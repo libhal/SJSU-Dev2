@@ -8,7 +8,7 @@
  * @version  V0.5
  * @date     17. May 2012
  * @author	NXP MCU SW Application Team
-* 
+*
 * Copyright(C) 2012, NXP Semiconductor
 * All rights reserved.
 *
@@ -31,13 +31,12 @@
 * this code.
 **********************************************************************/
 
-#ifndef __LPC407x_8x_177x_8x_H__
-#define __LPC407x_8x_177x_8x_H__
+#ifndef __LPC40xx_H__
+#define __LPC40xx_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 /* -------------------------  Interrupt Number Definition  ------------------------ */
 
@@ -114,12 +113,7 @@ typedef enum IRQn
 
 
 #include "core_cm4.h"                               /*!< Cortex-M4 processor and core peripherals                              */
-#include "system_LPC407x_8x_177x_8x.h"                      /*!< LPC408x_7x System                                                     */
-
-
-
-
-
+#include "system_LPC407x_8x_177x_8x.h"              /*!< LPC408x_7x System                                                     */
 
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */
@@ -193,9 +187,9 @@ typedef struct
   __IO uint32_t SCS;                        /*!< Offset: 0x1A0 (R/W)  System Controls and Status Register */
   __IO uint32_t IRCTRIM;                    /*!< Offset: 0x1A4 (R/W) Clock Dividers                     */
   __IO uint32_t PCLKSEL;                    /*!< Offset: 0x1A8 (R/W)  Peripheral Clock Selection Register */
-       uint32_t RESERVED8;					
-  __IO uint32_t PBOOST;						/*!< Offset: 0x1B0 (R/W)  Power Boost control register */	   
-  __IO uint32_t SPIFISEL;					
+       uint32_t RESERVED8;
+  __IO uint32_t PBOOST;						/*!< Offset: 0x1B0 (R/W)  Power Boost control register */
+  __IO uint32_t SPIFISEL;
   __IO uint32_t LCD_CFG;                    /*!< Offset: 0x1B8 (R/W)  LCD Configuration and clocking control Register */
        uint32_t RESERVED10[1];
   __IO uint32_t USBIntSt;                   /*!< Offset: 0x1C0 (R/W)  USB Interrupt Status Register */
@@ -413,12 +407,12 @@ typedef struct
   struct {
   __O  uint32_t DATA;
   } WR_DATA_DWORD;
-  
+
   struct {
   __O  uint16_t DATA;
        uint16_t RESERVED;
   }WR_DATA_WORD;
-  
+
   struct {
   __O  uint8_t  DATA;
        uint8_t  RESERVED[3];
@@ -847,8 +841,6 @@ typedef struct
   __IO uint32_t ERLASTSTAMP2;
 } LPC_RTC_TypeDef;
 
-
-
 /*------------- Pin Connect Block (PINCON) -----------------------------------*/
 typedef struct
 {
@@ -1039,11 +1031,6 @@ typedef struct
   __IO uint32_t P5_4;				/* 0x290 */
 } LPC_IOCON_TypeDef;
 
-
-
-
-
-
 /*------------- Synchronous Serial Communication (SSP) -----------------------*/
 typedef struct
 {
@@ -1203,7 +1190,6 @@ typedef struct
   __IO uint32_t CNTVAL;
 } LPC_DAC_TypeDef;
 
-
 /*------------- Inter IC Sound (I2S) -----------------------------------------*/
 typedef struct
 {
@@ -1222,11 +1208,6 @@ typedef struct
   __IO uint32_t TXMODE;
   __IO uint32_t RXMODE;
 } LPC_I2S_TypeDef;
-
-
-
-
-
 
 /*------------- Motor Control Pulse-Width Modulation (MCPWM) -----------------*/
 typedef struct
@@ -1321,15 +1302,6 @@ typedef struct
   __IO uint32_t FIFO[16];
 } LPC_MCI_TypeDef;
 
-
-
-
-
-
-
-
-
-
 /*------------- EEPROM Controller (EEPROM) -----------------------------------*/
 typedef struct
 {
@@ -1348,7 +1320,6 @@ typedef struct
   __IO uint32_t INT_CLR_STATUS;
   __IO uint32_t INT_SET_STATUS;
 } LPC_EEPROM_TypeDef;
-
 
 /*------------- COMPARATOR ----------------------------------------------------*/
 
@@ -1385,7 +1356,7 @@ typedef struct {                                    /*!< (@ 0x40020000) COMPARAT
 #define LPC_PWM0_BASE         (LPC_APB0_BASE + 0x14000)
 #define LPC_PWM1_BASE         (LPC_APB0_BASE + 0x18000)
 #define LPC_I2C0_BASE         (LPC_APB0_BASE + 0x1C000)
-#define LPC_COMPARATOR_BASE   (LPC_APB0_BASE + 0x20000)					
+#define LPC_COMPARATOR_BASE   (LPC_APB0_BASE + 0x20000)
 #define LPC_RTC_BASE          (LPC_APB0_BASE + 0x24000)
 #define LPC_GPIOINT_BASE      (LPC_APB0_BASE + 0x28080)
 #define LPC_IOCON_BASE        (LPC_APB0_BASE + 0x2C000)
@@ -1437,7 +1408,6 @@ typedef struct {                                    /*!< (@ 0x40020000) COMPARAT
 #define LPC_EMC_BASE          (LPC_AHB_BASE  + 0x1C000)
 
 #define LPC_EEPROM_BASE       (LPC_FLASH_BASE+ 0x200080)
-
 
 /******************************************************************************/
 /*                         Peripheral declaration                             */
@@ -1498,6 +1468,4 @@ typedef struct {                                    /*!< (@ 0x40020000) COMPARAT
 #define LPC_CRC               ((LPC_CRC_TypeDef       *) LPC_CRC_BASE      )
 #define LPC_EEPROM            ((LPC_EEPROM_TypeDef    *) LPC_EEPROM_BASE   )
 
-
-
-#endif  // __LPC407x_8x_177x_8x_H__
+#endif  // __LPC40xx_H__
