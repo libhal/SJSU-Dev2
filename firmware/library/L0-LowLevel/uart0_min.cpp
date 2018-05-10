@@ -1,23 +1,13 @@
-/*
- *     SocialLedge.com - Copyright (C) 2013
- *
- *     This file is part of free software framework for embedded processors.
- *     You can use it and/or distribute it as long as this copyright header
- *     remains unmodified.  The code is free for personal use and requires
- *     permission to use in a commercial product.
- *
- *      THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
- *      OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
- *      MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
- *      I SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
- *      CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
- *
- *     You can reach the author of this software at :
- *          p r e e t . w i k i @ g m a i l . c o m
- */
-
+#include <stdint.h>
 #include "LPC40xx.h"
-// #include "sys_config.h"
+
+typedef union
+{
+    LPC_IOCON_TypeDef origin;
+    uint32_t matrix[5][32];
+} iocon_union_t;
+
+iocon_union_t * const PIN_SELECTOR = (iocon_union_t *)(LPC_IOCON);
 
 void uart0_init(unsigned int baud_rate)
 {
@@ -31,7 +21,8 @@ void uart0_init(unsigned int baud_rate)
     LPC_SC->PCONP |= (1 << 3);
     LPC_SC->PCLKSEL = 1;
 
-    LPC_IOCON->P0_2 = 1;
+    PIN_SELECTOR->matrix[0][2] = 1;
+    // LPC_IOCON->P0_2 = 1;
     LPC_IOCON->P0_3 = 1;
 
     LPC_UART0->LCR  = dlab_bit;          // Set DLAB bit to access DLM & DLL

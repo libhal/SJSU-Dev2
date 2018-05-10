@@ -16,15 +16,22 @@
  *          p r e e t . w i k i @ g m a i l . c o m
  */
 
+/* GPIO - Warrior
+ * SPI  - Thief
+ * I2C  - Dual wield
+ * CAN  - Knight
+ * PWM  - Mage
+ *      -
+ *
+ */
+
 #include "LPC40xx.h"        // IRQn_Type
 #include "uart0_min.h"      // Uart0 initialization
 
 #if defined (__cplusplus)
-extern "C"
-{
+extern "C" {
 // The entry point for the C++ library startup
 extern void __libc_init_array(void);
-}
 #endif
 
 /// CPU execution begins from this function
@@ -192,19 +199,10 @@ void data_init(unsigned int romstart, unsigned int start, unsigned int len)
         *pulDest++ = *pulSrc++;
 }
 
-__attribute__ ((section(".after_vectors")))
-void bss_init(unsigned int start, unsigned int len)
-{
-    unsigned int *pulDest = (unsigned int*) start;
-    unsigned int loop;
-    for (loop = 0; loop < len; loop = loop + 4)
-        *pulDest++ = 0;
-}
-
 //*****************************************************************************
 extern unsigned int __data_section_table;
 extern unsigned int __data_section_table_end;
-//extern unsigned int __bss_section_table;
+extern unsigned int __bss_section_table;
 extern unsigned int __bss_section_table_end;
 
 //*****************************************************************************
@@ -212,90 +210,53 @@ extern unsigned int __bss_section_table_end;
 // This sets up the system and copies global memory contensts from FLASH to RAM
 // and initializes C/C++ environment
 //*****************************************************************************
-
-
-class FixInit
-{
-private:
-    int a;
-public:
-    FixInit()
-    {
-        a = 5;
-    }
-    int changeMember()
-    {
-        return ++a;
-    }
-};
-
-FixInit obj;
-
-void doSomething()
-{
-    obj.changeMember();
-}
-
-extern "C"
-{
+extern "C" {
     __attribute__ ((section(".after_vectors"), naked))
     void isr_reset(void)
     {
-
         // remove compiler warning
         (void)g_pfnVectors;
-
         /**
          * The hyperload bootloader sets the MSP/PSP upon a true reset, which is when the
-         * LPC17xx (Cortex-M3) sets the values of the stack pointer.  But since we are
+         * LPC40xx (Cortex-M3) sets the values of the stack pointer. But since we are
          * booting after a bootloader, we have to manually setup the stack pointers ourselves.
          */
-        do
+        const uint32_t topOfStack = (uint32_t) &_vStackTop;
+        __set_PSP(topOfStack);
+        __set_MSP(topOfStack);
+
+        // Copy data from FLASH to RAM
+        unsigned int LoadAddr, ExeAddr, SectionLen;
+        unsigned int *SectionTableAddr;
+
+        // Load base address of Global Section Table
+        SectionTableAddr = &__data_section_table;
+
+        // Copy the data sections from flash to SRAM.
+        while (SectionTableAddr < &__data_section_table_end)
         {
-            const uint32_t topOfStack = (uint32_t) &_vStackTop;
-            __set_PSP(topOfStack);
-            __set_MSP(topOfStack);
-        } while(0);
-
-        do
-        {
-            // Copy data from FLASH to RAM
-            unsigned int LoadAddr, ExeAddr, SectionLen;
-            unsigned int *SectionTableAddr;
-
-            // Load base address of Global Section Table
-            SectionTableAddr = &__data_section_table;
-
-            // Copy the data sections from flash to SRAM.
-            while (SectionTableAddr < &__data_section_table_end)
-            {
-                LoadAddr = *SectionTableAddr++;
-                ExeAddr = *SectionTableAddr++;
-                SectionLen = *SectionTableAddr++;
-                data_init(LoadAddr, ExeAddr, SectionLen);
-            }
-        } while (0) ;
+            LoadAddr = *SectionTableAddr++;
+            ExeAddr = *SectionTableAddr++;
+            SectionLen = *SectionTableAddr++;
+            data_init(LoadAddr, ExeAddr, SectionLen);
+        }
 
         #if defined (__cplusplus)
             __libc_init_array();    // Call C++ library initialization
         #endif
 
-        do
-        {
-            // low_level_init();   // Initialize minimal system, such as Clock & UART
-            // high_level_init();  // Initialize high level board specific features
-            // main();             // Finally call main()
-            doSomething();
-        } while(0);
-
+        // low_level_init();   // Initialize minimal system, such as Clock & UART
+        // high_level_init();  // Initialize high level board specific features
+        int result = main();   // Finally call main()
         // In case main() exits:
         const uint32_t SYS_CFG_UART0_BPS = 38400;
         uart0_init(SYS_CFG_UART0_BPS);
+        //// TODO: Print the result code the serial console below
+        (void) result;
         uart0_puts("PROGRAM ENDING ... \n");
         while (1);
     }
 }
-
 /**
  * Array of IRQs that the user can register, which we default to the weak ISR handler.
  * The user can either define the real one to override the weak handler, or the user
@@ -462,9 +423,13 @@ void isr_hard_fault_handler(unsigned long *hardfault_args)
     // sys_reboot();
 
     /* Prevent compiler warnings */
-    (void) stacked_r0 ;
-    (void) stacked_r1 ;
-    (void) stacked_r2 ;
-    (void) stacked_r3 ;
-    (void) stacked_r12 ;
+
+    (void) stacked_r0;
+    (void) stacked_r1;
+    (void) stacked_r2;
+    (void) stacked_r3;
+    (void) stacked_r12;
+    (void) stacked_lr;
+    (void) stacked_pc;
+    (void) stacked_psr;
 }

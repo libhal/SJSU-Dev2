@@ -34,7 +34,7 @@
 #ifndef __LPC40xx_H__
 #define __LPC40xx_H__
 
-#ifdef __cplusplus
+#if defined (__cplusplus)
 extern "C" {
 #endif
 
@@ -43,9 +43,9 @@ extern "C" {
 typedef enum IRQn
 {
 /******  Cortex-M4 Processor Exceptions Numbers ***************************************************/
-  Reset_IRQn                    = -15,              /*!<   1  Reset Vector, invoked on Power up and warm reset                 */
+  Reset_IRQn                    = -15,      /*!< 1  Reset Vector, invoked on Power up and warm reset */
   NonMaskableInt_IRQn           = -14,      /*!< 2 Non Maskable Interrupt                         */
-  HardFault_IRQn                = -13,              /*!<   3  Hard Fault, all classes of Fault                                 */
+  HardFault_IRQn                = -13,      /*!< 3  Hard Fault, all classes of Fault              */
   MemoryManagement_IRQn         = -12,      /*!< 4 Cortex-M3 Memory Management Interrupt          */
   BusFault_IRQn                 = -11,      /*!< 5 Cortex-M3 Bus Fault Interrupt                  */
   UsageFault_IRQn               = -10,      /*!< 6 Cortex-M3 Usage Fault Interrupt                */
@@ -94,10 +94,10 @@ typedef enum IRQn
   SSP2_IRQn                     = 36,       /*!< SSP2 Interrupt                                   */
   LCD_IRQn                      = 37,       /*!< LCD Interrupt                                    */
   GPIO_IRQn                     = 38,       /*!< GPIO Interrupt                                   */
-  PWM0_IRQn                     =  39,              /*!<  39  PWM0                                                             */
-  EEPROM_IRQn                   =  40,              /*!<  40  EEPROM                                                           */
-  CMP0_IRQn                     =  41,              /*!<  41  CMP0                                                             */
-  CMP1_IRQn                     =  42               /*!<  42  CMP1                                                             */
+  PWM0_IRQn                     = 39,       /*!<  39  PWM0                                        */
+  EEPROM_IRQn                   = 40,       /*!<  40  EEPROM                                      */
+  CMP0_IRQn                     = 41,       /*!<  41  CMP0                                        */
+  CMP1_IRQn                     = 42        /*!<  42  CMP1                                        */
 } IRQn_Type;
 
 /* ================================================================================ */
@@ -109,8 +109,9 @@ typedef enum IRQn
 #define __MPU_PRESENT                  1            /*!< MPU present or not                                                    */
 #define __NVIC_PRIO_BITS               3            /*!< Number of Bits used for Priority Levels                               */
 #define __Vendor_SysTickConfig         0            /*!< Set to 1 if different SysTick Config is used                          */
-#define __FPU_PRESENT                  1            /*!< FPU present or not                                                    */
-
+#ifndef __FPU_PRESENT
+    #define __FPU_PRESENT              1            /*!< FPU present or not                                                    */
+#endif
 
 #include "core_cm4.h"                               /*!< Cortex-M4 processor and core peripherals                              */
 #include "system_LPC407x_8x_177x_8x.h"              /*!< LPC408x_7x System                                                     */
@@ -1329,7 +1330,6 @@ typedef struct {                                    /*!< (@ 0x40020000) COMPARAT
   __IO uint32_t  CTRL1;                             /*!< (@ 0x40020008) Comparator 1 control register                          */
 } LPC_COMPARATOR_Type;
 
-
 #if defined ( __CC_ARM   )
 #pragma no_anon_unions
 #endif
@@ -1467,5 +1467,9 @@ typedef struct {                                    /*!< (@ 0x40020000) COMPARAT
 #define LPC_EMC               ((LPC_EMC_TypeDef       *) LPC_EMC_BASE      )
 #define LPC_CRC               ((LPC_CRC_TypeDef       *) LPC_CRC_BASE      )
 #define LPC_EEPROM            ((LPC_EEPROM_TypeDef    *) LPC_EEPROM_BASE   )
+
+#if defined (__cplusplus)
+} // extern "C"
+#endif
 
 #endif  // __LPC40xx_H__
