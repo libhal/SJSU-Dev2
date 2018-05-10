@@ -24,26 +24,26 @@ void uart0_init(unsigned int baud_rate)
     /* Adding 0.5 to perform rounding correctly since we do not want
      * 1.9 to round down to 1, but we want it to round-up to 2.
      */
-    const uint16_t divider = (sys_get_cpu_clock() / (16 * baud_rate) + 0.5);
+    const uint16_t divider = (48000000 / (16 * baud_rate) + 0.5);
     const uint8_t dlab_bit = (1 << 7);
     const uint8_t eight_bit_datalen = 3;
 
-    lpc_pconp(pconp_uart0, true);
-    lpc_pclk(pclk_uart0, clkdiv_1);
+    LPC_SC->PCONP |= (1 << 3);
+    LPC_SC->PCLKSEL = 1;
 
-    LPC_PINCON->PINSEL0 &= ~(0xF << 4); // Clear values
-    LPC_PINCON->PINSEL0 |= (0x5 << 4);  // Set values for UART0 Rx/Tx
+    LPC_IOCON->P0_2 = 1;
+    LPC_IOCON->P0_3 = 1;
 
-    LPC_UART0->LCR = dlab_bit;          // Set DLAB bit to access DLM & DLL
-    LPC_UART0->DLM = (divider >> 8);
-    LPC_UART0->DLL = (divider >> 0);
-    LPC_UART0->LCR = eight_bit_datalen; // DLAB is reset back to zero
+    LPC_UART0->LCR  = dlab_bit;          // Set DLAB bit to access DLM & DLL
+    LPC_UART0->DLM  = (divider >> 8);
+    LPC_UART0->DLL  = (divider >> 0);
+    LPC_UART0->LCR  = eight_bit_datalen; // DLAB is reset back to zero
+    LPC_UART0->FCR |= (1 << 0);
 }
 
 char uart0_getchar(char notused)
 {
-    while(! BIT(LPC_UART0->LSR).b0);
-
+    while(!(LPC_UART0->LSR & 0x1));
     return LPC_UART0->RBR;
 }
 
@@ -52,12 +52,12 @@ char uart0_putchar(char out)
     //while(! (LPC_UART0->LSR & (1 << 6)));
     LPC_UART0->THR = out;
 
-    while(! BIT(LPC_UART0->LSR).b6);
+    while(!(LPC_UART0->LSR & (0x1 << 6)));
 
     return 1;
 }
 
-void uart0_puts(const char* c_string)
+void uart0_puts(const char * c_string)
 {
     char* p = (char*) c_string;
     while(*p)

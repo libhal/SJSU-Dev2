@@ -24,6 +24,7 @@ extern "C"
 {
 // The entry point for the C++ library startup
 extern void __libc_init_array(void);
+}
 #endif
 
 /// CPU execution begins from this function
@@ -90,9 +91,9 @@ void CANAct_IRQHandler(void) ALIAS(isr_default_handler);
 /** @} */
 
 /** @{ FreeRTOS Interrupt Handlers  */
-extern void xPortSysTickHandler(void);  ///< OS timer or tick interrupt (for time slicing tasks)
-extern void xPortPendSVHandler(void);   ///< Context switch is performed using this interrupt
-extern void vPortSVCHandler(void);      ///< OS "supervisor" call to start first FreeRTOS task
+// extern void xPortSysTickHandler(void);  ///< OS timer or tick interrupt (for time slicing tasks)
+// extern void xPortPendSVHandler(void);   ///< Context switch is performed using this interrupt
+// extern void vPortSVCHandler(void);      ///< OS "supervisor" call to start first FreeRTOS task
 /** @} */
 
 /// Linker script (loader.ld) defines the initial stack pointer that we set at the interrupt vector
@@ -129,10 +130,12 @@ void (* const g_pfnVectors[])(void) =
     0,                  // Reserved
     0,                  // Reserved
     0,                  // Reserved
-    vPortSVCHandler,    // FreeRTOS SVC-call handler (naked function so needs direct call - not a wrapper)
+    // vPortSVCHandler,    // FreeRTOS SVC-call handler (naked function so needs direct call - not a wrapper)
+    0,    // FreeRTOS SVC-call handler (naked function so needs direct call - not a wrapper)
     isr_debug_mon,      // Debug monitor handler
     0,                  // Reserved
-    xPortPendSVHandler, // FreeRTOS PendSV handler (naked function so needs direct call - not a wrapper)
+    // xPortPendSVHandler, // FreeRTOS PendSV handler (naked function so needs direct call - not a wrapper)
+    0, // FreeRTOS PendSV handler (naked function so needs direct call - not a wrapper)
     isr_sys_tick,       // FreeRTOS SysTick handler (we enclose inside a wrapper to track OS overhead)
 
     // Chip Level - LPC17xx - common ISR that will call the real ISR
@@ -198,7 +201,6 @@ void bss_init(unsigned int start, unsigned int len)
         *pulDest++ = 0;
 }
 
-
 //*****************************************************************************
 extern unsigned int __data_section_table;
 extern unsigned int __data_section_table_end;
@@ -210,6 +212,29 @@ extern unsigned int __bss_section_table_end;
 // This sets up the system and copies global memory contensts from FLASH to RAM
 // and initializes C/C++ environment
 //*****************************************************************************
+
+
+class FixInit
+{
+private:
+    int a;
+public:
+    FixInit()
+    {
+        a = 5;
+    }
+    int changeMember()
+    {
+        return ++a;
+    }
+};
+
+FixInit obj;
+
+void doSomething()
+{
+    obj.changeMember();
+}
 
 extern "C"
 {
@@ -260,12 +285,13 @@ extern "C"
             // low_level_init();   // Initialize minimal system, such as Clock & UART
             // high_level_init();  // Initialize high level board specific features
             // main();             // Finally call main()
+            doSomething();
         } while(0);
 
         // In case main() exits:
-        #define SYS_CFG_UART0_BPS 38400
+        const uint32_t SYS_CFG_UART0_BPS = 38400;
         uart0_init(SYS_CFG_UART0_BPS);
-        u0_dbg_put("PROGRAM ENDING ... \n");
+        uart0_puts("PROGRAM ENDING ... \n");
         while (1);
     }
 }
@@ -339,13 +365,13 @@ static void isr_forwarder_routine(void)
     /* Inform FreeRTOS run-time counter API that we are inside an ISR such that it
      * won't think that the task is using the CPU.
      */
-    vRunTimeStatIsrEntry();
+    // vRunTimeStatIsrEntry();
 
     /* Get the IRQ number we are in.  Note that ICSR's real ISR bits are offset by 16.
      * We can read ICSR register too, but let's just read 8-bits directly.
      */
     const unsigned char isr_num = (*((unsigned char*) 0xE000ED04)) - 16; // (SCB->ICSR & 0xFF) - 16;
-    vTraceStoreISRBegin(isr_num);
+    // vTraceStoreISRBegin(isr_num);
 
     /* Lookup the function pointer we want to call and make the call */
     isr_func_t isr_to_service = g_isr_array[isr_num];
@@ -355,17 +381,18 @@ static void isr_forwarder_routine(void)
      */
     if (isr_default_handler == isr_to_service)
     {
-        u0_dbg_printf("%u IRQ was triggered, but no IRQ service was defined!\n", isr_num);
+        // u0_dbg_printf("%u IRQ was triggered, but no IRQ service was defined!\n", isr_num);
+        uart0_puts("IRQ was triggered, but no IRQ service was defined!\n");
         while(1);
     }
     else
     {
         isr_to_service();
     }
-    vTraceStoreISREnd(0);
+    // vTraceStoreISREnd(0);
 
     /* Inform FreeRTOS that we have exited the ISR */
-    vRunTimeStatIsrExit();
+    // vRunTimeStatIsrExit();
 }
 
 
@@ -384,14 +411,14 @@ void isr_hard_fault(void)
     ) ;
 }
 
-__attribute__ ((section(".after_vectors"))) void isr_nmi(void)        { u0_dbg_put("NMI Fault\n"); while(1); }
-__attribute__ ((section(".after_vectors"))) void isr_mem_fault(void)  { u0_dbg_put("Mem Fault\n"); while(1); }
-__attribute__ ((section(".after_vectors"))) void isr_bus_fault(void)  { u0_dbg_put("BUS Fault\n"); while(1); }
-__attribute__ ((section(".after_vectors"))) void isr_usage_fault(void){ u0_dbg_put("Usage Fault\n"); while(1); }
-__attribute__ ((section(".after_vectors"))) void isr_debug_mon(void)  { u0_dbg_put("DBGMON Fault\n"); while(1); }
+__attribute__ ((section(".after_vectors"))) void isr_nmi(void)        { uart0_puts("NMI Fault\n"); while(1); }
+__attribute__ ((section(".after_vectors"))) void isr_mem_fault(void)  { uart0_puts("Mem Fault\n"); while(1); }
+__attribute__ ((section(".after_vectors"))) void isr_bus_fault(void)  { uart0_puts("BUS Fault\n"); while(1); }
+__attribute__ ((section(".after_vectors"))) void isr_usage_fault(void){ uart0_puts("Usage Fault\n"); while(1); }
+__attribute__ ((section(".after_vectors"))) void isr_debug_mon(void)  { uart0_puts("DBGMON Fault\n"); while(1); }
 
 /// If an IRQ is not registered, we end up at this stub function
-__attribute__ ((section(".after_vectors"))) void isr_default_handler(void) { u0_dbg_put("IRQ not registered!"); while(1); }
+__attribute__ ((section(".after_vectors"))) void isr_default_handler(void) { uart0_puts("IRQ not registered!"); while(1); }
 
 /// Wrap the FreeRTOS tick function such that we get a true measure of how much CPU tasks are using
 __attribute__ ((section(".after_vectors"))) void isr_sys_tick(void)
@@ -427,10 +454,10 @@ void isr_hard_fault_handler(unsigned long *hardfault_args)
     stacked_pc = ((unsigned long)hardfault_args[6]) ;
     stacked_psr = ((unsigned long)hardfault_args[7]) ;
 
-    FAULT_EXISTS = FAULT_PRESENT_VAL;
-    FAULT_PC = stacked_pc;
-    FAULT_LR = stacked_lr - 1;
-    FAULT_PSR = stacked_psr;
+    // FAULT_EXISTS = FAULT_PRESENT_VAL;
+    // FAULT_PC = stacked_pc;
+    // FAULT_LR = stacked_lr - 1;
+    // FAULT_PSR = stacked_psr;
 
     // sys_reboot();
 
