@@ -1,0 +1,542 @@
+cc1plus: warning: command line option '-Wjump-misses-init' is valid for C/ObjC but not for C++
+In file included from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:116:0,
+                 from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:2:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPriorityGrouping(uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1599:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);             /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1602:75: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   reg_value &= ~((uint32_t)(SCB_AIRCR_VECTKEY_Msk | SCB_AIRCR_PRIGROUP_Msk)); /* clear bits to change               */
+                                                                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1604:28: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+                 ((uint32_t)0x5FAUL << SCB_AIRCR_VECTKEY_Pos) |
+                            ^~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetPriorityGrouping()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1617:85: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return ((uint32_t)((SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) >> SCB_AIRCR_PRIGROUP_Pos));
+                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_EnableIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1628:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ISER[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_DisableIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1639:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ICER[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1652:138: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return((uint32_t)(((NVIC->ISPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] & (1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL))) != 0UL) ? 1UL : 0UL));
+                                                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1663:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ISPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_ClearPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1674:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ICPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetActive(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1687:138: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return((uint32_t)(((NVIC->IABR[(((uint32_t)(int32_t)IRQn) >> 5UL)] & (1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL))) != 0UL) ? 1UL : 0UL));
+                                                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPriority(IRQn_Type, uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1702:117: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+     SCB->SHP[(((uint32_t)(int32_t)IRQn) & 0xFUL)-4UL] = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+                                                                                                                     ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1706:117: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+     NVIC->IP[((uint32_t)(int32_t)IRQn)]               = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+                                                                                                                     ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_EncodePriority(uint32_t, uint32_t, uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1747:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);   /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1751:149: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   PreemptPriorityBits = ((7UL - PriorityGroupTmp) > (uint32_t)(__NVIC_PRIO_BITS)) ? (uint32_t)(__NVIC_PRIO_BITS) : (uint32_t)(7UL - PriorityGroupTmp);
+                                                                                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:88: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                        ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:105: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                         ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:177: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                                                                                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1755:79: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+            ((PreemptPriority & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL)) << SubPriorityBits) |
+                                                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1756:79: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+            ((SubPriority     & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL)))
+                                                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_DecodePriority(uint32_t, uint32_t, uint32_t*, uint32_t*)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1774:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);   /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1778:149: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   PreemptPriorityBits = ((7UL - PriorityGroupTmp) > (uint32_t)(__NVIC_PRIO_BITS)) ? (uint32_t)(__NVIC_PRIO_BITS) : (uint32_t)(7UL - PriorityGroupTmp);
+                                                                                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:88: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                        ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:105: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                         ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:177: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                                                                                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1781:102: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   *pPreemptPriority = (Priority >> SubPriorityBits) & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL);
+                                                                                                      ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1782:102: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   *pSubPriority     = (Priority                   ) & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL);
+                                                                                                      ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SystemReset()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1796:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+                             SCB_AIRCR_SYSRESETREQ_Msk    );         /* Keep priority group unchanged */
+                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t SysTick_Config(uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1837:42: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SysTick->LOAD  = (uint32_t)(ticks - 1UL);                         /* set reload register */
+                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'int32_t ITM_ReceiveChar()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1861:46: warning: conversion to 'long unsigned int' from 'long int' may change the sign of the result [-Wsign-conversion]
+ #define                 ITM_RXBUFFER_EMPTY   0x5AA55AA5U /*!< Value identifying \ref ITM_RxBuffer is ready for next character. */
+                                              ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1897:23: note: in expansion of macro 'ITM_RXBUFFER_EMPTY'
+   if (ITM_RxBuffer != ITM_RXBUFFER_EMPTY)
+                       ^~~~~~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'int32_t ITM_CheckChar()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1861:46: warning: conversion to 'long unsigned int' from 'long int' may change the sign of the result [-Wsign-conversion]
+ #define                 ITM_RXBUFFER_EMPTY   0x5AA55AA5U /*!< Value identifying \ref ITM_RxBuffer is ready for next character. */
+                                              ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1916:23: note: in expansion of macro 'ITM_RXBUFFER_EMPTY'
+   if (ITM_RxBuffer == ITM_RXBUFFER_EMPTY)
+                       ^~~~~~~~~~~~~~~~~~
+In file included from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:2:0:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp: At global scope:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1362:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_IOCON_BASE        (LPC_APB0_BASE + 0x2C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1435:58: note: in expansion of macro 'LPC_IOCON_BASE'
+ #define LPC_IOCON             ((LPC_IOCON_TypeDef     *) LPC_IOCON_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:10:56: note: in expansion of macro 'LPC_IOCON'
+ iocon_union_t * const PIN_SELECTOR = (iocon_union_t *)(LPC_IOCON);
+                                                        ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:10:65: warning: use of old-style cast [-Wold-style-cast]
+ iocon_union_t * const PIN_SELECTOR = (iocon_union_t *)(LPC_IOCON);
+                                                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp: In function 'void uart0_init(unsigned int)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:17:40: warning: conversion to 'float' from 'unsigned int' may alter its value [-Wconversion]
+     const uint16_t divider = (48000000 / (16 * baud_rate) + 0.5);
+                               ~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:17:59: warning: conversion to 'uint16_t {aka short unsigned int}' from 'float' may alter its value [-Wfloat-conversion]
+     const uint16_t divider = (48000000 / (16 * baud_rate) + 0.5);
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+In file included from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:2:0:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1386:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_SC_BASE           (LPC_APB1_BASE + 0x7C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1415:58: note: in expansion of macro 'LPC_SC_BASE'
+ #define LPC_SC                ((LPC_SC_TypeDef        *) LPC_SC_BASE       )
+                                                          ^~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:21:5: note: in expansion of macro 'LPC_SC'
+     LPC_SC->PCONP |= (1 << 3);
+     ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1386:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_SC_BASE           (LPC_APB1_BASE + 0x7C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1415:58: note: in expansion of macro 'LPC_SC_BASE'
+ #define LPC_SC                ((LPC_SC_TypeDef        *) LPC_SC_BASE       )
+                                                          ^~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:22:5: note: in expansion of macro 'LPC_SC'
+     LPC_SC->PCLKSEL = 1;
+     ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1362:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_IOCON_BASE        (LPC_APB0_BASE + 0x2C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1435:58: note: in expansion of macro 'LPC_IOCON_BASE'
+ #define LPC_IOCON             ((LPC_IOCON_TypeDef     *) LPC_IOCON_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:26:5: note: in expansion of macro 'LPC_IOCON'
+     LPC_IOCON->P0_3 = 1;
+     ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:28:5: note: in expansion of macro 'LPC_UART0'
+     LPC_UART0->LCR  = dlab_bit;          // Set DLAB bit to access DLM & DLL
+     ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:29:5: note: in expansion of macro 'LPC_UART0'
+     LPC_UART0->DLM  = (divider >> 8);
+     ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:29:32: warning: conversion to 'uint8_t {aka unsigned char}' from 'int' may alter its value [-Wconversion]
+     LPC_UART0->DLM  = (divider >> 8);
+                       ~~~~~~~~~^~~~~
+In file included from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:2:0:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:30:5: note: in expansion of macro 'LPC_UART0'
+     LPC_UART0->DLL  = (divider >> 0);
+     ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:30:32: warning: conversion to 'uint8_t {aka unsigned char}' from 'int' may alter its value [-Wconversion]
+     LPC_UART0->DLL  = (divider >> 0);
+                       ~~~~~~~~~^~~~~
+In file included from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:2:0:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:31:5: note: in expansion of macro 'LPC_UART0'
+     LPC_UART0->LCR  = eight_bit_datalen; // DLAB is reset back to zero
+     ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:32:5: note: in expansion of macro 'LPC_UART0'
+     LPC_UART0->FCR |= (1 << 0);
+     ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp: In function 'char uart0_getchar(char)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:37:13: note: in expansion of macro 'LPC_UART0'
+     while(!(LPC_UART0->LSR & 0x1));
+             ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:38:12: note: in expansion of macro 'LPC_UART0'
+     return LPC_UART0->RBR;
+            ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:35:25: warning: unused parameter 'notused' [-Wunused-parameter]
+ char uart0_getchar(char notused)
+                         ^~~~~~~
+In file included from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:2:0:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp: In function 'char uart0_putchar(char)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:44:5: note: in expansion of macro 'LPC_UART0'
+     LPC_UART0->THR = out;
+     ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1354:55: warning: use of old-style cast [-Wold-style-cast]
+ #define LPC_UART0_BASE        (LPC_APB0_BASE + 0x0C000)
+                                                       ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:1421:58: note: in expansion of macro 'LPC_UART0_BASE'
+ #define LPC_UART0             ((LPC_UART_TypeDef      *) LPC_UART0_BASE    )
+                                                          ^~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:46:13: note: in expansion of macro 'LPC_UART0'
+     while(!(LPC_UART0->LSR & (0x1 << 6)));
+             ^~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp: In function 'void uart0_puts(const char*)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.cpp:53:23: warning: use of old-style cast [-Wold-style-cast]
+     char* p = (char*) c_string;
+                       ^~~~~~~~
+cc1plus: warning: command line option '-Wjump-misses-init' is valid for C/ObjC but not for C++
+In file included from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:116:0,
+                 from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:28:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPriorityGrouping(uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1599:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);             /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1602:75: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   reg_value &= ~((uint32_t)(SCB_AIRCR_VECTKEY_Msk | SCB_AIRCR_PRIGROUP_Msk)); /* clear bits to change               */
+                                                                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1604:28: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+                 ((uint32_t)0x5FAUL << SCB_AIRCR_VECTKEY_Pos) |
+                            ^~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetPriorityGrouping()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1617:85: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return ((uint32_t)((SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) >> SCB_AIRCR_PRIGROUP_Pos));
+                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_EnableIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1628:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ISER[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_DisableIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1639:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ICER[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1652:138: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return((uint32_t)(((NVIC->ISPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] & (1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL))) != 0UL) ? 1UL : 0UL));
+                                                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1663:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ISPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_ClearPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1674:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ICPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetActive(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1687:138: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return((uint32_t)(((NVIC->IABR[(((uint32_t)(int32_t)IRQn) >> 5UL)] & (1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL))) != 0UL) ? 1UL : 0UL));
+                                                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPriority(IRQn_Type, uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1702:117: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+     SCB->SHP[(((uint32_t)(int32_t)IRQn) & 0xFUL)-4UL] = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+                                                                                                                     ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1706:117: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+     NVIC->IP[((uint32_t)(int32_t)IRQn)]               = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+                                                                                                                     ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_EncodePriority(uint32_t, uint32_t, uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1747:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);   /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1751:149: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   PreemptPriorityBits = ((7UL - PriorityGroupTmp) > (uint32_t)(__NVIC_PRIO_BITS)) ? (uint32_t)(__NVIC_PRIO_BITS) : (uint32_t)(7UL - PriorityGroupTmp);
+                                                                                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:88: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                        ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:105: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                         ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:177: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                                                                                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1755:79: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+            ((PreemptPriority & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL)) << SubPriorityBits) |
+                                                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1756:79: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+            ((SubPriority     & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL)))
+                                                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_DecodePriority(uint32_t, uint32_t, uint32_t*, uint32_t*)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1774:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);   /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1778:149: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   PreemptPriorityBits = ((7UL - PriorityGroupTmp) > (uint32_t)(__NVIC_PRIO_BITS)) ? (uint32_t)(__NVIC_PRIO_BITS) : (uint32_t)(7UL - PriorityGroupTmp);
+                                                                                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:88: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                        ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:105: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                         ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:177: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                                                                                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1781:102: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   *pPreemptPriority = (Priority >> SubPriorityBits) & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL);
+                                                                                                      ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1782:102: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   *pSubPriority     = (Priority                   ) & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL);
+                                                                                                      ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SystemReset()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1796:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+                             SCB_AIRCR_SYSRESETREQ_Msk    );         /* Keep priority group unchanged */
+                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t SysTick_Config(uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1837:42: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SysTick->LOAD  = (uint32_t)(ticks - 1UL);                         /* set reload register */
+                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'int32_t ITM_ReceiveChar()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1861:46: warning: conversion to 'long unsigned int' from 'long int' may change the sign of the result [-Wsign-conversion]
+ #define                 ITM_RXBUFFER_EMPTY   0x5AA55AA5U /*!< Value identifying \ref ITM_RxBuffer is ready for next character. */
+                                              ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1897:23: note: in expansion of macro 'ITM_RXBUFFER_EMPTY'
+   if (ITM_RxBuffer != ITM_RXBUFFER_EMPTY)
+                       ^~~~~~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'int32_t ITM_CheckChar()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1861:46: warning: conversion to 'long unsigned int' from 'long int' may change the sign of the result [-Wsign-conversion]
+ #define                 ITM_RXBUFFER_EMPTY   0x5AA55AA5U /*!< Value identifying \ref ITM_RxBuffer is ready for next character. */
+                                              ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1916:23: note: in expansion of macro 'ITM_RXBUFFER_EMPTY'
+   if (ITM_RxBuffer == ITM_RXBUFFER_EMPTY)
+                       ^~~~~~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp: In function 'void data_init(unsigned int, unsigned int, unsigned int)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:195:45: warning: use of old-style cast [-Wold-style-cast]
+     unsigned int *pulDest = (unsigned int*) start;
+                                             ^~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:196:44: warning: use of old-style cast [-Wold-style-cast]
+     unsigned int *pulSrc = (unsigned int*) romstart;
+                                            ^~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp: In function 'void isr_reset()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:250:27: warning: ISO C++ forbids taking address of function '::main' [-Wpedantic]
+         int result = main();   // Finally call main()
+                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp: In function 'void isr_forwarder_routine()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:334:55: warning: use of old-style cast [-Wold-style-cast]
+     const unsigned char isr_num = (*((unsigned char*) 0xE000ED04)) - 16; // (SCB->ICSR & 0xFF) - 16;
+                                                       ^~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:334:68: warning: conversion to 'unsigned char' from 'int' may alter its value [-Wconversion]
+     const unsigned char isr_num = (*((unsigned char*) 0xE000ED04)) - 16; // (SCB->ICSR & 0xFF) - 16;
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp: In function 'void isr_hard_fault_handler(long unsigned int*)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:409:50: warning: use of old-style cast [-Wold-style-cast]
+     stacked_r0 = ((unsigned long)hardfault_args[0]) ;
+                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:409:50: warning: useless cast to type 'long unsigned int' [-Wuseless-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:410:50: warning: use of old-style cast [-Wold-style-cast]
+     stacked_r1 = ((unsigned long)hardfault_args[1]) ;
+                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:410:50: warning: useless cast to type 'long unsigned int' [-Wuseless-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:411:50: warning: use of old-style cast [-Wold-style-cast]
+     stacked_r2 = ((unsigned long)hardfault_args[2]) ;
+                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:411:50: warning: useless cast to type 'long unsigned int' [-Wuseless-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:412:50: warning: use of old-style cast [-Wold-style-cast]
+     stacked_r3 = ((unsigned long)hardfault_args[3]) ;
+                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:412:50: warning: useless cast to type 'long unsigned int' [-Wuseless-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:413:51: warning: use of old-style cast [-Wold-style-cast]
+     stacked_r12 = ((unsigned long)hardfault_args[4]) ;
+                                                   ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:413:51: warning: useless cast to type 'long unsigned int' [-Wuseless-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:414:50: warning: use of old-style cast [-Wold-style-cast]
+     stacked_lr = ((unsigned long)hardfault_args[5]) ;
+                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:414:50: warning: useless cast to type 'long unsigned int' [-Wuseless-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:415:50: warning: use of old-style cast [-Wold-style-cast]
+     stacked_pc = ((unsigned long)hardfault_args[6]) ;
+                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:415:50: warning: useless cast to type 'long unsigned int' [-Wuseless-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:416:51: warning: use of old-style cast [-Wold-style-cast]
+     stacked_psr = ((unsigned long)hardfault_args[7]) ;
+                                                   ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/startup.cpp:416:51: warning: useless cast to type 'long unsigned int' [-Wuseless-cast]
+cc1plus: warning: command line option '-Wjump-misses-init' is valid for C/ObjC but not for C++
+In file included from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/LPC40xx.h:116:0,
+                 from /home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/uart0_min.h:4,
+                 from L5_Application/main.cpp:2:
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPriorityGrouping(uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1599:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);             /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1602:75: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   reg_value &= ~((uint32_t)(SCB_AIRCR_VECTKEY_Msk | SCB_AIRCR_PRIGROUP_Msk)); /* clear bits to change               */
+                                                                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1604:28: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+                 ((uint32_t)0x5FAUL << SCB_AIRCR_VECTKEY_Pos) |
+                            ^~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetPriorityGrouping()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1617:85: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return ((uint32_t)((SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) >> SCB_AIRCR_PRIGROUP_Pos));
+                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_EnableIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1628:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ISER[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_DisableIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1639:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ICER[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1652:138: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return((uint32_t)(((NVIC->ISPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] & (1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL))) != 0UL) ? 1UL : 0UL));
+                                                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1663:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ISPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_ClearPendingIRQ(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1674:106: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   NVIC->ICPR[(((uint32_t)(int32_t)IRQn) >> 5UL)] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_GetActive(IRQn_Type)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1687:138: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   return((uint32_t)(((NVIC->IABR[(((uint32_t)(int32_t)IRQn) >> 5UL)] & (1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL))) != 0UL) ? 1UL : 0UL));
+                                                                                                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SetPriority(IRQn_Type, uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1702:117: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+     SCB->SHP[(((uint32_t)(int32_t)IRQn) & 0xFUL)-4UL] = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+                                                                                                                     ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1706:117: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+     NVIC->IP[((uint32_t)(int32_t)IRQn)]               = (uint8_t)((priority << (8U - __NVIC_PRIO_BITS)) & (uint32_t)0xFFUL);
+                                                                                                                     ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t NVIC_EncodePriority(uint32_t, uint32_t, uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1747:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);   /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1751:149: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   PreemptPriorityBits = ((7UL - PriorityGroupTmp) > (uint32_t)(__NVIC_PRIO_BITS)) ? (uint32_t)(__NVIC_PRIO_BITS) : (uint32_t)(7UL - PriorityGroupTmp);
+                                                                                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:88: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                        ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:105: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                         ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1752:177: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                                                                                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1755:79: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+            ((PreemptPriority & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL)) << SubPriorityBits) |
+                                                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1756:79: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+            ((SubPriority     & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL)))
+                                                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_DecodePriority(uint32_t, uint32_t, uint32_t*, uint32_t*)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1774:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   uint32_t PriorityGroupTmp = (PriorityGroup & (uint32_t)0x07UL);   /* only values 0..7 are used          */
+                                                          ^~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1778:149: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   PreemptPriorityBits = ((7UL - PriorityGroupTmp) > (uint32_t)(__NVIC_PRIO_BITS)) ? (uint32_t)(__NVIC_PRIO_BITS) : (uint32_t)(7UL - PriorityGroupTmp);
+                                                                                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:88: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                        ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:105: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                         ^~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1779:177: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SubPriorityBits     = ((PriorityGroupTmp + (uint32_t)(__NVIC_PRIO_BITS)) < (uint32_t)7UL) ? (uint32_t)0UL : (uint32_t)((PriorityGroupTmp - 7UL) + (uint32_t)(__NVIC_PRIO_BITS));
+                                                                                                                                                                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1781:102: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   *pPreemptPriority = (Priority >> SubPriorityBits) & (uint32_t)((1UL << (PreemptPriorityBits)) - 1UL);
+                                                                                                      ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1782:102: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   *pSubPriority     = (Priority                   ) & (uint32_t)((1UL << (SubPriorityBits    )) - 1UL);
+                                                                                                      ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'void NVIC_SystemReset()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1796:58: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+                             SCB_AIRCR_SYSRESETREQ_Msk    );         /* Keep priority group unchanged */
+                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'uint32_t SysTick_Config(uint32_t)':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1837:42: warning: useless cast to type 'uint32_t {aka long unsigned int}' [-Wuseless-cast]
+   SysTick->LOAD  = (uint32_t)(ticks - 1UL);                         /* set reload register */
+                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'int32_t ITM_ReceiveChar()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1861:46: warning: conversion to 'long unsigned int' from 'long int' may change the sign of the result [-Wsign-conversion]
+ #define                 ITM_RXBUFFER_EMPTY   0x5AA55AA5U /*!< Value identifying \ref ITM_RxBuffer is ready for next character. */
+                                              ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1897:23: note: in expansion of macro 'ITM_RXBUFFER_EMPTY'
+   if (ITM_RxBuffer != ITM_RXBUFFER_EMPTY)
+                       ^~~~~~~~~~~~~~~~~~
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h: In function 'int32_t ITM_CheckChar()':
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1861:46: warning: conversion to 'long unsigned int' from 'long int' may change the sign of the result [-Wsign-conversion]
+ #define                 ITM_RXBUFFER_EMPTY   0x5AA55AA5U /*!< Value identifying \ref ITM_RxBuffer is ready for next character. */
+                                              ^
+/home/kammce/Documents/GIT/SJSU-Dev2//firmware/library/L0-LowLevel/core_cm4.h:1916:23: note: in expansion of macro 'ITM_RXBUFFER_EMPTY'
+   if (ITM_RxBuffer == ITM_RXBUFFER_EMPTY)
+                       ^~~~~~~~~~~~~~~~~~

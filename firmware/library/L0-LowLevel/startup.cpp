@@ -190,13 +190,15 @@ void (* const g_pfnVectors[])(void) =
 // memory.
 //*****************************************************************************
 __attribute__ ((section(".after_vectors")))
-void data_init(unsigned int romstart, unsigned int start, unsigned int len)
+void data_init(unsigned int * romstart, unsigned int * start, unsigned int len)
 {
-    unsigned int *pulDest = (unsigned int*) start;
-    unsigned int *pulSrc = (unsigned int*) romstart;
+    unsigned int *pulDest = start;
+    unsigned int *pulSrc = romstart;
     unsigned int loop;
-    for (loop = 0; loop < len; loop = loop + 4)
+    for (loop = 0; loop < len; loop = loop + sizeof(unsigned int))
+    {
         *pulDest++ = *pulSrc++;
+    }
 }
 
 //*****************************************************************************
@@ -226,7 +228,9 @@ extern "C" {
         __set_MSP(topOfStack);
 
         // Copy data from FLASH to RAM
-        unsigned int LoadAddr, ExeAddr, SectionLen;
+        unsigned int *LoadAddr;
+        unsigned int *ExeAddr;
+        unsigned int SectionLen;
         unsigned int *SectionTableAddr;
 
         // Load base address of Global Section Table
@@ -235,8 +239,8 @@ extern "C" {
         // Copy the data sections from flash to SRAM.
         while (SectionTableAddr < &__data_section_table_end)
         {
-            LoadAddr = *SectionTableAddr++;
-            ExeAddr = *SectionTableAddr++;
+            LoadAddr = (unsigned int *)(*SectionTableAddr++);
+            ExeAddr = (unsigned int *)(*SectionTableAddr++);
             SectionLen = *SectionTableAddr++;
             data_init(LoadAddr, ExeAddr, SectionLen);
         }
@@ -331,7 +335,7 @@ static void isr_forwarder_routine(void)
     /* Get the IRQ number we are in.  Note that ICSR's real ISR bits are offset by 16.
      * We can read ICSR register too, but let's just read 8-bits directly.
      */
-    const unsigned char isr_num = (*((unsigned char*) 0xE000ED04)) - 16; // (SCB->ICSR & 0xFF) - 16;
+    const unsigned char isr_num = (*(static_cast<unsigned char*>(0xE000ED04))) - 16; // (SCB->ICSR & 0xFF) - 16;
     // vTraceStoreISRBegin(isr_num);
 
     /* Lookup the function pointer we want to call and make the call */
@@ -406,14 +410,14 @@ void isr_hard_fault_handler(unsigned long *hardfault_args)
     volatile unsigned int stacked_pc ;
     volatile unsigned int stacked_psr ;
 
-    stacked_r0 = ((unsigned long)hardfault_args[0]) ;
-    stacked_r1 = ((unsigned long)hardfault_args[1]) ;
-    stacked_r2 = ((unsigned long)hardfault_args[2]) ;
-    stacked_r3 = ((unsigned long)hardfault_args[3]) ;
-    stacked_r12 = ((unsigned long)hardfault_args[4]) ;
-    stacked_lr = ((unsigned long)hardfault_args[5]) ;
-    stacked_pc = ((unsigned long)hardfault_args[6]) ;
-    stacked_psr = ((unsigned long)hardfault_args[7]) ;
+    stacked_r0 = hardfault_args[0];
+    stacked_r1 = hardfault_args[1];
+    stacked_r2 = hardfault_args[2];
+    stacked_r3 = hardfault_args[3];
+    stacked_r12 = hardfault_args[4];
+    stacked_lr = hardfault_args[5];
+    stacked_pc = hardfault_args[6];
+    stacked_psr = hardfault_args[7];
 
     // FAULT_EXISTS = FAULT_PRESENT_VAL;
     // FAULT_PC = stacked_pc;
@@ -424,12 +428,12 @@ void isr_hard_fault_handler(unsigned long *hardfault_args)
 
     /* Prevent compiler warnings */
 
-    (void) stacked_r0;
-    (void) stacked_r1;
-    (void) stacked_r2;
-    (void) stacked_r3;
-    (void) stacked_r12;
-    (void) stacked_lr;
-    (void) stacked_pc;
-    (void) stacked_psr;
+    static_cast<void>(stacked_r0);
+    static_cast<void>(stacked_r1);
+    static_cast<void>(stacked_r2);
+    static_cast<void>(stacked_r3);
+    static_cast<void>(stacked_r12);
+    static_cast<void>(stacked_lr);
+    static_cast<void>(stacked_pc);
+    static_cast<void>(stacked_psr);
 }

@@ -33,6 +33,7 @@
 
 #ifndef __LPC40xx_H__
 #define __LPC40xx_H__
+#pragma GCC system_header
 
 #if defined (__cplusplus)
 extern "C" {

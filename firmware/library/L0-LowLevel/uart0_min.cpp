@@ -1,39 +1,32 @@
 #include <stdint.h>
 #include "LPC40xx.h"
 
-typedef union
-{
-    LPC_IOCON_TypeDef origin;
-    uint32_t matrix[5][32];
-} iocon_union_t;
-
-iocon_union_t * const PIN_SELECTOR = (iocon_union_t *)(LPC_IOCON);
-
-void uart0_init(unsigned int baud_rate)
+void uart0_init(uint32_t baud_rate)
 {
     /* Adding 0.5 to perform rounding correctly since we do not want
      * 1.9 to round down to 1, but we want it to round-up to 2.
      */
-    const uint16_t divider = (48000000 / (16 * baud_rate) + 0.5);
-    const uint8_t dlab_bit = (1 << 7);
-    const uint8_t eight_bit_datalen = 3;
+    float baud_rate_float = static_cast<float>(baud_rate);
+    const uint32_t divider = static_cast<uint32_t>(48000000.0f / (16.0f * baud_rate_float) + 0.5f);
+    const uint16_t dlab_bit = (1 << 7);
+    const uint32_t eight_bit_datalen = 3;
 
     LPC_SC->PCONP |= (1 << 3);
     LPC_SC->PCLKSEL = 1;
 
-    PIN_SELECTOR->matrix[0][2] = 1;
-    // LPC_IOCON->P0_2 = 1;
+    LPC_IOCON->P0_2 = 1;
     LPC_IOCON->P0_3 = 1;
 
     LPC_UART0->LCR  = dlab_bit;          // Set DLAB bit to access DLM & DLL
-    LPC_UART0->DLM  = (divider >> 8);
-    LPC_UART0->DLL  = (divider >> 0);
+    LPC_UART0->DLM  = static_cast<uint8_t>(divider >> 8);
+    LPC_UART0->DLL  = static_cast<uint8_t>(divider >> 0);
     LPC_UART0->LCR  = eight_bit_datalen; // DLAB is reset back to zero
     LPC_UART0->FCR |= (1 << 0);
 }
 
 char uart0_getchar(char notused)
 {
+    (void)(notused);
     while(!(LPC_UART0->LSR & 0x1));
     return LPC_UART0->RBR;
 }
@@ -50,11 +43,8 @@ char uart0_putchar(char out)
 
 void uart0_puts(const char * c_string)
 {
-    char* p = (char*) c_string;
-    while(*p)
+    for(uint32_t i = 0; c_string[i] != '\0'; i++)
     {
-        uart0_putchar(*p);
-        p++;
+        uart0_putchar(c_string[i]);
     }
-    uart0_putchar('\n');
 }
