@@ -27,18 +27,28 @@ endef
 ifndef SJDEV
 $(error $n$n=============================================$nSJSUOne environment variables not set.$nPLEASE run "source env.sh"$n=============================================$n$n)
 endif
-#
 
-COMMON_FLAGS = -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
-    -O3 -g -fmessage-length=0 \
-    -ffunction-sections -fdata-sections \
-    -Wall -Wshadow -Wlogical-op -Wfloat-equal \
-	-Wdouble-promotion -fsingle-precision-constant \
-	-DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
+# FLAGS
+CORTEX_M4F	= -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
+OPTIMIZE 	= -O3 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
+			   -fsingle-precision-constant -fno-rtti
+DEBUG 		= -g
+WARNINGS 	= -Wall -Wextra -Wpedantic -Wshadow -Wlogical-op -Wfloat-equal \
+			  -Wdouble-promotion -Wduplicated-cond -Wlogical-op -Wswitch \
+			  -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wformat=2 \
+			  -Wundef -Wconversion -Wsign-conversion -Woverloaded-virtual \
+			  -Wsuggest-attribute=const -Wsuggest-final-types -Wsuggest-final-methods -Wsuggest-override \
+			  -Wframe-larger-than=1024
+			  #-Walloc-zero -Walloc-size-larger-than=8kB -Walloca-larger-than=1
+
+DISABLED_WARNINGS = -Wno-main
+DEFINES     = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
+# end FLAGS
+
+COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DISABLED_WARNINGS) $(DEFINES)
 
 CFLAGS = $(COMMON_FLAGS) \
     -fabi-version=0 \
-    -fno-exceptions \
     -I"$(LIB_DIR)/" \
     -I"$(LIB_DIR)/newlib" \
     -I"$(LIB_DIR)/third-party/fat" \

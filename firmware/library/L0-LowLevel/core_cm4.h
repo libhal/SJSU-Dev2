@@ -31,12 +31,12 @@
    POSSIBILITY OF SUCH DAMAGE.
    ---------------------------------------------------------------------------*/
 
-
 #if   defined ( __ICCARM__ )
  #pragma system_include         /* treat file as system include file for MISRA check */
 #elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
   #pragma clang system_header   /* treat file as system include file */
 #endif
+#pragma GCC system_header
 
 #ifndef __CORE_CM4_H_GENERIC
 #define __CORE_CM4_H_GENERIC
