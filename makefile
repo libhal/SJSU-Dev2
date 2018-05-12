@@ -34,10 +34,13 @@ OPTIMIZE 	= -O3 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exce
 			   -fsingle-precision-constant -fno-rtti
 DEBUG 		= -g
 WARNINGS 	= -Wall -Wextra -Wpedantic -Wshadow -Wlogical-op -Wfloat-equal \
-			  -Wdouble-promotion -Wduplicated-cond -Wlogical-op \
-			  -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wjump-misses-init \
-			  -Wformat=2 -Wundef -Wconversion -Wsign-conversion -Woverloaded-virtual \
-			  -Wswitch
+			  -Wdouble-promotion -Wduplicated-cond -Wlogical-op -Wswitch \
+			  -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wformat=2 \
+			  -Wundef -Wconversion -Wsign-conversion -Woverloaded-virtual \
+			  -Wsuggest-attribute=const -Wsuggest-final-types -Wsuggest-final-methods -Wsuggest-override \
+			  -Wframe-larger-than=1024
+			  #-Walloc-zero -Walloc-size-larger-than=8kB -Walloca-larger-than=1
+
 DISABLED_WARNINGS = -Wno-main
 DEFINES     = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
 # end FLAGS

@@ -25,8 +25,10 @@
  *
  */
 
-#include "LPC40xx.h"        // IRQn_Type
-#include "uart0_min.h"      // Uart0 initialization
+#include <string.h>
+
+#include "LPC40xx.h"
+#include "uart0_min.h"
 
 #if defined (__cplusplus)
 extern "C" {
@@ -189,23 +191,17 @@ void (* const g_pfnVectors[])(void) =
 // ResetISR() function in order to cope with MCUs with multiple banks of
 // memory.
 //*****************************************************************************
-__attribute__ ((section(".after_vectors")))
-void data_init(unsigned int * romstart, unsigned int * start, unsigned int len)
-{
-    unsigned int *pulDest = start;
-    unsigned int *pulSrc = romstart;
-    unsigned int loop;
-    for (loop = 0; loop < len; loop = loop + sizeof(unsigned int))
-    {
-        *pulDest++ = *pulSrc++;
-    }
-}
-
+extern unsigned int __data_section_table[3];
 //*****************************************************************************
-extern unsigned int __data_section_table;
-extern unsigned int __data_section_table_end;
-extern unsigned int __bss_section_table;
-extern unsigned int __bss_section_table_end;
+__attribute__ ((section(".after_vectors")))
+void initSRAMDataSection()
+{
+    // Copy data from FLASH to RAM
+    uint32_t * rom_data_source  = reinterpret_cast<uint32_t *>(__data_section_table[0]);
+    uint32_t * sram_destination = reinterpret_cast<uint32_t *>(__data_section_table[1]);
+    uint32_t length             = __data_section_table[2] >> 2;
+    memcpy(rom_data_source, sram_destination, length);
+}
 
 //*****************************************************************************
 // Code Entry Point : The CPU RESET Handler
@@ -227,23 +223,7 @@ extern "C" {
         __set_PSP(topOfStack);
         __set_MSP(topOfStack);
 
-        // Copy data from FLASH to RAM
-        unsigned int *LoadAddr;
-        unsigned int *ExeAddr;
-        unsigned int SectionLen;
-        unsigned int *SectionTableAddr;
-
-        // Load base address of Global Section Table
-        SectionTableAddr = &__data_section_table;
-
-        // Copy the data sections from flash to SRAM.
-        while (SectionTableAddr < &__data_section_table_end)
-        {
-            LoadAddr = (unsigned int *)(*SectionTableAddr++);
-            ExeAddr = (unsigned int *)(*SectionTableAddr++);
-            SectionLen = *SectionTableAddr++;
-            data_init(LoadAddr, ExeAddr, SectionLen);
-        }
+        initSRAMDataSection();
 
         #if defined (__cplusplus)
             __libc_init_array();    // Call C++ library initialization
@@ -251,7 +231,9 @@ extern "C" {
 
         // low_level_init();   // Initialize minimal system, such as Clock & UART
         // high_level_init();  // Initialize high level board specific features
+        #pragma GCC diagnostic ignored "-Wpedantic"
         int result = main();   // Finally call main()
+        #pragma GCC diagnostic pop
         // In case main() exits:
         const uint32_t SYS_CFG_UART0_BPS = 38400;
         uart0_init(SYS_CFG_UART0_BPS);
@@ -332,14 +314,12 @@ static void isr_forwarder_routine(void)
      */
     // vRunTimeStatIsrEntry();
 
-    /* Get the IRQ number we are in.  Note that ICSR's real ISR bits are offset by 16.
-     * We can read ICSR register too, but let's just read 8-bits directly.
-     */
-    const unsigned char isr_num = (*(static_cast<unsigned char*>(0xE000ED04))) - 16; // (SCB->ICSR & 0xFF) - 16;
+    /* Get the IRQ number we are in.  Note that ICSR's real ISR bits are offset by 16. */
+    const uint32_t isr_num = ((SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk) - 16);
     // vTraceStoreISRBegin(isr_num);
 
     /* Lookup the function pointer we want to call and make the call */
-    isr_func_t isr_to_service = g_isr_array[isr_num];
+    const isr_func_t isr_to_service = g_isr_array[isr_num];
 
     /* If the user has not over-riden the "weak" isr name, or not registerd the new one using
      * isr_register(), then it will point to the isr_default_handler.
@@ -373,7 +353,7 @@ void isr_hard_fault(void)
             "_MSP:  \n"
             "MRS    R0, MSP \n"
             "B      isr_hard_fault_handler  \n"
-    ) ;
+    );
 }
 
 __attribute__ ((section(".after_vectors"))) void isr_nmi(void)        { uart0_puts("NMI Fault\n"); while(1); }
@@ -386,12 +366,15 @@ __attribute__ ((section(".after_vectors"))) void isr_debug_mon(void)  { uart0_pu
 __attribute__ ((section(".after_vectors"))) void isr_default_handler(void) { uart0_puts("IRQ not registered!"); while(1); }
 
 /// Wrap the FreeRTOS tick function such that we get a true measure of how much CPU tasks are using
+// TODO: remove GCC waring ignore after this function has been implemented
+#pragma GCC diagnostic ignored "-Wsuggest-attribute=const"
 __attribute__ ((section(".after_vectors"))) void isr_sys_tick(void)
 {
     // vRunTimeStatIsrEntry();
     // xPortSysTickHandler();
     // vRunTimeStatIsrExit();
 }
+#pragma GCC diagnostic pop
 
 /**
  * This is called from the HardFault_HandlerAsm with a pointer the Fault stack as the parameter.

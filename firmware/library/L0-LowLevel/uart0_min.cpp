@@ -7,7 +7,7 @@ void uart0_init(uint32_t baud_rate)
      * 1.9 to round down to 1, but we want it to round-up to 2.
      */
     float baud_rate_float = static_cast<float>(baud_rate);
-    const uint32_t divider = static_cast<uint32_t>(48000000.0f / (16.0f * baud_rate_float) + 0.5f);
+    const uint32_t divider = static_cast<uint32_t>(OSC_CLK / (16.0f * baud_rate_float) + 0.5f);
     const uint16_t dlab_bit = (1 << 7);
     const uint32_t eight_bit_datalen = 3;
 
