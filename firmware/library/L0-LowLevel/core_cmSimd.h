@@ -31,7 +31,6 @@
    POSSIBILITY OF SUCH DAMAGE.
    ---------------------------------------------------------------------------*/
 
-
 #if   defined ( __ICCARM__ )
  #pragma system_include         /* treat file as system include file for MISRA check */
 #elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
@@ -40,6 +39,7 @@
 
 #ifndef __CORE_CMSIMD_H
 #define __CORE_CMSIMD_H
+#pragma GCC system_header
 
 #ifdef __cplusplus
  extern "C" {
