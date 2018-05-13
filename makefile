@@ -32,7 +32,7 @@ endif
 CORTEX_M4F	= -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
 OPTIMIZE 	= -O3 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
 			   -fsingle-precision-constant -fno-rtti
-DEBUG 		= -g
+DEBUG 		=
 WARNINGS 	= -Wall -Wextra -Wpedantic -Wshadow -Wlogical-op -Wfloat-equal \
 			  -Wdouble-promotion -Wduplicated-cond -Wlogical-op -Wswitch \
 			  -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wformat=2 \
