@@ -17,6 +17,3 @@ script:
   - ls ./bin/firmware.hex
   - ls ./bin/firmware.lst
   - ls ./bin/firmware.map
-
-  # - cd test/simple-test/
-  # - make
