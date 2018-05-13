@@ -1,0 +1,432 @@
+ \──────────────────────────────/
+  \ Generating test executable /
+In file included from test.cpp:7:0:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:76:57: warning: use of old-style cast [-Wold-style-cast]
+             std::is_same<decltype(test(*(std::ostream *)nullptr,
+                                                         ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:76:57: warning: use of old-style cast [-Wold-style-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘virtual unsigned int fakeit::RepeatedSequence::size() const’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:535:32: warning: conversion to ‘unsigned int’ from ‘int’ may change the sign of the result [-Wsign-conversion]
+             return _s.size() * times;
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static std::__cxx11::string fakeit::DefaultEventFormatter::formatSequence(const fakeit::Sequence&)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:878:93: error: ‘dynamic_cast’ not permitted with -fno-rtti
+             const ConcatenatedSequence *cs = dynamic_cast<const ConcatenatedSequence *>(&val);
+                                                                                             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:882:85: error: ‘dynamic_cast’ not permitted with -fno-rtti
+             const RepeatedSequence *rs = dynamic_cast<const RepeatedSequence *>(&val);
+                                                                                     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static std::__cxx11::string fakeit::DefaultEventFormatter::format(const fakeit::RepeatedSequence&)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:929:107: error: ‘dynamic_cast’ not permitted with -fno-rtti
+             const ConcatenatedSequence *cs = dynamic_cast<const ConcatenatedSequence *>(&val.getSequence());
+                                                                                                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:930:99: error: ‘dynamic_cast’ not permitted with -fno-rtti
+             const RepeatedSequence *rs = dynamic_cast<const RepeatedSequence *>(&val.getSequence());
+                                                                                                   ^
+In file included from test.cpp:7:0:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static fakeit::VirtualTableBase& fakeit::VirtualTableBase::getVTable(void*)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5596:82: warning: use of old-style cast [-Wold-style-cast]
+             fakeit::VirtualTableBase *vt = (fakeit::VirtualTableBase *) (instance);
+                                                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘fakeit::VirtualTable<C, baseclasses>& fakeit::VirtualTable<C, baseclasses>::Handle::restore()’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5641:91: warning: use of old-style cast [-Wold-style-cast]
+                 VirtualTable<C, baseclasses...> *vt = (VirtualTable<C, baseclasses...> *) this;
+                                                                                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static fakeit::VirtualTable<C, baseclasses>& fakeit::VirtualTable<C, baseclasses>::getVTable(C&)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5647:113: warning: use of old-style cast [-Wold-style-cast]
+             fakeit::VirtualTable<C, baseclasses...> *vt = (fakeit::VirtualTable<C, baseclasses...> *) (&instance);
+                                                                                                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘unsigned int fakeit::VirtualTable<C, baseclasses>::dtor(int)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5671:26: warning: use of old-style cast [-Wold-style-cast]
+             C *c = (C *) this;
+                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘const std::type_info* fakeit::VirtualTable<C, baseclasses>::getTypeId()’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5705:62: warning: use of old-style cast [-Wold-style-cast]
+             return (const std::type_info *) (_firstMethod[-1]);
+                                                              ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static void** fakeit::VirtualTable<C, baseclasses>::buildVTArray()’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5721:62: error: cannot use typeid with -fno-rtti
+             array[0] = const_cast<std::type_info *>(&typeid(C));
+                                                              ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘void fakeit::FakeObject<C, baseclasses>::initializeDataMembersArea()’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5782:72: warning: use of old-style cast [-Wold-style-cast]
+             for (size_t i = 0; i < SIZE; ++i) instanceArea[i] = (char) 0;
+                                                                        ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static fakeit::InvocationHandlerCollection* fakeit::InvocationHandlerCollection::getInvocationHandlerCollection(void*)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5854:65: warning: use of old-style cast [-Wold-style-cast]
+                     InvocationHandlerCollection::VT_COOKIE_INDEX);
+                                                                 ^
+In file included from test.cpp:7:0:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘R fakeit::MethodProxyCreator<R, arglist>::methodProxy(unsigned int, const typename fakeit::production_arg<arglist>::type ...)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:5879:31: warning: use of old-style cast [-Wold-style-cast]
+                             id);
+                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘void fakeit::DynamicProxy<C, baseclasses>::stubDataMember(DATA_TYPE C::*, const arglist& ...)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:6002:56: warning: use of old-style cast [-Wold-style-cast]
+             DATA_TYPE C::*theMember = (DATA_TYPE C::*) member;
+                                                        ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘void fakeit::DynamicProxy<C, baseclasses>::checkMultipleInheritance()’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:6079:43: warning: use of old-style cast [-Wold-style-cast]
+             C *ptr = (C *) (unsigned int) 1;
+                                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:6079:43: warning: use of old-style cast [-Wold-style-cast]
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:6081:41: warning: use of old-style cast [-Wold-style-cast]
+             int delta = (unsigned long) basePtr - (unsigned long) ptr;
+                                         ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:6081:67: warning: use of old-style cast [-Wold-style-cast]
+             int delta = (unsigned long) basePtr - (unsigned long) ptr;
+                                                                   ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In member function ‘virtual std::__cxx11::string fakeit::DefaultValue<C, typename std::enable_if<(! fakeit::is_constructible_type<C>::value)>::type>::value()::Exception::what() const’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:6217:72: error: cannot use typeid with -fno-rtti
+                     return (std::string("Type ") + std::string(typeid(C).name())
+                                                                        ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In function ‘fakeit::QuantifierFunctor fakeit::operator""_Times(long long unsigned int)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:6971:40: warning: use of old-style cast [-Wold-style-cast]
+         return QuantifierFunctor((int) n);
+                                        ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In function ‘fakeit::QuantifierFunctor fakeit::operator""_Time(long long unsigned int)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:6980:40: warning: use of old-style cast [-Wold-style-cast]
+         return QuantifierFunctor((int) n);
+                                        ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static fakeit::RecordedMethodBody<R, arglist ...>* fakeit::MockImpl<C, baseclasses>::createRecordedMethodBody(fakeit::MockObject<C>&, R (C::*)(arglist ...))’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8129:83: error: cannot use typeid with -fno-rtti
+             return new RecordedMethodBody<R, arglist...>(mock.getFakeIt(), typeid(vMethod).name());
+                                                                                   ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static bool fakeit::MatchAnalysis::findNextMatch(std::vector<fakeit::Sequence*>&, std::vector<fakeit::Invocation*>&, int, int&, std::vector<fakeit::Invocation*>&)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8589:102: warning: conversion to ‘int’ from ‘unsigned int’ may change the sign of the result [-Wsign-conversion]
+                 collectMatchedInvocations(actualSequence, matchedInvocations, index, sequence->size());
+                                                                                                      ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8590:59: warning: conversion to ‘unsigned int’ from ‘int’ may change the sign of the result [-Wsign-conversion]
+                 startSearchIndex = index + sequence->size();
+                                                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8590:34: warning: conversion to ‘int’ from ‘unsigned int’ may change the sign of the result [-Wsign-conversion]
+                 startSearchIndex = index + sequence->size();
+                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static void fakeit::MatchAnalysis::collectMatchedInvocations(std::vector<fakeit::Invocation*>&, std::vector<fakeit::Invocation*>&, int, int)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8602:66: warning: conversion to ‘std::vector<fakeit::Invocation*>::size_type {aka long unsigned int}’ from ‘int’ may change the sign of the result [-Wsign-conversion]
+                 matchedInvocations.push_back(actualSequence[start]);
+                                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static bool fakeit::MatchAnalysis::isMatch(std::vector<fakeit::Invocation*>&, std::vector<fakeit::Invocation::Matcher*>&, int)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8611:61: warning: conversion to ‘unsigned int’ from ‘int’ may change the sign of the result [-Wsign-conversion]
+                 Invocation *actual = actualSequence[start + j];
+                                                             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In static member function ‘static int fakeit::MatchAnalysis::findNextMatch(fakeit::Sequence*&, std::vector<fakeit::Invocation*>&, int)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8621:75: warning: use of old-style cast [-Wold-style-cast]
+             for (int i = startSearchIndex; i < ((int) actualSequence.size() - (int) expectedSequence.size() + 1); i++) {
+                                                                           ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8621:107: warning: use of old-style cast [-Wold-style-cast]
+             for (int i = startSearchIndex; i < ((int) actualSequence.size() - (int) expectedSequence.size() + 1); i++) {
+                                                                                                           ^
+In file included from test.cpp:6:0:
+test.cpp: In function ‘int32_t test_add(int32_t, int32_t)’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:63:36: warning: use of old-style cast [-Wold-style-cast]
+     memcpy((void*)&FUNCNAME##_fake.arg##n##_val, (void*)&arg##n, sizeof(arg##n));
+                                    ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1731:13: note: in expansion of macro ‘SAVE_ARG’
+             SAVE_ARG(FUNCNAME, 0); \
+             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:63:58: warning: use of old-style cast [-Wold-style-cast]
+     memcpy((void*)&FUNCNAME##_fake.arg##n##_val, (void*)&arg##n, sizeof(arg##n));
+                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1731:13: note: in expansion of macro ‘SAVE_ARG’
+             SAVE_ARG(FUNCNAME, 0); \
+             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:63:36: warning: use of old-style cast [-Wold-style-cast]
+     memcpy((void*)&FUNCNAME##_fake.arg##n##_val, (void*)&arg##n, sizeof(arg##n));
+                                    ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1732:13: note: in expansion of macro ‘SAVE_ARG’
+             SAVE_ARG(FUNCNAME, 1); \
+             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:63:58: warning: use of old-style cast [-Wold-style-cast]
+     memcpy((void*)&FUNCNAME##_fake.arg##n##_val, (void*)&arg##n, sizeof(arg##n));
+                                                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1732:13: note: in expansion of macro ‘SAVE_ARG’
+             SAVE_ARG(FUNCNAME, 1); \
+             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:69:82: warning: use of old-style cast [-Wold-style-cast]
+     memcpy((void*)&FUNCNAME##_fake.arg##ARGN##_history[FUNCNAME##_fake.call_count], (void*)&arg##ARGN, sizeof(arg##ARGN));
+                                                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1734:17: note: in expansion of macro ‘SAVE_ARG_HISTORY’
+                 SAVE_ARG_HISTORY(FUNCNAME, 0); \
+                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:69:93: warning: use of old-style cast [-Wold-style-cast]
+     memcpy((void*)&FUNCNAME##_fake.arg##ARGN##_history[FUNCNAME##_fake.call_count], (void*)&arg##ARGN, sizeof(arg##ARGN));
+                                                                                             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1734:17: note: in expansion of macro ‘SAVE_ARG_HISTORY’
+                 SAVE_ARG_HISTORY(FUNCNAME, 0); \
+                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:69:82: warning: use of old-style cast [-Wold-style-cast]
+     memcpy((void*)&FUNCNAME##_fake.arg##ARGN##_history[FUNCNAME##_fake.call_count], (void*)&arg##ARGN, sizeof(arg##ARGN));
+                                                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1735:17: note: in expansion of macro ‘SAVE_ARG_HISTORY’
+                 SAVE_ARG_HISTORY(FUNCNAME, 1); \
+                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:69:93: warning: use of old-style cast [-Wold-style-cast]
+     memcpy((void*)&FUNCNAME##_fake.arg##ARGN##_history[FUNCNAME##_fake.call_count], (void*)&arg##ARGN, sizeof(arg##ARGN));
+                                                                                             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1735:17: note: in expansion of macro ‘SAVE_ARG_HISTORY’
+                 SAVE_ARG_HISTORY(FUNCNAME, 1); \
+                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+test.cpp:12:26: warning: use of old-style cast [-Wold-style-cast]
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:130:67: note: in definition of macro ‘REGISTER_CALL’
+        fff.call_history[fff.call_history_idx++] = (fff_function_t)function;
+                                                                   ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:1758:5: note: in expansion of macro ‘DEFINE_FAKE_VALUE_FUNC2’
+     DEFINE_FAKE_VALUE_FUNC2(RETURN_TYPE, FUNCNAME, ARG0_TYPE, ARG1_TYPE) \
+     ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5841:33: note: in expansion of macro ‘FAKE_VALUE_FUNC2’
+ #define FUNC_VALUE_N(N,...)     FAKE_VALUE_FUNC ## N(__VA_ARGS__)
+                                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5839:32: note: in expansion of macro ‘FUNC_VALUE_N’
+ #define FUNC_VALUE_(N,...)     FUNC_VALUE_N(N,__VA_ARGS__)
+                                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fff.h:5837:34: note: in expansion of macro ‘FUNC_VALUE_’
+ #define FAKE_VALUE_FUNC(...)     FUNC_VALUE_(PP_NARG_MINUS2(__VA_ARGS__), __VA_ARGS__)
+                                  ^
+test.cpp:12:1: note: in expansion of macro ‘FAKE_VALUE_FUNC’
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+ ^
+test.cpp: At global scope:
+test.cpp:12:53: warning: extra ‘;’ [-Wpedantic]
+ FAKE_VALUE_FUNC(int32_t, test_add, int32_t, int32_t);
+                                                     ^
+test.cpp: In function ‘void ____C_A_T_C_H____T_E_S_T____0()’:
+test.cpp:30:22: error: expected unqualified-id before ‘.’ token
+         test_add_Fake.custom_fake = [](int32_t a, int32_t b) -> int32_t {
+                      ^
+In file included from test.cpp:5:0:
+test.cpp:35:31: error: expected primary-expression before ‘.’ token
+         REQUIRE( test_add_Fake.call_count == 1 );
+                               ^
+test.cpp:35:31: error: expected primary-expression before ‘.’ token
+         REQUIRE( test_add_Fake.call_count == 1 );
+                               ^
+test.cpp:41:9: error: ‘Mock’ was not declared in this scope
+         Mock<SampleTestSubject> spy(subject);
+         ^
+test.cpp:41:9: note: suggested alternative:
+In file included from test.cpp:7:0:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:8192:11: note:   ‘fakeit::Mock’
+     class Mock : public ActualInvocationsSource {
+           ^
+test.cpp:41:31: error: expected primary-expression before ‘>’ token
+         Mock<SampleTestSubject> spy(subject);
+                               ^
+test.cpp:41:44: error: ‘spy’ was not declared in this scope
+         Mock<SampleTestSubject> spy(subject);
+                                            ^
+In file included from test.cpp:7:0:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9240:47: error: template argument 1 is invalid
+     std::remove_reference<decltype(mock.get())>::type
+                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9252:38: note: in expansion of macro ‘MOCK_TYPE’
+     mock.template stub<__COUNTER__>(&MOCK_TYPE(mock)::method).setMethodDetails(#mock,#method)
+                                      ^
+test.cpp:42:13: note: in expansion of macro ‘Method’
+         Spy(Method(spy, methodAdd));
+             ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9240:50: error: ‘<expression error>::type’ has not been declared
+     std::remove_reference<decltype(mock.get())>::type
+                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9252:38: note: in expansion of macro ‘MOCK_TYPE’
+     mock.template stub<__COUNTER__>(&MOCK_TYPE(mock)::method).setMethodDetails(#mock,#method)
+                                      ^
+test.cpp:42:13: note: in expansion of macro ‘Method’
+         Spy(Method(spy, methodAdd));
+             ^
+test.cpp:42:35: error: ‘Spy’ was not declared in this scope
+         Spy(Method(spy, methodAdd));
+                                   ^
+test.cpp:42:35: note: suggested alternative:
+In file included from test.cpp:7:0:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9213:23: note:   ‘fakeit::Spy’
+     static SpyFunctor Spy;
+                       ^
+test.cpp:44:9: error: ‘SomeClass’ was not declared in this scope
+         SomeClass& spy_reference = spy.get();
+         ^
+test.cpp:44:20: error: ‘spy_reference’ was not declared in this scope
+         SomeClass& spy_reference = spy.get();
+                    ^
+In file included from test.cpp:7:0:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9240:47: error: template argument 1 is invalid
+     std::remove_reference<decltype(mock.get())>::type
+                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9261:17: note: in definition of macro ‘Verify’
+         Verify( __VA_ARGS__ ).setFileInfo(__FILE__, __LINE__, __func__)
+                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9252:38: note: in expansion of macro ‘MOCK_TYPE’
+     mock.template stub<__COUNTER__>(&MOCK_TYPE(mock)::method).setMethodDetails(#mock,#method)
+                                      ^
+test.cpp:48:16: note: in expansion of macro ‘Method’
+         Verify(Method(spy, injectAddFunction)).Exactly(1);
+                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9240:50: error: ‘<expression error>::type’ has not been declared
+     std::remove_reference<decltype(mock.get())>::type
+                                                  ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9261:17: note: in definition of macro ‘Verify’
+         Verify( __VA_ARGS__ ).setFileInfo(__FILE__, __LINE__, __func__)
+                 ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9252:38: note: in expansion of macro ‘MOCK_TYPE’
+     mock.template stub<__COUNTER__>(&MOCK_TYPE(mock)::method).setMethodDetails(#mock,#method)
+                                      ^
+test.cpp:48:16: note: in expansion of macro ‘Method’
+         Verify(Method(spy, injectAddFunction)).Exactly(1);
+                ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9261:29: error: ‘Verify’ was not declared in this scope
+         Verify( __VA_ARGS__ ).setFileInfo(__FILE__, __LINE__, __func__)
+                             ^
+test.cpp:48:9: note: in expansion of macro ‘Verify’
+         Verify(Method(spy, injectAddFunction)).Exactly(1);
+         ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9261:29: note: suggested alternative:
+         Verify( __VA_ARGS__ ).setFileInfo(__FILE__, __LINE__, __func__)
+                             ^
+test.cpp:48:9: note: in expansion of macro ‘Verify’
+         Verify(Method(spy, injectAddFunction)).Exactly(1);
+         ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:9210:26: note:   ‘fakeit::Verify’
+     static VerifyFunctor Verify(Fakeit);
+                          ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In instantiation of ‘R fakeit::ActionSequence<R, arglist>::handleMethodInvocation(std::tuple<_Elements ...>&) [with R = void; arglist = {}]’:
+test.cpp:50:1:   required from here
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:7317:95: error: ‘dynamic_cast’ not permitted with -fno-rtti
+             Action<R, arglist...> &action = dynamic_cast<Action<R, arglist...> &>(destructable);
+                                                                                               ^
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp: In instantiation of ‘bool fakeit::MethodMockingContext<R, arglist>::Implementation::matches(fakeit::Invocation&) [with R = void; arglist = {}]’:
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:7669:45:   required from ‘bool fakeit::MethodMockingContext<R, arglist>::matches(fakeit::Invocation&) [with R = void; arglist = {}]’
+test.cpp:50:1:   required from here
+/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/fakeit.hpp:7591:121: error: ‘dynamic_cast’ not permitted with -fno-rtti
+                 ActualInvocation<arglist...> &actualInvocation = dynamic_cast<ActualInvocation<arglist...> &>(invocation);
+                                                                                                                         ^
+In file included from /usr/include/c++/5/memory:79:0,
+                 from /home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/catch.hpp:331,
+                 from test.cpp:5:
+/usr/include/c++/5/functional: At global scope:
+/usr/include/c++/5/functional:2246:7: error: ‘std::function<_Res(_ArgTypes ...)>::function(_Functor) [with _Functor = fakeit::ActionSequence<R, arglist>::handleMethodInvocation(std::tuple<_Elements ...>&) [with R = void; arglist = {}]::<lambda()>; <template-parameter-2-2> = void; <template-parameter-2-3> = void; _Res = void; _ArgTypes = {}]’, declared using local type ‘fakeit::ActionSequence<R, arglist>::handleMethodInvocation(std::tuple<_Elements ...>&) [with R = void; arglist = {}]::<lambda()>’, is used but never defined [-fpermissive]
+       function<_Res(_ArgTypes...)>::
+       ^
+makefile:68: recipe for target 'test-suite' failed
+make: *** [test-suite] Error 1
