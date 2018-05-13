@@ -13,7 +13,10 @@ script:
   - cd ./firmware/HelloWorld/
   - source env.sh
   - make build
-  - ls ./bin/firmware.elf
-  - ls ./bin/firmware.hex
-  - ls ./bin/firmware.lst
-  - ls ./bin/firmware.map
+  - ls ./binaries/firmware.elf
+  - ls ./binaries/firmware.hex
+  - ls ./binaries/firmware.lst
+  - ls ./binaries/firmware.map
+
+  # - cd test/simple-test/
+  # - makeT
