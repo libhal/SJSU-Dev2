@@ -141,7 +141,7 @@ case "$OS" in
 		echo "    Install XCode Command Line Tools (GCC, make)     "
 		echo "└─────────────────────────────────────────────────── "
         xcode-select --install &> /dev/null	# Install Command Line tools (make etc...)
-		sudo xcodebuild -license # Accept User Agreement
+		sudo xcodebuild -license accept # Accept User Agreement
         echo " ───────────────────────────────────────────────────┐"
 		echo "          Prompt Git installer by invoking it        "
 		echo "└─────────────────────────────────────────────────── "
