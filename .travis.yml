@@ -1,0 +1,22 @@
+language: cpp
+matrix:
+    include:
+        - os: linux
+          sudo: required
+          dist: trusty
+          install:
+            - ./setup
+        - os: osx
+          install:
+            - ./setup
+script:
+  - cd ./firmware/HelloWorld/
+  - source env.sh
+  - make build
+  - ls ./bin/firmware.elf
+  - ls ./bin/firmware.hex
+  - ls ./bin/firmware.lst
+  - ls ./bin/firmware.map
+
+  # - cd test/simple-test/
+  # - make
