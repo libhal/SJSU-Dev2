@@ -18,5 +18,3 @@ script:
   - ls ./binaries/firmware.lst
   - ls ./binaries/firmware.map
 
-  # - cd test/simple-test/
-  # - makeT
