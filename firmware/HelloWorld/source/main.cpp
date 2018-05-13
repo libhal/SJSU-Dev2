@@ -3,6 +3,8 @@
 
 int main(void)
 {
-    puts("Hello, World\n");
+    char buffer[128];
+    sprintf(buffer, "Hello, World %f\n", static_cast<double>(5.2));
+    puts(buffer);
     return 0;
 }

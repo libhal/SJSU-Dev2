@@ -4,8 +4,6 @@
 
 #include "L0-LowLevel/uart0.min.h"
 
-#include "syscalls.h"
-
 // sbrkr.c:(.text._sbrk_r+0xc): undefined reference to `_sbrk'
 void * heap;
 int _brk(void * addr)
