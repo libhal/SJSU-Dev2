@@ -94,14 +94,14 @@ MAKE_INSTALLED=$(check $(programInstalled make))
 # echo "make          $MAKE_INSTALLED"
 # echo "pip           $PIP_INSTALLED"
 # Concat results
-REQUIREMENTS_MET="$PYTHON_INSTALLED $PIP_INSTALLED $GIT_INSTALLED $PERL_INSTALLED"
+# REQUIREMENTS_MET="$PYTHON_INSTALLED $PIP_INSTALLED $GIT_INSTALLED $PERL_INSTALLED"
 # This lines uses wildcards to check if there exists a ✘ in the
 # Concatenated string above. If it does, terminate setup
-if [[ $REQUIREMENTS_MET == *"✘"* ]]
-then
-	echo "Missing requirement(s). Please install manually. Setup exiting."
-	exit 1
-fi
+# if [[ $REQUIREMENTS_MET == *"✘"* ]]
+# then
+# 	echo "Missing requirement(s). Please install manually. Setup exiting."
+# 	exit 1
+# fi
 echo " ──────────────────────────────────────────────────┐"
 echo "               System Dependent Setup               "
 echo "└────────────────────────────────────────────────── "
