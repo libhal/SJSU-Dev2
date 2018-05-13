@@ -28,8 +28,9 @@
 #include <string.h>
 
 #include "LPC40xx.h"
-#include "L0-LowLevel/uart0.min.hpp"
-
+extern "C" {
+    #include "L0-LowLevel/uart0.min.h"
+}
 #if defined (__cplusplus)
 extern "C" {
 // The entry point for the C++ library startup

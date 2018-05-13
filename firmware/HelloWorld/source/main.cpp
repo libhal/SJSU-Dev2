@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include "L0-LowLevel/uart0.min.hpp"
+#include "L0-LowLevel/uart0.min.h"
 
 int main(void)
 {
-    uart0_puts("Hello, World\n");
+    puts("Hello, World\n");
     return 0;
 }
