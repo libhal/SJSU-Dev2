@@ -28,7 +28,7 @@
 #include <string.h>
 
 #include "LPC40xx.h"
-#include "uart0_min.h"
+#include "L0-LowLevel/uart0.min.hpp"
 
 #if defined (__cplusplus)
 extern "C" {
