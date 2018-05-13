@@ -1,15 +1,15 @@
 firmware/*
-firmware/**/bin
-firmware/**/obj
+firmware/**/binaries
+firmware/**/compiled
 firmware/**/makefile
+firmware/**/can-dbc/*
 firmware/**/test-suite
-firmware/**/_can_dbc/*
 firmware/**/cgreen-test-suite
 
 !firmware/library
 !firmware/HelloWorld
 !firmware/FreeRTOS
-!firmware/CPPFreeRTOS
+!firmware/CppFreeRTOS
 !firmware/Telemetry
 !firmware/Unittest
 !firmware/Assembly

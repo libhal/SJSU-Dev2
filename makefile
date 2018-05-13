@@ -14,9 +14,9 @@ OBJCOPY         = arm-none-eabi-objcopy
 NM 		        = arm-none-eabi-nm
 
 # Internal build directories
-OBJ_DIR			= obj
-BIN_DIR			= bin
-DBC_DIR			= _can_dbc
+OBJ_DIR			= compiled
+BIN_DIR			= binaries
+DBC_DIR			= can-dbc
 LIB_DIR 		= $(SJLIBDIR)
 
 define n
@@ -57,16 +57,6 @@ CFLAGS = $(COMMON_FLAGS) \
     -I"$(LIB_DIR)/third-party/FreeRTOS/include" \
     -I"$(LIB_DIR)/third-party/FreeRTOS/portable" \
     -I"$(LIB_DIR)/third-party/FreeRTOS/portable/no_mpu" \
-    -I"$(LIB_DIR)/L0-LowLevel" \
-    -I"$(LIB_DIR)/L1-Drivers" \
-    -I"$(LIB_DIR)/L2-Utilties" \
-    -I"$(LIB_DIR)/L3-HardwareAbstraction" \
-    -I"$(LIB_DIR)/L4-Application" \
-    -I"L1_Drivers" \
-    -I"L2_Utilties" \
-    -I"L3_HardwareAbstraction" \
-    -I"L4_Application" \
-    -I"L4_Assembly" \
     -I"$(DBC_DIR)" \
     -MMD -MP -c
 
@@ -80,7 +70,7 @@ LINKFLAGS = $(COMMON_FLAGS) \
 
 DBC_BUILD        	= $(DBC_DIR)/generated_can.h
 LIBRARIES			= $(shell find "$(LIB_DIR)" -name '*.c' -o -name '*.cpp')
-SOURCES				= $(shell find L5_Application L5_Assembly \
+SOURCES				= $(shell find source \
  						 -name '*.c' -o\
 						 -name '*.s' -o \
 						 -name '*.S' -o \

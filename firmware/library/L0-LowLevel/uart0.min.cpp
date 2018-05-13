@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "LPC40xx.h"
+#include "uart0.min.hpp"
 
 void uart0_init(uint32_t baud_rate)
 {
