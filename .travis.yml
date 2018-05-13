@@ -1,4 +1,9 @@
 language: cpp
+branches:
+  only:
+    - master
+    - unstable
+    - khalil/setup-script
 matrix:
     include:
         - os: linux
