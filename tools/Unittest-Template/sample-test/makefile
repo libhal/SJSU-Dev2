@@ -26,14 +26,14 @@ endif
 
 # FLAGS
 CORTEX_M4F	= # nothing because this is being compiled on the host machine
-OPTIMIZE 	= -O0 -fno-rtti
+OPTIMIZE 	= -O0
 DEBUG 		= -g
-WARNINGS 	= -Wall -Wextra -Wpedantic -Wshadow -Wlogical-op -Wfloat-equal \
+WARNINGS 	= -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
 			  -Wdouble-promotion -Wlogical-op -Wswitch \
-			  -Wold-style-cast -Wuseless-cast -Wformat=2 \
+			  -Wuseless-cast -Wformat=2 \
 			  -Wundef -Wconversion -Wsign-conversion -Woverloaded-virtual \
-			  -Wsuggest-attribute=const -Wsuggest-final-types -Wsuggest-final-methods -Wsuggest-override \
-			  -Wframe-larger-than=1024
+			  -Wsuggest-attribute=const -Wsuggest-final-types -Wsuggest-final-methods \
+			  -Wsuggest-override
 			  #-Walloc-zero -Walloc-size-larger-than=8kB -Walloca-larger-than=1
 
 DISABLED_WARNINGS = -Wno-main
@@ -55,15 +55,28 @@ CFLAGS = $(COMMON_FLAGS) \
     -I"$(DBC_DIR)" \
     -I"../../source/"
 
+CURRENT_DIRECTORY	= $(shell pwd)
 TESTFILES 			= $(shell cat "test-files.list")
 COMPILABLES		 	= $(addprefix $(LIB_DIR)/, $(TESTFILES)) test.cpp
 TEST_EXEC 			= ./test-suite
 
-.PHONY: test build build-cgreen cgreen clean debug
 
-test: $(TEST_EXEC)
-	@$(TEST_EXEC) -s
+.PHONY: test clean debug
 
+COVERAGE_RESULTS=results
+
+test: $(COVERAGE_RESULTS) $(TEST_EXEC)
+	@valgrind --leak-check=full --track-origins=yes -v ./$(TEST_EXEC) -s
+	@gcovr -f "($(LIB_DIR)/|$(CURRENT_DIRECTORY))" \
+	-e "($(LIB_DIR)/newlib|$(LIB_DIR)/third-party)" \
+	--html --html-details -o $(COVERAGE_RESULTS)/code-coverage.html
+	mv *.gcda $(COVERAGE_RESULTS) 2> /dev/null
+	mv *.gcno $(COVERAGE_RESULTS) 2> /dev/null
+
+$(COVERAGE_RESULTS):
+	mkdir -p $(COVERAGE_RESULTS)
+
+# $(TEST_EXEC):
 $(TEST_EXEC): clean
 	@echo " \\──────────────────────────────/"
 	@echo "  \\ Generating test executable /"
