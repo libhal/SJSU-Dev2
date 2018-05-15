@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdint.h>
 
 #include "SampleTestSubject.hpp"
@@ -5,6 +6,10 @@
 int32_t SampleTestSubject::methodAdd(int32_t a, int32_t b) const
 {
     return a + b;
+}
+int32_t SampleTestSubject::outerMethodAdd(int32_t a, int32_t b) const
+{
+    return methodAdd(a, b);
 }
 void SampleTestSubject::injectAddFunction(int32_t (*new_function)(int32_t, int32_t))
 {
