@@ -65,12 +65,14 @@ TEST_EXEC 			= ./test-suite
 COVERAGE_RESULTS=results
 
 test-all:
-	make -f ./sample-test/makefile test
-	make -f ./Function-Stubbing/makefile test
-	cp ./sample-test/results/*.gcda ./Function-Stubbing/results/*.gcda global
+	# make --directory=sample-test test
+	# make --directory=Function-Stubbing test
+	cp -b ./sample-test/results/*.gcda  global
+	cp -b ./Function-Stubbing/results/*.gcda global
 	cd global
 	# rm -rf $(COVERAGE_RESULTS)
-	mkdir $(COVERAGE_RESULTS)
+	# mkdir $(COVERAGE_RESULTS)
+	cd global
 	@gcovr -f "($(LIB_DIR)/|$(CURRENT_DIRECTORY))" \
 	-e "($(LIB_DIR)/newlib|$(LIB_DIR)/third-party)" \
 	--html --html-details -o $(COVERAGE_RESULTS)/code-coverage.html

@@ -310,7 +310,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>5</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>MAX7456::MAX7456(void (*nChipSelect)(bool Select), uint8_t (*nSPI)(uint8_t data))</pre></td>
     </tr>
 
@@ -322,31 +322,31 @@
 
     <tr>
     <td align="right" class="lineno"><pre>7</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    printf("MAX7456 initializing!");</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>8</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    ChipSelect = nChipSelect;</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>9</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    SPITransfer = nSPI;</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>10</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>}</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>11</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>inline uint8_t MAX7456::READ_OPERATION(uint8_t ADDR) const</pre></td>
     </tr>
 
@@ -358,7 +358,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>13</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    return (ADDR |  (1 &lt;&lt; 7));</pre></td>
     </tr>
 
@@ -370,7 +370,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>15</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>6</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>12</pre></td>
     <td align="left" class="src coveredLine"><pre>inline uint8_t MAX7456::WRITE_OPERATION(uint8_t ADDR) const</pre></td>
     </tr>
 
@@ -382,7 +382,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>17</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>6</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>12</pre></td>
     <td align="left" class="src coveredLine"><pre>    return (ADDR &amp; ~(1 &lt;&lt; 7));</pre></td>
     </tr>
 
@@ -394,7 +394,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>19</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>bool MAX7456::Initialize()</pre></td>
     </tr>
 
@@ -436,7 +436,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>26</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    );</pre></td>
     </tr>
 
@@ -472,7 +472,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>32</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    );</pre></td>
     </tr>
 
@@ -508,7 +508,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>38</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    );</pre></td>
     </tr>
 
@@ -544,7 +544,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>44</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    );</pre></td>
     </tr>
 
@@ -580,7 +580,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>50</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    );</pre></td>
     </tr>
 
@@ -598,7 +598,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>53</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    VideoTransfer(</pre></td>
     </tr>
 
@@ -622,7 +622,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>57</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    );</pre></td>
     </tr>
 
@@ -658,13 +658,13 @@
 
     <tr>
     <td align="right" class="lineno"><pre>63</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    );</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>64</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>    return true;</pre></td>
     </tr>
 
@@ -736,7 +736,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>76</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>7</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>14</pre></td>
     <td align="left" class="src coveredLine"><pre>uint8_t MAX7456::VideoTransfer(uint8_t Addr, uint8_t Data, bool Write)</pre></td>
     </tr>
 
@@ -754,7 +754,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>79</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>7</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>14</pre></td>
     <td align="left" class="src coveredLine"><pre>    ChipSelect(true);</pre></td>
     </tr>
 
@@ -766,7 +766,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>81</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>7</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>14</pre></td>
     <td align="left" class="src coveredLine"><pre>    if(Write)</pre></td>
     </tr>
 
@@ -778,7 +778,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>83</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>6</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>12</pre></td>
     <td align="left" class="src coveredLine"><pre>        SPITransfer(WRITE_OPERATION(Addr));</pre></td>
     </tr>
 
@@ -802,7 +802,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>87</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>        SPITransfer(READ_OPERATION(Addr));</pre></td>
     </tr>
 
@@ -820,7 +820,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>90</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>7</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>14</pre></td>
     <td align="left" class="src coveredLine"><pre>    uint8_t result = SPITransfer(Data);</pre></td>
     </tr>
 
@@ -832,7 +832,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>92</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>7</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>14</pre></td>
     <td align="left" class="src coveredLine"><pre>    ChipSelect(false);</pre></td>
     </tr>
 
@@ -844,7 +844,7 @@
 
     <tr>
     <td align="right" class="lineno"><pre>94</pre></td>
-    <td align="right" class="linecount coveredLine"><pre>7</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>14</pre></td>
     <td align="left" class="src coveredLine"><pre>    return result;</pre></td>
     </tr>
 

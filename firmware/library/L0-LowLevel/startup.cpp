@@ -223,6 +223,15 @@ extern "C" {
         __set_PSP(topOfStack);
         __set_MSP(topOfStack);
 
+        LPC_SC->PCONP |= (1 << 15);
+        // LPC_IOCON->P1_15 &= (0b111 << 0);
+
+        LPC_GPIO1->DIR |= 1 << 15;
+        LPC_GPIO1->CLR |= 1 << 15;
+
+        LPC_GPIO1->DIR |= 1 << 10;
+        LPC_GPIO1->CLR |= 1 << 10;
+
         initSRAMDataSection();
 
         #if defined (__cplusplus)
@@ -231,11 +240,12 @@ extern "C" {
 
         // low_level_init();   // Initialize minimal system, such as Clock & UART
         // high_level_init();  // Initialize high level board specific features
+        const uint32_t SYS_CFG_UART0_BPS = 38400;
+        uart0_init(SYS_CFG_UART0_BPS);
         #pragma GCC diagnostic ignored "-Wpedantic"
         int result = main();   // Finally call main()
         #pragma GCC diagnostic pop
         // In case main() exits:
-        const uint32_t SYS_CFG_UART0_BPS = 38400;
         uart0_init(SYS_CFG_UART0_BPS);
         //// TODO: Print the result code the serial console below
         (void) result;
