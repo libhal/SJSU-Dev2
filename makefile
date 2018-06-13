@@ -96,6 +96,7 @@ OBJECT_FILES 		= $(addprefix $(OBJ_DIR)/, \
 					)
 EXECUTABLE			= $(BIN_DIR)/$(PROJ).elf
 SYMBOL_TABLE 		= $(BIN_DIR)/symbol-table.c
+BINARY				= $(EXECUTABLE:.elf=.bin)
 HEX					= $(EXECUTABLE:.elf=.hex)
 SYMBOLS_HEX			= $(EXECUTABLE:.elf=.symbols.hex)
 LIST				= $(EXECUTABLE:.elf=.lst)
@@ -126,7 +127,7 @@ default:
 	@echo "    cleaninstall  - cleans, builds and installs firmware"
 	@echo "    show-obj-list - Shows all object files that will be compiled"
 
-build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX)
+build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX) $(BINARY)
 
 sym-build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SYMBOLS_SIZE) $(SYMBOLS_LIST) $(SYMBOLS_HEX)
 
@@ -148,6 +149,13 @@ $(HEX): $(EXECUTABLE)
 	@echo ' '
 	@echo 'Invoking: Cross ARM GNU Create Flash Image'
 	@$(OBJCOPY) -O ihex "$<" "$@"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+$(BINARY): $(EXECUTABLE)
+	@echo ' '
+	@echo 'Invoking: Cross ARM GNU Create Flash Binary Image'
+	@$(OBJCOPY) -O binary "$<" "$@"
 	@echo 'Finished building: $@'
 	@echo ' '
 
