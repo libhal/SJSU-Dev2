@@ -5,6 +5,7 @@ firmware/**/makefile
 firmware/**/can-dbc/*
 firmware/**/test-suite
 firmware/**/cgreen-test-suite
+firmware/**/test
 
 !firmware/library
 !firmware/HelloWorld
@@ -22,5 +23,5 @@ tools/gcc-arm-none-eabi-*
 **/.DS_Store
 **/flash.txt
 **/env.sh
+archive/
 .idea/
-firmware/**/test
