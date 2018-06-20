@@ -29,14 +29,15 @@ $(error $n$n=============================================$nSJSUOne environment v
 endif
 
 # FLAGS
-CORTEX_M4F	= -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
-OPTIMIZE 	= -O3 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
+#CORTEX_M4F	= -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
+OPTIMIZE 	= -O0 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
 			   -fsingle-precision-constant -fno-rtti
 DEBUG 		= -g
 WARNINGS 	= -Wall -Wextra -Wpedantic -Wshadow -Wlogical-op -Wfloat-equal \
 			  -Wdouble-promotion -Wduplicated-cond -Wlogical-op -Wswitch \
 			  -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wformat=2 \
-			  -Wundef -Wconversion -Wsign-conversion -Woverloaded-virtual \
+			  -Wundef -Wconversion -Woverloaded-virtual \
 			  -Wsuggest-attribute=const -Wsuggest-final-types -Wsuggest-final-methods -Wsuggest-override \
 			  -Wframe-larger-than=1024
 			  #-Walloc-zero -Walloc-size-larger-than=8kB -Walloca-larger-than=1
@@ -63,7 +64,7 @@ CFLAGS = $(COMMON_FLAGS) \
 #-nostartfiles
 
 LINKFLAGS = $(COMMON_FLAGS) \
-	-T $(LIB_DIR)/loader.ld \
+	-T $(LIB_DIR)/LPC4078_Breakout_Debug.ld \
 	-Xlinker \
 	--gc-sections -Wl,-Map,"$(MAP)" \
 	-specs=nano.specs
@@ -96,6 +97,7 @@ OBJECT_FILES 		= $(addprefix $(OBJ_DIR)/, \
 					)
 EXECUTABLE			= $(BIN_DIR)/$(PROJ).elf
 SYMBOL_TABLE 		= $(BIN_DIR)/symbol-table.c
+BINARY				= $(EXECUTABLE:.elf=.bin)
 HEX					= $(EXECUTABLE:.elf=.hex)
 SYMBOLS_HEX			= $(EXECUTABLE:.elf=.symbols.hex)
 LIST				= $(EXECUTABLE:.elf=.lst)
@@ -126,7 +128,7 @@ default:
 	@echo "    cleaninstall  - cleans, builds and installs firmware"
 	@echo "    show-obj-list - Shows all object files that will be compiled"
 
-build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX)
+build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX) $(BINARY)
 
 sym-build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SYMBOLS_SIZE) $(SYMBOLS_LIST) $(SYMBOLS_HEX)
 
@@ -148,6 +150,13 @@ $(HEX): $(EXECUTABLE)
 	@echo ' '
 	@echo 'Invoking: Cross ARM GNU Create Flash Image'
 	@$(OBJCOPY) -O ihex "$<" "$@"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+$(BINARY): $(EXECUTABLE)
+	@echo ' '
+	@echo 'Invoking: Cross ARM GNU Create Flash Binary Image'
+	@$(OBJCOPY) -O binary "$<" "$@"
 	@echo 'Finished building: $@'
 	@echo ' '
 
