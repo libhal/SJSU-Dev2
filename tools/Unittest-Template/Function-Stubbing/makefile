@@ -69,8 +69,13 @@ test: $(COVERAGE_RESULTS) $(TEST_EXEC)
 	@valgrind --leak-check=full --track-origins=yes -v ./$(TEST_EXEC) -s
 	@gcovr -f "($(LIB_DIR)/|$(CURRENT_DIRECTORY))" \
 	-e "($(LIB_DIR)/newlib|$(LIB_DIR)/third-party)" \
+<<<<<<< HEAD
 	--delete --html --html-details -o $(COVERAGE_RESULTS)/code-coverage.html
 	mv *.gcno $(COVERAGE_RESULTS) 2> /dev/null
+=======
+	--html --html-details -o $(COVERAGE_RESULTS)/code-coverage.html
+	mv *.gcda *.gcno $(COVERAGE_RESULTS) 2> /dev/null
+>>>>>>> 5693f3cb6feb4ffae724835de6f1f9f7356a804e
 
 $(COVERAGE_RESULTS):
 	mkdir -p $(COVERAGE_RESULTS)

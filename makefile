@@ -69,7 +69,10 @@ LINKFLAGS = $(COMMON_FLAGS) \
 	-specs=nano.specs
 
 DBC_BUILD        	= $(DBC_DIR)/generated_can.h
-LIBRARIES			= $(shell find "$(LIB_DIR)" -name '*.c' -o -name '*.cpp')
+LIBRARIES			= $(shell find "$(LIB_DIR)" -name '*.c' -o \
+						 -name '*.cpp' \
+						 -not -path 'L5-Testing/*'\
+						 2> /dev/null)
 SOURCES				= $(shell find source \
  						 -name '*.c' -o\
 						 -name '*.s' -o \
@@ -298,12 +301,12 @@ clean:
 sym-flash: sym-build
 	@bash -c "\
 	source $(SJBASE)/tools/Hyperload/modules/bin/activate && \
-	python $(SJBASE)/tools/Hyperload/hyperload.py $(SJDEV) $(HEX)"
+	python $(SJBASE)/tools/Hyperload/hyperload.py $(SJDEV) $(SYMBOLS_HEX)"
 
 flash: build
 	@bash -c "\
 	source $(SJBASE)/tools/Hyperload/modules/bin/activate && \
-	python $(SJBASE)/tools/Hyperload/hyperload.py $(SJDEV) $(SYMBOLS_HEX)"
+	python $(SJBASE)/tools/Hyperload/hyperload.py $(SJDEV) $(HEX)"
 
 telemetry:
 	@bash -c "\

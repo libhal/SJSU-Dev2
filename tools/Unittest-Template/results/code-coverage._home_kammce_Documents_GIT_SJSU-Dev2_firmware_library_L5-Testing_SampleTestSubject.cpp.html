@@ -252,11 +252,11 @@
           </tr>
           <tr>
             <td class="headerName">File:</td>
-            <td class="headerValue">/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/SampleTestSubject.hpp</td>
+            <td class="headerValue">/home/kammce/Documents/GIT/SJSU-Dev2/firmware/library/L5-Testing/SampleTestSubject.cpp</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">3</td>
-            <td class="headerTableEntry">3</td>
+            <td class="headerTableEntry">9</td>
+            <td class="headerTableEntry">9</td>
             <td class="headerTableEntry" style="background-color:LightGreen">100.0 %</td>
           </tr>
           <tr>
@@ -264,9 +264,9 @@
             <td class="headerValue">2018-05-15</td>
             <td></td>
             <td class="headerName">Branches:</td>
-            <td class="headerTableEntry">2</td>
-            <td class="headerTableEntry">4</td>
-            <td class="headerTableEntry" style="background-color:LightPink">50.0 %</td>
+            <td class="headerTableEntry">0</td>
+            <td class="headerTableEntry">0</td>
+            <td class="headerTableEntry" style="background-color:LightPink">0.0 %</td>
           </tr>
         </table>
       </td>
@@ -287,13 +287,13 @@
     <tr>
     <td align="right" class="lineno"><pre>1</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>#ifndef __SAMPLETESTSUBJECT_HPP_</pre></td>
+    <td align="left" class="src "><pre>#include &lt;stdio.h&gt;</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>2</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>#define __SAMPLETESTSUBJECT_HPP_</pre></td>
+    <td align="left" class="src "><pre>#include &lt;stdint.h&gt;</pre></td>
     </tr>
 
     <tr>
@@ -305,7 +305,7 @@
     <tr>
     <td align="right" class="lineno"><pre>4</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>#include &lt;stdint.h&gt;</pre></td>
+    <td align="left" class="src "><pre>#include "SampleTestSubject.hpp"</pre></td>
     </tr>
 
     <tr>
@@ -316,12 +316,8 @@
 
     <tr>
     <td align="right" class="lineno"><pre>6</pre></td>
-<<<<<<< HEAD
-    <td align="right" class="linecount coveredLine"><pre>3</pre></td>
-=======
-    <td align="right" class="linecount coveredLine"><pre>6</pre></td>
->>>>>>> 5693f3cb6feb4ffae724835de6f1f9f7356a804e
-    <td align="left" class="src coveredLine"><pre>class SampleTestSubjectInterface</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
+    <td align="left" class="src coveredLine"><pre>int32_t SampleTestSubject::methodAdd(int32_t a, int32_t b) const</pre></td>
     </tr>
 
     <tr>
@@ -332,148 +328,86 @@
 
     <tr>
     <td align="right" class="lineno"><pre>8</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>public:</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
+    <td align="left" class="src coveredLine"><pre>    return a + b;</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>9</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    //// Simple test of method implementation</pre></td>
+    <td align="left" class="src "><pre>}</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>10</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    //// Used for spying on this</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="left" class="src coveredLine"><pre>int32_t SampleTestSubject::outerMethodAdd(int32_t a, int32_t b) const</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>11</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    virtual int32_t methodAdd(int32_t a, int32_t b) const = 0;</pre></td>
+    <td align="left" class="src "><pre>{</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>12</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    virtual int32_t outerMethodAdd(int32_t a, int32_t b) const = 0;</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="left" class="src coveredLine"><pre>    return methodAdd(a, b);</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>13</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    //// Simple test of function injection</pre></td>
+    <td align="left" class="src "><pre>}</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>14</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    virtual void injectAddFunction(int32_t (*new_function)(int32_t, int32_t)) = 0;</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="left" class="src coveredLine"><pre>void SampleTestSubject::injectAddFunction(int32_t (*new_function)(int32_t, int32_t))</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>15</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    virtual int32_t useInjectedMethod(int32_t a, int32_t b) = 0;</pre></td>
+    <td align="left" class="src "><pre>{</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>16</pre></td>
-<<<<<<< HEAD
-    <td align="right" class="linecount coveredLine"><pre>3</pre></td>
-=======
-    <td align="right" class="linecount coveredLine"><pre>6</pre></td>
->>>>>>> 5693f3cb6feb4ffae724835de6f1f9f7356a804e
-    <td align="left" class="src coveredLine"><pre>    virtual ~SampleTestSubjectInterface() = default;</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="left" class="src coveredLine"><pre>    alternative_add_function = new_function;</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>17</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>};</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>1</pre></td>
+    <td align="left" class="src coveredLine"><pre>}</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>18</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre></pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
+    <td align="left" class="src coveredLine"><pre>int32_t SampleTestSubject::useInjectedMethod(int32_t a, int32_t b)</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>19</pre></td>
-<<<<<<< HEAD
-    <td align="right" class="linecount coveredLine"><pre>6</pre></td>
-=======
-    <td align="right" class="linecount coveredLine"><pre>12</pre></td>
->>>>>>> 5693f3cb6feb4ffae724835de6f1f9f7356a804e
-    <td align="left" class="src coveredLine"><pre>class SampleTestSubject : public SampleTestSubjectInterface</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>20</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
     <td align="left" class="src "><pre>{</pre></td>
     </tr>
 
     <tr>
+    <td align="right" class="lineno"><pre>20</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
+    <td align="left" class="src coveredLine"><pre>    return alternative_add_function(a, b);</pre></td>
+    </tr>
+
+    <tr>
     <td align="right" class="lineno"><pre>21</pre></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>protected:</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>22</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    int32_t (*alternative_add_function)(int32_t, int32_t);</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>23</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>public:</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>24</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    int32_t methodAdd(int32_t a, int32_t b) const override;</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>25</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    int32_t outerMethodAdd(int32_t a, int32_t b) const override;</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>26</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    void injectAddFunction(int32_t (*new_function)(int32_t, int32_t)) override;</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>27</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>    int32_t useInjectedMethod(int32_t a, int32_t b) override;</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>28</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>};</pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>29</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre></pre></td>
-    </tr>
-
-    <tr>
-    <td align="right" class="lineno"><pre>30</pre></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>#endif</pre></td>
+    <td align="left" class="src "><pre>}</pre></td>
     </tr>
 
   </table>
