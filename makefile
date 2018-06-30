@@ -50,6 +50,7 @@ DBC_DIR   = $(BUILD_DIR)/can-dbc
 COVERAGE  = $(BUILD_DIR)/coverage
 LIB_DIR   = $(SJLIBDIR)
 FIRMWARE  = $(SJBASE)/firmware
+TOOLS     = $(SJBASE)/tools
 COMPILED_HEADERS    = $(BUILD_DIR)/headers
 CURRENT_DIRECTORY	= $(shell pwd)
 # Source files folder
@@ -333,13 +334,16 @@ clean:
 
 flash: build
 	@bash -c "\
-	source $(SJBASE)/tools/Hyperload/modules/bin/activate && \
-	python $(SJBASE)/tools/Hyperload/hyperload.py $(SJDEV) $(SYMBOLS_HEX)"
+	source $(TOOLS)/Hyperload/modules/bin/activate && \
+	python $(TOOLS)/Hyperload/hyperload.py $(SJDEV) $(SYMBOLS_HEX)"
 
 telemetry:
 	@bash -c "\
-	source $(SJBASE)/tools/Telemetry/modules/bin/activate && \
-	python $(SJBASE)/tools/Telemetry/telemetry.py"
+	source $(TOOLS)/Telemetry/modules/bin/activate && \
+	python $(TOOLS)/Telemetry/telemetry.py"
+
+lint:
+	python $(TOOLS)/cpplint/cpplint.py $(LIBRARIES) $(SOURCES)
 
 test: $(COVERAGE) $(TEST_EXEC)
 	@valgrind --leak-check=full --track-origins=yes -v $(TEST_EXEC) -s
