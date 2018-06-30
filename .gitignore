@@ -9,6 +9,8 @@ tools/Hyperload
 tools/Telemetry
 tools/gcc-arm-none-eabi-*
 
+**/.gch
+**/.gcno
 **/.gdb_history
 **/.DS_Store
 **/flash.txt

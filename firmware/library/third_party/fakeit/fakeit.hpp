@@ -1,3 +1,5 @@
+// SJSU-Dev2: Tell compiler to ignore warnings from this file
+#pragma GCC system_header
 #pragma once
 /*
  *  FakeIt - A Simplified C++ Mocking Framework
