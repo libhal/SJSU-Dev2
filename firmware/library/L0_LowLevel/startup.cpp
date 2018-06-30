@@ -29,7 +29,7 @@
 // this code.
 //*****************************************************************************
 
-#include "L0-LowLevel/LPC40xx.h"
+#include "L0_LowLevel/LPC40xx.h"
 #include <cstdint>
 #include <cstring>
 
