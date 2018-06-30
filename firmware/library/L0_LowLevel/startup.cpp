@@ -28,7 +28,6 @@
 // copyright, permission, and disclaimer notice must appear in all copies of
 // this code.
 //*****************************************************************************
-
 #include "L0_LowLevel/LPC40xx.h"
 #include <cstdint>
 #include <cstring>
@@ -290,7 +289,7 @@ void ResetISR(void)
 // Default exception handlers. Override the ones here by defining your own
 // handler routines in your application code.
 __attribute__ ((section(".after_vectors")))
-void NMI_Handler(void)
+void NMI_Handler(void) 
 { 
     while(1) {}
 }
