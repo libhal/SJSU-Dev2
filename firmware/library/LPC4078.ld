@@ -197,7 +197,7 @@ SECTIONS
         _end_noinit = .;
     } > RamLoc64
 
-    PROVIDE(_pvHeapStart = DEFINED(__user_heap_base) ? __user_heap_base : .);
+    PROVIDE(_heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
     PROVIDE(_vStackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_RamLoc64 - 0);
 
     /* ## Create checksum value (used in startup) ## */
