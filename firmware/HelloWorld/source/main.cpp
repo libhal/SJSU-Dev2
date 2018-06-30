@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstdint>
-#include "L0-LowLevel/LPC40xx.h"
-#include "L0-LowLevel/uart0.min.hpp"
+#include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/uart0.min.hpp"
 
 uint32_t cycles = 500'000;
 int main(void)
