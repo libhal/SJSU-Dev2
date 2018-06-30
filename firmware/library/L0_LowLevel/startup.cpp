@@ -200,11 +200,27 @@ extern struct DataSectionTable_t {
 // ResetISR() function in order to cope with MCUs with multiple banks of
 // memory.
 __attribute__ ((section(".after_vectors")))
-void initDataSection() {
+void InitDataSection() {
     uint32_t * rom_location  = __data_section_table.rom_location;
     uint32_t * ram_location  = __data_section_table.ram_location;
     uint32_t length          = __data_section_table.length << 2;
     memcpy(ram_location, rom_location, length);
+}
+
+// Bss Section Table Information
+extern struct BssSectionTable_t {
+    uint32_t * ram_location;
+    uint32_t length;
+}__attribute__((packed)) __bss_section_table;
+
+// extern unsigned int __data_section_table[3];
+// Functions to initialization BSS data sections. This is important because
+// the std c libs assume that BSS is set to zero.
+__attribute__ ((section(".after_vectors")))
+void InitBssSection() {
+    uint32_t * ram_location  = __bss_section_table.ram_location;
+    uint32_t length          = __bss_section_table.length << 2;
+    memset(ram_location, 0, length);
 }
 
 __attribute__ ((section(".after_vectors")))
@@ -227,7 +243,7 @@ http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0553a/
 BABGHFIB.html
 */
 __attribute__ ((section(".after_vectors")))
-void initFpu()
+void InitFpu()
 {  
     __asm(
         //CPACR is located at address 0xE000ED88
@@ -247,8 +263,9 @@ void initFpu()
 
 inline void SystemInit()
 {
-    initDataSection();
-    initFpu();
+    InitDataSection();
+    InitBssSection();
+    InitFpu();
 #if defined (__cplusplus)
     // Initialisation C++ libraries 
     __libc_init_array();
@@ -262,7 +279,7 @@ inline void SystemInit()
 // section and the execution and length of each BSS (zero initialized) section.
 // extern uint32_t __data_section_table;
 // extern uint32_t __data_section_table_end;
-extern uint32_t __bss_section_table;
+// extern uint32_t __bss_section_table;
 extern uint32_t __bss_section_table_end;
 
 constexpr uint32_t CRP_NO_CRP = 0xFFFFFFFF;

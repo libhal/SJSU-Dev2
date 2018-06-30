@@ -25,7 +25,7 @@ void uart0_init(uint32_t baud_rate)
     LPC_UART0->FCR |= (1 << 0);
 }
 
-char uart0_getchar(char notused)
+char uart0_getchar(char notused = 0)
 {
     (void)(notused);
     while(!(LPC_UART0->LSR & 0x1));
