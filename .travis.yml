@@ -13,8 +13,8 @@ script:
   - cd ./firmware/HelloWorld/
   - source env.sh
   - make build
-  - ls ./binaries/firmware.elf
-  - ls ./binaries/firmware.hex
-  - ls ./binaries/firmware.lst
-  - ls ./binaries/firmware.map
-
+  - ls ./build/binaries/firmware.elf
+  - ls ./build/binaries/firmware.hex
+  - ls ./build/binaries/firmware.lst
+  - ls ./build/binaries/firmware.map
+  - make test
