@@ -67,7 +67,8 @@ endif
 #########
 # FLAGS #
 ##########
-CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
+			 -fabi-version=0
 # CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
 OPTIMIZE  = -O3 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
                -fsingle-precision-constant -fno-rtti
@@ -87,7 +88,6 @@ COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS)  $(DEFINES) \
 # end FLAGS
 
 CFLAGS_COMMON = $(COMMON_FLAGS) \
-    -fabi-version=0 \
     -I"$(LIB_DIR)/" \
     -I"$(LIB_DIR)/newlib" \
     -I"$(LIB_DIR)/third_party/" \
@@ -128,8 +128,10 @@ LIBRARY_TESTS = $(shell find "$(LIB_DIR)" -name "*_test.cpp" \
                          -not -path "$(LIB_DIR)/third_party/*")
 TESTS = $(SOURCE_TESTS) $(LIBRARY_TESTS)
 OMIT_LIBRARIES = $(shell find "$(LIB_DIR)" \
-                         -name "startup.cpp" \
-                         -not -path "$(LIB_DIR)/third_party/*")
+                         -name "startup.cpp" -o \
+                         -name "*.cpp" \
+                         -path "$(LIB_DIR)/newlib/*" -o \
+                         -path "$(LIB_DIR)/third_party/*")
 OMIT_SOURCES   = $(shell find $(SOURCE) \
                          -name "main.cpp" \
                          -not -path "$(LIB_DIR)/third_party/*")
