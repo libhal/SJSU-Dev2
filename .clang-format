@@ -1,6 +1,7 @@
 BasedOnStyle: Google
 Language: Cpp
 BreakBeforeBraces: Allman
+DerivePointerAlignment: false
 PointerAlignment: Middle
 IndentWidth: 4
 ColumnLimit: 80
@@ -18,7 +19,7 @@ BreakStringLiterals: true
 CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 Cpp11BracedListStyle: false
-FixNamespaceComments: true 
+FixNamespaceComments: true
 IncludeBlocks: Regroup
 IndentPPDirectives: None
 KeepEmptyLinesAtTheStartOfBlocks: false
@@ -27,7 +28,7 @@ NamespaceIndentation: None
 ReflowComments: true
 SortIncludes: false
 # SpaceBeforeInheritanceColon: true
-SpaceBeforeParens: Never
+SpaceBeforeParens: ControlStatements
 SpaceInEmptyParentheses: false
 SpacesInAngles: false
 SpacesInCStyleCastParentheses: false
