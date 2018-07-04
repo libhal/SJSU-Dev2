@@ -13,12 +13,12 @@ DEVICE_SIZEC   = arm-none-eabi-size
 DEVICE_OBJCOPY = arm-none-eabi-objcopy
 DEVICE_NM      = arm-none-eabi-nm
 # IMPORTANT: Must be accessible via the PATH variable!!!
-HOST_CC        = gcc
-HOST_CPPC      = g++
-HOST_OBJDUMP   = objdump
-HOST_SIZEC     = size
-HOST_OBJCOPY   = objcopy
-HOST_NM        = nm
+HOST_CC        ?= gcc
+HOST_CPPC      ?= g++
+HOST_OBJDUMP   ?= objdump
+HOST_SIZEC     ?= size
+HOST_OBJCOPY   ?= objcopy
+HOST_NM        ?= nm
 
 ifeq ($(MAKECMDGOALS), test)
 CC      = $(HOST_CC)
@@ -196,7 +196,7 @@ DEPENDENCIES = $(OBJECT_FILES:.o=.d)
 .DEFAULT_GOAL := default
 # Tell make that these recipes don't have a end product
 .PHONY: build cleaninstall telemetry monitor show-lists clean flash telemetry \
-        default
+        presubmit default
 print-%  : ; @echo $* = $($*)
 
 # When the user types just "make" this should appear to them
@@ -207,7 +207,8 @@ default:
 	@echo "    telemetry     - will launch telemetry interface"
 	@echo "    clean         - cleans project folder"
 	@echo "    cleaninstall  - cleans, builds and installs firmware"
-	@echo "    show-lists - Shows all object files that will be compiled"
+	@echo "    show-lists    - Shows all object files that will be compiled"
+	@echo "    presubmit     - run presubmit script and "
 # Build recipe
 build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX) $(BINARY)
 # Complete rebuild and flash installation#
@@ -382,3 +383,6 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
         $(LIB_DIR)/L5_Testing/testing_frameworks.hpp
 	@echo 'Finished building: $<'
 	@echo ' '
+
+presubmit:
+	$(TOOLS)/presubmit.sh
