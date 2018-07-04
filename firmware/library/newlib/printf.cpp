@@ -11,7 +11,7 @@ int printf(const char * fmt, ...)
     va_start(args, fmt);
     int length = vsprintf(buffer, fmt, args);
     va_end(args);
-    
+
     uart0_puts(buffer);
     return length;
 }
