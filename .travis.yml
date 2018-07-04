@@ -4,17 +4,27 @@ matrix:
         - os: linux
           sudo: required
           dist: trusty
+          before_install:
+            - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+            - sudo apt update -qq
           install:
+            - sudo apt install -qq g++-8
+            - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
             - ./setup
+          script:
+            - cd ./firmware/HelloWorld/
+            - source env.sh
+            - make presubmit
         - os: osx
+          osx_image: xcode8
+          before_install:
+            - brew update
+            - brew cask uninstall oclint
+            - brew install gcc || echo "proceed"
+            - brew link --overwrite gcc
           install:
             - ./setup
-script:
-  - cd ./firmware/HelloWorld/
-  - source env.sh
-  - make build
-  - ls ./build/binaries/firmware.elf
-  - ls ./build/binaries/firmware.hex
-  - ls ./build/binaries/firmware.lst
-  - ls ./build/binaries/firmware.map
-  - make test
+          script:
+            - cd ./firmware/HelloWorld/
+            - source env.sh
+            - make presubmit HOST_CPPC=g++-8 HOST_CC=gcc-8
