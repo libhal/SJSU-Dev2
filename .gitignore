@@ -1,26 +1,19 @@
 firmware/*
-firmware/**/binaries
-firmware/**/compiled
+firmware/**/build
 firmware/**/makefile
-firmware/**/can-dbc/*
-firmware/**/test-suite
-firmware/**/cgreen-test-suite
 
 !firmware/library
 !firmware/HelloWorld
-!firmware/FreeRTOS
-!firmware/CppFreeRTOS
-!firmware/Telemetry
-!firmware/Unittest
-!firmware/Assembly
 
 tools/Hyperload
 tools/Telemetry
 tools/gcc-arm-none-eabi-*
 
+**/*.gch
+**/*.gcno
 **/.gdb_history
 **/.DS_Store
 **/flash.txt
 **/env.sh
+archive/
 .idea/
-firmware/**/test
