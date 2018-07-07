@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.2. SJSU-Dev2 Presubmit Checks &mdash; SJSU-Dev2 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4. About" href="../../about.html" />
+    <link rel="prev" title="3.1. SJSU-Dev2 Style Guide" href="style.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SJSU-Dev2
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started-toc.html">1. Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides-toc.html">2. Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../contributing-toc.html">3. Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="style.html">3.1. SJSU-Dev2 Style Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. SJSU-Dev2 Presubmit Checks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-testing">3.2.1. Building &amp; Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linting">3.2.2. Linting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#clang-format">3.2.2.1. Clang-format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-presubmit-checks">3.2.3. Running presubmit checks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing-toc.html#press-next-to-get-started">3.3. Press Next To Get Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">4. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyrights.html">5. Copyright</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SJSU-Dev2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../contributing-toc.html">3. Contributing</a> &raquo;</li>
+        
+      <li>3.2. SJSU-Dev2 Presubmit Checks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/rst/contributing/presubmit-checks.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sjsu-dev2-presubmit-checks">
+<h1>3.2. SJSU-Dev2 Presubmit Checks<a class="headerlink" href="#sjsu-dev2-presubmit-checks" title="Permalink to this headline">¶</a></h1>
+<p>Before you can merge anything to SJSU-Dev2 repo, you need to preform a few
+presubmit checks.</p>
+<p>The presubmit checks will build, test, and lint the code, as well as check to
+make sure that the current commit stage is clean. The following sections will go
+into detail about these processes and wha thtey do.</p>
+<div class="section" id="building-testing">
+<h2>3.2.1. Building &amp; Testing<a class="headerlink" href="#building-testing" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of this action for presubmit is to verify that any changes made to
+the repository doesn’t break the project’s ability to build and test software.
+Even small changes can break the whole system.</p>
+<p>The tests will be run under the watch of <strong>Valgrind</strong>. Valgrind will determine,
+if there is any memory leaks via the use of <code class="code docutils literal"><span class="pre">malloc</span></code> or <code class="code docutils literal"><span class="pre">new</span></code>. This
+is not useful for developers of SJSU-Dev2, but is useful for the users of the
+project.</p>
+</div>
+<div class="section" id="linting">
+<h2>3.2.2. Linting<a class="headerlink" href="#linting" title="Permalink to this headline">¶</a></h2>
+<p>Linting code is the process of running a program, in this case we use Google’s
+<code class="code docutils literal"><span class="pre">cpplint.py</span></code> script, to evaluate each source file to make sure that they
+conform to our coding style standards as well as do some rudamentory checks for
+code pratices that may be dangerous or produce bugs.</p>
+<p>Cpplint follows the <a class="reference external" href="https://google.github.io/styleguide/cppguide.html">Google C++ style guide</a>. The google cpplint repository can
+be found <a class="reference external" href="https://github.com/google/styleguide">here</a>.</p>
+<p>To lint the source code of your project as well as the SJSU-Dev2 libraries,
+in your project directory, run <code class="code docutils literal"><span class="pre">make</span> <span class="pre">lint</span></code>. If there are any errors found
+you should go in and fix them yourself or you can use <code class="code docutils literal"><span class="pre">clang-format</span></code> to
+do much of the formatting work for you.</p>
+<div class="section" id="clang-format">
+<h3>3.2.2.1. Clang-format<a class="headerlink" href="#clang-format" title="Permalink to this headline">¶</a></h3>
+<p>Clang-format is a code formatting tool that will refactor your code for you.
+Clang-format is installed by the setup script in SJSU-Dev2. If the clang-format
+command is not present on your machine, try pulling the latest master branch
+and try running the setup script again.</p>
+<p>To refactor your code with clang-format, all you have to do is run the
+following: <code class="code docutils literal"><span class="pre">clang-format</span> <span class="pre">-i</span> <span class="pre">&lt;path/to/file&gt;</span></code>. The <code class="code docutils literal"><span class="pre">-i</span></code> flag means you
+want to do an in place refactor. If you want to run this command, but you don’t
+want this to change your file, you can omit the <code class="code docutils literal"><span class="pre">-i</span></code> flag and it will dump
+the refactored text to stdout. You can use io redirects to dump to a file and
+review if the changes are to your likin.</p>
+</div>
+</div>
+<div class="section" id="running-presubmit-checks">
+<h2>3.2.3. Running presubmit checks<a class="headerlink" href="#running-presubmit-checks" title="Permalink to this headline">¶</a></h2>
+<p>To run the whole set of presubmit checks, change into your project directory and
+run <code class="code docutils literal"><span class="pre">make</span> <span class="pre">presubmit</span></code>. If you see this:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">============================</span>
+<span class="go">| Everything looks good here |</span>
+<span class="go">|                            |</span>
+<span class="go">|           (⌐▪_▪)           |</span>
+<span class="go">|                            |</span>
+<span class="go">|      You may commit        |</span>
+<span class="go">============================</span>
+</pre></div>
+</div>
+<p>Then you passed.</p>
+<p>If you see this:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">============================</span>
+<span class="go">|        None of this!       |</span>
+<span class="go">|                            |</span>
+<span class="go">|        (╯°□ °)╯︵ ┻━┻      |</span>
+<span class="go">|                            |</span>
+<span class="go">|      Don&#39;t commit this     |</span>
+<span class="go">============================</span>
+<span class="go">|                            |</span>
+<span class="go">| Code style must conform ✔  |</span>
+<span class="go">|   Commit must be clean ✔   |</span>
+<span class="go">|     Tests must pass ✘      |</span>
+<span class="go">|     Code must build ✔      |</span>
+<span class="go">|                            |</span>
+<span class="go">============================</span>
+</pre></div>
+</div>
+<p>Then it failed and each <strong>X</strong> represents an area that you need to fix.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../about.html" class="btn btn-neutral float-right" title="4. About" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="style.html" class="btn btn-neutral" title="3.1. SJSU-Dev2 Style Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Khalil A. Estell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
