@@ -84,6 +84,7 @@ DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS)  $(DEFINES) \
                $(DISABLED_WARNINGS)
 CFLAGS_COMMON = $(COMMON_FLAGS) \
+    -I"$(CURRENT_DIRECTORY)/" \
     -I"$(LIB_DIR)/" \
     -I"$(LIB_DIR)/newlib" \
     -I"$(LIB_DIR)/third_party/" \
