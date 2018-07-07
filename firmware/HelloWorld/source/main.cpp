@@ -12,11 +12,11 @@ int main(void)
 {
 #if SJ2_ENABLE_ANSI_CODES
     // Clears the terminal
-    puts("\e[2J\e[H");
+    fputs("\e[2J\e[H", stdout);
 #endif
-    puts(SJ2_BACKGROUND_GREEN
-        "================================== SJTwo Booted! "
-        "==================================\n" SJ2_COLOR_RESET);
+    fputs(SJ2_BACKGROUND_GREEN
+         "================================== SJTwo Booted! "
+         "==================================\n" SJ2_COLOR_RESET, stdout);
     DEBUG_PRINT("Initializing LEDs...\n");
     LPC_IOCON->P1_1 &= ~(0b111);
     LPC_IOCON->P1_8 &= ~(0b111);
