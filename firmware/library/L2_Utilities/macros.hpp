@@ -16,5 +16,7 @@
 //      #define VALUE true
 //      #define STRING "value = " STRINGIFY(s) => "value = true"
 //
-#define STRINGIFY(s) STRINGIFY2(s)
-#define STRINGIFY2(s) #s
+#define SJ2_STRINGIFY(s) SJ2_STRINGIFY2(s)
+#define SJ2_STRINGIFY2(s) #s
+// SJ2_PACKED give a specified type a packed attribute
+#define SJ2_PACKED(type) type __attribute__((packed))
