@@ -343,7 +343,7 @@ telemetry:
 	python $(TOOLS)/Telemetry/telemetry.py"
 
 lint:
-	python $(TOOLS)/cpplint/cpplint.py $(LIBRARIES) $(SOURCES)
+	python $(TOOLS)/cpplint/cpplint.py $(LIBRARIES) $(SOURCES) $(TESTS)
 
 test: $(COVERAGE) $(TEST_EXEC)
 	@valgrind --leak-check=full --track-origins=yes -v $(TEST_EXEC) -s
