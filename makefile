@@ -77,8 +77,7 @@ WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wdouble-promotion -Wduplicated-cond -Wlogical-op -Wswitch \
             -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wformat=2 \
             -Wundef -Wconversion -Woverloaded-virtual -Wsuggest-final-types \
-            -Wsuggest-final-methods -Wsuggest-override \
-            -Wframe-larger-than=1024
+            -Wsuggest-final-methods -Wsuggest-override
 DEFINES   = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS)  $(DEFINES) \
@@ -102,9 +101,9 @@ CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
          -ftest-coverage --coverage \
          -fno-elide-constructors \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
-         -O3
+         -O0
 else
-CFLAGS = $(CFLAGS_COMMON)
+CFLAGS = $(CFLAGS_COMMON) -Wframe-larger-than=2048
 endif
 
 LINKFLAGS = $(COMMON_FLAGS) \
