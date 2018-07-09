@@ -79,7 +79,7 @@ CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 			 -fabi-version=0
 # CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
 OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
-               -fsingle-precision-constant
+               -fsingle-precision-constant -fasynchronous-unwind-tables
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
 WARNINGS_ARE_ERRORS ?=
