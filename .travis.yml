@@ -4,27 +4,16 @@ matrix:
         - os: linux
           sudo: required
           dist: trusty
-          before_install:
-            - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-            - sudo apt update -qq
-          install:
-            - sudo apt install -qq g++-8
-            - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
-            - ./setup
-          script:
-            - cd ./firmware/HelloWorld/
-            - source env.sh
-            - make presubmit
         - os: osx
           osx_image: xcode8
-          before_install:
-            - brew update
-            - brew cask uninstall oclint
-            - brew install gcc || echo "proceed"
-            - brew link --overwrite gcc
-          install:
-            - ./setup
-          script:
-            - cd ./firmware/HelloWorld/
-            - source env.sh
-            - make presubmit HOST_CPPC=g++-8 HOST_CC=gcc-8
+
+install: ./setup
+script:
+  - cd ./firmware/HelloWorld/
+  - source env.sh
+  - make presubmit
+after_success:
+  - cd ../../
+  - gcov-7 --version # debug only
+  - g++-7 --version # debug only
+  - bash <(curl -s https://codecov.io/bash) -x $(which gcov-7)
