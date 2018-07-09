@@ -1,6 +1,10 @@
 // This file is meant for general purpose macros that can be used across the
 // SJSU-Dev2 environment.
 #pragma once
+#include "config.hpp"
+#include "L2_Utilities/ansi_terminal_codes.hpp"
+#include "L2_Utilities/backtrace.hpp"
+#include "L2_Utilities/debug_print.hpp"
 // SJ2_SECTION will place a variable or function within a given section of the
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as
@@ -27,3 +31,46 @@
 // Similar to the weak attribute, but also gives each function the
 // implementation of the function f.
 #define SJ2_ALIAS(f) __attribute__((weak, alias(#f)))  // NOLINT
+
+#if defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
+#define SJ2_DUMP_BACKTRACE() PrintTrace()
+#else
+#define SJ2_DUMP_BACKTRACE() \
+    do                       \
+    {                        \
+    } while (0)
+#endif  // defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
+
+#define SJ2_ASSERT_WARNING(condition, warning_message)                \
+    do                                                                \
+    {                                                                 \
+        if (!(condition))                                             \
+        {                                                             \
+            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                       \
+                        "WARNING: " warning_message SJ2_COLOR_RESET); \
+        }                                                             \
+    } while (0)
+
+#define SJ2_ASSERT_FATAL(condition, fatal_message)                            \
+    do                                                                        \
+    {                                                                         \
+        if (!(condition))                                                     \
+        {                                                                     \
+            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                               \
+                        "WARNING: " fatal_message SJ2_COLOR_RESET);           \
+            printf("\nPrinting Stack Trace:\n");                              \
+            SJ2_DUMP_BACKTRACE();                                             \
+            printf(                                                           \
+                "\nRun: the following command in your project directory\n   " \
+                " " SJ2_BOLD_WHITE                                            \
+                "arm-none-eabi-addr2line -e build/binaries/firmware.elf "     \
+                "<insert pc>" SJ2_COLOR_RESET                                 \
+                "\n"                                                          \
+                "This will report the file and line number associated "       \
+                "with that program counter values above.");                   \
+            while (true)                                                      \
+            {                                                                 \
+                continue;                                                     \
+            }                                                                 \
+        }                                                                     \
+    } while (0)
