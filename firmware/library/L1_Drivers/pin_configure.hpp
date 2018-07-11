@@ -22,18 +22,19 @@ class PinConfigureInterface
         kPullUp,
         kRepeater
     };
-    virtual void SetPinFunction(uint8_t function)                        = 0;
-    virtual void SetPinMode(PinConfigureInterface::PinMode mode)         = 0;
-    virtual void EnableHysteresis(bool enable_hysteresis)                = 0;
-    virtual void SetAsActiveLow(bool set_as_active_low)                  = 0;
-    virtual void SetAsAnalogMode(bool set_as_analog)                     = 0;
-    virtual void EnableDigitalFilter(bool enable_digital_filter)         = 0;
-    virtual void EnableFastMode(bool enable_fast_mode)                   = 0;
-    virtual void EnableI2cHighSpeedMode(bool enable_i2c_high_speed_mode) = 0;
+    virtual void SetPinFunction(uint8_t function)                       = 0;
+    virtual void SetPinMode(PinConfigureInterface::PinMode mode)        = 0;
+    virtual void EnableHysteresis(bool enable_hysteresis = true)        = 0;
+    virtual void SetAsActiveLow(bool set_as_active_low = true)          = 0;
+    virtual void SetAsAnalogMode(bool set_as_analog = true)             = 0;
+    virtual void EnableDigitalFilter(bool enable_digital_filter = true) = 0;
+    virtual void EnableFastMode(bool enable_fast_mode = true)           = 0;
+    virtual void EnableI2cHighSpeedMode(
+        bool enable_i2c_high_speed_mode = true) = 0;
     virtual void EnableI2cHighCurrentDrive(
-        bool enable_i2c_high_current_drive)             = 0;
-    virtual void SetAsOpenDrain(bool set_as_open_drain) = 0;
-    virtual void EnableDac(bool enable_dac)             = 0;
+        bool enable_i2c_high_current_drive = true)             = 0;
+    virtual void SetAsOpenDrain(bool set_as_open_drain = true) = 0;
+    virtual void EnableDac(bool enable_dac = true)             = 0;
 };
 
 class PinConfigure : public PinConfigureInterface
@@ -69,7 +70,7 @@ class PinConfigure : public PinConfigureInterface
     {
         static_assert(port <= 5, "Port must be between 0 and 5");
         static_assert(pin <= 31, "Pin must be between 0 and 31");
-        static_assert(port == 5 && pin <= 4,
+        static_assert(port < 5 || (port == 5 && pin <= 4),
                       "For port 5, the pin number must be equal to or below 4");
         return PinConfigure(port, pin);
     }
@@ -156,11 +157,11 @@ class PinConfigure : public PinConfigureInterface
         target |= (value & mask) << position;
         return target;
     }
-    uint8_t getPort()
+    const uint8_t getPort()
     {
         return port;
     }
-    uint8_t setPin()
+    const uint8_t setPin()
     {
         return pin;
     }
