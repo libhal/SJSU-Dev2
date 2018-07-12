@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.1. Debugging with OpenOCD and GDB &mdash; SJSU-Dev2 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.2. Unit Testing" href="unit-testing.html" />
+    <link rel="prev" title="2. Guides" href="../guides-toc.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SJSU-Dev2
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started-toc.html">1. Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../guides-toc.html">2. Guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.1. Debugging with OpenOCD and GDB</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">2.1.1. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-0-installing-openocd">2.1.2. Step 0: Installing OpenOCD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-solder-jtag-headers-to-sjone">2.1.3. Step 1: Solder JTAG Headers to SJOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-connecting-j-link-to-sjone">2.1.4. Step 2: Connecting J-Link to SJOne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-run-openocd">2.1.5. Step 3: Run OpenOCD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-run-gdb">2.1.6. Step 5: Run GDB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="unit-testing.html">2.2. Unit Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry-runtime-monitoring-and-tuning.html">2.3. Telemetry: Embedded Runtime Monitoring and Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides-toc.html#press-next-to-get-started">2.4. Press Next To Get Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing-toc.html">3. Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">4. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyrights.html">5. Copyright</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SJSU-Dev2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../guides-toc.html">2. Guides</a> &raquo;</li>
+        
+      <li>2.1. Debugging with OpenOCD and GDB</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/rst/guides/debugging-with-openocd-gdb.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="debugging-with-openocd-and-gdb">
+<h1>2.1. Debugging with OpenOCD and GDB<a class="headerlink" href="#debugging-with-openocd-and-gdb" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will use <strong>HelloWorld</strong> as an example. But this will work for any
+application you build.</p>
+<div class="section" id="prerequisites">
+<h2>2.1.1. Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>The official supported JTAG probes for the SJOne board is the SEGGER J-LINK mini
+EDU. Any other J-Link device will work with no modifications to the
+<code class="code docutils literal"><span class="pre">sjtwo.cfg</span></code> file. Otherwise, change the interface/source to the
+appropriate adapter.</p>
+</div>
+<div class="section" id="step-0-installing-openocd">
+<h2>2.1.2. Step 0: Installing OpenOCD<a class="headerlink" href="#step-0-installing-openocd" title="Permalink to this headline">¶</a></h2>
+<p>OpenOCD was installed when you ran the initial <code class="code docutils literal"><span class="pre">./setup</span></code> script if you are
+running Linux or WSL. If you are running OS X, install manually.</p>
+</div>
+<div class="section" id="step-1-solder-jtag-headers-to-sjone">
+<h2>2.1.3. Step 1: Solder JTAG Headers to SJOne<a class="headerlink" href="#step-1-solder-jtag-headers-to-sjone" title="Permalink to this headline">¶</a></h2>
+<p>Do as the title says if you haven’t already.</p>
+</div>
+<div class="section" id="step-2-connecting-j-link-to-sjone">
+<h2>2.1.4. Step 2: Connecting J-Link to SJOne<a class="headerlink" href="#step-2-connecting-j-link-to-sjone" title="Permalink to this headline">¶</a></h2>
+<p>Connect jumpers from the <code class="code docutils literal"><span class="pre">GND</span></code>, <code class="code docutils literal"><span class="pre">TDI</span></code>, <code class="code docutils literal"><span class="pre">TMS</span></code>, <code class="code docutils literal"><span class="pre">TCK</span></code>, and
+<code class="code docutils literal"><span class="pre">TDO</span></code> pins on the <strong>J-Link</strong> to the SJOne’s JTAG headers.</p>
+<div class="admonition danger">
+<p class="first admonition-title">Danger</p>
+<p class="last">DOUBLE AND TRIPLE CHECK THAT YOUR CONNECTIONS! The SJOne costs $80 and the
+BusBaster costs $35! Thats $115 down the drain if your burn them out!</p>
+</div>
+</div>
+<div class="section" id="step-3-run-openocd">
+<h2>2.1.5. Step 3: Run OpenOCD<a class="headerlink" href="#step-3-run-openocd" title="Permalink to this headline">¶</a></h2>
+<p>Run:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># If you used make install</span>
+openocd -f ./tools/OpenOCD/sjtwo.cfg
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>Successful output is the following:</p>
+<div class="last highlight-bash"><div class="highlight"><pre><span></span>Info : clock speed <span class="m">4000</span> kHz
+Info : JTAG tap: lpc40xx.cpu tap/device found: 0x4ba00477
+    <span class="o">(</span>mfg: 0x23b <span class="o">(</span>ARM Ltd.<span class="o">)</span>, part: 0xba00, ver: 0x4<span class="o">)</span>
+Info : lpc17xx.cpu: hardware has <span class="m">6</span> breakpoints, <span class="m">4</span> watchpoints
+</pre></div>
+</div>
+</div>
+<div class="admonition error">
+<p class="first admonition-title">Error</p>
+<p>If you see the following message:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>Error: JTAG-DP STICKY ERROR
+Info : DAP transaction stalled <span class="o">(</span>WAIT<span class="o">)</span> - slowing down
+Error: Timeout during WAIT recovery
+Error: Debug regions are unpowered, an unexpected reset might have
+    happened
+</pre></div>
+</div>
+<p class="last">Then the SJOne board is being held in a RESET state. To fix this, either
+by power cycling the SJOne board or by deassert the RTS and DTR signals
+through GTKTerm.</p>
+</div>
+<div class="admonition error">
+<p class="first admonition-title">Error</p>
+<p>If you see your terminal get spammed with this:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>Error: JTAG-DP STICKY ERROR
+Error: Invalid ACK <span class="o">(</span><span class="m">7</span><span class="o">)</span> in DAP response
+Error: JTAG-DP STICKY ERROR
+Error: Could not initialize the debug port
+</pre></div>
+</div>
+<p class="last">Then its a good chance that one of your pins is not connected. But typically
+this is not a problem.</p>
+</div>
+</div>
+<div class="section" id="step-5-run-gdb">
+<h2>2.1.6. Step 5: Run GDB<a class="headerlink" href="#step-5-run-gdb" title="Permalink to this headline">¶</a></h2>
+<p>Open another terminal and run the following command in the
+<code class="code docutils literal"><span class="pre">firmware/default/</span></code> folder.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>arm-none-eabi-gdb -ex <span class="s2">&quot;target remote :3333&quot;</span> bin/firmware.elf
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You can run arm-none-eabi-gdb without arguments and use the following gdb
+commands
+<code class="code docutils literal"><span class="pre">file</span> <span class="pre">bin/firmware.elf</span></code>
+then
+<code class="code docutils literal"><span class="pre">target</span> <span class="pre">remote</span> <span class="pre">:3333</span></code>
+in the gdb command line interface to get the same effect as the above
+command.</p>
+</div>
+<p>At this point the SJOne board has been halted. You should be able to add
+breakpoints to the program at this point and step through the code.</p>
+<p>At this point you will not see any source code. Do the following in the gdb
+command line interface:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nb">break</span> main
+&gt;&gt;&gt; <span class="k">continue</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Don’t use the typical “run” command to start the code. It is already started
+in the firmware. Also, run does not exist when using
+<code class="code docutils literal"><span class="pre">target</span> <span class="pre">remote</span> <span class="pre">:3333</span></code> to OpenOCD. It exists with
+<code class="code docutils literal"><span class="pre">target</span> <span class="pre">extended-remote</span> <span class="pre">:3333</span></code>, but causes issues… just don’t use it
+OK.</p>
+</div>
+<p>At this point you should see the source code of your <code class="code docutils literal"><span class="pre">main.cpp</span></code> show up.
+Now you can step through your code and set breakpoints using <code class="code docutils literal"><span class="pre">step</span></code>,
+<code class="code docutils literal"><span class="pre">next</span></code>, <code class="code docutils literal"><span class="pre">finish</span></code> and <code class="code docutils literal"><span class="pre">continue</span></code>, <code class="code docutils literal"><span class="pre">break</span></code>, etc.</p>
+<p>For a gdb cheat sheet, see this PDF:</p>
+<blockquote>
+<div><a class="reference external" href="http://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">http://darkdust.net/files/GDB%20Cheat%20Sheet.pdf</a></div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="unit-testing.html" class="btn btn-neutral float-right" title="2.2. Unit Testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../guides-toc.html" class="btn btn-neutral" title="2. Guides" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Khalil A. Estell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

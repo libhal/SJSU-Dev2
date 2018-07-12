@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.2. Understanding The Framework Layout &mdash; SJSU-Dev2 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. Guides" href="../guides-toc.html" />
+    <link rel="prev" title="1.1. Getting Started" href="getting-started.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SJSU-Dev2
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../getting-started-toc.html">1. Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html">1.1. Getting Started</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.2. Understanding The Framework Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#file-hierarchy">1.2.1. File Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-firmware">1.2.2. Folder: <code class="code docutils literal"><span class="pre">firmware</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-firmware-application-source">1.2.3. Folder: <code class="code docutils literal"><span class="pre">firmware/&lt;application&gt;/source/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-applications-build-binaries">1.2.4. Folder: <code class="code docutils literal"><span class="pre">&lt;applications&gt;/build/binaries/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-application-build-can-dbc">1.2.5. Folder: <code class="code docutils literal"><span class="pre">&lt;application&gt;/build/_can_dbc/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-application-build-compiled">1.2.6. Folder: <code class="code docutils literal"><span class="pre">&lt;application&gt;/build/compiled/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-application-build-test">1.2.7. Folder: <code class="code docutils literal"><span class="pre">&lt;application&gt;/build/test/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-application-build-coverage">1.2.8. Folder: <code class="code docutils literal"><span class="pre">&lt;application&gt;/build/coverage/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-firmware-library">1.2.9. Folder: <code class="code docutils literal"><span class="pre">firmware/library/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-firmware-third-party">1.2.10. Folder: <code class="code docutils literal"><span class="pre">firmware/third_party</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#folder-firmware-lib-l-d-s">1.2.11. Folder: <code class="code docutils literal"><span class="pre">firmware/lib/L%d_%s</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guides-toc.html">2. Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing-toc.html">3. Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">4. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyrights.html">5. Copyright</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SJSU-Dev2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../getting-started-toc.html">1. Getting Started</a> &raquo;</li>
+        
+      <li>1.2. Understanding The Framework Layout</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/rst/getting-started/understanding-the-framework-layout.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="understanding-the-framework-layout">
+<h1>1.2. Understanding The Framework Layout<a class="headerlink" href="#understanding-the-framework-layout" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="file-hierarchy">
+<h2>1.2.1. File Hierarchy<a class="headerlink" href="#file-hierarchy" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>firmware/
+├── HelloWorld
+│   ├── build
+│   │   ├── binaries
+│   │   ├── can-dbc
+│   │   ├── compiled
+│   │   ├── coverage
+│   │   └── <span class="nb">test</span>
+│   ├── env.sh -&gt; /home/khalil/Git/SJSU-Dev2/env.sh
+│   ├── makefile -&gt; /home/khalil/Git/SJSU-Dev2/makefile
+│   ├── project_config.hpp
+│   └── <span class="nb">source</span>
+│       └── main.cpp
+└── library
+        ├── config.hpp
+        ├── L0_LowLevel
+        │   ├── cmsis_gcc.h
+        │   ├── core_cm4.h
+        │   ├── core_cmFunc.h
+        │   ├── core_cmInstr.h
+        │   ├── core_cmSimd.h
+        │   ├── LPC40xx.h
+        │   ├── startup.cpp
+        │   ├── system_LPC407x_8x_177x_8x.h
+        │   ├── uart0.min.cpp
+        │   └── uart0.min.hpp
+        ├── L1_Drivers
+        ├── L2_Utilities
+        ├── L3_HAL
+        ├── L4_Application
+        ├── L5_Testing
+        │   ├── main_test.cpp
+        │   └── testing_frameworks.hpp
+        ├── LPC4078.ld
+        ├── newlib
+        │   ├── newlib.cpp
+        │   └── printf.cpp
+        ├── readme.md
+        └── third_party
+                ├── catch2
+                ├── fakeit
+                └── fff
+</pre></div>
+</div>
+</div>
+<div class="section" id="folder-firmware">
+<h2>1.2.2. Folder: <code class="code docutils literal"><span class="pre">firmware</span></code><a class="headerlink" href="#folder-firmware" title="Permalink to this headline">¶</a></h2>
+<p>This folder is meant to hold the firmware <strong>applications</strong> you make.
+The default applications are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>HelloWorld</strong>: Template for simple single-threaded applications.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="folder-firmware-application-source">
+<h2>1.2.3. Folder: <code class="code docutils literal"><span class="pre">firmware/&lt;application&gt;/source/</span></code><a class="headerlink" href="#folder-firmware-application-source" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal"><span class="pre">source</span></code> folder holds the <code class="code docutils literal"><span class="pre">main.cpp</span></code> file and other source
+files you want to create or use for your project.</p>
+</div>
+<div class="section" id="folder-applications-build-binaries">
+<h2>1.2.4. Folder: <code class="code docutils literal"><span class="pre">&lt;applications&gt;/build/binaries/</span></code><a class="headerlink" href="#folder-applications-build-binaries" title="Permalink to this headline">¶</a></h2>
+<p>This folder holds the executables (<code class="code docutils literal"><span class="pre">.hex</span></code>) that can be loaded into the
+SJTwo board.</p>
+<p>It also holds the disassembly file <code class="code docutils literal"><span class="pre">.lst</span></code>, linker file <code class="code docutils literal"><span class="pre">.map</span></code> and
+the Executable and Linkable Format <code class="code docutils literal"><span class="pre">.elf</span></code> file.</p>
+</div>
+<div class="section" id="folder-application-build-can-dbc">
+<h2>1.2.5. Folder: <code class="code docutils literal"><span class="pre">&lt;application&gt;/build/_can_dbc/</span></code><a class="headerlink" href="#folder-application-build-can-dbc" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="code docutils literal"><span class="pre">_can_dbc</span></code> folder holds the CAN message description files and
+generated header files.</p>
+</div>
+<div class="section" id="folder-application-build-compiled">
+<h2>1.2.6. Folder: <code class="code docutils literal"><span class="pre">&lt;application&gt;/build/compiled/</span></code><a class="headerlink" href="#folder-application-build-compiled" title="Permalink to this headline">¶</a></h2>
+<p>This folder holds object files generated during the compilation stage of
+building the executable. They are then all linked together to create an
+<code class="code docutils literal"><span class="pre">.elf</span></code> file afterwards. The last phase after creating an <code class="code docutils literal"><span class="pre">.elf</span></code> is
+to converts the <code class="code docutils literal"><span class="pre">.elf</span></code> to a <code class="code docutils literal"><span class="pre">.hex</span></code> file to be loaded into SJTwo’s
+flash memory.</p>
+</div>
+<div class="section" id="folder-application-build-test">
+<h2>1.2.7. Folder: <code class="code docutils literal"><span class="pre">&lt;application&gt;/build/test/</span></code><a class="headerlink" href="#folder-application-build-test" title="Permalink to this headline">¶</a></h2>
+<p>This folder holds compiled test object files as well as the <code class="code docutils literal"><span class="pre">test.exe</span></code>
+executable file. Running the <code class="code docutils literal"><span class="pre">test.exe</span></code> file will run through all of the
+library tests as well as any local test files in your project.</p>
+</div>
+<div class="section" id="folder-application-build-coverage">
+<h2>1.2.8. Folder: <code class="code docutils literal"><span class="pre">&lt;application&gt;/build/coverage/</span></code><a class="headerlink" href="#folder-application-build-coverage" title="Permalink to this headline">¶</a></h2>
+<p>This folder holds the test coverage files. Opening the <code class="code docutils literal"><span class="pre">coverage.html</span></code> in
+your browser will show you how much of the library code has been tested.</p>
+</div>
+<div class="section" id="folder-firmware-library">
+<h2>1.2.9. Folder: <code class="code docutils literal"><span class="pre">firmware/library/</span></code><a class="headerlink" href="#folder-firmware-library" title="Permalink to this headline">¶</a></h2>
+<p>This folder holds the core SJSU-Dev2 firmware source files, such as abstractions
+for using GPIO, I2C, UART, Interrupts, etc.</p>
+</div>
+<div class="section" id="folder-firmware-third-party">
+<h2>1.2.10. Folder: <code class="code docutils literal"><span class="pre">firmware/third_party</span></code><a class="headerlink" href="#folder-firmware-third-party" title="Permalink to this headline">¶</a></h2>
+<p>This folder holds the third party projects that are used by the SJSU-Dev2
+framework.</p>
+</div>
+<div class="section" id="folder-firmware-lib-l-d-s">
+<h2>1.2.11. Folder: <code class="code docutils literal"><span class="pre">firmware/lib/L%d_%s</span></code><a class="headerlink" href="#folder-firmware-lib-l-d-s" title="Permalink to this headline">¶</a></h2>
+<p>The folders that start with <strong>L&lt;some number&gt;_&lt;some folder name&gt;</strong> are kind of
+self explanatory as to what they hold. For example, <code class="code docutils literal"><span class="pre">L0_LowLevel</span></code> holds
+files that initialize the firmware before main is called and <code class="code docutils literal"><span class="pre">L1_Drivers</span></code>
+are device drivers and so on and so forth.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../guides-toc.html" class="btn btn-neutral float-right" title="2. Guides" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting-started.html" class="btn btn-neutral" title="1.1. Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Khalil A. Estell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
