@@ -143,7 +143,7 @@ LIBRARY_FILES = $(shell find "$(LIB_DIR)" \
 # Remove all test files from LIBRARY_FILES
 LIBRARIES     = $(filter-out $(LIBRARY_TESTS), $(LIBRARY_FILES))
 SOURCE_FILES  = $(shell find $(SOURCE) \
-                          -name "*.c" -o \
+                         -name "*.c" -o \
                          -name "*.s" -o \
                          -name "*.S" -o \
                          -name "*.cpp" \
@@ -196,19 +196,28 @@ DEPENDENCIES = $(OBJECT_FILES:.o=.d)
 .DEFAULT_GOAL := default
 # Tell make that these recipes don't have a end product
 .PHONY: build cleaninstall telemetry monitor show-lists clean flash telemetry \
-        presubmit default
+        presubmit openocd debug multi-debug default
 print-%  : ; @echo $* = $($*)
 
 # When the user types just "make" this should appear to them
-default:
+help:
 	@echo "List of available targets:"
-	@echo "    build         - builds firmware project"
-	@echo "    flash         - builds and installs firmware on to SJOne board"
-	@echo "    telemetry     - will launch telemetry interface"
-	@echo "    clean         - cleans project folder"
-	@echo "    cleaninstall  - cleans, builds and installs firmware"
-	@echo "    show-lists    - Shows all object files that will be compiled"
-	@echo "    presubmit     - run presubmit script and "
+	@echo
+	@echo "    build        - builds firmware project"
+	@echo "    help         - shows this menu"
+	@echo "    flash        - builds and installs firmware on to SJOne board"
+	@echo "    telemetry    - will launch telemetry interface"
+	@echo "    clean        - cleans project folder"
+	@echo "    cleaninstall - cleans, builds, and installs firmware"
+	@echo "    show-lists   - Shows all object files that will be compiled"
+	@echo "    presubmit    - run presubmit checks script"
+	@echo "    openocd      - run openocd with the sjtwo.cfg file"
+	@echo "    debug        - run arm gdb with current projects .elf file"
+	@echo "    multi-debug  - run multiarch gdb with current projects .elf file"
+	@echo
+
+default: help
+    # Just shows the help menu
 # Build recipe
 build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX) $(BINARY)
 # Complete rebuild and flash installation#
@@ -386,3 +395,12 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 
 presubmit:
 	$(TOOLS)/presubmit.sh
+
+openocd:
+	openocd -f $(TOOLS)/OpenOCD/sjtwo.cfg
+
+debug:
+	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)
+
+multi-debug:
+	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
