@@ -1,7 +1,5 @@
 // Test for PinConfigure class.
 // Using a test by side effect on the LPC_IOCON register
-#include <assert.h>
-#include <cstdio>
 #include "L0_LowLevel/LPC40xx.h"
 #include "L5_Testing/testing_frameworks.hpp"
 #include "L1_Drivers/pin_configure.hpp"
@@ -72,7 +70,7 @@ TEST_CASE("Testing PinConfigure", "[pin_configure]")
         CHECK(PinConfigureInterface::kRepeater << kModePosition ==
               (local_iocon.P2_5 & kMask));
     }
-    SECTION("Set and alear Hysteresis modes")
+    SECTION("Set and clear Hysteresis modes")
     {
         // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
         constexpr uint8_t kHysteresisPosition = 5;
