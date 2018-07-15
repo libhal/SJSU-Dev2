@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.1. SJSU-Dev2 Style Guide &mdash; SJSU-Dev2 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.2. SJSU-Dev2 Presubmit Checks" href="presubmit-checks.html" />
+    <link rel="prev" title="3. Contributing" href="../contributing-toc.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SJSU-Dev2
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started-toc.html">1. Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides-toc.html">2. Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../contributing-toc.html">3. Contributing</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.1. SJSU-Dev2 Style Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#c-style">3.1.1. C++ Style</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-of-c-files">3.1.2. Usage of C files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-headers">3.1.3. C headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-standard-libraries">3.1.4. C++ Standard Libraries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#curly-braces">3.1.5. Curly Braces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#infinite-loops">3.1.6. Infinite Loops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#include-guards">3.1.7. Include Guards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-allocation">3.1.8. Memory Allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pointers-and-references">3.1.9. Pointers and references</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-preprocessor-macro">3.1.10. Using Preprocessor macro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preprocessor-semicolons">3.1.11. Preprocessor Semicolons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preprocessor-conditionals">3.1.12. Preprocessor Conditionals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integer-typing">3.1.13. Integer typing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#low-level-driver-constructors">3.1.14. Low Level Driver Constructors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-of-constexpr">3.1.15. Usage of <code class="code docutils literal"><span class="pre">constexpr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-comments">3.1.16. File comments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comment-style">3.1.17. Comment style</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#assertive-software">3.1.18. Assertive Software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-formatting">3.1.19. File formatting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#number-formatting">3.1.20. Number formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="presubmit-checks.html">3.2. SJSU-Dev2 Presubmit Checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing-toc.html#press-next-to-get-started">3.3. Press Next To Get Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">4. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyrights.html">5. Copyright</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SJSU-Dev2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../contributing-toc.html">3. Contributing</a> &raquo;</li>
+        
+      <li>3.1. SJSU-Dev2 Style Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/rst/contributing/style.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sjsu-dev2-style-guide">
+<h1>3.1. SJSU-Dev2 Style Guide<a class="headerlink" href="#sjsu-dev2-style-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="c-style">
+<h2>3.1.1. C++ Style<a class="headerlink" href="#c-style" title="Permalink to this headline">¶</a></h2>
+<p>SJSU-Dev2 follows the Google C++ style guide with exception to the subjects
+stated here. See: <a class="reference external" href="http://google.github.io/styleguide/cppguide.html">http://google.github.io/styleguide/cppguide.html</a></p>
+</div>
+<div class="section" id="usage-of-c-files">
+<h2>3.1.2. Usage of C files<a class="headerlink" href="#usage-of-c-files" title="Permalink to this headline">¶</a></h2>
+<p>Only on special cases should <code class="code docutils literal"><span class="pre">.c</span></code> (C-only) source files be used. When ever
+possible, be sure to use C++ rather than C.</p>
+</div>
+<div class="section" id="c-headers">
+<h2>3.1.3. C headers<a class="headerlink" href="#c-headers" title="Permalink to this headline">¶</a></h2>
+<p>Always opt to use the C++ versio of the standard library headers. For example,
+besides using <code class="code docutils literal"><span class="pre">&lt;stdlib.h&gt;</span></code> use <code class="code docutils literal"><span class="pre">&lt;cstdlib&gt;</span></code>.</p>
+</div>
+<div class="section" id="c-standard-libraries">
+<h2>3.1.4. C++ Standard Libraries<a class="headerlink" href="#c-standard-libraries" title="Permalink to this headline">¶</a></h2>
+<p>Many of the C++ libraries are large and complex and not optimal for the
+SJSU-Dev2 project. For the most part stay away from using or including std C++
+libraries. For example, simply the simple <code class="code docutils literal"><span class="pre">#include</span> <span class="pre">&lt;iostream&gt;</span></code> will grow the
+executable’s <strong>size by 150kB!?</strong> Bare in mind that the flash size for the board is
+512kB, thats approximately <strong>30%</strong> to simply include it, and not even to use it.</p>
+<dl class="docutils">
+<dt>Here are a few standard C++ libraries you can include:</dt>
+<dd><ul class="first last simple">
+<li>&lt;variant&gt;</li>
+<li>&lt;utility&gt;</li>
+<li>&lt;tuple&gt;</li>
+<li>&lt;type_traits&gt;</li>
+<li>&lt;limits&gt;</li>
+<li>&lt;bitset&gt;</li>
+<li>&lt;atomic&gt;</li>
+<li>&lt;utility&gt;</li>
+<li>&lt;algorithm&gt;</li>
+<li>&lt;c*&gt; C standard libraries</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="curly-braces">
+<h2>3.1.5. Curly Braces<a class="headerlink" href="#curly-braces" title="Permalink to this headline">¶</a></h2>
+<p>SJSU-Dev2 will follow the Allman style of curly braces, where each curly brace
+gets their own line.</p>
+<p>A control statement can be done in 1 line, you must be surrounded by curly
+braces. For example, <code class="code docutils literal"><span class="pre">if(check)</span> <span class="pre">{</span> <span class="pre">DoSomething();</span> <span class="pre">}</span></code></p>
+</div>
+<div class="section" id="infinite-loops">
+<h2>3.1.6. Infinite Loops<a class="headerlink" href="#infinite-loops" title="Permalink to this headline">¶</a></h2>
+<p>Use <code class="code docutils literal"><span class="pre">while(true)</span></code> rather than <code class="code docutils literal"><span class="pre">for(;;)</span></code>
+Also, be sure to supply a <code class="code docutils literal"><span class="pre">continue</span></code> statement within your while loop to
+explicitly show that you mean <code class="code docutils literal"><span class="pre">while(true)</span> <span class="pre">{</span> <span class="pre">continue;</span> <span class="pre">}</span></code></p>
+</div>
+<div class="section" id="include-guards">
+<h2>3.1.7. Include Guards<a class="headerlink" href="#include-guards" title="Permalink to this headline">¶</a></h2>
+<p>The first non-comment line of every header file must be <code class="code docutils literal"><span class="pre">#pragma</span> <span class="pre">once</span></code>.
+Do not use the traditional macro include guards.</p>
+</div>
+<div class="section" id="memory-allocation">
+<h2>3.1.8. Memory Allocation<a class="headerlink" href="#memory-allocation" title="Permalink to this headline">¶</a></h2>
+<p>SJSU-Dev2 code may NOT use dynamic memory such as with <code class="code docutils literal"><span class="pre">malloc</span></code> or
+<code class="code docutils literal"><span class="pre">new</span></code>. All memory must be preallocated either via stack memory or by
+global storage. Code must NOT use C++ libraries that allocate memory, such as
+std::string.</p>
+</div>
+<div class="section" id="pointers-and-references">
+<h2>3.1.9. Pointers and references<a class="headerlink" href="#pointers-and-references" title="Permalink to this headline">¶</a></h2>
+<p>Pointer and reference symbols (astricks and ampersand), must be in the center
+of type and the variable name.</p>
+<p>For example: <code class="code docutils literal"><span class="pre">char</span> <span class="pre">*</span> <span class="pre">array;</span></code> and <code class="code docutils literal"><span class="pre">PositronManager</span> <span class="pre">&amp;</span> <span class="pre">pos;</span></code></p>
+<p>Prefer storing references over storing pointers. Use pointers only for cases
+where the pointer’s target may be changed or needs to point to nullptr.
+References must be passed as const as a function/method parameter.</p>
+</div>
+<div class="section" id="using-preprocessor-macro">
+<h2>3.1.10. Using Preprocessor macro<a class="headerlink" href="#using-preprocessor-macro" title="Permalink to this headline">¶</a></h2>
+<p>Try to stay away from #define as much as possible. Use constexpr and inline in
+place of macros.</p>
+<p>If a macro solution is the most optimal solution, they may be used them, but
+they must be prefixed with <code class="code docutils literal"><span class="pre">SJ2_</span></code> or <code class="code docutils literal"><span class="pre">_SJ2_</span></code>. When prefixed with a
+<code class="code docutils literal"><span class="pre">_</span></code>, that means that this macro is an internal macro and should not be
+called by the application.</p>
+</div>
+<div class="section" id="preprocessor-semicolons">
+<h2>3.1.11. Preprocessor Semicolons<a class="headerlink" href="#preprocessor-semicolons" title="Permalink to this headline">¶</a></h2>
+<p>Macros must force the user to end them with a semicolon. Thus the contents of
+the macro must be wrapped with <code class="code docutils literal"><span class="pre">do</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span> <span class="pre">while(0)</span></code> loop.</p>
+<p>Standalone macros must end with a throwaway <code class="code docutils literal"><span class="pre">static_assert</span></code> statement.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>define _SJ2_GENERATE_SOMETHING<span class="o">(</span>name<span class="o">)</span>     <span class="se">\</span>
+    bool factory_##name<span class="o">()</span> <span class="o">{</span> <span class="k">return</span> val<span class="p">;</span> <span class="o">}</span> <span class="se">\</span>
+    static_assert<span class="o">(</span><span class="nv">1</span> <span class="o">==</span> <span class="m">1</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="preprocessor-conditionals">
+<h2>3.1.12. Preprocessor Conditionals<a class="headerlink" href="#preprocessor-conditionals" title="Permalink to this headline">¶</a></h2>
+<p>Prefer ot use <code class="code docutils literal"><span class="pre">#if</span></code> rather than <code class="code docutils literal"><span class="pre">#ifdef</span></code>. <code class="code docutils literal"><span class="pre">#if</span></code> checks for
+definition as well as if the expression evaluates to something truthful.</p>
+<p>Every <code class="code docutils literal"><span class="pre">#endif</span></code> must be commented with the exprssion used in the
+<code class="code docutils literal"><span class="pre">#if</span></code> statement.</p>
+</div>
+<div class="section" id="integer-typing">
+<h2>3.1.13. Integer typing<a class="headerlink" href="#integer-typing" title="Permalink to this headline">¶</a></h2>
+<p>Stay away from the use of <code class="code docutils literal"><span class="pre">int</span></code> type. Prefer to use the sign and width
+designated <code class="code docutils literal"><span class="pre">&lt;cstdint&gt;</span></code> integers. Prefer <code class="code docutils literal"><span class="pre">int32_t</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">5;</span></code> to
+<code class="code docutils literal"><span class="pre">int</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">5;</span></code>.</p>
+</div>
+<div class="section" id="low-level-driver-constructors">
+<h2>3.1.14. Low Level Driver Constructors<a class="headerlink" href="#low-level-driver-constructors" title="Permalink to this headline">¶</a></h2>
+<p>Drivers must not use their constructor to initialize hardware perpherials.
+Initialization should be done explicitly at the application start point main()
+using an init() method.</p>
+<p>This is to ensure that the SystemIntialization and C++ libraries have been
+initialized before modifing hardware.</p>
+<p>The constructor should be used to initialize and set member variables and
+nothing more.</p>
+</div>
+<div class="section" id="usage-of-constexpr">
+<h2>3.1.15. Usage of <code class="code docutils literal"><span class="pre">constexpr</span></code><a class="headerlink" href="#usage-of-constexpr" title="Permalink to this headline">¶</a></h2>
+<p>Prefer to use these whenever possible to do complex computations during compile
+time rather than during runtime.</p>
+</div>
+<div class="section" id="file-comments">
+<h2>3.1.16. File comments<a class="headerlink" href="#file-comments" title="Permalink to this headline">¶</a></h2>
+<p>The top of each file must include a comment explaining the purpose of the file.</p>
+</div>
+<div class="section" id="comment-style">
+<h2>3.1.17. Comment style<a class="headerlink" href="#comment-style" title="Permalink to this headline">¶</a></h2>
+<p>Prefer that comments be directly above the line it means to comment.</p>
+<p>Use <code class="code docutils literal"><span class="pre">//</span> <span class="pre">...</span></code> for all comments in the code except for in macros for which
+<code class="code docutils literal"><span class="pre">//</span></code> cannot be used, thus <code class="code docutils literal"><span class="pre">/*</span> <span class="pre">...</span> <span class="pre">*/</span></code> is acceptable.</p>
+</div>
+<div class="section" id="assertive-software">
+<h2>3.1.18. Assertive Software<a class="headerlink" href="#assertive-software" title="Permalink to this headline">¶</a></h2>
+<p>Software in SJSU-Dev2 should be as assertive, in that you should use the
+<code class="code docutils literal"><span class="pre">static_assert()</span></code> compile time error function whenever the user performs
+and illegal action. For example, lets say the developer put 0Hz for the
+constructor of the SystemClock class. There should be a
+<code class="code docutils literal"><span class="pre">static_assert()</span></code> check done the parameters to make sure that the value
+is within a reasonable range.</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SystemClock</span>
+<span class="p">{</span>
+    <span class="k">constexpr</span> <span class="n">SystemClock</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">frequency</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">static_assert</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">frequency</span> <span class="o">&amp;&amp;</span> <span class="n">frequency</span> <span class="o">&lt;=</span> <span class="mi">100000000</span><span class="p">,</span>
+            <span class="s">&quot;SystemClock frequency must be between 1 and 100000000&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="file-formatting">
+<h2>3.1.19. File formatting<a class="headerlink" href="#file-formatting" title="Permalink to this headline">¶</a></h2>
+<p>Every file must end with a newline character.</p>
+</div>
+<div class="section" id="number-formatting">
+<h2>3.1.20. Number formatting<a class="headerlink" href="#number-formatting" title="Permalink to this headline">¶</a></h2>
+<p>Never use decimal or octal when doing bitsise operations. You may use hex
+<code class="code docutils literal"><span class="pre">0x32</span></code>, or binary <code class="code docutils literal"><span class="pre">0b0011'0010</span></code>.</p>
+<p>Please <strong>DO</strong> use the single quote <code class="code docutils literal"><span class="pre">'</span></code> to seperate your numbers for example:
+<code class="code docutils literal"><span class="pre">0b0110'1000'0101'1110</span></code> and <code class="code docutils literal"><span class="pre">12'000'000</span></code>.</p>
+<p>Making the number segments more visible if there are obvious mistakes.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="presubmit-checks.html" class="btn btn-neutral float-right" title="3.2. SJSU-Dev2 Presubmit Checks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../contributing-toc.html" class="btn btn-neutral" title="3. Contributing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Khalil A. Estell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

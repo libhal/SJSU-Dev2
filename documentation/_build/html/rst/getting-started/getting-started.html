@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.1. Getting Started &mdash; SJSU-Dev2 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.2. Understanding The Framework Layout" href="understanding-the-framework-layout.html" />
+    <link rel="prev" title="1. Getting Started" href="../getting-started-toc.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SJSU-Dev2
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../getting-started-toc.html">1. Getting Started</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.1. Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites-for-windows-users">1.1.1. Prerequisites For Windows Users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">1.1.2. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">1.1.3. Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-and-loading-hello-world-application">1.1.4. Building and Loading Hello World Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-your-own-project">1.1.5. Creating your own Project</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="understanding-the-framework-layout.html">1.2. Understanding The Framework Layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../guides-toc.html">2. Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing-toc.html">3. Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">4. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyrights.html">5. Copyright</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SJSU-Dev2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../getting-started-toc.html">1. Getting Started</a> &raquo;</li>
+        
+      <li>1.1. Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/rst/getting-started/getting-started.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<h1>1.1. Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites-for-windows-users">
+<h2>1.1.1. Prerequisites For Windows Users<a class="headerlink" href="#prerequisites-for-windows-users" title="Permalink to this headline">¶</a></h2>
+<p><strong>Note:</strong> this is for Windows build 16215 or later</p>
+<ol class="arabic">
+<li><p class="first">Open PowerShell as Administrator and run</p>
+<blockquote>
+<div><p><code class="code docutils literal"><span class="pre">Enable-WindowsOptionalFeature</span> <span class="pre">-Online</span> <span class="pre">-FeatureName</span> <span class="pre">Microsoft-Windows-Subsystem-Linux</span></code></p>
+</div></blockquote>
+</li>
+<li><p class="first">Restart computer when prompted.</p>
+</li>
+<li><p class="first">Open Windows Store and choose <strong>Ubuntu</strong> as Linux distro</p>
+<blockquote>
+<div><p>Ubuntu (<a class="reference external" href="https://www.microsoft.com/store/p/ubuntu/9nblggh4msv6">https://www.microsoft.com/store/p/ubuntu/9nblggh4msv6</a>)</p>
+</div></blockquote>
+</li>
+<li><p class="first">Select “Get”</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>If you get any errors go here:</dt>
+<dd><p class="first last"><a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">https://docs.microsoft.com/en-us/windows/wsl/install-win10</a></p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p class="first">After download completes select “Launch”</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Create UNIX user account</li>
+<li><dl class="first docutils">
+<dt>If you get any errors go here:</dt>
+<dd><a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">https://docs.microsoft.com/en-us/windows/wsl/install-win10</a></dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+<p>After this point, you should be able to run <code class="code docutils literal"><span class="pre">bash</span></code> from the start menu.</p>
+</div>
+<div class="section" id="prerequisites">
+<h2>1.1.2. Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Need a running version of Ubuntu 16.04 LTS or above, or Mac OS X (OS X Yosemite</dt>
+<dd>and above), or Windows 10 with WSL installed.</dd>
+</dl>
+</div>
+<div class="section" id="installation">
+<h2>1.1.3. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Step 0</strong></dt>
+<dd>Open a terminal and go to a directory where you want to download SJSU-Dev2.</dd>
+<dt><strong>Step 0</strong></dt>
+<dd><p class="first">Download the repository.
+Go to <a class="reference external" href="https://github.com/kammce/SJSU-Dev2">https://github.com/kammce/SJSU-Dev2</a> and click
+on the “Clone or download” drop down button.
+Click the “Download Zip” and download it to the folder you are in.
+Unzip the .zip file.</p>
+<p>You may also clone the repository if you already have Git installed.
+.. code-block:: bash</p>
+<blockquote class="last">
+<div>git clone <a class="reference external" href="https://github.com/kammce/SJSU-Dev.git">https://github.com/kammce/SJSU-Dev.git</a></div></blockquote>
+</dd>
+<dt><strong>Step 1</strong></dt>
+<dd><p class="first">Change directory into <strong>SJSU-Dev2</strong></p>
+<div class="last highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> SJSU-Dev2
+</pre></div>
+</div>
+</dd>
+<dt><strong>Step 2</strong></dt>
+<dd><p class="first">Run <code class="code docutils literal"><span class="pre">setup</span></code> script.</p>
+<div class="last highlight-bash"><div class="highlight"><pre><span></span>./setup
+</pre></div>
+</div>
+</dd>
+<dt><strong>Step 3</strong></dt>
+<dd><p class="first">Edit the <code class="code docutils literal"><span class="pre">env.sh</span></code> script. Change the line <code class="code docutils literal"><span class="pre">SJDEV=/dev/ttyUSB0</span></code>
+to equal what you have on your system.</p>
+<p><strong>How to find your serial device on Ubuntu</strong></p>
+<p>You probably do not have to change anything.</p>
+<p>If no other devices are connected to your machine, then it will be
+<code class="code docutils literal"><span class="pre">/dev/ttyUSB0</span></code>. It is recommended to keep it at this value, because
+when you add more devices, it will increment to <code class="code docutils literal"><span class="pre">/dev/ttyUSB1</span></code>. Once
+you remove your devices and replace them, the value will reset.</p>
+<p><strong>How to find your serial device on Mac OS X</strong></p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Remove the SJ-One from your computer if it is connected.</li>
+<li><dl class="first docutils">
+<dt>List the files in the <code class="code docutils literal"><span class="pre">/dev</span></code> folder by running the following</dt>
+<dd><code class="code docutils literal"><span class="pre">ls</span> <span class="pre">/dev/</span></code>.</dd>
+</dl>
+</li>
+<li>Plug it into your computer and run <code class="code docutils literal"><span class="pre">ls</span> <span class="pre">/dev/</span></code>.</li>
+<li>Observe the new file that was created.</li>
+<li><dl class="first docutils">
+<dt>On mac, the path should look something like the following</dt>
+<dd><code class="code docutils literal"><span class="pre">/dev/tty.cumodemfd1337</span></code>.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>If so, change the line in <code class="code docutils literal"><span class="pre">env.sh</span></code> to that file path from</dt>
+<dd><code class="code docutils literal"><span class="pre">SJDEV=/dev/ttyUSB0</span></code> -&gt; <code class="code docutils literal"><span class="pre">SJDEV=/dev/tty.</span></code></dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
+<p><strong>How to find your serial device on Windows Linux Subsystem</strong></p>
+<p class="last">On Windows it should be <code class="code docutils literal"><span class="pre">/dev/ttyS3</span></code>. Check your device manager to see
+what number COM device your device. The number after COM is the number after
+the <strong>S</strong> in the <code class="code docutils literal"><span class="pre">/dev/ttyS</span></code> path. That is your device. Replace the
+line <code class="code docutils literal"><span class="pre">SJDEV=/dev/ttyUSB0</span></code> -&gt; <code class="code docutils literal"><span class="pre">SJDEV=/dev/ttyS</span></code>. For example, if,
+when you plug in the SJTwo board and COM5 appears, then you would want to
+change <code class="code docutils literal"><span class="pre">SJDEV=/dev/ttyUSB0</span></code> -&gt; <code class="code docutils literal"><span class="pre">SJDEV=/dev/ttyS5</span></code>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="building-and-loading-hello-world-application">
+<h2>1.1.4. Building and Loading Hello World Application<a class="headerlink" href="#building-and-loading-hello-world-application" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Step 0</strong></dt>
+<dd><p class="first">From the root of the repository</p>
+<div class="last highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> firmware/HelloWorld
+</pre></div>
+</div>
+</dd>
+<dt><strong>Step 1</strong></dt>
+<dd><p class="first">Source the <code class="code docutils literal"><span class="pre">env.sh</span></code>. You only need to do this once for each terminal
+session. After sourcing, the necessary environment variables will be added
+to your shell.</p>
+<div class="last highlight-bash"><div class="highlight"><pre><span></span><span class="nb">source</span> env.sh
+</pre></div>
+</div>
+</dd>
+<dt><strong>Step 2</strong></dt>
+<dd><p class="first">Run <code class="code docutils literal"><span class="pre">make</span> <span class="pre">build</span></code> within the HelloWorld folder to compile it into a HEX
+file located in the <code class="code docutils literal"><span class="pre">build/binaries</span></code> folder.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>make build
+</pre></div>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">use the <code class="code docutils literal"><span class="pre">make</span></code> by itself to get additional information on how to
+use the build script.</p>
+</div>
+</dd>
+<dt><strong>Step 3</strong></dt>
+<dd><p class="first">To load the hex file into your SJTwo, run the following make command:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>make flash
+</pre></div>
+</div>
+<div class="admonition danger">
+<p class="first admonition-title">Danger</p>
+<p class="last">As of right now, this doesn’t work. Please use FlashMagic with wine,
+to program your device.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you run this command without first building, this command will build
+your project and then flash it. So you can skip the step above if you
+like.</p>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the device port of your SJOne did not appear as the device set in
+your <code class="code docutils literal"><span class="pre">env.sh</span></code> file, then run
+<code class="code docutils literal"><span class="pre">make</span> <span class="pre">flash</span> <span class="pre">SJDEV=&lt;PATH-TO-YOUR-PORT&gt;</span></code> and that will change your
+port path for that instant.</p>
+</div>
+</dd>
+<dt><strong>Step 4</strong></dt>
+<dd><p class="first">To view serial output, and interact with the board, run the following make
+command:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>make telemetry
+</pre></div>
+</div>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The interface should pop up in your default browser on launch, unless
+you are using Windows. If the browser doesn’t open automatically enter
+this into your browsers address bar <code class="code docutils literal"><span class="pre">http://localhost:5001</span></code>.</p>
+</div>
+</dd>
+<dt><strong>Step 5</strong></dt>
+<dd>Done!!</dd>
+</dl>
+</div>
+<div class="section" id="creating-your-own-project">
+<h2>1.1.5. Creating your own Project<a class="headerlink" href="#creating-your-own-project" title="Permalink to this headline">¶</a></h2>
+<p>DO NOT MODIFY the HelloWorld project. Copy and rename HelloWorld to make a new
+project.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="understanding-the-framework-layout.html" class="btn btn-neutral float-right" title="1.2. Understanding The Framework Layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../getting-started-toc.html" class="btn btn-neutral" title="1. Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Khalil A. Estell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
