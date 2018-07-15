@@ -132,4 +132,4 @@
 #define SJ2_HI_BACKGROUND_CYAN    ""
 #define SJ2_HI_BACKGROUND_WHITE   ""
 
-#endif // defined(SJ2_ENABLE_ANSI_CODES) && SJ2_ENABLE_ANSI_CODES == true
+#endif  // defined(SJ2_ENABLE_ANSI_CODES) && SJ2_ENABLE_ANSI_CODES == true
