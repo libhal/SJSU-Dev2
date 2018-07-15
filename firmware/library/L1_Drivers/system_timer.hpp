@@ -17,10 +17,10 @@
 class SystemTimerInterface
 {
  public:
-    virtual void SetIsrFunction(void (*isr)(void))     = 0;
-    virtual bool StartTimer()                          = 0;
-    virtual void DisableTimer()                        = 0;
-    virtual float SetTickFrequency(uint32_t frequency) = 0;
+    virtual void SetIsrFunction(void (*isr)(void))        = 0;
+    virtual bool StartTimer()                             = 0;
+    virtual void DisableTimer()                           = 0;
+    virtual uint32_t SetTickFrequency(uint32_t frequency) = 0;
 };
 
 class SystemTimer : public SystemTimerInterface
@@ -47,7 +47,7 @@ class SystemTimer : public SystemTimerInterface
         bool successful = false;
         if (sys_tick->LOAD != 0)
         {
-            sys_tick->VAL = 0UL;
+            sys_tick->VAL = 0;
             sys_tick->CTRL |= (1 << ControlBitMap::kTickInterupt);
             sys_tick->CTRL |= (1 << ControlBitMap::kEnableCounter);
             sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
@@ -65,20 +65,15 @@ class SystemTimer : public SystemTimerInterface
     //        If it is above the maximum SystemTick value 2^24
     //        [SysTick_LOAD_RELOAD_Msk], the value is ceiled to
     //        SysTick_LOAD_RELOAD_Msk
-    float SetTickFrequency(uint32_t frequency) override
+    uint32_t SetTickFrequency(uint32_t frequency) override
     {
-        uint32_t reload_value;
-        float remainder;
-        if ((frequency - 1) > SysTick_LOAD_RELOAD_Msk)
+        frequency             = (frequency == 0) ? 1 : frequency;
+        uint32_t reload_value = SJ2_SYSTEM_CLOCK / frequency - 1;
+        int remainder         = SJ2_SYSTEM_CLOCK % frequency;
+        if (reload_value > SysTick_LOAD_RELOAD_Msk)
         {
             reload_value = SysTick_LOAD_RELOAD_Msk;
             remainder    = SysTick_LOAD_RELOAD_Msk;
-        }
-        else
-        {
-            remainder = (SJ2_SYSTEM_CLOCK / static_cast<float>(frequency)) - 1;
-            reload_value = SJ2_SYSTEM_CLOCK / frequency - 1;
-            remainder    = remainder - static_cast<float>(reload_value);
         }
         // TODO(#30): change SJ2_SYSTEM_CLOCK macro to a value retrieved by the
         // SystemClock library.
