@@ -10,5 +10,5 @@
 //
 //      LPC_USB_TypeDef local_usb = {0};
 //      Example::usb = &local_usb;
-LPC_USB_TypeDef * Example::usb = LPC_USB;
+LPC_USB_TypeDef * Example::usb    = LPC_USB;
 LPC_CAN_TypeDef * Example::can[2] = { LPC_CAN1, LPC_CAN2 };

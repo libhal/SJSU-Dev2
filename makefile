@@ -70,7 +70,7 @@ endif
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 			 -fabi-version=0
 # CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
-OPTIMIZE  = -O3 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
+OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
                -fsingle-precision-constant -fno-rtti
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
@@ -114,23 +114,26 @@ LINKFLAGS = $(COMMON_FLAGS) \
 ##############
 # Test files #
 ##############
+define FILE_EXCLUDES =
+grep -v \
+-e "$(LIB_DIR)/third_party/" \
+-e "$(LIB_DIR)/L0_LowLevel/SystemFiles" \
+-e "$(LIB_DIR)/L0_LowLevel/LPC40xx.h"
+endef
 # Find all files that end with "_test.cpp"
 SOURCE_TESTS  = $(shell find $(SOURCE) \
                          -name "*_test.cpp" \
-                         -not -path "$(SOURCE)/third_party/*" \
                          2> /dev/null)
 # Find all library that end with "_test.cpp"
-LIBRARY_TESTS = $(shell find "$(LIB_DIR)" -name "*_test.cpp" \
-                         -not -path "$(LIB_DIR)/third_party/*")
+LIBRARY_TESTS = $(shell find "$(LIB_DIR)" -name "*_test.cpp" | \
+						 $(FILE_EXCLUDES))
 TESTS = $(SOURCE_TESTS) $(LIBRARY_TESTS)
 OMIT_LIBRARIES = $(shell find "$(LIB_DIR)" \
                          -name "startup.cpp" -o \
                          -name "*.cpp" \
                          -path "$(LIB_DIR)/newlib/*" -o \
                          -path "$(LIB_DIR)/third_party/*")
-OMIT_SOURCES   = $(shell find $(SOURCE) \
-                         -name "main.cpp" \
-                         -not -path "$(LIB_DIR)/third_party/*")
+OMIT_SOURCES   = $(shell find $(SOURCE) -name "main.cpp")
 OMIT = $(OMIT_LIBRARIES) $(OMIT_SOURCES)
 ################
 # Source files #
@@ -138,8 +141,7 @@ OMIT = $(OMIT_LIBRARIES) $(OMIT_SOURCES)
 DBC_BUILD     = $(DBC_DIR)/generated_can.h
 LIBRARY_FILES = $(shell find "$(LIB_DIR)" \
                          -name "*.c" -o \
-                         -name "*.cpp" \
-                         -not -path "$(LIB_DIR)/third_party/*")
+                         -name "*.cpp")
 # Remove all test files from LIBRARY_FILES
 LIBRARIES     = $(filter-out $(LIBRARY_TESTS), $(LIBRARY_FILES))
 SOURCE_FILES  = $(shell find $(SOURCE) \
@@ -147,6 +149,20 @@ SOURCE_FILES  = $(shell find $(SOURCE) \
                          -name "*.s" -o \
                          -name "*.S" -o \
                          -name "*.cpp" \
+                         2> /dev/null)
+SOURCE_HEADERS  = $(shell find $(SOURCE) \
+                         -name "*.h" -o \
+                         -name "*.hpp" \
+                         2> /dev/null)
+##############
+# Lint files #
+##############
+LINT_FILES      = $(shell find $(FIRMWARE) \
+                         -name "*.h"   -o \
+                         -name "*.hpp" -o \
+                         -name "*.c"   -o \
+                         -name "*.cpp" | \
+						 $(FILE_EXCLUDES) \
                          2> /dev/null)
 # Remove all test files from SOURCE_FILES
 SOURCES     = $(filter-out $(SOURCE_TESTS), $(SOURCE_FILES))
@@ -184,12 +200,11 @@ MAP        = $(EXECUTABLE:.elf=.map)
 TEST_EXEC  = $(TEST_DIR)/tests.exe
 TEST_FRAMEWORK = $(LIB_DIR)/L5_Testing/testing_frameworks.hpp.gch
 
-# This line allows the make to rebuild if header file #changes
-# This is feature and not a bug.
-# Otherwise updates to header files do not
+# This line allows the make to rebuild if header file changes.
+# This is feature and not a bug, otherwise updates to header files do not
 # register as an update to the source code.
 DEPENDENCIES = $(OBJECT_FILES:.o=.d)
--include       $(DEPENDENCIES)#
+-include       $(DEPENDENCIES)
 # Tell make to delete built files it has created if an error occurs
 .DELETE_ON_ERROR:
 # Tell make that the default recipe is the default
@@ -350,9 +365,6 @@ telemetry:
 	source $(TOOLS)/Telemetry/modules/bin/activate && \
 	python $(TOOLS)/Telemetry/telemetry.py"
 
-lint:
-	python $(TOOLS)/cpplint/cpplint.py $(LIBRARIES) $(SOURCES) $(TESTS)
-
 test: $(COVERAGE) $(TEST_EXEC)
 	@valgrind --leak-check=full --track-origins=yes -v $(TEST_EXEC) -s
 	# @./$(TEST_EXEC)
@@ -392,6 +404,9 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
         $(LIB_DIR)/L5_Testing/testing_frameworks.hpp
 	@echo 'Finished building: $<'
 	@echo ' '
+
+lint:
+	@python $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
 
 presubmit:
 	$(TOOLS)/presubmit.sh

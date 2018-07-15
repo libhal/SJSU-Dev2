@@ -114,8 +114,8 @@ typedef enum IRQn
     #define __FPU_PRESENT              1            /*!< FPU present or not                                                    */
 #endif
 
-#include "core_cm4.h"                               /*!< Cortex-M4 processor and core peripherals                              */
-#include "system_LPC407x_8x_177x_8x.h"              /*!< LPC408x_7x System                                                     */
+#include "SystemFiles/core_cm4.h"                               /*!< Cortex-M4 processor and core peripherals                              */
+#include "SystemFiles/system_LPC407x_8x_177x_8x.h"              /*!< LPC408x_7x System                                                     */
 
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */

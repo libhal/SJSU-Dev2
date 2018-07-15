@@ -17,8 +17,7 @@ extern "C" int _isatty(int file)
 // Arm register r3
 extern "C" void _exit(int rc)
 {
-    register int t1 asm("r3") = rc;
-    SJ2_USED(t1);
+    SJ2_USED(rc);
     while (1) { continue; }
 }
 // Dummy implementation of getpid

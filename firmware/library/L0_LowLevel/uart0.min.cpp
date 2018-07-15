@@ -43,7 +43,4 @@ char uart0_putchar(char out)
 void uart0_puts(const char * c_string)
 {
     for (uint32_t i = 0; c_string[i] != '\0'; i++)
-    {
-        uart0_putchar(c_string[i]);
-    }
-}
+    { uart0_putchar(c_string[i]); } }
