@@ -32,8 +32,11 @@
 #include <cstring>
 
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/startup.hpp"
 #include "L0_LowLevel/uart0.min.hpp"
+#include "L1_Drivers/system_timer.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/debug_print.hpp"
 
 // The entry point for the C++ library startup
 extern "C"
@@ -188,6 +191,51 @@ void (*const g_pfnVectors[])(void) = {
     EEPROM_IRQHandler,       // 56, 0xe0 - EEPROM
 };
 
+void (*const isr_vector_table[])(void) = {
+    // Chip Level - LPC40xx
+    WDT_IRQHandler,          // 16, 0x40 - WDT
+    TIMER0_IRQHandler,       // 17, 0x44 - TIMER0
+    TIMER1_IRQHandler,       // 18, 0x48 - TIMER1
+    TIMER2_IRQHandler,       // 19, 0x4c - TIMER2
+    TIMER3_IRQHandler,       // 20, 0x50 - TIMER3
+    UART0_IRQHandler,        // 21, 0x54 - UART0
+    UART1_IRQHandler,        // 22, 0x58 - UART1
+    UART2_IRQHandler,        // 23, 0x5c - UART2
+    UART3_IRQHandler,        // 24, 0x60 - UART3
+    PWM1_IRQHandler,         // 25, 0x64 - PWM1
+    I2C0_IRQHandler,         // 26, 0x68 - I2C0
+    I2C1_IRQHandler,         // 27, 0x6c - I2C1
+    I2C2_IRQHandler,         // 28, 0x70 - I2C2
+    IntDefaultHandler,       // 29, Not used
+    SSP0_IRQHandler,         // 30, 0x78 - SSP0
+    SSP1_IRQHandler,         // 31, 0x7c - SSP1
+    PLL0_IRQHandler,         // 32, 0x80 - PLL0 (Main PLL)
+    RTC_IRQHandler,          // 33, 0x84 - RTC
+    EINT0_IRQHandler,        // 34, 0x88 - EINT0
+    EINT1_IRQHandler,        // 35, 0x8c - EINT1
+    EINT2_IRQHandler,        // 36, 0x90 - EINT2
+    EINT3_IRQHandler,        // 37, 0x94 - EINT3
+    ADC_IRQHandler,          // 38, 0x98 - ADC
+    BOD_IRQHandler,          // 39, 0x9c - BOD
+    USB_IRQHandler,          // 40, 0xA0 - USB
+    CAN_IRQHandler,          // 41, 0xa4 - CAN
+    DMA_IRQHandler,          // 42, 0xa8 - GP DMA
+    I2S_IRQHandler,          // 43, 0xac - I2S
+    ENET_IRQHandler,         // 44, 0xb0 - Ethernet
+    SDIO_IRQHandler,         // 45, 0xb4 - SD/MMC card I/F
+    MCPWM_IRQHandler,        // 46, 0xb8 - Motor Control PWM
+    QEI_IRQHandler,          // 47, 0xbc - Quadrature Encoder
+    PLL1_IRQHandler,         // 48, 0xc0 - PLL1 (USB PLL)
+    USBActivity_IRQHandler,  // 49, 0xc4 - USB Activity interrupt to wakeup
+    CANActivity_IRQHandler,  // 50, 0xc8 - CAN Activity interrupt to wakeup
+    UART4_IRQHandler,        // 51, 0xcc - UART4
+    SSP2_IRQHandler,         // 52, 0xd0 - SSP2
+    LCD_IRQHandler,          // 53, 0xd4 - LCD
+    GPIO_IRQHandler,         // 54, 0xd8 - GPIO
+    PWM0_IRQHandler,         // 55, 0xdc - PWM0
+    EEPROM_IRQHandler,       // 56, 0xe0 - EEPROM
+};
+
 // .data Section Table Information
 extern struct DataSectionTable_t
 {
@@ -258,6 +306,28 @@ void InitFpu()
         "ISB\n");
 }
 
+SystemTimer system_timer;
+
+void FreeRTOSSystemTick()
+{
+    // TODO(#101): Add FreeRTOS kernel function here
+}
+
+WEAK void LowLevelInit()
+{
+    system_timer.SetIsrFunction(FreeRTOSSystemTick);
+    system_timer.SetTickFrequency(1000);
+    bool timer_started_successfully = system_timer.StartTimer();
+    if (timer_started_successfully)
+    {
+        DEBUG_PRINT("System Timer has begun.");
+    }
+    else
+    {
+        DEBUG_PRINT("System Timer has FAILED!!");
+    }
+}
+
 inline void SystemInit()
 {
     InitDataSection();
@@ -269,6 +339,7 @@ inline void SystemInit()
 #endif
     // required for printf and scanf to work properly
     uart0_init(38400);
+    LowLevelInit();
 }
 
 constexpr uint32_t CRP_NO_CRP                                      = 0xFFFFFFFF;
@@ -276,7 +347,6 @@ __attribute__((used, section(".crp"))) constexpr uint32_t CRP_WORD = CRP_NO_CRP;
 
 // Reset entry point for your code.
 // Sets up a simple runtime environment and initializes the C/C++ library.
-SJ2_SECTION(".after_vectors")
 void ResetISR(void)
 {
     SystemInit();
@@ -345,12 +415,32 @@ void PendSV_Handler(void)
 SJ2_SECTION(".after_vectors")
 void SysTick_Handler(void)
 {
-    while (1) { continue; }
+    if (SystemTimer::system_timer_isr == nullptr)
+    {
+        DEBUG_PRINT("System Timer ISR not defined, disabling System Timer\n");
+        system_timer.DisableTimer();
+    }
+    else
+    {
+        SystemTimer::system_timer_isr();
+    }
 }
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
-SJ2_SECTION(".after_vectors")
 void IntDefaultHandler(void)
 {
-    while (1) { continue; }
+    constexpr int32_t kIrqOffset = 16;
+    uint32_t active_isr          = SCB->ICSR;
+
+    void (*isr)(void) = isr_vector_table[active_isr - kIrqOffset];
+    if (isr == IntDefaultHandler)
+    {
+        DEBUG_PRINT("No ISR found for the vector %lu\n", active_isr);
+        while (1) { continue; }
+    }
+    else
+    {
+        DEBUG_PRINT("Launching IRQ %lu\n", active_isr);
+        isr();
+    }
 }
