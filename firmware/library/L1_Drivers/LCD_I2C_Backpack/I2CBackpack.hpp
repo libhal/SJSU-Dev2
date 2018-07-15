@@ -6,6 +6,7 @@ class I2CBackpack
 {
 
     public:
+        I2CBackpack();
         bool init();
         void set4BitMode();
         void clearScreen();
@@ -23,6 +24,7 @@ class I2CBackpack
         void shiftCursorLeft();
         void shiftCursorRight();
         void setFont();
+        ~I2CBackpack();
 
     private:
         uint8_t deviceAddress;
