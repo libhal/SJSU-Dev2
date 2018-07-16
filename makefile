@@ -365,10 +365,8 @@ telemetry:
 
 test: $(COVERAGE) $(TEST_EXEC)
 	@valgrind --leak-check=full --track-origins=yes -v $(TEST_EXEC) -s
-	# @./$(TEST_EXEC)
 	@gcovr --root $(FIRMWARE) --object-directory $(BUILD_DIR) \
-	-e "$(LIB_DIR)/newlib" \
-	-e "$(LIB_DIR)/third_party" \
+	-e "$(LIB_DIR)/newlib" -e "$(LIB_DIR)/third_party" \
 	--html --html-details -o $(COVERAGE)/coverage.html
 
 test-all: $(COVERAGE) $(TEST_EXEC)
@@ -376,23 +374,15 @@ test-all: $(COVERAGE) $(TEST_EXEC)
 $(COVERAGE):
 	mkdir -p $(COVERAGE)
 
-# $(TEST_EXEC):
 $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
-	@echo " \\──────────────────────────────/"
-	@echo "  \\ Generating test executable /"
+	@echo "Generating test executable $<"
 	@mkdir -p "$(dir $@)"
 	@echo 'Finished building target: $@'
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
          -fno-inline-small-functions -fno-default-inline \
-         -ftest-coverage --coverage \
-         -fno-elide-constructors \
+         -ftest-coverage --coverage -fno-elide-constructors \
          -fprofile-arcs -ftest-coverage -fPIC -O0 \
          -o $(TEST_EXEC) $(OBJECT_FILES)
-	@echo "   \\──────────────────────────/"
-	@echo "    \\       Finished         /"
-	@echo "     \\──────────────────────/"
-	@echo "      \\    Running Test    /"
-	@echo "       \\──────────────────/"
 
 %.hpp.gch: %.hpp
 	@echo 'Precompiling HPP file: $<'
