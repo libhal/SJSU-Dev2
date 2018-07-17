@@ -28,7 +28,10 @@ void uart0_init(uint32_t baud_rate)
 char uart0_getchar(char notused = 0)
 {
     (void)(notused);
-    while (!(LPC_UART0->LSR & 0x1)) { continue; }
+    while (!(LPC_UART0->LSR & 0x1))
+    {
+        continue;
+    }
     return LPC_UART0->RBR;
 }
 
@@ -36,7 +39,10 @@ char uart0_putchar(char out)
 {
     LPC_UART0->THR = out;
 
-    while (!(LPC_UART0->LSR & (0x1 << 6))) { continue; }
+    while (!(LPC_UART0->LSR & (0x1 << 6)))
+    {
+        continue;
+    }
     return 1;
 }
 

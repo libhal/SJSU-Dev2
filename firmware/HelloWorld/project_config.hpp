@@ -8,8 +8,8 @@
 #if !defined(SJ2_CONFIG_FILE) || SJ2_CONFIG_FILE == false
 #pragma GCC error \
 "Do not include this file directly. Include 'config.hpp' instead."
-#endif // !defined(SJ2_CONFIG_FILE)
+#endif  // !defined(SJ2_CONFIG_FILE)
 
 #define SJ2_ENABLE_ANSI_CODES true
 
-#define SJ2_SYSTEM_CLOCK 48'000'000
+#define SJ2_SYSTEM_CLOCK 12'000'000

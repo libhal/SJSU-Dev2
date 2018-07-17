@@ -1,7 +1,5 @@
 #include <cstdio>
 #include <cstdint>
-#include <cstdarg>
-#include <cstdlib>
 #include "L0_LowLevel/LPC40xx.h"
 #include "L2_Utilities/debug_print.hpp"
 #include "config.hpp"
