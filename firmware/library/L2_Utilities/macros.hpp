@@ -1,3 +1,6 @@
+// This file is meant for general purpose macros that can be used across the
+// SJSU-Dev2 environment.
+#pragma once
 // SJ2_SECTION will place a variable or function within a given section of the
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as
@@ -8,3 +11,12 @@
 // unused variables.
 // NOTE: this will not stop the compiler from optimizing this variable out.
 #define SJ2_USED(variable) (void)variable
+// These macros are used to stringify define values. For example:
+//
+//      #define VALUE true
+//      #define STRING "value = " STRINGIFY(s) => "value = true"
+//
+#define SJ2_STRINGIFY(s) SJ2_STRINGIFY2(s)
+#define SJ2_STRINGIFY2(s) #s
+// SJ2_PACKED give a specified type a packed attribute
+#define SJ2_PACKED(type) type __attribute__((packed))

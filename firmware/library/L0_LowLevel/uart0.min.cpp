@@ -1,12 +1,11 @@
-#include <stdint.h>
+#include <cstdint>
 #include "LPC40xx.h"
 #include "uart0.min.hpp"
 
 void uart0_init(uint32_t baud_rate)
 {
-    /* Adding 0.5 to perform rounding correctly since we do not want
-     * 1.9 to round down to 1, but we want it to round-up to 2.
-     */
+    // Adding 0.5 to perform rounding correctly since we do not want
+    // 1.9 to round down to 1, but we want it to round-up to 2.
     float baud_rate_float = static_cast<float>(baud_rate);
     const uint32_t divider =
         static_cast<uint32_t>(OSC_CLK / (16.0f * baud_rate_float) + 0.5f);
@@ -29,7 +28,10 @@ void uart0_init(uint32_t baud_rate)
 char uart0_getchar(char notused = 0)
 {
     (void)(notused);
-    while (!(LPC_UART0->LSR & 0x1)) { continue; }
+    while (!(LPC_UART0->LSR & 0x1))
+    {
+        continue;
+    }
     return LPC_UART0->RBR;
 }
 
@@ -37,7 +39,10 @@ char uart0_putchar(char out)
 {
     LPC_UART0->THR = out;
 
-    while (!(LPC_UART0->LSR & (0x1 << 6))) { continue; }
+    while (!(LPC_UART0->LSR & (0x1 << 6)))
+    {
+        continue;
+    }
     return 1;
 }
 

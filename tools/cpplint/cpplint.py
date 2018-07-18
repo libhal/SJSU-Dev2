@@ -558,7 +558,8 @@ _line_length = 80
 
 # The allowed extensions for file names
 # This is set by --extensions flag.
-_valid_extensions = set(['cc', 'h', 'cpp', 'cu', 'cuh'])
+# SJSU-Dev Edit: added hpp as an extension
+_valid_extensions = set(['cc', 'h', 'cpp', 'cu', 'cuh', 'hpp'])
 
 # Treat all headers starting with 'h' equally: .h, .hpp, .hxx etc.
 # This is set by --headers flag.
@@ -4301,7 +4302,7 @@ def GetLineWidth(line):
           is_low_surrogate = 0xDC00 <= ord(uc) <= 0xDFFF
           if not is_wide_build and is_low_surrogate:
             width -= 1
-          
+
         width += 1
     return width
   else:

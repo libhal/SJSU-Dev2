@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. Contributing &mdash; SJSU-Dev2 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.1. SJSU-Dev2 Style Guide" href="contributing/style.html" />
+    <link rel="prev" title="2.3. Telemetry: Embedded Runtime Monitoring and Tuning" href="guides/telemetry-runtime-monitoring-and-tuning.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SJSU-Dev2
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started-toc.html">1. Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides-toc.html">2. Guides</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html">3.1. SJSU-Dev2 Style Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/presubmit-checks.html">3.2. SJSU-Dev2 Presubmit Checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#press-next-to-get-started">3.3. Press Next To Get Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">4. About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../copyrights.html">5. Copyright</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SJSU-Dev2</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>3. Contributing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/rst/contributing-toc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="contributing">
+<h1>3. Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing/style.html">3.1. SJSU-Dev2 Style Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#c-style">3.1.1. C++ Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#usage-of-c-files">3.1.2. Usage of C files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#c-headers">3.1.3. C headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#c-standard-libraries">3.1.4. C++ Standard Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#curly-braces">3.1.5. Curly Braces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#infinite-loops">3.1.6. Infinite Loops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#include-guards">3.1.7. Include Guards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#memory-allocation">3.1.8. Memory Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#pointers-and-references">3.1.9. Pointers and references</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#using-preprocessor-macro">3.1.10. Using Preprocessor macro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#preprocessor-semicolons">3.1.11. Preprocessor Semicolons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#preprocessor-conditionals">3.1.12. Preprocessor Conditionals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#integer-typing">3.1.13. Integer typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#low-level-driver-constructors">3.1.14. Low Level Driver Constructors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#usage-of-constexpr">3.1.15. Usage of <code class="code docutils literal"><span class="pre">constexpr</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#file-comments">3.1.16. File comments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#comment-style">3.1.17. Comment style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#assertive-software">3.1.18. Assertive Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#file-formatting">3.1.19. File formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/style.html#number-formatting">3.1.20. Number formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing/presubmit-checks.html">3.2. SJSU-Dev2 Presubmit Checks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing/presubmit-checks.html#building-testing">3.2.1. Building &amp; Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/presubmit-checks.html#linting">3.2.2. Linting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing/presubmit-checks.html#clang-format">3.2.2.1. Clang-format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/presubmit-checks.html#running-presubmit-checks">3.2.3. Running presubmit checks</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="press-next-to-get-started">
+<h2>3.3. Press Next To Get Started<a class="headerlink" href="#press-next-to-get-started" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="contributing/style.html" class="btn btn-neutral float-right" title="3.1. SJSU-Dev2 Style Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="guides/telemetry-runtime-monitoring-and-tuning.html" class="btn btn-neutral" title="2.3. Telemetry: Embedded Runtime Monitoring and Tuning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Khalil A. Estell.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

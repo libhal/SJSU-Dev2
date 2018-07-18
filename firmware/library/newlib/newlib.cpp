@@ -17,8 +17,7 @@ extern "C" int _isatty(int file)
 // Arm register r3
 extern "C" void _exit(int rc)
 {
-    register int t1 asm("r3") = rc;
-    SJ2_USED(t1);
+    SJ2_USED(rc);
     while (1) { continue; }
 }
 // Dummy implementation of getpid
@@ -53,7 +52,6 @@ extern "C" void * _sbrk(int increment)
         previous_heap_end = nullptr;
     }
     heap_end += increment;
-    previous_heap_end = previous_heap_end;
     return previous_heap_end;
 }
 // Dummy implementation of close
