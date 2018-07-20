@@ -117,7 +117,8 @@ case "$OS" in
 		echo " ───────────────────────────────────────────────────┐"
 		echo "                Updating Apt listings                "
 		echo "└─────────────────────────────────────────────────── "
-		sudo apt update
+		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt update -qq
 		echo " ───────────────────────────────────────────────────┐"
 		echo "                Installing OpenOCD                   "
 		echo "└─────────────────────────────────────────────────── "
@@ -126,7 +127,8 @@ case "$OS" in
 		echo "        Installing build-essentials (GCC, make)      "
 		echo "└─────────────────────────────────────────────────── "
 		sudo apt -y install build-essential
-		sudo apt -y install g++
+        sudo apt -y install -qq g++-7
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
 		echo " ───────────────────────────────────────────────────┐"
 		echo "      Installing Git, Python, PIP, Curl and Perl     "
 		echo "└─────────────────────────────────────────────────── "
