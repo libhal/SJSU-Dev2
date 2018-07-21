@@ -41,12 +41,13 @@ echo "   3) Curl                                          "
 echo "   4) Git CLI                                       "
 echo "   5) Perl                                          "
 echo "   6) Valgrind                                      "
-echo "   7) Gcovr                                         "
-echo "   8) Clang-format                                  "
-echo "   9) OpenOCD (Debian/Ubuntu Only)                  "
-echo "   10) XCode CLI tools (MacOS Only)                 "
-echo "   11) Homebrew (MacOS Only)                        "
-echo "   12) Build Essential tools (Debian/Ubuntu Only)   "
+echo "   7) G++ 7                                         "
+echo "   8) Gcovr-7                                       "
+echo "   9) Clang-format                                  "1
+echo "   10) OpenOCD (Debian/Ubuntu Only)                 "
+echo "   11) XCode CLI tools (MacOS Only)                 "
+echo "   12) Homebrew (MacOS Only)                        "
+echo "   13) Build Essential tools (Debian/Ubuntu Only)   "
 echo "└────────────────────────────────────────────────── "
 echo "            Acquiring sudo privileges               "
 echo "└────────────────────────────────────────────────── "
@@ -117,7 +118,8 @@ case "$OS" in
 		echo " ───────────────────────────────────────────────────┐"
 		echo "                Updating Apt listings                "
 		echo "└─────────────────────────────────────────────────── "
-		sudo apt update
+		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt update -qq
 		echo " ───────────────────────────────────────────────────┐"
 		echo "                Installing OpenOCD                   "
 		echo "└─────────────────────────────────────────────────── "
@@ -126,7 +128,11 @@ case "$OS" in
 		echo "        Installing build-essentials (GCC, make)      "
 		echo "└─────────────────────────────────────────────────── "
 		sudo apt -y install build-essential
-		sudo apt -y install g++
+		echo " ───────────────────────────────────────────────────┐"
+		echo "              Installing GCC Version 7               "
+		echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install -qq g++-7
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
 		echo " ───────────────────────────────────────────────────┐"
 		echo "      Installing Git, Python, PIP, Curl and Perl     "
 		echo "└─────────────────────────────────────────────────── "
@@ -171,6 +177,14 @@ case "$OS" in
 		echo "                Installing Homebrew                  "
 		echo "└─────────────────────────────────────────────────── "
 		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		echo " ───────────────────────────────────────────────────┐"
+		echo "                 Updating Homebrew                   "
+		echo "└─────────────────────────────────────────────────── "
+		brew update
+		echo " ───────────────────────────────────────────────────┐"
+		echo "              Installing GCC Version 7               "
+		echo "└─────────────────────────────────────────────────── "
+        brew install gcc@7
 		echo " ───────────────────────────────────────────────────┐"
 		echo "         Installing Testing Tools (Valgrind)         "
 		echo "└─────────────────────────────────────────────────── "

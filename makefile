@@ -13,12 +13,12 @@ DEVICE_SIZEC   = arm-none-eabi-size
 DEVICE_OBJCOPY = arm-none-eabi-objcopy
 DEVICE_NM      = arm-none-eabi-nm
 # IMPORTANT: Must be accessible via the PATH variable!!!
-HOST_CC        ?= gcc
-HOST_CPPC      ?= g++
-HOST_OBJDUMP   ?= objdump
-HOST_SIZEC     ?= size
-HOST_OBJCOPY   ?= objcopy
-HOST_NM        ?= nm
+HOST_CC        ?= gcc-7
+HOST_CPPC      ?= g++-7
+HOST_OBJDUMP   ?= objdump-7
+HOST_SIZEC     ?= size-7
+HOST_OBJCOPY   ?= objcopy-7
+HOST_NM        ?= nm-7
 
 ifeq ($(MAKECMDGOALS), test)
 CC      = $(HOST_CC)
@@ -365,8 +365,7 @@ telemetry:
 
 test: $(COVERAGE) $(TEST_EXEC)
 	@valgrind --leak-check=full --track-origins=yes -v $(TEST_EXEC) -s
-	# @./$(TEST_EXEC)
-	@gcovr --root $(FIRMWARE) --object-directory $(BUILD_DIR) \
+	@gcovr --root $(FIRMWARE) --keep --object-directory $(BUILD_DIR) \
 	-e "$(LIB_DIR)/newlib" \
 	-e "$(LIB_DIR)/third_party" \
 	--html --html-details -o $(COVERAGE)/coverage.html
@@ -376,7 +375,6 @@ test-all: $(COVERAGE) $(TEST_EXEC)
 $(COVERAGE):
 	mkdir -p $(COVERAGE)
 
-# $(TEST_EXEC):
 $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@echo " \\──────────────────────────────/"
 	@echo "  \\ Generating test executable /"
@@ -385,7 +383,7 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
          -fno-inline-small-functions -fno-default-inline \
          -ftest-coverage --coverage \
-         -fno-elide-constructors \
+         -fno-elide-constructors -lgcov \
          -fprofile-arcs -ftest-coverage -fPIC -O0 \
          -o $(TEST_EXEC) $(OBJECT_FILES)
 	@echo "   \\──────────────────────────/"
