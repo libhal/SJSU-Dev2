@@ -4549,10 +4549,11 @@ def CheckIncludeLine(filename, clean_lines, linenum, include_state, error):
   #
   # We also make an exception for Lua headers, which follow google
   # naming convention but not the include convention.
-  match = Match(r'#include\s*"([^/]+\.h)"', line)
-  if match and not _THIRD_PARTY_HEADERS_PATTERN.match(match.group(1)):
-    error(filename, linenum, 'build/include', 4,
-          'Include the directory when naming .h files')
+  # SJSU-DEV2: commented out the 4 lines below
+  # match = Match(r'#include\s*"([^/]+\.h)"', line)
+  # if match and not _THIRD_PARTY_HEADERS_PATTERN.match(match.group(1)):
+  #   error(filename, linenum, 'build/include', 4,
+  #         'Include the directory when naming .h files')
 
   # we shouldn't include a file more than once. actually, there are a
   # handful of instances where doing so is okay, but in general it's

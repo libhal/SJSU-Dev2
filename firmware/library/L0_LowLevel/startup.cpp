@@ -327,7 +327,7 @@ void InitializeFreeRTOSSystemTick()
     }
 }
 
-void vPortSetupTimerInterrupt()
+void SetupTimerInterrupt()
 {
     DEBUG_PRINT("Setting up SystemTick Timer...");
     system_timer.SetIsrFunction(InitializeFreeRTOSSystemTick);
@@ -345,7 +345,7 @@ void vPortSetupTimerInterrupt()
 
 SJ2_WEAK void LowLevelInit()
 {
-    vPortSetupTimerInterrupt();
+    SetupTimerInterrupt();
 }
 
 inline void SystemInit()

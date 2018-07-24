@@ -4,6 +4,6 @@
 
 extern SystemTimer system_timer;
 
-extern "C" void xPortPendSVHandler(void);
-extern "C" void vPortSVCHandler(void);
-extern "C" void xPortSysTickHandler(void);
+extern "C" void xPortPendSVHandler(void);  // NOLINT
+extern "C" void vPortSVCHandler(void);  // NOLINT
+extern "C" void xPortSysTickHandler(void);  // NOLINT
