@@ -1,18 +1,21 @@
-// Note: Refer to i2c2_device function used from https://github.com/kammce/SJSU-Dev/blob/master/firmware/lib/L4_IO/i2c2_device.hpp
+/* Interface used to obtain the temperature of the system.*/
+
 
 #ifndef TEMPERATURE_SENSOR_HPP_
 
 #define TEMPERATURE_SENSOR_HPP_
 
+#pragma once
+
 #include "i2c2_device.hpp"
 
-class Temperature_I2C : private i2c2_device
+class TemperatureSensor : /*private i2c2_device*/
 
 {
 
     public:
 
-        Temperature_I2C(char address) : i2c2_device(address) {}                              // Access address
+        TemperatureSensor(char address) /*: i2c2_device(address) {}*/                            // Access address
 
     	unsigned char getTemperatureByte();						     // Read from register 0x00 and return byte.
 
