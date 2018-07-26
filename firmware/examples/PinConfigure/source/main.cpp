@@ -1,11 +1,12 @@
-#include <cstdio>
-#include <cstdint>
 #include <cstdarg>
+#include <cstdint>
+#include <cstdio>
 #include <cstdlib>
-#include "L0_LowLevel/LPC40xx.h"
-#include "L2_Utilities/debug_print.hpp"
-#include "L1_Drivers/pin_configure.hpp"
+
 #include "config.hpp"
+#include "L0_LowLevel/LPC40xx.h"
+#include "L1_Drivers/pin_configure.hpp"
+#include "L2_Utilities/debug_print.hpp"
 
 int main(void)
 {

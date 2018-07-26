@@ -36,6 +36,14 @@ OBJCOPY = $(DEVICE_OBJCOPY)
 NM      = $(DEVICE_NM)
 endif
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+CLANG_TIDY   = clang-tidy
+endif
+ifeq ($(UNAME_S),Darwin)
+CLANG_TIDY   = /usr/local/opt/llvm/bin/clang-tidy
+endif
+
 # Internal build directories
 BUILD_DIR = build
 
@@ -61,7 +69,7 @@ define n
 endef
 
 ifndef SJDEV
-$(error $n$n=============================================$nSJSUOne environment variables not set.$nPLEASE run "source env.sh"$n=============================================$n$n)
+$(error $n$n=============================================$nSJSU-Dev2 environment variables not set.$nPLEASE run "source env.sh"$n=============================================$n$n)
 endif
 
 #########
@@ -73,27 +81,27 @@ CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
                -fsingle-precision-constant -fno-rtti
 DEBUG     = -g
+WARNINGS_ARE_ERRORS ?=
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wdouble-promotion -Wduplicated-cond -Wlogical-op -Wswitch \
             -Wnull-dereference -Wold-style-cast -Wuseless-cast -Wformat=2 \
             -Wundef -Wconversion -Woverloaded-virtual -Wsuggest-final-types \
-            -Wsuggest-final-methods -Wsuggest-override
+            -Wsuggest-final-methods -Wsuggest-override $(WARNINGS_ARE_ERRORS)
 DEFINES   = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
+INCLUDES  = -I"$(CURRENT_DIRECTORY)/" \
+			-I"$(LIB_DIR)/" \
+			-I"$(LIB_DIR)/newlib" \
+			-I"$(LIB_DIR)/third_party/" \
+			-I"$(LIB_DIR)/third_party/FreeRTOS" \
+			-I"$(LIB_DIR)/third_party/FreeRTOS/trace" \
+			-I"$(LIB_DIR)/third_party/FreeRTOS/include" \
+			-I"$(LIB_DIR)/third_party/FreeRTOS/portable" \
+			-I"$(LIB_DIR)/third_party/FreeRTOS/portable/no_mpu"
 COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS)  $(DEFINES) \
                $(DISABLED_WARNINGS)
-CFLAGS_COMMON = $(COMMON_FLAGS) \
-    -I"$(CURRENT_DIRECTORY)/" \
-    -I"$(LIB_DIR)/" \
-    -I"$(LIB_DIR)/newlib" \
-    -I"$(LIB_DIR)/third_party/" \
-    -I"$(LIB_DIR)/third_party/FreeRTOS" \
-    -I"$(LIB_DIR)/third_party/FreeRTOS/trace" \
-    -I"$(LIB_DIR)/third_party/FreeRTOS/include" \
-    -I"$(LIB_DIR)/third_party/FreeRTOS/portable" \
-    -I"$(LIB_DIR)/third_party/FreeRTOS/portable/no_mpu" \
-    -I"$(DBC_DIR)" \
-    -MMD -MP -c
+
+CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) -MMD -MP -c
 
 ifeq ($(MAKECMDGOALS), test)
 CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
@@ -404,8 +412,11 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 lint:
 	@python $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
 
+tidy:
+	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 $(INCLUDES)
+
 presubmit:
-	$(TOOLS)/presubmit.sh
+	@$(TOOLS)/presubmit.sh
 
 openocd:
 	openocd -f $(TOOLS)/OpenOCD/sjtwo.cfg

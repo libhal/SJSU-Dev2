@@ -16,27 +16,27 @@ INCLUDE "LPC4078_Breakout_Debug_memory.ld"
 MEMORY
 {
   /* Define each memory region */
-  MFlash512 (rx) : ORIGIN = 0x0, LENGTH = 0x80000 /* 512K bytes (alias Flash) */  
-  RamLoc64 (rwx) : ORIGIN = 0x10000000, LENGTH = 0x10000 /* 64K bytes (alias RAM) */  
-  RamPeriph32 (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000 /* 32K bytes (alias RAM2) */  
+  MFlash512 (rx) : ORIGIN = 0x0, LENGTH = 0x80000 /* 512K bytes (alias Flash) */
+  RamLoc64 (rwx) : ORIGIN = 0x10000000, LENGTH = 0x10000 /* 64K bytes (alias RAM) */
+  RamPeriph32 (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000 /* 32K bytes (alias RAM2) */
 }
 
   /* Define a symbol for the top of each memory region */
-  __base_MFlash512 = 0x0  ; /* MFlash512 */  
-  __base_Flash = 0x0 ; /* Flash */  
-  __top_MFlash512 = 0x0 + 0x80000 ; /* 512K bytes */  
-  __top_Flash = 0x0 + 0x80000 ; /* 512K bytes */  
-  __base_RamLoc64 = 0x10000000  ; /* RamLoc64 */  
-  __base_RAM = 0x10000000 ; /* RAM */  
-  __top_RamLoc64 = 0x10000000 + 0x10000 ; /* 64K bytes */  
-  __top_RAM = 0x10000000 + 0x10000 ; /* 64K bytes */  
-  __base_RamPeriph32 = 0x20000000  ; /* RamPeriph32 */  
-  __base_RAM2 = 0x20000000 ; /* RAM2 */  
-  __top_RamPeriph32 = 0x20000000 + 0x8000 ; /* 32K bytes */  
-  __top_RAM2 = 0x20000000 + 0x8000 ; /* 32K bytes */  
+  __base_MFlash512 = 0x0  ; /* MFlash512 */
+  __base_Flash = 0x0 ; /* Flash */
+  __top_MFlash512 = 0x0 + 0x80000 ; /* 512K bytes */
+  __top_Flash = 0x0 + 0x80000 ; /* 512K bytes */
+  __base_RamLoc64 = 0x10000000  ; /* RamLoc64 */
+  __base_RAM = 0x10000000 ; /* RAM */
+  __top_RamLoc64 = 0x10000000 + 0x10000 ; /* 64K bytes */
+  __top_RAM = 0x10000000 + 0x10000 ; /* 64K bytes */
+  __base_RamPeriph32 = 0x20000000  ; /* RamPeriph32 */
+  __base_RAM2 = 0x20000000 ; /* RAM2 */
+  __top_RamPeriph32 = 0x20000000 + 0x8000 ; /* 32K bytes */
+  __top_RAM2 = 0x20000000 + 0x8000 ; /* 32K bytes */
 
 
-ENTRY(ResetISR)
+ENTRY(ResetIsr)
 
 SECTIONS
 {
@@ -47,23 +47,23 @@ SECTIONS
         __vectors_start__ = ABSOLUTE(.) ;
         KEEP(*(.isr_vector))
         /* Global Section Table */
-        . = ALIGN(4) ; 
-        __section_table_start = .;
-        __data_section_table = .;
+        . = ALIGN(4) ;
+        section_table_start = .;
+        data_section_table = .;
         LONG(LOADADDR(.data));
         LONG(    ADDR(.data));
         LONG(  SIZEOF(.data));
         LONG(LOADADDR(.data_RAM2));
         LONG(    ADDR(.data_RAM2));
         LONG(  SIZEOF(.data_RAM2));
-        __data_section_table_end = .;
-        __bss_section_table = .;
+        data_section_table_end = .;
+        bss_section_table = .;
         LONG(    ADDR(.bss));
         LONG(  SIZEOF(.bss));
         LONG(    ADDR(.bss_RAM2));
         LONG(  SIZEOF(.bss_RAM2));
-        __bss_section_table_end = .;
-        __section_table_end = . ;
+        bss_section_table_end = .;
+        section_table_end = . ;
 	    /* End of Global Section Table */
 
         *(.after_vectors*)
@@ -107,7 +107,7 @@ SECTIONS
         /* End C++ */
     } >MFlash512
 
-    .text : ALIGN(4)    
+    .text : ALIGN(4)
     {
         *(.text*)
         *(.rodata .rodata.* .constdata .constdata.*)
@@ -115,9 +115,9 @@ SECTIONS
     } > MFlash512
     /*
      * for exception handling/unwind - some Newlib functions (in common
-     * with C++ and STDC++) use this. 
+     * with C++ and STDC++) use this.
      */
-    .ARM.extab : ALIGN(4) 
+    .ARM.extab : ALIGN(4)
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > MFlash512
@@ -130,7 +130,7 @@ SECTIONS
     __exidx_end = .;
 
     _etext = .;
-        
+
     /* DATA section for RamPeriph32 */
     .data_RAM2 : ALIGN(4)
     {
@@ -170,7 +170,7 @@ SECTIONS
        *(.bss.$RamPeriph32*)
        . = ALIGN (. != 0 ? 4 : 1) ; /* avoid empty segment */
        PROVIDE(__end_bss_RAM2 = .) ;
-    } > RamPeriph32 
+    } > RamPeriph32
     /* MAIN BSS SECTION */
     .bss : ALIGN(4)
     {
@@ -187,27 +187,27 @@ SECTIONS
        *(.noinit.$RAM2*)
        *(.noinit.$RamPeriph32*)
        . = ALIGN(4) ;
-    } > RamPeriph32 
+    } > RamPeriph32
     /* DEFAULT NOINIT SECTION */
     .noinit (NOLOAD): ALIGN(4)
     {
         _noinit = .;
-        *(.noinit*) 
+        *(.noinit*)
          . = ALIGN(4) ;
         _end_noinit = .;
     } > RamLoc64
 
-    PROVIDE(_heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
-    PROVIDE(_vStackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_RamLoc64 - 0);
+    PROVIDE(heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
+    PROVIDE(StackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_RamLoc64 - 0);
 
     /* ## Create checksum value (used in startup) ## */
-    PROVIDE(__valid_user_code_checksum = 0 - 
-                                         (_vStackTop 
-                                         + (ResetISR + 1) 
-                                         + (NMI_Handler + 1) 
-                                         + (HardFault_Handler + 1) 
-                                         + (( DEFINED(MemManage_Handler) ? MemManage_Handler : 0 ) + 1)   /* MemManage_Handler may not be defined */
-                                         + (( DEFINED(BusFault_Handler) ? BusFault_Handler : 0 ) + 1)     /* BusFault_Handler may not be defined */
-                                         + (( DEFINED(UsageFault_Handler) ? UsageFault_Handler : 0 ) + 1) /* UsageFault_Handler may not be defined */
-                                         ) );
+    PROVIDE(ValidUserCodeChecksum = 0 -
+                                       (StackTop
+                                       + (ResetIsr + 1)
+                                       + (NmiHandler + 1)
+                                       + (HardFaultHandler + 1)
+                                       + (( DEFINED(MemManageHandler) ? MemManageHandler : 0 ) + 1)   /* MemManageHandler may not be defined */
+                                       + (( DEFINED(BusFaultHandler) ? BusFaultHandler : 0 ) + 1)     /* BusFaultHandler may not be defined */
+                                       + (( DEFINED(UsageFaultHandler) ? UsageFaultHandler : 0 ) + 1) /* UsageFaultHandler may not be defined */
+                                       ) );
 }

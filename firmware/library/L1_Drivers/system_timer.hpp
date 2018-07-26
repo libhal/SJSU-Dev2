@@ -7,7 +7,8 @@
 //      P0_0.SetPinMode(PinConfigureInterface::PinMode::kPullUp);
 #pragma once
 
-#include <cstdio>
+// #include <cstdio>
+#include <cstring>
 
 #include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
