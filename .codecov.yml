@@ -1,0 +1,3 @@
+ignore:
+  - "tools"
+  - "firmware/library/third_party/*"
