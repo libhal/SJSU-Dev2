@@ -6,7 +6,6 @@ matrix:
           dist: trusty
         - os: osx
           osx_image: xcode8
-
 install: ./setup
 script:
   - cd ./firmware/HelloWorld/

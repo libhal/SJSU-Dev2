@@ -8,6 +8,8 @@
 //          SSP1    |   P0.8    |   P0.9    |   P0.7
 #pragma once
 
+#include <cstdint>
+
 class SspInterface
 {
  public:
@@ -38,7 +40,6 @@ class SspInterface
         kMaster  = 0,
         kSlave   = 1
     };
-
 
     // SSP data size for frame packets
     enum DataSize

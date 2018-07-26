@@ -14,8 +14,8 @@
 // Include any C++ headers afterwards, in alphabetical order. If there is a C++
 // version of the standard library, use the C++ version and put them here. Put a
 // newline between these includes and the above includes.
-#include <cstdio>
 #include <cstdint>
+#include <cstdio>
 // Include any SJ2 libraries afterwards, in alphabetical order.
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin_configure.hpp"
@@ -58,7 +58,7 @@ class Example : public ExampleInterface
     // the same type.
     static LPC_CAN_TypeDef * can[2];
     // Define any structures or enumerations.
-    SJ2_PACKED(struct) CanFrame
+    SJ2_PACKED(struct) CanFrame_t
     {
         uint32_t uid;
         uint32_t message[8];
@@ -73,7 +73,7 @@ class Example : public ExampleInterface
     // "static_assert" to prompt the developer with a compiler error and error
     // message if they use the factory inappropriately.
     template <unsigned can_port, unsigned can_speed>
-    static Example createExample()
+    static Example CreateExample()
     {
         static_assert(1 <= can_port && can_port <= 2,
                       "Only CAN ports 0 and 1 are available");
@@ -96,9 +96,9 @@ class Example : public ExampleInterface
           usb_d_minus_pin_(PinConfigure::CreatePinConfigure<2, 3>()),
           usb_d_plus_pin_(PinConfigure::CreatePinConfigure<2, 4>())
     {
-        (void)port;
-        (void)speed;
-        (void)echo_to_usb;
+        SJ2_USED(port);
+        SJ2_USED(speed);
+        SJ2_USED(echo_to_usb);
         // Do other constructor stuff here ...
     }
     // Construction using externally constructed mosi, miso, and sck pins.
@@ -136,8 +136,8 @@ class Example : public ExampleInterface
     {
         // Ignore these two lines, these are here to suppress the "unused"
         // variable warning.
-        (void)payload;
-        (void)readback;
+        SJ2_USED(payload);
+        SJ2_USED(readback);
         // Send data here ...
     }
     void SetMode() override

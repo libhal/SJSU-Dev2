@@ -1,8 +1,9 @@
 // Test for PinConfigure class.
 // Using a test by side effect on the Cortex M4 SysTick register
+#include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L5_Testing/testing_frameworks.hpp"
 #include "L1_Drivers/system_timer.hpp"
+#include "L5_Testing/testing_frameworks.hpp"
 
 static void DummyFunction(void) {}
 
@@ -26,7 +27,7 @@ TEST_CASE("Testing SystemTimer", "[system_timer]")
         local_systick.LOAD                     = 0;
 
         CHECK(0 == test_subject.SetTickFrequency(kDivisibleFrequency));
-        CHECK((SJ2_SYSTEM_CLOCK / kDivisibleFrequency) - 1 ==
+        CHECK((config::kSystemClockRate / kDivisibleFrequency) - 1 ==
               local_systick.LOAD);
     }
     SECTION("SetTickFrequency should return remainder of ticks mismatch")
@@ -34,9 +35,10 @@ TEST_CASE("Testing SystemTimer", "[system_timer]")
         constexpr uint32_t kOddFrequency = 7;
         local_systick.LOAD               = 0;
 
-        CHECK(SJ2_SYSTEM_CLOCK % kOddFrequency ==
+        CHECK(config::kSystemClockRate % kOddFrequency ==
               test_subject.SetTickFrequency(kOddFrequency));
-        CHECK((SJ2_SYSTEM_CLOCK / kOddFrequency) - 1 == local_systick.LOAD);
+        CHECK((config::kSystemClockRate / kOddFrequency) - 1 ==
+              local_systick.LOAD);
     }
     SECTION(
         "Start Timer should set necessary SysTick Ctrl bits and set VAL to 0")
@@ -92,4 +94,6 @@ TEST_CASE("Testing SystemTimer", "[system_timer]")
 
         CHECK(DummyFunction == SystemTimer::system_timer_isr);
     }
+
+    SystemTimer::sys_tick = SysTick;
 }

@@ -20,3 +20,10 @@
 #define SJ2_STRINGIFY2(s) #s
 // SJ2_PACKED give a specified type a packed attribute
 #define SJ2_PACKED(type) type __attribute__((packed))
+// Set a function as a "weak" function. This means that if there is another
+// declaration of this exact function somewhere else in the software, the
+// non-weak function will be used instead of the weak function.
+#define SJ2_WEAK __attribute__((weak))
+// Similar to the weak attribute, but also gives each function the
+// implementation of the function f.
+#define SJ2_ALIAS(f) __attribute__((weak, alias(#f)))  // NOLINT

@@ -17,7 +17,9 @@ echo "   5) Perl                                          "
 echo "   6) Valgrind                                      "
 echo "   7) G++ 7                                         "
 echo "   8) Gcovr-7                                       "
-echo "   9) Clang-format                                  "1
+echo "   9) clang                                         "
+echo "   9) clang-format                                  "
+echo "   9) clang-tidy                                    "
 echo "   10) OpenOCD (Debian/Ubuntu Only)                 "
 echo "   11) XCode CLI tools (MacOS Only)                 "
 echo "   12) Homebrew (MacOS Only)                        "
@@ -92,9 +94,17 @@ case "$OS" in
         echo "└─────────────────────────────────────────────────── "
         sudo apt -y install valgrind
         echo " ───────────────────────────────────────────────────┐"
+        echo "                 Installing Clang                    "
+        echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install clang
+        echo " ───────────────────────────────────────────────────┐"
         echo "              Installing Clang Format                "
         echo "└─────────────────────────────────────────────────── "
         sudo apt -y install clang-format
+        echo " ───────────────────────────────────────────────────┐"
+        echo "               Installing Clang Tidy                 "
+        echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install clang-tidy
         echo " ───────────────────────────────────────────────────┐"
         echo "                Installing OpenOCD                   "
         echo "└─────────────────────────────────────────────────── "
@@ -135,6 +145,10 @@ case "$OS" in
         echo "              Installing GCC Version 7               "
         echo "└─────────────────────────────────────────────────── "
         brew install gcc@7
+        echo " ───────────────────────────────────────────────────┐"
+        echo "  Installing LLVM (clang, clang-format, clang-tidy)  "
+        echo "└─────────────────────────────────────────────────── "
+        brew install llvm
         echo " ───────────────────────────────────────────────────┐"
         echo "         Installing Testing Tools (Valgrind)         "
         echo "└─────────────────────────────────────────────────── "
@@ -226,19 +240,13 @@ export SJLIBDIR
 EOL
 
 echo " ───────────────────────────────────────────────────┐"
-echo "        Linking Files into Firmware projects         "
+echo "         Loading Environment Variables File          "
 echo "└─────────────────────────────────────────────────── "
-# DEFAULT_PROJECTS=HelloWorld FreeRTOS Telemetry Unittest
-DEFAULT_PROJECTS=HelloWorld
-for PROJECT in $DEFAULT_PROJECTS
-do
-    # Place env.sh link into project folder
-    rm -f "firmware/$PROJECT/env.sh"
-    ln -s -f "$BASE/env.sh" "firmware/$PROJECT/env.sh"
-    # Place makefile link into project folder
-    rm -f "firmware/$PROJECT/makefile"
-    ln -s -f "$BASE/makefile" "firmware/$PROJECT/makefile"
-done
+source env.sh
+echo " ───────────────────────────────────────────────────┐"
+echo "      Linking Files to Firmware Project Folder       "
+echo "└─────────────────────────────────────────────────── "
+./tools/link_projects.sh
 echo " ───────────────────────────────────────────────────┐"
 echo "                   SETUP COMPLETE!                   "
 echo "                                                     "

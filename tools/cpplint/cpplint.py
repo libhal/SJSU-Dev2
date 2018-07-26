@@ -281,7 +281,7 @@ _LEGACY_ERROR_CATEGORIES = [
 # flag. By default all errors are on, so only add here categories that should be
 # off by default (i.e., categories that must be enabled by the --filter= flags).
 # All entries here should start with a '-' or '+', as in the --filter= flag.
-_DEFAULT_FILTERS = ['-build/include_alpha']
+_DEFAULT_FILTERS = ['+build/include_alpha']
 
 # The default list of categories suppressed for C (not C++) files.
 _DEFAULT_C_SUPPRESSED_CATEGORIES = [
@@ -4231,6 +4231,7 @@ def CheckCheck(filename, clean_lines, linenum, error):
   rhs = rhs.strip()
   match_constant = r'^([-+]?(\d+|0[xX][0-9a-fA-F]+)[lLuU]{0,3}|".*"|\'.*\')$'
   if Match(match_constant, lhs) or Match(match_constant, rhs):
+    pass
     # Note: since we know both lhs and rhs, we can provide a more
     # descriptive error message like:
     #   Consider using CHECK_EQ(x, 42) instead of CHECK(x == 42)
@@ -4239,10 +4240,10 @@ def CheckCheck(filename, clean_lines, linenum, error):
     #
     # We are still keeping the less descriptive message because if lhs
     # or rhs gets long, the error message might become unreadable.
-    error(filename, linenum, 'readability/check', 2,
-          'Consider using %s instead of %s(a %s b)' % (
-              _CHECK_REPLACEMENT[check_macro][operator],
-              check_macro, operator))
+    # error(filename, linenum, 'readability/check', 2,
+    #       'Consider using %s instead of %s(a %s b)' % (
+    #           _CHECK_REPLACEMENT[check_macro][operator],
+    #           check_macro, operator))
 
 
 def CheckAltTokens(filename, clean_lines, linenum, error):
@@ -5583,7 +5584,7 @@ def CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error,
   # didn't include it in the .h file.
   # TODO(unknown): Do a better job of finding .h files so we are confident that
   # not having the .h file means there isn't one.
-  if filename.endswith('.cc') and not header_found:
+  if filename.endswith('.cpp') and not header_found:
     return
 
   # All the lines have been processed, report the errors found.

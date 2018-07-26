@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cstdint>
+#include <cstdio>
+
 class DacInterface
 {
  public:
-    Dac(void);
     virtual bool Initialize();
     virtual bool WriteDac(uint16_t dac_output);
     virtual bool SetVoltage(float voltage);

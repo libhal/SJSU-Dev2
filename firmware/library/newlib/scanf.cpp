@@ -1,14 +1,13 @@
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
 
-#include "L0_LowLevel/uart0.min.hpp"
-
-// Overriding printf to supply a static memory .text efficent varient.
-int scanf(const char * fmt, ...)
+// Overriding printf to supply a static memory .text efficient variant.
+// NOLINTNEXTLINE(readability-identifier-naming)
+int scanf(const char * format, ...)
 {
     va_list args;
-    va_start(args, fmt);
-    int items = vfscanf(stdin, fmt, args);
+    va_start(args, format);
+    int items = vfscanf(stdin, format, args);
     va_end(args);
     return items;
 }
