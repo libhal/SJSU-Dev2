@@ -9,13 +9,13 @@
 
 #include "i2c2_device.hpp"
 
-class TemperatureSensor : /*private i2c2_device*/
+class TemperatureSensor : private i2c2_device
 
 {
 
     public:
 
-        TemperatureSensor(char address) /*: i2c2_device(address) {}*/                            // Access address
+        TemperatureSensor(char address) : i2c2_device(address) {}                            // Access address
 
     	unsigned char getTemperatureByte();						     // Read from register 0x00 and return byte.
 
