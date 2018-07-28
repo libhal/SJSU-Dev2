@@ -316,7 +316,7 @@ void FreeRTOSSystemTick()
 WEAK void LowLevelInit()
 {
     system_timer.SetIsrFunction(FreeRTOSSystemTick);
-    system_timer.SetTickFrequency(1000);
+    system_timer.SetTickFrequency(config::kRtosFrequency);
     bool timer_started_successfully = system_timer.StartTimer();
     if (timer_started_successfully)
     {

@@ -9,9 +9,9 @@
 
 #include <cstdio>
 
+#include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L2_Utilities/macros.hpp"
-#include "config.hpp"
 
 // LPC4076 does not include P3.26 so supporting methods are not available
 class SystemTimerInterface
@@ -68,15 +68,15 @@ class SystemTimer : public SystemTimerInterface
     uint32_t SetTickFrequency(uint32_t frequency) override
     {
         frequency             = (frequency == 0) ? 1 : frequency;
-        uint32_t reload_value = SJ2_SYSTEM_CLOCK / frequency - 1;
-        int remainder         = SJ2_SYSTEM_CLOCK % frequency;
+        uint32_t reload_value = config::kSystemClockRate / frequency - 1;
+        int remainder         = config::kSystemClockRate % frequency;
         if (reload_value > SysTick_LOAD_RELOAD_Msk)
         {
             reload_value = SysTick_LOAD_RELOAD_Msk;
             remainder    = SysTick_LOAD_RELOAD_Msk;
         }
-        // TODO(#30): change SJ2_SYSTEM_CLOCK macro to a value retrieved by the
-        // SystemClock library.
+        // TODO(#30): change config::kSystemClockRate macro to a value retrieved
+        // by the SystemClock library.
         sys_tick->LOAD = reload_value;
         return remainder;
     }
