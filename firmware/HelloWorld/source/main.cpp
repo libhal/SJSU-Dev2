@@ -1,8 +1,10 @@
+#include <project_config.hpp>
+
 #include <cstdio>
 #include <cstdint>
+
 #include "L0_LowLevel/LPC40xx.h"
 #include "L2_Utilities/debug_print.hpp"
-#include "config.hpp"
 
 volatile uint32_t cycles = 500'000;
 
