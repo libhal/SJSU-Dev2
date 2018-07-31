@@ -28,6 +28,11 @@
 // copyright, permission, and disclaimer notice must appear in all copies of
 // this code.
 //*****************************************************************************
+#include "startup.hpp"
+
+#include <FreeRTOS.h>
+#include <task.h>
+
 #include <cstdint>
 #include <cstring>
 
@@ -143,10 +148,10 @@ const IsrPointer kInterruptVectorTable[] = {
     0,                          // Reserved
     0,                          // Reserved
     0,                          // Reserved
-    SvcHandler,                 // SVCall handler
+    vPortSVCHandler,            // SVCall handler
     DebugMonHandler,            // Debug monitor handler
     0,                          // Reserved
-    PendSVHandler,              // The PendSV handler
+    xPortPendSVHandler,         // The PendSV handler
     SysTickHandler,             // The SysTick handler
     // Chip Level - LPC40xx
     WdtIrqHandler,          // 16, 0x40 - WDT
@@ -313,14 +318,19 @@ void InitFpu()
 
 SystemTimer system_timer;
 
-void FreeRtosSystemTick()
+void InitializeFreeRTOSSystemTick()
 {
-    // TODO(#101): Add FreeRTOS kernel function here
+    if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
+    {
+        // Swap out the SystemTimer isr with FreeRTOS's xPortSysTickHandler
+        system_timer.SetIsrFunction(xPortSysTickHandler);
+    }
 }
 
-SJ2_WEAK void LowLevelInit()
+void SetupTimerInterrupt()
 {
-    system_timer.SetIsrFunction(FreeRtosSystemTick);
+    DEBUG_PRINT("Setting up SystemTick Timer...");
+    system_timer.SetIsrFunction(InitializeFreeRTOSSystemTick);
     system_timer.SetTickFrequency(config::kRtosFrequency);
     bool timer_started_successfully = system_timer.StartTimer();
     if (timer_started_successfully)
@@ -331,6 +341,11 @@ SJ2_WEAK void LowLevelInit()
     {
         DEBUG_PRINT("System Timer has FAILED!!");
     }
+}
+
+SJ2_WEAK void LowLevelInit()
+{
+    SetupTimerInterrupt();
 }
 
 inline void SystemInit()
@@ -375,10 +390,61 @@ void NmiHandler(void)
     while (1) { continue; }
 }
 
+extern "C" void GetRegistersFromStack(uint32_t *fault_stack_address)
+{
+    // These are volatile to try and prevent the compiler/linker optimising them
+    // away as the variables never actually get used.  If the debugger won't
+    // show the values of the variables, make them global my moving their
+    // declaration outside of this function.
+    volatile uint32_t r0;
+    volatile uint32_t r1;
+    volatile uint32_t r2;
+    volatile uint32_t r3;
+    volatile uint32_t r12;
+    // Link register.
+    volatile uint32_t lr;
+    // Program counter.
+    volatile uint32_t pc;
+    // Program status register.
+    volatile uint32_t psr;
+
+    r0 = fault_stack_address[0];
+    r1 = fault_stack_address[1];
+    r2 = fault_stack_address[2];
+    r3 = fault_stack_address[3];
+
+    r12 = fault_stack_address[4];
+    lr = fault_stack_address[5];
+    pc = fault_stack_address[6];
+    psr = fault_stack_address[7];
+
+    SJ2_USED(r0);
+    SJ2_USED(r1);
+    SJ2_USED(r2);
+    SJ2_USED(r3);
+    SJ2_USED(r12);
+    SJ2_USED(lr);
+    SJ2_USED(pc);
+    SJ2_USED(psr);
+
+    // When the following line is hit, the variables contain the register values
+    // Use a JTAG debugger to inspect these variables
+    while (true) { continue; }
+}
+
 SJ2_SECTION(".after_vectors")
 void HardFaultHandler(void)
 {
-    while (1) { continue; }
+    __asm volatile
+    (
+        " tst lr, #4                                          \n"
+        " ite eq                                              \n"
+        " mrseq r0, msp                                       \n"
+        " mrsne r0, psp                                       \n"
+        " ldr r1, [r0, #24]                                   \n"
+        " ldr r2, handler2_address_const                      \n"
+        " bx r2                                               \n"
+        " handler2_address_const: .word GetRegistersFromStack \n");
 }
 
 SJ2_SECTION(".after_vectors")
@@ -422,7 +488,7 @@ void SysTickHandler(void)
 {
     if (SystemTimer::system_timer_isr == nullptr)
     {
-        DEBUG_PRINT("System Timer ISR not defined, disabling System Timer\n");
+        DEBUG_PRINT("System Timer ISR not defined, disabling System Timer");
         system_timer.DisableTimer();
     }
     else
@@ -440,12 +506,12 @@ void IntDefaultHandler(void)
     void (*isr)(void) = dynamic_isr_vector_table[active_isr - kIrqOffset];
     if (isr == IntDefaultHandler)
     {
-        DEBUG_PRINT("No ISR found for the vector %lu\n", active_isr);
+        DEBUG_PRINT("No ISR found for the vector %lu", active_isr);
         while (1) { continue; }
     }
     else
     {
-        DEBUG_PRINT("Launching IRQ %lu\n", active_isr);
+        DEBUG_PRINT("Launching IRQ %lu", active_isr);
         isr();
     }
 }
