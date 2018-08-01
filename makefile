@@ -38,7 +38,7 @@ endif
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-CLANG_TIDY   = clang-tidy
+CLANG_TIDY   = clang-tidy-6.0
 endif
 ifeq ($(UNAME_S),Darwin)
 CLANG_TIDY   = /usr/local/opt/llvm/bin/clang-tidy
@@ -416,7 +416,7 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@echo ' '
 
 lint:
-	@python $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
+	@python2 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
 
 tidy:
 	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 $(INCLUDES)

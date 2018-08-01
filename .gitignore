@@ -18,3 +18,5 @@ tools/gcc-arm-none-eabi-*
 **/env.sh
 archive/
 .idea/
+**/*/.vscode
+.vscode
