@@ -76,8 +76,6 @@ class SystemTimer : public SystemTimerInterface
             reload_value = SysTick_LOAD_RELOAD_Msk;
             remainder    = SysTick_LOAD_RELOAD_Msk;
         }
-        // TODO(#30): change config::kSystemClockRate macro to a value retrieved
-        // by the SystemClock library.
         sys_tick->LOAD = reload_value;
         return remainder;
     }
