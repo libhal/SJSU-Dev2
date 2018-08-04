@@ -483,9 +483,32 @@ void PendSVHandler(void)
     while (1) { continue; }
 }
 
+volatile uint64_t milliseconds;
+
+uint64_t Milliseconds()
+{
+    return milliseconds;
+}
+
+void Delay(uint32_t delay_time)
+{
+    if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
+    {
+        vTaskDelay(delay_time);
+    }
+    else
+    {
+        uint64_t time_after_delay = milliseconds + delay_time;
+        while (milliseconds < time_after_delay) { continue; }
+    }
+}
+
 SJ2_SECTION(".after_vectors")
 void SysTickHandler(void)
 {
+    // This assumes that SysTickHandler is called every millisecond.
+    // Changing that frequency will distort the milliseconds time.
+    milliseconds += 1;
     if (SystemTimer::system_timer_isr == nullptr)
     {
         DEBUG_PRINT("System Timer ISR not defined, disabling System Timer");
