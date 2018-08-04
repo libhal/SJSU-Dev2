@@ -530,11 +530,6 @@ void SysTickHandler(void)
 
 constexpr int32_t kIrqOffset = 16;
 
-void SetSystemIsr(IRQn_Type irq, IsrPointer isr)
-{
-    dynamic_isr_vector_table[irq] = isr;
-}
-
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
 void IntDefaultHandler(void)

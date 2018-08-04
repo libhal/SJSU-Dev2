@@ -1,6 +1,8 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
+#include "L2_Utilities/macros.hpp"
+
 volatile uint64_t milliseconds;
 
 uint64_t Milliseconds()
@@ -11,6 +13,7 @@ uint64_t Milliseconds()
 void Delay(uint32_t delay_time)
 {
 #if defined HOST_TEST
+    SJ2_USED(delay_time);
     return;
 #else
     if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
