@@ -41,36 +41,38 @@
     } while (0)
 #endif  // defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
 
-#define SJ2_ASSERT_WARNING(condition, warning_message)                \
-    do                                                                \
-    {                                                                 \
-        if (!(condition))                                             \
-        {                                                             \
-            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                       \
-                        "WARNING: " warning_message SJ2_COLOR_RESET); \
-        }                                                             \
+#define SJ2_ASSERT_WARNING(condition, warning_message, ...)          \
+    do                                                               \
+    {                                                                \
+        if (!(condition))                                            \
+        {                                                            \
+            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                      \
+                        "WARNING: " warning_message SJ2_COLOR_RESET, \
+                        ##__VA_ARGS__);                              \
+        }                                                            \
     } while (0)
 
-#define SJ2_ASSERT_FATAL(condition, fatal_message)                            \
-    do                                                                        \
-    {                                                                         \
-        if (!(condition))                                                     \
-        {                                                                     \
-            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                               \
-                        "WARNING: " fatal_message SJ2_COLOR_RESET);           \
-            printf("\nPrinting Stack Trace:\n");                              \
-            SJ2_DUMP_BACKTRACE();                                             \
-            printf(                                                           \
-                "\nRun: the following command in your project directory\n   " \
-                " " SJ2_BOLD_WHITE                                            \
-                "arm-none-eabi-addr2line -e build/binaries/firmware.elf "     \
-                "<insert pc>" SJ2_COLOR_RESET                                 \
-                "\n"                                                          \
-                "This will report the file and line number associated "       \
-                "with that program counter values above.");                   \
-            while (true)                                                      \
-            {                                                                 \
-                continue;                                                     \
-            }                                                                 \
-        }                                                                     \
+#define SJ2_ASSERT_FATAL(condition, fatal_message, ...)                   \
+    do                                                                    \
+    {                                                                     \
+        if (!(condition))                                                 \
+        {                                                                 \
+            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                           \
+                        "ERROR: " fatal_message SJ2_COLOR_RESET,          \
+                        ##__VA_ARGS__);                                   \
+            printf("\nPrinting Stack Trace:\n");                          \
+            SJ2_DUMP_BACKTRACE();                                         \
+            printf(                                                       \
+                "\nRun: the following command in your project directory"  \
+                "\n\n    " SJ2_BOLD_WHITE                                 \
+                "arm-none-eabi-addr2line -e build/binaries/firmware.elf " \
+                "<insert pc>" SJ2_COLOR_RESET                             \
+                "\n\n"                                                    \
+                "This will report the file and line number associated "   \
+                "with that program counter values above.");               \
+            while (true)                                                  \
+            {                                                             \
+                continue;                                                 \
+            }                                                             \
+        }                                                                 \
     } while (0)
