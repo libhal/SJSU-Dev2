@@ -344,6 +344,9 @@ void SetupTimerInterrupt()
 SJ2_WEAK void LowLevelInit()
 {
     SetupTimerInterrupt();
+    // Enable Peripheral Clock
+    // TODO(#30): Replace this with a System Clock Driver.
+    LPC_SC->PCLKSEL = 1;
 }
 
 inline void SystemInit()
