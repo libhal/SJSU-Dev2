@@ -2,8 +2,7 @@
 
 #include <cstdint>
 
-// Import SJOne libraries to be used for testing
-#include "L2_Drivers/base/i2c_base.hpp"
+
 
 class LcdBackpackInterface
 {
