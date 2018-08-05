@@ -9,14 +9,14 @@ class LcdBackpackInterface
  public:
     enum FontSize
     {
-        small;
-        large;
+        small,
+        large,
     };
     enum DisplayLines
     {
-        one;
-        two;
-        four;
+        one,
+        two,
+        four,
     };
     virtual void Init() = 0;
     virtual void Set4BitMode() = 0;
@@ -31,4 +31,4 @@ class LcdBackpackInterface
     virtual void ShiftCursor() = 0;
     virtual void SetFont(FontSize size) = 0;
     virtual void FunctionSet(FontSize size, DisplayLines lines);
-}
+};
