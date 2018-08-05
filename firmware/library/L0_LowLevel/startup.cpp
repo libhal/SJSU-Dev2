@@ -129,30 +129,28 @@ extern "C"
 }  // extern "C"
 #endif
 
-// Define an alias for the Isr function pointer.
-using IsrPointer = void (*)(void);
 // The Interrupt vector table.
 // This relies on the linker script to place at correct location in memory.
 SJ2_SECTION(".isr_vector")
 // NOLINTNEXTLINE(readability-identifier-naming)
 const IsrPointer kInterruptVectorTable[] = {
     // Core Level - CM4
-    &StackTop,                  // The initial stack pointer
-    ResetIsr,                   // The reset handler
-    NmiHandler,                 // The NMI handler
-    HardFaultHandler,           // The hard fault handler
-    MemManageHandler,           // The MPU fault handler
-    BusFaultHandler,            // The bus fault handler
-    UsageFaultHandler,          // The usage fault handler
-    ValidUserCodeChecksum,      // LPC MCU Checksum
-    0,                          // Reserved
-    0,                          // Reserved
-    0,                          // Reserved
-    vPortSVCHandler,            // SVCall handler
-    DebugMonHandler,            // Debug monitor handler
-    0,                          // Reserved
-    xPortPendSVHandler,         // The PendSV handler
-    SysTickHandler,             // The SysTick handler
+    &StackTop,              // The initial stack pointer
+    ResetIsr,               // The reset handler
+    NmiHandler,             // The NMI handler
+    HardFaultHandler,       // The hard fault handler
+    MemManageHandler,       // The MPU fault handler
+    BusFaultHandler,        // The bus fault handler
+    UsageFaultHandler,      // The usage fault handler
+    ValidUserCodeChecksum,  // LPC MCU Checksum
+    0,                      // Reserved
+    0,                      // Reserved
+    0,                      // Reserved
+    vPortSVCHandler,        // SVCall handler
+    DebugMonHandler,        // Debug monitor handler
+    0,                      // Reserved
+    xPortPendSVHandler,     // The PendSV handler
+    SysTickHandler,         // The SysTick handler
     // Chip Level - LPC40xx
     WdtIrqHandler,          // 16, 0x40 - WDT
     Timer0IrqHandler,       // 17, 0x44 - TIMER0
@@ -212,7 +210,7 @@ IsrPointer dynamic_isr_vector_table[] = {
     I2c0IrqHandler,         // 26, 0x68 - I2C0
     I2c1IrqHandler,         // 27, 0x6c - I2C1
     I2c2IrqHandler,         // 28, 0x70 - I2C2
-    IntDefaultHandler,       // 29, Not used
+    IntDefaultHandler,      // 29, Not used
     Ssp0IrqHandler,         // 30, 0x78 - SSP0
     Ssp1IrqHandler,         // 31, 0x7c - SSP1
     Pll0IrqHandler,         // 32, 0x80 - PLL0 (Main PLL)
@@ -362,8 +360,7 @@ inline void SystemInit()
     LowLevelInit();
 }
 
-constexpr uint32_t kNoCrp = 0xFFFFFFFF;
-__attribute__((used, section(".crp"))) constexpr uint32_t kCrpWord = kNoCrp;
+__attribute__((used, section(".crp"))) constexpr uint32_t kCrpWord = 0xFFFFFFFF;
 
 // Reset entry point for your code.
 // Sets up a simple runtime environment and initializes the C/C++ library.
@@ -379,7 +376,10 @@ void ResetIsr(void)
     SJ2_USED(result);
     // main() shouldn't return, but if it does, we'll just enter an infinite
     // loop
-    while (true) { continue; }
+    while (true)
+    {
+        continue;
+    }
 }
 
 // Default exception handlers. Override the ones here by defining your own
@@ -387,12 +387,15 @@ void ResetIsr(void)
 SJ2_SECTION(".after_vectors")
 void NmiHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
-extern "C" void GetRegistersFromStack(uint32_t *fault_stack_address)
+extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
 {
-    // These are volatile to try and prevent the compiler/linker optimising them
+    // These are volatile to try and prevent the compiler/linker optimizing them
     // away as the variables never actually get used.  If the debugger won't
     // show the values of the variables, make them global my moving their
     // declaration outside of this function.
@@ -414,8 +417,8 @@ extern "C" void GetRegistersFromStack(uint32_t *fault_stack_address)
     r3 = fault_stack_address[3];
 
     r12 = fault_stack_address[4];
-    lr = fault_stack_address[5];
-    pc = fault_stack_address[6];
+    lr  = fault_stack_address[5];
+    pc  = fault_stack_address[6];
     psr = fault_stack_address[7];
 
     SJ2_USED(r0);
@@ -427,16 +430,19 @@ extern "C" void GetRegistersFromStack(uint32_t *fault_stack_address)
     SJ2_USED(pc);
     SJ2_USED(psr);
 
+    SJ2_ASSERT_FATAL(false, "Hard Fault Exception Occured!");
     // When the following line is hit, the variables contain the register values
     // Use a JTAG debugger to inspect these variables
-    while (true) { continue; }
+    while (true)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
 void HardFaultHandler(void)
 {
-    __asm volatile
-    (
+    __asm volatile(
         " tst lr, #4                                          \n"
         " ite eq                                              \n"
         " mrseq r0, msp                                       \n"
@@ -450,37 +456,55 @@ void HardFaultHandler(void)
 SJ2_SECTION(".after_vectors")
 void MemManageHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
 void BusFaultHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
 void UsageFaultHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
 void SvcHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
 void DebugMonHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
 void PendSVHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 volatile uint64_t milliseconds;
@@ -499,7 +523,10 @@ void Delay(uint32_t delay_time)
     else
     {
         uint64_t time_after_delay = milliseconds + delay_time;
-        while (milliseconds < time_after_delay) { continue; }
+        while (milliseconds < time_after_delay)
+        {
+            continue;
+        }
     }
 }
 
@@ -519,22 +546,23 @@ void SysTickHandler(void)
         SystemTimer::system_timer_isr();
     }
 }
+
+constexpr int32_t kIrqOffset = 16;
+
+void SetSystemIsr(IRQn_Type irq, IsrPointer isr)
+{
+    dynamic_isr_vector_table[irq] = isr;
+}
+
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
 void IntDefaultHandler(void)
 {
-    constexpr int32_t kIrqOffset = 16;
-    uint32_t active_isr          = SCB->ICSR;
+    uint8_t active_isr = (SCB->ICSR & 0xFF);
 
-    void (*isr)(void) = dynamic_isr_vector_table[active_isr - kIrqOffset];
-    if (isr == IntDefaultHandler)
-    {
-        DEBUG_PRINT("No ISR found for the vector %lu", active_isr);
-        while (1) { continue; }
-    }
-    else
-    {
-        DEBUG_PRINT("Launching IRQ %lu", active_isr);
-        isr();
-    }
+    IsrPointer isr = dynamic_isr_vector_table[(active_isr - kIrqOffset)];
+    SJ2_ASSERT_FATAL(isr != IntDefaultHandler,
+                     "No ISR found for the vector %u [%ld]", active_isr,
+                     ((active_isr - kIrqOffset)));
+    isr();
 }
