@@ -5,15 +5,18 @@
 
 // Overriding printf to supply a static memory .text efficient variant.
 // NOLINTNEXTLINE(readability-identifier-naming)
-int printf(const char * format, ...)
-{
-    constexpr size_t kPrintfBufferSize = 256;
-    char buffer[kPrintfBufferSize];
-    va_list args;
-    va_start(args, format);
-    int length = vsnprintf(buffer, kPrintfBufferSize, format, args);
-    va_end(args);
+int printf(const char * format, ...) {
+  constexpr size_t kPrintfBufferSize = 256;
+  char buffer[kPrintfBufferSize];
+  va_list args;
+  va_start(args, format);
+  int length = 0;
 
-    uart0::Puts(buffer);
-    return length;
+  for (size_t i = 0; i < kPrintfBufferSize; i++) {
+    length += vsnprintf(buffer, kPrintfBufferSize, format, args);
+  }
+
+  va_end(args);
+  uart0::Puts(buffer);
+  return length;
 }
