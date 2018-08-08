@@ -7,8 +7,9 @@ namespace uart0
 {
 
 void Init(uint32_t baud_rate);
-char GetChar(char notused);
-char PutChar(char out);
+int GetChar();
+int GetChar(int notused);
+int PutChar(int out);
 void Puts(const char c_string[]);
 
 }  // namespace uart0

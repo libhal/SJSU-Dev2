@@ -30,7 +30,12 @@ void Init(uint32_t baud_rate)
     LPC_UART0->FCR |= (1 << 0);
 }
 
-char GetChar(char notused = 0)
+int GetChar()
+{
+    return GetChar(0);
+}
+
+int GetChar(int notused = 0)
 {
     SJ2_USED(notused);
     while (!(LPC_UART0->LSR & 0x1))
@@ -40,9 +45,9 @@ char GetChar(char notused = 0)
     return LPC_UART0->RBR;
 }
 
-char PutChar(char out)
+int PutChar(int out)
 {
-    LPC_UART0->THR = out;
+    LPC_UART0->THR = static_cast<uint8_t>(out);
 
     while (!(LPC_UART0->LSR & (0x1 << 6)))
     {

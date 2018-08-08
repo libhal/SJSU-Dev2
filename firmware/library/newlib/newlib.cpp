@@ -6,6 +6,18 @@
 
 #include "L0_LowLevel/uart0.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "newlib/newlib.hpp"
+
+constexpr int32_t kHeapSize = 32768;
+#if defined(HOST_TEST)
+Stdout out = putchar;
+Stdin in = getchar;
+uint8_t heap[kHeapSize];
+#else
+Stdout out = uart0::PutChar;
+Stdin in = uart0::GetChar;
+extern uint8_t heap[kHeapSize];
+#endif
 
 extern "C"
 {
@@ -49,8 +61,6 @@ int _fstat(int file, struct stat * status)
 // NOLINTNEXTLINE(readability-identifier-naming)
 void * _sbrk(int increment)
 {
-    constexpr int32_t kHeapSize = 32768;
-    extern uint8_t heap[kHeapSize];
     static uint8_t * heap_end = heap;
     void * previous_heap_end  = static_cast<void *>(heap_end);
 
@@ -78,7 +88,7 @@ int _write(int file, char * ptr, int length)
     {
         // TODO(#81): either make this inline, or swap with function that can
         //   take a buffer and length.
-        uart0::PutChar(ptr[i]);
+        out(ptr[i]);
     }
     return length;
 }
@@ -99,13 +109,13 @@ int _read(FILE * file, char * ptr, int length)
     {
         length = 1;
         // TODO(#81): either make this inline
-        *ptr = uart0::GetChar(0);
+        *ptr = static_cast<char>(in());
         if (*ptr == '\r')
         {
-            uart0::PutChar('\r');
+            out('\r');
             *ptr = '\n';
         }
-        uart0::PutChar(*ptr);
+        out(*ptr);
     }
     return length;
 }

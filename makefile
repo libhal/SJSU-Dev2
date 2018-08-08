@@ -13,6 +13,8 @@ DEVICE_SIZEC   = arm-none-eabi-size
 DEVICE_OBJCOPY = arm-none-eabi-objcopy
 DEVICE_NM      = arm-none-eabi-nm
 # IMPORTANT: Must be accessible via the PATH variable!!!
+# Affects what DBC is generated for SJSUOne board
+TEST_GROUP     ?=
 HOST_CC        ?= gcc-7
 HOST_CPPC      ?= g++-7
 HOST_OBJDUMP   ?= objdump-7
@@ -109,6 +111,7 @@ CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) -MMD -MP -c
 ifeq ($(MAKECMDGOALS), test)
 CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
          -fno-inline-small-functions -fno-default-inline \
+		 -fno-builtin \
          -ftest-coverage --coverage \
          -fno-elide-constructors -DHOST_TEST=1 \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
@@ -143,8 +146,8 @@ TESTS = $(SOURCE_TESTS) $(LIBRARY_TESTS)
 OMIT_LIBRARIES = $(shell find "$(LIB_DIR)" \
                          -name "startup.cpp" -o \
                          -name "*.cpp" \
-                         -path "$(LIB_DIR)/newlib/*" -o \
-                         -path "$(LIB_DIR)/third_party/*")
+                         -path "$(LIB_DIR)/third_party/*" -o \
+						 -path "$(LIB_DIR)/third_party/*")
 OMIT_SOURCES   = $(shell find $(SOURCE) -name "main.cpp")
 OMIT = $(OMIT_LIBRARIES) $(OMIT_SOURCES)
 ################
@@ -268,7 +271,9 @@ show-lists:
 	@echo "=========== TEST FLAGS =============="
 	@echo $(TEST_CFLAGS)
 	@echo "=========== CLANG TIDY BIN PATH =============="
-	echo $(CLANG_TIDY)
+	@echo $(CLANG_TIDY)
+	@echo "=========== OMIT_LIBRARIES =============="
+	@echo $(OMIT_LIBRARIES)
 
 $(HEX): $(EXECUTABLE)
 	@echo ' '
@@ -380,11 +385,12 @@ telemetry:
 	python $(TOOLS)/Telemetry/telemetry.py"
 
 test: $(COVERAGE) $(TEST_EXEC)
-	@valgrind --leak-check=full --track-origins=yes -v $(TEST_EXEC) -s
+	@valgrind --leak-check=full --track-origins=yes -v \
+		$(TEST_EXEC) -s $(TEST_GROUP)
 	@gcovr --root $(FIRMWARE) --keep --object-directory $(BUILD_DIR) \
-	-e "$(LIB_DIR)/newlib" \
-	-e "$(LIB_DIR)/third_party" \
-	--html --html-details -o $(COVERAGE)/coverage.html
+		-e "$(LIB_DIR)/newlib" \
+		-e "$(LIB_DIR)/third_party" \
+		--html --html-details -o $(COVERAGE)/coverage.html
 
 test-all: $(COVERAGE) $(TEST_EXEC)
 
