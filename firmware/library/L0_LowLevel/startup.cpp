@@ -36,6 +36,7 @@
 #include <cstdint>
 #include <cstring>
 
+#include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/startup.hpp"
 #include "L0_LowLevel/uart0.hpp"
@@ -507,29 +508,6 @@ void PendSVHandler(void)
     while (1)
     {
         continue;
-    }
-}
-
-volatile uint64_t milliseconds;
-
-uint64_t Milliseconds()
-{
-    return milliseconds;
-}
-
-void Delay(uint32_t delay_time)
-{
-    if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
-    {
-        vTaskDelay(delay_time);
-    }
-    else
-    {
-        uint64_t time_after_delay = milliseconds + delay_time;
-        while (milliseconds < time_after_delay)
-        {
-            continue;
-        }
     }
 }
 

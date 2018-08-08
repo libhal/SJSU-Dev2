@@ -10,7 +10,3 @@ extern SystemTimer system_timer;
 extern "C" void xPortPendSVHandler(void);  // NOLINT
 extern "C" void vPortSVCHandler(void);  // NOLINT
 extern "C" void xPortSysTickHandler(void);  // NOLINT
-
-uint64_t Milliseconds();
-void Delay(uint32_t delay);
-void SetSystemIsr(IRQn_Type irq, IsrPointer isr);
