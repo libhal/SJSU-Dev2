@@ -2,6 +2,7 @@
 #include <cstdio>
 
 #include "L0_LowLevel/uart0.hpp"
+#include "newlib/newlib.hpp"
 
 // Overriding printf to supply a static memory .text efficient variant.
 // NOLINTNEXTLINE(readability-identifier-naming)
@@ -14,6 +15,6 @@ int printf(const char * format, ...)
     int length = vsnprintf(buffer, kPrintfBufferSize, format, args);
     va_end(args);
 
-    uart0::Puts(buffer);
+    _write(0, buffer, length);
     return length;
 }
