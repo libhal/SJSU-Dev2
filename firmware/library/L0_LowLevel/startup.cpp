@@ -36,6 +36,7 @@
 #include <cstdint>
 #include <cstring>
 
+#include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/startup.hpp"
 #include "L0_LowLevel/uart0.hpp"
@@ -510,29 +511,6 @@ void PendSVHandler(void)
     }
 }
 
-volatile uint64_t milliseconds;
-
-uint64_t Milliseconds()
-{
-    return milliseconds;
-}
-
-void Delay(uint32_t delay_time)
-{
-    if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
-    {
-        vTaskDelay(delay_time);
-    }
-    else
-    {
-        uint64_t time_after_delay = milliseconds + delay_time;
-        while (milliseconds < time_after_delay)
-        {
-            continue;
-        }
-    }
-}
-
 SJ2_SECTION(".after_vectors")
 void SysTickHandler(void)
 {
@@ -551,11 +529,6 @@ void SysTickHandler(void)
 }
 
 constexpr int32_t kIrqOffset = 16;
-
-void SetSystemIsr(IRQn_Type irq, IsrPointer isr)
-{
-    dynamic_isr_vector_table[irq] = isr;
-}
 
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
