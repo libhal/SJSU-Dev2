@@ -416,7 +416,7 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@echo ' '
 
 lint:
-	@python2 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
+	@python2.7 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
 
 tidy:
 	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 $(INCLUDES)
