@@ -110,7 +110,7 @@ ifeq ($(MAKECMDGOALS), test)
 CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
          -fno-inline-small-functions -fno-default-inline \
          -ftest-coverage --coverage \
-         -fno-elide-constructors \
+         -fno-elide-constructors -DHOST_TEST=1 \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
          -O0
 CPPFLAGS = $(CFLAGS)
