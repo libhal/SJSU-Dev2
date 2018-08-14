@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdio>
+#include "config.hpp"
 #include "L2_Utilities/ansi_terminal_codes.hpp"
 #include "L2_Utilities/constexpr.hpp"
 
@@ -23,6 +24,7 @@ struct FileBasename_t
 };
 
 // Printf style logging with filename, function name, and line number
+#if SJ2_DEBUG_PRINT_ENABLED
 #define DEBUG_PRINT(format, ...)                                             \
     do                                                                       \
     {                                                                        \
@@ -33,3 +35,6 @@ struct FileBasename_t
                            "%d> " SJ2_WHITE format SJ2_COLOR_RESET "\n",     \
                file.basename, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__); \
     } while (0)
+#else
+#define DEBUG_PRINT(format, ...)
+#endif  // SJ2_DEBUG_PRINT_ENABLED

@@ -65,4 +65,9 @@ static_assert(1 <= kRtosFrequency && kRtosFrequency <= 10'000,
 #endif  // !defined SJ2_INCLUDE_BACKTRACE
 SJ2_DECLARE_CONSTANT(INCLUDE_BACKTRACE, bool, kIncludeBacktrace);
 
+#if !defined SJ2_DEBUG_PRINT_ENABLED
+#define SJ2_DEBUG_PRINT_ENABLED true
+#endif  // !defined SJ2_DEBUG_PRINT_ENABLED
+SJ2_DECLARE_CONSTANT(DEBUG_PRINT_ENABLED, bool, kDebugPrintEnabled);
+
 }  // namespace config

@@ -177,9 +177,9 @@ case "$OS" in
         echo "└─────────────────────────────────────────────────── "
         brew install --HEAD valgrind
         echo " ───────────────────────────────────────────────────┐"
-        echo "          Using EASY_INSTALL to install PIP          "
+        echo "        Installing PIP via bootstrap.pypa.io         "
         echo "└─────────────────────────────────────────────────── "
-        sudo easy_install pip
+        curl https://bootstrap.pypa.io/get-pip.py | python2.7
         echo " ──────────────────────────────────────────────────┐"
         echo "            Downloading gcc-arm-embedded            "
         echo "└────────────────────────────────────────────────── "
@@ -220,6 +220,7 @@ echo "                Setting Up Hyperload                 "
 echo "└─────────────────────────────────────────────────── "
 rm -rf "$TOOLDIR/Hyperload/"
 git clone --depth=1 https://github.com/kammce/Hyperload.git "$TOOLDIR/Hyperload/"
+git checkout sjtwo
 cd "$TOOLDIR/Hyperload/" && ./setup
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
