@@ -1,4 +1,5 @@
 #include <cctype>
+#include <cinttypes>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -44,18 +45,17 @@ void PrintHexBytesRow(uint8_t * bytes, size_t length)
     printf(" ");
 }
 
-void Hexdump(void * address, size_t length)
+void Hexdump(void * address, uint32_t length)
 {
     uint8_t * bytes = static_cast<uint8_t *>(address);
-    size_t i        = 0;
+    uint32_t i      = 0;
     for (i = 0; i < length; i += 16)
     {
-        printf("%08zX  ", i);
+        printf("%08" PRIX32 "  ", i);
         size_t bytes_to_print = (i + 15 > length) ? (i + 15) - length : 16;
         PrintHexBytesRow(&bytes[i], bytes_to_print);
         PrintCharacterRow(&bytes[i], bytes_to_print);
     }
-    printf("%08zX  \n", length);
+    printf("%08" PRIX32 "  \n", length);
 }
-
 }  // namespace debug

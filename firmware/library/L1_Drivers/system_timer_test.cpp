@@ -70,7 +70,7 @@ TEST_CASE("Testing SystemTimer", "[system_timer]")
         CHECK(kClkSourceMask == local_systick.CTRL);
         CHECK(0xBEEF == local_systick.VAL);
     }
-    SECTION("DisableTimer should clear tick interrupt and enable counter bits")
+    SECTION("DisableTimer should clear all bits")
     {
         // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
         constexpr uint8_t kEnableMask    = 0b0001;
@@ -82,7 +82,7 @@ TEST_CASE("Testing SystemTimer", "[system_timer]")
 
         test_subject.DisableTimer();
 
-        CHECK(kClkSourceMask == local_systick.CTRL);
+        CHECK(0 == local_systick.CTRL);
     }
     SECTION(
         "SetIsrFunction should set SystemTimer::system_timer_isr to "

@@ -4,7 +4,10 @@
 PROJ    ?= firmware
 # Affects what DBC is generated for SJSUOne board
 ENTITY  ?= DBG
-
+# Cause compiler warnings to become errors.
+# Used in presubmit checks to make sure that the codebase does not include
+# warnings
+WARNINGS_ARE_ERRORS ?=
 # IMPORTANT: Be sure to source env.sh to access these via the PATH variable.
 DEVICE_CC      = arm-none-eabi-gcc
 DEVICE_CPPC    = arm-none-eabi-g++
@@ -84,7 +87,6 @@ OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exce
                -fsingle-precision-constant -fasynchronous-unwind-tables
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
-WARNINGS_ARE_ERRORS ?=
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wdouble-promotion -Wduplicated-cond -Wlogical-op -Wswitch \
             -Wnull-dereference -Wformat=2 \
@@ -113,19 +115,30 @@ CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
          -fno-inline-small-functions -fno-default-inline \
 		 -fno-builtin \
          -ftest-coverage --coverage \
-         -fno-elide-constructors -DHOST_TEST=1 \
+         -fno-elide-constructors -D HOST_TEST=1 \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
          -O0
 CPPFLAGS = $(CFLAGS)
 else
-CFLAGS = $(CFLAGS_COMMON) -Wframe-larger-than=2048
+CFLAGS = $(CFLAGS_COMMON)
 CPPFLAGS = $(CFLAGS) $(CPPWARNINGS) $(CPPOPTIMIZE)
 endif
 
+ifeq ($(MAKECMDGOALS), bootloader)
+LINKER = $(LIB_DIR)/LPC4078_bootloader.ld
+CFLAGS += -D BOOTLOADER=1
+LINK_PRINTF_FLOAT =
+else
+LINKER = $(LIB_DIR)/LPC4078_application.ld
+CFLAGS += -D APPLICATION=1
+LINK_PRINTF_FLOAT = -u _printf_float
+endif
+
 LINKFLAGS = $(COMMON_FLAGS) \
-    -T $(LIB_DIR)/LPC4078.ld \
+    -T $(LINKER) \
     -Xlinker \
     --gc-sections -Wl,-Map,"$(MAP)" \
+	-lc -lrdimon $(LINK_PRINTF_FLOAT) \
     -specs=nano.specs
 ##############
 # Test files #
@@ -234,6 +247,7 @@ help:
 	@echo "List of available targets:"
 	@echo
 	@echo "    build        - builds firmware project"
+	@echo "    bootloader   - builds firmware using bootloader linker"
 	@echo "    help         - shows this menu"
 	@echo "    flash        - builds and installs firmware on to SJOne board"
 	@echo "    telemetry    - will launch telemetry interface"
@@ -248,7 +262,9 @@ help:
 
 default: help
     # Just shows the help menu
+bootloader: build
 # Build recipe
+application: build
 build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX) $(BINARY)
 # Complete rebuild and flash installation#
 cleaninstall: clean build flash
@@ -358,7 +374,7 @@ $(OBJ_DIR)/%.o: $(LIB_DIR)/%.c
 	@echo ' '
 
 $(DBC_BUILD):
-	python "$(LIB_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIB_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
+	python2.7 "$(LIB_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIB_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
 
 $(DBC_DIR):
 	mkdir -p $(DBC_DIR)
@@ -377,12 +393,12 @@ clean:
 flash: build
 	@bash -c "\
 	source $(TOOLS)/Hyperload/modules/bin/activate && \
-	python $(TOOLS)/Hyperload/hyperload.py $(SJDEV) $(SYMBOLS_HEX)"
+	python2.7 $(TOOLS)/Hyperload/hyperload.py $(SJDEV) $(HEX)"
 
 telemetry:
 	@bash -c "\
 	source $(TOOLS)/Telemetry/modules/bin/activate && \
-	python $(TOOLS)/Telemetry/telemetry.py"
+	python2.7 $(TOOLS)/Telemetry/telemetry.py"
 
 test: $(COVERAGE) $(TEST_EXEC)
 	@valgrind --leak-check=full --track-origins=yes -v \
@@ -427,7 +443,8 @@ lint:
 	@python2.7 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
 
 tidy:
-	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 $(INCLUDES)
+	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 \
+	$(INCLUDES) -D CLANG_TIDY=1
 
 presubmit:
 	@$(TOOLS)/presubmit.sh

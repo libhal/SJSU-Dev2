@@ -59,8 +59,9 @@ class SystemTimer : public SystemTimerInterface
     // WARNING: doing so will most likely disable FreeRTOS
     void DisableTimer() override
     {
-        sys_tick->CTRL &= ~(1 << ControlBitMap::kTickInterupt);
-        sys_tick->CTRL &= ~(1 << ControlBitMap::kEnableCounter);
+        sys_tick->LOAD = 0;
+        sys_tick->VAL = 0;
+        sys_tick->CTRL = 0;
     }
     // @param frequency set the frequency that SystemTick counter will run.
     //        If it is above the maximum SystemTick value 2^24

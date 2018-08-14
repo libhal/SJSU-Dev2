@@ -150,8 +150,13 @@ const IsrPointer kInterruptVectorTable[] = {
     vPortSVCHandler,        // SVCall handler
     DebugMonHandler,        // Debug monitor handler
     0,                      // Reserved
-    xPortPendSVHandler,     // The PendSV handler
-    SysTickHandler,         // The SysTick handler
+// FreeRTOS is disabled/removed for bootloaders, to keep the flash size down.
+#if defined(BOOTLOADER)
+    PendSVHandler,          // The PendSV handler
+#else
+    xPortPendSVHandler,     // FreeRTOS PendSV Handler
+#endif  // defined(BOOTLOADER)
+    SysTickHandler,  // The SysTick handler
     // Chip Level - LPC40xx
     WdtIrqHandler,          // 16, 0x40 - WDT
     Timer0IrqHandler,       // 17, 0x44 - TIMER0
@@ -364,13 +369,26 @@ inline void SystemInit()
     LowLevelInit();
 }
 
-__attribute__((used, section(".crp"))) constexpr uint32_t kCrpWord = 0xFFFFFFFF;
+SJ2_SECTION(".crp") constexpr uint32_t kCrpWord = 0xFFFFFFFF;
 
 // Reset entry point for your code.
 // Sets up a simple runtime environment and initializes the C/C++ library.
 void ResetIsr(void)
 {
+    // The Hyperload bootloader takes up stack space to execute. The Hyperload
+    // bootloader function launches this ISR manually, but it never returns thus
+    // it never cleans up the memory it uses. To get that memory back, we have
+    // to manually move the stack pointers back to the top of stack.
+    const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
+    __set_PSP(kTopOfStack);
+    __set_MSP(kTopOfStack);
     SystemInit();
+    // Default baud rate of 38400 divides perfectly with the LPC17xx and LPC40xx
+    // UART clock dividers perfectly, where as all other standard baud rates
+    // do not.
+    constexpr uint32_t kDefaultBaudRate = 38400;
+    uart0::Init(kDefaultBaudRate);
+
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
     int32_t result = main();
@@ -433,6 +451,11 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
     SJ2_USED(lr);
     SJ2_USED(pc);
     SJ2_USED(psr);
+
+    DEBUG_PRINT("r0: 0x%08lX, r1: 0x%08lX, r2: 0x%08lX, r3: 0x%08lX ", r0, r1,
+                r2, r3);
+    DEBUG_PRINT("r12: 0x%08lX, lr: 0x%08lX, pc: 0x%08lX, psr: 0x%08lX", r12, lr,
+                pc, psr);
 
     SJ2_ASSERT_FATAL(false, "Hard Fault Exception Occured!");
     // When the following line is hit, the variables contain the register values
