@@ -175,6 +175,140 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
                Method(mock_e, SetLow));
     }
 
+    SECTION("Write Command / Data on 4-bit Bus")
+    {
+        constexpr uint8_t kByte = 0b0101'1010;
+
+        St7066u lcd = St7066u(St7066u::BusMode::kFourBit,
+                              St7066u::DisplayMode::kMultiLine,
+                              St7066u::FontStyle::kFont5x8, pins);
+        lcd.Initialize();
+
+        lcd.WriteCommand(kByte);
+        // The RS pin should be set to write to the instruction register.
+        // The upper nibble should be sent first through D7-D4 followed
+        // by the lower nibble on the same data lines.
+        // The enable pin should ouput low after each nibble is set.
+        Verify(Method(mock_rs, Set)
+                   .Using(GpioInterface::PinOutput(
+                       St7066u::WriteOperation::kCommand)),
+               Method(mock_rw, SetLow),
+               Method(mock_d7, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 7) & 0x01)),
+               Method(mock_d6, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 6) & 0x01)),
+               Method(mock_d5, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 5) & 0x01)),
+               Method(mock_d4, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 4) & 0x01)),
+               Method(mock_e, SetLow),
+               Method(mock_rs, Set)
+                   .Using(GpioInterface::PinOutput(
+                       St7066u::WriteOperation::kCommand)),
+               Method(mock_rw, SetLow),
+               Method(mock_d7, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 3) & 0x01)),
+               Method(mock_d6, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 2) & 0x01)),
+               Method(mock_d5, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 1) & 0x01)),
+               Method(mock_d4, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 0) & 0x01)),
+               Method(mock_e, SetLow));
+
+        lcd.WriteData(kByte);
+        // The RS pin should be set to write to the data register.
+        // The upper nibble should be sent first through D7-D4 followed
+        // by the lower nibble on the same data lines.
+        // The enable pin should ouput low after each nibble is set.
+        Verify(Method(mock_rs, Set)
+                   .Using(GpioInterface::PinOutput(
+                       St7066u::WriteOperation::kData)),
+               Method(mock_rw, SetLow),
+               Method(mock_d7, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 7) & 0x01)),
+               Method(mock_d6, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 6) & 0x01)),
+               Method(mock_d5, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 5) & 0x01)),
+               Method(mock_d4, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 4) & 0x01)),
+               Method(mock_e, SetLow),
+               Method(mock_rs, Set)
+                   .Using(GpioInterface::PinOutput(
+                       St7066u::WriteOperation::kData)),
+               Method(mock_rw, SetLow),
+               Method(mock_d7, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 3) & 0x01)),
+               Method(mock_d6, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 2) & 0x01)),
+               Method(mock_d5, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 1) & 0x01)),
+               Method(mock_d4, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 0) & 0x01)),
+               Method(mock_e, SetLow));
+    }
+
+    SECTION("Write Command / Data on 8-bit Bus")
+    {
+        constexpr uint8_t kByte = 0b0101'1010;
+
+        St7066u lcd = St7066u(St7066u::BusMode::kEightBit,
+                              St7066u::DisplayMode::kMultiLine,
+                              St7066u::FontStyle::kFont5x8, pins);
+        lcd.Initialize();
+
+        lcd.WriteCommand(kByte);
+        // The RS pin should be set to write to the instruction register.
+        // The enable pin should output low after D7-D0 are set.
+        Verify(Method(mock_rs, Set)
+                   .Using(GpioInterface::PinOutput(
+                       St7066u::WriteOperation::kCommand)),
+               Method(mock_rw, SetLow),
+               Method(mock_d7, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 7) & 0x01)),
+               Method(mock_d6, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 6) & 0x01)),
+               Method(mock_d5, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 5) & 0x01)),
+               Method(mock_d4, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 4) & 0x01)),
+               Method(mock_d3, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 3) & 0x01)),
+               Method(mock_d2, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 2) & 0x01)),
+               Method(mock_d1, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 1) & 0x01)),
+               Method(mock_d0, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 0) & 0x01)),
+               Method(mock_e, SetLow));
+
+        lcd.WriteData(kByte);
+        // The RS pin should be set to write to the data register.
+        // The enable pin should output low after D7-D0 are set.
+        Verify(Method(mock_rs, Set)
+                   .Using(GpioInterface::PinOutput(
+                       St7066u::WriteOperation::kData)),
+               Method(mock_rw, SetLow),
+               Method(mock_d7, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 7) & 0x01)),
+               Method(mock_d6, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 6) & 0x01)),
+               Method(mock_d5, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 5) & 0x01)),
+               Method(mock_d4, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 4) & 0x01)),
+               Method(mock_d3, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 3) & 0x01)),
+               Method(mock_d2, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 2) & 0x01)),
+               Method(mock_d1, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 1) & 0x01)),
+               Method(mock_d0, Set)
+                   .Using(GpioInterface::PinOutput((kByte >> 0) & 0x01)),
+               Method(mock_e, SetLow));
+    }
+
     SECTION("Clearing the Display")
     {
         constexpr uint8_t kClearDisplay =
@@ -466,5 +600,80 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
             Method(mock_d0, Set)
                 .Using(GpioInterface::PinOutput((kCursorAddress >> 0) & 0x01)),
             Method(mock_e, SetLow));
+    }
+
+    SECTION("Reset Cursor Position")
+    {
+        constexpr uint8_t kClearDisplay =
+            static_cast<uint8_t>(St7066u::Command::kClearDisplay);
+
+        St7066u lcd = St7066u(St7066u::BusMode::kEightBit,
+                              St7066u::DisplayMode::kMultiLine,
+                              St7066u::FontStyle::kFont5x8, pins);
+        lcd.Initialize();
+
+        lcd.ResetCursorPosition();
+        // The driver should send the kCursorAddress byte to set the cursor
+        // position address.
+        Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
+               Method(mock_e, SetHigh));
+        Verify(
+            Method(mock_rs, Set)
+                .Using(GpioInterface::PinOutput(
+                    St7066u::WriteOperation::kCommand)),
+            Method(mock_rw, SetLow),
+            Method(mock_d7, Set)
+                .Using(GpioInterface::PinOutput((kClearDisplay >> 7) & 0x01)),
+            Method(mock_d6, Set)
+                .Using(GpioInterface::PinOutput((kClearDisplay >> 6) & 0x01)),
+            Method(mock_d5, Set)
+                .Using(GpioInterface::PinOutput((kClearDisplay >> 5) & 0x01)),
+            Method(mock_d4, Set)
+                .Using(GpioInterface::PinOutput((kClearDisplay >> 4) & 0x01)),
+            Method(mock_d3, Set)
+                .Using(GpioInterface::PinOutput((kClearDisplay >> 3) & 0x01)),
+            Method(mock_d2, Set)
+                .Using(GpioInterface::PinOutput((kClearDisplay >> 2) & 0x01)),
+            Method(mock_d1, Set)
+                .Using(GpioInterface::PinOutput((kClearDisplay >> 1) & 0x01)),
+            Method(mock_d0, Set)
+                .Using(GpioInterface::PinOutput((kClearDisplay >> 0) & 0x01)),
+            Method(mock_e, SetLow));
+    }
+
+    SECTION("Display Text")
+    {
+        const char kText[] = "Text String";
+
+        St7066u lcd = St7066u(St7066u::BusMode::kEightBit,
+                              St7066u::DisplayMode::kMultiLine,
+                              St7066u::FontStyle::kFont5x8, pins);
+        lcd.Initialize();
+
+        lcd.DisplayText(kText);
+        for (uint8_t i = 0; i < strlen(kText); i++)
+        {
+            Verify(Method(mock_rs, Set)
+                       .Using(GpioInterface::PinOutput(
+                           St7066u::WriteOperation::kCommand)),
+                   Method(mock_rw, SetLow),
+                   Method(mock_d7, Set)
+                       .Using(GpioInterface::PinOutput((kText[i] >> 7) & 0x01)),
+                   Method(mock_d6, Set)
+                       .Using(GpioInterface::PinOutput((kText[i] >> 6) & 0x01)),
+                   Method(mock_d5, Set)
+                       .Using(GpioInterface::PinOutput((kText[i] >> 5) & 0x01)),
+                   Method(mock_d4, Set)
+                       .Using(GpioInterface::PinOutput((kText[i] >> 4) & 0x01)),
+                   Method(mock_d3, Set)
+                       .Using(GpioInterface::PinOutput((kText[i] >> 3) & 0x01)),
+                   Method(mock_d2, Set)
+                       .Using(GpioInterface::PinOutput((kText[i] >> 2) & 0x01)),
+                   Method(mock_d1, Set)
+                       .Using(GpioInterface::PinOutput((kText[i] >> 1) & 0x01)),
+                   Method(mock_d0, Set)
+                       .Using(GpioInterface::PinOutput((kText[i] >> 0) & 0x01)),
+                   Method(mock_e, SetLow));
+        }
     }
 }
