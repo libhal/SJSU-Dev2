@@ -25,10 +25,9 @@ class GpioInterface
   virtual void SetLow(void)                      = 0;
   virtual void Set(State output = kHigh)         = 0;
   virtual void Toggle()                          = 0;
-  virtual State ReadState(void)                    = 0;
-  virtual bool Read(void)                 = 0;
+  virtual State ReadState(void)                  = 0;
+  virtual bool Read(void)                        = 0;
 };
-
 class Gpio : public GpioInterface, public Pin
 {
  public:
