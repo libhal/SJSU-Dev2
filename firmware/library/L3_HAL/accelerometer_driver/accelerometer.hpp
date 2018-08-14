@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstdint>
 
+#include "L1_Drivers/i2c.hpp"
+
 class AccelerometerInterface
 {
  public:
@@ -23,6 +25,8 @@ class Accelerometer : AccelerometerInterface
     uint8_t const accelerometerAddress = 0x38;
     float const radiansToDegree = 180/3.14;
     uint8_t const whoAmIExpectedValue = 0x2a;
+    size_t const 8BitLength = 1;
+    size_t const 16BitLength = 2;
 
     enum class RegisterMap_t
       {
@@ -35,7 +39,15 @@ class Accelerometer : AccelerometerInterface
       };
     Accelerometer();
     bool Init() override;
-    int16_t GetX() override;
+    int16_t GetX() override
+    {
+        I2c XTransaction(kI2c2);
+        uint16_t kXVal;
+        RegisterMap_t kXReg = RegisterMap_t::x;
+        XTransaction.WriteThenRead(accelerometerAddress, &kXReg, 
+                                   8BitLength, kXVal, 16BitLength);
+        return kXVal/dataOffset;
+    };
     int16_t GetY() override;
     int16_t GetZ() override;
     float GetPitch() override;
