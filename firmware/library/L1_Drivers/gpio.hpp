@@ -43,12 +43,12 @@ class Gpio : public GpioInterface, public PinConfigure
     // Sets the GPIO pin direction as input
     void SetAsInput(void) override
     {
-        gpio_base[kPort]->DIR &= ~(1 << kPin);
+        gpio_base[port_]->DIR &= ~(1 << kPin);
     }
     // Sets the GPIO pin direction as output
     void SetAsOutput(void) override
     {
-        gpio_base[kPort]->DIR |= (1 << kPin);
+        gpio_base[port_]->DIR |= (1 << kPin);
     }
     // Sets the GPIO pin direction as output or input depending on the
     // PinDirection enum parameter
@@ -59,12 +59,12 @@ class Gpio : public GpioInterface, public PinConfigure
     // Sets the GPIO output pin to high
     void SetHigh(void) override
     {
-        gpio_base[kPort]->SET = (1 << kPin);
+        gpio_base[port_]->SET = (1 << kPin);
     }
     // Sets the GPIO output pin to low
     void SetLow(void) override
     {
-        gpio_base[kPort]->CLR = (1 << kPin);
+        gpio_base[port_]->CLR = (1 << kPin);
     }
     // Sets the GPIO output pin to high or low depending on the PinOutput enum
     // parameter
@@ -76,6 +76,6 @@ class Gpio : public GpioInterface, public PinConfigure
     // Returns true if input or output pin is high
     bool ReadPin(void) override
     {
-        return ((gpio_base[kPort]->PIN >> kPin) & 1);
+        return ((gpio_base[port_]->PIN >> kPin) & 1);
     }
 };

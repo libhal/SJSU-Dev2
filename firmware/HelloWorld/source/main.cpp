@@ -3,36 +3,42 @@
 #include <cstdint>
 #include <cstdio>
 
+#include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/LPC40xx.h"
+#include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/debug_print.hpp"
-
-volatile uint32_t cycles = 500'000;
 
 int main(void)
 {
-#if SJ2_ENABLE_ANSI_CODES
-    // Clears the terminal
-    fputs("\e[2J\e[H", stdout);
-#endif
-    fputs(SJ2_BACKGROUND_GREEN
-         "================================== SJTwo Booted! "
-         "==================================\n" SJ2_COLOR_RESET, stdout);
-    DEBUG_PRINT("Initializing LEDs...");
-    LPC_IOCON->P1_1 &= ~(0b111);
-    LPC_IOCON->P1_8 &= ~(0b111);
-    LPC_GPIO1->DIR |= (1 << 1);
-    LPC_GPIO1->PIN &= ~(1 << 1);
-    LPC_GPIO1->DIR |= (1 << 8);
-    LPC_GPIO1->PIN |= (1 << 8);
-    DEBUG_PRINT("LEDs Initialized...");
-    fputs("Enter wait cycles for led animation: ", stdout);
-    scanf("%lu", &cycles);
-    DEBUG_PRINT("Toggling LEDs...");
+    // This example code uses a loopback test. Please connect the
+    // relevant TxD and RxD pins together. For this example please
+    // connect the TxD2 and RxD2 pins together
 
+    Uart test(2,8);
+    char receive;
+    char input2 [] = "Hello World";
+
+    // Calls the initialize function and checks if the
+    // function fails due to wrong input.
+    if (test.Initialize(38400) == 0)
+    {
+        printf("Fail!");
+    }
+
+    // While loop to constantly send the array of data
     while (1)
     {
-        for (uint32_t i = 0; i < cycles; i++) { continue; }
-        LPC_GPIO1->PIN ^= 0b0001'0000'0010;
+        // This first loop sends all the data within the array
+        for (int i=0; input2[i] != '\0'; i++) test.Send(input2[i]);
+
+        // This second loop receives all the sent data and prints it out
+        for (int j=0; input2[j] != '\0'; j++)  // 12
+        {
+            receive = test.Receive();
+            printf("%c", receive);
+        }
+            printf("\n");
+        Delay(1000);
     }
     return 0;
 }
