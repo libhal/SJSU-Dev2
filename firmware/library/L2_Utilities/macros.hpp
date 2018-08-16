@@ -9,7 +9,12 @@
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as
 // used to ensure that the compiler does remove this symbol at link time.
+#if defined(__APPLE__)
+#define SJ2_SECTION(section_name) \
+    __attribute__((used, section("__TEXT," section_name)))
+#else
 #define SJ2_SECTION(section_name) __attribute__((used, section(section_name)))
+#endif
 // SJ2_USED will use void casting as a means to convince the compiler that the
 // variable has been used in the software, to remove compiler warnings about
 // unused variables.
@@ -30,8 +35,13 @@
 #define SJ2_WEAK __attribute__((weak))
 // Similar to the weak attribute, but also gives each function the
 // implementation of the function f.
+#if defined(__APPLE__)
+#define SJ2_ALIAS(f) \
+    {                \
+    }
+#else
 #define SJ2_ALIAS(f) __attribute__((weak, alias(#f)))  // NOLINT
-
+#endif
 #if defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
 #define SJ2_DUMP_BACKTRACE() PrintTrace()
 #else

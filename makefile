@@ -38,7 +38,7 @@ endif
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-CLANG_TIDY   = clang-tidy-6.0
+CLANG_TIDY   = $(SJCLANG)/clang-tidy
 endif
 ifeq ($(UNAME_S),Darwin)
 CLANG_TIDY   = /usr/local/opt/llvm/bin/clang-tidy
@@ -267,6 +267,8 @@ show-lists:
 	@echo $(CFLAGS)
 	@echo "=========== TEST FLAGS =============="
 	@echo $(TEST_CFLAGS)
+	@echo "=========== CLANG TIDY BIN PATH =============="
+	echo $(CLANG_TIDY)
 
 $(HEX): $(EXECUTABLE)
 	@echo ' '
@@ -416,7 +418,7 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@echo ' '
 
 lint:
-	@python2 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
+	@python2.7 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
 
 tidy:
 	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 $(INCLUDES)
