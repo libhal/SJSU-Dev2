@@ -86,7 +86,7 @@ cd "${SJBASE}/firmware/HelloWorld"
 # Clean the build and start building from scratch
 make clean
 # Check if the system can build without any warnings!
-make build WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
+make build -j16 WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
 # Set build capture to return code from the build
 BUILD_CAPTURE=$?
 print_status $BUILD_CAPTURE
@@ -100,7 +100,7 @@ printf "\e[0;33mBuilding Example $d\e[0m\n"
 # Clean the build and start building from scratch
 make clean
 # Check if the system can build without any warnings!
-make build WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
+make build -j16 WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
 # Add the return codes of the previous build capture. None zero means that at
 # least one of the captures failed.
 SPECIFIC_BUILD_CAPTURE=$?
@@ -134,7 +134,7 @@ printf "\e[1;33m======================================================= \e[0m\n"
 #         Unit Test Check          #
 ####################################
 printf "\e[0;33mBuilding and running unit tests \e[0m"
-make test -j8
+make test -j16
 TEST_CAPTURE=$?
 print_status $TEST_CAPTURE
 echo ""
