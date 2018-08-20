@@ -61,12 +61,12 @@ class SspInterface
 
     virtual bool Initialize()                                       = 0;
     virtual bool GetTransferStatus()                                = 0;
-    virtual uint8_t Transfer(uint16_t data)                         = 0;
+    virtual uint16_t Transfer(uint16_t data)                        = 0;
     virtual void SetPeripheralPower()                               = 0;
     virtual void SetPeripheralMode(
             MasterSlaveMode mode, FrameMode frame, DataSize size)   = 0;
-    // NOTE: clock_divider is the number of prescaler-output clocks per bit.
+    // NOTE: "divider" is the number of prescaler-output clocks per bit.
     // See page 611 of UM10562 for SCR-Serial Clock Rate for more info.
     virtual void SetClock(bool polarity, bool phase,
-            uint8_t prescaler, uint8_t clock_divider)               = 0;
+            uint8_t prescaler, uint8_t divider)                     = 0;
 };

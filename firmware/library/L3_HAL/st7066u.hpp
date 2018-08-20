@@ -1,4 +1,11 @@
-// TODO(#51): Add usage section
+// This file contains the driver class for Parallel LCD Screens that utilize the
+// ST7066U controller.
+// Usage:
+//      St7066u lcd(St7066u::BusMode::kEightBit,
+//                  St7066u::DisplayMode::kMultiLine,
+//                  St7066u::FontStyle::kFont5x8, pins);
+//      lcd.Initialize();
+//      lcd.DisplayText("Example Text.");
 #pragma once
 
 #include <cstdint>
@@ -280,6 +287,13 @@ class St7066u : public St7066uInterface
     // @param pos  Character position to move cursor to.
     void SetCursorPosition(CursorPosition_t position) override
     {
+        SJ2_ASSERT_FATAL(position.line_number < 5,
+                         "SetCursorPosition() - The driver does not support "
+                         "more than 4 display lines");
+        SJ2_ASSERT_FATAL(position.position < 20,
+                         "SetCursorPosition() - The character position should "
+                         "not exceed the max display width");
+
         constexpr Command kLineAddresses[] = {
             Command::kDisplayLineAddress0,
             Command::kDisplayLineAddress1,
@@ -297,21 +311,37 @@ class St7066u : public St7066uInterface
         Delay(2);  // requires 1.52ms
     }
 
+    // Displays a desired text string on the display.
+    //
+    // @param text     String to write on the display.
+    // @param position Position to start writing the characters
     void DisplayText(const char * text, CursorPosition_t position =
                                             kDefaultCursorPosition) override
     {
+        constexpr uint8_t kMaxDisplayWidth = 20;
+        const uint8_t kStartOffset         = position.position;
+        uint8_t termination_index          = uint8_t(strlen(text));
+        // calculate the termination_index to stop writing to the display
+        // if the string length of text exceeds the display's width
+        if (termination_index > kMaxDisplayWidth)
+        {
+            termination_index = kMaxDisplayWidth;
+        }
+        if (termination_index > (kMaxDisplayWidth - kStartOffset))
+        {
+            termination_index = uint8_t(kMaxDisplayWidth - kStartOffset);
+        }
+        // set cursor start position for writing
         SetCursorPosition(position);
-        // TODO(#51): check the string length of text to ensure it does not
-        // exceed the displays's maximum supported character display length
-        for (uint8_t i = 0; i < strlen(text); i++)
+        for (uint8_t i = 0; i < termination_index; i++)
         {
             WriteData(text[i]);
         }
     }
 
  protected:
-    const BusMode         kBusMode;
-    const DisplayMode     kDisplayMode;
-    const FontStyle       kFontStyle;
+    const BusMode kBusMode;
+    const DisplayMode kDisplayMode;
+    const FontStyle kFontStyle;
     const ControlPins_t & kControlPins;
 };
