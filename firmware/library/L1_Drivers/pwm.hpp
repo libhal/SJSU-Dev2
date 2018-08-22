@@ -102,7 +102,7 @@ class Pwm : public PwmInterface
 
     void SetDutyCycle(float duty_cycle) override
     {
-        SJ2_ASSERT_FATAL(0.0 <= duty_cycle && duty_cycle <= 1.0,
+        SJ2_ASSERT_FATAL(0.0f <= duty_cycle && duty_cycle <= 1.0f,
             "duty_cycle of Duty Cycle provided is out of bounds.");
         *match_register_table[channel_] = CalculateDutyCycle(duty_cycle);
         pwm1->LER |= (1 << channel_);

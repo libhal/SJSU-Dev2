@@ -25,7 +25,6 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
     Mock<PinConfigureInterface> mock_pwm_pin;
 
     Fake(Method(mock_pwm_pin, SetPinFunction));
-    PinConfigureInterface &pwm = mock_pwm_pin.get();
     Pwm test2_0(1);
 
     constexpr uint32_t kDefaultFrequency = 1'000;
@@ -64,9 +63,10 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
 
     SECTION("Calculate the Duty Cycle")
     {
-        test2_0.SetDutyCycle(.27);
-        CHECK(test2_0.CalculateDutyCycle(.27) ==
-         (.27 * test2_0.GetMatchRegister0()));
+        test2_0.SetDutyCycle(.27f);
+        float error = static_cast<float>(test2_0.CalculateDutyCycle(.27f)) -
+         (.27f * static_cast<float>(test2_0.GetMatchRegister0()));
+        CHECK((-.1f <= error && error <= .1f) == true);
     }
 
     SECTION("Setting and Getting Frequency")
@@ -79,18 +79,20 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
 
     SECTION("Set Duty Cycle")
     {
-        test2_0.SetDutyCycle(.50);
+        test2_0.SetDutyCycle(.50f);
+        float error = (static_cast<float>(local_pwm.MR1)/
+            static_cast<float>(local_pwm.MR0)) - .50f;
         CHECK(local_pwm.MR0 == test2_0.GetMatchRegister0());
-        CHECK(local_pwm.MR1 == test2_0.CalculateDutyCycle(.50));
-        CHECK((static_cast<float>(local_pwm.MR1)/local_pwm.MR0) * 100 == 50.0);
+        CHECK(local_pwm.MR1 == test2_0.CalculateDutyCycle(.50f));
+        CHECK((-0.1f <= error && error <= 0.1f) == true);
         CHECK(local_pwm.LER == 0b10);
     }
 
     SECTION("Get Duty Cycle")
     {
-        float duty_cycle = 0.10;
+        float duty_cycle = 0.10f;
         test2_0.SetDutyCycle(duty_cycle);
         float error = duty_cycle - test2_0.GetDutyCycle();
-        CHECK((-0.01 <= error && error <= 0.01) == true);
+        CHECK((-0.01f <= error && error <= 0.01f) == true);
     }
 }
