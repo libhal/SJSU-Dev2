@@ -71,14 +71,34 @@ case "$OS" in
         echo "                Updating Apt listings                "
         echo "└─────────────────────────────────────────────────── "
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main"
-        sudo apt-add-repository -y "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main"
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-6.0 main"
-        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID=")
+        echo "UBUNTU $VERSION_ID"
+        if [ "$VERSION_ID" = "VERSION_ID=18.04" ]
+        then
+            echo " ───────────────────────────────────────────────────┐"
+            echo "    Setting up Clang 6.0 tools repo (Ubuntu 18.04)   "
+            echo "└─────────────────────────────────────────────────── "
+            sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-6.0 main"
+            sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        elif [ "$VERSION_ID" = "VERSION_ID=16.04" ]
+        then
+            echo " ───────────────────────────────────────────────────┐"
+            echo "    Setting up Clang 6.0 tools repo (Ubuntu 16.04)   "
+            echo "└─────────────────────────────────────────────────── "
+            sudo apt-add-repository -y "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main"
+            sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        else
+            echo " ───────────────────────────────────────────────────┐"
+            echo "   Setting up Clang 6.0 tools repo (Ubuntu <=14.04)  "
+            echo "└─────────────────────────────────────────────────── "
+            sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main"
+            sudo apt-add-repository -y "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu trusty main"
+        fi
         sudo apt update
         echo " ───────────────────────────────────────────────────┐"
         echo "               Installing Clang 6.0                  "
         echo "└─────────────────────────────────────────────────── "
+        apt search clang
         sudo apt -y install clang-6.0 lldb-6.0 lld-6.0
         echo " ───────────────────────────────────────────────────┐"
         echo "            Installing Clang Format 6.0              "
