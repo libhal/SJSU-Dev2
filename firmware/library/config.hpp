@@ -57,6 +57,18 @@ SJ2_DECLARE_CONSTANT(RTOS_FREQUENCY, uint16_t, kRtosFrequency);
 static_assert(1 <= kRtosFrequency && kRtosFrequency <= 10'000,
               "SJ2_RTOS_FREQUENCY can only be between 1,000Hz and 1Hz");
 
+// Default baud rate of 38400 divides perfectly with the LPC17xx and LPC40xx
+// UART clock dividers perfectly, where as all other standard baud rates
+// do not.
+#if !defined SJ2_BAUD_RATE
+#define SJ2_BAUD_RATE 38'400
+#endif  // !defined SJ2_BAUD_RATE
+SJ2_DECLARE_CONSTANT(BAUD_RATE, uint32_t, kBaudRate);
+static_assert(4'800 <= kBaudRate && kBaudRate <= 4'000'000 &&
+                  kBaudRate <= kSystemClockRate / 16,
+              "SJ2_BAUD_RATE must be between 4800 bits/s and 4 Mbits/s and "
+              "less than the clock speed / 16 ");
+
 // Used to dump all the call stack when "PrintBacktrace" is called or an assert
 // using PrintBacktrace is occurs.
 // Disable this to omit getting these logs and reduce the binary size by ~5kB.

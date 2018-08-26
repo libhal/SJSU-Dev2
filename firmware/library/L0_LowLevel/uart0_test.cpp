@@ -7,8 +7,8 @@
 
 TEST_CASE("Testing Uart0", "[uart0]")
 {
-    using fakeit::Mock;
     using fakeit::Fake;
+    using fakeit::Mock;
     using fakeit::Verify;
 
     LPC_UART_TypeDef local_uart0_register;
@@ -35,11 +35,13 @@ TEST_CASE("Testing Uart0", "[uart0]")
         // Source: "UM10562 LPC408x/407x User manual" table 84 page 133
         constexpr uint32_t kPconpUart0  = 1 << 3;
         constexpr uint32_t kFIfoEnabled = 1 << 0;
-        constexpr uint32_t kBaudRate    = 38400;
-        constexpr uint32_t kDivider     = static_cast<uint32_t>(
-            config::kSystemClockRate / (16.0f * kBaudRate) + 0.5f);
-        constexpr uint32_t kUpperByte        = (kDivider >> 8) & 0xFF;
-        constexpr uint32_t kLowerByte        = kDivider & 0xFF;
+        constexpr uint32_t kBaudRate    = 500'000;
+        // 12'000'000 Hz / (16*1*(1+1/2)) = 500'000;
+        constexpr uint32_t kExpectedUpperByte = 0;
+        constexpr uint32_t kExpectedLowerByte = 1;
+        constexpr uint32_t kExpectedDivAdd    = 1;
+        constexpr uint32_t kExpectedMul       = 2;
+        constexpr uint32_t kExpectedFdr = (kExpectedMul << 4) | kExpectedDivAdd;
         constexpr uint32_t kBits8DlabCleared = 3;
 
         uart0::Init(kBaudRate);
@@ -54,9 +56,10 @@ TEST_CASE("Testing Uart0", "[uart0]")
             .Once();
         Verify(Method(mock_gpio_rx, SetPinFunction).Using(1)).Once();
 
-        CHECK(kUpperByte == local_uart0_register.DLM);
-        CHECK(kLowerByte == local_uart0_register.DLL);
+        CHECK(kExpectedUpperByte == local_uart0_register.DLM);
+        CHECK(kExpectedLowerByte == local_uart0_register.DLL);
         CHECK(kBits8DlabCleared == local_uart0_register.LCR);
         CHECK(kFIfoEnabled == (local_uart0_register.FCR & kFIfoEnabled));
+        CHECK(kExpectedFdr == local_uart0_register.FDR);
     }
 }

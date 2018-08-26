@@ -350,9 +350,6 @@ void SetupTimerInterrupt()
 SJ2_WEAK void LowLevelInit()
 {
     SetupTimerInterrupt();
-    // Enable Peripheral Clock
-    // TODO(#30): Replace this with a System Clock Driver.
-    LPC_SC->PCLKSEL = 1;
 }
 
 inline void SystemInit()
@@ -364,8 +361,11 @@ inline void SystemInit()
     // Initialisation C++ libraries
     __libc_init_array();
 #endif
+    // Enable Peripheral Clock
+    // TODO(#30): Replace this with a System Clock Driver.
+    LPC_SC->PCLKSEL = 1;
     // required for printf and scanf to work properly
-    uart0::Init(38400);
+    uart0::Init(config::kBaudRate);
     LowLevelInit();
 }
 
@@ -382,12 +382,8 @@ void ResetIsr(void)
     const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
     __set_PSP(kTopOfStack);
     __set_MSP(kTopOfStack);
+
     SystemInit();
-    // Default baud rate of 38400 divides perfectly with the LPC17xx and LPC40xx
-    // UART clock dividers perfectly, where as all other standard baud rates
-    // do not.
-    constexpr uint32_t kDefaultBaudRate = 38400;
-    uart0::Init(kDefaultBaudRate);
 
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
