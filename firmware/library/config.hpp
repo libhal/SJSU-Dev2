@@ -85,4 +85,10 @@ SJ2_DECLARE_CONSTANT(INCLUDE_BACKTRACE, bool, kIncludeBacktrace);
 #endif  // !defined SJ2_DEBUG_PRINT_ENABLED
 SJ2_DECLARE_CONSTANT(DEBUG_PRINT_ENABLED, bool, kDebugPrintEnabled);
 
+// Used to set the default scheduler size for the TaskScheduler.
+#if !defined SJ2_TASK_SCHEDULER_SIZE
+#define SJ2_TASK_SCHEDULER_SIZE 16
+#endif  // !defined SJ2_TASK_SCHEDULER_SIZE
+SJ2_DECLARE_CONSTANT(TASK_SCHEDULER_SIZE, uint8_t, kTaskSchedulerSize);
+
 }  // namespace config

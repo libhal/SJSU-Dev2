@@ -243,10 +243,25 @@ IsrPointer dynamic_isr_vector_table[] = {
     EepromIrqHandler,       // 56, 0xe0 - EEPROM
 };
 
-
 extern "C" void vPortSetupTimerInterrupt(void)  // NOLINT
 {
     // Empty implementation, startup handles this itself.
+}
+
+static StaticTask_t idle_task_tcb;
+static StackType_t idle_task_stack[configMINIMAL_STACK_SIZE];
+// Implementation of vApplicationGetIdleTaskMemory required when
+// configSUPPORT_STATIC_ALLOCATION == 1.
+// The function is called to statically create the idle task when
+// vTaskStartScheduler is invoked.
+extern "C" void vApplicationGetIdleTaskMemory(  // NOLINT
+    StaticTask_t ** ppx_idle_task_tcb_buffer,
+    StackType_t ** ppx_idle_task_stack_buffer,
+    uint32_t * pul_idle_task_stack_size)
+{
+    *ppx_idle_task_tcb_buffer   = &idle_task_tcb;
+    *ppx_idle_task_stack_buffer = idle_task_stack;
+    *pul_idle_task_stack_size   = SJ2_ARRAY_LENGTH(idle_task_stack);
 }
 
 // .data Section Table Information
@@ -341,7 +356,7 @@ void SetupTimerInterrupt()
     system_timer.SetTickFrequency(config::kRtosFrequency);
     bool timer_started_successfully = system_timer.StartTimer();
     SJ2_ASSERT_WARNING(timer_started_successfully,
-                    "System Timer has FAILED to start!");
+                       "System Timer has FAILED to start!");
 }
 
 SJ2_WEAK void LowLevelInit()
