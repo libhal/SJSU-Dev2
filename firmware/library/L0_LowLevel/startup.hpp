@@ -7,6 +7,7 @@ using IsrPointer = void (*)(void);
 
 extern SystemTimer system_timer;
 
+extern const IsrPointer kInterruptVectorTable[];
 extern IsrPointer dynamic_isr_vector_table[];
 
 extern "C" void xPortPendSVHandler(void);  // NOLINT

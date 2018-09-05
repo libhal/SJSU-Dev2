@@ -44,6 +44,17 @@ ARM_GCC_ARCHIVE_FILE_MAC="$ARM_GCC_COMMON-mac.tar.bz"
 ARM_GCC_ARCHIVE_LINUX_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_LINUX"
 ARM_GCC_ARCHIVE_MAC_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_MAC"
 
+CLANG_VERSION="6.0.1"
+UBUNTU_CLANG_URL="http://releases.llvm.org/$CLANG_VERSION/"
+CLANG_14="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04"
+CLANG_16="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-16.04"
+CLANG_FILE_EXTENSION=".tar.xz"
+CLANG_14_FILE="$CLANG_14$CLANG_FILE_EXTENSION"
+CLANG_16_FILE="$CLANG_16$CLANG_FILE_EXTENSION"
+CLANG_14_URL="$UBUNTU_CLANG_URL$CLANG_14_FILE"
+CLANG_16_URL="$UBUNTU_CLANG_URL$CLANG_16_FILE"
+CLANG_PKG=""
+CLANG_PATH=""
 echo " ──────────────────────────────────────────────────┐"
 echo ""
 echo "  Starting SJSU-DEV-Linux Environment Setup Script  "
@@ -68,32 +79,40 @@ case "$OS" in
         echo "Operating System: Linux"
         SJSUONEDEV=/dev/ttyUSB0
         echo " ───────────────────────────────────────────────────┐"
-        echo "                Updating Apt listings                "
+        echo "               Updating Apt listings                 "
         echo "└─────────────────────────────────────────────────── "
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-        sudo apt-add-repository -y "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-6.0 main"
-        sudo apt-add-repository -y "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main"
-        sudo apt-add-repository -y "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-6.0 main"
         sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
         sudo apt update
-        echo " ───────────────────────────────────────────────────┐"
-        echo "               Installing Clang 6.0                  "
-        echo "└─────────────────────────────────────────────────── "
-        sudo apt -y install clang-6.0 lldb-6.0 lld-6.0
-        echo " ───────────────────────────────────────────────────┐"
-        echo "            Installing Clang Format 6.0              "
-        echo "└─────────────────────────────────────────────────── "
-        sudo apt -y install clang-format-6.0
-        echo " ───────────────────────────────────────────────────┐"
-        echo "              Installing Clang Tidy 6.0              "
-        echo "└─────────────────────────────────────────────────── "
-        sudo apt -y install clang-tidy-6.0
+
+        VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID=")
+        echo "UBUNTU $VERSION_ID"
+        if [ "$VERSION_ID" = "VERSION_ID=\"14.04\"" ]
+        then
+            echo " ───────────────────────────────────────────────────┐"
+            echo "     Downloading Clang 6.0 tools (Ubuntu 14.04)      "
+            echo "└─────────────────────────────────────────────────── "
+            curl -C - -LO "$CLANG_14_URL"
+            CLANG_PKG="$CLANG_14_FILE"
+            CLANG_PATH="$CLANG_14"
+        else
+            echo " ───────────────────────────────────────────────────┐"
+            echo "     Downloading Clang 6.0 tools (Ubuntu 16.04)+     "
+            echo "└─────────────────────────────────────────────────── "
+            curl -C - -LO "$CLANG_16_URL"
+            CLANG_PKG="$CLANG_16_FILE"
+            CLANG_PATH="$CLANG_16"
+        fi
+        echo " ──────────────────────────────────────────────────┐"
+        echo "               Extracting Clang 6.0                 "
+        echo "└────────────────────────────────────────────────── "
+        echo "$CLANG_PKG"
+        tar --extract  --verbose --xz --file="$CLANG_PKG" 2> /dev/null
         echo " ───────────────────────────────────────────────────┐"
         echo "                Installing OpenOCD                   "
         echo "└─────────────────────────────────────────────────── "
         sudo apt -y install openocd
         echo " ───────────────────────────────────────────────────┐"
-        echo "        Installing build-essentials (GCC, make)      "
+        echo "        Installing build-essentials (make)           "
         echo "└─────────────────────────────────────────────────── "
         sudo apt -y install build-essential
         echo " ───────────────────────────────────────────────────┐"
@@ -158,9 +177,9 @@ case "$OS" in
         echo "└─────────────────────────────────────────────────── "
         brew install --HEAD valgrind
         echo " ───────────────────────────────────────────────────┐"
-        echo "          Using EASY_INSTALL to install PIP          "
+        echo "        Installing PIP via bootstrap.pypa.io         "
         echo "└─────────────────────────────────────────────────── "
-        sudo easy_install pip
+        curl https://bootstrap.pypa.io/get-pip.py | python2.7
         echo " ──────────────────────────────────────────────────┐"
         echo "            Downloading gcc-arm-embedded            "
         echo "└────────────────────────────────────────────────── "
@@ -169,7 +188,8 @@ case "$OS" in
         ;;
 
     *)	#Default if Operating System other than Mac or Linux
-        echo "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems are supported! Exiting..."
+        echo -n "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems "
+        echo "are supported! Exiting..."
         exit 1
         ;;
 esac
@@ -180,7 +200,7 @@ echo "└───────────────────────�
 tar --extract \
     --verbose \
     --bzip2 \
-    --file="$GCC_PKG"\
+    --file="$GCC_PKG" \
     --exclude='share/doc' 2> /dev/null
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
@@ -200,6 +220,7 @@ echo "                Setting Up Hyperload                 "
 echo "└─────────────────────────────────────────────────── "
 rm -rf "$TOOLDIR/Hyperload/"
 git clone --depth=1 https://github.com/kammce/Hyperload.git "$TOOLDIR/Hyperload/"
+git checkout sjtwo
 cd "$TOOLDIR/Hyperload/" && ./setup
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
@@ -228,9 +249,13 @@ SJPROJ=firmware
 # Sets which DBC to generate, defaults to "DBG"
 ENTITY=DBG
 
+# Sets CLANG tools path
+SJCLANG=\$SJBASE/tools/$CLANG_PATH/bin
+
 # Compiler and library settings:
 # Selects compiler version to use
 PATH=\$(printf %q "\$PATH:\$SJBASE/tools/$ARM_GCC_COMMON/bin")
+PATH=\$(printf %q "\$PATH:\$SJCLANG")
 SJLIBDIR="\$SJBASE/firmware/library"
 
 # Export everything to the environment
@@ -238,6 +263,7 @@ export SJBASE
 export SJDEV
 export SJBAUD
 export SJPROJ
+export SJCLANG
 export ENTITY
 export PATH
 export SJLIBDIR

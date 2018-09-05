@@ -9,7 +9,12 @@
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as
 // used to ensure that the compiler does remove this symbol at link time.
+#if defined(__APPLE__)
+#define SJ2_SECTION(section_name) \
+    __attribute__((used, section("__TEXT," section_name)))
+#else
 #define SJ2_SECTION(section_name) __attribute__((used, section(section_name)))
+#endif
 // SJ2_USED will use void casting as a means to convince the compiler that the
 // variable has been used in the software, to remove compiler warnings about
 // unused variables.
@@ -30,8 +35,13 @@
 #define SJ2_WEAK __attribute__((weak))
 // Similar to the weak attribute, but also gives each function the
 // implementation of the function f.
+#if defined(__APPLE__)
+#define SJ2_ALIAS(f) \
+    {                \
+    }
+#else
 #define SJ2_ALIAS(f) __attribute__((weak, alias(#f)))  // NOLINT
-
+#endif
 #if defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
 #define SJ2_DUMP_BACKTRACE() PrintTrace()
 #else
@@ -52,27 +62,33 @@
         }                                                            \
     } while (0)
 
-#define SJ2_ASSERT_FATAL(condition, fatal_message, ...)                   \
-    do                                                                    \
-    {                                                                     \
-        if (!(condition))                                                 \
-        {                                                                 \
-            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                           \
-                        "ERROR: " fatal_message SJ2_COLOR_RESET,          \
-                        ##__VA_ARGS__);                                   \
-            printf("\nPrinting Stack Trace:\n");                          \
-            SJ2_DUMP_BACKTRACE();                                         \
-            printf(                                                       \
-                "\nRun: the following command in your project directory"  \
-                "\n\n    " SJ2_BOLD_WHITE                                 \
-                "arm-none-eabi-addr2line -e build/binaries/firmware.elf " \
-                "<insert pc>" SJ2_COLOR_RESET                             \
-                "\n\n"                                                    \
-                "This will report the file and line number associated "   \
-                "with that program counter values above.");               \
-            while (true)                                                  \
-            {                                                             \
-                continue;                                                 \
-            }                                                             \
-        }                                                                 \
+#define SJ2_ASSERT_FATAL_WITH_DUMP(with_dump, condition, fatal_message, ...)  \
+    do                                                                        \
+    {                                                                         \
+        if (!(condition))                                                     \
+        {                                                                     \
+            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                               \
+                        "ERROR: " fatal_message SJ2_COLOR_RESET,              \
+                        ##__VA_ARGS__);                                       \
+            if ((with_dump))                                                  \
+            {                                                                 \
+                printf("\nPrinting Stack Trace:\n");                          \
+                SJ2_DUMP_BACKTRACE();                                         \
+                printf(                                                       \
+                    "\nRun: the following command in your project directory"  \
+                    "\n\n    " SJ2_BOLD_WHITE                                 \
+                    "arm-none-eabi-addr2line -e build/binaries/firmware.elf " \
+                    "<insert pc>" SJ2_COLOR_RESET                             \
+                    "\n\n"                                                    \
+                    "This will report the file and line number associated "   \
+                    "with that program counter values above.");               \
+            }                                                                 \
+            while (true)                                                      \
+            {                                                                 \
+                continue;                                                     \
+            }                                                                 \
+        }                                                                     \
     } while (0)
+
+#define SJ2_ASSERT_FATAL(condition, fatal_message, ...) \
+    SJ2_ASSERT_FATAL_WITH_DUMP(true, (condition), fatal_message, ##__VA_ARGS__)

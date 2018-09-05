@@ -76,17 +76,30 @@ git diff-index --quiet HEAD --
 STATUS_CAPTURE=$?
 print_status $STATUS_CAPTURE
 echo ""
-printf "\e[1;33m======================================================= \e[0m\n\n"
-printf "\e[0;33mBuilding Template Project HelloWorld\e[0m\n"
 ####################################
 #    All Projects Build Check      #
 ####################################
+printf "\e[1;33m======================================================= \e[0m\n\n"
+printf "\e[0;33mBuilding Template Project HelloWorld\e[0m\n"
 # Change to the HelloWorld project
 cd "${SJBASE}/firmware/HelloWorld"
 # Clean the build and start building from scratch
 make clean
 # Check if the system can build without any warnings!
-make build WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
+make application -j16 WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
+# Set build capture to return code from the build
+BUILD_CAPTURE=$?
+print_status $BUILD_CAPTURE
+echo ""
+
+printf "\e[1;33m======================================================= \e[0m\n\n"
+printf "\e[0;33mBuilding Project Hyperload\e[0m\n"
+# Change to the HelloWorld project
+cd "${SJBASE}/firmware/HelloWorld"
+# Clean the build and start building from scratch
+make clean
+# Check if the system can build without any warnings!
+make bootloader -j16 WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
 # Set build capture to return code from the build
 BUILD_CAPTURE=$?
 print_status $BUILD_CAPTURE
@@ -100,7 +113,7 @@ printf "\e[0;33mBuilding Example $d\e[0m\n"
 # Clean the build and start building from scratch
 make clean
 # Check if the system can build without any warnings!
-make build WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
+make application -j16 WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
 # Add the return codes of the previous build capture. None zero means that at
 # least one of the captures failed.
 SPECIFIC_BUILD_CAPTURE=$?
@@ -124,7 +137,7 @@ echo ""
 #         Clang Tidy Check         #
 ####################################
 printf "\e[1;33m======================================================= \e[0m\n"
-printf "\e[0;33mExecuting 'tidy' check \e[0m"
+printf "\e[0;33mExecuting 'tidy' check \e[0m\n"
 make tidy
 TIDY_CAPTURE=$?
 print_status $TIDY_CAPTURE
@@ -133,8 +146,8 @@ printf "\e[1;33m======================================================= \e[0m\n"
 ####################################
 #         Unit Test Check          #
 ####################################
-printf "\e[0;33mBuilding and running unit tests \e[0m"
-make test -j8
+printf "\e[0;33mBuilding and running unit tests \e[0m\n"
+make test -j16 WARNINGS_ARE_ERRORS=-Werror
 TEST_CAPTURE=$?
 print_status $TEST_CAPTURE
 echo ""
