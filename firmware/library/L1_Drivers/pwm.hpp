@@ -12,6 +12,7 @@
 #include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin_configure.hpp"
+#include "L2_Utilities/debug_print.hpp"
 #include "L2_Utilities/macros.hpp"
 
 class PwmInterface
@@ -44,6 +45,7 @@ class Pwm : public PwmInterface
     {
         kTimerMode = (3 << 0),
         kCounterEnable = (1 << 0),
+        kCounterReset = (1 << 1),
         kResetMr0 = (1 << 1),
         kPwmEnable = (1 << 3)
     };
@@ -134,6 +136,8 @@ class Pwm : public PwmInterface
     {
         if (enable)
         {
+            pwm1->TCR |= PwmConfigure::kCounterReset;
+            pwm1->TCR &= ~PwmConfigure::kCounterReset;
             pwm1->TCR |=
              PwmConfigure::kCounterEnable | PwmConfigure::kPwmEnable;
         }
