@@ -27,16 +27,27 @@ int main(void)
 
     while (1)
     {
-        while (frequency <= 5)
+        p2_0.SetFrequency(1000);
+        for (int i = 0; i <= 255; i++)
         {
-            frequency = frequency/2;
+            duty = static_cast<float>(i)/255.0;
+            p2_0.SetDutyCycle(duty);
+            Delay(10);
+        }
+
+        p2_0.SetDutyCycle(0.5);
+        while (frequency < 20000)
+        {
+            frequency = frequency * 2;
             p2_0.SetFrequency(frequency);
-            for (int i = 0; i <= 255; i++)
-            {
-                duty = static_cast<float>(i)/255.0;
-                p2_0.SetDutyCycle(duty);
-                Delay(10);
-            }
+            Delay(500);
+        }
+
+        while (frequency > 5)
+        {
+            frequency = frequency / 2;
+            p2_0.SetFrequency(frequency);
+            Delay(500);
         }
     }
     return 0;

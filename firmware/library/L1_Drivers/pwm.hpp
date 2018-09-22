@@ -3,16 +3,14 @@
 //      Pwm p2_0 = Pwm::CreatePwm<1>();
 //      Pwm p2_0(1);
 //      p2_0.Initialize(500);
-//      p2_0.SetDutyCycle(75);
+//      p2_0.SetDutyCycle(0.75);
 //      p2_0.SetFrequeny(1'000);
 #pragma once
 
 #include <cstdint>
 #include <cstdio>
-#include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin_configure.hpp"
-#include "L2_Utilities/debug_print.hpp"
 #include "L2_Utilities/macros.hpp"
 
 class PwmInterface
