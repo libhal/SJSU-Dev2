@@ -2,36 +2,40 @@
 #include <project_config.hpp>
 
 #include <cmath>
+#include <cstdarg>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 
 #include "config.hpp"
 #include "L0_LowLevel/delay.hpp"
+#include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/startup.hpp"
 #include "L0_LowLevel/uart0.hpp"
-#include "L1_Drivers/gpio.hpp"
+#include "L0_LowLevel/uart2.hpp"
 #include "L2_Utilities/debug.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "L3_HAL/onboard_led.hpp"
 
 #if !defined(BOOTLOADER) && !defined(CLANG_TIDY)
 #error Hyperload must be built as a 'bootloader' and not as an application or \
        test. Please build this software using 'make bootloader'
 #endif
 
-void EmptyIsr() {}
-// Replace startup.cpp's version of LowLevelInit
-void LowLevelInit()
+// NOLINTNEXTLINE(readability-identifier-naming)
+int printf2(const char * format, ...)
 {
-    // The system timer must be enabled to allow the Delay and Milliseconds
-    // functions to operate.
-    system_timer.SetIsrFunction(EmptyIsr);
-    system_timer.SetTickFrequency(1000);
-    system_timer.StartTimer();
-    // Enable Peripheral Clock
-    // TODO(#30): Replace this with a System Clock Driver.
-    LPC_SC->PCLKSEL = 1;
+    constexpr size_t kPrintfBufferSize = 256;
+    char buffer[kPrintfBufferSize];
+    va_list args;
+    va_start(args, format);
+    int length = vsnprintf(buffer, kPrintfBufferSize, format, args);
+    va_end(args);
+
+    uart2::Puts(buffer);
+    return length;
 }
 
 constexpr char kHyperloadFinished   = '*';
@@ -45,6 +49,7 @@ constexpr uint32_t kSizeOfSector    = 0x8000;
 constexpr uint32_t kStartSector     = 16;
 constexpr uint32_t kLastSector      = 29;
 constexpr uint32_t kApplicationStartAddress = kStartSector * kBlockSize;
+constexpr uint32_t kFlashDelay              = 0;
 
 enum IapCommands : uint8_t
 {
@@ -73,6 +78,13 @@ enum class IapResult : uint32_t
     kSectorNotPrepared = 9,
     kCompareError      = 10,
     kBusy              = 11
+};
+
+const char * const kIapResultString[] = {
+    "kCmdSuccess",        "kInvalidCommand",   "kSrcAddrError",
+    "kDstAddrError",      "kSrcAddrNotMapped", "kDstAddrNotMapped",
+    "kCountError",        "kInvalidSector",    "kSectorNotBlank",
+    "kSectorNotPrepared", "kCompareError",     "kBusy"
 };
 
 SJ2_PACKED(struct) IapCommand_t
@@ -122,7 +134,6 @@ IapResult FlashSector(Sector_t * ram_sector, uint32_t sector_number,
 
 namespace hyperload
 {
-constexpr float kSystemClockRate = 48'000'000;
 struct Version_t
 {
     uint8_t major;
@@ -153,8 +164,8 @@ float FindNearestBaudRate(float baud_rate)
     float result = 38400;
     for (size_t i = 0; i < SJ2_ARRAY_LENGTH(kStandardBaudRates); i++)
     {
-        if (0.7f * kStandardBaudRates[i] <= baud_rate &&
-            baud_rate <= 1.3f * kStandardBaudRates[i])
+        if (0.9f * kStandardBaudRates[i] <= baud_rate &&
+            baud_rate <= 1.1f * kStandardBaudRates[i])
         {
             result = kStandardBaudRates[i];
             break;
@@ -164,34 +175,43 @@ float FindNearestBaudRate(float baud_rate)
 }
 }  // namespace hyperload
 
-const hyperload::Version_t kHyperload = { 1, 0 };
+const hyperload::Version_t kHyperload = { 1, 1 };
 FlashMemory_t * flash                 = reinterpret_cast<FlashMemory_t *>(0x0);
 IapFunction iap = reinterpret_cast<IapFunction>(0x1FFF1FF1);
+
+void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
+{
+    if (clocks_per_flash_access > 6)
+    {
+        clocks_per_flash_access = 6;
+    }
+    else if (clocks_per_flash_access <= 0)
+    {
+        clocks_per_flash_access = 1;
+    }
+    clocks_per_flash_access -= 1;
+    // Set flash memory access clock rate to 6 clocks per access
+    LPC_SC->FLASHCFG =
+        (LPC_SC->FLASHCFG & ~(0b1111 << 12)) | (clocks_per_flash_access << 12);
+}
 
 int main(void)
 {
     Gpio button0(1, 0);
-    Gpio led0(1, 15);
-    Gpio led1(1, 10);
-    Gpio led2(1, 8);
-    Gpio led3(1, 1);
-
     button0.SetPinMode(PinConfigure::PinMode::kPullDown);
     button0.SetAsInput();
-    led0.SetAsOutput();
-    led1.SetAsOutput();
-    led2.SetAsOutput();
-    led3.SetAsOutput();
-    led0.SetHigh();
-    led1.SetHigh();
-    led2.SetHigh();
-    led3.SetHigh();
+    OnBoardLed leds;
+    leds.Initialize();
+    leds.SetAll(0);
+    uart2::Init(115200);
+    printf2("Bootloader Debug Port Initialized!\n");
     // Flush any initial bytes
     uart0::GetChar(500);
     uart0::PutChar(0xFF);
     // Hyperload will send 0x55 to notify that it is alive!
     if (0x55 == uart0::GetChar(500))
     {
+        SetFlashAcceleratorSpeed(6);
         // Notify Hyperload that we're alive too!
         uart0::PutChar(0xAA);
         // Get new baud rate control word
@@ -211,7 +231,7 @@ int main(void)
         // (control word) So we solve for BAUD:  BAUD = (48/(CW + 1))/16
         float control_word_f = static_cast<float>(control.word);
         float approx_baud =
-            (hyperload::kSystemClockRate / (control_word_f + 1.0f)) / 16.0f;
+            (config::kSystemClockRate / (control_word_f + 1.0f)) / 16.0f;
         uint32_t baud_rate =
             static_cast<uint32_t>(hyperload::FindNearestBaudRate(approx_baud));
         uart0::Init(baud_rate);
@@ -219,31 +239,30 @@ int main(void)
         Delay(500);
         // Send our CPU information along with data parameters:
         // Name:Blocksize:Bootsize/2:FlashSize
-        printf("$LPC4078:4096:32768:512\n");
+        uart0::Puts("$LPC4078:4096:32768:512\n");
         bool finished = false;
         for (uint32_t sector_number = kStartSector; !finished; sector_number++)
         {
             Sector_t ram_sector;
-            finished = WriteUartToRamSector(&ram_sector);
+            finished         = WriteUartToRamSector(&ram_sector);
             IapResult result = FlashSector(&ram_sector, sector_number);
             if (result == IapResult::kCmdSuccess)
             {
-                led0.SetLow();
-                led1.SetLow();
-                led2.SetLow();
-                led3.SetLow();
+                leds.SetAll(0);
+                uart2::Puts("Sector Flash Successful!\n");
             }
             else
             {
                 uint8_t error = static_cast<uint8_t>(result);
-                (error & (1 << 0)) ? led0.SetLow() : led0.SetHigh();
-                (error & (1 << 1)) ? led1.SetLow() : led1.SetHigh();
-                (error & (1 << 2)) ? led2.SetLow() : led2.SetHigh();
-                (error & (1 << 3)) ? led3.SetLow() : led3.SetHigh();
+                leds.SetAll(error);
+                printf2("Flashing error %s!\n",
+                        kIapResultString[static_cast<uint32_t>(result)]);
                 uart0::PutChar(kOtherError);
             }
         }
-        Delay(10);
+        uart2::Puts("Programming Finished!\n");
+        uart2::Puts("Sending final acknowledge!\n");
+        Delay(500);
         uart0::PutChar(kHyperloadFinished);
     }
     // Change baud rate back to 38400 so that user can continue using a serial
@@ -254,6 +273,7 @@ int main(void)
         reinterpret_cast<IsrPointer *>(&(flash->application));
     IsrPointer application_entry_isr = application_vector_table[1];
 
+    printf("Hyperload Version (%d.%d)\n", kHyperload.major, kHyperload.minor);
     if (button0.ReadPin())
     {
         constexpr uint32_t kSize16kB = 1 << 13;
@@ -275,18 +295,14 @@ int main(void)
         }
     }
 
-    printf("Hyperload Version (%d.%d)\n", kHyperload.major, kHyperload.minor);
     printf("Application Reset ISR value = %p\n", application_entry_isr);
     Delay(500);
     button0.SetPinMode(PinConfigure::PinMode::kPullUp);
+    leds.SetAll(0);
     // SystemTimerIrq must be disabled, otherwise it will continue to fire,
     // after the application is  executed. This can lead to a lot of problems
     // depending on the how the application is written.
     system_timer.DisableTimer();
-    led0.SetHigh();
-    led1.SetHigh();
-    led2.SetHigh();
-    led3.SetHigh();
     // Moving the interrupt vector table pointer
     SCB->VTOR = reinterpret_cast<intptr_t>(application_vector_table);
     // Jump to application code
@@ -297,13 +313,12 @@ int main(void)
 
 // TODO(#177): All of the code below should be moved into the file
 // library/L0_LowLevel/lpc_flash.hpp
-
 uint8_t WriteUartToBlock(Block_t * block)
 {
     uint32_t checksum = 0;
     for (uint32_t position = 0; position < kBlockSize; position++)
     {
-        uint8_t byte          = uart0::GetChar(1000);
+        uint8_t byte          = uart0::GetChar(100);
         block->data[position] = byte;
         checksum += byte;
     }
@@ -312,18 +327,20 @@ uint8_t WriteUartToBlock(Block_t * block)
 
 bool WriteUartToRamSector(Sector_t * sector)
 {
-    bool finished = false;
+    bool finished           = false;
     uint32_t blocks_written = 0;
     // Blank RAM sector to all 1s
     memset(sector, 0xFF, sizeof(*sector));
+    printf2("Writing to Ram Sector...\n");
     uart0::PutChar(kHyperloadReady);
     while (blocks_written < kBlocksPerSector)
     {
         uint8_t block_number_msb = uart0::GetChar(1000);
-        uint8_t block_number_lsb = uart0::GetChar(1000);
+        uint8_t block_number_lsb = uart0::GetChar(100);
         uint32_t block_number    = (block_number_msb << 8) | block_number_lsb;
         if (0xFFFF == block_number)
         {
+            uart2::Puts("End Of Blocks\n");
             finished = true;
             break;
         }
@@ -339,11 +356,13 @@ bool WriteUartToRamSector(Sector_t * sector)
             else
             {
                 blocks_written++;
-                uart0::PutChar(kHyperloadReady);
+                if (blocks_written < 8)
+                {
+                    uart0::PutChar(kHyperloadReady);
+                }
             }
         }
     }
-
     return finished;
 }
 
@@ -395,13 +414,13 @@ IapResult FlashBlock(Block_t * block, uint32_t sector_number,
         command.parameters[2] = kBlockSize;
         command.parameters[3] = config::kSystemClockRate / 1000;
         iap(&command, &status);
-        // DEBUG_PRINT("Flash Attempted! %p %d\n", flash_address,
-        // static_cast<uint32_t>(status.result));
+        printf2("Flash Attempted! %p %s\n", flash_address,
+                kIapResultString[static_cast<uint32_t>(status.result)]);
     }
     else
     {
-        DEBUG_PRINT("Flash Failed Preperation 0x%lX!\n",
-                    static_cast<uint32_t>(flash_status));
+        printf2("Flash Failed Preperation 0x%lX!\n",
+                kIapResultString[static_cast<uint32_t>(flash_status)]);
         status.result = flash_status;
     }
     return status.result;
@@ -434,6 +453,8 @@ IapResult BlankCheckSector(uint32_t start, uint32_t end)
 
 void EraseWithVerifySector(uint32_t sector_number)
 {
+    printf2("Erasing Flash...\n");
+    Delay(kFlashDelay);
     IapResult erase_sector_result, black_check_result;
     do
     {
@@ -441,12 +462,13 @@ void EraseWithVerifySector(uint32_t sector_number)
         black_check_result  = BlankCheckSector(sector_number, sector_number);
     } while (erase_sector_result != IapResult::kCmdSuccess ||
              black_check_result != IapResult::kCmdSuccess);
-    // DEBUG_PRINT("Flash Erased and Verified!\n");
+    printf2("Flash Erased and Verified!\n");
 }
 
 IapResult FlashSector(Sector_t * ram_sector, uint32_t sector_number,
                       uint32_t blocks_filled_in_sector)
 {
+    printf2("Flashing Sector %d\n", sector_number);
     EraseWithVerifySector(sector_number);
     IapResult flash_verified = IapResult::kBusy;
     while (flash_verified != IapResult::kCmdSuccess)
@@ -461,7 +483,7 @@ IapResult FlashSector(Sector_t * ram_sector, uint32_t sector_number,
             {
                 uint8_t error =
                     static_cast<uint8_t>(block_flashed_successfully);
-                DEBUG_PRINT("Flash Failed with Code 0x%X!\n", error);
+                printf2("Flash Failed with Code 0x%X!\n", error);
                 EraseWithVerifySector(sector_number);
                 block_number = 0;
             }
@@ -469,10 +491,10 @@ IapResult FlashSector(Sector_t * ram_sector, uint32_t sector_number,
             // consumed during flash programming.
             // The number of blocks flashed without it would vary from 1 to the
             // full sector's amount.
-            Delay(100);
+            Delay(kFlashDelay);
         }
         flash_verified = VerifySector(ram_sector, sector_number);
     }
-    // DEBUG_PRINT("Flash Programming Verified\n");
+    printf2("Flash Programming Verified\n");
     return IapResult::kCmdSuccess;
 }

@@ -37,9 +37,11 @@
 #include <cstring>
 
 #include "L0_LowLevel/delay.hpp"
+#include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/startup.hpp"
 #include "L0_LowLevel/uart0.hpp"
+#include "L1_Drivers/system_clock.hpp"
 #include "L1_Drivers/system_timer.hpp"
 #include "L2_Utilities/debug_print.hpp"
 #include "L2_Utilities/macros.hpp"
@@ -150,13 +152,8 @@ const IsrPointer kInterruptVectorTable[] = {
     vPortSVCHandler,        // SVCall handler
     DebugMonHandler,        // Debug monitor handler
     0,                      // Reserved
-// FreeRTOS is disabled/removed for bootloaders, to keep the flash size down.
-#if defined(BOOTLOADER)
-    PendSVHandler,          // The PendSV handler
-#else
     xPortPendSVHandler,     // FreeRTOS PendSV Handler
-#endif  // defined(BOOTLOADER)
-    SysTickHandler,  // The SysTick handler
+    SysTickHandler,         // The SysTick handler
     // Chip Level - LPC40xx
     WdtIrqHandler,          // 16, 0x40 - WDT
     Timer0IrqHandler,       // 17, 0x44 - TIMER0
@@ -321,6 +318,7 @@ void InitFpu()
 }
 
 SystemTimer system_timer;
+SystemClock system_clock;
 
 void InitializeFreeRTOSSystemTick()
 {
@@ -333,39 +331,39 @@ void InitializeFreeRTOSSystemTick()
 
 void SetupTimerInterrupt()
 {
-    DEBUG_PRINT("Setting up SystemTick Timer...");
     system_timer.SetIsrFunction(InitializeFreeRTOSSystemTick);
     system_timer.SetTickFrequency(config::kRtosFrequency);
     bool timer_started_successfully = system_timer.StartTimer();
-    if (timer_started_successfully)
-    {
-        DEBUG_PRINT("System Timer has begun.");
-    }
-    else
-    {
-        DEBUG_PRINT("System Timer has FAILED!!");
-    }
+    SJ2_ASSERT_WARNING(timer_started_successfully,
+                    "System Timer has FAILED to start!");
 }
 
 SJ2_WEAK void LowLevelInit()
 {
+    // Set Clock Speed
+    system_clock.SetClockFrequency(config::kSystemClockRateMhz);
+    // Enable Peripheral Clock
+    system_clock.SetPeripheralClockDivider(1);
+    // required for printf and scanf to work properly
+    uart0::Init(config::kBaudRate);
     SetupTimerInterrupt();
 }
 
 inline void SystemInit()
 {
+    // Transfer data section values from flash to RAM
     InitDataSection();
+    // Clear BSS section of RAM
+    // This is required because the nano implementation of the standard C/C++
+    // libraries assumes that the BSS section is initialized to 0.
     InitBssSection();
+    // Enable FPU (F.loating P.oint U.nit)
+    // System will crash if floating point operations occur without
+    // Initializing the FPU.
     InitFpu();
-#if defined(__cplusplus)
     // Initialisation C++ libraries
     __libc_init_array();
-#endif
-    // Enable Peripheral Clock
-    // TODO(#30): Replace this with a System Clock Driver.
-    LPC_SC->PCLKSEL = 1;
-    // required for printf and scanf to work properly
-    uart0::Init(config::kBaudRate);
+    // Run LowLevel System Initialization
     LowLevelInit();
 }
 
