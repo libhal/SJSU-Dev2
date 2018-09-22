@@ -393,7 +393,7 @@ clean:
 flash: build
 	@bash -c "\
 	source $(TOOLS)/Hyperload/modules/bin/activate && \
-	python2.7 $(TOOLS)/Hyperload/hyperload.py $(SJDEV) $(HEX)"
+	python $(TOOLS)/Hyperload/hyperload.py -b 576000 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
 
 telemetry:
 	@bash -c "\

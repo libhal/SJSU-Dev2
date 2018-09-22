@@ -1,4 +1,4 @@
-// Minimum required implementations of uart0 to make print statements work
+// Minimum required implementations of uart2 to make print statements work
 #pragma once
 
 #include <cmath>
@@ -8,12 +8,12 @@
 #include "LPC40xx.h"
 #include "L1_Drivers/gpio.hpp"
 
-namespace uart0
+namespace uart2
 {
 extern PinConfigureInterface * rx;
 extern PinConfigureInterface * tx;
 
-extern LPC_UART_TypeDef * uart0_register;
+extern LPC_UART_TypeDef * uart2_register;
 extern LPC_SC_TypeDef * sc;
 
 struct UartCalibration_t
@@ -50,4 +50,4 @@ int PutChar(int out);
 char PutChar(char out);
 void Puts(const char c_string[]);
 
-}  // namespace uart0
+}  // namespace uart2

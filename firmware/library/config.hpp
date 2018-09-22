@@ -1,5 +1,5 @@
 #pragma once
-// Using <> vs "" for including to make sure we only grab the project version of
+// Include using <> vs "" for  to make sure we only grab the project version of
 // project_config.hpp
 #include <project_config.hpp>
 #include <cstdint>
@@ -41,12 +41,15 @@ namespace config
 #endif  // !defined SJ2_ENABLE_ANSI_CODES
 SJ2_DECLARE_CONSTANT(ENABLE_ANSI_CODES, bool, kEnableAnsiCodes);
 
-// Used to set the system clock speed for the LPC4078
-#if !defined SJ2_SYSTEM_CLOCK_RATE
-#define SJ2_SYSTEM_CLOCK_RATE 12'000'000
+// Used to set the system clock speed for the LPC4078 in MHz
+#if !defined SJ2_SYSTEM_CLOCK_RATE_MHZ
+#define SJ2_SYSTEM_CLOCK_RATE_MHZ 12
 #endif  // !defined SJ2_SYSTEM_CLOCK_RATE
-SJ2_DECLARE_CONSTANT(SYSTEM_CLOCK_RATE, uint32_t, kSystemClockRate);
-static_assert(1 <= kSystemClockRate && kSystemClockRate <= 100'000'000,
+SJ2_DECLARE_CONSTANT(SYSTEM_CLOCK_RATE_MHZ, uint8_t, kSystemClockRateMhz);
+constexpr uint32_t kSystemClockRate = SJ2_SYSTEM_CLOCK_RATE_MHZ * 1'000'000;
+static_assert(1 <= kSystemClockRateMhz && kSystemClockRateMhz <= 100,
+              "SJ2_SYSTEM_CLOCK can only be between 1Hz and 100Mhz");
+static_assert(1'000'000 <= kSystemClockRate && kSystemClockRate <= 100'000'000,
               "SJ2_SYSTEM_CLOCK can only be between 1Hz and 100Mhz");
 
 // Used to set the FreeRTOS tick frequency defined in Hz
