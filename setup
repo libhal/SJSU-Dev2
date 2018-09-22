@@ -45,14 +45,17 @@ ARM_GCC_ARCHIVE_LINUX_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_LINUX"
 ARM_GCC_ARCHIVE_MAC_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_MAC"
 
 CLANG_VERSION="6.0.1"
-UBUNTU_CLANG_URL="http://releases.llvm.org/$CLANG_VERSION/"
+CLANG_BASE_URL="http://releases.llvm.org/$CLANG_VERSION/"
 CLANG_14="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04"
 CLANG_16="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-16.04"
+CLANG_MAC="clang+llvm-$CLANG_VERSION-x86_64-apple-darwin"
 CLANG_FILE_EXTENSION=".tar.xz"
 CLANG_14_FILE="$CLANG_14$CLANG_FILE_EXTENSION"
+CLANG_14_URL="$CLANG_BASE_URL$CLANG_14_FILE"
 CLANG_16_FILE="$CLANG_16$CLANG_FILE_EXTENSION"
-CLANG_14_URL="$UBUNTU_CLANG_URL$CLANG_14_FILE"
-CLANG_16_URL="$UBUNTU_CLANG_URL$CLANG_16_FILE"
+CLANG_16_URL="$CLANG_BASE_URL$CLANG_16_FILE"
+CLANG_MAC_FILE="$CLANG_MAC$CLANG_FILE_EXTENSION"
+CLANG_MAC_URL="$CLANG_BASE_URL$CLANG_MAC_FILE"
 CLANG_PKG=""
 CLANG_PATH=""
 echo " ──────────────────────────────────────────────────┐"
@@ -106,7 +109,7 @@ case "$OS" in
         echo "               Extracting Clang 6.0                 "
         echo "└────────────────────────────────────────────────── "
         echo "$CLANG_PKG"
-        tar --extract  --verbose --xz --file="$CLANG_PKG" 2> /dev/null
+        tar --extract  --verbose --xz --file="$CLANG_PKG"
         echo " ───────────────────────────────────────────────────┐"
         echo "                Installing OpenOCD                   "
         echo "└─────────────────────────────────────────────────── "
@@ -168,6 +171,7 @@ case "$OS" in
         echo "              Installing GCC Version 7               "
         echo "└─────────────────────────────────────────────────── "
         brew install gcc@7
+        brew link --overwrite gcc@7
         echo " ───────────────────────────────────────────────────┐"
         echo "  Installing LLVM (clang, clang-format, clang-tidy)  "
         echo "└─────────────────────────────────────────────────── "
@@ -201,7 +205,7 @@ tar --extract \
     --verbose \
     --bzip2 \
     --file="$GCC_PKG" \
-    --exclude='share/doc' 2> /dev/null
+    --exclude='share/doc'
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
 echo "                   Upgrading PIP                     "

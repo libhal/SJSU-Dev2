@@ -46,7 +46,7 @@ ifeq ($(UNAME_S),Linux)
 CLANG_TIDY   = $(SJCLANG)/clang-tidy
 endif
 ifeq ($(UNAME_S),Darwin)
-CLANG_TIDY   = /usr/local/opt/llvm/bin/clang-tidy
+CLANG_TIDY   = /usr/local/opt/llvm@6/bin/clang-tidy
 endif
 
 # Internal build directories
