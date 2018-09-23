@@ -28,24 +28,28 @@
 // copyright, permission, and disclaimer notice must appear in all copies of
 // this code.
 //*****************************************************************************
+#include "startup.hpp"
+
+#include <FreeRTOS.h>
+#include <task.h>
+
 #include <cstdint>
 #include <cstring>
 
+#include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/startup.hpp"
-#include "L0_LowLevel/uart0.min.hpp"
+#include "L0_LowLevel/uart0.hpp"
 #include "L1_Drivers/system_timer.hpp"
-#include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/macros.hpp"
 
 // The entry point for the C++ library startup
 extern "C"
 {
+    // NOLINTNEXTLINE(readability-identifier-naming)
     extern void __libc_init_array(void);
 }
-
-#define WEAK __attribute__((weak))
-#define ALIAS(f) __attribute__((weak, alias(#f)))
 
 #if defined(__cplusplus)
 extern "C"
@@ -55,229 +59,239 @@ extern "C"
     // Forward declaration of the default handlers. These are aliased.
     // When the application defines a handler (with the same name), this will
     // automatically take precedence over these weak definitions
-    void ResetISR(void);
-    WEAK void NMI_Handler(void);
-    WEAK void HardFault_Handler(void);
-    WEAK void MemManage_Handler(void);
-    WEAK void BusFault_Handler(void);
-    WEAK void UsageFault_Handler(void);
-    WEAK void SVC_Handler(void);
-    WEAK void DebugMon_Handler(void);
-    WEAK void PendSV_Handler(void);
-    WEAK void SysTick_Handler(void);
-    WEAK void IntDefaultHandler(void);
+    void ResetIsr(void);
+    SJ2_WEAK void NmiHandler(void);
+    SJ2_WEAK void HardFaultHandler(void);
+    SJ2_WEAK void MemManageHandler(void);
+    SJ2_WEAK void BusFaultHandler(void);
+    SJ2_WEAK void UsageFaultHandler(void);
+    SJ2_WEAK void SvcHandler(void);
+    SJ2_WEAK void DebugMonHandler(void);
+    SJ2_WEAK void PendSVHandler(void);
+    SJ2_WEAK void SysTickHandler(void);
+    SJ2_WEAK void IntDefaultHandler(void);
     // Forward declaration of the specific IRQ handlers. These are aliased
     // to the IntDefaultHandler, which is a 'forever' loop. When the application
     // defines a handler (with the same name), this will automatically take
     // precedence over these weak definitions
-    void WDT_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void TIMER0_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void TIMER1_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void TIMER2_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void TIMER3_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void UART0_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void UART1_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void UART2_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void UART3_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void PWM1_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void I2C0_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void I2C1_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void I2C2_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void SPI_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void SSP0_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void SSP1_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void PLL0_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void RTC_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void EINT0_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void EINT1_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void EINT2_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void EINT3_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void ADC_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void BOD_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void USB_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void CAN_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void DMA_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void I2S_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void ENET_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void RIT_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void MCPWM_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void QEI_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void PLL1_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void USBActivity_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void CANActivity_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void SDIO_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void UART4_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void SSP2_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void LCD_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void GPIO_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void PWM0_IRQHandler(void) ALIAS(IntDefaultHandler);
-    void EEPROM_IRQHandler(void) ALIAS(IntDefaultHandler);
+    void WdtIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Timer0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Timer1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Timer2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Timer3IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Uart0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Uart1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Uart2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Uart3IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Pwm1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void I2c0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void I2c1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void I2c2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void SpiIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Ssp0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Ssp1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Pll0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void RtcIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Eint0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Eint1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Eint2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Eint3IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void AdcIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void BodIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void UsbIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void CanIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void DmaIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void I2sIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void EnetIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void RitIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void McpwmIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void QeiIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Pll1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void UsbactivityIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void CanactivityIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void SdioIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Uart4IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Ssp2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void LcdIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void GpioIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void Pwm0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+    void EepromIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
     // The entry point for the application.
     // main() is the entry point for Newlib based applications
     extern int main(void);
     // External declaration for the pointer to the stack top from the Linker
     // Script
-    extern void _vStackTop(void);
+    extern void StackTop(void);
 
     // External declaration for LPC MCU vector table checksum from  Linker
     // Script
-    WEAK extern void __valid_user_code_checksum();
+    SJ2_WEAK extern void ValidUserCodeChecksum();
 #if defined(__cplusplus)
 }  // extern "C"
 #endif
+
 // The Interrupt vector table.
 // This relies on the linker script to place at correct location in memory.
-extern void (*const g_pfnVectors[])(void);
 SJ2_SECTION(".isr_vector")
-void (*const g_pfnVectors[])(void) = {
+// NOLINTNEXTLINE(readability-identifier-naming)
+const IsrPointer kInterruptVectorTable[] = {
     // Core Level - CM4
-    &_vStackTop,                 // The initial stack pointer
-    ResetISR,                    // The reset handler
-    NMI_Handler,                 // The NMI handler
-    HardFault_Handler,           // The hard fault handler
-    MemManage_Handler,           // The MPU fault handler
-    BusFault_Handler,            // The bus fault handler
-    UsageFault_Handler,          // The usage fault handler
-    __valid_user_code_checksum,  // LPC MCU Checksum
-    0,                           // Reserved
-    0,                           // Reserved
-    0,                           // Reserved
-    SVC_Handler,                 // SVCall handler
-    DebugMon_Handler,            // Debug monitor handler
-    0,                           // Reserved
-    PendSV_Handler,              // The PendSV handler
-    SysTick_Handler,             // The SysTick handler
+    &StackTop,              // The initial stack pointer
+    ResetIsr,               // The reset handler
+    NmiHandler,             // The NMI handler
+    HardFaultHandler,       // The hard fault handler
+    MemManageHandler,       // The MPU fault handler
+    BusFaultHandler,        // The bus fault handler
+    UsageFaultHandler,      // The usage fault handler
+    ValidUserCodeChecksum,  // LPC MCU Checksum
+    0,                      // Reserved
+    0,                      // Reserved
+    0,                      // Reserved
+    vPortSVCHandler,        // SVCall handler
+    DebugMonHandler,        // Debug monitor handler
+    0,                      // Reserved
+// FreeRTOS is disabled/removed for bootloaders, to keep the flash size down.
+#if defined(BOOTLOADER)
+    PendSVHandler,          // The PendSV handler
+#else
+    xPortPendSVHandler,     // FreeRTOS PendSV Handler
+#endif  // defined(BOOTLOADER)
+    SysTickHandler,  // The SysTick handler
     // Chip Level - LPC40xx
-    WDT_IRQHandler,          // 16, 0x40 - WDT
-    TIMER0_IRQHandler,       // 17, 0x44 - TIMER0
-    TIMER1_IRQHandler,       // 18, 0x48 - TIMER1
-    TIMER2_IRQHandler,       // 19, 0x4c - TIMER2
-    TIMER3_IRQHandler,       // 20, 0x50 - TIMER3
-    UART0_IRQHandler,        // 21, 0x54 - UART0
-    UART1_IRQHandler,        // 22, 0x58 - UART1
-    UART2_IRQHandler,        // 23, 0x5c - UART2
-    UART3_IRQHandler,        // 24, 0x60 - UART3
-    PWM1_IRQHandler,         // 25, 0x64 - PWM1
-    I2C0_IRQHandler,         // 26, 0x68 - I2C0
-    I2C1_IRQHandler,         // 27, 0x6c - I2C1
-    I2C2_IRQHandler,         // 28, 0x70 - I2C2
-    IntDefaultHandler,       // 29, Not used
-    SSP0_IRQHandler,         // 30, 0x78 - SSP0
-    SSP1_IRQHandler,         // 31, 0x7c - SSP1
-    PLL0_IRQHandler,         // 32, 0x80 - PLL0 (Main PLL)
-    RTC_IRQHandler,          // 33, 0x84 - RTC
-    EINT0_IRQHandler,        // 34, 0x88 - EINT0
-    EINT1_IRQHandler,        // 35, 0x8c - EINT1
-    EINT2_IRQHandler,        // 36, 0x90 - EINT2
-    EINT3_IRQHandler,        // 37, 0x94 - EINT3
-    ADC_IRQHandler,          // 38, 0x98 - ADC
-    BOD_IRQHandler,          // 39, 0x9c - BOD
-    USB_IRQHandler,          // 40, 0xA0 - USB
-    CAN_IRQHandler,          // 41, 0xa4 - CAN
-    DMA_IRQHandler,          // 42, 0xa8 - GP DMA
-    I2S_IRQHandler,          // 43, 0xac - I2S
-    ENET_IRQHandler,         // 44, 0xb0 - Ethernet
-    SDIO_IRQHandler,         // 45, 0xb4 - SD/MMC card I/F
-    MCPWM_IRQHandler,        // 46, 0xb8 - Motor Control PWM
-    QEI_IRQHandler,          // 47, 0xbc - Quadrature Encoder
-    PLL1_IRQHandler,         // 48, 0xc0 - PLL1 (USB PLL)
-    USBActivity_IRQHandler,  // 49, 0xc4 - USB Activity interrupt to wakeup
-    CANActivity_IRQHandler,  // 50, 0xc8 - CAN Activity interrupt to wakeup
-    UART4_IRQHandler,        // 51, 0xcc - UART4
-    SSP2_IRQHandler,         // 52, 0xd0 - SSP2
-    LCD_IRQHandler,          // 53, 0xd4 - LCD
-    GPIO_IRQHandler,         // 54, 0xd8 - GPIO
-    PWM0_IRQHandler,         // 55, 0xdc - PWM0
-    EEPROM_IRQHandler,       // 56, 0xe0 - EEPROM
+    WdtIrqHandler,          // 16, 0x40 - WDT
+    Timer0IrqHandler,       // 17, 0x44 - TIMER0
+    Timer1IrqHandler,       // 18, 0x48 - TIMER1
+    Timer2IrqHandler,       // 19, 0x4c - TIMER2
+    Timer3IrqHandler,       // 20, 0x50 - TIMER3
+    Uart0IrqHandler,        // 21, 0x54 - UART0
+    Uart1IrqHandler,        // 22, 0x58 - UART1
+    Uart2IrqHandler,        // 23, 0x5c - UART2
+    Uart3IrqHandler,        // 24, 0x60 - UART3
+    Pwm1IrqHandler,         // 25, 0x64 - PWM1
+    I2c0IrqHandler,         // 26, 0x68 - I2C0
+    I2c1IrqHandler,         // 27, 0x6c - I2C1
+    I2c2IrqHandler,         // 28, 0x70 - I2C2
+    IntDefaultHandler,      // 29, Not used
+    Ssp0IrqHandler,         // 30, 0x78 - SSP0
+    Ssp1IrqHandler,         // 31, 0x7c - SSP1
+    Pll0IrqHandler,         // 32, 0x80 - PLL0 (Main PLL)
+    RtcIrqHandler,          // 33, 0x84 - RTC
+    Eint0IrqHandler,        // 34, 0x88 - EINT0
+    Eint1IrqHandler,        // 35, 0x8c - EINT1
+    Eint2IrqHandler,        // 36, 0x90 - EINT2
+    Eint3IrqHandler,        // 37, 0x94 - EINT3
+    AdcIrqHandler,          // 38, 0x98 - ADC
+    BodIrqHandler,          // 39, 0x9c - BOD
+    UsbIrqHandler,          // 40, 0xA0 - USB
+    CanIrqHandler,          // 41, 0xa4 - CAN
+    DmaIrqHandler,          // 42, 0xa8 - GP DMA
+    I2sIrqHandler,          // 43, 0xac - I2S
+    EnetIrqHandler,         // 44, 0xb0 - Ethernet
+    SdioIrqHandler,         // 45, 0xb4 - SD/MMC card I/F
+    McpwmIrqHandler,        // 46, 0xb8 - Motor Control PWM
+    QeiIrqHandler,          // 47, 0xbc - Quadrature Encoder
+    Pll1IrqHandler,         // 48, 0xc0 - PLL1 (USB PLL)
+    UsbactivityIrqHandler,  // 49, 0xc4 - USB Activity interrupt to wakeup
+    CanactivityIrqHandler,  // 50, 0xc8 - CAN Activity interrupt to wakeup
+    Uart4IrqHandler,        // 51, 0xcc - UART4
+    Ssp2IrqHandler,         // 52, 0xd0 - SSP2
+    LcdIrqHandler,          // 53, 0xd4 - LCD
+    GpioIrqHandler,         // 54, 0xd8 - GPIO
+    Pwm0IrqHandler,         // 55, 0xdc - PWM0
+    EepromIrqHandler,       // 56, 0xe0 - EEPROM
 };
 
-void (*const isr_vector_table[])(void) = {
+IsrPointer dynamic_isr_vector_table[] = {
     // Chip Level - LPC40xx
-    WDT_IRQHandler,          // 16, 0x40 - WDT
-    TIMER0_IRQHandler,       // 17, 0x44 - TIMER0
-    TIMER1_IRQHandler,       // 18, 0x48 - TIMER1
-    TIMER2_IRQHandler,       // 19, 0x4c - TIMER2
-    TIMER3_IRQHandler,       // 20, 0x50 - TIMER3
-    UART0_IRQHandler,        // 21, 0x54 - UART0
-    UART1_IRQHandler,        // 22, 0x58 - UART1
-    UART2_IRQHandler,        // 23, 0x5c - UART2
-    UART3_IRQHandler,        // 24, 0x60 - UART3
-    PWM1_IRQHandler,         // 25, 0x64 - PWM1
-    I2C0_IRQHandler,         // 26, 0x68 - I2C0
-    I2C1_IRQHandler,         // 27, 0x6c - I2C1
-    I2C2_IRQHandler,         // 28, 0x70 - I2C2
-    IntDefaultHandler,       // 29, Not used
-    SSP0_IRQHandler,         // 30, 0x78 - SSP0
-    SSP1_IRQHandler,         // 31, 0x7c - SSP1
-    PLL0_IRQHandler,         // 32, 0x80 - PLL0 (Main PLL)
-    RTC_IRQHandler,          // 33, 0x84 - RTC
-    EINT0_IRQHandler,        // 34, 0x88 - EINT0
-    EINT1_IRQHandler,        // 35, 0x8c - EINT1
-    EINT2_IRQHandler,        // 36, 0x90 - EINT2
-    EINT3_IRQHandler,        // 37, 0x94 - EINT3
-    ADC_IRQHandler,          // 38, 0x98 - ADC
-    BOD_IRQHandler,          // 39, 0x9c - BOD
-    USB_IRQHandler,          // 40, 0xA0 - USB
-    CAN_IRQHandler,          // 41, 0xa4 - CAN
-    DMA_IRQHandler,          // 42, 0xa8 - GP DMA
-    I2S_IRQHandler,          // 43, 0xac - I2S
-    ENET_IRQHandler,         // 44, 0xb0 - Ethernet
-    SDIO_IRQHandler,         // 45, 0xb4 - SD/MMC card I/F
-    MCPWM_IRQHandler,        // 46, 0xb8 - Motor Control PWM
-    QEI_IRQHandler,          // 47, 0xbc - Quadrature Encoder
-    PLL1_IRQHandler,         // 48, 0xc0 - PLL1 (USB PLL)
-    USBActivity_IRQHandler,  // 49, 0xc4 - USB Activity interrupt to wakeup
-    CANActivity_IRQHandler,  // 50, 0xc8 - CAN Activity interrupt to wakeup
-    UART4_IRQHandler,        // 51, 0xcc - UART4
-    SSP2_IRQHandler,         // 52, 0xd0 - SSP2
-    LCD_IRQHandler,          // 53, 0xd4 - LCD
-    GPIO_IRQHandler,         // 54, 0xd8 - GPIO
-    PWM0_IRQHandler,         // 55, 0xdc - PWM0
-    EEPROM_IRQHandler,       // 56, 0xe0 - EEPROM
+    WdtIrqHandler,          // 16, 0x40 - WDT
+    Timer0IrqHandler,       // 17, 0x44 - TIMER0
+    Timer1IrqHandler,       // 18, 0x48 - TIMER1
+    Timer2IrqHandler,       // 19, 0x4c - TIMER2
+    Timer3IrqHandler,       // 20, 0x50 - TIMER3
+    Uart0IrqHandler,        // 21, 0x54 - UART0
+    Uart1IrqHandler,        // 22, 0x58 - UART1
+    Uart2IrqHandler,        // 23, 0x5c - UART2
+    Uart3IrqHandler,        // 24, 0x60 - UART3
+    Pwm1IrqHandler,         // 25, 0x64 - PWM1
+    I2c0IrqHandler,         // 26, 0x68 - I2C0
+    I2c1IrqHandler,         // 27, 0x6c - I2C1
+    I2c2IrqHandler,         // 28, 0x70 - I2C2
+    IntDefaultHandler,      // 29, Not used
+    Ssp0IrqHandler,         // 30, 0x78 - SSP0
+    Ssp1IrqHandler,         // 31, 0x7c - SSP1
+    Pll0IrqHandler,         // 32, 0x80 - PLL0 (Main PLL)
+    RtcIrqHandler,          // 33, 0x84 - RTC
+    Eint0IrqHandler,        // 34, 0x88 - EINT0
+    Eint1IrqHandler,        // 35, 0x8c - EINT1
+    Eint2IrqHandler,        // 36, 0x90 - EINT2
+    Eint3IrqHandler,        // 37, 0x94 - EINT3
+    AdcIrqHandler,          // 38, 0x98 - ADC
+    BodIrqHandler,          // 39, 0x9c - BOD
+    UsbIrqHandler,          // 40, 0xA0 - USB
+    CanIrqHandler,          // 41, 0xa4 - CAN
+    DmaIrqHandler,          // 42, 0xa8 - GP DMA
+    I2sIrqHandler,          // 43, 0xac - I2S
+    EnetIrqHandler,         // 44, 0xb0 - Ethernet
+    SdioIrqHandler,         // 45, 0xb4 - SD/MMC card I/F
+    McpwmIrqHandler,        // 46, 0xb8 - Motor Control PWM
+    QeiIrqHandler,          // 47, 0xbc - Quadrature Encoder
+    Pll1IrqHandler,         // 48, 0xc0 - PLL1 (USB PLL)
+    UsbactivityIrqHandler,  // 49, 0xc4 - USB Activity interrupt to wakeup
+    CanactivityIrqHandler,  // 50, 0xc8 - CAN Activity interrupt to wakeup
+    Uart4IrqHandler,        // 51, 0xcc - UART4
+    Ssp2IrqHandler,         // 52, 0xd0 - SSP2
+    LcdIrqHandler,          // 53, 0xd4 - LCD
+    GpioIrqHandler,         // 54, 0xd8 - GPIO
+    Pwm0IrqHandler,         // 55, 0xdc - PWM0
+    EepromIrqHandler,       // 56, 0xe0 - EEPROM
 };
 
 // .data Section Table Information
-extern struct DataSectionTable_t
+SJ2_PACKED(struct)
+DataSectionTable_t
 {
     uint32_t * rom_location;
     uint32_t * ram_location;
     uint32_t length;
-} __attribute__((packed)) __data_section_table[];
-extern DataSectionTable_t __data_section_table_end;
+};
+extern DataSectionTable_t data_section_table[];
+extern DataSectionTable_t data_section_table_end;
 
 // Functions to carry out the initialization of RW and BSS data sections. These
 // are written as separate functions rather than being inlined within the
-// ResetISR() function in order to cope with MCUs with multiple banks of
+// ResetIsr() function in order to cope with MCUs with multiple banks of
 // memory.
 SJ2_SECTION(".after_vectors")
 void InitDataSection()
 {
-    for (int i = 0; &__data_section_table[i] < &__data_section_table_end; i++)
+    for (int i = 0; &data_section_table[i] < &data_section_table_end; i++)
     {
-        uint32_t * rom_location = __data_section_table[i].rom_location;
-        uint32_t * ram_location = __data_section_table[i].ram_location;
-        uint32_t length         = __data_section_table[i].length << 2;
+        uint32_t * rom_location = data_section_table[i].rom_location;
+        uint32_t * ram_location = data_section_table[i].ram_location;
+        uint32_t length         = data_section_table[i].length << 2;
         memcpy(ram_location, rom_location, length);
     }
 }
 
 // .bss Section Table Information
-extern struct BssSectionTable_t
+SJ2_PACKED(struct)
+BssSectionTable_t
 {
     uint32_t * ram_location;
     uint32_t length;
-} __attribute__((packed)) __bss_section_table[];
-extern BssSectionTable_t __bss_section_table_end;
+};
+extern BssSectionTable_t bss_section_table[];
+extern BssSectionTable_t bss_section_table_end;
 
 // Functions to initialization BSS data sections. This is important because
 // the std c libs assume that BSS is set to zero.
 SJ2_SECTION(".after_vectors")
 void InitBssSection()
 {
-    for (int i = 0; &__bss_section_table[i] < &__bss_section_table_end; i++)
+    for (int i = 0; &bss_section_table[i] < &bss_section_table_end; i++)
     {
-        uint32_t * ram_location = __bss_section_table[i].ram_location;
-        uint32_t length         = __bss_section_table[i].length << 2;
+        uint32_t * ram_location = bss_section_table[i].ram_location;
+        uint32_t length         = bss_section_table[i].length << 2;
         memset(ram_location, 0, length);
     }
 }
@@ -308,15 +322,20 @@ void InitFpu()
 
 SystemTimer system_timer;
 
-void FreeRTOSSystemTick()
+void InitializeFreeRTOSSystemTick()
 {
-    // TODO(#101): Add FreeRTOS kernel function here
+    if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
+    {
+        // Swap out the SystemTimer isr with FreeRTOS's xPortSysTickHandler
+        system_timer.SetIsrFunction(xPortSysTickHandler);
+    }
 }
 
-WEAK void LowLevelInit()
+void SetupTimerInterrupt()
 {
-    system_timer.SetIsrFunction(FreeRTOSSystemTick);
-    system_timer.SetTickFrequency(1000);
+    DEBUG_PRINT("Setting up SystemTick Timer...");
+    system_timer.SetIsrFunction(InitializeFreeRTOSSystemTick);
+    system_timer.SetTickFrequency(config::kRtosFrequency);
     bool timer_started_successfully = system_timer.StartTimer();
     if (timer_started_successfully)
     {
@@ -328,6 +347,11 @@ WEAK void LowLevelInit()
     }
 }
 
+SJ2_WEAK void LowLevelInit()
+{
+    SetupTimerInterrupt();
+}
+
 inline void SystemInit()
 {
     InitDataSection();
@@ -337,87 +361,184 @@ inline void SystemInit()
     // Initialisation C++ libraries
     __libc_init_array();
 #endif
+    // Enable Peripheral Clock
+    // TODO(#30): Replace this with a System Clock Driver.
+    LPC_SC->PCLKSEL = 1;
     // required for printf and scanf to work properly
-    uart0_init(38400);
+    uart0::Init(config::kBaudRate);
     LowLevelInit();
 }
 
-constexpr uint32_t CRP_NO_CRP                                      = 0xFFFFFFFF;
-__attribute__((used, section(".crp"))) constexpr uint32_t CRP_WORD = CRP_NO_CRP;
+SJ2_SECTION(".crp") constexpr uint32_t kCrpWord = 0xFFFFFFFF;
 
 // Reset entry point for your code.
 // Sets up a simple runtime environment and initializes the C/C++ library.
-void ResetISR(void)
+void ResetIsr(void)
 {
+    // The Hyperload bootloader takes up stack space to execute. The Hyperload
+    // bootloader function launches this ISR manually, but it never returns thus
+    // it never cleans up the memory it uses. To get that memory back, we have
+    // to manually move the stack pointers back to the top of stack.
+    const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
+    __set_PSP(kTopOfStack);
+    __set_MSP(kTopOfStack);
+
     SystemInit();
+
 // #pragma ignored "-Wpedantic" to suppress main function call warning
-#pragma GCC diagnostic ignored "-Wpedantic"
+#pragma GCC diagnostic push ignored "-Wpedantic"
     int32_t result = main();
 // Enforce the warning after this point
 #pragma GCC diagnostic pop
     // Get rid of unused warning.
-    (void)result;
+    SJ2_USED(result);
     // main() shouldn't return, but if it does, we'll just enter an infinite
     // loop
-    while (true) { continue; }
+    while (true)
+    {
+        continue;
+    }
 }
 
 // Default exception handlers. Override the ones here by defining your own
 // handler routines in your application code.
 SJ2_SECTION(".after_vectors")
-void NMI_Handler(void)
+void NmiHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
+}
+
+extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
+{
+    // These are volatile to try and prevent the compiler/linker optimizing them
+    // away as the variables never actually get used.  If the debugger won't
+    // show the values of the variables, make them global my moving their
+    // declaration outside of this function.
+    volatile uint32_t r0;
+    volatile uint32_t r1;
+    volatile uint32_t r2;
+    volatile uint32_t r3;
+    volatile uint32_t r12;
+    // Link register.
+    volatile uint32_t lr;
+    // Program counter.
+    volatile uint32_t pc;
+    // Program status register.
+    volatile uint32_t psr;
+
+    r0 = fault_stack_address[0];
+    r1 = fault_stack_address[1];
+    r2 = fault_stack_address[2];
+    r3 = fault_stack_address[3];
+
+    r12 = fault_stack_address[4];
+    lr  = fault_stack_address[5];
+    pc  = fault_stack_address[6];
+    psr = fault_stack_address[7];
+
+    SJ2_USED(r0);
+    SJ2_USED(r1);
+    SJ2_USED(r2);
+    SJ2_USED(r3);
+    SJ2_USED(r12);
+    SJ2_USED(lr);
+    SJ2_USED(pc);
+    SJ2_USED(psr);
+
+    DEBUG_PRINT("r0: 0x%08lX, r1: 0x%08lX, r2: 0x%08lX, r3: 0x%08lX ", r0, r1,
+                r2, r3);
+    DEBUG_PRINT("r12: 0x%08lX, lr: 0x%08lX, pc: 0x%08lX, psr: 0x%08lX", r12, lr,
+                pc, psr);
+
+    SJ2_ASSERT_FATAL(false, "Hard Fault Exception Occured!");
+    // When the following line is hit, the variables contain the register values
+    // Use a JTAG debugger to inspect these variables
+    while (true)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
-void HardFault_Handler(void)
+void HardFaultHandler(void)
 {
-    while (1) { continue; }
+    __asm volatile(
+        " tst lr, #4                                          \n"
+        " ite eq                                              \n"
+        " mrseq r0, msp                                       \n"
+        " mrsne r0, psp                                       \n"
+        " ldr r1, [r0, #24]                                   \n"
+        " ldr r2, handler2_address_const                      \n"
+        " bx r2                                               \n"
+        " handler2_address_const: .word GetRegistersFromStack \n");
 }
 
 SJ2_SECTION(".after_vectors")
-void MemManage_Handler(void)
+void MemManageHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
-void BusFault_Handler(void)
+void BusFaultHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
-void UsageFault_Handler(void)
+void UsageFaultHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
-void SVC_Handler(void)
+void SvcHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
-void DebugMon_Handler(void)
+void DebugMonHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
-void PendSV_Handler(void)
+void PendSVHandler(void)
 {
-    while (1) { continue; }
+    while (1)
+    {
+        continue;
+    }
 }
 
 SJ2_SECTION(".after_vectors")
-void SysTick_Handler(void)
+void SysTickHandler(void)
 {
+    // This assumes that SysTickHandler is called every millisecond.
+    // Changing that frequency will distort the milliseconds time.
+    milliseconds += 1;
     if (SystemTimer::system_timer_isr == nullptr)
     {
-        DEBUG_PRINT("System Timer ISR not defined, disabling System Timer\n");
+        DEBUG_PRINT("System Timer ISR not defined, disabling System Timer");
         system_timer.DisableTimer();
     }
     else
@@ -425,22 +546,18 @@ void SysTick_Handler(void)
         SystemTimer::system_timer_isr();
     }
 }
+
+constexpr int32_t kIrqOffset = 16;
+
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
 void IntDefaultHandler(void)
 {
-    constexpr int32_t kIrqOffset = 16;
-    uint32_t active_isr          = SCB->ICSR;
+    uint8_t active_isr = (SCB->ICSR & 0xFF);
 
-    void (*isr)(void) = isr_vector_table[active_isr - kIrqOffset];
-    if (isr == IntDefaultHandler)
-    {
-        DEBUG_PRINT("No ISR found for the vector %lu\n", active_isr);
-        while (1) { continue; }
-    }
-    else
-    {
-        DEBUG_PRINT("Launching IRQ %lu\n", active_isr);
-        isr();
-    }
+    IsrPointer isr = dynamic_isr_vector_table[(active_isr - kIrqOffset)];
+    SJ2_ASSERT_FATAL(isr != IntDefaultHandler,
+                     "No ISR found for the vector %u [%ld]", active_isr,
+                     ((active_isr - kIrqOffset)));
+    isr();
 }

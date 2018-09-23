@@ -4,11 +4,13 @@ firmware/**/makefile
 
 !firmware/library
 !firmware/HelloWorld
+!firmware/Hyperload
 !firmware/examples
 
 tools/Hyperload
 tools/Telemetry
 tools/gcc-arm-none-eabi-*
+tools/clang*
 
 **/*.gch
 **/*.gcno
@@ -18,3 +20,5 @@ tools/gcc-arm-none-eabi-*
 **/env.sh
 archive/
 .idea/
+**/*/.vscode
+.vscode

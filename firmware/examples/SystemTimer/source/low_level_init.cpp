@@ -34,10 +34,10 @@ void LowLevelInit()
     bool timer_started_successfully = system_timer.StartTimer();
     if (timer_started_successfully)
     {
-        DEBUG_PRINT("Demo System Timer has begun.\n");
+        DEBUG_PRINT("Demo System Timer has begun.");
     }
     else
     {
-        DEBUG_PRINT("Demo System Timer has FAILED!!\n");
+        DEBUG_PRINT("Demo System Timer has FAILED!!");
     }
 }

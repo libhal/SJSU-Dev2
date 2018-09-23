@@ -1,31 +1,5 @@
 #!/bin/bash
 
-#########
-# Utils #
-#########
-
-# Checks for installed programs on machine
-function programInstalled
-{
-	local returning=1
-	type $1 >/dev/null 2>&1 || { local returning=0; }
-	echo "$returning"
-}
-
-# Function Displays Green Check for installed programs
-# Else Displays Red Cross for Missing Programs
-function check
-{
-	if [ $1 == 1 ]
-	then
-		printf "\e[32m✔"
-		echo $(tput sgr0)
-	else
-		printf "\e[31m✘"
-		echo $(tput sgr0)
-	fi
-}
-
 # Make sure only non-root users can run our script
 if [[ $EUID -eq 0 ]]
 then
@@ -41,12 +15,15 @@ echo "   3) Curl                                          "
 echo "   4) Git CLI                                       "
 echo "   5) Perl                                          "
 echo "   6) Valgrind                                      "
-echo "   7) Gcovr                                         "
-echo "   8) Clang-format                                  "
-echo "   9) OpenOCD (Debian/Ubuntu Only)                  "
-echo "   10) XCode CLI tools (MacOS Only)                 "
-echo "   11) Homebrew (MacOS Only)                        "
-echo "   12) Build Essential tools (Debian/Ubuntu Only)   "
+echo "   7) G++ 7                                         "
+echo "   8) Gcovr-7                                       "
+echo "   9) clang                                         "
+echo "   9) clang-format                                  "
+echo "   9) clang-tidy                                    "
+echo "   10) OpenOCD (Debian/Ubuntu Only)                 "
+echo "   11) XCode CLI tools (MacOS Only)                 "
+echo "   12) Homebrew (MacOS Only)                        "
+echo "   13) Build Essential tools (Debian/Ubuntu Only)   "
 echo "└────────────────────────────────────────────────── "
 echo "            Acquiring sudo privileges               "
 echo "└────────────────────────────────────────────────── "
@@ -67,8 +44,20 @@ ARM_GCC_ARCHIVE_FILE_MAC="$ARM_GCC_COMMON-mac.tar.bz"
 ARM_GCC_ARCHIVE_LINUX_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_LINUX"
 ARM_GCC_ARCHIVE_MAC_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_MAC"
 
-# https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/gcc-arm-none-eabi-7-2017-q4-major-linux.tar.bz
-
+CLANG_VERSION="6.0.1"
+CLANG_BASE_URL="http://releases.llvm.org/$CLANG_VERSION/"
+CLANG_14="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04"
+CLANG_16="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-16.04"
+CLANG_MAC="clang+llvm-$CLANG_VERSION-x86_64-apple-darwin"
+CLANG_FILE_EXTENSION=".tar.xz"
+CLANG_14_FILE="$CLANG_14$CLANG_FILE_EXTENSION"
+CLANG_14_URL="$CLANG_BASE_URL$CLANG_14_FILE"
+CLANG_16_FILE="$CLANG_16$CLANG_FILE_EXTENSION"
+CLANG_16_URL="$CLANG_BASE_URL$CLANG_16_FILE"
+CLANG_MAC_FILE="$CLANG_MAC$CLANG_FILE_EXTENSION"
+CLANG_MAC_URL="$CLANG_BASE_URL$CLANG_MAC_FILE"
+CLANG_PKG=""
+CLANG_PATH=""
 echo " ──────────────────────────────────────────────────┐"
 echo ""
 echo "  Starting SJSU-DEV-Linux Environment Setup Script  "
@@ -80,126 +69,143 @@ echo "              Detecting your platform               "
 echo "└────────────────────────────────────────────────── "
 if [[ "$ARCH" != 'x86_64' || "$ARCH" == "amd64" ]]
 then
-	echo 'Only 64-bit architecture systems are supported!'
-	exit 1
+    echo 'Only 64-bit architecture systems are supported!'
+    exit 1
 fi
-echo " ──────────────────────────────────────────────────┐"
-echo "               Checking Dependencies                "
-echo "└────────────────────────────────────────────────── "
-PYTHON_INSTALLED=$(check $(programInstalled python))
-PIP_INSTALLED=$(check $(programInstalled pip))
-GIT_INSTALLED=$(check $(programInstalled git))
-PERL_INSTALLED=$(check $(programInstalled perl))
-MAKE_INSTALLED=$(check $(programInstalled make))
-# Output results of dependencies
-# echo "python        $PYTHON_INSTALLED"
-# echo "perl          $PERL_INSTALLED"
-# echo "git           $GIT_INSTALLED"
-# echo "make          $MAKE_INSTALLED"
-# echo "pip           $PIP_INSTALLED"
-# Concat results
-# REQUIREMENTS_MET="$PYTHON_INSTALLED $PIP_INSTALLED $GIT_INSTALLED $PERL_INSTALLED"
-# This lines uses wildcards to check if there exists a ✘ in the
-# Concatenated string above. If it does, terminate setup
-# if [[ $REQUIREMENTS_MET == *"✘"* ]]
-# then
-# 	echo "Missing requirement(s). Please install manually. Setup exiting."
-# 	exit 1
-# fi
+
 echo " ──────────────────────────────────────────────────┐"
 echo "               System Dependent Setup               "
 echo "└────────────────────────────────────────────────── "
 cd $TOOLDIR
 case "$OS" in
-	Linux) # Linux & Windows WSL Case
-		echo "Operating System: Linux"
-		SJSUONEDEV=/dev/ttyUSB0
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                Updating Apt listings                "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt update
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                Installing OpenOCD                   "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install openocd
-		echo " ───────────────────────────────────────────────────┐"
-		echo "        Installing build-essentials (GCC, make)      "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install build-essential
-		sudo apt -y install g++
-		echo " ───────────────────────────────────────────────────┐"
-		echo "      Installing Git, Python, PIP, Curl and Perl     "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install git python python-pip curl perl
-		echo " ───────────────────────────────────────────────────┐"
-		echo "         Installing Testing Tools (Valgrind)         "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install valgrind
-		echo " ───────────────────────────────────────────────────┐"
-		echo "              Installing Clang Format                "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install clang-format
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                Installing OpenOCD                   "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install openocd
-		echo " ──────────────────────────────────────────────────┐"
-		echo "      Adding current user to '$GROUP' group"
-		echo "└────────────────────────────────────────────────── "
-		THE_GROUP=$(getent group | grep 'dial' | cut -d: -f1)
-		sudo adduser $USER $THE_GROUP
-		echo " ──────────────────────────────────────────────────┐"
-		echo "           Downloading gcc-arm-embedded             "
-		echo "└────────────────────────────────────────────────── "
-		curl -C - -LO $ARM_GCC_ARCHIVE_LINUX_URL
-		GCC_PKG=$ARM_GCC_ARCHIVE_FILE_LINUX
-		;;
+    Linux) # Linux & Windows WSL Case
+        echo "Operating System: Linux"
+        SJSUONEDEV=/dev/ttyUSB0
+        echo " ───────────────────────────────────────────────────┐"
+        echo "               Updating Apt listings                 "
+        echo "└─────────────────────────────────────────────────── "
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        sudo apt update
 
-	Darwin) # OS X Case
-		echo "Operating System: Mac OSX Darvin"
-		SJSUONEDEV=/dev/tty.usbserial-A503JOLS
+        VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID=")
+        echo "UBUNTU $VERSION_ID"
+        if [ "$VERSION_ID" = "VERSION_ID=\"14.04\"" ]
+        then
+            echo " ───────────────────────────────────────────────────┐"
+            echo "     Downloading Clang 6.0 tools (Ubuntu 14.04)      "
+            echo "└─────────────────────────────────────────────────── "
+            curl -C - -LO "$CLANG_14_URL"
+            CLANG_PKG="$CLANG_14_FILE"
+            CLANG_PATH="$CLANG_14"
+        else
+            echo " ───────────────────────────────────────────────────┐"
+            echo "     Downloading Clang 6.0 tools (Ubuntu 16.04)+     "
+            echo "└─────────────────────────────────────────────────── "
+            curl -C - -LO "$CLANG_16_URL"
+            CLANG_PKG="$CLANG_16_FILE"
+            CLANG_PATH="$CLANG_16"
+        fi
+        echo " ──────────────────────────────────────────────────┐"
+        echo "               Extracting Clang 6.0                 "
+        echo "└────────────────────────────────────────────────── "
+        echo "$CLANG_PKG"
+        tar --extract  --verbose --xz --file="$CLANG_PKG"
         echo " ───────────────────────────────────────────────────┐"
-		echo "    Install XCode Command Line Tools (GCC, make)     "
-		echo "└─────────────────────────────────────────────────── "
+        echo "                Installing OpenOCD                   "
+        echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install openocd
+        echo " ───────────────────────────────────────────────────┐"
+        echo "        Installing build-essentials (make)           "
+        echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install build-essential
+        echo " ───────────────────────────────────────────────────┐"
+        echo "              Installing GCC Version 7               "
+        echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install -qq g++-7
+        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
+        echo " ───────────────────────────────────────────────────┐"
+        echo "      Installing Git, Python, PIP, Curl and Perl     "
+        echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install git python python-pip curl perl
+        echo " ───────────────────────────────────────────────────┐"
+        echo "         Installing Testing Tools (Valgrind)         "
+        echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install valgrind
+        echo " ───────────────────────────────────────────────────┐"
+        echo "                Installing OpenOCD                   "
+        echo "└─────────────────────────────────────────────────── "
+        sudo apt -y install openocd
+        echo " ──────────────────────────────────────────────────┐"
+        echo "      Adding current user to '$GROUP' group"
+        echo "└────────────────────────────────────────────────── "
+        THE_GROUP=$(getent group | grep 'dial' | cut -d: -f1)
+        sudo adduser $USER $THE_GROUP
+        echo " ──────────────────────────────────────────────────┐"
+        echo "           Downloading gcc-arm-embedded             "
+        echo "└────────────────────────────────────────────────── "
+        curl -C - -LO $ARM_GCC_ARCHIVE_LINUX_URL
+        GCC_PKG=$ARM_GCC_ARCHIVE_FILE_LINUX
+        ;;
+
+    Darwin) # OS X Case
+        echo "Operating System: Mac OSX Darvin"
+        SJSUONEDEV=/dev/tty.usbserial-A503JOLS
+        echo " ───────────────────────────────────────────────────┐"
+        echo "    Install XCode Command Line Tools (GCC, make)     "
+        echo "└─────────────────────────────────────────────────── "
         xcode-select --install &> /dev/null	# Install Command Line tools (make etc...)
-		sudo xcodebuild -license accept # Accept User Agreement
+        sudo xcodebuild -license accept # Accept User Agreement
         echo " ───────────────────────────────────────────────────┐"
-		echo "          Prompt Git installer by invoking it        "
-		echo "└─────────────────────────────────────────────────── "
+        echo "          Prompt Git installer by invoking it        "
+        echo "└─────────────────────────────────────────────────── "
         git --version
         echo " ───────────────────────────────────────────────────┐"
-		echo "                Installing Homebrew                  "
-		echo "└─────────────────────────────────────────────────── "
-		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-		echo " ───────────────────────────────────────────────────┐"
-		echo "         Installing Testing Tools (Valgrind)         "
-		echo "└─────────────────────────────────────────────────── "
-		brew install valgrind
+        echo "                Installing Homebrew                  "
+        echo "└─────────────────────────────────────────────────── "
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         echo " ───────────────────────────────────────────────────┐"
-		echo "          Using EASY_INSTALL to install PIP          "
-		echo "└─────────────────────────────────────────────────── "
-		sudo easy_install pip
-		echo " ──────────────────────────────────────────────────┐"
-		echo "            Downloading gcc-arm-embedded            "
-		echo "└────────────────────────────────────────────────── "
-		curl -C - -LO $ARM_GCC_ARCHIVE_MAC_URL
-		GCC_PKG=$ARM_GCC_ARCHIVE_FILE_MAC
-		;;
+        echo "                 Updating Homebrew                   "
+        echo "└─────────────────────────────────────────────────── "
+        brew update
+        echo " ───────────────────────────────────────────────────┐"
+        echo "              Installing GCC Version 7               "
+        echo "└─────────────────────────────────────────────────── "
+        brew install gcc@7
+        brew link --overwrite gcc@7
+        echo " ───────────────────────────────────────────────────┐"
+        echo "  Installing LLVM (clang, clang-format, clang-tidy)  "
+        echo "└─────────────────────────────────────────────────── "
+        brew install llvm@6
+        echo " ───────────────────────────────────────────────────┐"
+        echo "         Installing Testing Tools (Valgrind)         "
+        echo "└─────────────────────────────────────────────────── "
+        brew install --HEAD valgrind
+        echo " ───────────────────────────────────────────────────┐"
+        echo "        Installing PIP via bootstrap.pypa.io         "
+        echo "└─────────────────────────────────────────────────── "
+        curl https://bootstrap.pypa.io/get-pip.py | python2.7
+        echo " ──────────────────────────────────────────────────┐"
+        echo "            Downloading gcc-arm-embedded            "
+        echo "└────────────────────────────────────────────────── "
+        curl -C - -LO $ARM_GCC_ARCHIVE_MAC_URL
+        GCC_PKG=$ARM_GCC_ARCHIVE_FILE_MAC
+        ;;
 
-	*)	#Default if Operating System other than Mac or Linux
-		echo "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems are supported! Exiting..."
-		exit 1
-		;;
+    *)	#Default if Operating System other than Mac or Linux
+        echo -n "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems "
+        echo "are supported! Exiting..."
+        exit 1
+        ;;
 esac
 
 echo " ──────────────────────────────────────────────────┐"
 echo "            Extracting gcc-arm-embedded             "
 echo "└────────────────────────────────────────────────── "
 tar --extract \
-	--verbose \
-	--bzip2 \
-	--file="$GCC_PKG"\
-	--exclude='share/doc' 2> /dev/null
+    --verbose \
+    --bzip2 \
+    --file="$GCC_PKG" \
+    --exclude='share/doc'
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
 echo "                   Upgrading PIP                     "
@@ -218,6 +224,7 @@ echo "                Setting Up Hyperload                 "
 echo "└─────────────────────────────────────────────────── "
 rm -rf "$TOOLDIR/Hyperload/"
 git clone --depth=1 https://github.com/kammce/Hyperload.git "$TOOLDIR/Hyperload/"
+git checkout sjtwo
 cd "$TOOLDIR/Hyperload/" && ./setup
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
@@ -246,9 +253,13 @@ SJPROJ=firmware
 # Sets which DBC to generate, defaults to "DBG"
 ENTITY=DBG
 
+# Sets CLANG tools path
+SJCLANG=\$SJBASE/tools/$CLANG_PATH/bin
+
 # Compiler and library settings:
 # Selects compiler version to use
 PATH=\$(printf %q "\$PATH:\$SJBASE/tools/$ARM_GCC_COMMON/bin")
+PATH=\$(printf %q "\$PATH:\$SJCLANG")
 SJLIBDIR="\$SJBASE/firmware/library"
 
 # Export everything to the environment
@@ -256,25 +267,20 @@ export SJBASE
 export SJDEV
 export SJBAUD
 export SJPROJ
+export SJCLANG
 export ENTITY
 export PATH
 export SJLIBDIR
 EOL
 
 echo " ───────────────────────────────────────────────────┐"
-echo "        Linking Files into Firmware projects         "
+echo "         Loading Environment Variables File          "
 echo "└─────────────────────────────────────────────────── "
-# DEFAULT_PROJECTS=HelloWorld FreeRTOS Telemetry Unittest
-DEFAULT_PROJECTS=HelloWorld
-for PROJECT in $DEFAULT_PROJECTS
-do
-	# Place env.sh link into project folder
-    rm -f "firmware/$PROJECT/env.sh"
-	ln -s -f "$BASE/env.sh" "firmware/$PROJECT/env.sh"
-	# Place makefile link into project folder
-    rm -f "firmware/$PROJECT/makefile"
-	ln -s -f "$BASE/makefile" "firmware/$PROJECT/makefile"
-done
+source env.sh
+echo " ───────────────────────────────────────────────────┐"
+echo "      Linking Files to Firmware Project Folder       "
+echo "└─────────────────────────────────────────────────── "
+./tools/link_projects.sh
 echo " ───────────────────────────────────────────────────┐"
 echo "                   SETUP COMPLETE!                   "
 echo "                                                     "

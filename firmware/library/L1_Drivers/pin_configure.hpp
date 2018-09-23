@@ -81,77 +81,77 @@ class PinConfigure : public PinConfigureInterface
     {
         return PinConfigure(5, 4);
     }
-    constexpr PinConfigure(const uint8_t _port, const uint8_t _pin)
-        : port(_port), pin(_pin)
+    constexpr PinConfigure(uint8_t port_number, uint8_t pin_number)
+        : kPort(port_number), kPin(pin_number)
     {
     }
     void SetPinFunction(uint8_t function) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin], PinBitMap::kFunction,
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kFunction,
                      function & 0b111, 3);
     }
     void SetPinMode(PinConfigureInterface::PinMode mode) override
     {
-        pin_map->_register[port][pin] = BitPlace(
-            pin_map->_register[port][pin], PinBitMap::kMode, mode & 0b11, 2);
+        pin_map->_register[kPort][kPin] = BitPlace(
+            pin_map->_register[kPort][kPin], PinBitMap::kMode, mode & 0b11, 2);
     }
     void EnableHysteresis(bool enable_hysteresis = true) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin], PinBitMap::kHysteresis,
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kHysteresis,
                      enable_hysteresis, 1);
     }
     void SetAsActiveLow(bool set_as_active_low = true) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin], PinBitMap::kInputInvert,
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kInputInvert,
                      set_as_active_low, 1);
     }
     // Set bit to 0 to enable analog mode
     void SetAsAnalogMode(bool set_as_analog = true) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin],
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin],
                      PinBitMap::kAnalogDigitalMode, !set_as_analog, 1);
     }
     // Enable by setting bit to 0 to enable digital filter.
     void EnableDigitalFilter(bool enable_digital_filter = true) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin], PinBitMap::kDigitalFilter,
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kDigitalFilter,
                      !enable_digital_filter, 1);
     }
     void EnableFastMode(bool enable_fast_mode = true) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin], PinBitMap::kSlew,
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kSlew,
                      enable_fast_mode, 1);
     }
     // Enable by setting bit to 0 for i2c high speed mode
     void EnableI2cHighSpeedMode(bool enable_i2c_high_speed_mode = true) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin], PinBitMap::kI2cHighSpeed,
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kI2cHighSpeed,
                      !enable_i2c_high_speed_mode, 1);
     }
     void EnableI2cHighCurrentDrive(
         bool enable_i2c_high_current_drive = true) override
     {
-        pin_map->_register[port][pin] = BitPlace(
-            pin_map->_register[port][pin], PinBitMap::kI2cHighCurrentDrive,
+        pin_map->_register[kPort][kPin] = BitPlace(
+            pin_map->_register[kPort][kPin], PinBitMap::kI2cHighCurrentDrive,
             enable_i2c_high_current_drive, 1);
     }
     void SetAsOpenDrain(bool set_as_open_drain = true) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin], PinBitMap::kOpenDrain,
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kOpenDrain,
                      set_as_open_drain, 1);
     }
     void EnableDac(bool enable_dac = true) override
     {
-        pin_map->_register[port][pin] =
-            BitPlace(pin_map->_register[port][pin], PinBitMap::kDacEnable,
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kDacEnable,
                      enable_dac, 1);
     }
     inline uint32_t BitPlace(uint32_t target, uint32_t position, uint32_t value,
@@ -163,16 +163,16 @@ class PinConfigure : public PinConfigureInterface
         target |= (value & mask) << position;
         return target;
     }
-    uint8_t getPort()
+    uint8_t GetPort()
     {
-        return port;
+        return kPort;
     }
-    uint8_t setPin()
+    uint8_t GetPin()
     {
-        return pin;
+        return kPin;
     }
 
  protected:
-    const uint8_t port;
-    const uint8_t pin;
+    const uint8_t kPort;
+    const uint8_t kPin;
 };

@@ -1,15 +1,15 @@
 // Test for PinConfigure class.
 // Using a test by side effect on the LPC_IOCON register
 #include "L0_LowLevel/LPC40xx.h"
-#include "L5_Testing/testing_frameworks.hpp"
 #include "L1_Drivers/pin_configure.hpp"
+#include "L5_Testing/testing_frameworks.hpp"
 
 TEST_CASE("Testing PinConfigure", "[pin_configure]")
 {
     // Simulated local version of LPC_IOCON register to verify register
     // manipulation by side effect of PinConfigure method calls
     LPC_IOCON_TypeDef local_iocon;
-
+    memset(&local_iocon, 0, sizeof(local_iocon));
     // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
     // Redirects manipulation to the 'local_iocon'
     PinConfigure::pin_map =
@@ -21,17 +21,17 @@ TEST_CASE("Testing PinConfigure", "[pin_configure]")
     SECTION("Pin Function")
     {
         // Source: "UM10562 LPC408x/407x User manual" table 84 page 133
-        constexpr uint8_t kP0_0_U3_TXD = 0b010;
-        constexpr uint8_t kP2_5_PWM1_6 = 0b001;
+        constexpr uint8_t kPort0Pin0Uart3Txd = 0b010;
+        constexpr uint8_t kPort2Pin5Pwm1Channel6 = 0b001;
 
-        test_subject00.SetPinFunction(kP0_0_U3_TXD);
-        test_subject25.SetPinFunction(kP2_5_PWM1_6);
+        test_subject00.SetPinFunction(kPort0Pin0Uart3Txd);
+        test_subject25.SetPinFunction(kPort2Pin5Pwm1Channel6);
         // Check that mapped pin P0.0's first 3 bits are equal to the function
         // U3_TXD
-        CHECK(kP0_0_U3_TXD == (local_iocon.P0_0 & 0b111));
+        CHECK(kPort0Pin0Uart3Txd == (local_iocon.P0_0 & 0b111));
         // Check that mapped pin P2.5's first 3 bits are equal to the function
         // PWM1_6
-        CHECK(kP2_5_PWM1_6 == (local_iocon.P2_5 & 0b111));
+        CHECK(kPort2Pin5Pwm1Channel6 == (local_iocon.P2_5 & 0b111));
     }
     SECTION("Pin Mode")
     {
@@ -225,4 +225,6 @@ TEST_CASE("Testing PinConfigure", "[pin_configure]")
         CHECK(0 == (local_iocon.P0_0 & kMask));
         CHECK(kMask == (local_iocon.P2_5 & kMask));
     }
+    PinConfigure::pin_map =
+        reinterpret_cast<PinConfigure::PinMap_t *>(LPC_IOCON);
 }
