@@ -5,7 +5,7 @@ matrix:
           sudo: required
           dist: trusty
         - os: osx
-          osx_image: xcode8
+          osx_image: xcode10
 install: ./setup
 script:
   - cd ./firmware/HelloWorld/
@@ -13,6 +13,4 @@ script:
   - make presubmit
 after_success:
   - cd ../../
-  - gcov-7 --version # debug only
-  - g++-7 --version # debug only
   - bash <(curl -s https://codecov.io/bash) -x $(which gcov-7)
