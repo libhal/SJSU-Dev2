@@ -7,7 +7,6 @@
 //      P0_0.SetPinMode(PinInterface::PinMode::kPullUp);
 #pragma once
 
-// #include <cstdio>
 #include <cstring>
 
 #include "config.hpp"

@@ -1,4 +1,5 @@
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/startup.hpp"
 #include "L1_Drivers/system_timer.hpp"
 
 // Sys_tick structure defaults to the Core M4 SysTick register address found in
@@ -7,4 +8,4 @@ SysTick_Type * SystemTimer::sys_tick = SysTick;
 // system_timer_isr defaults to nullptr. The actual SystemTickHandler should
 // check if the isr is set to nullptr, and if it is, turn off the timer, if
 // set a proper function then execute it.
-void (*SystemTimer::system_timer_isr)(void) = nullptr;
+IsrPointer SystemTimer::system_timer_isr = nullptr;
