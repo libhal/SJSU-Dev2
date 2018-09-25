@@ -12,13 +12,14 @@
 
 #include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/interrupt.hpp"
 #include "L2_Utilities/macros.hpp"
 
 // LPC4076 does not include P3.26 so supporting methods are not available
 class SystemTimerInterface
 {
  public:
-    virtual void SetIsrFunction(void (*isr)(void))        = 0;
+    virtual void SetIsrFunction(IsrPointer isr)           = 0;
     virtual bool StartTimer()                             = 0;
     virtual void DisableTimer()                           = 0;
     virtual uint32_t SetTickFrequency(uint32_t frequency) = 0;
@@ -35,11 +36,11 @@ class SystemTimer : public SystemTimerInterface
         kClkSource     = 2,
         kCountFlag     = 16
     };
-    static void (*system_timer_isr)(void);
+    static IsrPointer system_timer_isr;
     static SysTick_Type * sys_tick;
 
     constexpr SystemTimer() {}
-    void SetIsrFunction(void (*isr)(void)) override
+    void SetIsrFunction(IsrPointer isr) override
     {
         system_timer_isr = isr;
     }
