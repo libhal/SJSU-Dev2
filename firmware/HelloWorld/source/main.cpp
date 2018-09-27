@@ -14,7 +14,7 @@ int main(void)
     // relevant TxD and RxD pins together. For this example please
     // connect the TxD2 and RxD2 pins together
 
-    Uart test(2,8);
+    Uart test(2, 8);
     char receive;
     char input2 [] = "Hello World";
 

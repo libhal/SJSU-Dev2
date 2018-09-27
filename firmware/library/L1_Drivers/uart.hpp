@@ -44,6 +44,34 @@ class Uart : public UartInterface
         kPin28 = 28,
         kPin29 = 29
     };
+    const uint8_t TxPort[4] = 
+    {
+        kPort0,
+        kPort2,
+        kPort4,
+        kPort1
+    };
+    const uint8_t TxPin[4] = 
+    {
+        kPin0,
+        kPin8,
+        kPin28,
+        kPin29
+    };
+    const uint8_t RxPort[4] =
+    {
+        kPort0,
+        kPort2,
+        kPort4,
+        kPort2
+    };
+    const uint8_t RxPin[4] =
+    {
+        kPin1,
+        kPin9,
+        kPin29,
+        kPin9
+    }
     const uint8_t TxUartPortFunction[4] =
     {
         4,
@@ -124,22 +152,16 @@ class Uart : public UartInterface
         mode(1)
     {
     }
-    // explicit constexpr Uart(uint8_t mode)
-    // tx(tx_pin),
-    // rx(rx_pin),
-    // port((mode == kPort0) ? mode : mode - 1)
-    // {
-    // }
 
-    constexpr Uart(uint8_t port, uint8_t pin) :
+    constexpr Uart(uint8_t mode) :
         tx(&tx_pin),
         rx(&rx_pin),
         tx_pin(PinConfigure::CreateInactivePin()),
         rx_pin(PinConfigure::CreateInactivePin()),
-        mode(1)
+        mode(mode)
     {
-        tx_pin = PinConfigure(port, pin);
-        rx_pin = PinConfigure(port, kPin9);
+        tx_pin = PinConfigure(TxPort[mode], TxPin[mode]);
+        rx_pin = PinConfigure(RxPort[mode], RxPin[mode]);
     }
     ~Uart()
     {

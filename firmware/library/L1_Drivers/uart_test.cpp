@@ -5,69 +5,60 @@
 
 // TEST_CASE("Testing Uart", "[Uart]")
 // {
-//     // Char to be used in multiple tests
-//     constexpr char T = 'T';
+//     // Simulated local version of LPC_UART2 to verify registers
+//     LPC_UART2_TypeDef local_uart;
 
-//     // Local object of LPC_UART_TypeDef to
-//     // observe changes in registers of Uart1
-//     LPC_UART1_TypeDef Local_Uart1
+//     Uart test(2);
+//     test.Initialize(38400);
 
-//     Uart test
-
-//     // Calling the Initialization of UART 1 so it can be used for all tests
-//     // Called to be at 9600 bps
-
-//     test.Initialize(9600, 1);
-
-//     SECTION("Initialize UART 1")
+//     SECTION("Initialization")
 //     {
-//         constexpr uint8_t DLAB_bit = 7;
-//         constexpr uint32_t kFCR = 0b111;
-//         constexpr uint32_t kDiv =
-//             static_cast<uint32_t>(OSC_CLK / (16.0f * 9600.0f) + 0.5f);
-//         constexpr uint8_t kDLM = static_cast<uint8_t>(kDiv >> 8);
-//         constexpr uint8_t kDLL = static_cast<uint8_t>(kDiv >> 0);
-//         constexpr uint32_t kLCR = 0b11;
+//         // Checking the FCR register that it is properly set
+//         // It enables the FIFO and resets the Tx and Rx FIFO
+//         // Check page 501 of the user manual for register description
+//         constexpr uint8_t FIFOEnableAndReset = 0b111;
 
-//         // Check first 3 bits of FCR
-//         CHECK(kFCR == ((Local_Uart1.FCR) & 0b111));
-
-//         // Unlock DLAB
-//         Local_Uart1.LCR |= (1 << DLAB_bit);
-
-//         // Check DLM bits
-//         CHECK(kDLM == Local_Uart1.DLM);
-
-//         // Check DLL bits
-//         CHECK(kDLL == Local_Uart1.DLL);
-
-//         // Lock DLAB
-//         Local_Uart1.LCR &= ~(1 << DLAB_bit);
-
-//         CHECK(kLCR == (Local_Uart1.LCR) & 0b11);
+//         CHECK(FIFOEnableandReset == (local_uart -> FCR));
+        
 //     }
-//     SECTION("Sending Data")
+//     SECTION("Baud Rate")
 //     {
-//         constexpr uint8_t TER_bit = 7;
-//         // Disable Tx enable so test can check bits in register
-//         Local_Uart1.TER &= ~(1 << TER_bit);
+//         // Standard UART is 8 bit packages, with 1 stop bit and no parity enabled
+//         // Check page 502 of the user manual for regiser description
+//         constexpr uint8_t StandardUart = 0b011;
 
-//         // Send the letter T
-//         test.Send('T');
+//         // Divisor values to be checked
+//         uint32_t div =
+//             static_cast<uint32_t>(OSC_CLK / (16.0f * baudrate) + 0.5f);
+//         uint8_t high = static_cast<uint8_t>(div >> 8);
+//         uint8_t low = static_cast<uint8_t>(div >> 0);
 
-//         // Check the transmit holding register if it is holding the letter T
-//         CHECK(T == Local_Uart1.THR);
+//         // Unlock DLAB to check baud rate registers
+//         local_uart -> LCR |= (1 << 7);
 
-//         // Enable the FIFO to send the data
-//         Local_Uart1.TER |= (1 << TER_bit);
+//         CHECK(high == (local_uart -> DLM));
+//         CHECK(low == (local_uart -> DLL));
+
+//         local_uart -> LCR &= ~(1 << 7);
+
+//         CHECK(StandardUart == (local_uart -> LCR));
 //     }
-//     SECTION("Reading Data")
+//     SECTION("Send")
 //     {
-//         char output;
-//         // Inject a T char into the receive buffer
-//         Local_Uart1.RBR = T;
+//         // We are sending data through the send function
+//         // We are gonna test whether or not the data makes it into
+//         // the THR register that outputs data onto the Tx pin
+//         constexpr uint8_t SendData = 0b1000;
+//         test.Send(8);
+//         CHECK(SendData == (local_uart -> THR));
+//     }
+//     SECTION("Recieve")
+//     {
+//         constexpr uint8_t Data = 0b101;
 
-//         // Check the output of the receive function
-//         CHECK(T == (output = test.Receive()));
+//         local_uart -> RBR = Data;
+//         uint8_t Din = test.Recieve();
+
+//         CHECK(Data == Din);
 //     }
 // }
