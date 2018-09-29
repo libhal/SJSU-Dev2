@@ -104,6 +104,7 @@ INCLUDES  = -I"$(CURRENT_DIRECTORY)/" \
 			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/trace" \
 			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/include" \
 			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/portable" \
+			-isystem"$(LIB_DIR)/third_party/FreeRTOS-Plus-FAT/include" \
 			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
 COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS)  $(DEFINES) \
                $(DISABLED_WARNINGS)
