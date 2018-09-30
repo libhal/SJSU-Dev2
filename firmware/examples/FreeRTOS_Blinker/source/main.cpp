@@ -53,7 +53,7 @@ void ButtonReader(void * parameters)
     // accordingly.
     while (true)
     {
-        bool pressed = (switch3.ReadPin() == GpioInterface::PinOutput::kHigh);
+        bool pressed = (switch3.ReadPin() == GpioInterface::PinState::kHigh);
         if (pressed)
         {
             previously_pressed = true;

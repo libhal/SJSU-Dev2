@@ -26,7 +26,7 @@ TEST_CASE("Testing adc", "[adc]")
     // Set mock for PinInterface
     Mock<PinInterface> mock_adc;
     Fake(Method(mock_adc, SetAsAnalogMode),
-         Method(mock_adc, SetPinMode),
+         Method(mock_adc, SetMode),
          Method(mock_adc, SetPinFunction));
     PinInterface & adc = mock_adc.get();
 
@@ -55,7 +55,7 @@ TEST_CASE("Testing adc", "[adc]")
                 SetPinFunction).Using(Adc::AdcMode::kCh0123Pins),
                Method(mock_adc, SetAsAnalogMode).Using(true),
                Method(mock_adc,
-                SetPinMode).Using(PinInterface::kInactive));
+                SetMode).Using(PinInterface::Mode::kInactive));
         // Check if any bits in the clock divider are set
         CHECK(((local_adc.CR >> kChannelClkDivBit) & kChannelClkDivMask) != 0);
         // Check bit 21 to see if power down bit is set in local_adc.CR

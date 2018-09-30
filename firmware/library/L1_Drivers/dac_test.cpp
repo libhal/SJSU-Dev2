@@ -22,7 +22,7 @@ TEST_CASE("Testing Dac", "[dac]")
     Fake(Method(mock_dac_pin, SetPinFunction),
          Method(mock_dac_pin, EnableDac),
          Method(mock_dac_pin, SetAsAnalogMode),
-         Method(mock_dac_pin, SetPinMode));
+         Method(mock_dac_pin, SetMode));
     PinInterface & dac = mock_dac_pin.get();
     Dac test_subject00(&dac);
     Dac test_subject01;
@@ -41,7 +41,7 @@ TEST_CASE("Testing Dac", "[dac]")
         Method(mock_dac_pin, EnableDac).Using(true),
         Method(mock_dac_pin, SetAsAnalogMode).Using(true),
         Method(mock_dac_pin,
-               SetPinMode).Using(PinInterface::kInactive));
+               SetMode).Using(PinInterface::Mode::kInactive));
     }
     SECTION("Write Dac")
     {

@@ -125,7 +125,7 @@ class Adc : public AdcInterface
             adc_->SetPinFunction(static_cast<uint8_t>(AdcMode::kCh4567Pins));
         }
         adc_->SetAsAnalogMode(true);
-        adc_->SetPinMode(PinInterface::kInactive);
+        adc_->SetMode(PinInterface::Mode::kInactive);
 
         for (uint32_t i = 2; i < 255; i++)
         {
