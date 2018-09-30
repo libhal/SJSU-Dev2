@@ -3,7 +3,7 @@
 
 #include "L2_Utilities/macros.hpp"
 
-volatile uint64_t milliseconds;
+volatile uint64_t milliseconds = 0;
 
 uint64_t Milliseconds()
 {

@@ -243,6 +243,12 @@ IsrPointer dynamic_isr_vector_table[] = {
     EepromIrqHandler,       // 56, 0xe0 - EEPROM
 };
 
+
+extern "C" void vPortSetupTimerInterrupt(void)  // NOLINT
+{
+    // Empty implementation, startup handles this itself.
+}
+
 // .data Section Table Information
 SJ2_PACKED(struct)
 DataSectionTable_t
