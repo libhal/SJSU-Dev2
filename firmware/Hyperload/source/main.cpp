@@ -198,7 +198,7 @@ void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
 int main(void)
 {
     Gpio button0(1, 0);
-    button0.SetPinMode(PinConfigure::PinMode::kPullDown);
+    button0.SetPinMode(Pin::PinMode::kPullDown);
     button0.SetAsInput();
     OnBoardLed leds;
     leds.Initialize();
@@ -297,7 +297,7 @@ int main(void)
 
     printf("Application Reset ISR value = %p\n", application_entry_isr);
     Delay(500);
-    button0.SetPinMode(PinConfigure::PinMode::kPullUp);
+    button0.SetPinMode(Pin::PinMode::kPullUp);
     leds.SetAll(0);
     // SystemTimerIrq must be disabled, otherwise it will continue to fire,
     // after the application is  executed. This can lead to a lot of problems

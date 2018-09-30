@@ -91,10 +91,10 @@ class Example : public ExampleInterface
           can_tx_(can_tx_pin_),
           usb_d_minus_(usb_d_minus_pin_),
           usb_d_plus_(usb_d_plus_pin_),
-          can_rx_pin_(PinConfigure::CreatePinConfigure<0, 1>()),
-          can_tx_pin_(PinConfigure::CreatePinConfigure<0, 2>()),
-          usb_d_minus_pin_(PinConfigure::CreatePinConfigure<2, 3>()),
-          usb_d_plus_pin_(PinConfigure::CreatePinConfigure<2, 4>())
+          can_rx_pin_(Pin::CreatePin<0, 1>()),
+          can_tx_pin_(Pin::CreatePin<0, 2>()),
+          usb_d_minus_pin_(Pin::CreatePin<2, 3>()),
+          usb_d_plus_pin_(Pin::CreatePin<2, 4>())
     {
         SJ2_USED(port);
         SJ2_USED(speed);
@@ -103,18 +103,18 @@ class Example : public ExampleInterface
     }
     // Construction using externally constructed mosi, miso, and sck pins.
     // This is a dependency injection point
-    constexpr Example(const PinConfigureInterface & can_rx,
-                      const PinConfigureInterface & can_tx,
-                      const PinConfigureInterface & usb_d_minus,
-                      const PinConfigureInterface & usb_d_plus)
+    constexpr Example(const PinInterface & can_rx,
+                      const PinInterface & can_tx,
+                      const PinInterface & usb_d_minus,
+                      const PinInterface & usb_d_plus)
         : can_rx_(can_rx),
           can_tx_(can_tx),
           usb_d_minus_(usb_d_minus),
           usb_d_plus_(usb_d_plus),
-          can_rx_pin_(PinConfigure::CreateInactivePin()),
-          can_tx_pin_(PinConfigure::CreateInactivePin()),
-          usb_d_minus_pin_(PinConfigure::CreateInactivePin()),
-          usb_d_plus_pin_(PinConfigure::CreateInactivePin())
+          can_rx_pin_(Pin::CreateInactivePin()),
+          can_tx_pin_(Pin::CreateInactivePin()),
+          usb_d_minus_pin_(Pin::CreateInactivePin()),
+          usb_d_plus_pin_(Pin::CreateInactivePin())
     {
         // Do constructor stuff here ...
     }
@@ -155,14 +155,14 @@ class Example : public ExampleInterface
     // Then private region, if you need one.
  private:
     // Interface objects come first in declaration order
-    const PinConfigureInterface & can_rx_;
-    const PinConfigureInterface & can_tx_;
-    const PinConfigureInterface & usb_d_minus_;
-    const PinConfigureInterface & usb_d_plus_;
+    const PinInterface & can_rx_;
+    const PinInterface & can_tx_;
+    const PinInterface & usb_d_minus_;
+    const PinInterface & usb_d_plus_;
     // Then objects ...
-    PinConfigure can_rx_pin_;
-    PinConfigure can_tx_pin_;
-    PinConfigure usb_d_minus_pin_;
-    PinConfigure usb_d_plus_pin_;
+    Pin can_rx_pin_;
+    Pin can_tx_pin_;
+    Pin usb_d_minus_pin_;
+    Pin usb_d_plus_pin_;
     // Then primatives ...
 };

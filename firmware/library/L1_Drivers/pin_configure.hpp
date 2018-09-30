@@ -1,9 +1,9 @@
-// PinConfigure abstracts the process of changing the mode and attributes of a
+// Pin abstracts the process of changing the mode and attributes of a
 // pin on the LPC40xx series of chips.
 //   Usage:
-//      PinConfigure P0_0(0, 0);
+//      Pin P0_0(0, 0);
 //      P0_0.SetAsActiveLow();
-//      P0_0.SetPinMode(PinConfigureInterface::PinMode::kPullUp);
+//      P0_0.SetPinMode(PinInterface::PinMode::kPullUp);
 #pragma once
 
 #include <cstdio>
@@ -11,7 +11,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L2_Utilities/macros.hpp"
 
-class PinConfigureInterface
+class PinInterface
 {
  public:
     // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
@@ -23,7 +23,7 @@ class PinConfigureInterface
         kRepeater
     };
     virtual void SetPinFunction(uint8_t function)                       = 0;
-    virtual void SetPinMode(PinConfigureInterface::PinMode mode)        = 0;
+    virtual void SetPinMode(PinInterface::PinMode mode)        = 0;
     virtual void EnableHysteresis(bool enable_hysteresis = true)        = 0;
     virtual void SetAsActiveLow(bool set_as_active_low = true)          = 0;
     virtual void SetAsAnalogMode(bool set_as_analog = true)             = 0;
@@ -37,7 +37,7 @@ class PinConfigureInterface
     virtual void EnableDac(bool enable_dac = true)             = 0;
 };
 
-class PinConfigure : public PinConfigureInterface
+class Pin : public PinInterface
 {
  public:
     // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
@@ -63,25 +63,25 @@ class PinConfigure : public PinConfigureInterface
     };
 
     static PinMap_t * pin_map;
-    // Compile time validating PinConfigure factory.
+    // Compile time validating Pin factory.
     // Will test the port and pin variables to make sure they are within bounds
     // of the pin_config_register.
     template <unsigned port, unsigned pin>
-    static constexpr PinConfigure CreatePinConfigure()
+    static constexpr Pin CreatePin()
     {
         static_assert(port <= 5, "Port must be between 0 and 5");
         static_assert(pin <= 31, "Pin must be between 0 and 31");
         static_assert(port < 5 || (port == 5 && pin <= 4),
                       "For port 5, the pin number must be equal to or below 4");
-        return PinConfigure(port, pin);
+        return Pin(port, pin);
     }
     // Pin P5.4 is not featured on the LPC4078, so manipulating its bits has
     // no effect.
-    static constexpr PinConfigure CreateInactivePin()
+    static constexpr Pin CreateInactivePin()
     {
-        return PinConfigure(5, 4);
+        return Pin(5, 4);
     }
-    constexpr PinConfigure(uint8_t port_number, uint8_t pin_number)
+    constexpr Pin(uint8_t port_number, uint8_t pin_number)
         : kPort(port_number), kPin(pin_number)
     {
     }
@@ -91,7 +91,7 @@ class PinConfigure : public PinConfigureInterface
             BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kFunction,
                      function & 0b111, 3);
     }
-    void SetPinMode(PinConfigureInterface::PinMode mode) override
+    void SetPinMode(PinInterface::PinMode mode) override
     {
         pin_map->_register[kPort][kPin] = BitPlace(
             pin_map->_register[kPort][kPin], PinBitMap::kMode, mode & 0b11, 2);

@@ -42,9 +42,9 @@ class Dac : public DacInterface
      {
      }
      // For unit testing mocking purposes
-     explicit constexpr Dac(PinConfigureInterface * dac_pin) :
+     explicit constexpr Dac(PinInterface * dac_pin) :
                       dac_(dac_pin),
-                      dac_pin_(PinConfigure::CreateInactivePin())   // P0.26
+                      dac_pin_(Pin::CreateInactivePin())   // P0.26
      {
      }
     // Initialize Dac by setting the clock divider and enabling
@@ -54,7 +54,7 @@ class Dac : public DacInterface
         dac_->SetPinFunction(kDacMode);
         dac_->EnableDac(true);
         dac_->SetAsAnalogMode(true);
-        dac_->SetPinMode(PinConfigureInterface::kInactive);
+        dac_->SetPinMode(PinInterface::kInactive);
         // Set Update Rate to 1MHz
         SetBias(BiasLevel::kBiasHigh);
     }
@@ -92,6 +92,6 @@ class Dac : public DacInterface
                             |(bias << kBiasReg);
     }
  private:
-    PinConfigureInterface * dac_;
-    PinConfigure dac_pin_;
+    PinInterface * dac_;
+    Pin dac_pin_;
 };

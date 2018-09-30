@@ -10,8 +10,8 @@
 
 namespace uart0
 {
-extern PinConfigureInterface * rx;
-extern PinConfigureInterface * tx;
+extern PinInterface * rx;
+extern PinInterface * tx;
 
 extern LPC_UART_TypeDef * uart0_register;
 extern LPC_SC_TypeDef * sc;

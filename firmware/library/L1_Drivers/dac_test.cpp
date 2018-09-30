@@ -14,16 +14,16 @@ TEST_CASE("Testing Dac", "[dac]")
     memset(&local_iocon, 0, sizeof(local_iocon));
     LPC_DAC_TypeDef local_dac_port;
     Dac::dac_register = &local_dac_port;
-    PinConfigure iocon_pin_config(0, 26);
-    PinConfigure::pin_map =
-        reinterpret_cast<PinConfigure::PinMap_t *>(&local_iocon);
-    PinConfigure test_pin(0, 26);
-    Mock<PinConfigureInterface> mock_dac_pin;
+    Pin iocon_pin_config(0, 26);
+    Pin::pin_map =
+        reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
+    Pin test_pin(0, 26);
+    Mock<PinInterface> mock_dac_pin;
     Fake(Method(mock_dac_pin, SetPinFunction),
          Method(mock_dac_pin, EnableDac),
          Method(mock_dac_pin, SetAsAnalogMode),
          Method(mock_dac_pin, SetPinMode));
-    PinConfigureInterface & dac = mock_dac_pin.get();
+    PinInterface & dac = mock_dac_pin.get();
     Dac test_subject00(&dac);
     Dac test_subject01;
     SECTION("Initialize Dac")
@@ -41,7 +41,7 @@ TEST_CASE("Testing Dac", "[dac]")
         Method(mock_dac_pin, EnableDac).Using(true),
         Method(mock_dac_pin, SetAsAnalogMode).Using(true),
         Method(mock_dac_pin,
-               SetPinMode).Using(PinConfigureInterface::kInactive));
+               SetPinMode).Using(PinInterface::kInactive));
     }
     SECTION("Write Dac")
     {
@@ -84,6 +84,6 @@ TEST_CASE("Testing Dac", "[dac]")
         CHECK(kMask == (local_dac_port.CR & kMask));
     }
     Dac::dac_register = LPC_DAC;
-    PinConfigure::pin_map =
-        reinterpret_cast<PinConfigure::PinMap_t *>(LPC_IOCON);
+    Pin::pin_map =
+        reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }
