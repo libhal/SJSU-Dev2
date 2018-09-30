@@ -4,7 +4,7 @@
 //   Usage:
 //      Pin P0_0(0, 0);
 //      P0_0.SetAsActiveLow();
-//      P0_0.SetPinMode(PinInterface::PinMode::kPullUp);
+//      P0_0.SetMode(PinInterface::Mode::kPullUp);
 #pragma once
 
 #include <cstring>

@@ -164,8 +164,8 @@ void Init(uint32_t baud_rate)
     constexpr uint8_t kUartFunction       = 0b010;
     constexpr uint8_t kDlabBit            = (1 << 7);
 
-    tx->SetPinMode(PinInterface::PinMode::kPullUp);
-    rx->SetPinMode(PinInterface::PinMode::kPullUp);
+    tx->SetMode(PinInterface::Mode::kPullUp);
+    rx->SetMode(PinInterface::Mode::kPullUp);
     tx->SetPinFunction(kUartFunction);
     rx->SetPinFunction(kUartFunction);
 

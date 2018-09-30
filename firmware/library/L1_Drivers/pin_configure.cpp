@@ -2,5 +2,4 @@
 #include "L1_Drivers/pin_configure.hpp"
 
 // Initialize Pin::pin_map to LPC40xx memory mapped LPC_IOCON register
-Pin::PinMap_t * Pin::pin_map =
-    reinterpret_cast<PinMap_t *>(LPC_IOCON);
+Pin::PinMap_t * Pin::pin_map = reinterpret_cast<PinMap_t *>(LPC_IOCON);

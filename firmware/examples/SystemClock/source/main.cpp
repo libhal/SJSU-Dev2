@@ -12,7 +12,7 @@ int main(void)
     SystemClock clock;
     Pin clock_pin(1, 25);
     clock_pin.SetPinFunction(0b101);  //  set clock to putput mode
-    clock_pin.SetPinMode(clock_pin.PinInterface::kInactive);
+    clock_pin.SetMode(PinInterface::Mode::kInactive);
     clock_pin.EnableHysteresis(false);
     clock_pin.SetAsActiveLow(false);
     clock_pin.EnableFastMode(false);

@@ -310,8 +310,8 @@ class I2c : public I2cInterface
         scl_.SetPinFunction(kI2cPort2Function);
         sda_.SetAsOpenDrain();
         scl_.SetAsOpenDrain();
-        sda_.SetPinMode(PinInterface::kInactive);
-        scl_.SetPinMode(PinInterface::kInactive);
+        sda_.SetMode(PinInterface::Mode::kInactive);
+        scl_.SetMode(PinInterface::Mode::kInactive);
         // TODO(#6): Use a constexpr map to map out which duty cycle values are
         // used for this
         i2c[port_]->SCLL   = 60;

@@ -3,7 +3,7 @@
 //   Usage:
 //      Pin P0_0(0, 0);
 //      P0_0.SetAsActiveLow();
-//      P0_0.SetPinMode(PinInterface::PinMode::kPullUp);
+//      P0_0.SetMode(PinInterface::Mode::kPullUp);
 #pragma once
 
 #include <cstdio>
@@ -15,26 +15,24 @@ class PinInterface
 {
  public:
     // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
-    enum PinMode : uint8_t
+    enum class Mode : uint8_t
     {
         kInactive = 0,
         kPullDown,
         kPullUp,
         kRepeater
     };
-    virtual void SetPinFunction(uint8_t function)                       = 0;
-    virtual void SetPinMode(PinInterface::PinMode mode)        = 0;
-    virtual void EnableHysteresis(bool enable_hysteresis = true)        = 0;
-    virtual void SetAsActiveLow(bool set_as_active_low = true)          = 0;
-    virtual void SetAsAnalogMode(bool set_as_analog = true)             = 0;
-    virtual void EnableDigitalFilter(bool enable_digital_filter = true) = 0;
-    virtual void EnableFastMode(bool enable_fast_mode = true)           = 0;
-    virtual void EnableI2cHighSpeedMode(
-        bool enable_i2c_high_speed_mode = true) = 0;
-    virtual void EnableI2cHighCurrentDrive(
-        bool enable_i2c_high_current_drive = true)             = 0;
-    virtual void SetAsOpenDrain(bool set_as_open_drain = true) = 0;
-    virtual void EnableDac(bool enable_dac = true)             = 0;
+    virtual void SetPinFunction(uint8_t function)                           = 0;
+    virtual void SetMode(PinInterface::Mode mode)                           = 0;
+    virtual void EnableHysteresis(bool enable_hysteresis = true)            = 0;
+    virtual void SetAsActiveLow(bool set_as_active_low = true)              = 0;
+    virtual void SetAsAnalogMode(bool set_as_analog = true)                 = 0;
+    virtual void EnableDigitalFilter(bool enable_digital_filter = true)     = 0;
+    virtual void EnableFastMode(bool enable_fast_mode = true)               = 0;
+    virtual void EnableI2cHighSpeedMode(bool enable_high_speed = true)      = 0;
+    virtual void EnableI2cHighCurrentDrive(bool enable_high_current = true) = 0;
+    virtual void SetAsOpenDrain(bool set_as_open_drain = true)              = 0;
+    virtual void EnableDac(bool enable_dac = true)                          = 0;
 };
 
 class Pin : public PinInterface
@@ -91,10 +89,12 @@ class Pin : public PinInterface
             BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kFunction,
                      function & 0b111, 3);
     }
-    void SetPinMode(PinInterface::PinMode mode) override
+    void SetMode(PinInterface::Mode mode) override
     {
-        pin_map->_register[kPort][kPin] = BitPlace(
-            pin_map->_register[kPort][kPin], PinBitMap::kMode, mode & 0b11, 2);
+        uint8_t ui_mode = static_cast<uint8_t>(mode);
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kMode,
+                     ui_mode & 0b11, 2);
     }
     void EnableHysteresis(bool enable_hysteresis = true) override
     {
@@ -129,18 +129,17 @@ class Pin : public PinInterface
                      enable_fast_mode, 1);
     }
     // Enable by setting bit to 0 for i2c high speed mode
-    void EnableI2cHighSpeedMode(bool enable_i2c_high_speed_mode = true) override
+    void EnableI2cHighSpeedMode(bool enable_high_speed = true) override
     {
         pin_map->_register[kPort][kPin] =
             BitPlace(pin_map->_register[kPort][kPin], PinBitMap::kI2cHighSpeed,
-                     !enable_i2c_high_speed_mode, 1);
+                     !enable_high_speed, 1);
     }
-    void EnableI2cHighCurrentDrive(
-        bool enable_i2c_high_current_drive = true) override
+    void EnableI2cHighCurrentDrive(bool enable_high_current = true) override
     {
-        pin_map->_register[kPort][kPin] = BitPlace(
-            pin_map->_register[kPort][kPin], PinBitMap::kI2cHighCurrentDrive,
-            enable_i2c_high_current_drive, 1);
+        pin_map->_register[kPort][kPin] =
+            BitPlace(pin_map->_register[kPort][kPin],
+                     PinBitMap::kI2cHighCurrentDrive, enable_high_current, 1);
     }
     void SetAsOpenDrain(bool set_as_open_drain = true) override
     {

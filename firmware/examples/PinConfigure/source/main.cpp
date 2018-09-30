@@ -16,21 +16,21 @@ int main(void)
     // This is discouraged, since this constructor does not perform any compile
     // time checks on the port or pin value
     Pin p0_0(0, 7);
-    p0_0.SetPinMode(PinInterface::PinMode::kInactive);
+    p0_0.SetMode(PinInterface::Mode::kInactive);
     DEBUG_PRINT("Disabling both pull up and down resistors for P0.0...");
     // Prefered option of constructing Pin, since this factory call is
     // done in compile time and will perform compile time validation on the port
     // and pin template parameters.
     Pin p1_24 = Pin::CreatePin<1, 24>();
-    p1_24.SetPinMode(PinInterface::PinMode::kPullDown);
+    p1_24.SetMode(PinInterface::Mode::kPullDown);
     DEBUG_PRINT("Enabling P1.24 pull down resistor...");
 
     Pin p2_0 = Pin::CreatePin<2, 0>();
-    p2_0.SetPinMode(PinInterface::PinMode::kPullUp);
+    p2_0.SetMode(PinInterface::Mode::kPullUp);
     DEBUG_PRINT("Enabling P2.0 pull up resistor...");
 
     Pin p4_28 = Pin::CreatePin<4, 29>();
-    p4_28.SetPinMode(PinInterface::PinMode::kRepeater);
+    p4_28.SetMode(PinInterface::Mode::kRepeater);
     DEBUG_PRINT("Setting P4.29 to repeater mode...");
 
     DEBUG_PRINT(

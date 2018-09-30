@@ -6,9 +6,9 @@
 class DacInterface
 {
  public:
-    virtual void Initialize(void)                   = 0;
-    virtual bool WriteDac(uint16_t dac_output)      = 0;
-    virtual bool SetVoltage(float voltage)          = 0;
+    virtual void Initialize(void)              = 0;
+    virtual bool WriteDac(uint16_t dac_output) = 0;
+    virtual bool SetVoltage(float voltage)     = 0;
 };
 class Dac : public DacInterface
 {
@@ -16,10 +16,10 @@ class Dac : public DacInterface
     static LPC_DAC_TypeDef * dac_register;
     static LPC_SC_TypeDef * sc_ptr;
     static LPC_IOCON_TypeDef * iocon_register;
-    static constexpr float    kVref = 3.3f;
-    static constexpr uint8_t  kDacMode = 0b010;
+    static constexpr float kVref        = 3.3f;
+    static constexpr uint8_t kDacMode   = 0b010;
     static constexpr uint16_t kClearDac = 0b1111111111;
-    static constexpr uint8_t  kClockDiv = 0b0010;
+    static constexpr uint8_t kClockDiv  = 0b0010;
     enum Bit : uint8_t
     {
         kClockDividerReg = 1,
@@ -31,22 +31,17 @@ class Dac : public DacInterface
         kPort0           = 0,
         kPin26           = 26
     };
-    enum class BiasLevel: uint8_t
+    enum class BiasLevel : uint8_t
     {
-        kBiasHigh  = 0,
-        kBiasLow   = 1
+        kBiasHigh = 0,
+        kBiasLow  = 1
     };
-     constexpr Dac() :
-                        dac_(&dac_pin_),
-                        dac_pin_(kPort0, kPin26)
-     {
-     }
-     // For unit testing mocking purposes
-     explicit constexpr Dac(PinInterface * dac_pin) :
-                      dac_(dac_pin),
-                      dac_pin_(Pin::CreateInactivePin())   // P0.26
-     {
-     }
+    constexpr Dac() : dac_(&dac_pin_), dac_pin_(kPort0, kPin26) {}
+    // For unit testing mocking purposes
+    explicit constexpr Dac(PinInterface * dac_pin)
+        : dac_(dac_pin), dac_pin_(Pin::CreateInactivePin())  // P0.26
+    {
+    }
     // Initialize Dac by setting the clock divider and enabling
     // The Dac Pin withiin IOCON.  Then set the initial Bias level to 0
     void Initialize(void) override
@@ -54,7 +49,7 @@ class Dac : public DacInterface
         dac_->SetPinFunction(kDacMode);
         dac_->EnableDac(true);
         dac_->SetAsAnalogMode(true);
-        dac_->SetPinMode(PinInterface::kInactive);
+        dac_->SetMode(PinInterface::Mode::kInactive);
         // Set Update Rate to 1MHz
         SetBias(BiasLevel::kBiasHigh);
     }
@@ -75,8 +70,8 @@ class Dac : public DacInterface
     bool SetVoltage(float voltage) override
     {
         // value = (dac_out * 1024)/VrefP
-        float value = (voltage * 1024.0f) / kVref;
-        uint16_t   conversion = static_cast<uint16_t>(value);
+        float value         = (voltage * 1024.0f) / kVref;
+        uint16_t conversion = static_cast<uint16_t>(value);
         SJ2_ASSERT_FATAL(voltage < kVref,
                          "Input voltage above SJ2"
                          "output capacity of 3.3 Volts.");
@@ -88,9 +83,10 @@ class Dac : public DacInterface
     void SetBias(BiasLevel bias_level)
     {
         uint8_t bias = static_cast<int>(bias_level);
-        dac_register->CR = (dac_register->CR &~(1 << kBiasReg))
-                            |(bias << kBiasReg);
+        dac_register->CR =
+            (dac_register->CR & ~(1 << kBiasReg)) | (bias << kBiasReg);
     }
+
  private:
     PinInterface * dac_;
     Pin dac_pin_;

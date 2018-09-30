@@ -19,10 +19,10 @@ TEST_CASE("Testing Uart0", "[uart0]")
 
     Mock<PinInterface> mock_gpio_rx;
     Fake(Method(mock_gpio_rx, SetPinFunction));
-    Fake(Method(mock_gpio_rx, SetPinMode));
+    Fake(Method(mock_gpio_rx, SetMode));
     Mock<PinInterface> mock_gpio_tx;
     Fake(Method(mock_gpio_tx, SetPinFunction));
-    Fake(Method(mock_gpio_tx, SetPinMode));
+    Fake(Method(mock_gpio_tx, SetMode));
 
     uart0::uart0_register = &local_uart0_register;
     uart0::sc             = &local_sc;
@@ -47,12 +47,12 @@ TEST_CASE("Testing Uart0", "[uart0]")
         uart0::Init(kBaudRate);
         CHECK(kPconpUart0 == (kPconpUart0 & local_sc.PCONP));
 
-        Verify(Method(mock_gpio_tx, SetPinMode)
-                   .Using(PinInterface::PinMode::kPullUp))
+        Verify(Method(mock_gpio_tx, SetMode)
+                   .Using(PinInterface::Mode::kPullUp))
             .Once();
         Verify(Method(mock_gpio_tx, SetPinFunction).Using(1)).Once();
-        Verify(Method(mock_gpio_rx, SetPinMode)
-                   .Using(PinInterface::PinMode::kPullUp))
+        Verify(Method(mock_gpio_rx, SetMode)
+                   .Using(PinInterface::Mode::kPullUp))
             .Once();
         Verify(Method(mock_gpio_rx, SetPinFunction).Using(1)).Once();
 
