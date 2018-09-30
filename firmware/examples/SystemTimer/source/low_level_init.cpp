@@ -6,7 +6,7 @@
 #include "L2_Utilities/debug_print.hpp"
 
 constexpr uint8_t kGpioFunction = 0b000;
-PinConfigure led3(PinConfigure::CreatePinConfigure<1, 15>());
+Pin led3(Pin::CreatePin<1, 15>());
 
 void DemoSystemIsr()
 {

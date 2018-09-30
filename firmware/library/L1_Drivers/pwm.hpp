@@ -63,9 +63,9 @@ class Pwm : public PwmInterface
     {
     }
 
-    explicit constexpr Pwm(const PinConfigureInterface & pin):
+    explicit constexpr Pwm(const PinInterface & pin):
         pwm_(pin),
-        pwm_pin_(PinConfigure::CreateInactivePin()),
+        pwm_pin_(Pin::CreateInactivePin()),
         channel_(1)
     {
     }
@@ -162,9 +162,9 @@ class Pwm : public PwmInterface
     }
 
  private:
-    const PinConfigureInterface & pwm_;
+    const PinInterface & pwm_;
 
-    PinConfigure pwm_pin_;
+    Pin pwm_pin_;
 
     // Will signify current PWM1 channel
     uint8_t channel_;

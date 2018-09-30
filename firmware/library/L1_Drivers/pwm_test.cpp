@@ -19,10 +19,10 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
     Pwm::sc = &local_sc;
     Pwm::match_register_table[0] = &local_pwm.MR0;
     Pwm::match_register_table[1] = &local_pwm.MR1;
-    PinConfigure::pin_map =
-        reinterpret_cast<PinConfigure::PinMap_t *>(&local_iocon);
+    Pin::pin_map =
+        reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
 
-    Mock<PinConfigureInterface> mock_pwm_pin;
+    Mock<PinInterface> mock_pwm_pin;
 
     Fake(Method(mock_pwm_pin, SetPinFunction));
     Pwm test2_0(1);

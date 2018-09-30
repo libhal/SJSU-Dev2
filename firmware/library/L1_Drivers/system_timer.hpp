@@ -2,9 +2,9 @@
 // up the SystemTimer.
 //
 //   Usage:
-//      PinConfigure P0_0(0, 0);
+//      Pin P0_0(0, 0);
 //      P0_0.SetAsActiveLow();
-//      P0_0.SetPinMode(PinConfigureInterface::PinMode::kPullUp);
+//      P0_0.SetPinMode(PinInterface::PinMode::kPullUp);
 #pragma once
 
 // #include <cstdio>

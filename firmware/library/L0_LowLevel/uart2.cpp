@@ -11,11 +11,11 @@
 namespace uart2
 {
 
-PinConfigure rx_pin(2, 9);
-PinConfigureInterface * rx = &rx_pin;
+Pin rx_pin(2, 9);
+PinInterface * rx = &rx_pin;
 
-PinConfigure tx_pin(2, 8);
-PinConfigureInterface * tx = &tx_pin;
+Pin tx_pin(2, 8);
+PinInterface * tx = &tx_pin;
 
 LPC_UART_TypeDef * uart2_register = LPC_UART2;
 LPC_SC_TypeDef * sc               = LPC_SC;
@@ -164,8 +164,8 @@ void Init(uint32_t baud_rate)
     constexpr uint8_t kUartFunction       = 0b010;
     constexpr uint8_t kDlabBit            = (1 << 7);
 
-    tx->SetPinMode(PinConfigureInterface::PinMode::kPullUp);
-    rx->SetPinMode(PinConfigureInterface::PinMode::kPullUp);
+    tx->SetPinMode(PinInterface::PinMode::kPullUp);
+    rx->SetPinMode(PinInterface::PinMode::kPullUp);
     tx->SetPinFunction(kUartFunction);
     rx->SetPinFunction(kUartFunction);
 
