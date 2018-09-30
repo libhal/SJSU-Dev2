@@ -146,15 +146,15 @@ class Ssp : public SspInterface
 
     // Unit-testing constructor, removed for production
     constexpr Ssp(Peripheral pssp,
-                PinConfigureInterface * mosi_pin,
-                PinConfigureInterface * miso_pin,
-                PinConfigureInterface * sck_pin)
+                PinInterface * mosi_pin,
+                PinInterface * miso_pin,
+                PinInterface * sck_pin)
         : mosi_(*mosi_pin),
         miso_(*miso_pin),
         sck_(*sck_pin),
-        mosi_pin_(PinConfigure::CreateInactivePin()),
-        miso_pin_(PinConfigure::CreateInactivePin()),
-        sck_pin_(PinConfigure::CreateInactivePin()),
+        mosi_pin_(Pin::CreateInactivePin()),
+        miso_pin_(Pin::CreateInactivePin()),
+        sck_pin_(Pin::CreateInactivePin()),
         pssp_(pssp),
         pconp_bits_(static_cast<PowerOn>(0)),
         master_mode_(static_cast<MasterSlaveMode>(0)),
@@ -280,13 +280,13 @@ class Ssp : public SspInterface
     }
 
  private:
-    PinConfigureInterface & mosi_;
-    PinConfigureInterface & miso_;
-    PinConfigureInterface & sck_;
+    PinInterface & mosi_;
+    PinInterface & miso_;
+    PinInterface & sck_;
 
-    PinConfigure mosi_pin_;
-    PinConfigure miso_pin_;
-    PinConfigure sck_pin_;
+    Pin mosi_pin_;
+    Pin miso_pin_;
+    Pin sck_pin_;
 
     // SSP member variables
     Peripheral pssp_;                // SSP interfaces

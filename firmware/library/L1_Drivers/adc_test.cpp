@@ -20,15 +20,15 @@ TEST_CASE("Testing adc", "[adc]")
     // Any manipulation will be directed to the respective local registers
     Adc::adc_base = &local_adc;
     Adc::sysclk_register = &local_sc;
-    PinConfigure::pin_map =
-        reinterpret_cast<PinConfigure::PinMap_t *>(&local_io);
-    PinConfigure adc_test(0, 23);
-    // Set mock for PinConfigureInterface
-    Mock<PinConfigureInterface> mock_adc;
+    Pin::pin_map =
+        reinterpret_cast<Pin::PinMap_t *>(&local_io);
+    Pin adc_test(0, 23);
+    // Set mock for PinInterface
+    Mock<PinInterface> mock_adc;
     Fake(Method(mock_adc, SetAsAnalogMode),
          Method(mock_adc, SetPinMode),
          Method(mock_adc, SetPinFunction));
-    PinConfigureInterface & adc = mock_adc.get();
+    PinInterface & adc = mock_adc.get();
 
     // Create ports and pins to test and mock
     // Using channel 0 (0.23)
@@ -55,7 +55,7 @@ TEST_CASE("Testing adc", "[adc]")
                 SetPinFunction).Using(Adc::AdcMode::kCh0123Pins),
                Method(mock_adc, SetAsAnalogMode).Using(true),
                Method(mock_adc,
-                SetPinMode).Using(PinConfigureInterface::kInactive));
+                SetPinMode).Using(PinInterface::kInactive));
         // Check if any bits in the clock divider are set
         CHECK(((local_adc.CR >> kChannelClkDivBit) & kChannelClkDivMask) != 0);
         // Check bit 21 to see if power down bit is set in local_adc.CR

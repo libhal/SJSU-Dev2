@@ -87,15 +87,15 @@ class Adc : public AdcInterface
     }
     explicit constexpr Adc(Adc::Channel channel_bit)
         : adc_(&adc_pin_),
-          adc_pin_(PinConfigure(kAdcPorts[static_cast<uint8_t>(channel_bit)],
+          adc_pin_(Pin(kAdcPorts[static_cast<uint8_t>(channel_bit)],
                                 kAdcPins[static_cast<uint8_t>(channel_bit)])),
           channel_(static_cast<uint8_t>(channel_bit))
     {
     }
     // unit test constructor
-    explicit constexpr Adc(PinConfigureInterface * adc_pin)
+    explicit constexpr Adc(PinInterface * adc_pin)
         : adc_(adc_pin),
-          adc_pin_(PinConfigure::CreateInactivePin()),
+          adc_pin_(Pin::CreateInactivePin()),
           channel_(0)
     {
     }
@@ -125,7 +125,7 @@ class Adc : public AdcInterface
             adc_->SetPinFunction(static_cast<uint8_t>(AdcMode::kCh4567Pins));
         }
         adc_->SetAsAnalogMode(true);
-        adc_->SetPinMode(PinConfigureInterface::kInactive);
+        adc_->SetPinMode(PinInterface::kInactive);
 
         for (uint32_t i = 2; i < 255; i++)
         {
@@ -169,8 +169,8 @@ class Adc : public AdcInterface
     }
     ~Adc() { /* do nothing */ }
  private:
-    PinConfigureInterface * adc_;
-    PinConfigure adc_pin_;
+    PinInterface * adc_;
+    Pin adc_pin_;
 
     uint8_t channel_;
 

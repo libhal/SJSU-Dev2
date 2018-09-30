@@ -19,22 +19,22 @@
 //     LPC_SC_TypeDef local_sysclock;
 
 //     Ssp::ssp_registers[0] = &local_ssp[0];
-//     PinConfigure::pin_map =
-//         reinterpret_cast<PinConfigure::PinMap_t *>(&local_iocon);
+//     Pin::pin_map =
+//         reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
 //     Ssp::sysclock_register = &local_sysclock;
 
 //     // Set up Mock for PinCongiure
-//     fakeit::Mock<PinConfigureInterface> mock_mosi;
-//     fakeit::Mock<PinConfigureInterface> mock_miso;
-//     fakeit::Mock<PinConfigureInterface> mock_sck;
+//     fakeit::Mock<PinInterface> mock_mosi;
+//     fakeit::Mock<PinInterface> mock_miso;
+//     fakeit::Mock<PinInterface> mock_sck;
 
 //     fakeit::Fake(Method(mock_mosi, SetPinFunction));
 //     fakeit::Fake(Method(mock_miso, SetPinFunction));
 //     fakeit::Fake(Method(mock_sck, SetPinFunction));
 
-//     PinConfigureInterface &mosi = mock_mosi.get();
-//     PinConfigureInterface &miso = mock_miso.get();
-//     PinConfigureInterface &sck = mock_sck.get();
+//     PinInterface &mosi = mock_mosi.get();
+//     PinInterface &miso = mock_miso.get();
+//     PinInterface &sck = mock_sck.get();
 
 //     Ssp test_spi(SspInterface::Peripheral::kSsp0, mosi, miso, sck);
 //     test_spi.Initialize();

@@ -10,11 +10,11 @@
 
 namespace uart0
 {
-PinConfigure rx_pin(0, 3);
-PinConfigureInterface * rx = &rx_pin;
+Pin rx_pin(0, 3);
+PinInterface * rx = &rx_pin;
 
-PinConfigure tx_pin(0, 2);
-PinConfigureInterface * tx = &tx_pin;
+Pin tx_pin(0, 2);
+PinInterface * tx = &tx_pin;
 
 LPC_UART_TypeDef * uart0_register = LPC_UART0;
 LPC_SC_TypeDef * sc               = LPC_SC;
@@ -163,8 +163,8 @@ void Init(uint32_t baud_rate)
     constexpr uint8_t kUartFunction       = 1;
     constexpr uint8_t kDlabBit            = (1 << 7);
 
-    tx->SetPinMode(PinConfigureInterface::PinMode::kPullUp);
-    rx->SetPinMode(PinConfigureInterface::PinMode::kPullUp);
+    tx->SetPinMode(PinInterface::PinMode::kPullUp);
+    rx->SetPinMode(PinInterface::PinMode::kPullUp);
     tx->SetPinFunction(kUartFunction);
     rx->SetPinFunction(kUartFunction);
 

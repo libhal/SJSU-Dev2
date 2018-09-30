@@ -27,7 +27,7 @@ class GpioInterface
      virtual bool ReadPin(void)                                       = 0;
 };
 
-class Gpio : public GpioInterface, public PinConfigure
+class Gpio : public GpioInterface, public Pin
 {
  public:
     // Used to point to a certain port located in LPC memory map
@@ -37,7 +37,7 @@ class Gpio : public GpioInterface, public PinConfigure
     // For port 0-4, pins 0-31 are available
     // Port 5 only have pins 0-4 available
     constexpr Gpio(uint8_t port_number, uint8_t pin_number)
-        : PinConfigure(port_number, pin_number)
+        : Pin(port_number, pin_number)
     {
     }
     // Sets the GPIO pin direction as input
