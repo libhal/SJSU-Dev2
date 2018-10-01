@@ -51,14 +51,20 @@ endif
 
 # Internal build directories
 BUILD_DIR = build
-
 TEST_DIR  = $(BUILD_DIR)/test
+
+ifeq ($(MAKECMDGOALS), bootloader)
+BIN_DIR   = $(BUILD_DIR)/bootloader
+else
+BIN_DIR   = $(BUILD_DIR)/application
+endif
+
 ifeq ($(MAKECMDGOALS), test)
 OBJ_DIR   = $(TEST_DIR)/compiled
 else
-OBJ_DIR   = $(BUILD_DIR)/compiled
+OBJ_DIR   = $(BIN_DIR)/compiled
 endif
-BIN_DIR   = $(BUILD_DIR)/binaries
+
 DBC_DIR   = $(BUILD_DIR)/can-dbc
 COVERAGE  = $(BUILD_DIR)/coverage
 LIB_DIR   = $(SJLIBDIR)
@@ -381,11 +387,11 @@ $(DBC_DIR):
 
 $(OBJ_DIR):
 	@echo 'Creating Objects Folder: $<'
-	mkdir $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)
 
 $(BIN_DIR):
 	@echo 'Creating Binary Folder: $<'
-	mkdir $(BIN_DIR)
+	mkdir -p $(BIN_DIR)
 
 clean:
 	rm -fR $(BUILD_DIR)
