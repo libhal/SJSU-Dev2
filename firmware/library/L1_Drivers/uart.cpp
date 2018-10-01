@@ -9,7 +9,7 @@ LPC_UART_TypeDef * Uart::uart_base_reg[4] = {
   [3] = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4)
 };
 
-Pin Uart::pairs[4][2] = { { Pin(0, 0), Pin(0, 1) },
+Pin Uart::pairs[4][2] = { { Pin(0, 2), Pin(0, 3) },
                           { Pin(2, 8), Pin(2, 9) },
                           { Pin(4, 28), Pin(4, 29) },
                           { Pin(1, 29), Pin(2, 9) } };

@@ -44,13 +44,13 @@ class Gpio : public GpioInterface, public Pin
   void SetAsInput(void) override
   {
     SetPinFunction(kGpioFunction);
-    gpio_port[port]->DIR &= ~(1 << pin);
+    gpio_port[port_]->DIR &= ~(1 << pin_);
   }
   // Sets the GPIO pin direction as output
   void SetAsOutput(void) override
   {
     SetPinFunction(kGpioFunction);
-    gpio_port[port]->DIR |= (1 << pin);
+    gpio_port[port_]->DIR |= (1 << pin_);
   }
   // Sets the GPIO pin direction as output or input depending on the
   // Direction enum parameter
@@ -61,12 +61,12 @@ class Gpio : public GpioInterface, public Pin
   // Sets the GPIO output pin to high
   void SetHigh(void) override
   {
-    gpio_port[port]->SET = (1 << pin);
+    gpio_port[port_]->SET = (1 << pin_);
   }
   // Sets the GPIO output pin to low
   void SetLow(void) override
   {
-    gpio_port[port]->CLR = (1 << pin);
+    gpio_port[port_]->CLR = (1 << pin_);
   }
   // Sets the GPIO output pin to high or low depending on the State enum
   // parameter
@@ -77,16 +77,16 @@ class Gpio : public GpioInterface, public Pin
   // Toggle the output of a GPIO output pin
   void Toggle() override
   {
-    gpio_port[port]->PIN ^= (1 << pin);
+    gpio_port[port_]->PIN ^= (1 << pin_);
   }
   // Returns the current State state of the pin
   State ReadState(void) override
   {
-    return static_cast<State>((gpio_port[port]->PIN >> pin) & 1);
+    return static_cast<State>((gpio_port[port_]->PIN >> pin_) & 1);
   }
   // Returns true if input or output pin is high
   bool Read(void) override
   {
-    return static_cast<bool>((gpio_port[port]->PIN >> pin) & 1);
+    return static_cast<bool>((gpio_port[port_]->PIN >> pin_) & 1);
   }
 };
