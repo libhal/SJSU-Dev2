@@ -82,14 +82,7 @@ class OnBoardLed : public OnBoardLedInterface
             led_number < 4,
             "Input Led number can't be greater than 3, input = %d.\n",
             led_number);
-        if (led[led_number].ReadPin())
-        {
-            Set(led_number, LightState::kOn);
-        }
-        else
-        {
-            Set(led_number, LightState::kOff);
-        }
+        led[led_number].Toggle();
     }
 
     // This function takes in the 4 least significant bits from value, and sets
