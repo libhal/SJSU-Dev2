@@ -3,13 +3,12 @@
 //      Pwm p2_0 = Pwm::CreatePwm<1>();
 //      Pwm p2_0(1);
 //      p2_0.Initialize(500);
-//      p2_0.SetDutyCycle(75);
+//      p2_0.SetDutyCycle(0.75);
 //      p2_0.SetFrequeny(1'000);
 #pragma once
 
 #include <cstdint>
 #include <cstdio>
-#include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin_configure.hpp"
 #include "L2_Utilities/macros.hpp"
@@ -44,6 +43,7 @@ class Pwm : public PwmInterface
     {
         kTimerMode = (3 << 0),
         kCounterEnable = (1 << 0),
+        kCounterReset = (1 << 1),
         kResetMr0 = (1 << 1),
         kPwmEnable = (1 << 3)
     };
@@ -63,9 +63,9 @@ class Pwm : public PwmInterface
     {
     }
 
-    explicit constexpr Pwm(const PinConfigureInterface & pin):
+    explicit constexpr Pwm(const PinInterface & pin):
         pwm_(pin),
-        pwm_pin_(PinConfigure::CreateInactivePin()),
+        pwm_pin_(Pin::CreateInactivePin()),
         channel_(1)
     {
     }
@@ -134,6 +134,8 @@ class Pwm : public PwmInterface
     {
         if (enable)
         {
+            pwm1->TCR |= PwmConfigure::kCounterReset;
+            pwm1->TCR &= ~PwmConfigure::kCounterReset;
             pwm1->TCR |=
              PwmConfigure::kCounterEnable | PwmConfigure::kPwmEnable;
         }
@@ -160,9 +162,9 @@ class Pwm : public PwmInterface
     }
 
  private:
-    const PinConfigureInterface & pwm_;
+    const PinInterface & pwm_;
 
-    PinConfigure pwm_pin_;
+    Pin pwm_pin_;
 
     // Will signify current PWM1 channel
     uint8_t channel_;

@@ -8,19 +8,20 @@ TEST_CASE("Testing Gpio", "[gpio]")
     // of this unit test
     constexpr uint8_t kPin0 = 0;
     constexpr uint8_t kPin7 = 7;
-
+    // Simulated local version of LPC_IOCON.
+    // This is necessary since a Gpio is also a Pin.
+    LPC_IOCON_TypeDef local_iocon;
+    memset(&local_iocon, 0, sizeof(local_iocon));
+    // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
+    // Redirects manipulation to the 'local_iocon'
+    Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
     // Initialized local LPC_GPIO_TypeDef objects with 0 to observe how the Gpio
     // class manipulates the data in the registers
-    LPC_GPIO_TypeDef local_gpio_port[2] =
-    {
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
-    };
-
+    LPC_GPIO_TypeDef local_gpio_port[2];
+    memset(&local_gpio_port, 0, sizeof(local_gpio_port));
     // Only GPIO port 1 & 2 will be used in this unit test
     Gpio::gpio_base[0] = &local_gpio_port[0];
     Gpio::gpio_base[1] = &local_gpio_port[1];
-
     // Pins that are to be used in the unit test
     Gpio p0_00(0, 0);
     Gpio p1_07(1, 7);
@@ -33,7 +34,6 @@ TEST_CASE("Testing Gpio", "[gpio]")
 
         p0_00.SetAsInput();
         p1_07.SetAsOutput();
-
         // Check bit 0 of local_gpio_port[0].DIR (port 0 pin 0)
         // to see if it is cleared
         CHECK(((local_gpio_port[0].DIR >> kPin0) & 1) == kInputSet);
@@ -43,7 +43,6 @@ TEST_CASE("Testing Gpio", "[gpio]")
 
         p0_00.SetDirection(GpioInterface::kOutput);
         p1_07.SetDirection(GpioInterface::kInput);
-
         // Check bit 0 of local_gpio_port[0].DIR (port 0 pin 0)
         // to see if it is set
         CHECK(((local_gpio_port[0].DIR >> kPin0) & 1) == kOutputSet);
@@ -97,10 +96,30 @@ TEST_CASE("Testing Gpio", "[gpio]")
         CHECK(p0_00.ReadPin() == kLowRead);
         CHECK(p1_07.ReadPin() == kHighRead);
     }
+    SECTION("Toggle")
+    {
+        // Source: "UM10562 LPC408x/407x User manual" section 8.5.1.3 page 148
+        constexpr uint8_t kLowRead = 0b0;
+        constexpr uint8_t kHighRead = 0b1;
+        // Clearing bit 0 of local_gpio_port[0].PIN (port 0 pin 0) in order to
+        // read the pin value through the ReadPin method
+        local_gpio_port[0].PIN &= ~(1 << kPin0);
+        // Setting bit 7 of local_gpio_port[1].PIN (port 1 pin 7) in order to
+        // read the pin value through the ReadPin method
+        local_gpio_port[1].PIN |= (1 << kPin7);
+        // Should change to 1
+        p0_00.Toggle();
+        // Should change to 0
+        p1_07.Toggle();
+
+        CHECK(p0_00.ReadPin() == kHighRead);
+        CHECK(p1_07.ReadPin() == kLowRead);
+    }
     Gpio::gpio_base[0] = LPC_GPIO0;
     Gpio::gpio_base[1] = LPC_GPIO1;
     Gpio::gpio_base[2] = LPC_GPIO2;
     Gpio::gpio_base[3] = LPC_GPIO3;
     Gpio::gpio_base[4] = LPC_GPIO4;
     Gpio::gpio_base[5] = LPC_GPIO5;
+    Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }

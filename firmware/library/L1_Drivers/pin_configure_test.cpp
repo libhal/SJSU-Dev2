@@ -1,27 +1,26 @@
-// Test for PinConfigure class.
+// Test for Pin class.
 // Using a test by side effect on the LPC_IOCON register
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin_configure.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
-TEST_CASE("Testing PinConfigure", "[pin_configure]")
+TEST_CASE("Testing Pin", "[pin_configure]")
 {
     // Simulated local version of LPC_IOCON register to verify register
-    // manipulation by side effect of PinConfigure method calls
+    // manipulation by side effect of Pin method calls
     LPC_IOCON_TypeDef local_iocon;
     memset(&local_iocon, 0, sizeof(local_iocon));
     // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
     // Redirects manipulation to the 'local_iocon'
-    PinConfigure::pin_map =
-        reinterpret_cast<PinConfigure::PinMap_t *>(&local_iocon);
+    Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
 
-    PinConfigure test_subject00(0, 0);
-    PinConfigure test_subject25(2, 5);
+    Pin test_subject00(0, 0);
+    Pin test_subject25(2, 5);
 
     SECTION("Pin Function")
     {
         // Source: "UM10562 LPC408x/407x User manual" table 84 page 133
-        constexpr uint8_t kPort0Pin0Uart3Txd = 0b010;
+        constexpr uint8_t kPort0Pin0Uart3Txd     = 0b010;
         constexpr uint8_t kPort2Pin5Pwm1Channel6 = 0b001;
 
         test_subject00.SetPinFunction(kPort0Pin0Uart3Txd);
@@ -38,37 +37,40 @@ TEST_CASE("Testing PinConfigure", "[pin_configure]")
         // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
         constexpr uint8_t kModePosition = 3;
         constexpr uint32_t kMask        = 0b11 << kModePosition;
+        constexpr uint32_t kExpectedForInactive =
+            static_cast<uint8_t>(PinInterface::Mode::kInactive)
+            << kModePosition;
+        constexpr uint32_t kExpectedForPullDown =
+            static_cast<uint8_t>(PinInterface::Mode::kPullDown)
+            << kModePosition;
+        constexpr uint32_t kExpectedForPullUp =
+            static_cast<uint8_t>(PinInterface::Mode::kPullUp) << kModePosition;
+        constexpr uint32_t kExpectedForRepeater =
+            static_cast<uint8_t>(PinInterface::Mode::kRepeater)
+            << kModePosition;
 
-        test_subject00.SetPinMode(PinConfigureInterface::kInactive);
-        test_subject25.SetPinMode(PinConfigureInterface::kInactive);
-        CHECK(PinConfigureInterface::kInactive << kModePosition ==
-              (local_iocon.P0_0 & kMask));
-        CHECK(PinConfigureInterface::kInactive << kModePosition ==
-              (local_iocon.P2_5 & kMask));
+        test_subject00.SetMode(PinInterface::Mode::kInactive);
+        test_subject25.SetMode(PinInterface::Mode::kInactive);
+        CHECK(kExpectedForInactive == (local_iocon.P0_0 & kMask));
+        CHECK(kExpectedForInactive == (local_iocon.P2_5 & kMask));
 
-        test_subject00.SetPinMode(PinConfigureInterface::kPullDown);
-        test_subject25.SetPinMode(PinConfigureInterface::kPullDown);
+        test_subject00.SetMode(PinInterface::Mode::kPullDown);
+        test_subject25.SetMode(PinInterface::Mode::kPullDown);
 
-        CHECK(PinConfigureInterface::kPullDown << kModePosition ==
-              (local_iocon.P0_0 & kMask));
-        CHECK(PinConfigureInterface::kPullDown << kModePosition ==
-              (local_iocon.P2_5 & kMask));
+        CHECK(kExpectedForPullDown == (local_iocon.P0_0 & kMask));
+        CHECK(kExpectedForPullDown == (local_iocon.P2_5 & kMask));
 
-        test_subject00.SetPinMode(PinConfigureInterface::kPullUp);
-        test_subject25.SetPinMode(PinConfigureInterface::kPullUp);
+        test_subject00.SetMode(PinInterface::Mode::kPullUp);
+        test_subject25.SetMode(PinInterface::Mode::kPullUp);
 
-        CHECK(PinConfigureInterface::kPullUp << kModePosition ==
-              (local_iocon.P0_0 & kMask));
-        CHECK(PinConfigureInterface::kPullUp << kModePosition ==
-              (local_iocon.P2_5 & kMask));
+        CHECK(kExpectedForPullUp == (local_iocon.P0_0 & kMask));
+        CHECK(kExpectedForPullUp == (local_iocon.P2_5 & kMask));
 
-        test_subject00.SetPinMode(PinConfigureInterface::kRepeater);
-        test_subject25.SetPinMode(PinConfigureInterface::kRepeater);
+        test_subject00.SetMode(PinInterface::Mode::kRepeater);
+        test_subject25.SetMode(PinInterface::Mode::kRepeater);
 
-        CHECK(PinConfigureInterface::kRepeater << kModePosition ==
-              (local_iocon.P0_0 & kMask));
-        CHECK(PinConfigureInterface::kRepeater << kModePosition ==
-              (local_iocon.P2_5 & kMask));
+        CHECK(kExpectedForRepeater == (local_iocon.P0_0 & kMask));
+        CHECK(kExpectedForRepeater == (local_iocon.P2_5 & kMask));
     }
     SECTION("Set and clear Hysteresis modes")
     {
@@ -225,6 +227,5 @@ TEST_CASE("Testing PinConfigure", "[pin_configure]")
         CHECK(0 == (local_iocon.P0_0 & kMask));
         CHECK(kMask == (local_iocon.P2_5 & kMask));
     }
-    PinConfigure::pin_map =
-        reinterpret_cast<PinConfigure::PinMap_t *>(LPC_IOCON);
+    Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }

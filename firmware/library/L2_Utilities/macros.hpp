@@ -27,6 +27,8 @@
 //
 #define SJ2_STRINGIFY(s) SJ2_STRINGIFY2(s)
 #define SJ2_STRINGIFY2(s) #s
+// Returns the length of an array
+#define SJ2_ARRAY_LENGTH(array) sizeof(array) / sizeof(*array)
 // SJ2_PACKED give a specified type a packed attribute
 #define SJ2_PACKED(type) type __attribute__((packed))
 // Set a function as a "weak" function. This means that if there is another

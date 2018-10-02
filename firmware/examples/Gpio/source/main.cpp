@@ -33,7 +33,7 @@ int main(void)
         {
             // Another way to set the output of a pin high or low would be to
             // use the Set method, as demonstrated below.
-            p1_01.Set(GpioInterface::PinOutput::kHigh);
+            p1_01.Set(GpioInterface::PinState::kHigh);
         }
     }
 

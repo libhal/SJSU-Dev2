@@ -1,5 +1,5 @@
 #pragma once
-// Using <> vs "" for including to make sure we only grab the project version of
+// Include using <> vs "" for  to make sure we only grab the project version of
 // project_config.hpp
 #include <project_config.hpp>
 #include <cstdint>
@@ -41,12 +41,15 @@ namespace config
 #endif  // !defined SJ2_ENABLE_ANSI_CODES
 SJ2_DECLARE_CONSTANT(ENABLE_ANSI_CODES, bool, kEnableAnsiCodes);
 
-// Used to set the system clock speed for the LPC4078
-#if !defined SJ2_SYSTEM_CLOCK_RATE
-#define SJ2_SYSTEM_CLOCK_RATE 12'000'000
+// Used to set the system clock speed for the LPC4078 in MHz
+#if !defined SJ2_SYSTEM_CLOCK_RATE_MHZ
+#define SJ2_SYSTEM_CLOCK_RATE_MHZ 12
 #endif  // !defined SJ2_SYSTEM_CLOCK_RATE
-SJ2_DECLARE_CONSTANT(SYSTEM_CLOCK_RATE, uint32_t, kSystemClockRate);
-static_assert(1 <= kSystemClockRate && kSystemClockRate <= 100'000'000,
+SJ2_DECLARE_CONSTANT(SYSTEM_CLOCK_RATE_MHZ, uint8_t, kSystemClockRateMhz);
+constexpr uint32_t kSystemClockRate = SJ2_SYSTEM_CLOCK_RATE_MHZ * 1'000'000;
+static_assert(1 <= kSystemClockRateMhz && kSystemClockRateMhz <= 100,
+              "SJ2_SYSTEM_CLOCK can only be between 1Hz and 100Mhz");
+static_assert(1'000'000 <= kSystemClockRate && kSystemClockRate <= 100'000'000,
               "SJ2_SYSTEM_CLOCK can only be between 1Hz and 100Mhz");
 
 // Used to set the FreeRTOS tick frequency defined in Hz
@@ -56,6 +59,18 @@ static_assert(1 <= kSystemClockRate && kSystemClockRate <= 100'000'000,
 SJ2_DECLARE_CONSTANT(RTOS_FREQUENCY, uint16_t, kRtosFrequency);
 static_assert(1 <= kRtosFrequency && kRtosFrequency <= 10'000,
               "SJ2_RTOS_FREQUENCY can only be between 1,000Hz and 1Hz");
+
+// Default baud rate of 38400 divides perfectly with the LPC17xx and LPC40xx
+// UART clock dividers perfectly, where as all other standard baud rates
+// do not.
+#if !defined SJ2_BAUD_RATE
+#define SJ2_BAUD_RATE 38'400
+#endif  // !defined SJ2_BAUD_RATE
+SJ2_DECLARE_CONSTANT(BAUD_RATE, uint32_t, kBaudRate);
+static_assert(4'800 <= kBaudRate && kBaudRate <= 4'000'000 &&
+                  kBaudRate <= kSystemClockRate / 16,
+              "SJ2_BAUD_RATE must be between 4800 bits/s and 4 Mbits/s and "
+              "less than the clock speed / 16 ");
 
 // Used to dump all the call stack when "PrintBacktrace" is called or an assert
 // using PrintBacktrace is occurs.

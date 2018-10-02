@@ -1,4 +1,4 @@
-// Test for PinConfigure class.
+// Test for Pin class.
 // Using a test by side effect on the Cortex M4 SysTick register
 #include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
@@ -10,7 +10,7 @@ static void DummyFunction(void) {}
 TEST_CASE("Testing SystemTimer", "[system_timer]")
 {
     // Simulated local version of SysTick register to verify register
-    // manipulation by side effect of PinConfigure method calls
+    // manipulation by side effect of Pin method calls
     // Default figure 552 page 703
     SysTick_Type local_systick = { 0x4, 0, 0, 0x000F'423F };
     // Substitute the memory mapped SysTick with the local_systick test struture

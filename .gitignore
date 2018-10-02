@@ -4,6 +4,7 @@ firmware/**/makefile
 
 !firmware/library
 !firmware/HelloWorld
+!firmware/Hyperload
 !firmware/examples
 
 tools/Hyperload

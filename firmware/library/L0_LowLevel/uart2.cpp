@@ -4,19 +4,20 @@
 #include "config.hpp"
 #include "LPC40xx.h"
 #include "L0_LowLevel/delay.hpp"
-#include "L0_LowLevel/uart0.hpp"
+#include "L0_LowLevel/uart2.hpp"
 #include "L1_Drivers/gpio.hpp"
 #include "L2_Utilities/macros.hpp"
 
-namespace uart0
+namespace uart2
 {
-Pin rx_pin(0, 3);
+
+Pin rx_pin(2, 9);
 PinInterface * rx = &rx_pin;
 
-Pin tx_pin(0, 2);
+Pin tx_pin(2, 8);
 PinInterface * tx = &tx_pin;
 
-LPC_UART_TypeDef * uart0_register = LPC_UART0;
+LPC_UART_TypeDef * uart2_register = LPC_UART2;
 LPC_SC_TypeDef * sc               = LPC_SC;
 
 UartCalibration_t FindClosestFractional(float decimal)
@@ -156,11 +157,11 @@ void Init(uint32_t baud_rate)
     // 1.9 to round down to 1, but we want it to round-up to 2.
     float baud_rate_f          = static_cast<float>(baud_rate);
     UartCalibration_t dividers = GenerateUartCalibration(baud_rate_f);
-    // Power on UART0
-    sc->PCONP |= (1 << 3);
+    // Power on UART2
+    sc->PCONP |= (1 << 24);
 
     constexpr uint8_t kEightBitDataLength = 3;
-    constexpr uint8_t kUartFunction       = 1;
+    constexpr uint8_t kUartFunction       = 0b010;
     constexpr uint8_t kDlabBit            = (1 << 7);
 
     tx->SetMode(PinInterface::Mode::kPullUp);
@@ -173,12 +174,12 @@ void Init(uint32_t baud_rate)
     uint8_t fdr = static_cast<uint8_t>((dividers.multiply & 0xF) << 4 |
                                        (dividers.divide_add & 0xF));
 
-    uart0_register->LCR = kDlabBit;  // Set DLAB bit to access DLM & DLL
-    uart0_register->DLM = dlm;
-    uart0_register->DLL = dll;
-    uart0_register->FDR = fdr;
-    uart0_register->LCR = kEightBitDataLength;  // DLAB is reset back to zero
-    uart0_register->FCR |= 1;                   // Enable FIFO
+    uart2_register->LCR = kDlabBit;  // Set DLAB bit to access DLM & DLL
+    uart2_register->DLM = dlm;
+    uart2_register->DLL = dll;
+    uart2_register->FDR = fdr;
+    uart2_register->LCR = kEightBitDataLength;  // DLAB is reset back to zero
+    uart2_register->FCR |= 1;                   // Enable FIFO
 }
 
 int GetChar()
@@ -191,17 +192,17 @@ char GetChar(uint32_t timeout)
     uint64_t timeout_time = Milliseconds() + timeout;
     uint64_t current_time = Milliseconds();
     char result;
-    while (!(uart0_register->LSR & 0x1) && current_time < timeout_time)
+    while (!(uart2_register->LSR & 0x1) && current_time < timeout_time)
     {
         current_time = Milliseconds();
     }
-    if (!(uart0_register->LSR & 0x1) && current_time >= timeout_time)
+    if (!(uart2_register->LSR & 0x1) && current_time >= timeout_time)
     {
         result = '\xFF';
     }
     else
     {
-        result = uart0_register->RBR;
+        result = uart2_register->RBR;
     }
     return result;
 }
@@ -213,9 +214,9 @@ int PutChar(int out)
 
 char PutChar(char out)
 {
-    uart0_register->THR = static_cast<uint8_t>(out);
+    uart2_register->THR = static_cast<uint8_t>(out);
 
-    while (!(uart0_register->LSR & (0x1 << 6)))
+    while (!(uart2_register->LSR & (0x1 << 6)))
     {
         continue;
     }
@@ -230,4 +231,4 @@ void Puts(const char * c_string)
     }
 }
 
-}  // namespace uart0
+}  // namespace uart2

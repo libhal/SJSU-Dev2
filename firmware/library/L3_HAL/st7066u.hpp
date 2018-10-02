@@ -176,13 +176,13 @@ class St7066u : public St7066uInterface
     void WriteNibble(WriteOperation operation, uint8_t nibble) override
     {
         kControlPins.e.SetHigh();
-        kControlPins.rs.Set(Gpio::PinOutput(operation));
+        kControlPins.rs.Set(Gpio::PinState(operation));
         kControlPins.rw.SetLow();
         // set nibble on 4-bit data bus
-        kControlPins.d7.Set(Gpio::PinOutput((nibble >> 3) & 0x01));
-        kControlPins.d6.Set(Gpio::PinOutput((nibble >> 2) & 0x01));
-        kControlPins.d5.Set(Gpio::PinOutput((nibble >> 1) & 0x01));
-        kControlPins.d4.Set(Gpio::PinOutput((nibble >> 0) & 0x01));
+        kControlPins.d7.Set(Gpio::PinState((nibble >> 3) & 0x01));
+        kControlPins.d6.Set(Gpio::PinState((nibble >> 2) & 0x01));
+        kControlPins.d5.Set(Gpio::PinState((nibble >> 1) & 0x01));
+        kControlPins.d4.Set(Gpio::PinState((nibble >> 0) & 0x01));
         Delay(1);
         // Toggle chip enable to trigger write on falling edge
         kControlPins.e.SetLow();
@@ -196,17 +196,17 @@ class St7066u : public St7066uInterface
     void WriteByte(WriteOperation operation, uint8_t byte) override
     {
         kControlPins.e.SetHigh();
-        kControlPins.rs.Set(Gpio::PinOutput(operation));
+        kControlPins.rs.Set(Gpio::PinState(operation));
         kControlPins.rw.SetLow();
         // set byte on 8-bit data bus
-        kControlPins.d7.Set(Gpio::PinOutput((byte >> 7) & 0x01));
-        kControlPins.d6.Set(Gpio::PinOutput((byte >> 6) & 0x01));
-        kControlPins.d5.Set(Gpio::PinOutput((byte >> 5) & 0x01));
-        kControlPins.d4.Set(Gpio::PinOutput((byte >> 4) & 0x01));
-        kControlPins.d3.Set(Gpio::PinOutput((byte >> 3) & 0x01));
-        kControlPins.d2.Set(Gpio::PinOutput((byte >> 2) & 0x01));
-        kControlPins.d1.Set(Gpio::PinOutput((byte >> 1) & 0x01));
-        kControlPins.d0.Set(Gpio::PinOutput((byte >> 0) & 0x01));
+        kControlPins.d7.Set(Gpio::PinState((byte >> 7) & 0x01));
+        kControlPins.d6.Set(Gpio::PinState((byte >> 6) & 0x01));
+        kControlPins.d5.Set(Gpio::PinState((byte >> 5) & 0x01));
+        kControlPins.d4.Set(Gpio::PinState((byte >> 4) & 0x01));
+        kControlPins.d3.Set(Gpio::PinState((byte >> 3) & 0x01));
+        kControlPins.d2.Set(Gpio::PinState((byte >> 2) & 0x01));
+        kControlPins.d1.Set(Gpio::PinState((byte >> 1) & 0x01));
+        kControlPins.d0.Set(Gpio::PinState((byte >> 0) & 0x01));
         Delay(1);
         // Toggle chip enable to trigger write on falling edge
         kControlPins.e.SetLow();
