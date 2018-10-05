@@ -15,9 +15,16 @@ DEVICE_OBJDUMP = arm-none-eabi-objdump
 DEVICE_SIZEC   = arm-none-eabi-size
 DEVICE_OBJCOPY = arm-none-eabi-objcopy
 DEVICE_NM      = arm-none-eabi-nm
-# IMPORTANT: Must be accessible via the PATH variable!!!
-# Affects what DBC is generated for SJSUOne board
-TEST_GROUP     ?=
+# Set of tests you would like to run. Text must be surrounded by [] and be a set
+# comma deliminated.
+#
+#   Example of running only i2c and adc tests with the -s flag to show
+#   successful assertions:
+#
+#         make run-test TEST_ARGS="-s [i2c,adc]"
+#
+TEST_ARGS ?=
+# IMPORTANT: GCC must be accessible via the PATH environment variable
 HOST_CC        ?= gcc-7
 HOST_CPPC      ?= g++-7
 HOST_OBJDUMP   ?= objdump-7
@@ -407,21 +414,18 @@ telemetry:
 	python2.7 $(TOOLS)/Telemetry/telemetry.py"
 
 test: $(COVERAGE) $(TEST_EXEC)
-	@valgrind --leak-check=full --track-origins=yes -v \
-		$(TEST_EXEC) -s $(TEST_GROUP)
+
+run-test:
+	@valgrind --leak-check=full --track-origins=yes -v $(TEST_EXEC) $(TEST_ARGS)
 	@gcovr --root $(FIRMWARE) --keep --object-directory $(BUILD_DIR) \
 		-e "$(LIB_DIR)/newlib" \
 		-e "$(LIB_DIR)/third_party" \
 		--html --html-details -o $(COVERAGE)/coverage.html
 
-test-all: $(COVERAGE) $(TEST_EXEC)
-
 $(COVERAGE):
 	mkdir -p $(COVERAGE)
 
 $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
-	@echo " \\──────────────────────────────/"
-	@echo "  \\ Generating test executable /"
 	@mkdir -p "$(dir $@)"
 	@echo 'Finished building target: $@'
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
@@ -430,11 +434,6 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
          -fno-elide-constructors -lgcov \
          -fprofile-arcs -ftest-coverage -fPIC -O0 \
          -o $(TEST_EXEC) $(OBJECT_FILES)
-	@echo "   \\──────────────────────────/"
-	@echo "    \\       Finished         /"
-	@echo "     \\──────────────────────/"
-	@echo "      \\    Running Test    /"
-	@echo "       \\──────────────────/"
 
 %.hpp.gch: %.hpp
 	@echo 'Precompiling HPP file: $<'
