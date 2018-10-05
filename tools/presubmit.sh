@@ -148,7 +148,10 @@ printf "\e[1;33m======================================================= \e[0m\n"
 ####################################
 printf "\e[0;33mBuilding and running unit tests \e[0m\n"
 make test -j16 WARNINGS_ARE_ERRORS=-Werror
-TEST_CAPTURE=$?
+TEST_BUILD_CAPTURE=$?
+make run-test
+TEST_RUN_CAPTURE=$?
+TEST_CAPTURE=$(($TEST_BUILD_CAPTURE + $TEST_RUN_CAPTURE))
 print_status $TEST_CAPTURE
 echo ""
 # Check if there were any errors. For this to succeed, this value should be 0

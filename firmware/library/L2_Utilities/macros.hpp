@@ -19,7 +19,7 @@
 // variable has been used in the software, to remove compiler warnings about
 // unused variables.
 // NOTE: this will not stop the compiler from optimizing this variable out.
-#define SJ2_USED(variable) (void)variable
+#define SJ2_USED(variable) ((void)variable)
 // These macros are used to stringify define values. For example:
 //
 //      #define VALUE true
@@ -92,5 +92,13 @@
         }                                                                     \
     } while (0)
 
+#if defined HOST_TEST
+#define SJ2_ASSERT_FATAL(condition, fatal_message, ...)                 \
+    /* Without the if statement using the (condition) and SJ2_USED() */ \
+    /* the compiler may complain about unused variables.             */ \
+    /* This serves to silence those warnings during host tests.      */ \
+    if (condition) { SJ2_USED(fatal_message); }
+#else
 #define SJ2_ASSERT_FATAL(condition, fatal_message, ...) \
     SJ2_ASSERT_FATAL_WITH_DUMP(true, (condition), fatal_message, ##__VA_ARGS__)
+#endif  // defined HOST_TEST
