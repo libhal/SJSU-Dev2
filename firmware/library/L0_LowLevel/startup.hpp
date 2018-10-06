@@ -9,7 +9,6 @@ extern SystemClock system_clock;
 extern SystemTimer system_timer;
 
 extern const IsrPointer kInterruptVectorTable[];
-extern IsrPointer dynamic_isr_vector_table[];
 
 // These are defined after the compilation of the FreeRTOS port for Cortex M4F
 // These will link to those definitions.
