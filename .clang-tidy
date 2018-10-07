@@ -1,4 +1,4 @@
-Checks: '-clang-diagnostic-format,-clang-diagnostic-error,-clang-diagnostic-macro-redefined,-clang-analyzer-valist.Uninitialized,google-*,-google-default-arguments,readability-identifier-naming'
+Checks: '-clang-diagnostic-format,-clang-diagnostic-error,-clang-diagnostic-macro-redefined,-clang-analyzer-valist.Uninitialized,google-*,-google-default-arguments,-google-readability-function-size,readability-identifier-naming'
 FormatStyle: 'google'
 WarningsAsErrors: '*'
 CheckOptions:
