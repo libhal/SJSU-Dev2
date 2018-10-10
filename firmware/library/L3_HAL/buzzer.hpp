@@ -5,7 +5,6 @@
 #pragma once
 
 #include <cstdint>
-
 #include "L1_Drivers/pwm.hpp"
 
 class BuzzerInterface
@@ -21,25 +20,42 @@ class BuzzerInterface
 class Buzzer : public BuzzerInterface
 {
  public:
-  explicit Buzzer(uint8_t select_pin) : pwm_channel_(select_pin) {}
+  explicit constexpr Buzzer(uint8_t pin_select)
+  : pwm_(&pwm_pin_), pwm_pin_(pin_select)
+  {}
+
+  explicit Buzzer(PwmInterface * pwm_pin_select)
+  : pwm_(pwm_pin_select) , pwm_pin_(Pwm::CreatePwm<1>())
+  {}
 
   void Initialize() override
   {
-    pwm_channel_.Initialize(500);
+    pwm_->Initialize(500);
     Stop();
   }
 
   void Stop() override
   {
-    pwm_channel_.SetDutyCycle(0.0);
+    pwm_->SetDutyCycle(0.0);
   }
 
   void Beep(uint32_t frequency = 500, float volume = 1.0) override
   {
-    pwm_channel_.SetFrequency(frequency);
-    pwm_channel_.SetDutyCycle(volume);
+    pwm_->SetFrequency(frequency);
+    pwm_->SetDutyCycle(volume);
   }
 
+    uint32_t GetFrequency()
+    {
+        return pwm_->GetFrequency();
+    }
+
+    float GetVolume()
+    {
+        return pwm_->GetDutyCycle();
+    }
+
  private:
-  Pwm pwm_channel_;
+  PwmInterface * pwm_;
+  Pwm pwm_pin_;
 };
