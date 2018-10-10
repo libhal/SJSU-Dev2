@@ -7,6 +7,27 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#if defined HOST_TEST
+#include "event_groups.h"
+#include "L5_Testing/testing_frameworks.hpp"
+
+DECLARE_FAKE_VOID_FUNC(vTaskStartScheduler);
+DECLARE_FAKE_VOID_FUNC(vTaskSuspend, TaskHandle_t);
+DECLARE_FAKE_VOID_FUNC(vTaskResume, TaskHandle_t);
+DECLARE_FAKE_VOID_FUNC(vTaskDelete, TaskHandle_t);
+DECLARE_FAKE_VOID_FUNC(vTaskDelayUntil, TickType_t *, TickType_t);
+DECLARE_FAKE_VOID_FUNC(vApplicationGetIdleTaskMemory, StaticTask_t **,
+                       StackType_t **, uint32_t *);
+DECLARE_FAKE_VALUE_FUNC(TickType_t, xTaskGetTickCount);
+DECLARE_FAKE_VALUE_FUNC(TaskHandle_t, xTaskCreateStatic, TaskFunction_t,
+                        const char *, uint32_t, void *, UBaseType_t,
+                        StackType_t *, StaticTask_t *);
+DECLARE_FAKE_VALUE_FUNC(EventGroupHandle_t, xEventGroupCreateStatic,
+                        StaticEventGroup_t *);
+DECLARE_FAKE_VALUE_FUNC(EventBits_t, xEventGroupSync, EventGroupHandle_t,
+                        EventBits_t, EventBits_t, TickType_t);
+#endif  // HOST_TEST
+
 namespace rtos
 {
 enum Priority
