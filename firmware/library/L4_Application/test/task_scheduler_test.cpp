@@ -13,100 +13,134 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
 {
   using namespace rtos;  // NOLINT
 
-  constexpr uint32_t kTotalTestTaskCount         = 2;
-  const char * task_names[]                      = { "Task One", "Task Two" };
+  const char * task_names[] = {
+    "Task 1",  "Task 2",  "Task 3",  "Task 4",  "Task 5",  "Task 6",
+    "Task 7",  "Task 8",  "Task 9",  "Task 10", "Task 11", "Task 12",
+    "Task 13", "Task 14", "Task 15", "Task 16", "Task 17",
+  };
+  constexpr uint8_t kTotalTestTaskCount          = SJ2_ARRAY_LENGTH(task_names);
   TaskHandle_t task_handles[kTotalTestTaskCount] = { NULL };
+  Mock<TaskInterface> mock_tasks[kTotalTestTaskCount];
 
-  Mock<TaskInterface> mock_task_one;
-  When(Method(mock_task_one, GetName)).AlwaysReturn(task_names[0]);
-  When(Method(mock_task_one, Setup)).AlwaysReturn(true);
-  When(Method(mock_task_one, Run)).AlwaysReturn(true);
-  When(Method(mock_task_one, GetHandle)).AlwaysReturn(&task_handles[0]);
-  When(Method(mock_task_one, GetStackSize)).AlwaysReturn(0);
-  When(Method(mock_task_one, GetPriority)).AlwaysReturn(Priority::kLow);
-  When(Method(mock_task_one, GetStack)).AlwaysReturn(0);
-  When(Method(mock_task_one, GetTaskBuffer)).AlwaysReturn(0);
-
-  Mock<TaskInterface> mock_task_two;
-  When(Method(mock_task_two, GetName)).AlwaysReturn(task_names[1]);
-  When(Method(mock_task_two, Setup)).AlwaysReturn(true);
-  When(Method(mock_task_two, Run)).AlwaysReturn(true);
-  When(Method(mock_task_two, GetHandle)).AlwaysReturn(&task_handles[1]);
-  When(Method(mock_task_two, GetStackSize)).AlwaysReturn(0);
-  When(Method(mock_task_two, GetPriority)).AlwaysReturn(Priority::kLow);
-  When(Method(mock_task_two, GetStack)).AlwaysReturn(0);
-  When(Method(mock_task_two, GetTaskBuffer)).AlwaysReturn(0);
-
-  TaskInterface & task_one = mock_task_one.get();
-  TaskInterface & task_two = mock_task_two.get();
+  // stub each mock task
+  for (uint8_t i = 0; i < kTotalTestTaskCount; i++)
+  {
+    When(Method(mock_tasks[i], GetName)).AlwaysReturn(task_names[i]);
+    When(Method(mock_tasks[i], Setup)).AlwaysReturn(true);
+    When(Method(mock_tasks[i], Run)).AlwaysReturn(true);
+    When(Method(mock_tasks[i], GetHandle)).AlwaysReturn(&task_handles[i]);
+    When(Method(mock_tasks[i], GetStackSize)).AlwaysReturn(0);
+    When(Method(mock_tasks[i], GetPriority)).AlwaysReturn(Priority::kLow);
+    When(Method(mock_tasks[i], GetStack)).AlwaysReturn(0);
+    When(Method(mock_tasks[i], GetTaskBuffer)).AlwaysReturn(0);
+  }
 
   SECTION("AddTask")
   {
-    TaskScheduler scheduler    = TaskScheduler::Instance();
-    TaskInterface ** task_list = scheduler.GetAllTasks();
-    scheduler.AddTask(&task_one);
-    CHECK(scheduler.GetTaskCount() == 1);
-    CHECK(!strcmp(task_list[0]->GetName(), task_names[0]));
-
-    scheduler.AddTask(&task_two);
-    CHECK(scheduler.GetTaskCount() == 2);
-    CHECK(!strcmp(task_list[1]->GetName(), task_names[1]));
+    TaskScheduler scheduler         = TaskScheduler::Instance();
+    TaskInterface ** task_list      = scheduler.GetAllTasks();
+    constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
+    uint8_t task_count              = 0;
+    // scheduler should be initially empty
+    CHECK(scheduler.GetTaskCount() == 0);
+    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+    {
+      TaskInterface & task = mock_tasks[i].get();
+      scheduler.AddTask(&task);
+      task_count++;
+      CHECK(scheduler.GetTaskCount() == task_count);
+      CHECK(!strcmp(task_list[i]->GetName(), task.GetName()));
+    }
+    // scheduler should now be full and new tasks should not be added
+    TaskInterface & task = mock_tasks[kMaxTaskCount].get();
+    scheduler.AddTask(&task);
+    CHECK(scheduler.GetTaskCount() == task_count);
+    CHECK(strcmp(task_list[kMaxTaskCount - 1]->GetName(), task.GetName()));
   }
   SECTION("GetTask")
   {
-    TaskScheduler scheduler = TaskScheduler::Instance();
-    scheduler.AddTask(&task_one);
-    TaskInterface * fetched_task = scheduler.GetTask(task_names[0]);
-    CHECK(!strcmp(fetched_task->GetName(), task_names[0]));
+    TaskScheduler scheduler         = TaskScheduler::Instance();
+    constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
+    uint8_t task_count              = 0;
+    CHECK(scheduler.GetTaskCount() == 0);
+    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+    {
+      TaskInterface & task = mock_tasks[i].get();
+      scheduler.AddTask(&task);
+      task_count++;
+      CHECK(scheduler.GetTaskCount() == task_count);
+      TaskInterface * retreived_task = scheduler.GetTask(task_names[i]);
+      CHECK(retreived_task != nullptr);
+      CHECK(!strcmp(retreived_task->GetName(), task.GetName()));
+    }
+    TaskInterface * non_existent_task =
+        scheduler.GetTask(task_names[kMaxTaskCount]);
+    CHECK(non_existent_task == nullptr);
   }
   SECTION("GetTaskIndex")
   {
-    TaskScheduler scheduler = TaskScheduler::Instance();
-    scheduler.AddTask(&task_two);
-    scheduler.AddTask(&task_one);
-    CHECK(scheduler.GetTaskIndex(task_two.GetName()) == 0);
-    CHECK(scheduler.GetTaskIndex(task_one.GetName()) == 1);
+    TaskScheduler scheduler         = TaskScheduler::Instance();
+    constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
+    uint8_t task_count              = 0;
+    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+    {
+      TaskInterface & task = mock_tasks[i].get();
+      scheduler.AddTask(&task);
+      CHECK(scheduler.GetTaskIndex(task.GetName()) == task_count);
+      task_count++;
+      CHECK(scheduler.GetTaskCount() == task_count);
+    }
+    // If retreiving the index of a task that is not scheduled, GetTaskIndex
+    // should return kTaskSchedulerSize + 1
+    CHECK(scheduler.GetTaskIndex("Does not exist") == (kMaxTaskCount + 1));
   }
-  SECTION("RemoveTask")
+  SECTION("RemoveTask when scheduler is empty")
+  {
+    TaskScheduler scheduler    = TaskScheduler::Instance();
+    // should do nothing since this task is not scheduled
+    scheduler.RemoveTask("Task A");
+    CHECK(vTaskDelete_fake.call_count == 0);
+  }
+  SECTION("RemoveTask when scheduler is not empty")
   {
     TaskScheduler scheduler    = TaskScheduler::Instance();
     TaskInterface ** task_list = scheduler.GetAllTasks();
-    scheduler.AddTask(&task_one);
-    scheduler.AddTask(&task_two);
-    // should do nothing since this taks is not scheduled
-    scheduler.RemoveTask("Task A");
-    CHECK(vTaskDelete_fake.call_count == 0);
-    // Remove 'Task One' from scheduler
-    // 'Task Two' should now be the first and only task in the scheduler
-    scheduler.RemoveTask(task_names[0]);
-    CHECK(scheduler.GetTaskCount() == 1);
-    CHECK(task_list[0] == nullptr);
-    CHECK(scheduler.GetTask(task_names[0]) == nullptr);
-    // Remove 'Task Two' from scheduler
-    // Scheduler should now be emtpy
-    scheduler.RemoveTask(task_names[1]);
-    CHECK(scheduler.GetTaskCount() == 0);
-    CHECK(scheduler.GetTask(task_names[1]) == nullptr);
-    CHECK(task_list[1] == nullptr);
-    // should do nothing since there are no tasks
-    scheduler.RemoveTask(task_names[0]);
-    CHECK(vTaskDelete_fake.call_count == 2);
+    scheduler.AddTask(&(mock_tasks[0].get()));
+    scheduler.AddTask(&(mock_tasks[1].get()));
+    scheduler.AddTask(&(mock_tasks[2].get()));
+    scheduler.AddTask(&(mock_tasks[3].get()));
+    CHECK(scheduler.GetTaskCount() == 4);
+    scheduler.RemoveTask(mock_tasks[2].get().GetName());
+    CHECK(scheduler.GetTaskCount() == 3);
+    CHECK(task_list[2] == nullptr);
+    CHECK(vTaskDelete_fake.call_count == 1);
   }
   SECTION("Start")
   {
-    constexpr uint32_t kPreRunSyncBits = (1 << 0) | (1 << 1);
+    constexpr uint32_t kPreRunSyncBits = 0xFFFF;
     xEventGroupCreateStatic_fake.custom_fake =
         xEventGroupCreateStatic_custom_fake;
-    TaskScheduler scheduler = TaskScheduler::Instance();
-    // scheduler should initialize and start since there are tasks
-    // scheduled
-    scheduler.AddTask(&task_one);
-    scheduler.AddTask(&task_two);
-    CHECK(scheduler.GetTaskCount() == 2);
+    TaskScheduler scheduler         = TaskScheduler::Instance();
+    constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
+    uint8_t task_count              = 0;
+    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+    {
+      scheduler.AddTask(&(mock_tasks[i].get()));
+      task_count++;
+    }
+    CHECK(scheduler.GetTaskCount() == task_count);
     scheduler.Start();
-    Verify(Method(mock_task_one, Setup), Method(mock_task_two, Setup))
+    // xTaskCreateStatic and Setup should be invoked for each scheduled task
+    Verify(Method(mock_tasks[0], Setup), Method(mock_tasks[1], Setup),
+           Method(mock_tasks[2], Setup), Method(mock_tasks[3], Setup),
+           Method(mock_tasks[4], Setup), Method(mock_tasks[5], Setup),
+           Method(mock_tasks[6], Setup), Method(mock_tasks[7], Setup),
+           Method(mock_tasks[8], Setup), Method(mock_tasks[9], Setup),
+           Method(mock_tasks[10], Setup), Method(mock_tasks[11], Setup),
+           Method(mock_tasks[12], Setup), Method(mock_tasks[13], Setup),
+           Method(mock_tasks[14], Setup), Method(mock_tasks[15], Setup))
         .Exactly(1);
-    CHECK(xTaskCreateStatic_fake.call_count == kTotalTestTaskCount);
+    CHECK(xTaskCreateStatic_fake.call_count == kMaxTaskCount);
     CHECK(xEventGroupCreateStatic_fake.call_count == 1);
     CHECK(scheduler.GetPreRunEventGroupHandle() == test_event_group_handle);
     CHECK(scheduler.GetPreRunSyncBits() == kPreRunSyncBits);
