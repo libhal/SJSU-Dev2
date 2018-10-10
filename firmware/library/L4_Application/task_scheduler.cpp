@@ -78,7 +78,11 @@ void rtos::TaskScheduler::RemoveTask(const char * task_name)
   {
     return;
   }
-  vTaskDelete(task_list_[kTaskIndex]->GetHandle());
+  TaskHandle_t handle = task_list_[kTaskIndex]->GetHandle();
+  if (handle != nullptr)
+  {
+    vTaskDelete(handle);
+  }
   task_list_[kTaskIndex] = nullptr;
   task_count_--;
 };

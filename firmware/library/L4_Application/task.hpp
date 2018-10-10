@@ -1,10 +1,12 @@
 // This file contains the TaskInterface class.
 // All tasks must inherit TaskInterface and override the Run() function.
+//
+// NOTE: All tasks must be persistent or in global space.
+//
 // Usage:
 //      class PrinterTask : public rtos::Task<1024>;
-//      PrinterTask * printer_one =
-//          new PrinterTask("Printer A", "I am a printer, I am faster");
-//      printer_one->SetDelayTime(500);
+//      PrinterTask printer_one("Printer A", "I am a printer, I am faster");
+//      printer_one.SetDelayTime(500);
 //      rtos::TaskScheduler::Instance().Start();
 #pragma once
 
