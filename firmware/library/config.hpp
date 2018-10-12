@@ -2,6 +2,7 @@
 // Include using <> vs "" for  to make sure we only grab the project version of
 // project_config.hpp
 #include <project_config.hpp>
+#include <cstddef>
 #include <cstdint>
 
 namespace config
@@ -90,5 +91,11 @@ SJ2_DECLARE_CONSTANT(DEBUG_PRINT_ENABLED, bool, kDebugPrintEnabled);
 #define SJ2_TASK_SCHEDULER_SIZE 16
 #endif  // !defined SJ2_TASK_SCHEDULER_SIZE
 SJ2_DECLARE_CONSTANT(TASK_SCHEDULER_SIZE, uint8_t, kTaskSchedulerSize);
+
+// Used to set the reciever buffer size of the ESP8266 driver
+#if !defined SJ2_ESP8266_BUFFER_SIZE
+#define SJ2_ESP8266_BUFFER_SIZE 512
+#endif  // !defined SJ2_ESP8266_BUFFER_SIZE
+SJ2_DECLARE_CONSTANT(ESP8266_BUFFER_SIZE, std::size_t, kEsp8266BufferSize);
 
 }  // namespace config
