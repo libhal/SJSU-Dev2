@@ -11,7 +11,7 @@ constexpr uint8_t kAccelerometerAddress = 0x1C;
 uint8_t initialization_sequence[]       = { 0x2A, 0x01 };
 uint8_t byte                            = 0x0D;
 
-I2c i2c(I2c::Port::kI2c2);
+I2c i2c;
 
 int main(void)
 {
@@ -34,7 +34,7 @@ int main(void)
         for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
              address++)
         {
-            status = i2c.Write(address, nullptr, 0);
+            status = i2c.Write(address, nullptr, 0, 50);
             if (status == I2cInterface::Status::kSuccess)
             {
                 DEBUG_PRINT("    Found device at address: 0x%02X", address);

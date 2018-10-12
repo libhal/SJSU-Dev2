@@ -41,8 +41,10 @@ TEST_CASE("Testing I2C", "[i2c]")
             I2c::Control::kAssertAcknowledge | I2c::Control::kStart |
             I2c::Control::kStop | I2c::Control::kInterrupt;
         test_subject.Initialize();
-        CHECK(local_i2c.SCLL == 60);
-        CHECK(local_i2c.SCLH == 60);
+        constexpr uint32_t kLow = ((config::kSystemClockRate/75'000)/2)*0.7;
+        constexpr uint32_t kHigh = ((config::kSystemClockRate/75'000)/2)*1.3;
+        CHECK(kLow == local_i2c.SCLL);
+        CHECK(kHigh == local_i2c.SCLH);
         CHECK(local_i2c.CONCLR == kExpectedControlClear);
         CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
         CHECK(dynamic_isr_vector_table[I2c::kIrq[kI2cPort]] ==
@@ -135,9 +137,7 @@ TEST_CASE("Testing I2C", "[i2c]")
         CHECK(local_i2c.CONSET == I2c::Control::kStart);
     }
 
-    auto check_bit_set = [&](uint32_t mask, uint32_t reg) {
-        CHECK(mask == (reg & mask));
-    };
+    #define CHECK_BITS(mask, reg) CHECK(mask == (reg & mask))
 
     auto setup_state_machine = [&](I2c::MasterState state) {
         local_i2c.STAT   = util::Value(state);
@@ -153,9 +153,9 @@ TEST_CASE("Testing I2C", "[i2c]")
         I2c::Transaction_t actual_transaction =
             I2c::GetTransactionInfo(I2c::Port::kI2c0);
         CHECK(I2cInterface::Status::kBusError == actual_transaction.status);
-        check_bit_set(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
-        check_bit_set(I2c::Control::kStop, local_i2c.CONSET);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
+        CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kStartCondition")
     {
@@ -163,7 +163,7 @@ TEST_CASE("Testing I2C", "[i2c]")
         test_subject.Write(kAddress, nullptr, 0);
         I2c::I2cHandler<I2c::Port::kI2c0>();
         CHECK((kAddress << 1) == local_i2c.DAT);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kRepeatedStart")
     {
@@ -171,7 +171,7 @@ TEST_CASE("Testing I2C", "[i2c]")
         test_subject.Write(kAddress, nullptr, 0);
         I2c::I2cHandler<I2c::Port::kI2c0>();
         CHECK((kAddress << 1) == local_i2c.DAT);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kSlaveAddressWriteSentRecievedAck")
     {
@@ -185,8 +185,8 @@ TEST_CASE("Testing I2C", "[i2c]")
             // In this state, you will send the first byte from the write buffer
             // and thus, no other value needs to be check except for [0].
             CHECK(write_buffer[0] == local_i2c.DAT);
-            check_bit_set(I2c::Control::kStart, local_i2c.CONCLR);
-            check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
         }
         SECTION("Zero length buffer")
         {
@@ -199,9 +199,9 @@ TEST_CASE("Testing I2C", "[i2c]")
                 I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
             CHECK(!actual_transaction.busy);
-            check_bit_set(I2c::Control::kStop, local_i2c.CONSET);
-            check_bit_set(I2c::Control::kStart, local_i2c.CONCLR);
-            check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
+            CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
         }
     }
     SECTION("I2C State Machine: kSlaveAddressWriteSentRecievedNack")
@@ -214,9 +214,9 @@ TEST_CASE("Testing I2C", "[i2c]")
             I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
         CHECK(!actual_transaction.busy);
-        check_bit_set(I2c::Control::kStart, local_i2c.CONCLR);
-        check_bit_set(I2c::Control::kStop, local_i2c.CONSET);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kTransmittedDataRecievedAck")
     {
@@ -249,8 +249,8 @@ TEST_CASE("Testing I2C", "[i2c]")
             I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
         CHECK(!actual_transaction.busy);
-        check_bit_set(I2c::Control::kStop, local_i2c.CONSET);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kArbitrationLost")
     {
@@ -258,8 +258,8 @@ TEST_CASE("Testing I2C", "[i2c]")
 
         I2c::I2cHandler<I2c::Port::kI2c0>();
 
-        check_bit_set(I2c::Control::kStart, local_i2c.CONSET);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kStart, local_i2c.CONSET);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kSlaveAddressReadSentRecievedAck")
     {
@@ -272,9 +272,9 @@ TEST_CASE("Testing I2C", "[i2c]")
 
             I2c::I2cHandler<I2c::Port::kI2c0>();
 
-            check_bit_set(I2c::Control::kStart, local_i2c.CONCLR);
-            check_bit_set(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
-            check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
+            CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
         }
         SECTION("Zero length buffer")
         {
@@ -284,9 +284,9 @@ TEST_CASE("Testing I2C", "[i2c]")
 
             I2c::I2cHandler<I2c::Port::kI2c0>();
 
-            check_bit_set(I2c::Control::kStart, local_i2c.CONCLR);
-            check_bit_set(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
-            check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
+            CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
         }
     }
     SECTION("I2C State Machine: kSlaveAddressReadSentRecievedNack")
@@ -300,9 +300,9 @@ TEST_CASE("Testing I2C", "[i2c]")
 
         CHECK(I2c::Status::kDeviceNotFound == actual_transaction.status);
         CHECK(!actual_transaction.busy);
-        check_bit_set(I2c::Control::kStop, local_i2c.CONSET);
-        check_bit_set(I2c::Control::kStart, local_i2c.CONCLR);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
+        CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kRecievedDataRecievedAck")
     {
@@ -322,7 +322,7 @@ TEST_CASE("Testing I2C", "[i2c]")
             actual_transaction = I2c::GetTransactionInfo(I2c::Port::kI2c0);
             CHECK(actual_transaction.busy);
             CHECK(kI2cReadData[i] == read_buffer[i]);
-            check_bit_set(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
+            CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
         }
         // Last byte should be transferred
         setup_state_machine(I2c::MasterState::kRecievedDataRecievedAck);
@@ -335,7 +335,7 @@ TEST_CASE("Testing I2C", "[i2c]")
         // At this point, the limit for the length should have been reached.
         CHECK(!actual_transaction.busy);
         CHECK(kI2cReadData[kEnd] == read_buffer[kEnd]);
-        check_bit_set(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
 
         // Another is loaded into the DAT register, but it should not be found
         // in the read_buffer
@@ -349,8 +349,8 @@ TEST_CASE("Testing I2C", "[i2c]")
         }
         actual_transaction = I2c::GetTransactionInfo(I2c::Port::kI2c0);
         CHECK(!actual_transaction.busy);
-        check_bit_set(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kRecievedDataRecievedNack")
     {
@@ -365,8 +365,8 @@ TEST_CASE("Testing I2C", "[i2c]")
 
         CHECK(local_i2c.DAT == read_buffer[0]);
         CHECK(!actual_transaction.busy);
-        check_bit_set(I2c::Control::kStop, local_i2c.CONSET);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: kDoNothing")
     {
@@ -374,15 +374,15 @@ TEST_CASE("Testing I2C", "[i2c]")
 
         I2c::I2cHandler<I2c::Port::kI2c0>();
 
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("I2C State Machine: Unknown/Default")
     {
         setup_state_machine(I2c::MasterState(0xFF));
 
         I2c::I2cHandler<I2c::Port::kI2c0>();
-        check_bit_set(I2c::Control::kStop, local_i2c.CONCLR);
-        check_bit_set(I2c::Control::kInterrupt, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kStop, local_i2c.CONCLR);
+        CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
 
     I2c::i2c[util::Value(I2c::Port::kI2c0)] = LPC_I2C0;

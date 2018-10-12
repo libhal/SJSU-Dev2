@@ -49,7 +49,7 @@ constexpr uint32_t kSizeOfSector    = 0x8000;
 constexpr uint32_t kStartSector     = 16;
 constexpr uint32_t kLastSector      = 29;
 constexpr uint32_t kApplicationStartAddress = kStartSector * kBlockSize;
-constexpr uint32_t kFlashDelay              = 0;
+constexpr uint32_t kFlashDelay      = 10;
 
 enum IapCommands : uint8_t
 {

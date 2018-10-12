@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include "config.hpp"
 #include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
@@ -92,16 +93,12 @@ class I2c : public I2cInterface
               timeout(kDefaultTimeout)
         {
         }
-        constexpr Transaction_t(uint8_t set_address,
-                                uint8_t * set_transmitter,
+        constexpr Transaction_t(uint8_t set_address, uint8_t * set_transmitter,
                                 size_t set_transmit_length,
                                 uint8_t * set_receiver,
-                                size_t set_receive_length,
-                                size_t set_position,
-                                bool set_repeated,
-                                bool set_busy,
-                                Status set_status,
-                                Operation set_operation,
+                                size_t set_receive_length, size_t set_position,
+                                bool set_repeated, bool set_busy,
+                                Status set_status, Operation set_operation,
                                 uint64_t set_timeout)
             : address(set_address),
               transmitter(set_transmitter),
@@ -148,13 +145,14 @@ class I2c : public I2cInterface
     {
         static constexpr uint8_t kPort = util::Value(port);
         MasterState state              = MasterState(i2c[kPort]->STAT);
+        uint32_t clear_mask            = 0;
+        uint32_t set_mask              = 0;
         switch (state)
         {
             case MasterState::kBusError:  // 0x00
             {
                 transaction[kPort].status = Status::kBusError;
-                i2c[kPort]->CONSET |=
-                    Control::kAssertAcknowledge | Control::kStop;
+                set_mask = Control::kAssertAcknowledge | Control::kStop;
                 break;
             }
             case MasterState::kStartCondition:  // 0x08
@@ -169,11 +167,12 @@ class I2c : public I2cInterface
             }
             case MasterState::kSlaveAddressWriteSentRecievedAck:  // 0x18
             {
-                i2c[kPort]->CONCLR |= Control::kStart;
+                clear_mask = Control::kStart;
                 if (transaction[kPort].transmit_length == 0)
                 {
                     SetBusyState(port, false);
-                    i2c[kPort]->CONSET |= Control::kStop;
+                    transaction[kPort].status = Status::kSuccess;
+                    set_mask        = Control::kStop;
                 }
                 else
                 {
@@ -184,10 +183,10 @@ class I2c : public I2cInterface
             }
             case MasterState::kSlaveAddressWriteSentRecievedNack:  // 0x20
             {
-                i2c[kPort]->CONCLR |= Control::kStart;
+                clear_mask = Control::kStart;
                 SetBusyState(port, false);
                 transaction[kPort].status = Status::kDeviceNotFound;
-                i2c[kPort]->CONSET |= Control::kStop;
+                set_mask        = Control::kStop;
                 break;
             }
             case MasterState::kTransmittedDataRecievedAck:  // 0x28
@@ -201,12 +200,12 @@ class I2c : public I2cInterface
                         // transaction
                         transaction[kPort].address |= 0b1;
                         transaction[kPort].position = 0;
-                        i2c[kPort]->CONSET |= Control::kStart;
+                        set_mask          = Control::kStart;
                     }
                     else
                     {
                         SetBusyState(port, false);
-                        i2c[kPort]->CONSET |= Control::kStop;
+                        set_mask = Control::kStop;
                     }
                 }
                 else
@@ -219,33 +218,34 @@ class I2c : public I2cInterface
             case MasterState::kTransmittedDataRecievedNack:  // 0x30
             {
                 SetBusyState(port, false);
-                i2c[kPort]->CONSET |= Control::kStop;
+                set_mask = Control::kStop;
                 break;
             }
             case MasterState::kArbitrationLost:  // 0x38
             {
-                i2c[kPort]->CONSET |= Control::kStart;
+                set_mask = Control::kStart;
                 break;
             }
             case MasterState::kSlaveAddressReadSentRecievedAck:  // 0x40
             {
-                i2c[kPort]->CONCLR |= Control::kStart;
                 if (transaction[kPort].receive_length == 0)
                 {
-                    i2c[kPort]->CONCLR |= Control::kAssertAcknowledge;
+                    clear_mask =
+                        Control::kAssertAcknowledge | Control::kStart;
                 }
                 else
                 {
-                    i2c[kPort]->CONSET |= Control::kAssertAcknowledge;
+                    clear_mask = Control::kStart;
+                    set_mask = Control::kAssertAcknowledge;
                 }
                 break;
             }
             case MasterState::kSlaveAddressReadSentRecievedNack:  // 0x48
             {
-                i2c[kPort]->CONCLR |= Control::kStart;
+                clear_mask        = Control::kStart;
                 transaction[kPort].status = Status::kDeviceNotFound;
                 SetBusyState(port, false);
-                i2c[kPort]->CONSET |= Control::kStop;
+                set_mask = Control::kStop;
                 break;
             }
             case MasterState::kRecievedDataRecievedAck:  // 0x50
@@ -261,12 +261,12 @@ class I2c : public I2cInterface
                 // Check if the position has been pushed past the buffer length
                 if (transaction[kPort].position < kBufferEnd)
                 {
-                    i2c[kPort]->CONSET |= Control::kAssertAcknowledge;
+                    set_mask = Control::kAssertAcknowledge;
                 }
                 else
                 {
                     SetBusyState(port, false);
-                    i2c[kPort]->CONCLR |= Control::kAssertAcknowledge;
+                    clear_mask = Control::kAssertAcknowledge;
                 }
                 break;
             }
@@ -279,7 +279,7 @@ class I2c : public I2cInterface
                     transaction[kPort].receiver[position] =
                         static_cast<uint8_t>(i2c[kPort]->DAT);
                 }
-                i2c[kPort]->CONSET |= Control::kStop;
+                set_mask = Control::kStop;
                 break;
             }
             case MasterState::kDoNothing:  // 0xF8
@@ -288,13 +288,16 @@ class I2c : public I2cInterface
             }
             default:
             {
-                i2c[kPort]->CONCLR |= Control::kStop;
+                clear_mask = Control::kStop;
                 SJ2_ASSERT_FATAL(false, "Invalid I2C State Reached!!");
                 break;
             }
         }
         // Clear I2C Interrupt flag
-        i2c[kPort]->CONCLR |= Control::kInterrupt;
+        clear_mask |= Control::kInterrupt;
+        // Set register controls
+        i2c[kPort]->CONCLR = clear_mask;
+        i2c[kPort]->CONSET = set_mask;
     }
 
     static void SetBusyState(Port port, bool busy_state)
@@ -312,10 +315,10 @@ class I2c : public I2cInterface
     // This defaults to I2C port 2
     // TODO(#207): Add functionality for other ports.
     constexpr explicit I2c(Port port = Port::kI2c2)
-        : sda_(&sda_pin_),
-          scl_(&scl_pin_),
-          sda_pin_(0, 10),
-          scl_pin_(0, 11),
+        : sda_(sda_pin_),
+          scl_(scl_pin_),
+          sda_pin_(Pin(0, 10)),
+          scl_pin_(Pin(0, 11)),
           port_(util::Value(port)),
           initialized_(false),
           pins_initialized_(false)
@@ -325,8 +328,8 @@ class I2c : public I2cInterface
     // @param initialize_pins should only be used for testing
     constexpr I2c(Port port, PinInterface * sda_pin, PinInterface * scl_pin,
                   bool pins_are_initialized = true)
-        : sda_(sda_pin),
-          scl_(scl_pin),
+        : sda_(*sda_pin),
+          scl_(*scl_pin),
           sda_pin_(Pin::CreateInactivePin()),
           scl_pin_(Pin::CreateInactivePin()),
           port_(util::Value(port)),
@@ -340,21 +343,20 @@ class I2c : public I2cInterface
                          "I2C.ort::kNumberOfPorts is not a Invalid I2C Port!");
         if (!pins_initialized_)
         {
-            sda_->SetPinFunction(kI2cPort2Function);
-            scl_->SetPinFunction(kI2cPort2Function);
-            sda_->SetAsOpenDrain();
-            scl_->SetAsOpenDrain();
-            sda_->SetMode(PinInterface::Mode::kInactive);
-            scl_->SetMode(PinInterface::Mode::kInactive);
+            sda_.SetPinFunction(kI2cPort2Function);
+            scl_.SetPinFunction(kI2cPort2Function);
+            sda_.SetAsOpenDrain();
+            scl_.SetAsOpenDrain();
+            sda_.SetMode(PinInterface::Mode::kInactive);
+            scl_.SetMode(PinInterface::Mode::kInactive);
         }
-        // TODO(#6): Use a constexpr map to map out which duty cycle values are
-        // used for this
-        i2c[port_]->SCLL   = 60;
-        i2c[port_]->SCLH   = 60;
+        // TODO(#6): Need to include power I2C on logic.
+        i2c[port_]->SCLL   = ((config::kSystemClockRate / 75'000) / 2) * 0.7;
+        i2c[port_]->SCLH   = ((config::kSystemClockRate / 75'000) / 2) * 1.3;
         i2c[port_]->CONCLR = Control::kAssertAcknowledge | Control::kStart |
                              Control::kStop | Control::kInterrupt;
         i2c[port_]->CONSET = Control::kInterfaceEnable;
-        RegisterIsr(kIrq[port_], handlers[port_], kIrq[port_], true);
+        RegisterIsr(kIrq[port_], handlers[port_], true);
         initialized_ = true;
     }
     Status Read(uint8_t address, uint8_t * data, size_t length,
@@ -418,7 +420,7 @@ class I2c : public I2cInterface
 
     virtual Status BlockUntilFinished()
     {
-#if !defined HOST_TEST
+#if !defined(HOST_TEST)
         SJ2_ASSERT_FATAL(initialized_,
                          "Attempted to use I2C.%u, but peripheral was not "
                          "initialized! Be sure to run the Initialize() method "
@@ -435,11 +437,11 @@ class I2c : public I2cInterface
             // Abort I2C communication if this point is reached!
             i2c[port_]->CONSET = Control::kAssertAcknowledge | Control::kStop;
             SJ2_ASSERT_WARNING(
-                false,
+                transaction[port_].transmit_length == 0 ||
+                    transaction[port_].receive_length == 0,
                 "I2C.%u took too long to process and timed out! If the "
                 "transaction needs more time, you may want to increase the "
-                "timeout time using the timeout parameter in the Read() or "
-                "Write() methods. ",
+                "timeout time.",
                 port_);
             transaction[port_].status = Status::kTimedOut;
         }
@@ -450,8 +452,8 @@ class I2c : public I2cInterface
     }
 
  private:
-    PinInterface * sda_;
-    PinInterface * scl_;
+    PinInterface & sda_;
+    PinInterface & scl_;
     Pin sda_pin_;
     Pin scl_pin_;
     uint8_t port_;

@@ -1,3 +1,4 @@
+#include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin_configure.hpp"
 #include "L1_Drivers/pwm.hpp"
@@ -11,7 +12,6 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
     LPC_SC_TypeDef local_sc;
     LPC_IOCON_TypeDef local_iocon;
     // TODO(delwin-lei): Remove later with an interface Mock
-
     memset(&local_pwm, 0, sizeof(local_pwm));
     memset(&local_sc, 0, sizeof(local_sc));
     memset(&local_iocon, 0, sizeof(local_iocon));
@@ -71,9 +71,8 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
 
     SECTION("Setting and Getting Frequency")
     {
-        constexpr uint32_t kSystemClock = 12'000'000;
         test2_0.SetFrequency(2000);
-        CHECK(kSystemClock/local_pwm.MR0 == 2000);
+        CHECK(config::kSystemClockRate/local_pwm.MR0 == 2000);
         CHECK(test2_0.GetFrequency() == 2000);
     }
 
