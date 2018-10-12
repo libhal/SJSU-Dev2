@@ -43,7 +43,7 @@ SJ2_DECLARE_CONSTANT(ENABLE_ANSI_CODES, bool, kEnableAnsiCodes);
 
 // Used to set the system clock speed for the LPC4078 in MHz
 #if !defined SJ2_SYSTEM_CLOCK_RATE_MHZ
-#define SJ2_SYSTEM_CLOCK_RATE_MHZ 12
+#define SJ2_SYSTEM_CLOCK_RATE_MHZ 48
 #endif  // !defined SJ2_SYSTEM_CLOCK_RATE
 SJ2_DECLARE_CONSTANT(SYSTEM_CLOCK_RATE_MHZ, uint8_t, kSystemClockRateMhz);
 constexpr uint32_t kSystemClockRate = SJ2_SYSTEM_CLOCK_RATE_MHZ * 1'000'000;
