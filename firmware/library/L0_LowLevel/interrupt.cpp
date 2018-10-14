@@ -11,19 +11,19 @@ DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 void RegisterIsr(IRQn_Type irq, IsrPointer isr, bool enable_interrupt,
                  int32_t priority)
 {
-    dynamic_isr_vector_table[irq] = isr;
-    if (enable_interrupt)
-    {
-        NVIC_EnableIRQ(irq);
-    }
-    if (priority > -1)
-    {
-        NVIC_SetPriority(irq, priority);
-    }
+  dynamic_isr_vector_table[irq] = isr;
+  if (enable_interrupt)
+  {
+    NVIC_EnableIRQ(irq);
+  }
+  if (priority > -1)
+  {
+    NVIC_SetPriority(irq, priority);
+  }
 }
 
 void DeregisterIsr(IRQn_Type irq)
 {
-    NVIC_DisableIRQ(irq);
-    dynamic_isr_vector_table[irq] = nullptr;
+  NVIC_DisableIRQ(irq);
+  dynamic_isr_vector_table[irq] = nullptr;
 }

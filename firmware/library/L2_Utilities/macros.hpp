@@ -11,7 +11,7 @@
 // used to ensure that the compiler does remove this symbol at link time.
 #if defined(__APPLE__)
 #define SJ2_SECTION(section_name) \
-    __attribute__((used, section("__TEXT," section_name)))
+  __attribute__((used, section("__TEXT," section_name)))
 #else
 #define SJ2_SECTION(section_name) __attribute__((used, section(section_name)))
 #endif
@@ -39,8 +39,8 @@
 // implementation of the function f.
 #if defined(__APPLE__)
 #define SJ2_ALIAS(f) \
-    {                \
-    }
+  {                  \
+  }
 #else
 #define SJ2_ALIAS(f) __attribute__((weak, alias(#f)))  // NOLINT
 #endif
@@ -48,57 +48,60 @@
 #define SJ2_DUMP_BACKTRACE() PrintTrace()
 #else
 #define SJ2_DUMP_BACKTRACE() \
-    do                       \
-    {                        \
-    } while (0)
+  do                         \
+  {                          \
+  } while (0)
 #endif  // defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
 
-#define SJ2_ASSERT_WARNING(condition, warning_message, ...)          \
-    do                                                               \
-    {                                                                \
-        if (!(condition))                                            \
-        {                                                            \
-            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                      \
-                        "WARNING: " warning_message SJ2_COLOR_RESET, \
-                        ##__VA_ARGS__);                              \
-        }                                                            \
-    } while (0)
+#define SJ2_ASSERT_WARNING(condition, warning_message, ...)    \
+  do                                                           \
+  {                                                            \
+    if (!(condition))                                          \
+    {                                                          \
+      DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                      \
+                  "WARNING: " warning_message SJ2_COLOR_RESET, \
+                  ##__VA_ARGS__);                              \
+    }                                                          \
+  } while (0)
 
-#define SJ2_ASSERT_FATAL_WITH_DUMP(with_dump, condition, fatal_message, ...)  \
-    do                                                                        \
-    {                                                                         \
-        if (!(condition))                                                     \
-        {                                                                     \
-            DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                               \
-                        "ERROR: " fatal_message SJ2_COLOR_RESET,              \
-                        ##__VA_ARGS__);                                       \
-            if ((with_dump))                                                  \
-            {                                                                 \
-                printf("\nPrinting Stack Trace:\n");                          \
-                SJ2_DUMP_BACKTRACE();                                         \
-                printf(                                                       \
-                    "\nRun: the following command in your project directory"  \
-                    "\n\n    " SJ2_BOLD_WHITE                                 \
-                    "arm-none-eabi-addr2line -e build/binaries/firmware.elf " \
-                    "<insert pc>" SJ2_COLOR_RESET                             \
-                    "\n\n"                                                    \
-                    "This will report the file and line number associated "   \
-                    "with that program counter values above.");               \
-            }                                                                 \
-            while (true)                                                      \
-            {                                                                 \
-                continue;                                                     \
-            }                                                                 \
-        }                                                                     \
-    } while (0)
+#define SJ2_ASSERT_FATAL_WITH_DUMP(with_dump, condition, fatal_message, ...) \
+  do                                                                         \
+  {                                                                          \
+    if (!(condition))                                                        \
+    {                                                                        \
+      DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                                    \
+                  "ERROR: " fatal_message SJ2_COLOR_RESET,                   \
+                  ##__VA_ARGS__);                                            \
+      if ((with_dump))                                                       \
+      {                                                                      \
+        printf("\nPrinting Stack Trace:\n");                                 \
+        SJ2_DUMP_BACKTRACE();                                                \
+        printf(                                                              \
+            "\nRun: the following command in your project directory"         \
+            "\n\n    " SJ2_BOLD_WHITE                                        \
+            "arm-none-eabi-addr2line -e build/binaries/firmware.elf "        \
+            "<insert pc>" SJ2_COLOR_RESET                                    \
+            "\n\n"                                                           \
+            "This will report the file and line number associated "          \
+            "with that program counter values above.");                      \
+      }                                                                      \
+      while (true)                                                           \
+      {                                                                      \
+        continue;                                                            \
+      }                                                                      \
+    }                                                                        \
+  } while (0)
 
 #if defined HOST_TEST
-#define SJ2_ASSERT_FATAL(condition, fatal_message, ...)                 \
-    /* Without the if statement using the (condition) and SJ2_USED() */ \
-    /* the compiler may complain about unused variables.             */ \
-    /* This serves to silence those warnings during host tests.      */ \
-    if (condition) { SJ2_USED(fatal_message); }
+#define SJ2_ASSERT_FATAL(condition, fatal_message, ...)               \
+  /* Without the if statement using the (condition) and SJ2_USED() */ \
+  /* the compiler may complain about unused variables.             */ \
+  /* This serves to silence those warnings during host tests.      */ \
+  if (condition)                                                      \
+  {                                                                   \
+    SJ2_USED(fatal_message);                                          \
+  }
 #else
 #define SJ2_ASSERT_FATAL(condition, fatal_message, ...) \
-    SJ2_ASSERT_FATAL_WITH_DUMP(true, (condition), fatal_message, ##__VA_ARGS__)
+  SJ2_ASSERT_FATAL_WITH_DUMP(true, (condition), fatal_message, ##__VA_ARGS__)
 #endif  // defined HOST_TEST

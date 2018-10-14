@@ -30,9 +30,9 @@ namespace config
 // Creates a typed constexpr version of the macro defintion which should be used
 // rather than using the macro directly.
 #define SJ2_DECLARE_CONSTANT(macro_name, type, constant_name) \
-    constexpr type constant_name = SJ2_##macro_name;          \
-    static_assert(constant_name == SJ2_##macro_name,          \
-                  "SJ2_" #macro_name " must be of type '" #type "'")
+  constexpr type constant_name = SJ2_##macro_name;            \
+  static_assert(constant_name == SJ2_##macro_name,            \
+                "SJ2_" #macro_name " must be of type '" #type "'")
 
 // Used to enable and disable the sending of ANSI color escape codes via the
 // ansi_terminal_codes.hpp

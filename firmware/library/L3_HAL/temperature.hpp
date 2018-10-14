@@ -5,13 +5,7 @@ class TemperatureInterface
 {
  public:
   virtual bool Initialize() = 0;
-
-  // Read from register 0x00 and return byte.
-  virtual uint8_t GetTemperatureByte() = 0;
-
-  // Converts bits from register 0x00 to float.
+  virtual uint32_t GetTemperatureBytes() = 0;
   virtual float GetCelsius() = 0;
-
-  // Converts Celsius to Fahrenheit.
   virtual float GetFahrenheit() = 0;
 };

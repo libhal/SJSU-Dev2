@@ -7,26 +7,26 @@ volatile uint64_t milliseconds = 0;
 
 uint64_t Milliseconds()
 {
-    return milliseconds;
+  return milliseconds;
 }
 
 void Delay(uint32_t delay_time)
 {
 #if defined HOST_TEST
-    SJ2_USED(delay_time);
-    return;
+  SJ2_USED(delay_time);
+  return;
 #else
-    if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
+  if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
+  {
+    vTaskDelay(delay_time);
+  }
+  else
+  {
+    uint64_t time_after_delay = milliseconds + delay_time;
+    while (milliseconds < time_after_delay)
     {
-        vTaskDelay(delay_time);
+      continue;
     }
-    else
-    {
-        uint64_t time_after_delay = milliseconds + delay_time;
-        while (milliseconds < time_after_delay)
-        {
-            continue;
-        }
-    }
+  }
 #endif  // HOST_TEST
 }

@@ -8,13 +8,13 @@
 // NOLINTNEXTLINE(readability-identifier-naming)
 int printf(const char * format, ...)
 {
-    constexpr size_t kPrintfBufferSize = 256;
-    char buffer[kPrintfBufferSize];
-    va_list args;
-    va_start(args, format);
-    int length = vsnprintf(buffer, kPrintfBufferSize, format, args);
-    va_end(args);
+  constexpr size_t kPrintfBufferSize = 256;
+  char buffer[kPrintfBufferSize];
+  va_list args;
+  va_start(args, format);
+  int length = vsnprintf(buffer, kPrintfBufferSize, format, args);
+  va_end(args);
 
-    _write(0, buffer, length);
-    return length;
+  _write(0, buffer, length);
+  return length;
 }
