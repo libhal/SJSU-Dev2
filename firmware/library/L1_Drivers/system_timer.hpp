@@ -18,66 +18,66 @@
 class SystemTimerInterface
 {
  public:
-    virtual void SetIsrFunction(IsrPointer isr)           = 0;
-    virtual bool StartTimer()                             = 0;
-    virtual void DisableTimer()                           = 0;
-    virtual uint32_t SetTickFrequency(uint32_t frequency) = 0;
+  virtual void SetIsrFunction(IsrPointer isr)           = 0;
+  virtual bool StartTimer()                             = 0;
+  virtual void DisableTimer()                           = 0;
+  virtual uint32_t SetTickFrequency(uint32_t frequency) = 0;
 };
 
 class SystemTimer : public SystemTimerInterface
 {
  public:
-    // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
-    enum ControlBitMap : uint8_t
-    {
-        kEnableCounter = 0,
-        kTickInterupt  = 1,
-        kClkSource     = 2,
-        kCountFlag     = 16
-    };
-    static IsrPointer system_timer_isr;
-    static SysTick_Type * sys_tick;
+  // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
+  enum ControlBitMap : uint8_t
+  {
+    kEnableCounter = 0,
+    kTickInterupt  = 1,
+    kClkSource     = 2,
+    kCountFlag     = 16
+  };
+  static IsrPointer system_timer_isr;
+  static SysTick_Type * sys_tick;
 
-    constexpr SystemTimer() {}
-    void SetIsrFunction(IsrPointer isr) override
+  constexpr SystemTimer() {}
+  void SetIsrFunction(IsrPointer isr) override
+  {
+    system_timer_isr = isr;
+  }
+  bool StartTimer() override
+  {
+    bool successful = false;
+    if (sys_tick->LOAD != 0)
     {
-        system_timer_isr = isr;
+      sys_tick->VAL = 0;
+      sys_tick->CTRL |= (1 << ControlBitMap::kTickInterupt);
+      sys_tick->CTRL |= (1 << ControlBitMap::kEnableCounter);
+      sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
+      successful = true;
     }
-    bool StartTimer() override
+    return successful;
+  }
+  // WARNING: doing so will most likely disable FreeRTOS
+  void DisableTimer() override
+  {
+    sys_tick->LOAD = 0;
+    sys_tick->VAL  = 0;
+    sys_tick->CTRL = 0;
+  }
+  // @param frequency set the frequency that SystemTick counter will run.
+  //        If it is above the maximum SystemTick value 2^24
+  //        [SysTick_LOAD_RELOAD_Msk], the value is ceiled to
+  //        SysTick_LOAD_RELOAD_Msk
+  uint32_t SetTickFrequency(uint32_t frequency) override
+  {
+    frequency             = (frequency == 0) ? 1 : frequency;
+    uint32_t reload_value = config::kSystemClockRate / frequency - 1;
+    int remainder         = config::kSystemClockRate % frequency;
+    if (reload_value > SysTick_LOAD_RELOAD_Msk)
     {
-        bool successful = false;
-        if (sys_tick->LOAD != 0)
-        {
-            sys_tick->VAL = 0;
-            sys_tick->CTRL |= (1 << ControlBitMap::kTickInterupt);
-            sys_tick->CTRL |= (1 << ControlBitMap::kEnableCounter);
-            sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
-            successful = true;
-        }
-        return successful;
+      reload_value = SysTick_LOAD_RELOAD_Msk;
+      remainder    = SysTick_LOAD_RELOAD_Msk;
     }
-    // WARNING: doing so will most likely disable FreeRTOS
-    void DisableTimer() override
-    {
-        sys_tick->LOAD = 0;
-        sys_tick->VAL = 0;
-        sys_tick->CTRL = 0;
-    }
-    // @param frequency set the frequency that SystemTick counter will run.
-    //        If it is above the maximum SystemTick value 2^24
-    //        [SysTick_LOAD_RELOAD_Msk], the value is ceiled to
-    //        SysTick_LOAD_RELOAD_Msk
-    uint32_t SetTickFrequency(uint32_t frequency) override
-    {
-        frequency             = (frequency == 0) ? 1 : frequency;
-        uint32_t reload_value = config::kSystemClockRate / frequency - 1;
-        int remainder         = config::kSystemClockRate % frequency;
-        if (reload_value > SysTick_LOAD_RELOAD_Msk)
-        {
-            reload_value = SysTick_LOAD_RELOAD_Msk;
-            remainder    = SysTick_LOAD_RELOAD_Msk;
-        }
-        sys_tick->LOAD = reload_value;
-        return remainder;
-    }
+    sys_tick->LOAD = reload_value;
+    return remainder;
+  }
 };
