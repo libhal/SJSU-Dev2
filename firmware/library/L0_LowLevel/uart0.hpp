@@ -18,21 +18,19 @@ extern LPC_SC_TypeDef * sc;
 
 struct UartCalibration_t
 {
-    constexpr UartCalibration_t() : divide_latch(0), divide_add(0), multiply(1)
-    {
-    }
-    uint32_t divide_latch;
-    uint32_t divide_add;
-    uint32_t multiply;
+  constexpr UartCalibration_t() : divide_latch(0), divide_add(0), multiply(1) {}
+  uint32_t divide_latch;
+  uint32_t divide_add;
+  uint32_t multiply;
 };
 
 enum class States
 {
-    kCalculateIntegerDivideLatch,
-    kCalculateDivideLatchWithDecimal,
-    kDecimalFailedGenerateNewDecimal,
-    kGenerateFractionFromDecimal,
-    kDone
+  kCalculateIntegerDivideLatch,
+  kCalculateDivideLatchWithDecimal,
+  kDecimalFailedGenerateNewDecimal,
+  kGenerateFractionFromDecimal,
+  kDone
 };
 
 constexpr float kThreshold = 0.05f;

@@ -12,6 +12,6 @@ extern const IsrPointer kInterruptVectorTable[];
 
 // These are defined after the compilation of the FreeRTOS port for Cortex M4F
 // These will link to those definitions.
-extern "C" void xPortPendSVHandler(void);  // NOLINT
-extern "C" void vPortSVCHandler(void);  // NOLINT
+extern "C" void xPortPendSVHandler(void);   // NOLINT
+extern "C" void vPortSVCHandler(void);      // NOLINT
 extern "C" void xPortSysTickHandler(void);  // NOLINT
