@@ -10,10 +10,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,10 +30,20 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+// SJSU-Dev2: Added config to define PRINTF_SUPPORT_FLOAT,
+// PRINTF_SUPPORT_LONG_LONG, PRINTF_SUPPORT_PTRDIFF_T
+#include "config.hpp"
 #include <stdbool.h>
 #include <stdint.h>
 #include "printf.h"
 
+// SJSU-Dev2: Suppressing warnings from this file
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wall"
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wdouble-promotion"
 
 // ntoa conversion buffer size, this must be big enough to hold
 // one converted numeric number including padded zeros (dynamically created on stack)
@@ -45,16 +55,24 @@
 // 32 byte is a good default
 #define PRINTF_FTOA_BUFFER_SIZE    32U
 
+// SJSU-Dev2: Added define check to suppress redefinition warning
 // define this to support floating point (%f)
+#if !defined(PRINTF_SUPPORT_FLOAT)
 #define PRINTF_SUPPORT_FLOAT
+#endif  // !defined(PRINTF_SUPPORT_FLOAT)
 
+// SJSU-Dev2: Added define check to suppress redefinition warning
 // define this to support long long types (%llu or %p)
+#if !defined(PRINTF_SUPPORT_LONG_LONG)
 #define PRINTF_SUPPORT_LONG_LONG
+#endif  // !defined(PRINTF_SUPPORT_LONG_LONG)
 
+// SJSU-Dev2: Added define check to suppress redefinition warning
 // define this to support the ptrdiff_t type (%t)
 // ptrdiff_t is normally defined in <stddef.h> as long or long long type
+#if !defined(PRINTF_SUPPORT_PTRDIFF_T)
 #define PRINTF_SUPPORT_PTRDIFF_T
-
+#endif  // !defined(PRINTF_SUPPORT_PTRDIFF_T)
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -272,19 +290,21 @@ static size_t _ntoa_long_long(out_fct_type out, char* buffer, size_t idx, size_t
 
 
 #if defined(PRINTF_SUPPORT_FLOAT)
-static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags)
+static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value_param, unsigned int prec, unsigned int width, unsigned int flags)
 {
   const size_t start_idx = idx;
 
+  float value = static_cast<float>(value_param);
+
   char buf[PRINTF_FTOA_BUFFER_SIZE];
   size_t len  = 0U;
-  double diff = 0.0;
+  float diff = 0.0;
 
   // if input is larger than thres_max, revert to exponential
-  const double thres_max = (double)0x7FFFFFFF;
+  const float thres_max = (float)0x7FFFFFFF;
 
   // powers of 10
-  static const double pow10[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+  static const float pow10[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
 
   // test for negative
   bool negative = false;
@@ -304,7 +324,7 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   }
 
   int whole = (int)value;
-  double tmp = (value - whole) * pow10[prec];
+  float tmp = (value - whole) * pow10[prec];
   unsigned long frac = (unsigned long)tmp;
   diff = tmp - frac;
 
@@ -328,7 +348,7 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   }
 
   if (prec == 0U) {
-    diff = value - (double)whole;
+    diff = value - (float)whole;
     if (diff > 0.5) {
       // greater than 0.5, round up, e.g. 1.6 -> 2
       ++whole;
@@ -733,3 +753,4 @@ int fctprintf(void (*out)(char character, void* arg), void* arg, const char* for
   va_end(va);
   return ret;
 }
+#pragma GCC diagnostic pop

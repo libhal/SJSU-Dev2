@@ -122,4 +122,15 @@ extern "C"
     }
     return length;
   }
+  // Needed by third party printf library
+  void _putchar(char character)  // NOLINT
+  {
+    out(character);
+  }
+  // Overload default nano puts() with a more optimal version of puts
+  int puts(const char * str)  // NOLINT
+  {
+    uart0::Puts(str);
+    return 0;
+  }
 }

@@ -30,7 +30,7 @@ int main(void)
     p2_0.SetFrequency(1000);
     for (int i = 0; i <= 255; i++)
     {
-      duty = static_cast<float>(i) / 255.0;
+      duty = static_cast<float>(i) / 255.0f;
       p2_0.SetDutyCycle(duty);
       Delay(10);
     }
