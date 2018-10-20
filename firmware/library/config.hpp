@@ -121,6 +121,31 @@ static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET  ||
 #define SJ2_DESCRIPTIVE_FUNCTION_NAME false
 #endif  // !defined SJ2_DESCRIPTIVE_FUNCTION_NAME
 SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
+//// Third party support defines
+//// Printf
+// Enable or disable float support in printf statements. Setting to false will
+// reduce binary size.
+#if !defined SJ2_PRINTF_SUPPORT_FLOAT
+#define SJ2_PRINTF_SUPPORT_FLOAT true
+#endif  // !defined PRINTF_SUPPORT_FLOAT
+SJ2_DECLARE_CONSTANT(PRINTF_SUPPORT_FLOAT, bool, kPrintfSupportFloat);
+#define PRINTF_SUPPORT_FLOAT SJ2_PRINTF_SUPPORT_FLOAT
+
+// Enable printing of 64 bit numbers. Setting to false will reduce binary size.
+#if !defined SJ2_PRINTF_SUPPORT_LONG_LONG
+#define SJ2_PRINTF_SUPPORT_LONG_LONG true
+#endif  // !defined PRINTF_SUPPORT_LONG_LONG
+SJ2_DECLARE_CONSTANT(PRINTF_SUPPORT_LONG_LONG, bool, kPrintfSupportLongLong);
+#define PRINTF_SUPPORT_LONG_LONG SJ2_PRINTF_SUPPORT_LONG_LONG
+
+// Enable support for the ptrdiff_t type. Setting to false will reduce binary
+// size.
+#if !defined SJ2_PRINTF_SUPPORT_PTRDIFF_T
+#define SJ2_PRINTF_SUPPORT_PTRDIFF_T true
+#endif  // !defined PRINTF_SUPPORT_PTRDIFF_T
+SJ2_DECLARE_CONSTANT(PRINTF_SUPPORT_PTRDIFF_T, bool, kPrintfSupportPtrdiff);
+#define PRINTF_SUPPORT_PTRDIFF_T SJ2_PRINTF_SUPPORT_PTRDIFF_T
+
 
 }  // namespace config
 

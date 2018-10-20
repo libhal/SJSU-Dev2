@@ -12,7 +12,7 @@ int main(void)
   DEBUG_PRINT("Initializing LEDs...");
   OnBoardLed leds;
   leds.Initialize();
-  DEBUG_PRINT("LEDs Initialized!");
+  DEBUG_PRINT("LEDs Initialized! %f", 1234.123456);
   while (1)
   {
     for (uint8_t i = 0; i < 15; i++)
