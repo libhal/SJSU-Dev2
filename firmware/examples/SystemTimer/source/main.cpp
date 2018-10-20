@@ -1,4 +1,4 @@
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 
 int main(void)
 {

@@ -3,7 +3,7 @@
 #include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/dac.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 // Input Number for starting demo
 
 const uint16_t kSineLookup[256] = {

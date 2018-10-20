@@ -43,7 +43,7 @@
 #include "L0_LowLevel/uart0.hpp"
 #include "L1_Drivers/system_clock.hpp"
 #include "L1_Drivers/system_timer.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 #include "L2_Utilities/macros.hpp"
 
 // The entry point for the C++ library startup

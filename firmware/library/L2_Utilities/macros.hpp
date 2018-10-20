@@ -4,7 +4,7 @@
 #include "config.hpp"
 #include "L2_Utilities/ansi_terminal_codes.hpp"
 #include "L2_Utilities/backtrace.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 // SJ2_SECTION will place a variable or function within a given section of the
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as

@@ -1,7 +1,7 @@
 #include <cstdarg>
 
 #include "L0_LowLevel/uart0.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 #include "L4_Application/task.hpp"
 
 class PrinterTask : public rtos::Task<1024>

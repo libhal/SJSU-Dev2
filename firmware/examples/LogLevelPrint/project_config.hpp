@@ -10,4 +10,5 @@
 #define SJ2_ENABLE_ANSI_CODES true
 // Setting this to NONESET to allow types of log level message to appear
 #define SJ2_LOG_LEVEL SJ2_LOG_LEVEL_NONESET
+
 #include "config.hpp"
