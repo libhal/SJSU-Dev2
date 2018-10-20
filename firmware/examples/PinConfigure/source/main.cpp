@@ -6,7 +6,7 @@
 #include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 
 int main(void)
 {

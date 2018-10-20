@@ -7,7 +7,7 @@
 #include "config.hpp"
 #include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/rtos.hpp"
 #include "L3_HAL/onboard_led.hpp"
