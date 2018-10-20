@@ -5,6 +5,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "log_levels.hpp"
+
 namespace config
 {
 // How to properly use global configuration option:
@@ -98,4 +100,27 @@ SJ2_DECLARE_CONSTANT(TASK_SCHEDULER_SIZE, uint8_t, kTaskSchedulerSize);
 #endif  // !defined SJ2_ESP8266_BUFFER_SIZE
 SJ2_DECLARE_CONSTANT(ESP8266_BUFFER_SIZE, std::size_t, kEsp8266BufferSize);
 
+// Used to define the log level of the build
+#if !defined SJ2_LOG_LEVEL
+#define SJ2_LOG_LEVEL SJ2_LOG_LEVEL_CRITICAL
+#endif  // !defined SJ2_LOG_LEVEL
+SJ2_DECLARE_CONSTANT(LOG_LEVEL, uint8_t, kLogLevel);
+
+static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET  ||
+              kLogLevel == SJ2_LOG_LEVEL_DEBUG    ||
+              kLogLevel == SJ2_LOG_LEVEL_INFO     ||
+              kLogLevel == SJ2_LOG_LEVEL_WARNING  ||
+              kLogLevel == SJ2_LOG_LEVEL_ERROR    ||
+              kLogLevel == SJ2_LOG_LEVEL_CRITICAL,
+              "SJ2_LOG_LEVEL must equal to one of the predefined log levels "
+              "such as SJ2_LOG_LEVEL_INFO.");
+
+// If set to true, will display function name in LOG_* function calls. Otherwise
+// omit writing function names.
+#if !defined SJ2_DESCRIPTIVE_FUNCTION_NAME
+#define SJ2_DESCRIPTIVE_FUNCTION_NAME false
+#endif  // !defined SJ2_DESCRIPTIVE_FUNCTION_NAME
+SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
+
 }  // namespace config
+
