@@ -53,15 +53,13 @@
   } while (0)
 #endif  // defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
 
-#define SJ2_ASSERT_WARNING(condition, warning_message, ...)    \
-  do                                                           \
-  {                                                            \
-    if (!(condition))                                          \
-    {                                                          \
-      DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                      \
-                  "WARNING: " warning_message SJ2_COLOR_RESET, \
-                  ##__VA_ARGS__);                              \
-    }                                                          \
+#define SJ2_ASSERT_WARNING(condition, warning_message, ...)        \
+  do                                                               \
+  {                                                                \
+    if (!(condition))                                              \
+    {                                                              \
+      LOG_WARNING(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
+    }                                                              \
   } while (0)
 
 #define SJ2_ASSERT_FATAL_WITH_DUMP(with_dump, condition, fatal_message, ...) \
@@ -69,9 +67,7 @@
   {                                                                          \
     if (!(condition))                                                        \
     {                                                                        \
-      DEBUG_PRINT("\n" SJ2_BACKGROUND_RED                                    \
-                  "ERROR: " fatal_message SJ2_COLOR_RESET,                   \
-                  ##__VA_ARGS__);                                            \
+      LOG_CRITICAL(fatal_message SJ2_COLOR_RESET, ##__VA_ARGS__);            \
       if ((with_dump))                                                       \
       {                                                                      \
         printf("\nPrinting Stack Trace:\n");                                 \
