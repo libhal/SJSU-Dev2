@@ -95,10 +95,11 @@ endif
 #########
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 			 -fabi-version=0
+# -fno-omit-frame-pointer -rdynamic
 # CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
 # -fsingle-precision-constant
-OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
-            -fasynchronous-unwind-tables
+OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections \
+            -fno-exceptions -fomit-frame-pointer -finstrument-functions
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
@@ -128,7 +129,7 @@ CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) -MMD -MP -c
 ifeq ($(MAKECMDGOALS), test)
 CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
          -fno-inline-small-functions -fno-default-inline \
-		 -fno-builtin \
+		     -fno-builtin \
          -ftest-coverage --coverage \
          -fno-elide-constructors -D HOST_TEST=1 \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
@@ -149,9 +150,8 @@ endif
 
 LINKFLAGS = $(COMMON_FLAGS) \
     -T $(LINKER) \
-    -Xlinker \
-    --gc-sections -Wl,-Map,"$(MAP)" \
-	  -lc -lrdimon $(LINK_PRINTF_FLOAT) \
+    -Wl,--gc-sections \
+		-Wl,-Map,"$(MAP)" \
     -specs=nano.specs
 ##############
 # Test files #
@@ -328,10 +328,11 @@ $(SIZE): $(EXECUTABLE)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+#--line-numbers --disassemble --source
 $(LIST): $(EXECUTABLE)
 	@echo ' '
 	@echo 'Invoking: Cross ARM GNU Create Assembly Listing'
-	@$(OBJDUMP) --source --all-headers --demangle --line-numbers --wide "$<" > "$@"
+	@$(OBJDUMP) --disassemble --all-headers --demangle --wide "$<" > "$@"
 	@echo 'Finished building: $@'
 	@echo ' '
 
