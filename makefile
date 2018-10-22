@@ -96,8 +96,9 @@ endif
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 			 -fabi-version=0
 # CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
+# -fsingle-precision-constant
 OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections -fno-exceptions \
-               -fsingle-precision-constant -fasynchronous-unwind-tables
+            -fasynchronous-unwind-tables
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
@@ -113,6 +114,7 @@ INCLUDES  = -I"$(CURRENT_DIRECTORY)/" \
 			-I"$(LIB_DIR)/" \
 			-isystem"$(LIB_DIR)/L0_LowLevel/SystemFiles" \
 			-isystem"$(LIB_DIR)/third_party/" \
+			-isystem"$(LIB_DIR)/third_party/printf" \
 			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source" \
 			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/trace" \
 			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/include" \
@@ -140,18 +142,16 @@ endif
 ifeq ($(MAKECMDGOALS), bootloader)
 LINKER = $(LIB_DIR)/LPC4078_bootloader.ld
 CFLAGS += -D BOOTLOADER=1
-LINK_PRINTF_FLOAT =
 else
 LINKER = $(LIB_DIR)/LPC4078_application.ld
 CFLAGS += -D APPLICATION=1
-LINK_PRINTF_FLOAT = -u _printf_float
 endif
 
 LINKFLAGS = $(COMMON_FLAGS) \
     -T $(LINKER) \
     -Xlinker \
     --gc-sections -Wl,-Map,"$(MAP)" \
-	-lc -lrdimon $(LINK_PRINTF_FLOAT) \
+	  -lc -lrdimon $(LINK_PRINTF_FLOAT) \
     -specs=nano.specs
 ##############
 # Test files #
@@ -167,13 +167,13 @@ SOURCE_TESTS  = $(shell find $(SOURCE) \
                          2> /dev/null)
 # Find all library that end with "_test.cpp"
 LIBRARY_TESTS = $(shell find "$(LIB_DIR)" -name "*_test.cpp" | \
-						 $(FILE_EXCLUDES))
+						    $(FILE_EXCLUDES))
 TESTS = $(SOURCE_TESTS) $(LIBRARY_TESTS)
 OMIT_LIBRARIES = $(shell find "$(LIB_DIR)" \
                          -name "startup.cpp" -o \
                          -name "*.cpp" \
                          -path "$(LIB_DIR)/third_party/*" -o \
-						 -path "$(LIB_DIR)/third_party/*")
+						             -path "$(LIB_DIR)/third_party/*")
 OMIT_SOURCES   = $(shell find $(SOURCE) -name "main.cpp")
 OMIT = $(OMIT_LIBRARIES) $(OMIT_SOURCES)
 ################
@@ -195,6 +195,8 @@ SOURCE_HEADERS  = $(shell find $(SOURCE) \
                          -name "*.h" -o \
                          -name "*.hpp" \
                          2> /dev/null)
+PRINTF_3P_LIBRARY = $(shell find "$(LIB_DIR)/third_party/printf" \
+                         -name "*.cpp" 2> /dev/null)
 ##############
 # Lint files #
 ##############
@@ -203,12 +205,13 @@ LINT_FILES      = $(shell find $(FIRMWARE) \
                          -name "*.hpp" -o \
                          -name "*.c"   -o \
                          -name "*.cpp" | \
-						 $(FILE_EXCLUDES) \
+						             $(FILE_EXCLUDES) \
                          2> /dev/null)
 # Remove all test files from SOURCE_FILES
 SOURCES     = $(filter-out $(SOURCE_TESTS), $(SOURCE_FILES))
 ifeq ($(MAKECMDGOALS), test)
-COMPILABLES = $(filter-out $(OMIT), $(LIBRARIES) $(SOURCES) $(TESTS))
+COMPILABLES = $(filter-out $(OMIT), $(LIBRARIES) $(SOURCES) $(TESTS)) \
+              $(PRINTF_3P_LIBRARY)
 else
 COMPILABLES = $(LIBRARIES) $(SOURCES)
 endif

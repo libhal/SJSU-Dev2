@@ -11,15 +11,15 @@ namespace
 {
 char memory_out[512];
 int memory_out_position = 0;
-int TestStandardOutput(int out_char)
-{
-  memory_out[memory_out_position++] = static_cast<char>(out_char);
-  return 1;
-}
 void ResetTestStdoutBuffer()
 {
   memory_out_position = 0;
   memset(memory_out, 0x00, sizeof(memory_out));
+}
+int TestStandardOutput(int out_char)
+{
+  memory_out[memory_out_position++] = static_cast<char>(out_char);
+  return 1;
 }
 }  // namespace
 
@@ -32,6 +32,7 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
 
   SECTION("Hex dump byte array 16 byte aligned")
   {
+    out('C');
     ResetTestStdoutBuffer();
 
     uint8_t memory[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
