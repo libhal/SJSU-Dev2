@@ -5,7 +5,7 @@
 
 #include "L1_Drivers/pin.hpp"
 #include "L1_Drivers/system_clock.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 
 int main(void)
 {

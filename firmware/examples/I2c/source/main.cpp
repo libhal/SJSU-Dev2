@@ -2,7 +2,7 @@
 #include <cstdint>
 #include "L0_LowLevel/startup.hpp"
 #include "L1_Drivers/i2c.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 
 constexpr uint8_t kFirstI2cAddress = 0x08;
 constexpr uint8_t kLastI2cAddress  = 0x78;

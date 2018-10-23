@@ -43,7 +43,7 @@
 #include "L0_LowLevel/uart0.hpp"
 #include "L1_Drivers/system_clock.hpp"
 #include "L1_Drivers/system_timer.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 #include "L2_Utilities/macros.hpp"
 
 // The entry point for the C++ library startup
@@ -53,23 +53,26 @@ extern "C"
   extern void __libc_init_array(void);
 }
 
+
 #if defined(__cplusplus)
 extern "C"
 {
 #endif
+#define SJ2_VECTOR_OPTIMIZE __attribute__((weak, no_instrument_function))
+
   extern void SystemInit(void);
   // Forward declaration of the default handlers. These are aliased.
   // When the application defines a handler (with the same name), this will
   // automatically take precedence over these weak definitions
   void ResetIsr(void);
-  SJ2_WEAK void NmiHandler(void);
-  SJ2_WEAK void HardFaultHandler(void);
-  SJ2_WEAK void MemManageHandler(void);
-  SJ2_WEAK void BusFaultHandler(void);
-  SJ2_WEAK void UsageFaultHandler(void);
-  SJ2_WEAK void SvcHandler(void);
-  SJ2_WEAK void DebugMonHandler(void);
-  SJ2_WEAK void PendSVHandler(void);
+  SJ2_VECTOR_OPTIMIZE void NmiHandler(void);
+  SJ2_VECTOR_OPTIMIZE void HardFaultHandler(void);
+  SJ2_VECTOR_OPTIMIZE void MemManageHandler(void);
+  SJ2_VECTOR_OPTIMIZE void BusFaultHandler(void);
+  SJ2_VECTOR_OPTIMIZE void UsageFaultHandler(void);
+  SJ2_VECTOR_OPTIMIZE void SvcHandler(void);
+  SJ2_VECTOR_OPTIMIZE void DebugMonHandler(void);
+  SJ2_VECTOR_OPTIMIZE void PendSVHandler(void);
   SJ2_WEAK void SysTickHandler(void);
   SJ2_WEAK void IntDefaultHandler(void);
   // Forward declaration of the specific IRQ handlers. These are aliased
@@ -494,7 +497,6 @@ void HardFaultHandler(void)
       " bx r2                                               \n"
       " handler2_address_const: .word GetRegistersFromStack \n");
 }
-
 SJ2_SECTION(".after_vectors")
 void MemManageHandler(void)
 {

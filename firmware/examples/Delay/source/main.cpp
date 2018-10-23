@@ -1,7 +1,7 @@
 #include <inttypes.h>
 #include <cstdint>
 #include "L0_LowLevel/delay.hpp"
-#include "L2_Utilities/debug_print.hpp"
+#include "L2_Utilities/log.hpp"
 
 int main(void)
 {
