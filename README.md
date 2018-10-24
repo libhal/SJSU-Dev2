@@ -3,7 +3,7 @@
 [![Documentation Status](https://readthedocs.org/projects/sjsu-dev/badge/?version=latest)](http://sjsu-dev2.readthedocs.io/en/latest)
 [![Build Status](https://travis-ci.org/kammce/SJSU-Dev2.svg?branch=master)](https://travis-ci.org/kammce/SJSU-Dev2)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f004895337c42459f881db938e84885)](https://www.codacy.com/app/kammce/SJSU-Dev2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kammce/SJSU-Dev2&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/kammce/SJSU-Dev2/branch/master/graph/badge.svg)](https://codecov.io/gh/kammce/SJSU-Dev2)
+[![Coverage Status](https://coveralls.io/repos/github/kammce/SJSU-Dev2/badge.svg)](https://coveralls.io/github/kammce/SJSU-Dev2)
 
 [![SJSU-Dev-Linux Version](https://img.shields.io/badge/version-0.0.1-green.svg)](https://github.com/kammce/SJSU-Dev2)
 [![GitHub license](https://img.shields.io/github/license/kammce/SJSU-Dev2.svg)](https://github.com/kammce/SJSU-Dev2/blob/master/LICENSE)
