@@ -25,7 +25,7 @@ int main(void)
   p2_0.Initialize(frequency);
   float duty = 0;
 
-  while (1)
+  while (true)
   {
     p2_0.SetFrequency(1000);
     for (int i = 0; i <= 255; i++)

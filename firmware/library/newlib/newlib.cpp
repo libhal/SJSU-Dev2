@@ -34,7 +34,7 @@ extern "C"
   void _exit(int rc)
   {
     SJ2_USED(rc);
-    while (1)
+    while (true)
     {
       continue;
     }
