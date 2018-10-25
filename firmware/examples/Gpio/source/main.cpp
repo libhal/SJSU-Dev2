@@ -22,7 +22,7 @@ int main(void)
   DEBUG_PRINT(
       "Observe how the output of LED0 changes when the input of SW0 is "
       "pressed");
-  while (1)
+  while (true)
   {
     if (p1_00.Read())
     {

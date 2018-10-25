@@ -45,6 +45,7 @@
 #include "L1_Drivers/system_timer.hpp"
 #include "L2_Utilities/log.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/time.hpp"
 
 // The entry point for the C++ library startup
 extern "C"
@@ -423,10 +424,7 @@ void ResetIsr(void)
   SJ2_USED(result);
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
-  while (true)
-  {
-    continue;
-  }
+  Halt();
 }
 
 // Default exception handlers. Override the ones here by defining your own
@@ -434,10 +432,7 @@ void ResetIsr(void)
 SJ2_SECTION(".after_vectors")
 void NmiHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
@@ -485,13 +480,9 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   SJ2_ASSERT_FATAL(false, "Hard Fault Exception Occured!");
   // When the following line is hit, the variables contain the register values
   // Use a JTAG debugger to inspect these variables
-  while (true)
-  {
-    continue;
-  }
+  Halt();
 }
 
-SJ2_SECTION(".after_vectors")
 void HardFaultHandler(void)
 {
   __asm volatile(
@@ -504,58 +495,41 @@ void HardFaultHandler(void)
       " bx r2                                               \n"
       " handler2_address_const: .word GetRegistersFromStack \n");
 }
+
 SJ2_SECTION(".after_vectors")
 void MemManageHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void BusFaultHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void UsageFaultHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void SvcHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void DebugMonHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void PendSVHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
