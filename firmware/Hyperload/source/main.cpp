@@ -279,18 +279,12 @@ int main(void)
     void * vector_address = reinterpret_cast<void *>(application_vector_table);
     printf("Hexdump @ %p \n", vector_address);
     debug::Hexdump(vector_address, kSize16kB);
-    while (true)
-    {
-      continue;
-    }
+    Halt();
   }
   else if (application_entry_isr == reinterpret_cast<void *>(0xFFFFFFFFUL))
   {
     uart0::Puts("Application Not Found, Halting System ...\n");
-    while (true)
-    {
-      continue;
-    }
+    Halt();
   }
 
   printf("Application Reset ISR value = %p\n", application_entry_isr);

@@ -13,7 +13,7 @@ int main(void)
 
   uint32_t counter = 0;
 
-  while (1)
+  while (true)
   {
     DEBUG_PRINT("[%lu] Hello, World! (milliseconds = %lu)", counter++,
                 static_cast<uint32_t>(Milliseconds()));

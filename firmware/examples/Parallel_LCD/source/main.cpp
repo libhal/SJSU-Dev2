@@ -35,7 +35,7 @@ int main()
   lcd.DisplayText("SJSU-DEV2", St7066u::CursorPosition_t{ 2, 5 });
 
   lcd.SetCursorHidden(false);
-  while (1)
+  while (true)
   {
     for (uint8_t i = 0; i < kMaxLines; i++)
     {

@@ -14,9 +14,5 @@ int main(void)
       "programmed to toggle the LED at a frequency of 10Hz.");
 
   DEBUG_PRINT("Halting any action.");
-  while (1)
-  {
-    continue;
-  }
   return 0;
 }

@@ -5,6 +5,7 @@
 #include "L2_Utilities/ansi_terminal_codes.hpp"
 #include "L2_Utilities/debug.hpp"
 #include "L2_Utilities/log.hpp"
+#include "L2_Utilities/time.hpp"
 // SJ2_SECTION will place a variable or function within a given section of the
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as
@@ -96,10 +97,7 @@ inline void UsedVariadicFunction(...) {}
             "This will report the file and line number associated with that " \
             "program counter values provided above in the backtrace.\n\n");   \
       }                                                                       \
-      while (true)                                                            \
-      {                                                                       \
-        continue;                                                             \
-      }                                                                       \
+      Halt();                                                                 \
     }                                                                         \
   } while (0)
 
