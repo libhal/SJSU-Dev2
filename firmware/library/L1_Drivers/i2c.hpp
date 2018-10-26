@@ -3,23 +3,17 @@
 #include <cstdio>
 #include <cstdlib>
 #include "config.hpp"
-#include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin.hpp"
 #include "L2_Utilities/enum.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/status.hpp"
+#include "L2_Utilities/time.hpp"
 
 class I2cInterface
 {
  public:
-  enum class Status : uint8_t
-  {
-    kSuccess        = 0,
-    kBusError       = 1,
-    kDeviceNotFound = 2,
-    kTimedOut       = 3
-  };
   static constexpr uint32_t kDefaultTimeout = 1000;  // units milliseconds
 
   virtual void Initialize()                                        = 0;
@@ -420,13 +414,14 @@ class I2c : public I2cInterface
                      "initialized! Be sure to run the Initialize() method "
                      "of this class, before using it.",
                      port_);
-    uint64_t timeout_time = Milliseconds() + transaction[port_].timeout;
-    uint64_t current_time = Milliseconds();
-    while (transaction[port_].busy && current_time < timeout_time)
-    {
-      current_time = Milliseconds();
-    }
-    if (current_time >= timeout_time && transaction[port_].busy)
+
+    std::chrono::milliseconds timeout =
+        std::chrono::milliseconds(transaction[port_].timeout);
+    auto check_transaction = [this]() -> bool {
+      return !transaction[port_].busy;
+    };
+
+    if (Wait(timeout, check_transaction) == Status::kTimedOut)
     {
       // Abort I2C communication if this point is reached!
       i2c[port_]->CONSET = Control::kAssertAcknowledge | Control::kStop;

@@ -3,10 +3,10 @@
 #include <cmath>
 #include <cstdint>
 
-#include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/SystemFiles/system_LPC407x_8x_177x_8x.h"
 #include "L1_Drivers/pin.hpp"
+#include "L2_Utilities/time.hpp"
 
 class UartInterface
 {
@@ -228,29 +228,19 @@ class Uart : public UartInterface
   void Send(uint8_t data) override
   {
     uart_base_reg[channel_]->THR = data;
-    while (!(uart_base_reg[channel_]->LSR & (1 << 5)))
-    {
-      continue;
-    }
+    Wait(kMaxWait, [this]() -> bool {
+      return (uart_base_reg[channel_]->LSR & (1 << 5));
+    });
   }
 
   uint8_t Receive(uint32_t timeout = 0x7FFFFFFF) override
   {
-    uint8_t receiver      = 0;
-    uint64_t timeout_time = Milliseconds() + timeout;
-    uint64_t current_time = Milliseconds();
+    uint8_t receiver = '\xFF';
+    Status status = Wait(std::chrono::milliseconds(timeout), [this]() -> bool {
+      return (uart_base_reg[channel_]->LSR & (1 << 0));
+    });
 
-    while (!(uart_base_reg[channel_]->LSR & (1 << 0)) &&
-           (current_time < timeout_time))
-    {
-      current_time = Milliseconds();
-    }
-    if (!(uart_base_reg[channel_]->LSR & (1 << 0)) &&
-        current_time >= timeout_time)
-    {
-      receiver = '\xFF';
-    }
-    else
+    if (status == Status::kSuccess)
     {
       receiver = static_cast<uint8_t>(uart_base_reg[channel_]->RBR);
     }

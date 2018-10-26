@@ -9,12 +9,14 @@
 #include <cstring>
 
 #include "config.hpp"
-#include "L0_LowLevel/delay.hpp"
+#include "L4_Application/globals.hpp"
+
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/debug.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/time.hpp"
 #include "L3_HAL/onboard_led.hpp"
 
 #if !defined(BOOTLOADER) && !defined(CLANG_TIDY)
