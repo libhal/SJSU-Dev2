@@ -3,6 +3,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/i2c.hpp"
 #include "L2_Utilities/enum.hpp"
+#include "L2_Utilities/status.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
 TEST_CASE("Testing I2C", "[i2c]")
@@ -74,7 +75,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(actual_transaction.position == 0);
     CHECK(actual_transaction.repeated == false);
     CHECK(actual_transaction.busy == true);
-    CHECK(actual_transaction.status == I2c::Status::kSuccess);
+    CHECK(actual_transaction.status == Status::kSuccess);
     CHECK(actual_transaction.operation == I2c::Operation::kRead);
     CHECK(actual_transaction.timeout == I2c::kDefaultTimeout);
     CHECK(local_i2c.CONSET == I2c::Control::kStart);
@@ -98,7 +99,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(actual_transaction.position == 0);
     CHECK(actual_transaction.repeated == false);
     CHECK(actual_transaction.busy == true);
-    CHECK(actual_transaction.status == I2c::Status::kSuccess);
+    CHECK(actual_transaction.status == Status::kSuccess);
     CHECK(actual_transaction.operation == I2c::Operation::kWrite);
     CHECK(actual_transaction.timeout == I2c::kDefaultTimeout);
     CHECK(local_i2c.CONSET == I2c::Control::kStart);
@@ -124,7 +125,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(actual_transaction.position == 0);
     CHECK(actual_transaction.repeated == true);
     CHECK(actual_transaction.busy == true);
-    CHECK(actual_transaction.status == I2c::Status::kSuccess);
+    CHECK(actual_transaction.status == Status::kSuccess);
     CHECK(actual_transaction.operation == I2c::Operation::kWrite);
     CHECK(actual_transaction.timeout == I2c::kDefaultTimeout);
     CHECK(local_i2c.CONSET == I2c::Control::kStart);
@@ -145,7 +146,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     I2c::I2cHandler<I2c::Port::kI2c0>();
     I2c::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
-    CHECK(I2cInterface::Status::kBusError == actual_transaction.status);
+    CHECK(Status::kBusError == actual_transaction.status);
     CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
@@ -285,7 +286,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     I2c::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
-    CHECK(I2c::Status::kDeviceNotFound == actual_transaction.status);
+    CHECK(Status::kDeviceNotFound == actual_transaction.status);
     CHECK(!actual_transaction.busy);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);

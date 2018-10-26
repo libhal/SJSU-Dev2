@@ -4,9 +4,9 @@
 
 #include <FreeRTOS.h>
 
-#include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/interrupt.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/time.hpp"
 #include "L4_Application/globals.hpp"
 
 #define SJ2_VECTOR_OPTIMIZE __attribute__((weak, no_instrument_function))
@@ -348,7 +348,7 @@ void SysTickHandler(void)
 {
   // This assumes that SysTickHandler is called every millisecond.
   // Changing that frequency will distort the milliseconds time.
-  milliseconds += 1;
+  IncrementUptimeMs();
   if (SystemTimer::system_timer_isr == nullptr)
   {
     DEBUG_PRINT("System Timer ISR not defined, disabling System Timer");

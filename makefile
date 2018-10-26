@@ -4,6 +4,8 @@
 PROJ    ?= firmware
 # Affects what DBC is generated for SJSUOne board
 ENTITY  ?= DBG
+# Optimization level
+OPT=0
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
@@ -98,7 +100,7 @@ CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 # -fno-omit-frame-pointer -rdynamic
 # CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
 # -fsingle-precision-constant
-OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections \
+OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
             -fno-exceptions -fomit-frame-pointer
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
