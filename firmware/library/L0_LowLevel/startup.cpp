@@ -64,7 +64,7 @@ extern "C"
   // Forward declaration of the default handlers. These are aliased.
   // When the application defines a handler (with the same name), this will
   // automatically take precedence over these weak definitions
-  void ResetIsr(void);
+  SJ2_IGNORE_STACK_TRACE(void ResetIsr(void));
   SJ2_VECTOR_OPTIMIZE void NmiHandler(void);
   SJ2_VECTOR_OPTIMIZE void HardFaultHandler(void);
   SJ2_VECTOR_OPTIMIZE void MemManageHandler(void);
@@ -245,6 +245,13 @@ IsrPointer dynamic_isr_vector_table[] = {
   Pwm0IrqHandler,         // 55, 0xdc - PWM0
   EepromIrqHandler,       // 56, 0xe0 - EEPROM
 };
+
+
+SJ2_IGNORE_STACK_TRACE(void InitDataSection());
+SJ2_IGNORE_STACK_TRACE(void InitBssSection());
+SJ2_IGNORE_STACK_TRACE(void InitFpu());
+SJ2_IGNORE_STACK_TRACE(void __libc_init_array());
+SJ2_IGNORE_STACK_TRACE(void LowLevelInit());
 
 extern "C" void vPortSetupTimerInterrupt(void)  // NOLINT
 {

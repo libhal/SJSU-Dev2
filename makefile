@@ -99,7 +99,7 @@ CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 # CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
 # -fsingle-precision-constant
 OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections \
-            -fno-exceptions -fomit-frame-pointer -finstrument-functions
+            -fno-exceptions -fomit-frame-pointer
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
