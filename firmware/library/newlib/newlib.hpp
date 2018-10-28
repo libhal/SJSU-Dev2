@@ -1,5 +1,3 @@
-#include "L0_LowLevel/uart0.hpp"
-
 using Stdout = int (*)(int);
 extern Stdout out;
 

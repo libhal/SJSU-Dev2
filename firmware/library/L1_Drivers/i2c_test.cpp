@@ -1,7 +1,6 @@
 #include <cstdint>
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L0_LowLevel/startup.hpp"
 #include "L1_Drivers/i2c.hpp"
 #include "L2_Utilities/enum.hpp"
 #include "L5_Testing/testing_frameworks.hpp"

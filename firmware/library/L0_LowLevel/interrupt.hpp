@@ -37,3 +37,11 @@ void RegisterIsr(IRQn_Type irq, IsrPointer isr, bool enable_interrupt = true,
                  int32_t priority = -1);
 
 void DeregisterIsr(IRQn_Type irq);
+// External declaration for the pointer to the stack top from the linker
+// script
+extern "C" void StackTop(void);
+// These are defined after the compilation of the FreeRTOS port for Cortex M4F
+// These will link to those definitions.
+extern "C" void xPortPendSVHandler(void);   // NOLINT
+extern "C" void vPortSVCHandler(void);      // NOLINT
+extern "C" void xPortSysTickHandler(void);  // NOLINT
