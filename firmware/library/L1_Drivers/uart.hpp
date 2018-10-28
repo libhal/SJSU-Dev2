@@ -225,9 +225,9 @@ class Uart : public UartInterface
     return true;
   }
 
-  void Send(uint8_t out) override
+  void Send(uint8_t data) override
   {
-    uart_base_reg[channel_]->THR = out;
+    uart_base_reg[channel_]->THR = data;
     while (!(uart_base_reg[channel_]->LSR & (1 << 5)))
     {
       continue;

@@ -1,5 +1,4 @@
 #include "L0_LowLevel/LPC40xx.h"
-#include "L0_LowLevel/startup.hpp"
 #include "L1_Drivers/system_timer.hpp"
 
 // Sys_tick structure defaults to the Core M4 SysTick register address found in

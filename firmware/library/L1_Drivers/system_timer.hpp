@@ -10,6 +10,7 @@
 #include <cstring>
 
 #include "config.hpp"
+#include "L0_LowLevel/delay.hpp"
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L2_Utilities/macros.hpp"
