@@ -2,6 +2,11 @@
 // SJSU-Dev2 environment.
 #pragma once
 #include "config.hpp"
+// SJ2_FUNCTION_INLINE will cause a function to be inlined at the call site.
+// This means that, rather than actually call the function, the functions
+// contents will be copied to the location where the function was called.
+// This saves the cpu from having to setup for a function call.
+#define SJ2_FUNCTION_INLINE(function) function __attribute__((always_inline))
 // SJ2_SECTION will place a variable or function within a given section of the
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as
