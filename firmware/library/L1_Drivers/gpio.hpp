@@ -34,7 +34,9 @@ class Gpio : public GpioInterface, public Pin
   // Mode zero is the GPIO function for all pins.
   static constexpr uint8_t kGpioFunction = 0;
   // Table of GPIO ports located in LPC memory map
-  static LPC_GPIO_TypeDef * gpio_port[6];
+  inline static LPC_GPIO_TypeDef * gpio_port[6] = {
+    LPC_GPIO0, LPC_GPIO1, LPC_GPIO2, LPC_GPIO3, LPC_GPIO4, LPC_GPIO5
+  };
   // For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
   constexpr Gpio(uint8_t port_number, uint8_t pin_number)
       : Pin(port_number, pin_number)

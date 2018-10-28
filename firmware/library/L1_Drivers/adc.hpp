@@ -4,7 +4,7 @@
 
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/log.hpp"
 
 class AdcInterface
 {
@@ -73,8 +73,9 @@ class Adc : public AdcInterface
                                             kChannel4Pin, kChannel5Pin,
                                             kChannel6Pin, kChannel7Pin };
 
-  static LPC_ADC_TypeDef * adc_base;
-  static LPC_SC_TypeDef * sysclk_register;
+  inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
+  inline static LPC_SC_TypeDef * sysclk_register = LPC_SC;
+
   static void BurstMode(bool burst_mode_is_on = false)
   {
     burst_mode_is_on ? (adc_base->CR |= (1 << ControlBit::kBurstMode))

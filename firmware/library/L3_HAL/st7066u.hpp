@@ -12,6 +12,7 @@
 #include <cstring>
 
 #include "L1_Drivers/gpio.hpp"
+#include "L2_Utilities/log.hpp"
 #include "L2_Utilities/time.hpp"
 
 class St7066uInterface
