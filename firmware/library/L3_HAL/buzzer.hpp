@@ -3,7 +3,9 @@
 // Buzzer buzzer(1) ;
 // buzzer.Beep(500, 0.9) ; // frequency = 500Hz, Volume = 0.9
 #pragma once
+
 #include <cstdint>
+
 #include "L1_Drivers/pwm.hpp"
 
 class BuzzerInterface

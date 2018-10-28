@@ -1,8 +1,6 @@
 #pragma once
 
-#include <cstdint>
-
-enum class Status : uint8_t
+enum class Status
 {
   kSuccess,
   kTimedOut,

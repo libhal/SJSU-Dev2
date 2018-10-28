@@ -35,7 +35,6 @@
 #include <cstring>
 
 #include "L0_LowLevel/interrupt.hpp"
-#include "L0_LowLevel/LPC40xx.h"
 #include "L2_Utilities/log.hpp"
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/time.hpp"

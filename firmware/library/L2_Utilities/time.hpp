@@ -7,23 +7,38 @@
 
 constexpr std::chrono::milliseconds kMaxWait(std::chrono::milliseconds::max());
 
+static inline std::chrono::nanoseconds uptime(0);
+
 // Halt system by putting it into infinite loop
-void Halt();
+inline void Halt()
+{
+  while (true)
+  {
+    continue;
+  }
+}
 // Returns the system uptime in nanoseconds
-std::chrono::nanoseconds Uptime();
+inline std::chrono::nanoseconds Uptime()
+{
+  return uptime;
+}
 // Increment Uptime by 1 millisecond
-void IncrementUptimeMs();
+inline void IncrementUptimeMs()
+{
+  uptime += std::chrono::milliseconds(1);
+}
 // Get system uptime in milliseconds as a 64-bit integer
-int64_t Milliseconds();
-// Delay the system for a duration of time
-void Delay(uint32_t delay_time_ms);
+inline int64_t Milliseconds()
+{
+  return std::chrono::duration_cast<std::chrono::milliseconds>(uptime).count();
+}
 // Wait will until the is_done parameter returns true
 //
 // @param timeout the maximum amount of time to wait for the is_done to
 //        return true.
 // @param is_done will be run in a tight loop until it returns true or the
 //        timeout time has elapsed.
-template<typename F>
+template <typename F>
 inline Status Wait(std::chrono::milliseconds timeout, F is_done)
 {
   std::chrono::milliseconds current_time =
@@ -55,4 +70,15 @@ inline Status Wait(std::chrono::milliseconds timeout, F is_done)
 inline Status Wait(std::chrono::milliseconds timeout)
 {
   return Wait(timeout, []() -> bool { return false; });
+}
+
+// Delay the system for a duration of time
+inline void Delay(uint32_t delay_time_ms)
+{
+#if defined(HOST_TEST)
+  SJ2_USED(delay_time_ms);
+  return;
+#else
+  Wait(std::chrono::milliseconds(delay_time_ms));
+#endif  // HOST_TEST
 }

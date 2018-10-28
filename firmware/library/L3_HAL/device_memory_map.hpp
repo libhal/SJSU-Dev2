@@ -1,10 +1,12 @@
 #pragma once
+
 #include <algorithm>
 #include <array>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <type_traits>
+
 #include "L1_Drivers/i2c.hpp"
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/status.hpp"

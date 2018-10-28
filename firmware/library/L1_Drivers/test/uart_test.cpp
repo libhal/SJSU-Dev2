@@ -19,7 +19,7 @@ TEST_CASE("Testing Uart", "[Uart]")
   Fake(Method(mock_rx, SetMode));
 
   // Set up for UART2
-  Uart::uart_base_reg[1]  = &local_uart;
+  Uart::uart[1]  = &local_uart;
   Uart::sysclock_register = &local_sc;
 
   PinInterface * tx = &mock_tx.get();
