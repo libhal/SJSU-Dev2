@@ -150,4 +150,20 @@ extern "C"
     }
     return i;
   }
+
+  // =============================
+  // Backtrace Utility Functions
+  // =============================
+  void * stack_trace[config::kBacktraceDepth];
+  size_t stack_depth = 0;
+
+  void __cyg_profile_func_enter(void *, void * call_site)  // NOLINT
+  {
+    stack_trace[stack_depth++] = call_site;
+  }
+
+  void __cyg_profile_func_exit(void *, void *)  // NOLINT
+  {
+    stack_depth--;
+  }
 }

@@ -4,7 +4,7 @@
 #include <cstdint>
 
 #include "L0_LowLevel/LPC40xx.h"
-#include "L0_LowLevel/SystemFiles/system_LPC407x_8x_177x_8x.h"
+// #include "L0_LowLevel/SystemFiles/system_LPC407x_8x_177x_8x.h"
 #include "L1_Drivers/pin.hpp"
 #include "L2_Utilities/time.hpp"
 
@@ -19,23 +19,12 @@ class UartInterface
 class Uart : public UartInterface
 {
  public:
-  // Each port ony has 1 usable set of pins
-  // UART0 pins Tx = 0,0; Rx = 0,1
-  // UART2 pins Tx = 2,8; Rx = 2,9
-  // UART3 pins Tx = 4,28; Rx = 4,29
-  // UART4 pins Tx = 1,29; Rx = 2,9
-  static constexpr uint8_t kStandardUart = 0b011;
-
-  static LPC_UART_TypeDef * uart_base_reg[4];
-  static LPC_SC_TypeDef * sysclock_register;
-  static Pin pairs[4][2];
-  const float kThreshold = 0.05f;
-
   enum Pins : uint8_t
   {
     kTx = 0,
     kRx = 1
   };
+
   enum class Channels : uint8_t
   {
     kUart0 = 0,
@@ -44,9 +33,15 @@ class Uart : public UartInterface
     kUart4 = 3
   };
 
-  const uint8_t kTxUartPortFunction[4] = { 0b001, 0b010, 0b010, 0b101 };
-  const uint8_t kRxUartPortFunction[4] = { 0b001, 0b010, 0b010, 0b011 };
-  const uint32_t kPowerbit[4]          = { 1 << 3, 1 << 24, 1 << 25, 1 << 8 };
+  enum class States
+  {
+    kCalculateIntegerDivideLatch,
+    kCalculateDivideLatchWithDecimal,
+    kDecimalFailedGenerateNewDecimal,
+    kGenerateFractionFromDecimal,
+    kDone
+  };
+
   struct UartCalibration_t
   {
     constexpr UartCalibration_t() : divide_latch(0), divide_add(0), multiply(1)
@@ -56,14 +51,106 @@ class Uart : public UartInterface
     uint32_t divide_add;
     uint32_t multiply;
   };
-  enum class States
-  {
-    kCalculateIntegerDivideLatch,
-    kCalculateDivideLatchWithDecimal,
-    kDecimalFailedGenerateNewDecimal,
-    kGenerateFractionFromDecimal,
-    kDone
+
+  // Each port ony has 1 usable set of pins
+  // UART0 pins Tx = 0,0; Rx = 0,1
+  // UART2 pins Tx = 2,8; Rx = 2,9
+  // UART3 pins Tx = 4,28; Rx = 4,29
+  // UART4 pins Tx = 1,29; Rx = 2,9
+  static constexpr uint8_t kStandardUart = 0b011;
+  static constexpr float kThreshold      = 0.05f;
+
+  static constexpr uint8_t kTxUartPortFunction[4] = { 0b001, 0b010, 0b010,
+                                                      0b101 };
+  static constexpr uint8_t kRxUartPortFunction[4] = { 0b001, 0b010, 0b010,
+                                                      0b011 };
+  static constexpr uint32_t kPowerbit[4] = { 1 << 3, 1 << 24, 1 << 25, 1 << 8 };
+
+  inline static LPC_UART_TypeDef * uart[4] = {
+    [0] = LPC_UART0,
+    [1] = LPC_UART2,
+    [2] = LPC_UART3,
+    [3] = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4)
   };
+
+  inline static Pin pairs[4][2] = { { Pin(0, 2), Pin(0, 3) },
+                                    { Pin(2, 8), Pin(2, 9) },
+                                    { Pin(4, 28), Pin(4, 29) },
+                                    { Pin(1, 29), Pin(2, 9) } };
+
+  inline static LPC_SC_TypeDef * sysclock_register = LPC_SC;
+  // Not using a default constructor. User must define the Uart channel in order
+  // to properly define pins. User defined constructor. Must be commented out to
+  // use unit testing constructor below
+  explicit constexpr Uart(Channels mode)
+      : channel_(static_cast<uint8_t>(mode)),
+        tx_(&pairs[channel_][Pins::kTx]),
+        rx_(&pairs[channel_][Pins::kRx])
+  {
+  }
+  // Pass you own preconfigured pins through this constructor
+  constexpr Uart(Channels mode, PinInterface * tx_pin, PinInterface * rx_pin)
+      : channel_(static_cast<uint8_t>(mode)), tx_(tx_pin), rx_(rx_pin)
+  {
+  }
+
+  void SetBaudRate(uint32_t baud_rate) override
+  {
+    constexpr uint8_t kDlabBit = (1 << 7);
+    float baudrate             = static_cast<float>(baud_rate);
+    UartCalibration_t dividers = GenerateUartCalibration(baudrate);
+
+    uint8_t dlm = static_cast<uint8_t>((dividers.divide_latch >> 8) & 0xFF);
+    uint8_t dll = static_cast<uint8_t>(dividers.divide_latch & 0xFF);
+    uint8_t fdr = static_cast<uint8_t>((dividers.multiply & 0xF) << 4 |
+                                       (dividers.divide_add & 0xF));
+
+    // Set baud rate
+    uart[channel_]->LCR = kDlabBit;
+    uart[channel_]->DLM = dlm;
+    uart[channel_]->DLL = dll;
+    uart[channel_]->FDR = fdr;
+    uart[channel_]->LCR = kStandardUart;
+  }
+
+  bool Initialize(uint32_t baud_rate) override
+  {
+    constexpr uint8_t kFIFOEnableAndReset = 0b111;
+    // Powering the port
+    sysclock_register->PCONP |= kPowerbit[channel_];
+    // Setting the pin functions and modes
+    rx_->SetPinFunction(kRxUartPortFunction[channel_]);
+    tx_->SetPinFunction(kTxUartPortFunction[channel_]);
+    rx_->SetMode(PinInterface::Mode::kPullUp);
+    tx_->SetMode(PinInterface::Mode::kPullUp);
+    // Baud rate setting
+    SetBaudRate(baud_rate);
+    uart[channel_]->FCR |= kFIFOEnableAndReset;
+    return true;
+  }
+
+  void Send(uint8_t data) override
+  {
+    uart[channel_]->THR = data;
+    Wait(kMaxWait,
+         [this]() -> bool { return (uart[channel_]->LSR & (1 << 5)); });
+  }
+
+  uint8_t Receive(uint32_t timeout = 0x7FFFFFFF) override
+  {
+    uint8_t receiver = '\xFF';
+    Status status = Wait(std::chrono::milliseconds(timeout), [this]() -> bool {
+      return (uart[channel_]->LSR & (1 << 0));
+    });
+
+    if (status == Status::kSuccess)
+    {
+      receiver = static_cast<uint8_t>(uart[channel_]->RBR);
+    }
+    return receiver;
+  }
+
+ private:
   UartCalibration_t FindClosestFractional(float decimal)
   {
     UartCalibration_t result;
@@ -86,14 +173,17 @@ class Uart : public UartInterface
     }
     return result;
   }
+
   float DividerEstimate(float baud_rate, float fraction_estimate = 1)
   {
     return config::kSystemClockRate / (16.0f * baud_rate * fraction_estimate);
   }
+
   float FractionalEstimate(float baud_rate, float divider)
   {
     return config::kSystemClockRate / (16.0f * baud_rate * divider);
   }
+
   bool IsDecmial(float value)
   {
     bool result         = false;
@@ -105,6 +195,7 @@ class Uart : public UartInterface
     }
     return result;
   }
+
   UartCalibration_t GenerateUartCalibration(float baud_rate)
   {
     States state = States::kCalculateIntegerDivideLatch;
@@ -186,86 +277,6 @@ class Uart : public UartInterface
     return uart_calibration;
   }
 
-  void SetBaudRate(uint32_t baud_rate) override
-  {
-    constexpr uint8_t kDlabBit = (1 << 7);
-    float baudrate             = static_cast<float>(baud_rate);
-    UartCalibration_t dividers = GenerateUartCalibration(baudrate);
-
-    uint8_t dlm = static_cast<uint8_t>((dividers.divide_latch >> 8) & 0xFF);
-    uint8_t dll = static_cast<uint8_t>(dividers.divide_latch & 0xFF);
-    uint8_t fdr = static_cast<uint8_t>((dividers.multiply & 0xF) << 4 |
-                                       (dividers.divide_add & 0xF));
-
-    // Set baud rate
-    uart_base_reg[channel_]->LCR = kDlabBit;
-    uart_base_reg[channel_]->DLM = dlm;
-    uart_base_reg[channel_]->DLL = dll;
-    uart_base_reg[channel_]->FDR = fdr;
-    uart_base_reg[channel_]->LCR = kStandardUart;
-  }
-
-  bool Initialize(uint32_t baud_rate) override
-  {
-    constexpr uint8_t kFIFOEnableAndReset = 0b111;
-    // Powering the port
-    sysclock_register->PCONP |= kPowerbit[channel_];
-
-    // Setting the pin functions and modes
-    rx_->SetPinFunction(kRxUartPortFunction[channel_]);
-    tx_->SetPinFunction(kTxUartPortFunction[channel_]);
-    rx_->SetMode(PinInterface::Mode::kPullUp);
-    tx_->SetMode(PinInterface::Mode::kPullUp);
-
-    // Baud rate setting
-    Uart::SetBaudRate(baud_rate);
-
-    uart_base_reg[channel_]->FCR |= kFIFOEnableAndReset;
-
-    return true;
-  }
-
-  void Send(uint8_t data) override
-  {
-    uart_base_reg[channel_]->THR = data;
-    Wait(kMaxWait, [this]() -> bool {
-      return (uart_base_reg[channel_]->LSR & (1 << 5));
-    });
-  }
-
-  uint8_t Receive(uint32_t timeout = 0x7FFFFFFF) override
-  {
-    uint8_t receiver = '\xFF';
-    Status status = Wait(std::chrono::milliseconds(timeout), [this]() -> bool {
-      return (uart_base_reg[channel_]->LSR & (1 << 0));
-    });
-
-    if (status == Status::kSuccess)
-    {
-      receiver = static_cast<uint8_t>(uart_base_reg[channel_]->RBR);
-    }
-    return receiver;
-  }
-
-  // Not using a default constructor. User must define the
-  // Uart channel in order to properly define pins.
-  // User defined constructor. Must be commented out
-  // to use unit testing constructor below
-  explicit constexpr Uart(Channels mode)
-      : channel_(static_cast<uint8_t>(mode)),
-        tx_(&pairs[channel_][Pins::kTx]),
-        rx_(&pairs[channel_][Pins::kRx])
-  {
-  }
-
-  // Pass you own preconfigured pins through this
-  // constructor
-  constexpr Uart(Channels mode, PinInterface * tx_pin, PinInterface * rx_pin)
-      : channel_(static_cast<uint8_t>(mode)), tx_(tx_pin), rx_(rx_pin)
-  {
-  }
-
- private:
   uint8_t channel_;
   PinInterface * tx_;
   PinInterface * rx_;

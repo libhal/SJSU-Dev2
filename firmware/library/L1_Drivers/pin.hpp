@@ -60,7 +60,7 @@ class Pin : public PinInterface
     pin_config_register_t _register[6][32];
   };
 
-  static PinMap_t * pin_map;
+  inline static PinMap_t * pin_map = reinterpret_cast<PinMap_t *>(LPC_IOCON);
   // Compile time Pin factory that test the port and pin variables to make sure
   // they are within bounds of the pin_config_register.
   template <unsigned port_, unsigned pin_>

@@ -2,6 +2,7 @@
 
 #include <cstring>
 
+#include "L2_Utilities/log.hpp"
 #include "L4_Application/task.hpp"
 
 void rtos::TaskScheduler::RunTask(void * task_ptr)

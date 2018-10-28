@@ -68,10 +68,10 @@ TEST_CASE("Testing I2C", "[i2c]")
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
     CHECK(actual_transaction.address == kExpectedAddress);
-    CHECK(actual_transaction.transmitter == nullptr);
-    CHECK(actual_transaction.transmit_length == 0);
-    CHECK(actual_transaction.receiver == read_buffer);
-    CHECK(actual_transaction.receive_length == sizeof(read_buffer));
+    CHECK(actual_transaction.data_out == nullptr);
+    CHECK(actual_transaction.out_length == 0);
+    CHECK(actual_transaction.data_in == read_buffer);
+    CHECK(actual_transaction.in_length == sizeof(read_buffer));
     CHECK(actual_transaction.position == 0);
     CHECK(actual_transaction.repeated == false);
     CHECK(actual_transaction.busy == true);
@@ -92,10 +92,10 @@ TEST_CASE("Testing I2C", "[i2c]")
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
     CHECK(actual_transaction.address == kExpectedAddress);
-    CHECK(actual_transaction.transmitter == write_buffer);
-    CHECK(actual_transaction.transmit_length == sizeof(write_buffer));
-    CHECK(actual_transaction.receiver == nullptr);
-    CHECK(actual_transaction.receive_length == 0);
+    CHECK(actual_transaction.data_out == write_buffer);
+    CHECK(actual_transaction.out_length == sizeof(write_buffer));
+    CHECK(actual_transaction.data_in == nullptr);
+    CHECK(actual_transaction.in_length == 0);
     CHECK(actual_transaction.position == 0);
     CHECK(actual_transaction.repeated == false);
     CHECK(actual_transaction.busy == true);
@@ -118,10 +118,10 @@ TEST_CASE("Testing I2C", "[i2c]")
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
     CHECK(actual_transaction.address == kExpectedAddress);
-    CHECK(actual_transaction.transmitter == write_buffer);
-    CHECK(actual_transaction.transmit_length == sizeof(write_buffer));
-    CHECK(actual_transaction.receiver == read_buffer);
-    CHECK(actual_transaction.receive_length == sizeof(read_buffer));
+    CHECK(actual_transaction.data_out == write_buffer);
+    CHECK(actual_transaction.out_length == sizeof(write_buffer));
+    CHECK(actual_transaction.data_in == read_buffer);
+    CHECK(actual_transaction.in_length == sizeof(read_buffer));
     CHECK(actual_transaction.position == 0);
     CHECK(actual_transaction.repeated == true);
     CHECK(actual_transaction.busy == true);
