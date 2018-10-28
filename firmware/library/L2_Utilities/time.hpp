@@ -10,6 +10,7 @@ constexpr std::chrono::milliseconds kMaxWait(std::chrono::milliseconds::max());
 static inline std::chrono::nanoseconds uptime(0);
 
 // Halt system by putting it into infinite loop
+SJ2_FUNCTION_INLINE(SJ2_IGNORE_STACK_TRACE(inline void Halt()));
 inline void Halt()
 {
   while (true)
@@ -38,6 +39,9 @@ inline int64_t Milliseconds()
 //        return true.
 // @param is_done will be run in a tight loop until it returns true or the
 //        timeout time has elapsed.
+SJ2_FUNCTION_INLINE(template <typename F>
+                    inline Status Wait(std::chrono::milliseconds timeout,
+                                       F is_done));
 template <typename F>
 inline Status Wait(std::chrono::milliseconds timeout, F is_done)
 {
