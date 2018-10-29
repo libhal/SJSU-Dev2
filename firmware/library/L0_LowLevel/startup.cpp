@@ -222,8 +222,5 @@ extern "C" void ResetIsr(void)
   SJ2_USED(result);
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
-  while (true)
-  {
-    continue;
-  }
+  Halt();
 }
