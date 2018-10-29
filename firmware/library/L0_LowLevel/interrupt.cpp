@@ -238,10 +238,7 @@ void DeregisterIsr(IRQn_Type irq)
 SJ2_SECTION(".after_vectors")
 void NmiHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
@@ -291,10 +288,7 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   SJ2_ASSERT_FATAL(false, "Hard Fault Exception Occured!");
   // When the following line is hit, the variables contain the register values
   // Use a JTAG debugger to inspect these variables
-  while (true)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
@@ -316,55 +310,37 @@ void HardFaultHandler(void)
 SJ2_SECTION(".after_vectors")
 void MemManageHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void BusFaultHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void UsageFaultHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void SvcHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void DebugMonHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
 void PendSVHandler(void)
 {
-  while (1)
-  {
-    continue;
-  }
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
