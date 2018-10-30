@@ -77,14 +77,14 @@ class I2c : public I2cInterface
   {
     constexpr Transaction_t() :
           timeout(kDefaultTimeout),
-          status(Status::kSuccess),
           out_length(0),
           in_length(0),
           position(0),
-          operation(Operation::kWrite),
-          address(0xFF),
           data_out(nullptr),
           data_in(nullptr),
+          status(Status::kSuccess),
+          operation(Operation::kWrite),
+          address(0xFF),
           repeated(false),
           busy(false)
     {
@@ -95,14 +95,14 @@ class I2c : public I2cInterface
                             bool set_repeated, bool set_busy, Status set_status,
                             Operation set_operation, uint64_t set_timeout) :
           timeout(set_timeout),
-          status(set_status),
           out_length(set_out_length),
           in_length(set_in_length),
           position(set_position),
-          operation(set_operation),
-          address(set_address),
           data_out(set_data_out),
           data_in(set_data_in),
+          status(set_status),
+          operation(set_operation),
+          address(set_address),
           repeated(set_repeated),
           busy(set_busy)
     {
@@ -113,14 +113,14 @@ class I2c : public I2cInterface
       }
     }
     uint64_t timeout;
-    Status status;
     size_t out_length;
     size_t in_length;
     size_t position;
-    Operation operation;
-    uint8_t address;
     uint8_t * data_out;
     uint8_t * data_in;
+    Status status;
+    Operation operation;
+    uint8_t address;
     bool repeated;
     bool busy;
   };
