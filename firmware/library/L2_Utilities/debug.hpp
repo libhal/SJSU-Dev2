@@ -12,10 +12,8 @@
 
 namespace debug
 {
-namespace
-{
 // Hexdump Utility Functions
-inline void PrintCharacterRow(uint8_t * bytes, size_t length)
+static inline void PrintCharacterRow(uint8_t * bytes, size_t length)
 {
   printf("|");
   for (size_t j = 0; j < length; j++)
@@ -32,7 +30,7 @@ inline void PrintCharacterRow(uint8_t * bytes, size_t length)
   printf("|\n");
 }
 
-inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
+static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
 {
   for (size_t j = 0; j < 16; j++)
   {
@@ -51,8 +49,6 @@ inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
   }
   printf(" ");
 }
-
-}  // namespace
 
 inline void Hexdump(void * address, uint32_t length)
 {
