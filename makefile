@@ -130,12 +130,11 @@ CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) -MMD -MP -c
 
 ifeq ($(MAKECMDGOALS), test)
 CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
-         -fno-inline-small-functions -fno-default-inline \
-		     -fno-builtin \
+         -fno-inline-small-functions -fno-default-inline -fno-builtin \
          -ftest-coverage --coverage \
-         -fno-elide-constructors -D HOST_TEST=1 \
+				 -Wno-unused -fno-elide-constructors -D HOST_TEST=1 \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
-         -O0
+         -O0 -g
 CPPFLAGS = $(CFLAGS)
 else
 CFLAGS = $(CFLAGS_COMMON)
@@ -334,7 +333,7 @@ $(SIZE): $(EXECUTABLE)
 $(LIST): $(EXECUTABLE)
 	@echo ' '
 	@echo 'Invoking: Cross ARM GNU Create Assembly Listing'
-	@$(OBJDUMP) --disassemble --all-headers --demangle --wide "$<" > "$@"
+	@$(OBJDUMP) --disassemble --all-headers --source --demangle --wide "$<" > "$@"
 	@echo 'Finished building: $@'
 	@echo ' '
 
@@ -412,7 +411,7 @@ clean:
 flash: build
 	@bash -c "\
 	source $(TOOLS)/Hyperload/modules/bin/activate && \
-	python $(TOOLS)/Hyperload/hyperload.py -b 115200 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
+	python $(TOOLS)/Hyperload/hyperload.py -b 576000 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
 
 telemetry:
 	@bash -c "\

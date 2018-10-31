@@ -23,7 +23,7 @@ extern "C" {
   // Forward declaration of the default handlers. These are aliased.
   // When the application defines a handler (with the same name), this will
   // automatically take precedence over these weak definitions
-  SJ2_IGNORE_STACK_TRACE(void ResetIsr(void));
+  SJ2_VECTOR_OPTIMIZE SJ2_IGNORE_STACK_TRACE(void ResetIsr(void));
   SJ2_VECTOR_OPTIMIZE void NmiHandler(void);
   SJ2_VECTOR_OPTIMIZE void HardFaultHandler(void);
   SJ2_VECTOR_OPTIMIZE void MemManageHandler(void);
@@ -32,7 +32,7 @@ extern "C" {
   SJ2_VECTOR_OPTIMIZE void SvcHandler(void);
   SJ2_VECTOR_OPTIMIZE void DebugMonHandler(void);
   SJ2_VECTOR_OPTIMIZE void PendSVHandler(void);
-  SJ2_WEAK void SysTickHandler(void);
+  SJ2_VECTOR_OPTIMIZE void SysTickHandler(void);
   SJ2_WEAK void IntDefaultHandler(void);
   // Forward declaration of the specific IRQ handlers. These are aliased
   // to the IntDefaultHandler, which is a 'forever' loop. When the application

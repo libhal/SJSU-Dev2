@@ -432,13 +432,11 @@ class I2c : public I2cInterface
                      "of this class, before using it.",
                      port_);
 
-    std::chrono::milliseconds timeout =
-        std::chrono::milliseconds(transaction[port_].timeout);
-    auto check_transaction = [this]() -> bool {
+    Status status = Wait(transaction[port_].timeout, [this]() -> bool {
       return !transaction[port_].busy;
-    };
+    });
 
-    if (Wait(timeout, check_transaction) == Status::kTimedOut)
+    if (status == Status::kTimedOut)
     {
       // Abort I2C communication if this point is reached!
       i2c[port_]->CONSET = Control::kAssertAcknowledge | Control::kStop;
