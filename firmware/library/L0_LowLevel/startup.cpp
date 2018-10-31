@@ -69,6 +69,8 @@ extern "C"
   }
 }
 
+SJ2_IGNORE_STACK_TRACE(void InitializeFreeRTOSSystemTick());
+SJ2_IGNORE_STACK_TRACE(void SetupTimerInterrupt());
 SJ2_IGNORE_STACK_TRACE(void InitDataSection());
 SJ2_IGNORE_STACK_TRACE(void InitBssSection());
 SJ2_IGNORE_STACK_TRACE(void InitFpu());
@@ -158,27 +160,24 @@ void InitializeFreeRTOSSystemTick()
   }
 }
 
-void SetupTimerInterrupt()
-{
-  system_timer.SetIsrFunction(InitializeFreeRTOSSystemTick);
-  system_timer.SetTickFrequency(config::kRtosFrequency);
-  bool timer_started_successfully = system_timer.StartTimer();
-  SJ2_ASSERT_WARNING(timer_started_successfully,
-                     "System Timer has FAILED to start!");
-}
-
 SJ2_WEAK void LowLevelInit()
 {
   // Set Clock Speed
   system_clock.SetClockFrequency(config::kSystemClockRateMhz);
   // Enable Peripheral Clock
   system_clock.SetPeripheralClockDivider(1);
-  // required for printf and scanf to work properly
+  // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
-  SetupTimerInterrupt();
+  // Set system timer callback to InitializeFreeRTOSSystemTick
+  system_timer.SetIsrFunction(InitializeFreeRTOSSystemTick);
+  // Set the SystemTick frequency to the RTOS tick frequency
+  system_timer.SetTickFrequency(config::kRtosFrequency);
+  bool timer_started_successfully = system_timer.StartTimer();
+  SJ2_ASSERT_WARNING(timer_started_successfully,
+                     "System Timer has FAILED to start!");
 }
 
-inline void SystemInit()
+void SystemInit()
 {
   // Transfer data section values from flash to RAM
   InitDataSection();

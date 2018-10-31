@@ -17,7 +17,7 @@ int main(void)
   {
     for (uint8_t i = 0; i < 15; i++)
     {
-      DEBUG_PRINT("Hello World 0x%X\n", i);
+      DEBUG_PRINT("Hello World 0x%X", i);
       leds.SetAll(i);
       Delay(500);
     }

@@ -1,14 +1,14 @@
 #pragma once
 
-#include <chrono>
+#include <cstdint>
 
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/status.hpp"
 
-constexpr std::chrono::milliseconds kMaxWait(std::chrono::milliseconds::max());
-
-static inline std::chrono::nanoseconds uptime(0);
-
+// Max wait time in nanoseconds.
+constexpr uint64_t kMaxWait = 0xFFFFFFFFFFFFFFFF;
+// uptime in nanoseconds
+inline uint64_t uptime = 0;
 // Halt system by putting it into infinite loop
 SJ2_FUNCTION_INLINE(SJ2_IGNORE_STACK_TRACE(inline void Halt()));
 inline void Halt()
@@ -19,19 +19,19 @@ inline void Halt()
   }
 }
 // Returns the system uptime in nanoseconds
-inline std::chrono::nanoseconds Uptime()
+inline uint64_t Uptime()
 {
   return uptime;
 }
 // Increment Uptime by 1 millisecond
 inline void IncrementUptimeMs()
 {
-  uptime += std::chrono::milliseconds(1);
+  uptime += 1000;
 }
 // Get system uptime in milliseconds as a 64-bit integer
-inline int64_t Milliseconds()
+inline uint64_t Milliseconds()
 {
-  return std::chrono::duration_cast<std::chrono::milliseconds>(uptime).count();
+  return uptime / 1000;
 }
 // Wait will until the is_done parameter returns true
 //
@@ -39,50 +39,43 @@ inline int64_t Milliseconds()
 //        return true.
 // @param is_done will be run in a tight loop until it returns true or the
 //        timeout time has elapsed.
-SJ2_FUNCTION_INLINE(template <typename F>
-                    inline Status Wait(std::chrono::milliseconds timeout,
-                                       F is_done));
 template <typename F>
-inline Status Wait(std::chrono::milliseconds timeout, F is_done)
+inline Status Wait(uint64_t timeout, F is_done)
 {
-  std::chrono::milliseconds current_time =
-      std::chrono::duration_cast<std::chrono::milliseconds>(Uptime());
-  std::chrono::milliseconds timeout_time(0);
+  uint64_t timeout_time = 0;
   if (timeout == kMaxWait)
   {
     timeout_time = kMaxWait;
   }
   else
   {
-    timeout_time = current_time + timeout;
+    timeout_time = Milliseconds() + timeout;
   }
 
   Status status = Status::kTimedOut;
-  while (current_time < timeout_time)
+  while (Milliseconds() < timeout_time)
   {
     if (is_done())
     {
       status = Status::kSuccess;
       break;
     }
-    current_time =
-        std::chrono::duration_cast<std::chrono::milliseconds>(Uptime());
   }
   return status;
 }
 
-inline Status Wait(std::chrono::milliseconds timeout)
+inline Status Wait(uint64_t timeout)
 {
   return Wait(timeout, []() -> bool { return false; });
 }
 
 // Delay the system for a duration of time
-inline void Delay(uint32_t delay_time_ms)
+inline void Delay(uint64_t delay_time_ms)
 {
 #if defined(HOST_TEST)
   SJ2_USED(delay_time_ms);
   return;
 #else
-  Wait(std::chrono::milliseconds(delay_time_ms));
+  Wait(delay_time_ms);
 #endif  // HOST_TEST
 }

@@ -139,9 +139,8 @@ class Uart : public UartInterface
   uint8_t Receive(uint32_t timeout = 0x7FFFFFFF) override
   {
     uint8_t receiver = '\xFF';
-    Status status = Wait(std::chrono::milliseconds(timeout), [this]() -> bool {
-      return (uart[channel_]->LSR & (1 << 0));
-    });
+    Status status    = Wait(
+        timeout, [this]() -> bool { return (uart[channel_]->LSR & (1 << 0)); });
 
     if (status == Status::kSuccess)
     {
