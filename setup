@@ -109,7 +109,7 @@ case "$OS" in
         echo "               Extracting Clang 6.0                 "
         echo "└────────────────────────────────────────────────── "
         echo "$CLANG_PKG"
-        tar --extract  --verbose --xz --file="$CLANG_PKG"
+        tar --extract --xz --file="$CLANG_PKG"
         echo " ───────────────────────────────────────────────────┐"
         echo "                Installing OpenOCD                   "
         echo "└─────────────────────────────────────────────────── "
@@ -202,7 +202,6 @@ echo " ────────────────────────�
 echo "            Extracting gcc-arm-embedded             "
 echo "└────────────────────────────────────────────────── "
 tar --extract \
-    --verbose \
     --bzip2 \
     --file="$GCC_PKG" \
     --exclude='share/doc'

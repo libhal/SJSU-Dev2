@@ -20,7 +20,7 @@ after_success:
     --include "firmware/library/L2_Utilities"
     --include "firmware/library/L3_HAL"
     --include "firmware/library/L4_Application"
-  - sudo apt-get -y install doxygen
+  - sudo apt-get -y install doxygen graphviz
   - cd documentation/api/
   - doxygen sjsu-dev2-doxygen.conf
 deploy:
