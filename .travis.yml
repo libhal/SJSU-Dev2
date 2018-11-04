@@ -15,8 +15,18 @@ script:
 after_success:
   - cd ../../
   - coveralls --gcov $(which gcov-7)
-    --include "firmware/library/L0_LowLevel" 
-    --include "firmware/library/L1_Drivers" 
-    --include "firmware/library/L2_Utilities" 
-    --include "firmware/library/L3_HAL" 
-    --include "firmware/library/L4_Application" 
+    --include "firmware/library/L0_LowLevel"
+    --include "firmware/library/L1_Drivers"
+    --include "firmware/library/L2_Utilities"
+    --include "firmware/library/L3_HAL"
+    --include "firmware/library/L4_Application"
+  - sudo apt-get -y install doxygen
+  - cd documentation/api/
+  - doxygen sjsu-dev2-doxygen.conf
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  on:
+    branch: gh-pages
