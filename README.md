@@ -7,6 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/kammce/SJSU-Dev2.svg)](https://github.com/kammce/SJSU-Dev2/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/kammce/SJSU-Dev2.svg)](https://github.com/kammce/SJSU-Dev2/network)
 [![GitHub issues](https://img.shields.io/github/issues/kammce/SJSU-Dev2.svg)](https://github.com/kammce/SJSU-Dev2/issues)
+[![Slack Chat](https://img.shields.io/badge/join-slack-purple.svg?logo=slack&longCache=true&style=flat)](https://slofile.com/slack/sjsu-dev2)
 
 Firmware framework written by San Jose State University for the SJTwo board and
 LPC4078 microprocessor.
