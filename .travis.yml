@@ -4,6 +4,24 @@ matrix:
         - os: linux
           sudo: required
           dist: trusty
+          after_success:
+            - cd ../../
+            - coveralls --gcov $(which gcov-7)
+              --include "firmware/library/L0_LowLevel"
+              --include "firmware/library/L1_Drivers"
+              --include "firmware/library/L2_Utilities"
+              --include "firmware/library/L3_HAL"
+              --include "firmware/library/L4_Application"
+            - sudo apt-get -y install doxygen graphviz
+            - cd documentation/api/
+            - doxygen sjsu-dev2-doxygen.conf
+          deploy:
+            provider: pages
+            skip-cleanup: true
+            github-token: $GITHUB_TOKEN
+            keep-history: true
+            on:
+              branch: master
         - os: osx
           osx_image: xcode10
 before_install: pip install --user cpp-coveralls
@@ -12,21 +30,3 @@ script:
   - cd ./firmware/HelloWorld/
   - source env.sh
   - make presubmit
-after_success:
-  - cd ../../
-  - coveralls --gcov $(which gcov-7)
-    --include "firmware/library/L0_LowLevel"
-    --include "firmware/library/L1_Drivers"
-    --include "firmware/library/L2_Utilities"
-    --include "firmware/library/L3_HAL"
-    --include "firmware/library/L4_Application"
-  - sudo apt-get -y install doxygen graphviz
-  - cd documentation/api/
-  - doxygen sjsu-dev2-doxygen.conf
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN
-  keep-history: true
-  on:
-    branch: master
