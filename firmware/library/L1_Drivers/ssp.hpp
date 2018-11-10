@@ -76,8 +76,8 @@ class Ssp : public SspInterface
 {
  public:
   // SSP register lookup table
-  static LPC_SSP_TypeDef * ssp_registers[2];
-  static LPC_SC_TypeDef * sysclock_register;
+  inline static LPC_SSP_TypeDef * ssp_registers[2] = { LPC_SSP0, LPC_SSP1 };
+  inline static LPC_SC_TypeDef * sysclock_register = LPC_SC;
   static constexpr uint8_t kEnableSspPins = 0b010;
 
   enum PortPins : uint8_t

@@ -1,6 +1,6 @@
 #include <inttypes.h>
 #include <cstdint>
-#include "L0_LowLevel/startup.hpp"
+#include "L0_LowLevel/interrupt.hpp"
 #include "L1_Drivers/i2c.hpp"
 #include "L2_Utilities/log.hpp"
 
@@ -18,8 +18,8 @@ int main(void)
   DEBUG_PRINT("I2C Application Starting...");
   DEBUG_PRINT(
       "This example will scan I2C Bus 2 for any devices. If the transaction "
-      "comes back with I2cInterface::Status::kSuccess, then we know that an "
-      "I2C device has acknowledged our call and it exists.");
+      "comes back with Status::kSuccess, then we know that an I2C device has "
+      "acknowledged our call and it exists.");
 
   DEBUG_PRINT("Initializing I2C Port 2...");
   i2c.Initialize();
@@ -30,12 +30,12 @@ int main(void)
   while (true)
   {
     DEBUG_PRINT("Starting Scan...");
-    I2cInterface::Status status;
+    Status status;
     for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
          address++)
     {
       status = i2c.Write(address, nullptr, 0, 50);
-      if (status == I2cInterface::Status::kSuccess)
+      if (status == Status::kSuccess)
       {
         DEBUG_PRINT("    Found device at address: 0x%02X", address);
       }

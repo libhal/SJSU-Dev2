@@ -9,9 +9,10 @@
 
 #include <cstdint>
 #include <cstdio>
+
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/log.hpp"
 
 class PwmInterface
 {
@@ -28,10 +29,13 @@ class PwmInterface
 class Pwm : public PwmInterface
 {
  public:
-  static constexpr uint8_t kPwmFunction  = 0b001;
-  static volatile uint32_t * match[7];
-  static LPC_PWM_TypeDef * pwm1;
-  static LPC_SC_TypeDef * sc;
+  static constexpr uint8_t kPwmFunction      = 0b001;
+  inline static LPC_PWM_TypeDef * pwm1       = LPC_PWM1;
+  inline static LPC_SC_TypeDef * sc          = LPC_SC;
+  inline static volatile uint32_t * match[7] = { &pwm1->MR0, &pwm1->MR1,
+                                                 &pwm1->MR2, &pwm1->MR3,
+                                                 &pwm1->MR4, &pwm1->MR5,
+                                                 &pwm1->MR6 };
 
   enum SysClk : uint8_t
   {

@@ -1,12 +1,15 @@
 #pragma once
+
 #include <algorithm>
 #include <array>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <type_traits>
+
 #include "L1_Drivers/i2c.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/status.hpp"
 
 using WriteFnt = bool (*)(intptr_t, size_t, uint8_t *);
 using ReadFnt  = void (*)(intptr_t, size_t, uint8_t *);
@@ -233,8 +236,8 @@ class I2cDevice
     payload[0] = static_cast<uint8_t>(address);
     memcpy(&payload[1], target, size);
     // Size + 1 to account for the 1-byte register address
-    I2cInterface::Status status = i2c->Write(kDeviceAddress, payload, size + 1);
-    return (status == I2cInterface::Status::kSuccess);
+    Status status = i2c->Write(kDeviceAddress, payload, size + 1);
+    return (status == Status::kSuccess);
   }
   // Standard Read transaction for most I2C devices
   static void Read(intptr_t address, size_t size, uint8_t * target)

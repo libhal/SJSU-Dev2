@@ -10,6 +10,7 @@
 #include <cstring>
 
 #include "config.hpp"
+
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L2_Utilities/macros.hpp"
@@ -35,8 +36,13 @@ class SystemTimer : public SystemTimerInterface
     kClkSource     = 2,
     kCountFlag     = 16
   };
-  static IsrPointer system_timer_isr;
-  static SysTick_Type * sys_tick;
+  /// Sys_tick structure defaults to the Core M4 SysTick register address found
+  /// in L0_LowLevel/SystemFiles/core_m4.h which is included in LPC40xx.h
+  inline static SysTick_Type * sys_tick = SysTick;
+  /// system_timer_isr defaults to nullptr. The actual SystemTickHandler should
+  /// check if the isr is set to nullptr, and if it is, turn off the timer, if
+  /// set a proper function then execute it.
+  inline static IsrPointer system_timer_isr = nullptr;
 
   constexpr SystemTimer() {}
   void SetIsrFunction(IsrPointer isr) override

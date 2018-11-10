@@ -2,6 +2,7 @@
 
 #include <cstring>
 
+#include "L2_Utilities/log.hpp"
 #include "L4_Application/task.hpp"
 
 void rtos::TaskScheduler::RunTask(void * task_ptr)
@@ -77,7 +78,11 @@ void rtos::TaskScheduler::RemoveTask(const char * task_name)
   {
     return;
   }
-  vTaskDelete(task_list_[kTaskIndex]->GetHandle());
+  TaskHandle_t handle = task_list_[kTaskIndex]->GetHandle();
+  if (handle != nullptr)
+  {
+    vTaskDelete(handle);
+  }
   task_list_[kTaskIndex] = nullptr;
   task_count_--;
 };

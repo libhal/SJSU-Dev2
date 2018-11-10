@@ -52,11 +52,13 @@ class Example : public ExampleInterface
   // change out the register you are pointing to during testing. When compiled
   // into firmware, the example-driver.cpp will assign it to the appropriate
   // address, in this case LPC_USB;
-  // DO NOT DECLARE THESE AS constexpr OR const, they need to be mutable
-  static LPC_USB_TypeDef * usb;
-  // Make an array of pointers if you are controlling multiple perpherials of
+  // DO NOT DECLARE THESE AS constexpr OR const, they need to be mutable for
+  // testing purposes.
+  // Define as inline to give external linkage in header file
+  inline static LPC_USB_TypeDef * usb = LPC_USB;
+  // Make an array of pointers if you are controlling multiple peripherals of
   // the same type.
-  static LPC_CAN_TypeDef * can[2];
+  inline static LPC_CAN_TypeDef * can[2] = { LPC_CAN1, LPC_CAN2 };
   // Define any structures or enumerations.
   SJ2_PACKED(struct) CanFrame_t
   {

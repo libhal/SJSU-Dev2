@@ -1,12 +1,25 @@
+#include "newlib/newlib.hpp"
+
 #include <sys/stat.h>
 #include <unistd.h>
 
 #include <cstdint>
 #include <cstdio>
 
-#include "L0_LowLevel/uart0.hpp"
+#include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/macros.hpp"
-#include "newlib/newlib.hpp"
+#include "L4_Application/globals.hpp"
+
+int PutChar(int data)
+{
+  uart0.Send(static_cast<uint8_t>(data));
+  return 1;
+}
+
+int GetChar()
+{
+  return static_cast<int>(uart0.Receive());
+}
 
 constexpr int32_t kHeapSize = 32768;
 #if defined(HOST_TEST)
@@ -14,8 +27,8 @@ Stdout out = putchar;
 Stdin in   = getchar;
 uint8_t heap[kHeapSize];
 #else
-Stdout out = uart0::PutChar;
-Stdin in   = uart0::GetChar;
+Stdout out = PutChar;
+Stdin in   = GetChar;
 extern uint8_t heap[kHeapSize];
 #endif
 
@@ -34,7 +47,7 @@ extern "C"
   void _exit(int rc)
   {
     SJ2_USED(rc);
-    while (true)
+    while (1)
     {
       continue;
     }
@@ -130,7 +143,27 @@ extern "C"
   // Overload default nano puts() with a more optimal version of puts
   int puts(const char * str)  // NOLINT
   {
-    uart0::Puts(str);
-    return 0;
+    int i;
+    for (i = 0; str[i] != '\0'; i++)
+    {
+      out(str[i]);
+    }
+    return i;
+  }
+
+  // =============================
+  // Backtrace Utility Functions
+  // =============================
+  void * stack_trace[config::kBacktraceDepth];
+  size_t stack_depth = 0;
+
+  void __cyg_profile_func_enter(void *, void * call_site)  // NOLINT
+  {
+    stack_trace[stack_depth++] = call_site;
+  }
+
+  void __cyg_profile_func_exit(void *, void *)  // NOLINT
+  {
+    stack_depth--;
   }
 }

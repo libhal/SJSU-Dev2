@@ -4,7 +4,7 @@
 #include <cstdlib>
 
 #include "config.hpp"
-#include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/log.hpp"
 
 int Baz(void)
 {

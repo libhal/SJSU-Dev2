@@ -9,20 +9,32 @@
 #include <cstring>
 
 #include "config.hpp"
-#include "L0_LowLevel/delay.hpp"
+#include "L4_Application/globals.hpp"
+
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L0_LowLevel/startup.hpp"
-#include "L0_LowLevel/uart0.hpp"
-#include "L0_LowLevel/uart2.hpp"
+#include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/debug.hpp"
 #include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/time.hpp"
 #include "L3_HAL/onboard_led.hpp"
 
 #if !defined(BOOTLOADER) && !defined(CLANG_TIDY)
 #error Hyperload must be built as a 'bootloader' and not as an application or \
        test. Please build this software using 'make bootloader'
 #endif
+
+Uart uart2(Uart::Channels::kUart2);
+
+// NOLINTNEXTLINE(readability-identifier-naming)
+void puts2(const char * str)
+{
+  size_t i;
+  for (i = 0; str[i] != '\0'; i++)
+  {
+    uart2.Send(str[i]);
+  }
+}
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 int printf2(const char * format, ...)
@@ -34,7 +46,7 @@ int printf2(const char * format, ...)
   int length = vsnprintf(buffer, kPrintfBufferSize, format, args);
   va_end(args);
 
-  uart2::Puts(buffer);
+  puts2(buffer);
   return length;
 }
 
@@ -202,29 +214,31 @@ int main(void)
   OnBoardLed leds;
   leds.Initialize();
   leds.SetAll(0);
-  uart2::Init(115200);
+  uart0.Initialize(38400);
+  uart2.Initialize(115200);
   printf2("Bootloader Debug Port Initialized!\n");
   // Flush any initial bytes
-  uart0::GetChar(500);
-  uart0::PutChar(0xFF);
+  uart0.Receive(500);
+  uart0.Send(0xFF);
   // Hyperload will send 0x55 to notify that it is alive!
-  if (0x55 == uart0::GetChar(500))
+  if (0x55 == uart0.Receive(500))
   {
     SetFlashAcceleratorSpeed(6);
     // Notify Hyperload that we're alive too!
-    uart0::PutChar(0xAA);
+    uart0.Send(0xAA);
     // Get new baud rate control word
     union BaudRateControlWord {
       uint8_t array[4];
       uint32_t word;
     };
     BaudRateControlWord control;
-    control.array[0] = uart0::GetChar(500);
-    control.array[1] = uart0::GetChar(500);
-    control.array[2] = uart0::GetChar(500);
-    control.array[3] = uart0::GetChar(500);
+    control.array[0] = uart0.Receive(500);
+    control.array[1] = uart0.Receive(500);
+    control.array[2] = uart0.Receive(500);
+    control.array[3] = uart0.Receive(500);
     // Echo it back to verify
-    uart0::PutChar(control.array[0]);
+    uart0.Send(control.array[0]);
+    printf2("control.array[0] = 0x%02X\n", control.array[0]);
     // Hyperload Frequency should be set to 48,000,000 for this to work
     // correctly It calculates the baud rate by: 48Mhz/(16//BAUD) - 1 = CW
     // (control word) So we solve for BAUD:  BAUD = (48/(CW + 1))/16
@@ -233,12 +247,12 @@ int main(void)
         (config::kSystemClockRate / (control_word_f + 1.0f)) / 16.0f;
     uint32_t baud_rate =
         static_cast<uint32_t>(hyperload::FindNearestBaudRate(approx_baud));
-    uart0::Init(baud_rate);
+    uart0.SetBaudRate(baud_rate);
     // Wait for host to change it's baud rate
     Delay(500);
     // Send our CPU information along with data parameters:
     // Name:Blocksize:Bootsize/2:FlashSize
-    uart0::Puts("$LPC4078:4096:32768:512\n");
+    puts("$LPC4078:4096:32768:512\n");
     bool finished = false;
     for (uint32_t sector_number = kStartSector; !finished; sector_number++)
     {
@@ -248,7 +262,7 @@ int main(void)
       if (result == IapResult::kCmdSuccess)
       {
         leds.SetAll(0);
-        uart2::Puts("Sector Flash Successful!\n");
+        puts2("Sector Flash Successful!\n");
       }
       else
       {
@@ -256,17 +270,17 @@ int main(void)
         leds.SetAll(error);
         printf2("Flashing error %s!\n",
                 kIapResultString[static_cast<uint32_t>(result)]);
-        uart0::PutChar(kOtherError);
+        uart0.Send(kOtherError);
       }
     }
-    uart2::Puts("Programming Finished!\n");
-    uart2::Puts("Sending final acknowledge!\n");
+    puts2("Programming Finished!\n");
+    puts2("Sending final acknowledge!\n");
     Delay(500);
-    uart0::PutChar(kHyperloadFinished);
+    uart0.Send(kHyperloadFinished);
   }
   // Change baud rate back to 38400 so that user can continue using a serial
   // monitor for the final bootloader message and application messages.
-  uart0::Init(config::kBaudRate);
+  uart0.Initialize(config::kBaudRate);
 
   IsrPointer * application_vector_table =
       reinterpret_cast<IsrPointer *>(&(flash->application));
@@ -283,7 +297,7 @@ int main(void)
   }
   else if (application_entry_isr == reinterpret_cast<void *>(0xFFFFFFFFUL))
   {
-    uart0::Puts("Application Not Found, Halting System ...\n");
+    puts("Application Not Found, Halting System ...\n");
     Halt();
   }
 
@@ -298,7 +312,7 @@ int main(void)
   // Moving the interrupt vector table pointer
   SCB->VTOR = reinterpret_cast<intptr_t>(application_vector_table);
   // Jump to application code
-  uart0::Puts("Booting Application...\n");
+  puts("Booting Application...\n");
   application_entry_isr();
   return 0;
 }
@@ -310,7 +324,7 @@ uint8_t WriteUartToBlock(Block_t * block)
   uint32_t checksum = 0;
   for (uint32_t position = 0; position < kBlockSize; position++)
   {
-    uint8_t byte          = uart0::GetChar(100);
+    uint8_t byte          = uart0.Receive(100);
     block->data[position] = byte;
     checksum += byte;
   }
@@ -324,15 +338,15 @@ bool WriteUartToRamSector(Sector_t * sector)
   // Blank RAM sector to all 1s
   memset(sector, 0xFF, sizeof(*sector));
   printf2("Writing to Ram Sector...\n");
-  uart0::PutChar(kHyperloadReady);
+  uart0.Send(kHyperloadReady);
   while (blocks_written < kBlocksPerSector)
   {
-    uint8_t block_number_msb = uart0::GetChar(1000);
-    uint8_t block_number_lsb = uart0::GetChar(100);
+    uint8_t block_number_msb = uart0.Receive(1000);
+    uint8_t block_number_lsb = uart0.Receive(100);
     uint32_t block_number    = (block_number_msb << 8) | block_number_lsb;
     if (0xFFFF == block_number)
     {
-      uart2::Puts("End Of Blocks\n");
+      puts2("End Of Blocks\n");
       finished = true;
       break;
     }
@@ -340,17 +354,17 @@ bool WriteUartToRamSector(Sector_t * sector)
     {
       uint32_t partition        = block_number % kBlocksPerSector;
       uint8_t checksum          = WriteUartToBlock(&sector->block[partition]);
-      uint8_t expected_checksum = uart0::GetChar(1000);
+      uint8_t expected_checksum = uart0.Receive(1000);
       if (checksum != expected_checksum)
       {
-        uart0::PutChar(kChecksumError);
+        uart0.Send(kChecksumError);
       }
       else
       {
         blocks_written++;
         if (blocks_written < 8)
         {
-          uart0::PutChar(kHyperloadReady);
+          uart0.Send(kHyperloadReady);
         }
       }
     }

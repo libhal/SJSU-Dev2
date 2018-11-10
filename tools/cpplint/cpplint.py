@@ -5849,7 +5849,8 @@ def FlagCxx11Features(filename, clean_lines, linenum, error):
                                       'future',
                                       'mutex',
                                       'thread',
-                                      'chrono',
+                                      # 'chrono', # SJSU-Dev2
+                                      'iostream', # SJSU-Dev2
                                       'ratio',
                                       'regex',
                                       'system_error',

@@ -11,6 +11,7 @@
 #include <cstdint>
 
 #include "config.hpp"
+#include "L2_Utilities/log.hpp"
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/rtos.hpp"
 // Must include FreeRTOS before event_groups.h

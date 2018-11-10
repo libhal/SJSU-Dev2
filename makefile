@@ -4,6 +4,8 @@
 PROJ    ?= firmware
 # Affects what DBC is generated for SJSUOne board
 ENTITY  ?= DBG
+# Optimization level
+OPT=0
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
@@ -98,7 +100,7 @@ CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 # -fno-omit-frame-pointer -rdynamic
 # CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
 # -fsingle-precision-constant
-OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections \
+OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
             -fno-exceptions -fomit-frame-pointer
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
@@ -128,12 +130,11 @@ CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) -MMD -MP -c
 
 ifeq ($(MAKECMDGOALS), test)
 CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
-         -fno-inline-small-functions -fno-default-inline \
-		     -fno-builtin \
+         -fno-inline-small-functions -fno-default-inline -fno-builtin \
          -ftest-coverage --coverage \
-         -fno-elide-constructors -D HOST_TEST=1 \
+				 -Wno-unused -fno-elide-constructors -D HOST_TEST=1 \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
-         -O0
+         -O0 -g
 CPPFLAGS = $(CFLAGS)
 else
 CFLAGS = $(CFLAGS_COMMON)
@@ -332,7 +333,7 @@ $(SIZE): $(EXECUTABLE)
 $(LIST): $(EXECUTABLE)
 	@echo ' '
 	@echo 'Invoking: Cross ARM GNU Create Assembly Listing'
-	@$(OBJDUMP) --disassemble --all-headers --demangle --wide "$<" > "$@"
+	@$(OBJDUMP) --disassemble --all-headers --source --demangle --wide "$<" > "$@"
 	@echo 'Finished building: $@'
 	@echo ' '
 

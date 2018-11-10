@@ -1,8 +1,10 @@
 // system clock class set clock outputs frequency and selects clock source
 #pragma once
+
 #include <cstdint>
-#include "L0_LowLevel/delay.hpp"
+
 #include "L0_LowLevel/LPC40xx.h"
+#include "L2_Utilities/log.hpp"
 #include "L2_Utilities/macros.hpp"
 
 class SystemClockInterface
