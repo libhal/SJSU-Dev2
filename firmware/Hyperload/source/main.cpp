@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iterator>
 
 #include "config.hpp"
 #include "L4_Application/globals.hpp"
@@ -173,7 +174,7 @@ const float kStandardBaudRates[] = {
 float FindNearestBaudRate(float baud_rate)
 {
   float result = 38400;
-  for (size_t i = 0; i < SJ2_ARRAY_LENGTH(kStandardBaudRates); i++)
+  for (size_t i = 0; i < std::size(kStandardBaudRates); i++)
   {
     if (0.9f * kStandardBaudRates[i] <= baud_rate &&
         baud_rate <= 1.1f * kStandardBaudRates[i])
