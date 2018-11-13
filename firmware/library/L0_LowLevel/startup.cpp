@@ -214,11 +214,9 @@ extern "C" void ResetIsr(void)
 
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
-  int32_t result = main();
+  [[maybe_unused]] int32_t result = main();
 // Enforce the warning after this point
 #pragma GCC diagnostic pop
-  // Get rid of unused warning.
-  SJ2_USED(result);
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
   Halt();

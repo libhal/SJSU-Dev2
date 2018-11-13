@@ -70,10 +70,9 @@ inline Status Wait(uint64_t timeout)
 }
 
 // Delay the system for a duration of time
-inline void Delay(uint64_t delay_time_ms)
+inline void Delay([[maybe_unused]] uint64_t delay_time_ms)
 {
 #if defined(HOST_TEST)
-  SJ2_USED(delay_time_ms);
   return;
 #else
   Wait(delay_time_ms);

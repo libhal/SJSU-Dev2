@@ -20,11 +20,13 @@
 #else
 #define SJ2_SECTION(section_name) __attribute__((used, section(section_name)))
 #endif
-/// SJ2_USED will use void casting as a means to convince the compiler that the
+/// DO NOT USE this macro directly. Use the C++17 attribute [[maybe_unused]]
+/// instead.
+/// _SJ2_USED will use void casting as a means to convince the compiler that the
 /// variable has been used in the software, to remove compiler warnings about
 /// unused variables.
 /// NOTE: this will not stop the compiler from optimizing this variable out.
-#define SJ2_USED(variable) ((void)variable)
+#define _SJ2_USED(variable) ((void)variable)
 /// SJ2_VARIADIC_USED can suppress unused parameter warnings within macros when
 /// supplied with __VA_ARGS__.
 inline void UsedVariadicFunction(...) {}

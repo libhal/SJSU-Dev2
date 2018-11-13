@@ -37,9 +37,8 @@ void LedToggle(void * parameters)
   }
 }
 
-void ButtonReader(void * parameters)
+void ButtonReader([[maybe_unused]] void * parameters)
 {
-  SJ2_USED(parameters);
   DEBUG_PRINT("Setting up task...");
   DEBUG_PRINT("Initializing SW3...");
   Gpio switch3(1, 14);
