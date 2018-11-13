@@ -1,6 +1,7 @@
 #include <project_config.hpp>
 
 #include <cstdint>
+#include <iterator>
 
 #include "L2_Utilities/log.hpp"
 #include "L2_Utilities/time.hpp"
