@@ -140,13 +140,13 @@ struct FileBasename_t
   } while (0)
 
 #if defined HOST_TEST
-#define SJ2_ASSERT_FATAL(condition, fatal_message, ...)               \
-  /* Without the if statement using the (condition) and SJ2_USED() */ \
-  /* the compiler may complain about unused variables.             */ \
-  /* This serves to silence those warnings during host tests.      */ \
-  if (condition)                                                      \
-  {                                                                   \
-    SJ2_USED(fatal_message);                                          \
+#define SJ2_ASSERT_FATAL(condition, fatal_message, ...)                \
+  /* Without the if statement using the (condition) and _SJ2_USED() */ \
+  /* the compiler may complain about unused variables.              */ \
+  /* This serves to silence those warnings during host tests.       */ \
+  if (condition)                                                       \
+  {                                                                    \
+    _SJ2_USED(fatal_message);                                          \
   }
 #else
 #define SJ2_ASSERT_FATAL(condition, fatal_message, ...) \

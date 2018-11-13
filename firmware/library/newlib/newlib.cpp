@@ -36,17 +36,15 @@ extern "C"
 {
   // Dummy implementation of isatty
   // NOLINTNEXTLINE(readability-identifier-naming)
-  int _isatty(int file)
+  int _isatty([[maybe_unused]] int file)
   {
-    SJ2_USED(file);
     return 1;
   }
   // Dummy implementation of exit with return code placed into
   // Arm register r3
   // NOLINTNEXTLINE(readability-identifier-naming)
-  void _exit(int rc)
+  void _exit([[maybe_unused]] int rc)
   {
-    SJ2_USED(rc);
     while (1)
     {
       continue;
@@ -67,9 +65,8 @@ extern "C"
   // Dummy implementation of fstat, makes the assumption that the "device"
   // representing, in this case STDIN, STDOUT, and STDERR as character devices.
   // NOLINTNEXTLINE(readability-identifier-naming)
-  int _fstat(int file, struct stat * status)
+  int _fstat([[maybe_unused]] int file, struct stat * status)
   {
-    SJ2_USED(file);
     status->st_mode = S_IFCHR;
     return 0;
   }
@@ -90,16 +87,14 @@ extern "C"
   }
   // Dummy implementation of close
   // NOLINTNEXTLINE(readability-identifier-naming)
-  int _close(int file)
+  int _close([[maybe_unused]] int file)
   {
-    SJ2_USED(file);
     return -1;
   }
   // Minimum implementation of _write using UART0 putchar
   // NOLINTNEXTLINE(readability-identifier-naming)
-  int _write(int file, char * ptr, int length)
+  int _write([[maybe_unused]] int file, char * ptr, int length)
   {
-    SJ2_USED(file);
     for (int i = 0; i < length; i++)
     {
       // TODO(#81): either make this inline, or swap with function that can
@@ -110,11 +105,9 @@ extern "C"
   }
   // Dummy implementation of _lseek
   // NOLINTNEXTLINE(readability-identifier-naming)
-  int _lseek(int file, int ptr, int dir)
+  int _lseek([[maybe_unused]] int file, [[maybe_unused]] int ptr,
+             [[maybe_unused]] int dir)
   {
-    SJ2_USED(file);
-    SJ2_USED(ptr);
-    SJ2_USED(dir);
     return 0;
   }
   // Minimum implementation of _read using UART0 getchar

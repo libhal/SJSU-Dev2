@@ -247,17 +247,17 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   // away as the variables never actually get used.  If the debugger won't
   // show the values of the variables, make them global my moving their
   // declaration outside of this function.
-  volatile uint32_t r0;
-  volatile uint32_t r1;
-  volatile uint32_t r2;
-  volatile uint32_t r3;
-  volatile uint32_t r12;
+  [[maybe_unused]] volatile uint32_t r0;
+  [[maybe_unused]] volatile uint32_t r1;
+  [[maybe_unused]] volatile uint32_t r2;
+  [[maybe_unused]] volatile uint32_t r3;
+  [[maybe_unused]] volatile uint32_t r12;
   // Link register.
-  volatile uint32_t lr;
+  [[maybe_unused]] volatile uint32_t lr;
   // Program counter.
-  volatile uint32_t pc;
+  [[maybe_unused]] volatile uint32_t pc;
   // Program status register.
-  volatile uint32_t psr;
+  [[maybe_unused]] volatile uint32_t psr;
 
   r0 = fault_stack_address[0];
   r1 = fault_stack_address[1];
@@ -268,15 +268,6 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   lr  = fault_stack_address[5];
   pc  = fault_stack_address[6];
   psr = fault_stack_address[7];
-
-  SJ2_USED(r0);
-  SJ2_USED(r1);
-  SJ2_USED(r2);
-  SJ2_USED(r3);
-  SJ2_USED(r12);
-  SJ2_USED(lr);
-  SJ2_USED(pc);
-  SJ2_USED(psr);
 
   DEBUG_PRINT("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32 ", "
               "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 " ",
