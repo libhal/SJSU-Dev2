@@ -40,8 +40,6 @@ inline void UsedVariadicFunction(...) {}
 ///
 #define SJ2_STRINGIFY(s) SJ2_STRINGIFY2(s)
 #define SJ2_STRINGIFY2(s) #s
-/// Returns the length of an array
-#define SJ2_ARRAY_LENGTH(array) sizeof(array) / sizeof(*array)
 /// SJ2_PACKED give a specified type a packed attribute
 #define SJ2_PACKED(type) type __attribute__((packed))
 // SJ2_IGNORE_STACK_TRACE will remove function profiling for this

@@ -33,6 +33,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <iterator>
 
 #include "L0_LowLevel/interrupt.hpp"
 #include "L2_Utilities/log.hpp"
@@ -61,7 +62,7 @@ extern "C"
   {
     *ppx_idle_task_tcb_buffer   = &idle_task_tcb;
     *ppx_idle_task_stack_buffer = idle_task_stack;
-    *pul_idle_task_stack_size   = SJ2_ARRAY_LENGTH(idle_task_stack);
+    *pul_idle_task_stack_size   = std::size(idle_task_stack);
   }
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
