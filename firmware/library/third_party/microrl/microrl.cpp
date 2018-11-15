@@ -13,6 +13,16 @@ BUGS and TODO:
 #include <stdio.h>
 #endif
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wall"
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wdouble-promotion"
+#pragma GCC diagnostic ignored "-Wshadow"
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#pragma GCC diagnostic ignored "-Wwrite-strings"
+
 //#define DBG(...) fprintf(stderr, "\033[33m");fprintf(stderr,__VA_ARGS__);fprintf(stderr,"\033[0m");
 
 char * prompt_default = (char *)_PROMPT_DEFAULT;
@@ -693,3 +703,5 @@ void microrl_insert_char (microrl_t * pThis, int ch)
 	}
 #endif
 }
+
+#pragma GCC diagnostic pop  // SJSU-Dev2
