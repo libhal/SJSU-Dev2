@@ -1,6 +1,7 @@
 #include <project_config.hpp>
 
 #include <cstdio>
+#include <iterator>
 
 #include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/log.hpp"
@@ -25,7 +26,7 @@ int main(void)
           uart2.Send(message[i]);
         }
         // This second loop receives all the sent data and prints it out
-        for (size_t i = 0; i < SJ2_ARRAY_LENGTH(message)-1; i++)
+        for (size_t i = 0; i < std::size(message)-1; i++)
         {
             char receive = uart2.Receive();
             putchar(receive);

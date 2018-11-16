@@ -91,8 +91,7 @@ int main(void)
     uint16_t z = accelerometer.memory.z;
     DEBUG_PRINT("x = %d :: y = %d :: z = %d", x, y, z);
 
-    std::array<uint8_t, 6> xyz = accelerometer.memory.xyz;
-    SJ2_USED(xyz);
+    [[maybe_unused]] std::array<uint8_t, 6> xyz = accelerometer.memory.xyz;
     uint8_t x_msb = accelerometer.memory.xyz[0];
     uint8_t x_lsb = accelerometer.memory.xyz[1];
     DEBUG_PRINT("x = 0x%02X%02X", x_msb, x_lsb);

@@ -1,5 +1,8 @@
 // Tests for the TaskScheduler singleton class.
 #include "L4_Application/task.hpp"
+
+#include <iterator>
+
 #include "L5_Testing/testing_frameworks.hpp"
 
 EventGroupHandle_t test_event_group_handle;
@@ -18,7 +21,7 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
     "Task 7",  "Task 8",  "Task 9",  "Task 10", "Task 11", "Task 12",
     "Task 13", "Task 14", "Task 15", "Task 16", "Task 17",
   };
-  constexpr uint8_t kTotalTestTaskCount          = SJ2_ARRAY_LENGTH(task_names);
+  constexpr uint8_t kTotalTestTaskCount          = std::size(task_names);
   TaskHandle_t task_handles[kTotalTestTaskCount] = { NULL };
   Mock<TaskInterface> mock_tasks[kTotalTestTaskCount];
 

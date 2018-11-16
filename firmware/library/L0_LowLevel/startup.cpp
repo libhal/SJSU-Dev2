@@ -33,6 +33,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <iterator>
 
 #include "L0_LowLevel/interrupt.hpp"
 #include "L2_Utilities/log.hpp"
@@ -61,7 +62,7 @@ extern "C"
   {
     *ppx_idle_task_tcb_buffer   = &idle_task_tcb;
     *ppx_idle_task_stack_buffer = idle_task_stack;
-    *pul_idle_task_stack_size   = SJ2_ARRAY_LENGTH(idle_task_stack);
+    *pul_idle_task_stack_size   = std::size(idle_task_stack);
   }
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
@@ -213,11 +214,9 @@ extern "C" void ResetIsr(void)
 
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
-  int32_t result = main();
+  [[maybe_unused]] int32_t result = main();
 // Enforce the warning after this point
 #pragma GCC diagnostic pop
-  // Get rid of unused warning.
-  SJ2_USED(result);
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
   Halt();

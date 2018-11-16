@@ -88,7 +88,9 @@ class Example : public ExampleInterface
   // about using a constexpr constructor, is that the microcontroller doesn't
   // have to spend time running the constructor, it is known at compile time,
   // constructed at compile time and baked into the .data section.
-  constexpr Example(uint8_t port, uint32_t speed, bool echo_to_usb)
+  constexpr Example([[maybe_unused]] uint8_t port,
+                    [[maybe_unused]] uint32_t speed,
+                    [[maybe_unused]] bool echo_to_usb)
       : can_rx_(can_rx_pin_),
         can_tx_(can_tx_pin_),
         usb_d_minus_(usb_d_minus_pin_),
@@ -98,9 +100,6 @@ class Example : public ExampleInterface
         usb_d_minus_pin_(Pin::CreatePin<2, 3>()),
         usb_d_plus_pin_(Pin::CreatePin<2, 4>())
   {
-    SJ2_USED(port);
-    SJ2_USED(speed);
-    SJ2_USED(echo_to_usb);
     // Do other constructor stuff here ...
   }
   // Construction using externally constructed mosi, miso, and sck pins.
@@ -133,12 +132,11 @@ class Example : public ExampleInterface
   {
     // Do some action stuff here ...
   }
-  void SendData(const uint8_t * payload, bool readback = false) override
+  void SendData([[maybe_unused]] const uint8_t * payload,
+                [[maybe_unused]] bool readback = false) override
   {
     // Ignore these two lines, these are here to suppress the "unused"
     // variable warning.
-    SJ2_USED(payload);
-    SJ2_USED(readback);
     // Send data here ...
   }
   void SetMode() override
