@@ -11,6 +11,7 @@
 
 #include "L1_Drivers/i2c.hpp"
 #include "L2_HAL/device_memory_map.hpp"
+#include "third_party/etl/vector.h"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 
@@ -114,7 +115,7 @@ class Apds9960Interface
   };
 
   virtual bool FindDevice()                                       = 0;
-  virtual void Initialize()                                       = 0;
+  virtual bool Initialize()                                       = 0;
   virtual bool SetMode(Mode mode, bool enable)                    = 0;
   virtual void EnableGesture()                                    = 0;
   virtual bool DisableGesture()                                   = 0;
@@ -123,7 +124,7 @@ class Apds9960Interface
   virtual uint8_t GetGestureFIFOLevel()                           = 0;
   virtual void ReadGestureFIFO(uint8_t * data, uint8_t fifolevel) = 0;
   virtual void ProcessGestureData(uint8_t level)                  = 0;
-  virtual Gesture DecodeGestureData(uint8_t level)                = 0;
+  virtual Gesture DecodeGestureData()                             = 0;
   virtual Gesture GetGesture()                                    = 0;
 };
 
@@ -131,12 +132,22 @@ class Apds9960 : public Apds9960Interface
 {
  public:
   static constexpr uint8_t kApds9960Address = 0x39;
-  // Avago-APDS-9960 : 32 x 4 byte FIFO = 128-bytes of data to store (page 33)
-  static constexpr uint8_t kMaxFifoSize = 128;
+  // Avago-APDS-9960 : 33 x 4 byte FIFO = 132 bytes of data to store at
+  // max/overflow (page 33)
+  static constexpr uint8_t kMaxFifoSize = 132;
   // User may change kMaxDataSize to adjust how many Direction Data points
   // to be collected, then DecodeGestureData(uint8_t) can be overloaded to
   // take care of new patterns of Direction points for different gestures
   static constexpr uint8_t kMaxDataSize = 8;
+  // Sensitivity variables may be adjusted if there are different environements
+  // in light, glass or screen on top of sensor to hide it, adjust the height
+  // of hands passing above, etc.
+  static constexpr int8_t kUpSensitivity    = 0;
+  static constexpr int8_t kDownSensitivity  = 0;
+  static constexpr int8_t kLeftSensitivity  = 0;
+  static constexpr int8_t kRightSensitivity = 0;
+  static constexpr int16_t kFarSensitivity  = 750;
+  static constexpr int16_t kNearSensitivity = 1000;
 
   // Defualt values for Gesture sensor initialization
   enum DefaultValues : uint8_t
@@ -165,65 +176,39 @@ class Apds9960 : public Apds9960Interface
     kAilt                   = 0xFF,
     kAiht                   = 0x00
   };
+  // TODO(#1): Move I2c out of static to make this driver more platform angostic
+  inline static I2c i2c;
+  inline static I2cDevice<&i2c, 0x39, device::Endian::kLittle,
+                          Apds9960Interface::MemoryMap_t>
+      gesture;
+  inline static etl::vector<Direction, kMaxDataSize> points;
 
-  constexpr Apds9960()
-      : up_sensitivity_(-75),
-        down_sensitivity_(75),
-        left_sensitivity_(-50),
-        right_sensitivity_(50),
-        far_sensitivity_(750),
-        near_sensitivity_(1000),
-        far_count_(0),
-        near_count_(0),
-        index_(0)
+  constexpr Apds9960() : gfifo_data_{ 0 }, far_count_(0), near_count_(0)
   {
-    for (int i = 0; i < kMaxDataSize; i++)
-    {
-      points_[i] = Direction::kNone;
-    }
-    for (int i = 0; i < kMaxFifoSize; i++)
-    {
-      gfifo_data_[i] = 0;
-    }
-  }
-  constexpr Apds9960(int8_t up_sensitivity, int8_t down_sensitivity,
-                     int8_t left_sensitivity, int8_t right_sensitivity,
-                     int16_t far_sensitivity, int16_t near_sensitivity)
-      : up_sensitivity_(up_sensitivity),
-        down_sensitivity_(down_sensitivity),
-        left_sensitivity_(left_sensitivity),
-        right_sensitivity_(right_sensitivity),
-        far_sensitivity_(far_sensitivity),
-        near_sensitivity_(near_sensitivity),
-        far_count_(0),
-        near_count_(0),
-        index_(0)
-  {
-    for (int i = 0; i < kMaxDataSize; i++)
-    {
-      points_[i] = Direction::kNone;
-    }
-    for (int i = 0; i < kMaxFifoSize; i++)
-    {
-      gfifo_data_[i] = 0;
-    }
+    i2c.Initialize();
   }
   bool FindDevice() override
   {
     bool device_found = false;
     uint8_t device_id = gesture.memory.device_id;
+
+    LOG_DEBUG("ID: %02X", device_id);
+
     if (device_id == 0xAB)
     {
       device_found = true;
     }
     return device_found;
   }
-  void Initialize() override
+  bool Initialize() override
   {
+    bool success = false;
     i2c.Initialize();
-    constexpr uint16_t kGestureConfig1And2    = (kGconfig2 << 8) | (kGconfig1);
-    constexpr uint16_t kGestureConfig3And4    = (kGconfig4 << 8) | (kGconfig3);
-    constexpr uint16_t kAlsInterruptThreshold = (kAilt << 8) | (kAilt);
+    constexpr uint16_t kGestureConfig1And2 = ((kGconfig2 << 8) | (kGconfig1));
+    constexpr uint16_t kGestureConfig3And4 = ((kGconfig4 << 8) | (kGconfig3));
+    constexpr uint16_t kAlsInterruptThreshold = ((kAilt << 8) | (kAilt));
+    constexpr uint16_t kGestureUpDownOffset =
+        ((kGoffsetUpDown << 8) | (kGoffsetUpDown));
     if (FindDevice())
     {
       gesture.memory.enable                            = kNoMode;
@@ -244,16 +229,18 @@ class Apds9960 : public Apds9960Interface
       gesture.memory.gesture_proximity_enter_threshold = kGPEnTh;
       gesture.memory.gesture_exit_threshold            = kGExTh;
       gesture.memory.gesture_configuration_1_2         = kGestureConfig1And2;
-      gesture.memory.gesture_up_down_offset            = kGoffsetUpDown;
+      gesture.memory.gesture_up_down_offset            = kGestureUpDownOffset;
       gesture.memory.gesture_left_offset               = kGoffsetLeftRight;
       gesture.memory.gesture_right_offset              = kGoffsetLeftRight;
       gesture.memory.gesture_pulse_count_and_length    = kGPulse;
       gesture.memory.gesture_configuration_3_4         = kGestureConfig3And4;
+      success                                          = true;
     }
     else
     {
       SJ2_ASSERT_WARNING(false, "Error Initializing Gesture Sensor");
     }
+    return success;
   }
   /// SetMode(uint8_t mode, bool enable)
   /// @param mode -> enables/disables individual bits of the ENABLE register
@@ -334,17 +321,12 @@ class Apds9960 : public Apds9960Interface
     if (overflow_value & 0b10)  // if overflow, clear FIFO data
     {
       LOG_INFO("overflow");
-      uint8_t level = 0;
-      level         = gesture.memory.gesture_fifo_level;
-
-      uint8_t throw_away[kMaxFifoSize];
-      while (level != 0)
-      {
-        ReadGestureFIFO(throw_away, level);
-        level = gesture.memory.gesture_fifo_level;
-      }
+      value = 32;
     }
-    value = gesture.memory.gesture_fifo_level;
+    else
+    {
+      value = gesture.memory.gesture_fifo_level;
+    }
     return value;
   }
   void ProcessGestureData(uint8_t level) override
@@ -353,98 +335,101 @@ class Apds9960 : public Apds9960Interface
     // Store raw gesture data in a 4x32 uint8_t array
     for (int i = 0; i < (4 * level); i += 4)
     {
-      // Check which photodiode pair sensed more IR light
-      if (abs((gfifo_data_[i] - gfifo_data_[i + 1])) >
-          abs((gfifo_data_[i + 2] - gfifo_data_[i + 3])))
+      if (!points.full())
       {
-        // If a photodiode has a smaller value,
-        // then that photodiode was covered and movement detected
-        if ((gfifo_data_[i] - gfifo_data_[i + 1]) < up_sensitivity_)  // Up
+        // Check which photodiode pair sensed more IR light
+        if (abs((gfifo_data_[i] - gfifo_data_[i + 1])) >
+            abs((gfifo_data_[i + 2] - gfifo_data_[i + 3])))
         {
-          points_[index_] = Direction::kUp;
-          index_++;
+          // If a photodiode has a smaller value,
+          // then that photodiode was covered and movement detected
+          if ((gfifo_data_[i] - gfifo_data_[i + 1]) < kUpSensitivity)  // Up
+          {
+            points.push_back(Direction::kUp);
+          }
+          else if ((gfifo_data_[i] - gfifo_data_[i + 1]) >
+                   kDownSensitivity)  // Down
+          {
+            points.push_back(Direction::kDown);
+          }
         }
-        else if ((gfifo_data_[i] - gfifo_data_[i + 1]) >
-                 down_sensitivity_)  // Down
+        else
         {
-          points_[index_] = Direction::kDown;
-          index_++;
-        }
-      }
-      else
-      {
-        // If a photodiode has a smaller value,
-        // then that photodiode was covered and movement detected
-        if ((gfifo_data_[i + 2] - gfifo_data_[i + 3]) <
-            left_sensitivity_)  // Left
-        {
-          points_[index_] = Direction::kLeft;
-          index_++;
-        }
-        else if ((gfifo_data_[i + 2] - gfifo_data_[i + 3]) >
-                 right_sensitivity_)  // Right
-        {
-          points_[index_] = Direction::kRight;
-          index_++;
+          // If a photodiode has a smaller value,
+          // then that photodiode was covered and movement detected
+          if ((gfifo_data_[i + 2] - gfifo_data_[i + 3]) <
+              kLeftSensitivity)  // Left
+          {
+            points.push_back(Direction::kLeft);
+          }
+          else if ((gfifo_data_[i + 2] - gfifo_data_[i + 3]) >
+                   kRightSensitivity)  // Right
+          {
+            points.push_back(Direction::kRight);
+          }
         }
       }
       // Check the sum of all photodiodes
       if ((gfifo_data_[i] + gfifo_data_[i + 1] + gfifo_data_[i + 2] +
-           gfifo_data_[i + 3]) > near_sensitivity_)  // Near
+           gfifo_data_[i + 3]) > kNearSensitivity)  // Near
       {
         near_count_++;
       }
       else if ((gfifo_data_[i] + gfifo_data_[i + 1] + gfifo_data_[i + 2] +
-                gfifo_data_[i + 3]) < far_sensitivity_)  // Far
+                gfifo_data_[i + 3]) < kFarSensitivity)  // Far
       {
         far_count_++;
       }
     }
   }
-  Gesture DecodeGestureData(uint8_t level) override
+  Gesture DecodeGestureData() override
   {
     Gesture result = kError;
+    bool found     = false;
 
-    if (level > 15)
+    if (far_count_ > 5)
     {
-      if (far_count_ > 5)
-      {
-        result = kFAR;
-      }
-      else if (near_count_ > 5)
-      {
-        result = kNEAR;
-      }
+      result = kFAR;
+      found  = true;
+    }
+    else if (near_count_ > 5)
+    {
+      result = kNEAR;
+      found  = true;
     }
 
-    for (int i = 0; i < kMaxDataSize; i++)
+    for (uint8_t i = 0; i < points.size() - 1 && !found; i++)
     {
       // Check initial point, then check next point
       // to figure out the direction of the swipe
-      switch (points_[i])
+      switch (points[i])
       {
         case Direction::kUp:
-          if (points_[i + 1] == Direction::kDown)
+          if (points[i + 1] == Direction::kDown)
           {
             result = kSwipeDOWN;
+            found  = true;
           }
           break;
         case Direction::kDown:
-          if (points_[i + 1] == Direction::kUp)
+          if (points[i + 1] == Direction::kUp)
           {
             result = kSwipeUP;
+            found  = true;
           }
           break;
         case Direction::kLeft:
-          if (points_[i + 1] == Direction::kRight)
+          if (points[i + 1] == Direction::kRight)
           {
             result = kSwipeRIGHT;
+            found  = true;
           }
           break;
         case Direction::kRight:
-          if (points_[i + 1] == Direction::kLeft)
+          if (points[i + 1] == Direction::kLeft)
           {
             result = kSwipeLEFT;
+            found  = true;
           }
           break;
           // If no valid point, then check near/far counts
@@ -455,48 +440,37 @@ class Apds9960 : public Apds9960Interface
   }
   Gesture GetGesture() override
   {
+    Gesture result            = kError;
+    uint8_t gesture_interrupt = 0;
+
     if (CheckIfGestureOccured())
     {
       // check if gesture ended
-      if (ReadGestureMode() == 0)
+      if ((ReadGestureMode() == 0))
       {
         uint8_t level = 0;
         level         = (GetGestureFIFOLevel());
         ReadGestureFIFO(gfifo_data_, level);
 
         // reset processing variables
-        index_      = 0;
         near_count_ = 0;
         far_count_  = 0;
-        for (int i = 0; i < 8; i++)
+        points.clear();
+
+        gesture_interrupt = (gesture.memory.device_status & 0x04);
+
+        if (gesture_interrupt == 0)
         {
-          points_[i] = Direction::kNone;
+          ProcessGestureData(level);
+          result = DecodeGestureData();
         }
-
-        ProcessGestureData(level);
-
-        return DecodeGestureData(level);
       }
     }
-    return Gesture::kError;
+    return result;
   }
 
  private:
-  inline static I2c i2c;
-  inline static I2cDevice<&i2c, 0x39, device::Endian::kLittle,
-                          Apds9960Interface::MemoryMap_t>
-      gesture;
-
-  int8_t up_sensitivity_;
-  int8_t down_sensitivity_;
-  int8_t left_sensitivity_;
-  int8_t right_sensitivity_;
-  int16_t far_sensitivity_;
-  int16_t near_sensitivity_;
-
-  uint8_t gfifo_data_[kMaxFifoSize] = {};
-  Direction points_[kMaxDataSize]   = {};
-  uint8_t far_count_                = 0;
-  uint8_t near_count_               = 0;
-  uint8_t index_                    = 0;
+  uint8_t gfifo_data_[kMaxFifoSize];
+  uint8_t far_count_;
+  uint8_t near_count_;
 };
