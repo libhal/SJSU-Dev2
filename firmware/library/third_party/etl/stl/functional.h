@@ -1,3 +1,6 @@
+// SJSU-Dev2: Adding system_header
+#pragma GCC system_header
+
 
 #ifndef ETL_STL_FUNCTIONAL_INCLUDED
 #define ETL_STL_FUNCTIONAL_INCLUDED

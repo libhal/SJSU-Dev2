@@ -1,3 +1,6 @@
+// SJSU-Dev2: Adding system_header
+#pragma GCC system_header
+
 ///\file
 
 /******************************************************************************
@@ -1131,21 +1134,21 @@ namespace etl
   void sort(TIterator first, TIterator last, TCompare compare = TCompare())
   {
     typedef typename std::iterator_traits<TIterator>::difference_type difference_t;
-  
+
     difference_t n = std::distance(first, last);
 
-    for (difference_t i = n / 2; i > 0; i /= 2) 
+    for (difference_t i = n / 2; i > 0; i /= 2)
     {
-      for (difference_t j = i; j < n; ++j) 
+      for (difference_t j = i; j < n; ++j)
       {
         for (difference_t k = j - i; k >= 0; k -= i)
         {
-          TIterator itr1 = first; 
+          TIterator itr1 = first;
           TIterator itr2 = first;
-          
+
           std::advance(itr1, k);
           std::advance(itr2, k + i);
-          
+
           if (compare(*itr2, *itr1))
           {
             std::iter_swap(itr1, itr2);

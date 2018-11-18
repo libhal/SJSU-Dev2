@@ -1,3 +1,6 @@
+// SJSU-Dev2: Adding system_header
+#pragma GCC system_header
+
 /******************************************************************************
 The MIT License(MIT)
 
