@@ -96,10 +96,8 @@ endif
 # FLAGS #
 #########
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
-			 -fabi-version=0
-# -fno-omit-frame-pointer -rdynamic
-# CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
-# -fsingle-precision-constant
+			       -fabi-version=0 -finstrument-functions \
+			       -finstrument-functions-exclude-file-list=L0_LowLevel
 OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
             -fno-exceptions -fomit-frame-pointer
 CPPOPTIMIZE = -fno-rtti
