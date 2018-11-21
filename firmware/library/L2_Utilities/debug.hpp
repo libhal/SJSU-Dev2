@@ -64,15 +64,17 @@ inline void Hexdump(void * address, uint32_t length)
   printf("%08" PRIX32 "  \n", length);
 }
 
-inline void PrintTrace()
+inline void PrintBacktrace()
 {
-  printf("Stack Depth = %zd\n", stack_depth);
-  // stack_depth-1 to ignore PrintTrace()
-  // PrintTrace shouldn't be ignored in profiling because it causes the exit to
-  // still fire, which results in a negative stack_depth
+  printf("Stack Depth = %zd\n", GetStackDepth());
+  // stack_depth-1 to ignore PrintBacktrace()
+  // PrintBacktrace shouldn't be ignored in profiling because it causes
+  // the exit to still fire, which can result in a negative stack_depth
+  void ** list_of_called_functions = GetStackTrace();
+  size_t stack_depth = GetStackDepth();
   for (size_t pos = 0; pos < stack_depth; pos++)
   {
-    printf("  #%zu: 0x%p\n", pos, stack_trace[pos]);
+    printf("  #%zu: 0x%p\n", pos, list_of_called_functions[pos]);
   }
 }
 

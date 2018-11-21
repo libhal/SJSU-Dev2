@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 #include "config.hpp"
+#include "L2_Utilities/debug.hpp"
 #include "L2_Utilities/log.hpp"
 
 int Baz(void)
@@ -15,7 +16,7 @@ int Baz(void)
   LOG_INFO(
       "Everything in the middle is the sequence of calls that got you to this "
       "point.\n");
-  SJ2_DUMP_BACKTRACE();
+  debug::PrintBacktrace();
   puts("\n");
   return 2;
 }

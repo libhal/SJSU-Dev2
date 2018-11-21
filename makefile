@@ -79,7 +79,7 @@ COVERAGE  = $(BUILD_DIR)/coverage
 LIB_DIR   = $(SJLIBDIR)
 FIRMWARE  = $(SJBASE)/firmware
 TOOLS     = $(SJBASE)/tools
-COMPILED_HEADERS    = $(BUILD_DIR)/headers
+COMPILED_HEADERS  = $(BUILD_DIR)/headers
 CURRENT_DIRECTORY	= $(shell pwd)
 # Source files folder
 SOURCE    = source

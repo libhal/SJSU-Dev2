@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstring>
+
 #include "L2_Utilities/macros.hpp"
 
 using Stdout = int (*)(int);
@@ -8,11 +10,9 @@ extern Stdout out;
 using Stdin = int (*)();
 extern Stdin in;
 
-// NOLINTNEXTLINE(readability-identifier-naming)
-extern "C" int _write(int file, char * ptr, int length);
+void ** GetStackTrace();
+size_t GetStackDepth();
 
-extern "C" void * stack_trace[config::kBacktraceDepth];
-extern "C" size_t stack_depth;
 // Not ignoring the profile functions within the stack trace will result in
 // an recursive loop.
 extern "C"

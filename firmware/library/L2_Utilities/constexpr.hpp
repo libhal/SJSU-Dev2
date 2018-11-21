@@ -2,6 +2,25 @@
 
 #include <cstdlib>
 
+// Constructing this structure with a file path, will generate a structure with
+// a character array containing just the bare basename.
+template <size_t kPathLength, size_t kBasenameLength>
+struct FileBasename_t
+{
+  constexpr explicit FileBasename_t(const char (&path)[kPathLength])
+      : basename{}
+  {
+    size_t base_position = 0;
+    for (size_t i = kPathLength - kBasenameLength; i < kPathLength; i++)
+    {
+      basename[base_position] = path[i];
+      base_position++;
+    }
+    basename[base_position - 1] = '\0';
+  }
+  char basename[kBasenameLength];
+};
+
 constexpr size_t StringLength(const char * str)
 {
   size_t result = 0;
