@@ -5,6 +5,7 @@
 
 #include "L2_Utilities/log.hpp"
 #include "L4_Application/globals.hpp"
+#include "third_party/etl/vector.h"
 #include "third_party/microrl/microrl.h"
 
 /// CommandInterface is the set of methods that every command must support
@@ -109,12 +110,12 @@ class Command : public CommandInterface
 template <size_t kNumberOfCommands>
 struct CommandList_t
 {
-  CommandList_t() : command{ nullptr } {}
+  CommandList_t() : commands{ nullptr } {}
   constexpr size_t size()  // NOLINT
   {
     return kNumberOfCommands;
   }
-  CommandInterface * command[kNumberOfCommands];
+  etl::vector<CommandInterface *, kNumberOfCommands> commands;
 };
 namespace command
 {
@@ -174,15 +175,9 @@ class CommandLine
   ///
   /// @param command the address of a command object to store in the command
   ///        list.
-  bool AddCommand(CommandInterface * command)
+  void AddCommand(CommandInterface * command)
   {
-    bool command_was_added = false;
-    if (command_position_ < command_list.size())
-    {
-      command_list.command[command_position_++] = command;
-      command_was_added                         = true;
-    }
-    return command_was_added;
+    command_list.commands.push_back(command);
   }
   /// Starts the command line and waits for input from the user. This will put
   /// the system in an infinite loop. To exit this loop, the `quit` command must
@@ -215,34 +210,31 @@ class CommandLine
   /// entered and run's that command objects AutoComplete handler method.
   static char ** AutoCompleteHandler(int argc, const char * const argv[])
   {
-    size_t position                 = 0;
+    size_t position                = 0;
     autocomplete_options[position] = nullptr;
     // If the first command hasn't been completed yet
     if (argc <= 1)
     {
       // Iterate through our available token and match it
-      for (size_t i = 0; command_list.command[i] != nullptr; i++)
+      for (const auto & command : command_list.commands)
       {
         // If token is matched (text is part of our token starting from 0 char)
-        if (strstr(command_list.command[i]->GetName(), argv[0]) ==
-            command_list.command[i]->GetName())
+        if (strstr(command->GetName(), argv[0]) == command->GetName())
         {
           // Add it to completion set
-          autocomplete_options[position++] =
-              command_list.command[i]->GetName();
+          autocomplete_options[position++] = command->GetName();
         }
       }
     }
     else
     {
-      for (size_t i = 0; command_list.command[i] != nullptr; i++)
+      for (const auto & command : command_list.commands)
       {
         // If token is matched (text is part of our token starting from 0 char)
-        if (std::strcmp(command_list.command[i]->GetName(), argv[0]) == 0)
+        if (std::strcmp(command->GetName(), argv[0]) == 0)
         {
-          position = command_list.command[i]->AutoComplete(
-              argc, argv, autocomplete_options,
-              std::size(autocomplete_options));
+          position = command->AutoComplete(argc, argv, autocomplete_options,
+                                           std::size(autocomplete_options));
           break;
         }
       }
@@ -261,18 +253,18 @@ class CommandLine
   static int ExecuteCommand(int argc, const char * const argv[])
   {
     // Result of 0x7F means that the command was not found. See
-    int result                 = 0x7F;
-    bool a_command_was_handled = false;
-    for (size_t i = 0;
-         command_list.command[i] != nullptr && !a_command_was_handled; i++)
+    int result               = 0x7F;
+    bool command_was_handled = false;
+    for (const auto & command : command_list.commands)
     {
-      if (strcmp(argv[0], command_list.command[i]->GetName()) == 0)
+      if (strcmp(argv[0], command->GetName()) == 0)
       {
-        result                = command_list.command[i]->Program(argc, argv);
-        a_command_was_handled = true;
+        result              = command->Program(argc, argv);
+        command_was_handled = true;
+        break;
       }
     }
-    if (!a_command_was_handled)
+    if (!command_was_handled)
     {
       LOG_WARNING("Command: '%s' Not found", argv[0]);
     }
@@ -289,14 +281,14 @@ class CommandLine
   static int List(int, const char * const[])
   {
     printf("List of commands:\n------------------\n\n");
-    for (size_t i = 0; command_list.command[i] != nullptr; i++)
+    for (size_t i = 0; command_list.commands[i] != nullptr; i++)
     {
-      printf("%*s - %s\n", 10, command_list.command[i]->GetName(),
-             command_list.command[i]->GetDescription());
+      printf("%*s - %s\n", 10, command_list.commands[i]->GetName(),
+             command_list.commands[i]->GetDescription());
     }
     return 0;
   }
-  static inline bool is_commandline_running = false;
+  static inline bool is_commandline_running                             = false;
   static inline const char * autocomplete_options[kAutoCompleteOptions] = {
     nullptr
   };
