@@ -1,7 +1,6 @@
 // SJSU-Dev2: Adding system_header
 #pragma GCC system_header
 
-
 ///\file
 
 /******************************************************************************
@@ -35,11 +34,17 @@ SOFTWARE.
 #ifndef ETL_ERROR_HANDLER_INCLUDED
 #define ETL_ERROR_HANDLER_INCLUDED
 
+// #if !defined(LOG_PRINT)
+// #warning "Da faq!!"
+// #error "Why can't this be found"
+// #endif
+
 ///\defgroup error_handler error_handler
 /// Error handler for when throwing exceptions is not required.
 ///\ingroup utilities
-#include "L2_Utilities/log.hpp"
 #include <assert.h>
+
+#include "L2_Utilities/log.hpp"
 
 #include "platform.h"
 #include "exception.h"
@@ -136,7 +141,11 @@ namespace etl
     #if defined(NDEBUG)
       #define ETL_ASSERT(b, e) {if(!(b)) {etl::error_handler::error((e));}}              // If the condition fails, calls the error handler
     #else
-      #define ETL_ASSERT(b, e) {if(!(b)) {etl::error_handler::error((e));} SJ2_ASSERT_FATAL((b), "");} // If the condition fails, calls the error handler then asserts.
+      #define ETL_ASSERT(b, e) \
+        { \
+          if(!(b)) {etl::error_handler::error((e));} \
+          SJ2_ASSERT_FATAL((b), ""); \
+        } // If the condition fails, calls the error handler then asserts.
     #endif
   #else
     #if defined(NDEBUG)

@@ -165,3 +165,13 @@ extern "C"
     stack_depth--;
   }
 }
+
+void ** GetStackTrace()
+{
+  return stack_trace;
+}
+
+size_t GetStackDepth()
+{
+  return stack_depth;
+}

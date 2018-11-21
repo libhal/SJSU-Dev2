@@ -10,37 +10,11 @@
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/time.hpp"
 
-// Constructing this structure with a file path, will generate a structure with
-// a character array containing just the bare basename.
-template <size_t kPathLength, size_t kBasenameLength>
-struct FileBasename_t
-{
-  constexpr explicit FileBasename_t(const char (&path)[kPathLength])
-      : basename{}
-  {
-    size_t base_position = 0;
-    for (size_t i = kPathLength - kBasenameLength; i < kPathLength; i++)
-    {
-      basename[base_position] = path[i];
-      base_position++;
-    }
-    basename[base_position - 1] = '\0';
-  }
-  char basename[kBasenameLength];
-};
-
 #if SJ2_DESCRIPTIVE_FUNCTION_NAME
 #define SJ2_LOG_FUNCTION __PRETTY_FUNCTION__
 #else
 #define SJ2_LOG_FUNCTION ""
 #endif
-// SJ2_DUMP_BACKTRACE will print a list of the called functions leading up to
-// where this macro is called.
-#if defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
-#define SJ2_DUMP_BACKTRACE() ::debug::PrintTrace()
-#else
-#define SJ2_DUMP_BACKTRACE()
-#endif  // defined SJ2_INCLUDE_BACKTRACE && SJ2_INCLUDE_BACKTRACE == true
 // Printf style logging with filename, function name, and line number
 #if SJ2_DEBUG_PRINT_ENABLED
 #define DEBUG_PRINT(format, ...)                                      \
@@ -127,7 +101,7 @@ struct FileBasename_t
       if ((with_dump))                                                        \
       {                                                                       \
         printf("\nPrinting Stack Trace:\n\n");                                \
-        SJ2_DUMP_BACKTRACE();                                                 \
+        ::debug::PrintBacktrace();                                            \
         printf(                                                               \
             "\nRun: the following command in your project directory"          \
             "\n\n    " SJ2_BOLD_WHITE                                         \
