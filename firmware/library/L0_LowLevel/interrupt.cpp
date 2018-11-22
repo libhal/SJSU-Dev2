@@ -9,8 +9,6 @@
 #include "L2_Utilities/time.hpp"
 #include "L4_Application/globals.hpp"
 
-#define SJ2_VECTOR_OPTIMIZE __attribute__((weak, no_instrument_function))
-
 #if defined HOST_TEST
 // NOLINTNEXTLINE(readability-identifier-naming)
 IsrPointer dynamic_isr_vector_table[56] = { nullptr };
@@ -19,21 +17,8 @@ DEFINE_FAKE_VOID_FUNC(NVIC_EnableIRQ, IRQn_Type);
 DEFINE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
 DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 #else
-extern "C" {
-  // Forward declaration of the default handlers. These are aliased.
-  // When the application defines a handler (with the same name), this will
-  // automatically take precedence over these weak definitions
-  SJ2_VECTOR_OPTIMIZE SJ2_IGNORE_STACK_TRACE(void ResetIsr(void));
-  SJ2_VECTOR_OPTIMIZE void NmiHandler(void);
-  SJ2_VECTOR_OPTIMIZE void HardFaultHandler(void);
-  SJ2_VECTOR_OPTIMIZE void MemManageHandler(void);
-  SJ2_VECTOR_OPTIMIZE void BusFaultHandler(void);
-  SJ2_VECTOR_OPTIMIZE void UsageFaultHandler(void);
-  SJ2_VECTOR_OPTIMIZE void SvcHandler(void);
-  SJ2_VECTOR_OPTIMIZE void DebugMonHandler(void);
-  SJ2_VECTOR_OPTIMIZE void PendSVHandler(void);
-  SJ2_VECTOR_OPTIMIZE void SysTickHandler(void);
-  SJ2_WEAK void IntDefaultHandler(void);
+extern "C"
+{
   // Forward declaration of the specific IRQ handlers. These are aliased
   // to the IntDefaultHandler, which is a 'forever' loop. When the application
   // defines a handler (with the same name), this will automatically take
@@ -80,11 +65,10 @@ extern "C" {
   void GpioIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
   void Pwm0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
   void EepromIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-
-  // External declaration for LPC MCU vector table checksum from  Linker
-  // Script
-  SJ2_WEAK extern void ValidUserCodeChecksum();
+  // External declaration for LPC MCU vector table checksum from Linker Script
+  extern void ValidUserCodeChecksum();
 }
+
 // The Interrupt vector table.
 // This relies on the linker script to place at correct location in memory.
 SJ2_SECTION(".isr_vector")
@@ -197,12 +181,11 @@ IsrPointer dynamic_isr_vector_table[] = {
 };
 #endif  // defined HOST_TEST
 
-constexpr int32_t kIrqOffset = 16;
-
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
 void IntDefaultHandler(void)
 {
+  constexpr int32_t kIrqOffset = 16;
   uint8_t active_isr = (SCB->ICSR & 0xFF);
 
   IsrPointer isr = dynamic_isr_vector_table[(active_isr - kIrqOffset)];
@@ -232,9 +215,9 @@ void DeregisterIsr(IRQn_Type irq)
   dynamic_isr_vector_table[irq] = nullptr;
 }
 
-
 // Default exception handlers. Override the ones here by defining your own
 // handler routines in your application code.
+SJ2_WEAK
 SJ2_SECTION(".after_vectors")
 void NmiHandler(void)
 {
@@ -247,32 +230,24 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   // away as the variables never actually get used.  If the debugger won't
   // show the values of the variables, make them global my moving their
   // declaration outside of this function.
-  [[maybe_unused]] volatile uint32_t r0;
-  [[maybe_unused]] volatile uint32_t r1;
-  [[maybe_unused]] volatile uint32_t r2;
-  [[maybe_unused]] volatile uint32_t r3;
-  [[maybe_unused]] volatile uint32_t r12;
+  volatile uint32_t r0  = fault_stack_address[0];
+  volatile uint32_t r1  = fault_stack_address[1];
+  volatile uint32_t r2  = fault_stack_address[2];
+  volatile uint32_t r3  = fault_stack_address[3];
+  volatile uint32_t r12 = fault_stack_address[4];
   // Link register.
-  [[maybe_unused]] volatile uint32_t lr;
+  volatile uint32_t lr = fault_stack_address[5];
   // Program counter.
-  [[maybe_unused]] volatile uint32_t pc;
+  volatile uint32_t pc = fault_stack_address[6];
   // Program status register.
-  [[maybe_unused]] volatile uint32_t psr;
+  volatile uint32_t psr = fault_stack_address[7];
 
-  r0 = fault_stack_address[0];
-  r1 = fault_stack_address[1];
-  r2 = fault_stack_address[2];
-  r3 = fault_stack_address[3];
-
-  r12 = fault_stack_address[4];
-  lr  = fault_stack_address[5];
-  pc  = fault_stack_address[6];
-  psr = fault_stack_address[7];
-
-  DEBUG_PRINT("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32 ", "
+  DEBUG_PRINT("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32
+              ", "
               "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 " ",
               r0, r1, r2, r3);
-  DEBUG_PRINT("r12: 0x%08" PRIX32 ", lr: 0x%08" PRIX32 ", "
+  DEBUG_PRINT("r12: 0x%08" PRIX32 ", lr: 0x%08" PRIX32
+              ", "
               "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "",
               r12, lr, pc, psr);
 
@@ -298,36 +273,42 @@ void HardFaultHandler(void)
 #endif
 }
 
+SJ2_WEAK
 SJ2_SECTION(".after_vectors")
 void MemManageHandler(void)
 {
   Halt();
 }
 
+SJ2_WEAK
 SJ2_SECTION(".after_vectors")
 void BusFaultHandler(void)
 {
   Halt();
 }
 
+SJ2_WEAK
 SJ2_SECTION(".after_vectors")
 void UsageFaultHandler(void)
 {
   Halt();
 }
 
+SJ2_WEAK
 SJ2_SECTION(".after_vectors")
 void SvcHandler(void)
 {
   Halt();
 }
 
+SJ2_WEAK
 SJ2_SECTION(".after_vectors")
 void DebugMonHandler(void)
 {
   Halt();
 }
 
+SJ2_WEAK
 SJ2_SECTION(".after_vectors")
 void PendSVHandler(void)
 {

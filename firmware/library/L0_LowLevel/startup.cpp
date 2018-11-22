@@ -77,6 +77,7 @@ SJ2_IGNORE_STACK_TRACE(void InitBssSection());
 SJ2_IGNORE_STACK_TRACE(void InitFpu());
 SJ2_IGNORE_STACK_TRACE(void __libc_init_array());
 SJ2_IGNORE_STACK_TRACE(void LowLevelInit());
+SJ2_IGNORE_STACK_TRACE(void SystemInit());
 
 // .data Section Table Information
 SJ2_PACKED(struct)
@@ -89,10 +90,7 @@ DataSectionTable_t
 extern DataSectionTable_t data_section_table[];
 extern DataSectionTable_t data_section_table_end;
 
-// Functions to carry out the initialization of RW and BSS data sections. These
-// are written as separate functions rather than being inlined within the
-// ResetIsr() function in order to cope with MCUs with multiple banks of
-// memory.
+// Functions to carry out the initialization of RW and BSS data sections.
 SJ2_SECTION(".after_vectors")
 void InitDataSection()
 {
@@ -197,10 +195,12 @@ void SystemInit()
 }
 
 SJ2_SECTION(".crp") constexpr uint32_t kCrpWord = 0xFFFFFFFF;
-
 // Reset entry point for your code.
 // Sets up a simple runtime environment and initializes the C/C++ library.
-extern "C" void ResetIsr(void)
+
+extern "C"
+{
+void ResetIsr(void)
 {
   // The Hyperload bootloader takes up stack space to execute. The Hyperload
   // bootloader function launches this ISR manually, but it never returns thus
@@ -220,4 +220,5 @@ extern "C" void ResetIsr(void)
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
   Halt();
+}
 }
