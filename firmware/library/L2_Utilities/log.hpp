@@ -95,8 +95,8 @@
   {                                                                           \
     if (!(condition))                                                         \
     {                                                                         \
-      LOG_CRITICAL("Assertion Failed: " #condition                            \
-                   " " fatal_message SJ2_COLOR_RESET,                         \
+      LOG_CRITICAL("Assertion Failure, Condition Tested: " #condition         \
+                   "\n          " fatal_message SJ2_COLOR_RESET,             \
                    ##__VA_ARGS__);                                            \
       if ((with_dump))                                                        \
       {                                                                       \

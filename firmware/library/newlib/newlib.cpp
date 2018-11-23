@@ -21,15 +21,12 @@ int GetChar()
   return static_cast<int>(uart0.Receive());
 }
 
-constexpr int32_t kHeapSize = 32768;
 #if defined(HOST_TEST)
 Stdout out = putchar;
 Stdin in   = getchar;
-uint8_t heap[kHeapSize];
 #else
 Stdout out = PutChar;
 Stdin in   = GetChar;
-extern uint8_t heap[kHeapSize];
 #endif
 
 extern "C"
@@ -74,16 +71,16 @@ extern "C"
   // NOLINTNEXTLINE(readability-identifier-naming)
   void * _sbrk(int increment)
   {
-    static uint8_t * heap_end = heap;
-    void * previous_heap_end  = static_cast<void *>(heap_end);
+    static uint8_t * heap_position = &heap;
+    void * previous_heap_position  = static_cast<void *>(heap_position);
 
     // Check that by allocating this space, we do not exceed the heap area.
-    if ((heap_end + increment) - heap > kHeapSize)
+    if ((heap_position + increment) > &heap_end)
     {
-      previous_heap_end = nullptr;
+      previous_heap_position = nullptr;
     }
-    heap_end += increment;
-    return previous_heap_end;
+    heap_position += increment;
+    return previous_heap_position;
   }
   // Dummy implementation of close
   // NOLINTNEXTLINE(readability-identifier-naming)

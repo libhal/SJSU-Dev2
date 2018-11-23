@@ -45,7 +45,7 @@ void rtos::TaskScheduler::RunTask(void * task_ptr)
       vTaskDelayUntil(&last_wake_time, delay_time);
     }
   }
-};
+}
 
 void rtos::TaskScheduler::InitializeAllTasks()
 {
@@ -69,7 +69,7 @@ void rtos::TaskScheduler::InitializeAllTasks()
       xEventGroupCreateStatic(&pre_run_event_group_buffer_);
   SJ2_ASSERT_FATAL(pre_run_event_group_handle_ != nullptr,
                    "Failed to create PreRun Event Group!");
-};
+}
 
 void rtos::TaskScheduler::RemoveTask(const char * task_name)
 {
@@ -85,7 +85,7 @@ void rtos::TaskScheduler::RemoveTask(const char * task_name)
   }
   task_list_[kTaskIndex] = nullptr;
   task_count_--;
-};
+}
 
 uint8_t rtos::TaskScheduler::GetTaskIndex(const char * task_name)
 {
