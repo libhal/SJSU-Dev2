@@ -43,16 +43,16 @@ class TaskScheduler final : public TaskSchedulerInterface
     static TaskScheduler instance;
     return instance;
   };
-  inline EventGroupHandle_t GetPreRunEventGroupHandle() override
+  EventGroupHandle_t GetPreRunEventGroupHandle() override
   {
     return pre_run_event_group_handle_;
   };
-  inline EventBits_t GetPreRunSyncBits() override
+  EventBits_t GetPreRunSyncBits() override
   {
     return pre_run_sync_bits_;
   };
   // @return Returns the current number of scheduled tasks.
-  inline uint8_t GetTaskCount() override
+  uint8_t GetTaskCount() override
   {
     return task_count_;
   };
@@ -78,7 +78,7 @@ class TaskScheduler final : public TaskSchedulerInterface
         return;
       }
     }
-  };
+  }
   // Removes a specified task by its name and updates the task_list_ and
   // task_count_.
   // @param task_name  Name of the task to remove.
@@ -87,7 +87,7 @@ class TaskScheduler final : public TaskSchedulerInterface
   //
   // @param   task_name Name of the task.
   // @return  Returns nullptr if the task does not exist. Otherwise, returns a
-  //          pointer reference to the retreived task with the matching name.
+  //          pointer reference to the retrieved task with the matching name.
   TaskInterface * GetTask(const char * task_name) override
   {
     const uint32_t kTaskIndex = GetTaskIndex(task_name);
@@ -96,7 +96,7 @@ class TaskScheduler final : public TaskSchedulerInterface
       return nullptr;
     }
     return task_list_[kTaskIndex];
-  };
+  }
   // Used to get a task's index to determine the sync bit for the PreRun event
   // group.
   //
@@ -105,10 +105,10 @@ class TaskScheduler final : public TaskSchedulerInterface
   //          scheduled, kTaskSchedulerSize + 1 will be returned.
   uint8_t GetTaskIndex(const char * task_name) override;
   // @return Returns a pointer reference to all currently scheduled tasks.
-  inline TaskInterface ** GetAllTasks()
+  TaskInterface ** GetAllTasks()
   {
     return task_list_;
-  };
+  }
   // Starts the scheduler and attempts to initialize all tasks.
   // If there are currently no tasks scheduled, a fatal error will be
   // asserted.
@@ -121,7 +121,7 @@ class TaskScheduler final : public TaskSchedulerInterface
     InitializeAllTasks();
     vTaskStartScheduler();
     // does not reach this point
-  };
+  }
 
  private:
   // Array containing all scheduled tasks.

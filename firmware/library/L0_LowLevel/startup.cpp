@@ -79,17 +79,6 @@ SJ2_IGNORE_STACK_TRACE(void __libc_init_array());
 SJ2_IGNORE_STACK_TRACE(void LowLevelInit());
 SJ2_IGNORE_STACK_TRACE(void SystemInit());
 
-// .data Section Table Information
-SJ2_PACKED(struct)
-DataSectionTable_t
-{
-  uint32_t * rom_location;
-  uint32_t * ram_location;
-  uint32_t length;
-};
-extern DataSectionTable_t data_section_table[];
-extern DataSectionTable_t data_section_table_end;
-
 // Functions to carry out the initialization of RW and BSS data sections.
 SJ2_SECTION(".after_vectors")
 void InitDataSection()
@@ -102,16 +91,6 @@ void InitDataSection()
     memcpy(ram_location, rom_location, length);
   }
 }
-
-// .bss Section Table Information
-SJ2_PACKED(struct)
-BssSectionTable_t
-{
-  uint32_t * ram_location;
-  uint32_t length;
-};
-extern BssSectionTable_t bss_section_table[];
-extern BssSectionTable_t bss_section_table_end;
 
 // Functions to initialization BSS data sections. This is important because
 // the std c libs assume that BSS is set to zero.

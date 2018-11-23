@@ -4,7 +4,7 @@
 #include "L4_Application/task.hpp"
 #include "semphr.h"
 
-class PrinterTask : public rtos::Task<256>
+class PrinterTask : public rtos::Task<512>
 {
  public:
   constexpr PrinterTask(const char * task_name, const char * message)
