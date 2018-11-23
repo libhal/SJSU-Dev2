@@ -133,6 +133,11 @@ extern "C"
   {
     out(character);
   }
+  // Needed by third party printf library
+  int putchar(int character)  // NOLINT
+  {
+    return out(character);
+  }
   // Overload default nano puts() with a more optimal version of puts
   int puts(const char * str)  // NOLINT
   {
