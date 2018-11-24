@@ -145,7 +145,6 @@ class Ssd1306
     ssp_->SetPeripheralMode(Ssp::MasterSlaveMode::kMaster, Ssp::FrameMode::kSpi,
                             Ssp::DataSize::kEight);
     ssp_->SetClock(false, false, 1, 48);
-    ssp_->SetPeripheralPower();
     ssp_->Initialize();
 
     InitializationPanel();
