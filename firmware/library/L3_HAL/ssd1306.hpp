@@ -1,24 +1,30 @@
 #pragma once
 
 #include <cstddef>
-
-#include <algorithm>
 #include <cstdint>
 
+#include "config.hpp"
 #include "L1_Drivers/gpio.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "L1_Drivers/ssp.hpp"
 #include "L2_Utilities/log.hpp"
+#include "L3_HAL/displays.hpp"
 
-class Ssd1306
+class Ssd1306 : public DisplayInterface
 {
  public:
-  static constexpr size_t kWidth        = 128;  // pixels
-  static constexpr size_t kColumns      = kWidth;
+  static constexpr size_t kColumns      = 128;
+  static constexpr size_t kWidth        = kColumns;                 // pixels
   static constexpr size_t kColumnHeight = 8;                        // bits
   static constexpr size_t kHeight       = 64;                       // pixels
   static constexpr size_t kPages        = kHeight / kColumnHeight;  // rows
   static constexpr size_t kRows         = kPages;
+
+  enum class Transaction
+  {
+    kCommand = 0,
+    kData    = 1
+  };
 
   constexpr Ssd1306()
       : ssp_(&ssp1_),
@@ -27,7 +33,7 @@ class Ssd1306
         ssp1_(Ssp::Peripheral::kSsp1),
         cs_gpio_(1, 22),
         dc_gpio_(1, 25),
-        bitmap_{}
+        bitmap_{ 0 }
   {
   }
 
@@ -38,21 +44,41 @@ class Ssd1306
         ssp1_(),
         cs_gpio_(1, 22),
         dc_gpio_(1, 25),
-        bitmap_{}
+        bitmap_{ 0 }
   {
   }
 
-  enum class Transaction
+  size_t GetWidth() final override
   {
-    kCommand = 0,
-    kData    = 1
-  };
+    return kWidth;
+  }
+  size_t GetHeight() final override
+  {
+    return kHeight;
+  }
+  Color_t AvailableColors() final override
+  {
+    return Color_t(/* Red        = */ 1,
+                   /* Green      = */ 1,
+                   /* Blue       = */ 1,
+                   /* Alpha      = */ 1,
+                   /* Color Bits = */ 1,
+                   /* Monochrome = */ true);
+  }
 
-  void Write(uint8_t data, Transaction transaction)
+  void Write(uint32_t data, Transaction transaction, size_t size = 1)
   {
     dc_->Set(static_cast<Gpio::State>(transaction));
     cs_->SetLow();
-    ssp_->Transfer(data);
+    for (size_t i = 0; i < size; i++)
+    {
+      uint8_t send = static_cast<uint8_t>(data >> (((size - 1) - i) * 8));
+      if (transaction == Transaction::kCommand)
+      {
+        LOG_DEBUG("send = 0x%X", send);
+      }
+      ssp_->Transfer(send);
+    }
     cs_->SetHigh();
   }
 
@@ -62,80 +88,56 @@ class Ssd1306
     //   datasheets/OLED-display/ER-OLED0.96-1_Series_Datasheet.pdf, page 15
 
     // turn off oled panel
-    Write(0xae, Transaction::kCommand);
+    Write(0xAE, Transaction::kCommand);
 
     // set display clock divide ratio/oscillator frequency
-    Write(0xd5, Transaction::kCommand);
     // set divide ratio
-    Write(0x80, Transaction::kCommand);
+    Write(0xD5'80, Transaction::kCommand, 2);
 
     // set multiplex ratio(1 to 64)
-    Write(0xa8, Transaction::kCommand);
     // 1/64 duty
-    Write(0x3f, Transaction::kCommand);
+    Write(0xA8'3F, Transaction::kCommand, 2);
 
-    // set display offset
-    Write(0xd3, Transaction::kCommand);
-    // not offset
-    Write(0x00, Transaction::kCommand);
+    // set display offset = not offset
+    Write(0xD3'00, Transaction::kCommand, 2);
 
-    // set Charge Pump enable/disable
-    Write(0x8d, Transaction::kCommand);
-    // set(0x10) disable
-    Write(0x14, Transaction::kCommand);
-
-    // set start line address
+    // Set display start line
     Write(0x40, Transaction::kCommand);
 
-    // set normal display
-    Write(0xa6, Transaction::kCommand);
-
-    // Disable Entire Display On
-    Write(0xa4, Transaction::kCommand);
+    // Disable Charge Pump
+    Write(0x8D'14, Transaction::kCommand, 2);
 
     // set segment re-map 128 to 0
-    Write(0xa1, Transaction::kCommand);
+    Write(0xA1, Transaction::kCommand);
 
     // Set COM Output Scan Direction 64 to 0
     Write(0xC8, Transaction::kCommand);
 
     // set com pins hardware configuration
-    Write(0xda, Transaction::kCommand);
-    Write(0x12, Transaction::kCommand);
+    Write(0xDA'12, Transaction::kCommand, 2);
 
     // set contrast control register
-    Write(0x81, Transaction::kCommand);
-    Write(0xCF, Transaction::kCommand);
+    Write(0x81'CF, Transaction::kCommand, 2);
 
     // Set pre-charge period
-    Write(0xd9, Transaction::kCommand);
-    Write(0xf1, Transaction::kCommand);
+    Write(0xD9'F1, Transaction::kCommand, 2);
 
     // Set Vcomh
-    Write(0xdb, Transaction::kCommand);
-    Write(0x40, Transaction::kCommand);
+    Write(0xDB'40, Transaction::kCommand, 2);
 
-    // Set Addressing mode
-    Write(0x20, Transaction::kCommand);
-    // Addressing mode = Horizontal Mode
-    Write(0x00, Transaction::kCommand);
-    // Set Column Addresses
-    Write(0x21, Transaction::kCommand);
-    // Set Column Address start = Column 0
-    Write(0x00, Transaction::kCommand);
-    // Set Column Address start = Column 127
-    Write(0xff, Transaction::kCommand);
-    // Set Page Addresses
-    Write(0x22, Transaction::kCommand);
-    // Set Page Address start = Page 0
-    Write(0x00, Transaction::kCommand);
-    // Set Page Address start = Page 7
-    Write(0xff, Transaction::kCommand);
+    SetHorizontalAddressMode();
 
-    // turn on oled panel
-    Write(0xaf, Transaction::kCommand);
+    // Enable entire display
+    Write(0xA4, Transaction::kCommand);
+
+    // Set display to normal colors
+    Write(0xA6, Transaction::kCommand);
+
+    // Set Display On
+    Write(0xAF, Transaction::kCommand);
   }
-  void Initialize()
+
+  void Initialize() final override
   {
     cs_->SetAsOutput();
     dc_->SetAsOutput();
@@ -144,25 +146,57 @@ class Ssd1306
 
     ssp_->SetPeripheralMode(Ssp::MasterSlaveMode::kMaster, Ssp::FrameMode::kSpi,
                             Ssp::DataSize::kEight);
-    ssp_->SetClock(false, false, 1, 48);
+    // Set speed to 1Mhz by dividing by 1 * ClockFrequencyInMHz.
+    ssp_->SetClock(false, false, 100, config::kSystemClockRateMhz);
     ssp_->Initialize();
 
+    Clear();
     InitializationPanel();
   }
-  /// Clears the internal bitmap_ to zero (or a user defined clear_value)
-  ///
-  /// @param clear_value the value you would like to use to fill internal
-  ///        datastructure with. Defaults to writing 0x00 (zeros)
-  void Clear(uint8_t clear_value = 0x00)
+
+  void SetHorizontalAddressMode()
   {
-    for (size_t i = 0; i < kPages * kWidth; i++)
-    {
-      Write(clear_value, Transaction::kData);
-    }
+    // Set Addressing mode
+    // Addressing mode = Horizontal Mode (0b00)
+    Write(0x20'00, Transaction::kCommand, 2);
+    // Set Column Addresses
+    // Set Column Address start = Column 0
+    // Set Column Address start = Column 127
+    Write(0x21'00'7F, Transaction::kCommand, 3);
+    // Set Page Addresses
+    // Set Page Address start = Page 0
+    // Set Page Address start = Page 7
+    Write(0x22'00'07, Transaction::kCommand, 3);
+  }
+  /// Clears the internal bitmap_ to zero (or a user defined clear_value)
+  void Clear() final override
+  {
+    memset(bitmap_, 0x00, sizeof(bitmap_));
+  }
+  void DrawPixel(int32_t x, int32_t y, Color_t color) final override
+  {
+    // The 3 least significant bits hold the bit position within the byte
+    uint32_t bit_position = y & 0b111;
+    // Each byte makes up a vertical column.
+    // Shifting by 3, which also divides by 8 (the 8-bits of a column), will
+    // be the row that we need to edit.
+    uint32_t row = y >> 3;
+    // Mask to clear the bit
+    uint32_t clear_mask = ~(1 << bit_position);
+    // Mask to set the bit, if color.alpha != 0
+    bool pixel_is_on  = (color.alpha != 0);
+    uint32_t set_mask = pixel_is_on << bit_position;
+    // Address of the pixel column to edit
+    uint8_t * pixel_column = &(bitmap_[row][x]);
+    // Read pixel column and update the pixel
+    uint32_t result = (*pixel_column & clear_mask) | set_mask;
+    // Update pixel with the result of this operation
+    *pixel_column = static_cast<uint8_t>(result);
   }
   /// Writes internal bitmap_ to the screen
-  void Update()
+  void Update() final override
   {
+    SetHorizontalAddressMode();
     for (size_t row = 0; row < kRows; row++)
     {
       for (size_t column = 0; column < kColumns; column++)
@@ -179,70 +213,6 @@ class Ssd1306
   {
     Write(0xA6, Transaction::kCommand);
   }
-  void SetPixel(size_t x, size_t y, bool pixel_is_on = true)
-  {
-    // The 3 least significant bits hold the bit position within the byte
-    uint32_t bit_position = y & 0b111;
-    // Each byte makes up a vertical column.
-    // Shifting by 3, which also divides by 8 (the 8-bits of a column), will
-    // be the row that we need to edit.
-    uint32_t row = y >> 3;
-    // Mask to clear the bit
-    uint32_t clear_mask = ~(1 << bit_position);
-    // Mask to set the bit, if pixel_is_on = true
-    uint32_t set_mask = pixel_is_on << bit_position;
-    // Address of the pixel column to edit
-    uint8_t * pixel_column = &(bitmap_[row][x]);
-    // Read pixel column and update the pixel
-    uint32_t result = (*pixel_column & clear_mask) | set_mask;
-    // Write back resulting operation
-    *pixel_column = static_cast<uint8_t>(result);
-  }
-  void DrawHorizontalLine(size_t x, size_t y, size_t line_width)
-  {
-    LOG_DEBUG("x = %zu :: y = %zu :: line_width = %zu", x, y, line_width);
-    line_width = std::clamp(x + line_width, size_t(0), kColumns - x);
-    for (size_t column = x; column < line_width; column++)
-    {
-      SetPixel(column, y);
-    }
-  }
-  void DrawVerticalLine(size_t x, size_t y, size_t line_height)
-  {
-    line_height = std::clamp(y + line_height, size_t(0), kHeight - y);
-    LOG_DEBUG("x = %zu :: y = %zu :: line_height = %zu", x, y, line_height);
-    for (size_t row = y; row < line_height; row++)
-    {
-      SetPixel(x, row);
-    }
-  }
-  void DrawRectangle(size_t x, size_t y, size_t width, size_t height)
-  {
-    height = std::clamp(height, size_t(0), kHeight - y);
-    width  = std::clamp(width, size_t(0), kWidth - x);
-    LOG_DEBUG("x = %zu :: y = %zu :: height = %zu :: width = %zu", x, y, width,
-              height);
-    // +---------------------
-    //
-    //
-    //
-    DrawHorizontalLine(x, y, width);
-    // ----------------------
-    //
-    //
-    // +---------------------
-    DrawHorizontalLine(x, y + height, width);
-    // +---------------------
-    // |
-    // |
-    // ----------------------
-    DrawVerticalLine(x, y, height);
-    // ---------------------+
-    // |                    |
-    // |                    |
-    // ----------------------
-    DrawVerticalLine(x + width, y, height);
-  }
 
  private:
   Ssp * ssp_;
@@ -252,5 +222,5 @@ class Ssd1306
   Ssp ssp1_;
   Gpio cs_gpio_;
   Gpio dc_gpio_;
-  uint8_t bitmap_[kRows][kColumns];
+  uint8_t bitmap_[kRows + 5][kColumns + 5];
 };
