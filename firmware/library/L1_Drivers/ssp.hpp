@@ -10,23 +10,11 @@
 
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin.hpp"
+#include "L2_Utilities/enum.hpp"
 
 class SspInterface
 {
  public:
-  // SSP peripherals
-  enum class Peripheral
-  {
-    kSsp0 = 0,
-    kSsp1 = 1
-  };
-
-  enum PowerOn
-  {
-    kPconp0 = 21,
-    kPconp1 = 10
-  };
-
   // SSP frame formats
   enum FrameMode
   {
@@ -60,10 +48,9 @@ class SspInterface
     kSixteen  = 0b1111,  // 16-bit transfer
   };
 
-  virtual bool Initialize()                     = 0;
+  virtual void Initialize()                     = 0;
   virtual bool GetTransferStatus()              = 0;
   virtual uint16_t Transfer(uint16_t data)      = 0;
-  virtual void SetPeripheralPower()             = 0;
   virtual void SetPeripheralMode(MasterSlaveMode mode, FrameMode frame,
                                  DataSize size) = 0;
   // NOTE: "divider" is the number of prescaler-output clocks per bit.
@@ -75,21 +62,19 @@ class SspInterface
 class Ssp : public SspInterface
 {
  public:
-  // SSP register lookup table
-  inline static LPC_SSP_TypeDef * ssp_registers[2] = { LPC_SSP0, LPC_SSP1 };
+  /// SSP register lookup table
+  inline static LPC_SSP_TypeDef * ssp_registers[]  = { LPC_SSP0, LPC_SSP1,
+                                                      LPC_SSP2 };
   inline static LPC_SC_TypeDef * sysclock_register = LPC_SC;
-  static constexpr uint8_t kEnableSspPins = 0b010;
-
-  enum PortPins : uint8_t
+  /// SSP peripherals
+  enum class Peripheral
   {
-    kPort0 = 0,
-    kPin7  = 7,
-    kPin8  = 8,
-    kPin9  = 9,
-    kPin15 = 15,
-    kPin17 = 17,
-    kPin18 = 18
+    kSsp0 = 0,
+    kSsp1 = 1,
+    kSsp2 = 2,
+    kNumberOfPeripherals
   };
+
   enum RegisterBitPositions : uint8_t
   {
     kDataBit         = 0,
@@ -101,16 +86,41 @@ class Ssp : public SspInterface
     kDataLineIdleBit = 4
   };
 
-  // Default constructor sets up SSP0 peripheral as SPI master
+  enum MatrixLookup
+  {
+    kMosi = 0,
+    kMiso = 1,
+    kSck  = 2,
+  };
+
+  static constexpr uint8_t kPinSelect[] = { 0b010, 0b010, 0b100 };
+  static constexpr size_t kNumberOfPeripherals =
+      util::Value(Peripheral::kNumberOfPeripherals);
+  static constexpr Pin kSspPinMatrix[kNumberOfPeripherals][3] = {
+    // SSP0
+    { [MatrixLookup::kMosi] = Pin::CreatePin<0, 18>(),
+      [MatrixLookup::kMiso] = Pin::CreatePin<0, 17>(),
+      [MatrixLookup::kSck]  = Pin::CreatePin<0, 15>() },
+    // SSP1
+    { [MatrixLookup::kMosi] = Pin::CreatePin<0, 9>(),
+      [MatrixLookup::kMiso] = Pin::CreatePin<0, 8>(),
+      [MatrixLookup::kSck]  = Pin::CreatePin<0, 7>() },
+    // SSP2
+    { [MatrixLookup::kMosi] = Pin::CreatePin<1, 1>(),
+      [MatrixLookup::kMiso] = Pin::CreatePin<1, 4>(),
+      [MatrixLookup::kSck]  = Pin::CreatePin<1, 0>() }
+  };
+  static constexpr uint8_t kPowerOnBit[] = { 21, 10, 20 };
+
+  /// Default constructor sets up SSP0 peripheral as SPI master
   constexpr Ssp()
-      : mosi_(mosi_pin_),
-        miso_(miso_pin_),
-        sck_(sck_pin_),
-        mosi_pin_(kPort0, kPin18),
-        miso_pin_(kPort0, kPin17),
-        sck_pin_(kPort0, kPin15),
+      : mosi_(&mosi_pin_),
+        miso_(&miso_pin_),
+        sck_(&sck_pin_),
+        mosi_pin_(kSspPinMatrix[0][MatrixLookup::kMosi]),
+        miso_pin_(kSspPinMatrix[0][MatrixLookup::kMiso]),
+        sck_pin_(kSspPinMatrix[0][MatrixLookup::kSck]),
         pssp_(Peripheral::kSsp0),
-        pconp_bits_(kPconp0),
         master_mode_(kMaster),
         data_size_(kEight),
         frame_format_(kSpi),
@@ -121,19 +131,17 @@ class Ssp : public SspInterface
   {
   }
 
-  // User modified constructor. **MUST** be followed by the setter functions
-  // for Power, Clock, and Frame format found below.
+  /// User modified constructor. **MUST** be followed by the setter functions
+  /// for Power, Clock, and Frame format found below.
   explicit constexpr Ssp(Peripheral set_pssp)
-      : mosi_(mosi_pin_),
-        miso_(miso_pin_),
-        sck_(sck_pin_),
-        mosi_pin_(kPort0, ((set_pssp == Peripheral::kSsp0) ? kPin18 : kPin9)),
-        miso_pin_(kPort0, ((set_pssp == Peripheral::kSsp0) ? kPin17 : kPin8)),
-        sck_pin_(kPort0, ((set_pssp == Peripheral::kSsp0) ? kPin15 : kPin7)),
-
+      : mosi_(&mosi_pin_),
+        miso_(&miso_pin_),
+        sck_(&sck_pin_),
+        mosi_pin_(kSspPinMatrix[util::Value(set_pssp)][MatrixLookup::kMosi]),
+        miso_pin_(kSspPinMatrix[util::Value(set_pssp)][MatrixLookup::kMiso]),
+        sck_pin_(kSspPinMatrix[util::Value(set_pssp)][MatrixLookup::kSck]),
         // Must set all these values, default to 0
         pssp_(set_pssp),
-        pconp_bits_(static_cast<PowerOn>(0)),
         master_mode_(static_cast<MasterSlaveMode>(0)),
         data_size_(static_cast<DataSize>(0)),
         frame_format_(static_cast<FrameMode>(0)),
@@ -144,17 +152,16 @@ class Ssp : public SspInterface
   {
   }
 
-  // Unit-testing constructor, removed for production
+  // Constructor to pass in your own pins
   constexpr Ssp(Peripheral pssp, PinInterface * mosi_pin,
                 PinInterface * miso_pin, PinInterface * sck_pin)
-      : mosi_(*mosi_pin),
-        miso_(*miso_pin),
-        sck_(*sck_pin),
+      : mosi_(mosi_pin),
+        miso_(miso_pin),
+        sck_(sck_pin),
         mosi_pin_(Pin::CreateInactivePin()),
         miso_pin_(Pin::CreateInactivePin()),
         sck_pin_(Pin::CreateInactivePin()),
         pssp_(pssp),
-        pconp_bits_(static_cast<PowerOn>(0)),
         master_mode_(static_cast<MasterSlaveMode>(0)),
         data_size_(static_cast<DataSize>(0)),
         frame_format_(static_cast<FrameMode>(0)),
@@ -165,63 +172,57 @@ class Ssp : public SspInterface
   {
   }
 
-  // Powers on the desired peripheral and sets the peripheral clock. Also,
-  // enables the SSP data lines, format, data size, and more. See page 601
-  // of user manual UM10562 LPC408x/407x for more details.
-  bool Initialize() override
+  /// Powers on the peripheral, sets the peripheral clock, format, and data
+  /// size, and enables the SSP pins for communication see and more.
+  /// See page 601 of user manual UM10562 LPC408x/407x for more details.
+  void Initialize() override
   {
-    bool peripheral_initialized;
     uint32_t pssp = static_cast<uint32_t>(pssp_);
 
-    if (pssp_ > Peripheral::kSsp1)
+    DataSize check_data_size;
+    if (frame_format_ == kMicro)
     {
-      peripheral_initialized = 0;
+      check_data_size = kEight;
     }
     else
     {
-      // if frame mode is set for Microwire, force data_size_ = 8 bits
-      DataSize check_data_size =
-          (frame_format_ == kMicro) ? kEight : data_size_;
-      // Power up peripheral
-      sysclock_register->PCONP &= ~(1 << pconp_bits_);
-      sysclock_register->PCONP |= (1 << pconp_bits_);
-      ssp_registers[pssp]->CPSR &= ~(0xFF);
-      ssp_registers[pssp]->CPSR |= (clock_prescaler_);
-
-      // Enable SSP pins
-      mosi_.SetPinFunction(kEnableSspPins);
-      miso_.SetPinFunction(kEnableSspPins);
-      sck_.SetPinFunction(kEnableSspPins);
-
-      // Clear and Set Control Register values
-      ssp_registers[pssp]->CR0 &=
-          ~((0xF << kDataBit) | (0x3 << kFrameBit) | (0x3 << kPolarityBit) |
-            (0xFF << kDividerBit));
-      ssp_registers[pssp]->CR0 |=
-          (check_data_size << kDataBit) | (frame_format_ << kFrameBit);
-
-      // set clk polarity = 1, clk phase set to 0
-      ssp_registers[pssp]->CR0 |=
-          (clock_polarity_ << kPolarityBit) | (clock_phase_ << kPhaseBit);
-      ssp_registers[pssp]->CR0 |= (clock_divider_ << kDividerBit);
-      // enable SSP
-      ssp_registers[pssp]->CR1 &= ~(1 << 1);
-      ssp_registers[pssp]->CR1 |= (1 << 1);
-      ssp_registers[pssp]->CR1 &= ~(1 << kMasterModeBit);
-      ssp_registers[pssp]->CR1 |= (master_mode_ << kMasterModeBit);
-      peripheral_initialized = 1;
+      check_data_size = data_size_;
     }
-    return peripheral_initialized;
+    // Power up peripheral
+    sysclock_register->PCONP &= ~(1 << kPowerOnBit[pssp]);
+    sysclock_register->PCONP |= (1 << kPowerOnBit[pssp]);
+    ssp_registers[pssp]->CPSR &= ~(0xFF);
+    ssp_registers[pssp]->CPSR |= (clock_prescaler_);
+
+    // Enable SSP pins
+    mosi_->SetPinFunction(kPinSelect[pssp]);
+    miso_->SetPinFunction(kPinSelect[pssp]);
+    sck_->SetPinFunction(kPinSelect[pssp]);
+
+    // Clear and Set Control Register values
+    ssp_registers[pssp]->CR0 &=
+        ~((0xF << kDataBit) | (0x3 << kFrameBit) | (0x3 << kPolarityBit) |
+          (0xFF << kDividerBit));
+    ssp_registers[pssp]->CR0 |=
+        (check_data_size << kDataBit) | (frame_format_ << kFrameBit);
+
+    // Set clk polarity = 1, clk phase set to 0
+    ssp_registers[pssp]->CR0 |=
+        (clock_polarity_ << kPolarityBit) | (clock_phase_ << kPhaseBit);
+    ssp_registers[pssp]->CR0 |= (clock_divider_ << kDividerBit);
+    // Enable SSP
+    ssp_registers[pssp]->CR1 |= (1 << 1);
+    // Set SSP as master or slave
+    ssp_registers[pssp]->CR1 &= ~(1 << kMasterModeBit);
+    ssp_registers[pssp]->CR1 |= (master_mode_ << kMasterModeBit);
   }
 
-  // Renamed from get_status()
   // Checks if the SSP controller is idle.
   // @return 1 - the controller is sending or receiving a data frame.
   // @return 0 - the controller is idle.
   bool GetTransferStatus() override
   {
-    return (ssp_registers[static_cast<uint32_t>(pssp_)]->SR &
-            (1 << kDataLineIdleBit));
+    return (ssp_registers[util::Value(pssp_)]->SR & (1 << kDataLineIdleBit));
   }
 
   // Transfers a data frame to an external device using the SSP
@@ -232,7 +233,7 @@ class Ssp : public SspInterface
   // @return - received data from external device
   uint16_t Transfer(uint16_t data) override
   {
-    uint32_t pssp = static_cast<uint32_t>(pssp_);
+    uint32_t pssp = util::Value(pssp_);
 
     ssp_registers[pssp]->DR = data;
     while (GetTransferStatus())
@@ -241,14 +242,6 @@ class Ssp : public SspInterface
     }
     return static_cast<uint16_t>(ssp_registers[pssp]->DR);
   }
-
-  // Set the PCONP bits to power on peripheral
-  // uses the pssp_ set in constructor
-  void SetPeripheralPower() override
-  {
-    pconp_bits_ = (pssp_ == Peripheral::kSsp0) ? kPconp0 : kPconp1;
-  }
-
   // Sets the various modes for the Peripheral
   // @param mode - master or slave mode
   // @param frame - format for Peripheral data to use
@@ -272,9 +265,9 @@ class Ssp : public SspInterface
   }
 
  private:
-  PinInterface & mosi_;
-  PinInterface & miso_;
-  PinInterface & sck_;
+  PinInterface * mosi_;
+  PinInterface * miso_;
+  PinInterface * sck_;
 
   Pin mosi_pin_;
   Pin miso_pin_;
@@ -282,7 +275,6 @@ class Ssp : public SspInterface
   // SSP member variables
   Peripheral pssp_;  // SSP interfaces
   // TODO(#180): Replace following variables with get/set functions
-  PowerOn pconp_bits_;
   MasterSlaveMode master_mode_;
   DataSize data_size_;      // data size, number of bits
   FrameMode frame_format_;  // frame format
