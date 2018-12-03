@@ -432,8 +432,9 @@ $(COVERAGE):
 $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@mkdir -p "$(dir $@)"
 	@echo 'Finished building target: $@'
-	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
-         -fno-inline-small-functions -fno-default-inline \
+	@$(CPPC) -fprofile-arcs -fPIC -fexceptions  \
+         -fno-inline -fno-inline-small-functions -fno-default-inline \
+				 -fkeep-inline-functions \
          -ftest-coverage --coverage \
          -fno-elide-constructors -lgcov \
          -fprofile-arcs -ftest-coverage -fPIC -O0 \

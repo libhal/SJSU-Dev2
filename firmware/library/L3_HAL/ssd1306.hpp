@@ -5,7 +5,6 @@
 
 #include "config.hpp"
 #include "L1_Drivers/gpio.hpp"
-#include "L1_Drivers/pin.hpp"
 #include "L1_Drivers/ssp.hpp"
 #include "L2_Utilities/log.hpp"
 #include "L3_HAL/displays.hpp"
@@ -26,7 +25,7 @@ class Ssd1306 : public DisplayInterface
     kData    = 1
   };
 
-  constexpr Ssd1306()
+  constexpr Ssd1306(int a)
       : ssp_(&ssp1_),
         cs_(&cs_gpio_),
         dc_(&dc_gpio_),
@@ -209,11 +208,11 @@ class Ssd1306 : public DisplayInterface
       }
     }
   }
-  void InvertScreenColor()
+  void InvertScreenColor() __attribute__((used))
   {
     Write(0xA7, Transaction::kCommand);
   }
-  void NormalScreenColor()
+  void NormalScreenColor() __attribute__((used))
   {
     Write(0xA6, Transaction::kCommand);
   }

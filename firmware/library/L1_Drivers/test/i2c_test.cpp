@@ -6,6 +6,8 @@
 #include "L2_Utilities/status.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(I2c);
+
 TEST_CASE("Testing I2C", "[i2c]")
 {
   Mock<PinInterface> mock_sda_pin;
