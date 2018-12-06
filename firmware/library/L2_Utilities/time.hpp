@@ -40,6 +40,8 @@ inline uint64_t Milliseconds()
 // @param is_done will be run in a tight loop until it returns true or the
 //        timeout time has elapsed.
 template <typename F>
+inline Status Wait(uint64_t timeout, F is_done) __attribute__((always_inline));
+template <typename F>
 inline Status Wait(uint64_t timeout, F is_done)
 {
   uint64_t timeout_time = 0;
