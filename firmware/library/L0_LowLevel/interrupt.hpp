@@ -58,4 +58,6 @@ extern "C" SJ2_IGNORE_STACK_TRACE(void SvcHandler(void));
 extern "C" SJ2_IGNORE_STACK_TRACE(void DebugMonHandler(void));
 extern "C" SJ2_IGNORE_STACK_TRACE(void PendSVHandler(void));
 extern "C" SJ2_IGNORE_STACK_TRACE(void SysTickHandler(void));
-extern "C" SJ2_IGNORE_STACK_TRACE(SJ2_WEAK void IntDefaultHandler(void));
+extern "C" SJ2_IGNORE_STACK_TRACE(void IntDefaultHandler(void));
+extern "C" SJ2_WEAK(void IntDefaultHandler(void));
+

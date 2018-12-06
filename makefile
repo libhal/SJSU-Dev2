@@ -96,7 +96,7 @@ endif
 # FLAGS #
 #########
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
-			       -fabi-version=0 -finstrument-functions \
+			       -fabi-version=0 \
 			       -finstrument-functions-exclude-file-list=L0_LowLevel
 OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
             -fno-exceptions -fomit-frame-pointer
@@ -145,6 +145,7 @@ CFLAGS += -D BOOTLOADER=1
 else
 LINKER = $(LIB_DIR)/LPC4078_application.ld
 CFLAGS += -D APPLICATION=1
+CFLAGS += -finstrument-functions
 endif
 
 LINKFLAGS = $(COMMON_FLAGS) \

@@ -4,8 +4,8 @@
 #include <cstdint>
 
 #include "L0_LowLevel/LPC40xx.h"
-// #include "L0_LowLevel/SystemFiles/system_LPC407x_8x_177x_8x.h"
 #include "L1_Drivers/pin.hpp"
+#include "L1_Drivers/system_clock.hpp"
 #include "L2_Utilities/time.hpp"
 
 class UartInterface
@@ -131,16 +131,21 @@ class Uart : public UartInterface
 
   void Send(uint8_t data) override
   {
-    uart[channel_]->THR = data;
-    Wait(kMaxWait,
-         [this]() -> bool { return (uart[channel_]->LSR & (1 << 5)); });
+    uart[channel_]->THR              = data;
+    auto wait_for_transfer_to_finish = [this]() -> bool {
+      return (uart[channel_]->LSR & (1 << 5));
+    };
+    Wait(kMaxWait, wait_for_transfer_to_finish);
   }
 
-  uint8_t Receive(uint32_t timeout = 0x7FFFFFFF) override
+  uint8_t Receive([[maybe_unused]] uint32_t timeout = 0x7FFFFFFF) override
   {
-    uint8_t receiver = '\xFF';
-    Status status    = Wait(
-        timeout, [this]() -> bool { return (uart[channel_]->LSR & (1 << 0)); });
+    uint8_t receiver   = '\xFF';
+    auto byte_recieved = [this]() -> bool {
+      return (uart[channel_]->LSR & (1 << 0));
+    };
+
+    Status status = Wait(timeout, byte_recieved);
 
     if (status == Status::kSuccess)
     {
@@ -175,12 +180,16 @@ class Uart : public UartInterface
 
   float DividerEstimate(float baud_rate, float fraction_estimate = 1)
   {
-    return config::kSystemClockRate / (16.0f * baud_rate * fraction_estimate);
+    float clock_frequency =
+        static_cast<float>(system_clock.GetClockFrequency());
+    return clock_frequency / (16.0f * baud_rate * fraction_estimate);
   }
 
   float FractionalEstimate(float baud_rate, float divider)
   {
-    return config::kSystemClockRate / (16.0f * baud_rate * divider);
+    float clock_frequency =
+        static_cast<float>(system_clock.GetClockFrequency());
+    return clock_frequency / (16.0f * baud_rate * divider);
   }
 
   bool IsDecmial(float value)
@@ -280,3 +289,5 @@ class Uart : public UartInterface
   PinInterface * tx_;
   PinInterface * rx_;
 };
+
+inline Uart uart0(Uart::Channels::kUart0);

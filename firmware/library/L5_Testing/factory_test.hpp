@@ -26,22 +26,42 @@ class FactoryTest
   }
 
  private:
+  const char * BoolToSuccess(bool was_successful)
+  {
+    return (was_successful) ? "SUCCESS" : "FAILED";
+  }
   void OledTest()
   {
     Ssd1306 display;
-    LOG_INFO("Starting OLED Hardware Test...");
 
-    LOG_INFO("Initializing OLED Hardware Test...");
+    printf("++++++++++++++++++++++++++++++++++++++\n\n");
+    printf("Starting OLED Hardware Test...\n\n");
+
+    printf("  Initializing OLED Hardware Test...\n\n");
     display.Initialize();
 
-    LOG_INFO("Clearing Screen...");
+    printf("  Filling internal screen bitmap...\n\n");
+    display.Fill();
+
+    printf("  Updating Screen...\n\n");
+    display.Update();
+
+    printf("  Clearing internal screen bitmap...\n\n");
     display.Clear();
 
-    LOG_INFO("Clearing Screen finished.");
-
+    printf("  Updating Screen...\n\n");
     display.Update();
-    LOG_INFO("Inverting screen...");
+    Delay(1000);
+
+    printf("  Inverting screen from black to white...\n\n");
     display.InvertScreenColor();
+
+    printf(
+        "Manually check that the screen is white with no black pixels...\n\n");
+    printf(
+        "If the screen looks very spotty, try this test 4 more times.\n\n");
+
+    printf("End of OLED Hardware Test.\n\n");
   }
 
   bool ExternalFlashTest()
@@ -72,7 +92,7 @@ class FactoryTest
              array[2], array[3]);
     cs.SetHigh();
     Delay(1);
-    LOG_INFO("End of External Flash Test.");
+    printf("End of External Flash Test.\n\n");
     if ((array[0] == 0x1F) && (array[1] == 0x40) && (array[2] == 0x00) &&
         (array[3] == 0x00))
     {
@@ -104,47 +124,44 @@ class FactoryTest
     {
       leds.Set(3);
     }
-    printf("Test Results:\n\n");
-    printf("\tI2C = { Gesture: %d; Accelerometer: %d; Temperature: %d; }\n",
-           gesture_test, accelerometer_test, temp_test);
-    printf("\tFlash:%d\n", flash_test);
 
-    Delay(1000);
+    printf("\n=========== TEST RESULTS ===========\n\n");
+    printf("I2C: { \n");
+    printf("  Gesture: '%s', \n", BoolToSuccess(gesture_test));
+    printf("  Accelerometer: '%s',\n", BoolToSuccess(accelerometer_test));
+    printf("  Temperature: '%s',\n", BoolToSuccess(temp_test));
+    printf("}\n");
+    printf("Flash: '%s'\n\n", BoolToSuccess(flash_test));
   }
 
   bool GestureSensorTest()
   {
-    // Gesture Sensor Test
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting Gesture Sensor Test...\n\n");
     constexpr uint8_t kApds9960IdRegisterAddress = 0x92;
     bool result                                  = false;
 
-    result =
-        CheckDeviceId(i2c_, kGestureAddress, kApds9960IdRegisterAddress, 0xAB);
-    LOG_INFO("End of Gesture Sensor Test...");
+    result = CheckDeviceId(kGestureAddress, kApds9960IdRegisterAddress, 0xAB);
+    printf("End of Gesture Sensor Test...\n\n");
 
     return result;
   }
 
   bool AccelerometerTest()
   {
-    // Accelerometer Test
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting Accelerometer Test...\n\n");
     constexpr uint8_t kMMAIdRegisterAddress = 0x0D;
     bool result                             = false;
 
-    result =
-        CheckDeviceId(i2c_, kAccelerometerAddress, kMMAIdRegisterAddress, 0x2A);
-    LOG_INFO("End of Accelerometer Test...");
+    result = CheckDeviceId(kAccelerometerAddress, kMMAIdRegisterAddress, 0x2A);
+    printf("End of Accelerometer Test...\n\n");
 
     return result;
   }
 
   bool TemperatureSensorTest()
   {
-    // Temperature Test
     // ID should be 0x01 [7:4]
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting Temperature Test...\n\n");
@@ -152,23 +169,22 @@ class FactoryTest
     bool id_test_result                     = false;
 
     id_test_result =
-        CheckDeviceId(i2c_, kTemperatureAddress, kTemperatureIdAddress, 0x14);
+        CheckDeviceId(kTemperatureAddress, kTemperatureIdAddress, 0x14);
 
     int actual_temp       = CalculateTemperature(i2c_);
     bool temp_test_result = (-40 < actual_temp && actual_temp < 125);
-    LOG_INFO("Temperature is: %u", actual_temp);
-    LOG_INFO("End of temperature test...");
+    printf("  Temperature is: %u\n\n", actual_temp);
+    printf("End of temperature test...\n\n");
 
     return (id_test_result && temp_test_result);
   }
 
-  bool CheckDeviceId(I2c i2c_peripheral, uint8_t device_address,
-                     uint8_t id_register_address, uint8_t expected_id)
+  bool CheckDeviceId(uint8_t device_address, uint8_t id_register_address,
+                     uint8_t expected_id)
   {
     uint8_t device_id = 0x00;
-    i2c_peripheral.WriteThenRead(device_address, &id_register_address, 1,
-                                 &device_id, 1);
-    LOG_INFO("Device ID:%02X", device_id);
+    i2c_.WriteThenRead(device_address, &id_register_address, 1, &device_id, 1);
+    printf("  Device ID: 0x%02X\n\n", device_id);
     return (device_id == expected_id);
   }
 
@@ -188,8 +204,8 @@ class FactoryTest
                                   &temperature_ls, 1);
 
     temperature_data = ((temperature_ms & 0x7F) << 8) | temperature_ls;
-    LOG_INFO("temperature_data is %02X%02X, %04X", temperature_ms,
-             temperature_ls, temperature_data);
+    printf("  Temperature Data: 0x%02X, 0x%02X, 0x%04X\n\n", temperature_ms,
+           temperature_ls, temperature_data);
     // Compute the actual temperature in Celsius
     return (55 + ((temperature_data - 16384) / 160));
   }

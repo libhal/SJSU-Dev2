@@ -15,19 +15,19 @@ namespace debug
 // Hexdump Utility Functions
 static inline void PrintCharacterRow(uint8_t * bytes, size_t length)
 {
-  printf("|");
+  putchar('|');
   for (size_t j = 0; j < length; j++)
   {
     if (isprint(bytes[j]))
     {
-      printf("%c", bytes[j]);
+      putchar(bytes[j]);
     }
     else
     {
-      printf(".");
+      putchar('.');
     }
   }
-  printf("|\n");
+  puts("|");
 }
 
 static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
@@ -44,10 +44,10 @@ static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
     }
     if (j == 7)
     {
-      printf(" ");
+      putchar(' ');
     }
   }
-  printf(" ");
+  putchar(' ');
 }
 
 inline void Hexdump(void * address, uint32_t length)

@@ -173,6 +173,10 @@ class Ssd1306 : public DisplayInterface
   {
     memset(bitmap_, 0x00, sizeof(bitmap_));
   }
+  void Fill()
+  {
+    memset(bitmap_, 0xFF, sizeof(bitmap_));
+  }
   void DrawPixel(int32_t x, int32_t y, Color_t color) final override
   {
     // The 3 least significant bits hold the bit position within the byte
