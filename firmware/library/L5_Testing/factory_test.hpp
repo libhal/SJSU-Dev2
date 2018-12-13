@@ -190,18 +190,22 @@ class FactoryTest
 
   int CalculateTemperature(I2c temperature_i2c)
   {
-    uint8_t control_sequence[] = { 0xC4, 0x00, 0xC9, 0x01 };
-    temperature_i2c.Write(kTemperatureAddress, control_sequence,
-                          sizeof(control_sequence));
+    // Enables one burst mode (on-demand) temperature sampling
+    // by setting control register 0xC4 oneburst bit 3 to 1
+    // and stop bit 2 to 0. Stop bit is set to 1 upon successful
+    // measurement.
+    temperature_i2c.Write(kTemperatureAddress, { 0xC4, 0x04 });
 
+    // Enable the auto increment of the i2c register address pointer
+    // by setting control register 0xC5 to autoinc bit to 1
+    temperature_i2c.Write(kTemperatureAddress, { 0xC5, 0x01 });
     // MSB, LSB for temperature data
     uint8_t temperature_ms = 0xC1;
     uint8_t temperature_ls = 0xC2;
     int temperature_data   = 0;
     temperature_i2c.WriteThenRead(kTemperatureAddress, &temperature_ms, 1,
                                   &temperature_ms, 1);
-    temperature_i2c.WriteThenRead(kTemperatureAddress, &temperature_ls, 1,
-                                  &temperature_ls, 1);
+    temperature_i2c.Read(kTemperatureAddress, &temperature_ls, 1);
 
     temperature_data = ((temperature_ms & 0x7F) << 8) | temperature_ls;
     printf("  Temperature Data: 0x%02X, 0x%02X, 0x%04X\n\n", temperature_ms,
