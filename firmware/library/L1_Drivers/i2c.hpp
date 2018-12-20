@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <initializer_list>
 
 #include "config.hpp"
 
@@ -16,22 +17,71 @@
 class I2cInterface
 {
  public:
+  enum Operation : uint8_t
+  {
+    kWrite = 0,
+    kRead  = 1,
+  };
+
   static constexpr uint32_t kDefaultTimeout = 1000;  // units milliseconds
 
-  virtual void Initialize()                                        = 0;
+  struct Transaction_t
+  {
+    // Returns an 8-bit I2C address with the 0th bit set if the i2c operation
+    // is kRead.
+    constexpr uint8_t GetProperAddress()
+    {
+      uint8_t address_8bit = static_cast<uint8_t>(address << 1);
+      if (operation == Operation::kRead)
+      {
+        address_8bit |= 1;
+      }
+      return address_8bit;
+    }
+    uint64_t timeout         = I2cInterface::kDefaultTimeout;
+    size_t out_length        = 0;
+    size_t in_length         = 0;
+    size_t position          = 0;
+    const uint8_t * data_out = nullptr;
+    uint8_t * data_in        = nullptr;
+    Status status            = Status::kSuccess;
+    Operation operation      = Operation::kWrite;
+    uint8_t address          = 0xFF;
+    bool repeated            = false;
+    bool busy                = false;
+  };
+
+  virtual void Initialize()                                               = 0;
   virtual Status Read(uint8_t address, uint8_t * destination, size_t length,
-                      uint32_t timeout = kDefaultTimeout)          = 0;
-  virtual Status Write(uint8_t address, uint8_t * destination, size_t length,
-                       uint32_t timeout = kDefaultTimeout)         = 0;
-  virtual Status WriteThenRead(uint8_t address, uint8_t * transmit,
+                      uint32_t timeout = kDefaultTimeout)                 = 0;
+  virtual Status Write(uint8_t address, const uint8_t * destination,
+                       size_t length, uint32_t timeout = kDefaultTimeout) = 0;
+  virtual Status WriteThenRead(uint8_t address, const uint8_t * transmit,
                                size_t out_length, uint8_t * recieve,
                                size_t recieve_length,
                                uint32_t timeout = kDefaultTimeout) = 0;
+  Status WriteThenRead(uint8_t address, std::initializer_list<uint8_t> transmit,
+                       uint8_t * recieve, size_t recieve_length,
+                       uint32_t timeout = kDefaultTimeout)
+  {
+    return WriteThenRead(address, transmit.begin(), transmit.size(), recieve,
+                         recieve_length, timeout);
+  }
+  Status Write(uint8_t address, std::initializer_list<uint8_t> data,
+               uint32_t timeout = kDefaultTimeout)
+  {
+    return Write(address, data.begin(), data.size(), timeout);
+  }
 };
 
 class I2c : public I2cInterface
 {
  public:
+  // Bringing in I2cInterface's Write and WriteThenRead methods that use
+  // std::initializer_list.
+  using I2cInterface::Write;
+  using I2cInterface::WriteThenRead;
+
   enum class Port : uint8_t
   {
     kI2c0 = 0,
@@ -47,12 +97,6 @@ class I2c : public I2cInterface
     kStop              = 1 << 4,  // STO
     kStart             = 1 << 5,  // STA
     kInterfaceEnable   = 1 << 6   // I2EN
-  };
-
-  enum Operation : uint8_t
-  {
-    kWrite = 0,
-    kRead  = 1,
   };
 
   enum class MasterState : uint32_t
@@ -73,65 +117,13 @@ class I2c : public I2cInterface
     kDoNothing                         = 0xF8
   };
 
-  struct Transaction_t
-  {
-    constexpr Transaction_t() :
-          timeout(kDefaultTimeout),
-          out_length(0),
-          in_length(0),
-          position(0),
-          data_out(nullptr),
-          data_in(nullptr),
-          status(Status::kSuccess),
-          operation(Operation::kWrite),
-          address(0xFF),
-          repeated(false),
-          busy(false)
-    {
-    }
-    constexpr Transaction_t(uint8_t set_address, uint8_t * set_data_out,
-                            size_t set_out_length, uint8_t * set_data_in,
-                            size_t set_in_length, size_t set_position,
-                            bool set_repeated, bool set_busy, Status set_status,
-                            Operation set_operation, uint64_t set_timeout) :
-          timeout(set_timeout),
-          out_length(set_out_length),
-          in_length(set_in_length),
-          position(set_position),
-          data_out(set_data_out),
-          data_in(set_data_in),
-          status(set_status),
-          operation(set_operation),
-          address(set_address),
-          repeated(set_repeated),
-          busy(set_busy)
-    {
-      address = static_cast<uint8_t>(set_address << 1);
-      if (set_operation == Operation::kRead)
-      {
-        address |= 1;
-      }
-    }
-    uint64_t timeout;
-    size_t out_length;
-    size_t in_length;
-    size_t position;
-    uint8_t * data_out;
-    uint8_t * data_in;
-    Status status;
-    Operation operation;
-    uint8_t address;
-    bool repeated;
-    bool busy;
-  };
-
   // UM10562: Chapter 7: LPC408x/407x I/O configuration page 133
   static constexpr uint8_t kI2cPort2Function = 0b010;
 
   static constexpr uint8_t kNumberOfPorts = util::Value(Port::kNumberOfPorts);
-  static constexpr uint8_t kI2c0 = util::Value(Port::kI2c0);
-  static constexpr uint8_t kI2c1 = util::Value(Port::kI2c1);
-  static constexpr uint8_t kI2c2 = util::Value(Port::kI2c2);
+  static constexpr uint8_t kI2c0          = util::Value(Port::kI2c0);
+  static constexpr uint8_t kI2c1          = util::Value(Port::kI2c1);
+  static constexpr uint8_t kI2c2          = util::Value(Port::kI2c2);
 
   inline static const uint8_t kPconp[kNumberOfPorts] = {
     [kI2c0] = 7, [kI2c1] = 19, [kI2c2] = 26
@@ -162,12 +154,12 @@ class I2c : public I2cInterface
       }
       case MasterState::kStartCondition:  // 0x08
       {
-        i2c[kPort]->DAT = transaction[kPort].address;
+        i2c[kPort]->DAT = transaction[kPort].GetProperAddress();
         break;
       }
       case MasterState::kRepeatedStart:  // 0x10
       {
-        i2c[kPort]->DAT = transaction[kPort].address;
+        i2c[kPort]->DAT = transaction[kPort].GetProperAddress();
         break;
       }
       case MasterState::kSlaveAddressWriteSentRecievedAck:  // 0x18
@@ -360,60 +352,61 @@ class I2c : public I2cInterface
     RegisterIsr(kIrq[port_], handlers[port_], true);
     initialized_ = true;
   }
+
   Status Read(uint8_t address, uint8_t * data, size_t length,
               uint32_t timeout = kDefaultTimeout) override
   {
-    transaction[port_] = Transaction_t(address,           // address
-                                       nullptr,           // data_out
-                                       0,                 // out_length
-                                       data,              // data_in
-                                       length,            // in_length
-                                       0,                 // position
-                                       false,             // repeated
-                                       true,              // busy
-                                       Status::kSuccess,  // status
-                                       Operation::kRead,  // operation
-                                       timeout);          // timeout
-    i2c[port_]->CONSET = Control::kStart;
-    return BlockUntilFinished();
-  }
-  Status Write(uint8_t address, uint8_t * data, size_t length,
-               uint32_t timeout = kDefaultTimeout) override
-  {
-    transaction[port_] = Transaction_t(address,            // address
-                                       data,               // data_out
-                                       length,             // out_length
-                                       nullptr,            // data_in
-                                       0,                  // in_length
-                                       0,                  // position
-                                       false,              // repeated
-                                       true,               // busy
-                                       Status::kSuccess,   // status
-                                       Operation::kWrite,  // operation
-                                       timeout);           // timeout
-    i2c[port_]->CONSET = Control::kStart;
-    return BlockUntilFinished();
-  }
-  Status WriteThenRead(uint8_t address, uint8_t * transmit,
-                       size_t out_length, uint8_t * recieve,
-                       size_t recieve_length,
-                       uint32_t timeout = kDefaultTimeout) override
-  {
-    transaction[port_] = Transaction_t(address,            // address
-                                       transmit,           // data_out
-                                       out_length,    // out_length
-                                       recieve,            // data_in
-                                       recieve_length,     // in_length
-                                       0,                  // position
-                                       true,               // repeated
-                                       true,               // busy
-                                       Status::kSuccess,   // status
-                                       Operation::kWrite,  // operation
-                                       timeout);           // timeout
+    transaction[port_] = { .timeout    = timeout,
+                           .out_length = 0,
+                           .in_length  = length,
+                           .position   = 0,
+                           .data_out   = nullptr,
+                           .data_in    = data,
+                           .status     = Status::kSuccess,
+                           .operation  = Operation::kRead,
+                           .address    = address,
+                           .repeated   = false,
+                           .busy       = true };
     i2c[port_]->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
 
+  Status Write(uint8_t address, const uint8_t * data, size_t length,
+               uint32_t timeout = kDefaultTimeout) override
+  {
+    transaction[port_] = { .timeout    = timeout,
+                           .out_length = length,
+                           .in_length  = 0,
+                           .position   = 0,
+                           .data_out   = data,
+                           .data_in    = nullptr,
+                           .status     = Status::kSuccess,
+                           .operation  = Operation::kWrite,
+                           .address    = address,
+                           .repeated   = false,
+                           .busy       = true };
+    i2c[port_]->CONSET = Control::kStart;
+    return BlockUntilFinished();
+  }
+  Status WriteThenRead(uint8_t address, const uint8_t * transmit,
+                       size_t out_length, uint8_t * recieve,
+                       size_t recieve_length,
+                       uint32_t timeout = kDefaultTimeout) override
+  {
+    transaction[port_] = { .timeout    = timeout,
+                           .out_length = out_length,
+                           .in_length  = recieve_length,
+                           .position   = 0,
+                           .data_out   = transmit,
+                           .data_in    = recieve,
+                           .status     = Status::kSuccess,
+                           .operation  = Operation::kWrite,
+                           .address    = address,
+                           .repeated   = true,
+                           .busy       = true };
+    i2c[port_]->CONSET = Control::kStart;
+    return BlockUntilFinished();
+  }
   inline static IsrPointer handlers[kNumberOfPorts] = {
     [kI2c0] = I2cHandler<Port::kI2c0>,
     [kI2c1] = I2cHandler<Port::kI2c1>,
@@ -431,10 +424,10 @@ class I2c : public I2cInterface
                      "initialized! Be sure to run the Initialize() method "
                      "of this class, before using it.",
                      port_);
-
-    Status status = Wait(transaction[port_].timeout, [this]() -> bool {
+    auto wait_for_i2c_transaction = [this]() -> bool {
       return !transaction[port_].busy;
-    });
+    };
+    Status status = Wait(transaction[port_].timeout, wait_for_i2c_transaction);
 
     if (status == Status::kTimedOut)
     {

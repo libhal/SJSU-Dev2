@@ -33,8 +33,6 @@ TEST_CASE("Testing I2C", "[i2c]")
   SECTION("Initialize")
   {
     // Source: "UM10562 LPC408x/407x User manual" table 84 page 443
-    // constexpr uint8_t kPort0Pin0Uart3Txd = 0b010;
-    // constexpr uint8_t kPort2Pin5Pwm1Channel6 = 0b001;
     constexpr uint32_t kExpectedControlClear =
         I2c::Control::kAssertAcknowledge | I2c::Control::kStart |
         I2c::Control::kStop | I2c::Control::kInterrupt;
@@ -56,18 +54,29 @@ TEST_CASE("Testing I2C", "[i2c]")
     Verify(Method(mock_scl_pin, SetAsOpenDrain));
     Verify(Method(mock_scl_pin, SetMode).Using(PinInterface::Mode::kInactive));
   }
+  SECTION("Transaction test")
+  {
+    constexpr uint32_t kFakeDeviceAddress = 0x22;
+    I2cInterface::Transaction_t transaction;
+    transaction.address = 0x22;
+
+    transaction.operation = I2cInterface::Operation::kWrite;
+    // With a read operation, the address is shifted by 1 and LSB is set to 0.
+    CHECK((kFakeDeviceAddress << 1) == transaction.GetProperAddress());
+    // With a read operation, the address is shifted by 1 and LSB is set to 1.
+    transaction.operation = I2cInterface::Operation::kRead;
+    CHECK(((kFakeDeviceAddress << 1) | 1) == transaction.GetProperAddress());
+  }
   SECTION("Read Setup")
   {
-    constexpr uint8_t kExpectedAddress = (kAddress << 1) | 1;
-
     local_i2c.CONSET = 0;
     uint8_t read_buffer[10];
 
     test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));
-    I2c::Transaction_t actual_transaction =
+    I2cInterface::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
-    CHECK(actual_transaction.address == kExpectedAddress);
+    CHECK(actual_transaction.address == kAddress);
     CHECK(actual_transaction.data_out == nullptr);
     CHECK(actual_transaction.out_length == 0);
     CHECK(actual_transaction.data_in == read_buffer);
@@ -82,16 +91,14 @@ TEST_CASE("Testing I2C", "[i2c]")
   }
   SECTION("Write Setup")
   {
-    constexpr uint8_t kExpectedAddress = kAddress << 1;
-
     local_i2c.CONSET = 0;
     uint8_t write_buffer[10];
 
     test_subject.Write(kAddress, write_buffer, sizeof(write_buffer));
-    I2c::Transaction_t actual_transaction =
+    I2cInterface::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
-    CHECK(actual_transaction.address == kExpectedAddress);
+    CHECK(actual_transaction.address == kAddress);
     CHECK(actual_transaction.data_out == write_buffer);
     CHECK(actual_transaction.out_length == sizeof(write_buffer));
     CHECK(actual_transaction.data_in == nullptr);
@@ -106,18 +113,16 @@ TEST_CASE("Testing I2C", "[i2c]")
   }
   SECTION("Write and Read Setup")
   {
-    constexpr uint8_t kExpectedAddress = kAddress << 1;
-
     local_i2c.CONSET = 0;
     uint8_t read_buffer[10];
     uint8_t write_buffer[15];
 
     test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
                                read_buffer, sizeof(read_buffer));
-    I2c::Transaction_t actual_transaction =
+    I2cInterface::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
-    CHECK(actual_transaction.address == kExpectedAddress);
+    CHECK(actual_transaction.address == kAddress);
     CHECK(actual_transaction.data_out == write_buffer);
     CHECK(actual_transaction.out_length == sizeof(write_buffer));
     CHECK(actual_transaction.data_in == read_buffer);
@@ -144,7 +149,7 @@ TEST_CASE("Testing I2C", "[i2c]")
   {
     setup_state_machine(I2c::MasterState::kBusError);
     I2c::I2cHandler<I2c::Port::kI2c0>();
-    I2c::Transaction_t actual_transaction =
+    I2cInterface::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
     CHECK(Status::kBusError == actual_transaction.status);
     CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
@@ -187,7 +192,7 @@ TEST_CASE("Testing I2C", "[i2c]")
 
       test_subject.Write(kAddress, nullptr, 0);
       I2c::I2cHandler<I2c::Port::kI2c0>();
-      I2c::Transaction_t actual_transaction =
+      I2cInterface::Transaction_t actual_transaction =
           I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
       CHECK(!actual_transaction.busy);
@@ -201,7 +206,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentRecievedNack);
 
     I2c::I2cHandler<I2c::Port::kI2c0>();
-    I2c::Transaction_t actual_transaction =
+    I2cInterface::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
     CHECK(!actual_transaction.busy);
@@ -215,7 +220,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
     test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
                                nullptr, 0);
-    I2c::Transaction_t actual_transaction;
+    I2cInterface::Transaction_t actual_transaction;
     // Each iteration should be load the next byte from write_buffer into
     // the local_i2c.DAT
     for (size_t i = 0; i < sizeof(write_buffer); i++)
@@ -236,7 +241,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     setup_state_machine(I2c::MasterState::kTransmittedDataRecievedNack);
 
     I2c::I2cHandler<I2c::Port::kI2c0>();
-    I2c::Transaction_t actual_transaction =
+    I2cInterface::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
     CHECK(!actual_transaction.busy);
@@ -283,7 +288,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     setup_state_machine(I2c::MasterState::kSlaveAddressReadSentRecievedNack);
 
     I2c::I2cHandler<I2c::Port::kI2c0>();
-    I2c::Transaction_t actual_transaction =
+    I2cInterface::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
     CHECK(Status::kDeviceNotFound == actual_transaction.status);
@@ -297,7 +302,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     constexpr uint8_t kI2cReadData[]          = { 'A', 'B', 'C', 'D' };
     uint8_t read_buffer[sizeof(kI2cReadData)] = { 0 };
     test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));
-    I2c::Transaction_t actual_transaction;
+    I2cInterface::Transaction_t actual_transaction;
     // Each iteration should be load a new byte from kI2cReadData into the
     // read_buffer array;
     for (size_t i = 0; i < sizeof(read_buffer) - 1; i++)
@@ -348,7 +353,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));
 
     I2c::I2cHandler<I2c::Port::kI2c0>();
-    I2c::Transaction_t actual_transaction =
+    I2cInterface::Transaction_t actual_transaction =
         I2c::GetTransactionInfo(I2c::Port::kI2c0);
 
     CHECK(local_i2c.DAT == read_buffer[0]);
