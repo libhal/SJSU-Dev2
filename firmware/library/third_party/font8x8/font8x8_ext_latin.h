@@ -22,7 +22,8 @@
 // Contains an 8x8 font map for unicode points U+00A0 - U+00FF (extended latin)
 #pragma once
 // SJSU-Dev2: made this lookup table inlined
-inline char font8x8_ext_latin[96][8] = {
+#include <stdint.h>
+inline uint8_t font8x8_ext_latin[96][8] = {
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+00A0 (no break space)
     { 0x18, 0x18, 0x00, 0x18, 0x18, 0x18, 0x18, 0x00},   // U+00A1 (inverted !)
     { 0x18, 0x18, 0x7E, 0x03, 0x03, 0x7E, 0x18, 0x18},   // U+00A2 (dollarcents)

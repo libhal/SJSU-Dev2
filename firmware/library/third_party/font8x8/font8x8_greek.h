@@ -22,7 +22,8 @@
 // Contains an 8x8 font map for unicode points U+0390 - U+03C9 (greek characters)
 #pragma once
 // SJSU-Dev2: made this lookup table inlined
-inline char font8x8_greek[58][8] = {
+#include <stdint.h>
+inline uint8_t font8x8_greek[58][8] = {
     { 0x2D, 0x00, 0x0C, 0x0C, 0x0C, 0x2C, 0x18, 0x00},   // U+0390 (iota with tonos and diaeresis)
     { 0x0C, 0x1E, 0x33, 0x33, 0x3F, 0x33, 0x33, 0x00},   // U+0391 (Alpha)
     { 0x3F, 0x66, 0x66, 0x3E, 0x66, 0x66, 0x3F, 0x00},   // U+0392 (Beta)

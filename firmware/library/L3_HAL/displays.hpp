@@ -22,6 +22,7 @@ class DisplayInterface
           red(r),
           green(g),
           blue(b),
+          padding(0),
           color_bits(bits),
           alpha(a)
     {
@@ -31,6 +32,7 @@ class DisplayInterface
           red(false),
           green(false),
           blue(false),
+          padding(0),
           color_bits(0),
           alpha(0)
     {
@@ -39,7 +41,7 @@ class DisplayInterface
     bool red: 1;
     bool green: 1;
     bool blue: 1;
-    unsigned: 4;
+    unsigned padding: 4;
     uint8_t color_bits;
     uint8_t alpha;
   };
