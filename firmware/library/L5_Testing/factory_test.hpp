@@ -48,26 +48,26 @@ class FactoryTest
   {
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting External Flash Test...\n\n");
-    Ssp Ssp2(Ssp::Peripheral::kSsp2);
+    Ssp ssp2(Ssp::Peripheral::kSsp2);
     Gpio cs(1, 10);
     bool result = false;
     cs.SetAsOutput();
     cs.SetHigh();
 
-    Ssp2.SetPeripheralMode(Ssp::MasterSlaveMode::kMaster, Ssp::FrameMode::kSpi,
+    ssp2.SetPeripheralMode(Ssp::MasterSlaveMode::kMaster, Ssp::FrameMode::kSpi,
                            Ssp::DataSize::kEight);
-    Ssp2.SetClock(false, false, 100, 48);
-    Ssp2.Initialize();
+    ssp2.SetClock(false, false, 100, 48);
+    ssp2.Initialize();
 
     uint8_t array[5];
     cs.SetLow();
     Delay(1);
     // Read Manufacturer ID
-    Ssp2.Transfer(0x9F);
-    array[0] = static_cast<uint8_t>(Ssp2.Transfer(0x00));
-    array[1] = static_cast<uint8_t>(Ssp2.Transfer(0x00));
-    array[2] = static_cast<uint8_t>(Ssp2.Transfer(0x00));
-    array[3] = static_cast<uint8_t>(Ssp2.Transfer(0x00));
+    ssp2.Transfer(0x9F);
+    array[0] = static_cast<uint8_t>(ssp2.Transfer(0x00));
+    array[1] = static_cast<uint8_t>(ssp2.Transfer(0x00));
+    array[2] = static_cast<uint8_t>(ssp2.Transfer(0x00));
+    array[3] = static_cast<uint8_t>(ssp2.Transfer(0x00));
     LOG_INFO("Returned 0x%02X 0x%02X 0x%02X 0x%02X", array[0], array[1],
              array[2], array[3]);
     cs.SetHigh();

@@ -22,7 +22,8 @@
 // Contains an 8x8 font map for unicode points U+2580 - U+259F (block elements)
 #pragma once
 // SJSU-Dev2: made this lookup table inlined
-inline char font8x8_block[32][8] = {
+#include <stdint.h>
+inline uint8_t font8x8_block[32][8] = {
     { 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00},   // U+2580 (top half)
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF},   // U+2581 (box 1/8)
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF},   // U+2582 (box 2/8)
