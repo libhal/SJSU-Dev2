@@ -8,7 +8,6 @@ constexpr uint8_t kFirstI2cAddress = 0x08;
 constexpr uint8_t kLastI2cAddress  = 0x78;
 
 constexpr uint8_t kAccelerometerAddress = 0x1C;
-uint8_t initialization_sequence[]       = { 0x2A, 0x01 };
 uint8_t byte                            = 0x0D;
 
 I2c i2c;
@@ -24,8 +23,10 @@ int main(void)
   DEBUG_PRINT("Initializing I2C Port 2...");
   i2c.Initialize();
   DEBUG_PRINT("Initializing Onboard Accelerometer using I2C.2...");
-  i2c.Write(kAccelerometerAddress, initialization_sequence,
-            sizeof(initialization_sequence));
+  // Accelerometer initialization sequence of setting register 0x2A, Control
+  // register 1, to value 0x01. This sets the first bit, ACTIVE, to enabled and
+  // clears the rest.
+  i2c.Write(kAccelerometerAddress, { 0x2A, 0x01 });
 
   while (true)
   {
