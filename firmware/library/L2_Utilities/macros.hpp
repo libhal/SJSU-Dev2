@@ -63,3 +63,4 @@ inline void UsedVariadicFunction(...) {}
 #define SJ2_ALIAS(f) \
   __attribute__((weak, alias(#f), no_instrument_function))  // NOLINT
 #endif
+/// @}

@@ -14,6 +14,7 @@ int main(void)
   OnBoardLed leds;
   leds.Initialize();
   DEBUG_PRINT("LEDs Initialized! %f", 1234.123456);
+
   while (true)
   {
     for (uint8_t i = 0; i < 15; i++)
