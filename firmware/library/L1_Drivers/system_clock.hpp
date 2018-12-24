@@ -11,15 +11,12 @@ class SystemClockInterface
 {
  public:
   static constexpr uint64_t kDefaultTimeout = 1000;  // units in milliseconds
-  virtual void SetClockFrequency(uint8_t frequency_in_mhz) = 0;
-  virtual uint32_t GetClockFrequency()                     = 0;
+  virtual uint32_t SetClockFrequency(uint8_t frequency_in_mhz) = 0;
+  virtual uint32_t GetClockFrequency()                         = 0;
 };
 
 class SystemClock : public SystemClockInterface
 {
- private:
-  uint32_t speed_in_hertz_;
-
  public:
   enum class UsbSource : uint16_t
   {
@@ -118,11 +115,9 @@ class SystemClock : public SystemClockInterface
   static constexpr uint16_t kClearEmcDivider        = (1 << 0);
   static constexpr uint16_t kClearPeripheralDivider = (0x1F << 0);
   static constexpr uint16_t kClearUsbDivider        = (0x1F << 0);
+  static constexpr uint32_t kDefaultIRCFrequency    = 12'000'000;
 
-  SystemClock()
-  {
-    speed_in_hertz_ = 12000000;  // default 12 MHz from IRC
-  }
+  constexpr SystemClock(): speed_in_hertz_(kDefaultIRCFrequency) {}
 
   void SelectOscillatorSource(OscillatorSource source)
   {
@@ -218,8 +213,8 @@ class SystemClock : public SystemClockInterface
     {
       SJ2_ASSERT_FATAL(false,
                        "PLL lock could not be established before timeout");
+      actual_speed = kDefaultIRCFrequency;
     }
-
     return (actual_speed - desired_speed_in_mhz);
   }
 
@@ -241,7 +236,7 @@ class SystemClock : public SystemClockInterface
     LPC_SC->PLL1CFG =
         (LPC_SC->PLL1CFG & ~kClearPllDivider) | (divider_value << 5);
     LPC_SC->PLL1CON |= kEnablePll;
-    // nessecary feed sequence to ensure the changes are intentional
+    // Necessary feed sequence to ensure the changes are intentional
     LPC_SC->PLL1FEED = 0xAA;
     LPC_SC->PLL1FEED = 0x55;
     while (!(LPC_SC->PLL1STAT >> kPlock & 1) && (current_time < timeout_time))
@@ -275,22 +270,25 @@ class SystemClock : public SystemClockInterface
         (LPC_SC->PCLKSEL & ~kClearPeripheralDivider) | peripheral_divider;
   }
 
-  void SetClockFrequency(uint8_t frequency_in_mhz) override
+  uint32_t SetClockFrequency(uint8_t frequency_in_mhz) override
   {
+    uint32_t offset = 0;
     SelectOscillatorSource(OscillatorSource::kIrc);
     if (frequency_in_mhz > 12)
     {
-      SetMainPll(PllInput::kIrc, frequency_in_mhz);
+      offset = SetMainPll(PllInput::kIrc, frequency_in_mhz);
       SelectMainClockSource(MainClockSource::kPllClock);
+      speed_in_hertz_ = frequency_in_mhz * 1'000'000;
     }
     else
     {
       SelectMainClockSource(MainClockSource::kBaseClock);
-      speed_in_hertz_ = 12000000;
+      speed_in_hertz_ = kDefaultIRCFrequency;
     }
     SetCpuClockDivider(kDivideInputBy1);
     SetPeripheralClockDivider(kDivideInputBy1);
     SetEmcClockDivider(EmcDivider::kSameSpeedAsCpu);
+    return offset;
   }
 
   uint32_t GetClockFrequency() override
@@ -304,4 +302,8 @@ class SystemClock : public SystemClockInterface
         LPC_SC->PCONP | (1 << static_cast<uint8_t>(peripheral_select));
   }
   // TODO(Zaaji #181): Set USB and Spifi clock rates
+ private:
+  uint32_t speed_in_hertz_;
 };
+
+inline SystemClock system_clock;

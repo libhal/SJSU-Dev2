@@ -143,6 +143,7 @@ extern "C"
     {
       out(str[i]);
     }
+    out('\n');
     return i;
   }
 
