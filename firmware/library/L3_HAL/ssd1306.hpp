@@ -25,7 +25,7 @@ class Ssd1306 : public DisplayInterface
     kData    = 1
   };
 
-  constexpr Ssd1306(int a)
+  constexpr Ssd1306()
       : ssp_(&ssp1_),
         cs_(&cs_gpio_),
         dc_(&dc_gpio_),

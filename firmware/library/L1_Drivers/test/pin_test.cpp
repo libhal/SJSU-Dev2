@@ -4,6 +4,8 @@
 #include "L1_Drivers/pin.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(Pin);
+
 TEST_CASE("Testing Pin", "[pin_configure]")
 {
   // Simulated local version of LPC_IOCON register to verify register

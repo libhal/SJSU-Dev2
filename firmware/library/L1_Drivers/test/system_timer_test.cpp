@@ -5,6 +5,8 @@
 #include "L1_Drivers/system_timer.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(SystemTimer);
+
 static void DummyFunction(void) {}
 
 TEST_CASE("Testing SystemTimer", "[system_timer]")

@@ -2,6 +2,8 @@
 #include "L1_Drivers/uart.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(Uart);
+
 TEST_CASE("Testing Uart", "[Uart]")
 {
   // Simulated local version of LPC_UART2 to verify registers
