@@ -13,6 +13,7 @@
 
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
+#include "L1_Drivers/system_clock.hpp"
 #include "L2_Utilities/macros.hpp"
 
 // LPC4076 does not include P3.26 so supporting methods are not available
@@ -62,22 +63,31 @@ class SystemTimer : public SystemTimerInterface
     }
     return successful;
   }
-  // WARNING: doing so will most likely disable FreeRTOS
+  /// WARNING: Doing so will most likely disable FreeRTOS
   void DisableTimer() override
   {
     sys_tick->LOAD = 0;
     sys_tick->VAL  = 0;
     sys_tick->CTRL = 0;
   }
-  // @param frequency set the frequency that SystemTick counter will run.
-  //        If it is above the maximum SystemTick value 2^24
-  //        [SysTick_LOAD_RELOAD_Msk], the value is ceiled to
-  //        SysTick_LOAD_RELOAD_Msk
+  /// @param frequency set the frequency that SystemTick counter will run.
+  ///        If it is above the maximum SystemTick value 2^24
+  ///        [SysTick_LOAD_RELOAD_Msk], the value is ceiled to
+  ///        SysTick_LOAD_RELOAD_Msk.
+  /// @returns if the freqency was not divisible by the clock frequency, the
+  ///          remainder will be returned.
+  ///          If the freqency supplied is less then 2Hz, the function will
+  ///          return without changing any hardware.
+  ///          If the reload value exceeds the SysTick_LOAD_RELOAD_Msk, the
+  ///          returned value is the SysTick_LOAD_RELOAD_Msk.
   uint32_t SetTickFrequency(uint32_t frequency) override
   {
-    frequency             = (frequency == 0) ? 1 : frequency;
-    uint32_t reload_value = config::kSystemClockRate / frequency - 1;
-    int remainder         = config::kSystemClockRate % frequency;
+    if (frequency <= 1)
+    {
+      return 0;
+    }
+    uint32_t reload_value = (system_clock.GetClockFrequency() / frequency) - 1;
+    int remainder         = system_clock.GetClockFrequency() % frequency;
     if (reload_value > SysTick_LOAD_RELOAD_Msk)
     {
       reload_value = SysTick_LOAD_RELOAD_Msk;
@@ -87,3 +97,5 @@ class SystemTimer : public SystemTimerInterface
     return remainder;
   }
 };
+
+inline SystemTimer system_timer;

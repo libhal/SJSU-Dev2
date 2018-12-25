@@ -217,7 +217,7 @@ void DeregisterIsr(IRQn_Type irq)
 
 // Default exception handlers. Override the ones here by defining your own
 // handler routines in your application code.
-SJ2_WEAK
+SJ2_WEAK(void NmiHandler(void));
 SJ2_SECTION(".after_vectors")
 void NmiHandler(void)
 {
@@ -273,42 +273,42 @@ void HardFaultHandler(void)
 #endif
 }
 
-SJ2_WEAK
+SJ2_WEAK(void MemManageHandler(void));
 SJ2_SECTION(".after_vectors")
 void MemManageHandler(void)
 {
   Halt();
 }
 
-SJ2_WEAK
+SJ2_WEAK(void BusFaultHandler(void));
 SJ2_SECTION(".after_vectors")
 void BusFaultHandler(void)
 {
   Halt();
 }
 
-SJ2_WEAK
+SJ2_WEAK(void UsageFaultHandler(void));
 SJ2_SECTION(".after_vectors")
 void UsageFaultHandler(void)
 {
   Halt();
 }
 
-SJ2_WEAK
+SJ2_WEAK(void SvcHandler(void));
 SJ2_SECTION(".after_vectors")
 void SvcHandler(void)
 {
   Halt();
 }
 
-SJ2_WEAK
+SJ2_WEAK(void DebugMonHandler(void));
 SJ2_SECTION(".after_vectors")
 void DebugMonHandler(void)
 {
   Halt();
 }
 
-SJ2_WEAK
+SJ2_WEAK(void PendSVHandler(void));
 SJ2_SECTION(".after_vectors")
 void PendSVHandler(void)
 {

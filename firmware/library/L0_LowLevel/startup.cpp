@@ -77,6 +77,7 @@ SJ2_IGNORE_STACK_TRACE(void InitBssSection());
 SJ2_IGNORE_STACK_TRACE(void InitFpu());
 SJ2_IGNORE_STACK_TRACE(void __libc_init_array());
 SJ2_IGNORE_STACK_TRACE(void LowLevelInit());
+SJ2_WEAK(void LowLevelInit());
 SJ2_IGNORE_STACK_TRACE(void SystemInit());
 
 // Functions to carry out the initialization of RW and BSS data sections.
@@ -87,8 +88,11 @@ void InitDataSection()
   {
     uint32_t * rom_location = data_section_table[i].rom_location;
     uint32_t * ram_location = data_section_table[i].ram_location;
-    uint32_t length         = data_section_table[i].length << 2;
-    memcpy(ram_location, rom_location, length);
+    uint32_t length         = data_section_table[i].length;
+    for (size_t j = 0; j < length; j++)
+    {
+      ram_location[j] = rom_location[j];
+    }
   }
 }
 
@@ -100,8 +104,11 @@ void InitBssSection()
   for (int i = 0; &bss_section_table[i] < &bss_section_table_end; i++)
   {
     uint32_t * ram_location = bss_section_table[i].ram_location;
-    uint32_t length         = bss_section_table[i].length << 2;
-    memset(ram_location, 0, length);
+    uint32_t length         = bss_section_table[i].length;
+    for (size_t j = 0; j < length; j++)
+    {
+      ram_location[j] = 0;
+    }
   }
 }
 
@@ -131,28 +138,44 @@ void InitFpu()
 
 void InitializeFreeRTOSSystemTick()
 {
+#if !defined(BOOTLOADER)
   if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
   {
     // Swap out the SystemTimer isr with FreeRTOS's xPortSysTickHandler
     system_timer.SetIsrFunction(xPortSysTickHandler);
   }
+#endif
 }
 
-SJ2_WEAK void LowLevelInit()
+void LowLevelInit()
 {
-  // Set Clock Speed
-  system_clock.SetClockFrequency(config::kSystemClockRateMhz);
-  // Enable Peripheral Clock
-  system_clock.SetPeripheralClockDivider(1);
-  // Set UART0 baudrate, which is required for printf and scanf to work properly
-  uart0.Initialize(config::kBaudRate);
   // Set system timer callback to InitializeFreeRTOSSystemTick
   system_timer.SetIsrFunction(InitializeFreeRTOSSystemTick);
   // Set the SystemTick frequency to the RTOS tick frequency
+  // It is critical that this happens before you set the system_clock, since
+  // The system_timer keeps the time that the system_clock uses to delay itself.
   system_timer.SetTickFrequency(config::kRtosFrequency);
   bool timer_started_successfully = system_timer.StartTimer();
   SJ2_ASSERT_WARNING(timer_started_successfully,
                      "System Timer has FAILED to start!");
+  // Set Clock Speed
+  // SetClockFrequency will timeout return the offset between desire clockspeed
+  // and actual clockspeed if the PLL doesn't get a frequency fix within a
+  // defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
+  while (system_clock.SetClockFrequency(config::kSystemClockRateMhz) != 0)
+  {
+    // Continually attempt to set the clock frequency to the desired until the
+    // delta between desired and actual are 0.
+    continue;
+  }
+  // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
+  // fed to all peripherals will be 48Mhz.
+  system_clock.SetPeripheralClockDivider(1);
+  // Set System Timer frequency again, since the clock speed has changed since
+  // the last time we ran this.
+  system_timer.SetTickFrequency(config::kRtosFrequency);
+  // Set UART0 baudrate, which is required for printf and scanf to work properly
+  uart0.Initialize(config::kBaudRate);
 }
 
 void SystemInit()
@@ -179,25 +202,24 @@ SJ2_SECTION(".crp") constexpr uint32_t kCrpWord = 0xFFFFFFFF;
 
 extern "C"
 {
-void ResetIsr(void)
-{
-  // The Hyperload bootloader takes up stack space to execute. The Hyperload
-  // bootloader function launches this ISR manually, but it never returns thus
-  // it never cleans up the memory it uses. To get that memory back, we have
-  // to manually move the stack pointers back to the top of stack.
-  const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
-  __set_PSP(kTopOfStack);
-  __set_MSP(kTopOfStack);
+  void ResetIsr(void)
+  {
+    // The Hyperload bootloader takes up stack space to execute. The Hyperload
+    // bootloader function launches this ISR manually, but it never returns thus
+    // it never cleans up the memory it uses. To get that memory back, we have
+    // to manually move the stack pointers back to the top of stack.
+    const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
+    __set_PSP(kTopOfStack);
+    __set_MSP(kTopOfStack);
 
-  SystemInit();
-
+    SystemInit();
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
-  [[maybe_unused]] int32_t result = main();
+    [[maybe_unused]] int32_t result = main();
 // Enforce the warning after this point
 #pragma GCC diagnostic pop
-  // main() shouldn't return, but if it does, we'll just enter an infinite
-  // loop
-  Halt();
-}
+    // main() shouldn't return, but if it does, we'll just enter an infinite
+    // loop
+    Halt();
+  }
 }

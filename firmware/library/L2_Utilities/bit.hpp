@@ -1,15 +1,15 @@
-/// @ingroup SJSU-Dev2
-/// @defgroup Bit manipulation library
-/// @brief This library contains helper methods for manipulating or extracting
-/// bits from a numeric values.
-/// @{
+// @ingroup SJSU-Dev2
+// @defgroup Bit manipulation library
+// @brief This library contains helper methods for manipulating or extracting
+// bits from a numeric values.
+// @{
 #pragma once
 
 #include <cstdint>
 
 namespace bit
 {
-/// Extract a set of continguous bits from a target value.
+/// Extract a set of contiguous bits from a target value.
 ///
 /// target   =        0x00FE'DCBA
 ///                            ^
@@ -68,8 +68,8 @@ inline T Set(T target, uint8_t position);
 ///
 /// return   =        0b0000'0001
 ///
-// @param target the value you want to change
-// @param position the position of the bit you would like to change to 0
+/// @param target the value you want to change
+/// @param position the position of the bit you would like to change to 0
 template<typename T>
 inline T Clear(T target, uint8_t position);
 /// Toggle a bit in the target value at the position specifed.
@@ -84,9 +84,9 @@ inline T Clear(T target, uint8_t position);
 ///
 /// return   =        0b0000'0001
 ///
-// @param target the value you want to change
-// @param position the position of the bit you would like to toggle
+/// @param target the value you want to change
+/// @param position the position of the bit you would like to toggle
 template<typename T>
 inline T Toggle(T target, uint8_t position);
 }  // namespace bit
-/// @}
+// @}

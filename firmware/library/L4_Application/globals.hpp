@@ -37,10 +37,3 @@ inline uint8_t heap_end;
 extern uint8_t heap;
 extern uint8_t heap_end;
 #endif
-
-// ========================
-// System Objects
-// ========================
-inline SystemTimer system_timer;
-inline SystemClock system_clock;
-inline Uart uart0(Uart::Channels::kUart0);

@@ -52,7 +52,7 @@ inline void UsedVariadicFunction(...) {}
 /// Set a function as a "weak" function. This means that if there is another
 /// declaration of this exact function somewhere else in the software, the
 /// non-weak function will be used instead of the weak function.
-#define SJ2_WEAK __attribute__((weak))
+#define SJ2_WEAK(function) function __attribute__((weak))
 /// Similar to the weak attribute, but also gives each function the
 /// implementation of the function f.
 #if defined(__APPLE__)
