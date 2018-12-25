@@ -223,7 +223,6 @@ echo "                Setting Up Hyperload                 "
 echo "└─────────────────────────────────────────────────── "
 rm -rf "$TOOLDIR/Hyperload/"
 git clone --depth=1 https://github.com/kammce/Hyperload.git "$TOOLDIR/Hyperload/"
-git checkout sjtwo
 cd "$TOOLDIR/Hyperload/" && ./setup
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
