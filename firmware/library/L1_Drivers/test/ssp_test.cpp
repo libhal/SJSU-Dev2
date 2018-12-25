@@ -1,10 +1,10 @@
 #include "L0_LowLevel/LPC40xx.h"
-#include "L1_Drivers/system_clock.hpp"
+#include "L1_Drivers/ssp.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
-EMIT_ALL_METHODS(SystemClock);
+EMIT_ALL_METHODS(Ssp);
 
-TEST_CASE("SystemClock", "[system_clock]")
+TEST_CASE("Ssp", "[ssp]")
 {
   SECTION("Initialize")
   {

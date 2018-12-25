@@ -2,6 +2,8 @@
 #include "L1_Drivers/gpio.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(Gpio);
+
 TEST_CASE("Testing Gpio", "[gpio]")
 {
   // Declared constants that are to be used within the different sections

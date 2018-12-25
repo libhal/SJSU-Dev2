@@ -75,7 +75,8 @@ class Graphics
     {
       x = x + x_increment;
       y = y + y_increment;
-      DrawPixel(std::lround(x), std::lround(y));
+      DrawPixel(static_cast<uint32_t>(std::lround(x)),
+                static_cast<uint32_t>(std::lround(y)));
     }
   }
 

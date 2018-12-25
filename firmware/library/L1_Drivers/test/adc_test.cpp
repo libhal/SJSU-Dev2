@@ -2,6 +2,8 @@
 #include "L1_Drivers/adc.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(Adc);
+
 TEST_CASE("Testing adc", "[adc]")
 {
   using fakeit::Fake;

@@ -2,14 +2,10 @@
 #include "L3_HAL/st7066u.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(St7066u);
+
 TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
 {
-  using fakeit::Fake;
-  using fakeit::Mock;
-  using fakeit::Spy;
-  using fakeit::Verify;
-  using fakeit::When;
-
   Mock<GpioInterface> mock_rs;  // RS:    Register Select
   Mock<GpioInterface> mock_rw;  // RW:    Read / Write
   Mock<GpioInterface> mock_e;   // E      Chip Enable
