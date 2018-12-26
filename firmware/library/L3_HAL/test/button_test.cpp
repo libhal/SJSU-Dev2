@@ -2,6 +2,8 @@
 #include "L3_HAL/button.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(Button);
+
 TEST_CASE("Testing Button", "[button]")
 {
   // Simulated local version of LPC_IOCON

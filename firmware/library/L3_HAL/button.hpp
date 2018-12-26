@@ -14,6 +14,7 @@ class ButtonInterface
   virtual void InvertButtonSignal(bool enable_invert_signal = true) = 0;
 };
 
+
 class Button : public ButtonInterface, public Gpio
 {
  public:

@@ -4,6 +4,8 @@
 #include "L1_Drivers/pwm.hpp"
 #include "L5_Testing/testing_frameworks.hpp"
 
+EMIT_ALL_METHODS(Pwm);
+
 TEST_CASE("Testing PWM instantiation", "[pwm]")
 {
   using fakeit::Fake;

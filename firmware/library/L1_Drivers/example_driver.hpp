@@ -3,9 +3,9 @@
 // be done in the .cpp file.
 //   Usage:
 //      In this area here, you should give some examples of how the developer
-//      can use your driver. For example you should include how to initilize the
-//      driver, and how you would do some basic setup. You don't have to show
-//      everything, just enough to get the developer started.
+//      can use your driver. For example you should include how to initialize
+//      the driver, and how you would do some basic setup. You don't have to
+//      show everything, just enough to get the developer started.
 //      See library/L1_Drivers/pin.hpp for an example.
 // The first none comment line of the driver hpp should be this.
 #pragma once

@@ -177,7 +177,6 @@ class Apds9960 : public Apds9960Interface
         near_count_(0),
         index_(0)
   {
-    i2c.Initialize();
     for (int i = 0; i < kMaxDataSize; i++)
     {
       points_[i] = Direction::kNone;
@@ -200,7 +199,6 @@ class Apds9960 : public Apds9960Interface
         near_count_(0),
         index_(0)
   {
-    i2c.Initialize();
     for (int i = 0; i < kMaxDataSize; i++)
     {
       points_[i] = Direction::kNone;
@@ -222,6 +220,7 @@ class Apds9960 : public Apds9960Interface
   }
   void Initialize() override
   {
+    i2c.Initialize();
     constexpr uint16_t kGestureConfig1And2    = (kGconfig2 << 8) | (kGconfig1);
     constexpr uint16_t kGestureConfig3And4    = (kGconfig4 << 8) | (kGconfig3);
     constexpr uint16_t kAlsInterruptThreshold = (kAilt << 8) | (kAilt);
@@ -483,9 +482,9 @@ class Apds9960 : public Apds9960Interface
   }
 
  private:
-  static I2c i2c;
-  static I2cDevice<&i2c, 0x39, device::Endian::kLittle,
-                   Apds9960Interface::MemoryMap_t>
+  inline static I2c i2c;
+  inline static I2cDevice<&i2c, 0x39, device::Endian::kLittle,
+                          Apds9960Interface::MemoryMap_t>
       gesture;
 
   int8_t up_sensitivity_;

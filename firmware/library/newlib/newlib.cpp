@@ -150,7 +150,7 @@ extern "C"
   // =============================
   // Backtrace Utility Functions
   // =============================
-  void * stack_trace[config::kBacktraceDepth];
+  void * stack_trace[config::kBacktraceDepth] = { nullptr };
   size_t stack_depth = 0;
 
   void __cyg_profile_func_enter(void *, void * call_site)  // NOLINT

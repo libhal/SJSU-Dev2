@@ -130,7 +130,8 @@ ifeq ($(MAKECMDGOALS), test)
 CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
          -fno-inline-small-functions -fno-default-inline -fno-builtin \
          -ftest-coverage --coverage \
-				 -Wno-unused -fno-elide-constructors -D HOST_TEST=1 \
+				 -Wno-unused -fno-elide-constructors \
+				 -D HOST_TEST=1 -D SJ2_BACKTRACE_DEPTH=1024 \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
          -O0 -g
 CPPFLAGS = $(CFLAGS)
@@ -432,8 +433,9 @@ $(COVERAGE):
 $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@mkdir -p "$(dir $@)"
 	@echo 'Finished building target: $@'
-	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
-         -fno-inline-small-functions -fno-default-inline \
+	@$(CPPC) -fprofile-arcs -fPIC -fexceptions  \
+         -fno-inline -fno-inline-small-functions -fno-default-inline \
+				 -fkeep-inline-functions \
          -ftest-coverage --coverage \
          -fno-elide-constructors -lgcov \
          -fprofile-arcs -ftest-coverage -fPIC -O0 \
