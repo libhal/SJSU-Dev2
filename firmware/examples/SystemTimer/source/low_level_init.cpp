@@ -3,8 +3,8 @@
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin.hpp"
+#include "L1_Drivers/system_timer.hpp"
 #include "L2_Utilities/log.hpp"
-#include "L4_Application/globals.hpp"
 
 constexpr uint8_t kGpioFunction = 0b000;
 Pin led3(Pin::CreatePin<1, 15>());

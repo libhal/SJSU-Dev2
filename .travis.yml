@@ -3,7 +3,7 @@ matrix:
     include:
         - os: linux
           sudo: required
-          dist: trusty
+          dist: xenial
           after_success:
             - cd ../../
             - coveralls --gcov $(which gcov-7)

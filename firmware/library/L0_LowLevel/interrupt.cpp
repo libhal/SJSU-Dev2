@@ -5,9 +5,9 @@
 #include <FreeRTOS.h>
 
 #include "L0_LowLevel/interrupt.hpp"
+#include "L1_Drivers/system_timer.hpp"
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/time.hpp"
-#include "L4_Application/globals.hpp"
 
 #if defined HOST_TEST
 // NOLINTNEXTLINE(readability-identifier-naming)

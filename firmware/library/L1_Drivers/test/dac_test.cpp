@@ -6,26 +6,21 @@ EMIT_ALL_METHODS(Dac);
 
 TEST_CASE("Testing Dac", "[dac]")
 {
-  using fakeit::Fake;
-  using fakeit::Mock;
-  using fakeit::Spy;
-  using fakeit::Using;
-  using fakeit::Verify;
-  using fakeit::When;
-
   LPC_IOCON_TypeDef local_iocon;
   memset(&local_iocon, 0, sizeof(local_iocon));
+
   LPC_DAC_TypeDef local_dac_port;
+
   Dac::dac_register = &local_dac_port;
-  Pin iocon_pin_config(0, 26);
   Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
-  Pin test_pin(0, 26);
+
   Mock<PinInterface> mock_dac_pin;
   Fake(Method(mock_dac_pin, SetPinFunction), Method(mock_dac_pin, EnableDac),
        Method(mock_dac_pin, SetAsAnalogMode), Method(mock_dac_pin, SetMode));
   PinInterface & dac = mock_dac_pin.get();
+
   Dac test_subject00(&dac);
-  Dac test_subject01;
+
   SECTION("Initialize Dac")
   {
     // Source: "UM10562 LPC408x/407x User manual" table 686 page 814
@@ -33,9 +28,6 @@ TEST_CASE("Testing Dac", "[dac]")
     local_dac_port.CR           = kBiasMask;
     // Mocked out Initialize for the Verify Methods
     test_subject00.Initialize();
-    // Initialize that can properly check the registers if they
-    // recieved the correct values.
-    test_subject01.Initialize();
     // Check Pin Mode DAC_OUT
     Verify(Method(mock_dac_pin, SetPinFunction).Using(Dac::kDacMode),
            Method(mock_dac_pin, EnableDac).Using(true),

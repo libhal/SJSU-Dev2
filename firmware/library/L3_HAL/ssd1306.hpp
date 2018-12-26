@@ -32,7 +32,7 @@ class Ssd1306 : public DisplayInterface
         ssp1_(Ssp::Peripheral::kSsp1),
         cs_gpio_(1, 22),
         dc_gpio_(1, 25),
-        bitmap_{ 0 }
+        bitmap_{}
   {
   }
 
@@ -43,7 +43,7 @@ class Ssd1306 : public DisplayInterface
         ssp1_(),
         cs_gpio_(1, 22),
         dc_gpio_(1, 25),
-        bitmap_{ 0 }
+        bitmap_{}
   {
   }
 

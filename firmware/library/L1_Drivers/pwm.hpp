@@ -59,13 +59,13 @@ class Pwm : public PwmInterface
   }
 
   explicit constexpr Pwm(uint8_t channel)
-      : pwm_(pwm_pin_),
+      : pwm_(&pwm_pin_),
         pwm_pin_(2, static_cast<uint8_t>(channel - 1)),
         channel_(channel)
   {
   }
 
-  explicit constexpr Pwm(uint8_t channel, const PinInterface & pin)
+  explicit constexpr Pwm(uint8_t channel, PinInterface * pin)
       : pwm_(pin), pwm_pin_(Pin::CreateInactivePin()), channel_(channel)
   {
   }
@@ -85,7 +85,7 @@ class Pwm : public PwmInterface
     pwm1->CTCR &= ~PwmConfigure::kTimerMode;
     // Enables PWM[channel] output
     pwm1->PCR |= PwmOutputEnable(channel_);
-    pwm_pin_.SetPinFunction(kPwmFunction);
+    pwm_->SetPinFunction(kPwmFunction);
   }
 
   void SetDutyCycle(float duty_cycle) override
@@ -147,10 +147,8 @@ class Pwm : public PwmInterface
   {
     return (1 << (channel + 8));
   }
-
  private:
-  const PinInterface & pwm_;
-
+  PinInterface * pwm_;
   Pin pwm_pin_;
 
   // Will signify current PWM1 channel

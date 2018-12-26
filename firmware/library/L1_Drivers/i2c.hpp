@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -59,7 +60,7 @@ class I2cInterface
   virtual Status WriteThenRead(uint8_t address, const uint8_t * transmit,
                                size_t out_length, uint8_t * recieve,
                                size_t recieve_length,
-                               uint32_t timeout = kDefaultTimeout) = 0;
+                               uint32_t timeout = kDefaultTimeout)        = 0;
   Status WriteThenRead(uint8_t address, std::initializer_list<uint8_t> transmit,
                        uint8_t * recieve, size_t recieve_length,
                        uint32_t timeout = kDefaultTimeout)
@@ -125,11 +126,11 @@ class I2c : public I2cInterface
   static constexpr uint8_t kI2c1          = util::Value(Port::kI2c1);
   static constexpr uint8_t kI2c2          = util::Value(Port::kI2c2);
 
-  inline static const uint8_t kPconp[kNumberOfPorts] = {
+  inline static constexpr uint8_t kPconp[kNumberOfPorts] = {
     [kI2c0] = 7, [kI2c1] = 19, [kI2c2] = 26
   };
 
-  inline static const IRQn_Type kIrq[kNumberOfPorts] = {
+  inline static constexpr IRQn_Type kIrq[kNumberOfPorts] = {
     [kI2c0] = I2C0_IRQn, [kI2c1] = I2C1_IRQn, [kI2c2] = I2C2_IRQn
   };
 
@@ -317,8 +318,10 @@ class I2c : public I2cInterface
         pins_initialized_(false)
   {
   }
-  // Pins must be initialized to I2C prior to being passed into this class
-  // @param initialize_pins should only be used for testing
+  /// Pins must be initialized to I2C prior to being passed into this class
+  /// @param sda_pin address of an initialized sda pin object.
+  /// @param scl_pin address of an initialized scl pin object.
+  /// @param initialize_pins should only be used for testing.
   constexpr I2c(Port port, PinInterface * sda_pin, PinInterface * scl_pin,
                 bool pins_are_initialized = true)
       : sda_(*sda_pin),
@@ -344,12 +347,14 @@ class I2c : public I2cInterface
       scl_.SetMode(PinInterface::Mode::kInactive);
     }
     // TODO(#6): Need to include power I2C on logic.
-    i2c[port_]->SCLL   = ((config::kSystemClockRate / 75'000) / 2) * 0.7;
-    i2c[port_]->SCLH   = ((config::kSystemClockRate / 75'000) / 2) * 1.3;
+    float scll         = ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 0.7f;
+    i2c[port_]->SCLL   = static_cast<uint32_t>(scll);
+    float sclh         = ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 1.3f;
+    i2c[port_]->SCLH   = static_cast<uint32_t>(sclh);
     i2c[port_]->CONCLR = Control::kAssertAcknowledge | Control::kStart |
                          Control::kStop | Control::kInterrupt;
     i2c[port_]->CONSET = Control::kInterfaceEnable;
-    RegisterIsr(kIrq[port_], handlers[port_], true);
+    RegisterIsr(kIrq[port_], kHandlers[port_], true);
     initialized_ = true;
   }
 
@@ -407,15 +412,14 @@ class I2c : public I2cInterface
     i2c[port_]->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
-  inline static IsrPointer handlers[kNumberOfPorts] = {
+
+  inline constexpr static IsrPointer kHandlers[kNumberOfPorts] = {
     [kI2c0] = I2cHandler<Port::kI2c0>,
     [kI2c1] = I2cHandler<Port::kI2c1>,
     [kI2c2] = I2cHandler<Port::kI2c2>
   };
 
  protected:
-  inline static Transaction_t transaction[kNumberOfPorts];
-
   virtual Status BlockUntilFinished()
   {
 #if !defined(HOST_TEST)
@@ -447,8 +451,7 @@ class I2c : public I2cInterface
 #endif  // !defined HOST_TEST
     return transaction[port_].status;
   }
-
- private:
+  inline static Transaction_t transaction[kNumberOfPorts];
   PinInterface & sda_;
   PinInterface & scl_;
   Pin sda_pin_;

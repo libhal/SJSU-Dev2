@@ -153,7 +153,6 @@ class Uart : public UartInterface
     }
     return receiver;
   }
-
  private:
   UartCalibration_t FindClosestFractional(float decimal)
   {

@@ -1,9 +1,5 @@
+// TODO(kammce): rename this file to ram.hpp
 #pragma once
-
-#include "L1_Drivers/system_clock.hpp"
-#include "L1_Drivers/system_timer.hpp"
-#include "L1_Drivers/uart.hpp"
-
 // ========================
 // Memory Map information
 // ========================
