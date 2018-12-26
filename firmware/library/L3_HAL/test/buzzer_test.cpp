@@ -21,7 +21,7 @@ TEST_CASE("Testing buzzer", "[buzzer]")
   SECTION("Check Initialize")
   {
     constexpr uint32_t kFrequency = 500;
-    constexpr float kVolume       = 0.0;
+    constexpr float kVolume       = 0.0f;
     test1.Initialize();
     Verify(Method(mock_pwm_pin, Initialize).Using(500),
            Method(mock_pwm_pin, SetDutyCycle).Using(kVolume)),
@@ -31,7 +31,7 @@ TEST_CASE("Testing buzzer", "[buzzer]")
   SECTION("Check Beep")
   {
     constexpr uint32_t kFrequency = 0;
-    constexpr float kVolume       = 0.0;
+    constexpr float kVolume       = 0.0f;
     test1.Beep(kFrequency, kVolume);
 
     float vol_error = kVolume - test1.GetVolume();
@@ -43,9 +43,7 @@ TEST_CASE("Testing buzzer", "[buzzer]")
 
   SECTION("Check Stop")
   {
-    constexpr uint32_t kFrequency = 500;
-    constexpr float kVolume       = 0.0;
-
+    constexpr float kVolume = 0.0f;
     test1.Stop();
     float vol_error = kVolume - test1.GetVolume();
     CHECK((-0.1f <= vol_error && vol_error <= 0.1f));

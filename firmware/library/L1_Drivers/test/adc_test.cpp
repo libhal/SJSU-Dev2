@@ -6,25 +6,17 @@ EMIT_ALL_METHODS(Adc);
 
 TEST_CASE("Testing adc", "[adc]")
 {
-  using fakeit::Fake;
-  using fakeit::Mock;
-  using fakeit::Verify;
   // Create local version of LPC_ADC
   LPC_ADC_TypeDef local_adc;
   LPC_SC_TypeDef local_sc;
-  LPC_IOCON_TypeDef local_io;
   // Clear local adc registers
   memset(&local_adc, 0, sizeof(local_adc));
   memset(&local_sc, 0, sizeof(local_sc));
-  memset(&local_io, 0, sizeof(local_io));
   // Set base registers to respective local variables to check
   // for any bit manipulations
   // Any manipulation will be directed to the respective local registers
   Adc::adc_base = &local_adc;
   Adc::sysclk_register = &local_sc;
-  Pin::pin_map =
-    reinterpret_cast<Pin::PinMap_t *>(&local_io);
-  Pin adc_test(0, 23);
   // Set mock for PinInterface
   Mock<PinInterface> mock_adc;
   Fake(Method(mock_adc, SetAsAnalogMode),
@@ -33,8 +25,6 @@ TEST_CASE("Testing adc", "[adc]")
   PinInterface & adc = mock_adc.get();
 
   // Create ports and pins to test and mock
-  // Using channel 0 (0.23)
-  Adc p0_23_test(Adc::Channel::kChannel0);
   Adc channel0_mock(&adc);
 
   constexpr uint8_t kBurstBit = 16;
@@ -49,7 +39,6 @@ TEST_CASE("Testing adc", "[adc]")
 
     constexpr uint32_t kAdcClock = 1'000'000;
 
-    p0_23_test.Initialize(kAdcClock);
     channel0_mock.Initialize(kAdcClock);
     // Check if bit 0 is set in local_adc.CR
     CHECK(kChannelBit0 == (local_adc.CR & 1));

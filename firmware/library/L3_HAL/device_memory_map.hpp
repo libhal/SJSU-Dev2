@@ -80,7 +80,7 @@ Register_t
 
 #define RESERVED_OPERATION(op)                                          \
   template <typename T>                                                 \
-  constexpr bool operator op##=(T value)                                \
+  constexpr bool operator op##=(T)                                      \
   {                                                                     \
     static_assert(CallCheck<T>::kValue,                                 \
                   "Reserved memory cannot be assigned or manipulated"); \
@@ -98,7 +98,7 @@ Reserved_t
   };
 
   template <typename T>
-  constexpr bool operator=(T value)
+  constexpr bool operator=(T)
   {
     // This compile time check only happens when this variable is assigned.
     // Originally, false was in placed of the CallCheck structure. But this

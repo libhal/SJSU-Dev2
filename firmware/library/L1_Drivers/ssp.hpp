@@ -263,7 +263,6 @@ class Ssp : public SspInterface
     clock_divider_   = divider;
     clock_prescaler_ = prescaler;
   }
-
  private:
   PinInterface * mosi_;
   PinInterface * miso_;

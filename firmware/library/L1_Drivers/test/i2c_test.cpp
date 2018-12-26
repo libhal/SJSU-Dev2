@@ -39,14 +39,20 @@ TEST_CASE("Testing I2C", "[i2c]")
         I2c::Control::kAssertAcknowledge | I2c::Control::kStart |
         I2c::Control::kStop | I2c::Control::kInterrupt;
     test_subject.Initialize();
-    constexpr uint32_t kLow  = ((config::kSystemClockRate / 75'000) / 2) * 0.7;
-    constexpr uint32_t kHigh = ((config::kSystemClockRate / 75'000) / 2) * 1.3;
+
+    constexpr float kScll =
+        ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 0.7f;
+    constexpr float kSclh =
+        ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 1.3f;
+
+    constexpr uint32_t kLow  = static_cast<uint32_t>(kScll);
+    constexpr uint32_t kHigh = static_cast<uint32_t>(kSclh);
     CHECK(kLow == local_i2c.SCLL);
     CHECK(kHigh == local_i2c.SCLH);
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
     CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
     CHECK(dynamic_isr_vector_table[I2c::kIrq[kI2cPort]] ==
-          I2c::handlers[kI2cPort]);
+          I2c::kHandlers[kI2cPort]);
 
     Verify(Method(mock_sda_pin, SetPinFunction).Using(I2c::kI2cPort2Function));
     Verify(Method(mock_sda_pin, SetAsOpenDrain));
