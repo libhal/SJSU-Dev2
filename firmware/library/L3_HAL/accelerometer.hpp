@@ -46,7 +46,7 @@ class Accelerometer : public AccelerometerInterface
     }
     bool Init() override
     {
-        I2c Initialization(I2c::Port::kI2c2);
+        I2c Initialization;
         Initialization.Initialize();
         uint8_t WhoAmIReceivedValue;
         RegisterMap_t IdentityRegister = RegisterMap_t::who_am_i;
@@ -59,7 +59,7 @@ class Accelerometer : public AccelerometerInterface
     }
     int16_t GetX() override
     {
-        I2c XTransaction(I2c::Port::kI2c2);
+        I2c XTransaction;
         XTransaction.Initialize();
         uint8_t kXVal[2];
         RegisterMap_t XReg = RegisterMap_t::x;
@@ -74,7 +74,7 @@ class Accelerometer : public AccelerometerInterface
     }
     int16_t GetY() override
     {
-        I2c YTransaction(I2c::Port::kI2c2);
+        I2c YTransaction;
         YTransaction.Initialize();
         uint8_t kYVal[2];
         RegisterMap_t YReg = RegisterMap_t::y;
@@ -88,7 +88,7 @@ class Accelerometer : public AccelerometerInterface
     }
     int16_t GetZ() override
     {
-        I2c ZTransaction(I2c::Port::kI2c2);
+        I2c ZTransaction;
         ZTransaction.Initialize();
         uint8_t kZVal[2];
         RegisterMap_t ZReg = RegisterMap_t::z;
@@ -119,7 +119,7 @@ class Accelerometer : public AccelerometerInterface
     }
     uint8_t GetFullScaleRange() override
     {
-        I2c FullScaleRange(I2c::Port::kI2c2);
+        I2c FullScaleRange;
         FullScaleRange.Initialize();
         uint8_t fullScaleRangeValue;
         RegisterMap_t dataConfig = RegisterMap_t::data_config;
@@ -141,7 +141,7 @@ class Accelerometer : public AccelerometerInterface
     void SetFullScaleRange(uint8_t range_value) override
     {
         printf("range_value is %x\n", range_value);
-        I2c FullScaleRange(I2c::Port::kI2c2);
+        I2c FullScaleRange;
         FullScaleRange.Initialize();
         RegisterMap_t dataConfig = RegisterMap_t::data_config;
         uint8_t configReg;
