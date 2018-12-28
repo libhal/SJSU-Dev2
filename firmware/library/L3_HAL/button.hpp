@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstdint>
 
 #include "L1_Drivers/gpio.hpp"
@@ -12,6 +13,7 @@ class ButtonInterface
   virtual void ResetState(void)                                     = 0;
   virtual void InvertButtonSignal(bool enable_invert_signal = true) = 0;
 };
+
 
 class Button : public ButtonInterface, public Gpio
 {

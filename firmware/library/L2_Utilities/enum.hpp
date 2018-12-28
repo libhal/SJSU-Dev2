@@ -1,4 +1,4 @@
-// Enum.hpp includes enhancements to the "enum class" types.
+// Includes enhancements to the C++ "enum class" types.
 #pragma once
 
 #include <type_traits>

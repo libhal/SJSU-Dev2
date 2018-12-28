@@ -4,6 +4,8 @@
 PROJ    ?= firmware
 # Affects what DBC is generated for SJSUOne board
 ENTITY  ?= DBG
+# Optimization level
+OPT=0
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
@@ -77,7 +79,7 @@ COVERAGE  = $(BUILD_DIR)/coverage
 LIB_DIR   = $(SJLIBDIR)
 FIRMWARE  = $(SJBASE)/firmware
 TOOLS     = $(SJBASE)/tools
-COMPILED_HEADERS    = $(BUILD_DIR)/headers
+COMPILED_HEADERS  = $(BUILD_DIR)/headers
 CURRENT_DIRECTORY	= $(shell pwd)
 # Source files folder
 SOURCE    = source
@@ -94,12 +96,10 @@ endif
 # FLAGS #
 #########
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
-			 -fabi-version=0
-# -fno-omit-frame-pointer -rdynamic
-# CORTEX_M4F  = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb
-# -fsingle-precision-constant
-OPTIMIZE  = -O0 -fmessage-length=0 -ffunction-sections -fdata-sections \
-            -fno-exceptions -fomit-frame-pointer -finstrument-functions
+			       -fabi-version=0 \
+			       -finstrument-functions-exclude-file-list=L0_LowLevel
+OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
+            -fno-exceptions -fomit-frame-pointer
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
@@ -128,12 +128,12 @@ CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) -MMD -MP -c
 
 ifeq ($(MAKECMDGOALS), test)
 CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
-         -fno-inline-small-functions -fno-default-inline \
-		     -fno-builtin \
+         -fno-inline-small-functions -fno-default-inline -fno-builtin \
          -ftest-coverage --coverage \
-         -fno-elide-constructors -D HOST_TEST=1 \
+				 -Wno-unused -fno-elide-constructors \
+				 -D HOST_TEST=1 -D SJ2_BACKTRACE_DEPTH=1024 \
          $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
-         -O0
+         -O0 -g
 CPPFLAGS = $(CFLAGS)
 else
 CFLAGS = $(CFLAGS_COMMON)
@@ -146,6 +146,7 @@ CFLAGS += -D BOOTLOADER=1
 else
 LINKER = $(LIB_DIR)/LPC4078_application.ld
 CFLAGS += -D APPLICATION=1
+CFLAGS += -finstrument-functions
 endif
 
 LINKFLAGS = $(COMMON_FLAGS) \
@@ -332,7 +333,7 @@ $(SIZE): $(EXECUTABLE)
 $(LIST): $(EXECUTABLE)
 	@echo ' '
 	@echo 'Invoking: Cross ARM GNU Create Assembly Listing'
-	@$(OBJDUMP) --disassemble --all-headers --demangle --wide "$<" > "$@"
+	@$(OBJDUMP) --disassemble --all-headers --source --demangle --wide "$<" > "$@"
 	@echo 'Finished building: $@'
 	@echo ' '
 
@@ -432,8 +433,9 @@ $(COVERAGE):
 $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@mkdir -p "$(dir $@)"
 	@echo 'Finished building target: $@'
-	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
-         -fno-inline-small-functions -fno-default-inline \
+	@$(CPPC) -fprofile-arcs -fPIC -fexceptions  \
+         -fno-inline -fno-inline-small-functions -fno-default-inline \
+				 -fkeep-inline-functions \
          -ftest-coverage --coverage \
          -fno-elide-constructors -lgcov \
          -fprofile-arcs -ftest-coverage -fPIC -O0 \

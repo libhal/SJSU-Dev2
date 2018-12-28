@@ -37,10 +37,5 @@ int main(void)
   LOG_CRITICAL("This is an critical message.");
 
   PrintLogDescription(5);
-
-  while (true)
-  {
-    continue;
-  }
   return 0;
 }

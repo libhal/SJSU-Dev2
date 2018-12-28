@@ -1,7 +1,7 @@
 #include <inttypes.h>
 #include <cstdint>
-#include "L0_LowLevel/delay.hpp"
 #include "L2_Utilities/log.hpp"
+#include "L2_Utilities/time.hpp"
 
 int main(void)
 {
@@ -13,7 +13,7 @@ int main(void)
 
   uint32_t counter = 0;
 
-  while (1)
+  while (true)
   {
     DEBUG_PRINT("[%lu] Hello, World! (milliseconds = %lu)", counter++,
                 static_cast<uint32_t>(Milliseconds()));

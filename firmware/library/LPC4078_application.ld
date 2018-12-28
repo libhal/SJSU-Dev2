@@ -29,6 +29,7 @@ MEMORY
   __base_RAM2 = 0x20000000 ; /* RAM2 */
   __top_RamPeriph32 = 0x20000000 + 0x8000 ; /* 32K bytes */
   __top_RAM2 = 0x20000000 + 0x8000 ; /* 32K bytes */
+  __user_heap_base = __base_RAM2 ; /* SJSU-Dev2: RAM2 is solely for heap */
 
 ENTRY(ResetIsr)
 
@@ -192,6 +193,7 @@ SECTIONS
     } > RamLoc64
 
     PROVIDE(heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
+    PROVIDE(heap_end = __top_RAM2);
     PROVIDE(StackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_RamLoc64 - 0);
 
     /* ## Create checksum value (used in startup) ## */

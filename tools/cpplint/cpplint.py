@@ -5708,10 +5708,10 @@ def CheckRedundantOverrideOrFinal(filename, clean_lines, linenum, error):
       return
 
   # Check that at most one of "override" or "final" is present, not both
-  if Search(r'\boverride\b', fragment) and Search(r'\bfinal\b', fragment):
-    error(filename, linenum, 'readability/inheritance', 4,
-          ('"override" is redundant since function is '
-           'already declared as "final"'))
+  # if Search(r'\boverride\b', fragment) and Search(r'\bfinal\b', fragment):
+  #   error(filename, linenum, 'readability/inheritance', 4,
+  #         ('"override" is redundant since function is '
+  #          'already declared as "final"'))
 
 
 
@@ -5849,7 +5849,8 @@ def FlagCxx11Features(filename, clean_lines, linenum, error):
                                       'future',
                                       'mutex',
                                       'thread',
-                                      'chrono',
+                                      # 'chrono', # SJSU-Dev2
+                                      'iostream', # SJSU-Dev2
                                       'ratio',
                                       'regex',
                                       'system_error',

@@ -1,7 +1,8 @@
 #include <cstdarg>
 #include <cstdio>
 
-// Overriding printf to supply a static memory .text efficient variant.
+// nano.spec version of scanf relies on malloc.
+// Overriding scanf with an efficient static memory variant.
 // NOLINTNEXTLINE(readability-identifier-naming)
 int scanf(const char * format, ...)
 {

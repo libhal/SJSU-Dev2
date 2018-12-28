@@ -1,6 +1,6 @@
 #include <inttypes.h>
 #include <cstdint>
-#include "L0_LowLevel/startup.hpp"
+#include "L0_LowLevel/interrupt.hpp"
 #include "L1_Drivers/i2c.hpp"
 #include "L2_Utilities/log.hpp"
 
@@ -8,7 +8,6 @@ constexpr uint8_t kFirstI2cAddress = 0x08;
 constexpr uint8_t kLastI2cAddress  = 0x78;
 
 constexpr uint8_t kAccelerometerAddress = 0x1C;
-uint8_t initialization_sequence[]       = { 0x2A, 0x01 };
 uint8_t byte                            = 0x0D;
 
 I2c i2c;
@@ -18,24 +17,26 @@ int main(void)
   DEBUG_PRINT("I2C Application Starting...");
   DEBUG_PRINT(
       "This example will scan I2C Bus 2 for any devices. If the transaction "
-      "comes back with I2cInterface::Status::kSuccess, then we know that an "
-      "I2C device has acknowledged our call and it exists.");
+      "comes back with Status::kSuccess, then we know that an I2C device has "
+      "acknowledged our call and it exists.");
 
   DEBUG_PRINT("Initializing I2C Port 2...");
   i2c.Initialize();
   DEBUG_PRINT("Initializing Onboard Accelerometer using I2C.2...");
-  i2c.Write(kAccelerometerAddress, initialization_sequence,
-            sizeof(initialization_sequence));
+  // Accelerometer initialization sequence of setting register 0x2A, Control
+  // register 1, to value 0x01. This sets the first bit, ACTIVE, to enabled and
+  // clears the rest.
+  i2c.Write(kAccelerometerAddress, { 0x2A, 0x01 });
 
   while (true)
   {
     DEBUG_PRINT("Starting Scan...");
-    I2cInterface::Status status;
+    Status status;
     for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
          address++)
     {
       status = i2c.Write(address, nullptr, 0, 50);
-      if (status == I2cInterface::Status::kSuccess)
+      if (status == Status::kSuccess)
       {
         DEBUG_PRINT("    Found device at address: 0x%02X", address);
       }

@@ -42,9 +42,5 @@ int main(void)
       "input value.");
 
   DEBUG_PRINT("Halting any action.");
-  while (1)
-  {
-    continue;
-  }
   return 0;
 }

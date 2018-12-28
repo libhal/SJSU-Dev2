@@ -3,9 +3,9 @@
 // be done in the .cpp file.
 //   Usage:
 //      In this area here, you should give some examples of how the developer
-//      can use your driver. For example you should include how to initilize the
-//      driver, and how you would do some basic setup. You don't have to show
-//      everything, just enough to get the developer started.
+//      can use your driver. For example you should include how to initialize
+//      the driver, and how you would do some basic setup. You don't have to
+//      show everything, just enough to get the developer started.
 //      See library/L1_Drivers/pin.hpp for an example.
 // The first none comment line of the driver hpp should be this.
 #pragma once
@@ -52,11 +52,13 @@ class Example : public ExampleInterface
   // change out the register you are pointing to during testing. When compiled
   // into firmware, the example-driver.cpp will assign it to the appropriate
   // address, in this case LPC_USB;
-  // DO NOT DECLARE THESE AS constexpr OR const, they need to be mutable
-  static LPC_USB_TypeDef * usb;
-  // Make an array of pointers if you are controlling multiple perpherials of
+  // DO NOT DECLARE THESE AS constexpr OR const, they need to be mutable for
+  // testing purposes.
+  // Define as inline to give external linkage in header file
+  inline static LPC_USB_TypeDef * usb = LPC_USB;
+  // Make an array of pointers if you are controlling multiple peripherals of
   // the same type.
-  static LPC_CAN_TypeDef * can[2];
+  inline static LPC_CAN_TypeDef * can[2] = { LPC_CAN1, LPC_CAN2 };
   // Define any structures or enumerations.
   SJ2_PACKED(struct) CanFrame_t
   {
@@ -86,7 +88,9 @@ class Example : public ExampleInterface
   // about using a constexpr constructor, is that the microcontroller doesn't
   // have to spend time running the constructor, it is known at compile time,
   // constructed at compile time and baked into the .data section.
-  constexpr Example(uint8_t port, uint32_t speed, bool echo_to_usb)
+  constexpr Example([[maybe_unused]] uint8_t port,
+                    [[maybe_unused]] uint32_t speed,
+                    [[maybe_unused]] bool echo_to_usb)
       : can_rx_(can_rx_pin_),
         can_tx_(can_tx_pin_),
         usb_d_minus_(usb_d_minus_pin_),
@@ -96,9 +100,6 @@ class Example : public ExampleInterface
         usb_d_minus_pin_(Pin::CreatePin<2, 3>()),
         usb_d_plus_pin_(Pin::CreatePin<2, 4>())
   {
-    SJ2_USED(port);
-    SJ2_USED(speed);
-    SJ2_USED(echo_to_usb);
     // Do other constructor stuff here ...
   }
   // Construction using externally constructed mosi, miso, and sck pins.
@@ -131,12 +132,11 @@ class Example : public ExampleInterface
   {
     // Do some action stuff here ...
   }
-  void SendData(const uint8_t * payload, bool readback = false) override
+  void SendData([[maybe_unused]] const uint8_t * payload,
+                [[maybe_unused]] bool readback = false) override
   {
     // Ignore these two lines, these are here to suppress the "unused"
     // variable warning.
-    SJ2_USED(payload);
-    SJ2_USED(readback);
     // Send data here ...
   }
   void SetMode() override

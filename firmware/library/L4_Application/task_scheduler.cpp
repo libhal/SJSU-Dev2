@@ -2,6 +2,7 @@
 
 #include <cstring>
 
+#include "L2_Utilities/log.hpp"
 #include "L4_Application/task.hpp"
 
 void rtos::TaskScheduler::RunTask(void * task_ptr)
@@ -44,7 +45,7 @@ void rtos::TaskScheduler::RunTask(void * task_ptr)
       vTaskDelayUntil(&last_wake_time, delay_time);
     }
   }
-};
+}
 
 void rtos::TaskScheduler::InitializeAllTasks()
 {
@@ -68,7 +69,7 @@ void rtos::TaskScheduler::InitializeAllTasks()
       xEventGroupCreateStatic(&pre_run_event_group_buffer_);
   SJ2_ASSERT_FATAL(pre_run_event_group_handle_ != nullptr,
                    "Failed to create PreRun Event Group!");
-};
+}
 
 void rtos::TaskScheduler::RemoveTask(const char * task_name)
 {
@@ -77,10 +78,14 @@ void rtos::TaskScheduler::RemoveTask(const char * task_name)
   {
     return;
   }
-  vTaskDelete(task_list_[kTaskIndex]->GetHandle());
+  TaskHandle_t handle = task_list_[kTaskIndex]->GetHandle();
+  if (handle != nullptr)
+  {
+    vTaskDelete(handle);
+  }
   task_list_[kTaskIndex] = nullptr;
   task_count_--;
-};
+}
 
 uint8_t rtos::TaskScheduler::GetTaskIndex(const char * task_name)
 {

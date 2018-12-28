@@ -7,8 +7,9 @@
 #pragma once
 
 #include <cstdint>
+
 #include "L1_Drivers/gpio.hpp"
-#include "L2_Utilities/macros.hpp"
+#include "L2_Utilities/log.hpp"
 
 class OnBoardLedInterface
 {
@@ -113,5 +114,5 @@ class OnBoardLed : public OnBoardLedInterface
   }
 
  protected:
-  Gpio led[4] = { Gpio(1, 1), Gpio(1, 8), Gpio(1, 10), Gpio(1, 15) };
+  Gpio led[4] = { Gpio(2, 3), Gpio(1, 26), Gpio(1, 24), Gpio(1, 18) };
 };

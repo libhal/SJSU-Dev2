@@ -2,6 +2,7 @@
 #pragma once
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin.hpp"
+#include "L2_Utilities/log.hpp"
 
 class DacInterface
 {
@@ -13,9 +14,9 @@ class DacInterface
 class Dac : public DacInterface
 {
  public:
-  static LPC_DAC_TypeDef * dac_register;
-  static LPC_SC_TypeDef * sc_ptr;
-  static LPC_IOCON_TypeDef * iocon_register;
+  inline static LPC_DAC_TypeDef * dac_register = LPC_DAC;
+  inline static LPC_SC_TypeDef * sc_ptr        = LPC_SC;
+
   static constexpr float kVref        = 3.3f;
   static constexpr uint8_t kDacMode   = 0b010;
   static constexpr uint16_t kClearDac = 0b1111111111;
