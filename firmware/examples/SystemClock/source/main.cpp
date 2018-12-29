@@ -1,4 +1,3 @@
-#include <project_config.hpp>
 #include <cinttypes>
 #include <cstdint>
 #include <cstdio>

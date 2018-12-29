@@ -52,6 +52,7 @@ endif
 
 UNAME_S    := $(shell uname -s)
 CLANG_TIDY  = $(SJCLANG)/clang-tidy
+CLANG_TIDY_RUNNER = $(SJCLANG)/../share/clang/run-clang-tidy.py
 
 # Internal build directories
 BUILD_DIR = build
@@ -109,7 +110,7 @@ DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # stdlib=libc++ : tell clang to ignore GCC standard libs
 INCLUDES  = -I"$(CURRENT_DIRECTORY)/" \
 			-I"$(LIB_DIR)/" \
-			-idirafter"$(LIB_DIR)/L0_LowLevel/SystemFiles" \
+			-I"$(LIB_DIR)/L0_LowLevel/SystemFiles" \
 			-idirafter"$(LIB_DIR)/third_party/" \
 			-idirafter"$(LIB_DIR)/third_party/printf" \
 			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source" \
@@ -214,6 +215,7 @@ LINT_FILES      = $(shell find $(FIRMWARE) \
                          -name "*.cpp" | \
 						             $(FILE_EXCLUDES) \
                          2> /dev/null)
+LINT_FILES_PHONY = $(LINT_FILES:=.lint)
 # Remove all test files from SOURCE_FILES
 SOURCES     = $(filter-out $(SOURCE_TESTS), $(SOURCE_FILES))
 ifeq ($(MAKECMDGOALS), test)
@@ -283,13 +285,13 @@ help:
 	@echo "    multi-debug  - run multiarch gdb with current projects .elf file"
 	@echo
 
+# Shows the help menu without any targets specified
 default: help
-    # Just shows the help menu
 bootloader: build
 # Build recipe
 application: build
-build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(SIZE) $(LIST) $(HEX) $(BINARY)
-# Complete rebuild and flash installation#
+build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(LIST) $(HEX) $(BINARY) $(SIZE)
+# Complete rebuild and flash installation
 cleaninstall: clean build flash
 # Debug recipe to show internal list contents
 show-lists:
@@ -314,102 +316,82 @@ show-lists:
 	@echo "=========== OMIT_LIBRARIES =============="
 	@echo $(OMIT_LIBRARIES)
 
+# shell echo must be used to ensure that the \x1B makes it into the variable
+# simply doing YELLOW=\x1B[33;1m works on Linux but the forward slash is omitted
+# on mac.
+YELLOW=$(shell echo "\x1B[33;1m")
+RESET=$(shell echo "\x1B[0m")
+GREEN=$(shell echo "\x1B[32;1m")
+
 $(HEX): $(EXECUTABLE)
-	@echo ' '
-	@echo 'Invoking: Cross ARM GNU Create Flash Image'
+	@printf '$(YELLOW)Generating Hex Image $(RESET)   : $@ '
 	@$(OBJCOPY) -O ihex "$<" "$@"
-	@echo 'Finished building: $@'
-	@echo ' '
+	@printf '$(GREEN)Hex Generated!$(RESET)\n'
 
 $(BINARY): $(EXECUTABLE)
-	@echo ' '
-	@echo 'Invoking: Cross ARM GNU Create Flash Binary Image'
+	@printf '$(YELLOW)Generating Binary Image $(RESET): $@ '
 	@$(OBJCOPY) -O binary "$<" "$@"
-	@echo 'Finished building: $@'
-	@echo ' '
+	@printf '$(GREEN)Binary Generated!$(RESET)\n'
 
 $(SIZE): $(EXECUTABLE)
 	@echo ' '
-	@echo 'Invoking: Cross ARM GNU Print Size'
+	@echo 'Showing Image Size Information: '
 	@$(SIZEC) --format=berkeley "$<"
-	@echo 'Finished building: $@'
 	@echo ' '
 
-#--line-numbers --disassemble --source
 $(LIST): $(EXECUTABLE)
-	@echo ' '
-	@echo 'Invoking: Cross ARM GNU Create Assembly Listing'
+	@printf '$(YELLOW)Generating Disassembly$(RESET)  : $@ '
 	@$(OBJDUMP) --disassemble --all-headers --source --demangle --wide "$<" > "$@"
-	@echo 'Finished building: $@'
-	@echo ' '
+	@printf '$(GREEN)Disassembly Generated!$(RESET)\n'
 
 $(EXECUTABLE): $(OBJECT_FILES)
-	@echo 'Invoking: Cross ARM C++ Linker'
+	@printf '$(YELLOW)Linking Executable $(RESET)     : $@ '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECT_FILES)
-	@echo 'Finished building target: $@'
+	@printf '$(GREEN)Executable Generated!$(RESET)\n'
 
 $(OBJ_DIR)/%.o: %.cpp
-	@echo 'Building file: $<'
-	@echo 'Invoking: Cross ARM C++ Compiler'
+	@printf '$(YELLOW)Building file (C++) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) $(CPPFLAGS) -std=c++17 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
+	@printf '$(GREEN)DONE!$(RESET)\n'
 
 $(OBJ_DIR)/%.o: %.c
-	@echo 'Building file: $<'
-	@echo 'Invoking: Cross ARM C Compiler'
+	@printf '$(YELLOW)Building file ( C ) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CC) $(CFLAGS) -std=gnu11 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
+	@printf '$(GREEN)DONE!$(RESET)\n'
 
 $(OBJ_DIR)/%.o: %.s
-	@echo 'Building Assembly file: $<'
-	@echo 'Invoking: Cross ARM C Compiler'
+	@printf '$(YELLOW)Building file (Asm) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CC) $(CFLAGS) -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
+	@printf '$(GREEN)DONE!$(RESET)\n'
 
 $(OBJ_DIR)/%.o: %.S
-	@echo 'Building Assembly file: $<'
-	@echo 'Invoking: Cross ARM C Compiler'
+	@printf '$(YELLOW)Building file (Asm) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CC) $(CFLAGS) -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
+	@printf '$(GREEN)DONE!$(RESET)\n'
 
 $(OBJ_DIR)/%.o: $(LIB_DIR)/%.cpp
-	@echo 'Building C++ file: $<'
-	@echo 'Invoking: Cross ARM C++ Compiler'
+	@printf '$(YELLOW)Building file (C++) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) $(CPPFLAGS) -std=c++17 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
+	@printf '$(GREEN)DONE!$(RESET)\n'
 
 $(OBJ_DIR)/%.o: $(LIB_DIR)/%.c
-	@echo 'Building C file: $<'
-	@echo 'Invoking: Cross ARM C Compiler'
+	@printf '$(YELLOW)Building file ( C ) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CC) $(CFLAGS) -std=gnu11 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
+	@printf '$(GREEN)DONE!$(RESET)\n'
 
 $(DBC_BUILD):
 	python2.7 "$(LIB_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIB_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
 
-$(DBC_DIR):
-	mkdir -p $(DBC_DIR)
-
-$(OBJ_DIR):
-	@echo 'Creating Objects Folder: $<'
-	mkdir -p $(OBJ_DIR)
-
-$(BIN_DIR):
-	@echo 'Creating Binary Folder: $<'
-	mkdir -p $(BIN_DIR)
+$(OBJ_DIR) $(BIN_DIR) $(DBC_DIR):
+	@echo 'Creating Folder: $@'
+	mkdir -p "$@"
 
 clean:
 	rm -fR $(BUILD_DIR)
@@ -427,7 +409,6 @@ telemetry:
 test: $(COVERAGE) $(TEST_EXEC)
 
 run-test: $(COVERAGE)
-	# Set LD_LIBRARY_PATH to the clang
 	$(TEST_EXEC) $(TEST_ARGS)
 	gcovr --root="$(FIRMWARE)/" --keep --object-directory="$(BUILD_DIR)/" \
 		-e "$(LIB_DIR)/newlib" \
@@ -440,36 +421,43 @@ $(COVERAGE):
 	mkdir -p $(COVERAGE)
 
 $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
+	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@ '
 	@mkdir -p "$(dir $@)"
-	@echo 'Finished building target: $@'
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
            -fno-inline-small-functions -fno-default-inline \
 				   -fkeep-inline-functions -fno-elide-constructors  \
            -ftest-coverage -O0 -fsanitize=address \
 					 -std=c++17 -stdlib=libc++ -lc++ -lc++abi \
            -o $(TEST_EXEC) $(OBJECT_FILES)
+	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
 %.hpp.gch: %.hpp
-	@echo 'Precompiling HPP file: $<'
-	@echo 'Invoking: C Compiler'
+	@printf '$(YELLOW)Precompiling file (h++) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) $(CFLAGS) -std=c++17 -stdlib=libc++ -MF"$(@:%.o=%.d)" -MT"$(@)" \
 	      -o "$@" $(LIB_DIR)/L5_Testing/testing_frameworks.hpp
-	@echo 'Finished building: $<'
-	@echo ' '
+	@printf '$(GREEN)DONE!$(RESET)\n'
 
 lint:
 	@python2.7 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
 
-tidy:
-	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 \
-	 $(INCLUDES) -D CLANG_TIDY=1 -D HOST_TEST=1
+tidy: $(LINT_FILES_PHONY)
+	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
+
+%.lint: %
+	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
+	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
+	  -extra-arg="-std=c++17") "$<"  -- \
+		-D CLANG_TIDY=1 -D HOST_TEST=1 \
+		-isystem"$(SJCLANG)/../include/c++/v1/" \
+		-stdlib=libc++ $(INCLUDES) 2> /dev/null
+	@printf '$(GREEN)DONE!$(RESET)\n'
 
 presubmit:
 	@$(TOOLS)/presubmit.sh
 
 openocd:
-	openocd -f $(TOOLS)/OpenOCD/sjtwo.cfg
+	openocd -f $(FIRMWARE)/debug/sjtwo.cfg
 
 debug:
 	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)

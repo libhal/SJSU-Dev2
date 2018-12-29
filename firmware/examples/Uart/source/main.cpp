@@ -1,5 +1,3 @@
-#include <project_config.hpp>
-
 #include <cstdio>
 #include <iterator>
 
