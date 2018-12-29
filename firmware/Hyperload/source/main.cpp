@@ -13,12 +13,12 @@
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/system_clock.hpp"
+#include "L1_Drivers/system_timer.hpp"
 #include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/debug.hpp"
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/time.hpp"
 #include "L3_HAL/onboard_led.hpp"
-#include "L4_Application/globals.hpp"
 #include "L5_Testing/factory_test.hpp"
 
 #if !defined(BOOTLOADER) && !defined(CLANG_TIDY)

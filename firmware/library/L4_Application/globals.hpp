@@ -1,5 +1,7 @@
 // TODO(kammce): rename this file to ram.hpp
 #pragma once
+#include <cstdint>
+#include "L2_Utilities/macros.hpp"
 // ========================
 // Memory Map information
 // ========================

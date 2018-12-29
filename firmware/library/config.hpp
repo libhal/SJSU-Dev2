@@ -104,7 +104,7 @@ SJ2_DECLARE_CONSTANT(TASK_SCHEDULER_SIZE, uint8_t, kTaskSchedulerSize);
 #if !defined(SJ2_ESP8266_BUFFER_SIZE)
 #define SJ2_ESP8266_BUFFER_SIZE 512
 #endif  // !defined(SJ2_ESP8266_BUFFER_SIZE)
-SJ2_DECLARE_CONSTANT(ESP8266_BUFFER_SIZE, std::size_t, kEsp8266BufferSize);
+SJ2_DECLARE_CONSTANT(ESP8266_BUFFER_SIZE, size_t, kEsp8266BufferSize);
 
 /// Used to define the log level of the build
 #if !defined(SJ2_LOG_LEVEL)

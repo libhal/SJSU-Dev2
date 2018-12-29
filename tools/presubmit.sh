@@ -30,10 +30,11 @@ function print_status
 function check
 {
     if [ $1 -ne 0 ]
-    then
+        then
         lint="$(print_status $LINT_CAPTURE)"
         commit="$(print_status $STATUS_CAPTURE)"
         test="$(print_status $TEST_CAPTURE)"
+        tidy="$(print_status $TIDY_CAPTURE)"
         build="$(print_status $BUILD_CAPTURE)"
         printf "\e[0;31m ================================ \e[0m\n"
         printf "\e[1;31m|        None of this!           |\e[0m\n"
@@ -44,6 +45,7 @@ function check
         printf "\e[0;31m ================================ \e[0m\n"
         printf "\e[0;31m|                                |\e[0m\n"
         printf "\e[0;31m| Code style must be lint free %b |\e[0m\n" $lint
+        printf "\e[0;31m|    Code style must be tidy %b   |\e[0m\n" $tidy
         printf "\e[0;31m|     Commit must be clean %b     |\e[0m\n" $commit
         printf "\e[0;31m|       Tests must pass %b        |\e[0m\n" $test
         printf "\e[0;31m|       Code must build %b        |\e[0m\n" $build
@@ -65,9 +67,6 @@ function check
         printf "\e[0;32m ============================ \e[0m\n"
         exit 0
     fi
-    which clang
-    which clang++
-    which gcc
 }
 ####################################
 #    Clean Git Repository Check    #
@@ -94,17 +93,19 @@ print_status $BUILD_CAPTURE
 echo ""
 
 printf "\e[1;33m======================================================= \e[0m\n\n"
-printf "\e[0;33mBuilding Project Hyperload\e[0m\n"
-# Change to the HelloWorld project
-cd "${SJBASE}/firmware/HelloWorld"
+printf "\e[0;33mBuilding Hyperload Bootloader\e[0m\n"
+# Change to the Hyperload project
+cd "${SJBASE}/firmware/Hyperload"
 # Clean the build and start building from scratch
 make clean
 # Check if the system can build without any warnings!
 make bootloader -j16 WARNINGS_ARE_ERRORS=-Werror 1> /dev/null
 # Set build capture to return code from the build
-BUILD_CAPTURE=$?
+SPECIFIC_BUILD_CAPTURE=$?
+BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
 print_status $BUILD_CAPTURE
 echo ""
+
 # Build all example projects
 cd ${SJBASE}/firmware/examples
 for d in */; do
@@ -137,18 +138,18 @@ echo ""
 ####################################
 #         Clang Tidy Check         #
 ####################################
-# printf "\e[1;33m======================================================= \e[0m\n"
-# printf "\e[0;33mExecuting 'tidy' check \e[0m\n"
-# make tidy
-# TIDY_CAPTURE=$?
-# print_status $TIDY_CAPTURE
-# echo ""
+printf "\e[1;33m======================================================= \e[0m\n"
+printf "\e[0;33mExecuting 'tidy' check \e[0m\n"
+make tidy -j16
+TIDY_CAPTURE=$?
+print_status $TIDY_CAPTURE
+echo ""
 ####################################
 #         Unit Test Check          #
 ####################################
 printf "\e[1;33m======================================================= \e[0m\n"
 printf "\e[0;33mBuilding and running unit tests \e[0m\n"
-make test -j8 WARNINGS_ARE_ERRORS=-Werror
+make test -j16 WARNINGS_ARE_ERRORS=-Werror
 TEST_BUILD_CAPTURE=$?
 make run-test
 TEST_RUN_CAPTURE=$?
@@ -156,4 +157,4 @@ TEST_CAPTURE=$(($TEST_BUILD_CAPTURE + $TEST_RUN_CAPTURE))
 print_status $TEST_CAPTURE
 echo ""
 # Check if there were any errors. For this to succeed, this value should be 0
-check $(($STATUS_CAPTURE+$BUILD_CAPTURE+$LINT_CAPTURE+$TEST_CAPTURE))
+check $(($STATUS_CAPTURE+$BUILD_CAPTURE+$LINT_CAPTURE+$TIDY_CAPTURE+$TEST_CAPTURE))

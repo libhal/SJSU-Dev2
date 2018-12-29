@@ -36,7 +36,7 @@
 #elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
   #pragma clang system_header   /* treat file as system include file */
 #endif
-#pragma GCC system_header
+// #pragma GCC system_header
 
 #ifndef __CORE_CM4_H_GENERIC
 #define __CORE_CM4_H_GENERIC
