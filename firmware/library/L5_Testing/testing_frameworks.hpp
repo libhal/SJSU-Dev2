@@ -20,7 +20,7 @@ using namespace fakeit;  // NOLINT
     if (*ptr)                                                \
     {                                                        \
       class_name##_Template<0> emitter = *obj;               \
-      emitter.~class_name();                                 \
+      (void)emitter;                                         \
       return 1;                                              \
     }                                                        \
     return 0;                                                \

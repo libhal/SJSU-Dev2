@@ -11,6 +11,7 @@ tools/Hyperload
 tools/Telemetry
 tools/gcc-arm-none-eabi-*
 tools/clang*
+tools/openocd*
 
 **/*.gch
 **/*.gcno

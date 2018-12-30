@@ -81,7 +81,6 @@ class Dac : public DacInterface
     dac_register->CR =
         (dac_register->CR & ~(1 << kBiasReg)) | (bias << kBiasReg);
   }
-
  private:
   PinInterface * dac_;
   Pin dac_pin_;

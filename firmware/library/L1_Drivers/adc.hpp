@@ -158,7 +158,6 @@ class Adc : public AdcInterface
   {
     return ((adc_base->GDR >> kDoneBit) & 1);
   }
-
  private:
   PinInterface * adc_;
   Pin adc_pin_;

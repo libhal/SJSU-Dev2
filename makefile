@@ -27,12 +27,12 @@ DEVICE_NM      = arm-none-eabi-nm
 #
 TEST_ARGS ?=
 # IMPORTANT: GCC must be accessible via the PATH environment variable
-HOST_CC        ?= gcc-7
-HOST_CPPC      ?= g++-7
-HOST_OBJDUMP   ?= objdump-7
-HOST_SIZEC     ?= size-7
-HOST_OBJCOPY   ?= objcopy-7
-HOST_NM        ?= nm-7
+HOST_CC        ?= $(SJCLANG)/clang
+HOST_CPPC      ?= $(SJCLANG)/clang++
+HOST_OBJDUMP   ?= $(SJCLANG)/llvm-objdump
+HOST_SIZEC     ?= $(SJCLANG)/llvm-size
+HOST_OBJCOPY   ?= $(SJCLANG)/llvm-objcopy
+HOST_NM        ?= $(SJCLANG)/llvm-nm
 
 ifeq ($(MAKECMDGOALS), test)
 CC      = $(HOST_CC)
@@ -50,13 +50,8 @@ OBJCOPY = $(DEVICE_OBJCOPY)
 NM      = $(DEVICE_NM)
 endif
 
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-CLANG_TIDY   = $(SJCLANG)/clang-tidy
-endif
-ifeq ($(UNAME_S),Darwin)
-CLANG_TIDY   = /usr/local/opt/llvm@6/bin/clang-tidy
-endif
+UNAME_S    := $(shell uname -s)
+CLANG_TIDY  = $(SJCLANG)/clang-tidy
 
 # Internal build directories
 BUILD_DIR = build
@@ -103,7 +98,7 @@ OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
-            -Wdouble-promotion -Wduplicated-cond -Wlogical-op -Wswitch \
+            -Wdouble-promotion -Wduplicated-cond -Wswitch \
             -Wnull-dereference -Wformat=2 \
             -Wundef -Wconversion -Wsuggest-final-types \
             -Wsuggest-final-methods $(WARNINGS_ARE_ERRORS)
@@ -111,29 +106,36 @@ CPPWARNINGS = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
               -Wuseless-cast $(WARNINGS_ARE_ERRORS)
 DEFINES   = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
+# stdlib=libc++ : tell clang to ignore GCC standard libs
 INCLUDES  = -I"$(CURRENT_DIRECTORY)/" \
 			-I"$(LIB_DIR)/" \
-			-isystem"$(LIB_DIR)/L0_LowLevel/SystemFiles" \
-			-isystem"$(LIB_DIR)/third_party/" \
-			-isystem"$(LIB_DIR)/third_party/printf" \
-			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source" \
-			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/trace" \
-			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/include" \
-			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/portable" \
-			-isystem"$(LIB_DIR)/third_party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
-COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS)  $(DEFINES) \
+			-idirafter"$(LIB_DIR)/L0_LowLevel/SystemFiles" \
+			-idirafter"$(LIB_DIR)/third_party/" \
+			-idirafter"$(LIB_DIR)/third_party/printf" \
+			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source" \
+			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source/trace" \
+			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source/include" \
+			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source/portable" \
+			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
                $(DISABLED_WARNINGS)
 
 CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) -MMD -MP -c
 
 ifeq ($(MAKECMDGOALS), test)
-CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline \
-         -fno-inline-small-functions -fno-default-inline -fno-builtin \
-         -ftest-coverage --coverage \
-				 -Wno-unused -fno-elide-constructors \
+CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
+				 -fprofile-instr-generate -fcoverage-mapping \
+         -fno-elide-constructors -ftest-coverage -fno-omit-frame-pointer \
+				 -fsanitize=address -stdlib=libc++ \
+				 -Wconversion -Wextra -Wall \
+				 -Wno-sign-conversion -Wno-format-nonliteral \
+				 -Winconsistent-missing-override -Wshadow -Wfloat-equal \
+         -Wdouble-promotion -Wswitch -Wnull-dereference -Wformat=2 \
+         -Wundef -Wold-style-cast -Woverloaded-virtual \
+				 $(WARNINGS_ARE_ERRORS) \
 				 -D HOST_TEST=1 -D SJ2_BACKTRACE_DEPTH=1024 \
-         $(filter-out $(CORTEX_M4F) $(OPTIMIZE), $(CFLAGS_COMMON)) \
-         -O0 -g
+				 $(INCLUDES) $(DEFINES) $(DEBUG) $(DISABLED_WARNINGS) \
+         -O0 -MMD -MP -c
 CPPFLAGS = $(CFLAGS)
 else
 CFLAGS = $(CFLAGS_COMMON)
@@ -143,7 +145,11 @@ endif
 ifeq ($(MAKECMDGOALS), bootloader)
 LINKER = $(LIB_DIR)/LPC4078_bootloader.ld
 CFLAGS += -D BOOTLOADER=1
-else
+endif
+# NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
+# clang std libs (libc++) or it will result in a metric ton of undefined linker
+# errors.
+ifeq ($(MAKECMDGOALS), application)
 LINKER = $(LIB_DIR)/LPC4078_application.ld
 CFLAGS += -D APPLICATION=1
 CFLAGS += -finstrument-functions
@@ -211,7 +217,7 @@ LINT_FILES      = $(shell find $(FIRMWARE) \
 # Remove all test files from SOURCE_FILES
 SOURCES     = $(filter-out $(SOURCE_TESTS), $(SOURCE_FILES))
 ifeq ($(MAKECMDGOALS), test)
-COMPILABLES = $(filter-out $(OMIT), $(LIBRARIES) $(SOURCES) $(TESTS)) \
+COMPILABLES = $(filter-out $(OMIT), $(TESTS) $(LIBRARIES) $(SOURCES)) \
               $(PRINTF_3P_LIBRARY)
 else
 COMPILABLES = $(LIBRARIES) $(SOURCES)
@@ -420,12 +426,15 @@ telemetry:
 
 test: $(COVERAGE) $(TEST_EXEC)
 
-run-test:
-	@valgrind --leak-check=full --track-origins=yes -v $(TEST_EXEC) $(TEST_ARGS)
-	@gcovr --root $(FIRMWARE) --keep --object-directory $(BUILD_DIR) \
+run-test: $(COVERAGE)
+	# Set LD_LIBRARY_PATH to the clang
+	$(TEST_EXEC) $(TEST_ARGS)
+	gcovr --root="$(FIRMWARE)/" --keep --object-directory="$(BUILD_DIR)/" \
 		-e "$(LIB_DIR)/newlib" \
 		-e "$(LIB_DIR)/third_party" \
-		--html --html-details -o $(COVERAGE)/coverage.html
+		-e "$(LIB_DIR)/L5_Testing" \
+		--html --html-details --gcov-executable="llvm-cov gcov" \
+		-o $(COVERAGE)/coverage.html
 
 $(COVERAGE):
 	mkdir -p $(COVERAGE)
@@ -433,20 +442,19 @@ $(COVERAGE):
 $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@mkdir -p "$(dir $@)"
 	@echo 'Finished building target: $@'
-	@$(CPPC) -fprofile-arcs -fPIC -fexceptions  \
-         -fno-inline -fno-inline-small-functions -fno-default-inline \
-				 -fkeep-inline-functions \
-         -ftest-coverage --coverage \
-         -fno-elide-constructors -lgcov \
-         -fprofile-arcs -ftest-coverage -fPIC -O0 \
-         -o $(TEST_EXEC) $(OBJECT_FILES)
+	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
+           -fno-inline-small-functions -fno-default-inline \
+				   -fkeep-inline-functions -fno-elide-constructors  \
+           -ftest-coverage -O0 -fsanitize=address \
+					 -std=c++17 -stdlib=libc++ -lc++ -lc++abi \
+           -o $(TEST_EXEC) $(OBJECT_FILES)
 
 %.hpp.gch: %.hpp
 	@echo 'Precompiling HPP file: $<'
 	@echo 'Invoking: C Compiler'
 	@mkdir -p "$(dir $@)"
-	@$(CPPC) $(CFLAGS) -std=c++17 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" \
-        $(LIB_DIR)/L5_Testing/testing_frameworks.hpp
+	@$(CPPC) $(CFLAGS) -std=c++17 -stdlib=libc++ -MF"$(@:%.o=%.d)" -MT"$(@)" \
+	      -o "$@" $(LIB_DIR)/L5_Testing/testing_frameworks.hpp
 	@echo 'Finished building: $<'
 	@echo ' '
 
@@ -455,7 +463,7 @@ lint:
 
 tidy:
 	@$(CLANG_TIDY) -extra-arg=-std=c++17 $(LINT_FILES) -- -std=c++17 \
-	$(INCLUDES) -D CLANG_TIDY=1 -D HOST_TEST=1
+	 $(INCLUDES) -D CLANG_TIDY=1 -D HOST_TEST=1
 
 presubmit:
 	@$(TOOLS)/presubmit.sh
