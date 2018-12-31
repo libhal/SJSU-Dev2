@@ -155,7 +155,8 @@ endif
 # NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
 # clang std libs (libc++) or it will result in a metric ton of undefined linker
 # errors.
-ifeq ($(MAKECMDGOALS), application)
+ifeq ($(MAKECMDGOALS), $(filter \
+			$(MAKECMDGOALS), application flash build cleaninstall))
 LINKER = $(LIB_DIR)/LPC4078_application.ld
 CFLAGS += -D APPLICATION=1
 CFLAGS += -finstrument-functions
@@ -304,8 +305,8 @@ flash: build
 	@bash -c "\
 	source $(TOOLS)/Hyperload/modules/bin/activate && \
 	python $(TOOLS)/Hyperload/hyperload.py -b 576000 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
-# Complete rebuild and flash installation
-cleaninstall: clean build flash
+# Rebuild from scratch and flash application
+cleaninstall: clean flash
 # Run telemetry
 telemetry:
 	@bash -c "\
@@ -388,7 +389,7 @@ $(LIST): $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECT_FILES)
 	@printf '$(YELLOW)Linking Executable $(RESET)     : $@ '
 	@mkdir -p "$(dir $@)"
-	@$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECT_FILES)
+	$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECT_FILES)
 	@printf '$(GREEN)Executable Generated!$(RESET)\n'
 
 $(OBJ_DIR)/%.o: %.cpp

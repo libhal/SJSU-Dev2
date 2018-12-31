@@ -81,6 +81,7 @@ class SystemTimer : public SystemTimerInterface,
       sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
       successful = true;
     }
+    RegisterIsr(SysTick_IRQn, SystemTimerHandler);
     return successful;
   }
   /// @param frequency set the frequency that SystemTick counter will run.
