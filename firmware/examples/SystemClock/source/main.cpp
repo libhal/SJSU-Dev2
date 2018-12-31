@@ -2,13 +2,13 @@
 #include <cstdint>
 #include <cstdio>
 
+#include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L1_Drivers/system_clock.hpp"
 #include "L2_Utilities/log.hpp"
 
 int main(void)
 {
-  SystemClock clock;
+  Lpc40xxSystemController clock;
   Pin clock_pin(1, 25);
   clock_pin.SetPinFunction(0b101);  //  set clock to putput mode
   clock_pin.SetMode(PinInterface::Mode::kInactive);

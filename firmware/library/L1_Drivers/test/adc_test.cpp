@@ -16,7 +16,7 @@ TEST_CASE("Testing adc", "[adc]")
   // for any bit manipulations
   // Any manipulation will be directed to the respective local registers
   Adc::adc_base = &local_adc;
-  Adc::sysclk_register = &local_sc;
+  Lpc40xxSystemController::system_controller = &local_sc;
   // Set mock for PinInterface
   Mock<PinInterface> mock_adc;
   Fake(Method(mock_adc, SetAsAnalogMode),
@@ -45,6 +45,8 @@ TEST_CASE("Testing adc", "[adc]")
     Verify(Method(mock_adc, SetPinFunction).Using(Adc::AdcMode::kCh0123Pins),
            Method(mock_adc, SetAsAnalogMode).Using(true),
            Method(mock_adc, SetMode).Using(PinInterface::Mode::kInactive));
+    // TODO(#286): This test does not verify that the driver has been powered
+    // up.
     // Check if any bits in the clock divider are set
     CHECK(((local_adc.CR >> kChannelClkDivBit) & kChannelClkDivMask) != 0);
     // Check bit 21 to see if power down bit is set in local_adc.CR
@@ -98,5 +100,7 @@ TEST_CASE("Testing adc", "[adc]")
     channel0_mock.ReadResult();
     CHECK(((local_adc.GDR >> kResultBit) & kResultMask) == 0);
   }
+
+  Lpc40xxSystemController::system_controller  = LPC_SC;
   Adc::adc_base = LPC_ADC;
 }
