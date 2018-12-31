@@ -318,6 +318,7 @@ void PendSVHandler(void)
 SJ2_SECTION(".after_vectors")
 void SysTickHandler(void)
 {
+  SystemTimer system_timer;
   // This assumes that SysTickHandler is called every millisecond.
   // Changing that frequency will distort the milliseconds time.
   IncrementUptimeMs();

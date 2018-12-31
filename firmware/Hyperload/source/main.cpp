@@ -12,7 +12,6 @@
 #include "config.hpp"
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L1_Drivers/system_clock.hpp"
 #include "L1_Drivers/system_timer.hpp"
 #include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/debug.hpp"
@@ -219,6 +218,7 @@ void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
 
 int main(void)
 {
+  SystemTimer system_timer;
   Gpio button0(1, 19);
   Gpio button1(1, 15);
   Gpio button2(0, 30);

@@ -13,20 +13,19 @@
 
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L1_Drivers/system_clock.hpp"
+#include "L0_LowLevel/system_controller.hpp"
 #include "L2_Utilities/macros.hpp"
 
-// LPC4076 does not include P3.26 so supporting methods are not available
 class SystemTimerInterface
 {
  public:
   virtual void SetIsrFunction(IsrPointer isr)           = 0;
   virtual bool StartTimer()                             = 0;
-  virtual void DisableTimer()                           = 0;
   virtual uint32_t SetTickFrequency(uint32_t frequency) = 0;
 };
 
-class SystemTimer : public SystemTimerInterface
+class SystemTimer : public SystemTimerInterface,
+                    protected Lpc40xxSystemController
 {
  public:
   // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
@@ -44,7 +43,28 @@ class SystemTimer : public SystemTimerInterface
   /// check if the isr is set to nullptr, and if it is, turn off the timer, if
   /// set a proper function then execute it.
   inline static IsrPointer system_timer_isr = nullptr;
-
+  /// WARNING: Doing so will most likely disable FreeRTOS
+  static void DisableTimer()
+  {
+    sys_tick->LOAD = 0;
+    sys_tick->VAL  = 0;
+    sys_tick->CTRL = 0;
+  }
+  static void SystemTimerHandler()
+  {
+    // This assumes that SysTickHandler is called every millisecond.
+    // Changing that frequency will distort the milliseconds time.
+    IncrementUptimeMs();
+    if (system_timer_isr == nullptr)
+    {
+      DEBUG_PRINT("System Timer ISR not defined, disabling System Timer");
+      DisableTimer();
+    }
+    else
+    {
+      system_timer_isr();
+    }
+  }
   constexpr SystemTimer() {}
   void SetIsrFunction(IsrPointer isr) override
   {
@@ -63,13 +83,6 @@ class SystemTimer : public SystemTimerInterface
     }
     return successful;
   }
-  /// WARNING: Doing so will most likely disable FreeRTOS
-  void DisableTimer() override
-  {
-    sys_tick->LOAD = 0;
-    sys_tick->VAL  = 0;
-    sys_tick->CTRL = 0;
-  }
   /// @param frequency set the frequency that SystemTick counter will run.
   ///        If it is above the maximum SystemTick value 2^24
   ///        [SysTick_LOAD_RELOAD_Msk], the value is ceiled to
@@ -86,8 +99,8 @@ class SystemTimer : public SystemTimerInterface
     {
       return 0;
     }
-    uint32_t reload_value = (system_clock.GetClockFrequency() / frequency) - 1;
-    int remainder         = system_clock.GetClockFrequency() % frequency;
+    uint32_t reload_value = (GetClockFrequency() / frequency) - 1;
+    int remainder         = GetClockFrequency() % frequency;
     if (reload_value > SysTick_LOAD_RELOAD_Msk)
     {
       reload_value = SysTick_LOAD_RELOAD_Msk;
@@ -97,5 +110,3 @@ class SystemTimer : public SystemTimerInterface
     return remainder;
   }
 };
-
-inline SystemTimer system_timer;

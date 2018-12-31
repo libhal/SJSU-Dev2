@@ -4,8 +4,8 @@
 #include <cstdint>
 
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L1_Drivers/system_clock.hpp"
 #include "L2_Utilities/time.hpp"
 
 class UartInterface
@@ -16,7 +16,7 @@ class UartInterface
   virtual uint8_t Receive(uint32_t timeout)    = 0;
 };
 
-class Uart : public UartInterface
+class Uart : public UartInterface, protected Lpc40xxSystemController
 {
  public:
   enum Pins : uint8_t
@@ -153,6 +153,7 @@ class Uart : public UartInterface
     }
     return receiver;
   }
+
  private:
   UartCalibration_t FindClosestFractional(float decimal)
   {
@@ -179,15 +180,13 @@ class Uart : public UartInterface
 
   float DividerEstimate(float baud_rate, float fraction_estimate = 1)
   {
-    float clock_frequency =
-        static_cast<float>(system_clock.GetClockFrequency());
+    float clock_frequency = static_cast<float>(GetClockFrequency());
     return clock_frequency / (16.0f * baud_rate * fraction_estimate);
   }
 
   float FractionalEstimate(float baud_rate, float divider)
   {
-    float clock_frequency =
-        static_cast<float>(system_clock.GetClockFrequency());
+    float clock_frequency = static_cast<float>(GetClockFrequency());
     return clock_frequency / (16.0f * baud_rate * divider);
   }
 

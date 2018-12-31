@@ -50,9 +50,14 @@ OBJCOPY = $(DEVICE_OBJCOPY)
 NM      = $(DEVICE_NM)
 endif
 
-UNAME_S    := $(shell uname -s)
+# shell echo must be used to ensure that the \x1B makes it into the variable
+# simply doing YELLOW=\x1B[33;1m works on Linux but the forward slash is omitted
+# on mac.
+YELLOW=$(shell echo "\x1B[33;1m")
+RESET=$(shell echo "\x1B[0m")
+GREEN=$(shell echo "\x1B[32;1m")
+
 CLANG_TIDY  = $(SJCLANG)/clang-tidy
-CLANG_TIDY_RUNNER = $(SJCLANG)/../share/clang/run-clang-tidy.py
 
 # Internal build directories
 BUILD_DIR = build
@@ -291,8 +296,51 @@ bootloader: build
 # Build recipe
 application: build
 build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(LIST) $(HEX) $(BINARY) $(SIZE)
+# Clean working build directory by deleting the build folder
+clean:
+	rm -fR $(BUILD_DIR)
+# Build application and flash board
+flash: build
+	@bash -c "\
+	source $(TOOLS)/Hyperload/modules/bin/activate && \
+	python $(TOOLS)/Hyperload/hyperload.py -b 576000 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
 # Complete rebuild and flash installation
 cleaninstall: clean build flash
+# Run telemetry
+telemetry:
+	@bash -c "\
+	source $(TOOLS)/Telemetry/modules/bin/activate && \
+	python2.7 $(TOOLS)/Telemetry/telemetry.py"
+# Build test file
+test: $(COVERAGE) $(TEST_EXEC)
+# Run test file and generate code coverage report
+run-test: $(COVERAGE)
+	@$(TEST_EXEC) $(TEST_ARGS)
+	@gcovr --root="$(FIRMWARE)/" --keep --object-directory="$(BUILD_DIR)/" \
+		-e "$(LIB_DIR)/newlib" \
+		-e "$(LIB_DIR)/third_party" \
+		-e "$(LIB_DIR)/L5_Testing" \
+		--html --html-details --gcov-executable="llvm-cov gcov" \
+		-o $(COVERAGE)/coverage.html
+# Evaluate library files and check them for linting errors.
+lint:
+	@python2.7 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
+# Evaluate library files for proper code naming conventions
+tidy: $(LINT_FILES_PHONY)
+	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
+# Run presumbission tests
+presubmit:
+	$(TOOLS)/presubmit.sh
+# Start an openocd jtag debug session for the sjtwo development board
+openocd:
+	openocd -f $(FIRMWARE)/debug/sjtwo.cfg
+# Start gdb for arm and connect to openocd jtag debugging session
+debug:
+	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)
+# Start gdb just like the debug target, but using gdb-multiarch
+# gdb-multiarch is perferable since it supports python in its .gdbinit file
+multi-debug:
+	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
 # Debug recipe to show internal list contents
 show-lists:
 	@echo "=========== OBJECT FILES ============"
@@ -315,13 +363,6 @@ show-lists:
 	@echo $(CLANG_TIDY)
 	@echo "=========== OMIT_LIBRARIES =============="
 	@echo $(OMIT_LIBRARIES)
-
-# shell echo must be used to ensure that the \x1B makes it into the variable
-# simply doing YELLOW=\x1B[33;1m works on Linux but the forward slash is omitted
-# on mac.
-YELLOW=$(shell echo "\x1B[33;1m")
-RESET=$(shell echo "\x1B[0m")
-GREEN=$(shell echo "\x1B[32;1m")
 
 $(HEX): $(EXECUTABLE)
 	@printf '$(YELLOW)Generating Hex Image $(RESET)   : $@ '
@@ -393,30 +434,6 @@ $(OBJ_DIR) $(BIN_DIR) $(DBC_DIR):
 	@echo 'Creating Folder: $@'
 	mkdir -p "$@"
 
-clean:
-	rm -fR $(BUILD_DIR)
-
-flash: build
-	@bash -c "\
-	source $(TOOLS)/Hyperload/modules/bin/activate && \
-	python $(TOOLS)/Hyperload/hyperload.py -b 576000 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
-
-telemetry:
-	@bash -c "\
-	source $(TOOLS)/Telemetry/modules/bin/activate && \
-	python2.7 $(TOOLS)/Telemetry/telemetry.py"
-
-test: $(COVERAGE) $(TEST_EXEC)
-
-run-test: $(COVERAGE)
-	$(TEST_EXEC) $(TEST_ARGS)
-	gcovr --root="$(FIRMWARE)/" --keep --object-directory="$(BUILD_DIR)/" \
-		-e "$(LIB_DIR)/newlib" \
-		-e "$(LIB_DIR)/third_party" \
-		-e "$(LIB_DIR)/L5_Testing" \
-		--html --html-details --gcov-executable="llvm-cov gcov" \
-		-o $(COVERAGE)/coverage.html
-
 $(COVERAGE):
 	mkdir -p $(COVERAGE)
 
@@ -438,12 +455,6 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	      -o "$@" $(LIB_DIR)/L5_Testing/testing_frameworks.hpp
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
-lint:
-	@python2.7 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
-
-tidy: $(LINT_FILES_PHONY)
-	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
-
 %.lint: %
 	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
@@ -452,15 +463,3 @@ tidy: $(LINT_FILES_PHONY)
 		-isystem"$(SJCLANG)/../include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) 2> /dev/null
 	@printf '$(GREEN)DONE!$(RESET)\n'
-
-presubmit:
-	@$(TOOLS)/presubmit.sh
-
-openocd:
-	openocd -f $(FIRMWARE)/debug/sjtwo.cfg
-
-debug:
-	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)
-
-multi-debug:
-	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
