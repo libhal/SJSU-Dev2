@@ -51,7 +51,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(kHigh == local_i2c.SCLH);
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
     CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
-    CHECK(dynamic_isr_vector_table[I2c::kIrq[kI2cPort]] ==
+    CHECK(dynamic_isr_vector_table[I2c::kIrq[kI2cPort]+kIrqOffset] ==
           I2c::kHandlers[kI2cPort]);
 
     Verify(Method(mock_sda_pin, SetPinFunction).Using(I2c::kI2cPort2Function));

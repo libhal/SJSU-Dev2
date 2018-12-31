@@ -147,7 +147,7 @@ Lpc40xxSystemController system_controller;
 
 void InitializeFreeRTOSSystemTick()
 {
-#if !defined(BOOTLOADER)
+#if defined(APPLICATION)
   if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
   {
     // Register xPortPendSVHandler to the PendSV interrupt
@@ -186,7 +186,9 @@ void LowLevelInit()
   system_controller.SetPeripheralClockDivider(1);
   // Set System Timer frequency again, since the clock speed has changed since
   // the last time we ran this.
+  system_timer.DisableTimer();
   system_timer.SetTickFrequency(config::kRtosFrequency);
+  system_timer.StartTimer();
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
 }
