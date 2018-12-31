@@ -6,6 +6,7 @@ firmware/**/makefile
 !firmware/HelloWorld
 !firmware/Hyperload
 !firmware/examples
+!firmware/debug
 
 tools/Hyperload
 tools/Telemetry
