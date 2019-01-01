@@ -33,6 +33,8 @@ class PinInterface
   virtual void EnableI2cHighCurrentDrive(bool enable_high_current = true) = 0;
   virtual void SetAsOpenDrain(bool set_as_open_drain = true)              = 0;
   virtual void EnableDac(bool enable_dac = true)                          = 0;
+  virtual uint8_t GetPort() const                                         = 0;
+  virtual uint8_t GetPin() const                                          = 0;
 };
 
 class Pin : public PinInterface
@@ -158,11 +160,11 @@ class Pin : public PinInterface
     target |= (value & mask) << position;
     return target;
   }
-  uint8_t GetPort()
+  uint8_t GetPort() const override
   {
     return port_;
   }
-  uint8_t GetPin()
+  uint8_t GetPin() const override
   {
     return pin_;
   }

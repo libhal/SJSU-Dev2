@@ -6,6 +6,10 @@
 //      For example, include how to setup and initialize the driver, and how to
 //      do something simple with the driver.
 //      See library/L1_Drivers/pin.hpp for an example.
+//
+// Refrain at all costs from including any libary above L1. So you can include
+// from L0, L1 and Utilities, but no higher
+//
 // The first none comment line of the driver hpp MUST be this:
 #pragma once
 // Include any C-header files first, in alphabetical order.
