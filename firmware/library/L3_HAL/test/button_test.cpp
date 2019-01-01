@@ -6,84 +6,83 @@ EMIT_ALL_METHODS(Button);
 
 TEST_CASE("Testing Button", "[button]")
 {
-  // Simulated local version of LPC_IOCON
-  // manipulation by side effect of Pin method calls
-  LPC_IOCON_TypeDef local_iocon;
-  // Substitute the memory mapped LPC_IOCON
-  // with the local_iocon test struture
-  memset(&local_iocon, 0, sizeof(local_iocon));
+  // Make a mock pin to work with
+  Mock<PinInterface> mock_pin;
+  // Retrieve a reference to the PinInterface to be injected as the return value
+  // of GpioInterfaces's GetPin() method.
+  PinInterface & test_pin = mock_pin.get();
+  // Fake the implementation of SetAsActiveLow and SetMode to be inspected later
+  Fake(Method(mock_pin, SetAsActiveLow), Method(mock_pin, SetMode));
 
-  // Redirects manipulation to the 'local_iocon'
-  Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
-  LPC_GPIO_TypeDef local_gpio_port[2];
-  memset(&local_gpio_port, 0, sizeof(local_gpio_port));
+  // Create a mock gpio object
+  Mock<GpioInterface> mock_gpio;
+  // Fake Read and SetAsInput so we can inspect them later
+  Fake(Method(mock_gpio, Read), Method(mock_gpio, SetAsInput));
+  // Fake implementation of GetPin() to return our mock_pin reference. So when
+  // Button retrieves test_pin from GetPin() it will run our faked
+  // SetAsActiveLow and SetMode methods, allowing us to change them later.
+  When(Method(mock_gpio, GetPin)).AlwaysReturn(test_pin);
 
-  // Only Port 1 is tested in this test.
-  Gpio::gpio_port[1] = &local_gpio_port[1];
-  // Onboard button of Port 1 and Pin 9 will be used for this test
-  Button test_subject(1, 9);
+  // Retrieve GpioInterface reference ot be passed to the test subject
+  GpioInterface & test_gpio = mock_gpio.get();
+
+  // Inject test_gpio into button object
+  Button test_subject(&test_gpio);
 
   SECTION("Initialize")
   {
-    constexpr uint8_t kInputSet     = 0b0;
-    constexpr uint8_t kPin9         = 9;
-    constexpr uint8_t kModePosition = 3;
-    constexpr uint32_t kMask        = 0b11 << kModePosition;
-
-    constexpr uint32_t kExpectedForPullDown =
-        static_cast<uint8_t>(PinInterface::Mode::kPullDown) << kModePosition;
-
     test_subject.Initialize();
-
-    CHECK(kExpectedForPullDown == (local_iocon.P1_9 & kMask));
-    CHECK(((local_gpio_port[1].DIR >> kPin9) & 1) == kInputSet);
-  }
-  SECTION("Button Released")
-  {
-    constexpr bool kExpectedResult = true;
-    constexpr uint8_t kPin9        = 9;
-    // Reset Button's State
-    test_subject.ResetState();
-    // Set P1_9 for button read == true
-    local_gpio_port[1].PIN |= (1 << kPin9);
-    // Simulate button being pressed.
-    test_subject.Released();
-    // was_pressed is now true.
-    // Now clear P1_9 for button read == false
-    local_gpio_port[1].PIN &= ~(1 << kPin9);
-    // Button is now released.
-    // Check if button released condition is true
-    CHECK(test_subject.Released() == kExpectedResult);
-  }
-  SECTION("Button Pressed")
-  {
-    constexpr bool kExpectedResult = true;
-    constexpr uint8_t kPin9        = 9;
-    // Reset Button State
-    test_subject.ResetState();
-    // Simulate button being pressed.
-    // Set P1_9 for button read == true
-    local_gpio_port[1].PIN |= (1 << kPin9);
-    // Check if button pressed condition is true
-    CHECK(test_subject.Pressed() == kExpectedResult);
+    Verify(Method(mock_gpio, SetAsInput),
+           Method(mock_pin, SetMode).Using(PinInterface::Mode::kPullDown),
+           Method(mock_pin, SetAsActiveLow));
   }
   SECTION("Invert Button Signal")
   {
-    constexpr uint8_t kInvertPosition = 6;
-    constexpr uint32_t kMask          = 0b1 << kInvertPosition;
-    // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
-    // Check that mapped pin P1.9's input inversion bit is set to 1
     test_subject.InvertButtonSignal(true);
-    CHECK(kMask == (local_iocon.P1_9 & kMask));
-    // Check that mapped pin P1.9's input inversion bit is set to 0
+    Verify(Method(mock_pin, SetAsActiveLow).Using(true));
     test_subject.InvertButtonSignal(false);
-    CHECK(0 == (local_iocon.P1_9 & kMask));
+    Verify(Method(mock_pin, SetAsActiveLow).Using(false));
   }
-  Gpio::gpio_port[0] = LPC_GPIO0;
-  Gpio::gpio_port[1] = LPC_GPIO1;
-  Gpio::gpio_port[2] = LPC_GPIO2;
-  Gpio::gpio_port[3] = LPC_GPIO3;
-  Gpio::gpio_port[4] = LPC_GPIO4;
-  Gpio::gpio_port[5] = LPC_GPIO5;
-  Pin::pin_map       = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
+  SECTION("Button Released")
+  {
+    // Reset button state
+    test_subject.ResetState();
+    // Simulate button being idle
+    When(Method(mock_gpio, Read)).AlwaysReturn(false);
+    // With this check, the state of the button should be false, and since we
+    // have not run the Released() method yet, the Released() method should
+    // return false.
+    CHECK(!test_subject.Released());
+    // Simulate button being pressed
+    When(Method(mock_gpio, Read)).AlwaysReturn(true);
+    // Button is currently pressed but has not been released, so this method
+    // should return false again.
+    CHECK(!test_subject.Released());
+    // Simulate button being released
+    When(Method(mock_gpio, Read)).AlwaysReturn(false);
+    // Button has moved from a pressed to released state, so this method should
+    // return true.
+    CHECK(test_subject.Released());
+  }
+  SECTION("Button Pressed")
+  {
+    // Reset button state
+    test_subject.ResetState();
+    // Simulate button having already been pressed
+    When(Method(mock_gpio, Read)).AlwaysReturn(true);
+    // With this check, the state of the button should be true, and since we
+    // have not run the Pressed() method yet, the Press() method should
+    // return false.
+    CHECK(!test_subject.Pressed());
+    // Simulate button being released
+    When(Method(mock_gpio, Read)).AlwaysReturn(false);
+    // Button is currently released but has not been pressed, so this method
+    // should return false again.
+    CHECK(!test_subject.Pressed());
+    // Simulate button being pressed
+    When(Method(mock_gpio, Read)).AlwaysReturn(true);
+    // Button has changed from a low to high state signaling a pressed event,
+    // return true.
+    CHECK(test_subject.Pressed());
+  }
 }
