@@ -13,12 +13,12 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
   LPC_PWM_TypeDef local_pwm;
   LPC_SC_TypeDef local_sc;
   LPC_IOCON_TypeDef local_iocon;
+  Lpc40xxSystemController::system_controller = &local_sc;
   // TODO(delwin-lei): Remove later with an interface Mock
   memset(&local_pwm, 0, sizeof(local_pwm));
   memset(&local_sc, 0, sizeof(local_sc));
   memset(&local_iocon, 0, sizeof(local_iocon));
   Pwm::pwm1     = &local_pwm;
-  Pwm::sc       = &local_sc;
   Pwm::match[0] = &local_pwm.MR0;
   Pwm::match[1] = &local_pwm.MR1;
   Pin::pin_map  = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
@@ -29,7 +29,6 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
   Pwm test2_0(1);
 
   constexpr uint32_t kDefaultFrequency = 1'000;
-  constexpr uint8_t kActivePwm         = (1 << 6);
   constexpr uint8_t kResetMr0          = (1 << 1);
   constexpr uint8_t kCounterEnable     = (1 << 0);
   constexpr uint8_t kTimerMode         = (0b11 << 0);
@@ -39,7 +38,6 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
   test2_0.Initialize();
   SECTION("Initialization values")
   {
-    CHECK((local_sc.PCONP & 0b111'1111) == (kActivePwm & 0b111'1111));
     CHECK((local_pwm.MCR & 0b11) == (kResetMr0 & 0b11));
     CHECK((local_pwm.TCR & 0b1111) == ((kCounterEnable | kPwmEnable) & 0b1111));
     CHECK((local_pwm.CTCR & 0b11) == (~kTimerMode & 0b11));
@@ -95,4 +93,5 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
     float error = duty_cycle - test2_0.GetDutyCycle();
     CHECK((-0.01f <= error && error <= 0.01f) == true);
   }
+  Lpc40xxSystemController::system_controller = LPC_SC;
 }

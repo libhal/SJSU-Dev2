@@ -140,6 +140,7 @@ CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
          -Wundef -Wold-style-cast -Woverloaded-virtual \
 				 $(WARNINGS_ARE_ERRORS) \
 				 -D HOST_TEST=1 -D SJ2_BACKTRACE_DEPTH=1024 \
+				 -D CATCH_CONFIG_FAST_COMPILE \
 				 $(INCLUDES) $(DEFINES) $(DEBUG) $(DISABLED_WARNINGS) \
          -O0 -MMD -MP -c
 CPPFLAGS = $(CFLAGS)
@@ -389,7 +390,7 @@ $(LIST): $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECT_FILES)
 	@printf '$(YELLOW)Linking Executable $(RESET)     : $@ '
 	@mkdir -p "$(dir $@)"
-	$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECT_FILES)
+	@$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECT_FILES)
 	@printf '$(GREEN)Executable Generated!$(RESET)\n'
 
 $(OBJ_DIR)/%.o: %.cpp

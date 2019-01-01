@@ -9,6 +9,7 @@
 #pragma once
 
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "L2_Utilities/enum.hpp"
 
@@ -59,7 +60,7 @@ class SspInterface
                         uint8_t divider) = 0;
 };
 
-class Ssp : public SspInterface
+class Ssp final : public SspInterface, protected Lpc40xxSystemController
 {
  public:
   /// SSP register lookup table
@@ -110,7 +111,11 @@ class Ssp : public SspInterface
       [MatrixLookup::kMiso] = Pin::CreatePin<1, 4>(),
       [MatrixLookup::kSck]  = Pin::CreatePin<1, 0>() }
   };
-  static constexpr uint8_t kPowerOnBit[] = { 21, 10, 20 };
+  static constexpr Lpc40xxSystemController::PeripheralPowerUp kPowerBit[] = {
+    Lpc40xxSystemController::PeripheralPowerUp::kSsp0,
+    Lpc40xxSystemController::PeripheralPowerUp::kSsp1,
+    Lpc40xxSystemController::PeripheralPowerUp::kSsp2,
+  };
 
   /// Default constructor sets up SSP0 peripheral as SPI master
   constexpr Ssp()
@@ -189,8 +194,7 @@ class Ssp : public SspInterface
       check_data_size = data_size_;
     }
     // Power up peripheral
-    sysclock_register->PCONP &= ~(1 << kPowerOnBit[pssp]);
-    sysclock_register->PCONP |= (1 << kPowerOnBit[pssp]);
+    PowerUpPeripheral(kPowerBit[pssp]);
     ssp_registers[pssp]->CPSR &= ~(0xFF);
     ssp_registers[pssp]->CPSR |= (clock_prescaler_);
 

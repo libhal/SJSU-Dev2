@@ -24,8 +24,8 @@ class SystemTimerInterface
   virtual uint32_t SetTickFrequency(uint32_t frequency) = 0;
 };
 
-class SystemTimer : public SystemTimerInterface,
-                    protected Lpc40xxSystemController
+class SystemTimer final : public SystemTimerInterface,
+                          protected Lpc40xxSystemController
 {
  public:
   // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
