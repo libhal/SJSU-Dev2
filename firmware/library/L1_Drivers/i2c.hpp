@@ -9,6 +9,7 @@
 
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "L2_Utilities/enum.hpp"
 #include "L2_Utilities/log.hpp"
@@ -24,7 +25,7 @@ class I2cInterface
     kRead  = 1,
   };
 
-  static constexpr uint32_t kDefaultTimeout = 1000;  // units milliseconds
+  static constexpr uint32_t kI2cTimeout = 1000;  // units milliseconds
 
   struct Transaction_t
   {
@@ -39,7 +40,7 @@ class I2cInterface
       }
       return address_8bit;
     }
-    uint64_t timeout         = I2cInterface::kDefaultTimeout;
+    uint64_t timeout         = I2cInterface::kI2cTimeout;
     size_t out_length        = 0;
     size_t in_length         = 0;
     size_t position          = 0;
@@ -52,30 +53,30 @@ class I2cInterface
     bool busy                = false;
   };
 
-  virtual void Initialize()                                               = 0;
+  virtual void Initialize()                                           = 0;
   virtual Status Read(uint8_t address, uint8_t * destination, size_t length,
-                      uint32_t timeout = kDefaultTimeout)                 = 0;
+                      uint32_t timeout = kI2cTimeout)                 = 0;
   virtual Status Write(uint8_t address, const uint8_t * destination,
-                       size_t length, uint32_t timeout = kDefaultTimeout) = 0;
+                       size_t length, uint32_t timeout = kI2cTimeout) = 0;
   virtual Status WriteThenRead(uint8_t address, const uint8_t * transmit,
                                size_t out_length, uint8_t * recieve,
                                size_t recieve_length,
-                               uint32_t timeout = kDefaultTimeout)        = 0;
+                               uint32_t timeout = kI2cTimeout)        = 0;
   Status WriteThenRead(uint8_t address, std::initializer_list<uint8_t> transmit,
                        uint8_t * recieve, size_t recieve_length,
-                       uint32_t timeout = kDefaultTimeout)
+                       uint32_t timeout = kI2cTimeout)
   {
     return WriteThenRead(address, transmit.begin(), transmit.size(), recieve,
                          recieve_length, timeout);
   }
   Status Write(uint8_t address, std::initializer_list<uint8_t> data,
-               uint32_t timeout = kDefaultTimeout)
+               uint32_t timeout = kI2cTimeout)
   {
     return Write(address, data.begin(), data.size(), timeout);
   }
 };
 
-class I2c : public I2cInterface
+class I2c final : public I2cInterface, protected Lpc40xxSystemController
 {
  public:
   // Bringing in I2cInterface's Write and WriteThenRead methods that use
@@ -346,7 +347,7 @@ class I2c : public I2cInterface
       sda_.SetMode(PinInterface::Mode::kInactive);
       scl_.SetMode(PinInterface::Mode::kInactive);
     }
-    // TODO(#6): Need to include power I2C on logic.
+    PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kI2c2);
     float scll         = ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 0.7f;
     i2c[port_]->SCLL   = static_cast<uint32_t>(scll);
     float sclh         = ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 1.3f;
@@ -359,7 +360,7 @@ class I2c : public I2cInterface
   }
 
   Status Read(uint8_t address, uint8_t * data, size_t length,
-              uint32_t timeout = kDefaultTimeout) override
+              uint32_t timeout = kI2cTimeout) override
   {
     transaction[port_] = { .timeout    = timeout,
                            .out_length = 0,
@@ -377,7 +378,7 @@ class I2c : public I2cInterface
   }
 
   Status Write(uint8_t address, const uint8_t * data, size_t length,
-               uint32_t timeout = kDefaultTimeout) override
+               uint32_t timeout = kI2cTimeout) override
   {
     transaction[port_] = { .timeout    = timeout,
                            .out_length = length,
@@ -396,7 +397,7 @@ class I2c : public I2cInterface
   Status WriteThenRead(uint8_t address, const uint8_t * transmit,
                        size_t out_length, uint8_t * recieve,
                        size_t recieve_length,
-                       uint32_t timeout = kDefaultTimeout) override
+                       uint32_t timeout = kI2cTimeout) override
   {
     transaction[port_] = { .timeout    = timeout,
                            .out_length = out_length,

@@ -16,7 +16,7 @@ class UartInterface
   virtual uint8_t Receive(uint32_t timeout)    = 0;
 };
 
-class Uart : public UartInterface, protected Lpc40xxSystemController
+class Uart final : public UartInterface, protected Lpc40xxSystemController
 {
  public:
   enum Pins : uint8_t
@@ -64,7 +64,12 @@ class Uart : public UartInterface, protected Lpc40xxSystemController
                                                       0b101 };
   static constexpr uint8_t kRxUartPortFunction[4] = { 0b001, 0b010, 0b010,
                                                       0b011 };
-  static constexpr uint32_t kPowerbit[4] = { 1 << 3, 1 << 24, 1 << 25, 1 << 8 };
+  static constexpr Lpc40xxSystemController::PeripheralPowerUp kPowerbit[] = {
+    Lpc40xxSystemController::PeripheralPowerUp::kUart0,
+    Lpc40xxSystemController::PeripheralPowerUp::kUart2,
+    Lpc40xxSystemController::PeripheralPowerUp::kUart3,
+    Lpc40xxSystemController::PeripheralPowerUp::kUart4
+  };
 
   inline static LPC_UART_TypeDef * uart[4] = {
     [0] = LPC_UART0,
@@ -77,8 +82,6 @@ class Uart : public UartInterface, protected Lpc40xxSystemController
                                     { Pin(2, 8), Pin(2, 9) },
                                     { Pin(4, 28), Pin(4, 29) },
                                     { Pin(1, 29), Pin(2, 9) } };
-
-  inline static LPC_SC_TypeDef * sysclock_register = LPC_SC;
   // Not using a default constructor. User must define the Uart channel in order
   // to properly define pins. User defined constructor. Must be commented out to
   // use unit testing constructor below
@@ -117,7 +120,7 @@ class Uart : public UartInterface, protected Lpc40xxSystemController
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
     // Powering the port
-    sysclock_register->PCONP |= kPowerbit[channel_];
+    PowerUpPeripheral(kPowerbit[channel_]);
     // Setting the pin functions and modes
     rx_->SetPinFunction(kRxUartPortFunction[channel_]);
     tx_->SetPinFunction(kTxUartPortFunction[channel_]);

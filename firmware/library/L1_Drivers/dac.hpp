@@ -1,6 +1,7 @@
 // Dac is a driver for the Digital-To-Analog converter for the LPC40xx chip
 #pragma once
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "L2_Utilities/log.hpp"
 
@@ -11,16 +12,16 @@ class DacInterface
   virtual bool WriteDac(uint16_t dac_output) = 0;
   virtual bool SetVoltage(float voltage)     = 0;
 };
-class Dac : public DacInterface
+class Dac final: public DacInterface, protected Lpc40xxSystemController
 {
  public:
   inline static LPC_DAC_TypeDef * dac_register = LPC_DAC;
-  inline static LPC_SC_TypeDef * sc_ptr        = LPC_SC;
 
   static constexpr float kVref        = 3.3f;
   static constexpr uint8_t kDacMode   = 0b010;
   static constexpr uint16_t kClearDac = 0b1111111111;
   static constexpr uint8_t kClockDiv  = 0b0010;
+
   enum Bit : uint8_t
   {
     kBiasReg   = 16,

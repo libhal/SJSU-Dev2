@@ -16,10 +16,9 @@ class AdcInterface
   virtual bool FinishedConversion()                        = 0;
 };
 
-class Adc : public AdcInterface, protected Lpc40xxSystemController
+class Adc final : public AdcInterface, protected Lpc40xxSystemController
 {
  public:
-  static constexpr uint8_t kMaxNumOfPins = 8;
   enum class Channel : uint8_t
   {
     kChannel0 = 0,
@@ -29,7 +28,8 @@ class Adc : public AdcInterface, protected Lpc40xxSystemController
     kChannel4,
     kChannel5,
     kChannel6,
-    kChannel7
+    kChannel7,
+    kMaxNumOfPins
   };
   enum AdcPortsMap : uint8_t
   {
@@ -65,14 +65,15 @@ class Adc : public AdcInterface, protected Lpc40xxSystemController
     kCh4567Pins = 0b011
   };
 
-  const uint8_t kAdcPorts[kMaxNumOfPins] = { kChannel0Port, kChannel1Port,
-                                             kChannel2Port, kChannel3Port,
-                                             kChannel4Port, kChannel5Port,
-                                             kChannel6Port, kChannel7Port };
-  const uint8_t kAdcPins[kMaxNumOfPins]  = { kChannel0Pin, kChannel1Pin,
-                                            kChannel2Pin, kChannel3Pin,
-                                            kChannel4Pin, kChannel5Pin,
-                                            kChannel6Pin, kChannel7Pin };
+  static constexpr size_t kTableLength  = util::Value(Channel::kMaxNumOfPins);
+  const uint8_t kAdcPorts[kTableLength] = { kChannel0Port, kChannel1Port,
+                                            kChannel2Port, kChannel3Port,
+                                            kChannel4Port, kChannel5Port,
+                                            kChannel6Port, kChannel7Port };
+  const uint8_t kAdcPins[kTableLength]  = { kChannel0Pin, kChannel1Pin,
+                                           kChannel2Pin, kChannel3Pin,
+                                           kChannel4Pin, kChannel5Pin,
+                                           kChannel6Pin, kChannel7Pin };
 
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
 
@@ -95,8 +96,8 @@ class Adc : public AdcInterface, protected Lpc40xxSystemController
   }
   void Initialize(uint32_t adc_clk_hz = 1'000'000) override
   {
-    constexpr uint32_t kMaxAdcClock     = 12'000'000;
-    constexpr uint8_t kClkDivBit        = 8;
+    constexpr uint32_t kMaxAdcClock = 12'000'000;
+    constexpr uint8_t kClkDivBit    = 8;
 
     constexpr uint32_t kAdcClk = 12'000'000 / 4;
     SJ2_ASSERT_FATAL(adc_clk_hz < kMaxAdcClock,
@@ -153,6 +154,7 @@ class Adc : public AdcInterface, protected Lpc40xxSystemController
   {
     return ((adc_base->GDR >> kDoneBit) & 1);
   }
+
  private:
   PinInterface * adc_;
   Pin adc_pin_;
