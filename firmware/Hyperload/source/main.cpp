@@ -25,8 +25,12 @@
        test. Please build this software using 'make bootloader'
 #endif
 
+namespace
+{
+Lpc40xxSystemController system_controller;
 Uart uart3(Uart::Channels::kUart3);
 bool debug_print_button_was_pressed = false;
+}  // namespace
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 void puts3(const char * str)
@@ -270,8 +274,9 @@ int main(void)
     // correctly It calculates the baud rate by: 48Mhz/(16//BAUD) - 1 = CW
     // (control word) So we solve for BAUD:  BAUD = (48/(CW + 1))/16
     float control_word_f = static_cast<float>(control.word);
-    float approx_baud =
-        (config::kSystemClockRate / (control_word_f + 1.0f)) / 16.0f;
+    float system_frequency =
+        static_cast<float>(system_controller.GetSystemFrequency());
+    float approx_baud = (system_frequency / (control_word_f + 1.0f)) / 16.0f;
     uint32_t baud_rate =
         static_cast<uint32_t>(hyperload::FindNearestBaudRate(approx_baud));
     uart0.SetBaudRate(baud_rate);
@@ -428,7 +433,7 @@ IapResult EraseSector(uint32_t start, uint32_t end)
     command.command       = IapCommands::kEraseSector;
     command.parameters[0] = start;
     command.parameters[1] = end;
-    command.parameters[2] = config::kSystemClockRate / 1000;
+    command.parameters[2] = system_controller.GetSystemFrequency() / 1000;
     iap(&command, &status);
   }
   else
@@ -453,7 +458,7 @@ IapResult FlashBlock(Block_t * block, uint32_t sector_number,
     command.parameters[0] = reinterpret_cast<intptr_t>(flash_address);
     command.parameters[1] = reinterpret_cast<intptr_t>(block);
     command.parameters[2] = kBlockSize;
-    command.parameters[3] = config::kSystemClockRate / 1000;
+    command.parameters[3] = system_controller.GetSystemFrequency() / 1000;
     iap(&command, &status);
     printf3("Flash Attempted! %p %s\n", flash_address,
             kIapResultString[static_cast<uint32_t>(status.result)]);

@@ -348,9 +348,10 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       scl_.SetMode(PinInterface::Mode::kInactive);
     }
     PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kI2c2);
-    float scll         = ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 0.7f;
+    float peripheral_frequency = static_cast<float>(GetPeripheralFrequency());
+    float scll         = ((peripheral_frequency / 75'000.0f) / 2.0f) * 0.7f;
     i2c[port_]->SCLL   = static_cast<uint32_t>(scll);
-    float sclh         = ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 1.3f;
+    float sclh         = ((peripheral_frequency / 75'000.0f) / 2.0f) * 1.3f;
     i2c[port_]->SCLH   = static_cast<uint32_t>(sclh);
     i2c[port_]->CONCLR = Control::kAssertAcknowledge | Control::kStart |
                          Control::kStop | Control::kInterrupt;

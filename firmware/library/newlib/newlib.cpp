@@ -10,23 +10,32 @@
 #include "L3_Application/globals.hpp"
 #include "utility/macros.hpp"
 
-int PutChar(int data)
+#if defined(HOST_TEST)
+int HostWrite(int c)
+{
+  int payload = c;
+  return static_cast<int>(write(1, &payload, 1));
+}
+int HostRead()
+{
+  int result = 0;
+  read(1, &result, 1);
+  return result;
+}
+Stdout out = HostWrite;
+Stdin in   = HostRead;
+#else
+int FirmwareStdOut(int data)
 {
   uart0.Send(static_cast<uint8_t>(data));
   return 1;
 }
-
-int GetChar()
+int FirmwareStdIn()
 {
   return static_cast<int>(uart0.Receive());
 }
-
-#if defined(HOST_TEST)
-Stdout out = putchar;
-Stdin in   = getchar;
-#else
-Stdout out = PutChar;
-Stdin in   = GetChar;
+Stdout out = FirmwareStdOut;
+Stdin in   = FirmwareStdIn;
 #endif
 
 extern "C"
@@ -130,12 +139,16 @@ extern "C"
   {
     out(character);
   }
-  // Needed by third party printf library
+
+  // Overload default libnano putchar() with a more optimal version that does
+  // not use dynamic memory
   int putchar(int character)  // NOLINT
   {
     return out(character);
   }
-  // Overload default nano puts() with a more optimal version of puts
+
+  // Overload default libnano puts() with a more optimal version that does
+  // not use dynamic memory
   int puts(const char * str)  // NOLINT
   {
     int i;
