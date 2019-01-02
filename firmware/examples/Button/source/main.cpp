@@ -1,7 +1,7 @@
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/time.hpp"
-#include "L3_HAL/button.hpp"
-#include "L3_HAL/onboard_led.hpp"
+#include "L2_HAL/button.hpp"
+#include "L2_HAL/onboard_led.hpp"
+#include "utility/log.hpp"
+#include "utility/time.hpp"
 
 int main(void)
 {

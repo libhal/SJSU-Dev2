@@ -6,8 +6,8 @@
 
 #include "L0_LowLevel/interrupt.hpp"
 #include "L1_Drivers/system_timer.hpp"
-#include "L2_Utilities/macros.hpp"
-#include "L2_Utilities/time.hpp"
+#include "utility/macros.hpp"
+#include "utility/time.hpp"
 
 #if defined HOST_TEST
 // NOLINTNEXTLINE(readability-identifier-naming)

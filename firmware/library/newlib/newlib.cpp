@@ -7,8 +7,8 @@
 #include <cstdio>
 
 #include "L1_Drivers/uart.hpp"
-#include "L2_Utilities/macros.hpp"
-#include "L4_Application/globals.hpp"
+#include "L3_Application/globals.hpp"
+#include "utility/macros.hpp"
 
 int PutChar(int data)
 {

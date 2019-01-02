@@ -44,7 +44,7 @@ SOFTWARE.
 ///\ingroup utilities
 #include <assert.h>
 
-#include "L2_Utilities/log.hpp"
+#include "utility/log.hpp"
 
 #include "platform.h"
 #include "exception.h"

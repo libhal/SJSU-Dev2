@@ -1,5 +1,5 @@
 #include "L1_Drivers/gpio.hpp"
-#include "L2_Utilities/log.hpp"
+#include "utility/log.hpp"
 
 int main(void)
 {

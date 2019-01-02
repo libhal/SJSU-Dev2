@@ -14,11 +14,11 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/system_timer.hpp"
 #include "L1_Drivers/uart.hpp"
-#include "L2_Utilities/debug.hpp"
-#include "L2_Utilities/macros.hpp"
-#include "L2_Utilities/time.hpp"
-#include "L3_HAL/onboard_led.hpp"
-#include "L5_Testing/factory_test.hpp"
+#include "L2_HAL/onboard_led.hpp"
+#include "L4_Testing/factory_test.hpp"
+#include "utility/debug.hpp"
+#include "utility/macros.hpp"
+#include "utility/time.hpp"
 
 #if !defined(BOOTLOADER) && !defined(CLANG_TIDY)
 #error Hyperload must be built as a 'bootloader' and not as an application or \

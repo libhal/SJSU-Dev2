@@ -6,11 +6,11 @@
 
 #include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/macros.hpp"
-#include "L2_Utilities/rtos.hpp"
-#include "L2_Utilities/time.hpp"
-#include "L3_HAL/onboard_led.hpp"
+#include "L2_HAL/onboard_led.hpp"
+#include "utility/log.hpp"
+#include "utility/macros.hpp"
+#include "utility/rtos.hpp"
+#include "utility/time.hpp"
 
 // Using anonymous namespace so these tasks are only visible to this file
 namespace
@@ -79,7 +79,7 @@ int main(void)
   leds.Initialize();
   DEBUG_PRINT("Creating Tasks...");
   // See https://www.freertos.org/a00125.html for the xTaskCreate API
-  // See L2_Utilities/rtos.hpp for the rtos:: namespace utility functions
+  // See utility/rtos.hpp for the rtos:: namespace utility functions
   xTaskCreate(LedToggle,                 // Make function LedToggle a task
               "LedToggle",               // Give this task the name "LedToggle"
               rtos::StackSize(1024),     // Size of stack allocated to task

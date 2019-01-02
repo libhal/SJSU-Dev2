@@ -39,10 +39,10 @@
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/system_timer.hpp"
 #include "L1_Drivers/uart.hpp"
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/macros.hpp"
-#include "L2_Utilities/time.hpp"
-#include "L4_Application/globals.hpp"
+#include "L3_Application/globals.hpp"
+#include "utility/log.hpp"
+#include "utility/macros.hpp"
+#include "utility/time.hpp"
 
 // The entry point for the C++ library startup
 extern "C"
