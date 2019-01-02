@@ -12,13 +12,12 @@
 #include "config.hpp"
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L1_Drivers/system_clock.hpp"
+#include "L1_Drivers/system_timer.hpp"
 #include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/debug.hpp"
 #include "L2_Utilities/macros.hpp"
 #include "L2_Utilities/time.hpp"
 #include "L3_HAL/onboard_led.hpp"
-#include "L4_Application/globals.hpp"
 #include "L5_Testing/factory_test.hpp"
 
 #if !defined(BOOTLOADER) && !defined(CLANG_TIDY)
@@ -219,18 +218,19 @@ void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
 
 int main(void)
 {
+  SystemTimer system_timer;
   Gpio button0(1, 19);
   Gpio button1(1, 15);
   Gpio button2(0, 30);
   Gpio button3(0, 29);
 
-  button0.SetMode(Pin::Mode::kPullDown);
+  button0.GetPin().SetMode(Pin::Mode::kPullDown);
   button0.SetAsInput();
-  button1.SetMode(Pin::Mode::kPullDown);
+  button1.GetPin().SetMode(Pin::Mode::kPullDown);
   button1.SetAsInput();
-  button2.SetMode(Pin::Mode::kPullDown);
+  button2.GetPin().SetMode(Pin::Mode::kPullDown);
   button2.SetAsInput();
-  button3.SetMode(Pin::Mode::kPullDown);
+  button3.GetPin().SetMode(Pin::Mode::kPullDown);
   button3.SetAsInput();
 
   debug_print_button_was_pressed = button3.Read();
@@ -339,7 +339,6 @@ int main(void)
 
   printf("Application Reset ISR value = %p\n", application_entry_isr);
   Delay(500);
-  button0.SetMode(Pin::Mode::kPullUp);
   leds.SetAll(0);
   // SystemTimerIrq must be disabled, otherwise it will continue to fire,
   // after the application is  executed. This can lead to a lot of problems

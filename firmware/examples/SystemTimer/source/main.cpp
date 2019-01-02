@@ -1,17 +1,28 @@
+#include "L1_Drivers/gpio.hpp"
+#include "L1_Drivers/system_timer.hpp"
 #include "L2_Utilities/log.hpp"
+
+Gpio led3(1, 18);
+
+void DemoSystemIsr()
+{
+  // Simply toggle the LED off and on
+  led3.Toggle();
+}
 
 int main(void)
 {
   DEBUG_PRINT("System Timer Application Starting...");
 
-  DEBUG_PRINT(
-      "If you look at the source code of this demo, you can see that the "
-      "main only prints these messages and then waits in a while loop. Main "
-      "isn't doing anything and yet the 3rd LED is blinking?");
-  DEBUG_PRINT(
-      "If you checkout the low_level_init.cpp file you will see that the "
-      "LowLevelInit() function has been overriden and SystemTimer has been "
-      "programmed to toggle the LED at a frequency of 10Hz.");
+  SystemTimer system_timer;
+  // Set Pin 18 as output
+  led3.SetAsOutput();
+  // Default pin state to LOW (turns on LED)
+  led3.SetHigh();
+  system_timer.SetIsrFunction(DemoSystemIsr);
+  // Frequency is in Hz
+  system_timer.SetTickFrequency(10);
+  system_timer.StartTimer();
 
   DEBUG_PRINT("Halting any action.");
   return 0;

@@ -11,6 +11,7 @@
 #include <cstdio>
 
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "L2_Utilities/log.hpp"
 
@@ -26,12 +27,11 @@ class PwmInterface
   virtual uint32_t GetMatchRegister0()                   = 0;
 };
 
-class Pwm : public PwmInterface
+class Pwm final : public PwmInterface, protected Lpc40xxSystemController
 {
  public:
   static constexpr uint8_t kPwmFunction      = 0b001;
   inline static LPC_PWM_TypeDef * pwm1       = LPC_PWM1;
-  inline static LPC_SC_TypeDef * sc          = LPC_SC;
   inline static volatile uint32_t * match[7] = { &pwm1->MR0, &pwm1->MR1,
                                                  &pwm1->MR2, &pwm1->MR3,
                                                  &pwm1->MR4, &pwm1->MR5,
@@ -76,7 +76,7 @@ class Pwm : public PwmInterface
                      "Channel must be between 1 and 6.");
     // Enables PWM1 power/clock control bit
     // TODO(#): Replace direct manipulation of system clock register.
-    sc->PCONP |= SysClk::kActivatePwm1;
+    PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kPwm1);
     // Resets PWMTC on Match with MR0
     pwm1->MCR |= PwmConfigure::kResetMr0;
     pwm1->MR0 = config::kSystemClockRate / frequency_hz;

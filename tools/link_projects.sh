@@ -19,7 +19,8 @@ then
 fi
 
 # DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )
-PROJECTS=(${SJBASE}/firmware/HelloWorld/ ${SJBASE}/firmware/examples/*/)
+PROJECTS=(${SJBASE}/firmware/HelloWorld/ ${SJBASE}/firmware/Hyperload/ \
+${SJBASE}/firmware/examples/*/)
 for PROJECT in ${PROJECTS[@]}
 do
     echo "Creating link for: $PROJECT/env.sh"

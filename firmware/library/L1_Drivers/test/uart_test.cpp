@@ -22,7 +22,7 @@ TEST_CASE("Testing Uart", "[Uart]")
 
   // Set up for UART2
   Uart::uart[1]  = &local_uart;
-  Uart::sysclock_register = &local_sc;
+  Lpc40xxSystemController::system_controller = &local_sc;
 
   PinInterface * tx = &mock_tx.get();
   PinInterface * rx = &mock_rx.get();
@@ -39,7 +39,6 @@ TEST_CASE("Testing Uart", "[Uart]")
     constexpr uint32_t kFifo              = 1 << 0;
     constexpr uint32_t kBits8DlabClear    = 3;
     constexpr uint32_t kExpectedUpperByte = 0;
-    // constexpr uint32_t kExpectedLowerByte = 52;
     constexpr uint32_t kExpectedDivAdd    = 1;
     constexpr uint32_t kExpectedMul       = 2;
     constexpr uint32_t kExpectedFdr = (kExpectedMul << 4) | kExpectedDivAdd;
@@ -57,4 +56,5 @@ TEST_CASE("Testing Uart", "[Uart]")
     CHECK(kBits8DlabClear == local_uart.LCR);
     CHECK(kFifo == (local_uart.FCR & kFifo));
   }
+  Lpc40xxSystemController::system_controller = LPC_SC;
 }

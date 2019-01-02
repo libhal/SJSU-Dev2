@@ -26,6 +26,8 @@ TEST_CASE("Testing I2C", "[i2c]")
   LPC_I2C_TypeDef local_i2c;
   // Clear local i2c registers
   memset(&local_i2c, 0, sizeof(local_i2c));
+  LPC_SC_TypeDef local_sc;
+  Lpc40xxSystemController::system_controller = &local_sc;
   // Setting i2c register to local_i2c
   constexpr uint8_t kI2cPort = util::Value(I2c::Port::kI2c0);
   I2c::i2c[kI2cPort]         = &local_i2c;
@@ -51,7 +53,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(kHigh == local_i2c.SCLH);
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
     CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
-    CHECK(dynamic_isr_vector_table[I2c::kIrq[kI2cPort]] ==
+    CHECK(dynamic_isr_vector_table[I2c::kIrq[kI2cPort]+kIrqOffset] ==
           I2c::kHandlers[kI2cPort]);
 
     Verify(Method(mock_sda_pin, SetPinFunction).Using(I2c::kI2cPort2Function));
@@ -94,7 +96,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(actual_transaction.busy == true);
     CHECK(actual_transaction.status == Status::kSuccess);
     CHECK(actual_transaction.operation == I2c::Operation::kRead);
-    CHECK(actual_transaction.timeout == I2c::kDefaultTimeout);
+    CHECK(actual_transaction.timeout == I2c::kI2cTimeout);
     CHECK(local_i2c.CONSET == I2c::Control::kStart);
   }
   SECTION("Write Setup")
@@ -116,7 +118,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(actual_transaction.busy == true);
     CHECK(actual_transaction.status == Status::kSuccess);
     CHECK(actual_transaction.operation == I2c::Operation::kWrite);
-    CHECK(actual_transaction.timeout == I2c::kDefaultTimeout);
+    CHECK(actual_transaction.timeout == I2c::kI2cTimeout);
     CHECK(local_i2c.CONSET == I2c::Control::kStart);
   }
   SECTION("Write and Read Setup")
@@ -140,7 +142,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(actual_transaction.busy == true);
     CHECK(actual_transaction.status == Status::kSuccess);
     CHECK(actual_transaction.operation == I2c::Operation::kWrite);
-    CHECK(actual_transaction.timeout == I2c::kDefaultTimeout);
+    CHECK(actual_transaction.timeout == I2c::kI2cTimeout);
     CHECK(local_i2c.CONSET == I2c::Control::kStart);
   }
 
@@ -385,6 +387,6 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONCLR);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
-
+  Lpc40xxSystemController::system_controller = LPC_SC;
   I2c::i2c[util::Value(I2c::Port::kI2c0)] = LPC_I2C0;
 }

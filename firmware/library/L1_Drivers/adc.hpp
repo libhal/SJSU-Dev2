@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "L0_LowLevel/LPC40xx.h"
+#include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "L2_Utilities/log.hpp"
 
@@ -15,10 +16,9 @@ class AdcInterface
   virtual bool FinishedConversion()                        = 0;
 };
 
-class Adc : public AdcInterface
+class Adc final : public AdcInterface, protected Lpc40xxSystemController
 {
  public:
-  static constexpr uint8_t kMaxNumOfPins = 8;
   enum class Channel : uint8_t
   {
     kChannel0 = 0,
@@ -28,7 +28,8 @@ class Adc : public AdcInterface
     kChannel4,
     kChannel5,
     kChannel6,
-    kChannel7
+    kChannel7,
+    kMaxNumOfPins
   };
   enum AdcPortsMap : uint8_t
   {
@@ -64,17 +65,17 @@ class Adc : public AdcInterface
     kCh4567Pins = 0b011
   };
 
-  const uint8_t kAdcPorts[kMaxNumOfPins] = { kChannel0Port, kChannel1Port,
-                                             kChannel2Port, kChannel3Port,
-                                             kChannel4Port, kChannel5Port,
-                                             kChannel6Port, kChannel7Port };
-  const uint8_t kAdcPins[kMaxNumOfPins]  = { kChannel0Pin, kChannel1Pin,
-                                            kChannel2Pin, kChannel3Pin,
-                                            kChannel4Pin, kChannel5Pin,
-                                            kChannel6Pin, kChannel7Pin };
+  static constexpr size_t kTableLength  = util::Value(Channel::kMaxNumOfPins);
+  const uint8_t kAdcPorts[kTableLength] = { kChannel0Port, kChannel1Port,
+                                            kChannel2Port, kChannel3Port,
+                                            kChannel4Port, kChannel5Port,
+                                            kChannel6Port, kChannel7Port };
+  const uint8_t kAdcPins[kTableLength]  = { kChannel0Pin, kChannel1Pin,
+                                           kChannel2Pin, kChannel3Pin,
+                                           kChannel4Pin, kChannel5Pin,
+                                           kChannel6Pin, kChannel7Pin };
 
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
-  inline static LPC_SC_TypeDef * sysclk_register = LPC_SC;
 
   static void BurstMode(bool burst_mode_is_on = false)
   {
@@ -95,19 +96,14 @@ class Adc : public AdcInterface
   }
   void Initialize(uint32_t adc_clk_hz = 1'000'000) override
   {
-    constexpr uint32_t kMaxAdcClock     = 12'000'000;
-    constexpr uint8_t kDivBy4           = 0b10001;
-    constexpr uint8_t kAdcPeripheralBit = 12;
-    constexpr uint8_t kClkDivBit        = 8;
+    constexpr uint32_t kMaxAdcClock = 12'000'000;
+    constexpr uint8_t kClkDivBit    = 8;
 
     constexpr uint32_t kAdcClk = 12'000'000 / 4;
     SJ2_ASSERT_FATAL(adc_clk_hz < kMaxAdcClock,
                      "Adc clock has to be less than or equal to 12MHz");
 
-    adc_base->CR &= ~(1 << ControlBit::kPowerUp);
-    sysclk_register->PCONP &= ~(1 << kAdcPeripheralBit);
-    sysclk_register->PCONP |= (1 << kAdcPeripheralBit);
-    sysclk_register->PCLKSEL |= (1 << kDivBy4);
+    PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kAdc);
     adc_base->CR |= (1 << ControlBit::kPowerUp);
     adc_base->CR |= (1 << channel_);
     if (channel_ < 4)
@@ -158,6 +154,7 @@ class Adc : public AdcInterface
   {
     return ((adc_base->GDR >> kDoneBit) & 1);
   }
+
  private:
   PinInterface * adc_;
   Pin adc_pin_;

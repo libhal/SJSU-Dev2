@@ -27,17 +27,19 @@ TEST_CASE("Testing SystemTimer", "[system_timer]")
     local_systick.LOAD                     = 0;
 
     CHECK(0 == test_subject.SetTickFrequency(kDivisibleFrequency));
-    CHECK((SystemClock::kDefaultIRCFrequency / kDivisibleFrequency) - 1 ==
-          local_systick.LOAD);
+    constexpr uint32_t kExpectedLoadValue =
+        (Lpc40xxSystemController::kDefaultIRCFrequency / kDivisibleFrequency) -
+        1;
+    CHECK(kExpectedLoadValue == local_systick.LOAD);
   }
   SECTION("SetTickFrequency should return remainder of ticks mismatch")
   {
     constexpr uint32_t kOddFrequency = 7;
     local_systick.LOAD               = 0;
 
-    CHECK(SystemClock::kDefaultIRCFrequency % kOddFrequency ==
+    CHECK(Lpc40xxSystemController::kDefaultIRCFrequency % kOddFrequency ==
           test_subject.SetTickFrequency(kOddFrequency));
-    CHECK((SystemClock::kDefaultIRCFrequency / kOddFrequency) - 1 ==
+    CHECK((Lpc40xxSystemController::kDefaultIRCFrequency / kOddFrequency) - 1 ==
           local_systick.LOAD);
   }
   SECTION("Start Timer should set necessary SysTick Ctrl bits and set VAL to 0")

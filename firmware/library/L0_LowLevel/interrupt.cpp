@@ -19,52 +19,62 @@ DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 #else
 extern "C"
 {
+  // This does not alias InterruptLookupHandler because the hardfault handler
+  // has to carefully gather register information after it is called.
+  void NmiHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void MemManageHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void BusFaultHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void UsageFaultHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void SvcHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void DebugMonHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void PendSVHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void SysTickHandler(void) SJ2_ALIAS(InterruptLookupHandler);
   // Forward declaration of the specific IRQ handlers. These are aliased
-  // to the IntDefaultHandler, which is a 'forever' loop. When the application
-  // defines a handler (with the same name), this will automatically take
-  // precedence over these weak definitions
-  void WdtIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Timer0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Timer1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Timer2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Timer3IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Uart0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Uart1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Uart2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Uart3IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Pwm1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void I2c0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void I2c1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void I2c2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void SpiIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Ssp0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Ssp1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Pll0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void RtcIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Eint0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Eint1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Eint2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Eint3IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void AdcIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void BodIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void UsbIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void CanIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void DmaIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void I2sIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void EnetIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void RitIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void McpwmIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void QeiIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Pll1IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void UsbactivityIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void CanactivityIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void SdioIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Uart4IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Ssp2IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void LcdIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void GpioIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void Pwm0IrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
-  void EepromIrqHandler(void) SJ2_ALIAS(IntDefaultHandler);
+  // to the InterruptLookupHandler, which is a 'forever' loop. When the
+  // application defines a handler (with the same name), this will
+  // automatically take precedence over these weak definitions.
+  void WdtIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Timer0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Timer1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Timer2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Timer3IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Uart0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Uart1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Uart2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Uart3IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Pwm1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void I2c0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void I2c1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void I2c2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void SpiIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Ssp0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Ssp1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Pll0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void RtcIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Eint0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Eint1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Eint2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Eint3IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void AdcIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void BodIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void UsbIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void CanIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void DmaIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void I2sIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void EnetIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void RitIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void McpwmIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void QeiIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Pll1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void UsbactivityIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void CanactivityIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void SdioIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Uart4IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Ssp2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void LcdIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void GpioIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void Pwm0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  void EepromIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
   // External declaration for LPC MCU vector table checksum from Linker Script
   extern void ValidUserCodeChecksum();
 }
@@ -83,12 +93,12 @@ const IsrPointer kInterruptVectorTable[] = {
   BusFaultHandler,        // The bus fault handler
   UsageFaultHandler,      // The usage fault handler
   ValidUserCodeChecksum,  // LPC MCU Checksum
-  0,                      // Reserved
-  0,                      // Reserved
-  0,                      // Reserved
-  vPortSVCHandler,        // SVCall handler
+  kReservedVector,        // Reserved
+  kReservedVector,        // Reserved
+  kReservedVector,        // Reserved
+  vPortSVCHandler,        // SVCall handler  // vPortSVCHandler
   DebugMonHandler,        // Debug monitor handler
-  0,                      // Reserved
+  kReservedVector,        // Reserved
   xPortPendSVHandler,     // FreeRTOS PendSV Handler
   SysTickHandler,         // The SysTick handler
   // Chip Level - LPC40xx
@@ -105,7 +115,7 @@ const IsrPointer kInterruptVectorTable[] = {
   I2c0IrqHandler,         // 26, 0x68 - I2C0
   I2c1IrqHandler,         // 27, 0x6c - I2C1
   I2c2IrqHandler,         // 28, 0x70 - I2C2
-  IntDefaultHandler,      // 29, Not used
+  kReservedVector,        // 29, Not used
   Ssp0IrqHandler,         // 30, 0x78 - SSP0
   Ssp1IrqHandler,         // 31, 0x7c - SSP1
   Pll0IrqHandler,         // 32, 0x80 - PLL0 (Main PLL)
@@ -136,6 +146,26 @@ const IsrPointer kInterruptVectorTable[] = {
 };
 
 IsrPointer dynamic_isr_vector_table[] = {
+  kReservedVector,        // 0, Contains stack pointer, not used in
+                          // InterruptLookupHandler
+  kReservedVector,        // 1, Reset handler, not used in
+                          //    InterruptLookupHandler
+  NmiHandler,             // 2, The NMI handler
+  kReservedVector,        // 3, The hard fault handler, not used in
+                          //    InterruptLookupHandler
+  MemManageHandler,       // 4, The MPU fault handler
+  BusFaultHandler,        // 5, The bus fault handler
+  UsageFaultHandler,      // 6, The usage fault handler
+  kReservedVector,        // 7, LPC MCU Checksum, not used in
+                          //    InterruptLookupHandler
+  kReservedVector,        // 8, Reserved
+  kReservedVector,        // 9, Reserved
+  kReservedVector,        // 10, Reserved
+  SvcHandler,             // 11, SVCall handler
+  DebugMonHandler,        // 12, Debug monitor handler
+  kReservedVector,        // 13, Reserved
+  PendSVHandler,          // 14, PendSV Handler
+  SysTickHandler,         // 15, The SysTick handler
   // Chip Level - LPC40xx
   WdtIrqHandler,          // 16, 0x40 - WDT
   Timer0IrqHandler,       // 17, 0x44 - TIMER0
@@ -150,7 +180,7 @@ IsrPointer dynamic_isr_vector_table[] = {
   I2c0IrqHandler,         // 26, 0x68 - I2C0
   I2c1IrqHandler,         // 27, 0x6c - I2C1
   I2c2IrqHandler,         // 28, 0x70 - I2C2
-  IntDefaultHandler,      // 29, Not used
+  kReservedVector,        // 29, Not used
   Ssp0IrqHandler,         // 30, 0x78 - SSP0
   Ssp1IrqHandler,         // 31, 0x7c - SSP1
   Pll0IrqHandler,         // 32, 0x80 - PLL0 (Main PLL)
@@ -177,29 +207,26 @@ IsrPointer dynamic_isr_vector_table[] = {
   LcdIrqHandler,          // 53, 0xd4 - LCD
   GpioIrqHandler,         // 54, 0xd8 - GPIO
   Pwm0IrqHandler,         // 55, 0xdc - PWM0
-  EepromIrqHandler,       // 56, 0xe0 - EEPROM
+  EepromIrqHandler       // 56, 0xe0 - EEPROM
 };
 #endif  // defined HOST_TEST
 
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
-void IntDefaultHandler(void)
+void InterruptLookupHandler(void)
 {
-  constexpr int32_t kIrqOffset = 16;
   uint8_t active_isr = (SCB->ICSR & 0xFF);
-
-  IsrPointer isr = dynamic_isr_vector_table[(active_isr - kIrqOffset)];
-  SJ2_ASSERT_FATAL(isr != IntDefaultHandler,
-                   "No ISR found for the vector %u [%ld]", active_isr,
-                   ((active_isr - kIrqOffset)));
+  IsrPointer isr = dynamic_isr_vector_table[active_isr];
+  SJ2_ASSERT_FATAL(isr != InterruptLookupHandler,
+                   "No ISR found for the vector %u", active_isr);
   isr();
 }
 
 void RegisterIsr(IRQn_Type irq, IsrPointer isr, bool enable_interrupt,
                  int32_t priority)
 {
-  dynamic_isr_vector_table[irq] = isr;
-  if (enable_interrupt)
+  dynamic_isr_vector_table[irq+kIrqOffset] = isr;
+  if (enable_interrupt && irq >= 0)
   {
     NVIC_EnableIRQ(irq);
   }
@@ -212,16 +239,7 @@ void RegisterIsr(IRQn_Type irq, IsrPointer isr, bool enable_interrupt,
 void DeregisterIsr(IRQn_Type irq)
 {
   NVIC_DisableIRQ(irq);
-  dynamic_isr_vector_table[irq] = nullptr;
-}
-
-// Default exception handlers. Override the ones here by defining your own
-// handler routines in your application code.
-SJ2_WEAK(void NmiHandler(void));
-SJ2_SECTION(".after_vectors")
-void NmiHandler(void)
-{
-  Halt();
+  dynamic_isr_vector_table[irq+kIrqOffset] = InterruptLookupHandler;
 }
 
 extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
@@ -271,63 +289,4 @@ void HardFaultHandler(void)
       " bx r2                                               \n"
       " handler2_address_const: .word GetRegistersFromStack \n");
 #endif
-}
-
-SJ2_WEAK(void MemManageHandler(void));
-SJ2_SECTION(".after_vectors")
-void MemManageHandler(void)
-{
-  Halt();
-}
-
-SJ2_WEAK(void BusFaultHandler(void));
-SJ2_SECTION(".after_vectors")
-void BusFaultHandler(void)
-{
-  Halt();
-}
-
-SJ2_WEAK(void UsageFaultHandler(void));
-SJ2_SECTION(".after_vectors")
-void UsageFaultHandler(void)
-{
-  Halt();
-}
-
-SJ2_WEAK(void SvcHandler(void));
-SJ2_SECTION(".after_vectors")
-void SvcHandler(void)
-{
-  Halt();
-}
-
-SJ2_WEAK(void DebugMonHandler(void));
-SJ2_SECTION(".after_vectors")
-void DebugMonHandler(void)
-{
-  Halt();
-}
-
-SJ2_WEAK(void PendSVHandler(void));
-SJ2_SECTION(".after_vectors")
-void PendSVHandler(void)
-{
-  Halt();
-}
-
-SJ2_SECTION(".after_vectors")
-void SysTickHandler(void)
-{
-  // This assumes that SysTickHandler is called every millisecond.
-  // Changing that frequency will distort the milliseconds time.
-  IncrementUptimeMs();
-  if (SystemTimer::system_timer_isr == nullptr)
-  {
-    DEBUG_PRINT("System Timer ISR not defined, disabling System Timer");
-    system_timer.DisableTimer();
-  }
-  else
-  {
-    SystemTimer::system_timer_isr();
-  }
 }

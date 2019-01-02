@@ -36,7 +36,7 @@
 #include <iterator>
 
 #include "L0_LowLevel/interrupt.hpp"
-#include "L1_Drivers/system_clock.hpp"
+#include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/system_timer.hpp"
 #include "L1_Drivers/uart.hpp"
 #include "L2_Utilities/log.hpp"
@@ -139,11 +139,21 @@ void InitFpu()
       "ISB\n");
 }
 
+// Initialize system timer to be used by low level initialization.
+SystemTimer system_timer;
+
+// Initialize LPC40xx system controller to be used by low level initialization.
+Lpc40xxSystemController system_controller;
+
 void InitializeFreeRTOSSystemTick()
 {
-#if !defined(BOOTLOADER)
+#if defined(APPLICATION)
   if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
   {
+    // Register xPortPendSVHandler to the PendSV interrupt
+    RegisterIsr(PendSV_IRQn, xPortPendSVHandler);
+    // Register vPortSVCHandler to the SVCall interrupt
+    RegisterIsr(SVCall_IRQn, vPortSVCHandler);
     // Swap out the SystemTimer isr with FreeRTOS's xPortSysTickHandler
     system_timer.SetIsrFunction(xPortSysTickHandler);
   }
@@ -165,7 +175,7 @@ void LowLevelInit()
   // SetClockFrequency will timeout return the offset between desire clockspeed
   // and actual clockspeed if the PLL doesn't get a frequency fix within a
   // defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
-  while (system_clock.SetClockFrequency(config::kSystemClockRateMhz) != 0)
+  while (system_controller.SetClockFrequency(config::kSystemClockRateMhz) != 0)
   {
     // Continually attempt to set the clock frequency to the desired until the
     // delta between desired and actual are 0.
@@ -173,10 +183,12 @@ void LowLevelInit()
   }
   // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
   // fed to all peripherals will be 48Mhz.
-  system_clock.SetPeripheralClockDivider(1);
+  system_controller.SetPeripheralClockDivider(1);
   // Set System Timer frequency again, since the clock speed has changed since
   // the last time we ran this.
+  system_timer.DisableTimer();
   system_timer.SetTickFrequency(config::kRtosFrequency);
+  system_timer.StartTimer();
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
 }
