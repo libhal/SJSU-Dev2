@@ -9,7 +9,7 @@
 #include <cstdio>
 
 #include "L0_LowLevel/LPC40xx.h"
-#include "L2_Utilities/macros.hpp"
+#include "utility/macros.hpp"
 
 class PinInterface
 {

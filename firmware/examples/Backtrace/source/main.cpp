@@ -4,8 +4,8 @@
 #include <cstdlib>
 
 #include "config.hpp"
-#include "L2_Utilities/debug.hpp"
-#include "L2_Utilities/log.hpp"
+#include "utility/debug.hpp"
+#include "utility/log.hpp"
 
 int Baz(void)
 {

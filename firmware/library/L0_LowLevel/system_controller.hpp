@@ -4,9 +4,9 @@
 #include <cstdint>
 
 #include "L0_LowLevel/LPC40xx.h"
-#include "L2_Utilities/enum.hpp"
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/macros.hpp"
+#include "utility/enum.hpp"
+#include "utility/log.hpp"
+#include "utility/macros.hpp"
 
 class Lpc40xxSystemController
 {

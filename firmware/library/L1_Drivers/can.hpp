@@ -1,6 +1,6 @@
 #pragma once
 
-#include "L2_Utilities/macros.hpp"
+#include "utility/macros.hpp"
 
 class CanInterface
 {

@@ -1,7 +1,7 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L3_HAL/st7066u.hpp"
+#include "L2_HAL/st7066u.hpp"
 
 int main()
 {

@@ -2,8 +2,8 @@
 #include <iterator>
 
 #include "L1_Drivers/uart.hpp"
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/time.hpp"
+#include "utility/log.hpp"
+#include "utility/time.hpp"
 
 int main(void)
 {

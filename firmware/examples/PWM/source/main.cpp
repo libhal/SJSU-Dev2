@@ -1,7 +1,7 @@
 #include "L1_Drivers/gpio.hpp"
 #include "L1_Drivers/pwm.hpp"
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/time.hpp"
+#include "utility/log.hpp"
+#include "utility/time.hpp"
 
 int main(void)
 {

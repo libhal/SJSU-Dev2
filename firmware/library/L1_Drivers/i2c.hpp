@@ -11,10 +11,10 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/enum.hpp"
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/status.hpp"
-#include "L2_Utilities/time.hpp"
+#include "utility/enum.hpp"
+#include "utility/log.hpp"
+#include "utility/status.hpp"
+#include "utility/time.hpp"
 
 class I2cInterface
 {

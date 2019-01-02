@@ -1,7 +1,7 @@
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/time.hpp"
-#include "L3_HAL/ssd1306.hpp"
-#include "L4_Application/graphics.hpp"
+#include "L2_HAL/ssd1306.hpp"
+#include "L3_Application/graphics.hpp"
+#include "utility/log.hpp"
+#include "utility/time.hpp"
 
 int main(void)
 {

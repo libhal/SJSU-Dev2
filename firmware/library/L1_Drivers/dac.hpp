@@ -3,7 +3,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/log.hpp"
+#include "utility/log.hpp"
 
 class DacInterface
 {

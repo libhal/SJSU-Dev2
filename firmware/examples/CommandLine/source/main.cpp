@@ -1,10 +1,10 @@
 #include <cstdint>
 #include <iterator>
 
-#include "L2_Utilities/log.hpp"
-#include "L4_Application/commandline.hpp"
-#include "L4_Application/commands/common.hpp"
-#include "L4_Application/commands/i2c_command.hpp"
+#include "L3_Application/commandline.hpp"
+#include "L3_Application/commands/common.hpp"
+#include "L3_Application/commands/i2c_command.hpp"
+#include "utility/log.hpp"
 
 // In order to create a command line, you will need to create a command list
 // object. The value between the <> is the maximum number of commands you want

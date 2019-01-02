@@ -2,8 +2,8 @@
 #include <cstdint>
 #include "L0_LowLevel/interrupt.hpp"
 #include "L1_Drivers/i2c.hpp"
-#include "L2_Utilities/log.hpp"
-#include "L3_HAL/device_memory_map.hpp"
+#include "L2_HAL/device_memory_map.hpp"
+#include "utility/log.hpp"
 
 constexpr uint8_t kAccelerometerAddress = 0x1C;
 constexpr uint8_t kGestureAddress       = 0x39;

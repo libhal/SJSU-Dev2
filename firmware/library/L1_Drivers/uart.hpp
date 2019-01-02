@@ -6,7 +6,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/time.hpp"
+#include "utility/time.hpp"
 
 class UartInterface
 {
