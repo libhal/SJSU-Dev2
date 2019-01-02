@@ -157,7 +157,7 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   {
   }
 
-  // Constructor to pass in your own pins
+  /// Constructor to pass in your own pins
   constexpr Ssp(Peripheral pssp, PinInterface * mosi_pin,
                 PinInterface * miso_pin, PinInterface * sck_pin)
       : mosi_(mosi_pin),

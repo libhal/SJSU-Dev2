@@ -18,13 +18,14 @@
 class PwmInterface
 {
  public:
-  virtual void Initialize(uint32_t frequency_hz = 1'000) = 0;
-  virtual void SetDutyCycle(float duty_cycle)            = 0;
-  virtual float GetDutyCycle()                           = 0;
-  virtual void SetFrequency(uint32_t frequency_hz)       = 0;
-  virtual uint32_t GetFrequency()                        = 0;
-  virtual void EnablePwm(bool enable = true)             = 0;
-  virtual uint32_t GetMatchRegister0()                   = 0;
+  static constexpr uint32_t kDefaultFrequency = 1'000;
+  virtual void Initialize(uint32_t frequency_hz = kDefaultFrequency) = 0;
+  virtual void SetDutyCycle(float duty_cycle)                        = 0;
+  virtual float GetDutyCycle()                                       = 0;
+  virtual void SetFrequency(uint32_t frequency_hz)                   = 0;
+  virtual uint32_t GetFrequency()                                    = 0;
+  virtual void EnablePwm(bool enable = true)                         = 0;
+  virtual uint32_t GetMatchRegister0()                               = 0;
 };
 
 class Pwm final : public PwmInterface, protected Lpc40xxSystemController
@@ -70,7 +71,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
   {
   }
 
-  void Initialize(uint32_t frequency_hz = 1'000) override
+  void Initialize(uint32_t frequency_hz = kDefaultFrequency) override
   {
     SJ2_ASSERT_FATAL(1 <= channel_ && channel_ <= 6,
                      "Channel must be between 1 and 6.");
@@ -79,7 +80,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kPwm1);
     // Resets PWMTC on Match with MR0
     pwm1->MCR |= PwmConfigure::kResetMr0;
-    pwm1->MR0 = config::kSystemClockRate / frequency_hz;
+    pwm1->MR0 = GetPeripheralFrequency() / frequency_hz;
     // Enables PWM TC and PC for counting and enables PWM mode
     EnablePwm();
     pwm1->CTCR &= ~PwmConfigure::kTimerMode;
@@ -104,18 +105,25 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
 
   void SetFrequency(uint32_t frequency_hz) override
   {
+    SJ2_ASSERT_FATAL(frequency_hz != 0, "Pwm Frequency cannot be zero Hz.");
     // Disables PWM mode; this will reset all counters to 0
     // And allow us to update MR0
-    float recalculate_duty_cycle = GetDutyCycle();
+    float previous_duty_cycle = GetDutyCycle();
     EnablePwm(false);
-    pwm1->MR0 = config::kSystemClockRate / frequency_hz;
-    SetDutyCycle(recalculate_duty_cycle);
+    pwm1->MR0 = GetPeripheralFrequency() / frequency_hz;
+    SetDutyCycle(previous_duty_cycle);
     EnablePwm();
   }
 
   uint32_t GetFrequency() override
   {
-    return config::kSystemClockRate / GetMatchRegister0();
+    uint32_t match_register0 = GetMatchRegister0();
+    uint32_t result          = 0;
+    if (match_register0 != 0)
+    {
+      result = GetPeripheralFrequency() / match_register0;
+    }
+    return result;
   }
 
   void EnablePwm(bool enable = true) override
@@ -147,6 +155,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
   {
     return (1 << (channel + 8));
   }
+
  private:
   PinInterface * pwm_;
   Pin pwm_pin_;

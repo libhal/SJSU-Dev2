@@ -28,25 +28,24 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
   Fake(Method(mock_pwm_pin, SetPinFunction));
   Pwm test2_0(1);
 
-  constexpr uint32_t kDefaultFrequency = 1'000;
-  constexpr uint8_t kResetMr0          = (1 << 1);
-  constexpr uint8_t kCounterEnable     = (1 << 0);
-  constexpr uint8_t kTimerMode         = (0b11 << 0);
-  constexpr uint8_t kPwmEnable         = (1 << 3);
-  constexpr uint32_t kChannelEnable    = (1 << 9);
+  constexpr uint8_t kResetMr0       = (1 << 1);
+  constexpr uint8_t kCounterEnable  = (1 << 0);
+  constexpr uint8_t kTimerMode      = (0b11 << 0);
+  constexpr uint8_t kPwmEnable      = (1 << 3);
+  constexpr uint32_t kChannelEnable = (1 << 9);
 
-  test2_0.Initialize();
   SECTION("Initialization values")
   {
+    test2_0.Initialize();
     CHECK((local_pwm.MCR & 0b11) == (kResetMr0 & 0b11));
     CHECK((local_pwm.TCR & 0b1111) == ((kCounterEnable | kPwmEnable) & 0b1111));
     CHECK((local_pwm.CTCR & 0b11) == (~kTimerMode & 0b11));
     CHECK((local_pwm.PCR & 0b11'1111'1111) ==
           (kChannelEnable & 0b11'1111'1111));
 
-    CHECK(test2_0.GetFrequency() == kDefaultFrequency);
+    CHECK(PwmInterface::kDefaultFrequency == test2_0.GetFrequency());
     test2_0.Initialize(5000);
-    CHECK(test2_0.GetFrequency() == 5000);
+    CHECK(5000 == test2_0.GetFrequency());
   }
 
   SECTION("Match Register 0")
@@ -69,6 +68,7 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
 
   SECTION("Setting and Getting Frequency")
   {
+    test2_0.SetDutyCycle(0.5f);
     test2_0.SetFrequency(2000);
     CHECK(config::kSystemClockRate / local_pwm.MR0 == 2000);
     CHECK(test2_0.GetFrequency() == 2000);
@@ -76,10 +76,11 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
 
   SECTION("Set Duty Cycle")
   {
+    test2_0.SetFrequency(1000);
     test2_0.SetDutyCycle(.50f);
-    float error = (static_cast<float>(local_pwm.MR1) /
-                   static_cast<float>(local_pwm.MR0)) -
-                  .50f;
+    float mr0   = static_cast<float>(local_pwm.MR0);
+    float mr1   = static_cast<float>(local_pwm.MR1);
+    float error = (mr1 / mr0) - 0.5f;
     CHECK(local_pwm.MR0 == test2_0.GetMatchRegister0());
     CHECK(local_pwm.MR1 == test2_0.CalculateDutyCycle(.50f));
     CHECK((-0.1f <= error && error <= 0.1f) == true);
@@ -89,6 +90,7 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
   SECTION("Get Duty Cycle")
   {
     float duty_cycle = 0.10f;
+    test2_0.SetFrequency(1000);
     test2_0.SetDutyCycle(duty_cycle);
     float error = duty_cycle - test2_0.GetDutyCycle();
     CHECK((-0.01f <= error && error <= 0.01f) == true);

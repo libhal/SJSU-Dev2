@@ -57,4 +57,5 @@ TEST_CASE("Testing Uart", "[Uart]")
     CHECK(kFifo == (local_uart.FCR & kFifo));
   }
   Lpc40xxSystemController::system_controller = LPC_SC;
+  Uart::uart[1]  = LPC_UART2;
 }

@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+#include "project_config.hpp"
+
 #include "L0_LowLevel/LPC40xx.h"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
@@ -106,7 +108,7 @@ class Lpc40xxSystemController
   static constexpr uint16_t kClearPllDivider        = (0b11 << 5);
   static constexpr uint16_t kClearCpuDivider        = (0x1F << 0);
   static constexpr uint16_t kClearEmcDivider        = (1 << 0);
-  static constexpr uint16_t kClearPeripheralDivider = (0x1F << 0);
+  static constexpr uint16_t kClearPeripheralDivider = (0b1'1111);
   static constexpr uint16_t kClearUsbDivider        = (0x1F << 0);
   static constexpr uint32_t kDefaultIRCFrequency    = 12'000'000;
   static constexpr uint32_t kDefaultTimeout         = 1'000;  // ms
@@ -138,15 +140,37 @@ class Lpc40xxSystemController
 
   void SetPeripheralClockDivider(uint8_t peripheral_divider)
   {
-    SJ2_ASSERT_FATAL(peripheral_divider < 32, "Divider mustn't exceed 32");
-    system_controller->PCLKSEL =
-        (system_controller->PCLKSEL & ~kClearPeripheralDivider) |
-        peripheral_divider;
+    SJ2_ASSERT_FATAL(peripheral_divider <= 4, "Divider mustn't exceed 32");
+    system_controller->PCLKSEL = peripheral_divider;
   }
 
-  uint32_t GetClockFrequency()
+  uint32_t GetPeripheralClockDivider() const
   {
+    #if defined(HOST_TEST)
+    return 1;
+    #else
+    return system_controller->PCLKSEL;
+    #endif
+  }
+
+  uint32_t GetSystemFrequency()
+  {
+    #if defined(HOST_TEST)
+    return config::kSystemClockRate;
+    #else
     return speed_in_hertz;
+    #endif
+  }
+
+  uint32_t GetPeripheralFrequency()
+  {
+    uint32_t peripheral_clock_divider = GetPeripheralClockDivider();
+    uint32_t result = 0;  // return 0 if peripheral_clock_divider == 0
+    if (peripheral_clock_divider != 0)
+    {
+      result = GetSystemFrequency() / peripheral_clock_divider;
+    }
+    return result;
   }
 
   void PowerUpPeripheral(PeripheralPowerUp peripheral_select)
