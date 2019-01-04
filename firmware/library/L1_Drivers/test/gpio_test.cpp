@@ -1,6 +1,9 @@
+#include <cstdint>
+#include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "utility/log.hpp"
 
 EMIT_ALL_METHODS(Gpio);
 
@@ -119,4 +122,143 @@ TEST_CASE("Testing Gpio", "[gpio]")
   Gpio::gpio_port[4] = LPC_GPIO4;
   Gpio::gpio_port[5] = LPC_GPIO5;
   Pin::pin_map       = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
+}
+
+FAKE_VOID_FUNC(Pin0_15_ISR);
+FAKE_VOID_FUNC(Pin2_7_ISR);
+
+TEST_CASE("Testing Gpio External Interrupts", "[Gpio Interrupts]")
+{
+  // Declared constants that are to be used within the different sections
+  // of this unit test
+  constexpr uint8_t kPin15 = 15;
+  constexpr uint8_t kPin7  = 7;
+
+  constexpr uint8_t kSet    = 0b1;
+  constexpr uint8_t kNotSet = 0b0;
+  constexpr uint8_t kPort0  = 0;
+  constexpr uint8_t kPort2  = 1;
+
+  // Simulated version of LPC_GPIOINT
+  LPC_GPIOINT_TypeDef local_eint;
+  memset(&local_eint, 0, sizeof(local_eint));
+
+  // Reassign external interrupt registers to simulated LPC_GPIOINT
+  Gpio::interrupt[kPort0].rising_edge_status  = &(local_eint.IO0IntStatR);
+  Gpio::interrupt[kPort0].falling_edge_status = &(local_eint.IO0IntStatF);
+  Gpio::interrupt[kPort0].clear               = &(local_eint.IO0IntClr);
+  Gpio::interrupt[kPort0].enable_rising_edge  = &(local_eint.IO0IntEnR);
+  Gpio::interrupt[kPort0].enable_falling_edge = &(local_eint.IO0IntEnF);
+
+  Gpio::interrupt[kPort2].rising_edge_status  = &(local_eint.IO2IntStatR);
+  Gpio::interrupt[kPort2].falling_edge_status = &(local_eint.IO2IntStatF);
+  Gpio::interrupt[kPort2].clear               = &(local_eint.IO2IntClr);
+  Gpio::interrupt[kPort2].enable_rising_edge  = &(local_eint.IO2IntEnR);
+  Gpio::interrupt[kPort2].enable_falling_edge = &(local_eint.IO2IntEnF);
+
+  Gpio::port_status = &(local_eint.IntStatus);
+
+  // Pins that are to be used in the unit test
+  Gpio p0_15(0, 15);
+  Gpio p2_7(2, 7);
+
+  SECTION("Attacht then Detattach Interrupt from pin")
+  {
+    // Attach Interrupt to Pin.
+    p0_15.AttachInterrupt(&Pin0_15_ISR, GpioInterface::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&Pin2_7_ISR, GpioInterface::Edge::kEdgeBoth);
+    // Check Edge Setup
+    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
+    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
+    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
+    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
+    // Check Developer's ISR is attached
+    CHECK(p0_15.interrupthandlers[kPort0][kPin15] == &Pin0_15_ISR);
+    CHECK(p2_7.interrupthandlers[kPort2][kPin7] == &Pin2_7_ISR);
+
+    // Dettach Interrupt from Pin.
+    p0_15.DetachInterrupt();
+    p2_7.DetachInterrupt();
+    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
+    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
+    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
+    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
+    CHECK(p0_15.interrupthandlers[kPort0][kPin15] == nullptr);
+    CHECK(p2_7.interrupthandlers[kPort2][kPin7] == nullptr);
+  }
+
+  SECTION("Set and clear Interrupt Edges")
+  {
+    // Attach Interrupt to Pin.
+    p0_15.AttachInterrupt(&Pin0_15_ISR, GpioInterface::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&Pin2_7_ISR, GpioInterface::Edge::kEdgeBoth);
+    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
+    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
+    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
+    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
+
+    // Clear Interrupt Edge Rising
+    p0_15.ClearInterruptEdge(GpioInterface::Edge::kEdgeRising);
+    p2_7.ClearInterruptEdge(GpioInterface::Edge::kEdgeRising);
+    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
+    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
+    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
+    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
+
+    // Clear Interrupt Edge Falling
+    p0_15.ClearInterruptEdge(GpioInterface::Edge::kEdgeFalling);
+    p2_7.ClearInterruptEdge(GpioInterface::Edge::kEdgeFalling);
+    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
+    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
+    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
+    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
+
+    // Set Interrupt Edge Rising
+    p0_15.SetInterruptEdge(GpioInterface::Edge::kEdgeRising);
+    p2_7.SetInterruptEdge(GpioInterface::Edge::kEdgeRising);
+    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
+    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
+    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
+    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
+
+    // Set Interrupt Edge Falling
+    p0_15.SetInterruptEdge(GpioInterface::Edge::kEdgeFalling);
+    p2_7.SetInterruptEdge(GpioInterface::Edge::kEdgeFalling);
+    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
+    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
+    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
+    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
+  }
+
+  SECTION("Enable and Disable all Interrupts")
+  {
+    // Attach Interrupt to Pin.
+    p0_15.AttachInterrupt(&Pin0_15_ISR, GpioInterface::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&Pin2_7_ISR, GpioInterface::Edge::kEdgeBoth);
+
+    // Enable all Interrupts
+    p0_15.EnableInterrupts();
+    CHECK(dynamic_isr_vector_table[GPIO_IRQn + kIrqOffset] ==
+          Gpio::InterruptHandler);
+
+    // Disable all Interrupts
+    p0_15.DisableInterrupts();
+    CHECK(dynamic_isr_vector_table[GPIO_IRQn + kIrqOffset] ==
+          &InterruptLookupHandler);
+  }
+
+  SECTION("Call the Interrupt handler to service the pin.")
+  {
+    // Attach Interrupt to Pin.
+    p0_15.AttachInterrupt(&Pin0_15_ISR, GpioInterface::Edge::kEdgeBoth);
+
+    // Manually trigger an Interrupt
+    local_eint.IntStatus |= (1 << kPort0);
+    local_eint.IO0IntStatR |= (1 << kPin15);
+
+    // Manually Call the Interrupt Handeler.
+    p0_15.InterruptHandler();
+    CHECK(Pin0_15_ISR_fake.call_count == 1);
+    CHECK(((local_eint.IO0IntClr >> kPin15) & 1) == kSet);
+  }
 }
