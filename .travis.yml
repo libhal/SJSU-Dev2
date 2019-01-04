@@ -27,6 +27,5 @@ matrix:
 before_install: pip install --user cpp-coveralls
 install: ./setup
 script:
-  - cd ./firmware/HelloWorld/
-  - source env.sh
+  - cd firmware/HelloWorld/
   - make presubmit

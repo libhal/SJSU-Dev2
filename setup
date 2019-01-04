@@ -21,14 +21,15 @@ echo "└───────────────────────�
 echo "            Acquiring sudo privileges               "
 echo "└────────────────────────────────────────────────── "
 sudo echo "" || exit 1
+# Get base path
+BASE=$(dirname "$0")
+BASE=$(cd $BASE ; pwd -P)
 # Stash the tool directory
-TOOLDIR=$(dirname "$0")/tools
+TOOLDIR=$BASE/tools
 # Get System Architecture
 ARCH=$(uname -m)
 # Get System Operating System
 OS=$(uname -s)
-# Get base path
-BASE=$(pwd)
 # Define name of the arm version we are downloading
 ARM_GCC_URL="https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/"
 ARM_GCC_COMMON="gcc-arm-none-eabi-7-2017-q4-major"
@@ -85,7 +86,7 @@ case "$OS" in
 		echo "Operating System: Linux"
 		SJSUONEDEV=/dev/ttyUSB0
 		echo " ───────────────────────────────────────────────────┐"
-		echo "               Updating Apt listings                 "
+		echo "                    Updating Apt                     "
 		echo "└─────────────────────────────────────────────────── "
 		sudo apt update
 		echo " ───────────────────────────────────────────────────┐"
@@ -182,6 +183,8 @@ case "$OS" in
 		exit 1
 		;;
 esac
+
+if [[ "$1" != "fast" ]]; then
 echo " ───────────────────────────────────────────────────┐"
 echo "                  Upgrading PIP                      "
 echo "└─────────────────────────────────────────────────── "
@@ -209,13 +212,12 @@ echo "               Extracting OpenOCD                   "
 echo "└────────────────────────────────────────────────── "
 pv "$OPENOCD_PKG" | tar --extract --gzip --file="-"
 echo
+rm -r "openocd"
 mkdir "openocd"
 # Move contents of openocd in gnu-mcu-eclipse (without version) to openocd
 # folder
 mv -f gnu-mcu-eclipse/openocd/*/* openocd
-#
 # Return back to base of repository
-#
 cd "$BASE"
 
 echo " ───────────────────────────────────────────────────┐"
@@ -233,55 +235,43 @@ rm -rf "$TOOLDIR/Telemetry/"
 git clone --depth=1 https://github.com/kammce/Telemetry.git \
                     "$TOOLDIR/Telemetry"
 cd "$TOOLDIR/Telemetry/" && ./setup
+
+fi
+
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
 echo "        Generating Environment Variables File        "
 echo "└─────────────────────────────────────────────────── "
-cat > env.sh <<EOL
+cat > env.mk <<EOL
 #!/bin/bash
 # Setup a base directory:
-SJBASE="$BASE"
+SJBASE = $BASE
 
 # SJSUOne Board Settings:
-SJDEV="$SJSUONEDEV" # Set this to your board ID
-SJBAUD=38400
+SJDEV = $SJSUONEDEV # Set this to your board ID
+SJBAUD = 38400
 
 # Project Target Settings:
 # Sets the binary name, defaults to "firmware" (Optional)
-SJPROJ=firmware
+SJPROJ = firmware
 
 # Sets which DBC to generate, defaults to "DBG"
-ENTITY=DBG
+ENTITY = DBG
 
-# Sets CLANG tool path
-SJCLANG=\$SJBASE/tools/$CLANG_PATH/bin
-
-# Sets openocd tool path
-SJOPENOCD=\$SJBASE/tools/openocd/bin
+# Path to CLANG compiler
+SJCLANG = \$(SJBASE)/tools/$CLANG_PATH/bin
+# Path to ARM GCC compiler
+SJARMGCC = \$(SJBASE)/tools/gcc-arm-none-eabi-7-2017-q4-major/bin
+# Path to Openocd compiler
+SJOPENOCD = \$(SJBASE)/tools/openocd/bin
 
 # Compiler and library settings:
 # Selects compiler version to use
-PATH=\$(printf %q "\$PATH:\$SJBASE/tools/$ARM_GCC_COMMON/bin")
-PATH=\$(printf %q "\$PATH:\$SJCLANG")
-PATH=\$(printf %q "\$PATH:\$SJOPENOCD")
-SJLIBDIR="\$SJBASE/firmware/library"
-
-# Export everything to the environment
-export SJBASE
-export SJDEV
-export SJBAUD
-export SJPROJ
-export SJCLANG
-export ENTITY
-export PATH
-export SJLIBDIR
-export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:\$SJCLANG/../lib/"
+PATH := \$(shell printf "%s" "\$(PATH):\$(SJARMGCC)")
+PATH := \$(shell printf "%s" "\$(PATH):\$(SJCLANG)")
+PATH := \$(shell printf "%s" "\$(PATH):\$(SJOPENOCD)")
+SJLIBDIR = "\$(SJBASE)/firmware/library"
 EOL
-
-echo " ───────────────────────────────────────────────────┐"
-echo "         Loading Environment Variables File          "
-echo "└─────────────────────────────────────────────────── "
-source env.sh
 echo " ───────────────────────────────────────────────────┐"
 echo "      Linking Files to Firmware Project Folder       "
 echo "└─────────────────────────────────────────────────── "

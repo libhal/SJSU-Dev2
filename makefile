@@ -1,3 +1,52 @@
+# ============================
+# Misc Flags
+# ============================
+# shell echo must be used to ensure that the \x1B makes it into the variable
+# simply doing YELLOW=\x1B[33;1m works on Linux but the forward slash is omitted
+# on mac.
+YELLOW=$(shell echo "\x1B[33;1m")
+RED=$(shell echo "\x1B[31;1m")
+RESET=$(shell echo "\x1B[0m")
+GREEN=$(shell echo "\x1B[32;1m")
+# ============================
+# Environment Flags
+# ============================
+include env.mk
+# ============================
+# Modifying make Flags
+# ============================
+# The following list of target opt-out of output sync
+ifneq ($(MAKECMDGOALS), \
+       $(filter $(MAKECMDGOALS), \
+			 presubmit run-test openocd debug lint multi-debug))
+MAKEFLAGS += --output-sync
+endif
+#
+# Setting the number of threads
+#
+NPROCS := 1
+OS := $(shell uname -s)
+
+ifeq ($(OS), Linux)
+NPROCS := $(shell grep -c ^processor /proc/cpuinfo)
+endif
+
+ifeq ($(OS), Darwin) # Assume Mac OS X
+NPROCS := $(shell sysctl -n hw.ncpu | grep -o "[0-9]\+")
+endif
+
+ifneq ($(MAKECMDGOALS), presubmit)
+MAKEFLAGS += --jobs=$(NPROCS)
+endif
+
+#
+# Updating the LD_LIBRARY_PATH used to run executables using the clang libc++
+# linked library which are creatd via the "test" target
+#
+LD_LIBRARY_PATH := $(LD_LIBRARY_PATH):$(SJCLANG)/../lib/
+# ============================
+# User Flags
+# ============================
 # Allow settiing a project name from the environment, default to firmware.
 # Only affects the name of the generated binary.
 # TODO(#82): Set this from the directory this makefile is stored in
@@ -5,18 +54,7 @@ PROJ    ?= firmware
 # Affects what DBC is generated for SJSUOne board
 ENTITY  ?= DBG
 # Optimization level
-OPT=0
-# Cause compiler warnings to become errors.
-# Used in presubmit checks to make sure that the codebase does not include
-# warnings
-WARNINGS_ARE_ERRORS ?=
-# IMPORTANT: Be sure to source env.sh to access these via the PATH variable.
-DEVICE_CC      = arm-none-eabi-gcc
-DEVICE_CPPC    = arm-none-eabi-g++
-DEVICE_OBJDUMP = arm-none-eabi-objdump
-DEVICE_SIZEC   = arm-none-eabi-size
-DEVICE_OBJCOPY = arm-none-eabi-objcopy
-DEVICE_NM      = arm-none-eabi-nm
+OPT     ?= 0
 # Set of tests you would like to run. Text must be surrounded by [] and be a set
 # comma deliminated.
 #
@@ -26,14 +64,28 @@ DEVICE_NM      = arm-none-eabi-nm
 #         make run-test TEST_ARGS="-s [i2c,adc]"
 #
 TEST_ARGS ?=
+# ============================
+# Compilation Flags
+# ============================
+# IMPORTANT: Be sure to source env.sh to access these via the PATH variable.
+DEVICE_CC      = arm-none-eabi-gcc
+DEVICE_CPPC    = arm-none-eabi-g++
+DEVICE_OBJDUMP = arm-none-eabi-objdump
+DEVICE_SIZEC   = arm-none-eabi-size
+DEVICE_OBJCOPY = arm-none-eabi-objcopy
+DEVICE_NM      = arm-none-eabi-nm
+# Cause compiler warnings to become errors.
+# Used in presubmit checks to make sure that the codebase does not include
+# warnings
+WARNINGS_ARE_ERRORS ?=
 # IMPORTANT: GCC must be accessible via the PATH environment variable
-HOST_CC        ?= $(SJCLANG)/clang
-HOST_CPPC      ?= $(SJCLANG)/clang++
-HOST_OBJDUMP   ?= $(SJCLANG)/llvm-objdump
-HOST_SIZEC     ?= $(SJCLANG)/llvm-size
-HOST_OBJCOPY   ?= $(SJCLANG)/llvm-objcopy
-HOST_NM        ?= $(SJCLANG)/llvm-nm
-
+HOST_CC        = clang
+HOST_CPPC      = clang++
+HOST_OBJDUMP   = llvm-objdump
+HOST_SIZEC     = llvm-size
+HOST_OBJCOPY   = llvm-objcopy
+HOST_NM        = llvm-nm
+# Mux between using the firmware compiler executables or the host compiler
 ifeq ($(MAKECMDGOALS), test)
 CC      = $(HOST_CC)
 CPPC    = $(HOST_CPPC)
@@ -49,53 +101,80 @@ SIZEC   = $(DEVICE_SIZEC)
 OBJCOPY = $(DEVICE_OBJCOPY)
 NM      = $(DEVICE_NM)
 endif
-
-# shell echo must be used to ensure that the \x1B makes it into the variable
-# simply doing YELLOW=\x1B[33;1m works on Linux but the forward slash is omitted
-# on mac.
-YELLOW=$(shell echo "\x1B[33;1m")
-RESET=$(shell echo "\x1B[0m")
-GREEN=$(shell echo "\x1B[32;1m")
-
-CLANG_TIDY  = $(SJCLANG)/clang-tidy
-
-# Internal build directories
-BUILD_DIR = build
-TEST_DIR  = $(BUILD_DIR)/test
-
-ifeq ($(MAKECMDGOALS), bootloader)
-BIN_DIR   = $(BUILD_DIR)/bootloader
-else
-BIN_DIR   = $(BUILD_DIR)/application
+# =============================================
+# Directory Flags and Build Folder Organization
+# =============================================
+# Name of the folder where all of the object and intermediate compilable files
+# will be stored
+BUILD_DIRECTORY_NAME = build
+# "make application"'s build directory becomes "build/application"
+# "make test"'s build directory becomes "build/test"
+BUILD_DIR     = $(BUILD_DIRECTORY_NAME)/$(MAKECMDGOALS)
+OBJECT_DIR    = $(BUILD_DIR)/compiled
+DBC_DIR       = $(BUILD_DIR)/can-dbc
+COVERAGE_DIR  = $(BUILD_DIR)/coverage
+FIRMWARE_DIR  = $(SJBASE)/firmware
+LIB_DIR       = $(FIRMWARE_DIR)/library
+TOOLS_DIR     = $(SJBASE)/tools
+SOURCE_DIR    = source
+COMPILED_HEADERS_DIR  = $(BUILD_DIR)/headers # NOTE: Actually use this!
+CURRENT_DIRECTORY	= $(shell pwd)
+# ===========================
+# Gathering Source Files
+# ===========================
+DBC_BUILD = $(DBC_DIR)/generated_can.h
+# Set of directories to be added to the direct include list
+INCLUDES = $(CURRENT_DIRECTORY) $(SOURCE_DIR)
+# System includes are files that we do not want to show diagnostic information
+# about. This is typically used for third party code.
+SYSTEM_INCLUDES =
+# Set of all source files to compile (.c, .cpp)
+# By default, all source files included within the source directory of a
+# project are included. The search below is recursive, so subdirectories within
+# the source directory are supported.
+SOURCES = $(shell find source -name "*.c" -o -name "*.cpp" -print 2> /dev/null)
+# Report an error if the SOURCES variable is empty
+ifeq ($(SOURCES),)
+$(info $(shell printf '$(RED)'))
+$(info +------------ Project Source Files Not Found Error -------------+)
+$(info | Couldn't find any source files within the "source" directory! |)
+$(info |                                                               |)
+$(info | This is the case if you are not in a project folder, or your  |)
+$(info | project folder lacks a "sources" folder.                      |)
+$(info |                                                               |)
+$(info | Either move into a project directory or add a source folder   |)
+$(info | with source files in it.                                      |)
+$(info +---------------------------------------------------------------+)
+$(info $(shell printf '$(RESET)'))
+$(error )
 endif
+# Set of all compilable test files.
+# This also includes any source AND test to be tested.
+# MUST NOT contain source files that contain a "main()" implementation
+# TODO(#296): Add a seperation between library and user tests
+TESTS ?=
+# Include a project specific makefile. Using -include to keep make form exiting
+# if the project.mk file does not exist.
+-include project.mk
+# Include all source files within the SJSU-Dev2 library directory by running the
+# the library/library.mk makefile.
+# This is where a lot of the magic happens. This makefile will call more sub
+# makefiles until all of the included library source files have been found.
+include $(FIRMWARE_DIR)/library/library.mk
+# A bit of post processing on the source variables
+INCLUDES        := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
+SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
+OBJECTS          = $(addprefix $(OBJECT_DIR)/, $(SOURCES:=.o))
+TEST_OBJECTS     = $(addprefix $(OBJECT_DIR)/, $(TESTS:=.o))
 
 ifeq ($(MAKECMDGOALS), test)
-OBJ_DIR   = $(TEST_DIR)/compiled
+COMPILABLES = $(TESTS)
 else
-OBJ_DIR   = $(BIN_DIR)/compiled
+COMPILABLES = $(SOURCES)
 endif
-
-DBC_DIR   = $(BUILD_DIR)/can-dbc
-COVERAGE  = $(BUILD_DIR)/coverage
-LIB_DIR   = $(SJLIBDIR)
-FIRMWARE  = $(SJBASE)/firmware
-TOOLS     = $(SJBASE)/tools
-COMPILED_HEADERS  = $(BUILD_DIR)/headers
-CURRENT_DIRECTORY	= $(shell pwd)
-# Source files folder
-SOURCE    = source
-define n
-
-
-endef
-
-ifndef SJDEV
-$(error $n$n=============================================$nSJSU-Dev2 environment variables not set.$nPLEASE run "source env.sh"$n=============================================$n$n)
-endif
-
-#########
-# FLAGS #
-#########
+# ===========================
+# Compilation Flags
+# ===========================
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 			       -fabi-version=0 \
 			       -finstrument-functions-exclude-file-list=L0_LowLevel
@@ -112,24 +191,35 @@ CPPWARNINGS = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
               -Wuseless-cast $(WARNINGS_ARE_ERRORS)
 DEFINES   = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
-# stdlib=libc++ : tell clang to ignore GCC standard libs
-INCLUDES  = -I"$(CURRENT_DIRECTORY)/" \
-			-I"$(LIB_DIR)/" \
-			-I"$(LIB_DIR)/L0_LowLevel/SystemFiles" \
-			-idirafter"$(LIB_DIR)/third_party/" \
-			-idirafter"$(LIB_DIR)/third_party/printf" \
-			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source" \
-			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source/trace" \
-			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source/include" \
-			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source/portable" \
-			-idirafter"$(LIB_DIR)/third_party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+# Combine all of the flags together
 COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
                $(DISABLED_WARNINGS)
+# Add the last touch for object files
+CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
+LINKFLAGS = $(COMMON_FLAGS) -T $(LINKER) -specs=nano.specs \
+						-Wl,--gc-sections -Wl,-Map,"$(MAP)" \
 
-CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) -MMD -MP -c
+# Enable specific flags for building a bootloader
+ifeq ($(MAKECMDGOALS), bootloader)
+LINKER = $(LIB_DIR)/LPC4078_bootloader.ld
+CFLAGS_COMMON += -D BOOTLOADER=1
+endif
+# NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
+# clang std libs (libc++) or it will result in a metric ton of undefined linker
+# errors.
+# The filte command checks if any of the make targets are application, flash,
+# etc and if so, this ifeq will become true
+ifeq ($(MAKECMDGOALS), $(filter \
+			$(MAKECMDGOALS), application flash build cleaninstall))
+LINKER = $(LIB_DIR)/LPC4078_application.ld
+CFLAGS_COMMON += -D APPLICATION=1
+CFLAGS_COMMON += -finstrument-functions
+endif
 
+# Enable a whole different set of exceptions, checks, coverage tools and more
+# with the test target
 ifeq ($(MAKECMDGOALS), test)
-CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
+CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
 				 -fprofile-instr-generate -fcoverage-mapping \
          -fno-elide-constructors -ftest-coverage -fno-omit-frame-pointer \
 				 -fsanitize=address -stdlib=libc++ \
@@ -141,130 +231,53 @@ CFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
 				 $(WARNINGS_ARE_ERRORS) \
 				 -D HOST_TEST=1 -D SJ2_BACKTRACE_DEPTH=1024 \
 				 -D CATCH_CONFIG_FAST_COMPILE \
-				 $(INCLUDES) $(DEFINES) $(DEBUG) $(DISABLED_WARNINGS) \
-         -O0 -MMD -MP -c
-CPPFLAGS = $(CFLAGS)
+				 $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG) \
+				 $(DISABLED_WARNINGS) \
+				 -O0 -MMD -MP -c
+CFLAGS = $(CPPFLAGS)
 else
 CFLAGS = $(CFLAGS_COMMON)
 CPPFLAGS = $(CFLAGS) $(CPPWARNINGS) $(CPPOPTIMIZE)
 endif
 
-ifeq ($(MAKECMDGOALS), bootloader)
-LINKER = $(LIB_DIR)/LPC4078_bootloader.ld
-CFLAGS += -D BOOTLOADER=1
-endif
-# NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
-# clang std libs (libc++) or it will result in a metric ton of undefined linker
-# errors.
-ifeq ($(MAKECMDGOALS), $(filter \
-			$(MAKECMDGOALS), application flash build cleaninstall))
-LINKER = $(LIB_DIR)/LPC4078_application.ld
-CFLAGS += -D APPLICATION=1
-CFLAGS += -finstrument-functions
-endif
-
-LINKFLAGS = $(COMMON_FLAGS) \
-    -T $(LINKER) \
-    -Wl,--gc-sections \
-		-Wl,-Map,"$(MAP)" \
-    -specs=nano.specs
-##############
-# Test files #
-##############
+# ===========================
+# Lint variables
+# ===========================
+# Files to ignore in the linting and tidy process
 FILE_EXCLUDES = grep -v  \
 				-e "$(LIB_DIR)/third_party/" \
 				-e "$(LIB_DIR)/L0_LowLevel/SystemFiles" \
 				-e "$(LIB_DIR)/L0_LowLevel/LPC40xx.h" \
 				-e "$(LIB_DIR)/L0_LowLevel/FreeRTOSConfig.h"
-# Find all files that end with "_test.cpp"
-SOURCE_TESTS  = $(shell find $(SOURCE) \
-                         -name "*_test.cpp" \
-                         2> /dev/null)
-# Find all library that end with "_test.cpp"
-LIBRARY_TESTS = $(shell find "$(LIB_DIR)" -name "*_test.cpp" | \
-						    $(FILE_EXCLUDES))
-TESTS = $(SOURCE_TESTS) $(LIBRARY_TESTS)
-OMIT_LIBRARIES = $(shell find "$(LIB_DIR)" \
-                         -name "startup.cpp" -o \
-                         -name "*.cpp" \
-                         -path "$(LIB_DIR)/third_party/*" -o \
-						             -path "$(LIB_DIR)/third_party/*")
-OMIT_SOURCES   = $(shell find $(SOURCE) -name "main.cpp")
-OMIT = $(OMIT_LIBRARIES) $(OMIT_SOURCES)
-################
-# Source files #
-################
-DBC_BUILD     = $(DBC_DIR)/generated_can.h
-LIBRARY_FILES = $(shell find "$(LIB_DIR)" \
-                         -name "*.c" -o \
-                         -name "*.cpp")
-# Remove all test files from LIBRARY_FILES
-LIBRARIES     = $(filter-out $(LIBRARY_TESTS), $(LIBRARY_FILES))
-SOURCE_FILES  = $(shell find $(SOURCE) \
-                         -name "*.c" -o \
-                         -name "*.s" -o \
-                         -name "*.S" -o \
-                         -name "*.cpp" \
-                         2> /dev/null)
-SOURCE_HEADERS  = $(shell find $(SOURCE) \
-                         -name "*.h" -o \
-                         -name "*.hpp" \
-                         2> /dev/null)
-PRINTF_3P_LIBRARY = $(shell find "$(LIB_DIR)/third_party/printf" \
-                         -name "*.cpp" 2> /dev/null)
-##############
-# Lint files #
-##############
-LINT_FILES      = $(shell find $(FIRMWARE) \
-                         -name "*.h"   -o \
-                         -name "*.hpp" -o \
-                         -name "*.c"   -o \
-                         -name "*.cpp" | \
-						             $(FILE_EXCLUDES) \
-                         2> /dev/null)
+# Find all files within the firmware directory to be evaluated
+LINT_FILES    = $(shell find $(FIRMWARE_DIR) \
+                        -name "*.h"   -o \
+                        -name "*.hpp" -o \
+                        -name "*.c"   -o \
+                        -name "*.cpp" | \
+						            $(FILE_EXCLUDES) \
+                        2> /dev/null)
+# TODO(kammce): Add these phony files back to make linting and tiding up
+# remember which files have already been linted/tidied.
 LINT_FILES_PHONY = $(LINT_FILES:=.lint)
-# Remove all test files from SOURCE_FILES
-SOURCES     = $(filter-out $(SOURCE_TESTS), $(SOURCE_FILES))
-ifeq ($(MAKECMDGOALS), test)
-COMPILABLES = $(filter-out $(OMIT), $(TESTS) $(LIBRARIES) $(SOURCES)) \
-              $(PRINTF_3P_LIBRARY)
-else
-COMPILABLES = $(LIBRARIES) $(SOURCES)
-endif
-###############
-# Ouput Files #
-###############
-# $(patsubst %.cpp,%.o, LIST)    : Replace .cpp -> .o
-# $(patsubst %.c,%.o, LIST)      : Replace .c -> .o
-# $(patsubst src/%,%, LIST)      : Replace src/path/file.o -> path/file.o
-# $(addprefix $(OBJ_DIR)/, LIST) : Add OBJ DIR to path
-#                                  (path/file.o -> obj/path/file.o)
-# NOTE: the extra / for obj_dir is necessary to fully quaify the path from root.
-OBJECT_FILES = $(addprefix $(OBJ_DIR)/, \
-                    $(patsubst %.S,%.o, \
-                        $(patsubst %.s,%.o, \
-                            $(patsubst %.c,%.o, \
-                                $(patsubst %.cpp,%.o, \
-                                    $(COMPILABLES) \
-                                ) \
-                            ) \
-                        ) \
-                    ) \
-                )
-EXECUTABLE = $(BIN_DIR)/$(PROJ).elf
+TIDY_FILES_PHONY = $(LINT_FILES:=.tidy)
+# ===========================
+# Firmware final products
+# ===========================
+EXECUTABLE = $(BUILD_DIR)/$(PROJ).elf
 BINARY     = $(EXECUTABLE:.elf=.bin)
 HEX        = $(EXECUTABLE:.elf=.hex)
 LIST       = $(EXECUTABLE:.elf=.lst)
 SIZE       = $(EXECUTABLE:.elf=.siz)
 MAP        = $(EXECUTABLE:.elf=.map)
-TEST_EXEC  = $(TEST_DIR)/tests.exe
-TEST_FRAMEWORK = $(LIB_DIR)/L4_Testing/testing_frameworks.hpp.gch
+TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/test/tests.exe
+# TODO(kammce): Add header file precompilation back later
+# TEST_FRAMEWORK = $(LIB_DIR)/L4_Testing/testing_frameworks.hpp.gch
 
 # This line allows the make to rebuild if header file changes.
 # This is feature and not a bug, otherwise updates to header files do not
 # register as an update to the source code.
-DEPENDENCIES = $(OBJECT_FILES:.o=.d)
--include       $(DEPENDENCIES)
+-include       $(OBJECTS:.o=.d) # DEPENDENCIES
 # Tell make to delete built files it has created if an error occurs
 .DELETE_ON_ERROR:
 # Tell make that the default recipe is the default
@@ -273,8 +286,10 @@ DEPENDENCIES = $(OBJECT_FILES:.o=.d)
 .PHONY: build cleaninstall telemetry monitor show-lists clean flash telemetry \
         presubmit openocd debug multi-debug default
 print-%  : ; @echo $* = $($*)
-
-# When the user types just "make" this should appear to them
+# ====================================================================
+# When the user types just "make" or "help" this should appear to them
+# ====================================================================
+default: help
 help:
 	@echo "List of available targets:"
 	@echo
@@ -291,51 +306,67 @@ help:
 	@echo "    debug        - run arm gdb with current projects .elf file"
 	@echo "    multi-debug  - run multiarch gdb with current projects .elf file"
 	@echo
-
-# Shows the help menu without any targets specified
-default: help
+# ====================================================================
+# Build firmware
+# ====================================================================
 bootloader: build
-# Build recipe
 application: build
-build: $(DBC_DIR) $(OBJ_DIR) $(BIN_DIR) $(LIST) $(HEX) $(BINARY) $(SIZE)
-# Clean working build directory by deleting the build folder
-clean:
-	rm -fR $(BUILD_DIR)
-# Build application and flash board
-flash: build
+build: $(LIST) $(HEX) $(BINARY) $(SIZE)
+# ====================================================================
+# Flash board
+# ====================================================================
+flash:
 	@bash -c "\
-	source $(TOOLS)/Hyperload/modules/bin/activate && \
-	python $(TOOLS)/Hyperload/hyperload.py -b 576000 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
-# Rebuild from scratch and flash application
-cleaninstall: clean flash
+	source $(TOOLS_DIR)/Hyperload/modules/bin/activate && \
+	python $(TOOLS_DIR)/Hyperload/hyperload.py \
+		-b 576000 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
+# ====================================================================
+# Clean working build directory by deleting the build folder
+# ====================================================================
+clean:
+	rm -fR $(BUILD_DIRECTORY_NAME)
+# ====================================================================
 # Run telemetry
+# ====================================================================
 telemetry:
 	@bash -c "\
-	source $(TOOLS)/Telemetry/modules/bin/activate && \
-	python2.7 $(TOOLS)/Telemetry/telemetry.py"
-# Build test file
-test: $(COVERAGE) $(TEST_EXEC)
-# Run test file and generate code coverage report
-run-test: $(COVERAGE)
-	@$(TEST_EXEC) $(TEST_ARGS)
-	@gcovr --root="$(FIRMWARE)/" --keep --object-directory="$(BUILD_DIR)/" \
+	source $(TOOLS_DIR)/Telemetry/modules/bin/activate && \
+	python2.7 $(TOOLS_DIR)/Telemetry/telemetry.py"
+# ====================================================================
+# Build Test Executable
+# ====================================================================
+test: $(TEST_EXEC)
+# ====================================================================
+# Run Test Executable
+# ====================================================================
+run-test:
+	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
+	  $(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
+	@mkdir -p "$(COVERAGE_DIR)"
+	@gcovr --root="$(FIRMWARE_DIR)/" --keep --object-directory="$(BUILD_DIR)/" \
 		-e "$(LIB_DIR)/newlib" \
 		-e "$(LIB_DIR)/third_party" \
 		-e "$(LIB_DIR)/L4_Testing" \
 		--html --html-details --gcov-executable="llvm-cov gcov" \
-		-o $(COVERAGE)/coverage.html
+		-o $(COVERAGE_DIR)/coverage.html
+# ====================================================================
+# Source Code Linting
+# ====================================================================
 # Evaluate library files and check them for linting errors.
 lint:
-	@python2.7 $(TOOLS)/cpplint/cpplint.py $(LINT_FILES)
+	@python2.7 $(TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
 # Evaluate library files for proper code naming conventions
-tidy: $(LINT_FILES_PHONY)
+tidy: $(TIDY_FILES_PHONY)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 # Run presumbission tests
 presubmit:
-	$(TOOLS)/presubmit.sh
+	@$(TOOLS_DIR)/presubmit.sh
+# ====================================================================
+# Microcontroller Debugging
+# ====================================================================
 # Start an openocd jtag debug session for the sjtwo development board
 openocd:
-	openocd -f $(FIRMWARE)/debug/sjtwo.cfg
+	openocd -f $(FIRMWARE_DIR)/debug/sjtwo.cfg
 # Start gdb for arm and connect to openocd jtag debugging session
 debug:
 	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)
@@ -343,28 +374,30 @@ debug:
 # gdb-multiarch is perferable since it supports python in its .gdbinit file
 multi-debug:
 	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
-# Debug recipe to show internal list contents
+# ====================================================================
+# Makefile debug
+# ====================================================================
 show-lists:
-	@echo "=========== OBJECT FILES ============"
-	@echo $(OBJECT_FILES)
 	@echo "===========  TEST FILES  ============"
 	@echo $(TESTS)
-	@echo "===========  LIBRARIES   ============"
-	@echo $(LIBRARIES)
+	@echo "=========== OBJECT FILES ============"
+	@echo $(TEST_OBJECTS)
 	@echo "===========   SOURCES   ============"
 	@echo $(SOURCES)
-	@echo "=========== COMPILABLES ============"
-	@echo $(COMPILABLES)
-	@echo "=========== OMIT ============"
-	@echo $(OMIT)
+	@echo "=========== OBJECT FILES ============"
+	@echo $(OBJECTS)
+	@echo "=========== INCLUDES FILES ============"
+	@echo $(INCLUDES)
+	@echo "=========== SYSTEM INCLUDES FILES ============"
+	@echo $(SYSTEM_INCLUDES)
 	@echo "===========   FLAGS   =============="
 	@echo $(CFLAGS)
 	@echo "=========== TEST FLAGS =============="
 	@echo $(TEST_CFLAGS)
-	@echo "=========== CLANG TIDY BIN PATH =============="
-	@echo $(CLANG_TIDY)
-	@echo "=========== OMIT_LIBRARIES =============="
-	@echo $(OMIT_LIBRARIES)
+
+# ====================================================================
+# Recipes to Compile Source Code
+# ====================================================================
 
 $(HEX): $(EXECUTABLE)
 	@printf '$(YELLOW)Generating Hex Image $(RESET)   : $@ '
@@ -387,81 +420,44 @@ $(LIST): $(EXECUTABLE)
 	@$(OBJDUMP) --disassemble --all-headers --source --demangle --wide "$<" > "$@"
 	@printf '$(GREEN)Disassembly Generated!$(RESET)\n'
 
-$(EXECUTABLE): $(OBJECT_FILES)
+$(EXECUTABLE): $(OBJECTS)
 	@printf '$(YELLOW)Linking Executable $(RESET)     : $@ '
 	@mkdir -p "$(dir $@)"
-	@$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECT_FILES)
+	@$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECTS)
 	@printf '$(GREEN)Executable Generated!$(RESET)\n'
 
-$(OBJ_DIR)/%.o: %.cpp
-	@printf '$(YELLOW)Building file (C++) $(RESET): $< '
-	@mkdir -p "$(dir $@)"
-	@$(CPPC) $(CPPFLAGS) -std=c++17 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@printf '$(GREEN)DONE!$(RESET)\n'
-
-$(OBJ_DIR)/%.o: %.c
+$(OBJECT_DIR)/%.c.o: %.c
 	@printf '$(YELLOW)Building file ( C ) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CC) $(CFLAGS) -std=gnu11 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
-$(OBJ_DIR)/%.o: %.s
-	@printf '$(YELLOW)Building file (Asm) $(RESET): $< '
-	@mkdir -p "$(dir $@)"
-	@$(CC) $(CFLAGS) -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@printf '$(GREEN)DONE!$(RESET)\n'
-
-$(OBJ_DIR)/%.o: %.S
-	@printf '$(YELLOW)Building file (Asm) $(RESET): $< '
-	@mkdir -p "$(dir $@)"
-	@$(CC) $(CFLAGS) -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@printf '$(GREEN)DONE!$(RESET)\n'
-
-$(OBJ_DIR)/%.o: $(LIB_DIR)/%.cpp
+$(OBJECT_DIR)/%.o: %
 	@printf '$(YELLOW)Building file (C++) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) $(CPPFLAGS) -std=c++17 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@printf '$(GREEN)DONE!$(RESET)\n'
-
-$(OBJ_DIR)/%.o: $(LIB_DIR)/%.c
-	@printf '$(YELLOW)Building file ( C ) $(RESET): $< '
-	@mkdir -p "$(dir $@)"
-	@$(CC) $(CFLAGS) -std=gnu11 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
 $(DBC_BUILD):
+	@mkdir -p "$(dir $@)"
 	python2.7 "$(LIB_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIB_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
 
-$(OBJ_DIR) $(BIN_DIR) $(DBC_DIR):
-	@echo 'Creating Folder: $@'
-	mkdir -p "$@"
-
-$(COVERAGE):
-	mkdir -p $(COVERAGE)
-
-$(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
+$(TEST_EXEC): $(TEST_OBJECTS)
 	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@ '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
-           -fno-inline-small-functions -fno-default-inline \
-				   -fkeep-inline-functions -fno-elide-constructors  \
-           -ftest-coverage -O0 -fsanitize=address \
+					 -fno-inline-small-functions -fno-default-inline \
+					 -fkeep-inline-functions -fno-elide-constructors  \
+					 -ftest-coverage -O0 -fsanitize=address \
 					 -std=c++17 -stdlib=libc++ -lc++ -lc++abi \
-           -o $(TEST_EXEC) $(OBJECT_FILES)
+					 -o $(TEST_EXEC) $(TEST_OBJECTS)
 	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
-%.hpp.gch: %.hpp
-	@printf '$(YELLOW)Precompiling file (h++) $(RESET): $< '
-	@mkdir -p "$(dir $@)"
-	@$(CPPC) $(CFLAGS) -std=c++17 -stdlib=libc++ -MF"$(@:%.o=%.d)" -MT"$(@)" \
-	      -o "$@" $(LIB_DIR)/L4_Testing/testing_frameworks.hpp
-	@printf '$(GREEN)DONE!$(RESET)\n'
-
-%.lint: %
+%.tidy: %
 	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
-	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
+	@clang-tidy $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 	  -extra-arg="-std=c++17") "$<"  -- \
 		-D CLANG_TIDY=1 -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/../include/c++/v1/" \
-		-stdlib=libc++ $(INCLUDES) 2> /dev/null
+		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> /dev/null
 	@printf '$(GREEN)DONE!$(RESET)\n'

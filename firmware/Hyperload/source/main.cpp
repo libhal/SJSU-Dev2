@@ -20,6 +20,10 @@
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
 
+// Only allow this file to be compiled if the BOOTLOADER or CLANG_TIDY defines
+// have been defined.
+//    BOOTLOADER is defined when using "make bootloader"
+//    CLANG_TIDY is defined when using "make tidy"
 #if !defined(BOOTLOADER) && !defined(CLANG_TIDY)
 #error Hyperload must be built as a 'bootloader' and not as an application or \
        test. Please build this software using 'make bootloader'
