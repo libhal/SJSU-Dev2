@@ -1,7 +1,9 @@
+#include <FreeRTOS.h>
+#include <semphr.h>
+
 #include <cstdarg>
 
 #include "L3_Application/task.hpp"
-#include "semphr.h"
 #include "utility/log.hpp"
 
 class PrinterTask : public rtos::Task<512>

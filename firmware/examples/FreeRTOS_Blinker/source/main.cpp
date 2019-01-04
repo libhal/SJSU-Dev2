@@ -1,8 +1,8 @@
+#include <FreeRTOS.h>
+#include <task.h>
+
 #include <cstdint>
 #include <cstdio>
-
-#include "FreeRTOS.h"
-#include "task.h"
 
 #include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"

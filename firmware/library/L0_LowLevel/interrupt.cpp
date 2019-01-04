@@ -1,8 +1,8 @@
 
+#include <FreeRTOS.h>
+
 #include <cinttypes>
 #include <cstdint>
-
-#include <FreeRTOS.h>
 
 #include "L0_LowLevel/interrupt.hpp"
 #include "L1_Drivers/system_timer.hpp"
