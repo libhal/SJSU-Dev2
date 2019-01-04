@@ -18,7 +18,8 @@ include env.mk
 # The following list of target opt-out of output sync
 ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
-			 presubmit run-test openocd debug lint multi-debug flash burn))
+			 presubmit run-test openocd debug lint multi-debug flash burn \
+			 debug-user-test))
 MAKEFLAGS += --output-sync
 endif
 #
@@ -433,6 +434,8 @@ openocd:
 # Start gdb for arm and connect to openocd jtag debugging session
 debug:
 	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)
+debug-user-test:
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/test/tests.exe
 # Start gdb just like the debug target, but using gdb-multiarch
 # gdb-multiarch is perferable since it supports python in its .gdbinit file
 multi-debug:
