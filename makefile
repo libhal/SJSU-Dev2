@@ -18,7 +18,7 @@ include env.mk
 # The following list of target opt-out of output sync
 ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
-			 presubmit run-test openocd debug lint multi-debug))
+			 presubmit run-test openocd debug lint multi-debug flash burn))
 MAKEFLAGS += --output-sync
 endif
 #
@@ -109,7 +109,15 @@ endif
 BUILD_DIRECTORY_NAME = build
 # "make application"'s build directory becomes "build/application"
 # "make test"'s build directory becomes "build/test"
-BUILD_DIR     = $(BUILD_DIRECTORY_NAME)/$(MAKECMDGOALS)
+ifeq ($(MAKECMDGOALS), flash)
+BUILD_SUBDIRECTORY_NAME = application
+else ifeq ($(MAKECMDGOALS), burn)
+BUILD_SUBDIRECTORY_NAME = bootloader
+else
+BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
+endif
+
+BUILD_DIR     = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)
 OBJECT_DIR    = $(BUILD_DIR)/compiled
 DBC_DIR       = $(BUILD_DIR)/can-dbc
 COVERAGE_DIR  = $(BUILD_DIR)/coverage
