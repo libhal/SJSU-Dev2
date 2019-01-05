@@ -6,7 +6,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/time.hpp"
+#include "utility/time.hpp"
 
 class UartInterface
 {
@@ -183,13 +183,13 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
 
   float DividerEstimate(float baud_rate, float fraction_estimate = 1)
   {
-    float clock_frequency = static_cast<float>(GetClockFrequency());
+    float clock_frequency = static_cast<float>(GetPeripheralFrequency());
     return clock_frequency / (16.0f * baud_rate * fraction_estimate);
   }
 
   float FractionalEstimate(float baud_rate, float divider)
   {
-    float clock_frequency = static_cast<float>(GetClockFrequency());
+    float clock_frequency = static_cast<float>(GetPeripheralFrequency());
     return clock_frequency / (16.0f * baud_rate * divider);
   }
 

@@ -24,7 +24,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/macros.hpp"
+#include "utility/macros.hpp"
 // Every base driver MUST have a class interface.
 //
 // A class interface is simply a class that defines the API that the driver

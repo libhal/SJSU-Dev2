@@ -258,7 +258,7 @@ LIST       = $(EXECUTABLE:.elf=.lst)
 SIZE       = $(EXECUTABLE:.elf=.siz)
 MAP        = $(EXECUTABLE:.elf=.map)
 TEST_EXEC  = $(TEST_DIR)/tests.exe
-TEST_FRAMEWORK = $(LIB_DIR)/L5_Testing/testing_frameworks.hpp.gch
+TEST_FRAMEWORK = $(LIB_DIR)/L4_Testing/testing_frameworks.hpp.gch
 
 # This line allows the make to rebuild if header file changes.
 # This is feature and not a bug, otherwise updates to header files do not
@@ -321,7 +321,7 @@ run-test: $(COVERAGE)
 	@gcovr --root="$(FIRMWARE)/" --keep --object-directory="$(BUILD_DIR)/" \
 		-e "$(LIB_DIR)/newlib" \
 		-e "$(LIB_DIR)/third_party" \
-		-e "$(LIB_DIR)/L5_Testing" \
+		-e "$(LIB_DIR)/L4_Testing" \
 		--html --html-details --gcov-executable="llvm-cov gcov" \
 		-o $(COVERAGE)/coverage.html
 # Evaluate library files and check them for linting errors.
@@ -454,7 +454,7 @@ $(TEST_EXEC): $(TEST_FRAMEWORK) $(OBJECT_FILES)
 	@printf '$(YELLOW)Precompiling file (h++) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) $(CFLAGS) -std=c++17 -stdlib=libc++ -MF"$(@:%.o=%.d)" -MT"$(@)" \
-	      -o "$@" $(LIB_DIR)/L5_Testing/testing_frameworks.hpp
+	      -o "$@" $(LIB_DIR)/L4_Testing/testing_frameworks.hpp
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
 %.lint: %

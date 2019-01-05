@@ -2,8 +2,8 @@
 // The DAC driver can be demonstrated on an Oscilloscope.
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/dac.hpp"
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/time.hpp"
+#include "utility/log.hpp"
+#include "utility/time.hpp"
 // Input Number for starting demo
 
 const uint16_t kSineLookup[256] = {

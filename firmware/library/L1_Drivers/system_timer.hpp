@@ -14,7 +14,7 @@
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
-#include "L2_Utilities/macros.hpp"
+#include "utility/macros.hpp"
 
 class SystemTimerInterface
 {
@@ -100,8 +100,8 @@ class SystemTimer final : public SystemTimerInterface,
     {
       return 0;
     }
-    uint32_t reload_value = (GetClockFrequency() / frequency) - 1;
-    int remainder         = GetClockFrequency() % frequency;
+    uint32_t reload_value = (GetSystemFrequency() / frequency) - 1;
+    int remainder         = (GetSystemFrequency() % frequency);
     if (reload_value > SysTick_LOAD_RELOAD_Msk)
     {
       reload_value = SysTick_LOAD_RELOAD_Msk;

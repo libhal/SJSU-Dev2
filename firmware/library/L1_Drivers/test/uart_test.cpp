@@ -1,6 +1,6 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/uart.hpp"
-#include "L5_Testing/testing_frameworks.hpp"
+#include "L4_Testing/testing_frameworks.hpp"
 
 EMIT_ALL_METHODS(Uart);
 
@@ -57,4 +57,5 @@ TEST_CASE("Testing Uart", "[Uart]")
     CHECK(kFifo == (local_uart.FCR & kFifo));
   }
   Lpc40xxSystemController::system_controller = LPC_SC;
+  Uart::uart[1]  = LPC_UART2;
 }

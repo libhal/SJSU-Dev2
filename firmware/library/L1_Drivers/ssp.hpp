@@ -11,7 +11,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/enum.hpp"
+#include "utility/enum.hpp"
 
 class SspInterface
 {
@@ -157,7 +157,7 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   {
   }
 
-  // Constructor to pass in your own pins
+  /// Constructor to pass in your own pins
   constexpr Ssp(Peripheral pssp, PinInterface * mosi_pin,
                 PinInterface * miso_pin, PinInterface * sck_pin)
       : mosi_(mosi_pin),

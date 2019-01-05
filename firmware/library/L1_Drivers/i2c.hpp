@@ -11,10 +11,10 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
-#include "L2_Utilities/enum.hpp"
-#include "L2_Utilities/log.hpp"
-#include "L2_Utilities/status.hpp"
-#include "L2_Utilities/time.hpp"
+#include "utility/enum.hpp"
+#include "utility/log.hpp"
+#include "utility/status.hpp"
+#include "utility/time.hpp"
 
 class I2cInterface
 {
@@ -348,9 +348,10 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       scl_.SetMode(PinInterface::Mode::kInactive);
     }
     PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kI2c2);
-    float scll         = ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 0.7f;
+    float peripheral_frequency = static_cast<float>(GetPeripheralFrequency());
+    float scll         = ((peripheral_frequency / 75'000.0f) / 2.0f) * 0.7f;
     i2c[port_]->SCLL   = static_cast<uint32_t>(scll);
-    float sclh         = ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 1.3f;
+    float sclh         = ((peripheral_frequency / 75'000.0f) / 2.0f) * 1.3f;
     i2c[port_]->SCLH   = static_cast<uint32_t>(sclh);
     i2c[port_]->CONCLR = Control::kAssertAcknowledge | Control::kStart |
                          Control::kStop | Control::kInterrupt;

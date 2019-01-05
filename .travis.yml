@@ -9,9 +9,9 @@ matrix:
             - coveralls --gcov $(which gcov-7)
               --include "firmware/library/L0_LowLevel"
               --include "firmware/library/L1_Drivers"
-              --include "firmware/library/L2_Utilities"
-              --include "firmware/library/L3_HAL"
-              --include "firmware/library/L4_Application"
+              --include "firmware/library/Utility"
+              --include "firmware/library/L2_HAL"
+              --include "firmware/library/L3_Application"
             - sudo apt-get -y install doxygen graphviz
             - cd documentation/api/
             - doxygen sjsu-dev2-doxygen.conf

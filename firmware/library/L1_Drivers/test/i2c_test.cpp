@@ -2,9 +2,9 @@
 #include "L0_LowLevel/interrupt.hpp"
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/i2c.hpp"
-#include "L2_Utilities/enum.hpp"
-#include "L2_Utilities/status.hpp"
-#include "L5_Testing/testing_frameworks.hpp"
+#include "L4_Testing/testing_frameworks.hpp"
+#include "utility/enum.hpp"
+#include "utility/status.hpp"
 
 EMIT_ALL_METHODS(I2c);
 

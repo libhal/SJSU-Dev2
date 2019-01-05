@@ -4,7 +4,7 @@
 using IsrPointer = void (*)(void);
 
 #if defined HOST_TEST
-#include "L5_Testing/testing_frameworks.hpp"
+#include "L4_Testing/testing_frameworks.hpp"
 // During host tests, we don't want to call these functions since they write to
 // memory locations directly.
 // The defines below will replace every instance of the functions names with
@@ -17,7 +17,7 @@ using IsrPointer = void (*)(void);
 #endif  // defined HOST_TEST
 
 #include "L0_LowLevel/LPC40xx.h"
-#include "L2_Utilities/macros.hpp"
+#include "utility/macros.hpp"
 
 #if defined HOST_TEST
 // Remove the text replacement used to replace the variable names above.
