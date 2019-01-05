@@ -36,10 +36,10 @@
 #include <iterator>
 
 #include "L0_LowLevel/interrupt.hpp"
+#include "L0_LowLevel/ram.hpp"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/system_timer.hpp"
 #include "L1_Drivers/uart.hpp"
-#include "L3_Application/globals.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
