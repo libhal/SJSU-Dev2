@@ -161,6 +161,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       }
       case MasterState::kRepeatedStart:  // 0x10
       {
+      	transaction[kPort].operation = Operation::kRead;   	
         i2c[kPort]->DAT = transaction[kPort].GetProperAddress();
         break;
       }
@@ -195,7 +196,6 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
           if (transaction[kPort].repeated)
           {
             // OR with 1 to set address as READ for the next transaction
-            transaction[kPort].address |= 0b1;
             transaction[kPort].position = 0;
             set_mask                    = Control::kStart;
           }
