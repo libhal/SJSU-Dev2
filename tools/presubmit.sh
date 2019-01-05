@@ -79,8 +79,9 @@ echo ""
 #    All Projects Build Check      #
 ####################################
 print_divider
+printf "Checking that all projects build\n\n"
 
-printf "\e[0;33mBuilding Template Project HelloWorld\e[0m\n"
+printf "\e[0;33mBuilding HelloWorld Project\e[0m "
 # Change to the HelloWorld project
 cd "$SJBASE/firmware/HelloWorld"
 # Clean the build and start building from scratch
@@ -92,9 +93,7 @@ BUILD_CAPTURE=$?
 print_status $BUILD_CAPTURE
 echo ""
 
-print_divider
-
-printf "\e[0;33mBuilding Hyperload Bootloader\e[0m\n"
+printf "\e[0;33mBuilding Hyperload Bootloader\e[0m "
 # Change to the Hyperload project
 cd "$SJBASE/firmware/Hyperload"
 # Clean the build and start building from scratch
@@ -111,11 +110,9 @@ echo ""
 cd $SJBASE/firmware/examples
 for d in */; do
 
-print_divider
-
 cd "$SJBASE/firmware/examples/$d"
 
-printf "\e[0;33mBuilding Example $d\e[0m\n"
+printf "\e[0;33mBuilding Example $d\e[0m "
 # Clean the build and start building from scratch
 make -s clean
 # Check if the system can build without any warnings!
@@ -126,6 +123,7 @@ SPECIFIC_BUILD_CAPTURE=$?
 BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
 print_status $SPECIFIC_BUILD_CAPTURE
 echo ""
+
 done
 
 # Return to home project
