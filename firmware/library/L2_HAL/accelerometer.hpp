@@ -28,7 +28,8 @@ class Accelerometer : public AccelerometerInterface
     uint8_t const kMsbShift = 8;
     size_t const kEightBitLength = 1;
     size_t const kSixteenBitLength = 2;
-    uint32_t const kDefaultTimeout = 1000;
+
+    I2c AccelerometerDevice;
 
     enum class RegisterMap_t : uint8_t
       {
@@ -45,57 +46,50 @@ class Accelerometer : public AccelerometerInterface
     }
     bool Init() override
     {
-        I2c Initialization;
-        Initialization.Initialize();
+        AccelerometerDevice.Initialize();
+        AccelerometerDevice.Write(kAccelerometerAddress, { 0x2A, 0x01 });
         uint8_t WhoAmIReceivedValue;
         RegisterMap_t IdentityRegister = RegisterMap_t::who_am_i;
         uint8_t WhoAmIRegister;
         WhoAmIRegister = static_cast <unsigned char> (IdentityRegister);
-        Initialization.WriteThenRead(kAccelerometerAddress, &WhoAmIRegister,
+        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &WhoAmIRegister,
                                      kEightBitLength, &WhoAmIReceivedValue,
-                                     kEightBitLength, kDefaultTimeout);
+                                     kEightBitLength);
         return WhoAmIReceivedValue == kWhoAmIExpectedValue;
     }
     int16_t GetX() override
     {
-        I2c XTransaction;
-        XTransaction.Initialize();
         uint8_t kXVal[2];
         RegisterMap_t XReg = RegisterMap_t::x;
         uint8_t kXReg;
         kXReg = static_cast <unsigned char> (XReg);
-        XTransaction.WriteThenRead(kAccelerometerAddress, &kXReg,
+        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &kXReg,
                                    kEightBitLength, kXVal,
-                                   kSixteenBitLength, kDefaultTimeout);
-        printf("MSB %x, LSB %x\n", kXVal[0], kXVal[1]);
+                                   kSixteenBitLength);
         return (int16_t)((kXVal[0] << kMsbShift) |
                  kXVal[1])/kDataOffset;  // Data arrives MSB then LSB
     }
     int16_t GetY() override
     {
-        I2c YTransaction;
-        YTransaction.Initialize();
         uint8_t kYVal[2];
         RegisterMap_t YReg = RegisterMap_t::y;
         uint8_t kYReg;
         kYReg = static_cast <unsigned char> (YReg);
-        YTransaction.WriteThenRead(kAccelerometerAddress, &kYReg,
+        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &kYReg,
                                    kEightBitLength, kYVal,
-                                   kSixteenBitLength, kDefaultTimeout);
+                                   kSixteenBitLength);
         return (int16_t)((kYVal[0] << kMsbShift) |
                  kYVal[1])/kDataOffset;  // Data arrives MSB then LSB
     }
     int16_t GetZ() override
     {
-        I2c ZTransaction;
-        ZTransaction.Initialize();
         uint8_t kZVal[2];
         RegisterMap_t ZReg = RegisterMap_t::z;
         uint8_t kZReg;
         kZReg = static_cast <unsigned char> (ZReg);
-        ZTransaction.WriteThenRead(kAccelerometerAddress, &kZReg,
+        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &kZReg,
                                    kEightBitLength, kZVal,
-                                   kSixteenBitLength, kDefaultTimeout);
+                                   kSixteenBitLength);
         return (int16_t)((kZVal[0] << kMsbShift) |
                  kZVal[1])/kDataOffset;  // Data arrives MSB then LSB
     }
@@ -107,7 +101,6 @@ class Accelerometer : public AccelerometerInterface
         float kPitchNumerator = x * -1;
         float kPitchDenominator = sqrt((y * y) + (z * z));
         float pitch = atan2(kPitchNumerator, kPitchDenominator) * kRadiansToDegree;
-        printf("%f\n", pitch);
         return pitch;
     }
     float GetRoll() override
@@ -118,16 +111,14 @@ class Accelerometer : public AccelerometerInterface
     }
     uint8_t GetFullScaleRange() override
     {
-        I2c FullScaleRange;
-        FullScaleRange.Initialize();
         uint8_t fullScaleRangeValue;
         RegisterMap_t dataConfig = RegisterMap_t::data_config;
         uint8_t configReg;
         configReg = (unsigned char) dataConfig;
         uint8_t FullScaleValue;
-        FullScaleRange.WriteThenRead(kAccelerometerAddress, &configReg,
+        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &configReg,
                                      kEightBitLength, &FullScaleValue,
-                                     kEightBitLength, kDefaultTimeout);
+                                     kEightBitLength);
         FullScaleValue &= 0x01;
         switch (FullScaleValue)
         {
@@ -140,8 +131,6 @@ class Accelerometer : public AccelerometerInterface
     void SetFullScaleRange(uint8_t range_value) override
     {
         printf("range_value is %x\n", range_value);
-        I2c FullScaleRange;
-        FullScaleRange.Initialize();
         RegisterMap_t dataConfig = RegisterMap_t::data_config;
         uint8_t configReg;
         configReg = static_cast <unsigned char> (dataConfig);
@@ -164,8 +153,8 @@ class Accelerometer : public AccelerometerInterface
         }
         printf("send range is %x\n", sendRange);
         uint8_t fullScaleRangeWriteBuffer [2] = {configReg, sendRange};
-        FullScaleRange.Write(kAccelerometerAddress, fullScaleRangeWriteBuffer,
-                             kSixteenBitLength, kDefaultTimeout);
+        AccelerometerDevice.Write(kAccelerometerAddress, fullScaleRangeWriteBuffer,
+                             kSixteenBitLength);
     }
     virtual ~Accelerometer()
     {
