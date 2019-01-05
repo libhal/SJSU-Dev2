@@ -161,6 +161,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       }
       case MasterState::kRepeatedStart:  // 0x10
       {
+      	transaction[kPort].operation = Operation::kRead;   	
         i2c[kPort]->DAT = transaction[kPort].GetProperAddress();
         break;
       }
