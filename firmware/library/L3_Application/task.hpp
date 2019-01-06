@@ -132,6 +132,7 @@ class Task : public TaskInterface
   }
   bool DeclaredOnStackCheck()
   {
+#if !defined(HOST_TEST)
     // This task's position in memory
     intptr_t address = reinterpret_cast<intptr_t>(this);
     // The .data section starts at RAM address 0. The .bss section follows
@@ -154,7 +155,7 @@ class Task : public TaskInterface
             (start_of_heap <= address && address <= end_of_heap),
         "Must define tasks globally or within heap using new or malloc. "
         "Cannot exist on the stack.\n");
-
+#endif
     return true;
   }
 
