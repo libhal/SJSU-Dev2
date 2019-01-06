@@ -6,8 +6,8 @@
 #include <cstdint>
 #include <cstdio>
 
+#include "L0_LowLevel/ram.hpp"
 #include "L1_Drivers/uart.hpp"
-#include "L3_Application/globals.hpp"
 #include "utility/macros.hpp"
 
 #if defined(HOST_TEST)

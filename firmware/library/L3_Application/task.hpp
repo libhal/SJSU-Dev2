@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-#include "L3_Application/globals.hpp"
+#include "L0_LowLevel/ram.hpp"
 #include "L3_Application/task_scheduler.hpp"
 #include "utility/macros.hpp"
 
