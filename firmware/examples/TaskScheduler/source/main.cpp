@@ -14,7 +14,7 @@ class PrinterTask : public rtos::Task<512>
         message_(message),
         run_count_(0)
   {
-    print_mutex = {0};
+    print_mutex = { 0 };
   };
   bool Setup() override
   {
