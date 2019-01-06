@@ -1,10 +1,5 @@
 // SystemTimer abstracts the process of changing enabling and setting
 // up the SystemTimer.
-//
-//   Usage:
-//      Pin P0_0(0, 0);
-//      P0_0.SetAsActiveLow();
-//      P0_0.SetMode(PinInterface::Mode::kPullUp);
 #pragma once
 
 #include <cstring>
@@ -55,12 +50,7 @@ class SystemTimer final : public SystemTimerInterface,
     // This assumes that SysTickHandler is called every millisecond.
     // Changing that frequency will distort the milliseconds time.
     IncrementUptimeMs();
-    if (system_timer_isr == nullptr)
-    {
-      DEBUG_PRINT("System Timer ISR not defined, disabling System Timer");
-      DisableTimer();
-    }
-    else
+    if (system_timer_isr != nullptr)
     {
       system_timer_isr();
     }

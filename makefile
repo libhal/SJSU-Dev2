@@ -201,7 +201,7 @@ DEFINES   = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # Combine all of the flags together
 COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
-               $(DISABLED_WARNINGS)
+               $(DISABLED_WARNINGS) -fdiagnostics-color
 # Add the last touch for object files
 CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
 LINKFLAGS = $(COMMON_FLAGS) -T $(LINKER) -specs=nano.specs \
@@ -221,7 +221,8 @@ ifeq ($(MAKECMDGOALS), $(filter \
 			$(MAKECMDGOALS), application flash build cleaninstall))
 LINKER = $(LIB_DIR)/LPC4078_application.ld
 CFLAGS_COMMON += -D APPLICATION=1
-CFLAGS_COMMON += -finstrument-functions
+CFLAGS_COMMON += -finstrument-functions \
+	-finstrument-functions-exclude-file-list=third_party/FreeRTOS/Source
 endif
 
 # Enable a whole different set of exceptions, checks, coverage tools and more
