@@ -85,22 +85,22 @@ SJ2_SECTION(".isr_vector")
 // NOLINTNEXTLINE(readability-identifier-naming)
 const IsrPointer kInterruptVectorTable[] = {
   // Core Level - CM4
-  &StackTop,              // The initial stack pointer
-  ResetIsr,               // The reset handler
-  NmiHandler,             // The NMI handler
-  HardFaultHandler,       // The hard fault handler
-  MemManageHandler,       // The MPU fault handler
-  BusFaultHandler,        // The bus fault handler
-  UsageFaultHandler,      // The usage fault handler
-  ValidUserCodeChecksum,  // LPC MCU Checksum
-  kReservedVector,        // Reserved
-  kReservedVector,        // Reserved
-  kReservedVector,        // Reserved
-  vPortSVCHandler,        // SVCall handler  // vPortSVCHandler
-  DebugMonHandler,        // Debug monitor handler
-  kReservedVector,        // Reserved
-  xPortPendSVHandler,     // FreeRTOS PendSV Handler
-  SysTickHandler,         // The SysTick handler
+  &StackTop,              // 0, The initial stack pointer
+  ResetIsr,               // 1, The reset handler
+  NmiHandler,             // 2, The NMI handler
+  HardFaultHandler,       // 3, The hard fault handler
+  MemManageHandler,       // 4, The MPU fault handler
+  BusFaultHandler,        // 5, The bus fault handler
+  UsageFaultHandler,      // 6, The usage fault handler
+  ValidUserCodeChecksum,  // 7, LPC MCU Checksum
+  kReservedVector,        // 8, Reserved
+  kReservedVector,        // 9, Reserved
+  kReservedVector,        // 10, Reserved
+  vPortSVCHandler,        // 11, SVCall handler  // vPortSVCHandler
+  DebugMonHandler,        // 12, Debug monitor handler
+  kReservedVector,        // 13, Reserved
+  xPortPendSVHandler,     // 14, FreeRTOS PendSV Handler
+  SysTickHandler,         // 15, The SysTick handler
   // Chip Level - LPC40xx
   WdtIrqHandler,          // 16, 0x40 - WDT
   Timer0IrqHandler,       // 17, 0x44 - TIMER0
@@ -207,7 +207,7 @@ IsrPointer dynamic_isr_vector_table[] = {
   LcdIrqHandler,          // 53, 0xd4 - LCD
   GpioIrqHandler,         // 54, 0xd8 - GPIO
   Pwm0IrqHandler,         // 55, 0xdc - PWM0
-  EepromIrqHandler       // 56, 0xe0 - EEPROM
+  EepromIrqHandler        // 56, 0xe0 - EEPROM
 };
 #endif  // defined HOST_TEST
 

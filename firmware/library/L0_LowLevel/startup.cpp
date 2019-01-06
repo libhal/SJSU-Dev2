@@ -44,6 +44,11 @@
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
 
+// Initialize system timer to be used by low level initialization.
+SystemTimer system_timer;
+// Initialize LPC40xx system controller to be used by low level initialization.
+Lpc40xxSystemController system_controller;
+
 // The entry point for the C++ library startup
 extern "C"
 {
@@ -69,7 +74,10 @@ extern "C"
   }
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    // Empty implementation, startup handles this itself.
+    system_timer.DisableTimer();
+    system_timer.SetTickFrequency(config::kRtosFrequency);
+    system_timer.SetIsrFunction(xPortSysTickHandler);
+    system_timer.StartTimer();
   }
 }
 
@@ -139,31 +147,8 @@ void InitFpu()
       "ISB\n");
 }
 
-// Initialize system timer to be used by low level initialization.
-SystemTimer system_timer;
-
-// Initialize LPC40xx system controller to be used by low level initialization.
-Lpc40xxSystemController system_controller;
-
-void InitializeFreeRTOSSystemTick()
-{
-#if defined(APPLICATION)
-  if (taskSCHEDULER_RUNNING == xTaskGetSchedulerState())
-  {
-    // Register xPortPendSVHandler to the PendSV interrupt
-    RegisterIsr(PendSV_IRQn, xPortPendSVHandler);
-    // Register vPortSVCHandler to the SVCall interrupt
-    RegisterIsr(SVCall_IRQn, vPortSVCHandler);
-    // Swap out the SystemTimer isr with FreeRTOS's xPortSysTickHandler
-    system_timer.SetIsrFunction(xPortSysTickHandler);
-  }
-#endif
-}
-
 void LowLevelInit()
 {
-  // Set system timer callback to InitializeFreeRTOSSystemTick
-  system_timer.SetIsrFunction(InitializeFreeRTOSSystemTick);
   // Set the SystemTick frequency to the RTOS tick frequency
   // It is critical that this happens before you set the system_clock, since
   // The system_timer keeps the time that the system_clock uses to delay itself.
