@@ -51,10 +51,33 @@ LD_LIBRARY_PATH := $(LD_LIBRARY_PATH):$(SJCLANG)/../lib/
 # Only affects the name of the generated binary.
 # TODO(#82): Set this from the directory this makefile is stored in
 PROJ    ?= firmware
-# Affects what DBC is generated for SJSUOne board
+# Specifies which entity in the DBC your application will represent.
+# The example below will generate a DBC where this particular application is
+# the NAVIGATION entity on the CANBUS.
+#
+#			make application ENTITY="NAVIGATION"
+#
 ENTITY  ?= DBG
-# Optimization level
-OPT     ?= 0
+# Used by "make flash" to specify a direct path to a serial port connected to a
+# device running the Hyperload bootloader
+#
+#     make flash DEVICE="/dev/ttyUSB0"
+#
+DEVICE ?=
+# Set the optimization level of the compiler. Default is optimization level 0.
+# Available optimization levels for GCC are:
+#     0: Low to no optimization. Only trivial and quick optimizations will be
+#        considered
+#     1: Level 1 optimization. Optimizes the executable, compilation time will
+#        increase.
+#     2: Level 2 optimization. Optimizes the executable further. Performs all
+#        optimizations that do not sacrafice memory to increase runtime
+#        performance.
+#     3: Highest level of optimization. Typically increases binary size
+#        significatly.
+#     s: Optimize for size. Will perform all optimizations that reduce the size
+#        of the binary.
+OPT    ?= 0
 # Set of tests you would like to run. Text must be surrounded by [] and be a set
 # comma deliminated.
 #
@@ -301,19 +324,31 @@ print-%  : ; @echo $* = $($*)
 default: help
 help:
 	@echo "List of available targets:"
+	@echo "General Commands:"
+	@echo "  application  - Builds firmware project as an application"
+	@echo "  flash        - Installs firmware on to a device with the Hyperload"
+	@echo "                 bootloader installed."
+	@echo "  bootloader   - Builds firmware using bootloader linker"
+	@echo "  burn         - Installs bootloader onto device [NOT OPERATIONAL]"
+	@echo "                 (LPC40xx & LPC17xx)"
+	@echo "  clean        - deletes build folder contents"
+	@echo "  cleaninstall - cleans, builds, and installs application firmware on "
+	@echo "                 device."
+	@echo "  telemetry    - Launch telemetry web interface on platform"
+	@echo "  show-lists   - Makefile debugging target that displays the contents"
+	@echo "                 of make variables"
+	@echo "SJSU-Dev2 Developer Commands: "
+	@echo "  presubmit    - run presubmit checks script"
+	@echo "  lint         - Check that source files abide by the SJSU-Dev2 coding"
+	@echo "                 standard."
+	@echo "  tidy         - Check that source file fit the SJSU-Dev2 naming "
+	@echo "                 convention "
+	@echo "  help         - Shows this menu"
+	@echo "Debugging Commands: "
+	@echo "  openocd      - run openocd with the sjtwo.cfg file"
+	@echo "  debug        - run arm gdb with current projects .elf file"
+	@echo "  multi-debug  - run multiarch gdb with current projects .elf file"
 	@echo
-	@echo "    build        - builds firmware project"
-	@echo "    bootloader   - builds firmware using bootloader linker"
-	@echo "    help         - shows this menu"
-	@echo "    flash        - builds and installs firmware on to SJOne board"
-	@echo "    telemetry    - will launch telemetry interface"
-	@echo "    clean        - cleans project folder"
-	@echo "    cleaninstall - cleans, builds, and installs firmware"
-	@echo "    show-lists   - Shows all object files that will be compiled"
-	@echo "    presubmit    - run presubmit checks script"
-	@echo "    openocd      - run openocd with the sjtwo.cfg file"
-	@echo "    debug        - run arm gdb with current projects .elf file"
-	@echo "    multi-debug  - run multiarch gdb with current projects .elf file"
 	@echo
 # ====================================================================
 # Build firmware
@@ -328,7 +363,8 @@ flash:
 	@bash -c "\
 	source $(TOOLS_DIR)/Hyperload/modules/bin/activate && \
 	python $(TOOLS_DIR)/Hyperload/hyperload.py \
-		-b 576000 -c 48000000 -a clocks -d $(SJDEV) $(HEX)"
+	--baud=576000 --animation=clocks --clockspeed=48000000 \
+	--device=\"$(SJDEV)\" \"$(BINARY)\""
 # ====================================================================
 # Clean working build directory by deleting the build folder
 # ====================================================================
