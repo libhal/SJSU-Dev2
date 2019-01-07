@@ -259,13 +259,13 @@ FILE_EXCLUDES = grep -v  \
 				-e "$(LIB_DIR)/L0_LowLevel/LPC40xx.h" \
 				-e "$(LIB_DIR)/L0_LowLevel/FreeRTOSConfig.h"
 # Find all files within the firmware directory to be evaluated
-LINT_FILES    = $(shell find $(FIRMWARE_DIR) \
-                        -name "*.h"   -o \
-                        -name "*.hpp" -o \
-                        -name "*.c"   -o \
-                        -name "*.cpp" | \
-						            $(FILE_EXCLUDES) \
-                        2> /dev/null)
+LINT_FILES  = $(shell find $(FIRMWARE_DIR) \
+                      -name "*.h"   -o \
+                      -name "*.hpp" -o \
+                      -name "*.c"   -o \
+                      -name "*.cpp" | \
+					            $(FILE_EXCLUDES) \
+                      2> /dev/null)
 # TODO(kammce): Add these phony files back to make linting and tiding up
 # remember which files have already been linted/tidied.
 LINT_FILES_PHONY = $(LINT_FILES:=.lint)
