@@ -103,7 +103,7 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
     SJ2_ASSERT_FATAL(adc_clk_hz < kMaxAdcClock,
                      "Adc clock has to be less than or equal to 12MHz");
 
-    PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kAdc);
+    PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kAdc);
     adc_base->CR |= (1 << ControlBit::kPowerUp);
     adc_base->CR |= (1 << channel_);
     if (channel_ < 4)
