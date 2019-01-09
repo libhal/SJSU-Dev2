@@ -360,6 +360,7 @@ build: $(LIST) $(HEX) $(BINARY) $(SIZE)
 # Flash board
 # ====================================================================
 flash:
+	make --quiet application
 	@bash -c "\
 	source $(TOOLS_DIR)/Hyperload/modules/bin/activate && \
 	python $(TOOLS_DIR)/Hyperload/hyperload.py \
