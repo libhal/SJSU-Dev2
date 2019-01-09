@@ -55,6 +55,7 @@ SJ2_DECLARE_CONSTANT(ENABLE_ANSI_CODES, bool, kEnableAnsiCodes);
 #define SJ2_SYSTEM_CLOCK_RATE_MHZ 48
 #endif  // !defined(SJ2_SYSTEM_CLOCK_RATE)
 SJ2_DECLARE_CONSTANT(SYSTEM_CLOCK_RATE_MHZ, uint8_t, kSystemClockRateMhz);
+#define SJ2_SYSTEM_CLOCK_RATE_HZ (SJ2_SYSTEM_CLOCK_RATE_MHZ * 1'000'000)
 constexpr uint32_t kSystemClockRate = SJ2_SYSTEM_CLOCK_RATE_MHZ * 1'000'000;
 static_assert(1 <= kSystemClockRateMhz && kSystemClockRateMhz <= 100,
               "SJ2_SYSTEM_CLOCK can only be between 1Hz and 100Mhz");

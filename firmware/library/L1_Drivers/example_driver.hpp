@@ -166,7 +166,7 @@ class Example final : public ExampleInterface, protected Lpc40xxSystemController
   {
     // Typically you will need to power up your peripheral. Use the inherited
     // method rather than directly using the LPC_SC register.
-    PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kCan2);
+    PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kCan2);
     // Refrain from manipulating the CPU clock speed or peripheral clock speed
     // at this point. It would be very confusing for the user if using, lets say
     // the PWM driver, results in the CPU speed dropping by half or the

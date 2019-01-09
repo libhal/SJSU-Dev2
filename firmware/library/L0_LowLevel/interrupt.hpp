@@ -45,8 +45,7 @@ extern "C" void xPortSysTickHandler(void);  // NOLINT
 // definitions.
 extern "C" SJ2_IGNORE_STACK_TRACE(void ResetIsr(void));
 extern "C" SJ2_IGNORE_STACK_TRACE(void HardFaultHandler(void));
-extern "C" SJ2_IGNORE_STACK_TRACE(void IntDefaultHandler(void));
-extern "C" SJ2_WEAK(void InterruptLookupHandler(void));
+extern "C" void InterruptLookupHandler(void);
 
 void RegisterIsr(IRQn_Type irq, IsrPointer isr, bool enable_interrupt = true,
                  int32_t priority = -1);

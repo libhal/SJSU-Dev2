@@ -77,7 +77,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
                      "Channel must be between 1 and 6.");
     // Enables PWM1 power/clock control bit
     // TODO(#): Replace direct manipulation of system clock register.
-    PowerUpPeripheral(Lpc40xxSystemController::PeripheralPowerUp::kPwm1);
+    PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kPwm1);
     // Resets PWMTC on Match with MR0
     pwm1->MCR |= PwmConfigure::kResetMr0;
     pwm1->MR0 = GetPeripheralFrequency() / frequency_hz;
