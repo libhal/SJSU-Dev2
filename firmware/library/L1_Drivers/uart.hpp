@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cmath>
 #include <cstdint>
 
@@ -64,11 +65,11 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
                                                       0b101 };
   static constexpr uint8_t kRxUartPortFunction[4] = { 0b001, 0b010, 0b010,
                                                       0b011 };
-  static constexpr Lpc40xxSystemController::PeripheralPowerUp kPowerbit[] = {
-    Lpc40xxSystemController::PeripheralPowerUp::kUart0,
-    Lpc40xxSystemController::PeripheralPowerUp::kUart2,
-    Lpc40xxSystemController::PeripheralPowerUp::kUart3,
-    Lpc40xxSystemController::PeripheralPowerUp::kUart4
+  static constexpr Lpc40xxSystemController::PeripheralID kPowerbit[] = {
+    Lpc40xxSystemController::Peripherals::kUart0,
+    Lpc40xxSystemController::Peripherals::kUart2,
+    Lpc40xxSystemController::Peripherals::kUart3,
+    Lpc40xxSystemController::Peripherals::kUart4
   };
 
   inline static LPC_UART_TypeDef * uart[4] = {

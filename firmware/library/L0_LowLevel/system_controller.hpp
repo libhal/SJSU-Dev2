@@ -10,7 +10,34 @@
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 
-class Lpc40xxSystemController
+class SystemControllerInterface
+{
+ public:
+  class PeripheralID
+  {
+   public:
+    size_t device_id = -1;
+  };
+  template <size_t kDeviceId>
+  class AddPeripheralID : public PeripheralID
+  {
+   public:
+    constexpr AddPeripheralID()
+    {
+      device_id = kDeviceId;
+    }
+  };
+  virtual uint32_t SetClockFrequency(uint8_t frequency_in_mhz)             = 0;
+  virtual void SetPeripheralClockDivider(uint8_t peripheral_divider)       = 0;
+  virtual uint32_t GetPeripheralClockDivider() const                       = 0;
+  virtual uint32_t GetSystemFrequency() const                              = 0;
+  virtual uint32_t GetPeripheralFrequency() const                          = 0;
+  virtual void PowerUpPeripheral(const PeripheralID & peripheral_select) = 0;
+  virtual void PowerDownPeripheral(
+      const PeripheralID & peripheral_select) = 0;
+};
+
+class Lpc40xxSystemController : public SystemControllerInterface
 {
  public:
   enum class UsbSource : uint16_t
@@ -53,42 +80,6 @@ class Lpc40xxSystemController
     kHalfTheSpeedOfCpu
   };
 
-  enum class PeripheralPowerUp : uint8_t
-  {
-    kLcd = 0,
-    kTimer0,
-    kTimer1,
-    kUart0,
-    kUart1,
-    kPwm0,
-    kPwm1,
-    kI2c0,
-    kUart4,
-    kRtc,
-    kSsp1,
-    kEmc,
-    kAdc,
-    kCan1,
-    kCan2,
-    kGpio,
-    kSpifi,
-    kMotorControlPwm,
-    kQuadratureEncoderInterface,
-    kI2c1,
-    kSsp2,
-    kSsp0,
-    kTimer2,
-    kTimer3,
-    kUart2,
-    kUart3,
-    kI2c2,
-    kI2s,
-    kSdCard,
-    kGpdma,
-    kEthernetBlock,
-    kUsb
-  };
-
   enum class UsbDivider : uint8_t
   {
     kDivideBy1 = 0,
@@ -97,19 +88,59 @@ class Lpc40xxSystemController
     kDivideBy4
   };
 
-  static constexpr uint16_t kOscillatorSelect       = (1 << 0);
-  static constexpr uint16_t kBaseClockSelect        = (1 << 8);
-  static constexpr uint16_t kUsbClockSource         = (0b11 << 8);
-  static constexpr uint16_t kSpifiClockSource       = (0b11 << 8);
-  static constexpr uint16_t kEnablePll              = (0b1 << 0);
-  static constexpr uint16_t kPlock                  = 10;
-  static constexpr uint8_t kDivideInputBy1          = 1;
-  static constexpr uint16_t kClearPllMultiplier     = (0x1f << 0);
-  static constexpr uint16_t kClearPllDivider        = (0b11 << 5);
-  static constexpr uint16_t kClearCpuDivider        = (0x1F << 0);
-  static constexpr uint16_t kClearEmcDivider        = (1 << 0);
-  static constexpr uint16_t kClearPeripheralDivider = (0b1'1111);
-  static constexpr uint16_t kClearUsbDivider        = (0x1F << 0);
+  // LPC40xx Peripheral Power On Values:
+  // The kDeviceId of each peripheral corresponds to the peripheral's power on
+  // bit position within the LPC40xx System Controller's PCONP register.
+  class Peripherals
+  {
+   public:
+    static constexpr auto kLcd               = AddPeripheralID<0>();
+    static constexpr auto kTimer0            = AddPeripheralID<1>();
+    static constexpr auto kTimer1            = AddPeripheralID<2>();
+    static constexpr auto kUart0             = AddPeripheralID<3>();
+    static constexpr auto kUart1             = AddPeripheralID<4>();
+    static constexpr auto kPwm0              = AddPeripheralID<5>();
+    static constexpr auto kPwm1              = AddPeripheralID<6>();
+    static constexpr auto kI2c0              = AddPeripheralID<7>();
+    static constexpr auto kUart4             = AddPeripheralID<8>();
+    static constexpr auto kRtc               = AddPeripheralID<9>();
+    static constexpr auto kSsp1              = AddPeripheralID<10>();
+    static constexpr auto kEmc               = AddPeripheralID<11>();
+    static constexpr auto kAdc               = AddPeripheralID<12>();
+    static constexpr auto kCan1              = AddPeripheralID<13>();
+    static constexpr auto kCan2              = AddPeripheralID<14>();
+    static constexpr auto kGpio              = AddPeripheralID<15>();
+    static constexpr auto kSpifi             = AddPeripheralID<16>();
+    static constexpr auto kMotorControlPwm   = AddPeripheralID<17>();
+    static constexpr auto kQuadratureEncoder = AddPeripheralID<18>();
+    static constexpr auto kI2c1              = AddPeripheralID<19>();
+    static constexpr auto kSsp2              = AddPeripheralID<20>();
+    static constexpr auto kSsp0              = AddPeripheralID<21>();
+    static constexpr auto kTimer2            = AddPeripheralID<22>();
+    static constexpr auto kTimer3            = AddPeripheralID<23>();
+    static constexpr auto kUart2             = AddPeripheralID<24>();
+    static constexpr auto kUart3             = AddPeripheralID<25>();
+    static constexpr auto kI2c2              = AddPeripheralID<26>();
+    static constexpr auto kI2s               = AddPeripheralID<27>();
+    static constexpr auto kSdCard            = AddPeripheralID<28>();
+    static constexpr auto kGpdma             = AddPeripheralID<29>();
+    static constexpr auto kEthernet          = AddPeripheralID<30>();
+    static constexpr auto kUsb               = AddPeripheralID<31>();
+  };
+
+  static constexpr uint32_t kOscillatorSelect       = (1 << 0);
+  static constexpr uint32_t kBaseClockSelect        = (1 << 8);
+  static constexpr uint32_t kUsbClockSource         = (0b11 << 8);
+  static constexpr uint32_t kSpifiClockSource       = (0b11 << 8);
+  static constexpr uint32_t kEnablePll              = (0b1 << 0);
+  static constexpr uint32_t kPlock                  = 10;
+  static constexpr uint32_t kDivideInputBy1         = 1;
+  static constexpr uint32_t kClearPllMultiplier     = (0x1f << 0);
+  static constexpr uint32_t kClearPllDivider        = (0b11 << 5);
+  static constexpr uint32_t kClearCpuDivider        = (0x1F << 0);
+  static constexpr uint32_t kClearEmcDivider        = (1 << 0);
+  static constexpr uint32_t kClearPeripheralDivider = (0b1'1111);
+  static constexpr uint32_t kClearUsbDivider        = (0x1F << 0);
   static constexpr uint32_t kDefaultIRCFrequency    = 12'000'000;
   static constexpr uint32_t kDefaultTimeout         = 1'000;  // ms
 
@@ -117,7 +148,7 @@ class Lpc40xxSystemController
 
   constexpr Lpc40xxSystemController() {}
 
-  uint32_t SetClockFrequency(uint8_t frequency_in_mhz)
+  uint32_t SetClockFrequency(uint8_t frequency_in_mhz) override
   {
     uint32_t offset = 0;
     SelectOscillatorSource(OscillatorSource::kIrc);
@@ -138,31 +169,31 @@ class Lpc40xxSystemController
     return offset;
   }
 
-  void SetPeripheralClockDivider(uint8_t peripheral_divider)
+  void SetPeripheralClockDivider(uint8_t peripheral_divider) override
   {
     SJ2_ASSERT_FATAL(peripheral_divider <= 4, "Divider mustn't exceed 32");
     system_controller->PCLKSEL = peripheral_divider;
   }
 
-  uint32_t GetPeripheralClockDivider() const
+  uint32_t GetPeripheralClockDivider() const override
   {
-    #if defined(HOST_TEST)
+#if defined(HOST_TEST)
     return 1;
-    #else
+#else
     return system_controller->PCLKSEL;
-    #endif
+#endif
   }
 
-  uint32_t GetSystemFrequency()
+  uint32_t GetSystemFrequency() const override
   {
-    #if defined(HOST_TEST)
+#if defined(HOST_TEST)
     return config::kSystemClockRate;
-    #else
+#else
     return speed_in_hertz;
-    #endif
+#endif
   }
 
-  uint32_t GetPeripheralFrequency()
+  uint32_t GetPeripheralFrequency() const override
   {
     uint32_t peripheral_clock_divider = GetPeripheralClockDivider();
     uint32_t result = 0;  // return 0 if peripheral_clock_divider == 0
@@ -173,17 +204,17 @@ class Lpc40xxSystemController
     return result;
   }
 
-  void PowerUpPeripheral(PeripheralPowerUp peripheral_select)
+  void PowerUpPeripheral(const PeripheralID & peripheral_select) override
   {
     auto power_connection_with_enabled_peripheral =
-        system_controller->PCONP | (1 << util::Value(peripheral_select));
+        system_controller->PCONP | (1 << peripheral_select.device_id);
 
     system_controller->PCONP = power_connection_with_enabled_peripheral;
   }
-  void PowerDownPeripheral(PeripheralPowerUp peripheral_select)
+  void PowerDownPeripheral(const PeripheralID & peripheral_select) override
   {
     auto power_connection_without_enabled_peripheral =
-        system_controller->PCONP & (1 << util::Value(peripheral_select));
+        system_controller->PCONP & (1 << peripheral_select.device_id);
 
     system_controller->PCONP = power_connection_without_enabled_peripheral;
   }
@@ -191,9 +222,9 @@ class Lpc40xxSystemController
  private:
   void SelectOscillatorSource(OscillatorSource source)
   {
+    uint32_t source_bit = static_cast<uint32_t>(source);
     system_controller->CLKSRCSEL =
-        (system_controller->CLKSRCSEL & ~(kOscillatorSelect)) |
-        static_cast<uint32_t>(source);
+        (system_controller->CLKSRCSEL & ~(kOscillatorSelect)) | source_bit;
   }
 
   void SelectMainClockSource(MainClockSource source)

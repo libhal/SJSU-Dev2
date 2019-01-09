@@ -111,10 +111,10 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
       [MatrixLookup::kMiso] = Pin::CreatePin<1, 4>(),
       [MatrixLookup::kSck]  = Pin::CreatePin<1, 0>() }
   };
-  static constexpr Lpc40xxSystemController::PeripheralPowerUp kPowerBit[] = {
-    Lpc40xxSystemController::PeripheralPowerUp::kSsp0,
-    Lpc40xxSystemController::PeripheralPowerUp::kSsp1,
-    Lpc40xxSystemController::PeripheralPowerUp::kSsp2,
+  static constexpr Lpc40xxSystemController::PeripheralID kPowerBit[] = {
+    Lpc40xxSystemController::Peripherals::kSsp0,
+    Lpc40xxSystemController::Peripherals::kSsp1,
+    Lpc40xxSystemController::Peripherals::kSsp2,
   };
 
   /// Default constructor sets up SSP0 peripheral as SPI master
