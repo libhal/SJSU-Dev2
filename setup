@@ -247,8 +247,7 @@ cat > env.mk <<EOL
 # Setup a base directory:
 SJBASE = $BASE
 
-# SJSUOne Board Settings:
-SJDEV = $SJSUONEDEV # Set this to your board ID
+# Board Settings:
 SJBAUD = 38400
 
 # Project Target Settings:

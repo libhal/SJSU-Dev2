@@ -34,11 +34,6 @@ SOFTWARE.
 #ifndef ETL_ERROR_HANDLER_INCLUDED
 #define ETL_ERROR_HANDLER_INCLUDED
 
-// #if !defined(LOG_PRINT)
-// #warning "Da faq!!"
-// #error "Why can't this be found"
-// #endif
-
 ///\defgroup error_handler error_handler
 /// Error handler for when throwing exceptions is not required.
 ///\ingroup utilities
