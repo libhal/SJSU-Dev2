@@ -220,7 +220,7 @@ WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wsuggest-final-methods $(WARNINGS_ARE_ERRORS)
 CPPWARNINGS = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
               -Wuseless-cast $(WARNINGS_ARE_ERRORS)
-DEFINES   = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U
+DEFINES   = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U -DELF_FILE=\"$(EXECUTABLE)\"
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # Combine all of the flags together
 COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
@@ -243,7 +243,7 @@ endif
 ifeq ($(MAKECMDGOALS), $(filter \
 			$(MAKECMDGOALS), application flash build cleaninstall))
 LINKER = $(LIB_DIR)/LPC4078_application.ld
-CFLAGS_COMMON += -D APPLICATION=1
+CFLAGS_COMMON += -D APPLICATION=1 -D TARGET="application"
 CFLAGS_COMMON += -finstrument-functions \
 	-finstrument-functions-exclude-file-list=third_party/FreeRTOS/Source
 endif

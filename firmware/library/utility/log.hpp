@@ -88,6 +88,7 @@
       LOG_WARNING(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
     }                                                              \
   } while (0)
+
 // When the condition is false, issue a critical level message to the user and
 // halt the processor.
 #define SJ2_ASSERT_FATAL_WITH_DUMP(with_dump, condition, fatal_message, ...)  \
@@ -96,7 +97,7 @@
     if (!(condition))                                                         \
     {                                                                         \
       LOG_CRITICAL("Assertion Failure, Condition Tested: " #condition         \
-                   "\n          " fatal_message SJ2_COLOR_RESET,             \
+                   "\n          " fatal_message SJ2_COLOR_RESET,              \
                    ##__VA_ARGS__);                                            \
       if ((with_dump))                                                        \
       {                                                                       \
@@ -104,9 +105,8 @@
         ::debug::PrintBacktrace();                                            \
         printf(                                                               \
             "\nRun: the following command in your project directory"          \
-            "\n\n    " SJ2_BOLD_WHITE                                         \
-            "arm-none-eabi-addr2line -e build/binaries/firmware.elf "         \
-            "<insert pc>" SJ2_COLOR_RESET                                     \
+            "\n\n    " SJ2_BOLD_WHITE "arm-none-eabi-addr2line -e " ELF_FILE  \
+            " <insert pc>" SJ2_COLOR_RESET                                    \
             "\n\n"                                                            \
             "This will report the file and line number associated with that " \
             "program counter values provided above in the backtrace.\n\n");   \
