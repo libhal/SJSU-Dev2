@@ -1,7 +1,6 @@
 INCLUDES +=
 SYSTEM_INCLUDES +=
 SOURCES +=
-
 TESTS += $(LIB_DIR)/L2_HAL/test/accelerometer_test.cpp
 TESTS += $(LIB_DIR)/L2_HAL/test/apds_9960_test.cpp
 TESTS += $(LIB_DIR)/L2_HAL/test/button_test.cpp
