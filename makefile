@@ -109,7 +109,7 @@ HOST_SIZEC     = llvm-size
 HOST_OBJCOPY   = llvm-objcopy
 HOST_NM        = llvm-nm
 # Mux between using the firmware compiler executables or the host compiler
-ifeq ($(MAKECMDGOALS), test)
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
 CC      = $(HOST_CC)
 CPPC    = $(HOST_CPPC)
 OBJDUMP = $(HOST_OBJDUMP)
@@ -179,11 +179,16 @@ $(info +---------------------------------------------------------------+)
 $(info $(shell printf '$(RESET)'))
 $(error )
 endif
-# Set of all compilable test files.
+# Set of ALL compilable test files in the current library.
 # This also includes any source AND test to be tested.
 # MUST NOT contain source files that contain a "main()" implementation
 # TODO(#296): Add a seperation between library and user tests
 TESTS ?=
+# Set of compilable test files specified by the user.
+# This also includes any source AND test to be tested.
+# MUST NOT contain source files that contain a "main()" implementation
+# TODO(#296): Add a seperation between library and user tests
+USER_TESTS ?=
 # Include a project specific makefile. Using -include to keep make form exiting
 # if the project.mk file does not exist.
 -include project.mk
@@ -193,16 +198,20 @@ TESTS ?=
 # makefiles until all of the included library source files have been found.
 include $(FIRMWARE_DIR)/library/library.mk
 # A bit of post processing on the source variables
-INCLUDES        := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
-SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
-OBJECTS          = $(addprefix $(OBJECT_DIR)/, $(SOURCES:=.o))
-TEST_OBJECTS     = $(addprefix $(OBJECT_DIR)/, $(TESTS:=.o))
-
 ifeq ($(MAKECMDGOALS), test)
 COMPILABLES = $(TESTS)
+else ifeq ($(MAKECMDGOALS), user-test)
+COMPILABLES = $(USER_TESTS)
 else
 COMPILABLES = $(SOURCES)
 endif
+
+INCLUDES         := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
+SYSTEM_INCLUDES  := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
+OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
+# TEST_OBJECTS      = $(addprefix $(OBJECT_DIR)/, $(TESTS:=.o))
+# USER_TEST_OBJECTS = $(addprefix $(OBJECT_DIR)/, $(USER_TESTS:=.o))
+
 # ===========================
 # Compilation Flags
 # ===========================
@@ -250,11 +259,12 @@ endif
 
 # Enable a whole different set of exceptions, checks, coverage tools and more
 # with the test target
-ifeq ($(MAKECMDGOALS), test)
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
 CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
 				 -fprofile-instr-generate -fcoverage-mapping \
          -fno-elide-constructors -ftest-coverage -fno-omit-frame-pointer \
 				 -fsanitize=address -stdlib=libc++ \
+				 -fdiagnostics-color \
 				 -Wconversion -Wextra -Wall \
 				 -Wno-sign-conversion -Wno-format-nonliteral \
 				 -Winconsistent-missing-override -Wshadow -Wfloat-equal \
@@ -379,9 +389,13 @@ telemetry:
 	source $(TOOLS_DIR)/Telemetry/modules/bin/activate && \
 	python2.7 $(TOOLS_DIR)/Telemetry/telemetry.py"
 # ====================================================================
-# Build Test Executable
+# Build Test Executable for all tests in SJSU-Dev2
 # ====================================================================
 test: $(TEST_EXEC)
+# ====================================================================
+# Build Test Executable for user specified tests
+# ====================================================================
+user-test: $(TEST_EXEC)
 # ====================================================================
 # Run Test Executable
 # ====================================================================
@@ -488,7 +502,7 @@ $(DBC_BUILD):
 	@mkdir -p "$(dir $@)"
 	python2.7 "$(LIB_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIB_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
 
-$(TEST_EXEC): $(TEST_OBJECTS)
+$(TEST_EXEC): $(OBJECTS)
 	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@ '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
@@ -496,7 +510,7 @@ $(TEST_EXEC): $(TEST_OBJECTS)
 					 -fkeep-inline-functions -fno-elide-constructors  \
 					 -ftest-coverage -O0 -fsanitize=address \
 					 -std=c++17 -stdlib=libc++ -lc++ -lc++abi \
-					 -o $(TEST_EXEC) $(TEST_OBJECTS)
+					 -o $(TEST_EXEC) $(OBJECTS)
 	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
 %.tidy: %
