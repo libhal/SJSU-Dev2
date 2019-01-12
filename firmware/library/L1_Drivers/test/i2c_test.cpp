@@ -224,7 +224,33 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
-  SECTION("I2C State Machine: kTransmittedDataRecievedAck")
+  SECTION("I2C State Machine: kTransmittedDataRecievedAck wo/ repeat start")
+  {
+    setup_state_machine(I2c::MasterState::kTransmittedDataRecievedAck);
+    uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
+    test_subject.Write(kAddress, write_buffer, sizeof(write_buffer));
+    I2cInterface::Transaction_t actual_transaction;
+    // Each iteration should be load the next byte from write_buffer into
+    // the local_i2c.DAT
+    for (size_t i = 0; i < sizeof(write_buffer); i++)
+    {
+      setup_state_machine(I2c::MasterState::kTransmittedDataRecievedAck);
+
+      I2c::I2cHandler<I2c::Port::kI2c0>();
+
+      actual_transaction = I2c::GetTransactionInfo(I2c::Port::kI2c0);
+      CHECK(local_i2c.DAT == write_buffer[i]);
+      CHECK(actual_transaction.busy);
+    }
+
+    // WriteThenRead should set the transaction to repeated
+    I2c::I2cHandler<I2c::Port::kI2c0>();
+    actual_transaction = I2c::GetTransactionInfo(I2c::Port::kI2c0);
+
+    CHECK(!actual_transaction.busy);
+    CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
+  }
+  SECTION("I2C State Machine: kTransmittedDataRecievedAck w/ repeat start")
   {
     setup_state_machine(I2c::MasterState::kTransmittedDataRecievedAck);
     uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
@@ -243,8 +269,14 @@ TEST_CASE("Testing I2C", "[i2c]")
       CHECK(local_i2c.DAT == write_buffer[i]);
       CHECK(actual_transaction.busy);
     }
-    // TODO(#209): Need to add test coverage for the case state,
-    //             pos > length
+
+    // WriteThenRead should set the transaction to repeated
+    I2c::I2cHandler<I2c::Port::kI2c0>();
+    actual_transaction = I2c::GetTransactionInfo(I2c::Port::kI2c0);
+
+    CHECK(actual_transaction.operation == I2cInterface::Operation::kRead);
+    CHECK(actual_transaction.position == 0);
+    CHECK_BITS(I2c::Control::kStart, local_i2c.CONSET);
   }
   SECTION("I2C State Machine: kTransmittedDataRecievedNack")
   {
