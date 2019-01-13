@@ -1,4 +1,4 @@
-#include "L2_HAL/apds_9960.hpp"
+#include "L2_HAL/sensors/optical/apds_9960.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 EMIT_ALL_METHODS(Apds9960);

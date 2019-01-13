@@ -6,8 +6,8 @@
 
 #include "config.hpp"
 #include "L0_LowLevel/LPC40xx.h"
-#include "L2_HAL/button.hpp"
-#include "L2_HAL/onboard_led.hpp"
+#include "L2_HAL/displays/led/onboard_led.hpp"
+#include "L2_HAL/switches/button.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/rtos.hpp"

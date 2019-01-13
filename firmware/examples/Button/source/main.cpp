@@ -1,5 +1,5 @@
-#include "L2_HAL/button.hpp"
-#include "L2_HAL/onboard_led.hpp"
+#include "L2_HAL/displays/led/onboard_led.hpp"
+#include "L2_HAL/switches/button.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 

@@ -1,5 +1,5 @@
 // Tests for the St7066u Parallel LCD Driver class.
-#include "L2_HAL/st7066u.hpp"
+#include "L2_HAL/displays/lcd/st7066u.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 EMIT_ALL_METHODS(St7066u);
