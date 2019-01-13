@@ -28,6 +28,7 @@ class Accelerometer : public AccelerometerInterface
     size_t const kSixteenBitLength = 2;
 
     I2c AccelerometerDevice;
+    Status status;
 
     enum class RegisterMap_t : uint8_t
       {
@@ -50,7 +51,7 @@ class Accelerometer : public AccelerometerInterface
         RegisterMap_t IdentityRegister = RegisterMap_t::who_am_i;
         uint8_t WhoAmIRegister;
         WhoAmIRegister = static_cast <unsigned char> (IdentityRegister);
-        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &WhoAmIRegister,
+        status = AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &WhoAmIRegister,
                                      kEightBitLength, &WhoAmIReceivedValue,
                                      kEightBitLength);
         return WhoAmIReceivedValue == kWhoAmIExpectedValue;
@@ -59,9 +60,9 @@ class Accelerometer : public AccelerometerInterface
     {
         uint8_t kXVal[2];
         RegisterMap_t XReg = RegisterMap_t::x;
-        uint8_t kXReg;
+        uint8_t kXReg = 0x01;
         kXReg = static_cast <unsigned char> (XReg);
-        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &kXReg,
+        status = AccelerometerDevice.WriteThenRead(0x1c, &kXReg,
                                    kEightBitLength, kXVal,
                                    kSixteenBitLength);
         return (int16_t)((kXVal[0] << kMsbShift) |
@@ -71,11 +72,11 @@ class Accelerometer : public AccelerometerInterface
     {
         uint8_t kYVal[2];
         RegisterMap_t YReg = RegisterMap_t::y;
-        uint8_t kYReg;
+        uint8_t kYReg = 0x03;
         kYReg = static_cast <unsigned char> (YReg);
-        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &kYReg,
+        status = AccelerometerDevice.WriteThenRead(0x1c, &kYReg,
                                    kEightBitLength, kYVal,
-                                   kSixteenBitLength);
+                                   1);
         return (int16_t)((kYVal[0] << kMsbShift) |
                  kYVal[1])/kDataOffset;  // Data arrives MSB then LSB
     }
@@ -83,11 +84,11 @@ class Accelerometer : public AccelerometerInterface
     {
         uint8_t kZVal[2];
         RegisterMap_t ZReg = RegisterMap_t::z;
-        uint8_t kZReg;
+        uint8_t kZReg = 0x05;
         kZReg = static_cast <unsigned char> (ZReg);
-        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &kZReg,
+        status = AccelerometerDevice.WriteThenRead(0x1c, &kZReg,
                                    kEightBitLength, kZVal,
-                                   kSixteenBitLength);
+                                   1);
         return (int16_t)((kZVal[0] << kMsbShift) |
                  kZVal[1])/kDataOffset;  // Data arrives MSB then LSB
     }
@@ -114,7 +115,7 @@ class Accelerometer : public AccelerometerInterface
         uint8_t configReg;
         configReg = (unsigned char) dataConfig;
         uint8_t FullScaleValue;
-        AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &configReg,
+        status = AccelerometerDevice.WriteThenRead(kAccelerometerAddress, &configReg,
                                      kEightBitLength, &FullScaleValue,
                                      kEightBitLength);
         FullScaleValue &= 0x01;
@@ -151,7 +152,7 @@ class Accelerometer : public AccelerometerInterface
         }
         printf("send range is %x\n", sendRange);
         uint8_t fullScaleRangeWriteBuffer [2] = {configReg, sendRange};
-        AccelerometerDevice.Write(kAccelerometerAddress, fullScaleRangeWriteBuffer,
+        status = AccelerometerDevice.Write(kAccelerometerAddress, fullScaleRangeWriteBuffer,
                              kSixteenBitLength);
     }
     virtual ~Accelerometer()
