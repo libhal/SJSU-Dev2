@@ -6,10 +6,10 @@
 #include "config.hpp"
 #include "L1_Drivers/gpio.hpp"
 #include "L1_Drivers/ssp.hpp"
-#include "L2_HAL/displays.hpp"
+#include "L2_HAL/displays/pixel_display.hpp"
 #include "utility/log.hpp"
 
-class Ssd1306 : public DisplayInterface
+class Ssd1306 : public PixelDisplayInterface
 {
  public:
   static constexpr size_t kColumns      = 128;

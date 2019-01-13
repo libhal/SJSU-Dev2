@@ -11,7 +11,7 @@
 ///
 /// DisplayInterface is a common set of methods that all hardware display
 /// drivers must implement to work with the Graphics class.
-class DisplayInterface
+class PixelDisplayInterface
 {
  public:
   SJ2_PACKED(struct) Color_t
