@@ -1,4 +1,4 @@
-#include "L2_HAL/esp8266.hpp"
+#include "L2_HAL/communication/esp8266.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 // Uncomment this when can class has been created

@@ -1,8 +1,8 @@
 #include "L1_Drivers/gpio.hpp"
 #include "L1_Drivers/i2c.hpp"
 #include "L1_Drivers/ssp.hpp"
-#include "L2_HAL/onboard_led.hpp"
-#include "L2_HAL/ssd1306.hpp"
+#include "L2_HAL/displays/led/onboard_led.hpp"
+#include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
 

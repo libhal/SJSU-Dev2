@@ -1,4 +1,4 @@
-#include "L2_HAL/ssd1306.hpp"
+#include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "L3_Application/graphics.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"

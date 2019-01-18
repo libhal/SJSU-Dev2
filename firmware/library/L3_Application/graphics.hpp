@@ -5,14 +5,14 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "L2_HAL/displays.hpp"
+#include "L2_HAL/displays/pixel_display.hpp"
 #include "third_party/font8x8/font8x8_basic.h"
 #include "utility/log.hpp"
 
 class Graphics
 {
  public:
-  explicit Graphics(DisplayInterface * display)
+  explicit Graphics(PixelDisplayInterface * display)
       : display_(display), color_(), width_(0), height_(0)
   {
     width_  = display->GetWidth();
@@ -20,7 +20,7 @@ class Graphics
     color_  = display->AvailableColors();
   }
 
-  void SetColor(DisplayInterface::Color_t color)
+  void SetColor(PixelDisplayInterface::Color_t color)
   {
     color_ = color;
   }
@@ -145,9 +145,9 @@ class Graphics
   {
     int32_t letter_position = static_cast<int32_t>(letter);
 
-    DisplayInterface::Color_t foreground = color_;
-    DisplayInterface::Color_t background =
-        DisplayInterface::Color_t(0, 0, 0, 0, 1, true);
+    PixelDisplayInterface::Color_t foreground = color_;
+    PixelDisplayInterface::Color_t background =
+        PixelDisplayInterface::Color_t(0, 0, 0, 0, 1, true);
 
     for (int32_t y = 0; y < 8; y++)
     {
@@ -185,8 +185,8 @@ class Graphics
   }
 
  private:
-  DisplayInterface * display_;
-  DisplayInterface::Color_t color_;
+  PixelDisplayInterface * display_;
+  PixelDisplayInterface::Color_t color_;
   size_t width_;
   size_t height_;
 };

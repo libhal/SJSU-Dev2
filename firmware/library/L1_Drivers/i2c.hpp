@@ -169,7 +169,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
         clear_mask = Control::kStart;
         if (transaction[kPort].out_length == 0)
         {
-          SetBusyState(port, false);
+          transaction[kPort].busy = false;
           transaction[kPort].status = Status::kSuccess;
           set_mask                  = Control::kStop;
         }
@@ -183,7 +183,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       case MasterState::kSlaveAddressWriteSentRecievedNack:  // 0x20
       {
         clear_mask = Control::kStart;
-        SetBusyState(port, false);
+        transaction[kPort].busy = false;
         transaction[kPort].status = Status::kDeviceNotFound;
         set_mask                  = Control::kStop;
         break;
@@ -195,13 +195,13 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
           if (transaction[kPort].repeated)
           {
             // OR with 1 to set address as READ for the next transaction
-            transaction[kPort].address |= 0b1;
-            transaction[kPort].position = 0;
-            set_mask                    = Control::kStart;
+            transaction[kPort].operation = Operation::kRead;
+            transaction[kPort].position  = 0;
+            set_mask                     = Control::kStart;
           }
           else
           {
-            SetBusyState(port, false);
+            transaction[kPort].busy = false;
             set_mask = Control::kStop;
           }
         }
@@ -214,7 +214,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       }
       case MasterState::kTransmittedDataRecievedNack:  // 0x30
       {
-        SetBusyState(port, false);
+        transaction[kPort].busy = false;
         set_mask = Control::kStop;
         break;
       }
@@ -240,7 +240,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       {
         clear_mask                = Control::kStart;
         transaction[kPort].status = Status::kDeviceNotFound;
-        SetBusyState(port, false);
+        transaction[kPort].busy = false;
         set_mask = Control::kStop;
         break;
       }
@@ -261,14 +261,14 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
         }
         else
         {
-          SetBusyState(port, false);
+          transaction[kPort].busy = false;
           clear_mask = Control::kAssertAcknowledge;
         }
         break;
       }
       case MasterState::kRecievedDataRecievedNack:  // 0x58
       {
-        SetBusyState(port, false);
+        transaction[kPort].busy = false;
         if (transaction[kPort].in_length != 0)
         {
           size_t position = transaction[kPort].position++;
@@ -296,16 +296,9 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     i2c[kPort]->CONSET = set_mask;
   }
 
-  static void SetBusyState(Port port, bool busy_state)
-  {
-    uint8_t port_number           = util::Value(port);
-    transaction[port_number].busy = busy_state;
-  }
-
   static Transaction_t & GetTransactionInfo(Port port)
   {
-    uint8_t port_number = util::Value(port);
-    return transaction[port_number];
+    return transaction[util::Value(port)];
   }
 
   // This defaults to I2C port 2

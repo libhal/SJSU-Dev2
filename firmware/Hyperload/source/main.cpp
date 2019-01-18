@@ -14,7 +14,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/system_timer.hpp"
 #include "L1_Drivers/uart.hpp"
-#include "L2_HAL/onboard_led.hpp"
+#include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L4_Testing/factory_test.hpp"
 #include "utility/debug.hpp"
 #include "utility/macros.hpp"

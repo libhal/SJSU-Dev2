@@ -1,5 +1,5 @@
 #include "L0_LowLevel/LPC40xx.h"
-#include "L2_HAL/button.hpp"
+#include "L2_HAL/switches/button.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 EMIT_ALL_METHODS(Button);
