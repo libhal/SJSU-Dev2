@@ -1,23 +1,23 @@
-Welcome to SJSU-Dev2's documentation!
-===========================================
+Welcome to SJSU-Dev2's Documentation!
+=====================================
 
 Quick Links
 --------------
 
-+------------------------+------------------+------------------------+------------------------+
-| |Get Started|_         | |Guides|_        | |API Reference|_       | |Hardware Reference|_  |
-+------------------------+------------------+------------------------+------------------------+
-| `Get Started`_         | `Guides`_        | `API Reference`_       | `Hardware Reference`_  |
-+------------------------+------------------+------------------------+------------------------+
++----------------+-----------+------------------+--------------+
+| |Get Started|_ | |Guides|_ | |API Reference|_ | |Schematic|_ |
++----------------+-----------+------------------+--------------+
+| `Get Started`_ | `Guides`_ | `API Reference`_ | `Schematic`_ |
++----------------+-----------+------------------+--------------+
 
 .. |Get Started| image:: _static/getting-started.png
 .. _Get Started: rst/getting-started-toc.html
 
 .. |API Reference| image:: _static/api.png
-.. _API Reference:
+.. _API Reference: https://kammce.github.io/SJSU-Dev2/documentation/api/html/
 
-.. |Hardware Reference| image:: _static/hw-reference.png
-.. _Hardware Reference: https://github.com/kammce/SJSU-Dev2/blob/master/references/Schematic-rev1.B.pdf
+.. |Schematic| image:: _static/hw-reference.png
+.. _Schematic: https://github.com/kammce/SJSU-Dev2/blob/master/schematic/Schematic-RevE.2.pdf
 
 .. |Guides| image:: _static/guides.png
 .. _Guides: rst/guides-toc.html
