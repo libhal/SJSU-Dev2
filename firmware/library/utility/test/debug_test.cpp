@@ -53,8 +53,8 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
 
     char memory[] = "hello!\n";
     constexpr char kExpected[] =
-        "00000000  68 65 6C 6C 6F 21 0A                              "
-        "|hello!.|\n"
+        "00000000  68 65 6C 6C 6F 21 0A 00                           "
+        "|hello!..|\n"
         "00000008  \n";
 
     debug::Hexdump(memory, sizeof(memory));

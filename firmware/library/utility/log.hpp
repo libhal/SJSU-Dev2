@@ -112,3 +112,6 @@
 #define SJ2_ASSERT_FATAL(condition, fatal_message, ...) \
   SJ2_ASSERT_FATAL_WITH_DUMP(true, (condition), fatal_message, ##__VA_ARGS__)
 #endif  // defined HOST_TEST
+
+#define SJ2_PRINT_VARIABLE(variable, printf_specifier) \
+  LOG_DEBUG(#variable " = " printf_specifier "\n", (variable))

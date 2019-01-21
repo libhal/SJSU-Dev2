@@ -53,11 +53,10 @@ static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
 inline void Hexdump(void * address, uint32_t length)
 {
   uint8_t * bytes = static_cast<uint8_t *>(address);
-  uint32_t i      = 0;
-  for (i = 0; i < length; i += 16)
+  for (uint32_t i = 0; i < length; i += 16)
   {
     printf("%08" PRIX32 "  ", i);
-    size_t bytes_to_print = (i + 15 > length) ? (i + 15) - length : 16;
+    size_t bytes_to_print = (i + 15 > length) ? (length % 16) : 16;
     PrintHexBytesRow(&bytes[i], bytes_to_print);
     PrintCharacterRow(&bytes[i], bytes_to_print);
   }
