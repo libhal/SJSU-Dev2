@@ -119,6 +119,7 @@ struct CommandList_t
 };
 namespace command
 {
+static constexpr size_t kAutoCompleteOptions = 32;
 /// A standard print callback used by the microrl library to print to stdout
 inline void Print(const char * str)
 {
@@ -142,6 +143,7 @@ inline void Print(const char * str)
 /// @tparam command_list The CommandLine class must have a CommandList_t
 ///         structure passed to it. The CommandList_t is used to hold the list
 ///         of available commands. Must be greater than 2.
+
 template <auto /* CommandList_t<#count> */ & command_list>
 class CommandLine
 {
@@ -152,7 +154,6 @@ class CommandLine
 
   CommandLine()
       : rl_{},
-        command_position_(0),
         initialized_(false),
         quit_("quit", "Quit from commandline", Quit),
         list_("list", "List all available commands", List)
@@ -291,14 +292,12 @@ class CommandLine
     printf("\n");
     return 0;
   }
-  static inline bool is_commandline_running                             = false;
-  static inline const char * autocomplete_options[kAutoCompleteOptions] = {
-    nullptr
-  };
+  static inline bool is_commandline_running = false;
+  static inline const char *
+      autocomplete_options[command::kAutoCompleteOptions] = { nullptr };
 
   //// 3P microrl object and pointer on it
   microrl_t rl_;
-  size_t command_position_;
   bool initialized_;
   Command quit_;
   Command list_;

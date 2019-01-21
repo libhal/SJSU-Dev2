@@ -29,6 +29,7 @@ int main(void)
   AddCommonCommands(ci);
 
   LOG_INFO("Adding i2c command to command line...");
+  i2c_command.Initialize();
   ci.AddCommand(&i2c_command);
 
   LOG_INFO("Adding system command to command line...");
