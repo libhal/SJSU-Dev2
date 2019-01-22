@@ -1,5 +1,5 @@
 About
 ======
 
-.. warning::
-	This section is not complete
+This is the documentation for the SJSU-Dev2 development framework and build
+system.

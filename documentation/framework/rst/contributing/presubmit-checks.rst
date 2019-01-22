@@ -8,18 +8,13 @@ make sure that the current commit stage is clean. The following sections will go
 into detail about these processes and wha thtey do.
 
 Building & Testing
---------------------
+-------------------
 The purpose of this action for presubmit is to verify that any changes made to
 the repository doesn't break the project's ability to build and test software.
 Even small changes can break the whole system.
 
-The tests will be run under the watch of **Valgrind**. Valgrind will determine,
-if there is any memory leaks via the use of :code:`malloc` or :code:`new`. This
-is not useful for developers of SJSU-Dev2, but is useful for the users of the
-project.
-
 Linting
--------------
+--------
 Linting code is the process of running a program, in this case we use Google's
 :code:`cpplint.py` script, to evaluate each source file to make sure that they
 conform to our coding style standards as well as do some rudamentory checks for
@@ -48,7 +43,7 @@ following: :code:`clang-format -i <path/to/file>`. The :code:`-i` flag means you
 want to do an in place refactor. If you want to run this command, but you don't
 want this to change your file, you can omit the :code:`-i` flag and it will dump
 the refactored text to stdout. You can use io redirects to dump to a file and
-review if the changes are to your likin.
+review if the changes are to your liking.
 
 Running presubmit checks
 -------------------------
