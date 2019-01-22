@@ -1,11 +1,13 @@
 #pragma once
 
 #include <cstdint>
+#include <cstdio>
+
+#include "L1_Drivers/i2c.hpp"
 
 class AccelerometerInterface
 {
  public:
-
     virtual bool Init() = 0;
     virtual int16_t GetX() = 0;
     virtual int16_t GetY() = 0;
@@ -158,5 +160,4 @@ class Accelerometer : public AccelerometerInterface
     virtual ~Accelerometer()
     {
     }
->>>>>>> d028532... Changed to have 1 I2C object
 };
