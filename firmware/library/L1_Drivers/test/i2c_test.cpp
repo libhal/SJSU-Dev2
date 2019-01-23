@@ -53,7 +53,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK(kHigh == local_i2c.SCLH);
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
     CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
-    CHECK(dynamic_isr_vector_table[I2c::kIrq[kI2cPort]+kIrqOffset] ==
+    CHECK(dynamic_isr_vector_table[I2c::kIrq[kI2cPort] + kIrqOffset] ==
           I2c::kHandlers[kI2cPort]);
 
     Verify(Method(mock_sda_pin, SetPinFunction).Using(I2c::kI2cPort2Function));
@@ -179,7 +179,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     setup_state_machine(I2c::MasterState::kRepeatedStart);
     test_subject.Write(kAddress, nullptr, 0);
     I2c::I2cHandler<I2c::Port::kI2c0>();
-    CHECK((kAddress << 1) == local_i2c.DAT);
+    CHECK(((kAddress << 1) | 1) == local_i2c.DAT);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
   SECTION("I2C State Machine: kSlaveAddressWriteSentRecievedAck")
@@ -321,7 +321,6 @@ TEST_CASE("Testing I2C", "[i2c]")
       I2c::I2cHandler<I2c::Port::kI2c0>();
 
       CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
-      CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
       CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
   }
@@ -355,9 +354,18 @@ TEST_CASE("Testing I2C", "[i2c]")
       I2c::I2cHandler<I2c::Port::kI2c0>();
 
       actual_transaction = I2c::GetTransactionInfo(I2c::Port::kI2c0);
-      CHECK(actual_transaction.busy);
       CHECK(kI2cReadData[i] == read_buffer[i]);
-      CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
+      if (i < sizeof(read_buffer) - 2)
+      {
+        CHECK(actual_transaction.busy);
+        CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
+      }
+      // Check for the NACK at the end of the read buffer
+      else
+      {
+        CHECK(!actual_transaction.busy);
+        CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
+      }
     }
     // Last byte should be transferred
     setup_state_machine(I2c::MasterState::kRecievedDataRecievedAck);
@@ -420,5 +428,5 @@ TEST_CASE("Testing I2C", "[i2c]")
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
   Lpc40xxSystemController::system_controller = LPC_SC;
-  I2c::i2c[util::Value(I2c::Port::kI2c0)] = LPC_I2C0;
+  I2c::i2c[util::Value(I2c::Port::kI2c0)]    = LPC_I2C0;
 }

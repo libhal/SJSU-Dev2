@@ -127,17 +127,17 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
   static constexpr uint8_t kI2c1          = util::Value(Port::kI2c1);
   static constexpr uint8_t kI2c2          = util::Value(Port::kI2c2);
 
-  inline static constexpr uint8_t kPconp[kNumberOfPorts] = {
-    [kI2c0] = 7, [kI2c1] = 19, [kI2c2] = 26
-  };
+  inline static constexpr uint8_t kPconp[kNumberOfPorts] = { [kI2c0] = 7,
+                                                             [kI2c1] = 19,
+                                                             [kI2c2] = 26 };
 
   inline static constexpr IRQn_Type kIrq[kNumberOfPorts] = {
     [kI2c0] = I2C0_IRQn, [kI2c1] = I2C1_IRQn, [kI2c2] = I2C2_IRQn
   };
 
-  inline static LPC_I2C_TypeDef * i2c[kNumberOfPorts] = {
-    [kI2c0] = LPC_I2C0, [kI2c1] = LPC_I2C1, [kI2c2] = LPC_I2C2
-  };
+  inline static LPC_I2C_TypeDef * i2c[kNumberOfPorts] = { [kI2c0] = LPC_I2C0,
+                                                          [kI2c1] = LPC_I2C1,
+                                                          [kI2c2] = LPC_I2C2 };
 
   template <Port port>
   static void I2cHandler()
@@ -161,7 +161,8 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       }
       case MasterState::kRepeatedStart:  // 0x10
       {
-        i2c[kPort]->DAT = transaction[kPort].GetProperAddress();
+        transaction[kPort].operation = Operation::kRead;
+        i2c[kPort]->DAT              = transaction[kPort].GetProperAddress();
         break;
       }
       case MasterState::kSlaveAddressWriteSentRecievedAck:  // 0x18
@@ -169,7 +170,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
         clear_mask = Control::kStart;
         if (transaction[kPort].out_length == 0)
         {
-          transaction[kPort].busy = false;
+          transaction[kPort].busy   = false;
           transaction[kPort].status = Status::kSuccess;
           set_mask                  = Control::kStop;
         }
@@ -182,8 +183,8 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       }
       case MasterState::kSlaveAddressWriteSentRecievedNack:  // 0x20
       {
-        clear_mask = Control::kStart;
-        transaction[kPort].busy = false;
+        clear_mask                = Control::kStart;
+        transaction[kPort].busy   = false;
         transaction[kPort].status = Status::kDeviceNotFound;
         set_mask                  = Control::kStop;
         break;
@@ -202,7 +203,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
           else
           {
             transaction[kPort].busy = false;
-            set_mask = Control::kStop;
+            set_mask                = Control::kStop;
           }
         }
         else
@@ -215,7 +216,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       case MasterState::kTransmittedDataRecievedNack:  // 0x30
       {
         transaction[kPort].busy = false;
-        set_mask = Control::kStop;
+        set_mask                = Control::kStop;
         break;
       }
       case MasterState::kArbitrationLost:  // 0x38
@@ -225,14 +226,20 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       }
       case MasterState::kSlaveAddressReadSentRecievedAck:  // 0x40
       {
+        clear_mask = Control::kStart;
         if (transaction[kPort].in_length == 0)
         {
-          clear_mask = Control::kAssertAcknowledge | Control::kStart;
+          set_mask = Control::kStop;
         }
+        // If we only want 1 byte, make sure to nack that byte
+        else if (transaction[kPort].in_length == 1)
+        {
+          clear_mask |= Control::kAssertAcknowledge;
+        }
+        // If we want more then 1 byte, make sure to ack the first byte
         else
         {
-          clear_mask = Control::kStart;
-          set_mask   = Control::kAssertAcknowledge;
+          set_mask = Control::kAssertAcknowledge;
         }
         break;
       }
@@ -240,8 +247,8 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
       {
         clear_mask                = Control::kStart;
         transaction[kPort].status = Status::kDeviceNotFound;
-        transaction[kPort].busy = false;
-        set_mask = Control::kStop;
+        transaction[kPort].busy   = false;
+        set_mask                  = Control::kStop;
         break;
       }
       case MasterState::kRecievedDataRecievedAck:  // 0x50
@@ -255,14 +262,14 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
           transaction[kPort].position++;
         }
         // Check if the position has been pushed past the buffer length
-        if (transaction[kPort].position < kBufferEnd)
+        if (transaction[kPort].position + 1 >= kBufferEnd)
         {
-          set_mask = Control::kAssertAcknowledge;
+          clear_mask              = Control::kAssertAcknowledge;
+          transaction[kPort].busy = false;
         }
         else
         {
-          transaction[kPort].busy = false;
-          clear_mask = Control::kAssertAcknowledge;
+          set_mask = Control::kAssertAcknowledge;
         }
         break;
       }
@@ -292,8 +299,8 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     // Clear I2C Interrupt flag
     clear_mask |= Control::kInterrupt;
     // Set register controls
-    i2c[kPort]->CONCLR = clear_mask;
     i2c[kPort]->CONSET = set_mask;
+    i2c[kPort]->CONCLR = clear_mask;
   }
 
   static Transaction_t & GetTransactionInfo(Port port)
