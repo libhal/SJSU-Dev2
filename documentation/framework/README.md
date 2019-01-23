@@ -1,5 +1,5 @@
 # How to generate documentation html
-To genrate the documentation files in html, we need to install python Sphinx.
+To generate the documentation files in html, we need to install python Sphinx.
 
 ## Installing Sphinx for Linux
 
