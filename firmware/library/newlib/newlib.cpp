@@ -80,9 +80,7 @@ extern "C"
   // NOLINTNEXTLINE(readability-identifier-naming)
   void * _sbrk(int increment)
   {
-    static uint8_t * heap_position = &heap;
     void * previous_heap_position  = static_cast<void *>(heap_position);
-
     // Check that by allocating this space, we do not exceed the heap area.
     if ((heap_position + increment) > &heap_end)
     {

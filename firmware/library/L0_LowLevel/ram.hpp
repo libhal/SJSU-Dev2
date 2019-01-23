@@ -34,4 +34,5 @@ inline uint8_t heap_end;
 #else
 extern uint8_t heap;
 extern uint8_t heap_end;
-#endif
+#endif  // defined(HOST_TEST)
+inline uint8_t * heap_position = &heap;
