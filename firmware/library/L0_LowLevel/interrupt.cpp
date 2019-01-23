@@ -269,7 +269,9 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
               "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "",
               r12, lr, pc, psr);
 
-  SJ2_ASSERT_FATAL(false, "Hard Fault Exception Occured!");
+  bool hard_fault_occured = false;
+
+  SJ2_ASSERT_FATAL(hard_fault_occured, "Hard Fault Exception Occured!");
   // When the following line is hit, the variables contain the register values
   // Use a JTAG debugger to inspect these variables
   Halt();
