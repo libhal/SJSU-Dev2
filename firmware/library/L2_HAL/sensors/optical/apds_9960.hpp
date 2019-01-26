@@ -333,7 +333,7 @@ class Apds9960 : public Apds9960Interface
     overflow_value         = gesture.memory.gesture_status;
     if (overflow_value & 0b10)  // if overflow, clear FIFO data
     {
-      DEBUG_PRINT("overflow");
+      LOG_INFO("overflow");
       uint8_t level = 0;
       level         = gesture.memory.gesture_fifo_level;
 

@@ -28,7 +28,7 @@ int main(void)
     clock.SetClockFrequency(48);
     Delay(5000);
     speed = clock.GetSystemFrequency();
-    DEBUG_PRINT("Speed is %" PRIu32, speed);
+    LOG_INFO("Speed is %" PRIu32, speed);
   }
   return 0;
 }

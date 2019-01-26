@@ -7,19 +7,19 @@ int main(void)
   // and SW0 respectively on the schematic.  In this source file, there is a
   // pdf labled "SW&LED_Ckts", showing how the circuits that are being used
   // are constructed.
-  DEBUG_PRINT("Gpio application starting...");
+  LOG_INFO("Gpio application starting...");
   Gpio p1_00(1, 0);
   Gpio p1_01(1, 1);
 
   p1_00.SetAsInput();
-  DEBUG_PRINT("Configured port 1, pin 0 as input");
+  LOG_INFO("Configured port 1, pin 0 as input");
 
   // Another way to configure the input or output of a pin is to use the
   // method, SetDirection.
   p1_01.SetDirection(GpioInterface::Direction::kOutput);
-  DEBUG_PRINT("Configure port 1, pin 1 as output");
+  LOG_INFO("Configure port 1, pin 1 as output");
 
-  DEBUG_PRINT(
+  LOG_INFO(
       "Observe how the output of LED0 changes when the input of SW0 is "
       "pressed");
   while (true)

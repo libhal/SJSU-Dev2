@@ -146,26 +146,26 @@ const IsrPointer kInterruptVectorTable[] = {
 };
 
 IsrPointer dynamic_isr_vector_table[] = {
-  kReservedVector,        // 0, Contains stack pointer, not used in
-                          // InterruptLookupHandler
-  kReservedVector,        // 1, Reset handler, not used in
-                          //    InterruptLookupHandler
-  NmiHandler,             // 2, The NMI handler
-  kReservedVector,        // 3, The hard fault handler, not used in
-                          //    InterruptLookupHandler
-  MemManageHandler,       // 4, The MPU fault handler
-  BusFaultHandler,        // 5, The bus fault handler
-  UsageFaultHandler,      // 6, The usage fault handler
-  kReservedVector,        // 7, LPC MCU Checksum, not used in
-                          //    InterruptLookupHandler
-  kReservedVector,        // 8, Reserved
-  kReservedVector,        // 9, Reserved
-  kReservedVector,        // 10, Reserved
-  SvcHandler,             // 11, SVCall handler
-  DebugMonHandler,        // 12, Debug monitor handler
-  kReservedVector,        // 13, Reserved
-  PendSVHandler,          // 14, PendSV Handler
-  SysTickHandler,         // 15, The SysTick handler
+  kReservedVector,    // 0, Contains stack pointer, not used in
+                      // InterruptLookupHandler
+  kReservedVector,    // 1, Reset handler, not used in
+                      //    InterruptLookupHandler
+  NmiHandler,         // 2, The NMI handler
+  kReservedVector,    // 3, The hard fault handler, not used in
+                      //    InterruptLookupHandler
+  MemManageHandler,   // 4, The MPU fault handler
+  BusFaultHandler,    // 5, The bus fault handler
+  UsageFaultHandler,  // 6, The usage fault handler
+  kReservedVector,    // 7, LPC MCU Checksum, not used in
+                      //    InterruptLookupHandler
+  kReservedVector,    // 8, Reserved
+  kReservedVector,    // 9, Reserved
+  kReservedVector,    // 10, Reserved
+  SvcHandler,         // 11, SVCall handler
+  DebugMonHandler,    // 12, Debug monitor handler
+  kReservedVector,    // 13, Reserved
+  PendSVHandler,      // 14, PendSV Handler
+  SysTickHandler,     // 15, The SysTick handler
   // Chip Level - LPC40xx
   WdtIrqHandler,          // 16, 0x40 - WDT
   Timer0IrqHandler,       // 17, 0x44 - TIMER0
@@ -216,7 +216,7 @@ IsrPointer dynamic_isr_vector_table[] = {
 void InterruptLookupHandler(void)
 {
   uint8_t active_isr = (SCB->ICSR & 0xFF);
-  IsrPointer isr = dynamic_isr_vector_table[active_isr];
+  IsrPointer isr     = dynamic_isr_vector_table[active_isr];
   SJ2_ASSERT_FATAL(isr != InterruptLookupHandler,
                    "No ISR found for the vector %u", active_isr);
   isr();
@@ -225,7 +225,7 @@ void InterruptLookupHandler(void)
 void RegisterIsr(IRQn_Type irq, IsrPointer isr, bool enable_interrupt,
                  int32_t priority)
 {
-  dynamic_isr_vector_table[irq+kIrqOffset] = isr;
+  dynamic_isr_vector_table[irq + kIrqOffset] = isr;
   if (enable_interrupt && irq >= 0)
   {
     NVIC_EnableIRQ(irq);
@@ -239,7 +239,7 @@ void RegisterIsr(IRQn_Type irq, IsrPointer isr, bool enable_interrupt,
 void DeregisterIsr(IRQn_Type irq)
 {
   NVIC_DisableIRQ(irq);
-  dynamic_isr_vector_table[irq+kIrqOffset] = InterruptLookupHandler;
+  dynamic_isr_vector_table[irq + kIrqOffset] = InterruptLookupHandler;
 }
 
 extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
@@ -260,21 +260,20 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   // Program status register.
   volatile uint32_t psr = fault_stack_address[7];
 
-  DEBUG_PRINT("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32
-              ", "
-              "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 " ",
-              r0, r1, r2, r3);
-  DEBUG_PRINT("r12: 0x%08" PRIX32 ", lr: 0x%08" PRIX32
-              ", "
-              "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "",
-              r12, lr, pc, psr);
+  printf("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32
+         ", "
+         "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 " ",
+         r0, r1, r2, r3);
+  printf("r12: 0x%08" PRIX32 ", lr: 0x%08" PRIX32
+         ", "
+         "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "",
+         r12, lr, pc, psr);
 
-  bool hard_fault_occured = false;
+  bool hard_fault_occurred = false;
 
-  SJ2_ASSERT_FATAL(hard_fault_occured, "Hard Fault Exception Occured!");
   // When the following line is hit, the variables contain the register values
   // Use a JTAG debugger to inspect these variables
-  Halt();
+  SJ2_ASSERT_FATAL(hard_fault_occurred, "Hard Fault Exception Occurred!");
 }
 
 SJ2_SECTION(".after_vectors")

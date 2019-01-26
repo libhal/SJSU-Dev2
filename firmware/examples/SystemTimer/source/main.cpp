@@ -12,7 +12,7 @@ void DemoSystemIsr()
 
 int main(void)
 {
-  DEBUG_PRINT("System Timer Application Starting...");
+  LOG_INFO("System Timer Application Starting...");
 
   SystemTimer system_timer;
   // Set Pin 18 as output
@@ -24,6 +24,6 @@ int main(void)
   system_timer.SetTickFrequency(10);
   system_timer.StartTimer();
 
-  DEBUG_PRINT("Halting any action.");
+  LOG_INFO("Halting any action.");
   return 0;
 }

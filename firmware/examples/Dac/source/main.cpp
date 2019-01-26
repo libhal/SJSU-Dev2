@@ -113,8 +113,8 @@ int main(void)
 {
   Dac dac;
   dac.Initialize();
-  DEBUG_PRINT("Hook up pin p0.26 to an oscilloscope to test if it works!\n");
-  DEBUG_PRINT("Starting Output of waves...\n");
+  LOG_INFO("Hook up pin p0.26 to an oscilloscope to test if it works!\n");
+  LOG_INFO("Starting Output of waves...\n");
   while (true)
   {
     StartDemo(&dac, 5);
