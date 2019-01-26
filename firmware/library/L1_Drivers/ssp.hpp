@@ -13,7 +13,7 @@
 /// Note that all register modifications must be made before the SSP
 /// is enabled in the CR1 register (see page 612 of user manual UM10562)
 /// If changes are desired after the Initialize function is called, the
-/// peripheral must be disable, and then re-enabled after changes are made.
+/// peripheral must be disabled, and then re-enabled after changes are made.
 
 #pragma once
 
@@ -61,6 +61,8 @@ class SspInterface
   virtual void Initialize()                     = 0;
   virtual bool GetTransferStatus()              = 0;
   virtual uint16_t Transfer(uint16_t data)      = 0;
+  // virtual void TxData(uint16_t data)            = 0;
+  // virtual uint16_t RxData(uint16_t data)        = 0;
   virtual void SetSpiMasterDefault()            = 0;
   virtual void SetPeripheralMode(MasterSlaveMode mode, FrameMode frame,
                                  DataSize size) = 0;
@@ -125,12 +127,6 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
       [MatrixLookup::kMiso] = Pin::CreatePin<1, 4>(),
       [MatrixLookup::kSck]  = Pin::CreatePin<1, 0>() }
   };
-  // static constexpr Lpc40xxSystemController::PeripheralPowerUp kPowerBit[] = {
-  //   Lpc40xxSystemController::PeripheralPowerUp::kSsp0,
-  //   Lpc40xxSystemController::PeripheralPowerUp::kSsp1,
-  //   Lpc40xxSystemController::PeripheralPowerUp::kSsp2,
-  // };
-
   static constexpr Lpc40xxSystemController::PeripheralID kPowerBit[] = {
     Lpc40xxSystemController::Peripherals::kSsp0,
     Lpc40xxSystemController::Peripherals::kSsp1,
@@ -219,6 +215,23 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
     }
     return static_cast<uint16_t>(ssp_registers[pssp]->DR);
   }
+
+  /// Transfers a data frame to an external device using the SSP
+  /// data register.
+  /// @param data - information to be placed in data register
+  // void TxData(uint16_t data) override
+  // {
+  //   uint32_t pssp = util::Value(pssp_);
+
+  //   ssp_registers[pssp]->DR = data;
+  // }
+
+  /// Reads a byte of data from the SSP data register.
+  /// @param data - information to be read from data register
+  // uint16_t RxData(uint16_t data) override
+  // {
+  //   return static_cast<uint16_t>(ssp_registers[pssp]->DR);
+  // }
 
   /// Sets up SSP peripheral as SPI master
   void SetSpiMasterDefault() override
