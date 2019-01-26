@@ -8,9 +8,10 @@ TEST_CASE("Testing temperature sensor", "[temperature]")
 {
   Mock<I2cInterface> mock_i2c;
 
-  I2cInterface & test_i2c = mock_i2c.get();
   Fake(Method(mock_i2c, Initialize), Method(mock_i2c, WriteThenRead),
        Method(mock_i2c, Write), Method(mock_i2c, Read));
+
+  I2cInterface & test_i2c = mock_i2c.get();
 
   Temperature test(&test_i2c);
 
@@ -20,8 +21,7 @@ TEST_CASE("Testing temperature sensor", "[temperature]")
     constexpr uint8_t kI2cReturn = '\0';
     bool check_initialization = test.Initialize();
     Verify(Method(mock_i2c, Initialize),
-          Method(mock_i2c, WriteThenRead)/*.Using(0x31, { kTestRegister },
-                 &kI2cReturn, 1)*/);
+          Method(mock_i2c, WriteThenRead));
     CHECK(check_initialization == 0);
   }
 
@@ -31,11 +31,9 @@ TEST_CASE("Testing temperature sensor", "[temperature]")
     constexpr uint8_t kReturn1      = '\0';
     constexpr uint8_t kReturn2      = '\0';
     float check_celsius = test.GetCelsius();
-    Verify(Method(mock_i2c, Write)/*.Using(0x31, { 0xC4, 0x04 }, 2)*/,
-          Method(mock_i2c, Write)/*.Using(0x31, { 0xC5, 0x01 }, 2)*/,
-          Method(mock_i2c, WriteThenRead)/*.Using(0x31, { kTestRegister },
-                &kReturn1, 1)*/,
-          Method(mock_i2c, Read)/*.Using(0x31, &kReturn2, 1)*/);
+    Verify(Method(mock_i2c, Write) * 2,
+          Method(mock_i2c, WriteThenRead),
+          Method(mock_i2c, Read));
     CHECK(-47.4 <= check_celsius <= 157.39);
   }
 
