@@ -5,20 +5,20 @@
 
 int main(void)
 {
-  DEBUG_PRINT("Pwm Application Starting...");
+  LOG_INFO("Pwm Application Starting...");
 
-  DEBUG_PRINT("Creating Gpio powered LED...P4.28");
-  DEBUG_PRINT("This Gpio powered LED represents the maximum brightness");
-  DEBUG_PRINT("and is used as reference against the Pwm powered LED");
-  DEBUG_PRINT("during its sweep.");
-  DEBUG_PRINT("Connect a 470 ohm resistor between the power line and");
-  DEBUG_PRINT("the anode of the LED. The cathode is then connected to");
-  DEBUG_PRINT("P4.28 and P2.0(Pwm1).");
+  LOG_INFO("Creating Gpio powered LED...P4.28");
+  LOG_INFO("This Gpio powered LED represents the maximum brightness");
+  LOG_INFO("and is used as reference against the Pwm powered LED");
+  LOG_INFO("during its sweep.");
+  LOG_INFO("Connect a 470 ohm resistor between the power line and");
+  LOG_INFO("the anode of the LED. The cathode is then connected to");
+  LOG_INFO("P4.28 and P2.0(Pwm1).");
   Gpio p4_28(4, 28);
   p4_28.SetAsOutput();
   p4_28.SetLow();
 
-  DEBUG_PRINT("Creating Pwm powered LED...P2.0 (Pwm1)");
+  LOG_INFO("Creating Pwm powered LED...P2.0 (Pwm1)");
   Pwm p2_0 = Pwm::CreatePwm<1>();
   // Initialize Pwm at 1,000 hz
   uint32_t frequency = 1000;

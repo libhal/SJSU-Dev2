@@ -5,9 +5,9 @@
 
 int main(void)
 {
-  DEBUG_PRINT("Delay Application Starting...");
+  LOG_INFO("Delay Application Starting...");
 
-  DEBUG_PRINT(
+  LOG_INFO(
       "This example merely prints a statement every second using the delay "
       "function.");
 
@@ -15,7 +15,7 @@ int main(void)
 
   while (true)
   {
-    DEBUG_PRINT("[%lu] Hello, World! (milliseconds = %lu)", counter++,
+    LOG_INFO("[%lu] Hello, World! (milliseconds = %lu)", counter++,
                 static_cast<uint32_t>(Milliseconds()));
     Delay(1000);
   }

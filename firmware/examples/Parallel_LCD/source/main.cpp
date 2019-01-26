@@ -8,7 +8,7 @@ int main()
   constexpr uint8_t kMaxLines        = 4;
   constexpr uint8_t kMaxDisplayWidth = 20;
 
-  DEBUG_PRINT("Starting Parallel LCD Demo\n");
+  LOG_INFO("Starting Parallel LCD Demo\n");
 
   // set up control pins for lcd
   Gpio rs(0, 15);  // RS:    Register Select

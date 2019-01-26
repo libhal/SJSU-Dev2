@@ -71,47 +71,47 @@ I2cDevice<&i2c, kGestureAddress, device::Endian::kLittle, GestureMemoryMap_t>
 
 int main(void)
 {
-  DEBUG_PRINT("I2C MemoryMapped Device Starting...");
-  DEBUG_PRINT("Initializing I2C Port 2...");
+  LOG_INFO("I2C MemoryMapped Device Starting...");
+  LOG_INFO("Initializing I2C Port 2...");
   i2c.Initialize();
-  DEBUG_PRINT("Initializing Onboard Accelerometer using I2C.2...");
+  LOG_INFO("Initializing Onboard Accelerometer using I2C.2...");
   accelerometer.memory.control[0]     = (1 << 0);
   gesture.memory.adc_integration_time = 0;
 
   while (true)
   {
     uint8_t status = accelerometer.memory.status;
-    DEBUG_PRINT("Status 0x%02X", status);
+    LOG_INFO("Status 0x%02X", status);
 
     uint8_t who_am_i = accelerometer.memory.who_am_i;
-    DEBUG_PRINT("WHO_AM_I 0x%02X", who_am_i);
+    LOG_INFO("WHO_AM_I 0x%02X", who_am_i);
 
     uint16_t x = accelerometer.memory.x;
     uint16_t y = accelerometer.memory.y;
     uint16_t z = accelerometer.memory.z;
-    DEBUG_PRINT("x = %d :: y = %d :: z = %d", x, y, z);
+    LOG_INFO("x = %d :: y = %d :: z = %d", x, y, z);
 
     [[maybe_unused]] std::array<uint8_t, 6> xyz = accelerometer.memory.xyz;
     uint8_t x_msb = accelerometer.memory.xyz[0];
     uint8_t x_lsb = accelerometer.memory.xyz[1];
-    DEBUG_PRINT("x = 0x%02X%02X", x_msb, x_lsb);
+    LOG_INFO("x = 0x%02X%02X", x_msb, x_lsb);
 
     uint8_t reg1;
     reg1 = gesture.memory.adc_integration_time;
-    DEBUG_PRINT("cur reg1 = 0x%02X", reg1);
+    LOG_INFO("cur reg1 = 0x%02X", reg1);
 
     gesture.memory.adc_integration_time = 5;
     reg1 = gesture.memory.adc_integration_time;
-    DEBUG_PRINT("new reg1 = 0x%02X", reg1);
+    LOG_INFO("new reg1 = 0x%02X", reg1);
 
     gesture.memory.adc_integration_time |= (1 << 7);
     reg1 = gesture.memory.adc_integration_time;
-    DEBUG_PRINT("ord reg1 = 0x%02X", reg1);
+    LOG_INFO("ord reg1 = 0x%02X", reg1);
 
     gesture.memory.adc_integration_time = 255;
     reg1 = gesture.memory.adc_integration_time;
-    DEBUG_PRINT("add reg1 = 0x%02X", reg1);
-    DEBUG_PRINT("========================\n");
+    LOG_INFO("add reg1 = 0x%02X", reg1);
+    LOG_INFO("========================\n");
 
     Delay(500);
   }
