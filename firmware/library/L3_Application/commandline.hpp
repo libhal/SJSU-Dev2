@@ -193,6 +193,9 @@ class CommandLine
                      "This commandline has not been initalized yet!");
     is_commandline_running = true;
     List(0, nullptr);
+
+    printf(SJ2_BOLD_WHITE
+           "Press Enter to Start Command Line!\n" SJ2_COLOR_RESET);
     while (is_commandline_running)
     {
       // Get char from stdin (uart) and send to microrl lib

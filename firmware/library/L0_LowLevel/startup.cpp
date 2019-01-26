@@ -39,16 +39,31 @@
 #include "L0_LowLevel/ram.hpp"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/system_timer.hpp"
+#include "L1_Drivers/timer.hpp"
 #include "L1_Drivers/uart.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
 
-// Initialize system timer to be used by low level initialization.
+// Private namespace to make sure that these do not conflict with other globals
+namespace
+{
+// Create system timer to be used by low level initialization.
 SystemTimer system_timer;
-// Initialize LPC40xx system controller to be used by low level initialization.
+// Create LPC40xx system controller to be used by low level initialization.
 Lpc40xxSystemController system_controller;
+// Create timer0 to be used by lower level initialization for uptime calculation
+Timer timer0(Timer::TimerPort::kTimer0);
+uint64_t Lpc40xxUptime()
+{
+  return timer0.GetTimer();
+}
+}  // namespace
 
+extern "C" uint64_t UptimeRTOS()
+{
+  return timer0.GetTimer();
+}
 // The entry point for the C++ library startup
 extern "C"
 {
@@ -174,6 +189,10 @@ void LowLevelInit()
   system_timer.DisableTimer();
   system_timer.SetTickFrequency(config::kRtosFrequency);
   system_timer.StartTimer();
+  // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
+  // micro second.
+  timer0.Initialize(1'000'000);
+  SetUptimeFunction(Lpc40xxUptime);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
 }

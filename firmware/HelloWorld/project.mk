@@ -4,4 +4,3 @@
 # well, add it to the USER_TESTS list as well.
 USER_TESTS += $(LIB_DIR)/utility/test/bit_test.cpp
 USER_TESTS += $(LIB_DIR)/L1_Drivers/test/pin_test.cpp
-USER_TESTS += $(LIB_DIR)/L2_HAL/test/button_test.cpp
