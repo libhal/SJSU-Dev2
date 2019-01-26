@@ -43,11 +43,10 @@ TEST_CASE("Testing temperature sensor", "[temperature]")
     constexpr uint8_t kReturn1      = '\0';
     constexpr uint8_t kReturn2      = '\0';
     float check_fahrenheit = test.GetFahrenheit();
-    Verify(Method(mock_i2c, Write)/*.Using(0x31, { 0xC4, 0x04 }, 2)*/,
-          Method(mock_i2c, Write)/*.Using(0x31, { 0xC5, 0x01 }, 2)*/,
-          Method(mock_i2c, WriteThenRead)/*.Using(0x31, { kTestRegister },
-                &return1, 1)*/,
-          Method(mock_i2c, Read)/*.Using(0x31, &return2, 1)*/);
+    Verify(Method(mock_i2c, Write),
+          Method(mock_i2c, Write),
+          Method(mock_i2c, WriteThenRead),
+          Method(mock_i2c, Read));
     CHECK(-53.5 <= check_fahrenheit <= 315.3);
   }
 }
