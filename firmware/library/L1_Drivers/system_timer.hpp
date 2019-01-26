@@ -49,7 +49,6 @@ class SystemTimer final : public SystemTimerInterface,
   {
     // This assumes that SysTickHandler is called every millisecond.
     // Changing that frequency will distort the milliseconds time.
-    IncrementUptimeMs();
     if (system_timer_isr != nullptr)
     {
       system_timer_isr();

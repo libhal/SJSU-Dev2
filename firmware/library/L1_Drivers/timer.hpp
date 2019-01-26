@@ -24,9 +24,10 @@ class TimerInterface
   enum TimerPort : uint8_t
   {
     kTimer0 = 0,
-    kTimer1 = 1,
-    kTimer2 = 2,
-    kTimer3 = 3
+    kTimer1,
+    kTimer2,
+    kTimer3,
+    kCount
   };
   enum MatchControlRegister : uint8_t
   {
@@ -38,7 +39,7 @@ class TimerInterface
   // Modes for each match register that when match register matches timer
   // system can trigger an Interrupt, Stop Counter, or Restart and in any
   // mixture of those commands.
-  enum TimerSetting : uint8_t
+  enum TimerIsrCondition : uint8_t
   {
     kInterrupt            = 0b001,
     kRestart              = 0b010,
@@ -48,12 +49,11 @@ class TimerInterface
     kRestartStop          = 0b110,
     kInterruptRestartStop = 0b111
   };
-  virtual void Initialize(TimerPort timer, uint32_t us_per_tick, IsrPointer isr,
-                          int32_t priority) = 0;
-  virtual void SetTimer(uint32_t time, MatchControlRegister reg,
-                        TimerSetting mode)  = 0;
-  virtual uint32_t GetTimer()               = 0;
-  virtual void ClearInterrupts()            = 0;
+  virtual void Initialize(uint32_t us_per_tick, IsrPointer isr,
+                          int32_t priority)               = 0;
+  virtual void SetTimer(uint32_t time, TimerIsrCondition mode,
+                        MatchControlRegister reg = kMat0) = 0;
+  virtual uint32_t GetTimer()                             = 0;
 };
 
 class Timer : public TimerInterface, protected Lpc40xxSystemController
@@ -62,9 +62,7 @@ class Timer : public TimerInterface, protected Lpc40xxSystemController
   inline static LPC_TIM_TypeDef * tim_register[4] = {
     [0] = LPC_TIM0, [1] = LPC_TIM1, [2] = LPC_TIM2, [3] = LPC_TIM3
   };
-  static constexpr uint8_t kTimerFunc = 0b011;
-  static constexpr uint8_t kClearMode = 0b0111;
-  static constexpr uint32_t kClear    = std::numeric_limits<uint32_t>::max();
+  static constexpr uint32_t kClear = std::numeric_limits<uint32_t>::max();
   static constexpr Lpc40xxSystemController::PeripheralID kPowerbit[] = {
     Lpc40xxSystemController::Peripherals::kTimer0,
     Lpc40xxSystemController::Peripherals::kTimer1,
@@ -72,10 +70,9 @@ class Timer : public TimerInterface, protected Lpc40xxSystemController
     Lpc40xxSystemController::Peripherals::kTimer3
   };
 
-  static constexpr IRQn kRegISR[] = { IRQn::TIMER0_IRQn, IRQn::TIMER1_IRQn,
-                                      IRQn::TIMER2_IRQn, IRQn::TIMER3_IRQn };
-
-  explicit constexpr Timer(TimerPort mode) : channel_(util::Value(mode)) {}
+  static constexpr IRQn kTimerIrq[] = { IRQn::TIMER0_IRQn, IRQn::TIMER1_IRQn,
+                                        IRQn::TIMER2_IRQn, IRQn::TIMER3_IRQn };
+  static void DoNothingIsr() {}
 
   inline static volatile uint32_t * match[4][4] = {
     [kTimer0] = { &tim_register[0]->MR0, &tim_register[0]->MR1,
@@ -88,44 +85,81 @@ class Timer : public TimerInterface, protected Lpc40xxSystemController
                   &tim_register[3]->MR2, &tim_register[3]->MR3 }
   };
 
-  void Initialize(TimerPort timer, uint32_t us_per_tick, IsrPointer isr,
-                  int32_t priority) override final
+  inline static IsrPointer user_timer_isr[util::Value(kCount)] = { nullptr };
+
+  template <TimerPort port>
+  static void ClearInterrupts()
+  {
+    uint8_t channel = util::Value(port);
+    tim_register[channel]->IR |= (1 << kRegMR0);
+    tim_register[channel]->IR |= (1 << kRegMR1);
+    tim_register[channel]->IR |= (1 << kRegMR2);
+    tim_register[channel]->IR |= (1 << kRegMR3);
+  }
+
+  template <TimerPort port>
+  static void TimerHandler()
+  {
+    if (user_timer_isr != nullptr)
+    {
+      user_timer_isr[util::Value(port)]();
+    }
+    ClearInterrupts<port>();
+  }
+
+  static constexpr IsrPointer kTimerIsr[] = {
+    TimerHandler<TimerPort::kTimer0>,
+    TimerHandler<TimerPort::kTimer1>,
+    TimerHandler<TimerPort::kTimer2>,
+    TimerHandler<TimerPort::kTimer3>,
+  };
+
+  explicit constexpr Timer(TimerPort mode) : channel_(util::Value(mode)) {}
+
+  /// @param frequency the frequency that the timer register (TC) will
+  ///                  increment by. If set to 1000Hz, after 10 ms the TC
+  ///                  register will be 10 ms.
+  /// @param isr an ISR that will fire when the condition set by SetTimer
+  ///            method is achieved.
+  /// @param priority sets the Timer interrupt's priority level, defaults to -1
+  ///                 which uses the platforms default priority.
+  void Initialize(uint32_t frequency, IsrPointer isr = DoNothingIsr,
+                  int32_t priority = -1) override final
   {
     PowerUpPeripheral(kPowerbit[channel_]);
     SJ2_ASSERT_FATAL(
-        us_per_tick > 0,
+        frequency != 0,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
     // Set Prescale register for Prescale Counter to milliseconds
-    uint32_t freq       = ((GetPeripheralFrequency() / 1000000) * us_per_tick);
-    uint8_t timer_index = util::Value(timer);
-    tim_register[timer_index]->PR &= ~(kClear << 1);
-    tim_register[timer_index]->PR |= (freq << 1);
-    tim_register[timer_index]->TCR |= (1 << 0);
-    RegisterIsr(kRegISR[channel_], isr, true, priority);
+    uint32_t prescaler = GetPeripheralFrequency() / frequency;
+    tim_register[channel_]->PR &= ~(kClear << 1);
+    tim_register[channel_]->PR |= (prescaler << 1);
+    tim_register[channel_]->TCR |= (1 << 0);
+    user_timer_isr[channel_] = isr;
+    RegisterIsr(kTimerIrq[channel_], kTimerIsr[channel_], true, priority);
   }
 
-  // Function that sets a timer of your choice (0-3) to a specific
-  // time in milliseconds or micro seconds dependent on initilization
-  // Functionality is defined by mode: interrupt, stop, or reset on match.
-  void SetTimer(uint32_t time, MatchControlRegister reg,
-                TimerSetting mode) override final
+  /// @description Function that sets a timer of your choice (0-3) to a specific
+  /// time in milliseconds or micro seconds dependent on initialization
+  /// Functionality is defined by mode: interrupt, stop, or reset on match.
+  ///
+  /// @param ticks the count of the timer register (TC) to have an ISR fire
+  /// @param condition the condition for which a timer interrupt will occur
+  /// @param match_register which match register (from 0 to 3) should be used
+  ///                       for holding the ticks for the condition.
+  void SetTimer(uint32_t ticks, TimerIsrCondition condition,
+                MatchControlRegister match_register = kMat0) override final
   {
-    tim_register[channel_]->MCR &= ~(kClearMode << util::Value(reg));
-    tim_register[channel_]->MCR |= mode << util::Value(reg);
-    *match[channel_][(util::Value(reg)) / 3] |= (((time / 2)) << 0);
+    static constexpr uint8_t kClearMode = 0b0111;
+
+    uint8_t match_value = util::Value(match_register);
+    tim_register[channel_]->MCR &= ~(kClearMode << match_value);
+    tim_register[channel_]->MCR |= condition << match_value;
+    *match[channel_][match_value / 3] |= (((ticks / 2)) << 0);
   }
 
-  [[gnu::always_inline]] uint32_t GetTimer() override final
-  {
+  [[gnu::always_inline]] uint32_t GetTimer() override final {
     return tim_register[channel_]->TC;
-  }
-
-  void ClearInterrupts() override final
-  {
-    tim_register[channel_]->IR |= (1 << kRegMR0);
-    tim_register[channel_]->IR |= (1 << kRegMR1);
-    tim_register[channel_]->IR |= (1 << kRegMR2);
-    tim_register[channel_]->IR |= (1 << kRegMR3);
   }
 
  private:

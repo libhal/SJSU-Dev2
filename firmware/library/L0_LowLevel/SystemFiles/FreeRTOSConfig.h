@@ -30,6 +30,7 @@
 #define FREERTOS_CONFIG_H
 // SJSU-Dev: Making FreeRTOSConfig a system header to suppress warnings
 #pragma GCC system_header
+#include "stdint.h"
 
 /*-----------------------------------------------------------
  * Application specific definitions.
@@ -45,11 +46,12 @@
 #define configUSE_IDLE_HOOK 0
 #define configMAX_PRIORITIES (5)
 #define configUSE_TICK_HOOK 0
+// Not necessary since we configure the SystemTimer ourselves
 #define configCPU_CLOCK_HZ ((unsigned long)12000000)
 #define configTICK_RATE_HZ ((TickType_t)1000)
 #define configMINIMAL_STACK_SIZE ((unsigned short)80)
 #define configTOTAL_HEAP_SIZE ((size_t)(32 * 1024))
-#define configMAX_TASK_NAME_LEN (12)
+#define configMAX_TASK_NAME_LEN (16)
 #define configUSE_TRACE_FACILITY 1
 #define configUSE_16_BIT_TICKS 0
 #define configIDLE_SHOULD_YIELD 0
@@ -63,8 +65,7 @@
 #define configCHECK_FOR_STACK_OVERFLOW 0
 #define configUSE_RECURSIVE_MUTEXES 1
 #define configQUEUE_REGISTRY_SIZE 10
-#define configGENERATE_RUN_TIME_STATS 0
-
+#define configGENERATE_RUN_TIME_STATS 1
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
 
@@ -83,30 +84,6 @@ format the raw data provided by the uxTaskGetSystemState() function in to human
 readable ASCII form.  See the notes in the implementation of vTaskList() within
 FreeRTOS/Source/tasks.c for limitations. */
 #define configUSE_STATS_FORMATTING_FUNCTIONS 1
-
-/*-----------------------------------------------------------
- * Ethernet configuration.
- *-----------------------------------------------------------*/
-
-/* MAC address configuration. */
-#define configMAC_ADDR0 0x00
-#define configMAC_ADDR1 0x12
-#define configMAC_ADDR2 0x13
-#define configMAC_ADDR3 0x10
-#define configMAC_ADDR4 0x15
-#define configMAC_ADDR5 0x11
-
-/* IP address configuration. */
-#define configIP_ADDR0 192
-#define configIP_ADDR1 168
-#define configIP_ADDR2 0
-#define configIP_ADDR3 201
-
-/* Netmask configuration. */
-#define configNET_MASK0 255
-#define configNET_MASK1 255
-#define configNET_MASK2 255
-#define configNET_MASK3 0
 
 /* Use the system definition, if there is one */
 #ifdef __NVIC_PRIO_BITS
@@ -129,6 +106,10 @@ value needs to be equal to or greater than 5 (on the Cortex-M3 the lower the
 numeric value the higher the interrupt priority). */
 #define configEMAC_INTERRUPT_PRIORITY 5
 #define configUSB_INTERRUPT_PRIORITY 6
+
+extern uint64_t UptimeRTOS();
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
+#define portGET_RUN_TIME_COUNTER_VALUE() (uint32_t)(UptimeRTOS())
 
 /*-----------------------------------------------------------
  * Macros required to setup the timer for the run time stats.
