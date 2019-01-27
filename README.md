@@ -9,8 +9,9 @@
 [![GitHub issues](https://img.shields.io/github/issues/kammce/SJSU-Dev2.svg)](https://github.com/kammce/SJSU-Dev2/issues)
 [![Slack Chat](https://img.shields.io/badge/join-slack-purple.svg?logo=slack&longCache=true&style=flat)](https://slofile.com/slack/sjsu-dev2)
 
-Firmware framework written by San Jose State University for the SJTwo board and
-LPC4078 microprocessor.
+Cross platform firmware framework written by students, alumni, and faculty of
+San Jose State University. Designed for the original purpose of helping students
+develop firmware for the SJTwo board.
 
 ## Operating System Supported
 
@@ -23,12 +24,58 @@ LPC4078 microprocessor.
 </p>
 
 Built for **Ubuntu**, **Mac OSX**, and **Windows 10 WSL**.
-The instructions to install on Windows BASH are the same as in Linux.
 
-## Tutorial
+## Documentation and Installation Guide
 
 See **[documentation](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)**
 for a full tutorial.
+
+## Quick Start
+
+### Setting up the environment
+If you are using Windows, follow these steps to
+**[install WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)**
+and make sure to install the Ubuntu as the linux distro. Once you have installed
+WSL, all instructions below for Linux should work for Windows.
+
+To download and setup the environment, simply copy and paste this into a
+terminal:
+
+    git clone https://github.com/kammce/SJSU-Dev2.git && cd SJSU-Dev2 && ./setup
+
+If you find that git is not installed on your machine follow these steps to
+**[install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)**.
+
+### Building a Project
+The starter `HelloWorld` project can be found in the `firmware/` folder along
+with the the `firmware/examples` folder which is full of examples you can run
+on your board. To build `HelloWorld`:
+
+    cd firmware/HelloWorld
+    make application
+
+### Programming a board
+From within a project, run `make flash`.
+
+### Viewing Serial Output
+The preferred method for communicating with a serial device is via Google
+Chrome, using the online serial terminal tool,
+**[Telemetry](https://kammce.github.io/Telemetry)**.
+You can also open this up on your browser using the `make telemetry` command in
+a project directory.
+
+### Burning the Bootloader (NOT AVAILABLE YET)
+The Hyperload bootloader is used to rapidly quickly program the device. SJTwo
+and SJOne boards should both have the bootloaders pre-installed on them, but in
+case it is not installed, run the following from the root of the SJSU-Dev2
+directory:
+
+    cd firmware/Hyperload
+    make burn
+
+`make burn` will build the application using `make bootloader` and if that
+finishes successfully, then it will burn the bootloader to the first 64kB of the
+board, allowing you to use `make flash` later on.
 
 ## Contrib
 * [Khalil Estell](http://kammce.io): Creator of the SJSU-Dev2.
@@ -36,9 +83,6 @@ for a full tutorial.
 [SJSU-Dev repo](https://github.com/kammce/SJSU-Dev), the people in that contrib
 list are also contributors to this repository.
 
-### Special Credits
+## Special Credits
 * **Mikko Bayabo**: Windows surface destructive testing
 * **WSL testing**: Sameer Azer, Aaron Moffit, Ryan Lucus, Onyema Ude
-
-## Change Log
-nothing yet!

@@ -25,7 +25,7 @@ class Buzzer : public BuzzerInterface
   {}
 
   explicit Buzzer(PwmInterface * pwm_pin_select)
-  : pwm_(pwm_pin_select) , pwm_pin_(Pwm::CreatePwm<1>())
+  : pwm_(pwm_pin_select), pwm_pin_(Pwm::CreatePwm<1>())
   {}
 
   void Initialize() override

@@ -147,15 +147,17 @@ class CommandLine
 {
  public:
   static constexpr size_t kAutoCompleteOptions = 32;
-  constexpr CommandLine()
+  static_assert(command_list.size() > 2,
+                "Command list must be of size greater than 2");
+
+  CommandLine()
       : rl_{},
         command_position_(0),
         initialized_(false),
         quit_("quit", "Quit from commandline", Quit),
         list_("list", "List all available commands", List)
   {
-    static_assert(command_list.size() > 2,
-                  "Command list must be of size greater than 2");
+    command_list.commands.clear();
   }
   /// Call this to initialie the command line
   void Initialize()
@@ -286,6 +288,7 @@ class CommandLine
       printf("%*s - %s\n", 10, command_list.commands[i]->GetName(),
              command_list.commands[i]->GetDescription());
     }
+    printf("\n");
     return 0;
   }
   static inline bool is_commandline_running                             = false;
