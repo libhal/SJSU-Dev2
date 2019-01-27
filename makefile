@@ -382,12 +382,10 @@ flash:
 clean:
 	rm -fR $(BUILD_DIRECTORY_NAME)
 # ====================================================================
-# Run telemetry
+# Open Browser to Telemetry website
 # ====================================================================
 telemetry:
-	@bash -c "\
-	source $(TOOLS_DIR)/Telemetry/modules/bin/activate && \
-	python2.7 $(TOOLS_DIR)/Telemetry/telemetry.py"
+	google-chrome https://kammce.github.io/Telemetry
 # ====================================================================
 # Build Test Executable for all tests in SJSU-Dev2
 # ====================================================================

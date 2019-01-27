@@ -227,15 +227,6 @@ rm -rf "$TOOLDIR/Hyperload/"
 git clone --depth=1 https://github.com/kammce/Hyperload.git \
                     "$TOOLDIR/Hyperload/"
 cd "$TOOLDIR/Hyperload/" && ./setup
-cd "$BASE"
-echo " ───────────────────────────────────────────────────┐"
-echo "                Setting Up Telemetry                 "
-echo "└─────────────────────────────────────────────────── "
-rm -rf "$TOOLDIR/Telemetry/"
-git clone --depth=1 https://github.com/kammce/Telemetry.git \
-                    "$TOOLDIR/Telemetry"
-cd "$TOOLDIR/Telemetry/" && ./setup
-
 fi
 
 cd "$BASE"
