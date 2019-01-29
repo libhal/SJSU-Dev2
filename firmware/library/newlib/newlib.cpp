@@ -80,7 +80,7 @@ extern "C"
   // NOLINTNEXTLINE(readability-identifier-naming)
   void * _sbrk(int increment)
   {
-    void * previous_heap_position  = static_cast<void *>(heap_position);
+    void * previous_heap_position = static_cast<void *>(heap_position);
     // Check that by allocating this space, we do not exceed the heap area.
     if ((heap_position + increment) > &heap_end)
     {
@@ -162,7 +162,7 @@ extern "C"
   // Backtrace Utility Functions
   // =============================
   void * stack_trace[config::kBacktraceDepth] = { nullptr };
-  size_t stack_depth = 0;
+  size_t stack_depth                          = 0;
 
   void __cyg_profile_func_enter(void *, void * call_site)  // NOLINT
   {
@@ -172,6 +172,100 @@ extern "C"
   void __cyg_profile_func_exit(void *, void *)  // NOLINT
   {
     stack_depth--;
+  }
+
+  // using FILE = FF_FILE;
+  struct FF_FILE {};
+  // clang-format off
+  int ff_mkdir(...)       { return 0; }  // NOLINT
+  int ff_chdir(...)       { return 0; }  // NOLINT
+  int ff_rmdir(...)       { return 0; }  // NOLINT
+  int ff_getcwd(...)      { return 0; }  // NOLINT
+  FILE * ff_fopen(...)    { return nullptr; }  // NOLINT
+  int ff_fclose(...)      { return 0; }  // NOLINT
+  int ff_fwrite(...)      { return 0; }  // NOLINT
+  int ff_fread(...)       { return 0; }  // NOLINT
+  int ff_fputc(...)       { return 0; }  // NOLINT
+  int ff_fgetc(...)       { return 0; }  // NOLINT
+  char * ff_fgets(...)    { return nullptr; }  // NOLINT
+  int ff_fprintf(...)     { return 0; }  // NOLINT
+  int ff_fseek(...)       { return 0; }  // NOLINT
+  int ff_ftell(...)       { return 0; }  // NOLINT
+  int ff_seteof(...)      { return 0; }  // NOLINT
+  int ff_rewind(...)      { return 0; }  // NOLINT
+  int ff_truncate(...)    { return 0; }  // NOLINT
+  int ff_errno(...)       { return 0; }  // NOLINT
+  int ff_feof(...)        { return 0; }  // NOLINT
+  int ff_rename(...)      { return 0; }  // NOLINT
+  int ff_remove(...)      { return 0; }  // NOLINT
+  int ff_stat(...)        { return 0; }  // NOLINT
+  int ff_filelength(...)  { return 0; }  // NOLINT
+  int ff_findfirst(...)   { return 0; }  // NOLINT
+  int ff_findnext(...)    { return 0; }  // NOLINT
+  // clang-format on
+
+  FILE * fopen(const char * filename, const char * mode)  // NOLINT
+  {
+    return ff_fopen(filename, mode);
+  }
+  int fclose(FILE * stream)
+  {
+    return ff_fclose(stream);
+  }
+  size_t fwrite(const void * buffer, size_t size, size_t count,
+                FILE * stream)  // NOLINT
+  {
+    return ff_fwrite(buffer, size, count, stream);
+  }
+  size_t fread(void * buffer, size_t size, size_t count,
+               FILE * stream)  // NOLINT
+  {
+    return ff_fread(buffer, size, count, stream);
+  }
+  int fgetc(FILE * stream)  // NOLINT
+  {
+    return ff_fgetc(stream);
+  }
+  char * fgets(char * str, int count, FILE * stream)  // NOLINT
+  {
+    return ff_fgets(str, count, stream);
+  }
+  int fputc(int ch, FILE * stream)  // NOLINT
+  {
+    return ff_fputc(ch, stream);
+  }
+  int fputs(const char * str, FILE * stream)  // NOLINT
+  {
+    size_t i;
+    for (i = 0; str[i] == '\0'; i++)
+    {
+      fputc(str[i], stream);
+    }
+    return i;
+  }
+  int fseek(FILE * stream, long offset, int origin)  // NOLINT
+  {
+    return ff_fseek(stream, offset, origin);
+  }
+  long ftell(FILE * stream)  // NOLINT
+  {
+    return ff_ftell(stream);
+  }
+  void rewind(FILE * stream)  // NOLINT
+  {
+    ff_rewind(stream);
+  }
+  int feof(FILE * stream)  // NOLINT
+  {
+    return ff_feof(stream);
+  }
+  int rename(const char * old_filename, const char * new_filename)  // NOLINT
+  {
+    return ff_rename(old_filename, new_filename);
+  }
+  int remove(const char * fname)  // NOLINT
+  {
+    return ff_remove(fname);
   }
 }
 
