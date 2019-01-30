@@ -51,26 +51,30 @@ class Temperature : public TemperatureInterface
                         &most_significant_register, 1);
     i2c_->Read(kDeviceAddress, &least_significant_register, 1);
 
-    uint16_t temperature_data = 0;
-    // Clears the most significant bit from above and shifts all bit.
-    // The write and read operation sets most significant bit to one,
-    // telling the register that the data has been read.
-    most_significant_register = bit::Clear(most_significant_register, 7);
+    uint32_t temperature_data = 0;
+    // Shift all bits to the 15th bit.
     temperature_data =
         bit::Insert(temperature_data, most_significant_register, 8, 16);
+    // The write and read operation sets the most significant bit to one,
+    // telling the register that the data has been read.
+    // Therefore must clear the most significant bit from above.
+    temperature_data = bit::Clear(temperature_data, 15);
     temperature_data =
         bit::Insert(temperature_data, least_significant_register, 0, 8);
     // The required computation after bit shifting.
     // Formula can be found below, see page 4:
     // datasheets/Temperature-Sensor/si7060-datasheets.pdf
     // Note that: 1 << 14 = 2^14 = 16384
-    return (((temperature_data - (1 << 14)) / 160) + 55);
+    uint16_t new_temperature_data = static_cast<uint16_t>(temperature_data);
+    constexpr float kSubtractTemperatureData = static_cast<float>(1 << 14);
+    return (((new_temperature_data - kSubtractTemperatureData) / 160.0f)
+            + 55.0f);
   }
 
   float GetFahrenheit() override
   {
     // General formula used to convert Celsius to Fahrenheit
-    return (((GetCelsius() * 9) / 5) - 32);
+    return (((GetCelsius() * 9.0f) / 5.0f) - 32.0f);
   }
 
  private:
