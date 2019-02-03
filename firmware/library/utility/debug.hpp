@@ -8,6 +8,7 @@
 
 #include "config.hpp"
 #include "newlib/newlib.hpp"
+#include "utility/ansi_terminal_codes.hpp"
 #include "utility/macros.hpp"
 
 namespace debug
@@ -63,17 +64,40 @@ inline void Hexdump(void * address, uint32_t length)
   printf("%08" PRIX32 "  \n", length);
 }
 
-inline void PrintBacktrace()
+inline void PrintBacktrace(bool show_make_command = false)
 {
   printf("Stack Depth = %zd\n", GetStackDepth());
   // stack_depth-1 to ignore PrintBacktrace()
   // PrintBacktrace shouldn't be ignored in profiling because it causes
   // the exit to still fire, which can result in a negative stack_depth
   void ** list_of_called_functions = GetStackTrace();
-  size_t stack_depth = GetStackDepth();
+  size_t stack_depth               = GetStackDepth();
   for (size_t pos = 0; pos < stack_depth; pos++)
   {
     printf("  #%zu: 0x%p\n", pos, list_of_called_functions[pos]);
+  }
+  if (show_make_command)
+  {
+    constexpr const char kBuildType[] =
+#if defined(APPLICATION)
+        "application";
+#else
+        "bootloader";
+#endif
+    puts("\nRun: the following command in your project directory");
+    printf("\n  " SJ2_BOLD_WHITE "make stacktrace-%s TRACES=\"", kBuildType);
+    for (size_t pos = 0; pos < stack_depth; pos++)
+    {
+      if (pos != 0)
+      {
+        putchar(' ');
+      }
+      printf("0x%p", list_of_called_functions[pos]);
+    }
+    puts("\"\n" SJ2_COLOR_RESET);
+    puts(
+        "This will report the file and line number that led to this function "
+        "being called.");
   }
 }
 
