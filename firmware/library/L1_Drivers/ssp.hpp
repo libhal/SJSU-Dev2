@@ -7,9 +7,12 @@
 ///          SSP0    |   P0.17   |   P0.18   |   P0.15
 ///          SSP1    |   P0.8    |   P0.9    |   P0.7
 /// Order of function calls should be as follows:
-///     constructor
-///     setter functions
-///     Initialize
+///
+///     1. Constructor (create object)
+///     2. SetClock(...)
+///     3. SetPeripheralMode(...)
+///     4. Initialize()
+///
 /// Note that all register modifications must be made before the SSP
 /// is enabled in the CR1 register (see page 612 of user manual UM10562)
 /// If changes are desired after the Initialize function is called, the
@@ -71,7 +74,7 @@ class SspInterface
   // See page 611 of UM10562 for SCR-Serial Clock Rate for more info.
   virtual void SetClock(bool polarity, bool phase, uint8_t prescaler,
                         uint8_t divider) = 0;
-  virtual uint32_t GetClock()                   = 0;
+  virtual uint32_t GetClock()            = 0;
 };
 
 class Ssp final : public SspInterface, protected Lpc40xxSystemController
@@ -177,26 +180,22 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   void Initialize() override
   {
     uint32_t pssp = util::Value(pssp_);
-
     // Power up peripheral
     PowerUpPeripheral(kPowerBit[pssp]);
-
     // Enable SSP pins
     mosi_->SetPinFunction(kPinSelect[pssp]);
     miso_->SetPinFunction(kPinSelect[pssp]);
     sck_->SetPinFunction(kPinSelect[pssp]);
-
     // Enable SSP
     ssp_registers[pssp]->CR1 = bit::Set(ssp_registers[pssp]->CR1, kSspEnable);
   }
 
   /// Checks if the SSP controller is idle.
-  /// @returns true if the controller is sending or receving a data frame and
+  /// @returns true if the controller is sending or receiving a data frame and
   /// false if it is idle.
   bool IsTransferRegBusy() override
   {
-    return (bit::Read(ssp_registers[util::Value(pssp_)]->SR,
-            kDataLineIdleBit));
+    return (bit::Read(ssp_registers[util::Value(pssp_)]->SR, kDataLineIdleBit));
   }
 
   /// Transfers a data frame to an external device using the SSP
@@ -220,10 +219,10 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   /// Sets up SSP peripheral as SPI master
   void SetSpiMasterDefault() override
   {
-    constexpr bool kHighPolarity = 1;
-    constexpr bool kPhase0       = 0;
-    constexpr uint8_t kScrDivider   = 0;
-    constexpr uint8_t kPrescaler    = 2;
+    constexpr bool kHighPolarity  = 1;
+    constexpr bool kPhase0        = 0;
+    constexpr uint8_t kScrDivider = 0;
+    constexpr uint8_t kPrescaler  = SJ2_SYSTEM_CLOCK_RATE_MHZ;
 
     SetPeripheralMode(kMaster, kSpi, kEight);
     SetClock(kHighPolarity, kPhase0, kScrDivider, kPrescaler);
@@ -233,23 +232,23 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   /// @param mode - master or slave mode
   /// @param frame - format for Peripheral data to use
   /// @param size - number of bits per frame
-  void SetPeripheralMode(MasterSlaveMode mode,
-                        FrameMode frame, DataSize size) override
+  void SetPeripheralMode(MasterSlaveMode mode, FrameMode frame,
+                         DataSize size) override
   {
     uint32_t pssp = util::Value(pssp_);
-
-    // // first clear the appropriate register locations
-    ssp_registers[pssp]->CR0 &= ~((0b1111 << kDataBit) | (0b11 << kFrameBit));
-    ssp_registers[pssp]->CR1 &= ~(0b1 << kMasterModeBit);
-    // ensure that datasize is set to 8 bits for Micro frame format
+    // TODO(#371): Find a better alternative to powering up the peripheral for
+    // every method.
+    Ssp::PowerUpPeripheral(Ssp::kPowerBit[pssp]);
     if (frame == kMicro)
     {
       size = kEight;
     }
-    // set appropriate registers
-    ssp_registers[pssp]->CR1 |= (mode << kMasterModeBit);
-    ssp_registers[pssp]->CR0 |=
-        (size << kDataBit) | (frame << kFrameBit);
+    ssp_registers[pssp]->CR0 =
+        bit::Insert(ssp_registers[pssp]->CR0, util::Value(size), kDataBit, 4);
+    ssp_registers[pssp]->CR0 =
+        bit::Insert(ssp_registers[pssp]->CR0, util::Value(frame), kFrameBit, 2);
+    ssp_registers[pssp]->CR1 = bit::Insert(
+        ssp_registers[pssp]->CR1, util::Value(mode), kMasterModeBit, 1);
   }
 
   /// Gets the Peripheral modes from registers
@@ -260,7 +259,10 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   uint16_t GetPeripheralMode() override
   {
     uint16_t return_val = 0;
-    uint32_t pssp = util::Value(pssp_);
+    uint32_t pssp       = util::Value(pssp_);
+    // TODO(#371): Find a better alternative to powering up the peripheral for
+    // every method.
+    Ssp::PowerUpPeripheral(Ssp::kPowerBit[pssp]);
 
     return_val = static_cast<uint16_t>(
         (bit::Extract(ssp_registers[pssp]->CR0, kDataBit, 4)) +
@@ -274,21 +276,21 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   /// @param phase - capture serial data on 0=first or 1=second clock cycle
   /// @param divider - see notes in SSP_Interface above
   /// @param prescaler - divides the PCLK, must be even value between 2-254
-  void SetClock(bool polarity, bool phase,
-                uint8_t divider, uint8_t prescaler) override
+  void SetClock(bool polarity, bool phase, uint8_t divider,
+                uint8_t prescaler) override
   {
     uint32_t pssp = util::Value(pssp_);
-
+    // TODO(#371): Find a better alternative to powering up the peripheral for
+    // every method.
+    Ssp::PowerUpPeripheral(Ssp::kPowerBit[pssp]);
     // first clear the appropriate registers
-    ssp_registers[pssp]->CR0 &=
-        ~((0x3 << kPolarityBit) | (0xFF << kDividerBit));
-    ssp_registers[pssp]->CPSR &= ~(0xFF);
-
-    // then set appropraite registers
-    ssp_registers[pssp]->CR0 |=
-        (polarity << kPolarityBit) | (phase << kPhaseBit);
-    ssp_registers[pssp]->CR0 |= (divider << kDividerBit);
-    ssp_registers[pssp]->CPSR |= (prescaler);
+    ssp_registers[pssp]->CR0 =
+        bit::Insert(ssp_registers[pssp]->CR0, polarity, kPolarityBit, 1);
+    ssp_registers[pssp]->CR0 =
+        bit::Insert(ssp_registers[pssp]->CR0, phase, kPhaseBit, 1);
+    ssp_registers[pssp]->CR0 =
+        bit::Insert(ssp_registers[pssp]->CR0, divider, kDividerBit, 8);
+    ssp_registers[pssp]->CPSR = prescaler;
   }
 
   /// Gets the Peripheral clock from registers
@@ -301,9 +303,13 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   uint32_t GetClock() override
   {
     uint32_t return_val = 0;
-    uint32_t pssp = util::Value(pssp_);
+    uint32_t pssp       = util::Value(pssp_);
+    // TODO(#371): Find a better alternative to powering up the peripheral for
+    // every method.
+    Ssp::PowerUpPeripheral(Ssp::kPowerBit[pssp]);
 
-    return_val = (bit::Extract(ssp_registers[pssp]->CPSR, kPrescalerBit, 8)) +
+    return_val =
+        (bit::Extract(ssp_registers[pssp]->CPSR, kPrescalerBit, 8)) +
         ((bit::Extract(ssp_registers[pssp]->CR0, kDividerBit, 8)) << 8) +
         ((bit::Read(ssp_registers[pssp]->CR0, kPhaseBit)) << 16) +
         ((bit::Read(ssp_registers[pssp]->CR0, kPolarityBit)) << 18);
