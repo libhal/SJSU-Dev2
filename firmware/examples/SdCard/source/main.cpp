@@ -1,11 +1,11 @@
 #include <cstdint>
 
-#include "L2_HAL/memory/sddriver.hpp"
+#include "L2_HAL/memory/sd.hpp"
 #include "utility/debug.hpp"  // debug::Hexdump()
 #include "utility/log.hpp"
 #include "utility/time.hpp"  // Halt()
 
-const uint8_t kLongText[512] = R"(Lorem ipsum dolor sit amet, consectetur 
+const uint8_t kLongText[512] = R"(Lorem ipsum dolor sit amet, consectetur
 adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
 aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
 ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in

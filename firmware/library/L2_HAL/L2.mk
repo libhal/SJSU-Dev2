@@ -16,3 +16,5 @@ TESTS += $(LIB_DIR)/L2_HAL/sensors/optical/test/apds_9960_test.cpp
 TESTS += $(LIB_DIR)/L2_HAL/sensors/temperature/test/temperature_test.cpp
 
 TESTS += $(LIB_DIR)/L2_HAL/switches/test/button_test.cpp
+
+TESTS += $(LIB_DIR)/L2_HAL/memory/test/sd_test.cpp

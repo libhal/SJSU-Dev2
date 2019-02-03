@@ -58,12 +58,11 @@ TEST_CASE("Testing SSP", "[Ssp]")
   {
     constexpr uint8_t kPolarityBit = 6;
     constexpr uint8_t kPolarity = 1;
-    constexpr uint8_t kPrescaleBit = 0;
-    constexpr uint8_t kPrescaler = 2;
+    constexpr uint8_t kPrescaler = config::kSystemClockRateMhz;
 
     CHECK(((local_ssp[0].CR0 & (0x1 << kPolarityBit)) >> kPolarityBit)
       == kPolarity);
-    CHECK((local_ssp[0].CPSR & (0xFF << kPrescaleBit)) == kPrescaler);
+    CHECK(local_ssp[0].CPSR == kPrescaler);
   }
 
   SECTION("Check Transfer Register")

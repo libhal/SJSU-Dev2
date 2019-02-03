@@ -175,9 +175,9 @@ class SdInterface
       uint8_t polynomial_compare =
           static_cast<uint8_t>(i) ^ crc_table.kPoly8bit;
 
-      crc_table.crc_table[i] =
-          (most_significant_bit_set) ?
-            static_cast<T>(polynomial_compare) : static_cast<T>(i);
+      crc_table.crc_table[i] = (most_significant_bit_set)
+                                   ? static_cast<T>(polynomial_compare)
+                                   : static_cast<T>(i);
 
       for (j = 1; j < 8; j++)
       {
@@ -421,13 +421,13 @@ class Sd : public SdInterface
   // Enforcing block-size cross-compatibility
   static constexpr uint16_t kBlockSize = 512;
   static constexpr CrcTableConfig_t<uint8_t> kCrcTable8 =
-    GenerateCrc7Table<uint8_t>();
+      GenerateCrc7Table<uint8_t>();
   static constexpr CrcTableConfig_t<uint16_t> kCrcTable16 =
-    GenerateCrc16Table();
+      GenerateCrc16Table();
 
-  explicit constexpr Sd(uint8_t port = 1, uint8_t pin = 25)
+  explicit constexpr Sd(uint8_t port = 1, uint8_t pin = 8)
       : ssp_interface_(&ssp_),
-        ssp_(Ssp::Peripheral::kSsp0),
+        ssp_(Ssp::Peripheral::kSsp2),
         chip_select_(&chip_select_pin_),
         chip_select_external_(&chip_select_external_pin_),
         chip_select_pin_(port, pin),
@@ -441,14 +441,10 @@ class Sd : public SdInterface
   /// instantiate an Sd card instance like so:
   ///
   ///   Sd sdcard(Sd::DebugSdCard_t{});
-  constexpr Sd(
-    DebugSdCard_t,
-    uint8_t port = 1,
-    uint8_t pin = 25,
-    uint8_t extport = 0,
-    uint8_t extpin = 6)
+  constexpr Sd(DebugSdCard_t, uint8_t port = 1, uint8_t pin = 8,
+               uint8_t extport = 0, uint8_t extpin = 6)
       : ssp_interface_(&ssp_),
-        ssp_(Ssp::Peripheral::kSsp0),
+        ssp_(Ssp::Peripheral::kSsp2),
         chip_select_(&chip_select_pin_),
         chip_select_external_(&chip_select_external_pin_),
         chip_select_pin_(port, pin),
@@ -481,18 +477,14 @@ class Sd : public SdInterface
   // TODO(#349): Split method into smaller piece with single jobs
   bool Mount(CardInfo_t * sd) override
   {
-    uint8_t tries   = 0;
+    uint8_t tries     = 0;
     bool card_is_idle = false;
 
     // Reset the card and force it to go to idle state at <400kHz with a
     // CMD0 + (active-low) CS
     LOG_DEBUG("Sending SD Card to Idle State...");
-    sd->response.length = SendCmd(
-      Command::kReset,
-      0x00000000,
-      sd->response.data.byte,
-      100,
-      KeepAlive::kYes);
+    sd->response.length = SendCmd(Command::kReset, 0x00000000,
+                                  sd->response.data.byte, 100, KeepAlive::kYes);
 
     // Reset the card again to trigger SPI mode
     LOG_DEBUG("Initializing SPI mode...");
@@ -500,11 +492,7 @@ class Sd : public SdInterface
     {
       tries++;
       sd->response.length = SendCmd(
-        Command::kReset,
-        0x00,
-        sd->response.data.byte,
-        100,
-        KeepAlive::kYes);
+          Command::kReset, 0x00, sd->response.data.byte, 100, KeepAlive::kYes);
 
       // Check if R1 response frame's bit 1 is set (to ensure that
       // card is in idle state)
@@ -521,12 +509,8 @@ class Sd : public SdInterface
     if (tries >= kBusTimeout)
     {
       LOG_ERROR("Failed to initiate SPI mode within timeout. Aborting!");
-      sd->response.length = SendCmd(
-        Command::kGarbage,
-        0xFFFFFFFF,
-        sd->response.data.byte,
-        0,
-        KeepAlive::kNo);
+      sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
+                                    sd->response.data.byte, 0, KeepAlive::kNo);
       return false;
     }
 
@@ -534,14 +518,11 @@ class Sd : public SdInterface
     // supports it
     LOG_DEBUG("Checking Current SD Card Voltage Level...");
     constexpr uint8_t kCheckPattern = 0xAB;
-    uint64_t supported_voltage = 0x00000001;
+    uint64_t supported_voltage      = 0x00000001;
     sd->response.length =
-        SendCmd(
-            Command::kGetOp,
-            static_cast<uint32_t>((supported_voltage << 8) | kCheckPattern),
-            sd->response.data.byte,
-            100,
-            KeepAlive::kYes);
+        SendCmd(Command::kGetOp,
+                static_cast<uint32_t>((supported_voltage << 8) | kCheckPattern),
+                sd->response.data.byte, 100, KeepAlive::kYes);
     if (sd->response.data.byte[4] != kCheckPattern)
     {
       // If the last byte is not an exact echo of the LSB of the kGetOp
@@ -551,10 +532,8 @@ class Sd : public SdInterface
                                     sd->response.data.byte, 0, KeepAlive::kNo);
       return false;
     }
-    else if (
-        sd->response.data.byte[3] &
-        (supported_voltage == static_cast<uint64_t>(0x00))
-    )
+    else if (sd->response.data.byte[3] &
+             (supported_voltage == static_cast<uint64_t>(0x00)))
     {
       // If the 2nd-to-last byte of the reponse AND'ed with our host
       // device's supported voltage range is 0x00, the SD card doesn't
@@ -730,28 +709,28 @@ class Sd : public SdInterface
         WaitToReadBlock();
 
         // Calculate the block address offset
-        uint16_t block_addr_offset = static_cast<uint16_t>(
-          block_count * kBlockSize);
+        uint16_t block_addr_offset =
+            static_cast<uint16_t>(block_count * kBlockSize);
 
         // Read all the bytes of a single block
         for (uint16_t byte_count = 0; byte_count < kBlockSize; byte_count++)
         {
           // Calculate the current storage index
-          uint16_t storage_index = static_cast<uint16_t>(
-            block_addr_offset + byte_count);
+          uint16_t storage_index =
+              static_cast<uint16_t>(block_addr_offset + byte_count);
 
           // Transfer a byte to read a block from the SD card
-          array[storage_index] = static_cast<uint8_t>(
-            ssp_interface_->Transfer(0xFF));
+          array[storage_index] =
+              static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
 
           // Copy that byte into our temporary block store
           block_store[byte_count] = array[storage_index];
         }
 
         // Then read the block's 16-bit CRC (i.e. read two bytes)
-        uint16_t block_crc = static_cast<uint16_t>(
-          (ssp_interface_->Transfer(0xFF) << 8) |
-          ssp_interface_->Transfer(0xFF));
+        uint16_t block_crc =
+            static_cast<uint16_t>((ssp_interface_->Transfer(0xFF) << 8) |
+                                  ssp_interface_->Transfer(0xFF));
 
         // Run a CRC-16 calculation on the message to determine if the
         // received CRCs match (i.e. checks if the block data is
@@ -832,22 +811,18 @@ class Sd : public SdInterface
     uint8_t write_start_tkn;
     if (blocks > 1)
     {
-      write_cmd      = Command::kWriteMulti;
+      write_cmd       = Command::kWriteMulti;
       write_start_tkn = 0xFC;
     }
     else
     {
-      write_cmd      = Command::kWriteSingle;
+      write_cmd       = Command::kWriteSingle;
       write_start_tkn = 0xFE;
     }
 
     // Send initial write command
-    sd.response.length = SendCmd(
-      write_cmd,
-      address,
-      sd.response.data.byte,
-      100,
-      KeepAlive::kYes);
+    sd.response.length = SendCmd(write_cmd, address, sd.response.data.byte, 100,
+                                 KeepAlive::kYes);
     LOG_DEBUG("Sent Write Cmd");
     LOG_DEBUG("[R1 Response:0x%02X]", sd.response.data.byte[0]);
 
@@ -867,17 +842,15 @@ class Sd : public SdInterface
 
         // Write all 512-bytes of the given block
         LOG_DEBUG("Writing block #%d", current_block_num);
-        for (
-          uint16_t current_byte = 0;
-          current_byte < kBlockSize;
-          current_byte++)
+        for (uint16_t current_byte = 0; current_byte < kBlockSize;
+             current_byte++)
         {
           ssp_interface_->Transfer(array[arr_offset + current_byte]);
         }
 
         // Read the data response token after writing the block
-        uint8_t data_response_tkn = static_cast<uint8_t>(
-          ssp_interface_->Transfer(0xFF));
+        uint8_t data_response_tkn =
+            static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
         LOG_DEBUG("Response Byte");
         LOG_DEBUG("[Data Response Token: 0x%02X]", data_response_tkn);
         LOG_DEBUG("Data Accepted?: %s", ToBool(data_response_tkn & 0x05));
@@ -904,7 +877,8 @@ class Sd : public SdInterface
                         100, KeepAlive::kYes);
             LOG_DEBUG(
                 "Checking Status Register to see cause of Write Error...");
-            LOG_DEBUG("[R2 Response: 0x%04X]", sd.response.data.dWord.lo);
+            LOG_DEBUG("[R2 Response: 0x%04" PRIX32 "]",
+                      sd.response.data.dWord.lo);
           }
         }
         WaitWhileBusy();
@@ -1003,11 +977,11 @@ class Sd : public SdInterface
                    uint32_t delay, KeepAlive keep_alive) override
   {
     ResponseType res_type;
-    uint8_t res_len   = 0;
-    uint8_t crc       = 0;
-    uint8_t tries     = 0;
+    uint8_t res_len    = 0;
+    uint8_t crc        = 0;
+    uint8_t tries      = 0;
     uint8_t bit_offset = 0;  // determines the distance of the response's
-                            // 0 bit from the MSB place
+                             // 0 bit from the MSB place
     uint8_t temp_byte = 0;
 
     // Determine the response type of the set command
@@ -1110,8 +1084,8 @@ class Sd : public SdInterface
     // Acquire the response
     uint64_t temp_response = 0;
     // Read an extra 8 bits since the response was offset
-    uint8_t bytes_to_read = static_cast<uint8_t>(
-      (bit_offset > 0) ? res_len + 1 : res_len);
+    uint8_t bytes_to_read =
+        static_cast<uint8_t>((bit_offset > 0) ? res_len + 1 : res_len);
     while (bytes_to_read-- > 0)
     {
       // Make space for the next byte
@@ -1151,14 +1125,11 @@ class Sd : public SdInterface
   // Returns the CRC-7 for a message of "length" bytes
   uint8_t GetCrc7(uint8_t * message, uint8_t length) override
   {
-    int i;
     uint8_t crc = 0;
-
-    for (i = 0; i < length; i++)
+    for (int i = 0; i < length; i++)
     {
       crc = Crc7Add(crc, message[i]);
     }
-
     return crc;
   }
 
