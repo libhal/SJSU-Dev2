@@ -86,14 +86,7 @@
       if ((with_dump))                                                        \
       {                                                                       \
         printf("\nPrinting Stack Trace:\n\n");                                \
-        ::debug::PrintBacktrace();                                            \
-        printf(                                                               \
-            "\nRun: the following command in your project directory"          \
-            "\n\n    " SJ2_BOLD_WHITE "arm-none-eabi-addr2line -e " ELF_FILE  \
-            " <insert pc>" SJ2_COLOR_RESET                                    \
-            "\n\n"                                                            \
-            "This will report the file and line number associated with that " \
-            "program counter values provided above in the backtrace.\n\n");   \
+        ::debug::PrintBacktrace(true);                                        \
       }                                                                       \
       Halt();                                                                 \
     }                                                                         \

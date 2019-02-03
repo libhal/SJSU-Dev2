@@ -132,9 +132,10 @@ endif
 BUILD_DIRECTORY_NAME = build
 # "make application"'s build directory becomes "build/application"
 # "make test"'s build directory becomes "build/test"
-ifeq ($(MAKECMDGOALS), flash)
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), flash stacktrace-application))
 BUILD_SUBDIRECTORY_NAME = application
-else ifeq ($(MAKECMDGOALS), burn)
+else ifeq ($(MAKECMDGOALS), \
+	$(filter $(MAKECMDGOALS), burn stacktrace-bootloader))
 BUILD_SUBDIRECTORY_NAME = bootloader
 else
 BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
@@ -422,6 +423,10 @@ presubmit:
 # ====================================================================
 # Microcontroller Debugging
 # ====================================================================
+stacktrace-application:
+	@arm-none-eabi-addr2line -e $(EXECUTABLE) $(TRACES)
+stacktrace-bootloader:
+	@arm-none-eabi-addr2line -e $(EXECUTABLE)
 # Start an openocd jtag debug session for the sjtwo development board
 openocd:
 	openocd -f $(FIRMWARE_DIR)/debug/sjtwo.cfg
