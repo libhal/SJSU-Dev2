@@ -6,7 +6,9 @@
 
 #include "ff.h"
 
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#pragma GCC diagnostic ignored "-Wconversion"
 #if FF_USE_LFN == 3	/* Dynamic memory allocation */
 
 /*------------------------------------------------------------------------*/
@@ -168,3 +170,4 @@ void ff_rel_grant (
 
 #endif
 
+#pragma GCC diagnostic pop

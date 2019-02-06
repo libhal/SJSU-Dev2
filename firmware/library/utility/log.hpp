@@ -107,4 +107,4 @@
 #endif  // defined HOST_TEST
 
 #define SJ2_PRINT_VARIABLE(variable, printf_specifier) \
-  LOG_DEBUG(#variable " = " printf_specifier "\n", (variable))
+  LOG_DEBUG(#variable " = " printf_specifier, (variable))

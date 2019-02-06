@@ -25,6 +25,9 @@
 
 #include "ff.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#pragma GCC diagnostic ignored "-Wconversion"
 #if FF_USE_LFN	/* This module will be blanked at non-LFN configuration */
 
 #if FF_DEFINED != 86604	/* Revision ID */
@@ -15595,3 +15598,5 @@ DWORD ff_wtoupper (	/* Returns up-converted code point */
 
 
 #endif /* #if FF_USE_LFN */
+
+#pragma GCC diagnostic pop

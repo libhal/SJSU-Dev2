@@ -242,7 +242,9 @@ void DeregisterIsr(IRQn_Type irq)
   dynamic_isr_vector_table[irq + kIrqOffset] = InterruptLookupHandler;
 }
 
-extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
+extern "C"
+[[gnu::no_instrument_function]]
+void GetRegistersFromStack(uint32_t * fault_stack_address)
 {
   // These are volatile to try and prevent the compiler/linker optimizing them
   // away as the variables never actually get used.  If the debugger won't
@@ -260,20 +262,19 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   // Program status register.
   volatile uint32_t psr = fault_stack_address[7];
 
+  printf(SJ2_BACKGROUND_RED "Hard Fault Exception Occurred!\n" SJ2_COLOR_RESET);
   printf("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32
          ", "
-         "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 " ",
+         "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 "\n",
          r0, r1, r2, r3);
   printf("r12: 0x%08" PRIX32 ", lr: 0x%08" PRIX32
          ", "
-         "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "",
+         "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "\n",
          r12, lr, pc, psr);
-
-  bool hard_fault_occurred = false;
-
+  debug::PrintBacktrace(true, reinterpret_cast<void *>(pc));
   // When the following line is hit, the variables contain the register values
   // Use a JTAG debugger to inspect these variables
-  SJ2_ASSERT_FATAL(hard_fault_occurred, "Hard Fault Exception Occurred!");
+  Halt();
 }
 
 SJ2_SECTION(".after_vectors")
