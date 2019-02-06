@@ -13,12 +13,23 @@ environment. To do so follow these steps:
 
   https://docs.microsoft.com/en-us/windows/wsl/install-win10
 
+Installing Serial Device Driver for Windows 10 and Mac Users
+-------------------------------------------------------------
+Windows 10 and Mac users will need to install the serial drivers on their
+computer to be able to communicate with the SJTwo board. Follow this link and
+download the driver for your computer.
+
+  https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers
+
 Installation
 -------------
 
 **Step 0**
-  Open a terminal and go to a directory where you would like to download
-  SJSU-Dev2.
+  Open a terminal (also called commandline) and go to a directory where you
+  would like to download SJSU-Dev2.
+  * On Windows it is advised to install in the :code:`/mnt/c/` directory as you
+  will have access to the files from your desktop. To go to this folder type
+  :code:`cd /mnt/c` into your terminal and press enter.
 
 **Step 1**
   Download the repository.
@@ -85,8 +96,10 @@ Building and Loading the "Hello World" Application
 
   .. note::
     If :code:`make flash` couldn't find your device, try running it again. If
-    it continues to fail then it may not have the bootloader installed on it.
-    To install the bootloader, follow the steps at the bottom of this page.
+    it continues to fail then it could a few things such as, (1) you haven't
+    installed the driver yet or (2) the board may not have the bootloader
+    installed on it, which allows the board to be programmed. To install the
+    bootloader, follow the steps at the bottom of this page.
 
 **Step 3**
   To view output messages and interact with the board, go to this URL and following the setup instructions:
