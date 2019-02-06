@@ -22,8 +22,9 @@
 #include "ff.h"			/* Declarations of FatFs API */
 #include "diskio.h"		/* Declarations of device I/O functions */
 
-#pragma GCC diagnostic push ignored "-Wsign-conversion"
-#pragma GCC diagnostic push ignored "-Wconversion"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#pragma GCC diagnostic ignored "-Wconversion"
 /*--------------------------------------------------------------------------
 
    Module Private Definitions
@@ -6554,5 +6555,4 @@ FRESULT f_setcp (
 }
 #endif	/* FF_CODE_PAGE == 0 */
 
-#pragma GCC diagnostic pop
 #pragma GCC diagnostic pop

@@ -306,7 +306,7 @@ class SdInterface
   ///                               for details on what these
   ///                               flags mean.
   virtual uint8_t ReadBlock(uint32_t address, uint8_t * array,
-                            uint16_t blocks = 1) = 0;
+                            uint32_t blocks = 1) = 0;
 
   /// @description     writes any number of 512-byte blocks to the SD Card
   ///                  and returns the status of the operation.
@@ -348,7 +348,7 @@ class SdInterface
   ///                               for details on what these
   ///                               flags mean.
   virtual uint8_t WriteBlock(uint32_t address, const uint8_t * array,
-                             uint16_t blocks = 1) = 0;
+                             uint32_t blocks = 1) = 0;
 
   /// @description     Deletes any number of 512-byte blocks from the SD Card
   ///                  This function assumes the block length is locked to
@@ -667,8 +667,10 @@ class Sd : public SdInterface
 
   // Read any number of blocks from the SD card
   uint8_t ReadBlock(uint32_t address, uint8_t * array,
-                    uint16_t blocks = 1) override
+                    uint32_t blocks = 1) override
   {
+    LOG_DEBUG("Block %" PRId32 " :: 0x%" PRIX32 " for %" PRId32 " blocks",
+              address, address, blocks);
     // Wait for a previous command to finish
     WaitWhileBusy();
 
@@ -736,7 +738,8 @@ class Sd : public SdInterface
         // received CRCs match (i.e. checks if the block data is
         // valid).
         uint16_t expected_block_crc = GetCrc16(block_store, 512);
-        LOG_DEBUG("Block #%d acquired", block_count);
+
+        LOG_DEBUG("Block #%d @ 0x%" PRIX32 " acquired", block_count, address);
         LOG_DEBUG("Expecting block crc16 '0x%04X'", expected_block_crc);
         LOG_DEBUG("Got '0x%04X'", block_crc);
         if (expected_block_crc != block_crc)
@@ -786,7 +789,7 @@ class Sd : public SdInterface
     do
     {
       // Query the status register
-      sd.response.length = SendCmd(Command::kGetStatus, 0xFFFFFFFF,
+      sd.response.length = SendCmd(Command::kGetStatus, 32,
                                    sd.response.data.byte, 0, KeepAlive::kNo);
     } while (sd.response.data.byte[0] & 0x01);
     LOG_DEBUG("SD Card is out of Idle Mode!");
@@ -798,7 +801,7 @@ class Sd : public SdInterface
 
   // Writes any number of 512-byte blocks to the SD Card
   uint8_t WriteBlock(uint32_t address, const uint8_t * array,
-                     uint16_t blocks = 1) override
+                     uint32_t blocks = 1) override
   {
     // Wait for a previous command to finish
     WaitWhileBusy();
