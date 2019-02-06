@@ -12,6 +12,7 @@ class ButtonInterface
   virtual bool Pressed(void)                                        = 0;
   virtual void ResetState(void)                                     = 0;
   virtual void InvertButtonSignal(bool enable_invert_signal = true) = 0;
+  virtual GpioInterface & GetGpio()                                 = 0;
 };
 
 class Button : public ButtonInterface
@@ -77,8 +78,10 @@ class Button : public ButtonInterface
     was_pressed_  = false;
     was_released_ = false;
   }
-
-  ~Button() {}
+  GpioInterface & GetGpio() override
+  {
+    return *button_;
+  }
 
  private:
   GpioInterface * button_;

@@ -146,7 +146,7 @@ class Ssd1306 : public PixelDisplayInterface
     ssp_->SetPeripheralMode(Ssp::MasterSlaveMode::kMaster, Ssp::FrameMode::kSpi,
                             Ssp::DataSize::kEight);
     // Set speed to 1Mhz by dividing by 1 * ClockFrequencyInMHz.
-    ssp_->SetClock(false, false, 100, config::kSystemClockRateMhz);
+    ssp_->SetClock(false, false, 1, config::kSystemClockRateMhz/3);
     ssp_->Initialize();
 
     Clear();
