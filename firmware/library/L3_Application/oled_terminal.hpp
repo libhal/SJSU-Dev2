@@ -79,7 +79,7 @@ class OledTerminal
         size_t x = j * kCharacterWidth;
         size_t y = i * kCharacterHeight;
         graphics_.DrawCharacter(x, y,
-                                terminal_[(i + row_start_ % kMaxRows)][j]);
+                                terminal_[(i + row_start_) % kMaxRows][j]);
       }
     }
     graphics_.Update();
