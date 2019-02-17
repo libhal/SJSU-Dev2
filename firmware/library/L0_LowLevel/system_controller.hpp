@@ -6,52 +6,40 @@
 #include "project_config.hpp"
 
 #include "L0_LowLevel/LPC40xx.h"
+#include "utility/bit.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 
-class SystemControllerInterface
+class LpcPeripheral
 {
  public:
-  class PeripheralID
+  class ID
   {
    public:
     size_t device_id = -1;
   };
   template <size_t kDeviceId>
-  class AddPeripheralID : public PeripheralID
+  class AddID : public ID
   {
    public:
-    constexpr AddPeripheralID()
+    constexpr AddID()
     {
       device_id = kDeviceId;
     }
   };
-  virtual uint32_t SetClockFrequency(uint8_t frequency_in_mhz)             = 0;
-  virtual void SetPeripheralClockDivider(uint8_t peripheral_divider)       = 0;
-  virtual uint32_t GetPeripheralClockDivider() const                       = 0;
-  virtual uint32_t GetSystemFrequency() const                              = 0;
-  virtual uint32_t GetPeripheralFrequency() const                          = 0;
-  virtual void PowerUpPeripheral(const PeripheralID & peripheral_select) = 0;
-  virtual void PowerDownPeripheral(
-      const PeripheralID & peripheral_select) = 0;
 };
 
-class Lpc40xxSystemController : public SystemControllerInterface
+class Lpc40xxSystemController
 {
  public:
-  enum class UsbSource : uint16_t
-  {
-    kBaseClock         = (0b00 << 8),
-    kMainPllClock      = (0b01 << 8),
-    kALternatePllClock = (0b10 << 8)
-  };
+  using PeripheralID = LpcPeripheral::ID;
 
   enum class SpifiSource : uint16_t
   {
-    kBaseClock         = (0b00 << 8),
+    kIrcDirect         = (0b00 << 8),
     kMainPllClock      = (0b01 << 8),
-    kALternatePllClock = (0b10 << 8)
+    kAlternatePllClock = (0b10 << 8)
   };
 
   enum class OscillatorSource : uint16_t
@@ -62,8 +50,8 @@ class Lpc40xxSystemController : public SystemControllerInterface
 
   enum class MainClockSource : uint16_t
   {
-    kBaseClock = (0b0 << 8),
-    kPllClock  = (0b1 << 8)
+    kIrcDirect = 0b0,
+    kPllClock  = 0b1
   };
 
   enum class PllInput : uint16_t
@@ -80,12 +68,19 @@ class Lpc40xxSystemController : public SystemControllerInterface
     kHalfTheSpeedOfCpu
   };
 
+  enum class UsbSource : uint16_t
+  {
+    kIrcDirect         = 0x0,
+    kMainPllClock      = 0x1,
+    kAlternatePllClock = 0x2
+  };
+
   enum class UsbDivider : uint8_t
   {
-    kDivideBy1 = 0,
-    kDivideBy2,
-    kDivideBy3,
-    kDivideBy4
+    kDisable = 0,
+    kDivideBy1 = 1,
+    kDivideBy2 = 2,
+    kDivideBy3 = 3
   };
 
   // LPC40xx Peripheral Power On Values:
@@ -94,42 +89,42 @@ class Lpc40xxSystemController : public SystemControllerInterface
   class Peripherals
   {
    public:
-    static constexpr auto kLcd               = AddPeripheralID<0>();
-    static constexpr auto kTimer0            = AddPeripheralID<1>();
-    static constexpr auto kTimer1            = AddPeripheralID<2>();
-    static constexpr auto kUart0             = AddPeripheralID<3>();
-    static constexpr auto kUart1             = AddPeripheralID<4>();
-    static constexpr auto kPwm0              = AddPeripheralID<5>();
-    static constexpr auto kPwm1              = AddPeripheralID<6>();
-    static constexpr auto kI2c0              = AddPeripheralID<7>();
-    static constexpr auto kUart4             = AddPeripheralID<8>();
-    static constexpr auto kRtc               = AddPeripheralID<9>();
-    static constexpr auto kSsp1              = AddPeripheralID<10>();
-    static constexpr auto kEmc               = AddPeripheralID<11>();
-    static constexpr auto kAdc               = AddPeripheralID<12>();
-    static constexpr auto kCan1              = AddPeripheralID<13>();
-    static constexpr auto kCan2              = AddPeripheralID<14>();
-    static constexpr auto kGpio              = AddPeripheralID<15>();
-    static constexpr auto kSpifi             = AddPeripheralID<16>();
-    static constexpr auto kMotorControlPwm   = AddPeripheralID<17>();
-    static constexpr auto kQuadratureEncoder = AddPeripheralID<18>();
-    static constexpr auto kI2c1              = AddPeripheralID<19>();
-    static constexpr auto kSsp2              = AddPeripheralID<20>();
-    static constexpr auto kSsp0              = AddPeripheralID<21>();
-    static constexpr auto kTimer2            = AddPeripheralID<22>();
-    static constexpr auto kTimer3            = AddPeripheralID<23>();
-    static constexpr auto kUart2             = AddPeripheralID<24>();
-    static constexpr auto kUart3             = AddPeripheralID<25>();
-    static constexpr auto kI2c2              = AddPeripheralID<26>();
-    static constexpr auto kI2s               = AddPeripheralID<27>();
-    static constexpr auto kSdCard            = AddPeripheralID<28>();
-    static constexpr auto kGpdma             = AddPeripheralID<29>();
-    static constexpr auto kEthernet          = AddPeripheralID<30>();
-    static constexpr auto kUsb               = AddPeripheralID<31>();
+    static constexpr auto kLcd               = LpcPeripheral::AddID<0>();
+    static constexpr auto kTimer0            = LpcPeripheral::AddID<1>();
+    static constexpr auto kTimer1            = LpcPeripheral::AddID<2>();
+    static constexpr auto kUart0             = LpcPeripheral::AddID<3>();
+    static constexpr auto kUart1             = LpcPeripheral::AddID<4>();
+    static constexpr auto kPwm0              = LpcPeripheral::AddID<5>();
+    static constexpr auto kPwm1              = LpcPeripheral::AddID<6>();
+    static constexpr auto kI2c0              = LpcPeripheral::AddID<7>();
+    static constexpr auto kUart4             = LpcPeripheral::AddID<8>();
+    static constexpr auto kRtc               = LpcPeripheral::AddID<9>();
+    static constexpr auto kSsp1              = LpcPeripheral::AddID<10>();
+    static constexpr auto kEmc               = LpcPeripheral::AddID<11>();
+    static constexpr auto kAdc               = LpcPeripheral::AddID<12>();
+    static constexpr auto kCan1              = LpcPeripheral::AddID<13>();
+    static constexpr auto kCan2              = LpcPeripheral::AddID<14>();
+    static constexpr auto kGpio              = LpcPeripheral::AddID<15>();
+    static constexpr auto kSpifi             = LpcPeripheral::AddID<16>();
+    static constexpr auto kMotorControlPwm   = LpcPeripheral::AddID<17>();
+    static constexpr auto kQuadratureEncoder = LpcPeripheral::AddID<18>();
+    static constexpr auto kI2c1              = LpcPeripheral::AddID<19>();
+    static constexpr auto kSsp2              = LpcPeripheral::AddID<20>();
+    static constexpr auto kSsp0              = LpcPeripheral::AddID<21>();
+    static constexpr auto kTimer2            = LpcPeripheral::AddID<22>();
+    static constexpr auto kTimer3            = LpcPeripheral::AddID<23>();
+    static constexpr auto kUart2             = LpcPeripheral::AddID<24>();
+    static constexpr auto kUart3             = LpcPeripheral::AddID<25>();
+    static constexpr auto kI2c2              = LpcPeripheral::AddID<26>();
+    static constexpr auto kI2s               = LpcPeripheral::AddID<27>();
+    static constexpr auto kSdCard            = LpcPeripheral::AddID<28>();
+    static constexpr auto kGpdma             = LpcPeripheral::AddID<29>();
+    static constexpr auto kEthernet          = LpcPeripheral::AddID<30>();
+    static constexpr auto kUsb               = LpcPeripheral::AddID<31>();
   };
 
   static constexpr uint32_t kOscillatorSelect       = (1 << 0);
-  static constexpr uint32_t kBaseClockSelect        = (1 << 8);
+  static constexpr uint32_t kIrcDirectSelect        = 8;
   static constexpr uint32_t kUsbClockSource         = (0b11 << 8);
   static constexpr uint32_t kSpifiClockSource       = (0b11 << 8);
   static constexpr uint32_t kEnablePll              = (0b1 << 0);
@@ -148,34 +143,37 @@ class Lpc40xxSystemController : public SystemControllerInterface
 
   constexpr Lpc40xxSystemController() {}
 
-  uint32_t SetClockFrequency(uint8_t frequency_in_mhz) override
+  uint32_t SetClockFrequency(
+      uint8_t frequency_in_mhz,
+      OscillatorSource oscillator = OscillatorSource::kIrc,
+      PllInput pll_input          = PllInput::kIrc)
   {
     uint32_t offset = 0;
-    SelectOscillatorSource(OscillatorSource::kIrc);
+    SelectOscillatorSource(oscillator);
     if (frequency_in_mhz > 12)
     {
-      offset = SetMainPll(PllInput::kIrc, frequency_in_mhz);
-      SelectMainClockSource(MainClockSource::kPllClock);
+      offset = SetMainPll(pll_input, frequency_in_mhz);
+      SelectCpuClockSource(MainClockSource::kPllClock);
       speed_in_hertz = frequency_in_mhz * 1'000'000;
     }
     else
     {
-      SelectMainClockSource(MainClockSource::kBaseClock);
+      SelectCpuClockSource(MainClockSource::kIrcDirect);
       speed_in_hertz = kDefaultIRCFrequency;
     }
     SetCpuClockDivider(kDivideInputBy1);
-    SetPeripheralClockDivider(kDivideInputBy1);
     SetEmcClockDivider(EmcDivider::kSameSpeedAsCpu);
+    SetPeripheralClockDivider(kDivideInputBy1);
     return offset;
   }
 
-  void SetPeripheralClockDivider(uint8_t peripheral_divider) override
+  void SetPeripheralClockDivider(uint8_t peripheral_divider)
   {
     SJ2_ASSERT_FATAL(peripheral_divider <= 4, "Divider mustn't exceed 32");
     system_controller->PCLKSEL = peripheral_divider;
   }
 
-  uint32_t GetPeripheralClockDivider() const override
+  uint32_t GetPeripheralClockDivider() const
   {
 #if defined(HOST_TEST)
     return 1;
@@ -184,7 +182,7 @@ class Lpc40xxSystemController : public SystemControllerInterface
 #endif
   }
 
-  uint32_t GetSystemFrequency() const override
+  uint32_t GetSystemFrequency() const
   {
 #if defined(HOST_TEST)
     return config::kSystemClockRate;
@@ -193,7 +191,7 @@ class Lpc40xxSystemController : public SystemControllerInterface
 #endif
   }
 
-  uint32_t GetPeripheralFrequency() const override
+  uint32_t GetPeripheralFrequency() const
   {
     uint32_t peripheral_clock_divider = GetPeripheralClockDivider();
     uint32_t result = 0;  // return 0 if peripheral_clock_divider == 0
@@ -204,14 +202,15 @@ class Lpc40xxSystemController : public SystemControllerInterface
     return result;
   }
 
-  void PowerUpPeripheral(const PeripheralID & peripheral_select) override
+  void PowerUpPeripheral(const PeripheralID & peripheral_select)
   {
     auto power_connection_with_enabled_peripheral =
         system_controller->PCONP | (1 << peripheral_select.device_id);
 
     system_controller->PCONP = power_connection_with_enabled_peripheral;
   }
-  void PowerDownPeripheral(const PeripheralID & peripheral_select) override
+
+  void PowerDownPeripheral(const PeripheralID & peripheral_select)
   {
     auto power_connection_without_enabled_peripheral =
         system_controller->PCONP & (1 << peripheral_select.device_id);
@@ -219,26 +218,34 @@ class Lpc40xxSystemController : public SystemControllerInterface
     system_controller->PCONP = power_connection_without_enabled_peripheral;
   }
 
- private:
   void SelectOscillatorSource(OscillatorSource source)
   {
     uint32_t source_bit = static_cast<uint32_t>(source);
     system_controller->CLKSRCSEL =
-        (system_controller->CLKSRCSEL & ~(kOscillatorSelect)) | source_bit;
+        bit::Insert(system_controller->CLKSRCSEL, source_bit, 0, 1);
   }
 
-  void SelectMainClockSource(MainClockSource source)
+  void SelectCpuClockSource(MainClockSource source)
   {
     system_controller->CCLKSEL =
-        (system_controller->CCLKSEL & ~(kBaseClockSelect)) |
-        static_cast<uint32_t>(source);
+        bit::Insert(system_controller->CCLKSEL, 1, 0, 5);
+    system_controller->CCLKSEL =
+        bit::Insert(system_controller->CCLKSEL, static_cast<uint32_t>(source),
+                    kIrcDirectSelect, 1);
   }
 
   void SelectUsbClockSource(UsbSource usb_clock)
   {
+    uint32_t clock_value = static_cast<uint32_t>(usb_clock);
     system_controller->USBCLKSEL =
-        (system_controller->USBCLKSEL & ~(kUsbClockSource)) |
-        static_cast<uint32_t>(usb_clock);
+        bit::Insert(system_controller->USBCLKSEL, clock_value, 8, 2);
+  }
+
+  void SelectUsbClockDivider(UsbDivider usb_divider)
+  {
+    uint32_t divider_value = static_cast<uint32_t>(usb_divider);
+    system_controller->USBCLKSEL =
+        bit::Insert(system_controller->USBCLKSEL, divider_value, 0, 5);
   }
 
   void SelectSpifiClockSource(SpifiSource spifi_clock)
@@ -297,18 +304,17 @@ class Lpc40xxSystemController : public SystemControllerInterface
     uint32_t actual_speed =
         static_cast<uint32_t>(input_frequency) * multiplier_value;
     // TO DO: use registers to retreive values
-    SelectOscillatorSource(OscillatorSource::kIrc);
-    SelectMainClockSource(MainClockSource::kBaseClock);
-    SelectUsbClockSource(UsbSource::kBaseClock);
-    SelectSpifiClockSource(SpifiSource::kBaseClock);
+    SelectCpuClockSource(MainClockSource::kIrcDirect);
+    SelectUsbClockSource(UsbSource::kIrcDirect);
+    SelectSpifiClockSource(SpifiSource::kIrcDirect);
     // must subtract 1 from multiplier value as specified in datasheet
     system_controller->PLL0CFG =
         (system_controller->PLL0CFG & ~kClearPllMultiplier) |
         (multiplier_value - 1);
     system_controller->PLL0CFG =
         (system_controller->PLL0CFG & ~kClearPllDivider) | (divider_value << 5);
-    system_controller->PLL0CON |= kEnablePll;
     // nessecary feed sequence to ensure the changes are intentional
+    system_controller->PLL0CON  = kEnablePll;
     system_controller->PLL0FEED = 0xAA;
     system_controller->PLL0FEED = 0x55;
     while (!(system_controller->PLL0STAT >> kPlock & 1) &&
@@ -316,49 +322,65 @@ class Lpc40xxSystemController : public SystemControllerInterface
     {
       current_time = Milliseconds();
     }
-    if (!(system_controller->PLL0STAT >> kPlock & 1) &&
-        (current_time >= timeout_time))
+    if (current_time >= timeout_time)
     {
       SJ2_ASSERT_FATAL(false,
                        "PLL lock could not be established before timeout");
-      actual_speed = kDefaultIRCFrequency;
     }
     return (actual_speed - desired_speed_in_mhz);
   }
+
+  struct SystemControlRegister
+  {
+    unsigned reserved0 : 4;
+    uint8_t main_oscillator_freq_above_15Mhz : 1;
+    uint8_t main_oscillator_enable : 1;
+    uint8_t is_main_oscillator_enabled : 1;
+    uint32_t reserved1 : 25;
+  };
 
   uint32_t SetAlternatePll(PllInput input_frequency,
                            uint16_t desired_speed_in_mhz)
   {
     uint16_t divider_value = 1;
-    uint64_t timeout_time  = Milliseconds() + kDefaultTimeout;
+    uint64_t timeout_time  = Milliseconds() + (kDefaultTimeout);
     uint64_t current_time  = Milliseconds();
     uint32_t multiplier_value =
         CalculatePll(input_frequency, desired_speed_in_mhz);
     uint32_t actual_speed =
         static_cast<uint32_t>(input_frequency) * multiplier_value;
-    SelectUsbClockSource(UsbSource::kBaseClock);
-    SelectSpifiClockSource(SpifiSource::kBaseClock);
+
+    LPC_SC->SCS |= 1 << 5;
+    while(!(LPC_SC->SCS & (1 << 6)))
+    {
+      continue;
+    }
+
+    SelectUsbClockSource(UsbSource::kIrcDirect);
+    SelectSpifiClockSource(SpifiSource::kIrcDirect);
     // must subtract 1 from multiplier value as specified in datasheet
     system_controller->PLL1CFG =
         (system_controller->PLL1CFG & ~kClearPllMultiplier) |
         (multiplier_value - 1);
     system_controller->PLL1CFG =
         (system_controller->PLL1CFG & ~kClearPllDivider) | (divider_value << 5);
-    system_controller->PLL1CON |= kEnablePll;
     // Necessary feed sequence to ensure the changes are intentional
+    __disable_irq();  // Set PRIMASK
+    system_controller->PLL1CON  = 1;
     system_controller->PLL1FEED = 0xAA;
     system_controller->PLL1FEED = 0x55;
-    while (!(system_controller->PLL1STAT >> kPlock & 1) &&
+    __enable_irq();  // Clear PRIMASK
+    while (!(system_controller->PLL1STAT & (1 << kPlock)) &&
            (current_time < timeout_time))
     {
       current_time = Milliseconds();
     }
-    if (!(system_controller->PLL1STAT >> kPlock & 1) &&
-        (current_time >= timeout_time))
+    if (!(system_controller->PLL1STAT & (1 << kPlock)) && current_time >= timeout_time)
     {
       SJ2_ASSERT_FATAL(false,
                        "PLL lock could not be established before timeout");
     }
+    SJ2_PRINT_VARIABLE(system_controller->PLL1STAT, "%08lX");
     return (actual_speed - desired_speed_in_mhz);
   }
 
@@ -375,6 +397,8 @@ class Lpc40xxSystemController : public SystemControllerInterface
         (system_controller->EMCCLKSEL & ~kClearEmcDivider) |
         static_cast<uint8_t>(emc_divider);
   }
+
+ protected:
   // TODO(Zaaji #181): Set USB and Spifi clock rates
   inline static uint32_t speed_in_hertz = kDefaultIRCFrequency;
 };
