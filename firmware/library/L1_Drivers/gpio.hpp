@@ -87,7 +87,7 @@ class Gpio final : public GpioInterface
 
   inline static volatile uint32_t * port_status = &(LPC_GPIOINT->IntStatus);
 
-  // For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
+  /// For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
   constexpr Gpio(uint8_t port_number, uint8_t pin_number)
       : interupt_port_(false),
         pin_(&lpc40xx_pin_),
@@ -95,59 +95,58 @@ class Gpio final : public GpioInterface
   {
     interupt_port_ = (port_number == 2) ? 1 : 0;
   }
-  // For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
+  /// For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
   constexpr explicit Gpio(PinInterface * pin)
       : interupt_port_(false), pin_(pin), lpc40xx_pin_(Pin::CreateInactivePin())
   {
     interupt_port_ = pin_->GetPort();
   }
-  // Sets the GPIO pin direction as input
-  void SetAsInput(void) override
+  /// Sets the GPIO pin direction as input
+  void SetAsInput() override
   {
     pin_->SetPinFunction(kGpioFunction);
     gpio_port[pin_->GetPort()]->DIR &= ~(1 << pin_->GetPin());
   }
-  // Sets the GPIO pin direction as output
-  void SetAsOutput(void) override
+  /// Sets the GPIO pin direction as output
+  void SetAsOutput() override
   {
     pin_->SetPinFunction(kGpioFunction);
     gpio_port[pin_->GetPort()]->DIR |= (1 << pin_->GetPin());
   }
-  // Sets the GPIO pin direction as output or input depending on the
-  // Direction enum parameter
+  /// Sets the GPIO pin direction
   inline void SetDirection(Direction direction) override
   {
     (direction) ? SetAsOutput() : SetAsInput();
   }
-  // Sets the GPIO output pin to high
-  void SetHigh(void) override
+  /// Sets the GPIO output pin to high
+  void SetHigh() override
   {
     gpio_port[pin_->GetPort()]->SET = (1 << pin_->GetPin());
   }
-  // Sets the GPIO output pin to low
-  void SetLow(void) override
+  /// Sets the GPIO output pin to low
+  void SetLow() override
   {
     gpio_port[pin_->GetPort()]->CLR = (1 << pin_->GetPin());
   }
-  // Sets the GPIO output pin to high or low depending on the State enum
-  // parameter
+  /// Sets the GPIO output pin to high or low depending on the State enum
+  /// parameter
   void Set(State output = kHigh) override
   {
     (output) ? SetHigh() : SetLow();
   }
-  // Toggle the output of a GPIO output pin
+  /// Toggle the output of a GPIO output pin
   void Toggle() override
   {
     gpio_port[pin_->GetPort()]->PIN ^= (1 << pin_->GetPin());
   }
-  // Returns the current State state of the pin
-  State ReadState(void) override
+  /// Returns the current State state of the pin
+  State ReadState() override
   {
     bool state = (gpio_port[pin_->GetPort()]->PIN >> pin_->GetPin()) & 1;
     return static_cast<State>(state);
   }
-  // Returns true if input or output pin is high
-  bool Read(void) override
+  /// Returns true if input or output pin is high
+  bool Read() override
   {
     return (gpio_port[pin_->GetPort()]->PIN >> pin_->GetPin()) & 1;
   }
@@ -155,32 +154,18 @@ class Gpio final : public GpioInterface
   {
     return *pin_;
   }
-
-  // Checks if the selected gpio port is valid for external interrupts.
-  bool ValidPortCheck()
-  {
-    bool is_valid = (interupt_port_ <= 1);
-    SJ2_ASSERT_WARNING(is_valid,
-                       "Port %d cannot be used for External Interrupts. Need "
-                       "to use GPIO on Port 0 or 2.",
-                       pin_->GetPort());
-    return is_valid;
-  }
-
-  // Assigns the developer's ISR function to the port/pin gpio instance.
+  /// Assigns the developer's ISR function to the port/pin gpio instance.
   void SetInterruptRoutine(IsrPointer function) override
   {
     ValidPortCheck();
     interrupthandlers[interupt_port_][pin_->GetPin()] = function;
   }
-
-  // Clears the developers ISR function from the port/pin gio instance.
+  /// Clears the developers ISR function from the port/pin gio instance.
   void ClearInterruptRoutine() override
   {
     interrupthandlers[interupt_port_][pin_->GetPin()] = nullptr;
   }
-
-  // Sets the selected edge that the gpio interrupt will be triggered on.
+  /// Sets the selected edge that the gpio interrupt will be triggered on.
   void SetInterruptEdge(Edge edge) override
   {
     ValidPortCheck();
@@ -211,8 +196,7 @@ class Gpio final : public GpioInterface
       }
     }
   }
-
-  // Clears the seleted edge of the gpio interrupt from being triggered.
+  /// Clears the seleted edge of the gpio interrupt from being triggered.
   void ClearInterruptEdge(Edge edge) override
   {
     ValidPortCheck();
@@ -243,18 +227,16 @@ class Gpio final : public GpioInterface
       }
     }
   }
-
-  // Assign the developer's ISR and sets the selected edge that the gpio
-  // interrupt will be triggered on.
+  /// Assign the developer's ISR and sets the selected edge that the gpio
+  /// interrupt will be triggered on.
   void AttachInterrupt(IsrPointer function, Edge edge) override
   {
     ValidPortCheck();
     SetInterruptRoutine(function);
     SetInterruptEdge(edge);
   }
-
-  // Removes the developer's ISR and clears the selected edge of the gpio
-  // interrupt from being triggered.
+  /// Removes the developer's ISR and clears the selected edge of the gpio
+  /// interrupt from being triggered.
   void DetachInterrupt() override
   {
     ValidPortCheck();
@@ -262,22 +244,20 @@ class Gpio final : public GpioInterface
     ClearEdgeRising();
     ClearEdgeFalling();
   }
-
-  // Enables all gpio interrupts by putting the gpio internal ISR on the
-  // Interrupt Vector Table.
+  /// Enables all gpio interrupts by putting the gpio internal ISR on the
+  /// Interrupt Vector Table.
   static void EnableInterrupts()
   {
     RegisterIsr(GPIO_IRQn, InterruptHandler);
   }
-
-  // Disables all interrupts by removing the gpio internal ISR from the
-  // Interrupt Vector Table.
+  /// Disables all interrupts by removing the gpio internal ISR from the
+  /// Interrupt Vector Table.
   static void DisableInterrupts()
   {
     DeregisterIsr(GPIO_IRQn);
   }
-
-  // The gpio internal ISR that calls the developer's ISR's.
+ private:
+  /// The gpio internal ISR that calls the developer's ISR's.
   static void InterruptHandler()
   {
     int triggered_port = (*port_status >> 2);
@@ -287,27 +267,32 @@ class Gpio final : public GpioInterface
     interrupthandlers[triggered_port][triggered_pin]();
     *interrupt[triggered_port].clear |= (1 << triggered_pin);
   }
-
- private:
-  // Sets the gpio interrupt to trigger on a rising edge.
+  /// Checks if the selected gpio port is valid for external interrupts.
+  bool ValidPortCheck()
+  {
+    bool is_valid = (interupt_port_ <= 1);
+    SJ2_ASSERT_WARNING(is_valid,
+                       "Port %d cannot be used for External Interrupts. Need "
+                       "to use GPIO on Port 0 or 2.",
+                       pin_->GetPort());
+    return is_valid;
+  }
+  /// Sets the gpio interrupt to trigger on a rising edge.
   void SetEdgeRising()
   {
     *interrupt[interupt_port_].enable_rising_edge |= (1 << pin_->GetPin());
   }
-
-  // Sets the gpio interrupt to trigger on a falling edge.
+  /// Sets the gpio interrupt to trigger on a falling edge.
   void SetEdgeFalling()
   {
     *interrupt[interupt_port_].enable_falling_edge |= (1 << pin_->GetPin());
   }
-
-  // Clears the gpio interrupt to no longer trigger on a rising edge.
+  /// Clears the gpio interrupt to no longer trigger on a rising edge.
   void ClearEdgeRising()
   {
     *interrupt[interupt_port_].enable_rising_edge &= ~(1 << pin_->GetPin());
   }
-
-  // Clears the gpio interrupt to no longer trigger on a falling edge.
+  /// Clears the gpio interrupt to no longer trigger on a falling edge.
   void ClearEdgeFalling()
   {
     *interrupt[interupt_port_].enable_falling_edge &= ~(1 << pin_->GetPin());

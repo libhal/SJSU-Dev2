@@ -5,15 +5,16 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
+#include "utility/bit.hpp"
 #include "utility/log.hpp"
 
 class AdcInterface
 {
  public:
-  virtual void Initialize(uint32_t adc_clk_hz = 1'000'000) = 0;
-  virtual void Conversion()                                = 0;
-  virtual uint16_t ReadResult()                            = 0;
-  virtual bool FinishedConversion()                        = 0;
+  virtual void Initialize(uint32_t conversion_frequency = 1'000'000) = 0;
+  virtual void Conversion()                                          = 0;
+  virtual uint16_t ReadResult()                                      = 0;
+  virtual bool FinishedConversion()                                  = 0;
 };
 
 class Adc final : public AdcInterface, protected Lpc40xxSystemController
@@ -77,61 +78,87 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
 
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
 
-  static void BurstMode(bool burst_mode_is_on = false)
+  /// Enable or disable burst mode for analog to digital converter.
+  /// With burst mode enabled, the ADC will continually perform
+  /// analog to digital conversions meaning that the MCU will not have to wait
+  /// for the latest conversion, it can simply read from the ADC conversion
+  /// register for the latest conversion. This method will allow for faster
+  /// reading of ADC voltages, but the continually work requires more power.
+  ///
+  /// Without burst mode, the CPU will have to drive the clock of the ADC
+  /// converter, which will take a time to perform. This method only consumes
+  /// power when you are performing a conversion.
+  ///
+  /// @param burst_mode_is_on - Whether you would like
+  static void BurstMode(bool activate_burst_mode = true)
   {
-    burst_mode_is_on ? (adc_base->CR |= (1 << ControlBit::kBurstMode))
-                     : (adc_base->CR &= ~(1 << ControlBit::kBurstMode));
+    if (activate_burst_mode)
+    {
+      adc_base->CR |= (1 << ControlBit::kBurstMode);
+    }
+    else
+    {
+      adc_base->CR &= ~(1 << ControlBit::kBurstMode);
+    }
   }
-  explicit constexpr Adc(Adc::Channel channel_bit)
+  /// @param channel - ADC channel to read from
+  explicit constexpr Adc(Channel channel)
       : adc_(&adc_pin_),
-        adc_pin_(Pin(kAdcPorts[static_cast<uint8_t>(channel_bit)],
-                     kAdcPins[static_cast<uint8_t>(channel_bit)])),
-        channel_(static_cast<uint8_t>(channel_bit))
+        adc_pin_(Pin(kAdcPorts[util::Value(channel)],
+                     kAdcPins[util::Value(channel)])),
+        channel_(util::Value(channel))
   {
   }
-  // unit test constructor
-  explicit constexpr Adc(PinInterface * adc_pin)
-      : adc_(adc_pin), adc_pin_(Pin::CreateInactivePin()), channel_(0)
+  /// @param adc_pin - address to an initialized adc pin
+  explicit constexpr Adc(PinInterface * adc_pin, Channel channel)
+      : adc_(adc_pin),
+        adc_pin_(Pin::CreateInactivePin()),
+        channel_(util::Value(channel))
   {
   }
-  void Initialize(uint32_t adc_clk_hz = 1'000'000) override
+  /// Initializes ADC hardware.
+  ///
+  /// MUST be run before attempting to use the Conversion() or ReadResult()
+  /// methods.
+  ///
+  /// @param conversion_frequency - The spead
+  void Initialize(uint32_t conversion_frequency = 1'000'000) override
   {
-    constexpr uint32_t kMaxAdcClock = 12'000'000;
     constexpr uint8_t kClkDivBit    = 8;
 
-    constexpr uint32_t kAdcClk = 12'000'000 / 4;
-    SJ2_ASSERT_FATAL(adc_clk_hz < kMaxAdcClock,
+    SJ2_ASSERT_FATAL(conversion_frequency < GetPeripheralFrequency(),
                      "Adc clock has to be less than or equal to 12MHz");
 
     PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kAdc);
+
     adc_base->CR |= (1 << ControlBit::kPowerUp);
     adc_base->CR |= (1 << channel_);
-    if (channel_ < 4)
-    {
-      adc_->SetPinFunction(static_cast<uint8_t>(AdcMode::kCh0123Pins));
-    }
-    if (channel_ >= 4)
-    {
-      adc_->SetPinFunction(static_cast<uint8_t>(AdcMode::kCh4567Pins));
-    }
-    adc_->SetAsAnalogMode(true);
-    adc_->SetMode(PinInterface::Mode::kInactive);
 
-    for (uint32_t i = 2; i < 255; i++)
+    if (adc_ == &adc_pin_)
     {
-      if ((kAdcClk / i) < adc_clk_hz)
+      if (channel_ < 4)
       {
-        adc_base->CR |= (i << kClkDivBit);
-        break;
+        adc_->SetPinFunction(static_cast<uint8_t>(AdcMode::kCh0123Pins));
       }
+      if (channel_ >= 4)
+      {
+        adc_->SetPinFunction(static_cast<uint8_t>(AdcMode::kCh4567Pins));
+      }
+      adc_->SetAsAnalogMode(true);
+      adc_->SetMode(PinInterface::Mode::kInactive);
     }
+
+    uint32_t clock_divider = GetPeripheralFrequency() / conversion_frequency;
+    adc_base->CR = bit::Insert(adc_base->CR, clock_divider, kClkDivBit, 8);
   }
+  /// Run an ADC conversion. Once this function returns you may use the
+  /// ReadResults() method to get the ADC output.
   void Conversion() override
   {
     if (adc_base->CR & (1 << ControlBit::kBurstMode))
     {
       // clear start bits for burst mode
-      adc_base->CR &= ~(7 << ControlBit::kStart);
+      adc_base->CR &= ~(0b111 << ControlBit::kStart);
     }
     else
     {
@@ -139,27 +166,28 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
       adc_base->CR |= (1 << ControlBit::kStart);
     }
 
-    while (!(adc_base->GDR & (1 << kDoneBit)))
+    while (!FinishedConversion())
     {
       continue;
     }
   }
+  /// Returns ADC result from the latest conversion
   uint16_t ReadResult() override
   {
     constexpr uint16_t kResultMask = 0xFFF;
+    /// TODO(undef): This will not work multiple ADCs
     uint16_t result = static_cast<uint16_t>((adc_base->GDR >> 4) & kResultMask);
     return result;
   }
-  bool FinishedConversion() override
-  {
+  /// Check if the ADC conversion is complete
+  [[gnu::always_inline]] bool FinishedConversion() override {
+    constexpr uint8_t kDoneBit = 31;
     return ((adc_base->GDR >> kDoneBit) & 1);
   }
 
- private:
-  PinInterface * adc_;
+  private : PinInterface * adc_;
   Pin adc_pin_;
 
   uint8_t channel_;
 
-  static constexpr uint8_t kDoneBit = 31;
 };

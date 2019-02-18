@@ -127,18 +127,20 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
   static constexpr uint8_t kI2c1          = util::Value(Port::kI2c1);
   static constexpr uint8_t kI2c2          = util::Value(Port::kI2c2);
 
-  inline static constexpr uint8_t kPconp[kNumberOfPorts] = { [kI2c0] = 7,
-                                                             [kI2c1] = 19,
-                                                             [kI2c2] = 26 };
+  inline static constexpr uint8_t kPconp[kNumberOfPorts] = {
+    [kI2c0] = 7, [kI2c1] = 19, [kI2c2] = 26
+  };
 
   inline static constexpr IRQn_Type kIrq[kNumberOfPorts] = {
     [kI2c0] = I2C0_IRQn, [kI2c1] = I2C1_IRQn, [kI2c2] = I2C2_IRQn
   };
 
-  inline static LPC_I2C_TypeDef * i2c[kNumberOfPorts] = { [kI2c0] = LPC_I2C0,
-                                                          [kI2c1] = LPC_I2C1,
-                                                          [kI2c2] = LPC_I2C2 };
+  inline static LPC_I2C_TypeDef * i2c[kNumberOfPorts] = {
+    [kI2c0] = LPC_I2C0, [kI2c1] = LPC_I2C1, [kI2c2] = LPC_I2C2
+  };
 
+  /// I2C interrupt service routine to control the I2C state machine during the
+  /// the I2C transaction.
   template <Port port>
   static void I2cHandler()
   {
@@ -303,12 +305,11 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     i2c[kPort]->CONCLR = clear_mask;
   }
 
-  static Transaction_t & GetTransactionInfo(Port port)
+  static const Transaction_t & GetTransactionInfo(Port port)
   {
     return transaction[util::Value(port)];
   }
-
-  // This defaults to I2C port 2
+  /// Defaults to I2C port 2
   constexpr I2c()
       : sda_(sda_pin_),
         scl_(scl_pin_),
@@ -320,9 +321,10 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
   {
   }
   /// Pins must be initialized to I2C prior to being passed into this class
-  /// @param sda_pin address of an initialized sda pin object.
-  /// @param scl_pin address of an initialized scl pin object.
-  /// @param initialize_pins should only be used for testing.
+  ///
+  /// @param sda_pin              - address of an initialized sda pin object.
+  /// @param scl_pin              - address of an initialized scl pin object.
+  /// @param pins_are_initialized - should only be used for testing.
   constexpr I2c(Port port, PinInterface * sda_pin, PinInterface * scl_pin,
                 bool pins_are_initialized = true)
       : sda_(*sda_pin),
@@ -334,6 +336,10 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
         pins_initialized_(pins_are_initialized)
   {
   }
+  /// Initialize and enable I2C hardware on this platform.
+  ///
+  /// This method MUST be called before attempting using any of the other class
+  /// methods.
   void Initialize() override
   {
     SJ2_ASSERT_FATAL(Port(port_) != Port::kNumberOfPorts,
@@ -359,7 +365,17 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     RegisterIsr(kIrq[port_], kHandlers[port_], true);
     initialized_ = true;
   }
-
+  /// Read bytes from an I2C device.
+  ///
+  /// @param address - Address of the I2C device you would like to read from
+  /// @param data    - A buffer to store data from the I2C device
+  /// @param length  - The amount of data you would like to read from the I2C
+  ///                  device
+  /// @param timeout - time in milliseconds to wait for the transaction to
+  ///                  process. If the transaction takes longer then this time,
+  ///                  it will be cut short.
+  ///
+  /// @returns the status of the transaction (see utilities/status.hpp).
   Status Read(uint8_t address, uint8_t * data, size_t length,
               uint32_t timeout = kI2cTimeout) override
   {
@@ -377,7 +393,17 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     i2c[port_]->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
-
+  /// Write bytes to an I2C device.
+  ///
+  /// @param address - Address of the I2C device you would like to read from
+  /// @param data    - A buffer of bytes to send to the I2C device.
+  /// @param length  - The amount of data you would like to send to the I2C
+  ///                  device.
+  /// @param timeout - time in milliseconds to wait for the transaction to
+  ///                  process. If the transaction takes longer then this time,
+  ///                  it will be cut short.
+  ///
+  /// @returns the status of the transaction (see utilities/status.hpp).
   Status Write(uint8_t address, const uint8_t * data, size_t length,
                uint32_t timeout = kI2cTimeout) override
   {
@@ -395,6 +421,20 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     i2c[port_]->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
+  /// Write bytes to an I2C device.
+  ///
+  /// @param address    - Address of the I2C device you would like to read from
+  /// @param transmit   - A buffer of bytes to send to the I2C device.
+  /// @param out_length - The amount of data you would like to send to the I2C
+  ///                     device.
+  /// @param recieve    - A buffer of bytes to read from the I2C device.
+  /// @param in_length  - The amount of data you would like to read from the I2C
+  ///                     device.
+  /// @param timeout    - time in milliseconds to wait for the transaction to
+  ///                     process. If the transaction takes longer then this
+  ///                     time, it will be cut short.
+  ///
+  /// @returns the status of the transaction (see utilities/status.hpp).
   Status WriteThenRead(uint8_t address, const uint8_t * transmit,
                        size_t out_length, uint8_t * recieve,
                        size_t recieve_length,
@@ -422,7 +462,9 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
   };
 
  protected:
-  virtual Status BlockUntilFinished()
+  static Transaction_t transaction[kNumberOfPorts];
+
+  Status BlockUntilFinished()
   {
 #if !defined(HOST_TEST)
     SJ2_ASSERT_FATAL(initialized_,
@@ -453,7 +495,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
 #endif  // !defined HOST_TEST
     return transaction[port_].status;
   }
-  inline static Transaction_t transaction[kNumberOfPorts];
+
   PinInterface & sda_;
   PinInterface & scl_;
   Pin sda_pin_;

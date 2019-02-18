@@ -1,4 +1,4 @@
-/// SSP provides the ability for serial communication over SPI, SSI, or
+/// @brief SSP provides the ability for serial communication over SPI, SSI, or
 /// Microwire on the LPC407x chipset. NOTE: The SSP2 peripheral is a
 /// selectable option in this driver, it is not currently available on
 /// the SJTwo board. Only one set of pins are available for either SSP0
@@ -192,7 +192,7 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
 
   /// Checks if the SSP controller is idle.
   /// @returns true if the controller is sending or receiving a data frame and
-  /// false if it is idle.
+  ///          false if it is idle.
   bool IsTransferRegBusy() override
   {
     return (bit::Read(ssp_registers[util::Value(pssp_)]->SR, kDataLineIdleBit));
@@ -203,7 +203,7 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   /// receiving data. It is recommended this region be protected
   /// by a mutex.
   /// @param data - information to be placed in data register
-  /// @return - received data from external device
+  /// @return received data from external device
   uint16_t Transfer(uint16_t data) override
   {
     uint32_t pssp = util::Value(pssp_);
@@ -229,9 +229,9 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   }
 
   /// Sets the various modes for the Peripheral
-  /// @param mode - master or slave mode
+  /// @param mode  - master or slave mode
   /// @param frame - format for Peripheral data to use
-  /// @param size - number of bits per frame
+  /// @param size  - number of bits per frame
   void SetPeripheralMode(MasterSlaveMode mode, FrameMode frame,
                          DataSize size) override
   {
@@ -252,7 +252,7 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   }
 
   /// Gets the Peripheral modes from registers
-  /// @return - returns a 16-bit value as follows: 0000_000x 0xx0_xxxx
+  /// @returns returns a 16-bit value as follows: 0000_000x 0xx0_xxxx
   ///       MasterSlaveMode = 1-bit @ bit 8
   ///       FrameMode       = 2-bit @ bit 5
   ///       DataSize        = 4-bit @ bit 0
@@ -294,7 +294,7 @@ class Ssp final : public SspInterface, protected Lpc40xxSystemController
   }
 
   /// Gets the Peripheral clock from registers
-  /// @return - returns a 32-bit value as follows:
+  /// @returns returns a 32-bit value as follows:
   ///   0000_0000 0000_0x0x xxxx_xxxx xxxx_xxxx
   ///       polarity    = 1-bit @ bit 18
   ///       phase       = 1-bit @ bit 16

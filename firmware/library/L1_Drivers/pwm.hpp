@@ -75,8 +75,6 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
   {
     SJ2_ASSERT_FATAL(1 <= channel_ && channel_ <= 6,
                      "Channel must be between 1 and 6.");
-    // Enables PWM1 power/clock control bit
-    // TODO(#): Replace direct manipulation of system clock register.
     PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kPwm1);
     // Resets PWMTC on Match with MR0
     pwm1->MCR |= PwmConfigure::kResetMr0;
@@ -145,13 +143,13 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     return pwm1->MR0;
   }
 
-  inline uint32_t CalculateDutyCycle(float percent)
+  [[gnu::always_inline]] uint32_t CalculateDutyCycle(float percent)
   {
     return static_cast<uint32_t>(
         (percent * static_cast<float>(GetMatchRegister0())));
   }
 
-  inline uint32_t PwmOutputEnable(uint8_t channel)
+  [[gnu::always_inline]] uint32_t PwmOutputEnable(uint8_t channel)
   {
     return (1 << (channel + 8));
   }

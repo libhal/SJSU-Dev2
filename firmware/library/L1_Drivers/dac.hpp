@@ -33,23 +33,28 @@ class Dac final: public DacInterface, protected Lpc40xxSystemController
     kLow  = 1
   };
   constexpr Dac() : dac_(&dac_pin_), dac_pin_(0, 26) {}
-  // Supply your own pin for DAC output.
+  /// Supply your own pin initialized pin for DAC output.
   explicit constexpr Dac(PinInterface * dac_pin)
       : dac_(dac_pin), dac_pin_(Pin::CreateInactivePin())  // P0.26
   {
   }
-  // Initialize DAC hardware and enable DAC Pin.
-  // Initial Bias level set to 0.
-  void Initialize(void) override
+  /// Initialize DAC hardware and enable DAC Pin.
+  /// Initial Bias level set to high.
+  void Initialize() override
   {
-    dac_->SetPinFunction(kDacMode);
-    dac_->EnableDac(true);
-    dac_->SetAsAnalogMode(true);
-    dac_->SetMode(PinInterface::Mode::kInactive);
+    if (dac_ == &dac_pin_)
+    {
+      dac_->SetPinFunction(kDacMode);
+      dac_->EnableDac(true);
+      dac_->SetAsAnalogMode(true);
+      dac_->SetMode(PinInterface::Mode::kInactive);
+    }
     // Set Update Rate to 1MHz
     SetBias(Bias::kHigh);
   }
-  // Set the digital to analog converter
+  /// Set the digital to analog converter
+  ///
+  /// @param dac_output -
   bool WriteDac(uint16_t dac_output) override
   {
     // The DAC output is a 10 bit input and thus it is necessary to
@@ -60,12 +65,11 @@ class Dac final: public DacInterface, protected Lpc40xxSystemController
     dac_register->CR |= (dac_output << kDacOutReg);
     return true;
   }
-  // Takes an input voltage and converts the float value and calculates
-  // the conversion necessary and then typecasts it to an integer.
-  // If the voltage value is greater than 3.3 it will fail and end.
+  /// Sets DAC pin to the passed voltage.
+  ///
+  /// @param voltage - voltage between 0.0V to 3.3V
   bool SetVoltage(float voltage) override
   {
-    // value            = (dac_out * 1024)/VrefP
     float value         = (voltage * 1024.0f) / kVref;
     uint16_t conversion = static_cast<uint16_t>(value);
     SJ2_ASSERT_FATAL(
@@ -74,8 +78,11 @@ class Dac final: public DacInterface, protected Lpc40xxSystemController
     WriteDac(conversion);
     return true;
   }
-  // Sets the Bias for the Dac, which determines the settling time, max current,
-  // and the allowed maximum update rate
+  /// Sets the Bias for the Dac, which determines the settling time, max
+  /// current, and the allowed maximum update rate.
+  ///
+  /// @param bias_level - kLow bias will save power, but will take longer for
+  ///                     the voltage to reach its set output.
   void SetBias(Bias bias_level)
   {
     uint8_t bias = static_cast<uint8_t>(bias_level);
