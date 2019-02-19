@@ -28,9 +28,36 @@ Built for **Ubuntu**, **Mac OSX**, and **Windows 10 WSL**.
 ## Documentation and Installation Guide
 
 See **[documentation](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)**
-for a full tutorial.
+for a full guide.
 
-## Quick Start
+## Using a Prebuilt Virtual Machine
+One of the easist ways to get started with SJSU-Dev2 is to use a VM with all of
+the software installed.
+
+Steps to install virtual box and the virtual machine are listed below:
+
+1. Install virtualbox for your computer from this link:
+   https://www.virtualbox.org/wiki/Downloads
+2. Download the usb 2.0/3.0 extensions from here, allows you to
+   connect usb devices from your host machine into the virtual machine:
+   https://download.virtualbox.org/virtualbox/6.0.4/Oracle_VM_VirtualBox_Extension_Pack-6.0.4.vbox-extpack
+3. Open the "Oracle_VM_VirtualBox_Extension_Pack-6.0.4.vbox-extpack" and install
+   it into VirtualBox when prompted.
+4. Download the prebuilt virtual machine:
+   **[Ubuntu SJSU-Dev.ova](https://drive.google.com/file/d/1SNUkQY07GViJBu7H4jGsOoMN5gbs7kBa/view)**
+5. Open "Ubuntu SJSU-Dev.ova" and import into VirtualBox.
+6. Done!
+
+### Using the Virtual Machine
+1. Open the "Ubuntu SJSU-Dev" Virtual Machine on the left hand side.
+2. Login by entering the password "osboxes.org"
+3. To program your board, you will need to connect it to your host machine and
+   bring it into the virtual machine by using the top menu:
+   `Devices > USB > CP2102n...`
+4. At this point you can run commands like `make application` and `make flash`
+   from within the SJSU-Dev2 folder which is located `/home/osboxes/SJSU-Dev2`
+
+## Quick Start Install on host machine
 
 ### Setting up the environment
 If you are using Windows, follow these steps to
