@@ -27,9 +27,11 @@ Installation
 **Step 0**
   Open a terminal (also called commandline) and go to a directory where you
   would like to download SJSU-Dev2.
-  * On Windows it is advised to install in the :code:`/mnt/c/` directory as you
-  will have access to the files from your desktop. To go to this folder type
-  :code:`cd /mnt/c` into your terminal and press enter.
+
+  .. note::
+    On Windows it is advised to install in the :code:`/mnt/c/` directory as you
+    will have access to the files from your desktop. To go to this folder type
+    :code:`cd /mnt/c` into your terminal and press enter.
 
 **Step 1**
   Download the repository.
