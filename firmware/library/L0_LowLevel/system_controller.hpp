@@ -257,7 +257,7 @@ class Lpc40xxSystemController
 
   uint32_t CalculatePll(PllInput input_frequency, uint16_t desired_speed_in_mhz)
   {
-    SJ2_ASSERT_FATAL(desired_speed_in_mhz < 384 && desired_speed_in_mhz > 12,
+    SJ2_ASSERT_FATAL(desired_speed_in_mhz < 384 && desired_speed_in_mhz >= 12,
                      "Frequency must be lower than 384 MHz"
                      "and greater than or equal to 12 MHz");
     bool calculating = true;
