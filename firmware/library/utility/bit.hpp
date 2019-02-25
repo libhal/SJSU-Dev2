@@ -56,7 +56,7 @@ constexpr T Extract(T target, uint32_t position, uint32_t width = 1)
   // Shift target down to the right to get the bit position in the 0th bit
   // location.
   // Mask the value to clear any bit after the width's amount of bits.
-  return (target >> position) & mask;
+  return static_cast<T>((target >> position) & mask);
 }
 /// Insert a set of continguous bits into a target value.
 ///
@@ -125,7 +125,7 @@ constexpr T Set(T target, uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Set only accepts intergers.");
-  return target | (1 << position);
+  return static_cast<T>(target | (1 << position));
 }
 /// Set a bit in the target value at the position specifed to a 0 and return
 ///
@@ -145,7 +145,7 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Clear only accepts intergers.");
-  return target & ~(1 << position);
+  return static_cast<T>(target & ~(1 << position));
 }
 /// Toggle a bit in the target value at the position specifed.
 /// If the bit was a 1, it will be changed to a 0.
@@ -167,7 +167,7 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Toggle only accepts intergers.");
-  return target ^ (1 << position);
+  return static_cast<T>(target ^ (1 << position));
 }
 
 /// Read a bit from the target value at the position specifed.

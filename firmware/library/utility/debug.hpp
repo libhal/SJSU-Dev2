@@ -14,7 +14,7 @@
 namespace debug
 {
 // Hexdump Utility Functions
-static inline void PrintCharacterRow(uint8_t * bytes, size_t length)
+static inline void PrintCharacterRow(const uint8_t * bytes, size_t length)
 {
   putchar('|');
   for (size_t j = 0; j < length; j++)
@@ -31,7 +31,7 @@ static inline void PrintCharacterRow(uint8_t * bytes, size_t length)
   puts("|");
 }
 
-static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
+static inline void PrintHexBytesRow(const uint8_t * bytes, size_t length)
 {
   for (size_t j = 0; j < 16; j++)
   {
@@ -51,9 +51,9 @@ static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
   putchar(' ');
 }
 
-inline void Hexdump(void * address, uint32_t length)
+inline void Hexdump(const void * address, uint32_t length)
 {
-  uint8_t * bytes = static_cast<uint8_t *>(address);
+  const uint8_t * bytes = static_cast<const uint8_t *>(address);
   for (uint32_t i = 0; i < length; i += 16)
   {
     printf("%08" PRIX32 "  ", i);
