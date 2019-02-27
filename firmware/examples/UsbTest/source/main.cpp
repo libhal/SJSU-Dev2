@@ -8,12 +8,15 @@
 #include "L0_LowLevel/system_controller.hpp"
 #include "L0_LowLevel/interrupt.hpp"
 #include "L1_Drivers/pin.hpp"
+#include "L2_HAL/displays/led/onboard_led.hpp"
 
 #include "utility/log.hpp"
 #include "utility/bit.hpp"
 #include "utility/time.hpp"
 
 LPC_USB_TypeDef * usb = LPC_USB;
+
+OnBoardLed leds;
 
 constexpr uint8_t DEV_CLK_EN        = 1;
 constexpr uint8_t PORTSEL_CLK_EN    = 3;
@@ -54,11 +57,12 @@ struct [[gnu::packed]] UsbDeviceDescription_t
   uint8_t serial_number;
   uint8_t num_configurations;
 };
-const uint8_t kUsbDeviceClassCommunications = 0x02;
-const UsbDeviceDescription_t descriptor     = {
-  .length             = sizeof(descriptor),
+
+const uint8_t kUsbDeviceClassCommunications    = 0x02;
+const UsbDeviceDescription_t device_descriptor = {
+  .length             = sizeof(device_descriptor),
   .descriptor_type    = 0x01,
-  .bcd_usb            = 0x0200,
+  .bcd_usb            = 0x0110,
   .device_class       = 0xFF,
   .device_subclass    = 0,
   .device_protocol    = 0,
@@ -66,10 +70,10 @@ const UsbDeviceDescription_t descriptor     = {
   .id_vendor          = 0xA5A5,
   .id_product         = 0xA5A5,
   .bcdDevice          = 0x0010,
-  .manufacturer       = 0,
-  .product            = 0,
-  .serial_number      = 0,
-  .num_configurations = 0,
+  .manufacturer       = 1,
+  .product            = 2,
+  .serial_number      = 3,
+  .num_configurations = 1,
 };
 
 struct [[gnu::packed]] UsbDeviceQualifier_t
@@ -85,26 +89,127 @@ struct [[gnu::packed]] UsbDeviceQualifier_t
   uint8_t reserved;
 };
 
-struct DeviceDescriptor_t
+struct [[gnu::packed]] ConfigurationDescriptor_t
 {
-  UsbDeviceDescription_t device;
-  UsbDeviceQualifier_t qualifier;
+  uint8_t length;
+  uint8_t type;
+  uint16_t total_length;
+  uint8_t interface_count;
+  uint8_t configuration_value;
+  uint8_t configuration_string_index;
+  uint8_t attributes;
+  uint8_t max_power;
 };
 
-const UsbDeviceQualifier_t qualifier = {
-  .length             = sizeof(qualifier),
-  .descriptor_type    = 0x06,
-  .bcd_usb            = 0x0200,
-  .device_class       = 0xFF,
-  .device_subclass    = 0,
-  .device_protocol    = 0,
-  .max_packet_size    = 64,
-  .num_configurations = 0,
-  .reserved           = 0,
+union [[gnu::packed]] StringDescriptor_t {
+  uint8_t buffer[64];
+  uint8_t size;
+  StringDescriptor_t(const char * str)
+  {
+    buffer[1]                     = 0x03;
+    uint8_t length                = 2;
+    uint8_t * buffer_string_start = &buffer[2];
+    for (size_t i = 0; str[i] != 0; i++)
+    {
+      buffer_string_start[(i * 2)]     = str[i];
+      buffer_string_start[(i * 2) + 1] = 0;
+      length += 2;
+    }
+    buffer[0] = static_cast<uint8_t>(length & 0xff);
+  }
 };
 
-const DeviceDescriptor_t device_descriptor = { .device    = descriptor,
-                                               .qualifier = qualifier };
+struct [[gnu::packed]] InterfaceDescriptor_t
+{
+  uint8_t length              = sizeof(InterfaceDescriptor_t);
+  uint8_t type                = 0x4;
+  uint8_t interface_number    = 0;
+  uint8_t alternative_setting = 0;
+  uint8_t endpoint_count;
+  uint8_t interface_class    = 0xFF;
+  uint8_t interface_subclass = 0;
+  uint8_t interface_protocol = 0;
+  uint8_t string_index       = 0;
+};
+
+InterfaceDescriptor_t interface_descriptor = {
+  .length              = sizeof(interface_descriptor),
+  .type                = 0x4,
+  .interface_number    = 0,
+  .alternative_setting = 0,
+  .endpoint_count      = 1,
+  .interface_class     = 0xFF,
+  .interface_subclass  = 0,
+  .interface_protocol  = 0,
+  .string_index        = 0,
+};
+
+struct [[gnu::packed]] EndpointDescriptor_t
+{
+  uint8_t length;
+  uint8_t type = 0x5;
+  union {
+    uint8_t address;
+    struct
+    {
+      uint8_t logical_address : 4;
+      uint8_t reserved : 3;
+      uint8_t direction : 1;
+    } bitmap;
+  } endpoint;
+  uint8_t attributes;
+  uint16_t max_packet_size;
+  uint8_t interval;
+};
+
+EndpointDescriptor_t endpoint_descriptor = {
+  .length          = sizeof(endpoint_descriptor),
+  .type            = 0x5,
+  .endpoint        = { .bitmap = { .logical_address = 2,
+                            .reserved        = 0,
+                            .direction       = 0 } },
+  .attributes      = 0b10,
+  .max_packet_size = 64,
+  .interval        = 1,
+};
+
+struct [[gnu::packed]] LinkedConfig_t
+{
+  ConfigurationDescriptor_t config;
+  InterfaceDescriptor_t interface;
+  EndpointDescriptor_t endpoint;
+};
+
+LinkedConfig_t omni = {
+  .config =
+      {
+          .length                     = sizeof(ConfigurationDescriptor_t),
+          .type                       = 0x02,
+          .total_length               = sizeof(omni),
+          .interface_count            = 1,
+          .configuration_value        = 1,
+          .configuration_string_index = 0,
+          .attributes                 = 0b1000'0000,
+          .max_power                  = 250,
+      },
+  .interface = interface_descriptor,
+  .endpoint  = endpoint_descriptor,
+};
+
+const char * string_descriptor[] = { "K.A.M.M.C.E. Research", "Kammce USB",
+                                     "S.A.M.E.E.R. Clone #2" };
+
+void ClearEndpointInterrupt(uint32_t endpoint)
+{
+  if (usb->EpIntSt & (1 << endpoint))
+  {
+    usb->EpIntClr = 1 << endpoint;
+    while (!bit::Read(usb->DevIntSt, CDFULL))
+    {
+      continue;
+    }
+  }
+}
 
 void SerialInterfaceEngineWrite(uint8_t command, uint8_t data,
                                 bool data_present = true)
@@ -170,31 +275,35 @@ union UsbControl {
   uint32_t data;
 };
 
-void EndpointSend(uint8_t endpoint, const uint32_t * data, size_t length)
+void EndpointSend(uint32_t endpoint, const uint32_t * data, size_t length)
 {
-  // UsbControl enable_endpoint_write = { .bits = {
-  //                                          .read_enable      = 0,
-  //                                          .write_enable     = 1,
-  //                                          .logical_endpoint = endpoint } };
-
-  uint32_t control = usb->Ctrl;
-  control          = bit::Set(control, 1);
-  control          = bit::Insert(control, endpoint, 2, 4);
-  usb->Ctrl        = control;
-  usb->TxPLen      = length;
-  int new_length = length;
-  for (size_t i = 0; new_length > 0; i++)
+  UsbControl enable_endpoint_write = { .bits = { .read_enable  = 0,
+                                                 .write_enable = 1,
+                                                 .logical_endpoint =
+                                                     endpoint & 0xF } };
+  uint8_t physical_endpoint        = static_cast<uint8_t>((endpoint * 2) + 1);
+  uint16_t status = SerialInterfaceEngineRead(physical_endpoint);
+  if (status & (1 << 3))
   {
-    // LOG_INFO("%zu) 0x%08X :: 0x%08X", i, data[i]);
-    usb->TxData = data[i];
-    new_length -= 4;
+    return;
   }
-  usb->Ctrl                 = 0;
-  uint8_t physical_endpoint = static_cast<uint8_t>((endpoint * 2) + 1);
-  SerialInterfaceEngineRead(physical_endpoint);
+  usb->Ctrl      = enable_endpoint_write.data;
+  usb->TxPLen    = length;
+  int new_length = 0;
+  for (size_t i = 0; new_length < length; i++)
+  {
+    usb->TxData = data[i];
+    new_length += 4;
+  }
   SerialInterfaceEngineWrite(kValidateBuffer, 0, false);
-  usb->DevIntClr = 1 << 7;
+  usb->Ctrl = 0;
+  ClearEndpointInterrupt(1);
   LOG_INFO("TX_PACKET with Validate!");
+}
+
+void EndpointSend(uint32_t endpoint, std::initializer_list<uint32_t> list)
+{
+  EndpointSend(endpoint, list.begin(), list.size());
 }
 
 union RecievePacketLength {
@@ -206,18 +315,6 @@ union RecievePacketLength {
   } bits;
   uint32_t data;
 };
-
-void ClearEndpointInterrupt(uint32_t endpoint)
-{
-  if (usb->EpIntSt & (1 << endpoint))
-  {
-    usb->EpIntClr = 1 << endpoint;
-    while (!bit::Read(usb->DevIntSt, CDFULL))
-    {
-      continue;
-    }
-  }
-}
 
 void EndpointRecieve(uint32_t endpoint, uint32_t * buffer)
 {
@@ -241,7 +338,6 @@ void EndpointRecieve(uint32_t endpoint, uint32_t * buffer)
   uint8_t physical_endpoint = static_cast<uint8_t>(endpoint * 2);
   [[maybe_unused]] uint16_t endpoint_status =
       SerialInterfaceEngineRead(physical_endpoint);
-  SJ2_PRINT_VARIABLE(endpoint_status, "0x%X");
   SerialInterfaceEngineRead(kClearBuffer);
   LOG_DEBUG("~RX EP%lu", endpoint);
 }
@@ -267,36 +363,100 @@ struct [[gnu::packed]] SetupPacket_t
 {
   uint8_t request_type;
   uint8_t request;
-  uint16_t value;
+  union {
+    uint16_t raw;
+    struct
+    {
+      uint8_t index;
+      uint8_t type;
+    } descriptor;
+  } value;
   uint16_t index;
   uint16_t length;
 };
 
+[[gnu::always_inline]] void SendZeroLengthPacket() {
+  EndpointSend(0, nullptr, 0);
+}
+
+uint16_t configuration_number = 0;
+
+struct [[gnu::packed]] StringLanguages_t
+{
+  static constexpr uint16_t kEnglishUS = 0x0409;
+  uint8_t length = sizeof(StringLanguages_t);
+  uint8_t type = 0x03;
+  uint16_t language = kEnglishUS;
+};
+
 void ControlEndpointHandler(const uint32_t * buffer)
 {
-  constexpr uint8_t kGetRequest    = 0x80;
-  constexpr uint8_t kSetRequest    = 0x00;
-  constexpr uint8_t kSetAddress    = 0x05;
-  constexpr uint8_t kGetDescriptor = 0x06;
+  constexpr uint8_t kGetRequest       = 0x80;
+  constexpr uint8_t kSetRequest       = 0x00;
+  constexpr uint8_t kSetAddress       = 0x05;
+  constexpr uint8_t kGetDescriptor    = 0x06;
+  constexpr uint8_t kGetConfiguration = 0x08;
+  constexpr uint8_t kSetConfiguration = 0x09;
 
   const SetupPacket_t * setup_packet =
       reinterpret_cast<const SetupPacket_t *>(buffer);
 
   if (setup_packet->request_type == kGetRequest)
   {
+    // debug::Hexdump(buffer, 8);
     switch (setup_packet->request)
     {
       case kGetDescriptor:
       {
-        size_t min_length =
-            std::min({ static_cast<size_t>(setup_packet->length),
-                       sizeof(device_descriptor) });
-        EndpointSend(0, reinterpret_cast<const uint32_t *>(&device_descriptor),
-                     min_length);
+        if (setup_packet->value.descriptor.type == 1)
+        {
+          size_t min_length =
+              std::min({ static_cast<size_t>(setup_packet->length),
+                         sizeof(device_descriptor) });
+          EndpointSend(0,
+                       reinterpret_cast<const uint32_t *>(&device_descriptor),
+                       min_length);
+        }
+        else if (setup_packet->value.descriptor.type == 2)
+        {
+          size_t min_length = std::min(
+              { static_cast<size_t>(setup_packet->length), sizeof(omni) });
+          EndpointSend(0, reinterpret_cast<const uint32_t *>(&omni),
+                       min_length);
+        }
+        else if (setup_packet->value.descriptor.type == 3)
+        {
+          if (setup_packet->value.descriptor.index == 0)
+          {
+            StringLanguages_t languages;
+            EndpointSend(0,
+                         reinterpret_cast<const uint32_t *>(&languages),
+                         sizeof(languages));
+          }
+          else
+          {
+            StringDescriptor_t descriptor(
+                string_descriptor[setup_packet->value.descriptor.index - 1]);
+            EndpointSend(0,
+                         reinterpret_cast<const uint32_t *>(descriptor.buffer),
+                         descriptor.size);
+          }
+        }
+        else
+        {
+          SerialInterfaceEngineWrite(0x40, 1);
+        }
+        break;
+      }
+      case kGetConfiguration:
+      {
+        const uint32_t kConfigurationNumber = setup_packet->value.raw;
+        EndpointSend(0, &kConfigurationNumber, 1);
         break;
       }
       default:
         LOG_ERROR("Unhandled GET USB request %u", setup_packet->request);
+        SerialInterfaceEngineWrite(0x40, 1);
         break;
     }
   }
@@ -307,23 +467,29 @@ void ControlEndpointHandler(const uint32_t * buffer)
       case kSetAddress:
       {
         uint8_t address =
-            static_cast<uint8_t>(bit::Set(setup_packet->value, 7));
-        LOG_DEBUG("New Address = 0x%02X :: %u", setup_packet->value,
-                  setup_packet->value);
+            static_cast<uint8_t>(bit::Set(setup_packet->value.raw, 7));
+        LOG_DEBUG("New Address = 0x%02X :: %u", setup_packet->value.raw,
+                  setup_packet->value.raw);
         SerialInterfaceEngineWrite(kSetAddressDevice, address);
-        EndpointSend(0, nullptr, 0);
+        SendZeroLengthPacket();
+
+        break;
+      }
+      case kSetConfiguration:
+      {
+        configuration_number = setup_packet->value.raw;
+        SendZeroLengthPacket();
         break;
       }
       default:
-        // LOG_ERROR("Unhandled SET USB request %u", setup_packet->request);
-        // const uint32_t status = 1;
-        // EndpointSend(0, &status, 2);
+        SerialInterfaceEngineWrite(0x40, 1);
         break;
     }
   }
   else
   {
     LOG_ERROR("Unhandled USB request type %lu", buffer[0] & 0xFF);
+    SerialInterfaceEngineWrite(0x40, 1);
   }
   LOG_DEBUG("~Handler");
 }
@@ -414,25 +580,7 @@ int main(void)
   LOG_INFO("Enabled Interrupts and Priority");
 
   RegisterIsr(USB_IRQn, []() {
-    for (size_t i = 0; i < 32; i++)
-    {
-      if (usb->EpIntSt & (1 << i))
-      {
-        uint32_t buffer[64 / 4] = { 0 };
-        if (i % 2 == 0)
-        {
-          EndpointRecieve(i, buffer);
-          if (i == 0)
-          {
-            ControlEndpointHandler(buffer);
-          }
-          // debug::Hexdump(buffer, sizeof(buffer) / 4);
-        }
-        LOG_INFO("Endpoint%zu Interrupt Occured!", i);
-        ClearEndpointInterrupt(i);
-      }
-    }
-    LOG_INFO("~EPINT");
+    bool all_good_here = true;
     for (size_t i = 0; i < 10; i++)
     {
       if (usb->DevIntSt & 1 << i)
@@ -447,6 +595,8 @@ int main(void)
             {
               RealizeEndpoint(0, 64);
               RealizeEndpoint(1, 64);
+              // puts("R!");
+              all_good_here = false;
             }
             LOG_DEBUG("Device Change Status: 0x%02X", status);
             break;
@@ -454,12 +604,21 @@ int main(void)
           case 9:
             LOG_WARNING("Error: 0x%02X", SerialInterfaceEngineRead(0xFB));
             LOG_WARNING("Error Code: 0x%02X", SerialInterfaceEngineRead(0xFF));
+            all_good_here = false;
             break;
           default:
             LOG_DEBUG("Device Interrupt Status %zu Cleared!", i);
         }
       }
     }
+    if ((usb->EpIntSt & 1) && all_good_here)
+    {
+      uint32_t buffer[64 / 4] = { 0 };
+      EndpointRecieve(0, buffer);
+      ControlEndpointHandler(buffer);
+      ClearEndpointInterrupt(0);
+    }
+
     LOG_DEBUG("USB ISR Done!\n\n");
   });
   LOG_INFO("ISR Registered!");
@@ -475,7 +634,7 @@ int main(void)
   LOG_WARNING("Err Status = 0x%02X",
               SerialInterfaceEngineRead(kGetErrorCodeDevice));
 
-  LOG_INFO("Halting all Actions...");
+  LOG_CRITICAL("Halting all Actions...");
   Halt();
   return 0;
 }
