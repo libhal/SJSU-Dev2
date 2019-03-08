@@ -108,3 +108,6 @@
 
 #define SJ2_PRINT_VARIABLE(variable, printf_specifier) \
   LOG_DEBUG(#variable " = " printf_specifier, (variable))
+
+#define _SJ2_PRINT_VARIABLE(variable, printf_specifier) \
+  printf(#variable " = " printf_specifier "\n", (variable))

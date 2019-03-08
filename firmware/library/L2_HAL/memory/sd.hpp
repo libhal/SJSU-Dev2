@@ -405,7 +405,7 @@ class SdInterface
   virtual uint16_t GetCrc16(uint8_t message[], uint16_t length) = 0;
 };
 
-class Sd : public SdInterface
+class Sd final : public SdInterface
 {
  public:
   // This value was found through experimentation. The suggested value (found
