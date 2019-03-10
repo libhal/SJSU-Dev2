@@ -614,13 +614,14 @@ union UsbControl {
   uint32_t data;
 };
 
-void EndpointSend(uint32_t endpoint, const uint32_t * data, size_t length)
+void EndpointSend(uint32_t endpoint, const void * data_ptr, size_t length)
 {
+  const uint32_t * data = reinterpret_cast<const uint32_t *>(data_ptr);
   uint8_t physical_endpoint = static_cast<uint8_t>((endpoint * 2) + 1);
   if (!(usb->ReEp & (1 << physical_endpoint)))
   {
-    LOG_WARNING("TX) Endpoint %" PRIu32 " PHY: %" PRIu8 " not realized", endpoint,
-                physical_endpoint);
+    LOG_WARNING("TX) Endpoint %" PRIu32 " PHY: %" PRIu8 " not realized",
+                endpoint, physical_endpoint);
     return;
   }
   UsbControl enable_endpoint_write = { .bits = { .read_enable  = 0,
@@ -653,7 +654,7 @@ void EndpointSend(uint32_t endpoint, const uint32_t * data, size_t length)
 
 void EndpointSend(uint32_t endpoint, std::initializer_list<uint8_t> list)
 {
-  EndpointSend(endpoint, reinterpret_cast<const uint32_t *>(list.begin()),
+  EndpointSend(endpoint, reinterpret_cast<const void *>(list.begin()),
                list.size());
 }
 
@@ -698,8 +699,8 @@ size_t EndpointReceive(uint32_t endpoint, uint32_t * buffer)
   uint8_t physical_endpoint = static_cast<uint8_t>(endpoint * 2);
   if (!(usb->ReEp & (1 << physical_endpoint)))
   {
-    LOG_WARNING("RX) Endpoint %" PRIu32 " PHY: %" PRIu8 " not realized", endpoint,
-                physical_endpoint);
+    LOG_WARNING("RX) Endpoint %" PRIu32 " PHY: %" PRIu8 " not realized",
+                endpoint, physical_endpoint);
     return 0;
   }
   LOG_DEBUG("RX EP%lu", endpoint);
@@ -709,7 +710,7 @@ size_t EndpointReceive(uint32_t endpoint, uint32_t * buffer)
                                                     endpoint & 0xF } };
 
   usb->Ctrl         = enable_endpoint_read.data;
-  size_t RxPLen = usb->RxPLen;
+  size_t RxPLen     = usb->RxPLen;
   bool packet_ready = (RxPLen & (1 << 11));
   if (!packet_ready)
   {
@@ -802,10 +803,9 @@ struct [[gnu::packed]] StringLanguages_t
 
 void ReadUsbBuffer(const uint32_t * buffer, size_t length)
 {
-  printf("%.*s", length, reinterpret_cast<const char*>(buffer));
-  EndpointSend(
-      serial_port_descriptor.transmit.endpoint.bitmap.logical_address,
-      buffer, length);
+  printf("%.*s", length, reinterpret_cast<const char *>(buffer));
+  EndpointSend(serial_port_descriptor.transmit.endpoint.bitmap.logical_address,
+               buffer, length);
 }
 
 struct [[gnu::packed]] AcmNotification
@@ -952,7 +952,15 @@ void ControlEndpointHandler(const uint32_t * buffer)
     else if (setup_packet->request == kGetLineCoding)
     {
       EndpointSend(1, reinterpret_cast<const uint32_t *>(&notification),
-                  sizeof(notification));
+                   sizeof(notification));
+    }
+    else if (setup_packet->request == kSetLineCoding)
+    {
+      SendZeroLengthPacket();
+    }
+    else if (setup_packet->request_type == kUsbCdcRequestSetControlLineState)
+    {
+      SendZeroLengthPacket();
     }
     else
     {
@@ -961,16 +969,6 @@ void ControlEndpointHandler(const uint32_t * buffer)
     }
   }
   else if (setup_packet->request_type == kSetFeature)
-  {
-    SendZeroLengthPacket();
-  }
-  else if (setup_packet->request_type == kUsbCdcRequestSetControlLineState)
-  {
-    // EndpointSend(1, reinterpret_cast<const uint32_t *>(&notification),
-    //              sizeof(notification));
-    SendZeroLengthPacket();
-  }
-  else if (setup_packet->request_type == kSetLineCoding)
   {
     SendZeroLengthPacket();
   }
@@ -985,22 +983,21 @@ void ControlEndpointHandler(const uint32_t * buffer)
 
 void vSendByte([[maybe_unused]] void * pointer)
 {
+  const uint8_t kPrompt[] = "\nType whatever you like> ";
   while (true)
   {
-    putchar('\n');
-    putchar('\n');
     _SJ2_PRINT_VARIABLE(usb->ReEp, "0x%08lX");
+    _SJ2_PRINT_VARIABLE(usb->EpIntSt, "0x%08lX");
     for (int i = 0; i < 5; i++)
     {
-      vTaskDelay(200);
+      vTaskDelay(1000);
       putchar('.');
     }
     putchar('S');
     putchar('\n');
     EndpointSend(
         serial_port_descriptor.transmit.endpoint.bitmap.logical_address,
-        { 'K', 'h', 'a', 'l', 'i', 'l', ' ', '\0' });
-    vTaskDelay(1000);
+        kPrompt, sizeof(kPrompt));
   }
 }
 
@@ -1106,14 +1103,13 @@ int main(void)
       {
         if (usb->EpIntSt & (1 << i))
         {
-          printf(SJ2_HI_BACKGROUND_GREEN
-                 "\n1 << %d" SJ2_COLOR_RESET,
-                 i);
+          printf(SJ2_HI_BACKGROUND_GREEN "\n1 << %d\n" SJ2_COLOR_RESET, i);
           if (endpoint_isrs[i] != nullptr)
           {
             memset(buffer, 0, sizeof(buffer));
             size_t length = EndpointReceive(
-              static_cast<uint16_t>(floorf(static_cast<float>(i)/2)), buffer);
+                static_cast<uint16_t>(floorf(static_cast<float>(i) / 2)),
+                buffer);
             endpoint_isrs[i](buffer, length);
           }
           ClearEndpointInterrupt(i);
