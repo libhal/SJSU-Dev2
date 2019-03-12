@@ -5,14 +5,14 @@
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
 
-// Max wait time in nanoseconds.
+// Max wait time in microseconds.
 constexpr uint64_t kMaxWait = 0xFFFFFFFFFFFFFFFF;
 
 namespace
 {
-// uptime in nanoseconds
+// uptime in microseconds
 inline uint64_t uptime = 0;
-// Returns the system uptime in nanoseconds, do not use this function directly
+// Returns the system uptime in microseconds, do not use this function directly
 [[gnu::always_inline]] inline uint64_t DefaultUptime()
 {
   return uptime;
@@ -20,7 +20,7 @@ inline uint64_t uptime = 0;
 }  // namespace
 
 using UptimeFunction = uint64_t (*)();
-// Returns the system uptime in nanoseconds.
+// Returns the system uptime in microseconds.
 inline UptimeFunction Uptime = DefaultUptime;  // NOLINT
 inline void SetUptimeFunction(UptimeFunction uptime_function)
 {
