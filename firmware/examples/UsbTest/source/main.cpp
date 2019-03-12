@@ -10,6 +10,8 @@
 #include "L0_LowLevel/interrupt.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "L2_HAL/displays/led/onboard_led.hpp"
+#include "L2_HAL/switches/button.hpp"
+#include "L1_Drivers/uart.hpp"
 
 #include "utility/log.hpp"
 #include "utility/bit.hpp"
@@ -192,7 +194,7 @@ const UsbDeviceDescription_t device_descriptor = {
   .length             = sizeof(device_descriptor),
   .descriptor_type    = 0x01,
   .bcd_usb            = 0x0110,
-  .device_class       = usb_::type::kCdc,
+  .device_class       = 0,
   .device_subclass    = 0,
   .device_protocol    = 0,
   .max_packet_size    = 64,
@@ -301,10 +303,29 @@ struct [[gnu::packed]] VirtualComPortDescriptor_t
   EndpointDescriptor_t receive;
 };
 
+struct [[gnu::packed]] HIDClassDescriptor_t
+{
+  uint8_t length;
+  uint8_t type;
+  uint16_t release_number;
+  uint8_t localization_contry_code;
+  uint8_t hid_class_descriptor_count;
+  uint8_t report_descriptor_type;
+  uint16_t report_descriptor_length;
+};
+
+struct [[gnu::packed]] VirtualCom_Mouse_Descriptor_t
+{
+  VirtualComPortDescriptor_t virtual_com;
+  InterfaceDescriptor_t hid_interface;
+  HIDClassDescriptor_t hid_class;
+  EndpointDescriptor_t hid_endpoint;
+};
+
 const UsbDeviceDescription_t cdc_device_descriptor = {
   .length             = sizeof(device_descriptor),
   .descriptor_type    = 0x01,
-  .bcd_usb            = 0x0110,
+  .bcd_usb            = 0x0200,
   .device_class       = usb_::type::kCdc,
   .device_subclass    = 0,
   .device_protocol    = 0,
@@ -453,85 +474,269 @@ VirtualComPortDescriptor_t virtual_serial_port_descriptor = {
 };
 // clang-format on
 
-struct [[gnu::packed]] SerialComPortDescriptor_t
-{
-  ConfigurationDescriptor_t config;
-  InterfaceDescriptor_t interface;
-  EndpointDescriptor_t transmit;
-  EndpointDescriptor_t receive;
+const char hid_mouse_descriptor[50] = {
+  0x05, 0x01,  // USAGE_PAGE (Generic Desktop)
+  0x09, 0x02,  // USAGE (Mouse)
+  0xa1, 0x01,  // COLLECTION (Application)
+  0x09, 0x01,  //   USAGE (Pointer)
+  0xa1, 0x00,  //   COLLECTION (Physical)
+  0x05, 0x09,  //     USAGE_PAGE (Button)
+  0x19, 0x01,  //     USAGE_MINIMUM (Button 1)
+  0x29, 0x03,  //     USAGE_MAXIMUM (Button 3)
+  0x15, 0x00,  //     LOGICAL_MINIMUM (0)
+  0x25, 0x01,  //     LOGICAL_MAXIMUM (1)
+  0x95, 0x03,  //     REPORT_COUNT (3)
+  0x75, 0x01,  //     REPORT_SIZE (1)
+  0x81, 0x02,  //     INPUT (Data,Var,Abs)
+  0x95, 0x01,  //     REPORT_COUNT (1)
+  0x75, 0x05,  //     REPORT_SIZE (5)
+  0x81, 0x03,  //     INPUT (Cnst,Var,Abs)
+  0x05, 0x01,  //     USAGE_PAGE (Generic Desktop)
+  0x09, 0x30,  //     USAGE (X)
+  0x09, 0x31,  //     USAGE (Y)
+  0x15, 0x81,  //     LOGICAL_MINIMUM (-127)
+  0x25, 0x7f,  //     LOGICAL_MAXIMUM (127)
+  0x75, 0x08,  //     REPORT_SIZE (8)
+  0x95, 0x02,  //     REPORT_COUNT (2)
+  0x81, 0x06,  //     INPUT (Data,Var,Rel)
+  0xc0,        //   END_COLLECTION
+  0xc0         // END_COLLECTION
 };
 
-// clang-format off
-SerialComPortDescriptor_t serial_port_descriptor = {
-  .config =
-  {
-    .length                     = sizeof(ConfigurationDescriptor_t),
-    .type                       = 0x02,
-    .total_length               = sizeof(serial_port_descriptor),
-    .interface_count            = 1,
-    .configuration_value        = 1,
-    .configuration_string_index = 0,
-    .attributes                 = 0, // 0b1000'0000,
-    .max_power                  = 250,
+struct JoystickReport_t
+{
+  uint8_t throttle;
+  uint8_t x;
+  uint8_t y;
+  uint8_t rotary: 4;
+  uint8_t button0: 1;
+  uint8_t button1: 1;
+  uint8_t button2: 1;
+  uint8_t button3: 1;
+};
+
+const char hid_joystick_descriptor[77] = {
+    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+    0x15, 0x00,                    // LOGICAL_MINIMUM (0)
+    0x09, 0x04,                    // USAGE (Joystick)
+    0xa1, 0x01,                    // COLLECTION (Application)
+    0x05, 0x02,                    //   USAGE_PAGE (Simulation Controls)
+    0x09, 0xbb,                    //   USAGE (Throttle)
+    0x15, 0x81,                    //   LOGICAL_MINIMUM (-127)
+    0x25, 0x7f,                    //   LOGICAL_MAXIMUM (127)
+    0x75, 0x08,                    //   REPORT_SIZE (8)
+    0x95, 0x01,                    //   REPORT_COUNT (1)
+    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+    0x05, 0x01,                    //   USAGE_PAGE (Generic Desktop)
+    0x09, 0x01,                    //   USAGE (Pointer)
+    0xa1, 0x00,                    //   COLLECTION (Physical)
+    0x09, 0x30,                    //     USAGE (X)
+    0x09, 0x31,                    //     USAGE (Y)
+    0x95, 0x02,                    //     REPORT_COUNT (2)
+    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+    0xc0,                          //   END_COLLECTION
+    0x09, 0x39,                    //   USAGE (Hat switch)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x25, 0x03,                    //   LOGICAL_MAXIMUM (3)
+    0x35, 0x00,                    //   PHYSICAL_MINIMUM (0)
+    0x46, 0x0e, 0x01,              //   PHYSICAL_MAXIMUM (270)
+    0x65, 0x14,                    //   UNIT (Eng Rot:Angular Pos)
+    0x75, 0x04,                    //   REPORT_SIZE (4)
+    0x95, 0x01,                    //   REPORT_COUNT (1)
+    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+    0x05, 0x09,                    //   USAGE_PAGE (Button)
+    0x19, 0x01,                    //   USAGE_MINIMUM (Button 1)
+    0x29, 0x04,                    //   USAGE_MAXIMUM (Button 4)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+    0x75, 0x01,                    //   REPORT_SIZE (1)
+    0x95, 0x04,                    //   REPORT_COUNT (4)
+    0x55, 0x00,                    //   UNIT_EXPONENT (0)
+    0x65, 0x00,                    //   UNIT (None)
+    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+    0xc0                           // END_COLLECTION
+};
+
+VirtualCom_Mouse_Descriptor_t virtual_serial_mouse = {
+  .virtual_com = {
+    .config =
+    {
+      .length                     = sizeof(ConfigurationDescriptor_t),
+      .type                       = 0x02,
+      .total_length               = sizeof(virtual_serial_mouse),
+      .interface_count            = 3,
+      .configuration_value        = 1,
+      .configuration_string_index = 0,
+      .attributes                 = 0, // 0b1000'0000,
+      .max_power                  = 250,
+    },
+    .communication =
+    {
+      .length              = sizeof(InterfaceDescriptor_t),
+      .type                = 0x4,
+      .interface_number    = 0,
+      .alternative_setting = 0,
+      .endpoint_count      = 1,
+      .interface_class     = usb_::type::kCdc,
+      .interface_subclass  = usb_::subclass::kAbstractControlModel,
+      .interface_protocol  = usb_::protocol::kV25ter,
+      .string_index        = 0,
+    },
+    .header = {
+      .function_length = sizeof(CdcFunctionalHeaderDescriptor_t),
+      .descriptor_type = kCsInterface,
+      .descriptor_subtype = 0x00,
+      .bcdCDC = 0x0110,
+    },
+    .control = {
+      .function_length = sizeof(CdcAbstractControlModelFunctionDescriptor_t),
+      .descriptor_type = kCsInterface,
+      .descriptor_subtype = 0x02,
+      .capabilities = 0x00,
+    },
+    .union_function = {
+      .function_length = sizeof(CdcUnionFunctionDescriptor_t),
+      .descriptor_type = kCsInterface,
+      .descriptor_subtype = 0x06,
+      .master_interface = 0x00,
+      .slave_interface = 0x01,
+    },
+    .management = {
+      .function_length = sizeof(CdcCallManagementDesciptor_t),
+      .descriptor_type = kCsInterface,
+      .descriptor_subtype = 0x01,
+      .capabilities = 0b0000'0000,
+      .data_interface = 0x01,
+    },
+    .interrupt =
+    {
+      .length          = sizeof(EndpointDescriptor_t),
+      .type            = 0x5,
+      .endpoint        = {
+        .bitmap = {
+          .logical_address = 1,
+          .reserved        = 0,
+          .direction       = usb_::endpoint::Direction::kIn,
+        }
+      },
+      .attributes      = {
+        .bitmap = {
+          .transfer_type = usb_::endpoint::TransferType::kInterrupt,
+          .iso_synchronization = 0,
+          .iso_usage = 0,
+          .reserved = 0,
+        }
+      },
+      .max_packet_size = 64,
+      .interval        = 0x02,
+    },
+    .data =
+    {
+      .length              = sizeof(InterfaceDescriptor_t),
+      .type                = 0x4,
+      .interface_number    = 1,
+      .alternative_setting = 0,
+      .endpoint_count      = 2,
+      .interface_class     = usb_::type::kCdcData,
+      .interface_subclass  = 0,
+      .interface_protocol  = 0,
+      .string_index        = 0,
+    },
+    .transmit =
+    {
+      .length          = sizeof(EndpointDescriptor_t),
+      .type            = 0x5,
+      .endpoint        = {
+        .bitmap = {
+          .logical_address = 2,
+          .reserved        = 0,
+          .direction       = usb_::endpoint::Direction::kIn,
+        }
+      },
+      .attributes      = {
+        .bitmap = {
+          .transfer_type = usb_::endpoint::TransferType::kBulk,
+          .iso_synchronization = 0,
+          .iso_usage = 0,
+          .reserved = 0,
+        }
+      },
+      .max_packet_size = 64,
+      .interval        = 100,
+    },
+    .receive =
+    {
+      .length          = sizeof(EndpointDescriptor_t),
+      .type            = 0x5,
+      .endpoint        = {
+        .bitmap = {
+          .logical_address = 2,
+          .reserved        = 0,
+          .direction       = usb_::endpoint::Direction::kOut,
+        }
+      },
+      .attributes      = {
+        .bitmap = {
+          .transfer_type = usb_::endpoint::TransferType::kBulk,
+          .iso_synchronization = 0,
+          .iso_usage = 0,
+          .reserved = 0,
+        }
+      },
+      .max_packet_size = 64,
+      .interval        = 100,
+    },
   },
-  .interface =
+  .hid_interface =
   {
-    .length              = sizeof(InterfaceDescriptor_t),
-    .type                = 0x4,
-    .interface_number    = 0,
-    .alternative_setting = 0,
-    .endpoint_count      = 2,
-    .interface_class     = 0, // usb_::type::kCdcData,
-    .interface_subclass  = 0,
-    .interface_protocol  = 0,
-    .string_index        = 0,
+      .length              = sizeof(InterfaceDescriptor_t),
+      .type                = 0x4,
+      .interface_number    = 2,
+      .alternative_setting = 0,
+      .endpoint_count      = 1,
+      .interface_class     = 0x03,
+      .interface_subclass  = 0,
+      .interface_protocol  = 0,
+      .string_index        = 0,
   },
-  .transmit =
+  .hid_class =
   {
-    .length          = sizeof(EndpointDescriptor_t),
-    .type            = 0x5,
-    .endpoint        = {
-      .bitmap = {
-        .logical_address = 2,
-        .reserved        = 0,
-        .direction       = usb_::endpoint::Direction::kIn,
-      }
-    },
-    .attributes      = {
-      .bitmap = {
-        .transfer_type = usb_::endpoint::TransferType::kBulk,
-        .iso_synchronization = 0,
-        .iso_usage = 0,
-        .reserved = 0,
-      }
-    },
-    .max_packet_size = 64,
-    .interval        = 0,
+      .length                     = sizeof(HIDClassDescriptor_t),
+      .type                       = 0x21,  // 0x21 = HID
+      .release_number             = 0x0101,
+      .localization_contry_code   = 0x00,
+      .hid_class_descriptor_count = 0x01,
+      .report_descriptor_type     = 0x22,  // 0x22 = HID
+      .report_descriptor_length   = sizeof(hid_joystick_descriptor),
   },
-  .receive =
+  .hid_endpoint =
   {
-    .length          = sizeof(EndpointDescriptor_t),
-    .type            = 0x5,
-    .endpoint        = {
-      .bitmap = {
-        .logical_address = 2,
-        .reserved        = 0,
-        .direction       = usb_::endpoint::Direction::kOut,
-      }
-    },
-    .attributes      = {
-      .bitmap = {
-        .transfer_type = usb_::endpoint::TransferType::kBulk,
-        .iso_synchronization = 0,
-        .iso_usage = 0,
-        .reserved = 0,
-      }
-    },
-    .max_packet_size = 64,
-    .interval        = 0,
+      .length          = sizeof(EndpointDescriptor_t),
+      .type            = 0x5,
+      .endpoint        =
+      {
+        .bitmap =
+        {
+            .logical_address = 4,
+            .reserved        = 0,
+            .direction = usb_::endpoint::Direction::kIn,
+        }
+      },
+      .attributes      =
+      {
+        .bitmap =
+        {
+            .transfer_type =
+                usb_::endpoint::TransferType::kInterrupt,
+            .iso_synchronization = 0,
+            .iso_usage           = 0,
+            .reserved            = 0,
+        }
+      },
+      .max_packet_size = 64,
+      .interval        = 0xFE,
   },
 };
-// clang-format on
 
 const char * string_descriptor[] = {
   "San Jose State University CmpE Department", "SJTwo Development Board",
@@ -616,7 +821,7 @@ union UsbControl {
 
 void EndpointSend(uint32_t endpoint, const void * data_ptr, size_t length)
 {
-  const uint32_t * data = reinterpret_cast<const uint32_t *>(data_ptr);
+  const uint32_t * data     = reinterpret_cast<const uint32_t *>(data_ptr);
   uint8_t physical_endpoint = static_cast<uint8_t>((endpoint * 2) + 1);
   if (!(usb->ReEp & (1 << physical_endpoint)))
   {
@@ -663,8 +868,9 @@ void SendZeroLengthPacket()
   EndpointSend(0, nullptr, 0);
 }
 
-void EndpointSendLarge(uint32_t endpoint, const uint32_t * data, size_t length)
+void EndpointSendLarge(uint32_t endpoint, const void * data, size_t length)
 {
+  const uint32_t * payload     = reinterpret_cast<const uint32_t *>(data);
   bool send_zero_length_packet = ((length % 64) == 0);
   int32_t total_length         = length;
 
@@ -675,7 +881,7 @@ void EndpointSendLarge(uint32_t endpoint, const uint32_t * data, size_t length)
     {
       loop_transmit_length = total_length;
     }
-    EndpointSend(endpoint, &data[(64 / 4) * i], loop_transmit_length);
+    EndpointSend(endpoint, &payload[(64 / 4) * i], loop_transmit_length);
     total_length -= loop_transmit_length;
   }
   if (send_zero_length_packet)
@@ -775,6 +981,14 @@ void RealizeEndpoint(uint8_t endpoint, usb_::endpoint::Direction direction,
 
   endpoint_isrs[physical_endpoint] = isr;
 }
+
+struct [[gnu::packed]] MouseReport_t
+{
+  uint8_t buttons;
+  int8_t x;
+  int8_t y;
+};
+
 struct [[gnu::packed]] SetupPacket_t
 {
   uint8_t request_type;
@@ -803,9 +1017,11 @@ struct [[gnu::packed]] StringLanguages_t
 
 void ReadUsbBuffer(const uint32_t * buffer, size_t length)
 {
-  printf("%.*s", length, reinterpret_cast<const char *>(buffer));
-  EndpointSend(serial_port_descriptor.transmit.endpoint.bitmap.logical_address,
-               buffer, length);
+  const char * string_buffer = reinterpret_cast<const char *>(buffer);
+  printf("%.*s", length, string_buffer);
+  EndpointSend(
+      virtual_serial_port_descriptor.transmit.endpoint.bitmap.logical_address,
+      buffer, length);
 }
 
 struct [[gnu::packed]] AcmNotification
@@ -856,9 +1072,7 @@ void ControlEndpointHandler(const uint32_t * buffer)
           size_t min_length =
               std::min({ static_cast<size_t>(setup_packet->length),
                          sizeof(cdc_device_descriptor) });
-          EndpointSend(
-              0, reinterpret_cast<const uint32_t *>(&cdc_device_descriptor),
-              min_length);
+          EndpointSend(0, &cdc_device_descriptor, min_length);
         }
         else if (setup_packet->value.descriptor.type == 6)
         {
@@ -869,27 +1083,21 @@ void ControlEndpointHandler(const uint32_t * buffer)
         {
           size_t min_length =
               std::min({ static_cast<size_t>(setup_packet->length),
-                         sizeof(virtual_serial_port_descriptor) });
-          EndpointSendLarge(0,
-                            reinterpret_cast<const uint32_t *>(
-                                &virtual_serial_port_descriptor),
-                            min_length);
+                         sizeof(virtual_serial_mouse) });
+          EndpointSendLarge(0, &virtual_serial_mouse, min_length);
         }
         else if (setup_packet->value.descriptor.type == 3)
         {
           if (setup_packet->value.descriptor.index == 0)
           {
             StringLanguages_t languages;
-            EndpointSend(0, reinterpret_cast<const uint32_t *>(&languages),
-                         sizeof(languages));
+            EndpointSend(0, &languages, sizeof(languages));
           }
           else
           {
             StringDescriptor_t descriptor(
                 string_descriptor[setup_packet->value.descriptor.index - 1]);
-            EndpointSendLarge(
-                0, reinterpret_cast<const uint32_t *>(descriptor.buffer),
-                descriptor.size);
+            EndpointSendLarge(0, descriptor.buffer, descriptor.size);
           }
         }
         else
@@ -932,6 +1140,7 @@ void ControlEndpointHandler(const uint32_t * buffer)
         RealizeEndpoint(1, usb_::endpoint::Direction::kIn, 64);
         RealizeEndpoint(2, usb_::endpoint::Direction::kOut, 64, ReadUsbBuffer);
         RealizeEndpoint(2, usb_::endpoint::Direction::kIn, 64);
+        RealizeEndpoint(4, usb_::endpoint::Direction::kIn, 64);
         SerialInterfaceEngineWrite(kConfigureDeviceDevice, 0b0000'0001, true);
         SendZeroLengthPacket();
         break;
@@ -948,11 +1157,32 @@ void ControlEndpointHandler(const uint32_t * buffer)
     {
       uint8_t value = static_cast<uint8_t>(setup_packet->value.raw);
       printf("DTR = %d | RTS = %d\n", value & 0b1, value >> 1);
+
+      JoystickReport_t joystick_report;
+      memset(&joystick_report, 0, sizeof(joystick_report));
+      EndpointSend(4, &joystick_report, sizeof(joystick_report));
+
+      // MouseReport_t mouse_report = {0};
+      // bool send_report = false;
+      // if (value & 0b01)
+      // {
+      //   mouse_report.x = 40;
+      //   send_report = true;
+      // }
+      // else if (value & 0b10)
+      // {
+      //   mouse_report.x = -40;
+      //   send_report = true;
+      // }
+      // if (send_report)
+      // {
+      //   putchar('X');
+      //   EndpointSend(4, &mouse_report, sizeof(mouse_report));
+      // }
     }
     else if (setup_packet->request == kGetLineCoding)
     {
-      EndpointSend(1, reinterpret_cast<const uint32_t *>(&notification),
-                   sizeof(notification));
+      EndpointSend(1, &notification, sizeof(notification));
     }
     else if (setup_packet->request == kSetLineCoding)
     {
@@ -972,6 +1202,19 @@ void ControlEndpointHandler(const uint32_t * buffer)
   {
     SendZeroLengthPacket();
   }
+  else if (setup_packet->request_type == 0x81)
+  {
+    if(setup_packet->request == 0x06)
+    {
+      EndpointSendLarge(0, hid_joystick_descriptor, sizeof(hid_joystick_descriptor));
+    }
+    else
+    {
+      LOG_ERROR("Unhandled USB request type 0x%02X :: 0x%02X",
+                setup_packet->request_type, setup_packet->request);
+      SerialInterfaceEngineWrite(0x40, 1, true);
+    }
+  }
   else
   {
     LOG_ERROR("Unhandled USB request type 0x%02X :: 0x%02X",
@@ -983,21 +1226,105 @@ void ControlEndpointHandler(const uint32_t * buffer)
 
 void vSendByte([[maybe_unused]] void * pointer)
 {
-  const uint8_t kPrompt[] = "\nType whatever you like> ";
+  // const uint8_t kPrompt[] = "\nType whatever you like> ";
+  JoystickReport_t joystick_report;
+  memset(&joystick_report, 0, sizeof(joystick_report));
+  int i = 0;
+
   while (true)
   {
-    _SJ2_PRINT_VARIABLE(usb->ReEp, "0x%08lX");
-    _SJ2_PRINT_VARIABLE(usb->EpIntSt, "0x%08lX");
-    for (int i = 0; i < 5; i++)
+    i++;
+    char select = uart0.Receive(100);
+    if (i < 10)
     {
-      vTaskDelay(1000);
-      putchar('.');
+      if (select == 0xFF)
+      {
+        putchar('.');
+      }
+      else
+      {
+        printf("%02Xh,", select);
+        // MouseReport_t mouse_report = {0};
+
+        // if (select == '0')
+        // {
+        //   mouse_report.buttons |= 1 << 0;
+        // }
+        // if (select == '1')
+        // {
+        //   mouse_report.buttons |= 1 << 1;
+        // }
+        // if (select == '2')
+        // {
+        //   mouse_report.buttons |= 1 << 2;
+        // }
+        // if (select == 'X')
+        // {
+        //   mouse_report.x = 50;
+        // }
+        // if (select == 'Y')
+        // {
+        //   mouse_report.x = -50;
+        // }
+        // putchar('X');
+        // EndpointSend(4, &mouse_report, sizeof(mouse_report));
+
+        if (select == '0')
+        {
+          joystick_report.button0 = 0;
+        }
+        if (select == '1')
+        {
+          joystick_report.button0 = 1;
+        }
+        if (select == '2')
+        {
+          joystick_report.button1 = 0;
+        }
+        if (select == '3')
+        {
+          joystick_report.button1 = 1;
+        }
+        if (select == '4')
+        {
+          joystick_report.button2 = 0;
+        }
+        if (select == '5')
+        {
+          joystick_report.button2 = 1;
+        }
+        if (select == '6')
+        {
+          joystick_report.button3 = 0;
+        }
+        if (select == '7')
+        {
+          joystick_report.button3 = 1;
+        }
+        if (select == 'a')
+        {
+          joystick_report.throttle = 50;
+        }
+        if (select == 'b')
+        {
+          joystick_report.throttle = -50;
+        }
+        putchar('X');
+        EndpointSend(4, &joystick_report, sizeof(joystick_report));
+      }
     }
-    putchar('S');
-    putchar('\n');
-    EndpointSend(
-        serial_port_descriptor.transmit.endpoint.bitmap.logical_address,
-        kPrompt, sizeof(kPrompt));
+    else
+    {
+      putchar('\n');
+      _SJ2_PRINT_VARIABLE(usb->ReEp, "0x%08lX");
+      _SJ2_PRINT_VARIABLE(usb->EpIntSt, "0x%08lX");
+      i = 0;
+      putchar('S');
+      // EndpointSend(
+      //     virtual_serial_port_descriptor.transmit.endpoint.bitmap.logical_address,
+      //     kPrompt, sizeof(kPrompt));
+    }
+    // vTaskDelay(100);
   }
 }
 
