@@ -2,10 +2,16 @@
 
 enum class Status
 {
+  // Operation worked as expected.
   kSuccess,
+  // Operation could not be completed in the given time.
   kTimedOut,
+  // Operation could not be completed due to an error on the communication bus.
   kBusError,
-  kDeviceNotFound
+  // Operation to find an external deviced returned.
+  kDeviceNotFound,
+  // Operations not handled by executing function or method.
+  kNotHandled,
 };
 
 constexpr const char * Stringify(Status status)
@@ -25,7 +31,8 @@ constexpr const char * Stringify(Status status)
     case Status::kDeviceNotFound:
       result = "Device Not Found";
       break;
-    default:
+    case Status::kNotHandled:
+      result = "Operation Not Handled";
       break;
   }
   return result;
