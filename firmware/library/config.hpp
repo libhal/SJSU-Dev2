@@ -90,10 +90,17 @@ static_assert(4'800 <= kBaudRate && kBaudRate <= 4'000'000 &&
 #endif  // !defined(SJ2_INCLUDE_BACKTRACE)
 SJ2_DECLARE_CONSTANT(INCLUDE_BACKTRACE, bool, kIncludeBacktrace);
 
-#if !defined(SJ2_LOG_INFO_ENABLED)
-#define SJ2_LOG_INFO_ENABLED true
-#endif  // !defined(SJ2_LOG_INFO_ENABLED)
-SJ2_DECLARE_CONSTANT(LOG_INFO_ENABLED, bool, kDebugPrintEnabled);
+/// Used to offset the returned addresses from the libunwind GetIP function
+/// (get instruction pointer), in order to properly identify the line of code
+/// that caused the debug::PrintStackTrace function to be called. GetIP will
+/// retrieve the next instruction after a function has returned, which usually
+/// results in the file lookup showing the line right after the function was
+/// called. To fix this on ARM platforms, subtract 4 from the address pointer
+/// to move 1 line up to the exact call site.
+#if !defined(SJ2_BACKTRACE_ADDRESS_OFFSET)
+#define SJ2_BACKTRACE_ADDRESS_OFFSET 4
+#endif  // !defined(SJ2_BACKTRACE_ADDRESS_OFFSET)
+SJ2_DECLARE_CONSTANT(BACKTRACE_ADDRESS_OFFSET, size_t, kBacktraceAddressOffset);
 
 /// Used to set the default scheduler size for the TaskScheduler.
 #if !defined(SJ2_TASK_SCHEDULER_SIZE)

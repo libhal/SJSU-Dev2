@@ -44,11 +44,6 @@ inline void UsedVariadicFunction(...) {}
 #define SJ2_STRINGIFY2(s) #s
 /// SJ2_PACKED give a specified type a packed attribute
 #define SJ2_PACKED(type) type __attribute__((packed))
-// SJ2_IGNORE_STACK_TRACE will remove function profiling for this
-// specific function which means it will not be recoreded in the stack_trace
-// array and will not show up when a SJ2_DUMP_BACKTRACE() is called.
-#define SJ2_IGNORE_STACK_TRACE(function) \
-  function __attribute__((no_instrument_function))
 /// Set a function as a "weak" function. This means that if there is another
 /// declaration of this exact function somewhere else in the software, the
 /// non-weak function will be used instead of the weak function.
