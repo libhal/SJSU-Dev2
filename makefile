@@ -218,10 +218,9 @@ OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 # Compilation Flags
 # ===========================
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
-			       -fabi-version=0 \
-			       -finstrument-functions-exclude-file-list=L0_LowLevel
+			       -fabi-version=0 -mtpcs-frame -mtpcs-leaf-frame
 OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
-            -fno-exceptions -fomit-frame-pointer
+            -fno-exceptions -fno-omit-frame-pointer -fasynchronous-unwind-tables
 CPPOPTIMIZE = -fno-rtti
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
@@ -244,7 +243,7 @@ LINKFLAGS = $(COMMON_FLAGS) -T $(LINKER) -specs=nano.specs \
 # Enable specific flags for building a bootloader
 ifeq ($(MAKECMDGOALS), bootloader)
 LINKER = $(LIB_DIR)/LPC4078_bootloader.ld
-CFLAGS_COMMON += -D BOOTLOADER=1
+CFLAGS_COMMON += -D TARGET=Bootloader
 endif
 # NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
 # clang std libs (libc++) or it will result in a metric ton of undefined linker
@@ -254,9 +253,7 @@ endif
 ifeq ($(MAKECMDGOALS), $(filter \
 			$(MAKECMDGOALS), application flash build cleaninstall))
 LINKER = $(LIB_DIR)/LPC4078_application.ld
-CFLAGS_COMMON += -D APPLICATION=1 -D TARGET="application"
-CFLAGS_COMMON += -finstrument-functions \
-	-finstrument-functions-exclude-file-list=third_party/FreeRTOS/Source
+CFLAGS_COMMON += -D TARGET=Application
 endif
 
 # Enable a whole different set of exceptions, checks, coverage tools and more
@@ -273,7 +270,7 @@ CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
          -Wdouble-promotion -Wswitch -Wnull-dereference -Wformat=2 \
          -Wundef -Wold-style-cast -Woverloaded-virtual \
 				 $(WARNINGS_ARE_ERRORS) \
-				 -D HOST_TEST=1 -D SJ2_BACKTRACE_DEPTH=1024 \
+				 -D HOST_TEST=1 -D TARGET=HostTest -D SJ2_BACKTRACE_DEPTH=1024 \
 				 -D CATCH_CONFIG_FAST_COMPILE \
 				 $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG) \
 				 $(DISABLED_WARNINGS) \
@@ -523,7 +520,7 @@ $(TEST_EXEC): $(OBJECTS)
 	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
 	@clang-tidy $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 	  -extra-arg="-std=c++17") "$<"  -- \
-		-D CLANG_TIDY=1 -D HOST_TEST=1 \
+		-D TARGET=HostTest -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/../include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> /dev/null
 	@printf '$(GREEN)DONE!$(RESET)\n'

@@ -43,8 +43,8 @@ extern "C" void xPortSysTickHandler(void);  // NOLINT
 // When the application defines a handler (with the same name), the
 // application's handler will automatically take precedence over these weak
 // definitions.
-extern "C" SJ2_IGNORE_STACK_TRACE(void ResetIsr(void));
-extern "C" SJ2_IGNORE_STACK_TRACE(void HardFaultHandler(void));
+extern "C" void ResetIsr(void);
+extern "C" void HardFaultHandler(void);
 extern "C" void InterruptLookupHandler(void);
 
 void RegisterIsr(IRQn_Type irq, IsrPointer isr, bool enable_interrupt = true,

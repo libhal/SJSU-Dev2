@@ -16,6 +16,7 @@
 #include "L1_Drivers/uart.hpp"
 #include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L4_Testing/factory_test.hpp"
+#include "utility/build_info.hpp"
 #include "utility/debug.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
@@ -24,10 +25,12 @@
 // have been defined.
 //    BOOTLOADER is defined when using "make bootloader"
 //    CLANG_TIDY is defined when using "make tidy"
-#if !defined(BOOTLOADER) && !defined(CLANG_TIDY)
-#error Hyperload must be built as a 'bootloader' and not as an application or \
-       test. Please build this software using 'make bootloader'
-#endif
+
+static_assert(
+    build::kTarget == build::Target::Bootloader ||
+        build::kTarget == build::Target::HostTest,
+    "Hyperload must be built as a 'bootloader' and not as an application or "
+    "test. Please build this software using 'make bootloader'");
 
 namespace
 {

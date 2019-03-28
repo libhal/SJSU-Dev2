@@ -243,7 +243,6 @@ void DeregisterIsr(IRQn_Type irq)
 }
 
 extern "C"
-[[gnu::no_instrument_function]]
 void GetRegistersFromStack(uint32_t * fault_stack_address)
 {
   // These are volatile to try and prevent the compiler/linker optimizing them

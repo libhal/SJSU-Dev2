@@ -6,6 +6,7 @@
 #include "project_config.hpp"
 
 #include "L0_LowLevel/LPC40xx.h"
+#include "utility/build_info.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
@@ -177,20 +178,26 @@ class Lpc40xxSystemController : public SystemControllerInterface
 
   uint32_t GetPeripheralClockDivider() const override
   {
-#if defined(HOST_TEST)
-    return 1;
-#else
-    return system_controller->PCLKSEL;
-#endif
+    if constexpr (build::kTarget == build::Target::HostTest)
+    {
+      return 1;
+    }
+    else
+    {
+      return system_controller->PCLKSEL;
+    }
   }
 
   uint32_t GetSystemFrequency() const override
   {
-#if defined(HOST_TEST)
-    return config::kSystemClockRate;
-#else
-    return speed_in_hertz;
-#endif
+    if constexpr (build::kTarget == build::Target::HostTest)
+    {
+      return config::kSystemClockRate;
+    }
+    else
+    {
+      return speed_in_hertz;
+    }
   }
 
   uint32_t GetPeripheralFrequency() const override

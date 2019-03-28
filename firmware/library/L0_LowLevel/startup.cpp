@@ -96,15 +96,7 @@ extern "C"
   }
 }
 
-SJ2_IGNORE_STACK_TRACE(void InitializeFreeRTOSSystemTick());
-SJ2_IGNORE_STACK_TRACE(void SetupTimerInterrupt());
-SJ2_IGNORE_STACK_TRACE(void InitDataSection());
-SJ2_IGNORE_STACK_TRACE(void InitBssSection());
-SJ2_IGNORE_STACK_TRACE(void InitFpu());
-SJ2_IGNORE_STACK_TRACE(void __libc_init_array());
-SJ2_IGNORE_STACK_TRACE(void LowLevelInit());
 SJ2_WEAK(void LowLevelInit());
-SJ2_IGNORE_STACK_TRACE(void SystemInit());
 
 // Functions to carry out the initialization of RW and BSS data sections.
 SJ2_SECTION(".after_vectors")
