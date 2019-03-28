@@ -15,7 +15,7 @@
 #define DEV_SD 0 /* Example: Map SD Card to physical drive 0 */
 namespace
 {
-Sd sd_card(Sd::DebugSdCard_t{});
+SdInterface * sd_card;
 bool initialized = false;
 }  // namespace
 
@@ -42,10 +42,13 @@ extern "C" DSTATUS disk_status([[maybe_unused]] BYTE drive_number)
 
 extern "C" DSTATUS disk_initialize([[maybe_unused]] BYTE drive_number)
 {
+  static Sd sd_card_object(Sd::DebugSdCard_t{});
+  sd_card = &sd_card_object;
+
   LOG_DEBUG("DISK INIT!");
-  sd_card.Initialize();
+  sd_card->Initialize();
   Sd::CardInfo_t card_info;
-  DSTATUS status = sd_card.Mount(&card_info) ? 0 : STA_NOINIT;
+  DSTATUS status = sd_card->Mount(&card_info) ? 0 : STA_NOINIT;
   if (status == 0)
   {
     initialized = true;
@@ -59,7 +62,7 @@ extern "C" DRESULT disk_read([[maybe_unused]] BYTE drive_number, BYTE * buffer,
   LOG_DEBUG("drive_number: %u :: sector: %ld :: count: %u", drive_number,
             sector, count);
 
-  sd_card.ReadBlock(sector, buffer, static_cast<uint32_t>(count));
+  sd_card->ReadBlock(sector, buffer, static_cast<uint32_t>(count));
   return RES_OK;
 }
 
@@ -70,7 +73,7 @@ extern "C" DRESULT disk_write([[maybe_unused]] BYTE drive_number,
 {
   LOG_DEBUG("drive_number: %u :: sector: %ld :: count: %u", drive_number,
             sector, count);
-  sd_card.WriteBlock(sector, buffer, static_cast<uint32_t>(count));
+  sd_card->WriteBlock(sector, buffer, static_cast<uint32_t>(count));
   return RES_OK;
 }
 
