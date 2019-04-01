@@ -139,13 +139,19 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
                                                           [kI2c1] = LPC_I2C1,
                                                           [kI2c2] = LPC_I2C2 };
 
+
   template <Port port>
   static void I2cHandler()
   {
-    static constexpr uint8_t kPort = util::Value(port);
-    MasterState state              = MasterState(i2c[kPort]->STAT);
-    uint32_t clear_mask            = 0;
-    uint32_t set_mask              = 0;
+    I2cHandler(port);
+  }
+
+  static void I2cHandler(Port port)
+  {
+    const uint8_t kPort       = util::Value(port);
+    MasterState state   = MasterState(i2c[kPort]->STAT);
+    uint32_t clear_mask = 0;
+    uint32_t set_mask   = 0;
     switch (state)
     {
       case MasterState::kBusError:  // 0x00
