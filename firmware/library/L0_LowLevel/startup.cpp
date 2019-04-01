@@ -48,8 +48,6 @@
 // Private namespace to make sure that these do not conflict with other globals
 namespace
 {
-// Create system timer to be used by low level initialization.
-SystemTimer system_timer;
 // Create LPC40xx system controller to be used by low level initialization.
 Lpc40xxSystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
@@ -67,33 +65,39 @@ extern "C" uint64_t UptimeRTOS()
 // The entry point for the C++ library startup
 extern "C"
 {
-  // NOLINTNEXTLINE(readability-identifier-naming)
-  extern void __libc_init_array(void);
-  // The entry point for the application.
-  // main() is the entry point for newlib based applications
-  extern int main(void);
-  // Implementation of vApplicationGetIdleTaskMemory required when
-  // configSUPPORT_STATIC_ALLOCATION == 1.
-  // The function is called to statically create the idle task when
-  // vTaskStartScheduler is invoked.
-  static StaticTask_t idle_task_tcb;
-  static StackType_t idle_task_stack[configMINIMAL_STACK_SIZE];
-  void vApplicationGetIdleTaskMemory(  // NOLINT
-      StaticTask_t ** ppx_idle_task_tcb_buffer,
-      StackType_t ** ppx_idle_task_stack_buffer,
-      uint32_t * pul_idle_task_stack_size)
-  {
-    *ppx_idle_task_tcb_buffer   = &idle_task_tcb;
-    *ppx_idle_task_stack_buffer = idle_task_stack;
-    *pul_idle_task_stack_size   = std::size(idle_task_stack);
-  }
-  void vPortSetupTimerInterrupt(void)  // NOLINT
-  {
-    system_timer.DisableTimer();
-    system_timer.SetTickFrequency(config::kRtosFrequency);
-    system_timer.SetIsrFunction(xPortSysTickHandler);
-    system_timer.StartTimer();
-  }
+// NOLINTNEXTLINE(readability-identifier-naming)
+extern void __libc_init_array(void);
+// The entry point for the application.
+// main() is the entry point for newlib based applications
+extern int main(void);
+// Implementation of vApplicationGetIdleTaskMemory required when
+// configSUPPORT_STATIC_ALLOCATION == 1.
+// The function is called to statically create the idle task when
+// vTaskStartScheduler is invoked.
+static StaticTask_t idle_task_tcb;
+static StackType_t idle_task_stack[configMINIMAL_STACK_SIZE];
+void vApplicationGetIdleTaskMemory(  // NOLINT
+    StaticTask_t ** ppx_idle_task_tcb_buffer,
+    StackType_t ** ppx_idle_task_stack_buffer,
+    uint32_t * pul_idle_task_stack_size)
+{
+  *ppx_idle_task_tcb_buffer   = &idle_task_tcb;
+  *ppx_idle_task_stack_buffer = idle_task_stack;
+  *pul_idle_task_stack_size   = std::size(idle_task_stack);
+}
+void vPortSetupTimerInterrupt(void)  // NOLINT
+{
+  // Create system timer to be used by low level initialization.
+  SystemTimer system_timer;
+  // Set the SystemTick frequency to the RTOS tick frequency
+  // It is critical that this happens before you set the system_clock, since
+  // The system_timer keeps the time that the system_clock uses to delay itself.
+  system_timer.SetTickFrequency(config::kRtosFrequency);
+  system_timer.SetIsrFunction(xPortSysTickHandler);
+  bool timer_started_successfully = system_timer.StartTimer();
+  SJ2_ASSERT_FATAL(timer_started_successfully,
+                    "System Timer (used by FreeRTOS) has FAILED to start!");
+}
 }
 
 SJ2_WEAK(void LowLevelInit());
@@ -156,13 +160,6 @@ void InitFpu()
 
 void LowLevelInit()
 {
-  // Set the SystemTick frequency to the RTOS tick frequency
-  // It is critical that this happens before you set the system_clock, since
-  // The system_timer keeps the time that the system_clock uses to delay itself.
-  system_timer.SetTickFrequency(config::kRtosFrequency);
-  bool timer_started_successfully = system_timer.StartTimer();
-  SJ2_ASSERT_WARNING(timer_started_successfully,
-                     "System Timer has FAILED to start!");
   // Set Clock Speed
   // SetClockFrequency will timeout return the offset between desire clockspeed
   // and actual clockspeed if the PLL doesn't get a frequency fix within a
@@ -176,11 +173,6 @@ void LowLevelInit()
   // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
   // fed to all peripherals will be 48Mhz.
   system_controller.SetPeripheralClockDivider(1);
-  // Set System Timer frequency again, since the clock speed has changed since
-  // the last time we ran this.
-  system_timer.DisableTimer();
-  system_timer.SetTickFrequency(config::kRtosFrequency);
-  system_timer.StartTimer();
   // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
   // micro second.
   timer0.Initialize(1'000'000);
