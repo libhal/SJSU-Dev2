@@ -84,7 +84,7 @@ inline void Delay([[maybe_unused]] uint64_t delay_time_ms)
 #endif  // HOST_TEST
 }
 // Halt system by putting it into infinite loop
-SJ2_FUNCTION_INLINE(inline void Halt());
+[[gnu::always_inline]]
 inline void Halt()
 {
   while (true)
