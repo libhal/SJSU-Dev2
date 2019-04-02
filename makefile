@@ -151,7 +151,8 @@ LIB_DIR       = $(FIRMWARE_DIR)/library
 TOOLS_DIR     = $(SJBASE)/tools
 SOURCE_DIR    = source
 COMPILED_HEADERS_DIR  = $(BUILD_DIR)/headers # NOTE: Actually use this!
-CURRENT_DIRECTORY	= $(shell pwd)
+CURRENT_DIRECTORY	    = $(shell pwd)
+COVERAGE_FILES        = $(shell find build -name "*.gcda")
 # ===========================
 # Gathering Source Files
 # ===========================
@@ -393,9 +394,14 @@ user-test: $(TEST_EXEC)
 # ====================================================================
 # Run Test Executable
 # ====================================================================
+# In reference to issue #374, we need to remove the old gcda files otherwise
+# if the test has been recompiled between executions of run-test, the
+# executable will complain that the coverage files are out of date or
+# corrupted
 run-test:
+	@rm -f $(COVERAGE_FILES) 2> /dev/null
 	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
-	  $(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
+		$(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
 	@gcovr --root="$(FIRMWARE_DIR)/" --keep --object-directory="$(BUILD_DIR)/" \
 		-e "$(LIB_DIR)/newlib" \
@@ -454,6 +460,8 @@ show-lists:
 	@echo $(CFLAGS)
 	@echo "=========== TEST FLAGS =============="
 	@echo $(TEST_CFLAGS)
+	@echo "=========== COVERAGE FILES =============="
+	@echo $(COVERAGE_FILES)
 
 # ====================================================================
 # Recipes to Compile Source Code
@@ -516,7 +524,7 @@ $(TEST_EXEC): $(OBJECTS)
 %.tidy: %
 	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
 	@clang-tidy $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
-	  -extra-arg="-std=c++17") "$<"  -- \
+		-extra-arg="-std=c++17") "$<"  -- \
 		-D TARGET=HostTest -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/../include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> /dev/null
