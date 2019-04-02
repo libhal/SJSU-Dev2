@@ -5,11 +5,6 @@
 /// @{
 #pragma once
 #include "config.hpp"
-// SJ2_FUNCTION_INLINE will cause a function to be inlined at the call site.
-// This means that, rather than actually call the function, the functions
-// contents will be copied to the location where the function was called.
-// This saves the cpu from having to setup for a function call.
-#define SJ2_FUNCTION_INLINE(function) function __attribute__((always_inline))
 // SJ2_SECTION will place a variable or function within a given section of the
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as
@@ -43,19 +38,10 @@ inline void UsedVariadicFunction(...) {}
 #define SJ2_STRINGIFY(s) SJ2_STRINGIFY2(s)
 #define SJ2_STRINGIFY2(s) #s
 /// SJ2_PACKED give a specified type a packed attribute
-#define SJ2_PACKED(type) type __attribute__((packed))
+#define SJ2_PACKED(type) type [[gnu::packed]]
 /// Set a function as a "weak" function. This means that if there is another
 /// declaration of this exact function somewhere else in the software, the
 /// non-weak function will be used instead of the weak function.
-#define SJ2_WEAK(function) function __attribute__((weak))
-/// Similar to the weak attribute, but also gives each function the
-/// implementation of the function f.
-#if defined(__APPLE__)
-#define SJ2_ALIAS(f) \
-  {                  \
-  }
-#else
-#define SJ2_ALIAS(f) \
-  __attribute__((weak, alias(#f), no_instrument_function))  // NOLINT
-#endif
+#define SJ2_WEAK(function) [[gnu::weak]] function
+// __attribute__((weak, alias(#f), no_instrument_function))  // NOLINT
 /// @}

@@ -19,62 +19,63 @@ DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 #else
 extern "C"
 {
+#define ALIAS [[ gnu::alias("InterruptLookupHandler"), gnu::weak ]]
   // This does not alias InterruptLookupHandler because the hardfault handler
   // has to carefully gather register information after it is called.
-  void NmiHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void MemManageHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void BusFaultHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void UsageFaultHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void SvcHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void DebugMonHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void PendSVHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void SysTickHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  ALIAS void NmiHandler();
+  ALIAS void MemManageHandler();
+  ALIAS void BusFaultHandler();
+  ALIAS void UsageFaultHandler();
+  ALIAS void SvcHandler();
+  ALIAS void DebugMonHandler();
+  ALIAS void PendSVHandler();
+  ALIAS void SysTickHandler();
   // Forward declaration of the specific IRQ handlers. These are aliased
   // to the InterruptLookupHandler, which is a 'forever' loop. When the
   // application defines a handler (with the same name), this will
   // automatically take precedence over these weak definitions.
-  void WdtIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Timer0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Timer1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Timer2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Timer3IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Uart0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Uart1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Uart2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Uart3IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Pwm1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void I2c0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void I2c1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void I2c2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void SpiIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Ssp0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Ssp1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Pll0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void RtcIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Eint0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Eint1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Eint2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Eint3IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void AdcIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void BodIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void UsbIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void CanIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void DmaIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void I2sIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void EnetIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void RitIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void McpwmIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void QeiIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Pll1IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void UsbactivityIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void CanactivityIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void SdioIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Uart4IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Ssp2IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void LcdIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void GpioIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void Pwm0IrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
-  void EepromIrqHandler(void) SJ2_ALIAS(InterruptLookupHandler);
+  ALIAS void WdtIrqHandler();
+  ALIAS void Timer0IrqHandler();
+  ALIAS void Timer1IrqHandler();
+  ALIAS void Timer2IrqHandler();
+  ALIAS void Timer3IrqHandler();
+  ALIAS void Uart0IrqHandler();
+  ALIAS void Uart1IrqHandler();
+  ALIAS void Uart2IrqHandler();
+  ALIAS void Uart3IrqHandler();
+  ALIAS void Pwm1IrqHandler();
+  ALIAS void I2c0IrqHandler();
+  ALIAS void I2c1IrqHandler();
+  ALIAS void I2c2IrqHandler();
+  ALIAS void SpiIrqHandler();
+  ALIAS void Ssp0IrqHandler();
+  ALIAS void Ssp1IrqHandler();
+  ALIAS void Pll0IrqHandler();
+  ALIAS void RtcIrqHandler();
+  ALIAS void Eint0IrqHandler();
+  ALIAS void Eint1IrqHandler();
+  ALIAS void Eint2IrqHandler();
+  ALIAS void Eint3IrqHandler();
+  ALIAS void AdcIrqHandler();
+  ALIAS void BodIrqHandler();
+  ALIAS void UsbIrqHandler();
+  ALIAS void CanIrqHandler();
+  ALIAS void DmaIrqHandler();
+  ALIAS void I2sIrqHandler();
+  ALIAS void EnetIrqHandler();
+  ALIAS void RitIrqHandler();
+  ALIAS void McpwmIrqHandler();
+  ALIAS void QeiIrqHandler();
+  ALIAS void Pll1IrqHandler();
+  ALIAS void UsbactivityIrqHandler();
+  ALIAS void CanactivityIrqHandler();
+  ALIAS void SdioIrqHandler();
+  ALIAS void Uart4IrqHandler();
+  ALIAS void Ssp2IrqHandler();
+  ALIAS void LcdIrqHandler();
+  ALIAS void GpioIrqHandler();
+  ALIAS void Pwm0IrqHandler();
+  ALIAS void EepromIrqHandler();
   // External declaration for LPC MCU vector table checksum from Linker Script
   extern void ValidUserCodeChecksum();
 }
@@ -242,8 +243,7 @@ void DeregisterIsr(IRQn_Type irq)
   dynamic_isr_vector_table[irq + kIrqOffset] = InterruptLookupHandler;
 }
 
-extern "C"
-void GetRegistersFromStack(uint32_t * fault_stack_address)
+extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
 {
   // These are volatile to try and prevent the compiler/linker optimizing them
   // away as the variables never actually get used.  If the debugger won't
