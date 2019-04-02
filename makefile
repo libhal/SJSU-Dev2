@@ -184,12 +184,10 @@ endif
 # Set of ALL compilable test files in the current library.
 # This also includes any source AND test to be tested.
 # MUST NOT contain source files that contain a "main()" implementation
-# TODO(#296): Add a seperation between library and user tests
 TESTS ?=
 # Set of compilable test files specified by the user.
 # This also includes any source AND test to be tested.
 # MUST NOT contain source files that contain a "main()" implementation
-# TODO(#296): Add a seperation between library and user tests
 USER_TESTS ?=
 # Include a project specific makefile. Using -include to keep make form exiting
 # if the project.mk file does not exist.
@@ -211,8 +209,6 @@ endif
 INCLUDES         := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
 SYSTEM_INCLUDES  := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
 OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
-# TEST_OBJECTS      = $(addprefix $(OBJECT_DIR)/, $(TESTS:=.o))
-# USER_TEST_OBJECTS = $(addprefix $(OBJECT_DIR)/, $(USER_TESTS:=.o))
 
 # ===========================
 # Compilation Flags
@@ -220,8 +216,9 @@ OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 			       -fabi-version=0 -mtpcs-frame -mtpcs-leaf-frame
 OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
-            -fno-exceptions -fno-omit-frame-pointer -fasynchronous-unwind-tables
-CPPOPTIMIZE = -fno-rtti
+            -fno-exceptions -fno-omit-frame-pointer \
+            -fasynchronous-unwind-tables
+CPPOPTIMIZE = -fno-rtti -fno-threadsafe-statics
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wdouble-promotion -Wduplicated-cond -Wswitch \
