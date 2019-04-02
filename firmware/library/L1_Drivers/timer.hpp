@@ -90,21 +90,29 @@ class Timer : public TimerInterface, protected Lpc40xxSystemController
   template <TimerPort port>
   static void ClearInterrupts()
   {
-    uint8_t channel = util::Value(port);
-    tim_register[channel]->IR |= (1 << kRegMR0);
-    tim_register[channel]->IR |= (1 << kRegMR1);
-    tim_register[channel]->IR |= (1 << kRegMR2);
-    tim_register[channel]->IR |= (1 << kRegMR3);
+    ClearInterrupts(port);
   }
 
   template <TimerPort port>
   static void TimerHandler()
   {
+    TimerHandler(port);
+  }
+
+  static void ClearInterrupts(TimerPort port)
+  {
+    uint8_t channel = util::Value(port);
+    tim_register[channel]->IR |=
+        (1 << kRegMR0) | (1 << kRegMR1) | (1 << kRegMR2) | (1 << kRegMR3);
+  }
+
+  static void TimerHandler(TimerPort port)
+  {
     if (user_timer_isr != nullptr)
     {
       user_timer_isr[util::Value(port)]();
     }
-    ClearInterrupts<port>();
+    ClearInterrupts(port);
   }
 
   static constexpr IsrPointer kTimerIsr[] = {
