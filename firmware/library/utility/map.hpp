@@ -35,7 +35,7 @@
 ///
 /// Mapping equation is as follows:
 ///
-///               /                    (max - min)     \
+///               /                    (max - min)     \_
 ///      value = | (value - min) x -------------------  | + new_min
 ///               \                (new_max - new_min) /
 ///
@@ -45,7 +45,7 @@
 /// @param new_minimum the new minimum value to scale and shift the old value to
 /// @param new_maximum the new maximum value to scale and shift the old value to
 template <typename Input, typename Range, typename NewRange>
-[[gnu::always_inline]] NewRange Map(Input value, Range min, Range max,
+NewRange Map(Input value, Range min, Range max,
                                     NewRange new_min, NewRange new_max) {
   static_assert(std::is_arithmetic<Input>::value,
                 "Input value variable type must be an arithmetic type (like "
