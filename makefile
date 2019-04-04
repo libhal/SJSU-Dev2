@@ -151,7 +151,8 @@ LIB_DIR       = $(FIRMWARE_DIR)/library
 TOOLS_DIR     = $(SJBASE)/tools
 SOURCE_DIR    = source
 COMPILED_HEADERS_DIR  = $(BUILD_DIR)/headers # NOTE: Actually use this!
-CURRENT_DIRECTORY	= $(shell pwd)
+CURRENT_DIRECTORY	    = $(shell pwd)
+COVERAGE_FILES        = $(shell find build -name "*.gcda")
 # ===========================
 # Gathering Source Files
 # ===========================
@@ -184,12 +185,10 @@ endif
 # Set of ALL compilable test files in the current library.
 # This also includes any source AND test to be tested.
 # MUST NOT contain source files that contain a "main()" implementation
-# TODO(#296): Add a seperation between library and user tests
 TESTS ?=
 # Set of compilable test files specified by the user.
 # This also includes any source AND test to be tested.
 # MUST NOT contain source files that contain a "main()" implementation
-# TODO(#296): Add a seperation between library and user tests
 USER_TESTS ?=
 # Include a project specific makefile. Using -include to keep make form exiting
 # if the project.mk file does not exist.
@@ -211,8 +210,6 @@ endif
 INCLUDES         := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
 SYSTEM_INCLUDES  := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
 OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
-# TEST_OBJECTS      = $(addprefix $(OBJECT_DIR)/, $(TESTS:=.o))
-# USER_TEST_OBJECTS = $(addprefix $(OBJECT_DIR)/, $(USER_TESTS:=.o))
 
 # ===========================
 # Compilation Flags
@@ -220,8 +217,9 @@ OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
 			       -fabi-version=0 -mtpcs-frame -mtpcs-leaf-frame
 OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
-            -fno-exceptions -fno-omit-frame-pointer -fasynchronous-unwind-tables
-CPPOPTIMIZE = -fno-rtti
+            -fno-exceptions -fno-omit-frame-pointer \
+            -fasynchronous-unwind-tables
+CPPOPTIMIZE = -fno-rtti -fno-threadsafe-statics
 DEBUG     = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wdouble-promotion -Wduplicated-cond -Wswitch \
@@ -396,9 +394,14 @@ user-test: $(TEST_EXEC)
 # ====================================================================
 # Run Test Executable
 # ====================================================================
+# In reference to issue #374, we need to remove the old gcda files otherwise
+# if the test has been recompiled between executions of run-test, the
+# executable will complain that the coverage files are out of date or
+# corrupted
 run-test:
+	@rm -f $(COVERAGE_FILES) 2> /dev/null
 	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
-	  $(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
+		$(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
 	@gcovr --root="$(FIRMWARE_DIR)/" --keep --object-directory="$(BUILD_DIR)/" \
 		-e "$(LIB_DIR)/newlib" \
@@ -457,6 +460,8 @@ show-lists:
 	@echo $(CFLAGS)
 	@echo "=========== TEST FLAGS =============="
 	@echo $(TEST_CFLAGS)
+	@echo "=========== COVERAGE FILES =============="
+	@echo $(COVERAGE_FILES)
 
 # ====================================================================
 # Recipes to Compile Source Code
@@ -519,7 +524,7 @@ $(TEST_EXEC): $(OBJECTS)
 %.tidy: %
 	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
 	@clang-tidy $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
-	  -extra-arg="-std=c++17") "$<"  -- \
+		-extra-arg="-std=c++17") "$<"  -- \
 		-D TARGET=HostTest -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/../include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> /dev/null

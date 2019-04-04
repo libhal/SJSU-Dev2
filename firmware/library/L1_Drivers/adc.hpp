@@ -77,82 +77,116 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
 
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
 
-  static void BurstMode(bool burst_mode_is_on = false)
+  union ControlRegister_t {
+    uint32_t data;
+    struct
+    {
+      unsigned channel_enable : 8;
+      unsigned clock_divider : 8;
+      unsigned enable_burst : 1;
+      unsigned reserved0 : 4;
+      unsigned power_enable : 1;
+      unsigned reserved1 : 2;
+      unsigned start_conversion_code : 3;
+      unsigned start_conversion_on_falling_edge : 1;
+    } bits;
+  };
+
+  union GlobalDataRegister_t {
+    uint32_t data;
+    struct
+    {
+      unsigned reserved0 : 4;
+      unsigned result : 12;
+      unsigned reserved1 : 8;
+      unsigned converted_channel : 3;
+      unsigned reserved2 : 3;
+      unsigned overrun : 1;
+      unsigned done : 1;
+    } bits;
+  };
+
+  static volatile ControlRegister_t * GetControlRegister()
   {
-    burst_mode_is_on ? (adc_base->CR |= (1 << ControlBit::kBurstMode))
-                     : (adc_base->CR &= ~(1 << ControlBit::kBurstMode));
+    return reinterpret_cast<volatile ControlRegister_t *>(&adc_base->CR);
   }
-  explicit constexpr Adc(Adc::Channel channel_bit)
+  static volatile GlobalDataRegister_t * GetGlobalDataRegister()
+  {
+    return reinterpret_cast<volatile GlobalDataRegister_t *>(&adc_base->GDR);
+  }
+  static void BurstMode(bool burst_mode_is_on = true)
+  {
+    GetControlRegister()->bits.enable_burst = burst_mode_is_on;
+  }
+  explicit constexpr Adc(Channel channel)
       : adc_(&adc_pin_),
-        adc_pin_(Pin(kAdcPorts[static_cast<uint8_t>(channel_bit)],
-                     kAdcPins[static_cast<uint8_t>(channel_bit)])),
-        channel_(static_cast<uint8_t>(channel_bit))
+        adc_pin_(Pin(kAdcPorts[util::Value(channel)],
+                     kAdcPins[util::Value(channel)])),
+        channel_(util::Value(channel))
   {
   }
   // unit test constructor
-  explicit constexpr Adc(PinInterface * adc_pin)
-      : adc_(adc_pin), adc_pin_(Pin::CreateInactivePin()), channel_(0)
+  explicit constexpr Adc(PinInterface * adc_pin, Channel channel)
+      : adc_(adc_pin),
+        adc_pin_(Pin::CreateInactivePin()),
+        channel_(util::Value(channel))
   {
   }
-  void Initialize(uint32_t adc_clk_hz = 1'000'000) override
+  void Initialize(uint32_t adc_clock_freq = 1'000'000) override
   {
     constexpr uint32_t kMaxAdcClock = 12'000'000;
-    constexpr uint8_t kClkDivBit    = 8;
-
-    constexpr uint32_t kAdcClk = 12'000'000 / 4;
-    SJ2_ASSERT_FATAL(adc_clk_hz < kMaxAdcClock,
+    SJ2_ASSERT_FATAL(adc_clock_freq < kMaxAdcClock,
                      "Adc clock has to be less than or equal to 12MHz");
 
     PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kAdc);
-    adc_base->CR |= (1 << ControlBit::kPowerUp);
-    adc_base->CR |= (1 << channel_);
+
     if (channel_ < 4)
     {
-      adc_->SetPinFunction(static_cast<uint8_t>(AdcMode::kCh0123Pins));
+      adc_->SetPinFunction(util::Value(AdcMode::kCh0123Pins));
     }
     if (channel_ >= 4)
     {
-      adc_->SetPinFunction(static_cast<uint8_t>(AdcMode::kCh4567Pins));
+      adc_->SetPinFunction(util::Value(AdcMode::kCh4567Pins));
     }
     adc_->SetAsAnalogMode(true);
     adc_->SetMode(PinInterface::Mode::kInactive);
 
-    for (uint32_t i = 2; i < 255; i++)
-    {
-      if ((kAdcClk / i) < adc_clk_hz)
-      {
-        adc_base->CR |= (i << kClkDivBit);
-        break;
-      }
-    }
+    ControlRegister_t control;
+
+    control.data = adc_base->CR;
+    control.bits.channel_enable =
+        (control.bits.channel_enable | (1 << channel_)) & 0xFF;
+    control.bits.power_enable = true;
+    control.bits.clock_divider =
+        (GetPeripheralFrequency() / adc_clock_freq) & 0xFF;
+
+    adc_base->CR = control.data;
   }
   void Conversion() override
   {
-    if (adc_base->CR & (1 << ControlBit::kBurstMode))
+    volatile ControlRegister_t * control = GetControlRegister();
+    if (control->bits.enable_burst)
     {
-      // clear start bits for burst mode
-      adc_base->CR &= ~(7 << ControlBit::kStart);
+      control->bits.start_conversion_code = 0;
     }
     else
     {
-      // enable start bit for non-burst mode
-      adc_base->CR |= (1 << ControlBit::kStart);
+      // 0x01 = start code for "Start Conversion Now"
+      control->bits.start_conversion_code = 0x01;
     }
 
-    while (!(adc_base->GDR & (1 << kDoneBit)))
+    while (!(GetGlobalDataRegister()->bits.done))
     {
       continue;
     }
   }
   uint16_t ReadResult() override
   {
-    constexpr uint16_t kResultMask = 0xFFF;
-    uint16_t result = static_cast<uint16_t>((adc_base->GDR >> 4) & kResultMask);
-    return result;
+    return GetGlobalDataRegister()->bits.result;
   }
   bool FinishedConversion() override
   {
-    return ((adc_base->GDR >> kDoneBit) & 1);
+    return GetGlobalDataRegister()->bits.done;
   }
 
  private:
@@ -160,6 +194,4 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
   Pin adc_pin_;
 
   uint8_t channel_;
-
-  static constexpr uint8_t kDoneBit = 31;
 };

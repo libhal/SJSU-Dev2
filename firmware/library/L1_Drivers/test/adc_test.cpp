@@ -15,31 +15,29 @@ TEST_CASE("Testing adc", "[adc]")
   // Set base registers to respective local variables to check
   // for any bit manipulations
   // Any manipulation will be directed to the respective local registers
-  Adc::adc_base = &local_adc;
+  Adc::adc_base                              = &local_adc;
   Lpc40xxSystemController::system_controller = &local_sc;
   // Set mock for PinInterface
   Mock<PinInterface> mock_adc;
-  Fake(Method(mock_adc, SetAsAnalogMode),
-       Method(mock_adc, SetMode),
+  Fake(Method(mock_adc, SetAsAnalogMode), Method(mock_adc, SetMode),
        Method(mock_adc, SetPinFunction));
   PinInterface & adc = mock_adc.get();
 
   // Create ports and pins to test and mock
-  Adc channel0_mock(&adc);
+  Adc channel0_mock(&adc, Adc::Channel::kChannel0);
 
   constexpr uint8_t kBurstBit = 16;
   SECTION("Initialization")
   {
     // Source "UM10562 LPC408x/7x User Manual" table 678 page 805
-    constexpr uint8_t kPowerDownBit = 21;
-    constexpr uint8_t kPowerDown = 0b1;
+    constexpr uint8_t kPowerDownBit       = 21;
+    constexpr uint8_t kPowerDown          = 0b1;
     constexpr uint16_t kChannelClkDivMask = 0b1111'1111;
-    constexpr uint8_t kChannelClkDivBit = 8;
-    constexpr uint8_t kChannelBit0 = 0b1;
+    constexpr uint8_t kChannelClkDivBit   = 8;
+    constexpr uint8_t kChannelBit0        = 0b1;
+    constexpr uint32_t kAdcClockFrequency = 1'000'000;
 
-    constexpr uint32_t kAdcClock = 1'000'000;
-
-    channel0_mock.Initialize(kAdcClock);
+    channel0_mock.Initialize(kAdcClockFrequency);
     // Check if bit 0 is set in local_adc.CR
     CHECK(kChannelBit0 == (local_adc.CR & 1));
     Verify(Method(mock_adc, SetPinFunction).Using(Adc::AdcMode::kCh0123Pins),
@@ -48,7 +46,8 @@ TEST_CASE("Testing adc", "[adc]")
     // TODO(#286): This test does not verify that the driver has been powered
     // up.
     // Check if any bits in the clock divider are set
-    CHECK(((local_adc.CR >> kChannelClkDivBit) & kChannelClkDivMask) != 0);
+    CHECK(((local_adc.CR >> kChannelClkDivBit) & kChannelClkDivMask) ==
+          config::kSystemClockRate / kAdcClockFrequency);
     // Check bit 21 to see if power down bit is set in local_adc.CR
     CHECK(((local_adc.CR >> kPowerDownBit) & 1) == kPowerDown);
   }
@@ -56,10 +55,10 @@ TEST_CASE("Testing adc", "[adc]")
   {
     // Source "UM10562 LPC408x/7x User Manual" table 678 page 805
     constexpr uint8_t kStartNoBurst = 0b1;
-    constexpr uint8_t kStartBurst = 0;
-    constexpr uint8_t kStartBit = 24;
-    constexpr uint8_t kDone = 0b1;
-    constexpr uint8_t kDoneBit = 31;
+    constexpr uint8_t kStartBurst   = 0;
+    constexpr uint8_t kStartBit     = 24;
+    constexpr uint8_t kDone         = 0b1;
+    constexpr uint8_t kDoneBit      = 31;
 
     // Check if bit 24 in local_adc.CR for the start bits is set
     local_adc.GDR |= (1 << kDoneBit);
@@ -81,7 +80,7 @@ TEST_CASE("Testing adc", "[adc]")
   SECTION("Burst mode")
   {
     // Source "UM10562 LPC408x/7x User Manual" table 678 page 805
-    constexpr uint8_t kBurstOn = 0b1;
+    constexpr uint8_t kBurstOn  = 0b1;
     constexpr uint8_t kBurstOff = 0b0;
 
     // Only need to test if burst mode will turn on and off
@@ -94,13 +93,13 @@ TEST_CASE("Testing adc", "[adc]")
   SECTION("Read result")
   {
     constexpr uint16_t kResultMask = 0xfff;
-    constexpr uint8_t kResultBit = 4;
+    constexpr uint8_t kResultBit   = 4;
 
     // Check if there is any value in the global data reg
     channel0_mock.ReadResult();
     CHECK(((local_adc.GDR >> kResultBit) & kResultMask) == 0);
   }
 
-  Lpc40xxSystemController::system_controller  = LPC_SC;
-  Adc::adc_base = LPC_ADC;
+  Lpc40xxSystemController::system_controller = LPC_SC;
+  Adc::adc_base                              = LPC_ADC;
 }
