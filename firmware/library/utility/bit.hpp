@@ -35,7 +35,7 @@ constexpr T GenerateFieldOfOnes()
 /// @param position the starting position of the bits to extracted.
 /// @param width the number of bits from the starting position to be extracted.
 template <typename T>
-[[gnu::always_inline]][[nodiscard]]
+[[nodiscard]]
 constexpr T Extract(T target, uint32_t position, uint32_t width = 1)
 {
   // Check the types at compile time
@@ -74,7 +74,7 @@ constexpr T Extract(T target, uint32_t position, uint32_t width = 1)
 /// @param position the position in the target to insert the value of bits.
 /// @param width the length of bits that will be overwritten in the target.
 template <typename T, typename U>
-[[gnu::always_inline]][[nodiscard]]
+[[nodiscard]]
 constexpr T Insert(T target, U value, uint32_t position, uint32_t width = 1)
 {
   // Check the types at compile time
@@ -119,7 +119,7 @@ constexpr T Insert(T target, U value, uint32_t position, uint32_t width = 1)
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to change to 1
 template <typename T>
-[[gnu::always_inline]] [[nodiscard]]
+ [[nodiscard]]
 constexpr T Set(T target, uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
@@ -139,7 +139,7 @@ constexpr T Set(T target, uint32_t position)
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to change to 0
 template <typename T>
-[[gnu::always_inline]][[nodiscard]] constexpr T Clear(T target,
+[[nodiscard]] constexpr T Clear(T target,
                                                       uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
@@ -161,7 +161,7 @@ template <typename T>
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to toggle
 template <typename T>
-[[gnu::always_inline]][[nodiscard]] constexpr T Toggle(T target,
+[[nodiscard]] constexpr T Toggle(T target,
                                                        uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
@@ -185,7 +185,7 @@ template <typename T>
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to toggle
 template <typename T>
-[[gnu::always_inline]][[nodiscard]] constexpr bool Read(T target,
+[[nodiscard]] constexpr bool Read(T target,
                                                         uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
