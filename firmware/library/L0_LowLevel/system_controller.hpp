@@ -28,14 +28,17 @@ class SystemControllerInterface
       device_id = kDeviceId;
     }
   };
-  virtual uint32_t SetClockFrequency(uint8_t frequency_in_mhz)             = 0;
-  virtual void SetPeripheralClockDivider(uint8_t peripheral_divider)       = 0;
+  virtual uint32_t SetClockFrequency(uint8_t frequency_in_mhz) const       = 0;
+  virtual void SetPeripheralClockDivider(uint8_t peripheral_divider) const = 0;
   virtual uint32_t GetPeripheralClockDivider() const                       = 0;
   virtual uint32_t GetSystemFrequency() const                              = 0;
   virtual uint32_t GetPeripheralFrequency() const                          = 0;
-  virtual void PowerUpPeripheral(const PeripheralID & peripheral_select) = 0;
+  virtual bool IsPeripheralPoweredUp(
+      const PeripheralID & peripheral_select) const = 0;
+  virtual void PowerUpPeripheral(
+      const PeripheralID & peripheral_select) const = 0;
   virtual void PowerDownPeripheral(
-      const PeripheralID & peripheral_select) = 0;
+      const PeripheralID & peripheral_select) const = 0;
 };
 
 class Lpc40xxSystemController : public SystemControllerInterface
@@ -147,9 +150,7 @@ class Lpc40xxSystemController : public SystemControllerInterface
 
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
-  constexpr Lpc40xxSystemController() {}
-
-  uint32_t SetClockFrequency(uint8_t frequency_in_mhz) override
+  uint32_t SetClockFrequency(uint8_t frequency_in_mhz) const final override
   {
     uint32_t offset = 0;
     SelectOscillatorSource(OscillatorSource::kIrc);
@@ -170,7 +171,8 @@ class Lpc40xxSystemController : public SystemControllerInterface
     return offset;
   }
 
-  void SetPeripheralClockDivider(uint8_t peripheral_divider) override
+  void SetPeripheralClockDivider(
+      uint8_t peripheral_divider) const final override
   {
     SJ2_ASSERT_FATAL(peripheral_divider <= 4, "Divider mustn't exceed 32");
     system_controller->PCLKSEL = peripheral_divider;
@@ -188,7 +190,7 @@ class Lpc40xxSystemController : public SystemControllerInterface
     }
   }
 
-  uint32_t GetSystemFrequency() const override
+  uint32_t GetSystemFrequency() const final override
   {
     if constexpr (build::kTarget == build::Target::HostTest)
     {
@@ -200,7 +202,7 @@ class Lpc40xxSystemController : public SystemControllerInterface
     }
   }
 
-  uint32_t GetPeripheralFrequency() const override
+  uint32_t GetPeripheralFrequency() const final override
   {
     uint32_t peripheral_clock_divider = GetPeripheralClockDivider();
     uint32_t result = 0;  // return 0 if peripheral_clock_divider == 0
@@ -210,15 +212,27 @@ class Lpc40xxSystemController : public SystemControllerInterface
     }
     return result;
   }
+  /// Check if a peripheral is powered up by checking the power connection
+  /// register. Should typically only be used for unit testing code and
+  /// debugging.
+  bool IsPeripheralPoweredUp(
+      const PeripheralID & peripheral_select) const final override
+  {
+    bool peripheral_is_powered_on =
+        system_controller->PCONP & (1 << peripheral_select.device_id);
 
-  void PowerUpPeripheral(const PeripheralID & peripheral_select) override
+    return peripheral_is_powered_on;
+  }
+  void PowerUpPeripheral(
+      const PeripheralID & peripheral_select) const final override
   {
     auto power_connection_with_enabled_peripheral =
         system_controller->PCONP | (1 << peripheral_select.device_id);
 
     system_controller->PCONP = power_connection_with_enabled_peripheral;
   }
-  void PowerDownPeripheral(const PeripheralID & peripheral_select) override
+  void PowerDownPeripheral(
+      const PeripheralID & peripheral_select) const final override
   {
     auto power_connection_without_enabled_peripheral =
         system_controller->PCONP & (1 << peripheral_select.device_id);
@@ -227,35 +241,36 @@ class Lpc40xxSystemController : public SystemControllerInterface
   }
 
  private:
-  void SelectOscillatorSource(OscillatorSource source)
+  void SelectOscillatorSource(OscillatorSource source) const
   {
     uint32_t source_bit = static_cast<uint32_t>(source);
     system_controller->CLKSRCSEL =
         (system_controller->CLKSRCSEL & ~(kOscillatorSelect)) | source_bit;
   }
 
-  void SelectMainClockSource(MainClockSource source)
+  void SelectMainClockSource(MainClockSource source) const
   {
     system_controller->CCLKSEL =
         (system_controller->CCLKSEL & ~(kBaseClockSelect)) |
         static_cast<uint32_t>(source);
   }
 
-  void SelectUsbClockSource(UsbSource usb_clock)
+  void SelectUsbClockSource(UsbSource usb_clock) const
   {
     system_controller->USBCLKSEL =
         (system_controller->USBCLKSEL & ~(kUsbClockSource)) |
         static_cast<uint32_t>(usb_clock);
   }
 
-  void SelectSpifiClockSource(SpifiSource spifi_clock)
+  void SelectSpifiClockSource(SpifiSource spifi_clock) const
   {
     system_controller->SPIFISEL =
         (system_controller->SPIFISEL & ~(kSpifiClockSource)) |
         static_cast<uint32_t>(spifi_clock);
   }
 
-  uint32_t CalculatePll(PllInput input_frequency, uint16_t desired_speed_in_mhz)
+  uint32_t CalculatePll(PllInput input_frequency,
+                        uint16_t desired_speed_in_mhz) const
   {
     SJ2_ASSERT_FATAL(desired_speed_in_mhz < 384 && desired_speed_in_mhz > 12,
                      "Frequency must be lower than 384 MHz"
@@ -294,7 +309,8 @@ class Lpc40xxSystemController : public SystemControllerInterface
     return multiplier_value;
   }
 
-  uint32_t SetMainPll(PllInput input_frequency, uint16_t desired_speed_in_mhz)
+  uint32_t SetMainPll(PllInput input_frequency,
+                      uint16_t desired_speed_in_mhz) const
   {
     uint16_t divider_value = 1;
     uint64_t timeout_time  = Milliseconds() + kDefaultTimeout;
@@ -334,7 +350,7 @@ class Lpc40xxSystemController : public SystemControllerInterface
   }
 
   uint32_t SetAlternatePll(PllInput input_frequency,
-                           uint16_t desired_speed_in_mhz)
+                           uint16_t desired_speed_in_mhz) const
   {
     uint16_t divider_value = 1;
     uint64_t timeout_time  = Milliseconds() + kDefaultTimeout;
@@ -369,14 +385,14 @@ class Lpc40xxSystemController : public SystemControllerInterface
     return (actual_speed - desired_speed_in_mhz);
   }
 
-  void SetCpuClockDivider(uint8_t cpu_divider)
+  void SetCpuClockDivider(uint8_t cpu_divider) const
   {
     SJ2_ASSERT_FATAL(cpu_divider < 32, "Divider mustn't exceed 32");
     system_controller->CCLKSEL =
         (system_controller->CCLKSEL & ~kClearCpuDivider) | cpu_divider;
   }
 
-  void SetEmcClockDivider(EmcDivider emc_divider)
+  void SetEmcClockDivider(EmcDivider emc_divider) const
   {
     system_controller->EMCCLKSEL =
         (system_controller->EMCCLKSEL & ~kClearEmcDivider) |
@@ -385,5 +401,3 @@ class Lpc40xxSystemController : public SystemControllerInterface
   // TODO(Zaaji #181): Set USB and Spifi clock rates
   inline static uint32_t speed_in_hertz = kDefaultIRCFrequency;
 };
-
-// inline Lpc40xxSystemController system_clock;

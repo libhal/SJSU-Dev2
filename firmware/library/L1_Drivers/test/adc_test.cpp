@@ -18,13 +18,17 @@ TEST_CASE("Testing adc", "[adc]")
   Adc::adc_base                              = &local_adc;
   Lpc40xxSystemController::system_controller = &local_sc;
   // Set mock for PinInterface
-  Mock<PinInterface> mock_adc;
-  Fake(Method(mock_adc, SetAsAnalogMode), Method(mock_adc, SetMode),
-       Method(mock_adc, SetPinFunction));
-  PinInterface & adc = mock_adc.get();
+  Mock<PinInterface> mock_adc_pin;
+  Fake(Method(mock_adc_pin, SetAsAnalogMode), Method(mock_adc_pin, SetMode),
+       Method(mock_adc_pin, SetPinFunction));
 
+  Adc::Channel_t kMockChannel1 = {
+    .adc_pin      = mock_adc_pin.get(),
+    .channel      = 1,
+    .pin_function = 0b101,
+  };
   // Create ports and pins to test and mock
-  Adc channel0_mock(&adc, Adc::Channel::kChannel0);
+  Adc channel0_mock(kMockChannel1);
 
   constexpr uint8_t kBurstBit = 16;
   SECTION("Initialization")
@@ -32,22 +36,23 @@ TEST_CASE("Testing adc", "[adc]")
     // Source "UM10562 LPC408x/7x User Manual" table 678 page 805
     constexpr uint8_t kPowerDownBit       = 21;
     constexpr uint8_t kPowerDown          = 0b1;
-    constexpr uint16_t kChannelClkDivMask = 0b1111'1111;
+    constexpr uint16_t kChannelClkDivMask = 0b11'1111'1111;
     constexpr uint8_t kChannelClkDivBit   = 8;
-    constexpr uint8_t kChannelBit0        = 0b1;
-    constexpr uint32_t kAdcClockFrequency = 1'000'000;
 
-    channel0_mock.Initialize(kAdcClockFrequency);
-    // Check if bit 0 is set in local_adc.CR
-    CHECK(kChannelBit0 == (local_adc.CR & 1));
-    Verify(Method(mock_adc, SetPinFunction).Using(Adc::AdcMode::kCh0123Pins),
-           Method(mock_adc, SetAsAnalogMode).Using(true),
-           Method(mock_adc, SetMode).Using(PinInterface::Mode::kInactive));
-    // TODO(#286): This test does not verify that the driver has been powered
-    // up.
-    // Check if any bits in the clock divider are set
-    CHECK(((local_adc.CR >> kChannelClkDivBit) & kChannelClkDivMask) ==
-          config::kSystemClockRate / kAdcClockFrequency);
+    channel0_mock.Initialize();
+    CHECK(Lpc40xxSystemController().IsPeripheralPoweredUp(
+        Lpc40xxSystemController::Peripherals::kAdc));
+    Verify(
+        Method(mock_adc_pin, SetPinFunction).Using(kMockChannel1.pin_function),
+        Method(mock_adc_pin, SetMode).Using(PinInterface::Mode::kInactive),
+        Method(mock_adc_pin, SetAsAnalogMode).Using(true));
+
+    // Check if any bits in the clock divider are set given a frequency of
+    uint32_t expected_frequency =
+        config::kSystemClockRate / Adc::kClockFrequency;
+    uint32_t actual_set_frequency =
+        local_adc.CR >> kChannelClkDivBit & kChannelClkDivMask;
+    CHECK(expected_frequency == actual_set_frequency);
     // Check bit 21 to see if power down bit is set in local_adc.CR
     CHECK(((local_adc.CR >> kPowerDownBit) & 1) == kPowerDown);
   }

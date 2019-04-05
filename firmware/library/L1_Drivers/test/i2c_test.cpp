@@ -28,8 +28,11 @@ TEST_CASE("Testing I2C", "[i2c]")
   Fake(Method(mock_scl_pin, SetPinFunction),
        Method(mock_scl_pin, SetAsOpenDrain), Method(mock_scl_pin, SetMode));
 
-  static I2c::Transaction_t mock_i2c_transaction;
+  I2c::Transaction_t mock_i2c_transaction;
 
+  // The mock object must be statically linked, otherwise a reference to an
+  // object in the stack cannot be used as a template parameter for creating
+  // a I2c::I2cHandler<kMockI2cPartial> below in Bus_t kMockI2c.
   static const I2c::PartialBus_t kMockI2cPartial = {
     .registers           = &local_i2c,
     .peripheral_power_id = Lpc40xxSystemController::Peripherals::kI2c0,
@@ -40,7 +43,7 @@ TEST_CASE("Testing I2C", "[i2c]")
     .pin_function_id     = 0b010,
   };
 
-  static const I2c::Bus_t kMockI2c = {
+  const I2c::Bus_t kMockI2c = {
     .bus     = kMockI2cPartial,
     .handler = I2c::I2cHandler<kMockI2cPartial>,
   };
@@ -62,6 +65,8 @@ TEST_CASE("Testing I2C", "[i2c]")
 
     constexpr uint32_t kLow  = static_cast<uint32_t>(kScll);
     constexpr uint32_t kHigh = static_cast<uint32_t>(kSclh);
+    CHECK(Lpc40xxSystemController().IsPeripheralPoweredUp(
+        Lpc40xxSystemController::Peripherals::kI2c0));
     CHECK(kLow == local_i2c.SCLL);
     CHECK(kHigh == local_i2c.SCLH);
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
