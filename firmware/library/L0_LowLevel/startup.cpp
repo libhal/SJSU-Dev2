@@ -51,7 +51,7 @@ namespace
 // Create LPC40xx system controller to be used by low level initialization.
 Lpc40xxSystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
-Timer timer0(Timer::TimerPort::kTimer0);
+Timer timer0(Timer::Channel::kTimer0);
 uint64_t Lpc40xxUptime()
 {
   return timer0.GetTimer();
@@ -175,7 +175,7 @@ void LowLevelInit()
   system_controller.SetPeripheralClockDivider(1);
   // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
   // micro second.
-  timer0.Initialize(1'000'000);
+  timer0.Initialize(1'000'000UL);
   SetUptimeFunction(Lpc40xxUptime);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
