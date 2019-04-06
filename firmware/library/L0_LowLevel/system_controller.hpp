@@ -178,7 +178,7 @@ class Lpc40xxSystemController : public SystemControllerInterface
     system_controller->PCLKSEL = peripheral_divider;
   }
 
-  uint32_t GetPeripheralClockDivider() const override
+  uint32_t GetPeripheralClockDivider() const final override
   {
     if constexpr (build::kTarget == build::Target::HostTest)
     {
@@ -398,6 +398,6 @@ class Lpc40xxSystemController : public SystemControllerInterface
         (system_controller->EMCCLKSEL & ~kClearEmcDivider) |
         static_cast<uint8_t>(emc_divider);
   }
-  // TODO(Zaaji #181): Set USB and Spifi clock rates
+  // TODO(#181): Set USB and Spifi clock rates
   inline static uint32_t speed_in_hertz = kDefaultIRCFrequency;
 };
