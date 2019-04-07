@@ -11,133 +11,325 @@
 
 class UartInterface
 {
-  virtual void SetBaudRate(uint32_t baud_rate) = 0;
+  virtual bool SetBaudRate(uint32_t baud_rate) = 0;
   virtual bool Initialize(uint32_t baud_rate)  = 0;
   virtual void Send(uint8_t out)               = 0;
   virtual uint8_t Receive(uint32_t timeout)    = 0;
 };
 
+namespace uart
+{
+constexpr float kThreshold = 0.05f;
+
+struct UartCalibration_t
+{
+  uint32_t divide_latch = 0;
+  uint32_t divide_add   = 0;
+  uint32_t multiply     = 1;
+};
+
+constexpr UartCalibration_t FindClosestFractional(float decimal)
+{
+  UartCalibration_t result;
+  bool finished = false;
+  for (int div = 0; div < 15 && !finished; div++)
+  {
+    for (int mul = div + 1; mul < 15 && !finished; mul++)
+    {
+      float divf         = static_cast<float>(div);
+      float mulf         = static_cast<float>(mul);
+      float test_decimal = 1.0f + divf / mulf;
+      if (decimal <= test_decimal + kThreshold &&
+          decimal >= test_decimal - kThreshold)
+      {
+        result.divide_add = div;
+        result.multiply   = mul;
+        finished          = true;
+      }
+    }
+  }
+  return result;
+}
+
+constexpr float DividerEstimate(float baud_rate,
+                                       float fraction_estimate       = 1,
+                                       uint32_t peripheral_frequency = 1)
+{
+  float clock_frequency = static_cast<float>(peripheral_frequency);
+  return clock_frequency / (16.0f * baud_rate * fraction_estimate);
+}
+
+constexpr float FractionalEstimate(float baud_rate, float divider,
+                                          uint32_t peripheral_frequency)
+{
+  float clock_frequency = static_cast<float>(peripheral_frequency);
+  return clock_frequency / (16.0f * baud_rate * divider);
+}
+
+constexpr float RoundFloat(float value)
+{
+  return static_cast<float>(static_cast<int>(value + 0.5f));
+}
+
+constexpr bool IsDecmial(float value)
+{
+  bool result         = false;
+  float rounded_value = RoundFloat(value);
+  float error         = value - rounded_value;
+  if (-kThreshold <= error && error <= kThreshold)
+  {
+    result = true;
+  }
+  return result;
+}
+
+enum class States
+{
+  kCalculateIntegerDivideLatch,
+  kCalculateDivideLatchWithDecimal,
+  kDecimalFailedGenerateNewDecimal,
+  kGenerateFractionFromDecimal,
+  kDone
+};
+
+constexpr static UartCalibration_t GenerateUartCalibration(
+    float baud_rate, uint32_t peripheral_frequency)
+{
+  States state = States::kCalculateIntegerDivideLatch;
+  UartCalibration_t uart_calibration;
+  float divide_estimate = 0;
+  float decimal         = 1.5;
+  float div             = 1;
+  float mul             = 2;
+  while (state != States::kDone)
+  {
+    switch (state)
+    {
+      case States::kCalculateIntegerDivideLatch:
+      {
+        divide_estimate = DividerEstimate(baud_rate, 1, peripheral_frequency);
+
+        if (divide_estimate < 1.0f)
+        {
+          uart_calibration.divide_latch = 0;
+          state                         = States::kDone;
+        }
+        else if (IsDecmial(divide_estimate))
+        {
+          uart_calibration.divide_latch =
+              static_cast<uint32_t>(divide_estimate);
+          state = States::kDone;
+        }
+        else
+        {
+          state = States::kCalculateDivideLatchWithDecimal;
+        }
+        break;
+      }
+      case States::kCalculateDivideLatchWithDecimal:
+      {
+        divide_estimate =
+            RoundFloat(DividerEstimate(baud_rate, decimal, peripheral_frequency));
+        decimal = FractionalEstimate(baud_rate, divide_estimate,
+                                     peripheral_frequency);
+        if (1.1f <= decimal && decimal <= 1.9f)
+        {
+          state = States::kGenerateFractionFromDecimal;
+        }
+        else
+        {
+          state = States::kDecimalFailedGenerateNewDecimal;
+        }
+        break;
+      }
+      case States::kDecimalFailedGenerateNewDecimal:
+      {
+        mul += 1;
+
+        if (div > 15)
+        {
+          state = States::kDone;
+          break;
+        }
+        else if (mul > 15)
+        {
+          div += 1;
+          mul = div + 1;
+        }
+        decimal = div / mul;
+        state   = States::kCalculateDivideLatchWithDecimal;
+        break;
+      }
+      case States::kGenerateFractionFromDecimal:
+      {
+        uart_calibration              = FindClosestFractional(decimal);
+        uart_calibration.divide_latch = static_cast<uint32_t>(divide_estimate);
+        state                         = States::kDone;
+        break;
+      }
+      case States::kDone: { break;
+      }
+      default: { break;
+      }
+    }
+  }
+  return uart_calibration;
+}
+}  // namespace uart
+
 class Uart final : public UartInterface, protected Lpc40xxSystemController
 {
  public:
-  enum Pins : uint8_t
-  {
-    kTx = 0,
-    kRx = 1
-  };
-
-  enum class Channels : uint8_t
-  {
-    kUart0 = 0,
-    kUart2 = 1,
-    kUart3 = 2,
-    kUart4 = 3
-  };
-
-  enum class States
-  {
-    kCalculateIntegerDivideLatch,
-    kCalculateDivideLatchWithDecimal,
-    kDecimalFailedGenerateNewDecimal,
-    kGenerateFractionFromDecimal,
-    kDone
-  };
-
-  struct UartCalibration_t
-  {
-    constexpr UartCalibration_t() : divide_latch(0), divide_add(0), multiply(1)
-    {
-    }
-    uint32_t divide_latch;
-    uint32_t divide_add;
-    uint32_t multiply;
-  };
-
-  // Each port ony has 1 usable set of pins
-  // UART0 pins Tx = 0,0; Rx = 0,1
-  // UART2 pins Tx = 2,8; Rx = 2,9
-  // UART3 pins Tx = 4,28; Rx = 4,29
-  // UART4 pins Tx = 1,29; Rx = 2,9
   static constexpr uint8_t kStandardUart = 0b011;
-  static constexpr float kThreshold      = 0.05f;
-
-  static constexpr uint8_t kTxUartPortFunction[4] = { 0b001, 0b010, 0b010,
-                                                      0b101 };
-  static constexpr uint8_t kRxUartPortFunction[4] = { 0b001, 0b010, 0b010,
-                                                      0b011 };
-  static constexpr Lpc40xxSystemController::PeripheralID kPowerbit[] = {
-    Lpc40xxSystemController::Peripherals::kUart0,
-    Lpc40xxSystemController::Peripherals::kUart2,
-    Lpc40xxSystemController::Peripherals::kUart3,
-    Lpc40xxSystemController::Peripherals::kUart4
+  struct Port_t
+  {
+    LPC_UART_TypeDef * registers;
+    PeripheralID power_on_id;
+    const PinInterface & tx;
+    const PinInterface & rx;
+    uint8_t tx_function_id : 3;
+    uint8_t rx_function_id : 3;
   };
 
-  inline static LPC_UART_TypeDef * uart[4] = {
-    [0] = LPC_UART0,
-    [1] = LPC_UART2,
-    [2] = LPC_UART3,
-    [3] = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4)
+  static constexpr uart::UartCalibration_t kBaudRateLUT[] = {
+    uart::GenerateUartCalibration(4800, config::kSystemClockRate),
+    uart::GenerateUartCalibration(9600, config::kSystemClockRate),
+    uart::GenerateUartCalibration(19200, config::kSystemClockRate),
+    uart::GenerateUartCalibration(38400, config::kSystemClockRate),
+    uart::GenerateUartCalibration(57600, config::kSystemClockRate),
+    uart::GenerateUartCalibration(115200, config::kSystemClockRate),
+    uart::GenerateUartCalibration(230400, config::kSystemClockRate),
+    uart::GenerateUartCalibration(460800, config::kSystemClockRate),
+    uart::GenerateUartCalibration(921600, config::kSystemClockRate),
   };
 
-  inline static Pin pairs[4][2] = { { Pin(0, 2), Pin(0, 3) },
-                                    { Pin(2, 8), Pin(2, 9) },
-                                    { Pin(4, 28), Pin(4, 29) },
-                                    { Pin(1, 29), Pin(2, 9) } };
-  // Not using a default constructor. User must define the Uart channel in order
-  // to properly define pins. User defined constructor. Must be commented out to
-  // use unit testing constructor below
-  explicit constexpr Uart(Channels mode)
-      : channel_(static_cast<uint8_t>(mode)),
-        tx_(&pairs[channel_][Pins::kTx]),
-        rx_(&pairs[channel_][Pins::kRx])
+  struct Port
   {
-  }
-  // Pass you own preconfigured pins through this constructor
-  constexpr Uart(Channels mode, PinInterface * tx_pin, PinInterface * rx_pin)
-      : channel_(static_cast<uint8_t>(mode)), tx_(tx_pin), rx_(rx_pin)
+   private:
+    inline static const Pin kUart0Tx = Pin(0, 2);
+    inline static const Pin kUart0Rx = Pin(0, 3);
+
+    inline static const Pin kUart2Tx = Pin(2, 8);
+    inline static const Pin kUart2Rx = Pin(2, 9);
+
+    inline static const Pin kUart3Tx = Pin(4, 28);
+    inline static const Pin kUart3Rx = Pin(4, 29);
+
+    inline static const Pin kUart4Tx = Pin(1, 29);
+    inline static const Pin kUart4Rx = Pin(2, 9);
+
+   public:
+    inline static const Port_t kUart0 = {
+      .registers      = LPC_UART0,
+      .power_on_id    = Peripherals::kUart0,
+      .tx             = kUart0Tx,
+      .rx             = kUart0Rx,
+      .tx_function_id = 0b001,
+      .rx_function_id = 0b001,
+    };
+
+    inline static const Port_t kUart2 = {
+      .registers      = LPC_UART2,
+      .power_on_id    = Peripherals::kUart2,
+      .tx             = kUart2Tx,
+      .rx             = kUart2Rx,
+      .tx_function_id = 0b010,
+      .rx_function_id = 0b010,
+    };
+
+    inline static const Port_t kUart3 = {
+      .registers      = LPC_UART3,
+      .power_on_id    = Peripherals::kUart3,
+      .tx             = kUart3Tx,
+      .rx             = kUart3Rx,
+      .tx_function_id = 0b010,
+      .rx_function_id = 0b010,
+    };
+
+    inline static const Port_t kUart4 = {
+      .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4),
+      .power_on_id    = Peripherals::kUart4,
+      .tx             = kUart4Tx,
+      .rx             = kUart4Rx,
+      .tx_function_id = 0b101,
+      .rx_function_id = 0b011,
+    };
+  };
+
+  explicit constexpr Uart(const Port_t & port) : port_(port) {}
+
+  /// For LPC40xx only supports the following baud rates:
+  ///   4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600
+  bool SetBaudRate(uint32_t baud_rate) override
   {
+    uart::UartCalibration_t calibration;
+    switch (baud_rate)
+    {
+      case 4800: calibration = kBaudRateLUT[0]; break;
+      case 9600: calibration = kBaudRateLUT[1]; break;
+      case 19200: calibration = kBaudRateLUT[2]; break;
+      case 38400: calibration = kBaudRateLUT[3]; break;
+      case 57600: calibration = kBaudRateLUT[4]; break;
+      case 115200: calibration = kBaudRateLUT[5]; break;
+      case 230400: calibration = kBaudRateLUT[6]; break;
+      case 460800: calibration = kBaudRateLUT[7]; break;
+      case 921600: calibration = kBaudRateLUT[8]; break;
+      default: return false;
+    }
+    constexpr uint8_t kDlabBit = (1 << 7);
+
+    uint8_t dlm = static_cast<uint8_t>((calibration.divide_latch >> 8) & 0xFF);
+    uint8_t dll = static_cast<uint8_t>(calibration.divide_latch & 0xFF);
+    uint8_t fdr = static_cast<uint8_t>((calibration.multiply & 0xF) << 4 |
+                                       (calibration.divide_add & 0xF));
+
+    port_.registers->LCR = kDlabBit;
+    port_.registers->DLM = dlm;
+    port_.registers->DLL = dll;
+    port_.registers->FDR = fdr;
+    port_.registers->LCR = kStandardUart;
+    return true;
   }
 
-  void SetBaudRate(uint32_t baud_rate) override
+  void SetNonStandardBaudRate(uint32_t baud_rate)
   {
     constexpr uint8_t kDlabBit = (1 << 7);
     float baudrate             = static_cast<float>(baud_rate);
-    UartCalibration_t dividers = GenerateUartCalibration(baudrate);
+    uart::UartCalibration_t dividers =
+        uart::GenerateUartCalibration(baudrate, GetPeripheralFrequency());
 
     uint8_t dlm = static_cast<uint8_t>((dividers.divide_latch >> 8) & 0xFF);
     uint8_t dll = static_cast<uint8_t>(dividers.divide_latch & 0xFF);
     uint8_t fdr = static_cast<uint8_t>((dividers.multiply & 0xF) << 4 |
                                        (dividers.divide_add & 0xF));
 
-    // Set baud rate
-    uart[channel_]->LCR = kDlabBit;
-    uart[channel_]->DLM = dlm;
-    uart[channel_]->DLL = dll;
-    uart[channel_]->FDR = fdr;
-    uart[channel_]->LCR = kStandardUart;
+    port_.registers->LCR = kDlabBit;
+    port_.registers->DLM = dlm;
+    port_.registers->DLL = dll;
+    port_.registers->FDR = fdr;
+    port_.registers->LCR = kStandardUart;
   }
 
   bool Initialize(uint32_t baud_rate) override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
     // Powering the port
-    PowerUpPeripheral(kPowerbit[channel_]);
-    // Setting the pin functions and modes
-    rx_->SetPinFunction(kRxUartPortFunction[channel_]);
-    tx_->SetPinFunction(kTxUartPortFunction[channel_]);
-    rx_->SetMode(PinInterface::Mode::kPullUp);
-    tx_->SetMode(PinInterface::Mode::kPullUp);
-    // Baud rate setting
+    PowerUpPeripheral(port_.power_on_id);
     SetBaudRate(baud_rate);
-    uart[channel_]->FCR |= kFIFOEnableAndReset;
+    // Setting the pin functions and modes
+    port_.rx.SetPinFunction(port_.rx_function_id);
+    port_.tx.SetPinFunction(port_.tx_function_id);
+    port_.rx.SetMode(PinInterface::Mode::kPullUp);
+    port_.tx.SetMode(PinInterface::Mode::kPullUp);
+    port_.registers->FCR |= kFIFOEnableAndReset;
     return true;
   }
 
   void Send(uint8_t data) override
   {
-    uart[channel_]->THR              = data;
+    port_.registers->THR             = data;
     auto wait_for_transfer_to_finish = [this]() -> bool {
-      return (uart[channel_]->LSR & (1 << 5));
+      return (port_.registers->LSR & (1 << 5));
     };
     Wait(kMaxWait, wait_for_transfer_to_finish);
   }
@@ -146,150 +338,20 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
   {
     uint8_t receiver   = '\xFF';
     auto byte_recieved = [this]() -> bool {
-      return (uart[channel_]->LSR & (1 << 0));
+      return (port_.registers->LSR & (1 << 0));
     };
 
     Status status = Wait(timeout, byte_recieved);
 
     if (status == Status::kSuccess)
     {
-      receiver = static_cast<uint8_t>(uart[channel_]->RBR);
+      receiver = static_cast<uint8_t>(port_.registers->RBR);
     }
     return receiver;
   }
 
  private:
-  UartCalibration_t FindClosestFractional(float decimal)
-  {
-    UartCalibration_t result;
-    bool finished = false;
-    for (int div = 0; div < 15 && !finished; div++)
-    {
-      for (int mul = div + 1; mul < 15 && !finished; mul++)
-      {
-        float divf         = static_cast<float>(div);
-        float mulf         = static_cast<float>(mul);
-        float test_decimal = 1.0f + divf / mulf;
-        if (decimal <= test_decimal + kThreshold &&
-            decimal >= test_decimal - kThreshold)
-        {
-          result.divide_add = div;
-          result.multiply   = mul;
-          finished          = true;
-        }
-      }
-    }
-    return result;
-  }
-
-  float DividerEstimate(float baud_rate, float fraction_estimate = 1)
-  {
-    float clock_frequency = static_cast<float>(GetPeripheralFrequency());
-    return clock_frequency / (16.0f * baud_rate * fraction_estimate);
-  }
-
-  float FractionalEstimate(float baud_rate, float divider)
-  {
-    float clock_frequency = static_cast<float>(GetPeripheralFrequency());
-    return clock_frequency / (16.0f * baud_rate * divider);
-  }
-
-  bool IsDecmial(float value)
-  {
-    bool result         = false;
-    float rounded_value = roundf(value);
-    float error         = value - rounded_value;
-    if (-kThreshold <= error && error <= kThreshold)
-    {
-      result = true;
-    }
-    return result;
-  }
-
-  UartCalibration_t GenerateUartCalibration(float baud_rate)
-  {
-    States state = States::kCalculateIntegerDivideLatch;
-    UartCalibration_t uart_calibration;
-    float divide_estimate = 0;
-    float decimal         = 1.5;
-    float div             = 1;
-    float mul             = 2;
-    while (state != States::kDone)
-    {
-      switch (state)
-      {
-        case States::kCalculateIntegerDivideLatch:
-        {
-          divide_estimate = DividerEstimate(baud_rate);
-          if (divide_estimate < 1.0f)
-          {
-            uart_calibration.divide_latch = 0;
-            state                         = States::kDone;
-          }
-          else if (IsDecmial(divide_estimate))
-          {
-            uart_calibration.divide_latch =
-                static_cast<uint32_t>(divide_estimate);
-            state = States::kDone;
-          }
-          else
-          {
-            state = States::kCalculateDivideLatchWithDecimal;
-          }
-          break;
-        }
-        case States::kCalculateDivideLatchWithDecimal:
-        {
-          divide_estimate = roundf(DividerEstimate(baud_rate, decimal));
-          decimal         = FractionalEstimate(baud_rate, divide_estimate);
-          if (1.1f <= decimal && decimal <= 1.9f)
-          {
-            state = States::kGenerateFractionFromDecimal;
-          }
-          else
-          {
-            state = States::kDecimalFailedGenerateNewDecimal;
-          }
-          break;
-        }
-        case States::kDecimalFailedGenerateNewDecimal:
-        {
-          mul += 1;
-
-          if (div > 15)
-          {
-            state = States::kDone;
-            break;
-          }
-          else if (mul > 15)
-          {
-            div += 1;
-            mul = div + 1;
-          }
-          decimal = div / mul;
-          state   = States::kCalculateDivideLatchWithDecimal;
-          break;
-        }
-        case States::kGenerateFractionFromDecimal:
-        {
-          uart_calibration = FindClosestFractional(decimal);
-          uart_calibration.divide_latch =
-              static_cast<uint32_t>(divide_estimate);
-          state = States::kDone;
-          break;
-        }
-        case States::kDone: { break;
-        }
-        default: { break;
-        }
-      }
-    }
-    return uart_calibration;
-  }
-
-  uint8_t channel_;
-  PinInterface * tx_;
-  PinInterface * rx_;
+  const Port_t & port_;
 };
 
-inline Uart uart0(Uart::Channels::kUart0);
+inline Uart uart0(Uart::Port::kUart0);
