@@ -1,6 +1,6 @@
 #include "L1_Drivers/gpio.hpp"
 #include "L1_Drivers/i2c.hpp"
-#include "L1_Drivers/ssp.hpp"
+#include "L1_Drivers/spi.hpp"
 #include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "utility/log.hpp"
@@ -58,8 +58,7 @@ class FactoryTest
 
     printf(
         "Manually check that the screen is white with no black pixels...\n\n");
-    printf(
-        "If the screen looks very spotty, try this test 4 more times.\n\n");
+    printf("If the screen looks very spotty, try this test 4 more times.\n\n");
 
     printf("End of OLED Hardware Test.\n\n");
   }
@@ -68,26 +67,26 @@ class FactoryTest
   {
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting External Flash Test...\n\n");
-    Ssp ssp2(Ssp::Peripheral::kSsp2);
+    Spi spi2(Spi::Bus::kSpi2);
     Gpio cs(1, 10);
     bool result = false;
     cs.SetAsOutput();
     cs.SetHigh();
 
-    ssp2.SetPeripheralMode(Ssp::MasterSlaveMode::kMaster, Ssp::FrameMode::kSpi,
-                           Ssp::DataSize::kEight);
-    ssp2.SetClock(false, false, 100, 48);
-    ssp2.Initialize();
+    spi2.SetPeripheralMode(Spi::MasterSlaveMode::kMaster,
+                           Spi::DataSize::kEight);
+    spi2.SetClock(false, false, 100, 48);
+    spi2.Initialize();
 
     uint8_t array[5];
     cs.SetLow();
     Delay(1);
     // Read Manufacturer ID
-    ssp2.Transfer(0x9F);
-    array[0] = static_cast<uint8_t>(ssp2.Transfer(0x00));
-    array[1] = static_cast<uint8_t>(ssp2.Transfer(0x00));
-    array[2] = static_cast<uint8_t>(ssp2.Transfer(0x00));
-    array[3] = static_cast<uint8_t>(ssp2.Transfer(0x00));
+    spi2.Transfer(0x9F);
+    array[0] = static_cast<uint8_t>(spi2.Transfer(0x00));
+    array[1] = static_cast<uint8_t>(spi2.Transfer(0x00));
+    array[2] = static_cast<uint8_t>(spi2.Transfer(0x00));
+    array[3] = static_cast<uint8_t>(spi2.Transfer(0x00));
     LOG_INFO("Returned 0x%02X 0x%02X 0x%02X 0x%02X", array[0], array[1],
              array[2], array[3]);
     cs.SetHigh();

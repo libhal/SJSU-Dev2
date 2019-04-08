@@ -8,6 +8,6 @@ TESTS += $(LIB_DIR)/L1_Drivers/test/gpio_test.cpp
 TESTS += $(LIB_DIR)/L1_Drivers/test/i2c_test.cpp
 TESTS += $(LIB_DIR)/L1_Drivers/test/pin_test.cpp
 TESTS += $(LIB_DIR)/L1_Drivers/test/pwm_test.cpp
-TESTS += $(LIB_DIR)/L1_Drivers/test/ssp_test.cpp
+TESTS += $(LIB_DIR)/L1_Drivers/test/spi_test.cpp
 TESTS += $(LIB_DIR)/L1_Drivers/test/system_timer_test.cpp
 TESTS += $(LIB_DIR)/L1_Drivers/test/uart_test.cpp

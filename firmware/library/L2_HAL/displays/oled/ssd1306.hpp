@@ -5,7 +5,7 @@
 
 #include "config.hpp"
 #include "L1_Drivers/gpio.hpp"
-#include "L1_Drivers/ssp.hpp"
+#include "L1_Drivers/spi.hpp"
 #include "L2_HAL/displays/pixel_display.hpp"
 #include "utility/log.hpp"
 
@@ -29,14 +29,14 @@ class Ssd1306 : public PixelDisplayInterface
       : ssp_(&ssp1_),
         cs_(&cs_gpio_),
         dc_(&dc_gpio_),
-        ssp1_(Ssp::Peripheral::kSsp1),
+        ssp1_(Spi::Bus::kSpi1),
         cs_gpio_(1, 22),
         dc_gpio_(1, 25),
         bitmap_{}
   {
   }
 
-  constexpr Ssd1306(Ssp * ssp, Gpio * cs, Gpio * dc)
+  constexpr Ssd1306(Spi * ssp, Gpio * cs, Gpio * dc)
       : ssp_(ssp),
         cs_(cs),
         dc_(dc),
@@ -143,8 +143,8 @@ class Ssd1306 : public PixelDisplayInterface
     cs_->SetHigh();
     dc_->SetHigh();
 
-    ssp_->SetPeripheralMode(Ssp::MasterSlaveMode::kMaster, Ssp::FrameMode::kSpi,
-                            Ssp::DataSize::kEight);
+    ssp_->SetPeripheralMode(Spi::MasterSlaveMode::kMaster, Spi::FrameMode::kSpi,
+                            Spi::DataSize::kEight);
     // Set speed to 1Mhz by dividing by 1 * ClockFrequencyInMHz.
     ssp_->SetClock(false, false, 1, config::kSystemClockRateMhz/3);
     ssp_->Initialize();
@@ -218,11 +218,11 @@ class Ssd1306 : public PixelDisplayInterface
   }
 
  private:
-  Ssp * ssp_;
+  Spi * ssp_;
   Gpio * cs_;
   Gpio * dc_;
 
-  Ssp ssp1_;
+  Spi ssp1_;
   Gpio cs_gpio_;
   Gpio dc_gpio_;
   uint8_t bitmap_[kRows + 5][kColumns + 5];
