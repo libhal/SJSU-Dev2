@@ -49,8 +49,9 @@ class Dac final : public DacInterface, protected Lpc40xxSystemController
   {
     static constexpr uint8_t kDacMode = 0b010;
     dac_pin_.SetPinFunction(kDacMode);
-    dac_pin_.EnableDac(true);
-    dac_pin_.SetAsAnalogMode(true);
+    // Temporally convert
+    reinterpret_cast<const Pin*>(&dac_pin_)->EnableDac();
+    dac_pin_.SetAsAnalogMode();
     dac_pin_.SetMode(PinInterface::Mode::kInactive);
     // Disable interrupt and DMA
     dac_register->CTRL = 0;

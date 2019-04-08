@@ -18,28 +18,17 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
   Mock<GpioInterface> mock_d1;
   Mock<GpioInterface> mock_d0;
 
-  Fake(Method(mock_rs, SetAsOutput), Method(mock_rs, SetHigh),
-       Method(mock_rs, SetLow), Method(mock_rs, Set));
-  Fake(Method(mock_rw, SetAsOutput), Method(mock_rw, SetHigh),
-       Method(mock_rw, SetLow), Method(mock_rw, Set));
-  Fake(Method(mock_e, SetAsOutput), Method(mock_e, SetHigh),
-       Method(mock_e, SetLow), Method(mock_e, Set));
-  Fake(Method(mock_d7, SetAsOutput), Method(mock_d7, SetHigh),
-       Method(mock_d7, SetLow), Method(mock_d7, Set));
-  Fake(Method(mock_d6, SetAsOutput), Method(mock_d6, SetHigh),
-       Method(mock_d6, SetLow), Method(mock_d6, Set));
-  Fake(Method(mock_d5, SetAsOutput), Method(mock_d5, SetHigh),
-       Method(mock_d5, SetLow), Method(mock_d5, Set));
-  Fake(Method(mock_d4, SetAsOutput), Method(mock_d4, SetHigh),
-       Method(mock_d4, SetLow), Method(mock_d4, Set));
-  Fake(Method(mock_d3, SetAsOutput), Method(mock_d3, SetHigh),
-       Method(mock_d3, SetLow), Method(mock_d3, Set));
-  Fake(Method(mock_d2, SetAsOutput), Method(mock_d2, SetHigh),
-       Method(mock_d2, SetLow), Method(mock_d2, Set));
-  Fake(Method(mock_d1, SetAsOutput), Method(mock_d1, SetHigh),
-       Method(mock_d1, SetLow), Method(mock_d1, Set));
-  Fake(Method(mock_d0, SetAsOutput), Method(mock_d0, SetHigh),
-       Method(mock_d0, SetLow), Method(mock_d0, Set));
+  Fake(Method(mock_rs, SetDirection), Method(mock_rs, Set));
+  Fake(Method(mock_rw, SetDirection), Method(mock_rw, Set));
+  Fake(Method(mock_e, SetDirection), Method(mock_e, Set));
+  Fake(Method(mock_d7, SetDirection), Method(mock_d7, Set));
+  Fake(Method(mock_d6, SetDirection), Method(mock_d6, Set));
+  Fake(Method(mock_d5, SetDirection), Method(mock_d5, Set));
+  Fake(Method(mock_d4, SetDirection), Method(mock_d4, Set));
+  Fake(Method(mock_d3, SetDirection), Method(mock_d3, Set));
+  Fake(Method(mock_d2, SetDirection), Method(mock_d2, Set));
+  Fake(Method(mock_d1, SetDirection), Method(mock_d1, Set));
+  Fake(Method(mock_d0, SetDirection), Method(mock_d0, Set));
 
   St7066u::ControlPins_t pins = { mock_rs.get(), mock_rw.get(), mock_e.get(),
                                   mock_d7.get(), mock_d6.get(), mock_d5.get(),
@@ -52,10 +41,14 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
         St7066u(St7066u::BusMode::kFourBit, St7066u::DisplayMode::kSingleLine,
                 St7066u::FontStyle::kFont5x8, pins);
     lcd.Initialize();
-    Verify(Method(mock_rs, SetAsOutput), Method(mock_rw, SetAsOutput),
-           Method(mock_e, SetAsOutput), Method(mock_d7, SetAsOutput),
-           Method(mock_d6, SetAsOutput), Method(mock_d5, SetAsOutput),
-           Method(mock_d4, SetAsOutput));
+    Verify(
+        Method(mock_rs, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_rw, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_e, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d7, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d6, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d5, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d4, SetDirection).Using(GpioInterface::Direction::kOutput));
   }
 
   SECTION("8-bit Bus Initialization")
@@ -66,12 +59,18 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     lcd.Initialize();
     // All control pins RS, RW, and D7-D0 pin direction should be set to
     // output.
-    Verify(Method(mock_rs, SetAsOutput), Method(mock_rw, SetAsOutput),
-           Method(mock_e, SetAsOutput), Method(mock_d7, SetAsOutput),
-           Method(mock_d6, SetAsOutput), Method(mock_d5, SetAsOutput),
-           Method(mock_d4, SetAsOutput), Method(mock_d3, SetAsOutput),
-           Method(mock_d2, SetAsOutput), Method(mock_d1, SetAsOutput),
-           Method(mock_d0, SetAsOutput))
+    Verify(
+        Method(mock_rs, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_rw, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_e, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d7, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d6, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d5, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d4, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d3, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d2, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d1, SetDirection).Using(GpioInterface::Direction::kOutput),
+        Method(mock_d0, SetDirection).Using(GpioInterface::Direction::kOutput))
         .Exactly(1);
   }
 
@@ -86,21 +85,18 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     lcd.WriteNibble(St7066u::WriteOperation::kCommand, kNibble);
     // pins RS, RW, and D7-D4 should all be set before the Chip Enable
     // falling edge write trigger.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
     Verify(
         Method(mock_rs, Set)
             .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kNibble >> 3) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kNibble >> 2) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kNibble >> 1) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kNibble >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+        Method(mock_d7, Set).Using(GpioInterface::State((kNibble >> 3) & 0x01)),
+        Method(mock_d6, Set).Using(GpioInterface::State((kNibble >> 2) & 0x01)),
+        Method(mock_d5, Set).Using(GpioInterface::State((kNibble >> 1) & 0x01)),
+        Method(mock_d4, Set).Using(GpioInterface::State((kNibble >> 0) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow));
 
     // Pins D3-D0 should never be used when writing a nibble.
     Verify(Method(mock_d3, Set), Method(mock_d2, Set), Method(mock_d1, Set),
@@ -121,36 +117,37 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     lcd.WriteByte(St7066u::WriteOperation::kCommand, kCommandByte);
     // pins RS, RW, and D7-D0 should all be set before the Chip Enable
     // falling edge write trigger.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
-    Verify(
-        Method(mock_rs, Set)
-            .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kCommandByte >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kCommandByte >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kCommandByte >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kCommandByte >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kCommandByte >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kCommandByte >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kCommandByte >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kCommandByte >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
+    Verify(Method(mock_rs, Set)
+               .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+           Method(mock_d7, Set)
+               .Using(GpioInterface::State((kCommandByte >> 7) & 0x01)),
+           Method(mock_d6, Set)
+               .Using(GpioInterface::State((kCommandByte >> 6) & 0x01)),
+           Method(mock_d5, Set)
+               .Using(GpioInterface::State((kCommandByte >> 5) & 0x01)),
+           Method(mock_d4, Set)
+               .Using(GpioInterface::State((kCommandByte >> 4) & 0x01)),
+           Method(mock_d3, Set)
+               .Using(GpioInterface::State((kCommandByte >> 3) & 0x01)),
+           Method(mock_d2, Set)
+               .Using(GpioInterface::State((kCommandByte >> 2) & 0x01)),
+           Method(mock_d1, Set)
+               .Using(GpioInterface::State((kCommandByte >> 1) & 0x01)),
+           Method(mock_d0, Set)
+               .Using(GpioInterface::State((kCommandByte >> 0) & 0x01)),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
 
     lcd.WriteByte(St7066u::WriteOperation::kData, kDataByte);
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
     Verify(Method(mock_rs, Set)
                .Using(GpioInterface::State(St7066u::WriteOperation::kData)),
-           Method(mock_rw, SetLow),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
            Method(mock_d7, Set)
                .Using(GpioInterface::State((kDataByte >> 7) & 0x01)),
            Method(mock_d6, Set)
@@ -167,7 +164,7 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
                .Using(GpioInterface::State((kDataByte >> 1) & 0x01)),
            Method(mock_d0, Set)
                .Using(GpioInterface::State((kDataByte >> 0) & 0x01)),
-           Method(mock_e, SetLow));
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Write Command / Data on 4-bit Bus")
@@ -187,58 +184,43 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     Verify(
         Method(mock_rs, Set)
             .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kByte >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kByte >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kByte >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kByte >> 4) & 0x01)),
-        Method(mock_e, SetLow),
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+        Method(mock_d7, Set).Using(GpioInterface::State((kByte >> 7) & 0x01)),
+        Method(mock_d6, Set).Using(GpioInterface::State((kByte >> 6) & 0x01)),
+        Method(mock_d5, Set).Using(GpioInterface::State((kByte >> 5) & 0x01)),
+        Method(mock_d4, Set).Using(GpioInterface::State((kByte >> 4) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow),
         Method(mock_rs, Set)
             .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kByte >> 3) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kByte >> 2) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kByte >> 1) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kByte >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+        Method(mock_d7, Set).Using(GpioInterface::State((kByte >> 3) & 0x01)),
+        Method(mock_d6, Set).Using(GpioInterface::State((kByte >> 2) & 0x01)),
+        Method(mock_d5, Set).Using(GpioInterface::State((kByte >> 1) & 0x01)),
+        Method(mock_d4, Set).Using(GpioInterface::State((kByte >> 0) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow));
 
     lcd.WriteData(kByte);
     // The RS pin should be set to write to the data register.
     // The upper nibble should be sent first through D7-D4 followed
     // by the lower nibble on the same data lines.
     // The enable pin should ouput low after each nibble is set.
-    Verify(Method(mock_rs, Set)
-               .Using(GpioInterface::State(St7066u::WriteOperation::kData)),
-           Method(mock_rw, SetLow),
-           Method(mock_d7, Set)
-               .Using(GpioInterface::State((kByte >> 7) & 0x01)),
-           Method(mock_d6, Set)
-               .Using(GpioInterface::State((kByte >> 6) & 0x01)),
-           Method(mock_d5, Set)
-               .Using(GpioInterface::State((kByte >> 5) & 0x01)),
-           Method(mock_d4, Set)
-               .Using(GpioInterface::State((kByte >> 4) & 0x01)),
-           Method(mock_e, SetLow),
-           Method(mock_rs, Set)
-               .Using(GpioInterface::State(St7066u::WriteOperation::kData)),
-           Method(mock_rw, SetLow),
-           Method(mock_d7, Set)
-               .Using(GpioInterface::State((kByte >> 3) & 0x01)),
-           Method(mock_d6, Set)
-               .Using(GpioInterface::State((kByte >> 2) & 0x01)),
-           Method(mock_d5, Set)
-               .Using(GpioInterface::State((kByte >> 1) & 0x01)),
-           Method(mock_d4, Set)
-               .Using(GpioInterface::State((kByte >> 0) & 0x01)),
-           Method(mock_e, SetLow));
+    Verify(
+        Method(mock_rs, Set)
+            .Using(GpioInterface::State(St7066u::WriteOperation::kData)),
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+        Method(mock_d7, Set).Using(GpioInterface::State((kByte >> 7) & 0x01)),
+        Method(mock_d6, Set).Using(GpioInterface::State((kByte >> 6) & 0x01)),
+        Method(mock_d5, Set).Using(GpioInterface::State((kByte >> 5) & 0x01)),
+        Method(mock_d4, Set).Using(GpioInterface::State((kByte >> 4) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow),
+        Method(mock_rs, Set)
+            .Using(GpioInterface::State(St7066u::WriteOperation::kData)),
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+        Method(mock_d7, Set).Using(GpioInterface::State((kByte >> 3) & 0x01)),
+        Method(mock_d6, Set).Using(GpioInterface::State((kByte >> 2) & 0x01)),
+        Method(mock_d5, Set).Using(GpioInterface::State((kByte >> 1) & 0x01)),
+        Method(mock_d4, Set).Using(GpioInterface::State((kByte >> 0) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Write Command / Data on 8-bit Bus")
@@ -256,48 +238,33 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     Verify(
         Method(mock_rs, Set)
             .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kByte >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kByte >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kByte >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kByte >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kByte >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kByte >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kByte >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kByte >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+        Method(mock_d7, Set).Using(GpioInterface::State((kByte >> 7) & 0x01)),
+        Method(mock_d6, Set).Using(GpioInterface::State((kByte >> 6) & 0x01)),
+        Method(mock_d5, Set).Using(GpioInterface::State((kByte >> 5) & 0x01)),
+        Method(mock_d4, Set).Using(GpioInterface::State((kByte >> 4) & 0x01)),
+        Method(mock_d3, Set).Using(GpioInterface::State((kByte >> 3) & 0x01)),
+        Method(mock_d2, Set).Using(GpioInterface::State((kByte >> 2) & 0x01)),
+        Method(mock_d1, Set).Using(GpioInterface::State((kByte >> 1) & 0x01)),
+        Method(mock_d0, Set).Using(GpioInterface::State((kByte >> 0) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow));
 
     lcd.WriteData(kByte);
     // The RS pin should be set to write to the data register.
     // The enable pin should output low after D7-D0 are set.
-    Verify(Method(mock_rs, Set)
-               .Using(GpioInterface::State(St7066u::WriteOperation::kData)),
-           Method(mock_rw, SetLow),
-           Method(mock_d7, Set)
-               .Using(GpioInterface::State((kByte >> 7) & 0x01)),
-           Method(mock_d6, Set)
-               .Using(GpioInterface::State((kByte >> 6) & 0x01)),
-           Method(mock_d5, Set)
-               .Using(GpioInterface::State((kByte >> 5) & 0x01)),
-           Method(mock_d4, Set)
-               .Using(GpioInterface::State((kByte >> 4) & 0x01)),
-           Method(mock_d3, Set)
-               .Using(GpioInterface::State((kByte >> 3) & 0x01)),
-           Method(mock_d2, Set)
-               .Using(GpioInterface::State((kByte >> 2) & 0x01)),
-           Method(mock_d1, Set)
-               .Using(GpioInterface::State((kByte >> 1) & 0x01)),
-           Method(mock_d0, Set)
-               .Using(GpioInterface::State((kByte >> 0) & 0x01)),
-           Method(mock_e, SetLow));
+    Verify(
+        Method(mock_rs, Set)
+            .Using(GpioInterface::State(St7066u::WriteOperation::kData)),
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+        Method(mock_d7, Set).Using(GpioInterface::State((kByte >> 7) & 0x01)),
+        Method(mock_d6, Set).Using(GpioInterface::State((kByte >> 6) & 0x01)),
+        Method(mock_d5, Set).Using(GpioInterface::State((kByte >> 5) & 0x01)),
+        Method(mock_d4, Set).Using(GpioInterface::State((kByte >> 4) & 0x01)),
+        Method(mock_d3, Set).Using(GpioInterface::State((kByte >> 3) & 0x01)),
+        Method(mock_d2, Set).Using(GpioInterface::State((kByte >> 2) & 0x01)),
+        Method(mock_d1, Set).Using(GpioInterface::State((kByte >> 1) & 0x01)),
+        Method(mock_d0, Set).Using(GpioInterface::State((kByte >> 0) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Clearing the Display")
@@ -311,29 +278,29 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
 
     lcd.ClearDisplay();
 
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
-    Verify(
-        Method(mock_rs, Set)
-            .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
+    Verify(Method(mock_rs, Set)
+               .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+           Method(mock_d7, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 7) & 0x01)),
+           Method(mock_d6, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 6) & 0x01)),
+           Method(mock_d5, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 5) & 0x01)),
+           Method(mock_d4, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 4) & 0x01)),
+           Method(mock_d3, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 3) & 0x01)),
+           Method(mock_d2, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 2) & 0x01)),
+           Method(mock_d1, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 1) & 0x01)),
+           Method(mock_d0, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 0) & 0x01)),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Turning Display ON / OFF")
@@ -350,55 +317,55 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
 
     lcd.SetDisplayOn();
     // The driver should send the kDisplayOn byte to turn on the display.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
-    Verify(
-        Method(mock_rs, Set)
-            .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kDisplayOn >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kDisplayOn >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kDisplayOn >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kDisplayOn >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kDisplayOn >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kDisplayOn >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kDisplayOn >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kDisplayOn >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
+    Verify(Method(mock_rs, Set)
+               .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+           Method(mock_d7, Set)
+               .Using(GpioInterface::State((kDisplayOn >> 7) & 0x01)),
+           Method(mock_d6, Set)
+               .Using(GpioInterface::State((kDisplayOn >> 6) & 0x01)),
+           Method(mock_d5, Set)
+               .Using(GpioInterface::State((kDisplayOn >> 5) & 0x01)),
+           Method(mock_d4, Set)
+               .Using(GpioInterface::State((kDisplayOn >> 4) & 0x01)),
+           Method(mock_d3, Set)
+               .Using(GpioInterface::State((kDisplayOn >> 3) & 0x01)),
+           Method(mock_d2, Set)
+               .Using(GpioInterface::State((kDisplayOn >> 2) & 0x01)),
+           Method(mock_d1, Set)
+               .Using(GpioInterface::State((kDisplayOn >> 1) & 0x01)),
+           Method(mock_d0, Set)
+               .Using(GpioInterface::State((kDisplayOn >> 0) & 0x01)),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
 
     lcd.SetDisplayOn(false);
     // The driver should send the kDisplayOff byte to turn off the display.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
-    Verify(
-        Method(mock_rs, Set)
-            .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kDisplayOff >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kDisplayOff >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kDisplayOff >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kDisplayOff >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kDisplayOff >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kDisplayOff >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kDisplayOff >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kDisplayOff >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
+    Verify(Method(mock_rs, Set)
+               .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+           Method(mock_d7, Set)
+               .Using(GpioInterface::State((kDisplayOff >> 7) & 0x01)),
+           Method(mock_d6, Set)
+               .Using(GpioInterface::State((kDisplayOff >> 6) & 0x01)),
+           Method(mock_d5, Set)
+               .Using(GpioInterface::State((kDisplayOff >> 5) & 0x01)),
+           Method(mock_d4, Set)
+               .Using(GpioInterface::State((kDisplayOff >> 4) & 0x01)),
+           Method(mock_d3, Set)
+               .Using(GpioInterface::State((kDisplayOff >> 3) & 0x01)),
+           Method(mock_d2, Set)
+               .Using(GpioInterface::State((kDisplayOff >> 2) & 0x01)),
+           Method(mock_d1, Set)
+               .Using(GpioInterface::State((kDisplayOff >> 1) & 0x01)),
+           Method(mock_d0, Set)
+               .Using(GpioInterface::State((kDisplayOff >> 0) & 0x01)),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Show / Hide Cursor")
@@ -415,55 +382,55 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
 
     lcd.SetCursorHidden(false);
     // The driver should send the kShowCursor byte to show the cursor.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
-    Verify(
-        Method(mock_rs, Set)
-            .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kShowCursor >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kShowCursor >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kShowCursor >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kShowCursor >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kShowCursor >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kShowCursor >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kShowCursor >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kShowCursor >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
+    Verify(Method(mock_rs, Set)
+               .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+           Method(mock_d7, Set)
+               .Using(GpioInterface::State((kShowCursor >> 7) & 0x01)),
+           Method(mock_d6, Set)
+               .Using(GpioInterface::State((kShowCursor >> 6) & 0x01)),
+           Method(mock_d5, Set)
+               .Using(GpioInterface::State((kShowCursor >> 5) & 0x01)),
+           Method(mock_d4, Set)
+               .Using(GpioInterface::State((kShowCursor >> 4) & 0x01)),
+           Method(mock_d3, Set)
+               .Using(GpioInterface::State((kShowCursor >> 3) & 0x01)),
+           Method(mock_d2, Set)
+               .Using(GpioInterface::State((kShowCursor >> 2) & 0x01)),
+           Method(mock_d1, Set)
+               .Using(GpioInterface::State((kShowCursor >> 1) & 0x01)),
+           Method(mock_d0, Set)
+               .Using(GpioInterface::State((kShowCursor >> 0) & 0x01)),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
 
     lcd.SetCursorHidden();
     // The driver should send the kHideCursor byte to hide the cursor.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
-    Verify(
-        Method(mock_rs, Set)
-            .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kHideCursor >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kHideCursor >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kHideCursor >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kHideCursor >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kHideCursor >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kHideCursor >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kHideCursor >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kHideCursor >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
+    Verify(Method(mock_rs, Set)
+               .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+           Method(mock_d7, Set)
+               .Using(GpioInterface::State((kHideCursor >> 7) & 0x01)),
+           Method(mock_d6, Set)
+               .Using(GpioInterface::State((kHideCursor >> 6) & 0x01)),
+           Method(mock_d5, Set)
+               .Using(GpioInterface::State((kHideCursor >> 5) & 0x01)),
+           Method(mock_d4, Set)
+               .Using(GpioInterface::State((kHideCursor >> 4) & 0x01)),
+           Method(mock_d3, Set)
+               .Using(GpioInterface::State((kHideCursor >> 3) & 0x01)),
+           Method(mock_d2, Set)
+               .Using(GpioInterface::State((kHideCursor >> 2) & 0x01)),
+           Method(mock_d1, Set)
+               .Using(GpioInterface::State((kHideCursor >> 1) & 0x01)),
+           Method(mock_d0, Set)
+               .Using(GpioInterface::State((kHideCursor >> 0) & 0x01)),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Setting Cursor Direction")
@@ -480,71 +447,65 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
 
     lcd.SetCursorDirection(St7066u::CursorDirection::kBackward);
     // The driver should send the kShowCursor byte to show the cursor.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
     Verify(
         Method(mock_rs, Set)
             .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
         Method(mock_d7, Set)
-            .Using(GpioInterface::State((kCursorDirectionBackward >> 7) &
-                                           0x01)),
+            .Using(
+                GpioInterface::State((kCursorDirectionBackward >> 7) & 0x01)),
         Method(mock_d6, Set)
-            .Using(GpioInterface::State((kCursorDirectionBackward >> 6) &
-                                           0x01)),
+            .Using(
+                GpioInterface::State((kCursorDirectionBackward >> 6) & 0x01)),
         Method(mock_d5, Set)
-            .Using(GpioInterface::State((kCursorDirectionBackward >> 5) &
-                                           0x01)),
+            .Using(
+                GpioInterface::State((kCursorDirectionBackward >> 5) & 0x01)),
         Method(mock_d4, Set)
-            .Using(GpioInterface::State((kCursorDirectionBackward >> 4) &
-                                           0x01)),
+            .Using(
+                GpioInterface::State((kCursorDirectionBackward >> 4) & 0x01)),
         Method(mock_d3, Set)
-            .Using(GpioInterface::State((kCursorDirectionBackward >> 3) &
-                                           0x01)),
+            .Using(
+                GpioInterface::State((kCursorDirectionBackward >> 3) & 0x01)),
         Method(mock_d2, Set)
-            .Using(GpioInterface::State((kCursorDirectionBackward >> 2) &
-                                           0x01)),
+            .Using(
+                GpioInterface::State((kCursorDirectionBackward >> 2) & 0x01)),
         Method(mock_d1, Set)
-            .Using(GpioInterface::State((kCursorDirectionBackward >> 1) &
-                                           0x01)),
+            .Using(
+                GpioInterface::State((kCursorDirectionBackward >> 1) & 0x01)),
         Method(mock_d0, Set)
-            .Using(GpioInterface::State((kCursorDirectionBackward >> 0) &
-                                           0x01)),
-        Method(mock_e, SetLow));
+            .Using(
+                GpioInterface::State((kCursorDirectionBackward >> 0) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow));
 
     lcd.SetCursorDirection(St7066u::CursorDirection::kForward);
     // The driver should send the kHideCursor byte to hide the cursor.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
     Verify(
         Method(mock_rs, Set)
             .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
+        Method(mock_rw, Set).Using(GpioInterface::State::kLow),
         Method(mock_d7, Set)
-            .Using(
-                GpioInterface::State((kCursorDirectionForward >> 7) & 0x01)),
+            .Using(GpioInterface::State((kCursorDirectionForward >> 7) & 0x01)),
         Method(mock_d6, Set)
-            .Using(
-                GpioInterface::State((kCursorDirectionForward >> 6) & 0x01)),
+            .Using(GpioInterface::State((kCursorDirectionForward >> 6) & 0x01)),
         Method(mock_d5, Set)
-            .Using(
-                GpioInterface::State((kCursorDirectionForward >> 5) & 0x01)),
+            .Using(GpioInterface::State((kCursorDirectionForward >> 5) & 0x01)),
         Method(mock_d4, Set)
-            .Using(
-                GpioInterface::State((kCursorDirectionForward >> 4) & 0x01)),
+            .Using(GpioInterface::State((kCursorDirectionForward >> 4) & 0x01)),
         Method(mock_d3, Set)
-            .Using(
-                GpioInterface::State((kCursorDirectionForward >> 3) & 0x01)),
+            .Using(GpioInterface::State((kCursorDirectionForward >> 3) & 0x01)),
         Method(mock_d2, Set)
-            .Using(
-                GpioInterface::State((kCursorDirectionForward >> 2) & 0x01)),
+            .Using(GpioInterface::State((kCursorDirectionForward >> 2) & 0x01)),
         Method(mock_d1, Set)
-            .Using(
-                GpioInterface::State((kCursorDirectionForward >> 1) & 0x01)),
+            .Using(GpioInterface::State((kCursorDirectionForward >> 1) & 0x01)),
         Method(mock_d0, Set)
-            .Using(
-                GpioInterface::State((kCursorDirectionForward >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+            .Using(GpioInterface::State((kCursorDirectionForward >> 0) & 0x01)),
+        Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Setting Cursor Position")
@@ -564,29 +525,29 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     lcd.SetCursorPosition(St7066u::CursorPosition_t{ kLineNumber, kPosition });
     // The driver should send the kCursorAddress byte to set the cursor
     // position address.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
-    Verify(
-        Method(mock_rs, Set)
-            .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kCursorAddress >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kCursorAddress >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kCursorAddress >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kCursorAddress >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kCursorAddress >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kCursorAddress >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kCursorAddress >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kCursorAddress >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
+    Verify(Method(mock_rs, Set)
+               .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+           Method(mock_d7, Set)
+               .Using(GpioInterface::State((kCursorAddress >> 7) & 0x01)),
+           Method(mock_d6, Set)
+               .Using(GpioInterface::State((kCursorAddress >> 6) & 0x01)),
+           Method(mock_d5, Set)
+               .Using(GpioInterface::State((kCursorAddress >> 5) & 0x01)),
+           Method(mock_d4, Set)
+               .Using(GpioInterface::State((kCursorAddress >> 4) & 0x01)),
+           Method(mock_d3, Set)
+               .Using(GpioInterface::State((kCursorAddress >> 3) & 0x01)),
+           Method(mock_d2, Set)
+               .Using(GpioInterface::State((kCursorAddress >> 2) & 0x01)),
+           Method(mock_d1, Set)
+               .Using(GpioInterface::State((kCursorAddress >> 1) & 0x01)),
+           Method(mock_d0, Set)
+               .Using(GpioInterface::State((kCursorAddress >> 0) & 0x01)),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Reset Cursor Position")
@@ -602,29 +563,29 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     lcd.ResetCursorPosition();
     // The driver should send the kCursorAddress byte to set the cursor
     // position address.
-    Verify(Method(mock_e, SetHigh), Method(mock_e, SetLow),
-           Method(mock_e, SetHigh));
-    Verify(
-        Method(mock_rs, Set)
-            .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
-        Method(mock_rw, SetLow),
-        Method(mock_d7, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 7) & 0x01)),
-        Method(mock_d6, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 6) & 0x01)),
-        Method(mock_d5, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 5) & 0x01)),
-        Method(mock_d4, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 4) & 0x01)),
-        Method(mock_d3, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 3) & 0x01)),
-        Method(mock_d2, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 2) & 0x01)),
-        Method(mock_d1, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 1) & 0x01)),
-        Method(mock_d0, Set)
-            .Using(GpioInterface::State((kClearDisplay >> 0) & 0x01)),
-        Method(mock_e, SetLow));
+    Verify(Method(mock_e, Set),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow),
+           Method(mock_e, Set));
+    Verify(Method(mock_rs, Set)
+               .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+           Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+           Method(mock_d7, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 7) & 0x01)),
+           Method(mock_d6, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 6) & 0x01)),
+           Method(mock_d5, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 5) & 0x01)),
+           Method(mock_d4, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 4) & 0x01)),
+           Method(mock_d3, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 3) & 0x01)),
+           Method(mock_d2, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 2) & 0x01)),
+           Method(mock_d1, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 1) & 0x01)),
+           Method(mock_d0, Set)
+               .Using(GpioInterface::State((kClearDisplay >> 0) & 0x01)),
+           Method(mock_e, Set).Using(GpioInterface::State::kLow));
   }
 
   SECTION("Display Text")
@@ -639,27 +600,27 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     lcd.DisplayText(kText);
     for (uint8_t i = 0; i < strlen(kText); i++)
     {
-      Verify(Method(mock_rs, Set)
-                 .Using(GpioInterface::State(
-                     St7066u::WriteOperation::kCommand)),
-             Method(mock_rw, SetLow),
-             Method(mock_d7, Set)
-                 .Using(GpioInterface::State((kText[i] >> 7) & 0x01)),
-             Method(mock_d6, Set)
-                 .Using(GpioInterface::State((kText[i] >> 6) & 0x01)),
-             Method(mock_d5, Set)
-                 .Using(GpioInterface::State((kText[i] >> 5) & 0x01)),
-             Method(mock_d4, Set)
-                 .Using(GpioInterface::State((kText[i] >> 4) & 0x01)),
-             Method(mock_d3, Set)
-                 .Using(GpioInterface::State((kText[i] >> 3) & 0x01)),
-             Method(mock_d2, Set)
-                 .Using(GpioInterface::State((kText[i] >> 2) & 0x01)),
-             Method(mock_d1, Set)
-                 .Using(GpioInterface::State((kText[i] >> 1) & 0x01)),
-             Method(mock_d0, Set)
-                 .Using(GpioInterface::State((kText[i] >> 0) & 0x01)),
-             Method(mock_e, SetLow));
+      Verify(
+          Method(mock_rs, Set)
+              .Using(GpioInterface::State(St7066u::WriteOperation::kCommand)),
+          Method(mock_rw, Set).Using(GpioInterface::State::kLow),
+          Method(mock_d7, Set)
+              .Using(GpioInterface::State((kText[i] >> 7) & 0x01)),
+          Method(mock_d6, Set)
+              .Using(GpioInterface::State((kText[i] >> 6) & 0x01)),
+          Method(mock_d5, Set)
+              .Using(GpioInterface::State((kText[i] >> 5) & 0x01)),
+          Method(mock_d4, Set)
+              .Using(GpioInterface::State((kText[i] >> 4) & 0x01)),
+          Method(mock_d3, Set)
+              .Using(GpioInterface::State((kText[i] >> 3) & 0x01)),
+          Method(mock_d2, Set)
+              .Using(GpioInterface::State((kText[i] >> 2) & 0x01)),
+          Method(mock_d1, Set)
+              .Using(GpioInterface::State((kText[i] >> 1) & 0x01)),
+          Method(mock_d0, Set)
+              .Using(GpioInterface::State((kText[i] >> 0) & 0x01)),
+          Method(mock_e, Set).Using(GpioInterface::State::kLow));
     }
   }
 }

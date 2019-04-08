@@ -456,10 +456,10 @@ class Sd : public SdInterface
   {
     LOG_DEBUG("Begin initialization:");
     LOG_DEBUG("Setting CS as output...");
-    chip_select_->SetAsOutput();
-    chip_select_->SetHigh();
-    chip_select_external_->SetAsOutput();
-    chip_select_external_->SetHigh();
+    chip_select_->SetDirection(GpioInterface::Direction::kOutput);
+    chip_select_->Set(GpioInterface::State::kHigh);
+    chip_select_external_->SetDirection(GpioInterface::Direction::kOutput);
+    chip_select_external_->Set(GpioInterface::State::kHigh);
 
     LOG_DEBUG("Setting SSP Clock Speed...");
     spi_interface_->SetClock(false, false, 14, 2);  // 400kHz
@@ -1027,8 +1027,8 @@ class Sd : public SdInterface
     }
 
     // Select the SD Card
-    chip_select_->SetLow();
-    chip_select_external_->SetLow();
+    chip_select_->Set(GpioInterface::State::kLow);
+    chip_select_external_->Set(GpioInterface::State::kLow);
 
     // If desired, wait a bit before talking
     if (delay > 0)
@@ -1112,8 +1112,8 @@ class Sd : public SdInterface
     if (keep_alive == KeepAlive::kNo)
     {
       // Deselect the SPI comm board
-      chip_select_->SetHigh();
-      chip_select_external_->SetHigh();
+      chip_select_->Set(GpioInterface::State::kHigh);
+      chip_select_external_->Set(GpioInterface::State::kHigh);
     }
     return res_len;
   }

@@ -11,7 +11,6 @@ class ButtonInterface
   virtual bool Released(void)                                       = 0;
   virtual bool Pressed(void)                                        = 0;
   virtual void ResetState(void)                                     = 0;
-  virtual void InvertButtonSignal(bool enable_invert_signal = true) = 0;
   virtual GpioInterface & GetGpio()                                 = 0;
 };
 
@@ -35,13 +34,8 @@ class Button : public ButtonInterface
 
   void Initialize(void) override
   {
-    button_->SetAsInput();
+    button_->SetDirection(Gpio::Direction::kInput);
     button_->GetPin().SetMode(PinInterface::Mode::kPullDown);
-    InvertButtonSignal(false);
-  }
-  void InvertButtonSignal(bool enable_invert_signal = true) override
-  {
-    button_->GetPin().SetAsActiveLow(enable_invert_signal);
   }
   bool Released(void) override
   {
