@@ -18,7 +18,7 @@ int main(void)
   LOG_INFO("Enabling ADC to burst mode!");
   LOG_INFO(
       "Burst mode is useful in that you do not need to turn on conversion. You "
-      "simply need to run the ReadResult() method!");
+      "simply need to run the Read() method!");
   adc0.BurstMode(true);
 
   LOG_INFO(
@@ -27,7 +27,7 @@ int main(void)
 
   while (true)
   {
-    uint16_t adc_digital_value = adc0.ReadResult();
+    uint16_t adc_digital_value = adc0.Read();
     // For the LPC40xx with a 12-bit ADC, lowest and highest values are 0 to
     // 1023, where as the lowest and highest voltages are between 0 and 3.3V
     float voltage = Map(adc_digital_value, 0, 1023, 0.0f, 3.3f);

@@ -144,21 +144,21 @@ class St7066u : public St7066uInterface
 
   void Initialize() override
   {
-    kControlPins.rs.SetAsOutput();
-    kControlPins.rw.SetAsOutput();
-    kControlPins.e.SetAsOutput();
+    kControlPins.rs.SetDirection(Gpio::Direction::kOutput);
+    kControlPins.rw.SetDirection(Gpio::Direction::kOutput);
+    kControlPins.e.SetDirection(Gpio::Direction::kOutput);
     kControlPins.e.Set(GpioInterface::kHigh);
-    kControlPins.d7.SetAsOutput();
-    kControlPins.d6.SetAsOutput();
-    kControlPins.d5.SetAsOutput();
-    kControlPins.d4.SetAsOutput();
+    kControlPins.d7.SetDirection(Gpio::Direction::kOutput);
+    kControlPins.d6.SetDirection(Gpio::Direction::kOutput);
+    kControlPins.d5.SetDirection(Gpio::Direction::kOutput);
+    kControlPins.d4.SetDirection(Gpio::Direction::kOutput);
 
     if (kBusMode == BusMode::kEightBit)
     {
-      kControlPins.d3.SetAsOutput();
-      kControlPins.d2.SetAsOutput();
-      kControlPins.d1.SetAsOutput();
-      kControlPins.d0.SetAsOutput();
+      kControlPins.d3.SetDirection(Gpio::Direction::kOutput);
+      kControlPins.d2.SetDirection(Gpio::Direction::kOutput);
+      kControlPins.d1.SetDirection(Gpio::Direction::kOutput);
+      kControlPins.d0.SetDirection(Gpio::Direction::kOutput);
     }
 
     WriteCommand(static_cast<uint8_t>(Command::kDefaultDisplayConfiguration) |
@@ -175,9 +175,9 @@ class St7066u : public St7066uInterface
   // @param nibble    4-bit data to transfer.
   void WriteNibble(WriteOperation operation, uint8_t nibble) override
   {
-    kControlPins.e.SetHigh();
+    kControlPins.e.Set(Gpio::State::kHigh);
     kControlPins.rs.Set(Gpio::State(operation));
-    kControlPins.rw.SetLow();
+    kControlPins.rw.Set(Gpio::State::kLow);
     // set nibble on 4-bit data bus
     kControlPins.d7.Set(Gpio::State((nibble >> 3) & 0x01));
     kControlPins.d6.Set(Gpio::State((nibble >> 2) & 0x01));
@@ -185,8 +185,8 @@ class St7066u : public St7066uInterface
     kControlPins.d4.Set(Gpio::State((nibble >> 0) & 0x01));
     Delay(1);
     // Toggle chip enable to trigger write on falling edge
-    kControlPins.e.SetLow();
-    kControlPins.e.SetHigh();
+    kControlPins.e.Set(Gpio::State::kLow);
+    kControlPins.e.Set(Gpio::State::kHigh);
   }
 
   // Transfers a command or data byte to the device.
@@ -195,9 +195,9 @@ class St7066u : public St7066uInterface
   // @param byte      Byte to transfer.
   void WriteByte(WriteOperation operation, uint8_t byte) override
   {
-    kControlPins.e.SetHigh();
+    kControlPins.e.Set(Gpio::State::kHigh);
     kControlPins.rs.Set(Gpio::State(operation));
-    kControlPins.rw.SetLow();
+    kControlPins.rw.Set(Gpio::State::kLow);
     // set byte on 8-bit data bus
     kControlPins.d7.Set(Gpio::State((byte >> 7) & 0x01));
     kControlPins.d6.Set(Gpio::State((byte >> 6) & 0x01));
@@ -209,8 +209,8 @@ class St7066u : public St7066uInterface
     kControlPins.d0.Set(Gpio::State((byte >> 0) & 0x01));
     Delay(1);
     // Toggle chip enable to trigger write on falling edge
-    kControlPins.e.SetLow();
-    kControlPins.e.SetHigh();
+    kControlPins.e.Set(Gpio::State::kLow);
+    kControlPins.e.Set(Gpio::State::kHigh);
   }
 
   // @param command 8-bit command to send.

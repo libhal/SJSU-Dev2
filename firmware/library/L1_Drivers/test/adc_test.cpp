@@ -69,7 +69,7 @@ TEST_CASE("Testing adc", "[adc]")
     local_adc.GDR |= (1 << kDoneBit);
     channel0_mock.Conversion();
     CHECK(((local_adc.CR >> kStartBit) & 1) == kStartNoBurst);
-    channel0_mock.FinishedConversion();
+    channel0_mock.HasConversionFinished();
     CHECK(((local_adc.GDR >> kDoneBit) & 1) == kDone);
 
     // Check if bits 24 to 26 in local_adc.CR are cleared for burst mode
@@ -79,7 +79,7 @@ TEST_CASE("Testing adc", "[adc]")
     CHECK(((local_adc.CR >> kStartBit) & 0b111) == kStartBurst);
 
     // Check if done bit is set after conversion
-    channel0_mock.FinishedConversion();
+    channel0_mock.HasConversionFinished();
     CHECK(((local_adc.GDR >> kDoneBit) & 1) == kDone);
   }
   SECTION("Burst mode")
@@ -101,7 +101,7 @@ TEST_CASE("Testing adc", "[adc]")
     constexpr uint8_t kResultBit   = 4;
 
     // Check if there is any value in the global data reg
-    channel0_mock.ReadResult();
+    channel0_mock.Read();
     CHECK(((local_adc.GDR >> kResultBit) & kResultMask) == 0);
   }
 
