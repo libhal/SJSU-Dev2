@@ -56,11 +56,8 @@ class SpiInterface
   virtual void Initialize()                                           = 0;
   virtual uint16_t Transfer(uint16_t data)                            = 0;
   virtual void SetPeripheralMode(MasterSlaveMode mode, DataSize size) = 0;
-  // NOTE: "divider" is the number of prescaler-output clocks per bit.
-  // See page 611 of UM10562 for SCR-Serial Clock Rate for more info.
   virtual void SetClock(bool positive_polarity, bool phase, uint8_t prescaler,
                         uint8_t divider) = 0;
-  virtual uint32_t GetClock()            = 0;
 };
 
 class Spi final : public SpiInterface, protected Lpc40xxSystemController
@@ -245,7 +242,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   ///       phase       = 1-bit @ bit 16
   ///       divider     = 8-bits @ bit 8
   ///       prescaler   = 8-bits @ bit 0
-  uint32_t GetClock() override
+  uint32_t GetClock()
   {
     uint32_t return_val;
     return_val = (bit::Extract(bus_.registers->CPSR, kPrescalerBit, 8)) +

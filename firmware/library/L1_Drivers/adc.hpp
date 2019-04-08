@@ -10,10 +10,10 @@
 class AdcInterface
 {
  public:
-  virtual void Initialize()         = 0;
-  virtual void Conversion()         = 0;
-  virtual uint16_t ReadResult()     = 0;
-  virtual bool FinishedConversion() = 0;
+  virtual void Initialize()            = 0;
+  virtual void Conversion()            = 0;
+  virtual uint16_t Read()              = 0;
+  virtual bool HasConversionFinished() = 0;
 };
 
 class Adc final : public AdcInterface, protected Lpc40xxSystemController
@@ -177,11 +177,11 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
       continue;
     }
   }
-  uint16_t ReadResult() override
+  uint16_t Read() override
   {
     return GetGlobalDataRegister()->bits.result;
   }
-  bool FinishedConversion() override
+  bool HasConversionFinished() override
   {
     return GetGlobalDataRegister()->bits.done;
   }

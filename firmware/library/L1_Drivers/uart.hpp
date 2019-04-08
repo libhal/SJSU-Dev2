@@ -11,8 +11,8 @@
 
 class UartInterface
 {
-  virtual bool SetBaudRate(uint32_t baud_rate) = 0;
   virtual bool Initialize(uint32_t baud_rate)  = 0;
+  virtual bool SetBaudRate(uint32_t baud_rate) = 0;
   virtual void Send(uint8_t out)               = 0;
   virtual uint8_t Receive(uint32_t timeout)    = 0;
 };

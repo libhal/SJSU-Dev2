@@ -12,8 +12,7 @@ class BuzzerInterface
  public:
   virtual void Initialize() = 0;
   virtual void Stop()       = 0;
-  // beep continuously at a certain volume &
-  // at a specified frequency
+  // Produce a tone at the supplied frequency and volume
   virtual void Beep(uint32_t frequency, float volume) = 0;
 };
 
@@ -44,12 +43,9 @@ class Buzzer : public BuzzerInterface
   void Beep(uint32_t frequency = 500, float volume = 1.0) override
   {
     pwm_->SetFrequency(frequency);
-    pwm_->SetDutyCycle(volume);
-  }
-
-  uint32_t GetFrequency()
-  {
-    return pwm_->GetFrequency();
+    // NOTE: Since the PWM is at its loudest at 50% duty cycle, the maximum PWM
+    // is divided by 2.
+    pwm_->SetDutyCycle(volume/2);
   }
 
   float GetVolume()

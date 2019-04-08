@@ -10,8 +10,7 @@ TEST_CASE("Testing buzzer", "[buzzer]")
   Mock<PwmInterface> mock_pwm_pin;
 
   Fake(Method(mock_pwm_pin, Initialize), Method(mock_pwm_pin, SetDutyCycle),
-       Method(mock_pwm_pin, SetFrequency), Method(mock_pwm_pin, GetDutyCycle),
-       Method(mock_pwm_pin, GetFrequency));
+       Method(mock_pwm_pin, SetFrequency));
 
   PwmInterface & pwm = mock_pwm_pin.get();
 
@@ -24,28 +23,26 @@ TEST_CASE("Testing buzzer", "[buzzer]")
     constexpr float kVolume       = 0.0f;
     test1.Initialize();
     Verify(Method(mock_pwm_pin, Initialize).Using(500),
-           Method(mock_pwm_pin, SetDutyCycle).Using(kVolume)),
+           Method(mock_pwm_pin, SetDutyCycle).Using(kVolume/2)),
         Method(mock_pwm_pin, SetFrequency).Using(kFrequency);
   }
 
   SECTION("Check Beep")
   {
-    constexpr uint32_t kFrequency = 0;
-    constexpr float kVolume       = 0.0f;
+    constexpr uint32_t kFrequency = 500;
+    constexpr float kVolume       = 0.5f;
     test1.Beep(kFrequency, kVolume);
 
-    float vol_error = kVolume - test1.GetVolume();
-    CHECK((-0.1f <= vol_error && vol_error <= 0.1f));
-
-    uint32_t freq_error = kFrequency - test1.GetFrequency();
-    CHECK(freq_error == 0);
+    // NOTE: Since the PWM is at its loudest at 50% duty cycle, the maximum PWM
+    // is divided by 2.
+    Verify(Method(mock_pwm_pin, SetDutyCycle).Using(kVolume/2));
+    Verify(Method(mock_pwm_pin, SetFrequency).Using(kFrequency));
   }
 
   SECTION("Check Stop")
   {
-    constexpr float kVolume = 0.0f;
     test1.Stop();
-    float vol_error = kVolume - test1.GetVolume();
-    CHECK((-0.1f <= vol_error && vol_error <= 0.1f));
+    Verify(Method(mock_pwm_pin, SetDutyCycle).Using(0)),
+        Method(mock_pwm_pin, SetFrequency).Using(0);
   }
 }

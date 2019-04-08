@@ -23,7 +23,6 @@ class PwmInterface
   virtual void SetDutyCycle(float duty_cycle)                        = 0;
   virtual float GetDutyCycle()                                       = 0;
   virtual void SetFrequency(uint32_t frequency_hz)                   = 0;
-  virtual uint32_t GetFrequency()                                    = 0;
 };
 
 class Pwm final : public PwmInterface, protected Lpc40xxSystemController
@@ -214,7 +213,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     EnablePwm();
   }
 
-  uint32_t GetFrequency() override
+  uint32_t GetFrequency()
   {
     uint32_t match_register0 = GetMatchRegisters()[0];
     uint32_t result          = 0;

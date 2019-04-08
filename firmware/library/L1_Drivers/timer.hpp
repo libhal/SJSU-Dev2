@@ -12,30 +12,6 @@
 class TimerInterface
 {
  public:
-  enum RegisterChoice : uint8_t
-  {
-    kRegMR0 = 0,
-    kRegMR1 = 1,
-    kRegMR2 = 2,
-    kRegMR3 = 3,
-    kRegCR0 = 4,
-    kRegCR1 = 5
-  };
-  enum TimerPort : uint8_t
-  {
-    kTimer0 = 0,
-    kTimer1,
-    kTimer2,
-    kTimer3,
-    kCount
-  };
-  enum MatchControlRegister : uint8_t
-  {
-    kMat0 = 0,
-    kMat1 = 3,
-    kMat2 = 6,
-    kMat3 = 9
-  };
   // Modes for each match register that when match register matches timer
   // system can trigger an Interrupt, Stop Counter, or Restart and in any
   // mixture of those commands.
@@ -60,7 +36,15 @@ class TimerInterface
 class Timer final : public TimerInterface, protected Lpc40xxSystemController
 {
  public:
-  inline static const uint32_t kClear = std::numeric_limits<uint32_t>::max();
+  enum RegisterChoice : uint8_t
+  {
+    kRegMR0 = 0,
+    kRegMR1 = 1,
+    kRegMR2 = 2,
+    kRegMR3 = 3,
+    kRegCR0 = 4,
+    kRegCR1 = 5
+  };
 
   struct ChannelPartial_t
   {
@@ -161,6 +145,7 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
   void Initialize(uint32_t frequency, IsrPointer isr = nullptr,
                   int32_t priority = -1) override
   {
+    constexpr uint32_t kClear = std::numeric_limits<uint32_t>::max();
     PowerUpPeripheral(timer_.channel.power_id);
     SJ2_ASSERT_FATAL(
         frequency != 0,

@@ -15,8 +15,13 @@ TEST_CASE("Testing Dac", "[dac]")
   Dac::dac_register = &local_dac_port;
 
   Mock<PinInterface> mock_dac_pin;
-  Fake(Method(mock_dac_pin, SetPinFunction), Method(mock_dac_pin, EnableDac),
+  Fake(Method(mock_dac_pin, SetPinFunction),
        Method(mock_dac_pin, SetAsAnalogMode), Method(mock_dac_pin, SetMode));
+  // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
+  // Redirects manipulation to the 'local_iocon'
+  // This is necessary because we have to cast the pin interface back to a Pin
+  // object which will attempt to manipulate hardware registers.
+  Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
 
   Dac test_subject(mock_dac_pin.get());
 
@@ -30,9 +35,10 @@ TEST_CASE("Testing Dac", "[dac]")
     test_subject.Initialize();
     // Check Pin Mode DAC_OUT
     Verify(Method(mock_dac_pin, SetPinFunction).Using(kDacMode),
-           Method(mock_dac_pin, EnableDac).Using(true),
            Method(mock_dac_pin, SetAsAnalogMode).Using(true),
            Method(mock_dac_pin, SetMode).Using(PinInterface::Mode::kInactive));
+    // Check that DacEnable occured!
+    // local_iocon.
   }
   SECTION("Write Dac")
   {
@@ -73,4 +79,5 @@ TEST_CASE("Testing Dac", "[dac]")
   }
 
   Dac::dac_register = LPC_DAC;
+  Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }
