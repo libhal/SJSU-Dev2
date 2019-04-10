@@ -97,7 +97,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     uint8_t channel : 3;
   };
 
-  struct Channel
+  struct Channel  // NOLINT
   {
    private:
     inline static const Peripheral_t kPwm1PeripheralCommon = {
@@ -107,40 +107,40 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     };
 
    public:
-    inline static const Pin kPin2_0        = Pin::CreatePin<2, 0>();
+    inline static const Pin kPwmPin0    = Pin::CreatePin<2, 0>();
     inline static const Channel_t kPwm0 = {
       .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPin2_0,
+      .pin        = kPwmPin0,
       .channel    = 1,
     };
-    inline static const Pin kPin2_1        = Pin::CreatePin<2, 1>();
+    inline static const Pin kPwmPin1    = Pin::CreatePin<2, 1>();
     inline static const Channel_t kPwm1 = {
       .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPin2_1,
+      .pin        = kPwmPin1,
       .channel    = 2,
     };
-    inline static const Pin kPin2_2        = Pin::CreatePin<2, 2>();
+    inline static const Pin kPwmPin2    = Pin::CreatePin<2, 2>();
     inline static const Channel_t kPwm2 = {
       .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPin2_2,
+      .pin        = kPwmPin2,
       .channel    = 3,
     };
-    inline static const Pin kPin2_3        = Pin::CreatePin<2, 3>();
+    inline static const Pin kPwmPin3    = Pin::CreatePin<2, 3>();
     inline static const Channel_t kPwm3 = {
       .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPin2_3,
+      .pin        = kPwmPin3,
       .channel    = 4,
     };
-    inline static const Pin kPin2_4        = Pin::CreatePin<2, 4>();
+    inline static const Pin kPwmPin4    = Pin::CreatePin<2, 4>();
     inline static const Channel_t kPwm4 = {
       .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPin2_4,
+      .pin        = kPwmPin4,
       .channel    = 5,
     };
-    inline static const Pin kPin2_5        = Pin::CreatePin<2, 5>();
+    inline static const Pin kPwmPin5    = Pin::CreatePin<2, 5>();
     inline static const Channel_t kPwm5 = {
       .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPin2_5,
+      .pin        = kPwmPin5,
       .channel    = 6,
     };
   };

@@ -187,7 +187,7 @@ class FactoryTest
     return (device_id == expected_id);
   }
 
-  int CalculateTemperature(I2c temperature_i2c)
+  int CalculateTemperature(I2c & temperature_i2c)
   {
     // Enables one burst mode (on-demand) temperature sampling
     // by setting control register 0xC4 oneburst bit 3 to 1
@@ -212,6 +212,6 @@ class FactoryTest
     // Compute the actual temperature in Celsius
     return (55 + ((temperature_data - 16384) / 160));
   }
-
-  I2c i2c_;
+ private:
+  I2c i2c_ = I2c(I2c::Bus::kI2c2);
 };

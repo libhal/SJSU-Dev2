@@ -51,16 +51,15 @@ constexpr UartCalibration_t FindClosestFractional(float decimal)
   return result;
 }
 
-constexpr float DividerEstimate(float baud_rate,
-                                       float fraction_estimate       = 1,
-                                       uint32_t peripheral_frequency = 1)
+constexpr float DividerEstimate(float baud_rate, float fraction_estimate = 1,
+                                uint32_t peripheral_frequency = 1)
 {
   float clock_frequency = static_cast<float>(peripheral_frequency);
   return clock_frequency / (16.0f * baud_rate * fraction_estimate);
 }
 
 constexpr float FractionalEstimate(float baud_rate, float divider,
-                                          uint32_t peripheral_frequency)
+                                   uint32_t peripheral_frequency)
 {
   float clock_frequency = static_cast<float>(peripheral_frequency);
   return clock_frequency / (16.0f * baud_rate * divider);
@@ -128,8 +127,8 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       }
       case States::kCalculateDivideLatchWithDecimal:
       {
-        divide_estimate =
-            RoundFloat(DividerEstimate(baud_rate, decimal, peripheral_frequency));
+        divide_estimate = RoundFloat(
+            DividerEstimate(baud_rate, decimal, peripheral_frequency));
         decimal = FractionalEstimate(baud_rate, divide_estimate,
                                      peripheral_frequency);
         if (1.1f <= decimal && decimal <= 1.9f)
@@ -203,7 +202,7 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
     uart::GenerateUartCalibration(921600, config::kSystemClockRate),
   };
 
-  struct Port
+  struct Port  // NOLINT
   {
    private:
     inline static const Pin kUart0Tx = Pin(0, 2);

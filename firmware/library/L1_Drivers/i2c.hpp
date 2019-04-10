@@ -117,8 +117,8 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     PeripheralID peripheral_power_id;
     IRQn_Type irq_number;
     Transaction_t & transaction;
-    PinInterface & sda_pin;
-    PinInterface & scl_pin;
+    const PinInterface & sda_pin;
+    const PinInterface & scl_pin;
     uint8_t pin_function_id;
   };
 
@@ -134,18 +134,18 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     I2cHandler(i2c);
   }
 
-  struct Bus
+  struct Bus  // NOLINT
   {
    private:
-    inline static Pin kI2c0SdaPin = Pin::CreatePin<0, 0>();
-    inline static Pin kI2c0SclPin = Pin::CreatePin<0, 1>();
-    inline static Pin kI2c1SdaPin = Pin::CreatePin<1, 30>();
-    inline static Pin kI2c1SclPin = Pin::CreatePin<1, 31>();
-    inline static Pin kI2c2SdaPin = Pin::CreatePin<0, 10>();
-    inline static Pin kI2c2SclPin = Pin::CreatePin<0, 11>();
+    inline static const Pin kI2c0SdaPin = Pin::CreatePin<0, 0>();
+    inline static const Pin kI2c0SclPin = Pin::CreatePin<0, 1>();
+    inline static const Pin kI2c1SdaPin = Pin::CreatePin<1, 30>();
+    inline static const Pin kI2c1SclPin = Pin::CreatePin<1, 31>();
+    inline static const Pin kI2c2SdaPin = Pin::CreatePin<0, 10>();
+    inline static const Pin kI2c2SclPin = Pin::CreatePin<0, 11>();
     // UM10562: Chapter 7: LPC408x/407x I/O configuration page 133
     inline static Transaction_t transaction_i2c0;
-    inline static PartialBus_t kI2c0Partial = {
+    inline static const PartialBus_t kI2c0Partial = {
       .registers           = LPC_I2C0,
       .peripheral_power_id = Lpc40xxSystemController::Peripherals::kI2c0,
       .irq_number          = I2C0_IRQn,
@@ -156,7 +156,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     };
 
     inline static Transaction_t transaction_i2c1;
-    inline static PartialBus_t kI2c1Partial = {
+    inline static const PartialBus_t kI2c1Partial = {
       .registers           = LPC_I2C1,
       .peripheral_power_id = Lpc40xxSystemController::Peripherals::kI2c1,
       .irq_number          = I2C1_IRQn,
@@ -167,7 +167,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     };
 
     inline static Transaction_t transaction_i2c2;
-    inline static PartialBus_t kI2c2Partial = {
+    inline static const PartialBus_t kI2c2Partial = {
       .registers           = LPC_I2C2,
       .peripheral_power_id = Lpc40xxSystemController::Peripherals::kI2c2,
       .irq_number          = I2C2_IRQn,
@@ -178,13 +178,13 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     };
 
    public:
-    inline static Bus_t kI2c0 = { .bus     = kI2c0Partial,
+    inline static const Bus_t kI2c0 = { .bus     = kI2c0Partial,
                                   .handler = I2cHandler<kI2c0Partial> };
 
-    inline static Bus_t kI2c1 = { .bus     = kI2c1Partial,
+    inline static const Bus_t kI2c1 = { .bus     = kI2c1Partial,
                                   .handler = I2cHandler<kI2c1Partial> };
 
-    inline static Bus_t kI2c2 = { .bus     = kI2c2Partial,
+    inline static const Bus_t kI2c2 = { .bus     = kI2c2Partial,
                                   .handler = I2cHandler<kI2c2Partial> };
   };
 
@@ -351,7 +351,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
   }
 
   // This defaults to I2C port 2
-  constexpr I2c(const Bus_t & bus) : i2c_(bus) {}
+  explicit constexpr I2c(const Bus_t & bus) : i2c_(bus) {}
 
   void Initialize(bool initialize_pins = true) override
   {

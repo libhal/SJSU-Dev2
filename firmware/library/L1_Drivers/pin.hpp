@@ -9,9 +9,9 @@
 #include <cstdio>
 
 #include "L0_LowLevel/LPC40xx.h"
-#include "utility/macros.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
+#include "utility/macros.hpp"
 
 class PinInterface
 {
@@ -83,95 +83,82 @@ class Pin : public PinInterface
   {
     return Pin(5, 4);
   }
-  constexpr Pin(uint8_t port_number, uint8_t pin_number) : pin_info_{}
-  {
-    pin_info_.port = port_number & 0b111;
-    pin_info_.pin  = pin_number & 0b1'1111;
-  }
+  constexpr Pin(uint8_t port, uint8_t pin) : port_(port), pin_(pin) {}
   void SetPinFunction(uint8_t function) const override
   {
-    *GetPinRegister() = bit::Insert(
-        *GetPinRegister(), util::Value(PinBitMap::kFunction), function, 3);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), function,
+                                    util::Value(PinBitMap::kFunction), 3);
   }
   void SetMode(PinInterface::Mode mode) const override
   {
     uint8_t ui_mode   = static_cast<uint8_t>(mode);
-    *GetPinRegister() = bit::Insert(
-        *GetPinRegister(), util::Value(PinBitMap::kMode), ui_mode & 0b11, 2);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), ui_mode & 0b11,
+                                    util::Value(PinBitMap::kMode), 2);
   }
   void EnableHysteresis(bool enable_hysteresis = true) const override
   {
-    *GetPinRegister() =
-        bit::Insert(*GetPinRegister(), util::Value(PinBitMap::kHysteresis),
-                    enable_hysteresis, 1);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), enable_hysteresis,
+                                    util::Value(PinBitMap::kHysteresis), 1);
   }
   void SetAsActiveLow(bool set_as_active_low = true) const override
   {
-    *GetPinRegister() =
-        bit::Insert(*GetPinRegister(), util::Value(PinBitMap::kInputInvert),
-                    set_as_active_low, 1);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), set_as_active_low,
+                                    util::Value(PinBitMap::kInputInvert), 1);
   }
   // Set bit to 0 to enable analog mode
   void SetAsAnalogMode(bool set_as_analog = true) const override
   {
-    *GetPinRegister() = bit::Insert(*GetPinRegister(),
-                                    util::Value(PinBitMap::kAnalogDigitalMode),
-                                    !set_as_analog, 1);
+    *GetPinRegister() =
+        bit::Insert(*GetPinRegister(), !set_as_analog,
+                    util::Value(PinBitMap::kAnalogDigitalMode), 1);
   }
   // Enable by setting bit to 0 to enable digital filter.
   void EnableDigitalFilter(bool enable_digital_filter = true) const override
   {
-    *GetPinRegister() =
-        bit::Insert(*GetPinRegister(), util::Value(PinBitMap::kDigitalFilter),
-                    !enable_digital_filter, 1);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), !enable_digital_filter,
+                                    util::Value(PinBitMap::kDigitalFilter), 1);
   }
   void EnableFastMode(bool enable_fast_mode = true) const override
   {
-    *GetPinRegister() = bit::Insert(
-        *GetPinRegister(), util::Value(PinBitMap::kSlew), enable_fast_mode, 1);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), enable_fast_mode,
+                                    util::Value(PinBitMap::kSlew), 1);
   }
   // Enable by setting bit to 0 for i2c high speed mode
   void EnableI2cHighSpeedMode(bool enable_high_speed = true) const override
   {
-    *GetPinRegister() =
-        bit::Insert(*GetPinRegister(), util::Value(PinBitMap::kI2cHighSpeed),
-                    !enable_high_speed, 1);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), !enable_high_speed,
+                                    util::Value(PinBitMap::kI2cHighSpeed), 1);
   }
   void EnableI2cHighCurrentDrive(bool enable_high_current = true) const override
   {
-    *GetPinRegister() = bit::Insert(
-        *GetPinRegister(), util::Value(PinBitMap::kI2cHighCurrentDrive),
-        enable_high_current, 1);
+    *GetPinRegister() =
+        bit::Insert(*GetPinRegister(), enable_high_current,
+                    util::Value(PinBitMap::kI2cHighCurrentDrive), 1);
   }
   void SetAsOpenDrain(bool set_as_open_drain = true) const override
   {
-    *GetPinRegister() =
-        bit::Insert(*GetPinRegister(), util::Value(PinBitMap::kOpenDrain),
-                    set_as_open_drain, 1);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), set_as_open_drain,
+                                    util::Value(PinBitMap::kOpenDrain), 1);
   }
   void EnableDac(bool enable_dac = true) const override
   {
-    *GetPinRegister() = bit::Insert(
-        *GetPinRegister(), util::Value(PinBitMap::kDacEnable), enable_dac, 1);
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), enable_dac,
+                                    util::Value(PinBitMap::kDacEnable), 1);
   }
   uint8_t GetPort() const override
   {
-    return pin_info_.port;
+    return port_;
   }
   uint8_t GetPin() const override
   {
-    return pin_info_.pin;
+    return pin_;
   }
 
  protected:
-  volatile uint32_t * GetPinRegister() const
+  [[gnu::always_inline]] volatile uint32_t * GetPinRegister() const
   {
-    return &pin_map->_register[pin_info_.port][pin_info_.pin];
+    return &pin_map->_register[port_][pin_];
   }
-  struct [[gnu::packed]] PinStructure
-  {
-    unsigned port : 3;
-    unsigned pin : 5;
-  };
-  PinStructure pin_info_;
+  uint8_t port_;
+  uint8_t pin_;
 };

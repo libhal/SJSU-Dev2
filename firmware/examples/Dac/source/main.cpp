@@ -27,18 +27,18 @@ const uint16_t kSineLookup[256] = {
   488
 };
 
-void SineDac(Dac * dac_demo, uint32_t delay)
+void SineDac(const Dac & dac, uint32_t delay)
 {
   SJ2_ASSERT_FATAL(delay < 500,
                    "Input frequency out of range! Frequency "
                    "input needs to be between 0 and 500 Hz.");
   for (uint8_t i = 0; i < 255; i++)
   {
-    dac_demo->WriteDac(kSineLookup[i]);
+    dac.Write(kSineLookup[i]);
     Delay(delay);
   }
 }
-void SawtoothDac(Dac * dac_demo, uint32_t delay)
+void SawtoothDac(const Dac & dac, uint32_t delay)
 {
   SJ2_ASSERT_FATAL(delay < 500,
                    "Input delay out of range! Delay "
@@ -47,12 +47,12 @@ void SawtoothDac(Dac * dac_demo, uint32_t delay)
   for (uint8_t i = 0; i < 255; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(sawtooth);
-    dac_demo->WriteDac(conversion);
+    dac.Write(conversion);
     sawtooth = sawtooth + 4;
     Delay(delay);
   }
 }
-void TriangleDac(Dac * dac_demo, uint32_t delay)
+void TriangleDac(const Dac & dac, uint32_t delay)
 {
   SJ2_ASSERT_FATAL(delay < 500,
                    "Input delay out of range! Delay "
@@ -61,19 +61,19 @@ void TriangleDac(Dac * dac_demo, uint32_t delay)
   for (uint8_t i = 0; i < 127; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(triangle);
-    dac_demo->WriteDac(conversion);
+    dac.Write(conversion);
     triangle = triangle + 8;
     Delay(delay);
   }
   for (uint8_t i = 127; i < 255; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(triangle);
-    dac_demo->WriteDac(conversion);
+    dac.Write(conversion);
     triangle = triangle - 8;
     Delay(delay);
   }
 }
-void SerratedDac(Dac * dac_demo, uint32_t delay)
+void SerratedDac(const Dac & dac, uint32_t delay)
 {
   SJ2_ASSERT_FATAL(delay < 500,
                    "Input delay out of range! Delay "
@@ -82,7 +82,7 @@ void SerratedDac(Dac * dac_demo, uint32_t delay)
   for (uint8_t i = 0; i < 127; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(serrated);
-    dac_demo->WriteDac(conversion);
+    dac.Write(conversion);
     serrated = serrated + 8;
     Delay(delay);
   }
@@ -90,21 +90,22 @@ void SerratedDac(Dac * dac_demo, uint32_t delay)
   for (uint8_t i = 127; i < 253; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(serrated);
-    dac_demo->WriteDac(conversion);
+    dac.Write(conversion);
     serrated = serrated + 4;
     Delay(delay);
   }
 }
-void (*dac_controllers[])(Dac *, uint32_t) = { SerratedDac, TriangleDac,
-                                               SawtoothDac, SineDac };
 
-void StartDemo(Dac * dac_demo, uint32_t input_cycles)
+void StartDemo(const Dac & dac, uint32_t input_cycles)
 {
   for (uint32_t i = 0; i < 4; i++)
   {
     for (int j = 0; j < 30; j++)
     {
-      dac_controllers[i](dac_demo, input_cycles);
+      SerratedDac(dac, input_cycles);
+      TriangleDac(dac, input_cycles);
+      SawtoothDac(dac, input_cycles);
+      SineDac(dac, input_cycles);
     }
   }
 }
@@ -117,6 +118,6 @@ int main(void)
   LOG_INFO("Starting Output of waves...\n");
   while (true)
   {
-    StartDemo(&dac, 5);
+    StartDemo(dac, 5);
   }
 }

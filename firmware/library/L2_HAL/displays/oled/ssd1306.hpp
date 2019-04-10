@@ -40,7 +40,7 @@ class Ssd1306 : public PixelDisplayInterface
       : ssp_(ssp),
         cs_(cs),
         dc_(dc),
-        ssp1_(),
+        ssp1_(Spi::Bus::kSpi1),  // not used
         cs_gpio_(1, 22),
         dc_gpio_(1, 25),
         bitmap_{}
@@ -143,10 +143,10 @@ class Ssd1306 : public PixelDisplayInterface
     cs_->SetHigh();
     dc_->SetHigh();
 
-    ssp_->SetPeripheralMode(Spi::MasterSlaveMode::kMaster, Spi::FrameMode::kSpi,
+    ssp_->SetPeripheralMode(Spi::MasterSlaveMode::kMaster,
                             Spi::DataSize::kEight);
     // Set speed to 1Mhz by dividing by 1 * ClockFrequencyInMHz.
-    ssp_->SetClock(false, false, 1, config::kSystemClockRateMhz/3);
+    ssp_->SetClock(false, false, 1, config::kSystemClockRateMhz / 3);
     ssp_->Initialize();
 
     Clear();

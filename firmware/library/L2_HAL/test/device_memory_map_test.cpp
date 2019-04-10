@@ -32,7 +32,7 @@ TestMemoryMap_t
   Array<uint32_t, 4> array_0;
 };
 
-I2c test_i2c;
+I2c test_i2c(I2c::Bus::kI2c0);
 
 }  // namespace
 

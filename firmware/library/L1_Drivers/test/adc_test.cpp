@@ -22,7 +22,7 @@ TEST_CASE("Testing adc", "[adc]")
   Fake(Method(mock_adc_pin, SetAsAnalogMode), Method(mock_adc_pin, SetMode),
        Method(mock_adc_pin, SetPinFunction));
 
-  Adc::Channel_t kMockChannel1 = {
+  const Adc::Channel_t kMockChannel1 = {
     .adc_pin      = mock_adc_pin.get(),
     .channel      = 1,
     .pin_function = 0b101,

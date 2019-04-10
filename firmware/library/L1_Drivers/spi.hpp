@@ -106,7 +106,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
     uint8_t pin_function_id;
   };
 
-  struct Bus
+  struct Bus  // NOLINT
   {
    private:
     // SSP0 pins
@@ -149,7 +149,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
     };
   };
 
-  constexpr Spi(const Bus_t & bus) : bus_(bus) {}
+  explicit constexpr Spi(const Bus_t & bus) : bus_(bus) {}
 
   /// This METHOD MUST BE EXECUTED before any other method can be called.
   /// Powers on the peripheral, activates the SSP pins and enables the SSP

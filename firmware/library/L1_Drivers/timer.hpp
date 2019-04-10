@@ -53,14 +53,14 @@ class TimerInterface
   virtual void Initialize(uint32_t us_per_tick, IsrPointer isr = nullptr,
                           int32_t priority = -1) = 0;
   virtual void SetTimer(uint32_t time, TimerIsrCondition mode,
-                        uint8_t reg = 0)    = 0;
-  virtual uint32_t GetTimer()               = 0;
+                        uint8_t reg = 0)         = 0;
+  virtual uint32_t GetTimer()                    = 0;
 };
 
 class Timer final : public TimerInterface, protected Lpc40xxSystemController
 {
  public:
-  static constexpr uint32_t kClear = std::numeric_limits<uint32_t>::max();
+  inline static const uint32_t kClear = std::numeric_limits<uint32_t>::max();
 
   struct ChannelPartial_t
   {
@@ -78,15 +78,15 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
 
   struct Channel_t
   {
-    const ChannelPartial_t * channel;
+    const ChannelPartial_t & channel;
     IsrPointer isr;
   };
 
-  struct Channel
+  struct Channel  // NOLINT
   {
    private:
     inline static IsrPointer timer0_isr              = nullptr;
-    static constexpr ChannelPartial_t kTimerPartial0 = {
+    inline static const ChannelPartial_t kTimerPartial0 = {
       .timer_register = LPC_TIM0,
       .power_id       = Peripherals::kTimer0,
       .irq            = IRQn::TIMER0_IRQn,
@@ -94,7 +94,7 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
     };
 
     inline static IsrPointer timer1_isr              = nullptr;
-    static constexpr ChannelPartial_t kTimerPartial1 = {
+    inline static const ChannelPartial_t kTimerPartial1 = {
       .timer_register = LPC_TIM1,
       .power_id       = Peripherals::kTimer1,
       .irq            = IRQn::TIMER1_IRQn,
@@ -102,7 +102,7 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
     };
 
     inline static IsrPointer timer2_isr              = nullptr;
-    static constexpr ChannelPartial_t kTimerPartial2 = {
+    inline static const ChannelPartial_t kTimerPartial2 = {
       .timer_register = LPC_TIM2,
       .power_id       = Peripherals::kTimer2,
       .irq            = IRQn::TIMER2_IRQn,
@@ -110,7 +110,7 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
     };
 
     inline static IsrPointer timer3_isr              = nullptr;
-    static constexpr ChannelPartial_t kTimerPartial3 = {
+    inline static const ChannelPartial_t kTimerPartial3 = {
       .timer_register = LPC_TIM3,
       .power_id       = Peripherals::kTimer3,
       .irq            = IRQn::TIMER3_IRQn,
@@ -118,23 +118,23 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
     };
 
    public:
-    static constexpr Channel_t kTimer0 = {
-      .channel = &kTimerPartial0,
+    inline static const Channel_t kTimer0 = {
+      .channel = kTimerPartial0,
       .isr     = TimerHandler<kTimerPartial0>,
     };
 
-    static constexpr Channel_t kTimer1 = {
-      .channel = &kTimerPartial1,
+    inline static const Channel_t kTimer1 = {
+      .channel = kTimerPartial1,
       .isr     = TimerHandler<kTimerPartial1>,
     };
 
-    static constexpr Channel_t kTimer2 = {
-      .channel = &kTimerPartial2,
+    inline static const Channel_t kTimer2 = {
+      .channel = kTimerPartial2,
       .isr     = TimerHandler<kTimerPartial2>,
     };
 
-    static constexpr Channel_t kTimer3 = {
-      .channel = &kTimerPartial3,
+    inline static const Channel_t kTimer3 = {
+      .channel = kTimerPartial3,
       .isr     = TimerHandler<kTimerPartial3>,
     };
   };
@@ -161,17 +161,17 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
   void Initialize(uint32_t frequency, IsrPointer isr = nullptr,
                   int32_t priority = -1) override
   {
-    PowerUpPeripheral(timer_.channel->power_id);
+    PowerUpPeripheral(timer_.channel.power_id);
     SJ2_ASSERT_FATAL(
         frequency != 0,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
     // Set Prescale register for Prescale Counter to milliseconds
     uint32_t prescaler = GetPeripheralFrequency() / frequency;
-    timer_.channel->timer_register->PR &= ~(kClear << 1);
-    timer_.channel->timer_register->PR |= (prescaler << 1);
-    timer_.channel->timer_register->TCR |= (1 << 0);
-    *timer_.channel->user_callback = isr;
-    RegisterIsr(timer_.channel->irq, timer_.isr, true, priority);
+    timer_.channel.timer_register->PR &= ~(kClear << 1);
+    timer_.channel.timer_register->PR |= (prescaler << 1);
+    timer_.channel.timer_register->TCR |= (1 << 0);
+    *timer_.channel.user_callback = isr;
+    RegisterIsr(timer_.channel.irq, timer_.isr, true, priority);
   }
 
   /// Function that sets a timer of your choice (0-3) to a specific
@@ -193,21 +193,21 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
 
     static constexpr uint8_t kClearMode = 0b0111;
 
-    timer_.channel->timer_register->MCR &= ~(kClearMode << match_register);
-    timer_.channel->timer_register->MCR |= condition << match_register;
+    timer_.channel.timer_register->MCR &= ~(kClearMode << match_register);
+    timer_.channel.timer_register->MCR |= condition << match_register;
     // MR0, MR1, MR2, and MR3 are contiguous, so we can point to the first
     // match register and index from there to get the other match registers.
     volatile uint32_t * match_register_ptr =
-        &timer_.channel->timer_register->MR0;
+        &timer_.channel.timer_register->MR0;
 
     match_register_ptr[match_register & 0b11] = ticks / 2;
   }
 
   uint32_t GetTimer() override
   {
-    return timer_.channel->timer_register->TC;
+    return timer_.channel.timer_register->TC;
   }
 
-  private:
-    Channel_t & timer_;
+ private:
+  Channel_t & timer_;
 };

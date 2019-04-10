@@ -16,10 +16,6 @@ class DacInterface
 class Dac final : public DacInterface, protected Lpc40xxSystemController
 {
  public:
-  inline static LPC_DAC_TypeDef * dac_register = LPC_DAC;
-
-  static constexpr float kVref = 3.3f;
-
   enum Bit : uint8_t
   {
     kBiasReg   = 16,
@@ -41,8 +37,12 @@ class Dac final : public DacInterface, protected Lpc40xxSystemController
     } bits;
   };
 
-  static constexpr Pin dac_pin = Pin::CreatePin<0, 26>();
-  constexpr Dac(const PinInterface & pin = dac_pin) : dac_pin_(pin) {}
+  static constexpr Pin kDacPin = Pin::CreatePin<0, 26>();
+  static constexpr float kVref = 3.3f;
+
+  inline static LPC_DAC_TypeDef * dac_register = LPC_DAC;
+
+  explicit constexpr Dac(const PinInterface & pin = kDacPin) : dac_pin_(pin) {}
   /// Initialize DAC hardware and enable DAC Pin.
   /// Initial Bias level set to 0.
   void Initialize() const override

@@ -61,12 +61,12 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
 
   struct Channel_t
   {
-    PinInterface & adc_pin;
+    const PinInterface & adc_pin;
     uint8_t channel : 3;
     uint8_t pin_function : 3;
   };
 
-  struct Channel
+  struct Channel  // NOLINT
   {
    private:
     enum AdcMode : uint8_t
@@ -74,52 +74,52 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
       kCh0123Pins = 0b001,
       kCh4567Pins = 0b011
     };
-    inline static Pin kAdcPinChannel0 = Pin::CreatePin<0, 23>();
-    inline static Pin kAdcPinChannel1 = Pin::CreatePin<0, 24>();
-    inline static Pin kAdcPinChannel2 = Pin::CreatePin<0, 25>();
-    inline static Pin kAdcPinChannel3 = Pin::CreatePin<0, 26>();
-    inline static Pin kAdcPinChannel4 = Pin::CreatePin<1, 30>();
-    inline static Pin kAdcPinChannel5 = Pin::CreatePin<1, 31>();
-    inline static Pin kAdcPinChannel6 = Pin::CreatePin<0, 12>();
-    inline static Pin kAdcPinChannel7 = Pin::CreatePin<0, 13>();
+    inline static const Pin kAdcPinChannel0 = Pin::CreatePin<0, 23>();
+    inline static const Pin kAdcPinChannel1 = Pin::CreatePin<0, 24>();
+    inline static const Pin kAdcPinChannel2 = Pin::CreatePin<0, 25>();
+    inline static const Pin kAdcPinChannel3 = Pin::CreatePin<0, 26>();
+    inline static const Pin kAdcPinChannel4 = Pin::CreatePin<1, 30>();
+    inline static const Pin kAdcPinChannel5 = Pin::CreatePin<1, 31>();
+    inline static const Pin kAdcPinChannel6 = Pin::CreatePin<0, 12>();
+    inline static const Pin kAdcPinChannel7 = Pin::CreatePin<0, 13>();
 
    public:
-    inline static Channel_t kChannel0 = {
+    inline static const Channel_t kChannel0 = {
       .adc_pin      = kAdcPinChannel0,
       .channel      = 0,
       .pin_function = AdcMode::kCh0123Pins,
     };
-    inline static Channel_t kChannel1 = {
+    inline static const Channel_t kChannel1 = {
       .adc_pin      = kAdcPinChannel1,
       .channel      = 1,
       .pin_function = AdcMode::kCh0123Pins,
     };
-    inline static Channel_t kChannel2 = {
+    inline static const Channel_t kChannel2 = {
       .adc_pin      = kAdcPinChannel2,
       .channel      = 2,
       .pin_function = AdcMode::kCh0123Pins,
     };
-    inline static Channel_t kChannel3 = {
+    inline static const Channel_t kChannel3 = {
       .adc_pin      = kAdcPinChannel3,
       .channel      = 3,
       .pin_function = AdcMode::kCh0123Pins,
     };
-    inline static Channel_t kChannel4 = {
+    inline static const Channel_t kChannel4 = {
       .adc_pin      = kAdcPinChannel4,
       .channel      = 4,
       .pin_function = AdcMode::kCh4567Pins,
     };
-    inline static Channel_t kChannel5 = {
+    inline static const Channel_t kChannel5 = {
       .adc_pin      = kAdcPinChannel5,
       .channel      = 5,
       .pin_function = AdcMode::kCh4567Pins,
     };
-    inline static Channel_t kChannel6 = {
+    inline static const Channel_t kChannel6 = {
       .adc_pin      = kAdcPinChannel6,
       .channel      = 6,
       .pin_function = AdcMode::kCh4567Pins,
     };
-    inline static Channel_t kChannel7 = {
+    inline static const Channel_t kChannel7 = {
       .adc_pin      = kAdcPinChannel7,
       .channel      = 7,
       .pin_function = AdcMode::kCh4567Pins,

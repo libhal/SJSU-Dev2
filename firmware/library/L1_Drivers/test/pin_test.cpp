@@ -3,6 +3,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/pin.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "utility/debug.hpp"
 
 EMIT_ALL_METHODS(Pin);
 
@@ -226,5 +227,6 @@ TEST_CASE("Testing Pin", "[pin_configure]")
     CHECK(0 == (local_iocon.P0_0 & kMask));
     CHECK(kMask == (local_iocon.P2_5 & kMask));
   }
+
   Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }
