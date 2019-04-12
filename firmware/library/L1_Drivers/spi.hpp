@@ -226,9 +226,6 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   void SetClock(bool polarity, bool phase, uint8_t divider,
                 uint8_t prescaler) override
   {
-    // TODO(#371): Find a better alternative to powering up the peripheral for
-    // every method.
-    PowerUpPeripheral(bus_.power_on_bit);
     // first clear the appropriate registers
     bus_.registers->CR0 =
         bit::Insert(bus_.registers->CR0, polarity, kPolarityBit, 1);
