@@ -18,11 +18,12 @@
 class PwmInterface
 {
  public:
-  static constexpr uint32_t kDefaultFrequency                        = 1'000;
-  virtual void Initialize(uint32_t frequency_hz = kDefaultFrequency) = 0;
-  virtual void SetDutyCycle(float duty_cycle)                        = 0;
-  virtual float GetDutyCycle()                                       = 0;
-  virtual void SetFrequency(uint32_t frequency_hz)                   = 0;
+  static constexpr uint32_t kDefaultFrequency = 1'000;
+
+  virtual void Initialize(uint32_t frequency_hz = kDefaultFrequency) const = 0;
+  virtual void SetDutyCycle(float duty_cycle) const                        = 0;
+  virtual float GetDutyCycle() const                                       = 0;
+  virtual void SetFrequency(uint32_t frequency_hz) const                   = 0;
 };
 
 class Pwm final : public PwmInterface, protected Lpc40xxSystemController
@@ -147,7 +148,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
   explicit constexpr Pwm(const Channel_t & channel) : channel_(channel) {}
 
   /// @param frequency_hz - Pulse width modulation frequency
-  void Initialize(uint32_t frequency_hz = kDefaultFrequency) override
+  void Initialize(uint32_t frequency_hz = kDefaultFrequency) const override
   {
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");
@@ -186,7 +187,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     channel_.pin.SetPinFunction(channel_.peripheral.pin_function_id);
   }
 
-  void SetDutyCycle(float duty_cycle) override
+  void SetDutyCycle(float duty_cycle) const override
   {
     SJ2_ASSERT_FATAL(0.0f <= duty_cycle && duty_cycle <= 1.0f,
                      "duty_cycle of Duty Cycle provided is out of bounds.");
@@ -194,13 +195,13 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     channel_.peripheral.registers->LER |= (1 << channel_.channel);
   }
 
-  float GetDutyCycle() override
+  float GetDutyCycle() const override
   {
     return (static_cast<float>(GetMatchRegisters()[channel_.channel]) /
             static_cast<float>(GetMatchRegisters()[0]));
   }
 
-  void SetFrequency(uint32_t frequency_hz) override
+  void SetFrequency(uint32_t frequency_hz) const override
   {
     SJ2_ASSERT_FATAL(frequency_hz != 0, "Pwm Frequency cannot be zero Hz.");
     // Disables PWM mode; this will reset all counters to 0
@@ -213,7 +214,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     EnablePwm();
   }
 
-  uint32_t GetFrequency()
+  uint32_t GetFrequency() const
   {
     uint32_t match_register0 = GetMatchRegisters()[0];
     uint32_t result          = 0;
@@ -224,7 +225,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
     return result;
   }
 
-  void EnablePwm(bool enable = true)
+  void EnablePwm(bool enable = true) const
   {
     if (enable)
     {
@@ -240,39 +241,39 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
   }
 
   [[gnu::always_inline]] volatile MatchControlRegister_t *
-  GetMatchControlRegister()
+  GetMatchControlRegister() const
   {
     return reinterpret_cast<volatile MatchControlRegister_t *>(
         &channel_.peripheral.registers->MCR);
   }
 
   [[gnu::always_inline]] volatile CountControlRegister_t *
-  GetCountControlRegister()
+  GetCountControlRegister() const
   {
     return reinterpret_cast<volatile CountControlRegister_t *>(
         &channel_.peripheral.registers->CTCR);
   }
 
   [[gnu::always_inline]] volatile OutputControlRegister_t *
-  GetOutputControlRegister()
+  GetOutputControlRegister() const
   {
     return reinterpret_cast<volatile OutputControlRegister_t *>(
         &channel_.peripheral.registers->PCR);
   }
 
   [[gnu::always_inline]] volatile TimerControlRegister_t *
-  GetTimerControlRegister()
+  GetTimerControlRegister() const
   {
     return reinterpret_cast<volatile TimerControlRegister_t *>(
         &channel_.peripheral.registers->TCR);
   }
 
-  [[gnu::always_inline]] volatile uint32_t * GetMatchRegisters()
+  [[gnu::always_inline]] volatile uint32_t * GetMatchRegisters() const
   {
     return &channel_.peripheral.registers->MR0;
   }
 
-  uint32_t CalculateDutyCycle(float percent)
+  uint32_t CalculateDutyCycle(float percent) const
   {
     float pwm_period = static_cast<float>(GetMatchRegisters()[0]);
     return static_cast<uint32_t>(percent * pwm_period);

@@ -23,7 +23,7 @@ class CanInterface
 
   // This struct represents a transmit message based on the BOSCH CAN spec 2.0B.
   // It is HW mapped to 32-bit registers TFI, TID, TDx (pg. 568).
-  SJ2_PACKED(struct) TxMessage_t
+  struct [[gnu::packed]] TxMessage_t
   {
     union {
       // TFI - Transmit Frame Information Register - Message frame info
@@ -31,16 +31,16 @@ class CanInterface
       struct
       {
         // User definable priority level for a message (0-255)
-        uint8_t tx_priority                 : 8;
-        uint8_t reserved_1                  : 8;
+        uint8_t tx_priority : 8;
+        uint8_t reserved_1 : 8;
         // Data payload length (0-7 bytes)
-        uint8_t data_length                 : 4;
+        uint8_t data_length : 4;
         // Reserved
-        uint16_t reserved_2                 : 10;
+        uint16_t reserved_2 : 10;
         // Request a data frame from a node
-        uint8_t remote_tx_request           : 1;
+        uint8_t remote_tx_request : 1;
         // 11-bit or 29-bit identifier format
-        uint8_t frame_format                : 1;
+        uint8_t frame_format : 1;
       } frame_data;
     };
     // TID - Transmit Identifier Register
@@ -50,20 +50,20 @@ class CanInterface
   };
   // This struct represents a receive message based on the BOSCH CAN spec 2.0B.
   // It is HW mapped to 32-bit registers RFS, RID, RDx (pg. 565).
-  SJ2_PACKED(struct) RxMessage_t
+  struct [[gnu::packed]] RxMessage_t
   {
     union {
       // RFS - Receive Frame Status Register
       uint32_t RFS;
       struct
       {
-        uint16_t id_index           : 10;
-        uint8_t bypass_mode         : 1;
-        uint8_t reserved_1          : 5;
-        uint8_t data_length         : 4;
-        uint16_t reserved_2         : 10;
-        uint8_t remote_tx_request   : 1;
-        uint8_t frame_format        : 1;
+        uint16_t id_index : 10;
+        uint8_t bypass_mode : 1;
+        uint8_t reserved_1 : 5;
+        uint8_t data_length : 4;
+        uint16_t reserved_2 : 10;
+        uint8_t remote_tx_request : 1;
+        uint8_t frame_format : 1;
       } frame_data;
     };
     // RID - Receive Identifier Register
@@ -72,17 +72,17 @@ class CanInterface
     Data_t data;  // CAN message data payload
   };
 
-  virtual bool Initialize()                                              = 0;
+  virtual bool Initialize() const                                        = 0;
   virtual bool Send(TxMessage_t * const kMessage, uint32_t id,
                     const uint8_t * const kPayload, size_t length) const = 0;
   virtual bool Receive(RxMessage_t * const kMessage) const               = 0;
-  virtual bool SelfTestBus(uint32_t id)                                  = 0;
+  virtual bool SelfTestBus(uint32_t id) const                            = 0;
   virtual bool IsBusOff() const                                          = 0;
   virtual uint8_t GetFrameErrorLocation() const                          = 0;
-  virtual void EnableBus()                                               = 0;
+  virtual void EnableBus() const                                         = 0;
 
   bool Send(TxMessage_t * const kMessage, uint32_t id,
-            std::initializer_list<uint8_t> payload)
+            std::initializer_list<uint8_t> payload) const
   {
     return Send(kMessage, id, payload.begin(), payload.size());
   }
@@ -97,7 +97,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
 
   // This struct holds bit timing values. It is used to configure the CAN bus
   // clock. It is HW mapped to a 32-bit register: BTR (pg. 562)
-  SJ2_PACKED(struct) BusTiming_t
+  struct [[gnu::packed]] BusTiming_t
   {
     union {
       uint32_t BTR;
@@ -105,21 +105,21 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
       {
         // The peripheral bus clock is divided by this value
         uint16_t baud_rate_prescaler : 10;
-        uint8_t reserved_1           : 4;
+        uint8_t reserved_1 : 4;
         // Used to compensate for positive and negative edge phase errors
-        uint8_t sync_jump_width      : 2;
+        uint8_t sync_jump_width : 2;
         // Determines the location of the sample point
-        uint8_t time_segment_1       : 4;
-        uint8_t time_segment_2       : 3;
+        uint8_t time_segment_1 : 4;
+        uint8_t time_segment_2 : 3;
         // How many times the bus is sampled; 0 == once, 1 == 3 times
-        uint8_t sampling             : 1;
-        uint8_t reserved_2           : 8;
+        uint8_t sampling : 1;
+        uint8_t reserved_2 : 8;
       } values;
     };
   };
   // This struct holds interrupt flags and capture flag status. It is HW mapped
   // to a 16-bit register: ICR (pg. 557)
-  SJ2_PACKED(struct) Interrupts_t
+  struct [[gnu::packed]] Interrupts_t
   {
     union {
       // ICR - Interrupt and Capture Register
@@ -130,21 +130,21 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
       uint32_t ICR;
       struct
       {
-        uint8_t rx_buffer_full            : 1;
-        uint8_t tx_buffer_1_ready         : 1;
-        uint8_t error_warning             : 1;
-        uint8_t data_overrun              : 1;
-        uint8_t wake_up                   : 1;
-        uint8_t error_passive             : 1;
-        uint8_t arbitration_lost          : 1;
-        uint8_t bus_error                 : 1;
-        uint8_t identifier_ready          : 1;
-        uint8_t tx_buffer_2_ready         : 1;
-        uint8_t tx_buffer_3_ready         : 1;
-        uint8_t reserved                  : 5;
-        uint8_t error_code_location       : 5;
-        uint8_t error_code_direction      : 1;
-        uint8_t error_code_type           : 2;
+        uint8_t rx_buffer_full : 1;
+        uint8_t tx_buffer_1_ready : 1;
+        uint8_t error_warning : 1;
+        uint8_t data_overrun : 1;
+        uint8_t wake_up : 1;
+        uint8_t error_passive : 1;
+        uint8_t arbitration_lost : 1;
+        uint8_t bus_error : 1;
+        uint8_t identifier_ready : 1;
+        uint8_t tx_buffer_2_ready : 1;
+        uint8_t tx_buffer_3_ready : 1;
+        uint8_t reserved : 5;
+        uint8_t error_code_location : 5;
+        uint8_t error_code_direction : 1;
+        uint8_t error_code_type : 2;
         uint8_t arbitration_lost_location : 8;
       } flags;
     };
@@ -152,31 +152,31 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
   // This struct holds CAN controller global status information.
   // It is a condensed version of the status register.
   // It is HW mapped to a 32-bit register: GSR (pg. 555)
-  SJ2_PACKED(struct) GlobalStatus_t
+  struct [[gnu::packed]] GlobalStatus_t
   {
     union {
       // GSR - Global Status Register
       uint32_t GSR;
       struct
       {
-        uint8_t rx_buffer_full       : 1;
-        uint8_t data_overrun         : 1;
-        uint8_t tx_buffer_ready      : 1;
-        uint8_t tx_complete          : 1;
-        uint8_t receiving_message    : 1;
+        uint8_t rx_buffer_full : 1;
+        uint8_t data_overrun : 1;
+        uint8_t tx_buffer_ready : 1;
+        uint8_t tx_complete : 1;
+        uint8_t receiving_message : 1;
         uint8_t transmitting_message : 1;
-        uint8_t bus_error            : 1;
-        uint8_t bus_status           : 1;
-        uint8_t reserved             : 8;
-        uint8_t rx_error_count       : 8;
-        uint8_t tx_error_count       : 8;
+        uint8_t bus_error : 1;
+        uint8_t bus_status : 1;
+        uint8_t reserved : 8;
+        uint8_t rx_error_count : 8;
+        uint8_t tx_error_count : 8;
       } flags;
     };
   };
   // This struct holds a R/W value. This value is compared against
   // the Tx and Rx error counts
   // It is HW mapped to a 32-bit register: EWL (pg. 563)
-  SJ2_PACKED(struct) ErrorWarningLimit_t
+  struct [[gnu::packed]] ErrorWarningLimit_t
   {
     union {
       // EWL - Error Warning Limit Register
@@ -184,45 +184,45 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
       struct
       {
         uint8_t error_warning_limit : 8;
-        uint32_t reserved           : 24;
+        uint32_t reserved : 24;
       } error;
     };
   };
   // This struct holds CAN controller status information. It is HW mapped to a
   // 32-bit register: SR (pg. 564) Each "not_used_x" is already covered in the
   // GSR (global status register).
-  SJ2_PACKED(struct) Status_t
+  struct [[gnu::packed]] Status_t
   {
     union {
       // SR - Status Register
       uint32_t SR;
       struct
       {
-        uint8_t not_used_1               : 1;
-        uint8_t not_used_2               : 1;
-        uint8_t tx_buffer_1_released     : 1;
-        uint8_t tx_buffer_1_complete     : 1;
-        uint8_t not_used_3               : 1;
+        uint8_t not_used_1 : 1;
+        uint8_t not_used_2 : 1;
+        uint8_t tx_buffer_1_released : 1;
+        uint8_t tx_buffer_1_complete : 1;
+        uint8_t not_used_3 : 1;
         uint8_t tx_buffer_1_transmitting : 1;
-        uint8_t bus_error                : 1;
-        uint8_t not_used_4               : 1;
-        uint8_t not_used_5               : 1;
-        uint8_t not_used_6               : 1;
-        uint8_t tx_buffer_2_released     : 1;
-        uint8_t tx_buffer_2_complete     : 1;
-        uint8_t not_used_7               : 1;
+        uint8_t bus_error : 1;
+        uint8_t not_used_4 : 1;
+        uint8_t not_used_5 : 1;
+        uint8_t not_used_6 : 1;
+        uint8_t tx_buffer_2_released : 1;
+        uint8_t tx_buffer_2_complete : 1;
+        uint8_t not_used_7 : 1;
         uint8_t tx_buffer_2_transmitting : 1;
-        uint8_t not_used_8               : 1;
-        uint8_t not_used_9               : 1;
-        uint8_t not_used_10              : 1;
-        uint8_t not_used_11              : 1;
-        uint8_t tx_buffer_3_released     : 1;
-        uint8_t tx_buffer_3_complete     : 1;
-        uint8_t not_used_12              : 1;
+        uint8_t not_used_8 : 1;
+        uint8_t not_used_9 : 1;
+        uint8_t not_used_10 : 1;
+        uint8_t not_used_11 : 1;
+        uint8_t tx_buffer_3_released : 1;
+        uint8_t tx_buffer_3_complete : 1;
+        uint8_t not_used_12 : 1;
         uint8_t tx_buffer_3_transmitting : 1;
-        uint8_t not_used_13              : 1;
-        uint8_t not_used_14              : 1;
-        uint8_t reserved                 : 8;
+        uint8_t not_used_13 : 1;
+        uint8_t not_used_14 : 1;
+        uint8_t reserved : 8;
       } flags;
     };
   };
@@ -374,7 +374,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
   {
   }
 
-  bool Initialize() override
+  bool Initialize() const override
   {
     bool success = true;
     if (controller_ > kNumberOfControllers)
@@ -471,8 +471,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
   }
 
   [[gnu::always_inline]] bool Receive(
-      RxMessage_t * const kMessage) const override
-  {
+      RxMessage_t * const kMessage) const override {
     bool success = false;
     if (xQueueReceive(receive_queue[controller_], kMessage, 0) == pdPASS)
     {
@@ -481,7 +480,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
     return success;
   }
 
-  bool SelfTestBus(uint32_t id) override
+  bool SelfTestBus(uint32_t id) const override
   {
     bool success = false;
 
@@ -558,12 +557,12 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
     return interrupts[controller_].flags.error_code_location;
   }
 
-  void EnableBus() override
+  void EnableBus() const override
   {
     SetControllerMode(kReset, false);
   }
 
-  [[gnu::always_inline]] static void ProcessIrq()
+  static void ProcessIrq()
   {
     TxMessage_t * message_ptr;
     bool transmit_interrupt, receive_interrupt;
@@ -704,14 +703,13 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
     can_registers[controller]->CMR = kReleaseRxBuffer;
   }
 
-  [[gnu::always_inline]] void CaptureRegisterData()
-  {
+  [[gnu::always_inline]] void CaptureRegisterData() {
     interrupts[controller_].ICR    = can_registers[controller_]->ICR;
     status[controller_].SR         = can_registers[controller_]->SR;
     global_status[controller_].GSR = can_registers[controller_]->GSR;
   }
 
-  void SetControllerMode(const Modes kModeBitPos, bool enable_mode)
+  void SetControllerMode(const Modes kModeBitPos, bool enable_mode) const
   {
     if (enable_mode == true)
     {
@@ -723,7 +721,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
     }
   }
 
-  void EnablePower()
+  void EnablePower() const
   {
     if (controller_ == kCan1)
     {
@@ -735,7 +733,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
     }
   }
 
-  void ConfigurePins()
+  void ConfigurePins() const
   {
     // Configure internal pin MUX to map board I/O pins to controller
     //                       _
@@ -757,7 +755,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
     }
   }
 
-  void EnableInterrupts()
+  void EnableInterrupts() const
   {
     // IER - Interrupt Enable Register
     can_registers[controller_]->IER |= (1 << kRxBufferIntEnableBit);
@@ -773,7 +771,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
   // TODO(#346): This function should use GetPeripheralFrequency() to calculate
   // baud rates.
   // TODO(#347): Add details about these calculations in documentation.
-  void SetBaudRate()
+  void SetBaudRate() const
   {
     BusTiming_t bus_timing;
     memset(&bus_timing, 0, sizeof(BusTiming_t));

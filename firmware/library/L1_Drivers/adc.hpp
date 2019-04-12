@@ -10,10 +10,10 @@
 class AdcInterface
 {
  public:
-  virtual void Initialize()            = 0;
-  virtual void Conversion()            = 0;
-  virtual uint16_t Read()              = 0;
-  virtual bool HasConversionFinished() = 0;
+  virtual void Initialize() const            = 0;
+  virtual void Conversion() const            = 0;
+  virtual uint16_t Read() const              = 0;
+  virtual bool HasConversionFinished() const = 0;
 };
 
 class Adc final : public AdcInterface, protected Lpc40xxSystemController
@@ -140,7 +140,7 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
   }
 
   explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
-  void Initialize() override
+  void Initialize() const override
   {
     PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kAdc);
 
@@ -159,7 +159,7 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
 
     adc_base->CR = control.data;
   }
-  void Conversion() override
+  void Conversion() const override
   {
     volatile ControlRegister_t * control = GetControlRegister();
     if (control->bits.enable_burst)
@@ -177,11 +177,11 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
       continue;
     }
   }
-  uint16_t Read() override
+  uint16_t Read() const override
   {
     return GetGlobalDataRegister()->bits.result;
   }
-  bool HasConversionFinished() override
+  bool HasConversionFinished() const override
   {
     return GetGlobalDataRegister()->bits.done;
   }
