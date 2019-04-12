@@ -14,9 +14,9 @@
 class SystemTimerInterface
 {
  public:
-  virtual void SetIsrFunction(IsrPointer isr)           = 0;
-  virtual bool StartTimer()                             = 0;
-  virtual uint32_t SetTickFrequency(uint32_t frequency) = 0;
+  virtual void SetIsrFunction(IsrPointer isr)           const = 0;
+  virtual bool StartTimer()                             const = 0;
+  virtual uint32_t SetTickFrequency(uint32_t frequency) const = 0;
 };
 
 class SystemTimer final : public SystemTimerInterface,
@@ -54,12 +54,12 @@ class SystemTimer final : public SystemTimerInterface,
       system_timer_isr();
     }
   }
-  constexpr SystemTimer() {}
-  void SetIsrFunction(IsrPointer isr) override
+
+  void SetIsrFunction(IsrPointer isr) const override
   {
     system_timer_isr = isr;
   }
-  bool StartTimer() override
+  bool StartTimer() const override
   {
     bool successful = false;
     if (sys_tick->LOAD != 0)
@@ -83,7 +83,7 @@ class SystemTimer final : public SystemTimerInterface,
   ///          return without changing any hardware.
   ///          If the reload value exceeds the SysTick_LOAD_RELOAD_Msk, the
   ///          returned value is the SysTick_LOAD_RELOAD_Msk.
-  uint32_t SetTickFrequency(uint32_t frequency) override
+  uint32_t SetTickFrequency(uint32_t frequency) const override
   {
     if (frequency <= 1)
     {

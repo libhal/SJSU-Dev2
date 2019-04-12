@@ -11,10 +11,11 @@
 
 class UartInterface
 {
-  virtual bool Initialize(uint32_t baud_rate)  = 0;
-  virtual bool SetBaudRate(uint32_t baud_rate) = 0;
-  virtual void Send(uint8_t out)               = 0;
-  virtual uint8_t Receive(uint32_t timeout)    = 0;
+  virtual bool Initialize(uint32_t baud_rate)  const = 0;
+  virtual bool SetBaudRate(uint32_t baud_rate) const = 0;
+  virtual void Send(uint8_t out)               const = 0;
+  // TODO(#442): Add an IsAvailable function to check if a byte has been receive
+  virtual uint8_t Receive(uint32_t timeout)    const = 0;
 };
 
 namespace uart
@@ -259,7 +260,7 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
 
   /// For LPC40xx only supports the following baud rates:
   ///   4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600
-  bool SetBaudRate(uint32_t baud_rate) override
+  bool SetBaudRate(uint32_t baud_rate) const override
   {
     uart::UartCalibration_t calibration;
     switch (baud_rate)
@@ -309,7 +310,7 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
     port_.registers->LCR = kStandardUart;
   }
 
-  bool Initialize(uint32_t baud_rate) override
+  bool Initialize(uint32_t baud_rate) const override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
     // Powering the port
@@ -324,7 +325,7 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
     return true;
   }
 
-  void Send(uint8_t data) override
+  void Send(uint8_t data) const override
   {
     port_.registers->THR             = data;
     auto wait_for_transfer_to_finish = [this]() -> bool {
@@ -333,7 +334,7 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
     Wait(kMaxWait, wait_for_transfer_to_finish);
   }
 
-  uint8_t Receive([[maybe_unused]] uint32_t timeout = 0x7FFFFFFF) override
+  uint8_t Receive([[maybe_unused]] uint32_t timeout = 0x7FFFFFFF) const override
   {
     uint8_t receiver   = '\xFF';
     auto byte_recieved = [this]() -> bool {
