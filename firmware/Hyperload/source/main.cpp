@@ -35,7 +35,7 @@ static_assert(
 namespace
 {
 Lpc40xxSystemController system_controller;
-Uart uart3(Uart::Channels::kUart3);
+Uart uart3(Uart::Port::kUart3);
 bool debug_print_button_was_pressed = false;
 }  // namespace
 

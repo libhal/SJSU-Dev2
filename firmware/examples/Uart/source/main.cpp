@@ -13,7 +13,7 @@ int main(void)
       "sending data between the Tx and Rx pins."
       "Please connect pins P2.8 and P2.9 together using a wire for this "
       "test.");
-  Uart uart2(Uart::Channels::kUart2);
+  Uart uart2(Uart::Port::kUart2);
   LOG_INFO(
       "Initializing UART port 2 with a baud rate of 38400 bits per second");
   uart2.Initialize(38400);

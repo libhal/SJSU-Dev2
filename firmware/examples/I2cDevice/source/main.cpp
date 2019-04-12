@@ -61,7 +61,7 @@ GestureMemoryMap_t  // APDS-9960
   Register<uint8_t> adc_integration_time;
 };
 
-I2c i2c;
+I2c i2c(I2c::Bus::kI2c2);
 
 I2cDevice<&i2c, kAccelerometerAddress, device::Endian::kBig,
           AccelerometerMemoryMap_t> accelerometer;

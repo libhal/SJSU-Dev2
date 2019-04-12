@@ -403,7 +403,7 @@ run-test:
 	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
 		$(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
-	@gcovr --root="$(FIRMWARE_DIR)/" --keep --object-directory="$(BUILD_DIR)/" \
+	@gcovr --root="$(FIRMWARE_DIR)/" --object-directory="$(BUILD_DIR)/" \
 		-e "$(LIB_DIR)/newlib" \
 		-e "$(LIB_DIR)/third_party" \
 		-e "$(LIB_DIR)/L4_Testing" \

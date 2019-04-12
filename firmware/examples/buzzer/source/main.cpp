@@ -10,7 +10,7 @@ int main(void)
     LOG_INFO("and a volume of 10 percent i.e. 0.1f");
     LOG_INFO("==================================================");
 
-    Buzzer buzzer(1);
+    Buzzer buzzer(Pwm::Channel::kPwm1);
 
     constexpr uint32_t kFrequency = 1000;
     constexpr float kVolume = 0.1f;

@@ -8,81 +8,100 @@ EMIT_ALL_METHODS(Pwm);
 
 TEST_CASE("Testing PWM instantiation", "[pwm]")
 {
-  using fakeit::Fake;
-  using fakeit::Mock;
+  // Creating local instances of register structures
   LPC_PWM_TypeDef local_pwm;
   LPC_SC_TypeDef local_sc;
-  LPC_IOCON_TypeDef local_iocon;
-  Lpc40xxSystemController::system_controller = &local_sc;
-  // TODO(delwin-lei): Remove later with an interface Mock
+
+  // Setting local register structures to all zeros
   memset(&local_pwm, 0, sizeof(local_pwm));
   memset(&local_sc, 0, sizeof(local_sc));
-  memset(&local_iocon, 0, sizeof(local_iocon));
-  Pwm::pwm1     = &local_pwm;
-  Pwm::match[0] = &local_pwm.MR0;
-  Pwm::match[1] = &local_pwm.MR1;
-  Pin::pin_map  = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
 
-  Mock<PinInterface> mock_pwm_pin;
+  // Set system controller pointer to local register
+  Lpc40xxSystemController::system_controller = &local_sc;
 
+  // Creating mock of Pin class
+  Mock<Pin> mock_pwm_pin;
+  // Make sure mock Pin doesn't call real SetPinFunction() method
   Fake(Method(mock_pwm_pin, SetPinFunction));
-  Pwm test2_0(1);
 
-  constexpr uint8_t kResetMr0       = (1 << 1);
-  constexpr uint8_t kCounterEnable  = (1 << 0);
-  constexpr uint8_t kTimerMode      = (0b11 << 0);
-  constexpr uint8_t kPwmEnable      = (1 << 3);
-  constexpr uint32_t kChannelEnable = (1 << 9);
+  // Creating mock peripheral configuration
+  Pwm::Peripheral_t mock_peripheral = {
+    .registers       = &local_pwm,
+    .power_on_id     = Lpc40xxSystemController::Peripherals::kPwm0,
+    .pin_function_id = 0b101,
+  };
+
+  // Creating mock channel configuration
+  Pwm::Channel_t mock_channel = {
+    .peripheral = mock_peripheral,
+    .pin        = mock_pwm_pin.get(),
+    .channel    = 1,
+  };
+
+  Pwm test_pwm(mock_channel);
+
+  constexpr uint8_t kResetMr0                  = (1 << 1);
+  constexpr uint8_t kCounterEnable             = (1 << 0);
+  constexpr uint8_t kTimerMode                 = (0b11 << 0);
+  constexpr uint8_t kPwmEnable                 = (1 << 3);
+  constexpr uint32_t kChannelEnable            = 1;
+  constexpr uint32_t kChannelEnableBitPosition = 10;
 
   SECTION("Initialization values")
   {
-    test2_0.Initialize();
+    test_pwm.Initialize();
+
+    Lpc40xxSystemController system_controller;
+    CHECK(system_controller.IsPeripheralPoweredUp(
+        Lpc40xxSystemController::Peripherals::kPwm0));
     CHECK((local_pwm.MCR & 0b11) == (kResetMr0 & 0b11));
     CHECK((local_pwm.TCR & 0b1111) == ((kCounterEnable | kPwmEnable) & 0b1111));
     CHECK((local_pwm.CTCR & 0b11) == (~kTimerMode & 0b11));
-    CHECK((local_pwm.PCR & 0b11'1111'1111) ==
-          (kChannelEnable & 0b11'1111'1111));
+    CHECK(((local_pwm.PCR >> kChannelEnableBitPosition) & 0b11'1111) ==
+          kChannelEnable);
 
-    CHECK(PwmInterface::kDefaultFrequency == test2_0.GetFrequency());
-    test2_0.Initialize(5000);
-    CHECK(5000 == test2_0.GetFrequency());
+    Verify(Method(mock_pwm_pin, SetPinFunction)
+               .Using(mock_channel.peripheral.pin_function_id))
+        .Once();
+
+    CHECK(PwmInterface::kDefaultFrequency == test_pwm.GetFrequency());
+    test_pwm.Initialize(5000);
+    CHECK(5000 == test_pwm.GetFrequency());
   }
 
   SECTION("Match Register 0")
   {
-    CHECK(test2_0.GetMatchRegister0() == local_pwm.MR0);
-  }
-
-  SECTION("Enabling PWM Channels")
-  {
-    CHECK(test2_0.PwmOutputEnable(1) == kChannelEnable);
+    CHECK(test_pwm.GetMatchRegisters()[0] == local_pwm.MR0);
   }
 
   SECTION("Calculate the Duty Cycle")
   {
-    test2_0.SetDutyCycle(.27f);
-    float error = static_cast<float>(test2_0.CalculateDutyCycle(.27f)) -
-                  (.27f * static_cast<float>(test2_0.GetMatchRegister0()));
+    test_pwm.SetDutyCycle(.27f);
+    float calculated_duty_cycle_precent =
+        static_cast<float>(test_pwm.CalculateDutyCycle(.27f));
+    float match_register_0 =
+        static_cast<float>(test_pwm.GetMatchRegisters()[0]);
+    float error = calculated_duty_cycle_precent - (.27f * match_register_0);
     CHECK((-.1f <= error && error <= .1f) == true);
   }
 
   SECTION("Setting and Getting Frequency")
   {
-    test2_0.SetDutyCycle(0.5f);
-    test2_0.SetFrequency(2000);
+    test_pwm.SetDutyCycle(0.5f);
+    test_pwm.SetFrequency(2000);
     CHECK(config::kSystemClockRate / local_pwm.MR0 == 2000);
-    CHECK(test2_0.GetFrequency() == 2000);
+    CHECK(test_pwm.GetFrequency() == 2000);
   }
 
   SECTION("Set Duty Cycle")
   {
-    test2_0.SetFrequency(1000);
-    test2_0.SetDutyCycle(.50f);
+    test_pwm.SetFrequency(1000);
+    test_pwm.SetDutyCycle(.50f);
     float mr0   = static_cast<float>(local_pwm.MR0);
     float mr1   = static_cast<float>(local_pwm.MR1);
     float error = (mr1 / mr0) - 0.5f;
-    CHECK(local_pwm.MR0 == test2_0.GetMatchRegister0());
-    CHECK(local_pwm.MR1 == test2_0.CalculateDutyCycle(.50f));
+    CHECK(local_pwm.MR0 == test_pwm.GetMatchRegisters()[0]);
+    CHECK(local_pwm.MR1 == test_pwm.CalculateDutyCycle(.50f));
     CHECK((-0.1f <= error && error <= 0.1f) == true);
     CHECK(local_pwm.LER == 0b10);
   }
@@ -90,9 +109,9 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
   SECTION("Get Duty Cycle")
   {
     float duty_cycle = 0.10f;
-    test2_0.SetFrequency(1000);
-    test2_0.SetDutyCycle(duty_cycle);
-    float error = duty_cycle - test2_0.GetDutyCycle();
+    test_pwm.SetFrequency(1000);
+    test_pwm.SetDutyCycle(duty_cycle);
+    float error = duty_cycle - test_pwm.GetDutyCycle();
     CHECK((-0.01f <= error && error <= 0.01f) == true);
   }
   Lpc40xxSystemController::system_controller = LPC_SC;

@@ -19,7 +19,7 @@ int main(void)
   p4_28.SetLow();
 
   LOG_INFO("Creating Pwm powered LED...P2.0 (Pwm1)");
-  Pwm p2_0 = Pwm::CreatePwm<1>();
+  Pwm p2_0(Pwm::Channel::kPwm0);
   // Initialize Pwm at 1,000 hz
   uint32_t frequency = 1000;
   p2_0.Initialize(frequency);

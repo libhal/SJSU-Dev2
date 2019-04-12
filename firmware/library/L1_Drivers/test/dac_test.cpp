@@ -7,29 +7,29 @@ EMIT_ALL_METHODS(Dac);
 TEST_CASE("Testing Dac", "[dac]")
 {
   LPC_IOCON_TypeDef local_iocon;
-  memset(&local_iocon, 0, sizeof(local_iocon));
-
   LPC_DAC_TypeDef local_dac_port;
 
+  memset(&local_iocon, 0, sizeof(local_iocon));
+  memset(&local_dac_port, 0, sizeof(local_dac_port));
+
   Dac::dac_register = &local_dac_port;
-  Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
 
   Mock<PinInterface> mock_dac_pin;
   Fake(Method(mock_dac_pin, SetPinFunction), Method(mock_dac_pin, EnableDac),
        Method(mock_dac_pin, SetAsAnalogMode), Method(mock_dac_pin, SetMode));
-  PinInterface & dac = mock_dac_pin.get();
 
-  Dac test_subject00(&dac);
+  Dac test_subject(mock_dac_pin.get());
 
   SECTION("Initialize Dac")
   {
     // Source: "UM10562 LPC408x/407x User manual" table 686 page 814
     constexpr uint8_t kBiasMask = 0b0;
+    constexpr uint8_t kDacMode  = 0b010;
     local_dac_port.CR           = kBiasMask;
     // Mocked out Initialize for the Verify Methods
-    test_subject00.Initialize();
+    test_subject.Initialize();
     // Check Pin Mode DAC_OUT
-    Verify(Method(mock_dac_pin, SetPinFunction).Using(Dac::kDacMode),
+    Verify(Method(mock_dac_pin, SetPinFunction).Using(kDacMode),
            Method(mock_dac_pin, EnableDac).Using(true),
            Method(mock_dac_pin, SetAsAnalogMode).Using(true),
            Method(mock_dac_pin, SetMode).Using(PinInterface::Mode::kInactive));
@@ -39,17 +39,17 @@ TEST_CASE("Testing Dac", "[dac]")
     // Source: "UM10562 LPC408x/407x User manual" table 686 page 814
     constexpr uint16_t kBiasMask = 0b0000000000;
     local_dac_port.CR            = kBiasMask;
-    // Test the WriteDac function by checking if the CR
+    // Test the Write function by checking if the CR
     // register receives the correctValue when the
     // function has its value input.
     constexpr uint8_t kDacWrite0 = 10;
     constexpr uint8_t kDacWrite1 = 100;
-    constexpr uint32_t kMask     = kDacWrite0 << Dac::kDacOutReg;
+    constexpr uint32_t kMask0    = kDacWrite0 << Dac::kDacOutReg;
     constexpr uint32_t kMask1    = kDacWrite1 << Dac::kDacOutReg;
-    test_subject00.WriteDac(10);
-    CHECK((kMask) == (local_dac_port.CR & kMask));
-    test_subject00.WriteDac(100);
-    CHECK((kMask1) == (local_dac_port.CR & kMask1));
+    test_subject.Write(10);
+    CHECK(kMask0 == (local_dac_port.CR & kMask0));
+    test_subject.Write(100);
+    CHECK(kMask1 == (local_dac_port.CR & kMask1));
   }
   SECTION("SetVoltage")
   {
@@ -58,23 +58,19 @@ TEST_CASE("Testing Dac", "[dac]")
     constexpr float kDacVoltage0   = (kVoltageInput0 * 1024.0f) / 3.3f;
     constexpr int kConversion0     = static_cast<int>(kDacVoltage0);
     constexpr uint32_t kMask       = kConversion0 << Dac::kDacOutReg;
-    test_subject00.SetVoltage(kVoltageInput0);
-    CHECK((kMask) == (local_dac_port.CR & kMask));
+    test_subject.SetVoltage(kVoltageInput0);
+    CHECK(kMask == (local_dac_port.CR & kMask));
   }
   SECTION("SetBias")
   {
-    // Source: "UM10562 LPC408x/407x User manual" table 686 page 814
-    constexpr uint8_t kBiasMask = 0b0;
-    constexpr uint32_t kMask    = 0b1 << Dac::kBiasReg;
-
-    local_dac_port.CR = kBiasMask;
+    constexpr uint32_t kMask = 0b1 << Dac::kBiasReg;
     // Test Setting Bias to 0 and checking if the register is correct
-    test_subject00.SetBias(Dac::Bias::kHigh);
+    test_subject.SetBias(Dac::Bias::kHigh);
     CHECK(0 == (local_dac_port.CR & kMask));
     // Test Setting Bias to 1 and checking if the register is correct
-    test_subject00.SetBias(Dac::Bias::kLow);
+    test_subject.SetBias(Dac::Bias::kLow);
     CHECK(kMask == (local_dac_port.CR & kMask));
   }
+
   Dac::dac_register = LPC_DAC;
-  Pin::pin_map      = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }

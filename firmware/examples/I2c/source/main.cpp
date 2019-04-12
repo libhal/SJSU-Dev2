@@ -10,8 +10,6 @@ constexpr uint8_t kLastI2cAddress  = 0x78;
 constexpr uint8_t kAccelerometerAddress = 0x1C;
 uint8_t byte                            = 0x0D;
 
-I2c i2c;
-
 int main(void)
 {
   LOG_INFO("I2C Application Starting...");
@@ -21,6 +19,7 @@ int main(void)
       "acknowledged our call and it exists.");
 
   LOG_INFO("Initializing I2C Port 2...");
+  I2c i2c(I2c::Bus::kI2c2);
   i2c.Initialize();
   LOG_INFO("Initializing Onboard Accelerometer using I2C.2...");
   // Accelerometer initialization sequence of setting register 0x2A, Control

@@ -46,7 +46,7 @@ class Accelerometer : public AccelerometerInterface
 
   explicit constexpr Accelerometer(uint8_t address = 0x1c)
       : i2c_(&accelerometer_device_),
-        accelerometer_device_(),
+        accelerometer_device_(I2c::Bus::kI2c2),
         accelerometer_address_(address)
   {
   }
