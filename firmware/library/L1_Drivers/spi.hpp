@@ -53,11 +53,11 @@ class SpiInterface
     kSixteen,  // The largest standard frame sized allowed for SJSU-Dev2
   };
 
-  virtual void Initialize()                                           = 0;
-  virtual uint16_t Transfer(uint16_t data)                            = 0;
-  virtual void SetPeripheralMode(MasterSlaveMode mode, DataSize size) = 0;
+  virtual void Initialize() const                                           = 0;
+  virtual uint16_t Transfer(uint16_t data) const                            = 0;
+  virtual void SetPeripheralMode(MasterSlaveMode mode, DataSize size) const = 0;
   virtual void SetClock(bool positive_polarity, bool phase, uint8_t prescaler,
-                        uint8_t divider) = 0;
+                        uint8_t divider) const                              = 0;
 };
 
 class Spi final : public SpiInterface, protected Lpc40xxSystemController
@@ -152,7 +152,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   /// Powers on the peripheral, activates the SSP pins and enables the SSP
   /// peripheral.
   /// See page 601 of user manual UM10562 LPC408x/407x for more details.
-  void Initialize() override
+  void Initialize() const override
   {
     // Power up peripheral
     PowerUpPeripheral(bus_.power_on_bit);
@@ -166,7 +166,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
 
   /// An easy way to sets up an SPI peripheral as SPI master with default clock
   /// rate at 1Mhz.
-  void SetSpiMasterDefault()
+  void SetSpiMasterDefault() const
   {
     constexpr bool kHighPolarity  = 1;
     constexpr bool kPhase0        = 0;
@@ -180,7 +180,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   /// Checks if the SSP controller is idle.
   /// @returns true if the controller is sending or receiving a data frame and
   /// false if it is idle.
-  bool IsBusBusy()
+  bool IsBusBusy() const
   {
     return bit::Read(bus_.registers->SR, kDataLineIdleBit);
   }
@@ -191,7 +191,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   /// by a mutex.
   /// @param data - information to be placed in data register
   /// @return - received data from external device
-  uint16_t Transfer(uint16_t data) override
+  uint16_t Transfer(uint16_t data) const override
   {
     bus_.registers->DR = data;
     while (IsBusBusy())
@@ -205,12 +205,11 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   /// @param mode - master or slave mode
   /// @param frame - format for Peripheral data to use
   /// @param size - number of bits per frame
-  void SetPeripheralMode(MasterSlaveMode mode, DataSize size) override
+  void SetPeripheralMode(MasterSlaveMode mode, DataSize size) const override
   {
     bus_.registers->CR0 =
         bit::Insert(bus_.registers->CR0, util::Value(size), kDataBit, 4);
-    bus_.registers->CR0 =
-        bit::Insert(bus_.registers->CR0, 0, kFrameBit, 2);
+    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0, 0, kFrameBit, 2);
     bus_.registers->CR1 =
         bit::Insert(bus_.registers->CR1, util::Value(mode), kMasterModeBit, 1);
   }
@@ -221,7 +220,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   /// @param divider - see notes in SSP_Interface above
   /// @param prescaler - divides the PCLK, must be even value between 2-254
   void SetClock(bool polarity, bool phase, uint8_t divider,
-                uint8_t prescaler) override
+                uint8_t prescaler) const override
   {
     // first clear the appropriate registers
     bus_.registers->CR0 =
@@ -230,24 +229,6 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
     bus_.registers->CR0 =
         bit::Insert(bus_.registers->CR0, divider, kDividerBit, 8);
     bus_.registers->CPSR = prescaler;
-  }
-
-  /// Gets the Peripheral clock from registers
-  /// @return - returns a 32-bit value as follows:
-  ///   0000_0000 0000_0x0x xxxx_xxxx xxxx_xxxx
-  ///       polarity    = 1-bit @ bit 18
-  ///       phase       = 1-bit @ bit 16
-  ///       divider     = 8-bits @ bit 8
-  ///       prescaler   = 8-bits @ bit 0
-  uint32_t GetClock()
-  {
-    uint32_t return_val;
-    return_val = (bit::Extract(bus_.registers->CPSR, kPrescalerBit, 8)) +
-                 ((bit::Extract(bus_.registers->CR0, kDividerBit, 8)) << 8) +
-                 ((bit::Read(bus_.registers->CR0, kPhaseBit)) << 16) +
-                 ((bit::Read(bus_.registers->CR0, kPolarityBit)) << 18);
-
-    return return_val;
   }
 
  private:

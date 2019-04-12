@@ -27,14 +27,14 @@ class GpioInterface
     kEdgeFalling = 1,
     kEdgeBoth    = 2
   };
-  virtual void SetDirection(Direction direction)               = 0;
-  virtual void Set(State output = kHigh)                       = 0;
-  virtual void Toggle()                                        = 0;
-  virtual State ReadState()                                    = 0;
-  virtual bool Read()                                          = 0;
-  virtual const PinInterface & GetPin()                        = 0;
-  virtual void AttachInterrupt(IsrPointer function, Edge edge) = 0;
-  virtual void DetachInterrupt()                               = 0;
+  virtual void SetDirection(Direction direction) const               = 0;
+  virtual void Set(State output = kHigh) const                       = 0;
+  virtual void Toggle() const                                        = 0;
+  virtual State ReadState() const                                    = 0;
+  virtual bool Read() const                                          = 0;
+  virtual const PinInterface & GetPin() const                        = 0;
+  virtual void AttachInterrupt(IsrPointer function, Edge edge) const = 0;
+  virtual void DetachInterrupt() const                               = 0;
 };
 
 class Gpio final : public GpioInterface
@@ -88,61 +88,61 @@ class Gpio final : public GpioInterface
     interupt_port_ = (port_number == 2) ? 1 : 0;
   }
   // Sets the GPIO pin direction as input
-  void SetAsInput()
+  void SetAsInput() const
   {
     pin_.SetPinFunction(kGpioFunction);
     gpio_port[pin_.GetPort()]->DIR &= ~(1 << pin_.GetPin());
   }
   // Sets the GPIO pin direction as output
-  void SetAsOutput()
+  void SetAsOutput() const
   {
     pin_.SetPinFunction(kGpioFunction);
     gpio_port[pin_.GetPort()]->DIR |= (1 << pin_.GetPin());
   }
   // Sets the GPIO pin direction as output or input depending on the
   // Direction enum parameter
-  inline void SetDirection(Direction direction) override
+  inline void SetDirection(Direction direction) const override
   {
     (direction) ? SetAsOutput() : SetAsInput();
   }
   // Sets the GPIO output pin to high
-  void SetHigh()
+  void SetHigh() const
   {
     gpio_port[pin_.GetPort()]->SET = (1 << pin_.GetPin());
   }
   // Sets the GPIO output pin to low
-  void SetLow()
+  void SetLow() const
   {
     gpio_port[pin_.GetPort()]->CLR = (1 << pin_.GetPin());
   }
   // Sets the GPIO output pin to high or low depending on the State enum
   // parameter
-  void Set(State output = kHigh) override
+  void Set(State output = kHigh) const override
   {
     (output) ? SetHigh() : SetLow();
   }
   // Toggle the output of a GPIO output pin
-  void Toggle() override
+  void Toggle() const override
   {
     gpio_port[pin_.GetPort()]->PIN ^= (1 << pin_.GetPin());
   }
   // Returns the current State state of the pin
-  State ReadState() override
+  State ReadState() const override
   {
     return static_cast<State>(Read());
   }
   // Returns true if input or output pin is high
-  bool Read() override
+  bool Read() const override
   {
     return (gpio_port[pin_.GetPort()]->PIN >> pin_.GetPin()) & 1;
   }
-  const PinInterface & GetPin() override
+  const PinInterface & GetPin() const override
   {
     return pin_;
   }
 
   // Checks if the selected gpio port is valid for external interrupts.
-  bool ValidPortCheck()
+  bool ValidPortCheck() const
   {
     bool is_valid = (interupt_port_ <= 1);
     SJ2_ASSERT_WARNING(is_valid,
@@ -153,20 +153,20 @@ class Gpio final : public GpioInterface
   }
 
   // Assigns the developer's ISR function to the port/pin gpio instance.
-  void SetInterruptRoutine(IsrPointer function)
+  void SetInterruptRoutine(IsrPointer function) const
   {
     ValidPortCheck();
     interrupthandlers[interupt_port_][pin_.GetPin()] = function;
   }
 
   // Clears the developers ISR function from the port/pin gio instance.
-  void ClearInterruptRoutine()
+  void ClearInterruptRoutine() const
   {
     interrupthandlers[interupt_port_][pin_.GetPin()] = nullptr;
   }
 
   // Sets the selected edge that the gpio interrupt will be triggered on.
-  void SetInterruptEdge(Edge edge)
+  void SetInterruptEdge(Edge edge) const
   {
     ValidPortCheck();
     switch (edge)
@@ -231,7 +231,7 @@ class Gpio final : public GpioInterface
 
   // Assign the developer's ISR and sets the selected edge that the gpio
   // interrupt will be triggered on.
-  void AttachInterrupt(IsrPointer function, Edge edge) override
+  void AttachInterrupt(IsrPointer function, Edge edge) const override
   {
     ValidPortCheck();
     SetInterruptRoutine(function);
@@ -240,7 +240,7 @@ class Gpio final : public GpioInterface
 
   // Removes the developer's ISR and clears the selected edge of the gpio
   // interrupt from being triggered.
-  void DetachInterrupt() override
+  void DetachInterrupt() const override
   {
     ValidPortCheck();
     ClearInterruptRoutine();
@@ -275,25 +275,25 @@ class Gpio final : public GpioInterface
 
  private:
   // Sets the gpio interrupt to trigger on a rising edge.
-  void SetEdgeRising()
+  void SetEdgeRising() const
   {
     *interrupt[interupt_port_].enable_rising_edge |= (1 << pin_.GetPin());
   }
 
   // Sets the gpio interrupt to trigger on a falling edge.
-  void SetEdgeFalling()
+  void SetEdgeFalling() const
   {
     *interrupt[interupt_port_].enable_falling_edge |= (1 << pin_.GetPin());
   }
 
   // Clears the gpio interrupt to no longer trigger on a rising edge.
-  void ClearEdgeRising()
+  void ClearEdgeRising() const
   {
     *interrupt[interupt_port_].enable_rising_edge &= ~(1 << pin_.GetPin());
   }
 
   // Clears the gpio interrupt to no longer trigger on a falling edge.
-  void ClearEdgeFalling()
+  void ClearEdgeFalling() const
   {
     *interrupt[interupt_port_].enable_falling_edge &= ~(1 << pin_.GetPin());
   }
