@@ -482,7 +482,7 @@ class Apds9960 : public Apds9960Interface
   }
 
  private:
-  inline static I2c i2c;
+  inline static I2c i2c = I2c(I2c::Bus::kI2c2);
   inline static I2cDevice<&i2c, 0x39, device::Endian::kLittle,
                           Apds9960Interface::MemoryMap_t>
       gesture;

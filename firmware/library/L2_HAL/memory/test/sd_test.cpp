@@ -4,6 +4,6 @@ EMIT_ALL_METHODS(Sd);
 
 TEST_CASE("Testing SD Card Driver Class", "[sd]")
 {
-    Mock<SspInterface> mock_cs;     // CS:      SSP Chip Select
+    Mock<SpiInterface> mock_spi;
 }
 

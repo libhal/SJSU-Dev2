@@ -1,6 +1,6 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L1_Drivers/gpio.hpp"
-#include "L1_Drivers/ssp.hpp"
+#include "L1_Drivers/spi.hpp"
 #include "utility/log.hpp"
 
 int main(void)
@@ -21,14 +21,13 @@ int main(void)
   // Select SSP1 peripheral
   LOG_INFO("Setting up peripheral pins: MOSI on Port 1.1.");
   LOG_INFO("MISO on Port 1.4, and SCK on Port 1.0.");
-  Ssp spi2(Ssp::Peripheral::kSsp2);
+  Spi spi2(Spi::Bus::kSpi2);
 
   // Set SSP1 as SPI master. Note that the function SetSpiMasterDefault()
   // could be used instead of SetPeripheralMode() and SetClock().
   LOG_INFO("Set SSP1 as SPI master.");
-  spi2.SetPeripheralMode(SspInterface::MasterSlaveMode::kMaster,
-                             SspInterface::FrameMode::kSpi,
-                             SspInterface::DataSize::kEight);
+  spi2.SetPeripheralMode(SpiInterface::MasterSlaveMode::kMaster,
+                             SpiInterface::DataSize::kEight);
 
   // Set up SPI clock polarity and phase
   LOG_INFO("MOSI will read low when inactive.");

@@ -4,7 +4,7 @@
 #include <type_traits>
 
 #include "L1_Drivers/gpio.hpp"
-#include "L1_Drivers/ssp.hpp"
+#include "L1_Drivers/spi.hpp"
 #include "utility/log.hpp"
 
 // NOLINTNEXTLINE(readability-identifier-naming)
@@ -426,8 +426,8 @@ class Sd : public SdInterface
       GenerateCrc16Table();
 
   explicit constexpr Sd(uint8_t port = 1, uint8_t pin = 8)
-      : ssp_interface_(&ssp_),
-        ssp_(Ssp::Peripheral::kSsp2),
+      : spi_interface_(&spi_),
+        spi_(Spi::Bus::kSpi2),
         chip_select_(&chip_select_pin_),
         chip_select_external_(&chip_select_external_pin_),
         chip_select_pin_(port, pin),
@@ -443,8 +443,8 @@ class Sd : public SdInterface
   ///   Sd sdcard(Sd::DebugSdCard_t{});
   constexpr Sd(DebugSdCard_t, uint8_t port = 1, uint8_t pin = 8,
                uint8_t extport = 0, uint8_t extpin = 6)
-      : ssp_interface_(&ssp_),
-        ssp_(Ssp::Peripheral::kSsp2),
+      : spi_interface_(&spi_),
+        spi_(Spi::Bus::kSpi2),
         chip_select_(&chip_select_pin_),
         chip_select_external_(&chip_select_external_pin_),
         chip_select_pin_(port, pin),
@@ -462,15 +462,14 @@ class Sd : public SdInterface
     chip_select_external_->SetHigh();
 
     LOG_DEBUG("Setting SSP Clock Speed...");
-    ssp_interface_->SetClock(false, false, 14, 2);  // 400kHz
+    spi_interface_->SetClock(false, false, 14, 2);  // 400kHz
 
     LOG_DEBUG("Setting Peripheral Mode...");
-    ssp_interface_->SetPeripheralMode(Ssp::MasterSlaveMode::kMaster,
-                                      Ssp::FrameMode::kSpi,
-                                      Ssp::DataSize::kEight);
+    spi_interface_->SetPeripheralMode(Spi::MasterSlaveMode::kMaster,
+                                      Spi::DataSize::kEight);
 
     LOG_DEBUG("Starting SSP Peripheral...");
-    ssp_interface_->Initialize();
+    spi_interface_->Initialize();
   }
 
   // Initialize SD Card
@@ -629,7 +628,7 @@ class Sd : public SdInterface
     uint8_t wait_byte = 0x00;
     do
     {
-      wait_byte = static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
+      wait_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
     } while (wait_byte != 0xFE && (wait_byte & 0xE0) != 0x00);
 
     // DEBUG: Check the value of the wait byte
@@ -660,7 +659,7 @@ class Sd : public SdInterface
     LOG_DEBUG("Card is busy. Waiting for it to finish...");
     do
     {
-      busy_byte = static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
+      busy_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
     } while (busy_byte != 0xFF);
     LOG_DEBUG("Card finished!");
   }
@@ -723,7 +722,7 @@ class Sd : public SdInterface
 
           // Transfer a byte to read a block from the SD card
           array[storage_index] =
-              static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
+              static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
 
           // Copy that byte into our temporary block store
           block_store[byte_count] = array[storage_index];
@@ -731,8 +730,8 @@ class Sd : public SdInterface
 
         // Then read the block's 16-bit CRC (i.e. read two bytes)
         uint16_t block_crc =
-            static_cast<uint16_t>((ssp_interface_->Transfer(0xFF) << 8) |
-                                  ssp_interface_->Transfer(0xFF));
+            static_cast<uint16_t>((spi_interface_->Transfer(0xFF) << 8) |
+                                  spi_interface_->Transfer(0xFF));
 
         // Run a CRC-16 calculation on the message to determine if the
         // received CRCs match (i.e. checks if the block data is
@@ -841,19 +840,19 @@ class Sd : public SdInterface
         uint64_t arr_offset = current_block_num * kBlockSize;
 
         // Send the start token for the current block
-        ssp_interface_->Transfer(write_start_tkn);
+        spi_interface_->Transfer(write_start_tkn);
 
         // Write all 512-bytes of the given block
         LOG_DEBUG("Writing block #%d", current_block_num);
         for (uint16_t current_byte = 0; current_byte < kBlockSize;
              current_byte++)
         {
-          ssp_interface_->Transfer(array[arr_offset + current_byte]);
+          spi_interface_->Transfer(array[arr_offset + current_byte]);
         }
 
         // Read the data response token after writing the block
         uint8_t data_response_tkn =
-            static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
+            static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
         LOG_DEBUG("Response Byte");
         LOG_DEBUG("[Data Response Token: 0x%02X]", data_response_tkn);
         LOG_DEBUG("Data Accepted?: %s", ToBool(data_response_tkn & 0x05));
@@ -890,7 +889,7 @@ class Sd : public SdInterface
       if (blocks > 1)
       {
         constexpr uint8_t kStopToken = 0xFD;
-        ssp_interface_->Transfer(kStopToken);
+        spi_interface_->Transfer(kStopToken);
 
         // Wait for the card's programming to complete before
         // reselecting it (i.e. to prevent corruption)
@@ -1039,24 +1038,24 @@ class Sd : public SdInterface
 
     // Send the desired command frame to the SD card board
     // Begin by transfering the command byte
-    ssp_interface_->Transfer(static_cast<uint16_t>(sdc));
+    spi_interface_->Transfer(static_cast<uint16_t>(sdc));
     // Send arg byte [31:24]
-    ssp_interface_->Transfer(static_cast<uint16_t>(arg >> 24) & 0xFF);
+    spi_interface_->Transfer(static_cast<uint16_t>(arg >> 24) & 0xFF);
     // Send arg byte [23:16]
-    ssp_interface_->Transfer(static_cast<uint16_t>(arg >> 16) & 0xFF);
+    spi_interface_->Transfer(static_cast<uint16_t>(arg >> 16) & 0xFF);
     // Send arg byte [15:8]
-    ssp_interface_->Transfer(static_cast<uint16_t>(arg >> 8) & 0xFF);
+    spi_interface_->Transfer(static_cast<uint16_t>(arg >> 8) & 0xFF);
     // Send arg byte [7:0]
-    ssp_interface_->Transfer(static_cast<uint16_t>(arg >> 0) & 0xFF);
+    spi_interface_->Transfer(static_cast<uint16_t>(arg >> 0) & 0xFF);
     // Send 7-bit CRC and LSB stop addr (as b1)
-    ssp_interface_->Transfer(static_cast<uint16_t>(crc << 1) | 0x01);
+    spi_interface_->Transfer(static_cast<uint16_t>(crc << 1) | 0x01);
 
     // Write garbage while waiting for a response
     // Send at least 1 byte of garbage before checking for a response
-    temp_byte = static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
+    temp_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
     while (tries++ < kBusTimeout)
     {
-      temp_byte = static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
+      temp_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
       if (temp_byte != 0xFF)
       {
         // Determine the offset, since the first byte of a
@@ -1094,7 +1093,7 @@ class Sd : public SdInterface
       // Make space for the next byte
       temp_response = temp_response << 8;
       temp_response |= temp_byte;
-      temp_byte = static_cast<uint8_t>(ssp_interface_->Transfer(0xFF));
+      temp_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
     }
     // Compensate for the bit offset
     temp_response = temp_response >> bit_offset;
@@ -1154,10 +1153,10 @@ class Sd : public SdInterface
 
  private:
   /// @description     the object reference to use when using SSP/SPI
-  SspInterface * ssp_interface_;
+  SpiInterface * spi_interface_;
 
-  /// @description     this SdInterface's instance of Ssp/SPI
-  Ssp ssp_;
+  /// @description     this SdInterface's instance of Spi/SPI
+  Spi spi_;
 
   /// @description     the object reference to use when using CS (GPIO)
   GpioInterface * chip_select_;

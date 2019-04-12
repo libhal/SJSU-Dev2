@@ -26,10 +26,10 @@ int main(void)
 {
   LOG_INFO("Timer Application Starting...");
 
-  Timer timer0(TimerInterface::kTimer0);
-  Timer timer1(TimerInterface::kTimer1);
-  Timer timer2(TimerInterface::kTimer2);
-  Timer timer3(TimerInterface::kTimer3);
+  Timer timer0(Timer::Channel::kTimer0);
+  Timer timer1(Timer::Channel::kTimer1);
+  Timer timer2(Timer::Channel::kTimer2);
+  Timer timer3(Timer::Channel::kTimer3);
 
   timer0.Initialize(1'000'000, Timer0ISR);
   timer1.Initialize(1'000'000, Timer1ISR);

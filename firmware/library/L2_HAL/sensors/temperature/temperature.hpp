@@ -79,5 +79,5 @@ class Temperature : public TemperatureInterface
 
  private:
   I2cInterface * i2c_;
-  I2c lpc40xx_i2c_;
+  I2c lpc40xx_i2c_ = I2c(I2c::Bus::kI2c2);
 };

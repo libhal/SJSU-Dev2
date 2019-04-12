@@ -262,6 +262,6 @@ class I2cCommand : public Command
   static inline const char * const kI2cOperations[] = { "read", "write",
                                                         "discover", nullptr };
   etl::vector<AddressString_t, command::kAutoCompleteOptions> devices_found_;
-  I2c i2c_peripheral_;
+  I2c i2c_peripheral_ = I2c(I2c::Bus::kI2c2);
   I2cInterface * i2c_ = &i2c_peripheral_;
 };

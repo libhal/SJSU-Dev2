@@ -20,13 +20,15 @@ class BuzzerInterface
 class Buzzer : public BuzzerInterface
 {
  public:
-  explicit constexpr Buzzer(uint8_t pin_select)
-  : pwm_(&pwm_pin_), pwm_pin_(pin_select)
-  {}
+  explicit constexpr Buzzer(const Pwm::Channel_t & channel)
+      : pwm_(&pwm_pin_), pwm_pin_(channel)
+  {
+  }
 
   explicit Buzzer(PwmInterface * pwm_pin_select)
-  : pwm_(pwm_pin_select), pwm_pin_(Pwm::CreatePwm<1>())
-  {}
+      : pwm_(pwm_pin_select), pwm_pin_(Pwm::Channel::kPwm0)
+  {
+  }
 
   void Initialize() override
   {
@@ -45,15 +47,15 @@ class Buzzer : public BuzzerInterface
     pwm_->SetDutyCycle(volume);
   }
 
-    uint32_t GetFrequency()
-    {
-        return pwm_->GetFrequency();
-    }
+  uint32_t GetFrequency()
+  {
+    return pwm_->GetFrequency();
+  }
 
-    float GetVolume()
-    {
-        return pwm_->GetDutyCycle();
-    }
+  float GetVolume()
+  {
+    return pwm_->GetDutyCycle();
+  }
 
  private:
   PwmInterface * pwm_;

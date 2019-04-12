@@ -10,70 +10,23 @@
 class AdcInterface
 {
  public:
-  virtual void Initialize(uint32_t adc_clk_hz = 1'000'000) = 0;
-  virtual void Conversion()                                = 0;
-  virtual uint16_t ReadResult()                            = 0;
-  virtual bool FinishedConversion()                        = 0;
+  virtual void Initialize()         = 0;
+  virtual void Conversion()         = 0;
+  virtual uint16_t ReadResult()     = 0;
+  virtual bool FinishedConversion() = 0;
 };
 
 class Adc final : public AdcInterface, protected Lpc40xxSystemController
 {
  public:
-  enum class Channel : uint8_t
-  {
-    kChannel0 = 0,
-    kChannel1,
-    kChannel2,
-    kChannel3,
-    kChannel4,
-    kChannel5,
-    kChannel6,
-    kChannel7,
-    kMaxNumOfPins
-  };
-  enum AdcPortsMap : uint8_t
-  {
-    kChannel0Port = 0,
-    kChannel1Port = 0,
-    kChannel2Port = 0,
-    kChannel3Port = 0,
-    kChannel4Port = 1,
-    kChannel5Port = 1,
-    kChannel6Port = 0,
-    kChannel7Port = 0
-  };
-  enum AdcPinsMap : uint8_t
-  {
-    kChannel0Pin = 23,
-    kChannel1Pin = 24,
-    kChannel2Pin = 25,
-    kChannel3Pin = 26,
-    kChannel4Pin = 30,
-    kChannel5Pin = 31,
-    kChannel6Pin = 12,
-    kChannel7Pin = 13
-  };
   enum ControlBit : uint8_t
   {
     kBurstMode = 16,
     kPowerUp   = 21,
     kStart     = 24
   };
-  enum AdcMode : uint8_t
-  {
-    kCh0123Pins = 0b001,
-    kCh4567Pins = 0b011
-  };
 
-  static constexpr size_t kTableLength  = util::Value(Channel::kMaxNumOfPins);
-  const uint8_t kAdcPorts[kTableLength] = { kChannel0Port, kChannel1Port,
-                                            kChannel2Port, kChannel3Port,
-                                            kChannel4Port, kChannel5Port,
-                                            kChannel6Port, kChannel7Port };
-  const uint8_t kAdcPins[kTableLength]  = { kChannel0Pin, kChannel1Pin,
-                                           kChannel2Pin, kChannel3Pin,
-                                           kChannel4Pin, kChannel5Pin,
-                                           kChannel6Pin, kChannel7Pin };
+  static constexpr uint32_t kClockFrequency = 1'000'000;
 
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
 
@@ -106,6 +59,73 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
     } bits;
   };
 
+  struct Channel_t
+  {
+    const PinInterface & adc_pin;
+    uint8_t channel : 3;
+    uint8_t pin_function : 3;
+  };
+
+  struct Channel  // NOLINT
+  {
+   private:
+    enum AdcMode : uint8_t
+    {
+      kCh0123Pins = 0b001,
+      kCh4567Pins = 0b011
+    };
+    inline static const Pin kAdcPinChannel0 = Pin::CreatePin<0, 23>();
+    inline static const Pin kAdcPinChannel1 = Pin::CreatePin<0, 24>();
+    inline static const Pin kAdcPinChannel2 = Pin::CreatePin<0, 25>();
+    inline static const Pin kAdcPinChannel3 = Pin::CreatePin<0, 26>();
+    inline static const Pin kAdcPinChannel4 = Pin::CreatePin<1, 30>();
+    inline static const Pin kAdcPinChannel5 = Pin::CreatePin<1, 31>();
+    inline static const Pin kAdcPinChannel6 = Pin::CreatePin<0, 12>();
+    inline static const Pin kAdcPinChannel7 = Pin::CreatePin<0, 13>();
+
+   public:
+    inline static const Channel_t kChannel0 = {
+      .adc_pin      = kAdcPinChannel0,
+      .channel      = 0,
+      .pin_function = AdcMode::kCh0123Pins,
+    };
+    inline static const Channel_t kChannel1 = {
+      .adc_pin      = kAdcPinChannel1,
+      .channel      = 1,
+      .pin_function = AdcMode::kCh0123Pins,
+    };
+    inline static const Channel_t kChannel2 = {
+      .adc_pin      = kAdcPinChannel2,
+      .channel      = 2,
+      .pin_function = AdcMode::kCh0123Pins,
+    };
+    inline static const Channel_t kChannel3 = {
+      .adc_pin      = kAdcPinChannel3,
+      .channel      = 3,
+      .pin_function = AdcMode::kCh0123Pins,
+    };
+    inline static const Channel_t kChannel4 = {
+      .adc_pin      = kAdcPinChannel4,
+      .channel      = 4,
+      .pin_function = AdcMode::kCh4567Pins,
+    };
+    inline static const Channel_t kChannel5 = {
+      .adc_pin      = kAdcPinChannel5,
+      .channel      = 5,
+      .pin_function = AdcMode::kCh4567Pins,
+    };
+    inline static const Channel_t kChannel6 = {
+      .adc_pin      = kAdcPinChannel6,
+      .channel      = 6,
+      .pin_function = AdcMode::kCh4567Pins,
+    };
+    inline static const Channel_t kChannel7 = {
+      .adc_pin      = kAdcPinChannel7,
+      .channel      = 7,
+      .pin_function = AdcMode::kCh4567Pins,
+    };
+  };
+
   static volatile ControlRegister_t * GetControlRegister()
   {
     return reinterpret_cast<volatile ControlRegister_t *>(&adc_base->CR);
@@ -118,47 +138,24 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
   {
     GetControlRegister()->bits.enable_burst = burst_mode_is_on;
   }
-  explicit constexpr Adc(Channel channel)
-      : adc_(&adc_pin_),
-        adc_pin_(Pin(kAdcPorts[util::Value(channel)],
-                     kAdcPins[util::Value(channel)])),
-        channel_(util::Value(channel))
-  {
-  }
-  // unit test constructor
-  explicit constexpr Adc(PinInterface * adc_pin, Channel channel)
-      : adc_(adc_pin),
-        adc_pin_(Pin::CreateInactivePin()),
-        channel_(util::Value(channel))
-  {
-  }
-  void Initialize(uint32_t adc_clock_freq = 1'000'000) override
-  {
-    constexpr uint32_t kMaxAdcClock = 12'000'000;
-    SJ2_ASSERT_FATAL(adc_clock_freq < kMaxAdcClock,
-                     "Adc clock has to be less than or equal to 12MHz");
 
+  explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
+  void Initialize() override
+  {
     PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kAdc);
 
-    if (channel_ < 4)
-    {
-      adc_->SetPinFunction(util::Value(AdcMode::kCh0123Pins));
-    }
-    if (channel_ >= 4)
-    {
-      adc_->SetPinFunction(util::Value(AdcMode::kCh4567Pins));
-    }
-    adc_->SetAsAnalogMode(true);
-    adc_->SetMode(PinInterface::Mode::kInactive);
+    channel_.adc_pin.SetPinFunction(channel_.pin_function);
+    channel_.adc_pin.SetMode(PinInterface::Mode::kInactive);
+    channel_.adc_pin.SetAsAnalogMode(true);
 
     ControlRegister_t control;
 
     control.data = adc_base->CR;
     control.bits.channel_enable =
-        (control.bits.channel_enable | (1 << channel_)) & 0xFF;
+        (control.bits.channel_enable | (1 << channel_.channel)) & 0xFF;
     control.bits.power_enable = true;
     control.bits.clock_divider =
-        (GetPeripheralFrequency() / adc_clock_freq) & 0xFF;
+        (GetPeripheralFrequency() / kClockFrequency) & 0xFF;
 
     adc_base->CR = control.data;
   }
@@ -190,8 +187,5 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
   }
 
  private:
-  PinInterface * adc_;
-  Pin adc_pin_;
-
-  uint8_t channel_;
+  const Channel_t & channel_;
 };
