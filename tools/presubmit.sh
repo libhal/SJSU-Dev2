@@ -12,60 +12,60 @@ SJBASE=$(cd "$SJBASE/.." ; pwd -P)
 
 function print_divider
 {
-    printf "\e[1;33m======================================================= "
-    printf "\e[0m\n\n"
+  printf "\e[1;33m======================================================= "
+  printf "\e[0m\n\n"
 }
 
 function print_status
 {
-    if [ $1 -ne 0 ]
-    then
-        printf "\e[31m✘\e[0;31m"
-    else
-        printf "\e[32m✔\e[0;31m"
-    fi
+  if [ $1 -ne 0 ]
+  then
+    printf "\e[31m✘\e[0;31m"
+  else
+    printf "\e[32m✔\e[0;31m"
+  fi
 }
 
 function check
 {
-    if [ $1 -ne 0 ]
-        then
-        lint="$(print_status $LINT_CAPTURE)"
-        commit="$(print_status $STATUS_CAPTURE)"
-        test="$(print_status $TEST_CAPTURE)"
-        tidy="$(print_status $TIDY_CAPTURE)"
-        build="$(print_status $BUILD_CAPTURE)"
-        printf "\e[0;31m ================================ \e[0m\n"
-        printf "\e[1;31m|        None of this!           |\e[0m\n"
-        printf "\e[1;31m|                                |\e[0m\n"
-        printf "\e[1;31m|        (╯°□ °)╯︵ ┻━┻          |\e[0m\n"
-        printf "\e[1;31m|                                |\e[0m\n"
-        printf "\e[1;31m|      Don't even PUSH!          |\e[0m\n"
-        printf "\e[0;31m ================================ \e[0m\n"
-        printf "\e[0;31m|                                |\e[0m\n"
-        printf "\e[0;31m| Code style must be lint free %b |\e[0m\n" $lint
-        printf "\e[0;31m|    Code style must be tidy %b   |\e[0m\n" $tidy
-        printf "\e[0;31m|     Commit must be clean %b     |\e[0m\n" $commit
-        printf "\e[0;31m|       Tests must pass %b        |\e[0m\n" $test
-        printf "\e[0;31m|       Code must build %b        |\e[0m\n" $build
-        printf "\e[0;31m|                                |\e[0m\n"
-        printf "\e[0;31m ================================ \e[0m\n"
-        exit 1
-    else
-        printf "\e[0;32m ============================ \e[0m\n"
-        printf "\e[0;32m| Everything looks good here |\e[0m\n"
-        printf "\e[0;32m|                            |\e[0m\n"
-        printf "\e[0;32m|           (•_•)            |\e[0m\r"
-        sleep .5
-        printf "\e[0;32m|           ( •_•)>⌐▪-▪      |\e[0m\r"
-        sleep .5
-        printf "\e[0;32m|           (⌐▪_▪)           |\e[0m\n"
-        sleep .5
-        printf "\e[0;32m|                            |\e[0m\n"
-        printf "\e[0;32m|      You may commit        |\e[0m\n"
-        printf "\e[0;32m ============================ \e[0m\n"
-        exit 0
-    fi
+  if [ $1 -ne 0 ]
+    then
+    lint="$(print_status $LINT_CAPTURE)"
+    commit="$(print_status $STATUS_CAPTURE)"
+    test="$(print_status $TEST_CAPTURE)"
+    tidy="$(print_status $TIDY_CAPTURE)"
+    build="$(print_status $BUILD_CAPTURE)"
+    printf "\e[0;31m ================================ \e[0m\n"
+    printf "\e[1;31m|        None of this!           |\e[0m\n"
+    printf "\e[1;31m|                                |\e[0m\n"
+    printf "\e[1;31m|        (╯°□ °)╯︵ ┻━┻          |\e[0m\n"
+    printf "\e[1;31m|                                |\e[0m\n"
+    printf "\e[1;31m|      Don't even PUSH!          |\e[0m\n"
+    printf "\e[0;31m ================================ \e[0m\n"
+    printf "\e[0;31m|                                |\e[0m\n"
+    printf "\e[0;31m| Code style must be lint free %b |\e[0m\n" $lint
+    printf "\e[0;31m|    Code style must be tidy %b   |\e[0m\n" $tidy
+    printf "\e[0;31m|     Commit must be clean %b     |\e[0m\n" $commit
+    printf "\e[0;31m|       Tests must pass %b        |\e[0m\n" $test
+    printf "\e[0;31m|       Code must build %b        |\e[0m\n" $build
+    printf "\e[0;31m|                                |\e[0m\n"
+    printf "\e[0;31m ================================ \e[0m\n"
+    exit 1
+  else
+    printf "\e[0;32m ============================ \e[0m\n"
+    printf "\e[0;32m| Everything looks good here |\e[0m\n"
+    printf "\e[0;32m|                            |\e[0m\n"
+    printf "\e[0;32m|           (•_•)            |\e[0m\r"
+    sleep .5
+    printf "\e[0;32m|           ( •_•)>⌐▪-▪      |\e[0m\r"
+    sleep .5
+    printf "\e[0;32m|           (⌐▪_▪)           |\e[0m\n"
+    sleep .5
+    printf "\e[0;32m|                            |\e[0m\n"
+    printf "\e[0;32m|      You may commit        |\e[0m\n"
+    printf "\e[0;32m ============================ \e[0m\n"
+    exit 0
+  fi
 }
 ####################################
 #    Clean Git Repository Check    #
@@ -84,8 +84,9 @@ printf "Checking that all projects build\n\n"
 printf "\e[0;33mBuilding HelloWorld Project\e[0m "
 # Change to the HelloWorld project
 cd "$SJBASE/firmware/HelloWorld"
-# Clean the build and start building from scratch
-make -s clean
+# Purge repository of all application and framework build files and start
+# building from scratch
+SILENCE=$(make purge)
 # Check if the system can build without any warnings!
 SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
 # Set build capture to return code from the build
@@ -97,7 +98,7 @@ printf "\e[0;33mBuilding Hyperload Bootloader\e[0m "
 # Change to the Hyperload project
 cd "$SJBASE/firmware/Hyperload"
 # Clean the build and start building from scratch
-make -s clean
+SILENCE=$(make clean)
 # Check if the system can build without any warnings!
 SILENCE=$(make -s bootloader WARNINGS_ARE_ERRORS=-Werror)
 # Set build capture to return code from the build
@@ -114,7 +115,7 @@ cd "$SJBASE/firmware/examples/$d"
 
 printf "\e[0;33mBuilding Example $d\e[0m "
 # Clean the build and start building from scratch
-make -s clean
+SILENCE=$(make clean)
 # Check if the system can build without any warnings!
 SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
 # Add the return codes of the previous build capture. None zero means that at
@@ -125,6 +126,8 @@ print_status $SPECIFIC_BUILD_CAPTURE
 echo ""
 
 done
+
+exit
 
 # Return to home project
 cd $SJBASE/firmware/HelloWorld

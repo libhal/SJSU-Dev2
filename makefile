@@ -6,6 +6,7 @@
 # on mac.
 YELLOW=$(shell echo "\x1B[33;1m")
 RED=$(shell echo "\x1B[31;1m")
+MAGENTA=$(shell echo "\x1B[35;1m")
 RESET=$(shell echo "\x1B[0m")
 GREEN=$(shell echo "\x1B[32;1m")
 # ============================
@@ -98,6 +99,8 @@ DEVICE_OBJDUMP = arm-none-eabi-objdump
 DEVICE_SIZEC   = arm-none-eabi-size
 DEVICE_OBJCOPY = arm-none-eabi-objcopy
 DEVICE_NM      = arm-none-eabi-nm
+DEVICE_AR      = arm-none-eabi-ar
+DEVICE_RANLIB  = arm-none-eabi-ranlib
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
@@ -142,14 +145,15 @@ else
 BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
 endif
 
-BUILD_DIR     = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)
-OBJECT_DIR    = $(BUILD_DIR)/compiled
-DBC_DIR       = $(BUILD_DIR)/can-dbc
-COVERAGE_DIR  = $(BUILD_DIR)/coverage
-FIRMWARE_DIR  = $(SJBASE)/firmware
-LIB_DIR       = $(FIRMWARE_DIR)/library
-TOOLS_DIR     = $(SJBASE)/tools
-SOURCE_DIR    = source
+BUILD_DIR      = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)
+OBJECT_DIR     = $(BUILD_DIR)/compiled
+DBC_DIR        = $(BUILD_DIR)/can-dbc
+COVERAGE_DIR   = $(BUILD_DIR)/coverage
+FIRMWARE_DIR   = $(SJBASE)/firmware
+LIB_DIR        = $(FIRMWARE_DIR)/library
+STATIC_LIB_DIR = $(LIB_DIR)/static_libraries
+TOOLS_DIR      = $(SJBASE)/tools
+SOURCE_DIR     = source
 COMPILED_HEADERS_DIR  = $(BUILD_DIR)/headers # NOTE: Actually use this!
 CURRENT_DIRECTORY	    = $(shell pwd)
 COVERAGE_FILES        = $(shell find build -name "*.gcda")
@@ -182,6 +186,30 @@ $(info +---------------------------------------------------------------+)
 $(info $(shell printf '$(RESET)'))
 $(error )
 endif
+
+# Precompiled LIBARY files to link into project
+CORE_STATIC_LIBRARY = $(OBJECT_DIR)/libsjsudev2.a
+LIBRARIES ?=
+
+define BUILD_LIRBARY =
+
+LIBRARIES += $(STATIC_LIB_DIR)/$(1).a
+
+$(1)_OBJECTS = $$(addprefix $(OBJECT_DIR)/, $$($(2):=.o))
+
+.SECONDARY: $$($(1)_OBJECTS)
+
+-include    $$($(1)_OBJECTS:.o=.d) # DEPENDENCIES
+
+$(STATIC_LIB_DIR)/$(1).a: $$($(1)_OBJECTS)
+	@mkdir -p "$(STATIC_LIB_DIR)"
+	@printf '$(YELLOW)Library  file ( A ) $(RESET): $$@ '
+	@rm -f "$@"
+	@$(DEVICE_AR) rcs "$$@" $$^
+	@$(DEVICE_RANLIB) "$$@"
+	@printf '$(GREEN)DONE!$(RESET)\n'
+
+endef
 # Set of ALL compilable test files in the current library.
 # This also includes any source AND test to be tested.
 # MUST NOT contain source files that contain a "main()" implementation
@@ -323,7 +351,7 @@ TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/test/tests.exe
 .DEFAULT_GOAL := default
 # Tell make that these recipes don't have a end product
 .PHONY: build cleaninstall telemetry monitor show-lists clean flash telemetry \
-        presubmit openocd debug multi-debug default
+        presubmit openocd debug multi-debug default library-clean purge
 print-%  : ; @echo $* = $($*)
 # ====================================================================
 # When the user types just "make" or "help" this should appear to them
@@ -377,7 +405,18 @@ flash:
 # Clean working build directory by deleting the build folder
 # ====================================================================
 clean:
-	rm -fR $(BUILD_DIRECTORY_NAME)
+	@rm -fR $(BUILD_DIRECTORY_NAME)
+	@printf '$(MAGENTA)Build directory deleted$(RESET)\n'
+# ====================================================================
+# Remove precompiled libraries
+# ====================================================================
+library-clean:
+	@rm -f $(LIBRARIES) $(CORE_STATIC_LIBRARY)
+	@printf '$(MAGENTA)Libraries cleared$(RESET)\n'
+# ====================================================================
+# Remove precompiled libraries and current build folder
+# ====================================================================
+purge: clean library-clean
 # ====================================================================
 # Open Browser to Telemetry website
 # ====================================================================
@@ -462,6 +501,8 @@ show-lists:
 	@echo $(TEST_CFLAGS)
 	@echo "=========== COVERAGE FILES =============="
 	@echo $(COVERAGE_FILES)
+	@echo "=========== LIBRARIES =============="
+	@echo $(LIBRARIES)
 
 # ====================================================================
 # Recipes to Compile Source Code
@@ -488,10 +529,17 @@ $(LIST): $(EXECUTABLE)
 	@$(OBJDUMP) --disassemble --all-headers --source --demangle --wide "$<" > "$@"
 	@printf '$(GREEN)Disassembly Generated!$(RESET)\n'
 
-$(EXECUTABLE): $(OBJECTS)
+$(CORE_STATIC_LIBRARY): $(LIBRARIES)
+	@printf '$(YELLOW)Final Library file ( A ) $(RESET): $@ '
+	@rm -f "$@"
+	@$(DEVICE_AR) -rcT "$@" $^
+	@$(DEVICE_RANLIB) "$@"
+	@printf '$(GREEN)DONE!$(RESET)\n'
+
+$(EXECUTABLE): $(OBJECTS) $(CORE_STATIC_LIBRARY)
 	@printf '$(YELLOW)Linking Executable $(RESET)     : $@ '
 	@mkdir -p "$(dir $@)"
-	@$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECTS)
+	@$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECTS) $(CORE_STATIC_LIBRARY)
 	@printf '$(GREEN)Executable Generated!$(RESET)\n'
 
 $(OBJECT_DIR)/%.c.o: %.c

@@ -3,6 +3,6 @@
 // options you can change.
 #pragma once
 
-#define SJ2_ENABLE_ANSI_CODES true
+#define SJ2_LOG_LEVEL SJ2_LOG_LEVEL_DEBUG
 
 #include "config.hpp"
