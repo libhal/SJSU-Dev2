@@ -32,7 +32,6 @@
 
 // SJSU-Dev2: Added config to define PRINTF_SUPPORT_FLOAT,
 // PRINTF_SUPPORT_LONG_LONG, PRINTF_SUPPORT_PTRDIFF_T
-#include "config.hpp"
 #include <stdbool.h>
 #include <stdint.h>
 #include "printf.h"

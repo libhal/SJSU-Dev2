@@ -1,4 +1,3 @@
-// TODO(kammce): rename this file to ram.hpp
 #pragma once
 #include <cstdint>
 #include "utility/macros.hpp"

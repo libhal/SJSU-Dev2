@@ -2,6 +2,8 @@ INCLUDES +=
 
 SYSTEM_INCLUDES += $(LIB_DIR)/third_party/printf/
 
-SOURCES += $(LIB_DIR)/third_party/printf/printf.cpp
-
 TESTS += $(LIB_DIR)/third_party/printf/printf.cpp
+
+LIBRARY_PRINTF += $(LIB_DIR)/third_party/printf/printf.cpp
+
+$(eval $(call BUILD_LIRBARY,libprintf,LIBRARY_PRINTF))
