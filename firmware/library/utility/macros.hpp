@@ -4,7 +4,6 @@
 /// across the SJSU-Dev2 environment.
 /// @{
 #pragma once
-#include "config.hpp"
 // SJ2_SECTION will place a variable or function within a given section of the
 // executable. It uses both attribute "section" and "used". Section attribute
 // places variable/function into that section and "used" labels the symbol as
