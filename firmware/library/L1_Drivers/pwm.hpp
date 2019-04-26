@@ -14,16 +14,18 @@
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "utility/log.hpp"
+#include "utility/status.hpp"
 
 class PwmInterface
 {
  public:
   static constexpr uint32_t kDefaultFrequency = 1'000;
 
-  virtual void Initialize(uint32_t frequency_hz = kDefaultFrequency) const = 0;
-  virtual void SetDutyCycle(float duty_cycle) const                        = 0;
-  virtual float GetDutyCycle() const                                       = 0;
-  virtual void SetFrequency(uint32_t frequency_hz) const                   = 0;
+  virtual Status Initialize(
+      uint32_t frequency_hz = kDefaultFrequency) const   = 0;
+  virtual void SetDutyCycle(float duty_cycle) const      = 0;
+  virtual float GetDutyCycle() const                     = 0;
+  virtual void SetFrequency(uint32_t frequency_hz) const = 0;
 };
 
 class Pwm final : public PwmInterface, protected Lpc40xxSystemController
@@ -148,7 +150,7 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
   explicit constexpr Pwm(const Channel_t & channel) : channel_(channel) {}
 
   /// @param frequency_hz - Pulse width modulation frequency
-  void Initialize(uint32_t frequency_hz = kDefaultFrequency) const override
+  Status Initialize(uint32_t frequency_hz = kDefaultFrequency) const override
   {
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");
@@ -185,6 +187,8 @@ class Pwm final : public PwmInterface, protected Lpc40xxSystemController
         0b11'1111;
 
     channel_.pin.SetPinFunction(channel_.peripheral.pin_function_id);
+
+    return Status::kSuccess;
   }
 
   void SetDutyCycle(float duty_cycle) const override

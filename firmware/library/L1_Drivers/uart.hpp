@@ -7,15 +7,16 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
+#include "utility/status.hpp"
 #include "utility/time.hpp"
 
 class UartInterface
 {
-  virtual bool Initialize(uint32_t baud_rate)  const = 0;
-  virtual bool SetBaudRate(uint32_t baud_rate) const = 0;
-  virtual void Send(uint8_t out)               const = 0;
+  virtual Status Initialize(uint32_t baud_rate) const = 0;
+  virtual bool SetBaudRate(uint32_t baud_rate) const  = 0;
+  virtual void Send(uint8_t out) const                = 0;
   // TODO(#442): Add an IsAvailable function to check if a byte has been receive
-  virtual uint8_t Receive(uint32_t timeout)    const = 0;
+  virtual uint8_t Receive(uint32_t timeout) const = 0;
 };
 
 namespace uart
@@ -310,7 +311,7 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
     port_.registers->LCR = kStandardUart;
   }
 
-  bool Initialize(uint32_t baud_rate) const override
+  Status Initialize(uint32_t baud_rate) const override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
     // Powering the port
@@ -322,7 +323,8 @@ class Uart final : public UartInterface, protected Lpc40xxSystemController
     port_.rx.SetMode(PinInterface::Mode::kPullUp);
     port_.tx.SetMode(PinInterface::Mode::kPullUp);
     port_.registers->FCR |= kFIFOEnableAndReset;
-    return true;
+
+    return Status::kSuccess;
   }
 
   void Send(uint8_t data) const override

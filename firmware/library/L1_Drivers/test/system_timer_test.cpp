@@ -50,7 +50,7 @@ TEST_CASE("Testing SystemTimer", "[system_timer]")
     local_systick.VAL        = 0xBEEF;
     local_systick.LOAD       = 1000;
 
-    CHECK(true == test_subject.StartTimer());
+    CHECK(Status::kSuccess == test_subject.StartTimer());
     CHECK(kMask == local_systick.CTRL);
     CHECK(0 == local_systick.VAL);
   }
@@ -65,7 +65,7 @@ TEST_CASE("Testing SystemTimer", "[system_timer]")
     local_systick.LOAD = 0;
     local_systick.VAL  = 0xBEEF;
 
-    CHECK(false == test_subject.StartTimer());
+    CHECK(Status::kInvalidSettings == test_subject.StartTimer());
     CHECK(kClkSourceMask == local_systick.CTRL);
     CHECK(0xBEEF == local_systick.VAL);
   }
