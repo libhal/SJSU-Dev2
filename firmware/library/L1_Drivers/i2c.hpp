@@ -11,6 +11,7 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
+#include "utility/build_info.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
@@ -449,7 +450,12 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
  protected:
   Status BlockUntilFinished() const
   {
-  #if !defined(HOST_TEST)  // TODO(#440): Replace with if constexpr
+    // Skip waiting on the interrupt if running a host unit test
+    if constexpr (build::kTarget == build::Target::HostTest)
+    {
+      return i2c_.bus.transaction.status;
+    }
+
     SJ2_ASSERT_FATAL(IsIntialized(),
                      "Attempted to use I2C, but peripheral was not "
                      "initialized! Be sure to run the Initialize() method "
@@ -474,7 +480,6 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     }
     // Ensure that start is cleared before leaving this function
     i2c_.bus.registers->CONCLR = Control::kStart;
-#endif  // !defined HOST_TEST
     return i2c_.bus.transaction.status;
   }
   const Bus_t & i2c_;
