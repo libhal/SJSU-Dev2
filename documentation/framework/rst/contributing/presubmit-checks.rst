@@ -1,4 +1,4 @@
-SJSU-Dev2 Presubmit Checks
+Presubmit Checks
 =============================
 Before you can merge anything to SJSU-Dev2 repo, you need to preform a few
 presubmit checks.
