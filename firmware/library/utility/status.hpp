@@ -5,7 +5,8 @@ enum class Status
   kSuccess,
   kTimedOut,
   kBusError,
-  kDeviceNotFound
+  kDeviceNotFound,
+  kInvalidSettings
 };
 
 constexpr const char * Stringify(Status status)

@@ -10,6 +10,7 @@
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "utility/macros.hpp"
+#include "utility/status.hpp"
 
 class CanInterface
 {
@@ -72,7 +73,7 @@ class CanInterface
     Data_t data;  // CAN message data payload
   };
 
-  virtual bool Initialize() const                                        = 0;
+  virtual Status Initialize() const                                      = 0;
   virtual bool Send(TxMessage_t * const kMessage, uint32_t id,
                     const uint8_t * const kPayload, size_t length) const = 0;
   virtual bool Receive(RxMessage_t * const kMessage) const               = 0;
@@ -374,12 +375,12 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
   {
   }
 
-  bool Initialize() const override
+  Status Initialize() const override
   {
-    bool success = true;
+    Status status = Status::kSuccess;
     if (controller_ > kNumberOfControllers)
     {
-      success = false;
+      status = Status::kDeviceNotFound;
     }
     else
     {
@@ -405,7 +406,7 @@ class Can final : public CanInterface, protected Lpc40xxSystemController
       is_controller_initialized[controller_] = true;
     }
 
-    return success;
+    return status;
   }
 
   // TODO(#344):

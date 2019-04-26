@@ -4,11 +4,12 @@
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "utility/log.hpp"
+#include "utility/status.hpp"
 
 class DacInterface
 {
  public:
-  virtual void Initialize() const               = 0;
+  virtual Status Initialize() const             = 0;
   virtual void Write(uint32_t dac_output) const = 0;
   virtual void SetVoltage(float voltage) const  = 0;
 };
@@ -45,18 +46,20 @@ class Dac final : public DacInterface, protected Lpc40xxSystemController
   explicit constexpr Dac(const PinInterface & pin = kDacPin) : dac_pin_(pin) {}
   /// Initialize DAC hardware and enable DAC Pin.
   /// Initial Bias level set to 0.
-  void Initialize() const override
+  Status Initialize() const override
   {
     static constexpr uint8_t kDacMode = 0b010;
     dac_pin_.SetPinFunction(kDacMode);
     // Temporally convert
-    reinterpret_cast<const Pin*>(&dac_pin_)->EnableDac();
+    reinterpret_cast<const Pin *>(&dac_pin_)->EnableDac();
     dac_pin_.SetAsAnalogMode();
     dac_pin_.SetMode(PinInterface::Mode::kInactive);
     // Disable interrupt and DMA
     dac_register->CTRL = 0;
     // Set Update Rate to 1MHz
     SetBias(Bias::kHigh);
+
+    return Status::kSuccess;
   }
   /// Set the digital-to-analog converter directly
   void Write(uint32_t dac_output) const override
