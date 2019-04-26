@@ -10,12 +10,13 @@
 #include "L0_LowLevel/LPC40xx.h"
 #include "L0_LowLevel/system_controller.hpp"
 #include "utility/macros.hpp"
+#include "utility/status.hpp"
 
 class SystemTimerInterface
 {
  public:
-  virtual void SetIsrFunction(IsrPointer isr)           const = 0;
-  virtual bool StartTimer()                             const = 0;
+  virtual void SetIsrFunction(IsrPointer isr) const           = 0;
+  virtual Status StartTimer() const                           = 0;
   virtual uint32_t SetTickFrequency(uint32_t frequency) const = 0;
 };
 
@@ -59,19 +60,22 @@ class SystemTimer final : public SystemTimerInterface,
   {
     system_timer_isr = isr;
   }
-  bool StartTimer() const override
+  Status StartTimer() const override
   {
-    bool successful = false;
+    Status status = Status::kInvalidSettings;
+
     if (sys_tick->LOAD != 0)
     {
       sys_tick->VAL = 0;
       sys_tick->CTRL |= (1 << ControlBitMap::kTickInterupt);
       sys_tick->CTRL |= (1 << ControlBitMap::kEnableCounter);
       sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
-      successful = true;
+
+      RegisterIsr(SysTick_IRQn, SystemTimerHandler);
+      status = Status::kSuccess;
     }
-    RegisterIsr(SysTick_IRQn, SystemTimerHandler);
-    return successful;
+
+    return status;
   }
   /// @param frequency set the frequency that SystemTick counter will run.
   ///        If it is above the maximum SystemTick value 2^24

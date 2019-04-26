@@ -54,7 +54,7 @@ class I2cInterface
     bool busy                = false;
   };
 
-  virtual void Initialize() const                                           = 0;
+  virtual Status Initialize() const                                         = 0;
   virtual Status Read(uint8_t address, uint8_t * destination, size_t length,
                       uint32_t timeout = kI2cTimeout) const                 = 0;
   virtual Status Write(uint8_t address, const uint8_t * destination,
@@ -354,7 +354,7 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
   // This defaults to I2C port 2
   explicit constexpr I2c(const Bus_t & bus) : i2c_(bus) {}
 
-  void Initialize() const override
+  Status Initialize() const override
   {
     i2c_.bus.sda_pin.SetPinFunction(i2c_.bus.pin_function_id);
     i2c_.bus.scl_pin.SetPinFunction(i2c_.bus.pin_function_id);
@@ -377,6 +377,8 @@ class I2c final : public I2cInterface, protected Lpc40xxSystemController
     i2c_.bus.registers->CONSET = Control::kInterfaceEnable;
 
     RegisterIsr(i2c_.bus.irq_number, i2c_.handler, true);
+
+    return Status::kSuccess;
   }
 
   Status Read(uint8_t address, uint8_t * data, size_t length,

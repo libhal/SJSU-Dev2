@@ -94,8 +94,8 @@ void vPortSetupTimerInterrupt(void)  // NOLINT
   // The system_timer keeps the time that the system_clock uses to delay itself.
   system_timer.SetTickFrequency(config::kRtosFrequency);
   system_timer.SetIsrFunction(xPortSysTickHandler);
-  bool timer_started_successfully = system_timer.StartTimer();
-  SJ2_ASSERT_FATAL(timer_started_successfully,
+  Status timer_start_status = system_timer.StartTimer();
+  SJ2_ASSERT_FATAL(timer_start_status == Status::kSuccess,
                     "System Timer (used by FreeRTOS) has FAILED to start!");
 }
 }

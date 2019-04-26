@@ -68,7 +68,7 @@ class ExampleInterface
   // Only put in methods that you know each Example driver should have. If you
   // are not sure, put them all in and it can be figured out during code
   // review.
-  virtual void Initialize()                                             = 0;
+  virtual Status Initialize()                                             = 0;
   virtual void DoSomeAction()                                           = 0;
   virtual void SendData(const uint8_t * payload, bool readback = false) = 0;
   virtual void SetMode(InterfaceModes mode)                             = 0;
@@ -162,7 +162,7 @@ class Example final : public ExampleInterface, protected Lpc40xxSystemController
   // You must put "override" for methods that you override from the interface.
   // If you don't expect someone to inherit and override this class's
   // implementation declare it "final".
-  void Initialize() override
+  Status Initialize() override
   {
     // Typically you will need to power up your peripheral. Use the inherited
     // method rather than directly using the LPC_SC register.

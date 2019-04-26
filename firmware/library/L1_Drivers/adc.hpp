@@ -6,11 +6,12 @@
 #include "L0_LowLevel/system_controller.hpp"
 #include "L1_Drivers/pin.hpp"
 #include "utility/log.hpp"
+#include "utility/status.hpp"
 
 class AdcInterface
 {
  public:
-  virtual void Initialize() const            = 0;
+  virtual Status Initialize() const          = 0;
   virtual void Conversion() const            = 0;
   virtual uint16_t Read() const              = 0;
   virtual bool HasConversionFinished() const = 0;
@@ -140,7 +141,7 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
   }
 
   explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
-  void Initialize() const override
+  Status Initialize() const override
   {
     PowerUpPeripheral(Lpc40xxSystemController::Peripherals::kAdc);
 
@@ -158,6 +159,8 @@ class Adc final : public AdcInterface, protected Lpc40xxSystemController
         (GetPeripheralFrequency() / kClockFrequency) & 0xFF;
 
     adc_base->CR = control.data;
+
+    return Status::kSuccess;
   }
   void Conversion() const override
   {

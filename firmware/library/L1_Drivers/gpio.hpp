@@ -7,6 +7,7 @@
 #include "L1_Drivers/pin.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
+#include "utility/status.hpp"
 
 class GpioInterface
 {

@@ -8,6 +8,7 @@
 #include "L1_Drivers/pin.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
+#include "utility/status.hpp"
 
 class TimerInterface
 {
@@ -26,11 +27,11 @@ class TimerInterface
     kInterruptRestartStop = 0b111
   };
 
-  virtual void Initialize(uint32_t us_per_tick, IsrPointer isr = nullptr,
-                          int32_t priority = -1) const = 0;
+  virtual Status Initialize(uint32_t us_per_tick, IsrPointer isr = nullptr,
+                            int32_t priority = -1) const = 0;
   virtual void SetTimer(uint32_t time, TimerIsrCondition mode,
-                        uint8_t reg = 0) const         = 0;
-  virtual uint32_t GetTimer() const                    = 0;
+                        uint8_t reg = 0) const           = 0;
+  virtual uint32_t GetTimer() const                      = 0;
 };
 
 class Timer final : public TimerInterface, protected Lpc40xxSystemController
@@ -142,8 +143,8 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
   ///        method is achieved.
   /// @param priority - sets the Timer interrupt's priority level, defaults to
   ///        -1 which uses the platforms default priority.
-  void Initialize(uint32_t frequency, IsrPointer isr = nullptr,
-                  int32_t priority = -1) const override
+  Status Initialize(uint32_t frequency, IsrPointer isr = nullptr,
+                    int32_t priority = -1) const override
   {
     constexpr uint32_t kClear = std::numeric_limits<uint32_t>::max();
     PowerUpPeripheral(timer_.channel.power_id);
@@ -157,6 +158,8 @@ class Timer final : public TimerInterface, protected Lpc40xxSystemController
     timer_.channel.timer_register->TCR |= (1 << 0);
     *timer_.channel.user_callback = isr;
     RegisterIsr(timer_.channel.irq, timer_.isr, true, priority);
+
+    return Status::kSuccess;
   }
 
   /// Function that sets a timer of your choice (0-3) to a specific

@@ -25,6 +25,7 @@
 #include "L1_Drivers/pin.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
+#include "utility/status.hpp"
 
 class SpiInterface
 {
@@ -53,7 +54,7 @@ class SpiInterface
     kSixteen,  // The largest standard frame sized allowed for SJSU-Dev2
   };
 
-  virtual void Initialize() const                                           = 0;
+  virtual Status Initialize() const                                         = 0;
   virtual uint16_t Transfer(uint16_t data) const                            = 0;
   virtual void SetPeripheralMode(MasterSlaveMode mode, DataSize size) const = 0;
   virtual void SetClock(bool positive_polarity, bool phase, uint8_t prescaler,
@@ -152,7 +153,7 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   /// Powers on the peripheral, activates the SSP pins and enables the SSP
   /// peripheral.
   /// See page 601 of user manual UM10562 LPC408x/407x for more details.
-  void Initialize() const override
+  Status Initialize() const override
   {
     // Power up peripheral
     PowerUpPeripheral(bus_.power_on_bit);
@@ -162,6 +163,8 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
     bus_.sck.SetPinFunction(bus_.pin_function_id);
     // Enable SSP
     bus_.registers->CR1 = bit::Set(bus_.registers->CR1, kSpiEnable);
+
+    return Status::kSuccess;
   }
 
   /// An easy way to sets up an SPI peripheral as SPI master with default clock
