@@ -4,29 +4,35 @@ Common Guidelines across Levels
 .. toctree::
   :maxdepth: 5
 
-  levels/L0-SystemControllers-porting-guide.rst
-  levels/L1-Driver-guide.rst
-  levels/L2-Hal-guide.rst
-  levels/L3-Application-guide.rst
+  level_guide/L0-platform.rst
+  level_guide/L1-peripheral.rst
+  level_guide/L2-hal.rst
+  level_guide/L3-application.rst
 
-Sphere of inclusion
---------------------
-All source files, regardless of level, can include files from other files on
-their same level, sources within utility, and 1 level below themselves.
+Heirachy of inclusion
+----------------------
+
+|Inclusion Heirachy|
 
 Explanation
 ++++++++++++
-This approach is meant to keep a levels of isolation between the categories of files. For example, lets take L1_Peripheral
+Arrows indicate which levels can include from. For example, L2_HAL can include
+L1_Peripherals, and L3_Application can include L2_HAL. L3_Applications should
+refrain from including L1_Peripherals. If an L3_Application needs to include
+from L1_Peripherals, it must only take the peripheral interface and not a
+specific platforms driver. L0_Platform can include everything, except testing
+libraries, as its startup may need code from any of the levels. In order to hit
+the **light weight** goal, keep the code in startup to an absolute minimum.
 
-L1_Peripheral contains platform specific peripheral drivers. Typically these
-drivers need to understand the memory map of the platform they are on, thus
-they must include files from L0_Platform. A driver may need to utilize other
-drivers within the L1_Peripheral directory, thus inclusion across files within L1_Peripheral is permitted.
+Everything can include from :code:`utility/` and :code:`third_party/`. Although,
+some third party libraries should not be included in some library code levels.
+For example, microrl, used for command line control, should not be included in
+anything in L1_Peripherals or even L2_HAL. There may be consideration in the future to seperate the third party libraries into their own set of levels that match the library levels.
 
-L1_Peripheral, under any normal circumstances, should NOT include files above
-Level 1, as this could result in circular dependencies and/or coupling between
-L1 and higher level files.
+This approach is meant to keep a levels of isolation between the categories of
+files. Doing this can keep from circular dependencies and unreasonable coupling
+between the layers.
 
-For L2_HAL, for which H.A.L. stands for H.ardware A.bstraction L.ayer, these modules should only be including across the L2 directory or at the L1 level. The HAL layer for SJSU-Dev2 should be agnostic to how peripherals in the L1 directory are implemented and should not need to include the L0 files.
+Utilities are meant to be usable on all levels.
 
-This continues for all levels.
+.. |Inclusion Heirachy| image:: ../../_static/inclusion-heirachy.png

@@ -30,10 +30,6 @@ Unit tests are compiled with the following addons enabled:
 * :code:`-D HOST_TEST=1`
     * This defines a macro :code:`HOST_TEST` which can be used within your
       source files remove or add source code that can be used for tests only.
-* :code:`-D SJ2_BACKTRACE_DEPTH=1024`
-    * Defines the maximum depth of a call stack for test files...
-      this is rather large, and hopefully, you never reach the lowest point of
-      this call.
 
 .. _AddressSanitizer: https://clang.llvm.org/docs/AddressSanitizer.html
 
@@ -47,10 +43,10 @@ If your project directory does not have a :code:`test` folder, create one.
   linking issues since main is already defined for tests in the
   :code:`firmware/library/L4_Testing/main_test.cpp` file.
 
-Adding Unit Tests Files to User Unit Tests
--------------------------------------------
-Add a :code:`project.mk` file into your project folder. Within it add files like
-so:
+Adding Unit Tests Files to "User" Unit Tests
+---------------------------------------------
+Add a :code:`project.mk` file into your project folder if it doesn't already
+exist. Within it, add your source and test source files like so:
 
   .. code-block:: make
 
@@ -62,7 +58,7 @@ Compiling and Running Tests
 ----------------------------
 
 Use :code:`make user-test` to compile your tests.
-Use :code:`make run-test` to run user tests.
+Use :code:`make run-test` to run user tests after they have been compiled.
 
 Finding Example Test Files
 ----------------------------
