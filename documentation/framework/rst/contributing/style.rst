@@ -1,5 +1,10 @@
-SJSU-Dev2 Style Guide
+Style Guide
 ===========================
+
+.. toctree::
+  :maxdepth: 5
+
+  techniques/left-to-right.rst
 
 C++ Style
 ----------
@@ -43,63 +48,58 @@ C++ libraries that increase compile time and **should not** be included:
 C++ libraries that increase binary size and you should **NEVER** be included:
   * :code:`<iostream>`
 
+Taking more than 4 arguments for a function
+--------------------------------------------
+If a method or function takes more than 4 arguments, consider taking a
+structure as an input rather than the seperate arguments.
+
+Without structure parameter:
+
+.. code-block:: c++
+
+    void GeneratePulse(uint32_t frequency, uint32_t amplitude, uint32_t cycles, bool rise_in_volume);
+
+    // Used like:
+    GeneratePulse(2000, 5, 100, false);
+
+    /// OR
+
+    struct GeneratePulseParameter
+    {
+      uint32_t frequency;
+      uint32_t amplitude;
+      uint32_t cycles;
+      bool rise_in_volume;
+    };
+    void GeneratePulse(GeneratePulseParameter parameters);
+
+    // Used like:
+    GeneratePulse(2000, 5, 100, false);
+
+Refrain from abbreviations
+---------------------------
+Choose the variable name "timer" over the name "tim". Choose InterruptHandler
+over IHandler or IntHandler. FunctionPointer over FuncPtr. Be expressive with
+your variables and make sure it is obvious what your variable does.
+
+Exceptions are abbreviations known in the industry such as using :code:`int i`
+within a for loop. Another is the use of abbreviations like SPI and I2C where
+most people do not typically remember what the actual words for these
+abbreviations, but understand how these protocols work.
+
+Code expressions read nicely from left to right
+------------------------------------------------
+When reading code, we read from left to right as we do any text. When writing
+APIs think about how nicely your code reads from left to right.
+
+Link to how this should look: `Left to Right Technique`_.
+
+.. _`Left to Right Technique`: techniques/left-to-right.html
+
 Curly Braces
 -------------
 SJSU-Dev2 will follow the Allman style of curly braces, where each curly brace
 gets their own line.
-
-Returning values
------------------
-Prefer to only have 1 return statement within function and to have it return a result variable.
-
-.. code-block:: cpp
-
-    int function()
-    {
-      // Preload with a default return.
-      int result = 0;
-      //
-      // Do some stuff in the function that any alter the result.
-      //
-      return result;
-    }
-
-How to Efficiently Return variables
-++++++++++++++++++++++++++++++++++++
-.. code-block:: cpp
-
-    int function(bool check1, bool check2)
-    {
-      // Preload with a default return.
-      int result = 1;
-      if (check1 && check2)
-      {
-        result = 17;
-      }
-      else if (!check1 && check2)
-      {
-        result = 17;
-      }
-      if (check1 && !check2)
-      {
-        result = 17;
-      }
-      // As you can see, using 1 as the preloaded value was a poor choice because
-      // we had to write 17, 3 times and the compiler may have had to write those
-      // three assignments into assembly.
-      return result;
-    }
-    int functionBetter(bool check1, bool check2)
-    {
-      // A better alternative would be set the default value to 17, now we only
-      // have to check 1 case, and all other are taken care of.
-      int result = 17;
-      if (!check1 && !check2)
-      {
-        result = 1;
-      }
-      return result;
-    }
 
 Infinite Loops
 ---------------
@@ -235,3 +235,57 @@ Make sure that the radix of the number you are using from datasheets or manuals
 matching the radix in those manuals. If the datahsheet says that at address
 :code:`0xABCD`, you should also use 0xABCD rather then converting it to
 :code:`43981`.
+
+Returning values
+-----------------
+Prefer to only have 1 return statement within function and to have it return a result variable.
+
+.. code-block:: cpp
+
+    int function()
+    {
+      // Preload with a default return.
+      int result = 0;
+      //
+      // Do some stuff in the function that any alter the result.
+      //
+      return result;
+    }
+
+How to Efficiently Return variables
+++++++++++++++++++++++++++++++++++++
+.. code-block:: cpp
+
+    int function(bool check1, bool check2)
+    {
+      // Preload with a default return.
+      int result = 1;
+      if (check1 && check2)
+      {
+        result = 17;
+      }
+      else if (!check1 && check2)
+      {
+        result = 17;
+      }
+      if (check1 && !check2)
+      {
+        result = 17;
+      }
+      // As you can see, using 1 as the preloaded value was a poor choice because
+      // we had to write 17, 3 times and the compiler may have had to write those
+      // three assignments into assembly.
+      return result;
+    }
+
+    int functionBetter(bool check1, bool check2)
+    {
+      // A better alternative would be set the default value to 17, now we only
+      // have to check 1 case, and all other are taken care of.
+      int result = 17;
+      if (!check1 && !check2)
+      {
+        result = 1;
+      }
+      return result;
+    }
