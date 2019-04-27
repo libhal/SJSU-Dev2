@@ -28,7 +28,7 @@ class OnBoardLedInterface
   virtual uint8_t GetStates(void)                        = 0;
 };
 
-class OnBoardLed : public OnBoardLedInterface
+class OnBoardLed final : public OnBoardLedInterface
 {
  public:
   // Initialize takes the array of Gpios, sets each one to an output, and
