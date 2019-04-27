@@ -218,6 +218,8 @@ mkdir "openocd"
 # folder
 mv -f gnu-mcu-eclipse/openocd/*/* openocd
 # Return back to base of repository
+fi
+
 cd "$BASE"
 
 echo " ───────────────────────────────────────────────────┐"
@@ -227,7 +229,6 @@ rm -rf "$TOOLDIR/Hyperload/"
 git clone --depth=1 https://github.com/kammce/Hyperload.git \
                     "$TOOLDIR/Hyperload/"
 cd "$TOOLDIR/Hyperload/" && ./setup
-fi
 
 cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
