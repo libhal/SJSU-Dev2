@@ -19,9 +19,9 @@ TEST_CASE("Testing SPI", "[Spi]")
   memset(&local_sc, 0, sizeof(local_sc));
 
   // Set up Mock for PinCongiure
-  Mock<Pin> mock_mosi;
-  Mock<Pin> mock_miso;
-  Mock<Pin> mock_sck;
+  Mock<PinInterface> mock_mosi;
+  Mock<PinInterface> mock_miso;
+  Mock<PinInterface> mock_sck;
 
   Fake(Method(mock_mosi, SetPinFunction));
   Fake(Method(mock_miso, SetPinFunction));

@@ -20,7 +20,7 @@ TEST_CASE("Testing PWM instantiation", "[pwm]")
   Lpc40xxSystemController::system_controller = &local_sc;
 
   // Creating mock of Pin class
-  Mock<Pin> mock_pwm_pin;
+  Mock<PinInterface> mock_pwm_pin;
   // Make sure mock Pin doesn't call real SetPinFunction() method
   Fake(Method(mock_pwm_pin, SetPinFunction));
 
