@@ -44,7 +44,7 @@ class PinInterface
   uint8_t pin_;
 };
 
-class Pin : public PinInterface
+class Pin final : public PinInterface
 {
  public:
   // Source: "UM10562 LPC408x/407x User manual" table 83 page 132

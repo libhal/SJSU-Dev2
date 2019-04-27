@@ -98,9 +98,9 @@ class Spi final : public SpiInterface, protected Lpc40xxSystemController
   {
     LPC_SSP_TypeDef * registers;
     PeripheralID power_on_bit;
-    const Pin & mosi;
-    const Pin & miso;
-    const Pin & sck;
+    const PinInterface & mosi;
+    const PinInterface & miso;
+    const PinInterface & sck;
     uint8_t pin_function_id;
   };
 
