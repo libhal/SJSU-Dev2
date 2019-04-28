@@ -5,8 +5,8 @@ Sphere of inclusion
 --------------------
 
 * May include from:
-    * L0_LowLevel/
-    * L1_Drivers/
+    * L0_Platform/
+    * L1_Peripheral/
     * Utility/
 
 More coming soon!

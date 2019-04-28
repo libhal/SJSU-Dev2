@@ -108,8 +108,8 @@ print_status $SPECIFIC_BUILD_CAPTURE
 echo ""
 
 # Build all example projects
-cd $SJBASE/firmware/examples
-for d in */; do
+cd $SJBASE/firmware/examples/
+for d in $(dirname $(find ./ -name "makefile")); do
 
 cd "$SJBASE/firmware/examples/$d"
 
@@ -126,8 +126,6 @@ print_status $SPECIFIC_BUILD_CAPTURE
 echo ""
 
 done
-
-exit
 
 # Return to home project
 cd $SJBASE/firmware/HelloWorld

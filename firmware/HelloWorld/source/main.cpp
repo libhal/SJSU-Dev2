@@ -7,11 +7,11 @@
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
-int main(void)
+int main()
 {
   LOG_INFO("Staring Hello World Application");
   LOG_INFO("Initializing LEDs...");
-  OnBoardLed leds;
+  sjsu::OnBoardLed leds;
   leds.Initialize();
   LOG_INFO("LEDs Initialized!");
 

@@ -10,10 +10,10 @@
 #include <iterator>
 
 #include "config.hpp"
-#include "L0_LowLevel/interrupt.hpp"
-#include "L0_LowLevel/LPC40xx.h"
-#include "L1_Drivers/system_timer.hpp"
-#include "L1_Drivers/uart.hpp"
+#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/cortex/system_timer.hpp"
+#include "L1_Peripheral/lpc40xx/uart.hpp"
 #include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L4_Testing/factory_test.hpp"
 #include "utility/build_info.hpp"
@@ -34,8 +34,8 @@ static_assert(
 
 namespace
 {
-Lpc40xxSystemController system_controller;
-Uart uart3(Uart::Port::kUart3);
+sjsu::lpc40xx::SystemController system_controller;
+sjsu::lpc40xx::Uart uart3(sjsu::lpc40xx::Uart::Port::kUart3);
 bool debug_print_button_was_pressed = false;
 }  // namespace
 
@@ -227,54 +227,54 @@ void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
       (LPC_SC->FLASHCFG & ~(0b1111 << 12)) | (clocks_per_flash_access << 12);
 }
 
-int main(void)
+int main()
 {
-  SystemTimer system_timer;
-  Gpio button0(1, 19);
-  Gpio button1(1, 15);
-  Gpio button2(0, 30);
-  Gpio button3(0, 29);
+  sjsu::cortex::SystemTimer system_timer;
+  sjsu::lpc40xx::Gpio button0(1, 19);
+  sjsu::lpc40xx::Gpio button1(1, 15);
+  sjsu::lpc40xx::Gpio button2(0, 30);
+  sjsu::lpc40xx::Gpio button3(0, 29);
 
-  button0.GetPin().SetMode(Pin::Mode::kPullDown);
+  button0.GetPin().SetMode(sjsu::lpc40xx::Pin::Mode::kPullDown);
   button0.SetAsInput();
-  button1.GetPin().SetMode(Pin::Mode::kPullDown);
+  button1.GetPin().SetMode(sjsu::lpc40xx::Pin::Mode::kPullDown);
   button1.SetAsInput();
-  button2.GetPin().SetMode(Pin::Mode::kPullDown);
+  button2.GetPin().SetMode(sjsu::lpc40xx::Pin::Mode::kPullDown);
   button2.SetAsInput();
-  button3.GetPin().SetMode(Pin::Mode::kPullDown);
+  button3.GetPin().SetMode(sjsu::lpc40xx::Pin::Mode::kPullDown);
   button3.SetAsInput();
 
   debug_print_button_was_pressed = button3.Read();
 
-  OnBoardLed leds;
+  sjsu::OnBoardLed leds;
   leds.Initialize();
   leds.SetAll(0);
 
-  uart0.Initialize(38400);
+  sjsu::lpc40xx::uart0.Initialize(38400);
   uart3.Initialize(115200);
 
   printf3("Bootloader Debug Port Initialized!\n");
   // Flush any initial bytes
-  uart0.Receive(500);
-  uart0.Send(0xFF);
+  sjsu::lpc40xx::uart0.Receive(500);
+  sjsu::lpc40xx::uart0.Send(0xFF);
   // Hyperload will send 0x55 to notify that it is alive!
-  if (0x55 == uart0.Receive(500))
+  if (0x55 == sjsu::lpc40xx::uart0.Receive(500))
   {
     SetFlashAcceleratorSpeed(6);
     // Notify Hyperload that we're alive too!
-    uart0.Send(0xAA);
+    sjsu::lpc40xx::uart0.Send(0xAA);
     // Get new baud rate control word
     union BaudRateControlWord {
       uint8_t array[4];
       uint32_t word;
     };
     BaudRateControlWord control;
-    control.array[0] = uart0.Receive(500);
-    control.array[1] = uart0.Receive(500);
-    control.array[2] = uart0.Receive(500);
-    control.array[3] = uart0.Receive(500);
+    control.array[0] = sjsu::lpc40xx::uart0.Receive(500);
+    control.array[1] = sjsu::lpc40xx::uart0.Receive(500);
+    control.array[2] = sjsu::lpc40xx::uart0.Receive(500);
+    control.array[3] = sjsu::lpc40xx::uart0.Receive(500);
     // Echo it back to verify
-    uart0.Send(control.array[0]);
+    sjsu::lpc40xx::uart0.Send(control.array[0]);
     Delay(1);
     printf3("control.array[0] = 0x%02X\n", control.array[0]);
     // Hyperload Frequency should be set to 48,000,000 for this to work
@@ -286,7 +286,7 @@ int main(void)
     float approx_baud = (system_frequency / (control_word_f + 1.0f)) / 16.0f;
     uint32_t baud_rate =
         static_cast<uint32_t>(hyperload::FindNearestBaudRate(approx_baud));
-    uart0.SetBaudRate(baud_rate);
+    sjsu::lpc40xx::uart0.SetBaudRate(baud_rate);
     // Wait for host to change it's baud rate
     Delay(500);
     // Send our CPU information along with data parameters:
@@ -309,17 +309,17 @@ int main(void)
         leds.SetAll(error);
         printf3("Flashing error %s!\n",
                 kIapResultString[static_cast<uint32_t>(result)]);
-        uart0.Send(kOtherError);
+        sjsu::lpc40xx::uart0.Send(kOtherError);
       }
     }
     puts3("Programming Finished!\n");
     puts3("Sending final acknowledge!\n");
     Delay(100);
-    uart0.Send(kHyperloadFinished);
+    sjsu::lpc40xx::uart0.Send(kHyperloadFinished);
   }
   // Change baud rate back to 38400 so that user can continue using a serial
   // monitor for the final bootloader message and application messages.
-  uart0.Initialize(config::kBaudRate);
+  sjsu::lpc40xx::uart0.Initialize(config::kBaudRate);
 
   IsrPointer * application_vector_table =
       reinterpret_cast<IsrPointer *>(&(flash->application));
@@ -339,8 +339,8 @@ int main(void)
   // If button1 is held down, run factory test
   else if (button0.Read())
   {
-    FactoryTest factory_test;
-    factory_test.RunFactoryTest();
+    // FactoryTest factory_test;
+    // factory_test.RunFactoryTest();
     Halt();
   }
   else if (application_entry_isr == reinterpret_cast<void *>(0xFFFFFFFFUL))
@@ -365,13 +365,13 @@ int main(void)
 }
 
 // TODO(#177): All of the code below should be moved into the file
-// library/L0_LowLevel/lpc_flash.hpp
+// library/L0_Platform/lpc_flash.hpp
 uint8_t WriteUartToBlock(Block_t * block)
 {
   uint32_t checksum = 0;
   for (uint32_t position = 0; position < kBlockSize; position++)
   {
-    uint8_t byte          = uart0.Receive(100);
+    uint8_t byte          = sjsu::lpc40xx::uart0.Receive(100);
     block->data[position] = byte;
     checksum += byte;
   }
@@ -385,11 +385,11 @@ bool WriteUartToRamSector(Sector_t * sector)
   // Blank RAM sector to all 1s
   memset(sector, 0xFF, sizeof(*sector));
   printf3("Writing to Ram Sector...\n");
-  uart0.Send(kHyperloadReady);
+  sjsu::lpc40xx::uart0.Send(kHyperloadReady);
   while (blocks_written < kBlocksPerSector)
   {
-    uint8_t block_number_msb = uart0.Receive(1000);
-    uint8_t block_number_lsb = uart0.Receive(100);
+    uint8_t block_number_msb = sjsu::lpc40xx::uart0.Receive(1000);
+    uint8_t block_number_lsb = sjsu::lpc40xx::uart0.Receive(100);
     uint32_t block_number    = (block_number_msb << 8) | block_number_lsb;
     if (0xFFFF == block_number)
     {
@@ -401,17 +401,17 @@ bool WriteUartToRamSector(Sector_t * sector)
     {
       uint32_t partition        = block_number % kBlocksPerSector;
       uint8_t checksum          = WriteUartToBlock(&sector->block[partition]);
-      uint8_t expected_checksum = uart0.Receive(1000);
+      uint8_t expected_checksum = sjsu::lpc40xx::uart0.Receive(1000);
       if (checksum != expected_checksum)
       {
-        uart0.Send(kChecksumError);
+        sjsu::lpc40xx::uart0.Send(kChecksumError);
       }
       else
       {
         blocks_written++;
         if (blocks_written < 8)
         {
-          uart0.Send(kHyperloadReady);
+          sjsu::lpc40xx::uart0.Send(kHyperloadReady);
         }
       }
     }

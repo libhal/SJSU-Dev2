@@ -11,13 +11,14 @@
 ///
 /// DisplayInterface is a common set of methods that all hardware display
 /// drivers must implement to work with the Graphics class.
-class PixelDisplayInterface
+namespace sjsu
+{
+class PixelDisplay
 {
  public:
   SJ2_PACKED(struct) Color_t
   {
-    Color_t(bool r, bool g, bool b, uint8_t a, uint8_t bits,
-            bool mono)
+    Color_t(bool r, bool g, bool b, uint8_t a, uint8_t bits, bool mono)
         : monochrome(mono),
           red(r),
           green(g),
@@ -37,11 +38,11 @@ class PixelDisplayInterface
           alpha(0)
     {
     }
-    bool monochrome: 1;
-    bool red: 1;
-    bool green: 1;
-    bool blue: 1;
-    unsigned padding: 4;
+    bool monochrome : 1;
+    bool red : 1;
+    bool green : 1;
+    bool blue : 1;
+    unsigned padding : 4;
     uint8_t color_bits;
     uint8_t alpha;
   };
@@ -74,3 +75,4 @@ class PixelDisplayInterface
   /// due to memory constrains, can refrain from implementing this function.
   virtual void Update() {}
 };
+}  // namespace sjsu

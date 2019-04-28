@@ -11,11 +11,13 @@
 #include <cstdint>
 #include <cstring>
 
-#include "L1_Drivers/gpio.hpp"
+#include "L1_Peripheral/gpio.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
-class St7066uInterface
+namespace sjsu
+{
+class St7066u
 {
  public:
   // Data transfer operation types.
@@ -70,24 +72,6 @@ class St7066uInterface
     uint8_t position;
   };
 
-  virtual void Initialize()                                              = 0;
-  virtual void WriteNibble(WriteOperation operation, uint8_t nibble)     = 0;
-  virtual void WriteByte(WriteOperation operation, uint8_t byte)         = 0;
-  virtual void WriteCommand(Command command)                             = 0;
-  virtual void WriteCommand(uint8_t command)                             = 0;
-  virtual void WriteData(uint8_t data)                                   = 0;
-  virtual void ClearDisplay()                                            = 0;
-  virtual void SetDisplayOn(bool on)                                     = 0;
-  virtual void SetCursorHidden(bool hidden)                              = 0;
-  virtual void SetCursorDirection(CursorDirection direction)             = 0;
-  virtual void SetCursorPosition(CursorPosition_t position)              = 0;
-  virtual void ResetCursorPosition()                                     = 0;
-  virtual void DisplayText(const char * text, CursorPosition_t position) = 0;
-};
-
-class St7066u : public St7066uInterface
-{
- public:
   enum class BusMode : uint8_t
   {
     kFourBit  = 0 << 4,
@@ -108,17 +92,17 @@ class St7066u : public St7066uInterface
 
   struct ControlPins_t
   {
-    GpioInterface & rs;  // Register Selection
-    GpioInterface & rw;  // Read/Write
-    GpioInterface & e;   // Chip Enable
-    GpioInterface & d7;
-    GpioInterface & d6;
-    GpioInterface & d5;
-    GpioInterface & d4;
-    GpioInterface & d3;
-    GpioInterface & d2;
-    GpioInterface & d1;
-    GpioInterface & d0;
+    sjsu::Gpio & rs;  // Register Selection
+    sjsu::Gpio & rw;  // Read/Write
+    sjsu::Gpio & e;   // Chip Enable
+    sjsu::Gpio & d7;
+    sjsu::Gpio & d6;
+    sjsu::Gpio & d5;
+    sjsu::Gpio & d4;
+    sjsu::Gpio & d3;
+    sjsu::Gpio & d2;
+    sjsu::Gpio & d1;
+    sjsu::Gpio & d0;
   };
 
   // Default cursor position at line 0, position 0.
@@ -140,25 +124,23 @@ class St7066u : public St7066uInterface
   {
   }
 
-  ~St7066u() {}
-
-  void Initialize() override
+  void Initialize()
   {
-    kControlPins.rs.SetDirection(Gpio::Direction::kOutput);
-    kControlPins.rw.SetDirection(Gpio::Direction::kOutput);
-    kControlPins.e.SetDirection(Gpio::Direction::kOutput);
-    kControlPins.e.Set(GpioInterface::kHigh);
-    kControlPins.d7.SetDirection(Gpio::Direction::kOutput);
-    kControlPins.d6.SetDirection(Gpio::Direction::kOutput);
-    kControlPins.d5.SetDirection(Gpio::Direction::kOutput);
-    kControlPins.d4.SetDirection(Gpio::Direction::kOutput);
+    kControlPins.rs.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kControlPins.rw.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kControlPins.e.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kControlPins.e.Set(sjsu::Gpio::kHigh);
+    kControlPins.d7.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kControlPins.d6.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kControlPins.d5.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kControlPins.d4.SetDirection(sjsu::Gpio::Direction::kOutput);
 
     if (kBusMode == BusMode::kEightBit)
     {
-      kControlPins.d3.SetDirection(Gpio::Direction::kOutput);
-      kControlPins.d2.SetDirection(Gpio::Direction::kOutput);
-      kControlPins.d1.SetDirection(Gpio::Direction::kOutput);
-      kControlPins.d0.SetDirection(Gpio::Direction::kOutput);
+      kControlPins.d3.SetDirection(sjsu::Gpio::Direction::kOutput);
+      kControlPins.d2.SetDirection(sjsu::Gpio::Direction::kOutput);
+      kControlPins.d1.SetDirection(sjsu::Gpio::Direction::kOutput);
+      kControlPins.d0.SetDirection(sjsu::Gpio::Direction::kOutput);
     }
 
     WriteCommand(static_cast<uint8_t>(Command::kDefaultDisplayConfiguration) |
@@ -173,52 +155,52 @@ class St7066u : public St7066uInterface
   //
   // @param operation Operation transfer type.
   // @param nibble    4-bit data to transfer.
-  void WriteNibble(WriteOperation operation, uint8_t nibble) override
+  void WriteNibble(WriteOperation operation, uint8_t nibble)
   {
-    kControlPins.e.Set(Gpio::State::kHigh);
-    kControlPins.rs.Set(Gpio::State(operation));
-    kControlPins.rw.Set(Gpio::State::kLow);
+    kControlPins.e.Set(sjsu::Gpio::State::kHigh);
+    kControlPins.rs.Set(sjsu::Gpio::State(operation));
+    kControlPins.rw.Set(sjsu::Gpio::State::kLow);
     // set nibble on 4-bit data bus
-    kControlPins.d7.Set(Gpio::State((nibble >> 3) & 0x01));
-    kControlPins.d6.Set(Gpio::State((nibble >> 2) & 0x01));
-    kControlPins.d5.Set(Gpio::State((nibble >> 1) & 0x01));
-    kControlPins.d4.Set(Gpio::State((nibble >> 0) & 0x01));
+    kControlPins.d7.Set(sjsu::Gpio::State((nibble >> 3) & 0x01));
+    kControlPins.d6.Set(sjsu::Gpio::State((nibble >> 2) & 0x01));
+    kControlPins.d5.Set(sjsu::Gpio::State((nibble >> 1) & 0x01));
+    kControlPins.d4.Set(sjsu::Gpio::State((nibble >> 0) & 0x01));
     Delay(1);
     // Toggle chip enable to trigger write on falling edge
-    kControlPins.e.Set(Gpio::State::kLow);
-    kControlPins.e.Set(Gpio::State::kHigh);
+    kControlPins.e.Set(sjsu::Gpio::State::kLow);
+    kControlPins.e.Set(sjsu::Gpio::State::kHigh);
   }
 
   // Transfers a command or data byte to the device.
   //
   // @param operation Operation transfer type.
   // @param byte      Byte to transfer.
-  void WriteByte(WriteOperation operation, uint8_t byte) override
+  void WriteByte(WriteOperation operation, uint8_t byte)
   {
-    kControlPins.e.Set(Gpio::State::kHigh);
-    kControlPins.rs.Set(Gpio::State(operation));
-    kControlPins.rw.Set(Gpio::State::kLow);
+    kControlPins.e.Set(sjsu::Gpio::State::kHigh);
+    kControlPins.rs.Set(sjsu::Gpio::State(operation));
+    kControlPins.rw.Set(sjsu::Gpio::State::kLow);
     // set byte on 8-bit data bus
-    kControlPins.d7.Set(Gpio::State((byte >> 7) & 0x01));
-    kControlPins.d6.Set(Gpio::State((byte >> 6) & 0x01));
-    kControlPins.d5.Set(Gpio::State((byte >> 5) & 0x01));
-    kControlPins.d4.Set(Gpio::State((byte >> 4) & 0x01));
-    kControlPins.d3.Set(Gpio::State((byte >> 3) & 0x01));
-    kControlPins.d2.Set(Gpio::State((byte >> 2) & 0x01));
-    kControlPins.d1.Set(Gpio::State((byte >> 1) & 0x01));
-    kControlPins.d0.Set(Gpio::State((byte >> 0) & 0x01));
+    kControlPins.d7.Set(sjsu::Gpio::State((byte >> 7) & 0x01));
+    kControlPins.d6.Set(sjsu::Gpio::State((byte >> 6) & 0x01));
+    kControlPins.d5.Set(sjsu::Gpio::State((byte >> 5) & 0x01));
+    kControlPins.d4.Set(sjsu::Gpio::State((byte >> 4) & 0x01));
+    kControlPins.d3.Set(sjsu::Gpio::State((byte >> 3) & 0x01));
+    kControlPins.d2.Set(sjsu::Gpio::State((byte >> 2) & 0x01));
+    kControlPins.d1.Set(sjsu::Gpio::State((byte >> 1) & 0x01));
+    kControlPins.d0.Set(sjsu::Gpio::State((byte >> 0) & 0x01));
     Delay(1);
     // Toggle chip enable to trigger write on falling edge
-    kControlPins.e.Set(Gpio::State::kLow);
-    kControlPins.e.Set(Gpio::State::kHigh);
+    kControlPins.e.Set(sjsu::Gpio::State::kLow);
+    kControlPins.e.Set(sjsu::Gpio::State::kHigh);
   }
 
   // @param command 8-bit command to send.
-  inline void WriteCommand(Command command) override
+  inline void WriteCommand(Command command)
   {
     WriteCommand(static_cast<uint8_t>(command));
   }
-  void WriteCommand(uint8_t command) override
+  void WriteCommand(uint8_t command)
   {
     switch (kBusMode)
     {
@@ -235,7 +217,7 @@ class St7066u : public St7066uInterface
   // Writes a byte to the current cursor address position.
   //
   // @param data Byte to send to device.
-  void WriteData(uint8_t data) override
+  void WriteData(uint8_t data)
   {
     switch (kBusMode)
     {
@@ -249,24 +231,24 @@ class St7066u : public St7066uInterface
 
   // Clears all characters on the display by sending the clear display command
   // to the device.
-  void ClearDisplay() override
+  void ClearDisplay()
   {
     WriteCommand(Command::kClearDisplay);
     Delay(2);  // Clear display operation requires 1.52ms
   }
 
   // @param on Toggles the display on if TRUe.
-  void SetDisplayOn(bool on = true) override
+  void SetDisplayOn(bool on = true)
   {
     WriteCommand(on ? Command::kTurnDisplayOn : Command::kTurnDisplayOff);
   }
 
-  void SetCursorHidden(bool hidden = true) override
+  void SetCursorHidden(bool hidden = true)
   {
     WriteCommand(hidden ? Command::kTurnDisplayOn : Command::kTurnCursorOn);
   }
 
-  void SetCursorDirection(CursorDirection direction) override
+  void SetCursorDirection(CursorDirection direction)
   {
     switch (direction)
     {
@@ -283,7 +265,7 @@ class St7066u : public St7066uInterface
   //
   // @param line Line number to move cursor to.
   // @param pos  Character position to move cursor to.
-  void SetCursorPosition(CursorPosition_t position) override
+  void SetCursorPosition(CursorPosition_t position)
   {
     SJ2_ASSERT_FATAL(position.line_number < 5,
                      "SetCursorPosition() - The driver does not support "
@@ -303,7 +285,7 @@ class St7066u : public St7066uInterface
     WriteCommand(uint8_t(line_address + position.position));
   }
 
-  inline void ResetCursorPosition() override
+  inline void ResetCursorPosition()
   {
     WriteCommand(Command::kResetCursor);
     Delay(2);  // requires 1.52ms
@@ -314,7 +296,7 @@ class St7066u : public St7066uInterface
   // @param text     String to write on the display.
   // @param position Position to start writing the characters
   void DisplayText(const char * text,
-                   CursorPosition_t position = kDefaultCursorPosition) override
+                   CursorPosition_t position = kDefaultCursorPosition)
   {
     constexpr uint8_t kMaxDisplayWidth = 20;
     const uint8_t kStartOffset         = position.position;
@@ -343,3 +325,4 @@ class St7066u : public St7066uInterface
   const FontStyle kFontStyle;
   const ControlPins_t & kControlPins;
 };
+}  // namespace sjsu

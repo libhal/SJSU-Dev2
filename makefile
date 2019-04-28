@@ -49,10 +49,12 @@ LD_LIBRARY_PATH := $(LD_LIBRARY_PATH):$(SJCLANG)/../lib/
 # ============================
 # User Flags
 # ============================
-# Allow settiing a project name from the environment, default to firmware.
+# Allow setting a project name from the environment, default to firmware.
 # Only affects the name of the generated binary.
 # TODO(#82): Set this from the directory this makefile is stored in
-PROJ    ?= firmware
+PROJ     ?= firmware
+# Allow user to change which platform they are building for
+PLATFORM ?= lpc40xx
 # Specifies which entity in the DBC your application will represent.
 # The example below will generate a DBC where this particular application is
 # the NAVIGATION entity on the CANBUS.
@@ -191,7 +193,7 @@ endif
 CORE_STATIC_LIBRARY = $(OBJECT_DIR)/libsjsudev2.a
 LIBRARIES ?=
 
-define BUILD_LIRBARY =
+define BUILD_LIRBARY
 
 LIBRARIES += $(STATIC_LIB_DIR)/$(1).a
 
@@ -218,6 +220,10 @@ TESTS ?=
 # This also includes any source AND test to be tested.
 # MUST NOT contain source files that contain a "main()" implementation
 USER_TESTS ?=
+# Set of common flags to build software
+COMMON_FLAGS ?=
+# List of folder or files that should be excluded from lint analysis
+LINT_FILTER ?=
 # Include a project specific makefile. Using -include to keep make form exiting
 # if the project.mk file does not exist.
 -include project.mk
@@ -242,8 +248,6 @@ OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 # ===========================
 # Compilation Flags
 # ===========================
-CORTEX_M4F = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
-			       -fabi-version=0 -mtpcs-frame -mtpcs-leaf-frame
 OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
             -fno-exceptions -fno-omit-frame-pointer \
             -fasynchronous-unwind-tables
@@ -256,19 +260,20 @@ WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wsuggest-final-methods $(WARNINGS_ARE_ERRORS)
 CPPWARNINGS = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
               -Wuseless-cast $(WARNINGS_ARE_ERRORS)
-DEFINES   = -DARM_MATH_CM4=1 -D__FPU_PRESENT=1U -DELF_FILE=\"$(EXECUTABLE)\"
+DEFINES   = -D ARM_MATH_CM4=1 -D ELF_FILE=\"$(EXECUTABLE)\" \
+            -D PLATFORM=$(PLATFORM) -D __FPU_PRESENT=1U
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # Combine all of the flags together
-COMMON_FLAGS = $(CORTEX_M4F) $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
+COMMON_FLAGS += $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
                $(DISABLED_WARNINGS) -fdiagnostics-color
 # Add the last touch for object files
 CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
 LINKFLAGS = $(COMMON_FLAGS) -T $(LINKER) -specs=nano.specs \
-						-Wl,--gc-sections -Wl,-Map,"$(MAP)" \
+						-Wl,--gc-sections -Wl,-Map,"$(MAP)"
 
 # Enable specific flags for building a bootloader
 ifeq ($(MAKECMDGOALS), bootloader)
-LINKER = $(LIB_DIR)/LPC4078_bootloader.ld
+LINKER = $(LIB_DIR)/L0_Platform/$(PLATFORM)/bootloader.ld
 CFLAGS_COMMON += -D TARGET=Bootloader
 endif
 # NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
@@ -278,7 +283,7 @@ endif
 # etc and if so, this ifeq will become true
 ifeq ($(MAKECMDGOALS), $(filter \
 			$(MAKECMDGOALS), application flash build cleaninstall))
-LINKER = $(LIB_DIR)/LPC4078_application.ld
+LINKER = $(LIB_DIR)/L0_Platform/$(PLATFORM)/application.ld
 CFLAGS_COMMON += -D TARGET=Application
 endif
 
@@ -313,9 +318,8 @@ endif
 # Files to ignore in the linting and tidy process
 FILE_EXCLUDES = grep -v  \
 				-e "$(LIB_DIR)/third_party/" \
-				-e "$(LIB_DIR)/L0_LowLevel/SystemFiles" \
-				-e "$(LIB_DIR)/L0_LowLevel/LPC40xx.h" \
-				-e "$(LIB_DIR)/L0_LowLevel/FreeRTOSConfig.h"
+				$(addprefix -e ,$(LINT_FILTER))
+
 # Find all files within the firmware directory to be evaluated
 LINT_FILES  = $(shell find $(FIRMWARE_DIR) \
                       -name "*.h"   -o \

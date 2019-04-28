@@ -4,12 +4,14 @@
 #include <cstdint>
 
 #include "config.hpp"
-#include "L1_Drivers/gpio.hpp"
-#include "L1_Drivers/spi.hpp"
+#include "L1_Peripheral/gpio.hpp"
+#include "L1_Peripheral/spi.hpp"
 #include "L2_HAL/displays/pixel_display.hpp"
 #include "utility/log.hpp"
 
-class Ssd1306 : public PixelDisplayInterface
+namespace sjsu
+{
+class Ssd1306 final : public PixelDisplay
 {
  public:
   static constexpr size_t kColumns      = 128;
@@ -25,37 +27,20 @@ class Ssd1306 : public PixelDisplayInterface
     kData    = 1
   };
 
-  constexpr Ssd1306()
-      : ssp_(&ssp1_),
-        cs_(&cs_gpio_),
-        dc_(&dc_gpio_),
-        ssp1_(Spi::Bus::kSpi1),
-        cs_gpio_(1, 22),
-        dc_gpio_(1, 25),
-        bitmap_{}
+  constexpr Ssd1306(sjsu::Spi & ssp, sjsu::Gpio & cs, sjsu::Gpio & dc)
+      : ssp_(ssp), cs_(cs), dc_(dc), bitmap_{}
   {
   }
 
-  constexpr Ssd1306(Spi * ssp, Gpio * cs, Gpio * dc)
-      : ssp_(ssp),
-        cs_(cs),
-        dc_(dc),
-        ssp1_(Spi::Bus::kSpi1),  // not used
-        cs_gpio_(1, 22),
-        dc_gpio_(1, 25),
-        bitmap_{}
-  {
-  }
-
-  size_t GetWidth() final override
+  size_t GetWidth() override
   {
     return kWidth;
   }
-  size_t GetHeight() final override
+  size_t GetHeight() override
   {
     return kHeight;
   }
-  Color_t AvailableColors() final override
+  Color_t AvailableColors() override
   {
     return Color_t(/* Red        = */ 1,
                    /* Green      = */ 1,
@@ -67,8 +52,8 @@ class Ssd1306 : public PixelDisplayInterface
 
   void Write(uint32_t data, Transaction transaction, size_t size = 1)
   {
-    dc_->Set(static_cast<Gpio::State>(transaction));
-    cs_->SetLow();
+    dc_.Set(static_cast<sjsu::Gpio::State>(transaction));
+    cs_.Set(sjsu::Gpio::State::kLow);
     for (size_t i = 0; i < size; i++)
     {
       uint8_t send = static_cast<uint8_t>(data >> (((size - 1) - i) * 8));
@@ -76,9 +61,9 @@ class Ssd1306 : public PixelDisplayInterface
       {
         LOG_DEBUG("send = 0x%X", send);
       }
-      ssp_->Transfer(send);
+      ssp_.Transfer(send);
     }
-    cs_->SetHigh();
+    cs_.Set(sjsu::Gpio::State::kHigh);
   }
 
   void InitializationPanel()
@@ -136,18 +121,18 @@ class Ssd1306 : public PixelDisplayInterface
     Write(0xAF, Transaction::kCommand);
   }
 
-  void Initialize() final override
+  void Initialize() override
   {
-    cs_->SetAsOutput();
-    dc_->SetAsOutput();
-    cs_->SetHigh();
-    dc_->SetHigh();
+    cs_.SetDirection(sjsu::Gpio::Direction::kOutput);
+    dc_.SetDirection(sjsu::Gpio::Direction::kOutput);
+    cs_.Set(sjsu::Gpio::State::kHigh);
+    dc_.Set(sjsu::Gpio::State::kHigh);
 
-    ssp_->SetPeripheralMode(Spi::MasterSlaveMode::kMaster,
-                            Spi::DataSize::kEight);
+    ssp_.SetPeripheralMode(sjsu::Spi::MasterSlaveMode::kMaster,
+                           sjsu::Spi::DataSize::kEight);
     // Set speed to 1Mhz by dividing by 1 * ClockFrequencyInMHz.
-    ssp_->SetClock(false, false, 1, config::kSystemClockRateMhz / 3);
-    ssp_->Initialize();
+    ssp_.SetClock(false, false, 1, config::kSystemClockRateMhz / 3);
+    ssp_.Initialize();
 
     Clear();
     InitializationPanel();
@@ -168,7 +153,7 @@ class Ssd1306 : public PixelDisplayInterface
     Write(0x22'00'07, Transaction::kCommand, 3);
   }
   /// Clears the internal bitmap_ to zero (or a user defined clear_value)
-  void Clear() final override
+  void Clear() override
   {
     memset(bitmap_, 0x00, sizeof(bitmap_));
   }
@@ -176,7 +161,7 @@ class Ssd1306 : public PixelDisplayInterface
   {
     memset(bitmap_, 0xFF, sizeof(bitmap_));
   }
-  void DrawPixel(int32_t x, int32_t y, Color_t color) final override
+  void DrawPixel(int32_t x, int32_t y, Color_t color) override
   {
     // The 3 least significant bits hold the bit position within the byte
     uint32_t bit_position = y & 0b111;
@@ -197,7 +182,7 @@ class Ssd1306 : public PixelDisplayInterface
     *pixel_column = static_cast<uint8_t>(result);
   }
   /// Writes internal bitmap_ to the screen
-  void Update() final override
+  void Update() override
   {
     SetHorizontalAddressMode();
     for (size_t row = 0; row < kRows; row++)
@@ -218,12 +203,10 @@ class Ssd1306 : public PixelDisplayInterface
   }
 
  private:
-  Spi * ssp_;
-  Gpio * cs_;
-  Gpio * dc_;
+  sjsu::Spi & ssp_;
+  sjsu::Gpio & cs_;
+  sjsu::Gpio & dc_;
 
-  Spi ssp1_;
-  Gpio cs_gpio_;
-  Gpio dc_gpio_;
   uint8_t bitmap_[kRows + 5][kColumns + 5];
 };
+}  // namespace sjsu
