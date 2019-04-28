@@ -196,11 +196,11 @@ class St7066u
   }
 
   // @param command 8-bit command to send.
-  inline void WriteCommand(Command command)
+  [[gnu::always_inline]] void WriteCommand(Command command)
   {
     WriteCommand(static_cast<uint8_t>(command));
   }
-  void WriteCommand(uint8_t command)
+  virtual void WriteCommand(uint8_t command)
   {
     switch (kBusMode)
     {
@@ -217,7 +217,7 @@ class St7066u
   // Writes a byte to the current cursor address position.
   //
   // @param data Byte to send to device.
-  void WriteData(uint8_t data)
+  virtual void WriteData(uint8_t data)
   {
     switch (kBusMode)
     {
@@ -231,24 +231,24 @@ class St7066u
 
   // Clears all characters on the display by sending the clear display command
   // to the device.
-  void ClearDisplay()
+  virtual void ClearDisplay()
   {
     WriteCommand(Command::kClearDisplay);
     sjsu::Delay(2);  // Clear display operation requires 1.52ms
   }
 
   // @param on Toggles the display on if TRUe.
-  void SetDisplayOn(bool on = true)
+  virtual void SetDisplayOn(bool on = true)
   {
     WriteCommand(on ? Command::kTurnDisplayOn : Command::kTurnDisplayOff);
   }
 
-  void SetCursorHidden(bool hidden = true)
+  virtual void SetCursorHidden(bool hidden = true)
   {
     WriteCommand(hidden ? Command::kTurnDisplayOn : Command::kTurnCursorOn);
   }
 
-  void SetCursorDirection(CursorDirection direction)
+  virtual void SetCursorDirection(CursorDirection direction)
   {
     switch (direction)
     {
@@ -265,7 +265,7 @@ class St7066u
   //
   // @param line Line number to move cursor to.
   // @param pos  Character position to move cursor to.
-  void SetCursorPosition(CursorPosition_t position)
+  virtual void SetCursorPosition(CursorPosition_t position)
   {
     SJ2_ASSERT_FATAL(position.line_number < 5,
                      "SetCursorPosition() - The driver does not support "
@@ -285,7 +285,7 @@ class St7066u
     WriteCommand(uint8_t(line_address + position.position));
   }
 
-  inline void ResetCursorPosition()
+  [[gnu::always_inline]] virtual void ResetCursorPosition()
   {
     WriteCommand(Command::kResetCursor);
     sjsu::Delay(2);  // requires 1.52ms
@@ -295,7 +295,7 @@ class St7066u
   //
   // @param text     String to write on the display.
   // @param position Position to start writing the characters
-  void DisplayText(const char * text,
+  virtual void DisplayText(const char * text,
                    CursorPosition_t position = kDefaultCursorPosition)
   {
     constexpr uint8_t kMaxDisplayWidth = 20;

@@ -10,13 +10,12 @@
 #include <diskio.h> /* Declarations of disk functions */
 #include <ff.h>     /* Obtains integer types */
 
-#include "L2_HAL/memory/sd.hpp"
+#include "L2_HAL/boards/sjtwo.hpp"
 
 /* Definitions of physical drive number for each drive */
 #define DEV_SD 0 /* Example: Map SD Card to physical drive 0 */
 namespace
 {
-sjsu::SdInterface * sd_card;
 bool initialized = false;
 }  // namespace
 
@@ -45,13 +44,10 @@ extern "C" DSTATUS disk_status([[maybe_unused]] BYTE drive_number)
 // NOLINTNEXTLINE
 extern "C" DSTATUS disk_initialize([[maybe_unused]] BYTE drive_number)
 {
-  static sjsu::Sd sd_card_object(sjsu::Sd::DebugSdCard_t{});
-  sd_card = &sd_card_object;
-
   LOG_DEBUG("DISK INIT!");
-  sd_card->Initialize();
+  sjtwo::SdCard().Initialize();
   sjsu::Sd::CardInfo_t card_info;
-  DSTATUS status = sd_card->Mount(&card_info) ? 0 : STA_NOINIT;
+  DSTATUS status = sjtwo::SdCard().Mount(&card_info) ? 0 : STA_NOINIT;
   if (status == 0)
   {
     initialized = true;
@@ -66,7 +62,7 @@ extern "C" DRESULT disk_read([[maybe_unused]] BYTE drive_number, BYTE * buffer,
   LOG_DEBUG("drive_number: %u :: sector: %ld :: count: %u", drive_number,
             sector, count);
 
-  sd_card->ReadBlock(sector, buffer, static_cast<uint32_t>(count));
+  sjtwo::SdCard().ReadBlock(sector, buffer, static_cast<uint32_t>(count));
   return RES_OK;
 }
 
@@ -77,7 +73,7 @@ extern "C" DRESULT disk_write([[maybe_unused]] BYTE drive_number,
 {
   LOG_DEBUG("drive_number: %u :: sector: %ld :: count: %u", drive_number,
             sector, count);
-  sd_card->WriteBlock(sector, buffer, static_cast<uint32_t>(count));
+  sjtwo::SdCard().WriteBlock(sector, buffer, static_cast<uint32_t>(count));
   return RES_OK;
 }
 

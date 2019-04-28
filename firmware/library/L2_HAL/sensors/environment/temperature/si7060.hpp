@@ -1,6 +1,6 @@
 #pragma once
 
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
+#include "L1_Peripheral/i2c.hpp"
 #include "L2_HAL/sensors/environment/temperature.hpp"
 #include "utility/bit.hpp"
 
@@ -9,24 +9,25 @@ namespace sjsu
 class Si7060 : public Temperature
 {
  public:
-  static constexpr uint8_t kDeviceAddress           = 0x31;
+  static constexpr uint8_t kDefaultAddress          = 0x31;
   static constexpr uint8_t kIdRegister              = 0xC0;
   static constexpr uint8_t kExpectedSensorId        = 0x14;
   static constexpr uint8_t kOneBurstRegister        = 0xC4;
   static constexpr uint8_t kAutonicBitRegister      = 0xC5;
   static constexpr uint8_t kMostSignificantRegister = 0xC1;
 
-  constexpr Si7060() : i2c_(&lpc40xx_i2c_) {}
-
-  explicit Si7060(sjsu::I2c * lpc40xx_i2c_select) : i2c_(lpc40xx_i2c_select) {}
+  explicit Si7060(I2c & i2c, uint8_t address = kDefaultAddress)
+      : i2c_(i2c), address_(address)
+  {
+  }
 
   bool Initialize() override
   {
-    i2c_->Initialize();
+    i2c_.Initialize();
     uint8_t temperature_sensor_id_register;
     // is the same as the Base ID (0x14).
-    i2c_->WriteThenRead(kDeviceAddress, { kIdRegister },
-                        &temperature_sensor_id_register, 1);
+    i2c_.WriteThenRead(address_, { kIdRegister },
+                       &temperature_sensor_id_register, 1);
     return (temperature_sensor_id_register == kExpectedSensorId);
   }
 
@@ -36,12 +37,12 @@ class Si7060 : public Temperature
     uint8_t least_significant_register;
     // The register will enable the device to collect data once
     // and automatically sets the stop bit to 0 (2nd bit).
-    i2c_->Write(kDeviceAddress, { kOneBurstRegister, 0x04 }, 2);
+    i2c_.Write(address_, { kOneBurstRegister, 0x04 }, 2);
     // Auto increments I2c register address pointer.
-    i2c_->Write(kDeviceAddress, { kAutonicBitRegister, 0x01 }, 2);
-    i2c_->WriteThenRead(kDeviceAddress, { kMostSignificantRegister },
-                        &most_significant_register, 1);
-    i2c_->Read(kDeviceAddress, &least_significant_register, 1);
+    i2c_.Write(address_, { kAutonicBitRegister, 0x01 }, 2);
+    i2c_.WriteThenRead(address_, { kMostSignificantRegister },
+                       &most_significant_register, 1);
+    i2c_.Read(address_, &least_significant_register, 1);
 
     uint32_t temperature_data = 0;
     // Shift all bits to the 15th bit.
@@ -70,7 +71,7 @@ class Si7060 : public Temperature
   }
 
  private:
-  I2c * i2c_;
-  lpc40xx::I2c lpc40xx_i2c_ = lpc40xx::I2c(lpc40xx::I2c::Bus::kI2c2);
+  const I2c & i2c_;
+  uint8_t address_;
 };
 }  // namespace sjsu

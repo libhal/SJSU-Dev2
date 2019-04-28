@@ -39,7 +39,7 @@ lpc40xx::I2c test_i2c(lpc40xx::I2c::Bus::kI2c0);
 
 TEST_CASE("Testing Device Memory Map", "[device_memory_map]")
 {
-  I2cDevice<&test_i2c, 0x39, device::Endian::kLittle, TestMemoryMap_t> test;
+  I2cDevice<0x39, device::Endian::kLittle, TestMemoryMap_t> test(&test_i2c);
   SECTION("Initialize") {}
 }
 }  // namespace sjsu

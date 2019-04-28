@@ -70,13 +70,13 @@ GestureMemoryMap_t  // APDS-9960
 
 sjsu::lpc40xx::I2c i2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
 
-sjsu::I2cDevice<&i2c, kAccelerometerAddress, sjsu::device::Endian::kBig,
+sjsu::I2cDevice<kAccelerometerAddress, sjsu::device::Endian::kBig,
                 AccelerometerMemoryMap_t>
-    accelerometer;
+    accelerometer(&i2c);
 
-sjsu::I2cDevice<&i2c, kGestureAddress, sjsu::device::Endian::kLittle,
+sjsu::I2cDevice<kGestureAddress, sjsu::device::Endian::kLittle,
                 GestureMemoryMap_t>
-    gesture;
+    gesture(&i2c);
 
 int main()
 {

@@ -4,7 +4,7 @@
 #include <iterator>
 #include <tuple>
 
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
+#include "L1_Peripheral/i2c.hpp"
 #include "L3_Application/commandline.hpp"
 #include "third_party/etl/vector.h"
 #include "utility/log.hpp"
@@ -47,11 +47,13 @@ class I2cCommand : public Command
                 i2c discover
   )";
 
-  I2cCommand() : Command("i2c", kDescription) {}
+  explicit I2cCommand(const I2c & i2c) : Command("i2c", kDescription), i2c_(i2c)
+  {
+  }
 
   void Initialize()
   {
-    i2c_peripheral_.Initialize();
+    i2c_.Initialize();
   }
 
   std::tuple<uint8_t, bool> ParseByte(const char * const kArgument,
@@ -119,7 +121,7 @@ class I2cCommand : public Command
     for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
          address++)
     {
-      if (Status::kSuccess == i2c_->Write(address, nullptr, 0, 50))
+      if (Status::kSuccess == i2c_.Write(address, nullptr, 0, 50))
       {
         AddressString_t address_string;
         snprintf(address_string.str, sizeof(address_string.str), "0x%02X",
@@ -143,8 +145,8 @@ class I2cCommand : public Command
     uint8_t contents[128];
     if (args.length < sizeof(contents))
     {
-      i2c_->WriteThenRead(args.device_address, &args.register_address, 1,
-                          contents, args.length);
+      i2c_.WriteThenRead(args.device_address, &args.register_address, 1,
+                         contents, args.length);
       debug::Hexdump(contents, args.length);
     }
     else
@@ -176,7 +178,7 @@ class I2cCommand : public Command
           std::get<0>(ParseByte(argv[Args::kWriteStartByte + position], 16));
     }
     // subtract 1 since position will overshoot by 1
-    i2c_->Write(args.device_address, payload, position - 1);
+    i2c_.Write(args.device_address, payload, position - 1);
     debug::Hexdump(payload, position - 1);
     return 0;
   }
@@ -264,7 +266,6 @@ class I2cCommand : public Command
   static inline const char * const kI2cOperations[] = { "read", "write",
                                                         "discover", nullptr };
   etl::vector<AddressString_t, command::kAutoCompleteOptions> devices_found_;
-  lpc40xx::I2c i2c_peripheral_ = lpc40xx::I2c(lpc40xx::I2c::Bus::kI2c2);
-  I2c * i2c_                   = &i2c_peripheral_;
+  const I2c & i2c_;
 };
 }  // namespace sjsu
