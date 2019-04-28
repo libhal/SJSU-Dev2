@@ -30,7 +30,7 @@ TEST_CASE("Testing Button", "[button]")
   Gpio & test_gpio = mock_gpio.get();
 
   // Inject test_gpio into button object
-  Button test_subject(&test_gpio);
+  Button test_subject(test_gpio);
 
   SECTION("Initialize")
   {

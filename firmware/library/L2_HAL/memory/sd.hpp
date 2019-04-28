@@ -427,30 +427,9 @@ class Sd final : public SdInterface
   static constexpr CrcTableConfig_t<uint16_t> kCrcTable16 =
       GenerateCrc16Table();
 
-  explicit constexpr Sd(uint8_t port = 1, uint8_t pin = 8)
-      : spi_interface_(&spi_),
-        spi_(sjsu::lpc40xx::Spi::Bus::kSpi2),
-        chip_select_(&chip_select_pin_),
-        chip_select_external_(&chip_select_external_pin_),
-        chip_select_pin_(port, pin),
-        chip_select_external_pin_(5, 3)
-  {
-  }
-
-  /// This version of the constructor will provide you with an external pin and
-  /// port that is broken out through the board's GPIO, allowing you to probe
-  /// the chip select manually. To use this version instead of the main version,
-  /// instantiate an Sd card instance like so:
-  ///
-  ///   Sd sdcard(Sd::DebugSdCard_t{});
-  constexpr Sd(DebugSdCard_t, uint8_t port = 1, uint8_t pin = 8,
-               uint8_t extport = 0, uint8_t extpin = 6)
-      : spi_interface_(&spi_),
-        spi_(sjsu::lpc40xx::Spi::Bus::kSpi2),
-        chip_select_(&chip_select_pin_),
-        chip_select_external_(&chip_select_external_pin_),
-        chip_select_pin_(port, pin),
-        chip_select_external_pin_(extport, extpin)
+  explicit constexpr Sd(const Spi & spi, const Gpio & chip_select)
+      : spi_(spi),
+        chip_select_(chip_select)
   {
   }
 
@@ -458,20 +437,18 @@ class Sd final : public SdInterface
   {
     LOG_DEBUG("Begin initialization:");
     LOG_DEBUG("Setting CS as output...");
-    chip_select_->SetDirection(sjsu::Gpio::Direction::kOutput);
-    chip_select_->Set(sjsu::Gpio::State::kHigh);
-    chip_select_external_->SetDirection(sjsu::Gpio::Direction::kOutput);
-    chip_select_external_->Set(sjsu::Gpio::State::kHigh);
+    chip_select_.SetDirection(Gpio::Direction::kOutput);
+    chip_select_.Set(Gpio::State::kHigh);
 
     LOG_DEBUG("Setting SSP Clock Speed...");
-    spi_interface_->SetClock(false, false, 14, 2);  // 400kHz
+    spi_.SetClock(false, false, 14, 2);  // 400kHz
 
     LOG_DEBUG("Setting Peripheral Mode...");
-    spi_interface_->SetPeripheralMode(Spi::MasterSlaveMode::kMaster,
-                                      Spi::DataSize::kEight);
+    spi_.SetPeripheralMode(Spi::MasterSlaveMode::kMaster,
+                           Spi::DataSize::kEight);
 
     LOG_DEBUG("Starting SSP Peripheral...");
-    spi_interface_->Initialize();
+    spi_.Initialize();
   }
 
   // Initialize SD Card
@@ -504,7 +481,7 @@ class Sd final : public SdInterface
         // amount of tries
         card_is_idle = true;
       }
-      sjsu::Delay(10);
+      Delay(10);
     } while (tries < kBusTimeout && !card_is_idle);
     LOG_DEBUG("%d tries", tries);
     if (tries >= kBusTimeout)
@@ -630,7 +607,7 @@ class Sd final : public SdInterface
     uint8_t wait_byte = 0x00;
     do
     {
-      wait_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
+      wait_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
     } while (wait_byte != 0xFE && (wait_byte & 0xE0) != 0x00);
 
     // DEBUG: Check the value of the wait byte
@@ -661,7 +638,7 @@ class Sd final : public SdInterface
     LOG_DEBUG("Card is busy. Waiting for it to finish...");
     do
     {
-      busy_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
+      busy_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
     } while (busy_byte != 0xFF);
     LOG_DEBUG("Card finished!");
   }
@@ -723,17 +700,15 @@ class Sd final : public SdInterface
               static_cast<uint16_t>(block_addr_offset + byte_count);
 
           // Transfer a byte to read a block from the SD card
-          array[storage_index] =
-              static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
+          array[storage_index] = static_cast<uint8_t>(spi_.Transfer(0xFF));
 
           // Copy that byte into our temporary block store
           block_store[byte_count] = array[storage_index];
         }
 
         // Then read the block's 16-bit CRC (i.e. read two bytes)
-        uint16_t block_crc =
-            static_cast<uint16_t>((spi_interface_->Transfer(0xFF) << 8) |
-                                  spi_interface_->Transfer(0xFF));
+        uint16_t block_crc = static_cast<uint16_t>((spi_.Transfer(0xFF) << 8) |
+                                                   spi_.Transfer(0xFF));
 
         // Run a CRC-16 calculation on the message to determine if the
         // received CRCs match (i.e. checks if the block data is
@@ -842,19 +817,18 @@ class Sd final : public SdInterface
         uint64_t arr_offset = current_block_num * kBlockSize;
 
         // Send the start token for the current block
-        spi_interface_->Transfer(write_start_tkn);
+        spi_.Transfer(write_start_tkn);
 
         // Write all 512-bytes of the given block
         LOG_DEBUG("Writing block #%d", current_block_num);
         for (uint16_t current_byte = 0; current_byte < kBlockSize;
              current_byte++)
         {
-          spi_interface_->Transfer(array[arr_offset + current_byte]);
+          spi_.Transfer(array[arr_offset + current_byte]);
         }
 
         // Read the data response token after writing the block
-        uint8_t data_response_tkn =
-            static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
+        uint8_t data_response_tkn = static_cast<uint8_t>(spi_.Transfer(0xFF));
         LOG_DEBUG("Response Byte");
         LOG_DEBUG("[Data Response Token: 0x%02X]", data_response_tkn);
         LOG_DEBUG("Data Accepted?: %s", ToBool(data_response_tkn & 0x05));
@@ -891,7 +865,7 @@ class Sd final : public SdInterface
       if (blocks > 1)
       {
         constexpr uint8_t kStopToken = 0xFD;
-        spi_interface_->Transfer(kStopToken);
+        spi_.Transfer(kStopToken);
 
         // Wait for the card's programming to complete before
         // reselecting it (i.e. to prevent corruption)
@@ -1029,35 +1003,34 @@ class Sd final : public SdInterface
     }
 
     // Select the SD Card
-    chip_select_->Set(sjsu::Gpio::State::kLow);
-    chip_select_external_->Set(sjsu::Gpio::State::kLow);
+    chip_select_.Set(Gpio::State::kLow);
 
     // If desired, wait a bit before talking
     if (delay > 0)
     {
-      sjsu::Delay(delay);
+      Delay(delay);
     }
 
     // Send the desired command frame to the SD card board
     // Begin by transfering the command byte
-    spi_interface_->Transfer(static_cast<uint16_t>(sdc));
+    spi_.Transfer(static_cast<uint16_t>(sdc));
     // Send arg byte [31:24]
-    spi_interface_->Transfer(static_cast<uint16_t>(arg >> 24) & 0xFF);
+    spi_.Transfer(static_cast<uint16_t>(arg >> 24) & 0xFF);
     // Send arg byte [23:16]
-    spi_interface_->Transfer(static_cast<uint16_t>(arg >> 16) & 0xFF);
+    spi_.Transfer(static_cast<uint16_t>(arg >> 16) & 0xFF);
     // Send arg byte [15:8]
-    spi_interface_->Transfer(static_cast<uint16_t>(arg >> 8) & 0xFF);
+    spi_.Transfer(static_cast<uint16_t>(arg >> 8) & 0xFF);
     // Send arg byte [7:0]
-    spi_interface_->Transfer(static_cast<uint16_t>(arg >> 0) & 0xFF);
+    spi_.Transfer(static_cast<uint16_t>(arg >> 0) & 0xFF);
     // Send 7-bit CRC and LSB stop addr (as b1)
-    spi_interface_->Transfer(static_cast<uint16_t>(crc << 1) | 0x01);
+    spi_.Transfer(static_cast<uint16_t>(crc << 1) | 0x01);
 
     // Write garbage while waiting for a response
     // Send at least 1 byte of garbage before checking for a response
-    temp_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
+    temp_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
     while (tries++ < kBusTimeout)
     {
-      temp_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
+      temp_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
       if (temp_byte != 0xFF)
       {
         // Determine the offset, since the first byte of a
@@ -1095,7 +1068,7 @@ class Sd final : public SdInterface
       // Make space for the next byte
       temp_response = temp_response << 8;
       temp_response |= temp_byte;
-      temp_byte = static_cast<uint8_t>(spi_interface_->Transfer(0xFF));
+      temp_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
     }
     // Compensate for the bit offset
     temp_response = temp_response >> bit_offset;
@@ -1114,8 +1087,7 @@ class Sd final : public SdInterface
     if (keep_alive == KeepAlive::kNo)
     {
       // Deselect the SPI comm board
-      chip_select_->Set(sjsu::Gpio::State::kHigh);
-      chip_select_external_->Set(sjsu::Gpio::State::kHigh);
+      chip_select_.Set(Gpio::State::kHigh);
     }
     return res_len;
   }
@@ -1155,16 +1127,8 @@ class Sd final : public SdInterface
 
  private:
   /// @description     the object reference to use when using SSP/SPI
-  sjsu::Spi * spi_interface_;
-  /// @description     this SdInterface's instance of Spi/SPI
-  sjsu::lpc40xx::Spi spi_;
+  const Spi & spi_;
   /// @description     the object reference to use when using CS (GPIO)
-  sjsu::Gpio * chip_select_;
-  /// @description     the object reference to use when using CS (GPIO)
-  sjsu::Gpio * chip_select_external_;
-  /// @description     this SdInterface's instance of the GPIO chip select
-  sjsu::lpc40xx::Gpio chip_select_pin_;
-  /// @description     this SdInterface's instance of the GPIO chip select
-  sjsu::lpc40xx::Gpio chip_select_external_pin_;
+  const Gpio & chip_select_;
 };
 }  // namespace sjsu

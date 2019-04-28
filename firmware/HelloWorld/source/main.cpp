@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <iterator>
 
-#include "L2_HAL/displays/led/onboard_led.hpp"
+#include "L2_HAL/boards/sjtwo.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
@@ -11,16 +11,14 @@ int main()
 {
   LOG_INFO("Staring Hello World Application");
   LOG_INFO("Initializing LEDs...");
-  sjsu::OnBoardLed leds;
-  leds.Initialize();
+  sjtwo::Leds().Initialize();
   LOG_INFO("LEDs Initialized!");
-
   while (true)
   {
     for (uint8_t i = 0; i < 16; i++)
     {
       LOG_INFO("Hello World 0x%X", i);
-      leds.SetAll(i);
+      sjtwo::Leds().SetAll(i);
       sjsu::Delay(500);
     }
   }
