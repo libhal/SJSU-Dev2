@@ -8,10 +8,12 @@
 
 #include <cstdint>
 
-#include "L1_Drivers/gpio.hpp"
+#include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "utility/log.hpp"
 
-class OnBoardLedInterface
+namespace sjsu
+{
+class OnBoardLed
 {
  public:
   enum class LightState : bool
@@ -19,21 +21,9 @@ class OnBoardLedInterface
     kOn  = true,
     kOff = false
   };
-  virtual void Initialize()                              = 0;
-  virtual void On(uint8_t led_number)                    = 0;
-  virtual void Off(uint8_t led_number)                   = 0;
-  virtual void Set(uint8_t led_number, LightState state) = 0;
-  virtual void Toggle(uint8_t led_number)                = 0;
-  virtual void SetAll(uint8_t value)                     = 0;
-  virtual uint8_t GetStates(void)                        = 0;
-};
-
-class OnBoardLed final : public OnBoardLedInterface
-{
- public:
   // Initialize takes the array of Gpios, sets each one to an output, and
   // then turns off all of the leds by setting the output high.
-  void Initialize(void) override
+  void Initialize()
   {
     for (uint8_t i = 0; i < 4; i++)
     {
@@ -42,7 +32,7 @@ class OnBoardLed final : public OnBoardLedInterface
     }
   }
 
-  void On(uint8_t led_number) override
+  void On(uint8_t led_number)
   {
     SJ2_ASSERT_FATAL(led_number < 4,
                      "Input Led number can't be greater than 3, input = %d.\n",
@@ -50,7 +40,7 @@ class OnBoardLed final : public OnBoardLedInterface
     led[led_number].SetLow();
   }
 
-  void Off(uint8_t led_number) override
+  void Off(uint8_t led_number)
   {
     SJ2_ASSERT_FATAL(led_number < 4,
                      "Input Led number can't be greater than 3, input = %d.\n",
@@ -58,8 +48,7 @@ class OnBoardLed final : public OnBoardLedInterface
     led[led_number].SetHigh();
   }
 
-  void Set(uint8_t led_number,
-           OnBoardLedInterface::LightState state = LightState::kOn) override
+  void Set(uint8_t led_number, LightState state = LightState::kOn)
   {
     SJ2_ASSERT_FATAL(led_number < 4,
                      "Input Led number can't be greater than 3, input = %d.\n",
@@ -74,7 +63,7 @@ class OnBoardLed final : public OnBoardLedInterface
     }
   }
 
-  void Toggle(uint8_t led_number) override
+  void Toggle(uint8_t led_number)
   {
     SJ2_ASSERT_FATAL(led_number < 4,
                      "Input Led number can't be greater than 3, input = %d.\n",
@@ -86,7 +75,7 @@ class OnBoardLed final : public OnBoardLedInterface
   // the led to be ON or OFF. The least significant bit corresponds to LED0,
   // next least significant corresponds to LED1, etc. ON =1, OFF =0. The four
   // most significant bits will be unused.
-  void SetAll(uint8_t value) override
+  void SetAll(uint8_t value)
   {
     for (uint8_t i = 0; i < 4; i++)
     {
@@ -103,7 +92,7 @@ class OnBoardLed final : public OnBoardLedInterface
   // This function will return the states of LED0-LED3, going from bit 0
   // represnting LED 0, to bit 3 representing LED3. Only the four least
   // significant bits will be used. The four most significant bits will be 0s.
-  uint8_t GetStates(void) override
+  uint8_t GetStates()
   {
     uint32_t led_states = 0x0000;
     for (uint8_t i = 0; i < 4; i++)
@@ -114,5 +103,11 @@ class OnBoardLed final : public OnBoardLedInterface
   }
 
  protected:
-  Gpio led[4] = { Gpio(2, 3), Gpio(1, 26), Gpio(1, 24), Gpio(1, 18) };
+  sjsu::lpc40xx::Gpio led[4] = {
+    sjsu::lpc40xx::Gpio(2, 3),
+    sjsu::lpc40xx::Gpio(1, 26),
+    sjsu::lpc40xx::Gpio(1, 24),
+    sjsu::lpc40xx::Gpio(1, 18),
+  };
 };
+}  // namespace sjsu

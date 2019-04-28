@@ -7,8 +7,8 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L0_LowLevel/ram.hpp"
-#include "L1_Drivers/uart.hpp"
+#include "L0_Platform/lpc40xx/ram.hpp"
+#include "L1_Peripheral/lpc40xx/uart.hpp"
 #include "utility/macros.hpp"
 
 #if defined(HOST_TEST)
@@ -28,12 +28,12 @@ Stdin in   = HostRead;
 #else
 int FirmwareStdOut(int data)
 {
-  uart0.Send(static_cast<uint8_t>(data));
+  sjsu::lpc40xx::uart0.Send(static_cast<uint8_t>(data));
   return 1;
 }
 int FirmwareStdIn()
 {
-  return static_cast<int>(uart0.Receive());
+  return static_cast<int>(sjsu::lpc40xx::uart0.Receive());
 }
 Stdout out = FirmwareStdOut;
 Stdin in   = FirmwareStdIn;

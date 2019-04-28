@@ -16,14 +16,14 @@ their same level, sources within utility, and 1 level below themselves.
 
 Explanation
 ++++++++++++
-This approach is meant to keep a levels of isolation between the categories of files. For example, lets take L1_Drivers
+This approach is meant to keep a levels of isolation between the categories of files. For example, lets take L1_Peripheral
 
-L1_Drivers contains platform specific peripheral drivers. Typically these
+L1_Peripheral contains platform specific peripheral drivers. Typically these
 drivers need to understand the memory map of the platform they are on, thus
-they must include files from L0_LowLevel. A driver may need to utilize other
-drivers within the L1_Drivers directory, thus inclusion across files within L1_Drivers is permitted.
+they must include files from L0_Platform. A driver may need to utilize other
+drivers within the L1_Peripheral directory, thus inclusion across files within L1_Peripheral is permitted.
 
-L1_Drivers, under any normal circumstances, should NOT include files above
+L1_Peripheral, under any normal circumstances, should NOT include files above
 Level 1, as this could result in circular dependencies and/or coupling between
 L1 and higher level files.
 

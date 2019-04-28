@@ -2,16 +2,18 @@
 
 #include <cstdint>
 
-#include "L1_Drivers/gpio.hpp"
+#include "L1_Peripheral/lpc40xx/gpio.hpp"
 
+namespace sjsu
+{
 class ButtonInterface
 {
  public:
-  virtual void Initialize(void)                                     = 0;
-  virtual bool Released(void)                                       = 0;
-  virtual bool Pressed(void)                                        = 0;
-  virtual void ResetState(void)                                     = 0;
-  virtual GpioInterface & GetGpio()                                 = 0;
+  virtual void Initialize(void)  = 0;
+  virtual bool Released(void)    = 0;
+  virtual bool Pressed(void)     = 0;
+  virtual void ResetState(void)  = 0;
+  virtual sjsu::Gpio & GetGpio() = 0;
 };
 
 class Button : public ButtonInterface
@@ -24,7 +26,7 @@ class Button : public ButtonInterface
         was_released_(false)
   {
   }
-  constexpr explicit Button(GpioInterface * button)
+  constexpr explicit Button(sjsu::Gpio * button)
       : button_(button),
         button_gpio_(0, 0),
         was_pressed_(false),
@@ -35,7 +37,7 @@ class Button : public ButtonInterface
   void Initialize(void) override
   {
     button_->SetDirection(Gpio::Direction::kInput);
-    button_->GetPin().SetMode(PinInterface::Mode::kPullDown);
+    button_->GetPin().SetMode(sjsu::Pin::Mode::kPullDown);
   }
   bool Released(void) override
   {
@@ -72,14 +74,15 @@ class Button : public ButtonInterface
     was_pressed_  = false;
     was_released_ = false;
   }
-  GpioInterface & GetGpio() override
+  sjsu::Gpio & GetGpio() override
   {
     return *button_;
   }
 
  private:
-  GpioInterface * button_;
-  Gpio button_gpio_;
+  sjsu::Gpio * button_;
+  sjsu::lpc40xx::Gpio button_gpio_;
   bool was_pressed_;
   bool was_released_;
 };
+}  // namespace sjsu

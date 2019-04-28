@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <iterator>
 
-#include "L1_Drivers/uart.hpp"
+#include "L1_Peripheral/lpc40xx/uart.hpp"
 #include "third_party/etl/vector.h"
 #include "third_party/microrl/microrl.h"
 #include "utility/log.hpp"
@@ -132,7 +132,7 @@ inline void Print(const char * str)
 ///     Command command_one("one", "first command", SomeFunction);
 ///     CommandList_t<16> command_list; // Can hold 16 commands total, must be
 ///                                   // global/static storage.
-///     int main(void)
+///     int main()
 ///     {
 ///       CommandLine<command_list> command_line; // Create CommandLine Object
 ///       command_line.AddCommand(&command_one); // Add a command
@@ -199,7 +199,7 @@ class CommandLine
     while (is_commandline_running)
     {
       // Get char from stdin (uart) and send to microrl lib
-      microrl_insert_char(&rl_, uart0.Receive());
+      microrl_insert_char(&rl_, sjsu::lpc40xx::uart0.Receive());
     }
   }
 

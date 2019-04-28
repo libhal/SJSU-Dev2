@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <type_traits>
 
-#include "L1_Drivers/i2c.hpp"
+#include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
 
@@ -54,7 +54,9 @@ Register_t
   }
   MEMORY_OPERATION(|);
   MEMORY_OPERATION(&);
+  // clang-format off
   MEMORY_OPERATION(^);
+  // clang-format on
   MEMORY_OPERATION(+);
   MEMORY_OPERATION(-);
   MEMORY_OPERATION(*);
@@ -111,7 +113,9 @@ Reserved_t
   }
   RESERVED_OPERATION(|);
   RESERVED_OPERATION(&);
+  // clang-format off
   RESERVED_OPERATION(^);
+  // clang-format on
   RESERVED_OPERATION(+);
   RESERVED_OPERATION(-);
   RESERVED_OPERATION(*);
@@ -220,7 +224,8 @@ class Device
   }
 };
 
-template <I2c * i2c, const uint8_t kDeviceAddress, device::Endian endianess,
+template <const sjsu::lpc40xx::I2c * i2c, const uint8_t kDeviceAddress,
+          device::Endian endianess,
           template <device::Endian endian, WriteFnt write, ReadFnt read>
           class MemoryMap>
 class I2cDevice

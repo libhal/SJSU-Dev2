@@ -5,7 +5,7 @@ Sphere of inclusion
 --------------------
 
 * May include from:
-    * L1_Drivers/
+    * L1_Peripheral/
     * L2_HAL/
     * Utility/
 

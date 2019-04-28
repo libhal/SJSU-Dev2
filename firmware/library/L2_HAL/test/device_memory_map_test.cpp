@@ -1,8 +1,10 @@
 #include "L2_HAL/device_memory_map.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
-namespace {
-
+namespace sjsu
+{
+namespace
+{
 template <device::Endian endianess, WriteFnt write, ReadFnt read>
 SJ2_PACKED(struct)
 TestMemoryMap_t
@@ -14,8 +16,7 @@ TestMemoryMap_t
   using Array = device::Array_t<Int, kLength, write, read>;
 
   Register<uint8_t> register0;
-  union
-  {
+  union {
     Array<uint8_t, 6> union_register;
     struct
     {
@@ -32,14 +33,13 @@ TestMemoryMap_t
   Array<uint32_t, 4> array_0;
 };
 
-I2c test_i2c(I2c::Bus::kI2c0);
+lpc40xx::I2c test_i2c(lpc40xx::I2c::Bus::kI2c0);
 
 }  // namespace
 
 TEST_CASE("Testing Device Memory Map", "[device_memory_map]")
 {
   I2cDevice<&test_i2c, 0x39, device::Endian::kLittle, TestMemoryMap_t> test;
-  SECTION("Initialize")
-  {
-  }
+  SECTION("Initialize") {}
 }
+}  // namespace sjsu

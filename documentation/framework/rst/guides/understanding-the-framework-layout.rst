@@ -52,13 +52,13 @@ Folder: :code:`firmware/library/utilities`
 ------------------------------------------
 Contains system agnostic utility functions and classes for things like bit manipulation, printing stack traces, logging, helpful macros and more.
 
-Folder: :code:`firmware/library/L0_LowLevel`
+Folder: :code:`firmware/library/L0_Platform`
 ---------------------------------------------
 Contains source files for initializing and the
 processor/microcontroller. The startup.cpp file here is what calls main from a
 :code:`ResetISR` is called.
 
-Folder: :code:`firmware/library/L1_Drivers`
+Folder: :code:`firmware/library/L1_Peripheral`
 --------------------------------------------
 Contains drivers for controlling peripheral internal to the microcontroller.
 

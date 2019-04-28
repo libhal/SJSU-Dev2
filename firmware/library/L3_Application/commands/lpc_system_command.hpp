@@ -3,9 +3,9 @@
 #include <cinttypes>
 #include <iterator>
 
-#include "L0_LowLevel/interrupt.hpp"
-#include "L0_LowLevel/ram.hpp"
-#include "L0_LowLevel/system_controller.hpp"
+#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L0_Platform/lpc40xx/ram.hpp"
+#include "L0_Platform/lpc40xx/system_controller.hpp"
 #include "L3_Application/commandline.hpp"
 #include "utility/log.hpp"
 
@@ -22,7 +22,7 @@ class LpcSystemInfoCommand : public Command
 
   int Program(int, const char * const[]) override final
   {
-    Lpc40xxSystemController system;
+    sjsu::lpc40xx::SystemController system;
     uint32_t system_frequency     = system.GetSystemFrequency() / 1000;
     uint32_t peripheral_frequency = system.GetPeripheralFrequency() / 1000;
 
