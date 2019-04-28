@@ -1,11 +1,15 @@
-#include "L1_Drivers/gpio.hpp"
-#include "L1_Drivers/i2c.hpp"
-#include "L1_Drivers/spi.hpp"
+#include "L1_Peripheral/lpc40xx/gpio.hpp"
+#include "L1_Peripheral/lpc40xx/i2c.hpp"
+#include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
 
+namespace sjsu
+{
+namespace lpc40xx
+{
 class FactoryTest
 {
  public:
@@ -32,7 +36,12 @@ class FactoryTest
   }
   void OledTest()
   {
-    Ssd1306 display;
+    sjsu::lpc40xx::Spi ssp1(sjsu::lpc40xx::Spi::Bus::kSpi1);
+    sjsu::lpc40xx::Gpio cs(1, 22);
+    sjsu::lpc40xx::Gpio dc(1, 25);
+
+    Spi spi1(Spi::Bus::kSpi1);
+    Ssd1306 display(spi1, cs, dc);
 
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting OLED Hardware Test...\n\n");
@@ -105,7 +114,7 @@ class FactoryTest
   {
     // Turn on all LEDs if all tests pass else none.
     // LED Test
-    OnBoardLed leds;
+    sjsu::OnBoardLed leds;
     leds.Initialize();
     if (gesture_test)
     {
@@ -212,6 +221,9 @@ class FactoryTest
     // Compute the actual temperature in Celsius
     return (55 + ((temperature_data - 16384) / 160));
   }
+
  private:
   I2c i2c_ = I2c(I2c::Bus::kI2c2);
 };
+}  // namespace lpc40xx
+}  // namespace sjsu

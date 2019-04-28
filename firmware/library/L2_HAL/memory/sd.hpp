@@ -3,10 +3,12 @@
 #include <cstdint>
 #include <type_traits>
 
-#include "L1_Drivers/gpio.hpp"
-#include "L1_Drivers/spi.hpp"
+#include "L1_Peripheral/lpc40xx/gpio.hpp"
+#include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "utility/log.hpp"
 
+namespace sjsu
+{
 // NOLINTNEXTLINE(readability-identifier-naming)
 // Relevant Datasheet:
 // https://www.sdcard.org/downloads/pls/pdf/index.php?p=Part1_Physical_Layer_Simplified_Specification_Ver6.00.jpg&f=Part1_Physical_Layer_Simplified_Specification_Ver6.00.pdf&e=EN_SS1
@@ -427,7 +429,7 @@ class Sd final : public SdInterface
 
   explicit constexpr Sd(uint8_t port = 1, uint8_t pin = 8)
       : spi_interface_(&spi_),
-        spi_(Spi::Bus::kSpi2),
+        spi_(sjsu::lpc40xx::Spi::Bus::kSpi2),
         chip_select_(&chip_select_pin_),
         chip_select_external_(&chip_select_external_pin_),
         chip_select_pin_(port, pin),
@@ -444,7 +446,7 @@ class Sd final : public SdInterface
   constexpr Sd(DebugSdCard_t, uint8_t port = 1, uint8_t pin = 8,
                uint8_t extport = 0, uint8_t extpin = 6)
       : spi_interface_(&spi_),
-        spi_(Spi::Bus::kSpi2),
+        spi_(sjsu::lpc40xx::Spi::Bus::kSpi2),
         chip_select_(&chip_select_pin_),
         chip_select_external_(&chip_select_external_pin_),
         chip_select_pin_(port, pin),
@@ -456,10 +458,10 @@ class Sd final : public SdInterface
   {
     LOG_DEBUG("Begin initialization:");
     LOG_DEBUG("Setting CS as output...");
-    chip_select_->SetDirection(GpioInterface::Direction::kOutput);
-    chip_select_->Set(GpioInterface::State::kHigh);
-    chip_select_external_->SetDirection(GpioInterface::Direction::kOutput);
-    chip_select_external_->Set(GpioInterface::State::kHigh);
+    chip_select_->SetDirection(sjsu::Gpio::Direction::kOutput);
+    chip_select_->Set(sjsu::Gpio::State::kHigh);
+    chip_select_external_->SetDirection(sjsu::Gpio::Direction::kOutput);
+    chip_select_external_->Set(sjsu::Gpio::State::kHigh);
 
     LOG_DEBUG("Setting SSP Clock Speed...");
     spi_interface_->SetClock(false, false, 14, 2);  // 400kHz
@@ -1027,8 +1029,8 @@ class Sd final : public SdInterface
     }
 
     // Select the SD Card
-    chip_select_->Set(GpioInterface::State::kLow);
-    chip_select_external_->Set(GpioInterface::State::kLow);
+    chip_select_->Set(sjsu::Gpio::State::kLow);
+    chip_select_external_->Set(sjsu::Gpio::State::kLow);
 
     // If desired, wait a bit before talking
     if (delay > 0)
@@ -1112,8 +1114,8 @@ class Sd final : public SdInterface
     if (keep_alive == KeepAlive::kNo)
     {
       // Deselect the SPI comm board
-      chip_select_->Set(GpioInterface::State::kHigh);
-      chip_select_external_->Set(GpioInterface::State::kHigh);
+      chip_select_->Set(sjsu::Gpio::State::kHigh);
+      chip_select_external_->Set(sjsu::Gpio::State::kHigh);
     }
     return res_len;
   }
@@ -1153,20 +1155,16 @@ class Sd final : public SdInterface
 
  private:
   /// @description     the object reference to use when using SSP/SPI
-  SpiInterface * spi_interface_;
-
+  sjsu::Spi * spi_interface_;
   /// @description     this SdInterface's instance of Spi/SPI
-  Spi spi_;
-
+  sjsu::lpc40xx::Spi spi_;
   /// @description     the object reference to use when using CS (GPIO)
-  GpioInterface * chip_select_;
-
+  sjsu::Gpio * chip_select_;
   /// @description     the object reference to use when using CS (GPIO)
-  GpioInterface * chip_select_external_;
-
+  sjsu::Gpio * chip_select_external_;
   /// @description     this SdInterface's instance of the GPIO chip select
-  Gpio chip_select_pin_;
-
+  sjsu::lpc40xx::Gpio chip_select_pin_;
   /// @description     this SdInterface's instance of the GPIO chip select
-  Gpio chip_select_external_pin_;
+  sjsu::lpc40xx::Gpio chip_select_external_pin_;
 };
+}  // namespace sjsu

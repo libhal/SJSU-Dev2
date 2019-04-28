@@ -3,8 +3,8 @@ SYSTEM_INCLUDES +=
 SOURCES +=
 TESTS +=
 
-include $(LIB_DIR)/L0_LowLevel/L0.mk
-include $(LIB_DIR)/L1_Drivers/L1.mk
+include $(LIB_DIR)/L0_Platform/L0.mk
+include $(LIB_DIR)/L1_Peripheral/L1.mk
 include $(LIB_DIR)/L2_HAL/L2.mk
 include $(LIB_DIR)/L3_Application/L3.mk
 include $(LIB_DIR)/L4_Testing/L4.mk

@@ -4,7 +4,7 @@
 #include <iterator>
 #include <tuple>
 
-#include "L1_Drivers/i2c.hpp"
+#include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L3_Application/commandline.hpp"
 #include "third_party/etl/vector.h"
 #include "utility/log.hpp"
@@ -262,6 +262,7 @@ class I2cCommand : public Command
   static inline const char * const kI2cOperations[] = { "read", "write",
                                                         "discover", nullptr };
   etl::vector<AddressString_t, command::kAutoCompleteOptions> devices_found_;
-  I2c i2c_peripheral_ = I2c(I2c::Bus::kI2c2);
-  I2cInterface * i2c_ = &i2c_peripheral_;
+  sjsu::lpc40xx::I2c i2c_peripheral_ =
+      sjsu::lpc40xx::I2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
+  sjsu::I2c * i2c_ = &i2c_peripheral_;
 };

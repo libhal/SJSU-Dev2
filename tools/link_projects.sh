@@ -7,7 +7,7 @@ SJBASE=$(cd "$SJBASE/.." ; pwd -P)
 PROJECTS=(\
   ${SJBASE}/firmware/HelloWorld/ \
   ${SJBASE}/firmware/Hyperload/ \
-  ${SJBASE}/firmware/examples/*/ )
+  ${SJBASE}/firmware/examples/*/*/ )
 
 for PROJECT in ${PROJECTS[@]}
 do
@@ -16,7 +16,7 @@ do
     # Place env.sh link into project folder
     rm -f "$PROJECT/env.mk"
     ln -s -f "${SJBASE}/env.mk" "$PROJECT/env.mk"
-    # # # # Place makefile link into project folder
+    # Place makefile link into project folder
     rm -f "$PROJECT/makefile"
     ln -s -f "${SJBASE}/makefile" "$PROJECT/makefile"
 done

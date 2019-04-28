@@ -1,21 +1,23 @@
-#include "L0_LowLevel/LPC40xx.h"
+#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L2_HAL/switches/button.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
+namespace sjsu
+{
 EMIT_ALL_METHODS(Button);
 
 TEST_CASE("Testing Button", "[button]")
 {
   // Make a mock pin to work with
-  Mock<PinInterface> mock_pin;
-  // Retrieve a reference to the PinInterface to be injected as the return value
-  // of GpioInterfaces's GetPin() method.
-  PinInterface & test_pin = mock_pin.get();
+  Mock<Pin> mock_pin;
+  // Retrieve a reference to the Pin to be injected as the return value
+  // of Gpios's GetPin() method.
+  Pin & test_pin = mock_pin.get();
   // Fake the implementation of SetAsActiveLow and SetMode to be inspected later
   Fake(Method(mock_pin, SetMode));
 
   // Create a mock gpio object
-  Mock<GpioInterface> mock_gpio;
+  Mock<Gpio> mock_gpio;
   // Fake Read and SetAsInput so we can inspect them later
   Fake(Method(mock_gpio, Read), Method(mock_gpio, Set),
        Method(mock_gpio, SetDirection));
@@ -24,8 +26,8 @@ TEST_CASE("Testing Button", "[button]")
   // SetAsActiveLow and SetMode methods, allowing us to change them later.
   When(Method(mock_gpio, GetPin)).AlwaysReturn(test_pin);
 
-  // Retrieve GpioInterface reference ot be passed to the test subject
-  GpioInterface & test_gpio = mock_gpio.get();
+  // Retrieve Gpio reference ot be passed to the test subject
+  Gpio & test_gpio = mock_gpio.get();
 
   // Inject test_gpio into button object
   Button test_subject(&test_gpio);
@@ -33,9 +35,8 @@ TEST_CASE("Testing Button", "[button]")
   SECTION("Initialize")
   {
     test_subject.Initialize();
-    Verify(
-        Method(mock_gpio, SetDirection).Using(GpioInterface::Direction::kInput),
-        Method(mock_pin, SetMode).Using(PinInterface::Mode::kPullDown));
+    Verify(Method(mock_gpio, SetDirection).Using(Gpio::Direction::kInput),
+           Method(mock_pin, SetMode).Using(Pin::Mode::kPullDown));
   }
   SECTION("Button Released")
   {
@@ -80,3 +81,4 @@ TEST_CASE("Testing Button", "[button]")
     CHECK(test_subject.Pressed());
   }
 }
+}  // namespace sjsu

@@ -5,6 +5,8 @@
 
 #include "config.hpp"
 
+namespace sjsu
+{
 class Esp8266WifiInterface
 {
  public:
@@ -34,3 +36,4 @@ class Esp8266WifiInterface
   virtual bool SendPostRequest(const char url[], const char data[],
                                char buffer[], std::size_t buffer_size) = 0;
 };
+}  // namespace sjsu

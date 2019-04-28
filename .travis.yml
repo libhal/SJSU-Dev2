@@ -7,8 +7,8 @@ matrix:
           after_success:
             - cd ../../
             - coveralls --gcov "$(pwd)/tools/clang+llvm-7.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/llvm-cov gcov"
-              --include "firmware/library/L0_LowLevel"
-              --include "firmware/library/L1_Drivers"
+              --include "firmware/library/L0_Platform"
+              --include "firmware/library/L1_Peripheral"
               --include "firmware/library/Utility"
               --include "firmware/library/L2_HAL"
               --include "firmware/library/L3_Application"

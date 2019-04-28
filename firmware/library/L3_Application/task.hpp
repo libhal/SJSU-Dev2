@@ -12,7 +12,7 @@
 
 #include <cstdint>
 
-#include "L0_LowLevel/ram.hpp"
+#include "L0_Platform/lpc40xx/ram.hpp"
 #include "L3_Application/task_scheduler.hpp"
 #include "utility/macros.hpp"
 
