@@ -18,8 +18,12 @@ int main()
 {
     LOG_INFO("BEGIN SD Card Driver Example...");
 
-    sjsu::Sd card(sjsu::Sd::DebugSdCard_t{});
+    sjsu::lpc40xx::Spi spi2(sjsu::lpc40xx::Spi::Bus::kSpi2);
+    sjsu::lpc40xx::Gpio sd_cs(1, 8);
+
+    sjsu::Sd card(spi2, sd_cs);
     sjsu::Sd::CardInfo_t sd_card_info;
+
     uint8_t buffer[512];
     card.Initialize();
     SJ2_ASSERT_FATAL(card.Mount(&sd_card_info), "Failed to mount SD Card");

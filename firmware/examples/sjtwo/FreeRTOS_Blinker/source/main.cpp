@@ -5,7 +5,7 @@
 #include <cstdio>
 
 #include "config.hpp"
-#include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L2_HAL/switches/button.hpp"
 #include "utility/log.hpp"
@@ -43,7 +43,9 @@ void ButtonReader([[maybe_unused]] void * parameters)
   LOG_INFO("Setting up task...");
   LOG_INFO("Initializing SW3...");
 
-  sjsu::Button switch3(1, 19);
+  sjsu::lpc40xx::Gpio button_gpio3(1, 19);
+  sjsu::Button switch3(button_gpio3);
+
   switch3.Initialize();
   leds.Off(3);
 

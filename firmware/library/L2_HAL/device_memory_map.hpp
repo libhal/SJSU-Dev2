@@ -226,15 +226,16 @@ class Device
   }
 };
 
-template <const sjsu::lpc40xx::I2c * i2c, const uint8_t kDeviceAddress,
+template <const uint8_t kDeviceAddress,
           device::Endian endianess,
           template <device::Endian endian, WriteFnt write, ReadFnt read>
           class MemoryMap>
 class I2cDevice
-    : public Device<I2cDevice<i2c, kDeviceAddress, endianess, MemoryMap>,
+    : public Device<I2cDevice<kDeviceAddress, endianess, MemoryMap>,
                     endianess, MemoryMap>
 {
  public:
+  inline static const I2c * i2c = nullptr;
   // Standard Write transaction for most I2C devices
   static bool Write(intptr_t address, size_t size, uint8_t * target)
   {
@@ -252,6 +253,9 @@ class I2cDevice
     uint8_t register_address = static_cast<uint8_t>(address);
     i2c->WriteThenRead(kDeviceAddress, &register_address, 1, target, size);
   }
-  I2cDevice() {}
+  explicit I2cDevice(const I2c * i2c_peripheral)
+  {
+    i2c = i2c_peripheral;
+  }
 };
 }  // namespace sjsu

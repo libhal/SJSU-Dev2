@@ -9,14 +9,14 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
+#include "L1_Peripheral/i2c.hpp"
 #include "L2_HAL/device_memory_map.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
 {
-class Apds9960Interface
+class Apds9960
 {
  public:
   template <device::Endian endianess, WriteFnt write, ReadFnt read>
@@ -115,23 +115,6 @@ class Apds9960Interface
     kGESTURE
   };
 
-  virtual bool FindDevice()                                       = 0;
-  virtual void Initialize()                                       = 0;
-  virtual bool SetMode(Mode mode, bool enable)                    = 0;
-  virtual void EnableGesture()                                    = 0;
-  virtual bool DisableGesture()                                   = 0;
-  virtual bool ReadGestureMode()                                  = 0;
-  virtual bool CheckIfGestureOccured()                            = 0;
-  virtual uint8_t GetGestureFIFOLevel()                           = 0;
-  virtual void ReadGestureFIFO(uint8_t * data, uint8_t fifolevel) = 0;
-  virtual void ProcessGestureData(uint8_t level)                  = 0;
-  virtual Gesture DecodeGestureData(uint8_t level)                = 0;
-  virtual Gesture GetGesture()                                    = 0;
-};
-
-class Apds9960 : public Apds9960Interface
-{
- public:
   static constexpr uint8_t kApds9960Address = 0x39;
   // Avago-APDS-9960 : 32 x 4 byte FIFO = 128-bytes of data to store (page 33)
   static constexpr uint8_t kMaxFifoSize = 128;
@@ -168,8 +151,9 @@ class Apds9960 : public Apds9960Interface
     kAiht                   = 0x00
   };
 
-  constexpr Apds9960()
-      : up_sensitivity_(-75),
+  explicit Apds9960(const I2c & i2c)
+      : i2c_(i2c),
+        up_sensitivity_(-75),
         down_sensitivity_(75),
         left_sensitivity_(-50),
         right_sensitivity_(50),
@@ -188,69 +172,69 @@ class Apds9960 : public Apds9960Interface
       gfifo_data_[i] = 0;
     }
   }
-  constexpr Apds9960(int8_t up_sensitivity, int8_t down_sensitivity,
-                     int8_t left_sensitivity, int8_t right_sensitivity,
-                     int16_t far_sensitivity, int16_t near_sensitivity)
-      : up_sensitivity_(up_sensitivity),
-        down_sensitivity_(down_sensitivity),
-        left_sensitivity_(left_sensitivity),
-        right_sensitivity_(right_sensitivity),
-        far_sensitivity_(far_sensitivity),
-        near_sensitivity_(near_sensitivity),
-        far_count_(0),
-        near_count_(0),
-        index_(0)
-  {
-    for (int i = 0; i < kMaxDataSize; i++)
-    {
-      points_[i] = Direction::kNone;
-    }
-    for (int i = 0; i < kMaxFifoSize; i++)
-    {
-      gfifo_data_[i] = 0;
-    }
-  }
-  bool FindDevice() override
+  // constexpr Apds9960(int8_t up_sensitivity, int8_t down_sensitivity,
+  //                    int8_t left_sensitivity, int8_t right_sensitivity,
+  //                    int16_t far_sensitivity, int16_t near_sensitivity)
+  //     : up_sensitivity_(up_sensitivity),
+  //       down_sensitivity_(down_sensitivity),
+  //       left_sensitivity_(left_sensitivity),
+  //       right_sensitivity_(right_sensitivity),
+  //       far_sensitivity_(far_sensitivity),
+  //       near_sensitivity_(near_sensitivity),
+  //       far_count_(0),
+  //       near_count_(0),
+  //       index_(0)
+  // {
+  //   for (int i = 0; i < kMaxDataSize; i++)
+  //   {
+  //     points_[i] = Direction::kNone;
+  //   }
+  //   for (int i = 0; i < kMaxFifoSize; i++)
+  //   {
+  //     gfifo_data_[i] = 0;
+  //   }
+  // }
+  virtual bool FindDevice()
   {
     bool device_found = false;
-    uint8_t device_id = gesture.memory.device_id;
+    uint8_t device_id = gesture_.memory.device_id;
     if (device_id == 0xAB)
     {
       device_found = true;
     }
     return device_found;
   }
-  void Initialize() override
+  virtual void Initialize()
   {
-    i2c.Initialize();
+    i2c_.Initialize();
     constexpr uint16_t kGestureConfig1And2    = (kGconfig2 << 8) | (kGconfig1);
     constexpr uint16_t kGestureConfig3And4    = (kGconfig4 << 8) | (kGconfig3);
     constexpr uint16_t kAlsInterruptThreshold = (kAilt << 8) | (kAilt);
     if (FindDevice())
     {
-      gesture.memory.enable                            = kNoMode;
-      gesture.memory.adc_integration_time              = kAtime;
-      gesture.memory.wait_time_nongesture              = kWtime;
-      gesture.memory.als_interrupt_low_threshold       = kAlsInterruptThreshold;
-      gesture.memory.als_interrupt_high_threshold      = kAiht;
-      gesture.memory.proximity_interrupt_low_threshold = kPilt;
-      gesture.memory.proximity_interrupt_high_threshold       = kPiht;
-      gesture.memory.interrupt_persistence_filters_nongesture = kPers;
-      gesture.memory.configuration_1                          = kConfig1;
-      gesture.memory.proximity_pulse_count_and_length         = kPpulse;
-      gesture.memory.gain_control                             = kControl;
-      gesture.memory.configuration_2                          = kConfig2;
-      gesture.memory.proximity_offset_up_right_down_left_photodiodes =
+      gesture_.memory.enable                       = kNoMode;
+      gesture_.memory.adc_integration_time         = kAtime;
+      gesture_.memory.wait_time_nongesture         = kWtime;
+      gesture_.memory.als_interrupt_low_threshold  = kAlsInterruptThreshold;
+      gesture_.memory.als_interrupt_high_threshold = kAiht;
+      gesture_.memory.proximity_interrupt_low_threshold        = kPilt;
+      gesture_.memory.proximity_interrupt_high_threshold       = kPiht;
+      gesture_.memory.interrupt_persistence_filters_nongesture = kPers;
+      gesture_.memory.configuration_1                          = kConfig1;
+      gesture_.memory.proximity_pulse_count_and_length         = kPpulse;
+      gesture_.memory.gain_control                             = kControl;
+      gesture_.memory.configuration_2                          = kConfig2;
+      gesture_.memory.proximity_offset_up_right_down_left_photodiodes =
           kPoffsetUpRightDownLeft;
-      gesture.memory.configuration_3                   = kConfig3;
-      gesture.memory.gesture_proximity_enter_threshold = kGPEnTh;
-      gesture.memory.gesture_exit_threshold            = kGExTh;
-      gesture.memory.gesture_configuration_1_2         = kGestureConfig1And2;
-      gesture.memory.gesture_up_down_offset            = kGoffsetUpDown;
-      gesture.memory.gesture_left_offset               = kGoffsetLeftRight;
-      gesture.memory.gesture_right_offset              = kGoffsetLeftRight;
-      gesture.memory.gesture_pulse_count_and_length    = kGPulse;
-      gesture.memory.gesture_configuration_3_4         = kGestureConfig3And4;
+      gesture_.memory.configuration_3                   = kConfig3;
+      gesture_.memory.gesture_proximity_enter_threshold = kGPEnTh;
+      gesture_.memory.gesture_exit_threshold            = kGExTh;
+      gesture_.memory.gesture_configuration_1_2         = kGestureConfig1And2;
+      gesture_.memory.gesture_up_down_offset            = kGoffsetUpDown;
+      gesture_.memory.gesture_left_offset               = kGoffsetLeftRight;
+      gesture_.memory.gesture_right_offset              = kGoffsetLeftRight;
+      gesture_.memory.gesture_pulse_count_and_length    = kGPulse;
+      gesture_.memory.gesture_configuration_3_4         = kGestureConfig3And4;
     }
     else
     {
@@ -264,11 +248,11 @@ class Apds9960 : public Apds9960Interface
   /// 3: Wait   | 2: Proximity | 1: ALS  | 0: Power ON
   /// @param enable -> true: sets bit; false: resets bit
   /// @return -> true if successful; false otherwise
-  bool SetMode(Mode mode, bool enable) override
+  virtual bool SetMode(Mode mode, bool enable)
   {
     bool result   = true;
     int reg_value = 0;
-    reg_value     = gesture.memory.enable;
+    reg_value     = gesture_.memory.enable;
 
     if (mode > 7)
     {
@@ -282,20 +266,20 @@ class Apds9960 : public Apds9960Interface
     {
       reg_value &= ~(1 << mode);
     }
-    gesture.memory.enable = static_cast<uint8_t>(reg_value);
+    gesture_.memory.enable = static_cast<uint8_t>(reg_value);
     return result;
   }
-  void EnableGesture() override
+  virtual void EnableGesture()
   {
     SetMode(Mode::kPOWERON, false);
     constexpr uint8_t kShortWaitTime                                   = 0xFF;
     constexpr uint8_t kK16UsPulseLengthAnd10PulseCount                 = 0x89;
     constexpr uint8_t kClearProximityLedInterruptChannelAndLedBoost150 = 0xD0;
 
-    gesture.memory.wait_time_nongesture = kShortWaitTime;
-    gesture.memory.proximity_pulse_count_and_length =
+    gesture_.memory.wait_time_nongesture = kShortWaitTime;
+    gesture_.memory.proximity_pulse_count_and_length =
         kK16UsPulseLengthAnd10PulseCount;
-    gesture.memory.configuration_2 =
+    gesture_.memory.configuration_2 =
         kClearProximityLedInterruptChannelAndLedBoost150;
 
     SetMode(Mode::kPOWERON, true);
@@ -303,7 +287,7 @@ class Apds9960 : public Apds9960Interface
     SetMode(Mode::kPROXIMITYDETECT, true);
     SetMode(Mode::kGESTURE, true);
   }
-  bool DisableGesture() override
+  virtual bool DisableGesture()
   {
     bool result = true;
     if (!SetMode(Mode::kGESTURE, 0))
@@ -312,44 +296,44 @@ class Apds9960 : public Apds9960Interface
     }
     return result;
   }
-  bool ReadGestureMode() override
+  virtual bool ReadGestureMode()
   {
-    uint16_t value = gesture.memory.gesture_configuration_3_4;
+    uint16_t value = gesture_.memory.gesture_configuration_3_4;
     return (value & 0x0100);
   }
-  bool CheckIfGestureOccured() override
+  virtual bool CheckIfGestureOccured()
   {
-    return (gesture.memory.gesture_status & 0b1);
+    return (gesture_.memory.gesture_status & 0b1);
   }
-  void ReadGestureFIFO(uint8_t * data, uint8_t fifolevel) override
+  virtual void ReadGestureFIFO(uint8_t * data, uint8_t fifolevel)
   {
     int amount_of_data_to_read = (4 * fifolevel);
     intptr_t address =
-        reinterpret_cast<intptr_t>(&gesture.memory.gesture_fifo_data[0]);
-    gesture.Read(address, amount_of_data_to_read, data);
+        reinterpret_cast<intptr_t>(&gesture_.memory.gesture_fifo_data[0]);
+    gesture_.Read(address, amount_of_data_to_read, data);
   }
-  uint8_t GetGestureFIFOLevel() override
+  virtual uint8_t GetGestureFIFOLevel()
   {
     uint8_t overflow_value = 0;
     uint8_t value          = 0;
-    overflow_value         = gesture.memory.gesture_status;
+    overflow_value         = gesture_.memory.gesture_status;
     if (overflow_value & 0b10)  // if overflow, clear FIFO data
     {
       LOG_INFO("overflow");
       uint8_t level = 0;
-      level         = gesture.memory.gesture_fifo_level;
+      level         = gesture_.memory.gesture_fifo_level;
 
       uint8_t throw_away[kMaxFifoSize];
       while (level != 0)
       {
         ReadGestureFIFO(throw_away, level);
-        level = gesture.memory.gesture_fifo_level;
+        level = gesture_.memory.gesture_fifo_level;
       }
     }
-    value = gesture.memory.gesture_fifo_level;
+    value = gesture_.memory.gesture_fifo_level;
     return value;
   }
-  void ProcessGestureData(uint8_t level) override
+  virtual void ProcessGestureData(uint8_t level)
   {
     // Read Gesture FIFOs (U/D/L/R)
     // Store raw gesture data in a 4x32 uint8_t array
@@ -403,7 +387,7 @@ class Apds9960 : public Apds9960Interface
       }
     }
   }
-  Gesture DecodeGestureData(uint8_t level) override
+  virtual Gesture DecodeGestureData(uint8_t level)
   {
     Gesture result = kError;
 
@@ -455,7 +439,7 @@ class Apds9960 : public Apds9960Interface
     }
     return result;
   }
-  Gesture GetGesture() override
+  virtual Gesture GetGesture()
   {
     if (CheckIfGestureOccured())
     {
@@ -484,11 +468,9 @@ class Apds9960 : public Apds9960Interface
   }
 
  private:
-  inline static sjsu::lpc40xx::I2c i2c =
-      sjsu::lpc40xx::I2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
-  inline static I2cDevice<&i2c, 0x39, device::Endian::kLittle,
-                          Apds9960Interface::MemoryMap_t>
-      gesture;
+  const I2c & i2c_;
+  I2cDevice<0x39, device::Endian::kLittle, MemoryMap_t> gesture_ =
+      I2cDevice<0x39, device::Endian::kLittle, MemoryMap_t>(&i2c_);
 
   int8_t up_sensitivity_;
   int8_t down_sensitivity_;
