@@ -11,6 +11,21 @@
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "utility/log.hpp"
 
+// TODO(#274): Delete this file and add this to the appropriate board.h file.
+//
+// Example:
+//
+//    ParallelBus & OnboardLeds()
+//    {
+//      static sjsu::lpc40xx::Gpio led0 = sjsu::lpc40xx::Gpio(0,0);
+//      static sjsu::lpc40xx::Gpio led1 = sjsu::lpc40xx::Gpio(0,1);
+//      static sjsu::lpc40xx::Gpio led2 = sjsu::lpc40xx::Gpio(0,2);
+//      static sjsu::lpc40xx::Gpio led3 = sjsu::lpc40xx::Gpio(0,3);
+//      // takes initializer_list<sjsu::Gpio&>
+//      static ParallelBus onboard_leds({ led0, led1, led2, led3 });
+//      return return onboard_leds;
+//    }
+
 namespace sjsu
 {
 class OnBoardLed

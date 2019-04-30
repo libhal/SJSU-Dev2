@@ -5,7 +5,11 @@
 #include "L3_Application/task.hpp"
 #include "utility/log.hpp"
 
-void rtos::TaskScheduler::RunTask(void * task_ptr)
+namespace sjsu
+{
+namespace rtos
+{
+void TaskScheduler::RunTask(void * task_ptr)
 {
   TaskInterface & task = *(reinterpret_cast<TaskInterface *>(task_ptr));
 
@@ -47,7 +51,7 @@ void rtos::TaskScheduler::RunTask(void * task_ptr)
   }
 }
 
-void rtos::TaskScheduler::InitializeAllTasks()
+void TaskScheduler::InitializeAllTasks()
 {
   for (uint32_t i = 0; i < task_count_; i++)
   {
@@ -71,7 +75,7 @@ void rtos::TaskScheduler::InitializeAllTasks()
                    "Failed to create PreRun Event Group!");
 }
 
-void rtos::TaskScheduler::RemoveTask(const char * task_name)
+void TaskScheduler::RemoveTask(const char * task_name)
 {
   const uint8_t kTaskIndex = GetTaskIndex(task_name);
   if (kTaskIndex > config::kTaskSchedulerSize)
@@ -87,7 +91,7 @@ void rtos::TaskScheduler::RemoveTask(const char * task_name)
   task_count_--;
 }
 
-uint8_t rtos::TaskScheduler::GetTaskIndex(const char * task_name)
+uint8_t TaskScheduler::GetTaskIndex(const char * task_name)
 {
   for (uint8_t i = 0; i < config::kTaskSchedulerSize; i++)
   {
@@ -101,3 +105,5 @@ uint8_t rtos::TaskScheduler::GetTaskIndex(const char * task_name)
   }
   return static_cast<uint8_t>(config::kTaskSchedulerSize + 1);
 };
+}  // namespace rtos
+}  // namespace sjsu

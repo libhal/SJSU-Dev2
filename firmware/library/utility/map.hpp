@@ -2,6 +2,8 @@
 
 #include <type_traits>
 
+namespace sjsu
+{
 /// Remap a numeric value from one range to another.
 /// Example 1:
 ///
@@ -45,8 +47,9 @@
 /// @param new_minimum the new minimum value to scale and shift the old value to
 /// @param new_maximum the new maximum value to scale and shift the old value to
 template <typename Input, typename Range, typename NewRange>
-NewRange Map(Input value, Range min, Range max,
-                                    NewRange new_min, NewRange new_max) {
+NewRange Map(Input value, Range min, Range max, NewRange new_min,
+             NewRange new_max)
+{
   static_assert(std::is_arithmetic<Input>::value,
                 "Input value variable type must be an arithmetic type (like "
                 "int, char, float, etc).");
@@ -65,3 +68,4 @@ NewRange Map(Input value, Range min, Range max,
   float mapped      = ((map_value - map_min) * range_ratio) + map_new_min;
   return static_cast<NewRange>(mapped);
 };
+}  // namespace sjsu

@@ -10,12 +10,14 @@
 //    {
 //      // do something...
 //    }
-//    rtos::PeriodicScheduler scheduler = rtos::PeriodicScheduler<512>();
-//    rtos::PeriodicTask<512> task_10Hz("Task10Hz",
-//                                      rtos::Priority::kLow,
-//                                      TaskFunction10Hz);
-//    scheduler.SetTask(&task_10Hz, rtos::PeriodicScheduler::Frequency::k10Hz);
-//    rtos::TaskScheduler::Instance().Start();
+//    sjsu::rtos::PeriodicScheduler scheduler =
+//        sjsu::rtos::PeriodicScheduler<512>();
+// sjsu::rtos::PeriodicTask<512> task_10Hz("Task10Hz",
+//                                         sjsu::rtos::Priority::kLow,
+//                                         TaskFunction10Hz);
+//    scheduler.SetTask(&task_10Hz,
+//    sjsu::rtos::PeriodicScheduler::Frequency::k10Hz);
+//    sjsu::rtos::TaskScheduler::Instance().Start();
 #pragma once
 
 #include "L3_Application/task.hpp"
@@ -23,6 +25,8 @@
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 
+namespace sjsu
+{
 namespace rtos
 {
 /// Pointer to the function containing the code to be executed periodically.
@@ -196,4 +200,5 @@ class PeriodicScheduler final : public Task<512>
     return semaphore_given;
   }
 };
-};  // namespace rtos
+}  // namespace rtos
+}  // namespace sjsu

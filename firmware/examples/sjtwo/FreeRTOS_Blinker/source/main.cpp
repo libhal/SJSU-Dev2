@@ -22,7 +22,7 @@ void LedToggle(void * parameters)
 {
   LOG_INFO("Setting up task...");
   LOG_INFO("Retrieving delay amount from parameters...");
-  auto delay = rtos::RetrieveParameter(parameters);
+  auto delay = sjsu::rtos::RetrieveParameter(parameters);
   LOG_INFO("Initializing LEDs...");
   leds.Off(0);
   leds.On(1);
@@ -70,21 +70,21 @@ int main()
   LOG_INFO("Initializing LEDs...");
   leds.Initialize();
   LOG_INFO("Creating Tasks...");
-  Delay(1000);
+  sjsu::Delay(1000);
   // See https://www.freertos.org/a00125.html for the xTaskCreate API
-  // See utility/rtos.hpp for the rtos:: namespace utility functions
-  xTaskCreate(LedToggle,              // Make function LedToggle a task
-              "LedToggleTask",        // Give this task the name "LedToggleTask"
-              rtos::StackSize(1024),  // Size of stack allocated to task
-              rtos::PassParameter(100),  // Parameter to be passed to task
-              rtos::Priority::kLow,      // Give this task low priority
-              &handle);                  // Optional feference to the task
-  xTaskCreate(ButtonReader,              // Make function ButtonReader a task
+  // See utility/rtos.hpp for the sjsu::rtos:: namespace utility functions
+  xTaskCreate(LedToggle,        // Make function LedToggle a task
+              "LedToggleTask",  // Give this task the name "LedToggleTask"
+              sjsu::rtos::StackSize(1024),  // Size of stack allocated to task
+              sjsu::rtos::PassParameter(100),  // Parameter to be passed to task
+              sjsu::rtos::Priority::kLow,      // Give this task low priority
+              &handle);                        // Optional feference to the task
+  xTaskCreate(ButtonReader,        // Make function ButtonReader a task
               "ButtonReaderTask",  // Give this task the name "ButtonReaderTask"
-              rtos::StackSize(1024),    // Size of stack allocated to task
-              rtos::kNoParameter,       // Pass nothing to this task
-              rtos::Priority::kMedium,  // Give this task medium priority
-              rtos::kNoHandle);         // Do not supply a task handle
+              sjsu::rtos::StackSize(1024),    // Size of stack allocated to task
+              sjsu::rtos::kNoParameter,       // Pass nothing to this task
+              sjsu::rtos::Priority::kMedium,  // Give this task medium priority
+              sjsu::rtos::kNoHandle);         // Do not supply a task handle
   LOG_INFO("Starting Scheduler...");
   vTaskStartScheduler();
   return 0;

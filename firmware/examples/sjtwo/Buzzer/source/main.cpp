@@ -18,17 +18,17 @@ int main()
 
     LOG_INFO("Initializing the buzzer...");
     buzzer.Initialize();
-    Delay(1000);
+    sjsu::Delay(1000);
 
     LOG_INFO("Buzzer will emit sound at 10 percent volume and 1kHz freqeuncy");
     buzzer.Beep(kFrequency, kVolume);
-    Delay(1000);
+    sjsu::Delay(1000);
     buzzer.Stop();
 
     LOG_INFO("Volume will be increased to 40 percent and ");
     LOG_INFO("frequency lowered to 750Hz");
     buzzer.Beep(750, 0.4f);
-    Delay(1000);
+    sjsu::Delay(1000);
     buzzer.Stop();
 
     LOG_INFO("Emit sound with default volume (100 percent) ");
@@ -37,13 +37,13 @@ int main()
     LOG_INFO("if the Beep() function is called without any arguments");
 
     buzzer.Beep();
-    Delay(1000);
+    sjsu::Delay(1000);
     buzzer.Stop();
 
     LOG_INFO("Restart the example anytime by ");
     LOG_INFO("pressing the 'reset' button on controller");
 
     LOG_INFO("Halting the processor...");
-    Halt();
+    sjsu::Halt();
     return 0;
 }

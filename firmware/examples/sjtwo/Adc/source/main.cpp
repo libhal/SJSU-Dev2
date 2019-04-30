@@ -30,10 +30,10 @@ int main()
     uint16_t adc_digital_value = adc0.Read();
     // For the LPC40xx with a 12-bit ADC, lowest and highest values are 0 to
     // 1023, where as the lowest and highest voltages are between 0 and 3.3V
-    float voltage = Map(adc_digital_value, 0, 1023, 0.0f, 3.3f);
+    float voltage = sjsu::Map(adc_digital_value, 0, 1023, 0.0f, 3.3f);
     LOG_INFO("Voltage on pin P0.23 = %f, raw value = %u\n",
              static_cast<double>(voltage), adc_digital_value);
-    Delay(250);
+    sjsu::Delay(250);
   }
   return 0;
 }

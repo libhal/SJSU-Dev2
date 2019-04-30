@@ -8,19 +8,26 @@
 constexpr uint8_t kAccelerometerAddress = 0x1C;
 constexpr uint8_t kGestureAddress       = 0x39;
 
-template <device::Endian endianess, WriteFnt write, ReadFnt read>
+using sjsu::ReadFnt;
+using sjsu::WriteFnt;
+using sjsu::device::Array_t;
+using sjsu::device::Endian;
+using sjsu::device::Register_t;
+using sjsu::device::Reserved_t;
+
+template <Endian endianess, WriteFnt write,
+          ReadFnt read>
 SJ2_PACKED(struct)
 AccelerometerMemoryMap_t  // MMA8452Q
 {
   template <typename Int>
-  using Register = device::Register_t<Int, endianess, write, read>;
+  using Register = Register_t<Int, endianess, write, read>;
 
   template <typename Int, size_t kLength>
-  using Array = device::Array_t<Int, kLength, write, read>;
+  using Array = Array_t<Int, kLength, write, read>;
 
   Register<uint8_t> status;
-  union
-  {
+  union {
     Array<uint8_t, 6> xyz;
     struct
     {
@@ -29,13 +36,12 @@ AccelerometerMemoryMap_t  // MMA8452Q
       Register<uint16_t> z;
     };
   };
-  device::Reserved_t<0x04> reserved0;
+  Reserved_t<0x04> reserved0;
   Register<uint8_t> sysmod;
   Register<uint8_t> int_source;
   Register<uint8_t> who_am_i;
-  device::Reserved_t<0x1C> reserved1;
-  union
-  {
+  Reserved_t<0x1C> reserved1;
+  union {
     Array<uint8_t, 3> control;
     struct
     {
@@ -46,27 +52,30 @@ AccelerometerMemoryMap_t  // MMA8452Q
   };
 };
 
-template <device::Endian endianess, WriteFnt write, ReadFnt read>
+template <Endian endianess, WriteFnt write,
+          ReadFnt read>
 SJ2_PACKED(struct)
 GestureMemoryMap_t  // APDS-9960
 {
   template <typename Int>
-  using Register = device::Register_t<Int, endianess, write, read>;
+  using Register = Register_t<Int, endianess, write, read>;
 
   template <typename Int, size_t kLength>
-  using Array = device::Array_t<Int, kLength, write, read>;
+  using Array = Array_t<Int, kLength, write, read>;
 
-  device::Reserved_t<0x80> ram;
+  Reserved_t<0x80> ram;
   Register<uint8_t> enable;
   Register<uint8_t> adc_integration_time;
 };
 
 sjsu::lpc40xx::I2c i2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
 
-I2cDevice<&i2c, kAccelerometerAddress, device::Endian::kBig,
-          AccelerometerMemoryMap_t> accelerometer;
+sjsu::I2cDevice<&i2c, kAccelerometerAddress, sjsu::device::Endian::kBig,
+                AccelerometerMemoryMap_t>
+    accelerometer;
 
-I2cDevice<&i2c, kGestureAddress, device::Endian::kLittle, GestureMemoryMap_t>
+sjsu::I2cDevice<&i2c, kGestureAddress, sjsu::device::Endian::kLittle,
+                GestureMemoryMap_t>
     gesture;
 
 int main()
@@ -92,8 +101,8 @@ int main()
     LOG_INFO("x = %d :: y = %d :: z = %d", x, y, z);
 
     [[maybe_unused]] std::array<uint8_t, 6> xyz = accelerometer.memory.xyz;
-    uint8_t x_msb = accelerometer.memory.xyz[0];
-    uint8_t x_lsb = accelerometer.memory.xyz[1];
+    uint8_t x_msb                               = accelerometer.memory.xyz[0];
+    uint8_t x_lsb                               = accelerometer.memory.xyz[1];
     LOG_INFO("x = 0x%02X%02X", x_msb, x_lsb);
 
     uint8_t reg1;
@@ -101,7 +110,7 @@ int main()
     LOG_INFO("cur reg1 = 0x%02X", reg1);
 
     gesture.memory.adc_integration_time = 5;
-    reg1 = gesture.memory.adc_integration_time;
+    reg1                                = gesture.memory.adc_integration_time;
     LOG_INFO("new reg1 = 0x%02X", reg1);
 
     gesture.memory.adc_integration_time |= (1 << 7);
@@ -109,11 +118,11 @@ int main()
     LOG_INFO("ord reg1 = 0x%02X", reg1);
 
     gesture.memory.adc_integration_time = 255;
-    reg1 = gesture.memory.adc_integration_time;
+    reg1                                = gesture.memory.adc_integration_time;
     LOG_INFO("add reg1 = 0x%02X", reg1);
     LOG_INFO("========================\n");
 
-    Delay(500);
+    sjsu::Delay(500);
   }
   return 0;
 }

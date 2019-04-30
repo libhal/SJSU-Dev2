@@ -9,6 +9,8 @@
 #include <limits>
 #include <type_traits>
 
+namespace sjsu
+{
 namespace bit
 {
 template <typename T>
@@ -36,8 +38,8 @@ constexpr T GenerateFieldOfOnes()
 /// @param position the starting position of the bits to extracted.
 /// @param width the number of bits from the starting position to be extracted.
 template <typename T>
-[[nodiscard]]
-constexpr T Extract(T target, uint32_t position, uint32_t width = 1)
+[[nodiscard]] constexpr T Extract(T target, uint32_t position,
+                                  uint32_t width = 1)
 {
   // Check the types at compile time
   static_assert(std::numeric_limits<T>::is_integer,
@@ -49,10 +51,10 @@ constexpr T Extract(T target, uint32_t position, uint32_t width = 1)
   // target parameter.
   constexpr UnsignedT kFieldOfOnes = GenerateFieldOfOnes<T>();
   // At compile time calculate the number of bits in the target parameter.
-  constexpr size_t kTargetWidth     = sizeof(T) * 8;
+  constexpr size_t kTargetWidth = sizeof(T) * 8;
   // Create mask by shifting the set of 1s down so that the number of 1s from
   // bit position 0 is equal to the width parameter.
-  UnsignedT mask   = kFieldOfOnes >> (kTargetWidth - width);
+  UnsignedT mask = kFieldOfOnes >> (kTargetWidth - width);
   // Shift target down to the right to get the bit position in the 0th bit
   // location.
   // Mask the value to clear any bit after the width's amount of bits.
@@ -75,8 +77,8 @@ constexpr T Extract(T target, uint32_t position, uint32_t width = 1)
 /// @param position the position in the target to insert the value of bits.
 /// @param width the length of bits that will be overwritten in the target.
 template <typename T, typename U>
-[[nodiscard]]
-constexpr T Insert(T target, U value, uint32_t position, uint32_t width = 1)
+[[nodiscard]] constexpr T Insert(T target, U value, uint32_t position,
+                                 uint32_t width = 1)
 {
   // Check the types at compile time
   static_assert(
@@ -95,10 +97,10 @@ constexpr T Insert(T target, U value, uint32_t position, uint32_t width = 1)
   // target parameter.
   constexpr UnsignedT kFieldOfOnes = GenerateFieldOfOnes<T>();
   // At compile time calculate the number of bits in the target parameter.
-  constexpr size_t kTargetWidth     = sizeof(T) * 8;
+  constexpr size_t kTargetWidth = sizeof(T) * 8;
   // Create mask by shifting the set of 1s down so that the number of 1s from
   // bit position 0 is equal to the width parameter.
-  UnsignedT mask   = kFieldOfOnes >> (kTargetWidth - width);
+  UnsignedT mask = kFieldOfOnes >> (kTargetWidth - width);
   // Clear width's number of bits in the target value at the bit position
   // specified.
   target &= ~(mask << position);
@@ -120,8 +122,7 @@ constexpr T Insert(T target, U value, uint32_t position, uint32_t width = 1)
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to change to 1
 template <typename T>
- [[nodiscard]]
-constexpr T Set(T target, uint32_t position)
+[[nodiscard]] constexpr T Set(T target, uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Set only accepts intergers.");
@@ -140,8 +141,7 @@ constexpr T Set(T target, uint32_t position)
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to change to 0
 template <typename T>
-[[nodiscard]] constexpr T Clear(T target,
-                                                      uint32_t position)
+[[nodiscard]] constexpr T Clear(T target, uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Clear only accepts intergers.");
@@ -162,8 +162,7 @@ template <typename T>
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to toggle
 template <typename T>
-[[nodiscard]] constexpr T Toggle(T target,
-                                                       uint32_t position)
+[[nodiscard]] constexpr T Toggle(T target, uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Toggle only accepts intergers.");
@@ -186,12 +185,12 @@ template <typename T>
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to toggle
 template <typename T>
-[[nodiscard]] constexpr bool Read(T target,
-                                                        uint32_t position)
+[[nodiscard]] constexpr bool Read(T target, uint32_t position)
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Read only accepts intergers.");
   return static_cast<bool>(target & (1 << position));
 }
 }  // namespace bit
+}  // namespace sjsu
 // @}

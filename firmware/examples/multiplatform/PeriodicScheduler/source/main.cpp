@@ -14,19 +14,21 @@ void Print10Hz(uint32_t)
   printf("10 Hz counter: %d\n", counter++);
 }
 
-rtos::PeriodicScheduler scheduler = rtos::PeriodicScheduler();
-rtos::PeriodicTask<512> blinker_1_hz_task("Print1Hz", rtos::Priority::kLow,
-                                          Print1Hz);
-rtos::PeriodicTask<512> blinker_10_hz_task("Print10Hz", rtos::Priority::kLow,
-                                           Print10Hz);
+sjsu::rtos::PeriodicScheduler scheduler = sjsu::rtos::PeriodicScheduler();
+sjsu::rtos::PeriodicTask<512> blinker_1_hz_task("Print1Hz",
+                                                sjsu::rtos::Priority::kLow,
+                                                Print1Hz);
+sjsu::rtos::PeriodicTask<512> blinker_10_hz_task("Print10Hz",
+                                                 sjsu::rtos::Priority::kLow,
+                                                 Print10Hz);
 
 int main()
 {
   LOG_INFO("Starting PeriodicScheduler example...");
   scheduler.SetTask(&blinker_1_hz_task,
-                    rtos::PeriodicScheduler::Frequency::k1Hz);
+                    sjsu::rtos::PeriodicScheduler::Frequency::k1Hz);
   scheduler.SetTask(&blinker_10_hz_task,
-                    rtos::PeriodicScheduler::Frequency::k10Hz);
-  rtos::TaskScheduler::Instance().Start();
+                    sjsu::rtos::PeriodicScheduler::Frequency::k10Hz);
+  sjsu::rtos::TaskScheduler::Instance().Start();
   return 0;
 }

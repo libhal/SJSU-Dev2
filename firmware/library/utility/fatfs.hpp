@@ -2,6 +2,8 @@
 
 #include "third_party/fatfs/source/ff.h"
 
+namespace sjsu
+{
 inline const char * FResultToString(FRESULT result)
 {
   static const char * k_result_string_table[] = {
@@ -33,3 +35,4 @@ inline const char * FResultToString(FRESULT result)
   return (result <= FR_INVALID_PARAMETER) ? k_result_string_table[result]
                                           : "Invalid!";
 }
+}  // namespace sjsu

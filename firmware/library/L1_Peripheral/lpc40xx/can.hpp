@@ -434,7 +434,7 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     can_registers[controller_]->CMR = kSelfReceptionSendTxBuffer1;
 
     // Wait for HW
-    Delay(1);
+    sjsu::Delay(1);
 
     // Get the message; the ISR (interrupt service routine)
     // will read the message from the rx buffer

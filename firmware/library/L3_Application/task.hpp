@@ -4,10 +4,10 @@
 // NOTE: All tasks must be persistent or in global space.
 //
 // Usage:
-//      class PrinterTask : public rtos::Task<1024>;
+//      class PrinterTask : public sjsu::rtos::Task<1024>;
 //      PrinterTask printer_one("Printer A", "I am a printer, I am faster");
 //      printer_one.SetDelayTime(500);
-//      rtos::TaskScheduler::Instance().Start();
+//      sjsu::rtos::TaskScheduler::Instance().Start();
 #pragma once
 
 #include <cstdint>
@@ -16,6 +16,8 @@
 #include "L3_Application/task_scheduler.hpp"
 #include "utility/macros.hpp"
 
+namespace sjsu
+{
 namespace rtos
 {
 class TaskInterface
@@ -68,7 +70,7 @@ class Task : public TaskInterface
   void Delete() override
   {
     vTaskSuspend(handle_);
-    rtos::TaskScheduler::Instance().RemoveTask(kName);
+    sjsu::rtos::TaskScheduler::Instance().RemoveTask(kName);
   }
   const char * GetName() override
   {
@@ -103,15 +105,15 @@ class Task : public TaskInterface
   // Sets the delay time to ensure Run() is called at a desired frequency for
   // periodic tasks.
   //
-  // For examples, if time = 1000 and the rtos tick period = 1ms, then Run()
-  // will be called every 1 second.
+  // For examples, if time = 1000 and the sjsu::rtos tick period = 1ms, then
+  // Run() will be called every 1 second.
   //
-  // @param time Desired delay time in rtos ticks.
+  // @param time Desired delay time in sjsu::rtos ticks.
   void SetDelayTime(uint32_t time) override
   {
     delay_time_ = time;
   }
-  // @return Returns the delay time in rtos ticks.
+  // @return Returns the delay time in sjsu::rtos ticks.
   uint32_t GetDelayTime() override
   {
     return delay_time_;
@@ -128,7 +130,7 @@ class Task : public TaskInterface
       : kName(name), kPriority(priority), handle_(NULL), delay_time_(0)
   {
     DeclaredOnStackCheck();
-    rtos::TaskScheduler::Instance().AddTask(this);
+    sjsu::rtos::TaskScheduler::Instance().AddTask(this);
   }
   bool DeclaredOnStackCheck()
   {
@@ -163,7 +165,7 @@ class Task : public TaskInterface
   const Priority kPriority;
   // Used to identify the task
   TaskHandle_t handle_;
-  // Task delay time in rtos ticks.
+  // Task delay time in sjsu::rtos ticks.
   uint32_t delay_time_;
   // Pointer reference to the statically allocated buffer that will hold the
   // task TCB.
@@ -174,3 +176,4 @@ class Task : public TaskInterface
 };
 
 }  // namespace rtos
+}  // namespace sjsu

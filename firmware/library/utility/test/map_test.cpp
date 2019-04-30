@@ -3,6 +3,8 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/map.hpp"
 
+namespace sjsu
+{
 TEST_CASE("Testing Numeric Range remapping utility function", "[map]")
 {
   SECTION("Mapping with number literals")
@@ -35,3 +37,4 @@ TEST_CASE("Testing Numeric Range remapping utility function", "[map]")
     CHECK(double_error <= 0.1);
   }
 }
+}  // namespace sjsu

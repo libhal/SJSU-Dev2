@@ -51,7 +51,7 @@ int main()
   pin0_29.AttachInterrupt(&Port0Pin29ISR, sjsu::Gpio::Edge::kEdgeBoth);
   LOG_INFO("Press Switch 3 to trigger Interrupt for pin0_29.");
 
-  Halt();
+  sjsu::Halt();
   LOG_INFO("Halting any action.");
   return 0;
 }

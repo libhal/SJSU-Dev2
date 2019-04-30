@@ -14,19 +14,19 @@ int main()
   sjsu::Ssd1306 oled_display(ssp1, cs_gpio, dc_gpio);
   sjsu::Graphics graphics(&oled_display);
   LOG_INFO("Starting OLED Hardware Test in 5s...");
-  Delay(5000);
+  sjsu::Delay(5000);
 
   LOG_INFO("Initializing Graphics library along with OLED Hardware...");
   graphics.Initialize();
-  Delay(1000);
+  sjsu::Delay(1000);
 
   LOG_INFO("Clearing Screen...");
   graphics.Clear();
   graphics.Update();
-  Delay(1000);
+  sjsu::Delay(1000);
 
   LOG_INFO("Clearing Screen finished. Waiting 1 second...");
-  Delay(1000);
+  sjsu::Delay(1000);
 
   LOG_INFO("Drawing Some Shapes...");
 
@@ -97,10 +97,10 @@ int main()
   {
     LOG_INFO("Inverting Screen Colors...");
     oled_display.InvertScreenColor();
-    Delay(5000);
+    sjsu::Delay(5000);
     LOG_INFO("Normalizing Screen Colors...");
     oled_display.NormalScreenColor();
-    Delay(5000);
+    sjsu::Delay(5000);
   }
   return 0;
 }

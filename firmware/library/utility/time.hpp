@@ -5,6 +5,8 @@
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
 
+namespace sjsu
+{
 // Max wait time in microseconds.
 constexpr uint64_t kMaxWait = 0xFFFFFFFFFFFFFFFF;
 
@@ -84,11 +86,11 @@ inline void Delay([[maybe_unused]] uint64_t delay_time_ms)
 #endif  // HOST_TEST
 }
 // Halt system by putting it into infinite loop
-[[gnu::always_inline]]
-inline void Halt()
+[[gnu::always_inline]] inline void Halt()
 {
   while (true)
   {
     continue;
   }
 }
+}  // namespace sjsu

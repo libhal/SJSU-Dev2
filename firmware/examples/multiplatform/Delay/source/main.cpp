@@ -16,8 +16,8 @@ int main()
   while (true)
   {
     LOG_INFO("[%lu] Hello, World! (milliseconds = %lu)", counter++,
-                static_cast<uint32_t>(Milliseconds()));
-    Delay(1000);
+                static_cast<uint32_t>(sjsu::Milliseconds()));
+    sjsu::Delay(1000);
   }
   return 0;
 }

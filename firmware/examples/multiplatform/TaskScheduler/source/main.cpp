@@ -6,11 +6,11 @@
 #include "L3_Application/task.hpp"
 #include "utility/log.hpp"
 
-class PrinterTask : public rtos::Task<512>
+class PrinterTask : public sjsu::rtos::Task<512>
 {
  public:
   constexpr PrinterTask(const char * task_name, const char * message)
-      : Task(task_name, rtos::Priority::kMedium),
+      : Task(task_name, sjsu::rtos::Priority::kMedium),
         message_(message),
         run_count_(0)
   {
@@ -61,12 +61,12 @@ int main()
   printer_two.SetDelayTime(1000);
 
   LOG_INFO("Attempting to search for Printer A in the scheduler...");
-  rtos::TaskInterface & task =
-      *(rtos::TaskScheduler::Instance().GetTask("Printer A"));
+  sjsu::rtos::TaskInterface & task =
+      *(sjsu::rtos::TaskScheduler::Instance().GetTask("Printer A"));
   LOG_INFO("Found task: %s", task.GetName());
 
   LOG_INFO("Starting scheduler");
-  rtos::TaskScheduler::Instance().Start();
+  sjsu::rtos::TaskScheduler::Instance().Start();
   LOG_INFO("This point should not be reached!");
   return 0;
 }

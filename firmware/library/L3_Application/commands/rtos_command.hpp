@@ -8,6 +8,8 @@
 
 #include "L3_Application/commandline.hpp"
 
+namespace sjsu
+{
 // Print RTOS runtime stats of FreeRTOS.
 class RtosCommand : public Command
 {
@@ -20,7 +22,7 @@ class RtosCommand : public Command
       "|    Task Name     |   State   | CPU% | Stack Left |   Priority  |\n"
       "|                  |           |      |  in words  | Base : Curr |";
 
-  constexpr RtosCommand() : Command("rtos", kDescription) {}
+  constexpr RtosCommand() : Command("sjsu::rtos", kDescription) {}
   static const char * RtosStateToString(eTaskState state)
   {
     switch (state)
@@ -71,3 +73,4 @@ class RtosCommand : public Command
     return 0;
   }
 };
+}  // namespace sjsu
