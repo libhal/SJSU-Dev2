@@ -27,8 +27,8 @@
 //    CLANG_TIDY is defined when using "make tidy"
 
 static_assert(
-    build::kTarget == build::Target::Bootloader ||
-        build::kTarget == build::Target::HostTest,
+    sjsu::build::kTarget == sjsu::build::Target::Bootloader ||
+        sjsu::build::kTarget == sjsu::build::Target::HostTest,
     "Hyperload must be built as a 'bootloader' and not as an application or "
     "test. Please build this software using 'make bootloader'");
 
@@ -275,7 +275,7 @@ int main()
     control.array[3] = sjsu::lpc40xx::uart0.Receive(500);
     // Echo it back to verify
     sjsu::lpc40xx::uart0.Send(control.array[0]);
-    Delay(1);
+    sjsu::Delay(1);
     printf3("control.array[0] = 0x%02X\n", control.array[0]);
     // Hyperload Frequency should be set to 48,000,000 for this to work
     // correctly It calculates the baud rate by: 48Mhz/(16//BAUD) - 1 = CW
@@ -288,7 +288,7 @@ int main()
         static_cast<uint32_t>(hyperload::FindNearestBaudRate(approx_baud));
     sjsu::lpc40xx::uart0.SetBaudRate(baud_rate);
     // Wait for host to change it's baud rate
-    Delay(500);
+    sjsu::Delay(500);
     // Send our CPU information along with data parameters:
     // Name:Blocksize:Bootsize/2:FlashSize
     puts("$LPC4078:4096:32768:512");
@@ -314,7 +314,7 @@ int main()
     }
     puts3("Programming Finished!\n");
     puts3("Sending final acknowledge!\n");
-    Delay(100);
+    sjsu::Delay(100);
     sjsu::lpc40xx::uart0.Send(kHyperloadFinished);
   }
   // Change baud rate back to 38400 so that user can continue using a serial
@@ -333,24 +333,24 @@ int main()
     constexpr uint32_t kSize16kB = 1 << 13;
     void * vector_address = reinterpret_cast<void *>(application_vector_table);
     printf("Hexdump @ %p \n", vector_address);
-    debug::Hexdump(vector_address, kSize16kB);
-    Halt();
+    sjsu::debug::Hexdump(vector_address, kSize16kB);
+    sjsu::Halt();
   }
   // If button1 is held down, run factory test
   else if (button0.Read())
   {
     // FactoryTest factory_test;
     // factory_test.RunFactoryTest();
-    Halt();
+    sjsu::Halt();
   }
   else if (application_entry_isr == reinterpret_cast<void *>(0xFFFFFFFFUL))
   {
     puts("Application Not Found, Halting System ...\n");
-    Halt();
+    sjsu::Halt();
   }
 
   printf("Application Reset ISR value = %p\n", application_entry_isr);
-  Delay(500);
+  sjsu::Delay(500);
   leds.SetAll(0);
   // SystemTimerIrq must be disabled, otherwise it will continue to fire,
   // after the application is  executed. This can lead to a lot of problems
@@ -507,7 +507,7 @@ IapResult BlankCheckSector(uint32_t start, uint32_t end)
 void EraseWithVerifySector(uint32_t sector_number)
 {
   printf3("Erasing Flash...\n");
-  Delay(kFlashDelay);
+  sjsu::Delay(kFlashDelay);
   IapResult erase_sector_result, black_check_result;
   do
   {
@@ -543,7 +543,7 @@ IapResult FlashSector(Sector_t * ram_sector, uint32_t sector_number,
       // consumed during flash programming.
       // The number of blocks flashed without it would vary from 1 to the
       // full sector's amount.
-      Delay(kFlashDelay);
+      sjsu::Delay(kFlashDelay);
     }
     flash_verified = VerifySector(ram_sector, sector_number);
   }

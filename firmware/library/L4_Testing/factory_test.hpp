@@ -60,7 +60,7 @@ class FactoryTest
 
     printf("  Updating Screen...\n\n");
     display.Update();
-    Delay(1000);
+    sjsu::Delay(1000);
 
     printf("  Inverting screen from black to white...\n\n");
     display.InvertScreenColor();
@@ -89,7 +89,7 @@ class FactoryTest
 
     uint8_t array[5];
     cs.SetLow();
-    Delay(1);
+    sjsu::Delay(1);
     // Read Manufacturer ID
     spi2.Transfer(0x9F);
     array[0] = static_cast<uint8_t>(spi2.Transfer(0x00));
@@ -99,7 +99,7 @@ class FactoryTest
     LOG_INFO("Returned 0x%02X 0x%02X 0x%02X 0x%02X", array[0], array[1],
              array[2], array[3]);
     cs.SetHigh();
-    Delay(1);
+    sjsu::Delay(1);
     printf("End of External Flash Test.\n\n");
     if ((array[0] == 0x1F) && (array[1] == 0x40) && (array[2] == 0x00) &&
         (array[3] == 0x00))

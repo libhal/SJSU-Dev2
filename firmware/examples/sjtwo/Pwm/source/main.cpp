@@ -32,7 +32,7 @@ int main()
     {
       duty = static_cast<float>(i) / 255.0f;
       p2_0.SetDutyCycle(duty);
-      Delay(10);
+      sjsu::Delay(10);
     }
 
     p2_0.SetDutyCycle(0.5);
@@ -40,14 +40,14 @@ int main()
     {
       frequency = frequency * 2;
       p2_0.SetFrequency(frequency);
-      Delay(500);
+      sjsu::Delay(500);
     }
 
     while (frequency > 5)
     {
       frequency = frequency / 2;
       p2_0.SetFrequency(frequency);
-      Delay(500);
+      sjsu::Delay(500);
     }
   }
   return 0;

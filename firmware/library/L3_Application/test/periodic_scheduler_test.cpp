@@ -17,6 +17,11 @@ FAKE_VOID_FUNC(PeriodicTaskTestFunction100Hz, uint32_t);
 FAKE_VOID_FUNC(PeriodicTaskTestFunction1000Hz, uint32_t);
 }  // namespace
 
+namespace sjsu
+{
+namespace rtos
+{
+
 TEST_CASE("Testing PeriodicTask", "[periodic_task]")
 {
   using namespace rtos;  // NOLINT
@@ -80,3 +85,5 @@ TEST_CASE("Testing PeriodicScheduler", "[periodic_scheduler]")
     }
   }
 }
+}  // namespace rtos
+}  // namespace sjsu

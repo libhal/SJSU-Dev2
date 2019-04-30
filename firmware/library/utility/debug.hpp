@@ -14,6 +14,8 @@
 #include "utility/build_info.hpp"
 #include "utility/macros.hpp"
 
+namespace sjsu
+{
 namespace debug
 {
 // =====================================
@@ -64,7 +66,7 @@ static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
 ///
 ///   char some_string[] = "Hello World, and Goodbye World!\n";
 ///   // Subtract 1 to ignore null character
-///   debug::Hexdump(some_string, sizeof(some_string) - 1);
+///   sjsu::debug::Hexdump(some_string, sizeof(some_string) - 1);
 ///
 /// Output:
 /*
@@ -116,7 +118,7 @@ static inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
 ///
 /// Example Usage:
 ///
-///   debug::PrintBacktrace();
+///   sjsu::debug::PrintBacktrace();
 ///
 /// @param show_make_command - if true, print the make command that can be used
 ///        to print the file and line number that corrisponds to the printed
@@ -153,3 +155,4 @@ inline void PrintBacktrace(bool show_make_command = false,
 }
 
 }  // namespace debug
+}  // namespace sjsu

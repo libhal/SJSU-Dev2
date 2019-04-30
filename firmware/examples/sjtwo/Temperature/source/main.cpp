@@ -9,7 +9,7 @@ int main()
   if (!temperature_sensor_initialized)
   {
     LOG_INFO("Could not initialize temperature device (Si7060)\n\n");
-    Halt();
+    sjsu::Halt();
   }
 
   LOG_INFO("Temperature Device is ON.\n");

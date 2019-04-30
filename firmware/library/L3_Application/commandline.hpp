@@ -8,6 +8,8 @@
 #include "third_party/microrl/microrl.h"
 #include "utility/log.hpp"
 
+namespace sjsu
+{
 /// CommandInterface is the set of methods that every command must support
 class CommandInterface
 {
@@ -305,3 +307,4 @@ class CommandLine
   Command quit_;
   Command list_;
 };
+}  // namespace sjsu

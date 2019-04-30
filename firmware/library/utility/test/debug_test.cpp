@@ -7,6 +7,8 @@
 #include "newlib/newlib.hpp"
 #include "utility/debug.hpp"
 
+namespace sjsu
+{
 namespace
 {
 char memory_out[512];
@@ -42,7 +44,7 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
         "|..\"3DUfw........|\n"
         "00000010  \n";
 
-    debug::Hexdump(memory, sizeof(memory));
+    sjsu::debug::Hexdump(memory, sizeof(memory));
 
     CHECK_THAT(memory_out, Catch::Matchers::Equals(kExpected));
   }
@@ -57,7 +59,7 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
         "|hello!..|\n"
         "00000008  \n";
 
-    debug::Hexdump(memory, sizeof(memory));
+    sjsu::debug::Hexdump(memory, sizeof(memory));
 
     CHECK_THAT(memory_out, Catch::Matchers::Equals(kExpected));
   }
@@ -77,10 +79,11 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
         "|..#4EVgx........|\n"
         "00000020  \n";
 
-    debug::Hexdump(memory, sizeof(memory));
+    sjsu::debug::Hexdump(memory, sizeof(memory));
 
     CHECK_THAT(memory_out, Catch::Matchers::Equals(kExpected));
   }
   // Restore stdout function
   out = previous_out;
 }
+}  // namespace sjsu

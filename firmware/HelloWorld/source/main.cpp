@@ -21,7 +21,7 @@ int main()
     {
       LOG_INFO("Hello World 0x%X", i);
       leds.SetAll(i);
-      Delay(500);
+      sjsu::Delay(500);
     }
   }
 

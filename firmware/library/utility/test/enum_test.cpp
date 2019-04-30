@@ -3,6 +3,8 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/enum.hpp"
 
+namespace sjsu
+{
 enum class TestEnumClass : uint8_t
 {
   kVal0 = 0b1010,
@@ -42,7 +44,9 @@ TEST_CASE("Testing Enumeration Bit Operators", "[enum-bit]")
   }
   SECTION("Enum Class XOR")
   {
+    // clang-format off
     ENUM_TEST_SHORT_OP(^);
+    // clang-format on
   }
   SECTION("Enum Class INVERT")
   {
@@ -62,7 +66,9 @@ TEST_CASE("Testing Enumeration Bit Operators", "[enum-bit]")
   }
   SECTION("Enum Class XOR EQUALS")
   {
+    // clang-format off
     ENUM_TEST_SHORT_OP_EQUALS(^, ^=);
+    // clang-format on
   }
 }
 
@@ -76,3 +82,4 @@ TEST_CASE("Testing Enumeration Utilites", "[enum-value]")
           util::Value(TestEnumClass::kVal1));
   }
 }
+}  // namespace sjsu

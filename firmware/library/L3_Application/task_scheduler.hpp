@@ -4,7 +4,7 @@
 // constructed. Simply start the scheduler after constructing and configuring
 // desired tasks.
 // Usage:
-//      rtos::TaskScheduler::Instance().Start();
+//      sjsu::rtos::TaskScheduler::Instance().Start();
 #pragma once
 
 #include <cstddef>
@@ -17,6 +17,8 @@
 // Must include FreeRTOS before event_groups.h
 #include "event_groups.h"
 
+namespace sjsu
+{
 namespace rtos
 {
 class TaskInterface;
@@ -149,4 +151,5 @@ class TaskScheduler final : public TaskSchedulerInterface
   // A fatal error is asserted if either xTaskCreate() or Setup() fails.
   void InitializeAllTasks() override;
 };
-};  // namespace rtos
+}  // namespace rtos
+}  // namespace sjsu

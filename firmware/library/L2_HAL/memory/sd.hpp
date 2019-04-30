@@ -504,7 +504,7 @@ class Sd final : public SdInterface
         // amount of tries
         card_is_idle = true;
       }
-      Delay(10);
+      sjsu::Delay(10);
     } while (tries < kBusTimeout && !card_is_idle);
     LOG_DEBUG("%d tries", tries);
     if (tries >= kBusTimeout)
@@ -1035,7 +1035,7 @@ class Sd final : public SdInterface
     // If desired, wait a bit before talking
     if (delay > 0)
     {
-      Delay(delay);
+      sjsu::Delay(delay);
     }
 
     // Send the desired command frame to the SD card board

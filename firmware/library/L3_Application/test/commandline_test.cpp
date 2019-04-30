@@ -1,6 +1,8 @@
 #include "L3_Application/commandline.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
+namespace sjsu
+{
 EMIT_ALL_METHODS(Command);
 
 namespace
@@ -47,3 +49,4 @@ TEST_CASE("CommandLine Test", "[commandline]")
     // command_line.AddCommand(&test_command);
   }
 }
+}  // namespace sjsu

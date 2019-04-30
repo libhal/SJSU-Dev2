@@ -1,7 +1,7 @@
 #include <cstdint>
 
 #include "L2_HAL/memory/sd.hpp"
-#include "utility/debug.hpp"  // debug::Hexdump()
+#include "utility/debug.hpp"  // sjsu::debug::Hexdump()
 #include "utility/log.hpp"
 #include "utility/time.hpp"  // Halt()
 
@@ -24,43 +24,43 @@ int main()
     card.Initialize();
     SJ2_ASSERT_FATAL(card.Mount(&sd_card_info), "Failed to mount SD Card");
 
-    Delay(1000);
+    sjsu::Delay(1000);
 
     LOG_INFO("Deleting blocks");
     card.DeleteBlock(0x00000000, 0x0000A000);
 
-    Delay(1000);
+    sjsu::Delay(1000);
 
     LOG_INFO("Writing Hello World to block 0 (0x00000000)");
     card.WriteBlock(0x00000000, kHelloWorld);
 
-    Delay(1000);
+    sjsu::Delay(1000);
 
     LOG_INFO("Reading block 0 (0x00000000)");
     card.ReadBlock(0x00000000, buffer);
-    debug::Hexdump(buffer, sizeof(buffer));
+    sjsu::debug::Hexdump(buffer, sizeof(buffer));
 
-    Delay(1000);
+    sjsu::Delay(1000);
 
     LOG_INFO("Deleting blocks again");
     card.DeleteBlock(0x00000000, 0x0000A000);
 
-    Delay(1000);
+    sjsu::Delay(1000);
 
     LOG_INFO("Reading block 0 after delete (0x00000000)");
     card.ReadBlock(0x00000000, buffer);
-    debug::Hexdump(buffer, sizeof(buffer));
+    sjsu::debug::Hexdump(buffer, sizeof(buffer));
 
     LOG_INFO("Writing to block 1 after delete (0x00000200)");
     card.WriteBlock(0x00000200, kLongText);
 
-    Delay(1000);
+    sjsu::Delay(1000);
 
     LOG_INFO("Reading block 1 after write (0x00000200)");
     card.ReadBlock(0x00000200, buffer);
-    debug::Hexdump(buffer, sizeof(buffer));
+    sjsu::debug::Hexdump(buffer, sizeof(buffer));
 
     LOG_INFO("END SD Card Driver Example...");
-    Halt();
+    sjsu::Halt();
     return 0;
 }

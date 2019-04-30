@@ -25,9 +25,9 @@ int main()
   {
     uint32_t speed;
     clock.SetClockFrequency(12);
-    Delay(5000);
+    sjsu::Delay(5000);
     clock.SetClockFrequency(48);
-    Delay(5000);
+    sjsu::Delay(5000);
     speed = clock.GetSystemFrequency();
     LOG_INFO("Speed is %" PRIu32, speed);
   }

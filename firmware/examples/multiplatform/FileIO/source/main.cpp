@@ -62,6 +62,6 @@ int main()
   LOG_INFO("SD card file scan complete!");
 
   LOG_INFO("FileIO Application Complete!");
-  Halt();
+  sjsu::Halt();
   return 0;
 }

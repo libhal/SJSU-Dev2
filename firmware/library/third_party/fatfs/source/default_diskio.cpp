@@ -5,14 +5,14 @@
 extern "C" [[gnu::weak]] DSTATUS disk_status([[maybe_unused]] BYTE pdrv)
 {
   LOG_INFO("FatFS not currently supported on this platform");
-  Halt();
+  sjsu::Halt();
   return STA_NOINIT;
 }
 
 extern "C" [[gnu::weak]] DSTATUS disk_initialize([[maybe_unused]] BYTE drive_number)
 {
   LOG_INFO("FatFS not currently supported on this platform");
-  Halt();
+  sjsu::Halt();
   return RES_PARERR;
 }
 
@@ -22,7 +22,7 @@ extern "C" [[gnu::weak]] DRESULT disk_read([[maybe_unused]] BYTE drive_number,
                                 [[maybe_unused]] UINT count)
 {
   LOG_INFO("FatFS not currently supported on this platform");
-  Halt();
+  sjsu::Halt();
   return RES_PARERR;
 }
 
@@ -32,7 +32,7 @@ extern "C" [[gnu::weak]] DRESULT disk_write([[maybe_unused]] BYTE drive_number,
                                 [[maybe_unused]] UINT count)
 {
   LOG_INFO("FatFS not currently supported on this platform");
-  Halt();
+  sjsu::Halt();
   return RES_PARERR;
 }
 
@@ -41,6 +41,6 @@ extern "C" [[gnu::weak]] DRESULT disk_ioctl([[maybe_unused]] BYTE drive_number,
                                 [[maybe_unused]] void * buffer)
 {
   LOG_INFO("FatFS not currently supported on this platform");
-  Halt();
+  sjsu::Halt();
   return RES_PARERR;
 }

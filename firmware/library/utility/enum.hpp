@@ -3,6 +3,8 @@
 
 #include <type_traits>
 
+namespace sjsu
+{
 namespace util
 {
 // Returns the value of the enum class. This should be used in place of
@@ -129,3 +131,4 @@ constexpr Enum & operator^=(Enum & lhs, Enum rhs)
                           static_cast<underlying>(rhs));
   return lhs;
 }
+}  // namespace sjsu
