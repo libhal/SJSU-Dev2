@@ -38,7 +38,7 @@ void SineDac(const Dac & dac, uint32_t delay)
   for (uint8_t i = 0; i < 255; i++)
   {
     dac.Write(kSineLookup[i]);
-    Delay(delay);
+    sjsu::Delay(delay);
   }
 }
 void SawtoothDac(const Dac & dac, uint32_t delay)
@@ -52,7 +52,7 @@ void SawtoothDac(const Dac & dac, uint32_t delay)
     uint16_t conversion = static_cast<uint16_t>(sawtooth);
     dac.Write(conversion);
     sawtooth = sawtooth + 4;
-    Delay(delay);
+    sjsu::Delay(delay);
   }
 }
 void TriangleDac(const Dac & dac, uint32_t delay)
@@ -66,14 +66,14 @@ void TriangleDac(const Dac & dac, uint32_t delay)
     uint16_t conversion = static_cast<uint16_t>(triangle);
     dac.Write(conversion);
     triangle = triangle + 8;
-    Delay(delay);
+    sjsu::Delay(delay);
   }
   for (uint8_t i = 127; i < 255; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(triangle);
     dac.Write(conversion);
     triangle = triangle - 8;
-    Delay(delay);
+    sjsu::Delay(delay);
   }
 }
 void SerratedDac(const Dac & dac, uint32_t delay)
@@ -87,7 +87,7 @@ void SerratedDac(const Dac & dac, uint32_t delay)
     uint16_t conversion = static_cast<uint16_t>(serrated);
     dac.Write(conversion);
     serrated = serrated + 8;
-    Delay(delay);
+    sjsu::Delay(delay);
   }
   serrated = 0;
   for (uint8_t i = 127; i < 253; i++)
@@ -95,7 +95,7 @@ void SerratedDac(const Dac & dac, uint32_t delay)
     uint16_t conversion = static_cast<uint16_t>(serrated);
     dac.Write(conversion);
     serrated = serrated + 4;
-    Delay(delay);
+    sjsu::Delay(delay);
   }
 }
 

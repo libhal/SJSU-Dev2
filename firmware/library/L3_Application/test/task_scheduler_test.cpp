@@ -5,6 +5,8 @@
 
 #include "L4_Testing/testing_frameworks.hpp"
 
+namespace sjsu
+{
 EventGroupHandle_t test_event_group_handle;
 EventGroupHandle_t xEventGroupCreateStatic_custom_fake(  // NOLINT
     StaticEventGroup_t *)
@@ -99,7 +101,7 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
   }
   SECTION("RemoveTask when scheduler is empty")
   {
-    TaskScheduler scheduler    = TaskScheduler::Instance();
+    TaskScheduler scheduler = TaskScheduler::Instance();
     // should do nothing since this task is not scheduled
     scheduler.RemoveTask("Task A");
     CHECK(vTaskDelete_fake.call_count == 0);
@@ -150,3 +152,4 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
     CHECK(vTaskStartScheduler_fake.call_count == 1);
   }
 }
+}  // namespace sjsu

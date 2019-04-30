@@ -11,6 +11,8 @@
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
 
+namespace sjsu
+{
 using WriteFnt = bool (*)(intptr_t, size_t, uint8_t *);
 using ReadFnt  = void (*)(intptr_t, size_t, uint8_t *);
 
@@ -252,3 +254,4 @@ class I2cDevice
   }
   I2cDevice() {}
 };
+}  // namespace sjsu

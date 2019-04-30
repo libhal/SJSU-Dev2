@@ -2,6 +2,8 @@
 
 #include <cstdlib>
 
+namespace sjsu
+{
 // Constructing this structure with a file path, will generate a structure with
 // a character array containing just the bare basename.
 template <size_t kPathLength, size_t kBasenameLength>
@@ -44,3 +46,4 @@ constexpr size_t BasenameLength(const char * path)
   }
   return forward_slash;
 }
+}  // namespace sjsu

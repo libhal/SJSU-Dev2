@@ -3,6 +3,8 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/bit.hpp"
 
+namespace sjsu
+{
 TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
 {
   SECTION("Extract")
@@ -62,7 +64,7 @@ TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
     CHECK(0b1011'1101 == bit::Insert(0b1010'0101, 0b1111, 2, 4));
     static_assert(0b1011'1101 == bit::Insert(0b1010'0101, 0b1111, 2, 4));
 
-    uint32_t target = 0xAAAA'BBBB;
+    uint32_t target        = 0xAAAA'BBBB;
     int8_t value_to_insert = 0xCD;
     // Shows replacement of 0101 -> 1111 in the middle of byte
     CHECK(0xAAAA'BCDB == bit::Insert(target, value_to_insert, 4, 8));
@@ -134,3 +136,4 @@ TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
     static_assert(false == bit::Read(0x0000, 31));
   }
 }
+}  // namespace sjsu

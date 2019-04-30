@@ -95,8 +95,8 @@ extern "C"
     // itself.
     system_timer.SetTickFrequency(config::kRtosFrequency);
     system_timer.SetInterrupt(xPortSysTickHandler);
-    Status timer_start_status = system_timer.StartTimer();
-    SJ2_ASSERT_FATAL(timer_start_status == Status::kSuccess,
+    sjsu::Status timer_start_status = system_timer.StartTimer();
+    SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
                      "System Timer (used by FreeRTOS) has FAILED to start!");
   }
 }
@@ -177,7 +177,7 @@ void InitializePlatform()
   // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
   // micro second.
   timer0.Initialize(1'000'000UL);
-  SetUptimeFunction(Lpc40xxUptime);
+  sjsu::SetUptimeFunction(Lpc40xxUptime);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   sjsu::lpc40xx::uart0.Initialize(config::kBaudRate);
 }
@@ -222,5 +222,5 @@ extern "C" void ResetIsr()
 #pragma GCC diagnostic pop
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
-  Halt();
+  sjsu::Halt();
 }

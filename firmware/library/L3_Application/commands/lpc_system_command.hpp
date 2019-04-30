@@ -9,6 +9,8 @@
 #include "L3_Application/commandline.hpp"
 #include "utility/log.hpp"
 
+namespace sjsu
+{
 /// The SystemInfoCommand allows the user to get runtime stats about the
 // processor like, memory left, heap left, etc ...
 class LpcSystemInfoCommand : public Command
@@ -30,8 +32,8 @@ class LpcSystemInfoCommand : public Command
     intptr_t master_stack_pointer = __get_MSP();
     intptr_t used_stack           = top_of_stack - master_stack_pointer;
     intptr_t remaining_stack      = 0x10000 - used_stack;
-    intptr_t head_used      = heap_position - &heap;
-    intptr_t remaining_head = 0x8000 - head_used;
+    intptr_t head_used            = heap_position - &heap;
+    intptr_t remaining_head       = 0x8000 - head_used;
 
     printf("System Information:\n");
     printf("-------------------\n");
@@ -49,3 +51,4 @@ class LpcSystemInfoCommand : public Command
     return 0;
   }
 };
+}  // namespace sjsu

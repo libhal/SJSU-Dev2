@@ -269,10 +269,10 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
          ", "
          "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "\n",
          r12, lr, pc, psr);
-  debug::PrintBacktrace(true, reinterpret_cast<void *>(pc));
+  sjsu::debug::PrintBacktrace(true, reinterpret_cast<void *>(pc));
   // When the following line is hit, the variables contain the register values
   // Use a JTAG debugger to inspect these variables
-  Halt();
+  sjsu::Halt();
 }
 
 SJ2_SECTION(".after_vectors")

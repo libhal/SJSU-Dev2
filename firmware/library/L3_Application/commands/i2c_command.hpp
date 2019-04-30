@@ -9,6 +9,8 @@
 #include "third_party/etl/vector.h"
 #include "utility/log.hpp"
 
+namespace sjsu
+{
 /// The I2cCommand [will] allows the user to discover, read, and write to
 /// devices on the I2C bus.
 class I2cCommand : public Command
@@ -262,7 +264,7 @@ class I2cCommand : public Command
   static inline const char * const kI2cOperations[] = { "read", "write",
                                                         "discover", nullptr };
   etl::vector<AddressString_t, command::kAutoCompleteOptions> devices_found_;
-  sjsu::lpc40xx::I2c i2c_peripheral_ =
-      sjsu::lpc40xx::I2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
-  sjsu::I2c * i2c_ = &i2c_peripheral_;
+  lpc40xx::I2c i2c_peripheral_ = lpc40xx::I2c(lpc40xx::I2c::Bus::kI2c2);
+  I2c * i2c_                   = &i2c_peripheral_;
 };
+}  // namespace sjsu

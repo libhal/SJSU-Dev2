@@ -39,6 +39,8 @@ DECLARE_FAKE_VALUE_FUNC(BaseType_t, xQueueSemaphoreTake, QueueHandle_t,
                         TickType_t);
 #endif  // HOST_TEST
 
+namespace sjsu
+{
 namespace rtos
 {
 enum Priority
@@ -59,10 +61,10 @@ constexpr size_t StackSize(size_t stack_size_bytes)
 {
   return configMINIMAL_STACK_SIZE + (stack_size_bytes / sizeof(StackType_t));
 }
-// Allows the developer to convert primitive type parameter to an rtos task by
-// converting it into an void*. The size of this parameter must be equal to or
-// smaller than intptr_t, otherwise it will not fit. If this is the case,
-// passing such a parameter must be pasted by pointer.
+// Allows the developer to convert primitive type parameter to an sjsu::rtos
+// task by converting it into an void*. The size of this parameter must be
+// equal to or smaller than intptr_t, otherwise it will not fit. If this is the
+// case, passing such a parameter must be pasted by pointer.
 template <typename T>
 constexpr void * PassParameter(T t)
 {
@@ -79,3 +81,4 @@ inline intptr_t RetrieveParameter(void * parameter)
 }
 
 }  // namespace rtos
+}  // namespace sjsu

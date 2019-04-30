@@ -16,7 +16,7 @@ int Baz(void)
   LOG_INFO(
       "Everything in the middle is the sequence of calls that got you to this "
       "point.\n");
-  debug::PrintBacktrace();
+  sjsu::debug::PrintBacktrace();
   puts("\n");
   return 2;
 }

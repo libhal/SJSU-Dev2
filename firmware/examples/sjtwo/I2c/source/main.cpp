@@ -30,12 +30,12 @@ int main()
   while (true)
   {
     LOG_INFO("Starting Scan...");
-    Status status;
+    sjsu::Status status;
     for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
          address++)
     {
       status = i2c.Write(address, nullptr, 0, 50);
-      if (status == Status::kSuccess)
+      if (status == sjsu::Status::kSuccess)
       {
         LOG_INFO("    Found device at address: 0x%02X", address);
       }
@@ -47,7 +47,7 @@ int main()
     LOG_INFO("Accelerometer ID = 0x%02X", byte);
 
     LOG_INFO("Waiting 5s before starting the scan again...");
-    Delay(5000);
+    sjsu::Delay(5000);
   }
   return 0;
 }

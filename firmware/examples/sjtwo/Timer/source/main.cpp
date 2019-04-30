@@ -41,6 +41,6 @@ int main()
   timer2.SetTimer(5'000'000, sjsu::lpc40xx::Timer::kInterruptRestart);
   timer3.SetTimer(10'000'000, sjsu::lpc40xx::Timer::kInterruptRestart);
 
-  Halt();
+  sjsu::Halt();
   return 0;
 }

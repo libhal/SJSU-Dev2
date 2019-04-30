@@ -6,6 +6,8 @@
 #include "L3_Application/commandline.hpp"
 #include "utility/log.hpp"
 
+namespace sjsu
+{
 namespace command
 {
 inline Command clear("clear", "Clear console",
@@ -25,13 +27,13 @@ inline Command telemetry(
     "Retrieve information about registered variables and memory in realtime",
     DoNothingCommand);
 inline Command datetime("datetime", "Display or set current datetime",
-                            DoNothingCommand);
+                        DoNothingCommand);
 inline Command help("help", "Get information about how to use the SJ2 board",
                     DoNothingCommand);
 }  // namespace command
 
 /// Adds the common set of commands: clear, reboot, sensor, memory, telemetry
-/// datetime, help and rtos to the passed command_line object
+/// datetime, help and sjsu::rtos to the passed command_line object
 ///
 /// @tparam CommandListType should not be defined within the template argument
 ///         list. This type is automatically deduced by the compiler.
@@ -49,3 +51,4 @@ inline void AddCommonCommands(CommandLineType<list> & command_line)
   command_line.AddCommand(&command::datetime);
   command_line.AddCommand(&command::help);
 }
+}  // namespace sjsu
