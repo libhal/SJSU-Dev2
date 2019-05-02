@@ -71,7 +71,7 @@ class Pin final : public sjsu::Pin
   void SetMode(sjsu::Pin::Mode mode) const override
   {
     uint8_t ui_mode   = static_cast<uint8_t>(mode);
-    *GetPinRegister() = bit::Insert(*GetPinRegister(), ui_mode & 0b11,
+    *GetPinRegister() = bit::Insert(*GetPinRegister(), ui_mode,
                                     util::Value(PinBitMap::kMode), 2);
   }
   // Set bit to 0 to enable analog mode

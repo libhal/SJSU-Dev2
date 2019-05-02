@@ -77,7 +77,7 @@ class Gpio final : public sjsu::Gpio
   }
   // Sets the GPIO pin direction as output or input depending on the
   // Direction enum parameter
-  inline void SetDirection(Direction direction) const override
+  void SetDirection(Direction direction) const override
   {
     (direction) ? SetAsOutput() : SetAsInput();
   }

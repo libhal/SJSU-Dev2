@@ -17,7 +17,7 @@
 
 namespace sjsu
 {
-class St7066u
+class St7066u final
 {
  public:
   // Data transfer operation types.

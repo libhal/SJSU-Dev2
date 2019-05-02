@@ -6,7 +6,7 @@
 
 namespace sjsu
 {
-class Si7060 : public Temperature
+class Si7060 final : public Temperature
 {
  public:
   static constexpr uint8_t kDefaultAddress          = 0x31;

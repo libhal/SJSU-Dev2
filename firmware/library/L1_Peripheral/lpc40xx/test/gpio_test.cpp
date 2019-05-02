@@ -240,12 +240,12 @@ TEST_CASE("Testing Gpio External Interrupts", "[Gpio Interrupts]")
 
     // Enable all Interrupts
     p0_15.EnableInterrupts();
-    CHECK(dynamic_isr_vector_table[GPIO_IRQn + kIrqOffset] ==
+    CHECK(dynamic_isr_vector_table[GPIO_IRQn + sjsu::lpc40xx::kIrqOffset] ==
           Gpio::InterruptHandler);
 
     // Disable all Interrupts
     p0_15.DisableInterrupts();
-    CHECK(dynamic_isr_vector_table[GPIO_IRQn + kIrqOffset] ==
+    CHECK(dynamic_isr_vector_table[GPIO_IRQn + sjsu::lpc40xx::kIrqOffset] ==
           &InterruptLookupHandler);
   }
 

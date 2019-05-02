@@ -1,10 +1,12 @@
 #include "L0_Platform/lpc40xx/interrupt.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
+namespace sjsu::lpc40xx
+{
 TEST_CASE("Testing interrupt", "[interrupt]")
 {
-  auto test_isr = []() {};
-  constexpr size_t kVectorIndex = WDT_IRQn+kIrqOffset;
+  auto test_isr                 = []() {};
+  constexpr size_t kVectorIndex = WDT_IRQn + lpc40xx::kIrqOffset;
   SECTION("RegisterIsr")
   {
     constexpr int32_t kPriority = 5;
@@ -30,3 +32,4 @@ TEST_CASE("Testing interrupt", "[interrupt]")
     CHECK(WDT_IRQn == NVIC_DisableIRQ_fake.arg0_val);
   }
 }
+}  // namespace sjsu::lpc40xx
