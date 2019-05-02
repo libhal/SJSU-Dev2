@@ -1,0 +1,168 @@
+MEMORY
+{
+    /* Flash memory region for the program, offset by the bootloader section */
+    FLASH (rx) : ORIGIN = 0, LENGTH = 64K
+
+    /* 32K (Heap starts here) */
+    SRAM (rwx) : ORIGIN = 0x10000000, LENGTH = 32K
+
+    /* 32K (Globals at bottom, stack on top), heap continues from here */
+    SRAM_AHB (rwx) : ORIGIN = 0x2007c000, LENGTH = 32K
+
+    /* Heap starts at SRAM because if heap starts from higher memory, then
+     * malloc tracking routines get confused when sbrk() system function
+     * returns higher heap memory first, and then lower heap memory.
+     * So we start heap from SRAM, and then move it up to SRAM_AHB if SRAM
+     * portion runs out completely.
+     */
+
+     /* Symbol Table */
+     /*FLASH_SYMBOL_TABLE : ORIGIN = 0x1000, LENGTH = 32K*/
+}
+
+  /* Define a symbol for the top of each memory region */
+  __base_MFlash512 = 0x0  ; /* MFlash512 */
+  __base_Flash = 0x0 ; /* Flash */
+  __top_MFlash512 = 0x0 + 0x80000 ; /* 512K bytes */
+  __top_Flash = 0x0 + 0x80000 ; /* 512K bytes */
+  __base_RamLoc64 = 0x10000000  ; /* RamLoc64 */
+  __base_RAM = 0x10000000 ; /* RAM */
+  __top_RamLoc64 = 0x10000000 + 32K ; /* 64K bytes */
+  __top_RAM = 0x10000000 + 32K ; /* 64K bytes */
+  __base_RamPeriph32 = 0x2007c000  ; /* RamPeriph32 */
+  __base_RAM2 = 0x2007c000 ; /* RAM2 */
+  __top_RamPeriph32 = 0x2007c000 + 0x8000 ; /* 32K bytes */
+  __top_RAM2 = 0x2007c000 + 0x8000 ; /* 32K bytes */
+  __user_heap_base = __base_RAM2 ; /* SJSU-Dev2: RAM2 is solely for heap */
+
+/* Program entry point */
+ENTRY(ResetIsr)
+
+SECTIONS
+{
+	/* MAIN TEXT SECTION */
+	.text : ALIGN(4)
+	{
+		FILL(0xff)
+		KEEP(*(.isr_vector))
+
+		/* Global Section Table */
+		. = ALIGN(4) ;
+		PROVIDE(section_table_start = .);
+    PROVIDE(data_section_table = .);
+		LONG(LOADADDR(.data));
+		LONG(    ADDR(.data));
+		LONG(  SIZEOF(.data));
+		PROVIDE(data_section_table_end = .);
+		PROVIDE(bss_section_table = .);
+		LONG(    ADDR(.bss));
+		LONG(  SIZEOF(.bss));
+		PROVIDE(bss_section_table_end = .);
+		PROVIDE(section_table_end = .);
+
+    /* Functions that are placed after the interrupt vector */
+		*(.after_vectors*)
+
+		*(.text*)
+		*(.rodata .rodata.*)
+		. = ALIGN(4);
+
+		/* C++ constructors etc */
+		. = ALIGN(4);
+		KEEP(*(.init))
+
+		. = ALIGN(4);
+		__preinit_array_start = .;
+		KEEP (*(.preinit_array))
+		__preinit_array_end = .;
+
+		. = ALIGN(4);
+		__init_array_start = .;
+		KEEP (*(SORT(.init_array.*)))
+		KEEP (*(.init_array))
+		__init_array_end = .;
+
+		KEEP(*(.fini));
+
+		. = ALIGN(4);
+		KEEP (*crtbegin.o(.ctors))
+		KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
+		KEEP (*(SORT(.ctors.*)))
+		KEEP (*crtend.o(.ctors))
+
+		. = ALIGN(4);
+		KEEP (*crtbegin.o(.dtors))
+		KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
+		KEEP (*(SORT(.dtors.*)))
+		KEEP (*crtend.o(.dtors))
+		/* End C++ */
+	} > FLASH
+
+	/*
+	 * for exception handling/unwind - some Newlib functions (in common
+	 * with C++ and STDC++) use this.
+	 */
+	.ARM.extab : ALIGN(4)
+	{
+		*(.ARM.extab* .gnu.linkonce.armextab.*)
+	} > FLASH
+	__exidx_start = .;
+
+	.ARM.exidx : ALIGN(4)
+	{
+		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
+	} > FLASH
+	__exidx_end = .;
+
+	_etext = .;
+
+	/* MAIN DATA SECTION */
+	.uninit_RESERVED : ALIGN(4)
+	{
+		KEEP(*(.bss.$RESERVED*))
+	} > SRAM_AHB
+  /* used by the startup to initialize data */
+  _sidata = .;
+
+  /* Initialized data sections goes into RAM, load LMA copy after code */
+  .data : AT ( _sidata )
+	{
+		FILL(0xff)
+		_data = .;
+		*(vtable)
+		*(.data*)
+		. = ALIGN(4) ;
+		_edata = .;
+		/* End of Global Section Table */
+	} > SRAM
+
+	/* MAIN BSS SECTION */
+	.bss : ALIGN(4)
+	{
+		bss_start = .;
+		*(.bss*)
+		*(COMMON)
+		. = ALIGN(4) ;
+		bss_end = .;
+		PROVIDE(end = .);
+	} > SRAM
+
+	/* Provide a symbol of the heap pointer to C/C++ code */
+  PROVIDE(heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
+  PROVIDE(heap_end = __top_RAM2);
+
+	/* Provide the start of the initial stack pointer
+	 * Debugger and ISP may use 32-bytes of space?
+	 */
+	PROVIDE(StackTop = ORIGIN(SRAM) + LENGTH(SRAM) - 32);
+  /* ## Create checksum value (used in startup) ## */
+  PROVIDE(ValidUserCodeChecksum = 0 -
+                                      (StackTop
+                                      + (ResetIsr + 1)
+                                      + (NmiHandler + 1)
+                                      + (HardFaultHandler + 1)
+                                      + (( DEFINED(MemManageHandler) ? MemManageHandler : 0 ) + 1)   /* MemManageHandler may not be defined */
+                                      + (( DEFINED(BusFaultHandler) ? BusFaultHandler : 0 ) + 1)     /* BusFaultHandler may not be defined */
+                                      + (( DEFINED(UsageFaultHandler) ? UsageFaultHandler : 0 ) + 1) /* UsageFaultHandler may not be defined */
+                                      ) );
+}

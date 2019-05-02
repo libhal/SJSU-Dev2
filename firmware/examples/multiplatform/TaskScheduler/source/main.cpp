@@ -6,7 +6,7 @@
 #include "L3_Application/task.hpp"
 #include "utility/log.hpp"
 
-class PrinterTask : public sjsu::rtos::Task<512>
+class PrinterTask final : public sjsu::rtos::Task<512>
 {
  public:
   constexpr PrinterTask(const char * task_name, const char * message)
@@ -61,9 +61,18 @@ int main()
   printer_two.SetDelayTime(1000);
 
   LOG_INFO("Attempting to search for Printer A in the scheduler...");
-  sjsu::rtos::TaskInterface & task =
-      *(sjsu::rtos::TaskScheduler::Instance().GetTask("Printer A"));
-  LOG_INFO("Found task: %s", task.GetName());
+  sjsu::rtos::TaskInterface * task =
+      sjsu::rtos::TaskScheduler::Instance().GetTask("Printer A");
+
+  if (task != nullptr)
+  {
+    LOG_INFO("Found task: %s", task->GetName());
+  }
+  else
+  {
+    LOG_ERROR("Could not find task \"Printer A\", Halt System.");
+    sjsu::Halt();
+  }
 
   LOG_INFO("Starting scheduler");
   sjsu::rtos::TaskScheduler::Instance().Start();

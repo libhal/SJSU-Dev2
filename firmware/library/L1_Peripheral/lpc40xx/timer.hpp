@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <limits>
 
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L0_Platform/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L0_Platform/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"

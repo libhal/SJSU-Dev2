@@ -35,12 +35,13 @@
 #include <cstring>
 #include <iterator>
 
-#include "L0_Platform/lpc40xx/interrupt.hpp"
-#include "L0_Platform/lpc40xx/ram.hpp"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
+#include "L0_Platform/lpc17xx/interrupt.hpp"
+#include "L0_Platform/lpc17xx/LPC17xx.h"
+#include "L0_Platform/lpc17xx/ram.hpp"
+#include "L0_Platform/lpc17xx/system_controller.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
-#include "L1_Peripheral/lpc40xx/timer.hpp"
-#include "L1_Peripheral/lpc40xx/uart.hpp"
+#include "L1_Peripheral/lpc17xx/timer.hpp"
+#include "L1_Peripheral/lpc17xx/uart.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
@@ -49,10 +50,10 @@
 namespace
 {
 // Create LPC40xx system controller to be used by low level initialization.
-sjsu::lpc40xx::SystemController system_controller;
+sjsu::lpc17xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
-sjsu::lpc40xx::Timer timer0(sjsu::lpc40xx::Timer::Channel::kTimer0);
-uint64_t Lpc40xxUptime()
+sjsu::lpc17xx::Timer timer0(sjsu::lpc17xx::Timer::Channel::kTimer0);
+uint64_t Lpc17xxUptime()
 {
   return timer0.GetTimer();
 }
@@ -135,51 +136,29 @@ void InitializeBssSection()
   }
 }
 
-// Initialize the FPU. Must be done before any floating point instructions
-// are executed.
-/* Found here:
-http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0553a/
-BABGHFIB.html
-*/
-SJ2_SECTION(".after_vectors")
-void InitializeFloatingPointUnit()
-{
-  __asm(
-      // CPACR is located at address 0xE000ED88
-      "LDR.W   R0, =0xE000ED88\n"
-      // Read CPACR
-      "LDR     R1, [R0]\n"
-      // Set bits 20-23 to enable CP10 and CP11 coprocessors
-      "ORR     R1, R1, #(0xF << 20)\n"
-      // Write back the modified value to the CPACR
-      "STR     R1, [R0]\n"
-      // Wait for store to complete
-      "DSB\n"
-      // reset pipeline now the FPU is enabled
-      "ISB\n");
-}
-
 void InitializePlatform()
 {
   // Set Clock Speed
   // SetClockFrequency will timeout return the offset between desire clockspeed
   // and actual clockspeed if the PLL doesn't get a frequency fix within a
   // defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
+  timer0.Initialize(1'000'000UL);
+  sjsu::SetUptimeFunction(Lpc17xxUptime);
+  // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
+  // fed to all peripherals will be 48Mhz.
+  system_controller.SetPeripheralClockDivider(1);
+
   while (system_controller.SetClockFrequency(config::kSystemClockRateMhz) != 0)
   {
     // Continually attempt to set the clock frequency to the desired until the
     // delta between desired and actual are 0.
     continue;
   }
-  // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
-  // fed to all peripherals will be 48Mhz.
-  system_controller.SetPeripheralClockDivider(1);
-  // Set UART0 baudrate, which is required for printf and scanf to work properly
-  sjsu::lpc40xx::uart0.Initialize(config::kBaudRate);
   // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
-  // micro second.
+  // micro second. This is done again, because the system clock has changed.
   timer0.Initialize(1'000'000UL);
-  sjsu::SetUptimeFunction(Lpc40xxUptime);
+  // Set UART0 baudrate, which is required for printf and scanf to work properly
+  sjsu::lpc17xx::uart0.Initialize(config::kBaudRate);
 }
 
 void SystemInitialize()
@@ -190,10 +169,6 @@ void SystemInitialize()
   // This is required because the nano implementation of the standard C/C++
   // libraries assumes that the BSS section is initialized to 0.
   InitializeBssSection();
-  // Enable FPU (F.loating P.oint U.nit)
-  // System will crash if floating point instruction is executed before
-  // Initializing the FPU first.
-  InitializeFloatingPointUnit();
   // Initialisation C++ libraries
   __libc_init_array();
   // Run Low Level Platform Initialization
@@ -210,9 +185,9 @@ extern "C" void ResetIsr()
   // bootloader function launches this ISR manually, but it never returns thus
   // it never cleans up the memory it uses. To get that memory back, we have
   // to manually move the stack pointers back to the top of stack.
-  const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
-  sjsu::lpc40xx::__set_PSP(kTopOfStack);
-  sjsu::lpc40xx::__set_MSP(kTopOfStack);
+  const uint32_t kTopOfStack = reinterpret_cast<uint32_t>(&StackTop);
+  sjsu::lpc17xx::__set_PSP(kTopOfStack);
+  sjsu::lpc17xx::__set_MSP(kTopOfStack);
 
   SystemInitialize();
 // #pragma ignored "-Wpedantic" to suppress main function call warning

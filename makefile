@@ -41,9 +41,11 @@ endif
 # SJSU-Dev2 Toolchain Paths
 # ============================
 # Path to CLANG compiler
-SJCLANG   = $(SJSU_DEV2_BASE)/tools/clang+llvm-*
+SJCLANG_PATH   = $(SJSU_DEV2_BASE)/tools/clang+llvm-*
+SJCLANG        = $(shell cd $(SJCLANG_PATH); pwd)
 # Path to ARM GCC compiler
-SJARMGCC  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*
+SJARMGCC_PATH  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*
+SJARMGCC       = $(shell cd $(SJARMGCC_PATH); pwd)
 # Path to Openocd compiler
 SJOPENOCD = $(SJSU_DEV2_BASE)/tools/openocd
 # Compiler and library settings:
@@ -124,6 +126,8 @@ HOST_OBJDUMP   = $(SJCLANG)/bin/llvm-objdump
 HOST_SIZEC     = $(SJCLANG)/bin/llvm-size
 HOST_OBJCOPY   = $(SJCLANG)/bin/llvm-objcopy
 HOST_NM        = $(SJCLANG)/bin/llvm-nm
+HOST_COV       = $(SJCLANG)/bin/llvm-cov
+CLANG_TIDY     = $(SJCLANG)/bin/clang-tidy
 # Mux between using the firmware compiler executables or the host compiler
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
 CC      = $(HOST_CC)
@@ -148,22 +152,22 @@ endif
 BUILD_DIRECTORY_NAME = build
 # "make application"'s build directory becomes "build/application"
 # "make test"'s build directory becomes "build/test"
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), flash stacktrace-application))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), flash stacktrace-application multi-debug debug))
 BUILD_SUBDIRECTORY_NAME = application
 else ifeq ($(MAKECMDGOALS), \
-	$(filter $(MAKECMDGOALS), burn stacktrace-bootloader))
+	$(filter $(MAKECMDGOALS), burn stacktrace-bootloader multi-debug-bootloader))
 BUILD_SUBDIRECTORY_NAME = bootloader
 else
 BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
 endif
 
-BUILD_DIR      = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)
+BUILD_DIR      = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)/$(PLATFORM)
 OBJECT_DIR     = $(BUILD_DIR)/compiled
 DBC_DIR        = $(BUILD_DIR)/can-dbc
 COVERAGE_DIR   = $(BUILD_DIR)/coverage
 FIRMWARE_DIR   = $(SJSU_DEV2_BASE)/firmware
 LIB_DIR        = $(FIRMWARE_DIR)/library
-STATIC_LIB_DIR = $(LIB_DIR)/static_libraries
+STATIC_LIB_DIR = $(LIB_DIR)/static_libraries/$(PLATFORM)
 TOOLS_DIR      = $(SJSU_DEV2_BASE)/tools
 SOURCE_DIR     = source
 COMPILED_HEADERS_DIR  = $(BUILD_DIR)/headers # NOTE: Actually use this!
@@ -336,12 +340,13 @@ LINT_FILES  = $(shell find $(FIRMWARE_DIR) \
                       -name "*.hpp" -o \
                       -name "*.c"   -o \
                       -name "*.cpp" | \
-					            $(FILE_EXCLUDES) \
+                      $(FILE_EXCLUDES) \
                       2> /dev/null)
+
 # TODO(kammce): Add these phony files back to make linting and tiding up
 # remember which files have already been linted/tidied.
 LINT_FILES_PHONY = $(LINT_FILES:=.lint)
-TIDY_FILES_PHONY = $(LINT_FILES:=.tidy)
+TIDY_FILES_PHONY = $(addprefix $(OBJECT_DIR)/, $(LINT_FILES:=.tidy))
 # ===========================
 # Firmware final products
 # ===========================
@@ -460,7 +465,7 @@ run-test:
 		-e "$(LIB_DIR)/newlib" \
 		-e "$(LIB_DIR)/third_party" \
 		-e "$(LIB_DIR)/L4_Testing" \
-		--html --html-details --gcov-executable="llvm-cov gcov" \
+		--html --html-details --gcov-executable="$(HOST_COV) gcov" \
 		-o $(COVERAGE_DIR)/coverage.html
 # ====================================================================
 # Source Code Linting
@@ -483,7 +488,8 @@ stacktrace-bootloader:
 	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE)
 # Start an openocd jtag debug session for the sjtwo development board
 openocd:
-	$(SJOPENOCD)/bin/openocd -f $(FIRMWARE_DIR)/debug/sjtwo.cfg
+	$(SJOPENOCD)/bin/openocd -f $(FIRMWARE_DIR)/debug/sjone.cfg
+	# $(SJOPENOCD)/bin/openocd -f $(FIRMWARE_DIR)/debug/sjtwo.cfg
 # Start gdb for arm and connect to openocd jtag debugging session
 debug:
 	$(DEVICE_GDB) -ex "target remote :3333" $(EXECUTABLE)
@@ -492,6 +498,8 @@ debug-user-test:
 # Start gdb just like the debug target, but using gdb-multiarch
 # gdb-multiarch is perferable since it supports python in its .gdbinit file
 multi-debug:
+	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
+multi-debug-bootloader:
 	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
 # ====================================================================
 # Makefile debug
@@ -517,6 +525,8 @@ show-lists:
 	@echo $(COVERAGE_FILES)
 	@echo "=========== LIBRARIES =============="
 	@echo $(LIBRARIES)
+	@echo "=========== LINT =============="
+	@echo $(LINT_FILES)
 
 # ====================================================================
 # Recipes to Compile Source Code
@@ -583,11 +593,12 @@ $(TEST_EXEC): $(OBJECTS)
 					 -o $(TEST_EXEC) $(OBJECTS)
 	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
-%.tidy: %
+$(OBJECT_DIR)/%.tidy: %
 	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
-	@clang-tidy $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
+	@mkdir -p "$(dir $@)"
+	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 		-extra-arg="-std=c++17") "$<"  -- \
 		-D TARGET=HostTest -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/include/c++/v1/" \
-		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> /dev/null
+		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@printf '$(GREEN)DONE!$(RESET)\n'

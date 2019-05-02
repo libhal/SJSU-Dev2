@@ -4,7 +4,9 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L0_Platform/lpc17xx/interrupt.hpp"
+#include "L0_Platform/lpc17xx/LPC17xx.h"
+
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
@@ -17,45 +19,51 @@ DEFINE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
 DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 #else
 
-const IsrPointer kReservedVector = nullptr;
+namespace sjsu
+{
+namespace lpc17xx
+{
+void InterruptLookupHandler(void);
+constexpr int32_t kIrqOffset = (Reset_IRQn * -1) + 1;
+}  // namespace lpc17xx
+}  // namespace sjsu
 
 extern "C"
 {
-// [[ gnu::alias("sjsu::lpc40xx::InterruptLookupHandler"),
 #define WEAK [[gnu::weak]]
   // This does not alias InterruptLookupHandler because the hardfault handler
   // has to carefully gather register information after it is called.
   WEAK void NmiHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void MemManageHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void BusFaultHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void UsageFaultHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void SvcHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void DebugMonHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void PendSVHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void SysTickHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   // Forward declaration of the specific IRQ handlers. These are aliased
   // to the InterruptLookupHandler, which is a 'forever' loop. When the
@@ -63,167 +71,143 @@ extern "C"
   // automatically take precedence over these weak definitions.
   WEAK void WdtIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Timer0IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Timer1IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Timer2IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Timer3IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Uart0IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Uart1IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Uart2IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Uart3IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Pwm1IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void I2c0IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void I2c1IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void I2c2IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void SpiIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Ssp0IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Ssp1IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Pll0IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void RtcIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Eint0IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Eint1IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Eint2IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Eint3IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void AdcIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void BodIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void UsbIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void CanIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void DmaIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void I2sIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void EnetIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
+  }
+  WEAK void RitIrqHandler()
+  {
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void McpwmIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void QeiIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void Pll1IrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void UsbactivityIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   WEAK void CanactivityIrqHandler()
   {
-    sjsu::lpc40xx::InterruptLookupHandler();
-  }
-  WEAK void SdioIrqHandler()
-  {
-    sjsu::lpc40xx::InterruptLookupHandler();
-  }
-  WEAK void Uart4IrqHandler()
-  {
-    sjsu::lpc40xx::InterruptLookupHandler();
-  }
-  WEAK void Ssp2IrqHandler()
-  {
-    sjsu::lpc40xx::InterruptLookupHandler();
-  }
-  WEAK void LcdIrqHandler()
-  {
-    sjsu::lpc40xx::InterruptLookupHandler();
-  }
-  WEAK void GpioIrqHandler()
-  {
-    sjsu::lpc40xx::InterruptLookupHandler();
-  }
-  WEAK void Pwm0IrqHandler()
-  {
-    sjsu::lpc40xx::InterruptLookupHandler();
-  }
-  WEAK void EepromIrqHandler()
-  {
-    sjsu::lpc40xx::InterruptLookupHandler();
+    sjsu::lpc17xx::InterruptLookupHandler();
   }
   // External declaration for LPC MCU vector table checksum from Linker Script
   extern void ValidUserCodeChecksum();
@@ -251,7 +235,7 @@ const IsrPointer kInterruptVectorTable[] = {
   kReservedVector,        // 13, Reserved
   xPortPendSVHandler,     // 14, FreeRTOS PendSV Handler
   SysTickHandler,         // 15, The SysTick handler
-  // Chip Level - LPC40xx
+  // Chip Level - LPC17xx
   WdtIrqHandler,          // 16, 0x40 - WDT
   Timer0IrqHandler,       // 17, 0x44 - TIMER0
   Timer1IrqHandler,       // 18, 0x48 - TIMER1
@@ -265,7 +249,7 @@ const IsrPointer kInterruptVectorTable[] = {
   I2c0IrqHandler,         // 26, 0x68 - I2C0
   I2c1IrqHandler,         // 27, 0x6c - I2C1
   I2c2IrqHandler,         // 28, 0x70 - I2C2
-  kReservedVector,        // 29, Not used
+  SpiIrqHandler,          // 29, 0x74 - SPI0
   Ssp0IrqHandler,         // 30, 0x78 - SSP0
   Ssp1IrqHandler,         // 31, 0x7c - SSP1
   Pll0IrqHandler,         // 32, 0x80 - PLL0 (Main PLL)
@@ -281,18 +265,12 @@ const IsrPointer kInterruptVectorTable[] = {
   DmaIrqHandler,          // 42, 0xa8 - GP DMA
   I2sIrqHandler,          // 43, 0xac - I2S
   EnetIrqHandler,         // 44, 0xb0 - Ethernet
-  SdioIrqHandler,         // 45, 0xb4 - SD/MMC card I/F
+  RitIrqHandler,          // 45, 0xb4 - RIT
   McpwmIrqHandler,        // 46, 0xb8 - Motor Control PWM
   QeiIrqHandler,          // 47, 0xbc - Quadrature Encoder
   Pll1IrqHandler,         // 48, 0xc0 - PLL1 (USB PLL)
   UsbactivityIrqHandler,  // 49, 0xc4 - USB Activity interrupt to wakeup
   CanactivityIrqHandler,  // 50, 0xc8 - CAN Activity interrupt to wakeup
-  Uart4IrqHandler,        // 51, 0xcc - UART4
-  Ssp2IrqHandler,         // 52, 0xd0 - SSP2
-  LcdIrqHandler,          // 53, 0xd4 - LCD
-  GpioIrqHandler,         // 54, 0xd8 - GPIO
-  Pwm0IrqHandler,         // 55, 0xdc - PWM0
-  EepromIrqHandler,       // 56, 0xe0 - EEPROM
 };
 
 IsrPointer dynamic_isr_vector_table[] = {
@@ -316,7 +294,7 @@ IsrPointer dynamic_isr_vector_table[] = {
   kReservedVector,    // 13, Reserved
   PendSVHandler,      // 14, PendSV Handler
   SysTickHandler,     // 15, The SysTick handler
-  // Chip Level - LPC40xx
+  // Chip Level - LPC17xx
   WdtIrqHandler,          // 16, 0x40 - WDT
   Timer0IrqHandler,       // 17, 0x44 - TIMER0
   Timer1IrqHandler,       // 18, 0x48 - TIMER1
@@ -330,7 +308,7 @@ IsrPointer dynamic_isr_vector_table[] = {
   I2c0IrqHandler,         // 26, 0x68 - I2C0
   I2c1IrqHandler,         // 27, 0x6c - I2C1
   I2c2IrqHandler,         // 28, 0x70 - I2C2
-  kReservedVector,        // 29, Not used
+  SpiIrqHandler,          // 29, 0x74 - SPI0
   Ssp0IrqHandler,         // 30, 0x78 - SSP0
   Ssp1IrqHandler,         // 31, 0x7c - SSP1
   Pll0IrqHandler,         // 32, 0x80 - PLL0 (Main PLL)
@@ -346,24 +324,18 @@ IsrPointer dynamic_isr_vector_table[] = {
   DmaIrqHandler,          // 42, 0xa8 - GP DMA
   I2sIrqHandler,          // 43, 0xac - I2S
   EnetIrqHandler,         // 44, 0xb0 - Ethernet
-  SdioIrqHandler,         // 45, 0xb4 - SD/MMC card I/F
+  RitIrqHandler,          // 45, 0xb4 - RIT
   McpwmIrqHandler,        // 46, 0xb8 - Motor Control PWM
   QeiIrqHandler,          // 47, 0xbc - Quadrature Encoder
   Pll1IrqHandler,         // 48, 0xc0 - PLL1 (USB PLL)
   UsbactivityIrqHandler,  // 49, 0xc4 - USB Activity interrupt to wakeup
   CanactivityIrqHandler,  // 50, 0xc8 - CAN Activity interrupt to wakeup
-  Uart4IrqHandler,        // 51, 0xcc - UART4
-  Ssp2IrqHandler,         // 52, 0xd0 - SSP2
-  LcdIrqHandler,          // 53, 0xd4 - LCD
-  GpioIrqHandler,         // 54, 0xd8 - GPIO
-  Pwm0IrqHandler,         // 55, 0xdc - PWM0
-  EepromIrqHandler        // 56, 0xe0 - EEPROM
 };
 #endif  // defined HOST_TEST
 
 namespace sjsu
 {
-namespace lpc40xx
+namespace lpc17xx
 {
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
@@ -408,27 +380,27 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   // Use a JTAG debugger to inspect these variables
   sjsu::Halt();
 }
-}  // namespace lpc40xx
+}  // namespace lpc17xx
 
 void RegisterIsr(int32_t irq, IsrPointer isr, bool enable_interrupt,
                  int32_t priority)
 {
-  dynamic_isr_vector_table[irq + lpc40xx::kIrqOffset] = isr;
+  dynamic_isr_vector_table[irq + sjsu::lpc17xx::kIrqOffset] = isr;
   if (enable_interrupt && irq >= 0)
   {
-    NVIC_EnableIRQ(static_cast<lpc40xx::IRQn>(irq));
+    NVIC_EnableIRQ(static_cast<lpc17xx::IRQn>(irq));
   }
   if (priority > -1)
   {
-    NVIC_SetPriority(static_cast<lpc40xx::IRQn>(irq), priority);
+    NVIC_SetPriority(static_cast<lpc17xx::IRQn>(irq), priority);
   }
 }
 
 void DeregisterIsr(int32_t irq)
 {
-  NVIC_DisableIRQ(static_cast<lpc40xx::IRQn>(irq));
-  dynamic_isr_vector_table[irq + lpc40xx::kIrqOffset] =
-      sjsu::lpc40xx::InterruptLookupHandler;
+  NVIC_DisableIRQ(static_cast<lpc17xx::IRQn>(irq));
+  dynamic_isr_vector_table[irq + sjsu::lpc17xx::kIrqOffset] =
+      InterruptLookupHandler;
 }
 
 }  // namespace sjsu
@@ -436,15 +408,23 @@ void DeregisterIsr(int32_t irq)
 SJ2_SECTION(".after_vectors")
 void HardFaultHandler(void)
 {
-#if defined(__arm__)
-  __asm volatile(
-      " tst lr, #4                                          \n"
-      " ite eq                                              \n"
-      " mrseq r0, msp                                       \n"
-      " mrsne r0, psp                                       \n"
-      " ldr r1, [r0, #24]                                   \n"
-      " ldr r2, handler2_address_const                      \n"
-      " bx r2                                               \n"
-      " handler2_address_const: .word GetRegistersFromStack \n");
-#endif
+    asm volatile(
+      "tst lr, #4\t\n" /* Check EXC_RETURN[2] */
+      "ite eq\t\n"
+      "mrseq r0, msp\t\n"
+      "mrsne r0, psp\t\n"
+      "b GetRegistersFromStack\t\n"
+      : /* no output */
+      : /* no input */
+      : "r0" /* clobber */
+    );
+  // __asm volatile(
+  //     " tst lr, #4                                          \n"
+  //     " ite eq                                              \n"
+  //     " mrseq r0, msp                                       \n"
+  //     " mrsne r0, psp                                       \n"
+  //     " ldr r1, [r0, #24]                                   \n"
+  //     " ldr r2, handler2_address_const                      \n"
+  //     " bx r2                                               \n"
+  //     " handler2_address_const: .word GetRegistersFromStack \n");
 }

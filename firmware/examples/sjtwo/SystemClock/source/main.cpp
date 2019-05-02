@@ -18,6 +18,7 @@ int main()
   clock_pin.EnableFastMode(false);
   clock_pin.SetAsOpenDrain(false);
 
+  using sjsu::lpc40xx::LPC_SC_TypeDef;
   LPC_SC->CLKOUTCFG |= (1 << 8);
   LPC_SC->CLKOUTCFG &= ~(0xFF << 0);
 
