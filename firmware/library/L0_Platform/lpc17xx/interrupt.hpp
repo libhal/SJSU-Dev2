@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cstring>
+
 #include "L0_Platform/interrupt.hpp"
 
 #if defined HOST_TEST
@@ -17,8 +18,9 @@
 #define NVIC_SetPriority NVIC_SetPriority_original
 #endif  // defined HOST_TEST
 
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "utility/macros.hpp"
+
+#include "L0_Platform/lpc17xx/LPC17xx.h"
 
 #if defined HOST_TEST
 // Remove the text replacement used to replace the variable names above.
@@ -26,22 +28,12 @@
 #undef NVIC_DisableIRQ
 #undef NVIC_SetPriority
 
-using sjsu::lpc40xx::IRQn_Type;
 DECLARE_FAKE_VOID_FUNC(NVIC_EnableIRQ, IRQn_Type);
 DECLARE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
 DECLARE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 #endif  // defined HOST_TEST
 extern IsrPointer dynamic_isr_vector_table[];
-
-namespace sjsu
-{
-namespace lpc40xx
-{
-constexpr int32_t kIrqOffset = (Reset_IRQn * -1) + 1;
-void InterruptLookupHandler(void);
-}  // namespace lpc40xx
-}  // namespace sjsu
-
+inline const IsrPointer kReservedVector = nullptr;
 // External declaration for the pointer to the stack top from the linker script
 extern "C" void StackTop(void);
 // These are defined after the compilation of the FreeRTOS port for Cortex M4F
@@ -55,3 +47,4 @@ extern "C" void xPortSysTickHandler(void);  // NOLINT
 // definitions.
 extern "C" void ResetIsr(void);
 extern "C" void HardFaultHandler(void);
+extern "C" void InterruptLookupHandler(void);

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-STATUS_CAPTURE=0
 BUILD_CAPTURE=0
 LINT_CAPTURE=0
 TIDY_CAPTURE=0
@@ -31,9 +30,8 @@ function check
   if [ $1 -ne 0 ]
     then
     lint="$(print_status $LINT_CAPTURE)"
-    commit="$(print_status $STATUS_CAPTURE)"
-    test="$(print_status $TEST_CAPTURE)"
     tidy="$(print_status $TIDY_CAPTURE)"
+    test="$(print_status $TEST_CAPTURE)"
     build="$(print_status $BUILD_CAPTURE)"
     printf "\e[0;31m ================================ \e[0m\n"
     printf "\e[1;31m|        None of this!           |\e[0m\n"
@@ -45,7 +43,6 @@ function check
     printf "\e[0;31m|                                |\e[0m\n"
     printf "\e[0;31m| Code style must be lint free %b |\e[0m\n" $lint
     printf "\e[0;31m|    Code style must be tidy %b   |\e[0m\n" $tidy
-    printf "\e[0;31m|     Commit must be clean %b     |\e[0m\n" $commit
     printf "\e[0;31m|       Tests must pass %b        |\e[0m\n" $test
     printf "\e[0;31m|       Code must build %b        |\e[0m\n" $build
     printf "\e[0;31m|                                |\e[0m\n"
@@ -67,14 +64,6 @@ function check
     exit 0
   fi
 }
-####################################
-#    Clean Git Repository Check    #
-####################################
-printf "\e[0;33mChecking if git repo is clean\e[0m "
-git diff-index --quiet HEAD --
-STATUS_CAPTURE=$?
-print_status $STATUS_CAPTURE
-echo ""
 ####################################
 #    All Projects Build Check      #
 ####################################
@@ -109,23 +98,26 @@ echo ""
 
 # Build all example projects
 cd $SJBASE/firmware/examples/
+
 LIST_OF_PROJECT=$(find ./ -name "makefile")
-for d in $(dirname $LIST_OF_PROJECT); do
+for d in $(dirname $LIST_OF_PROJECT)
+do
+  for platform in lpc17xx lpc40xx
+  do
+  cd "$SJBASE/firmware/examples/$d"
 
-cd "$SJBASE/firmware/examples/$d"
-
-printf "\e[0;33mBuilding Example $d\e[0m "
-# Clean the build and start building from scratch
-SILENCE=$(make clean)
-# Check if the system can build without any warnings!
-SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
-# Add the return codes of the previous build capture. None zero means that at
-# least one of the captures failed.
-SPECIFIC_BUILD_CAPTURE=$?
-BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
-print_status $SPECIFIC_BUILD_CAPTURE
-echo ""
-
+  printf "\e[0;33mBuilding Example $d ($platform)\e[0m "
+  # Clean the build and start building from scratch
+  SILENCE=$(make clean)
+  # Check if the system can build without any warnings!
+  SILENCE=$(make application PLATFORM=$platform WARNINGS_ARE_ERRORS=-Werror)
+  # Add the return codes of the previous build capture. None zero means that at
+  # least one of the captures failed.
+  SPECIFIC_BUILD_CAPTURE=$?
+  BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
+  print_status $SPECIFIC_BUILD_CAPTURE
+  echo ""
+  done
 done
 
 # Return to home project

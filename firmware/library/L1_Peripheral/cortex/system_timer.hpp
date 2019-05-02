@@ -13,6 +13,8 @@
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
 
+using sjsu::lpc40xx::SysTick_Type;
+
 namespace sjsu
 {
 namespace cortex
@@ -31,6 +33,9 @@ class SystemTimer final : public sjsu::SystemTimer,
   };
   /// Sys_tick structure defaults to the Core M4 SysTick register address found
   /// in L0_Platform/SystemFiles/core_m4.h which is included in LPC40xx.h
+  ///
+  /// TODO(): Move SysTick_Type out of lpc40xx.
+
   inline static SysTick_Type * sys_tick = SysTick;
   /// system_timer_isr defaults to nullptr. The actual SystemTickHandler should
   /// check if the isr is set to nullptr, and if it is, turn off the timer, if
@@ -69,7 +74,7 @@ class SystemTimer final : public sjsu::SystemTimer,
       sys_tick->CTRL |= (1 << ControlBitMap::kEnableCounter);
       sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
 
-      RegisterIsr(SysTick_IRQn, SystemTimerHandler);
+      RegisterIsr(lpc40xx::SysTick_IRQn, SystemTimerHandler);
       status = Status::kSuccess;
     }
 
