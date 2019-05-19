@@ -116,7 +116,7 @@ class Timer final : public sjsu::Timer,
         (1 << kRegMR0) | (1 << kRegMR1) | (1 << kRegMR2) | (1 << kRegMR3);
   }
 
-  explicit constexpr Timer(Channel_t timer) : timer_(timer) {}
+  explicit constexpr Timer(const Channel_t & timer) : timer_(timer) {}
 
   /// @param frequency - the frequency that the timer register (TC) will
   ///        increment by. If set to 1000Hz, after 10 ms the TC
@@ -179,7 +179,7 @@ class Timer final : public sjsu::Timer,
   }
 
  private:
-  Channel_t & timer_;
+  const Channel_t & timer_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu
