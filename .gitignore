@@ -1,6 +1,5 @@
 firmware/*
 firmware/**/build
-firmware/**/makefile
 firmware/library/static_libraries
 
 !firmware/library
