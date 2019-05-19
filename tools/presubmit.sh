@@ -109,7 +109,8 @@ echo ""
 
 # Build all example projects
 cd $SJBASE/firmware/examples/
-for d in $(dirname $(find ./ -name "makefile")); do
+LIST_OF_PROJECT=$(find ./ -name "makefile")
+for d in $(dirname $LIST_OF_PROJECT); do
 
 cd "$SJBASE/firmware/examples/$d"
 

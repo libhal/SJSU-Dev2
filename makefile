@@ -41,11 +41,24 @@ ifneq ($(MAKECMDGOALS), presubmit)
 MAKEFLAGS += --jobs=$(NPROCS)
 endif
 
-#
-# Updating the LD_LIBRARY_PATH used to run executables using the clang libc++
+# ============================
+# SJSU-Dev2 Toolchain Paths
+# ============================
+# Path to CLANG compiler
+SJCLANG   = $(SJSU_DEV2_BASE)/tools/clang+llvm-*
+# Path to ARM GCC compiler
+SJARMGCC  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*
+# Path to Openocd compiler
+SJOPENOCD = $(SJSU_DEV2_BASE)/tools/openocd
+# Compiler and library settings:
+SJLIBDIR  = $(SJSU_DEV2_BASE)/firmware/library
+
+# =================================
+# Updating the LD_LIBRARY_PATH
+# =================================
+# used to run executables using the clang libc++
 # linked library which are creatd via the "test" target
-#
-LD_LIBRARY_PATH := $(LD_LIBRARY_PATH):$(SJCLANG)/../lib/
+LD_LIBRARY_PATH := $(LD_LIBRARY_PATH):$(SJCLANG)/lib/
 # ============================
 # User Flags
 # ============================
@@ -92,28 +105,27 @@ OPT    ?= 0
 #
 TEST_ARGS ?=
 # ============================
-# Compilation Flags
+# Compilation Tools
 # ============================
-# IMPORTANT: Be sure to source env.sh to access these via the PATH variable.
-DEVICE_CC      = arm-none-eabi-gcc
-DEVICE_CPPC    = arm-none-eabi-g++
-DEVICE_OBJDUMP = arm-none-eabi-objdump
-DEVICE_SIZEC   = arm-none-eabi-size
-DEVICE_OBJCOPY = arm-none-eabi-objcopy
-DEVICE_NM      = arm-none-eabi-nm
-DEVICE_AR      = arm-none-eabi-ar
-DEVICE_RANLIB  = arm-none-eabi-ranlib
+DEVICE_CC      = $(SJARMGCC)/bin/arm-none-eabi-gcc
+DEVICE_CPPC    = $(SJARMGCC)/bin/arm-none-eabi-g++
+DEVICE_OBJDUMP = $(SJARMGCC)/bin/arm-none-eabi-objdump
+DEVICE_SIZEC   = $(SJARMGCC)/bin/arm-none-eabi-size
+DEVICE_OBJCOPY = $(SJARMGCC)/bin/arm-none-eabi-objcopy
+DEVICE_NM      = $(SJARMGCC)/bin/arm-none-eabi-nm
+DEVICE_AR      = $(SJARMGCC)/bin/arm-none-eabi-ar
+DEVICE_RANLIB  = $(SJARMGCC)/bin/arm-none-eabi-ranlib
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
 WARNINGS_ARE_ERRORS ?=
 # IMPORTANT: GCC must be accessible via the PATH environment variable
-HOST_CC        = clang
-HOST_CPPC      = clang++
-HOST_OBJDUMP   = llvm-objdump
-HOST_SIZEC     = llvm-size
-HOST_OBJCOPY   = llvm-objcopy
-HOST_NM        = llvm-nm
+HOST_CC        = $(SJCLANG)/bin/clang
+HOST_CPPC      = $(SJCLANG)/bin/clang++
+HOST_OBJDUMP   = $(SJCLANG)/bin/llvm-objdump
+HOST_SIZEC     = $(SJCLANG)/bin/llvm-size
+HOST_OBJCOPY   = $(SJCLANG)/bin/llvm-objcopy
+HOST_NM        = $(SJCLANG)/bin/llvm-nm
 # Mux between using the firmware compiler executables or the host compiler
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
 CC      = $(HOST_CC)
@@ -151,10 +163,10 @@ BUILD_DIR      = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)
 OBJECT_DIR     = $(BUILD_DIR)/compiled
 DBC_DIR        = $(BUILD_DIR)/can-dbc
 COVERAGE_DIR   = $(BUILD_DIR)/coverage
-FIRMWARE_DIR   = $(SJBASE)/firmware
+FIRMWARE_DIR   = $(SJSU_DEV2_BASE)/firmware
 LIB_DIR        = $(FIRMWARE_DIR)/library
 STATIC_LIB_DIR = $(LIB_DIR)/static_libraries
-TOOLS_DIR      = $(SJBASE)/tools
+TOOLS_DIR      = $(SJSU_DEV2_BASE)/tools
 SOURCE_DIR     = source
 COMPILED_HEADERS_DIR  = $(BUILD_DIR)/headers # NOTE: Actually use this!
 CURRENT_DIRECTORY	    = $(shell pwd)
@@ -473,7 +485,7 @@ stacktrace-bootloader:
 	@arm-none-eabi-addr2line -e $(EXECUTABLE)
 # Start an openocd jtag debug session for the sjtwo development board
 openocd:
-	openocd -f $(FIRMWARE_DIR)/debug/sjtwo.cfg
+	$(SJOPENOCD)/bin/openocd -f $(FIRMWARE_DIR)/debug/sjtwo.cfg
 # Start gdb for arm and connect to openocd jtag debugging session
 debug:
 	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)
@@ -578,6 +590,6 @@ $(TEST_EXEC): $(OBJECTS)
 	@clang-tidy $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 		-extra-arg="-std=c++17") "$<"  -- \
 		-D TARGET=HostTest -D HOST_TEST=1 \
-		-isystem"$(SJCLANG)/../include/c++/v1/" \
+		-isystem"$(SJCLANG)/include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> /dev/null
 	@printf '$(GREEN)DONE!$(RESET)\n'
