@@ -10,10 +10,6 @@ MAGENTA=$(shell echo "\x1B[35;1m")
 RESET=$(shell echo "\x1B[0m")
 GREEN=$(shell echo "\x1B[32;1m")
 # ============================
-# Environment Flags
-# ============================
-include env.mk
-# ============================
 # Modifying make Flags
 # ============================
 # The following list of target opt-out of output sync
@@ -107,14 +103,16 @@ TEST_ARGS ?=
 # ============================
 # Compilation Tools
 # ============================
-DEVICE_CC      = $(SJARMGCC)/bin/arm-none-eabi-gcc
-DEVICE_CPPC    = $(SJARMGCC)/bin/arm-none-eabi-g++
-DEVICE_OBJDUMP = $(SJARMGCC)/bin/arm-none-eabi-objdump
-DEVICE_SIZEC   = $(SJARMGCC)/bin/arm-none-eabi-size
-DEVICE_OBJCOPY = $(SJARMGCC)/bin/arm-none-eabi-objcopy
-DEVICE_NM      = $(SJARMGCC)/bin/arm-none-eabi-nm
-DEVICE_AR      = $(SJARMGCC)/bin/arm-none-eabi-ar
-DEVICE_RANLIB  = $(SJARMGCC)/bin/arm-none-eabi-ranlib
+DEVICE_CC        = $(SJARMGCC)/bin/arm-none-eabi-gcc
+DEVICE_CPPC      = $(SJARMGCC)/bin/arm-none-eabi-g++
+DEVICE_OBJDUMP   = $(SJARMGCC)/bin/arm-none-eabi-objdump
+DEVICE_SIZEC     = $(SJARMGCC)/bin/arm-none-eabi-size
+DEVICE_OBJCOPY   = $(SJARMGCC)/bin/arm-none-eabi-objcopy
+DEVICE_NM        = $(SJARMGCC)/bin/arm-none-eabi-nm
+DEVICE_AR        = $(SJARMGCC)/bin/arm-none-eabi-ar
+DEVICE_RANLIB    = $(SJARMGCC)/bin/arm-none-eabi-ranlib
+DEVICE_ADDR2LINE = $(SJARMGCC)/bin/arm-none-eabi-addr2line
+DEVICE_GDB       = $(SJARMGCC)/bin/arm-none-eabi-gdb
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
@@ -480,15 +478,15 @@ presubmit:
 # Microcontroller Debugging
 # ====================================================================
 stacktrace-application:
-	@arm-none-eabi-addr2line -e $(EXECUTABLE) $(TRACES)
+	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE) $(TRACES)
 stacktrace-bootloader:
-	@arm-none-eabi-addr2line -e $(EXECUTABLE)
+	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE)
 # Start an openocd jtag debug session for the sjtwo development board
 openocd:
 	$(SJOPENOCD)/bin/openocd -f $(FIRMWARE_DIR)/debug/sjtwo.cfg
 # Start gdb for arm and connect to openocd jtag debugging session
 debug:
-	arm-none-eabi-gdb -ex "target remote :3333" $(EXECUTABLE)
+	$(DEVICE_GDB) -ex "target remote :3333" $(EXECUTABLE)
 debug-user-test:
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/test/tests.exe
 # Start gdb just like the debug target, but using gdb-multiarch
