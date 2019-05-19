@@ -234,34 +234,9 @@ cd "$BASE"
 echo " ───────────────────────────────────────────────────┐"
 echo "        Generating Environment Variables File        "
 echo "└─────────────────────────────────────────────────── "
-cat > env.mk <<EOL
-#!/bin/bash
-# Setup a base directory:
-SJBASE = $BASE
-
-# Board Settings:
-SJBAUD = 38400
-
-# Project Target Settings:
-# Sets the binary name, defaults to "firmware" (Optional)
-SJPROJ = firmware
-
-# Sets which DBC to generate, defaults to "DBG"
-ENTITY = DBG
-
-# Path to CLANG compiler
-SJCLANG = \$(SJBASE)/tools/$CLANG_PATH/bin
-# Path to ARM GCC compiler
-SJARMGCC = \$(SJBASE)/tools/gcc-arm-none-eabi-7-2017-q4-major/bin
-# Path to Openocd compiler
-SJOPENOCD = \$(SJBASE)/tools/openocd/bin
-
-# Compiler and library settings:
-# Selects compiler version to use
-PATH := \$(shell printf "%s" "\$(PATH):\$(SJARMGCC)")
-PATH := \$(shell printf "%s" "\$(PATH):\$(SJCLANG)")
-PATH := \$(shell printf "%s" "\$(PATH):\$(SJOPENOCD)")
-SJLIBDIR = "\$(SJBASE)/firmware/library"
+cat > ~/.sjsu_dev2.mk << EOL
+# Location of SJSU-Dev2 folder
+SJSU_DEV2_BASE    = $BASE
 EOL
 echo " ───────────────────────────────────────────────────┐"
 echo "      Linking Files to Firmware Project Folder       "
