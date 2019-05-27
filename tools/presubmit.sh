@@ -72,7 +72,7 @@ printf "Checking that all projects build\n\n"
 
 printf "\e[0;33mBuilding HelloWorld Project\e[0m "
 # Change to the HelloWorld project
-cd "$SJBASE/firmware/HelloWorld"
+cd "$SJBASE/projects/hello_world"
 # Purge repository of all application and framework build files and start
 # building from scratch
 SILENCE=$(make purge)
@@ -85,7 +85,7 @@ echo ""
 
 printf "\e[0;33mBuilding Hyperload Bootloader\e[0m "
 # Change to the Hyperload project
-cd "$SJBASE/firmware/Hyperload"
+cd "$SJBASE/projects/hyperload"
 # Clean the build and start building from scratch
 SILENCE=$(make clean)
 # Check if the system can build without any warnings!
@@ -97,14 +97,14 @@ print_status $SPECIFIC_BUILD_CAPTURE
 echo ""
 
 # Build all example projects
-cd $SJBASE/firmware/examples/
+cd $SJBASE/demos/
 
 LIST_OF_PROJECT=$(find ./ -name "makefile")
 for d in $(dirname $LIST_OF_PROJECT)
 do
   for platform in lpc17xx lpc40xx
   do
-  cd "$SJBASE/firmware/examples/$d"
+  cd "$SJBASE/demos/$d"
 
   printf "\e[0;33mBuilding Example $d ($platform)\e[0m "
   # Clean the build and start building from scratch
@@ -121,7 +121,7 @@ do
 done
 
 # Return to home project
-cd $SJBASE/firmware/HelloWorld
+cd $SJBASE/projects/HelloWorld
 ####################################
 #           Lint Check             #
 ####################################

@@ -161,15 +161,16 @@ else
 BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
 endif
 
-BUILD_DIR      = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)/$(PLATFORM)
-OBJECT_DIR     = $(BUILD_DIR)/compiled
-DBC_DIR        = $(BUILD_DIR)/can-dbc
-COVERAGE_DIR   = $(BUILD_DIR)/coverage
-FIRMWARE_DIR   = $(SJSU_DEV2_BASE)/firmware
-LIB_DIR        = $(FIRMWARE_DIR)/library
-STATIC_LIB_DIR = $(LIB_DIR)/static_libraries/$(PLATFORM)
-TOOLS_DIR      = $(SJSU_DEV2_BASE)/tools
-SOURCE_DIR     = source
+BUILD_DIR       = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)/$(PLATFORM)
+OBJECT_DIR            = $(BUILD_DIR)/compiled
+DBC_DIR               = $(BUILD_DIR)/can-dbc
+COVERAGE_DIR          = $(BUILD_DIR)/coverage
+LIBRARY_DIR           = $(SJSU_DEV2_BASE)/library
+PROJECTS_DIR          = $(SJSU_DEV2_BASE)/projects
+DEMOS_DIR             = $(SJSU_DEV2_BASE)/demos
+STATIC_LIBRARY_DIR    = $(LIBRARY_DIR)/static_libraries/$(PLATFORM)
+TOOLS_DIR             = $(SJSU_DEV2_BASE)/tools
+SOURCE_DIR            = source
 COMPILED_HEADERS_DIR  = $(BUILD_DIR)/headers # NOTE: Actually use this!
 CURRENT_DIRECTORY	    = $(shell pwd)
 COVERAGE_FILES        = $(shell find build -name "*.gcda")
@@ -209,7 +210,7 @@ LIBRARIES ?=
 
 define BUILD_LIRBARY
 
-LIBRARIES += $(STATIC_LIB_DIR)/$(1).a
+LIBRARIES += $(STATIC_LIBRARY_DIR)/$(1).a
 
 $(1)_OBJECTS = $$(addprefix $(OBJECT_DIR)/, $$($(2):=.o))
 
@@ -217,8 +218,8 @@ $(1)_OBJECTS = $$(addprefix $(OBJECT_DIR)/, $$($(2):=.o))
 
 -include    $$($(1)_OBJECTS:.o=.d) # DEPENDENCIES
 
-$(STATIC_LIB_DIR)/$(1).a: $$($(1)_OBJECTS)
-	@mkdir -p "$(STATIC_LIB_DIR)"
+$(STATIC_LIBRARY_DIR)/$(1).a: $$($(1)_OBJECTS)
+	@mkdir -p "$(STATIC_LIBRARY_DIR)"
 	@printf '$(YELLOW)Library  file ( A ) $(RESET): $$@ '
 	@rm -f "$@"
 	@$(DEVICE_AR) rcs "$$@" $$^
@@ -245,7 +246,7 @@ LINT_FILTER ?=
 # the library/library.mk makefile.
 # This is where a lot of the magic happens. This makefile will call more sub
 # makefiles until all of the included library source files have been found.
-include $(FIRMWARE_DIR)/library/library.mk
+include $(LIBRARY_DIR)/library.mk
 # A bit of post processing on the source variables
 ifeq ($(MAKECMDGOALS), test)
 COMPILABLES = $(TESTS)
@@ -287,7 +288,7 @@ LINKFLAGS = $(COMMON_FLAGS) -T $(LINKER) -specs=nano.specs \
 
 # Enable specific flags for building a bootloader
 ifeq ($(MAKECMDGOALS), bootloader)
-LINKER = $(LIB_DIR)/L0_Platform/$(PLATFORM)/bootloader.ld
+LINKER = $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/bootloader.ld
 CFLAGS_COMMON += -D TARGET=Bootloader
 endif
 # NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
@@ -297,7 +298,7 @@ endif
 # etc and if so, this ifeq will become true
 ifeq ($(MAKECMDGOALS), $(filter \
 			$(MAKECMDGOALS), application flash build cleaninstall))
-LINKER = $(LIB_DIR)/L0_Platform/$(PLATFORM)/application.ld
+LINKER = $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/application.ld
 CFLAGS_COMMON += -D TARGET=Application
 endif
 
@@ -330,16 +331,19 @@ endif
 # Lint variables
 # ===========================
 # Files to ignore in the linting and tidy process
-FILE_EXCLUDES = grep -v  \
-				-e "$(LIB_DIR)/third_party/" \
-				$(addprefix -e ,$(LINT_FILTER))
+# FILE_EXCLUDES entry resembles:
+#   grep -v -e path/to/excluded/file
+#   grep -v -e path/to/excluded/directory/
+FILE_EXCLUDES = grep -v $(addprefix -e ,$(LINT_FILTER))
 
 # Find all files within the firmware directory to be evaluated
-LINT_FILES  = $(shell find $(FIRMWARE_DIR) \
+LINT_FILES  = $(shell find $(PROJECTS_DIR)/hello_world \
+                      $(PROJECTS_DIR)/hyperload \
+                      $(LIBRARY_DIR) $(DEMOS_DIR) \
                       -name "*.h"   -o \
                       -name "*.hpp" -o \
                       -name "*.c"   -o \
-                      -name "*.cpp" | \
+                      -name "*.cpp" |  \
                       $(FILE_EXCLUDES) \
                       2> /dev/null)
 
@@ -358,7 +362,7 @@ SIZE       = $(EXECUTABLE:.elf=.siz)
 MAP        = $(EXECUTABLE:.elf=.map)
 TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/test/tests.exe
 # TODO(kammce): Add header file precompilation back later
-# TEST_FRAMEWORK = $(LIB_DIR)/L4_Testing/testing_frameworks.hpp.gch
+# TEST_FRAMEWORK = $(LIBRARY_DIR)/L4_Testing/testing_frameworks.hpp.gch
 
 # This line allows the make to rebuild if header file changes.
 # This is feature and not a bug, otherwise updates to header files do not
@@ -462,9 +466,9 @@ run-test:
 		$(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
 	@gcovr --root="$(FIRMWARE_DIR)/" --object-directory="$(BUILD_DIR)/" \
-		-e "$(LIB_DIR)/newlib" \
-		-e "$(LIB_DIR)/third_party" \
-		-e "$(LIB_DIR)/L4_Testing" \
+		-e "$(LIBRARY_DIR)/newlib" \
+		-e "$(LIBRARY_DIR)/third_party" \
+		-e "$(LIBRARY_DIR)/L4_Testing" \
 		--html --html-details --gcov-executable="$(HOST_COV) gcov" \
 		-o $(COVERAGE_DIR)/coverage.html
 # ====================================================================
@@ -580,7 +584,7 @@ $(OBJECT_DIR)/%.o: %
 
 $(DBC_BUILD):
 	@mkdir -p "$(dir $@)"
-	python2.7 "$(LIB_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIB_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
+	python2.7 "$(LIBRARY_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIBRARY_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
 
 $(TEST_EXEC): $(OBJECTS)
 	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@ '

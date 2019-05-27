@@ -1,0 +1,9 @@
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/adc_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/can_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/dac_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/gpio_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/i2c_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/pin_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/pwm_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/spi_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/uart_test.cpp
