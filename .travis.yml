@@ -13,7 +13,7 @@ matrix:
               --include "firmware/library/L2_HAL"
               --include "firmware/library/L3_Application"
             - sudo apt-get -y install doxygen graphviz
-            - cd documentation/api/
+            - cd api/
             - doxygen sjsu-dev2-doxygen.conf
           deploy:
             provider: pages
@@ -27,5 +27,5 @@ matrix:
 before_install: pip install --user cpp-coveralls
 install: ./setup
 script:
-  - cd firmware/HelloWorld/
+  - cd projects/hello_world/
   - make presubmit
