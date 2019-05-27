@@ -1,12 +1,12 @@
-firmware/*
-firmware/**/build
-firmware/library/static_libraries
+projects/*
+projects/**/build
 
-!firmware/library
-!firmware/HelloWorld
-!firmware/Hyperload
-!firmware/examples
-!firmware/debug
+!projects/hello_world
+!projects/hyperload
+
+demos/**/build
+library/static_libraries/*
+!library/static_libraries/keep_folder
 
 tools/Hyperload
 tools/Telemetry
