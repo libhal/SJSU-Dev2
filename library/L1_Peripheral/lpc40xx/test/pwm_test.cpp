@@ -8,7 +8,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Pwm);
 
-TEST_CASE("Testing PWM instantiation", "[pwm]")
+TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
 {
   // Creating local instances of register structures
   LPC_PWM_TypeDef local_pwm;
