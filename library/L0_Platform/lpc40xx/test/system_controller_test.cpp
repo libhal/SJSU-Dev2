@@ -6,7 +6,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(SystemController);
 
-TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx_system_controller]")
+TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx-system-controller]")
 {
   SECTION("Initialize") {}
 }

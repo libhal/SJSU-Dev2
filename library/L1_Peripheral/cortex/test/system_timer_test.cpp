@@ -11,7 +11,7 @@ EMIT_ALL_METHODS(SystemTimer);
 
 static void DummyFunction(void) {}
 
-TEST_CASE("Testing SystemTimer", "[system_timer]")
+TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
 {
   // Simulated local version of SysTick register to verify register
   // manipulation by side effect of Pin method calls

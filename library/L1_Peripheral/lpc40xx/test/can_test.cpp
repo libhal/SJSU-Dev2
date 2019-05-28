@@ -8,7 +8,7 @@ namespace sjsu::lpc40xx
 // Uncomment this when can class has been created
 // EMIT_ALL_METHODS(Can);
 
-TEST_CASE("Can", "[can]")
+TEST_CASE("Testing lpc40xx Can", "[lpc40xx-can]")
 {
   SECTION("Initialize") {}
 }
