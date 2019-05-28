@@ -179,10 +179,10 @@ COVERAGE_FILES        = $(shell find build -name "*.gcda")
 # ===========================
 DBC_BUILD = $(DBC_DIR)/generated_can.h
 # Set of directories to be added to the direct include list
-INCLUDES = $(CURRENT_DIRECTORY) $(SOURCE_DIR)
+INCLUDES += $(CURRENT_DIRECTORY) $(SOURCE_DIR)
 # System includes are files that we do not want to show diagnostic information
 # about. This is typically used for third party code.
-SYSTEM_INCLUDES =
+SYSTEM_INCLUDES ?=
 # Set of all source files to compile (.c, .cpp)
 # By default, all source files included within the source directory of a
 # project are included. The search below is recursive, so subdirectories within
