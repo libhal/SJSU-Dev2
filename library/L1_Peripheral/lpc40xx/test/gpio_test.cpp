@@ -9,7 +9,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Gpio);
 
-TEST_CASE("Testing Gpio", "[gpio]")
+TEST_CASE("Testing lpc40xx Gpio", "[lpc40xx-gpio]")
 {
   // Declared constants that are to be used within the different sections
   // of this unit test
@@ -129,7 +129,8 @@ TEST_CASE("Testing Gpio", "[gpio]")
 FAKE_VOID_FUNC(Pin0_15_ISR);
 FAKE_VOID_FUNC(Pin2_7_ISR);
 
-TEST_CASE("Testing Gpio External Interrupts", "[Gpio Interrupts]")
+TEST_CASE("Testing lpc40xx Gpio External Interrupts",
+          "[lpc40xx-Gpio Interrupts]")
 {
   // Declared constants that are to be used within the different sections
   // of this unit test

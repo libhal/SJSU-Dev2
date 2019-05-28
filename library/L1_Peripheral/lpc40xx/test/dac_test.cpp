@@ -6,7 +6,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Dac);
 
-TEST_CASE("Testing Dac", "[dac]")
+TEST_CASE("Testing lpc40xx Dac", "[lpc40xx-dac]")
 {
   LPC_IOCON_TypeDef local_iocon;
   LPC_DAC_TypeDef local_dac_port;
