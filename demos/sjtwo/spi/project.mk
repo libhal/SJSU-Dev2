@@ -1,1 +1,2 @@
-USER_TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/spi_test.cpp
+USER_TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/spi_test.cpp
+PLATFORM = lpc40xx

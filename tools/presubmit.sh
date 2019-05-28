@@ -115,22 +115,18 @@ cd $SJBASE/demos/
 LIST_OF_PROJECT=$(find ./ -name "makefile")
 for d in $(dirname $LIST_OF_PROJECT)
 do
-  for platform in lpc17xx lpc40xx
-  do
-  cd "$SJBASE/demos/$d"
-
-  printf "\e[0;33mBuilding Example $d ($platform)\e[0m "
-  # Clean the build and start building from scratch
-  SILENCE=$(make clean)
-  # Check if the system can build without any warnings!
-  SILENCE=$(make application PLATFORM=$platform WARNINGS_ARE_ERRORS=-Werror)
-  # Add the return codes of the previous build capture. None zero means that at
-  # least one of the captures failed.
-  SPECIFIC_BUILD_CAPTURE=$?
-  BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
-  print_status $SPECIFIC_BUILD_CAPTURE
-  echo ""
-  done
+cd "$SJBASE/demos/$d"
+printf "\e[0;33mBuilding Example $d \e[0m "
+# Clean the build and start building from scratch
+SILENCE=$(make clean)
+# Check if the system can build without any warnings!
+SILENCE=$(make application WARNINGS_ARE_ERRORS=-Werror)
+# Add the return codes of the previous build capture. None zero means that at
+# least one of the captures failed.
+SPECIFIC_BUILD_CAPTURE=$?
+BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
+print_status $SPECIFIC_BUILD_CAPTURE
+echo ""
 done
 
 # Return to home project
