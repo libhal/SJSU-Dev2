@@ -6,7 +6,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Adc);
 
-TEST_CASE("Testing adc", "[adc]")
+TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
 {
   // Create local version of LPC_ADC
   LPC_ADC_TypeDef local_adc;

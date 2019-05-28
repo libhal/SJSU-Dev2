@@ -3,7 +3,7 @@
 
 namespace sjsu::lpc40xx
 {
-TEST_CASE("Testing interrupt", "[interrupt]")
+TEST_CASE("Testing lpc40xx interrupt", "[lpc40xx-interrupt]")
 {
   auto test_isr                 = []() {};
   constexpr size_t kVectorIndex = WDT_IRQn + lpc40xx::kIrqOffset;
