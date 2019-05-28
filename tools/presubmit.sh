@@ -83,6 +83,19 @@ BUILD_CAPTURE=$?
 print_status $BUILD_CAPTURE
 echo ""
 
+printf "\e[0;33mBuilding Starter Project\e[0m "
+# Change to the Hyperload project
+cd "$SJBASE/projects/starter"
+# Clean the build and start building from scratch
+SILENCE=$(make clean)
+# Check if the system can build without any warnings!
+SILENCE=$(make -s application)
+# Set build capture to return code from the build
+SPECIFIC_BUILD_CAPTURE=$?
+BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
+print_status $SPECIFIC_BUILD_CAPTURE
+echo ""
+
 printf "\e[0;33mBuilding Hyperload Bootloader\e[0m "
 # Change to the Hyperload project
 cd "$SJBASE/projects/hyperload"
