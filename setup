@@ -80,6 +80,7 @@ fi
 echo " ──────────────────────────────────────────────────┐"
 echo "               System Dependent Setup               "
 echo "└────────────────────────────────────────────────── "
+if [[ "$1" != "fast" ]]; then
 cd "$TOOLDIR"
 case "$OS" in
 	Linux) # Linux & Windows WSL Case
@@ -184,7 +185,6 @@ case "$OS" in
 		;;
 esac
 
-if [[ "$1" != "fast" ]]; then
 echo " ───────────────────────────────────────────────────┐"
 echo "                  Upgrading PIP                      "
 echo "└─────────────────────────────────────────────────── "
