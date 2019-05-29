@@ -4,6 +4,9 @@
 
 using namespace fakeit;  // NOLINT
 
+int HostWrite(const char * payload, size_t length);
+int HostRead(char * payload, size_t length);
+
 /// This magical method does a lot of tricks to convince the compiler to emit
 /// as many of the class methods as possible for methods of a function that may
 /// only exist in a header file.

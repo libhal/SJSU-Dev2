@@ -1,11 +1,16 @@
 #pragma once
 
-#include <cstring>
+#include <cstddef>
 
-#include "utility/macros.hpp"
+namespace newlib
+{
+using Stdout = int (*)(const char *, size_t);
+using Stdin  = int (*)(char *, size_t);
 
-using Stdout = int (*)(int);
-extern Stdout out;
-
-using Stdin = int (*)();
-extern Stdin in;
+void SetStdout(Stdout);
+void SetStdin(Stdin);
+/// Enables echo back when _read (stdin) is called.
+///
+/// @param enable_echo - If true, enable echo, if false disable echo back.
+void StdinEchoBack(bool enable_echo);
+}  // namespace newlib

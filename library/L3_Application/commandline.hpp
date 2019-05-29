@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <iterator>
 
-#include "L1_Peripheral/lpc40xx/uart.hpp"
+#include "newlib/newlib.hpp"
 #include "third_party/etl/vector.h"
 #include "third_party/microrl/microrl.h"
 #include "utility/log.hpp"
@@ -174,6 +174,7 @@ class CommandLine
     // Adding list and quit to list of commands
     AddCommand(&list_);
     AddCommand(&quit_);
+    newlib::StdinEchoBack(false);
     initialized_ = true;
   }
   /// Adds a command to the command list
@@ -201,7 +202,7 @@ class CommandLine
     while (is_commandline_running)
     {
       // Get char from stdin (uart) and send to microrl lib
-      microrl_insert_char(&rl_, sjsu::lpc40xx::uart0.Read());
+      microrl_insert_char(&rl_, getchar());
     }
   }
 

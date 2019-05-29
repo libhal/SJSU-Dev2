@@ -18,23 +18,23 @@ void ResetTestStdoutBuffer()
   memory_out_position = 0;
   memset(memory_out, 0x00, sizeof(memory_out));
 }
-int TestStandardOutput(int out_char)
+int TestStandardOutput(const char * out_char, size_t length)
 {
-  memory_out[memory_out_position++] = static_cast<char>(out_char);
+  for (size_t i = 0; i < length; i++)
+  {
+    memory_out[memory_out_position++] = out_char[i];
+  }
   return 1;
 }
+using newlib::Stdout;
 }  // namespace
 
 TEST_CASE("Testing Debug Utilities", "[hexdump]")
 {
-  // Saving previous out to be restored after test
-  Stdout previous_out = out;
-  // Inject "TestStandardOutput" as new stdout function.
-  out = TestStandardOutput;
+  newlib::SetStdout(TestStandardOutput);
 
   SECTION("Hex dump byte array 16 byte aligned")
   {
-    out('C');
     ResetTestStdoutBuffer();
 
     uint8_t memory[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
@@ -84,6 +84,6 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
     CHECK_THAT(memory_out, Catch::Matchers::Equals(kExpected));
   }
   // Restore stdout function
-  out = previous_out;
+  newlib::SetStdout(HostWrite);
 }
 }  // namespace sjsu

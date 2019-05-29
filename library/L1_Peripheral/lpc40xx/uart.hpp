@@ -338,21 +338,23 @@ class Uart final : public sjsu::Uart, protected sjsu::lpc40xx::SystemController
     }
   }
 
-  Status Read(uint8_t * data, size_t size, uint32_t timeout) const override
+  Status Read(uint8_t * data, size_t size,
+              uint32_t timeout = UINT32_MAX) const override
   {
     // NOTE: Consider changing this to using a Wait() call.
     Status status       = Status::kTimedOut;
     uint64_t start_time = Milliseconds();
     size_t position     = 0;
-    while ((start_time + timeout) < Milliseconds())
+    while (Milliseconds() < (start_time + timeout))
     {
       if (HasData())
       {
         data[position++] = static_cast<uint8_t>(port_.registers->RBR);
       }
-      if (position > size)
+      if (position >= size)
       {
         status = Status::kSuccess;
+        break;
       }
     }
     return status;
@@ -370,8 +372,5 @@ class Uart final : public sjsu::Uart, protected sjsu::lpc40xx::SystemController
 
   const Port_t & port_;
 };
-
-inline sjsu::lpc40xx::Uart uart0(Uart::Port::kUart0);
-
 }  // namespace lpc40xx
 }  // namespace sjsu

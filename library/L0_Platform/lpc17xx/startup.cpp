@@ -53,9 +53,22 @@ namespace
 sjsu::lpc17xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
 sjsu::lpc17xx::Timer timer0(sjsu::lpc17xx::Timer::Channel::kTimer0);
+sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0);
 uint64_t Lpc17xxUptime()
 {
   return timer0.GetTimer();
+}
+
+int Lpc17xxStdOut(const char * data, size_t length)
+{
+  uart0.Write(reinterpret_cast<const uint8_t *>(data), length);
+  return length;
+}
+
+int Lpc17xxStdIn(char * data, size_t length)
+{
+  uart0.Read(reinterpret_cast<uint8_t *>(data), length);
+  return length;
 }
 }  // namespace
 
@@ -143,7 +156,10 @@ void InitializePlatform()
   // micro second. This is done again, because the system clock has changed.
   timer0.Initialize(1'000'000UL);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
-  sjsu::lpc17xx::uart0.Initialize(config::kBaudRate);
+  uart0.Initialize(config::kBaudRate);
+
+  newlib::SetStdout(Lpc17xxStdOut);
+  newlib::SetStdin(Lpc17xxStdIn);
 }
 
 void SystemInitialize()
