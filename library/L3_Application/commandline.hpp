@@ -201,7 +201,7 @@ class CommandLine
     while (is_commandline_running)
     {
       // Get char from stdin (uart) and send to microrl lib
-      microrl_insert_char(&rl_, sjsu::lpc40xx::uart0.Receive());
+      microrl_insert_char(&rl_, sjsu::lpc40xx::uart0.Read());
     }
   }
 
