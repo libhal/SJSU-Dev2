@@ -27,13 +27,13 @@ int main()
     {
       // This first loop sends all the data within the array
       LOG_INFO("Sending characters now.");
-      uart2.Send(message[i]);
+      uart2.Write(message[i]);
     }
     LOG_INFO("Recieving characters that arrived at Rx pin and printing them");
     // This second loop receives all the sent data and prints it out
     for (size_t i = 0; i < std::size(message) - 1; i++)
     {
-      char receive = uart2.Receive();
+      char receive = uart2.Read();
       putchar(receive);
     }
 
