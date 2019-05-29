@@ -35,6 +35,7 @@ static_assert(
 namespace
 {
 sjsu::lpc40xx::SystemController system_controller;
+sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
 sjsu::lpc40xx::Uart uart3(sjsu::lpc40xx::Uart::Port::kUart3);
 bool debug_print_button_was_pressed = false;
 }  // namespace
@@ -252,31 +253,31 @@ int main()
   leds.Initialize();
   leds.SetAll(0);
 
-  sjsu::lpc40xx::uart0.Initialize(38400);
+  uart0.Initialize(38400);
   uart3.Initialize(115200);
 
   printf3("Bootloader Debug Port Initialized!\n");
   // Flush any initial bytes
-  sjsu::lpc40xx::uart0.Read(500);
-  sjsu::lpc40xx::uart0.Write(0xFF);
+  uart0.Read(500);
+  uart0.Write(0xFF);
   // Hyperload will send 0x55 to notify that it is alive!
-  if (0x55 == sjsu::lpc40xx::uart0.Read(500))
+  if (0x55 == uart0.Read(500))
   {
     SetFlashAcceleratorSpeed(6);
     // Notify Hyperload that we're alive too!
-    sjsu::lpc40xx::uart0.Write(0xAA);
+    uart0.Write(0xAA);
     // Get new baud rate control word
     union BaudRateControlWord {
       uint8_t array[4];
       uint32_t word;
     };
     BaudRateControlWord control;
-    control.array[0] = sjsu::lpc40xx::uart0.Read(500);
-    control.array[1] = sjsu::lpc40xx::uart0.Read(500);
-    control.array[2] = sjsu::lpc40xx::uart0.Read(500);
-    control.array[3] = sjsu::lpc40xx::uart0.Read(500);
+    control.array[0] = uart0.Read(500);
+    control.array[1] = uart0.Read(500);
+    control.array[2] = uart0.Read(500);
+    control.array[3] = uart0.Read(500);
     // Echo it back to verify
-    sjsu::lpc40xx::uart0.Write(control.array[0]);
+    uart0.Write(control.array[0]);
     sjsu::Delay(1);
     printf3("control.array[0] = 0x%02X\n", control.array[0]);
     // Hyperload Frequency should be set to 48,000,000 for this to work
@@ -288,7 +289,7 @@ int main()
     float approx_baud = (system_frequency / (control_word_f + 1.0f)) / 16.0f;
     uint32_t baud_rate =
         static_cast<uint32_t>(hyperload::FindNearestBaudRate(approx_baud));
-    sjsu::lpc40xx::uart0.SetBaudRate(baud_rate);
+    uart0.SetBaudRate(baud_rate);
     // Wait for host to change it's baud rate
     sjsu::Delay(500);
     // Send our CPU information along with data parameters:
@@ -311,17 +312,17 @@ int main()
         leds.SetAll(error);
         printf3("Flashing error %s!\n",
                 kIapResultString[static_cast<uint32_t>(result)]);
-        sjsu::lpc40xx::uart0.Write(kOtherError);
+        uart0.Write(kOtherError);
       }
     }
     puts3("Programming Finished!\n");
     puts3("Sending final acknowledge!\n");
     sjsu::Delay(100);
-    sjsu::lpc40xx::uart0.Write(kHyperloadFinished);
+    uart0.Write(kHyperloadFinished);
   }
   // Change baud rate back to 38400 so that user can continue using a serial
   // monitor for the final bootloader message and application messages.
-  sjsu::lpc40xx::uart0.Initialize(config::kBaudRate);
+  uart0.Initialize(config::kBaudRate);
 
   IsrPointer * application_vector_table =
       reinterpret_cast<IsrPointer *>(&(flash->application));
@@ -374,7 +375,7 @@ uint8_t WriteUartToBlock(Block_t * block)
   uint32_t checksum = 0;
   for (uint32_t position = 0; position < kBlockSize; position++)
   {
-    uint8_t byte          = sjsu::lpc40xx::uart0.Read(100);
+    uint8_t byte          = uart0.Read(100);
     block->data[position] = byte;
     checksum += byte;
   }
@@ -388,11 +389,11 @@ bool WriteUartToRamSector(Sector_t * sector)
   // Blank RAM sector to all 1s
   memset(sector, 0xFF, sizeof(*sector));
   printf3("Writing to Ram Sector...\n");
-  sjsu::lpc40xx::uart0.Write(kHyperloadReady);
+  uart0.Write(kHyperloadReady);
   while (blocks_written < kBlocksPerSector)
   {
-    uint8_t block_number_msb = sjsu::lpc40xx::uart0.Read(1000);
-    uint8_t block_number_lsb = sjsu::lpc40xx::uart0.Read(100);
+    uint8_t block_number_msb = uart0.Read(1000);
+    uint8_t block_number_lsb = uart0.Read(100);
     uint32_t block_number    = (block_number_msb << 8) | block_number_lsb;
     if (0xFFFF == block_number)
     {
@@ -404,17 +405,17 @@ bool WriteUartToRamSector(Sector_t * sector)
     {
       uint32_t partition        = block_number % kBlocksPerSector;
       uint8_t checksum          = WriteUartToBlock(&sector->block[partition]);
-      uint8_t expected_checksum = sjsu::lpc40xx::uart0.Read(1000);
+      uint8_t expected_checksum = uart0.Read(1000);
       if (checksum != expected_checksum)
       {
-        sjsu::lpc40xx::uart0.Write(kChecksumError);
+        uart0.Write(kChecksumError);
       }
       else
       {
         blocks_written++;
         if (blocks_written < 8)
         {
-          sjsu::lpc40xx::uart0.Write(kHyperloadReady);
+          uart0.Write(kHyperloadReady);
         }
       }
     }

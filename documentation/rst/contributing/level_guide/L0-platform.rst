@@ -101,10 +101,24 @@ called:
     - There must be some way to communicate with a host computer. This is
       usualy done via UART or USB-CDC and either method is acceptable, but UART
       tends to be the easiest.
-    - (NOTE: update this when proper dependency injection is done) Reassign
-      :code:`Stdout out` and :code:`Stdin in`, found in the
-      :code:`library/newblib/newlib.h` file to your own variant of Stdout (ex:
-      uart send) and Stdin (ex: uart recieve)
+    - Update the STDOUT and STDIN callback functions by using
+      :code:`SetStdout` and :code:`SetStdin`, found in the
+      :code:`library/newblib/newlib.h`
+      Example:
+
+.. code-block:: cpp
+
+    int Lpc40xxStdOut(const char * data, size_t length)
+    {
+      uart0.Write(reinterpret_cast<const uint8_t *>(data), length);
+      return length;
+    }
+
+    int Lpc40xxStdIn(char * data, size_t length)
+    {
+      uart0.Read(reinterpret_cast<uint8_t *>(data), length);
+      return length;
+    }
 
   3. Malloc & new:
 

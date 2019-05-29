@@ -41,6 +41,7 @@
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/lpc40xx/timer.hpp"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
+#include "newlib/newlib.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
@@ -52,10 +53,26 @@ namespace
 sjsu::lpc40xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
 sjsu::lpc40xx::Timer timer0(sjsu::lpc40xx::Timer::Channel::kTimer0);
+// Uart port 0 is used to communicate back to the host computer
+sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
+
 uint64_t Lpc40xxUptime()
 {
   return timer0.GetTimer();
 }
+
+int Lpc40xxStdOut(const char * data, size_t length)
+{
+  uart0.Write(reinterpret_cast<const uint8_t *>(data), length);
+  return length;
+}
+
+int Lpc40xxStdIn(char * data, size_t length)
+{
+  uart0.Read(reinterpret_cast<uint8_t *>(data), length);
+  return length;
+}
+
 }  // namespace
 
 extern "C" uint64_t UptimeRTOS()
@@ -160,7 +177,9 @@ void InitializePlatform()
   // fed to all peripherals will be 48Mhz.
   system_controller.SetPeripheralClockDivider(1);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
-  sjsu::lpc40xx::uart0.Initialize(config::kBaudRate);
+  uart0.Initialize(config::kBaudRate);
+  newlib::SetStdout(Lpc40xxStdOut);
+  newlib::SetStdin(Lpc40xxStdIn);
   // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
   // micro second.
   timer0.Initialize(1'000'000UL);
