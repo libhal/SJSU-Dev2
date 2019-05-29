@@ -177,6 +177,9 @@ constexpr static UartCalibration_t GenerateUartCalibration(
 class Uart final : public sjsu::Uart, protected sjsu::lpc40xx::SystemController
 {
  public:
+  using sjsu::Uart::Read;
+  using sjsu::Uart::Write;
+
   static constexpr uint8_t kStandardUart = 0b011;
   struct Port_t
   {
@@ -323,32 +326,48 @@ class Uart final : public sjsu::Uart, protected sjsu::lpc40xx::SystemController
     return Status::kSuccess;
   }
 
-  void Send(uint8_t data) const override
+  void Write(const uint8_t * data, size_t size) const override
   {
-    port_.registers->THR             = data;
-    auto wait_for_transfer_to_finish = [this]() -> bool {
-      return (port_.registers->LSR & (1 << 5));
-    };
-    Wait(kMaxWait, wait_for_transfer_to_finish);
+    for (size_t i = 0; i < size; i++)
+    {
+      port_.registers->THR = data[i];
+      while (!TransmissionComplete())
+      {
+        continue;
+      }
+    }
   }
 
-  uint8_t Receive([[maybe_unused]] uint32_t timeout = 0x7FFFFFFF) const override
+  Status Read(uint8_t * data, size_t size, uint32_t timeout) const override
   {
-    uint8_t receiver   = '\xFF';
-    auto byte_recieved = [this]() -> bool {
-      return (port_.registers->LSR & (1 << 0));
-    };
-
-    Status status = Wait(timeout, byte_recieved);
-
-    if (status == Status::kSuccess)
+    // NOTE: Consider changing this to using a Wait() call.
+    Status status       = Status::kTimedOut;
+    uint64_t start_time = Milliseconds();
+    size_t position     = 0;
+    while ((start_time + timeout) < Milliseconds())
     {
-      receiver = static_cast<uint8_t>(port_.registers->RBR);
+      if (HasData())
+      {
+        data[position++] = static_cast<uint8_t>(port_.registers->RBR);
+      }
+      if (position > size)
+      {
+        status = Status::kSuccess;
+      }
     }
-    return receiver;
+    return status;
+  }
+  bool HasData() const override
+  {
+    return port_.registers->LSR & (1 << 0);
   }
 
  private:
+  bool TransmissionComplete() const
+  {
+    return (port_.registers->LSR & (1 << 5));
+  }
+
   const Port_t & port_;
 };
 
@@ -356,4 +375,3 @@ inline sjsu::lpc40xx::Uart uart0(Uart::Port::kUart0);
 
 }  // namespace lpc40xx
 }  // namespace sjsu
-

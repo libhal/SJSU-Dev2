@@ -49,7 +49,7 @@ void puts3(const char * str)
   size_t i;
   for (i = 0; str[i] != '\0'; i++)
   {
-    uart3.Send(str[i]);
+    uart3.Write(str[i]);
   }
 }
 
@@ -257,26 +257,26 @@ int main()
 
   printf3("Bootloader Debug Port Initialized!\n");
   // Flush any initial bytes
-  sjsu::lpc40xx::uart0.Receive(500);
-  sjsu::lpc40xx::uart0.Send(0xFF);
+  sjsu::lpc40xx::uart0.Read(500);
+  sjsu::lpc40xx::uart0.Write(0xFF);
   // Hyperload will send 0x55 to notify that it is alive!
-  if (0x55 == sjsu::lpc40xx::uart0.Receive(500))
+  if (0x55 == sjsu::lpc40xx::uart0.Read(500))
   {
     SetFlashAcceleratorSpeed(6);
     // Notify Hyperload that we're alive too!
-    sjsu::lpc40xx::uart0.Send(0xAA);
+    sjsu::lpc40xx::uart0.Write(0xAA);
     // Get new baud rate control word
     union BaudRateControlWord {
       uint8_t array[4];
       uint32_t word;
     };
     BaudRateControlWord control;
-    control.array[0] = sjsu::lpc40xx::uart0.Receive(500);
-    control.array[1] = sjsu::lpc40xx::uart0.Receive(500);
-    control.array[2] = sjsu::lpc40xx::uart0.Receive(500);
-    control.array[3] = sjsu::lpc40xx::uart0.Receive(500);
+    control.array[0] = sjsu::lpc40xx::uart0.Read(500);
+    control.array[1] = sjsu::lpc40xx::uart0.Read(500);
+    control.array[2] = sjsu::lpc40xx::uart0.Read(500);
+    control.array[3] = sjsu::lpc40xx::uart0.Read(500);
     // Echo it back to verify
-    sjsu::lpc40xx::uart0.Send(control.array[0]);
+    sjsu::lpc40xx::uart0.Write(control.array[0]);
     sjsu::Delay(1);
     printf3("control.array[0] = 0x%02X\n", control.array[0]);
     // Hyperload Frequency should be set to 48,000,000 for this to work
@@ -311,13 +311,13 @@ int main()
         leds.SetAll(error);
         printf3("Flashing error %s!\n",
                 kIapResultString[static_cast<uint32_t>(result)]);
-        sjsu::lpc40xx::uart0.Send(kOtherError);
+        sjsu::lpc40xx::uart0.Write(kOtherError);
       }
     }
     puts3("Programming Finished!\n");
     puts3("Sending final acknowledge!\n");
     sjsu::Delay(100);
-    sjsu::lpc40xx::uart0.Send(kHyperloadFinished);
+    sjsu::lpc40xx::uart0.Write(kHyperloadFinished);
   }
   // Change baud rate back to 38400 so that user can continue using a serial
   // monitor for the final bootloader message and application messages.
@@ -374,7 +374,7 @@ uint8_t WriteUartToBlock(Block_t * block)
   uint32_t checksum = 0;
   for (uint32_t position = 0; position < kBlockSize; position++)
   {
-    uint8_t byte          = sjsu::lpc40xx::uart0.Receive(100);
+    uint8_t byte          = sjsu::lpc40xx::uart0.Read(100);
     block->data[position] = byte;
     checksum += byte;
   }
@@ -388,11 +388,11 @@ bool WriteUartToRamSector(Sector_t * sector)
   // Blank RAM sector to all 1s
   memset(sector, 0xFF, sizeof(*sector));
   printf3("Writing to Ram Sector...\n");
-  sjsu::lpc40xx::uart0.Send(kHyperloadReady);
+  sjsu::lpc40xx::uart0.Write(kHyperloadReady);
   while (blocks_written < kBlocksPerSector)
   {
-    uint8_t block_number_msb = sjsu::lpc40xx::uart0.Receive(1000);
-    uint8_t block_number_lsb = sjsu::lpc40xx::uart0.Receive(100);
+    uint8_t block_number_msb = sjsu::lpc40xx::uart0.Read(1000);
+    uint8_t block_number_lsb = sjsu::lpc40xx::uart0.Read(100);
     uint32_t block_number    = (block_number_msb << 8) | block_number_lsb;
     if (0xFFFF == block_number)
     {
@@ -404,17 +404,17 @@ bool WriteUartToRamSector(Sector_t * sector)
     {
       uint32_t partition        = block_number % kBlocksPerSector;
       uint8_t checksum          = WriteUartToBlock(&sector->block[partition]);
-      uint8_t expected_checksum = sjsu::lpc40xx::uart0.Receive(1000);
+      uint8_t expected_checksum = sjsu::lpc40xx::uart0.Read(1000);
       if (checksum != expected_checksum)
       {
-        sjsu::lpc40xx::uart0.Send(kChecksumError);
+        sjsu::lpc40xx::uart0.Write(kChecksumError);
       }
       else
       {
         blocks_written++;
         if (blocks_written < 8)
         {
-          sjsu::lpc40xx::uart0.Send(kHyperloadReady);
+          sjsu::lpc40xx::uart0.Write(kHyperloadReady);
         }
       }
     }

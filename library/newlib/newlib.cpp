@@ -28,12 +28,12 @@ Stdin in   = HostRead;
 #else
 int FirmwareStdOut(int data)
 {
-  sjsu::lpc40xx::uart0.Send(static_cast<uint8_t>(data));
+  sjsu::lpc40xx::uart0.Write(static_cast<uint8_t>(data));
   return 1;
 }
 int FirmwareStdIn()
 {
-  return static_cast<int>(sjsu::lpc40xx::uart0.Receive());
+  return static_cast<int>(sjsu::lpc40xx::uart0.Read());
 }
 Stdout out = FirmwareStdOut;
 Stdin in   = FirmwareStdIn;
