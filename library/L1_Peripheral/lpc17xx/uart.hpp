@@ -53,7 +53,5 @@ struct UartPort  // NOLINT
   };
 };
 
-inline sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0);
-
 }  // namespace lpc17xx
 }  // namespace sjsu

@@ -41,11 +41,11 @@ endif
 # SJSU-Dev2 Toolchain Paths
 # ============================
 # Path to CLANG compiler
-SJCLANG_PATH   = $(SJSU_DEV2_BASE)/tools/clang+llvm-*
-SJCLANG        = $(shell cd $(SJCLANG_PATH); pwd)
+SJCLANG_PATH   = $(SJSU_DEV2_BASE)/tools/clang+llvm-*/
+SJCLANG        = $(shell cd $(SJCLANG_PATH) ; pwd)
 # Path to ARM GCC compiler
-SJARMGCC_PATH  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*
-SJARMGCC       = $(shell cd $(SJARMGCC_PATH); pwd)
+SJARMGCC_PATH  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/
+SJARMGCC       = $(shell cd $(SJARMGCC_PATH) ; pwd)
 # Path to Openocd compiler
 SJOPENOCD = $(SJSU_DEV2_BASE)/tools/openocd
 # Compiler and library settings:

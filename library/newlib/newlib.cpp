@@ -6,38 +6,40 @@
 #include <cstdarg>
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
 
 #include "L0_Platform/lpc40xx/ram.hpp"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
 #include "utility/macros.hpp"
 
-#if defined(HOST_TEST)
-int HostWrite(int c)
+namespace newlib
 {
-  int payload = c;
-  return static_cast<int>(write(1, &payload, 1));
-}
-int HostRead()
+int DoNothingStdOut(const char *, size_t)
 {
-  int result = 0;
-  read(1, &result, 1);
-  return result;
-}
-Stdout out = HostWrite;
-Stdin in   = HostRead;
-#else
-int FirmwareStdOut(int data)
-{
-  sjsu::lpc40xx::uart0.Write(static_cast<uint8_t>(data));
   return 1;
 }
-int FirmwareStdIn()
+int DoNothingStdIn(char *, size_t)
 {
-  return static_cast<int>(sjsu::lpc40xx::uart0.Read());
+  return 0;
 }
-Stdout out = FirmwareStdOut;
-Stdin in   = FirmwareStdIn;
-#endif
+
+Stdout out = DoNothingStdOut;
+Stdin in   = DoNothingStdIn;
+bool echo_back_is_enabled = true;
+
+void SetStdout(Stdout stdout_handler)
+{
+  out = stdout_handler;
+}
+void SetStdin(Stdin stdin_handler)
+{
+  in = stdin_handler;
+}
+void StdinEchoBack(bool enable_echo)
+{
+  echo_back_is_enabled = enable_echo;
+}
+}  // namespace newlib
 
 extern "C"
 {
@@ -81,7 +83,7 @@ extern "C"
   // NOLINTNEXTLINE(readability-identifier-naming)
   void * _sbrk(int increment)
   {
-    void * previous_heap_position  = static_cast<void *>(heap_position);
+    void * previous_heap_position = static_cast<void *>(heap_position);
     // Check that by allocating this space, we do not exceed the heap area.
     if ((heap_position + increment) > &heap_end)
     {
@@ -100,13 +102,7 @@ extern "C"
   // NOLINTNEXTLINE(readability-identifier-naming)
   int _write([[maybe_unused]] int file, char * ptr, int length)
   {
-    for (int i = 0; i < length; i++)
-    {
-      // TODO(#81): either make this inline, or swap with function that can
-      //   take a buffer and length.
-      out(ptr[i]);
-    }
-    return length;
+    return newlib::out(ptr, length);
   }
   // Dummy implementation of _lseek
   // NOLINTNEXTLINE(readability-identifier-naming)
@@ -117,46 +113,44 @@ extern "C"
   }
   // Minimum implementation of _read using UART0 getchar
   // NOLINTNEXTLINE(readability-identifier-naming)
-  int _read(FILE * file, char * ptr, int length)
+  int _read(FILE * file, char * ptr, [[maybe_unused]] int length)
   {
+    int number_of_read_characters = 0;
     if (file == STDIN_FILENO)
     {
-      length = 1;
-      // TODO(#81): either make this inline
-      *ptr = static_cast<char>(in());
-      if (*ptr == '\r')
+      number_of_read_characters = newlib::in(ptr, 1);
+      // Echo back to STDOUT
+      if (newlib::echo_back_is_enabled)
       {
-        out('\r');
-        *ptr = '\n';
+        newlib::out(ptr, 1);
       }
-      out(*ptr);
     }
-    return length;
+    return number_of_read_characters;
   }
   // Needed by third party printf library
   void _putchar(char character)  // NOLINT
   {
-    out(character);
+    newlib::out(&character, 1);
   }
 
   // Overload default libnano putchar() with a more optimal version that does
   // not use dynamic memory
   int putchar(int character)  // NOLINT
   {
-    return out(character);
+    char character_value = static_cast<char>(character);
+    return newlib::out(&character_value, 1);
   }
 
   // Overload default libnano puts() with a more optimal version that does
   // not use dynamic memory
   int puts(const char * str)  // NOLINT
   {
-    int i;
-    for (i = 0; str[i] != '\0'; i++)
-    {
-      out(str[i]);
-    }
-    out('\n');
-    return i;
+    size_t string_length = strlen(str);
+    int result           = 0;
+    result += newlib::out(str, string_length);
+    result += newlib::out("\n", 1);
+    // + 1 because puts adds an additional newline '\n' character.
+    return result;
   }
 }
 
