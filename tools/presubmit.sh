@@ -113,9 +113,10 @@ echo ""
 cd $SJBASE/demos/
 
 LIST_OF_PROJECT=$(find ./ -name "makefile")
-for d in $(dirname $LIST_OF_PROJECT)
+for d in $LIST_OF_PROJECT
 do
-cd "$SJBASE/demos/$d"
+PROJECT_PATH=$(dirname $d)
+cd "$SJBASE/demos/$PROJECT_PATH"
 printf "\e[0;33mBuilding Example $d \e[0m "
 # Clean the build and start building from scratch
 SILENCE=$(make clean)
