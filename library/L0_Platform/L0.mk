@@ -3,6 +3,8 @@ INCLUDES += $(LIBRARY_DIR)/L0_Platform/freertos
 LINT_FILTER += $(LIBRARY_DIR)/L0_Platform/freertos/
 LINT_FILTER += $(LIBRARY_DIR)/L0_Platform/arm_cortex/
 
+LINT_FILTER += $(LIBRARY_DIR)/L0_Platform/example/example_memory_map_c.h
+
 LINT_FILTER += $(LIBRARY_DIR)/L0_Platform/lpc17xx/LPC17xx.h
 LINT_FILTER += $(LIBRARY_DIR)/L0_Platform/lpc17xx/LPC17xx_c.h
 
