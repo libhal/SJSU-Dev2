@@ -7,23 +7,13 @@
 
 namespace sjsu
 {
-// Max wait time in microseconds.
-constexpr uint64_t kMaxWait = 0xFFFFFFFFFFFFFFFF;
-
-namespace
-{
-// uptime in microseconds
-inline uint64_t uptime = 0;
-// Returns the system uptime in microseconds, do not use this function directly
-[[gnu::always_inline]] inline uint64_t DefaultUptime()
-{
-  return uptime;
-}
-}  // namespace
-
 using UptimeFunction = uint64_t (*)();
+inline uint64_t DefaultUptime() { return 0; }
 // Returns the system uptime in microseconds.
 inline UptimeFunction Uptime = DefaultUptime;  // NOLINT
+// Max wait time in microseconds.
+constexpr uint64_t kMaxWait = 0xFFFFFFFFFFFFFFFF;
+// Returns the system uptime in microseconds, do not use this function directly
 inline void SetUptimeFunction(UptimeFunction uptime_function)
 {
   Uptime = uptime_function;
@@ -31,12 +21,12 @@ inline void SetUptimeFunction(UptimeFunction uptime_function)
 // Get system uptime in milliseconds as a 64-bit integer
 inline uint64_t Milliseconds()
 {
-  return Uptime() / 1'000;
+  return Uptime();
 }
 // Get system uptime in seconds as a 64-bit integer
 inline uint64_t Seconds()
 {
-  return Uptime() / 1'000'000;
+  return Uptime() / 1'000;
 }
 // Wait will until the is_done parameter returns true
 //

@@ -6,7 +6,7 @@ DerivePointerAlignment: false
 PointerAlignment: Middle
 AlignConsecutiveAssignments: true
 AlignEscapedNewlines: Left
-BinPackParameters: true
+BinPackParameters: false
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Empty

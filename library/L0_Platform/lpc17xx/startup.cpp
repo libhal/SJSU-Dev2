@@ -38,6 +38,7 @@
 #include "L0_Platform/lpc17xx/interrupt.hpp"
 #include "L0_Platform/ram.hpp"
 #include "L0_Platform/startup.hpp"
+#include "L1_Peripheral/cortex/dwt_counter.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/lpc17xx/system_controller.hpp"
 #include "L1_Peripheral/lpc17xx/timer.hpp"
@@ -52,12 +53,12 @@ namespace
 // Create LPC40xx system controller to be used by low level initialization.
 sjsu::lpc17xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
-sjsu::lpc17xx::Timer timer0(sjsu::lpc17xx::Timer::Channel::kTimer0);
+sjsu::cortex::DwtCounter arm_dwt_counter;
+// Uart port 0 is used to communicate back to the host computer
 sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0);
-uint64_t Lpc17xxUptime()
-{
-  return timer0.GetTimer();
-}
+// System timer is used to count milliseconds of time and to run the RTOS
+// scheduler.
+sjsu::cortex::SystemTimer system_timer(system_controller);
 
 int Lpc17xxStdOut(const char * data, size_t length)
 {
@@ -72,9 +73,9 @@ int Lpc17xxStdIn(char * data, size_t length)
 }
 }  // namespace
 
-extern "C" uint64_t ThreadRuntimeCounter()
+extern "C" uint32_t ThreadRuntimeCounter()
 {
-  return timer0.GetTimer();
+  return arm_dwt_counter.GetCount();
 }
 // The entry point for the C++ library startup
 extern "C"
@@ -86,17 +87,11 @@ extern "C"
   extern int main();
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    // Create system timer to be used by low level initialization.
-    sjsu::cortex::SystemTimer system_timer(system_controller);
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock, since
     // The system_timer keeps the time that the system_clock uses to delay
     // itself.
-    system_timer.SetTickFrequency(config::kRtosFrequency);
     system_timer.SetInterrupt(xPortSysTickHandler);
-    sjsu::Status timer_start_status = system_timer.StartTimer();
-    SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
-                     "System Timer (used by FreeRTOS) has FAILED to start!");
   }
 }
 
@@ -104,30 +99,29 @@ SJ2_WEAK(void InitializePlatform());
 
 void InitializePlatform()
 {
-  // Set Clock Speed
-  // SetClockFrequency will timeout return the offset between desire clockspeed
-  // and actual clockspeed if the PLL doesn't get a frequency fix within a
-  // defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
-  timer0.Initialize(1'000'000UL);
-  sjsu::SetUptimeFunction(Lpc17xxUptime);
-  // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
-  // fed to all peripherals will be 48Mhz.
-  system_controller.SetPeripheralClockDivider(1);
-
   while (system_controller.SetClockFrequency(config::kSystemClockRateMhz) != 0)
   {
     // Continually attempt to set the clock frequency to the desired until the
     // delta between desired and actual are 0.
     continue;
   }
-  // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
-  // micro second. This is done again, because the system clock has changed.
-  timer0.Initialize(1'000'000UL);
+  // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
+  // fed to all peripherals will be 48Mhz.
+  system_controller.SetPeripheralClockDivider(1);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
 
   sjsu::newlib::SetStdout(Lpc17xxStdOut);
   sjsu::newlib::SetStdin(Lpc17xxStdIn);
+
+  system_timer.SetTickFrequency(config::kRtosFrequency);
+  sjsu::Status timer_start_status = system_timer.StartTimer();
+
+  SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
+                   "System Timer (used by FreeRTOS) has FAILED to start!");
+
+  arm_dwt_counter.Initialize();
+  sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);
 }
 
 SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
@@ -153,5 +147,6 @@ extern "C" void ResetIsr()
 #pragma GCC diagnostic pop
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
+  LOG_CRITICAL("main() returned with value %" PRId32, result);
   sjsu::Halt();
 }
