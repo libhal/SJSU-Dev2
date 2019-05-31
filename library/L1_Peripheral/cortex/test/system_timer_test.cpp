@@ -21,7 +21,11 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   // Redirects manipulation to the 'local_systick'
   SystemTimer::sys_tick = &local_systick;
 
-  SystemTimer test_subject;
+  Mock<SystemController> mock_system_controller;
+  When(Method(mock_system_controller, GetSystemFrequency))
+      .AlwaysReturn(48'000'000);
+
+  SystemTimer test_subject(mock_system_controller.get());
 
   SECTION("SetTickFrequency generate desired frequency")
   {

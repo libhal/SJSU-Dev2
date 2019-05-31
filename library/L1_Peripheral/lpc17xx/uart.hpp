@@ -1,8 +1,8 @@
 #pragma once
 
 #include "L0_Platform/lpc17xx/LPC17xx.h"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/lpc17xx/pin.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
 
 namespace sjsu

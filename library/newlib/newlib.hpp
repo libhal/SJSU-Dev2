@@ -2,6 +2,8 @@
 
 #include <cstddef>
 
+namespace sjsu
+{
 namespace newlib
 {
 using Stdout = int (*)(const char *, size_t);
@@ -14,3 +16,4 @@ void SetStdin(Stdin);
 /// @param enable_echo - If true, enable echo, if false disable echo back.
 void StdinEchoBack(bool enable_echo);
 }  // namespace newlib
+}  // namespace sjsu

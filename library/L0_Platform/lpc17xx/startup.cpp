@@ -36,10 +36,10 @@
 #include <iterator>
 
 #include "L0_Platform/lpc17xx/interrupt.hpp"
-#include "L0_Platform/lpc17xx/LPC17xx.h"
-#include "L0_Platform/lpc17xx/ram.hpp"
-#include "L0_Platform/lpc17xx/system_controller.hpp"
+#include "L0_Platform/ram.hpp"
+#include "L0_Platform/startup.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
+#include "L1_Peripheral/lpc17xx/system_controller.hpp"
 #include "L1_Peripheral/lpc17xx/timer.hpp"
 #include "L1_Peripheral/lpc17xx/uart.hpp"
 #include "utility/log.hpp"
@@ -72,7 +72,7 @@ int Lpc17xxStdIn(char * data, size_t length)
 }
 }  // namespace
 
-extern "C" uint64_t UptimeRTOS()
+extern "C" uint64_t ThreadRuntimeCounter()
 {
   return timer0.GetTimer();
 }
@@ -87,7 +87,7 @@ extern "C"
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
     // Create system timer to be used by low level initialization.
-    sjsu::cortex::SystemTimer system_timer;
+    sjsu::cortex::SystemTimer system_timer(system_controller);
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock, since
     // The system_timer keeps the time that the system_clock uses to delay
@@ -101,38 +101,6 @@ extern "C"
 }
 
 SJ2_WEAK(void InitializePlatform());
-
-// Functions to carry out the initialization of RW and BSS data sections.
-SJ2_SECTION(".after_vectors")
-void InitializeDataSection()
-{
-  for (int i = 0; &data_section_table[i] < &data_section_table_end; i++)
-  {
-    uint32_t * rom_location = data_section_table[i].rom_location;
-    uint32_t * ram_location = data_section_table[i].ram_location;
-    uint32_t length         = data_section_table[i].length;
-    for (size_t j = 0; j < length; j++)
-    {
-      ram_location[j] = rom_location[j];
-    }
-  }
-}
-
-// Functions to initialization BSS data sections. This is important because
-// the std c libs assume that BSS is set to zero.
-SJ2_SECTION(".after_vectors")
-void InitializeBssSection()
-{
-  for (int i = 0; &bss_section_table[i] < &bss_section_table_end; i++)
-  {
-    uint32_t * ram_location = bss_section_table[i].ram_location;
-    uint32_t length         = bss_section_table[i].length;
-    for (size_t j = 0; j < length; j++)
-    {
-      ram_location[j] = 0;
-    }
-  }
-}
 
 void InitializePlatform()
 {
@@ -158,22 +126,8 @@ void InitializePlatform()
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
 
-  newlib::SetStdout(Lpc17xxStdOut);
-  newlib::SetStdin(Lpc17xxStdIn);
-}
-
-void SystemInitialize()
-{
-  // Transfer data section values from flash to RAM
-  InitializeDataSection();
-  // Clear BSS section of RAM
-  // This is required because the nano implementation of the standard C/C++
-  // libraries assumes that the BSS section is initialized to 0.
-  InitializeBssSection();
-  // Initialisation C++ libraries
-  __libc_init_array();
-  // Run Low Level Platform Initialization
-  InitializePlatform();
+  sjsu::newlib::SetStdout(Lpc17xxStdOut);
+  sjsu::newlib::SetStdin(Lpc17xxStdIn);
 }
 
 SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
@@ -190,7 +144,8 @@ extern "C" void ResetIsr()
   sjsu::lpc17xx::__set_PSP(kTopOfStack);
   sjsu::lpc17xx::__set_MSP(kTopOfStack);
 
-  SystemInitialize();
+  sjsu::SystemInitialize();
+  InitializePlatform();
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
   [[maybe_unused]] int32_t result = main();
