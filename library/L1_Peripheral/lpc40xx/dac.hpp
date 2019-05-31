@@ -3,8 +3,8 @@
 #include "L1_Peripheral/dac.hpp"
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
 

@@ -18,8 +18,8 @@ int HostRead(char * payload, size_t length)
 
 int main(int argc, char * argv[])
 {
-  newlib::SetStdout(HostWrite);
-  newlib::SetStdin(HostRead);
+  sjsu::newlib::SetStdout(HostWrite);
+  sjsu::newlib::SetStdin(HostRead);
 
   int result = Catch::Session().run(argc, argv);
 

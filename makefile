@@ -162,18 +162,19 @@ BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
 endif
 
 BUILD_DIR       = $(BUILD_DIRECTORY_NAME)/$(BUILD_SUBDIRECTORY_NAME)/$(PLATFORM)
-OBJECT_DIR            = $(BUILD_DIR)/compiled
-DBC_DIR               = $(BUILD_DIR)/can-dbc
-COVERAGE_DIR          = $(BUILD_DIR)/coverage
-LIBRARY_DIR           = $(SJSU_DEV2_BASE)/library
-PROJECTS_DIR          = $(SJSU_DEV2_BASE)/projects
-DEMOS_DIR             = $(SJSU_DEV2_BASE)/demos
-STATIC_LIBRARY_DIR    = $(LIBRARY_DIR)/static_libraries/$(PLATFORM)
-TOOLS_DIR             = $(SJSU_DEV2_BASE)/tools
-SOURCE_DIR            = source
-COMPILED_HEADERS_DIR  = $(BUILD_DIR)/headers # NOTE: Actually use this!
-CURRENT_DIRECTORY	    = $(shell pwd)
-COVERAGE_FILES        = $(shell find build -name "*.gcda")
+OBJECT_DIR                  = $(BUILD_DIR)/compiled
+DBC_DIR                     = $(BUILD_DIR)/can-dbc
+COVERAGE_DIR                = $(BUILD_DIR)/coverage
+LIBRARY_DIR                 = $(SJSU_DEV2_BASE)/library
+PROJECTS_DIR                = $(SJSU_DEV2_BASE)/projects
+DEMOS_DIR                   = $(SJSU_DEV2_BASE)/demos
+STATIC_LIBRARY_DIR          = $(LIBRARY_DIR)/static_libraries
+PLATFORM_STATIC_LIBRARY_DIR = $(STATIC_LIBRARY_DIR)/$(PLATFORM)
+TOOLS_DIR                   = $(SJSU_DEV2_BASE)/tools
+SOURCE_DIR                  = source
+COMPILED_HEADERS_DIR        = $(BUILD_DIR)/headers # NOTE: Actually use this!
+CURRENT_DIRECTORY	          = $(shell pwd)
+COVERAGE_FILES              = $(shell find build -name "*.gcda")
 # ===========================
 # Gathering Source Files
 # ===========================
@@ -210,7 +211,7 @@ LIBRARIES ?=
 
 define BUILD_LIRBARY
 
-LIBRARIES += $(STATIC_LIBRARY_DIR)/$(1).a
+LIBRARIES += $(PLATFORM_STATIC_LIBRARY_DIR)/$(1).a
 
 $(1)_OBJECTS = $$(addprefix $(OBJECT_DIR)/, $$($(2):=.o))
 
@@ -218,8 +219,8 @@ $(1)_OBJECTS = $$(addprefix $(OBJECT_DIR)/, $$($(2):=.o))
 
 -include    $$($(1)_OBJECTS:.o=.d) # DEPENDENCIES
 
-$(STATIC_LIBRARY_DIR)/$(1).a: $$($(1)_OBJECTS)
-	@mkdir -p "$(STATIC_LIBRARY_DIR)"
+$(PLATFORM_STATIC_LIBRARY_DIR)/$(1).a: $$($(1)_OBJECTS)
+	@mkdir -p "$(PLATFORM_STATIC_LIBRARY_DIR)"
 	@printf '$(YELLOW)Library  file ( A ) $(RESET): $$@ '
 	@rm -f "$@"
 	@$(DEVICE_AR) rcs "$$@" $$^
@@ -441,7 +442,9 @@ library-clean:
 # ====================================================================
 # Remove precompiled libraries and current build folder
 # ====================================================================
-purge: clean library-clean
+purge: clean
+	@rm -rf $(STATIC_LIBRARY_DIR)
+	@printf '$(MAGENTA)Cleared All Libraries$(RESET)\n'
 # ====================================================================
 # Open Browser to Telemetry website
 # ====================================================================

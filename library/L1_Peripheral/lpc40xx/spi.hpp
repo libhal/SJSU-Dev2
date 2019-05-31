@@ -23,8 +23,8 @@
 #include "L1_Peripheral/spi.hpp"
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
 #include "utility/status.hpp"
