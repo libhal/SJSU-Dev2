@@ -38,10 +38,10 @@
 #include "L0_Platform/lpc40xx/interrupt.hpp"
 #include "L0_Platform/ram.hpp"
 #include "L0_Platform/startup.hpp"
+#include "L1_Peripheral/cortex/dwt_counter.hpp"
 #include "L1_Peripheral/cortex/fpu.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "L1_Peripheral/lpc40xx/timer.hpp"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
 #include "newlib/newlib.hpp"
 #include "utility/log.hpp"
@@ -54,14 +54,12 @@ namespace
 // Create LPC40xx system controller to be used by low level initialization.
 sjsu::lpc40xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
-sjsu::lpc40xx::Timer timer0(sjsu::lpc40xx::Timer::Channel::kTimer0);
+sjsu::cortex::DwtCounter arm_dwt_counter;
 // Uart port 0 is used to communicate back to the host computer
 sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
-
-uint64_t Lpc40xxUptime()
-{
-  return timer0.GetTimer();
-}
+// System timer is used to count milliseconds of time and to run the RTOS
+// scheduler.
+sjsu::cortex::SystemTimer system_timer(system_controller);
 
 int Lpc40xxStdOut(const char * data, size_t length)
 {
@@ -76,9 +74,9 @@ int Lpc40xxStdIn(char * data, size_t length)
 }
 }  // namespace
 
-extern "C" uint64_t ThreadRuntimeCounter()
+extern "C" uint32_t ThreadRuntimeCounter()
 {
-  return timer0.GetTimer();
+  return arm_dwt_counter.GetCount();
 }
 // The entry point for the C++ library startup
 extern "C"
@@ -90,17 +88,11 @@ extern "C"
   extern int main();
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    // Create system timer to be used by low level initialization.
-    sjsu::cortex::SystemTimer system_timer(system_controller);
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock, since
     // The system_timer keeps the time that the system_clock uses to delay
     // itself.
-    system_timer.SetTickFrequency(config::kRtosFrequency);
     system_timer.SetInterrupt(xPortSysTickHandler);
-    sjsu::Status timer_start_status = system_timer.StartTimer();
-    SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
-                     "System Timer (used by FreeRTOS) has FAILED to start!");
   }
 }
 
@@ -129,10 +121,15 @@ void InitializePlatform()
   uart0.Initialize(config::kBaudRate);
   sjsu::newlib::SetStdout(Lpc40xxStdOut);
   sjsu::newlib::SetStdin(Lpc40xxStdIn);
-  // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
-  // micro second.
-  timer0.Initialize(1'000'000UL);
-  sjsu::SetUptimeFunction(Lpc40xxUptime);
+
+  system_timer.SetTickFrequency(config::kRtosFrequency);
+  sjsu::Status timer_start_status = system_timer.StartTimer();
+
+  SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
+                   "System Timer (used by FreeRTOS) has FAILED to start!");
+
+  arm_dwt_counter.Initialize();
+  sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);
 }
 
 SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
@@ -158,5 +155,6 @@ extern "C" void ResetIsr()
 #pragma GCC diagnostic pop
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
+  LOG_CRITICAL("main() returned with value %" PRId32, result);
   sjsu::Halt();
 }
