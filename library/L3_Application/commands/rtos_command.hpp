@@ -22,7 +22,7 @@ class RtosCommand : public Command
       "|    Task Name     |   State   | CPU% | Stack Left |   Priority  |\n"
       "|                  |           |      |  in words  | Base : Curr |";
 
-  constexpr RtosCommand() : Command("sjsu::rtos", kDescription) {}
+  constexpr RtosCommand() : Command("rtos", kDescription) {}
   static const char * RtosStateToString(eTaskState state)
   {
     switch (state)
