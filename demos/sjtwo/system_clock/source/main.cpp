@@ -2,8 +2,8 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L0_Platform/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/log.hpp"
 
 int main()

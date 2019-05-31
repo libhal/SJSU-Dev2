@@ -4,8 +4,8 @@
 #include <iterator>
 
 #include "L0_Platform/lpc40xx/interrupt.hpp"
-#include "L0_Platform/lpc40xx/ram.hpp"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
+#include "L0_Platform/ram.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L3_Application/commandline.hpp"
 #include "utility/log.hpp"
 

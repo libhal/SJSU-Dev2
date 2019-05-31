@@ -1,5 +1,5 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::lpc40xx

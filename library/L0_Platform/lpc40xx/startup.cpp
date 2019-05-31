@@ -36,9 +36,11 @@
 #include <iterator>
 
 #include "L0_Platform/lpc40xx/interrupt.hpp"
-#include "L0_Platform/lpc40xx/ram.hpp"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
+#include "L0_Platform/ram.hpp"
+#include "L0_Platform/startup.hpp"
+#include "L1_Peripheral/cortex/fpu.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/lpc40xx/timer.hpp"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
 #include "newlib/newlib.hpp"
@@ -72,10 +74,9 @@ int Lpc40xxStdIn(char * data, size_t length)
   uart0.Read(reinterpret_cast<uint8_t *>(data), length);
   return length;
 }
-
 }  // namespace
 
-extern "C" uint64_t UptimeRTOS()
+extern "C" uint64_t ThreadRuntimeCounter()
 {
   return timer0.GetTimer();
 }
@@ -90,7 +91,7 @@ extern "C"
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
     // Create system timer to be used by low level initialization.
-    sjsu::cortex::SystemTimer system_timer;
+    sjsu::cortex::SystemTimer system_timer(system_controller);
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock, since
     // The system_timer keeps the time that the system_clock uses to delay
@@ -105,64 +106,12 @@ extern "C"
 
 SJ2_WEAK(void InitializePlatform());
 
-// Functions to carry out the initialization of RW and BSS data sections.
-SJ2_SECTION(".after_vectors")
-void InitializeDataSection()
-{
-  for (int i = 0; &data_section_table[i] < &data_section_table_end; i++)
-  {
-    uint32_t * rom_location = data_section_table[i].rom_location;
-    uint32_t * ram_location = data_section_table[i].ram_location;
-    uint32_t length         = data_section_table[i].length;
-    for (size_t j = 0; j < length; j++)
-    {
-      ram_location[j] = rom_location[j];
-    }
-  }
-}
-
-// Functions to initialization BSS data sections. This is important because
-// the std c libs assume that BSS is set to zero.
-SJ2_SECTION(".after_vectors")
-void InitializeBssSection()
-{
-  for (int i = 0; &bss_section_table[i] < &bss_section_table_end; i++)
-  {
-    uint32_t * ram_location = bss_section_table[i].ram_location;
-    uint32_t length         = bss_section_table[i].length;
-    for (size_t j = 0; j < length; j++)
-    {
-      ram_location[j] = 0;
-    }
-  }
-}
-
-// Initialize the FPU. Must be done before any floating point instructions
-// are executed.
-/* Found here:
-http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0553a/
-BABGHFIB.html
-*/
-SJ2_SECTION(".after_vectors")
-void InitializeFloatingPointUnit()
-{
-  __asm(
-      // CPACR is located at address 0xE000ED88
-      "LDR.W   R0, =0xE000ED88\n"
-      // Read CPACR
-      "LDR     R1, [R0]\n"
-      // Set bits 20-23 to enable CP10 and CP11 coprocessors
-      "ORR     R1, R1, #(0xF << 20)\n"
-      // Write back the modified value to the CPACR
-      "STR     R1, [R0]\n"
-      // Wait for store to complete
-      "DSB\n"
-      // reset pipeline now the FPU is enabled
-      "ISB\n");
-}
-
 void InitializePlatform()
 {
+  // Enable FPU (F.loating P.oint U.nit)
+  // System will crash if floating point instruction is executed before
+  // Initializing the FPU first.
+  sjsu::cortex::InitializeFloatingPointUnit();
   // Set Clock Speed
   // SetClockFrequency will timeout return the offset between desire clockspeed
   // and actual clockspeed if the PLL doesn't get a frequency fix within a
@@ -178,30 +127,12 @@ void InitializePlatform()
   system_controller.SetPeripheralClockDivider(1);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
-  newlib::SetStdout(Lpc40xxStdOut);
-  newlib::SetStdin(Lpc40xxStdIn);
+  sjsu::newlib::SetStdout(Lpc40xxStdOut);
+  sjsu::newlib::SetStdin(Lpc40xxStdIn);
   // Set timer0 to 1 MHz (1,000,000 Hz) so that the timer increments every 1
   // micro second.
   timer0.Initialize(1'000'000UL);
   sjsu::SetUptimeFunction(Lpc40xxUptime);
-}
-
-void SystemInitialize()
-{
-  // Transfer data section values from flash to RAM
-  InitializeDataSection();
-  // Clear BSS section of RAM
-  // This is required because the nano implementation of the standard C/C++
-  // libraries assumes that the BSS section is initialized to 0.
-  InitializeBssSection();
-  // Enable FPU (F.loating P.oint U.nit)
-  // System will crash if floating point instruction is executed before
-  // Initializing the FPU first.
-  InitializeFloatingPointUnit();
-  // Initialisation C++ libraries
-  __libc_init_array();
-  // Run Low Level Platform Initialization
-  InitializePlatform();
 }
 
 SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
@@ -218,7 +149,8 @@ extern "C" void ResetIsr()
   sjsu::lpc40xx::__set_PSP(kTopOfStack);
   sjsu::lpc40xx::__set_MSP(kTopOfStack);
 
-  SystemInitialize();
+  sjsu::SystemInitialize();
+  InitializePlatform();
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
   [[maybe_unused]] int32_t result = main();
