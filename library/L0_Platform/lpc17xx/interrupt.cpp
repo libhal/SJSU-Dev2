@@ -7,6 +7,7 @@
 #include "L0_Platform/lpc17xx/interrupt.hpp"
 #include "L0_Platform/lpc17xx/LPC17xx.h"
 
+#include "utility/build_info.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
@@ -19,14 +20,10 @@ DEFINE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
 DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 #else
 
-namespace sjsu
+namespace
 {
-namespace lpc17xx
-{
-void InterruptLookupHandler(void);
-constexpr int32_t kIrqOffset = (Reset_IRQn * -1) + 1;
-}  // namespace lpc17xx
-}  // namespace sjsu
+const IsrPointer kReservedVector = nullptr;
+}  // namespace
 
 extern "C"
 {
@@ -408,23 +405,16 @@ void DeregisterIsr(int32_t irq)
 SJ2_SECTION(".after_vectors")
 void HardFaultHandler(void)
 {
+  if constexpr (sjsu::build::kTarget != sjsu::build::Target::HostTest)
+  {
     asm volatile(
-      "tst lr, #4\t\n" /* Check EXC_RETURN[2] */
-      "ite eq\t\n"
-      "mrseq r0, msp\t\n"
-      "mrsne r0, psp\t\n"
-      "b GetRegistersFromStack\t\n"
-      : /* no output */
-      : /* no input */
-      : "r0" /* clobber */
-    );
-  // __asm volatile(
-  //     " tst lr, #4                                          \n"
-  //     " ite eq                                              \n"
-  //     " mrseq r0, msp                                       \n"
-  //     " mrsne r0, psp                                       \n"
-  //     " ldr r1, [r0, #24]                                   \n"
-  //     " ldr r2, handler2_address_const                      \n"
-  //     " bx r2                                               \n"
-  //     " handler2_address_const: .word GetRegistersFromStack \n");
+        " tst lr, #4                                          \n"
+        " ite eq                                              \n"
+        " mrseq r0, msp                                       \n"
+        " mrsne r0, psp                                       \n"
+        " ldr r1, [r0, #24]                                   \n"
+        " ldr r2, handler2_address_const                      \n"
+        " bx r2                                               \n"
+        " handler2_address_const: .word GetRegistersFromStack \n");
+  }
 }

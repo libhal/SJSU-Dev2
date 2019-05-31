@@ -28,12 +28,21 @@
 #undef NVIC_DisableIRQ
 #undef NVIC_SetPriority
 
+using sjsu::lpc17xx::IRQn_Type;
 DECLARE_FAKE_VOID_FUNC(NVIC_EnableIRQ, IRQn_Type);
 DECLARE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
 DECLARE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 #endif  // defined HOST_TEST
 extern IsrPointer dynamic_isr_vector_table[];
-inline const IsrPointer kReservedVector = nullptr;
+
+namespace sjsu
+{
+namespace lpc17xx
+{
+constexpr int32_t kIrqOffset = (Reset_IRQn * -1) + 1;
+void InterruptLookupHandler(void);
+}  // namespace lpc17xx
+}  // namespace sjsu
 // External declaration for the pointer to the stack top from the linker script
 extern "C" void StackTop(void);
 // These are defined after the compilation of the FreeRTOS port for Cortex M4F

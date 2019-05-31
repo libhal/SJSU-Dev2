@@ -17,7 +17,10 @@ DEFINE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
 DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
 #else
 
+namespace
+{
 const IsrPointer kReservedVector = nullptr;
+}  // namespace
 
 extern "C"
 {
@@ -436,15 +439,16 @@ void DeregisterIsr(int32_t irq)
 SJ2_SECTION(".after_vectors")
 void HardFaultHandler(void)
 {
-#if defined(__arm__)
-  __asm volatile(
-      " tst lr, #4                                          \n"
-      " ite eq                                              \n"
-      " mrseq r0, msp                                       \n"
-      " mrsne r0, psp                                       \n"
-      " ldr r1, [r0, #24]                                   \n"
-      " ldr r2, handler2_address_const                      \n"
-      " bx r2                                               \n"
-      " handler2_address_const: .word GetRegistersFromStack \n");
-#endif
+  if constexpr (sjsu::build::kTarget != sjsu::build::Target::HostTest)
+  {
+    __asm volatile(
+        " tst lr, #4                                          \n"
+        " ite eq                                              \n"
+        " mrseq r0, msp                                       \n"
+        " mrsne r0, psp                                       \n"
+        " ldr r1, [r0, #24]                                   \n"
+        " ldr r2, handler2_address_const                      \n"
+        " bx r2                                               \n"
+        " handler2_address_const: .word GetRegistersFromStack \n");
+  }
 }
