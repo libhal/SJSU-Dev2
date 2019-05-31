@@ -8,7 +8,7 @@
 
 #include "L0_Platform/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
 

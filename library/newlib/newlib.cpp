@@ -8,10 +8,11 @@
 #include <cstdio>
 #include <cstring>
 
-#include "L0_Platform/lpc40xx/ram.hpp"
-#include "L1_Peripheral/lpc40xx/uart.hpp"
+#include "L0_Platform/ram.hpp"
 #include "utility/macros.hpp"
 
+namespace sjsu
+{
 namespace newlib
 {
 int DoNothingStdOut(const char *, size_t)
@@ -23,8 +24,8 @@ int DoNothingStdIn(char *, size_t)
   return 0;
 }
 
-Stdout out = DoNothingStdOut;
-Stdin in   = DoNothingStdIn;
+Stdout out                = DoNothingStdOut;
+Stdin in                  = DoNothingStdIn;
 bool echo_back_is_enabled = true;
 
 void SetStdout(Stdout stdout_handler)
@@ -40,6 +41,7 @@ void StdinEchoBack(bool enable_echo)
   echo_back_is_enabled = enable_echo;
 }
 }  // namespace newlib
+}  // namespace sjsu
 
 extern "C"
 {
@@ -102,7 +104,7 @@ extern "C"
   // NOLINTNEXTLINE(readability-identifier-naming)
   int _write([[maybe_unused]] int file, char * ptr, int length)
   {
-    return newlib::out(ptr, length);
+    return sjsu::newlib::out(ptr, length);
   }
   // Dummy implementation of _lseek
   // NOLINTNEXTLINE(readability-identifier-naming)
@@ -118,11 +120,11 @@ extern "C"
     int number_of_read_characters = 0;
     if (file == STDIN_FILENO)
     {
-      number_of_read_characters = newlib::in(ptr, 1);
+      number_of_read_characters = sjsu::newlib::in(ptr, 1);
       // Echo back to STDOUT
-      if (newlib::echo_back_is_enabled)
+      if (sjsu::newlib::echo_back_is_enabled)
       {
-        newlib::out(ptr, 1);
+        sjsu::newlib::out(ptr, 1);
       }
     }
     return number_of_read_characters;
@@ -130,7 +132,7 @@ extern "C"
   // Needed by third party printf library
   void _putchar(char character)  // NOLINT
   {
-    newlib::out(&character, 1);
+    sjsu::newlib::out(&character, 1);
   }
 
   // Overload default libnano putchar() with a more optimal version that does
@@ -138,7 +140,7 @@ extern "C"
   int putchar(int character)  // NOLINT
   {
     char character_value = static_cast<char>(character);
-    return newlib::out(&character_value, 1);
+    return sjsu::newlib::out(&character_value, 1);
   }
 
   // Overload default libnano puts() with a more optimal version that does
@@ -147,8 +149,8 @@ extern "C"
   {
     size_t string_length = strlen(str);
     int result           = 0;
-    result += newlib::out(str, string_length);
-    result += newlib::out("\n", 1);
+    result += sjsu::newlib::out(str, string_length);
+    result += sjsu::newlib::out("\n", 1);
     // + 1 because puts adds an additional newline '\n' character.
     return result;
   }

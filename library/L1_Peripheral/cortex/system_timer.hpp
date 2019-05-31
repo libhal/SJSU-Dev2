@@ -2,15 +2,13 @@
 // up the SystemTimer.
 #pragma once
 
-#include <cstring>
-
-#include "config.hpp"
-
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L0_Platform/interrupt.hpp"
+// NOTE: Including lpc40xx's definitions includes SysTick address and
+// definitions as well. These definitions are the same across m3 and m4, so its
+// fine to include this here.
 #include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
+#include "L1_Peripheral/system_controller.hpp"
 #include "L1_Peripheral/system_timer.hpp"
-#include "utility/macros.hpp"
 #include "utility/status.hpp"
 
 using sjsu::lpc40xx::SysTick_Type;
@@ -19,8 +17,7 @@ namespace sjsu
 {
 namespace cortex
 {
-class SystemTimer final : public sjsu::SystemTimer,
-                          protected sjsu::lpc40xx::SystemController
+class SystemTimer final : public sjsu::SystemTimer
 {
  public:
   // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
@@ -31,16 +28,23 @@ class SystemTimer final : public sjsu::SystemTimer,
     kClkSource     = 2,
     kCountFlag     = 16
   };
-  /// Sys_tick structure defaults to the Core M4 SysTick register address found
-  /// in L0_Platform/SystemFiles/core_m4.h which is included in LPC40xx.h
-  ///
-  /// TODO(): Move SysTick_Type out of lpc40xx.
 
   inline static SysTick_Type * sys_tick = SysTick;
   /// system_timer_isr defaults to nullptr. The actual SystemTickHandler should
   /// check if the isr is set to nullptr, and if it is, turn off the timer, if
   /// set a proper function then execute it.
   inline static IsrPointer system_timer_isr = nullptr;
+  // If the user does not specify a system controller, the default system
+  // controller will be used. The default system controller does not modify
+  // hardware. It only returns the project's desired system clock rate.
+  inline static DefaultSystemController default_system_controller;
+
+  explicit SystemTimer(
+      const SystemController & system_controller = default_system_controller)
+      : system_controller_(system_controller)
+  {
+  }
+
   /// WARNING: Doing so will most likely disable FreeRTOS
   static void DisableTimer()
   {
@@ -96,16 +100,23 @@ class SystemTimer final : public sjsu::SystemTimer,
     {
       return 0;
     }
-    uint32_t reload_value = (GetSystemFrequency() / frequency) - 1;
-    int remainder         = (GetSystemFrequency() % frequency);
+
+    uint32_t system_frequency = system_controller_.GetSystemFrequency();
+    uint32_t reload_value     = (system_frequency / frequency) - 1;
+    int remainder             = (system_frequency % frequency);
+
     if (reload_value > SysTick_LOAD_RELOAD_Msk)
     {
       reload_value = SysTick_LOAD_RELOAD_Msk;
       remainder    = SysTick_LOAD_RELOAD_Msk;
     }
+
     sys_tick->LOAD = reload_value;
     return remainder;
   }
+
+ private:
+  const SystemController & system_controller_;
 };
 }  // namespace cortex
 }  // namespace sjsu

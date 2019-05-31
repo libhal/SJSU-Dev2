@@ -107,9 +107,9 @@ numeric value the higher the interrupt priority). */
 #define configEMAC_INTERRUPT_PRIORITY 5
 #define configUSB_INTERRUPT_PRIORITY 6
 
-extern uint64_t UptimeRTOS();
+extern uint64_t ThreadRuntimeCounter();
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
-#define portGET_RUN_TIME_COUNTER_VALUE() (uint32_t)(UptimeRTOS())
+#define portGET_RUN_TIME_COUNTER_VALUE() (uint32_t)(ThreadRuntimeCounter())
 
 /*-----------------------------------------------------------
  * Macros required to setup the timer for the run time stats.

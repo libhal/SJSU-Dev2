@@ -7,5 +7,5 @@ namespace sjsu
 namespace lpc17xx
 {
 #include "LPC17xx_c.h"
-} // lpc17xx
-} // sjsu
+}  // namespace lpc17xx
+}  // namespace sjsu

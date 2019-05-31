@@ -5,8 +5,8 @@
 #include <cstdint>
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L0_Platform/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/uart.hpp"
 #include "utility/status.hpp"
 #include "utility/time.hpp"
