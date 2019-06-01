@@ -8,7 +8,8 @@ enum class Status
   kTimedOut,
   kBusError,
   kDeviceNotFound,
-  kInvalidSettings
+  kInvalidSettings,
+  kNotImplemented,
 };
 
 constexpr const char * Stringify(Status status)
@@ -20,6 +21,7 @@ constexpr const char * Stringify(Status status)
     case Status::kTimedOut: result = "Timed Out"; break;
     case Status::kBusError: result = "Bus Error"; break;
     case Status::kDeviceNotFound: result = "Device Not Found"; break;
+    case Status::kNotImplemented: result = "Not Implemented"; break;
     default: break;
   }
   return result;
