@@ -4,7 +4,7 @@
 
 namespace sjsu
 {
-inline const char * FResultToString(FRESULT result)
+inline const char * ToString(FRESULT result)
 {
   static const char * k_result_string_table[] = {
     [FR_OK]       = "(0) Succeeded",
