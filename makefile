@@ -157,6 +157,8 @@ BUILD_SUBDIRECTORY_NAME = application
 else ifeq ($(MAKECMDGOALS), \
 	$(filter $(MAKECMDGOALS), burn stacktrace-bootloader multi-debug-bootloader))
 BUILD_SUBDIRECTORY_NAME = bootloader
+else ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), run-test))
+BUILD_SUBDIRECTORY_NAME = test
 else
 BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
 endif
@@ -363,7 +365,7 @@ HEX        = $(EXECUTABLE:.elf=.hex)
 LIST       = $(EXECUTABLE:.elf=.lst)
 SIZE       = $(EXECUTABLE:.elf=.siz)
 MAP        = $(EXECUTABLE:.elf=.map)
-TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/test/tests.exe
+TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/tests.exe
 # TODO(kammce): Add header file precompilation back later
 # TEST_FRAMEWORK = $(LIBRARY_DIR)/L4_Testing/testing_frameworks.hpp.gch
 
@@ -470,7 +472,8 @@ run-test:
 	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
 		$(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
-	@gcovr --root="$(LIBRARY_DIR)/" --object-directory="$(BUILD_DIR)/" \
+	@gcovr --root="$(LIBRARY_DIR)/" \
+		--object-directory="$(BUILD_DIRECTORY_NAME)/test/" \
 		-e "$(LIBRARY_DIR)/newlib" \
 		-e "$(LIBRARY_DIR)/third_party" \
 		-e "$(LIBRARY_DIR)/L4_Testing" \

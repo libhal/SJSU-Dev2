@@ -9,9 +9,9 @@ matrix:
             - coveralls --gcov "$(pwd)/tools/clang+llvm-7.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/llvm-cov gcov"
               --include "library/L0_Platform"
               --include "library/L1_Peripheral"
-              --include "library/Utility"
               --include "library/L2_HAL"
               --include "library/L3_Application"
+              --include "library/utility"
             - sudo apt-get -y install doxygen graphviz
             - cd api/
             - doxygen sjsu-dev2-doxygen.conf
