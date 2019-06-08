@@ -26,4 +26,12 @@ DEFINE_FAKE_VALUE_FUNC(BaseType_t, xQueueGenericSend, QueueHandle_t,
                        const void *, TickType_t, BaseType_t);
 DEFINE_FAKE_VALUE_FUNC(BaseType_t, xQueueSemaphoreTake, QueueHandle_t,
                        TickType_t);
+
+DEFINE_FAKE_VALUE_FUNC(TimerHandle_t, xTimerCreateStatic, const char *,
+                       TickType_t, UBaseType_t, void *, TimerCallbackFunction_t,
+                       StaticTimer_t *);
+DEFINE_FAKE_VALUE_FUNC(BaseType_t, xTimerGenericCommand, TimerHandle_t,
+                       BaseType_t, TickType_t, BaseType_t *, TickType_t);
+DEFINE_FAKE_VALUE_FUNC(void *, pvTimerGetTimerID, TimerHandle_t);
+DEFINE_FAKE_VOID_FUNC(vTimerSetTimerID, TimerHandle_t, void *);
 #endif  // HOST_TEST

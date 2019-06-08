@@ -15,3 +15,19 @@ extern "C" void vApplicationGetIdleTaskMemory(  // NOLINT
   *ppx_idle_task_stack_buffer = idle_task_stack;
   *pul_idle_task_stack_size   = std::size(idle_task_stack);
 }
+// Implementation of vApplicationGetTimerTaskMemory is required for
+// the use of timers when configSUPPORT_STATIC_ALLOCATION == 1.
+// The function is called to statically create the FreeRTOS timer task
+// responsible for handling all created timers.
+// see: https://www.freertos.org/a00110.html#configSUPPORT_STATIC_ALLOCATION
+static StaticTask_t timer_task_tcb;
+static StackType_t timer_task_stack[configTIMER_TASK_STACK_DEPTH];
+extern "C" void vApplicationGetTimerTaskMemory( // NOLINT
+    StaticTask_t ** ppx_timer_task_tcb_buffer,
+    StackType_t ** ppx_timer_task_stack_buffer,
+    uint32_t * pul_timer_task_stack_size)
+{
+    *ppx_timer_task_tcb_buffer = &timer_task_tcb;
+    *ppx_timer_task_stack_buffer = timer_task_stack;
+    *pul_timer_task_stack_size = std::size(timer_task_stack);
+}

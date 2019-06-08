@@ -21,11 +21,8 @@ namespace sjsu
 {
 namespace rtos
 {
-
 TEST_CASE("Testing PeriodicTask", "[periodic_task]")
 {
-  using namespace rtos;  // NOLINT
-
   const char kTaskName[]           = "Test Periodic Task";
   constexpr Priority kTaskPriority = Priority::kLow;
 
@@ -51,7 +48,9 @@ TEST_CASE("Testing PeriodicTask", "[periodic_task]")
 
 TEST_CASE("Testing PeriodicScheduler", "[periodic_scheduler]")
 {
-  using namespace rtos;  // NOLINT
+  RESET_FAKE(xTimerCreateStatic);
+  RESET_FAKE(xTimerGenericCommand);
+  RESET_FAKE(vTimerSetTimerID);
 
   constexpr uint8_t kMaxTaskCount = PeriodicScheduler::kMaxTaskCount;
   constexpr PeriodicTaskFunction kTaskFunctions[] = {
@@ -70,8 +69,11 @@ TEST_CASE("Testing PeriodicScheduler", "[periodic_scheduler]")
   SECTION("Initialization")
   {
     PeriodicScheduler scheduler = PeriodicScheduler();
-    CHECK(scheduler.GetPriority() == Priority::kHigh);
-    CHECK(scheduler.GetDelayTime() == 1);
+    CHECK(scheduler.GetPriority() == Priority::kLow);
+    // A total of four timers should be created for each of the task frequencies
+    // with each timer set to its active state
+    CHECK(xTimerCreateStatic_fake.call_count == kMaxTaskCount);
+    CHECK(xTimerGenericCommand_fake.call_count == kMaxTaskCount);
   }
   SECTION("Setting and getting a task function")
   {
@@ -82,6 +84,7 @@ TEST_CASE("Testing PeriodicScheduler", "[periodic_scheduler]")
       PeriodicScheduler::Frequency frequency = PeriodicScheduler::Frequency(i);
       scheduler.SetTask(task, frequency);
       CHECK(scheduler.GetTask(frequency) == task);
+      CHECK(vTimerSetTimerID_fake.call_count == (i + 1));
     }
   }
 }

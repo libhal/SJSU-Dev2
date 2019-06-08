@@ -12,6 +12,7 @@
 
 #include "event_groups.h"
 #include "semphr.h"
+#include "timers.h"
 
 DECLARE_FAKE_VOID_FUNC(vTaskStartScheduler);
 DECLARE_FAKE_VOID_FUNC(vTaskSuspend, TaskHandle_t);
@@ -37,6 +38,14 @@ DECLARE_FAKE_VALUE_FUNC(BaseType_t, xQueueGenericSend, QueueHandle_t,
                         const void *, TickType_t, BaseType_t);
 DECLARE_FAKE_VALUE_FUNC(BaseType_t, xQueueSemaphoreTake, QueueHandle_t,
                         TickType_t);
+
+DECLARE_FAKE_VALUE_FUNC(TimerHandle_t, xTimerCreateStatic, const char *,
+                        TickType_t, UBaseType_t, void *,
+                        TimerCallbackFunction_t, StaticTimer_t *);
+DECLARE_FAKE_VALUE_FUNC(BaseType_t, xTimerGenericCommand, TimerHandle_t,
+                        BaseType_t, TickType_t, BaseType_t *, TickType_t);
+DECLARE_FAKE_VALUE_FUNC(void *, pvTimerGetTimerID, TimerHandle_t);
+DECLARE_FAKE_VOID_FUNC(vTimerSetTimerID, TimerHandle_t, void *);
 #endif  // HOST_TEST
 
 namespace sjsu
