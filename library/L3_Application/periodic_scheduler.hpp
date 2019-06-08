@@ -1,3 +1,4 @@
+
 // This file contains the PeriodicTask and PeriodicScheduler class that allows
 // task functions to be scheduled and executed at fixed frequencies of 1Hz,
 // 10Hz, 100Hz, and 1000Hz.
@@ -10,18 +11,19 @@
 //    {
 //      // do something...
 //    }
-//    sjsu::rtos::PeriodicScheduler scheduler =
-//        sjsu::rtos::PeriodicScheduler<512>();
-// sjsu::rtos::PeriodicTask<512> task_10Hz("Task10Hz",
-//                                         sjsu::rtos::Priority::kLow,
-//                                         TaskFunction10Hz);
-//    scheduler.SetTask(&task_10Hz,
-//    sjsu::rtos::PeriodicScheduler::Frequency::k10Hz);
-//    sjsu::rtos::TaskScheduler::Instance().Start();
+//    rtos::PeriodicScheduler scheduler = rtos::PeriodicScheduler<512>();
+//    rtos::PeriodicTask<512> task_10Hz("Task10Hz",
+//                                      rtos::Priority::kLow,
+//                                      TaskFunction10Hz);
+//    scheduler.SetTask(&task_10Hz, rtos::PeriodicScheduler::Frequency::k10Hz);
+//    rtos::TaskScheduler::Instance().Start();
 #pragma once
 
 #include "L3_Application/task.hpp"
+
 #include "semphr.h"
+#include "timers.h"
+
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 
@@ -30,9 +32,8 @@ namespace sjsu
 namespace rtos
 {
 /// Pointer to the function containing the code to be executed periodically.
-/// The functions should not containing any blocking code.
-/// eg. vTaskDelay() and vTaskDelayUntil() should not be used within the
-/// function.
+/// @note The function should not contain any blocking code. eg. vTaskDelay()
+///       and vTaskDelayUntil() should not be used within the function.
 ///
 /// @param count Number of times the task function has been run.
 using PeriodicTaskFunction = void (*)(uint32_t count);
@@ -44,14 +45,14 @@ class PeriodicTaskInterface
   virtual SemaphoreHandle_t GetPeriodicSemaphore()     = 0;
   virtual uint32_t GetRunCount()                       = 0;
 };
-
 /// @tparam kTaskStackSize Task stack size in bytes.
 template <size_t kTaskStackSize>
 class PeriodicTask : public Task<kTaskStackSize>,
                      public virtual PeriodicTaskInterface
 {
  public:
-  PeriodicTask(const char * name, Priority priority,
+  PeriodicTask(const char * name,
+               Priority priority,
                PeriodicTaskFunction task_function)
       : Task<kTaskStackSize>(name, priority), task_function_(task_function)
   {
@@ -75,7 +76,7 @@ class PeriodicTask : public Task<kTaskStackSize>,
     return task_function_;
   }
   /// @return Returns the periodic semaphore that is used by the
-  ///         PeriodicScheduler to manager the PeriodicTask
+  ///         PeriodicScheduler to manage the PeriodicTask
   SemaphoreHandle_t GetPeriodicSemaphore() override
   {
     return semaphore_;
@@ -88,11 +89,9 @@ class PeriodicTask : public Task<kTaskStackSize>,
 
  protected:
   PeriodicTaskFunction task_function_;
-  /// Pointer references to statically allocated buffer for each
-  /// semaphore in periodic_semaphores
   StaticSemaphore_t semaphore_buffer_;
-  /// Periodic semaphore used by the PeriodicScheduler to ensure the task that
-  /// doesnt overrun its allocated time.
+  /// A semaphore managed by the PeriodicScheduler to control when the task is
+  /// executed.
   SemaphoreHandle_t semaphore_;
   /// Number of times the task function has been executed.
   uint32_t run_count_;
@@ -113,32 +112,29 @@ class PeriodicScheduler final : public Task<512>
   static constexpr size_t kMaxTaskCount = util::Value(Frequency::kCount);
 
   PeriodicScheduler()
-      : Task("Periodic Scheduler", Priority::kHigh),
-        task_list_{ nullptr },
-        counters_{ 0 }
+      : Task("Periodic_Scheduler", Priority::kLow), task_list_{ nullptr }
   {
-    // The delay time should be 1 since the FreeRTOS tick rate is set to
-    // 1 tick = 1000Hz and 1000Hz is fastest rate for the PeriodicScheduler
-    SetDelayTime(1);
+    const uint32_t kPeriods[]  = { 1000, 100, 10, 1 };
+    const char * timer_names[] = { "Timer_1Hz", "Timer_10Hz", "Timer_100Hz",
+                                   "Timer_1000Hz" };
+    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+    {
+      timers_[i] =
+          xTimerCreateStatic(timer_names[i],
+                             kPeriods[i],          // timer period in ticks
+                             pdTRUE,               // auto-reload
+                             nullptr,              // pvTimerID
+                             HandlePeriodicTimer,  // pxCallbackFunction
+                             &(timer_buffers_[i]));
+      SJ2_ASSERT_FATAL(timers_[i] != nullptr,
+                       "Failed to create timer for: %s\n", timer_names[i]);
+      SJ2_ASSERT_FATAL(xTimerStart(timers_[i], 0) == pdPASS,
+                       "Failed to set timer into the active state for: %s\n",
+                       timer_names[i]);
+    }
   }
   bool Run() override
   {
-    // Since the FreeRTOS tick rate is set to 1000Hz, the 1000Hz task should be
-    // executed every 1 tick and the 100Hz, 10Hz, and 1Hz tasks would execute at
-    // 1/10th of the subsequent rates
-    if (HandlePeriodicSemaphore(Frequency::k1000Hz, 1))
-    {
-      if (HandlePeriodicSemaphore(Frequency::k100Hz, 10))
-      {
-        if (HandlePeriodicSemaphore(Frequency::k10Hz, 10))
-        {
-          if (HandlePeriodicSemaphore(Frequency::k1Hz, 10))
-          {
-            // NOLINT
-          }
-        }
-      }
-    }
     return true;
   }
   /// Adds a periodic task to the scheduler.
@@ -148,56 +144,34 @@ class PeriodicScheduler final : public Task<512>
   void SetTask(PeriodicTaskInterface * task, Frequency frequency)
   {
     task_list_[util::Value(frequency)] = task;
+    // Since HandlePeriodicTimer callback handles multiple timers, the pointer
+    // of the task is stored as the timer's pvTimerID in order to be able to
+    // identify which task should be handled in the HandlePeriodicTimer()
+    // function.
+    vTimerSetTimerID(timers_[util::Value(frequency)],
+                     static_cast<void *>(task));
   }
-  /// @return Returns the scheduled task for a specified frequency.
+  /// @return Returns the scheduled task for a specified frequency. If no task
+  ///         has been scheduled then a nullptr is returned.
   PeriodicTaskInterface * GetTask(Frequency frequency) const
   {
     return task_list_[util::Value(frequency)];
   }
 
  protected:
+  TimerHandle_t timers_[kMaxTaskCount];
+  StaticTimer_t timer_buffers_[kMaxTaskCount];
   /// Array containing the 1Hz, 10Hz, 100Hz, and 1000Hz tasks.
   PeriodicTaskInterface * task_list_[kMaxTaskCount];
-  /// Frequency counters used in HandlePeriodicSemaphore() to determine if a
-  /// semphore should be given for a task to be executed.
-  uint8_t counters_[kMaxTaskCount];
-  /// Handles semaphore of the specified periodic task function to ensure the
-  /// task does not overrun. Each time the function is invokes, the counter for
-  /// the respective frequecy in counters_ is incremented.
-  ///
-  /// When the counter matches the period it is reset, at this time, if there is
-  /// an existing scheduled task and the semaphore is taken before it can be
-  /// given, then the task has exceeded its allocated run-time; otherwise, the
-  /// semaphore is given to allow the task to be executed at the specified
-  /// frequency.
-  ///
-  /// @param frequency  Frequency at which the task executes.
-  /// @param period     Since the FreeRTOS frequency rate is set to 1000Hz,
-  ///                   period = 1 would be 1 RTOS tick.
-  /// @return           Returns true if the counters_[frequency] matches the
-  ///                   specified period.
-  bool HandlePeriodicSemaphore(Frequency frequency, uint8_t period)
+
+  static void HandlePeriodicTimer(TimerHandle_t timer)
   {
-    bool semaphore_given = false;
-    if (++counters_[util::Value(frequency)] == period)
+    PeriodicTaskInterface * task =
+        static_cast<PeriodicTaskInterface *>(pvTimerGetTimerID(timer));
+    if (task != nullptr)
     {
-      counters_[util::Value(frequency)] = 0;
-      PeriodicTaskInterface * task      = task_list_[util::Value(frequency)];
-      // do nothing if no task is scheduled for the specified frequency
-      if (task == nullptr)
-      {
-        return true;
-      }
-      SemaphoreHandle_t semaphore                = task->GetPeriodicSemaphore();
-      [[maybe_unused]] const char * task_names[] = { "1Hz", "10Hz", "100Hz",
-                                                     "1000Hz" };
-      SJ2_ASSERT_FATAL(xSemaphoreTake(semaphore, 0) == false,
-                       "Overrun occured for task with frequency: %s",
-                       task_names[util::Value(frequency)]);
-      semaphore_given = true;
-      xSemaphoreGive(semaphore);
+      xSemaphoreGive(task->GetPeriodicSemaphore());
     }
-    return semaphore_given;
   }
 };
 }  // namespace rtos
