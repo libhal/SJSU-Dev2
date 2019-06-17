@@ -11,7 +11,7 @@ TESTS += $(LIBRARY_DIR)/L0_Platform/lpc17xx/interrupt.cpp
 TESTS += $(LIBRARY_DIR)/L0_Platform/lpc17xx/test/interrupt_test.cpp
 TESTS += $(LIBRARY_DIR)/L0_Platform/lpc17xx/test/system_controller_test.cpp
 
-OPENOCD_CONFIG = $(LIBRARY_DIR)/L0_Platform/lpc40xx/sjone.cfg
+OPENOCD_CONFIG = $(LIBRARY_DIR)/L0_Platform/lpc17xx/lpc17xx.cfg
 
 $(eval $(call BUILD_LIRBARY,liblpc17xx,LIBRARY_LPC40XX))
 
