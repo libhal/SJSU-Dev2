@@ -15,8 +15,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class Timer final : public sjsu::Timer,
-                    protected sjsu::lpc40xx::SystemController
+class Timer final : public sjsu::Timer
 {
  public:
   enum RegisterChoice : uint8_t
@@ -32,7 +31,7 @@ class Timer final : public sjsu::Timer,
   struct ChannelPartial_t
   {
     LPC_TIM_TypeDef * timer_register;
-    PeripheralID power_id;
+    sjsu::SystemController::PeripheralID power_id;
     IRQn irq;
     IsrPointer * user_callback;
   };
@@ -55,7 +54,7 @@ class Timer final : public sjsu::Timer,
     inline static IsrPointer timer0_isr                 = nullptr;
     inline static const ChannelPartial_t kTimerPartial0 = {
       .timer_register = LPC_TIM0,
-      .power_id       = Peripherals::kTimer0,
+      .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer0,
       .irq            = IRQn::TIMER0_IRQn,
       .user_callback  = &timer0_isr,
     };
@@ -63,7 +62,7 @@ class Timer final : public sjsu::Timer,
     inline static IsrPointer timer1_isr                 = nullptr;
     inline static const ChannelPartial_t kTimerPartial1 = {
       .timer_register = LPC_TIM1,
-      .power_id       = Peripherals::kTimer1,
+      .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer1,
       .irq            = IRQn::TIMER1_IRQn,
       .user_callback  = &timer1_isr,
     };
@@ -71,7 +70,7 @@ class Timer final : public sjsu::Timer,
     inline static IsrPointer timer2_isr                 = nullptr;
     inline static const ChannelPartial_t kTimerPartial2 = {
       .timer_register = LPC_TIM2,
-      .power_id       = Peripherals::kTimer2,
+      .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer2,
       .irq            = IRQn::TIMER2_IRQn,
       .user_callback  = &timer2_isr,
     };
@@ -79,7 +78,7 @@ class Timer final : public sjsu::Timer,
     inline static IsrPointer timer3_isr                 = nullptr;
     inline static const ChannelPartial_t kTimerPartial3 = {
       .timer_register = LPC_TIM3,
-      .power_id       = Peripherals::kTimer3,
+      .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer3,
       .irq            = IRQn::TIMER3_IRQn,
       .user_callback  = &timer3_isr,
     };
@@ -116,7 +115,15 @@ class Timer final : public sjsu::Timer,
         (1 << kRegMR0) | (1 << kRegMR1) | (1 << kRegMR2) | (1 << kRegMR3);
   }
 
-  explicit constexpr Timer(const Channel_t & timer) : timer_(timer) {}
+  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
+      sjsu::lpc40xx::SystemController();
+
+  explicit constexpr Timer(const Channel_t & timer,
+                           const sjsu::SystemController & system_controller =
+                               kLpc40xxSystemController)
+      : timer_(timer), system_controller_(system_controller)
+  {
+  }
 
   /// @param frequency - the frequency that the timer register (TC) will
   ///        increment by. If set to 1000Hz, after 10 ms the TC
@@ -125,16 +132,18 @@ class Timer final : public sjsu::Timer,
   ///        method is achieved.
   /// @param priority - sets the Timer interrupt's priority level, defaults to
   ///        -1 which uses the platforms default priority.
-  Status Initialize(uint32_t frequency, IsrPointer isr = nullptr,
+  Status Initialize(uint32_t frequency,
+                    IsrPointer isr   = nullptr,
                     int32_t priority = -1) const override
   {
     constexpr uint32_t kClear = std::numeric_limits<uint32_t>::max();
-    PowerUpPeripheral(timer_.channel.power_id);
+    system_controller_.PowerUpPeripheral(timer_.channel.power_id);
     SJ2_ASSERT_FATAL(
         frequency != 0,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
     // Set Prescale register for Prescale Counter to milliseconds
-    uint32_t prescaler = GetPeripheralFrequency() / frequency;
+    uint32_t prescaler =
+        system_controller_.GetPeripheralFrequency() / frequency;
     timer_.channel.timer_register->PR &= ~(kClear << 1);
     timer_.channel.timer_register->PR |= (prescaler << 1);
     timer_.channel.timer_register->TCR |= (1 << 0);
@@ -153,7 +162,8 @@ class Timer final : public sjsu::Timer,
   /// @param match_register - which match register (from 0 to 3) should be used
   ///        for holding the ticks for the condition. Only the two least
   ///        significant bits are used for the LPC40xx.
-  void SetTimer(uint32_t ticks, TimerIsrCondition condition,
+  void SetTimer(uint32_t ticks,
+                TimerIsrCondition condition,
                 uint8_t match_register = 0) const override
   {
     SJ2_ASSERT_FATAL(match_register > 3,
@@ -180,6 +190,7 @@ class Timer final : public sjsu::Timer,
 
  private:
   const Channel_t & timer_;
+  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

@@ -10,15 +10,20 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
 {
   // Create local version of LPC_ADC
   LPC_ADC_TypeDef local_adc;
-  LPC_SC_TypeDef local_sc;
   // Clear local adc registers
   memset(&local_adc, 0, sizeof(local_adc));
-  memset(&local_sc, 0, sizeof(local_sc));
   // Set base registers to respective local variables to check
   // for any bit manipulations
   // Any manipulation will be directed to the respective local registers
-  Adc::adc_base                                      = &local_adc;
-  sjsu::lpc40xx::SystemController::system_controller = &local_sc;
+  Adc::adc_base = &local_adc;
+
+  // Set mock for sjsu::SystemController
+  constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
+  Mock<sjsu::SystemController> mock_system_controller;
+  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
+
   // Set mock for sjsu::Pin
   Mock<sjsu::Pin> mock_adc_pin;
   Fake(Method(mock_adc_pin, SetAsAnalogMode), Method(mock_adc_pin, SetMode),
@@ -30,7 +35,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
     .pin_function = 0b101,
   };
   // Create ports and pins to test and mock
-  Adc channel0_mock(kMockChannel1);
+  Adc channel0_mock(kMockChannel1, mock_system_controller.get());
 
   constexpr uint8_t kBurstBit = 16;
   SECTION("Initialization")
@@ -42,8 +47,12 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
     constexpr uint8_t kChannelClkDivBit   = 8;
 
     channel0_mock.Initialize();
-    CHECK(sjsu::lpc40xx::SystemController().IsPeripheralPoweredUp(
-        sjsu::lpc40xx::SystemController::Peripherals::kAdc));
+
+    Verify(Method(mock_system_controller, PowerUpPeripheral)
+               .Matching([](sjsu::SystemController::PeripheralID id) {
+                 return sjsu::lpc40xx::SystemController::Peripherals::kAdc
+                            .device_id == id.device_id;
+               }));
     Verify(
         Method(mock_adc_pin, SetPinFunction).Using(kMockChannel1.pin_function),
         Method(mock_adc_pin, SetMode).Using(sjsu::Pin::Mode::kInactive),
@@ -51,7 +60,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
 
     // Check if any bits in the clock divider are set given a frequency of
     uint32_t expected_frequency =
-        config::kSystemClockRate / Adc::kClockFrequency;
+        kDummySystemControllerClockFrequency / Adc::kClockFrequency;
     uint32_t actual_set_frequency =
         local_adc.CR >> kChannelClkDivBit & kChannelClkDivMask;
     CHECK(expected_frequency == actual_set_frequency);

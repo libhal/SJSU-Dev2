@@ -12,14 +12,15 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
 {
   // Creating local instances of register structures
   LPC_PWM_TypeDef local_pwm;
-  LPC_SC_TypeDef local_sc;
-
   // Setting local register structures to all zeros
   memset(&local_pwm, 0, sizeof(local_pwm));
-  memset(&local_sc, 0, sizeof(local_sc));
 
-  // Set system controller pointer to local register
-  sjsu::lpc40xx::SystemController::system_controller = &local_sc;
+  // Set mock for sjsu::SystemController
+  constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
+  Mock<sjsu::SystemController> mock_system_controller;
+  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   // Creating mock of Pin class
   Mock<sjsu::Pin> mock_pwm_pin;
@@ -40,7 +41,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
     .channel    = 1,
   };
 
-  Pwm test_pwm(mock_channel);
+  Pwm test_pwm(mock_channel, mock_system_controller.get());
 
   constexpr uint8_t kResetMr0                  = (1 << 1);
   constexpr uint8_t kCounterEnable             = (1 << 0);
@@ -52,10 +53,11 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
   SECTION("Initialization values")
   {
     test_pwm.Initialize();
-
-    sjsu::lpc40xx::SystemController system_controller;
-    CHECK(system_controller.IsPeripheralPoweredUp(
-        sjsu::lpc40xx::SystemController::Peripherals::kPwm0));
+    Verify(Method(mock_system_controller, PowerUpPeripheral)
+               .Matching([](sjsu::SystemController::PeripheralID id) {
+                 return sjsu::lpc40xx::SystemController::Peripherals::kPwm0
+                            .device_id == id.device_id;
+               }));
     CHECK((local_pwm.MCR & 0b11) == (kResetMr0 & 0b11));
     CHECK((local_pwm.TCR & 0b1111) == ((kCounterEnable | kPwmEnable) & 0b1111));
     CHECK((local_pwm.CTCR & 0b11) == (~kTimerMode & 0b11));
@@ -91,7 +93,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
   {
     test_pwm.SetDutyCycle(0.5f);
     test_pwm.SetFrequency(2000);
-    CHECK(config::kSystemClockRate / local_pwm.MR0 == 2000);
+    CHECK(kDummySystemControllerClockFrequency / local_pwm.MR0 == 2000);
     CHECK(test_pwm.GetFrequency() == 2000);
   }
 

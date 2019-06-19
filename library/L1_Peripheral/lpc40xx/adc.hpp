@@ -14,7 +14,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class Adc final : public sjsu::Adc, protected sjsu::lpc40xx::SystemController
+class Adc final : public sjsu::Adc
 {
  public:
   enum ControlBit : uint8_t
@@ -124,6 +124,9 @@ class Adc final : public sjsu::Adc, protected sjsu::lpc40xx::SystemController
     };
   };
 
+  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
+      sjsu::lpc40xx::SystemController();
+
   static volatile ControlRegister_t * GetControlRegister()
   {
     return reinterpret_cast<volatile ControlRegister_t *>(&adc_base->CR);
@@ -137,10 +140,16 @@ class Adc final : public sjsu::Adc, protected sjsu::lpc40xx::SystemController
     GetControlRegister()->bits.enable_burst = burst_mode_is_on;
   }
 
-  explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
+  explicit constexpr Adc(const Channel_t & channel,
+                         const sjsu::SystemController & system_controller =
+                             kLpc40xxSystemController)
+      : channel_(channel), system_controller_(system_controller)
+  {
+  }
   Status Initialize() const override
   {
-    PowerUpPeripheral(sjsu::lpc40xx::SystemController::Peripherals::kAdc);
+    system_controller_.PowerUpPeripheral(
+        sjsu::lpc40xx::SystemController::Peripherals::kAdc);
 
     channel_.adc_pin.SetPinFunction(channel_.pin_function);
     channel_.adc_pin.SetMode(sjsu::Pin::Mode::kInactive);
@@ -153,7 +162,7 @@ class Adc final : public sjsu::Adc, protected sjsu::lpc40xx::SystemController
         (control.bits.channel_enable | (1 << channel_.channel)) & 0xFF;
     control.bits.power_enable = true;
     control.bits.clock_divider =
-        (GetPeripheralFrequency() / kClockFrequency) & 0xFF;
+        (system_controller_.GetPeripheralFrequency() / kClockFrequency) & 0xFF;
 
     adc_base->CR = control.data;
 
@@ -188,6 +197,7 @@ class Adc final : public sjsu::Adc, protected sjsu::lpc40xx::SystemController
 
  private:
   const Channel_t & channel_;
+  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

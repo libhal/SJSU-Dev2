@@ -22,7 +22,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class I2c final : public sjsu::I2c, protected sjsu::lpc40xx::SystemController
+class I2c final : public sjsu::I2c
 {
  public:
   // Bringing in I2c Interface's Write and WriteThenRead methods that use
@@ -60,7 +60,7 @@ class I2c final : public sjsu::I2c, protected sjsu::lpc40xx::SystemController
   struct PartialBus_t
   {
     LPC_I2C_TypeDef * registers;
-    PeripheralID peripheral_power_id;
+    sjsu::SystemController::PeripheralID peripheral_power_id;
     IRQn_Type irq_number;
     Transaction_t & transaction;
     const sjsu::Pin & sda_pin;
@@ -305,8 +305,16 @@ class I2c final : public sjsu::I2c, protected sjsu::lpc40xx::SystemController
     i2c.registers->CONCLR = clear_mask;
   }
 
+  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
+      sjsu::lpc40xx::SystemController();
+
   // This defaults to I2C port 2
-  explicit constexpr I2c(const Bus_t & bus) : i2c_(bus) {}
+  explicit constexpr I2c(const Bus_t & bus,
+                         const sjsu::SystemController & system_controller =
+                             kLpc40xxSystemController)
+      : i2c_(bus), system_controller_(system_controller)
+  {
+  }
 
   Status Initialize() const override
   {
@@ -317,9 +325,10 @@ class I2c final : public sjsu::I2c, protected sjsu::lpc40xx::SystemController
     i2c_.bus.sda_pin.SetMode(sjsu::Pin::Mode::kInactive);
     i2c_.bus.scl_pin.SetMode(sjsu::Pin::Mode::kInactive);
 
-    PowerUpPeripheral(i2c_.bus.peripheral_power_id);
+    system_controller_.PowerUpPeripheral(i2c_.bus.peripheral_power_id);
 
-    float peripheral_frequency = static_cast<float>(GetPeripheralFrequency());
+    float peripheral_frequency =
+        static_cast<float>(system_controller_.GetPeripheralFrequency());
     float scll = ((peripheral_frequency / 75'000.0f) / 2.0f) * 0.7f;
     float sclh = ((peripheral_frequency / 75'000.0f) / 2.0f) * 1.3f;
 
@@ -335,7 +344,9 @@ class I2c final : public sjsu::I2c, protected sjsu::lpc40xx::SystemController
     return Status::kSuccess;
   }
 
-  Status Read(uint8_t address, uint8_t * data, size_t length,
+  Status Read(uint8_t address,
+              uint8_t * data,
+              size_t length,
               uint32_t timeout = kI2cTimeout) const override
   {
     i2c_.bus.transaction = { .timeout    = timeout,
@@ -354,7 +365,9 @@ class I2c final : public sjsu::I2c, protected sjsu::lpc40xx::SystemController
     return BlockUntilFinished();
   }
 
-  Status Write(uint8_t address, const uint8_t * data, size_t length,
+  Status Write(uint8_t address,
+               const uint8_t * data,
+               size_t length,
                uint32_t timeout = kI2cTimeout) const override
   {
     i2c_.bus.transaction = { .timeout    = timeout,
@@ -372,8 +385,10 @@ class I2c final : public sjsu::I2c, protected sjsu::lpc40xx::SystemController
     i2c_.bus.registers->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
-  Status WriteThenRead(uint8_t address, const uint8_t * transmit,
-                       size_t out_length, uint8_t * recieve,
+  Status WriteThenRead(uint8_t address,
+                       const uint8_t * transmit,
+                       size_t out_length,
+                       uint8_t * recieve,
                        size_t recieve_length,
                        uint32_t timeout = kI2cTimeout) const override
   {
@@ -439,6 +454,7 @@ class I2c final : public sjsu::I2c, protected sjsu::lpc40xx::SystemController
     return i2c_.bus.transaction.status;
   }
   const Bus_t & i2c_;
+  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu
