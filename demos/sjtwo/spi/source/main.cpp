@@ -23,15 +23,15 @@ int main()
   sjsu::lpc40xx::Spi spi2(sjsu::lpc40xx::Spi::Bus::kSpi2);
 
   // Set SSP1 as SPI master. Note that the function SetSpiMasterDefault()
-  // could be used instead of SetPeripheralMode() and SetClock().
+  // could be used instead of SetMode() and SetClock().
   LOG_INFO("Set SSP1 as SPI master.");
-  spi2.SetPeripheralMode(sjsu::lpc40xx::Spi::MasterSlaveMode::kMaster,
+  spi2.SetMode(sjsu::lpc40xx::Spi::MasterSlaveMode::kMaster,
                          sjsu::lpc40xx::Spi::DataSize::kEight);
 
   // Set up SPI clock polarity and phase
   LOG_INFO("MOSI will read low when inactive.");
   LOG_INFO("SCK will read high when inactive.");
-  spi2.SetClock(1, 1, 2, 0);
+  spi2.SetClock(1, 1, 1'000'000);
 
   // Initialize SSP
   LOG_INFO("SSP initialization");

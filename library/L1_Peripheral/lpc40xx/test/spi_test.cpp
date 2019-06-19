@@ -12,13 +12,15 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
 {
   // Simulate local version of LPC_SSP
   LPC_SSP_TypeDef local_ssp;
-  LPC_SC_TypeDef local_sc;
-
-  sjsu::lpc40xx::SystemController::system_controller = &local_sc;
-
   // Clear memory locations
   memset(&local_ssp, 0, sizeof(local_ssp));
-  memset(&local_sc, 0, sizeof(local_sc));
+
+  // Set mock for sjsu::SystemController
+  constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
+  Mock<sjsu::SystemController> mock_system_controller;
+  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   // Set up Mock for PinCongiure
   Mock<sjsu::Pin> mock_mosi;
@@ -39,14 +41,17 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
     .pin_function_id = 0b110,
   };
 
-  Spi test_spi(kMockSpi);
+  Spi test_spi(kMockSpi, mock_system_controller.get());
   test_spi.SetSpiMasterDefault();
   test_spi.Initialize();
 
   SECTION("Initialize")
   {
-    CHECK(sjsu::lpc40xx::SystemController().IsPeripheralPoweredUp(
-        sjsu::lpc40xx::SystemController::Peripherals::kSsp0));
+    Verify(Method(mock_system_controller, PowerUpPeripheral)
+               .Matching([](sjsu::SystemController::PeripheralID id) {
+                 return sjsu::lpc40xx::SystemController::Peripherals::kSsp0
+                            .device_id == id.device_id;
+               }));
 
     Verify(Method(mock_mosi, SetPinFunction).Using(kMockSpi.pin_function_id))
         .Once();
@@ -72,13 +77,12 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
 
   SECTION("Verify Clock Polarity and Prescaler")
   {
-    constexpr uint8_t kPolarityBit = 6;
-    constexpr uint8_t kPolarity    = 1;
-    constexpr uint8_t kPrescaler   = config::kSystemClockRateMhz;
+    constexpr uint8_t kPolarityMask = 1 << 6;
+    constexpr uint16_t kPrescaler =
+        kDummySystemControllerClockFrequency / 1'000'000;
 
-    CHECK(((local_ssp.CR0 & (0x1 << kPolarityBit)) >> kPolarityBit) ==
-          kPolarity);
-    CHECK(local_ssp.CPSR == kPrescaler);
+    CHECK((local_ssp.CR0 & kPolarityMask) == kPolarityMask);
+    CHECK(local_ssp.CPSR == (kPrescaler & 0xFF));
   }
 
   SECTION("Check Transfer Register")

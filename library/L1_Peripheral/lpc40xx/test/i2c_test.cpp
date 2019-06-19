@@ -16,11 +16,15 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   constexpr uint8_t kAddress = 0x33;
   // Create a local register
   LPC_I2C_TypeDef local_i2c;
-  LPC_SC_TypeDef local_sc;
   // Clear local i2c registers
   memset(&local_i2c, 0, sizeof(local_i2c));
-  memset(&local_sc, 0, sizeof(local_sc));
-  sjsu::lpc40xx::SystemController::system_controller = &local_sc;
+
+  // Set mock for sjsu::SystemController
+  constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
+  Mock<sjsu::SystemController> mock_system_controller;
+  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   Mock<sjsu::Pin> mock_sda_pin;
   Fake(Method(mock_sda_pin, SetPinFunction),
@@ -50,7 +54,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     .handler = I2c::I2cHandler<kMockI2cPartial>,
   };
 
-  I2c test_subject(kMockI2c);
+  I2c test_subject(kMockI2c, mock_system_controller.get());
 
   SECTION("Initialize")
   {
@@ -61,14 +65,18 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     test_subject.Initialize();
 
     constexpr float kScll =
-        ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 0.7f;
+        ((kDummySystemControllerClockFrequency / 75'000.0f) / 2.0f) * 0.7f;
     constexpr float kSclh =
-        ((config::kSystemClockRate / 75'000.0f) / 2.0f) * 1.3f;
+        ((kDummySystemControllerClockFrequency / 75'000.0f) / 2.0f) * 1.3f;
 
     constexpr uint32_t kLow  = static_cast<uint32_t>(kScll);
     constexpr uint32_t kHigh = static_cast<uint32_t>(kSclh);
-    CHECK(sjsu::lpc40xx::SystemController().IsPeripheralPoweredUp(
-        sjsu::lpc40xx::SystemController::Peripherals::kI2c0));
+
+    Verify(Method(mock_system_controller, PowerUpPeripheral)
+               .Matching([](sjsu::SystemController::PeripheralID id) {
+                 return sjsu::lpc40xx::SystemController::Peripherals::kI2c0
+                            .device_id == id.device_id;
+               }));
     CHECK(kLow == local_i2c.SCLL);
     CHECK(kHigh == local_i2c.SCLH);
     CHECK(local_i2c.CONCLR == kExpectedControlClear);

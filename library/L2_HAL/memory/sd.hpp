@@ -441,10 +441,10 @@ class Sd final : public SdInterface
     chip_select_.Set(Gpio::State::kHigh);
 
     LOG_DEBUG("Setting SSP Clock Speed...");
-    spi_.SetClock(false, false, 14, 2);  // 400kHz
+    spi_.SetClock(false, false, 400'000);
 
     LOG_DEBUG("Setting Peripheral Mode...");
-    spi_.SetPeripheralMode(Spi::MasterSlaveMode::kMaster,
+    spi_.SetMode(Spi::MasterSlaveMode::kMaster,
                            Spi::DataSize::kEight);
 
     LOG_DEBUG("Starting SSP Peripheral...");

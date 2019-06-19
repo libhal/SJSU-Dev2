@@ -128,10 +128,10 @@ class Ssd1306 final : public PixelDisplay
     cs_.Set(sjsu::Gpio::State::kHigh);
     dc_.Set(sjsu::Gpio::State::kHigh);
 
-    ssp_.SetPeripheralMode(sjsu::Spi::MasterSlaveMode::kMaster,
+    ssp_.SetMode(sjsu::Spi::MasterSlaveMode::kMaster,
                            sjsu::Spi::DataSize::kEight);
     // Set speed to 1Mhz by dividing by 1 * ClockFrequencyInMHz.
-    ssp_.SetClock(false, false, 1, config::kSystemClockRateMhz / 3);
+    ssp_.SetClock(false, false, 1'000'000);
     ssp_.Initialize();
 
     Clear();

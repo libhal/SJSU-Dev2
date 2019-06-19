@@ -155,26 +155,12 @@ class SystemController : public sjsu::SystemController
 
   uint32_t GetPeripheralClockDivider() const final override
   {
-    if constexpr (build::kTarget == build::Target::HostTest)
-    {
-      return 1;
-    }
-    else
-    {
-      return system_controller->PCLKSEL;
-    }
+    return system_controller->PCLKSEL;
   }
 
   uint32_t GetSystemFrequency() const final override
   {
-    if constexpr (build::kTarget == build::Target::HostTest)
-    {
-      return config::kSystemClockRate;
-    }
-    else
-    {
-      return speed_in_hertz;
-    }
+    return speed_in_hertz;
   }
 
   uint32_t GetPeripheralFrequency() const final override
@@ -210,7 +196,7 @@ class SystemController : public sjsu::SystemController
       const PeripheralID & peripheral_select) const final override
   {
     auto power_connection_without_enabled_peripheral =
-        system_controller->PCONP & (1 << peripheral_select.device_id);
+        system_controller->PCONP & ~(1 << peripheral_select.device_id);
 
     system_controller->PCONP = power_connection_without_enabled_peripheral;
   }

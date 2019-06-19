@@ -34,8 +34,9 @@ class Spi
 
   virtual Status Initialize() const                                         = 0;
   virtual uint16_t Transfer(uint16_t data) const                            = 0;
-  virtual void SetPeripheralMode(MasterSlaveMode mode, DataSize size) const = 0;
-  virtual void SetClock(bool positive_polarity, bool phase, uint8_t prescaler,
-                        uint8_t divider) const                              = 0;
+  virtual void SetMode(MasterSlaveMode mode, DataSize size) const = 0;
+  virtual void SetClock(bool positive_polarity,
+                        bool phase,
+                        uint32_t frequency) const                           = 0;
 };
 }  // namespace sjsu

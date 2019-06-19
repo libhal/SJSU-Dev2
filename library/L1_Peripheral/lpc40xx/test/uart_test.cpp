@@ -10,12 +10,14 @@ TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
 {
   // Simulated local version of LPC_UART2 to verify registers
   LPC_UART_TypeDef local_uart;
-  LPC_SC_TypeDef local_sc;
-
   memset(&local_uart, 0, sizeof(local_uart));
-  memset(&local_sc, 0, sizeof(local_sc));
 
-  sjsu::lpc40xx::SystemController::system_controller = &local_sc;
+  // Set mock for sjsu::SystemController
+  constexpr uint32_t kDummySystemControllerClockFrequency = 48'000'000;
+  Mock<sjsu::SystemController> mock_system_controller;
+  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   Mock<sjsu::Pin> mock_tx;
   Fake(Method(mock_tx, SetPinFunction));
@@ -36,7 +38,7 @@ TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
   };
   constexpr uint32_t kBaudRate = 9600;
 
-  Uart uart_test(kMockUart2);
+  Uart uart_test(kMockUart2, mock_system_controller.get());
   uart_test.Initialize(kBaudRate);
 
   SECTION("Initialize")
@@ -49,8 +51,11 @@ TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
     constexpr uint32_t kExpectedMul       = 2;
     constexpr uint32_t kExpectedFdr = (kExpectedMul << 4) | kExpectedDivAdd;
 
-    CHECK(sjsu::lpc40xx::SystemController().IsPeripheralPoweredUp(
-        sjsu::lpc40xx::SystemController::Peripherals::kUart2));
+    Verify(Method(mock_system_controller, PowerUpPeripheral)
+               .Matching([](sjsu::SystemController::PeripheralID id) {
+                 return sjsu::lpc40xx::SystemController::Peripherals::kUart2
+                            .device_id == id.device_id;
+               }));
 
     Verify(Method(mock_tx, SetMode).Using(sjsu::Pin::Mode::kPullUp)).Once();
     Verify(Method(mock_tx, SetPinFunction).Using(kMockUart2.tx_function_id))

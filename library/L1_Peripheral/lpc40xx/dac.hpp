@@ -12,7 +12,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class Dac final : public sjsu::Dac, protected sjsu::lpc40xx::SystemController
+class Dac final : public sjsu::Dac
 {
  public:
   enum Bit : uint8_t
@@ -37,7 +37,7 @@ class Dac final : public sjsu::Dac, protected sjsu::lpc40xx::SystemController
   };
 
   static constexpr sjsu::lpc40xx::Pin kDacPin = Pin::CreatePin<0, 26>();
-  static constexpr float kVref = 3.3f;
+  static constexpr float kVref                = 3.3f;
 
   inline static LPC_DAC_TypeDef * dac_register = LPC_DAC;
 
@@ -48,8 +48,11 @@ class Dac final : public sjsu::Dac, protected sjsu::lpc40xx::SystemController
   {
     static constexpr uint8_t kDacMode = 0b010;
     dac_pin_.SetPinFunction(kDacMode);
-    // Temporally convert
-    reinterpret_cast<const Pin *>(&dac_pin_)->EnableDac();
+    // Temporally convert dac_pin to a lpc40xx::Pin so we can use the
+    // EnableDacs() method featured in the LPC40xx pin object.
+    const sjsu::lpc40xx::Pin & lpc40xx_dac_pin =
+        reinterpret_cast<const sjsu::lpc40xx::Pin &>(dac_pin_);
+    lpc40xx_dac_pin.EnableDac();
     dac_pin_.SetAsAnalogMode();
     dac_pin_.SetMode(Pin::Mode::kInactive);
     // Disable interrupt and DMA

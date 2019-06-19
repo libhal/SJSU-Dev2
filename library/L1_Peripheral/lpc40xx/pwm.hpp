@@ -22,7 +22,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
+class Pwm final : public sjsu::Pwm
 {
  public:
   union [[gnu::packed]] OutputControlRegister_t {
@@ -82,7 +82,7 @@ class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
   struct Peripheral_t
   {
     LPC_PWM_TypeDef * registers;
-    PeripheralID power_on_id;
+    sjsu::SystemController::PeripheralID power_on_id;
     uint8_t pin_function_id : 3;
   };
 
@@ -98,7 +98,7 @@ class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
    private:
     inline static const Peripheral_t kPwm1PeripheralCommon = {
       .registers       = LPC_PWM1,
-      .power_on_id     = Peripherals::kPwm1,
+      .power_on_id     = sjsu::lpc40xx::SystemController::Peripherals::kPwm1,
       .pin_function_id = 0b001,
     };
 
@@ -147,7 +147,15 @@ class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
     };
   };
 
-  explicit constexpr Pwm(const Channel_t & channel) : channel_(channel) {}
+  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
+      sjsu::lpc40xx::SystemController();
+
+  explicit constexpr Pwm(const Channel_t & channel,
+                         const sjsu::SystemController & system_controller =
+                             kLpc40xxSystemController)
+      : channel_(channel), system_controller_(system_controller)
+  {
+  }
 
   /// @param frequency_hz - Pulse width modulation frequency
   Status Initialize(uint32_t frequency_hz = kDefaultFrequency) const override
@@ -155,7 +163,7 @@ class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");
 
-    PowerUpPeripheral(channel_.peripheral.power_on_id);
+    system_controller_.PowerUpPeripheral(channel_.peripheral.power_on_id);
     // Set prescalar to 1 so the input frequency to the PWM peripheral is equal
     // to the peripheral clock frequency.
     //
@@ -172,7 +180,7 @@ class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
     // Match register 0 is used to generate the desired frequency. If the time
     // counter TC is equal to MR0
     channel_.peripheral.registers->MR0 =
-        GetPeripheralFrequency() / frequency_hz;
+        system_controller_.GetPeripheralFrequency() / frequency_hz;
     // Sets match register 0 to reset when TC and Match 0 match each other,
     // meaning that the PWM pulse will cycle continuously.
     GetMatchControlRegister()->bits.pwm0.reset = 1;
@@ -213,7 +221,7 @@ class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
     float previous_duty_cycle = GetDutyCycle();
     EnablePwm(false);
     channel_.peripheral.registers->MR0 =
-        GetPeripheralFrequency() / frequency_hz;
+        system_controller_.GetPeripheralFrequency() / frequency_hz;
     SetDutyCycle(previous_duty_cycle);
     EnablePwm();
   }
@@ -224,7 +232,7 @@ class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
     uint32_t result          = 0;
     if (match_register0 != 0)
     {
-      result = GetPeripheralFrequency() / match_register0;
+      result = system_controller_.GetPeripheralFrequency() / match_register0;
     }
     return result;
   }
@@ -285,6 +293,7 @@ class Pwm final : public sjsu::Pwm, protected sjsu::lpc40xx::SystemController
 
  private:
   const Channel_t & channel_;
+  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

@@ -55,7 +55,7 @@ sjsu::lpc17xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
 sjsu::cortex::DwtCounter arm_dwt_counter;
 // Uart port 0 is used to communicate back to the host computer
-sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0);
+sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0, system_controller);
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
 sjsu::cortex::SystemTimer system_timer(system_controller);

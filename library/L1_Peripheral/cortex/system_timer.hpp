@@ -38,13 +38,8 @@ class SystemTimer final : public sjsu::SystemTimer
   /// frequency of the SystemTimer is set to 1kHz, this could be used as a
   /// milliseconds counter.
   inline static uint64_t counter = 0;
-  // If the user does not specify a system controller, the default system
-  // controller will be used. The default system controller does not modify
-  // hardware. It only returns the project's desired system clock rate.
-  inline static DefaultSystemController default_system_controller;
 
-  explicit SystemTimer(
-      const SystemController & system_controller = default_system_controller)
+  explicit SystemTimer(const SystemController & system_controller)
       : system_controller_(system_controller)
   {
   }

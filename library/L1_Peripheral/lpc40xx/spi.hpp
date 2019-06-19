@@ -10,7 +10,7 @@
 ///
 ///     1. Constructor (create object)
 ///     2. SetClock(...)
-///     3. SetPeripheralMode(...)
+///     3. SetMode(...)
 ///     4. Initialize()
 ///
 /// Note that all register modifications must be made before the SSP
@@ -33,7 +33,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
+class Spi final : public sjsu::Spi
 {
  public:
   enum RegisterBitPositions : uint8_t
@@ -69,7 +69,7 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
   struct Bus_t
   {
     LPC_SSP_TypeDef * registers;
-    PeripheralID power_on_bit;
+    sjsu::lpc40xx::SystemController::PeripheralID power_on_bit;
     const sjsu::Pin & mosi;
     const sjsu::Pin & miso;
     const sjsu::Pin & sck;
@@ -104,7 +104,7 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
    public:
     inline static const Bus_t kSpi0 = {
       .registers       = LPC_SSP0,
-      .power_on_bit    = Peripherals::kSsp0,
+      .power_on_bit    = sjsu::lpc40xx::SystemController::Peripherals::kSsp0,
       .mosi            = kMosi0,
       .miso            = kMiso0,
       .sck             = kSck0,
@@ -112,7 +112,7 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
     };
     inline static const Bus_t kSpi1 = {
       .registers       = LPC_SSP1,
-      .power_on_bit    = Peripherals::kSsp1,
+      .power_on_bit    = sjsu::lpc40xx::SystemController::Peripherals::kSsp1,
       .mosi            = kMosi1,
       .miso            = kMiso1,
       .sck             = kSck1,
@@ -120,7 +120,7 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
     };
     inline static const Bus_t kSpi2 = {
       .registers       = LPC_SSP2,
-      .power_on_bit    = Peripherals::kSsp2,
+      .power_on_bit    = sjsu::lpc40xx::SystemController::Peripherals::kSsp2,
       .mosi            = kMosi2,
       .miso            = kMiso2,
       .sck             = kSck2,
@@ -128,7 +128,15 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
     };
   };
 
-  explicit constexpr Spi(const Bus_t & bus) : bus_(bus) {}
+  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
+      sjsu::lpc40xx::SystemController();
+
+  explicit constexpr Spi(const Bus_t & bus,
+                         const sjsu::SystemController & system_controller =
+                             kLpc40xxSystemController)
+      : bus_(bus), system_controller_(system_controller)
+  {
+  }
 
   /// This METHOD MUST BE EXECUTED before any other method can be called.
   /// Powers on the peripheral, activates the SSP pins and enables the SSP
@@ -137,7 +145,7 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
   Status Initialize() const override
   {
     // Power up peripheral
-    PowerUpPeripheral(bus_.power_on_bit);
+    system_controller_.PowerUpPeripheral(bus_.power_on_bit);
     // Enable SSP pins
     bus_.mosi.SetPinFunction(bus_.pin_function_id);
     bus_.miso.SetPinFunction(bus_.pin_function_id);
@@ -152,13 +160,12 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
   /// rate at 1Mhz.
   void SetSpiMasterDefault() const
   {
-    constexpr bool kHighPolarity  = 1;
-    constexpr bool kPhase0        = 0;
-    constexpr uint8_t kScrDivider = 0;
-    constexpr uint8_t kPrescaler  = SJ2_SYSTEM_CLOCK_RATE_MHZ;
+    constexpr bool kHighPolarity         = 1;
+    constexpr bool kPhase0               = 0;
+    constexpr uint32_t kDefaultFrequency = 1'000'000;
 
-    SetPeripheralMode(MasterSlaveMode::kMaster, DataSize::kEight);
-    SetClock(kHighPolarity, kPhase0, kScrDivider, kPrescaler);
+    SetMode(MasterSlaveMode::kMaster, DataSize::kEight);
+    SetClock(kHighPolarity, kPhase0, kDefaultFrequency);
   }
 
   /// Checks if the SSP controller is idle.
@@ -189,7 +196,7 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
   /// @param mode - master or slave mode
   /// @param frame - format for Peripheral data to use
   /// @param size - number of bits per frame
-  void SetPeripheralMode(MasterSlaveMode mode, DataSize size) const override
+  void SetMode(MasterSlaveMode mode, DataSize size) const override
   {
     bus_.registers->CR0 =
         bit::Insert(bus_.registers->CR0, util::Value(size), kDataBit, 4);
@@ -199,24 +206,27 @@ class Spi final : public sjsu::Spi, protected sjsu::lpc40xx::SystemController
   }
 
   /// Sets the clock rate for the Peripheral
-  /// @param polarity - maintain bus on clock 0=low or 1=high between frames
-  /// @param phase - capture serial data on 0=first or 1=second clock cycle
-  /// @param divider - see notes in SSP_Interface above
-  /// @param prescaler - divides the PCLK, must be even value between 2-254
-  void SetClock(bool polarity, bool phase, uint8_t divider,
-                uint8_t prescaler) const override
+  /// @param polarity  - maintain bus on clock 0=low or 1=high between frames
+  /// @param phase     - capture serial data on 0=first or 1=second clock cycle
+  /// @param frequency - serial clock rate
+  void SetClock(bool polarity, bool phase, uint32_t frequency) const override
   {
     // first clear the appropriate registers
     bus_.registers->CR0 =
         bit::Insert(bus_.registers->CR0, polarity, kPolarityBit, 1);
     bus_.registers->CR0 = bit::Insert(bus_.registers->CR0, phase, kPhaseBit, 1);
+
+    uint16_t prescaler = static_cast<uint8_t>(
+        system_controller_.GetPeripheralFrequency() / frequency);
+
     bus_.registers->CR0 =
-        bit::Insert(bus_.registers->CR0, divider, kDividerBit, 8);
-    bus_.registers->CPSR = prescaler;
+        bit::Insert(bus_.registers->CR0, prescaler >> 8, kDividerBit, 8);
+    bus_.registers->CPSR = prescaler & 0xFF;
   }
 
  private:
   const Bus_t & bus_;
+  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu
