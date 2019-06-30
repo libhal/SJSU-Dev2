@@ -23,6 +23,8 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   // Set up Mock for PinCongiure
   Mock<sjsu::Pin> mock_mosi;

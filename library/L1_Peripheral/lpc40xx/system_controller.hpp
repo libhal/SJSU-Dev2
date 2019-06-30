@@ -168,19 +168,19 @@ class SystemController final : public sjsu::SystemController
       speed_in_hertz = kDefaultIRCFrequency;
     }
     SetCpuClockDivider(1);
-    SetPeripheralClockDivider(1);
+    SetPeripheralClockDivider({}, 1);
     SetEmcClockDivider(EmcDivider::kSameSpeedAsCpu);
     return offset;
   }
 
   void SetPeripheralClockDivider(
-      uint8_t peripheral_divider) const override
+      const PeripheralID &, uint8_t peripheral_divider) const override
   {
     SJ2_ASSERT_FATAL(peripheral_divider <= 4, "Divider mustn't exceed 32");
     system_controller->PCLKSEL = peripheral_divider;
   }
 
-  uint32_t GetPeripheralClockDivider() const override
+  uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
   {
     return system_controller->PCLKSEL;
   }

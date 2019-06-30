@@ -140,8 +140,10 @@ class Adc final : public sjsu::Adc
     channel_.adc_pin.SetPull(sjsu::Pin::Resistor::kNone);
     channel_.adc_pin.SetAsAnalogMode(true);
 
-    uint32_t clock_divider =
-        system_controller_.GetPeripheralFrequency() / kClockFrequency;
+    const uint32_t kPeripheralFrequency =
+        system_controller_.GetPeripheralFrequency(
+            sjsu::lpc40xx::SystemController::Peripherals::kAdc);
+    uint32_t clock_divider = kPeripheralFrequency / kClockFrequency;
 
     uint32_t control = adc_base->CR;
 

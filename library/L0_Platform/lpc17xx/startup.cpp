@@ -99,17 +99,10 @@ SJ2_WEAK(void InitializePlatform());
 
 void InitializePlatform()
 {
-  while (system_controller.SetSystemClockFrequency(
-             config::kSystemClockRateMhz) != 0)
-  {
-    // Continually attempt to set the clock frequency to the desired until the
-    // delta between desired and actual are 0.
-    continue;
-  }
-  // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
-  // fed to all peripherals will be 48Mhz.
-  system_controller.SetPeripheralClockDivider(1);
+  system_controller.SetSystemClockFrequency(config::kSystemClockRateMhz);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
+  system_controller.SetPeripheralClockDivider(
+      sjsu::lpc17xx::SystemController::Peripherals::kUart0, 1);
   uart0.Initialize(config::kBaudRate);
 
   sjsu::newlib::SetStdout(Lpc17xxStdOut);

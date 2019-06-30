@@ -242,7 +242,8 @@ class Spi final : public sjsu::Spi
         bus_.registers->CR0, read_miso_on_rising, ControlRegister0::kPhaseBit);
 
     uint16_t prescaler = static_cast<uint16_t>(
-        system_controller_.GetPeripheralFrequency() / frequency);
+        system_controller_.GetPeripheralFrequency(bus_.power_on_bit) /
+        frequency);
     // Store lower half of precalar in clock prescalar register
     bus_.registers->CPSR = prescaler & 0xFF;
     // Store upper 8 bit half of the prescalar in control register 0
