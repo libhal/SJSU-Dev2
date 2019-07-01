@@ -3,6 +3,7 @@ SYSTEM_INCLUDES +=
 SOURCES +=
 
 TESTS += $(LIBRARY_DIR)/L2_HAL/test/device_memory_map_test.cpp
+TESTS += $(LIBRARY_DIR)/L2_HAL/test/example_test.cpp
 
 TESTS += $(LIBRARY_DIR)/L2_HAL/audio/test/buzzer_test.cpp
 

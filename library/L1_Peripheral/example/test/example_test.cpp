@@ -12,10 +12,10 @@ TEST_CASE("Testing L1 example::Example", "[l1-example]")
 {
   // Create mocked versions of the sjsu::Pin
   Mock<sjsu::Pin> mock_pin_data;
-  Method(mock_pin_data, SetPinFunction);
+  Fake(Method(mock_pin_data, SetPinFunction));
 
   Mock<sjsu::Pin> mock_pin_clock;
-  Method(mock_pin_clock, SetPinFunction);
+  Fake(Method(mock_pin_clock, SetPinFunction));
 
   // Create a version of the local_iocon
   LPC_IOCON_TypeDef local_iocon;
@@ -34,6 +34,7 @@ TEST_CASE("Testing L1 example::Example", "[l1-example]")
   {
     // Test that the initialize() method actually called the SetPinFunction with
     // the appropriate values
+    test_subject.Initialize();
     Verify(Method(mock_pin_data, SetPinFunction)
                .Using(dependency_injection.data_pin_function));
     Verify(Method(mock_pin_clock, SetPinFunction)

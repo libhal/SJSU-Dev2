@@ -107,11 +107,18 @@ class Example final : public sjsu::Example
   }
   bool Write(const uint8_t * data, size_t length) const override
   {
+    // This is a trick to make the compiler think we used these variables.
+    // Only using this for an example. Otherwise, use the [[maybe_unused]]
+    // attribute.
     (void)data;
     (void)length;
+    return true;
   }
   Status Read(uint8_t * data, size_t length, uint32_t timeout) const override
   {
+    // This is a trick to make the compiler think we used these variables.
+    // Only using this for an example. Otherwise, use the [[maybe_unused]]
+    // attribute.
     (void)data;
     (void)length;
     (void)timeout;
