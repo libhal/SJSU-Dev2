@@ -15,7 +15,7 @@
 #define NVIC_EnableIRQ NVIC_EnableIRQ_original
 #define NVIC_DisableIRQ NVIC_DisableIRQ_original
 #define NVIC_SetPriority NVIC_SetPriority_original
-#endif  // defined HOST_TEST
+#endif  // defined HostTest
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "utility/macros.hpp"
@@ -30,7 +30,7 @@ using sjsu::lpc40xx::IRQn_Type;
 DECLARE_FAKE_VOID_FUNC(NVIC_EnableIRQ, IRQn_Type);
 DECLARE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
 DECLARE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
-#endif  // defined HOST_TEST
+#endif  // defined HostTest
 extern IsrPointer dynamic_isr_vector_table[];
 
 namespace sjsu
