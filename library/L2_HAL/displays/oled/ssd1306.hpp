@@ -27,8 +27,8 @@ class Ssd1306 final : public PixelDisplay
     kData    = 1
   };
 
-  constexpr Ssd1306(sjsu::Spi & ssp, sjsu::Gpio & cs, sjsu::Gpio & dc)
-      : ssp_(ssp), cs_(cs), dc_(dc), bitmap_{}
+  constexpr Ssd1306(sjsu::Spi & spi, sjsu::Gpio & cs, sjsu::Gpio & dc)
+      : spi_(spi), cs_(cs), dc_(dc), bitmap_{}
   {
   }
 
@@ -61,9 +61,24 @@ class Ssd1306 final : public PixelDisplay
       {
         LOG_DEBUG("send = 0x%X", send);
       }
-      ssp_.Transfer(send);
+      spi_.Transfer(send);
     }
     cs_.Set(sjsu::Gpio::State::kHigh);
+  }
+
+  void Initialize() override
+  {
+    cs_.SetDirection(sjsu::Gpio::Direction::kOutput);
+    dc_.SetDirection(sjsu::Gpio::Direction::kOutput);
+    cs_.Set(sjsu::Gpio::State::kHigh);
+    dc_.Set(sjsu::Gpio::State::kHigh);
+
+    spi_.Initialize();
+    spi_.SetDataSize(sjsu::Spi::DataSize::kEight);
+    spi_.SetClock(100'000);
+
+    Clear();
+    InitializationPanel();
   }
 
   void InitializationPanel()
@@ -119,23 +134,6 @@ class Ssd1306 final : public PixelDisplay
 
     // Set Display On
     Write(0xAF, Transaction::kCommand);
-  }
-
-  void Initialize() override
-  {
-    cs_.SetDirection(sjsu::Gpio::Direction::kOutput);
-    dc_.SetDirection(sjsu::Gpio::Direction::kOutput);
-    cs_.Set(sjsu::Gpio::State::kHigh);
-    dc_.Set(sjsu::Gpio::State::kHigh);
-
-    ssp_.SetMode(sjsu::Spi::MasterSlaveMode::kMaster,
-                           sjsu::Spi::DataSize::kEight);
-    // Set speed to 1Mhz by dividing by 1 * ClockFrequencyInMHz.
-    ssp_.SetClock(false, false, 1'000'000);
-    ssp_.Initialize();
-
-    Clear();
-    InitializationPanel();
   }
 
   void SetHorizontalAddressMode()
@@ -203,7 +201,7 @@ class Ssd1306 final : public PixelDisplay
   }
 
  private:
-  sjsu::Spi & ssp_;
+  sjsu::Spi & spi_;
   sjsu::Gpio & cs_;
   sjsu::Gpio & dc_;
 

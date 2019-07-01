@@ -12,6 +12,7 @@ int main()
   sjsu::lpc40xx::Gpio dc_gpio(1, 25);
 
   sjsu::Ssd1306 oled_display(ssp1, cs_gpio, dc_gpio);
+  oled_display.Initialize();
   sjsu::Graphics graphics(&oled_display);
   LOG_INFO("Starting OLED Hardware Test in 5s...");
   sjsu::Delay(5000);

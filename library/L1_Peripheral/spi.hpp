@@ -32,11 +32,11 @@ class Spi
     kSixteen,  // The largest standard frame sized allowed for SJSU-Dev2
   };
 
-  virtual Status Initialize() const                                         = 0;
-  virtual uint16_t Transfer(uint16_t data) const                            = 0;
-  virtual void SetMode(MasterSlaveMode mode, DataSize size) const = 0;
-  virtual void SetClock(bool positive_polarity,
-                        bool phase,
-                        uint32_t frequency) const                           = 0;
+  virtual Status Initialize() const                             = 0;
+  virtual uint16_t Transfer(uint16_t data) const                = 0;
+  virtual void SetDataSize(DataSize size) const                 = 0;
+  virtual void SetClock(uint32_t frequency,
+                        bool positive_clock_on_idle = false,
+                        bool read_miso_on_rising    = false) const = 0;
 };
 }  // namespace sjsu

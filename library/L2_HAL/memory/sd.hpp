@@ -251,11 +251,14 @@ class SdInterface
   ///                                       receiving response
   /// @returns         on success: the number of bytes given in the response
   ///                  on failure: -1
-  virtual uint32_t SendCmd(Command sdc, uint32_t arg, uint8_t response_buffer[],
-                           uint32_t delay, KeepAlive keep_alive) = 0;
+  virtual uint32_t SendCmd(Command sdc,
+                           uint32_t arg,
+                           uint8_t response_buffer[],
+                           uint32_t delay,
+                           KeepAlive keep_alive) = 0;
 
   /// @description     initializes all required hardware constructs to talk
-  ///                  to the SD Card via SPI/SSP
+  ///                  to the SD Card via SPI/SPI
   virtual void Initialize() = 0;
 
   /// @description     runs the SD Card initialization sequence, effectively
@@ -307,7 +310,8 @@ class SdInterface
   ///                               the official SD documentation
   ///                               for details on what these
   ///                               flags mean.
-  virtual uint8_t ReadBlock(uint32_t address, uint8_t * array,
+  virtual uint8_t ReadBlock(uint32_t address,
+                            uint8_t * array,
                             uint32_t blocks = 1) = 0;
 
   /// @description     writes any number of 512-byte blocks to the SD Card
@@ -349,7 +353,8 @@ class SdInterface
   ///                               the official SD documentation
   ///                               for details on what these
   ///                               flags mean.
-  virtual uint8_t WriteBlock(uint32_t address, const uint8_t * array,
+  virtual uint8_t WriteBlock(uint32_t address,
+                             const uint8_t * array,
                              uint32_t blocks = 1) = 0;
 
   /// @description     Deletes any number of 512-byte blocks from the SD Card
@@ -428,8 +433,7 @@ class Sd final : public SdInterface
       GenerateCrc16Table();
 
   explicit constexpr Sd(const Spi & spi, const Gpio & chip_select)
-      : spi_(spi),
-        chip_select_(chip_select)
+      : spi_(spi), chip_select_(chip_select)
   {
   }
 
@@ -440,15 +444,13 @@ class Sd final : public SdInterface
     chip_select_.SetDirection(Gpio::Direction::kOutput);
     chip_select_.Set(Gpio::State::kHigh);
 
-    LOG_DEBUG("Setting SSP Clock Speed...");
-    spi_.SetClock(false, false, 400'000);
-
-    LOG_DEBUG("Setting Peripheral Mode...");
-    spi_.SetMode(Spi::MasterSlaveMode::kMaster,
-                           Spi::DataSize::kEight);
-
-    LOG_DEBUG("Starting SSP Peripheral...");
+    LOG_DEBUG("Initializing SPI Clock Speed...");
     spi_.Initialize();
+    LOG_DEBUG("Setting SPI Clock Speed...");
+    spi_.SetClock(1'000'000);
+    LOG_DEBUG("Setting Peripheral Mode...");
+    spi_.SetDataSize(Spi::DataSize::kEight);
+    LOG_DEBUG("Starting SPI Peripheral...");
   }
 
   // Initialize SD Card
@@ -644,7 +646,8 @@ class Sd final : public SdInterface
   }
 
   // Read any number of blocks from the SD card
-  uint8_t ReadBlock(uint32_t address, uint8_t * array,
+  uint8_t ReadBlock(uint32_t address,
+                    uint8_t * array,
                     uint32_t blocks = 1) override
   {
     LOG_DEBUG("Block %" PRId32 " :: 0x%" PRIX32 " for %" PRId32 " blocks",
@@ -776,7 +779,8 @@ class Sd final : public SdInterface
   }
 
   // Writes any number of 512-byte blocks to the SD Card
-  uint8_t WriteBlock(uint32_t address, const uint8_t * array,
+  uint8_t WriteBlock(uint32_t address,
+                     const uint8_t * array,
                      uint32_t blocks = 1) override
   {
     // Wait for a previous command to finish
@@ -951,8 +955,11 @@ class Sd final : public SdInterface
   }
 
   // Send a command
-  uint32_t SendCmd(Command sdc, uint32_t arg, uint8_t response_buffer[],
-                   uint32_t delay, KeepAlive keep_alive) override
+  uint32_t SendCmd(Command sdc,
+                   uint32_t arg,
+                   uint8_t response_buffer[],
+                   uint32_t delay,
+                   KeepAlive keep_alive) override
   {
     ResponseType res_type;
     uint8_t res_len    = 0;
@@ -1126,7 +1133,7 @@ class Sd final : public SdInterface
   }
 
  private:
-  /// @description     the object reference to use when using SSP/SPI
+  /// @description     the object reference to use when using SPI/SPI
   const Spi & spi_;
   /// @description     the object reference to use when using CS (GPIO)
   const Gpio & chip_select_;

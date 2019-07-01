@@ -42,7 +42,7 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
   };
 
   Spi test_spi(kMockSpi, mock_system_controller.get());
-  test_spi.SetSpiMasterDefault();
+  test_spi.SetSpiDefault();
   test_spi.Initialize();
 
   SECTION("Initialize")
@@ -72,12 +72,12 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
     CHECK((local_ssp.CR1 & (0x1 << kMasterBit)) ==
           util::Value(Spi::MasterSlaveMode::kMaster));
     CHECK((local_ssp.CR0 & (0xF << kDataBit)) ==
-          util::Value(Spi::DataSize::kEight));
+          util::Value(Spi::DataSize::kEight) + 3);
   }
 
   SECTION("Verify Clock Polarity and Prescaler")
   {
-    constexpr uint8_t kPolarityMask = 1 << 6;
+    constexpr uint8_t kPolarityMask = 0 << 6;
     constexpr uint16_t kPrescaler =
         kDummySystemControllerClockFrequency / 1'000'000;
 

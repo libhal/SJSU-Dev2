@@ -144,28 +144,36 @@ class Spi final : public sjsu::Spi
   /// See page 601 of user manual UM10562 LPC408x/407x for more details.
   Status Initialize() const override
   {
+    constexpr uint8_t kSpiFormatCode  = 0b00;
+    constexpr uint8_t kMasterModeCode = 0b0;
+
     // Power up peripheral
     system_controller_.PowerUpPeripheral(bus_.power_on_bit);
     // Enable SSP pins
     bus_.mosi.SetPinFunction(bus_.pin_function_id);
     bus_.miso.SetPinFunction(bus_.pin_function_id);
     bus_.sck.SetPinFunction(bus_.pin_function_id);
+    // Set SSP frame format to SPI
+    bus_.registers->CR0 =
+        bit::Insert(bus_.registers->CR0, kSpiFormatCode, kFrameBit, 2);
+    // Set SPI to master mode
+    bus_.registers->CR1 =
+        bit::Insert(bus_.registers->CR1, kMasterModeCode, kMasterModeBit, 1);
     // Enable SSP
     bus_.registers->CR1 = bit::Set(bus_.registers->CR1, kSpiEnable);
-
     return Status::kSuccess;
   }
 
   /// An easy way to sets up an SPI peripheral as SPI master with default clock
   /// rate at 1Mhz.
-  void SetSpiMasterDefault() const
+  void SetSpiDefault() const
   {
-    constexpr bool kHighPolarity         = 1;
-    constexpr bool kPhase0               = 0;
+    constexpr bool kPositiveClockOnIdle = false;
+    constexpr bool kReadMisoOnRising    = false;
     constexpr uint32_t kDefaultFrequency = 1'000'000;
 
-    SetMode(MasterSlaveMode::kMaster, DataSize::kEight);
-    SetClock(kHighPolarity, kPhase0, kDefaultFrequency);
+    SetDataSize(DataSize::kEight);
+    SetClock(kDefaultFrequency, kPositiveClockOnIdle, kReadMisoOnRising);
   }
 
   /// Checks if the SSP controller is idle.
@@ -193,34 +201,41 @@ class Spi final : public sjsu::Spi
   }
 
   /// Sets the various modes for the Peripheral
-  /// @param mode - master or slave mode
-  /// @param frame - format for Peripheral data to use
   /// @param size - number of bits per frame
-  void SetMode(MasterSlaveMode mode, DataSize size) const override
+  void SetDataSize(DataSize size) const override
   {
+    // NOTE: In UM10562 page 611, you will see that DSS (Data Size Select) is
+    // equal to the bit transfer minus 1. So we can add 3 to our DataSize enum
+    // to get the appropriate tranfer code.
+    constexpr uint8_t kBitTransferCodeOffset = 3;
+    uint8_t size_code =
+        static_cast<uint8_t>(util::Value(size) + kBitTransferCodeOffset);
+
     bus_.registers->CR0 =
-        bit::Insert(bus_.registers->CR0, util::Value(size), kDataBit, 4);
-    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0, 0, kFrameBit, 2);
-    bus_.registers->CR1 =
-        bit::Insert(bus_.registers->CR1, util::Value(mode), kMasterModeBit, 1);
+        bit::Insert(bus_.registers->CR0, size_code, kDataBit, 4);
   }
 
   /// Sets the clock rate for the Peripheral
-  /// @param polarity  - maintain bus on clock 0=low or 1=high between frames
-  /// @param phase     - capture serial data on 0=first or 1=second clock cycle
+  /// @param positive_clock_on_idle - maintain bus on clock false=low or
+  ///        false=high between frames
+  /// @param read_miso_on_rising - capture serial data on true=first or
+  ///        1=second clock cycle
   /// @param frequency - serial clock rate
-  void SetClock(bool polarity, bool phase, uint32_t frequency) const override
+  void SetClock(uint32_t frequency,
+                bool positive_clock_on_idle = false,
+                bool read_miso_on_rising    = false) const override
   {
-    // first clear the appropriate registers
+    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0,
+                                      positive_clock_on_idle, kPolarityBit, 1);
     bus_.registers->CR0 =
-        bit::Insert(bus_.registers->CR0, polarity, kPolarityBit, 1);
-    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0, phase, kPhaseBit, 1);
+        bit::Insert(bus_.registers->CR0, read_miso_on_rising, kPhaseBit, 1);
 
     uint16_t prescaler = static_cast<uint8_t>(
         system_controller_.GetPeripheralFrequency() / frequency);
-
+    // Store lower half of precalar in clock prescalar register
     bus_.registers->CR0 =
         bit::Insert(bus_.registers->CR0, prescaler >> 8, kDividerBit, 8);
+    // Store upper half of the prescalar in control register 0
     bus_.registers->CPSR = prescaler & 0xFF;
   }
 
