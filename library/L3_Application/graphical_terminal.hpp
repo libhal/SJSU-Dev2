@@ -16,13 +16,13 @@ class GraphicalTerminal
   static constexpr size_t kMaxColumns      = Ssd1306::kWidth / kCharacterWidth;
   static constexpr size_t kMaxRows = Ssd1306::kHeight / kCharacterHeight;
 
-  GraphicalTerminal() {}
+  explicit GraphicalTerminal(Graphics * graphics): graphics_(graphics) {}
 
   void Initialize()
   {
-    graphics_.Initialize();
-    graphics_.Clear();
-    graphics_.Update();
+    graphics_->Initialize();
+    graphics_->Clear();
+    graphics_->Update();
   }
 
   int printf(const char * format, ...)  // NOLINT
@@ -84,11 +84,11 @@ class GraphicalTerminal
       {
         size_t x = j * kCharacterWidth;
         size_t y = i * kCharacterHeight;
-        graphics_.DrawCharacter(x, y,
+        graphics_->DrawCharacter(x, y,
                                 terminal_[(i + row_start_) % kMaxRows][j]);
       }
     }
-    graphics_.Update();
+    graphics_->Update();
     return *this;
   }
   void ClearRow(size_t row_location)
@@ -100,19 +100,14 @@ class GraphicalTerminal
   }
   void Clear()
   {
-    graphics_.Clear();
+    graphics_->Clear();
     memset(terminal_, '\0', sizeof(terminal_));
     SetCursor(0, 0);
-    graphics_.Update();
+    graphics_->Update();
   }
 
  private:
-  lpc40xx::Spi ssp1_     = lpc40xx::Spi(lpc40xx::Spi::Bus::kSpi1);
-  lpc40xx::Gpio cs_gpio_ = lpc40xx::Gpio(1, 22);
-  lpc40xx::Gpio dc_gpio_ = lpc40xx::Gpio(1, 25);
-
-  Ssd1306 oled_display_ = Ssd1306(ssp1_, cs_gpio_, dc_gpio_);
-  Graphics graphics_    = Graphics(&oled_display_);
+  Graphics * graphics_;
 
   size_t row_                           = 0;
   size_t column_                        = 0;

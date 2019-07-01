@@ -82,8 +82,8 @@ class FactoryTest
     cs.SetAsOutput();
     cs.SetHigh();
 
-    spi2.SetMode(Spi::MasterSlaveMode::kMaster, Spi::DataSize::kEight);
-    spi2.SetClock(false, false, 100'000);
+    spi2.SetDataSize(Spi::DataSize::kEight);
+    spi2.SetClock(100'000);
     spi2.Initialize();
 
     uint8_t array[5];

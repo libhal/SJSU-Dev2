@@ -1,6 +1,7 @@
 #include <cstdarg>
 #include <cstdint>
 
+#include "L2_HAL/boards/sjtwo.hpp"
 #include "L3_Application/graphical_terminal.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
@@ -8,7 +9,8 @@
 int main()
 {
   LOG_INFO("Starting OledPrint Application...");
-  sjsu::GraphicalTerminal oled_terminal;
+  sjsu::Graphics & oled_graphics = sjtwo::Oled();
+  sjsu::GraphicalTerminal oled_terminal(&oled_graphics);
 
   oled_terminal.Initialize();
 

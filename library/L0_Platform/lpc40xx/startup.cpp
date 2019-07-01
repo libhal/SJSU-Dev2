@@ -150,7 +150,7 @@ extern "C" void ResetIsr()
   InitializePlatform();
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
-  [[maybe_unused]] int32_t result = main();
+  int32_t result = main();
 // Enforce the warning after this point
 #pragma GCC diagnostic pop
   // main() shouldn't return, but if it does, we'll just enter an infinite
