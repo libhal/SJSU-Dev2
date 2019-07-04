@@ -13,15 +13,25 @@ namespace sjsu
 {
 namespace bit
 {
-template <typename T>
-constexpr T GenerateFieldOfOnes()
+struct Mask  // NOLINT
 {
-  T result = 0;
-  for (size_t i = 0; i < sizeof(T); i++)
-  {
-    result |= 0xFF << (i * 8);
-  }
-  return result;
+  uint8_t position;
+  uint8_t width;
+};
+constexpr Mask CreateMaskFromRange(uint8_t low_bit_position,
+                                   uint8_t high_bit_position)
+{
+  return Mask({
+      .position = low_bit_position,
+      .width = static_cast<uint8_t>(1 + (high_bit_position - low_bit_position)),
+  });
+}
+constexpr Mask CreateMaskFromRange(uint8_t bit_position)
+{
+  return Mask({
+      .position = bit_position,
+      .width    = 1,
+  });
 }
 /// Extract a set of contiguous bits from a target value.
 ///
@@ -38,7 +48,8 @@ constexpr T GenerateFieldOfOnes()
 /// @param position the starting position of the bits to extracted.
 /// @param width the number of bits from the starting position to be extracted.
 template <typename T>
-[[nodiscard]] constexpr T Extract(T target, uint32_t position,
+[[nodiscard]] constexpr T Extract(T target,
+                                  uint32_t position,
                                   uint32_t width = 1)
 {
   // Check the types at compile time
@@ -49,7 +60,7 @@ template <typename T>
   using UnsignedT = typename std::make_unsigned<T>::type;
   // At compile time, generate variable containing all 1s with the size of the
   // target parameter.
-  constexpr UnsignedT kFieldOfOnes = GenerateFieldOfOnes<T>();
+  constexpr UnsignedT kFieldOfOnes = std::numeric_limits<UnsignedT>::max();
   // At compile time calculate the number of bits in the target parameter.
   constexpr size_t kTargetWidth = sizeof(T) * 8;
   // Create mask by shifting the set of 1s down so that the number of 1s from
@@ -58,7 +69,12 @@ template <typename T>
   // Shift target down to the right to get the bit position in the 0th bit
   // location.
   // Mask the value to clear any bit after the width's amount of bits.
-  return (target >> position) & mask;
+  return static_cast<T>((target >> position) & mask);
+}
+template <typename T>
+[[nodiscard]] constexpr T Extract(T target, Mask bitmask)
+{
+  return Extract(target, bitmask.position, bitmask.width);
 }
 /// Insert a set of continguous bits into a target value.
 ///
@@ -77,7 +93,9 @@ template <typename T>
 /// @param position the position in the target to insert the value of bits.
 /// @param width the length of bits that will be overwritten in the target.
 template <typename T, typename U>
-[[nodiscard]] constexpr T Insert(T target, U value, uint32_t position,
+[[nodiscard]] constexpr T Insert(T target,
+                                 U value,
+                                 uint32_t position,
                                  uint32_t width = 1)
 {
   // Check the types at compile time
@@ -95,7 +113,7 @@ template <typename T, typename U>
   using UnsignedT = typename std::make_unsigned<T>::type;
   // At compile time, generate variable containing all 1s with the size of the
   // target parameter.
-  constexpr UnsignedT kFieldOfOnes = GenerateFieldOfOnes<T>();
+  constexpr UnsignedT kFieldOfOnes = std::numeric_limits<UnsignedT>::max();
   // At compile time calculate the number of bits in the target parameter.
   constexpr size_t kTargetWidth = sizeof(T) * 8;
   // Create mask by shifting the set of 1s down so that the number of 1s from
@@ -107,7 +125,12 @@ template <typename T, typename U>
   // AND value with mask to remove any bits beyond the specified width.
   // Shift masked value into bit position and OR with target value.
   target |= (value & mask) << position;
-  return target;
+  return static_cast<T>(target);
+}
+template <typename T, typename U>
+[[nodiscard]] constexpr T Insert(T target, U value, Mask bitmask)
+{
+  return Insert(target, value, bitmask.position, bitmask.width);
 }
 /// Set a bit in the target value at the position specifed to a 1 and return
 ///
@@ -126,7 +149,7 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Set only accepts intergers.");
-  return target | (1 << position);
+  return static_cast<T>(target | (1 << position));
 }
 /// Set a bit in the target value at the position specifed to a 0 and return
 ///
@@ -145,7 +168,7 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Clear only accepts intergers.");
-  return target & ~(1 << position);
+  return static_cast<T>(target & ~(1 << position));
 }
 /// Toggle a bit in the target value at the position specifed.
 /// If the bit was a 1, it will be changed to a 0.
@@ -166,7 +189,7 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Toggle only accepts intergers.");
-  return target ^ (1 << position);
+  return static_cast<T>(target ^ (1 << position));
 }
 
 /// Read a bit from the target value at the position specifed.
@@ -180,7 +203,7 @@ template <typename T>
 /// position = 3 ---------+  |
 ///                         \|/
 ///
-/// return   =               1
+/// return   =               true
 ///
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to toggle

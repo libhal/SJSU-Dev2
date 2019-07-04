@@ -1,6 +1,7 @@
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L2_HAL/sensors/environment/temperature/si7060.hpp"
 #include "utility/log.hpp"
+#include "utility/time.hpp"
 
 int main()
 {
@@ -11,22 +12,18 @@ int main()
 
   if (!temperature_sensor_initialized)
   {
-    LOG_INFO("Could not initialize temperature device (Si7060)\n\n");
+    LOG_ERROR("Could not initialize temperature device (Si7060)");
     sjsu::Halt();
   }
 
-  LOG_INFO("Temperature Device is ON.\n");
+  LOG_INFO("Temperature Device is ON.");
 
   while (temperature_sensor_initialized)
   {
-    double temperature_data;
-
-    temperature_data = static_cast<double>(temperature_sensor.GetCelsius());
-    LOG_INFO("Celsius data: %.2g \n", temperature_data);
-
-    // This will only return Fahrenheit.
-    temperature_data = static_cast<double>(temperature_sensor.GetFahrenheit());
-    LOG_INFO("Fahrenheit data: %.2g \n", temperature_data);
+    double temperature_data =
+        static_cast<double>(temperature_sensor.GetCelsius());
+    LOG_INFO("Board Temperature: %.4f C", temperature_data);
+    sjsu::Delay(1000);
   }
   return 0;
 }

@@ -26,7 +26,8 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
 
   // Set mock for sjsu::Pin
   Mock<sjsu::Pin> mock_adc_pin;
-  Fake(Method(mock_adc_pin, SetAsAnalogMode), Method(mock_adc_pin, SetMode),
+  Fake(Method(mock_adc_pin, SetAsAnalogMode),
+       Method(mock_adc_pin, SetMode),
        Method(mock_adc_pin, SetPinFunction));
 
   const Adc::Channel_t kMockChannel1 = {
@@ -77,11 +78,11 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
     constexpr uint8_t kDoneBit      = 31;
 
     // Check if bit 24 in local_adc.CR for the start bits is set
-    local_adc.GDR |= (1 << kDoneBit);
+    local_adc.DR[kMockChannel1.channel] |= (1 << kDoneBit);
     channel0_mock.Conversion();
     CHECK(((local_adc.CR >> kStartBit) & 1) == kStartNoBurst);
     channel0_mock.HasConversionFinished();
-    CHECK(((local_adc.GDR >> kDoneBit) & 1) == kDone);
+    CHECK(((local_adc.DR[kMockChannel1.channel] >> kDoneBit) & 1) == kDone);
 
     // Check if bits 24 to 26 in local_adc.CR are cleared for burst mode
     // conversion
@@ -91,7 +92,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
 
     // Check if done bit is set after conversion
     channel0_mock.HasConversionFinished();
-    CHECK(((local_adc.GDR >> kDoneBit) & 1) == kDone);
+    CHECK(((local_adc.DR[kMockChannel1.channel] >> kDoneBit) & 1) == kDone);
   }
   SECTION("Burst mode")
   {
@@ -113,7 +114,8 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
 
     // Check if there is any value in the global data reg
     channel0_mock.Read();
-    CHECK(((local_adc.GDR >> kResultBit) & kResultMask) == 0);
+    CHECK(((local_adc.DR[kMockChannel1.channel] >> kResultBit) & kResultMask) ==
+          0);
   }
 
   sjsu::lpc40xx::SystemController::system_controller = LPC_SC;

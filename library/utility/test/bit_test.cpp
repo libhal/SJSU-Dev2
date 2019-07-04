@@ -70,6 +70,112 @@ TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
     CHECK(0xAAAA'BCDB == bit::Insert(target, value_to_insert, 4, 8));
   }
 
+  SECTION("Insert with Mask")
+  {
+    CHECK(0b0110'0000 == bit::Insert(0,
+                                     0b11,
+                                     {
+                                         .position = 5,
+                                         .width    = 2,
+                                     }));
+    static_assert(0b0110'0000 == bit::Insert(0,
+                                             0b11,
+                                             {
+                                                 .position = 5,
+                                                 .width    = 2,
+                                             }));
+
+    CHECK(0b0000'1110 == bit::Insert(0,
+                                     0b111,
+                                     {
+                                         .position = 1,
+                                         .width    = 3,
+                                     }));
+    static_assert(0b0000'1110 == bit::Insert(0,
+                                             0b111,
+                                             {
+                                                 .position = 1,
+                                                 .width    = 3,
+                                             }));
+
+    CHECK(0b0000'1111 == bit::Insert(0,
+                                     0b1111,
+                                     {
+                                         .position = 0,
+                                         .width    = 4,
+                                     }));
+    static_assert(0b0000'1111 == bit::Insert(0,
+                                             0b1111,
+                                             {
+                                                 .position = 0,
+                                                 .width    = 4,
+                                             }));
+
+    CHECK(0xAB00'0000 == bit::Insert(0,
+                                     0xAB,
+                                     {
+                                         .position = 24,
+                                         .width    = 8,
+                                     }));
+    static_assert(0xAB00'0000 == bit::Insert(0,
+                                             0xAB,
+                                             {
+                                                 .position = 24,
+                                                 .width    = 8,
+                                             }));
+
+    CHECK(0xDEAD'BEEF == bit::Insert(0xD00D'BEEF,
+                                     0xEA,
+                                     {
+                                         .position = 20,
+                                         .width    = 8,
+                                     }));
+    static_assert(0xDEAD'BEEF == bit::Insert(0xD00D'BEEF,
+                                             0xEA,
+                                             {
+                                                 .position = 20,
+                                                 .width    = 8,
+                                             }));
+
+    // Shows replacement of DEAD -> BEEF
+    CHECK(0xDEAD'BEEF == bit::Insert(0xDEAD'DEAD,
+                                     0xBEEF,
+                                     {
+                                         .position = 0,
+                                         .width    = 16,
+                                     }));
+    static_assert(0xDEAD'BEEF == bit::Insert(0xDEAD'DEAD,
+                                             0xBEEF,
+                                             {
+                                                 .position = 0,
+                                                 .width    = 16,
+                                             }));
+
+    // Shows replacement of 0101 -> 1111 in the middle of byte
+    CHECK(0b1011'1101 == bit::Insert(0b1010'0101,
+                                     0b1111,
+                                     {
+                                         .position = 2,
+                                         .width    = 4,
+                                     }));
+    static_assert(0b1011'1101 == bit::Insert(0b1010'0101,
+                                             0b1111,
+                                             {
+                                                 .position = 2,
+                                                 .width    = 4,
+                                             }));
+
+    uint32_t target        = 0xAAAA'BBBB;
+    int8_t value_to_insert = 0xCD;
+    // Shows replacement of 0101 -> 1111 in the middle of byte
+    CHECK(0xAAAA'BCDB == bit::Insert(target,
+                                     value_to_insert,
+                                     {
+                                         .position = 4,
+                                         .width    = 8,
+                                     }));
+  }
+
   SECTION("Set")
   {
     CHECK(0b0001'1111 == bit::Set(0b1111, 4));

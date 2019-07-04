@@ -15,6 +15,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
+#include "utility/bit.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
 
@@ -25,58 +26,30 @@ namespace lpc40xx
 class Pwm final : public sjsu::Pwm
 {
  public:
-  union [[gnu::packed]] OutputControlRegister_t {
-    uint32_t data;
-    struct
-    {
-      uint8_t reserved0 : 2;
-      // First bit corrisponds to PWM2, final bit corrisponds to PWM6
-      uint8_t enable_double_edge : 5;
-      uint8_t reserved1 : 2;
-      // First bit corrisponds to PWM1, final bit corrisponds to PWM6
-      uint8_t enable_output : 6;
-    } bits;
+  struct OutputControl  // NOLINT
+  {
+    constexpr static bit::Mask kEnableDoubleEdge =
+        bit::CreateMaskFromRange(0, 6);
+    constexpr static bit::Mask kEnableOutput = bit::CreateMaskFromRange(8, 14);
   };
 
-  union [[gnu::packed]] MatchControlRegister_t {
-    struct [[gnu::packed]] MatchSection_t
-    {
-      uint8_t interrupt : 1;
-      uint8_t reset : 1;
-      uint8_t stop : 1;
-    };
-    uint32_t data;
-    struct
-    {
-      MatchSection_t pwm0;
-      MatchSection_t pwm1;
-      MatchSection_t pwm2;
-      MatchSection_t pwm3;
-      MatchSection_t pwm4;
-      MatchSection_t pwm5;
-      MatchSection_t pwm6;
-    } bits;
+  struct MatchControl  // NOLINT
+  {
+    constexpr static bit::Mask kPwm0Reset = bit::CreateMaskFromRange(1);
   };
 
-  union [[gnu::packed]] CountControlRegister_t {
-    uint32_t data;
-    struct
-    {
-      uint8_t mode : 2;
-      uint8_t count_input_select : 2;
-    } bits;
+  struct Timer  // NOLINT
+  {
+    constexpr static bit::Mask kCounterEnable = bit::CreateMaskFromRange(0);
+    constexpr static bit::Mask kCounterReset  = bit::CreateMaskFromRange(1);
+    constexpr static bit::Mask kPwmEnable     = bit::CreateMaskFromRange(3);
+    constexpr static bit::Mask kMasterDisable = bit::CreateMaskFromRange(4);
   };
 
-  union [[gnu::packed]] TimerControlRegister_t {
-    uint32_t data;
-    struct
-    {
-      uint8_t counter_enable : 1;
-      uint8_t counter_reset : 1;
-      uint8_t reserved0 : 1;
-      uint8_t pwm_enable : 1;
-      uint8_t master_disable : 1;  // only used with PWM0
-    } bits;
+  struct CountControl  // NOLINT
+  {
+    constexpr static bit::Mask kMode       = bit::CreateMaskFromRange(0, 1);
+    constexpr static bit::Mask kCountInput = bit::CreateMaskFromRange(2, 3);
   };
 
   struct Peripheral_t
@@ -95,14 +68,12 @@ class Pwm final : public sjsu::Pwm
 
   struct Channel  // NOLINT
   {
-   private:
+   public:
     inline static const Peripheral_t kPwm1PeripheralCommon = {
       .registers       = LPC_PWM1,
       .power_on_id     = sjsu::lpc40xx::SystemController::Peripherals::kPwm1,
       .pin_function_id = 0b001,
     };
-
-   public:
     inline static const sjsu::lpc40xx::Pin kPwmPin0 =
         sjsu::lpc40xx::Pin::CreatePin<2, 0>();
     inline static const Channel_t kPwm0 = {
@@ -174,25 +145,25 @@ class Pwm final : public sjsu::Pwm
     channel_.peripheral.registers->PC = 0;
     // Mode 0x0 means increment time counter (TC) after the peripheral clock
     // has cycled the amount inside of the prescale.
-    GetCountControlRegister()->bits.mode = 0;
+    channel_.peripheral.registers->CTCR = bit::Insert(
+        channel_.peripheral.registers->CTCR, 0, CountControl::kMode);
     // 0x0 for this register says to use the TC for input counts.
-    GetCountControlRegister()->bits.count_input_select = 0;
+    channel_.peripheral.registers->CTCR = bit::Insert(
+        channel_.peripheral.registers->CTCR, 0, CountControl::kCountInput);
     // Match register 0 is used to generate the desired frequency. If the time
     // counter TC is equal to MR0
     channel_.peripheral.registers->MR0 =
         system_controller_.GetPeripheralFrequency() / frequency_hz;
     // Sets match register 0 to reset when TC and Match 0 match each other,
     // meaning that the PWM pulse will cycle continuously.
-    GetMatchControlRegister()->bits.pwm0.reset = 1;
+    channel_.peripheral.registers->MCR = bit::Set(
+        channel_.peripheral.registers->MCR, MatchControl::kPwm0Reset.position);
     // Enables PWM TC and PC for counting and enables PWM mode
     EnablePwm();
     // Enables PWM[channel] output
-    // Subtract 1 to move shift index to zero.
-    const uint32_t kEnableChannelMask = 1 << (channel_.channel - 1);
-
-    GetOutputControlRegister()->bits.enable_output =
-        (GetOutputControlRegister()->bits.enable_output | kEnableChannelMask) &
-        0b11'1111;
+    channel_.peripheral.registers->PCR =
+        bit::Set(channel_.peripheral.registers->PCR,
+                 OutputControl::kEnableOutput.position + channel_.channel);
 
     channel_.pin.SetPinFunction(channel_.peripheral.pin_function_id);
 
@@ -239,48 +210,26 @@ class Pwm final : public sjsu::Pwm
 
   void EnablePwm(bool enable = true) const
   {
+    volatile uint32_t * pwm_timer = &channel_.peripheral.registers->TCR;
     if (enable)
     {
-      GetTimerControlRegister()->bits.counter_reset  = 1;
-      GetTimerControlRegister()->bits.counter_reset  = 0;
-      GetTimerControlRegister()->bits.pwm_enable     = 1;
-      GetTimerControlRegister()->bits.counter_enable = 1;
+      // Reset the Timer Counter
+      *pwm_timer = bit::Set(*pwm_timer, Timer::kCounterReset.position);
+      // Clear reset and allow timer to count
+      *pwm_timer = bit::Clear(*pwm_timer, Timer::kCounterReset.position);
+      // Enable PWM output
+      *pwm_timer = bit::Set(*pwm_timer, Timer::kPwmEnable.position);
+      // Enable counting
+      *pwm_timer = bit::Set(*pwm_timer, Timer::kCounterEnable.position);
     }
     else
     {
-      GetTimerControlRegister()->bits.pwm_enable = 0;
+      // Disable PWM output
+      *pwm_timer = bit::Clear(*pwm_timer, Timer::kPwmEnable.position);
     }
   }
 
-  [[gnu::always_inline]] volatile MatchControlRegister_t *
-  GetMatchControlRegister() const
-  {
-    return reinterpret_cast<volatile MatchControlRegister_t *>(
-        &channel_.peripheral.registers->MCR);
-  }
-
-  [[gnu::always_inline]] volatile CountControlRegister_t *
-  GetCountControlRegister() const
-  {
-    return reinterpret_cast<volatile CountControlRegister_t *>(
-        &channel_.peripheral.registers->CTCR);
-  }
-
-  [[gnu::always_inline]] volatile OutputControlRegister_t *
-  GetOutputControlRegister() const
-  {
-    return reinterpret_cast<volatile OutputControlRegister_t *>(
-        &channel_.peripheral.registers->PCR);
-  }
-
-  [[gnu::always_inline]] volatile TimerControlRegister_t *
-  GetTimerControlRegister() const
-  {
-    return reinterpret_cast<volatile TimerControlRegister_t *>(
-        &channel_.peripheral.registers->TCR);
-  }
-
-  [[gnu::always_inline]] volatile uint32_t * GetMatchRegisters() const
+  volatile uint32_t * GetMatchRegisters() const
   {
     return &channel_.peripheral.registers->MR0;
   }
