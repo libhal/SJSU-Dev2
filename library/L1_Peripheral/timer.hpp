@@ -13,7 +13,7 @@ class Timer
   // Modes for each match register that when match register matches timer
   // system can trigger an Interrupt, Stop Counter, or Restart and in any
   // mixture of those commands.
-  enum TimerIsrCondition : uint8_t
+  enum class TimerIsrCondition : uint8_t
   {
     kInterrupt            = 0b001,
     kRestart              = 0b010,

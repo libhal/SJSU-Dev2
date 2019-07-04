@@ -13,7 +13,7 @@ AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: true
-BinPackArguments: true
+BinPackArguments: false
 BreakStringLiterals: true
 CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true

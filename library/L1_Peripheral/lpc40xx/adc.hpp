@@ -28,33 +28,23 @@ class Adc final : public sjsu::Adc
 
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
 
-  union ControlRegister_t {
-    uint32_t data;
-    struct
-    {
-      unsigned channel_enable : 8;
-      unsigned clock_divider : 8;
-      unsigned enable_burst : 1;
-      unsigned reserved0 : 4;
-      unsigned power_enable : 1;
-      unsigned reserved1 : 2;
-      unsigned start_conversion_code : 3;
-      unsigned start_conversion_on_falling_edge : 1;
-    } bits;
+  struct Control  // NOLINT
+  {
+    static constexpr bit::Mask kChannelEnable = bit::CreateMaskFromRange(0, 7);
+    static constexpr bit::Mask kClockDivider  = bit::CreateMaskFromRange(8, 15);
+    static constexpr bit::Mask kBurstEnable   = bit::CreateMaskFromRange(16);
+    static constexpr bit::Mask kPowerEnable   = bit::CreateMaskFromRange(21);
+    static constexpr bit::Mask kStartCode = bit::CreateMaskFromRange(24, 26);
+    static constexpr bit::Mask kStartEdge = bit::CreateMaskFromRange(27);
   };
 
-  union GlobalDataRegister_t {
-    uint32_t data;
-    struct
-    {
-      unsigned reserved0 : 4;
-      unsigned result : 12;
-      unsigned reserved1 : 8;
-      unsigned converted_channel : 3;
-      unsigned reserved2 : 3;
-      unsigned overrun : 1;
-      unsigned done : 1;
-    } bits;
+  struct GlobalData  // NOLINT
+  {
+    static constexpr bit::Mask kResult = bit::CreateMaskFromRange(4, 15);
+    static constexpr bit::Mask kConvertedChannel =
+        bit::CreateMaskFromRange(24, 26);
+    static constexpr bit::Mask kOverrun = bit::CreateMaskFromRange(30);
+    static constexpr bit::Mask kDone    = bit::CreateMaskFromRange(31);
   };
 
   struct Channel_t
@@ -127,17 +117,10 @@ class Adc final : public sjsu::Adc
   static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
       sjsu::lpc40xx::SystemController();
 
-  static volatile ControlRegister_t * GetControlRegister()
-  {
-    return reinterpret_cast<volatile ControlRegister_t *>(&adc_base->CR);
-  }
-  static volatile GlobalDataRegister_t * GetGlobalDataRegister()
-  {
-    return reinterpret_cast<volatile GlobalDataRegister_t *>(&adc_base->GDR);
-  }
   static void BurstMode(bool burst_mode_is_on = true)
   {
-    GetControlRegister()->bits.enable_burst = burst_mode_is_on;
+    adc_base->CR =
+        bit::Insert(adc_base->CR, burst_mode_is_on, Control::kBurstEnable);
   }
 
   explicit constexpr Adc(const Channel_t & channel,
@@ -155,44 +138,47 @@ class Adc final : public sjsu::Adc
     channel_.adc_pin.SetMode(sjsu::Pin::Mode::kInactive);
     channel_.adc_pin.SetAsAnalogMode(true);
 
-    ControlRegister_t control;
+    uint32_t clock_divider =
+        system_controller_.GetPeripheralFrequency() / kClockFrequency;
 
-    control.data = adc_base->CR;
-    control.bits.channel_enable =
-        (control.bits.channel_enable | (1 << channel_.channel)) & 0xFF;
-    control.bits.power_enable = true;
-    control.bits.clock_divider =
-        (system_controller_.GetPeripheralFrequency() / kClockFrequency) & 0xFF;
+    uint32_t control = adc_base->CR;
 
-    adc_base->CR = control.data;
+    control = bit::Set(control, channel_.channel);
+    control = bit::Set(control, Control::kPowerEnable.position);
+    control = bit::Insert(control, clock_divider, Control::kClockDivider);
+
+    adc_base->CR = control;
 
     return Status::kSuccess;
   }
   void Conversion() const override
   {
-    volatile ControlRegister_t * control = GetControlRegister();
-    if (control->bits.enable_burst)
+    if (bit::Read(adc_base->CR, Control::kBurstEnable.position))
     {
-      control->bits.start_conversion_code = 0;
+      // NOTE: If burst mode is enabled, conversion start must be set 0
+      adc_base->CR = bit::Insert(adc_base->CR, 0, Control::kStartCode);
     }
     else
     {
-      // 0x01 = start code for "Start Conversion Now"
-      control->bits.start_conversion_code = 0x01;
+      // NOTE: 0x01 = start code for "Start Conversion Now"
+      adc_base->CR = bit::Insert(adc_base->CR, 1, Control::kStartCode);
     }
 
-    while (!(GetGlobalDataRegister()->bits.done))
+    while (!HasConversionFinished())
     {
       continue;
     }
   }
   uint16_t Read() const override
   {
-    return GetGlobalDataRegister()->bits.result;
+    uint32_t result =
+        bit::Extract(adc_base->DR[channel_.channel], GlobalData::kResult);
+    return static_cast<uint16_t>(result);
   }
   bool HasConversionFinished() const override
   {
-    return GetGlobalDataRegister()->bits.done;
+    return bit::Read(adc_base->DR[channel_.channel],
+                     GlobalData::kDone.position);
   }
 
  private:

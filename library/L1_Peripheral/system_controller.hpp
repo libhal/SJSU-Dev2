@@ -13,7 +13,7 @@ class SystemController
   class PeripheralID
   {
    public:
-    size_t device_id = -1;
+    uint8_t device_id = -1;
   };
   template <size_t kDeviceId>
   class AddPeripheralID : public PeripheralID

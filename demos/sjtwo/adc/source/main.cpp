@@ -11,7 +11,7 @@ int main()
 
   LOG_INFO("Creating Adc object and selecting ADC channel 0");
   LOG_INFO("ADC channel 0 is connected to pin P0.23");
-  sjsu::lpc40xx::Adc adc0(sjsu::lpc40xx::Adc::Channel::kChannel0);
+  sjsu::lpc40xx::Adc adc0(sjsu::lpc40xx::Adc::Channel::kChannel2);
   LOG_INFO("Initializing ADC ...");
   adc0.Initialize();
   LOG_INFO("Initializing ADC Complete!");
@@ -30,8 +30,8 @@ int main()
     uint16_t adc_digital_value = adc0.Read();
     // For the LPC40xx with a 12-bit ADC, lowest and highest values are 0 to
     // 1023, where as the lowest and highest voltages are between 0 and 3.3V
-    float voltage = sjsu::Map(adc_digital_value, 0, 1023, 0.0f, 3.3f);
-    LOG_INFO("Voltage on pin P0.23 = %f, raw value = %u\n",
+    float voltage = sjsu::Map(adc_digital_value, 0, 4095, 0.0f, 3.3f);
+    LOG_INFO("Voltage on pin P0.23 = %f, raw value = %u",
              static_cast<double>(voltage), adc_digital_value);
     sjsu::Delay(250);
   }

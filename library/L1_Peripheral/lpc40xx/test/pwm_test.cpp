@@ -43,13 +43,6 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
 
   Pwm test_pwm(mock_channel, mock_system_controller.get());
 
-  constexpr uint8_t kResetMr0                  = (1 << 1);
-  constexpr uint8_t kCounterEnable             = (1 << 0);
-  constexpr uint8_t kTimerMode                 = (0b11 << 0);
-  constexpr uint8_t kPwmEnable                 = (1 << 3);
-  constexpr uint32_t kChannelEnable            = 1;
-  constexpr uint32_t kChannelEnableBitPosition = 10;
-
   SECTION("Initialization values")
   {
     test_pwm.Initialize();
@@ -58,11 +51,20 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
                  return sjsu::lpc40xx::SystemController::Peripherals::kPwm0
                             .device_id == id.device_id;
                }));
-    CHECK((local_pwm.MCR & 0b11) == (kResetMr0 & 0b11));
-    CHECK((local_pwm.TCR & 0b1111) == ((kCounterEnable | kPwmEnable) & 0b1111));
-    CHECK((local_pwm.CTCR & 0b11) == (~kTimerMode & 0b11));
-    CHECK(((local_pwm.PCR >> kChannelEnableBitPosition) & 0b11'1111) ==
-          kChannelEnable);
+
+    // PWM Count Control Register should be all zeros
+    CHECK(0 == local_pwm.CTCR);
+    // Check that Match Control Register reset for PWM0 has been set
+    CHECK(0b1 == bit::Read(local_pwm.MCR, 1));
+    // Timer Control Register
+    constexpr uint32_t kCounterEnable = 0;
+    constexpr uint8_t kCounterReset   = 1;
+    constexpr uint8_t kPwmEnable      = 3;
+    CHECK(0b1 == bit::Read(local_pwm.TCR, kCounterEnable));
+    CHECK(0b0 == bit::Read(local_pwm.TCR, kCounterReset));
+    CHECK(0b1 == bit::Read(local_pwm.TCR, kPwmEnable));
+
+    CHECK(0b1 == bit::Extract(local_pwm.PCR, mock_channel.channel + 8));
 
     Verify(Method(mock_pwm_pin, SetPinFunction)
                .Using(mock_channel.peripheral.pin_function_id))

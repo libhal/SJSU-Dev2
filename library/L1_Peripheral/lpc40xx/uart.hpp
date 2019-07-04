@@ -329,13 +329,13 @@ class Uart final : public sjsu::Uart
   }
   bool HasData() const override
   {
-    return port_.registers->LSR & (1 << 0);
+    return bit::Read(port_.registers->LSR, 0);
   }
 
  private:
   bool TransmissionComplete() const
   {
-    return (port_.registers->LSR & (1 << 5));
+    return bit::Read(port_.registers->LSR, 5);
   }
 
   const Port_t & port_;

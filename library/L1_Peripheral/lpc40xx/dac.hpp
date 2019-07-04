@@ -26,14 +26,10 @@ class Dac final : public sjsu::Dac
     kLow  = 1
   };
 
-  union [[gnu::packed]] ControlRegister {
-    uint32_t data;
-    struct
-    {
-      uint8_t reserved0 : 6;
-      uint16_t value : 10;
-      bool bias : 1;
-    } bits;
+  struct Control  // NOLINT
+  {
+    static constexpr bit::Mask kValue = bit::CreateMaskFromRange(6, 15);
+    static constexpr bit::Mask kBias  = bit::CreateMaskFromRange(16);
   };
 
   static constexpr sjsu::lpc40xx::Pin kDacPin = Pin::CreatePin<0, 26>();
@@ -69,7 +65,8 @@ class Dac final : public sjsu::Dac
     // ensure dac_output is less than 1024 (largest 10-bit number)
     SJ2_ASSERT_FATAL(dac_output < 1023,
                      "DAC output set above 1023. Must be between 0-1023.");
-    GetControlRegister()->bits.value = dac_output & 0b11'1111'1111;
+    dac_register->CR =
+        bit::Insert(dac_register->CR, dac_output, Control::kValue);
   }
   /// Takes an input voltage and converts the float value and calculates
   /// the conversion necessary and then typecasts it to an integer.
@@ -87,15 +84,11 @@ class Dac final : public sjsu::Dac
   /// current, and the allowed maximum update rate
   void SetBias(Bias bias_level) const
   {
-    bool bias                       = static_cast<bool>(bias_level);
-    GetControlRegister()->bits.bias = bias;
+    bool bias        = static_cast<bool>(bias_level);
+    dac_register->CR = bit::Insert(dac_register->CR, bias, Control::kBias);
   }
 
  private:
-  volatile ControlRegister * GetControlRegister() const
-  {
-    return reinterpret_cast<volatile ControlRegister *>(&dac_register->CR);
-  }
   const sjsu::Pin & dac_pin_;
 };
 }  // namespace lpc40xx
