@@ -47,7 +47,7 @@ namespace sjsu
 /// @param new_minimum the new minimum value to scale and shift the old value to
 /// @param new_maximum the new maximum value to scale and shift the old value to
 template <typename Input, typename Range, typename NewRange>
-NewRange Map(Input value, Range min, Range max, NewRange new_min,
+constexpr NewRange Map(Input value, Range min, Range max, NewRange new_min,
              NewRange new_max)
 {
   static_assert(std::is_arithmetic<Input>::value,
