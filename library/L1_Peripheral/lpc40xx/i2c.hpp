@@ -344,66 +344,9 @@ class I2c final : public sjsu::I2c
     return Status::kSuccess;
   }
 
-  Status Read(uint8_t address,
-              uint8_t * data,
-              size_t length,
-              uint32_t timeout = kI2cTimeout) const override
+  Status Transaction(Transaction_t transaction) const override
   {
-    i2c_.bus.transaction = { .timeout    = timeout,
-                             .out_length = 0,
-                             .in_length  = length,
-                             .position   = 0,
-                             .data_out   = nullptr,
-                             .data_in    = data,
-                             .status     = Status::kSuccess,
-                             .operation  = Operation::kRead,
-                             .address    = address,
-                             .repeated   = false,
-                             .busy       = true };
-
-    i2c_.bus.registers->CONSET = Control::kStart;
-    return BlockUntilFinished();
-  }
-
-  Status Write(uint8_t address,
-               const uint8_t * data,
-               size_t length,
-               uint32_t timeout = kI2cTimeout) const override
-  {
-    i2c_.bus.transaction = { .timeout    = timeout,
-                             .out_length = length,
-                             .in_length  = 0,
-                             .position   = 0,
-                             .data_out   = data,
-                             .data_in    = nullptr,
-                             .status     = Status::kSuccess,
-                             .operation  = Operation::kWrite,
-                             .address    = address,
-                             .repeated   = false,
-                             .busy       = true };
-
-    i2c_.bus.registers->CONSET = Control::kStart;
-    return BlockUntilFinished();
-  }
-  Status WriteThenRead(uint8_t address,
-                       const uint8_t * transmit,
-                       size_t out_length,
-                       uint8_t * recieve,
-                       size_t recieve_length,
-                       uint32_t timeout = kI2cTimeout) const override
-  {
-    i2c_.bus.transaction = { .timeout    = timeout,
-                             .out_length = out_length,
-                             .in_length  = recieve_length,
-                             .position   = 0,
-                             .data_out   = transmit,
-                             .data_in    = recieve,
-                             .status     = Status::kSuccess,
-                             .operation  = Operation::kWrite,
-                             .address    = address,
-                             .repeated   = true,
-                             .busy       = true };
-
+    i2c_.bus.transaction = transaction;
     i2c_.bus.registers->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
