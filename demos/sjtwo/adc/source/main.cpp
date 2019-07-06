@@ -1,5 +1,7 @@
 #include <cstdint>
 
+#include "L1_Peripheral/example.hpp"
+#include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/lpc40xx/adc.hpp"
 #include "utility/log.hpp"
 #include "utility/map.hpp"

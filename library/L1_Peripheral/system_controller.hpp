@@ -3,8 +3,6 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "config.hpp"
-
 namespace sjsu
 {
 class SystemController
@@ -35,33 +33,5 @@ class SystemController
       const PeripheralID & peripheral_select) const = 0;
   virtual void PowerDownPeripheral(
       const PeripheralID & peripheral_select) const = 0;
-};
-
-class DefaultSystemController : public sjsu::SystemController
-{
-  uint32_t SetClockFrequency(uint8_t) const override
-  {
-    return 0;
-  }
-  uint32_t GetPeripheralClockDivider() const override
-  {
-    return 0;
-  }
-  uint32_t GetPeripheralFrequency() const override
-  {
-    return 0;
-  }
-  bool IsPeripheralPoweredUp(const PeripheralID &) const override
-  {
-    return false;
-  }
-  void SetPeripheralClockDivider(uint8_t) const override {}
-  void PowerUpPeripheral(const PeripheralID &) const override {}
-  void PowerDownPeripheral(const PeripheralID &) const override {}
-  // NOTE: We only this method for SystemTimer to work.
-  uint32_t GetSystemFrequency() const override
-  {
-    return config::kSystemClockRate;
-  }
 };
 }  // namespace sjsu
