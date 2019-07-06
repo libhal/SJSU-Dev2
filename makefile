@@ -397,9 +397,9 @@ help:
 	@echo "  clean        - deletes build folder contents"
 	@echo "  cleaninstall - cleans, builds, and installs application firmware on "
 	@echo "                 device."
+	@echo " library-clean - cleans static libraries files"
+	@echo "  purge        - remove local build files and static libraries "
 	@echo "  telemetry    - Launch telemetry web interface on platform"
-	@echo "  show-lists   - Makefile debugging target that displays the contents"
-	@echo "                 of make variables"
 	@echo "SJSU-Dev2 Developer Commands: "
 	@echo "  presubmit    - run presubmit checks script"
 	@echo "  lint         - Check that source files abide by the SJSU-Dev2 coding"
@@ -407,12 +407,19 @@ help:
 	@echo "  tidy         - Check that source file fit the SJSU-Dev2 naming "
 	@echo "                 convention "
 	@echo "  help         - Shows this menu"
+	@echo "SJSU-Dev2 Testing Commands: "
+	@echo "  user-test    - build all user defined test as defined in USER_TESTS"
+	@echo "  test         - build all library tests"
+	@echo "  run-test     - Run either user or test executable"
 	@echo "Debugging Commands: "
 	@echo "  openocd      - run openocd with the sjtwo.cfg file"
 	@echo "  debug        - run arm gdb with current projects .elf file"
 	@echo "  multi-debug  - run multiarch gdb with current projects .elf file"
+	@echo "  show-lists   - Makefile debugging target that displays the contents"
+	@echo "                 of make variables"
 	@echo
 	@echo
+
 # ====================================================================
 # Build firmware
 # ====================================================================
