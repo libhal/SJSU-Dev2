@@ -34,39 +34,103 @@ class I2c
       }
       return address_8bit;
     }
-    uint64_t timeout         = kI2cTimeout;
-    size_t out_length        = 0;
-    size_t in_length         = 0;
-    size_t position          = 0;
-    const uint8_t * data_out = nullptr;
-    uint8_t * data_in        = nullptr;
-    Status status            = Status::kSuccess;
     Operation operation      = Operation::kWrite;
     uint8_t address          = 0xFF;
+    const uint8_t * data_out = nullptr;
+    size_t out_length        = 0;
+    uint8_t * data_in        = nullptr;
+    size_t in_length         = 0;
+    size_t position          = 0;
     bool repeated            = false;
     bool busy                = false;
+    uint64_t timeout         = kI2cTimeout;
+    Status status            = Status::kSuccess;
   };
 
-  virtual Status Initialize() const                                         = 0;
-  virtual Status Read(uint8_t address, uint8_t * destination, size_t length,
-                      uint32_t timeout = kI2cTimeout) const                 = 0;
-  virtual Status Write(uint8_t address, const uint8_t * destination,
-                       size_t length, uint32_t timeout = kI2cTimeout) const = 0;
-  virtual Status WriteThenRead(uint8_t address, const uint8_t * transmit,
-                               size_t out_length, uint8_t * recieve,
-                               size_t recieve_length,
-                               uint32_t timeout = kI2cTimeout) const        = 0;
-  Status WriteThenRead(uint8_t address, std::initializer_list<uint8_t> transmit,
-                       uint8_t * recieve, size_t recieve_length,
-                       uint32_t timeout = kI2cTimeout) const
+  // Interface Methods
+  virtual Status Initialize() const                           = 0;
+  virtual Status Transaction(Transaction_t transaction) const = 0;
+  // Utility Methods
+  Status Read(uint8_t address,
+              uint8_t * data,
+              size_t length,
+              uint32_t timeout = kI2cTimeout) const
   {
-    return WriteThenRead(address, transmit.begin(), transmit.size(), recieve,
-                         recieve_length, timeout);
+    return Transaction({
+        .operation  = Operation::kRead,
+        .address    = address,
+        .data_out   = nullptr,
+        .out_length = 0,
+        .data_in    = data,
+        .in_length  = length,
+        .position   = 0,
+        .repeated   = false,
+        .busy       = true,
+        .timeout    = timeout,
+        .status     = Status::kSuccess,
+    });
   }
-  Status Write(uint8_t address, std::initializer_list<uint8_t> data,
+
+  Status Write(uint8_t address,
+               const uint8_t * data,
+               size_t length,
                uint32_t timeout = kI2cTimeout) const
   {
-    return Write(address, data.begin(), data.size(), timeout);
+    return Transaction({
+        .operation  = Operation::kWrite,
+        .address    = address,
+        .data_out   = data,
+        .out_length = length,
+        .data_in    = nullptr,
+        .in_length  = 0,
+        .position   = 0,
+        .repeated   = false,
+        .busy       = true,
+        .timeout    = timeout,
+        .status     = Status::kSuccess,
+    });
+  }
+
+  Status Write(uint8_t address,
+               std::initializer_list<uint8_t> transmit,
+               uint32_t timeout = kI2cTimeout) const
+  {
+    return Write(address, transmit.begin(), transmit.size(), timeout);
+  }
+
+  Status WriteThenRead(uint8_t address,
+                       const uint8_t * transmit,
+                       size_t out_length,
+                       uint8_t * recieve,
+                       size_t recieve_length,
+                       uint32_t timeout = kI2cTimeout) const
+  {
+    return Transaction({
+        .operation  = Operation::kWrite,
+        .address    = address,
+        .data_out   = transmit,
+        .out_length = out_length,
+        .data_in    = recieve,
+        .in_length  = recieve_length,
+        .position   = 0,
+        .repeated   = true,
+        .busy       = true,
+        .timeout    = timeout,
+        .status     = Status::kSuccess,
+    });
+  }
+  Status WriteThenRead(uint8_t address,
+                       std::initializer_list<uint8_t> transmit,
+                       uint8_t * recieve,
+                       size_t recieve_length,
+                       uint32_t timeout = kI2cTimeout) const
+  {
+    return WriteThenRead(address,
+                         transmit.begin(),
+                         transmit.size(),
+                         recieve,
+                         recieve_length,
+                         timeout);
   }
 };
 }  // namespace sjsu

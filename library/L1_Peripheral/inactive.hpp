@@ -133,20 +133,7 @@ const sjsu::I2c & GetInactive<sjsu::I2c>()
     {
       return Status::kNotImplemented;
     }
-    Status Read(uint8_t, uint8_t *, size_t, uint32_t) const override
-    {
-      return Status::kNotImplemented;
-    }
-    Status Write(uint8_t, const uint8_t *, size_t, uint32_t) const override
-    {
-      return Status::kNotImplemented;
-    }
-    Status WriteThenRead(uint8_t,
-                         const uint8_t *,
-                         size_t,
-                         uint8_t *,
-                         size_t,
-                         uint32_t) const override
+    Status Transaction(Transaction_t) const override
     {
       return Status::kNotImplemented;
     }
