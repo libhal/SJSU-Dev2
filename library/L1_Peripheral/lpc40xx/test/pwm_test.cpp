@@ -33,7 +33,6 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
   Pwm::Peripheral_t mock_peripheral = {
     .registers       = &local_pwm,
     .power_on_id     = sjsu::lpc40xx::SystemController::Peripherals::kPwm0,
-    .pin_function_id = 0b101,
   };
 
   // Creating mock channel configuration
@@ -41,6 +40,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
     .peripheral = mock_peripheral,
     .pin        = mock_pwm_pin.get(),
     .channel    = 1,
+    .pin_function_id = 0b101,
   };
 
   Pwm test_pwm(mock_channel, mock_system_controller.get());
@@ -69,7 +69,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
     CHECK(0b1 == bit::Extract(local_pwm.PCR, mock_channel.channel + 8));
 
     Verify(Method(mock_pwm_pin, SetPinFunction)
-               .Using(mock_channel.peripheral.pin_function_id))
+               .Using(mock_channel.pin_function_id))
         .Once();
 
     CHECK(Pwm::kDefaultFrequency == test_pwm.GetFrequency());
