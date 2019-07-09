@@ -142,11 +142,22 @@ extern "C" void ResetIsr()
   InitializePlatform();
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"
-  [[maybe_unused]] int32_t result = main();
+  int32_t result = main();
 // Enforce the warning after this point
 #pragma GCC diagnostic pop
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
-  LOG_CRITICAL("main() returned with value %" PRId32, result);
+  if (result >= 0)
+  {
+    printf("\n" SJ2_BOLD_WHITE SJ2_BACKGROUND_GREEN
+           "Program Returned Exit Code: %" PRId32 "\n" SJ2_COLOR_RESET,
+           result);
+  }
+  else
+  {
+    printf("\n" SJ2_BOLD_WHITE SJ2_BACKGROUND_RED
+           "Program Returned Exit Code: %" PRId32 "\n" SJ2_COLOR_RESET,
+           result);
+  }
   sjsu::Halt();
 }
