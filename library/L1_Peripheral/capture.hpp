@@ -8,6 +8,7 @@ namespace sjsu
     {
         public:
         virtual Status Initialize() const = 0;
+        virtual void ConfigureCapture() const = 0;
     };
 
 
