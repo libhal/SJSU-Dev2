@@ -18,7 +18,7 @@ TEST_CASE("Testing lpc40xx Dac", "[lpc40xx-dac]")
 
   Mock<sjsu::Pin> mock_dac_pin;
   Fake(Method(mock_dac_pin, SetPinFunction),
-       Method(mock_dac_pin, SetAsAnalogMode), Method(mock_dac_pin, SetMode));
+       Method(mock_dac_pin, SetAsAnalogMode), Method(mock_dac_pin, SetPull));
   // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
   // Redirects manipulation to the 'local_iocon'
   // This is necessary because we have to cast the pin interface back to a Pin
@@ -38,7 +38,7 @@ TEST_CASE("Testing lpc40xx Dac", "[lpc40xx-dac]")
     // Check Pin Mode DAC_OUT
     Verify(Method(mock_dac_pin, SetPinFunction).Using(kDacMode),
            Method(mock_dac_pin, SetAsAnalogMode).Using(true),
-           Method(mock_dac_pin, SetMode).Using(sjsu::Pin::Mode::kInactive));
+           Method(mock_dac_pin, SetPull).Using(sjsu::Pin::Resistor::kNone));
     // Check that DacEnable occured!
     // local_iocon.
   }

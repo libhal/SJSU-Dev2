@@ -117,6 +117,8 @@ class Adc final : public sjsu::Adc
   static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
       sjsu::lpc40xx::SystemController();
 
+  static constexpr uint8_t kActiveBits = 12;
+
   static void BurstMode(bool burst_mode_is_on = true)
   {
     adc_base->CR =
@@ -135,7 +137,7 @@ class Adc final : public sjsu::Adc
         sjsu::lpc40xx::SystemController::Peripherals::kAdc);
 
     channel_.adc_pin.SetPinFunction(channel_.pin_function);
-    channel_.adc_pin.SetMode(sjsu::Pin::Mode::kInactive);
+    channel_.adc_pin.SetPull(sjsu::Pin::Resistor::kNone);
     channel_.adc_pin.SetAsAnalogMode(true);
 
     uint32_t clock_divider =
@@ -169,16 +171,20 @@ class Adc final : public sjsu::Adc
       continue;
     }
   }
-  uint16_t Read() const override
+  uint32_t Read() const override
   {
     uint32_t result =
         bit::Extract(adc_base->DR[channel_.channel], GlobalData::kResult);
-    return static_cast<uint16_t>(result);
+    return result;
   }
   bool HasConversionFinished() const override
   {
     return bit::Read(adc_base->DR[channel_.channel],
                      GlobalData::kDone.position);
+  }
+  uint8_t GetActiveBits() const override
+  {
+    return kActiveBits;
   }
 
  private:

@@ -99,7 +99,8 @@ SJ2_WEAK(void InitializePlatform());
 
 void InitializePlatform()
 {
-  while (system_controller.SetClockFrequency(config::kSystemClockRateMhz) != 0)
+  while (system_controller.SetSystemClockFrequency(
+             config::kSystemClockRateMhz) != 0)
   {
     // Continually attempt to set the clock frequency to the desired until the
     // delta between desired and actual are 0.

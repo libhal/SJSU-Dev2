@@ -3,7 +3,7 @@
 //   Usage:
 //      Pin P0_0(0, 0);
 //      P0_0.SetAsActiveLow();
-//      P0_0.SetMode(sjsu::Pin::Mode::pullUp);
+//      P0_0.SetPull(sjsu::Pin::Resistor::pullUp);
 #pragma once
 
 #include <cstdio>
@@ -24,7 +24,7 @@ class Pin final : public sjsu::Pin
  public:
   // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
   static constexpr bit::Mask kFunction    = bit::CreateMaskFromRange(0, 2);
-  static constexpr bit::Mask kMode        = bit::CreateMaskFromRange(3, 4);
+  static constexpr bit::Mask kResistor    = bit::CreateMaskFromRange(3, 4);
   static constexpr bit::Mask kHysteresis  = bit::CreateMaskFromRange(5);
   static constexpr bit::Mask kInputInvert = bit::CreateMaskFromRange(6);
   static constexpr bit::Mask kAnalogDigitalMode   = bit::CreateMaskFromRange(7);
@@ -65,9 +65,9 @@ class Pin final : public sjsu::Pin
   {
     SetPinRegister(function, kFunction);
   }
-  void SetMode(sjsu::Pin::Mode mode) const override
+  void SetPull(Resistor resistor) const override
   {
-    SetPinRegister(static_cast<uint8_t>(mode), kMode);
+    SetPinRegister(static_cast<uint8_t>(resistor), kResistor);
   }
   // Set bit to 0 to enable analog mode
   void SetAsAnalogMode(bool set_as_analog = true) const override

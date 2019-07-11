@@ -105,10 +105,11 @@ void InitializePlatform()
   // Initializing the FPU first.
   sjsu::cortex::InitializeFloatingPointUnit();
   // Set Clock Speed
-  // SetClockFrequency will timeout return the offset between desire clockspeed
-  // and actual clockspeed if the PLL doesn't get a frequency fix within a
-  // defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
-  while (system_controller.SetClockFrequency(config::kSystemClockRateMhz) != 0)
+  // SetSystemClockFrequency will timeout return the offset between desire
+  // clockspeed and actual clockspeed if the PLL doesn't get a frequency fix
+  // within a defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
+  while (system_controller.SetSystemClockFrequency(
+             config::kSystemClockRateMhz) != 0)
   {
     // Continually attempt to set the clock frequency to the desired until the
     // delta between desired and actual are 0.

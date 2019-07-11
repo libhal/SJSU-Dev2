@@ -239,13 +239,13 @@ int main()
   sjsu::lpc40xx::Gpio button2(0, 30);
   sjsu::lpc40xx::Gpio button3(0, 29);
 
-  button0.GetPin().SetMode(sjsu::lpc40xx::Pin::Mode::kPullDown);
+  button0.GetPin().SetPull(sjsu::lpc40xx::Pin::Resistor::kPullDown);
   button0.SetAsInput();
-  button1.GetPin().SetMode(sjsu::lpc40xx::Pin::Mode::kPullDown);
+  button1.GetPin().SetPull(sjsu::lpc40xx::Pin::Resistor::kPullDown);
   button1.SetAsInput();
-  button2.GetPin().SetMode(sjsu::lpc40xx::Pin::Mode::kPullDown);
+  button2.GetPin().SetPull(sjsu::lpc40xx::Pin::Resistor::kPullDown);
   button2.SetAsInput();
-  button3.GetPin().SetMode(sjsu::lpc40xx::Pin::Mode::kPullDown);
+  button3.GetPin().SetPull(sjsu::lpc40xx::Pin::Resistor::kPullDown);
   button3.SetAsInput();
 
   debug_print_button_was_pressed = button3.Read();

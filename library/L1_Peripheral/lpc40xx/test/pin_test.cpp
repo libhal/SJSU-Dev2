@@ -43,33 +43,33 @@ TEST_CASE("Testing lpc40xx Pin", "[lpc40xx-pin_configure]")
     constexpr uint8_t kModePosition = 3;
     constexpr uint32_t kMask        = 0b11 << kModePosition;
     constexpr uint32_t kExpectedForInactive =
-        static_cast<uint8_t>(sjsu::Pin::Mode::kInactive) << kModePosition;
+        static_cast<uint8_t>(sjsu::Pin::Resistor::kNone) << kModePosition;
     constexpr uint32_t kExpectedForPullDown =
-        static_cast<uint8_t>(sjsu::Pin::Mode::kPullDown) << kModePosition;
+        static_cast<uint8_t>(sjsu::Pin::Resistor::kPullDown) << kModePosition;
     constexpr uint32_t kExpectedForPullUp =
-        static_cast<uint8_t>(sjsu::Pin::Mode::kPullUp) << kModePosition;
+        static_cast<uint8_t>(sjsu::Pin::Resistor::kPullUp) << kModePosition;
     constexpr uint32_t kExpectedForRepeater =
-        static_cast<uint8_t>(sjsu::Pin::Mode::kRepeater) << kModePosition;
+        static_cast<uint8_t>(sjsu::Pin::Resistor::kRepeater) << kModePosition;
 
-    test_subject00.SetMode(sjsu::Pin::Mode::kInactive);
-    test_subject25.SetMode(sjsu::Pin::Mode::kInactive);
+    test_subject00.SetPull(sjsu::Pin::Resistor::kNone);
+    test_subject25.SetPull(sjsu::Pin::Resistor::kNone);
     CHECK(kExpectedForInactive == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForInactive == (local_iocon.P2_5 & kMask));
 
-    test_subject00.SetMode(sjsu::Pin::Mode::kPullDown);
-    test_subject25.SetMode(sjsu::Pin::Mode::kPullDown);
+    test_subject00.SetPull(sjsu::Pin::Resistor::kPullDown);
+    test_subject25.SetPull(sjsu::Pin::Resistor::kPullDown);
 
     CHECK(kExpectedForPullDown == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForPullDown == (local_iocon.P2_5 & kMask));
 
-    test_subject00.SetMode(sjsu::Pin::Mode::kPullUp);
-    test_subject25.SetMode(sjsu::Pin::Mode::kPullUp);
+    test_subject00.SetPull(sjsu::Pin::Resistor::kPullUp);
+    test_subject25.SetPull(sjsu::Pin::Resistor::kPullUp);
 
     CHECK(kExpectedForPullUp == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForPullUp == (local_iocon.P2_5 & kMask));
 
-    test_subject00.SetMode(sjsu::Pin::Mode::kRepeater);
-    test_subject25.SetMode(sjsu::Pin::Mode::kRepeater);
+    test_subject00.SetPull(sjsu::Pin::Resistor::kRepeater);
+    test_subject25.SetPull(sjsu::Pin::Resistor::kRepeater);
 
     CHECK(kExpectedForRepeater == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForRepeater == (local_iocon.P2_5 & kMask));

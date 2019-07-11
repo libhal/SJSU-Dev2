@@ -322,8 +322,8 @@ class I2c final : public sjsu::I2c
     i2c_.bus.scl_pin.SetPinFunction(i2c_.bus.pin_function_id);
     i2c_.bus.sda_pin.SetAsOpenDrain();
     i2c_.bus.scl_pin.SetAsOpenDrain();
-    i2c_.bus.sda_pin.SetMode(sjsu::Pin::Mode::kInactive);
-    i2c_.bus.scl_pin.SetMode(sjsu::Pin::Mode::kInactive);
+    i2c_.bus.sda_pin.SetPull(sjsu::Pin::Resistor::kNone);
+    i2c_.bus.scl_pin.SetPull(sjsu::Pin::Resistor::kNone);
 
     system_controller_.PowerUpPeripheral(i2c_.bus.peripheral_power_id);
 

@@ -63,39 +63,34 @@ class Gpio final : public sjsu::Gpio
   {
     interupt_port_ = (port_number == 2) ? 1 : 0;
   }
-  // Sets the GPIO pin direction as input
-  void SetAsInput() const
-  {
-    pin_.SetPinFunction(kGpioFunction);
-    gpio_port[pin_.GetPort()]->DIR &= ~(1 << pin_.GetPin());
-  }
-  // Sets the GPIO pin direction as output
-  void SetAsOutput() const
-  {
-    pin_.SetPinFunction(kGpioFunction);
-    gpio_port[pin_.GetPort()]->DIR |= (1 << pin_.GetPin());
-  }
   // Sets the GPIO pin direction as output or input depending on the
   // Direction enum parameter
   void SetDirection(Direction direction) const override
   {
-    (direction) ? SetAsOutput() : SetAsInput();
-  }
-  // Sets the GPIO output pin to high
-  void SetHigh() const
-  {
-    gpio_port[pin_.GetPort()]->SET = (1 << pin_.GetPin());
-  }
-  // Sets the GPIO output pin to low
-  void SetLow() const
-  {
-    gpio_port[pin_.GetPort()]->CLR = (1 << pin_.GetPin());
+    pin_.SetPinFunction(kGpioFunction);
+    volatile uint32_t * dir_register = &gpio_port[pin_.GetPort()]->DIR;
+
+    if (direction == Direction::kInput)
+    {
+      *dir_register = bit::Clear(*dir_register, pin_.GetPin());
+    }
+    else
+    {
+      *dir_register = bit::Set(*dir_register, pin_.GetPin());
+    }
   }
   // Sets the GPIO output pin to high or low depending on the State enum
   // parameter
   void Set(State output = kHigh) const override
   {
-    (output) ? SetHigh() : SetLow();
+    if (output == State::kHigh)
+    {
+      gpio_port[pin_.GetPort()]->SET = (1 << pin_.GetPin());
+    }
+    else
+    {
+      gpio_port[pin_.GetPort()]->CLR = (1 << pin_.GetPin());
+    }
   }
   // Toggle the output of a GPIO output pin
   void Toggle() const override
@@ -103,14 +98,9 @@ class Gpio final : public sjsu::Gpio
     gpio_port[pin_.GetPort()]->PIN ^= (1 << pin_.GetPin());
   }
   // Returns the current State state of the pin
-  State ReadState() const override
-  {
-    return static_cast<State>(Read());
-  }
-  // Returns true if input or output pin is high
   bool Read() const override
   {
-    return (gpio_port[pin_.GetPort()]->PIN >> pin_.GetPin()) & 1;
+    return bit::Read(gpio_port[pin_.GetPort()]->PIN, pin_.GetPin());
   }
   const sjsu::Pin & GetPin() const override
   {
