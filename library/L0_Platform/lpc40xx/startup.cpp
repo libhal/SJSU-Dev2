@@ -105,10 +105,11 @@ void InitializePlatform()
   // Initializing the FPU first.
   sjsu::cortex::InitializeFloatingPointUnit();
   // Set Clock Speed
-  // SetClockFrequency will timeout return the offset between desire clockspeed
-  // and actual clockspeed if the PLL doesn't get a frequency fix within a
-  // defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
-  while (system_controller.SetClockFrequency(config::kSystemClockRateMhz) != 0)
+  // SetSystemClockFrequency will timeout return the offset between desire
+  // clockspeed and actual clockspeed if the PLL doesn't get a frequency fix
+  // within a defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
+  while (system_controller.SetSystemClockFrequency(
+             config::kSystemClockRateMhz) != 0)
   {
     // Continually attempt to set the clock frequency to the desired until the
     // delta between desired and actual are 0.
@@ -155,6 +156,18 @@ extern "C" void ResetIsr()
 #pragma GCC diagnostic pop
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
-  LOG_CRITICAL("main() returned with value %" PRId32, result);
+  if (result >= 0)
+  {
+    printf("\n" SJ2_BOLD_WHITE SJ2_BACKGROUND_GREEN
+           "Program Returned Exit Code: %" PRId32 "\n" SJ2_COLOR_RESET,
+           result);
+  }
+  else
+  {
+    printf("\n" SJ2_BOLD_WHITE SJ2_BACKGROUND_RED
+           "Program Returned Exit Code: %" PRId32 "\n" SJ2_COLOR_RESET,
+           result);
+  }
+
   sjsu::Halt();
 }

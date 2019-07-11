@@ -10,7 +10,7 @@
 ///
 ///     1. Constructor (create object)
 ///     2. SetClock(...)
-///     3. SetMode(...)
+///     3. SetPull(...)
 ///     4. Initialize()
 ///
 /// Note that all register modifications must be made before the SSP
@@ -49,7 +49,7 @@ class Spi final : public sjsu::Spi
   struct ControlRegister1  // NOLINT
   {
     static constexpr bit::Mask kSpiEnable     = bit::CreateMaskFromRange(1);
-    static constexpr bit::Mask kMasterModeBit = bit::CreateMaskFromRange(2);
+    static constexpr bit::Mask kSlaveModeBit = bit::CreateMaskFromRange(2);
   };
   // SSPn Status Register
   struct StatusRegister  // NOLINT
@@ -153,7 +153,6 @@ class Spi final : public sjsu::Spi
   Status Initialize() const override
   {
     constexpr uint8_t kSpiFormatCode  = 0b00;
-    constexpr uint8_t kMasterModeCode = 0b0;
 
     // Power up peripheral
     system_controller_.PowerUpPeripheral(bus_.power_on_bit);
@@ -164,9 +163,9 @@ class Spi final : public sjsu::Spi
     // Set SSP frame format to SPI
     bus_.registers->CR0 = bit::Insert(
         bus_.registers->CR0, kSpiFormatCode, ControlRegister0::kFrameBit);
-    // Set SPI to master mode
-    bus_.registers->CR1 = bit::Insert(
-        bus_.registers->CR1, kMasterModeCode, ControlRegister1::kMasterModeBit);
+    // Set SPI to master mode by clearing
+    bus_.registers->CR1 = bit::Clear(bus_.registers->CR1,
+                                     ControlRegister1::kSlaveModeBit.position);
     // Enable SSP
     bus_.registers->CR1 =
         bit::Set(bus_.registers->CR1, ControlRegister1::kSpiEnable.position);

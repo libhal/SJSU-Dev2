@@ -25,7 +25,7 @@ class Pin final : public sjsu::Pin
   inline static volatile PinTable_t * function_map =
       reinterpret_cast<volatile PinTable_t *>(&LPC_PINCON->PINSEL0);
 
-  inline static volatile PinTable_t * mode_map =
+  inline static volatile PinTable_t * resistor_map =
       reinterpret_cast<volatile PinTable_t *>(&LPC_PINCON->PINMODE0);
 
   inline static volatile PinTable_t * open_drain_map =
@@ -70,17 +70,17 @@ class Pin final : public sjsu::Pin
         bit::Insert(function_map->pin[pin_reg_select], function, kPinMask);
   }
   static constexpr uint8_t kResistorModes[4] = {
-    0b10,  // kInactive [0]
+    0b10,  // kNone [0]
     0b11,  // kPullDown [1]
     0b00,  // kPullUp   [2]
     0b01,  // kRepeater [3]
   };
-  void SetMode(Mode mode) const override
+  void SetPull(Resistor resistor) const override
   {
     uint32_t pin_reg_select = PinRegisterLookup();
-    mode_map->pin[pin_reg_select] =
-        bit::Insert(mode_map->pin[pin_reg_select],
-                    kResistorModes[util::Value(mode)],
+    resistor_map->pin[pin_reg_select] =
+        bit::Insert(resistor_map->pin[pin_reg_select],
+                    kResistorModes[util::Value(resistor)],
                     kPinMask);
   }
   [[deprecated]] void SetAsAnalogMode(

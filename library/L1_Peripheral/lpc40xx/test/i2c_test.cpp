@@ -23,16 +23,18 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetPeripheralFrequency))
+  When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
+  When(Method(mock_system_controller, GetPeripheralClockDivider))
+      .AlwaysReturn(1);
 
   Mock<sjsu::Pin> mock_sda_pin;
   Fake(Method(mock_sda_pin, SetPinFunction),
-       Method(mock_sda_pin, SetAsOpenDrain), Method(mock_sda_pin, SetMode));
+       Method(mock_sda_pin, SetAsOpenDrain), Method(mock_sda_pin, SetPull));
 
   Mock<sjsu::Pin> mock_scl_pin;
   Fake(Method(mock_scl_pin, SetPinFunction),
-       Method(mock_scl_pin, SetAsOpenDrain), Method(mock_scl_pin, SetMode));
+       Method(mock_scl_pin, SetAsOpenDrain), Method(mock_scl_pin, SetPull));
 
   I2c::Transaction_t mock_i2c_transaction;
 
@@ -88,14 +90,14 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
                .Using(kMockI2c.bus.pin_function_id))
         .Once();
     Verify(Method(mock_sda_pin, SetAsOpenDrain)).Once();
-    Verify(Method(mock_sda_pin, SetMode).Using(sjsu::Pin::Mode::kInactive))
+    Verify(Method(mock_sda_pin, SetPull).Using(sjsu::Pin::Resistor::kNone))
         .Once();
 
     Verify(Method(mock_scl_pin, SetPinFunction)
                .Using(kMockI2c.bus.pin_function_id))
         .Once();
     Verify(Method(mock_scl_pin, SetAsOpenDrain)).Once();
-    Verify(Method(mock_scl_pin, SetMode).Using(sjsu::Pin::Mode::kInactive))
+    Verify(Method(mock_scl_pin, SetPull).Using(sjsu::Pin::Resistor::kNone))
         .Once();
   }
   SECTION("Transaction test")
