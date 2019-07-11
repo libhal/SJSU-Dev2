@@ -109,6 +109,8 @@ class Timer final : public sjsu::Timer
   static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
       sjsu::lpc40xx::SystemController();
 
+  static constexpr uint8_t kMatchRegisterCount = 4;
+
   explicit constexpr Timer(const Channel_t & timer,
                            const sjsu::SystemController & system_controller =
                                kLpc40xxSystemController)
@@ -116,13 +118,6 @@ class Timer final : public sjsu::Timer
   {
   }
 
-  /// @param frequency - the frequency that the timer register (TC) will
-  ///        increment by. If set to 1000Hz, after 10 ms the TC
-  ///        register will be 10 ms.
-  /// @param isr - an ISR that will fire when the condition set by SetTimer
-  ///        method is achieved.
-  /// @param priority - sets the Timer interrupt's priority level, defaults to
-  ///        -1 which uses the platforms default priority.
   Status Initialize(uint32_t frequency,
                     IsrPointer isr   = nullptr,
                     int32_t priority = -1) const override
@@ -142,27 +137,18 @@ class Timer final : public sjsu::Timer
     return Status::kSuccess;
   }
 
-  /// Function that sets a timer of your choice (0-3) to a specific
-  /// time in milliseconds or micro seconds dependent on initialization
-  /// Functionality is defined by mode: interrupt, stop, or reset on match.
-  ///
-  /// @param ticks - the count of the timer register (TC) to have an ISR fire
-  /// @param condition - the condition for which a timer interrupt will occur
-  /// @param match_register - which match register (from 0 to 3) should be used
-  ///        for holding the ticks for the condition. Only the two least
-  ///        significant bits are used for the LPC40xx.
-  void SetTimer(uint32_t ticks,
-                TimerIsrCondition condition,
-                uint8_t match_register = 0) const override
+  void SetMatchBehavior(uint32_t ticks,
+                        MatchAction action,
+                        uint8_t match_register = 0) const override
   {
-    SJ2_ASSERT_FATAL(match_register < 3,
-                     "The LPC40xx can only has 3 match registers. An attempt "
+    SJ2_ASSERT_FATAL(match_register < kMatchRegisterCount,
+                     "LPC40xx can only has 3 match registers. An attempt "
                      "to set match register %d was attempted.",
                      match_register);
 
     timer_.channel.timer_register->MCR =
         bit::Insert(timer_.channel.timer_register->MCR,
-                    static_cast<uint32_t>(condition),
+                    static_cast<uint32_t>(action),
                     {
                         .position = static_cast<uint8_t>(match_register * 3),
                         .width    = 3,
@@ -176,7 +162,12 @@ class Timer final : public sjsu::Timer
     match_register_ptr[match_register & 0b11] = ticks / 2;
   }
 
-  uint32_t GetTimer() const override
+  uint8_t GetAvailableMatchRegisters() const override
+  {
+    return kMatchRegisterCount;
+  }
+
+  uint32_t GetCount() const override
   {
     return timer_.channel.timer_register->TC;
   }

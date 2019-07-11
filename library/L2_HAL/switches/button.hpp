@@ -19,7 +19,7 @@ class Button
   virtual void Initialize()
   {
     button_.SetDirection(Gpio::Direction::kInput);
-    button_.GetPin().SetMode(Pin::Mode::kPullDown);
+    button_.GetPin().SetPull(Pin::Resistor::kPullDown);
   }
   virtual bool Released()
   {

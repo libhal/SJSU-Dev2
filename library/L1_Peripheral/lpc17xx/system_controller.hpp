@@ -50,12 +50,13 @@ class SystemController final : public sjsu::SystemController
     static constexpr auto kUsb               = AddPeripheralID<31>();
   };
 
-  static constexpr uint32_t kDefaultIRCFrequency    = 4'000'000;
-  static constexpr uint32_t kDefaultTimeout         = 1'000;  // ms
+  static constexpr uint32_t kDefaultIRCFrequency = 4'000'000;
+  static constexpr uint32_t kDefaultTimeout      = 1'000;  // ms
 
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
-  uint32_t SetClockFrequency(uint8_t /* frequency_in_mhz */) const override
+  uint32_t SetSystemClockFrequency(
+      uint8_t /* frequency_in_mhz */) const override
   {
     return 0;
   }
@@ -77,10 +78,6 @@ class SystemController final : public sjsu::SystemController
     return speed_in_hertz;
   }
 
-  uint32_t GetPeripheralFrequency() const override
-  {
-    return speed_in_hertz;
-  }
   /// Check if a peripheral is powered up by checking the power connection
   /// register. Should typically only be used for unit testing code and
   /// debugging.
@@ -92,8 +89,7 @@ class SystemController final : public sjsu::SystemController
 
     return peripheral_is_powered_on;
   }
-  void PowerUpPeripheral(
-      const PeripheralID & peripheral_select) const override
+  void PowerUpPeripheral(const PeripheralID & peripheral_select) const override
   {
     auto power_connection_with_enabled_peripheral =
         system_controller->PCONP | (1 << peripheral_select.device_id);

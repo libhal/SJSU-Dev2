@@ -36,11 +36,14 @@ int main()
   timer2.Initialize(1'000'000, Timer2ISR);
   timer3.Initialize(1'000'000, Timer3ISR);
 
-  timer0.SetTimer(1'000'000, sjsu::Timer::TimerIsrCondition::kInterruptRestart);
-  timer1.SetTimer(3'000'000, sjsu::Timer::TimerIsrCondition::kInterruptRestart);
-  timer2.SetTimer(5'000'000, sjsu::Timer::TimerIsrCondition::kInterruptRestart);
-  timer3.SetTimer(10'000'000,
-                  sjsu::Timer::TimerIsrCondition::kInterruptRestart);
+  timer0.SetMatchBehavior(1'000'000,
+                          sjsu::Timer::MatchAction::kInterruptRestart);
+  timer1.SetMatchBehavior(3'000'000,
+                          sjsu::Timer::MatchAction::kInterruptRestart);
+  timer2.SetMatchBehavior(5'000'000,
+                          sjsu::Timer::MatchAction::kInterruptRestart);
+  timer3.SetMatchBehavior(10'000'000,
+                          sjsu::Timer::MatchAction::kInterruptRestart);
 
   sjsu::Halt();
   return 0;

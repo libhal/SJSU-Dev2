@@ -1,8 +1,8 @@
 #pragma once
 
-#include <array>
 #include <cmath>
 #include <cstdint>
+#include <limits>
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
@@ -131,8 +131,8 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       {
         divide_estimate = RoundFloat(
             DividerEstimate(baud_rate_float, decimal, peripheral_frequency));
-        decimal = FractionalEstimate(baud_rate_float, divide_estimate,
-                                     peripheral_frequency);
+        decimal = FractionalEstimate(
+            baud_rate_float, divide_estimate, peripheral_frequency);
         if (1.1f <= decimal && decimal <= 1.9f)
         {
           state = States::kGenerateFractionFromDecimal;
@@ -260,14 +260,14 @@ class Uart final : public sjsu::Uart
   Status Initialize(uint32_t baud_rate) const override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
-    // Powering the port
     system_controller_.PowerUpPeripheral(port_.power_on_id);
+
     SetBaudRate(baud_rate);
-    // Setting the pin functions and modes
+
     port_.rx.SetPinFunction(port_.rx_function_id);
     port_.tx.SetPinFunction(port_.tx_function_id);
-    port_.rx.SetMode(sjsu::Pin::Mode::kPullUp);
-    port_.tx.SetMode(sjsu::Pin::Mode::kPullUp);
+    port_.rx.SetPull(sjsu::Pin::Resistor::kPullUp);
+    port_.tx.SetPull(sjsu::Pin::Resistor::kPullUp);
     port_.registers->FCR |= kFIFOEnableAndReset;
 
     return Status::kSuccess;
@@ -305,9 +305,10 @@ class Uart final : public sjsu::Uart
     }
   }
 
-  Status Read(uint8_t * data,
-              size_t size,
-              uint32_t timeout = UINT32_MAX) const override
+  Status Read(
+      uint8_t * data,
+      size_t size,
+      uint32_t timeout = std::numeric_limits<uint32_t>::max()) const override
   {
     // NOTE: Consider changing this to using a Wait() call.
     Status status       = Status::kTimedOut;

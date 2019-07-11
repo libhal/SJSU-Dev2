@@ -19,8 +19,10 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
   constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetPeripheralFrequency))
+  When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
+  When(Method(mock_system_controller, GetPeripheralClockDivider))
+      .AlwaysReturn(1);
 
   // Set up Mock for PinCongiure
   Mock<sjsu::Pin> mock_mosi;
@@ -66,11 +68,11 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
 
   SECTION("Verify Mode and Frame")
   {
-    constexpr uint8_t kMasterBit = 2;
+    constexpr uint8_t kSlaveBit = 2;
     constexpr uint8_t kDataBit   = 0;
 
-    CHECK((local_ssp.CR1 & (0x1 << kMasterBit)) ==
-          util::Value(Spi::MasterSlaveMode::kMaster));
+    // Check that slave mode bit is 0, meaning we are in master mode.
+    CHECK(bit::Read(local_ssp.CR1, kSlaveBit) == false);
     CHECK((local_ssp.CR0 & (0xF << kDataBit)) ==
           util::Value(Spi::DataSize::kEight) + 3);
   }

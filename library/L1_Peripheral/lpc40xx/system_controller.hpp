@@ -151,7 +151,8 @@ class SystemController : public sjsu::SystemController
 
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
-  uint32_t SetClockFrequency(uint8_t frequency_in_mhz) const final override
+  uint32_t SetSystemClockFrequency(
+      uint8_t frequency_in_mhz) const final override
   {
     uint32_t offset = 0;
     SelectOscillatorSource(OscillatorSource::kIrc);
@@ -189,16 +190,6 @@ class SystemController : public sjsu::SystemController
     return speed_in_hertz;
   }
 
-  uint32_t GetPeripheralFrequency() const final override
-  {
-    uint32_t peripheral_clock_divider = GetPeripheralClockDivider();
-    uint32_t result = 0;  // return 0 if peripheral_clock_divider == 0
-    if (peripheral_clock_divider != 0)
-    {
-      result = GetSystemFrequency() / peripheral_clock_divider;
-    }
-    return result;
-  }
   /// Check if a peripheral is powered up by checking the power connection
   /// register. Should typically only be used for unit testing code and
   /// debugging.

@@ -17,8 +17,16 @@ namespace sjsu
 class SystemTimer
 {
  public:
-  virtual void SetInterrupt(IsrPointer isr) const             = 0;
-  virtual Status StartTimer() const                           = 0;
+  // ==============================
+  // Interface Methods
+  // ==============================
+
+  // Set the interrupt handler for the system timer
+  virtual void SetInterrupt(IsrPointer isr) const = 0;
+  // Set frequency of the timer
   virtual uint32_t SetTickFrequency(uint32_t frequency) const = 0;
+  // Start the system timer. Should be done after SetInterrupt and
+  // SetTickFrequency have been called.
+  virtual Status StartTimer() const = 0;
 };
 }  // namespace sjsu

@@ -28,7 +28,7 @@ int main()
   spi2.Initialize();
 
   // Set SPI1 as SPI master. Note that the function SetSpiDefault()
-  // could be used instead of SetMode() and SetClock().
+  // could be used instead of SetPull() and SetClock().
   LOG_INFO("Set SPI1 as SPI master.");
   spi2.SetDataSize(sjsu::Spi::DataSize::kEight);
 

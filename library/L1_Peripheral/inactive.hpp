@@ -42,7 +42,7 @@ const sjsu::Pin & GetInactive<sjsu::Pin>()
    public:
     InactivePin() : sjsu::Pin(0, 0) {}
     void SetPinFunction(uint8_t) const override {}
-    void SetMode(Mode) const override {}
+    void SetPull(Resistor) const override {}
     void SetAsOpenDrain(bool) const override {}
     void SetAsAnalogMode(bool) const override {}
   };
@@ -62,13 +62,17 @@ const sjsu::Adc & GetInactive<sjsu::Adc>()
       return sjsu::Status::kNotImplemented;
     }
     void Conversion() const override {}
-    uint16_t Read() const override
+    uint32_t Read() const override
     {
       return 0;
     }
     bool HasConversionFinished() const override
     {
       return true;
+    }
+    uint8_t GetActiveBits() const override
+    {
+      return 12;
     }
   };
 
@@ -88,6 +92,10 @@ const sjsu::Dac & GetInactive<sjsu::Dac>()
     }
     void Write(uint32_t) const override {}
     void SetVoltage(float) const override {}
+    uint8_t GetActiveBits() const override
+    {
+      return 12;
+    }
   };
 
   static InactiveDac inactive;
@@ -103,10 +111,6 @@ const sjsu::Gpio & GetInactive<sjsu::Gpio>()
     void SetDirection(Direction) const override {}
     void Set(State) const override {}
     void Toggle() const override {}
-    State ReadState() const override
-    {
-      return State::kLow;
-    }
     bool Read() const override
     {
       return false;
@@ -193,15 +197,11 @@ const sjsu::SystemController & GetInactive<sjsu::SystemController>()
   class InactiveSystemController : public sjsu::SystemController
   {
    public:
-    uint32_t SetClockFrequency(uint8_t) const override
+    uint32_t SetSystemClockFrequency(uint8_t) const override
     {
       return 0;
     }
     uint32_t GetPeripheralClockDivider() const override
-    {
-      return 0;
-    }
-    uint32_t GetPeripheralFrequency() const override
     {
       return 0;
     }
@@ -254,10 +254,14 @@ const sjsu::Timer & GetInactive<sjsu::Timer>()
     {
       return Status::kNotImplemented;
     }
-    void SetTimer(uint32_t, TimerIsrCondition, uint8_t) const override {}
-    uint32_t GetTimer() const override
+    void SetMatchBehavior(uint32_t, MatchAction, uint8_t) const override {}
+    uint32_t GetCount() const override
     {
       return 0;
+    }
+    uint8_t GetAvailableMatchRegisters() const override
+    {
+      return 3;
     }
   };
 

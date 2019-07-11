@@ -12,7 +12,7 @@ int main()
   sjsu::lpc40xx::Pin clock_pin(1, 25);
 
   clock_pin.SetPinFunction(0b101);  //  set clock to putput mode
-  clock_pin.SetMode(sjsu::Pin::Mode::kInactive);
+  clock_pin.SetPull(sjsu::Pin::Resistor::kNone);
   clock_pin.EnableHysteresis(false);
   clock_pin.SetAsActiveLow(false);
   clock_pin.EnableFastMode(false);
@@ -25,9 +25,9 @@ int main()
   while (true)
   {
     uint32_t speed;
-    clock.SetClockFrequency(12);
+    clock.SetSystemClockFrequency(12);
     sjsu::Delay(5000);
-    clock.SetClockFrequency(48);
+    clock.SetSystemClockFrequency(48);
     sjsu::Delay(5000);
     speed = clock.GetSystemFrequency();
     LOG_INFO("Speed is %" PRIu32, speed);

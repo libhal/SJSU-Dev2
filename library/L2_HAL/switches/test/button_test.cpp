@@ -13,8 +13,8 @@ TEST_CASE("Testing Button", "[button]")
   // Retrieve a reference to the Pin to be injected as the return value
   // of Gpios's GetPin() method.
   Pin & test_pin = mock_pin.get();
-  // Fake the implementation of SetAsActiveLow and SetMode to be inspected later
-  Fake(Method(mock_pin, SetMode));
+  // Fake the implementation of SetAsActiveLow and SetPull to be inspected later
+  Fake(Method(mock_pin, SetPull));
 
   // Create a mock gpio object
   Mock<Gpio> mock_gpio;
@@ -23,7 +23,7 @@ TEST_CASE("Testing Button", "[button]")
        Method(mock_gpio, SetDirection));
   // Fake implementation of GetPin() to return our mock_pin reference. So when
   // Button retrieves test_pin from GetPin() it will run our faked
-  // SetAsActiveLow and SetMode methods, allowing us to change them later.
+  // SetAsActiveLow and SetPull methods, allowing us to change them later.
   When(Method(mock_gpio, GetPin)).AlwaysReturn(test_pin);
 
   // Retrieve Gpio reference ot be passed to the test subject
@@ -36,7 +36,7 @@ TEST_CASE("Testing Button", "[button]")
   {
     test_subject.Initialize();
     Verify(Method(mock_gpio, SetDirection).Using(Gpio::Direction::kInput),
-           Method(mock_pin, SetMode).Using(Pin::Mode::kPullDown));
+           Method(mock_pin, SetPull).Using(Pin::Resistor::kPullDown));
   }
   SECTION("Button Released")
   {
