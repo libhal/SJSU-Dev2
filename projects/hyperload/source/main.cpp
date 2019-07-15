@@ -21,17 +21,6 @@
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
 
-// Only allow this file to be compiled if the BOOTLOADER or CLANG_TIDY defines
-// have been defined.
-//    BOOTLOADER is defined when using "make bootloader"
-//    CLANG_TIDY is defined when using "make tidy"
-
-static_assert(
-    sjsu::build::kTarget == sjsu::build::Target::Bootloader ||
-        sjsu::build::kTarget == sjsu::build::Target::HostTest,
-    "Hyperload must be built as a 'bootloader' and not as an application or "
-    "test. Please build this software using 'make bootloader'");
-
 namespace
 {
 sjsu::lpc40xx::SystemController system_controller;

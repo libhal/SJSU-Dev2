@@ -11,9 +11,12 @@
 MEMORY
 {
   /* Define each memory region */
-  MFlash512 (rx) : ORIGIN = 0x0, LENGTH = 0x10000 /* 64K bytes bootloader flash */
-  RamLoc64 (rwx) : ORIGIN = 0x10000000, LENGTH = 0x10000 /* 64K bytes (alias RAM) */
-  RamPeriph32 (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000 /* 32K bytes (alias RAM2) */
+  /* 512kB (alias Flash) */
+  MFlash512 (rx) : ORIGIN = 0, LENGTH = 512K
+  /* 64kB (alias RAM) */
+  RamLoc64 (rwx) : ORIGIN = 0x10000000, LENGTH = 0x10000
+  /* 32kB (alias RAM2) */
+  RamPeriph32 (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000
 }
 
   /* Define a symbol for the top of each memory region */
@@ -29,6 +32,7 @@ MEMORY
   __base_RAM2 = 0x20000000 ; /* RAM2 */
   __top_RamPeriph32 = 0x20000000 + 0x8000 ; /* 32K bytes */
   __top_RAM2 = 0x20000000 + 0x8000 ; /* 32K bytes */
+  __user_heap_base = __base_RAM2 ; /* SJSU-Dev2: RAM2 is solely for heap */
 
 ENTRY(ResetIsr)
 
@@ -192,6 +196,7 @@ SECTIONS
     } > RamLoc64
 
     PROVIDE(heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
+    PROVIDE(heap_end = __top_RAM2);
     PROVIDE(StackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_RamLoc64 - 0);
 
     /* ## Create checksum value (used in startup) ## */

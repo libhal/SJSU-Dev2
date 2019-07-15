@@ -9,6 +9,7 @@ library/static_libraries/*
 !library/static_libraries/keep_folder
 
 tools/Hyperload
+tools/nxpprog
 tools/Telemetry
 tools/gcc-arm-none-eabi-*
 tools/clang*
