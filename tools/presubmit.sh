@@ -102,7 +102,7 @@ cd "$SJBASE/projects/hyperload"
 # Clean the build and start building from scratch
 SILENCE=$(make clean)
 # Check if the system can build without any warnings!
-SILENCE=$(make -s bootloader OPT=s WARNINGS_ARE_ERRORS=-Werror)
+SILENCE=$(make -s application OPT=s WARNINGS_ARE_ERRORS=-Werror)
 # Set build capture to return code from the build
 SPECIFIC_BUILD_CAPTURE=$?
 BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))

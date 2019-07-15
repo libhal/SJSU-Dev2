@@ -223,14 +223,15 @@ fi
 cd "$BASE"
 
 echo " ───────────────────────────────────────────────────┐"
-echo "                Setting Up Hyperload                 "
+echo "                Setting Up nxpprog                   "
 echo "└─────────────────────────────────────────────────── "
-rm -rf "$TOOLDIR/Hyperload/"
-git clone --depth=1 https://github.com/kammce/Hyperload.git \
-                    "$TOOLDIR/Hyperload/"
-cd "$TOOLDIR/Hyperload/" && ./setup
+rm -rf "$TOOLDIR/nxpprog/"
+git clone --depth=1 https://github.com/kammce/nxpprog.git \
+                    "$TOOLDIR/nxpprog/"
+cd "$TOOLDIR/nxpprog/" && ./setup
 
 cd "$BASE"
+
 echo " ───────────────────────────────────────────────────┐"
 echo "        Generating Environment Variables File        "
 echo "└─────────────────────────────────────────────────── "
