@@ -85,15 +85,14 @@ cd "$TOOLDIR"
 case "$OS" in
 	Linux) # Linux & Windows WSL Case
 		echo "Operating System: Linux"
-		SJSUONEDEV=/dev/ttyUSB0
 		echo " ───────────────────────────────────────────────────┐"
 		echo "                    Updating Apt                     "
 		echo "└─────────────────────────────────────────────────── "
 		sudo apt update
 		echo " ───────────────────────────────────────────────────┐"
-		echo "   Installing git, make python, pip, Curl, tar, pv   "
+		echo "   Installing git, make python3, pip3, Curl, tar, pv   "
 		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install git make python python-pip curl tar pv
+		sudo apt -y install git make python3 python3-pip curl tar pv
 
 		VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID=")
 		echo "UBUNTU $VERSION_ID"
@@ -132,7 +131,6 @@ case "$OS" in
 
 	Darwin) # OS X Case
 		echo "Operating System: Mac OSX Darvin"
-		SJSUONEDEV=/dev/tty.usbserial-A503JOLS
 		echo " ───────────────────────────────────────────────────┐"
 		echo "    Install XCode Command Line Tools (GCC, make)     "
 		echo "└─────────────────────────────────────────────────── "
@@ -170,7 +168,7 @@ case "$OS" in
 		echo " ───────────────────────────────────────────────────┐"
 		echo "        Installing PIP via bootstrap.pypa.io         "
 		echo "└─────────────────────────────────────────────────── "
-		curl https://bootstrap.pypa.io/get-pip.py | python2.7
+		curl https://bootstrap.pypa.io/get-pip.py | python3
 		echo " ──────────────────────────────────────────────────┐"
 		echo "            Downloading gcc-arm-embedded            "
 		echo "└────────────────────────────────────────────────── "
@@ -188,15 +186,15 @@ esac
 echo " ───────────────────────────────────────────────────┐"
 echo "                  Upgrading PIP                      "
 echo "└─────────────────────────────────────────────────── "
-sudo -H pip install --upgrade pip
+sudo -H python3 -m pip install --upgrade pip
 echo " ───────────────────────────────────────────────────┐"
 echo "                 Installing Gcovr                    "
 echo "└─────────────────────────────────────────────────── "
-sudo -H pip install gcovr
+sudo -H python3 -m pip install gcovr
 echo " ───────────────────────────────────────────────────┐"
 echo "          Installing/Upgrading Virtualenv            "
 echo "└─────────────────────────────────────────────────── "
-sudo -H pip install --upgrade virtualenv
+sudo -H python3 -m pip install --upgrade virtualenv
 echo " ──────────────────────────────────────────────────┐"
 echo "           Extracting gcc-arm-embedded             "
 echo "└────────────────────────────────────────────────── "

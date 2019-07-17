@@ -8,11 +8,12 @@
 #include <cstdint>
 
 #if defined HOST_TEST
-#include "L4_Testing/testing_frameworks.hpp"
-
 #include "event_groups.h"
 #include "semphr.h"
 #include "timers.h"
+
+#include "L4_Testing/testing_frameworks.hpp"
+
 
 DECLARE_FAKE_VOID_FUNC(vTaskStartScheduler);
 DECLARE_FAKE_VOID_FUNC(vTaskSuspend, TaskHandle_t);
@@ -54,7 +55,7 @@ namespace rtos
 {
 enum Priority
 {
-  kIdle = tskIDLE_PRIORITY,
+  kIdle = 0,
   kLow,
   kMedium,
   kHigh,

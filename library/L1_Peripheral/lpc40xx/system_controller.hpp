@@ -17,7 +17,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class SystemController : public sjsu::SystemController
+class SystemController final : public sjsu::SystemController
 {
  public:
   enum class UsbSource : uint16_t
@@ -152,7 +152,7 @@ class SystemController : public sjsu::SystemController
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
   uint32_t SetSystemClockFrequency(
-      uint8_t frequency_in_mhz) const final override
+      uint8_t frequency_in_mhz) const override
   {
     uint32_t offset = 0;
     SelectOscillatorSource(OscillatorSource::kIrc);
@@ -174,18 +174,18 @@ class SystemController : public sjsu::SystemController
   }
 
   void SetPeripheralClockDivider(
-      uint8_t peripheral_divider) const final override
+      uint8_t peripheral_divider) const override
   {
     SJ2_ASSERT_FATAL(peripheral_divider <= 4, "Divider mustn't exceed 32");
     system_controller->PCLKSEL = peripheral_divider;
   }
 
-  uint32_t GetPeripheralClockDivider() const final override
+  uint32_t GetPeripheralClockDivider() const override
   {
     return system_controller->PCLKSEL;
   }
 
-  uint32_t GetSystemFrequency() const final override
+  uint32_t GetSystemFrequency() const override
   {
     return speed_in_hertz;
   }
@@ -194,7 +194,7 @@ class SystemController : public sjsu::SystemController
   /// register. Should typically only be used for unit testing code and
   /// debugging.
   bool IsPeripheralPoweredUp(
-      const PeripheralID & peripheral_select) const final override
+      const PeripheralID & peripheral_select) const override
   {
     bool peripheral_is_powered_on =
         system_controller->PCONP & (1 << peripheral_select.device_id);
@@ -202,13 +202,13 @@ class SystemController : public sjsu::SystemController
     return peripheral_is_powered_on;
   }
   void PowerUpPeripheral(
-      const PeripheralID & peripheral_select) const final override
+      const PeripheralID & peripheral_select) const override
   {
     system_controller->PCONP =
         bit::Set(system_controller->PCONP, peripheral_select.device_id);
   }
   void PowerDownPeripheral(
-      const PeripheralID & peripheral_select) const final override
+      const PeripheralID & peripheral_select) const override
   {
     system_controller->PCONP =
         bit::Clear(system_controller->PCONP, peripheral_select.device_id);

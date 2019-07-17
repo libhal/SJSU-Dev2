@@ -3,9 +3,10 @@
 #pragma once
 // Include using <> vs "" for  to make sure we only grab the project version of
 // project_config.hpp
-#include <project_config.hpp>
 #include <cstddef>
 #include <cstdint>
+
+#include <project_config.hpp>
 
 #include "log_levels.hpp"
 

@@ -11,7 +11,7 @@
 namespace sjsu
 {
 // Print RTOS runtime stats of FreeRTOS.
-class RtosCommand : public Command
+class RtosCommand final: public Command
 {
  public:
   static constexpr const char kDescription[] =
@@ -37,7 +37,7 @@ class RtosCommand : public Command
     }
   }
 
-  int Program(int, const char * const[]) override final
+  int Program(int, const char * const[]) override
   {
     TaskStatus_t task_status[32];
     uint32_t total_runtime;
