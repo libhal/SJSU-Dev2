@@ -15,7 +15,7 @@ GREEN=$(shell echo "\x1B[32;1m")
 # The following list of target opt-out of output sync
 ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
-			 presubmit run-test openocd debug lint multi-debug flash burn \
+			 presubmit run-test openocd debug lint multi-debug flash \
 			 debug-user-test))
 MAKEFLAGS += --output-sync
 endif
@@ -410,14 +410,12 @@ help:
 application: build
 build: $(LIST) $(HEX) $(BINARY) $(SIZE)
 # ====================================================================
-# Flash board
+# Flash/Program firmware to board/chip
 # ====================================================================
 flash:
-	@make --quiet application
-	@bash -c "\
-	source $(TOOLS_DIR)/nxpprog/modules/bin/activate && \
-	python3 $(TOOLS_DIR)/nxpprog/nxpprog.py --oscfreq=12000000 --baud=115200 \
-	--control \"$(SJDEV)\" \"$(BINARY)\""
+	@$(MAKE) --quiet application
+	@printf '$(MAGENTA)Programming chip...$(RESET)\n'
+	@$(MAKE) --quiet platform-flash
 # ====================================================================
 # Clean working build directory by deleting the build folder
 # ====================================================================
