@@ -18,7 +18,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
+class Can final : public sjsu::Can
 {
  public:
   // Adding this so Send() with the std::initializer_list is within the scope of
@@ -282,6 +282,8 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     kAcceptAllMessages          = 0x02,
   };
 
+  static const sjsu::lpc40xx::SystemController kDefaultSystemController;
+
   // Default constructor that defaults to CAN 1
   constexpr Can()
       : controller_(kCan1),
@@ -289,18 +291,25 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
         rd_(&rd_pin_),
         td_(&td_pin_),
         rd_pin_(Pin(kCan1Port, kRd1PinNumber)),
-        td_pin_(Pin(kCan1Port, kTd1PinNumber))
+        td_pin_(Pin(kCan1Port, kTd1PinNumber)),
+        system_controller_(kDefaultSystemController)
   {
   }
 
-  constexpr Can(Controllers controller, BaudRates baud_rate, sjsu::Pin * td_pin,
-                sjsu::Pin * rd_pin)
+  constexpr Can(
+              Controllers controller,
+              BaudRates baud_rate,
+              sjsu::Pin * td_pin,
+              sjsu::Pin * rd_pin,
+              const sjsu::lpc40xx::SystemController & system_controller =
+                  kDefaultSystemController)
       : controller_(controller),
         baud_rate_(baud_rate),
         rd_(td_pin),
         td_(rd_pin),
         rd_pin_(Pin::CreateInactivePin()),
-        td_pin_(Pin::CreateInactivePin())
+        td_pin_(Pin::CreateInactivePin()),
+        system_controller_(system_controller)
   {
   }
 
@@ -655,11 +664,13 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
   {
     if (controller_ == kCan1)
     {
-      PowerUpPeripheral(sjsu::lpc40xx::SystemController::Peripherals::kCan1);
+      system_controller_.PowerUpPeripheral(
+          sjsu::lpc40xx::SystemController::Peripherals::kCan1);
     }
     else
     {
-      PowerUpPeripheral(sjsu::lpc40xx::SystemController::Peripherals::kCan2);
+      system_controller_.PowerUpPeripheral(
+          sjsu::lpc40xx::SystemController::Peripherals::kCan2);
     }
   }
 
@@ -751,6 +762,7 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
   sjsu::Pin * td_;
   lpc40xx::Pin rd_pin_;
   lpc40xx::Pin td_pin_;
+  const sjsu::lpc40xx::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

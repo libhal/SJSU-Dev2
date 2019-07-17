@@ -1,6 +1,4 @@
 // SJTwo Hyperload Version 1.0
-#include <project_config.hpp>
-
 #include <cmath>
 #include <cstdarg>
 #include <cstdint>
@@ -8,6 +6,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <iterator>
+
+#include <project_config.hpp>
 
 #include "config.hpp"
 #include "L0_Platform/lpc40xx/interrupt.hpp"

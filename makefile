@@ -416,7 +416,7 @@ flash:
 	@make --quiet application
 	@bash -c "\
 	source $(TOOLS_DIR)/nxpprog/modules/bin/activate && \
-	python $(TOOLS_DIR)/nxpprog/nxpprog.py --oscfreq=12000000 --baud=115200 \
+	python3 $(TOOLS_DIR)/nxpprog/nxpprog.py --oscfreq=12000000 --baud=115200 \
 	--control \"$(SJDEV)\" \"$(BINARY)\""
 # ====================================================================
 # Clean working build directory by deleting the build folder
@@ -473,7 +473,7 @@ run-test:
 # ====================================================================
 # Evaluate library files and check them for linting errors.
 lint:
-	@python2.7 $(TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
+	@python3 $(TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
 # Evaluate library files for proper code naming conventions
 tidy: $(TIDY_FILES_PHONY)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
@@ -576,7 +576,8 @@ $(OBJECT_DIR)/%.o: %
 
 $(DBC_BUILD):
 	@mkdir -p "$(dir $@)"
-	python2.7 "$(LIBRARY_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIBRARY_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
+	python3 "$(LIBRARY_DIR)/$(DBC_DIR)/dbc_parse.py" \
+		-i "$(LIBRARY_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
 
 $(TEST_EXEC): $(OBJECTS)
 	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@ '

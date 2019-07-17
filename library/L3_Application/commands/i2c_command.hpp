@@ -13,7 +13,7 @@ namespace sjsu
 {
 /// The I2cCommand [will] allows the user to discover, read, and write to
 /// devices on the I2C bus.
-class I2cCommand : public Command
+class I2cCommand final : public Command
 {
  public:
   enum Args
@@ -199,7 +199,7 @@ class I2cCommand : public Command
   }
 
   int AutoComplete(int argc, const char * const argv[],
-                   const char * completion[], const size_t) override final
+                   const char * completion[], const size_t) override
   {
     size_t position = 0;
     completion[0]   = nullptr;
@@ -235,7 +235,7 @@ class I2cCommand : public Command
     return position;
   }
 
-  int Program(int argc, const char * const argv[]) override final
+  int Program(int argc, const char * const argv[]) override
   {
     if (argc - 1 < kOperation)
     {

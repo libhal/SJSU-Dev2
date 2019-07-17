@@ -10,6 +10,6 @@ namespace sjsu
 {
 namespace example  // rename to name of platform
 {
-#include "example_memory_map_c.h"
+#include "L0_Platform/example/example_memory_map_c.h"
 }  // namespace example
 }  // namespace sjsu
