@@ -154,9 +154,6 @@ BUILD_DIRECTORY_NAME = build
 # "make test"'s build directory becomes "build/test"
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), flash stacktrace-application multi-debug debug))
 BUILD_SUBDIRECTORY_NAME = application
-else ifeq ($(MAKECMDGOALS), \
-	$(filter $(MAKECMDGOALS), burn stacktrace-bootloader multi-debug-bootloader))
-BUILD_SUBDIRECTORY_NAME = bootloader
 else ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), run-test))
 BUILD_SUBDIRECTORY_NAME = test
 else
@@ -280,55 +277,39 @@ WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wsuggest-final-methods $(WARNINGS_ARE_ERRORS)
 CPPWARNINGS = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
               -Wuseless-cast $(WARNINGS_ARE_ERRORS)
-DEFINES   = -D ARM_MATH_CM4=1 -D ELF_FILE=\"$(EXECUTABLE)\" \
-            -D PLATFORM=$(PLATFORM) -D __FPU_PRESENT=1U
+DEFINES   = -D ELF_FILE=\"$(EXECUTABLE)\" -D PLATFORM=$(PLATFORM)
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # Combine all of the flags together
 COMMON_FLAGS += $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
-               $(DISABLED_WARNINGS) -fdiagnostics-color
+                $(DISABLED_WARNINGS) -fdiagnostics-color
 # Add the last touch for object files
 CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
-LINKFLAGS = $(COMMON_FLAGS) -T $(LINKER) -specs=nano.specs \
-						-Wl,--gc-sections -Wl,-Map,"$(MAP)"
-
-# Enable specific flags for building a bootloader
-ifeq ($(MAKECMDGOALS), bootloader)
-LINKER = $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/bootloader.ld
-CFLAGS_COMMON += -D TARGET=Bootloader
-endif
-# NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
-# clang std libs (libc++) or it will result in a metric ton of undefined linker
-# errors.
-# The filte command checks if any of the make targets are application, flash,
-# etc and if so, this ifeq will become true
-ifeq ($(MAKECMDGOALS), $(filter \
-			$(MAKECMDGOALS), application flash build cleaninstall))
-LINKER = $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/application.ld
-CFLAGS_COMMON += -D TARGET=Application
-endif
+LINKFLAGS = $(COMMON_FLAGS)  -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
+            -specs=nano.specs \
+            -T $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/linker.ld
 
 # Enable a whole different set of exceptions, checks, coverage tools and more
 # with the test target
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
 CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
-				 -fprofile-instr-generate -fcoverage-mapping \
+         -fprofile-instr-generate -fcoverage-mapping \
          -fno-elide-constructors -ftest-coverage -fno-omit-frame-pointer \
-				 -fsanitize=address -stdlib=libc++ \
-				 -fdiagnostics-color \
-				 -Wconversion -Wextra -Wall \
-				 -Wno-sign-conversion -Wno-format-nonliteral \
-				 -Winconsistent-missing-override -Wshadow -Wfloat-equal \
+         -fsanitize=address -stdlib=libc++ \
+         -fdiagnostics-color \
+         -Wconversion -Wextra -Wall \
+         -Wno-sign-conversion -Wno-format-nonliteral \
+         -Winconsistent-missing-override -Wshadow -Wfloat-equal \
          -Wdouble-promotion -Wswitch -Wnull-dereference -Wformat=2 \
          -Wundef -Wold-style-cast -Woverloaded-virtual \
-				 $(WARNINGS_ARE_ERRORS) \
-				 -D HOST_TEST=1 -D TARGET=HostTest -D SJ2_BACKTRACE_DEPTH=1024 \
-				 -D CATCH_CONFIG_FAST_COMPILE \
-				 $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG) \
-				 $(DISABLED_WARNINGS) \
-				 -O0 -MMD -MP -c
+          $(WARNINGS_ARE_ERRORS) \
+         -D HOST_TEST=1 -D TARGET=HostTest -D SJ2_BACKTRACE_DEPTH=1024 \
+         -D CATCH_CONFIG_FAST_COMPILE \
+         $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG) \
+         $(DISABLED_WARNINGS) \
+         -O0 -MMD -MP -c
 CFLAGS = $(CPPFLAGS)
 else
-CFLAGS = $(CFLAGS_COMMON)
+CFLAGS = $(CFLAGS_COMMON) -D TARGET=Application
 CPPFLAGS = $(CFLAGS) $(CPPWARNINGS) $(CPPOPTIMIZE)
 endif
 
@@ -387,55 +368,56 @@ print-%  : ; @echo $* = $($*)
 default: help
 help:
 	@echo "List of available targets:"
+	@echo
 	@echo "General Commands:"
+	@echo
 	@echo "  application  - Builds firmware project as an application"
 	@echo "  flash        - Installs firmware on to a device with the Hyperload"
 	@echo "                 bootloader installed."
-	@echo "  bootloader   - Builds firmware using bootloader linker"
-	@echo "  burn         - Installs bootloader onto device [NOT OPERATIONAL]"
-	@echo "                 (LPC40xx & LPC17xx)"
 	@echo "  clean        - deletes build folder contents"
 	@echo "  cleaninstall - cleans, builds, and installs application firmware on "
 	@echo "                 device."
 	@echo " library-clean - cleans static libraries files"
 	@echo "  purge        - remove local build files and static libraries "
 	@echo "  telemetry    - Launch telemetry web interface on platform"
+	@echo
 	@echo "SJSU-Dev2 Developer Commands: "
+	@echo
 	@echo "  presubmit    - run presubmit checks script"
 	@echo "  lint         - Check that source files abide by the SJSU-Dev2 coding"
 	@echo "                 standard."
 	@echo "  tidy         - Check that source file fit the SJSU-Dev2 naming "
 	@echo "                 convention "
 	@echo "  help         - Shows this menu"
+	@echo
 	@echo "SJSU-Dev2 Testing Commands: "
+	@echo
 	@echo "  user-test    - build all user defined test as defined in USER_TESTS"
 	@echo "  test         - build all library tests"
 	@echo "  run-test     - Run either user or test executable"
+	@echo
 	@echo "Debugging Commands: "
+	@echo
 	@echo "  openocd      - run openocd with the sjtwo.cfg file"
 	@echo "  debug        - run arm gdb with current projects .elf file"
 	@echo "  multi-debug  - run multiarch gdb with current projects .elf file"
 	@echo "  show-lists   - Makefile debugging target that displays the contents"
 	@echo "                 of make variables"
-	@echo
-	@echo
 
 # ====================================================================
 # Build firmware
 # ====================================================================
-bootloader: build
 application: build
 build: $(LIST) $(HEX) $(BINARY) $(SIZE)
 # ====================================================================
 # Flash board
 # ====================================================================
 flash:
-	make --quiet application
+	@make --quiet application
 	@bash -c "\
-	source $(TOOLS_DIR)/Hyperload/modules/bin/activate && \
-	python $(TOOLS_DIR)/Hyperload/hyperload.py \
-	--baud=576000 --animation=clocks --clockspeed=48000000 \
-	--device=\"$(SJDEV)\" \"$(BINARY)\""
+	source $(TOOLS_DIR)/nxpprog/modules/bin/activate && \
+	python $(TOOLS_DIR)/nxpprog/nxpprog.py --oscfreq=12000000 --baud=115200 \
+	--control \"$(SJDEV)\" \"$(BINARY)\""
 # ====================================================================
 # Clean working build directory by deleting the build folder
 # ====================================================================
@@ -503,8 +485,6 @@ presubmit:
 # ====================================================================
 stacktrace-application:
 	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE) $(TRACES)
-stacktrace-bootloader:
-	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE)
 # Start an openocd jtag debug session for the sjtwo development board
 openocd:
 	$(SJOPENOCD)/bin/openocd -f $(OPENOCD_CONFIG)
@@ -516,8 +496,6 @@ debug-user-test:
 # Start gdb just like the debug target, but using gdb-multiarch
 # gdb-multiarch is perferable since it supports python in its .gdbinit file
 multi-debug:
-	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
-multi-debug-bootloader:
 	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
 # ====================================================================
 # Makefile debug

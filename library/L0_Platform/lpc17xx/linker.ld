@@ -1,7 +1,7 @@
 MEMORY
 {
     /* Flash memory region for the program, offset by the bootloader section */
-    FLASH (rx) : ORIGIN = 64K, LENGTH = 448K
+    FLASH (rx) : ORIGIN = 0, LENGTH = 512K
 
     /* 32K (Heap starts here) */
     SRAM (rwx) : ORIGIN = 0x10000000, LENGTH = 32K
