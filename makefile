@@ -15,8 +15,8 @@ GREEN=$(shell echo "\x1B[32;1m")
 # The following list of target opt-out of output sync
 ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
-			 presubmit run-test openocd debug lint multi-debug flash \
-			 debug-user-test))
+			 presubmit run-test openocd debug lint multi-debug flash jtag-flash \
+			 platform-flash platform-jtag-flash debug-test))
 MAKEFLAGS += --output-sync
 endif
 #
@@ -152,7 +152,9 @@ endif
 BUILD_DIRECTORY_NAME = build
 # "make application"'s build directory becomes "build/application"
 # "make test"'s build directory becomes "build/test"
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), flash stacktrace-application multi-debug debug))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), flash jtag-flash \
+      platform-flash platform-jtag-flash \
+      stacktrace-application multi-debug debug))
 BUILD_SUBDIRECTORY_NAME = application
 else ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), run-test))
 BUILD_SUBDIRECTORY_NAME = test
@@ -410,12 +412,22 @@ help:
 application: build
 build: $(LIST) $(HEX) $(BINARY) $(SIZE)
 # ====================================================================
-# Flash/Program firmware to board/chip
+# Flash/Program microcontroller using In-system programming (ISP)
 # ====================================================================
 flash:
 	@$(MAKE) --quiet application
-	@printf '$(MAGENTA)Programming chip...$(RESET)\n'
+	@printf \
+	'$(MAGENTA)Programming chip via In-system programming (ISP)...$(RESET)\n'
 	@$(MAKE) --quiet platform-flash
+# ====================================================================
+# Flash/Program microcontroller using a debug port like jtag or swd
+# ====================================================================
+jtag-flash:
+	@$(MAKE) --quiet application
+	@printf '$(MAGENTA)Programming chip via debug port...$(RESET)\n'
+	@$(SJOPENOCD)/bin/openocd -s $(SJOPENOCD)/scripts/ \
+	-c "source [find interface/$(DEBUG_ADAPTER).cfg]" -f $(OPENOCD_CONFIG) \
+	-c "program \"$(EXECUTABLE)\" verify reset exit 0x0"
 # ====================================================================
 # Clean working build directory by deleting the build folder
 # ====================================================================
@@ -489,7 +501,7 @@ openocd:
 # Start gdb for arm and connect to openocd jtag debugging session
 debug:
 	$(DEVICE_GDB) -ex "target remote :3333" $(EXECUTABLE)
-debug-user-test:
+debug-test:
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/test/tests.exe
 # Start gdb just like the debug target, but using gdb-multiarch
 # gdb-multiarch is perferable since it supports python in its .gdbinit file
