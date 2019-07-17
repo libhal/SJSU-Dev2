@@ -20,3 +20,5 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/movement/accelerometer/test/mma8452q_test
 TESTS += $(LIBRARY_DIR)/L2_HAL/switches/test/button_test.cpp
 
 TESTS += $(LIBRARY_DIR)/L2_HAL/memory/test/sd_test.cpp
+
+TESTS += $(LIBRARY_DIR)/L2_HAL/actuators/servo/test/servo_test.cpp
