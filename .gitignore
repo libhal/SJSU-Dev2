@@ -15,6 +15,7 @@ tools/gcc-arm-none-eabi-*
 tools/clang*
 tools/openocd*
 tools/gnu-mcu-eclipse-openocd*
+tools/bundle-*
 
 **/*.gch
 **/*.gcno

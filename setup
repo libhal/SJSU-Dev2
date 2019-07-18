@@ -9,14 +9,12 @@ fi
 
 echo " ──────────────────────────────────────────────────┐"
 echo "  List of global software installed:                "
-echo "   1) Python                                        "
-echo "   2) Python's PIP                                  "
+echo "   1) Python3                                       "
+echo "   2) pip (Python3 package manager)                 "
 echo "   3) Curl                                          "
 echo "   4) Git                                           "
 echo "   5) Gcovr                                         "
-echo "   6) pv                                            "
-echo "   7) Homebrew + libmagic (OSX Only)                "
-echo "   8) XCode CLI tools (OSX Only)                    "
+echo "   6) XCode CLI tools (OSX Only)                    "
 echo "└────────────────────────────────────────────────── "
 echo "            Acquiring sudo privileges               "
 echo "└────────────────────────────────────────────────── "
@@ -31,38 +29,11 @@ ARCH=$(uname -m)
 # Get System Operating System
 OS=$(uname -s)
 # Define name of the arm version we are downloading
-ARM_GCC_URL="https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/"
-ARM_GCC_COMMON="gcc-arm-none-eabi-7-2017-q4-major"
-ARM_GCC_ARCHIVE_FILE_LINUX="$ARM_GCC_COMMON-linux.tar.bz"
-ARM_GCC_ARCHIVE_FILE_MAC="$ARM_GCC_COMMON-mac.tar.bz"
-ARM_GCC_ARCHIVE_LINUX_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_LINUX"
-ARM_GCC_ARCHIVE_MAC_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_MAC"
-GCC_PKG=""
-
-CLANG_VERSION="7.0.0"
-CLANG_BASE_URL="http://releases.llvm.org/$CLANG_VERSION/"
-CLANG_14="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04"
-CLANG_16="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-16.04"
-CLANG_MAC="clang+llvm-$CLANG_VERSION-x86_64-apple-darwin"
-CLANG_FILE_EXTENSION=".tar.xz"
-CLANG_14_FILE="$CLANG_14$CLANG_FILE_EXTENSION"
-CLANG_14_URL="$CLANG_BASE_URL$CLANG_14_FILE"
-CLANG_16_FILE="$CLANG_16$CLANG_FILE_EXTENSION"
-CLANG_16_URL="$CLANG_BASE_URL$CLANG_16_FILE"
-CLANG_MAC_FILE="$CLANG_MAC$CLANG_FILE_EXTENSION"
-CLANG_MAC_URL="$CLANG_BASE_URL$CLANG_MAC_FILE"
-CLANG_PKG=""
-CLANG_PATH=""
-
-OPENOCD_URL="https://github.com/gnu-mcu-eclipse/openocd/releases/download"
-OPENOCD_VERSION="0.10.0-10-20181020"
-OPENOCD_VERSION_BASE="0522"
-OPENOCD_BASE="$OPENOCD_URL/v$OPENOCD_VERSION/gnu-mcu-eclipse-openocd-$OPENOCD_VERSION"
-OPENOCD_MAC_URL="$OPENOCD_BASE-$OPENOCD_VERSION_BASE-macos.tgz"
-OPENOCD_MAC_PATH="gnu-mcu-eclipse-openocd-$OPENOCD_VERSION-$OPENOCD_VERSION_BASE-macos.tgz"
-OPENOCD_LINUX64_URL="$OPENOCD_BASE-$OPENOCD_VERSION_BASE-centos64.tgz"
-OPENOCD_LINUX64_PATH="gnu-mcu-eclipse-openocd-$OPENOCD_VERSION-$OPENOCD_VERSION_BASE-centos64.tgz"
-OPENOCD_PKG=""
+TOOLS_BUNDLE_BASE_URL="https://github.com/kammce/SJSU-Dev2/releases/download/v2.0/bundle-arm-gcc7-clang7-openocd10"
+TOOLS_BUNDLE_URL_LINUX="$TOOLS_BUNDLE_BASE_URL-linux.tar.bz2"
+TOOLS_BUNDLE_URL_OSX="$TOOLS_BUNDLE_BASE_URL-osx.tar.bz2"
+# Set later
+TOOLS_BUNDLE_URL=
 
 echo " ──────────────────────────────────────────────────┐"
 echo ""
@@ -86,52 +57,29 @@ cd "$TOOLDIR"
 case "$OS" in
 	Linux) # Linux & Windows WSL Case
 		echo "Operating System: Linux"
+		TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_LINUX
 		echo " ───────────────────────────────────────────────────┐"
-		echo "                    Updating Apt                     "
+		echo "                   Updating Apt                      "
 		echo "└─────────────────────────────────────────────────── "
 		sudo apt update
 		echo " ───────────────────────────────────────────────────┐"
-		echo "   Installing git, make python3, pip3, Curl, tar, pv   "
+		echo "    Installing git, make python3, pip3, Curl, tar    "
 		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install git make python3 python3-pip curl tar pv
-
-		VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID=")
-		echo "UBUNTU $VERSION_ID"
-		if [ "$VERSION_ID" = "VERSION_ID=\"14.04\"" ]
-		then
-			echo " ───────────────────────────────────────────────────┐"
-			echo "    Downloading Clang $CLANG_VERSION tools (Ubuntu 14.04)"
-			echo "└─────────────────────────────────────────────────── "
-			curl -C - -LO "$CLANG_14_URL"
-			CLANG_PKG="$CLANG_14_FILE"
-			CLANG_PATH="$CLANG_14"
-		else
-			echo " ───────────────────────────────────────────────────┐"
-			echo "     Downloading Clang $CLANG_VERSION tools (Ubuntu 16.04)+"
-			echo "└─────────────────────────────────────────────────── "
-			curl -C - -LO "$CLANG_16_URL"
-			CLANG_PKG="$CLANG_16_FILE"
-			CLANG_PATH="$CLANG_16"
-		fi
+		sudo apt -y install git make python3 python3-pip curl tar
 		echo " ───────────────────────────────────────────────────┐"
-		echo "                Downloading OpenOCD                  "
+		echo "             Downloading Tools Bundle                "
 		echo "└─────────────────────────────────────────────────── "
-		curl -C - -LO "$OPENOCD_LINUX64_URL"
-		OPENOCD_PKG="$OPENOCD_LINUX64_PATH"
+		curl -C - -LO "$TOOLS_BUNDLE_URL"
 		echo " ──────────────────────────────────────────────────┐"
-		echo "      Adding current user to '$GROUP' group"
+		echo "       Adding current user to 'dialout' group        "
 		echo "└────────────────────────────────────────────────── "
-		THE_GROUP=$(getent group | grep 'dial' | cut -d: -f1)
-		sudo adduser $USER $THE_GROUP
-		echo " ──────────────────────────────────────────────────┐"
-		echo "           Downloading gcc-arm-embedded             "
-		echo "└────────────────────────────────────────────────── "
-		curl -C - -LO $ARM_GCC_ARCHIVE_LINUX_URL
-		GCC_PKG=$ARM_GCC_ARCHIVE_FILE_LINUX
+		DIALOUT_GROUP=$(getent group | grep 'dial' | cut -d: -f1)
+		sudo adduser $USER $DIALOUT_GROUP
 		;;
 
 	Darwin) # OS X Case
 		echo "Operating System: Mac OSX Darvin"
+		TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_OSX
 		echo " ───────────────────────────────────────────────────┐"
 		echo "    Install XCode Command Line Tools (GCC, make)     "
 		echo "└─────────────────────────────────────────────────── "
@@ -140,41 +88,13 @@ case "$OS" in
 		# Accept User Agreement
 		sudo xcodebuild -license accept
 		echo " ───────────────────────────────────────────────────┐"
-		echo "                 Install Homebrew                    "
-		echo "└─────────────────────────────────────────────────── "
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                   Install xz                        "
-		echo "└─────────────────────────────────────────────────── "
-    brew install xz
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                   Install pv                        "
-		echo "└─────────────────────────────────────────────────── "
-    brew install pv
-		echo " ───────────────────────────────────────────────────┐"
 		echo "          Prompt Git installer by invoking it        "
 		echo "└─────────────────────────────────────────────────── "
 		git --version
 		echo " ───────────────────────────────────────────────────┐"
-		echo "     Downloading Clang $CLANG_VERSION tools          "
-		echo "└─────────────────────────────────────────────────── "
-		curl -C - -LO "$CLANG_MAC_URL"
-		CLANG_PKG="$CLANG_MAC_FILE"
-		CLANG_PATH="$CLANG_MAC"
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                Downloading OpenOCD                  "
-		echo "└─────────────────────────────────────────────────── "
-		curl -C - -LO "$OPENOCD_MAC_URL"
-		OPENOCD_PKG="$OPENOCD_MAC_PATH"
-		echo " ───────────────────────────────────────────────────┐"
 		echo "        Installing PIP via bootstrap.pypa.io         "
 		echo "└─────────────────────────────────────────────────── "
 		curl https://bootstrap.pypa.io/get-pip.py | python3
-		echo " ──────────────────────────────────────────────────┐"
-		echo "            Downloading gcc-arm-embedded            "
-		echo "└────────────────────────────────────────────────── "
-		curl -C - -LO $ARM_GCC_ARCHIVE_MAC_URL
-		GCC_PKG=$ARM_GCC_ARCHIVE_FILE_MAC
 		;;
 
 	*)	# Default if Operating System other than Mac or Linux
@@ -193,30 +113,26 @@ echo "                 Installing Gcovr                    "
 echo "└─────────────────────────────────────────────────── "
 sudo -H python3 -m pip install gcovr
 echo " ───────────────────────────────────────────────────┐"
-echo "          Installing/Upgrading Virtualenv            "
+echo "           Installing/Upgrading Virtualenv           "
 echo "└─────────────────────────────────────────────────── "
 sudo -H python3 -m pip install --upgrade virtualenv
 echo " ──────────────────────────────────────────────────┐"
-echo "           Extracting gcc-arm-embedded             "
+echo "           Deleting Old Tools (if present)          "
 echo "└────────────────────────────────────────────────── "
-pv "$GCC_PKG" | tar --extract --bzip --file="-"
-echo
+cd "$TOOLDIR/"
+# Delete old openocd folder
+rm -r "openocd" &> /dev/null
+rm -r "gcc-arm*" &> /dev/null
+rm -r "clang+llvm*" &> /dev/null
+echo " ───────────────────────────────────────────────────┐"
+echo "             Downloading tools Bundle                "
+echo "└─────────────────────────────────────────────────── "
+curl -C - -LO "$TOOLS_BUNDLE_URL"
 echo " ──────────────────────────────────────────────────┐"
-echo "             Extracting Clang $CLANG_VERSION        "
+echo "             Extracting tools bundle                "
 echo "└────────────────────────────────────────────────── "
-pv "$CLANG_PKG" | tar --extract --xz --file="-"
+tar --extract --bzip --file="$(basename $TOOLS_BUNDLE_URL)"
 echo
-echo " ──────────────────────────────────────────────────┐"
-echo "               Extracting OpenOCD                   "
-echo "└────────────────────────────────────────────────── "
-pv "$OPENOCD_PKG" | tar --extract --gzip --file="-"
-echo
-rm -r "openocd"
-mkdir "openocd"
-# Move contents of openocd in gnu-mcu-eclipse (without version) to openocd
-# folder
-mv -f gnu-mcu-eclipse/openocd/*/* openocd
-# Return back to base of repository
 fi
 
 cd "$BASE"
@@ -232,7 +148,7 @@ cd "$TOOLDIR/nxpprog/" && ./setup
 cd "$BASE"
 
 echo " ───────────────────────────────────────────────────┐"
-echo "        Generating Environment Variables File        "
+echo "         Generating SJSU-Dev2 Location File          "
 echo "└─────────────────────────────────────────────────── "
 cat > ~/.sjsu_dev2.mk << EOL
 # Location of SJSU-Dev2 folder
@@ -247,5 +163,4 @@ echo "                   SETUP COMPLETE!                   "
 echo "                                                     "
 echo " IF THIS IS YOUR FIRST TIME RUNNING THE SETUP SCRIPT "
 echo "             PLEASE RESTART YOUR SYSTEM              "
-echo "         TO LOAD CODE INTO YOUR SJONE BOARD          "
 echo "└─────────────────────────────────────────────────── "
