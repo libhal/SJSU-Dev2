@@ -328,7 +328,8 @@ class I2c final : public sjsu::I2c
     system_controller_.PowerUpPeripheral(i2c_.bus.peripheral_power_id);
 
     float peripheral_frequency =
-        static_cast<float>(system_controller_.GetPeripheralFrequency());
+        static_cast<float>(system_controller_.GetPeripheralFrequency(
+            i2c_.bus.peripheral_power_id));
     float scll = ((peripheral_frequency / 75'000.0f) / 2.0f) * 0.7f;
     float sclh = ((peripheral_frequency / 75'000.0f) / 2.0f) * 1.3f;
 
@@ -346,7 +347,7 @@ class I2c final : public sjsu::I2c
 
   Status Transaction(Transaction_t transaction) const override
   {
-    i2c_.bus.transaction = transaction;
+    i2c_.bus.transaction       = transaction;
     i2c_.bus.registers->CONSET = Control::kStart;
     return BlockUntilFinished();
   }

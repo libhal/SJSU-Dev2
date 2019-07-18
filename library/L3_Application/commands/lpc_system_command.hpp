@@ -26,7 +26,7 @@ class LpcSystemInfoCommand final : public Command
   {
     sjsu::lpc40xx::SystemController system;
     uint32_t system_frequency     = system.GetSystemFrequency() / 1000;
-    uint32_t peripheral_frequency = system.GetPeripheralFrequency() / 1000;
+    uint32_t peripheral_frequency = system.GetPeripheralFrequency({}) / 1000;
 
     intptr_t top_of_stack         = reinterpret_cast<intptr_t>(&StackTop);
     intptr_t master_stack_pointer = sjsu::lpc40xx::__get_MSP();

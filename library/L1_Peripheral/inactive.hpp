@@ -201,7 +201,7 @@ const sjsu::SystemController & GetInactive<sjsu::SystemController>()
     {
       return 0;
     }
-    uint32_t GetPeripheralClockDivider() const override
+    uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
     {
       return 0;
     }
@@ -209,7 +209,9 @@ const sjsu::SystemController & GetInactive<sjsu::SystemController>()
     {
       return false;
     }
-    void SetPeripheralClockDivider(uint8_t) const override {}
+    void SetPeripheralClockDivider(const PeripheralID &, uint8_t) const override
+    {
+    }
     void PowerUpPeripheral(const PeripheralID &) const override {}
     void PowerDownPeripheral(const PeripheralID &) const override {}
     // NOTE: We only this method for SystemTimer to work.

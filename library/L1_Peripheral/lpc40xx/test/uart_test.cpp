@@ -20,6 +20,8 @@ TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   Mock<sjsu::Pin> mock_tx;
   Fake(Method(mock_tx, SetPinFunction));

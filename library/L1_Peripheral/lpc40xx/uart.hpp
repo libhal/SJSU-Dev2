@@ -276,7 +276,8 @@ class Uart final : public sjsu::Uart
   bool SetBaudRate(uint32_t baud_rate) const override
   {
     uart::UartCalibration_t calibration = uart::GenerateUartCalibration(
-        baud_rate, system_controller_.GetPeripheralFrequency());
+        baud_rate,
+        system_controller_.GetPeripheralFrequency(port_.power_on_id));
 
     constexpr uint8_t kDlabBit = (1 << 7);
 

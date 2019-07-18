@@ -23,6 +23,8 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   // Creating mock of Pin class
   Mock<sjsu::Pin> mock_pwm_pin;
