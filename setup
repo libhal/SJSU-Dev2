@@ -9,13 +9,12 @@ fi
 
 echo " ──────────────────────────────────────────────────┐"
 echo "  List of global software installed:                "
-echo "   1) Python                                        "
-echo "   2) Python's PIP                                  "
+echo "   1) Python3                                       "
+echo "   2) Python3 PIP                                   "
 echo "   3) Curl                                          "
 echo "   4) Git                                           "
-echo "   5) Gcovr                                         "
+echo "   5) Gcovr (pip install)                           "
 echo "   6) pv                                            "
-echo "   7) Homebrew + libmagic (OSX Only)                "
 echo "   8) XCode CLI tools (OSX Only)                    "
 echo "└────────────────────────────────────────────────── "
 echo "            Acquiring sudo privileges               "
@@ -140,17 +139,13 @@ case "$OS" in
 		# Accept User Agreement
 		sudo xcodebuild -license accept
 		echo " ───────────────────────────────────────────────────┐"
-		echo "                 Install Homebrew                    "
-		echo "└─────────────────────────────────────────────────── "
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-		echo " ───────────────────────────────────────────────────┐"
 		echo "                   Install xz                        "
 		echo "└─────────────────────────────────────────────────── "
-    brew install xz
+    sudo port install xz
 		echo " ───────────────────────────────────────────────────┐"
 		echo "                   Install pv                        "
 		echo "└─────────────────────────────────────────────────── "
-    brew install pv
+    sudo port install pv
 		echo " ───────────────────────────────────────────────────┐"
 		echo "          Prompt Git installer by invoking it        "
 		echo "└─────────────────────────────────────────────────── "
