@@ -8,15 +8,18 @@ namespace sjsu
 class LCD_I2C : public lcd
 {
 	public:
-		LCD_I2C(uint8_t address)
-		{
-			_i2c.Initialize();
-			_addr = address;
-		}
+		LCD_I2C(BusMode bus_mode, DisplayMode display_mode, FontStyle font_style, uint8_t address)
+		: lcd(bus_mode, display_mode, font_style)
+        {
+            kBusMode = bus_mode;
+            kDisplayMode = display_mode;
+            kFontStyle = font_style;
+            _addr = address;
+        }
 		
 		void Initialize() override
 		{
-			//_i2c.Initialize();
+			_i2c.Initialize();
 			
 			Delay(100);
 			WriteByte(WriteOperation::kData, 0x03);
