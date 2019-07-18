@@ -37,9 +37,10 @@ class SystemController
   ///          achieved.
   virtual uint32_t SetSystemClockFrequency(uint8_t frequency_in_mhz) const = 0;
   /// Set the peripheral/bus clock frequency divider
-  virtual void SetPeripheralClockDivider(uint8_t peripheral_divider) const = 0;
+  virtual void SetPeripheralClockDivider(const PeripheralID &,
+                                         uint8_t peripheral_divider) const = 0;
   /// @return peripheral clock divider
-  virtual uint32_t GetPeripheralClockDivider() const = 0;
+  virtual uint32_t GetPeripheralClockDivider(const PeripheralID &) const = 0;
   /// @return system clock frequency
   virtual uint32_t GetSystemFrequency() const = 0;
   /// Checks hardware and determines if the peripheral is powered up
@@ -57,9 +58,10 @@ class SystemController
   // ==============================
 
   /// @returns current bus/peripheral operating frequency
-  uint32_t GetPeripheralFrequency() const
+  uint32_t GetPeripheralFrequency(const PeripheralID & peripheral_select) const
   {
-    uint32_t peripheral_clock_divider = GetPeripheralClockDivider();
+    uint32_t peripheral_clock_divider =
+        GetPeripheralClockDivider(peripheral_select);
     uint32_t result = 0;  // return 0 if peripheral_clock_divider == 0
     if (peripheral_clock_divider != 0)
     {

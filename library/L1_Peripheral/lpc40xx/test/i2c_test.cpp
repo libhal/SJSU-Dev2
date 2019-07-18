@@ -27,6 +27,8 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
+  When(Method(mock_system_controller, GetPeripheralFrequency))
+      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   Mock<sjsu::Pin> mock_sda_pin;
   Fake(Method(mock_sda_pin, SetPinFunction),

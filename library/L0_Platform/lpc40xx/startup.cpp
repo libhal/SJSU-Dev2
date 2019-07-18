@@ -117,7 +117,7 @@ void InitializePlatform()
   }
   // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
   // fed to all peripherals will be 48Mhz.
-  system_controller.SetPeripheralClockDivider(1);
+  system_controller.SetPeripheralClockDivider({}, 1);
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
   sjsu::newlib::SetStdout(Lpc40xxStdOut);

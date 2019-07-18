@@ -157,8 +157,10 @@ class Pwm final : public sjsu::Pwm
         channel_.peripheral.registers->CTCR, 0, CountControl::kCountInput);
     // Match register 0 is used to generate the desired frequency. If the time
     // counter TC is equal to MR0
-    channel_.peripheral.registers->MR0 =
-        system_controller_.GetPeripheralFrequency() / frequency_hz;
+    const uint32_t kPeripheralFrequency =
+        system_controller_.GetPeripheralFrequency(
+            channel_.peripheral.power_on_id);
+    channel_.peripheral.registers->MR0 = kPeripheralFrequency / frequency_hz;
     // Sets match register 0 to reset when TC and Match 0 match each other,
     // meaning that the PWM pulse will cycle continuously.
     channel_.peripheral.registers->MCR = bit::Set(
@@ -196,8 +198,10 @@ class Pwm final : public sjsu::Pwm
     // And allow us to update MR0
     float previous_duty_cycle = GetDutyCycle();
     EnablePwm(false);
-    channel_.peripheral.registers->MR0 =
-        system_controller_.GetPeripheralFrequency() / frequency_hz;
+    const uint32_t kPeripheralFrequency =
+        system_controller_.GetPeripheralFrequency(
+            channel_.peripheral.power_on_id);
+    channel_.peripheral.registers->MR0 = kPeripheralFrequency / frequency_hz;
     SetDutyCycle(previous_duty_cycle);
     EnablePwm();
   }
@@ -208,7 +212,10 @@ class Pwm final : public sjsu::Pwm
     uint32_t result          = 0;
     if (match_register0 != 0)
     {
-      result = system_controller_.GetPeripheralFrequency() / match_register0;
+      const uint32_t kPeripheralFrequency =
+          system_controller_.GetPeripheralFrequency(
+              channel_.peripheral.power_on_id);
+      result = kPeripheralFrequency / match_register0;
     }
     return result;
   }

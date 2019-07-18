@@ -128,7 +128,8 @@ class Timer final : public sjsu::Timer
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
     // Set Prescale register for Prescale Counter to milliseconds
     uint32_t prescaler =
-        system_controller_.GetPeripheralFrequency() / frequency;
+        system_controller_.GetPeripheralFrequency(timer_.channel.power_id) /
+        frequency;
     timer_.channel.timer_register->PR = prescaler;
     timer_.channel.timer_register->TCR |= (1 << 0);
     *timer_.channel.user_callback = isr;
