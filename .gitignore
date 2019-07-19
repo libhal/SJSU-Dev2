@@ -8,14 +8,14 @@ demos/**/build
 library/static_libraries/*
 !library/static_libraries/keep_folder
 
-tools/Hyperload
-tools/nxpprog
-tools/Telemetry
-tools/gcc-arm-none-eabi-*
-tools/clang*
-tools/openocd*
-tools/gnu-mcu-eclipse-openocd*
-tools/bundle-*
+tools/**/*
+!tools/cpplint
+!tools/FlashMagic
+!tools/Hercules.exe
+!tools/link_projects.sh
+!tools/presubmit.sh
+!tools/putty32.exe
+!tools/putty64.exe
 
 **/*.gch
 **/*.gcno

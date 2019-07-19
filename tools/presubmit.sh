@@ -41,10 +41,10 @@ function check
     printf "\e[1;31m|      Don't even PUSH!          |\e[0m\n"
     printf "\e[0;31m ================================ \e[0m\n"
     printf "\e[0;31m|                                |\e[0m\n"
-    printf "\e[0;31m| Code style must be lint free %b |\e[0m\n" $lint
-    printf "\e[0;31m|    Code style must be tidy %b   |\e[0m\n" $tidy
-    printf "\e[0;31m|       Tests must pass %b        |\e[0m\n" $test
-    printf "\e[0;31m|       Code must build %b        |\e[0m\n" $build
+    printf "\e[0;31m| Code must be lint free ..... %b |\e[0m\n" $lint
+    printf "\e[0;31m| Code must be tidy .......... %b |\e[0m\n" $tidy
+    printf "\e[0;31m| Tests must pass ............ %b |\e[0m\n" $test
+    printf "\e[0;31m| Code must build ............ %b |\e[0m\n" $build
     printf "\e[0;31m|                                |\e[0m\n"
     printf "\e[0;31m ================================ \e[0m\n"
     exit 1
