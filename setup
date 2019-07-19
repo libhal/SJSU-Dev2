@@ -187,8 +187,18 @@ function generate_location_file()
   echo "         Generating SJSU-Dev2 Location File          "
   echo "└─────────────────────────────────────────────────── "
   cat >~/.sjsu_dev2.mk <<EOL
-  # Location of SJSU-Dev2 folder
-  SJSU_DEV2_BASE    = $BASE
+# Location of SJSU-Dev2 folder
+SJSU_DEV2_BASE    = $BASE
+
+ifeq (,\$(wildcard \$(SJSU_DEV2_BASE)))
+\$(info +-------------- SJSU-Dev2 Folder Not Found Error ---------------+)
+\$(info |                                                               |)
+\$(info | To update the location of SJSU-Dev2's folder run ./setup      |)
+\$(info |                                                               |)
+\$(info +---------------------------------------------------------------+)
+\$(error )
+endif
+
 EOL
   return $?
 }
