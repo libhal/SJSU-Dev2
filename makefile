@@ -9,6 +9,7 @@ RED=$(shell echo "\x1B[31;1m")
 MAGENTA=$(shell echo "\x1B[35;1m")
 RESET=$(shell echo "\x1B[0m")
 GREEN=$(shell echo "\x1B[32;1m")
+CURRENT_SETUP_VERSION=$(shell cat $(SJSU_DEV2_BASE)/setup_version.txt)
 # ============================
 # Modifying make Flags
 # ============================
@@ -24,6 +25,21 @@ endif
 #
 NPROCS := 1
 OS := $(shell uname -s)
+
+ifneq ($(PREVIOUS_SETUP_VERSION), $(CURRENT_SETUP_VERSION))
+$(info $(shell printf '$(YELLOW)'))
+$(info +---------------- Project Setup Not Up to Date -----------------+)
+$(info | The setup file version in the location file and this project  |)
+$(info | are not equal.                                                |)
+$(info |                                                               |)
+$(info \  PREVIOUS_SETUP_VERSION = $(PREVIOUS_SETUP_VERSION)            )
+$(info \  CURRENT_SETUP_VERSION  = $(CURRENT_SETUP_VERSION)             )
+$(info |                                                               |)
+$(info | Please run ./setup again                                      |)
+$(info +---------------------------------------------------------------+)
+$(info $(shell printf '$(RESET)'))
+$(warning )
+endif
 
 ifeq ($(OS), Linux)
 NPROCS := $(shell grep -c ^processor /proc/cpuinfo)
@@ -152,9 +168,10 @@ endif
 BUILD_DIRECTORY_NAME = build
 # "make application"'s build directory becomes "build/application"
 # "make test"'s build directory becomes "build/test"
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), flash jtag-flash \
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), application flash jtag-flash \
       platform-flash platform-jtag-flash \
       stacktrace-application multi-debug debug))
+$(info $(shell printf '$(MAGENTA)Building application firmware...$(RESET)\n'))
 BUILD_SUBDIRECTORY_NAME = application
 else ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), run-test))
 BUILD_SUBDIRECTORY_NAME = test

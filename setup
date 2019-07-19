@@ -186,9 +186,11 @@ function generate_location_file()
   echo " ───────────────────────────────────────────────────┐"
   echo "         Generating SJSU-Dev2 Location File          "
   echo "└─────────────────────────────────────────────────── "
+  local SETUP_VERSION=$(cat $BASE/setup_version.txt)
   cat >~/.sjsu_dev2.mk <<EOL
 # Location of SJSU-Dev2 folder
-SJSU_DEV2_BASE    = $BASE
+SJSU_DEV2_BASE         = $BASE
+PREVIOUS_SETUP_VERSION = $SETUP_VERSION
 
 ifeq (,\$(wildcard \$(SJSU_DEV2_BASE)))
 \$(info +-------------- SJSU-Dev2 Folder Not Found Error ---------------+)
