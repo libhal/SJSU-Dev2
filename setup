@@ -148,11 +148,10 @@ function download_and_install_tool_bundle()
   rm -r "clang+llvm*" &>/dev/null
   tar --verbose --extract --bzip --file="$(basename $TOOLS_BUNDLE_URL)" 2>&1 |
   while read line; do
-      echo -en "\r"
       x=$((x+1))
-      echo -en "Extracting Progress: $(($x*100/$TOOLS_FILE_COUNT))%"
+      echo -en "Extracting Progress: $(($x*100/$TOOLS_FILE_COUNT))%\r"
   done
-  echo
+	echo "Extracting Progress: 100%"
   local extract=$?
   # Verify that each directory exists
   ls clang+llvm-*/ &> /dev/null
