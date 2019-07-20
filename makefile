@@ -13,11 +13,11 @@ CURRENT_SETUP_VERSION=$(shell cat $(SJSU_DEV2_BASE)/setup_version.txt)
 # ============================
 # Modifying make Flags
 # ============================
-# The following list of target opt-out of output sync
+# The following list of targets that opt-out of output sync
 ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
-			 presubmit run-test openocd debug lint multi-debug flash jtag-flash \
-			 platform-flash platform-jtag-flash debug-test))
+        presubmit openocd debug lint multi-debug flash jtag-flash \
+        platform-flash platform-jtag-flash debug-test))
 MAKEFLAGS += --output-sync
 endif
 #
@@ -115,7 +115,8 @@ OPT    ?= 0
 #   Example of running only i2c and adc tests with the -s flag to show
 #   successful assertions:
 #
-#         make run-test TEST_ARGS="-s [i2c,adc]"
+#         make test TEST_ARGS="-s [i2c,adc]"
+#         make library-test TEST_ARGS="-s [i2c,adc]"
 #
 TEST_ARGS ?=
 # ============================
@@ -145,7 +146,7 @@ HOST_NM        = $(SJCLANG)/bin/llvm-nm
 HOST_COV       = $(SJCLANG)/bin/llvm-cov
 CLANG_TIDY     = $(SJCLANG)/bin/clang-tidy
 # Mux between using the firmware compiler executables or the host compiler
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
 CC      = $(HOST_CC)
 CPPC    = $(HOST_CPPC)
 OBJDUMP = $(HOST_OBJDUMP)
@@ -167,14 +168,11 @@ endif
 # will be stored
 BUILD_DIRECTORY_NAME = build
 # "make application"'s build directory becomes "build/application"
-# "make test"'s build directory becomes "build/test"
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), application flash jtag-flash \
-      platform-flash platform-jtag-flash \
-      stacktrace-application multi-debug debug))
+      platform-flash platform-jtag-flash stacktrace-application \
+			multi-debug debug))
 $(info $(shell printf '$(MAGENTA)Building application firmware...$(RESET)\n'))
 BUILD_SUBDIRECTORY_NAME = application
-else ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), run-test))
-BUILD_SUBDIRECTORY_NAME = test
 else
 BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
 endif
@@ -269,10 +267,13 @@ OPENOCD_CONFIG ?=
 # makefiles until all of the included library source files have been found.
 include $(LIBRARY_DIR)/library.mk
 # A bit of post processing on the source variables
-ifeq ($(MAKECMDGOALS), test)
+ifeq ($(MAKECMDGOALS), library-test)
 COMPILABLES = $(TESTS)
-else ifeq ($(MAKECMDGOALS), user-test)
+TEST_SOURCE_DIRECTORIES = --filter="$(LIBRARY_DIR)"
+else ifeq ($(MAKECMDGOALS), test)
 COMPILABLES = $(USER_TESTS)
+TEST_SOURCE_DIRECTORIES = --filter="$(LIBRARY_DIR)" \
+    $(addsuffix ", $(addprefix --filter=", $(USER_TESTS)))
 else
 COMPILABLES = $(SOURCES)
 endif
@@ -309,7 +310,7 @@ LINKFLAGS = $(COMMON_FLAGS)  -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
 
 # Enable a whole different set of exceptions, checks, coverage tools and more
 # with the test target
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
 CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
          -fprofile-instr-generate -fcoverage-mapping \
          -fno-elide-constructors -ftest-coverage -fno-omit-frame-pointer \
@@ -378,8 +379,9 @@ TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/tests.exe
 # Tell make that the default recipe is the default
 .DEFAULT_GOAL := default
 # Tell make that these recipes don't have a end product
-.PHONY: build cleaninstall telemetry monitor show-lists clean flash telemetry \
-        presubmit openocd debug multi-debug default library-clean purge
+.PHONY: default build cleaninstall telemetry monitor show-lists clean flash \
+        telemetry presubmit openocd debug multi-debug library-clean purge \
+        test library-test
 print-%  : ; @echo $* = $($*)
 # ====================================================================
 # When the user types just "make" or "help" this should appear to them
@@ -411,9 +413,8 @@ help:
 	@echo
 	@echo "SJSU-Dev2 Testing Commands: "
 	@echo
-	@echo "  user-test    - build all user defined test as defined in USER_TESTS"
-	@echo "  test         - build all library tests"
-	@echo "  run-test     - Run either user or test executable"
+	@echo "  test          - build all library tests"
+	@echo "  library-test     - build all tests as defined in USER_TESTS"
 	@echo
 	@echo "Debugging Commands: "
 	@echo
@@ -469,27 +470,20 @@ purge: clean
 telemetry:
 	google-chrome https://kammce.github.io/Telemetry
 # ====================================================================
-# Build Test Executable for all tests in SJSU-Dev2
-# ====================================================================
-test: $(TEST_EXEC)
-# ====================================================================
-# Build Test Executable for user specified tests
-# ====================================================================
-user-test: $(TEST_EXEC)
-# ====================================================================
-# Run Test Executable
+# Build Test Executable, Run test and generate code coverage
 # ====================================================================
 # In reference to issue #374, we need to remove the old gcda files otherwise
 # if the test has been recompiled between executions of run-test, the
 # executable will complain that the coverage files are out of date or
 # corrupted
-run-test:
+library-test: test $(TEST_EXEC)
+test: $(TEST_EXEC)
 	@rm -f $(COVERAGE_FILES) 2> /dev/null
 	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
 		$(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
-	@gcovr --root="$(LIBRARY_DIR)/" \
-		--object-directory="$(BUILD_DIRECTORY_NAME)/test/" \
+	@gcovr $(TEST_SOURCE_DIRECTORIES) \
+		--object-directory="$(BUILD_DIRECTORY_NAME)/" \
 		-e "$(LIBRARY_DIR)/newlib" \
 		-e "$(LIBRARY_DIR)/third_party" \
 		-e "$(LIBRARY_DIR)/L4_Testing" \
