@@ -158,13 +158,10 @@ echo ""
 print_divider
 
 printf "\e[0;33mBuilding and running unit tests \e[0m\n"
-make -s test WARNINGS_ARE_ERRORS=-Werror
-TEST_BUILD_CAPTURE=$?
-make -s run-test
-TEST_RUN_CAPTURE=$?
-TEST_CAPTURE=$(($TEST_BUILD_CAPTURE + $TEST_RUN_CAPTURE))
+make -s library-test WARNINGS_ARE_ERRORS=-Werror
+TEST_CAPTURE=$?
 print_status $TEST_CAPTURE
 echo ""
 
 # Check if there were any errors. For this to succeed, this value should be 0
-check $(($STATUS_CAPTURE+$BUILD_CAPTURE+$LINT_CAPTURE+$TIDY_CAPTURE+$TEST_CAPTURE))
+check $(($BUILD_CAPTURE+$LINT_CAPTURE+$TIDY_CAPTURE+$TEST_CAPTURE))
