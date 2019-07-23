@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cmath>
 
 #include "L1_Peripheral/i2c.hpp"
 #include "L2_HAL/sensors/movement/accelerometer.hpp"

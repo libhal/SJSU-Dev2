@@ -2,16 +2,13 @@
 // up the SystemTimer.
 #pragma once
 
-#include "L0_Platform/interrupt.hpp"
-// NOTE: Including lpc40xx's definitions includes SysTick address and
-// definitions as well. These definitions are the same across m3 and m4, so its
-// fine to include this here.
-#include "L0_Platform/lpc40xx/LPC40xx.h"
+// NOTE: Support for cortex M4 also supports M3 and possibly M0 and M0+ as well.
+#include "L0_Platform/arm_cortex/m4/core_cm4.h"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/system_controller.hpp"
 #include "L1_Peripheral/system_timer.hpp"
 #include "utility/status.hpp"
-
-using ::sjsu::lpc40xx::SysTick_Type;
+#include "utility/enum.hpp"
 
 namespace sjsu
 {
@@ -38,9 +35,14 @@ class SystemTimer final : public sjsu::SystemTimer
   /// frequency of the SystemTimer is set to 1kHz, this could be used as a
   /// milliseconds counter.
   inline static uint64_t counter = 0;
+  inline static const sjsu::cortex::InterruptController
+      kCortexInterruptController = sjsu::cortex::InterruptController();
 
-  explicit SystemTimer(const SystemController & system_controller)
-      : system_controller_(system_controller)
+  explicit SystemTimer(const sjsu::SystemController & system_controller,
+                       const sjsu::InterruptController & interrupt_controller =
+                           kCortexInterruptController)
+      : system_controller_(system_controller),
+        interrupt_controller_(interrupt_controller)
   {
   }
 
@@ -82,7 +84,10 @@ class SystemTimer final : public sjsu::SystemTimer
       sys_tick->CTRL |= (1 << ControlBitMap::kEnableCounter);
       sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
 
-      RegisterIsr(lpc40xx::SysTick_IRQn, SystemTimerHandler);
+      interrupt_controller_.Register({
+          .interrupt_request_number  = cortex::SysTick_IRQn,
+          .interrupt_service_routine = SystemTimerHandler,
+      });
       status = Status::kSuccess;
     }
 
@@ -120,7 +125,8 @@ class SystemTimer final : public sjsu::SystemTimer
   }
 
  private:
-  const SystemController & system_controller_;
+  const sjsu::SystemController & system_controller_;
+  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace cortex
 }  // namespace sjsu

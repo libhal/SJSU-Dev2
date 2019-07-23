@@ -5,7 +5,6 @@
 
 #include "config.hpp"
 
-#include "L0_Platform/lpc40xx/interrupt.hpp"
 #include "utility/status.hpp"
 
 namespace sjsu

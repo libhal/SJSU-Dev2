@@ -178,14 +178,4 @@ SECTIONS
 	 * Debugger and ISP may use 32-bytes of space?
 	 */
 	PROVIDE(StackTop = ORIGIN(SRAM_AHB) + LENGTH(SRAM_AHB) - 32);
-  /* ## Create checksum value (used in startup) ## */
-  PROVIDE(ValidUserCodeChecksum = 0 -
-                                      (StackTop
-                                      + (ResetIsr + 1)
-                                      + (NmiHandler + 1)
-                                      + (HardFaultHandler + 1)
-                                      + (( DEFINED(MemManageHandler) ? MemManageHandler : 0 ) + 1)   /* MemManageHandler may not be defined */
-                                      + (( DEFINED(BusFaultHandler) ? BusFaultHandler : 0 ) + 1)     /* BusFaultHandler may not be defined */
-                                      + (( DEFINED(UsageFaultHandler) ? UsageFaultHandler : 0 ) + 1) /* UsageFaultHandler may not be defined */
-                                      ) );
 }

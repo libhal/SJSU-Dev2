@@ -2,14 +2,9 @@
 // up the SystemTimer.
 #pragma once
 
-#include <cstring>
+#include <cstdint>
 
-#include "config.hpp"
-
-#include "L0_Platform/interrupt.hpp"
-#include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "utility/macros.hpp"
+#include "L1_Peripheral/interrupt.hpp"
 #include "utility/status.hpp"
 
 namespace sjsu

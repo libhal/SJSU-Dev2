@@ -10,7 +10,6 @@
 #include <project_config.hpp>
 
 #include "config.hpp"
-#include "L0_Platform/lpc40xx/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
@@ -314,9 +313,11 @@ int main()
   // monitor for the final bootloader message and application messages.
   uart0.Initialize(config::kBaudRate);
 
-  IsrPointer * application_vector_table =
-      reinterpret_cast<IsrPointer *>(&(flash->application));
-  IsrPointer application_entry_isr = application_vector_table[1];
+  using ResetFunction = void(*)(void);
+
+  ResetFunction * application_vector_table =
+      reinterpret_cast<ResetFunction *>(&(flash->application));
+  ResetFunction application_entry_isr = application_vector_table[1];
 
   printf("Hyperload Version (%d.%d)\n", kHyperload.major, kHyperload.minor);
   // If button0 is held down, display hexdump of the first 16kb of application
@@ -350,7 +351,7 @@ int main()
   // depending on the how the application is written.
   system_timer.DisableTimer();
   // Move the interrupt vector table register address to the application's IVT
-  using sjsu::lpc40xx::SCB_Type;
+  using sjsu::cortex::SCB_Type;
   SCB->VTOR = reinterpret_cast<intptr_t>(application_vector_table);
   // Jump to application code
   puts("Booting Application...");

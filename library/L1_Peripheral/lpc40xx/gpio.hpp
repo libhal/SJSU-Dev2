@@ -4,7 +4,7 @@
 
 #include "L1_Peripheral/gpio.hpp"
 
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "utility/enum.hpp"
@@ -56,10 +56,18 @@ class Gpio final : public sjsu::Gpio
   };
 
   inline static volatile uint32_t * port_status = &(LPC_GPIOINT->IntStatus);
+  static constexpr sjsu::cortex::InterruptController kInterruptController =
+      sjsu::cortex::InterruptController();
 
   // For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
-  constexpr Gpio(uint8_t port_number, uint8_t pin_number)
-      : interupt_port_(0), pin_(port_number, pin_number)
+  constexpr Gpio(uint8_t port_number,
+                 uint8_t pin_number,
+                 const sjsu::InterruptController & interrupt_controller =
+                     kInterruptController)
+
+      : interupt_port_(0),
+        pin_(port_number, pin_number),
+        interrupt_controller_(interrupt_controller)
   {
     interupt_port_ = (port_number == 2) ? 1 : 0;
   }
@@ -216,16 +224,19 @@ class Gpio final : public sjsu::Gpio
 
   // Enables all gpio interrupts by putting the gpio internal ISR on the
   // Interrupt Vector Table.
-  static void EnableInterrupts()
+  void EnableInterrupts()
   {
-    RegisterIsr(GPIO_IRQn, InterruptHandler);
+    interrupt_controller_.Register({
+        .interrupt_request_number  = GPIO_IRQn,
+        .interrupt_service_routine = InterruptHandler,
+    });
   }
 
   // Disables all interrupts by removing the gpio internal ISR from the
   // Interrupt Vector Table.
-  static void DisableInterrupts()
+  void DisableInterrupts()
   {
-    DeregisterIsr(GPIO_IRQn);
+     interrupt_controller_.Deregister(GPIO_IRQn);
   }
 
   // The gpio internal ISR that calls the developer's ISR's.
@@ -266,6 +277,7 @@ class Gpio final : public sjsu::Gpio
 
   uint8_t interupt_port_;
   sjsu::lpc40xx::Pin pin_;
+  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

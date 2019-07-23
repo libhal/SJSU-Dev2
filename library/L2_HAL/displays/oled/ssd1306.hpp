@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 #include "config.hpp"
 #include "L1_Peripheral/gpio.hpp"

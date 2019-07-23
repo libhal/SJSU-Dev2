@@ -49,7 +49,12 @@
     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
   @{
  */
-
+#ifdef __cplusplus
+// SJSU-Dev2: Placing contents of file in sjsu::cortex namespace
+namespace sjsu::cortex
+{
+ extern "C" {
+#endif
 /**
   \brief   Enable IRQ Interrupts
   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
@@ -1365,6 +1370,10 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __SMMLA (int32_t op1
 #endif /* (__CORTEX_M >= 0x04) */
 /*@} end of group CMSIS_SIMD_intrinsics */
 
+#ifdef __cplusplus
+}  // extern "C"
+}  // namespace sjsu::cortex
+#endif
 
 #if defined ( __GNUC__ )
 #pragma GCC diagnostic pop

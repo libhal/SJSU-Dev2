@@ -8,7 +8,7 @@
 
 #include "L1_Peripheral/i2c.hpp"
 
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
@@ -61,7 +61,7 @@ class I2c final : public sjsu::I2c
   {
     LPC_I2C_TypeDef * registers;
     sjsu::SystemController::PeripheralID peripheral_power_id;
-    IRQn_Type irq_number;
+    sjsu::cortex::IRQn_Type irq_number;
     Transaction_t & transaction;
     const sjsu::Pin & sda_pin;
     const sjsu::Pin & scl_pin;
@@ -307,12 +307,18 @@ class I2c final : public sjsu::I2c
 
   static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
       sjsu::lpc40xx::SystemController();
+  static constexpr sjsu::cortex::InterruptController kInterruptController =
+      sjsu::cortex::InterruptController();
 
   // This defaults to I2C port 2
   explicit constexpr I2c(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
-      : i2c_(bus), system_controller_(system_controller)
+                             kLpc40xxSystemController,
+                         const sjsu::InterruptController &
+                             interrupt_controller = kInterruptController)
+      : i2c_(bus),
+        system_controller_(system_controller),
+        interrupt_controller_(interrupt_controller)
   {
   }
 
@@ -340,7 +346,10 @@ class I2c final : public sjsu::I2c
                                  Control::kStop | Control::kInterrupt;
     i2c_.bus.registers->CONSET = Control::kInterfaceEnable;
 
-    RegisterIsr(i2c_.bus.irq_number, i2c_.handler, true);
+    interrupt_controller_.Register({
+        .interrupt_request_number  = i2c_.bus.irq_number,
+        .interrupt_service_routine = i2c_.handler,
+    });
 
     return Status::kSuccess;
   }
@@ -399,6 +408,7 @@ class I2c final : public sjsu::I2c
   }
   const Bus_t & i2c_;
   const sjsu::SystemController & system_controller_;
+  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

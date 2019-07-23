@@ -1,5 +1,5 @@
 #include <cstdint>
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
@@ -32,11 +32,13 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
 
   Mock<sjsu::Pin> mock_sda_pin;
   Fake(Method(mock_sda_pin, SetPinFunction),
-       Method(mock_sda_pin, SetAsOpenDrain), Method(mock_sda_pin, SetPull));
+       Method(mock_sda_pin, SetAsOpenDrain),
+       Method(mock_sda_pin, SetPull));
 
   Mock<sjsu::Pin> mock_scl_pin;
   Fake(Method(mock_scl_pin, SetPinFunction),
-       Method(mock_scl_pin, SetAsOpenDrain), Method(mock_scl_pin, SetPull));
+       Method(mock_scl_pin, SetAsOpenDrain),
+       Method(mock_scl_pin, SetPull));
 
   I2c::Transaction_t mock_i2c_transaction;
 
@@ -58,7 +60,12 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     .handler = I2c::I2cHandler<kMockI2cPartial>,
   };
 
-  I2c test_subject(kMockI2c, mock_system_controller.get());
+  Mock<sjsu::InterruptController> mock_interrupt_controller;
+  Fake(Method(mock_interrupt_controller, Register));
+  Fake(Method(mock_interrupt_controller, Deregister));
+
+  I2c test_subject(
+      kMockI2c, mock_system_controller.get(), mock_interrupt_controller.get());
 
   SECTION("Initialize")
   {
@@ -85,8 +92,17 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK(kHigh == local_i2c.SCLH);
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
     CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
-    CHECK(dynamic_isr_vector_table[kMockI2c.bus.irq_number + kIrqOffset] ==
-          kMockI2c.handler);
+    // CHECK(dynamic_isr_vector_table[kMockI2c.bus.irq_number + kIrqOffset] ==
+    //       kMockI2c.handler);
+    Verify(
+        Method(mock_interrupt_controller, Register)
+            .Matching([kMockI2c](
+                          sjsu::InterruptController::RegistrationInfo_t info) {
+              return (info.interrupt_request_number ==
+                      kMockI2c.bus.irq_number) &&
+                     (info.interrupt_service_routine == kMockI2c.handler) &&
+                     (info.enable_interrupt == true) && (info.priority == -1);
+            }));
 
     Verify(Method(mock_sda_pin, SetPinFunction)
                .Using(kMockI2c.bus.pin_function_id))
@@ -165,8 +181,11 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     uint8_t read_buffer[10];
     uint8_t write_buffer[15];
 
-    test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
-                               read_buffer, sizeof(read_buffer));
+    test_subject.WriteThenRead(kAddress,
+                               write_buffer,
+                               sizeof(write_buffer),
+                               read_buffer,
+                               sizeof(read_buffer));
     sjsu::I2c::Transaction_t actual_transaction =
         test_subject.GetTransactionInfo();
 
@@ -292,8 +311,8 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   {
     setup_state_machine(I2c::MasterState::kTransmittedDataRecievedAck);
     uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
-    test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
-                               nullptr, 0);
+    test_subject.WriteThenRead(
+        kAddress, write_buffer, sizeof(write_buffer), nullptr, 0);
     sjsu::I2c::Transaction_t actual_transaction;
     // Each iteration should be load the next byte from write_buffer into
     // the local_i2c.DAT

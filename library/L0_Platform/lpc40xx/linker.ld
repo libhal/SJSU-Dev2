@@ -198,15 +198,4 @@ SECTIONS
     PROVIDE(heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
     PROVIDE(heap_end = __top_RAM2);
     PROVIDE(StackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_RamLoc64 - 0);
-
-    /* ## Create checksum value (used in startup) ## */
-    PROVIDE(ValidUserCodeChecksum = 0 -
-                                       (StackTop
-                                       + (ResetIsr + 1)
-                                       + (NmiHandler + 1)
-                                       + (HardFaultHandler + 1)
-                                       + (( DEFINED(MemManageHandler) ? MemManageHandler : 0 ) + 1)   /* MemManageHandler may not be defined */
-                                       + (( DEFINED(BusFaultHandler) ? BusFaultHandler : 0 ) + 1)     /* BusFaultHandler may not be defined */
-                                       + (( DEFINED(UsageFaultHandler) ? UsageFaultHandler : 0 ) + 1) /* UsageFaultHandler may not be defined */
-                                       ) );
 }

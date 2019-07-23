@@ -150,7 +150,7 @@ inline void PrintBacktrace(bool show_make_command = false,
     printf("\"\n\n" SJ2_COLOR_RESET);
     printf(
         "This will report the file and line number that led to this function "
-        "being called.");
+        "being called.\n");
   }
 }
 

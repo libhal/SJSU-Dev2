@@ -28,7 +28,12 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
-  SystemTimer test_subject(mock_system_controller.get());
+  Mock<sjsu::InterruptController> mock_interrupt_controller;
+  Fake(Method(mock_interrupt_controller, Register));
+  Fake(Method(mock_interrupt_controller, Deregister));
+
+  SystemTimer test_subject(mock_system_controller.get(),
+                           mock_interrupt_controller.get());
 
   SECTION("SetTickFrequency generate desired frequency")
   {
@@ -78,6 +83,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     CHECK(Status::kInvalidSettings == test_subject.StartTimer());
     CHECK(kClkSourceMask == local_systick.CTRL);
     CHECK(0xBEEF == local_systick.VAL);
+    // TODO(undef): add check for interrupt_controller.Register()
   }
   SECTION("DisableTimer should clear all bits")
   {
