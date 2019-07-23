@@ -26,10 +26,15 @@
 #undef NVIC_DisableIRQ
 #undef NVIC_SetPriority
 
-using sjsu::lpc40xx::IRQn_Type;
-DECLARE_FAKE_VOID_FUNC(NVIC_EnableIRQ, IRQn_Type);
-DECLARE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
-DECLARE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
+namespace sjsu
+{
+namespace cortex
+{
+DECLARE_FAKE_VOID_FUNC(NVIC_EnableIRQ, sjsu::cortex::IRQn_Type);
+DECLARE_FAKE_VOID_FUNC(NVIC_DisableIRQ, sjsu::cortex::IRQn_Type);
+DECLARE_FAKE_VOID_FUNC(NVIC_SetPriority, sjsu::cortex::IRQn_Type, uint32_t);
+}  // namespace cortex
+}  // namespace sjsu
 #endif  // defined HOST_TEST
 extern IsrPointer dynamic_isr_vector_table[];
 
@@ -37,7 +42,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-constexpr int32_t kIrqOffset = (Reset_IRQn * -1) + 1;
+constexpr int32_t kIrqOffset = (cortex::Reset_IRQn * -1) + 1;
 void InterruptLookupHandler(void);
 }  // namespace lpc40xx
 }  // namespace sjsu

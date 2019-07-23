@@ -11,7 +11,7 @@
 #include "L1_Peripheral/system_timer.hpp"
 #include "utility/status.hpp"
 
-using ::sjsu::lpc40xx::SysTick_Type;
+// using ::sjsu::lpc40xx::SysTick_Type;
 
 namespace sjsu
 {
@@ -82,7 +82,7 @@ class SystemTimer final : public sjsu::SystemTimer
       sys_tick->CTRL |= (1 << ControlBitMap::kEnableCounter);
       sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
 
-      RegisterIsr(lpc40xx::SysTick_IRQn, SystemTimerHandler);
+      RegisterIsr(cortex::SysTick_IRQn, SystemTimerHandler);
       status = Status::kSuccess;
     }
 

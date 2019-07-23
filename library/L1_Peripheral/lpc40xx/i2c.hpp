@@ -61,7 +61,7 @@ class I2c final : public sjsu::I2c
   {
     LPC_I2C_TypeDef * registers;
     sjsu::SystemController::PeripheralID peripheral_power_id;
-    IRQn_Type irq_number;
+    sjsu::cortex::IRQn_Type irq_number;
     Transaction_t & transaction;
     const sjsu::Pin & sda_pin;
     const sjsu::Pin & scl_pin;

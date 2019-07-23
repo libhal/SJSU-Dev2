@@ -350,7 +350,7 @@ int main()
   // depending on the how the application is written.
   system_timer.DisableTimer();
   // Move the interrupt vector table register address to the application's IVT
-  using sjsu::lpc40xx::SCB_Type;
+  using sjsu::cortex::SCB_Type;
   SCB->VTOR = reinterpret_cast<intptr_t>(application_vector_table);
   // Jump to application code
   puts("Booting Application...");

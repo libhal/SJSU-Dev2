@@ -15,9 +15,15 @@
 // NOLINTNEXTLINE(readability-identifier-naming)
 IsrPointer dynamic_isr_vector_table[56] = { nullptr };
 
-DEFINE_FAKE_VOID_FUNC(NVIC_EnableIRQ, IRQn_Type);
-DEFINE_FAKE_VOID_FUNC(NVIC_DisableIRQ, IRQn_Type);
-DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, IRQn_Type, uint32_t);
+namespace sjsu
+{
+namespace cortex
+{
+DEFINE_FAKE_VOID_FUNC(NVIC_EnableIRQ, sjsu::cortex::IRQn_Type);
+DEFINE_FAKE_VOID_FUNC(NVIC_DisableIRQ, sjsu::cortex::IRQn_Type);
+DEFINE_FAKE_VOID_FUNC(NVIC_SetPriority, sjsu::cortex::IRQn_Type, uint32_t);
+}  // namespace cortex
+}  // namespace sjsu
 #else
 
 namespace
@@ -338,10 +344,13 @@ namespace lpc17xx
 // handler is not present in the application code.
 void InterruptLookupHandler(void)
 {
+  using sjsu::cortex::SCB_Type;
+
   uint8_t active_isr = (SCB->ICSR & 0xFF);
   IsrPointer isr     = dynamic_isr_vector_table[active_isr];
   SJ2_ASSERT_FATAL(isr != InterruptLookupHandler,
-                   "No ISR found for the vector %u", active_isr);
+                   "No ISR found for the vector %u",
+                   active_isr);
   isr();
 }
 
@@ -367,11 +376,17 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
   printf("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32
          ", "
          "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 "\n",
-         r0, r1, r2, r3);
+         r0,
+         r1,
+         r2,
+         r3);
   printf("r12: 0x%08" PRIX32 ", lr: 0x%08" PRIX32
          ", "
          "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "\n",
-         r12, lr, pc, psr);
+         r12,
+         lr,
+         pc,
+         psr);
   sjsu::debug::PrintBacktrace(true, reinterpret_cast<void *>(pc));
   // When the following line is hit, the variables contain the register values
   // Use a JTAG debugger to inspect these variables
@@ -379,23 +394,25 @@ extern "C" void GetRegistersFromStack(uint32_t * fault_stack_address)
 }
 }  // namespace lpc17xx
 
-void RegisterIsr(int32_t irq, IsrPointer isr, bool enable_interrupt,
+void RegisterIsr(int32_t irq,
+                 IsrPointer isr,
+                 bool enable_interrupt,
                  int32_t priority)
 {
   dynamic_isr_vector_table[irq + sjsu::lpc17xx::kIrqOffset] = isr;
   if (enable_interrupt && irq >= 0)
   {
-    NVIC_EnableIRQ(static_cast<lpc17xx::IRQn>(irq));
+    sjsu::cortex::NVIC_EnableIRQ(irq);
   }
   if (priority > -1)
   {
-    NVIC_SetPriority(static_cast<lpc17xx::IRQn>(irq), priority);
+    sjsu::cortex::NVIC_SetPriority(irq, priority);
   }
 }
 
 void DeregisterIsr(int32_t irq)
 {
-  NVIC_DisableIRQ(static_cast<lpc17xx::IRQn>(irq));
+  sjsu::cortex::NVIC_DisableIRQ(irq);
   dynamic_isr_vector_table[irq + sjsu::lpc17xx::kIrqOffset] =
       InterruptLookupHandler;
 }

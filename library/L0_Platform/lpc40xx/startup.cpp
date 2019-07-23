@@ -144,8 +144,8 @@ extern "C" void ResetIsr()
   // it never cleans up the memory it uses. To get that memory back, we have
   // to manually move the stack pointers back to the top of stack.
   const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
-  sjsu::lpc40xx::__set_PSP(kTopOfStack);
-  sjsu::lpc40xx::__set_MSP(kTopOfStack);
+  sjsu::cortex::__set_PSP(kTopOfStack);
+  sjsu::cortex::__set_MSP(kTopOfStack);
 
   sjsu::SystemInitialize();
   InitializePlatform();

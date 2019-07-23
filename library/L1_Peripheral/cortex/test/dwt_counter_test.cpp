@@ -11,10 +11,10 @@ EMIT_ALL_METHODS(DwtCounter);
 TEST_CASE("Testing ARM Cortex Data Watchdog Trace Counter",
           "[cortex-dwt-counter]")
 {
-  lpc40xx::DWT_Type local_dwt = {
+  DWT_Type local_dwt = {
     .PCSR = 0,
   };
-  lpc40xx::CoreDebug_Type local_core;
+  CoreDebug_Type local_core;
 
   memset(&local_dwt, 0, sizeof(local_dwt));
   memset(&local_core, 0, sizeof(local_core));

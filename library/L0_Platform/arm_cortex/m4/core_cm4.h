@@ -43,10 +43,6 @@
 
 #include <stdint.h>
 
-#ifdef __cplusplus
- extern "C" {
-#endif
-
 /**
   \page CMSIS_MISRA_Exceptions  MISRA-C:2004 Compliance Exceptions
   CMSIS violates the following MISRA-C:2004 rules:
@@ -207,6 +203,8 @@
 
 #endif
 
+#endif /* __CORE_CM4_H_GENERIC */
+
 /* Core Instruction Access */
 #include "L0_Platform/arm_cortex/cmsis/core_cmInstr.h"
 /* Core Function Access */
@@ -214,20 +212,10 @@
 /* Compiler specific SIMD Intrinsics */
 #include "L0_Platform/arm_cortex/cmsis/core_cmSimd.h"
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* __CORE_CM4_H_GENERIC */
-
 #ifndef __CMSIS_GENERIC
 
 #ifndef __CORE_CM4_H_DEPENDANT
 #define __CORE_CM4_H_DEPENDANT
-
-#ifdef __cplusplus
- extern "C" {
-#endif
 
 /* check device defines and use defaults */
 #if defined __CHECK_DEVICE_DEFINES
@@ -280,7 +268,30 @@
 
 /*@} end of group Cortex_M4 */
 
+#ifdef __cplusplus
+// SJSU-Dev2: Placing contents of file in sjsu::cortex namespace
+namespace sjsu::cortex
+{
+ extern "C" {
+  // SJSU-Dev2: Creating an IRQn_Type so that files including this file do not
+  // need to define this prior inclusion.
+  typedef int IRQn_Type;
 
+  enum CortexM4_IRQn
+  {
+  /******  Cortex-M4 Processor Exceptions Numbers ***************************************************/
+    Reset_IRQn                    = -15,      /*!< 1  Reset Vector, invoked on Power up and warm reset */
+    NonMaskableInt_IRQn           = -14,      /*!< 2 Non Maskable Interrupt                         */
+    HardFault_IRQn                = -13,      /*!< 3  Hard Fault, all classes of Fault              */
+    MemoryManagement_IRQn         = -12,      /*!< 4 Cortex-M3 Memory Management Interrupt          */
+    BusFault_IRQn                 = -11,      /*!< 5 Cortex-M3 Bus Fault Interrupt                  */
+    UsageFault_IRQn               = -10,      /*!< 6 Cortex-M3 Usage Fault Interrupt                */
+    SVCall_IRQn                   = -5,       /*!< 11 Cortex-M3 SV Call Interrupt                   */
+    DebugMonitor_IRQn             = -4,       /*!< 12 Cortex-M3 Debug Monitor Interrupt             */
+    PendSV_IRQn                   = -2,       /*!< 14 Cortex-M3 Pend SV Interrupt                   */
+    SysTick_IRQn                  = -1,       /*!< 15 Cortex-M3 System Tick Interrupt               */
+  };
+#endif
 
 /*******************************************************************************
  *                 Register Abstraction
@@ -1930,11 +1941,9 @@ __STATIC_INLINE int32_t ITM_CheckChar (void)
 
 /*@} end of CMSIS_core_DebugFunctions */
 
-
-
-
 #ifdef __cplusplus
 }
+}  // namespace sjsu::cortex
 #endif
 
 #endif /* __CORE_CM4_H_DEPENDANT */
