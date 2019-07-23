@@ -62,8 +62,7 @@ extern "C"
 
 // 11. Define default instance of InitializePlatform() function.
 //     Here you construct everything that is needed to run the micrcontroller.
-[[gnu::weak]] void InitializePlatform()
-{
+[[gnu::weak]] void InitializePlatform() {
   // Platform 1. Enable any coprocessors or peripherals that keep the following
   // functions from being executed, for example, activating the floating point
   // unit in the Cortex M4 before running any floating point arithmetic.
@@ -112,3 +111,9 @@ extern "C" void ResetIsr()
 // values.
 // The .crp section kCrpWord
 SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
+
+// 14. Define an milliseconds Uptime function
+// ------------------------------------------
+// Place interrupt vector table here. How this is implemented is very platform
+// specific. See the manufacturer's startup file for details on what it should
+// look like.

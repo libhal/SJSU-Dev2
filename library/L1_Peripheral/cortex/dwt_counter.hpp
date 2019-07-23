@@ -2,8 +2,8 @@
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 
-using ::sjsu::lpc40xx::DWT_Type;
-using ::sjsu::lpc40xx::CoreDebug_Type;
+// using ::sjsu::lpc40xx::DWT_Type;
+// using ::sjsu::lpc40xx::CoreDebug_Type;
 
 namespace sjsu
 {

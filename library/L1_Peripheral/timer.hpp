@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "L0_Platform/interrupt.hpp"
+#include "L1_Peripheral/interrupt.hpp"
 #include "utility/status.hpp"
 
 namespace sjsu

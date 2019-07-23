@@ -3,7 +3,6 @@
 # if necessary. Prefer to reused files rather than making a new one.
 LIBRARY_EXAMPLE += $(LIBRARY_DIR)/L0_Platform/example/diskio.cpp
 LIBRARY_EXAMPLE += $(LIBRARY_DIR)/L0_Platform/example/startup.cpp
-LIBRARY_EXAMPLE += $(LIBRARY_DIR)/L0_Platform/example/interrupt.cpp
 LIBRARY_EXAMPLE += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/ARM_CM4F/port.c
 
 # Give a path to the OPENOCD configuration file

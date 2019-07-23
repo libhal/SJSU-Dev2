@@ -2,10 +2,10 @@
 #include <cstdint>
 #include <limits>
 
-#include "L0_Platform/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/timer.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
@@ -108,13 +108,19 @@ class Timer final : public sjsu::Timer
 
   static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
       sjsu::lpc40xx::SystemController();
+  static constexpr sjsu::cortex::InterruptController kInterruptController =
+      sjsu::cortex::InterruptController();
 
   static constexpr uint8_t kMatchRegisterCount = 4;
 
   explicit constexpr Timer(const Channel_t & timer,
                            const sjsu::SystemController & system_controller =
-                               kLpc40xxSystemController)
-      : timer_(timer), system_controller_(system_controller)
+                               kLpc40xxSystemController,
+                           const sjsu::InterruptController &
+                               interrupt_controller = kInterruptController)
+      : timer_(timer),
+        system_controller_(system_controller),
+        interrupt_controller_(interrupt_controller)
   {
   }
 
@@ -133,7 +139,13 @@ class Timer final : public sjsu::Timer
     timer_.channel.timer_register->PR = prescaler;
     timer_.channel.timer_register->TCR |= (1 << 0);
     *timer_.channel.user_callback = isr;
-    RegisterIsr(timer_.channel.irq, timer_.isr, true, priority);
+
+    interrupt_controller_.Register({
+        .interrupt_request_number  = timer_.channel.irq,
+        .interrupt_service_routine = timer_.isr,
+        .enable_interrupt          = true,
+        .priority                  = priority,
+    });
 
     return Status::kSuccess;
   }
@@ -176,6 +188,7 @@ class Timer final : public sjsu::Timer
  private:
   const Channel_t & timer_;
   const sjsu::SystemController & system_controller_;
+  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

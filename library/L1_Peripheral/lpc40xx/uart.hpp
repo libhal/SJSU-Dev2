@@ -5,11 +5,14 @@
 #include <limits>
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L0_Platform/lpc17xx/LPC17xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/uart.hpp"
 #include "utility/status.hpp"
 #include "utility/time.hpp"
+
+using sjsu::lpc17xx::LPC_UART0_TypeDef;
 
 namespace sjsu
 {
@@ -212,7 +215,11 @@ class Uart final : public sjsu::Uart
 
    public:
     inline static const Port_t kUart0 = {
-      .registers      = LPC_UART0,
+      // NOTE: required since LPC_UART0 is of type LPC_UART0_TypeDef in lpc17xx
+      // and LPC_UART_TypeDef in lpc40xx causing a "useless cast" warning when
+      // compiled for, some odd reason, for either one being compiled, which
+      // would make more sense if it only warned us with lpc40xx.
+      .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART0_BASE),
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart0,
       .tx             = kUart0Tx,
       .rx             = kUart0Rx,

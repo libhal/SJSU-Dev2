@@ -1,5 +1,5 @@
 #include <cstdint>
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
@@ -162,10 +162,14 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   Gpio::port_status = &(local_eint.IntStatus);
 
   // Pins that are to be used in the unit test
-  Gpio p0_15(0, 15);
-  Gpio p2_7(2, 7);
+  Mock<sjsu::InterruptController> mock_interrupt_controller;
+  Fake(Method(mock_interrupt_controller, Register));
+  Fake(Method(mock_interrupt_controller, Deregister));
 
-  SECTION("Attacht then Detattach Interrupt from pin")
+  Gpio p0_15(0, 15, mock_interrupt_controller.get());
+  Gpio p2_7(2, 7, mock_interrupt_controller.get());
+
+  SECTION("Attach then Detattach Interrupt from pin")
   {
     // Attach Interrupt to Pin.
     p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
@@ -241,13 +245,18 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
 
     // Enable all Interrupts
     p0_15.EnableInterrupts();
-    CHECK(dynamic_isr_vector_table[GPIO_IRQn + sjsu::lpc40xx::kIrqOffset] ==
-          Gpio::InterruptHandler);
+    Verify(
+        Method(mock_interrupt_controller, Register)
+            .Matching([](sjsu::InterruptController::RegistrationInfo_t info) {
+              return (info.interrupt_request_number == GPIO_IRQn) &&
+                     (info.interrupt_service_routine ==
+                      Gpio::InterruptHandler) &&
+                     (info.enable_interrupt == true) && (info.priority == -1);
+            }));
 
     // Disable all Interrupts
     p0_15.DisableInterrupts();
-    CHECK(dynamic_isr_vector_table[GPIO_IRQn + sjsu::lpc40xx::kIrqOffset] ==
-          &InterruptLookupHandler);
+    Verify(Method(mock_interrupt_controller, Deregister).Using(GPIO_IRQn));
   }
 
   SECTION("Call the Interrupt handler to service the pin.")
@@ -259,7 +268,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
     local_eint.IntStatus |= (1 << kPort0);
     local_eint.IO0IntStatR |= (1 << kPin15);
 
-    // Manually Call the Interrupt Handeler.
+    // Manually call interrupt handler
     p0_15.InterruptHandler();
     CHECK(Pin0_15_ISR_fake.call_count == 1);
     CHECK(((local_eint.IO0IntClr >> kPin15) & 1) == kSet);

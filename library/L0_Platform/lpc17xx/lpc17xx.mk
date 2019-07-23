@@ -4,11 +4,8 @@ SYSTEM_INCLUDES +=
 
 LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/lpc17xx/diskio.cpp
 LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/lpc17xx/startup.cpp
-LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/lpc17xx/interrupt.cpp
 LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m3/ARM_CM3/port.c
-
-# TESTS += $(LIBRARY_DIR)/L0_Platform/lpc17xx/interrupt.cpp
-# TESTS += $(LIBRARY_DIR)/L0_Platform/lpc17xx/test/interrupt_test.cpp
+LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/exceptions.cpp
 
 OPENOCD_CONFIG = $(LIBRARY_DIR)/L0_Platform/lpc17xx/lpc17xx.cfg
 

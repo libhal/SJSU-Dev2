@@ -513,7 +513,7 @@ openocd:
 debug:
 	$(DEVICE_GDB) -ex "target remote :3333" $(EXECUTABLE)
 debug-test:
-	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/test/tests.exe
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/tests.exe
 # Start gdb just like the debug target, but using gdb-multiarch
 # gdb-multiarch is perferable since it supports python in its .gdbinit file
 multi-debug:
