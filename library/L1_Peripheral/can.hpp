@@ -75,7 +75,7 @@ class Can
   virtual bool Receive(RxMessage_t * const kMessage) const               = 0;
   virtual bool SelfTestBus(uint32_t id) const                            = 0;
   virtual bool IsBusOff() const                                          = 0;
-  virtual uint8_t GetFrameErrorLocation() const                          = 0;
+  virtual bool GetFrameErrorLocation(const char * &error_message) const  = 0;
   virtual void EnableBus() const                                         = 0;
 
   bool Send(TxMessage_t * const kMessage, uint32_t id,
