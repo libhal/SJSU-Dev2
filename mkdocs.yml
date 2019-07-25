@@ -9,7 +9,7 @@ theme:
   hljs_style:
     - monokai
   extra_css:
-    - css/extra.css
+    - 'stylesheets/extra.css'
 
 docs_dir: documentation/
 
@@ -20,15 +20,16 @@ copyright: 'Copyright (C) 2018-2019 San Jose State University Computer Engineeri
 nav:
   - Home: 'index.md'
   - Get Started:
-        - Getting started: 'getting-started/getting-started.md'
-        - How to Use Make: 'getting-started/using-make.md'
-  #- 'guides-toc.md'
+    - Getting started: 'getting-started/getting-started.md'
+    - How to Use Make: 'getting-started/using-make.md'
   - Guides:
-        - Understanding The Library Directory Layout: 'guides/understanding-the-platforms-layout.md'
-        - Unit Testing Your Project: 'guides/unit-testing.md'
-        - Debugging with OpenOCD and GDB: 'guides/debugging-with-openocd-gdb.md'
-        - Telemetry Embedded Runtime Monitoring and Tuning: 'guides/telemetry-runtime-monitoring-and-tuning.md'
-
+    - Understanding the Library Directory Structure:
+      - 'guides/directory_layout/project.md'
+      - 'guides/directory_layout/demos.md'
+      - 'guides/directory_layout/library.md'
+      - 'guides/directory_layout/reference.md'
+    - 'guides/unit_testing.md'
+    - 'guides/firmware_debugging.md'
   - 'contributing-toc.md'
   - 'about.md'
   - 'copyrights.md'
