@@ -3,8 +3,10 @@
 ## Adding a device driver (HAL)
 
 First, you will need to figure out which folder to put it in. Lets take
-the Sharp GP2Y0A21YK0F Analog Distance [Sensor]() for example. For the
-sharp distance sensor it should be placed in the
+the
+[Sharp GP2Y0A21YK0F Analog Distance Sensor]
+(http://www.sharp-world.com/products/device/lineup/data/pdf/datasheet/gp2y0a21yk_e.pdf)
+for example. For the sharp distance sensor it should be placed in the
 `library/L2_HAL/sensors/distance/`. If there doesn't seem to be a proper
 place for your sensor, make a new folder for it.
 
@@ -35,7 +37,7 @@ an example:
 
 If the category is temperature, then there should be a temperature
 folder. In this case, this is apart of the sensors category. The
-implementations of the catgory shall reside in that folder.
+implementations of the category shall reside in that folder.
 
 The interface file should be outside of the folder of implementations.
 
@@ -46,7 +48,7 @@ of the L1 peripherals that the driver takes. With the sharp distance
 example, sharp a mock ADC would be created using the
 [FakeIt](https://github.com/eranpeer/FakeIt) mocking library.
 
-``` cpp
+``` c++
 Mock<sjsu::Adc> mock_adc;
 // We only need to fake the methods that our class uses
 Fake(Method(mock_adc, Initialize));
@@ -63,6 +65,3 @@ helpful to change what the `mock_adc::Read()` returns in order to change
 the behavior of the Sharp distance method. You can then check that the
 returned distance values agree with the mocked return value of the ADC
 function.
-
-\_Sharp GP2Y0A21YK0F Analog Distance Sensor: <http://www.python.org/>
-\_FakeIt: <https://github.com/eranpeer/FakeIt>

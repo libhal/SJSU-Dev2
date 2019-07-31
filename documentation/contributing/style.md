@@ -1,11 +1,5 @@
 # Style Guide
 
-<div class="toctree" data-maxdepth="5">
-
-techniques/left-to-right.rst
-
-</div>
-
 ## C++ Style
 
 SJSU-Dev2 follows the Google C++ style guide with exception to the
@@ -27,13 +21,13 @@ example, besides including `<stdlib.h>` use `<cstdlib>`.
 Many of the C++ libraries are large and complex and not optimal for the
 SJSU-Dev2 project. For the most part stay away from using or including
 std C++ libraries. For example, simply the simple `#include <iostream>`
-will grow the executable's **size by 150kB\!?** Bare in mind that the
+will grow the executable's **size by 150kB!?** Bare in mind that the
 flash size for the board is **512kB**. `<iostream>` will take up
 approximately **30%** of your flash size when it is included and not
 even used.
 
   - Here are a few standard C++ libraries you can include:
-    
+
       - `<variant>`
       - `<utility>`
       - `<tuple>`
@@ -47,13 +41,13 @@ even used.
 
   - C++ libraries that increase compile time and **should not** be
     included:
-    
+
       - `<functional>`
       - `<chrono>`
 
   - C++ libraries that increase binary size and you should **NEVER** be
     included:
-    
+
       - `<iostream>`
 
 ## Taking more than 4 arguments for a function
@@ -102,7 +96,7 @@ When reading code, we read from left to right as we do any text. When
 writing APIs think about how nicely your code reads from left to right.
 
 Link to how this should look: [Left to Right
-Technique](techniques/left-to-right.html).
+Technique](techniques/left-to-right.md).
 
 # Curly Braces
 
@@ -257,7 +251,7 @@ it to `43981`.
 Prefer to only have 1 return statement within function and to have it
 return a result variable.
 
-``` cpp
+``` c++
 int function()
 {
   // Prel
@@ -268,7 +262,7 @@ int function()
 Prefer to only have 1 return statement within function and to have it
 return a result variable.
 
-``` cpp
+``` c++
 int function()
 {
   // Preload with a default return.
@@ -282,7 +276,7 @@ int function()
 
 ## How to Efficiently Return variables
 
-``` cpp
+``` c++
 int function(bool check1, bool check2)
 {
   // Preload with a default return.

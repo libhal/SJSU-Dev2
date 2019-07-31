@@ -72,7 +72,7 @@ variable. For example, the possible set of VALUES for VARIABLE
   style.
 - **presubmit**: run presubmit checks that the continous integration system runs
   before allowing a pull request's code to be allowed into the code base.
-  See [presubmitchecks](../contributing/presubmit-checks.html)
+  See [presubmit checks](../contributing/presubmit-checks.md)
 
 ### Makefile Diagnostic Targets
 

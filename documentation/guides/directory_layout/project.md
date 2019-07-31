@@ -38,3 +38,9 @@ Each of the following files are needed in your project directory:
   for the complete list of configuration options. See `hello_world/`'s
   [`project_config.hpp`](https://github.com/kammce/SJSU-Dev2/blob/master/projects/hello_world/project_config.hpp)
   for an example of how to use this.
+
+## Build Folder
+The build folder is generated everytime you build something using make. It
+contains all of the files generated in the process of creating the firmware
+binary that you flash onto your board. The build folder contains a folder for
+every make-able target.
