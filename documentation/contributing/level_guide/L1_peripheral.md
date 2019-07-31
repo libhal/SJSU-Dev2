@@ -11,15 +11,14 @@ other platforms.
 Every peripheral in L1 must be const-able, meaning you can write it like
 this:
 
-``` cpp
+``` c++
 const Gpio gpio(/* ... */);
 ```
 
 and be able to call every method within the interface. This helps with
-optmizations later and allows them to be passed as const references to
-objects in L2\_HAL. The implementation must not alter any internal
-variables, but can alter external variables via pointer or direct
-access.
+optimizations later and allows them to be passed as const references to objects
+in L2_HAL. The implementation must not alter any internal variables, but can
+alter external variables via pointer or direct access.
 
 ## Adding an Interface
 
@@ -27,7 +26,6 @@ Lets say you want to implement a peripheral that does not currently have
 an interface, like an SPIFI interface.
 
 You would need to create a file in the following folder:
-
 `library/L1_Peripheral/spifi.hpp`
 
 After adding the interface at least 1 implementation of this driver for
@@ -68,10 +66,10 @@ than inheritance (IS-A).
 
 ## Borrowing Drivers from other systems
 
-Sometimes we get lucky and the register mapping between two distint
+Sometimes we get lucky and the register mapping between two distinct
 microcontrollers in the same family are the same, but not 100%
 identical. In this case, we can borrow the implementation of other
-microcontrollers for antoher. All you need to do is put that driver's
+microcontrollers for another. All you need to do is put that driver's
 name in the namespace of the other microcontroller.
 
 The following borrows the LPC40xx ADC driver for use in the LPC17xx
@@ -101,7 +99,7 @@ dependency injection.
 
 Take the following example for a GPIO object:
 
-``` cpp
+``` c++
 class Gpio
 {
  public:
@@ -113,11 +111,11 @@ class Gpio
 };
 ```
 
-We can create our own version of the LPC\_GPIO\_TypeDef structure in our
+We can create our own version of the `LPC_GPIO_TypeDef` structure in our
 test and set the entries in the look up table to the address of local
 GPIO register description structure.
 
-``` cpp
+``` c++
 TEST_CASE("Testing Gpio", "[gpio]")
 {
   // Initialized local LPC_GPIO_TypeDef objects with 0 to observe how the
@@ -135,19 +133,18 @@ TEST_CASE("Testing Gpio", "[gpio]")
 }
 ```
 
-After reassigning these addresses you can safely run the Gpio methods,
-as they will no longer attempt to access the address on hardware, but
-will actually access the data within your local test case. Now you can
-run your methods and check if the bits in the structure have been
-modified in the correct way.
+After reassigning these addresses you can safely run the Gpio methods, as they
+will no longer attempt to access the address on hardware, but will actually
+access the data within your local test case. Now you can run your methods and
+check if the bits in the structure have been modified in the correct way.
 
 ## Using Predefined Structures
 
 This works nearly the same as the LUT/Register pointer testing scheme,
 except that you do not need to overwrite and then restore the original
-values within the static varible of the object.
+values within the static variable of the object.
 
-``` cpp
+``` c++
 class Gpio
 {
  public:
@@ -161,17 +158,17 @@ class Gpio
 };
 ```
 
-The actual port register address has bene passed into the GPIO object
-this time. This is beneficial because all we need to do is pass and
-address of our own local created LPC\_GPIO\_TypeDef structure and pass
-that to your test subject peripheral object.
+The actual port register address has bene passed into the GPIO object this time.
+This is beneficial because all we need to do is pass and address of our own
+local created LPC_GPIO_TypeDef structure and pass that to your test subject
+peripheral object.
 
-The actual port register address has bene passed into the GPIO object
-this time. This is beneficial because all we need to do is pass and
-address of our own local created LPC\_GPIO\_TypeDef structure and pass
-that to your test subject peripheral object.
+The actual port register address has bene passed into the GPIO object this time.
+This is beneficial because all we need to do is pass and address of our own
+local created LPC_GPIO_TypeDef structure and pass that to your test subject
+peripheral object.
 
-``` cpp
+``` c++
 TEST_CASE("Testing Gpio", "[gpio]")
 {
   // Initialized local LPC_GPIO_TypeDef objects with 0 to observe how the

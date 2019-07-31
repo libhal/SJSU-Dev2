@@ -9,13 +9,15 @@ Yosemite and above), or Windows 10 with WSL installed.
 
 Windows 10 users must install WSL in order to work with the development
 environment.
-Follow this link and follow the steps: [Install WSL on Windows 10](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+Follow this link and follow the steps:
+[Install WSL on Windows 10](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 ## Installing Serial Device Driver for Windows 10 and Mac Users
 
 Windows 10 and Mac users will need to install the serial drivers on
 their computer to be able to communicate with the SJTwo board. Follow
-this link and download the driver for your computer. [Link to Serial Driver Download](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
+this link and download the driver for your computer.
+[Link to Serial Driver Download](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
 
 ## Installation
 
