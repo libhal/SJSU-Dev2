@@ -49,7 +49,7 @@ class Uart
   // ================
 
   /// Transmit just 1 byte
-  void Write(uint8_t byte)
+  void Write(uint8_t byte) const
   {
     Write(&byte, 1);
   }
@@ -58,12 +58,12 @@ class Uart
   ///
   ///    uart.Write({ 0x01, 0xAA, 0x33, 0x55 });
   ///
-  void Write(std::initializer_list<uint8_t> data)
+  void Write(std::initializer_list<uint8_t> data) const
   {
     Write(data.begin(), data.size());
   }
   /// Wait to receive just 1 byte
-  uint8_t Read(uint32_t timeout = std::numeric_limits<uint32_t>::max())
+  uint8_t Read(uint32_t timeout = std::numeric_limits<uint32_t>::max()) const
   {
     uint8_t byte;
     if (Read(&byte, 1, timeout) == Status::kTimedOut)
