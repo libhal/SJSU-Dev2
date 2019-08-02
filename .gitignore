@@ -16,6 +16,7 @@ tools/**/*
 !tools/presubmit.sh
 !tools/putty32.exe
 !tools/putty64.exe
+!tools/launch_openocd_gdb.sh
 
 **/*.gch
 **/*.gcno
