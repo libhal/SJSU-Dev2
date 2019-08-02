@@ -2,7 +2,7 @@
 
 Level 0 is the level for specific platforms. Working in this level means
 you are working on a specific platforms low level code or that you are
-add a new platofrm to the environment. Making a new platform is as
+add a new platform to the environment. Making a new platform is as
 simple as adding a new folder in the platform with the exact name of the
 platform you want to support (example: lpc17xx or atmega328p), and
 adding and refactoring vendor code for the interrupt vector table
@@ -30,25 +30,23 @@ namespace lpc40xx
 } // sjsu
 ```
 
-The orignal header file must NOT be included in any library in SJSU-Dev2
-to prevent the global namespace from being contaminated.
+The original header file must NOT be included in any library in SJSU-Dev2 to
+prevent the global namespace from being contaminated.
 
 ## Linker Script
 
-All platforms will require a linker script to decribe to format of the
+All platforms will require a linker script to describe to format of the
 binary to the GCC linker. Typically vendor linker scripts do not need to
 modified when brought into SJSU-Dev2. But the name of the linker script
 must become `application.ld` and/or `bootloader.ld`. `application.ld`
 will be used when the user uses `make application` and `bootloader.ld`
 will be used when users use `make bootloader`.
 
-Definitions required for linker script:
+### Definitions required for linker script
 
-1.  Define `.data` and `.bss` section table in the following way:
+#### Define `.data` and `.bss` section table in the following way
 
-<!-- end list -->
-
-``` text
+```
 section_table_start = .;
 data_section_table = .;
 LONG(LOADADDR(.data));
@@ -69,13 +67,13 @@ bss_section_table_end = .;
 section_table_end = . ;
 ```
 
-2.  Provide a symbol for `heap_start` and `heap_end`.
+#### Provide a symbol for `heap_start` and `heap_end`.
 
-In order for malloc and new to work, you need to define the `heap_start`
+In order for `malloc` and new to work, you need to define the `heap_start`
 and `heap_end` in your linker script. Below is an example of how to
 define start ane ends of the heap.
 
-``` text
+```
 # Put this near the end of the linker script.
 # the . symbol is used to denote the current position of memory pointer
 PROVIDE(heap_start =  .);
@@ -85,13 +83,13 @@ PROVIDE(heap_end = __RAM_TOP);
 ```
 
 The best option is to choose a defined region of ram just for heap such
-that the stack pointer and heap pointer never cross eachother. The
+that the stack pointer and heap pointer never cross each other. The
 LPC40xx boards, has 96kB ram with 64kB used for RAM1 and 32kB for RAM2.
-RAM1 and RAM2 are not contigiuous blocks of ram in LPC40xx, so RAM1 is
+RAM1 and RAM2 are not contiguous blocks of ram in LPC40xx, so RAM1 is
 used for `.data`, `.bss` and stack, where RAM2 is defined just for heap
 memory.
 
-# Startup
+## Startup
 
 Typically the vendor provides a `startup.c` or `startup.cpp` file for
 your use. Integration of this startup file must be converted to C++ and
@@ -99,30 +97,30 @@ follow the coding standards of SJSU-Dev2. This usually requires a bit of
 rewriting of the startup code to comply with SJSU-Dev2 coding standards.
 
 In order for a board to be fully compatible with SJSU-Dev2's
-multiplatform examples the following things need to be setup before `int
+multi-platform examples the following things need to be setup before `int
 main()` is called:
 
-1.  [Porting Newlib]():
+## [Porting Newlib](https://www.embecosm.com/appnotes/ean9/ean9-howto-newlib-1.0.html)
 
-> 1.  Initialize RAM sections
-> 
-> >   - `.data` section must be copied into RAM from ROM. Failure to do
-> >     so mean that initialized global variables will be undefined.
-> >   - `.bss` section must be initialized to zero. Failure to do so
-> >     means undefined global and staticly allocated variables will be
-> >     undefined and will typically result in a hard fault when
-> >     attempting to use stdlibc and stdlibc++.
-> 
-> 2.  Host Communication:
-> 
-> >   - There must be some way to communicate with a host computer. This
-> >     is usualy done via UART or USB-CDC and either method is
-> >     acceptable, but UART tends to be the easiest.
-> >   - Update the STDOUT and STDIN callback functions by using
-> >     `SetStdout` and `SetStdin`, found in the
-> >     `library/newblib/newlib.h` Example:
+### Initialize RAM sections
 
-``` cpp
+- `.data` section must be copied into RAM from ROM. Failure to do
+  so mean that initialized global variables will be undefined.
+- `.bss` section must be initialized to zero. Failure to do so
+  means undefined global and statically allocated variables will be
+  undefined and will typically result in a hard fault when
+  attempting to use stdlibc and stdlibc++.
+
+### Host Communication
+
+- There must be some way to communicate with a host computer. This
+  is usually done via UART or USB-CDC and either method is
+  acceptable, but UART tends to be the easiest.
+- Update the STDOUT and STDIN callback functions by using
+  `SetStdout` and `SetStdin`, found in the
+  `library/newblib/newlib.h` Example:
+
+``` c++
 int Lpc40xxStdOut(const char * data, size_t length)
 {
   uart0.Write(reinterpret_cast<const uint8_t *>(data), length);
@@ -136,72 +134,47 @@ int Lpc40xxStdIn(char * data, size_t length)
 }
 ```
 
-> 3.  Malloc & new:
-> 
-> >   - Following Linker script part 2 for heap should handle this for
-> >     you.
+### malloc & new
 
-2.  Millisecond Timer:
+Following Linker script part 2 for heap should handle this for you.
 
->   - Need some source of time keeping preferably 64-bit. This could be
->     a timer peripheral timer but it is preferred to use a timer that
->     is a part of the CPU and not the MCU specifically. For example,
->     each Arm Cortex chip has a system tick timer, thu we can reduce
->     the amount of code necessary for each microcontroller that uses an
->     Arm Cortex Mx (where x is any of them), by simply embedding a
->     64-bit counter within the SysTick ISR call and SysTick object.
->   - Once you have your time keeping source you will need to inject it
->     into the timer system by running
->     `SetUptimeFunction(Lpc40xxUptime);` where `Lpc40xxUptime()` is a
->     function that returns the uptime count as a 64-bit value.
+## Millisecond Timer:
 
+- There needs to be some source of time keeping, preferably 64-bit. This could
+  be a timer peripheral timer but it is preferred to use a timer that is a part
+  of the CPU and not the MCU specifically. For example, each Arm Cortex chip has
+  a system tick timer, thu we can reduce the amount of code necessary for each
+  microcontroller that uses an Arm Cortex Mx (where x is any of them), by simply
+  embedding a 64-bit counter within the SysTick ISR call and SysTick object.
 
-3.  FreeRTOS:
+- Once you have your time keeping source you will need to inject it into the
+  timer system by running `SetUptimeFunction(Lpc40xxUptime);` where
+  `Lpc40xxUptime()` is a function that returns the uptime count as a 64-bit
+  value.
 
->   - Add the appropriate processor port.c and portmacro.h file to the
->     processor platform in L0. See
->     `libary/L0_Platform/arm_cortex/m3/freertos/port.c`. Make sure you
->     are using the GCC variant.
->   - Make sure that the appropriate interrupt service routines and
->     timers have been setup. This variates depending on the
->     architecure. On arm, there is the vPortSVCHandler,
->     xPortPendSVHandler, and vSysTickHandler. Be sure to inject these
->     using the interrupt peripheral class from within the `void
->     vPortSetupTimerInterrupt(void)` function vs putting them directly
->     into the interrupt vector table if possible. Doing this will
->     reduce code size if FreeRTOS is not used.
->   - Because the standard for SJSU-Dev2 is to have deterministic memory
->     requirements, in order to use FreeRTOS you need to statically
->     allocate your idle task memory using the following block of code:
+## FreeRTOS:
 
-# Optional things to port
+- Add the appropriate processor port.c and portmacro.h file to the processor
+  platform in L0. See `library/L0_Platform/arm_cortex/m3/freertos/port.c`. Make
+  sure you are using the GCC variant.
+- Make sure that the appropriate interrupt service routines and timers have been
+  setup. This variates depending on the architecure. On arm, there is the
+  `vPortSVCHandler`, `xPortPendSVHandler`, and `vSysTickHandler`. Be sure to
+  inject these using the interrupt peripheral class from within the
+  `void vPortSetupTimerInterrupt(void)` function vs putting them directly into
+  the interrupt vector table if possible. Doing this will reduce code size if
+  FreeRTOS is not used.
+- Because the standard for SJSU-Dev2 is to have deterministic memory
+  requirements, in order to use FreeRTOS you need to statically allocate your
+  idle task memory using the following block of code:
 
-## FatFS
+## Interrupt Vector Table
 
-Add a file `diskio.cpp` in the platform folder. Follow the code example
-below:
-
-<div class="warning">
-
-<div class="admonition-title">
-
-Warning
-
-</div>
-
-This section is currently missing. Add a section for this after github
-issue \#400\_ is resolved which adds how to dependency inject a callback
-function FatFS.
-
-</div>
-
-# Interrupt Vector Table
-
-For organization purposes it is prefered that the interrupt vector table
+For organization purposes it is preferred that the interrupt vector table
 (IVT) is placed in the L0 folder as its own file rather than putting it
 in the `startup.cpp` file as many vendors do.
 
-# Writing .mk file
+## Writing .mk file
 
 ``` Makefile
 # Add library source files, typically its just the startup.cpp file
@@ -230,17 +203,20 @@ $(eval $(call BUILD_LIRBARY,liblpc40xx,LIBRARY_LPC40XX))
 include $(LIB_DIR)/L0_Platform/arm_cortex/m4/m4.mk
 ```
 
-# Testing L0 Platform
+## Testing L0 Platform
 
-<div class="error">
+!!! Error
+    Testing of IVT and and startup sequence has not been integrated into
+    SJSU-Dev2.
 
-<div class="admonition-title">
+## Optional things to port
 
-Error
+### FatFS
 
-</div>
+Add a file `diskio.cpp` in the platform folder. Follow the code example
+below:
 
-Testing of IVT and and startup sequence has not been integrated into
-SJSU-Dev2.
-
-</div>
+!!! Warning
+    This section is currently missing. Add a section for this after github
+    issue #400_ is resolved which adds how to dependency inject a callback
+    function FatFS.
