@@ -7,8 +7,8 @@
 YELLOW=$(shell echo "\x1B[33;1m")
 RED=$(shell echo "\x1B[31;1m")
 MAGENTA=$(shell echo "\x1B[35;1m")
-RESET=$(shell echo "\x1B[0m")
 GREEN=$(shell echo "\x1B[32;1m")
+RESET=$(shell echo "\x1B[0m")
 CURRENT_SETUP_VERSION=$(shell cat $(SJSU_DEV2_BASE)/setup_version.txt)
 # ============================
 # Modifying make Flags
@@ -16,8 +16,8 @@ CURRENT_SETUP_VERSION=$(shell cat $(SJSU_DEV2_BASE)/setup_version.txt)
 # The following list of targets that opt-out of output sync
 ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
-        presubmit openocd debug lint multi-debug flash jtag-flash \
-        platform-flash platform-jtag-flash debug-test))
+        presubmit openocd debug debug-test flash jtag-flash platform-flash \
+        platform-jtag-flash lint ))
 MAKEFLAGS += --output-sync
 endif
 #
@@ -63,7 +63,7 @@ SJCLANG        = $(shell cd $(SJCLANG_PATH) ; pwd)
 SJARMGCC_PATH  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/
 SJARMGCC       = $(shell cd $(SJARMGCC_PATH) ; pwd)
 # Path to Openocd compiler
-SJOPENOCD = $(SJSU_DEV2_BASE)/tools/openocd
+OPENOCD_DIR = $(SJSU_DEV2_BASE)/tools/openocd
 # Compiler and library settings:
 SJLIBDIR  = $(SJSU_DEV2_BASE)/firmware/library
 
@@ -131,7 +131,7 @@ DEVICE_NM        = $(SJARMGCC)/bin/arm-none-eabi-nm
 DEVICE_AR        = $(SJARMGCC)/bin/arm-none-eabi-ar
 DEVICE_RANLIB    = $(SJARMGCC)/bin/arm-none-eabi-ranlib
 DEVICE_ADDR2LINE = $(SJARMGCC)/bin/arm-none-eabi-addr2line
-DEVICE_GDB       = $(SJARMGCC)/bin/arm-none-eabi-gdb
+DEVICE_GDB       = $(SJARMGCC)/bin/arm-none-eabi-gdb-py
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
@@ -167,11 +167,15 @@ endif
 # Name of the folder where all of the object and intermediate compilable files
 # will be stored
 BUILD_DIRECTORY_NAME = build
+
+ifeq ($(MAKECMDGOALS), application)
+$(info $(shell printf '$(MAGENTA)Building application firmware...$(RESET)\n'))
+endif
+
 # "make application"'s build directory becomes "build/application"
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), application flash jtag-flash \
       platform-flash platform-jtag-flash stacktrace-application \
 			multi-debug debug))
-$(info $(shell printf '$(MAGENTA)Building application firmware...$(RESET)\n'))
 BUILD_SUBDIRECTORY_NAME = application
 else
 BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
@@ -289,7 +293,7 @@ OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
             -fno-exceptions -fno-omit-frame-pointer \
             -fasynchronous-unwind-tables
 CPPOPTIMIZE = -fno-rtti -fno-threadsafe-statics
-DEBUG     = -g
+DEBUG_FLAG  = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wdouble-promotion -Wduplicated-cond -Wswitch \
             -Wnull-dereference -Wformat=2 \
@@ -300,7 +304,7 @@ CPPWARNINGS = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
 DEFINES   = -D ELF_FILE=\"$(EXECUTABLE)\" -D PLATFORM=$(PLATFORM)
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # Combine all of the flags together
-COMMON_FLAGS += $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
+COMMON_FLAGS += $(OPTIMIZE) $(DEBUG_FLAG) $(WARNINGS) $(DEFINES) \
                 $(DISABLED_WARNINGS) -fdiagnostics-color
 # Add the last touch for object files
 CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
@@ -324,7 +328,7 @@ CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
           $(WARNINGS_ARE_ERRORS) \
          -D HOST_TEST=1 -D TARGET=HostTest -D SJ2_BACKTRACE_DEPTH=1024 \
          -D CATCH_CONFIG_FAST_COMPILE \
-         $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG) \
+         $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG_FLAG) \
          $(DISABLED_WARNINGS) \
          -O0 -MMD -MP -c
 CFLAGS = $(CPPFLAGS)
@@ -380,8 +384,7 @@ TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/tests.exe
 .DEFAULT_GOAL := default
 # Tell make that these recipes don't have a end product
 .PHONY: default build cleaninstall telemetry monitor show-lists clean flash \
-        telemetry presubmit openocd debug multi-debug library-clean purge \
-        test library-test
+        telemetry presubmit openocd debug library-clean purge test library-test
 print-%  : ; @echo $* = $($*)
 # ====================================================================
 # When the user types just "make" or "help" this should appear to them
@@ -420,7 +423,6 @@ help:
 	@echo
 	@echo "  openocd      - run openocd with the sjtwo.cfg file"
 	@echo "  debug        - run arm gdb with current projects .elf file"
-	@echo "  multi-debug  - run multiarch gdb with current projects .elf file"
 	@echo "  show-lists   - Makefile debugging target that displays the contents"
 	@echo "                 of make variables"
 
@@ -443,8 +445,8 @@ flash:
 jtag-flash:
 	@$(MAKE) --quiet application
 	@printf '$(MAGENTA)Programming chip via debug port...$(RESET)\n'
-	@$(SJOPENOCD)/bin/openocd -s $(SJOPENOCD)/scripts/ \
-	-c "source [find interface/$(DEBUG_ADAPTER).cfg]" -f $(OPENOCD_CONFIG) \
+	@$(OPENOCD_DIR)/bin/openocd -s $(OPENOCD_DIR)/scripts/ \
+	-c "source [find interface/$(DEBUG_DEVICE).cfg]" -f $(OPENOCD_CONFIG) \
 	-c "program \"$(EXECUTABLE)\" verify reset exit 0x0"
 # ====================================================================
 # Clean working build directory by deleting the build folder
@@ -506,18 +508,14 @@ presubmit:
 # ====================================================================
 stacktrace-application:
 	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE) $(TRACES)
-# Start an openocd jtag debug session for the sjtwo development board
-openocd:
-	$(SJOPENOCD)/bin/openocd -f $(OPENOCD_CONFIG)
-# Start gdb for arm and connect to openocd jtag debugging session
+# Start gdb and connect to openocd jtag debugging session
+
 debug:
-	$(DEVICE_GDB) -ex "target remote :3333" $(EXECUTABLE)
+	$(info $(shell printf '$(MAGENTA)Starting firmware debug...$(RESET)\n'))
+	$(TOOLS_DIR)/launch_openocd_gdb.sh $(OPENOCD_DIR) $(DEBUG_DEVICE) \
+	  $(OPENOCD_CONFIG) $(DEVICE_GDB) $(CURRENT_DIRECTORY)/$(EXECUTABLE)
 debug-test:
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/tests.exe
-# Start gdb just like the debug target, but using gdb-multiarch
-# gdb-multiarch is perferable since it supports python in its .gdbinit file
-multi-debug:
-	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
 # ====================================================================
 # Makefile debug
 # ====================================================================
