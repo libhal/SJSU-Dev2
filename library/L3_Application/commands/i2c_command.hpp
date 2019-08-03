@@ -122,7 +122,7 @@ class I2cCommand final : public Command
     for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
          address++)
     {
-      if (Status::kSuccess == i2c_.Write(address, nullptr, 0, 50))
+      if (Status::kSuccess == i2c_.Write(address, nullptr, 0, 50ms))
       {
         AddressString_t address_string;
         snprintf(address_string.str, sizeof(address_string.str), "0x%02X",
@@ -163,7 +163,7 @@ class I2cCommand final : public Command
     if (argc - 1 < kRegisterAddress)
     {
       LOG_ERROR(
-          "Invalid number of arguments for write opeation, required %d, "
+          "Invalid number of arguments for write operation, required %d, "
           "supplied %d",
           kRegisterAddress, argc);
       return 1;

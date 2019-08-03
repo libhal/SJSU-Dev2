@@ -1,4 +1,3 @@
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L2_HAL/actuators/servo/servo.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
@@ -25,14 +24,14 @@ TEST_CASE("Testing Servo", "[Servo]")
 
   SECTION("Write Microseconds")
   {
-    constexpr uint32_t kTestFrequency = 100;
-    constexpr float kTestMaxPulseLength =
-        (1 / static_cast<float>(kTestFrequency)) * 1'000'000;
-    constexpr float kTestPulseLength = 200;
-    constexpr float kTestDutyCycle   = kTestPulseLength / kTestMaxPulseLength;
+    constexpr auto kTestFrequency      = 100_Hz;
+    constexpr float kTestMaxPulseWidth = (1_MHz / kTestFrequency).to<float>();
+    constexpr auto kTestPulseWidth     = 200us;
+    constexpr float kTestDutyCycle =
+        static_cast<float>(kTestPulseWidth.count() / kTestMaxPulseWidth);
 
     test_servo.SetFrequency(kTestFrequency);
-    test_servo.SetPulseWidthInMicroseconds(kTestPulseLength);
+    test_servo.SetPulseWidthInMicroseconds(kTestPulseWidth);
 
     Verify(Method(mock_pwm, SetFrequency).Using(kTestFrequency)).Once();
     Verify(Method(mock_pwm, SetDutyCycle).Using(kTestDutyCycle)).Once();
@@ -40,27 +39,36 @@ TEST_CASE("Testing Servo", "[Servo]")
 
   SECTION("Write Angle")
   {
-    constexpr uint32_t kTestFrequency = 400;
-    constexpr float kTestMaxPulseLength =
-        (1 / static_cast<float>(kTestFrequency)) * 1'000'000;
-    constexpr float kTestAngle          = 90;
-    constexpr float kTestMinAngle       = 20;
-    constexpr float kTestMaxAngle       = 140;
-    constexpr float kTestPulseLengthMin = 1000;
-    constexpr float kTestPulseLengthMax = 2300;
-    constexpr float kTestPulseLength    = sjsu::Map(kTestAngle,
-                                                 kTestMinAngle,
-                                                 kTestMaxAngle,
-                                                 kTestPulseLengthMin,
-                                                 kTestPulseLengthMax);
-    constexpr float kTestDutyCycle = kTestPulseLength / kTestMaxPulseLength;
+    constexpr auto kTestFrequency     = 400_Hz;
+    constexpr auto kTestAngle         = 90_deg;
+    constexpr auto kTestMinAngle      = 20_deg;
+    constexpr auto kTestMaxAngle      = 140_deg;
+    constexpr auto kTestPulseWidthMin = 1000us;
+    constexpr auto kTestPulseWidthMax = 2300us;
+
+    constexpr std::chrono::microseconds kTestMaxPulseWidth =
+        std::chrono::microseconds((1_MHz / kTestFrequency).to<uint32_t>());
+
+    constexpr float kTestPulseWidth =
+        sjsu::Map(kTestAngle.to<float>(),
+                  kTestMinAngle.to<float>(),
+                  kTestMaxAngle.to<float>(),
+                  static_cast<float>(kTestPulseWidthMin.count()),
+                  static_cast<float>(kTestPulseWidthMax.count()));
+    constexpr float kExpectedDutyCycle =
+        kTestPulseWidth / kTestMaxPulseWidth.count();
 
     test_servo.SetFrequency(kTestFrequency);
     test_servo.SetAngleBounds(kTestMinAngle, kTestMaxAngle);
-    test_servo.SetPulseBounds(kTestPulseLengthMin, kTestPulseLengthMax);
+    test_servo.SetPulseBounds(kTestPulseWidthMin, kTestPulseWidthMax);
     test_servo.SetAngle(kTestAngle);
 
-    Verify(Method(mock_pwm, SetDutyCycle).Using(kTestDutyCycle)).Once();
+    Verify(
+        Method(mock_pwm, SetDutyCycle).Matching([](float duty_cycle) -> bool {
+          float error = duty_cycle - kExpectedDutyCycle;
+          return (-0.01f <= error && error <= 0.01f);
+        }))
+        .Once();
   }
 }
 }  // namespace sjsu

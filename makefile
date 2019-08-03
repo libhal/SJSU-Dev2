@@ -447,7 +447,7 @@ jtag-flash:
 	@printf '$(MAGENTA)Programming chip via debug port...$(RESET)\n'
 	@$(OPENOCD_DIR)/bin/openocd -s $(OPENOCD_DIR)/scripts/ \
 	-c "source [find interface/$(DEBUG_DEVICE).cfg]" -f $(OPENOCD_CONFIG) \
-	-c "program \"$(EXECUTABLE)\" verify reset exit 0x0"
+	-c "program \"$(EXECUTABLE)\" reset exit 0x0"
 # ====================================================================
 # Clean working build directory by deleting the build folder
 # ====================================================================

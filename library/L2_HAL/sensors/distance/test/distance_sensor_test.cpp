@@ -2,7 +2,7 @@
 // @defgroup DistanceSensor unit tests
 // @brief This file contains the unit tests to validate the DistanceSensor class
 // @{
-#include "L2_HAL/sensors/distance/distancesensor.hpp"
+#include "L2_HAL/sensors/distance/distance_sensor.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/log.hpp"
 namespace sjsu

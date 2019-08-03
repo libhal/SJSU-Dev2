@@ -5,6 +5,7 @@
 #include <limits>
 
 #include "utility/status.hpp"
+#include "utility/time.hpp"
 
 namespace sjsu
 {
@@ -41,7 +42,7 @@ class Uart
   virtual Status Read(
       uint8_t * data,
       size_t size,
-      uint32_t timeout = std::numeric_limits<uint32_t>::max()) const = 0;
+      std::chrono::microseconds timeout = MaxDelay()) const = 0;
   virtual bool HasData() const                                       = 0;
 
   // ================
@@ -63,7 +64,7 @@ class Uart
     Write(data.begin(), data.size());
   }
   /// Wait to receive just 1 byte
-  uint8_t Read(uint32_t timeout = std::numeric_limits<uint32_t>::max()) const
+  uint8_t Read(std::chrono::microseconds timeout = MaxDelay()) const
   {
     uint8_t byte;
     if (Read(&byte, 1, timeout) == Status::kTimedOut)

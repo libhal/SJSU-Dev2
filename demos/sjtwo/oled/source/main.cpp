@@ -15,19 +15,19 @@ int main()
   oled_display.Initialize();
   sjsu::Graphics graphics(&oled_display);
   LOG_INFO("Starting OLED Hardware Test in 5s...");
-  sjsu::Delay(5000);
+  sjsu::Delay(5000ms);
 
   LOG_INFO("Initializing Graphics library along with OLED Hardware...");
   graphics.Initialize();
-  sjsu::Delay(1000);
+  sjsu::Delay(1s);
 
   LOG_INFO("Clearing Screen...");
   graphics.Clear();
   graphics.Update();
-  sjsu::Delay(1000);
+  sjsu::Delay(1s);
 
   LOG_INFO("Clearing Screen finished. Waiting 1 second...");
-  sjsu::Delay(1000);
+  sjsu::Delay(1s);
 
   LOG_INFO("Drawing Some Shapes...");
 
@@ -98,10 +98,10 @@ int main()
   {
     LOG_INFO("Inverting Screen Colors...");
     oled_display.InvertScreenColor();
-    sjsu::Delay(5000);
+    sjsu::Delay(5000ms);
     LOG_INFO("Normalizing Screen Colors...");
     oled_display.NormalScreenColor();
-    sjsu::Delay(5000);
+    sjsu::Delay(5000ms);
   }
   return 0;
 }

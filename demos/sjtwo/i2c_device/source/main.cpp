@@ -122,7 +122,7 @@ int main()
     LOG_INFO("add reg1 = 0x%02X", reg1);
     LOG_INFO("========================\n");
 
-    sjsu::Delay(500);
+    sjsu::Delay(500ms);
   }
   return 0;
 }

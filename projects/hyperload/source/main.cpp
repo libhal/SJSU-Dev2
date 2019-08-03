@@ -26,6 +26,7 @@ sjsu::lpc40xx::SystemController system_controller;
 sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
 sjsu::lpc40xx::Uart uart3(sjsu::lpc40xx::Uart::Port::kUart3);
 bool debug_print_button_was_pressed = false;
+constexpr std::chrono::microseconds kSerialReadTimeout = 500ms;
 }  // namespace
 
 // NOLINTNEXTLINE(readability-identifier-naming)
@@ -70,8 +71,8 @@ constexpr uint32_t kSectorSize      = kBlockSize * kBlocksPerSector;  // 32 kB
 constexpr uint32_t kSizeOfSector    = 0x8000;
 constexpr uint32_t kStartSector     = 16;
 constexpr uint32_t kLastSector      = 29;
-constexpr uint32_t kApplicationStartAddress = kStartSector * kBlockSize;
-constexpr uint32_t kFlashDelay              = 10;
+constexpr uint32_t kApplicationStartAddress     = kStartSector * kBlockSize;
+constexpr std::chrono::microseconds kFlashDelay = 10ms;
 
 enum IapCommands : uint8_t
 {
@@ -145,12 +146,14 @@ bool WriteUartToRamSector(Sector_t * sector);
 uint32_t BlockToSector(uint32_t block);
 IapResult PrepareSector(uint32_t start, uint32_t end);
 IapResult EraseSector(uint32_t start, uint32_t end);
-IapResult FlashBlock(Block_t * block, uint32_t sector_number,
+IapResult FlashBlock(Block_t * block,
+                     uint32_t sector_number,
                      uint32_t block_number);
 IapResult VerifySector(Sector_t * ram_sector, uint32_t sector_number);
 IapResult BlankCheckSector(uint32_t start, uint32_t end);
 void EraseWithVerifySector(uint32_t sector_number);
-IapResult FlashSector(Sector_t * ram_sector, uint32_t sector_number,
+IapResult FlashSector(Sector_t * ram_sector,
+                      uint32_t sector_number,
                       uint32_t blocks_filled_in_sector = kBlocksPerSector);
 
 namespace hyperload
@@ -214,8 +217,7 @@ void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
   // Set flash memory access clock rate to 6 clocks per access
   using sjsu::lpc40xx::LPC_SC_TypeDef;
   LPC_SC->FLASHCFG =
-      (LPC_SC->FLASHCFG & ~(0b1111 << 12)) |
-      (clocks_per_flash_access << 12);
+      (LPC_SC->FLASHCFG & ~(0b1111 << 12)) | (clocks_per_flash_access << 12);
 }
 
 int main()
@@ -247,10 +249,10 @@ int main()
 
   printf3("Bootloader Debug Port Initialized!\n");
   // Flush any initial bytes
-  uart0.Read(500);
+  uart0.Read(kSerialReadTimeout);
   uart0.Write(0xFF);
   // Hyperload will send 0x55 to notify that it is alive!
-  if (0x55 == uart0.Read(500))
+  if (0x55 == uart0.Read(kSerialReadTimeout))
   {
     SetFlashAcceleratorSpeed(6);
     // Notify Hyperload that we're alive too!
@@ -261,13 +263,13 @@ int main()
       uint32_t word;
     };
     BaudRateControlWord control;
-    control.array[0] = uart0.Read(500);
-    control.array[1] = uart0.Read(500);
-    control.array[2] = uart0.Read(500);
-    control.array[3] = uart0.Read(500);
+    control.array[0] = uart0.Read(kSerialReadTimeout);
+    control.array[1] = uart0.Read(kSerialReadTimeout);
+    control.array[2] = uart0.Read(kSerialReadTimeout);
+    control.array[3] = uart0.Read(kSerialReadTimeout);
     // Echo it back to verify
     uart0.Write(control.array[0]);
-    sjsu::Delay(1);
+    sjsu::Delay(1ms);
     printf3("control.array[0] = 0x%02X\n", control.array[0]);
     // Hyperload Frequency should be set to 48,000,000 for this to work
     // correctly It calculates the baud rate by: 48Mhz/(16//BAUD) - 1 = CW
@@ -280,7 +282,7 @@ int main()
         static_cast<uint32_t>(hyperload::FindNearestBaudRate(approx_baud));
     uart0.SetBaudRate(baud_rate);
     // Wait for host to change it's baud rate
-    sjsu::Delay(500);
+    sjsu::Delay(500ms);
     // Send our CPU information along with data parameters:
     // Name:Blocksize:Bootsize/2:FlashSize
     puts("$LPC4078:4096:32768:512");
@@ -306,14 +308,14 @@ int main()
     }
     puts3("Programming Finished!\n");
     puts3("Sending final acknowledge!\n");
-    sjsu::Delay(100);
+    sjsu::Delay(100ms);
     uart0.Write(kHyperloadFinished);
   }
   // Change baud rate back to 38400 so that user can continue using a serial
   // monitor for the final bootloader message and application messages.
   uart0.Initialize(config::kBaudRate);
 
-  using ResetFunction = void(*)(void);
+  using ResetFunction = void (*)(void);
 
   ResetFunction * application_vector_table =
       reinterpret_cast<ResetFunction *>(&(flash->application));
@@ -344,7 +346,7 @@ int main()
   }
 
   printf("Application Reset ISR value = %p\n", application_entry_isr);
-  sjsu::Delay(500);
+  sjsu::Delay(500ms);
   leds.SetAll(0);
   // SystemTimerIrq must be disabled, otherwise it will continue to fire,
   // after the application is  executed. This can lead to a lot of problems
@@ -366,7 +368,7 @@ uint8_t WriteUartToBlock(Block_t * block)
   uint32_t checksum = 0;
   for (uint32_t position = 0; position < kBlockSize; position++)
   {
-    uint8_t byte          = uart0.Read(100);
+    uint8_t byte          = uart0.Read(100ms);
     block->data[position] = byte;
     checksum += byte;
   }
@@ -383,8 +385,8 @@ bool WriteUartToRamSector(Sector_t * sector)
   uart0.Write(kHyperloadReady);
   while (blocks_written < kBlocksPerSector)
   {
-    uint8_t block_number_msb = uart0.Read(1000);
-    uint8_t block_number_lsb = uart0.Read(100);
+    uint8_t block_number_msb = uart0.Read(1s);
+    uint8_t block_number_lsb = uart0.Read(100ms);
     uint32_t block_number    = (block_number_msb << 8) | block_number_lsb;
     if (0xFFFF == block_number)
     {
@@ -396,7 +398,7 @@ bool WriteUartToRamSector(Sector_t * sector)
     {
       uint32_t partition        = block_number % kBlocksPerSector;
       uint8_t checksum          = WriteUartToBlock(&sector->block[partition]);
-      uint8_t expected_checksum = uart0.Read(1000);
+      uint8_t expected_checksum = uart0.Read(1s);
       if (checksum != expected_checksum)
       {
         uart0.Write(kChecksumError);
@@ -435,7 +437,7 @@ IapResult EraseSector(uint32_t start, uint32_t end)
     command.command       = IapCommands::kEraseSector;
     command.parameters[0] = start;
     command.parameters[1] = end;
-    command.parameters[2] = system_controller.GetSystemFrequency() / 1000;
+    command.parameters[2] = system_controller.GetSystemFrequency() / 1_kHz;
     iap(&command, &status);
   }
   else
@@ -445,7 +447,8 @@ IapResult EraseSector(uint32_t start, uint32_t end)
   return status.result;
 }
 
-IapResult FlashBlock(Block_t * block, uint32_t sector_number,
+IapResult FlashBlock(Block_t * block,
+                     uint32_t sector_number,
                      uint32_t block_number)
 {
   IapCommand_t command   = { 0, { 0 } };
@@ -460,9 +463,10 @@ IapResult FlashBlock(Block_t * block, uint32_t sector_number,
     command.parameters[0] = reinterpret_cast<intptr_t>(flash_address);
     command.parameters[1] = reinterpret_cast<intptr_t>(block);
     command.parameters[2] = kBlockSize;
-    command.parameters[3] = system_controller.GetSystemFrequency() / 1000;
+    command.parameters[3] = system_controller.GetSystemFrequency() / 1_kHz;
     iap(&command, &status);
-    printf3("Flash Attempted! %p %s\n", flash_address,
+    printf3("Flash Attempted! %p %s\n",
+            flash_address,
             kIapResultString[static_cast<uint32_t>(status.result)]);
   }
   else
@@ -513,7 +517,8 @@ void EraseWithVerifySector(uint32_t sector_number)
   printf3("Flash Erased and Verified!\n");
 }
 
-IapResult FlashSector(Sector_t * ram_sector, uint32_t sector_number,
+IapResult FlashSector(Sector_t * ram_sector,
+                      uint32_t sector_number,
                       uint32_t blocks_filled_in_sector)
 {
   printf3("Flashing Sector %d\n", sector_number);

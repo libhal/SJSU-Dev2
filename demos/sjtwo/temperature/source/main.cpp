@@ -23,7 +23,7 @@ int main()
     double temperature_data =
         static_cast<double>(temperature_sensor.GetCelsius());
     LOG_INFO("Board Temperature: %.4f C", temperature_data);
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
   }
   return 0;
 }

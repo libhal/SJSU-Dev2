@@ -11,6 +11,7 @@ enum class Status
   kInvalidSettings,
   kNotImplemented,
   kNotReadyYet,
+  kInvalidParameters,
 };
 
 constexpr const char * Stringify(Status status)

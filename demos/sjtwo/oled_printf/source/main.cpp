@@ -17,12 +17,12 @@ int main()
   LOG_INFO("Demonstrating printf capabilities...");
   oled_terminal.printf("Float: %.1f\nInteger: %d", 234.5, 15);
 
-  sjsu::Delay(2000);
+  sjsu::Delay(2000ms);
   LOG_INFO("Demonstrating that you can move the print cursor as well...");
   oled_terminal.SetCursor(2, 3);
   oled_terminal.printf("Offset by 2-3");
 
-  sjsu::Delay(3000);
+  sjsu::Delay(3000ms);
 
   LOG_INFO("Clearing screen...");
   oled_terminal.Clear();
@@ -42,7 +42,7 @@ int main()
     oled_terminal.printf("%1s", buffer);
   }
   LOG_INFO("Finished printing message!");
-  sjsu::Delay(3000);
+  sjsu::Delay(3000ms);
 
   LOG_INFO("Clearing screen...");
   oled_terminal.Clear();
@@ -55,7 +55,7 @@ int main()
     for (int i = 0; i < 16; i++)
     {
       oled_terminal.printf("Hello World 0x%X\n", i);
-      sjsu::Delay(300);
+      sjsu::Delay(300ms);
     }
   }
   return 0;

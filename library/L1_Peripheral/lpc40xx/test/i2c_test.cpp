@@ -20,15 +20,14 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   memset(&local_i2c, 0, sizeof(local_i2c));
 
   // Set mock for sjsu::SystemController
-  constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
+  constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
+      12_MHz;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
   When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
-  When(Method(mock_system_controller, GetPeripheralFrequency))
-      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   Mock<sjsu::Pin> mock_sda_pin;
   Fake(Method(mock_sda_pin, SetPinFunction),
@@ -75,10 +74,11 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
         I2c::Control::kStop | I2c::Control::kInterrupt;
     test_subject.Initialize();
 
-    constexpr float kScll =
-        ((kDummySystemControllerClockFrequency / 75'000.0f) / 2.0f) * 0.7f;
-    constexpr float kSclh =
-        ((kDummySystemControllerClockFrequency / 75'000.0f) / 2.0f) * 1.3f;
+    constexpr float kSystemFrequency =
+        kDummySystemControllerClockFrequency.to<uint32_t>();
+
+    constexpr float kScll = ((kSystemFrequency / 75'000.0f) / 2.0f) * 0.7f;
+    constexpr float kSclh = ((kSystemFrequency / 75'000.0f) / 2.0f) * 1.3f;
 
     constexpr uint32_t kLow  = static_cast<uint32_t>(kScll);
     constexpr uint32_t kHigh = static_cast<uint32_t>(kSclh);

@@ -37,7 +37,7 @@ class ExampleHal
   void RunHalRoutine0()
   {
     Write({ 0xAA, 0xBB });
-    Delay(500);
+    Delay(500ms);
     Write({ 0xCC, 0xDD });
   }
   void Shutdown()
@@ -129,7 +129,7 @@ class ExampleSingleImplementationHal
   void RunHalRoutine0()
   {
     Write({ 0xAA, 0xBB });
-    Delay(500);
+    Delay(500ms);
     Write({ 0xCC, 0xDD });
   }
   void Shutdown()

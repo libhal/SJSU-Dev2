@@ -4,29 +4,30 @@
 
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
+#include "utility/units.hpp"
+#include "utility/build_info.hpp"
 
 namespace sjsu
 {
-using UptimeFunction = uint64_t (*)();
-inline uint64_t DefaultUptime() { return 0; }
-// Returns the system uptime in microseconds.
+// Definition of an UptimeFunction
+using UptimeFunction = std::chrono::microseconds (*)();
+/// @returns the maximum possible delay time
+constexpr std::chrono::microseconds MaxDelay()
+{
+  return std::chrono::duration_values<std::chrono::microseconds>::max();
+}
+
+inline std::chrono::microseconds DefaultUptime()
+{
+  return 0us;
+}
+
 inline UptimeFunction Uptime = DefaultUptime;  // NOLINT
-// Max wait time in microseconds.
-constexpr uint64_t kMaxWait = 0xFFFFFFFFFFFFFFFF;
+
 // Returns the system uptime in microseconds, do not use this function directly
 inline void SetUptimeFunction(UptimeFunction uptime_function)
 {
   Uptime = uptime_function;
-}
-// Get system uptime in milliseconds as a 64-bit integer
-inline uint64_t Milliseconds()
-{
-  return Uptime();
-}
-// Get system uptime in seconds as a 64-bit integer
-inline uint64_t Seconds()
-{
-  return Uptime() / 1'000;
 }
 // Wait will until the is_done parameter returns true
 //
@@ -35,22 +36,15 @@ inline uint64_t Seconds()
 // @param is_done will be run in a tight loop until it returns true or the
 //        timeout time has elapsed.
 template <typename F>
-[[gnu::always_inline]] inline Status Wait(uint64_t timeout, F is_done);
+[[gnu::always_inline]] inline Status Wait(std::chrono::microseconds timeout,
+                                          F is_done);
 template <typename F>
-inline Status Wait(uint64_t timeout, F is_done)
+inline Status Wait(std::chrono::microseconds timeout, F is_done)
 {
-  uint64_t timeout_time = 0;
-  if (timeout == kMaxWait)
-  {
-    timeout_time = kMaxWait;
-  }
-  else
-  {
-    timeout_time = Milliseconds() + timeout;
-  }
+  std::chrono::microseconds timeout_time = Uptime() + timeout;
 
   Status status = Status::kTimedOut;
-  while (Milliseconds() < timeout_time)
+  while (Uptime() < timeout_time)
   {
     if (is_done())
     {
@@ -61,19 +55,22 @@ inline Status Wait(uint64_t timeout, F is_done)
   return status;
 }
 
-inline Status Wait(uint64_t timeout)
+inline Status Wait(std::chrono::microseconds timeout)
 {
   return Wait(timeout, []() -> bool { return false; });
 }
 
 // Delay the system for a duration of time
-inline void Delay([[maybe_unused]] uint64_t delay_time_ms)
+inline void Delay(std::chrono::microseconds delay_time)
 {
-#if defined(HOST_TEST)
-  return;
-#else
-  Wait(delay_time_ms);
-#endif  // HOST_TEST
+  if constexpr (sjsu::build::kTarget == sjsu::build::Target::HostTest)
+  {
+    return;
+  }
+  else
+  {
+    Wait(delay_time);
+  }
 }
 // Halt system by putting it into infinite loop
 [[gnu::always_inline]] inline void Halt()

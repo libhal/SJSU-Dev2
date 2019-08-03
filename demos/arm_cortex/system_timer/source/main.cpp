@@ -16,7 +16,7 @@ int main()
       sjsu::GetInactive<sjsu::SystemController>());
 
   system_timer.SetInterrupt(DemoSystemIsr);
-  system_timer.SetTickFrequency(10 /* Hz */);
+  system_timer.SetTickFrequency(10_Hz);
   system_timer.StartTimer();
 
   LOG_INFO("Halting any action.");

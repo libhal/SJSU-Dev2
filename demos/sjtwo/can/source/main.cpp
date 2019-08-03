@@ -144,7 +144,7 @@ int main(void)
       LOG_INFO("Re-enabling CAN 2...");
       can2.EnableBus();
     }
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
   }
 
   return 0;

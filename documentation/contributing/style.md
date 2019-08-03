@@ -311,3 +311,75 @@ int functionBetter(bool check1, bool check2)
   return result;
 }
 ```
+
+## Use third party library "units" whenever appropriate
+
+In order to handle unit conversions and to make passing values with an
+associated unit attached to it easier use the units library.
+See: https://github.com/nholthaus/units on how to use it.
+
+Prefer an interface like:
+
+``` c++
+#include "utility/units.hpp"
+
+class DistanceSensor
+{
+ public:
+  virtual Status Initialize() const = 0;
+  virtual Status GetDistance(units::length::millimeters_t * distance) const = 0;
+  // This can stay a float from 0.0f <-> 1.0f because some datasheets do not
+  // assign units to the strength, and keep it as a percentage.
+  virtual Status GetSignalStrengthPercent(float * strength) const = 0;
+};
+```
+
+Over the following that requires you to handle the unit conversions yourself.
+If every engineer does this, there are is bound to mistakes and worse, we bloat
+the code doing the same operations but in different locations:
+
+``` c++
+class DistanceSensor
+{
+ public:
+  static constexpr float kConversionCM   = 10;
+  static constexpr float kConversionInch = 25.4f;
+  static constexpr float kConversionFt   = 304.8f;
+
+  // ==============================
+  // Required Methods for Subclasses
+  // ==============================
+  virtual Status Initialize() const = 0;
+  // Distance units are to be in milimeters
+  virtual Status GetDistance(uint32_t * distance) const           = 0;
+  virtual Status GetSignalStrengthPercent(float * strength) const = 0;
+
+  // ===============
+  // Utility Methods
+  // ===============
+  Status GetDistanceCm(float * distance) const
+  {
+    uint32_t sensor_reading;
+    Status sensor_status;
+    sensor_status = GetDistance(&sensor_reading);
+    *distance     = static_cast<float>(sensor_reading / kConversionCM);
+    return sensor_status;
+  }
+  Status GetDistanceInch(float * distance) const
+  {
+    uint32_t sensor_reading;
+    Status sensor_status;
+    sensor_status = GetDistance(&sensor_reading);
+    *distance     = static_cast<float>(sensor_reading / kConversionInch);
+    return sensor_status;
+  }
+  Status GetDistanceFt(float * distance) const
+  {
+    uint32_t sensor_reading;
+    Status sensor_status;
+    sensor_status = GetDistance(&sensor_reading);
+    *distance     = static_cast<float>(sensor_reading / kConversionFt);
+    return sensor_status;
+  }
+};
+```

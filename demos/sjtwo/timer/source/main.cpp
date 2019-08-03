@@ -1,6 +1,8 @@
 #include "L1_Peripheral/lpc40xx/timer.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
+#include "utility/units.hpp"
+
 // Put whatever functions you want to be triggered within these ISR's
 // and you can use the timer to trigger whatever event you want.
 void Timer0ISR(void)
@@ -31,10 +33,10 @@ int main()
   sjsu::lpc40xx::Timer timer2(sjsu::lpc40xx::Timer::Channel::kTimer2);
   sjsu::lpc40xx::Timer timer3(sjsu::lpc40xx::Timer::Channel::kTimer3);
 
-  timer0.Initialize(1'000'000, Timer0ISR);
-  timer1.Initialize(1'000'000, Timer1ISR);
-  timer2.Initialize(1'000'000, Timer2ISR);
-  timer3.Initialize(1'000'000, Timer3ISR);
+  timer0.Initialize(1_MHz, Timer0ISR);
+  timer1.Initialize(1_MHz, Timer1ISR);
+  timer2.Initialize(1_MHz, Timer2ISR);
+  timer3.Initialize(1_MHz, Timer3ISR);
 
   timer0.SetMatchBehavior(1'000'000,
                           sjsu::Timer::MatchAction::kInterruptRestart);

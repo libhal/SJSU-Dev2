@@ -447,7 +447,7 @@ class Sd final : public SdInterface
     LOG_DEBUG("Initializing SPI Clock Speed...");
     spi_.Initialize();
     LOG_DEBUG("Setting SPI Clock Speed...");
-    spi_.SetClock(1'000'000);
+    spi_.SetClock(12_MHz);
     LOG_DEBUG("Setting Peripheral Mode...");
     spi_.SetDataSize(Spi::DataSize::kEight);
     LOG_DEBUG("Starting SPI Peripheral...");
@@ -483,7 +483,7 @@ class Sd final : public SdInterface
         // amount of tries
         card_is_idle = true;
       }
-      Delay(10);
+      Delay(10ms);
     } while (tries < kBusTimeout && !card_is_idle);
     LOG_DEBUG("%d tries", tries);
     if (tries >= kBusTimeout)
@@ -1015,7 +1015,7 @@ class Sd final : public SdInterface
     // If desired, wait a bit before talking
     if (delay > 0)
     {
-      Delay(delay);
+      Delay(std::chrono::milliseconds(delay));
     }
 
     // Send the desired command frame to the SD card board

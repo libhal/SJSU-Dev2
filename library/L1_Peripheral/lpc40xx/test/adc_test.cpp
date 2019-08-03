@@ -18,15 +18,14 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
   Adc::adc_base = &local_adc;
 
   // Set mock for sjsu::SystemController
-  constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
+  constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
+      12_MHz;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
   When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
-  When(Method(mock_system_controller, GetPeripheralFrequency))
-      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   // Set mock for sjsu::Pin
   Mock<sjsu::Pin> mock_adc_pin;

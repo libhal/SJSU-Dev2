@@ -16,15 +16,14 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
   memset(&local_pwm, 0, sizeof(local_pwm));
 
   // Set mock for sjsu::SystemController
-  constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
+  constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
+      12_MHz;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
   When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
-  When(Method(mock_system_controller, GetPeripheralFrequency))
-      .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   // Creating mock of Pin class
   Mock<sjsu::Pin> mock_pwm_pin;
@@ -33,15 +32,15 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
 
   // Creating mock peripheral configuration
   Pwm::Peripheral_t mock_peripheral = {
-    .registers       = &local_pwm,
-    .power_on_id     = sjsu::lpc40xx::SystemController::Peripherals::kPwm0,
+    .registers   = &local_pwm,
+    .power_on_id = sjsu::lpc40xx::SystemController::Peripherals::kPwm0,
   };
 
   // Creating mock channel configuration
   Pwm::Channel_t mock_channel = {
-    .peripheral = mock_peripheral,
-    .pin        = mock_pwm_pin.get(),
-    .channel    = 1,
+    .peripheral      = mock_peripheral,
+    .pin             = mock_pwm_pin.get(),
+    .channel         = 1,
     .pin_function_id = 0b101,
   };
 
@@ -49,7 +48,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
 
   SECTION("Initialization values")
   {
-    test_pwm.Initialize();
+    test_pwm.Initialize(1_kHz);
     Verify(Method(mock_system_controller, PowerUpPeripheral)
                .Matching([](sjsu::SystemController::PeripheralID id) {
                  return sjsu::lpc40xx::SystemController::Peripherals::kPwm0
@@ -74,9 +73,8 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
                .Using(mock_channel.pin_function_id))
         .Once();
 
-    CHECK(Pwm::kDefaultFrequency == test_pwm.GetFrequency());
-    test_pwm.Initialize(5000);
-    CHECK(5000 == test_pwm.GetFrequency());
+    test_pwm.Initialize(5_kHz);
+    CHECK(5000_Hz == test_pwm.GetFrequency());
   }
 
   SECTION("Match Register 0")
@@ -98,14 +96,14 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
   SECTION("Setting and Getting Frequency")
   {
     test_pwm.SetDutyCycle(0.5f);
-    test_pwm.SetFrequency(2000);
-    CHECK(kDummySystemControllerClockFrequency / local_pwm.MR0 == 2000);
-    CHECK(test_pwm.GetFrequency() == 2000);
+    test_pwm.SetFrequency(2000_Hz);
+    CHECK(kDummySystemControllerClockFrequency / local_pwm.MR0 == 2000_Hz);
+    CHECK(test_pwm.GetFrequency() == 2000_Hz);
   }
 
   SECTION("Set Duty Cycle")
   {
-    test_pwm.SetFrequency(1000);
+    test_pwm.SetFrequency(1000_Hz);
     test_pwm.SetDutyCycle(.50f);
     float mr0   = static_cast<float>(local_pwm.MR0);
     float mr1   = static_cast<float>(local_pwm.MR1);
@@ -119,7 +117,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
   SECTION("Get Duty Cycle")
   {
     float duty_cycle = 0.10f;
-    test_pwm.SetFrequency(1000);
+    test_pwm.SetFrequency(1000_Hz);
     test_pwm.SetDutyCycle(duty_cycle);
     float error = duty_cycle - test_pwm.GetDutyCycle();
     CHECK((-0.01f <= error && error <= 0.01f) == true);
