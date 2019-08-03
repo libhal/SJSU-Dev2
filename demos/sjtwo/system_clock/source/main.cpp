@@ -24,13 +24,12 @@ int main()
 
   while (true)
   {
-    uint32_t speed;
-    clock.SetSystemClockFrequency(12);
-    sjsu::Delay(5000);
-    clock.SetSystemClockFrequency(48);
-    sjsu::Delay(5000);
-    speed = clock.GetSystemFrequency();
-    LOG_INFO("Speed is %" PRIu32, speed);
+    clock.SetSystemClockFrequency(12_MHz);
+    sjsu::Delay(5000ms);
+    clock.SetSystemClockFrequency(48_MHz);
+    sjsu::Delay(5000ms);
+    auto speed = clock.GetSystemFrequency();
+    LOG_INFO("Speed is %" PRIu32, speed.to<uint32_t>());
   }
   return 0;
 }

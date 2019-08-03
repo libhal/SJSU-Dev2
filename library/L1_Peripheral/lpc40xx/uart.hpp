@@ -95,8 +95,10 @@ enum class States
 };
 
 constexpr static UartCalibration_t GenerateUartCalibration(
-    uint32_t baud_rate, uint32_t peripheral_frequency)
+    uint32_t baud_rate, units::frequency::hertz_t peripheral_frequency)
 {
+  uint32_t integer_peripheral_frequency =
+      units::unit_cast<uint32_t>(peripheral_frequency);
   States state = States::kCalculateIntegerDivideLatch;
   UartCalibration_t uart_calibration;
   float baud_rate_float = static_cast<float>(baud_rate);
@@ -111,7 +113,7 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       case States::kCalculateIntegerDivideLatch:
       {
         divide_estimate =
-            DividerEstimate(baud_rate_float, 1, peripheral_frequency);
+            DividerEstimate(baud_rate_float, 1, integer_peripheral_frequency);
 
         if (divide_estimate < 1.0f)
         {
@@ -132,10 +134,10 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       }
       case States::kCalculateDivideLatchWithDecimal:
       {
-        divide_estimate = RoundFloat(
-            DividerEstimate(baud_rate_float, decimal, peripheral_frequency));
-        decimal = FractionalEstimate(
-            baud_rate_float, divide_estimate, peripheral_frequency);
+        divide_estimate = RoundFloat(DividerEstimate(
+            baud_rate_float, decimal, integer_peripheral_frequency));
+        decimal         = FractionalEstimate(
+            baud_rate_float, divide_estimate, integer_peripheral_frequency);
         if (1.1f <= decimal && decimal <= 1.9f)
         {
           state = States::kGenerateFractionFromDecimal;
@@ -171,10 +173,8 @@ constexpr static UartCalibration_t GenerateUartCalibration(
         state                         = States::kDone;
         break;
       }
-      case States::kDone: { break;
-      }
-      default: { break;
-      }
+      case States::kDone:
+      default: break;
     }
   }
   return uart_calibration;
@@ -188,6 +188,7 @@ class Uart final : public sjsu::Uart
   using sjsu::Uart::Write;
 
   static constexpr uint8_t kStandardUart = 0b011;
+
   struct Port_t
   {
     LPC_UART_TypeDef * registers;
@@ -313,28 +314,23 @@ class Uart final : public sjsu::Uart
     }
   }
 
-  Status Read(
-      uint8_t * data,
-      size_t size,
-      uint32_t timeout = std::numeric_limits<uint32_t>::max()) const override
+  Status Read(uint8_t * data,
+              size_t size,
+              std::chrono::microseconds timeout = MaxDelay()) const override
   {
+    uint32_t position = 0;
     // NOTE: Consider changing this to using a Wait() call.
-    Status status       = Status::kTimedOut;
-    uint64_t start_time = Milliseconds();
-    size_t position     = 0;
-    while (Milliseconds() < (start_time + timeout))
-    {
+    return Wait(timeout, [this, &data, size, &position]() -> bool {
       if (HasData())
       {
         data[position++] = static_cast<uint8_t>(port_.registers->RBR);
       }
       if (position >= size)
       {
-        status = Status::kSuccess;
-        break;
+        return true;
       }
-    }
-    return status;
+      return false;
+    });
   }
   bool HasData() const override
   {

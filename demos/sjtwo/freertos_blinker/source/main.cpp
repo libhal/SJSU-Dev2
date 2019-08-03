@@ -72,7 +72,7 @@ int main()
   LOG_INFO("Initializing LEDs...");
   leds.Initialize();
   LOG_INFO("Creating Tasks...");
-  sjsu::Delay(1000);
+  sjsu::Delay(1s);
   // See https://www.freertos.org/a00125.html for the xTaskCreate API
   // See utility/rtos.hpp for the sjsu::rtos:: namespace utility functions
   xTaskCreate(LedToggle,        // Make function LedToggle a task

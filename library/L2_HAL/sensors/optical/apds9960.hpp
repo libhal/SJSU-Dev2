@@ -413,7 +413,7 @@ class Apds9960
         result = kNEAR;
       }
     }
-    sjsu::Delay(30);
+    sjsu::Delay(30ms);
     for (int i = 0; i < kMaxDataSize - 1; i++)
     {
       // Check initial point, then check next point

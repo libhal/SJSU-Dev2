@@ -7,9 +7,9 @@ int main()
 {
   LOG_INFO("Starting LPC176x/5x SystemController example...");
 
-  constexpr uint32_t kInputFrequency =
-      sjsu::lpc17xx::SystemController::kDefaultIRCFrequency / 1'000;  // kHz
-  constexpr uint32_t kDesiredFrequency = 96;                          // MHz
+  constexpr units::frequency::hertz_t kInputFrequency =
+      sjsu::lpc17xx::SystemController::kDefaultIRCFrequency;
+  constexpr units::frequency::hertz_t kDesiredFrequency = 96_MHz;
   sjsu::lpc17xx::SystemController controller;
   controller.SetSystemClockFrequency(kDesiredFrequency);
   controller.SetPeripheralClockDivider(
@@ -28,10 +28,11 @@ int main()
       LPC_SC->PLL0STAT, sjsu::lpc17xx::SystemController::MainPll::kPreDivider);
   const uint32_t kCpuDivider = sjsu::bit::Extract(
       LPC_SC->CCLKCFG, sjsu::lpc17xx::SystemController::CpuClock::kDivider);
-  const uint32_t kClockFrequencyInKhz =
+  const units::frequency::hertz_t kClockFrequency =
       ((2 * (kMultiplier + 1) * kInputFrequency) / (kPreDivider + 1)) /
       (kCpuDivider + 1);
-  LOG_INFO("CPU Clock Frequency: %lu", (kClockFrequencyInKhz * 1'000));
+
+  LOG_INFO("CPU Clock Frequency: %" PRIu32, kClockFrequency.to<uint32_t>());
 
   // configure the CLKOUT pin, P1.27, to output system clock
   sjsu::lpc17xx::Pin clock_pin(1, 27);

@@ -7,6 +7,7 @@
 #include <cstdint>
 
 #include "L1_Peripheral/pwm.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -20,16 +21,16 @@ class Buzzer
 
   void Initialize()
   {
-    pwm_.Initialize(500);
+    pwm_.Initialize(500_Hz);
     Stop();
   }
 
   void Stop()
   {
-    pwm_.SetDutyCycle(0.0);
+    pwm_.SetDutyCycle(0.0f);
   }
 
-  void Beep(uint32_t frequency = 500, float volume = 1.0)
+  void Beep(units::frequency::hertz_t frequency = 500_Hz, float volume = 1.0f)
   {
     pwm_.SetFrequency(frequency);
     // NOTE: Since the PWM is at its loudest at 50% duty cycle, the maximum PWM

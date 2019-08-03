@@ -48,7 +48,7 @@ class Spi final : public sjsu::Spi
   // SSPn Control Register 1
   struct ControlRegister1  // NOLINT
   {
-    static constexpr bit::Mask kSpiEnable     = bit::CreateMaskFromRange(1);
+    static constexpr bit::Mask kSpiEnable    = bit::CreateMaskFromRange(1);
     static constexpr bit::Mask kSlaveModeBit = bit::CreateMaskFromRange(2);
   };
   // SSPn Status Register
@@ -152,7 +152,7 @@ class Spi final : public sjsu::Spi
   /// See page 601 of user manual UM10562 LPC408x/407x for more details.
   Status Initialize() const override
   {
-    constexpr uint8_t kSpiFormatCode  = 0b00;
+    constexpr uint8_t kSpiFormatCode = 0b00;
 
     // Power up peripheral
     system_controller_.PowerUpPeripheral(bus_.power_on_bit);
@@ -178,7 +178,7 @@ class Spi final : public sjsu::Spi
   {
     constexpr bool kPositiveClockOnIdle  = false;
     constexpr bool kReadMisoOnRising     = false;
-    constexpr uint32_t kDefaultFrequency = 1'000'000;
+    constexpr units::frequency::hertz_t kDefaultFrequency = 1_MHz;
 
     SetDataSize(DataSize::kEight);
     SetClock(kDefaultFrequency, kPositiveClockOnIdle, kReadMisoOnRising);
@@ -230,7 +230,7 @@ class Spi final : public sjsu::Spi
   /// @param read_miso_on_rising - capture serial data on true=first or
   ///        1=second clock cycle
   /// @param frequency - serial clock rate
-  void SetClock(uint32_t frequency,
+  void SetClock(units::frequency::hertz_t frequency,
                 bool positive_clock_on_idle = false,
                 bool read_miso_on_rising    = false) const override
   {
@@ -241,9 +241,10 @@ class Spi final : public sjsu::Spi
     bus_.registers->CR0 = bit::Insert(
         bus_.registers->CR0, read_miso_on_rising, ControlRegister0::kPhaseBit);
 
-    uint16_t prescaler = static_cast<uint16_t>(
-        system_controller_.GetPeripheralFrequency(bus_.power_on_bit) /
-        frequency);
+    uint16_t prescaler =
+        (system_controller_.GetPeripheralFrequency(bus_.power_on_bit) /
+         frequency)
+            .to<uint16_t>();
     // Store lower half of precalar in clock prescalar register
     bus_.registers->CPSR = prescaler & 0xFF;
     // Store upper 8 bit half of the prescalar in control register 0

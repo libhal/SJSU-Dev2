@@ -134,7 +134,7 @@ class Pwm final : public sjsu::Pwm
   }
 
   /// @param frequency_hz - Pulse width modulation frequency
-  Status Initialize(uint32_t frequency_hz = kDefaultFrequency) const override
+  Status Initialize(units::frequency::hertz_t frequency_hz) const override
   {
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");
@@ -157,10 +157,11 @@ class Pwm final : public sjsu::Pwm
         channel_.peripheral.registers->CTCR, 0, CountControl::kCountInput);
     // Match register 0 is used to generate the desired frequency. If the time
     // counter TC is equal to MR0
-    const uint32_t kPeripheralFrequency =
+    const units::frequency::hertz_t kPeripheralFrequency =
         system_controller_.GetPeripheralFrequency(
             channel_.peripheral.power_on_id);
-    channel_.peripheral.registers->MR0 = kPeripheralFrequency / frequency_hz;
+    channel_.peripheral.registers->MR0 =
+        (kPeripheralFrequency / frequency_hz).to<uint32_t>();
     // Sets match register 0 to reset when TC and Match 0 match each other,
     // meaning that the PWM pulse will cycle continuously.
     channel_.peripheral.registers->MCR = bit::Set(
@@ -191,28 +192,29 @@ class Pwm final : public sjsu::Pwm
             static_cast<float>(GetMatchRegisters()[0]));
   }
 
-  void SetFrequency(uint32_t frequency_hz) const override
+  void SetFrequency(units::frequency::hertz_t frequency_hz) const override
   {
-    SJ2_ASSERT_FATAL(frequency_hz != 0, "Pwm Frequency cannot be zero Hz.");
+    SJ2_ASSERT_FATAL(frequency_hz != 0_Hz, "Pwm Frequency cannot be zero Hz.");
     // Disables PWM mode; this will reset all counters to 0
     // And allow us to update MR0
     float previous_duty_cycle = GetDutyCycle();
     EnablePwm(false);
-    const uint32_t kPeripheralFrequency =
+    const units::frequency::hertz_t kPeripheralFrequency =
         system_controller_.GetPeripheralFrequency(
             channel_.peripheral.power_on_id);
-    channel_.peripheral.registers->MR0 = kPeripheralFrequency / frequency_hz;
+    channel_.peripheral.registers->MR0 =
+        (kPeripheralFrequency / frequency_hz).to<uint32_t>();
     SetDutyCycle(previous_duty_cycle);
     EnablePwm();
   }
 
-  uint32_t GetFrequency() const
+  units::frequency::hertz_t GetFrequency() const
   {
-    uint32_t match_register0 = GetMatchRegisters()[0];
-    uint32_t result          = 0;
+    uint32_t match_register0         = GetMatchRegisters()[0];
+    units::frequency::hertz_t result = 0_Hz;
     if (match_register0 != 0)
     {
-      const uint32_t kPeripheralFrequency =
+      const units::frequency::hertz_t kPeripheralFrequency =
           system_controller_.GetPeripheralFrequency(
               channel_.peripheral.power_on_id);
       result = kPeripheralFrequency / match_register0;

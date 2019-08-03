@@ -35,7 +35,7 @@ int main()
     float voltage = sjsu::Map(adc_digital_value, 0, 4095, 0.0f, 3.3f);
     LOG_INFO("Voltage on pin P0.23 = %f, raw value = %lu",
              static_cast<double>(voltage), adc_digital_value);
-    sjsu::Delay(250);
+    sjsu::Delay(250ms);
   }
   return 0;
 }

@@ -9,6 +9,7 @@
 #include <project_config.hpp>
 
 #include "log_levels.hpp"
+#include "utility/units.hpp"
 
 /// @ingroup SJSU-Dev2
 /// @defgroup Config Configuration
@@ -53,23 +54,21 @@ SJ2_DECLARE_CONSTANT(ENABLE_ANSI_CODES, bool, kEnableAnsiCodes);
 
 /// Used to set the system clock speed for the LPC4078 in MHz
 #if !defined(SJ2_SYSTEM_CLOCK_RATE_MHZ)
-#define SJ2_SYSTEM_CLOCK_RATE_MHZ 48
+#define SJ2_SYSTEM_CLOCK_RATE_MHZ 48_MHz
 #endif  // !defined(SJ2_SYSTEM_CLOCK_RATE)
-SJ2_DECLARE_CONSTANT(SYSTEM_CLOCK_RATE_MHZ, uint8_t, kSystemClockRateMhz);
-#define SJ2_SYSTEM_CLOCK_RATE_HZ (SJ2_SYSTEM_CLOCK_RATE_MHZ * 1'000'000)
-constexpr uint32_t kSystemClockRate = SJ2_SYSTEM_CLOCK_RATE_MHZ * 1'000'000;
-static_assert(1 <= kSystemClockRateMhz && kSystemClockRateMhz <= 100,
-              "SJ2_SYSTEM_CLOCK can only be between 1Hz and 100Mhz");
-static_assert(1'000'000 <= kSystemClockRate && kSystemClockRate <= 100'000'000,
-              "SJ2_SYSTEM_CLOCK can only be between 1Hz and 100Mhz");
+SJ2_DECLARE_CONSTANT(SYSTEM_CLOCK_RATE_MHZ,
+                     units::frequency::megahertz_t,
+                     kSystemClockRateMhz);
+static_assert(1_MHz <= kSystemClockRateMhz && kSystemClockRateMhz <= 120_MHz,
+              "SJ2_SYSTEM_CLOCK can only be between 1 Hz and 4000 Mhz");
 
 /// Used to set the FreeRTOS tick frequency defined in Hz
 #if !defined(SJ2_RTOS_FREQUENCY)
-#define SJ2_RTOS_FREQUENCY 1'000
+#define SJ2_RTOS_FREQUENCY 1'000_Hz
 #endif  // !defined(SJ2_RTOS_FREQUENCY)
-SJ2_DECLARE_CONSTANT(RTOS_FREQUENCY, uint16_t, kRtosFrequency);
-static_assert(1 <= kRtosFrequency && kRtosFrequency <= 10'000,
-              "SJ2_RTOS_FREQUENCY can only be between 1,000Hz and 1Hz");
+SJ2_DECLARE_CONSTANT(RTOS_FREQUENCY, units::frequency::hertz_t, kRtosFrequency);
+static_assert(1_Hz <= kRtosFrequency && kRtosFrequency <= 10'000_Hz,
+              "SJ2_RTOS_FREQUENCY can only be between 10,000 Hz and 1 Hz");
 
 /// Default baud rate of 38400 divides perfectly with the LPC17xx and LPC40xx
 /// UART clock dividers perfectly, where as all other standard baud rates
@@ -78,10 +77,8 @@ static_assert(1 <= kRtosFrequency && kRtosFrequency <= 10'000,
 #define SJ2_BAUD_RATE 38'400
 #endif  // !defined(SJ2_BAUD_RATE)
 SJ2_DECLARE_CONSTANT(BAUD_RATE, uint32_t, kBaudRate);
-static_assert(4'800 <= kBaudRate && kBaudRate <= 4'000'000 &&
-                  kBaudRate <= kSystemClockRate / 16,
-              "SJ2_BAUD_RATE must be between 4800 bits/s and 4 Mbits/s and "
-              "less than the clock speed / 16 ");
+static_assert(4'800 <= kBaudRate && kBaudRate <= 4'000'000,
+              "SJ2_BAUD_RATE must be between 4800 bits/s and 4 MBits/s");
 
 /// Used to dump all the call stack when "PrintBacktrace" is called or an assert
 /// using PrintBacktrace is occurs.
@@ -109,7 +106,7 @@ SJ2_DECLARE_CONSTANT(BACKTRACE_ADDRESS_OFFSET, size_t, kBacktraceAddressOffset);
 #endif  // !defined(SJ2_TASK_SCHEDULER_SIZE)
 SJ2_DECLARE_CONSTANT(TASK_SCHEDULER_SIZE, uint8_t, kTaskSchedulerSize);
 
-/// Used to set the reciever buffer size of the ESP8266 driver
+/// Used to set the receiver buffer size of the ESP8266 driver
 #if !defined(SJ2_ESP8266_BUFFER_SIZE)
 #define SJ2_ESP8266_BUFFER_SIZE 512
 #endif  // !defined(SJ2_ESP8266_BUFFER_SIZE)
@@ -121,12 +118,12 @@ SJ2_DECLARE_CONSTANT(ESP8266_BUFFER_SIZE, size_t, kEsp8266BufferSize);
 #endif  // !defined(SJ2_LOG_LEVEL)
 SJ2_DECLARE_CONSTANT(LOG_LEVEL, uint8_t, kLogLevel);
 
-static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET  ||
-              kLogLevel == SJ2_LOG_LEVEL_DEBUG    ||
-              kLogLevel == SJ2_LOG_LEVEL_INFO     ||
-              kLogLevel == SJ2_LOG_LEVEL_WARNING  ||
-              kLogLevel == SJ2_LOG_LEVEL_ERROR    ||
-              kLogLevel == SJ2_LOG_LEVEL_CRITICAL,
+static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
+                  kLogLevel == SJ2_LOG_LEVEL_DEBUG ||
+                  kLogLevel == SJ2_LOG_LEVEL_INFO ||
+                  kLogLevel == SJ2_LOG_LEVEL_WARNING ||
+                  kLogLevel == SJ2_LOG_LEVEL_ERROR ||
+                  kLogLevel == SJ2_LOG_LEVEL_CRITICAL,
               "SJ2_LOG_LEVEL must equal to one of the predefined log levels "
               "such as SJ2_LOG_LEVEL_INFO.");
 

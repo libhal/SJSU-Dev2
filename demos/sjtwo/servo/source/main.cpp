@@ -20,36 +20,38 @@ int main()
   // When all of the bounds of the servo class are set, the servo class will
   // map your degrees to microseconds. With the below example, 0 degrees will
   // represent 500 us, 180 will represent 2500 us, and by linear correlation
-  // 90 degrees will reperesnt 1500 us.
+  // 90 degrees will representation 1500 us.
 
   // Set the pulse wideth bounds to be 500 us and 2500 us.
-  servo.SetPulseBounds(500, 2500);
+  servo.SetPulseBounds(500us, 2500us);
   // Set the angle bounds of the servo to be 0 degrees and 180 degrees
-  servo.SetAngleBounds(0, 180);
+  servo.SetAngleBounds(0_deg, 180_deg);
 
   while (true)
   {
-     // Command the servo to go to 180 degrees as fast as the servo will allow.
-    servo.SetAngle(180);
-    sjsu::Delay(1000);
+    // Command the servo to go to 180 degrees as fast as the servo will allow.
+    servo.SetAngle(180_deg);
+    sjsu::Delay(1s);
 
     // Command the servo to go to 0 degrees as fast as the servo will allow.
-    servo.SetAngle(0);
-    sjsu::Delay(1000);
+    servo.SetAngle(0_deg);
+    sjsu::Delay(1s);
 
-    // Take ~ 60 seconds to go from 0 degrees to 180 desgrees
-    for (float i_pulse_length = 0; i_pulse_length < 180; i_pulse_length++)
+    // Take ~ 60 seconds to go from 0 degrees to 180 degrees
+    for (units::angle::degree_t servo_angle = 0_deg; servo_angle < 180_deg;
+         servo_angle++)
     {
-      servo.SetAngle(i_pulse_length);
-      sjsu::Delay(167);
+      servo.SetAngle(servo_angle);
+      sjsu::Delay(167ms);
     }
 
     // Take ~ 60 seconds to go from 180 degrees to 0 degrees by directly
     //  manipulating the pulse width.
-    for (float i_pulse_length = 2500; i_pulse_length > 500; i_pulse_length--)
+    for (std::chrono::microseconds pulse_width = 2500us; pulse_width > 500us;
+         pulse_width--)
     {
-      servo.SetPulseWidthInMicroseconds(i_pulse_length);
-      sjsu::Delay(15);
+      servo.SetPulseWidthInMicroseconds(pulse_width);
+      sjsu::Delay(15ms);
     }
   }
   return 0;

@@ -43,7 +43,7 @@ int main()
       for (uint8_t j = 0; j < kMaxDisplayWidth; j++)
       {
         lcd.SetCursorPosition(sjsu::St7066u::CursorPosition_t{ i, j });
-        sjsu::Delay(1000);
+        sjsu::Delay(1s);
       }
     }
   }

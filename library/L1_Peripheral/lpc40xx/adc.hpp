@@ -9,6 +9,7 @@
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -24,7 +25,7 @@ class Adc final : public sjsu::Adc
     kStart     = 24
   };
 
-  static constexpr uint32_t kClockFrequency = 1'000'000;
+  static constexpr units::frequency::hertz_t kClockFrequency = 1_MHz;
 
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
 
@@ -140,10 +141,11 @@ class Adc final : public sjsu::Adc
     channel_.adc_pin.SetPull(sjsu::Pin::Resistor::kNone);
     channel_.adc_pin.SetAsAnalogMode(true);
 
-    const uint32_t kPeripheralFrequency =
+    const units::frequency::hertz_t kPeripheralFrequency =
         system_controller_.GetPeripheralFrequency(
             sjsu::lpc40xx::SystemController::Peripherals::kAdc);
-    uint32_t clock_divider = kPeripheralFrequency / kClockFrequency;
+    uint32_t clock_divider =
+        (kPeripheralFrequency / kClockFrequency).to<uint32_t>();
 
     uint32_t control = adc_base->CR;
 

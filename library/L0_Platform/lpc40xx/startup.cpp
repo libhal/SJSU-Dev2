@@ -134,13 +134,7 @@ void InitializePlatform()
   // SetSystemClockFrequency will timeout return the offset between desire
   // clockspeed and actual clockspeed if the PLL doesn't get a frequency fix
   // within a defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
-  while (system_controller.SetSystemClockFrequency(
-             config::kSystemClockRateMhz) != 0)
-  {
-    // Continually attempt to set the clock frequency to the desired until the
-    // delta between desired and actual are 0.
-    continue;
-  }
+  system_controller.SetSystemClockFrequency(config::kSystemClockRateMhz);
   // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
   // fed to all peripherals will be 48Mhz.
   system_controller.SetPeripheralClockDivider({}, 1);
