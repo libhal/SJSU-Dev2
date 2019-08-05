@@ -91,8 +91,8 @@ TEST_CASE("Testing tfmini", "[tfmini]")
   SECTION("Check GetDistance")
   {
     Status get_dist_status;
-    uint32_t distance_check              = 0;
-    constexpr uint16_t kExpectedDistance = 291;
+    units::length::millimeter_t distance_check                     = 0_mm;
+    static constexpr units::length::millimeter_t kExpectedDistance = 291_mm;
     auto dist_read_callback =
         [](uint8_t * data,
            size_t size,
@@ -100,8 +100,8 @@ TEST_CASE("Testing tfmini", "[tfmini]")
       static constexpr uint8_t kReadData[8] = {
         0x59,
         0x59,
-        bit::Extract(kExpectedDistance, 0, 8),
-        bit::Extract(kExpectedDistance, 8, 8),
+        bit::Extract(kExpectedDistance.to<uint32_t>(), 0, 8),
+        bit::Extract(kExpectedDistance.to<uint32_t>(), 8, 8),
         0xDC,
         0x05,
         0x02,
@@ -162,12 +162,14 @@ TEST_CASE("Testing tfmini", "[tfmini]")
     // Checking Invalid Device Header
     get_dist_status = test.GetDistance(&distance_check);
     CHECK(get_dist_status == sjsu::Status::kDeviceNotFound);
-    CHECK(distance_check == std::numeric_limits<uint32_t>::max());
+    CHECK(distance_check ==
+          std::numeric_limits<units::length::millimeter_t>::max());
 
     // Checking Invalid Checksum
     get_dist_status = test.GetDistance(&distance_check);
     CHECK(get_dist_status == sjsu::Status::kBusError);
-    CHECK(distance_check == std::numeric_limits<uint32_t>::max());
+    CHECK(distance_check ==
+          std::numeric_limits<units::length::millimeter_t>::max());
   }
 
   SECTION("Check GetSignalStrengthPercent")
