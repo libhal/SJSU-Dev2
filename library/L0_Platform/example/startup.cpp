@@ -84,7 +84,7 @@ extern "C"
 // Reset entry point for your code.
 // Sets up a simple runtime environment and initializes the C/C++ library.
 
-extern "C" void ResetIsr()
+extern "C" void ResetHandler()
 {
   // 12. Set stack pointer back up to the top of the stack.
   //

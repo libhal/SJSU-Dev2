@@ -34,7 +34,7 @@ MEMORY
   __top_RAM2 = 0x20000000 + 0x8000 ; /* 32K bytes */
   __user_heap_base = __base_RAM2 ; /* SJSU-Dev2: RAM2 is solely for heap */
 
-ENTRY(ResetIsr)
+ENTRY(ArmResetHandler)
 
 SECTIONS
 {
