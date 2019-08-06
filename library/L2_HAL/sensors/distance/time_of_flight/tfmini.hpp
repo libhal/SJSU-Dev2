@@ -106,7 +106,7 @@ class TFMini final : public DistanceSensor
   /// @returns Status::kDeviceNotFound if device is not recognized
   /// @returns Status::kBusError if data read from device is inconsistent
   /// @returns Status::kSuccess if device is successfully read from
-  Status GetDistance(uint32_t * distance) const override
+  Status GetDistance(units::length::millimeter_t * distance) const override
   {
     Status success = sjsu::Status::kSuccess;
     uint8_t device_data[kDeviceDataLength];
@@ -115,8 +115,8 @@ class TFMini final : public DistanceSensor
     uart_pin_.Read(device_data, kDeviceDataLength, kTimeout);
     if ((device_data[0] != kFrameHeader) || (device_data[1] != kFrameHeader))
     {
-      success   = sjsu::Status::kDeviceNotFound;
-      *distance = std::numeric_limits<uint32_t>::max();
+      success = sjsu::Status::kDeviceNotFound;
+      *distance = std::numeric_limits<units::length::millimeter_t>::max();
     }
     else
     {
@@ -129,12 +129,12 @@ class TFMini final : public DistanceSensor
       {
         uint32_t dist = device_data[2];
         dist |= device_data[3] << 8;
-        *distance = dist;
+        *distance = units::length::millimeter_t(dist);
       }
       else
       {
         success   = sjsu::Status::kBusError;
-        *distance = std::numeric_limits<uint32_t>::max();
+        *distance = std::numeric_limits<units::length::millimeter_t>::max();
       }
     }
     return success;
