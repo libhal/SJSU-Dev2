@@ -53,6 +53,32 @@ ifneq ($(MAKECMDGOALS), presubmit)
 MAKEFLAGS += --jobs=$(NPROCS)
 endif
 
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), debug jtag-flash))
+ifndef DEBUG_DEVICE
+$(info $(shell printf '$(RED)'))
+$(info +--------------- Missing command line arguments ----------------+)
+$(info | In order to run the targets 'debug' or 'jtag-flash' you need  |)
+$(info | to supply the following comand line variables:                |)
+$(info |                                                               |)
+$(info | 1. DEBUG_DEVICE = the name of the debugging interface in the  |)
+$(info |                   command line variable DEBUG_DEVICE          |)
+$(info | 2. PLATFORM     = name of the platform you want to target     |)
+$(info |                                                               |)
+$(info |                                                               |)
+$(info | Example usage:                                                |)
+$(info |                                                               |)
+$(info |    make debug DEBUG_DEVICE=stlink PLATFORM=lpc17xx            |)
+$(info |                                                               |)
+$(info +---------------------------------------------------------------+)
+$(info $(shell printf '$(RESET)'))
+$(error )
+endif
+endif
+
+ifneq ($(MAKECMDGOALS), presubmit)
+endif
+
+
 # ============================
 # SJSU-Dev2 Toolchain Paths
 # ============================
@@ -514,6 +540,7 @@ debug:
 	$(info $(shell printf '$(MAGENTA)Starting firmware debug...$(RESET)\n'))
 	$(TOOLS_DIR)/launch_openocd_gdb.sh $(OPENOCD_DIR) $(DEBUG_DEVICE) \
 	  $(OPENOCD_CONFIG) $(DEVICE_GDB) $(CURRENT_DIRECTORY)/$(EXECUTABLE)
+
 debug-test:
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/tests.exe
 # ====================================================================

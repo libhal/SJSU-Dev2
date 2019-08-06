@@ -59,10 +59,10 @@ variable. For example, the possible set of VALUES for VARIABLE
 
 ### Debug Commands
 
-- **openocd**: Open up openocd (Open On-Chip Debugger)
-- **debug**: Opens gdb for your specific platform (only works for arm
-  processors at the moment)
-- **test-debug**: Runs test executable in gdb
+- **debug**: connects to a microcontroller using OpenOCD and creates a GDB
+  session.
+- **test-debug**: Debug test executable in GDB (currently uses system's GDB not
+  llvm)
 
 ### Collaberation Commands
 
