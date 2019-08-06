@@ -30,6 +30,7 @@ nav:
       - 'guides/directory_layout/reference.md'
     - 'guides/firmware_debugging.md'
     - 'guides/unit_testing.md'
+    - 'guides/multi_platform.md'
   - Contributing:
     - 'contributing/philosophy.md'
     - 'contributing/levels.md'
