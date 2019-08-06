@@ -74,15 +74,19 @@ If you find that git is not installed on your machine follow these steps to
 **[install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)**.
 
 ### Building a Project
-The starter `HelloWorld` project can be found in the `firmware/` folder along
-with the the `firmware/examples` folder which is full of examples you can run
-on your board. To build `HelloWorld`:
+The starter `hello_world` project can be found in the `projects/` folder along
+with the the `demos/` folder which is full of examples you can run
+on your board. To build `hello_world` :
 
-    cd firmware/HelloWorld
+    cd project/hello_world
     make application
 
 ### Programming a board
 From within a project, run `make flash`.
+
+If `make flash` is not available for your platform, then you can try
+`make jtag-flash DEBUG_DEVICE=<jlink|stlink|etc> PLATFORM=<insert platform here>`
+if you have a JTAG or SWD debugger.
 
 ### Viewing Serial Output
 The preferred method for communicating with a serial device is via Google

@@ -1,31 +1,71 @@
 # Debugging with OpenOCD and GDB
 
-This tutorial will use **HelloWorld** as an example. But this will work
-for any application you build.
+## Step 0: Prerequisites
 
-## Prerequisites
+In order to debug an application running on a microcontroller you need, hardware
+tools that allow you to inspect the inner workings of a device. These debugging
+interfaces are called JTAG debugger or "in-circuit" debugger.
 
-The official supported JTAG probes for the SJOne and SJTwo board is the
-SEGGER J-LINK mini EDU. Any other J-Link device will work with no
-modifications to the `sjtwo.cfg` file. Otherwise, change the
-interface/source to the appropriate adapter. If you want
+Some development boards have debugging hardware built in. Many others will have
+pins or ports available for using an external debugger like a **STLink** or
+**Segger Jlink**.
 
-## Step 0: Solder JTAG Headers to board
+## Step 1: Connecting the Debugger
+!!! Danger
+    DOUBLE AND TRIPLE CHECK YOUR CONNECTIONS! Not doing this right could destroy
+    board and debugger.
 
-Do as the title says if you haven't already.
+!!! Tip
+    Skip this step if you board has a debugger built in.
 
-## Step 2: Connecting the J-Link
-
+### Step 1.1: Connecting JTAG
 Connect jumpers from the `GND`, `TDI`, `TMS`, `TCK`, and `TDO` pins on
 the **J-Link** to the board's JTAG headers.
 
-!!! Danger
-    DOUBLE AND TRIPLE CHECK YOUR CONNECTIONS! Not doing this right
-    could destroy board and debugger.
+### Step 1.2: Connecting SWD
+Connect jumpers from `GND`, `SWDIO` and `SWDCLK` to the pins on the board. If
+the board supports both `SWD` and `JTAG` like many arm cortex boards do, then
+connect the pins in the following way:
 
-## Step 3: Run OpenOCD
+* `GND` --> `GND`
+* `SWDIO` --> `TMS`
+* `SWDCLK` --> `TCK`
 
-To start openocd, run `make openocd`.
+### Step 1.3: Using a standard connector
+Some development boards may use an interface that only requires connecting a
+ribbon cable that your development board also has an port for, in which case,
+simply connect the boards together with the ribbon cable.
+
+## Step 2: Running the debugger
+In order for you to be able to debug your microcontroller you need to know the
+name of the debugging device. Collaborators typically use the `jlink`  or
+`stlink` debuggers for their work thus it is generally supported and tested
+with.
+
+The `make` target to start debugging is `make debug`. In order for this to work
+you need to set the variables `DEBUG_DEVICE` and `PLATFORM`.
+
+For example if you are using the `lpc40xx` platform and the `stlink` branded
+debugger your command would look something like this:
+
+```bash
+# Automatically works for any stlink debugger
+make debug DEBUG_DEVICE=stlink PLATFORM=lpc40xx
+```
+
+Example for `lpc17xx` and `jlink`
+
+```bash
+# Automatically works for any jlink debugger
+make debug DEBUG_DEVICE=jlink PLATFORM=lpc17xx
+```
+
+!!! Tip
+    For advanced users that want to use a different debugger, all you need to do
+    in order to use it is to use the name of the debugging interface that can be
+    found in the `tools/openocd/scripts/interface/` such as the `buspirate` or
+    `cmsis-dap`. The `DEBUG_DEVICE` variable is literally the name of the file
+    without the `.cfg` extension.
 
 !!! Tip
     Successful output should look something like the following:
@@ -36,20 +76,6 @@ To start openocd, run `make openocd`.
            (mfg: 0x23b (ARM Ltd.), part: 0xba00, ver: 0x4)
     Info : lpc17xx.cpu: hardware has 6 breakpoints, 4 watchpoints
     ```
-
-!!! Error
-    If you see the following message:
-
-    ``` bash
-    Error: JTAG-DP STICKY ERROR
-    Info : DAP transaction stalled (WAIT) - slowing down
-    Error: Timeout during WAIT recovery
-    Error: Debug regions are unpowered, an unexpected reset might have
-        happened
-    ```
-
-    Then the SJOne board is being held in a RESET state. To fix this, either
-    by reset the board using the reset button or by deassert in Telemetry.
 
 !!! Error
     If you see your terminal get spammed with this:
@@ -63,36 +89,38 @@ To start openocd, run `make openocd`.
 
     Then its a good chance that one of your pins is not connected.
 
-## Step 5: Run GDB
+## Step 2: Using GDB
+!!! Tip
+    Also a handy cheat sheet, see this PDF:
+    [gdb cheatsheet](http://darkdust.net/files/GDB%20Cheat%20Sheet.pdf>)
 
-Open another terminal and run `make debug`
+At this point the board has been halted and reset. You should be able to add
+breakpoints to add breakpoints at this point.
 
-At this point the board has been halted. You should be able to add
-breakpoints to the program. You shouldn't see any source because you are
-in the factory bootloader.
+!!! note
+    On boards with a factory bootloader, when you start debugging, you will
+    notice that you cannot see the source code lines in the gdb shell. This is
+    because the bootloader address's are not associated with any addresses in
+    your code, thus you will not see source code. Generally a good thing to do
+    is to set a breakpoint at the **reset interrupt service routine** or at
+    **main()** and run the GDB `continue` command like so:
 
-Do the following in the gdb command line interface:
-
-``` bash
->>> break main
->>> continue
-```
+    ``` bash
+    >>> break main
+    >>> continue
+    ```
 
 !!! Note
     Typically you would use the `run` command to start the code. When performing
     firmware testing, the `run` command is not needed as the code is already
-    running on the remote microcontroller.
+    "running" on the remote microcontroller.
+
+!!! Note
+    You may also notice that GDB also looks a look nicer in SJSU-Dev2. Thats
+    because we use the
+    [gdb-dashboard](https://github.com/cyrus-and/gdb-dashboard) which is an
+    awesome tool for doing gdb debugging in general.
 
 At this point you should see the source code of your `main.cpp` show up.
 Now you can step through your code and set breakpoints using `step`,
 `next`, `finish` and `continue`, `break`, etc.
-
-!!! Tip
-    For a gdb cheat sheet, see this PDF:
-    [gdb cheatsheet](http://darkdust.net/files/GDB%20Cheat%20Sheet.pdf>)
-
-!!! Tip
-    I highly recommend
-    [GDB-Dashboard](https://github.com/cyrus-and/gdb-dashboard) which is a nifty
-    configuration of gdb that add on to make your life using gdb much more
-    enjoyable.
