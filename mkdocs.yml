@@ -28,8 +28,8 @@ nav:
       - 'guides/directory_layout/demos.md'
       - 'guides/directory_layout/library.md'
       - 'guides/directory_layout/reference.md'
-    - 'guides/unit_testing.md'
     - 'guides/firmware_debugging.md'
+    - 'guides/unit_testing.md'
   - Contributing:
     - 'contributing/philosophy.md'
     - 'contributing/levels.md'

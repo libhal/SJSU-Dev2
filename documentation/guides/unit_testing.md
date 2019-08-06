@@ -7,6 +7,12 @@ framework), [Fakeit](https://github.com/eranpeer/FakeIt) (struct & class
 mocking), and [FFF](https://github.com/meekrosoft/fff) (fake function
 framework) to assist in unit testing.
 
+One property of the SJSU-Dev2 testing framework is that it does not require
+external (non C++ language) tools to work. None of the following libraries
+attempt to read the code in some language like python, ruby, etc, in order to
+convert/remove/replace code in order to work. They all work within the C++
+language, thus, all that is needed in order to test is a C++ compiler.
+
 ## Instrumentation added into Test Executables
 
 Unit tests are compiled with the following addons enabled:
@@ -17,8 +23,7 @@ Unit tests are compiled with the following addons enabled:
     - Use-after-free
     - Use-after-return (runtime flag
       ASAN_OPTIONS=detect_stack_use_after_return=1)
-    - Use-after-scope (clang flag
-      -fsanitize-address-use-after-scope)
+    - Use-after-scope (clang flag -fsanitize-address-use-after-scope)
     - Double-free, invalid free
     - Memory leaks (experimental)
     - Useful if your firmware is crashing and you cannot exactly
@@ -55,9 +60,23 @@ USER_TESTS += test/guidance_system_test.cpp
 ```
 
 ## Compiling and Running Tests
+Use `make test` to compile and run your tests.
 
-Use `make user-test` to compile your tests. Use `make run-test` to run
-user tests after they have been compiled.
+Use `make library-test` to compile every library test file and run that test.
+
+!!! Warning
+    If you are running on a mac and see an error like this:
+
+    ```
+    In file included from test.cpp:4:
+    /usr/local/opt/llvm/bin/../include/c++/v1/stdlib.h:94:15: fatal error: 'stdlib.h' file not found
+    #include_next <stdlib.h>
+    ```
+
+    Then run the following command:
+    ```
+    sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+    ```
 
 ## Finding Example Test Files
 
