@@ -34,7 +34,7 @@ int main()
 
   // Set up SPI clock polarity and phase
   LOG_INFO("Set SPI2 clock.");
-  spi2.SetClock(1'000'000);
+  spi2.SetClock(1_MHz);
 
   // Set up chip select as GPIO pin
   sjsu::lpc40xx::Gpio chip_select(kPort1, kPin10);

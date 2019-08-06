@@ -20,34 +20,34 @@ int main()
 
   LOG_INFO("Creating Pwm powered LED...P2.0 (Pwm1)");
   sjsu::lpc40xx::Pwm p2_0(sjsu::lpc40xx::Pwm::Channel::kPwm0);
-  // Initialize Pwm at 1,000 hz
-  uint32_t frequency = 1000;
-  p2_0.Initialize(frequency);
+  // Initialize Pwm at 1 kHz
+  p2_0.Initialize(1_kHz);
   float duty = 0;
 
   while (true)
   {
-    p2_0.SetFrequency(1000);
+    p2_0.SetFrequency(1_kHz);
     for (int i = 0; i <= 255; i++)
     {
       duty = static_cast<float>(i) / 255.0f;
       p2_0.SetDutyCycle(duty);
-      sjsu::Delay(10);
+      sjsu::Delay(10ms);
     }
 
     p2_0.SetDutyCycle(0.5);
-    while (frequency < 20000)
+    units::frequency::hertz_t frequency = 1_Hz;
+    while (frequency < 20'000_Hz)
     {
       frequency = frequency * 2;
       p2_0.SetFrequency(frequency);
-      sjsu::Delay(500);
+      sjsu::Delay(500ms);
     }
 
-    while (frequency > 5)
+    while (frequency > 5_Hz)
     {
       frequency = frequency / 2;
       p2_0.SetFrequency(frequency);
-      sjsu::Delay(500);
+      sjsu::Delay(500ms);
     }
   }
   return 0;

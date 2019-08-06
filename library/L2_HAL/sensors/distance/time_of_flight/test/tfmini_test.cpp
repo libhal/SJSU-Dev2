@@ -2,10 +2,11 @@
 // @defgroup TFMini unit tests
 // @brief This file contains the unit tests to validate the TFMini device driver
 // @{
-#include "L2_HAL/sensors/distance/timeofflight/tfmini.hpp"
+#include "L2_HAL/sensors/distance/time_of_flight/tfmini.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/log.hpp"
 #include "utility/bit.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -25,7 +26,9 @@ TEST_CASE("Testing tfmini", "[tfmini]")
     // Assuming Uart Initialization is successful
     When(Method(mock_uart, Initialize)).Return(sjsu::Status::kSuccess);
     auto init_read_callback =
-        [](uint8_t * data, size_t size, uint32_t timeout) -> sjsu::Status {
+        [](uint8_t * data,
+           size_t size,
+           std::chrono::microseconds timeout) -> sjsu::Status {
       static constexpr uint8_t kSuccessfulAck[8] = { 0x42, 0x57, 0x02, 0x01,
                                                      0x00, 0x00, 0x01, 0x02 };
       static constexpr uint8_t kExitConfig[8]    = { 0x42, 0x57, 0x02, 0x01,
@@ -56,7 +59,9 @@ TEST_CASE("Testing tfmini", "[tfmini]")
       return sjsu::Status::kSuccess;
     };
     When(ConstOverloadedMethod(
-             mock_uart, Read, sjsu::Status(uint8_t *, size_t, uint32_t)))
+             mock_uart,
+             Read,
+             sjsu::Status(uint8_t *, size_t, std::chrono::microseconds)))
         .AlwaysDo(init_read_callback);
     CHECK(test.Initialize() == sjsu::Status::kSuccess);
     // Check that uart initialization uses the correct Baud rate
@@ -89,7 +94,9 @@ TEST_CASE("Testing tfmini", "[tfmini]")
     uint32_t distance_check              = 0;
     constexpr uint16_t kExpectedDistance = 291;
     auto dist_read_callback =
-        [](uint8_t * data, size_t size, uint32_t timeout) -> sjsu::Status {
+        [](uint8_t * data,
+           size_t size,
+           std::chrono::microseconds timeout) -> sjsu::Status {
       static constexpr uint8_t kReadData[8] = {
         0x59,
         0x59,
@@ -136,7 +143,9 @@ TEST_CASE("Testing tfmini", "[tfmini]")
       return sjsu::Status::kSuccess;
     };
     When(ConstOverloadedMethod(
-             mock_uart, Read, sjsu::Status(uint8_t *, size_t, uint32_t)))
+             mock_uart,
+             Read,
+             sjsu::Status(uint8_t *, size_t, std::chrono::microseconds)))
         .AlwaysDo(dist_read_callback);
 
     // Checking Proper Operation
@@ -170,7 +179,9 @@ TEST_CASE("Testing tfmini", "[tfmini]")
         static_cast<float>(kExpectedStrength / TFMini::kStrengthUpperBound);
     constexpr float kExpectedError = -1.0f;
     auto stren_read_callback =
-        [](uint8_t * data, size_t size, uint32_t timeout) -> sjsu::Status {
+        [](uint8_t * data,
+           size_t size,
+           std::chrono::microseconds timeout) -> sjsu::Status {
       static constexpr uint8_t kReadData[8] = {
         0x59,
         0x59,
@@ -217,7 +228,9 @@ TEST_CASE("Testing tfmini", "[tfmini]")
       return sjsu::Status::kSuccess;
     };
     When(ConstOverloadedMethod(
-             mock_uart, Read, sjsu::Status(uint8_t *, size_t, uint32_t)))
+             mock_uart,
+             Read,
+             sjsu::Status(uint8_t *, size_t, std::chrono::microseconds)))
         .AlwaysDo(stren_read_callback);
 
     // Checking Proper Operation
@@ -249,7 +262,9 @@ TEST_CASE("Testing tfmini", "[tfmini]")
   {
     uint8_t test_numbers[3] = { 0, 50, 100 };
     auto min_threshold_update =
-        [](uint8_t * data, size_t size, uint32_t timeout) -> sjsu::Status {
+        [](uint8_t * data,
+           size_t size,
+           std::chrono::microseconds timeout) -> sjsu::Status {
       static constexpr uint8_t kSuccessfulAck[8] = { 0x42, 0x57, 0x02, 0x01,
                                                      0x00, 0x00, 0x01, 0x02 };
       static constexpr uint8_t kExitConfig[8]    = { 0x42, 0x57, 0x02, 0x01,
@@ -280,7 +295,9 @@ TEST_CASE("Testing tfmini", "[tfmini]")
       return sjsu::Status::kSuccess;
     };
     When(ConstOverloadedMethod(
-             mock_uart, Read, sjsu::Status(uint8_t *, size_t, uint32_t)))
+             mock_uart,
+             Read,
+             sjsu::Status(uint8_t *, size_t, std::chrono::microseconds)))
         .AlwaysDo(min_threshold_update);
 
     // Verify successful return using edge case 0

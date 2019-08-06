@@ -40,9 +40,9 @@ class Si7060 final : public Temperature
     uint8_t least_significant_register;
     // The register will enable the device to collect data once
     // and automatically sets the stop bit to 0 (2nd bit).
-    i2c_.Write(address_, { kOneBurstRegister, 0x04 }, 2);
+    i2c_.Write(address_, { kOneBurstRegister, 0x04 });
     // Auto increments I2c register address pointer.
-    i2c_.Write(address_, { kAutomaticBitRegister, 0x01 }, 2);
+    i2c_.Write(address_, { kAutomaticBitRegister, 0x01 });
     i2c_.WriteThenRead(
         address_, { kMostSignificantRegister }, &most_significant_register, 1);
     i2c_.Read(address_, &least_significant_register, 1);

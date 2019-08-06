@@ -4,6 +4,7 @@
 
 #include "L1_Peripheral/interrupt.hpp"
 #include "utility/status.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -41,7 +42,7 @@ class Timer
   ///        method is achieved.
   /// @param priority - sets the Timer interrupt's priority level, defaults to
   ///        -1 which uses the platforms default priority.
-  virtual Status Initialize(uint32_t counter_frequency,
+  virtual Status Initialize(units::frequency::hertz_t counter_frequency,
                             IsrPointer isr   = nullptr,
                             int32_t priority = -1) const = 0;
   /// Set a timer to execute your timer command when the time counter equals the

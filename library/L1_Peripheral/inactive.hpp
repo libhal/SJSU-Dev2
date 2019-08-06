@@ -16,6 +16,7 @@
 #include "L1_Peripheral/system_timer.hpp"
 #include "L1_Peripheral/timer.hpp"
 #include "L1_Peripheral/uart.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -153,7 +154,7 @@ const sjsu::Pwm & GetInactive<sjsu::Pwm>()
   class InactivePwm : public sjsu::Pwm
   {
    public:
-    Status Initialize(uint32_t) const override
+    Status Initialize(units::frequency::hertz_t) const override
     {
       return Status::kNotImplemented;
     }
@@ -162,7 +163,7 @@ const sjsu::Pwm & GetInactive<sjsu::Pwm>()
     {
       return 0.0;
     }
-    void SetFrequency(uint32_t) const override {}
+    void SetFrequency(units::frequency::hertz_t) const override {}
   };
 
   static InactivePwm inactive;
@@ -184,7 +185,7 @@ const sjsu::Spi & GetInactive<sjsu::Spi>()
       return 0xFF;
     }
     void SetDataSize(DataSize) const override {}
-    void SetClock(uint32_t, bool, bool) const override {}
+    void SetClock(units::frequency::hertz_t, bool, bool) const override {}
   };
 
   static InactiveSpi inactive;
@@ -197,13 +198,16 @@ const sjsu::SystemController & GetInactive<sjsu::SystemController>()
   class InactiveSystemController : public sjsu::SystemController
   {
    public:
-    uint32_t SetSystemClockFrequency(uint8_t) const override
+    void SetSystemClockFrequency(units::frequency::megahertz_t) const override
     {
-      return 0;
     }
     uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
     {
-      return 0;
+      return 1;
+    }
+    units::frequency::hertz_t GetSystemFrequency() const override
+    {
+      return config::kSystemClockRateMhz;
     }
     bool IsPeripheralPoweredUp(const PeripheralID &) const override
     {
@@ -214,11 +218,6 @@ const sjsu::SystemController & GetInactive<sjsu::SystemController>()
     }
     void PowerUpPeripheral(const PeripheralID &) const override {}
     void PowerDownPeripheral(const PeripheralID &) const override {}
-    // NOTE: We only this method for SystemTimer to work.
-    uint32_t GetSystemFrequency() const override
-    {
-      return config::kSystemClockRate;
-    }
   };
 
   static InactiveSystemController inactive;
@@ -236,7 +235,7 @@ const sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
     {
       return Status::kNotImplemented;
     }
-    uint32_t SetTickFrequency(uint32_t) const override
+    int32_t SetTickFrequency(units::frequency::hertz_t) const override
     {
       return 0;
     }
@@ -252,7 +251,9 @@ const sjsu::Timer & GetInactive<sjsu::Timer>()
   class InactiveTimer : public sjsu::Timer
   {
    public:
-    Status Initialize(uint32_t, IsrPointer, int32_t) const override
+    Status Initialize(units::frequency::hertz_t,
+                      IsrPointer,
+                      int32_t) const override
     {
       return Status::kNotImplemented;
     }
@@ -286,7 +287,7 @@ const sjsu::Uart & GetInactive<sjsu::Uart>()
       return true;
     }
     void Write(const uint8_t *, size_t) const override {}
-    Status Read(uint8_t *, size_t, uint32_t) const override
+    Status Read(uint8_t *, size_t, std::chrono::microseconds) const override
     {
       return Status::kNotImplemented;
     }

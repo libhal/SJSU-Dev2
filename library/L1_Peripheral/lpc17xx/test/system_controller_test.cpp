@@ -51,10 +51,10 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
 
   SECTION("Set CPU Clock Frequency")
   {
-    constexpr uint32_t kInputFrequencyInKhz    = 4'000;
-    constexpr uint32_t kExpectedFrequencyInMhz = 48;
+    constexpr units::frequency::hertz_t kDefaultIRCFrequency = 4_MHz;
+    constexpr units::frequency::hertz_t kExpectedFrequency   = 48_MHz;
 
-    system_controller.SetSystemClockFrequency(kExpectedFrequencyInMhz);
+    system_controller.SetSystemClockFrequency(kExpectedFrequency);
 
     CHECK(bit::Read(local_sc.PLL0CON, SystemController::kPllEnableBit) == 0b1);
     CHECK(bit::Read(local_sc.PLL0CON, SystemController::kPllConnectBit) == 0b1);
@@ -62,20 +62,23 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
     // corrensponding registers to re-calculate the desired cpu frequency to
     // check at the correct values were written
     const uint32_t kMultiplier =
-        bit::Extract(local_sc.PLL0CFG, SystemController::MainPll::kMultiplier);
+        bit::Extract(local_sc.PLL0CFG, SystemController::MainPll::kMultiplier) +
+        1;
     const uint32_t kPreDivider =
-        bit::Extract(local_sc.PLL0CFG, SystemController::MainPll::kPreDivider);
+        bit::Extract(local_sc.PLL0CFG, SystemController::MainPll::kPreDivider) +
+        1;
     const uint32_t kCpuDivider =
-        bit::Extract(local_sc.CCLKCFG, SystemController::CpuClock::kDivider);
-    const uint32_t kClockFrequencyInKhz =
-        ((2 * (kMultiplier + 1) * kInputFrequencyInKhz) / (kPreDivider + 1)) /
-        (kCpuDivider + 1);
+        bit::Extract(local_sc.CCLKCFG, SystemController::CpuClock::kDivider) +
+        1;
+    const uint32_t kCalculatedClockFrequency =
+        ((2 * kMultiplier * kDefaultIRCFrequency.to<uint32_t>()) /
+         kPreDivider) /
+        kCpuDivider;
 
     CHECK(bit::Extract(local_sc.CLKSRCSEL,
                        SystemController::Oscillator::kSelect) == 0b00);
-    CHECK(kClockFrequencyInKhz == (kExpectedFrequencyInMhz * 1'000));
-    CHECK(system_controller.GetSystemFrequency() ==
-          (kExpectedFrequencyInMhz * 1'000'000));
+    CHECK(kCalculatedClockFrequency == kExpectedFrequency.to<uint32_t>());
+    CHECK(system_controller.GetSystemFrequency() == kExpectedFrequency);
   }
 
   SECTION("Set USB PLL Input Frequency")
@@ -118,8 +121,8 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
     volatile uint32_t * local_pclksel0  = &(local_sc.PCLKSEL0);
     volatile uint32_t * local_pclksel1  = &(local_sc.PCLKSEL1);
 
-    constexpr uint32_t kSystemFrequency = 48'000'000;
-    system_controller.SetSystemClockFrequency(kSystemFrequency / 1'000'000);
+    constexpr auto kSystemFrequency = 48_MHz;
+    system_controller.SetSystemClockFrequency(kSystemFrequency);
 
     // Test for peripherals in PCLKSEL0
     for (uint8_t i = 0; i < kPclkSel1StartIndex; i++)

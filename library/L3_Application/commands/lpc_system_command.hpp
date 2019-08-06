@@ -8,6 +8,7 @@
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L3_Application/commandline.hpp"
 #include "utility/log.hpp"
+#include "utility/time.hpp"
 
 namespace sjsu
 {
@@ -26,8 +27,8 @@ class LpcSystemInfoCommand final : public Command
   int Program(int, const char * const[]) override
   {
     sjsu::lpc40xx::SystemController system;
-    uint32_t system_frequency     = system.GetSystemFrequency() / 1000;
-    uint32_t peripheral_frequency = system.GetPeripheralFrequency({}) / 1000;
+    uint32_t system_frequency     = system.GetSystemFrequency() / 1_kHz;
+    uint32_t peripheral_frequency = system.GetPeripheralFrequency({}) / 1_kHz;
 
     intptr_t top_of_stack         = reinterpret_cast<intptr_t>(&StackTop);
     intptr_t master_stack_pointer = sjsu::cortex::__get_MSP();

@@ -28,6 +28,7 @@ class I2c final : public sjsu::I2c
   // Bringing in I2c Interface's Write and WriteThenRead methods that use
   // std::initializer_list.
   using sjsu::I2c::Write;
+  using sjsu::I2c::Read;
   using sjsu::I2c::WriteThenRead;
 
   enum Control : uint32_t

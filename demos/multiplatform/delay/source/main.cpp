@@ -15,9 +15,10 @@ int main()
 
   while (true)
   {
-    LOG_INFO("[%lu] Hello, World! (milliseconds = %lu)", counter++,
-                static_cast<uint32_t>(sjsu::Milliseconds()));
-    sjsu::Delay(1000);
+    LOG_INFO("[%lu] Hello, World! (microseconds = %lu)",
+             counter++,
+             static_cast<uint32_t>(sjsu::Uptime().count()));
+    sjsu::Delay(1s);
   }
   return 0;
 }

@@ -41,7 +41,6 @@
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/lpc17xx/system_controller.hpp"
-#include "L1_Peripheral/lpc17xx/timer.hpp"
 #include "L1_Peripheral/lpc17xx/uart.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"

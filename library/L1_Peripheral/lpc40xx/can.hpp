@@ -576,7 +576,7 @@ class Can final : public sjsu::Can
     can_registers[controller_]->CMR = kSelfReceptionSendTxBuffer1;
 
     // Allow time for RX interrupt to fire
-    sjsu::Delay(2);
+    sjsu::Delay(2ms);
 
     // Get the message; the ISR (interrupt service routine)
     // will read the message from the rx buffer

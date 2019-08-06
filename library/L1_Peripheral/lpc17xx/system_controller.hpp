@@ -131,10 +131,9 @@ class SystemController final : public sjsu::SystemController
   static constexpr uint32_t kPllEnableBit  = 0;
   static constexpr uint32_t kPllConnectBit = 1;
 
-  static constexpr uint32_t kDefaultIRCFrequency = 4'000'000;
-  static constexpr uint32_t kUsbClockFrequency   = 48'000'000;
-  static constexpr uint32_t kDefaultTimeout      = 1'000;  // ms
-  static constexpr uint32_t kRTCFrequency        = 32'768;
+  static constexpr units::frequency::hertz_t kDefaultIRCFrequency = 4_MHz;
+  static constexpr units::frequency::hertz_t kUsbClockFrequency   = 48_MHz;
+  static constexpr units::frequency::hertz_t kRTCFrequency        = 32'768_Hz;
 
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
@@ -145,18 +144,17 @@ class SystemController final : public sjsu::SystemController
   ///       from the USB PLL. The internal RC is used for PLL0 and will not
   ///       generate a precise enough clock to be used by the USB subsystem.
   ///
-  /// @param frequency_in_mhz The desired CPU Clock frequency, if
-  ///                         frequency_in_mhz = 12, then the desired frequency
-  ///                         is 12 MHz
-  uint32_t SetSystemClockFrequency(uint8_t frequency_in_mhz) const override
+  /// @param frequency The desired CPU Clock frequency in megahertz.
+  void SetSystemClockFrequency(
+      units::frequency::megahertz_t frequency) const override
   {
     // The following sequence is specified in the LPC176x/5x User Manual
     // Section 4.5.13 and must be followed step by step in order to have PLL0
     // initialized and running.
 
-    // NOTE:  It is very important not to merge any steps. For example, do
-    //        not update the PLL0CFG and enable PLL0 simultaneously with the
-    //        same feed sequence.
+    // NOTE: It is very important not to merge any steps. For example, do not
+    //       update the PLL0CFG and enable PLL0 simultaneously with the same
+    //       feed sequence.
 
     // 1. Disconnect PLL0 with one feed sequence if PLL0 is already connected.
     system_controller->PLL0CON =
@@ -177,7 +175,7 @@ class SystemController final : public sjsu::SystemController
     // 5. Write to the PLL0CFG and make it effective with one feed sequence.
     //    The PLL0CFG can only be updated when PLL0 is disabled.
     const Pll0Settings_t kPll0Settings =
-        CalculatePll0(kDefaultIRCFrequency / 1'000, frequency_in_mhz);
+        CalculatePll0(kDefaultIRCFrequency, frequency);
     system_controller->PLL0CFG = bit::Insert(system_controller->PLL0CFG,
                                              kPll0Settings.multiplier,
                                              MainPll::kMultiplier);
@@ -195,20 +193,17 @@ class SystemController final : public sjsu::SystemController
     // 8. Wait for PLL0 to achieve lock by monitoring the PLOCK0 bit in the
     //    PLL0STAT register, or using the PLOCK0 interrupt, or wait for a fixed
     //    time when the input clock to PLL0 is slow (i.e. 32 kHz).
-    SJ2_ASSERT_FATAL(WaitForPllLockStatus(PllSelect::kMainPll, kDefaultTimeout),
+    SJ2_ASSERT_FATAL(WaitForPllLockStatus(PllSelect::kMainPll),
                      "PLL0 lock could not be established before timeout");
     // 9. Connect PLL0 with one feed sequence.
     system_controller->PLL0CON =
         bit::Set(system_controller->PLL0CON, kPllConnectBit);
     WritePllFeedSequence(PllSelect::kMainPll);
 
-    SJ2_ASSERT_FATAL(
-        WaitForPllConnectionStatus(PllSelect::kMainPll, kDefaultTimeout),
-        "Failed to connect PLL0.");
+    SJ2_ASSERT_FATAL(WaitForPllConnectionStatus(PllSelect::kMainPll),
+                     "Failed to connect PLL0.");
 
-    speed_in_hertz = frequency_in_mhz * 1'000'000;
-
-    return 0;
+    speed_in_hertz = frequency;
   }
   /// Configures the USB PLL (PLL1) to produce the required 48 MHz clock based
   /// on the input frequency provided to the PLL.
@@ -249,16 +244,15 @@ class SystemController final : public sjsu::SystemController
         bit::Set(system_controller->PLL1CON, kPllEnableBit);
     WritePllFeedSequence(PllSelect::kUsbPll);
     // 5. Configurations to the PLL must be locked before it can be connected.
-    SJ2_ASSERT_FATAL(WaitForPllLockStatus(PllSelect::kUsbPll, kDefaultTimeout),
+    SJ2_ASSERT_FATAL(WaitForPllLockStatus(PllSelect::kUsbPll),
                      "PLL1 lock could not be established before timeout");
     // 6. Connect PLL1 with one feed sequence.
     system_controller->PLL1CON =
         bit::Set(system_controller->PLL1CON, kPllConnectBit);
     WritePllFeedSequence(PllSelect::kUsbPll);
 
-    SJ2_ASSERT_FATAL(
-        WaitForPllConnectionStatus(PllSelect::kUsbPll, kDefaultTimeout),
-        "Failed to connect PLL1.");
+    SJ2_ASSERT_FATAL(WaitForPllConnectionStatus(PllSelect::kUsbPll),
+                     "Failed to connect PLL1.");
   }
   /// Sets the divider to control the desired peripheral clock rate (PCLK) for a
   /// specified peripheral where PCLK = CCLK / divider.
@@ -348,7 +342,7 @@ class SystemController final : public sjsu::SystemController
     return peripheral_clock_divider;
   }
 
-  uint32_t GetSystemFrequency() const override
+  units::frequency::hertz_t GetSystemFrequency() const override
   {
     return speed_in_hertz;
   }
@@ -374,7 +368,7 @@ class SystemController final : public sjsu::SystemController
   }
 
  private:
-  inline static uint32_t speed_in_hertz = kDefaultIRCFrequency;
+  inline static units::frequency::hertz_t speed_in_hertz = kDefaultIRCFrequency;
 
   void SelectOscillatorSource(OscillatorSource source) const
   {
@@ -386,29 +380,29 @@ class SystemController final : public sjsu::SystemController
   /// generated the desired CPU clock with PLL0 based on the specified input
   /// frequency.
   ///
-  /// @param input_frequency_in_khz Input of PLL0 should be 32 kHz to 50 MHz.
-  /// @param desired_speed_in_mhz   Desired CPU clock to achieve. Should not
-  ///                               exceed the maximum allowed CPU clock.
-  Pll0Settings_t CalculatePll0(uint32_t input_frequency_in_khz,
-                               uint32_t desired_speed_in_mhz) const
+  /// @param input_frequency Input of PLL0 should be 32 kHz to 50 MHz.
+  /// @param desired_speed   Desired CPU clock to achieve. Should not
+  ///                        exceed the maximum allowed CPU clock.
+  Pll0Settings_t CalculatePll0(units::frequency::hertz_t input_frequency,
+                               units::frequency::hertz_t desired_speed) const
   {
     // minimum/maximum input and output frequencies of PLL0 in kHz
-    constexpr uint32_t kMinimumPll0InputFrequency = 32;
-    constexpr uint32_t kMaximumPll0InputFrequency = 50'000;
-    constexpr uint32_t kMinimumPll0OuputFrequency = 275'000;
-    constexpr uint32_t kMaximumPll0OuputFrequency = 550'000;
+    constexpr units::frequency::hertz_t kMinimumPll0InputFrequency = 32_kHz;
+    constexpr units::frequency::hertz_t kMaximumPll0InputFrequency = 50_MHz;
+    constexpr units::frequency::hertz_t kMinimumPll0OuputFrequency = 275_MHz;
+    constexpr units::frequency::hertz_t kMaximumPll0OuputFrequency = 550_MHz;
 
     // Maximum allowed CPU speed in kHz.
     // This value will be 100 MHz or 120 MHz depending on the MCU in use
     // For the SJOne, the max CPU speed for LPC1758 is 100 MHz.
-    constexpr uint32_t kMaxCPUSpeed = 100 * 1000;
+    constexpr units::frequency::hertz_t kMaxCPUSpeed = 100_MHz;
 
     SJ2_ASSERT_FATAL(
-        input_frequency_in_khz > kMinimumPll0InputFrequency &&
-            input_frequency_in_khz < kMaximumPll0InputFrequency,
+        input_frequency > kMinimumPll0InputFrequency &&
+            input_frequency < kMaximumPll0InputFrequency,
         "The input PLL0 frequency must be between 32kHz and 50MHz");
     SJ2_ASSERT_FATAL(
-        desired_speed_in_mhz < kMaxCPUSpeed,
+        desired_speed < kMaxCPUSpeed,
         "The desired CPU speed cannot exceed the maximum allow CPU speed.");
     // The supported pre-divider values ranges from 1 to 32 while the supported
     // multiplier values ranges from 6 to 512.
@@ -421,9 +415,13 @@ class SystemController final : public sjsu::SystemController
     {
       for (uint16_t m = 511; m >= 6; m--)
       {
-        // current controlled oscilator frequency, fcco, output of PLL0
-        const uint32_t kFcco = (2 * (m + 1) * input_frequency_in_khz) / (n + 1);
-        if (kFcco > kMinimumPll0OuputFrequency &&
+        // Current calculated controlled oscillator frequency, fcco, output of
+        // PLL0 in kilohertz
+        // Dividing by 1000 to scale down kFcco, as the multiplier for is
+        // internally scaled by 1000.
+        const units::frequency::hertz_t kFcco =
+            (2 * (m + 1) * input_frequency) / (n + 1);
+        if (kMinimumPll0OuputFrequency < kFcco &&
             kFcco < kMaximumPll0OuputFrequency)
         {
           // since PLL0 is in use, the cpu_divider values of 0 and 1 are not
@@ -431,9 +429,11 @@ class SystemController final : public sjsu::SystemController
           // allowed CPU speed
           for (uint16_t cpu_divider = 2; cpu_divider < 256; cpu_divider++)
           {
-            // resulting CPU clock in kHz
-            const uint32_t kCpuClock = kFcco / (cpu_divider + 1);
-            if (kCpuClock == (desired_speed_in_mhz * 1'000))
+            // Get resulting CPU clock
+            // Requires that we scale kFcco back to a proper frequency.
+            const units::frequency::hertz_t kCpuClock =
+                kFcco / (cpu_divider + 1);
+            if (kCpuClock == desired_speed)
             {
               return Pll0Settings_t{ .multiplier  = m,
                                      .pre_divider = n,
@@ -463,8 +463,7 @@ class SystemController final : public sjsu::SystemController
     *(pll_feed_registers[util::Value(pll)]) = 0x55;
   }
 
-  bool WaitForPllLockStatus([[maybe_unused]] PllSelect pll,
-                            [[maybe_unused]] uint64_t time_out) const
+  bool WaitForPllLockStatus(PllSelect pll) const
   {
     // Skip waiting for PLLSTAT register to update if running a host unit test
     if constexpr (build::kTarget == build::Target::HostTest)
@@ -481,18 +480,10 @@ class SystemController final : public sjsu::SystemController
     volatile uint32_t * status_register =
         pll_status_registers[util::Value(pll)];
     const bit::Mask kLockStatusMask = kLockStatusMasks[util::Value(pll)];
-    uint64_t current_time           = Milliseconds();
-    uint64_t timeout_time           = current_time + time_out;
 
-    volatile const bool kPllIsLocked =
-        bit::Extract(*status_register, kLockStatusMask);
-    while (!kPllIsLocked && (current_time < timeout_time))
+    while (!bit::Read(*status_register, kLockStatusMask.position))
     {
-      current_time = Milliseconds();
-    }
-    if (!kPllIsLocked && (current_time >= timeout_time))
-    {
-      return false;
+      continue;
     }
 
     return true;
@@ -500,8 +491,7 @@ class SystemController final : public sjsu::SystemController
 
   /// @returns  Returns true if the PLL's enable and connect status bits in the
   ///           PLL status register are both 1.
-  bool WaitForPllConnectionStatus([[maybe_unused]] PllSelect pll,
-                                  [[maybe_unused]] uint64_t time_out) const
+  bool WaitForPllConnectionStatus(PllSelect pll) const
   {
     // Skip waiting for PLLSTAT register to update if running a host unit test
     if constexpr (build::kTarget == build::Target::HostTest)
@@ -517,19 +507,10 @@ class SystemController final : public sjsu::SystemController
     volatile uint32_t * status_register =
         pll_status_registers[util::Value(pll)];
     const bit::Mask kPllModeMask = kMasks[util::Value(pll)];
-    uint64_t current_time        = Milliseconds();
-    uint64_t timeout_time        = current_time + time_out;
 
-    constexpr uint32_t kPllModeActive = 0b11;
-    volatile const uint32_t kPllMode =
-        bit::Extract(*status_register, kPllModeMask);
-    while (!(kPllMode == kPllModeActive) && (current_time < timeout_time))
+    while (!bit::Read(*status_register, kPllModeMask.position))
     {
-      current_time = Milliseconds();
-    }
-    if (!(kPllMode == kPllModeActive) && (current_time >= timeout_time))
-    {
-      return false;
+      continue;
     }
 
     return true;
@@ -550,7 +531,7 @@ class SystemController final : public sjsu::SystemController
     system_controller->CCLKCFG = bit::Insert(
         system_controller->CCLKCFG, cpu_divider, CpuClock::kDivider);
   }
-  /// @returns  Pointer to the PLCKSEL0 or PCLKSEL1 register based on the
+  /// @returns  Pointer to the PCLKSEL0 or PCLKSEL1 register based on the
   ///           peripheral's device_id.
   volatile uint32_t * GetPeripheralClockSelectRegister(
       const PeripheralID & peripheral_select) const

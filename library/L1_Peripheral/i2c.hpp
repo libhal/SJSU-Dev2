@@ -6,6 +6,7 @@
 #include "config.hpp"
 
 #include "utility/status.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -21,7 +22,7 @@ class I2c
     kRead  = 1,
   };
 
-  static constexpr uint32_t kI2cTimeout = 100;  // units milliseconds
+  static constexpr std::chrono::milliseconds kI2cTimeout = 100ms;
 
   struct Transaction_t
   {
@@ -36,17 +37,17 @@ class I2c
       }
       return address_8bit;
     }
-    Operation operation      = Operation::kWrite;
-    uint8_t address          = 0xFF;
-    const uint8_t * data_out = nullptr;
-    size_t out_length        = 0;
-    uint8_t * data_in        = nullptr;
-    size_t in_length         = 0;
-    size_t position          = 0;
-    bool repeated            = false;
-    bool busy                = false;
-    uint64_t timeout         = kI2cTimeout;
-    Status status            = Status::kSuccess;
+    Operation operation               = Operation::kWrite;
+    uint8_t address                   = 0xFF;
+    const uint8_t * data_out          = nullptr;
+    size_t out_length                 = 0;
+    uint8_t * data_in                 = nullptr;
+    size_t in_length                  = 0;
+    size_t position                   = 0;
+    bool repeated                     = false;
+    bool busy                         = false;
+    std::chrono::milliseconds timeout = kI2cTimeout;
+    Status status                     = Status::kSuccess;
   };
 
   // ==============================
@@ -81,7 +82,7 @@ class I2c
   Status Read(uint8_t address,
               uint8_t * transmit_buffer,
               size_t transmit_buffer_length,
-              uint32_t timeout = kI2cTimeout) const
+              std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Transaction({
         .operation  = Operation::kRead,
@@ -108,7 +109,7 @@ class I2c
   Status Write(uint8_t address,
                const uint8_t * receive_buffer,
                size_t receive_buffer_length,
-               uint32_t timeout = kI2cTimeout) const
+               std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Transaction({
         .operation  = Operation::kWrite,
@@ -136,7 +137,7 @@ class I2c
   ///        bailing out.
   Status Write(uint8_t address,
                std::initializer_list<uint8_t> transmit,
-               uint32_t timeout = kI2cTimeout) const
+               std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Write(address, transmit.begin(), transmit.size(), timeout);
   }
@@ -159,7 +160,7 @@ class I2c
                        size_t transmit_buffer_length,
                        uint8_t * receive_buffer,
                        size_t receive_buffer_length,
-                       uint32_t timeout = kI2cTimeout) const
+                       std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Transaction({
         .operation  = Operation::kWrite,
@@ -193,7 +194,7 @@ class I2c
                        std::initializer_list<uint8_t> transmit,
                        uint8_t * receive_buffer,
                        size_t receive_buffer_length,
-                       uint32_t timeout = kI2cTimeout) const
+                       std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return WriteThenRead(address,
                          transmit.begin(),

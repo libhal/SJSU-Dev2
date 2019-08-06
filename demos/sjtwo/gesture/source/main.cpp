@@ -53,7 +53,7 @@ int main(void)
       break;
       default: break;
     }
-    sjsu::Delay(500);  // Do other code here
+    sjsu::Delay(500ms);  // Do other code here
   }
   return 0;
 }

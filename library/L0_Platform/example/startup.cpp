@@ -25,9 +25,9 @@ namespace
 
 // 6. Define an milliseconds Uptime function
 // ------------------------------------------
-uint64_t Uptime()
+std::chrono::microseconds ExampleUptime()
 {
-  return 0;
+  return 0us;
 }
 // 7. Define a function for stdout
 //    Typically uses UART0 or USB CDC
@@ -78,7 +78,7 @@ extern "C"
   sjsu::newlib::SetStdout(StdOut);
   sjsu::newlib::SetStdin(StdIn);
   // Platform 6. Set uptime function to the uptime function defined in startup.6
-  sjsu::SetUptimeFunction(Uptime);
+  sjsu::SetUptimeFunction(ExampleUptime);
 }
 
 // Reset entry point for your code.

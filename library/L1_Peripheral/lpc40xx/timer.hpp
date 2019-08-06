@@ -11,6 +11,7 @@
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -124,13 +125,13 @@ class Timer final : public sjsu::Timer
   {
   }
 
-  Status Initialize(uint32_t frequency,
+  Status Initialize(units::frequency::hertz_t frequency,
                     IsrPointer isr   = nullptr,
                     int32_t priority = -1) const override
   {
     system_controller_.PowerUpPeripheral(timer_.channel.power_id);
     SJ2_ASSERT_FATAL(
-        frequency != 0,
+        frequency.to<uint32_t>() != 0,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
     // Set Prescale register for Prescale Counter to milliseconds
     uint32_t prescaler =

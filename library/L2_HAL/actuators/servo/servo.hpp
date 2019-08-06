@@ -11,72 +11,80 @@ namespace sjsu
 class Servo
 {
  public:
-    static constexpr uint32_t kDefaultFrequency = 50;
-    static constexpr float kDefaultMinAngle = 0;
-    static constexpr float kDefaultMaxAngle = 90;
-    static constexpr float kDefaultMinPulse = 1000;
-    static constexpr float kDefaultMaxPulse = 2000;
+  static constexpr units::frequency::hertz_t kDefaultFrequency = 50_Hz;
+  static constexpr units::angle::degree_t kDefaultMinAngle     = 0_deg;
+  static constexpr units::angle::degree_t kDefaultMaxAngle     = 90_deg;
+  static constexpr std::chrono::microseconds kDefaultMinPulse  = 1000us;
+  static constexpr std::chrono::microseconds kDefaultMaxPulse  = 2000us;
 
-    explicit constexpr Servo(const sjsu::Pwm & pwm)
+  explicit constexpr Servo(const sjsu::Pwm & pwm)
       : servo_pwm_(pwm),
-        max_pulse_length_us_(0),
+        waveform_period_(0),
         pulse_lower_bound_(kDefaultMinPulse),
         pulse_upper_bound_(kDefaultMaxPulse),
         min_angle_(kDefaultMinAngle),
         max_angle_(kDefaultMaxAngle)
-    {
-    }
+  {
+  }
 
-    virtual void Initialize(uint32_t frequency = kDefaultFrequency)
-    {
-      servo_pwm_.Initialize(frequency);
-      max_pulse_length_us_ = (1 / static_cast<float>(frequency)) * 1'000'000;
-    }
+  virtual void Initialize(
+      units::frequency::hertz_t frequency = kDefaultFrequency)
+  {
+    servo_pwm_.Initialize(frequency);
+    SetFrequency(frequency);
+  }
 
-    virtual void SetFrequency(uint32_t frequency = kDefaultFrequency)
-    {
-      servo_pwm_.SetFrequency(frequency);
-      max_pulse_length_us_ = (1 / static_cast<float>(frequency)) * 1'000'000;
-    }
+  virtual void SetFrequency(
+      units::frequency::hertz_t frequency = kDefaultFrequency)
+  {
+    servo_pwm_.SetFrequency(frequency);
+    waveform_period_ =
+        std::chrono::microseconds((1_MHz / frequency).to<uint32_t>());
+  }
 
-    // Sets the minimum and maximum pulse width lengths that the class will
-    // use to clamp its pulse width output when using SetAngle.
-    virtual void SetPulseBounds(float lower, float upper)
-    {
-      pulse_lower_bound_ = lower;
-      pulse_upper_bound_ = upper;
-    }
+  // Sets the minimum and maximum pulse width lengths that the class will
+  // use to clamp its pulse width output when using SetAngle.
+  virtual void SetPulseBounds(std::chrono::microseconds lower,
+                              std::chrono::microseconds upper)
+  {
+    pulse_lower_bound_ = lower;
+    pulse_upper_bound_ = upper;
+  }
 
-    // Sets your angle bounds that maps angles to microseconds when
-    // using SetAngle
-    virtual void SetAngleBounds(float min_angle, float max_angle)
-    {
-      min_angle_ = min_angle;
-      max_angle_ = max_angle;
-    }
+  // Sets your angle bounds that maps angles to microseconds when
+  // using SetAngle
+  virtual void SetAngleBounds(units::angle::degree_t min_angle,
+                              units::angle::degree_t max_angle)
+  {
+    min_angle_ = min_angle;
+    max_angle_ = max_angle;
+  }
 
-    virtual void SetPulseWidthInMicroseconds(float pulse_length_us)
-    {
-      servo_pwm_.SetDutyCycle(pulse_length_us / max_pulse_length_us_);
-    }
+  virtual void SetPulseWidthInMicroseconds(
+      std::chrono::microseconds pulse_width)
+  {
+    servo_pwm_.SetDutyCycle(static_cast<float>(pulse_width.count()) /
+                            static_cast<float>(waveform_period_.count()));
+  }
 
-    // Should only be used after pulse bounds and angle bounds have been set.
-    virtual void SetAngle(float angle)
-    {
-      float pulse_length_us = Map(angle,
-                                  min_angle_,
-                                  max_angle_,
-                                  pulse_lower_bound_,
-                                  pulse_upper_bound_);
-      SetPulseWidthInMicroseconds(pulse_length_us);
-    }
+  // Should only be used after pulse bounds and angle bounds have been set.
+  virtual void SetAngle(units::angle::degree_t angle)
+  {
+    float pulse_width = Map(angle.to<float>(),
+                            min_angle_.to<float>(),
+                            max_angle_.to<float>(),
+                            static_cast<float>(pulse_lower_bound_.count()),
+                            static_cast<float>(pulse_upper_bound_.count()));
+    SetPulseWidthInMicroseconds(
+        std::chrono::microseconds(static_cast<uint32_t>(pulse_width)));
+  }
 
  private:
-    const Pwm & servo_pwm_;
-    float max_pulse_length_us_;
-    float pulse_lower_bound_;
-    float pulse_upper_bound_;
-    float min_angle_;
-    float max_angle_;
+  const Pwm & servo_pwm_;
+  std::chrono::microseconds waveform_period_;
+  std::chrono::microseconds pulse_lower_bound_;
+  std::chrono::microseconds pulse_upper_bound_;
+  units::angle::degree_t min_angle_;
+  units::angle::degree_t max_angle_;
 };
 }  // namespace sjsu

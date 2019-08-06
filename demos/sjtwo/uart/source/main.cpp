@@ -38,7 +38,7 @@ int main()
     }
 
     putchar('\n');
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
   }
   return 0;
 }

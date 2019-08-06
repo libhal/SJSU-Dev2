@@ -9,7 +9,7 @@
 #include <limits>
 
 #include "L1_Peripheral/uart.hpp"
-#include "L2_HAL/sensors/distance/distancesensor.hpp"
+#include "L2_HAL/sensors/distance/distance_sensor.hpp"
 #include "utility/status.hpp"
 #include "utility/log.hpp"
 
@@ -26,7 +26,7 @@ class TFMini final : public DistanceSensor
   static constexpr uint8_t kThresholdByte                 = 4;
   static constexpr uint8_t kStrengthLowerLimitCap         = 80;
   static constexpr uint32_t kStrengthUpperBound           = 3000;
-  static constexpr uint32_t kTimeout                      = 1000;
+  static constexpr std::chrono::microseconds kTimeout     = 1s;
   static constexpr uint8_t kConfigCommand[kCommandLength] = {
     0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x01, 0x02
   };

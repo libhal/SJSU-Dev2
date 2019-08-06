@@ -30,6 +30,7 @@ sjsu::I2cCommand i2c_command(i2c2);
 sjsu::RtosCommand rtos_command;
 sjsu::LpcSystemInfoCommand system_command;
 sjsu::CommandLine<command_list> ci;
+
 void TerminalTask([[maybe_unused]] void * ptr)
 {
   LOG_INFO("Press Enter to Start Command Line!");
@@ -74,8 +75,8 @@ int main()
   LOG_INFO("Initializing CommandLine object...");
   ci.Initialize();
 
-  xTaskCreate(TerminalTask, "Terminal", 501, nullptr, sjsu::rtos::kLow,
-              nullptr);
+  xTaskCreate(
+      TerminalTask, "Terminal", 501, nullptr, sjsu::rtos::kLow, nullptr);
   xTaskCreate(BusyTask, "BusyTask", 512, nullptr, sjsu::rtos::kMedium, nullptr);
 
   vTaskStartScheduler();
