@@ -498,6 +498,12 @@ purge: clean
 telemetry:
 	google-chrome https://kammce.github.io/Telemetry
 # ====================================================================
+# Format Code
+# ====================================================================
+format-code:
+	@$(SJCLANG)/bin/git-clang-format --binary="$(SJCLANG)/bin/clang-format" \
+	  --force
+# ====================================================================
 # Build Test Executable, Run test and generate code coverage
 # ====================================================================
 # In reference to issue #374, we need to remove the old gcda files otherwise
