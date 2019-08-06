@@ -4,9 +4,9 @@
 namespace sjsu::lpc40xx
 {
 // Uncomment this when can class has been created
-// EMIT_ALL_METHODS(Temperature);
+EMIT_ALL_METHODS(Si7060);
 
-TEST_CASE("Temperature", "[temperature]")
+TEST_CASE("Si7060", "[si7060]")
 {
   SECTION("Initialize") {}
 }

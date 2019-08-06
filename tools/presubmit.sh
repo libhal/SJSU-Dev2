@@ -70,8 +70,8 @@ function check
 print_divider
 printf "Checking that all projects build\n\n"
 
-printf "\e[0;33mBuilding HelloWorld Project\e[0m "
-# Change to the HelloWorld project
+printf "\e[0;33mBuilding hello_world Project\e[0m "
+# Change to the hello_world project
 cd "$SJBASE/projects/hello_world"
 # Purge repository of all application and framework build files and start
 # building from scratch

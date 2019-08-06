@@ -29,7 +29,6 @@ nav:
       - 'guides/directory_layout/library.md'
       - 'guides/directory_layout/reference.md'
     - 'guides/unit_testing.md'
-    - 'guides/debugging_with_openocd_gdb.md'
     - 'guides/firmware_debugging.md'
   - Contributing:
     - 'contributing/philosophy.md'
