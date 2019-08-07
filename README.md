@@ -68,7 +68,11 @@ WSL, all instructions below for Linux should work for Windows.
 To download and setup the environment, simply copy and paste this into a
 terminal:
 
-    git clone https://github.com/kammce/SJSU-Dev2.git && cd SJSU-Dev2 && ./setup
+```
+git clone https://github.com/kammce/SJSU-Dev2.git
+cd SJSU-Dev2
+./setup
+```
 
 If you find that git is not installed on your machine follow these steps to
 **[install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)**.
@@ -95,24 +99,32 @@ Chrome, using the online serial terminal tool,
 You can also open this up on your browser using the `make telemetry` command in
 a project directory.
 
-### Burning the Bootloader (NOT AVAILABLE YET)
-The Hyperload bootloader is used to rapidly quickly program the device. SJTwo
-and SJOne boards should both have the bootloaders pre-installed on them, but in
-case it is not installed, run the following from the root of the SJSU-Dev2
-directory:
+## Future Goals of SJSU-Dev2
+- [x] Integrate user-defined literals for SI units
+- [ ] Platform Additions
+  - [ ] Support for Raspberry Pi and other SBCs such as the BeagleBone Black
+  - [ ] Support for host side application for testing
+  - [ ] Support of STM32 ARM cortex series of MCUs
+  - [ ] Support of TI ARM Cortex series of MUCs
+  - [ ] Support of RISC-V (HiFive Board)
+  - [ ] Support of AVR based MCUS (probably not)
+- [ ] Multi Threading Portability
+  - [ ] Add C++11 wrapper for FreeRTOS
+    - [ ] This will allow the use of C++11 api calls to call FreeRTOS functions
+        underneath.
+  - [ ] Add FreeRTOS wrapper of POSIX calls
+    - [ ] Allows Linux platforms to work with code that makes calls to FreeRTOS.
+- [ ] Move from **Return-Error-Codes** to **C++ Exceptions**
+  - [ ] Make a version of C++ exceptions that is more optimal for embedded
 
-    cd firmware/Hyperload
-    make burn
-
-`make burn` will build the application using `make bootloader` and if that
-finishes successfully, then it will burn the bootloader to the first 64kB of the
-board, allowing you to use `make flash` later on.
-
-## Contrib
-* [Khalil Estell](http://kammce.io): Creator of the SJSU-Dev2.
+## Contributors
+* [Khalil Estell](http://kammce.io): Creator and maintainer of the SJSU-Dev2.
+* David Huang
+* Matthew Boyd
 * Since this repository borrows heavily form
 [SJSU-Dev repo](https://github.com/kammce/SJSU-Dev), the people in that contrib
 list are also contributors to this repository.
+  * SJSU-Dev was based on SJDev by Preet Kang.
 
 ## Special Credits
 * **Mikko Bayabo**: Windows surface destructive testing
