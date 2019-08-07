@@ -42,6 +42,7 @@
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/lpc17xx/system_controller.hpp"
 #include "L1_Peripheral/lpc17xx/uart.hpp"
+#include "L1_Peripheral/inactive.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
@@ -55,7 +56,7 @@ sjsu::lpc17xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
 sjsu::cortex::DwtCounter arm_dwt_counter;
 // Uart port 0 is used to communicate back to the host computer
-sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0, system_controller);
+const sjsu::Uart & uart0 = sjsu::GetInactive<sjsu::Uart>();
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
 sjsu::cortex::SystemTimer system_timer(system_controller);
@@ -182,11 +183,11 @@ namespace sjsu
 SJ2_WEAK(void InitializePlatform());
 void InitializePlatform()
 {
-  system_controller.SetSystemClockFrequency(config::kSystemClockRateMhz);
-  // Set UART0 baudrate, which is required for printf and scanf to work properly
-  system_controller.SetPeripheralClockDivider(
-      sjsu::lpc17xx::SystemController::Peripherals::kUart0, 1);
-  uart0.Initialize(config::kBaudRate);
+  // system_controller.SetSystemClockFrequency(config::kSystemClockRateMhz);
+  // // Set UART0 baudrate, which is required for printf and scanf to work properly
+  // system_controller.SetPeripheralClockDivider(
+  //     sjsu::lpc17xx::SystemController::Peripherals::kUart0, 1);
+  // uart0.Initialize(config::kBaudRate);
 
   sjsu::newlib::SetStdout(Lpc17xxStdOut);
   sjsu::newlib::SetStdin(Lpc17xxStdIn);
