@@ -9,16 +9,17 @@ extern "C"
   // yourself.
   // NOLINTNEXTLINE(readability-identifier-naming)
   extern void __libc_init_array(void);
-  // Declare The entry point for the application.
-  // This will need to be supplied by the developer.
+  // The entry point for the application.
+  // main() is the entry point for newlib based applications
   extern int main();
+  // External declaration for the pointer to the stack top from the linker
+  // script
+  extern void StackTop(void);
 }
 
 namespace sjsu
 {
-// 12. Define SystemInitialize(), which is done mostly for you, in order to
-// setup the .data, .bss sections, run C++ constructors and setup what ever else
-// is required for
+// Sets up the .data, .bss sections, run C++ constructors.
 inline void SystemInitialize()
 {
   // SysInit 1. Transfer data section values from flash to RAM
@@ -34,4 +35,9 @@ inline void SystemInitialize()
   //            (ALREADY DONE FOR YOU)
   __libc_init_array();
 }
+
+// Declaration of an InitializePlatform function that every platform must have
+// defined and available at link time. Typically this is defined as [[weak]]
+// in the startup.cpp file.
+extern void InitializePlatform();
 }  // namespace sjsu

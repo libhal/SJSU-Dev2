@@ -79,18 +79,10 @@ extern "C" uint32_t ThreadRuntimeCounter()
 {
   return arm_dwt_counter.GetCount();
 }
+
 // The entry point for the C++ library startup
 extern "C"
 {
-  // NOLINTNEXTLINE(readability-identifier-naming)
-  extern void __libc_init_array(void);
-  // The entry point for the application.
-  // main() is the entry point for newlib based applications
-  extern int main();
-
-  // External declaration for the pointer to the stack top from the linker
-  // script
-  extern void StackTop(void);
   // These are defined after the compilation of the FreeRTOS port for Cortex M4F
   // These will link to those definitions.
   extern void xPortPendSVHandler(void);   // NOLINT
@@ -100,7 +92,8 @@ extern "C"
   // When the application defines a handler (with the same name), the
   // application's handler will automatically take precedence over these weak
   // definitions.
-  extern void HardFaultHandler(void);
+  extern void ArmHardFaultHandler(void);
+  extern void ArmResetHandler(void);
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
@@ -120,66 +113,7 @@ extern "C"
   }
 }
 
-SJ2_WEAK(void InitializePlatform());
-
-void InitializePlatform()
-{
-  system_controller.SetSystemClockFrequency(config::kSystemClockRateMhz);
-  // Set UART0 baudrate, which is required for printf and scanf to work properly
-  system_controller.SetPeripheralClockDivider(
-      sjsu::lpc17xx::SystemController::Peripherals::kUart0, 1);
-  uart0.Initialize(config::kBaudRate);
-
-  sjsu::newlib::SetStdout(Lpc17xxStdOut);
-  sjsu::newlib::SetStdin(Lpc17xxStdIn);
-
-  system_timer.SetTickFrequency(config::kRtosFrequency);
-  sjsu::Status timer_start_status = system_timer.StartTimer();
-
-  SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
-                   "System Timer (used by FreeRTOS) has FAILED to start!");
-
-  arm_dwt_counter.Initialize();
-  sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);
-}
-
 SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
-// Reset entry point for your code.
-// Sets up a simple runtime environment and initializes the C/C++ library.
-
-extern "C" void ResetIsr()
-{
-  // The Hyperload bootloader takes up stack space to execute. The Hyperload
-  // bootloader function launches this ISR manually, but it never returns thus
-  // it never cleans up the memory it uses. To get that memory back, we have
-  // to manually move the stack pointers back to the top of stack.
-  const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
-  sjsu::cortex::__set_PSP(kTopOfStack);
-  sjsu::cortex::__set_MSP(kTopOfStack);
-
-  sjsu::SystemInitialize();
-  InitializePlatform();
-// #pragma ignored "-Wpedantic" to suppress main function call warning
-#pragma GCC diagnostic push ignored "-Wpedantic"
-  int32_t result = main();
-// Enforce the warning after this point
-#pragma GCC diagnostic pop
-  // main() shouldn't return, but if it does, we'll just enter an infinite
-  // loop
-  if (result >= 0)
-  {
-    printf("\n" SJ2_BOLD_WHITE SJ2_BACKGROUND_GREEN
-           "Program Returned Exit Code: %" PRId32 "\n" SJ2_COLOR_RESET,
-           result);
-  }
-  else
-  {
-    printf("\n" SJ2_BOLD_WHITE SJ2_BACKGROUND_RED
-           "Program Returned Exit Code: %" PRId32 "\n" SJ2_COLOR_RESET,
-           result);
-  }
-  sjsu::Halt();
-}
 
 // The Interrupt vector table.
 // This relies on the linker script to place at correct location in memory.
@@ -188,9 +122,9 @@ SJ2_SECTION(".isr_vector")
 const sjsu::IsrPointer kInterruptVectorTable[] = {
   // Core Level - CM4
   &StackTop,                           // 0, The initial stack pointer
-  ResetIsr,                            // 1, The reset handler
+  ArmResetHandler,                     // 1, The reset handler
   InterruptController::LookupHandler,  // 2, The NMI handler
-  HardFaultHandler,                    // 3, The hard fault handler
+  ArmHardFaultHandler,                 // 3, The hard fault handler
   InterruptController::LookupHandler,  // 4, The MPU fault handler
   InterruptController::LookupHandler,  // 5, The bus fault handler
   InterruptController::LookupHandler,  // 6, The usage fault handler
@@ -242,3 +176,28 @@ const sjsu::IsrPointer kInterruptVectorTable[] = {
   InterruptController::LookupHandler,  // 50, 0xc8 - CAN Activity interrupt to
                                        // wakeup
 };
+
+namespace sjsu
+{
+SJ2_WEAK(void InitializePlatform());
+void InitializePlatform()
+{
+  system_controller.SetSystemClockFrequency(config::kSystemClockRateMhz);
+  // Set UART0 baudrate, which is required for printf and scanf to work properly
+  system_controller.SetPeripheralClockDivider(
+      sjsu::lpc17xx::SystemController::Peripherals::kUart0, 1);
+  uart0.Initialize(config::kBaudRate);
+
+  sjsu::newlib::SetStdout(Lpc17xxStdOut);
+  sjsu::newlib::SetStdin(Lpc17xxStdIn);
+
+  system_timer.SetTickFrequency(config::kRtosFrequency);
+  sjsu::Status timer_start_status = system_timer.StartTimer();
+
+  SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
+                   "System Timer (used by FreeRTOS) has FAILED to start!");
+
+  arm_dwt_counter.Initialize();
+  sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);
+}
+}  // namespace sjsu
