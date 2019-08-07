@@ -36,7 +36,7 @@ MEMORY
   __user_heap_base = __base_RAM2 ; /* SJSU-Dev2: RAM2 is solely for heap */
 
 /* Program entry point */
-ENTRY(ResetIsr)
+ENTRY(ArmResetHandler)
 
 SECTIONS
 {
