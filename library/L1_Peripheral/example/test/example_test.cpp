@@ -18,7 +18,7 @@ TEST_CASE("Testing L1 example::Example", "[l1-example]")
   Fake(Method(mock_pin_clock, SetPinFunction));
 
   // Create a version of the local_iocon
-  LPC_IOCON_TypeDef local_iocon;
+  sjsu::lpc40xx::LPC_IOCON_TypeDef local_iocon;
 
   // Create a custom Channel_t with the data we plan to inspect.
   Example::Channel_t dependency_injection = { .iocon = &local_iocon,
