@@ -2,7 +2,7 @@ projects/*
 projects/**/build
 
 !projects/hello_world
-!projects/hyperload
+!projects/starter
 
 demos/**/build
 library/static_libraries/*

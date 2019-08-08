@@ -374,7 +374,7 @@ FILE_EXCLUDES = grep -v $(addprefix -e ,$(LINT_FILTER))
 
 # Find all files within the firmware directory to be evaluated
 LINT_FILES  = $(shell find $(PROJECTS_DIR)/hello_world \
-                      $(PROJECTS_DIR)/hyperload \
+                      $(PROJECTS_DIR)/starter \
                       $(LIBRARY_DIR) $(DEMOS_DIR) \
                       -name "*.h"   -o \
                       -name "*.hpp" -o \
