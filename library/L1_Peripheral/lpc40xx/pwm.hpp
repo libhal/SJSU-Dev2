@@ -123,12 +123,9 @@ class Pwm final : public sjsu::Pwm
     };
   };
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
-
   explicit constexpr Pwm(const Channel_t & channel,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
+                             DefaultSystemController())
       : channel_(channel), system_controller_(system_controller)
   {
   }

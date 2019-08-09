@@ -255,12 +255,10 @@ class Uart final : public sjsu::Uart
       .rx_function_id = 0b011,
     };
   };
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
 
   explicit constexpr Uart(const Port_t & port,
                           const sjsu::SystemController & system_controller =
-                              kLpc40xxSystemController)
+                              DefaultSystemController())
       : port_(port), system_controller_(system_controller)
   {
   }

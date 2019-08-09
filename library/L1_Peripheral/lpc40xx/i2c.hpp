@@ -306,15 +306,13 @@ class I2c final : public sjsu::I2c
     i2c.registers->CONCLR = clear_mask;
   }
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
   static constexpr sjsu::cortex::InterruptController kInterruptController =
       sjsu::cortex::InterruptController();
 
   // This defaults to I2C port 2
   explicit constexpr I2c(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController,
+                             DefaultSystemController(),
                          const sjsu::InterruptController &
                              interrupt_controller = kInterruptController)
       : i2c_(bus),
