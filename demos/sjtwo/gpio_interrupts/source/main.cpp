@@ -41,14 +41,14 @@ int main()
       "Setting up pin0_30 (Switch 2) to interrupt on only Rising edges...");
   sjsu::lpc40xx::Gpio pin0_30(0, 30);
   pin0_30.GetPin().SetPull(sjsu::Pin::Resistor::kPullUp);
-  pin0_30.AttachInterrupt(&Port0Pin30ISR, sjsu::Gpio::Edge::kEdgeBoth);
+  pin0_30.AttachInterrupt(&Port0Pin30ISR, sjsu::Gpio::Edge::kEdgeRising);
   LOG_INFO("Press Switch 2 to trigger Interrupt for pin0_30.\n");
 
   LOG_INFO(
       "Setting up pin0_29 (Switch 3) to interrupt on only Falling edges...");
   sjsu::lpc40xx::Gpio pin0_29(0, 29);
   pin0_29.GetPin().SetPull(sjsu::Pin::Resistor::kPullUp);
-  pin0_29.AttachInterrupt(&Port0Pin29ISR, sjsu::Gpio::Edge::kEdgeBoth);
+  pin0_29.AttachInterrupt(&Port0Pin29ISR, sjsu::Gpio::Edge::kEdgeFalling);
   LOG_INFO("Press Switch 3 to trigger Interrupt for pin0_29.");
 
   sjsu::Halt();
