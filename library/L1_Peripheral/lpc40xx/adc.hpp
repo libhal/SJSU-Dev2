@@ -115,9 +115,6 @@ class Adc final : public sjsu::Adc
     };
   };
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
-
   static constexpr uint8_t kActiveBits = 12;
 
   static void BurstMode(bool burst_mode_is_on = true)
@@ -128,7 +125,7 @@ class Adc final : public sjsu::Adc
 
   explicit constexpr Adc(const Channel_t & channel,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
+                              DefaultSystemController())
       : channel_(channel), system_controller_(system_controller)
   {
   }
