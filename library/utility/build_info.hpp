@@ -22,6 +22,7 @@ enum class Platform
 {
   lpc17xx,  // NOLINT
   lpc40xx,  // NOLINT
+  linux,    // NOLINT
 };
 
 constexpr const Target kTarget     = Target::TARGET;
@@ -46,6 +47,7 @@ constexpr const char * Stringify(Platform platform)
   {
     case Platform::lpc17xx: result = "lpc17xx"; break;
     case Platform::lpc40xx: result = "lpc40xx"; break;
+    case Platform::linux: result = "linux"; break;
     default: break;
   }
   return result;
