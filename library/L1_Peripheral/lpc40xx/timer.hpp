@@ -107,8 +107,6 @@ class Timer final : public sjsu::Timer
     channel.timer_register->IR |= 0b1111;
   }
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
   static constexpr sjsu::cortex::InterruptController kInterruptController =
       sjsu::cortex::InterruptController();
 
@@ -116,7 +114,7 @@ class Timer final : public sjsu::Timer
 
   explicit constexpr Timer(const Channel_t & timer,
                            const sjsu::SystemController & system_controller =
-                               kLpc40xxSystemController,
+                               DefaultSystemController(),
                            const sjsu::InterruptController &
                                interrupt_controller = kInterruptController)
       : timer_(timer),

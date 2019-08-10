@@ -136,12 +136,9 @@ class Spi final : public sjsu::Spi
     };
   };
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
-
   explicit constexpr Spi(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
+                             DefaultSystemController())
       : bus_(bus), system_controller_(system_controller)
   {
   }
