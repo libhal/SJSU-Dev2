@@ -25,7 +25,7 @@ namespace
 sjsu::lpc40xx::SystemController system_controller;
 sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
 sjsu::lpc40xx::Uart uart3(sjsu::lpc40xx::Uart::Port::kUart3);
-bool debug_print_button_was_pressed = false;
+bool debug_print_button_was_pressed                    = false;
 constexpr std::chrono::microseconds kSerialReadTimeout = 500ms;
 }  // namespace
 
@@ -215,9 +215,9 @@ void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
   }
   clocks_per_flash_access -= 1;
   // Set flash memory access clock rate to 6 clocks per access
-  using sjsu::lpc40xx::LPC_SC_TypeDef;
-  LPC_SC->FLASHCFG =
-      (LPC_SC->FLASHCFG & ~(0b1111 << 12)) | (clocks_per_flash_access << 12);
+  sjsu::lpc40xx::LPC_SC->FLASHCFG =
+      (sjsu::lpc40xx::LPC_SC->FLASHCFG & ~(0b1111 << 12)) |
+      (clocks_per_flash_access << 12);
 }
 
 int main()
