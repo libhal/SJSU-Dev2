@@ -1,5 +1,4 @@
 #include <cstdint>
-#include <iterator>
 
 #include "utility/log.hpp"
 #include "utility/time.hpp"

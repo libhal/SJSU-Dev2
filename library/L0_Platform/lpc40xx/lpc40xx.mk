@@ -11,7 +11,7 @@ include $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/m4.mk
 
 platform-flash:
 	@echo
-	bash -c "\
+	@bash -c "\
 	source $(TOOLS_DIR)/nxpprog/modules/bin/activate && \
 	python3 $(TOOLS_DIR)/nxpprog/nxpprog.py \
 	--binary=\"$(BINARY)\" --device=\"$(SJDEV)\" \
