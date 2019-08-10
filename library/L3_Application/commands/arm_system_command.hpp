@@ -5,7 +5,7 @@
 
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/ram.hpp"
-#include "L1_Peripheral/lpc40xx/system_controller.hpp"
+#include "L1_Peripheral/system_controller.hpp"
 #include "L3_Application/commandline.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
@@ -22,13 +22,16 @@ class LpcSystemInfoCommand final : public Command
       "Get runtime stats about the  processor like, memory left, and system "
       "speeds";
 
-  constexpr LpcSystemInfoCommand() : Command("info", kDescription) {}
+  explicit constexpr LpcSystemInfoCommand(
+      const sjsu::SystemController & system_controller)
+      : Command("info", kDescription), system_(system_controller)
+  {
+  }
 
   int Program(int, const char * const[]) override
   {
-    sjsu::lpc40xx::SystemController system;
-    uint32_t system_frequency     = system.GetSystemFrequency() / 1_kHz;
-    uint32_t peripheral_frequency = system.GetPeripheralFrequency({}) / 1_kHz;
+    uint32_t system_frequency     = system_.GetSystemFrequency() / 1_kHz;
+    uint32_t peripheral_frequency = system_.GetPeripheralFrequency({}) / 1_kHz;
 
     intptr_t top_of_stack         = reinterpret_cast<intptr_t>(&StackTop);
     intptr_t master_stack_pointer = sjsu::cortex::__get_MSP();
@@ -52,5 +55,6 @@ class LpcSystemInfoCommand final : public Command
     printf("\n");
     return 0;
   }
+  const sjsu::SystemController & system_;
 };
 }  // namespace sjsu
