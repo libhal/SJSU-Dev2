@@ -5,10 +5,11 @@
 #include <iterator>
 
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L3_Application/commandline.hpp"
 #include "L3_Application/commands/common.hpp"
 #include "L3_Application/commands/i2c_command.hpp"
-#include "L3_Application/commands/lpc_system_command.hpp"
+#include "L3_Application/commands/arm_system_command.hpp"
 #include "L3_Application/commands/rtos_command.hpp"
 #include "utility/log.hpp"
 #include "utility/rtos.hpp"
@@ -28,7 +29,8 @@ sjsu::CommandList_t<32> command_list;
 sjsu::lpc40xx::I2c i2c2(sjsu::lpc40xx::I2c::Bus::kI2c2);
 sjsu::I2cCommand i2c_command(i2c2);
 sjsu::RtosCommand rtos_command;
-sjsu::LpcSystemInfoCommand system_command;
+sjsu::lpc40xx::SystemController lpc40xx_system_controller;
+sjsu::LpcSystemInfoCommand system_command(lpc40xx_system_controller);
 sjsu::CommandLine<command_list> ci;
 
 void TerminalTask([[maybe_unused]] void * ptr)
