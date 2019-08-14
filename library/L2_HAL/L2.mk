@@ -16,6 +16,7 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/displays/oled/test/ssd1306_test.cpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/optical/test/apds9960_test.cpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/environment/light/test/temt6000x01_test.cpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/environment/temperature/test/si7060_test.cpp
+TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/environment/temperature/test/tmp102_test.cpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/movement/accelerometer/test/mma8452q_test.cpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/distance/time_of_flight/test/tfmini_test.cpp
 
