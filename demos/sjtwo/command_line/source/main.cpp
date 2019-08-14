@@ -35,11 +35,11 @@ sjsu::CommandLine<command_list> ci;
 
 void TerminalTask([[maybe_unused]] void * ptr)
 {
-  LOG_INFO("Press Enter to Start Command Line!");
+  LOG_INFO("Press Enter to Start Command Line >");
 
   ci.WaitForInput();
 
-  LOG_WARNING("\nUser has quit from terminal!");
+  LOG_WARNING("\nUser has quit from terminal >");
   vTaskDelete(nullptr);
 }
 
