@@ -19,7 +19,7 @@ struct I2cBus  // NOLINT
   inline static const Pin kI2c1SdaPin = Pin::CreatePin<0, 0>();
   inline static const Pin kI2c1SclPin = Pin::CreatePin<0, 1>();
   inline static const Pin kI2c2SdaPin = Pin::CreatePin<0, 10>();
-  inline static const Pin kI2c2SclPin = Pin::CreatePin<0, 21>();
+  inline static const Pin kI2c2SclPin = Pin::CreatePin<0, 11>();
 
   inline static I2c::Transaction_t transaction_i2c0;
   inline static const lpc40xx::I2c::PartialBus_t kI2c0Partial = {
