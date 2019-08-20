@@ -17,6 +17,8 @@ namespace lpc17xx
 class Pin final : public sjsu::Pin
 {
  public:
+  static constexpr uint32_t kNumberOfPins = 32;
+
   struct [[gnu::packed]] PinTable_t
   {
     volatile uint32_t pin[11];
@@ -51,7 +53,7 @@ class Pin final : public sjsu::Pin
   constexpr Pin(uint8_t port, uint8_t pin)
       : sjsu::Pin(port, pin),
         kPinMask{
-          .position = static_cast<uint8_t>(pin_ * 2),
+          .position = static_cast<uint8_t>((pin_ * 2) % kNumberOfPins),
           .width    = 2,
         }
   {
