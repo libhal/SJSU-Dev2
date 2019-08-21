@@ -316,8 +316,8 @@ OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 # Compilation Flags
 # ===========================
 OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
-            -fno-exceptions -fno-omit-frame-pointer \
-            -fasynchronous-unwind-tables
+            -fno-exceptions -fno-omit-frame-pointer
+            # -fasynchronous-unwind-tables
 CPPOPTIMIZE = -fno-rtti -fno-threadsafe-statics
 DEBUG_FLAG  = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
