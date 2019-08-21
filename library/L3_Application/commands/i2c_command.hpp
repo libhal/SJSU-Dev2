@@ -7,7 +7,7 @@
 
 #include "L1_Peripheral/i2c.hpp"
 #include "L3_Application/commandline.hpp"
-#include "third_party/etl/vector.h"
+#include "utility/containers/vector.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
@@ -48,8 +48,12 @@ class I2cCommand final : public Command
                 i2c discover
   )";
 
-  explicit I2cCommand(const I2c & i2c) : Command("i2c", kDescription), i2c_(i2c)
+  explicit I2cCommand(const I2c & i2c)
+      : Command("i2c", kDescription),
+        devices_found_(decltype(devices_found_)::allocator_type{}),
+        i2c_(i2c)
   {
+    devices_found_.reserve(decltype(devices_found_)::allocator_type::size);
   }
 
   void Initialize()
@@ -275,7 +279,7 @@ class I2cCommand final : public Command
   static inline const char * const kI2cOperations[] = {
     "read", "write", "discover", nullptr
   };
-  etl::vector<AddressString_t, command::kAutoCompleteOptions> devices_found_;
+  sjsu::Vector<AddressString_t, command::kAutoCompleteOptions> devices_found_;
   const I2c & i2c_;
 };
 }  // namespace sjsu

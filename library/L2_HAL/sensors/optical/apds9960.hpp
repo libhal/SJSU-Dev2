@@ -175,28 +175,6 @@ class Apds9960
       gfifo_data_[i] = 0;
     }
   }
-  // constexpr Apds9960(int8_t up_sensitivity, int8_t down_sensitivity,
-  //                    int8_t left_sensitivity, int8_t right_sensitivity,
-  //                    int16_t far_sensitivity, int16_t near_sensitivity)
-  //     : up_sensitivity_(up_sensitivity),
-  //       down_sensitivity_(down_sensitivity),
-  //       left_sensitivity_(left_sensitivity),
-  //       right_sensitivity_(right_sensitivity),
-  //       far_sensitivity_(far_sensitivity),
-  //       near_sensitivity_(near_sensitivity),
-  //       far_count_(0),
-  //       near_count_(0),
-  //       index_(0)
-  // {
-  //   for (int i = 0; i < kMaxDataSize; i++)
-  //   {
-  //     points_[i] = Direction::kNone;
-  //   }
-  //   for (int i = 0; i < kMaxFifoSize; i++)
-  //   {
-  //     gfifo_data_[i] = 0;
-  //   }
-  // }
   virtual bool FindDevice()
   {
     bool device_found = false;

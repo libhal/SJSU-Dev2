@@ -314,7 +314,8 @@ class Uart final : public sjsu::Uart
 
   Status Read(uint8_t * data,
               size_t size,
-              std::chrono::microseconds timeout = MaxDelay()) const override
+              std::chrono::microseconds timeout =
+                  std::chrono::microseconds::max()) const override
   {
     uint32_t position = 0;
     // NOTE: Consider changing this to using a Wait() call.
