@@ -43,7 +43,7 @@ int main()
     {
       leds.Toggle(3);
     }
-    sjsu::Delay(1);
+    sjsu::Delay(1ms);
   }
 
   return 0;

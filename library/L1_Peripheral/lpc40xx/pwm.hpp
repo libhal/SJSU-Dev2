@@ -56,7 +56,6 @@ class Pwm final : public sjsu::Pwm
   {
     LPC_PWM_TypeDef * registers;
     sjsu::SystemController::PeripheralID power_on_id;
-    uint8_t pin_function_id : 3;
   };
 
   struct Channel_t
@@ -64,72 +63,75 @@ class Pwm final : public sjsu::Pwm
     const Peripheral_t & peripheral;
     const sjsu::Pin & pin;
     uint8_t channel : 3;
+    uint8_t pin_function_id : 3;
   };
 
   struct Channel  // NOLINT
   {
    public:
     inline static const Peripheral_t kPwm1PeripheralCommon = {
-      .registers       = LPC_PWM1,
-      .power_on_id     = sjsu::lpc40xx::SystemController::Peripherals::kPwm1,
-      .pin_function_id = 0b001,
+      .registers   = LPC_PWM1,
+      .power_on_id = sjsu::lpc40xx::SystemController::Peripherals::kPwm1,
     };
     inline static const sjsu::lpc40xx::Pin kPwmPin0 =
         sjsu::lpc40xx::Pin::CreatePin<2, 0>();
     inline static const Channel_t kPwm0 = {
-      .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPwmPin0,
-      .channel    = 1,
+      .peripheral      = kPwm1PeripheralCommon,
+      .pin             = kPwmPin0,
+      .channel         = 1,
+      .pin_function_id = 0b001,
     };
     inline static const sjsu::lpc40xx::Pin kPwmPin1 =
         sjsu::lpc40xx::Pin::CreatePin<2, 1>();
     inline static const Channel_t kPwm1 = {
-      .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPwmPin1,
-      .channel    = 2,
+      .peripheral      = kPwm1PeripheralCommon,
+      .pin             = kPwmPin1,
+      .channel         = 2,
+      .pin_function_id = 0b001,
     };
     inline static const sjsu::lpc40xx::Pin kPwmPin2 =
         sjsu::lpc40xx::Pin::CreatePin<2, 2>();
     inline static const Channel_t kPwm2 = {
-      .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPwmPin2,
-      .channel    = 3,
+      .peripheral      = kPwm1PeripheralCommon,
+      .pin             = kPwmPin2,
+      .channel         = 3,
+      .pin_function_id = 0b001,
     };
     inline static const sjsu::lpc40xx::Pin kPwmPin3 =
         sjsu::lpc40xx::Pin::CreatePin<2, 3>();
     inline static const Channel_t kPwm3 = {
-      .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPwmPin3,
-      .channel    = 4,
+      .peripheral      = kPwm1PeripheralCommon,
+      .pin             = kPwmPin3,
+      .channel         = 4,
+      .pin_function_id = 0b001,
     };
     inline static const sjsu::lpc40xx::Pin kPwmPin4 =
         sjsu::lpc40xx::Pin::CreatePin<2, 4>();
     inline static const Channel_t kPwm4 = {
-      .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPwmPin4,
-      .channel    = 5,
+      .peripheral      = kPwm1PeripheralCommon,
+      .pin             = kPwmPin4,
+      .channel         = 5,
+      .pin_function_id = 0b001,
     };
     inline static const sjsu::lpc40xx::Pin kPwmPin5 =
         sjsu::lpc40xx::Pin::CreatePin<2, 5>();
     inline static const Channel_t kPwm5 = {
-      .peripheral = kPwm1PeripheralCommon,
-      .pin        = kPwmPin5,
-      .channel    = 6,
+      .peripheral      = kPwm1PeripheralCommon,
+      .pin             = kPwmPin5,
+      .channel         = 6,
+      .pin_function_id = 0b001,
     };
   };
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
-
   explicit constexpr Pwm(const Channel_t & channel,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
+                             DefaultSystemController())
       : channel_(channel), system_controller_(system_controller)
   {
   }
 
   /// @param frequency_hz - Pulse width modulation frequency
-  Status Initialize(uint32_t frequency_hz = kDefaultFrequency) const override
+  Status Initialize(units::frequency::hertz_t frequency_hz) const override
   {
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");
@@ -152,8 +154,11 @@ class Pwm final : public sjsu::Pwm
         channel_.peripheral.registers->CTCR, 0, CountControl::kCountInput);
     // Match register 0 is used to generate the desired frequency. If the time
     // counter TC is equal to MR0
+    const units::frequency::hertz_t kPeripheralFrequency =
+        system_controller_.GetPeripheralFrequency(
+            channel_.peripheral.power_on_id);
     channel_.peripheral.registers->MR0 =
-        system_controller_.GetPeripheralFrequency() / frequency_hz;
+        (kPeripheralFrequency / frequency_hz).to<uint32_t>();
     // Sets match register 0 to reset when TC and Match 0 match each other,
     // meaning that the PWM pulse will cycle continuously.
     channel_.peripheral.registers->MCR = bit::Set(
@@ -165,7 +170,7 @@ class Pwm final : public sjsu::Pwm
         bit::Set(channel_.peripheral.registers->PCR,
                  OutputControl::kEnableOutput.position + channel_.channel);
 
-    channel_.pin.SetPinFunction(channel_.peripheral.pin_function_id);
+    channel_.pin.SetPinFunction(channel_.pin_function_id);
 
     return Status::kSuccess;
   }
@@ -184,26 +189,32 @@ class Pwm final : public sjsu::Pwm
             static_cast<float>(GetMatchRegisters()[0]));
   }
 
-  void SetFrequency(uint32_t frequency_hz) const override
+  void SetFrequency(units::frequency::hertz_t frequency_hz) const override
   {
-    SJ2_ASSERT_FATAL(frequency_hz != 0, "Pwm Frequency cannot be zero Hz.");
+    SJ2_ASSERT_FATAL(frequency_hz != 0_Hz, "Pwm Frequency cannot be zero Hz.");
     // Disables PWM mode; this will reset all counters to 0
     // And allow us to update MR0
     float previous_duty_cycle = GetDutyCycle();
     EnablePwm(false);
+    const units::frequency::hertz_t kPeripheralFrequency =
+        system_controller_.GetPeripheralFrequency(
+            channel_.peripheral.power_on_id);
     channel_.peripheral.registers->MR0 =
-        system_controller_.GetPeripheralFrequency() / frequency_hz;
+        (kPeripheralFrequency / frequency_hz).to<uint32_t>();
     SetDutyCycle(previous_duty_cycle);
     EnablePwm();
   }
 
-  uint32_t GetFrequency() const
+  units::frequency::hertz_t GetFrequency() const
   {
-    uint32_t match_register0 = GetMatchRegisters()[0];
-    uint32_t result          = 0;
+    uint32_t match_register0         = GetMatchRegisters()[0];
+    units::frequency::hertz_t result = 0_Hz;
     if (match_register0 != 0)
     {
-      result = system_controller_.GetPeripheralFrequency() / match_register0;
+      const units::frequency::hertz_t kPeripheralFrequency =
+          system_controller_.GetPeripheralFrequency(
+              channel_.peripheral.power_on_id);
+      result = kPeripheralFrequency / match_register0;
     }
     return result;
   }

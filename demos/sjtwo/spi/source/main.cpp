@@ -28,13 +28,13 @@ int main()
   spi2.Initialize();
 
   // Set SPI1 as SPI master. Note that the function SetSpiDefault()
-  // could be used instead of SetMode() and SetClock().
+  // could be used instead of SetPull() and SetClock().
   LOG_INFO("Set SPI1 as SPI master.");
   spi2.SetDataSize(sjsu::Spi::DataSize::kEight);
 
   // Set up SPI clock polarity and phase
   LOG_INFO("Set SPI2 clock.");
-  spi2.SetClock(1'000'000);
+  spi2.SetClock(1_MHz);
 
   // Set up chip select as GPIO pin
   sjsu::lpc40xx::Gpio chip_select(kPort1, kPin10);

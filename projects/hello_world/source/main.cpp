@@ -1,5 +1,3 @@
-#include <project_config.hpp>
-
 #include <cstdint>
 #include <iterator>
 
@@ -14,7 +12,7 @@ int main()
     for (uint8_t i = 0; i < 16; i++)
     {
       LOG_INFO("Hello World 0x%X", i);
-      sjsu::Delay(500);
+      sjsu::Delay(500ms);
     }
   }
 

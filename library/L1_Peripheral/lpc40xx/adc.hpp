@@ -9,6 +9,7 @@
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -24,7 +25,7 @@ class Adc final : public sjsu::Adc
     kStart     = 24
   };
 
-  static constexpr uint32_t kClockFrequency = 1'000'000;
+  static constexpr units::frequency::hertz_t kClockFrequency = 1_MHz;
 
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
 
@@ -114,8 +115,7 @@ class Adc final : public sjsu::Adc
     };
   };
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
+  static constexpr uint8_t kActiveBits = 12;
 
   static void BurstMode(bool burst_mode_is_on = true)
   {
@@ -125,7 +125,7 @@ class Adc final : public sjsu::Adc
 
   explicit constexpr Adc(const Channel_t & channel,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
+                              DefaultSystemController())
       : channel_(channel), system_controller_(system_controller)
   {
   }
@@ -135,11 +135,14 @@ class Adc final : public sjsu::Adc
         sjsu::lpc40xx::SystemController::Peripherals::kAdc);
 
     channel_.adc_pin.SetPinFunction(channel_.pin_function);
-    channel_.adc_pin.SetMode(sjsu::Pin::Mode::kInactive);
+    channel_.adc_pin.SetPull(sjsu::Pin::Resistor::kNone);
     channel_.adc_pin.SetAsAnalogMode(true);
 
+    const units::frequency::hertz_t kPeripheralFrequency =
+        system_controller_.GetPeripheralFrequency(
+            sjsu::lpc40xx::SystemController::Peripherals::kAdc);
     uint32_t clock_divider =
-        system_controller_.GetPeripheralFrequency() / kClockFrequency;
+        (kPeripheralFrequency / kClockFrequency).to<uint32_t>();
 
     uint32_t control = adc_base->CR;
 
@@ -169,16 +172,20 @@ class Adc final : public sjsu::Adc
       continue;
     }
   }
-  uint16_t Read() const override
+  uint32_t Read() const override
   {
     uint32_t result =
         bit::Extract(adc_base->DR[channel_.channel], GlobalData::kResult);
-    return static_cast<uint16_t>(result);
+    return result;
   }
   bool HasConversionFinished() const override
   {
     return bit::Read(adc_base->DR[channel_.channel],
                      GlobalData::kDone.position);
+  }
+  uint8_t GetActiveBits() const override
+  {
+    return kActiveBits;
   }
 
  private:

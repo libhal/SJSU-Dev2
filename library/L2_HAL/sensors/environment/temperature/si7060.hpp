@@ -3,6 +3,8 @@
 #include "L1_Peripheral/i2c.hpp"
 #include "L2_HAL/sensors/environment/temperature.hpp"
 #include "utility/bit.hpp"
+#include "utility/units.hpp"
+#include "utility/status.hpp"
 
 namespace sjsu
 {
@@ -21,17 +23,31 @@ class Si7060 final : public Temperature
   {
   }
 
-  bool Initialize() override
+  Status Initialize() override
   {
-    i2c_.Initialize();
+    Status status;
+
+    status = i2c_.Initialize();
+    if (status != Status::kSuccess)
+    {
+      return status;
+    }
     uint8_t temperature_sensor_id_register;
     // is the same as the Base ID (0x14).
-    i2c_.WriteThenRead(
+    status = i2c_.WriteThenRead(
         address_, { kIdRegister }, &temperature_sensor_id_register, 1);
-    return (temperature_sensor_id_register == kExpectedSensorId);
+    if (status != Status::kSuccess)
+    {
+      return status;
+    }
+    if (temperature_sensor_id_register != kExpectedSensorId)
+    {
+      status = Status::kDeviceNotFound;
+    }
+    return status;
   }
 
-  float GetCelsius() override
+  Status GetTemperature(units::temperature::celsius_t * temperature) override
   {
     // Note that: 1 << 14 = 2^14 = 16384
     constexpr int32_t kSubtractTemperatureData = 1 << 14;
@@ -40,9 +56,9 @@ class Si7060 final : public Temperature
     uint8_t least_significant_register;
     // The register will enable the device to collect data once
     // and automatically sets the stop bit to 0 (2nd bit).
-    i2c_.Write(address_, { kOneBurstRegister, 0x04 }, 2);
+    i2c_.Write(address_, { kOneBurstRegister, 0x04 });
     // Auto increments I2c register address pointer.
-    i2c_.Write(address_, { kAutomaticBitRegister, 0x01 }, 2);
+    i2c_.Write(address_, { kAutomaticBitRegister, 0x01 });
     i2c_.WriteThenRead(
         address_, { kMostSignificantRegister }, &most_significant_register, 1);
     i2c_.Read(address_, &least_significant_register, 1);
@@ -57,17 +73,12 @@ class Si7060 final : public Temperature
     // The required computation after bit shifting.
     // Formula can be found below, see page 4:
     // datasheets/Temperature-Sensor/si7060-datasheets.pdf
-    float temperature =
+    float acquired_temperature =
         static_cast<float>(temperature_data - kSubtractTemperatureData);
-    temperature = (temperature / 160.0f) + 55.0f;
+    *temperature =
+        units::temperature::celsius_t((acquired_temperature / 160.0f) + 55.0f);
 
-    return temperature;
-  }
-
-  float GetFahrenheit() override
-  {
-    // General formula used to convert Celsius to Fahrenheit
-    return (((GetCelsius() * 9.0f) / 5.0f) - 32.0f);
+    return Status::kSuccess;
   }
 
  private:

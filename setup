@@ -1,29 +1,15 @@
 #!/bin/bash
 
-# Make sure only non-root users can run our script
-if [[ $EUID -eq 0 ]]
-then
-	 echo "SJSU-DEV installer script must NOT be run as root! " 1>&2
-	 exit 1
-fi
+####################
+# Global Variables #
+####################
 
-echo " ──────────────────────────────────────────────────┐"
-echo "  List of global software installed:                "
-echo "   1) Python                                        "
-echo "   2) Python's PIP                                  "
-echo "   3) Curl                                          "
-echo "   4) Git                                           "
-echo "   5) Gcovr                                         "
-echo "   6) pv                                            "
-echo "   7) Homebrew + libmagic (OSX Only)                "
-echo "   8) XCode CLI tools (OSX Only)                    "
-echo "└────────────────────────────────────────────────── "
-echo "            Acquiring sudo privileges               "
-echo "└────────────────────────────────────────────────── "
-sudo echo "" || exit 1
 # Get base path
 BASE=$(dirname "$0")
-BASE=$(cd $BASE ; pwd -P)
+BASE=$(
+  cd $BASE
+  pwd -P
+)
 # Stash the tool directory
 TOOLDIR=$BASE/tools
 # Get System Architecture
@@ -31,221 +17,313 @@ ARCH=$(uname -m)
 # Get System Operating System
 OS=$(uname -s)
 # Define name of the arm version we are downloading
-ARM_GCC_URL="https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2017q4/"
-ARM_GCC_COMMON="gcc-arm-none-eabi-7-2017-q4-major"
-ARM_GCC_ARCHIVE_FILE_LINUX="$ARM_GCC_COMMON-linux.tar.bz"
-ARM_GCC_ARCHIVE_FILE_MAC="$ARM_GCC_COMMON-mac.tar.bz"
-ARM_GCC_ARCHIVE_LINUX_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_LINUX"
-ARM_GCC_ARCHIVE_MAC_URL="$ARM_GCC_URL$ARM_GCC_ARCHIVE_FILE_MAC"
-GCC_PKG=""
+TOOLS_BUNDLE_BASE_URL="https://github.com/kammce/SJSU-Dev2/releases/download/v2.0/tools-bundle"
+TOOLS_BUNDLE_URL_LINUX="$TOOLS_BUNDLE_BASE_URL-linux.tar.bz2"
+TOOLS_BUNDLE_URL_OSX="$TOOLS_BUNDLE_BASE_URL-osx.tar.bz2"
+# Set later
+TOOLS_BUNDLE_URL=
+TOOLS_FILE_COUNT=9615
 
-CLANG_VERSION="7.0.0"
-CLANG_BASE_URL="http://releases.llvm.org/$CLANG_VERSION/"
-CLANG_14="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04"
-CLANG_16="clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-16.04"
-CLANG_MAC="clang+llvm-$CLANG_VERSION-x86_64-apple-darwin"
-CLANG_FILE_EXTENSION=".tar.xz"
-CLANG_14_FILE="$CLANG_14$CLANG_FILE_EXTENSION"
-CLANG_14_URL="$CLANG_BASE_URL$CLANG_14_FILE"
-CLANG_16_FILE="$CLANG_16$CLANG_FILE_EXTENSION"
-CLANG_16_URL="$CLANG_BASE_URL$CLANG_16_FILE"
-CLANG_MAC_FILE="$CLANG_MAC$CLANG_FILE_EXTENSION"
-CLANG_MAC_URL="$CLANG_BASE_URL$CLANG_MAC_FILE"
-CLANG_PKG=""
-CLANG_PATH=""
+PREREQUISITES=1
+TOOL_BUNDLE=1
+PYTHON_TOOLS=1
+NXPPROG=1
+LOCATION_FILE=1
+LINK_PROJECTS=1
 
-OPENOCD_URL="https://github.com/gnu-mcu-eclipse/openocd/releases/download"
-OPENOCD_VERSION="0.10.0-10-20181020"
-OPENOCD_BASE="$OPENOCD_URL/v$OPENOCD_VERSION/gnu-mcu-eclipse-openocd-$OPENOCD_VERSION"
-OPENOCD_MAC_URL="$OPENOCD_BASE-1448-osx.tgz"
-OPENOCD_MAC_PATH="gnu-mcu-eclipse-openocd-$OPENOCD_VERSION-1448-osx.tgz"
-OPENOCD_LINUX64_URL="$OPENOCD_BASE-0522-centos64.tgz"
-OPENOCD_LINUX64_PATH="gnu-mcu-eclipse-openocd-$OPENOCD_VERSION-0522-centos64.tgz"
-OPENOCD_PKG=""
+# Make sure only non-root users can run our script
+function quit_if_script_was_run_as_root() {
+  if [[ $EUID -eq 0 ]]; then
+    echo "SJSU-DEV installer script must NOT be run as root! " 1>&2
+    exit 1
+  fi
+}
 
-echo " ──────────────────────────────────────────────────┐"
-echo ""
-echo "  Starting SJSU-DEV-Linux Environment Setup Script  "
-echo ""
-echo "└────────────────────────────────────────────────── "
-sleep 1
-echo " ──────────────────────────────────────────────────┐"
-echo "              Detecting your platform               "
-echo "└────────────────────────────────────────────────── "
-if [[ "$ARCH" != 'x86_64' || "$ARCH" == "amd64" ]]
-then
-		echo 'Only 64-bit architecture systems are supported!'
-		exit 1
-fi
-echo " ──────────────────────────────────────────────────┐"
-echo "               System Dependent Setup               "
-echo "└────────────────────────────────────────────────── "
-if [[ "$1" != "fast" ]]; then
-cd "$TOOLDIR"
-case "$OS" in
-	Linux) # Linux & Windows WSL Case
-		echo "Operating System: Linux"
-		SJSUONEDEV=/dev/ttyUSB0
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                    Updating Apt                     "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt update
-		echo " ───────────────────────────────────────────────────┐"
-		echo "   Installing git, make python, pip, Curl, tar, pv   "
-		echo "└─────────────────────────────────────────────────── "
-		sudo apt -y install git make python python-pip curl tar pv
+function request_sudo_privileges() {
+  echo " ──────────────────────────────────────────────────┐"
+  echo "            Acquiring sudo privileges               "
+  echo "└────────────────────────────────────────────────── "
+  sudo echo "" || exit 1
+}
 
-		VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID=")
-		echo "UBUNTU $VERSION_ID"
-		if [ "$VERSION_ID" = "VERSION_ID=\"14.04\"" ]
-		then
-			echo " ───────────────────────────────────────────────────┐"
-			echo "    Downloading Clang $CLANG_VERSION tools (Ubuntu 14.04)"
-			echo "└─────────────────────────────────────────────────── "
-			curl -C - -LO "$CLANG_14_URL"
-			CLANG_PKG="$CLANG_14_FILE"
-			CLANG_PATH="$CLANG_14"
-		else
-			echo " ───────────────────────────────────────────────────┐"
-			echo "     Downloading Clang $CLANG_VERSION tools (Ubuntu 16.04)+"
-			echo "└─────────────────────────────────────────────────── "
-			curl -C - -LO "$CLANG_16_URL"
-			CLANG_PKG="$CLANG_16_FILE"
-			CLANG_PATH="$CLANG_16"
-		fi
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                Downloading OpenOCD                  "
-		echo "└─────────────────────────────────────────────────── "
-		curl -C - -LO "$OPENOCD_LINUX64_URL"
-		OPENOCD_PKG="$OPENOCD_LINUX64_PATH"
-		echo " ──────────────────────────────────────────────────┐"
-		echo "      Adding current user to '$GROUP' group"
-		echo "└────────────────────────────────────────────────── "
-		THE_GROUP=$(getent group | grep 'dial' | cut -d: -f1)
-		sudo adduser $USER $THE_GROUP
-		echo " ──────────────────────────────────────────────────┐"
-		echo "           Downloading gcc-arm-embedded             "
-		echo "└────────────────────────────────────────────────── "
-		curl -C - -LO $ARM_GCC_ARCHIVE_LINUX_URL
-		GCC_PKG=$ARM_GCC_ARCHIVE_FILE_LINUX
-		;;
+function quit_if_not_64_bit() {
+  echo " ──────────────────────────────────────────────────┐"
+  echo "              Detecting your platform               "
+  echo "└────────────────────────────────────────────────── "
+  if [[ "$ARCH" != 'x86_64' || "$ARCH" == "amd64" ]]; then
+    echo 'Only 64-bit architecture systems are supported!'
+    exit 1
+  fi
+}
 
-	Darwin) # OS X Case
-		echo "Operating System: Mac OSX Darvin"
-		SJSUONEDEV=/dev/tty.usbserial-A503JOLS
-		echo " ───────────────────────────────────────────────────┐"
-		echo "    Install XCode Command Line Tools (GCC, make)     "
-		echo "└─────────────────────────────────────────────────── "
-		# Install Command Line tools (make etc...)
-		xcode-select --install &> /dev/null
-		# Accept User Agreement
-		sudo xcodebuild -license accept
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                 Install Homebrew                    "
-		echo "└─────────────────────────────────────────────────── "
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                   Install xz                        "
-		echo "└─────────────────────────────────────────────────── "
-    brew install xz
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                   Install pv                        "
-		echo "└─────────────────────────────────────────────────── "
-    brew install pv
-		echo " ───────────────────────────────────────────────────┐"
-		echo "          Prompt Git installer by invoking it        "
-		echo "└─────────────────────────────────────────────────── "
-		git --version
-		echo " ───────────────────────────────────────────────────┐"
-		echo "     Downloading Clang $CLANG_VERSION tools          "
-		echo "└─────────────────────────────────────────────────── "
-		curl -C - -LO "$CLANG_MAC_URL"
-		CLANG_PKG="$CLANG_MAC_FILE"
-		CLANG_PATH="$CLANG_MAC"
-		echo " ───────────────────────────────────────────────────┐"
-		echo "                Downloading OpenOCD                  "
-		echo "└─────────────────────────────────────────────────── "
-		curl -C - -LO "$OPENOCD_MAC_URL"
-		OPENOCD_PKG="$OPENOCD_MAC_PATH"
-		echo " ───────────────────────────────────────────────────┐"
-		echo "        Installing PIP via bootstrap.pypa.io         "
-		echo "└─────────────────────────────────────────────────── "
-		curl https://bootstrap.pypa.io/get-pip.py | python2.7
-		echo " ──────────────────────────────────────────────────┐"
-		echo "            Downloading gcc-arm-embedded            "
-		echo "└────────────────────────────────────────────────── "
-		curl -C - -LO $ARM_GCC_ARCHIVE_MAC_URL
-		GCC_PKG=$ARM_GCC_ARCHIVE_FILE_MAC
-		;;
+function install_linux_prerequisites() {
+  echo " ──────────────────────────────────────────────────┐"
+  echo ""
+  echo "            Installing Linux Prerequisites          "
+  echo ""
+  echo "└────────────────────────────────────────────────── "
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                   Updating Apt                      "
+  echo "└─────────────────────────────────────────────────── "
+  sudo apt update
+  local apt_update=$?
+  echo " ───────────────────────────────────────────────────┐"
+  echo "    Installing git, make python3, pip3, curl, tar    "
+  echo "└─────────────────────────────────────────────────── "
+  sudo apt -y install git make python3 python3-pip curl tar
+  local apt_install=$?
+  echo " ──────────────────────────────────────────────────┐"
+  echo "       Adding current user to 'dialout' group        "
+  echo "└────────────────────────────────────────────────── "
+  sudo adduser $USER dialout
+  local add_user=$?
+  sudo udevadm control --reload-rules && sudo udevadm trigger
+  local udevadm_control=$?
 
-	*)	# Default if Operating System other than Mac or Linux
-		echo -n "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems "
-		echo "are supported! Exiting..."
-		exit 1
-		;;
-esac
+  return $(($apt_update + $apt_install + $add_user + $udevadm_control))
+}
 
-echo " ───────────────────────────────────────────────────┐"
-echo "                  Upgrading PIP                      "
-echo "└─────────────────────────────────────────────────── "
-sudo -H pip install --upgrade pip
-echo " ───────────────────────────────────────────────────┐"
-echo "                 Installing Gcovr                    "
-echo "└─────────────────────────────────────────────────── "
-sudo -H pip install gcovr
-echo " ───────────────────────────────────────────────────┐"
-echo "          Installing/Upgrading Virtualenv            "
-echo "└─────────────────────────────────────────────────── "
-sudo -H pip install --upgrade virtualenv
-echo " ──────────────────────────────────────────────────┐"
-echo "           Extracting gcc-arm-embedded             "
-echo "└────────────────────────────────────────────────── "
-pv "$GCC_PKG" | tar --extract --bzip --file="-"
-echo
-echo " ──────────────────────────────────────────────────┐"
-echo "             Extracting Clang $CLANG_VERSION        "
-echo "└────────────────────────────────────────────────── "
-pv "$CLANG_PKG" | tar --extract --xz --file="-"
-echo
-echo " ──────────────────────────────────────────────────┐"
-echo "               Extracting OpenOCD                   "
-echo "└────────────────────────────────────────────────── "
-pv "$OPENOCD_PKG" | tar --extract --gzip --file="-"
-echo
-rm -r "openocd"
-mkdir "openocd"
-# Move contents of openocd in gnu-mcu-eclipse (without version) to openocd
-# folder
-mv -f gnu-mcu-eclipse/openocd/*/* openocd
-# Return back to base of repository
-fi
+function install_mac_osx_prerequisites() {
+  echo " ──────────────────────────────────────────────────┐"
+  echo ""
+  echo "           Installing Mac OSX Prerequisites         "
+  echo ""
+  echo "└────────────────────────────────────────────────── "
+  echo " ───────────────────────────────────────────────────┐"
+  echo "    Install XCode Command Line Tools (GCC, make)     "
+  echo "└─────────────────────────────────────────────────── "
+  # Install Command Line tools (make etc...)
+  xcode-select --install &>/dev/null
+  # Accept User Agreement
+  sudo xcodebuild -license accept
+  local xcodebuild_status=$?
+  echo " ───────────────────────────────────────────────────┐"
+  echo "          Prompt Git installer by invoking it        "
+  echo "└─────────────────────────────────────────────────── "
+  git --version
+  local git_status=$?
+  echo " ───────────────────────────────────────────────────┐"
+  echo "        Installing PIP via bootstrap.pypa.io         "
+  echo "└─────────────────────────────────────────────────── "
+  curl https://bootstrap.pypa.io/get-pip.py | python3
+  local pip_install_status=$?
 
-cd "$BASE"
+  return $(($xcodebuild_status + $git_status + $pip_install_status))
+}
 
-echo " ───────────────────────────────────────────────────┐"
-echo "                Setting Up Hyperload                 "
-echo "└─────────────────────────────────────────────────── "
-rm -rf "$TOOLDIR/Hyperload/"
-git clone --depth=1 https://github.com/kammce/Hyperload.git \
-                    "$TOOLDIR/Hyperload/"
-cd "$TOOLDIR/Hyperload/" && ./setup
+function install_python_tools()
+{
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                  Upgrading PIP                      "
+  echo "└─────────────────────────────────────────────────── "
+  sudo -H python3 -m pip install --upgrade pip
+  local pip_status=$?
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                 Installing Gcovr                    "
+  echo "└─────────────────────────────────────────────────── "
+  sudo -H python3 -m pip install gcovr
+  local gcovr_status=$?
+  echo " ───────────────────────────────────────────────────┐"
+  echo "           Installing/Upgrading Virtualenv           "
+  echo "└─────────────────────────────────────────────────── "
+  sudo -H python3 -m pip install --upgrade virtualenv
+  local virtualenv_status=$?
 
-cd "$BASE"
-echo " ───────────────────────────────────────────────────┐"
-echo "        Generating Environment Variables File        "
-echo "└─────────────────────────────────────────────────── "
-cat > ~/.sjsu_dev2.mk << EOL
+  return $(($pip_status + $gcovr_status + $virtualenv_status))
+}
+
+function download_and_install_tool_bundle()
+{
+  cd "$TOOLDIR/"
+  echo " ───────────────────────────────────────────────────┐"
+  echo "             Downloading Tools Bundle                "
+  echo "└─────────────────────────────────────────────────── "
+  curl -C - -LO "$TOOLS_BUNDLE_URL"
+  echo " ──────────────────────────────────────────────────┐"
+  echo "             Extracting tools bundle                "
+  echo "└────────────────────────────────────────────────── "
+  # Delete old openocd folder
+  rm -r "openocd" &>/dev/null
+  rm -r "gcc-arm*" &>/dev/null
+  rm -r "clang+llvm*" &>/dev/null
+  tar --verbose --extract --bzip --file="$(basename $TOOLS_BUNDLE_URL)" 2>&1 |
+  while read line; do
+      x=$((x+1))
+      echo -en "Extracting Progress: $(($x*100/$TOOLS_FILE_COUNT))%\r"
+  done
+	echo "Extracting Progress: 100%"
+  local extract=$?
+  # Verify that each directory exists
+  ls clang+llvm-*/ &> /dev/null
+  local clang_exists=$?
+  ls gcc-arm-none-eabi-*/ &> /dev/null
+  local gcc_exists=$?
+  ls openocd/ &> /dev/null
+  local openocd_exists=$?
+
+  return $(($extract + $clang_exists + $gcc_exists + $openocd_exists))
+}
+
+function install_nxpprog()
+{
+  cd "$TOOLDIR"
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                Setting Up nxpprog                   "
+  echo "└─────────────────────────────────────────────────── "
+  rm -rf "nxpprog/"
+  git clone --depth=1 https://github.com/kammce/nxpprog.git "nxpprog/"
+  # Save the result of git clone
+  local git_clone=$?
+  cd "nxpprog/"
+  ./setup
+  local nxp_setup_status=$?
+
+  return $(($git_clone_status + $nxp_setup_status))
+}
+
+function generate_location_file()
+{
+  echo " ───────────────────────────────────────────────────┐"
+  echo "         Generating SJSU-Dev2 Location File          "
+  echo "└─────────────────────────────────────────────────── "
+  local SETUP_VERSION=$(cat $BASE/setup_version.txt)
+  cat >~/.sjsu_dev2.mk <<EOL
 # Location of SJSU-Dev2 folder
-SJSU_DEV2_BASE    = $BASE
+SJSU_DEV2_BASE         = $BASE
+PREVIOUS_SETUP_VERSION = $SETUP_VERSION
+
+ifeq (,\$(wildcard \$(SJSU_DEV2_BASE)))
+\$(info +-------------- SJSU-Dev2 Folder Not Found Error ---------------+)
+\$(info |                                                               |)
+\$(info | To update the location of SJSU-Dev2's folder run ./setup      |)
+\$(info |                                                               |)
+\$(info +---------------------------------------------------------------+)
+\$(error )
+endif
+
 EOL
-echo " ───────────────────────────────────────────────────┐"
-echo "      Linking Files to Firmware Project Folder       "
-echo "└─────────────────────────────────────────────────── "
-./tools/link_projects.sh
-echo " ───────────────────────────────────────────────────┐"
-echo "                   SETUP COMPLETE!                   "
-echo "                                                     "
-echo " IF THIS IS YOUR FIRST TIME RUNNING THE SETUP SCRIPT "
-echo "             PLEASE RESTART YOUR SYSTEM              "
-echo "         TO LOAD CODE INTO YOUR SJONE BOARD          "
-echo "└─────────────────────────────────────────────────── "
+  return $?
+}
+
+function link_projects()
+{
+  cd "$BASE"
+  echo " ───────────────────────────────────────────────────┐"
+  echo "      Linking Files to Firmware Project Folder       "
+  echo "└─────────────────────────────────────────────────── "
+  ./tools/link_projects.sh
+  return $?
+}
+
+function print_status
+{
+  if [[ $1 -ne 0 ]]
+  then
+    printf "\e[31m✘\e[0;31m"
+  else
+    printf "\e[32m✔\e[0;31m"
+  fi
+}
+
+function final_install_check
+{
+  local prerequisites="$(print_status $PREREQUISITES)"
+  local tool_bundle="$(print_status $TOOL_BUNDLE)"
+  local python_tools="$(print_status $PYTHON_TOOLS)"
+  local nxpprog="$(print_status $NXPPROG)"
+  local location_file="$(print_status $LOCATION_FILE)"
+  local project_link="$(print_status $LINK_PROJECTS)"
+
+  if [[ $1 -ne 0 ]]
+    then
+    printf "\e[0;31m =========================== \e[0m\n"
+    printf "\e[1;31m|   Something went wrong!   |\e[0m\n"
+    printf "\e[1;31m|                           |\e[0m\n"
+    printf "\e[1;31m|      (╯°□ °)╯︵ ┻━┻       |\e[0m\n"
+    printf "\e[0;31m|                           |\e[0m\n"
+    printf "\e[0;31m| Prerequisites Install . %b |\e[0m\n" $prerequisites
+    printf "\e[0;31m| Tools Install ......... %b |\e[0m\n" $tool_bundle
+    printf "\e[0;31m| Python Tools .......... %b |\e[0m\n" $python_tools
+    printf "\e[0;31m| Setup nxpprog ......... %b |\e[0m\n" $nxpprog
+    printf "\e[0;31m| Setup Location File ... %b |\e[0m\n" $location_file
+    printf "\e[0;31m| Project Linking ....... %b |\e[0m\n" $project_link
+    printf "\e[0;31m|                           |\e[0m\n"
+    printf "\e[0;31m =========================== \e[0m\n"
+    exit 1
+  else
+    printf "\e[0;32m =========================== \e[0m\n"
+    printf "\e[0;32m|                           |\e[0m\n"
+    printf "\e[0;32m| Prerequisites Install . %b |\e[0m\n" $prerequisites
+    printf "\e[0;32m| Tools Install ......... %b |\e[0m\n" $tool_bundle
+    printf "\e[0;32m| Python Tools .......... %b |\e[0m\n" $python_tools
+    printf "\e[0;32m| Setup nxpprog ......... %b |\e[0m\n" $nxpprog
+    printf "\e[0;32m| Setup Location File ... %b |\e[0m\n" $location_file
+    printf "\e[0;32m| Project Linking ....... %b |\e[0m\n" $project_link
+    printf "\e[0;32m|                           |\e[0m\n"
+    printf "\e[0;32m|          (•_•)            |\e[0m\r"
+    sleep .5
+    printf "\e[0;32m|          ( •_•)>⌐▪-▪      |\e[0m\r"
+    sleep .5
+    printf "\e[0;32m|          (⌐▪_▪)           |\e[0m\n"
+    sleep .5
+    printf "\e[0;32m|                           |\e[0m\n"
+    printf "\e[0;32m|      SETUP COMPLETE!      |\e[0m\n"
+    printf "\e[0;32m|                           |\e[0m\n"
+    printf "\e[0;32m =========================== \e[0m\n"
+    exit 0
+  fi
+}
+
+###############
+# Setup Start #
+###############
+
+quit_if_script_was_run_as_root
+quit_if_not_64_bit
+
+echo " ──────────────────────────────────────────────────┐"
+echo "  List of software installed globally:              "
+echo "   1) Python3                                       "
+echo "   2) pip (Python3 package manager)                 "
+echo "   3) Curl                                          "
+echo "   4) Git                                           "
+echo "   5) Gcovr                                         "
+echo "   6) XCode CLI tools (OSX Only)                    "
+echo "└────────────────────────────────────────────────── "
+
+request_sudo_privileges
+
+echo " ──────────────────────────────────────────────────┐"
+echo ""
+echo "    Starting SJSU-Dev2 Environment Setup Script     "
+echo ""
+echo "└────────────────────────────────────────────────── "
+
+if [[ "$OS" == "Linux" ]] # Linux or Windows WSL
+then
+  echo "Operating System: Linux"
+  TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_LINUX
+  install_linux_prerequisites   ; PREREQUISITES=$?
+elif [[ "$OS" == "Darwin" ]] # Mac OSX
+then
+  echo "Operating System: Mac OSX Darvin"
+  TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_OSX
+  install_mac_osx_prerequisites ; PREREQUISITES=$?
+else
+  # Default if Operating System other than Mac or Linux
+  echo -n "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems "
+  echo "are supported! Exiting..."
+  exit 1
+fi
+
+download_and_install_tool_bundle  ; TOOL_BUNDLE=$?
+install_python_tools              ; PYTHON_TOOLS=$?
+install_nxpprog                   ; NXPPROG=$?
+generate_location_file            ; LOCATION_FILE=$?
+link_projects                     ; LINK_PROJECTS=$?
+
+echo ""
+
+final_install_check \
+  $(($PREREQUISITES + $TOOL_BUNDLE + $PYTHON_TOOLS + \
+     $NXPPROG + $LOCATION_FILE + $LINK_PROJECTS))

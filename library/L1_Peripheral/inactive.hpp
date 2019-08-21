@@ -16,6 +16,7 @@
 #include "L1_Peripheral/system_timer.hpp"
 #include "L1_Peripheral/timer.hpp"
 #include "L1_Peripheral/uart.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -42,7 +43,7 @@ const sjsu::Pin & GetInactive<sjsu::Pin>()
    public:
     InactivePin() : sjsu::Pin(0, 0) {}
     void SetPinFunction(uint8_t) const override {}
-    void SetMode(Mode) const override {}
+    void SetPull(Resistor) const override {}
     void SetAsOpenDrain(bool) const override {}
     void SetAsAnalogMode(bool) const override {}
   };
@@ -62,13 +63,17 @@ const sjsu::Adc & GetInactive<sjsu::Adc>()
       return sjsu::Status::kNotImplemented;
     }
     void Conversion() const override {}
-    uint16_t Read() const override
+    uint32_t Read() const override
     {
       return 0;
     }
     bool HasConversionFinished() const override
     {
       return true;
+    }
+    uint8_t GetActiveBits() const override
+    {
+      return 12;
     }
   };
 
@@ -88,6 +93,10 @@ const sjsu::Dac & GetInactive<sjsu::Dac>()
     }
     void Write(uint32_t) const override {}
     void SetVoltage(float) const override {}
+    uint8_t GetActiveBits() const override
+    {
+      return 12;
+    }
   };
 
   static InactiveDac inactive;
@@ -103,10 +112,6 @@ const sjsu::Gpio & GetInactive<sjsu::Gpio>()
     void SetDirection(Direction) const override {}
     void Set(State) const override {}
     void Toggle() const override {}
-    State ReadState() const override
-    {
-      return State::kLow;
-    }
     bool Read() const override
     {
       return false;
@@ -149,7 +154,7 @@ const sjsu::Pwm & GetInactive<sjsu::Pwm>()
   class InactivePwm : public sjsu::Pwm
   {
    public:
-    Status Initialize(uint32_t) const override
+    Status Initialize(units::frequency::hertz_t) const override
     {
       return Status::kNotImplemented;
     }
@@ -158,7 +163,7 @@ const sjsu::Pwm & GetInactive<sjsu::Pwm>()
     {
       return 0.0;
     }
-    void SetFrequency(uint32_t) const override {}
+    void SetFrequency(units::frequency::hertz_t) const override {}
   };
 
   static InactivePwm inactive;
@@ -180,7 +185,7 @@ const sjsu::Spi & GetInactive<sjsu::Spi>()
       return 0xFF;
     }
     void SetDataSize(DataSize) const override {}
-    void SetClock(uint32_t, bool, bool) const override {}
+    void SetClock(units::frequency::hertz_t, bool, bool) const override {}
   };
 
   static InactiveSpi inactive;
@@ -193,30 +198,26 @@ const sjsu::SystemController & GetInactive<sjsu::SystemController>()
   class InactiveSystemController : public sjsu::SystemController
   {
    public:
-    uint32_t SetClockFrequency(uint8_t) const override
+    void SetSystemClockFrequency(units::frequency::megahertz_t) const override
     {
-      return 0;
     }
-    uint32_t GetPeripheralClockDivider() const override
+    uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
     {
-      return 0;
+      return 1;
     }
-    uint32_t GetPeripheralFrequency() const override
+    units::frequency::hertz_t GetSystemFrequency() const override
     {
-      return 0;
+      return config::kSystemClockRateMhz;
     }
     bool IsPeripheralPoweredUp(const PeripheralID &) const override
     {
       return false;
     }
-    void SetPeripheralClockDivider(uint8_t) const override {}
+    void SetPeripheralClockDivider(const PeripheralID &, uint8_t) const override
+    {
+    }
     void PowerUpPeripheral(const PeripheralID &) const override {}
     void PowerDownPeripheral(const PeripheralID &) const override {}
-    // NOTE: We only this method for SystemTimer to work.
-    uint32_t GetSystemFrequency() const override
-    {
-      return config::kSystemClockRate;
-    }
   };
 
   static InactiveSystemController inactive;
@@ -234,7 +235,7 @@ const sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
     {
       return Status::kNotImplemented;
     }
-    uint32_t SetTickFrequency(uint32_t) const override
+    int32_t SetTickFrequency(units::frequency::hertz_t) const override
     {
       return 0;
     }
@@ -250,14 +251,20 @@ const sjsu::Timer & GetInactive<sjsu::Timer>()
   class InactiveTimer : public sjsu::Timer
   {
    public:
-    Status Initialize(uint32_t, IsrPointer, int32_t) const override
+    Status Initialize(units::frequency::hertz_t,
+                      IsrPointer,
+                      int32_t) const override
     {
       return Status::kNotImplemented;
     }
-    void SetTimer(uint32_t, TimerIsrCondition, uint8_t) const override {}
-    uint32_t GetTimer() const override
+    void SetMatchBehavior(uint32_t, MatchAction, uint8_t) const override {}
+    uint32_t GetCount() const override
     {
       return 0;
+    }
+    uint8_t GetAvailableMatchRegisters() const override
+    {
+      return 3;
     }
   };
 
@@ -280,7 +287,7 @@ const sjsu::Uart & GetInactive<sjsu::Uart>()
       return true;
     }
     void Write(const uint8_t *, size_t) const override {}
-    Status Read(uint8_t *, size_t, uint32_t) const override
+    Status Read(uint8_t *, size_t, std::chrono::microseconds) const override
     {
       return Status::kNotImplemented;
     }

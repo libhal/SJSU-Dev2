@@ -2,16 +2,15 @@
 // up the SystemTimer.
 #pragma once
 
-#include "L0_Platform/interrupt.hpp"
-// NOTE: Including lpc40xx's definitions includes SysTick address and
-// definitions as well. These definitions are the same across m3 and m4, so its
-// fine to include this here.
-#include "L0_Platform/lpc40xx/LPC40xx.h"
+// NOTE: Support for cortex M4 also supports M3 and possibly M0 and M0+ as well.
+#include "L0_Platform/arm_cortex/m4/core_cm4.h"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/system_controller.hpp"
 #include "L1_Peripheral/system_timer.hpp"
 #include "utility/status.hpp"
-
-using ::sjsu::lpc40xx::SysTick_Type;
+#include "utility/enum.hpp"
+#include "utility/time.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -37,10 +36,15 @@ class SystemTimer final : public sjsu::SystemTimer
   /// Used to count the number of times system_timer has executed. If the
   /// frequency of the SystemTimer is set to 1kHz, this could be used as a
   /// milliseconds counter.
-  inline static uint64_t counter = 0;
+  inline static std::chrono::microseconds counter = 0us;
+  inline static const sjsu::cortex::InterruptController
+      kCortexInterruptController = sjsu::cortex::InterruptController();
 
-  explicit SystemTimer(const SystemController & system_controller)
-      : system_controller_(system_controller)
+  explicit SystemTimer(const sjsu::SystemController & system_controller,
+                       const sjsu::InterruptController & interrupt_controller =
+                           kCortexInterruptController)
+      : system_controller_(system_controller),
+        interrupt_controller_(interrupt_controller)
   {
   }
 
@@ -53,7 +57,7 @@ class SystemTimer final : public sjsu::SystemTimer
   }
   static void SystemTimerHandler()
   {
-    counter++;
+    counter += 1ms;
     // This assumes that SysTickHandler is called every millisecond.
     // Changing that frequency will distort the milliseconds time.
     if (system_timer_isr != nullptr)
@@ -61,7 +65,7 @@ class SystemTimer final : public sjsu::SystemTimer
       system_timer_isr();
     }
   }
-  static uint64_t GetCount()
+  static std::chrono::microseconds GetCount()
   {
     return counter;
   }
@@ -82,7 +86,10 @@ class SystemTimer final : public sjsu::SystemTimer
       sys_tick->CTRL |= (1 << ControlBitMap::kEnableCounter);
       sys_tick->CTRL |= (1 << ControlBitMap::kClkSource);
 
-      RegisterIsr(lpc40xx::SysTick_IRQn, SystemTimerHandler);
+      interrupt_controller_.Register({
+          .interrupt_request_number  = cortex::SysTick_IRQn,
+          .interrupt_service_routine = SystemTimerHandler,
+      });
       status = Status::kSuccess;
     }
 
@@ -94,20 +101,25 @@ class SystemTimer final : public sjsu::SystemTimer
   ///        SysTick_LOAD_RELOAD_Msk.
   /// @returns if the freqency was not divisible by the clock frequency, the
   ///          remainder will be returned.
-  ///          If the freqency supplied is less then 2Hz, the function will
-  ///          return without changing any hardware.
+  ///          If the freqency supplied is less then 1Hz, the function will
+  ///          return without changing any hardware and return -1.
   ///          If the reload value exceeds the SysTick_LOAD_RELOAD_Msk, the
   ///          returned value is the SysTick_LOAD_RELOAD_Msk.
-  uint32_t SetTickFrequency(uint32_t frequency) const override
+  int32_t SetTickFrequency(units::frequency::hertz_t frequency) const override
   {
-    if (frequency <= 1)
+    if (frequency <= 1_Hz)
     {
-      return 0;
+      return -1;
     }
 
-    uint32_t system_frequency = system_controller_.GetSystemFrequency();
-    uint32_t reload_value     = (system_frequency / frequency) - 1;
-    int remainder             = (system_frequency % frequency);
+    units::frequency::hertz_t system_frequency =
+        system_controller_.GetSystemFrequency();
+
+    uint32_t reload_value =
+        units::unit_cast<uint32_t>((system_frequency / frequency) - 1);
+
+    int remainder = (units::unit_cast<uint32_t>(system_frequency) %
+                     units::unit_cast<uint32_t>(frequency));
 
     if (reload_value > SysTick_LOAD_RELOAD_Msk)
     {
@@ -120,7 +132,8 @@ class SystemTimer final : public sjsu::SystemTimer
   }
 
  private:
-  const SystemController & system_controller_;
+  const sjsu::SystemController & system_controller_;
+  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace cortex
 }  // namespace sjsu

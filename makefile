@@ -7,16 +7,17 @@
 YELLOW=$(shell echo "\x1B[33;1m")
 RED=$(shell echo "\x1B[31;1m")
 MAGENTA=$(shell echo "\x1B[35;1m")
-RESET=$(shell echo "\x1B[0m")
 GREEN=$(shell echo "\x1B[32;1m")
+RESET=$(shell echo "\x1B[0m")
+CURRENT_SETUP_VERSION=$(shell cat $(SJSU_DEV2_BASE)/setup_version.txt)
 # ============================
 # Modifying make Flags
 # ============================
-# The following list of target opt-out of output sync
+# The following list of targets that opt-out of output sync
 ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
-			 presubmit run-test openocd debug lint multi-debug flash burn \
-			 debug-user-test))
+        presubmit openocd debug debug-test flash jtag-flash platform-flash \
+        platform-jtag-flash lint ))
 MAKEFLAGS += --output-sync
 endif
 #
@@ -24,6 +25,21 @@ endif
 #
 NPROCS := 1
 OS := $(shell uname -s)
+
+ifneq ($(PREVIOUS_SETUP_VERSION), $(CURRENT_SETUP_VERSION))
+$(info $(shell printf '$(YELLOW)'))
+$(info +---------------- Project Setup Not Up to Date -----------------+)
+$(info | The setup file version in the location file and this project  |)
+$(info | are not equal.                                                |)
+$(info |                                                               |)
+$(info \  PREVIOUS_SETUP_VERSION = $(PREVIOUS_SETUP_VERSION)            )
+$(info \  CURRENT_SETUP_VERSION  = $(CURRENT_SETUP_VERSION)             )
+$(info |                                                               |)
+$(info | Please run ./setup again                                      |)
+$(info +---------------------------------------------------------------+)
+$(info $(shell printf '$(RESET)'))
+$(warning )
+endif
 
 ifeq ($(OS), Linux)
 NPROCS := $(shell grep -c ^processor /proc/cpuinfo)
@@ -37,6 +53,32 @@ ifneq ($(MAKECMDGOALS), presubmit)
 MAKEFLAGS += --jobs=$(NPROCS)
 endif
 
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), debug jtag-flash))
+ifndef DEBUG_DEVICE
+$(info $(shell printf '$(RED)'))
+$(info +--------------- Missing command line arguments ----------------+)
+$(info | In order to run the targets 'debug' or 'jtag-flash' you need  |)
+$(info | to supply the following comand line variables:                |)
+$(info |                                                               |)
+$(info | 1. DEBUG_DEVICE = the name of the debugging interface in the  |)
+$(info |                   command line variable DEBUG_DEVICE          |)
+$(info | 2. PLATFORM     = name of the platform you want to target     |)
+$(info |                                                               |)
+$(info |                                                               |)
+$(info | Example usage:                                                |)
+$(info |                                                               |)
+$(info |    make debug DEBUG_DEVICE=stlink PLATFORM=lpc17xx            |)
+$(info |                                                               |)
+$(info +---------------------------------------------------------------+)
+$(info $(shell printf '$(RESET)'))
+$(error )
+endif
+endif
+
+ifneq ($(MAKECMDGOALS), presubmit)
+endif
+
+
 # ============================
 # SJSU-Dev2 Toolchain Paths
 # ============================
@@ -47,7 +89,7 @@ SJCLANG        = $(shell cd $(SJCLANG_PATH) ; pwd)
 SJARMGCC_PATH  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/
 SJARMGCC       = $(shell cd $(SJARMGCC_PATH) ; pwd)
 # Path to Openocd compiler
-SJOPENOCD = $(SJSU_DEV2_BASE)/tools/openocd
+OPENOCD_DIR = $(SJSU_DEV2_BASE)/tools/openocd
 # Compiler and library settings:
 SJLIBDIR  = $(SJSU_DEV2_BASE)/firmware/library
 
@@ -99,7 +141,8 @@ OPT    ?= 0
 #   Example of running only i2c and adc tests with the -s flag to show
 #   successful assertions:
 #
-#         make run-test TEST_ARGS="-s [i2c,adc]"
+#         make test TEST_ARGS="-s [i2c,adc]"
+#         make library-test TEST_ARGS="-s [i2c,adc]"
 #
 TEST_ARGS ?=
 # ============================
@@ -114,7 +157,7 @@ DEVICE_NM        = $(SJARMGCC)/bin/arm-none-eabi-nm
 DEVICE_AR        = $(SJARMGCC)/bin/arm-none-eabi-ar
 DEVICE_RANLIB    = $(SJARMGCC)/bin/arm-none-eabi-ranlib
 DEVICE_ADDR2LINE = $(SJARMGCC)/bin/arm-none-eabi-addr2line
-DEVICE_GDB       = $(SJARMGCC)/bin/arm-none-eabi-gdb
+DEVICE_GDB       = $(SJARMGCC)/bin/arm-none-eabi-gdb-py
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
@@ -129,7 +172,7 @@ HOST_NM        = $(SJCLANG)/bin/llvm-nm
 HOST_COV       = $(SJCLANG)/bin/llvm-cov
 CLANG_TIDY     = $(SJCLANG)/bin/clang-tidy
 # Mux between using the firmware compiler executables or the host compiler
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
 CC      = $(HOST_CC)
 CPPC    = $(HOST_CPPC)
 OBJDUMP = $(HOST_OBJDUMP)
@@ -150,15 +193,16 @@ endif
 # Name of the folder where all of the object and intermediate compilable files
 # will be stored
 BUILD_DIRECTORY_NAME = build
+
+ifeq ($(MAKECMDGOALS), application)
+$(info $(shell printf '$(MAGENTA)Building application firmware...$(RESET)\n'))
+endif
+
 # "make application"'s build directory becomes "build/application"
-# "make test"'s build directory becomes "build/test"
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), flash stacktrace-application multi-debug debug))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), application flash jtag-flash \
+      platform-flash platform-jtag-flash stacktrace-application \
+			multi-debug debug))
 BUILD_SUBDIRECTORY_NAME = application
-else ifeq ($(MAKECMDGOALS), \
-	$(filter $(MAKECMDGOALS), burn stacktrace-bootloader multi-debug-bootloader))
-BUILD_SUBDIRECTORY_NAME = bootloader
-else ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), run-test))
-BUILD_SUBDIRECTORY_NAME = test
 else
 BUILD_SUBDIRECTORY_NAME = $(MAKECMDGOALS)
 endif
@@ -253,10 +297,13 @@ OPENOCD_CONFIG ?=
 # makefiles until all of the included library source files have been found.
 include $(LIBRARY_DIR)/library.mk
 # A bit of post processing on the source variables
-ifeq ($(MAKECMDGOALS), test)
+ifeq ($(MAKECMDGOALS), library-test)
 COMPILABLES = $(TESTS)
-else ifeq ($(MAKECMDGOALS), user-test)
+TEST_SOURCE_DIRECTORIES = --filter="$(LIBRARY_DIR)"
+else ifeq ($(MAKECMDGOALS), test)
 COMPILABLES = $(USER_TESTS)
+TEST_SOURCE_DIRECTORIES = --filter="$(LIBRARY_DIR)" \
+    $(addsuffix ", $(addprefix --filter=", $(USER_TESTS)))
 else
 COMPILABLES = $(SOURCES)
 endif
@@ -272,7 +319,7 @@ OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
             -fno-exceptions -fno-omit-frame-pointer \
             -fasynchronous-unwind-tables
 CPPOPTIMIZE = -fno-rtti -fno-threadsafe-statics
-DEBUG     = -g
+DEBUG_FLAG  = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wdouble-promotion -Wduplicated-cond -Wswitch \
             -Wnull-dereference -Wformat=2 \
@@ -280,55 +327,39 @@ WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
             -Wsuggest-final-methods $(WARNINGS_ARE_ERRORS)
 CPPWARNINGS = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
               -Wuseless-cast $(WARNINGS_ARE_ERRORS)
-DEFINES   = -D ARM_MATH_CM4=1 -D ELF_FILE=\"$(EXECUTABLE)\" \
-            -D PLATFORM=$(PLATFORM) -D __FPU_PRESENT=1U
+DEFINES   = -D ELF_FILE=\"$(EXECUTABLE)\" -D PLATFORM=$(PLATFORM)
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # Combine all of the flags together
-COMMON_FLAGS += $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(DEFINES) \
-               $(DISABLED_WARNINGS) -fdiagnostics-color
+COMMON_FLAGS += $(OPTIMIZE) $(DEBUG_FLAG) $(WARNINGS) $(DEFINES) \
+                $(DISABLED_WARNINGS) -fdiagnostics-color
 # Add the last touch for object files
 CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
-LINKFLAGS = $(COMMON_FLAGS) -T $(LINKER) -specs=nano.specs \
-						-Wl,--gc-sections -Wl,-Map,"$(MAP)"
-
-# Enable specific flags for building a bootloader
-ifeq ($(MAKECMDGOALS), bootloader)
-LINKER = $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/bootloader.ld
-CFLAGS_COMMON += -D TARGET=Bootloader
-endif
-# NOTE: DO NOT LINK -finstrument-functions into test build when using clang and
-# clang std libs (libc++) or it will result in a metric ton of undefined linker
-# errors.
-# The filte command checks if any of the make targets are application, flash,
-# etc and if so, this ifeq will become true
-ifeq ($(MAKECMDGOALS), $(filter \
-			$(MAKECMDGOALS), application flash build cleaninstall))
-LINKER = $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/application.ld
-CFLAGS_COMMON += -D TARGET=Application
-endif
+LINKFLAGS = $(COMMON_FLAGS)  -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
+            -specs=nano.specs \
+            -T $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/linker.ld
 
 # Enable a whole different set of exceptions, checks, coverage tools and more
 # with the test target
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test user-test))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
 CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
-				 -fprofile-instr-generate -fcoverage-mapping \
+         -fprofile-instr-generate -fcoverage-mapping \
          -fno-elide-constructors -ftest-coverage -fno-omit-frame-pointer \
-				 -fsanitize=address -stdlib=libc++ \
-				 -fdiagnostics-color \
-				 -Wconversion -Wextra -Wall \
-				 -Wno-sign-conversion -Wno-format-nonliteral \
-				 -Winconsistent-missing-override -Wshadow -Wfloat-equal \
+         -fsanitize=address -stdlib=libc++ \
+         -fdiagnostics-color \
+         -Wconversion -Wextra -Wall \
+         -Wno-sign-conversion -Wno-format-nonliteral \
+         -Winconsistent-missing-override -Wshadow -Wfloat-equal \
          -Wdouble-promotion -Wswitch -Wnull-dereference -Wformat=2 \
          -Wundef -Wold-style-cast -Woverloaded-virtual \
-				 $(WARNINGS_ARE_ERRORS) \
-				 -D HOST_TEST=1 -D TARGET=HostTest -D SJ2_BACKTRACE_DEPTH=1024 \
-				 -D CATCH_CONFIG_FAST_COMPILE \
-				 $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG) \
-				 $(DISABLED_WARNINGS) \
-				 -O0 -MMD -MP -c
+          $(WARNINGS_ARE_ERRORS) \
+         -D HOST_TEST=1 -D TARGET=HostTest -D SJ2_BACKTRACE_DEPTH=1024 \
+         -D CATCH_CONFIG_FAST_COMPILE \
+         $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG_FLAG) \
+         $(DISABLED_WARNINGS) \
+         -O0 -MMD -MP -c
 CFLAGS = $(CPPFLAGS)
 else
-CFLAGS = $(CFLAGS_COMMON)
+CFLAGS = $(CFLAGS_COMMON) -D TARGET=Application
 CPPFLAGS = $(CFLAGS) $(CPPWARNINGS) $(CPPOPTIMIZE)
 endif
 
@@ -343,7 +374,7 @@ FILE_EXCLUDES = grep -v $(addprefix -e ,$(LINT_FILTER))
 
 # Find all files within the firmware directory to be evaluated
 LINT_FILES  = $(shell find $(PROJECTS_DIR)/hello_world \
-                      $(PROJECTS_DIR)/hyperload \
+                      $(PROJECTS_DIR)/starter \
                       $(LIBRARY_DIR) $(DEMOS_DIR) \
                       -name "*.h"   -o \
                       -name "*.hpp" -o \
@@ -378,8 +409,8 @@ TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/tests.exe
 # Tell make that the default recipe is the default
 .DEFAULT_GOAL := default
 # Tell make that these recipes don't have a end product
-.PHONY: build cleaninstall telemetry monitor show-lists clean flash telemetry \
-        presubmit openocd debug multi-debug default library-clean purge
+.PHONY: default build cleaninstall telemetry monitor show-lists clean flash \
+        telemetry presubmit openocd debug library-clean purge test library-test
 print-%  : ; @echo $* = $($*)
 # ====================================================================
 # When the user types just "make" or "help" this should appear to them
@@ -387,55 +418,62 @@ print-%  : ; @echo $* = $($*)
 default: help
 help:
 	@echo "List of available targets:"
+	@echo
 	@echo "General Commands:"
+	@echo
 	@echo "  application  - Builds firmware project as an application"
 	@echo "  flash        - Installs firmware on to a device with the Hyperload"
 	@echo "                 bootloader installed."
-	@echo "  bootloader   - Builds firmware using bootloader linker"
-	@echo "  burn         - Installs bootloader onto device [NOT OPERATIONAL]"
-	@echo "                 (LPC40xx & LPC17xx)"
 	@echo "  clean        - deletes build folder contents"
 	@echo "  cleaninstall - cleans, builds, and installs application firmware on "
 	@echo "                 device."
 	@echo " library-clean - cleans static libraries files"
 	@echo "  purge        - remove local build files and static libraries "
 	@echo "  telemetry    - Launch telemetry web interface on platform"
+	@echo
 	@echo "SJSU-Dev2 Developer Commands: "
+	@echo
 	@echo "  presubmit    - run presubmit checks script"
 	@echo "  lint         - Check that source files abide by the SJSU-Dev2 coding"
 	@echo "                 standard."
 	@echo "  tidy         - Check that source file fit the SJSU-Dev2 naming "
 	@echo "                 convention "
 	@echo "  help         - Shows this menu"
+	@echo
 	@echo "SJSU-Dev2 Testing Commands: "
-	@echo "  user-test    - build all user defined test as defined in USER_TESTS"
-	@echo "  test         - build all library tests"
-	@echo "  run-test     - Run either user or test executable"
+	@echo
+	@echo "  test          - build all library tests"
+	@echo "  library-test     - build all tests as defined in USER_TESTS"
+	@echo
 	@echo "Debugging Commands: "
+	@echo
 	@echo "  openocd      - run openocd with the sjtwo.cfg file"
 	@echo "  debug        - run arm gdb with current projects .elf file"
-	@echo "  multi-debug  - run multiarch gdb with current projects .elf file"
 	@echo "  show-lists   - Makefile debugging target that displays the contents"
 	@echo "                 of make variables"
-	@echo
-	@echo
 
 # ====================================================================
 # Build firmware
 # ====================================================================
-bootloader: build
 application: build
 build: $(LIST) $(HEX) $(BINARY) $(SIZE)
 # ====================================================================
-# Flash board
+# Flash/Program microcontroller using In-system programming (ISP)
 # ====================================================================
 flash:
-	make --quiet application
-	@bash -c "\
-	source $(TOOLS_DIR)/Hyperload/modules/bin/activate && \
-	python $(TOOLS_DIR)/Hyperload/hyperload.py \
-	--baud=576000 --animation=clocks --clockspeed=48000000 \
-	--device=\"$(SJDEV)\" \"$(BINARY)\""
+	@$(MAKE) --quiet application
+	@printf \
+	'$(MAGENTA)Programming chip via In-system programming (ISP)...$(RESET)\n'
+	@$(MAKE) --quiet platform-flash
+# ====================================================================
+# Flash/Program microcontroller using a debug port like jtag or swd
+# ====================================================================
+jtag-flash:
+	@$(MAKE) --quiet application
+	@printf '$(MAGENTA)Programming chip via debug port...$(RESET)\n'
+	@$(OPENOCD_DIR)/bin/openocd -s $(OPENOCD_DIR)/scripts/ \
+	-c "source [find interface/$(DEBUG_DEVICE).cfg]" -f $(OPENOCD_CONFIG) \
+	-c "program \"$(EXECUTABLE)\" reset exit 0x0"
 # ====================================================================
 # Clean working build directory by deleting the build folder
 # ====================================================================
@@ -460,27 +498,26 @@ purge: clean
 telemetry:
 	google-chrome https://kammce.github.io/Telemetry
 # ====================================================================
-# Build Test Executable for all tests in SJSU-Dev2
+# Format Code
 # ====================================================================
-test: $(TEST_EXEC)
+format-code:
+	@$(SJCLANG)/bin/git-clang-format --binary="$(SJCLANG)/bin/clang-format" \
+	  --force
 # ====================================================================
-# Build Test Executable for user specified tests
-# ====================================================================
-user-test: $(TEST_EXEC)
-# ====================================================================
-# Run Test Executable
+# Build Test Executable, Run test and generate code coverage
 # ====================================================================
 # In reference to issue #374, we need to remove the old gcda files otherwise
 # if the test has been recompiled between executions of run-test, the
 # executable will complain that the coverage files are out of date or
 # corrupted
-run-test:
+library-test: test $(TEST_EXEC)
+test: $(TEST_EXEC)
 	@rm -f $(COVERAGE_FILES) 2> /dev/null
 	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
 		$(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
-	@gcovr --root="$(LIBRARY_DIR)/" \
-		--object-directory="$(BUILD_DIRECTORY_NAME)/test/" \
+	@gcovr $(TEST_SOURCE_DIRECTORIES) \
+		--object-directory="$(BUILD_DIRECTORY_NAME)/" \
 		-e "$(LIBRARY_DIR)/newlib" \
 		-e "$(LIBRARY_DIR)/third_party" \
 		-e "$(LIBRARY_DIR)/L4_Testing" \
@@ -491,7 +528,7 @@ run-test:
 # ====================================================================
 # Evaluate library files and check them for linting errors.
 lint:
-	@python2.7 $(TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
+	@python3 $(TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
 # Evaluate library files for proper code naming conventions
 tidy: $(TIDY_FILES_PHONY)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
@@ -503,22 +540,15 @@ presubmit:
 # ====================================================================
 stacktrace-application:
 	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE) $(TRACES)
-stacktrace-bootloader:
-	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE)
-# Start an openocd jtag debug session for the sjtwo development board
-openocd:
-	$(SJOPENOCD)/bin/openocd -f $(OPENOCD_CONFIG)
-# Start gdb for arm and connect to openocd jtag debugging session
+# Start gdb and connect to openocd jtag debugging session
+
 debug:
-	$(DEVICE_GDB) -ex "target remote :3333" $(EXECUTABLE)
-debug-user-test:
-	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/test/tests.exe
-# Start gdb just like the debug target, but using gdb-multiarch
-# gdb-multiarch is perferable since it supports python in its .gdbinit file
-multi-debug:
-	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
-multi-debug-bootloader:
-	gdb-multiarch -ex "target remote :3333" $(EXECUTABLE)
+	$(info $(shell printf '$(MAGENTA)Starting firmware debug...$(RESET)\n'))
+	$(TOOLS_DIR)/launch_openocd_gdb.sh $(OPENOCD_DIR) $(DEBUG_DEVICE) \
+	  $(OPENOCD_CONFIG) $(DEVICE_GDB) $(CURRENT_DIRECTORY)/$(EXECUTABLE)
+
+debug-test:
+	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/tests.exe
 # ====================================================================
 # Makefile debug
 # ====================================================================
@@ -598,7 +628,8 @@ $(OBJECT_DIR)/%.o: %
 
 $(DBC_BUILD):
 	@mkdir -p "$(dir $@)"
-	python2.7 "$(LIBRARY_DIR)/$(DBC_DIR)/dbc_parse.py" -i "$(LIBRARY_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
+	python3 "$(LIBRARY_DIR)/$(DBC_DIR)/dbc_parse.py" \
+		-i "$(LIBRARY_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
 
 $(TEST_EXEC): $(OBJECTS)
 	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@ '

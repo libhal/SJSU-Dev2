@@ -165,7 +165,7 @@ class St7066u final
     kControlPins.d6.Set(sjsu::Gpio::State((nibble >> 2) & 0x01));
     kControlPins.d5.Set(sjsu::Gpio::State((nibble >> 1) & 0x01));
     kControlPins.d4.Set(sjsu::Gpio::State((nibble >> 0) & 0x01));
-    sjsu::Delay(1);
+    sjsu::Delay(1ms);
     // Toggle chip enable to trigger write on falling edge
     kControlPins.e.Set(sjsu::Gpio::State::kLow);
     kControlPins.e.Set(sjsu::Gpio::State::kHigh);
@@ -189,7 +189,7 @@ class St7066u final
     kControlPins.d2.Set(sjsu::Gpio::State((byte >> 2) & 0x01));
     kControlPins.d1.Set(sjsu::Gpio::State((byte >> 1) & 0x01));
     kControlPins.d0.Set(sjsu::Gpio::State((byte >> 0) & 0x01));
-    sjsu::Delay(1);
+    sjsu::Delay(1ms);
     // Toggle chip enable to trigger write on falling edge
     kControlPins.e.Set(sjsu::Gpio::State::kLow);
     kControlPins.e.Set(sjsu::Gpio::State::kHigh);
@@ -234,7 +234,7 @@ class St7066u final
   virtual void ClearDisplay()
   {
     WriteCommand(Command::kClearDisplay);
-    sjsu::Delay(2);  // Clear display operation requires 1.52ms
+    sjsu::Delay(2ms);  // Clear display operation requires 1.52ms
   }
 
   // @param on Toggles the display on if TRUe.
@@ -288,7 +288,7 @@ class St7066u final
   [[gnu::always_inline]] virtual void ResetCursorPosition()
   {
     WriteCommand(Command::kResetCursor);
-    sjsu::Delay(2);  // requires 1.52ms
+    sjsu::Delay(2ms);  // requires 1.52ms
   }
 
   // Displays a desired text string on the display.

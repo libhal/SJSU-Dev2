@@ -41,10 +41,10 @@ function check
     printf "\e[1;31m|      Don't even PUSH!          |\e[0m\n"
     printf "\e[0;31m ================================ \e[0m\n"
     printf "\e[0;31m|                                |\e[0m\n"
-    printf "\e[0;31m| Code style must be lint free %b |\e[0m\n" $lint
-    printf "\e[0;31m|    Code style must be tidy %b   |\e[0m\n" $tidy
-    printf "\e[0;31m|       Tests must pass %b        |\e[0m\n" $test
-    printf "\e[0;31m|       Code must build %b        |\e[0m\n" $build
+    printf "\e[0;31m| Code must be lint free ..... %b |\e[0m\n" $lint
+    printf "\e[0;31m| Code must be tidy .......... %b |\e[0m\n" $tidy
+    printf "\e[0;31m| Tests must pass ............ %b |\e[0m\n" $test
+    printf "\e[0;31m| Code must build ............ %b |\e[0m\n" $build
     printf "\e[0;31m|                                |\e[0m\n"
     printf "\e[0;31m ================================ \e[0m\n"
     exit 1
@@ -70,8 +70,8 @@ function check
 print_divider
 printf "Checking that all projects build\n\n"
 
-printf "\e[0;33mBuilding HelloWorld Project\e[0m "
-# Change to the HelloWorld project
+printf "\e[0;33mBuilding hello_world Project\e[0m "
+# Change to the hello_world project
 cd "$SJBASE/projects/hello_world"
 # Purge repository of all application and framework build files and start
 # building from scratch
@@ -90,19 +90,6 @@ cd "$SJBASE/projects/starter"
 SILENCE=$(make clean)
 # Check if the system can build without any warnings!
 SILENCE=$(make -s application)
-# Set build capture to return code from the build
-SPECIFIC_BUILD_CAPTURE=$?
-BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
-print_status $SPECIFIC_BUILD_CAPTURE
-echo ""
-
-printf "\e[0;33mBuilding Hyperload Bootloader\e[0m "
-# Change to the Hyperload project
-cd "$SJBASE/projects/hyperload"
-# Clean the build and start building from scratch
-SILENCE=$(make clean)
-# Check if the system can build without any warnings!
-SILENCE=$(make -s bootloader OPT=s WARNINGS_ARE_ERRORS=-Werror)
 # Set build capture to return code from the build
 SPECIFIC_BUILD_CAPTURE=$?
 BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
@@ -158,13 +145,10 @@ echo ""
 print_divider
 
 printf "\e[0;33mBuilding and running unit tests \e[0m\n"
-make -s test WARNINGS_ARE_ERRORS=-Werror
-TEST_BUILD_CAPTURE=$?
-make -s run-test
-TEST_RUN_CAPTURE=$?
-TEST_CAPTURE=$(($TEST_BUILD_CAPTURE + $TEST_RUN_CAPTURE))
+make -s library-test WARNINGS_ARE_ERRORS=-Werror
+TEST_CAPTURE=$?
 print_status $TEST_CAPTURE
 echo ""
 
 # Check if there were any errors. For this to succeed, this value should be 0
-check $(($STATUS_CAPTURE+$BUILD_CAPTURE+$LINT_CAPTURE+$TIDY_CAPTURE+$TEST_CAPTURE))
+check $(($BUILD_CAPTURE+$LINT_CAPTURE+$TIDY_CAPTURE+$TEST_CAPTURE))

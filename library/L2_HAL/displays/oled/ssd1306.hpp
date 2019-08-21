@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 #include "config.hpp"
 #include "L1_Peripheral/gpio.hpp"
@@ -75,7 +76,7 @@ class Ssd1306 final : public PixelDisplay
 
     spi_.Initialize();
     spi_.SetDataSize(sjsu::Spi::DataSize::kEight);
-    spi_.SetClock(100'000);
+    spi_.SetClock(2_MHz);
 
     Clear();
     InitializationPanel();

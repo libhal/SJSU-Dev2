@@ -19,7 +19,7 @@ int main()
     // NOTE: The counter increments on clock rising and falling. To get back our
     // system clock rate, the value must be divided by 2.
     counts[i] = dwt_counter.GetCount() / 2;
-    sjsu::Delay(10);
+    sjsu::Delay(10ms);
   }
 
   for (size_t i = 0; i < kCountTotal; i++)

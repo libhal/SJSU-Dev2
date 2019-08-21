@@ -4,10 +4,11 @@
 #include <queue.h>
 
 #include <initializer_list>
+#include <cstring>
 
 #include "L1_Peripheral/can.hpp"
 
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
@@ -18,7 +19,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
+class Can final : public sjsu::Can
 {
  public:
   // Adding this so Send() with the std::initializer_list is within the scope of
@@ -166,7 +167,7 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
 
   inline static bool is_controller_initialized[kNumberOfControllers] = {
     [kCan1] = false,
-    [kCan2] = false,
+    [kCan2] = false
   };
 
   inline static Interrupts_t interrupts[kNumberOfControllers];
@@ -183,13 +184,13 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
   // Queue transmit handles
   inline static QueueHandle_t transmit_queue[kNumberOfControllers] = {
     [kCan1] = NULL,
-    [kCan2] = NULL,
+    [kCan2] = NULL
   };
 
   // Queue receive handles
   inline static QueueHandle_t receive_queue[kNumberOfControllers] = {
     [kCan1] = NULL,
-    [kCan2] = NULL,
+    [kCan2] = NULL
   };
 
   // Templated struct the user can configure and then pass to
@@ -229,7 +230,7 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     kRd1PinNumber = 0,
     kTd1PinNumber = 1,
     kRd2PinNumber = 7,
-    kTd2PinNumber = 8,
+    kTd2PinNumber = 8
   };
 
   enum PinFunctions : uint8_t
@@ -237,7 +238,7 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     kRd1FunctionBit = 1,
     kTd1FunctionBit = 1,
     kRd2FunctionBit = 1,
-    kTd2FunctionBit = 1,
+    kTd2FunctionBit = 1
   };
 
   enum Interrupts : uint8_t
@@ -245,7 +246,7 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     kRxBufferIntEnableBit  = 0,
     kTxBuffer1IntEnableBit = 1,
     kTxBuffer2IntEnableBit = 9,
-    kTxBuffer3IntEnableBit = 10,
+    kTxBuffer3IntEnableBit = 10
   };
 
   enum Modes : uint8_t
@@ -256,19 +257,19 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     kTxPriority = 3,
     kSleepMode  = 4,
     kRxPolarity = 5,
-    kTest       = 7,
+    kTest       = 7
   };
 
   enum BaudRates : uint8_t
   {
-    kBaud100Kbps = 100,
+    kBaud100Kbps = 100
   };
 
   enum TxBuffers : uint8_t
   {
     kBuffer1 = 0,
     kBuffer2 = 1,
-    kBuffer3 = 2,
+    kBuffer3 = 2
   };
 
   // https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 554)
@@ -279,8 +280,137 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     kSendTxBuffer2              = 0x41,
     kSendTxBuffer3              = 0x81,
     kSelfReceptionSendTxBuffer1 = 0x30,
-    kAcceptAllMessages          = 0x02,
+    kAcceptAllMessages          = 0x02
   };
+
+  // https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 560)
+  // CAN frame format: https://goo.gl/images/XLjzn5
+  enum FrameErrorCodes : uint8_t
+  {
+    kStartOfFrame = 0x03,
+    kID28toID21 = 0x02,
+    kID20toID18 = 0x06,
+    kSrtrBit = 0x04,
+    kIdeBit = 0x05,
+    kID17toID13 = 0x07,
+    kID12toID5 = 0x0F,
+    kID4toID0 = 0x0E,
+    kRtrBit = 0x0C,
+    kReservedBit1 = 0x0D,
+    kReservedBit0 = 0x09,
+    kDataLengthCode = 0x0B,
+    kDataField = 0x0A,
+    kCrcSequence = 0x08,
+    kCrcDelimiter = 0x18,
+    kAcknowledgeSlot = 0x19,
+    kAcknowledgeDelimiter = 0x1B,
+    kEndOfFrame = 0x1A,
+    kIntermission = 0x12
+  };
+
+  struct FrameError_t
+  {
+    uint8_t errorCode;
+    const char * errorMessage;
+  };
+
+  inline static FrameError_t frame_error_table[19] =
+  {
+    {kStartOfFrame, "Start of Frame"},
+    {kID28toID21, "ID28 ... ID21"},
+    {kID20toID18, "ID20 ... ID18"},
+    {kSrtrBit, "SRTR Bit"},
+    {kIdeBit, "IDE Bit"},
+    {kID17toID13, "ID17 ... ID13"},
+    {kID12toID5, "ID12 ... ID5"},
+    {kID4toID0, "ID4 ... ID0"},
+    {kRtrBit, "RTR Bit"},
+    {kReservedBit1, "Reserved Bit 1"},
+    {kReservedBit0, "Reserved Bit 0"},
+    {kDataLengthCode, "Data Length Code"},
+    {kDataField, "Data Field"},
+    {kCrcSequence, "CRC Sequence"},
+    {kCrcDelimiter, "CRC Delimiter"},
+    {kAcknowledgeSlot, "Acknowledge Slot"},
+    {kAcknowledgeDelimiter, "Acknowledge Delimiter"},
+    {kEndOfFrame, "End of Frame"},
+    {kIntermission, "Intermission"}
+  };
+
+  static void ProcessIrq()
+  {
+    TxMessage_t * message_ptr;
+    bool transmit_interrupt, receive_interrupt;
+
+    for (uint8_t controller = 0; controller < kNumberOfControllers;
+         controller++)
+    {
+      if (is_controller_initialized[controller] == true)
+      {
+        // Capture interrupt register
+        // Bits are cleared when you read the ICR register
+        interrupts[controller].ICR = can_registers[controller]->ICR;
+
+        transmit_interrupt = interrupts[controller].flags.tx_buffer_1_ready ||
+                             interrupts[controller].flags.tx_buffer_2_ready ||
+                             interrupts[controller].flags.tx_buffer_3_ready;
+
+        receive_interrupt = interrupts[controller].flags.rx_buffer_full;
+
+        if (transmit_interrupt == true)
+        {
+          if (xQueueIsQueueEmptyFromISR(transmit_queue[controller]) == pdFALSE)
+          {
+            // dequeue message pointer
+            xQueueReceiveFromISR(transmit_queue[controller], &message_ptr, 0);
+            // send it to the available buffer
+            if (interrupts[controller].flags.tx_buffer_1_ready)
+            {
+              WriteMessageToBuffer(
+                  message_ptr, kBuffer1, static_cast<Controllers>(controller));
+            }
+            else if (interrupts[controller].flags.tx_buffer_2_ready)
+            {
+              WriteMessageToBuffer(
+                  message_ptr, kBuffer2, static_cast<Controllers>(controller));
+            }
+            else if (interrupts[controller].flags.tx_buffer_3_ready)
+            {
+              WriteMessageToBuffer(
+                  message_ptr, kBuffer3, static_cast<Controllers>(controller));
+            }
+            else
+            {
+              // will never occur
+            }
+          }
+        }
+
+        if (receive_interrupt == true)
+        {
+          ReadMessageFromBuffer(static_cast<Controllers>(controller));
+        }
+      }
+    }
+  }
+
+  static void CanIrqHandler()
+  {
+    ProcessIrq();
+  }
+
+  inline static const InterruptController::RegistrationInfo_t
+      kCanInterruptInfo = {
+        .interrupt_request_number  = CAN_IRQn,
+        .interrupt_service_routine = &CanIrqHandler,
+        .enable_interrupt          = true,
+        .priority                  = 5,
+      };
+
+  inline static const sjsu::lpc40xx::SystemController
+      kDefaultSystemController = sjsu::lpc40xx::SystemController();
+  inline static const sjsu::cortex::InterruptController
+      kCortexInterruptController = sjsu::cortex::InterruptController();
 
   // Default constructor that defaults to CAN 1
   constexpr Can()
@@ -289,18 +419,28 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
         rd_(&rd_pin_),
         td_(&td_pin_),
         rd_pin_(Pin(kCan1Port, kRd1PinNumber)),
-        td_pin_(Pin(kCan1Port, kTd1PinNumber))
+        td_pin_(Pin(kCan1Port, kTd1PinNumber)),
+        system_controller_(kDefaultSystemController),
+        interrupt_controller_(kCortexInterruptController)
   {
   }
 
-  constexpr Can(Controllers controller, BaudRates baud_rate, sjsu::Pin * td_pin,
-                sjsu::Pin * rd_pin)
+  constexpr Can(
+      Controllers controller,
+      BaudRates baud_rate,
+      sjsu::Pin * td_pin,
+      sjsu::Pin * rd_pin,
+      const sjsu::lpc40xx::SystemController & system_controller =
+          kDefaultSystemController,
+      const sjsu::cortex::InterruptController & = kCortexInterruptController)
       : controller_(controller),
         baud_rate_(baud_rate),
         rd_(td_pin),
         td_(rd_pin),
         rd_pin_(Pin::CreateInactivePin()),
-        td_pin_(Pin::CreateInactivePin())
+        td_pin_(Pin::CreateInactivePin()),
+        system_controller_(system_controller),
+        interrupt_controller_(kCortexInterruptController)
   {
   }
 
@@ -329,12 +469,12 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
       // TODO(#343): Allow the user to configure their own filter.
       EnableAcceptanceFilter();
       EnableInterrupts();
-      RegisterIsr(CAN_IRQn, &CanIrqHandler, true, 5);
+      // Enable core interrupt
+      interrupt_controller_.Register(kCanInterruptInfo);
       // Disable reset mode and enter operating mode.
       SetControllerMode(kReset, false);
       is_controller_initialized[controller_] = true;
     }
-
     return status;
   }
 
@@ -347,8 +487,10 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
   // to send a 1 time message. However, if the user is sending cyclic messages,
   // it is assumed that global message handles exist somewhere in the user's app
   // layer since they need to be updated periodically.
-  bool Send(TxMessage_t * const kMessage, uint32_t id,
-            const uint8_t * const kPayload, size_t length) const override
+  bool Send(TxMessage_t * const kMessage,
+            uint32_t id,
+            const uint8_t * const kPayload,
+            size_t length) const override
   {
     bool success = false;
 
@@ -361,7 +503,7 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     // the ISR (to eventually write the data at this memory location into the
     // transmit buffer), we disable the CAN interrupt to ensure that complete
     // and valid data is written before it is accessed by the ISR.
-    DeregisterIsr(CAN_IRQn);
+    interrupt_controller_.Deregister(CAN_IRQn);
     kMessage->id                           = id;
     kMessage->frame_data.data_length       = (length & 0xF);
     kMessage->frame_data.remote_tx_request = 0;
@@ -369,7 +511,7 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     {
       kMessage->data.bytes[i] = kPayload[i];
     }
-    RegisterIsr(CAN_IRQn, &CanIrqHandler, true, 5);
+    interrupt_controller_.Register(kCanInterruptInfo);
 
     // Check if any buffer is available.
     if (status[controller_].flags.tx_buffer_1_released)
@@ -433,8 +575,8 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     // Set self-test request and send buffer 1
     can_registers[controller_]->CMR = kSelfReceptionSendTxBuffer1;
 
-    // Wait for HW
-    sjsu::Delay(1);
+    // Allow time for RX interrupt to fire
+    sjsu::Delay(2ms);
 
     // Get the message; the ISR (interrupt service routine)
     // will read the message from the rx buffer
@@ -461,97 +603,26 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
     return status[controller_].flags.bus_error;
   }
 
-  uint8_t GetFrameErrorLocation() const override
+  bool GetFrameErrorLocation(const char * &error_message) const override
   {
-    // 00011 = Start of Frame
-    // 00010 = ID28 ... ID21
-    // 00110 = ID20 ... ID18
-    // 00100 = SRTR Bit
-    // 00101 = IDE bit
-    // 00111 = ID17 ... 13
-    // 01111 = ID12 ... ID5
-    // 01110 = ID4 ... ID0
-    // 01100 = RTR Bit
-    // 01101 = Reserved Bit 1
-    // 01001 = Reserved Bit 0
-    // 01011 = Data Length Code
-    // 01010 = Data Field
-    // 01000 = CRC Sequence
-    // 11000 = CRC Delimiter
-    // 11001 = Acknowledge Slot
-    // 11011 = Acknowledge Delimiter
-    // 11010 = End of Frame
-    // 10010 = Intermission
-
+    bool success = false;
     interrupts[controller_].ICR = can_registers[controller_]->ICR;
-    return interrupts[controller_].flags.error_code_location;
+
+    for (uint8_t i = 0; i < 19; i++)
+    {
+      if (frame_error_table[i].errorCode ==
+          interrupts[controller_].flags.error_code_location)
+      {
+        error_message = frame_error_table[i].errorMessage;
+        success = true;
+      }
+    }
+    return success;
   }
 
   void EnableBus() const override
   {
     SetControllerMode(kReset, false);
-  }
-
-  static void ProcessIrq()
-  {
-    TxMessage_t * message_ptr;
-    bool transmit_interrupt, receive_interrupt;
-
-    for (uint8_t controller = 0; controller < kNumberOfControllers;
-         controller++)
-    {
-      if (is_controller_initialized[controller] == true)
-      {
-        // Capture interrupt register
-        // Bits are cleared when you read the ICR register
-        interrupts[controller].ICR = can_registers[controller]->ICR;
-
-        transmit_interrupt = interrupts[controller].flags.tx_buffer_1_ready ||
-                             interrupts[controller].flags.tx_buffer_2_ready ||
-                             interrupts[controller].flags.tx_buffer_3_ready;
-
-        receive_interrupt = interrupts[controller].flags.rx_buffer_full;
-
-        if (transmit_interrupt == true)
-        {
-          if (xQueueIsQueueEmptyFromISR(transmit_queue[controller]) == pdFALSE)
-          {
-            // dequeue message pointer
-            xQueueReceiveFromISR(transmit_queue[controller], &message_ptr, 0);
-            // send it to the available buffer
-            if (interrupts[controller].flags.tx_buffer_1_ready)
-            {
-              WriteMessageToBuffer(message_ptr, kBuffer1,
-                                   static_cast<Controllers>(controller));
-            }
-            else if (interrupts[controller].flags.tx_buffer_2_ready)
-            {
-              WriteMessageToBuffer(message_ptr, kBuffer2,
-                                   static_cast<Controllers>(controller));
-            }
-            else if (interrupts[controller].flags.tx_buffer_3_ready)
-            {
-              WriteMessageToBuffer(message_ptr, kBuffer3,
-                                   static_cast<Controllers>(controller));
-            }
-            else
-            {
-              // will never occur
-            }
-          }
-        }
-
-        if (receive_interrupt == true)
-        {
-          ReadMessageFromBuffer(static_cast<Controllers>(controller));
-        }
-      }
-    }
-  }
-
-  static void CanIrqHandler()
-  {
-    ProcessIrq();
   }
 
   template <typename T>
@@ -571,7 +642,8 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
 
  private:
   [[gnu::always_inline]] static void WriteMessageToBuffer(
-      const TxMessage_t * const kMessage, TxBuffers buffer_number,
+      const TxMessage_t * const kMessage,
+      TxBuffers buffer_number,
       Controllers controller)
   {
     volatile TxMessage_t * ptr_to_buffer_offset;
@@ -605,12 +677,12 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
         break;
     }
 
-    DeregisterIsr(CAN_IRQn);
+    kCortexInterruptController.Deregister(CAN_IRQn);
     ptr_to_buffer_offset->TFI        = kMessage->TFI;
     ptr_to_buffer_offset->id         = kMessage->id;
     ptr_to_buffer_offset->data.qword = kMessage->data.qword;
     can_registers[controller]->CMR   = command;
-    RegisterIsr(CAN_IRQn, &CanIrqHandler, true, 5);
+    kCortexInterruptController.Register(kCanInterruptInfo);
   }
 
   [[gnu::always_inline]] static void ReadMessageFromBuffer(
@@ -623,11 +695,11 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
         reinterpret_cast<volatile RxMessage_t *>(
             &can_registers[controller]->RFS);
 
-    NVIC_DisableIRQ(CAN_IRQn);
+    kCortexInterruptController.Deregister(CAN_IRQn);
     message.RFS        = ptr_to_buffer_offset->RFS;
     message.id         = ptr_to_buffer_offset->id;
     message.data.qword = ptr_to_buffer_offset->data.qword;
-    NVIC_EnableIRQ(CAN_IRQn);
+    kCortexInterruptController.Register(kCanInterruptInfo);
 
     xQueueSendFromISR(receive_queue[controller], &message, 0);
     can_registers[controller]->CMR = kReleaseRxBuffer;
@@ -655,11 +727,13 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
   {
     if (controller_ == kCan1)
     {
-      PowerUpPeripheral(sjsu::lpc40xx::SystemController::Peripherals::kCan1);
+      system_controller_.PowerUpPeripheral(
+          sjsu::lpc40xx::SystemController::Peripherals::kCan1);
     }
     else
     {
-      PowerUpPeripheral(sjsu::lpc40xx::SystemController::Peripherals::kCan2);
+      system_controller_.PowerUpPeripheral(
+          sjsu::lpc40xx::SystemController::Peripherals::kCan2);
     }
   }
 
@@ -687,7 +761,6 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
 
   void EnableInterrupts() const
   {
-    // IER - Interrupt Enable Register
     can_registers[controller_]->IER |= (1 << kRxBufferIntEnableBit);
     can_registers[controller_]->IER |= (1 << kTxBuffer1IntEnableBit);
     can_registers[controller_]->IER |= (1 << kTxBuffer2IntEnableBit);
@@ -751,6 +824,8 @@ class Can final : public sjsu::Can, protected sjsu::lpc40xx::SystemController
   sjsu::Pin * td_;
   lpc40xx::Pin rd_pin_;
   lpc40xx::Pin td_pin_;
+  const sjsu::lpc40xx::SystemController & system_controller_;
+  const sjsu::cortex::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

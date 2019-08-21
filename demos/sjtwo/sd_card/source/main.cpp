@@ -28,28 +28,28 @@ int main()
     card.Initialize();
     SJ2_ASSERT_FATAL(card.Mount(&sd_card_info), "Failed to mount SD Card");
 
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
 
     LOG_INFO("Deleting blocks");
     card.DeleteBlock(0x00000000, 0x0000A000);
 
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
 
     LOG_INFO("Writing Hello World to block 0 (0x00000000)");
     card.WriteBlock(0x00000000, kHelloWorld);
 
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
 
     LOG_INFO("Reading block 0 (0x00000000)");
     card.ReadBlock(0x00000000, buffer);
     sjsu::debug::Hexdump(buffer, sizeof(buffer));
 
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
 
     LOG_INFO("Deleting blocks again");
     card.DeleteBlock(0x00000000, 0x0000A000);
 
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
 
     LOG_INFO("Reading block 0 after delete (0x00000000)");
     card.ReadBlock(0x00000000, buffer);
@@ -58,7 +58,7 @@ int main()
     LOG_INFO("Writing to block 1 after delete (0x00000200)");
     card.WriteBlock(0x00000200, kLongText);
 
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
 
     LOG_INFO("Reading block 1 after write (0x00000200)");
     card.ReadBlock(0x00000200, buffer);

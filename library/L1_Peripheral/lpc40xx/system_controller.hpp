@@ -12,12 +12,13 @@
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
+#include "utility/time.hpp"
 
 namespace sjsu
 {
 namespace lpc40xx
 {
-class SystemController : public sjsu::SystemController
+class SystemController final : public sjsu::SystemController
 {
  public:
   enum class UsbSource : uint16_t
@@ -46,12 +47,12 @@ class SystemController : public sjsu::SystemController
     kPllClock  = 0b1,
   };
 
-  enum class PllInput : uint16_t
+  struct PllInput  // NOLINT
   {
-    kIrc    = 12,
-    kF12MHz = 12,
-    kF16MHz = 16,
-    kF24MHz = 24,
+    static constexpr units::frequency::megahertz_t kIrc    = 12_MHz;
+    static constexpr units::frequency::megahertz_t kF12MHz = 12_MHz;
+    static constexpr units::frequency::megahertz_t kF16MHz = 16_MHz;
+    static constexpr units::frequency::megahertz_t kF24MHz = 24_MHz;
   };
 
   enum class EmcDivider : uint8_t
@@ -113,8 +114,8 @@ class SystemController : public sjsu::SystemController
   static constexpr uint32_t kClearPllMultiplier     = (0x1f << 0);
   static constexpr uint32_t kClearPllDivider        = (0b11 << 5);
   static constexpr uint32_t kClearPeripheralDivider = (0b1'1111);
-  static constexpr uint32_t kDefaultIRCFrequency    = 12'000'000;
-  static constexpr uint32_t kDefaultTimeout         = 1'000;  // ms
+  static constexpr units::frequency::megahertz_t kDefaultIRCFrequency = 12_MHz;
+  static constexpr std::chrono::milliseconds kDefaultTimeout          = 1s;
 
   struct Oscillator  // NOLINT
   {
@@ -151,15 +152,15 @@ class SystemController : public sjsu::SystemController
 
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
-  uint32_t SetClockFrequency(uint8_t frequency_in_mhz) const final override
+  void SetSystemClockFrequency(
+      units::frequency::megahertz_t frequency) const override
   {
-    uint32_t offset = 0;
     SelectOscillatorSource(OscillatorSource::kIrc);
-    if (frequency_in_mhz > 12)
+    if (frequency > 12_MHz)
     {
-      offset = SetMainPll(PllInput::kIrc, frequency_in_mhz);
+      SetMainPll(PllInput::kIrc, frequency);
       SelectMainClockSource(MainClockSource::kPllClock);
-      speed_in_hertz = frequency_in_mhz * 1'000'000;
+      speed_in_hertz = frequency;
     }
     else
     {
@@ -167,57 +168,45 @@ class SystemController : public sjsu::SystemController
       speed_in_hertz = kDefaultIRCFrequency;
     }
     SetCpuClockDivider(1);
-    SetPeripheralClockDivider(1);
+    SetPeripheralClockDivider({}, 1);
     SetEmcClockDivider(EmcDivider::kSameSpeedAsCpu);
-    return offset;
   }
 
-  void SetPeripheralClockDivider(
-      uint8_t peripheral_divider) const final override
+  void SetPeripheralClockDivider(const PeripheralID &,
+                                 uint8_t peripheral_divider) const override
   {
     SJ2_ASSERT_FATAL(peripheral_divider <= 4, "Divider mustn't exceed 32");
     system_controller->PCLKSEL = peripheral_divider;
   }
 
-  uint32_t GetPeripheralClockDivider() const final override
+  uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
   {
     return system_controller->PCLKSEL;
   }
 
-  uint32_t GetSystemFrequency() const final override
+  units::frequency::hertz_t GetSystemFrequency() const override
   {
     return speed_in_hertz;
   }
 
-  uint32_t GetPeripheralFrequency() const final override
-  {
-    uint32_t peripheral_clock_divider = GetPeripheralClockDivider();
-    uint32_t result = 0;  // return 0 if peripheral_clock_divider == 0
-    if (peripheral_clock_divider != 0)
-    {
-      result = GetSystemFrequency() / peripheral_clock_divider;
-    }
-    return result;
-  }
   /// Check if a peripheral is powered up by checking the power connection
   /// register. Should typically only be used for unit testing code and
   /// debugging.
   bool IsPeripheralPoweredUp(
-      const PeripheralID & peripheral_select) const final override
+      const PeripheralID & peripheral_select) const override
   {
     bool peripheral_is_powered_on =
         system_controller->PCONP & (1 << peripheral_select.device_id);
 
     return peripheral_is_powered_on;
   }
-  void PowerUpPeripheral(
-      const PeripheralID & peripheral_select) const final override
+  void PowerUpPeripheral(const PeripheralID & peripheral_select) const override
   {
     system_controller->PCONP =
         bit::Set(system_controller->PCONP, peripheral_select.device_id);
   }
   void PowerDownPeripheral(
-      const PeripheralID & peripheral_select) const final override
+      const PeripheralID & peripheral_select) const override
   {
     system_controller->PCONP =
         bit::Clear(system_controller->PCONP, peripheral_select.device_id);
@@ -249,23 +238,23 @@ class SystemController : public sjsu::SystemController
                     static_cast<uint32_t>(spifi_clock),
                     SpiFiClock::kSelect);
   }
-  uint32_t CalculatePll(PllInput input_frequency,
-                        uint16_t desired_speed_in_mhz) const
+  uint32_t CalculatePll(units::frequency::megahertz_t input_frequency,
+                        units::frequency::megahertz_t desired_frequency) const
   {
-    SJ2_ASSERT_FATAL(desired_speed_in_mhz < 384 && desired_speed_in_mhz > 12,
+    SJ2_ASSERT_FATAL(desired_frequency < 384_MHz && desired_frequency > 12_MHz,
                      "Frequency must be lower than 384 MHz"
                      "and greater than or equal to 12 MHz");
     bool calculating = true;
     uint32_t multiplier_value;
-    if ((desired_speed_in_mhz % static_cast<uint16_t>(input_frequency)) >= 1)
+    if ((desired_frequency.to<uint32_t>() % input_frequency.to<uint32_t>()) > 0)
     {
-      multiplier_value = static_cast<uint32_t>(
-          (desired_speed_in_mhz / static_cast<uint16_t>(input_frequency)) + 1);
+      multiplier_value =
+          static_cast<uint32_t>((desired_frequency / input_frequency) + 1);
     }
     else
     {
-      multiplier_value = static_cast<uint32_t>(
-          desired_speed_in_mhz / static_cast<uint16_t>(input_frequency));
+      multiplier_value =
+          static_cast<uint32_t>(desired_frequency / input_frequency);
     }
     uint16_t divider_value = 1;
     while (calculating)
@@ -289,16 +278,14 @@ class SystemController : public sjsu::SystemController
     return multiplier_value;
   }
 
-  uint32_t SetMainPll(PllInput input_frequency,
-                      uint16_t desired_speed_in_mhz) const
+  void SetMainPll(units::frequency::megahertz_t input_frequency,
+                  units::frequency::megahertz_t desired_frequency) const
   {
     uint16_t divider_value = 1;
-    uint64_t timeout_time  = Milliseconds() + kDefaultTimeout;
-    uint64_t current_time  = Milliseconds();
     uint32_t multiplier_value =
-        CalculatePll(input_frequency, desired_speed_in_mhz);
-    uint32_t actual_speed =
-        static_cast<uint32_t>(input_frequency) * multiplier_value;
+        CalculatePll(input_frequency, desired_frequency);
+    // units::frequency::megahertz_t actual_speed =
+    //     input_frequency * multiplier_value;
     // TO DO: use registers to retreive values
     SelectOscillatorSource(OscillatorSource::kIrc);
     SelectMainClockSource(MainClockSource::kBaseClock);
@@ -311,34 +298,22 @@ class SystemController : public sjsu::SystemController
     system_controller->PLL0CFG =
         (system_controller->PLL0CFG & ~kClearPllDivider) | (divider_value << 5);
     system_controller->PLL0CON |= kEnablePll;
-    // nessecary feed sequence to ensure the changes are intentional
+    // Necessary feed sequence to ensure the changes are intentional
     system_controller->PLL0FEED = 0xAA;
     system_controller->PLL0FEED = 0x55;
-    while (!(system_controller->PLL0STAT >> kPlock & 1) &&
-           (current_time < timeout_time))
+
+    while (!bit::Read(system_controller->PLL0STAT, kPlock))
     {
-      current_time = Milliseconds();
+      continue;
     }
-    if (!(system_controller->PLL0STAT >> kPlock & 1) &&
-        (current_time >= timeout_time))
-    {
-      SJ2_ASSERT_FATAL(false,
-                       "PLL lock could not be established before timeout");
-      actual_speed = kDefaultIRCFrequency;
-    }
-    return (actual_speed - desired_speed_in_mhz);
   }
 
-  uint32_t SetAlternatePll(PllInput input_frequency,
-                           uint16_t desired_speed_in_mhz) const
+  void SetAlternatePll(units::frequency::megahertz_t input_frequency,
+                       units::frequency::megahertz_t desired_frequency) const
   {
     uint16_t divider_value = 1;
-    uint64_t timeout_time  = Milliseconds() + kDefaultTimeout;
-    uint64_t current_time  = Milliseconds();
     uint32_t multiplier_value =
-        CalculatePll(input_frequency, desired_speed_in_mhz);
-    uint32_t actual_speed =
-        static_cast<uint32_t>(input_frequency) * multiplier_value;
+        CalculatePll(input_frequency, desired_frequency);
     SelectUsbClockSource(UsbSource::kBaseClock);
     SelectSpifiClockSource(SpifiSource::kBaseClock);
     // must subtract 1 from multiplier value as specified in datasheet
@@ -351,18 +326,11 @@ class SystemController : public sjsu::SystemController
     // Necessary feed sequence to ensure the changes are intentional
     system_controller->PLL1FEED = 0xAA;
     system_controller->PLL1FEED = 0x55;
-    while (!(system_controller->PLL1STAT >> kPlock & 1) &&
-           (current_time < timeout_time))
+
+    while (!bit::Read(system_controller->PLL1STAT, kPlock))
     {
-      current_time = Milliseconds();
+      continue;
     }
-    if (!(system_controller->PLL1STAT >> kPlock & 1) &&
-        (current_time >= timeout_time))
-    {
-      SJ2_ASSERT_FATAL(false,
-                       "PLL lock could not be established before timeout");
-    }
-    return (actual_speed - desired_speed_in_mhz);
   }
 
   void SetCpuClockDivider(uint8_t cpu_divider) const
@@ -381,7 +349,15 @@ class SystemController : public sjsu::SystemController
                     EmcClock::kDivider);
   }
   // TODO(#181): Set USB and Spifi clock rates
-  inline static uint32_t speed_in_hertz = kDefaultIRCFrequency;
+  inline static units::frequency::hertz_t speed_in_hertz = kDefaultIRCFrequency;
 };
+
+inline const sjsu::lpc40xx::SystemController & DefaultSystemController()
+{
+  static sjsu::lpc40xx::SystemController default_system_controller =
+      sjsu::lpc40xx::SystemController();
+  return default_system_controller;
+}
+
 }  // namespace lpc40xx
 }  // namespace sjsu

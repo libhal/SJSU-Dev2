@@ -30,22 +30,16 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-void SineDac(const Dac & dac, uint32_t delay)
+void SineDac(const Dac & dac, std::chrono::microseconds delay)
 {
-  SJ2_ASSERT_FATAL(delay < 500,
-                   "Input frequency out of range! Frequency "
-                   "input needs to be between 0 and 500 Hz.");
   for (uint8_t i = 0; i < 255; i++)
   {
     dac.Write(kSineLookup[i]);
     sjsu::Delay(delay);
   }
 }
-void SawtoothDac(const Dac & dac, uint32_t delay)
+void SawtoothDac(const Dac & dac, std::chrono::microseconds delay)
 {
-  SJ2_ASSERT_FATAL(delay < 500,
-                   "Input delay out of range! Delay "
-                   "input needs to be between 0 and 500 Hz.");
   int sawtooth = 0;
   for (uint8_t i = 0; i < 255; i++)
   {
@@ -55,11 +49,8 @@ void SawtoothDac(const Dac & dac, uint32_t delay)
     sjsu::Delay(delay);
   }
 }
-void TriangleDac(const Dac & dac, uint32_t delay)
+void TriangleDac(const Dac & dac, std::chrono::microseconds delay)
 {
-  SJ2_ASSERT_FATAL(delay < 500,
-                   "Input delay out of range! Delay "
-                   "input needs to be between 0 and 500 Hz.");
   int triangle = 0;
   for (uint8_t i = 0; i < 127; i++)
   {
@@ -76,11 +67,8 @@ void TriangleDac(const Dac & dac, uint32_t delay)
     sjsu::Delay(delay);
   }
 }
-void SerratedDac(const Dac & dac, uint32_t delay)
+void SerratedDac(const Dac & dac, std::chrono::microseconds delay)
 {
-  SJ2_ASSERT_FATAL(delay < 500,
-                   "Input delay out of range! Delay "
-                   "input needs to be between 0 and 500.");
   int serrated = 0;
   for (uint8_t i = 0; i < 127; i++)
   {
@@ -99,7 +87,7 @@ void SerratedDac(const Dac & dac, uint32_t delay)
   }
 }
 
-void StartDemo(const Dac & dac, uint32_t input_cycles)
+void StartDemo(const Dac & dac, std::chrono::microseconds input_cycles)
 {
   for (uint32_t i = 0; i < 4; i++)
   {
@@ -123,6 +111,6 @@ int main()
   LOG_INFO("Starting Output of waves...\n");
   while (true)
   {
-    StartDemo(dac, 5);
+    StartDemo(dac, 1ms);
   }
 }

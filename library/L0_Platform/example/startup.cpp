@@ -25,9 +25,9 @@ namespace
 
 // 6. Define an milliseconds Uptime function
 // ------------------------------------------
-uint64_t Uptime()
+std::chrono::microseconds ExampleUptime()
 {
-  return 0;
+  return 0us;
 }
 // 7. Define a function for stdout
 //    Typically uses UART0 or USB CDC
@@ -62,8 +62,7 @@ extern "C"
 
 // 11. Define default instance of InitializePlatform() function.
 //     Here you construct everything that is needed to run the micrcontroller.
-[[gnu::weak]] void InitializePlatform()
-{
+[[gnu::weak]] void InitializePlatform() {
   // Platform 1. Enable any coprocessors or peripherals that keep the following
   // functions from being executed, for example, activating the floating point
   // unit in the Cortex M4 before running any floating point arithmetic.
@@ -79,13 +78,13 @@ extern "C"
   sjsu::newlib::SetStdout(StdOut);
   sjsu::newlib::SetStdin(StdIn);
   // Platform 6. Set uptime function to the uptime function defined in startup.6
-  sjsu::SetUptimeFunction(Uptime);
+  sjsu::SetUptimeFunction(ExampleUptime);
 }
 
 // Reset entry point for your code.
 // Sets up a simple runtime environment and initializes the C/C++ library.
 
-extern "C" void ResetIsr()
+extern "C" void ResetHandler()
 {
   // 12. Set stack pointer back up to the top of the stack.
   //
@@ -112,3 +111,9 @@ extern "C" void ResetIsr()
 // values.
 // The .crp section kCrpWord
 SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
+
+// 14. Define an milliseconds Uptime function
+// ------------------------------------------
+// Place interrupt vector table here. How this is implemented is very platform
+// specific. See the manufacturer's startup file for details on what it should
+// look like.

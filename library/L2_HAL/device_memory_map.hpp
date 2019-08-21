@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <type_traits>
 
 #include "L1_Peripheral/lpc40xx/i2c.hpp"

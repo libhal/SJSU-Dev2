@@ -10,12 +10,13 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "FreeRTOS.h"
+#include "event_groups.h"
+
 #include "config.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/rtos.hpp"
-// Must include FreeRTOS before event_groups.h
-#include "event_groups.h"
 
 namespace sjsu
 {

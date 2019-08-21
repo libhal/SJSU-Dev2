@@ -10,7 +10,7 @@
 ///
 ///     1. Constructor (create object)
 ///     2. SetClock(...)
-///     3. SetMode(...)
+///     3. SetPull(...)
 ///     4. Initialize()
 ///
 /// Note that all register modifications must be made before the SSP
@@ -48,8 +48,8 @@ class Spi final : public sjsu::Spi
   // SSPn Control Register 1
   struct ControlRegister1  // NOLINT
   {
-    static constexpr bit::Mask kSpiEnable     = bit::CreateMaskFromRange(1);
-    static constexpr bit::Mask kMasterModeBit = bit::CreateMaskFromRange(2);
+    static constexpr bit::Mask kSpiEnable    = bit::CreateMaskFromRange(1);
+    static constexpr bit::Mask kSlaveModeBit = bit::CreateMaskFromRange(2);
   };
   // SSPn Status Register
   struct StatusRegister  // NOLINT
@@ -136,12 +136,9 @@ class Spi final : public sjsu::Spi
     };
   };
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
-
   explicit constexpr Spi(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
+                             DefaultSystemController())
       : bus_(bus), system_controller_(system_controller)
   {
   }
@@ -152,8 +149,7 @@ class Spi final : public sjsu::Spi
   /// See page 601 of user manual UM10562 LPC408x/407x for more details.
   Status Initialize() const override
   {
-    constexpr uint8_t kSpiFormatCode  = 0b00;
-    constexpr uint8_t kMasterModeCode = 0b0;
+    constexpr uint8_t kSpiFormatCode = 0b00;
 
     // Power up peripheral
     system_controller_.PowerUpPeripheral(bus_.power_on_bit);
@@ -164,9 +160,9 @@ class Spi final : public sjsu::Spi
     // Set SSP frame format to SPI
     bus_.registers->CR0 = bit::Insert(
         bus_.registers->CR0, kSpiFormatCode, ControlRegister0::kFrameBit);
-    // Set SPI to master mode
-    bus_.registers->CR1 = bit::Insert(
-        bus_.registers->CR1, kMasterModeCode, ControlRegister1::kMasterModeBit);
+    // Set SPI to master mode by clearing
+    bus_.registers->CR1 = bit::Clear(bus_.registers->CR1,
+                                     ControlRegister1::kSlaveModeBit.position);
     // Enable SSP
     bus_.registers->CR1 =
         bit::Set(bus_.registers->CR1, ControlRegister1::kSpiEnable.position);
@@ -179,7 +175,7 @@ class Spi final : public sjsu::Spi
   {
     constexpr bool kPositiveClockOnIdle  = false;
     constexpr bool kReadMisoOnRising     = false;
-    constexpr uint32_t kDefaultFrequency = 1'000'000;
+    constexpr units::frequency::hertz_t kDefaultFrequency = 1_MHz;
 
     SetDataSize(DataSize::kEight);
     SetClock(kDefaultFrequency, kPositiveClockOnIdle, kReadMisoOnRising);
@@ -231,7 +227,7 @@ class Spi final : public sjsu::Spi
   /// @param read_miso_on_rising - capture serial data on true=first or
   ///        1=second clock cycle
   /// @param frequency - serial clock rate
-  void SetClock(uint32_t frequency,
+  void SetClock(units::frequency::hertz_t frequency,
                 bool positive_clock_on_idle = false,
                 bool read_miso_on_rising    = false) const override
   {
@@ -242,8 +238,10 @@ class Spi final : public sjsu::Spi
     bus_.registers->CR0 = bit::Insert(
         bus_.registers->CR0, read_miso_on_rising, ControlRegister0::kPhaseBit);
 
-    uint16_t prescaler = static_cast<uint16_t>(
-        system_controller_.GetPeripheralFrequency() / frequency);
+    uint16_t prescaler =
+        (system_controller_.GetPeripheralFrequency(bus_.power_on_bit) /
+         frequency)
+            .to<uint16_t>();
     // Store lower half of precalar in clock prescalar register
     bus_.registers->CPSR = prescaler & 0xFF;
     // Store upper 8 bit half of the prescalar in control register 0

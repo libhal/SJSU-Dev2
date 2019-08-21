@@ -1,14 +1,17 @@
 LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/lpc40xx/diskio.cpp
 LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/lpc40xx/startup.cpp
-LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/lpc40xx/interrupt.cpp
 LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/ARM_CM4F/port.c
-
-TESTS += $(LIBRARY_DIR)/L0_Platform/lpc40xx/interrupt.cpp
-TESTS += $(LIBRARY_DIR)/L0_Platform/lpc40xx/test/interrupt_test.cpp
-TESTS += $(LIBRARY_DIR)/L0_Platform/lpc40xx/test/system_controller_test.cpp
+LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/exceptions.cpp
 
 OPENOCD_CONFIG = $(LIBRARY_DIR)/L0_Platform/lpc40xx/lpc40xx.cfg
 
 $(eval $(call BUILD_LIRBARY,liblpc40xx,LIBRARY_LPC40XX))
 
 include $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/m4.mk
+
+platform-flash:
+	@bash -c "\
+	source $(TOOLS_DIR)/nxpprog/modules/bin/activate && \
+	python3 $(TOOLS_DIR)/nxpprog/nxpprog.py \
+	--oscfreq=12000000 --baud=115200 --control \
+	\"$(SJDEV)\" \"$(BINARY)\""

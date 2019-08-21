@@ -8,7 +8,7 @@
 
 #include "L1_Peripheral/i2c.hpp"
 
-#include "L0_Platform/lpc40xx/interrupt.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
@@ -28,6 +28,7 @@ class I2c final : public sjsu::I2c
   // Bringing in I2c Interface's Write and WriteThenRead methods that use
   // std::initializer_list.
   using sjsu::I2c::Write;
+  using sjsu::I2c::Read;
   using sjsu::I2c::WriteThenRead;
 
   enum Control : uint32_t
@@ -61,7 +62,7 @@ class I2c final : public sjsu::I2c
   {
     LPC_I2C_TypeDef * registers;
     sjsu::SystemController::PeripheralID peripheral_power_id;
-    IRQn_Type irq_number;
+    sjsu::cortex::IRQn_Type irq_number;
     Transaction_t & transaction;
     const sjsu::Pin & sda_pin;
     const sjsu::Pin & scl_pin;
@@ -305,14 +306,18 @@ class I2c final : public sjsu::I2c
     i2c.registers->CONCLR = clear_mask;
   }
 
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
+  static constexpr sjsu::cortex::InterruptController kInterruptController =
+      sjsu::cortex::InterruptController();
 
   // This defaults to I2C port 2
   explicit constexpr I2c(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
-      : i2c_(bus), system_controller_(system_controller)
+                             DefaultSystemController(),
+                         const sjsu::InterruptController &
+                             interrupt_controller = kInterruptController)
+      : i2c_(bus),
+        system_controller_(system_controller),
+        interrupt_controller_(interrupt_controller)
   {
   }
 
@@ -322,13 +327,14 @@ class I2c final : public sjsu::I2c
     i2c_.bus.scl_pin.SetPinFunction(i2c_.bus.pin_function_id);
     i2c_.bus.sda_pin.SetAsOpenDrain();
     i2c_.bus.scl_pin.SetAsOpenDrain();
-    i2c_.bus.sda_pin.SetMode(sjsu::Pin::Mode::kInactive);
-    i2c_.bus.scl_pin.SetMode(sjsu::Pin::Mode::kInactive);
+    i2c_.bus.sda_pin.SetPull(sjsu::Pin::Resistor::kNone);
+    i2c_.bus.scl_pin.SetPull(sjsu::Pin::Resistor::kNone);
 
     system_controller_.PowerUpPeripheral(i2c_.bus.peripheral_power_id);
 
     float peripheral_frequency =
-        static_cast<float>(system_controller_.GetPeripheralFrequency());
+        static_cast<float>(system_controller_.GetPeripheralFrequency(
+            i2c_.bus.peripheral_power_id));
     float scll = ((peripheral_frequency / 75'000.0f) / 2.0f) * 0.7f;
     float sclh = ((peripheral_frequency / 75'000.0f) / 2.0f) * 1.3f;
 
@@ -339,14 +345,17 @@ class I2c final : public sjsu::I2c
                                  Control::kStop | Control::kInterrupt;
     i2c_.bus.registers->CONSET = Control::kInterfaceEnable;
 
-    RegisterIsr(i2c_.bus.irq_number, i2c_.handler, true);
+    interrupt_controller_.Register({
+        .interrupt_request_number  = i2c_.bus.irq_number,
+        .interrupt_service_routine = i2c_.handler,
+    });
 
     return Status::kSuccess;
   }
 
   Status Transaction(Transaction_t transaction) const override
   {
-    i2c_.bus.transaction = transaction;
+    i2c_.bus.transaction       = transaction;
     i2c_.bus.registers->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
@@ -398,6 +407,7 @@ class I2c final : public sjsu::I2c
   }
   const Bus_t & i2c_;
   const sjsu::SystemController & system_controller_;
+  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

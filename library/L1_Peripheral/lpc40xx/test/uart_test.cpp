@@ -13,18 +13,21 @@ TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
   memset(&local_uart, 0, sizeof(local_uart));
 
   // Set mock for sjsu::SystemController
-  constexpr uint32_t kDummySystemControllerClockFrequency = 48'000'000;
+  constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
+      48_MHz;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetPeripheralFrequency))
+  When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
+  When(Method(mock_system_controller, GetPeripheralClockDivider))
+      .AlwaysReturn(1);
 
   Mock<sjsu::Pin> mock_tx;
   Fake(Method(mock_tx, SetPinFunction));
-  Fake(Method(mock_tx, SetMode));
+  Fake(Method(mock_tx, SetPull));
   Mock<sjsu::Pin> mock_rx;
   Fake(Method(mock_rx, SetPinFunction));
-  Fake(Method(mock_rx, SetMode));
+  Fake(Method(mock_rx, SetPull));
 
   // Set up for UART2
   // Parameters for constructor
@@ -57,10 +60,10 @@ TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
                             .device_id == id.device_id;
                }));
 
-    Verify(Method(mock_tx, SetMode).Using(sjsu::Pin::Mode::kPullUp)).Once();
+    Verify(Method(mock_tx, SetPull).Using(sjsu::Pin::Resistor::kPullUp)).Once();
     Verify(Method(mock_tx, SetPinFunction).Using(kMockUart2.tx_function_id))
         .Once();
-    Verify(Method(mock_rx, SetMode).Using(sjsu::Pin::Mode::kPullUp)).Once();
+    Verify(Method(mock_rx, SetPull).Using(sjsu::Pin::Resistor::kPullUp)).Once();
     Verify(Method(mock_tx, SetPinFunction).Using(kMockUart2.rx_function_id))
         .Once();
 

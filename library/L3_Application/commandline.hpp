@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdio>
+#include <cstring>
 #include <iterator>
 
 #include "newlib/newlib.hpp"
@@ -81,11 +82,11 @@ class Command : public CommandInterface
       : name_(name), description_(description), program_(program)
   {
   }
-  const char * GetName() override final
+  const char * GetName() override
   {
     return name_;
   }
-  const char * GetDescription() override final
+  const char * GetDescription() override
   {
     return description_;
   }

@@ -22,18 +22,24 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   SystemTimer::sys_tick = &local_systick;
 
   // Set mock for sjsu::SystemController
-  constexpr uint32_t kDummySystemControllerClockFrequency = 12'000'000;
+  constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
+      12_MHz;
 
   Mock<SystemController> mock_system_controller;
   When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
-  SystemTimer test_subject(mock_system_controller.get());
+  Mock<sjsu::InterruptController> mock_interrupt_controller;
+  Fake(Method(mock_interrupt_controller, Register));
+  Fake(Method(mock_interrupt_controller, Deregister));
+
+  SystemTimer test_subject(mock_system_controller.get(),
+                           mock_interrupt_controller.get());
 
   SECTION("SetTickFrequency generate desired frequency")
   {
-    constexpr uint32_t kDivisibleFrequency = 1000;
-    local_systick.LOAD                     = 0;
+    constexpr auto kDivisibleFrequency = 1_kHz;
+    local_systick.LOAD                 = 0;
 
     CHECK(0 == test_subject.SetTickFrequency(kDivisibleFrequency));
     constexpr uint32_t kExpectedLoadValue =
@@ -42,13 +48,14 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   }
   SECTION("SetTickFrequency should return remainder of ticks mismatch")
   {
-    constexpr uint32_t kOddFrequency = 7;
-    local_systick.LOAD               = 0;
+    constexpr auto kOddFrequency = 7_Hz;
+    local_systick.LOAD           = 0;
 
-    CHECK(kDummySystemControllerClockFrequency % kOddFrequency ==
+    CHECK(kDummySystemControllerClockFrequency.to<uint32_t>() %
+              kOddFrequency.to<uint32_t>() ==
           test_subject.SetTickFrequency(kOddFrequency));
-    CHECK((kDummySystemControllerClockFrequency / kOddFrequency) - 1 ==
-          local_systick.LOAD);
+    CHECK(((kDummySystemControllerClockFrequency / kOddFrequency) - 1)
+              .to<uint32_t>() == local_systick.LOAD);
   }
   SECTION("Start Timer should set necessary SysTick Ctrl bits and set VAL to 0")
   {
@@ -78,6 +85,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     CHECK(Status::kInvalidSettings == test_subject.StartTimer());
     CHECK(kClkSourceMask == local_systick.CTRL);
     CHECK(0xBEEF == local_systick.VAL);
+    // TODO(undef): add check for interrupt_controller.Register()
   }
   SECTION("DisableTimer should clear all bits")
   {

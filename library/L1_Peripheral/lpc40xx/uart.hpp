@@ -1,15 +1,18 @@
 #pragma once
 
-#include <array>
 #include <cmath>
 #include <cstdint>
+#include <limits>
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L0_Platform/lpc17xx/LPC17xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/uart.hpp"
 #include "utility/status.hpp"
 #include "utility/time.hpp"
+
+using sjsu::lpc17xx::LPC_UART0_TypeDef;
 
 namespace sjsu
 {
@@ -92,8 +95,10 @@ enum class States
 };
 
 constexpr static UartCalibration_t GenerateUartCalibration(
-    uint32_t baud_rate, uint32_t peripheral_frequency)
+    uint32_t baud_rate, units::frequency::hertz_t peripheral_frequency)
 {
+  uint32_t integer_peripheral_frequency =
+      units::unit_cast<uint32_t>(peripheral_frequency);
   States state = States::kCalculateIntegerDivideLatch;
   UartCalibration_t uart_calibration;
   float baud_rate_float = static_cast<float>(baud_rate);
@@ -108,7 +113,7 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       case States::kCalculateIntegerDivideLatch:
       {
         divide_estimate =
-            DividerEstimate(baud_rate_float, 1, peripheral_frequency);
+            DividerEstimate(baud_rate_float, 1, integer_peripheral_frequency);
 
         if (divide_estimate < 1.0f)
         {
@@ -129,10 +134,10 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       }
       case States::kCalculateDivideLatchWithDecimal:
       {
-        divide_estimate = RoundFloat(
-            DividerEstimate(baud_rate_float, decimal, peripheral_frequency));
-        decimal = FractionalEstimate(baud_rate_float, divide_estimate,
-                                     peripheral_frequency);
+        divide_estimate = RoundFloat(DividerEstimate(
+            baud_rate_float, decimal, integer_peripheral_frequency));
+        decimal         = FractionalEstimate(
+            baud_rate_float, divide_estimate, integer_peripheral_frequency);
         if (1.1f <= decimal && decimal <= 1.9f)
         {
           state = States::kGenerateFractionFromDecimal;
@@ -168,10 +173,8 @@ constexpr static UartCalibration_t GenerateUartCalibration(
         state                         = States::kDone;
         break;
       }
-      case States::kDone: { break;
-      }
-      default: { break;
-      }
+      case States::kDone:
+      default: break;
     }
   }
   return uart_calibration;
@@ -185,6 +188,7 @@ class Uart final : public sjsu::Uart
   using sjsu::Uart::Write;
 
   static constexpr uint8_t kStandardUart = 0b011;
+
   struct Port_t
   {
     LPC_UART_TypeDef * registers;
@@ -212,7 +216,11 @@ class Uart final : public sjsu::Uart
 
    public:
     inline static const Port_t kUart0 = {
-      .registers      = LPC_UART0,
+      // NOTE: required since LPC_UART0 is of type LPC_UART0_TypeDef in lpc17xx
+      // and LPC_UART_TypeDef in lpc40xx causing a "useless cast" warning when
+      // compiled for, some odd reason, for either one being compiled, which
+      // would make more sense if it only warned us with lpc40xx.
+      .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART0_BASE),
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart0,
       .tx             = kUart0Tx,
       .rx             = kUart0Rx,
@@ -247,12 +255,10 @@ class Uart final : public sjsu::Uart
       .rx_function_id = 0b011,
     };
   };
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
 
   explicit constexpr Uart(const Port_t & port,
                           const sjsu::SystemController & system_controller =
-                              kLpc40xxSystemController)
+                              DefaultSystemController())
       : port_(port), system_controller_(system_controller)
   {
   }
@@ -260,14 +266,14 @@ class Uart final : public sjsu::Uart
   Status Initialize(uint32_t baud_rate) const override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
-    // Powering the port
     system_controller_.PowerUpPeripheral(port_.power_on_id);
+
     SetBaudRate(baud_rate);
-    // Setting the pin functions and modes
+
     port_.rx.SetPinFunction(port_.rx_function_id);
     port_.tx.SetPinFunction(port_.tx_function_id);
-    port_.rx.SetMode(sjsu::Pin::Mode::kPullUp);
-    port_.tx.SetMode(sjsu::Pin::Mode::kPullUp);
+    port_.rx.SetPull(sjsu::Pin::Resistor::kPullUp);
+    port_.tx.SetPull(sjsu::Pin::Resistor::kPullUp);
     port_.registers->FCR |= kFIFOEnableAndReset;
 
     return Status::kSuccess;
@@ -276,7 +282,8 @@ class Uart final : public sjsu::Uart
   bool SetBaudRate(uint32_t baud_rate) const override
   {
     uart::UartCalibration_t calibration = uart::GenerateUartCalibration(
-        baud_rate, system_controller_.GetPeripheralFrequency());
+        baud_rate,
+        system_controller_.GetPeripheralFrequency(port_.power_on_id));
 
     constexpr uint8_t kDlabBit = (1 << 7);
 
@@ -307,25 +314,21 @@ class Uart final : public sjsu::Uart
 
   Status Read(uint8_t * data,
               size_t size,
-              uint32_t timeout = UINT32_MAX) const override
+              std::chrono::microseconds timeout = MaxDelay()) const override
   {
+    uint32_t position = 0;
     // NOTE: Consider changing this to using a Wait() call.
-    Status status       = Status::kTimedOut;
-    uint64_t start_time = Milliseconds();
-    size_t position     = 0;
-    while (Milliseconds() < (start_time + timeout))
-    {
+    return Wait(timeout, [this, &data, size, &position]() -> bool {
       if (HasData())
       {
         data[position++] = static_cast<uint8_t>(port_.registers->RBR);
       }
       if (position >= size)
       {
-        status = Status::kSuccess;
-        break;
+        return true;
       }
-    }
-    return status;
+      return false;
+    });
   }
   bool HasData() const override
   {
