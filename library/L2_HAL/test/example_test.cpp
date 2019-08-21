@@ -3,10 +3,25 @@
 
 namespace sjsu
 {
+uint8_t actual_data[128];
+size_t actual_index = 0;
 TEST_CASE("Testing Example Implementation", "[example-implementation]")
 {
   // 1. Setup your mocks
   Mock<sjsu::Example> mock_example;
+  When(Method(mock_example, Write))
+      .AlwaysDo([](const uint8_t * data, size_t length) -> bool {
+        memcpy(&actual_data[actual_index], data, length);
+        actual_index += length;
+      });
+
+  const uint8_t kExpected[] = {0xAA, 0x55, 0xAB};
+
+  for(size_t i = 0; i < std::size(kExpected); i++)
+  {
+    CHECK(actual_data[i] == kExpected[i]);
+  }
+
   sjsu::ExampleHalImplementation test_subject(mock_example.get());
 
   // 2. Test that your Initialize operates as intended
