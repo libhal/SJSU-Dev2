@@ -41,6 +41,14 @@ nav:
     - 'contributing/presubmit-checks.md'
     - 'contributing/style.md'
     - 'contributing/techniques/left-to-right.md'
+<<<<<<< HEAD
+=======
+  - Peripherals:
+    - Lessons: # socialledge
+      - 'tutorials/adc_lesson.md'
+    - Overview: # espressif
+      - 'tutorials/adc_overview.md'
+>>>>>>> 26b92203... Add ADC Tutorial to MkDocs
   - 'about.md'
   - 'copyrights.md'
 
