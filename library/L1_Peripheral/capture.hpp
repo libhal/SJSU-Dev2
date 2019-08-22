@@ -32,7 +32,7 @@ namespace sjsu
             kCaptureEdgeModeBoth
         };
 
-        virtual Status Initialize(uint32_t frequency, IsrPointer isr = nullptr, int32_t priority = -1) const = 0;
+        virtual Status Initialize(units::frequency::hertz_t frequency, IsrPointer isr = nullptr, int32_t priority = -1) const = 0;
         virtual void ConfigureCapture(CaptureChannelNumber channel, CaptureEdgeMode mode) const = 0;
         virtual void EnableCaptureInterrupt(CaptureChannelNumber channel, bool enabled) const = 0;
     };

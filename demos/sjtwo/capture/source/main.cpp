@@ -32,8 +32,9 @@ void CaptureISR(void)
 
 int main()
 {
-  const uint32_t CaptureFrequency = 4'000'000;
-  const uint32_t GeneratorFrequency = 10;
+
+  units::frequency::hertz_t CaptureFrequency = 4_MHz;
+  units::frequency::hertz_t GeneratorFrequency = 10_Hz;
   const float GeneratorDutyCycle = 0.5f;
 
   // Configure P1.14 as T2_CAP0
@@ -41,7 +42,7 @@ int main()
   sjsu::lpc40xx::Pin CapturePin(1, 14);
   CapturePin.SetPinFunction(3);
   CapturePin.SetAsOpenDrain(false);
-  CapturePin.SetMode(sjsu::Pin::Mode::kInactive);
+//  CapturePin.SetMode(sjsu::Pin::Mode::kInactive);
   
   // Configure Timer #2 capture unit, channel 0
   LOG_INFO("Configuring Timer 2 capture unit to sample Channel 0 at 4 MHz");
@@ -64,12 +65,12 @@ int main()
 
   while(1)
   {
-    sjsu::Delay(1000);
+    sjsu::Delay(1s);
     float average_count = static_cast<float>(delta_accumulator) / static_cast<float>(num_samples);
-    double frequency = 1.0f / (average_count * (1.0f / static_cast<float>(CaptureFrequency))) / 2.0f;
+    double frequency = 1.0f / (average_count * (1.0f / CaptureFrequency.to<float>())) / 2.0f;
     delta_accumulator = 0;
     num_samples = 0;
-    LOG_INFO("Input frequency = %.3f Hz, Expcted = %ld", frequency, GeneratorFrequency);
+    LOG_INFO("Input frequency = %.3f Hz, Expcted = %d", frequency, GeneratorFrequency.to<int>());
   }
 
   sjsu::Halt();
