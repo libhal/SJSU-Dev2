@@ -15,8 +15,4 @@ TEST_CASE("Testing lpc40xx capture", "[lpc40xx-capture]")
 {
 }  // namespace sjsu::lpc40xx
 
-
-
-
-
-
+} // namespace sjsu
