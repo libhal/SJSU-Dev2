@@ -6,6 +6,7 @@
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "utility/log.hpp"
+#include "utility/crc.hpp"
 
 namespace sjsu
 {
@@ -14,9 +15,32 @@ namespace sjsu
 // https://www.sdcard.org/downloads/pls/pdf/index.php?p=Part1_Physical_Layer_Simplified_Specification_Ver6.00.jpg&f=Part1_Physical_Layer_Simplified_Specification_Ver6.00.pdf&e=EN_SS1
 // TODO(#348):  Write a class to represent a single Sd Card Block to make use
 //              of block-related functions easier.
-class SdInterface
+
+class Sd
 {
  public:
+  // This value was found through experimentation. The suggested value (found
+  // via research) is to wait at least 1-8 bytes after sending a command's CRC
+  // before expecting a response from the card.
+  // See https://luckyresistor.me/cat-protector/software/sdcard-2/
+  static constexpr uint8_t kBusTimeout = 250;
+
+  struct DebugSdCard_t
+  {
+  };
+
+  // Enforcing block-size cross-compatibility
+  static constexpr uint16_t kBlockSize = 512;
+  static constexpr sjsu::crc::CrcTableConfig_t<uint8_t> kCrcTable8 =
+      sjsu::crc::GenerateCrc7Table<uint8_t>();
+  static constexpr sjsu::crc::CrcTableConfig_t<uint16_t> kCrcTable16 =
+      sjsu::crc::GenerateCrc16Table();
+
+  explicit constexpr Sd(const Spi & spi, const Gpio & chip_select)
+      : spi_(spi), chip_select_(chip_select)
+  {
+  }
+
   /// @description     a response frame struct to contain the various responses
   ///                  sent by the card after commands are issued (response type
   ///                  and length depend on the command sent)
@@ -99,7 +123,7 @@ class SdInterface
                                // (card-specific data) register
     kStopTrans = 0x40 | 12,    // CMD12: terminates a multi-block read or
                                // write operation
-    kGetStatus = 0x04 | 13,    // CMD13: get status register
+    kGetStatus = 0x40 | 13,    // CMD13: get status register
     kChgBlkLen = 0x40 | 16,    // CMD16: change block length (only
                                // effective in SDSC cards; SDHC/SDXC
                                // cards are locked to 512-byte blocks)
@@ -132,22 +156,6 @@ class SdInterface
     kNo  = false
   };
 
-  /// @description     A template housing a CRC7 or CRC16 table for the SD
-  ///                  card, using either an 8-bit or 16-bit data type
-  template <typename T>
-  struct CrcTableConfig_t
-  {
-    static constexpr size_t kTableSize   = 256;
-    static constexpr uint32_t kPoly16bit = (1 << 16 | 1 << 12 | 1 << 5) + 1;
-    static constexpr uint8_t kPoly8bit   = 0x89;
-
-    // Compile-time check for appropriate crc table type
-    static_assert(
-        std::is_same<T, uint16_t>::value || std::is_same<T, uint8_t>::value,
-        "Incompatibility: SD CRC table only accepts uint8_t or uint16_t");
-    T crc_table[kTableSize] = { 0 };
-  };
-
   /// @description     Structure for recording information about the SD Card
   // TODO(#350): Add support for CID/CSD Registers
   struct CardInfo_t
@@ -161,283 +169,7 @@ class SdInterface
     Response_t response;
   };
 
-  /// @description     This function acts as a compile-time CRC-7 table
-  ///                  generator
-  /// @returns         tableInfo
-  ///                  The configured CRC-7 table container.
-  template <typename T>
-  constexpr static CrcTableConfig_t<T> GenerateCrc7Table()
-  {
-    CrcTableConfig_t<T> crc_table = CrcTableConfig_t<T>();
-    size_t i = 0, j = 0;
-    // generate a table value for all 256 possible byte values
-    for (i = 0; i < 0xFF; i++)
-    {
-      bool most_significant_bit_set = static_cast<bool>(i & 0x80);
-      uint8_t polynomial_compare =
-          static_cast<uint8_t>(i) ^ crc_table.kPoly8bit;
-
-      crc_table.crc_table[i] = (most_significant_bit_set)
-                                   ? static_cast<T>(polynomial_compare)
-                                   : static_cast<T>(i);
-
-      for (j = 1; j < 8; j++)
-      {
-        crc_table.crc_table[i] = static_cast<T>(crc_table.crc_table[i] << 1);
-        if (crc_table.crc_table[i] & 0x80)
-        {
-          crc_table.crc_table[i] ^= crc_table.kPoly8bit;
-        }
-      }
-    }
-    return crc_table;
-  }
-
-  /// @description     This function acts as a compile-time CRC-16 table
-  ///                  generator
-  /// @parameter       n/a
-  /// @returns         tableInfo
-  ///                  The configured CCITT CRC-16 table container.
-  constexpr static CrcTableConfig_t<uint16_t> GenerateCrc16Table()
-  {
-    // Create a place to store our table data
-    CrcTableConfig_t<uint16_t> table;
-
-    for (uint16_t i = 0; i < 256; i++)
-    {
-      // Initialize the CRC for this byte
-      uint16_t crc = static_cast<uint16_t>(i << 8);
-
-      // Check each bit
-      for (uint16_t j = 0; j < 8; j++)
-      {
-        // Check if we will need to add the polynomial with no carry
-        // (i.e. XOR it)
-        bool xor_is_needed = crc & (1 << 15);
-
-        // Left-shift the crc
-        crc = static_cast<uint16_t>(crc << 1);
-
-        // Check if msb is 1
-        if (xor_is_needed)
-        {
-          // XOR it with the polynomial
-          crc ^= static_cast<uint16_t>(table.kPoly16bit);
-        }
-      }
-
-      // Add crc to the table
-      table.crc_table[i] = crc;
-    }
-
-    // Return the CRC-16 table
-    return table;
-  }
-
-  /// @description     sends a command frame to the SD Card and sets the
-  ///                  response
-  /// @parameter       sdc                  the command code to
-  ///                                       send as the first byte
-  /// @parameter       arg                  the 4-byte argument
-  ///                                       for the command
-  /// @parameter       response_buffer      pointer to a buffer to
-  ///                                       house the response
-  ///                                       frame
-  /// @parameter       delay                delay (ms) between
-  ///                                       asserting CS and
-  ///                                       sending a cmd frame
-  /// @parameter       keep_alive           determines whether to
-  ///                                       de-assert CS after
-  ///                                       receiving response
-  /// @returns         on success: the number of bytes given in the response
-  ///                  on failure: -1
-  virtual uint32_t SendCmd(Command sdc,
-                           uint32_t arg,
-                           uint8_t response_buffer[],
-                           uint32_t delay,
-                           KeepAlive keep_alive) = 0;
-
-  /// @description     initializes all required hardware constructs to talk
-  ///                  to the SD Card via SPI/SPI
-  virtual void Initialize() = 0;
-
-  /// @description     runs the SD Card initialization sequence, effectively
-  ///                  resetting communication with the card and mounting it
-  ///                  to the board
-  /// @parameter       sd                  a pointer to the SD
-  ///                                      Card data structure
-  /// @returns         true on init success
-  virtual bool Mount(CardInfo_t * sd) = 0;
-
-  /// @description     reads any number of 512-byte blocks from the SD Card
-  ///                  and returns the received block
-  ///                  This function assumes the block length is locked to
-  ///                  512-bytes (as is the case for SDHC/SDXC cards).
-  ///                  SD Command 17 and 18 are are used for single and multi
-  ///                  block reads, respectively.
-  /// @parameter       address      The address of the starting
-  ///                               block to read from. Note that
-  ///                               this address must be aligned
-  ///                               with a block boundary. By
-  ///                               assuming block size of 512-
-  ///                               bytes, valid addresses must be
-  ///                               multiples of 512.
-  ///                               Some Valid Examples:
-  ///                               0x00000000 --> byte addr 0
-  ///                               0x00000200 --> byte addr 512
-  ///                               0x00000400 --> byte addr 1024
-  ///                               0x00000600 --> byte addr 1536
-  ///                               Some Invalid Examples:
-  ///                               0x00000001 --> byte addr 1
-  ///                               0x000001FF --> byte addr 511
-  ///                               0x00000300 --> byte addr 768
-  /// @parameter       array        A pointer to an array where
-  ///                               the bytes read will be stored.
-  ///                               The array must be able to hold
-  ///                               a multiple 512 bytes (the SD
-  ///                               standard size of blocks).
-  /// @parameter       blocks       The number of blocks to read.
-  ///                               Inherently, this number should
-  ///                               be the number of 512-byte
-  ///                               blocks that the above array
-  ///                               can store. If omitted, this
-  ///                               defaults to 1 (i.e. a single
-  ///                               512-byte block).
-  /// @returns         status       Returns the R1-type command
-  ///                               response byte returned from
-  ///                               the card after the initial
-  ///                               read command is sent. See
-  ///                               the official SD documentation
-  ///                               for details on what these
-  ///                               flags mean.
-  virtual uint8_t ReadBlock(uint32_t address,
-                            uint8_t * array,
-                            uint32_t blocks = 1) = 0;
-
-  /// @description     writes any number of 512-byte blocks to the SD Card
-  ///                  and returns the status of the operation.
-  ///                  This function assumes the block length is locked to
-  ///                  512-bytes (as is the case for SDHC/SDXC cards).
-  /// @parameter       address      The address of the starting
-  ///                               block to write to. Note that
-  ///                               this address must be aligned
-  ///                               with a block boundary. By
-  ///                               assuming block size of 512-
-  ///                               bytes, valid addresses must be
-  ///                               multiples of 512.
-  ///                               Some Valid Examples:
-  ///                               0x00000000 --> byte addr 0
-  ///                               0x00000200 --> byte addr 512
-  ///                               0x00000400 --> byte addr 1024
-  ///                               0x00000600 --> byte addr 1536
-  ///                               Some Invalid Examples:
-  ///                               0x00000001 --> byte addr 1
-  ///                               0x000001FF --> byte addr 511
-  ///                               0x00000300 --> byte addr 768
-  /// @parameter       array        A pointer to an array where
-  ///                               the bytes to write are stored.
-  ///                               The array must be able to hold
-  ///                               a multiple 512 bytes (the SD
-  ///                               standard size of blocks).
-  /// @parameter       blocks       The number of blocks to write.
-  ///                               Inherently, this number should
-  ///                               be the number of 512-byte
-  ///                               blocks that the above array
-  ///                               stores. If omitted, this will
-  ///                               default to 1 (i.e. a single
-  ///                               512-byte block).
-  /// @returns         status       Returns the R1-type command
-  ///                               reponse byte returned from
-  ///                               the card after the initial
-  ///                               write command is sent. See
-  ///                               the official SD documentation
-  ///                               for details on what these
-  ///                               flags mean.
-  virtual uint8_t WriteBlock(uint32_t address,
-                             const uint8_t * array,
-                             uint32_t blocks = 1) = 0;
-
-  /// @description     Deletes any number of 512-byte blocks from the SD Card
-  ///                  This function assumes the block length is locked to
-  ///                  512-bytes (as is the case for SDHC/SDXC cards).
-  /// @parameter       start        The address of the block to
-  ///                               start deleting from. Note that
-  ///                               this address must be aligned
-  ///                               with a block boundary. By
-  ///                               assuming block size of 512-
-  ///                               bytes, valid addresses must be
-  ///                               multiples of 512.
-  ///                               Some Valid Examples:
-  ///                               0x00000000 --> byte addr 0
-  ///                               0x00000200 --> byte addr 512
-  ///                               0x00000400 --> byte addr 1024
-  ///                               0x00000600 --> byte addr 1536
-  ///                               Some Invalid Examples:
-  ///                               0x00000001 --> byte addr 1
-  ///                               0x000001FF --> byte addr 511
-  ///                               0x00000300 --> byte addr 768
-  /// @parameter       end          The address of the last block
-  ///                               to delete. Must also align
-  ///                               with a block boundary.
-  /// @returns         status        Returns the R1b-type command
-  ///                               response byte returned from
-  ///                               the card after the final
-  ///                               erase command is sent.
-  virtual uint8_t DeleteBlock(uint32_t start, uint32_t end) = 0;
-
-  /// @description     This function performs a CRC-7 Add Operation
-  /// @parameter       CRC          The CRC to add upon
-  /// @parameter       message_byte The byte to use when
-  ///                               performing the add operation.
-  /// @returns         newCRC       The new CRC-7 value resulting
-  ///                               from the add operation.
-  virtual uint8_t Crc7Add(uint8_t crc, uint8_t message_byte) = 0;
-
-  /// @description     This function acquires the CRC-7 code of a given
-  ///                  message with the given length
-  /// @parameter       message
-  ///                               A pointer to an array housing
-  ///                               the message.
-  /// @parameter       length       The length of the message
-  /// @returns         crc
-  virtual uint8_t GetCrc7(uint8_t message[], uint8_t length) = 0;
-
-  /// @description     This function acquires the CRC-16 code of a given
-  ///                  message with the given length
-  /// @parameter       message      A pointer to an array housing
-  ///                               the message.
-  /// @parameter       length       The length of the message
-  /// @returns         newCRC       The new CRC-16 value as a result from the
-  ///                               calculation.
-  virtual uint16_t GetCrc16(uint8_t message[], uint16_t length) = 0;
-};
-
-class Sd final : public SdInterface
-{
- public:
-  // This value was found through experimentation. The suggested value (found
-  // via research) is to wait at least 1-8 bytes after sending a command's CRC
-  // before expecting a response from the card.
-  // See https://luckyresistor.me/cat-protector/software/sdcard-2/
-  static constexpr uint8_t kBusTimeout = 250;
-
-  struct DebugSdCard_t
-  {
-  };
-
-  // Enforcing block-size cross-compatibility
-  static constexpr uint16_t kBlockSize = 512;
-  static constexpr CrcTableConfig_t<uint8_t> kCrcTable8 =
-      GenerateCrc7Table<uint8_t>();
-  static constexpr CrcTableConfig_t<uint16_t> kCrcTable16 =
-      GenerateCrc16Table();
-
-  explicit constexpr Sd(const Spi & spi, const Gpio & chip_select)
-      : spi_(spi), chip_select_(chip_select)
-  {
-  }
-
-  void Initialize() override
+  virtual void Initialize()
   {
     LOG_DEBUG("Begin initialization:");
     LOG_DEBUG("Setting CS as output...");
@@ -455,7 +187,7 @@ class Sd final : public SdInterface
 
   // Initialize SD Card
   // TODO(#349): Split method into smaller piece with single jobs
-  bool Mount(CardInfo_t * sd) override
+  virtual bool Mount(CardInfo_t * sd)
   {
     uint8_t tries     = 0;
     bool card_is_idle = false;
@@ -464,7 +196,7 @@ class Sd final : public SdInterface
     // CMD0 + (active-low) CS
     LOG_DEBUG("Sending SD Card to Idle State...");
     sd->response.length = SendCmd(Command::kReset, 0x00000000,
-                                  sd->response.data.byte, 100, KeepAlive::kYes);
+                                  sd->response.data.byte, KeepAlive::kYes);
 
     // Reset the card again to trigger SPI mode
     LOG_DEBUG("Initializing SPI mode...");
@@ -472,7 +204,7 @@ class Sd final : public SdInterface
     {
       tries++;
       sd->response.length = SendCmd(
-          Command::kReset, 0x00, sd->response.data.byte, 100, KeepAlive::kYes);
+          Command::kReset, 0x00, sd->response.data.byte, KeepAlive::kYes);
 
       // Check if R1 response frame's bit 1 is set (to ensure that
       // card is in idle state)
@@ -490,7 +222,7 @@ class Sd final : public SdInterface
     {
       LOG_ERROR("Failed to initiate SPI mode within timeout. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
-                                    sd->response.data.byte, 0, KeepAlive::kNo);
+                                    sd->response.data.byte, KeepAlive::kNo);
       return false;
     }
 
@@ -502,14 +234,14 @@ class Sd final : public SdInterface
     sd->response.length =
         SendCmd(Command::kGetOp,
                 static_cast<uint32_t>((supported_voltage << 8) | kCheckPattern),
-                sd->response.data.byte, 100, KeepAlive::kYes);
+                sd->response.data.byte, KeepAlive::kYes);
     if (sd->response.data.byte[4] != kCheckPattern)
     {
       // If the last byte is not an exact echo of the LSB of the kGetOp
       // command's argument, this response is invalid
       LOG_ERROR("Response integrity check failed. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
-                                    sd->response.data.byte, 0, KeepAlive::kNo);
+                                    sd->response.data.byte, KeepAlive::kNo);
       return false;
     }
     else if (sd->response.data.byte[3] &
@@ -520,7 +252,7 @@ class Sd final : public SdInterface
       // support our device's operating voltage
       LOG_ERROR("Unsupported voltage in use. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
-                                    sd->response.data.byte, 0, KeepAlive::kNo);
+                                    sd->response.data.byte, KeepAlive::kNo);
       return false;
     }
 
@@ -532,7 +264,7 @@ class Sd final : public SdInterface
     {
       // Send host's operating conditions
       sd->response.length =
-          SendCmd(Command::kInit, 0x40000000, sd->response.data.byte, 100,
+          SendCmd(Command::kInit, 0x40000000, sd->response.data.byte,
                   KeepAlive::kYes);
       tries++;
     } while (tries < kBusTimeout && sd->response.data.byte[0] & 0x01);
@@ -540,7 +272,7 @@ class Sd final : public SdInterface
     {
       LOG_ERROR("SD Card timed out. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
-                                    sd->response.data.byte, 0, KeepAlive::kNo);
+                                    sd->response.data.byte, KeepAlive::kNo);
       return false;
     }
 
@@ -549,7 +281,7 @@ class Sd final : public SdInterface
     LOG_DEBUG("Reading Card Capacity Information...");
     // Read CCS
     sd->response.length = SendCmd(Command::kGetOcr, 0x00,
-                                  sd->response.data.byte, 100, KeepAlive::kYes);
+                                  sd->response.data.byte, KeepAlive::kYes);
     if (sd->response.data.byte[1] & 0x40)
     {
       // The card is either high or extended capacity
@@ -576,21 +308,21 @@ class Sd final : public SdInterface
       // Send requested byte size
       sd->response.length =
           SendCmd(Command::kChgBlkLen, static_cast<uint32_t>(kBlockSize),
-                  sd->response.data.byte, 0, KeepAlive::kYes);
+                  sd->response.data.byte, KeepAlive::kYes);
     }
 
     return true;
   }
 
   // Returns string to represent a boolean value
-  const char * ToBool(bool condition)
+  virtual const char * ToBool(bool condition)
   {
     return (condition) ? "true" : "false";
   }
 
   // Waits for the card to respond after a single or multi block read cmd is
   // sent.
-  void WaitToReadBlock()
+  virtual void WaitToReadBlock()
   {
     // Since the command encountered no errors, we can now begin to
     // read data. The card will enter "BUSY" mode following reception
@@ -632,7 +364,7 @@ class Sd final : public SdInterface
 
   // Waits for the card to be ready to receive a new block after one has
   // been written or erased
-  void WaitWhileBusy()
+  virtual void WaitWhileBusy()
   {
     // Wait for the card to finish programming (i.e. when the
     // bytes return to 0xFF)
@@ -646,9 +378,9 @@ class Sd final : public SdInterface
   }
 
   // Read any number of blocks from the SD card
-  uint8_t ReadBlock(uint32_t address,
+  virtual uint8_t ReadBlock(uint32_t address,
                     uint8_t * array,
-                    uint32_t blocks = 1) override
+                    uint32_t blocks = 1)
   {
     LOG_DEBUG("Block %" PRId32 " :: 0x%" PRIX32 " for %" PRId32 " blocks",
               address, address, blocks);
@@ -677,7 +409,7 @@ class Sd final : public SdInterface
 
     // Send initial read command
     sd.response.length =
-        SendCmd(read_cmd, address, sd.response.data.byte, 100, KeepAlive::kYes);
+        SendCmd(read_cmd, address, sd.response.data.byte, KeepAlive::kYes);
     LOG_DEBUG("Sent Read Cmd");
     LOG_DEBUG("[R1 Response:0x%02X]", sd.response.data.byte[0]);
 
@@ -736,7 +468,7 @@ class Sd final : public SdInterface
       if (blocks > 1)
       {
         sd.response.length =
-            SendCmd(Command::kStopTrans, 0xFFFFFFFF, sd.response.data.byte, 100,
+            SendCmd(Command::kStopTrans, 0xFFFFFFFF, sd.response.data.byte,
                     KeepAlive::kNo);
       }
 
@@ -769,7 +501,7 @@ class Sd final : public SdInterface
     {
       // Query the status register
       sd.response.length = SendCmd(Command::kGetStatus, 32,
-                                   sd.response.data.byte, 0, KeepAlive::kNo);
+                                   sd.response.data.byte, KeepAlive::kNo);
     } while (sd.response.data.byte[0] & 0x01);
     LOG_DEBUG("SD Card is out of Idle Mode!");
 
@@ -779,9 +511,9 @@ class Sd final : public SdInterface
   }
 
   // Writes any number of 512-byte blocks to the SD Card
-  uint8_t WriteBlock(uint32_t address,
+  virtual uint8_t WriteBlock(uint32_t address,
                      const uint8_t * array,
-                     uint32_t blocks = 1) override
+                     uint32_t blocks = 1)
   {
     // Wait for a previous command to finish
     WaitWhileBusy();
@@ -804,7 +536,7 @@ class Sd final : public SdInterface
     }
 
     // Send initial write command
-    sd.response.length = SendCmd(write_cmd, address, sd.response.data.byte, 100,
+    sd.response.length = SendCmd(write_cmd, address, sd.response.data.byte,
                                  KeepAlive::kYes);
     LOG_DEBUG("Sent Write Cmd");
     LOG_DEBUG("[R1 Response:0x%02X]", sd.response.data.byte[0]);
@@ -847,7 +579,7 @@ class Sd final : public SdInterface
           // Send an immediate stop (CMD12)
           sd.response.length =
               SendCmd(Command::kStopTrans, 0xFFFFFFFF, sd.response.data.byte,
-                      100, KeepAlive::kYes);
+                      KeepAlive::kYes);
           LOG_DEBUG("Stopped Transmission due to rejection...");
           LOG_DEBUG("[R1 Response: 0x%02X]", sd.response.data.byte[0]);
 
@@ -856,7 +588,7 @@ class Sd final : public SdInterface
           {
             sd.response.length =
                 SendCmd(Command::kGetStatus, 0xFFFFFFFF, sd.response.data.byte,
-                        100, KeepAlive::kYes);
+                        KeepAlive::kYes);
             LOG_DEBUG(
                 "Checking Status Register to see cause of Write Error...");
             LOG_DEBUG("[R2 Response: 0x%04" PRIX32 "]",
@@ -892,7 +624,7 @@ class Sd final : public SdInterface
   }
 
   // Deletes any number of blocks (inclusively) within a range of address.
-  uint8_t DeleteBlock(uint32_t start, uint32_t end) override
+  virtual uint8_t DeleteBlock(uint32_t start, uint32_t end)
   {
     // Wait for a previous command to finish
     WaitWhileBusy();
@@ -904,7 +636,7 @@ class Sd final : public SdInterface
     // Set the delete start address
     LOG_DEBUG("Setting Delete Start Address...");
     sd.response.length = SendCmd(Command::kDelFrom, start,
-                                 sd.response.data.byte, 100, KeepAlive::kYes);
+                                 sd.response.data.byte, KeepAlive::kYes);
 
     // Wait while the writing the start address
     WaitWhileBusy();
@@ -921,7 +653,7 @@ class Sd final : public SdInterface
     {
       LOG_DEBUG("Setting Delete End Address...");
       sd.response.length = SendCmd(Command::kDelTo, end, sd.response.data.byte,
-                                   100, KeepAlive::kYes);
+                                   KeepAlive::kYes);
     }
 
     // Wait while the writing the end address
@@ -940,7 +672,7 @@ class Sd final : public SdInterface
       // Issue the delete command to delete from our from:to range
       LOG_DEBUG("Issuing Delete Command...");
       sd.response.length = SendCmd(Command::kDel, 0xFFFFFFFF,
-                                   sd.response.data.byte, 100, KeepAlive::kYes);
+                                   sd.response.data.byte, KeepAlive::kYes);
 
       // Wait while the deletion occurs
       WaitWhileBusy();
@@ -955,11 +687,10 @@ class Sd final : public SdInterface
   }
 
   // Send a command
-  uint32_t SendCmd(Command sdc,
+  virtual uint32_t SendCmd(Command sdc,
                    uint32_t arg,
                    uint8_t response_buffer[],
-                   uint32_t delay,
-                   KeepAlive keep_alive) override
+                   KeepAlive keep_alive)
   {
     ResponseType res_type;
     uint8_t res_len    = 0;
@@ -1011,12 +742,6 @@ class Sd final : public SdInterface
 
     // Select the SD Card
     chip_select_.Set(Gpio::State::kLow);
-
-    // If desired, wait a bit before talking
-    if (delay > 0)
-    {
-      Delay(std::chrono::milliseconds(delay));
-    }
 
     // Send the desired command frame to the SD card board
     // Begin by transfering the command byte
@@ -1100,13 +825,13 @@ class Sd final : public SdInterface
   }
 
   // Adds a message byte to the current CRC-7 to get a the new CRC-7
-  uint8_t Crc7Add(uint8_t crc, uint8_t message_byte) override
+  virtual uint8_t Crc7Add(uint8_t crc, uint8_t message_byte)
   {
     return kCrcTable8.crc_table[(crc << 1) ^ message_byte];
   }
 
   // Returns the CRC-7 for a message of "length" bytes
-  uint8_t GetCrc7(uint8_t * message, uint8_t length) override
+  virtual uint8_t GetCrc7(uint8_t * message, uint8_t length)
   {
     uint8_t crc = 0;
     for (int i = 0; i < length; i++)
@@ -1117,7 +842,7 @@ class Sd final : public SdInterface
   }
 
   // Returns CCITT CRC-16 for a message of "length" bytes
-  uint16_t GetCrc16(uint8_t * message, uint16_t length) override
+  virtual uint16_t GetCrc16(uint8_t * message, uint16_t length)
   {
     uint64_t crc = 0x0000;
     uint64_t temp;
