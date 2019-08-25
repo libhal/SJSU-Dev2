@@ -172,13 +172,17 @@ function install_nxpprog()
   echo "└─────────────────────────────────────────────────── "
   rm -rf "nxpprog/"
   git clone --depth=1 https://github.com/kammce/nxpprog.git "nxpprog/"
-  # Save the result of git clone
   local git_clone=$?
-  cd "nxpprog/"
-  ./setup
-  local nxp_setup_status=$?
 
-  return $(($git_clone_status + $nxp_setup_status))
+  cd "nxpprog/"
+
+  git checkout --quiet 521aebb124491cc3254d38aa67bb374e2881ad1e
+  local git_checkout=$?
+
+  ./setup
+  local setup_status=$?
+
+  return $(($git_clone + $setup_status + $git_checkout))
 }
 
 function generate_location_file()
