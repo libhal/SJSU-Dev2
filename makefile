@@ -464,7 +464,7 @@ flash:
 	@$(MAKE) --quiet application
 	@printf \
 	'$(MAGENTA)Programming chip via In-system programming (ISP)...$(RESET)\n'
-	@$(MAKE) platform-flash
+	@$(MAKE) --quiet platform-flash
 # ====================================================================
 # Flash/Program microcontroller using a debug port like jtag or swd
 # ====================================================================
