@@ -98,14 +98,11 @@ namespace sjsu
                 channel.timer_register->IR |= 0x30;
             }
 
-
-
             typedef struct
             {
                 uint32_t count;
                 uint32_t flags;
             } CaptureStatus_t;          
-
 
             static constexpr sjsu::cortex::InterruptController kInterruptController = sjsu::cortex::InterruptController();
 
@@ -137,7 +134,6 @@ namespace sjsu
                         .enable_interrupt = true,
                         .priority = priority
                 });
-//                RegisterIsr(timer_.channel.irq, timer_.isr, true, priority);
 
                 // NOTE: New initialization for Capture library
                 ConfigureCapture(kCaptureChannel0, kCaptureEdgeModeNone);
