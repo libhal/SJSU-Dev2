@@ -7,8 +7,24 @@ Yosemite and above), or Windows 10 with WSL installed.
 
 ## Installing WSL for Windows 10 Users
 
-Windows 10 users must install WSL in order to work with the development
-environment.
+!!! Warning
+    You **MUST** update your laptop or computer to the latest version of
+    Windows. This process is a bit annoying as Windows 10 has to be upgraded
+    serially. Meaning that you cannot update from version 3 to version 10. You
+    need to run update 7 times in order to reach the latest update, version 10.
+
+    Steps to updating windows:
+
+    1. Open the Settings menu and go to `Update & security > Windows Update`
+    2. Click **Check for updates** to prompt your PC to scan for the latest
+       updates. The update will be downloaded and installed automatically.
+    3. Click **Restart Now** to restart your PC.
+    4. Now follow steps 1 to 3 until Windows tells you there are no more updates
+       left.
+
+With an up to date Windows 10 users must install WSL in order to work with the
+development platform.
+
 Follow this link and follow the steps:
 [Install WSL on Windows 10](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
