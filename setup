@@ -176,7 +176,7 @@ function install_nxpprog()
 
   cd "nxpprog/"
 
-  git checkout --quiet 521aebb124491cc3254d38aa67bb374e2881ad1e
+  git checkout --quiet b32f130
   local git_checkout=$?
 
   ./setup
