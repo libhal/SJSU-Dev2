@@ -5,6 +5,7 @@
 #include "L1_Peripheral/i2c.hpp"
 #include "utility/bit.hpp"
 #include "utility/log.hpp"
+#include "third_party/result/result.h"
 
 namespace sjsu
 {
@@ -44,31 +45,41 @@ class Tmp102 final : public Temperature
     return i2c_.Initialize();
   }
 
-  Status GetTemperature(units::temperature::celsius_t * temperature) override
+  Result<units::temperature::celsius_t, Status> GetTemperature() override
   {
-    OneShotShutdown();
+    Status status = OneShotShutdown();
+    if (status != Status::kSuccess)
+    {
+      return Err(status);
+    }
     constexpr uint8_t kBufferLength = 2;
     uint8_t temperature_buffer[kBufferLength];
     // Note: The MSB is received first in the buffer.
-    i2c_.WriteThenRead(kDeviceAddress,
-                       { RegisterAddress::kTemperature },
-                       &temperature_buffer[0],
-                       kBufferLength,
-                       kConversionTimeout);
+    status = i2c_.WriteThenRead(kDeviceAddress,
+                                { RegisterAddress::kTemperature },
+                                &temperature_buffer[0],
+                                kBufferLength,
+                                kConversionTimeout);
+    if (status != Status::kSuccess)
+    {
+      return Err(status);
+    }
     // The temperature value is at bits [15:3].
     const int32_t kTemperatureData =
         (temperature_buffer[0] << 4) | (temperature_buffer[1] >> 4);
     constexpr float kResolution = 0.0625f;
-    *temperature                = units::temperature::celsius_t(
+
+    auto temperature = units::temperature::celsius_t(
         static_cast<float>(kTemperatureData) * kResolution);
-    return Status::kSuccess;
+    return Ok(temperature);
   }
 
  private:
-  void OneShotShutdown() const
+  Status OneShotShutdown() const
   {
-    i2c_.Write(kDeviceAddress,
-               { RegisterAddress::kConfiguration, kOneShotShutdownMode });
+    return i2c_.Write(
+        kDeviceAddress,
+        { RegisterAddress::kConfiguration, kOneShotShutdownMode });
   }
 
   const I2c & i2c_;

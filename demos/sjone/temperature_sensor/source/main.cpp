@@ -13,15 +13,16 @@ int main()
 
   sjsu::lpc17xx::I2c i2c2(sjsu::lpc17xx::I2cBus::kI2c2, system_controller);
   sjsu::Tmp102 temperature_sensor(i2c2, sjsu::Tmp102::DeviceAddress::kGround);
-  units::temperature::celsius_t temperature;
+  // units::temperature::celsius_t temperature;
 
   SJ2_ASSERT_FATAL(temperature_sensor.Initialize() == sjsu::Status::kSuccess,
                    "Failed to initialize Tmp102 Temperature Sensor!");
 
   while (1)
   {
-    temperature_sensor.GetTemperature(&temperature);
-    LOG_INFO("Temperature: %.2f C", temperature.to<double>());
+    auto temperature = temperature_sensor.GetTemperature();
+    LOG_INFO("Temperature: %.2f C", temperature.unwrap().to<double>());
+    //  temperature.to<double>()
     sjsu::Delay(1s);
   }
 

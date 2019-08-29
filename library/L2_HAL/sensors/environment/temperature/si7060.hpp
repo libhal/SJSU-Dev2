@@ -47,7 +47,7 @@ class Si7060 final : public Temperature
     return status;
   }
 
-  Status GetTemperature(units::temperature::celsius_t * temperature) override
+  Result<units::temperature::celsius_t, Status> GetTemperature() override
   {
     // Note that: 1 << 14 = 2^14 = 16384
     constexpr int32_t kSubtractTemperatureData = 1 << 14;
@@ -75,10 +75,10 @@ class Si7060 final : public Temperature
     // datasheets/Temperature-Sensor/si7060-datasheets.pdf
     float acquired_temperature =
         static_cast<float>(temperature_data - kSubtractTemperatureData);
-    *temperature =
+    auto temperature =
         units::temperature::celsius_t((acquired_temperature / 160.0f) + 55.0f);
 
-    return Status::kSuccess;
+    return Ok(temperature);
   }
 
  private:

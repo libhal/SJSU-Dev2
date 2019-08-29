@@ -56,16 +56,4 @@ struct sjtwo // NOLINT
     static sjsu::Sd sd(spi2, sd_cs);
     return sd;
   }
-
-  [[gnu::always_inline]] inline static sjsu::Apds9960 & Gesture()
-  {
-    static sjsu::Apds9960 apds9960(i2c2);
-    return apds9960;
-  }
-
-  [[gnu::always_inline]] inline static sjsu::Si7060 & Temperature()
-  {
-    static sjsu::Si7060 si7060(i2c2);
-    return si7060;
-  }
 };
