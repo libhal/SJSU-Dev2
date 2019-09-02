@@ -134,7 +134,7 @@ class Task : public TaskInterface
   }
   bool DeclaredOnStackCheck()
   {
-#if !defined(HOST_TEST)
+#if !defined(HOST_TEST) && !defined(__unix__)
     // This task's position in memory
     intptr_t address = reinterpret_cast<intptr_t>(this);
     // The .data section starts at RAM address 0. The .bss section follows

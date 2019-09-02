@@ -14,8 +14,8 @@ using UptimeFunction = std::chrono::microseconds (*)();
 
 inline std::chrono::microseconds DefaultUptime()
 {
-  static std::chrono::microseconds inner_time = 0us;
-  return inner_time++;
+  static std::chrono::microseconds default_uptime = 0us;
+  return default_uptime++;
 }
 
 inline UptimeFunction Uptime = DefaultUptime;  // NOLINT

@@ -25,7 +25,7 @@
 #define ENABLE_PREDEFINED_CURRENT_UNITS
 
 #include "third_party/units/units.h"
-#include <chrono>  // NOLINT
+#include <chrono>
 
 using namespace std::chrono_literals;  // NOLINT
 using namespace units::literals;  // NOLINT
