@@ -11,15 +11,11 @@ namespace sjsu
 {
 // Definition of an UptimeFunction
 using UptimeFunction = std::chrono::microseconds (*)();
-/// @returns the maximum possible delay time
-constexpr std::chrono::microseconds MaxDelay()
-{
-  return std::chrono::duration_values<std::chrono::microseconds>::max();
-}
 
 inline std::chrono::microseconds DefaultUptime()
 {
-  return 0us;
+  static std::chrono::microseconds inner_time = 0us;
+  return inner_time++;
 }
 
 inline UptimeFunction Uptime = DefaultUptime;  // NOLINT
@@ -41,7 +37,15 @@ template <typename F>
 template <typename F>
 inline Status Wait(std::chrono::microseconds timeout, F is_done)
 {
-  std::chrono::microseconds timeout_time = Uptime() + timeout;
+  std::chrono::microseconds timeout_time;
+  if (timeout == std::chrono::microseconds::max())
+  {
+    timeout_time = timeout;
+  }
+  else
+  {
+    timeout_time = Uptime() + timeout;
+  }
 
   Status status = Status::kTimedOut;
   while (Uptime() < timeout_time)

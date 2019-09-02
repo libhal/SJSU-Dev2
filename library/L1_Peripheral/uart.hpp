@@ -39,10 +39,10 @@ class Uart
   /// @returns Status::kTimeout if buffer was not filled all the way before
   ///          timeout
   /// @returns Status::kSuccess if read was successful
-  virtual Status Read(
-      uint8_t * data,
-      size_t size,
-      std::chrono::microseconds timeout = MaxDelay()) const = 0;
+  virtual Status Read(uint8_t * data,
+                      size_t size,
+                      std::chrono::microseconds timeout =
+                          std::chrono::microseconds::max()) const    = 0;
   virtual bool HasData() const                                       = 0;
 
   // ================
@@ -64,7 +64,8 @@ class Uart
     Write(data.begin(), data.size());
   }
   /// Wait to receive just 1 byte
-  uint8_t Read(std::chrono::microseconds timeout = MaxDelay()) const
+  uint8_t Read(std::chrono::microseconds timeout =
+                   std::chrono::microseconds::max()) const
   {
     uint8_t byte;
     if (Read(&byte, 1, timeout) == Status::kTimedOut)
