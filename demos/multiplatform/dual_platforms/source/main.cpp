@@ -35,8 +35,8 @@ int main()
   }
   else
   {
-    button_gpio = &sjsu::GetInactive<sjsu::Gpio>();
-    led_gpio    = &sjsu::GetInactive<sjsu::Gpio>();
+    LOG_CRITICAL("Invalid platform for this application!");
+    sjsu::Halt();
   }
   // Phase #3:
   // Pass and initialize all L2 HAL abstraction objects. Typically the hardware
@@ -45,7 +45,7 @@ int main()
   // application.
   sjsu::Button button(*button_gpio);
 
-  // Phase #4:
+  // DONE!
   // Now you can use the L2 HAL abstractions and L1 Peripheral interfaces as
   // you wish.
 
