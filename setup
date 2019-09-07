@@ -76,11 +76,9 @@ function install_linux_prerequisites() {
   echo "       Adding current user to 'dialout' group        "
   echo "└────────────────────────────────────────────────── "
   sudo adduser $USER dialout
-  local add_user=$?
   sudo udevadm control --reload-rules && sudo udevadm trigger
-  local udevadm_control=$?
 
-  return $(($apt_update + $apt_install + $add_user + $udevadm_control))
+  return $(($apt_update + $apt_install))
 }
 
 function install_mac_osx_prerequisites() {
@@ -176,7 +174,7 @@ function install_nxpprog()
 
   cd "nxpprog/"
 
-  git checkout --quiet b32f130
+  git checkout --quiet ea28bd0
   local git_checkout=$?
 
   ./setup

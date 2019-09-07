@@ -36,17 +36,12 @@ the software installed.
 
 Steps to install virtual box and the virtual machine are listed below:
 
-1. Install virtualbox for your computer from this link:
+1. Download and install Virtualbox and then the "VirtualBox Oracle VM VirtualBox
+   Extension Pack" on your computer from this link:
    https://www.virtualbox.org/wiki/Downloads
-2. Download the usb 2.0/3.0 extensions from here, allows you to
-   connect usb devices from your host machine into the virtual machine:
-   https://download.virtualbox.org/virtualbox/6.0.4/Oracle_VM_VirtualBox_Extension_Pack-6.0.4.vbox-extpack
-3. Open the "Oracle_VM_VirtualBox_Extension_Pack-6.0.4.vbox-extpack" and install
-   it into VirtualBox when prompted.
-4. Download the prebuilt virtual machine:
+2. Download the prebuilt virtual machine:
    **[Ubuntu SJSU-Dev.ova](https://drive.google.com/file/d/1SNUkQY07GViJBu7H4jGsOoMN5gbs7kBa/view)**
-5. Open "Ubuntu SJSU-Dev.ova" and import into VirtualBox.
-6. Done!
+3. Open "Ubuntu SJSU-Dev.ova" and import into VirtualBox.
 
 ### Using the Virtual Machine
 1. Open the "Ubuntu SJSU-Dev" Virtual Machine on the left hand side.
