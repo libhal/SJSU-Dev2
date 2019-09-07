@@ -35,6 +35,12 @@ their computer to be able to communicate with the SJTwo board. Follow
 this link and download the driver for your computer.
 [Link to Serial Driver Download](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers)
 
+!!! Warning
+    If you are using a Mac Book Pro 2018 and earlier, make sure to install the
+    legacy driver from the link above. If you installed the latest driver and it
+    did not work, run the uninstall script, and re-install the legacy VCP
+    driver.
+
 ## Installation
 
 ### Step 0: Find a download spot
@@ -93,6 +99,20 @@ project.
 To load the built binary file into your board, run:
 
     make flash
+
+If you want to specify the device port you can try:
+
+For Ubuntu:
+
+    make flash SJDEV=/dev/ttyUSB0
+
+For Windows 10:
+
+    make flash SJDEV=/dev/ttyS3
+
+For Mac OSX:
+
+    make flash SJDEV=/dev/tty.SLAB_USBtoUART
 
 !!! Tip
     If the code wasn't built before, this command will build your latest project
