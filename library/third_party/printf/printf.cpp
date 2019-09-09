@@ -35,6 +35,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "printf.h"
+#include "config.hpp"
 
 // SJSU-Dev2: Suppressing warnings from this file
 #pragma GCC diagnostic push
@@ -434,6 +435,16 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
 // internal vsnprintf
 static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const char* format, va_list va)
 {
+  if constexpr (!config::kIncludeVsnprintf)
+  {
+    int i= 0;
+    for(; format[i] != '\0'; i++)
+    {
+      out(format[i], buffer, 1, maxlen);
+    }
+    return i;
+  }
+
   unsigned int flags, width, precision, n;
   size_t idx = 0U;
 
