@@ -22,7 +22,7 @@ TOOLS_BUNDLE_URL_LINUX="$TOOLS_BUNDLE_BASE_URL-linux.tar.bz2"
 TOOLS_BUNDLE_URL_OSX="$TOOLS_BUNDLE_BASE_URL-osx.tar.bz2"
 # Set later
 TOOLS_BUNDLE_URL=
-TOOLS_FILE_COUNT=9621
+TOOLS_FILE_COUNT=9642
 
 PREREQUISITES=1
 TOOL_BUNDLE=1
@@ -211,7 +211,7 @@ function install_nxpprog()
   echo "                Setting Up nxpprog                   "
   echo "└─────────────────────────────────────────────────── "
   rm -rf "nxpprog/"
-  git clone --depth=1 https://github.com/kammce/nxpprog.git "nxpprog/"
+  git clone https://github.com/kammce/nxpprog.git "nxpprog/"
   local git_clone=$?
 
   cd "nxpprog/"
@@ -284,40 +284,44 @@ function final_install_check
 
   if [[ $install_was_successful -ne "0" ]]
     then
-    printf "\e[0;31m =========================== \e[0m\n"
-    printf "\e[1;31m|   Something went wrong!   |\e[0m\n"
-    printf "\e[1;31m|                           |\e[0m\n"
-    printf "\e[1;31m|      (╯°□ °)╯︵ ┻━┻       |\e[0m\n"
-    printf "\e[0;31m|                           |\e[0m\n"
-    printf "\e[0;31m| Prerequisites Install . %b |\e[0m\n" $prerequisites
-    printf "\e[0;31m| Tools Install ......... %b |\e[0m\n" $tool_bundle
-    printf "\e[0;31m| Python Tools .......... %b |\e[0m\n" $python_tools
-    printf "\e[0;31m| Setup nxpprog ......... %b |\e[0m\n" $nxpprog
-    printf "\e[0;31m| Setup Location File ... %b |\e[0m\n" $location_file
-    printf "\e[0;31m| Project Linking ....... %b |\e[0m\n" $project_link
-    printf "\e[0;31m|                           |\e[0m\n"
-    printf "\e[0;31m =========================== \e[0m\n"
+    printf "\e[0;31m"
+    echo   " =========================== "
+    echo   "|   Something went wrong!   |"
+    echo   "|                           |"
+    echo   "|      (╯°□ °)╯︵ ┻━┻       |"  ; printf "\e[0;31m"
+    echo   "|                           |"
+    echo   "| Prerequisites Install . %b |" $prerequisites ; printf "\n"
+    echo   "| Tools Install ......... %b |" $tool_bundle   ; printf "\n"
+    echo   "| Python Tools .......... %b |" $python_tools  ; printf "\n"
+    echo   "| Setup nxpprog ......... %b |" $nxpprog       ; printf "\n"
+    echo   "| Setup Location File ... %b |" $location_file ; printf "\n"
+    echo   "| Project Linking ....... %b |" $project_link  ; printf "\n"
+    echo   "|                           |"
+    echo   " =========================== "
+    printf "\e[0m\n"
     exit 1
   else
-    printf "\e[0;32m =========================== \e[0m\n"
-    printf "\e[0;32m|                           |\e[0m\n"
-    printf "\e[0;32m| Prerequisites Install . %b |\e[0m\n" $prerequisites
-    printf "\e[0;32m| Tools Install ......... %b |\e[0m\n" $tool_bundle
-    printf "\e[0;32m| Python Tools .......... %b |\e[0m\n" $python_tools
-    printf "\e[0;32m| Setup nxpprog ......... %b |\e[0m\n" $nxpprog
-    printf "\e[0;32m| Setup Location File ... %b |\e[0m\n" $location_file
-    printf "\e[0;32m| Project Linking ....... %b |\e[0m\n" $project_link
-    printf "\e[0;32m|                           |\e[0m\n"
-    printf "\e[0;32m|          (•_•)            |\e[0m\r"
+    printf "\e[0;32m"
+    echo   " =========================== "
+    echo   "|                           |"
+    printf "| Prerequisites Install . %b " $prerequisites ; printf "\e[0;32m|\n"
+    printf "| Tools Install ......... %b " $tool_bundle   ; printf "\e[0;32m|\n"
+    printf "| Python Tools .......... %b " $python_tools  ; printf "\e[0;32m|\n"
+    printf "| Setup nxpprog ......... %b " $nxpprog       ; printf "\e[0;32m|\n"
+    printf "| Setup Location File ... %b " $location_file ; printf "\e[0;32m|\n"
+    printf "| Project Linking ....... %b " $project_link  ; printf "\e[0;32m|\n"
+    echo   "|                           |"
+    printf "|          (•_•)            |\r"
     sleep .5
-    printf "\e[0;32m|          ( •_•)>⌐▪-▪      |\e[0m\r"
+    printf "|          ( •_•)>⌐▪-▪      |\r"
     sleep .5
-    printf "\e[0;32m|          (⌐▪_▪)           |\e[0m\n"
+    printf "|          (⌐▪_▪)           |\n"
     sleep .5
-    printf "\e[0;32m|                           |\e[0m\n"
-    printf "\e[0;32m|      SETUP COMPLETE!      |\e[0m\n"
-    printf "\e[0;32m|                           |\e[0m\n"
-    printf "\e[0;32m =========================== \e[0m\n"
+    echo   "|                           |"
+    echo   "|      SETUP COMPLETE!      |"
+    echo   "|                           |"
+    printf " =========================== "
+    printf "\e[0m\n"
     exit 0
   fi
 }
@@ -361,6 +365,21 @@ else
   # Default if Operating System other than Mac or Linux
   echo -n "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems "
   echo "are supported! Exiting..."
+  exit 1
+fi
+
+if [ "$PREREQUISITES" -ne "0" ]; then
+  printf "\e[0;31m"
+  printf " ─────────────────────────────────────────────────────────┐"
+  echo ""
+  printf "                 Prequisite Install Failed.                "
+  echo ""
+  echo  "  Make sure:                                               "
+  echo  "     - Nothing else is currently being installed using APT "
+  echo  "     - You are connected to the internet                   "
+  echo ""
+  printf "└───────────────────────────────────────────────────────── "
+  printf "\e[0m\n"
   exit 1
 fi
 
