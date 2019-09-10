@@ -142,12 +142,6 @@ static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
 #endif  // !defined(SJ2_DESCRIPTIVE_FUNCTION_NAME)
 SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
 
-/// Used to define the log level of the build
-#if !defined(SJ2_BACKTRACE_DEPTH)
-#define SJ2_BACKTRACE_DEPTH 64
-#endif  // !defined(SJ2_BACKTRACE_DEPTH)
-SJ2_DECLARE_CONSTANT(BACKTRACE_DEPTH, size_t, kBacktraceDepth);
-
 /// @defgroup 3P Third party support defines
 /// @{
 
