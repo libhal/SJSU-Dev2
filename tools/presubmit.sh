@@ -96,6 +96,20 @@ BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
 print_status $SPECIFIC_BUILD_CAPTURE
 echo ""
 
+
+printf "\e[0;33mBuilding Barebones Project\e[0m "
+# Change to the Hyperload project
+cd "$SJBASE/projects/barebones"
+# Clean the build and start building from scratch
+SILENCE=$(make clean)
+# Check if the system can build without any warnings!
+SILENCE=$(make -s application)
+# Set build capture to return code from the build
+SPECIFIC_BUILD_CAPTURE=$?
+BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
+print_status $SPECIFIC_BUILD_CAPTURE
+echo ""
+
 # Build all example projects
 cd $SJBASE/demos/
 
