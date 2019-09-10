@@ -1,6 +1,7 @@
 projects/*
 projects/**/build
 
+!projects/barebones
 !projects/hello_world
 !projects/starter
 
