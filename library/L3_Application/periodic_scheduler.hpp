@@ -42,7 +42,10 @@ class PeriodicTaskInterface
 {
  public:
   virtual PeriodicTaskFunction GetTaskFunction() const = 0;
+  /// @return Returns the periodic semaphore that is used by the
+  ///         PeriodicScheduler to manage the PeriodicTask
   virtual SemaphoreHandle_t GetPeriodicSemaphore()     = 0;
+  /// @return Returns the number of times the task has been executed.
   virtual uint32_t GetRunCount()                       = 0;
 };
 /// @tparam kTaskStackSize Task stack size in bytes.
@@ -75,13 +78,10 @@ class PeriodicTask : public Task<kTaskStackSize>,
   {
     return task_function_;
   }
-  /// @return Returns the periodic semaphore that is used by the
-  ///         PeriodicScheduler to manage the PeriodicTask
   SemaphoreHandle_t GetPeriodicSemaphore() override
   {
     return semaphore_;
   }
-  /// @return Returns the number of times the task has been executed.
   uint32_t GetRunCount() override
   {
     return run_count_;

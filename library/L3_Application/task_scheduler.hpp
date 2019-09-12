@@ -24,21 +24,7 @@ namespace rtos
 {
 class TaskInterface;
 
-class TaskSchedulerInterface
-{
- public:
-  virtual EventGroupHandle_t GetPreRunEventGroupHandle()  = 0;
-  virtual EventBits_t GetPreRunSyncBits()                 = 0;
-  virtual uint8_t GetTaskCount()                          = 0;
-  virtual void AddTask(TaskInterface * task)              = 0;
-  virtual void RemoveTask(const char * task_name)         = 0;
-  virtual TaskInterface * GetTask(const char * task_name) = 0;
-  virtual uint8_t GetTaskIndex(const char * task_name)    = 0;
-  virtual void Start()                                    = 0;
-  virtual void InitializeAllTasks()                       = 0;
-};
-
-class TaskScheduler final : public TaskSchedulerInterface
+class TaskScheduler
 {
  public:
   static TaskScheduler & Instance()
@@ -46,27 +32,27 @@ class TaskScheduler final : public TaskSchedulerInterface
     static TaskScheduler instance;
     return instance;
   };
-  EventGroupHandle_t GetPreRunEventGroupHandle() override
+  EventGroupHandle_t GetPreRunEventGroupHandle()
   {
     return pre_run_event_group_handle_;
   };
-  EventBits_t GetPreRunSyncBits() override
+  EventBits_t GetPreRunSyncBits()
   {
     return pre_run_sync_bits_;
   };
-  // @return Returns the current number of scheduled tasks.
-  uint8_t GetTaskCount() override
+  /// @return Returns the current number of scheduled tasks.
+  uint8_t GetTaskCount()
   {
     return task_count_;
   };
-  // Add a task to the task scheduler. If the scheduler is full, the task will
-  // not be added and a fatal error will be asserted.
-  //
-  // @note When a task inheriting the TaskInterface is constructed, it will
-  // automatically call this function to add itself to the scheduler.
-  //
-  // @param task  Task to add.
-  void AddTask(TaskInterface * task) override
+  /// Add a task to the task scheduler. If the scheduler is full, the task will
+  /// not be added and a fatal error will be asserted.
+  ///
+  /// @note When a task inheriting the TaskInterface is constructed, it will
+  /// automatically call this function to add itself to the scheduler.
+  ///
+  /// @param task  Task to add.
+  void AddTask(TaskInterface * task)
   {
     SJ2_ASSERT_FATAL(
         task_count_ + 1 < config::kTaskSchedulerSize,
@@ -82,16 +68,16 @@ class TaskScheduler final : public TaskSchedulerInterface
       }
     }
   }
-  // Removes a specified task by its name and updates the task_list_ and
-  // task_count_.
-  // @param task_name  Name of the task to remove.
-  void RemoveTask(const char * task_name) override;
-  // Retreive a task by its task name.
-  //
-  // @param   task_name Name of the task.
-  // @return  Returns nullptr if the task does not exist. Otherwise, returns a
-  //          pointer reference to the retrieved task with the matching name.
-  TaskInterface * GetTask(const char * task_name) override
+  /// Removes a specified task by its name and updates the task_list_ and
+  /// task_count_.
+  /// @param task_name  Name of the task to remove.
+  void RemoveTask(const char * task_name);
+  /// Retreive a task by its task name.
+  ///
+  /// @param   task_name Name of the task.
+  /// @return  Returns nullptr if the task does not exist. Otherwise, returns a
+  ///          pointer reference to the retrieved task with the matching name.
+  TaskInterface * GetTask(const char * task_name)
   {
     const uint32_t kTaskIndex = GetTaskIndex(task_name);
     if (kTaskIndex > task_count_)
@@ -100,22 +86,22 @@ class TaskScheduler final : public TaskSchedulerInterface
     }
     return task_list_[kTaskIndex];
   }
-  // Used to get a task's index to determine the sync bit for the PreRun event
-  // group.
-  //
-  // @param   task_name Name of the task.
-  // @return  Returns the index of the specified task. If the task is not
-  //          scheduled, kTaskSchedulerSize + 1 will be returned.
-  uint8_t GetTaskIndex(const char * task_name) override;
-  // @return Returns a pointer reference to all currently scheduled tasks.
+  /// Used to get a task's index to determine the sync bit for the PreRun event
+  /// group.
+  ///
+  /// @param   task_name Name of the task.
+  /// @return  Returns the index of the specified task. If the task is not
+  ///          scheduled, kTaskSchedulerSize + 1 will be returned.
+  uint8_t GetTaskIndex(const char * task_name);
+  /// @return Returns a pointer reference to all currently scheduled tasks.
   TaskInterface ** GetAllTasks()
   {
     return task_list_;
   }
-  // Starts the scheduler and attempts to initialize all tasks.
-  // If there are currently no tasks scheduled, a fatal error will be
-  // asserted.
-  void Start() override
+  /// Starts the scheduler and attempts to initialize all tasks.
+  /// If there are currently no tasks scheduled, a fatal error will be
+  /// asserted.
+  void Start()
   {
     SJ2_ASSERT_FATAL(
         task_count_ != 0,
@@ -127,30 +113,31 @@ class TaskScheduler final : public TaskSchedulerInterface
   }
 
  private:
-  // Array containing all scheduled tasks.
-  TaskInterface * task_list_[config::kTaskSchedulerSize];
-  // Current number of scheduled tasks in task_list_.
-  uint8_t task_count_;
-  // Buffer to hold the static allocation of the PreRun Event Group.
-  StaticEventGroup_t pre_run_event_group_buffer_;
-  // Event Group handle of for notfiying all PreRun are complete.
-  EventGroupHandle_t pre_run_event_group_handle_;
-  // All PreRun sync bits for PreRun Event Group.
-  EventBits_t pre_run_sync_bits_;
-  // Function used during InitalizeAllTasks() for xTaskCreate() for running
-  // scheduled tasks.
-  //
-  // @param task_ptr Pointer reference of the task to run.
+  /// Function used during InitalizeAllTasks() for xTaskCreate() for running
+  /// scheduled tasks.
+  ///
+  /// @param task_ptr Pointer reference of the task to run.
   static void RunTask(void * task_ptr);
 
   TaskScheduler()
       : task_count_(0),
         pre_run_event_group_handle_(NULL),
         pre_run_sync_bits_(0x0){};
-  // Attempt to initialize each scheduled task with xTaskCreate() and execute
-  // each task's Setup().
-  // A fatal error is asserted if either xTaskCreate() or Setup() fails.
-  void InitializeAllTasks() override;
+  /// Attempt to initialize each scheduled task with xTaskCreate() and execute
+  /// each task's Setup().
+  /// A fatal error is asserted if either xTaskCreate() or Setup() fails.
+  void InitializeAllTasks();
+
+  /// Array containing all scheduled tasks.
+  TaskInterface * task_list_[config::kTaskSchedulerSize];
+  /// Current number of scheduled tasks in task_list_.
+  uint8_t task_count_;
+  /// Buffer to hold the static allocation of the PreRun Event Group.
+  StaticEventGroup_t pre_run_event_group_buffer_;
+  /// Event Group handle of for notfiying all PreRun are complete.
+  EventGroupHandle_t pre_run_event_group_handle_;
+  /// All PreRun sync bits for PreRun Event Group.
+  EventBits_t pre_run_sync_bits_;
 };
 }  // namespace rtos
 }  // namespace sjsu
