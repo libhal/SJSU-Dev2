@@ -6,6 +6,7 @@
 
 namespace sjsu
 {
+/// Analog-to-Digital (ADC) Converter Interface
 class Adc
 {
  public:
