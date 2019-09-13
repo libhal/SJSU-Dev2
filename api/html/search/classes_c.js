@@ -12,8 +12,8 @@ var searchData=
   ['peripherals',['Peripherals',['../d7/d9f/classsjsu_1_1lpc17xx_1_1SystemController_1_1Peripherals.html',1,'sjsu::lpc17xx::SystemController']]],
   ['peripherals',['Peripherals',['../d9/d78/classsjsu_1_1lpc40xx_1_1SystemController_1_1Peripherals.html',1,'sjsu::lpc40xx::SystemController']]],
   ['pin',['Pin',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html',1,'sjsu::lpc40xx']]],
-  ['pin',['Pin',['../d0/da9/classsjsu_1_1Pin.html',1,'sjsu']]],
   ['pin',['Pin',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html',1,'sjsu::lpc17xx']]],
+  ['pin',['Pin',['../d0/da9/classsjsu_1_1Pin.html',1,'sjsu']]],
   ['pinmap_5ft',['PinMap_t',['../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html',1,'sjsu::lpc40xx::Pin']]],
   ['pintable_5ft',['PinTable_t',['../d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html',1,'sjsu::lpc17xx::Pin']]],
   ['pixeldisplay',['PixelDisplay',['../df/d96/classsjsu_1_1PixelDisplay.html',1,'sjsu']]],
@@ -21,7 +21,7 @@ var searchData=
   ['pllinput',['PllInput',['../d5/df0/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllInput.html',1,'sjsu::lpc40xx::SystemController']]],
   ['port',['Port',['../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html',1,'sjsu::lpc40xx::Uart']]],
   ['port_5ft',['Port_t',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html',1,'sjsu::lpc40xx::Uart']]],
-  ['pwm',['Pwm',['../d6/ddf/classsjsu_1_1Pwm.html',1,'sjsu']]],
   ['pwm',['Pwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html',1,'sjsu::lpc40xx']]],
+  ['pwm',['Pwm',['../d6/ddf/classsjsu_1_1Pwm.html',1,'sjsu']]],
   ['pwmchannel',['PwmChannel',['../d0/d71/structsjsu_1_1lpc17xx_1_1PwmChannel.html',1,'sjsu::lpc17xx']]]
 ];

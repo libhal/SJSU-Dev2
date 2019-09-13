@@ -1,0 +1,7 @@
+<map id="sjsu::lpc40xx::Eeprom" name="sjsu::lpc40xx::Eeprom">
+<area shape="rect" id="node2" href="$d9/df3/classsjsu_1_1Eeprom.html" title="sjsu::Eeprom" alt="" coords="5,95,111,121"/>
+<area shape="rect" id="node3" href="$d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="135,95,357,121"/>
+<area shape="rect" id="node4" href="$df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="77,5,244,32"/>
+<area shape="rect" id="node5" href="$df/d8b/structLPC__SC__TypeDef.html" title="LPC_SC_TypeDef" alt="" coords="269,5,397,32"/>
+<area shape="rect" id="node6" href="$dd/d14/structLPC__EEPROM__TypeDef.html" title="LPC_EEPROM_TypeDef" alt="" coords="382,95,545,121"/>
+</map>

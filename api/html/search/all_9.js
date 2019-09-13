@@ -2,8 +2,8 @@ var searchData=
 [
   ['itm_20functions',['ITM Functions',['../da/d30/group__CMSIS__core__DebugFunctions.html',1,'']]],
   ['instrumentation_20trace_20macrocell_20_28itm_29',['Instrumentation Trace Macrocell (ITM)',['../d7/d2e/group__CMSIS__ITM.html',1,'']]],
-  ['i2c',['I2c',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx']]],
   ['i2c',['I2c',['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu']]],
+  ['i2c',['I2c',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx']]],
   ['i2c0_5firqn',['I2C0_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a0f1945c7372a6de732306ea3801c8e2a',1,'LPC17xx.h']]],
   ['i2c1_5firqn',['I2C1_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083af651b1769e03e4653b1a4a7c88132398',1,'LPC17xx.h']]],
   ['i2c2_5firqn',['I2C2_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a0e9ff46d0a6311ca3cc43a71702d638d',1,'LPC17xx.h']]],
