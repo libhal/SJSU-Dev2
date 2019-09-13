@@ -1,0 +1,14 @@
+<map id="Defines and Type Definitions" name="Defines and Type Definitions">
+<area shape="rect" id="node1" href="$d7/df6/group__CMSIS__TPI.html" title="Type definitions for the Trace Port Interface (TPI) " alt="" coords="276,5,421,47"/>
+<area shape="rect" id="node2" href="$d5/dea/group__CMSIS__CORE.html" title="Core Register type definitions. " alt="" coords="277,71,420,112"/>
+<area shape="rect" id="node3" href="$d7/d12/group__CMSIS__core__base.html" title="Definitions for base addresses, unions, and structures. " alt="" coords="287,137,410,163"/>
+<area shape="rect" id="node4" href="$d3/d5e/group__CMSIS__SysTick.html" title="Type definitions for the System Timer Registers. " alt="" coords="277,188,420,229"/>
+<area shape="rect" id="node5" href="$d1/dfe/group__CMSIS__NVIC.html" title="Type definitions for the NVIC Registers. " alt="" coords="255,253,443,295"/>
+<area shape="rect" id="node6" href="$d6/d64/group__CMSIS__SCnSCB.html" title="Type definitions for the System Control and ID Register not in the SCB. " alt="" coords="272,319,425,360"/>
+<area shape="rect" id="node7" href="$dd/d30/group__CMSIS__SCB.html" title="Type definitions for the System Control Block Registers. " alt="" coords="269,384,428,425"/>
+<area shape="rect" id="node8" href="$d9/db3/group__CMSIS__DWT.html" title="Type definitions for the Data Watchpoint and Trace (DWT) " alt="" coords="271,449,426,491"/>
+<area shape="rect" id="node9" href="$d1/d4e/group__CMSIS__CoreDebug.html" title="Type definitions for the Core Debug Registers. " alt="" coords="269,515,429,556"/>
+<area shape="rect" id="node10" href="$d7/d2e/group__CMSIS__ITM.html" title="Type definitions for the Instrumentation Trace Macrocell (ITM) " alt="" coords="268,580,429,621"/>
+<area shape="rect" id="node11" href="$d2/daf/group__CMSIS__MPU.html" title="Type definitions for the Memory Protection Unit (MPU) " alt="" coords="262,645,435,687"/>
+<area shape="rect" id="node13" href="$dc/db4/group__CMSIS__core__bitfield.html" title="Macros for use with bit field definitions (xxx_Pos, xxx_Msk). " alt="" coords="271,711,426,752"/>
+</map>

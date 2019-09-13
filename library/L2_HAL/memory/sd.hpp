@@ -19,17 +19,17 @@ namespace sjsu
 class Sd
 {
  public:
-  // This value was found through experimentation. The suggested value (found
-  // via research) is to wait at least 1-8 bytes after sending a command's CRC
-  // before expecting a response from the card.
-  // See https://luckyresistor.me/cat-protector/software/sdcard-2/
+  /// This value was found through experimentation. The suggested value (found
+  /// via research) is to wait at least 1-8 bytes after sending a command's CRC
+  /// before expecting a response from the card.
+  /// See https://luckyresistor.me/cat-protector/software/sdcard-2/
   static constexpr uint8_t kBusTimeout = 250;
 
   struct DebugSdCard_t
   {
   };
 
-  // Enforcing block-size cross-compatibility
+  /// Enforcing block-size cross-compatibility
   static constexpr uint16_t kBlockSize = 512;
   static constexpr sjsu::crc::CrcTableConfig_t<uint8_t> kCrcTable8 =
       sjsu::crc::GenerateCrc7Table<uint8_t>();
@@ -41,9 +41,9 @@ class Sd
   {
   }
 
-  /// @description     a response frame struct to contain the various responses
-  ///                  sent by the card after commands are issued (response type
-  ///                  and length depend on the command sent)
+  /// @brief  a response frame struct to contain the various responses
+  ///         sent by the card after commands are issued (response type
+  ///         and length depend on the command sent)
   struct Response_t
   {
     union {
@@ -58,8 +58,8 @@ class Sd
     uint32_t length;
   };
 
-  /// @description     Enumerator for response type codes (See Physical Layer
-  ///                  V6.00 p.225)
+  /// @brief  Enumerator for response type codes (See Physical Layer V6.00
+  ///         p.225)
   enum class ResponseType
   {
     kR1,
@@ -72,7 +72,7 @@ class Sd
     kR7
   };
 
-  /// @description     Enumerator for SD Card Capacity type codes
+  /// @brief  Enumerator for SD Card Capacity type codes
   enum class Type
   {
     kSDSC,  // up to 2GB
@@ -80,8 +80,8 @@ class Sd
     kSDXC   // up to 256GB
   };
 
-  /// @description     bit shift counts provided to allow easy checking of
-  ///                  the OCR flag bits for the card's operating conditions
+  /// @brief bit shift counts provided to allow easy checking of
+  ///        the OCR flag bits for the card's operating conditions
   enum class Ocr
   {
     kIsDualVoltage = 7,  // OCR bit 7: Supports both Low and High
@@ -105,10 +105,11 @@ class Sd
                          // process)
   };
 
-  /// @description     a collection of SPI-supported command codes to be used
-  ///                  with SendCmd()
-  /// @note            OR'ing of b0100_0000 is meant to conform with the SD
-  ///                  protocol (i.e. first bits must be b01)
+  /// @brief  a collection of SPI-supported command codes to be used with
+  ///         SendCmd()
+  ///
+  /// @note  OR'ing of b0100_0000 is meant to conform with the SD
+  ///        protocol (i.e. first bits must be b01)
   enum class Command
   {
     kGarbage = 0xFF,           // "SendGarbage" command; instructs
@@ -148,7 +149,7 @@ class Sd
                                // CMD1 (must precede with CMD55)
   };
 
-  /// @description     Enumerations to allow CS keep-alive during command byte
+  /// @brief     Enumerations to allow CS keep-alive during command byte
   ///                  exchanges
   enum class KeepAlive : bool
   {
@@ -156,7 +157,7 @@ class Sd
     kNo  = false
   };
 
-  /// @description     Structure for recording information about the SD Card
+  /// @brief Structure for recording information about the SD Card
   // TODO(#350): Add support for CID/CSD Registers
   struct CardInfo_t
   {
@@ -195,8 +196,8 @@ class Sd
     // Reset the card and force it to go to idle state at <400kHz with a
     // CMD0 + (active-low) CS
     LOG_DEBUG("Sending SD Card to Idle State...");
-    sd->response.length = SendCmd(Command::kReset, 0x00000000,
-                                  sd->response.data.byte, KeepAlive::kYes);
+    sd->response.length = SendCmd(
+        Command::kReset, 0x00000000, sd->response.data.byte, KeepAlive::kYes);
 
     // Reset the card again to trigger SPI mode
     LOG_DEBUG("Initializing SPI mode...");
@@ -221,8 +222,10 @@ class Sd
     if (tries >= kBusTimeout)
     {
       LOG_ERROR("Failed to initiate SPI mode within timeout. Aborting!");
-      sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
-                                    sd->response.data.byte, KeepAlive::kNo);
+      sd->response.length = SendCmd(Command::kGarbage,
+                                    0xFFFFFFFF,
+                                    sd->response.data.byte,
+                                    KeepAlive::kNo);
       return false;
     }
 
@@ -234,14 +237,17 @@ class Sd
     sd->response.length =
         SendCmd(Command::kGetOp,
                 static_cast<uint32_t>((supported_voltage << 8) | kCheckPattern),
-                sd->response.data.byte, KeepAlive::kYes);
+                sd->response.data.byte,
+                KeepAlive::kYes);
     if (sd->response.data.byte[4] != kCheckPattern)
     {
       // If the last byte is not an exact echo of the LSB of the kGetOp
       // command's argument, this response is invalid
       LOG_ERROR("Response integrity check failed. Aborting!");
-      sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
-                                    sd->response.data.byte, KeepAlive::kNo);
+      sd->response.length = SendCmd(Command::kGarbage,
+                                    0xFFFFFFFF,
+                                    sd->response.data.byte,
+                                    KeepAlive::kNo);
       return false;
     }
     else if (sd->response.data.byte[3] &
@@ -251,8 +257,10 @@ class Sd
       // device's supported voltage range is 0x00, the SD card doesn't
       // support our device's operating voltage
       LOG_ERROR("Unsupported voltage in use. Aborting!");
-      sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
-                                    sd->response.data.byte, KeepAlive::kNo);
+      sd->response.length = SendCmd(Command::kGarbage,
+                                    0xFFFFFFFF,
+                                    sd->response.data.byte,
+                                    KeepAlive::kNo);
       return false;
     }
 
@@ -263,16 +271,17 @@ class Sd
     do
     {
       // Send host's operating conditions
-      sd->response.length =
-          SendCmd(Command::kInit, 0x40000000, sd->response.data.byte,
-                  KeepAlive::kYes);
+      sd->response.length = SendCmd(
+          Command::kInit, 0x40000000, sd->response.data.byte, KeepAlive::kYes);
       tries++;
     } while (tries < kBusTimeout && sd->response.data.byte[0] & 0x01);
     if (tries == kBusTimeout)
     {
       LOG_ERROR("SD Card timed out. Aborting!");
-      sd->response.length = SendCmd(Command::kGarbage, 0xFFFFFFFF,
-                                    sd->response.data.byte, KeepAlive::kNo);
+      sd->response.length = SendCmd(Command::kGarbage,
+                                    0xFFFFFFFF,
+                                    sd->response.data.byte,
+                                    KeepAlive::kNo);
       return false;
     }
 
@@ -280,8 +289,8 @@ class Sd
     // second time
     LOG_DEBUG("Reading Card Capacity Information...");
     // Read CCS
-    sd->response.length = SendCmd(Command::kGetOcr, 0x00,
-                                  sd->response.data.byte, KeepAlive::kYes);
+    sd->response.length = SendCmd(
+        Command::kGetOcr, 0x00, sd->response.data.byte, KeepAlive::kYes);
     if (sd->response.data.byte[1] & 0x40)
     {
       // The card is either high or extended capacity
@@ -306,9 +315,10 @@ class Sd
     if (sd->type == Type::kSDSC)
     {
       // Send requested byte size
-      sd->response.length =
-          SendCmd(Command::kChgBlkLen, static_cast<uint32_t>(kBlockSize),
-                  sd->response.data.byte, KeepAlive::kYes);
+      sd->response.length = SendCmd(Command::kChgBlkLen,
+                                    static_cast<uint32_t>(kBlockSize),
+                                    sd->response.data.byte,
+                                    KeepAlive::kYes);
     }
 
     return true;
@@ -379,11 +389,13 @@ class Sd
 
   // Read any number of blocks from the SD card
   virtual uint8_t ReadBlock(uint32_t address,
-                    uint8_t * array,
-                    uint32_t blocks = 1)
+                            uint8_t * array,
+                            uint32_t blocks = 1)
   {
     LOG_DEBUG("Block %" PRId32 " :: 0x%" PRIX32 " for %" PRId32 " blocks",
-              address, address, blocks);
+              address,
+              address,
+              blocks);
     // Wait for a previous command to finish
     WaitWhileBusy();
 
@@ -467,9 +479,10 @@ class Sd
       // transaction (i.e. no keep-alive)
       if (blocks > 1)
       {
-        sd.response.length =
-            SendCmd(Command::kStopTrans, 0xFFFFFFFF, sd.response.data.byte,
-                    KeepAlive::kNo);
+        sd.response.length = SendCmd(Command::kStopTrans,
+                                     0xFFFFFFFF,
+                                     sd.response.data.byte,
+                                     KeepAlive::kNo);
       }
 
       // DEBUG: Print out the latest response byte
@@ -500,8 +513,8 @@ class Sd
     do
     {
       // Query the status register
-      sd.response.length = SendCmd(Command::kGetStatus, 32,
-                                   sd.response.data.byte, KeepAlive::kNo);
+      sd.response.length = SendCmd(
+          Command::kGetStatus, 32, sd.response.data.byte, KeepAlive::kNo);
     } while (sd.response.data.byte[0] & 0x01);
     LOG_DEBUG("SD Card is out of Idle Mode!");
 
@@ -512,8 +525,8 @@ class Sd
 
   // Writes any number of 512-byte blocks to the SD Card
   virtual uint8_t WriteBlock(uint32_t address,
-                     const uint8_t * array,
-                     uint32_t blocks = 1)
+                             const uint8_t * array,
+                             uint32_t blocks = 1)
   {
     // Wait for a previous command to finish
     WaitWhileBusy();
@@ -536,8 +549,8 @@ class Sd
     }
 
     // Send initial write command
-    sd.response.length = SendCmd(write_cmd, address, sd.response.data.byte,
-                                 KeepAlive::kYes);
+    sd.response.length =
+        SendCmd(write_cmd, address, sd.response.data.byte, KeepAlive::kYes);
     LOG_DEBUG("Sent Write Cmd");
     LOG_DEBUG("[R1 Response:0x%02X]", sd.response.data.byte[0]);
 
@@ -577,18 +590,20 @@ class Sd
         if (blocks > 1 && !(data_response_tkn & 0x05))
         {
           // Send an immediate stop (CMD12)
-          sd.response.length =
-              SendCmd(Command::kStopTrans, 0xFFFFFFFF, sd.response.data.byte,
-                      KeepAlive::kYes);
+          sd.response.length = SendCmd(Command::kStopTrans,
+                                       0xFFFFFFFF,
+                                       sd.response.data.byte,
+                                       KeepAlive::kYes);
           LOG_DEBUG("Stopped Transmission due to rejection...");
           LOG_DEBUG("[R1 Response: 0x%02X]", sd.response.data.byte[0]);
 
           // In the case of a write error, ask for the reason why
           if (data_response_tkn & 0x0D)
           {
-            sd.response.length =
-                SendCmd(Command::kGetStatus, 0xFFFFFFFF, sd.response.data.byte,
-                        KeepAlive::kYes);
+            sd.response.length = SendCmd(Command::kGetStatus,
+                                         0xFFFFFFFF,
+                                         sd.response.data.byte,
+                                         KeepAlive::kYes);
             LOG_DEBUG(
                 "Checking Status Register to see cause of Write Error...");
             LOG_DEBUG("[R2 Response: 0x%04" PRIX32 "]",
@@ -635,8 +650,8 @@ class Sd
 
     // Set the delete start address
     LOG_DEBUG("Setting Delete Start Address...");
-    sd.response.length = SendCmd(Command::kDelFrom, start,
-                                 sd.response.data.byte, KeepAlive::kYes);
+    sd.response.length = SendCmd(
+        Command::kDelFrom, start, sd.response.data.byte, KeepAlive::kYes);
 
     // Wait while the writing the start address
     WaitWhileBusy();
@@ -652,8 +667,8 @@ class Sd
     if (!delete_failed)
     {
       LOG_DEBUG("Setting Delete End Address...");
-      sd.response.length = SendCmd(Command::kDelTo, end, sd.response.data.byte,
-                                   KeepAlive::kYes);
+      sd.response.length =
+          SendCmd(Command::kDelTo, end, sd.response.data.byte, KeepAlive::kYes);
     }
 
     // Wait while the writing the end address
@@ -671,8 +686,8 @@ class Sd
     {
       // Issue the delete command to delete from our from:to range
       LOG_DEBUG("Issuing Delete Command...");
-      sd.response.length = SendCmd(Command::kDel, 0xFFFFFFFF,
-                                   sd.response.data.byte, KeepAlive::kYes);
+      sd.response.length = SendCmd(
+          Command::kDel, 0xFFFFFFFF, sd.response.data.byte, KeepAlive::kYes);
 
       // Wait while the deletion occurs
       WaitWhileBusy();
@@ -688,9 +703,9 @@ class Sd
 
   // Send a command
   virtual uint32_t SendCmd(Command sdc,
-                   uint32_t arg,
-                   uint8_t response_buffer[],
-                   KeepAlive keep_alive)
+                           uint32_t arg,
+                           uint8_t response_buffer[],
+                           KeepAlive keep_alive)
   {
     ResponseType res_type;
     uint8_t res_len    = 0;
@@ -858,9 +873,9 @@ class Sd
   }
 
  private:
-  /// @description     the object reference to use when using SPI/SPI
+  /// @brief the object reference to use when using SPI/SPI
   const Spi & spi_;
-  /// @description     the object reference to use when using CS (GPIO)
+  /// @brief the object reference to use when using CS (GPIO)
   const Gpio & chip_select_;
 };
 }  // namespace sjsu

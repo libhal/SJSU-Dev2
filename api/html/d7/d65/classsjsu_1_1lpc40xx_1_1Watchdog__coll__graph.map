@@ -1,0 +1,9 @@
+<map id="sjsu::lpc40xx::Watchdog" name="sjsu::lpc40xx::Watchdog">
+<area shape="rect" id="node2" href="$d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="362,5,479,32"/>
+<area shape="rect" id="node3" href="$df/dcf/structLPC__WDT__TypeDef.html" title="LPC_WDT_TypeDef" alt="" coords="351,56,490,83"/>
+<area shape="rect" id="node4" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,107,531,133"/>
+<area shape="rect" id="node5" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,56,201,83"/>
+<area shape="rect" id="node6" href="$d1/dd1/structSCB__Type.html" title="Structure type to access the System Control Block (SCB). " alt="" coords="73,107,157,133"/>
+<area shape="rect" id="node7" href="$d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,158,225,199"/>
+<area shape="rect" id="node8" href="$dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="335,158,507,199"/>
+</map>

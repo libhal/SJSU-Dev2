@@ -1,0 +1,17 @@
+<map id="sjsu::lpc40xx::Can" name="sjsu::lpc40xx::Can">
+<area shape="rect" id="node2" href="$da/d70/classsjsu_1_1Can.html" title="sjsu::Can" alt="" coords="463,5,543,32"/>
+<area shape="rect" id="node3" href="$df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html" title="sjsu::lpc40xx::Can\l::FrameError_t" alt="" coords="435,57,571,98"/>
+<area shape="rect" id="node4" href="$db/dcc/structsjsu_1_1lpc40xx_1_1Can_1_1GlobalStatus__t.html" title="sjsu::lpc40xx::Can\l::GlobalStatus_t" alt="" coords="435,122,571,163"/>
+<area shape="rect" id="node5" href="$df/dc0/structsjsu_1_1lpc40xx_1_1Can_1_1Status__t.html" title="sjsu::lpc40xx::Can\l::Status_t" alt="" coords="435,187,571,229"/>
+<area shape="rect" id="node6" href="$d2/d34/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts__t.html" title="sjsu::lpc40xx::Can\l::Interrupts_t" alt="" coords="435,253,571,294"/>
+<area shape="rect" id="node7" href="$d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="392,319,615,345"/>
+<area shape="rect" id="node8" href="$df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="32,268,199,295"/>
+<area shape="rect" id="node9" href="$df/d8b/structLPC__SC__TypeDef.html" title="LPC_SC_TypeDef" alt="" coords="51,319,179,345"/>
+<area shape="rect" id="node10" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="393,369,613,396"/>
+<area shape="rect" id="node11" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,369,201,396"/>
+<area shape="rect" id="node12" href="$d1/dd1/structSCB__Type.html" title="Structure type to access the System Control Block (SCB). " alt="" coords="73,420,157,447"/>
+<area shape="rect" id="node13" href="$d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,471,225,513"/>
+<area shape="rect" id="node14" href="$dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="417,421,589,462"/>
+<area shape="rect" id="node15" href="$d5/d2b/structLPC__CANAF__TypeDef.html" title="LPC_CANAF_TypeDef" alt="" coords="426,487,581,513"/>
+<area shape="rect" id="node16" href="$d1/dba/structLPC__CAN__TypeDef.html" title="LPC_CAN_TypeDef" alt="" coords="434,537,573,564"/>
+</map>

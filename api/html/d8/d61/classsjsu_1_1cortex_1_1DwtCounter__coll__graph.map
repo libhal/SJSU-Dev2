@@ -1,0 +1,4 @@
+<map id="sjsu::cortex::DwtCounter" name="sjsu::cortex::DwtCounter">
+<area shape="rect" id="node2" href="$d6/d00/structCoreDebug__Type.html" title="Structure type to access the Core Debug Register (CoreDebug). " alt="" coords="5,5,135,32"/>
+<area shape="rect" id="node3" href="$d5/db5/structDWT__Type.html" title="Structure type to access the Data Watchpoint and Trace Register (DWT). " alt="" coords="159,5,245,32"/>
+</map>

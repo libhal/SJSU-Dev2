@@ -10,7 +10,8 @@ namespace sjsu
 {
 namespace command
 {
-inline Command clear("clear", "Clear console",
+inline Command clear("clear",
+                     "Clear console",
                      [](int, const char * const[]) -> int {
                        // Clear entire screen
                        // And move cursor to home
@@ -18,29 +19,26 @@ inline Command clear("clear", "Clear console",
                        return 0;
                      });
 
-inline Command reboot("reboot", "Reboot the board", DoNothingCommand);
+inline Command reboot("reboot", "Reboot the board");
 inline Command sensor("sensor",
-                      "Display the current information from the sensors",
-                      DoNothingCommand);
+                      "Display the current information from the sensors");
 inline Command telemetry(
     "telemetry",
-    "Retrieve information about registered variables and memory in realtime",
-    DoNothingCommand);
-inline Command datetime("datetime", "Display or set current datetime",
-                        DoNothingCommand);
-inline Command help("help", "Get information about how to use the SJ2 board",
-                    DoNothingCommand);
+    "Retrieve information about registered variables and memory in realtime");
+inline Command datetime("datetime", "Display or set current datetime");
+inline Command help("help", "Get information about how to use the SJ2 board");
 }  // namespace command
 
 /// Adds the common set of commands: clear, reboot, sensor, memory, telemetry
-/// datetime, help and sjsu::rtos to the passed command_line object
+/// datetime, help and rtos to the passed command_line object.
 ///
 /// @tparam CommandListType should not be defined within the template argument
 ///         list. This type is automatically deduced by the compiler.
 /// @param  command_line is the CommandLine object you would like to have the
 ///         command list of commands added to.
 template <template <auto> class CommandLineType,
-          template <size_t> class CommandListType, size_t kSize,
+          template <size_t> class CommandListType,
+          size_t kSize,
           CommandListType<kSize> & list>
 inline void AddCommonCommands(CommandLineType<list> & command_line)
 {
