@@ -42,13 +42,6 @@ class CommandInterface
     return 0;
   }
 };
-/// This function acts as a filler function for to be used for functions that
-/// have not yet been defined.
-inline int DoNothingCommand(int, const char * const[])
-{
-  LOG_INFO("This command hasn't been implemented yet.");
-  return 0;
-}
 /// The common function signature for all commands.
 /// Every command must take an interger that represents the number of arguments
 /// passed, argc, and an array of command arguments as character strings, argv.
@@ -99,6 +92,14 @@ class Command : public CommandInterface
   }
 
  private:
+  /// This function acts as a filler function for to be used for functions that
+  /// have not yet been defined.
+  static int DoNothingCommand(int, const char * const[])
+  {
+    LOG_INFO("This command hasn't been implemented yet.");
+    return 0;
+  }
+
   const char * name_;
   const char * description_;
   CommandSignature program_;

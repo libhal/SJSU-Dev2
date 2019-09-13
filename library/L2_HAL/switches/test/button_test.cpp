@@ -1,4 +1,3 @@
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L2_HAL/switches/button.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
@@ -9,15 +8,15 @@ EMIT_ALL_METHODS(Button);
 TEST_CASE("Testing Button", "[button]")
 {
   // Make a mock pin to work with
-  Mock<Pin> mock_pin;
+  Mock<sjsu::Pin> mock_pin;
   // Retrieve a reference to the Pin to be injected as the return value
   // of Gpios's GetPin() method.
-  Pin & test_pin = mock_pin.get();
+  sjsu::Pin & test_pin = mock_pin.get();
   // Fake the implementation of SetAsActiveLow and SetPull to be inspected later
   Fake(Method(mock_pin, SetPull));
 
   // Create a mock gpio object
-  Mock<Gpio> mock_gpio;
+  Mock<sjsu::Gpio> mock_gpio;
   // Fake Read and SetAsInput so we can inspect them later
   Fake(Method(mock_gpio, Read), Method(mock_gpio, Set),
        Method(mock_gpio, SetDirection));
@@ -27,7 +26,7 @@ TEST_CASE("Testing Button", "[button]")
   When(Method(mock_gpio, GetPin)).AlwaysReturn(test_pin);
 
   // Retrieve Gpio reference ot be passed to the test subject
-  Gpio & test_gpio = mock_gpio.get();
+  sjsu::Gpio & test_gpio = mock_gpio.get();
 
   // Inject test_gpio into button object
   Button test_subject(test_gpio);

@@ -128,8 +128,7 @@ class I2c
   /// Write to a device on the I2C bus
   ///
   /// Usage:
-  ///
-  ///    i2c.Write(0x29, {0x01, 0x2a, 0x10});
+  /// ```i2c.Write(0x29, {0x01, 0x2a, 0x10});```
   ///
   /// @param address - device address
   /// @param transmit - array literal to send to device
