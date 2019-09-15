@@ -104,7 +104,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
@@ -113,12 +112,17 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Adc Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>ADC driver for the LPC40xx and LPC17xx microcontrollers.  
+ <a href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../dd/d54/lpc40xx_2adc_8hpp_source.html">adc.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::lpc40xx::Adc:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d8a/classsjsu_1_1lpc40xx_1_1Adc__inherit__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Adc_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Adc_inherit__map" id="sjsu_1_1lpc40xx_1_1Adc_inherit__map">
-<area shape="rect" id="node2" href="../../d0/dc1/classsjsu_1_1Adc.html" title="sjsu::Adc" alt="" coords="33,5,112,32"/>
+<area shape="rect" id="node2" href="../../d0/dc1/classsjsu_1_1Adc.html" title="Analog&#45;to&#45;Digital (ADC) Converter Interface. " alt="" coords="33,5,112,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -126,7 +130,7 @@ Collaboration diagram for sjsu::lpc40xx::Adc:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../db/de7/classsjsu_1_1lpc40xx_1_1Adc__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Adc_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Adc_coll__map" id="sjsu_1_1lpc40xx_1_1Adc_coll__map">
-<area shape="rect" id="node2" href="../../d0/dc1/classsjsu_1_1Adc.html" title="sjsu::Adc" alt="" coords="5,5,84,32"/>
+<area shape="rect" id="node2" href="../../d0/dc1/classsjsu_1_1Adc.html" title="Analog&#45;to&#45;Digital (ADC) Converter Interface. " alt="" coords="5,5,84,32"/>
 <area shape="rect" id="node3" href="../../d3/d95/structLPC__ADC__TypeDef.html" title="LPC_ADC_TypeDef" alt="" coords="109,5,247,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -142,18 +146,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d47/structsjsu_1_1lpc40xx_1_1Adc_1_1GlobalData.html">GlobalData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a62cb03057dc794cb85eccb54b8feb396"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62cb03057dc794cb85eccb54b8feb396"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ControlBit</b> : uint8_t { <b>kBurstMode</b> = 16, 
-<b>kPowerUp</b> = 21, 
-<b>kStart</b> = 24
- }</td></tr>
-<tr class="separator:a62cb03057dc794cb85eccb54b8feb396"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8ab74e7f1d0ae68be925a93790029c4f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ab74e7f1d0ae68be925a93790029c4f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Adc</b> (const <a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">Channel_t</a> &amp;channel, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
+<tr class="memitem:a8ab74e7f1d0ae68be925a93790029c4f"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a8ab74e7f1d0ae68be925a93790029c4f">Adc</a> (const <a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">Channel_t</a> &amp;channel, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
 <tr class="separator:a8ab74e7f1d0ae68be925a93790029c4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a003cf91d55b3a8401b098e36b9634d90"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a003cf91d55b3a8401b098e36b9634d90">Initialize</a> () const override</td></tr>
 <tr class="separator:a003cf91d55b3a8401b098e36b9634d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,23 +163,97 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Adc</b> (const <
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a22251f3b172f782a01715242f7d12515"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22251f3b172f782a01715242f7d12515"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>BurstMode</b> (bool burst_mode_is_on=true)</td></tr>
-<tr class="separator:a22251f3b172f782a01715242f7d12515"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3771dcd8323f29bbee55c9c61871899"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae3771dcd8323f29bbee55c9c61871899">BurstMode</a> (bool turn_burst_mode_on=true)</td></tr>
+<tr class="separator:ae3771dcd8323f29bbee55c9c61871899"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a81bdaa0efc54b01da70afa55fd4c44f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81bdaa0efc54b01da70afa55fd4c44f9"></a>
-static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><b>kClockFrequency</b> = 1_MHz</td></tr>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a81bdaa0efc54b01da70afa55fd4c44f9">kClockFrequency</a> = 1_MHz</td></tr>
+<tr class="memdesc:a81bdaa0efc54b01da70afa55fd4c44f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default and highest frequence that the ADC can operate at. <br /></td></tr>
 <tr class="separator:a81bdaa0efc54b01da70afa55fd4c44f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38438a89c9cf7dcd697e2674521417c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38438a89c9cf7dcd697e2674521417c9"></a>
-static <a class="el" href="../../d3/d95/structLPC__ADC__TypeDef.html">LPC_ADC_TypeDef</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>adc_base</b> = LPC_ADC</td></tr>
+<tr class="memitem:a38438a89c9cf7dcd697e2674521417c9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d3/d95/structLPC__ADC__TypeDef.html">LPC_ADC_TypeDef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a38438a89c9cf7dcd697e2674521417c9">adc_base</a> = LPC_ADC</td></tr>
 <tr class="separator:a38438a89c9cf7dcd697e2674521417c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae062fa73ba090adab38b1b423715fb32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae062fa73ba090adab38b1b423715fb32"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kActiveBits</b> = 12</td></tr>
+<tr class="memitem:ae062fa73ba090adab38b1b423715fb32"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae062fa73ba090adab38b1b423715fb32">kActiveBits</a> = 12</td></tr>
 <tr class="separator:ae062fa73ba090adab38b1b423715fb32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>ADC driver for the LPC40xx and LPC17xx microcontrollers. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a8ab74e7f1d0ae68be925a93790029c4f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::lpc40xx::Adc::Adc </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">Channel_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
+          <td class="paramname"><em>system_controller</em> = <code>DefaultSystemController()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">channel</td><td>Passed channel descriptor object. See <a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">Channel_t</a> and <a class="el" href="../../d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html">Channel</a> documentation for more details about how to use this.</td></tr>
+    <tr><td class="paramname">system_controller</td><td>pass a system controller object to the ADC. typically this parameter is used for testing this class and for choosing the lpc17xx system controller when using this class on that platform. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ae3771dcd8323f29bbee55c9c61871899"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void sjsu::lpc40xx::Adc::BurstMode </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>turn_burst_mode_on</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Turn on or off burst mode for the whole ADC peripheral. Normally, and ADC conversion must be triggered. After triggering conversion, one must wait until the conversion is complete before retrieving the converted analog voltage to digital value.</p>
+<p>Burst mode is an ADC mode that makes the ADC peripheral continously sample it's input channels without CPU intervention, meaning that the CPU can simply read back the value in the conversion register to get the current converted voltage.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">turn_burst_mode_on</td><td>if true, will turn on burst mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a8731324beb14293fa1871b3c9351c156"></a>
 <div class="memitem">
 <div class="memproto">
@@ -314,6 +383,49 @@ static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>k
 <dl class="section return"><dt>Returns</dt><dd>Returns the digital representation of the analog. </dd></dl>
 
 <p>Implements <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#ac91e91ae9c477778b078b4d5e6e8d77d">sjsu::Adc</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a38438a89c9cf7dcd697e2674521417c9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d3/d95/structLPC__ADC__TypeDef.html">LPC_ADC_TypeDef</a>* sjsu::lpc40xx::Adc::adc_base = LPC_ADC</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A pointer holding the address to the LPC40xx ADC peripheral. This variable is a dependency injection point for unit testing thus it is public and mutable. This is needed to perform the "test by side effect" technique for this class. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae062fa73ba090adab38b1b423715fb32"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::lpc40xx::Adc::kActiveBits = 12</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Number of active bits of the ADC. The ADC is a 12-bit ADC meaning that the largest value it can have is 2^12 = 4096 </p>
 
 </div>
 </div>

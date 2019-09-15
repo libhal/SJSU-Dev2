@@ -109,6 +109,8 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Adc::GlobalData Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../dd/d54/lpc40xx_2adc_8hpp_source.html">adc.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for sjsu::lpc40xx::Adc::GlobalData:</div>
 <div class="dyncontent">
@@ -121,18 +123,23 @@ Collaboration diagram for sjsu::lpc40xx::Adc::GlobalData:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a478298ea0571de673f9d316fa6d0abb6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a478298ea0571de673f9d316fa6d0abb6"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kResult</b> = bit::CreateMaskFromRange(4, 15)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d47/structsjsu_1_1lpc40xx_1_1Adc_1_1GlobalData.html#a478298ea0571de673f9d316fa6d0abb6">kResult</a> = bit::CreateMaskFromRange(4, 15)</td></tr>
+<tr class="memdesc:a478298ea0571de673f9d316fa6d0abb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result mask holds the latest result from the last ADC that was converted. <br /></td></tr>
 <tr class="separator:a478298ea0571de673f9d316fa6d0abb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4da18b583825e8155869dd15dc4fda2"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kConvertedChannel</b></td></tr>
+<tr class="memitem:ad4da18b583825e8155869dd15dc4fda2"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d47/structsjsu_1_1lpc40xx_1_1Adc_1_1GlobalData.html#ad4da18b583825e8155869dd15dc4fda2">kConvertedChannel</a></td></tr>
 <tr class="separator:ad4da18b583825e8155869dd15dc4fda2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac78df0f306007ad68f45b59de3404f93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac78df0f306007ad68f45b59de3404f93"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kOverrun</b> = bit::CreateMaskFromRange(30)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d47/structsjsu_1_1lpc40xx_1_1Adc_1_1GlobalData.html#ac78df0f306007ad68f45b59de3404f93">kOverrun</a> = bit::CreateMaskFromRange(30)</td></tr>
+<tr class="memdesc:ac78df0f306007ad68f45b59de3404f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds whether or not the ADC overran its conversion. <br /></td></tr>
 <tr class="separator:ac78df0f306007ad68f45b59de3404f93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c5010e2ee4cb609af55c2163c4adfa9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c5010e2ee4cb609af55c2163c4adfa9"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kDone</b> = bit::CreateMaskFromRange(31)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d47/structsjsu_1_1lpc40xx_1_1Adc_1_1GlobalData.html#a7c5010e2ee4cb609af55c2163c4adfa9">kDone</a> = bit::CreateMaskFromRange(31)</td></tr>
+<tr class="memdesc:a7c5010e2ee4cb609af55c2163c4adfa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates when the ADC conversion is complete. <br /></td></tr>
 <tr class="separator:a7c5010e2ee4cb609af55c2163c4adfa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Namespace containing the bitmask objects that are used to manipulate the lpc40xx's ADC Global Data register. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="ad4da18b583825e8155869dd15dc4fda2"></a>
 <div class="memitem">
 <div class="memproto">
@@ -150,7 +157,8 @@ static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        bit::CreateMaskFromRange(24, 26)</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        bit::CreateMaskFromRange(24, 26)</div></div><!-- fragment --><p>Converted channel mask indicates which channel was converted in the latest conversion. </p>
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>

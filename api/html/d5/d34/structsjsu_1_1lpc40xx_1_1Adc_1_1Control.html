@@ -109,6 +109,8 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Adc::Control Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../dd/d54/lpc40xx_2adc_8hpp_source.html">adc.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for sjsu::lpc40xx::Adc::Control:</div>
 <div class="dyncontent">
@@ -120,25 +122,129 @@ Collaboration diagram for sjsu::lpc40xx::Adc::Control:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a4351601f0ead87e2eedfdec19c661d7a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4351601f0ead87e2eedfdec19c661d7a"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kChannelEnable</b> = bit::CreateMaskFromRange(0, 7)</td></tr>
+<tr class="memitem:a4351601f0ead87e2eedfdec19c661d7a"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a4351601f0ead87e2eedfdec19c661d7a">kChannelEnable</a> = bit::CreateMaskFromRange(0, 7)</td></tr>
 <tr class="separator:a4351601f0ead87e2eedfdec19c661d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa13d0257fbcd2d8684232ee7ebbe3614"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa13d0257fbcd2d8684232ee7ebbe3614"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kClockDivider</b> = bit::CreateMaskFromRange(8, 15)</td></tr>
+<tr class="memitem:aa13d0257fbcd2d8684232ee7ebbe3614"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#aa13d0257fbcd2d8684232ee7ebbe3614">kClockDivider</a> = bit::CreateMaskFromRange(8, 15)</td></tr>
 <tr class="separator:aa13d0257fbcd2d8684232ee7ebbe3614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0ac4653bf59be520127b28febacca93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0ac4653bf59be520127b28febacca93"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kBurstEnable</b> = bit::CreateMaskFromRange(16)</td></tr>
+<tr class="memitem:ac0ac4653bf59be520127b28febacca93"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ac0ac4653bf59be520127b28febacca93">kBurstEnable</a> = bit::CreateMaskFromRange(16)</td></tr>
 <tr class="separator:ac0ac4653bf59be520127b28febacca93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6fbba60523c2cf03e60c92a89dccb50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad6fbba60523c2cf03e60c92a89dccb50"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kPowerEnable</b> = bit::CreateMaskFromRange(21)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ad6fbba60523c2cf03e60c92a89dccb50">kPowerEnable</a> = bit::CreateMaskFromRange(21)</td></tr>
+<tr class="memdesc:ad6fbba60523c2cf03e60c92a89dccb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power on the ADC. <br /></td></tr>
 <tr class="separator:ad6fbba60523c2cf03e60c92a89dccb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2126f6b386de2a1c5caec235551a19be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2126f6b386de2a1c5caec235551a19be"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kStartCode</b> = bit::CreateMaskFromRange(24, 26)</td></tr>
+<tr class="memitem:a2126f6b386de2a1c5caec235551a19be"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a2126f6b386de2a1c5caec235551a19be">kStartCode</a> = bit::CreateMaskFromRange(24, 26)</td></tr>
 <tr class="separator:a2126f6b386de2a1c5caec235551a19be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4870d5d17da8adf84d54dd6e1de1577"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4870d5d17da8adf84d54dd6e1de1577"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kStartEdge</b> = bit::CreateMaskFromRange(27)</td></tr>
+<tr class="memitem:ad4870d5d17da8adf84d54dd6e1de1577"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ad4870d5d17da8adf84d54dd6e1de1577">kStartEdge</a> = bit::CreateMaskFromRange(27)</td></tr>
 <tr class="separator:ad4870d5d17da8adf84d54dd6e1de1577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Namespace containing the bitmask objects that are used to manipulate the lpc40xx's ADC <a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html">Control</a> register. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ac0ac4653bf59be520127b28febacca93"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Adc::Control::kBurstEnable = bit::CreateMaskFromRange(16)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enable Burst Mode for the ADC. See <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae3771dcd8323f29bbee55c9c61871899">BurstMode()</a> method of this class to learn more about what it is and how it works. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4351601f0ead87e2eedfdec19c661d7a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Adc::Control::kChannelEnable = bit::CreateMaskFromRange(0, 7)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set which ADC channels are enabled. It bit position represents 1 channel with this 8 channel ADC. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa13d0257fbcd2d8684232ee7ebbe3614"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Adc::Control::kClockDivider = bit::CreateMaskFromRange(8, 15)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the channel's clock divider. Potentially saving power if clock is reduced further. </p>
+
+</div>
+</div>
+<a class="anchor" id="a2126f6b386de2a1c5caec235551a19be"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Adc::Control::kStartCode = bit::CreateMaskFromRange(24, 26)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>In order to start a conversion a start code must be inserted into this bit location. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad4870d5d17da8adf84d54dd6e1de1577"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Adc::Control::kStartEdge = bit::CreateMaskFromRange(27)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not used in this driver, but allows the use of an external pins to trigger a conversion. This flag indicates if rising or falling edges trigger the conversion. 1 = falling, 0 = rising. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/lpc40xx/<a class="el" href="../../dd/d54/lpc40xx_2adc_8hpp_source.html">adc.hpp</a></li>
 </ul>

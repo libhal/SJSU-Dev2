@@ -7,7 +7,6 @@ DEVICE_GDB=$4
 EXECUTABLE=$5
 
 ## Uncomment the line below to get a bit of debug information
-
 # echo "$OPENOCD/bin/openocd  -s $OPENOCD/scripts/ \
 #-c \"source [find interface/$DEBUG_DEVICE.cfg]\" -f $OPENOCD_CONFIG &"
 

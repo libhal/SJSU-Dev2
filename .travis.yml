@@ -4,17 +4,22 @@ matrix:
         - os: linux
           sudo: required
           dist: xenial
+          before_install:
+            - sudo apt-get -y install doxygen graphviz
+            - pip install --user cpp-coveralls
+          script:
+            - cd projects/hello_world/
+            - make presubmit
+            - cd ../../tools/
+            - ./generate_doxygen_docs.sh
           after_success:
-            - cd ../../
+            - cd ../
             - coveralls --gcov "$(pwd)/tools/clang+llvm-7.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/llvm-cov gcov"
               --include "library/L0_Platform"
               --include "library/L1_Peripheral"
               --include "library/L2_HAL"
               --include "library/L3_Application"
               --include "library/utility"
-            - sudo apt-get -y install doxygen graphviz
-            - cd api/
-            - doxygen sjsu-dev2-doxygen.conf
           deploy:
             provider: pages
             skip-cleanup: true
@@ -24,8 +29,10 @@ matrix:
               branch: master
         - os: osx
           osx_image: xcode10
-before_install: pip install --user cpp-coveralls
+          before_install:
+            - pip install --user cpp-coveralls
+          script:
+            - cd projects/hello_world/
+            - make presubmit
 install: ./setup
-script:
-  - cd projects/hello_world/
-  - make presubmit
+

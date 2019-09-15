@@ -117,5 +117,5 @@ var searchData=
   ['transfer',['Transfer',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a53a54924e1b6ac531c2f2c6df3836014',1,'sjsu::lpc40xx::Spi::Transfer()'],['../d3/de6/classsjsu_1_1Spi.html#a7ae6d25113c04de85317facc25ac70a4',1,'sjsu::Spi::Transfer()']]],
   ['trigger',['TRIGGER',['../db/daf/structTPI__Type.html#a4d4cd2357f72333a82a1313228287bbd',1,'TPI_Type']]],
   ['txmessage_5ft',['TxMessage_t',['../dc/d88/structsjsu_1_1Can_1_1TxMessage__t.html',1,'sjsu::Can']]],
-  ['type',['Type',['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()'],['../d9/dc6/structMPU__Type.html#a0433efc1383674bc8e86cc0e830b462d',1,'MPU_Type::TYPE()']]]
+  ['type',['TYPE',['../d9/dc6/structMPU__Type.html#a0433efc1383674bc8e86cc0e830b462d',1,'MPU_Type::TYPE()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()']]]
 ];

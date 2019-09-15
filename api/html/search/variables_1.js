@@ -3,6 +3,8 @@ var searchData=
   ['acpr',['ACPR',['../db/daf/structTPI__Type.html#a9e5e4421ef9c3d5b7ff8b24abd4e99b3',1,'TPI_Type']]],
   ['acr',['ACR',['../d9/d2d/structLPC__UART4__TypeDef.html#a67015ac014c209b729fd9bd94dff4864',1,'LPC_UART4_TypeDef']]],
   ['actlr',['ACTLR',['../d4/d9d/structSCnSCB__Type.html#a13af9b718dde7481f1c0344f00593c23',1,'SCnSCB_Type']]],
+  ['adc_5fbase',['adc_base',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a38438a89c9cf7dcd697e2674521417c9',1,'sjsu::lpc40xx::Adc']]],
+  ['adc_5fpin',['adc_pin',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a68e0d6ae5228171b9550537579ac8984',1,'sjsu::lpc40xx::Adc::Channel_t']]],
   ['adr',['ADR',['../d1/dd1/structSCB__Type.html#af084e1b2dad004a88668efea1dfe7fa1',1,'SCB_Type']]],
   ['adr0',['ADR0',['../d8/d12/structLPC__I2C__TypeDef.html#ac8ed8ecb80a084f3f10a82d7e29dc069',1,'LPC_I2C_TypeDef']]],
   ['adr1',['ADR1',['../d8/d12/structLPC__I2C__TypeDef.html#ab280cbe7965f098dd17a41ee2641710a',1,'LPC_I2C_TypeDef']]],

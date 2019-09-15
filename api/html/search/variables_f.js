@@ -17,6 +17,7 @@ var searchData=
   ['pid5',['PID5',['../d8/da9/structITM__Type.html#af9085648bf18f69b5f9d1136d45e1d37',1,'ITM_Type']]],
   ['pid6',['PID6',['../d8/da9/structITM__Type.html#ad34dbe6b1072c77d36281049c8b169f6',1,'ITM_Type']]],
   ['pid7',['PID7',['../d8/da9/structITM__Type.html#a2bcec6803f28f30d5baf5e20e3517d3d',1,'ITM_Type']]],
+  ['pin_5ffunction',['pin_function',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a446885d6584043680e012d7d72010870',1,'sjsu::lpc40xx::Adc::Channel_t']]],
   ['pll0cfg',['PLL0CFG',['../df/d8b/structLPC__SC__TypeDef.html#a8793cd1c3649849b126253e8567c9138',1,'LPC_SC_TypeDef']]],
   ['pll0con',['PLL0CON',['../df/d8b/structLPC__SC__TypeDef.html#ae75e4960a5e1d70b912d93a3d9dd3193',1,'LPC_SC_TypeDef']]],
   ['pll0feed',['PLL0FEED',['../df/d8b/structLPC__SC__TypeDef.html#acdafef0cdd425361238c459db34dd810',1,'LPC_SC_TypeDef']]],

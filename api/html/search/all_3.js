@@ -14,6 +14,7 @@ var searchData=
   ['cfsr',['CFSR',['../d1/dd1/structSCB__Type.html#a0cda9e061b42373383418663092ad19a',1,'SCB_Type']]],
   ['channel',['Channel',['../d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html',1,'sjsu::lpc40xx::Adc']]],
   ['channel',['Channel',['../d5/dce/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel.html',1,'sjsu::lpc40xx::Pwm']]],
+  ['channel',['channel',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a6e27aeace9b3564c531b2a690dfa4461',1,'sjsu::lpc40xx::Adc::Channel_t']]],
   ['channel',['Channel',['../d5/d0d/structsjsu_1_1lpc40xx_1_1Timer_1_1Channel.html',1,'sjsu::lpc40xx::Timer']]],
   ['channel',['Channel',['../dd/d4d/structsjsu_1_1example_1_1Example_1_1Channel.html',1,'sjsu::example::Example']]],
   ['channel_5ft',['Channel_t',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html',1,'sjsu::lpc40xx::Adc']]],

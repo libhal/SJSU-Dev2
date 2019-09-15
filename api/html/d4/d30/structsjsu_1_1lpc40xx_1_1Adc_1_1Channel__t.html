@@ -109,6 +109,8 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Adc::Channel_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../dd/d54/lpc40xx_2adc_8hpp_source.html">adc.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for sjsu::lpc40xx::Adc::Channel_t:</div>
 <div class="dyncontent">
@@ -121,15 +123,33 @@ Collaboration diagram for sjsu::lpc40xx::Adc::Channel_t:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a68e0d6ae5228171b9550537579ac8984"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a68e0d6ae5228171b9550537579ac8984"></a>
-const <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>adc_pin</b></td></tr>
+const <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a68e0d6ae5228171b9550537579ac8984">adc_pin</a></td></tr>
+<tr class="memdesc:a68e0d6ae5228171b9550537579ac8984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the pin associated with the adc channel. <br /></td></tr>
 <tr class="separator:a68e0d6ae5228171b9550537579ac8984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e27aeace9b3564c531b2a690dfa4461"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e27aeace9b3564c531b2a690dfa4461"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b>: 3</td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a6e27aeace9b3564c531b2a690dfa4461">channel</a>: 3</td></tr>
+<tr class="memdesc:a6e27aeace9b3564c531b2a690dfa4461"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html">Channel</a> number. <br /></td></tr>
 <tr class="separator:a6e27aeace9b3564c531b2a690dfa4461"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a446885d6584043680e012d7d72010870"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a446885d6584043680e012d7d72010870"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_function</b>: 3</td></tr>
+<tr class="memitem:a446885d6584043680e012d7d72010870"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a446885d6584043680e012d7d72010870">pin_function</a>: 3</td></tr>
 <tr class="separator:a446885d6584043680e012d7d72010870"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Structure that defines a channel's pin, pin's function code and channel number.</p>
+<p>Usage:</p>
+<div class="fragment"><div class="line"><a class="code" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html">sjsu::lpc40xx::Pin</a> <a class="code" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a68e0d6ae5228171b9550537579ac8984">adc_pin</a>(<span class="comment">/* adc port number */</span>, <span class="comment">/* adc pin number */</span>);</div><div class="line"><span class="keyword">const</span> <a class="code" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">sjsu::lpc40xx::Adc::Channel_t</a> kCustomChannelX = {</div><div class="line">  .<a class="code" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a68e0d6ae5228171b9550537579ac8984">adc_pin</a>      = <a class="code" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a68e0d6ae5228171b9550537579ac8984">adc_pin</a>,</div><div class="line">  .channel      = <span class="comment">/* insert correct channel here */</span>,</div><div class="line">  .pin_function = 0b101,</div><div class="line">};</div><div class="line"><a class="code" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html">sjsu::lpc40xx::Adc</a> channelX_adc(kCustomChannelX);</div></div><!-- fragment --> </div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a446885d6584043680e012d7d72010870"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sjsu::lpc40xx::Adc::Channel_t::pin_function</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Which function code selects the ADC function for the pin, specified in the adc_pin field. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/lpc40xx/<a class="el" href="../../dd/d54/lpc40xx_2adc_8hpp_source.html">adc.hpp</a></li>
 </ul>
