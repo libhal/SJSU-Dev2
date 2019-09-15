@@ -9,21 +9,7 @@ TEST_CAPTURE=0
 SJBASE=$(dirname "$0")
 SJBASE=$(cd "$SJBASE/.." ; pwd -P)
 
-function print_divider
-{
-  printf "\e[1;33m======================================================= "
-  printf "\e[0m\n\n"
-}
-
-function print_status
-{
-  if [ $1 -ne 0 ]
-  then
-    printf "\e[31m✘\e[0;31m"
-  else
-    printf "\e[32m✔\e[0;31m"
-  fi
-}
+. $SJBASE/tools/common.sh
 
 function check
 {
@@ -67,10 +53,9 @@ function check
 ####################################
 #    All Projects Build Check      #
 ####################################
-print_divider
-printf "Checking that all projects build\n\n"
+print_divider "Checking that all projects build"
 
-printf "\e[0;33mBuilding hello_world Project\e[0m "
+printf "$YELLOW    Building hello_world Project $RESET"
 # Change to the hello_world project
 cd "$SJBASE/projects/hello_world"
 # Purge repository of all application and framework build files and start
@@ -83,9 +68,22 @@ BUILD_CAPTURE=$?
 print_status $BUILD_CAPTURE
 echo ""
 
-printf "\e[0;33mBuilding Starter Project\e[0m "
+printf "$YELLOW    Building Starter Project $RESET"
 # Change to the Hyperload project
 cd "$SJBASE/projects/starter"
+# Clean the build and start building from scratch
+SILENCE=$(make clean)
+# Check if the system can build without any warnings!
+SILENCE=$(make -s application)
+# Set build capture to return code from the build
+SPECIFIC_BUILD_CAPTURE=$?
+BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
+print_status $SPECIFIC_BUILD_CAPTURE
+echo ""
+
+printf "$YELLOW    Building Barebones Project $RESET"
+# Change to the Hyperload project
+cd "$SJBASE/projects/barebones"
 # Clean the build and start building from scratch
 SILENCE=$(make clean)
 # Check if the system can build without any warnings!
@@ -104,7 +102,7 @@ for d in $LIST_OF_PROJECT
 do
 PROJECT_PATH=$(dirname $d)
 cd "$SJBASE/demos/$PROJECT_PATH"
-printf "\e[0;33mBuilding Example $d \e[0m "
+printf "$YELLOW    Building Example $d $RESET"
 # Clean the build and start building from scratch
 SILENCE=$(make clean)
 # Check if the system can build without any warnings!
@@ -122,9 +120,8 @@ cd $SJBASE/projects/hello_world
 ####################################
 #           Lint Check             #
 ####################################
-print_divider
+print_divider "Executing 'lint' check"
 
-printf "\e[0;33mExecuting 'lint' check \e[0m"
 make -s lint 1> /dev/null
 LINT_CAPTURE=$?
 print_status $LINT_CAPTURE
@@ -132,9 +129,8 @@ echo ""
 ####################################
 #         Clang Tidy Check         #
 ####################################
-print_divider
+print_divider "Executing 'tidy' check"
 
-printf "\e[0;33mExecuting 'tidy' check \e[0m\n"
 make -s tidy
 TIDY_CAPTURE=$?
 print_status $TIDY_CAPTURE
@@ -142,9 +138,8 @@ echo ""
 ####################################
 #         Unit Test Check          #
 ####################################
-print_divider
+print_divider "Building and running unit tests"
 
-printf "\e[0;33mBuilding and running unit tests \e[0m\n"
 make -s library-test WARNINGS_ARE_ERRORS=-Werror
 TEST_CAPTURE=$?
 print_status $TEST_CAPTURE

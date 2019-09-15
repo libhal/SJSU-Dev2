@@ -1,6 +1,7 @@
 projects/*
 projects/**/build
 
+!projects/barebones
 !projects/hello_world
 !projects/starter
 
@@ -17,6 +18,11 @@ tools/**/*
 !tools/putty32.exe
 !tools/putty64.exe
 !tools/launch_openocd_gdb.sh
+!tools/generate_doxygen_docs.sh
+!tools/doxygen_warning_patterns.txt
+!tools/common.sh
+
+api/doxygen_stderr.txt
 
 **/*.gch
 **/*.gcno

@@ -82,11 +82,19 @@ static_assert(4'800 <= kBaudRate && kBaudRate <= 4'000'000,
 
 /// Used to dump all the call stack when "PrintBacktrace" is called or an assert
 /// using PrintBacktrace is occurs.
-/// Disable this to omit getting these logs and reduce the binary size by ~5kB.
+/// Disable this to omit getting these logs and reduce the binary size by ~5kB
+/// to ~10kB
 #if !defined(SJ2_INCLUDE_BACKTRACE)
 #define SJ2_INCLUDE_BACKTRACE true
 #endif  // !defined(SJ2_INCLUDE_BACKTRACE)
 SJ2_DECLARE_CONSTANT(INCLUDE_BACKTRACE, bool, kIncludeBacktrace);
+
+/// Enables vsnprintf which enables full control over printf. Without this,
+/// printf cannot print out variables.
+#if !defined(SJ2_INCLUDE_VSNPRINTF)
+#define SJ2_INCLUDE_VSNPRINTF true
+#endif  // !defined(SJ2_INCLUDE_VSNPRINTF)
+SJ2_DECLARE_CONSTANT(INCLUDE_VSNPRINTF, bool, kIncludeVsnprintf);
 
 /// Used to offset the returned addresses from the libunwind GetIP function
 /// (get instruction pointer), in order to properly identify the line of code
@@ -133,12 +141,6 @@ static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
 #define SJ2_DESCRIPTIVE_FUNCTION_NAME true
 #endif  // !defined(SJ2_DESCRIPTIVE_FUNCTION_NAME)
 SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
-
-/// Used to define the log level of the build
-#if !defined(SJ2_BACKTRACE_DEPTH)
-#define SJ2_BACKTRACE_DEPTH 64
-#endif  // !defined(SJ2_BACKTRACE_DEPTH)
-SJ2_DECLARE_CONSTANT(BACKTRACE_DEPTH, size_t, kBacktraceDepth);
 
 /// @defgroup 3P Third party support defines
 /// @{

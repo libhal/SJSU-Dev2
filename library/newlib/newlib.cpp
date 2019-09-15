@@ -11,38 +11,6 @@
 #include "L0_Platform/ram.hpp"
 #include "utility/macros.hpp"
 
-namespace sjsu
-{
-namespace newlib
-{
-int DoNothingStdOut(const char *, size_t)
-{
-  return 1;
-}
-int DoNothingStdIn(char *, size_t)
-{
-  return 0;
-}
-
-Stdout out                = DoNothingStdOut;
-Stdin in                  = DoNothingStdIn;
-bool echo_back_is_enabled = true;
-
-void SetStdout(Stdout stdout_handler)
-{
-  out = stdout_handler;
-}
-void SetStdin(Stdin stdin_handler)
-{
-  in = stdin_handler;
-}
-void StdinEchoBack(bool enable_echo)
-{
-  echo_back_is_enabled = enable_echo;
-}
-}  // namespace newlib
-}  // namespace sjsu
-
 extern "C"
 {
   // Dummy implementation of isatty
@@ -100,7 +68,6 @@ extern "C"
   {
     return -1;
   }
-  // Minimum implementation of _write using UART0 putchar
   // NOLINTNEXTLINE(readability-identifier-naming)
   int _write([[maybe_unused]] int file, char * ptr, int length)
   {
@@ -113,7 +80,6 @@ extern "C"
   {
     return 0;
   }
-  // Minimum implementation of _read using UART0 getchar
   // NOLINTNEXTLINE(readability-identifier-naming)
   int _read(FILE * file, char * ptr, [[maybe_unused]] int length)
   {
@@ -128,11 +94,6 @@ extern "C"
       }
     }
     return number_of_read_characters;
-  }
-  // Needed by third party printf library
-  void _putchar(char character)  // NOLINT
-  {
-    sjsu::newlib::out(&character, 1);
   }
 
   // Overload default libnano putchar() with a more optimal version that does

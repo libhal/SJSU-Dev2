@@ -21,7 +21,7 @@ namespace debug
 // =====================================
 // Hidden utility functions for Hexdump
 // =====================================
-static inline void PrintCharacterRow(uint8_t * bytes, size_t length)
+inline void PrintCharacterRow(uint8_t * bytes, size_t length)
 {
   putchar('|');
   for (size_t j = 0; j < length; j++)
@@ -38,7 +38,7 @@ static inline void PrintCharacterRow(uint8_t * bytes, size_t length)
   puts("|");
 }
 
-static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
+inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
 {
   for (size_t j = 0; j < 16; j++)
   {
@@ -58,7 +58,7 @@ static inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
   putchar(' ');
 }
 
-/// Similiar to the UNIX hexdump program, this function will read the bytes from
+/// Similar to the UNIX hexdump program, this function will read the bytes from
 /// the starting address and print them in hex. Any characters that can be
 /// translated into a viewable character will be display.
 ///
@@ -93,7 +93,7 @@ inline void Hexdump(void * address, uint32_t length)
 // ==============================================
 // Hidden Backtrace Utility Functions
 // ==============================================
-static inline _Unwind_Reason_Code PrintAddressAsList(_Unwind_Context * context,
+inline _Unwind_Reason_Code PrintAddressAsList(_Unwind_Context * context,
                                                      void * depth_pointer)
 {
   int * depth      = static_cast<int *>(depth_pointer);
@@ -103,7 +103,7 @@ static inline _Unwind_Reason_Code PrintAddressAsList(_Unwind_Context * context,
   (*depth)++;
   return _URC_NO_REASON;
 }
-static inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
+inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
                                                     void * depth_pointer)
 {
   int * depth      = static_cast<int *>(depth_pointer);
@@ -112,7 +112,7 @@ static inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
   (*depth)++;
   return _URC_NO_REASON;
 }
-/// Similiar to the UNIX hexdump program, this function will read the bytes from
+/// Similar to the UNIX hexdump program, this function will read the bytes from
 /// the starting address and print them in hex. Any characters that can be
 /// translated into a viewable character will be display.
 ///
@@ -121,36 +121,38 @@ static inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
 ///   sjsu::debug::PrintBacktrace();
 ///
 /// @param show_make_command - if true, print the make command that can be used
-///        to print the file and line number that corrisponds to the printed
+///        to print the file and line number that corresponds to the printed
 ///        addresses.
 /// @param length - the number of bytes to read from the starting location
 inline void PrintBacktrace(bool show_make_command = false,
                            void * final_address   = nullptr)
 {
-  int depth = 0;
-
-  _Unwind_Backtrace(&PrintAddressAsList, &depth);
-  if (final_address)
+  if constexpr (config::kIncludeBacktrace)
   {
-    printf("  %d) 0x%p\n", depth, final_address);
-  }
-
-  if (show_make_command)
-  {
-    printf("\nRun: the following command in your project directory");
-    printf("\n\n  " SJ2_BOLD_WHITE);
-    printf("make stacktrace-%s TRACES=\"", Stringify(build::kTarget));
-
-    _Unwind_Backtrace(&PrintAddressInRow, &depth);
+    int depth = 0;
+    _Unwind_Backtrace(&PrintAddressAsList, &depth);
     if (final_address)
     {
-      printf(" 0x%p", final_address);
+      printf("  %d) 0x%p\n", depth, final_address);
     }
 
-    printf("\"\n\n" SJ2_COLOR_RESET);
-    printf(
-        "This will report the file and line number that led to this function "
-        "being called.\n");
+    if (show_make_command)
+    {
+      printf("\nRun: the following command in your project directory");
+      printf("\n\n  " SJ2_BOLD_WHITE);
+      printf("make stacktrace-%s TRACES=\"", Stringify(build::kTarget));
+
+      _Unwind_Backtrace(&PrintAddressInRow, &depth);
+      if (final_address)
+      {
+        printf(" 0x%p", final_address);
+      }
+
+      printf("\"\n\n" SJ2_COLOR_RESET);
+      printf(
+          "This will report the file and line number that led to this function "
+          "being called.\n");
+    }
   }
 }
 

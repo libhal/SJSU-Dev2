@@ -18,7 +18,7 @@ ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
         presubmit openocd debug debug-test flash jtag-flash platform-flash \
         platform-jtag-flash lint ))
-MAKEFLAGS += --output-sync
+MAKEFLAGS += --output-sync=target
 endif
 #
 # Setting the number of threads
@@ -148,16 +148,6 @@ TEST_ARGS ?=
 # ============================
 # Compilation Tools
 # ============================
-DEVICE_CC        = $(SJARMGCC)/bin/arm-none-eabi-gcc
-DEVICE_CPPC      = $(SJARMGCC)/bin/arm-none-eabi-g++
-DEVICE_OBJDUMP   = $(SJARMGCC)/bin/arm-none-eabi-objdump
-DEVICE_SIZEC     = $(SJARMGCC)/bin/arm-none-eabi-size
-DEVICE_OBJCOPY   = $(SJARMGCC)/bin/arm-none-eabi-objcopy
-DEVICE_NM        = $(SJARMGCC)/bin/arm-none-eabi-nm
-DEVICE_AR        = $(SJARMGCC)/bin/arm-none-eabi-ar
-DEVICE_RANLIB    = $(SJARMGCC)/bin/arm-none-eabi-ranlib
-DEVICE_ADDR2LINE = $(SJARMGCC)/bin/arm-none-eabi-addr2line
-DEVICE_GDB       = $(SJARMGCC)/bin/arm-none-eabi-gdb-py
 # Cause compiler warnings to become errors.
 # Used in presubmit checks to make sure that the codebase does not include
 # warnings
@@ -269,8 +259,8 @@ $(PLATFORM_STATIC_LIBRARY_DIR)/$(1).a: $$($(1)_OBJECTS)
 	@mkdir -p "$(PLATFORM_STATIC_LIBRARY_DIR)"
 	@printf '$(YELLOW)Library  file ( A ) $(RESET): $$@ '
 	@rm -f "$@"
-	@$(DEVICE_AR) rcs "$$@" $$^
-	@$(DEVICE_RANLIB) "$$@"
+	@$$(DEVICE_AR) rcs "$$@" $$^
+	@$$(DEVICE_RANLIB) "$$@"
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
 endef
@@ -316,8 +306,8 @@ OBJECTS           = $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 # Compilation Flags
 # ===========================
 OPTIMIZE  = -O$(OPT) -fmessage-length=0 -ffunction-sections -fdata-sections \
-            -fno-exceptions -fno-omit-frame-pointer \
-            -fasynchronous-unwind-tables
+            -fno-exceptions -fno-omit-frame-pointer
+            # -fasynchronous-unwind-tables
 CPPOPTIMIZE = -fno-rtti -fno-threadsafe-statics
 DEBUG_FLAG  = -g
 WARNINGS  = -Wall -Wextra -Wshadow -Wlogical-op -Wfloat-equal \
@@ -330,13 +320,16 @@ CPPWARNINGS = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
 DEFINES   = -D ELF_FILE=\"$(EXECUTABLE)\" -D PLATFORM=$(PLATFORM)
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # Combine all of the flags together
-COMMON_FLAGS += $(OPTIMIZE) $(DEBUG_FLAG) $(WARNINGS) $(DEFINES) \
+COMMON_FLAGS += $(OPTIMIZE) $(DEBUG_FLAG) $(DEFINES) \
                 $(DISABLED_WARNINGS) -fdiagnostics-color
 # Add the last touch for object files
 CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
-LINKFLAGS = $(COMMON_FLAGS)  -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
+
+ifndef LINKFLAGS
+LINKFLAGS = $(COMMON_FLAGS) -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
             -specs=nano.specs \
             -T $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/linker.ld
+endif
 
 # Enable a whole different set of exceptions, checks, coverage tools and more
 # with the test target
@@ -360,7 +353,7 @@ CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
 CFLAGS = $(CPPFLAGS)
 else
 CFLAGS = $(CFLAGS_COMMON) -D TARGET=Application
-CPPFLAGS = $(CFLAGS) $(CPPWARNINGS) $(CPPOPTIMIZE)
+CPPFLAGS = $(CFLAGS) $(CPPWARNINGS) $(CPPOPTIMIZE) $(WARNINGS)
 endif
 
 # ===========================

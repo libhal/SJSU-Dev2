@@ -14,8 +14,10 @@ $(eval $(call BUILD_LIRBARY,liblpc17xx,LIBRARY_LPC17XX))
 include $(LIBRARY_DIR)/L0_Platform/arm_cortex/m3/m3.mk
 
 platform-flash:
+	@echo
 	@bash -c "\
 	source $(TOOLS_DIR)/nxpprog/modules/bin/activate && \
 	python3 $(TOOLS_DIR)/nxpprog/nxpprog.py \
-	--oscfreq=12000000 --baud=230400 --control \
-	\"$(SJDEV)\" \"$(BINARY)\""
+	--binary=\"$(BINARY)\" --device=\"$(SJDEV)\" \
+	--osfreq=12000000 --baud=230400 --control"
+	@echo

@@ -5,7 +5,7 @@
 #include <iterator>
 
 #include "newlib/newlib.hpp"
-#include "third_party/etl/vector.h"
+#include "utility/containers/vector.hpp"
 #include "third_party/microrl/microrl.h"
 #include "utility/log.hpp"
 
@@ -42,13 +42,6 @@ class CommandInterface
     return 0;
   }
 };
-/// This function acts as a filler function for to be used for functions that
-/// have not yet been defined.
-inline int DoNothingCommand(int, const char * const[])
-{
-  LOG_INFO("This command hasn't been implemented yet.");
-  return 0;
-}
 /// The common function signature for all commands.
 /// Every command must take an interger that represents the number of arguments
 /// passed, argc, and an array of command arguments as character strings, argv.
@@ -77,7 +70,8 @@ class Command : public CommandInterface
   ///        "help" argument in argv[1] and give a long description there.
   /// @param program the function that will be called when the user types in
   ///        this commands name
-  constexpr Command(const char * name, const char * description,
+  constexpr Command(const char * name,
+                    const char * description,
                     CommandSignature program = DoNothingCommand)
       : name_(name), description_(description), program_(program)
   {
@@ -98,6 +92,14 @@ class Command : public CommandInterface
   }
 
  private:
+  /// This function acts as a filler function for to be used for functions that
+  /// have not yet been defined.
+  static int DoNothingCommand(int, const char * const[])
+  {
+    LOG_INFO("This command hasn't been implemented yet.");
+    return 0;
+  }
+
   const char * name_;
   const char * description_;
   CommandSignature program_;
@@ -113,12 +115,15 @@ class Command : public CommandInterface
 template <size_t kNumberOfCommands>
 struct CommandList_t
 {
-  CommandList_t() : commands{ nullptr } {}
+  CommandList_t()
+  {
+    commands.reserve(decltype(commands)::allocator_type::size);
+  }
   constexpr size_t size()  // NOLINT
   {
     return kNumberOfCommands;
   }
-  etl::vector<CommandInterface *, kNumberOfCommands> commands;
+  sjsu::Vector<CommandInterface *, kNumberOfCommands> commands;
 };
 namespace command
 {
@@ -202,7 +207,7 @@ class CommandLine
            "Press Enter to Start Command Line!\n" SJ2_COLOR_RESET);
     while (is_commandline_running)
     {
-      // Get char from stdin (uart) and send to microrl lib
+      // Get char from stdin and send to microrl lib
       microrl_insert_char(&rl_, getchar());
     }
   }
@@ -243,7 +248,9 @@ class CommandLine
         // If token is matched (text is part of our token starting from 0 char)
         if (std::strcmp(command->GetName(), argv[0]) == 0)
         {
-          position = command->AutoComplete(argc, argv, autocomplete_options,
+          position = command->AutoComplete(argc,
+                                           argv,
+                                           autocomplete_options,
                                            std::size(autocomplete_options));
           break;
         }
@@ -293,7 +300,9 @@ class CommandLine
     printf("List of commands:\n------------------\n\n");
     for (size_t i = 0; command_list.commands[i] != nullptr; i++)
     {
-      printf("%*s - %s\n", 10, command_list.commands[i]->GetName(),
+      printf("%*s - %s\n",
+             10,
+             command_list.commands[i]->GetName(),
              command_list.commands[i]->GetDescription());
     }
     printf("\n");
