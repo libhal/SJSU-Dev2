@@ -250,6 +250,21 @@ class Gpio final : public sjsu::Gpio
     *interrupt[triggered_port].clear |= (1 << triggered_pin);
   }
 
+  void SetPullDown()
+  {
+    if (pin_.GetPin() == 19)
+    {
+      sjsu::lpc40xx::LPC_IOCON->P1_19 &= ~(0b11<<3);
+      sjsu::lpc40xx::LPC_IOCON->P1_19 |= (0b1<<3);
+    }
+
+    else if (pin_.GetPin() == 15)
+    {
+      sjsu::lpc40xx::LPC_IOCON->P1_15 &= ~(0b11<<3);
+      sjsu::lpc40xx::LPC_IOCON->P1_15 |= (0b1<<3);
+    }
+  }
+
  private:
   // Sets the gpio interrupt to trigger on a rising edge.
   void SetEdgeRising() const
