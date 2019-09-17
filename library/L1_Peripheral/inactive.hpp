@@ -292,6 +292,9 @@ inline sjsu::Timer & GetInactive<sjsu::Timer>()
     {
       return 3;
     }
+    void Start() const override {}
+    void Stop() const override {}
+    void Reset() const override {}
   };
 
   static InactiveTimer inactive;

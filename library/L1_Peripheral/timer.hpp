@@ -63,5 +63,11 @@ class Timer
   virtual uint8_t GetAvailableMatchRegisters() const = 0;
   /// Get the current count in the count register
   virtual uint32_t GetCount() const = 0;
+  /// Starts the timer.
+  virtual void Start() const = 0;
+  /// Stops the timer.
+  virtual void Stop() const  = 0;
+  /// Resets the timer.
+  virtual void Reset() const = 0;
 };
 }  // namespace sjsu

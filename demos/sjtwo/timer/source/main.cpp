@@ -47,6 +47,11 @@ int main()
   timer3.SetMatchBehavior(10'000'000,
                           sjsu::Timer::MatchAction::kInterruptRestart);
 
+  timer0.Start();
+  timer1.Start();
+  timer2.Start();
+  timer3.Start();
+
   sjsu::Halt();
   return 0;
 }

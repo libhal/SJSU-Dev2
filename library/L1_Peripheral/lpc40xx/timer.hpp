@@ -9,7 +9,6 @@
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/timer.hpp"
 #include "utility/bit.hpp"
-#include "utility/enum.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
 #include "utility/units.hpp"
@@ -55,6 +54,13 @@ class Timer final : public sjsu::Timer
     };
   };
 
+  struct TimerControlRegister  // NOLINT
+  {
+   public:
+    inline static constexpr bit::Mask kEnableBit = bit::CreateMaskFromRange(0);
+    inline static constexpr bit::Mask kResetBit  = bit::CreateMaskFromRange(1);
+  };
+
   static constexpr uint8_t kMatchRegisterCount = 4;
 
   explicit constexpr Timer(const Peripheral_t & timer) : timer_(timer) {}
@@ -74,7 +80,6 @@ class Timer final : public sjsu::Timer
             timer_.id);
     uint32_t prescaler    = peripheral_frequency / frequency;
     timer_.peripheral->PR = prescaler;
-    timer_.peripheral->TCR |= (1 << 0);
 
     // Take the class's address and a copy of the callback for use in the
     // interrupt handler.
@@ -117,7 +122,7 @@ class Timer final : public sjsu::Timer
     // match register and index from there to get the other match registers.
     volatile uint32_t * match_register_ptr = &timer_.peripheral->MR0;
 
-    match_register_ptr[match_register & 0b11] = ticks / 2;
+    match_register_ptr[match_register & 0b11] = ticks;
   }
 
   uint8_t GetAvailableMatchRegisters() const override
@@ -128,6 +133,26 @@ class Timer final : public sjsu::Timer
   uint32_t GetCount() const override
   {
     return timer_.peripheral->TC;
+  }
+
+  void Start() const override
+  {
+    timer_.peripheral->TCR = bit::Set(
+        timer_.peripheral->TCR, TimerControlRegister::kEnableBit.position);
+  }
+
+  void Stop() const override
+  {
+    timer_.peripheral->TCR = bit::Clear(
+        timer_.peripheral->TCR, TimerControlRegister::kEnableBit.position);
+  }
+
+  void Reset() const override
+  {
+    timer_.peripheral->TCR = bit::Set(timer_.peripheral->TCR,
+                                      TimerControlRegister::kResetBit.position);
+    timer_.peripheral->TCR = bit::Clear(
+        timer_.peripheral->TCR, TimerControlRegister::kResetBit.position);
   }
 
  private:
