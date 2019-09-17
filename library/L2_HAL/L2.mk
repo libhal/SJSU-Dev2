@@ -15,6 +15,7 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/audio/test/buzzer_test.cpp
 # Communication
 # ==============================================================================
 TESTS += $(LIBRARY_DIR)/L2_HAL/communication/test/esp8266_test.cpp
+TESTS += $(LIBRARY_DIR)/L2_HAL/communication/test/tsop752_test.cpp
 # ==============================================================================
 # Displays
 # ==============================================================================
