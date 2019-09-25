@@ -1,8 +1,3 @@
-// @ingroup SJSU-Dev2
-// @defgroup Bit manipulation library
-// @brief This library contains helper methods for manipulating or extracting
-// bits from a numeric values.
-// @{
 #pragma once
 
 #include <cstdint>
@@ -18,6 +13,7 @@ struct Mask  // NOLINT
   uint8_t position;
   uint8_t width;
 };
+
 constexpr Mask CreateMaskFromRange(uint8_t low_bit_position,
                                    uint8_t high_bit_position)
 {
@@ -191,7 +187,6 @@ template <typename T>
                 "Toggle only accepts intergers.");
   return static_cast<T>(target ^ (1 << position));
 }
-
 /// Read a bit from the target value at the position specifed.
 /// If the bit is 1 at the position given, return true.
 /// If the bit is 0 at the position given, return false.
@@ -214,6 +209,36 @@ template <typename T>
                 "Read only accepts intergers.");
   return static_cast<bool>(target & (1 << position));
 }
+
+/// @returns a value that is the target value with the bit set to a 1 at the bit
+/// position within the bitmask. For exmaple if your bitmask has field position
+/// set to 5, then this function will return the target value with the 5th bits
+/// set to a 1.
+template <typename T>
+[[nodiscard]] constexpr T Set(T target, Mask bitmask)
+{
+  return Set(target, bitmask.position);
+}
+/// Operates the same way as the Set(T target, Mask bitmask) function except it
+/// clears the bit.
+template <typename T>
+[[nodiscard]] constexpr T Clear(T target, Mask bitmask)
+{
+  return Clear(target, bitmask.position);
+}
+/// Operates the same way as the Set() function except it toggles the bit.
+template <typename T>
+[[nodiscard]] constexpr bool Toggle(T target, Mask bitmask)
+{
+  return Toggle(target, bitmask.position);
+}
+/// @returns the bit in the value at the "position" field of the bitmask. For
+/// exmaple, if the passed bitmask has position set to 5, then this function
+/// will return the 5th bits value, regardless of the "width" field is.
+template <typename T>
+[[nodiscard]] constexpr bool Read(T target, Mask bitmask)
+{
+  return Read(target, bitmask.position);
+}
 }  // namespace bit
 }  // namespace sjsu
-// @}
