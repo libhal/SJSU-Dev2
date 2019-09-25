@@ -23,9 +23,11 @@ class Adc final : public sjsu::Adc
   /// lpc40xx's ADC Control register.
   struct Control  // NOLINT
   {
-    /// Set which ADC channels are enabled. It bit position represents 1 channel
-    /// with this 8 channel ADC.
-    static constexpr bit::Mask kChannelEnable = bit::CreateMaskFromRange(0, 7);
+    /// In burst mode, sets the ADC channels to be automatically converted.
+    /// It bit position represents 1 channel with this 8 channel ADC.
+    /// In software mode, this should hold only a single 1 for the single
+    /// channel to be converted.
+    static constexpr bit::Mask kChannelSelect = bit::CreateMaskFromRange(0, 7);
     /// Sets the channel's clock divider. Potentially saving power if clock is
     /// reduced further.
     static constexpr bit::Mask kClockDivider = bit::CreateMaskFromRange(8, 15);
@@ -45,7 +47,7 @@ class Adc final : public sjsu::Adc
   };
   /// Namespace containing the bitmask objects that are used to manipulate the
   /// lpc40xx's ADC Global Data register.
-  struct GlobalData  // NOLINT
+  struct DataRegister  // NOLINT
   {
     /// Result mask holds the latest result from the last ADC that was converted
     static constexpr bit::Mask kResult = bit::CreateMaskFromRange(4, 15);
@@ -178,6 +180,10 @@ class Adc final : public sjsu::Adc
   /// largest value it can have is 2^12 = 4096
   static constexpr uint8_t kActiveBits = 12;
   /// Turn on or off burst mode for the whole ADC peripheral.
+  ///
+  /// WARNING: if you are using this mode, call this before intializing any of
+  /// your LPC40xx ADC peripherals.
+  ///
   /// Normally, and ADC conversion must be triggered. After triggering
   /// conversion, one must wait until the conversion is complete before
   /// retrieving the converted analog voltage to digital value.
@@ -192,6 +198,11 @@ class Adc final : public sjsu::Adc
   {
     adc_base->CR =
         bit::Insert(adc_base->CR, turn_burst_mode_on, Control::kBurstEnable);
+  }
+  /// @returns true if burst mode is enabled and false otherwise.
+  static bool BurstModeIsEnabled()
+  {
+    return bit::Read(adc_base->CR, Control::kBurstEnable);
   }
   /// @param channel: Passed channel descriptor object. See Channel_t and
   ///        Channel documentation for more details about how to use this.
@@ -223,42 +234,28 @@ class Adc final : public sjsu::Adc
 
     uint32_t control = adc_base->CR;
 
-    control = bit::Set(control, channel_.channel);
-    control = bit::Set(control, Control::kPowerEnable.position);
+    control = bit::Set(control, Control::kPowerEnable);
     control = bit::Insert(control, clock_divider, Control::kClockDivider);
+
+    // If burst mode is enabled, the bits in the select area of the control
+    // register, are enables for each corrisponding ADC channel. Otherwise, this
+    // field should only hold a single set 1 when using software conversion.
+    if (BurstModeIsEnabled())
+    {
+      control = bit::Set(control, channel_.channel);
+    }
 
     adc_base->CR = control;
 
     return Status::kSuccess;
   }
-  void Conversion() const override
-  {
-    if (bit::Read(adc_base->CR, Control::kBurstEnable.position))
-    {
-      // NOTE: If burst mode is enabled, conversion start must be set 0
-      adc_base->CR = bit::Insert(adc_base->CR, 0, Control::kStartCode);
-    }
-    else
-    {
-      // NOTE: 0x01 = start code for "Start Conversion Now"
-      adc_base->CR = bit::Insert(adc_base->CR, 1, Control::kStartCode);
-    }
-
-    while (!HasConversionFinished())
-    {
-      continue;
-    }
-  }
   uint32_t Read() const override
   {
+    // Convert analog value from analog to a digital value
+    Conversion();
     uint32_t result =
-        bit::Extract(adc_base->DR[channel_.channel], GlobalData::kResult);
+        bit::Extract(adc_base->DR[channel_.channel], DataRegister::kResult);
     return result;
-  }
-  bool HasConversionFinished() const override
-  {
-    return bit::Read(adc_base->DR[channel_.channel],
-                     GlobalData::kDone.position);
   }
   uint8_t GetActiveBits() const override
   {
@@ -266,6 +263,30 @@ class Adc final : public sjsu::Adc
   }
 
  private:
+  bool HasConversionFinished() const
+  {
+    return bit::Read(adc_base->DR[channel_.channel], DataRegister::kDone);
+  }
+  void Conversion() const
+  {
+    if (BurstModeIsEnabled())
+    {
+      // NOTE: If burst mode is enabled, conversion start must be set 0
+      adc_base->CR = bit::Insert(adc_base->CR, 0, Control::kStartCode);
+    }
+    else
+    {
+      uint32_t channel_select = (1 << channel_.channel);
+      adc_base->CR =
+          bit::Insert(adc_base->CR, channel_select, Control::kChannelSelect);
+      // Start ADC conversion with start code 0x01
+      adc_base->CR = bit::Insert(adc_base->CR, 0x01, Control::kStartCode);
+      while (!HasConversionFinished())
+      {
+        continue;
+      }
+    }
+  }
   const Channel_t & channel_;
   const sjsu::SystemController & system_controller_;
 };

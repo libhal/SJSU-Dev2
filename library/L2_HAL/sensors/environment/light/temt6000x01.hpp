@@ -30,7 +30,6 @@ class Temt6000x01 final : public LightSensor
   /// @returns The illuminance in units of lux ranging from 1 - 1'000.
   units::illuminance::lux_t GetIlluminance() const override
   {
-    adc_.Conversion();
     // voltage = adc_output * (adc_reference_voltage / adc_resolution)
     const units::voltage::microvolt_t kVoltage(
         adc_.Read() * kAdcReferenceVoltage / adc_resolution_);
