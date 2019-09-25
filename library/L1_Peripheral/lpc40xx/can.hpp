@@ -8,8 +8,9 @@
 
 #include "L1_Peripheral/can.hpp"
 
-#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/cortex/interrupt.hpp"
+#include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/macros.hpp"
@@ -217,22 +218,6 @@ class Can final : public sjsu::Can
         rx_queue_storage_area[kRxQueueLength * kRxQueueItemSize];
   };
 
-  enum Ports : uint8_t
-  {
-    // based on schematic rev1.D
-    kCan1Port = 0,
-    kCan2Port = 2
-  };
-
-  enum Pins : uint8_t
-  {
-    // based on schematic rev1.D
-    kRd1PinNumber = 0,
-    kTd1PinNumber = 1,
-    kRd2PinNumber = 7,
-    kTd2PinNumber = 8
-  };
-
   enum PinFunctions : uint8_t
   {
     kRd1FunctionBit = 1,
@@ -412,14 +397,17 @@ class Can final : public sjsu::Can
   inline static const sjsu::cortex::InterruptController
       kCortexInterruptController = sjsu::cortex::InterruptController();
 
+  inline static const lpc40xx::Pin kPort1ReadPin = Pin(0, 0);
+  inline static const lpc40xx::Pin kPort1TransmitPin = Pin(0, 1);
+  inline static const lpc40xx::Pin kPort2ReadPin = Pin(2, 7);
+  inline static const lpc40xx::Pin kPort2TransmitPin = Pin(2, 8);
+
   // Default constructor that defaults to CAN 1
   constexpr Can()
       : controller_(kCan1),
         baud_rate_(BaudRates::kBaud100Kbps),
-        rd_(&rd_pin_),
-        td_(&td_pin_),
-        rd_pin_(Pin(kCan1Port, kRd1PinNumber)),
-        td_pin_(Pin(kCan1Port, kTd1PinNumber)),
+        rd_(kPort1ReadPin),
+        td_(kPort1TransmitPin),
         system_controller_(kDefaultSystemController),
         interrupt_controller_(kCortexInterruptController)
   {
@@ -428,8 +416,8 @@ class Can final : public sjsu::Can
   constexpr Can(
       Controllers controller,
       BaudRates baud_rate,
-      sjsu::Pin * td_pin,
-      sjsu::Pin * rd_pin,
+      const sjsu::Pin & td_pin = GetInactive<sjsu::Pin>(),
+      const sjsu::Pin & rd_pin = GetInactive<sjsu::Pin>(),
       const sjsu::lpc40xx::SystemController & system_controller =
           kDefaultSystemController,
       const sjsu::cortex::InterruptController & = kCortexInterruptController)
@@ -437,8 +425,6 @@ class Can final : public sjsu::Can
         baud_rate_(baud_rate),
         rd_(td_pin),
         td_(rd_pin),
-        rd_pin_(Pin::CreateInactivePin()),
-        td_pin_(Pin::CreateInactivePin()),
         system_controller_(system_controller),
         interrupt_controller_(kCortexInterruptController)
   {
@@ -749,13 +735,13 @@ class Can final : public sjsu::Can
     //
     if (controller_ == kCan1)
     {
-      rd_->SetPinFunction(kRd1FunctionBit);
-      td_->SetPinFunction(kTd1FunctionBit);
+      rd_.SetPinFunction(kRd1FunctionBit);
+      td_.SetPinFunction(kTd1FunctionBit);
     }
     else
     {
-      rd_->SetPinFunction(kRd2FunctionBit);
-      td_->SetPinFunction(kTd2FunctionBit);
+      rd_.SetPinFunction(kRd2FunctionBit);
+      td_.SetPinFunction(kTd2FunctionBit);
     }
   }
 
@@ -820,10 +806,8 @@ class Can final : public sjsu::Can
 
   Controllers controller_;
   BaudRates baud_rate_;
-  sjsu::Pin * rd_;
-  sjsu::Pin * td_;
-  lpc40xx::Pin rd_pin_;
-  lpc40xx::Pin td_pin_;
+  const sjsu::Pin & rd_;
+  const sjsu::Pin & td_;
   const sjsu::lpc40xx::SystemController & system_controller_;
   const sjsu::cortex::InterruptController & interrupt_controller_;
 };

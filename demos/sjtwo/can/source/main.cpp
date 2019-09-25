@@ -6,18 +6,11 @@ int main(void)
 {
   // Using default constructor for CAN 1
   sjsu::lpc40xx::Can can1;
-
-  sjsu::lpc40xx::Pin rd_pin(sjsu::lpc40xx::Can::Ports::kCan2Port,
-                            sjsu::lpc40xx::Can::Pins::kRd2PinNumber);
-  sjsu::lpc40xx::Pin td_pin(sjsu::lpc40xx::Can::Ports::kCan2Port,
-                            sjsu::lpc40xx::Can::Pins::kTd2PinNumber);
-
   // Using parameterized constructor for CAN 2
   sjsu::lpc40xx::Can can2(sjsu::lpc40xx::Can::Controllers::kCan2,
                           sjsu::lpc40xx::Can::BaudRates::kBaud100Kbps,
-                          &td_pin,
-                          &rd_pin);
-
+                          sjsu::lpc40xx::Can::kPort2TransmitPin,
+                          sjsu::lpc40xx::Can::kPort2ReadPin);
   // Tx Messages
   sjsu::lpc40xx::Can::TxMessage_t tx_message1;
   memset(&tx_message1, 0, sizeof(sjsu::lpc40xx::Can::TxMessage_t));
