@@ -62,14 +62,9 @@ const sjsu::Adc & GetInactive<sjsu::Adc>()
     {
       return sjsu::Status::kNotImplemented;
     }
-    void Conversion() const override {}
     uint32_t Read() const override
     {
       return 0;
-    }
-    bool HasConversionFinished() const override
-    {
-      return true;
     }
     uint8_t GetActiveBits() const override
     {

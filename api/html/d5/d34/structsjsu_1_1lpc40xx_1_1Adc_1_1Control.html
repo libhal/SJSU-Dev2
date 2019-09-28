@@ -122,8 +122,8 @@ Collaboration diagram for sjsu::lpc40xx::Adc::Control:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a4351601f0ead87e2eedfdec19c661d7a"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a4351601f0ead87e2eedfdec19c661d7a">kChannelEnable</a> = bit::CreateMaskFromRange(0, 7)</td></tr>
-<tr class="separator:a4351601f0ead87e2eedfdec19c661d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a93d91ae499199580e94d2cf9382ebc"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a5a93d91ae499199580e94d2cf9382ebc">kChannelSelect</a> = bit::CreateMaskFromRange(0, 7)</td></tr>
+<tr class="separator:a5a93d91ae499199580e94d2cf9382ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa13d0257fbcd2d8684232ee7ebbe3614"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#aa13d0257fbcd2d8684232ee7ebbe3614">kClockDivider</a> = bit::CreateMaskFromRange(8, 15)</td></tr>
 <tr class="separator:aa13d0257fbcd2d8684232ee7ebbe3614"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0ac4653bf59be520127b28febacca93"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ac0ac4653bf59be520127b28febacca93">kBurstEnable</a> = bit::CreateMaskFromRange(16)</td></tr>
@@ -161,7 +161,7 @@ static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html
 
 </div>
 </div>
-<a class="anchor" id="a4351601f0ead87e2eedfdec19c661d7a"></a>
+<a class="anchor" id="a5a93d91ae499199580e94d2cf9382ebc"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -169,7 +169,7 @@ static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Adc::Control::kChannelEnable = bit::CreateMaskFromRange(0, 7)</td>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Adc::Control::kChannelSelect = bit::CreateMaskFromRange(0, 7)</td>
         </tr>
       </table>
   </td>
@@ -178,7 +178,7 @@ static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set which ADC channels are enabled. It bit position represents 1 channel with this 8 channel ADC. </p>
+<p>In burst mode, sets the ADC channels to be automatically converted. It bit position represents 1 channel with this 8 channel ADC. In software mode, this should hold only a single 1 for the single channel to be converted. </p>
 
 </div>
 </div>

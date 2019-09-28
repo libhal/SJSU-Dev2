@@ -11,17 +11,21 @@ int main()
 {
   LOG_INFO("Analog-to-Ditial Application Starting...");
 
-  LOG_INFO("Creating Adc object and selecting ADC channel 0");
-  LOG_INFO("ADC channel 0 is connected to pin P0.23");
-  sjsu::lpc40xx::Adc adc0(sjsu::lpc40xx::Adc::Channel::kChannel2);
-  LOG_INFO("Initializing ADC ...");
-  adc0.Initialize();
-  LOG_INFO("Initializing ADC Complete!");
-  LOG_INFO("Enabling ADC to burst mode!");
+  LOG_INFO("Creating ADC object and selecting ADC channel 4 & 5");
+  LOG_INFO("ADC channel 4 is connected to pin P1.30");
+  sjsu::lpc40xx::Adc adc4(sjsu::lpc40xx::Adc::Channel::kChannel4);
+  LOG_INFO("ADC channel 5 is connected to pin P1.31");
+  sjsu::lpc40xx::Adc adc5(sjsu::lpc40xx::Adc::Channel::kChannel5);
+
   LOG_INFO(
-      "Burst mode is useful in that you do not need to turn on conversion. You "
-      "simply need to run the Read() method!");
-  adc0.BurstMode(true);
+      "If you leave a channel disconnected, then the pin will be in a floating "
+      "state, and in this state, the voltage read from this pin will be "
+      "random.");
+
+  LOG_INFO("Initializing ADC ...");
+  adc5.Initialize();
+  adc4.Initialize();
+  LOG_INFO("Initializing ADC Complete!");
 
   LOG_INFO(
       "Apply a voltage from 0 to 3.3V (BE SUPER SURE not to accidently apply "
@@ -29,12 +33,26 @@ int main()
 
   while (true)
   {
-    uint32_t adc_digital_value = adc0.Read();
+    // Now that conversion is complete, read the value like so.
+    uint32_t adc_digital_value[2];
+    float voltage[2];
+
     // For the LPC40xx with a 12-bit ADC, lowest and highest values are 0 to
     // 1023, where as the lowest and highest voltages are between 0 and 3.3V
-    float voltage = sjsu::Map(adc_digital_value, 0, 4095, 0.0f, 3.3f);
-    LOG_INFO("Voltage on pin P0.23 = %f, raw value = %lu",
-             static_cast<double>(voltage), adc_digital_value);
+
+    // Now that conversion is complete, read the value like so.
+    adc_digital_value[0] = adc5.Read();
+    adc_digital_value[1] = adc4.Read();
+    // For the LPC40xx with a 12-bit ADC, lowest and highest values are 0 to
+    // 1023, where as the lowest and highest voltages are between 0 and 3.3V
+    voltage[0] = sjsu::Map(adc_digital_value[0], 0, 4095, 0.0f, 3.3f);
+    voltage[1] = sjsu::Map(adc_digital_value[1], 0, 4095, 0.0f, 3.3f);
+
+    LOG_INFO("voltage[0] = %f V (%lu) :: voltage[1] = %f V (%lu)",
+             static_cast<double>(voltage[0]),
+             adc_digital_value[0],
+             static_cast<double>(voltage[1]),
+             adc_digital_value[1]);
     sjsu::Delay(250ms);
   }
   return 0;

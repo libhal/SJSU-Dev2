@@ -110,9 +110,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Analog-to-Digital (ADC) Converter Interface.  
- <a href="../../d0/dc1/classsjsu_1_1Adc.html#details">More...</a></p>
-
 <p><code>#include &lt;<a class="el" href="../../d5/d90/adc_8hpp_source.html">adc.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Adc:</div>
@@ -127,45 +124,14 @@ Inheritance diagram for sjsu::Adc:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aaf6048e11962ab57b0668dff500cba8a"><td class="memItemLeft" align="right" valign="top">virtual Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#aaf6048e11962ab57b0668dff500cba8a">Initialize</a> () const =0</td></tr>
 <tr class="separator:aaf6048e11962ab57b0668dff500cba8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0920b45711f58cc1a4bfd5815c30ff57"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#a0920b45711f58cc1a4bfd5815c30ff57">Conversion</a> () const =0</td></tr>
-<tr class="separator:a0920b45711f58cc1a4bfd5815c30ff57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac91e91ae9c477778b078b4d5e6e8d77d"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#ac91e91ae9c477778b078b4d5e6e8d77d">Read</a> () const =0</td></tr>
 <tr class="separator:ac91e91ae9c477778b078b4d5e6e8d77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec1e263d83741c28c67babef6611a390"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#aec1e263d83741c28c67babef6611a390">HasConversionFinished</a> () const =0</td></tr>
-<tr class="separator:aec1e263d83741c28c67babef6611a390"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad0f82c8674acc5916171b9c654797cf"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#aad0f82c8674acc5916171b9c654797cf">GetActiveBits</a> () const =0</td></tr>
 <tr class="separator:aad0f82c8674acc5916171b9c654797cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Analog-to-Digital (ADC) Converter Interface. </p>
+<div class="textblock"><p>Common abstraction interface for Analog-to-Digital (ADC) Converter. These peripherals are used to sense a voltage and convert it to a numeric value. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a0920b45711f58cc1a4bfd5815c30ff57"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void sjsu::Adc::Conversion </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Start conversion process and loop until the ADC conversion is complete. When this returns, you can read the actual value from the <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#ac91e91ae9c477778b078b4d5e6e8d77d">Read()</a> method.</p>
-<p>Some implementations of ADC have additional functionality that allows them to skip the conversion step. For example the LPC40xx series of chips have burst mode, which causes the hardware to continuous perform conversion without the need of the user code to run this method. With Burst mode enabled, <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#ac91e91ae9c477778b078b4d5e6e8d77d">Read()</a> will always return the latest value. </p>
-
-<p>Implemented in <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a8731324beb14293fa1871b3c9351c156">sjsu::lpc40xx::Adc</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="aad0f82c8674acc5916171b9c654797cf"></a>
 <div class="memitem">
 <div class="memproto">
@@ -189,32 +155,6 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>number of active bits for the ADC. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a3f886549ab4444d418c8586ede018fea">sjsu::lpc40xx::Adc</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aec1e263d83741c28c67babef6611a390"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool sjsu::Adc::HasConversionFinished </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>true if a conversion has finished. The exact behaviour of this method is not known if <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#a0920b45711f58cc1a4bfd5815c30ff57">Conversion()</a> was not called before calling this method. </dd></dl>
-
-<p>Implemented in <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a886f2dfb5383d85dd4a9feb32a5e0e37">sjsu::lpc40xx::Adc</a>.</p>
 
 </div>
 </div>

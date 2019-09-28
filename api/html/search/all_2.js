@@ -6,6 +6,7 @@ var searchData=
   ['btr',['BTR',['../d1/dba/structLPC__CAN__TypeDef.html#a461439cb1fa20001b5177c0589a2fdcc',1,'LPC_CAN_TypeDef']]],
   ['buffer_5ft',['Buffer_t',['../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html',1,'sjsu::Esp8266']]],
   ['burstmode',['BurstMode',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae3771dcd8323f29bbee55c9c61871899',1,'sjsu::lpc40xx::Adc']]],
+  ['burstmodeisenabled',['BurstModeIsEnabled',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#af66237fedb28bab973744ea61bf73099',1,'sjsu::lpc40xx::Adc']]],
   ['bus',['Bus',['../db/d99/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus.html',1,'sjsu::lpc40xx::I2c']]],
   ['bus',['Bus',['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html',1,'sjsu::lpc40xx::Spi']]],
   ['bus_5ft',['Bus_t',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html',1,'sjsu::lpc40xx::I2c']]],

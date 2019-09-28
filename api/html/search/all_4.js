@@ -8,6 +8,7 @@ var searchData=
   ['dat',['DAT',['../d8/d12/structLPC__I2C__TypeDef.html#afb767d34e141707ca657ed2df4cbc3f5',1,'LPC_I2C_TypeDef']]],
   ['data_5fbuffer',['DATA_BUFFER',['../d8/d12/structLPC__I2C__TypeDef.html#ad1e68823c832452aa2d0b4d9be4ba122',1,'LPC_I2C_TypeDef']]],
   ['data_5ft',['Data_t',['../d0/dd2/unionsjsu_1_1Can_1_1Data__t.html',1,'sjsu::Can']]],
+  ['dataregister',['DataRegister',['../df/d35/structsjsu_1_1lpc40xx_1_1Adc_1_1DataRegister.html',1,'sjsu::lpc40xx::Adc']]],
   ['dcrdr',['DCRDR',['../d6/d00/structCoreDebug__Type.html#aab3cc92ef07bc1f04b3a3aa6db2c2d55',1,'CoreDebug_Type']]],
   ['dcrsr',['DCRSR',['../d6/d00/structCoreDebug__Type.html#af907cf64577eaf927dac6787df6dd98b',1,'CoreDebug_Type']]],
   ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena']]],
