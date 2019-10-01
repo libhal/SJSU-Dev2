@@ -45,6 +45,14 @@ you don't want this to change your file, you can omit the `-i` flag and
 it will dump the refactored text to stdout. You can use io redirects to
 dump to a file and review if the changes are to your liking.
 
+## Documentation
+
+The code base will be evaluated for missing documentation or incorrect
+documentation syntax. This test does not appear in the presubmit checks, as it
+would require that `setup.sh` install doxygen on every system. If you install
+doxygen, then you can run this by running `tools/generate_doxygen_docs.sh`.
+The program will list all of the documentation errors at the end of the program.
+
 ## Running presubmit checks
 
 To run the whole set of presubmit checks, change into your project
