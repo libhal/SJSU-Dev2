@@ -111,54 +111,105 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Pin Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d5/df1/pin_8hpp_source.html">pin.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Pin:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d0/d86/classsjsu_1_1Pin__inherit__graph.png" border="0" usemap="#sjsu_1_1Pin_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Pin_inherit__map" id="sjsu_1_1Pin_inherit__map">
-<area shape="rect" id="node2" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="sjsu::lpc17xx::Pin" alt="" coords="5,80,136,107"/>
-<area shape="rect" id="node3" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="sjsu::lpc40xx::Pin" alt="" coords="160,80,291,107"/>
+<area shape="rect" id="node2" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="5,80,136,107"/>
+<area shape="rect" id="node3" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="160,80,291,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:af3152fad7bd72aaf4b1ffaa51e962b95"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3152fad7bd72aaf4b1ffaa51e962b95"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Resistor</b> : uint8_t { <b>kNone</b> = 0, 
-<b>kPullDown</b>, 
-<b>kPullUp</b>, 
-<b>kRepeater</b>
+<tr class="memitem:af3152fad7bd72aaf4b1ffaa51e962b95"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95">Resistor</a> : uint8_t { <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95a35c3ace1970663a16e5c65baa5941b13">Resistor::kNone</a> = 0, 
+<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95a7b8953ca917153ed7e0f8f0d64e616bf">Resistor::kPullDown</a>, 
+<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95aef7e3f1637f99b1b8619308ee2dab8e9">Resistor::kPullUp</a>, 
+<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95a4e01a1ad92574d898bd8319b9ceb958f">Resistor::kRepeater</a>
  }</td></tr>
 <tr class="separator:af3152fad7bd72aaf4b1ffaa51e962b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c859e3dbd78a0841a43d0d6b823a902"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c859e3dbd78a0841a43d0d6b823a902"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Pin</b> (uint8_t port, uint8_t pin)</td></tr>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a1c859e3dbd78a0841a43d0d6b823a902">Pin</a> (uint8_t port, uint8_t pin)</td></tr>
+<tr class="memdesc:a1c859e3dbd78a0841a43d0d6b823a902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set internal port and pin values. <br /></td></tr>
 <tr class="separator:a1c859e3dbd78a0841a43d0d6b823a902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa270c92d27abcc181e1c8f7f5f2a03e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#aa270c92d27abcc181e1c8f7f5f2a03e7">SetPinFunction</a> (uint8_t function) const =0</td></tr>
 <tr class="separator:aa270c92d27abcc181e1c8f7f5f2a03e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd0aa827556331a5ab117d5381dd0f74"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#acd0aa827556331a5ab117d5381dd0f74">SetPull</a> (Resistor mode) const =0</td></tr>
-<tr class="separator:acd0aa827556331a5ab117d5381dd0f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af059b120d4e4897e50dd4253fef724ab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af059b120d4e4897e50dd4253fef724ab">SetPull</a> (<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95">Resistor</a> resistor) const =0</td></tr>
+<tr class="separator:af059b120d4e4897e50dd4253fef724ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe39ca55730406d9faea3dbe8dd0c7ab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#abe39ca55730406d9faea3dbe8dd0c7ab">SetAsOpenDrain</a> (bool set_as_open_drain=true) const =0</td></tr>
 <tr class="separator:abe39ca55730406d9faea3dbe8dd0c7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02715a050637b44259c96d3b857473cc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a02715a050637b44259c96d3b857473cc">SetAsAnalogMode</a> (bool set_as_analog=true) const =0</td></tr>
 <tr class="separator:a02715a050637b44259c96d3b857473cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af23cc3bdc37d03e92cd4f40deb04e61c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af23cc3bdc37d03e92cd4f40deb04e61c"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetPort</b> () const </td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af23cc3bdc37d03e92cd4f40deb04e61c">GetPort</a> () const </td></tr>
+<tr class="memdesc:af23cc3bdc37d03e92cd4f40deb04e61c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for the pin's port. <br /></td></tr>
 <tr class="separator:af23cc3bdc37d03e92cd4f40deb04e61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a260b81a7598f30528ad2e86dae0d44bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a260b81a7598f30528ad2e86dae0d44bc"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetPin</b> () const </td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a260b81a7598f30528ad2e86dae0d44bc">GetPin</a> () const </td></tr>
+<tr class="memdesc:a260b81a7598f30528ad2e86dae0d44bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for the pin's pin. <br /></td></tr>
 <tr class="separator:a260b81a7598f30528ad2e86dae0d44bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a4932425145eb6c974042da8065cfd22b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4932425145eb6c974042da8065cfd22b"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>port_</b></td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a4932425145eb6c974042da8065cfd22b">port_</a></td></tr>
+<tr class="memdesc:a4932425145eb6c974042da8065cfd22b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigned port. <br /></td></tr>
 <tr class="separator:a4932425145eb6c974042da8065cfd22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41a8c139acdc313bc5f27065f8142d9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41a8c139acdc313bc5f27065f8142d9b"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a41a8c139acdc313bc5f27065f8142d9b">pin_</a></td></tr>
+<tr class="memdesc:a41a8c139acdc313bc5f27065f8142d9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigned pin within the above port. <br /></td></tr>
 <tr class="separator:a41a8c139acdc313bc5f27065f8142d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Abstraction interface for physical electrical "pins".</p>
+<p>Pins are a type of electrical contact. Contacts are metal surfaces which can be pressed or connected to another contact or pin in order to create an electric circuit.</p>
+<p>The pins of a microcontrollers typically can support more then one function or mode. This could be allowing the pin to sense analog voltages, another could be a mode for communicating to other devices.</p>
+<p>Not only can pin's functions be changed but their properties can also be changed along side these functions. For example, many controllers have internal pull up (resistor connected to high voltage) or pull down (resistor connected to ground) resistors to keep the state of the pin at a known voltage when the pin is not connected to anything.</p>
+<p>This interface represents a common set of functions that most controllers and systems support. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="af3152fad7bd72aaf4b1ffaa51e962b95"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95">sjsu::Pin::Resistor</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Defines the set of internal resistence connections to a pin. Read specific enumeration constant comments/documentation to understand more about what each one does. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="af3152fad7bd72aaf4b1ffaa51e962b95a35c3ace1970663a16e5c65baa5941b13"></a>kNone&#160;</td><td class="fielddoc">
+<p>Disable resistor pull. If the pin is setup as high-z (input mode) and not connected to anything then the pin will be floating. Its value will not undefined. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="af3152fad7bd72aaf4b1ffaa51e962b95a7b8953ca917153ed7e0f8f0d64e616bf"></a>kPullDown&#160;</td><td class="fielddoc">
+<p>Connect pin to ground using weak (high resistence) resistor. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="af3152fad7bd72aaf4b1ffaa51e962b95aef7e3f1637f99b1b8619308ee2dab8e9"></a>kPullUp&#160;</td><td class="fielddoc">
+<p>Connect pin to controller digital voltage (VCC) using a weak (high resistence) resistor. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="af3152fad7bd72aaf4b1ffaa51e962b95a4e01a1ad92574d898bd8319b9ceb958f"></a>kRepeater&#160;</td><td class="fielddoc">
+<p>Connect pin to a pull up or pull down resistor based what the pin's previous state was.</p>
+<p>For example: if the pin was connected to a HIGH voltage for a moment, then then was removed from this source (so now the pin is disconnected or floating), then the pin will remember that voltage state and enable the pull-up resistor.</p>
+<p>Connecting a LOW voltage source to the pin, will enable the pull-down resistor. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a02715a050637b44259c96d3b857473cc"></a>
 <div class="memitem">
@@ -189,7 +240,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a3849d96d5d02d71c696df1dce1022ae7">sjsu::lpc40xx::Pin</a>.</p>
+<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a3849d96d5d02d71c696df1dce1022ae7">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#abaa5bf87c7ecb6deb2d5cdd3707bc48b">sjsu::lpc17xx::Pin</a>.</p>
 
 </div>
 </div>
@@ -222,7 +273,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a908cc2f89c81eecb1216d1ece4129d18">sjsu::lpc17xx::Pin</a>, and <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6ea3c9456d597fb32ad7efab1975da83">sjsu::lpc40xx::Pin</a>.</p>
+<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6ea3c9456d597fb32ad7efab1975da83">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a908cc2f89c81eecb1216d1ece4129d18">sjsu::lpc17xx::Pin</a>.</p>
 
 </div>
 </div>
@@ -247,7 +298,17 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set the pin's function</p>
+<p>Set the pin's function using a function code. The function code is very specific to the controller being used.</p>
+<p>But an example could be the LPC4078 chip's P0.0. It has the following functions:</p>
+<p>0. GPIO (General purpose input or output) pin</p><ol type="1">
+<li>CANBUS port 1 Read</li>
+<li>UART port 3 transmitter</li>
+<li>I2C port 1 serial data</li>
+<li>and UART port 0 transmitter</li>
+</ol>
+<p>Each function listed above is listed with its function code. If you pass the value 4 into the SetPinFunction function, for P0.0, it will set that pin to the UART port 0 transmitter function. After that, if you have properly enabled the UART hardware, when you attempt to send data through the uart0 port, it will show up on the pin.</p>
+<p>Please consult the user manual for the chip you are using to figure out which function codes correspond to specific functions.</p>
+<p>Generally, this method is only used laterally in the L1 layer. This is due to the fact that other L1s need to use this library to setup their external pins, but also due to the fact that a Hardware abstraction or above should not have to concern itself with function codes, thus it is the job of the L1 peripheral that uses this pin to manage its own function code usage.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">function</td><td>- pin function code </td></tr>
@@ -255,11 +316,11 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a495b36f5b0d154c819db581db04c6561">sjsu::lpc17xx::Pin</a>, and <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a79c5b2e4558199c4cbb2a41fec0f86e7">sjsu::lpc40xx::Pin</a>.</p>
+<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a79c5b2e4558199c4cbb2a41fec0f86e7">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a495b36f5b0d154c819db581db04c6561">sjsu::lpc17xx::Pin</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="acd0aa827556331a5ab117d5381dd0f74"></a>
+<a class="anchor" id="af059b120d4e4897e50dd4253fef724ab"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -269,8 +330,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
         <tr>
           <td class="memname">virtual void sjsu::Pin::SetPull </td>
           <td>(</td>
-          <td class="paramtype">Resistor&#160;</td>
-          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95">Resistor</a>&#160;</td>
+          <td class="paramname"><em>resistor</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -283,12 +344,12 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
 <p>Set pin's resistor pull, setting ot either no resistor pull, pull down, pull up and repeater.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>- pin mode </td></tr>
+    <tr><td class="paramname">resistor</td><td>- which resistor setup you would like. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ae5a0995b82daecbf6eaee43152cb33ac">sjsu::lpc17xx::Pin</a>, and <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa83501ab5e87a9a734bc62e4ba88a614">sjsu::lpc40xx::Pin</a>.</p>
+<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa83501ab5e87a9a734bc62e4ba88a614">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ae5a0995b82daecbf6eaee43152cb33ac">sjsu::lpc17xx::Pin</a>.</p>
 
 </div>
 </div>

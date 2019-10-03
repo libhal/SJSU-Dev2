@@ -16,5 +16,6 @@ var searchData=
   ['function0',['FUNCTION0',['../d5/db5/structDWT__Type.html#a579ae082f58a0317b7ef029b20f52889',1,'DWT_Type']]],
   ['function1',['FUNCTION1',['../d5/db5/structDWT__Type.html#a8dfcf25675f9606aa305c46e85182e4e',1,'DWT_Type']]],
   ['function2',['FUNCTION2',['../d5/db5/structDWT__Type.html#ab1b60d6600c38abae515bab8e86a188f',1,'DWT_Type']]],
-  ['function3',['FUNCTION3',['../d5/db5/structDWT__Type.html#a52d4ff278fae6f9216c63b74ce328841',1,'DWT_Type']]]
+  ['function3',['FUNCTION3',['../d5/db5/structDWT__Type.html#a52d4ff278fae6f9216c63b74ce328841',1,'DWT_Type']]],
+  ['function_5fmap',['function_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a362622236e910dba04f12d5cb7fddcf6',1,'sjsu::lpc17xx::Pin']]]
 ];

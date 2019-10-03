@@ -109,13 +109,33 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc17xx::Pin::PinTable_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Table of registers for the LPC17xx pins.  
+ <a href="../../d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d7/d6e/lpc17xx_2pin_8hpp_source.html">pin.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a89b060554a4c9147153810e10efb4a79"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89b060554a4c9147153810e10efb4a79"></a>
-volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin</b> [11]</td></tr>
+<tr class="memitem:a89b060554a4c9147153810e10efb4a79"><td class="memItemLeft" align="right" valign="top">volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html#a89b060554a4c9147153810e10efb4a79">pin</a> [11]</td></tr>
 <tr class="separator:a89b060554a4c9147153810e10efb4a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Table of registers for the LPC17xx pins. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a89b060554a4c9147153810e10efb4a79"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t sjsu::lpc17xx::Pin::PinTable_t::pin[11]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Because each port holds 32 pins, and most of the pin control registers use 2-bits for configuration, and we have about five and a half ports, this structure holds an array of 11 uint32_t. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/lpc17xx/<a class="el" href="../../d7/d6e/lpc17xx_2pin_8hpp_source.html">pin.hpp</a></li>
 </ul>

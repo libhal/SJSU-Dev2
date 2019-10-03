@@ -11,6 +11,8 @@ var searchData=
   ['rbr',['RBR',['../d9/d2d/structLPC__UART4__TypeDef.html#adeff6b8ba33964c6f9513d74dd213b05',1,'LPC_UART4_TypeDef']]],
   ['rda',['RDA',['../d1/dba/structLPC__CAN__TypeDef.html#a3bf277729e96b67ccdda724d32c401e3',1,'LPC_CAN_TypeDef']]],
   ['rdb',['RDB',['../d1/dba/structLPC__CAN__TypeDef.html#a9e30d0e614d62cb8c4dcc028b54b1c1c',1,'LPC_CAN_TypeDef']]],
+  ['register_5fmatrix',['register_matrix',['../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html#a24f9558dd4d59675b8aa5cbb69c25943',1,'sjsu::lpc40xx::Pin::PinMap_t']]],
+  ['resistor_5fmap',['resistor_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#af61d2da32f1f3363c10d6c8b2204bcd9',1,'sjsu::lpc17xx::Pin']]],
   ['rfs',['RFS',['../d1/dba/structLPC__CAN__TypeDef.html#a1226fc21b1f4530138d8804d4616ee75',1,'LPC_CAN_TypeDef']]],
   ['rid',['RID',['../d1/dba/structLPC__CAN__TypeDef.html#acc2d189e0ce8d151633fe7af32b16751',1,'LPC_CAN_TypeDef']]],
   ['ris',['RIS',['../d2/d47/structLPC__SSP__TypeDef.html#ac864a0884f6871821318720c8a7c06ef',1,'LPC_SSP_TypeDef']]],

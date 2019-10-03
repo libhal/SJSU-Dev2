@@ -4,7 +4,7 @@
 <area shape="rect" id="node3" href="$dc/dbf/structLPC__PWM__TypeDef.html" title="LPC_PWM_TypeDef" alt="" coords="19,322,159,349"/>
 <area shape="rect" id="node4" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="5,373,172,415"/>
 <area shape="rect" id="node6" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="337,270,412,297"/>
-<area shape="rect" id="node7" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="sjsu::lpc40xx::Pin" alt="" coords="651,205,781,231"/>
-<area shape="rect" id="node8" href="$d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="sjsu::lpc40xx::Pin\l::PinMap_t" alt="" coords="309,5,440,47"/>
+<area shape="rect" id="node7" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="651,205,781,231"/>
+<area shape="rect" id="node8" href="$d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="Pin map table for maping pins and ports to registers. " alt="" coords="309,5,440,47"/>
 <area shape="rect" id="node9" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="319,205,431,231"/>
 </map>

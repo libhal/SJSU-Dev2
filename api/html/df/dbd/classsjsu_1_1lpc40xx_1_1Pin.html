@@ -113,6 +113,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Pin Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. ">Pin</a> control driver for the LPC40xx and LPC17xx microcontrollers.  
+ <a href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d4/da5/lpc40xx_2pin_8hpp_source.html">pin.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::lpc40xx::Pin:</div>
 <div class="dyncontent">
@@ -127,7 +132,7 @@ Collaboration diagram for sjsu::lpc40xx::Pin:</div>
 <div class="center"><img src="../../d1/d3e/classsjsu_1_1lpc40xx_1_1Pin__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Pin_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Pin_coll__map" id="sjsu_1_1lpc40xx_1_1Pin_coll__map">
 <area shape="rect" id="node2" href="../../d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
-<area shape="rect" id="node3" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="sjsu::lpc40xx::Pin\l::PinMap_t" alt="" coords="104,5,235,47"/>
+<area shape="rect" id="node3" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="Pin map table for maping pins and ports to registers. " alt="" coords="104,5,235,47"/>
 <area shape="rect" id="node4" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="259,13,371,39"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
@@ -135,129 +140,435 @@ Collaboration diagram for sjsu::lpc40xx::Pin:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html">PinMap_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. ">Pin</a> map table for maping pins and ports to registers.  <a href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae7b9b8c1fb4153c09fb59912f3b86b9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7b9b8c1fb4153c09fb59912f3b86b9b"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Pin</b> (uint8_t port, uint8_t pin)</td></tr>
+<tr class="memitem:ae7b9b8c1fb4153c09fb59912f3b86b9b"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae7b9b8c1fb4153c09fb59912f3b86b9b">Pin</a> (uint8_t port, uint8_t pin)</td></tr>
 <tr class="separator:ae7b9b8c1fb4153c09fb59912f3b86b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79c5b2e4558199c4cbb2a41fec0f86e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a79c5b2e4558199c4cbb2a41fec0f86e7">SetPinFunction</a> (uint8_t function) const override</td></tr>
 <tr class="separator:a79c5b2e4558199c4cbb2a41fec0f86e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa83501ab5e87a9a734bc62e4ba88a614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa83501ab5e87a9a734bc62e4ba88a614">SetPull</a> (Resistor resistor) const override</td></tr>
+<tr class="memitem:aa83501ab5e87a9a734bc62e4ba88a614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa83501ab5e87a9a734bc62e4ba88a614">SetPull</a> (<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95">Resistor</a> resistor) const override</td></tr>
 <tr class="separator:aa83501ab5e87a9a734bc62e4ba88a614"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3849d96d5d02d71c696df1dce1022ae7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a3849d96d5d02d71c696df1dce1022ae7">SetAsAnalogMode</a> (bool set_as_analog=true) const override</td></tr>
 <tr class="separator:a3849d96d5d02d71c696df1dce1022ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ea3c9456d597fb32ad7efab1975da83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6ea3c9456d597fb32ad7efab1975da83">SetAsOpenDrain</a> (bool set_as_open_drain=true) const override</td></tr>
 <tr class="separator:a6ea3c9456d597fb32ad7efab1975da83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fec5e4fe1429f55ea836fdc8a22a4ec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fec5e4fe1429f55ea836fdc8a22a4ec"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableHysteresis</b> (bool enable_hysteresis=true) const </td></tr>
+<tr class="memitem:a1fec5e4fe1429f55ea836fdc8a22a4ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1fec5e4fe1429f55ea836fdc8a22a4ec">EnableHysteresis</a> (bool enable_hysteresis=true) const </td></tr>
 <tr class="separator:a1fec5e4fe1429f55ea836fdc8a22a4ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a282ec914c8e58c3bc8e2301a9606fc18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a282ec914c8e58c3bc8e2301a9606fc18"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsActiveLow</b> (bool set_as_active_low=true) const </td></tr>
+<tr class="memitem:a282ec914c8e58c3bc8e2301a9606fc18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a282ec914c8e58c3bc8e2301a9606fc18">SetAsActiveLow</a> (bool set_as_active_low=true) const </td></tr>
 <tr class="separator:a282ec914c8e58c3bc8e2301a9606fc18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9ebb9636ad7d1798cda62234dcf1737"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9ebb9636ad7d1798cda62234dcf1737"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableDigitalFilter</b> (bool enable_digital_filter=true) const </td></tr>
+<tr class="memitem:ad9ebb9636ad7d1798cda62234dcf1737"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ad9ebb9636ad7d1798cda62234dcf1737">EnableDigitalFilter</a> (bool enable_digital_filter=true) const </td></tr>
 <tr class="separator:ad9ebb9636ad7d1798cda62234dcf1737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a478da84cc15b6d1eefcfa60f9ea61977"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a478da84cc15b6d1eefcfa60f9ea61977"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableFastMode</b> (bool enable_fast_mode=true) const </td></tr>
+<tr class="memitem:a478da84cc15b6d1eefcfa60f9ea61977"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a478da84cc15b6d1eefcfa60f9ea61977">EnableFastMode</a> (bool enable_fast_mode=true) const </td></tr>
 <tr class="separator:a478da84cc15b6d1eefcfa60f9ea61977"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65e30196ce68adf18a1094613c281713"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65e30196ce68adf18a1094613c281713"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableI2cHighSpeedMode</b> (bool enable_high_speed=true) const </td></tr>
+<tr class="memitem:a65e30196ce68adf18a1094613c281713"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a65e30196ce68adf18a1094613c281713">EnableI2cHighSpeedMode</a> (bool enable_high_speed=true) const </td></tr>
 <tr class="separator:a65e30196ce68adf18a1094613c281713"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cae6a6642d6d810bf67a52a137e2d74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6cae6a6642d6d810bf67a52a137e2d74"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableI2cHighCurrentDrive</b> (bool enable_high_current=true) const </td></tr>
+<tr class="memitem:a6cae6a6642d6d810bf67a52a137e2d74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6cae6a6642d6d810bf67a52a137e2d74">EnableI2cHighCurrentDrive</a> (bool enable_high_current=true) const </td></tr>
 <tr class="separator:a6cae6a6642d6d810bf67a52a137e2d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9be77c66c312383ac26df7cbc10d949"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9be77c66c312383ac26df7cbc10d949"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>EnableDac</b> (bool enable_dac=true) const </td></tr>
+<tr class="memitem:ae9be77c66c312383ac26df7cbc10d949"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae9be77c66c312383ac26df7cbc10d949">EnableDac</a> (bool enable_dac=true) const </td></tr>
 <tr class="separator:ae9be77c66c312383ac26df7cbc10d949"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1Pin"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1Pin')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a></td></tr>
 <tr class="memitem:a1c859e3dbd78a0841a43d0d6b823a902 inherit pub_methods_classsjsu_1_1Pin"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c859e3dbd78a0841a43d0d6b823a902"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Pin</b> (uint8_t port, uint8_t pin)</td></tr>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a1c859e3dbd78a0841a43d0d6b823a902">Pin</a> (uint8_t port, uint8_t pin)</td></tr>
+<tr class="memdesc:a1c859e3dbd78a0841a43d0d6b823a902 inherit pub_methods_classsjsu_1_1Pin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set internal port and pin values. <br /></td></tr>
 <tr class="separator:a1c859e3dbd78a0841a43d0d6b823a902 inherit pub_methods_classsjsu_1_1Pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af23cc3bdc37d03e92cd4f40deb04e61c inherit pub_methods_classsjsu_1_1Pin"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af23cc3bdc37d03e92cd4f40deb04e61c"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetPort</b> () const </td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af23cc3bdc37d03e92cd4f40deb04e61c">GetPort</a> () const </td></tr>
+<tr class="memdesc:af23cc3bdc37d03e92cd4f40deb04e61c inherit pub_methods_classsjsu_1_1Pin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for the pin's port. <br /></td></tr>
 <tr class="separator:af23cc3bdc37d03e92cd4f40deb04e61c inherit pub_methods_classsjsu_1_1Pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a260b81a7598f30528ad2e86dae0d44bc inherit pub_methods_classsjsu_1_1Pin"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a260b81a7598f30528ad2e86dae0d44bc"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetPin</b> () const </td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a260b81a7598f30528ad2e86dae0d44bc">GetPin</a> () const </td></tr>
+<tr class="memdesc:a260b81a7598f30528ad2e86dae0d44bc inherit pub_methods_classsjsu_1_1Pin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for the pin's pin. <br /></td></tr>
 <tr class="separator:a260b81a7598f30528ad2e86dae0d44bc inherit pub_methods_classsjsu_1_1Pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa8a3e1bbd8958f5153d72939c6220648"><td class="memTemplParams" colspan="2"><a class="anchor" id="aa8a3e1bbd8958f5153d72939c6220648"></a>
-template&lt;unsigned port_, unsigned pin_&gt; </td></tr>
-<tr class="memitem:aa8a3e1bbd8958f5153d72939c6220648"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html">sjsu::lpc40xx::Pin</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>CreatePin</b> ()</td></tr>
+<tr class="memitem:aa8a3e1bbd8958f5153d72939c6220648"><td class="memTemplParams" colspan="2">template&lt;unsigned port_, unsigned pin_&gt; </td></tr>
+<tr class="memitem:aa8a3e1bbd8958f5153d72939c6220648"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html">sjsu::lpc40xx::Pin</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa8a3e1bbd8958f5153d72939c6220648">CreatePin</a> ()</td></tr>
 <tr class="separator:aa8a3e1bbd8958f5153d72939c6220648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedbabfce5bd7860202c77df03c05c83a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedbabfce5bd7860202c77df03c05c83a"></a>
-static constexpr <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html">sjsu::lpc40xx::Pin</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CreateInactivePin</b> ()</td></tr>
-<tr class="separator:aedbabfce5bd7860202c77df03c05c83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a5e2b02144699e9e2a3a7c2fd65321b7a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e2b02144699e9e2a3a7c2fd65321b7a"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kFunction</b> = bit::CreateMaskFromRange(0, 2)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a5e2b02144699e9e2a3a7c2fd65321b7a">kFunction</a> = bit::CreateMaskFromRange(0, 2)</td></tr>
+<tr class="memdesc:a5e2b02144699e9e2a3a7c2fd65321b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitmask for setting pin mux function code. <br /></td></tr>
 <tr class="separator:a5e2b02144699e9e2a3a7c2fd65321b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1653e62a8f81e4cd540819be8e76a90b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1653e62a8f81e4cd540819be8e76a90b"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kResistor</b> = bit::CreateMaskFromRange(3, 4)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1653e62a8f81e4cd540819be8e76a90b">kResistor</a> = bit::CreateMaskFromRange(3, 4)</td></tr>
+<tr class="memdesc:a1653e62a8f81e4cd540819be8e76a90b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitmask for setting resistor mode of pin. <br /></td></tr>
 <tr class="separator:a1653e62a8f81e4cd540819be8e76a90b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59b732ceb7f9b1747e1ed7b722fc9e25"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59b732ceb7f9b1747e1ed7b722fc9e25"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kHysteresis</b> = bit::CreateMaskFromRange(5)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a59b732ceb7f9b1747e1ed7b722fc9e25">kHysteresis</a> = bit::CreateMaskFromRange(5)</td></tr>
+<tr class="memdesc:a59b732ceb7f9b1747e1ed7b722fc9e25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitmask for setting pin hysteresis mode. <br /></td></tr>
 <tr class="separator:a59b732ceb7f9b1747e1ed7b722fc9e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a879bb451244d3203cffb018e4e00bd03"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a879bb451244d3203cffb018e4e00bd03"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kInputInvert</b> = bit::CreateMaskFromRange(6)</td></tr>
+<tr class="memitem:a879bb451244d3203cffb018e4e00bd03"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a879bb451244d3203cffb018e4e00bd03">kInputInvert</a> = bit::CreateMaskFromRange(6)</td></tr>
 <tr class="separator:a879bb451244d3203cffb018e4e00bd03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae61e2249bae8c7c80388023447b3def0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae61e2249bae8c7c80388023447b3def0"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kAnalogDigitalMode</b> = bit::CreateMaskFromRange(7)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae61e2249bae8c7c80388023447b3def0">kAnalogDigitalMode</a> = bit::CreateMaskFromRange(7)</td></tr>
+<tr class="memdesc:ae61e2249bae8c7c80388023447b3def0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitmask for setting a pin to analog mode. <br /></td></tr>
 <tr class="separator:ae61e2249bae8c7c80388023447b3def0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b36c83fa9e37f0a778dca19775b57b3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b36c83fa9e37f0a778dca19775b57b3"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kDigitalFilter</b> = bit::CreateMaskFromRange(8)</td></tr>
+<tr class="memitem:a1b36c83fa9e37f0a778dca19775b57b3"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1b36c83fa9e37f0a778dca19775b57b3">kDigitalFilter</a> = bit::CreateMaskFromRange(8)</td></tr>
 <tr class="separator:a1b36c83fa9e37f0a778dca19775b57b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add4dfd99ee774ac5c15438c4d107a3f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add4dfd99ee774ac5c15438c4d107a3f1"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kI2cHighSpeed</b> = bit::CreateMaskFromRange(8)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#add4dfd99ee774ac5c15438c4d107a3f1">kI2cHighSpeed</a> = bit::CreateMaskFromRange(8)</td></tr>
+<tr class="memdesc:add4dfd99ee774ac5c15438c4d107a3f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitmask to enable/disable high speed I2C mode. <br /></td></tr>
 <tr class="separator:add4dfd99ee774ac5c15438c4d107a3f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a60668702567bd7468bfc94fa18c386"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a60668702567bd7468bfc94fa18c386"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kSlew</b> = bit::CreateMaskFromRange(9)</td></tr>
+<tr class="memitem:a1a60668702567bd7468bfc94fa18c386"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1a60668702567bd7468bfc94fa18c386">kSlew</a> = bit::CreateMaskFromRange(9)</td></tr>
 <tr class="separator:a1a60668702567bd7468bfc94fa18c386"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5098547dcb7864957960d2187baba46"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5098547dcb7864957960d2187baba46"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kI2cHighCurrentDrive</b> = bit::CreateMaskFromRange(9)</td></tr>
+<tr class="memitem:ab5098547dcb7864957960d2187baba46"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ab5098547dcb7864957960d2187baba46">kI2cHighCurrentDrive</a> = bit::CreateMaskFromRange(9)</td></tr>
 <tr class="separator:ab5098547dcb7864957960d2187baba46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a568907ac611edb05444f4ab0afd31ad7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a568907ac611edb05444f4ab0afd31ad7"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kOpenDrain</b> = bit::CreateMaskFromRange(10)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a568907ac611edb05444f4ab0afd31ad7">kOpenDrain</a> = bit::CreateMaskFromRange(10)</td></tr>
+<tr class="memdesc:a568907ac611edb05444f4ab0afd31ad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitmask to enable/disable open drain mode. <br /></td></tr>
 <tr class="separator:a568907ac611edb05444f4ab0afd31ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10fb982b459575b2c1ae8896a011d661"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10fb982b459575b2c1ae8896a011d661"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kDacEnable</b> = bit::CreateMaskFromRange(16)</td></tr>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a10fb982b459575b2c1ae8896a011d661">kDacEnable</a> = bit::CreateMaskFromRange(16)</td></tr>
+<tr class="memdesc:a10fb982b459575b2c1ae8896a011d661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitmask for enabling/disabling digital to analog pin mode. <br /></td></tr>
 <tr class="separator:a10fb982b459575b2c1ae8896a011d661"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ace573d9b1e8866a17e99f72fcb06bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ace573d9b1e8866a17e99f72fcb06bc"></a>
-static <a class="el" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html">PinMap_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>pin_map</b> = reinterpret_cast&lt;<a class="el" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html">PinMap_t</a> *&gt;(LPC_IOCON)</td></tr>
+<tr class="memitem:a1ace573d9b1e8866a17e99f72fcb06bc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html">PinMap_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1ace573d9b1e8866a17e99f72fcb06bc">pin_map</a> = reinterpret_cast&lt;<a class="el" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html">PinMap_t</a> *&gt;(LPC_IOCON)</td></tr>
 <tr class="separator:a1ace573d9b1e8866a17e99f72fcb06bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6d97dd6fc69b5005d2ccb25575c9d11c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d97dd6fc69b5005d2ccb25575c9d11c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPinRegister</b> (uint8_t data, <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> mask) const </td></tr>
+<tr class="memitem:a6d97dd6fc69b5005d2ccb25575c9d11c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6d97dd6fc69b5005d2ccb25575c9d11c">SetPinRegister</a> (uint8_t data, <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> mask) const </td></tr>
 <tr class="separator:a6d97dd6fc69b5005d2ccb25575c9d11c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4c898a8c8e33addab42e243b4628f92"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4c898a8c8e33addab42e243b4628f92"></a>
-volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>PinRegister</b> () const </td></tr>
+<tr class="memitem:ac4c898a8c8e33addab42e243b4628f92"><td class="memItemLeft" align="right" valign="top">volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ac4c898a8c8e33addab42e243b4628f92">PinRegister</a> () const </td></tr>
 <tr class="separator:ac4c898a8c8e33addab42e243b4628f92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classsjsu_1_1Pin"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classsjsu_1_1Pin')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a></td></tr>
-<tr class="memitem:af3152fad7bd72aaf4b1ffaa51e962b95 inherit pub_types_classsjsu_1_1Pin"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3152fad7bd72aaf4b1ffaa51e962b95"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Resistor</b> : uint8_t { <b>kNone</b> = 0, 
-<b>kPullDown</b>, 
-<b>kPullUp</b>, 
-<b>kRepeater</b>
+<tr class="memitem:af3152fad7bd72aaf4b1ffaa51e962b95 inherit pub_types_classsjsu_1_1Pin"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95">Resistor</a> : uint8_t { <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95a35c3ace1970663a16e5c65baa5941b13">Resistor::kNone</a> = 0, 
+<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95a7b8953ca917153ed7e0f8f0d64e616bf">Resistor::kPullDown</a>, 
+<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95aef7e3f1637f99b1b8619308ee2dab8e9">Resistor::kPullUp</a>, 
+<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95a4e01a1ad92574d898bd8319b9ceb958f">Resistor::kRepeater</a>
  }</td></tr>
 <tr class="separator:af3152fad7bd72aaf4b1ffaa51e962b95 inherit pub_types_classsjsu_1_1Pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classsjsu_1_1Pin"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classsjsu_1_1Pin')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a></td></tr>
 <tr class="memitem:a4932425145eb6c974042da8065cfd22b inherit pro_attribs_classsjsu_1_1Pin"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4932425145eb6c974042da8065cfd22b"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>port_</b></td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a4932425145eb6c974042da8065cfd22b">port_</a></td></tr>
+<tr class="memdesc:a4932425145eb6c974042da8065cfd22b inherit pro_attribs_classsjsu_1_1Pin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigned port. <br /></td></tr>
 <tr class="separator:a4932425145eb6c974042da8065cfd22b inherit pro_attribs_classsjsu_1_1Pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41a8c139acdc313bc5f27065f8142d9b inherit pro_attribs_classsjsu_1_1Pin"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41a8c139acdc313bc5f27065f8142d9b"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a41a8c139acdc313bc5f27065f8142d9b">pin_</a></td></tr>
+<tr class="memdesc:a41a8c139acdc313bc5f27065f8142d9b inherit pro_attribs_classsjsu_1_1Pin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigned pin within the above port. <br /></td></tr>
 <tr class="separator:a41a8c139acdc313bc5f27065f8142d9b inherit pro_attribs_classsjsu_1_1Pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. ">Pin</a> control driver for the LPC40xx and LPC17xx microcontrollers. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="ae7b9b8c1fb4153c09fb59912f3b86b9b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::lpc40xx::Pin::Pin </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>pin</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Construct a pin for the specified port and pin numbers.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>- port number for the pin you want to construct. </td></tr>
+    <tr><td class="paramname">pin</td><td>- pin number for the pin you want to construct. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aa8a3e1bbd8958f5153d72939c6220648"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned port_, unsigned pin_&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html">sjsu::lpc40xx::Pin</a> sjsu::lpc40xx::Pin::CreatePin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Compile time <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. ">Pin</a> factory that test the port and pin variables to make sure they are within bounds of the pin map register. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae9be77c66c312383ac26df7cbc10d949"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Pin::EnableDac </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable_dac</em> = <code>true</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enable digital-to-analog mode on pin.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable_dac</td><td>- set to false to disable this mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ad9ebb9636ad7d1798cda62234dcf1737"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Pin::EnableDigitalFilter </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable_digital_filter</em> = <code>true</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enable by setting bit to 0 to enable digital filter.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable_digital_filter</td><td>- set to false to disable this mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a478da84cc15b6d1eefcfa60f9ea61977"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Pin::EnableFastMode </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable_fast_mode</em> = <code>true</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enable fast IO mode this pin.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable_fast_mode</td><td>- set to false to disable this mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a1fec5e4fe1429f55ea836fdc8a22a4ec"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Pin::EnableHysteresis </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable_hysteresis</em> = <code>true</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enable pin hysteresis. This allows the pin to remember which state is was previously when it was driven.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable_hysteresis</td><td>- set to false to disable this mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a6cae6a6642d6d810bf67a52a137e2d74"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Pin::EnableI2cHighCurrentDrive </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable_high_current</em> = <code>true</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enable i2c high current drive mode on pin.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable_high_current</td><td>- set to false to disable this mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a65e30196ce68adf18a1094613c281713"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Pin::EnableI2cHighSpeedMode </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable_high_speed</em> = <code>true</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enable I2C high speed mode for this pin.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable_high_speed</td><td>- set to false to disable this mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ac4c898a8c8e33addab42e243b4628f92"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t* sjsu::lpc40xx::Pin::PinRegister </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the pin's registor in the pin_map matrix. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a282ec914c8e58c3bc8e2301a9606fc18"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Pin::SetAsActiveLow </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>set_as_active_low</em> = <code>true</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the pin to be active low. Only works for input pin functions. Undefined behavior, possibly dangerous, if used with output pin function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">set_as_active_low</td><td>- set to false to disable this mode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a3849d96d5d02d71c696df1dce1022ae7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -345,7 +656,17 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set the pin's function</p>
+<p>Set the pin's function using a function code. The function code is very specific to the controller being used.</p>
+<p>But an example could be the LPC4078 chip's P0.0. It has the following functions:</p>
+<p>0. GPIO (General purpose input or output) pin</p><ol type="1">
+<li>CANBUS port 1 Read</li>
+<li>UART port 3 transmitter</li>
+<li>I2C port 1 serial data</li>
+<li>and UART port 0 transmitter</li>
+</ol>
+<p>Each function listed above is listed with its function code. If you pass the value 4 into the SetPinFunction function, for P0.0, it will set that pin to the UART port 0 transmitter function. After that, if you have properly enabled the UART hardware, when you attempt to send data through the uart0 port, it will show up on the pin.</p>
+<p>Please consult the user manual for the chip you are using to figure out which function codes correspond to specific functions.</p>
+<p>Generally, this method is only used laterally in the L1 layer. This is due to the fact that other L1s need to use this library to setup their external pins, but also due to the fact that a Hardware abstraction or above should not have to concern itself with function codes, thus it is the job of the L1 peripheral that uses this pin to manage its own function code usage.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">function</td><td>- pin function code </td></tr>
@@ -354,6 +675,48 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#aa270c92d27abcc181e1c8f7f5f2a03e7">sjsu::Pin</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6d97dd6fc69b5005d2ccb25575c9d11c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Pin::SetPinRegister </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Does the work of changing the contents of the pin register.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>- the contents to load into the register </td></tr>
+    <tr><td class="paramname">mask</td><td>- indicates which bits to set to data </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -367,8 +730,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
         <tr>
           <td class="memname">void sjsu::lpc40xx::Pin::SetPull </td>
           <td>(</td>
-          <td class="paramtype">Resistor&#160;</td>
-          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95">Resistor</a>&#160;</td>
+          <td class="paramname"><em>resistor</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -381,12 +744,118 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_</b></td></tr>
 <p>Set pin's resistor pull, setting ot either no resistor pull, pull down, pull up and repeater.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>- pin mode </td></tr>
+    <tr><td class="paramname">resistor</td><td>- which resistor setup you would like. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#acd0aa827556331a5ab117d5381dd0f74">sjsu::Pin</a>.</p>
+<p>Implements <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af059b120d4e4897e50dd4253fef724ab">sjsu::Pin</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a1b36c83fa9e37f0a778dca19775b57b3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Pin::kDigitalFilter = bit::CreateMaskFromRange(8)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Bitmask for enabling/disabling digital filter. This can be used to ignore/reject noise, reflections, or signal bounce (from something like a switch). </p>
+
+</div>
+</div>
+<a class="anchor" id="ab5098547dcb7864957960d2187baba46"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Pin::kI2cHighCurrentDrive = bit::CreateMaskFromRange(9)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Bitmask to enable I2C high current drain. This can allow for even faster I2C communications, as well as allow for more devices on the bus. </p>
+
+</div>
+</div>
+<a class="anchor" id="a879bb451244d3203cffb018e4e00bd03"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Pin::kInputInvert = bit::CreateMaskFromRange(6)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Bitmask for setting inputs as active low or active high. This will behave badly if the pin is set to a mode that is an output or set to analog. See usermanual for more details. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1a60668702567bd7468bfc94fa18c386"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Pin::kSlew = bit::CreateMaskFromRange(9)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Bitmask to change the slew rate of signal transitions for outputs for a pin. </p>
+
+</div>
+</div>
+<a class="anchor" id="a1ace573d9b1e8866a17e99f72fcb06bc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html">PinMap_t</a>* sjsu::lpc40xx::Pin::pin_map = reinterpret_cast&lt;<a class="el" href="../../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html">PinMap_t</a> *&gt;(LPC_IOCON)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A pointer holding the address to the LPC40xx PIN peripheral. This variable is a dependency injection point for unit testing thus it is public and mutable. This is needed to perform the "test by side effect" technique for this class. </p>
 
 </div>
 </div>

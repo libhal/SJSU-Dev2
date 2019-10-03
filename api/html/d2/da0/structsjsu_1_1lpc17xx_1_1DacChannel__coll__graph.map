@@ -1,6 +1,5 @@
 <map id="sjsu::lpc17xx::DacChannel" name="sjsu::lpc17xx::DacChannel">
-<area shape="rect" id="node2" href="$d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="sjsu::lpc17xx::Pin" alt="" coords="95,139,225,165"/>
+<area shape="rect" id="node2" href="$d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="40,139,171,165"/>
 <area shape="rect" id="node3" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
-<area shape="rect" id="node4" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="104,13,216,39"/>
-<area shape="rect" id="node5" href="$d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html" title="sjsu::lpc17xx::Pin\l::PinTable_t" alt="" coords="240,5,371,47"/>
+<area shape="rect" id="node4" href="$d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html" title="Table of registers for the LPC17xx pins. " alt="" coords="104,5,235,47"/>
 </map>

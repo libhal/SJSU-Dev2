@@ -1,4 +1,4 @@
 <map id="sjsu::Pin" name="sjsu::Pin">
-<area shape="rect" id="node2" href="$d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="sjsu::lpc17xx::Pin" alt="" coords="5,80,136,107"/>
-<area shape="rect" id="node3" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="sjsu::lpc40xx::Pin" alt="" coords="160,80,291,107"/>
+<area shape="rect" id="node2" href="$d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="5,80,136,107"/>
+<area shape="rect" id="node3" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="160,80,291,107"/>
 </map>

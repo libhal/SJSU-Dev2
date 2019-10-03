@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['uart0_5firqn',['UART0_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083ae9122b85b58f7c24033a8515615a7b74',1,'LPC17xx.h']]],
-  ['uart1_5firqn',['UART1_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a9650ab92e46bc16f333d4c63ad0459b4',1,'LPC17xx.h']]],
-  ['uart2_5firqn',['UART2_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083ab051fac6b15b88454713bb36d96e5dd5',1,'LPC17xx.h']]],
-  ['uart3_5firqn',['UART3_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a11614a227a56dc01859bf803013e6358',1,'LPC17xx.h']]],
-  ['usagefault_5firqn',['UsageFault_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a6895237c9443601ac832efa635dd8bbf',1,'LPC17xx.h']]],
-  ['usb_5firqn',['USB_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a5078f46ddc47f29eae4aa40bd57d1692',1,'LPC17xx.h']]]
+  ['timer0_5firqn',['TIMER0_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a2336220ce1e39507eb592958064a2b87',1,'LPC17xx.h']]],
+  ['timer1_5firqn',['TIMER1_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a0b751a83bbf254701e0d5a1d863010d9',1,'LPC17xx.h']]],
+  ['timer2_5firqn',['TIMER2_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083ad97a34027a8b1017d42d1d6320381e48',1,'LPC17xx.h']]],
+  ['timer3_5firqn',['TIMER3_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a7d15b5c33e51350d11303db7d4bc3381',1,'LPC17xx.h']]]
 ];
