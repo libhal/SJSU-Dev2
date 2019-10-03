@@ -105,11 +105,13 @@ class Spi final : public sjsu::Spi
     LPC_SSP_TypeDef * registers;
     /// PeripheralID of the SSP peripheral to power on at initialization
     sjsu::lpc40xx::SystemController::PeripheralID power_on_bit;
-    /// Refernce to MOSI pin.
+    /// Refernce to the M.ASTER-O.UT-S.LAVE-I.N (output from microcontroller)
+    /// spi pin.
     const sjsu::Pin & mosi;
-    /// Refernce to MISO pin.
+    /// Refernce to the M.ASTER-I.N-S.LAVE-O.UT (input to microcontroller) spi
+    /// pin.
     const sjsu::Pin & miso;
-    /// Refernce to SCK pin.
+    /// Refernce to S.erial-C.lock spi pin.
     const sjsu::Pin & sck;
     /// Function code to set each pin to the appropriate SSP function.
     uint8_t pin_function_id;
@@ -172,7 +174,8 @@ class Spi final : public sjsu::Spi
   };
   /// Constructor for LPC40xx Spi peripheral
   ///
-  /// @param bus - reference to a constant bus definition.
+  /// @param bus - pass a reference to a constant lpc40xx::Spi::Bus_t
+  ///        definition.
   /// @param system_controller - reference to system controller. Uses the
   ///        default lpc40xx system controller. This is typically only used for
   ///        unit testing.
@@ -290,7 +293,8 @@ class Spi final : public sjsu::Spi
  private:
   /// Const reference to an lpc40xx::Spi::Bus_t definition.
   const Bus_t & bus_;
-  /// Const reference to an lpc40xx::SystemController.
+  /// Reference to a system controller object. Used to power on the peripheral
+  /// and get the current peripheral frequency.
   const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx

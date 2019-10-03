@@ -4,7 +4,6 @@
 #include "third_party/units/units.h"
 #include "utility/status.hpp"
 
-
 namespace sjsu
 {
 class Watchdog

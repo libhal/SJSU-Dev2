@@ -21,6 +21,7 @@ tools/**/*
 !tools/generate_doxygen_docs.sh
 !tools/doxygen_warning_patterns.txt
 !tools/common.sh
+!tools/gdb_dashboard
 
 api/doxygen_stderr.txt
 

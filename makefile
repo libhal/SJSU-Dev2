@@ -54,6 +54,7 @@ MAKEFLAGS += --jobs=$(NPROCS)
 endif
 
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), debug jtag-flash))
+ifneq ($(PLATFORM), linux)
 ifndef DEBUG_DEVICE
 $(info $(shell printf '$(RED)'))
 $(info +--------------- Missing command line arguments ----------------+)
@@ -74,6 +75,7 @@ $(info $(shell printf '$(RESET)'))
 $(error )
 endif
 endif
+endif
 
 ifneq ($(MAKECMDGOALS), presubmit)
 endif
@@ -83,15 +85,17 @@ endif
 # SJSU-Dev2 Toolchain Paths
 # ============================
 # Path to CLANG compiler
-SJCLANG_PATH   = $(SJSU_DEV2_BASE)/tools/clang+llvm-*/
-SJCLANG        = $(shell cd $(SJCLANG_PATH) ; pwd)
+SJCLANG_PATH      = $(SJSU_DEV2_BASE)/tools/clang+llvm-*/
+SJCLANG           = $(shell cd $(SJCLANG_PATH) ; pwd)
 # Path to ARM GCC compiler
-SJARMGCC_PATH  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/
-SJARMGCC       = $(shell cd $(SJARMGCC_PATH) ; pwd)
+SJARMGCC_PATH     = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/
+SJARMGCC          = $(shell cd $(SJARMGCC_PATH) ; pwd)
 # Path to Openocd compiler
-OPENOCD_DIR = $(SJSU_DEV2_BASE)/tools/openocd
+OPENOCD_DIR       = $(SJSU_DEV2_BASE)/tools/openocd
+# Path to Openocd compiler
+GDBINIT_PATH      = $(SJSU_DEV2_BASE)/tools/gdb_dashboard/gdbinit
 # Compiler and library settings:
-SJLIBDIR  = $(SJSU_DEV2_BASE)/firmware/library
+SJLIBDIR          = $(SJSU_DEV2_BASE)/firmware/library
 
 # =================================
 # Updating the LD_LIBRARY_PATH
@@ -539,9 +543,15 @@ stacktrace-application:
 # Start gdb and connect to openocd jtag debugging session
 
 debug:
-	$(info $(shell printf '$(MAGENTA)Starting firmware debug...$(RESET)\n'))
-	$(TOOLS_DIR)/launch_openocd_gdb.sh $(OPENOCD_DIR) $(DEBUG_DEVICE) \
-	  $(OPENOCD_CONFIG) $(DEVICE_GDB) $(CURRENT_DIRECTORY)/$(EXECUTABLE)
+	@$(info $(shell printf '$(MAGENTA)Starting firmware debug...$(RESET)\n'))
+	@$(TOOLS_DIR)/launch_openocd_gdb.sh \
+			$(DEVICE_GDB) \
+			$(GDBINIT_PATH) \
+			$(PLATFORM) \
+			$(CURRENT_DIRECTORY)/$(EXECUTABLE) \
+			$(OPENOCD_DIR) \
+			$(DEBUG_DEVICE) \
+			$(OPENOCD_CONFIG)
 
 debug-test:
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/tests.exe
