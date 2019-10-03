@@ -59,7 +59,7 @@ void _putchar(char character);
  * \return The number of characters that are written into the array, not counting the terminating null character
  */
 int printf(const char* format, ...);
-
+int vprintf(const char* format, va_list va);
 
 /**
  * Tiny sprintf implementation

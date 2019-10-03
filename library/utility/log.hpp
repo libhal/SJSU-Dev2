@@ -4,66 +4,112 @@
 /// across the SJSU-Dev2 environment.
 /// @{
 #pragma once
+
+#include <cinttypes>
+#include <cstdarg>
 #include <cstdio>
+#include <experimental/source_location>
 
 #include "config.hpp"
 #include "log_levels.hpp"
 
 #include "utility/ansi_terminal_codes.hpp"
-#include "utility/constexpr.hpp"
 #include "utility/debug.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
 
-/// SJ2_LOG_FUNCTION is an alias of __PRETTY_FUNCTION__ in the event we would
-/// like to switch the function to something else.
-#if SJ2_DESCRIPTIVE_FUNCTION_NAME
-#define SJ2_LOG_FUNCTION __PRETTY_FUNCTION__
-#else
-#define SJ2_LOG_FUNCTION ""
-#endif
-/// Printf style logging with filename, function name, and line number
-#define _LOG_PRINT(log_message, format, ...)                                  \
-  do                                                                          \
-  {                                                                           \
-    static constexpr ::sjsu::FileBasename_t<::sjsu::StringLength(__FILE__),   \
-                                            ::sjsu::BasenameLength(__FILE__)> \
-        file(__FILE__);                                                       \
-    printf(log_message SJ2_HI_BLUE ":%s:" SJ2_HI_GREEN "%s:" SJ2_HI_YELLOW    \
-                                   "%d> " SJ2_WHITE format SJ2_COLOR_RESET    \
-                                   "\n",                                      \
-           file.basename,                                                     \
-           SJ2_LOG_FUNCTION,                                                  \
-           __LINE__,                                                          \
-           ##__VA_ARGS__);                                                    \
-  } while (0)
-/// Log with the DEBUG level of log mesage.
+namespace sjsu
+{
+struct Log
+{
+  constexpr Log(std::experimental::source_location const location =
+                    std::experimental::source_location::current())
+      : location_{ location }
+  {
+  }
+  void log_location(const char * log_level, const char * color = "")
+  {
+    printf("%s%8s" SJ2_HI_BLUE ":%s" SJ2_HI_GREEN ":%s()" SJ2_HI_YELLOW
+           ":%" PRIuLEAST32 "> " SJ2_COLOR_RESET,
+           color,
+           log_level,
+           location_.file_name(),
+           location_.function_name(),
+           location_.line());
+  }
+
+  void debug(const char * format, ...)
+  {
+    log_location("DEBUG");
+
+    va_list va;
+    va_start(va, format);
+    vprintf(format, va);
+    va_end(va);
+    puts("");
+  }
+
+  void info(const char * format, ...)
+  {
+    log_location("INFO", SJ2_BACKGROUND_GREEN);
+
+    va_list va;
+    va_start(va, format);
+    vprintf(format, va);
+    va_end(va);
+    puts("");
+  }
+
+  void warning(const char * format, ...)
+  {
+    log_location("WARNING", SJ2_BACKGROUND_PURPLE);
+
+    va_list va;
+    va_start(va, format);
+    vprintf(format, va);
+    va_end(va);
+    puts("");
+  }
+
+  void error(const char * format, ...)
+  {
+    log_location("ERROR", SJ2_BACKGROUND_RED);
+
+    va_list va;
+    va_start(va, format);
+    vprintf(format, va);
+    va_end(va);
+    puts("");
+  }
+
+ private:
+  std::experimental::source_location const location_;
+};
+}  // namespace sjsu
+
 #if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_DEBUG
-#define LOG_DEBUG(format, ...) _LOG_PRINT("   DEBUG", format, ##__VA_ARGS__)
+#define LOG_DEBUG(format, ...) ::sjsu::Log().debug(format, ##__VA_ARGS__)
 #else
 #define LOG_DEBUG(format, ...)
 #endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_DEBUG
 
 /// Log with the INFO level of log mesage.
 #if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_INFO
-#define LOG_INFO(format, ...) \
-  _LOG_PRINT(SJ2_BACKGROUND_GREEN "    INFO", format, ##__VA_ARGS__)
+#define LOG_INFO(format, ...) ::sjsu::Log().info(format, ##__VA_ARGS__)
 #else
 #define LOG_INFO(format, ...)
 #endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_INFO
 
 /// Log with the WARNING level of log mesage.
 #if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_WARNING
-#define LOG_WARNING(format, ...) \
-  _LOG_PRINT(SJ2_BACKGROUND_YELLOW " WARNING", format, ##__VA_ARGS__)
+#define LOG_WARNING(format, ...) ::sjsu::Log().warning(format, ##__VA_ARGS__)
 #else
 #define LOG_WARNING(format, ...)
 #endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_WARNING
 
 /// Log with the ERROR level of log mesage.
 #if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_ERROR
-#define LOG_ERROR(format, ...) \
-  _LOG_PRINT(SJ2_BACKGROUND_PURPLE "   ERROR", format, ##__VA_ARGS__)
+#define LOG_ERROR(format, ...) ::sjsu::Log().error(format, ##__VA_ARGS__)
 #else
 #define LOG_ERROR(format, ...)
 #endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_ERROR

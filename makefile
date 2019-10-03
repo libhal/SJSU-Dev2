@@ -629,7 +629,7 @@ $(OBJECT_DIR)/%.c.o: %.c
 $(OBJECT_DIR)/%.o: %
 	@printf '$(YELLOW)Building file (C++) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
-	@$(CPPC) $(CPPFLAGS) -std=c++17 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	@$(CPPC) $(CPPFLAGS) -std=c++2a -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
 $(DBC_BUILD):
@@ -644,7 +644,7 @@ $(TEST_EXEC): $(OBJECTS)
 					 -fno-inline-small-functions -fno-default-inline \
 					 -fkeep-inline-functions -fno-elide-constructors  \
 					 -ftest-coverage -O0 -fsanitize=address \
-					 -std=c++17 -stdlib=libc++ -lc++ -lc++abi \
+					 -std=c++2a -stdlib=libc++ -lc++ -lc++abi \
 					 -o $(TEST_EXEC) $(OBJECTS)
 	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
@@ -652,7 +652,7 @@ $(OBJECT_DIR)/%.tidy: %
 	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
 	@mkdir -p "$(dir $@)"
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
-		-extra-arg="-std=c++17") "$<"  -- \
+		-extra-arg="-std=c++2a") "$<"  -- \
 		-D TARGET=HostTest -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@

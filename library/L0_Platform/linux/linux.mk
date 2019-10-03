@@ -3,8 +3,8 @@ SYSTEM_INCLUDES += $(LIBRARY_DIR)/L0_Platform/linux/freertos_posix/
 SOURCES += $(LIBRARY_DIR)/L0_Platform/linux/startup.cpp
 SOURCES += $(LIBRARY_DIR)/L0_Platform/linux/freertos_posix/port.c
 
-DEVICE_CC        ?= gcc
-DEVICE_CPPC      ?= g++
+DEVICE_CC        ?= gcc-9
+DEVICE_CPPC      ?= g++-9
 DEVICE_OBJDUMP   ?= objdump
 DEVICE_SIZEC     ?= size
 DEVICE_OBJCOPY   ?= objcopy
