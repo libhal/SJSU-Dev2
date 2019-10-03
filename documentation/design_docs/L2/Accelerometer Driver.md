@@ -1,6 +1,6 @@
-# Design Document Template
+# Accelerometer Driver
 
-- [Design Document Template](#design-document-template)
+- [Accelerometer Driver](#accelerometer-driver)
 - [Location](#location)
 - [Type](#type)
 - [Background](#background)
