@@ -22,9 +22,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
   constexpr units::illuminance::lux_t kExpectedMaxLux(1'000_lx);
 
   Mock<Adc> mock_adc;
-  Fake(Method(mock_adc, GetActiveBits),
-       Method(mock_adc, Conversion),
-       Method(mock_adc, HasConversionFinished));
+  Fake(Method(mock_adc, GetActiveBits));
   When(Method(mock_adc, Initialize)).AlwaysReturn(Status::kSuccess);
   When(Method(mock_adc, GetActiveBits)).AlwaysReturn(kAdcActiveBits);
   When(Method(mock_adc, Read)).AlwaysReturn(kAdcTestOutput);
@@ -45,7 +43,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
     const units::illuminance::lux_t kLux = light_sensor.GetIlluminance();
     const float kFloatError = fabs(kLux.to<float>() - kExpectedLux.to<float>());
 
-    Verify(Method(mock_adc, Conversion), Method(mock_adc, Read)).Once();
+    Verify(Method(mock_adc, Read)).Once();
     CHECK(0.0f <= kFloatError);
     CHECK(kFloatError < 0.001f);
   }
@@ -67,7 +65,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
     const float kPercentage = light_sensor.GetPercentageBrightness();
     const float kFloatError = fabs(kPercentage - kExpectedPercentage);
 
-    Verify(Method(mock_adc, Conversion), Method(mock_adc, Read)).Once();
+    Verify(Method(mock_adc, Read)).Once();
     CHECK(0.0f <= kFloatError);
     CHECK(kFloatError < 0.1f);
   }

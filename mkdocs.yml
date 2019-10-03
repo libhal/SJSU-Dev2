@@ -16,12 +16,20 @@ docs_dir: documentation/
 # Copyright
 copyright: 'Copyright (C) 2018-2019 San Jose State University Computer Engineering Department'
 
+markdown_extensions:
+  - admonition
+  - pymdownx.mark # highlighting
+  - pymdownx.superfences # nest code
+  - codehilite # code syntax coding
+  - toc:
+      permalink:
+
 #Navigation
 nav:
   - Home: 'index.md'
   - Get Started:
-    - Getting started: 'getting-started/getting-started.md'
-    - How to Use Make: 'getting-started/using-make.md'
+    - Getting started: 'getting_started/getting_started.md'
+    - How to Use Make: 'getting_started/using_make.md'
   - Guides:
     - Understanding the Library Directory Structure:
       - 'guides/directory_layout/project.md'
@@ -41,13 +49,22 @@ nav:
     - 'contributing/presubmit-checks.md'
     - 'contributing/style.md'
     - 'contributing/techniques/left-to-right.md'
+  - Design Documents:
+    - L0 Platform:
+      - 'design_docs/L0/none.md'
+    - L1 Peripheral:
+      - 'design_docs/L1/none.md'
+    - L2 Hardware Abstraction:
+      - 'design_docs/L2/none.md'
+    - L3 Application:
+      - 'design_docs/L3/none.md'
+    - Utility:
+      - 'design_docs/utility/none.md'
+    - Testing:
+      - 'design_docs/utility/none.md'
+    - Third Party Software:
+      - 'design_docs/utility/none.md'
+    - Template:
+      - 'design_docs/template/template.md'
   - 'about.md'
   - 'copyrights.md'
-
-markdown_extensions:
-  - admonition
-  - pymdownx.mark # highlighting
-  - pymdownx.superfences # nest code
-  - codehilite # code syntax coding
-  - toc:
-      permalink:
