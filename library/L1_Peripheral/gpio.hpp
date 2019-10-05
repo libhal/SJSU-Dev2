@@ -8,23 +8,26 @@
 
 namespace sjsu
 {
+/// An abstract interface for General Purpose I/O
 class Gpio
 {
  public:
   // ==============================
   // Interface Defintions
   // ==============================
-
+  /// Defines the set of directions a GPIO can be.
   enum Direction : uint8_t
   {
     kInput  = 0,
     kOutput = 1
   };
+  /// Defines what states a GPIO pin can be in.
   enum State : uint8_t
   {
     kLow  = 0,
     kHigh = 1
   };
+  /// Defines the set of events that can trigger a GPIO interrupt.
   enum class Edge : uint8_t
   {
     kEdgeRising  = 0,
@@ -62,18 +65,22 @@ class Gpio
   // Utility Methods
   // ==============================
 
+  /// Set pin to HIGH voltage
   void SetHigh() const
   {
     Set(State::kHigh);
   }
+  /// Set pin to LOW voltage
   void SetLow() const
   {
     Set(State::kLow);
   }
+  /// Set pin direction as input
   void SetAsInput() const
   {
     SetDirection(Direction::kInput);
   }
+  /// Set pin direction as output
   void SetAsOutput() const
   {
     SetDirection(Direction::kOutput);

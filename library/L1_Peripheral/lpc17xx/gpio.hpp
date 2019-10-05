@@ -11,147 +11,142 @@ namespace sjsu
 {
 namespace lpc17xx
 {
+/// GPIO implementation for the lpc17xx platform
 class Gpio final : public sjsu::Gpio
 {
  public:
   /// Specifies number of ports and pins that can be used with gpio interrupts.
-  static constexpr uint8_t kNumberOfPins  = 32;
-  static constexpr uint8_t kNumberOfPorts = 2;
+  static constexpr uint8_t kNumberOfPins = 32;
+  /// Specifies the number of ports that can have interrupts.
+  static constexpr uint8_t kNumberOfInterruptPorts = 2;
+  /// Specifies the number of ports that the LPC17xx has.
+  static constexpr uint8_t kNumberOfPorts = 5;
   /// Mode zero is the GPIO function for all pins.
   static constexpr uint8_t kGpioFunction = 0;
-
-  /// Contains the available Gpio ports in LPC17xx memory.
-  ///
-  /// Each GPIO port's address are calculated from the Gpio base address in
-  /// LPC17xx memory since the LPC17xx defines for Gpio are overriden when
-  /// LPC40xx.h is ever included.
-  struct GpioPort  // NOLINT
+  /// Structure containing kNumberOfPorts of gpio peripherals. In the LPC17xx
+  /// hardware, the addresses between LPC_GPIO peripherals are contiguous, so we
+  /// can make a map of them by making an array of LPC_GPIO_TypeDefs.
+  struct GpioPort_t
   {
-   public:
-    inline static constexpr uint32_t kGpioBaseAddress = 0x2009'C000;
-    inline static LPC_GPIO_TypeDef * const kGpio0 =
-        reinterpret_cast<LPC_GPIO_TypeDef *>(kGpioBaseAddress + 0x0'0000);
-    inline static LPC_GPIO_TypeDef * const kGpio1 =
-        reinterpret_cast<LPC_GPIO_TypeDef *>(kGpioBaseAddress + 0x0'0020);
-    inline static LPC_GPIO_TypeDef * const kGpio2 =
-        reinterpret_cast<LPC_GPIO_TypeDef *>(kGpioBaseAddress + 0x0'0040);
-    inline static LPC_GPIO_TypeDef * const kGpio3 =
-        reinterpret_cast<LPC_GPIO_TypeDef *>(kGpioBaseAddress + 0x0'0060);
-    inline static LPC_GPIO_TypeDef * const kGpio4 =
-        reinterpret_cast<LPC_GPIO_TypeDef *>(kGpioBaseAddress + 0x0'0080);
+    /// List of LPC_GPIO peripherals
+    LPC_GPIO_TypeDef port[kNumberOfPorts];
   };
-  /// Table of GPIO ports located in LPC memory map
-  inline static LPC_GPIO_TypeDef * gpio_port[] = {
-    GpioPort::kGpio0, GpioPort::kGpio1, GpioPort::kGpio2,
-    GpioPort::kGpio3, GpioPort::kGpio4,
-  };
-
+  /// Map a pointer to a GpioPort_t to the gpio.ports actual address.
+  inline static GpioPort_t * gpio = reinterpret_cast<GpioPort_t *>(0x2009'C000);
   /// Lookup table that holds developer gpio interrupt handelers.
-  inline static IsrPointer interrupthandlers[kNumberOfPorts][kNumberOfPins];
-
-  /// Structure that holds gpio tnterrupt port specpefic registers,
+  inline static IsrPointer interrupthandlers[kNumberOfInterruptPorts]
+                                            [kNumberOfPins];
+  /// Holds gpio interrupt port specific registers. Used to make the code more
+  /// readable.
   struct GpioInterruptRegisterMap_t
   {
-    volatile uint32_t * rising_edge_status  = nullptr;
+    /// Pointer to the register that holds the rising edge event status. So if
+    /// pin 5 had a rising edge interrupt cause it, then there will be a 1 in
+    /// the 5th position.
+    volatile uint32_t * rising_edge_status = nullptr;
+    /// Pointer to the register that holds the falling edge event status. So if
+    /// pin 5 had a falling edge interrupt cause it, then there will be a 1 in
+    /// the 5th position.
     volatile uint32_t * falling_edge_status = nullptr;
-    volatile uint32_t * clear               = nullptr;
-    volatile uint32_t * enable_rising_edge  = nullptr;
+    /// Pointer to the register that clears gpio interrupts.
+    volatile uint32_t * clear = nullptr;
+    /// Pointer to the register that enables/disables rising edge interrupts.
+    volatile uint32_t * enable_rising_edge = nullptr;
+    /// Pointer to the register that enables/disables falling edge interrupts.
     volatile uint32_t * enable_falling_edge = nullptr;
   };
 
   /// An array that contains all the port specific gpio interrupt registers.
-  inline static GpioInterruptRegisterMap_t interrupt[kNumberOfPorts] = {
-    { .rising_edge_status  = &(LPC_GPIOINT->IO0IntStatR),
-      .falling_edge_status = &(LPC_GPIOINT->IO0IntStatF),
-      .clear               = &(LPC_GPIOINT->IO0IntClr),
-      .enable_rising_edge  = &(LPC_GPIOINT->IO0IntEnR),
-      .enable_falling_edge = &(LPC_GPIOINT->IO0IntEnF) },
-    { .rising_edge_status  = &(LPC_GPIOINT->IO2IntStatR),
-      .falling_edge_status = &(LPC_GPIOINT->IO2IntStatF),
-      .clear               = &(LPC_GPIOINT->IO2IntClr),
-      .enable_rising_edge  = &(LPC_GPIOINT->IO2IntEnR),
-      .enable_falling_edge = &(LPC_GPIOINT->IO2IntEnF) }
-  };
-
+  inline static GpioInterruptRegisterMap_t interrupt[kNumberOfInterruptPorts] =
+      { { .rising_edge_status  = &(LPC_GPIOINT->IO0IntStatR),
+          .falling_edge_status = &(LPC_GPIOINT->IO0IntStatF),
+          .clear               = &(LPC_GPIOINT->IO0IntClr),
+          .enable_rising_edge  = &(LPC_GPIOINT->IO0IntEnR),
+          .enable_falling_edge = &(LPC_GPIOINT->IO0IntEnF) },
+        { .rising_edge_status  = &(LPC_GPIOINT->IO2IntStatR),
+          .falling_edge_status = &(LPC_GPIOINT->IO2IntStatF),
+          .clear               = &(LPC_GPIOINT->IO2IntClr),
+          .enable_rising_edge  = &(LPC_GPIOINT->IO2IntEnR),
+          .enable_falling_edge = &(LPC_GPIOINT->IO2IntEnF) } };
+  /// Register that points to the port status register.
   inline static volatile uint32_t * port_status = &(LPC_GPIOINT->IntStatus);
+  /// Get a ARM cortex interrupt controller object
   static constexpr sjsu::cortex::InterruptController kInterruptController =
       sjsu::cortex::InterruptController();
-
+  /// Converts the port into the appropriate index in the lookup table.
+  ///
+  /// @param port - port to convert to a lookup table index.
+  constexpr uint8_t ConvertPortToInterruptPortIndex(uint8_t port)
+  {
+    return (port == 2) ? 1 : 0;
+  }
   /// For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
-  constexpr Gpio(uint8_t port_number,
-                 uint8_t pin_number,
+  constexpr Gpio(uint8_t port,
+                 uint8_t pin,
                  const sjsu::InterruptController & interrupt_controller =
                      kInterruptController)
-
-      : interupt_port_(0),
-        pin_(port_number, pin_number),
+      : kInteruptPort(ConvertPortToInterruptPortIndex(port)),
+        kPin(port, pin),
         interrupt_controller_(interrupt_controller)
   {
-    interupt_port_ = (port_number == 2) ? 1 : 0;
   }
-  /// Sets the GPIO pin direction as output or input depending on the
-  /// Direction enum parameter
   void SetDirection(Direction direction) const override
   {
-    pin_.SetPinFunction(kGpioFunction);
-    volatile uint32_t * dir_register = &gpio_port[pin_.GetPort()]->FIODIR;
+    kPin.SetPinFunction(kGpioFunction);
+    volatile uint32_t * dir = &gpio->port[kPin.GetPort()].FIODIR;
 
     if (direction == Direction::kInput)
     {
-      *dir_register = bit::Clear(*dir_register, pin_.GetPin());
+      *dir = bit::Clear(*dir, kPin.GetPin());
     }
     else
     {
-      *dir_register = bit::Set(*dir_register, pin_.GetPin());
+      *dir = bit::Set(*dir, kPin.GetPin());
     }
   }
-  /// Sets the GPIO output pin to high or low depending on the State enum
-  /// parameter
   void Set(State output = kHigh) const override
   {
     if (output == State::kHigh)
     {
-      gpio_port[pin_.GetPort()]->FIOSET = (1 << pin_.GetPin());
+      gpio->port[kPin.GetPort()].FIOSET = (1 << kPin.GetPin());
     }
     else
     {
-      gpio_port[pin_.GetPort()]->FIOCLR = (1 << pin_.GetPin());
+      gpio->port[kPin.GetPort()].FIOCLR = (1 << kPin.GetPin());
     }
   }
-  /// Toggle the output of a GPIO output pin
   void Toggle() const override
   {
-    gpio_port[pin_.GetPort()]->FIOPIN ^= (1 << pin_.GetPin());
+    gpio->port[kPin.GetPort()].FIOPIN ^= (1 << kPin.GetPin());
   }
-  /// Returns the current State state of the pin
   bool Read() const override
   {
-    return bit::Read(gpio_port[pin_.GetPort()]->FIOPIN, pin_.GetPin());
+    return bit::Read(gpio->port[kPin.GetPort()].FIOPIN, kPin.GetPin());
   }
   const sjsu::Pin & GetPin() const override
   {
-    return pin_;
+    return kPin;
   }
   /// Checks if the selected gpio port is valid for external interrupts.
   bool ValidPortCheck() const
   {
-    bool is_valid = (interupt_port_ <= 1);
+    bool is_valid = (kInteruptPort <= 1);
     SJ2_ASSERT_WARNING(is_valid,
                        "Port %d cannot be used for External Interrupts. Need "
                        "to use GPIO on Port 0 or 2.",
-                       pin_.GetPort());
+                       kPin.GetPort());
     return is_valid;
   }
   /// Assigns the developer's ISR function to the port/pin gpio instance.
   void SetInterruptRoutine(IsrPointer function) const
   {
     ValidPortCheck();
-    interrupthandlers[interupt_port_][pin_.GetPin()] = function;
+    interrupthandlers[kInteruptPort][kPin.GetPin()] = function;
   }
   /// Clears the developers ISR function from the port/pin gio instance.
   void ClearInterruptRoutine() const
   {
-    interrupthandlers[interupt_port_][pin_.GetPin()] = nullptr;
+    interrupthandlers[kInteruptPort][kPin.GetPin()] = nullptr;
   }
   /// Sets the selected edge that the gpio interrupt will be triggered on.
   void SetInterruptEdge(Edge edge) const
@@ -184,7 +179,7 @@ class Gpio final : public sjsu::Gpio
       }
     }
   }
-  /// Clears the seleted edge of the gpio interrupt from being triggered.
+  /// Clears the selected edge of the gpio interrupt from being triggered.
   void ClearInterruptEdge(Edge edge)
   {
     ValidPortCheck();
@@ -263,26 +258,28 @@ class Gpio final : public sjsu::Gpio
   /// Sets the gpio interrupt to trigger on a rising edge.
   void SetEdgeRising() const
   {
-    *interrupt[interupt_port_].enable_rising_edge |= (1 << pin_.GetPin());
+    *interrupt[kInteruptPort].enable_rising_edge |= (1 << kPin.GetPin());
   }
   /// Sets the gpio interrupt to trigger on a falling edge.
   void SetEdgeFalling() const
   {
-    *interrupt[interupt_port_].enable_falling_edge |= (1 << pin_.GetPin());
+    *interrupt[kInteruptPort].enable_falling_edge |= (1 << kPin.GetPin());
   }
   /// Clears the gpio interrupt to no longer trigger on a rising edge.
   void ClearEdgeRising() const
   {
-    *interrupt[interupt_port_].enable_rising_edge &= ~(1 << pin_.GetPin());
+    *interrupt[kInteruptPort].enable_rising_edge &= ~(1 << kPin.GetPin());
   }
   /// Clears the gpio interrupt to no longer trigger on a falling edge.
   void ClearEdgeFalling() const
   {
-    *interrupt[interupt_port_].enable_falling_edge &= ~(1 << pin_.GetPin());
+    *interrupt[kInteruptPort].enable_falling_edge &= ~(1 << kPin.GetPin());
   }
-
-  uint8_t interupt_port_;
-  Pin pin_;
+  /// Cache of the port index in the lookup table.
+  const uint8_t kInteruptPort;
+  /// Internal pin object.
+  const Pin kPin;
+  /// Internal reference to an interrupt controller.
   const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc17xx
