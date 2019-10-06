@@ -179,7 +179,7 @@ in the `startup.cpp` file as many vendors do.
 ``` Makefile
 # Add library source files, typically its just the startup.cpp file
 LIBRARY_LPC40XX += $(LIB_DIR)/L0_Platform/lpc40xx/startup.cpp
-LIBRARY_LPC40XX += $(LIB_DIR)/L0_Platform/lpc40xx/interrupt_vector_table.cpp
+LIBRARY_LPC40XX += $(LIB_DIR)/L1_Peripheral/cortex/interrupt_vector_table.cpp
 
 # Add test source files if applicable
 TESTS += $(LIB_DIR)/L0_Platform/lpc40xx/startup_test.cpp
