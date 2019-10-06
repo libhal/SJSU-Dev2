@@ -53,7 +53,7 @@ nav:
     - L0 Platform:
       - 'design_docs/L0/none.md'
     - L1 Peripheral:
-      - 'design_docs/L1/none.md'
+      - 'design_docs/L1/counter.md'
     - L2 Hardware Abstraction:
       - 'design_docs/L2/none.md'
     - L3 Application:
@@ -61,9 +61,9 @@ nav:
     - Utility:
       - 'design_docs/utility/none.md'
     - Testing:
-      - 'design_docs/utility/none.md'
+      - 'design_docs/testing/none.md'
     - Third Party Software:
-      - 'design_docs/utility/none.md'
+      - 'design_docs/third_party/none.md'
     - Template:
       - 'design_docs/template/template.md'
   - 'about.md'

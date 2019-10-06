@@ -15,7 +15,7 @@
 - [Future Advancements](#future-advancements)
 - [Testing Plan](#testing-plan)
   - [Unit Testing Scheme](#unit-testing-scheme)
-  - [Demonstration Project (only for implementation/system architecture)](#demonstration-project-only-for-implementationsystem-architecture)
+  - [Demonstration Project](#demonstration-project)
 
 # Location
 `L1 Peripheral`
@@ -122,5 +122,5 @@ N/A
 This interface does not come with utility methods, thus there is no code to
 test.
 
-## Demonstration Project (only for implementation/system architecture)
+## Demonstration Project
 N/A
