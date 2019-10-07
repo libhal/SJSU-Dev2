@@ -153,14 +153,15 @@ TEST_ARGS ?=
 # warnings
 WARNINGS_ARE_ERRORS ?=
 # IMPORTANT: GCC must be accessible via the PATH environment variable
-HOST_CC        = $(SJCLANG)/bin/clang
-HOST_CPPC      = $(SJCLANG)/bin/clang++
-HOST_OBJDUMP   = $(SJCLANG)/bin/llvm-objdump
-HOST_SIZEC     = $(SJCLANG)/bin/llvm-size
-HOST_OBJCOPY   = $(SJCLANG)/bin/llvm-objcopy
-HOST_NM        = $(SJCLANG)/bin/llvm-nm
-HOST_COV       = $(SJCLANG)/bin/llvm-cov
-CLANG_TIDY     = $(SJCLANG)/bin/clang-tidy
+HOST_CC         = $(SJCLANG)/bin/clang
+HOST_CPPC       = $(SJCLANG)/bin/clang++
+HOST_OBJDUMP    = $(SJCLANG)/bin/llvm-objdump
+HOST_SIZEC      = $(SJCLANG)/bin/llvm-size
+HOST_OBJCOPY    = $(SJCLANG)/bin/llvm-objcopy
+HOST_NM         = $(SJCLANG)/bin/llvm-nm
+HOST_COV        = $(SJCLANG)/bin/llvm-cov
+CLANG_TIDY      = $(SJCLANG)/bin/clang-tidy
+HOST_SYMBOLIZER = $(SJCLANG)/bin/llvm-symbolizer
 # Mux between using the firmware compiler executables or the host compiler
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
 CC      = $(HOST_CC)
@@ -507,7 +508,9 @@ library-test: test $(TEST_EXEC)
 test: $(TEST_EXEC)
 	@rm -f $(COVERAGE_FILES) 2> /dev/null
 	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
-		$(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
+	 export ASAN_SYMBOLIZER_PATH=$(HOST_SYMBOLIZER) && \
+	 ASAN_OPTIONS="symbolize=1 color=always" \
+	 $(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
 	@gcovr $(TEST_SOURCE_DIRECTORIES) \
 		--object-directory="$(BUILD_DIRECTORY_NAME)/" \
