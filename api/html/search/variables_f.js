@@ -30,7 +30,8 @@ var searchData=
   ['pll1feed',['PLL1FEED',['../df/d8b/structLPC__SC__TypeDef.html#af6c3319c7cad9a705520c6e205ba62e5',1,'LPC_SC_TypeDef']]],
   ['pll1stat',['PLL1STAT',['../df/d8b/structLPC__SC__TypeDef.html#a00d9e4d1bf9425f8310d458bf0b166e8',1,'LPC_SC_TypeDef']]],
   ['pop',['POP',['../d9/d2d/structLPC__UART4__TypeDef.html#a3f038c50826af75bbd3251252887ce8e',1,'LPC_UART4_TypeDef']]],
-  ['port',['PORT',['../d8/da9/structITM__Type.html#af95bc1810f9ea802d628cb9dea81e02e',1,'ITM_Type']]],
+  ['port',['PORT',['../d8/da9/structITM__Type.html#af95bc1810f9ea802d628cb9dea81e02e',1,'ITM_Type::PORT()'],['../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html#aebafd8167bd4d448c6f9849b4e3475a1',1,'sjsu::lpc17xx::Gpio::GpioPort_t::port()']]],
   ['port_5f',['port_',['../d0/da9/classsjsu_1_1Pin.html#a4932425145eb6c974042da8065cfd22b',1,'sjsu::Pin']]],
+  ['port_5fstatus',['port_status',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ab14268c44d17e8f28589912016a0fbd5',1,'sjsu::lpc17xx::Gpio::port_status()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a048f745fc1e703b033a42460c3240bc4',1,'sjsu::lpc40xx::Gpio::port_status()']]],
   ['pr',['PR',['../d2/d9b/structLPC__TIM__TypeDef.html#afb73bd0a29f62603c2c88feffd0f97e2',1,'LPC_TIM_TypeDef::PR()'],['../dc/dbf/structLPC__PWM__TypeDef.html#a7b4fe1c22c66694348c1e75dd817afd6',1,'LPC_PWM_TypeDef::PR()']]]
 ];

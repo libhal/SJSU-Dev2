@@ -114,37 +114,165 @@ Inheritance diagram for sjsu::ParallelBus:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/db5/classsjsu_1_1ParallelBus__inherit__graph.png" border="0" usemap="#sjsu_1_1ParallelBus_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1ParallelBus_inherit__map" id="sjsu_1_1ParallelBus_inherit__map">
-<area shape="rect" id="node2" href="../../d0/d27/classsjsu_1_1ParallelGpio.html" title="sjsu::ParallelGpio" alt="" coords="5,80,135,107"/>
+<area shape="rect" id="node2" href="../../d0/d27/classsjsu_1_1ParallelGpio.html" title="A parallel bus composed of sjsu::Gpio objects. " alt="" coords="5,80,135,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aca02ad251827257ad0aa9458d2ee3771"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca02ad251827257ad0aa9458d2ee3771"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html#aca02ad251827257ad0aa9458d2ee3771">Initialize</a> ()=0</td></tr>
+<tr class="memdesc:aca02ad251827257ad0aa9458d2ee3771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html">ParallelBus</a> hardware. <br /></td></tr>
 <tr class="separator:aca02ad251827257ad0aa9458d2ee3771"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49876a0e15e4c71fe1a5e04bfd555364"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49876a0e15e4c71fe1a5e04bfd555364"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (uint32_t data)=0</td></tr>
+<tr class="memitem:a49876a0e15e4c71fe1a5e04bfd555364"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html#a49876a0e15e4c71fe1a5e04bfd555364">Write</a> (uint32_t data)=0</td></tr>
 <tr class="separator:a49876a0e15e4c71fe1a5e04bfd555364"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad38646785512577972b2fda9b95ce534"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad38646785512577972b2fda9b95ce534"></a>
-virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> ()=0</td></tr>
+<tr class="memitem:ad38646785512577972b2fda9b95ce534"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html#ad38646785512577972b2fda9b95ce534">Read</a> ()=0</td></tr>
 <tr class="separator:ad38646785512577972b2fda9b95ce534"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61682645483824342e5f504db8a58398"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61682645483824342e5f504db8a58398"></a>
-virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>BusWidth</b> () const =0</td></tr>
+virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html#a61682645483824342e5f504db8a58398">BusWidth</a> () const =0</td></tr>
+<tr class="memdesc:a61682645483824342e5f504db8a58398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of parallel pins that make up this parallel bus. <br /></td></tr>
 <tr class="separator:a61682645483824342e5f504db8a58398"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ef661e8c594cfe088ce43e9cf936a32"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ef661e8c594cfe088ce43e9cf936a32"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDirection</b> (sjsu::Gpio::Direction direction)=0</td></tr>
+<tr class="memitem:a4ef661e8c594cfe088ce43e9cf936a32"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html#a4ef661e8c594cfe088ce43e9cf936a32">SetDirection</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">sjsu::Gpio::Direction</a> direction)=0</td></tr>
 <tr class="separator:a4ef661e8c594cfe088ce43e9cf936a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa76c72d145b818b91edc9c7e553fcd9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa76c72d145b818b91edc9c7e553fcd9c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsOpenDrain</b> ([[maybe_unused]] bool set_as_open_drain=true)</td></tr>
+<tr class="memitem:aa76c72d145b818b91edc9c7e553fcd9c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html#aa76c72d145b818b91edc9c7e553fcd9c">SetAsOpenDrain</a> ([[maybe_unused]] bool set_as_open_drain=true)</td></tr>
 <tr class="separator:aa76c72d145b818b91edc9c7e553fcd9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8c89832ef5474504425e81c27b01ea5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8c89832ef5474504425e81c27b01ea5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsOutput</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html#ad8c89832ef5474504425e81c27b01ea5">SetAsOutput</a> ()</td></tr>
+<tr class="memdesc:ad8c89832ef5474504425e81c27b01ea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method for setting all pins to output. <br /></td></tr>
 <tr class="separator:ad8c89832ef5474504425e81c27b01ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc5d559b2d62892f0d14e13d08149c56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc5d559b2d62892f0d14e13d08149c56"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsInput</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html#acc5d559b2d62892f0d14e13d08149c56">SetAsInput</a> ()</td></tr>
+<tr class="memdesc:acc5d559b2d62892f0d14e13d08149c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility method for setting all pins to input. <br /></td></tr>
 <tr class="separator:acc5d559b2d62892f0d14e13d08149c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ad38646785512577972b2fda9b95ce534"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint32_t sjsu::ParallelBus::Read </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read the state of the parallel pins in the bus and return them as a uint32_t. NOTE: if the pins are set to output, this function is expected to return the state of the output pins. This should not change the direction of the pins from OUTPUT to INPUT. </p>
+
+<p>Implemented in <a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html#ab91e7dd55fa2dea3f51cc5a1fe368fb9">sjsu::ParallelGpio</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa76c72d145b818b91edc9c7e553fcd9c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::ParallelBus::SetAsOpenDrain </td>
+          <td>(</td>
+          <td class="paramtype">[[maybe_unused] ] bool&#160;</td>
+          <td class="paramname"><em>set_as_open_drain</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the pins of the parallel bus as open drain (or open collector). Default version of this will halt the system if called, as most implementations are not expected to have an open drain capability.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">set_as_open_drain</td><td>- if true, set output of parallel bus pins to open drain. Otherwise, set pin as push-pull. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4ef661e8c594cfe088ce43e9cf936a32"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::ParallelBus::SetDirection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">sjsu::Gpio::Direction</a>&#160;</td>
+          <td class="paramname"><em>direction</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the direction of the parallel bus pins.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>- The direction to set the parallel bus to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html#ae631122671ef1c1ae0b4193387b6504d">sjsu::ParallelGpio</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a49876a0e15e4c71fe1a5e04bfd555364"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::ParallelBus::Write </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write the contents of the data parameter the parallel bus. Each bit of the data uint32_t is assigned to each corrissponding bit of the parallel bus from the 0th bit to the Nth, where N is the width of the bus.</p>
+<p>Lets assume a bit width of 5 bits.</p>
+<p>parallel_bus.Write(0b1'1001);</p>
+<p>Becomes: /- [4] 1 /&ndash; [3] 1 0b1'1001 --&mdash; [2] 0 &amp;ndash; [1] 0 - [0] 1</p>
+<p>Where each [x] is a pin.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>- value to set the parallel bus to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html#aaf0b953625d5ec2e1b45fae0ae9643da">sjsu::ParallelGpio</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/io/<a class="el" href="../../d1/d2a/parallel__bus_8hpp_source.html">parallel_bus.hpp</a></li>
 </ul>

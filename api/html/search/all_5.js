@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['eeprom',['Eeprom',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html',1,'sjsu::lpc40xx']]],
+  ['edge',['Edge',['../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149',1,'sjsu::Gpio']]],
   ['eeprom',['Eeprom',['../d9/df3/classsjsu_1_1Eeprom.html',1,'sjsu']]],
+  ['eeprom',['Eeprom',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html',1,'sjsu::lpc40xx']]],
   ['eff_5fgrp_5fsa',['EFF_GRP_sa',['../d5/d2b/structLPC__CANAF__TypeDef.html#a4d4dd49407ea55b29ba5ccc6b3601cdf',1,'LPC_CANAF_TypeDef']]],
   ['eff_5fsa',['EFF_sa',['../d5/d2b/structLPC__CANAF__TypeDef.html#a89c7026753c5e55a3e54a8382cd6a335',1,'LPC_CANAF_TypeDef']]],
   ['eint0_5firqn',['EINT0_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a0a3db3233549f012f8ecb88f0510adcf',1,'LPC17xx.h']]],
@@ -14,6 +15,8 @@ var searchData=
   ['emcdlyctl',['EMCDLYCTL',['../df/d8b/structLPC__SC__TypeDef.html#ad49808917666d18a197ba6ea4930c729',1,'LPC_SC_TypeDef']]],
   ['emr',['EMR',['../d2/d9b/structLPC__TIM__TypeDef.html#ad094765dc5720a2333d56dc17e14c4fc',1,'LPC_TIM_TypeDef']]],
   ['enable',['Enable',['../df/d96/classsjsu_1_1PixelDisplay.html#a1004fd12da67314f8cdae8a80fd95fd1',1,'sjsu::PixelDisplay']]],
+  ['enable_5ffalling_5fedge',['enable_falling_edge',['../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#a0464185e9236cee3f2cd2fcd7ed92ba7',1,'sjsu::lpc17xx::Gpio::GpioInterruptRegisterMap_t']]],
+  ['enable_5frising_5fedge',['enable_rising_edge',['../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#a63d9caeb4d3463eba5259636f6581b9c',1,'sjsu::lpc17xx::Gpio::GpioInterruptRegisterMap_t']]],
   ['enablebitmaskoperators_5ft',['EnableBitMaskOperators_t',['../db/dc2/structsjsu_1_1EnableBitMaskOperators__t.html',1,'sjsu']]],
   ['enabledac',['EnableDac',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae9be77c66c312383ac26df7cbc10d949',1,'sjsu::lpc40xx::Pin']]],
   ['enabledigitalfilter',['EnableDigitalFilter',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ad9ebb9636ad7d1798cda62234dcf1737',1,'sjsu::lpc40xx::Pin']]],
@@ -21,7 +24,7 @@ var searchData=
   ['enablehysteresis',['EnableHysteresis',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1fec5e4fe1429f55ea836fdc8a22a4ec',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6cae6a6642d6d810bf67a52a137e2d74',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a65e30196ce68adf18a1094613c281713',1,'sjsu::lpc40xx::Pin']]],
-  ['enableinterrupts',['EnableInterrupts',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aadccb197280d98e29b2c4a4e8c6559bf',1,'sjsu::lpc17xx::Gpio']]],
+  ['enableinterrupts',['EnableInterrupts',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aadccb197280d98e29b2c4a4e8c6559bf',1,'sjsu::lpc17xx::Gpio::EnableInterrupts()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ae58e775559659b47fba85f7e999c5b5c',1,'sjsu::lpc40xx::Gpio::EnableInterrupts()']]],
   ['endoftable',['ENDofTable',['../d5/d2b/structLPC__CANAF__TypeDef.html#a705055dcc5dd3c2eaa964329bd2bcd7a',1,'LPC_CANAF_TypeDef']]],
   ['enet_5firqn',['ENET_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083af3a2a999d58e47ed39ed1bd9c877aee6',1,'LPC17xx.h']]],
   ['errorwarninglimit_5ft',['ErrorWarningLimit_t',['../dd/de5/structsjsu_1_1lpc40xx_1_1Can_1_1ErrorWarningLimit__t.html',1,'sjsu::lpc40xx::Can']]],

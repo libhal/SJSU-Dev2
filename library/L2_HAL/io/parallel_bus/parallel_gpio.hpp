@@ -8,13 +8,34 @@
 
 namespace sjsu
 {
+/// A parallel bus composed of sjsu::Gpio objects
 class ParallelGpio : public sjsu::ParallelBus
 {
  public:
+  /// Construct ParallelGpio
+  ///
+  /// @param array - an array of pointers to mutable sjsu::Gpio objects. The
+  ///        const is a measure to make sure that this class does not attempt to
+  ///        change pointer values of the array.
+  /// @param width - The size of the array of gpio.
   ParallelGpio(sjsu::Gpio * const array[], size_t width)
       : io_(array), kWidth(width)
   {
   }
+  /// Constructor of ParallelGpio that takes a std::initializer_list of
+  /// sjsu::Gpio pointers. This simplifies the usage of parallel bus and helps
+  /// to eliminate mistakes where the array size is not correct.
+  ///
+  /// Example Usage:
+  ///
+  ///    ParallelGpio parallel_gpio({
+  ///        gpio_led0,
+  ///        gpio_led1,
+  ///        gpio_led2,
+  ///        gpio_led3,
+  ///    });
+  ///
+  /// @param array - std::initializer_list of sjsu::Gpio pointers.
   explicit ParallelGpio(const std::initializer_list<sjsu::Gpio *> & array)
       : io_(array.begin()), kWidth(array.size())
   {
@@ -36,7 +57,10 @@ class ParallelGpio : public sjsu::ParallelBus
 
     SetAsInput();
   }
-
+  /// Set the pins of the parallel bus as open drain (or open collector).
+  ///
+  /// @param set_as_open_drain - if true, set output of parallel bus pins to
+  /// open drain. Otherwise, set pin as push-pull.
   void SetAsOpenDrain(bool set_as_open_drain = true) override
   {
     for (size_t i = 0; i < kWidth; i++)

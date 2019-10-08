@@ -27,5 +27,5 @@ var searchData=
   ['gettaskbuffer',['GetTaskBuffer',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a1b379ffed4324e3354999b31e52c669a',1,'sjsu::rtos::Task']]],
   ['gettaskcount',['GetTaskCount',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aa1a31b35ae26fa27a0d4aa62ade71143',1,'sjsu::rtos::TaskScheduler']]],
   ['gettaskindex',['GetTaskIndex',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#af369ceb720de477a42ca3e1d9edde2fe',1,'sjsu::rtos::TaskScheduler']]],
-  ['gpio',['Gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a6c5804a1c6f5a2c20aa78e2fc7ecadcb',1,'sjsu::lpc17xx::Gpio']]]
+  ['gpio',['Gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aaa68f39449b606ce99e7a6444c9a6906',1,'sjsu::lpc17xx::Gpio::Gpio()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab998c0df2ccba384fa099b66c0657ef2',1,'sjsu::lpc40xx::Gpio::Gpio()']]]
 ];

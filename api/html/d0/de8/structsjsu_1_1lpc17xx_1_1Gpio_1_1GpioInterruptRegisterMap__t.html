@@ -110,7 +110,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Structure that holds gpio tnterrupt port specpefic registers,.  
+<p>Holds gpio interrupt port specific registers. Used to make the code more readable.  
  <a href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../dd/d32/lpc17xx_2gpio_8hpp_source.html">gpio.hpp</a>&gt;</code></p>
@@ -118,23 +118,28 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a379ffdf3ae11253f2adf2269652af716"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a379ffdf3ae11253f2adf2269652af716"></a>
-volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>rising_edge_status</b> = nullptr</td></tr>
+volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#a379ffdf3ae11253f2adf2269652af716">rising_edge_status</a> = nullptr</td></tr>
+<tr class="memdesc:a379ffdf3ae11253f2adf2269652af716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the register that holds the rising edge event status. So if pin 5 had a rising edge interrupt cause it, then there will be a 1 in the 5th position. <br /></td></tr>
 <tr class="separator:a379ffdf3ae11253f2adf2269652af716"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7000291df27a9b735e1537e06e5c20dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7000291df27a9b735e1537e06e5c20dd"></a>
-volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>falling_edge_status</b> = nullptr</td></tr>
+volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#a7000291df27a9b735e1537e06e5c20dd">falling_edge_status</a> = nullptr</td></tr>
+<tr class="memdesc:a7000291df27a9b735e1537e06e5c20dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the register that holds the falling edge event status. So if pin 5 had a falling edge interrupt cause it, then there will be a 1 in the 5th position. <br /></td></tr>
 <tr class="separator:a7000291df27a9b735e1537e06e5c20dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3be336c8d5248eb1630fc60591cd79d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3be336c8d5248eb1630fc60591cd79d8"></a>
-volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> = nullptr</td></tr>
+volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#a3be336c8d5248eb1630fc60591cd79d8">clear</a> = nullptr</td></tr>
+<tr class="memdesc:a3be336c8d5248eb1630fc60591cd79d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the register that clears gpio interrupts. <br /></td></tr>
 <tr class="separator:a3be336c8d5248eb1630fc60591cd79d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63d9caeb4d3463eba5259636f6581b9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63d9caeb4d3463eba5259636f6581b9c"></a>
-volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>enable_rising_edge</b> = nullptr</td></tr>
+volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#a63d9caeb4d3463eba5259636f6581b9c">enable_rising_edge</a> = nullptr</td></tr>
+<tr class="memdesc:a63d9caeb4d3463eba5259636f6581b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the register that enables/disables rising edge interrupts. <br /></td></tr>
 <tr class="separator:a63d9caeb4d3463eba5259636f6581b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0464185e9236cee3f2cd2fcd7ed92ba7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0464185e9236cee3f2cd2fcd7ed92ba7"></a>
-volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>enable_falling_edge</b> = nullptr</td></tr>
+volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#a0464185e9236cee3f2cd2fcd7ed92ba7">enable_falling_edge</a> = nullptr</td></tr>
+<tr class="memdesc:a0464185e9236cee3f2cd2fcd7ed92ba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the register that enables/disables falling edge interrupts. <br /></td></tr>
 <tr class="separator:a0464185e9236cee3f2cd2fcd7ed92ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Structure that holds gpio tnterrupt port specpefic registers,. </p>
+<div class="textblock"><p>Holds gpio interrupt port specific registers. Used to make the code more readable. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/lpc17xx/<a class="el" href="../../dd/d32/lpc17xx_2gpio_8hpp_source.html">gpio.hpp</a></li>
 </ul>

@@ -2,6 +2,7 @@ var searchData=
 [
   ['parallelbus',['ParallelBus',['../d7/d86/classsjsu_1_1ParallelBus.html',1,'sjsu']]],
   ['parallelgpio',['ParallelGpio',['../d0/d27/classsjsu_1_1ParallelGpio.html',1,'sjsu']]],
+  ['parallelgpio',['ParallelGpio',['../d0/d27/classsjsu_1_1ParallelGpio.html#a1440615db48fd86793c68dbb7bad297b',1,'sjsu::ParallelGpio::ParallelGpio(sjsu::Gpio *const array[], size_t width)'],['../d0/d27/classsjsu_1_1ParallelGpio.html#a926d3b26a8d7931fc129e0c38f9ba957',1,'sjsu::ParallelGpio::ParallelGpio(const std::initializer_list&lt; sjsu::Gpio * &gt; &amp;array)']]],
   ['partialbus_5ft',['PartialBus_t',['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html',1,'sjsu::lpc40xx::I2c']]],
   ['pboost',['PBOOST',['../df/d8b/structLPC__SC__TypeDef.html#a2a81a243822da4dc6b526bf1fee461e8',1,'LPC_SC_TypeDef']]],
   ['pc',['PC',['../d2/d9b/structLPC__TIM__TypeDef.html#ae9ca163001bce16366eb455e09ab251e',1,'LPC_TIM_TypeDef::PC()'],['../dc/dbf/structLPC__PWM__TypeDef.html#afc34e1b610676c8cf5255efe1faf2770',1,'LPC_PWM_TypeDef::PC()']]],
@@ -29,7 +30,7 @@ var searchData=
   ['pid5',['PID5',['../d8/da9/structITM__Type.html#af9085648bf18f69b5f9d1136d45e1d37',1,'ITM_Type']]],
   ['pid6',['PID6',['../d8/da9/structITM__Type.html#ad34dbe6b1072c77d36281049c8b169f6',1,'ITM_Type']]],
   ['pid7',['PID7',['../d8/da9/structITM__Type.html#a2bcec6803f28f30d5baf5e20e3517d3d',1,'ITM_Type']]],
-  ['pin',['pin',['../d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html#a89b060554a4c9147153810e10efb4a79',1,'sjsu::lpc17xx::Pin::PinTable_t::pin()'],['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ad75d106139c74c056ade11459852a7c5',1,'sjsu::lpc17xx::Pin::Pin()'],['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae7b9b8c1fb4153c09fb59912f3b86b9b',1,'sjsu::lpc40xx::Pin::Pin()'],['../d0/da9/classsjsu_1_1Pin.html#a1c859e3dbd78a0841a43d0d6b823a902',1,'sjsu::Pin::Pin()']]],
+  ['pin',['Pin',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ad75d106139c74c056ade11459852a7c5',1,'sjsu::lpc17xx::Pin::Pin()'],['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae7b9b8c1fb4153c09fb59912f3b86b9b',1,'sjsu::lpc40xx::Pin::Pin()'],['../d0/da9/classsjsu_1_1Pin.html#a1c859e3dbd78a0841a43d0d6b823a902',1,'sjsu::Pin::Pin()'],['../d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html#a89b060554a4c9147153810e10efb4a79',1,'sjsu::lpc17xx::Pin::PinTable_t::pin()']]],
   ['pin',['Pin',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html',1,'sjsu::lpc40xx']]],
   ['pin',['Pin',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html',1,'sjsu::lpc17xx']]],
   ['pin',['Pin',['../d0/da9/classsjsu_1_1Pin.html',1,'sjsu']]],
@@ -54,8 +55,9 @@ var searchData=
   ['pllinput',['PllInput',['../d5/df0/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllInput.html',1,'sjsu::lpc40xx::SystemController']]],
   ['pop',['POP',['../d9/d2d/structLPC__UART4__TypeDef.html#a3f038c50826af75bbd3251252887ce8e',1,'LPC_UART4_TypeDef']]],
   ['port',['Port',['../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html',1,'sjsu::lpc40xx::Uart']]],
-  ['port',['PORT',['../d8/da9/structITM__Type.html#af95bc1810f9ea802d628cb9dea81e02e',1,'ITM_Type']]],
+  ['port',['PORT',['../d8/da9/structITM__Type.html#af95bc1810f9ea802d628cb9dea81e02e',1,'ITM_Type::PORT()'],['../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html#aebafd8167bd4d448c6f9849b4e3475a1',1,'sjsu::lpc17xx::Gpio::GpioPort_t::port()']]],
   ['port_5f',['port_',['../d0/da9/classsjsu_1_1Pin.html#a4932425145eb6c974042da8065cfd22b',1,'sjsu::Pin']]],
+  ['port_5fstatus',['port_status',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ab14268c44d17e8f28589912016a0fbd5',1,'sjsu::lpc17xx::Gpio::port_status()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a048f745fc1e703b033a42460c3240bc4',1,'sjsu::lpc40xx::Gpio::port_status()']]],
   ['port_5ft',['Port_t',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html',1,'sjsu::lpc40xx::Uart']]],
   ['powerdownperipheral',['PowerDownPeripheral',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#acf1f16f4bab4565259033b1c416dab0c',1,'sjsu::lpc17xx::SystemController::PowerDownPeripheral()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#aacd74933e60e57829e2511ac14862cb7',1,'sjsu::lpc40xx::SystemController::PowerDownPeripheral()'],['../df/d0e/classsjsu_1_1SystemController.html#a2daf290ce909701e09e9a0f017273170',1,'sjsu::SystemController::PowerDownPeripheral()']]],
   ['powerupperipheral',['PowerUpPeripheral',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#aca426a3141d4ecfbb3f034152c99ec1f',1,'sjsu::lpc17xx::SystemController::PowerUpPeripheral()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a363dc99641b504ca364f0995d7c6aca3',1,'sjsu::lpc40xx::SystemController::PowerUpPeripheral()'],['../df/d0e/classsjsu_1_1SystemController.html#afc4dbcdcd3fb543b7e2d846c0a9bc9d7',1,'sjsu::SystemController::PowerUpPeripheral()']]],
@@ -63,8 +65,8 @@ var searchData=
   ['prerun',['PreRun',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a59f0291e67429b3218c654662fb14d47',1,'sjsu::rtos::Task']]],
   ['printf',['Printf',['../da/ddf/group__Printf.html',1,'']]],
   ['program',['Program',['../d9/db2/classsjsu_1_1CommandInterface.html#ae305b4bb9776d60b30250dd6dba2e8ad',1,'sjsu::CommandInterface::Program()'],['../d9/d71/classCommand.html#aa85aa6f2ed8d697378e1ffe04bc01f71',1,'Command::Program()']]],
-  ['pwm',['Pwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html',1,'sjsu::lpc40xx']]],
   ['pwm',['Pwm',['../d6/ddf/classsjsu_1_1Pwm.html',1,'sjsu']]],
+  ['pwm',['Pwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html',1,'sjsu::lpc40xx']]],
   ['pwm1_5firqn',['PWM1_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a0cd5b403aa037bacf964fd1a60c3f08f',1,'LPC17xx.h']]],
   ['pwmchannel',['PwmChannel',['../d0/d71/structsjsu_1_1lpc17xx_1_1PwmChannel.html',1,'sjsu::lpc17xx']]]
 ];

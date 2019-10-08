@@ -110,40 +110,48 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Gpio Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>An abstract interface for General Purpose I/O.  
+ <a href="../../dd/d3a/classsjsu_1_1Gpio.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d1/d2c/gpio_8hpp_source.html">gpio.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Gpio:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d72/classsjsu_1_1Gpio__inherit__graph.png" border="0" usemap="#sjsu_1_1Gpio_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Gpio_inherit__map" id="sjsu_1_1Gpio_inherit__map">
-<area shape="rect" id="node2" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html" title="sjsu::lpc17xx::Gpio" alt="" coords="5,80,145,107"/>
-<area shape="rect" id="node3" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="sjsu::lpc40xx::Gpio" alt="" coords="169,80,309,107"/>
+<area shape="rect" id="node2" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html" title="GPIO implementation for the lpc17xx platform. " alt="" coords="5,80,145,107"/>
+<area shape="rect" id="node3" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="169,80,309,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a6debc89a7e5406a6aed8ef7f24739e81"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6debc89a7e5406a6aed8ef7f24739e81"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Direction</b> : uint8_t { <b>kInput</b> = 0, 
+<tr class="memitem:a6debc89a7e5406a6aed8ef7f24739e81"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6debc89a7e5406a6aed8ef7f24739e81"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">Direction</a> : uint8_t { <b>kInput</b> = 0, 
 <b>kOutput</b> = 1
- }</td></tr>
+ }<tr class="memdesc:a6debc89a7e5406a6aed8ef7f24739e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the set of directions a GPIO can be. <br /></td></tr>
+</td></tr>
 <tr class="separator:a6debc89a7e5406a6aed8ef7f24739e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe65948089b7eacd3881a6305493f88f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe65948089b7eacd3881a6305493f88f"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>State</b> : uint8_t { <b>kLow</b> = 0, 
+<tr class="memitem:abe65948089b7eacd3881a6305493f88f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe65948089b7eacd3881a6305493f88f"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f">State</a> : uint8_t { <b>kLow</b> = 0, 
 <b>kHigh</b> = 1
- }</td></tr>
+ }<tr class="memdesc:abe65948089b7eacd3881a6305493f88f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines what states a GPIO pin can be in. <br /></td></tr>
+</td></tr>
 <tr class="separator:abe65948089b7eacd3881a6305493f88f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28d10175d5620f861a7aecd118513149"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28d10175d5620f861a7aecd118513149"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Edge</b> : uint8_t { <b>kEdgeRising</b> = 0, 
+<tr class="memitem:a28d10175d5620f861a7aecd118513149"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28d10175d5620f861a7aecd118513149"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a> : uint8_t { <b>kEdgeRising</b> = 0, 
 <b>kEdgeFalling</b> = 1, 
 <b>kEdgeBoth</b> = 2
- }</td></tr>
+ }<tr class="memdesc:a28d10175d5620f861a7aecd118513149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the set of events that can trigger a GPIO interrupt. <br /></td></tr>
+</td></tr>
 <tr class="separator:a28d10175d5620f861a7aecd118513149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a783a6c7de21ed585fbe7269ad3ca0905"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a783a6c7de21ed585fbe7269ad3ca0905"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a783a6c7de21ed585fbe7269ad3ca0905">SetDirection</a> (Direction direction) const =0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a783a6c7de21ed585fbe7269ad3ca0905">SetDirection</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">Direction</a> direction) const =0</td></tr>
 <tr class="memdesc:a783a6c7de21ed585fbe7269ad3ca0905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin as an output or an input. <br /></td></tr>
 <tr class="separator:a783a6c7de21ed585fbe7269ad3ca0905"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addc9edc1a2f660388af1e2208897e48b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addc9edc1a2f660388af1e2208897e48b"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#addc9edc1a2f660388af1e2208897e48b">Set</a> (State output) const =0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#addc9edc1a2f660388af1e2208897e48b">Set</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f">State</a> output) const =0</td></tr>
 <tr class="memdesc:addc9edc1a2f660388af1e2208897e48b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the pin state as HIGH voltage or LOW voltage. <br /></td></tr>
 <tr class="separator:addc9edc1a2f660388af1e2208897e48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92833a30a38cd1ad87a2e27e4d25d054"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a92833a30a38cd1ad87a2e27e4d25d054">Toggle</a> () const =0</td></tr>
@@ -152,26 +160,32 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="separator:a8adbc3a6738710cdff41a29e0abfee05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1074eb7db45e5693269d8a4ae5355e5a"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a1074eb7db45e5693269d8a4ae5355e5a">GetPin</a> () const =0</td></tr>
 <tr class="separator:a1074eb7db45e5693269d8a4ae5355e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4786313eb197e4fdf37aa8bddf66ba4e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a4786313eb197e4fdf37aa8bddf66ba4e">AttachInterrupt</a> (IsrPointer function, Edge edge) const =0</td></tr>
+<tr class="memitem:a4786313eb197e4fdf37aa8bddf66ba4e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a4786313eb197e4fdf37aa8bddf66ba4e">AttachInterrupt</a> (IsrPointer function, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a> edge) const =0</td></tr>
 <tr class="separator:a4786313eb197e4fdf37aa8bddf66ba4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0657f0c0777ec9cd10cc1d31e9f8d5a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0657f0c0777ec9cd10cc1d31e9f8d5a4"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a0657f0c0777ec9cd10cc1d31e9f8d5a4">DetachInterrupt</a> () const =0</td></tr>
 <tr class="memdesc:a0657f0c0777ec9cd10cc1d31e9f8d5a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove interrupt call from pin and deactivate interrupts for this pin. <br /></td></tr>
 <tr class="separator:a0657f0c0777ec9cd10cc1d31e9f8d5a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef6e6d827436912beeefc9e419ee8407"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef6e6d827436912beeefc9e419ee8407"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetHigh</b> () const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#aef6e6d827436912beeefc9e419ee8407">SetHigh</a> () const </td></tr>
+<tr class="memdesc:aef6e6d827436912beeefc9e419ee8407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin to HIGH voltage. <br /></td></tr>
 <tr class="separator:aef6e6d827436912beeefc9e419ee8407"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5685873fd8c47432fd86045859149248"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5685873fd8c47432fd86045859149248"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLow</b> () const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a5685873fd8c47432fd86045859149248">SetLow</a> () const </td></tr>
+<tr class="memdesc:a5685873fd8c47432fd86045859149248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin to LOW voltage. <br /></td></tr>
 <tr class="separator:a5685873fd8c47432fd86045859149248"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe564f989b5ee8754f79e6d82f0bd487"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe564f989b5ee8754f79e6d82f0bd487"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsInput</b> () const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe564f989b5ee8754f79e6d82f0bd487">SetAsInput</a> () const </td></tr>
+<tr class="memdesc:abe564f989b5ee8754f79e6d82f0bd487"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin direction as input. <br /></td></tr>
 <tr class="separator:abe564f989b5ee8754f79e6d82f0bd487"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65809efbd86eef6c07f5023de968cb5e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65809efbd86eef6c07f5023de968cb5e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsOutput</b> () const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a65809efbd86eef6c07f5023de968cb5e">SetAsOutput</a> () const </td></tr>
+<tr class="memdesc:a65809efbd86eef6c07f5023de968cb5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin direction as output. <br /></td></tr>
 <tr class="separator:a65809efbd86eef6c07f5023de968cb5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An abstract interface for General Purpose I/O. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a4786313eb197e4fdf37aa8bddf66ba4e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -188,7 +202,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsOutput</b> () co
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Edge&#160;</td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a>&#160;</td>
           <td class="paramname"><em>edge</em>&#160;</td>
         </tr>
         <tr>

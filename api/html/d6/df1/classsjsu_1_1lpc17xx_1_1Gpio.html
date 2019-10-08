@@ -112,12 +112,17 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc17xx::Gpio Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>GPIO implementation for the lpc17xx platform.  
+ <a href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../dd/d32/lpc17xx_2gpio_8hpp_source.html">gpio.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::lpc17xx::Gpio:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d5/d75/classsjsu_1_1lpc17xx_1_1Gpio__inherit__graph.png" border="0" usemap="#sjsu_1_1lpc17xx_1_1Gpio_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1lpc17xx_1_1Gpio_inherit__map" id="sjsu_1_1lpc17xx_1_1Gpio_inherit__map">
-<area shape="rect" id="node2" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="33,5,117,32"/>
+<area shape="rect" id="node2" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="33,5,117,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -125,41 +130,45 @@ Collaboration diagram for sjsu::lpc17xx::Gpio:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/dd8/classsjsu_1_1lpc17xx_1_1Gpio__coll__graph.png" border="0" usemap="#sjsu_1_1lpc17xx_1_1Gpio_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc17xx_1_1Gpio_coll__map" id="sjsu_1_1lpc17xx_1_1Gpio_coll__map">
-<area shape="rect" id="node2" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="379,5,463,32"/>
-<area shape="rect" id="node3" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html" title="Structure that holds gpio tnterrupt port specpefic registers,. " alt="" coords="319,57,523,98"/>
-<area shape="rect" id="node4" href="../../d8/d56/structLPC__GPIO__TypeDef.html" title="LPC_GPIO_TypeDef" alt="" coords="350,123,491,149"/>
-<area shape="rect" id="node5" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,173,531,200"/>
-<area shape="rect" id="node6" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,123,201,149"/>
-<area shape="rect" id="node7" href="../../d1/dd1/structSCB__Type.html" title="Structure type to access the System Control Block (SCB). " alt="" coords="73,173,157,200"/>
-<area shape="rect" id="node8" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,225,225,266"/>
+<area shape="rect" id="node2" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="379,5,463,32"/>
+<area shape="rect" id="node3" href="../../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html" title="sjsu::lpc17xx::Gpio\l::GpioPort_t" alt="" coords="351,57,491,98"/>
+<area shape="rect" id="node4" href="../../d8/d56/structLPC__GPIO__TypeDef.html" title="LPC_GPIO_TypeDef" alt="" coords="45,64,186,91"/>
+<area shape="rect" id="node5" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html" title="Holds gpio interrupt port specific registers. Used to make the code more readable. " alt="" coords="319,122,523,163"/>
+<area shape="rect" id="node6" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,188,531,215"/>
+<area shape="rect" id="node7" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,137,201,164"/>
+<area shape="rect" id="node8" href="../../d1/dd1/structSCB__Type.html" title="Structure type to access the System Control Block (SCB). " alt="" coords="73,188,157,215"/>
+<area shape="rect" id="node9" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,239,225,281"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html">GpioInterruptRegisterMap_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure that holds gpio tnterrupt port specpefic registers,.  <a href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds gpio interrupt port specific registers. Used to make the code more readable.  <a href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d9f/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort.html">GpioPort</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html">GpioPort_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6c5804a1c6f5a2c20aa78e2fc7ecadcb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c5804a1c6f5a2c20aa78e2fc7ecadcb"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a6c5804a1c6f5a2c20aa78e2fc7ecadcb">Gpio</a> (uint8_t port_number, uint8_t pin_number, const <a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html">sjsu::InterruptController</a> &amp;interrupt_controller=kInterruptController)</td></tr>
-<tr class="memdesc:a6c5804a1c6f5a2c20aa78e2fc7ecadcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available. <br /></td></tr>
-<tr class="separator:a6c5804a1c6f5a2c20aa78e2fc7ecadcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2d0943cab32d241cf50d4c8055b0bfb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ad2d0943cab32d241cf50d4c8055b0bfb">SetDirection</a> (Direction direction) const override</td></tr>
+<tr class="memitem:ad519ef17138034eae30a6dcf621618ee"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ad519ef17138034eae30a6dcf621618ee">ConvertPortToInterruptPortIndex</a> (uint8_t port)</td></tr>
+<tr class="memdesc:ad519ef17138034eae30a6dcf621618ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the port into the appropriate index in the lookup table.  <a href="#ad519ef17138034eae30a6dcf621618ee">More...</a><br /></td></tr>
+<tr class="separator:ad519ef17138034eae30a6dcf621618ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa68f39449b606ce99e7a6444c9a6906"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa68f39449b606ce99e7a6444c9a6906"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aaa68f39449b606ce99e7a6444c9a6906">Gpio</a> (uint8_t port, uint8_t pin, const <a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html">sjsu::InterruptController</a> &amp;interrupt_controller=<a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a425c749ca3355abfe3292a49de18e5dd">kInterruptController</a>)</td></tr>
+<tr class="memdesc:aaa68f39449b606ce99e7a6444c9a6906"><td class="mdescLeft">&#160;</td><td class="mdescRight">For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available. <br /></td></tr>
+<tr class="separator:aaa68f39449b606ce99e7a6444c9a6906"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d0943cab32d241cf50d4c8055b0bfb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad2d0943cab32d241cf50d4c8055b0bfb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ad2d0943cab32d241cf50d4c8055b0bfb">SetDirection</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">Direction</a> direction) const override</td></tr>
+<tr class="memdesc:ad2d0943cab32d241cf50d4c8055b0bfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin as an output or an input. <br /></td></tr>
 <tr class="separator:ad2d0943cab32d241cf50d4c8055b0bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c7643750ef626464469c98fc3fcf7b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a9c7643750ef626464469c98fc3fcf7b1">Set</a> (State output=kHigh) const override</td></tr>
+<tr class="memitem:a9c7643750ef626464469c98fc3fcf7b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c7643750ef626464469c98fc3fcf7b1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a9c7643750ef626464469c98fc3fcf7b1">Set</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f">State</a> output=kHigh) const override</td></tr>
+<tr class="memdesc:a9c7643750ef626464469c98fc3fcf7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the pin state as HIGH voltage or LOW voltage. <br /></td></tr>
 <tr class="separator:a9c7643750ef626464469c98fc3fcf7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4584747765c35a81701430e3cefbfbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4584747765c35a81701430e3cefbfbd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#af4584747765c35a81701430e3cefbfbd">Toggle</a> () const override</td></tr>
-<tr class="memdesc:af4584747765c35a81701430e3cefbfbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle the output of a GPIO output pin. <br /></td></tr>
+<tr class="memitem:af4584747765c35a81701430e3cefbfbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#af4584747765c35a81701430e3cefbfbd">Toggle</a> () const override</td></tr>
 <tr class="separator:af4584747765c35a81701430e3cefbfbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a445491d647713590d508a97570c52e3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a445491d647713590d508a97570c52e3e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a445491d647713590d508a97570c52e3e">Read</a> () const override</td></tr>
-<tr class="memdesc:a445491d647713590d508a97570c52e3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current State state of the pin. <br /></td></tr>
+<tr class="memitem:a445491d647713590d508a97570c52e3e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a445491d647713590d508a97570c52e3e">Read</a> () const override</td></tr>
 <tr class="separator:a445491d647713590d508a97570c52e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a542c4d7e165b3e52232170fe944468b2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a542c4d7e165b3e52232170fe944468b2">GetPin</a> () const override</td></tr>
 <tr class="separator:a542c4d7e165b3e52232170fe944468b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,14 +185,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memdesc:ada096509ffe3a6346f21fedfdeb97a9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the developers ISR function from the port/pin gio instance. <br /></td></tr>
 <tr class="separator:ada096509ffe3a6346f21fedfdeb97a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfbb80ce68639a0fc9212d777dd599fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acfbb80ce68639a0fc9212d777dd599fb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#acfbb80ce68639a0fc9212d777dd599fb">SetInterruptEdge</a> (Edge edge) const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#acfbb80ce68639a0fc9212d777dd599fb">SetInterruptEdge</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a> edge) const </td></tr>
 <tr class="memdesc:acfbb80ce68639a0fc9212d777dd599fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the selected edge that the gpio interrupt will be triggered on. <br /></td></tr>
 <tr class="separator:acfbb80ce68639a0fc9212d777dd599fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af637c219ab8a23e7b0852882635d45c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af637c219ab8a23e7b0852882635d45c2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#af637c219ab8a23e7b0852882635d45c2">ClearInterruptEdge</a> (Edge edge)</td></tr>
-<tr class="memdesc:af637c219ab8a23e7b0852882635d45c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the seleted edge of the gpio interrupt from being triggered. <br /></td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#af637c219ab8a23e7b0852882635d45c2">ClearInterruptEdge</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a> edge)</td></tr>
+<tr class="memdesc:af637c219ab8a23e7b0852882635d45c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the selected edge of the gpio interrupt from being triggered. <br /></td></tr>
 <tr class="separator:af637c219ab8a23e7b0852882635d45c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a078ed1bcd2be20bd05946f1313763996"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a078ed1bcd2be20bd05946f1313763996">AttachInterrupt</a> (IsrPointer function, Edge edge) const override</td></tr>
+<tr class="memitem:a078ed1bcd2be20bd05946f1313763996"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a078ed1bcd2be20bd05946f1313763996">AttachInterrupt</a> (IsrPointer function, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a> edge) const override</td></tr>
 <tr class="separator:a078ed1bcd2be20bd05946f1313763996"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf678698334134657c8183b58bc1f48c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#adf678698334134657c8183b58bc1f48c">DetachInterrupt</a> () const override</td></tr>
 <tr class="separator:adf678698334134657c8183b58bc1f48c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,16 +202,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:a31b9db629494e8d123a631fb9be920fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1Gpio"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1Gpio')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a></td></tr>
 <tr class="memitem:aef6e6d827436912beeefc9e419ee8407 inherit pub_methods_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef6e6d827436912beeefc9e419ee8407"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetHigh</b> () const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#aef6e6d827436912beeefc9e419ee8407">SetHigh</a> () const </td></tr>
+<tr class="memdesc:aef6e6d827436912beeefc9e419ee8407 inherit pub_methods_classsjsu_1_1Gpio"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin to HIGH voltage. <br /></td></tr>
 <tr class="separator:aef6e6d827436912beeefc9e419ee8407 inherit pub_methods_classsjsu_1_1Gpio"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5685873fd8c47432fd86045859149248 inherit pub_methods_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5685873fd8c47432fd86045859149248"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLow</b> () const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a5685873fd8c47432fd86045859149248">SetLow</a> () const </td></tr>
+<tr class="memdesc:a5685873fd8c47432fd86045859149248 inherit pub_methods_classsjsu_1_1Gpio"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin to LOW voltage. <br /></td></tr>
 <tr class="separator:a5685873fd8c47432fd86045859149248 inherit pub_methods_classsjsu_1_1Gpio"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe564f989b5ee8754f79e6d82f0bd487 inherit pub_methods_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe564f989b5ee8754f79e6d82f0bd487"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsInput</b> () const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe564f989b5ee8754f79e6d82f0bd487">SetAsInput</a> () const </td></tr>
+<tr class="memdesc:abe564f989b5ee8754f79e6d82f0bd487 inherit pub_methods_classsjsu_1_1Gpio"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin direction as input. <br /></td></tr>
 <tr class="separator:abe564f989b5ee8754f79e6d82f0bd487 inherit pub_methods_classsjsu_1_1Gpio"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65809efbd86eef6c07f5023de968cb5e inherit pub_methods_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65809efbd86eef6c07f5023de968cb5e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAsOutput</b> () const </td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a65809efbd86eef6c07f5023de968cb5e">SetAsOutput</a> () const </td></tr>
+<tr class="memdesc:a65809efbd86eef6c07f5023de968cb5e inherit pub_methods_classsjsu_1_1Gpio"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin direction as output. <br /></td></tr>
 <tr class="separator:a65809efbd86eef6c07f5023de968cb5e inherit pub_methods_classsjsu_1_1Gpio"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -218,47 +231,60 @@ Static Public Attributes</h2></td></tr>
 static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ad2f363b536f3a118201b13b1fe21a123">kNumberOfPins</a> = 32</td></tr>
 <tr class="memdesc:ad2f363b536f3a118201b13b1fe21a123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies number of ports and pins that can be used with gpio interrupts. <br /></td></tr>
 <tr class="separator:ad2f363b536f3a118201b13b1fe21a123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65523cf23373b4b6945a9ba53792d8e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65523cf23373b4b6945a9ba53792d8e0"></a>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a65523cf23373b4b6945a9ba53792d8e0">kNumberOfInterruptPorts</a> = 2</td></tr>
+<tr class="memdesc:a65523cf23373b4b6945a9ba53792d8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the number of ports that can have interrupts. <br /></td></tr>
+<tr class="separator:a65523cf23373b4b6945a9ba53792d8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1c06d0ef0b6209b96f33653ef318808"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1c06d0ef0b6209b96f33653ef318808"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kNumberOfPorts</b> = 2</td></tr>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#af1c06d0ef0b6209b96f33653ef318808">kNumberOfPorts</a> = 5</td></tr>
+<tr class="memdesc:af1c06d0ef0b6209b96f33653ef318808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the number of ports that the LPC17xx has. <br /></td></tr>
 <tr class="separator:af1c06d0ef0b6209b96f33653ef318808"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3794e759fb396a9c8db21a1f0c6e834"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3794e759fb396a9c8db21a1f0c6e834"></a>
 static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aa3794e759fb396a9c8db21a1f0c6e834">kGpioFunction</a> = 0</td></tr>
 <tr class="memdesc:aa3794e759fb396a9c8db21a1f0c6e834"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mode zero is the GPIO function for all pins. <br /></td></tr>
 <tr class="separator:aa3794e759fb396a9c8db21a1f0c6e834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0027186498c31c0d5063fc1013700c2b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d8/d56/structLPC__GPIO__TypeDef.html">LPC_GPIO_TypeDef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a0027186498c31c0d5063fc1013700c2b">gpio_port</a> []</td></tr>
-<tr class="memdesc:a0027186498c31c0d5063fc1013700c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table of GPIO ports located in LPC memory map.  <a href="#a0027186498c31c0d5063fc1013700c2b">More...</a><br /></td></tr>
-<tr class="separator:a0027186498c31c0d5063fc1013700c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0658e46d874a1594a1fc32f762104d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0658e46d874a1594a1fc32f762104d6"></a>
-static IsrPointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ad0658e46d874a1594a1fc32f762104d6">interrupthandlers</a> [kNumberOfPorts][<a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ad2f363b536f3a118201b13b1fe21a123">kNumberOfPins</a>]</td></tr>
-<tr class="memdesc:ad0658e46d874a1594a1fc32f762104d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lookup table that holds developer gpio interrupt handelers. <br /></td></tr>
-<tr class="separator:ad0658e46d874a1594a1fc32f762104d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada22be76b4c7ec9c2009f2895b1a1747"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html">GpioInterruptRegisterMap_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ada22be76b4c7ec9c2009f2895b1a1747">interrupt</a> [kNumberOfPorts]</td></tr>
-<tr class="memdesc:ada22be76b4c7ec9c2009f2895b1a1747"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array that contains all the port specific gpio interrupt registers.  <a href="#ada22be76b4c7ec9c2009f2895b1a1747">More...</a><br /></td></tr>
-<tr class="separator:ada22be76b4c7ec9c2009f2895b1a1747"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba9652bd525a73699225ab977771614"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ba9652bd525a73699225ab977771614"></a>
+static <a class="el" href="../../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html">GpioPort_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a8ba9652bd525a73699225ab977771614">gpio</a> = reinterpret_cast&lt;<a class="el" href="../../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html">GpioPort_t</a> *&gt;(0x2009'C000)</td></tr>
+<tr class="memdesc:a8ba9652bd525a73699225ab977771614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map a pointer to a <a class="el" href="../../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html">GpioPort_t</a> to the gpio.ports actual address. <br /></td></tr>
+<tr class="separator:a8ba9652bd525a73699225ab977771614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4e64e62e0f67afcb3a78d75f034f8bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4e64e62e0f67afcb3a78d75f034f8bf"></a>
+static IsrPointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ac4e64e62e0f67afcb3a78d75f034f8bf">interrupthandlers</a> [<a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a65523cf23373b4b6945a9ba53792d8e0">kNumberOfInterruptPorts</a>][<a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ad2f363b536f3a118201b13b1fe21a123">kNumberOfPins</a>]</td></tr>
+<tr class="memdesc:ac4e64e62e0f67afcb3a78d75f034f8bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lookup table that holds developer gpio interrupt handelers. <br /></td></tr>
+<tr class="separator:ac4e64e62e0f67afcb3a78d75f034f8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae624438d2c0214cad729292170ae222a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html">GpioInterruptRegisterMap_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ae624438d2c0214cad729292170ae222a">interrupt</a> [<a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a65523cf23373b4b6945a9ba53792d8e0">kNumberOfInterruptPorts</a>]</td></tr>
+<tr class="memdesc:ae624438d2c0214cad729292170ae222a"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array that contains all the port specific gpio interrupt registers.  <a href="#ae624438d2c0214cad729292170ae222a">More...</a><br /></td></tr>
+<tr class="separator:ae624438d2c0214cad729292170ae222a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab14268c44d17e8f28589912016a0fbd5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab14268c44d17e8f28589912016a0fbd5"></a>
-static volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>port_status</b> = &amp;(LPC_GPIOINT-&gt;IntStatus)</td></tr>
+static volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ab14268c44d17e8f28589912016a0fbd5">port_status</a> = &amp;(LPC_GPIOINT-&gt;IntStatus)</td></tr>
+<tr class="memdesc:ab14268c44d17e8f28589912016a0fbd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register that points to the port status register. <br /></td></tr>
 <tr class="separator:ab14268c44d17e8f28589912016a0fbd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a425c749ca3355abfe3292a49de18e5dd"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">sjsu::cortex::InterruptController</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kInterruptController</b></td></tr>
+<tr class="memitem:a425c749ca3355abfe3292a49de18e5dd"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">sjsu::cortex::InterruptController</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a425c749ca3355abfe3292a49de18e5dd">kInterruptController</a></td></tr>
+<tr class="memdesc:a425c749ca3355abfe3292a49de18e5dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a ARM cortex interrupt controller object.  <a href="#a425c749ca3355abfe3292a49de18e5dd">More...</a><br /></td></tr>
 <tr class="separator:a425c749ca3355abfe3292a49de18e5dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classsjsu_1_1Gpio"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classsjsu_1_1Gpio')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a></td></tr>
-<tr class="memitem:a6debc89a7e5406a6aed8ef7f24739e81 inherit pub_types_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6debc89a7e5406a6aed8ef7f24739e81"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Direction</b> : uint8_t { <b>kInput</b> = 0, 
+<tr class="memitem:a6debc89a7e5406a6aed8ef7f24739e81 inherit pub_types_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6debc89a7e5406a6aed8ef7f24739e81"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">Direction</a> : uint8_t { <b>kInput</b> = 0, 
 <b>kOutput</b> = 1
- }</td></tr>
+ }<tr class="memdesc:a6debc89a7e5406a6aed8ef7f24739e81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the set of directions a GPIO can be. <br /></td></tr>
+</td></tr>
 <tr class="separator:a6debc89a7e5406a6aed8ef7f24739e81 inherit pub_types_classsjsu_1_1Gpio"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe65948089b7eacd3881a6305493f88f inherit pub_types_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe65948089b7eacd3881a6305493f88f"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>State</b> : uint8_t { <b>kLow</b> = 0, 
+<tr class="memitem:abe65948089b7eacd3881a6305493f88f inherit pub_types_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe65948089b7eacd3881a6305493f88f"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f">State</a> : uint8_t { <b>kLow</b> = 0, 
 <b>kHigh</b> = 1
- }</td></tr>
+ }<tr class="memdesc:abe65948089b7eacd3881a6305493f88f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines what states a GPIO pin can be in. <br /></td></tr>
+</td></tr>
 <tr class="separator:abe65948089b7eacd3881a6305493f88f inherit pub_types_classsjsu_1_1Gpio"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28d10175d5620f861a7aecd118513149 inherit pub_types_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28d10175d5620f861a7aecd118513149"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Edge</b> : uint8_t { <b>kEdgeRising</b> = 0, 
+<tr class="memitem:a28d10175d5620f861a7aecd118513149 inherit pub_types_classsjsu_1_1Gpio"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28d10175d5620f861a7aecd118513149"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a> : uint8_t { <b>kEdgeRising</b> = 0, 
 <b>kEdgeFalling</b> = 1, 
 <b>kEdgeBoth</b> = 2
- }</td></tr>
+ }<tr class="memdesc:a28d10175d5620f861a7aecd118513149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the set of events that can trigger a GPIO interrupt. <br /></td></tr>
+</td></tr>
 <tr class="separator:a28d10175d5620f861a7aecd118513149 inherit pub_types_classsjsu_1_1Gpio"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>GPIO implementation for the lpc17xx platform. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a078ed1bcd2be20bd05946f1313763996"></a>
 <div class="memitem">
 <div class="memproto">
@@ -275,7 +301,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Edge&#160;</td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a>&#160;</td>
           <td class="paramname"><em>edge</em>&#160;</td>
         </tr>
         <tr>
@@ -293,6 +319,38 @@ Additional Inherited Members</h2></td></tr>
 <p>Assign the developer's ISR and sets the selected edge that the gpio interrupt will be triggered on. </p>
 
 <p>Implements <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a4786313eb197e4fdf37aa8bddf66ba4e">sjsu::Gpio</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad519ef17138034eae30a6dcf621618ee"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::lpc17xx::Gpio::ConvertPortToInterruptPortIndex </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>port</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the port into the appropriate index in the lookup table. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>- port to convert to a lookup table index. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -396,7 +454,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9c7643750ef626464469c98fc3fcf7b1"></a>
+<a class="anchor" id="a445491d647713590d508a97570c52e3e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -404,10 +462,9 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void sjsu::lpc17xx::Gpio::Set </td>
+          <td class="memname">bool sjsu::lpc17xx::Gpio::Read </td>
           <td>(</td>
-          <td class="paramtype">State&#160;</td>
-          <td class="paramname"><em>output</em> = <code>kHigh</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -417,13 +474,13 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Sets the GPIO output pin to high or low depending on the State enum parameter </p>
+<dl class="section return"><dt>Returns</dt><dd>the state of the pin, note that this method does not consider whether or not the active level is high or low. Simply returns the state as depicted in memory </dd></dl>
 
-<p>Implements <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#addc9edc1a2f660388af1e2208897e48b">sjsu::Gpio</a>.</p>
+<p>Implements <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a8adbc3a6738710cdff41a29e0abfee05">sjsu::Gpio</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad2d0943cab32d241cf50d4c8055b0bfb"></a>
+<a class="anchor" id="af4584747765c35a81701430e3cefbfbd"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -431,10 +488,9 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void sjsu::lpc17xx::Gpio::SetDirection </td>
+          <td class="memname">void sjsu::lpc17xx::Gpio::Toggle </td>
           <td>(</td>
-          <td class="paramtype">Direction&#160;</td>
-          <td class="paramname"><em>direction</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -444,14 +500,14 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Sets the GPIO pin direction as output or input depending on the Direction enum parameter </p>
+<p>Toggles pin state. If the pin is HIGH, after this call it will be LOW and vise versa. </p>
 
-<p>Implements <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a783a6c7de21ed585fbe7269ad3ca0905">sjsu::Gpio</a>.</p>
+<p>Implements <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a92833a30a38cd1ad87a2e27e4d25d054">sjsu::Gpio</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a0027186498c31c0d5063fc1013700c2b"></a>
+<a class="anchor" id="ae624438d2c0214cad729292170ae222a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -459,7 +515,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d8/d56/structLPC__GPIO__TypeDef.html">LPC_GPIO_TypeDef</a>* sjsu::lpc17xx::Gpio::gpio_port[]</td>
+          <td class="memname"><a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html">GpioInterruptRegisterMap_t</a> sjsu::lpc17xx::Gpio::interrupt[<a class="el" href="../../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a65523cf23373b4b6945a9ba53792d8e0">kNumberOfInterruptPorts</a>]</td>
         </tr>
       </table>
   </td>
@@ -468,29 +524,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    GpioPort::kGpio0, GpioPort::kGpio1, GpioPort::kGpio2,</div><div class="line">    GpioPort::kGpio3, GpioPort::kGpio4,</div><div class="line">  }</div></div><!-- fragment -->
-<p>Table of GPIO ports located in LPC memory map. </p>
-
-</div>
-</div>
-<a class="anchor" id="ada22be76b4c7ec9c2009f2895b1a1747"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html">GpioInterruptRegisterMap_t</a> sjsu::lpc17xx::Gpio::interrupt[kNumberOfPorts]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    { .rising_edge_status  = &amp;(LPC_GPIOINT-&gt;IO0IntStatR),</div><div class="line">      .falling_edge_status = &amp;(LPC_GPIOINT-&gt;IO0IntStatF),</div><div class="line">      .clear               = &amp;(LPC_GPIOINT-&gt;IO0IntClr),</div><div class="line">      .enable_rising_edge  = &amp;(LPC_GPIOINT-&gt;IO0IntEnR),</div><div class="line">      .enable_falling_edge = &amp;(LPC_GPIOINT-&gt;IO0IntEnF) },</div><div class="line">    { .rising_edge_status  = &amp;(LPC_GPIOINT-&gt;IO2IntStatR),</div><div class="line">      .falling_edge_status = &amp;(LPC_GPIOINT-&gt;IO2IntStatF),</div><div class="line">      .clear               = &amp;(LPC_GPIOINT-&gt;IO2IntClr),</div><div class="line">      .enable_rising_edge  = &amp;(LPC_GPIOINT-&gt;IO2IntEnR),</div><div class="line">      .enable_falling_edge = &amp;(LPC_GPIOINT-&gt;IO2IntEnF) }</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      { { .rising_edge_status  = &amp;(LPC_GPIOINT-&gt;IO0IntStatR),</div><div class="line">          .falling_edge_status = &amp;(LPC_GPIOINT-&gt;IO0IntStatF),</div><div class="line">          .clear               = &amp;(LPC_GPIOINT-&gt;IO0IntClr),</div><div class="line">          .enable_rising_edge  = &amp;(LPC_GPIOINT-&gt;IO0IntEnR),</div><div class="line">          .enable_falling_edge = &amp;(LPC_GPIOINT-&gt;IO0IntEnF) },</div><div class="line">        { .rising_edge_status  = &amp;(LPC_GPIOINT-&gt;IO2IntStatR),</div><div class="line">          .falling_edge_status = &amp;(LPC_GPIOINT-&gt;IO2IntStatF),</div><div class="line">          .clear               = &amp;(LPC_GPIOINT-&gt;IO2IntClr),</div><div class="line">          .enable_rising_edge  = &amp;(LPC_GPIOINT-&gt;IO2IntEnR),</div><div class="line">          .enable_falling_edge = &amp;(LPC_GPIOINT-&gt;IO2IntEnF) } }</div></div><!-- fragment -->
 <p>An array that contains all the port specific gpio interrupt registers. </p>
 
 </div>
@@ -513,6 +547,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      <a class="code" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">sjsu::cortex::InterruptController</a>()</div></div><!-- fragment -->
+<p>Get a ARM cortex interrupt controller object. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
