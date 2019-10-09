@@ -6,6 +6,8 @@
 
 namespace sjsu
 {
+/// An abstract interface for hardware that implements the Serial Peripheral
+/// Interface (SPI) communication protocol
 class Spi
 {
  public:
@@ -13,7 +15,7 @@ class Spi
   // Interface Defintions
   // ==============================
 
-  // SSP data size for frame packets
+  /// SSP data size for frame packets
   enum class DataSize : uint8_t
   {
     kFour = 0,  // The smallest standard frame sized allowed for SJSU-Dev2
@@ -50,7 +52,7 @@ class Spi
   virtual void SetDataSize(DataSize size) const = 0;
   /// Set the clock frequency
   ///
-  /// @param size - number of bits to transmit over spi
+  /// @param frequency - the clock rate in hertz to set the SPI device to.
   /// @param positive_clock_on_idle - if true, clock signal will be high when
   ///        nothing is being transmitted.
   /// @param read_miso_on_rising - if true, device will read the the MISO line
