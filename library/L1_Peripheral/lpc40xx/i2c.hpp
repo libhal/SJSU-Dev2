@@ -22,15 +22,17 @@ namespace sjsu
 {
 namespace lpc40xx
 {
+/// Implementation of the I2C interface for the LPC40xx family of
+/// microcontrollers.
 class I2c final : public sjsu::I2c
 {
  public:
   // Bringing in I2c Interface's Write and WriteThenRead methods that use
   // std::initializer_list.
-  using sjsu::I2c::Write;
   using sjsu::I2c::Read;
+  using sjsu::I2c::Write;
   using sjsu::I2c::WriteThenRead;
-
+  /// lpc40xx i2c peripheral control register flags
   enum Control : uint32_t
   {
     kAssertAcknowledge = 1 << 2,  // AA
@@ -39,7 +41,7 @@ class I2c final : public sjsu::I2c
     kStart             = 1 << 5,  // STA
     kInterfaceEnable   = 1 << 6   // I2EN
   };
-
+  /// lpc40xx I2C peripheral state numbers
   enum class MasterState : uint32_t
   {
     kBusError                          = 0x00,
@@ -58,29 +60,48 @@ class I2c final : public sjsu::I2c
     kDoNothing                         = 0xF8
   };
 
+  /// PartialBus_t holds all of the information for an I2C bus on the LPC40xx
+  /// platform.
   struct PartialBus_t
   {
+    /// Holds a pointer to the LPC_I2C peripheral registers
     LPC_I2C_TypeDef * registers;
+    /// PeripheralID of the SSP peripheral to power on at initialization.
     sjsu::SystemController::PeripheralID peripheral_power_id;
+    /// IRQ number for this I2C port.
     sjsu::cortex::IRQn_Type irq_number;
+    /// A reference to the transaction structure for this specific port. Each
+    /// port gets its own transaction structure. Only 1, because a I2C bus can
+    /// only have a single transaction on its bus at a time.
     Transaction_t & transaction;
+    /// Refernce to I2C data pin.
     const sjsu::Pin & sda_pin;
+    /// Refernce to I2C clock pin.
     const sjsu::Pin & scl_pin;
+    /// Function code to set each pin to the appropriate SSP function.
     uint8_t pin_function_id;
   };
-
+  /// Bus_t completes the partial bus structure by including a ISR handler.
+  /// The ISR handler is intended to point to an instance of the I2cHandler
+  /// template function. The template parameter would be a const reference to a
+  /// statically allocated PartialBus_t. That way, The actual handler
+  /// (non-template) that requires a reference to a PartialBus_t can have it
+  /// passed to it via a template parameter.
   struct Bus_t
   {
+    /// Reference to partial bus, used as template parameter.
     const PartialBus_t & bus;
+    /// Contains a pointer to the I2C Handler object.
     IsrPointer handler;
   };
-
+  /// Template I2cHandler that passes a PartialBus_t reference to the actual I2C
+  /// handler via template parameter.
   template <const PartialBus_t & i2c>
   static void I2cHandler()
   {
     I2cHandler(i2c);
   }
-
+  /// Structure used as a namespace for predefined Bus definitions
   struct Bus  // NOLINT
   {
    private:
@@ -134,16 +155,21 @@ class I2c final : public sjsu::I2c
     };
 
    public:
+    /// Definition for I2C bus 0 for LPC40xx
     inline static const Bus_t kI2c0 = { .bus     = kI2c0Partial,
                                         .handler = I2cHandler<kI2c0Partial> };
-
+    /// Definition for I2C bus 1 for LPC40xx
     inline static const Bus_t kI2c1 = { .bus     = kI2c1Partial,
                                         .handler = I2cHandler<kI2c1Partial> };
-
+    /// Definition for I2C bus 2 for LPC40xx
     inline static const Bus_t kI2c2 = { .bus     = kI2c2Partial,
                                         .handler = I2cHandler<kI2c2Partial> };
   };
-
+  /// I2C interrupt handler
+  ///
+  /// @param i2c - this function cannot normally be used as an ISR, so it needs
+  ///        help from a template function, or some other static function to
+  ///        pass it the appropriate PartialBus_t object.
   static void I2cHandler(const PartialBus_t & i2c)
   {
     MasterState state   = MasterState(i2c.registers->STAT);
@@ -305,11 +331,19 @@ class I2c final : public sjsu::I2c
     i2c.registers->CONSET = set_mask;
     i2c.registers->CONCLR = clear_mask;
   }
-
+  /// Get access to the ARM Cortex interrupt controller.
   static constexpr sjsu::cortex::InterruptController kInterruptController =
       sjsu::cortex::InterruptController();
-
-  // This defaults to I2C port 2
+  /// Constructor for LPC40xx I2c peripheral
+  ///
+  /// @param bus - pass a reference to a constant sjsu::lpc40xx::Bus_t
+  ///        definition.
+  /// @param system_controller - reference to system controller. Uses the
+  ///        default lpc40xx system controller. This is typically only used for
+  ///        unit testing.
+  /// @param interrupt_controller - reference to an interrupt controller. Uses
+  ///        the default ARM interrupt controller. This is typically only used
+  ///        for unit testing.
   explicit constexpr I2c(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
                              DefaultSystemController(),
@@ -359,18 +393,22 @@ class I2c final : public sjsu::I2c
     i2c_.bus.registers->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
-
+  /// Special method that returns the current state of the transaction.
   const Transaction_t GetTransactionInfo()
   {
     return i2c_.bus.transaction;
   }
-
+  /// Special method to check if the bus is currently initialized.
+  /// @returns true if this bus has been initialized.
   bool IsIntialized() const
   {
     return (i2c_.bus.registers->CONSET & Control::kInterfaceEnable);
   }
 
- protected:
+ private:
+  /// Since this I2C implementation utilizes interrupts, while the transaction
+  /// is happening, on the bus, block the sequence of execution until the
+  /// transaction has completed, OR the timeout has elapsed.
   Status BlockUntilFinished() const
   {
     // Skip waiting on the interrupt if running a host unit test
@@ -405,8 +443,11 @@ class I2c final : public sjsu::I2c
     i2c_.bus.registers->CONCLR = Control::kStart;
     return i2c_.bus.transaction.status;
   }
+  /// Reference to lpc40xx::I2c::Bus_t
   const Bus_t & i2c_;
+  /// Reference to a system controller object.
   const sjsu::SystemController & system_controller_;
+  /// Reference to an interrupt controller object.
   const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
