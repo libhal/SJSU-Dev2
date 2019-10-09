@@ -11,6 +11,7 @@ namespace lpc17xx
 // The LPC40xx driver is compatible with the lpc17xx peripheral
 using ::sjsu::lpc40xx::Spi;
 
+/// Structure used as a namespace for predefined Bus definitions
 struct SpiBus  // NOLINT
 {
  private:
@@ -24,6 +25,7 @@ struct SpiBus  // NOLINT
   inline static const Pin kSck1  = Pin::CreatePin<0, 7>();
 
  public:
+  /// Definition for SPI bus 0 for LPC40xx
   inline static const lpc40xx::Spi::Bus_t kSpi0 = {
     .registers       = reinterpret_cast<lpc40xx::LPC_SSP_TypeDef *>(LPC_SSP0),
     .power_on_bit    = SystemController::Peripherals::kSsp0,
@@ -32,6 +34,7 @@ struct SpiBus  // NOLINT
     .sck             = kSck0,
     .pin_function_id = 0b10,
   };
+  /// Definition for SPI bus 1 for LPC40xx
   inline static const lpc40xx::Spi::Bus_t kSpi1 = {
     .registers       = reinterpret_cast<lpc40xx::LPC_SSP_TypeDef *>(LPC_SSP1),
     .power_on_bit    = SystemController::Peripherals::kSsp1,

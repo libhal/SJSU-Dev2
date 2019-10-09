@@ -110,6 +110,8 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Spi Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d7/de4/spi_8hpp_source.html">spi.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Spi:</div>
 <div class="dyncontent">
@@ -121,7 +123,7 @@ Inheritance diagram for sjsu::Spi:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ae229950b482a3d995f7834da1aaa1931"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae229950b482a3d995f7834da1aaa1931"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DataSize</b> : uint8_t { <br />
+<tr class="memitem:ae229950b482a3d995f7834da1aaa1931"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae229950b482a3d995f7834da1aaa1931"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#ae229950b482a3d995f7834da1aaa1931">DataSize</a> : uint8_t { <br />
 &#160;&#160;<b>kFour</b> = 0, 
 <b>kFive</b>, 
 <b>kSix</b>, 
@@ -139,7 +141,8 @@ Public Types</h2></td></tr>
 <br />
 &#160;&#160;<b>kSixteen</b>
 <br />
- }</td></tr>
+ }<tr class="memdesc:ae229950b482a3d995f7834da1aaa1931"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSP data size for frame packets. <br /></td></tr>
+</td></tr>
 <tr class="separator:ae229950b482a3d995f7834da1aaa1931"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -148,12 +151,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6c9323b0974ede9d0038a87328846284"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ae6d25113c04de85317facc25ac70a4"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#a7ae6d25113c04de85317facc25ac70a4">Transfer</a> (uint16_t data) const =0</td></tr>
 <tr class="separator:a7ae6d25113c04de85317facc25ac70a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a042759d1f201f45964216280f6f5d980"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#a042759d1f201f45964216280f6f5d980">SetDataSize</a> (DataSize size) const =0</td></tr>
+<tr class="memitem:a042759d1f201f45964216280f6f5d980"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#a042759d1f201f45964216280f6f5d980">SetDataSize</a> (<a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#ae229950b482a3d995f7834da1aaa1931">DataSize</a> size) const =0</td></tr>
 <tr class="separator:a042759d1f201f45964216280f6f5d980"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43c9506161b89b9e7c5c148a3b02a019"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#a43c9506161b89b9e7c5c148a3b02a019">SetClock</a> (units::frequency::hertz_t frequency, bool positive_clock_on_idle=false, bool read_miso_on_rising=false) const =0</td></tr>
 <tr class="separator:a43c9506161b89b9e7c5c148a3b02a019"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An abstract interface for hardware that implements the Serial Peripheral Interface (SPI) communication protocol </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a6c9323b0974ede9d0038a87328846284"></a>
 <div class="memitem">
 <div class="memproto">
@@ -220,7 +225,7 @@ Public Member Functions</h2></td></tr>
 <p>Set the clock frequency</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">size</td><td>- number of bits to transmit over spi </td></tr>
+    <tr><td class="paramname">frequency</td><td>- the clock rate in hertz to set the SPI device to. </td></tr>
     <tr><td class="paramname">positive_clock_on_idle</td><td>- if true, clock signal will be high when nothing is being transmitted. </td></tr>
     <tr><td class="paramname">read_miso_on_rising</td><td>- if true, device will read the the MISO line on rising edge of the clock line. </td></tr>
   </table>
@@ -241,7 +246,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual void sjsu::Spi::SetDataSize </td>
           <td>(</td>
-          <td class="paramtype">DataSize&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#ae229950b482a3d995f7834da1aaa1931">DataSize</a>&#160;</td>
           <td class="paramname"><em>size</em></td><td>)</td>
           <td> const</td>
         </tr>

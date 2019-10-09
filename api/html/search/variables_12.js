@@ -1,6 +1,7 @@
 var searchData=
 [
   ['sci_5fctrl',['SCI_CTRL',['../d9/d2d/structLPC__UART4__TypeDef.html#afc3ff5add380571bdcd501a2001ee6fd',1,'LPC_UART4_TypeDef']]],
+  ['sck',['sck',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ae43749c815d89a304082344729583899',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['sclh',['SCLH',['../d8/d12/structLPC__I2C__TypeDef.html#a5e408689670ce2cca437972896bc241d',1,'LPC_I2C_TypeDef']]],
   ['scll',['SCLL',['../d8/d12/structLPC__I2C__TypeDef.html#af1ecc95ca301033c54b4f860858050c7',1,'LPC_I2C_TypeDef']]],
   ['scr',['SCR',['../d1/dd1/structSCB__Type.html#a3a4840c6fa4d1ee75544f4032c88ec34',1,'SCB_Type::SCR()'],['../d9/d2d/structLPC__UART4__TypeDef.html#af44b7f3f374a51063f7a66606b7424b3',1,'LPC_UART4_TypeDef::SCR()']]],

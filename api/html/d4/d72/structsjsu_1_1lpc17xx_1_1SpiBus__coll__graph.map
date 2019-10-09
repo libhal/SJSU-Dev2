@@ -1,5 +1,5 @@
 <map id="sjsu::lpc17xx::SpiBus" name="sjsu::lpc17xx::SpiBus">
-<area shape="rect" id="node2" href="$d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html" title="sjsu::lpc40xx::Spi\l::Bus_t" alt="" coords="41,124,172,165"/>
+<area shape="rect" id="node2" href="$d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html" title="Bus_t holds all of the information for an SPI bus on the LPC40xx platform. " alt="" coords="41,124,172,165"/>
 <area shape="rect" id="node3" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,5,80,32"/>
 <area shape="rect" id="node4" href="$d2/d47/structLPC__SSP__TypeDef.html" title="LPC_SSP_TypeDef" alt="" coords="104,5,240,32"/>
 </map>

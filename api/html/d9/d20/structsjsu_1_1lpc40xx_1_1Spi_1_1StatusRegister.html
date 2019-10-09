@@ -109,6 +109,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Spi::StatusRegister Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>SSPn Status Register.  
+ <a href="../../d9/d20/structsjsu_1_1lpc40xx_1_1Spi_1_1StatusRegister.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../dd/d0d/lpc40xx_2spi_8hpp_source.html">spi.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for sjsu::lpc40xx::Spi::StatusRegister:</div>
 <div class="dyncontent">
@@ -120,10 +125,33 @@ Collaboration diagram for sjsu::lpc40xx::Spi::StatusRegister:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a47e6ec01b1d1a3996ef41bc964378c60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47e6ec01b1d1a3996ef41bc964378c60"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kDataLineIdleBit</b> = bit::CreateMaskFromRange(4)</td></tr>
-<tr class="separator:a47e6ec01b1d1a3996ef41bc964378c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bf65b52704e0777a858504979ee650f"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d20/structsjsu_1_1lpc40xx_1_1Spi_1_1StatusRegister.html#a0bf65b52704e0777a858504979ee650f">kDataLineBusyBit</a> = bit::CreateMaskFromRange(4)</td></tr>
+<tr class="separator:a0bf65b52704e0777a858504979ee650f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>SSPn Status Register. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a0bf65b52704e0777a858504979ee650f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Spi::StatusRegister::kDataLineBusyBit = bit::CreateMaskFromRange(4)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This bit is 0 if the SSPn controller is idle, or 1 if it is currently sending/receiving a frame and/or the Tx FIFO is not empty. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/lpc40xx/<a class="el" href="../../dd/d0d/lpc40xx_2spi_8hpp_source.html">spi.hpp</a></li>
 </ul>

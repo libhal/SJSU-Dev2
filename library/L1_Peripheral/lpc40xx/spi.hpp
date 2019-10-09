@@ -33,31 +33,55 @@ namespace sjsu
 {
 namespace lpc40xx
 {
+/// Implementation of the SPI interface for the LPC40xx family of
+/// microcontrollers.
 class Spi final : public sjsu::Spi
 {
  public:
-  // SSPn Control Register 0
+  /// SSPn Control Register 0
   struct ControlRegister0  // NOLINT
   {
-    static constexpr bit::Mask kDataBit     = bit::CreateMaskFromRange(0, 3);
-    static constexpr bit::Mask kFrameBit    = bit::CreateMaskFromRange(4, 5);
+    /// Data Size Select. This field controls the number of bits transferred in
+    /// each frame. Values 0000-0010 are not supported and should not be used.
+    static constexpr bit::Mask kDataBit = bit::CreateMaskFromRange(0, 3);
+    /// Frame Format bitmask.
+    /// 00 = SPI, 01 = TI, 10 = Microwire, 11 = Invalid
+    static constexpr bit::Mask kFrameBit = bit::CreateMaskFromRange(4, 5);
+    /// If bit is set to 0 SSP controller maintains the bus clock low between
+    /// frames.
+    ///
+    /// If bit is set to 1 SSP controller maintains the bus clock high between
+    /// frames.
     static constexpr bit::Mask kPolarityBit = bit::CreateMaskFromRange(6);
-    static constexpr bit::Mask kPhaseBit    = bit::CreateMaskFromRange(7);
-    static constexpr bit::Mask kDividerBit  = bit::CreateMaskFromRange(8, 15);
+    /// If bit is set to 0 SSP controller captures serial data on the first
+    /// clock transition of the frame, that is, the transition away from the
+    /// inter-frame state of the clock line.
+    ///
+    /// If bit is set to 1 SSP controller captures serial data on the second
+    /// clock transition of the frame, that is, the transition back to the
+    /// inter-frame state of the clock line.
+    static constexpr bit::Mask kPhaseBit = bit::CreateMaskFromRange(7);
+    /// Bitmask for dividing the peripheral clock to set the SPI clock
+    /// frequency.
+    static constexpr bit::Mask kDividerBit = bit::CreateMaskFromRange(8, 15);
   };
-  // SSPn Control Register 1
+  /// SSPn Control Register 1
   struct ControlRegister1  // NOLINT
   {
-    static constexpr bit::Mask kSpiEnable    = bit::CreateMaskFromRange(1);
+    /// Setting this bit to 1 will enable the peripheral for communication.
+    static constexpr bit::Mask kSpiEnable = bit::CreateMaskFromRange(1);
+    /// Setting this bit to 1 will enable spi slave mode.
     static constexpr bit::Mask kSlaveModeBit = bit::CreateMaskFromRange(2);
   };
-  // SSPn Status Register
+  /// SSPn Status Register
   struct StatusRegister  // NOLINT
   {
-    static constexpr bit::Mask kDataLineIdleBit = bit::CreateMaskFromRange(4);
+    /// This bit is 0 if the SSPn controller is idle, or 1 if it is currently
+    /// sending/receiving a frame and/or the Tx FIFO is not empty.
+    static constexpr bit::Mask kDataLineBusyBit = bit::CreateMaskFromRange(4);
   };
 
-  // SSP data size for frame packets
+  /// SSP data size for frame packets
   static constexpr uint8_t kDataSizeLUT[] = {
     0b0011,  // 4-bit  transfer
     0b0100,  // 5-bit  transfer
@@ -74,16 +98,24 @@ class Spi final : public sjsu::Spi
     0b1111,  // 16-bit transfer
   };
 
+  /// Bus_t holds all of the information for an SPI bus on the LPC40xx platform.
   struct Bus_t
   {
+    /// Pointer to the LPC SSP peripheral in memory
     LPC_SSP_TypeDef * registers;
+    /// PeripheralID of the SSP peripheral to power on at initialization
     sjsu::lpc40xx::SystemController::PeripheralID power_on_bit;
+    /// Refernce to MOSI pin.
     const sjsu::Pin & mosi;
+    /// Refernce to MISO pin.
     const sjsu::Pin & miso;
+    /// Refernce to SCK pin.
     const sjsu::Pin & sck;
+    /// Function code to set each pin to the appropriate SSP function.
     uint8_t pin_function_id;
   };
 
+  /// Structure used as a namespace for predefined Bus definitions
   struct Bus  // NOLINT
   {
    private:
@@ -110,6 +142,7 @@ class Spi final : public sjsu::Spi
         sjsu::lpc40xx::Pin::CreatePin<1, 0>();
 
    public:
+    /// Definition for SPI bus 0 for LPC40xx
     inline static const Bus_t kSpi0 = {
       .registers       = LPC_SSP0,
       .power_on_bit    = sjsu::lpc40xx::SystemController::Peripherals::kSsp0,
@@ -118,6 +151,7 @@ class Spi final : public sjsu::Spi
       .sck             = kSck0,
       .pin_function_id = 0b010,
     };
+    /// Definition for SPI bus 1 for LPC40xx
     inline static const Bus_t kSpi1 = {
       .registers       = LPC_SSP1,
       .power_on_bit    = sjsu::lpc40xx::SystemController::Peripherals::kSsp1,
@@ -126,6 +160,7 @@ class Spi final : public sjsu::Spi
       .sck             = kSck1,
       .pin_function_id = 0b010,
     };
+    /// Definition for SPI bus 2 for LPC40xx
     inline static const Bus_t kSpi2 = {
       .registers       = LPC_SSP2,
       .power_on_bit    = sjsu::lpc40xx::SystemController::Peripherals::kSsp2,
@@ -135,14 +170,18 @@ class Spi final : public sjsu::Spi
       .pin_function_id = 0b100,
     };
   };
-
+  /// Constructor for LPC40xx Spi peripheral
+  ///
+  /// @param bus - reference to a constant bus definition.
+  /// @param system_controller - reference to system controller. Uses the
+  ///        default lpc40xx system controller. This is typically only used for
+  ///        unit testing.
   explicit constexpr Spi(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
                              DefaultSystemController())
       : bus_(bus), system_controller_(system_controller)
   {
   }
-
   /// This METHOD MUST BE EXECUTED before any other method can be called.
   /// Powers on the peripheral, activates the SSP pins and enables the SSP
   /// peripheral.
@@ -161,11 +200,11 @@ class Spi final : public sjsu::Spi
     bus_.registers->CR0 = bit::Insert(
         bus_.registers->CR0, kSpiFormatCode, ControlRegister0::kFrameBit);
     // Set SPI to master mode by clearing
-    bus_.registers->CR1 = bit::Clear(bus_.registers->CR1,
-                                     ControlRegister1::kSlaveModeBit.position);
+    bus_.registers->CR1 =
+        bit::Clear(bus_.registers->CR1, ControlRegister1::kSlaveModeBit);
     // Enable SSP
     bus_.registers->CR1 =
-        bit::Set(bus_.registers->CR1, ControlRegister1::kSpiEnable.position);
+        bit::Set(bus_.registers->CR1, ControlRegister1::kSpiEnable);
     return Status::kSuccess;
   }
 
@@ -173,8 +212,8 @@ class Spi final : public sjsu::Spi
   /// rate at 1Mhz.
   void SetSpiDefault() const
   {
-    constexpr bool kPositiveClockOnIdle  = false;
-    constexpr bool kReadMisoOnRising     = false;
+    constexpr bool kPositiveClockOnIdle                   = false;
+    constexpr bool kReadMisoOnRising                      = false;
     constexpr units::frequency::hertz_t kDefaultFrequency = 1_MHz;
 
     SetDataSize(DataSize::kEight);
@@ -186,8 +225,7 @@ class Spi final : public sjsu::Spi
   /// false if it is idle.
   bool IsBusBusy() const
   {
-    return bit::Read(bus_.registers->SR,
-                     StatusRegister::kDataLineIdleBit.position);
+    return bit::Read(bus_.registers->SR, StatusRegister::kDataLineBusyBit);
   }
 
   /// Transfers a data frame to an external device using the SSP
@@ -250,7 +288,9 @@ class Spi final : public sjsu::Spi
   }
 
  private:
+  /// Const reference to an lpc40xx::Spi::Bus_t definition.
   const Bus_t & bus_;
+  /// Const reference to an lpc40xx::SystemController.
   const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx

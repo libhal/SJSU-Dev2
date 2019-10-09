@@ -33,6 +33,7 @@ var searchData=
   ['setup',['Setup',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a96bef5b9a687a25deffd7c9ad013e2a7',1,'sjsu::rtos::Task']]],
   ['setusbpllinputfrequency',['SetUsbPllInputFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a43dcadedf6c97250fa8e59b0d83e9a99',1,'sjsu::lpc17xx::SystemController']]],
   ['setvoltage',['SetVoltage',['../da/d01/classsjsu_1_1Dac.html#a311e9ae6e48ca456499a7d1dce970319',1,'sjsu::Dac::SetVoltage()'],['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a78d7703a50fce52407e6c892ae165970',1,'sjsu::lpc40xx::Dac::SetVoltage()']]],
+  ['spi',['Spi',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a6f4668b9ff75733163c7e4e5b29e1e9b',1,'sjsu::lpc40xx::Spi']]],
   ['start',['Start',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#acf030b7e79fe165fcf8d5240aff82510',1,'sjsu::rtos::TaskScheduler']]],
   ['suspend',['Suspend',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a1ee60099bc7964da3fe56a8cd23b9df4',1,'sjsu::rtos::Task']]]
 ];

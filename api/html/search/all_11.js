@@ -15,6 +15,7 @@ var searchData=
   ['rebind',['rebind',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html',1,'sjsu::FixedAllocator']]],
   ['register_5fmatrix',['register_matrix',['../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html#a24f9558dd4d59675b8aa5cbb69c25943',1,'sjsu::lpc40xx::Pin::PinMap_t']]],
   ['registeraddress',['RegisterAddress',['../d8/da2/structsjsu_1_1Tmp102_1_1RegisterAddress.html',1,'sjsu::Tmp102']]],
+  ['registers',['registers',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a0de8224161b549d610104270aed3b8b3',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['registrationinfo_5ft',['RegistrationInfo_t',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html',1,'sjsu::InterruptController']]],
   ['removetask',['RemoveTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#abffd7e8f29082ec825c11a8fcf2fd3e9',1,'sjsu::rtos::TaskScheduler']]],
   ['reset_5firqn',['Reset_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a50ad21f2fd0d54d04b390d5a9145889a',1,'LPC17xx.h']]],
