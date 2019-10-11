@@ -12,7 +12,7 @@ DEVICE_NM        ?= nm
 DEVICE_AR        ?= ar
 DEVICE_RANLIB    ?= ranlib
 DEVICE_ADDR2LINE ?= addr2line
-DEVICE_GDB       ?= gdb-py
+DEVICE_GDB       ?= gdb
 
 COMMON_FLAGS += -m32
 
