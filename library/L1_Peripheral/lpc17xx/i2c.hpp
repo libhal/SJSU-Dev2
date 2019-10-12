@@ -8,9 +8,11 @@ namespace sjsu
 {
 namespace lpc17xx
 {
-// The LPC40xx driver is compatible with the lpc17xx peripheral
+// Bring in and using the LPC40xx driver as it is compatible with the lpc17xx
+// peripheral.
 using ::sjsu::lpc40xx::I2c;
 
+/// Structure used as a namespace for predefined I2C Bus definitions.
 struct I2cBus  // NOLINT
 {
  private:
@@ -55,17 +57,18 @@ struct I2cBus  // NOLINT
   };
 
  public:
+  /// Definition for I2C bus 0 for LPC17xx.
   /// NOTE: I2C0 is not available for the 80-pin package.
   inline static const lpc40xx::I2c::Bus_t kI2c0 = {
     .bus     = kI2c0Partial,
     .handler = lpc40xx::I2c::I2cHandler<kI2c0Partial>,
   };
-
+  /// Definition for I2C bus 1 for LPC17xx.
   inline static const lpc40xx::I2c::Bus_t kI2c1 = {
     .bus     = kI2c1Partial,
     .handler = lpc40xx::I2c::I2cHandler<kI2c1Partial>,
   };
-
+  /// Definition for I2C bus 2 for LPC17xx.
   inline static const lpc40xx::I2c::Bus_t kI2c2 = {
     .bus     = kI2c2Partial,
     .handler = lpc40xx::I2c::I2cHandler<kI2c2Partial>,

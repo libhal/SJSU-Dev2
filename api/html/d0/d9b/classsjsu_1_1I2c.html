@@ -112,6 +112,8 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::I2c Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../db/d1c/i2c_8hpp_source.html">i2c.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::I2c:</div>
 <div class="dyncontent">
@@ -128,7 +130,7 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a539a41100567dee1b59b3c43d5cd480c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a539a41100567dee1b59b3c43d5cd480c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Operation</b> : uint8_t { <b>kWrite</b> = 0, 
+<tr class="memitem:a539a41100567dee1b59b3c43d5cd480c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a539a41100567dee1b59b3c43d5cd480c">Operation</a> : uint8_t { <b>kWrite</b> = 0, 
 <b>kRead</b> = 1
  }</td></tr>
 <tr class="separator:a539a41100567dee1b59b3c43d5cd480c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,17 +141,38 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a50907d4d89828d869e9925df00fa2a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5f74263207d178f3d9e1402b4a0a525"><td class="memItemLeft" align="right" valign="top">virtual Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#ad5f74263207d178f3d9e1402b4a0a525">Transaction</a> (<a class="el" href="../../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html">Transaction_t</a> transaction) const =0</td></tr>
 <tr class="separator:ad5f74263207d178f3d9e1402b4a0a525"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a930b720cb30b75417cd462422c6394c6"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a930b720cb30b75417cd462422c6394c6">Read</a> (uint8_t address, uint8_t *transmit_buffer, size_t transmit_buffer_length, std::chrono::milliseconds timeout=kI2cTimeout) const </td></tr>
+<tr class="memitem:a930b720cb30b75417cd462422c6394c6"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a930b720cb30b75417cd462422c6394c6">Read</a> (uint8_t address, uint8_t *transmit_buffer, size_t transmit_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const </td></tr>
 <tr class="separator:a930b720cb30b75417cd462422c6394c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81ca6fb4cca7b723f7dbe058a04ebeb6"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a81ca6fb4cca7b723f7dbe058a04ebeb6">Write</a> (uint8_t address, const uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=kI2cTimeout) const </td></tr>
+<tr class="memitem:a81ca6fb4cca7b723f7dbe058a04ebeb6"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a81ca6fb4cca7b723f7dbe058a04ebeb6">Write</a> (uint8_t address, const uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const </td></tr>
 <tr class="separator:a81ca6fb4cca7b723f7dbe058a04ebeb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a1be8b54107b84b80895911615406cb"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a0a1be8b54107b84b80895911615406cb">Write</a> (uint8_t address, std::initializer_list&lt; uint8_t &gt; transmit, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const </td></tr>
+<tr class="separator:a0a1be8b54107b84b80895911615406cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc0e728f31f2930b3e84fa1c523873f8"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#afc0e728f31f2930b3e84fa1c523873f8">WriteThenRead</a> (uint8_t address, const uint8_t *transmit_buffer, size_t transmit_buffer_length, uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const </td></tr>
+<tr class="separator:afc0e728f31f2930b3e84fa1c523873f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d542ccd3a55ef1cb1a60d60e3af9d3e"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a5d542ccd3a55ef1cb1a60d60e3af9d3e">WriteThenRead</a> (uint8_t address, std::initializer_list&lt; uint8_t &gt; transmit, uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const </td></tr>
+<tr class="separator:a5d542ccd3a55ef1cb1a60d60e3af9d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:acea3c1d338413b9b02cc278d3316b921"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acea3c1d338413b9b02cc278d3316b921"></a>
-static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><b>kI2cTimeout</b> = 100ms</td></tr>
+<tr class="memitem:acea3c1d338413b9b02cc278d3316b921"><td class="memItemLeft" align="right" valign="top">static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a> = 100ms</td></tr>
 <tr class="separator:acea3c1d338413b9b02cc278d3316b921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An abstract interface for hardware that implements the Inter-integrated Circuit (I2C) or Two Wire Interface (TWI) hardware communication Protocol. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="a539a41100567dee1b59b3c43d5cd480c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a539a41100567dee1b59b3c43d5cd480c">sjsu::I2c::Operation</a> : uint8_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Operation defines the types of operations that can occur in an I2C transaction. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a50907d4d89828d869e9925df00fa2a18"></a>
 <div class="memitem">
@@ -206,7 +229,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::chrono::milliseconds&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>kI2cTimeout</code>&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -290,7 +313,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::chrono::milliseconds&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>kI2cTimeout</code>&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -314,6 +337,214 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a0a1be8b54107b84b80895911615406cb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Status sjsu::I2c::Write </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::initializer_list&lt; uint8_t &gt;&#160;</td>
+          <td class="paramname"><em>transmit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write to a device on the I2C bus</p>
+<p>Usage: </p><pre class="fragment">i2c.Write(0x29, {0x01, 0x2a, 0x10});
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">address</td><td>- device address </td></tr>
+    <tr><td class="paramname">transmit</td><td>- array literal to send to device </td></tr>
+    <tr><td class="paramname">timeout</td><td>- Amount of time to wait for a response by device before bailing out. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="afc0e728f31f2930b3e84fa1c523873f8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Status sjsu::I2c::WriteThenRead </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>transmit_buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>transmit_buffer_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>receive_buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>receive_buffer_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write to a device on the I2C bus, then read from that device.</p>
+<p>This is very common for most I2C devices, where the microcontroller must send a register address byte, then perform a read transaction in order to read the data from the device.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">address</td><td>- device address </td></tr>
+    <tr><td class="paramname">transmit_buffer</td><td>- pointer to a byte buffer to read information into </td></tr>
+    <tr><td class="paramname">transmit_buffer_length</td><td>- number of bytes to be written into the data buffer </td></tr>
+    <tr><td class="paramname">receive_buffer</td><td>- pointer to a byte buffer to send to the device </td></tr>
+    <tr><td class="paramname">receive_buffer_length</td><td>- number of bytes to be written to the device </td></tr>
+    <tr><td class="paramname">timeout</td><td>- Amount of time to wait for a response by device before bailing out. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a5d542ccd3a55ef1cb1a60d60e3af9d3e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Status sjsu::I2c::WriteThenRead </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::initializer_list&lt; uint8_t &gt;&#160;</td>
+          <td class="paramname"><em>transmit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>receive_buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>receive_buffer_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write to a device on the I2C bus, then read from that device.</p>
+<p>Usage:</p>
+<p>uint8_t buffer[10]; i2c.Write(0x29, {0x01}, buffer, sizeof(buffer));</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">address</td><td>- device address </td></tr>
+    <tr><td class="paramname">transmit</td><td>- array literal to send to device </td></tr>
+    <tr><td class="paramname">receive_buffer</td><td>- b </td></tr>
+    <tr><td class="paramname">receive_buffer_length</td><td>- </td></tr>
+    <tr><td class="paramname">timeout</td><td>- Amount of time to wait for a response by device before bailing out. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="acea3c1d338413b9b02cc278d3316b921"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::chrono::milliseconds sjsu::I2c::kI2cTimeout = 100ms</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Default timeout time for I2C if you choose to not supply your own timeout time. </p>
 
 </div>
 </div>

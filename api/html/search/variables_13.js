@@ -18,7 +18,9 @@ var searchData=
   ['tid1',['TID1',['../d1/dba/structLPC__CAN__TypeDef.html#ad941f092e33373988b99e82eb8da7b98',1,'LPC_CAN_TypeDef']]],
   ['tid2',['TID2',['../d1/dba/structLPC__CAN__TypeDef.html#aa5df91f305a251b272faf9ec198ec0e8',1,'LPC_CAN_TypeDef']]],
   ['tid3',['TID3',['../d1/dba/structLPC__CAN__TypeDef.html#a8ad7b5ae2f928f189fea5f021789e1e2',1,'LPC_CAN_TypeDef']]],
+  ['timeout',['timeout',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a050e7f7988d762c4099178e8842e32b6',1,'sjsu::I2c::Transaction_t']]],
   ['tpr',['TPR',['../d8/da9/structITM__Type.html#ae907229ba50538bf370fbdfd54c099a2',1,'ITM_Type']]],
+  ['transaction',['transaction',['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html#a457012b837f83c8fde658be986d0af09',1,'sjsu::lpc40xx::I2c::PartialBus_t']]],
   ['trigger',['TRIGGER',['../db/daf/structTPI__Type.html#a4d4cd2357f72333a82a1313228287bbd',1,'TPI_Type']]],
   ['type',['TYPE',['../d9/dc6/structMPU__Type.html#a0433efc1383674bc8e86cc0e830b462d',1,'MPU_Type']]]
 ];

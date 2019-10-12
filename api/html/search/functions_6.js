@@ -18,6 +18,7 @@ var searchData=
   ['getpin',['GetPin',['../dd/d3a/classsjsu_1_1Gpio.html#a1074eb7db45e5693269d8a4ae5355e5a',1,'sjsu::Gpio::GetPin()'],['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a542c4d7e165b3e52232170fe944468b2',1,'sjsu::lpc17xx::Gpio::GetPin()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a4c71dae52920bbb18e24ab15fbeb8238',1,'sjsu::lpc40xx::Gpio::GetPin()'],['../d0/da9/classsjsu_1_1Pin.html#a260b81a7598f30528ad2e86dae0d44bc',1,'sjsu::Pin::GetPin()']]],
   ['getport',['GetPort',['../d0/da9/classsjsu_1_1Pin.html#af23cc3bdc37d03e92cd4f40deb04e61c',1,'sjsu::Pin']]],
   ['getpriority',['GetPriority',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a2890a85b5035849fdf07679c99f2972c',1,'sjsu::rtos::Task']]],
+  ['getproperaddress',['GetProperAddress',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ad9e66eebc47547b675aeb10b7dbe453e',1,'sjsu::I2c::Transaction_t']]],
   ['getruncount',['GetRunCount',['../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a2de1650399965c284d53b81d2c7aa340',1,'sjsu::rtos::PeriodicTaskInterface::GetRunCount()'],['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a5e87d71f799518c5f710d5d26fad1861',1,'sjsu::rtos::PeriodicTask::GetRunCount()']]],
   ['getsignalstrengthpercent',['GetSignalStrengthPercent',['../d2/dc6/classsjsu_1_1TFMini.html#ab498308d3f6e0713786fccb8c606b982',1,'sjsu::TFMini']]],
   ['getstack',['GetStack',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#adc475e736e0966aabfa4943065d10381',1,'sjsu::rtos::Task']]],
@@ -27,5 +28,6 @@ var searchData=
   ['gettaskbuffer',['GetTaskBuffer',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a1b379ffed4324e3354999b31e52c669a',1,'sjsu::rtos::Task']]],
   ['gettaskcount',['GetTaskCount',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aa1a31b35ae26fa27a0d4aa62ade71143',1,'sjsu::rtos::TaskScheduler']]],
   ['gettaskindex',['GetTaskIndex',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#af369ceb720de477a42ca3e1d9edde2fe',1,'sjsu::rtos::TaskScheduler']]],
+  ['gettransactioninfo',['GetTransactionInfo',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a1aab2429685ff4d31764246480566ee2',1,'sjsu::lpc40xx::I2c']]],
   ['gpio',['Gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aaa68f39449b606ce99e7a6444c9a6906',1,'sjsu::lpc17xx::Gpio::Gpio()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab998c0df2ccba384fa099b66c0657ef2',1,'sjsu::lpc40xx::Gpio::Gpio()']]]
 ];

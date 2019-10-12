@@ -2,6 +2,8 @@ var searchData=
 [
   ['dat',['DAT',['../d8/d12/structLPC__I2C__TypeDef.html#afb767d34e141707ca657ed2df4cbc3f5',1,'LPC_I2C_TypeDef']]],
   ['data_5fbuffer',['DATA_BUFFER',['../d8/d12/structLPC__I2C__TypeDef.html#ad1e68823c832452aa2d0b4d9be4ba122',1,'LPC_I2C_TypeDef']]],
+  ['data_5fin',['data_in',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ad09af8f2e92717b00790636207811b22',1,'sjsu::I2c::Transaction_t']]],
+  ['data_5fout',['data_out',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ae29e8896e5b9b209ef11a0679bf68fd7',1,'sjsu::I2c::Transaction_t']]],
   ['dcrdr',['DCRDR',['../d6/d00/structCoreDebug__Type.html#aab3cc92ef07bc1f04b3a3aa6db2c2d55',1,'CoreDebug_Type']]],
   ['dcrsr',['DCRSR',['../d6/d00/structCoreDebug__Type.html#af907cf64577eaf927dac6787df6dd98b',1,'CoreDebug_Type']]],
   ['delay_5ftime_5f',['delay_time_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5be244105265971ef530ad246b030c7b',1,'sjsu::rtos::Task']]],

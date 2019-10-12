@@ -9,6 +9,7 @@ var searchData=
   ['mask1',['MASK1',['../d5/db5/structDWT__Type.html#aabf94936c9340e62fed836dcfb152405',1,'DWT_Type::MASK1()'],['../d8/d12/structLPC__I2C__TypeDef.html#a8d9d4bb3ddf1de0ffdf8d9fb42488ad1',1,'LPC_I2C_TypeDef::MASK1()']]],
   ['mask2',['MASK2',['../d5/db5/structDWT__Type.html#a00ac4d830dfe0070a656cda9baed170f',1,'DWT_Type::MASK2()'],['../d8/d12/structLPC__I2C__TypeDef.html#a812c5823d41baf9e0ae59dc229994819',1,'LPC_I2C_TypeDef::MASK2()']]],
   ['mask3',['MASK3',['../d5/db5/structDWT__Type.html#a2a509d8505c37a3b64f6b24993df5f3f',1,'DWT_Type::MASK3()'],['../d8/d12/structLPC__I2C__TypeDef.html#a3dca11db526cd0cbe627dd3d17b3f322',1,'LPC_I2C_TypeDef::MASK3()']]],
+  ['masterstate',['MasterState',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a9a5a932d99ae273205a55913aedc1c22',1,'sjsu::lpc40xx::I2c']]],
   ['matchaction',['MatchAction',['../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8',1,'sjsu::Timer']]],
   ['matchcontrol',['MatchControl',['../d1/dd9/structsjsu_1_1lpc40xx_1_1Pwm_1_1MatchControl.html',1,'sjsu::lpc40xx::Pwm']]],
   ['mcpwm_5firqn',['MCPWM_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a66a11398b7cc13d7c525945b0a86a2f0',1,'LPC17xx.h']]],
