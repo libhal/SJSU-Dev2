@@ -25,6 +25,7 @@ var searchData=
   ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6cae6a6642d6d810bf67a52a137e2d74',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a65e30196ce68adf18a1094613c281713',1,'sjsu::lpc40xx::Pin']]],
   ['enableinterrupts',['EnableInterrupts',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aadccb197280d98e29b2c4a4e8c6559bf',1,'sjsu::lpc17xx::Gpio::EnableInterrupts()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ae58e775559659b47fba85f7e999c5b5c',1,'sjsu::lpc40xx::Gpio::EnableInterrupts()']]],
+  ['enablepwm',['EnablePwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#ad22e92fbe0d7de1101d3bd2fc4556827',1,'sjsu::lpc40xx::Pwm']]],
   ['endoftable',['ENDofTable',['../d5/d2b/structLPC__CANAF__TypeDef.html#a705055dcc5dd3c2eaa964329bd2bcd7a',1,'LPC_CANAF_TypeDef']]],
   ['enet_5firqn',['ENET_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083af3a2a999d58e47ed39ed1bd9c877aee6',1,'LPC17xx.h']]],
   ['errorwarninglimit_5ft',['ErrorWarningLimit_t',['../dd/de5/structsjsu_1_1lpc40xx_1_1Can_1_1ErrorWarningLimit__t.html',1,'sjsu::lpc40xx::Can']]],

@@ -8,7 +8,7 @@ var searchData=
   ['ccr',['CCR',['../d1/dd1/structSCB__Type.html#a2d6653b0b70faac936046a02809b577f',1,'SCB_Type::CCR()'],['../d2/d9b/structLPC__TIM__TypeDef.html#a5c30622954dacacdef69677e99715ba8',1,'LPC_TIM_TypeDef::CCR()'],['../dc/dbf/structLPC__PWM__TypeDef.html#af4dccc1d2c7d44f065140cd22bb5495c',1,'LPC_PWM_TypeDef::CCR()']]],
   ['cfg',['CFG',['../d9/d2d/structLPC__UART4__TypeDef.html#a8baaf1b61d0b0d3a7dc03c3209b5ad6d',1,'LPC_UART4_TypeDef']]],
   ['cfsr',['CFSR',['../d1/dd1/structSCB__Type.html#a0cda9e061b42373383418663092ad19a',1,'SCB_Type']]],
-  ['channel',['channel',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a6e27aeace9b3564c531b2a690dfa4461',1,'sjsu::lpc40xx::Adc::Channel_t']]],
+  ['channel',['channel',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a6e27aeace9b3564c531b2a690dfa4461',1,'sjsu::lpc40xx::Adc::Channel_t::channel()'],['../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#a4e7060a5bdbbe40896b2312b8baef1b2',1,'sjsu::lpc40xx::Pwm::Channel_t::channel()']]],
   ['cid0',['CID0',['../d8/da9/structITM__Type.html#a30bb2b166b1723867da4a708935677ba',1,'ITM_Type']]],
   ['cid1',['CID1',['../d8/da9/structITM__Type.html#ac40df2c3a6cef02f90b4e82c8204756f',1,'ITM_Type']]],
   ['cid2',['CID2',['../d8/da9/structITM__Type.html#a8000b92e4e528ae7ac4cb8b8d9f6757d',1,'ITM_Type']]],

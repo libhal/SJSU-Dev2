@@ -15,7 +15,7 @@ var searchData=
   ['rebind',['rebind',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html',1,'sjsu::FixedAllocator']]],
   ['register_5fmatrix',['register_matrix',['../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html#a24f9558dd4d59675b8aa5cbb69c25943',1,'sjsu::lpc40xx::Pin::PinMap_t']]],
   ['registeraddress',['RegisterAddress',['../d8/da2/structsjsu_1_1Tmp102_1_1RegisterAddress.html',1,'sjsu::Tmp102']]],
-  ['registers',['registers',['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html#a4f0cd30544da29ee2803e6d02b8b9a8b',1,'sjsu::lpc40xx::I2c::PartialBus_t::registers()'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a0de8224161b549d610104270aed3b8b3',1,'sjsu::lpc40xx::Spi::Bus_t::registers()']]],
+  ['registers',['registers',['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html#a4f0cd30544da29ee2803e6d02b8b9a8b',1,'sjsu::lpc40xx::I2c::PartialBus_t::registers()'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#aa923cd4323e1c5d138931772fb5339d0',1,'sjsu::lpc40xx::Pwm::Peripheral_t::registers()'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a0de8224161b549d610104270aed3b8b3',1,'sjsu::lpc40xx::Spi::Bus_t::registers()']]],
   ['registrationinfo_5ft',['RegistrationInfo_t',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html',1,'sjsu::InterruptController']]],
   ['removetask',['RemoveTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#abffd7e8f29082ec825c11a8fcf2fd3e9',1,'sjsu::rtos::TaskScheduler']]],
   ['repeated',['repeated',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adc0985997e4b61df23608c071b2422e7',1,'sjsu::I2c::Transaction_t']]],

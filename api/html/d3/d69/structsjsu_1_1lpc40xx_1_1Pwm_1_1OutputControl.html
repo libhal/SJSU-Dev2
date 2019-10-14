@@ -109,6 +109,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Pwm::OutputControl Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Output Control bit masks.  
+ <a href="../../d3/d69/structsjsu_1_1lpc40xx_1_1Pwm_1_1OutputControl.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d1/d52/lpc40xx_2pwm_8hpp_source.html">pwm.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for sjsu::lpc40xx::Pwm::OutputControl:</div>
 <div class="dyncontent">
@@ -120,13 +125,14 @@ Collaboration diagram for sjsu::lpc40xx::Pwm::OutputControl:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a07095a125467b1456392837afb78ffe6"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kEnableDoubleEdge</b></td></tr>
+<tr class="memitem:a07095a125467b1456392837afb78ffe6"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d69/structsjsu_1_1lpc40xx_1_1Pwm_1_1OutputControl.html#a07095a125467b1456392837afb78ffe6">kEnableDoubleEdge</a></td></tr>
 <tr class="separator:a07095a125467b1456392837afb78ffe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b1ed1df274bcae917928e7940571ece"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b1ed1df274bcae917928e7940571ece"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kEnableOutput</b> = bit::CreateMaskFromRange(8, 14)</td></tr>
+<tr class="memitem:a6b1ed1df274bcae917928e7940571ece"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d69/structsjsu_1_1lpc40xx_1_1Pwm_1_1OutputControl.html#a6b1ed1df274bcae917928e7940571ece">kEnableOutput</a> = bit::CreateMaskFromRange(8, 14)</td></tr>
 <tr class="separator:a6b1ed1df274bcae917928e7940571ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Output Control bit masks. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a07095a125467b1456392837afb78ffe6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +150,29 @@ static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        bit::CreateMaskFromRange(0, 6)</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        bit::CreateMaskFromRange(2, 6)</div></div><!-- fragment --><p>Enables/disables double edge PWM for each channel. Each bit in this field corrissponds to a channel. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6b1ed1df274bcae917928e7940571ece"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Pwm::OutputControl::kEnableOutput = bit::CreateMaskFromRange(8, 14)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enables/disables output of PWM channels. Each bit from the start corrissponds to a PWM channel. </p>
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>

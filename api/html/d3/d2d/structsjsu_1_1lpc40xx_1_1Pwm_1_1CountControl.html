@@ -109,6 +109,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Pwm::CountControl Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>PWM channel count control register.  
+ <a href="../../d3/d2d/structsjsu_1_1lpc40xx_1_1Pwm_1_1CountControl.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d1/d52/lpc40xx_2pwm_8hpp_source.html">pwm.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for sjsu::lpc40xx::Pwm::CountControl:</div>
 <div class="dyncontent">
@@ -120,13 +125,56 @@ Collaboration diagram for sjsu::lpc40xx::Pwm::CountControl:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:ab289047b98a83519d3c45d29e62d4ad7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab289047b98a83519d3c45d29e62d4ad7"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kMode</b> = bit::CreateMaskFromRange(0, 1)</td></tr>
+<tr class="memitem:ab289047b98a83519d3c45d29e62d4ad7"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d2d/structsjsu_1_1lpc40xx_1_1Pwm_1_1CountControl.html#ab289047b98a83519d3c45d29e62d4ad7">kMode</a> = bit::CreateMaskFromRange(0, 1)</td></tr>
 <tr class="separator:ab289047b98a83519d3c45d29e62d4ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c83f0e907906a4d36dc0d241523558f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c83f0e907906a4d36dc0d241523558f"></a>
-static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kCountInput</b> = bit::CreateMaskFromRange(2, 3)</td></tr>
+<tr class="memitem:a7c83f0e907906a4d36dc0d241523558f"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d2d/structsjsu_1_1lpc40xx_1_1Pwm_1_1CountControl.html#a7c83f0e907906a4d36dc0d241523558f">kCountInput</a> = bit::CreateMaskFromRange(2, 3)</td></tr>
 <tr class="separator:a7c83f0e907906a4d36dc0d241523558f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>PWM channel count control register. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a7c83f0e907906a4d36dc0d241523558f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Pwm::CountControl::kCountInput = bit::CreateMaskFromRange(2, 3)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Controls the count input source. For this driver, this should be kept to zero, since we want to utilize the internal peripheral clock source. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab289047b98a83519d3c45d29e62d4ad7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Pwm::CountControl::kMode = bit::CreateMaskFromRange(0, 1)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Controls the counting mode of the PWM peripheral. When set to 0, counts using the internal prescale counter which is driven by the peripheral clock. Other modes involve use of an external clock source. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/lpc40xx/<a class="el" href="../../d1/d52/lpc40xx_2pwm_8hpp_source.html">pwm.hpp</a></li>
 </ul>
