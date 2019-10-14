@@ -37,19 +37,19 @@ TEST_CASE("Testing lpc40xx watchdog", "[lpc40xx-watchdog]")
     CHECK(kTimerConstant == local_wdt.TC);
     CHECK(kTimerMode == local_wdt.MOD);
     CHECK(kTimerWarning == local_wdt.WARNINT);
-    }
+  }
 
-    SECTION("Send Feed Sequence")
-    {
-        watchdog_test.FeedSequence();
-        CHECK(kFeedSequence == local_wdt.FEED);
-    }
+  SECTION("Send Feed Sequence")
+  {
+    watchdog_test.FeedSequence();
+    CHECK(kFeedSequence == local_wdt.FEED);
+  }
 
-    SECTION("Read watchdog timer value")
-    {
-        local_wdt.TV = kNewTimerValue;
-        CHECK(kNewTimerValue == watchdog_test.CheckTimeout());
-    }
+  SECTION("Read watchdog timer value")
+  {
+    local_wdt.TV = kNewTimerValue;
+    CHECK(kNewTimerValue == watchdog_test.CheckTimeout());
+  }
 }
 }  // namespace lpc40xx
 }  // namespace sjsu

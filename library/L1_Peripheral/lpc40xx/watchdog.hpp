@@ -6,7 +6,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/watchdog_interface.hpp"
+#include "L1_Peripheral/watchdog.hpp"
 #include "third_party/units/units.h"
 #include "utility/time.hpp"
 #include "utility/bit.hpp"
@@ -18,11 +18,11 @@ namespace lpc40xx
 class Watchdog final : public sjsu::Watchdog
 {
  public:
-  const uint8_t  kWatchdogResetAndEnable  = 0x3;
-  const uint32_t kTimerWarningMax = 0b11'1111'1111;
+  const uint8_t kWatchdogResetAndEnable = 0x3;
+  const uint32_t kTimerWarningMax       = 0b11'1111'1111;
   static constexpr units::frequency::hertz_t kWatchdogClockFrequency = 500_kHz;
   static constexpr units::frequency::hertz_t kWatchdogClockDivider   = 4_Hz;
-  inline static LPC_WDT_TypeDef * wdt_base = LPC_WDT;
+  inline static LPC_WDT_TypeDef * wdt_base                           = LPC_WDT;
 
   // Calls the default watchdog handler
   static void WatchdogIrqHandler()
@@ -55,8 +55,8 @@ class Watchdog final : public sjsu::Watchdog
         .enable_interrupt          = true,
       };
 
-  inline static const cortex::InterruptController
-      kCortexInterruptController = cortex::InterruptController();
+  inline static const cortex::InterruptController kCortexInterruptController =
+      cortex::InterruptController();
 
   // Initializes the watchdog timer
   Status Initialize(std::chrono::seconds duration) const override
@@ -65,8 +65,7 @@ class Watchdog final : public sjsu::Watchdog
     timer_constant = ConvertDurationToWatchdogTicks(timer_constant, duration);
 
     // Insert timer_constant value into TC register
-    wdt_base->TC = bit::Extract(timer_constant,
-    { .position = 0, .width = 24 });
+    wdt_base->TC = bit::Extract(timer_constant, { .position = 0, .width = 24 });
 
     // Enables the watchdog and enables the watchdog reset
     wdt_base->MOD = kWatchdogResetAndEnable;
