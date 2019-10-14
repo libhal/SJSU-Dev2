@@ -445,9 +445,11 @@ class I2c final : public sjsu::I2c
   }
   /// Reference to lpc40xx::I2c::Bus_t
   const Bus_t & i2c_;
-  /// Reference to a system controller object.
+  /// Reference to a system controller object. Used to power on the peripheral
+  /// and get the current peripheral frequency.
   const sjsu::SystemController & system_controller_;
-  /// Reference to an interrupt controller object.
+  /// Reference to an interrupt controller object. Used to enable and attach an
+  /// I2C interrupt handler.
   const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx

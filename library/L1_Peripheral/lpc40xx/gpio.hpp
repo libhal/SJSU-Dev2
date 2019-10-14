@@ -281,7 +281,8 @@ class Gpio final : public sjsu::Gpio
   uint8_t interupt_port_;
   /// Object of pin type.
   sjsu::lpc40xx::Pin pin_;
-  /// Holds reference to cortex interrupt controller.
+  /// Reference to an interrupt controller object. Used to enable and attach a
+  /// GPIO interrupt handler.
   const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
