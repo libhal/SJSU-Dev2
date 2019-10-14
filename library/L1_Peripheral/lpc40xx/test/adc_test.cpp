@@ -106,7 +106,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
   }
 
   // This test only tests that the channel select lines were enabled. The rest
-  // of the intiailization is tested above.
+  // of the initialize is tested above.
   SECTION("Burst Mode Initialization")
   {
     // Setup

@@ -293,7 +293,8 @@ class Spi final : public sjsu::Spi
  private:
   /// Const reference to an lpc40xx::Spi::Bus_t definition.
   const Bus_t & bus_;
-  /// Const reference to an lpc40xx::SystemController.
+  /// Reference to a system controller object. Used to power on the peripheral
+  /// and get the current peripheral frequency.
   const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
