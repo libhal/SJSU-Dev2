@@ -1,0 +1,70 @@
+# Project Information
+site_name: SJSU-DEV2
+# Configuration
+theme:
+  name: 'material'
+  # custom_dir: css/
+  # include_sidebar: true
+  highlightjs: true
+  hljs_style:
+    - monokai
+  extra_css:
+    - 'stylesheets/extra.css'
+
+docs_dir: documentation/
+
+# Copyright
+copyright: 'Copyright (C) 2018-2019 San Jose State University Computer Engineering Department'
+
+markdown_extensions:
+  - admonition
+  - pymdownx.mark # highlighting
+  - pymdownx.superfences # nest code
+  - codehilite # code syntax coding
+  - toc:
+      permalink:
+
+#Navigation
+nav:
+  - Home: 'index.md'
+  - Get Started:
+    - Getting started: 'getting_started/getting_started.md'
+    - How to Use Make: 'getting_started/using_make.md'
+  - Guides:
+    - Understanding the Library Directory Structure:
+      - 'guides/directory_layout/project.md'
+      - 'guides/directory_layout/demos.md'
+      - 'guides/directory_layout/library.md'
+      - 'guides/directory_layout/reference.md'
+    - 'guides/firmware_debugging.md'
+    - 'guides/unit_testing.md'
+    - 'guides/multi_platform.md'
+  - Contributing:
+    - 'contributing/philosophy.md'
+    - 'contributing/levels.md'
+    - 'contributing/level_guide/L0_platform.md'
+    - 'contributing/level_guide/L1_peripheral.md'
+    - 'contributing/level_guide/L2_hal.md'
+    - 'contributing/level_guide/L3_application.md'
+    - 'contributing/presubmit-checks.md'
+    - 'contributing/style.md'
+    - 'contributing/techniques/left-to-right.md'
+  - Design Documents:
+    - L0 Platform:
+      - 'design_docs/L0/none.md'
+    - L1 Peripheral:
+      - 'design_docs/L1/counter.md'
+    - L2 Hardware Abstraction:
+      - 'design_docs/L2/none.md'
+    - L3 Application:
+      - 'design_docs/L3/none.md'
+    - Utility:
+      - 'design_docs/utility/none.md'
+    - Testing:
+      - 'design_docs/testing/none.md'
+    - Third Party Software:
+      - 'design_docs/third_party/none.md'
+    - Template:
+      - 'design_docs/template/template.md'
+  - 'about.md'
+  - 'copyrights.md'

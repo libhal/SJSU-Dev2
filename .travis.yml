@@ -1,18 +1,38 @@
-language: cpp
+language: generic
 matrix:
     include:
         - os: linux
           sudo: required
-          dist: trusty
+          dist: xenial
+          before_install:
+            - sudo apt-get -y install doxygen graphviz
+            - pip install --user cpp-coveralls
+          script:
+            - cd projects/hello_world/
+            - make presubmit
+            - cd ../../tools/
+            - ./generate_doxygen_docs.sh
+          after_success:
+            - cd ../
+            - coveralls --gcov "$(pwd)/tools/clang+llvm-7.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/llvm-cov gcov"
+              --include "library/L0_Platform"
+              --include "library/L1_Peripheral"
+              --include "library/L2_HAL"
+              --include "library/L3_Application"
+              --include "library/utility"
+          deploy:
+            provider: pages
+            skip-cleanup: true
+            github-token: $GITHUB_TOKEN
+            keep-history: true
+            on:
+              branch: master
         - os: osx
-          osx_image: xcode8
+          osx_image: xcode10
+          before_install:
+            - pip install --user cpp-coveralls
+          script:
+            - cd projects/hello_world/
+            - make presubmit
 install: ./setup
-script:
-  - cd ./firmware/HelloWorld/
-  - source env.sh
-  - make presubmit
-after_success:
-  - cd ../../
-  - gcov-7 --version # debug only
-  - g++-7 --version # debug only
-  - bash <(curl -s https://codecov.io/bash) -x $(which gcov-7)
+
