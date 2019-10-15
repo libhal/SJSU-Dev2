@@ -38,6 +38,6 @@ var searchData=
   ['port_5fstatus',['port_status',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ab14268c44d17e8f28589912016a0fbd5',1,'sjsu::lpc17xx::Gpio::port_status()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a048f745fc1e703b033a42460c3240bc4',1,'sjsu::lpc40xx::Gpio::port_status()']]],
   ['position',['position',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a804a6e4a713c843a032f33227e78ae3c',1,'sjsu::I2c::Transaction_t']]],
   ['power_5fon_5fbit',['power_on_bit',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#af7a8a2bffc3c807a307ef0f2746eae04',1,'sjsu::lpc40xx::Spi::Bus_t']]],
-  ['power_5fon_5fid',['power_on_id',['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#af836906ddb17282daea264095c3b9b3a',1,'sjsu::lpc40xx::Pwm::Peripheral_t']]],
+  ['power_5fon_5fid',['power_on_id',['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#af836906ddb17282daea264095c3b9b3a',1,'sjsu::lpc40xx::Pwm::Peripheral_t::power_on_id()'],['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a35be89e626200386b8726bd69eff1b84',1,'sjsu::lpc40xx::Uart::Port_t::power_on_id()']]],
   ['pr',['PR',['../d2/d9b/structLPC__TIM__TypeDef.html#afb73bd0a29f62603c2c88feffd0f97e2',1,'LPC_TIM_TypeDef::PR()'],['../dc/dbf/structLPC__PWM__TypeDef.html#a7b4fe1c22c66694348c1e75dd817afd6',1,'LPC_PWM_TypeDef::PR()']]]
 ];

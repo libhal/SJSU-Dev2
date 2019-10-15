@@ -13,6 +13,8 @@ var searchData=
   ['dfr',['DFR',['../d1/dd1/structSCB__Type.html#a85dd6fe77aab17e7ea89a52c59da6004',1,'SCB_Type']]],
   ['dfsr',['DFSR',['../d1/dd1/structSCB__Type.html#a191579bde0d21ff51d30a714fd887033',1,'SCB_Type']]],
   ['dhcsr',['DHCSR',['../d6/d00/structCoreDebug__Type.html#ad63554e4650da91a8e79929cbb63db66',1,'CoreDebug_Type']]],
+  ['divide_5fadd',['divide_add',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a805a337d0ddac02557b190af81a8f49e',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
+  ['divide_5flatch',['divide_latch',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a811d5016449d3f36725712edd9f93500',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
   ['dll',['DLL',['../d9/d2d/structLPC__UART4__TypeDef.html#a3756b2ae589b406b6557d17d1e8736bd',1,'LPC_UART4_TypeDef']]],
   ['dlm',['DLM',['../d9/d2d/structLPC__UART4__TypeDef.html#a58593d36841f01114bab76ef36065055',1,'LPC_UART4_TypeDef']]],
   ['dmareqsel',['DMAREQSEL',['../df/d8b/structLPC__SC__TypeDef.html#af3d37f98e345ed9c1dcf42f7bc3927eb',1,'LPC_SC_TypeDef']]],

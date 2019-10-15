@@ -76,5 +76,6 @@ var searchData=
   ['mr4',['MR4',['../dc/dbf/structLPC__PWM__TypeDef.html#ae90ffca378aac822c16662c2ae7f50fe',1,'LPC_PWM_TypeDef']]],
   ['mr5',['MR5',['../dc/dbf/structLPC__PWM__TypeDef.html#a7bdc029656bf2fd1a7e7d90bd82f2574',1,'LPC_PWM_TypeDef']]],
   ['mr6',['MR6',['../dc/dbf/structLPC__PWM__TypeDef.html#afca7a9ad44bffca861a84612d7b28fde',1,'LPC_PWM_TypeDef']]],
-  ['msr',['MSR',['../d9/d2d/structLPC__UART4__TypeDef.html#a94e0d5d77dd6ed4f974e6c38d939c073',1,'LPC_UART4_TypeDef']]]
+  ['msr',['MSR',['../d9/d2d/structLPC__UART4__TypeDef.html#a94e0d5d77dd6ed4f974e6c38d939c073',1,'LPC_UART4_TypeDef']]],
+  ['multiply',['multiply',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t']]]
 ];

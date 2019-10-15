@@ -37,6 +37,8 @@ var searchData=
   ['disableinterrupts',['DisableInterrupts',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a31b9db629494e8d123a631fb9be920fe',1,'sjsu::lpc17xx::Gpio::DisableInterrupts()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a382416d511b252a9ebf54bc427ddd54a',1,'sjsu::lpc40xx::Gpio::DisableInterrupts()']]],
   ['disabletimer',['DisableTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa13190bddfc1da090d3b3a445ee2eb5d',1,'sjsu::cortex::SystemTimer']]],
   ['distancesensor',['DistanceSensor',['../df/d5c/classsjsu_1_1DistanceSensor.html',1,'sjsu']]],
+  ['divide_5fadd',['divide_add',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a805a337d0ddac02557b190af81a8f49e',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
+  ['divide_5flatch',['divide_latch',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a811d5016449d3f36725712edd9f93500',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
   ['dll',['DLL',['../d9/d2d/structLPC__UART4__TypeDef.html#a3756b2ae589b406b6557d17d1e8736bd',1,'LPC_UART4_TypeDef']]],
   ['dlm',['DLM',['../d9/d2d/structLPC__UART4__TypeDef.html#a58593d36841f01114bab76ef36065055',1,'LPC_UART4_TypeDef']]],
   ['dma_5firqn',['DMA_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a4968eb85558b7cd25e0f0fa1b839f881',1,'LPC17xx.h']]],

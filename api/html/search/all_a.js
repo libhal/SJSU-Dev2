@@ -77,6 +77,11 @@ var searchData=
   ['kspi1',['kSpi1',['../da/d85/structsjsu_1_1lpc17xx_1_1SpiBus.html#a166197638328c98ea75b42b139926de7',1,'sjsu::lpc17xx::SpiBus::kSpi1()'],['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html#a372bc94cabec3d20f79aa7634972f06f',1,'sjsu::lpc40xx::Spi::Bus::kSpi1()']]],
   ['kspi2',['kSpi2',['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html#acc3ee18f38d695b0b7d2a150ec2315f1',1,'sjsu::lpc40xx::Spi::Bus']]],
   ['kspienable',['kSpiEnable',['../d7/dde/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister1.html#a0aaf7d2c5e901e2395d4d45fced263f5',1,'sjsu::lpc40xx::Spi::ControlRegister1']]],
+  ['kstandarduart',['kStandardUart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aa4bbcf7ccfa5a5de3c14906ca231d9f8',1,'sjsu::lpc40xx::Uart']]],
   ['kstartcode',['kStartCode',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a2126f6b386de2a1c5caec235551a19be',1,'sjsu::lpc40xx::Adc::Control']]],
-  ['kstartedge',['kStartEdge',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ad4870d5d17da8adf84d54dd6e1de1577',1,'sjsu::lpc40xx::Adc::Control']]]
+  ['kstartedge',['kStartEdge',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ad4870d5d17da8adf84d54dd6e1de1577',1,'sjsu::lpc40xx::Adc::Control']]],
+  ['kuart0',['kUart0',['../d4/d2f/structsjsu_1_1lpc17xx_1_1UartPort.html#a35b3c4f569e040a6897f7372b0b8358f',1,'sjsu::lpc17xx::UartPort::kUart0()'],['../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html#a59cfbddd48f9cb1860034630feb1848f',1,'sjsu::lpc40xx::Uart::Port::kUart0()']]],
+  ['kuart2',['kUart2',['../d4/d2f/structsjsu_1_1lpc17xx_1_1UartPort.html#aba16fdada37a74c2f2f735e69acf125c',1,'sjsu::lpc17xx::UartPort::kUart2()'],['../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html#aa96f65f2b10598559deecf22f5198e56',1,'sjsu::lpc40xx::Uart::Port::kUart2()']]],
+  ['kuart3',['kUart3',['../d4/d2f/structsjsu_1_1lpc17xx_1_1UartPort.html#ab370ed1a810b9e2089299a5d22d711e9',1,'sjsu::lpc17xx::UartPort::kUart3()'],['../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html#a203bc4019c4db8bd9c71dbbfe28ec99d',1,'sjsu::lpc40xx::Uart::Port::kUart3()']]],
+  ['kuart4',['kUart4',['../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html#a558b963afdbd545e6d2039f33151b081',1,'sjsu::lpc40xx::Uart::Port']]]
 ];

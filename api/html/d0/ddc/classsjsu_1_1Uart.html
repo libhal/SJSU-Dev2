@@ -109,6 +109,8 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Uart Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../de/d3f/uart_8hpp_source.html">uart.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Uart:</div>
 <div class="dyncontent">
@@ -130,21 +132,44 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="separator:ab2c65267ec9c37d617c217d497eb4c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a787220b5a9cc3e1d019b4fa8f7ed04e7"><td class="memItemLeft" align="right" valign="top">virtual Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a787220b5a9cc3e1d019b4fa8f7ed04e7">Read</a> (uint8_t *data, size_t size, std::chrono::microseconds timeout=std::chrono::microseconds::max()) const =0</td></tr>
 <tr class="separator:a787220b5a9cc3e1d019b4fa8f7ed04e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90f16341ec8921e784a8a5d6d2044f2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90f16341ec8921e784a8a5d6d2044f2d"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasData</b> () const =0</td></tr>
+<tr class="memitem:a90f16341ec8921e784a8a5d6d2044f2d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a90f16341ec8921e784a8a5d6d2044f2d">HasData</a> () const =0</td></tr>
 <tr class="separator:a90f16341ec8921e784a8a5d6d2044f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21be4544fe9630586e9306b66f197114"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21be4544fe9630586e9306b66f197114"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a21be4544fe9630586e9306b66f197114">Write</a> (uint8_t byte) const </td></tr>
-<tr class="memdesc:a21be4544fe9630586e9306b66f197114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit just 1 byte. <br /></td></tr>
+<tr class="memitem:a21be4544fe9630586e9306b66f197114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a21be4544fe9630586e9306b66f197114">Write</a> (uint8_t byte) const </td></tr>
 <tr class="separator:a21be4544fe9630586e9306b66f197114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56d0ce94b777eb2c2605dfe8cc532cb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a56d0ce94b777eb2c2605dfe8cc532cb9">Write</a> (std::initializer_list&lt; uint8_t &gt; data) const </td></tr>
 <tr class="separator:a56d0ce94b777eb2c2605dfe8cc532cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabd493964dcf9941388fe46af8b01a70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabd493964dcf9941388fe46af8b01a70"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#aabd493964dcf9941388fe46af8b01a70">Read</a> (std::chrono::microseconds timeout=std::chrono::microseconds::max()) const </td></tr>
-<tr class="memdesc:aabd493964dcf9941388fe46af8b01a70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait to receive just 1 byte. <br /></td></tr>
+<tr class="memitem:aabd493964dcf9941388fe46af8b01a70"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#aabd493964dcf9941388fe46af8b01a70">Read</a> (std::chrono::microseconds timeout=std::chrono::microseconds::max()) const </td></tr>
 <tr class="separator:aabd493964dcf9941388fe46af8b01a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An abstract interface for hardware that implements the Universal Asynchronous Receiver Transmitter (UART) hardware communication Protocol. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a90f16341ec8921e784a8a5d6d2044f2d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool sjsu::Uart::HasData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks if there is data available for this port. </p><dl class="section return"><dt>Returns</dt><dd>true if the UART port has received some data. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#ac046fe03411044562f72761af3b59a37">sjsu::lpc40xx::Uart</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aa2299630acd8937d532ae0d100526b5a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -232,6 +257,37 @@ Status::kSuccess if read was successful </dd></dl>
 
 </div>
 </div>
+<a class="anchor" id="aabd493964dcf9941388fe46af8b01a70"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sjsu::Uart::Read </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>std::chrono::microseconds::max()</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Wait to receive just 1 byte</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeout</td><td>- The maximum amount of time to wait for a byte to be transmitted. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="ab2c65267ec9c37d617c217d497eb4c67"></a>
 <div class="memitem">
 <div class="memproto">
@@ -276,6 +332,36 @@ Status::kSuccess if read was successful </dd></dl>
 
 </div>
 </div>
+<a class="anchor" id="a21be4544fe9630586e9306b66f197114"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Uart::Write </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Transmit just 1 byte </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">byte</td><td>- Write a single byte to the UART port. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a56d0ce94b777eb2c2605dfe8cc532cb9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -298,7 +384,13 @@ Status::kSuccess if read was successful </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>Transmit bytes using an array literal Usage:</p>
-<p>uart.Write({ 0x01, 0xAA, 0x33, 0x55 }); </p>
+<p>uart.Write({ 0x01, 0xAA, 0x33, 0x55 });</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>- initializer list of bytes to send. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

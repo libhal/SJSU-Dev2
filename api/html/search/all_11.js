@@ -15,7 +15,7 @@ var searchData=
   ['rebind',['rebind',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html',1,'sjsu::FixedAllocator']]],
   ['register_5fmatrix',['register_matrix',['../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html#a24f9558dd4d59675b8aa5cbb69c25943',1,'sjsu::lpc40xx::Pin::PinMap_t']]],
   ['registeraddress',['RegisterAddress',['../d8/da2/structsjsu_1_1Tmp102_1_1RegisterAddress.html',1,'sjsu::Tmp102']]],
-  ['registers',['registers',['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html#a4f0cd30544da29ee2803e6d02b8b9a8b',1,'sjsu::lpc40xx::I2c::PartialBus_t::registers()'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#aa923cd4323e1c5d138931772fb5339d0',1,'sjsu::lpc40xx::Pwm::Peripheral_t::registers()'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a0de8224161b549d610104270aed3b8b3',1,'sjsu::lpc40xx::Spi::Bus_t::registers()']]],
+  ['registers',['registers',['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html#a4f0cd30544da29ee2803e6d02b8b9a8b',1,'sjsu::lpc40xx::I2c::PartialBus_t::registers()'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#aa923cd4323e1c5d138931772fb5339d0',1,'sjsu::lpc40xx::Pwm::Peripheral_t::registers()'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a0de8224161b549d610104270aed3b8b3',1,'sjsu::lpc40xx::Spi::Bus_t::registers()'],['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#ad0d4a145aa5415f9399e1353ad8fb107',1,'sjsu::lpc40xx::Uart::Port_t::registers()']]],
   ['registrationinfo_5ft',['RegistrationInfo_t',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html',1,'sjsu::InterruptController']]],
   ['removetask',['RemoveTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#abffd7e8f29082ec825c11a8fcf2fd3e9',1,'sjsu::rtos::TaskScheduler']]],
   ['repeated',['repeated',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adc0985997e4b61df23608c071b2422e7',1,'sjsu::I2c::Transaction_t']]],
@@ -39,5 +39,7 @@ var searchData=
   ['rtc_5firqn',['RTC_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083adcc0f2770f7f57f75fac3d8bcac0e858',1,'LPC17xx.h']]],
   ['rtoscommand',['RtosCommand',['../d3/d13/classsjsu_1_1RtosCommand.html',1,'sjsu']]],
   ['run_5fcount_5f',['run_count_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a2a52810dad462e3fff1c2f9d9e33b102',1,'sjsu::rtos::PeriodicTask']]],
+  ['rx',['rx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a0bfb6e9a1a73dbd7e23faf3a40f8805a',1,'sjsu::lpc40xx::Uart::Port_t']]],
+  ['rx_5ffunction_5fid',['rx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a9430e0d1d6216f3f7b6ddfb82096b757',1,'sjsu::lpc40xx::Uart::Port_t']]],
   ['rxmessage_5ft',['RxMessage_t',['../d8/d53/structsjsu_1_1Can_1_1RxMessage__t.html',1,'sjsu::Can']]]
 ];

@@ -22,5 +22,7 @@ var searchData=
   ['tpr',['TPR',['../d8/da9/structITM__Type.html#ae907229ba50538bf370fbdfd54c099a2',1,'ITM_Type']]],
   ['transaction',['transaction',['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html#a457012b837f83c8fde658be986d0af09',1,'sjsu::lpc40xx::I2c::PartialBus_t']]],
   ['trigger',['TRIGGER',['../db/daf/structTPI__Type.html#a4d4cd2357f72333a82a1313228287bbd',1,'TPI_Type']]],
+  ['tx',['tx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a67f2ca56b242323c441088b74c7507c7',1,'sjsu::lpc40xx::Uart::Port_t']]],
+  ['tx_5ffunction_5fid',['tx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a8fbfab57d6cf7237b51ed843e664b3f2',1,'sjsu::lpc40xx::Uart::Port_t']]],
   ['type',['TYPE',['../d9/dc6/structMPU__Type.html#a0433efc1383674bc8e86cc0e830b462d',1,'MPU_Type']]]
 ];

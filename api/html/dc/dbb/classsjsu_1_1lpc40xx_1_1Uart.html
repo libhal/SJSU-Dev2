@@ -111,6 +111,8 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Uart Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d6/dbe/lpc40xx_2uart_8hpp_source.html">uart.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::lpc40xx::Uart:</div>
 <div class="dyncontent">
@@ -131,14 +133,14 @@ Collaboration diagram for sjsu::lpc40xx::Uart:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html">Port</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure used as a namespace for predefined <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">Port_t</a> definitions.  <a href="../../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">Port_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6f3bad70771d2c879bbd14cdb44c1b50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f3bad70771d2c879bbd14cdb44c1b50"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Uart</b> (const <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">Port_t</a> &amp;port, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
+<tr class="memitem:a6f3bad70771d2c879bbd14cdb44c1b50"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a6f3bad70771d2c879bbd14cdb44c1b50">Uart</a> (const <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">Port_t</a> &amp;port, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
 <tr class="separator:a6f3bad70771d2c879bbd14cdb44c1b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67c158b4cc48c2b65733afce101a3484"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a67c158b4cc48c2b65733afce101a3484">Initialize</a> (uint32_t baud_rate) const override</td></tr>
 <tr class="separator:a67c158b4cc48c2b65733afce101a3484"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,28 +152,94 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:a59f61f04c5f7075c8b92a5d1b9195136"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45a2b2d6e16ccf386904151500daf304"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a45a2b2d6e16ccf386904151500daf304">Read</a> (uint8_t *data, size_t size, std::chrono::microseconds timeout=std::chrono::microseconds::max()) const override</td></tr>
 <tr class="separator:a45a2b2d6e16ccf386904151500daf304"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac046fe03411044562f72761af3b59a37"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac046fe03411044562f72761af3b59a37"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasData</b> () const override</td></tr>
+<tr class="memitem:ac046fe03411044562f72761af3b59a37"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#ac046fe03411044562f72761af3b59a37">HasData</a> () const override</td></tr>
 <tr class="separator:ac046fe03411044562f72761af3b59a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1Uart"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1Uart')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html">sjsu::Uart</a></td></tr>
-<tr class="memitem:a21be4544fe9630586e9306b66f197114 inherit pub_methods_classsjsu_1_1Uart"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21be4544fe9630586e9306b66f197114"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a21be4544fe9630586e9306b66f197114">Write</a> (uint8_t byte) const </td></tr>
-<tr class="memdesc:a21be4544fe9630586e9306b66f197114 inherit pub_methods_classsjsu_1_1Uart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit just 1 byte. <br /></td></tr>
+<tr class="memitem:a21be4544fe9630586e9306b66f197114 inherit pub_methods_classsjsu_1_1Uart"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a21be4544fe9630586e9306b66f197114">Write</a> (uint8_t byte) const </td></tr>
 <tr class="separator:a21be4544fe9630586e9306b66f197114 inherit pub_methods_classsjsu_1_1Uart"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56d0ce94b777eb2c2605dfe8cc532cb9 inherit pub_methods_classsjsu_1_1Uart"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a56d0ce94b777eb2c2605dfe8cc532cb9">Write</a> (std::initializer_list&lt; uint8_t &gt; data) const </td></tr>
 <tr class="separator:a56d0ce94b777eb2c2605dfe8cc532cb9 inherit pub_methods_classsjsu_1_1Uart"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabd493964dcf9941388fe46af8b01a70 inherit pub_methods_classsjsu_1_1Uart"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabd493964dcf9941388fe46af8b01a70"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#aabd493964dcf9941388fe46af8b01a70">Read</a> (std::chrono::microseconds timeout=std::chrono::microseconds::max()) const </td></tr>
-<tr class="memdesc:aabd493964dcf9941388fe46af8b01a70 inherit pub_methods_classsjsu_1_1Uart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait to receive just 1 byte. <br /></td></tr>
+<tr class="memitem:aabd493964dcf9941388fe46af8b01a70 inherit pub_methods_classsjsu_1_1Uart"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#aabd493964dcf9941388fe46af8b01a70">Read</a> (std::chrono::microseconds timeout=std::chrono::microseconds::max()) const </td></tr>
 <tr class="separator:aabd493964dcf9941388fe46af8b01a70 inherit pub_methods_classsjsu_1_1Uart"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:aa4bbcf7ccfa5a5de3c14906ca231d9f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4bbcf7ccfa5a5de3c14906ca231d9f8"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kStandardUart</b> = 0b011</td></tr>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aa4bbcf7ccfa5a5de3c14906ca231d9f8">kStandardUart</a> = 0b011</td></tr>
+<tr class="memdesc:aa4bbcf7ccfa5a5de3c14906ca231d9f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code for enabling standard uart mode. <br /></td></tr>
 <tr class="separator:aa4bbcf7ccfa5a5de3c14906ca231d9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementation of the UART interface for the LPC40xx family of microcontrollers. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a6f3bad70771d2c879bbd14cdb44c1b50"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::lpc40xx::Uart::Uart </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">Port_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
+          <td class="paramname"><em>system_controller</em> = <code>DefaultSystemController()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>- a reference to a constant <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">lpc40xx::Uart::Port_t</a> definition </td></tr>
+    <tr><td class="paramname">system_controller</td><td>- reference to system controller. Uses the default lpc40xx system controller. This is typically only used for unit testing. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ac046fe03411044562f72761af3b59a37"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sjsu::lpc40xx::Uart::HasData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks if there is data available for this port. </p><dl class="section return"><dt>Returns</dt><dd>true if the UART port has received some data. </dd></dl>
+
+<p>Implements <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a90f16341ec8921e784a8a5d6d2044f2d">sjsu::Uart</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a67c158b4cc48c2b65733afce101a3484"></a>
 <div class="memitem">
 <div class="memproto">
