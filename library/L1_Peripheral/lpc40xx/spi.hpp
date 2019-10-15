@@ -174,7 +174,7 @@ class Spi final : public sjsu::Spi
   };
   /// Constructor for LPC40xx Spi peripheral
   ///
-  /// @param bus - pass a reference to a constant sjsu::lpc40xx::Bus_t
+  /// @param bus - pass a reference to a constant lpc40xx::Spi::Bus_t
   ///        definition.
   /// @param system_controller - reference to system controller. Uses the
   ///        default lpc40xx system controller. This is typically only used for
