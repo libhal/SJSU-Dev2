@@ -66,7 +66,7 @@ class I2c final : public sjsu::I2c
   {
     /// Holds a pointer to the LPC_I2C peripheral registers
     LPC_I2C_TypeDef * registers;
-    /// PeripheralID of the SSP peripheral to power on at initialization.
+    /// PeripheralID of the I2C peripheral to power on at initialization.
     sjsu::SystemController::PeripheralID peripheral_power_id;
     /// IRQ number for this I2C port.
     sjsu::cortex::IRQn_Type irq_number;
@@ -336,7 +336,7 @@ class I2c final : public sjsu::I2c
       sjsu::cortex::InterruptController();
   /// Constructor for LPC40xx I2c peripheral
   ///
-  /// @param bus - pass a reference to a constant sjsu::lpc40xx::Bus_t
+  /// @param bus - pass a reference to a constant lpc40xx::I2c::Bus_t
   ///        definition.
   /// @param system_controller - reference to system controller. Uses the
   ///        default lpc40xx system controller. This is typically only used for
