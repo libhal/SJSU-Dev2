@@ -22,5 +22,6 @@ var searchData=
   ['status',['status',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adfccef243357bbb8518ce19faa60e22e',1,'sjsu::I2c::Transaction_t']]],
   ['stir',['STIR',['../d9/deb/structNVIC__Type.html#a37de89637466e007171c6b135299bc75',1,'NVIC_Type']]],
   ['syncctrl',['SYNCCTRL',['../d9/d2d/structLPC__UART4__TypeDef.html#afcc9eceff2ec718d0a90d992fbd147dd',1,'LPC_UART4_TypeDef']]],
+  ['sys_5ftick',['sys_tick',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8',1,'sjsu::cortex::SystemTimer']]],
   ['system_5ftimer_5fisr',['system_timer_isr',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a13751b55560e1df2cd6e1eb2e302aa2e',1,'sjsu::cortex::SystemTimer']]]
 ];

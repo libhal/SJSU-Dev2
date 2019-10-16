@@ -16,6 +16,7 @@ var searchData=
   ['setfrequency',['SetFrequency',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#aedcdb22b1de25219a2bda5bc2fd586e4',1,'sjsu::lpc40xx::Pwm::SetFrequency()'],['../d6/ddf/classsjsu_1_1Pwm.html#a17925286801d4d918e11699a6f27b5ba',1,'sjsu::Pwm::SetFrequency()']]],
   ['sethandle',['SetHandle',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aca324268794cb9043cbfba9256056702',1,'sjsu::rtos::Task']]],
   ['sethigh',['SetHigh',['../dd/d3a/classsjsu_1_1Gpio.html#aef6e6d827436912beeefc9e419ee8407',1,'sjsu::Gpio']]],
+  ['setinterrupt',['SetInterrupt',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2aa2a139e7a9569eeb59e5414dd25a6c',1,'sjsu::cortex::SystemTimer::SetInterrupt()'],['../de/d0c/classsjsu_1_1SystemTimer.html#ad6af3278e333fc994a9e2418cfdaf96d',1,'sjsu::SystemTimer::SetInterrupt()']]],
   ['setinterruptedge',['SetInterruptEdge',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#acfbb80ce68639a0fc9212d777dd599fb',1,'sjsu::lpc17xx::Gpio::SetInterruptEdge()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a2d65d460c729058fb30afead94e2f765',1,'sjsu::lpc40xx::Gpio::SetInterruptEdge()']]],
   ['setinterruptroutine',['SetInterruptRoutine',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ae34179537d42965eb374c5e52a3ecdb4',1,'sjsu::lpc17xx::Gpio::SetInterruptRoutine()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#af38c2124180fe7ae7ba7f503bf006b53',1,'sjsu::lpc40xx::Gpio::SetInterruptRoutine()']]],
   ['setlow',['SetLow',['../dd/d3a/classsjsu_1_1Gpio.html#a5685873fd8c47432fd86045859149248',1,'sjsu::Gpio']]],
@@ -29,11 +30,14 @@ var searchData=
   ['setspidefault',['SetSpiDefault',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a9790b3b3b9d4d102c6aa1e90b25833c1',1,'sjsu::lpc40xx::Spi']]],
   ['setsystemclockfrequency',['SetSystemClockFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#acfc8395713d77b504ce9455be1192039',1,'sjsu::lpc17xx::SystemController::SetSystemClockFrequency()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#af1b9eae3603baa747b5fb8e441100e02',1,'sjsu::lpc40xx::SystemController::SetSystemClockFrequency()'],['../df/d0e/classsjsu_1_1SystemController.html#a6b96dcf70b180b4f224cbadb5adef362',1,'sjsu::SystemController::SetSystemClockFrequency()']]],
   ['settask',['SetTask',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a8bbed2237b59bd755ca4dd664361c6f5',1,'sjsu::rtos::PeriodicScheduler']]],
-  ['settickfrequency',['SetTickFrequency',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#adb7441308a247bcc389f0aa20132f334',1,'sjsu::cortex::SystemTimer']]],
+  ['settickfrequency',['SetTickFrequency',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#adb7441308a247bcc389f0aa20132f334',1,'sjsu::cortex::SystemTimer::SetTickFrequency()'],['../de/d0c/classsjsu_1_1SystemTimer.html#ac4f771d7b99ce43ea158018504c4fc0a',1,'sjsu::SystemTimer::SetTickFrequency()']]],
   ['setup',['Setup',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a96bef5b9a687a25deffd7c9ad013e2a7',1,'sjsu::rtos::Task']]],
   ['setusbpllinputfrequency',['SetUsbPllInputFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a43dcadedf6c97250fa8e59b0d83e9a99',1,'sjsu::lpc17xx::SystemController']]],
   ['setvoltage',['SetVoltage',['../da/d01/classsjsu_1_1Dac.html#a311e9ae6e48ca456499a7d1dce970319',1,'sjsu::Dac::SetVoltage()'],['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a78d7703a50fce52407e6c892ae165970',1,'sjsu::lpc40xx::Dac::SetVoltage()']]],
   ['spi',['Spi',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a6f4668b9ff75733163c7e4e5b29e1e9b',1,'sjsu::lpc40xx::Spi']]],
   ['start',['Start',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#acf030b7e79fe165fcf8d5240aff82510',1,'sjsu::rtos::TaskScheduler']]],
-  ['suspend',['Suspend',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a1ee60099bc7964da3fe56a8cd23b9df4',1,'sjsu::rtos::Task']]]
+  ['starttimer',['StartTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#affbee8753ef48ebc1c01fc809681d46f',1,'sjsu::cortex::SystemTimer::StartTimer()'],['../de/d0c/classsjsu_1_1SystemTimer.html#a450e04219db91de314883380dee1d9c4',1,'sjsu::SystemTimer::StartTimer()']]],
+  ['suspend',['Suspend',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a1ee60099bc7964da3fe56a8cd23b9df4',1,'sjsu::rtos::Task']]],
+  ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2b7101862d284d1285e90a7f3c57ca4b',1,'sjsu::cortex::SystemTimer']]],
+  ['systemtimerhandler',['SystemTimerHandler',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a876dd71b2d954db5401a44bda10eaf64',1,'sjsu::cortex::SystemTimer']]]
 ];

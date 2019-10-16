@@ -65,6 +65,7 @@ var searchData=
   ['control_5fspsel_5fmsk',['CONTROL_SPSEL_Msk',['../d5/dea/group__CMSIS__CORE.html#ga70b29840969b06909da21369b0b05b53',1,'core_cm4.h']]],
   ['control_5fspsel_5fpos',['CONTROL_SPSEL_Pos',['../d5/dea/group__CMSIS__CORE.html#ga07eafc53e609895342c6a530e9d01310',1,'core_cm4.h']]],
   ['control_5ftype',['CONTROL_Type',['../d0/dc5/unionCONTROL__Type.html',1,'']]],
+  ['controlbitmap',['ControlBitMap',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991',1,'sjsu::cortex::SystemTimer']]],
   ['controlpins_5ft',['ControlPins_t',['../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html',1,'sjsu::St7066u']]],
   ['controlregister0',['ControlRegister0',['../dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html',1,'sjsu::lpc40xx::Spi']]],
   ['controlregister1',['ControlRegister1',['../d7/dde/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister1.html',1,'sjsu::lpc40xx::Spi']]],
