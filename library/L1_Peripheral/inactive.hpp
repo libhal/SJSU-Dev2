@@ -225,6 +225,7 @@ const sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
   class InactiveSystemTimer : public sjsu::SystemTimer
   {
    public:
+    void Initialize() const override {}
     void SetInterrupt(IsrPointer) const override {}
     Status StartTimer() const override
     {
