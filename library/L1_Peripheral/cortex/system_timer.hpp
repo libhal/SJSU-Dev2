@@ -16,10 +16,13 @@ namespace sjsu
 {
 namespace cortex
 {
+/// Implementation of the sjsu::SystemTimer for all ARM Cortex-M series
+/// microcontrollers.
 class SystemTimer final : public sjsu::SystemTimer
 {
  public:
-  // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
+  /// Enumeration holding the bit positions of used flags.
+  /// Source: "UM10562 LPC408x/407x User manual" table 83 page 132
   enum ControlBitMap : uint8_t
   {
     kEnableCounter = 0,
@@ -27,7 +30,7 @@ class SystemTimer final : public sjsu::SystemTimer
     kClkSource     = 2,
     kCountFlag     = 16
   };
-
+  /// Address of the ARM Cortex SysTick peripheral.
   inline static SysTick_Type * sys_tick = SysTick;
   /// system_timer_isr defaults to nullptr. The actual SystemTickHandler should
   /// check if the isr is set to nullptr, and if it is, turn off the timer, if
@@ -37,38 +40,49 @@ class SystemTimer final : public sjsu::SystemTimer
   /// frequency of the SystemTimer is set to 1kHz, this could be used as a
   /// milliseconds counter.
   inline static std::chrono::microseconds counter = 0us;
+  /// ARM Cortex NVIC controller.
   inline static const sjsu::cortex::InterruptController
       kCortexInterruptController = sjsu::cortex::InterruptController();
-
-  explicit SystemTimer(const sjsu::SystemController & system_controller,
-                       const sjsu::InterruptController & interrupt_controller =
-                           kCortexInterruptController)
-      : system_controller_(system_controller),
-        interrupt_controller_(interrupt_controller)
-  {
-  }
-
-  /// WARNING: Doing so will most likely disable FreeRTOS
+  /// Disables this system timer.
+  /// @warning: Calling this function so will disable FreeRTOS.
   static void DisableTimer()
   {
     sys_tick->LOAD = 0;
     sys_tick->VAL  = 0;
     sys_tick->CTRL = 0;
   }
+  /// Universal default system timer interrupt handler.
   static void SystemTimerHandler()
   {
-    counter += 1ms;
     // This assumes that SysTickHandler is called every millisecond.
     // Changing that frequency will distort the milliseconds time.
+    counter += 1ms;
     if (system_timer_isr != nullptr)
     {
       system_timer_isr();
     }
   }
+  /// @return returns the current system_timer counter value.
   static std::chrono::microseconds GetCount()
   {
     return counter;
   }
+  /// Constructor for ARM Cortex M system timer.
+  ///
+  /// @param system_controller - used specifically to get platform's frequency.
+  /// @param interrupt_controller - used to enable the system timer interrupt.
+  ///        Must be an ARM NVIC interrupt controller. This is primarily used as
+  ///        a dependency injection site for unit testing.
+  explicit constexpr SystemTimer(
+      const sjsu::SystemController & system_controller,
+      const sjsu::InterruptController & interrupt_controller =
+          kCortexInterruptController)
+      : system_controller_(system_controller),
+        interrupt_controller_(interrupt_controller)
+  {
+  }
+
+  void Initialize() const override {}
 
   void SetInterrupt(IsrPointer isr) const override
   {
