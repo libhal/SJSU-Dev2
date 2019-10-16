@@ -12,42 +12,51 @@ namespace sjsu
 {
 namespace lpc40xx
 {
+/// Implementation of digital-to-analog converter for lpc40xx.
 class Dac final : public sjsu::Dac
 {
  public:
-  enum Bit : uint8_t
-  {
-    kBiasReg   = 16,
-    kDacOutReg = 6,
-  };
+  /// Definitions for DAC bias setting. Setting this to high will use more
+  /// power, but will have a faster refresh rate.
   enum class Bias : bool
   {
     kHigh = 0,
     kLow  = 1
   };
-
+  /// DAC control register bitmasks.
   struct Control  // NOLINT
   {
+    /// This bit field holds the output value of the DAC. This bit field is also
+    /// the exact bit resolution of the DAC output.
     static constexpr bit::Mask kValue = bit::CreateMaskFromRange(6, 15);
-    static constexpr bit::Mask kBias  = bit::CreateMaskFromRange(16);
+    /// Bias bit position in control register. See Bias enumeration for details
+    /// about how this bit works.
+    static constexpr bit::Mask kBias = bit::CreateMaskFromRange(16);
   };
-
+  /// The only DAC output pin on the lpc40xx.
   static constexpr sjsu::lpc40xx::Pin kDacPin = Pin::CreatePin<0, 26>();
-  static constexpr float kVref                = 3.3f;
-  static constexpr uint8_t kActiveBits        = 10;
-  static constexpr uint32_t kMaximumValue     = (1 << kActiveBits) - 1;
-
+  /// Voltage reference for the lpc40xx voltage.
+  static constexpr float kVref = 3.3f;
+  /// Maximum numeric value of the ADC value register.
+  static constexpr uint32_t kMaximumValue = (1 << Control::kValue.width) - 1;
+  /// Pointer to the LPC DAC peripheral in memory
   inline static LPC_DAC_TypeDef * dac_register = LPC_DAC;
 
+  /// Construct lpc40xx Dac object.
+  ///
+  /// @param pin - defaults to the only dac pin on the board. The only reason to
+  ///        use this parameter would be for unit testing. Otherwise, it should
+  ///        not be changed from its default.
   explicit constexpr Dac(const sjsu::Pin & pin = kDacPin) : dac_pin_(pin) {}
-  /// Initialize DAC hardware and enable DAC Pin.
-  /// Initial Bias level set to 0.
+  /// Initialize DAC hardware, enable dac Pin, initial Bias level set to 0.
   Status Initialize() const override
   {
     static constexpr uint8_t kDacMode = 0b010;
     dac_pin_.SetPinFunction(kDacMode);
-    // Temporally convert dac_pin to a lpc40xx::Pin so we can use the
+    // Temporarily convert dac_pin to a lpc40xx::Pin so we can use the
     // EnableDacs() method featured in the LPC40xx pin object.
+    // The program is ill-formed if the pin's implementation was not a lpc40xx
+    // pin.
     const sjsu::lpc40xx::Pin & lpc40xx_dac_pin =
         reinterpret_cast<const sjsu::lpc40xx::Pin &>(dac_pin_);
     lpc40xx_dac_pin.EnableDac();
@@ -60,7 +69,6 @@ class Dac final : public sjsu::Dac
 
     return Status::kSuccess;
   }
-  /// Set the digital-to-analog converter directly
   void Write(uint32_t dac_output) const override
   {
     // The DAC output is a 10 bit input and thus it is necessary to
@@ -70,9 +78,6 @@ class Dac final : public sjsu::Dac
     dac_register->CR =
         bit::Insert(dac_register->CR, dac_output, Control::kValue);
   }
-  /// Takes an input voltage and converts the float value and calculates
-  /// the conversion necessary and then typecasts it to an integer.
-  /// If the voltage value is greater than 3.3 it will fail and end.
   void SetVoltage(float voltage) const override
   {
     float value         = (voltage * kMaximumValue) / kVref;
@@ -91,7 +96,7 @@ class Dac final : public sjsu::Dac
   }
   uint8_t GetActiveBits() const override
   {
-    return kActiveBits;
+    return Control::kValue.width;
   }
 
  private:
