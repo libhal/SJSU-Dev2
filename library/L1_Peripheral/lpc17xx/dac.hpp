@@ -8,10 +8,5 @@ namespace sjsu
 namespace lpc17xx
 {
 using ::sjsu::lpc40xx::Dac;
-
-struct DacChannel // NOLINT
-{
-  static constexpr Pin kDacPin = Pin::CreatePin<0, 26>();
-};
 }  // namespace lpc17xx
 }  // namespace sjsu
