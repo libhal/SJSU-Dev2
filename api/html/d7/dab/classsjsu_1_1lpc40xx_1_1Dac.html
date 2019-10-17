@@ -112,6 +112,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Dac Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implementation of digital-to-analog converter for lpc40xx.  
+ <a href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d2/d13/lpc40xx_2dac_8hpp_source.html">dac.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::lpc40xx::Dac:</div>
 <div class="dyncontent">
@@ -137,33 +142,29 @@ Collaboration diagram for sjsu::lpc40xx::Dac:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html">Control</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DAC control register bitmasks.  <a href="../../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:af6960b6c98171d87210ed06fe4a67ce9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af6960b6c98171d87210ed06fe4a67ce9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Bit</b> : uint8_t { <b>kBiasReg</b> = 16, 
-<b>kDacOutReg</b> = 6
- }</td></tr>
-<tr class="separator:af6960b6c98171d87210ed06fe4a67ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadb6fea48b66b0d68c9805930caf0246"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aadb6fea48b66b0d68c9805930caf0246"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Bias</b> : bool { <b>kHigh</b> = 0, 
+<tr class="memitem:aadb6fea48b66b0d68c9805930caf0246"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246">Bias</a> : bool { <b>kHigh</b> = 0, 
 <b>kLow</b> = 1
  }</td></tr>
 <tr class="separator:aadb6fea48b66b0d68c9805930caf0246"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae4d9b92052810adbe2c9c3e1c1abff1a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4d9b92052810adbe2c9c3e1c1abff1a"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Dac</b> (const <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a> &amp;pin=kDacPin)</td></tr>
+<tr class="memitem:ae4d9b92052810adbe2c9c3e1c1abff1a"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae4d9b92052810adbe2c9c3e1c1abff1a">Dac</a> (const <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a> &amp;pin=<a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae53c19c534567bb10c74f9576d8b0203">kDacPin</a>)</td></tr>
 <tr class="separator:ae4d9b92052810adbe2c9c3e1c1abff1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afea6f270c327e31b792dfbe8777d3f9d"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#afea6f270c327e31b792dfbe8777d3f9d">Initialize</a> () const override</td></tr>
+<tr class="memitem:afea6f270c327e31b792dfbe8777d3f9d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afea6f270c327e31b792dfbe8777d3f9d"></a>
+Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#afea6f270c327e31b792dfbe8777d3f9d">Initialize</a> () const override</td></tr>
+<tr class="memdesc:afea6f270c327e31b792dfbe8777d3f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize DAC hardware, enable dac <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. ">Pin</a>, initial Bias level set to 0. <br /></td></tr>
 <tr class="separator:afea6f270c327e31b792dfbe8777d3f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62b974329eb1e3d634daf15c16adba41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a62b974329eb1e3d634daf15c16adba41"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a62b974329eb1e3d634daf15c16adba41">Write</a> (uint32_t dac_output) const override</td></tr>
-<tr class="memdesc:a62b974329eb1e3d634daf15c16adba41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the digital-to-analog converter directly. <br /></td></tr>
+<tr class="memitem:a62b974329eb1e3d634daf15c16adba41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a62b974329eb1e3d634daf15c16adba41">Write</a> (uint32_t dac_output) const override</td></tr>
 <tr class="separator:a62b974329eb1e3d634daf15c16adba41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78d7703a50fce52407e6c892ae165970"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a78d7703a50fce52407e6c892ae165970">SetVoltage</a> (float voltage) const override</td></tr>
 <tr class="separator:a78d7703a50fce52407e6c892ae165970"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe45ce1966b929616829a17720237c25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#abe45ce1966b929616829a17720237c25">SetBias</a> (Bias bias_level) const </td></tr>
+<tr class="memitem:abe45ce1966b929616829a17720237c25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#abe45ce1966b929616829a17720237c25">SetBias</a> (<a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246">Bias</a> bias_level) const </td></tr>
 <tr class="separator:abe45ce1966b929616829a17720237c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace0b148664a123566a3679cdbaf42a3f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ace0b148664a123566a3679cdbaf42a3f">GetActiveBits</a> () const override</td></tr>
 <tr class="separator:ace0b148664a123566a3679cdbaf42a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,21 +172,78 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ae53c19c534567bb10c74f9576d8b0203"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae53c19c534567bb10c74f9576d8b0203"></a>
-static constexpr <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html">sjsu::lpc40xx::Pin</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kDacPin</b> = <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa8a3e1bbd8958f5153d72939c6220648">Pin::CreatePin</a>&lt;0, 26&gt;()</td></tr>
+static constexpr <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html">sjsu::lpc40xx::Pin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae53c19c534567bb10c74f9576d8b0203">kDacPin</a> = <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa8a3e1bbd8958f5153d72939c6220648">Pin::CreatePin</a>&lt;0, 26&gt;()</td></tr>
+<tr class="memdesc:ae53c19c534567bb10c74f9576d8b0203"><td class="mdescLeft">&#160;</td><td class="mdescRight">The only DAC output pin on the lpc40xx. <br /></td></tr>
 <tr class="separator:ae53c19c534567bb10c74f9576d8b0203"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30431206431b0f96b87a19b5aaa11e6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30431206431b0f96b87a19b5aaa11e6c"></a>
-static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><b>kVref</b> = 3.3f</td></tr>
+static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a30431206431b0f96b87a19b5aaa11e6c">kVref</a> = 3.3f</td></tr>
+<tr class="memdesc:a30431206431b0f96b87a19b5aaa11e6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voltage reference for the lpc40xx voltage. <br /></td></tr>
 <tr class="separator:a30431206431b0f96b87a19b5aaa11e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fc67104401c07a724b0b9ea2974675d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5fc67104401c07a724b0b9ea2974675d"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kActiveBits</b> = 10</td></tr>
-<tr class="separator:a5fc67104401c07a724b0b9ea2974675d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef44a1f54473eb577d94c6217d04ad8c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef44a1f54473eb577d94c6217d04ad8c"></a>
-static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMaximumValue</b> = (1 &lt;&lt; kActiveBits) - 1</td></tr>
+static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aef44a1f54473eb577d94c6217d04ad8c">kMaximumValue</a> = (1 &lt;&lt; Control::kValue.width) - 1</td></tr>
+<tr class="memdesc:aef44a1f54473eb577d94c6217d04ad8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum numeric value of the ADC value register. <br /></td></tr>
 <tr class="separator:aef44a1f54473eb577d94c6217d04ad8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2169bfd0263658e25fc448605ace49c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac2169bfd0263658e25fc448605ace49c"></a>
-static <a class="el" href="../../d4/d9e/structLPC__DAC__TypeDef.html">LPC_DAC_TypeDef</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>dac_register</b> = LPC_DAC</td></tr>
+static <a class="el" href="../../d4/d9e/structLPC__DAC__TypeDef.html">LPC_DAC_TypeDef</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ac2169bfd0263658e25fc448605ace49c">dac_register</a> = LPC_DAC</td></tr>
+<tr class="memdesc:ac2169bfd0263658e25fc448605ace49c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the LPC DAC peripheral in memory. <br /></td></tr>
 <tr class="separator:ac2169bfd0263658e25fc448605ace49c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementation of digital-to-analog converter for lpc40xx. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="aadb6fea48b66b0d68c9805930caf0246"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246">sjsu::lpc40xx::Dac::Bias</a> : bool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Definitions for DAC bias setting. Setting this to high will use more power, but will have a faster refresh rate. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="ae4d9b92052810adbe2c9c3e1c1abff1a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::lpc40xx::Dac::Dac </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a> &amp;&#160;</td>
+          <td class="paramname"><em>pin</em> = <code><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae53c19c534567bb10c74f9576d8b0203">kDacPin</a></code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Construct lpc40xx <a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html" title="Implementation of digital-to-analog converter for lpc40xx. ">Dac</a> object.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>- defaults to the only dac pin on the board. The only reason to use this parameter would be for unit testing. Otherwise, it should not be changed from its default. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ace0b148664a123566a3679cdbaf42a3f"></a>
 <div class="memitem">
@@ -213,32 +271,6 @@ static <a class="el" href="../../d4/d9e/structLPC__DAC__TypeDef.html">LPC_DAC_Ty
 
 </div>
 </div>
-<a class="anchor" id="afea6f270c327e31b792dfbe8777d3f9d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Status sjsu::lpc40xx::Dac::Initialize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Initialize DAC hardware and enable DAC <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. ">Pin</a>. Initial Bias level set to 0. </p>
-
-<p>Implements <a class="el" href="../../da/d01/classsjsu_1_1Dac.html#a95f74961bc5d7faf6449189d25d880f1">sjsu::Dac</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="abe45ce1966b929616829a17720237c25"></a>
 <div class="memitem">
 <div class="memproto">
@@ -249,7 +281,7 @@ static <a class="el" href="../../d4/d9e/structLPC__DAC__TypeDef.html">LPC_DAC_Ty
         <tr>
           <td class="memname">void sjsu::lpc40xx::Dac::SetBias </td>
           <td>(</td>
-          <td class="paramtype">Bias&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246">Bias</a>&#160;</td>
           <td class="paramname"><em>bias_level</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -260,7 +292,7 @@ static <a class="el" href="../../d4/d9e/structLPC__DAC__TypeDef.html">LPC_DAC_Ty
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Sets the Bias for the <a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html">Dac</a>, which determines the settling time, max current, and the allowed maximum update rate </p>
+<p>Sets the Bias for the <a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html" title="Implementation of digital-to-analog converter for lpc40xx. ">Dac</a>, which determines the settling time, max current, and the allowed maximum update rate </p>
 
 </div>
 </div>
@@ -285,9 +317,48 @@ static <a class="el" href="../../d4/d9e/structLPC__DAC__TypeDef.html">LPC_DAC_Ty
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Takes an input voltage and converts the float value and calculates the conversion necessary and then typecasts it to an integer. If the voltage value is greater than 3.3 it will fail and end. </p>
+<p>Set the DAC to the voltage supplied. If the voltage is above or below the voltage range, then the output will be capped at those voltages.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">voltage</td><td>- The specific voltage to set the DAC to. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="../../da/d01/classsjsu_1_1Dac.html#a311e9ae6e48ca456499a7d1dce970319">sjsu::Dac</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a62b974329eb1e3d634daf15c16adba41"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Dac::Write </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>output</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the DAC output the the value supplied.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">output</td><td>- what value to write to the DAC register. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../da/d01/classsjsu_1_1Dac.html#a3bea0cce099ecc4dea01653b610ee54e">sjsu::Dac</a>.</p>
 
 </div>
 </div>

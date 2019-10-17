@@ -1,8 +1,8 @@
 var searchData=
 [
   ['edge',['Edge',['../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149',1,'sjsu::Gpio']]],
-  ['eeprom',['Eeprom',['../d9/df3/classsjsu_1_1Eeprom.html',1,'sjsu']]],
   ['eeprom',['Eeprom',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html',1,'sjsu::lpc40xx']]],
+  ['eeprom',['Eeprom',['../d9/df3/classsjsu_1_1Eeprom.html',1,'sjsu']]],
   ['eff_5fgrp_5fsa',['EFF_GRP_sa',['../d5/d2b/structLPC__CANAF__TypeDef.html#a4d4dd49407ea55b29ba5ccc6b3601cdf',1,'LPC_CANAF_TypeDef']]],
   ['eff_5fsa',['EFF_sa',['../d5/d2b/structLPC__CANAF__TypeDef.html#a89c7026753c5e55a3e54a8382cd6a335',1,'LPC_CANAF_TypeDef']]],
   ['eint0_5firqn',['EINT0_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a0a3db3233549f012f8ecb88f0510adcf',1,'LPC17xx.h']]],

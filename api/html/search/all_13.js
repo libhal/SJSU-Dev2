@@ -32,8 +32,8 @@ var searchData=
   ['tid3',['TID3',['../d1/dba/structLPC__CAN__TypeDef.html#a8ad7b5ae2f928f189fea5f021789e1e2',1,'LPC_CAN_TypeDef']]],
   ['timeout',['timeout',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a050e7f7988d762c4099178e8842e32b6',1,'sjsu::I2c::Transaction_t']]],
   ['timer',['Timer',['../dd/d31/classsjsu_1_1Timer.html',1,'sjsu']]],
-  ['timer',['Timer',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html',1,'sjsu::lpc40xx']]],
   ['timer',['Timer',['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html',1,'sjsu::lpc40xx::Pwm']]],
+  ['timer',['Timer',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html',1,'sjsu::lpc40xx']]],
   ['timer0_5firqn',['TIMER0_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a2336220ce1e39507eb592958064a2b87',1,'LPC17xx.h']]],
   ['timer1_5firqn',['TIMER1_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a0b751a83bbf254701e0d5a1d863010d9',1,'LPC17xx.h']]],
   ['timer2_5firqn',['TIMER2_IRQn',['../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083ad97a34027a8b1017d42d1d6320381e48',1,'LPC17xx.h']]],
@@ -113,12 +113,12 @@ var searchData=
   ['tpi_5ftrigger_5ftrigger_5fpos',['TPI_TRIGGER_TRIGGER_Pos',['../d7/df6/group__CMSIS__TPI.html#ga5517fa2ced64efbbd413720329c50b99',1,'core_cm4.h']]],
   ['tpi_5ftype',['TPI_Type',['../db/daf/structTPI__Type.html',1,'']]],
   ['tpr',['TPR',['../d8/da9/structITM__Type.html#ae907229ba50538bf370fbdfd54c099a2',1,'ITM_Type']]],
-  ['transaction',['Transaction',['../d0/d9b/classsjsu_1_1I2c.html#ad5f74263207d178f3d9e1402b4a0a525',1,'sjsu::I2c::Transaction()'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#adcd3f4d566c68e7617c7aadb3202ae6e',1,'sjsu::lpc40xx::I2c::Transaction()'],['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html#a457012b837f83c8fde658be986d0af09',1,'sjsu::lpc40xx::I2c::PartialBus_t::transaction()']]],
+  ['transaction',['transaction',['../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html#a457012b837f83c8fde658be986d0af09',1,'sjsu::lpc40xx::I2c::PartialBus_t::transaction()'],['../d0/d9b/classsjsu_1_1I2c.html#ad5f74263207d178f3d9e1402b4a0a525',1,'sjsu::I2c::Transaction()'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#adcd3f4d566c68e7617c7aadb3202ae6e',1,'sjsu::lpc40xx::I2c::Transaction()']]],
   ['transaction_5ft',['Transaction_t',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html',1,'sjsu::I2c']]],
   ['transfer',['Transfer',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a53a54924e1b6ac531c2f2c6df3836014',1,'sjsu::lpc40xx::Spi::Transfer()'],['../d3/de6/classsjsu_1_1Spi.html#a7ae6d25113c04de85317facc25ac70a4',1,'sjsu::Spi::Transfer()']]],
   ['trigger',['TRIGGER',['../db/daf/structTPI__Type.html#a4d4cd2357f72333a82a1313228287bbd',1,'TPI_Type']]],
   ['tx',['tx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a67f2ca56b242323c441088b74c7507c7',1,'sjsu::lpc40xx::Uart::Port_t']]],
   ['tx_5ffunction_5fid',['tx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a8fbfab57d6cf7237b51ed843e664b3f2',1,'sjsu::lpc40xx::Uart::Port_t']]],
   ['txmessage_5ft',['TxMessage_t',['../dc/d88/structsjsu_1_1Can_1_1TxMessage__t.html',1,'sjsu::Can']]],
-  ['type',['Type',['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()'],['../d9/dc6/structMPU__Type.html#a0433efc1383674bc8e86cc0e830b462d',1,'MPU_Type::TYPE()']]]
+  ['type',['TYPE',['../d9/dc6/structMPU__Type.html#a0433efc1383674bc8e86cc0e830b462d',1,'MPU_Type::TYPE()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()']]]
 ];

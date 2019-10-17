@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['dac',['Dac',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae4d9b92052810adbe2c9c3e1c1abff1a',1,'sjsu::lpc40xx::Dac']]],
   ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena']]],
   ['declaredonstackcheck',['DeclaredOnStackCheck',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83',1,'sjsu::rtos::Task']]],
   ['delete',['Delete',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab6f2cee2c287b9068c4ab0357140c9af',1,'sjsu::rtos::Task']]],

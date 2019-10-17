@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['eeprom',['Eeprom',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html',1,'sjsu::lpc40xx']]],
   ['eeprom',['Eeprom',['../d9/df3/classsjsu_1_1Eeprom.html',1,'sjsu']]],
+  ['eeprom',['Eeprom',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html',1,'sjsu::lpc40xx']]],
   ['emcclock',['EmcClock',['../dc/d31/structsjsu_1_1lpc40xx_1_1SystemController_1_1EmcClock.html',1,'sjsu::lpc40xx::SystemController']]],
   ['enablebitmaskoperators_5ft',['EnableBitMaskOperators_t',['../db/dc2/structsjsu_1_1EnableBitMaskOperators__t.html',1,'sjsu']]],
   ['errorwarninglimit_5ft',['ErrorWarningLimit_t',['../dd/de5/structsjsu_1_1lpc40xx_1_1Can_1_1ErrorWarningLimit__t.html',1,'sjsu::lpc40xx::Can']]],
