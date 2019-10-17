@@ -19,7 +19,7 @@ class Esp8266
   struct Buffer_t
   {
     size_t size;
-    uint8_t address[];
+    uint8_t * address;
   };
   struct ModuleVersion_t
   {
@@ -27,7 +27,7 @@ class Esp8266
   };
   struct NetworkConnection_t
   {
-    uint8_t connection_info[63];
+    uint8_t connection_info[68];
   };
   enum ConnectionType : uint8_t
   {
@@ -96,7 +96,7 @@ class Esp8266
     FlushSerialBuffer();
 
     return CompareResponse(kConfirmationResponse,
-                           sizeof(kConfirmationResponse),
+                           (sizeof(kConfirmationResponse)-1),
                            receive_buffer);
   }
   // Sends reset command to ESP8266
@@ -110,13 +110,9 @@ class Esp8266
   virtual bool Initialize()
   {
     uart_port_.Initialize(kBaudRate);
-    FlushSerialBuffer();
 
     Write(kDisableEchoCommand);
-    FlushSerialBuffer();
-
     ResetModule();
-
     Write(kClientModeCommand);
     FlushSerialBuffer();
 
@@ -147,6 +143,8 @@ class Esp8266
                     kReadTimeout);
     FlushSerialBuffer();
 
+    AppendNullToResponse(version.module_info, sizeof(version.module_info));
+
     return version;
   }
   // Gets network connection info and writes it to default buffer
@@ -155,9 +153,12 @@ class Esp8266
     NetworkConnection_t network;
 
     Write(kGetNetworkConnectionInfoCommand);
-    uart_port_.Read(network.connection_info, sizeof(network.connection_info),
-                    kReadTimeout);
+    uart_port_.Read(network.connection_info,
+                    sizeof(network.connection_info), kReadTimeout);
     FlushSerialBuffer();
+
+    AppendNullToResponse(network.connection_info,
+                         sizeof(network.connection_info));
 
     return network;
   }
@@ -178,7 +179,7 @@ class Esp8266
     FlushSerialBuffer();
 
     return CompareResponse(kConfirmationResponse,
-                           sizeof(kConfirmationResponse),
+                           (sizeof(kConfirmationResponse)-1),
                            receive_buffer);
   }
   // Disconnects ESP8266 from access point
@@ -211,8 +212,8 @@ class Esp8266
     uart_port_.Read(receive_buffer, sizeof(receive_buffer), uart_timeout);
     FlushSerialBuffer();
 
-    return !(CompareResponse(kErrorResponse, sizeof(kErrorResponse),
-                           receive_buffer));
+    return !(CompareResponse(kErrorResponse, (sizeof(kErrorResponse)-1),
+                             receive_buffer));
   }
   // Disconnect from server
   virtual void DisconnectFromServer()
@@ -257,7 +258,7 @@ class Esp8266
     }
 
     snprintf(get_request_buffer, sizeof(get_request_buffer), kGetRequest,
-             &url[end_of_hostname], static_cast<int>(end_of_hostname-1), url);
+             &url[end_of_hostname], static_cast<int>(end_of_hostname), url);
 
     WriteFromNullTerminatedBuffer(
       reinterpret_cast<uint8_t*>(send_data_command_buffer));
@@ -307,10 +308,17 @@ class Esp8266
     size_t end_of_hostname = 0;
     uint32_t url_size = static_cast<uint32_t>(strlen(url));
     uint32_t payload_size = static_cast<uint32_t>(strlen(payload));
+    int temp_payload_size = payload_size;
     uint32_t post_request_size = 97 + payload_size + url_size;
     char send_data_command_buffer[23];
     char post_request_buffer[256];
     uint8_t dummy_buffer;
+
+    while (temp_payload_size != 0)
+    {
+      temp_payload_size /= 10;
+      post_request_size++;
+    }
 
     snprintf(send_data_command_buffer, sizeof(send_data_command_buffer),
              kSendDataCommand, post_request_size);
@@ -328,7 +336,7 @@ class Esp8266
     }
 
     snprintf(post_request_buffer, sizeof(post_request_buffer), kPostRequest,
-             &url[end_of_hostname], static_cast<int>(end_of_hostname-1), url,
+             &url[end_of_hostname], static_cast<int>(end_of_hostname), url,
              payload_size, payload);
 
     WriteFromNullTerminatedBuffer(
@@ -370,11 +378,11 @@ class Esp8266
   }
 
  private:
-  // Writes array to Esp8266 and flushes buffer
+  // Writes command array to Esp8266 and flushes buffer
   template<typename T, size_t size>
   void Write(const T (&array)[size])
   {
-    uart_port_.Write(array, size);
+    uart_port_.Write(array, (size-1));
   }
   // Compares expected responses with the actual response from Esp8266
   virtual bool CompareResponse(const uint8_t * expected_response,
@@ -411,6 +419,20 @@ class Esp8266
         break;
       }
     }
+  }
+  virtual void AppendNullToResponse(uint8_t * buffer, size_t size)
+  {
+    for (size_t i = 0; i < (size-5); i++)
+    {
+      if ((buffer[i] == '\r') && (buffer[i+1] == '\n') && (buffer[i+2] == 'O')
+          && (buffer[i+3] == 'K'))
+      {
+        buffer[i+4] = '\0';
+        break;
+      }
+    }
+
+    buffer[size-1] = '\0';
   }
   virtual void WriteFromNullTerminatedBuffer(const uint8_t * buffer)
   {
