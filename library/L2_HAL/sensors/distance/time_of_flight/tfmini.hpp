@@ -141,7 +141,7 @@ class TFMini final : public DistanceSensor
   }
   /// Obtain the strength of the light pulse the sensor emits.
   ///
-  /// @param distance - the strength of the light pulse, calculated by
+  /// @param strength - the strength of the light pulse, calculated by
   ///        strength_val / 3000. Recommended that readings are reliable if in
   ///        range .7%-67%, lower limit is adjustable -> SetMinSignalThreshhold
   ///
