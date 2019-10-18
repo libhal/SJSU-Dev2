@@ -1,10 +1,8 @@
 <map id="sjsu::OnBoardLed" name="sjsu::OnBoardLed">
-<area shape="rect" id="node2" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="708,93,848,120"/>
+<area shape="rect" id="node2" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="708,64,848,91"/>
 <area shape="rect" id="node3" href="$dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="379,5,463,32"/>
 <area shape="rect" id="node4" href="$d9/d34/structsjsu_1_1lpc40xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html" title="This structure makes the access of gpio interrupt registers more readable. " alt="" coords="319,57,523,98"/>
-<area shape="rect" id="node5" href="$d8/d56/structLPC__GPIO__TypeDef.html" title="LPC_GPIO_TypeDef" alt="" coords="350,123,491,149"/>
-<area shape="rect" id="node6" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,173,531,200"/>
-<area shape="rect" id="node7" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,123,201,149"/>
-<area shape="rect" id="node8" href="$d1/dd1/structSCB__Type.html" title="Structure type to access the System Control Block (SCB). " alt="" coords="73,173,157,200"/>
-<area shape="rect" id="node9" href="$d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,225,225,266"/>
+<area shape="rect" id="node5" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,123,531,149"/>
+<area shape="rect" id="node6" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,93,201,120"/>
+<area shape="rect" id="node7" href="$d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,145,225,186"/>
 </map>

@@ -1,4 +1,3 @@
 <map id="sjsu::lpc40xx::Pwm::Peripheral_t" name="sjsu::lpc40xx::Pwm::Peripheral_t">
-<area shape="rect" id="node2" href="$dc/dbf/structLPC__PWM__TypeDef.html" title="LPC_PWM_TypeDef" alt="" coords="5,13,145,39"/>
-<area shape="rect" id="node3" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="169,5,336,47"/>
+<area shape="rect" id="node2" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="5,5,172,47"/>
 </map>

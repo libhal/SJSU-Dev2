@@ -1,16 +1,6 @@
 var searchData=
 [
-  ['nvic_5fclearpendingirq',['NVIC_ClearPendingIRQ',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga332e10ef9605dc6eb10b9e14511930f8',1,'core_cm4.h']]],
-  ['nvic_5fdecodepriority',['NVIC_DecodePriority',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga3387607fd8a1a32cccd77d2ac672dd96',1,'core_cm4.h']]],
-  ['nvic_5fdisableirq',['NVIC_DisableIRQ',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga260fba04ac8346855c57f091d4ee1e71',1,'core_cm4.h']]],
-  ['nvic_5fenableirq',['NVIC_EnableIRQ',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga3349f2e3580d7ce22d6530b7294e5921',1,'core_cm4.h']]],
-  ['nvic_5fencodepriority',['NVIC_EncodePriority',['../de/da0/group__CMSIS__Core__NVICFunctions.html#gadb94ac5d892b376e4f3555ae0418ebac',1,'core_cm4.h']]],
-  ['nvic_5fgetactive',['NVIC_GetActive',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga47a0f52794068d076c9147aa3cb8d8a6',1,'core_cm4.h']]],
-  ['nvic_5fgetpendingirq',['NVIC_GetPendingIRQ',['../de/da0/group__CMSIS__Core__NVICFunctions.html#gafec8042db64c0f8ed432b6c8386a05d8',1,'core_cm4.h']]],
-  ['nvic_5fgetpriority',['NVIC_GetPriority',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga1cbaf8e6abd4aa4885828e7f24fcfeb4',1,'core_cm4.h']]],
-  ['nvic_5fgetprioritygrouping',['NVIC_GetPriorityGrouping',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga394f7ce2ca826c0da26284d17ac6524d',1,'core_cm4.h']]],
-  ['nvic_5fsetpendingirq',['NVIC_SetPendingIRQ',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga3ecf446519da33e1690deffbf5be505f',1,'core_cm4.h']]],
-  ['nvic_5fsetpriority',['NVIC_SetPriority',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga2305cbd44aaad792e3a4e538bdaf14f9',1,'core_cm4.h']]],
-  ['nvic_5fsetprioritygrouping',['NVIC_SetPriorityGrouping',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga77cfbb35a9d8027e392034321bed6904',1,'core_cm4.h']]],
-  ['nvic_5fsystemreset',['NVIC_SystemReset',['../de/da0/group__CMSIS__Core__NVICFunctions.html#ga1143dec48d60a3d6f238c4798a87759c',1,'core_cm4.h']]]
+  ['read',['Read',['../d0/dc1/classsjsu_1_1Adc.html#ac91e91ae9c477778b078b4d5e6e8d77d',1,'sjsu::Adc::Read()'],['../dd/d3a/classsjsu_1_1Gpio.html#a8adbc3a6738710cdff41a29e0abfee05',1,'sjsu::Gpio::Read()'],['../d0/d9b/classsjsu_1_1I2c.html#a930b720cb30b75417cd462422c6394c6',1,'sjsu::I2c::Read()'],['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a445491d647713590d508a97570c52e3e',1,'sjsu::lpc17xx::Gpio::Read()'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ade2640b4ab7f6415693a44be0724dbce',1,'sjsu::lpc40xx::Adc::Read()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab0345f741e89a03b78689da6188a8d49',1,'sjsu::lpc40xx::Gpio::Read()'],['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a45a2b2d6e16ccf386904151500daf304',1,'sjsu::lpc40xx::Uart::Read()'],['../d0/ddc/classsjsu_1_1Uart.html#a787220b5a9cc3e1d019b4fa8f7ed04e7',1,'sjsu::Uart::Read(uint8_t *data, size_t size, std::chrono::microseconds timeout=std::chrono::microseconds::max()) const =0'],['../d0/ddc/classsjsu_1_1Uart.html#aabd493964dcf9941388fe46af8b01a70',1,'sjsu::Uart::Read(std::chrono::microseconds timeout=std::chrono::microseconds::max()) const '],['../d0/d27/classsjsu_1_1ParallelGpio.html#ab91e7dd55fa2dea3f51cc5a1fe368fb9',1,'sjsu::ParallelGpio::Read()'],['../d7/d86/classsjsu_1_1ParallelBus.html#ad38646785512577972b2fda9b95ce534',1,'sjsu::ParallelBus::Read()']]],
+  ['removetask',['RemoveTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#abffd7e8f29082ec825c11a8fcf2fd3e9',1,'sjsu::rtos::TaskScheduler']]],
+  ['resume',['Resume',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a9ad6add41a523ef5948d8407bdfcccad',1,'sjsu::rtos::Task']]]
 ];

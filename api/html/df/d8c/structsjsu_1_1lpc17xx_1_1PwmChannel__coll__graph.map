@@ -1,7 +1,6 @@
 <map id="sjsu::lpc17xx::PwmChannel" name="sjsu::lpc17xx::PwmChannel">
 <area shape="rect" id="node2" href="$d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html" title="sjsu::lpc40xx::Pwm\l::Peripheral_t" alt="" coords="117,109,259,151"/>
-<area shape="rect" id="node5" href="$d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html" title="Defines all information necessary to control a specific PWM channel. " alt="" coords="5,213,147,255"/>
-<area shape="rect" id="node3" href="$dc/dbf/structLPC__PWM__TypeDef.html" title="LPC_PWM_TypeDef" alt="" coords="29,13,169,39"/>
-<area shape="rect" id="node4" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="193,5,359,47"/>
-<area shape="rect" id="node6" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="13,117,88,143"/>
+<area shape="rect" id="node4" href="$d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html" title="Defines all information necessary to control a specific PWM channel. " alt="" coords="5,213,147,255"/>
+<area shape="rect" id="node3" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="105,5,271,47"/>
+<area shape="rect" id="node5" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="13,117,88,143"/>
 </map>

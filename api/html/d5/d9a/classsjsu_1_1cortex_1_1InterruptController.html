@@ -125,9 +125,8 @@ Collaboration diagram for sjsu::cortex::InterruptController:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d8/daf/classsjsu_1_1cortex_1_1InterruptController__coll__graph.png" border="0" usemap="#sjsu_1_1cortex_1_1InterruptController_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1cortex_1_1InterruptController_coll__map" id="sjsu_1_1cortex_1_1InterruptController_coll__map">
-<area shape="rect" id="node2" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,5,201,32"/>
-<area shape="rect" id="node3" href="../../d1/dd1/structSCB__Type.html" title="Structure type to access the System Control Block (SCB). " alt="" coords="73,56,157,83"/>
-<area shape="rect" id="node4" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,107,225,149"/>
+<area shape="rect" id="node2" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="5,13,177,39"/>
+<area shape="rect" id="node3" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="201,5,421,47"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -168,16 +167,16 @@ static IsrPointer *&#160;</td><td class="memItemRight" valign="bottom"><b>GetVec
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a9dc69a165eccb3f3b1fdd93e2809cf77"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9dc69a165eccb3f3b1fdd93e2809cf77"></a>
-static constexpr int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>kArmIrqOffset</b> = (-<a class="el" href="../../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a50ad21f2fd0d54d04b390d5a9145889a">cortex::Reset_IRQn</a>) + 1</td></tr>
+static constexpr int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>kArmIrqOffset</b> = (-cortex::Reset_IRQn) + 1</td></tr>
 <tr class="separator:a9dc69a165eccb3f3b1fdd93e2809cf77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbc9d25c6957bccfc6702fd84a90fd7d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adbc9d25c6957bccfc6702fd84a90fd7d"></a>
 static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kNumberOfInterrupts</b> = 64</td></tr>
 <tr class="separator:adbc9d25c6957bccfc6702fd84a90fd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2405ce2c957e93802a8b27224572f58"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2405ce2c957e93802a8b27224572f58"></a>
-static <a class="el" href="../../d1/dd1/structSCB__Type.html">SCB_Type</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>scb</b> = <a class="el" href="../../d7/d12/group__CMSIS__core__base.html#gaaaf6477c2bde2f00f99e3c2fd1060b01">SCB</a></td></tr>
+static SCB_Type *&#160;</td><td class="memItemRight" valign="bottom"><b>scb</b> = SCB</td></tr>
 <tr class="separator:ae2405ce2c957e93802a8b27224572f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bb19d2bc4902b65a156b13a9152c3e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7bb19d2bc4902b65a156b13a9152c3e8"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>current_vector</b> = <a class="el" href="../../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a50ad21f2fd0d54d04b390d5a9145889a">cortex::Reset_IRQn</a></td></tr>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>current_vector</b> = cortex::Reset_IRQn</td></tr>
 <tr class="separator:a7bb19d2bc4902b65a156b13a9152c3e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf292ab30583b0c641f8c344a75947f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf292ab30583b0c641f8c344a75947f1"></a>
 static <a class="el" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html">VectorTable_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>table</b> = VectorTable_t::GenerateDefaultTable()</td></tr>

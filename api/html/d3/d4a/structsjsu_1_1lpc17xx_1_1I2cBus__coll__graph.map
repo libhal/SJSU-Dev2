@@ -1,7 +1,6 @@
 <map id="sjsu::lpc17xx::I2cBus" name="sjsu::lpc17xx::I2cBus">
-<area shape="rect" id="node2" href="$d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html" title="sjsu::lpc40xx::I2c\l::Bus_t" alt="" coords="105,228,234,269"/>
-<area shape="rect" id="node3" href="$d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html" title="sjsu::lpc40xx::I2c\l::PartialBus_t" alt="" coords="105,124,234,165"/>
+<area shape="rect" id="node2" href="$d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html" title="sjsu::lpc40xx::I2c\l::Bus_t" alt="" coords="50,228,179,269"/>
+<area shape="rect" id="node3" href="$d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html" title="sjsu::lpc40xx::I2c\l::PartialBus_t" alt="" coords="50,124,179,165"/>
 <area shape="rect" id="node4" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
-<area shape="rect" id="node5" href="$d8/d12/structLPC__I2C__TypeDef.html" title="LPC_I2C_TypeDef" alt="" coords="104,13,235,39"/>
-<area shape="rect" id="node6" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="259,5,426,47"/>
+<area shape="rect" id="node5" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="103,5,270,47"/>
 </map>

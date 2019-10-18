@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$db/d1f/structsjsu_1_1lpc40xx_1_1Can_1_1StaticQueueConfig__t.html" title="sjsu::lpc40xx::Can\l::StaticQueueConfig\l_t\&lt; kTxLength, kRxLength \&gt;" alt="" coords="5,5,208,61"/>
+<area shape="rect" id="node1" href="$d3/de6/classsjsu_1_1Spi.html" title="sjsu::Spi" alt="" coords="5,5,80,32"/>
+<area shape="rect" id="node2" href="$da/d39/classsjsu_1_1lpc40xx_1_1Spi.html" title="sjsu::lpc40xx::Spi" alt="" coords="128,5,259,32"/>
 </map>

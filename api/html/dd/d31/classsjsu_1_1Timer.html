@@ -236,7 +236,7 @@ virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <p>Initialize and enable hardware. This must be called before any other method in this interface is called.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">frequency</td><td>- the frequency that the timer's count register will increment by. If this is set to 1'000'000Hz then the counter will increment every microsecond. register will be 10 ms. </td></tr>
+    <tr><td class="paramname">counter_frequency</td><td>- the frequency that the timer's count register will increment by. If this is set to 1'000'000Hz then the counter will increment every microsecond. register will be 10 ms. </td></tr>
     <tr><td class="paramname">isr</td><td>- the ISR that will fire when the condition set by SetTimer method is achieved. </td></tr>
     <tr><td class="paramname">priority</td><td>- sets the <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html">Timer</a> interrupt's priority level, defaults to -1 which uses the platforms default priority. </td></tr>
   </table>

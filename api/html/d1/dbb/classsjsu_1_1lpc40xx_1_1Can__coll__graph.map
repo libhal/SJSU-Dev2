@@ -1,21 +1,17 @@
 <map id="sjsu::lpc40xx::Can" name="sjsu::lpc40xx::Can">
-<area shape="rect" id="node2" href="$da/d70/classsjsu_1_1Can.html" title="sjsu::Can" alt="" coords="481,7,561,34"/>
-<area shape="rect" id="node3" href="$df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html" title="sjsu::lpc40xx::Can\l::FrameError_t" alt="" coords="453,59,589,100"/>
-<area shape="rect" id="node4" href="$db/dcc/structsjsu_1_1lpc40xx_1_1Can_1_1GlobalStatus__t.html" title="sjsu::lpc40xx::Can\l::GlobalStatus_t" alt="" coords="453,124,589,165"/>
-<area shape="rect" id="node5" href="$df/dc0/structsjsu_1_1lpc40xx_1_1Can_1_1Status__t.html" title="sjsu::lpc40xx::Can\l::Status_t" alt="" coords="453,189,589,231"/>
-<area shape="rect" id="node6" href="$d2/d34/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts__t.html" title="sjsu::lpc40xx::Can\l::Interrupts_t" alt="" coords="453,255,589,296"/>
-<area shape="rect" id="node7" href="$d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="409,321,632,347"/>
-<area shape="rect" id="node8" href="$df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="32,157,199,183"/>
-<area shape="rect" id="node9" href="$df/d8b/structLPC__SC__TypeDef.html" title="LPC_SC_TypeDef" alt="" coords="51,207,179,234"/>
-<area shape="rect" id="node10" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="455,381,586,407"/>
-<area shape="rect" id="node11" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="78,258,153,285"/>
-<area shape="rect" id="node12" href="$d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="Pin map table for maping pins and ports to registers. " alt="" coords="50,309,181,351"/>
-<area shape="rect" id="node13" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="59,478,171,505"/>
-<area shape="rect" id="node14" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="411,442,631,469"/>
-<area shape="rect" id="node15" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,529,201,555"/>
-<area shape="rect" id="node16" href="$d1/dd1/structSCB__Type.html" title="Structure type to access the System Control Block (SCB). " alt="" coords="73,579,157,606"/>
-<area shape="rect" id="node17" href="$d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,631,225,672"/>
-<area shape="rect" id="node18" href="$dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="435,493,607,535"/>
-<area shape="rect" id="node19" href="$d5/d2b/structLPC__CANAF__TypeDef.html" title="LPC_CANAF_TypeDef" alt="" coords="443,559,598,586"/>
-<area shape="rect" id="node20" href="$d1/dba/structLPC__CAN__TypeDef.html" title="LPC_CAN_TypeDef" alt="" coords="451,610,590,637"/>
+<area shape="rect" id="node2" href="$da/d70/classsjsu_1_1Can.html" title="sjsu::Can" alt="" coords="481,5,561,32"/>
+<area shape="rect" id="node3" href="$df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html" title="sjsu::lpc40xx::Can\l::FrameError_t" alt="" coords="453,57,589,98"/>
+<area shape="rect" id="node4" href="$db/dcc/structsjsu_1_1lpc40xx_1_1Can_1_1GlobalStatus__t.html" title="sjsu::lpc40xx::Can\l::GlobalStatus_t" alt="" coords="453,122,589,163"/>
+<area shape="rect" id="node5" href="$df/dc0/structsjsu_1_1lpc40xx_1_1Can_1_1Status__t.html" title="sjsu::lpc40xx::Can\l::Status_t" alt="" coords="453,187,589,229"/>
+<area shape="rect" id="node6" href="$d2/d34/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts__t.html" title="sjsu::lpc40xx::Can\l::Interrupts_t" alt="" coords="453,253,589,294"/>
+<area shape="rect" id="node7" href="$d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="409,319,632,345"/>
+<area shape="rect" id="node8" href="$df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="32,189,199,216"/>
+<area shape="rect" id="node9" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="455,383,586,409"/>
+<area shape="rect" id="node10" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="78,240,153,267"/>
+<area shape="rect" id="node11" href="$d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="Pin map table for maping pins and ports to registers. " alt="" coords="50,291,181,333"/>
+<area shape="rect" id="node12" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="59,475,171,501"/>
+<area shape="rect" id="node13" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="411,433,631,460"/>
+<area shape="rect" id="node14" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,525,201,552"/>
+<area shape="rect" id="node15" href="$d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,577,225,618"/>
+<area shape="rect" id="node16" href="$dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="435,485,607,526"/>
 </map>

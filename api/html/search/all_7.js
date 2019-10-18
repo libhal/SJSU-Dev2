@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['gdr',['GDR',['../d3/d95/structLPC__ADC__TypeDef.html#a6891936fcf717753e53ffed97d6329dd',1,'LPC_ADC_TypeDef']]],
-  ['ge',['GE',['../dd/daf/unionAPSR__Type.html#adcb98a5b9c93b0cb69cdb7af5638f32e',1,'APSR_Type::GE()'],['../d7/ddc/unionxPSR__Type.html#a2d0ec4ccae337c1df5658f8cf4632e76',1,'xPSR_Type::GE()']]],
   ['getactivebits',['GetActiveBits',['../d0/dc1/classsjsu_1_1Adc.html#aad0f82c8674acc5916171b9c654797cf',1,'sjsu::Adc::GetActiveBits()'],['../da/d01/classsjsu_1_1Dac.html#a701eca7eb9b1cbb37a403e3c4df39c6d',1,'sjsu::Dac::GetActiveBits()'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a3f886549ab4444d418c8586ede018fea',1,'sjsu::lpc40xx::Adc::GetActiveBits()'],['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ace0b148664a123566a3679cdbaf42a3f',1,'sjsu::lpc40xx::Dac::GetActiveBits()']]],
   ['getalltasks',['GetAllTasks',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a7d3f9cec15e3660387c92247f00b403b',1,'sjsu::rtos::TaskScheduler']]],
   ['getavailablematchregisters',['GetAvailableMatchRegisters',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ac6e6bc69b3c07a9b7a145266899984be',1,'sjsu::lpc40xx::Timer::GetAvailableMatchRegisters()'],['../dd/d31/classsjsu_1_1Timer.html#a5be3fa5ef96894c0174d3824af1a15a9',1,'sjsu::Timer::GetAvailableMatchRegisters()']]],
@@ -34,8 +32,8 @@ var searchData=
   ['gettaskindex',['GetTaskIndex',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#af369ceb720de477a42ca3e1d9edde2fe',1,'sjsu::rtos::TaskScheduler']]],
   ['gettransactioninfo',['GetTransactionInfo',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a1aab2429685ff4d31764246480566ee2',1,'sjsu::lpc40xx::I2c']]],
   ['globalstatus_5ft',['GlobalStatus_t',['../db/dcc/structsjsu_1_1lpc40xx_1_1Can_1_1GlobalStatus__t.html',1,'sjsu::lpc40xx::Can']]],
-  ['gpio',['Gpio',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html',1,'sjsu::lpc40xx']]],
   ['gpio',['Gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html',1,'sjsu::lpc17xx']]],
+  ['gpio',['Gpio',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html',1,'sjsu::lpc40xx']]],
   ['gpio',['gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a8ba9652bd525a73699225ab977771614',1,'sjsu::lpc17xx::Gpio::gpio()'],['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aaa68f39449b606ce99e7a6444c9a6906',1,'sjsu::lpc17xx::Gpio::Gpio(uint8_t port, uint8_t pin, const sjsu::InterruptController &amp;interrupt_controller=kInterruptController)'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab998c0df2ccba384fa099b66c0657ef2',1,'sjsu::lpc40xx::Gpio::Gpio()']]],
   ['gpio',['Gpio',['../dd/d3a/classsjsu_1_1Gpio.html',1,'sjsu']]],
   ['gpio_5fport',['gpio_port',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a199a5f6d8d9fd8a014e3639b342c513d',1,'sjsu::lpc40xx::Gpio']]],
@@ -43,6 +41,5 @@ var searchData=
   ['gpiointerruptregistermap_5ft',['GpioInterruptRegisterMap_t',['../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html',1,'sjsu::lpc17xx::Gpio']]],
   ['gpioport_5ft',['GpioPort_t',['../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html',1,'sjsu::lpc17xx::Gpio']]],
   ['graphicalterminal',['GraphicalTerminal',['../d6/dde/classsjsu_1_1GraphicalTerminal.html',1,'sjsu']]],
-  ['graphics',['Graphics',['../d7/d8c/classsjsu_1_1Graphics.html',1,'sjsu']]],
-  ['gsr',['GSR',['../d1/dba/structLPC__CAN__TypeDef.html#aaebe05a3f2b42fe710cc55146232709c',1,'LPC_CAN_TypeDef']]]
+  ['graphics',['Graphics',['../d7/d8c/classsjsu_1_1Graphics.html',1,'sjsu']]]
 ];

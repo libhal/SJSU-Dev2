@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['dac',['Dac',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae4d9b92052810adbe2c9c3e1c1abff1a',1,'sjsu::lpc40xx::Dac']]],
-  ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena']]],
-  ['declaredonstackcheck',['DeclaredOnStackCheck',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83',1,'sjsu::rtos::Task']]],
-  ['delete',['Delete',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab6f2cee2c287b9068c4ab0357140c9af',1,'sjsu::rtos::Task']]],
-  ['detachinterrupt',['DetachInterrupt',['../dd/d3a/classsjsu_1_1Gpio.html#a0657f0c0777ec9cd10cc1d31e9f8d5a4',1,'sjsu::Gpio::DetachInterrupt()'],['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#adf678698334134657c8183b58bc1f48c',1,'sjsu::lpc17xx::Gpio::DetachInterrupt()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ad7fcbd8e572440d339a1c8e492e49f24',1,'sjsu::lpc40xx::Gpio::DetachInterrupt()']]],
-  ['disable',['Disable',['../df/d96/classsjsu_1_1PixelDisplay.html#a0f470d25a1fbb6128df65468c4074c1b',1,'sjsu::PixelDisplay']]],
-  ['disableinterrupts',['DisableInterrupts',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a31b9db629494e8d123a631fb9be920fe',1,'sjsu::lpc17xx::Gpio::DisableInterrupts()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a382416d511b252a9ebf54bc427ddd54a',1,'sjsu::lpc40xx::Gpio::DisableInterrupts()']]],
-  ['disabletimer',['DisableTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa13190bddfc1da090d3b3a445ee2eb5d',1,'sjsu::cortex::SystemTimer']]],
-  ['drawpixel',['DrawPixel',['../db/d32/classsjsu_1_1Ssd1306.html#a23537e08e643eb02a7d21bda108045a5',1,'sjsu::Ssd1306::DrawPixel()'],['../df/d96/classsjsu_1_1PixelDisplay.html#aa9bdf3da6e53f69881d92bdb6c5b3abf',1,'sjsu::PixelDisplay::DrawPixel()']]]
+  ['enable',['Enable',['../df/d96/classsjsu_1_1PixelDisplay.html#a1004fd12da67314f8cdae8a80fd95fd1',1,'sjsu::PixelDisplay']]],
+  ['enabledac',['EnableDac',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae9be77c66c312383ac26df7cbc10d949',1,'sjsu::lpc40xx::Pin']]],
+  ['enabledigitalfilter',['EnableDigitalFilter',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ad9ebb9636ad7d1798cda62234dcf1737',1,'sjsu::lpc40xx::Pin']]],
+  ['enablefastmode',['EnableFastMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a478da84cc15b6d1eefcfa60f9ea61977',1,'sjsu::lpc40xx::Pin']]],
+  ['enablehysteresis',['EnableHysteresis',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1fec5e4fe1429f55ea836fdc8a22a4ec',1,'sjsu::lpc40xx::Pin']]],
+  ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6cae6a6642d6d810bf67a52a137e2d74',1,'sjsu::lpc40xx::Pin']]],
+  ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a65e30196ce68adf18a1094613c281713',1,'sjsu::lpc40xx::Pin']]],
+  ['enableinterrupts',['EnableInterrupts',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aadccb197280d98e29b2c4a4e8c6559bf',1,'sjsu::lpc17xx::Gpio::EnableInterrupts()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ae58e775559659b47fba85f7e999c5b5c',1,'sjsu::lpc40xx::Gpio::EnableInterrupts()']]],
+  ['enablepwm',['EnablePwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#ad22e92fbe0d7de1101d3bd2fc4556827',1,'sjsu::lpc40xx::Pwm']]]
 ];

@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d4/d9d/structSCnSCB__Type.html" title="Structure type to access the System Control and ID Register not in the SCB. " alt="" coords="5,5,116,32"/>
+<area shape="rect" id="node1" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="5,5,177,32"/>
+<area shape="rect" id="node2" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="225,5,445,32"/>
 </map>

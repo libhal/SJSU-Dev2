@@ -16,7 +16,9 @@ doxygen sjsu-dev2-doxygen.conf 2> doxygen_stderr.txt
 print_divider \
     "Verifying that Documentation is not Missing or Contains Mistakes"
 
-grep --color -f "$SJBASE/tools/doxygen_warning_patterns.txt" doxygen_stderr.txt
+grep --color --invert-match -f "$SJBASE/tools/doxygen_ignore_list.txt" \
+    doxygen_stderr.txt
+
 GREP_RETRUN_CODE=$?
 
 # Grep will return 1 if it found nothing in the file and 0 if it found some

@@ -1,5 +1,4 @@
 <map id="sjsu::lpc40xx::Uart::Port_t" name="sjsu::lpc40xx::Uart::Port_t">
 <area shape="rect" id="node2" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
-<area shape="rect" id="node3" href="$db/d14/structLPC__UART__TypeDef.html" title="LPC_UART_TypeDef" alt="" coords="103,13,246,39"/>
-<area shape="rect" id="node4" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="270,5,437,47"/>
+<area shape="rect" id="node3" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="103,5,270,47"/>
 </map>

@@ -1,5 +1,4 @@
 <map id="sjsu::lpc40xx::I2c::PartialBus_t" name="sjsu::lpc40xx::I2c::PartialBus_t">
 <area shape="rect" id="node2" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
-<area shape="rect" id="node3" href="$d8/d12/structLPC__I2C__TypeDef.html" title="LPC_I2C_TypeDef" alt="" coords="104,13,235,39"/>
-<area shape="rect" id="node4" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="259,5,426,47"/>
+<area shape="rect" id="node3" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="103,5,270,47"/>
 </map>

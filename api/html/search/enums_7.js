@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ocr',['Ocr',['../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698',1,'sjsu::Sd']]],
-  ['operation',['Operation',['../d0/d9b/classsjsu_1_1I2c.html#a539a41100567dee1b59b3c43d5cd480c',1,'sjsu::I2c']]]
+  ['resistor',['Resistor',['../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95',1,'sjsu::Pin']]],
+  ['responsetype',['ResponseType',['../dc/d5f/classsjsu_1_1Sd.html#aae21a97bbd11f456310b6fc8f399a580',1,'sjsu::Sd']]]
 ];

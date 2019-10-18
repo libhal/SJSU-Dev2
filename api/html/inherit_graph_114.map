@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html" title="sjsu::lpc40xx::Adc\l::Channel_t" alt="" coords="5,5,140,47"/>
+<area shape="rect" id="node1" href="$d6/ddf/classsjsu_1_1Pwm.html" title="sjsu::Pwm" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node2" href="$df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html" title="sjsu::lpc40xx::Pwm" alt="" coords="139,5,280,32"/>
 </map>

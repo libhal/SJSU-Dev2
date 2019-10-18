@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d4/d2f/structsjsu_1_1lpc17xx_1_1UartPort.html" title="Structure used as a namespace for predefined Port_t definitions. " alt="" coords="5,5,171,32"/>
+<area shape="rect" id="node1" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,31,80,57"/>
+<area shape="rect" id="node2" href="$d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="128,5,259,32"/>
+<area shape="rect" id="node3" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="128,56,259,83"/>
 </map>

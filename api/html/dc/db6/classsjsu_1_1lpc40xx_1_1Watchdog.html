@@ -126,12 +126,10 @@ Collaboration diagram for sjsu::lpc40xx::Watchdog:</div>
 <div class="center"><img src="../../d7/d65/classsjsu_1_1lpc40xx_1_1Watchdog__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Watchdog_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Watchdog_coll__map" id="sjsu_1_1lpc40xx_1_1Watchdog_coll__map">
 <area shape="rect" id="node2" href="../../d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="362,5,479,32"/>
-<area shape="rect" id="node3" href="../../df/dcf/structLPC__WDT__TypeDef.html" title="LPC_WDT_TypeDef" alt="" coords="351,56,490,83"/>
-<area shape="rect" id="node4" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,107,531,133"/>
-<area shape="rect" id="node5" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,56,201,83"/>
-<area shape="rect" id="node6" href="../../d1/dd1/structSCB__Type.html" title="Structure type to access the System Control Block (SCB). " alt="" coords="73,107,157,133"/>
-<area shape="rect" id="node7" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,158,225,199"/>
-<area shape="rect" id="node8" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="335,158,507,199"/>
+<area shape="rect" id="node3" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,56,531,83"/>
+<area shape="rect" id="node4" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,27,201,53"/>
+<area shape="rect" id="node5" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,78,225,119"/>
+<area shape="rect" id="node6" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="335,107,507,149"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -180,7 +178,7 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
 static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><b>kWatchdogClockDivider</b> = 4_Hz</td></tr>
 <tr class="separator:ab070a5f9b70757108ebedfde5aa35bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a999d5dbb73a733a481d9bf43768a7663"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a999d5dbb73a733a481d9bf43768a7663"></a>
-static <a class="el" href="../../df/dcf/structLPC__WDT__TypeDef.html">LPC_WDT_TypeDef</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>wdt_base</b> = LPC_WDT</td></tr>
+static LPC_WDT_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><b>wdt_base</b> = LPC_WDT</td></tr>
 <tr class="separator:a999d5dbb73a733a481d9bf43768a7663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9bad0ae2842220d3f7fed7c5485defc"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kWatchdogInterruptInfo</b></td></tr>
 <tr class="separator:ad9bad0ae2842220d3f7fed7c5485defc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,7 +223,7 @@ static <a class="el" href="../../df/dcf/structLPC__WDT__TypeDef.html">LPC_WDT_Ty
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">        .interrupt_request_number  = <a class="code" href="../../da/dc3/LPC17xx_8h.html#a666eb0caeb12ec0e281415592ae89083a78573b84a4133ef5812b33ce10dcba12">WDT_IRQn</a>,</div><div class="line">        .interrupt_service_routine = &amp;WatchdogIrqHandler,</div><div class="line">        .enable_interrupt          = <span class="keyword">true</span>,</div><div class="line">      }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">        .interrupt_request_number  = WDT_IRQn,</div><div class="line">        .interrupt_service_routine = &amp;WatchdogIrqHandler,</div><div class="line">        .enable_interrupt          = <span class="keyword">true</span>,</div><div class="line">      }</div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
