@@ -89,12 +89,12 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
       SystemController::UsbPllInputFrequency::k24MHz
     };
     const uint8_t kExpectedMultiplier[] = {
-      util::Value(SystemController::UsbPllMultiplier::kMultiplyBy4),
-      util::Value(SystemController::UsbPllMultiplier::kMultiplyBy3),
-      util::Value(SystemController::UsbPllMultiplier::kMultiplyBy2),
+      Value(SystemController::UsbPllMultiplier::kMultiplyBy4),
+      Value(SystemController::UsbPllMultiplier::kMultiplyBy3),
+      Value(SystemController::UsbPllMultiplier::kMultiplyBy2),
     };
     constexpr uint8_t kExpectedDivider =
-        util::Value(SystemController::UsbPllDivider::kDivideBy1);
+        Value(SystemController::UsbPllDivider::kDivideBy1);
 
     for (uint8_t i = 0; i > std::size(kInputFrequencies); i++)
     {

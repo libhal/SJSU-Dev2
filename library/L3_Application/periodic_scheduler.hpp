@@ -109,7 +109,7 @@ class PeriodicScheduler final : public Task<512>
     kCount
   };
 
-  static constexpr size_t kMaxTaskCount = util::Value(Frequency::kCount);
+  static constexpr size_t kMaxTaskCount = Value(Frequency::kCount);
 
   PeriodicScheduler()
       : Task("Periodic_Scheduler", Priority::kLow), task_list_{ nullptr }
@@ -143,19 +143,19 @@ class PeriodicScheduler final : public Task<512>
   /// @param frequency  Desired frequency the task should be executed.
   void SetTask(PeriodicTaskInterface * task, Frequency frequency)
   {
-    task_list_[util::Value(frequency)] = task;
+    task_list_[Value(frequency)] = task;
     // Since HandlePeriodicTimer callback handles multiple timers, the pointer
     // of the task is stored as the timer's pvTimerID in order to be able to
     // identify which task should be handled in the HandlePeriodicTimer()
     // function.
-    vTimerSetTimerID(timers_[util::Value(frequency)],
+    vTimerSetTimerID(timers_[Value(frequency)],
                      static_cast<void *>(task));
   }
   /// @return Returns the scheduled task for a specified frequency. If no task
   ///         has been scheduled then a nullptr is returned.
   PeriodicTaskInterface * GetTask(Frequency frequency) const
   {
-    return task_list_[util::Value(frequency)];
+    return task_list_[Value(frequency)];
   }
 
  protected:
