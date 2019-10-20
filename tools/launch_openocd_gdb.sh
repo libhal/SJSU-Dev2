@@ -12,7 +12,7 @@ GDB_ARGS=""
 
 if [ $PLATFORM == "linux" ]
 then
-$DEVICE_GDB $EXECUTABLE -ex "source $GDBINIT_PATH"
+  $DEVICE_GDB $EXECUTABLE -ex "source $GDBINIT_PATH"
 else # For all other platforms
   $OPENOCD/bin/openocd  -s $OPENOCD/scripts/ \
   -c "source [find interface/$DEBUG_DEVICE.cfg]" -f $OPENOCD_CONFIG &
@@ -34,7 +34,9 @@ else # For all other platforms
     echo
     exit 1
   fi
-  GDB_ARGS="$GDB_ARGS -ex \"target remote :3333\""
+
+  # When the GDB session closes, kill openocd below
+  $DEVICE_GDB $EXECUTABLE -ex "target remote :3333" $GDB_ARGS
 
   echo "Killing OpenOCD PID: $OPENOCD_PID"
   kill $OPENOCD_PID
