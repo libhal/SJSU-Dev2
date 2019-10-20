@@ -206,7 +206,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
 #define CHECK_BITS(mask, reg) CHECK(mask == (reg & mask))
 
   auto setup_state_machine = [&](I2c::MasterState state) {
-    local_i2c.STAT   = util::Value(state);
+    local_i2c.STAT   = Value(state);
     local_i2c.CONSET = 0;
     local_i2c.CONCLR = 0;
     local_i2c.DAT    = 0;

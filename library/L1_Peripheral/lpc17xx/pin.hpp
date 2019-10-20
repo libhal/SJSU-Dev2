@@ -75,7 +75,7 @@ class Pin final : public sjsu::Pin
     uint32_t pin_reg_select = PinRegisterLookup();
     resistor_map->pin[pin_reg_select] =
         bit::Insert(resistor_map->pin[pin_reg_select],
-                    kResistorModes[util::Value(resistor)],
+                    kResistorModes[Value(resistor)],
                     kPinMask);
   }
   /// Implement SetAsAnalogMode as deprecated and unsupported
