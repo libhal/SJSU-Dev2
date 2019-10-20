@@ -155,6 +155,5 @@ inline void PrintBacktrace(bool show_make_command = false,
     }
   }
 }
-
 }  // namespace debug
 }  // namespace sjsu

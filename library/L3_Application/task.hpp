@@ -127,7 +127,7 @@ class Task : public TaskInterface
   virtual ~Task() {}
 
  protected:
-  /// Defualt constructor. When a Task is constructed, it is automatically
+  /// Default constructor. When a Task is constructed, it is automatically
   /// added to the TaskScheduler singleton.
   ///
   /// @param name       Name used to easily identify the task.
