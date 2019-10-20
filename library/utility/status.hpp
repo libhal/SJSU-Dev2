@@ -2,6 +2,7 @@
 
 namespace sjsu
 {
+/// Status error codes returned by functions throughout the SJSU-Dev2 code base.
 enum class Status
 {
   kSuccess,
@@ -13,7 +14,8 @@ enum class Status
   kNotReadyYet,
   kInvalidParameters,
 };
-
+/// @param status - the status code to convert to a string
+/// @return a string representation of the status code.
 constexpr const char * Stringify(Status status)
 {
   const char * result = "";
