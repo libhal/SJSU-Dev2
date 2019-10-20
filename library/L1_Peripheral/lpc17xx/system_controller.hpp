@@ -224,17 +224,17 @@ class SystemController final : public sjsu::SystemController
         bit::Clear(system_controller->PLL1CON, kPllEnableBit);
     WritePllFeedSequence(PllSelect::kUsbPll);
     // 3. Write to the PLL1CFG and make it effective with one feed sequence.
-    constexpr uint8_t kDivider = util::Value(UsbPllDivider::kDivideBy1);
+    constexpr uint8_t kDivider = Value(UsbPllDivider::kDivideBy1);
     // depending on the input frequency, the multiplier value will always be
     // either 2, 3, or 4
     const uint8_t kMultiplier[] = {
-      util::Value(UsbPllMultiplier::kMultiplyBy4),
-      util::Value(UsbPllMultiplier::kMultiplyBy3),
-      util::Value(UsbPllMultiplier::kMultiplyBy2),
+      Value(UsbPllMultiplier::kMultiplyBy4),
+      Value(UsbPllMultiplier::kMultiplyBy3),
+      Value(UsbPllMultiplier::kMultiplyBy2),
     };
     system_controller->PLL1CFG =
         bit::Insert(system_controller->PLL1CFG,
-                    kMultiplier[util::Value(frequency)],
+                    kMultiplier[Value(frequency)],
                     UsbPll::kMultiplier);
     system_controller->PLL1CFG =
         bit::Insert(system_controller->PLL1CFG, kDivider, UsbPll::kDivider);
@@ -459,8 +459,8 @@ class SystemController final : public sjsu::SystemController
       &(system_controller->PLL0FEED),
       &(system_controller->PLL1FEED),
     };
-    *(pll_feed_registers[util::Value(pll)]) = 0xAA;
-    *(pll_feed_registers[util::Value(pll)]) = 0x55;
+    *(pll_feed_registers[Value(pll)]) = 0xAA;
+    *(pll_feed_registers[Value(pll)]) = 0x55;
   }
 
   bool WaitForPllLockStatus(PllSelect pll) const
@@ -478,8 +478,8 @@ class SystemController final : public sjsu::SystemController
     const bit::Mask kLockStatusMasks[] = { MainPll::kLockStatus,
                                            UsbPll::kLockStatus };
     volatile uint32_t * status_register =
-        pll_status_registers[util::Value(pll)];
-    const bit::Mask kLockStatusMask = kLockStatusMasks[util::Value(pll)];
+        pll_status_registers[Value(pll)];
+    const bit::Mask kLockStatusMask = kLockStatusMasks[Value(pll)];
 
     while (!bit::Read(*status_register, kLockStatusMask.position))
     {
@@ -505,8 +505,8 @@ class SystemController final : public sjsu::SystemController
     };
     const bit::Mask kMasks[] = { MainPll::kMode, UsbPll::kMode };
     volatile uint32_t * status_register =
-        pll_status_registers[util::Value(pll)];
-    const bit::Mask kPllModeMask = kMasks[util::Value(pll)];
+        pll_status_registers[Value(pll)];
+    const bit::Mask kPllModeMask = kMasks[Value(pll)];
 
     while (!bit::Read(*status_register, kPllModeMask.position))
     {

@@ -55,13 +55,6 @@
 #define LOG_ERROR(format, ...)
 #endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_ERROR
 
-#if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_CRITICAL
-#define LOG_CRITICAL(format, ...) \
-  _LOG_PRINT(SJ2_BACKGROUND_RED "CRITICAL", format, ##__VA_ARGS__)
-#else
-#define LOG_CRITICAL(format, ...)
-#endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_CRITICAL
-
 // When the condition is false, issue a warning to the user with a warning
 // message. Warning message format acts like printf.
 #define SJ2_ASSERT_WARNING(condition, warning_message, ...)        \
@@ -80,7 +73,7 @@
   {                                                                          \
     if (!(condition))                                                        \
     {                                                                        \
-      LOG_CRITICAL("Assertion Failure, Condition Tested: " #condition        \
+      LOG_ERROR("Assertion Failure, Condition Tested: " #condition        \
                    "\n          " fatal_message SJ2_COLOR_RESET,             \
                    ##__VA_ARGS__);                                           \
       if ((with_dump))                                                       \

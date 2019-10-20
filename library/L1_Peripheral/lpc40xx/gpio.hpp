@@ -168,7 +168,7 @@ class Gpio final : public sjsu::Gpio
         LOG_WARNING(
             "Edge %d cannot be used for External Interrupts."
             "Need to use a rising, falling, or both configuration.",
-            util::Value(edge));
+            Value(edge));
       }
     }
   }
@@ -200,7 +200,7 @@ class Gpio final : public sjsu::Gpio
         LOG_WARNING(
             "Edge %d cannot be used for External Interrupts."
             "Need to use a rising, falling, or both configuration.",
-            util::Value(edge));
+            Value(edge));
       }
     }
   }

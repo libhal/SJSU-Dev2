@@ -20,7 +20,7 @@ else # For all other platforms
   # Capture the pid of the background OpenOCD process
   OPENOCD_PID=$(echo $!)
   # Wait for OpenOCD to continue or quit
-  sleep .25
+  sleep 2
   # Use kill to check if OpenOCD is running
   kill -0 $OPENOCD_PID &> /dev/null
   # Capture success or failure of check above
@@ -34,7 +34,6 @@ else # For all other platforms
     echo
     exit 1
   fi
-
   # When the GDB session closes, kill openocd below
   $DEVICE_GDB $EXECUTABLE -ex "target remote :3333" $GDB_ARGS
 

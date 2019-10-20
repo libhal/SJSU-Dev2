@@ -340,6 +340,10 @@ constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>StringLen
 <tr class="memitem:a9ead998e2ac62523001932e91dbd793d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ead998e2ac62523001932e91dbd793d"></a>
 constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>BasenameLength</b> (const char *path)</td></tr>
 <tr class="separator:a9ead998e2ac62523001932e91dbd793d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79f32e2dacc990b1245c581ea958a03f"><td class="memTemplParams" colspan="2"><a class="anchor" id="a79f32e2dacc990b1245c581ea958a03f"></a>
+template&lt;typename Enum , typename Type  = typename std::underlying_type_t&lt;Enum&gt;&gt; </td></tr>
+<tr class="memitem:a79f32e2dacc990b1245c581ea958a03f"><td class="memTemplItemLeft" align="right" valign="top">constexpr Type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Value</b> (Enum enum_type_value)</td></tr>
+<tr class="separator:a79f32e2dacc990b1245c581ea958a03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf4826253a08f0cd26782f7cb8328e82"><td class="memTemplParams" colspan="2"><a class="anchor" id="aaf4826253a08f0cd26782f7cb8328e82"></a>
 template&lt;typename Enum , class  = typename std::enable_if_t&lt;                             EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
 <tr class="memitem:aaf4826253a08f0cd26782f7cb8328e82"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator|</b> (Enum lhs, Enum rhs)</td></tr>

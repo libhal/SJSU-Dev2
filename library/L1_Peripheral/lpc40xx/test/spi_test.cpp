@@ -75,7 +75,7 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
     // Check that slave mode bit is 0, meaning we are in master mode.
     CHECK(bit::Read(local_ssp.CR1, kSlaveBit) == false);
     CHECK((local_ssp.CR0 & (0xF << kDataBit)) ==
-          util::Value(Spi::DataSize::kEight) + 3);
+          Value(Spi::DataSize::kEight) + 3);
   }
 
   SECTION("Verify Clock Polarity and Prescaler")

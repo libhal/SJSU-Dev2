@@ -130,8 +130,7 @@ static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
                   kLogLevel == SJ2_LOG_LEVEL_DEBUG ||
                   kLogLevel == SJ2_LOG_LEVEL_INFO ||
                   kLogLevel == SJ2_LOG_LEVEL_WARNING ||
-                  kLogLevel == SJ2_LOG_LEVEL_ERROR ||
-                  kLogLevel == SJ2_LOG_LEVEL_CRITICAL,
+                  kLogLevel == SJ2_LOG_LEVEL_ERROR,
               "SJ2_LOG_LEVEL must equal to one of the predefined log levels "
               "such as SJ2_LOG_LEVEL_INFO.");
 
