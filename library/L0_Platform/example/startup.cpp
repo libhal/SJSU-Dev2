@@ -104,7 +104,7 @@ extern "C" void ResetHandler()
 #pragma GCC diagnostic pop
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
-  LOG_CRITICAL("main() returned with value %" PRId32, result);
+  LOG_ERROR("main() returned with value %" PRId32, result);
   sjsu::Halt();
 }
 // Add section variables. Typically this includes checksums or security lock
