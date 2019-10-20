@@ -256,7 +256,7 @@ class Spi final : public sjsu::Spi
     // to get the appropriate tranfer code.
     constexpr uint8_t kBitTransferCodeOffset = 3;
     uint8_t size_code =
-        static_cast<uint8_t>(util::Value(size) + kBitTransferCodeOffset);
+        static_cast<uint8_t>(Value(size) + kBitTransferCodeOffset);
 
     bus_.registers->CR0 =
         bit::Insert(bus_.registers->CR0, size_code, ControlRegister0::kDataBit);

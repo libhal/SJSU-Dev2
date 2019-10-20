@@ -5,8 +5,6 @@
 
 namespace sjsu
 {
-namespace util
-{
 // Returns the value of the enum class. This should be used in place of
 // static_cast<some_numeric_type>(some_variable).
 //
@@ -14,7 +12,7 @@ namespace util
 //
 //      enum class SomeType : uint32_t { kValue1 = 1, kValue2 = 2 };
 //      SomeType some_variable = SomeType::kValue1;
-//      uint32_t numeric_variable = util::Value(some_variable);
+//      uint32_t numeric_variable = Value(some_variable);
 //
 // @param enum_type_value variable you would like to get the value of.
 // @return the value of the enum class type variable of with the underlying
@@ -24,7 +22,6 @@ constexpr Type Value(Enum enum_type_value)
 {
   return static_cast<Type>(enum_type_value);
 }
-}  // namespace util
 
 //
 // Below is the set of bitwise operator overloads for enum class types

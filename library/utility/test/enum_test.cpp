@@ -74,12 +74,12 @@ TEST_CASE("Testing Enumeration Bit Operators", "[enum-bit]")
 
 TEST_CASE("Testing Enumeration Utilites", "[enum-value]")
 {
-  SECTION("util::Value() should return proper value")
+  SECTION("Value() should return proper value")
   {
     CHECK(static_cast<uint8_t>(TestEnumClass::kVal0) ==
-          util::Value(TestEnumClass::kVal0));
+          Value(TestEnumClass::kVal0));
     CHECK(static_cast<uint8_t>(TestEnumClass::kVal1) ==
-          util::Value(TestEnumClass::kVal1));
+          Value(TestEnumClass::kVal1));
   }
 }
 }  // namespace sjsu
