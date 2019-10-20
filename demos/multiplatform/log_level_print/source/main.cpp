@@ -21,7 +21,7 @@ void PrintLogDescription(int a)
       "something possibly going wrong in the program.");
   LOG_ERROR(
       "Error messages should alert the user or developer of a possible error.");
-  LOG_CRITICAL(
+  LOG_ERROR(
       "Critical messages should always be shown and typically occur when a "
       "fatal error has occurred during the runtime of the program.");
 }
@@ -34,7 +34,7 @@ int main()
   LOG_INFO("This is an info message.");
   LOG_WARNING("This is an warning message.");
   LOG_ERROR("This is an error message.");
-  LOG_CRITICAL("This is an critical message.");
+  LOG_ERROR("This is an critical message.");
 
   PrintLogDescription(5);
   return 0;

@@ -6,4 +6,3 @@
 #define SJ2_LOG_LEVEL_INFO       20
 #define SJ2_LOG_LEVEL_WARNING    30
 #define SJ2_LOG_LEVEL_ERROR      40
-#define SJ2_LOG_LEVEL_CRITICAL   50

@@ -35,7 +35,7 @@ int main()
   }
   else
   {
-    LOG_CRITICAL("Invalid platform for this application!");
+    LOG_ERROR("Invalid platform for this application!");
     sjsu::Halt();
   }
   // Phase #3:
