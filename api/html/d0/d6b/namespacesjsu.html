@@ -149,6 +149,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html">ExampleSingleImplementationHal</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d1b/structsjsu_1_1FallbackListNode__t.html">FallbackListNode_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback list Node for compilers not defined in the macro below.  <a href="../../da/d1b/structsjsu_1_1FallbackListNode__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddb/structsjsu_1_1FileBasename__t.html">FileBasename_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,7 +258,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>UptimeFunction</b>) 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a8354cf87fb610918847695d576d419d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8354cf87fb610918847695d576d419d2"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Status</b> { <br />
+<tr class="memitem:a8354cf87fb610918847695d576d419d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8354cf87fb610918847695d576d419d2"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> { <br />
 &#160;&#160;<b>kSuccess</b>, 
 <b>kTimedOut</b>, 
 <b>kBusError</b>, 
@@ -268,7 +269,8 @@ Enumerations</h2></td></tr>
 <b>kNotReadyYet</b>, 
 <b>kInvalidParameters</b>
 <br />
- }</td></tr>
+ }<tr class="memdesc:a8354cf87fb610918847695d576d419d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Status error codes returned by functions throughout the SJSU-Dev2 code base. <br /></td></tr>
+</td></tr>
 <tr class="separator:a8354cf87fb610918847695d576d419d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -335,52 +337,19 @@ template&lt;class T , size_t N, class U , class V , size_t M, class W &gt; </td>
 template&lt;class T , size_t N, class U , class V , size_t M, class W &gt; </td></tr>
 <tr class="memitem:aed1d0601b214fea36b1cb84dd46b5110"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a>&lt; T, N, U &gt; &amp;x, const <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a>&lt; V, M, W &gt; &amp;y) noexcept</td></tr>
 <tr class="separator:aed1d0601b214fea36b1cb84dd46b5110"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11e9a8820c447020c5b3206659e6b116"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11e9a8820c447020c5b3206659e6b116"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>StringLength</b> (const char *str)</td></tr>
+<tr class="memitem:a11e9a8820c447020c5b3206659e6b116"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a11e9a8820c447020c5b3206659e6b116">StringLength</a> (const char *str)</td></tr>
 <tr class="separator:a11e9a8820c447020c5b3206659e6b116"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ead998e2ac62523001932e91dbd793d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ead998e2ac62523001932e91dbd793d"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>BasenameLength</b> (const char *path)</td></tr>
+<tr class="memitem:a9ead998e2ac62523001932e91dbd793d"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a9ead998e2ac62523001932e91dbd793d">BasenameLength</a> (const char *path)</td></tr>
 <tr class="separator:a9ead998e2ac62523001932e91dbd793d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79f32e2dacc990b1245c581ea958a03f"><td class="memTemplParams" colspan="2"><a class="anchor" id="a79f32e2dacc990b1245c581ea958a03f"></a>
-template&lt;typename Enum , typename Type  = typename std::underlying_type_t&lt;Enum&gt;&gt; </td></tr>
-<tr class="memitem:a79f32e2dacc990b1245c581ea958a03f"><td class="memTemplItemLeft" align="right" valign="top">constexpr Type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Value</b> (Enum enum_type_value)</td></tr>
-<tr class="separator:a79f32e2dacc990b1245c581ea958a03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf4826253a08f0cd26782f7cb8328e82"><td class="memTemplParams" colspan="2"><a class="anchor" id="aaf4826253a08f0cd26782f7cb8328e82"></a>
-template&lt;typename Enum , class  = typename std::enable_if_t&lt;                             EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
-<tr class="memitem:aaf4826253a08f0cd26782f7cb8328e82"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator|</b> (Enum lhs, Enum rhs)</td></tr>
-<tr class="separator:aaf4826253a08f0cd26782f7cb8328e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa18918459e96939c8e099102969dbd4e"><td class="memTemplParams" colspan="2"><a class="anchor" id="aa18918459e96939c8e099102969dbd4e"></a>
-template&lt;typename Enum , class  = typename std::enable_if_t&lt;                             EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
-<tr class="memitem:aa18918459e96939c8e099102969dbd4e"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&amp;</b> (Enum lhs, Enum rhs)</td></tr>
-<tr class="separator:aa18918459e96939c8e099102969dbd4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad812d0788560f85bec7e38e07431d626"><td class="memTemplParams" colspan="2"><a class="anchor" id="ad812d0788560f85bec7e38e07431d626"></a>
-template&lt;typename Enum , class  = typename std::enable_if_t&lt;                             EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
-<tr class="memitem:ad812d0788560f85bec7e38e07431d626"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator^</b> (Enum lhs, Enum rhs)</td></tr>
-<tr class="separator:ad812d0788560f85bec7e38e07431d626"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90b52aadb06f664413d34a0a8acdbde4"><td class="memTemplParams" colspan="2"><a class="anchor" id="a90b52aadb06f664413d34a0a8acdbde4"></a>
-template&lt;typename Enum , class  = typename std::enable_if_t&lt;                             EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
-<tr class="memitem:a90b52aadb06f664413d34a0a8acdbde4"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator~</b> (Enum rhs)</td></tr>
-<tr class="separator:a90b52aadb06f664413d34a0a8acdbde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa59a6263ecd09fc182e449f009022150"><td class="memTemplParams" colspan="2"><a class="anchor" id="aa59a6263ecd09fc182e449f009022150"></a>
-template&lt;typename Enum , class  = typename std::enable_if_t&lt;                             EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
-<tr class="memitem:aa59a6263ecd09fc182e449f009022150"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator|=</b> (Enum &amp;lhs, Enum rhs)</td></tr>
-<tr class="separator:aa59a6263ecd09fc182e449f009022150"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f02bfe070e2cf7140afd030132bc85a"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5f02bfe070e2cf7140afd030132bc85a"></a>
-template&lt;typename Enum , class  = typename std::enable_if_t&lt;                             EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
-<tr class="memitem:a5f02bfe070e2cf7140afd030132bc85a"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&amp;=</b> (Enum &amp;lhs, Enum rhs)</td></tr>
-<tr class="separator:a5f02bfe070e2cf7140afd030132bc85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a679ad25c09fadd2919bbfad530719304"><td class="memTemplParams" colspan="2"><a class="anchor" id="a679ad25c09fadd2919bbfad530719304"></a>
-template&lt;typename Enum , class  = typename std::enable_if_t&lt;                             EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
-<tr class="memitem:a679ad25c09fadd2919bbfad530719304"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator^=</b> (Enum &amp;lhs, Enum rhs)</td></tr>
-<tr class="separator:a679ad25c09fadd2919bbfad530719304"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdb3780a1ed335d1328613aa8cdde3da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abdb3780a1ed335d1328613aa8cdde3da"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</b> (FRESULT result)</td></tr>
-<tr class="separator:abdb3780a1ed335d1328613aa8cdde3da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f02778e34f958f03f01da8e11a5ad98"><td class="memTemplParams" colspan="2">template&lt;typename Enum &gt; </td></tr>
+<tr class="memitem:a6f02778e34f958f03f01da8e11a5ad98"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a6f02778e34f958f03f01da8e11a5ad98">Value</a> (Enum enum_type_value)</td></tr>
+<tr class="separator:a6f02778e34f958f03f01da8e11a5ad98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa79e71ad78594c5dc7af1a5b5bffdd90"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#aa79e71ad78594c5dc7af1a5b5bffdd90">Stringify</a> (FRESULT result)</td></tr>
+<tr class="separator:aa79e71ad78594c5dc7af1a5b5bffdd90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab8ca257071bdc5d7a663c24d44b518b"><td class="memTemplParams" colspan="2">template&lt;typename Input , typename Range , typename NewRange &gt; </td></tr>
 <tr class="memitem:aab8ca257071bdc5d7a663c24d44b518b"><td class="memTemplItemLeft" align="right" valign="top">constexpr NewRange&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#aab8ca257071bdc5d7a663c24d44b518b">Map</a> (Input value, Range min, Range max, NewRange new_min, NewRange new_max)</td></tr>
 <tr class="separator:aab8ca257071bdc5d7a663c24d44b518b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a348f1e255225c6385c2759b49c111c5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a348f1e255225c6385c2759b49c111c5f"></a>
-constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><b>Stringify</b> (Status status)</td></tr>
+<tr class="memitem:a348f1e255225c6385c2759b49c111c5f"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a348f1e255225c6385c2759b49c111c5f">Stringify</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> status)</td></tr>
 <tr class="separator:a348f1e255225c6385c2759b49c111c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8744125900419599388b2a125e2fbc55"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8744125900419599388b2a125e2fbc55"></a>
 std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultUptime</b> ()</td></tr>
@@ -390,10 +359,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUptimeFunction</b>
 <tr class="separator:a8e2cb4b7be14a36c3477dcae3a3010a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04c14f7bedeca0daba22c5a380dff608"><td class="memTemplParams" colspan="2"><a class="anchor" id="a04c14f7bedeca0daba22c5a380dff608"></a>
 template&lt;typename F &gt; </td></tr>
-<tr class="memitem:a04c14f7bedeca0daba22c5a380dff608"><td class="memTemplItemLeft" align="right" valign="top">Status&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Wait</b> (std::chrono::microseconds timeout, F is_done)</td></tr>
+<tr class="memitem:a04c14f7bedeca0daba22c5a380dff608"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Wait</b> (std::chrono::microseconds timeout, F is_done)</td></tr>
 <tr class="separator:a04c14f7bedeca0daba22c5a380dff608"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b14641f8bcd6cd0c17bcad47c0209b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b14641f8bcd6cd0c17bcad47c0209b8"></a>
-Status&#160;</td><td class="memItemRight" valign="bottom"><b>Wait</b> (std::chrono::microseconds timeout)</td></tr>
+<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Wait</b> (std::chrono::microseconds timeout)</td></tr>
 <tr class="separator:a5b14641f8bcd6cd0c17bcad47c0209b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad90da361581fb6ebcc50f118c5696ec6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad90da361581fb6ebcc50f118c5696ec6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Delay</b> (std::chrono::microseconds delay_time)</td></tr>
@@ -401,6 +370,34 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Delay</b> (std::chron
 <tr class="memitem:a9e0c84e1acf85469e214a02be7b0049a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e0c84e1acf85469e214a02be7b0049a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Halt</b> ()</td></tr>
 <tr class="separator:a9e0c84e1acf85469e214a02be7b0049a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:aaf4826253a08f0cd26782f7cb8328e82"><td class="memTemplParams" colspan="2">template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
+<tr class="memitem:aaf4826253a08f0cd26782f7cb8328e82"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#aaf4826253a08f0cd26782f7cb8328e82">operator|</a> (Enum lhs, Enum rhs)</td></tr>
+<tr class="separator:aaf4826253a08f0cd26782f7cb8328e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa18918459e96939c8e099102969dbd4e"><td class="memTemplParams" colspan="2"><a class="anchor" id="aa18918459e96939c8e099102969dbd4e"></a>
+template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
+<tr class="memitem:aa18918459e96939c8e099102969dbd4e"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&amp;</b> (Enum lhs, Enum rhs)</td></tr>
+<tr class="separator:aa18918459e96939c8e099102969dbd4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad812d0788560f85bec7e38e07431d626"><td class="memTemplParams" colspan="2"><a class="anchor" id="ad812d0788560f85bec7e38e07431d626"></a>
+template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
+<tr class="memitem:ad812d0788560f85bec7e38e07431d626"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator^</b> (Enum lhs, Enum rhs)</td></tr>
+<tr class="separator:ad812d0788560f85bec7e38e07431d626"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b52aadb06f664413d34a0a8acdbde4"><td class="memTemplParams" colspan="2"><a class="anchor" id="a90b52aadb06f664413d34a0a8acdbde4"></a>
+template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
+<tr class="memitem:a90b52aadb06f664413d34a0a8acdbde4"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator~</b> (Enum rhs)</td></tr>
+<tr class="separator:a90b52aadb06f664413d34a0a8acdbde4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa59a6263ecd09fc182e449f009022150"><td class="memTemplParams" colspan="2"><a class="anchor" id="aa59a6263ecd09fc182e449f009022150"></a>
+template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
+<tr class="memitem:aa59a6263ecd09fc182e449f009022150"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator|=</b> (Enum &amp;lhs, Enum rhs)</td></tr>
+<tr class="separator:aa59a6263ecd09fc182e449f009022150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f02bfe070e2cf7140afd030132bc85a"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5f02bfe070e2cf7140afd030132bc85a"></a>
+template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
+<tr class="memitem:a5f02bfe070e2cf7140afd030132bc85a"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&amp;=</b> (Enum &amp;lhs, Enum rhs)</td></tr>
+<tr class="separator:a5f02bfe070e2cf7140afd030132bc85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a679ad25c09fadd2919bbfad530719304"><td class="memTemplParams" colspan="2"><a class="anchor" id="a679ad25c09fadd2919bbfad530719304"></a>
+template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>
+<tr class="memitem:a679ad25c09fadd2919bbfad530719304"><td class="memTemplItemLeft" align="right" valign="top">constexpr Enum &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator^=</b> (Enum &amp;lhs, Enum rhs)</td></tr>
+<tr class="separator:a679ad25c09fadd2919bbfad530719304"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -555,6 +552,29 @@ template&lt;template&lt; auto &gt; class CommandLineType, template&lt; size_t &g
 
 </div>
 </div>
+<a class="anchor" id="a9ead998e2ac62523001932e91dbd793d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t sjsu::BasenameLength </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>- path to calculate the basename length for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of characters from the end of a string that contains the basename. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="aab8ca257071bdc5d7a663c24d44b518b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -613,6 +633,154 @@ template&lt;typename Input , typename Range , typename NewRange &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="aaf4826253a08f0cd26782f7cb8328e82"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr Enum sjsu::operator| </td>
+          <td>(</td>
+          <td class="paramtype">Enum&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Enum&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The following is the same for all operators beyond this point.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Enum</td><td>is the type used in this operator overload </td></tr>
+    <tr><td class="paramname">class=</td><td>is used as a select. The compiler will use this implementation of the | operator if that type has a EnableBitMaskOperators_t&lt;&gt; specialization of the Enum type or, in other words, the SJ2_ENABLE_BITMASK_OPERATORS was used on it.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an enum class that is the | of the two input enum operators. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa79e71ad78594c5dc7af1a5b5bffdd90"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* sjsu::Stringify </td>
+          <td>(</td>
+          <td class="paramtype">FRESULT&#160;</td>
+          <td class="paramname"><em>result</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>- the fatfs result to convert to a string description. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a string description of the passed fatfs result. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a348f1e255225c6385c2759b49c111c5f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char* sjsu::Stringify </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td>
+          <td class="paramname"><em>status</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">status</td><td>- the status code to convert to a string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a string representation of the status code. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a11e9a8820c447020c5b3206659e6b116"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t sjsu::StringLength </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>- a string to have its length computed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The length of the input string. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6f02778e34f958f03f01da8e11a5ad98"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Enum &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto sjsu::Value </td>
+          <td>(</td>
+          <td class="paramtype">Enum&#160;</td>
+          <td class="paramname"><em>enum_type_value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="../../d4/d55/classsjsu_1_1Example.html">Example</a>: </p><pre class="fragment"> enum class SomeType : uint32_t { kValue1 = 1, kValue2 = 2 };
+ SomeType some_variable = SomeType::kValue1;
+ uint32_t numeric_variable = util::Value(some_variable);
+</pre><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Enum</td><td>Do not supply the function with this parameter. This is deduced from the input parameter of the function. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enum_type_value</td><td>variable you would like to get the value of. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the numeric value of the enum class type variable of with the underlying type of the enum class. This should be used in place of static_cast&lt;some_numeric_type&gt;(some_variable). </dd></dl>
 
 </div>
 </div>

@@ -12,12 +12,14 @@ namespace sjsu
 {
 namespace build
 {
+/// Defines the number of build targets available for SJSU-Dev2.
 enum class Target
 {
   Application = 0,  // NOLINT
   HostTest,         // NOLINT
 };
-
+/// Defines the list of build platforms that SJSU-Dev2 can build applications
+/// for.
 enum class Platform
 {
   lpc17xx,  // NOLINT
@@ -28,6 +30,8 @@ enum class Platform
 constexpr const Target kTarget     = Target::TARGET;
 constexpr const Platform kPlatform = Platform::PLATFORM;
 
+/// @param target - the target to convert to a string
+/// @return a string representation of the target.
 constexpr const char * Stringify(Target target)
 {
   const char * result = "invalid";
@@ -39,7 +43,8 @@ constexpr const char * Stringify(Target target)
   }
   return result;
 }
-
+/// @param platform - the platform to convert to a string
+/// @return a string representation of the platform.
 constexpr const char * Stringify(Platform platform)
 {
   const char * result = "invalid";
@@ -52,6 +57,5 @@ constexpr const char * Stringify(Platform platform)
   }
   return result;
 }
-
 }  // namespace build
 }  // namespace sjsu

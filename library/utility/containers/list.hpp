@@ -9,12 +9,15 @@
 
 namespace sjsu
 {
-
+/// Fallback list Node for compilers not defined in the macro below.
 template <class T>
 struct FallbackListNode_t
 {
+  /// Pointer to the previous value.
   void * a;
+  /// Pointer to the next value.
   void * b;
+  /// Node value
   T c;
 };
 

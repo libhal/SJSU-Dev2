@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['b',['b',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#adb16414448c0857eea4a638fbe8f717d',1,'sjsu::FallbackListNode_t']]],
+  ['basename',['basename',['../d2/ddb/structsjsu_1_1FileBasename__t.html#ae572ba96379d91a13e4daed8727bd8bf',1,'sjsu::FileBasename_t']]],
+  ['basenamelength',['BasenameLength',['../d0/d6b/namespacesjsu.html#a9ead998e2ac62523001932e91dbd793d',1,'sjsu']]],
   ['bias',['Bias',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246',1,'sjsu::lpc40xx::Dac']]],
   ['buffer_5ft',['Buffer_t',['../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html',1,'sjsu::Esp8266']]],
   ['burstmode',['BurstMode',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae3771dcd8323f29bbee55c9c61871899',1,'sjsu::lpc40xx::Adc']]],

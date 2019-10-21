@@ -110,20 +110,36 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::FileBasename_t&lt; kPathLength, kBasenameLength &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d4/dce/constexpr_8hpp_source.html">constexpr.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a708f982402536948ebdc100aa18c131b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a708f982402536948ebdc100aa18c131b"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FileBasename_t</b> (const char(&amp;path)[kPathLength])</td></tr>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddb/structsjsu_1_1FileBasename__t.html#a708f982402536948ebdc100aa18c131b">FileBasename_t</a> (const char(&amp;path)[kPathLength])</td></tr>
+<tr class="memdesc:a708f982402536948ebdc100aa18c131b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the contents of the basename into the char[] basename field. <br /></td></tr>
 <tr class="separator:a708f982402536948ebdc100aa18c131b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ae572ba96379d91a13e4daed8727bd8bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae572ba96379d91a13e4daed8727bd8bf"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><b>basename</b> [kBasenameLength]</td></tr>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddb/structsjsu_1_1FileBasename__t.html#ae572ba96379d91a13e4daed8727bd8bf">basename</a> [kBasenameLength]</td></tr>
+<tr class="memdesc:ae572ba96379d91a13e4daed8727bd8bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the path's basename string. <br /></td></tr>
 <tr class="separator:ae572ba96379d91a13e4daed8727bd8bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;size_t kPathLength, size_t kBasenameLength&gt;<br />
+struct sjsu::FileBasename_t&lt; kPathLength, kBasenameLength &gt;</h3>
+
+<p>Constructing this structure with a file path, will generate a structure with a character array containing just the bare basename.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">kPathLength</td><td>- length of the full string path </td></tr>
+    <tr><td class="paramname">kBasenameLength</td><td>- length of the string basename. </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/utility/<a class="el" href="../../d4/dce/constexpr_8hpp_source.html">constexpr.hpp</a></li>
 </ul>
 </div><!-- contents -->

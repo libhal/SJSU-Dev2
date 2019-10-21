@@ -4,7 +4,9 @@
 
 namespace sjsu
 {
-inline const char * ToString(FRESULT result)
+/// @param result - the fatfs result to convert to a string description.
+/// @return a string description of the passed fatfs result.
+inline const char * Stringify(FRESULT result)
 {
   static const char * k_result_string_table[] = {
     [FR_OK]       = "(0) Succeeded",

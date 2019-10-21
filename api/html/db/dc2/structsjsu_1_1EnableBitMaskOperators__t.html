@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>SJSU-Dev2: sjsu::EnableBitMaskOperators_t&lt; Enum &gt; Struct Template Reference</title>
+        <title>SJSU-Dev2: sjsu::EnableBitMaskOperators_t&lt; typename &gt; Struct Template Reference</title>
         <!--<link href="../../tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="../../dynsections.js"></script>
         <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
@@ -106,17 +106,31 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../de/db4/structsjsu_1_1EnableBitMaskOperators__t-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::EnableBitMaskOperators_t&lt; Enum &gt; Struct Template Reference</div>  </div>
+<div class="title">sjsu::EnableBitMaskOperators_t&lt; typename &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../dd/d0a/enum_8hpp_source.html">enum.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a084d85292748e1a4905d8301f1a50862"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a084d85292748e1a4905d8301f1a50862"></a>
-static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>kEnable</b> = false</td></tr>
-<tr class="separator:a084d85292748e1a4905d8301f1a50862"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a231e2b72425ff832d7e971a2650089b0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a231e2b72425ff832d7e971a2650089b0"></a>
+static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dc2/structsjsu_1_1EnableBitMaskOperators__t.html#a231e2b72425ff832d7e971a2650089b0">kEnable</a> = false</td></tr>
+<tr class="memdesc:a231e2b72425ff832d7e971a2650089b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, unlocks the enum bitwise operations on the enum class. <br /></td></tr>
+<tr class="separator:a231e2b72425ff832d7e971a2650089b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename&gt;<br />
+struct sjsu::EnableBitMaskOperators_t&lt; typename &gt;</h3>
+
+<p>This struct is used in the template evaluation to determine if bitwise operators are enabled. This generic instance will match with all enumeration types that do not have their own template specializations. This will disable bit mask operations for all types. See the comments for SJ2_ENABLE_BITMASK_OPERATIONS for more details for the template specialization.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">If</td><td>any other type that does not have a type specialization for <a class="el" href="../../db/dc2/structsjsu_1_1EnableBitMaskOperators__t.html">EnableBitMaskOperators_t</a> is used, the kEnable flag will be declared as false. </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/utility/<a class="el" href="../../dd/d0a/enum_8hpp_source.html">enum.hpp</a></li>
 </ul>
 </div><!-- contents -->

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['a',['a',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#a9c48cd871987d2e96432228bd6f3bc6f',1,'sjsu::FallbackListNode_t']]],
   ['accelerometer',['Accelerometer',['../d2/d7b/classsjsu_1_1Accelerometer.html',1,'sjsu']]],
   ['adc',['Adc',['../d0/dc1/classsjsu_1_1Adc.html',1,'sjsu']]],
   ['adc',['Adc',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a8ab74e7f1d0ae68be925a93790029c4f',1,'sjsu::lpc40xx::Adc']]],
@@ -14,8 +15,8 @@ var searchData=
   ['addressstring_5ft',['AddressString_t',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html',1,'sjsu::I2cCommand']]],
   ['addtask',['AddTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab2cb704019734dfbe774efe8f257d443',1,'sjsu::rtos::TaskScheduler']]],
   ['apds9960',['Apds9960',['../d8/d99/classsjsu_1_1Apds9960.html',1,'sjsu']]],
-  ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu']]],
   ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html#a5f9b57a035215dbf0686c93a724fa190',1,'sjsu::Arena']]],
+  ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu']]],
   ['arguments_5ft',['Arguments_t',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html',1,'sjsu::I2cCommand']]],
   ['attachinterrupt',['AttachInterrupt',['../dd/d3a/classsjsu_1_1Gpio.html#a4786313eb197e4fdf37aa8bddf66ba4e',1,'sjsu::Gpio::AttachInterrupt()'],['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a078ed1bcd2be20bd05946f1313763996',1,'sjsu::lpc17xx::Gpio::AttachInterrupt()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a19f481f4dd04db166941c233b5bf558d',1,'sjsu::lpc40xx::Gpio::AttachInterrupt()']]],
   ['autocomplete',['AutoComplete',['../d9/db2/classsjsu_1_1CommandInterface.html#a00b4ad214faf72ef3391ca6fd5f1b798',1,'sjsu::CommandInterface']]],
