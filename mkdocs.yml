@@ -55,7 +55,9 @@ nav:
     - L1 Peripheral:
       - 'design_docs/L1/counter.md'
     - L2 Hardware Abstraction:
-      - 'design_docs/L2/none.md'
+      - 'design_docs/L2/accelerometer.md'
+      - Accelerometer:
+        - 'design_docs/L2/accelerometer/mma8452q.md'
     - L3 Application:
       - 'design_docs/L3/none.md'
     - Utility:
