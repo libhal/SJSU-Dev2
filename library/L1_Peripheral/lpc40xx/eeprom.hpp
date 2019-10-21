@@ -10,51 +10,66 @@ namespace sjsu
 {
 namespace lpc40xx
 {
+/// Implementation of the EEPROM interface for the LPC40xx family of
+/// microcontrollers.
 class Eeprom final : public sjsu::Eeprom
 {
  public:
+  /// Pointer to the LPC EEPROM peripheral in memory
   inline static LPC_EEPROM_TypeDef * eeprom_register = LPC_EEPROM;
 
+  /// This driver only supports reading and writing to the EEPROM in 32-bit
+  /// mode, which means addresses must be multiples of 4 to avoid hard faults.
+  /// To enforce this, all addresses used to read/write to the EEPROM have to
+  /// be masked.
   static constexpr uint32_t kAddressMask = 0b1111'1111'1100;
 
-  static constexpr uint8_t kProgramStatusBit   = 28;
-  static constexpr uint8_t kReadWriteStatusBit = 26;
+  /// Which bits in the status register correspond to programming the EEPROM
+  /// vs. reading and writing to it
+  enum eeprom_status_bits {
+    kProgramStatusBit   = 28,
+    kReadWriteStatusBit = 26
+  };
 
-  // EEPROM Command codes
-  static constexpr uint8_t kRead32Bits    = 0b010;
-  static constexpr uint8_t kWrite32Bits   = 0b101;
-  static constexpr uint8_t kEraseProgram  = 0b110;
+  /// EEPROM Command codes for reading from, writing to, and programming the
+  /// device
+  enum eeprom_command_codes {
+    kRead32Bits    = 0b010,
+    kWrite32Bits   = 0b101,
+    kEraseProgram  = 0b110
+  };
 
-  // Max timeout for program/write operations
-  static constexpr uint16_t kMaxTimeout = 20;
+  /// Max timeout for program/write operations in milliseconds
+  static constexpr std::chrono::milliseconds kMaxTimeout = 20ms;
 
-  // Getting actual SystemController Object
+  /// Getting actual SystemController Object
   static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
       sjsu::lpc40xx::SystemController();
 
-  // Constructor has an optional SystemController parameter which can be
-  // specified for testing purposes. Otherwise, the actual SystemController
-  // object is used (kLpc40xxSystemController)
+  /// Constructor has an optional SystemController parameter which can be
+  /// specified for testing purposes. Otherwise, the actual SystemController
+  /// object is used (kLpc40xxSystemController)
   explicit constexpr Eeprom(const sjsu::SystemController & system_controller =
                              kLpc40xxSystemController)
       : system_controller_(system_controller)
   {
   }
 
-  // Initializing the EEPROM requires setting the wait state register,
-  // and the clock divider register
+  /// Initializing the EEPROM requires setting the wait state register, setting
+  /// the clock divider register, and ensuring that the device is powered on.
   void Initialize() const override
   {
     const float kSystemClock    = static_cast<float>
                                     (system_controller_.GetSystemFrequency());
-    constexpr float kEepromClk  = 375'000;  // EEPROM runs at 375 kHz
+    // The EEPROM runs at 375 kHz
+    constexpr float kEepromClk  = 375'000;
     constexpr float kNanosecond = 1E-9f;
 
     // The EEPROM is turned on by default, but in case it was somehow
     // turned off, we turn it on by writing 0 to the PWRDWN register
     eeprom_register->PWRDWN = 0;
 
-    // Initialzie EEPROM wait state register with number of wait states
+    // Initialize EEPROM wait state register with number of wait states
     // for each of its internal phases
     // Phase 3 (15 ns)
     eeprom_register->WSTATE |=
@@ -70,16 +85,17 @@ class Eeprom final : public sjsu::Eeprom
     eeprom_register->CLKDIV = static_cast<uint8_t>(kSystemClock / kEepromClk);
   }
 
-  // The EEPROM can only be interfaced in 32-bit mode, which means that the
-  // address used must be a multiple of 4. The address entered will be cut
-  // down to a multiple of 4.
+  /// This function will write however much data to the EEPROM that the user
+  /// specifies. The maximum size of the EEPROM is 64 KB.
+  ///
+  /// @param wdata        - array of data to be written to EEPROM
+  /// @param full_address - address where data will start being written to
+  /// @param count        - number of bytes that have to be transferred
   void Write(const uint8_t * wdata, uint32_t full_address,
              size_t count) const override
   {
     constexpr uint8_t kMax6Bits = 0b11'1111;
 
-    // Writing a 32-bit number to an address that isn't a multiple of 4 will
-    // cause a hard fault, thus this safety is put into place to avoid that.
     full_address &= kAddressMask;
 
     // Because the EEPROM uses 32-bit communication, write_data will be casted
@@ -110,7 +126,7 @@ class Eeprom final : public sjsu::Eeprom
         return !(eeprom_register->INT_STATUS >> kReadWriteStatusBit & 1);
       };
 
-      Wait(std::chrono::milliseconds(kMaxTimeout), check_register);
+      Wait(kMaxTimeout, check_register);
 
       // Clear write interrupt
       eeprom_register->INT_CLR_STATUS = (1 << kReadWriteStatusBit);
@@ -131,8 +147,8 @@ class Eeprom final : public sjsu::Eeprom
     Program(address);
   }
 
-  // The EEPROM is accessed through a 64 byte page buffer, and after it fills
-  // up, it must be programmed to the actual EEPROM. This function handles that.
+  /// The EEPROM is accessed through a 64 byte page buffer, and after it fills
+  /// up, it must be programmed to the EEPROM. This function handles that.
   void Program(uint32_t address) const
   {
     eeprom_register->ADDR = address;
@@ -144,22 +160,20 @@ class Eeprom final : public sjsu::Eeprom
       return !(eeprom_register->INT_STATUS >> kProgramStatusBit & 1);
     };
 
-    // Wait((!(eeprom_register->INT_STATUS >> kReadWriteStatusBit)) & 1);
-    Wait(std::chrono::milliseconds(kMaxTimeout), check_register);
+    Wait(kMaxTimeout, check_register);
 
     // Clear program interrupt
     eeprom_register->INT_CLR_STATUS = (1 << kProgramStatusBit);
   }
 
-  // This function will return however much 32-bit data from the EEPROM
-  // starting at address and continuing on for how large count is. The EEPROM
-  // can only be interfaced in 32-bit mode, which means that the address used
-  // must be a multiple of 4. The address entered will be cut down to a
-  // multiple of 4.
+  /// This function will return however much 32-bit data from the EEPROM
+  /// starting at address and continuing on for how large count is.
+  ///
+  /// @param rdata   - array that read data will be stored in
+  /// @param address - address where data will start being read from
+  /// @param count   - number of bytes that have to be read
   void Read(uint8_t * rdata, uint32_t address, size_t count) const override
   {
-    // Writing a 32-bit number to an address that isn't a multiple of 4 will
-    // cause a hard fault, thus this safety is put into place to avoid that.
     address &= kAddressMask;
 
     // Because the EEPROM uses 32-bit communication, read_data will be casted
