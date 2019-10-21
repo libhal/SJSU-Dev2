@@ -1,6 +1,7 @@
 var searchData=
 [
   ['kactivebits',['kActiveBits',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae062fa73ba090adab38b1b423715fb32',1,'sjsu::lpc40xx::Adc']]],
+  ['kaddressmask',['kAddressMask',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad22c8776def99aacbea29d54416c5338',1,'sjsu::lpc40xx::Eeprom']]],
   ['kanalogdigitalmode',['kAnalogDigitalMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae61e2249bae8c7c80388023447b3def0',1,'sjsu::lpc40xx::Pin']]],
   ['kbias',['kBias',['../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html#aa98aaa5479a5da965d827fa510ecf34f',1,'sjsu::lpc40xx::Dac::Control']]],
   ['kblocksize',['kBlockSize',['../dc/d5f/classsjsu_1_1Sd.html#a392f2c4132fdf3b0656a766004347f17',1,'sjsu::Sd']]],
@@ -46,8 +47,10 @@ var searchData=
   ['ki2ctimeout',['kI2cTimeout',['../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921',1,'sjsu::I2c']]],
   ['kinputinvert',['kInputInvert',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a879bb451244d3203cffb018e4e00bd03',1,'sjsu::lpc40xx::Pin']]],
   ['kinterruptcontroller',['kInterruptController',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a425c749ca3355abfe3292a49de18e5dd',1,'sjsu::lpc17xx::Gpio::kInterruptController()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#acb3374ba6022e4cd6b98ca6cd7b9c1bf',1,'sjsu::lpc40xx::Gpio::kInterruptController()'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a07f910f4228273fbcc5ac1a7e55dddc0',1,'sjsu::lpc40xx::I2c::kInterruptController()']]],
+  ['klpc40xxsystemcontroller',['kLpc40xxSystemController',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afa2b165f318ca821d1f62e82dd133b51',1,'sjsu::lpc40xx::Eeprom']]],
   ['kmasterdisable',['kMasterDisable',['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html#ac48f636441e558c588ece5a159b348e5',1,'sjsu::lpc40xx::Pwm::Timer']]],
   ['kmaximumvalue',['kMaximumValue',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aef44a1f54473eb577d94c6217d04ad8c',1,'sjsu::lpc40xx::Dac']]],
+  ['kmaxtimeout',['kMaxTimeout',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a66ffe664a475b8859da7348e2d3fbe69',1,'sjsu::lpc40xx::Eeprom']]],
   ['kmode',['kMode',['../d3/d2d/structsjsu_1_1lpc40xx_1_1Pwm_1_1CountControl.html#ab289047b98a83519d3c45d29e62d4ad7',1,'sjsu::lpc40xx::Pwm::CountControl']]],
   ['kname',['kName',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a0a7a81b7a00e4ed82935d1c357bba91f',1,'sjsu::rtos::Task']]],
   ['knone',['kNone',['../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95a35c3ace1970663a16e5c65baa5941b13',1,'sjsu::Pin']]],

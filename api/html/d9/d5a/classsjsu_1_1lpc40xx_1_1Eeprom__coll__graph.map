@@ -1,5 +1,5 @@
 <map id="sjsu::lpc40xx::Eeprom" name="sjsu::lpc40xx::Eeprom">
-<area shape="rect" id="node2" href="$d9/df3/classsjsu_1_1Eeprom.html" title="sjsu::Eeprom" alt="" coords="5,81,111,108"/>
+<area shape="rect" id="node2" href="$d9/df3/classsjsu_1_1Eeprom.html" title="An abstract interface for communicating with EEPROM devices. " alt="" coords="5,81,111,108"/>
 <area shape="rect" id="node3" href="$d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="135,81,357,108"/>
 <area shape="rect" id="node4" href="$df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="163,5,329,32"/>
 </map>

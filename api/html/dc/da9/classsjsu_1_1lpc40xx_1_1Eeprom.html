@@ -103,6 +103,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../da/de1/classsjsu_1_1lpc40xx_1_1Eeprom-members.html">List of all members</a>  </div>
@@ -110,12 +111,14 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::lpc40xx::Eeprom Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../de/d6c/lpc40xx_2eeprom_8hpp_source.html">eeprom.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::lpc40xx::Eeprom:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d0/d0d/classsjsu_1_1lpc40xx_1_1Eeprom__inherit__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Eeprom_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Eeprom_inherit__map" id="sjsu_1_1lpc40xx_1_1Eeprom_inherit__map">
-<area shape="rect" id="node2" href="../../d9/df3/classsjsu_1_1Eeprom.html" title="sjsu::Eeprom" alt="" coords="33,5,139,32"/>
+<area shape="rect" id="node2" href="../../d9/df3/classsjsu_1_1Eeprom.html" title="An abstract interface for communicating with EEPROM devices. " alt="" coords="33,5,139,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -123,60 +126,286 @@ Collaboration diagram for sjsu::lpc40xx::Eeprom:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d5a/classsjsu_1_1lpc40xx_1_1Eeprom__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Eeprom_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Eeprom_coll__map" id="sjsu_1_1lpc40xx_1_1Eeprom_coll__map">
-<area shape="rect" id="node2" href="../../d9/df3/classsjsu_1_1Eeprom.html" title="sjsu::Eeprom" alt="" coords="5,81,111,108"/>
+<area shape="rect" id="node2" href="../../d9/df3/classsjsu_1_1Eeprom.html" title="An abstract interface for communicating with EEPROM devices. " alt="" coords="5,81,111,108"/>
 <area shape="rect" id="node3" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="135,81,357,108"/>
 <area shape="rect" id="node4" href="../../df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="163,5,329,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a7a3b60a9c98060ad430e3c4f0394f549"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a7a3b60a9c98060ad430e3c4f0394f549">eeprom_status_bits</a> { <b>kProgramStatusBit</b> = 28, 
+<b>kReadWriteStatusBit</b> = 26
+ }</td></tr>
+<tr class="separator:a7a3b60a9c98060ad430e3c4f0394f549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09833ba2fb1d9b4e6ca07aa35c8f8f44"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a09833ba2fb1d9b4e6ca07aa35c8f8f44">eeprom_command_codes</a> { <b>kRead32Bits</b> = 0b010, 
+<b>kWrite32Bits</b> = 0b101, 
+<b>kEraseProgram</b> = 0b110
+ }</td></tr>
+<tr class="separator:a09833ba2fb1d9b4e6ca07aa35c8f8f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a165a81bf628190020bef130504105672"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a165a81bf628190020bef130504105672"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Eeprom</b> (const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=kLpc40xxSystemController)</td></tr>
+<tr class="memitem:a165a81bf628190020bef130504105672"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a165a81bf628190020bef130504105672">Eeprom</a> (const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=<a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afa2b165f318ca821d1f62e82dd133b51">kLpc40xxSystemController</a>)</td></tr>
 <tr class="separator:a165a81bf628190020bef130504105672"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9625b589a8ff0f752652c92c3c5ba9e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9625b589a8ff0f752652c92c3c5ba9e7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () const override</td></tr>
+<tr class="memitem:a9625b589a8ff0f752652c92c3c5ba9e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a9625b589a8ff0f752652c92c3c5ba9e7">Initialize</a> () const override</td></tr>
 <tr class="separator:a9625b589a8ff0f752652c92c3c5ba9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a881ddad19bb9ab33dbac9aece443d7f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a881ddad19bb9ab33dbac9aece443d7f1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (const uint8_t *wdata, uint32_t full_address, size_t count) const override</td></tr>
+<tr class="memitem:a881ddad19bb9ab33dbac9aece443d7f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a881ddad19bb9ab33dbac9aece443d7f1">Write</a> (const uint8_t *wdata, uint32_t full_address, size_t count) const override</td></tr>
+<tr class="memdesc:a881ddad19bb9ab33dbac9aece443d7f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will write however much data to the EEPROM that the user specifies. The maximum size of the EEPROM is 64 KB.  <a href="#a881ddad19bb9ab33dbac9aece443d7f1">More...</a><br /></td></tr>
 <tr class="separator:a881ddad19bb9ab33dbac9aece443d7f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22c46f30e7ae1646082c3a1f89dc494c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22c46f30e7ae1646082c3a1f89dc494c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Program</b> (uint32_t address) const </td></tr>
+<tr class="memitem:a22c46f30e7ae1646082c3a1f89dc494c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a22c46f30e7ae1646082c3a1f89dc494c">Program</a> (uint32_t address) const </td></tr>
 <tr class="separator:a22c46f30e7ae1646082c3a1f89dc494c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05d7768f0627db935ded2b433187103f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05d7768f0627db935ded2b433187103f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (uint8_t *rdata, uint32_t address, size_t count) const override</td></tr>
+<tr class="memitem:a05d7768f0627db935ded2b433187103f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a05d7768f0627db935ded2b433187103f">Read</a> (uint8_t *rdata, uint32_t address, size_t count) const override</td></tr>
 <tr class="separator:a05d7768f0627db935ded2b433187103f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a3faf44bc640f083da8fe8e278cd105f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3faf44bc640f083da8fe8e278cd105f5"></a>
-static LPC_EEPROM_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><b>eeprom_register</b> = LPC_EEPROM</td></tr>
+static LPC_EEPROM_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a3faf44bc640f083da8fe8e278cd105f5">eeprom_register</a> = LPC_EEPROM</td></tr>
+<tr class="memdesc:a3faf44bc640f083da8fe8e278cd105f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the LPC EEPROM peripheral in memory. <br /></td></tr>
 <tr class="separator:a3faf44bc640f083da8fe8e278cd105f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad22c8776def99aacbea29d54416c5338"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad22c8776def99aacbea29d54416c5338"></a>
-static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>kAddressMask</b> = 0b1111'1111'1100</td></tr>
+<tr class="memitem:ad22c8776def99aacbea29d54416c5338"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad22c8776def99aacbea29d54416c5338">kAddressMask</a> = 0b1111'1111'1100</td></tr>
 <tr class="separator:ad22c8776def99aacbea29d54416c5338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac03f529d2f064e8e300a3e22238dcadb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac03f529d2f064e8e300a3e22238dcadb"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kProgramStatusBit</b> = 28</td></tr>
-<tr class="separator:ac03f529d2f064e8e300a3e22238dcadb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38e8d06eefecdfdf725c81c491b91167"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38e8d06eefecdfdf725c81c491b91167"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kReadWriteStatusBit</b> = 26</td></tr>
-<tr class="separator:a38e8d06eefecdfdf725c81c491b91167"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2b8ca392e942b07bd841f32464ac0e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2b8ca392e942b07bd841f32464ac0e7"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kRead32Bits</b> = 0b010</td></tr>
-<tr class="separator:af2b8ca392e942b07bd841f32464ac0e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3ad37155f5a160837c43c0c209e171e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3ad37155f5a160837c43c0c209e171e"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kWrite32Bits</b> = 0b101</td></tr>
-<tr class="separator:ad3ad37155f5a160837c43c0c209e171e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d9772ca62fcbbbb2efcf16e06d93ffb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d9772ca62fcbbbb2efcf16e06d93ffb"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kEraseProgram</b> = 0b110</td></tr>
-<tr class="separator:a0d9772ca62fcbbbb2efcf16e06d93ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a70cf048c3f2af50c3d80053803aabd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a70cf048c3f2af50c3d80053803aabd"></a>
-static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMaxTimeout</b> = 20</td></tr>
-<tr class="separator:a1a70cf048c3f2af50c3d80053803aabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa2b165f318ca821d1f62e82dd133b51"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">sjsu::lpc40xx::SystemController</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kLpc40xxSystemController</b></td></tr>
+<tr class="memitem:a66ffe664a475b8859da7348e2d3fbe69"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66ffe664a475b8859da7348e2d3fbe69"></a>
+static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a66ffe664a475b8859da7348e2d3fbe69">kMaxTimeout</a> = 20ms</td></tr>
+<tr class="memdesc:a66ffe664a475b8859da7348e2d3fbe69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max timeout for program/write operations in milliseconds. <br /></td></tr>
+<tr class="separator:a66ffe664a475b8859da7348e2d3fbe69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa2b165f318ca821d1f62e82dd133b51"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">sjsu::lpc40xx::SystemController</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afa2b165f318ca821d1f62e82dd133b51">kLpc40xxSystemController</a></td></tr>
+<tr class="memdesc:afa2b165f318ca821d1f62e82dd133b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting actual <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">SystemController</a> Object.  <a href="#afa2b165f318ca821d1f62e82dd133b51">More...</a><br /></td></tr>
 <tr class="separator:afa2b165f318ca821d1f62e82dd133b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementation of the EEPROM interface for the LPC40xx family of microcontrollers. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="a09833ba2fb1d9b4e6ca07aa35c8f8f44"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a09833ba2fb1d9b4e6ca07aa35c8f8f44">sjsu::lpc40xx::Eeprom::eeprom_command_codes</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>EEPROM <a class="el" href="../../d9/d71/classCommand.html">Command</a> codes for reading from, writing to, and programming the device </p>
+
+</div>
+</div>
+<a class="anchor" id="a7a3b60a9c98060ad430e3c4f0394f549"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a7a3b60a9c98060ad430e3c4f0394f549">sjsu::lpc40xx::Eeprom::eeprom_status_bits</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Which bits in the status register correspond to programming the EEPROM vs. reading and writing to it </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a165a81bf628190020bef130504105672"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::lpc40xx::Eeprom::Eeprom </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
+          <td class="paramname"><em>system_controller</em> = <code><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afa2b165f318ca821d1f62e82dd133b51">kLpc40xxSystemController</a></code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor has an optional <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">SystemController</a> parameter which can be specified for testing purposes. Otherwise, the actual <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">SystemController</a> object is used (kLpc40xxSystemController) </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a9625b589a8ff0f752652c92c3c5ba9e7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Eeprom::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializing the EEPROM requires setting the wait state register, setting the clock divider register, and ensuring that the device is powered on. </p>
+
+<p>Implements <a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#a0ff5dcecc8002aae6b9eb094b4b458d0">sjsu::Eeprom</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a22c46f30e7ae1646082c3a1f89dc494c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Eeprom::Program </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>address</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The EEPROM is accessed through a 64 byte page buffer, and after it fills up, it must be programmed to the EEPROM. This function handles that. </p>
+
+</div>
+</div>
+<a class="anchor" id="a05d7768f0627db935ded2b433187103f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Eeprom::Read </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>rdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function will return however much 32-bit data from the EEPROM starting at address and continuing on for how large count is.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rdata</td><td>- array that read data will be stored in </td></tr>
+    <tr><td class="paramname">address</td><td>- address where data will start being read from </td></tr>
+    <tr><td class="paramname">count</td><td>- number of bytes that have to be read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#af919e1a4ada2efb34bf830db1509bff5">sjsu::Eeprom</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a881ddad19bb9ab33dbac9aece443d7f1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::lpc40xx::Eeprom::Write </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>wdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>full_address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This function will write however much data to the EEPROM that the user specifies. The maximum size of the EEPROM is 64 KB. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wdata</td><td>- array of data to be written to EEPROM </td></tr>
+    <tr><td class="paramname">full_address</td><td>- address where data will start being written to </td></tr>
+    <tr><td class="paramname">count</td><td>- number of bytes that have to be transferred </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#aba4129ba0750b8f87b0054a2928e83fb">sjsu::Eeprom</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ad22c8776def99aacbea29d54416c5338"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint32_t sjsu::lpc40xx::Eeprom::kAddressMask = 0b1111'1111'1100</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This driver only supports reading and writing to the EEPROM in 32-bit mode, which means addresses must be multiples of 4 to avoid hard faults. To enforce this, all addresses used to read/write to the EEPROM have to be masked. </p>
+
+</div>
+</div>
 <a class="anchor" id="afa2b165f318ca821d1f62e82dd133b51"></a>
 <div class="memitem">
 <div class="memproto">
@@ -195,6 +424,8 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      <a class="code" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">sjsu::lpc40xx::SystemController</a>()</div></div><!-- fragment -->
+<p>Getting actual <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">SystemController</a> Object. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

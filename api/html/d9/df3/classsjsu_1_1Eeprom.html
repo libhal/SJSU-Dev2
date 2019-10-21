@@ -109,6 +109,11 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Eeprom Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>An abstract interface for communicating with EEPROM devices.  
+ <a href="../../d9/df3/classsjsu_1_1Eeprom.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../db/d04/eeprom_8hpp_source.html">eeprom.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Eeprom:</div>
 <div class="dyncontent">
@@ -120,16 +125,144 @@ Inheritance diagram for sjsu::Eeprom:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0ff5dcecc8002aae6b9eb094b4b458d0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ff5dcecc8002aae6b9eb094b4b458d0"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () const =0</td></tr>
+<tr class="memitem:a0ff5dcecc8002aae6b9eb094b4b458d0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#a0ff5dcecc8002aae6b9eb094b4b458d0">Initialize</a> () const =0</td></tr>
 <tr class="separator:a0ff5dcecc8002aae6b9eb094b4b458d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba4129ba0750b8f87b0054a2928e83fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba4129ba0750b8f87b0054a2928e83fb"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (const uint8_t *wdata, uint32_t address, size_t count) const =0</td></tr>
+<tr class="memitem:aba4129ba0750b8f87b0054a2928e83fb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#aba4129ba0750b8f87b0054a2928e83fb">Write</a> (const uint8_t *wdata, uint32_t address, size_t count) const =0</td></tr>
 <tr class="separator:aba4129ba0750b8f87b0054a2928e83fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af919e1a4ada2efb34bf830db1509bff5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af919e1a4ada2efb34bf830db1509bff5"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (uint8_t *rdata, uint32_t address, size_t count) const =0</td></tr>
+<tr class="memitem:af919e1a4ada2efb34bf830db1509bff5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#af919e1a4ada2efb34bf830db1509bff5">Read</a> (uint8_t *rdata, uint32_t address, size_t count) const =0</td></tr>
 <tr class="separator:af919e1a4ada2efb34bf830db1509bff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An abstract interface for communicating with EEPROM devices. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a0ff5dcecc8002aae6b9eb094b4b458d0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Eeprom::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize and enable hardware. This must be called before any other method in this interface is called. </p>
+
+<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a9625b589a8ff0f752652c92c3c5ba9e7">sjsu::lpc40xx::Eeprom</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af919e1a4ada2efb34bf830db1509bff5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Eeprom::Read </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>rdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads a stream of data from the EEPROM</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rdata</td><td>- array that read data will be stored in </td></tr>
+    <tr><td class="paramname">address</td><td>- address where data will start being read from </td></tr>
+    <tr><td class="paramname">count</td><td>- number of bytes that have to be read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a05d7768f0627db935ded2b433187103f">sjsu::lpc40xx::Eeprom</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aba4129ba0750b8f87b0054a2928e83fb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Eeprom::Write </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>wdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Writes a stream of data to the EEPROM</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wdata</td><td>- array of data to be written to EEPROM </td></tr>
+    <tr><td class="paramname">address</td><td>- address where data will start being written to </td></tr>
+    <tr><td class="paramname">count</td><td>- number of bytes that have to be transferred </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a881ddad19bb9ab33dbac9aece443d7f1">sjsu::lpc40xx::Eeprom</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/<a class="el" href="../../db/d04/eeprom_8hpp_source.html">eeprom.hpp</a></li>
 </ul>
