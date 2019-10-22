@@ -21,7 +21,7 @@ var searchData=
   ['device_3c_20i2cdevice_3c_20kdeviceaddress_2c_20endianess_2c_20memorymap_5ft_20_3e_2c_20endianess_2c_20memorymap_5ft_20_3e',['Device&lt; I2cDevice&lt; kDeviceAddress, endianess, MemoryMap_t &gt;, endianess, MemoryMap_t &gt;',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],
   ['deviceaddress',['DeviceAddress',['../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html',1,'sjsu::Tmp102']]],
   ['direction',['Direction',['../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81',1,'sjsu::Gpio']]],
-  ['disable',['Disable',['../df/d96/classsjsu_1_1PixelDisplay.html#a0f470d25a1fbb6128df65468c4074c1b',1,'sjsu::PixelDisplay']]],
+  ['disable',['Disable',['../d7/ddd/classsjsu_1_1HardwareCounter.html#afac1cecbb38b639ad6560147e2a34ddf',1,'sjsu::HardwareCounter::Disable()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a0f470d25a1fbb6128df65468c4074c1b',1,'sjsu::PixelDisplay::Disable()']]],
   ['disableinterrupts',['DisableInterrupts',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a31b9db629494e8d123a631fb9be920fe',1,'sjsu::lpc17xx::Gpio::DisableInterrupts()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a382416d511b252a9ebf54bc427ddd54a',1,'sjsu::lpc40xx::Gpio::DisableInterrupts()']]],
   ['disabletimer',['DisableTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa13190bddfc1da090d3b3a445ee2eb5d',1,'sjsu::cortex::SystemTimer']]],
   ['distancesensor',['DistanceSensor',['../df/d5c/classsjsu_1_1DistanceSensor.html',1,'sjsu']]],
