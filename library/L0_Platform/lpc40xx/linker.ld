@@ -12,25 +12,25 @@ MEMORY
 {
   /* Define each memory region */
   /* 512kB (alias Flash) */
-  MFlash512 (rx) : ORIGIN = 0, LENGTH = 512K
+  FLASH (rx) : ORIGIN = 0, LENGTH = 512K
   /* 64kB (alias RAM) */
-  RamLoc64 (rwx) : ORIGIN = 0x10000000, LENGTH = 0x10000
+  SRAM (rwx) : ORIGIN = 0x10000000, LENGTH = 0x10000
   /* 32kB (alias RAM2) */
-  RamPeriph32 (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000
+  SRAM_AHB (rwx) : ORIGIN = 0x20000000, LENGTH = 0x8000
 }
 
   /* Define a symbol for the top of each memory region */
-  __base_MFlash512 = 0x0  ; /* MFlash512 */
+  __base_FLASH = 0x0  ; /* FLASH */
   __base_Flash = 0x0 ; /* Flash */
-  __top_MFlash512 = 0x0 + 0x80000 ; /* 512K bytes */
+  __top_FLASH = 0x0 + 0x80000 ; /* 512K bytes */
   __top_Flash = 0x0 + 0x80000 ; /* 512K bytes */
-  __base_RamLoc64 = 0x10000000  ; /* RamLoc64 */
+  __base_SRAM = 0x10000000  ; /* SRAM */
   __base_RAM = 0x10000000 ; /* RAM */
-  __top_RamLoc64 = 0x10000000 + 0x10000 ; /* 64K bytes */
+  __top_SRAM = 0x10000000 + 0x10000 ; /* 64K bytes */
   __top_RAM = 0x10000000 + 0x10000 ; /* 64K bytes */
-  __base_RamPeriph32 = 0x20000000  ; /* RamPeriph32 */
+  __base_SRAM_AHB = 0x20000000  ; /* SRAM_AHB */
   __base_RAM2 = 0x20000000 ; /* RAM2 */
-  __top_RamPeriph32 = 0x20000000 + 0x8000 ; /* 32K bytes */
+  __top_SRAM_AHB = 0x20000000 + 0x8000 ; /* 32K bytes */
   __top_RAM2 = 0x20000000 + 0x8000 ; /* 32K bytes */
   __user_heap_base = __base_RAM2 ; /* SJSU-Dev2: RAM2 is solely for heap */
 
@@ -103,14 +103,14 @@ SECTIONS
 		KEEP (*(SORT(.dtors.*)))
 		KEEP (*crtend.o(.dtors))
         /* End C++ */
-    } >MFlash512
+    } >FLASH
 
     .text : ALIGN(4)
     {
         *(.text*)
         *(.rodata .rodata.* .constdata .constdata.*)
         . = ALIGN(4);
-    } > MFlash512
+    } > FLASH
     /*
      * for exception handling/unwind - some Newlib functions (in common
      * with C++ and STDC++) use this.
@@ -118,29 +118,29 @@ SECTIONS
     .ARM.extab : ALIGN(4)
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } > MFlash512
+    } > FLASH
     __exidx_start = .;
 
     .ARM.exidx : ALIGN(4)
     {
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    } > MFlash512
+    } > FLASH
     __exidx_end = .;
 
     _etext = .;
 
-    /* DATA section for RamPeriph32 */
+    /* DATA section for SRAM_AHB */
     .data_RAM2 : ALIGN(4)
     {
         FILL(0xff)
         PROVIDE(__start_data_RAM2 = .) ;
         *(.ramfunc.$RAM2)
-        *(.ramfunc.$RamPeriph32)
+        *(.ramfunc.$SRAM_AHB)
         *(.data.$RAM2*)
-        *(.data.$RamPeriph32*)
+        *(.data.$SRAM_AHB*)
         . = ALIGN(4) ;
         PROVIDE(__end_data_RAM2 = .) ;
-     } > RamPeriph32 AT>MFlash512
+     } > SRAM_AHB AT>FLASH
 
     /* MAIN DATA SECTION */
     .uninit_RESERVED : ALIGN(4)
@@ -148,8 +148,8 @@ SECTIONS
         KEEP(*(.bss.$RESERVED*))
         . = ALIGN(4) ;
         _end_uninit_RESERVED = .;
-    } > RamLoc64
-    /* Main DATA section (RamLoc64) */
+    } > SRAM
+    /* Main DATA section (SRAM) */
     .data : ALIGN(4)
     {
        FILL(0xff)
@@ -159,16 +159,16 @@ SECTIONS
        *(.data*)
        . = ALIGN(4) ;
        _edata = . ;
-    } > RamLoc64 AT>MFlash512
-    /* BSS section for RamPeriph32 */
+    } > SRAM AT>FLASH
+    /* BSS section for SRAM_AHB */
     .bss_RAM2 : ALIGN(4)
     {
        PROVIDE(__start_bss_RAM2 = .) ;
        *(.bss.$RAM2*)
-       *(.bss.$RamPeriph32*)
+       *(.bss.$SRAM_AHB*)
        . = ALIGN (. != 0 ? 4 : 1) ; /* avoid empty segment */
        PROVIDE(__end_bss_RAM2 = .) ;
-    } > RamPeriph32
+    } > SRAM_AHB
     /* MAIN BSS SECTION */
     .bss : ALIGN(4)
     {
@@ -178,14 +178,14 @@ SECTIONS
         . = ALIGN(4) ;
         _ebss = .;
         PROVIDE(end = .);
-    } > RamLoc64
-    /* NOINIT section for RamPeriph32 */
+    } > SRAM
+    /* NOINIT section for SRAM_AHB */
     .noinit_RAM2 (NOLOAD) : ALIGN(4)
     {
        *(.noinit.$RAM2*)
-       *(.noinit.$RamPeriph32*)
+       *(.noinit.$SRAM_AHB*)
        . = ALIGN(4) ;
-    } > RamPeriph32
+    } > SRAM_AHB
     /* DEFAULT NOINIT SECTION */
     .noinit (NOLOAD): ALIGN(4)
     {
@@ -193,9 +193,9 @@ SECTIONS
         *(.noinit*)
          . = ALIGN(4) ;
         _end_noinit = .;
-    } > RamLoc64
+    } > SRAM
 
     PROVIDE(heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
     PROVIDE(heap_end = __top_RAM2);
-    PROVIDE(StackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_RamLoc64 - 0);
+    PROVIDE(StackTop = DEFINED(__user_stack_top) ? __user_stack_top : __top_SRAM - 0);
 }
