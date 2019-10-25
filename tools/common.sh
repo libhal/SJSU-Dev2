@@ -31,7 +31,7 @@ function print_divider
   printf "$BOLD_YELLOW"
   printf "_____________________________________________________________________"
   printf "\n\n"
-  printf "$1\n"
+  printf "$BOLD_WHITE $1\n"
   printf "_____________________________________________________________________"
   printf "\n"
   printf "$RESET\n"

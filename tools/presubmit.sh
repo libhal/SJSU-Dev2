@@ -45,7 +45,7 @@ function check
     printf "\e[0;32m|           (⌐▪_▪)           |\e[0m\n"
     sleep .5
     printf "\e[0;32m|                            |\e[0m\n"
-    printf "\e[0;32m|      You may commit        |\e[0m\n"
+    printf "\e[0;32m|       You may commit       |\e[0m\n"
     printf "\e[0;32m ============================ \e[0m\n"
     exit 0
   fi
