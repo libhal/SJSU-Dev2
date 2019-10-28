@@ -36,7 +36,10 @@ else # For all other platforms
   fi
   # When the GDB session closes, kill openocd below
   $DEVICE_GDB $EXECUTABLE \
-      -ex "target remote :3333" -ex "monitor arm semihosting enable" $GDB_ARGS
+      -ex "source $GDBINIT_PATH" \
+      -ex "target remote :3333" \
+      -ex "monitor arm semihosting enable" \
+      $GDB_ARGS
 
   echo "Killing OpenOCD PID: $OPENOCD_PID"
   kill $OPENOCD_PID

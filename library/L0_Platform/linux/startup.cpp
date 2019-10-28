@@ -19,6 +19,11 @@ int LinuxStdIn(char * data, size_t length)
   return read(STDIN_FILENO, data, length);
 }
 
+extern "C" int _write(int, const char* ptr, int length)  // NOLINT
+{
+  return LinuxStdOut(ptr, length);
+}
+
 std::chrono::microseconds LinuxUptime()
 {
   return std::chrono::duration_cast<std::chrono::microseconds>(
