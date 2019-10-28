@@ -9,3 +9,4 @@ TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/spi_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/uart_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/system_controller_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/watchdog_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/pulse_capture_test.cpp
