@@ -7,6 +7,9 @@
 
 namespace sjsu
 {
+/// ParallelBus is an abstraction for a set of parallel digital input/output
+/// pins that can be used to communicate over a parallel bus, read switch
+/// states, or possibly control control LEDs.
 class ParallelBus
 {
  public:
@@ -41,7 +44,7 @@ class ParallelBus
   /// direction of the pins from OUTPUT to INPUT.
   virtual uint32_t Read() = 0;
   /// Returns the number of parallel pins that make up this parallel bus.
-  virtual size_t BusWidth() const                            = 0;
+  virtual size_t BusWidth() const = 0;
   /// Set the direction of the parallel bus pins.
   ///
   /// @param direction - The direction to set the parallel bus to.
