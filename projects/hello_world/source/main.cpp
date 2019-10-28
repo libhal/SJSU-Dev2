@@ -2,7 +2,6 @@
 
 #include "utility/log.hpp"
 #include "utility/time.hpp"
-#include "third_party/semihost/trace.h"
 
 int main()
 {
