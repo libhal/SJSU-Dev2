@@ -10,5 +10,7 @@ var searchData=
   ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6cae6a6642d6d810bf67a52a137e2d74',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a65e30196ce68adf18a1094613c281713',1,'sjsu::lpc40xx::Pin']]],
   ['enableinterrupts',['EnableInterrupts',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aadccb197280d98e29b2c4a4e8c6559bf',1,'sjsu::lpc17xx::Gpio::EnableInterrupts()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ae58e775559659b47fba85f7e999c5b5c',1,'sjsu::lpc40xx::Gpio::EnableInterrupts()']]],
-  ['enablepwm',['EnablePwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#ad22e92fbe0d7de1101d3bd2fc4556827',1,'sjsu::lpc40xx::Pwm']]]
+  ['enablepwm',['EnablePwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#ad22e92fbe0d7de1101d3bd2fc4556827',1,'sjsu::lpc40xx::Pwm']]],
+  ['examplehalimplementation',['ExampleHalImplementation',['../d7/d4f/classsjsu_1_1ExampleHalImplementation.html#ad8b1d5af72ed6d3c668262a38831153f',1,'sjsu::ExampleHalImplementation']]],
+  ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#afd407530822417a5ce69c2a131bea9b0',1,'sjsu::ExampleSingleImplementationHal']]]
 ];

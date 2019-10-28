@@ -16,6 +16,7 @@ var searchData=
   ['rising_5fedge_5fstatus',['rising_edge_status',['../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html#a379ffdf3ae11253f2adf2269652af716',1,'sjsu::lpc17xx::Gpio::GpioInterruptRegisterMap_t']]],
   ['rtoscommand',['RtosCommand',['../d3/d13/classsjsu_1_1RtosCommand.html',1,'sjsu']]],
   ['run_5fcount_5f',['run_count_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a2a52810dad462e3fff1c2f9d9e33b102',1,'sjsu::rtos::PeriodicTask']]],
+  ['runhalroutine0',['RunHalRoutine0',['../d7/d23/classsjsu_1_1ExampleHal.html#afa39db425d234c1d1df7a37f4334d5cf',1,'sjsu::ExampleHal::RunHalRoutine0()'],['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#a159c764b6118f94f5164626fd90f7e41',1,'sjsu::ExampleSingleImplementationHal::RunHalRoutine0()']]],
   ['rx',['rx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a0bfb6e9a1a73dbd7e23faf3a40f8805a',1,'sjsu::lpc40xx::Uart::Port_t']]],
   ['rx_5ffunction_5fid',['rx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a9430e0d1d6216f3f7b6ddfb82096b757',1,'sjsu::lpc40xx::Uart::Port_t']]],
   ['rxmessage_5ft',['RxMessage_t',['../d8/d53/structsjsu_1_1Can_1_1RxMessage__t.html',1,'sjsu::Can']]]

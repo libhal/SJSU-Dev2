@@ -1,5 +1,4 @@
 L1_Peripheral/can.hpp
-L1_Peripheral/cortex/dwt_counter.hpp
 L1_Peripheral/cortex/interrupt.hpp
 L1_Peripheral/example.hpp
 L1_Peripheral/example/example.hpp
@@ -25,7 +24,6 @@ L2_HAL/displays/lcd/st7066u.hpp
 L2_HAL/displays/led/onboard_led.hpp
 L2_HAL/displays/oled/ssd1306.hpp
 L2_HAL/displays/pixel_display.hpp
-L2_HAL/example.hpp
 L2_HAL/io/parallel_bus.hpp
 L2_HAL/io/parallel_bus/parallel_gpio.hpp
 L2_HAL/memory/sd.hpp

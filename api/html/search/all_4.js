@@ -28,5 +28,6 @@ var searchData=
   ['divide_5fadd',['divide_add',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a805a337d0ddac02557b190af81a8f49e',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
   ['divide_5flatch',['divide_latch',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a811d5016449d3f36725712edd9f93500',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
   ['drawpixel',['DrawPixel',['../db/d32/classsjsu_1_1Ssd1306.html#a23537e08e643eb02a7d21bda108045a5',1,'sjsu::Ssd1306::DrawPixel()'],['../df/d96/classsjsu_1_1PixelDisplay.html#aa9bdf3da6e53f69881d92bdb6c5b3abf',1,'sjsu::PixelDisplay::DrawPixel()']]],
+  ['dwt',['dwt',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a2c6afc4851e31f71ede5b40973b5eac1',1,'sjsu::cortex::DwtCounter']]],
   ['dwtcounter',['DwtCounter',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html',1,'sjsu::cortex']]]
 ];

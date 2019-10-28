@@ -110,25 +110,78 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::cortex::DwtCounter Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d7/dca/dwt__counter_8hpp_source.html">dwt_counter.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aeb68a308c35cfeaa87b41d33c821dbea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb68a308c35cfeaa87b41d33c821dbea"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
+<tr class="memitem:aeb68a308c35cfeaa87b41d33c821dbea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#aeb68a308c35cfeaa87b41d33c821dbea">Initialize</a> ()</td></tr>
 <tr class="separator:aeb68a308c35cfeaa87b41d33c821dbea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a888358662e0404b64907aca2eff30570"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a888358662e0404b64907aca2eff30570"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetCount</b> ()</td></tr>
+<tr class="memitem:a888358662e0404b64907aca2eff30570"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a888358662e0404b64907aca2eff30570">GetCount</a> ()</td></tr>
 <tr class="separator:a888358662e0404b64907aca2eff30570"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a2c6afc4851e31f71ede5b40973b5eac1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c6afc4851e31f71ede5b40973b5eac1"></a>
-static DWT_Type *&#160;</td><td class="memItemRight" valign="bottom"><b>dwt</b> = DWT</td></tr>
+static DWT_Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a2c6afc4851e31f71ede5b40973b5eac1">dwt</a> = DWT</td></tr>
+<tr class="memdesc:a2c6afc4851e31f71ede5b40973b5eac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of the hardware DWT registers. <br /></td></tr>
 <tr class="separator:a2c6afc4851e31f71ede5b40973b5eac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a132ec893313a5c0d5c5f980b070c7e5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a132ec893313a5c0d5c5f980b070c7e5d"></a>
-static CoreDebug_Type *&#160;</td><td class="memItemRight" valign="bottom"><b>core</b> = CoreDebug</td></tr>
+static CoreDebug_Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a132ec893313a5c0d5c5f980b070c7e5d">core</a> = CoreDebug</td></tr>
+<tr class="memdesc:a132ec893313a5c0d5c5f980b070c7e5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of the Cortex M CoreDebug module. <br /></td></tr>
 <tr class="separator:a132ec893313a5c0d5c5f980b070c7e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The DWT (Debug Watch and Trace) module in the Cortex M series of processors has a number of debugging </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a888358662e0404b64907aca2eff30570"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t sjsu::cortex::DwtCounter::GetCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Return the current number of ticks. Note that this is typically 2x the system frequency as it counts on rising and falling edges. </p>
+
+</div>
+</div>
+<a class="anchor" id="aeb68a308c35cfeaa87b41d33c821dbea"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::cortex::DwtCounter::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize the debug core to enable counting and then being counting on the DWT. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/cortex/<a class="el" href="../../d7/dca/dwt__counter_8hpp_source.html">dwt_counter.hpp</a></li>
 </ul>
