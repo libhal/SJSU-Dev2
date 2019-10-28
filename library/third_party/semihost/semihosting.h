@@ -67,6 +67,9 @@ static inline int
 __attribute__ ((always_inline))
 call_host (int reason, void* arg)
 {
+  (void)reason;
+  (void)arg;
+#if !defined(__unix__)
   int value;
   asm volatile (
 
@@ -87,6 +90,9 @@ call_host (int reason, void* arg)
   // registers. Note: we are assuming the manual is right and
   // Angel is respecting the APCS.
   return value;
+#else
+  return 0;
+#endif
 }
 
 // ----------------------------------------------------------------------------
