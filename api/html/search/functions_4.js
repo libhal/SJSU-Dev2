@@ -2,6 +2,7 @@ var searchData=
 [
   ['eeprom',['Eeprom',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a165a81bf628190020bef130504105672',1,'sjsu::lpc40xx::Eeprom']]],
   ['enable',['Enable',['../d7/ddd/classsjsu_1_1HardwareCounter.html#a9ff88b8906f1fdfee4e3408ff271d99f',1,'sjsu::HardwareCounter::Enable()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a1004fd12da67314f8cdae8a80fd95fd1',1,'sjsu::PixelDisplay::Enable()']]],
+  ['enablecaptureinterrupt',['EnableCaptureInterrupt',['../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#af0ec368bae57690717de7a3be3afc42c',1,'sjsu::lpc40xx::PulseCapture::EnableCaptureInterrupt()'],['../d2/d96/classsjsu_1_1PulseCapture.html#a4b8f3f7a50d2cddb75d347415412bb65',1,'sjsu::PulseCapture::EnableCaptureInterrupt()']]],
   ['enabledac',['EnableDac',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae9be77c66c312383ac26df7cbc10d949',1,'sjsu::lpc40xx::Pin']]],
   ['enabledigitalfilter',['EnableDigitalFilter',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ad9ebb9636ad7d1798cda62234dcf1737',1,'sjsu::lpc40xx::Pin']]],
   ['enablefastmode',['EnableFastMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a478da84cc15b6d1eefcfa60f9ea61977',1,'sjsu::lpc40xx::Pin']]],
