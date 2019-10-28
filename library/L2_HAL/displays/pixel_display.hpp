@@ -3,51 +3,42 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "utility/macros.hpp"
-
-/// A "framebuffer" (frame buffer, or sometimes framestore) is a portion of RAM
-/// containing a bitmap that drives a video display. It is a memory buffer
-/// containing a complete frame of data.
-///
-/// DisplayInterface is a common set of methods that all hardware display
-/// drivers must implement to work with the Graphics class.
 namespace sjsu
 {
+/// PixelDisplay is a common set of methods that all hardware display drivers
+/// must implement to work with the Graphics class.
 class PixelDisplay
 {
  public:
-  SJ2_PACKED(struct) Color_t
+  /// Describes the color space and resolution of the display.
+  struct Color_t
   {
-    Color_t(bool r, bool g, bool b, uint8_t a, uint8_t bits, bool mono)
-        : monochrome(mono),
-          red(r),
-          green(g),
-          blue(b),
-          padding(0),
-          color_bits(bits),
-          alpha(a)
+    /// Bits of the red channel
+    uint8_t red   = 0;
+    /// Bits of the green channel
+    uint8_t green = 0;
+    /// Bits of the blue channel
+    uint8_t blue  = 0;
+    /// Bits of alpha (transparent) channel
+    uint8_t alpha = 0;
+    /// @returns true if the Color_t definitions is
+    ///          { .red = 0, .green = 0, .blue = 0, .alpha = 0} which indicates
+    ///           monochrome, when looking
+    bool IsMonoChrome()
     {
+      return red == 0 && green == 0 && blue == 0 && alpha == 0;
     }
-    Color_t()
-        : monochrome(false),
-          red(false),
-          green(false),
-          blue(false),
-          padding(0),
-          color_bits(0),
-          alpha(0)
+    /// @returns true if the Color_t definitions is
+    ///          { .red = 0, .green = 0, .blue = 0, .alpha = 0} which indicates
+    ///           no color and invisible.
+    bool IsBlank()
     {
+      return red == 0 && green == 0 && blue == 0 && alpha == 0;
     }
-    bool monochrome : 1;
-    bool red : 1;
-    bool green : 1;
-    bool blue : 1;
-    unsigned padding : 4;
-    uint8_t color_bits;
-    uint8_t alpha;
   };
-
+  /// Returns the number of pixels wide the display is.
   virtual size_t GetWidth()  = 0;
+  /// Returns the number of pixels high the display is.
   virtual size_t GetHeight() = 0;
   /// @returns a color object with the available colors.
   virtual Color_t AvailableColors() = 0;
