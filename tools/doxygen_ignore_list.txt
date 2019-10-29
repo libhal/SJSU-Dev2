@@ -39,7 +39,6 @@ L3_Application/commands/common.hpp
 L3_Application/commands/i2c_command.hpp
 L3_Application/commands/rtos_command.hpp
 L3_Application/graphical_terminal.hpp
-L3_Application/graphics.hpp
 L3_Application/periodic_scheduler.hpp
 L3_Application/task.hpp
 L3_Application/task_scheduler.hpp
