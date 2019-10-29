@@ -34,7 +34,8 @@ class Tmp102 final : public Temperature
   /// Max time for the device to complete one temperature conversion.
   static constexpr std::chrono::milliseconds kConversionTimeout = 30ms;
 
-  explicit constexpr Tmp102(I2c & i2c, uint8_t device_address)
+  explicit constexpr Tmp102(
+      I2c & i2c, uint8_t device_address = sjsu::Tmp102::DeviceAddress::kGround)
       : i2c_(i2c), kDeviceAddress(device_address)
   {
   }
