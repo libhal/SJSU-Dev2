@@ -27,7 +27,13 @@ var searchData=
   ['distancesensor',['DistanceSensor',['../df/d5c/classsjsu_1_1DistanceSensor.html',1,'sjsu']]],
   ['divide_5fadd',['divide_add',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a805a337d0ddac02557b190af81a8f49e',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
   ['divide_5flatch',['divide_latch',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a811d5016449d3f36725712edd9f93500',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
-  ['drawpixel',['DrawPixel',['../db/d32/classsjsu_1_1Ssd1306.html#a23537e08e643eb02a7d21bda108045a5',1,'sjsu::Ssd1306::DrawPixel()'],['../df/d96/classsjsu_1_1PixelDisplay.html#aa9bdf3da6e53f69881d92bdb6c5b3abf',1,'sjsu::PixelDisplay::DrawPixel()']]],
+  ['drawcharacter',['DrawCharacter',['../d7/d8c/classsjsu_1_1Graphics.html#aa0ec32c4f630a496e9cf979a153242b7',1,'sjsu::Graphics']]],
+  ['drawcircle',['DrawCircle',['../d7/d8c/classsjsu_1_1Graphics.html#a97846d979fe492861ddf88f39609db20',1,'sjsu::Graphics']]],
+  ['drawhorizontalline',['DrawHorizontalLine',['../d7/d8c/classsjsu_1_1Graphics.html#aa5f5cb715220acdfd3b53e42869878b8',1,'sjsu::Graphics']]],
+  ['drawline',['DrawLine',['../d7/d8c/classsjsu_1_1Graphics.html#aef56d743554be5c9d87b013cd177679d',1,'sjsu::Graphics']]],
+  ['drawpixel',['DrawPixel',['../db/d32/classsjsu_1_1Ssd1306.html#a23537e08e643eb02a7d21bda108045a5',1,'sjsu::Ssd1306::DrawPixel()'],['../df/d96/classsjsu_1_1PixelDisplay.html#aa9bdf3da6e53f69881d92bdb6c5b3abf',1,'sjsu::PixelDisplay::DrawPixel()'],['../d7/d8c/classsjsu_1_1Graphics.html#ab047e73b3c57121969b8fadb31a1de00',1,'sjsu::Graphics::DrawPixel()']]],
+  ['drawrectangle',['DrawRectangle',['../d7/d8c/classsjsu_1_1Graphics.html#afe37ee2c43e7a7384feb4f2c488c9000',1,'sjsu::Graphics']]],
+  ['drawverticalline',['DrawVerticalLine',['../d7/d8c/classsjsu_1_1Graphics.html#a5ec2ae4017c3ad75baf7b85209d2e5fb',1,'sjsu::Graphics']]],
   ['dwt',['dwt',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a2c6afc4851e31f71ede5b40973b5eac1',1,'sjsu::cortex::DwtCounter']]],
   ['dwtcounter',['DwtCounter',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html',1,'sjsu::cortex']]]
 ];

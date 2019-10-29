@@ -34,7 +34,7 @@ struct sjtwo // NOLINT
     static sjsu::lpc40xx::Gpio oled_cs = sjsu::lpc40xx::Gpio(1, 22);
     static sjsu::lpc40xx::Gpio oled_dc = sjsu::lpc40xx::Gpio(1, 25);
     static sjsu::Ssd1306 oled_display(spi1, oled_cs, oled_dc);
-    static sjsu::Graphics oled(&oled_display);
+    static sjsu::Graphics oled(oled_display);
     return oled;
   }
 
