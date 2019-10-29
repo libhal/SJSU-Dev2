@@ -141,12 +141,14 @@ Public Member Functions</h2></td></tr>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Ssd1306</b> (<a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">sjsu::Spi</a> &amp;spi, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;cs, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;dc)</td></tr>
 <tr class="separator:afb36d6a1b47b9b597530f389a78f2cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2602eabd5f405febf399123933e0d8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2602eabd5f405febf399123933e0d8a"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetWidth</b> () override</td></tr>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a">GetWidth</a> () override</td></tr>
+<tr class="memdesc:ab2602eabd5f405febf399123933e0d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of pixels wide the display is. <br /></td></tr>
 <tr class="separator:ab2602eabd5f405febf399123933e0d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47e47d288886889be9ce67510312a93d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47e47d288886889be9ce67510312a93d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () override</td></tr>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a47e47d288886889be9ce67510312a93d">GetHeight</a> () override</td></tr>
+<tr class="memdesc:a47e47d288886889be9ce67510312a93d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of pixels high the display is. <br /></td></tr>
 <tr class="separator:a47e47d288886889be9ce67510312a93d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae14b7eb5dcbfdf040f1ffdc29229774c"><td class="memItemLeft" align="right" valign="top">Color_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ae14b7eb5dcbfdf040f1ffdc29229774c">AvailableColors</a> () override</td></tr>
+<tr class="memitem:ae14b7eb5dcbfdf040f1ffdc29229774c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html">Color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ae14b7eb5dcbfdf040f1ffdc29229774c">AvailableColors</a> () override</td></tr>
 <tr class="separator:ae14b7eb5dcbfdf040f1ffdc29229774c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3ab47b080575b44f21b4b0526dc491e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3ab47b080575b44f21b4b0526dc491e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (uint32_t data, Transaction transaction, size_t size=1)</td></tr>
@@ -168,7 +170,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:ab089ba1b2d17602cb03b7242def6ac60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab089ba1b2d17602cb03b7242def6ac60"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Fill</b> ()</td></tr>
 <tr class="separator:ab089ba1b2d17602cb03b7242def6ac60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23537e08e643eb02a7d21bda108045a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a23537e08e643eb02a7d21bda108045a5">DrawPixel</a> (int32_t x, int32_t y, Color_t color) override</td></tr>
+<tr class="memitem:a23537e08e643eb02a7d21bda108045a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a23537e08e643eb02a7d21bda108045a5">DrawPixel</a> (int32_t x, int32_t y, <a class="el" href="../../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html">Color_t</a> color) override</td></tr>
 <tr class="separator:a23537e08e643eb02a7d21bda108045a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3abd909600703b0a2cfe8b5bd0fc2077"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3abd909600703b0a2cfe8b5bd0fc2077"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a3abd909600703b0a2cfe8b5bd0fc2077">Update</a> () override</td></tr>
@@ -181,9 +183,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>InvertScreenColor</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>NormalScreenColor</b> () __attribute__((used))</td></tr>
 <tr class="separator:a47a69ab867248478e6db52eb082042aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1PixelDisplay"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1PixelDisplay')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html">sjsu::PixelDisplay</a></td></tr>
-<tr class="memitem:ad9721742c2f2c6e65ccca81ce736943a inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9721742c2f2c6e65ccca81ce736943a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SJ2_PACKED</b> (struct) Color_t</td></tr>
-<tr class="separator:ad9721742c2f2c6e65ccca81ce736943a inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1004fd12da67314f8cdae8a80fd95fd1 inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1004fd12da67314f8cdae8a80fd95fd1"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#a1004fd12da67314f8cdae8a80fd95fd1">Enable</a> ()</td></tr>
 <tr class="memdesc:a1004fd12da67314f8cdae8a80fd95fd1 inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional method to turn on display if applicable. <br /></td></tr>
@@ -221,7 +220,7 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kR
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Color_t sjsu::Ssd1306::AvailableColors </td>
+          <td class="memname"><a class="el" href="../../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html">Color_t</a> sjsu::Ssd1306::AvailableColors </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -261,7 +260,7 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kR
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Color_t&#160;</td>
+          <td class="paramtype"><a class="el" href="../../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html">Color_t</a>&#160;</td>
           <td class="paramname"><em>color</em>&#160;</td>
         </tr>
         <tr>

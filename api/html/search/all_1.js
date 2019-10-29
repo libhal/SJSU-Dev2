@@ -14,6 +14,7 @@ var searchData=
   ['address',['address',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adce62b3d21f5e350471cd087a0262e3a',1,'sjsu::I2c::Transaction_t']]],
   ['addressstring_5ft',['AddressString_t',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html',1,'sjsu::I2cCommand']]],
   ['addtask',['AddTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab2cb704019734dfbe774efe8f257d443',1,'sjsu::rtos::TaskScheduler']]],
+  ['alpha',['alpha',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a188ba3108004e6099d90d8701cdcec3b',1,'sjsu::PixelDisplay::Color_t']]],
   ['apds9960',['Apds9960',['../d8/d99/classsjsu_1_1Apds9960.html',1,'sjsu']]],
   ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html#a5f9b57a035215dbf0686c93a724fa190',1,'sjsu::Arena']]],
   ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu']]],

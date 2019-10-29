@@ -79,11 +79,11 @@ var searchData=
   ['suspend',['Suspend',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a1ee60099bc7964da3fe56a8cd23b9df4',1,'sjsu::rtos::Task']]],
   ['sys_5ftick',['sys_tick',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8',1,'sjsu::cortex::SystemTimer']]],
   ['system_5ftimer_5fisr',['system_timer_isr',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a13751b55560e1df2cd6e1eb2e302aa2e',1,'sjsu::cortex::SystemTimer']]],
-  ['systemcontroller',['SystemController',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html',1,'sjsu::lpc40xx']]],
   ['systemcontroller',['SystemController',['../df/d0e/classsjsu_1_1SystemController.html',1,'sjsu']]],
   ['systemcontroller',['SystemController',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html',1,'sjsu::lpc17xx']]],
-  ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html',1,'sjsu::cortex']]],
+  ['systemcontroller',['SystemController',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html',1,'sjsu::lpc40xx']]],
   ['systemtimer',['SystemTimer',['../de/d0c/classsjsu_1_1SystemTimer.html',1,'sjsu']]],
+  ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html',1,'sjsu::cortex']]],
   ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2b7101862d284d1285e90a7f3c57ca4b',1,'sjsu::cortex::SystemTimer']]],
   ['systemtimerhandler',['SystemTimerHandler',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a876dd71b2d954db5401a44bda10eaf64',1,'sjsu::cortex::SystemTimer']]]
 ];

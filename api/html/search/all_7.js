@@ -9,6 +9,7 @@ var searchData=
   ['getdutycycle',['GetDutyCycle',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a8cc7d4fcaa4860db071ee8a9b0cf84ee',1,'sjsu::lpc40xx::Pwm::GetDutyCycle()'],['../d6/ddf/classsjsu_1_1Pwm.html#af88f83b8b493df9a9c419df13bdb61a9',1,'sjsu::Pwm::GetDutyCycle()']]],
   ['getfrequency',['GetFrequency',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a62589b965cf37d46ab981e65c808e5ab',1,'sjsu::lpc40xx::Pwm']]],
   ['gethandle',['GetHandle',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab0b5901f7f1ac3a18d8d6664d7812857',1,'sjsu::rtos::Task']]],
+  ['getheight',['GetHeight',['../db/d32/classsjsu_1_1Ssd1306.html#a47e47d288886889be9ce67510312a93d',1,'sjsu::Ssd1306::GetHeight()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a726c225c675804f71fb0fecc3c23565d',1,'sjsu::PixelDisplay::GetHeight()']]],
   ['getilluminance',['GetIlluminance',['../d3/da6/classsjsu_1_1Temt6000x01.html#a4b20c55d0750ad1572d4064ffaeff1ac',1,'sjsu::Temt6000x01']]],
   ['getinactive',['GetInactive',['../d0/d6b/namespacesjsu.html#a45b09ac788e0929082d290fc91e16191',1,'sjsu']]],
   ['getinactive_3c_20sjsu_3a_3aadc_20_3e',['GetInactive&lt; sjsu::Adc &gt;',['../d0/d6b/namespacesjsu.html#ae79a493a21afd1b70a6f098c262d04a2',1,'sjsu']]],
@@ -43,15 +44,17 @@ var searchData=
   ['gettaskcount',['GetTaskCount',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aa1a31b35ae26fa27a0d4aa62ade71143',1,'sjsu::rtos::TaskScheduler']]],
   ['gettaskindex',['GetTaskIndex',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#af369ceb720de477a42ca3e1d9edde2fe',1,'sjsu::rtos::TaskScheduler']]],
   ['gettransactioninfo',['GetTransactionInfo',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a1aab2429685ff4d31764246480566ee2',1,'sjsu::lpc40xx::I2c']]],
+  ['getwidth',['GetWidth',['../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a',1,'sjsu::Ssd1306::GetWidth()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a6d136302e6266d6fbc773d49fd487670',1,'sjsu::PixelDisplay::GetWidth()']]],
   ['globalstatus_5ft',['GlobalStatus_t',['../db/dcc/structsjsu_1_1lpc40xx_1_1Can_1_1GlobalStatus__t.html',1,'sjsu::lpc40xx::Can']]],
-  ['gpio',['Gpio',['../dd/d3a/classsjsu_1_1Gpio.html',1,'sjsu']]],
   ['gpio',['Gpio',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html',1,'sjsu::lpc40xx']]],
-  ['gpio',['gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a8ba9652bd525a73699225ab977771614',1,'sjsu::lpc17xx::Gpio::gpio()'],['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aaa68f39449b606ce99e7a6444c9a6906',1,'sjsu::lpc17xx::Gpio::Gpio(uint8_t port, uint8_t pin, const sjsu::InterruptController &amp;interrupt_controller=kInterruptController)'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab998c0df2ccba384fa099b66c0657ef2',1,'sjsu::lpc40xx::Gpio::Gpio()']]],
   ['gpio',['Gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html',1,'sjsu::lpc17xx']]],
+  ['gpio',['gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a8ba9652bd525a73699225ab977771614',1,'sjsu::lpc17xx::Gpio::gpio()'],['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aaa68f39449b606ce99e7a6444c9a6906',1,'sjsu::lpc17xx::Gpio::Gpio(uint8_t port, uint8_t pin, const sjsu::InterruptController &amp;interrupt_controller=kInterruptController)'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab998c0df2ccba384fa099b66c0657ef2',1,'sjsu::lpc40xx::Gpio::Gpio()']]],
+  ['gpio',['Gpio',['../dd/d3a/classsjsu_1_1Gpio.html',1,'sjsu']]],
   ['gpio_5fport',['gpio_port',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a199a5f6d8d9fd8a014e3639b342c513d',1,'sjsu::lpc40xx::Gpio']]],
   ['gpiointerruptregistermap_5ft',['GpioInterruptRegisterMap_t',['../d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html',1,'sjsu::lpc17xx::Gpio']]],
   ['gpiointerruptregistermap_5ft',['GpioInterruptRegisterMap_t',['../d9/d34/structsjsu_1_1lpc40xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html',1,'sjsu::lpc40xx::Gpio']]],
   ['gpioport_5ft',['GpioPort_t',['../d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html',1,'sjsu::lpc17xx::Gpio']]],
   ['graphicalterminal',['GraphicalTerminal',['../d6/dde/classsjsu_1_1GraphicalTerminal.html',1,'sjsu']]],
-  ['graphics',['Graphics',['../d7/d8c/classsjsu_1_1Graphics.html',1,'sjsu']]]
+  ['graphics',['Graphics',['../d7/d8c/classsjsu_1_1Graphics.html',1,'sjsu']]],
+  ['green',['green',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a713270880c3d736c7aaa9dd786a771d8',1,'sjsu::PixelDisplay::Color_t']]]
 ];

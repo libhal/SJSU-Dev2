@@ -32,6 +32,7 @@ function print_divider
   printf "_____________________________________________________________________"
   printf "\n\n"
   printf "$BOLD_WHITE $1\n"
+  printf "$BOLD_YELLOW"
   printf "_____________________________________________________________________"
   printf "\n"
   printf "$RESET\n"

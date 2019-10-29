@@ -16,6 +16,7 @@ var searchData=
   ['channel_5ft',['Channel_t',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html',1,'sjsu::lpc40xx::Adc']]],
   ['channel_5ft',['Channel_t',['../d6/dbc/structsjsu_1_1lpc40xx_1_1Timer_1_1Channel__t.html',1,'sjsu::lpc40xx::Timer']]],
   ['channelpartial_5ft',['ChannelPartial_t',['../d1/d78/structsjsu_1_1lpc40xx_1_1Timer_1_1ChannelPartial__t.html',1,'sjsu::lpc40xx::Timer']]],
+  ['color_5ft',['Color_t',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html',1,'sjsu::PixelDisplay']]],
   ['command',['Command',['../d9/d71/classCommand.html',1,'']]],
   ['commandinterface',['CommandInterface',['../d9/db2/classsjsu_1_1CommandInterface.html',1,'sjsu']]],
   ['commandline',['CommandLine',['../dd/d02/classCommandLine.html',1,'']]],
