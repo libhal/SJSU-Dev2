@@ -20,11 +20,17 @@
 
 namespace sjsu
 {
+/// Templated struct with a boolean value field of false for any types that are
+/// not specialized like the list below. Used for compile time check usage of
+/// GetInactive().
 template <typename T>
 struct UnsupportedInactivePeripheral_t : std::false_type
 {
 };
 
+/// Default template behaviour for an attempt to create an inactive sjsu L1
+/// interface for an interface that is not yet supported. Will generate a custom
+/// compile time error message.
 template <typename T>
 const T & GetInactive()
 {
@@ -32,9 +38,7 @@ const T & GetInactive()
                 "There does not exist an inactive variant of this peripheral");
 }
 
-// template <typename T>
-// const T & GetInactive() = delete;
-
+/// Template specialization that generates an inactive sjsu::Pin.
 template <>
 const sjsu::Pin & GetInactive<sjsu::Pin>()
 {
@@ -52,6 +56,7 @@ const sjsu::Pin & GetInactive<sjsu::Pin>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::Adc.
 template <>
 const sjsu::Adc & GetInactive<sjsu::Adc>()
 {
@@ -76,6 +81,7 @@ const sjsu::Adc & GetInactive<sjsu::Adc>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::Dac.
 template <>
 const sjsu::Dac & GetInactive<sjsu::Dac>()
 {
@@ -98,6 +104,7 @@ const sjsu::Dac & GetInactive<sjsu::Dac>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::Gpio.
 template <>
 const sjsu::Gpio & GetInactive<sjsu::Gpio>()
 {
@@ -123,6 +130,7 @@ const sjsu::Gpio & GetInactive<sjsu::Gpio>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::I2c.
 template <>
 const sjsu::I2c & GetInactive<sjsu::I2c>()
 {
@@ -143,6 +151,7 @@ const sjsu::I2c & GetInactive<sjsu::I2c>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::Pwm.
 template <>
 const sjsu::Pwm & GetInactive<sjsu::Pwm>()
 {
@@ -165,6 +174,7 @@ const sjsu::Pwm & GetInactive<sjsu::Pwm>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::Spi.
 template <>
 const sjsu::Spi & GetInactive<sjsu::Spi>()
 {
@@ -187,6 +197,7 @@ const sjsu::Spi & GetInactive<sjsu::Spi>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::SystemController.
 template <>
 const sjsu::SystemController & GetInactive<sjsu::SystemController>()
 {
@@ -219,6 +230,7 @@ const sjsu::SystemController & GetInactive<sjsu::SystemController>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::SystemTimer.
 template <>
 const sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
 {
@@ -241,6 +253,7 @@ const sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::Timer.
 template <>
 const sjsu::Timer & GetInactive<sjsu::Timer>()
 {
@@ -268,6 +281,7 @@ const sjsu::Timer & GetInactive<sjsu::Timer>()
   return inactive;
 }
 
+/// Template specialization that generates an inactive sjsu::Uart.
 template <>
 const sjsu::Uart & GetInactive<sjsu::Uart>()
 {
