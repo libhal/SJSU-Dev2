@@ -109,25 +109,97 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Buzzer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../df/d07/buzzer_8hpp_source.html">buzzer.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e898c3147956ab8e542316bf44012c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e898c3147956ab8e542316bf44012c6"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Buzzer</b> (<a class="el" href="../../d6/ddf/classsjsu_1_1Pwm.html">Pwm</a> &amp;pwm)</td></tr>
-<tr class="separator:a1e898c3147956ab8e542316bf44012c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b68d1d57788fa4b654567b332812ac7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b68d1d57788fa4b654567b332812ac7"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html#a1b68d1d57788fa4b654567b332812ac7">Buzzer</a> (<a class="el" href="../../d6/ddf/classsjsu_1_1Pwm.html">sjsu::Pwm</a> &amp;pwm)</td></tr>
+<tr class="memdesc:a1b68d1d57788fa4b654567b332812ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize <a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html">Buzzer</a> with a pwm signal. <br /></td></tr>
+<tr class="separator:a1b68d1d57788fa4b654567b332812ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc904ae4feec8890ad0ad76bae0c9222"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc904ae4feec8890ad0ad76bae0c9222"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html#afc904ae4feec8890ad0ad76bae0c9222">Initialize</a> ()</td></tr>
+<tr class="memdesc:afc904ae4feec8890ad0ad76bae0c9222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize <a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html">Buzzer</a> hardware. <br /></td></tr>
 <tr class="separator:afc904ae4feec8890ad0ad76bae0c9222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21f5618521643c54bd651c42248feef2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21f5618521643c54bd651c42248feef2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Stop</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html#a21f5618521643c54bd651c42248feef2">Stop</a> ()</td></tr>
+<tr class="memdesc:a21f5618521643c54bd651c42248feef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn off buzzer. <br /></td></tr>
 <tr class="separator:a21f5618521643c54bd651c42248feef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1397d0c5093422c2a7d119e4b8fe61f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1397d0c5093422c2a7d119e4b8fe61f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Beep</b> (units::frequency::hertz_t frequency=500_Hz, float volume=1.0f)</td></tr>
+<tr class="memitem:ab1397d0c5093422c2a7d119e4b8fe61f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html#ab1397d0c5093422c2a7d119e4b8fe61f">Beep</a> (units::frequency::hertz_t frequency=500_Hz, float volume=1.0f)</td></tr>
 <tr class="separator:ab1397d0c5093422c2a7d119e4b8fe61f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf2952a1214bb003cb5574b3a0f61af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedf2952a1214bb003cb5574b3a0f61af"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>GetVolume</b> ()</td></tr>
+<tr class="memitem:aedf2952a1214bb003cb5574b3a0f61af"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html#aedf2952a1214bb003cb5574b3a0f61af">GetVolume</a> ()</td></tr>
 <tr class="separator:aedf2952a1214bb003cb5574b3a0f61af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A controller for small speakers and piezoelectric buzzer.</p>
+<p>Usage: </p><div class="fragment"><div class="line"><a class="code" href="../../d6/ddf/classsjsu_1_1Pwm.html">sjsu::Pwm</a> &amp; buzzer_pwm = GetBuzzerPwm();</div><div class="line"><a class="code" href="../../de/d29/classsjsu_1_1Buzzer.html">sjsu::Buzzer</a> buzzer(buzzer_pwm);</div><div class="line">buzzer.Initializer();</div><div class="line"><span class="comment">// Set buzzer to 550 Hz @ 75% volume.</span></div><div class="line">buzzer.Beep(550_Hz, 0.75f);</div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ab1397d0c5093422c2a7d119e4b8fe61f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Buzzer::Beep </td>
+          <td>(</td>
+          <td class="paramtype">units::frequency::hertz_t&#160;</td>
+          <td class="paramname"><em>frequency</em> = <code>500_Hz</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>volume</em> = <code>1.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Turn on buzzer at a specific frequency and volume.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frequency</td><td>- The frequency to set the buzzer to. </td></tr>
+    <tr><td class="paramname">volume</td><td>- percent output power from 0.0f to 1.0f. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aedf2952a1214bb003cb5574b3a0f61af"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float sjsu::Buzzer::GetVolume </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>gets the current running volume of the device. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/audio/<a class="el" href="../../df/d07/buzzer_8hpp_source.html">buzzer.hpp</a></li>
 </ul>

@@ -44,6 +44,7 @@ var searchData=
   ['gettaskcount',['GetTaskCount',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aa1a31b35ae26fa27a0d4aa62ade71143',1,'sjsu::rtos::TaskScheduler']]],
   ['gettaskindex',['GetTaskIndex',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#af369ceb720de477a42ca3e1d9edde2fe',1,'sjsu::rtos::TaskScheduler']]],
   ['gettransactioninfo',['GetTransactionInfo',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a1aab2429685ff4d31764246480566ee2',1,'sjsu::lpc40xx::I2c']]],
+  ['getvolume',['GetVolume',['../de/d29/classsjsu_1_1Buzzer.html#aedf2952a1214bb003cb5574b3a0f61af',1,'sjsu::Buzzer']]],
   ['getwidth',['GetWidth',['../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a',1,'sjsu::Ssd1306::GetWidth()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a6d136302e6266d6fbc773d49fd487670',1,'sjsu::PixelDisplay::GetWidth()']]],
   ['gpio',['Gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aaa68f39449b606ce99e7a6444c9a6906',1,'sjsu::lpc17xx::Gpio::Gpio()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab998c0df2ccba384fa099b66c0657ef2',1,'sjsu::lpc40xx::Gpio::Gpio()']]]
 ];

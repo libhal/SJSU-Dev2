@@ -38,6 +38,7 @@ var searchData=
   ['spi',['Spi',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a6f4668b9ff75733163c7e4e5b29e1e9b',1,'sjsu::lpc40xx::Spi']]],
   ['start',['Start',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#acf030b7e79fe165fcf8d5240aff82510',1,'sjsu::rtos::TaskScheduler']]],
   ['starttimer',['StartTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#affbee8753ef48ebc1c01fc809681d46f',1,'sjsu::cortex::SystemTimer::StartTimer()'],['../de/d0c/classsjsu_1_1SystemTimer.html#a450e04219db91de314883380dee1d9c4',1,'sjsu::SystemTimer::StartTimer()']]],
+  ['stop',['Stop',['../de/d29/classsjsu_1_1Buzzer.html#a21f5618521643c54bd651c42248feef2',1,'sjsu::Buzzer']]],
   ['stringify',['Stringify',['../d0/d6b/namespacesjsu.html#aa79e71ad78594c5dc7af1a5b5bffdd90',1,'sjsu::Stringify(FRESULT result)'],['../d0/d6b/namespacesjsu.html#a348f1e255225c6385c2759b49c111c5f',1,'sjsu::Stringify(Status status)']]],
   ['stringlength',['StringLength',['../d0/d6b/namespacesjsu.html#a11e9a8820c447020c5b3206659e6b116',1,'sjsu']]],
   ['suspend',['Suspend',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a1ee60099bc7964da3fe56a8cd23b9df4',1,'sjsu::rtos::Task']]],
