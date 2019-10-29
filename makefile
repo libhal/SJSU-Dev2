@@ -7,7 +7,9 @@
 YELLOW=$(shell echo "\x1B[33;1m")
 RED=$(shell echo "\x1B[31;1m")
 MAGENTA=$(shell echo "\x1B[35;1m")
+BLUE=$(shell echo "\x1B[34;1m")
 GREEN=$(shell echo "\x1B[32;1m")
+WHITE=$(shell echo "\x1B[37;1m")
 RESET=$(shell echo "\x1B[0m")
 CURRENT_SETUP_VERSION=$(shell cat $(SJSU_DEV2_BASE)/setup_version.txt)
 # ============================
@@ -190,7 +192,7 @@ endif
 BUILD_DIRECTORY_NAME = build
 
 ifeq ($(MAKECMDGOALS), application)
-$(info $(shell printf '$(MAGENTA)Building application firmware...$(RESET)\n'))
+$(info $(shell printf '$(MAGENTA)Building application firmware...$(RESET)'))
 endif
 
 # "make application"'s build directory becomes "build/application"
@@ -262,11 +264,10 @@ $(1)_OBJECTS = $$(addprefix $(OBJECT_DIR)/, $$($(2):=.o))
 
 $(PLATFORM_STATIC_LIBRARY_DIR)/$(1).a: $$($(1)_OBJECTS)
 	@mkdir -p "$(PLATFORM_STATIC_LIBRARY_DIR)"
-	@printf '$(YELLOW)Library  file ( A ) $(RESET): $$@ '
 	@rm -f "$@"
 	@$$(DEVICE_AR) rcs "$$@" $$^
 	@$$(DEVICE_RANLIB) "$$@"
-	@printf '$(GREEN)DONE!$(RESET)\n'
+	@echo -e '$(YELLOW)Library file ( A )$(RESET)  : $$@ '
 
 endef
 # Set of ALL compilable test files in the current library.
@@ -332,7 +333,7 @@ CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
 
 ifndef LINKFLAGS
 LINKFLAGS = $(COMMON_FLAGS) -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
-            -specs=nano.specs \
+            --specs=nano.specs --specs=rdimon.specs \
             -T $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/linker.ld
 endif
 
@@ -357,7 +358,7 @@ CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
          -O0 -MMD -MP -c
 CFLAGS = $(CPPFLAGS)
 else
-CFLAGS = $(CFLAGS_COMMON) -D TARGET=Application
+CFLAGS = $(CFLAGS_COMMON) -D TARGET=Application -DTRACE -DOS_USE_TRACE_SEMIHOSTING_STDOUT
 CPPFLAGS = $(CFLAGS) $(CPPWARNINGS) $(CPPOPTIMIZE) $(WARNINGS)
 endif
 
@@ -408,7 +409,8 @@ TEST_EXEC  = $(BUILD_DIRECTORY_NAME)/tests.exe
 .DEFAULT_GOAL := default
 # Tell make that these recipes don't have a end product
 .PHONY: default build cleaninstall telemetry monitor show-lists clean flash \
-        telemetry presubmit openocd debug library-clean purge test library-test
+        telemetry presubmit openocd debug library-clean purge test \
+        library-test $(SIZE)
 print-%  : ; @echo $* = $($*)
 # ====================================================================
 # When the user types just "make" or "help" this should appear to them
@@ -425,7 +427,7 @@ help:
 	@echo "  clean        - deletes build folder contents"
 	@echo "  cleaninstall - cleans, builds, and installs application firmware on "
 	@echo "                 device."
-	@echo " library-clean - cleans static libraries files"
+	@echo "  library-clean - cleans static libraries files"
 	@echo "  purge        - remove local build files and static libraries "
 	@echo "  telemetry    - Launch telemetry web interface on platform"
 	@echo
@@ -587,50 +589,49 @@ show-lists:
 # ====================================================================
 
 $(HEX): $(EXECUTABLE)
-	@printf '$(YELLOW)Generating Hex Image $(RESET)   : $@ '
 	@$(OBJCOPY) -O ihex "$<" "$@"
-	@printf '$(GREEN)Hex Generated!$(RESET)\n'
+	@echo -e '$(YELLOW)Generated Hex Image $(RESET)   : $@'
 
 $(BINARY): $(EXECUTABLE)
-	@printf '$(YELLOW)Generating Binary Image $(RESET): $@ '
 	@$(OBJCOPY) -O binary "$<" "$@"
-	@printf '$(GREEN)Binary Generated!$(RESET)\n'
+	@echo -e '$(YELLOW)Generated Binary Image $(RESET): $@'
+
 
 $(SIZE): $(EXECUTABLE)
-	@echo ' '
-	@echo 'Showing Image Size Information: '
+	@echo
+	@echo -e '$(WHITE)   Memory region:     Used Size  Region Size  %age Used'
+	@echo -ne '$(RESET)'
+	@export GREP_COLOR='1;34' ; cat '$(SIZE)' | grep --color=always ".*: " || true
+	@echo
+	@echo -e '$(WHITE)Section Memory Usage$(RESET)'
 	@$(SIZEC) --format=berkeley "$<"
-	@echo ' '
+	@echo
 
 $(LIST): $(EXECUTABLE)
-	@printf '$(YELLOW)Generating Disassembly$(RESET)  : $@ '
 	@$(OBJDUMP) --disassemble --all-headers --source --demangle --wide "$<" > "$@"
-	@printf '$(GREEN)Disassembly Generated!$(RESET)\n'
+	@echo -e '$(YELLOW)Disassembly Generated!$(RESET)  : $@'
 
 $(CORE_STATIC_LIBRARY): $(LIBRARIES)
-	@printf '$(YELLOW)Final Library file ( A ) $(RESET): $@ '
 	@rm -f "$@"
 	@$(DEVICE_AR) -rcT "$@" $^
 	@$(DEVICE_RANLIB) "$@"
-	@printf '$(GREEN)DONE!$(RESET)\n'
+	@echo -e '$(YELLOW)Final Library file ( A ) $(RESET): $@'
 
 $(EXECUTABLE): $(OBJECTS) $(CORE_STATIC_LIBRARY)
-	@printf '$(YELLOW)Linking Executable $(RESET)     : $@ '
+	@echo -e '$(YELLOW)Linking Executable$(RESET)    : $@'
 	@mkdir -p "$(dir $@)"
-	@$(CPPC) $(LINKFLAGS) -o "$@" $(OBJECTS) $(CORE_STATIC_LIBRARY)
-	@printf '$(GREEN)Executable Generated!$(RESET)\n'
+	@$(CPPC) -Wl,--print-memory-usage $(LINKFLAGS) -o "$@" \
+			$(OBJECTS) $(CORE_STATIC_LIBRARY) 1> "$(SIZE)"
 
 $(OBJECT_DIR)/%.c.o: %.c
-	@printf '$(YELLOW)Building file ( C ) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CC) $(CFLAGS) -std=gnu11 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@printf '$(GREEN)DONE!$(RESET)\n'
+	@echo -e '$(YELLOW)Built file ( C ) $(RESET): $<'
 
 $(OBJECT_DIR)/%.o: %
-	@printf '$(YELLOW)Building file (C++) $(RESET): $< '
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) $(CPPFLAGS) -std=c++17 -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
-	@printf '$(GREEN)DONE!$(RESET)\n'
+	@echo -e '$(YELLOW)Built file (C++) $(RESET): $<'
 
 $(DBC_BUILD):
 	@mkdir -p "$(dir $@)"
@@ -638,7 +639,7 @@ $(DBC_BUILD):
 		-i "$(LIBRARY_DIR)/$(DBC_DIR)/243.dbc" -s $(ENTITY) > $(DBC_BUILD)
 
 $(TEST_EXEC): $(OBJECTS)
-	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@ '
+	@echo -e '$(YELLOW)Linking Test Executable $(RESET) : $@'
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
 					 -fno-inline-small-functions -fno-default-inline \
@@ -646,14 +647,13 @@ $(TEST_EXEC): $(OBJECTS)
 					 -ftest-coverage -O0 -fsanitize=address \
 					 -std=c++17 -stdlib=libc++ -lc++ -lc++abi \
 					 -o $(TEST_EXEC) $(OBJECTS)
-	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
+	@echo -e '$(GREEN)Test Executable Generated!$(RESET)'
 
 $(OBJECT_DIR)/%.tidy: %
-	@printf '$(YELLOW)Evaluating file: $(RESET)$< '
 	@mkdir -p "$(dir $@)"
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 		-extra-arg="-std=c++17") "$<"  -- \
 		-D TARGET=HostTest -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
-	@printf '$(GREEN)DONE!$(RESET)\n'
+	@echo -e '$(GREEN)Evaluated file: $(RESET)$< '

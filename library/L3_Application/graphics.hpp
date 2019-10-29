@@ -36,7 +36,9 @@ class Graphics
   void DrawHorizontalLine(int32_t x, int32_t y, int32_t line_width)
   {
     LOG_DEBUG("x = %" PRId32 " :: y = %" PRId32 " :: line_width = %" PRId32 "",
-              x, y, line_width);
+              x,
+              y,
+              line_width);
     line_width = std::clamp(x + line_width, int32_t(0), int32_t(width_ - x));
     for (int32_t column = x; column < line_width; column++)
     {
@@ -48,7 +50,9 @@ class Graphics
   {
     line_height = std::clamp(y + line_height, int32_t(0), int32_t(height_ - y));
     LOG_DEBUG("x = %" PRId32 " :: y = %" PRId32 " :: line_height = %" PRId32 "",
-              x, y, line_height);
+              x,
+              y,
+              line_height);
     for (int32_t row = y; row < line_height; row++)
     {
       DrawPixel(x, row);
@@ -59,7 +63,10 @@ class Graphics
   {
     LOG_DEBUG("(x0, y0, x1, y1) -> (%" PRId32 ", %" PRId32 ", %" PRId32
               ", %" PRId32 ")",
-              x0, y0, x1, y1);
+              x0,
+              y0,
+              x1,
+              y1);
     float dx           = static_cast<float>(x1 - x0);
     float dy           = static_cast<float>(y1 - y0);
     float steps        = std::max(std::abs(dx), std::abs(dy));
@@ -67,8 +74,10 @@ class Graphics
     float x_increment  = dx / steps;
     float y_increment  = dy / steps;
     LOG_DEBUG("steps = %f :: dx = %f :: dy = %f :: x-inc = %f :: y-inc = %f",
-              static_cast<double>(steps), static_cast<double>(dx),
-              static_cast<double>(dy), static_cast<double>(x_increment),
+              static_cast<double>(steps),
+              static_cast<double>(dx),
+              static_cast<double>(dy),
+              static_cast<double>(x_increment),
               static_cast<double>(y_increment));
 
     float x = static_cast<float>(x0);
@@ -119,7 +128,10 @@ class Graphics
   {
     LOG_DEBUG("x: %" PRId32 " :: y: %" PRId32 " :: h: %" PRId32
               " :: w: %" PRId32,
-              x, y, width, height);
+              x,
+              y,
+              width,
+              height);
     // +---------------------
     //
     //
@@ -142,14 +154,20 @@ class Graphics
     DrawVerticalLine(x + width, y, height);
   }
 
-  void DrawCharacter(int32_t x0, int32_t y0, char letter,
+  void DrawCharacter(int32_t x0,
+                     int32_t y0,
+                     char letter,
                      bool fill_background = true)
   {
     int32_t letter_position = static_cast<int32_t>(letter);
 
     PixelDisplay::Color_t foreground = color_;
-    PixelDisplay::Color_t background =
-        PixelDisplay::Color_t(0, 0, 0, 0, 1, true);
+    PixelDisplay::Color_t background = {
+      .red   = 0,
+      .green = 0,
+      .blue  = 0,
+      .alpha = 0,
+    };
 
     for (int32_t y = 0; y < 8; y++)
     {

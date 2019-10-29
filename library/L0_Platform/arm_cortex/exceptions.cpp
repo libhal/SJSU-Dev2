@@ -4,9 +4,11 @@
 
 #include "L0_Platform/ram.hpp"
 #include "L0_Platform/startup.hpp"
+#include "L0_Platform/arm_cortex/m4/core_cm4.h"
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
+#include "third_party/semihost/trace.h"
 
 extern "C"
 {
@@ -81,6 +83,14 @@ extern "C"
     sjsu::cortex::__set_MSP(kTopOfStack);
 
     sjsu::SystemInitialize();
+    // Check if Debugger is connected
+    {
+      using sjsu::cortex::CoreDebug_Type;
+      if (CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk)
+      {
+          trace_initialize();  // Enable debug tracing
+      }
+    }
     sjsu::InitializePlatform();
 // #pragma ignored "-Wpedantic" to suppress main function call warning
 #pragma GCC diagnostic push ignored "-Wpedantic"

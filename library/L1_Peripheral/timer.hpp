@@ -35,9 +35,9 @@ class Timer
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
   ///
-  /// @param frequency - the frequency that the timer's count register will
-  ///        increment by. If this is set to 1'000'000Hz then the counter will
-  ///        increment every microsecond. register will be 10 ms.
+  /// @param counter_frequency - the frequency that the timer's count register
+  ///        will increment by. If this is set to 1'000'000Hz then the counter
+  ///        will increment every microsecond. register will be 10 ms.
   /// @param isr - the ISR that will fire when the condition set by SetTimer
   ///        method is achieved.
   /// @param priority - sets the Timer interrupt's priority level, defaults to

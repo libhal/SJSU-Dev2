@@ -168,7 +168,7 @@ class Gpio final : public sjsu::Gpio
         LOG_WARNING(
             "Edge %d cannot be used for External Interrupts."
             "Need to use a rising, falling, or both configuration.",
-            util::Value(edge));
+            Value(edge));
       }
     }
   }
@@ -200,7 +200,7 @@ class Gpio final : public sjsu::Gpio
         LOG_WARNING(
             "Edge %d cannot be used for External Interrupts."
             "Need to use a rising, falling, or both configuration.",
-            util::Value(edge));
+            Value(edge));
       }
     }
   }
@@ -277,12 +277,8 @@ class Gpio final : public sjsu::Gpio
     *interrupt[interupt_port_].enable_falling_edge &= ~(1 << pin_.GetPin());
   }
 
-  /// Holds index of interrupt port in interrupt lookup table.
   uint8_t interupt_port_;
-  /// Object of pin type.
   sjsu::lpc40xx::Pin pin_;
-  /// Reference to an interrupt controller object. Used to enable and attach a
-  /// GPIO interrupt handler.
   const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx

@@ -19,7 +19,7 @@ tools/**/*
 !tools/putty64.exe
 !tools/launch_openocd_gdb.sh
 !tools/generate_doxygen_docs.sh
-!tools/doxygen_warning_patterns.txt
+!tools/doxygen_ignore_list.txt
 !tools/common.sh
 !tools/gdb_dashboard
 

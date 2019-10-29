@@ -1,6 +1,0 @@
-adc.hpp
-pin.hpp
-gpio.hpp
-spi.hpp
-i2c.hpp
-pwm.hpp

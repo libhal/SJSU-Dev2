@@ -13,8 +13,7 @@
 
 /// @ingroup SJSU-Dev2
 /// @defgroup Config Configuration
-/// @brief Testing...
-/// @{
+//@{
 namespace config
 {
 /// How to properly use global configuration option:
@@ -130,8 +129,7 @@ static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
                   kLogLevel == SJ2_LOG_LEVEL_DEBUG ||
                   kLogLevel == SJ2_LOG_LEVEL_INFO ||
                   kLogLevel == SJ2_LOG_LEVEL_WARNING ||
-                  kLogLevel == SJ2_LOG_LEVEL_ERROR ||
-                  kLogLevel == SJ2_LOG_LEVEL_CRITICAL,
+                  kLogLevel == SJ2_LOG_LEVEL_ERROR,
               "SJ2_LOG_LEVEL must equal to one of the predefined log levels "
               "such as SJ2_LOG_LEVEL_INFO.");
 
@@ -143,24 +141,21 @@ static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
 SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
 
 /// @defgroup 3P Third party support defines
-/// @{
-
-/// @defgroup Printf Printf
-/// @{
+//@{
 
 /// Enable or disable float support in printf statements. Setting to false will
 /// reduce binary size.
 #if !defined(SJ2_PRINTF_SUPPORT_FLOAT)
 #define SJ2_PRINTF_SUPPORT_FLOAT true
 #endif  // !defined(PRINTF_SUPPORT_FLOAT)
-SJ2_DECLARE_CONSTANT(PRINTF_SUPPORT_FLOAT, bool, kPrintfSupportFloat);
+/// Enables FLOAT support for the 3rd party printf library.
 #define PRINTF_SUPPORT_FLOAT SJ2_PRINTF_SUPPORT_FLOAT
 
 /// Enable printing of 64 bit numbers. Setting to false will reduce binary size.
 #if !defined(SJ2_PRINTF_SUPPORT_LONG_LONG)
 #define SJ2_PRINTF_SUPPORT_LONG_LONG true
 #endif  // !defined(PRINTF_SUPPORT_LONG_LONG)
-SJ2_DECLARE_CONSTANT(PRINTF_SUPPORT_LONG_LONG, bool, kPrintfSupportLongLong);
+/// Enables LONG LONG support for the 3rd party printf library.
 #define PRINTF_SUPPORT_LONG_LONG SJ2_PRINTF_SUPPORT_LONG_LONG
 
 /// Enable support for the ptrdiff_t type. Setting to false will reduce binary
@@ -168,13 +163,8 @@ SJ2_DECLARE_CONSTANT(PRINTF_SUPPORT_LONG_LONG, bool, kPrintfSupportLongLong);
 #if !defined(SJ2_PRINTF_SUPPORT_PTRDIFF_T)
 #define SJ2_PRINTF_SUPPORT_PTRDIFF_T true
 #endif  // !defined(PRINTF_SUPPORT_PTRDIFF_T)
-SJ2_DECLARE_CONSTANT(PRINTF_SUPPORT_PTRDIFF_T, bool, kPrintfSupportPtrdiff);
+/// Enables PTRDIFF support for the 3rd party printf library.
 #define PRINTF_SUPPORT_PTRDIFF_T SJ2_PRINTF_SUPPORT_PTRDIFF_T
-
-/// @} End Printf
-
-/// @} End 3P
-
+//@} End 3P
 }  // namespace config
-
-/// @}  End Config
+//@}  End Config

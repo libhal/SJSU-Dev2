@@ -9,6 +9,8 @@
 
 namespace sjsu
 {
+/// An abstract interface for hardware that implements the Universal
+/// Asynchronous Receiver Transmitter (UART) hardware communication Protocol.
 class Uart
 {
  public:
@@ -28,7 +30,6 @@ class Uart
   /// @param data - buffer to data to write to the uart serial port
   /// @param size - the number of bytes to write to the uart serial port
   virtual void Write(const uint8_t * data, size_t size) const = 0;
-
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
   ///
@@ -42,14 +43,17 @@ class Uart
   virtual Status Read(uint8_t * data,
                       size_t size,
                       std::chrono::microseconds timeout =
-                          std::chrono::microseconds::max()) const    = 0;
-  virtual bool HasData() const                                       = 0;
+                          std::chrono::microseconds::max()) const = 0;
+  /// Checks if there is data available for this port.
+  /// @returns true if the UART port has received some data.
+  virtual bool HasData() const = 0;
 
   // ================
   // Utility Methods
   // ================
 
   /// Transmit just 1 byte
+  /// @param byte - Write a single byte to the UART port.
   void Write(uint8_t byte) const
   {
     Write(&byte, 1);
@@ -59,11 +63,15 @@ class Uart
   ///
   ///    uart.Write({ 0x01, 0xAA, 0x33, 0x55 });
   ///
+  /// @param data - initializer list of bytes to send.
   void Write(std::initializer_list<uint8_t> data) const
   {
     Write(data.begin(), data.size());
   }
   /// Wait to receive just 1 byte
+  ///
+  /// @param timeout - The maximum amount of time to wait for a byte to be
+  ///        transmitted.
   uint8_t Read(std::chrono::microseconds timeout =
                    std::chrono::microseconds::max()) const
   {

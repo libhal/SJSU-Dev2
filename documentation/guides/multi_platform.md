@@ -81,7 +81,7 @@ else if constexpr (sjsu::build::kPlatform == sjsu::build::Platform::linux)
 }
 else
 {
-  LOG_CRITICAL("Invalid platform for this application!");
+  LOG_ERROR("Invalid platform for this application!");
   sjsu::Halt();
 }
 ```

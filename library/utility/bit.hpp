@@ -8,12 +8,20 @@ namespace sjsu
 {
 namespace bit
 {
+/// Definition of a bit mask. Can be used in various bit manipulation functions
+/// to specify which bits to be modified.
 struct Mask  // NOLINT
 {
+  /// Starting position of the bitfield
   uint8_t position;
+  /// Number of bits of the bitfield
   uint8_t width;
 };
-
+/// @param low_bit_position - the starting bit of the bit field.
+/// @param high_bit_position - the last bit of the bit field.
+/// @return constexpr Mask from the low bit position to the high bit position.
+///         If the low_bit_position > high_bit_position, the result is
+///         undefined.
 constexpr Mask CreateMaskFromRange(uint8_t low_bit_position,
                                    uint8_t high_bit_position)
 {
@@ -22,6 +30,8 @@ constexpr Mask CreateMaskFromRange(uint8_t low_bit_position,
       .width = static_cast<uint8_t>(1 + (high_bit_position - low_bit_position)),
   });
 }
+/// @param bit_position - bit field composed of a single bit with bit width 1.
+/// @return a bit mask with of width 1 and position = bit_position.
 constexpr Mask CreateMaskFromRange(uint8_t bit_position)
 {
   return Mask({

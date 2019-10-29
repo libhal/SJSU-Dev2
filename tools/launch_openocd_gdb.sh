@@ -12,7 +12,7 @@ GDB_ARGS=""
 
 if [ $PLATFORM == "linux" ]
 then
-$DEVICE_GDB $EXECUTABLE -ex "source $GDBINIT_PATH"
+  $DEVICE_GDB $EXECUTABLE -ex "source $GDBINIT_PATH"
 else # For all other platforms
   $OPENOCD/bin/openocd  -s $OPENOCD/scripts/ \
   -c "source [find interface/$DEBUG_DEVICE.cfg]" -f $OPENOCD_CONFIG &
@@ -20,7 +20,7 @@ else # For all other platforms
   # Capture the pid of the background OpenOCD process
   OPENOCD_PID=$(echo $!)
   # Wait for OpenOCD to continue or quit
-  sleep .25
+  sleep 2
   # Use kill to check if OpenOCD is running
   kill -0 $OPENOCD_PID &> /dev/null
   # Capture success or failure of check above
@@ -34,7 +34,12 @@ else # For all other platforms
     echo
     exit 1
   fi
-  GDB_ARGS="$GDB_ARGS -ex \"target remote :3333\""
+  # When the GDB session closes, kill openocd below
+  $DEVICE_GDB $EXECUTABLE \
+      -ex "source $GDBINIT_PATH" \
+      -ex "target remote :3333" \
+      -ex "monitor arm semihosting enable" \
+      $GDB_ARGS
 
   echo "Killing OpenOCD PID: $OPENOCD_PID"
   kill $OPENOCD_PID

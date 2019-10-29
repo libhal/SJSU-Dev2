@@ -174,7 +174,7 @@ class Spi final : public sjsu::Spi
   };
   /// Constructor for LPC40xx Spi peripheral
   ///
-  /// @param bus - pass a reference to a constant sjsu::lpc40xx::Bus_t
+  /// @param bus - pass a reference to a constant lpc40xx::Spi::Bus_t
   ///        definition.
   /// @param system_controller - reference to system controller. Uses the
   ///        default lpc40xx system controller. This is typically only used for
@@ -256,7 +256,7 @@ class Spi final : public sjsu::Spi
     // to get the appropriate tranfer code.
     constexpr uint8_t kBitTransferCodeOffset = 3;
     uint8_t size_code =
-        static_cast<uint8_t>(util::Value(size) + kBitTransferCodeOffset);
+        static_cast<uint8_t>(Value(size) + kBitTransferCodeOffset);
 
     bus_.registers->CR0 =
         bit::Insert(bus_.registers->CR0, size_code, ControlRegister0::kDataBit);
@@ -291,10 +291,7 @@ class Spi final : public sjsu::Spi
   }
 
  private:
-  /// Const reference to an lpc40xx::Spi::Bus_t definition.
   const Bus_t & bus_;
-  /// Reference to a system controller object. Used to power on the peripheral
-  /// and get the current peripheral frequency.
   const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
