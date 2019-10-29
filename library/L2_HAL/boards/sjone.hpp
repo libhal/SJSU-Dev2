@@ -5,9 +5,8 @@
 #include "L1_Peripheral/lpc17xx/spi.hpp"
 #include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L2_HAL/memory/sd.hpp"
-#include "L2_HAL/sensors/environment/temperature/si7060.hpp"
+#include "L2_HAL/sensors/environment/temperature/tmp102.hpp"
 #include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
-#include "L2_HAL/sensors/optical/apds9960.hpp"
 
 struct sjtwo // NOLINT
 {
@@ -44,15 +43,9 @@ struct sjtwo // NOLINT
     return sd;
   }
 
-  [[gnu::always_inline]] inline static sjsu::Apds9960 & Gesture()
+  [[gnu::always_inline]] inline static sjsu::Tmp102 & Temperature()
   {
-    static sjsu::Apds9960 apds9960(i2c2);
-    return apds9960;
-  }
-
-  [[gnu::always_inline]] inline static sjsu::Si7060 & Temperature()
-  {
-    static sjsu::Si7060 si7060(i2c2);
-    return si7060;
+    static sjsu::Tmp102 tmp102(i2c2);
+    return tmp102;
   }
 };
