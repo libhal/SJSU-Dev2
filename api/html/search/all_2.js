@@ -17,7 +17,8 @@ var searchData=
   ['bustiming_5ft',['BusTiming_t',['../db/de0/structsjsu_1_1lpc40xx_1_1Can_1_1BusTiming__t.html',1,'sjsu::lpc40xx::Can']]],
   ['buswidth',['BusWidth',['../d0/d27/classsjsu_1_1ParallelGpio.html#ae000150c6072e359621b90a639d84562',1,'sjsu::ParallelGpio::BusWidth()'],['../d7/d86/classsjsu_1_1ParallelBus.html#a61682645483824342e5f504db8a58398',1,'sjsu::ParallelBus::BusWidth()']]],
   ['busy',['busy',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#acb59f1b6bb072d4b3da9f36d3619a8dd',1,'sjsu::I2c::Transaction_t']]],
+  ['button',['Button',['../d1/de1/classsjsu_1_1Button.html#a4dd1bebfea9188c392073bf7233f1d95',1,'sjsu::Button']]],
   ['button',['Button',['../d1/de1/classsjsu_1_1Button.html',1,'sjsu']]],
-  ['buzzer',['Buzzer',['../de/d29/classsjsu_1_1Buzzer.html#a1b68d1d57788fa4b654567b332812ac7',1,'sjsu::Buzzer']]],
-  ['buzzer',['Buzzer',['../de/d29/classsjsu_1_1Buzzer.html',1,'sjsu']]]
+  ['buzzer',['Buzzer',['../de/d29/classsjsu_1_1Buzzer.html',1,'sjsu']]],
+  ['buzzer',['Buzzer',['../de/d29/classsjsu_1_1Buzzer.html#a1b68d1d57788fa4b654567b332812ac7',1,'sjsu::Buzzer']]]
 ];
