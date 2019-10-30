@@ -57,7 +57,7 @@ class Gpio
   /// @param function - the function to execute when the interrupt condition
   ///        occurs
   /// @param edge - the pin condition that will trigger the interrupt
-  virtual void AttachInterrupt(IsrPointer function, Edge edge) const = 0;
+  virtual void AttachInterrupt(IsrPointer function, Edge edge) = 0;
   /// Remove interrupt call from pin and deactivate interrupts for this pin
   virtual void DetachInterrupt() const = 0;
 

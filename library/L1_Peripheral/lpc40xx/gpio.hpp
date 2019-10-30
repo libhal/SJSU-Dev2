@@ -207,8 +207,9 @@ class Gpio final : public sjsu::Gpio
 
   /// Assign the developer's ISR and sets the selected edge that the gpio
   /// interrupt will be triggered on.
-  void AttachInterrupt(IsrPointer function, Edge edge) const override
+  void AttachInterrupt(IsrPointer function, Edge edge) override
   {
+    EnableInterrupts();
     ValidPortCheck();
     SetInterruptRoutine(function);
     SetInterruptEdge(edge);
