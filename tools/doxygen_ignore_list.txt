@@ -32,7 +32,6 @@ L2_HAL/sensors/environment/temperature/tmp102.hpp
 L2_HAL/sensors/movement/accelerometer.hpp
 L2_HAL/sensors/movement/accelerometer/mma8452q.hpp
 L2_HAL/sensors/optical/apds9960.hpp
-L2_HAL/switches/button.hpp
 L3_Application/commandline.hpp
 L3_Application/commands/arm_system_command.hpp
 L3_Application/commands/common.hpp
