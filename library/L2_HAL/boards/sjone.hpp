@@ -3,15 +3,10 @@
 #include "L1_Peripheral/lpc17xx/gpio.hpp"
 #include "L1_Peripheral/lpc17xx/i2c.hpp"
 #include "L1_Peripheral/lpc17xx/spi.hpp"
-
 #include "L2_HAL/displays/led/onboard_led.hpp"
-#include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "L2_HAL/memory/sd.hpp"
-#include "L2_HAL/sensors/environment/temperature/si7060.hpp"
+#include "L2_HAL/sensors/environment/temperature/tmp102.hpp"
 #include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
-#include "L2_HAL/sensors/optical/apds9960.hpp"
-
-#include "L3_Application/graphics.hpp"
 
 struct sjtwo // NOLINT
 {
@@ -28,15 +23,6 @@ struct sjtwo // NOLINT
       sjsu::lpc17xx::I2c(sjsu::lpc17xx::I2c::Bus::kI2c1);
   inline static sjsu::lpc17xx::I2c i2c2 =
       sjsu::lpc17xx::I2c(sjsu::lpc17xx::I2c::Bus::kI2c2);
-
-  [[gnu::always_inline]] inline static sjsu::Graphics & Oled()
-  {
-    static sjsu::lpc17xx::Gpio oled_cs = sjsu::lpc17xx::Gpio(1, 22);
-    static sjsu::lpc17xx::Gpio oled_dc = sjsu::lpc17xx::Gpio(1, 25);
-    static sjsu::Ssd1306 oled_display(spi1, oled_cs, oled_dc);
-    static sjsu::Graphics oled(&oled_display);
-    return oled;
-  }
 
   [[gnu::always_inline]] inline static sjsu::OnBoardLed & Leds()
   {
@@ -57,15 +43,9 @@ struct sjtwo // NOLINT
     return sd;
   }
 
-  [[gnu::always_inline]] inline static sjsu::Apds9960 & Gesture()
+  [[gnu::always_inline]] inline static sjsu::Tmp102 & Temperature()
   {
-    static sjsu::Apds9960 apds9960(i2c2);
-    return apds9960;
-  }
-
-  [[gnu::always_inline]] inline static sjsu::Si7060 & Temperature()
-  {
-    static sjsu::Si7060 si7060(i2c2);
-    return si7060;
+    static sjsu::Tmp102 tmp102(i2c2);
+    return tmp102;
   }
 };
