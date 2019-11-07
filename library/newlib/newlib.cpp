@@ -10,25 +10,10 @@
 
 #include "L0_Platform/ram.hpp"
 #include "utility/macros.hpp"
+#include "third_party/semihost/trace.h"
 
 extern "C"
 {
-  // Dummy implementation of isatty
-  // NOLINTNEXTLINE(readability-identifier-naming)
-  int _isatty([[maybe_unused]] int file)
-  {
-    return 1;
-  }
-  // Dummy implementation of exit with return code placed into
-  // Arm register r3
-  // NOLINTNEXTLINE(readability-identifier-naming)
-  void _exit([[maybe_unused]] int rc)
-  {
-    while (1)
-    {
-      continue;
-    }
-  }
   // Dummy implementation of getpid
   // NOLINTNEXTLINE(readability-identifier-naming)
   int _getpid()
@@ -62,23 +47,11 @@ extern "C"
     heap_position += increment;
     return previous_heap_position;
   }
-  // Dummy implementation of close
   // NOLINTNEXTLINE(readability-identifier-naming)
-  int _close([[maybe_unused]] int file)
+  int _write([[maybe_unused]] int file, const char * ptr, int length)
   {
-    return -1;
-  }
-  // NOLINTNEXTLINE(readability-identifier-naming)
-  int _write([[maybe_unused]] int file, char * ptr, int length)
-  {
+    trace_write(ptr, length);
     return sjsu::newlib::out(ptr, length);
-  }
-  // Dummy implementation of _lseek
-  // NOLINTNEXTLINE(readability-identifier-naming)
-  int _lseek([[maybe_unused]] int file, [[maybe_unused]] int ptr,
-             [[maybe_unused]] int dir)
-  {
-    return 0;
   }
   // NOLINTNEXTLINE(readability-identifier-naming)
   int _read(FILE * file, char * ptr, [[maybe_unused]] int length)
@@ -101,19 +74,52 @@ extern "C"
   int putchar(int character)  // NOLINT
   {
     char character_value = static_cast<char>(character);
-    return sjsu::newlib::out(&character_value, 1);
+    return _write(0, &character_value, 1);
   }
 
   // Overload default libnano puts() with a more optimal version that does
   // not use dynamic memory
   int puts(const char * str)  // NOLINT
   {
-    size_t string_length = strlen(str);
+    int string_length = static_cast<int>(strlen(str));
     int result           = 0;
-    result += sjsu::newlib::out(str, string_length);
-    result += sjsu::newlib::out("\n", 1);
+    result += _write(0, str, string_length);
+    result += _write(0, "\n", 1);
     // + 1 because puts adds an additional newline '\n' character.
     return result;
+  }
+
+// Removing this from the build for now, as rdimon links these in on its own.
+#if 0
+  // Dummy implementation of _lseek
+  // NOLINTNEXTLINE(readability-identifier-naming)
+  int _lseek([[maybe_unused]] int file, [[maybe_unused]] int ptr,
+             [[maybe_unused]] int dir)
+  {
+    return 0;
+  }
+  // Dummy implementation of close
+  // NOLINTNEXTLINE(readability-identifier-naming)
+  int _close([[maybe_unused]] int file)
+  {
+    return -1;
+  }
+  // Dummy implementation of isatty
+  // NOLINTNEXTLINE(readability-identifier-naming)
+  int _isatty([[maybe_unused]] int file)
+  {
+    return 1;
+  }
+#endif
+  // Dummy implementation of exit with return code placed into
+  // Arm register r3
+  // NOLINTNEXTLINE(readability-identifier-naming)
+  void _exit([[maybe_unused]] int rc)
+  {
+    while (1)
+    {
+      continue;
+    }
   }
 }
 

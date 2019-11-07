@@ -11,65 +11,71 @@
 
 namespace sjsu
 {
+/// Graphics library to draw shapes and characters on a pixel display
 class Graphics
 {
  public:
-  explicit Graphics(PixelDisplay * display)
+  /// Constructor for a graphics object.
+  ///
+  /// @param display - reference to a pixel display
+  explicit Graphics(PixelDisplay & display)
       : display_(display), color_(), width_(0), height_(0)
   {
-    width_  = display->GetWidth();
-    height_ = display->GetHeight();
-    color_  = display->AvailableColors();
+    width_  = display.GetWidth();
+    height_ = display.GetHeight();
+    color_  = display.AvailableColors();
   }
-
+  /// Set the current color of drawn elements.
   void SetColor(PixelDisplay::Color_t color)
   {
     color_ = color;
   }
-
+  /// Initialize display hardware.
   void Initialize()
   {
-    display_->Initialize();
-    display_->Enable();
+    display_.Initialize();
+    display_.Enable();
   }
-
+  /// Draw a horizontal line
+  ///
+  /// @param x - starting x coordinate
+  /// @param y - starting y coordinate
+  /// @param line_width - length of the line going to the right
   void DrawHorizontalLine(int32_t x, int32_t y, int32_t line_width)
   {
-    LOG_DEBUG("x = %" PRId32 " :: y = %" PRId32 " :: line_width = %" PRId32 "",
-              x, y, line_width);
     line_width = std::clamp(x + line_width, int32_t(0), int32_t(width_ - x));
     for (int32_t column = x; column < line_width; column++)
     {
       DrawPixel(column, y);
     }
   }
-
+  /// Draw a vertical line
+  ///
+  /// @param x - start x coordinate
+  /// @param y - start y coordinate
+  /// @param line_height - length of the line going down.
   void DrawVerticalLine(int32_t x, int32_t y, int32_t line_height)
   {
     line_height = std::clamp(y + line_height, int32_t(0), int32_t(height_ - y));
-    LOG_DEBUG("x = %" PRId32 " :: y = %" PRId32 " :: line_height = %" PRId32 "",
-              x, y, line_height);
     for (int32_t row = y; row < line_height; row++)
     {
       DrawPixel(x, row);
     }
   }
-
+  /// Draw a line.
+  ///
+  /// @param x0 - start x position
+  /// @param y0 - start y position
+  /// @param x1 - end x position
+  /// @param y1 - end y position
   void DrawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
   {
-    LOG_DEBUG("(x0, y0, x1, y1) -> (%" PRId32 ", %" PRId32 ", %" PRId32
-              ", %" PRId32 ")",
-              x0, y0, x1, y1);
     float dx           = static_cast<float>(x1 - x0);
     float dy           = static_cast<float>(y1 - y0);
     float steps        = std::max(std::abs(dx), std::abs(dy));
     uint32_t int_steps = static_cast<uint32_t>(ceilf(steps));
     float x_increment  = dx / steps;
     float y_increment  = dy / steps;
-    LOG_DEBUG("steps = %f :: dx = %f :: dy = %f :: x-inc = %f :: y-inc = %f",
-              static_cast<double>(steps), static_cast<double>(dx),
-              static_cast<double>(dy), static_cast<double>(x_increment),
-              static_cast<double>(y_increment));
 
     float x = static_cast<float>(x0);
     float y = static_cast<float>(y0);
@@ -81,7 +87,11 @@ class Graphics
                 static_cast<uint32_t>(std::lround(y)));
     }
   }
-
+  /// Draw a circle on the display.
+  ///
+  /// @param x0 - center x position of the circle.
+  /// @param y0 - center y position of the circle.
+  /// @param radius - the radius of the circle.
   void DrawCircle(int32_t x0, int32_t y0, int32_t radius)
   {
     int32_t x   = radius - 1;
@@ -114,12 +124,14 @@ class Graphics
       }
     }
   }
-
+  /// Draw a character on the screen
+  ///
+  /// @param x - x coordinate
+  /// @param y - y coordinate
+  /// @param width - width of the rectangle
+  /// @param height - height of the rectangle
   void DrawRectangle(int32_t x, int32_t y, int32_t width, int32_t height)
   {
-    LOG_DEBUG("x: %" PRId32 " :: y: %" PRId32 " :: h: %" PRId32
-              " :: w: %" PRId32,
-              x, y, width, height);
     // +---------------------
     //
     //
@@ -141,15 +153,16 @@ class Graphics
     // ----------------------
     DrawVerticalLine(x + width, y, height);
   }
-
-  void DrawCharacter(int32_t x0, int32_t y0, char letter,
-                     bool fill_background = true)
+  /// Draw a character on the display.
+  ///
+  /// @param x0 - X coordinate to start printing to the screen
+  /// @param y0 - Y coordinate to start printing to the screen
+  /// @param letter - The character to write to the screen
+  void DrawCharacter(int32_t x0, int32_t y0, char letter)
   {
     int32_t letter_position = static_cast<int32_t>(letter);
 
     PixelDisplay::Color_t foreground = color_;
-    PixelDisplay::Color_t background =
-        PixelDisplay::Color_t(0, 0, 0, 0, 1, true);
 
     for (int32_t y = 0; y < 8; y++)
     {
@@ -159,35 +172,36 @@ class Graphics
         {
           color_ = foreground;
         }
-        else if (fill_background)
-        {
-          color_ = background;
-        }
         DrawPixel(x0 + x, y0 + y);
       }
     }
     color_ = foreground;
   }
-
+  /// Put a pixel on a specific position.
+  ///
+  /// @param x - x coordinate to place the coordinate.
+  /// @param y - y coordinate to place the coordinate.
   void DrawPixel(uint32_t x, uint32_t y)
   {
     // Pixels outside of the bounds of the screen will not be drawn.
     if (x <= width_ && y <= height_)
     {
-      display_->DrawPixel(x, y, color_);
+      display_.DrawPixel(x, y, color_);
     }
   }
+  /// Update the display.
   void Update()
   {
-    display_->Update();
+    display_.Update();
   }
+  /// Clears the display.
   void Clear()
   {
-    display_->Clear();
+    display_.Clear();
   }
 
  private:
-  PixelDisplay * display_;
+  PixelDisplay & display_;
   PixelDisplay::Color_t color_;
   size_t width_;
   size_t height_;

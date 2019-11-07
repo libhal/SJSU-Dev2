@@ -1,9 +1,7 @@
 L1_Peripheral/can.hpp
-L1_Peripheral/cortex/dwt_counter.hpp
 L1_Peripheral/cortex/interrupt.hpp
 L1_Peripheral/example.hpp
 L1_Peripheral/example/example.hpp
-L1_Peripheral/inactive.hpp
 L1_Peripheral/interrupt.hpp
 L1_Peripheral/lpc17xx/system_controller.hpp
 L1_Peripheral/lpc17xx/timer.hpp
@@ -15,7 +13,6 @@ L1_Peripheral/system_controller.hpp
 L1_Peripheral/timer.hpp
 L1_Peripheral/watchdog.hpp
 L2_HAL/actuators/servo/servo.hpp
-L2_HAL/audio/buzzer.hpp
 L2_HAL/boards/example_board.hpp
 L2_HAL/boards/sjone.hpp
 L2_HAL/boards/sjtwo.hpp
@@ -24,10 +21,6 @@ L2_HAL/device_memory_map.hpp
 L2_HAL/displays/lcd/st7066u.hpp
 L2_HAL/displays/led/onboard_led.hpp
 L2_HAL/displays/oled/ssd1306.hpp
-L2_HAL/displays/pixel_display.hpp
-L2_HAL/example.hpp
-L2_HAL/io/parallel_bus.hpp
-L2_HAL/io/parallel_bus/parallel_gpio.hpp
 L2_HAL/memory/sd.hpp
 L2_HAL/sensors/distance/distance_sensor.hpp
 L2_HAL/sensors/distance/time_of_flight/tfmini.hpp
@@ -39,14 +32,12 @@ L2_HAL/sensors/environment/temperature/tmp102.hpp
 L2_HAL/sensors/movement/accelerometer.hpp
 L2_HAL/sensors/movement/accelerometer/mma8452q.hpp
 L2_HAL/sensors/optical/apds9960.hpp
-L2_HAL/switches/button.hpp
 L3_Application/commandline.hpp
 L3_Application/commands/arm_system_command.hpp
 L3_Application/commands/common.hpp
 L3_Application/commands/i2c_command.hpp
 L3_Application/commands/rtos_command.hpp
 L3_Application/graphical_terminal.hpp
-L3_Application/graphics.hpp
 L3_Application/periodic_scheduler.hpp
 L3_Application/task.hpp
 L3_Application/task_scheduler.hpp

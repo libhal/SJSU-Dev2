@@ -34,6 +34,7 @@
 // PRINTF_SUPPORT_LONG_LONG, PRINTF_SUPPORT_PTRDIFF_T
 #include <stdbool.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "printf.h"
 #include "config.hpp"
 
@@ -54,6 +55,9 @@
 // one converted float number including padded zeros (dynamically created on stack)
 // 32 byte is a good default
 #define PRINTF_FTOA_BUFFER_SIZE    32U
+
+// Temperary buffer used by vsnprintf in order to
+#define PRINTF_BUFFER_CHUNK_SIZE    256U
 
 // SJSU-Dev2: Added define check to suppress redefinition warning
 // define this to support floating point (%f)
@@ -106,6 +110,29 @@ static inline void _out_buffer(char character, void* buffer, size_t idx, size_t 
 {
   if (idx < maxlen) {
     ((char*)buffer)[idx] = character;
+  }
+}
+
+// SJSU-Dev2: Adding _out_chunk to make usage of the write function more more
+// efficient vs using the out() with individual characters.
+extern "C" int _write(int file, char * ptr, int length);
+// internal chunk output
+
+void _out_chunk(char character, void* buffer, size_t idx, size_t)
+{
+  size_t string_limit = PRINTF_BUFFER_CHUNK_SIZE - 2;
+  size_t proper_index = idx % (string_limit);
+  ((char*)buffer)[proper_index] = character;
+  // if character == '\0', flush the buffer.
+  if (character == '\0') {
+    _write(STDOUT_FILENO, (char*)buffer, proper_index);
+  } else if (proper_index + 1 == string_limit) {
+    // Add null character to the end of the array to make _write(), which uses
+    // trace_write faster.
+    size_t last_character = string_limit + 1;
+    ((char*)buffer)[last_character] = '\0';
+    // At the end of the buffer, flush buffer.
+    _write(STDOUT_FILENO, (char*)buffer, last_character);
   }
 }
 
@@ -721,10 +748,17 @@ int printf(const char* format, ...)
 {
   va_list va;
   va_start(va, format);
-  char buffer[1];
-  const int ret = _vsnprintf(_out_char, buffer, (size_t)-1, format, va);
+  char buffer[PRINTF_BUFFER_CHUNK_SIZE];
+  const int ret = _vsnprintf(_out_chunk, buffer, (size_t)-1, format, va);
   va_end(va);
   return ret;
+
+  // va_list va;
+  // va_start(va, format);
+  // char buffer[1];
+  // const int ret = _vsnprintf(_out_char, buffer, (size_t)-1, format, va);
+  // va_end(va);
+  // return ret;
 }
 
 

@@ -333,7 +333,7 @@ CFLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
 
 ifndef LINKFLAGS
 LINKFLAGS = $(COMMON_FLAGS) -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
-            -specs=nano.specs \
+            --specs=nano.specs --specs=rdimon.specs \
             -T $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/linker.ld
 endif
 
@@ -358,7 +358,7 @@ CPPFLAGS = -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
          -O0 -MMD -MP -c
 CFLAGS = $(CPPFLAGS)
 else
-CFLAGS = $(CFLAGS_COMMON) -D TARGET=Application
+CFLAGS = $(CFLAGS_COMMON) -D TARGET=Application -DTRACE -DOS_USE_TRACE_SEMIHOSTING_STDOUT
 CPPFLAGS = $(CFLAGS) $(CPPWARNINGS) $(CPPOPTIMIZE) $(WARNINGS)
 endif
 
