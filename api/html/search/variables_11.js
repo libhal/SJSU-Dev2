@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['width',['width',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html#a60b43d484fc581bcee9771d9c1db4fc9',1,'sjsu::bit::Mask']]]
+  ['user_5fcallback',['user_callback',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#acbb4c80c2c01eaa6392a1e4819624692',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]]
 ];

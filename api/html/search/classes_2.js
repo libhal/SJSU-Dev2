@@ -27,6 +27,7 @@ var searchData=
   ['controlregister0',['ControlRegister0',['../dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html',1,'sjsu::lpc40xx::Spi']]],
   ['controlregister1',['ControlRegister1',['../d7/dde/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister1.html',1,'sjsu::lpc40xx::Spi']]],
   ['controlregister_5ft',['ControlRegister_t',['../d8/d65/structsjsu_1_1example_1_1Example_1_1ControlRegister__t.html',1,'sjsu::example::Example']]],
+  ['coulombcounter',['CoulombCounter',['../d1/d15/classsjsu_1_1CoulombCounter.html',1,'sjsu']]],
   ['countcontrol',['CountControl',['../d3/d2d/structsjsu_1_1lpc40xx_1_1Pwm_1_1CountControl.html',1,'sjsu::lpc40xx::Pwm']]],
   ['cpuclock',['CpuClock',['../d9/d69/structsjsu_1_1lpc17xx_1_1SystemController_1_1CpuClock.html',1,'sjsu::lpc17xx::SystemController']]],
   ['cpuclock',['CpuClock',['../d2/d80/structsjsu_1_1lpc40xx_1_1SystemController_1_1CpuClock.html',1,'sjsu::lpc40xx::SystemController']]],

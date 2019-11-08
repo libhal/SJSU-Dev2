@@ -127,6 +127,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html">CommandInterface</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html" title="CommandInterface is the set of methods that every command must support. ">CommandInterface</a> is the set of methods that every command must support.  <a href="../../d9/db2/classsjsu_1_1CommandInterface.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html">CoulombCounter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d01/classsjsu_1_1Dac.html">Dac</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a></td></tr>
@@ -177,6 +179,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/db3/classsjsu_1_1LpcSystemInfoCommand.html">LpcSystemInfoCommand</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SystemInfoCommand allows the user to get runtime stats about the.  <a href="../../d6/db3/classsjsu_1_1LpcSystemInfoCommand.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html">Ltc4150</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html">Mma8452q</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -417,6 +421,12 @@ template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMask
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a97e3f80b60dd5570d890c9e0792d0928"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a97e3f80b60dd5570d890c9e0792d0928">kRsense</a> = 0.00005f</td></tr>
+<tr class="separator:a97e3f80b60dd5570d890c9e0792d0928"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83f7e6d8a436c3db828cc638f36e9703"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83f7e6d8a436c3db828cc638f36e9703"></a>
+constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a83f7e6d8a436c3db828cc638f36e9703">kGvf</a> = 32.55f</td></tr>
+<tr class="memdesc:a83f7e6d8a436c3db828cc638f36e9703"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the voltage to frequency gain in millivolts. <br /></td></tr>
+<tr class="separator:a83f7e6d8a436c3db828cc638f36e9703"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1015ce029891b6ea23685a883ebd664"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1015ce029891b6ea23685a883ebd664"></a>
 UptimeFunction&#160;</td><td class="memItemRight" valign="bottom"><b>Uptime</b> = DefaultUptime</td></tr>
 <tr class="separator:ac1015ce029891b6ea23685a883ebd664"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -813,6 +823,20 @@ template&lt;typename Enum &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the numeric value of the enum class type variable of with the underlying type of the enum class. This should be used in place of static_cast&lt;some_numeric_type&gt;(some_variable). </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="a97e3f80b60dd5570d890c9e0792d0928"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float sjsu::kRsense = 0.00005f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Represents the default Rsense value from calculating the mAh for a given number of ticks. </p>
 
 </div>
 </div>

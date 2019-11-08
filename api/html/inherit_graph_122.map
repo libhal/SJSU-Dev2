@@ -1,9 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html" title="sjsu::rtos::PeriodicTask\lInterface" alt="" coords="241,5,407,47"/>
-<area shape="rect" id="node2" href="$d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html" title="sjsu::rtos::PeriodicTask\l\&lt; kTaskStackSize \&gt;" alt="" coords="491,71,656,112"/>
-<area shape="rect" id="node3" href="$d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="sjsu::rtos::TaskInterface" alt="" coords="5,143,176,170"/>
-<area shape="rect" id="node4" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kStack\lSize \&gt;" alt="" coords="237,71,411,112"/>
-<area shape="rect" id="node5" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; 512 \&gt;" alt="" coords="239,202,409,229"/>
-<area shape="rect" id="node7" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kTaskStack\lSize \&gt;" alt="" coords="224,136,424,177"/>
-<area shape="rect" id="node6" href="$dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html" title="sjsu::rtos::PeriodicScheduler" alt="" coords="472,202,675,229"/>
+<area shape="rect" id="node1" href="$d2/d96/classsjsu_1_1PulseCapture.html" title="Pulse capture library. " alt="" coords="5,5,145,32"/>
+<area shape="rect" id="node2" href="$d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html" title="Pulse capture library. " alt="" coords="193,5,389,32"/>
 </map>
