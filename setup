@@ -17,7 +17,7 @@ ARCH=$(uname -m)
 # Get System Operating System
 OS=$(uname -s)
 # Define name of the arm version we are downloading
-TOOLS_BUNDLE_BASE_URL="https://github.com/kammce/SJSU-Dev2/releases/download/v2.0/tools-bundle"
+TOOLS_BUNDLE_BASE_URL="https://github.com/kammce/SJSU-Dev2/releases/download/v2.1/tools-bundle"
 TOOLS_BUNDLE_URL_LINUX="$TOOLS_BUNDLE_BASE_URL-linux.tar.bz2"
 TOOLS_BUNDLE_URL_OSX="$TOOLS_BUNDLE_BASE_URL-osx.tar.bz2"
 # Set later
@@ -68,9 +68,9 @@ function install_linux_prerequisites() {
   sudo apt update
   local apt_update=$?
   echo " ───────────────────────────────────────────────────┐"
-  echo "    Installing git, make python3, pip3, curl, tar    "
+  echo " Installing git, make python3, pip3, curl, tar, tree "
   echo "└─────────────────────────────────────────────────── "
-  sudo apt -y install git make python3 python3-pip curl tar
+  sudo apt -y install git make python3 python3-pip curl tar tree
   local apt_install=$?
   echo " ──────────────────────────────────────────────────┐"
   echo "       Adding current user to 'dialout' group        "
@@ -178,7 +178,7 @@ function download_and_extract_tool_bundle()
     return 0
   else
     # Delete old toolkit folders
-    rm -r "openocd" &> /dev/null
+    rm -r "openocd*" &> /dev/null
     rm -r "gcc-arm*" &> /dev/null
     rm -r "clang+llvm*" &> /dev/null
 

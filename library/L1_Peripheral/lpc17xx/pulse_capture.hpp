@@ -11,7 +11,8 @@ namespace sjsu::lpc17xx
 // The LPC40xx driver is compatible with the lpc17xx peripheral
 using ::sjsu::lpc40xx::PulseCapture;
 
-struct PulseCaptureChannel
+/// Structure used as a namespace for predefined Channel definitions
+struct PulseCaptureChannel  // NOLINT
 {
  private:
   inline static lpc40xx::PulseCapture::CaptureIsr timer0_isr = nullptr;
