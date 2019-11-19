@@ -93,7 +93,11 @@ SJCLANG           = $(shell cd $(SJCLANG_PATH) ; pwd)
 SJARMGCC_PATH     = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/
 SJARMGCC          = $(shell cd $(SJARMGCC_PATH) ; pwd)
 # Path to Openocd compiler
-OPENOCD_DIR       = $(SJSU_DEV2_BASE)/tools/openocd
+OPENOCD_DIR       = $(shell grep -q Microsoft /proc/version && \
+                      echo "$(SJSU_DEV2_BASE)/tools/openocd-wsl" || \
+                      echo "$(SJSU_DEV2_BASE)/tools/openocd")
+OPENOCD_EXECUTABLE= $(shell grep -q Microsoft /proc/version && \
+                      echo "openocd.exe" || echo "openocd")
 # Path to Openocd compiler
 GDBINIT_PATH      = $(SJSU_DEV2_BASE)/tools/gdb_dashboard/gdbinit
 # Compiler and library settings:
@@ -471,7 +475,7 @@ flash:
 jtag-flash:
 	@$(MAKE) --quiet application
 	@printf '$(MAGENTA)Programming chip via debug port...$(RESET)\n'
-	@$(OPENOCD_DIR)/bin/openocd -s $(OPENOCD_DIR)/scripts/ \
+	@$(OPENOCD_DIR)/bin/$(OPENOCD_EXECUTABLE) -s $(OPENOCD_DIR)/scripts/ \
 	-c "source [find interface/$(DEBUG_DEVICE).cfg]" -f $(OPENOCD_CONFIG) \
 	-c "program \"$(EXECUTABLE)\" reset exit 0x0"
 # ====================================================================
@@ -553,7 +557,9 @@ debug:
 			$(CURRENT_DIRECTORY)/$(EXECUTABLE) \
 			$(OPENOCD_DIR) \
 			$(DEBUG_DEVICE) \
-			$(OPENOCD_CONFIG)
+			$(OPENOCD_CONFIG) \
+			$(OPENOCD_EXECUTABLE)
+
 
 debug-test:
 	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/tests.exe

@@ -17,7 +17,7 @@ class PulseCapture
   {
     /// Timer count at the point in time a capture event was triggered
     uint32_t count;
-    /// Capture status flags at the poin in time a capture event was triggered
+    /// Capture status flags at the point in time a capture event was triggered
     uint32_t flags;
   };
 
