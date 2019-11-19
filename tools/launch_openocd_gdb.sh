@@ -7,6 +7,7 @@ EXECUTABLE=$4
 OPENOCD=$5
 DEBUG_DEVICE=$6
 OPENOCD_CONFIG=$7
+OPENOCD_EXECUTABLE=$8
 
 GDB_ARGS=""
 
@@ -14,8 +15,8 @@ if [ $PLATFORM == "linux" ]
 then
   $DEVICE_GDB $EXECUTABLE -ex "source $GDBINIT_PATH"
 else # For all other platforms
-  $OPENOCD/bin/openocd  -s $OPENOCD/scripts/ \
-  -c "source [find interface/$DEBUG_DEVICE.cfg]" -f $OPENOCD_CONFIG &
+  $OPENOCD/bin/$OPENOCD_EXECUTABLE  -s $OPENOCD/scripts/ \
+    -c "source [find interface/$DEBUG_DEVICE.cfg]" -f $OPENOCD_CONFIG &
 
   # Capture the pid of the background OpenOCD process
   OPENOCD_PID=$(echo $!)

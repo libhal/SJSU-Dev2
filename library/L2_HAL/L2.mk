@@ -59,3 +59,7 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/memory/test/sd_test.cpp
 # Actuators
 # ==============================================================================
 TESTS += $(LIBRARY_DIR)/L2_HAL/actuators/servo/test/servo_test.cpp
+# ==============================================================================
+# Battery
+# ==============================================================================
+TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/battery/test/ltc4150_test.cpp
