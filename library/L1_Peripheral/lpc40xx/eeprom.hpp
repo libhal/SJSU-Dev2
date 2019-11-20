@@ -6,6 +6,8 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 
+#include "utility/bit.hpp"
+
 namespace sjsu
 {
 namespace lpc40xx
@@ -22,18 +24,21 @@ class Eeprom final : public sjsu::Eeprom
   /// mode, which means addresses must be multiples of 4 to avoid hard faults.
   /// To enforce this, all addresses used to read/write to the EEPROM have to
   /// be masked.
-  static constexpr uint32_t kAddressMask = 0b1111'1111'1100;
+  static constexpr bit::Mask kAddressMask = bit::CreateMaskFromRange(0, 1);
 
-  /// Which bits in the status register correspond to programming the EEPROM
-  /// vs. reading and writing to it
-  enum eeprom_status_bits {
-    kProgramStatusBit   = 28,
-    kReadWriteStatusBit = 26
+  /// Masks for the program status bits and read/write status bits
+  struct Status {  // NOLINT
+    /// Mask to get value of programming status bit
+    static constexpr bit::Mask kProgramStatusMask =
+        bit::CreateMaskFromRange(28);
+    /// Mask to get value of read/write status bit
+    static constexpr bit::Mask kReadWriteStatusMask =
+        bit::CreateMaskFromRange(26);
   };
 
   /// EEPROM Command codes for reading from, writing to, and programming the
   /// device
-  enum eeprom_command_codes {
+  enum command_codes {
     kRead32Bits    = 0b010,
     kWrite32Bits   = 0b101,
     kEraseProgram  = 0b110
@@ -94,9 +99,10 @@ class Eeprom final : public sjsu::Eeprom
   void Write(const uint8_t * wdata, uint32_t full_address,
              size_t count) const override
   {
-    constexpr uint8_t kMax6Bits = 0b11'1111;
+    constexpr bit::Mask kLower6Bits = bit::CreateMaskFromRange(0, 5);
+    constexpr bit::Mask kUpper6Bits = bit::CreateMaskFromRange(6, 11);
 
-    full_address &= kAddressMask;
+    full_address = bit::Clear(full_address, kAddressMask);
 
     // Because the EEPROM uses 32-bit communication, write_data will be casted
     // into a uint32_t *
@@ -104,8 +110,8 @@ class Eeprom final : public sjsu::Eeprom
 
     // The first 6 bits in the address (MSB) dictate which page is being written
     // to in the EEPROM, and the last 6 bits (LSB) dictate offset in the page
-    uint8_t page_count  = static_cast<uint8_t>(full_address >> 6);
-    uint8_t page_offset = full_address & 0b0000'0011'1111;
+    uint8_t page_count  = bit::Read(full_address, kUpper6Bits);
+    uint8_t page_offset = bit::Read(full_address, kLower6Bits);
 
     uint16_t address;
 
@@ -121,21 +127,23 @@ class Eeprom final : public sjsu::Eeprom
       eeprom_register->WDATA = write_data[i];
 
       // Poll status register bit to see when writing is finished
-      auto check_register = [&] ()
+      auto check_register = [] ()
       {
-        return !(eeprom_register->INT_STATUS >> kReadWriteStatusBit & 1);
+        return !(bit::Read(eeprom_register->INT_STATUS,
+                           Status::kReadWriteStatusMask));
       };
 
       Wait(kMaxTimeout, check_register);
 
       // Clear write interrupt
-      eeprom_register->INT_CLR_STATUS = (1 << kReadWriteStatusBit);
+      eeprom_register->INT_CLR_STATUS =
+              (bit::Set(0, Status::kReadWriteStatusMask));
 
       page_offset = static_cast<uint8_t>(page_offset + kOffsetInterval);
 
       // If the 64 byte page buffer fills up, then it must be programmed to the
-      // EEPROM before continuing.
-      if (page_offset > kMax6Bits)
+      // programmed to the EEPROM before continuing.
+      if (page_offset > 64)
       {
         Program(address);
         page_count++;
@@ -155,15 +163,17 @@ class Eeprom final : public sjsu::Eeprom
     eeprom_register->CMD  = kEraseProgram;
 
     // Poll status register bit to see when writing is finished
-    auto check_register = [&] ()
+    auto check_register = [] ()
     {
-      return !(eeprom_register->INT_STATUS >> kProgramStatusBit & 1);
+      return !(bit::Read(eeprom_register->INT_STATUS,
+                         Status::kProgramStatusMask));
     };
 
     Wait(kMaxTimeout, check_register);
 
     // Clear program interrupt
-    eeprom_register->INT_CLR_STATUS = (1 << kProgramStatusBit);
+    eeprom_register->INT_CLR_STATUS =
+            (bit::Set(0, Status::kReadWriteStatusMask));
   }
 
   /// This function will return however much 32-bit data from the EEPROM
@@ -174,7 +184,7 @@ class Eeprom final : public sjsu::Eeprom
   /// @param count   - number of bytes that have to be read
   void Read(uint8_t * rdata, uint32_t address, size_t count) const override
   {
-    address &= kAddressMask;
+    address = bit::Clear(address, kAddressMask);
 
     // Because the EEPROM uses 32-bit communication, read_data will be casted
     // into a uint32_t *

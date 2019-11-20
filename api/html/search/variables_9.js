@@ -1,7 +1,7 @@
 var searchData=
 [
   ['kactivebits',['kActiveBits',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae062fa73ba090adab38b1b423715fb32',1,'sjsu::lpc40xx::Adc']]],
-  ['kaddressmask',['kAddressMask',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad22c8776def99aacbea29d54416c5338',1,'sjsu::lpc40xx::Eeprom']]],
+  ['kaddressmask',['kAddressMask',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a53eeb9f770c3b05675e5550e9fe57016',1,'sjsu::lpc40xx::Eeprom']]],
   ['kanalogdigitalmode',['kAnalogDigitalMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae61e2249bae8c7c80388023447b3def0',1,'sjsu::lpc40xx::Pin']]],
   ['kbias',['kBias',['../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html#aa98aaa5479a5da965d827fa510ecf34f',1,'sjsu::lpc40xx::Dac::Control']]],
   ['kblocksize',['kBlockSize',['../dc/d5f/classsjsu_1_1Sd.html#a392f2c4132fdf3b0656a766004347f17',1,'sjsu::Sd']]],
@@ -69,6 +69,7 @@ var searchData=
   ['kpoly8bit',['kPoly8bit',['../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html#a4189da74d9a83cad14b4bd26d4a80248',1,'sjsu::crc::CrcTableConfig_t']]],
   ['kpowerenable',['kPowerEnable',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ad6fbba60523c2cf03e60c92a89dccb50',1,'sjsu::lpc40xx::Adc::Control']]],
   ['kpriority',['kPriority',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a21f2d733f945a82658dd213431ea889f',1,'sjsu::rtos::Task']]],
+  ['kprogramstatusmask',['kProgramStatusMask',['../d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html#a0bcf6dc69bd71095074fd8f6e3cee01f',1,'sjsu::lpc40xx::Eeprom::Status']]],
   ['kpwm0',['kPwm0',['../d0/d71/structsjsu_1_1lpc17xx_1_1PwmChannel.html#a8527c1406356070e241afd7a3364e9df',1,'sjsu::lpc17xx::PwmChannel::kPwm0()'],['../d5/dce/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel.html#acb9ec0c333c282f6fd66867aeb0a67e4',1,'sjsu::lpc40xx::Pwm::Channel::kPwm0()']]],
   ['kpwm0peripheral',['kPwm0Peripheral',['../d5/dce/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel.html#a8bdb64b33865cc0602d0d3ae7085465a',1,'sjsu::lpc40xx::Pwm::Channel']]],
   ['kpwm0reset',['kPwm0Reset',['../d1/dd9/structsjsu_1_1lpc40xx_1_1Pwm_1_1MatchControl.html#a830bf4c9434f36d6920522fd25a45c58',1,'sjsu::lpc40xx::Pwm::MatchControl']]],
@@ -79,6 +80,7 @@ var searchData=
   ['kpwm4',['kPwm4',['../d0/d71/structsjsu_1_1lpc17xx_1_1PwmChannel.html#a8a2e62dc4c44d39c1e6fc7647a106a84',1,'sjsu::lpc17xx::PwmChannel::kPwm4()'],['../d5/dce/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel.html#a80babf36e64e2a3a2d9e8a26224f91e3',1,'sjsu::lpc40xx::Pwm::Channel::kPwm4()']]],
   ['kpwm5',['kPwm5',['../d0/d71/structsjsu_1_1lpc17xx_1_1PwmChannel.html#acddbaa1924764f7b36baf9adc178f96b',1,'sjsu::lpc17xx::PwmChannel::kPwm5()'],['../d5/dce/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel.html#acbd2f46201e6a71d8322e52efd5d2c56',1,'sjsu::lpc40xx::Pwm::Channel::kPwm5()']]],
   ['kpwmenable',['kPwmEnable',['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html#a8a0bc107ff543263f239e2842d23b821',1,'sjsu::lpc40xx::Pwm::Timer']]],
+  ['kreadwritestatusmask',['kReadWriteStatusMask',['../d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html#af5a4fff1c4d463b8ea5bdc5fd57a5f05',1,'sjsu::lpc40xx::Eeprom::Status']]],
   ['kresistor',['kResistor',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1653e62a8f81e4cd540819be8e76a90b',1,'sjsu::lpc40xx::Pin']]],
   ['kresult',['kResult',['../df/d35/structsjsu_1_1lpc40xx_1_1Adc_1_1DataRegister.html#a7e8e173982cf309561075774c7275d66',1,'sjsu::lpc40xx::Adc::DataRegister']]],
   ['krsense',['kRsense',['../d0/d6b/namespacesjsu.html#a97e3f80b60dd5570d890c9e0792d0928',1,'sjsu']]],

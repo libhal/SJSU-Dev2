@@ -103,6 +103,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
@@ -127,22 +128,25 @@ Collaboration diagram for sjsu::lpc40xx::Eeprom:</div>
 <div class="center"><img src="../../d9/d5a/classsjsu_1_1lpc40xx_1_1Eeprom__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Eeprom_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Eeprom_coll__map" id="sjsu_1_1lpc40xx_1_1Eeprom_coll__map">
 <area shape="rect" id="node2" href="../../d9/df3/classsjsu_1_1Eeprom.html" title="An abstract interface for communicating with EEPROM devices. " alt="" coords="5,81,111,108"/>
-<area shape="rect" id="node3" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="135,81,357,108"/>
-<area shape="rect" id="node4" href="../../df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="163,5,329,32"/>
+<area shape="rect" id="node3" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="134,81,246,108"/>
+<area shape="rect" id="node4" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="269,81,492,108"/>
+<area shape="rect" id="node5" href="../../df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="297,5,464,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html">Status</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Masks for the program status bits and read/write status bits.  <a href="../../d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a7a3b60a9c98060ad430e3c4f0394f549"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a7a3b60a9c98060ad430e3c4f0394f549">eeprom_status_bits</a> { <b>kProgramStatusBit</b> = 28, 
-<b>kReadWriteStatusBit</b> = 26
- }</td></tr>
-<tr class="separator:a7a3b60a9c98060ad430e3c4f0394f549"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09833ba2fb1d9b4e6ca07aa35c8f8f44"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a09833ba2fb1d9b4e6ca07aa35c8f8f44">eeprom_command_codes</a> { <b>kRead32Bits</b> = 0b010, 
+<tr class="memitem:a3a970a8d24f3ab2923d8cc3c3f154795"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a3a970a8d24f3ab2923d8cc3c3f154795">command_codes</a> { <b>kRead32Bits</b> = 0b010, 
 <b>kWrite32Bits</b> = 0b101, 
 <b>kEraseProgram</b> = 0b110
  }</td></tr>
-<tr class="separator:a09833ba2fb1d9b4e6ca07aa35c8f8f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a3a970a8d24f3ab2923d8cc3c3f154795"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -164,8 +168,8 @@ Static Public Attributes</h2></td></tr>
 static LPC_EEPROM_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a3faf44bc640f083da8fe8e278cd105f5">eeprom_register</a> = LPC_EEPROM</td></tr>
 <tr class="memdesc:a3faf44bc640f083da8fe8e278cd105f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the LPC EEPROM peripheral in memory. <br /></td></tr>
 <tr class="separator:a3faf44bc640f083da8fe8e278cd105f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad22c8776def99aacbea29d54416c5338"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad22c8776def99aacbea29d54416c5338">kAddressMask</a> = 0b1111'1111'1100</td></tr>
-<tr class="separator:ad22c8776def99aacbea29d54416c5338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53eeb9f770c3b05675e5550e9fe57016"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a53eeb9f770c3b05675e5550e9fe57016">kAddressMask</a> = bit::CreateMaskFromRange(0, 1)</td></tr>
+<tr class="separator:a53eeb9f770c3b05675e5550e9fe57016"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66ffe664a475b8859da7348e2d3fbe69"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66ffe664a475b8859da7348e2d3fbe69"></a>
 static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a66ffe664a475b8859da7348e2d3fbe69">kMaxTimeout</a> = 20ms</td></tr>
 <tr class="memdesc:a66ffe664a475b8859da7348e2d3fbe69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max timeout for program/write operations in milliseconds. <br /></td></tr>
@@ -177,29 +181,16 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the EEPROM interface for the LPC40xx family of microcontrollers. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a class="anchor" id="a09833ba2fb1d9b4e6ca07aa35c8f8f44"></a>
+<a class="anchor" id="a3a970a8d24f3ab2923d8cc3c3f154795"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a09833ba2fb1d9b4e6ca07aa35c8f8f44">sjsu::lpc40xx::Eeprom::eeprom_command_codes</a></td>
+          <td class="memname">enum <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a3a970a8d24f3ab2923d8cc3c3f154795">sjsu::lpc40xx::Eeprom::command_codes</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>EEPROM <a class="el" href="../../d9/d71/classCommand.html">Command</a> codes for reading from, writing to, and programming the device </p>
-
-</div>
-</div>
-<a class="anchor" id="a7a3b60a9c98060ad430e3c4f0394f549"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a7a3b60a9c98060ad430e3c4f0394f549">sjsu::lpc40xx::Eeprom::eeprom_status_bits</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Which bits in the status register correspond to programming the EEPROM vs. reading and writing to it </p>
 
 </div>
 </div>
@@ -385,7 +376,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="ad22c8776def99aacbea29d54416c5338"></a>
+<a class="anchor" id="a53eeb9f770c3b05675e5550e9fe57016"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -393,7 +384,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint32_t sjsu::lpc40xx::Eeprom::kAddressMask = 0b1111'1111'1100</td>
+          <td class="memname">constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a> sjsu::lpc40xx::Eeprom::kAddressMask = bit::CreateMaskFromRange(0, 1)</td>
         </tr>
       </table>
   </td>
