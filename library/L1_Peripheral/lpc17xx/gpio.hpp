@@ -34,8 +34,8 @@ class Gpio final : public sjsu::Gpio
   /// Map a pointer to a GpioPort_t to the gpio.ports actual address.
   inline static GpioPort_t * gpio = reinterpret_cast<GpioPort_t *>(0x2009'C000);
   /// Lookup table that holds developer gpio interrupt handelers.
-  inline static IsrPointer interrupthandlers[kNumberOfInterruptPorts]
-                                            [kNumberOfPins];
+  inline static std::function<void(void)>
+      interrupt_handlers[kNumberOfInterruptPorts][kNumberOfPins];
   /// Holds gpio interrupt port specific registers. Used to make the code more
   /// readable.
   struct GpioInterruptRegisterMap_t
@@ -138,15 +138,15 @@ class Gpio final : public sjsu::Gpio
     return is_valid;
   }
   /// Assigns the developer's ISR function to the port/pin gpio instance.
-  void SetInterruptRoutine(IsrPointer function) const
+  void SetInterruptRoutine(std::function<void(void)> function) const
   {
     ValidPortCheck();
-    interrupthandlers[kInteruptPort][kPin.GetPin()] = function;
+    interrupt_handlers[kInteruptPort][kPin.GetPin()] = function;
   }
   /// Clears the developers ISR function from the port/pin gio instance.
   void ClearInterruptRoutine() const
   {
-    interrupthandlers[kInteruptPort][kPin.GetPin()] = nullptr;
+    interrupt_handlers[kInteruptPort][kPin.GetPin()] = nullptr;
   }
   /// Sets the selected edge that the gpio interrupt will be triggered on.
   void SetInterruptEdge(Edge edge) const
@@ -212,11 +212,11 @@ class Gpio final : public sjsu::Gpio
   }
   /// Assign the developer's ISR and sets the selected edge that the gpio
   /// interrupt will be triggered on.
-  void AttachInterrupt(IsrPointer function, Edge edge) override
+  void AttachInterrupt(std::function<void(void)> callback, Edge edge) override
   {
     EnableInterrupts();
     ValidPortCheck();
-    SetInterruptRoutine(function);
+    SetInterruptRoutine(callback);
     SetInterruptEdge(edge);
   }
   /// Removes the developer's ISR and clears the selected edge of the gpio
@@ -251,7 +251,7 @@ class Gpio final : public sjsu::Gpio
     int triggered_pin =
         __builtin_ctz(*interrupt[triggered_port].rising_edge_status |
                       *interrupt[triggered_port].falling_edge_status);
-    interrupthandlers[triggered_port][triggered_pin]();
+    interrupt_handlers[triggered_port][triggered_pin]();
     *interrupt[triggered_port].clear |= (1 << triggered_pin);
   }
 

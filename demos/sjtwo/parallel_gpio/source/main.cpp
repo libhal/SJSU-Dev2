@@ -28,7 +28,7 @@ int main()
       LOG_INFO("Displaying 0x%X in binary on leds", i);
       // Each LED above the 4 buttons on the SJTwo is active low, meaning it
       // turns on when the pin is set to state LOW. In order to make an LED
-      // shine when the corrisponding bit is 1, I need to invert the value of
+      // shine when the corrissponding bit is 1, I need to invert the value of
       // i. To do this, we use the bitwise invert operator ~
       parallel_leds.Write(~i);
       sjsu::Delay(500ms);

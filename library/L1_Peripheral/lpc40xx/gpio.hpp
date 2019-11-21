@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 
 #include "L1_Peripheral/gpio.hpp"
 
@@ -31,8 +32,8 @@ class Gpio final : public sjsu::Gpio
   };
 
   /// Lookup table that holds developer gpio interrupt handelers.
-  inline static IsrPointer interrupthandlers[kNumberOfInterruptPorts]
-                                            [kNumberOfPins];
+  inline static std::function<void(void)>
+      interrupt_handlers[kNumberOfInterruptPorts][kNumberOfPins];
 
   /// This structure makes the access of gpio interrupt registers more readable
   struct GpioInterruptRegisterMap_t
@@ -129,16 +130,16 @@ class Gpio final : public sjsu::Gpio
   }
 
   /// Assigns the developer's ISR function to the port/pin gpio instance.
-  void SetInterruptRoutine(IsrPointer function) const
+  void SetInterruptRoutine(std::function<void(void)> callback) const
   {
     ValidPortCheck();
-    interrupthandlers[interupt_port_][pin_.GetPin()] = function;
+    interrupt_handlers[interupt_port_][pin_.GetPin()] = callback;
   }
 
   /// Clears the developers ISR function from the port/pin gio instance.
   void ClearInterruptRoutine() const
   {
-    interrupthandlers[interupt_port_][pin_.GetPin()] = nullptr;
+    interrupt_handlers[interupt_port_][pin_.GetPin()] = nullptr;
   }
 
   /// Sets the selected edge that the gpio interrupt will be triggered on.
@@ -207,11 +208,11 @@ class Gpio final : public sjsu::Gpio
 
   /// Assign the developer's ISR and sets the selected edge that the gpio
   /// interrupt will be triggered on.
-  void AttachInterrupt(IsrPointer function, Edge edge) override
+  void AttachInterrupt(std::function<void(void)> callback, Edge edge) override
   {
     EnableInterrupts();
     ValidPortCheck();
-    SetInterruptRoutine(function);
+    SetInterruptRoutine(callback);
     SetInterruptEdge(edge);
   }
 
@@ -249,7 +250,7 @@ class Gpio final : public sjsu::Gpio
     int triggered_pin =
         __builtin_ctz(*interrupt[triggered_port].rising_edge_status |
                       *interrupt[triggered_port].falling_edge_status);
-    interrupthandlers[triggered_port][triggered_pin]();
+    interrupt_handlers[triggered_port][triggered_pin]();
     *interrupt[triggered_port].clear |= (1 << triggered_pin);
   }
 

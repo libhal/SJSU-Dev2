@@ -1,7 +1,7 @@
 #pragma once
 
+#include <array>
 #include <cstddef>
-#include <iterator>
 
 #include "L0_Platform/arm_cortex/m4/core_cm4.h"
 #include "L1_Peripheral/interrupt.hpp"
@@ -32,10 +32,10 @@ class InterruptController final : public sjsu::InterruptController
 
   struct VectorTable_t
   {
-    IsrPointer vector[kNumberOfInterrupts];
+    std::array<IsrPointer, kNumberOfInterrupts> vector;
     void Print()
     {
-      for (size_t i = 0; i < std::size(vector); i++)
+      for (size_t i = 0; i < vector.size(); i++)
       {
         LOG_INFO("vector[%zu] = %p", i, vector[i]);
       }
@@ -52,7 +52,7 @@ class InterruptController final : public sjsu::InterruptController
       }
       // For all other exceptions, give a handler that will disable the ISR if
       // it is enabled but has not been registered.
-      for (size_t i = kArmIrqOffset; i < std::size(temp_table.vector); i++)
+      for (size_t i = kArmIrqOffset; i < temp_table.vector.size(); i++)
       {
         temp_table.vector[i] = UnregisteredInterruptHandler;
       }

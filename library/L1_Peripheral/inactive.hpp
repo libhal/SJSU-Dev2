@@ -122,7 +122,7 @@ const sjsu::Gpio & GetInactive<sjsu::Gpio>()
     {
       return GetInactive<sjsu::Pin>();
     }
-    void AttachInterrupt(IsrPointer, Edge) override {}
+    void AttachInterrupt(std::function<void(void)>, Edge) override {}
     void DetachInterrupt() const override {}
   };
 
