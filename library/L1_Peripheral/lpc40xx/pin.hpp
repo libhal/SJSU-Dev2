@@ -53,7 +53,7 @@ class Pin final : public sjsu::Pin
   /// Bitmask for enabling/disabling digital to analog pin mode.
   static constexpr bit::Mask kDacEnable = bit::CreateMaskFromRange(16);
   /// Pin map table for maping pins and ports to registers.
-  struct [[gnu::packed]] PinMap_t
+  struct PinMap_t
   {
     /// Register matrix that maps against the 6 ports and the 32 pins per port
     volatile uint32_t register_matrix[6][32];

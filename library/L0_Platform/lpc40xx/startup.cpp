@@ -111,7 +111,7 @@ extern "C"
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
     // delay itself.
-    system_timer.SetInterrupt(xPortSysTickHandler);
+    system_timer.SetCallback(xPortSysTickHandler);
   }
 }
 
@@ -121,7 +121,7 @@ SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
 // This relies on the linker script to place at correct location in memory.
 SJ2_SECTION(".isr_vector")
 // NOLINTNEXTLINE(readability-identifier-naming)
-const sjsu::IsrPointer kInterruptVectorTable[] = {
+const sjsu::InterruptHandler kInterruptVectorTable[] = {
   // Core Level - CM4
   &StackTop,                           // 0, The initial stack pointer
   ArmResetHandler,                     // 1, The reset handler

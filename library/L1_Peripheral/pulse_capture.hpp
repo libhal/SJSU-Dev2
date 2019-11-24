@@ -22,7 +22,7 @@ class PulseCapture
   };
 
   /// Interrupt callback that passes capture status information
-  using CaptureIsr = void (*)(PulseCapture::CaptureStatus_t);
+  using CaptureCallback = std::function<void(PulseCapture::CaptureStatus_t)>;
 
   /// Define which edges to capture input on
   enum class CaptureEdgeMode : uint8_t
@@ -34,7 +34,7 @@ class PulseCapture
   };
 
   /// Initialize timer for capturing
-  virtual Status Initialize(CaptureIsr isr             = nullptr,
+  virtual Status Initialize(CaptureCallback isr        = nullptr,
                             int32_t interrupt_priority = -1) const = 0;
 
   /// Select edge type to capture on

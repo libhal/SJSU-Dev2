@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstdint>
 #include <limits>
 
@@ -25,7 +26,7 @@ class Timer final : public sjsu::Timer
     LPC_TIM_TypeDef * timer_register;
     sjsu::SystemController::PeripheralID power_id;
     IRQn irq;
-    IsrPointer * user_callback;
+    InterruptCallback * user_callback;
   };
 
   template <const ChannelPartial_t & port>
@@ -37,63 +38,63 @@ class Timer final : public sjsu::Timer
   struct Channel_t
   {
     const ChannelPartial_t & channel;
-    IsrPointer isr;
+    InterruptHandler handler;
   };
 
   struct Channel  // NOLINT
   {
    private:
-    inline static IsrPointer timer0_isr                 = nullptr;
+    inline static InterruptCallback timer0_callback     = nullptr;
     inline static const ChannelPartial_t kTimerPartial0 = {
       .timer_register = LPC_TIM0,
       .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer0,
       .irq            = IRQn::TIMER0_IRQn,
-      .user_callback  = &timer0_isr,
+      .user_callback  = &timer0_callback,
     };
 
-    inline static IsrPointer timer1_isr                 = nullptr;
+    inline static InterruptCallback timer1_callback     = nullptr;
     inline static const ChannelPartial_t kTimerPartial1 = {
       .timer_register = LPC_TIM1,
       .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer1,
       .irq            = IRQn::TIMER1_IRQn,
-      .user_callback  = &timer1_isr,
+      .user_callback  = &timer1_callback,
     };
 
-    inline static IsrPointer timer2_isr                 = nullptr;
+    inline static InterruptCallback timer2_callback     = nullptr;
     inline static const ChannelPartial_t kTimerPartial2 = {
       .timer_register = LPC_TIM2,
       .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer2,
       .irq            = IRQn::TIMER2_IRQn,
-      .user_callback  = &timer2_isr,
+      .user_callback  = &timer2_callback,
     };
 
-    inline static IsrPointer timer3_isr                 = nullptr;
+    inline static InterruptCallback timer3_callback     = nullptr;
     inline static const ChannelPartial_t kTimerPartial3 = {
       .timer_register = LPC_TIM3,
       .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer3,
       .irq            = IRQn::TIMER3_IRQn,
-      .user_callback  = &timer3_isr,
+      .user_callback  = &timer3_callback,
     };
 
    public:
     inline static const Channel_t kTimer0 = {
       .channel = kTimerPartial0,
-      .isr     = TimerHandler<kTimerPartial0>,
+      .handler = TimerHandler<kTimerPartial0>,
     };
 
     inline static const Channel_t kTimer1 = {
       .channel = kTimerPartial1,
-      .isr     = TimerHandler<kTimerPartial1>,
+      .handler = TimerHandler<kTimerPartial1>,
     };
 
     inline static const Channel_t kTimer2 = {
       .channel = kTimerPartial2,
-      .isr     = TimerHandler<kTimerPartial2>,
+      .handler = TimerHandler<kTimerPartial2>,
     };
 
     inline static const Channel_t kTimer3 = {
       .channel = kTimerPartial3,
-      .isr     = TimerHandler<kTimerPartial3>,
+      .handler = TimerHandler<kTimerPartial3>,
     };
   };
 
@@ -124,8 +125,8 @@ class Timer final : public sjsu::Timer
   }
 
   Status Initialize(units::frequency::hertz_t frequency,
-                    IsrPointer isr   = nullptr,
-                    int32_t priority = -1) const override
+                    InterruptCallback callback = nullptr,
+                    int32_t priority           = -1) const override
   {
     system_controller_.PowerUpPeripheral(timer_.channel.power_id);
     SJ2_ASSERT_FATAL(
@@ -137,11 +138,11 @@ class Timer final : public sjsu::Timer
         frequency;
     timer_.channel.timer_register->PR = prescaler;
     timer_.channel.timer_register->TCR |= (1 << 0);
-    *timer_.channel.user_callback = isr;
+    *timer_.channel.user_callback = callback;
 
     interrupt_controller_.Register({
         .interrupt_request_number  = timer_.channel.irq,
-        .interrupt_service_routine = timer_.isr,
+        .interrupt_service_routine = timer_.handler,
         .enable_interrupt          = true,
         .priority                  = priority,
     });

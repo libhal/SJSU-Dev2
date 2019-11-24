@@ -2,7 +2,8 @@
 // up the SystemTimer.
 #pragma once
 
-// NOTE: Support for cortex M4 also supports M3 and possibly M0 and M0+ as well.
+#include <functional>
+
 #include "L0_Platform/arm_cortex/m4/core_cm4.h"
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/system_controller.hpp"
@@ -32,10 +33,10 @@ class SystemTimer final : public sjsu::SystemTimer
   };
   /// Address of the ARM Cortex SysTick peripheral.
   inline static SysTick_Type * sys_tick = SysTick;
-  /// system_timer_isr defaults to nullptr. The actual SystemTickHandler should
-  /// check if the isr is set to nullptr, and if it is, turn off the timer, if
-  /// set a proper function then execute it.
-  inline static IsrPointer system_timer_isr = nullptr;
+  /// callback defaults to nullptr. The actual SystemTickHandler
+  /// should check if the isr is set to nullptr, and if it is, turn off the
+  /// timer, if set a proper function then execute it.
+  inline static InterruptCallback callback = nullptr;
   /// Used to count the number of times system_timer has executed. If the
   /// frequency of the SystemTimer is set to 1kHz, this could be used as a
   /// milliseconds counter.
@@ -57,9 +58,9 @@ class SystemTimer final : public sjsu::SystemTimer
     // This assumes that SysTickHandler is called every millisecond.
     // Changing that frequency will distort the milliseconds time.
     counter += 1ms;
-    if (system_timer_isr != nullptr)
+    if (callback)
     {
-      system_timer_isr();
+      callback();
     }
   }
   /// @return returns the current system_timer counter value.
@@ -84,9 +85,9 @@ class SystemTimer final : public sjsu::SystemTimer
 
   void Initialize() const override {}
 
-  void SetInterrupt(IsrPointer isr) const override
+  void SetCallback(InterruptCallback isr) const override
   {
-    system_timer_isr = isr;
+    callback = isr;
   }
 
   Status StartTimer() const override
