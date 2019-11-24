@@ -126,11 +126,11 @@ TEST_CASE("Testing lpc40xx Gpio", "[lpc40xx-gpio]")
   Pin::pin_map       = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }
 
-FAKE_VOID_FUNC(Pin0_15_ISR);
-FAKE_VOID_FUNC(Pin2_7_ISR);
+FAKE_VOID_FUNC(InterruptCallback0);
+FAKE_VOID_FUNC(InterruptCallback1);
 
 TEST_CASE("Testing lpc40xx Gpio External Interrupts",
-          "[lpc40xx-Gpio Interrupts]")
+          "[lpc40xx-gpio-interrupts]")
 {
   // Declared constants that are to be used within the different sections
   // of this unit test
@@ -172,33 +172,39 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   SECTION("Attach then Detattach Interrupt from pin")
   {
     // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&Pin2_7_ISR, sjsu::Gpio::Edge::kEdgeBoth);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
     // Check Edge Setup
     CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
     CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
     // Check Developer's ISR is attached
-    CHECK(p0_15.interrupthandlers[kPort0][kPin15] == &Pin0_15_ISR);
-    CHECK(p2_7.interrupthandlers[kPort2][kPin7] == &Pin2_7_ISR);
+    auto * save_callback0 =
+        p0_15.interrupt_handlers[kPort0][kPin15].target<void (*)(void)>();
+    auto * save_callback1 =
+        p2_7.interrupt_handlers[kPort2][kPin7].target<void (*)(void)>();
+    REQUIRE(save_callback0 != nullptr);
+    REQUIRE(save_callback1 != nullptr);
+    CHECK(&InterruptCallback0 == *save_callback0);
+    CHECK(&InterruptCallback1 == *save_callback1);
 
-    // Dettach Interrupt from Pin.
+    // Detach Interrupt from Pin.
     p0_15.DetachInterrupt();
     p2_7.DetachInterrupt();
     CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
     CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
     CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
     CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
-    CHECK(p0_15.interrupthandlers[kPort0][kPin15] == nullptr);
-    CHECK(p2_7.interrupthandlers[kPort2][kPin7] == nullptr);
+    CHECK(p0_15.interrupt_handlers[kPort0][kPin15] == nullptr);
+    CHECK(p2_7.interrupt_handlers[kPort2][kPin7] == nullptr);
   }
 
   SECTION("Set and clear Interrupt Edges")
   {
     // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&Pin2_7_ISR, sjsu::Gpio::Edge::kEdgeBoth);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
     CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
@@ -240,8 +246,8 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   SECTION("Enable and Disable all Interrupts")
   {
     // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&Pin2_7_ISR, sjsu::Gpio::Edge::kEdgeBoth);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
 
     // Enable all Interrupts
     p0_15.EnableInterrupts();
@@ -262,7 +268,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   SECTION("Call the Interrupt handler to service the pin.")
   {
     // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
 
     // Manually trigger an Interrupt
     local_eint.IntStatus |= (1 << kPort0);
@@ -270,7 +276,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
 
     // Manually call interrupt handler
     p0_15.InterruptHandler();
-    CHECK(Pin0_15_ISR_fake.call_count == 1);
+    CHECK(InterruptCallback0_fake.call_count == 1);
     CHECK(((local_eint.IO0IntClr >> kPin15) & 1) == kSet);
   }
 }

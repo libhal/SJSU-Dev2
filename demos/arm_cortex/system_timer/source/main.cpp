@@ -15,7 +15,7 @@ int main()
   sjsu::cortex::SystemTimer system_timer(
       sjsu::GetInactive<sjsu::SystemController>());
 
-  system_timer.SetInterrupt(DemoSystemIsr);
+  system_timer.SetCallback(DemoSystemIsr);
   system_timer.SetTickFrequency(10_Hz);
   system_timer.StartTimer();
 

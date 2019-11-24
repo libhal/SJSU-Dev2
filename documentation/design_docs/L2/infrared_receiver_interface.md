@@ -40,10 +40,10 @@ class InfraredReceiver
     uint32_t number_of_pulses;
   };
 
-  using DataReceivedHandler = void (*)(DataFrame_t *);
+  using DataReceivedHandler = std::function<void(DataFrame_t *)>;
 
   virtual Status Initialize()                                   const = 0;
-  virtual void SetInterruptHandler(DataReceivedHandler handler) const = 0;
+  virtual void SetInterruptCallback(DataReceivedHandler handler) const = 0;
 };
 }
 ```
@@ -56,9 +56,9 @@ device and returns `Status::kSuccess` upon successful initialization. If the
 device fails to be initialized, the appropriate failure `Status` is returned.
 
 ```c++
-virtual void SetInterruptHandler(DataReceivedHandler handler) const = 0;
+virtual void SetInterruptCallback(DataReceivedHandler handler) const = 0;
 ```
-`SetInterruptHandler` sets the interrupt callback handler that is invoked when
+`SetInterruptCallback` sets the interrupt callback handler that is invoked when
 a new data is successfully received.
 
 # Caveats

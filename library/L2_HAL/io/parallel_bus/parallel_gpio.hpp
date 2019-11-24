@@ -22,24 +22,6 @@ class ParallelGpio : public sjsu::ParallelBus
       : io_(array), kWidth(width)
   {
   }
-  /// Constructor of ParallelGpio that takes a std::initializer_list of
-  /// sjsu::Gpio pointers. This simplifies the usage of parallel bus and helps
-  /// to eliminate mistakes where the array size is not correct.
-  ///
-  /// Example Usage:
-  ///
-  ///    ParallelGpio parallel_gpio({
-  ///        gpio_led0,
-  ///        gpio_led1,
-  ///        gpio_led2,
-  ///        gpio_led3,
-  ///    });
-  ///
-  /// @param array - std::initializer_list of sjsu::Gpio pointers.
-  explicit ParallelGpio(const std::initializer_list<sjsu::Gpio *> & array)
-      : io_(array.begin()), kWidth(array.size())
-  {
-  }
   void Initialize() override
   {
     bool parallel_gpio_bus_initialized_successfully = true;

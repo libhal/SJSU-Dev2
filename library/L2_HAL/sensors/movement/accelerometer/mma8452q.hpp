@@ -58,7 +58,7 @@ class Mma8452q : public Accelerometer
                         sizeof(tilt_val));
     tilt_reading = (tilt_val[0] << kMsbShift) | tilt_val[1];
     axis_tilt    = static_cast<int16_t>(tilt_reading);
-    return axis_tilt / kDataOffset;
+    return static_cast<int16_t>(axis_tilt / kDataOffset);
   }
   int16_t X() const override
   {

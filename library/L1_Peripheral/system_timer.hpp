@@ -3,6 +3,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 
 #include "L1_Peripheral/interrupt.hpp"
 #include "utility/status.hpp"
@@ -21,11 +22,11 @@ class SystemTimer
   // ==============================
   /// Initialize system timer hardware.
   virtual void Initialize() const = 0;
-  /// Set the interrupt handler for the system timer
+  /// Set the function to be called when the System Timer interrupt fires.
   ///
-  /// @param isr - interrupt service routine
-  virtual void SetInterrupt(IsrPointer isr) const = 0;
-  /// Set frequency of the timer
+  /// @param callback - function to be called on system timer event.
+  virtual void SetCallback(InterruptCallback callback) const = 0;
+  /// Set frequency of the timer.
   ///
   /// @param frequency - How many times per second should the system timer
   ///         interrupt be called.

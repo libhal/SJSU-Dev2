@@ -15,7 +15,7 @@ using ::sjsu::lpc40xx::PulseCapture;
 struct PulseCaptureChannel  // NOLINT
 {
  private:
-  inline static lpc40xx::PulseCapture::CaptureIsr timer0_isr = nullptr;
+  inline static lpc40xx::PulseCapture::CaptureCallback timer0_isr = nullptr;
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer0_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
@@ -32,7 +32,7 @@ struct PulseCaptureChannel  // NOLINT
                          .capture_pin1   = kCapture0Channel1Pin,
                          .channel_number = &timer0_channel_number };
 
-  inline static lpc40xx::PulseCapture::CaptureIsr timer1_isr = nullptr;
+  inline static lpc40xx::PulseCapture::CaptureCallback timer1_isr = nullptr;
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer1_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
@@ -49,7 +49,7 @@ struct PulseCaptureChannel  // NOLINT
                          .capture_pin1   = kCapture1Channel1Pin,
                          .channel_number = &timer1_channel_number };
 
-  inline static lpc40xx::PulseCapture::CaptureIsr timer2_isr = nullptr;
+  inline static lpc40xx::PulseCapture::CaptureCallback timer2_isr = nullptr;
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer2_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
@@ -66,7 +66,7 @@ struct PulseCaptureChannel  // NOLINT
                          .capture_pin1   = kCapture2Channel1Pin,
                          .channel_number = &timer2_channel_number };
 
-  inline static lpc40xx::PulseCapture::CaptureIsr timer3_isr = nullptr;
+  inline static lpc40xx::PulseCapture::CaptureCallback timer3_isr = nullptr;
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer3_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
@@ -87,22 +87,22 @@ struct PulseCaptureChannel  // NOLINT
   /// Structure that defines the capture channels associated with timer 0
   inline static const lpc40xx::PulseCapture::CaptureChannel_t kCaptureTimer0 = {
     .channel = kTimerPartial0,
-    .isr     = lpc40xx::PulseCapture::TimerHandler<kTimerPartial0>
+    .handler = lpc40xx::PulseCapture::TimerHandler<kTimerPartial0>
   };
   /// Structure that defines the capture channels associated with timer 1
   inline static const lpc40xx::PulseCapture::CaptureChannel_t kCaptureTimer1 = {
     .channel = kTimerPartial1,
-    .isr     = lpc40xx::PulseCapture::TimerHandler<kTimerPartial1>
+    .handler = lpc40xx::PulseCapture::TimerHandler<kTimerPartial1>
   };
   /// Structure that defines the capture channels associated with timer 2
   inline static const lpc40xx::PulseCapture::CaptureChannel_t kCaptureTimer2 = {
     .channel = kTimerPartial2,
-    .isr     = lpc40xx::PulseCapture::TimerHandler<kTimerPartial2>
+    .handler = lpc40xx::PulseCapture::TimerHandler<kTimerPartial2>
   };
   /// Structure that defines the capture channels associated with timer 3
   inline static const lpc40xx::PulseCapture::CaptureChannel_t kCaptureTimer3 = {
     .channel = kTimerPartial3,
-    .isr     = lpc40xx::PulseCapture::TimerHandler<kTimerPartial3>
+    .handler = lpc40xx::PulseCapture::TimerHandler<kTimerPartial3>
   };
 };
 };  // namespace sjsu::lpc17xx

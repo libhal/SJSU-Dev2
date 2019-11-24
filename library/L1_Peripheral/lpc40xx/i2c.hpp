@@ -92,7 +92,7 @@ class I2c final : public sjsu::I2c
     /// Reference to partial bus, used as template parameter.
     const PartialBus_t & bus;
     /// Contains a pointer to the I2C Handler object.
-    IsrPointer handler;
+    InterruptHandler handler;
   };
   /// Template I2cHandler that passes a PartialBus_t reference to the actual I2C
   /// handler via template parameter.
