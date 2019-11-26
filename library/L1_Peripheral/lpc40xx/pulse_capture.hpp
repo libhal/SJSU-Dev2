@@ -193,11 +193,6 @@ class PulseCapture final : public sjsu::PulseCapture
                                              kResetCaptureInterrupts,
                                              kCaptureInterruptFlagBit);
   }
-
-  /// Interrupt controller used to manage capture interrupts
-  static constexpr sjsu::cortex::InterruptController kInterruptController =
-      sjsu::cortex::InterruptController();
-
   /// Constructor for LPC40xx timer peripheral
   ///
   /// @param timer - timer to capture from
@@ -205,21 +200,16 @@ class PulseCapture final : public sjsu::PulseCapture
   /// @param kFrequency - rate at which capture events are monitored
   /// @param system_controller - reference to system controller.
   ///        Uses the default LPC40xx system controller.
-  /// @param interrupt_controller - reference to interrupt controller.
-  ///        Uses the default LPC40xx interrupt controller.
   explicit constexpr PulseCapture(
       const CaptureChannel_t & timer,
       const CaptureChannelNumber & channel,
       const units::frequency::hertz_t kFrequency,
       const sjsu::SystemController & system_controller =
-          DefaultSystemController(),
-      const sjsu::InterruptController & interrupt_controller =
-          kInterruptController)
+          DefaultSystemController())
       : timer_(timer),
         channel_(channel),
         frequency_(kFrequency),
-        system_controller_(system_controller),
-        interrupt_controller_(interrupt_controller)
+        system_controller_(system_controller)
   {
     *timer_.channel.channel_number = channel_;
   };
@@ -253,10 +243,9 @@ class PulseCapture final : public sjsu::PulseCapture
 
     // Install capture ISR
     *timer_.channel.user_callback = callback;
-    interrupt_controller_.Register(
+    sjsu::InterruptController::GetPlatformController().Enable(
         { .interrupt_request_number  = timer_.channel.irq,
-          .interrupt_service_routine = timer_.handler,
-          .enable_interrupt          = true,
+          .interrupt_handler = timer_.handler,
           .priority                  = interrupt_priority });
 
     return Status::kSuccess;
@@ -321,7 +310,6 @@ class PulseCapture final : public sjsu::PulseCapture
   const CaptureChannelNumber channel_;         // NOLINT
   const units::frequency::hertz_t frequency_;  // NOLINT
   const sjsu::SystemController & system_controller_;
-  const sjsu::InterruptController & interrupt_controller_;
 };  // class Capture
 };  // namespace lpc40xx
 };  // namespace sjsu

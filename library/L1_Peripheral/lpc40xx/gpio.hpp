@@ -65,19 +65,13 @@ class Gpio final : public sjsu::Gpio
   /// position if that port has a pending interrupt. For port 2, the 2nd bit
   /// will be set. All other bits will be zero.
   inline static volatile uint32_t * port_status = &(LPC_GPIOINT->IntStatus);
-  /// Get access to the ARM Cortex interrupt controller.
-  static constexpr sjsu::cortex::InterruptController kInterruptController =
-      sjsu::cortex::InterruptController();
 
   /// For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
   constexpr Gpio(uint8_t port_number,
-                 uint8_t pin_number,
-                 const sjsu::InterruptController & interrupt_controller =
-                     kInterruptController)
+                 uint8_t pin_number)
 
       : interupt_port_(0),
-        pin_(port_number, pin_number),
-        interrupt_controller_(interrupt_controller)
+        pin_(port_number, pin_number)
   {
     interupt_port_ = (port_number == 2) ? 1 : 0;
   }
@@ -227,21 +221,19 @@ class Gpio final : public sjsu::Gpio
     ClearEdgeFalling();
   }
 
-  /// Enables all gpio interrupts by putting the gpio internal ISR on the
-  /// Interrupt Vector Table.
+  /// Enables gpio interrupts for all gpio pins.
   void EnableInterrupts()
   {
-    interrupt_controller_.Register({
+    sjsu::InterruptController::GetPlatformController().Enable({
         .interrupt_request_number  = GPIO_IRQn,
-        .interrupt_service_routine = InterruptHandler,
+        .interrupt_handler = InterruptHandler,
     });
   }
 
-  /// Disables all gpio interrupts by removing the gpio internal ISR from the
-  /// Interrupt Vector Table.
+  /// Disables all gpio interrupts on this platform.
   void DisableInterrupts()
   {
-    interrupt_controller_.Deregister(GPIO_IRQn);
+    sjsu::InterruptController::GetPlatformController().Disable(GPIO_IRQn);
   }
 
   /// The gpio interrupt handler that calls the attached interrupt callbacks.
@@ -282,7 +274,6 @@ class Gpio final : public sjsu::Gpio
 
   uint8_t interupt_port_;
   sjsu::lpc40xx::Pin pin_;
-  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

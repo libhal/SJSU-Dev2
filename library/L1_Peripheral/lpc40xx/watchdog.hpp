@@ -51,12 +51,8 @@ class Watchdog final : public sjsu::Watchdog
   inline static const InterruptController::RegistrationInfo_t
       kWatchdogInterruptInfo = {
         .interrupt_request_number  = WDT_IRQn,
-        .interrupt_service_routine = &WatchdogIrqHandler,
-        .enable_interrupt          = true,
+        .interrupt_handler = &WatchdogIrqHandler,
       };
-
-  inline static const cortex::InterruptController kCortexInterruptController =
-      cortex::InterruptController();
 
   // Initializes the watchdog timer
   Status Initialize(std::chrono::seconds duration) const override
@@ -76,10 +72,11 @@ class Watchdog final : public sjsu::Watchdog
     return Status::kSuccess;
   }
 
-  void RegisterWatchdogHandler() const override
+  void Enable() const override
   {
     // Register WDT_IRQ defined by the structure
-    kCortexInterruptController.Register(kWatchdogInterruptInfo);
+    sjsu::InterruptController::GetPlatformController().Enable(
+        kWatchdogInterruptInfo);
   }
 
   // Feeds the watchdog timer

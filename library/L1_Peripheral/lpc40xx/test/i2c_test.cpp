@@ -9,15 +9,43 @@
 namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(I2c);
-
+namespace
+{
+Mock<sjsu::Pin> mock_sda_pin;
+Mock<sjsu::Pin> mock_scl_pin;
+// Create a local register
+LPC_I2C_TypeDef local_i2c;
+I2c::Transaction_t mock_i2c_transaction;
+// The mock object must be statically linked, otherwise a reference to an
+// object in the stack cannot be used as a template parameter for creating
+// a I2c::I2cHandler<kMockI2cPartial> below in Bus_t kMockI2c.
+const I2c::PartialBus_t kMockI2cPartial = {
+  .registers           = &local_i2c,
+  .peripheral_power_id = sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
+  .irq_number          = I2C0_IRQn,
+  .transaction         = mock_i2c_transaction,
+  .sda_pin             = mock_sda_pin.get(),
+  .scl_pin             = mock_scl_pin.get(),
+  .pin_function_id     = 0b010,
+};
+const I2c::Bus_t kMockI2c = {
+  .bus     = kMockI2cPartial,
+  .handler = I2c::I2cHandler<kMockI2cPartial>,
+};
+}  // namespace
 TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
 {
   // Dummy address used by test sections
   constexpr uint8_t kAddress = 0x33;
-  // Create a local register
-  LPC_I2C_TypeDef local_i2c;
   // Clear local i2c registers
   memset(&local_i2c, 0, sizeof(local_i2c));
+
+  Fake(Method(mock_sda_pin, SetPinFunction),
+       Method(mock_sda_pin, SetAsOpenDrain),
+       Method(mock_sda_pin, SetPull));
+  Fake(Method(mock_scl_pin, SetPinFunction),
+       Method(mock_scl_pin, SetAsOpenDrain),
+       Method(mock_scl_pin, SetPull));
 
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
@@ -29,42 +57,13 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
 
-  Mock<sjsu::Pin> mock_sda_pin;
-  Fake(Method(mock_sda_pin, SetPinFunction),
-       Method(mock_sda_pin, SetAsOpenDrain),
-       Method(mock_sda_pin, SetPull));
-
-  Mock<sjsu::Pin> mock_scl_pin;
-  Fake(Method(mock_scl_pin, SetPinFunction),
-       Method(mock_scl_pin, SetAsOpenDrain),
-       Method(mock_scl_pin, SetPull));
-
-  I2c::Transaction_t mock_i2c_transaction;
-
-  // The mock object must be statically linked, otherwise a reference to an
-  // object in the stack cannot be used as a template parameter for creating
-  // a I2c::I2cHandler<kMockI2cPartial> below in Bus_t kMockI2c.
-  static const I2c::PartialBus_t kMockI2cPartial = {
-    .registers           = &local_i2c,
-    .peripheral_power_id = sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
-    .irq_number          = I2C0_IRQn,
-    .transaction         = mock_i2c_transaction,
-    .sda_pin             = mock_sda_pin.get(),
-    .scl_pin             = mock_scl_pin.get(),
-    .pin_function_id     = 0b010,
-  };
-
-  const I2c::Bus_t kMockI2c = {
-    .bus     = kMockI2cPartial,
-    .handler = I2c::I2cHandler<kMockI2cPartial>,
-  };
-
   Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Register));
-  Fake(Method(mock_interrupt_controller, Deregister));
+  Fake(Method(mock_interrupt_controller, Enable));
+  Fake(Method(mock_interrupt_controller, Disable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
 
-  I2c test_subject(
-      kMockI2c, mock_system_controller.get(), mock_interrupt_controller.get());
+  I2c test_subject(kMockI2c, mock_system_controller.get());
 
   SECTION("Initialize")
   {
@@ -92,17 +91,15 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK(kHigh == local_i2c.SCLH);
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
     CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
-    // CHECK(dynamic_isr_vector_table[kMockI2c.bus.irq_number + kIrqOffset] ==
-    //       kMockI2c.handler);
+
     Verify(
-        Method(mock_interrupt_controller, Register)
-            .Matching([kMockI2c](
-                          sjsu::InterruptController::RegistrationInfo_t info) {
-              return (info.interrupt_request_number ==
-                      kMockI2c.bus.irq_number) &&
-                     (info.interrupt_service_routine == kMockI2c.handler) &&
-                     (info.enable_interrupt == true) && (info.priority == -1);
-            }));
+        Method(mock_interrupt_controller, Enable)
+            .Matching(
+                [](sjsu::InterruptController::RegistrationInfo_t info) {
+                  return (info.interrupt_request_number ==
+                          kMockI2c.bus.irq_number) &&
+                         (info.priority == -1);
+                }));
 
     Verify(Method(mock_sda_pin, SetPinFunction)
                .Using(kMockI2c.bus.pin_function_id))

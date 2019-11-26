@@ -28,11 +28,12 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Register));
-  Fake(Method(mock_interrupt_controller, Deregister));
+  Fake(Method(mock_interrupt_controller, Enable));
+  Fake(Method(mock_interrupt_controller, Disable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
 
-  SystemTimer test_subject(mock_system_controller.get(),
-                           mock_interrupt_controller.get());
+  SystemTimer test_subject(mock_system_controller.get());
 
   SECTION("SetTickFrequency generate desired frequency")
   {
@@ -72,7 +73,14 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     // Verify
     CHECK(kMask == local_systick.CTRL);
     CHECK(0 == local_systick.VAL);
+    Verify(
+        Method(mock_interrupt_controller, Enable)
+            .Matching([](sjsu::InterruptController::RegistrationInfo_t info) {
+              return (info.interrupt_request_number == cortex::SysTick_IRQn) &&
+                     (info.priority == -1);
+            }));
   }
+
   SECTION(
       "StartTimer should return false and set no bits if LOAD is set to zero")
   {
@@ -91,7 +99,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     // Verify
     CHECK(kClkSourceMask == local_systick.CTRL);
     CHECK(0xBEEF == local_systick.VAL);
-    // TODO(#954): add check for interrupt_controller.Register()
+    Verify(Method(mock_interrupt_controller, Enable)).Never();
   }
   SECTION("DisableTimer should clear all bits")
   {
