@@ -54,7 +54,7 @@ int main()
   // The parameter for this function is in seconds.
   // The first parameter is the value stored in the watchdog counter.
   watchdog.Initialize(10s);
-  watchdog.RegisterWatchdogHandler();
+  watchdog.Enable();
 
   // The watchdog is fed for the first time to start the watchdog timer.
   watchdog.FeedSequence();

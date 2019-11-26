@@ -331,9 +331,6 @@ class I2c final : public sjsu::I2c
     i2c.registers->CONSET = set_mask;
     i2c.registers->CONCLR = clear_mask;
   }
-  /// Get access to the ARM Cortex interrupt controller.
-  static constexpr sjsu::cortex::InterruptController kInterruptController =
-      sjsu::cortex::InterruptController();
   /// Constructor for LPC40xx I2c peripheral
   ///
   /// @param bus - pass a reference to a constant lpc40xx::I2c::Bus_t
@@ -341,17 +338,11 @@ class I2c final : public sjsu::I2c
   /// @param system_controller - reference to system controller. Uses the
   ///        default lpc40xx system controller. This is typically only used for
   ///        unit testing.
-  /// @param interrupt_controller - reference to an interrupt controller. Uses
-  ///        the default ARM interrupt controller. This is typically only used
-  ///        for unit testing.
   explicit constexpr I2c(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
-                             DefaultSystemController(),
-                         const sjsu::InterruptController &
-                             interrupt_controller = kInterruptController)
+                             DefaultSystemController())
       : i2c_(bus),
-        system_controller_(system_controller),
-        interrupt_controller_(interrupt_controller)
+        system_controller_(system_controller)
   {
   }
 
@@ -379,9 +370,9 @@ class I2c final : public sjsu::I2c
                                  Control::kStop | Control::kInterrupt;
     i2c_.bus.registers->CONSET = Control::kInterfaceEnable;
 
-    interrupt_controller_.Register({
+    sjsu::InterruptController::GetPlatformController().Enable({
         .interrupt_request_number  = i2c_.bus.irq_number,
-        .interrupt_service_routine = i2c_.handler,
+        .interrupt_handler = i2c_.handler,
     });
 
     return Status::kSuccess;
@@ -445,7 +436,6 @@ class I2c final : public sjsu::I2c
   }
   const Bus_t & i2c_;
   const sjsu::SystemController & system_controller_;
-  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

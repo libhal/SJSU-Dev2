@@ -108,19 +108,12 @@ class Timer final : public sjsu::Timer
     channel.timer_register->IR |= 0b1111;
   }
 
-  static constexpr sjsu::cortex::InterruptController kInterruptController =
-      sjsu::cortex::InterruptController();
-
   static constexpr uint8_t kMatchRegisterCount = 4;
 
   explicit constexpr Timer(const Channel_t & timer,
                            const sjsu::SystemController & system_controller =
-                               DefaultSystemController(),
-                           const sjsu::InterruptController &
-                               interrupt_controller = kInterruptController)
-      : timer_(timer),
-        system_controller_(system_controller),
-        interrupt_controller_(interrupt_controller)
+                               DefaultSystemController())
+      : timer_(timer), system_controller_(system_controller)
   {
   }
 
@@ -140,10 +133,9 @@ class Timer final : public sjsu::Timer
     timer_.channel.timer_register->TCR |= (1 << 0);
     *timer_.channel.user_callback = callback;
 
-    interrupt_controller_.Register({
+    sjsu::InterruptController::GetPlatformController().Enable({
         .interrupt_request_number  = timer_.channel.irq,
-        .interrupt_service_routine = timer_.handler,
-        .enable_interrupt          = true,
+        .interrupt_handler = timer_.handler,
         .priority                  = priority,
     });
 
@@ -188,7 +180,6 @@ class Timer final : public sjsu::Timer
  private:
   const Channel_t & timer_;
   const sjsu::SystemController & system_controller_;
-  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

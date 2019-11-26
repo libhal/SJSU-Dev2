@@ -163,11 +163,13 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
 
   // Pins that are to be used in the unit test
   Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Register));
-  Fake(Method(mock_interrupt_controller, Deregister));
+  Fake(Method(mock_interrupt_controller, Enable));
+  Fake(Method(mock_interrupt_controller, Disable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
 
-  Gpio p0_15(0, 15, mock_interrupt_controller.get());
-  Gpio p2_7(2, 7, mock_interrupt_controller.get());
+  Gpio p0_15(0, 15);
+  Gpio p2_7(2, 7);
 
   SECTION("Attach then Detattach Interrupt from pin")
   {
@@ -252,17 +254,15 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
     // Enable all Interrupts
     p0_15.EnableInterrupts();
     Verify(
-        Method(mock_interrupt_controller, Register)
+        Method(mock_interrupt_controller, Enable)
             .Matching([](sjsu::InterruptController::RegistrationInfo_t info) {
               return (info.interrupt_request_number == GPIO_IRQn) &&
-                     (info.interrupt_service_routine ==
-                      Gpio::InterruptHandler) &&
-                     (info.enable_interrupt == true) && (info.priority == -1);
+                     (info.priority == -1);
             }));
 
     // Disable all Interrupts
     p0_15.DisableInterrupts();
-    Verify(Method(mock_interrupt_controller, Deregister).Using(GPIO_IRQn));
+    Verify(Method(mock_interrupt_controller, Disable).Using(GPIO_IRQn));
   }
 
   SECTION("Call the Interrupt handler to service the pin.")

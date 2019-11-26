@@ -10,7 +10,7 @@ class Watchdog
 {
  public:
   virtual Status Initialize(std::chrono::seconds duration) const = 0;
-  virtual void RegisterWatchdogHandler() const                   = 0;
+  virtual void Enable() const                                    = 0;
   virtual void FeedSequence() const                              = 0;
   virtual uint32_t CheckTimeout() const                          = 0;
 };

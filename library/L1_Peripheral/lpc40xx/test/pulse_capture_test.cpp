@@ -85,21 +85,22 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
       .AlwaysReturn(kTestPeripheralClockDivider);
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Register));
+  Fake(Method(mock_interrupt_controller, Enable));
+  Fake(Method(mock_interrupt_controller, Disable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
 
   constexpr units::frequency::hertz_t kTestFrequency = 4_MHz;
 
   PulseCapture test_subject0(kTestTimerCh0,
                              PulseCapture::CaptureChannelNumber::kChannel0,
                              kTestFrequency,
-                             mock_system_controller.get(),
-                             mock_interrupt_controller.get());
+                             mock_system_controller.get());
 
   PulseCapture test_subject1(kTestTimerCh1,
                              PulseCapture::CaptureChannelNumber::kChannel1,
                              kTestFrequency,
-                             mock_system_controller.get(),
-                             mock_interrupt_controller.get());
+                             mock_system_controller.get());
 
   PulseCapture * test_subjects[2] = { &test_subject0, &test_subject1 };
 
@@ -111,14 +112,12 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
         kTestFrequency.to<int32_t>();
 
     Verify(
-        Method(mock_interrupt_controller, Register)
+        Method(mock_interrupt_controller, Enable)
             .Matching([kTestTimerCh0](
                           sjsu::InterruptController::RegistrationInfo_t info) {
               return (info.interrupt_request_number ==
                       kTestTimerCh0.channel.irq) &&
-                     (info.interrupt_service_routine ==
-                      kTestTimerCh0.handler) &&
-                     (info.enable_interrupt == true) && (info.priority == -1);
+                     (info.priority == -1);
             }));
 
     CHECK(test_timer_register.PR == prescaler);
@@ -133,14 +132,12 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
         kTestFrequency.to<int32_t>();
 
     Verify(
-        Method(mock_interrupt_controller, Register)
+        Method(mock_interrupt_controller, Enable)
             .Matching([kTestTimerCh1](
                           sjsu::InterruptController::RegistrationInfo_t info) {
               return (info.interrupt_request_number ==
                       kTestTimerCh1.channel.irq) &&
-                     (info.interrupt_service_routine ==
-                      kTestTimerCh1.handler) &&
-                     (info.enable_interrupt == true) && (info.priority == -1);
+                     (info.priority == -1);
             }));
 
     CHECK(test_timer_register.PR == prescaler);

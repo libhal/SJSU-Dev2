@@ -167,8 +167,7 @@ class Can final : public sjsu::Can
   };
 
   inline static bool is_controller_initialized[kNumberOfControllers] = {
-    [kCan1] = false,
-    [kCan2] = false
+    [kCan1] = false, [kCan2] = false
   };
 
   inline static Interrupts_t interrupts[kNumberOfControllers];
@@ -184,14 +183,12 @@ class Can final : public sjsu::Can
 
   // Queue transmit handles
   inline static QueueHandle_t transmit_queue[kNumberOfControllers] = {
-    [kCan1] = NULL,
-    [kCan2] = NULL
+    [kCan1] = NULL, [kCan2] = NULL
   };
 
   // Queue receive handles
   inline static QueueHandle_t receive_queue[kNumberOfControllers] = {
-    [kCan1] = NULL,
-    [kCan2] = NULL
+    [kCan1] = NULL, [kCan2] = NULL
   };
 
   // Templated struct the user can configure and then pass to
@@ -272,25 +269,25 @@ class Can final : public sjsu::Can
   // CAN frame format: https://goo.gl/images/XLjzn5
   enum FrameErrorCodes : uint8_t
   {
-    kStartOfFrame = 0x03,
-    kID28toID21 = 0x02,
-    kID20toID18 = 0x06,
-    kSrtrBit = 0x04,
-    kIdeBit = 0x05,
-    kID17toID13 = 0x07,
-    kID12toID5 = 0x0F,
-    kID4toID0 = 0x0E,
-    kRtrBit = 0x0C,
-    kReservedBit1 = 0x0D,
-    kReservedBit0 = 0x09,
-    kDataLengthCode = 0x0B,
-    kDataField = 0x0A,
-    kCrcSequence = 0x08,
-    kCrcDelimiter = 0x18,
-    kAcknowledgeSlot = 0x19,
+    kStartOfFrame         = 0x03,
+    kID28toID21           = 0x02,
+    kID20toID18           = 0x06,
+    kSrtrBit              = 0x04,
+    kIdeBit               = 0x05,
+    kID17toID13           = 0x07,
+    kID12toID5            = 0x0F,
+    kID4toID0             = 0x0E,
+    kRtrBit               = 0x0C,
+    kReservedBit1         = 0x0D,
+    kReservedBit0         = 0x09,
+    kDataLengthCode       = 0x0B,
+    kDataField            = 0x0A,
+    kCrcSequence          = 0x08,
+    kCrcDelimiter         = 0x18,
+    kAcknowledgeSlot      = 0x19,
     kAcknowledgeDelimiter = 0x1B,
-    kEndOfFrame = 0x1A,
-    kIntermission = 0x12
+    kEndOfFrame           = 0x1A,
+    kIntermission         = 0x12
   };
 
   struct FrameError_t
@@ -299,27 +296,26 @@ class Can final : public sjsu::Can
     const char * errorMessage;
   };
 
-  inline static FrameError_t frame_error_table[19] =
-  {
-    {kStartOfFrame, "Start of Frame"},
-    {kID28toID21, "ID28 ... ID21"},
-    {kID20toID18, "ID20 ... ID18"},
-    {kSrtrBit, "SRTR Bit"},
-    {kIdeBit, "IDE Bit"},
-    {kID17toID13, "ID17 ... ID13"},
-    {kID12toID5, "ID12 ... ID5"},
-    {kID4toID0, "ID4 ... ID0"},
-    {kRtrBit, "RTR Bit"},
-    {kReservedBit1, "Reserved Bit 1"},
-    {kReservedBit0, "Reserved Bit 0"},
-    {kDataLengthCode, "Data Length Code"},
-    {kDataField, "Data Field"},
-    {kCrcSequence, "CRC Sequence"},
-    {kCrcDelimiter, "CRC Delimiter"},
-    {kAcknowledgeSlot, "Acknowledge Slot"},
-    {kAcknowledgeDelimiter, "Acknowledge Delimiter"},
-    {kEndOfFrame, "End of Frame"},
-    {kIntermission, "Intermission"}
+  inline static FrameError_t frame_error_table[19] = {
+    { kStartOfFrame, "Start of Frame" },
+    { kID28toID21, "ID28 ... ID21" },
+    { kID20toID18, "ID20 ... ID18" },
+    { kSrtrBit, "SRTR Bit" },
+    { kIdeBit, "IDE Bit" },
+    { kID17toID13, "ID17 ... ID13" },
+    { kID12toID5, "ID12 ... ID5" },
+    { kID4toID0, "ID4 ... ID0" },
+    { kRtrBit, "RTR Bit" },
+    { kReservedBit1, "Reserved Bit 1" },
+    { kReservedBit0, "Reserved Bit 0" },
+    { kDataLengthCode, "Data Length Code" },
+    { kDataField, "Data Field" },
+    { kCrcSequence, "CRC Sequence" },
+    { kCrcDelimiter, "CRC Delimiter" },
+    { kAcknowledgeSlot, "Acknowledge Slot" },
+    { kAcknowledgeDelimiter, "Acknowledge Delimiter" },
+    { kEndOfFrame, "End of Frame" },
+    { kIntermission, "Intermission" }
   };
 
   static void ProcessIrq()
@@ -387,19 +383,16 @@ class Can final : public sjsu::Can
   inline static const InterruptController::RegistrationInfo_t
       kCanInterruptInfo = {
         .interrupt_request_number  = CAN_IRQn,
-        .interrupt_service_routine = &CanIrqHandler,
-        .enable_interrupt          = true,
+        .interrupt_handler = &CanIrqHandler,
         .priority                  = 5,
       };
 
-  inline static const sjsu::lpc40xx::SystemController
-      kDefaultSystemController = sjsu::lpc40xx::SystemController();
-  inline static const sjsu::cortex::InterruptController
-      kCortexInterruptController = sjsu::cortex::InterruptController();
+  inline static const sjsu::lpc40xx::SystemController kDefaultSystemController =
+      sjsu::lpc40xx::SystemController();
 
-  inline static const lpc40xx::Pin kPort1ReadPin = Pin(0, 0);
+  inline static const lpc40xx::Pin kPort1ReadPin     = Pin(0, 0);
   inline static const lpc40xx::Pin kPort1TransmitPin = Pin(0, 1);
-  inline static const lpc40xx::Pin kPort2ReadPin = Pin(2, 7);
+  inline static const lpc40xx::Pin kPort2ReadPin     = Pin(2, 7);
   inline static const lpc40xx::Pin kPort2TransmitPin = Pin(2, 8);
 
   // Default constructor that defaults to CAN 1
@@ -408,25 +401,21 @@ class Can final : public sjsu::Can
         baud_rate_(BaudRates::kBaud100Kbps),
         rd_(kPort1ReadPin),
         td_(kPort1TransmitPin),
-        system_controller_(kDefaultSystemController),
-        interrupt_controller_(kCortexInterruptController)
+        system_controller_(kDefaultSystemController)
   {
   }
 
-  constexpr Can(
-      Controllers controller,
-      BaudRates baud_rate,
-      const sjsu::Pin & td_pin = GetInactive<sjsu::Pin>(),
-      const sjsu::Pin & rd_pin = GetInactive<sjsu::Pin>(),
-      const sjsu::lpc40xx::SystemController & system_controller =
-          kDefaultSystemController,
-      const sjsu::cortex::InterruptController & = kCortexInterruptController)
+  constexpr Can(Controllers controller,
+                BaudRates baud_rate,
+                const sjsu::Pin & td_pin = GetInactive<sjsu::Pin>(),
+                const sjsu::Pin & rd_pin = GetInactive<sjsu::Pin>(),
+                const sjsu::lpc40xx::SystemController & system_controller =
+                    kDefaultSystemController)
       : controller_(controller),
         baud_rate_(baud_rate),
         rd_(td_pin),
         td_(rd_pin),
-        system_controller_(system_controller),
-        interrupt_controller_(kCortexInterruptController)
+        system_controller_(system_controller)
   {
   }
 
@@ -456,7 +445,8 @@ class Can final : public sjsu::Can
       EnableAcceptanceFilter();
       EnableInterrupts();
       // Enable core interrupt
-      interrupt_controller_.Register(kCanInterruptInfo);
+      sjsu::InterruptController::GetPlatformController().Enable(
+          kCanInterruptInfo);
       // Disable reset mode and enter operating mode.
       SetControllerMode(kReset, false);
       is_controller_initialized[controller_] = true;
@@ -489,7 +479,7 @@ class Can final : public sjsu::Can
     // the ISR (to eventually write the data at this memory location into the
     // transmit buffer), we disable the CAN interrupt to ensure that complete
     // and valid data is written before it is accessed by the ISR.
-    interrupt_controller_.Deregister(CAN_IRQn);
+    sjsu::InterruptController::GetPlatformController().Disable(CAN_IRQn);
     kMessage->id                           = id;
     kMessage->frame_data.data_length       = (length & 0xF);
     kMessage->frame_data.remote_tx_request = 0;
@@ -497,7 +487,8 @@ class Can final : public sjsu::Can
     {
       kMessage->data.bytes[i] = kPayload[i];
     }
-    interrupt_controller_.Register(kCanInterruptInfo);
+    sjsu::InterruptController::GetPlatformController().Enable(
+        kCanInterruptInfo);
 
     // Check if any buffer is available.
     if (status[controller_].flags.tx_buffer_1_released)
@@ -589,9 +580,9 @@ class Can final : public sjsu::Can
     return status[controller_].flags.bus_error;
   }
 
-  bool GetFrameErrorLocation(const char * &error_message) const override
+  bool GetFrameErrorLocation(const char *& error_message) const override
   {
-    bool success = false;
+    bool success                = false;
     interrupts[controller_].ICR = can_registers[controller_]->ICR;
 
     for (uint8_t i = 0; i < 19; i++)
@@ -600,7 +591,7 @@ class Can final : public sjsu::Can
           interrupts[controller_].flags.error_code_location)
       {
         error_message = frame_error_table[i].errorMessage;
-        success = true;
+        success       = true;
       }
     }
     return success;
@@ -663,12 +654,13 @@ class Can final : public sjsu::Can
         break;
     }
 
-    kCortexInterruptController.Deregister(CAN_IRQn);
+    sjsu::InterruptController::GetPlatformController().Disable(CAN_IRQn);
     ptr_to_buffer_offset->TFI        = kMessage->TFI;
     ptr_to_buffer_offset->id         = kMessage->id;
     ptr_to_buffer_offset->data.qword = kMessage->data.qword;
     can_registers[controller]->CMR   = command;
-    kCortexInterruptController.Register(kCanInterruptInfo);
+    sjsu::InterruptController::GetPlatformController().Enable(
+        kCanInterruptInfo);
   }
 
   [[gnu::always_inline]] static void ReadMessageFromBuffer(
@@ -681,11 +673,12 @@ class Can final : public sjsu::Can
         reinterpret_cast<volatile RxMessage_t *>(
             &can_registers[controller]->RFS);
 
-    kCortexInterruptController.Deregister(CAN_IRQn);
+    sjsu::InterruptController::GetPlatformController().Disable(CAN_IRQn);
     message.RFS        = ptr_to_buffer_offset->RFS;
     message.id         = ptr_to_buffer_offset->id;
     message.data.qword = ptr_to_buffer_offset->data.qword;
-    kCortexInterruptController.Register(kCanInterruptInfo);
+    sjsu::InterruptController::GetPlatformController().Enable(
+        kCanInterruptInfo);
 
     xQueueSendFromISR(receive_queue[controller], &message, 0);
     can_registers[controller]->CMR = kReleaseRxBuffer;
@@ -809,7 +802,6 @@ class Can final : public sjsu::Can
   const sjsu::Pin & rd_;
   const sjsu::Pin & td_;
   const sjsu::lpc40xx::SystemController & system_controller_;
-  const sjsu::cortex::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu
