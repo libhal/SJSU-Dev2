@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
@@ -31,11 +32,8 @@ inline void SetUptimeFunction(UptimeFunction uptime_function)
 //        return true.
 // @param is_done will be run in a tight loop until it returns true or the
 //        timeout time has elapsed.
-template <typename F>
 [[gnu::always_inline]] inline Status Wait(std::chrono::microseconds timeout,
-                                          F is_done);
-template <typename F>
-inline Status Wait(std::chrono::microseconds timeout, F is_done)
+                                          std::function<bool()> is_done)
 {
   std::chrono::microseconds timeout_time;
   if (timeout == std::chrono::microseconds::max())
@@ -58,17 +56,19 @@ inline Status Wait(std::chrono::microseconds timeout, F is_done)
   }
   return status;
 }
-
+/// Overload of `Wait` that merely takes a timeout.
 inline Status Wait(std::chrono::microseconds timeout)
 {
   return Wait(timeout, []() -> bool { return false; });
 }
 
-// Delay the system for a duration of time
+/// Delay the system for a duration of time
 inline void Delay(std::chrono::microseconds delay_time)
 {
   if constexpr (sjsu::build::kTarget == sjsu::build::Target::HostTest)
   {
+    // TODO(#): Have this increment the global uptime counter by the number of
+    // microseconds we want to delay.
     return;
   }
   else
@@ -76,7 +76,7 @@ inline void Delay(std::chrono::microseconds delay_time)
     Wait(delay_time);
   }
 }
-// Halt system by putting it into infinite loop
+/// Halt system by putting it into infinite loop
 [[gnu::always_inline]] inline void Halt()
 {
   while (true)

@@ -125,11 +125,8 @@ Collaboration diagram for sjsu::lpc40xx::Watchdog:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d7/d65/classsjsu_1_1lpc40xx_1_1Watchdog__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Watchdog_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Watchdog_coll__map" id="sjsu_1_1lpc40xx_1_1Watchdog_coll__map">
-<area shape="rect" id="node2" href="../../d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="362,5,479,32"/>
-<area shape="rect" id="node3" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,56,531,83"/>
-<area shape="rect" id="node4" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,27,201,53"/>
-<area shape="rect" id="node5" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,78,225,119"/>
-<area shape="rect" id="node6" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="335,107,507,149"/>
+<area shape="rect" id="node2" href="../../d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="5,13,123,39"/>
+<area shape="rect" id="node3" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="147,5,319,47"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -138,9 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ced32f9b77753675102b2ad0dd0d131"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ced32f9b77753675102b2ad0dd0d131"></a>
 <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (std::chrono::seconds duration) const override</td></tr>
 <tr class="separator:a6ced32f9b77753675102b2ad0dd0d131"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e99cc6e5d497ebc54bdc142ad9da666"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e99cc6e5d497ebc54bdc142ad9da666"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RegisterWatchdogHandler</b> () const override</td></tr>
-<tr class="separator:a3e99cc6e5d497ebc54bdc142ad9da666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1def8925ffdfb31ff9629202e021c99f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1def8925ffdfb31ff9629202e021c99f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Enable</b> () const override</td></tr>
+<tr class="separator:a1def8925ffdfb31ff9629202e021c99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dda314d3fe97b7b7a4f1de7137253b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1dda314d3fe97b7b7a4f1de7137253b9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FeedSequence</b> () const override</td></tr>
 <tr class="separator:a1dda314d3fe97b7b7a4f1de7137253b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,30 +179,8 @@ static LPC_WDT_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><b>w
 <tr class="separator:a999d5dbb73a733a481d9bf43768a7663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9bad0ae2842220d3f7fed7c5485defc"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kWatchdogInterruptInfo</b></td></tr>
 <tr class="separator:ad9bad0ae2842220d3f7fed7c5485defc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf15f819e0a396e6d29b7c1911a8cbfe"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">cortex::InterruptController</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kCortexInterruptController</b></td></tr>
-<tr class="separator:adf15f819e0a396e6d29b7c1911a8cbfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="adf15f819e0a396e6d29b7c1911a8cbfe"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">cortex::InterruptController</a> sjsu::lpc40xx::Watchdog::kCortexInterruptController</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      cortex::InterruptController()</div></div><!-- fragment -->
-</div>
-</div>
 <a class="anchor" id="ad9bad0ae2842220d3f7fed7c5485defc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -223,7 +198,7 @@ static LPC_WDT_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><b>w
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">        .interrupt_request_number  = WDT_IRQn,</div><div class="line">        .interrupt_service_routine = &amp;WatchdogIrqHandler,</div><div class="line">        .enable_interrupt          = <span class="keyword">true</span>,</div><div class="line">      }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">        .interrupt_request_number  = WDT_IRQn,</div><div class="line">        .interrupt_handler = &amp;WatchdogIrqHandler,</div><div class="line">      }</div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

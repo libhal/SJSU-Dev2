@@ -105,17 +105,20 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="../../d7/d46/classsjsu_1_1InterruptController-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::InterruptController Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../df/d97/interrupt_8hpp_source.html">interrupt.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::InterruptController:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/db1/classsjsu_1_1InterruptController__inherit__graph.png" border="0" usemap="#sjsu_1_1InterruptController_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1InterruptController_inherit__map" id="sjsu_1_1InterruptController_inherit__map">
-<area shape="rect" id="node2" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="5,80,225,107"/>
+<area shape="rect" id="node2" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController\l\&lt; kNumberOfInterrupts, kNvicPriorityBits \&gt;" alt="" coords="5,80,303,121"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -126,13 +129,149 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aded42d3bd4951f893a51974c0f27ab57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aded42d3bd4951f893a51974c0f27ab57"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Register</b> (<a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">RegistrationInfo_t</a> register_info) const =0</td></tr>
-<tr class="separator:aded42d3bd4951f893a51974c0f27ab57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c3587dab2b4261ec7f0f5cecd0a5715"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c3587dab2b4261ec7f0f5cecd0a5715"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Deregister</b> (int irq) const =0</td></tr>
-<tr class="separator:a5c3587dab2b4261ec7f0f5cecd0a5715"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3af9c1af844d43deb2811511c204751"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html#ac3af9c1af844d43deb2811511c204751">Initialize</a> (InterruptHandler unregistered_handler=nullptr)=0</td></tr>
+<tr class="separator:ac3af9c1af844d43deb2811511c204751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5312dd447c84ed8de35bb4bec77829d5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html#a5312dd447c84ed8de35bb4bec77829d5">Enable</a> (<a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">RegistrationInfo_t</a> register_info)=0</td></tr>
+<tr class="separator:a5312dd447c84ed8de35bb4bec77829d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a830f42ee6978ec4ddcd96d6a51fe886f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html#a830f42ee6978ec4ddcd96d6a51fe886f">Disable</a> (int interrupt_request_number)=0</td></tr>
+<tr class="separator:a830f42ee6978ec4ddcd96d6a51fe886f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a4219cd628944b3bde57c1c01fecbe30f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html#a4219cd628944b3bde57c1c01fecbe30f">SetPlatformController</a> (<a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html">InterruptController</a> *interrupt_controller)</td></tr>
+<tr class="separator:a4219cd628944b3bde57c1c01fecbe30f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7f2132bfa7c4d5ca942d93c192b1557"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7f2132bfa7c4d5ca942d93c192b1557"></a>
+static <a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html">sjsu::InterruptController</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html#aa7f2132bfa7c4d5ca942d93c192b1557">GetPlatformController</a> ()</td></tr>
+<tr class="memdesc:aa7f2132bfa7c4d5ca942d93c192b1557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a reference of the platforms interrupt controller. <br /></td></tr>
+<tr class="separator:aa7f2132bfa7c4d5ca942d93c192b1557"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An abstract interface for a platforms interrupt controller. This allows a developer to enable and disable interrupts as well as assign handlers for each. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a830f42ee6978ec4ddcd96d6a51fe886f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::InterruptController::Disable </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>interrupt_request_number</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Disables and interrupt based on its interrupt request number</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interrupt_request_number</td><td>- the interrupt request number to be disabled. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#af98f92796b76ae8ebdd729f8931d156c">sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5312dd447c84ed8de35bb4bec77829d5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::InterruptController::Enable </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">RegistrationInfo_t</a>&#160;</td>
+          <td class="paramname"><em>register_info</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Configures and enables the interrupt on the platform and also registers the interrupt handler.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">register_info</td><td>- the needed information to setup the interrupt, such as its vector number, priority, if it should be enabled with this call, etc. See <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">RegistrationInfo_t</a> documentation for more details. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#aefa3fd0f112f1b50f958efe9eca1d245">sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac3af9c1af844d43deb2811511c204751"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::InterruptController::Initialize </td>
+          <td>(</td>
+          <td class="paramtype">InterruptHandler&#160;</td>
+          <td class="paramname"><em>unregistered_handler</em> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize interrupt vector table. </p><dl class="section note"><dt>Note</dt><dd>This MUST NOT be called by application code. This for use only in the platform's startup. Doing this typically overwrites the interrupt handlers with the unregistered_handler. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#a75050bcbde50d3b2b6fa0c21cdfb4a7a">sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4219cd628944b3bde57c1c01fecbe30f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void sjsu::InterruptController::SetPlatformController </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html">InterruptController</a> *&#160;</td>
+          <td class="paramname"><em>interrupt_controller</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the controller for the platform</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interrupt_controller</td><td>- a pointer to the current platform's interrupt controller. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/<a class="el" href="../../df/d97/interrupt_8hpp_source.html">interrupt.hpp</a></li>
 </ul>

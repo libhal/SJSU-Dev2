@@ -127,10 +127,7 @@ Collaboration diagram for sjsu::cortex::SystemTimer:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d54/classsjsu_1_1cortex_1_1SystemTimer__coll__graph.png" border="0" usemap="#sjsu_1_1cortex_1_1SystemTimer_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1cortex_1_1SystemTimer_coll__map" id="sjsu_1_1cortex_1_1SystemTimer_coll__map">
-<area shape="rect" id="node2" href="../../de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="5,109,145,136"/>
-<area shape="rect" id="node3" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="169,109,389,136"/>
-<area shape="rect" id="node4" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="83,13,255,39"/>
-<area shape="rect" id="node5" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="279,5,499,47"/>
+<area shape="rect" id="node2" href="../../de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="29,5,169,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -145,14 +142,14 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2b7101862d284d1285e90a7f3c57ca4b"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2b7101862d284d1285e90a7f3c57ca4b">SystemTimer</a> (const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller, const <a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html">sjsu::InterruptController</a> &amp;interrupt_controller=<a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ac0ddd01c42543685b3a744c327a213d8">kCortexInterruptController</a>)</td></tr>
-<tr class="separator:a2b7101862d284d1285e90a7f3c57ca4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fcc33685f07a7370d76649f8b50fe66"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fcc33685f07a7370d76649f8b50fe66">SystemTimer</a> (const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller)</td></tr>
+<tr class="separator:a9fcc33685f07a7370d76649f8b50fe66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fecf977b3d1f5f8d1c8be0a297a6618"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fecf977b3d1f5f8d1c8be0a297a6618">Initialize</a> () const override</td></tr>
 <tr class="memdesc:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize system timer hardware. <br /></td></tr>
 <tr class="separator:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aa2a139e7a9569eeb59e5414dd25a6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2aa2a139e7a9569eeb59e5414dd25a6c">SetInterrupt</a> (IsrPointer isr) const override</td></tr>
-<tr class="separator:a2aa2a139e7a9569eeb59e5414dd25a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc2d3bf8f5a4a566759167111232b722"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#abc2d3bf8f5a4a566759167111232b722">SetCallback</a> (InterruptCallback isr) const override</td></tr>
+<tr class="separator:abc2d3bf8f5a4a566759167111232b722"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affbee8753ef48ebc1c01fc809681d46f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#affbee8753ef48ebc1c01fc809681d46f">StartTimer</a> () const override</td></tr>
 <tr class="separator:affbee8753ef48ebc1c01fc809681d46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb7441308a247bcc389f0aa20132f334"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#adb7441308a247bcc389f0aa20132f334">SetTickFrequency</a> (units::frequency::hertz_t frequency) const override</td></tr>
@@ -175,14 +172,10 @@ Static Public Attributes</h2></td></tr>
 static SysTick_Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8">sys_tick</a> = SysTick</td></tr>
 <tr class="memdesc:a2072bd1bdcfc860636a16021693ed4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of the ARM Cortex SysTick peripheral. <br /></td></tr>
 <tr class="separator:a2072bd1bdcfc860636a16021693ed4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13751b55560e1df2cd6e1eb2e302aa2e"><td class="memItemLeft" align="right" valign="top">static IsrPointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a13751b55560e1df2cd6e1eb2e302aa2e">system_timer_isr</a> = nullptr</td></tr>
-<tr class="separator:a13751b55560e1df2cd6e1eb2e302aa2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40769f764fdfd4a35d7bc2f2c13e5f49"><td class="memItemLeft" align="right" valign="top">static InterruptCallback&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a40769f764fdfd4a35d7bc2f2c13e5f49">callback</a> = nullptr</td></tr>
+<tr class="separator:a40769f764fdfd4a35d7bc2f2c13e5f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff29823fac884a5fb58c52cd0568f653"><td class="memItemLeft" align="right" valign="top">static std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff29823fac884a5fb58c52cd0568f653">counter</a> = 0us</td></tr>
 <tr class="separator:aff29823fac884a5fb58c52cd0568f653"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0ddd01c42543685b3a744c327a213d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0ddd01c42543685b3a744c327a213d8"></a>
-static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">sjsu::cortex::InterruptController</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ac0ddd01c42543685b3a744c327a213d8">kCortexInterruptController</a> = <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">sjsu::cortex::InterruptController</a>()</td></tr>
-<tr class="memdesc:ac0ddd01c42543685b3a744c327a213d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">ARM Cortex NVIC controller. <br /></td></tr>
-<tr class="separator:ac0ddd01c42543685b3a744c327a213d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html">sjsu::SystemTimer</a> for all ARM Cortex-M series microcontrollers. </p>
@@ -201,7 +194,7 @@ static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptCo
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a2b7101862d284d1285e90a7f3c57ca4b"></a>
+<a class="anchor" id="a9fcc33685f07a7370d76649f8b50fe66"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -212,18 +205,8 @@ static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptCo
           <td class="memname">constexpr sjsu::cortex::SystemTimer::SystemTimer </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
-          <td class="paramname"><em>system_controller</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>system_controller</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html">sjsu::InterruptController</a> &amp;&#160;</td>
-          <td class="paramname"><em>interrupt_controller</em> = <code><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ac0ddd01c42543685b3a744c327a213d8">kCortexInterruptController</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -236,7 +219,6 @@ static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptCo
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">system_controller</td><td>- used specifically to get platform's frequency. </td></tr>
-    <tr><td class="paramname">interrupt_controller</td><td>- used to enable the system timer interrupt. Must be an ARM NVIC interrupt controller. This is primarily used as a dependency injection site for unit testing. </td></tr>
   </table>
   </dd>
 </dl>
@@ -292,7 +274,7 @@ static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptCo
 
 </div>
 </div>
-<a class="anchor" id="a2aa2a139e7a9569eeb59e5414dd25a6c"></a>
+<a class="anchor" id="abc2d3bf8f5a4a566759167111232b722"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -300,10 +282,10 @@ static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptCo
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void sjsu::cortex::SystemTimer::SetInterrupt </td>
+          <td class="memname">void sjsu::cortex::SystemTimer::SetCallback </td>
           <td>(</td>
-          <td class="paramtype">IsrPointer&#160;</td>
-          <td class="paramname"><em>isr</em></td><td>)</td>
+          <td class="paramtype">InterruptCallback&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -313,15 +295,15 @@ static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptCo
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set the interrupt handler for the system timer</p>
+<p>Set the function to be called when the System <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html">Timer</a> interrupt fires.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">isr</td><td>- interrupt service routine </td></tr>
+    <tr><td class="paramname">callback</td><td>- function to be called on system timer event. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#ad6af3278e333fc994a9e2418cfdaf96d">sjsu::SystemTimer</a>.</p>
+<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#aeaf96515f7680302d871fcbe2d91e151">sjsu::SystemTimer</a>.</p>
 
 </div>
 </div>
@@ -386,6 +368,27 @@ static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptCo
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a40769f764fdfd4a35d7bc2f2c13e5f49"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">InterruptCallback sjsu::cortex::SystemTimer::callback = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>callback defaults to nullptr. The actual SystemTickHandler should check if the isr is set to nullptr, and if it is, turn off the timer, if set a proper function then execute it. </p>
+
+</div>
+</div>
 <a class="anchor" id="aff29823fac884a5fb58c52cd0568f653"></a>
 <div class="memitem">
 <div class="memproto">
@@ -404,27 +407,6 @@ static const <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptCo
 </table>
 </div><div class="memdoc">
 <p>Used to count the number of times system_timer has executed. If the frequency of the <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html">SystemTimer</a> is set to 1kHz, this could be used as a milliseconds counter. </p>
-
-</div>
-</div>
-<a class="anchor" id="a13751b55560e1df2cd6e1eb2e302aa2e"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">IsrPointer sjsu::cortex::SystemTimer::system_timer_isr = nullptr</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>system_timer_isr defaults to nullptr. The actual SystemTickHandler should check if the isr is set to nullptr, and if it is, turn off the timer, if set a proper function then execute it. </p>
 
 </div>
 </div>

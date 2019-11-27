@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <functional>
 
 #include "config.hpp"
 #include "L1_Peripheral/adc.hpp"
@@ -122,7 +123,7 @@ const sjsu::Gpio & GetInactive<sjsu::Gpio>()
     {
       return GetInactive<sjsu::Pin>();
     }
-    void AttachInterrupt(IsrPointer, Edge) override {}
+    void AttachInterrupt(InterruptCallback, Edge) override {}
     void DetachInterrupt() const override {}
   };
 
@@ -238,7 +239,7 @@ const sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
   {
    public:
     void Initialize() const override {}
-    void SetInterrupt(IsrPointer) const override {}
+    void SetCallback(InterruptCallback) const override {}
     Status StartTimer() const override
     {
       return Status::kNotImplemented;
@@ -261,7 +262,7 @@ const sjsu::Timer & GetInactive<sjsu::Timer>()
   {
    public:
     Status Initialize(units::frequency::hertz_t,
-                      IsrPointer,
+                      InterruptCallback,
                       int32_t) const override
     {
       return Status::kNotImplemented;

@@ -51,7 +51,6 @@
 // Private namespace to make sure that these do not conflict with other globals
 namespace
 {
-using sjsu::cortex::InterruptController;
 // Create LPC40xx system controller to be used by low level initialization.
 sjsu::lpc40xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
@@ -61,8 +60,10 @@ sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
 sjsu::cortex::SystemTimer system_timer(system_controller);
-// Cortex NVIC interrupt controller used to setup FreeRTOS ISRs
-sjsu::cortex::InterruptController interrupt_controller;
+// Platform interrupt controller for Arm Cortex microcontrollers.
+sjsu::cortex::InterruptController<sjsu::lpc40xx::kNumberOfIrqs,
+                                  __NVIC_PRIO_BITS>
+    interrupt_controller;
 
 int Lpc40xxStdOut(const char * data, size_t length)
 {
@@ -99,19 +100,19 @@ extern "C"
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    interrupt_controller.Register({
-        .interrupt_request_number  = sjsu::cortex::SVCall_IRQn,
-        .interrupt_service_routine = vPortSVCHandler,
+    interrupt_controller.Enable({
+        .interrupt_request_number = sjsu::cortex::SVCall_IRQn,
+        .interrupt_handler        = vPortSVCHandler,
     });
-    interrupt_controller.Register({
-        .interrupt_request_number  = sjsu::cortex::PendSV_IRQn,
-        .interrupt_service_routine = xPortPendSVHandler,
+    interrupt_controller.Enable({
+        .interrupt_request_number = sjsu::cortex::PendSV_IRQn,
+        .interrupt_handler        = xPortPendSVHandler,
     });
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
     // delay itself.
-    system_timer.SetInterrupt(xPortSysTickHandler);
+    system_timer.SetCallback(xPortSysTickHandler);
   }
 }
 
@@ -121,68 +122,68 @@ SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
 // This relies on the linker script to place at correct location in memory.
 SJ2_SECTION(".isr_vector")
 // NOLINTNEXTLINE(readability-identifier-naming)
-const sjsu::IsrPointer kInterruptVectorTable[] = {
+const sjsu::InterruptVectorAddress kInterruptVectorTable[] = {
   // Core Level - CM4
   &StackTop,                           // 0, The initial stack pointer
   ArmResetHandler,                     // 1, The reset handler
-  InterruptController::LookupHandler,  // 2, The NMI handler
+  interrupt_controller.LookupHandler,  // 2, The NMI handler
   ArmHardFaultHandler,                 // 3, The hard fault handler
-  InterruptController::LookupHandler,  // 4, The MPU fault handler
-  InterruptController::LookupHandler,  // 5, The bus fault handler
-  InterruptController::LookupHandler,  // 6, The usage fault handler
+  interrupt_controller.LookupHandler,  // 4, The MPU fault handler
+  interrupt_controller.LookupHandler,  // 5, The bus fault handler
+  interrupt_controller.LookupHandler,  // 6, The usage fault handler
   nullptr,                             // 7, Reserved
   nullptr,                             // 8, Reserved
   nullptr,                             // 9, Reserved
   nullptr,                             // 10, Reserved
   vPortSVCHandler,                     // 11, SVCall handler
-  InterruptController::LookupHandler,  // 12, Debug monitor handler
+  interrupt_controller.LookupHandler,  // 12, Debug monitor handler
   nullptr,                             // 13, Reserved
   xPortPendSVHandler,                  // 14, FreeRTOS PendSV Handler
-  InterruptController::LookupHandler,  // 15, The SysTick handler
+  interrupt_controller.LookupHandler,  // 15, The SysTick handler
   // Chip Level - LPC40xx
-  InterruptController::LookupHandler,  // 16, 0x40 - WDT
-  InterruptController::LookupHandler,  // 17, 0x44 - TIMER0
-  InterruptController::LookupHandler,  // 18, 0x48 - TIMER1
-  InterruptController::LookupHandler,  // 19, 0x4c - TIMER2
-  InterruptController::LookupHandler,  // 20, 0x50 - TIMER3
-  InterruptController::LookupHandler,  // 21, 0x54 - UART0
-  InterruptController::LookupHandler,  // 22, 0x58 - UART1
-  InterruptController::LookupHandler,  // 23, 0x5c - UART2
-  InterruptController::LookupHandler,  // 24, 0x60 - UART3
-  InterruptController::LookupHandler,  // 25, 0x64 - PWM1
-  InterruptController::LookupHandler,  // 26, 0x68 - I2C0
-  InterruptController::LookupHandler,  // 27, 0x6c - I2C1
-  InterruptController::LookupHandler,  // 28, 0x70 - I2C2
-  InterruptController::LookupHandler,  // 29, Not used
-  InterruptController::LookupHandler,  // 30, 0x78 - SSP0
-  InterruptController::LookupHandler,  // 31, 0x7c - SSP1
-  InterruptController::LookupHandler,  // 32, 0x80 - PLL0 (Main PLL)
-  InterruptController::LookupHandler,  // 33, 0x84 - RTC
-  InterruptController::LookupHandler,  // 34, 0x88 - EINT0
-  InterruptController::LookupHandler,  // 35, 0x8c - EINT1
-  InterruptController::LookupHandler,  // 36, 0x90 - EINT2
-  InterruptController::LookupHandler,  // 37, 0x94 - EINT3
-  InterruptController::LookupHandler,  // 38, 0x98 - ADC
-  InterruptController::LookupHandler,  // 39, 0x9c - BOD
-  InterruptController::LookupHandler,  // 40, 0xA0 - USB
-  InterruptController::LookupHandler,  // 41, 0xa4 - CAN
-  InterruptController::LookupHandler,  // 42, 0xa8 - GP DMA
-  InterruptController::LookupHandler,  // 43, 0xac - I2S
-  InterruptController::LookupHandler,  // 44, 0xb0 - Ethernet
-  InterruptController::LookupHandler,  // 45, 0xb4 - SD/MMC card I/F
-  InterruptController::LookupHandler,  // 46, 0xb8 - Motor Control PWM
-  InterruptController::LookupHandler,  // 47, 0xbc - Quadrature Encoder
-  InterruptController::LookupHandler,  // 48, 0xc0 - PLL1 (USB PLL)
-  InterruptController::LookupHandler,  // 49, 0xc4 - USB Activity interrupt to
+  interrupt_controller.LookupHandler,  // 16, 0x40 - WDT
+  interrupt_controller.LookupHandler,  // 17, 0x44 - TIMER0
+  interrupt_controller.LookupHandler,  // 18, 0x48 - TIMER1
+  interrupt_controller.LookupHandler,  // 19, 0x4c - TIMER2
+  interrupt_controller.LookupHandler,  // 20, 0x50 - TIMER3
+  interrupt_controller.LookupHandler,  // 21, 0x54 - UART0
+  interrupt_controller.LookupHandler,  // 22, 0x58 - UART1
+  interrupt_controller.LookupHandler,  // 23, 0x5c - UART2
+  interrupt_controller.LookupHandler,  // 24, 0x60 - UART3
+  interrupt_controller.LookupHandler,  // 25, 0x64 - PWM1
+  interrupt_controller.LookupHandler,  // 26, 0x68 - I2C0
+  interrupt_controller.LookupHandler,  // 27, 0x6c - I2C1
+  interrupt_controller.LookupHandler,  // 28, 0x70 - I2C2
+  interrupt_controller.LookupHandler,  // 29, Not used
+  interrupt_controller.LookupHandler,  // 30, 0x78 - SSP0
+  interrupt_controller.LookupHandler,  // 31, 0x7c - SSP1
+  interrupt_controller.LookupHandler,  // 32, 0x80 - PLL0 (Main PLL)
+  interrupt_controller.LookupHandler,  // 33, 0x84 - RTC
+  interrupt_controller.LookupHandler,  // 34, 0x88 - EINT0
+  interrupt_controller.LookupHandler,  // 35, 0x8c - EINT1
+  interrupt_controller.LookupHandler,  // 36, 0x90 - EINT2
+  interrupt_controller.LookupHandler,  // 37, 0x94 - EINT3
+  interrupt_controller.LookupHandler,  // 38, 0x98 - ADC
+  interrupt_controller.LookupHandler,  // 39, 0x9c - BOD
+  interrupt_controller.LookupHandler,  // 40, 0xA0 - USB
+  interrupt_controller.LookupHandler,  // 41, 0xa4 - CAN
+  interrupt_controller.LookupHandler,  // 42, 0xa8 - GP DMA
+  interrupt_controller.LookupHandler,  // 43, 0xac - I2S
+  interrupt_controller.LookupHandler,  // 44, 0xb0 - Ethernet
+  interrupt_controller.LookupHandler,  // 45, 0xb4 - SD/MMC card I/F
+  interrupt_controller.LookupHandler,  // 46, 0xb8 - Motor Control PWM
+  interrupt_controller.LookupHandler,  // 47, 0xbc - Quadrature Encoder
+  interrupt_controller.LookupHandler,  // 48, 0xc0 - PLL1 (USB PLL)
+  interrupt_controller.LookupHandler,  // 49, 0xc4 - USB Activity interrupt to
                                        // wakeup
-  InterruptController::LookupHandler,  // 50, 0xc8 - CAN Activity interrupt to
+  interrupt_controller.LookupHandler,  // 50, 0xc8 - CAN Activity interrupt to
                                        // wakeup
-  InterruptController::LookupHandler,  // 51, 0xcc - UART4
-  InterruptController::LookupHandler,  // 52, 0xd0 - SSP2
-  InterruptController::LookupHandler,  // 53, 0xd4 - LCD
-  InterruptController::LookupHandler,  // 54, 0xd8 - GPIO
-  InterruptController::LookupHandler,  // 55, 0xdc - PWM0
-  InterruptController::LookupHandler,  // 56, 0xe0 - EEPROM
+  interrupt_controller.LookupHandler,  // 51, 0xcc - UART4
+  interrupt_controller.LookupHandler,  // 52, 0xd0 - SSP2
+  interrupt_controller.LookupHandler,  // 53, 0xd4 - LCD
+  interrupt_controller.LookupHandler,  // 54, 0xd8 - GPIO
+  interrupt_controller.LookupHandler,  // 55, 0xdc - PWM0
+  interrupt_controller.LookupHandler,  // 56, 0xe0 - EEPROM
 };
 
 namespace sjsu
@@ -194,6 +195,9 @@ void InitializePlatform()
   // System will crash if floating point instruction is executed before
   // Initializing the FPU first.
   sjsu::cortex::InitializeFloatingPointUnit();
+  // Set the platform's interrupt controller.
+  // This will be used by other libraries to enable and disable interrupts.
+  sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   // Set Clock Speed
   // SetSystemClockFrequency will timeout return the offset between desire
   // clockspeed and actual clockspeed if the PLL doesn't get a frequency fix

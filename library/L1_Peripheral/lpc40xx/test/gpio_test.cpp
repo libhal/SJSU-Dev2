@@ -126,11 +126,11 @@ TEST_CASE("Testing lpc40xx Gpio", "[lpc40xx-gpio]")
   Pin::pin_map       = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }
 
-FAKE_VOID_FUNC(Pin0_15_ISR);
-FAKE_VOID_FUNC(Pin2_7_ISR);
+FAKE_VOID_FUNC(InterruptCallback0);
+FAKE_VOID_FUNC(InterruptCallback1);
 
 TEST_CASE("Testing lpc40xx Gpio External Interrupts",
-          "[lpc40xx-Gpio Interrupts]")
+          "[lpc40xx-gpio-interrupts]")
 {
   // Declared constants that are to be used within the different sections
   // of this unit test
@@ -163,42 +163,50 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
 
   // Pins that are to be used in the unit test
   Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Register));
-  Fake(Method(mock_interrupt_controller, Deregister));
+  Fake(Method(mock_interrupt_controller, Enable));
+  Fake(Method(mock_interrupt_controller, Disable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
 
-  Gpio p0_15(0, 15, mock_interrupt_controller.get());
-  Gpio p2_7(2, 7, mock_interrupt_controller.get());
+  Gpio p0_15(0, 15);
+  Gpio p2_7(2, 7);
 
   SECTION("Attach then Detattach Interrupt from pin")
   {
     // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&Pin2_7_ISR, sjsu::Gpio::Edge::kEdgeBoth);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
     // Check Edge Setup
     CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
     CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
     // Check Developer's ISR is attached
-    CHECK(p0_15.interrupthandlers[kPort0][kPin15] == &Pin0_15_ISR);
-    CHECK(p2_7.interrupthandlers[kPort2][kPin7] == &Pin2_7_ISR);
+    auto * save_callback0 =
+        p0_15.interrupt_handlers[kPort0][kPin15].target<void (*)(void)>();
+    auto * save_callback1 =
+        p2_7.interrupt_handlers[kPort2][kPin7].target<void (*)(void)>();
+    REQUIRE(save_callback0 != nullptr);
+    REQUIRE(save_callback1 != nullptr);
+    CHECK(&InterruptCallback0 == *save_callback0);
+    CHECK(&InterruptCallback1 == *save_callback1);
 
-    // Dettach Interrupt from Pin.
+    // Detach Interrupt from Pin.
     p0_15.DetachInterrupt();
     p2_7.DetachInterrupt();
     CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
     CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
     CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
     CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
-    CHECK(p0_15.interrupthandlers[kPort0][kPin15] == nullptr);
-    CHECK(p2_7.interrupthandlers[kPort2][kPin7] == nullptr);
+    CHECK(p0_15.interrupt_handlers[kPort0][kPin15] == nullptr);
+    CHECK(p2_7.interrupt_handlers[kPort2][kPin7] == nullptr);
   }
 
   SECTION("Set and clear Interrupt Edges")
   {
     // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&Pin2_7_ISR, sjsu::Gpio::Edge::kEdgeBoth);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
     CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
@@ -240,29 +248,27 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   SECTION("Enable and Disable all Interrupts")
   {
     // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&Pin2_7_ISR, sjsu::Gpio::Edge::kEdgeBoth);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
 
     // Enable all Interrupts
     p0_15.EnableInterrupts();
     Verify(
-        Method(mock_interrupt_controller, Register)
+        Method(mock_interrupt_controller, Enable)
             .Matching([](sjsu::InterruptController::RegistrationInfo_t info) {
               return (info.interrupt_request_number == GPIO_IRQn) &&
-                     (info.interrupt_service_routine ==
-                      Gpio::InterruptHandler) &&
-                     (info.enable_interrupt == true) && (info.priority == -1);
+                     (info.priority == -1);
             }));
 
     // Disable all Interrupts
     p0_15.DisableInterrupts();
-    Verify(Method(mock_interrupt_controller, Deregister).Using(GPIO_IRQn));
+    Verify(Method(mock_interrupt_controller, Disable).Using(GPIO_IRQn));
   }
 
   SECTION("Call the Interrupt handler to service the pin.")
   {
     // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&Pin0_15_ISR, sjsu::Gpio::Edge::kEdgeBoth);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
 
     // Manually trigger an Interrupt
     local_eint.IntStatus |= (1 << kPort0);
@@ -270,7 +276,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
 
     // Manually call interrupt handler
     p0_15.InterruptHandler();
-    CHECK(Pin0_15_ISR_fake.call_count == 1);
+    CHECK(InterruptCallback0_fake.call_count == 1);
     CHECK(((local_eint.IO0IntClr >> kPin15) & 1) == kSet);
   }
 }

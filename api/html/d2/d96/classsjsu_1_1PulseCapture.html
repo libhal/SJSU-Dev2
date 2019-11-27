@@ -140,17 +140,17 @@ Public Types</h2></td></tr>
  }<tr class="memdesc:a60d7b48cf59703107bc569a6d27e01db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define which edges to capture input on. <br /></td></tr>
 </td></tr>
 <tr class="separator:a60d7b48cf59703107bc569a6d27e01db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5bdc7b9fa704be0336ee5ea37bc59b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5bdc7b9fa704be0336ee5ea37bc59b9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#ab5bdc7b9fa704be0336ee5ea37bc59b9">CaptureIsr</a> = void(*)(<a class="el" href="../../d0/ded/structsjsu_1_1PulseCapture_1_1CaptureStatus__t.html">PulseCapture::CaptureStatus_t</a>)</td></tr>
-<tr class="memdesc:ab5bdc7b9fa704be0336ee5ea37bc59b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt callback that passes capture status information. <br /></td></tr>
-<tr class="separator:ab5bdc7b9fa704be0336ee5ea37bc59b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fa4abf74b4edd9674360f43352244e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fa4abf74b4edd9674360f43352244e1"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#a4fa4abf74b4edd9674360f43352244e1">CaptureCallback</a> = std::function&lt; void(<a class="el" href="../../d0/ded/structsjsu_1_1PulseCapture_1_1CaptureStatus__t.html">PulseCapture::CaptureStatus_t</a>)&gt;</td></tr>
+<tr class="memdesc:a4fa4abf74b4edd9674360f43352244e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt callback that passes capture status information. <br /></td></tr>
+<tr class="separator:a4fa4abf74b4edd9674360f43352244e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa2ec56c13f7bb97b4f0b42ce1da1063d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa2ec56c13f7bb97b4f0b42ce1da1063d"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#aa2ec56c13f7bb97b4f0b42ce1da1063d">Initialize</a> (<a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#ab5bdc7b9fa704be0336ee5ea37bc59b9">CaptureIsr</a> isr=nullptr, int32_t interrupt_priority=-1) const =0</td></tr>
-<tr class="memdesc:aa2ec56c13f7bb97b4f0b42ce1da1063d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize timer for capturing. <br /></td></tr>
-<tr class="separator:aa2ec56c13f7bb97b4f0b42ce1da1063d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c78d25f102b18ecc34e05967a154e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6c78d25f102b18ecc34e05967a154e8"></a>
+virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#aa6c78d25f102b18ecc34e05967a154e8">Initialize</a> (<a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#a4fa4abf74b4edd9674360f43352244e1">CaptureCallback</a> isr=nullptr, int32_t interrupt_priority=-1) const =0</td></tr>
+<tr class="memdesc:aa6c78d25f102b18ecc34e05967a154e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize timer for capturing. <br /></td></tr>
+<tr class="separator:aa6c78d25f102b18ecc34e05967a154e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e275666b6dcd09961a6d3297284dc4e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e275666b6dcd09961a6d3297284dc4e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#a6e275666b6dcd09961a6d3297284dc4e">ConfigureCapture</a> (<a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#a60d7b48cf59703107bc569a6d27e01db">CaptureEdgeMode</a> mode) const =0</td></tr>
 <tr class="memdesc:a6e275666b6dcd09961a6d3297284dc4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select edge type to capture on. <br /></td></tr>

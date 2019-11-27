@@ -1,36 +1,76 @@
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
-namespace sjsu::lpc40xx
+namespace sjsu::cortex
 {
-// TODO(#632): Add tests back
-TEST_CASE("Testing lpc40xx interrupt", "[lpc40xx-interrupt]")
+TEST_CASE("Testing cortex interrupt", "[cortex-interrupt]")
 {
-  // auto test_isr                 = []() {};
-  // constexpr size_t kVectorIndex = WDT_IRQn + lpc40xx::kIrqOffset;
-  // SECTION("RegisterIsr")
-  // {
-  //   constexpr int32_t kPriority = 5;
-  //   RESET_FAKE(NVIC_EnableIRQ);
-  //   RESET_FAKE(NVIC_SetPriority);
-  //   dynamic_isr_vector_table[kVectorIndex] = nullptr;
+  constexpr uint8_t kIRQ             = 7;
+  constexpr uint8_t kPriority        = 2;
+  constexpr uint8_t kPriorityBits    = 5;
+  constexpr uint8_t kNumberOfVectors = 10;
 
-  //   interrupt_controller_.Register(WDT_IRQn, test_isr, true, kPriority);
+  InterruptController<kNumberOfVectors, kPriorityBits> test_subject;
 
-  //   CHECK(test_isr == dynamic_isr_vector_table[kVectorIndex]);
-  //   CHECK(WDT_IRQn == NVIC_EnableIRQ_fake.arg0_val);
-  //   CHECK(WDT_IRQn == NVIC_SetPriority_fake.arg0_val);
-  //   CHECK(kPriority == NVIC_SetPriority_fake.arg1_val);
-  // }
-  // SECTION("DeregisterIsr")
-  // {
-  //   RESET_FAKE(NVIC_DisableIRQ);
-  //   dynamic_isr_vector_table[kVectorIndex] = test_isr;
+  SCB_Type local_scb = {
+    // This field must be defined otherwise compiler will complain
+    .CPUID = 0,
+  };
 
-  //    interrupt_controller_.Deregister(WDT_IRQn);
+  memset(&local_scb, 0, sizeof(local_scb));
+  test_subject.scb = &local_scb;
 
-  //   CHECK(InterruptLookupHandler == dynamic_isr_vector_table[kVectorIndex]);
-  //   CHECK(WDT_IRQn == NVIC_DisableIRQ_fake.arg0_val);
-  // }
+  NVIC_Type local_nvic;
+  memset(&local_nvic, 0, sizeof(local_nvic));
+  test_subject.nvic = &local_nvic;
+
+  // Making the unregistered handler nullptr guarantees that an exception will
+  // be thrown if an exception occurs, which is useful in the "Initialize" test
+  // section.
+  test_subject.Initialize(nullptr);
+
+  SECTION("Initialize")
+  {
+    for (uint32_t irq = 0; irq < kNumberOfVectors; irq++)
+    {
+      // Setup
+      // Set the active interrupt to
+      local_scb.ICSR = irq;
+
+      // Exercise & Verify
+      CHECK_THROWS(test_subject.LookupHandler());
+    }
+  }
+
+  SECTION("Enable")
+  {
+    // Setup
+    bool callback_was_registered_and_called = false;
+
+    // Exercise
+    test_subject.Enable({
+        .interrupt_request_number = kIRQ,
+        .interrupt_handler =
+            [&callback_was_registered_and_called]() {
+              callback_was_registered_and_called = true;
+            },
+        .priority = kPriority,
+    });
+    // Set the active interrupt to kIRQ.
+    local_scb.ICSR = test_subject.IRQToIndex(kIRQ);
+    // Should call the service routine above.
+    test_subject.LookupHandler();
+
+    // Verify
+    CHECK(callback_was_registered_and_called);
+    CHECK(kIRQ == test_subject.current_vector);
+    CHECK((kPriority << (8 - kPriorityBits)) == local_nvic.IP[kIRQ]);
+    CHECK(local_nvic.ISER[(kIRQ >> 5)] == (1 << (kIRQ & 0x1F)));
+  }
+  SECTION("Disable")
+  {
+    test_subject.Disable(kIRQ);
+    CHECK(local_nvic.ICER[(kIRQ >> 5)] == (1 << (kIRQ & 0x1F)));
+  }
 }
-}  // namespace sjsu::lpc40xx
+}  // namespace sjsu::cortex

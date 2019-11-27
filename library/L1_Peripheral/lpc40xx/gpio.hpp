@@ -1,9 +1,11 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 
 #include "L1_Peripheral/gpio.hpp"
 
+#include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
@@ -31,8 +33,8 @@ class Gpio final : public sjsu::Gpio
   };
 
   /// Lookup table that holds developer gpio interrupt handelers.
-  inline static IsrPointer interrupthandlers[kNumberOfInterruptPorts]
-                                            [kNumberOfPins];
+  inline static InterruptCallback interrupt_handlers[kNumberOfInterruptPorts]
+                                                    [kNumberOfPins];
 
   /// This structure makes the access of gpio interrupt registers more readable
   struct GpioInterruptRegisterMap_t
@@ -63,19 +65,13 @@ class Gpio final : public sjsu::Gpio
   /// position if that port has a pending interrupt. For port 2, the 2nd bit
   /// will be set. All other bits will be zero.
   inline static volatile uint32_t * port_status = &(LPC_GPIOINT->IntStatus);
-  /// Get access to the ARM Cortex interrupt controller.
-  static constexpr sjsu::cortex::InterruptController kInterruptController =
-      sjsu::cortex::InterruptController();
 
   /// For port 0-4, pins 0-31 are available. Port 5 only has pins 0-4 available.
   constexpr Gpio(uint8_t port_number,
-                 uint8_t pin_number,
-                 const sjsu::InterruptController & interrupt_controller =
-                     kInterruptController)
+                 uint8_t pin_number)
 
       : interupt_port_(0),
-        pin_(port_number, pin_number),
-        interrupt_controller_(interrupt_controller)
+        pin_(port_number, pin_number)
   {
     interupt_port_ = (port_number == 2) ? 1 : 0;
   }
@@ -129,16 +125,16 @@ class Gpio final : public sjsu::Gpio
   }
 
   /// Assigns the developer's ISR function to the port/pin gpio instance.
-  void SetInterruptRoutine(IsrPointer function) const
+  void SetInterruptRoutine(InterruptCallback callback) const
   {
     ValidPortCheck();
-    interrupthandlers[interupt_port_][pin_.GetPin()] = function;
+    interrupt_handlers[interupt_port_][pin_.GetPin()] = callback;
   }
 
   /// Clears the developers ISR function from the port/pin gio instance.
   void ClearInterruptRoutine() const
   {
-    interrupthandlers[interupt_port_][pin_.GetPin()] = nullptr;
+    interrupt_handlers[interupt_port_][pin_.GetPin()] = nullptr;
   }
 
   /// Sets the selected edge that the gpio interrupt will be triggered on.
@@ -207,11 +203,11 @@ class Gpio final : public sjsu::Gpio
 
   /// Assign the developer's ISR and sets the selected edge that the gpio
   /// interrupt will be triggered on.
-  void AttachInterrupt(IsrPointer function, Edge edge) override
+  void AttachInterrupt(InterruptCallback callback, Edge edge) override
   {
     EnableInterrupts();
     ValidPortCheck();
-    SetInterruptRoutine(function);
+    SetInterruptRoutine(callback);
     SetInterruptEdge(edge);
   }
 
@@ -225,31 +221,29 @@ class Gpio final : public sjsu::Gpio
     ClearEdgeFalling();
   }
 
-  /// Enables all gpio interrupts by putting the gpio internal ISR on the
-  /// Interrupt Vector Table.
+  /// Enables gpio interrupts for all gpio pins.
   void EnableInterrupts()
   {
-    interrupt_controller_.Register({
+    sjsu::InterruptController::GetPlatformController().Enable({
         .interrupt_request_number  = GPIO_IRQn,
-        .interrupt_service_routine = InterruptHandler,
+        .interrupt_handler = InterruptHandler,
     });
   }
 
-  /// Disables all gpio interrupts by removing the gpio internal ISR from the
-  /// Interrupt Vector Table.
+  /// Disables all gpio interrupts on this platform.
   void DisableInterrupts()
   {
-    interrupt_controller_.Deregister(GPIO_IRQn);
+    sjsu::InterruptController::GetPlatformController().Disable(GPIO_IRQn);
   }
 
-  /// The gpio internal ISR that calls the developer's ISR's.
+  /// The gpio interrupt handler that calls the attached interrupt callbacks.
   static void InterruptHandler()
   {
     int triggered_port = (*port_status >> 2);
     int triggered_pin =
         __builtin_ctz(*interrupt[triggered_port].rising_edge_status |
                       *interrupt[triggered_port].falling_edge_status);
-    interrupthandlers[triggered_port][triggered_pin]();
+    interrupt_handlers[triggered_port][triggered_pin]();
     *interrupt[triggered_port].clear |= (1 << triggered_pin);
   }
 
@@ -280,7 +274,6 @@ class Gpio final : public sjsu::Gpio
 
   uint8_t interupt_port_;
   sjsu::lpc40xx::Pin pin_;
-  const sjsu::InterruptController & interrupt_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

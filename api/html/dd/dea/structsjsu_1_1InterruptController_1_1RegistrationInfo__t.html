@@ -109,22 +109,61 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::InterruptController::RegistrationInfo_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../df/d97/interrupt_8hpp_source.html">interrupt.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aa55f42dfba230e94a6b4546858f39735"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa55f42dfba230e94a6b4546858f39735"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>interrupt_request_number</b></td></tr>
+<tr class="memitem:aa55f42dfba230e94a6b4546858f39735"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#aa55f42dfba230e94a6b4546858f39735">interrupt_request_number</a></td></tr>
 <tr class="separator:aa55f42dfba230e94a6b4546858f39735"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a689ee6e12eac3d7cf3b778dfaf7b1c24"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a689ee6e12eac3d7cf3b778dfaf7b1c24"></a>
-IsrPointer&#160;</td><td class="memItemRight" valign="bottom"><b>interrupt_service_routine</b></td></tr>
-<tr class="separator:a689ee6e12eac3d7cf3b778dfaf7b1c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c68cc14fd526be8be90b7d72c054fa7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c68cc14fd526be8be90b7d72c054fa7"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>enable_interrupt</b> = true</td></tr>
-<tr class="separator:a7c68cc14fd526be8be90b7d72c054fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad501f59b6cf62779ca06dcfa61c6de90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad501f59b6cf62779ca06dcfa61c6de90"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>priority</b> = -1</td></tr>
+<tr class="memitem:a8f02c27e02ebca4f78f9733be8a174d4"><td class="memItemLeft" align="right" valign="top">InterruptHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#a8f02c27e02ebca4f78f9733be8a174d4">interrupt_handler</a></td></tr>
+<tr class="separator:a8f02c27e02ebca4f78f9733be8a174d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad501f59b6cf62779ca06dcfa61c6de90"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#ad501f59b6cf62779ca06dcfa61c6de90">priority</a> = -1</td></tr>
 <tr class="separator:ad501f59b6cf62779ca06dcfa61c6de90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Contains all of the information required to setup an configure an interrupt service routine. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a8f02c27e02ebca4f78f9733be8a174d4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">InterruptHandler sjsu::InterruptController::RegistrationInfo_t::interrupt_handler</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The handler for the interrupt. <a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> be set to nullptr if you plan to disable the interrupt. Setting this field to nullptr with an enabled interrupt, will cause std::abort to be called when the interrupt occurs. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa55f42dfba230e94a6b4546858f39735"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sjsu::InterruptController::RegistrationInfo_t::interrupt_request_number</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Interrupt request number or also called the interrupt vector that is associated with the interrupt you plan to manipulate. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad501f59b6cf62779ca06dcfa61c6de90"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sjsu::InterruptController::RegistrationInfo_t::priority = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Priority of the interrupt. The actual value here and what is means is dependent on the platform you are running on. -1 is considered the "do
+nothing" value. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/<a class="el" href="../../df/d97/interrupt_8hpp_source.html">interrupt.hpp</a></li>
 </ul>

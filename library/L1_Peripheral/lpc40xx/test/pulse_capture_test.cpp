@@ -11,7 +11,7 @@ namespace sjsu::lpc40xx
 EMIT_ALL_METHODS(PulseCapture);
 
 PulseCapture::CaptureStatus_t isr_result;
-PulseCapture::CaptureIsr test_timer_isr = nullptr;
+PulseCapture::CaptureCallback test_timer_callback = nullptr;
 
 void DummyCallback(PulseCapture::CaptureStatus_t status)
 {
@@ -46,7 +46,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
     .timer_register = &test_timer_register,
     .power_id       = SystemController::Peripherals::kTimer0,
     .irq            = IRQn::TIMER0_IRQn,
-    .user_callback  = &test_timer_isr,
+    .user_callback  = &test_timer_callback,
     .capture_pin0   = capture0_input_pin,
     .capture_pin1   = capture1_input_pin,
     .channel_number = &test_timer_channel_number0
@@ -56,7 +56,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
     .timer_register = &test_timer_register,
     .power_id       = SystemController::Peripherals::kTimer0,
     .irq            = IRQn::TIMER0_IRQn,
-    .user_callback  = &test_timer_isr,
+    .user_callback  = &test_timer_callback,
     .capture_pin0   = capture0_input_pin,
     .capture_pin1   = capture1_input_pin,
     .channel_number = &test_timer_channel_number1
@@ -64,11 +64,11 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
 
   const PulseCapture::CaptureChannel_t kTestTimerCh0 = {
     .channel = kTestTimerPartial0,
-    .isr     = PulseCapture::TimerHandler<kTestTimerPartial0>
+    .handler = PulseCapture::TimerHandler<kTestTimerPartial0>
   };
   const PulseCapture::CaptureChannel_t kTestTimerCh1 = {
     .channel = kTestTimerPartial1,
-    .isr     = PulseCapture::TimerHandler<kTestTimerPartial1>
+    .handler = PulseCapture::TimerHandler<kTestTimerPartial1>
   };
 
   memset(&test_timer_register, 0, sizeof(test_timer_register));
@@ -85,21 +85,22 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
       .AlwaysReturn(kTestPeripheralClockDivider);
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Register));
+  Fake(Method(mock_interrupt_controller, Enable));
+  Fake(Method(mock_interrupt_controller, Disable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
 
   constexpr units::frequency::hertz_t kTestFrequency = 4_MHz;
 
   PulseCapture test_subject0(kTestTimerCh0,
                              PulseCapture::CaptureChannelNumber::kChannel0,
                              kTestFrequency,
-                             mock_system_controller.get(),
-                             mock_interrupt_controller.get());
+                             mock_system_controller.get());
 
   PulseCapture test_subject1(kTestTimerCh1,
                              PulseCapture::CaptureChannelNumber::kChannel1,
                              kTestFrequency,
-                             mock_system_controller.get(),
-                             mock_interrupt_controller.get());
+                             mock_system_controller.get());
 
   PulseCapture * test_subjects[2] = { &test_subject0, &test_subject1 };
 
@@ -111,13 +112,12 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
         kTestFrequency.to<int32_t>();
 
     Verify(
-        Method(mock_interrupt_controller, Register)
+        Method(mock_interrupt_controller, Enable)
             .Matching([kTestTimerCh0](
                           sjsu::InterruptController::RegistrationInfo_t info) {
               return (info.interrupt_request_number ==
                       kTestTimerCh0.channel.irq) &&
-                     (info.interrupt_service_routine == kTestTimerCh0.isr) &&
-                     (info.enable_interrupt == true) && (info.priority == -1);
+                     (info.priority == -1);
             }));
 
     CHECK(test_timer_register.PR == prescaler);
@@ -132,13 +132,12 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
         kTestFrequency.to<int32_t>();
 
     Verify(
-        Method(mock_interrupt_controller, Register)
+        Method(mock_interrupt_controller, Enable)
             .Matching([kTestTimerCh1](
                           sjsu::InterruptController::RegistrationInfo_t info) {
               return (info.interrupt_request_number ==
                       kTestTimerCh1.channel.irq) &&
-                     (info.interrupt_service_routine == kTestTimerCh1.isr) &&
-                     (info.enable_interrupt == true) && (info.priority == -1);
+                     (info.priority == -1);
             }));
 
     CHECK(test_timer_register.PR == prescaler);
@@ -188,7 +187,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
   SECTION("Capture Interrupt Handler Acknowledge (Common)")
   {
     memset(&isr_result, 0, sizeof(PulseCapture::CaptureStatus_t));
-    kTestTimerCh0.isr();
+    kTestTimerCh0.handler();
     CHECK(bit::Extract(test_timer_register.IR, 4, 2) == 0b11);
   }
 
@@ -197,7 +196,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
     constexpr uint32_t kCr0TestPattern = 0x22226666;
     memset(&isr_result, 0, sizeof(PulseCapture::CaptureStatus_t));
     test_timer_register.CR0 = kCr0TestPattern;
-    kTestTimerCh0.isr();
+    kTestTimerCh0.handler();
     CHECK(isr_result.count == kCr0TestPattern);
   }  // end section capture interrupt handler
 
@@ -206,7 +205,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
     constexpr uint32_t kCr1TestPattern = 0x33337777;
     memset(&isr_result, 0, sizeof(PulseCapture::CaptureStatus_t));
     test_timer_register.CR1 = kCr1TestPattern;
-    kTestTimerCh1.isr();
+    kTestTimerCh1.handler();
     CHECK(isr_result.count == kCr1TestPattern);
   }  // end section capture interrupt handler
 }  // end test case

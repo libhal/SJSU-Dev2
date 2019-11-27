@@ -57,7 +57,7 @@ class Tsop752 final : public InfraredReceiver
                              sjsu::Timer & timer);
 
   Status Initialize() const override;
-  void SetInterruptHandler(DataReceivedHandler handler) const override;
+  void SetInterruptCallback(DataReceivedHandler handler) const override;
 
  private:
   static void HandlePulseCaptured();
@@ -87,9 +87,9 @@ The following sequence is performed to initialize the driver:
 
 ### Capturing The De-modulated IR signal
 ```C++
-void SetInterruptHandler(DataReceivedHandler handler) const override
+void SetInterruptCallback(DataReceivedHandler handler) const override
 ```
-`SetInterruptHandler` sets the `interrupt_handler` that is invoked when a data
+`SetInterruptCallback` sets the `interrupt_handler` that is invoked when a data
 frame is successfully received.
 
 ```C++

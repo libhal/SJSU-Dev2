@@ -136,8 +136,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a51e25e5ee8a662be887d9afb12382e2c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a51e25e5ee8a662be887d9afb12382e2c">Initialize</a> (units::frequency::hertz_t counter_frequency, IsrPointer isr=nullptr, int32_t priority=-1) const =0</td></tr>
-<tr class="separator:a51e25e5ee8a662be887d9afb12382e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab07d9ae5c7aaeceb2839a6eb93af06d2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#ab07d9ae5c7aaeceb2839a6eb93af06d2">Initialize</a> (units::frequency::hertz_t counter_frequency, InterruptCallback callback=nullptr, int32_t priority=-1) const =0</td></tr>
+<tr class="separator:ab07d9ae5c7aaeceb2839a6eb93af06d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8c95d6b7e1d88d2dc03493b18e48b39"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#af8c95d6b7e1d88d2dc03493b18e48b39">SetMatchBehavior</a> (uint32_t match_count, <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8">MatchAction</a> action, uint8_t match_register) const =0</td></tr>
 <tr class="separator:af8c95d6b7e1d88d2dc03493b18e48b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5be3fa5ef96894c0174d3824af1a15a9"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a5be3fa5ef96894c0174d3824af1a15a9">GetAvailableMatchRegisters</a> () const =0</td></tr>
@@ -196,7 +196,7 @@ virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 
 </div>
 </div>
-<a class="anchor" id="a51e25e5ee8a662be887d9afb12382e2c"></a>
+<a class="anchor" id="ab07d9ae5c7aaeceb2839a6eb93af06d2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -212,8 +212,8 @@ virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IsrPointer&#160;</td>
-          <td class="paramname"><em>isr</em> = <code>nullptr</code>, </td>
+          <td class="paramtype">InterruptCallback&#160;</td>
+          <td class="paramname"><em>callback</em> = <code>nullptr</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -237,13 +237,13 @@ virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">counter_frequency</td><td>- the frequency that the timer's count register will increment by. If this is set to 1'000'000Hz then the counter will increment every microsecond. register will be 10 ms. </td></tr>
-    <tr><td class="paramname">isr</td><td>- the ISR that will fire when the condition set by SetTimer method is achieved. </td></tr>
+    <tr><td class="paramname">callback</td><td>- a callback that will be called when the condition set by SetTimer method has occurred. </td></tr>
     <tr><td class="paramname">priority</td><td>- sets the <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html">Timer</a> interrupt's priority level, defaults to -1 which uses the platforms default priority. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#a31ffad0379a3b340ac6734f1cf083fc9">sjsu::lpc40xx::Timer</a>.</p>
+<p>Implemented in <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#a915c334eb9f41fbaf338bb21143b5d08">sjsu::lpc40xx::Timer</a>.</p>
 
 </div>
 </div>

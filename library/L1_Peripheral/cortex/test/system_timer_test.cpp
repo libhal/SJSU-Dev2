@@ -9,8 +9,6 @@ namespace sjsu::cortex
 {
 EMIT_ALL_METHODS(SystemTimer);
 
-static void DummyFunction(void) {}
-
 TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
 {
   // Simulated local version of SysTick register to verify register
@@ -30,11 +28,12 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Register));
-  Fake(Method(mock_interrupt_controller, Deregister));
+  Fake(Method(mock_interrupt_controller, Enable));
+  Fake(Method(mock_interrupt_controller, Disable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
 
-  SystemTimer test_subject(mock_system_controller.get(),
-                           mock_interrupt_controller.get());
+  SystemTimer test_subject(mock_system_controller.get());
 
   SECTION("SetTickFrequency generate desired frequency")
   {
@@ -59,6 +58,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   }
   SECTION("Start Timer should set necessary SysTick Ctrl bits and set VAL to 0")
   {
+    // Setup
     // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
     constexpr uint8_t kEnableMask    = 0b0001;
     constexpr uint8_t kTickIntMask   = 0b0010;
@@ -67,13 +67,24 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     local_systick.VAL        = 0xBEEF;
     local_systick.LOAD       = 1000;
 
+    // Exercise
     CHECK(Status::kSuccess == test_subject.StartTimer());
+
+    // Verify
     CHECK(kMask == local_systick.CTRL);
     CHECK(0 == local_systick.VAL);
+    Verify(
+        Method(mock_interrupt_controller, Enable)
+            .Matching([](sjsu::InterruptController::RegistrationInfo_t info) {
+              return (info.interrupt_request_number == cortex::SysTick_IRQn) &&
+                     (info.priority == -1);
+            }));
   }
+
   SECTION(
       "StartTimer should return false and set no bits if LOAD is set to zero")
   {
+    // Setup
     // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
     constexpr uint8_t kClkSourceMask = 0b0100;
     // Default value see above.
@@ -82,13 +93,17 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     local_systick.LOAD = 0;
     local_systick.VAL  = 0xBEEF;
 
+    // Exercise
     CHECK(Status::kInvalidSettings == test_subject.StartTimer());
+
+    // Verify
     CHECK(kClkSourceMask == local_systick.CTRL);
     CHECK(0xBEEF == local_systick.VAL);
-    // TODO(undef): add check for interrupt_controller.Register()
+    Verify(Method(mock_interrupt_controller, Enable)).Never();
   }
   SECTION("DisableTimer should clear all bits")
   {
+    // Setup
     // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
     constexpr uint8_t kEnableMask    = 0b0001;
     constexpr uint8_t kTickIntMask   = 0b0010;
@@ -97,17 +112,25 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     local_systick.CTRL       = kMask;
     local_systick.LOAD       = 1000;
 
+    // Exercise
     test_subject.DisableTimer();
 
+    // Verify
     CHECK(0 == local_systick.CTRL);
   }
-  SECTION("SetInterrupt set SystemTimer::system_timer_isr to DummyFunction")
+  SECTION(
+      "SetInterrupt set SystemTimer::system_timer_callback to dummy_function")
   {
-    SystemTimer::system_timer_isr = nullptr;
+    // Setup
+    bool was_called     = false;
+    auto dummy_function = [&was_called](void) { was_called = true; };
 
-    test_subject.SetInterrupt(DummyFunction);
+    // Exercise
+    test_subject.SetCallback(dummy_function);
+    test_subject.SystemTimerHandler();
 
-    CHECK(DummyFunction == SystemTimer::system_timer_isr);
+    // Verify
+    CHECK(was_called);
   }
 
   SystemTimer::sys_tick = SysTick;

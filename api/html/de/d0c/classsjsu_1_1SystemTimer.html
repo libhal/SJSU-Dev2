@@ -126,8 +126,8 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#a07b5f947f4877beb5026f469bb3f623d">Initialize</a> () const =0</td></tr>
 <tr class="memdesc:a07b5f947f4877beb5026f469bb3f623d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize system timer hardware. <br /></td></tr>
 <tr class="separator:a07b5f947f4877beb5026f469bb3f623d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6af3278e333fc994a9e2418cfdaf96d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#ad6af3278e333fc994a9e2418cfdaf96d">SetInterrupt</a> (IsrPointer isr) const =0</td></tr>
-<tr class="separator:ad6af3278e333fc994a9e2418cfdaf96d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaf96515f7680302d871fcbe2d91e151"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#aeaf96515f7680302d871fcbe2d91e151">SetCallback</a> (InterruptCallback callback) const =0</td></tr>
+<tr class="separator:aeaf96515f7680302d871fcbe2d91e151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4f771d7b99ce43ea158018504c4fc0a"><td class="memItemLeft" align="right" valign="top">virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#ac4f771d7b99ce43ea158018504c4fc0a">SetTickFrequency</a> (units::frequency::hertz_t frequency) const =0</td></tr>
 <tr class="separator:ac4f771d7b99ce43ea158018504c4fc0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a450e04219db91de314883380dee1d9c4"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#a450e04219db91de314883380dee1d9c4">StartTimer</a> () const =0</td></tr>
@@ -136,7 +136,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A system timer is a general timer used primarily for generating an interrupt at a fixed period, like 1ms or 10ms. Such interrupts are generally used to give control of the processor back to an operating. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ad6af3278e333fc994a9e2418cfdaf96d"></a>
+<a class="anchor" id="aeaf96515f7680302d871fcbe2d91e151"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -144,10 +144,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void sjsu::SystemTimer::SetInterrupt </td>
+          <td class="memname">virtual void sjsu::SystemTimer::SetCallback </td>
           <td>(</td>
-          <td class="paramtype">IsrPointer&#160;</td>
-          <td class="paramname"><em>isr</em></td><td>)</td>
+          <td class="paramtype">InterruptCallback&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -157,15 +157,15 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set the interrupt handler for the system timer</p>
+<p>Set the function to be called when the System <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html">Timer</a> interrupt fires.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">isr</td><td>- interrupt service routine </td></tr>
+    <tr><td class="paramname">callback</td><td>- function to be called on system timer event. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2aa2a139e7a9569eeb59e5414dd25a6c">sjsu::cortex::SystemTimer</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#abc2d3bf8f5a4a566759167111232b722">sjsu::cortex::SystemTimer</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set frequency of the timer</p>
+<p>Set frequency of the timer.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">frequency</td><td>- How many times per second should the system timer interrupt be called. </td></tr>

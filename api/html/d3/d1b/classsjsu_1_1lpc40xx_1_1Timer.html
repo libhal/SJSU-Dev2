@@ -125,10 +125,7 @@ Collaboration diagram for sjsu::lpc40xx::Timer:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/d3d/classsjsu_1_1lpc40xx_1_1Timer__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Timer_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Timer_coll__map" id="sjsu_1_1lpc40xx_1_1Timer_coll__map">
-<area shape="rect" id="node2" href="../../dd/d31/classsjsu_1_1Timer.html" title="sjsu::Timer" alt="" coords="5,109,96,136"/>
-<area shape="rect" id="node3" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="121,109,341,136"/>
-<area shape="rect" id="node4" href="../../dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="34,13,206,39"/>
-<area shape="rect" id="node5" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="230,5,450,47"/>
+<area shape="rect" id="node2" href="../../dd/d31/classsjsu_1_1Timer.html" title="sjsu::Timer" alt="" coords="33,5,124,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -143,11 +140,11 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abedeef16a531bcc35d5c8b85a6fba913"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abedeef16a531bcc35d5c8b85a6fba913"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Timer</b> (const <a class="el" href="../../d6/dbc/structsjsu_1_1lpc40xx_1_1Timer_1_1Channel__t.html">Channel_t</a> &amp;timer, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController(), const <a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html">sjsu::InterruptController</a> &amp;interrupt_controller=kInterruptController)</td></tr>
-<tr class="separator:abedeef16a531bcc35d5c8b85a6fba913"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31ffad0379a3b340ac6734f1cf083fc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#a31ffad0379a3b340ac6734f1cf083fc9">Initialize</a> (units::frequency::hertz_t frequency, IsrPointer isr=nullptr, int32_t priority=-1) const override</td></tr>
-<tr class="separator:a31ffad0379a3b340ac6734f1cf083fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fa91e9fd24d8278ab7f017684830d44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fa91e9fd24d8278ab7f017684830d44"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Timer</b> (const <a class="el" href="../../d6/dbc/structsjsu_1_1lpc40xx_1_1Timer_1_1Channel__t.html">Channel_t</a> &amp;timer, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
+<tr class="separator:a4fa91e9fd24d8278ab7f017684830d44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a915c334eb9f41fbaf338bb21143b5d08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#a915c334eb9f41fbaf338bb21143b5d08">Initialize</a> (units::frequency::hertz_t frequency, InterruptCallback callback=nullptr, int32_t priority=-1) const override</td></tr>
+<tr class="separator:a915c334eb9f41fbaf338bb21143b5d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add4aabca1f231b7a1aee354809551223"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#add4aabca1f231b7a1aee354809551223">SetMatchBehavior</a> (uint32_t ticks, <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8">MatchAction</a> action, uint8_t match_register=0) const override</td></tr>
 <tr class="separator:add4aabca1f231b7a1aee354809551223"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6e6bc69b3c07a9b7a145266899984be"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ac6e6bc69b3c07a9b7a145266899984be">GetAvailableMatchRegisters</a> () const override</td></tr>
@@ -169,8 +166,6 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>TimerHandler</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a43c16f4d8507c23ea72503f58f4652d1"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">sjsu::cortex::InterruptController</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kInterruptController</b></td></tr>
-<tr class="separator:a43c16f4d8507c23ea72503f58f4652d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af78ddd21c51244ba555f94a152647a5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af78ddd21c51244ba555f94a152647a5d"></a>
 static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMatchRegisterCount</b> = 4</td></tr>
 <tr class="separator:af78ddd21c51244ba555f94a152647a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,7 +213,7 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a31ffad0379a3b340ac6734f1cf083fc9"></a>
+<a class="anchor" id="a915c334eb9f41fbaf338bb21143b5d08"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -234,8 +229,8 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">IsrPointer&#160;</td>
-          <td class="paramname"><em>isr</em> = <code>nullptr</code>, </td>
+          <td class="paramtype">InterruptCallback&#160;</td>
+          <td class="paramname"><em>callback</em> = <code>nullptr</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -259,13 +254,13 @@ Additional Inherited Members</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">counter_frequency</td><td>- the frequency that the timer's count register will increment by. If this is set to 1'000'000Hz then the counter will increment every microsecond. register will be 10 ms. </td></tr>
-    <tr><td class="paramname">isr</td><td>- the ISR that will fire when the condition set by SetTimer method is achieved. </td></tr>
+    <tr><td class="paramname">callback</td><td>- a callback that will be called when the condition set by SetTimer method has occurred. </td></tr>
     <tr><td class="paramname">priority</td><td>- sets the <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html">Timer</a> interrupt's priority level, defaults to -1 which uses the platforms default priority. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a51e25e5ee8a662be887d9afb12382e2c">sjsu::Timer</a>.</p>
+<p>Implements <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#ab07d9ae5c7aaeceb2839a6eb93af06d2">sjsu::Timer</a>.</p>
 
 </div>
 </div>
@@ -318,27 +313,6 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#af8c95d6b7e1d88d2dc03493b18e48b39">sjsu::Timer</a>.</p>
 
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a43c16f4d8507c23ea72503f58f4652d1"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">sjsu::cortex::InterruptController</a> sjsu::lpc40xx::Timer::kInterruptController</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      <a class="code" href="../../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html">sjsu::cortex::InterruptController</a>()</div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

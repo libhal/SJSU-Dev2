@@ -128,10 +128,10 @@ Public Attributes</h2></td></tr>
 const <a class="el" href="../../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html">PartialBus_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a5b652f7177a3acb2f861bbf581d46ce5">bus</a></td></tr>
 <tr class="memdesc:a5b652f7177a3acb2f861bbf581d46ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to partial bus, used as template parameter. <br /></td></tr>
 <tr class="separator:a5b652f7177a3acb2f861bbf581d46ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9a2852e9f77fe35d39d3eede2f825d3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9a2852e9f77fe35d39d3eede2f825d3"></a>
-IsrPointer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#ab9a2852e9f77fe35d39d3eede2f825d3">handler</a></td></tr>
-<tr class="memdesc:ab9a2852e9f77fe35d39d3eede2f825d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a pointer to the I2C Handler object. <br /></td></tr>
-<tr class="separator:ab9a2852e9f77fe35d39d3eede2f825d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05379e6a70cd5087b3b2d77b6db3cb80"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05379e6a70cd5087b3b2d77b6db3cb80"></a>
+InterruptHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a05379e6a70cd5087b3b2d77b6db3cb80">handler</a></td></tr>
+<tr class="memdesc:a05379e6a70cd5087b3b2d77b6db3cb80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a pointer to the I2C Handler object. <br /></td></tr>
+<tr class="separator:a05379e6a70cd5087b3b2d77b6db3cb80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="../../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html">Bus_t</a> completes the partial bus structure by including a ISR handler. The ISR handler is intended to point to an instance of the I2cHandler template function. The template parameter would be a const reference to a statically allocated <a class="el" href="../../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html">PartialBus_t</a>. That way, The actual handler (non-template) that requires a reference to a <a class="el" href="../../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html">PartialBus_t</a> can have it passed to it via a template parameter. </p>

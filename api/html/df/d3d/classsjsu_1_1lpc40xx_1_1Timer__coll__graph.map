@@ -1,6 +1,3 @@
 <map id="sjsu::lpc40xx::Timer" name="sjsu::lpc40xx::Timer">
-<area shape="rect" id="node2" href="$dd/d31/classsjsu_1_1Timer.html" title="sjsu::Timer" alt="" coords="5,109,96,136"/>
-<area shape="rect" id="node3" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="121,109,341,136"/>
-<area shape="rect" id="node4" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="34,13,206,39"/>
-<area shape="rect" id="node5" href="$d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="230,5,450,47"/>
+<area shape="rect" id="node2" href="$dd/d31/classsjsu_1_1Timer.html" title="sjsu::Timer" alt="" coords="33,5,124,32"/>
 </map>

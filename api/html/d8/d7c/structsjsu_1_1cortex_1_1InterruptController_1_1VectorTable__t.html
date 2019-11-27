@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>SJSU-Dev2: sjsu::cortex::InterruptController::VectorTable_t Struct Reference</title>
+        <title>SJSU-Dev2: sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;::VectorTable_t Struct Reference</title>
         <!--<link href="../../tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="../../dynsections.js"></script>
         <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
@@ -103,34 +103,30 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="../../db/df5/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::cortex::InterruptController::VectorTable_t Struct Reference</div>  </div>
+<div class="title">sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;::VectorTable_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Vector table container for Cortex M platforms.  
+ <a href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d6/d92/cortex_2interrupt_8hpp_source.html">interrupt.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a3855d5b5128e1469abcda0a130d92d93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3855d5b5128e1469abcda0a130d92d93"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Print</b> ()</td></tr>
-<tr class="separator:a3855d5b5128e1469abcda0a130d92d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a4061264df5772dc9d5d658957cfe7a6e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4061264df5772dc9d5d658957cfe7a6e"></a>
-static constexpr <a class="el" href="../../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html">VectorTable_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GenerateDefaultTable</b> ()</td></tr>
-<tr class="separator:a4061264df5772dc9d5d658957cfe7a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2d9fbcb90533db35b9c42ff09897cc1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d9fbcb90533db35b9c42ff09897cc1b"></a>
-IsrPointer&#160;</td><td class="memItemRight" valign="bottom"><b>vector</b> [kNumberOfInterrupts]</td></tr>
-<tr class="separator:a2d9fbcb90533db35b9c42ff09897cc1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a7a7d0b4fd4fd4b911354412b0efc0c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a7a7d0b4fd4fd4b911354412b0efc0c"></a>
+std::array&lt; InterruptHandler, kNumberOfInterrupts+kArmExceptionOffset &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>vector</b></td></tr>
+<tr class="separator:a7a7a7d0b4fd4fd4b911354412b0efc0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;size_t kNumberOfInterrupts, uint32_t kNvicPriorityBits&gt;<br />
+struct sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;::VectorTable_t</h3>
+
+<p>Vector table container for Cortex M platforms. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/cortex/<a class="el" href="../../d6/d92/cortex_2interrupt_8hpp_source.html">interrupt.hpp</a></li>
 </ul>
 </div><!-- contents -->

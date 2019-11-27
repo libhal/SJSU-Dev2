@@ -239,9 +239,15 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a0e847bc52d069f78c5a7c9537fd82428"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e847bc52d069f78c5a7c9537fd82428"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>IsrPointer</b> = void(*)(void)</td></tr>
-<tr class="separator:a0e847bc52d069f78c5a7c9537fd82428"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbf3b3c62aa36a07f9aec53b8a735b61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbf3b3c62aa36a07f9aec53b8a735b61"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>InterruptVectorAddress</b> = void(*)(void)</td></tr>
+<tr class="separator:abbf3b3c62aa36a07f9aec53b8a735b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae026ae4849a8724377e6b3d4c0988830"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae026ae4849a8724377e6b3d4c0988830"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>InterruptHandler</b> = std::function&lt; void(void)&gt;</td></tr>
+<tr class="separator:ae026ae4849a8724377e6b3d4c0988830"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaed1ac5d25f4e9f920a8542577b803d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaed1ac5d25f4e9f920a8542577b803d7"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>InterruptCallback</b> = std::function&lt; void(void)&gt;</td></tr>
+<tr class="separator:aaed1ac5d25f4e9f920a8542577b803d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3337f5c03e3713b3368a993fd78339a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3337f5c03e3713b3368a993fd78339a"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>WriteFnt</b> = bool(*)(intptr_t, size_t, uint8_t *)</td></tr>
 <tr class="separator:ac3337f5c03e3713b3368a993fd78339a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -377,18 +383,20 @@ std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="memitem:a8e2cb4b7be14a36c3477dcae3a3010a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e2cb4b7be14a36c3477dcae3a3010a0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUptimeFunction</b> (UptimeFunction uptime_function)</td></tr>
 <tr class="separator:a8e2cb4b7be14a36c3477dcae3a3010a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04c14f7bedeca0daba22c5a380dff608"><td class="memTemplParams" colspan="2"><a class="anchor" id="a04c14f7bedeca0daba22c5a380dff608"></a>
-template&lt;typename F &gt; </td></tr>
-<tr class="memitem:a04c14f7bedeca0daba22c5a380dff608"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Wait</b> (std::chrono::microseconds timeout, F is_done)</td></tr>
-<tr class="separator:a04c14f7bedeca0daba22c5a380dff608"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ebae2d1aa4a854629bbfddaf05935b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ebae2d1aa4a854629bbfddaf05935b5"></a>
+<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Wait</b> (std::chrono::microseconds timeout, std::function&lt; bool()&gt; is_done)</td></tr>
+<tr class="separator:a8ebae2d1aa4a854629bbfddaf05935b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b14641f8bcd6cd0c17bcad47c0209b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b14641f8bcd6cd0c17bcad47c0209b8"></a>
-<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Wait</b> (std::chrono::microseconds timeout)</td></tr>
+<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a5b14641f8bcd6cd0c17bcad47c0209b8">Wait</a> (std::chrono::microseconds timeout)</td></tr>
+<tr class="memdesc:a5b14641f8bcd6cd0c17bcad47c0209b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of <code>Wait</code> that merely takes a timeout. <br /></td></tr>
 <tr class="separator:a5b14641f8bcd6cd0c17bcad47c0209b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad90da361581fb6ebcc50f118c5696ec6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad90da361581fb6ebcc50f118c5696ec6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Delay</b> (std::chrono::microseconds delay_time)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ad90da361581fb6ebcc50f118c5696ec6">Delay</a> (std::chrono::microseconds delay_time)</td></tr>
+<tr class="memdesc:ad90da361581fb6ebcc50f118c5696ec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay the system for a duration of time. <br /></td></tr>
 <tr class="separator:ad90da361581fb6ebcc50f118c5696ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e0c84e1acf85469e214a02be7b0049a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e0c84e1acf85469e214a02be7b0049a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Halt</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a9e0c84e1acf85469e214a02be7b0049a">Halt</a> ()</td></tr>
+<tr class="memdesc:a9e0c84e1acf85469e214a02be7b0049a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Halt system by putting it into infinite loop. <br /></td></tr>
 <tr class="separator:a9e0c84e1acf85469e214a02be7b0049a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:aaf4826253a08f0cd26782f7cb8328e82"><td class="memTemplParams" colspan="2">template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMaskOperators_t&lt;Enum&gt;::kEnable, Enum&gt;&gt; </td></tr>

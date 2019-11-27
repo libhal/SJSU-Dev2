@@ -50,7 +50,7 @@ class PulseCapture final : public sjsu::PulseCapture
     /// Interrupt number associated with this timer
     IRQn irq;
     /// Callback invoked during a capture event
-    CaptureIsr * user_callback;
+    CaptureCallback * user_callback;
     /// Pin corresponding to timer capture channel #0
     const sjsu::Pin & capture_pin0;
     /// Pin corresponding to timer capture channel #1
@@ -66,7 +66,7 @@ class PulseCapture final : public sjsu::PulseCapture
     /// Structure defining low-level attributes of the capture channel
     const CaptureChannelPartial_t & channel;
     /// Callback used to invoke timer handler
-    IsrPointer isr;
+    InterruptHandler handler;
   };
 
   /// Method used to define multiple timer handlers for each available timer
@@ -80,7 +80,7 @@ class PulseCapture final : public sjsu::PulseCapture
   struct Channel  // NOLINT
   {
    private:
-    inline static CaptureIsr timer0_isr = nullptr;
+    inline static CaptureCallback timer0_callback = nullptr;
     inline static CaptureChannelNumber timer0_channel_number =
         CaptureChannelNumber::kChannel1;
     inline static const Pin kCapture0Channel0Pin               = Pin(1, 26);
@@ -89,13 +89,13 @@ class PulseCapture final : public sjsu::PulseCapture
       .timer_register = LPC_TIM0,
       .power_id       = SystemController::Peripherals::kTimer0,
       .irq            = IRQn::TIMER0_IRQn,
-      .user_callback  = &timer0_isr,
+      .user_callback  = &timer0_callback,
       .capture_pin0   = kCapture0Channel0Pin,
       .capture_pin1   = kCapture0Channel1Pin,
       .channel_number = &timer0_channel_number
     };
 
-    inline static CaptureIsr timer1_isr = nullptr;
+    inline static CaptureCallback timer1_callback = nullptr;
     inline static CaptureChannelNumber timer1_channel_number =
         CaptureChannelNumber::kChannel1;
     inline static const Pin kCapture1Channel0Pin               = Pin(1, 18);
@@ -105,13 +105,13 @@ class PulseCapture final : public sjsu::PulseCapture
       .timer_register = LPC_TIM1,
       .power_id       = SystemController::Peripherals::kTimer1,
       .irq            = IRQn::TIMER1_IRQn,
-      .user_callback  = &timer1_isr,
+      .user_callback  = &timer1_callback,
       .capture_pin0   = kCapture1Channel0Pin,
       .capture_pin1   = kCapture1Channel1Pin,
       .channel_number = &timer1_channel_number
     };
 
-    inline static CaptureIsr timer2_isr = nullptr;
+    inline static CaptureCallback timer2_callback = nullptr;
     inline static CaptureChannelNumber timer2_channel_number =
         CaptureChannelNumber::kChannel1;
     inline static const Pin kCapture2Channel0Pin               = Pin(1, 14);
@@ -120,13 +120,13 @@ class PulseCapture final : public sjsu::PulseCapture
       .timer_register = LPC_TIM2,
       .power_id       = SystemController::Peripherals::kTimer2,
       .irq            = IRQn::TIMER2_IRQn,
-      .user_callback  = &timer2_isr,
+      .user_callback  = &timer2_callback,
       .capture_pin0   = kCapture2Channel0Pin,
       .capture_pin1   = kCapture2Channel1Pin,
       .channel_number = &timer2_channel_number
     };
 
-    inline static CaptureIsr timer3_isr = nullptr;
+    inline static CaptureCallback timer3_callback = nullptr;
     inline static CaptureChannelNumber timer3_channel_number =
         CaptureChannelNumber::kChannel1;
     inline static const Pin kCapture3Channel0Pin               = Pin(0, 23);
@@ -135,7 +135,7 @@ class PulseCapture final : public sjsu::PulseCapture
       .timer_register = LPC_TIM3,
       .power_id       = SystemController::Peripherals::kTimer3,
       .irq            = IRQn::TIMER3_IRQn,
-      .user_callback  = &timer3_isr,
+      .user_callback  = &timer3_callback,
       .capture_pin0   = kCapture3Channel0Pin,
       .capture_pin1   = kCapture3Channel1Pin,
       .channel_number = &timer3_channel_number
@@ -144,22 +144,25 @@ class PulseCapture final : public sjsu::PulseCapture
    public:
     /// Structure that defines the capture channels associated with timer 0
     inline static const CaptureChannel_t kCaptureTimer0 = {
-      .channel = kTimerPartial0, .isr = TimerHandler<kTimerPartial0>
+      .channel = kTimerPartial0,
+      .handler = TimerHandler<kTimerPartial0>,
     };
 
     /// Structure that defines the capture channels associated with timer 1
     inline static const CaptureChannel_t kCaptureTimer1 = {
-      .channel = kTimerPartial1, .isr = TimerHandler<kTimerPartial1>
+      .channel = kTimerPartial1,
+      .handler = TimerHandler<kTimerPartial1>,
     };
 
     /// Structure that defines the capture channels associated with timer 2
     inline static const CaptureChannel_t kCaptureTimer2 = {
-      .channel = kTimerPartial2, .isr = TimerHandler<kTimerPartial2>
+      .channel = kTimerPartial2,
+      .handler = TimerHandler<kTimerPartial2>,
     };
 
     /// Structure that defines the capture channels associated with timer 3
     inline static const CaptureChannel_t kCaptureTimer3 = {
-      .channel = kTimerPartial3, .isr = TimerHandler<kTimerPartial3>
+      .channel = kTimerPartial3, .handler = TimerHandler<kTimerPartial3>
     };
   };  // struct Channel
 
@@ -190,11 +193,6 @@ class PulseCapture final : public sjsu::PulseCapture
                                              kResetCaptureInterrupts,
                                              kCaptureInterruptFlagBit);
   }
-
-  /// Interrupt controller used to manage capture interrupts
-  static constexpr sjsu::cortex::InterruptController kInterruptController =
-      sjsu::cortex::InterruptController();
-
   /// Constructor for LPC40xx timer peripheral
   ///
   /// @param timer - timer to capture from
@@ -202,29 +200,24 @@ class PulseCapture final : public sjsu::PulseCapture
   /// @param kFrequency - rate at which capture events are monitored
   /// @param system_controller - reference to system controller.
   ///        Uses the default LPC40xx system controller.
-  /// @param interrupt_controller - reference to interrupt controller.
-  ///        Uses the default LPC40xx interrupt controller.
   explicit constexpr PulseCapture(
       const CaptureChannel_t & timer,
       const CaptureChannelNumber & channel,
       const units::frequency::hertz_t kFrequency,
       const sjsu::SystemController & system_controller =
-          DefaultSystemController(),
-      const sjsu::InterruptController & interrupt_controller =
-          kInterruptController)
+          DefaultSystemController())
       : timer_(timer),
         channel_(channel),
         frequency_(kFrequency),
-        system_controller_(system_controller),
-        interrupt_controller_(interrupt_controller)
+        system_controller_(system_controller)
   {
     *timer_.channel.channel_number = channel_;
   };
 
-  /// This METHOD MUST BE EXECUTED before any othe rmethod can be called.
+  /// This METHOD MUST BE EXECUTED before any other method can be called.
   /// Powers on the peripheral, configures the timer pins.
   /// See page 687 of the user manual UM10562 LPC408x/407x for more details.
-  Status Initialize(CaptureIsr isr             = nullptr,
+  Status Initialize(CaptureCallback callback   = nullptr,
                     int32_t interrupt_priority = -1) const override
   {
     // NOTE: Same initialization as Timer library's Initialize()
@@ -249,11 +242,10 @@ class PulseCapture final : public sjsu::PulseCapture
     EnableCaptureInterrupt(false);
 
     // Install capture ISR
-    *timer_.channel.user_callback = isr;
-    interrupt_controller_.Register(
+    *timer_.channel.user_callback = callback;
+    sjsu::InterruptController::GetPlatformController().Enable(
         { .interrupt_request_number  = timer_.channel.irq,
-          .interrupt_service_routine = timer_.isr,
-          .enable_interrupt          = true,
+          .interrupt_handler = timer_.handler,
           .priority                  = interrupt_priority });
 
     return Status::kSuccess;
@@ -318,7 +310,6 @@ class PulseCapture final : public sjsu::PulseCapture
   const CaptureChannelNumber channel_;         // NOLINT
   const units::frequency::hertz_t frequency_;  // NOLINT
   const sjsu::SystemController & system_controller_;
-  const sjsu::InterruptController & interrupt_controller_;
 };  // class Capture
 };  // namespace lpc40xx
 };  // namespace sjsu

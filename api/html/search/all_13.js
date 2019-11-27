@@ -11,5 +11,5 @@ var searchData=
   ['usbclock',['UsbClock',['../d2/d0a/structsjsu_1_1lpc40xx_1_1SystemController_1_1UsbClock.html',1,'sjsu::lpc40xx::SystemController']]],
   ['usbpll',['UsbPll',['../d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html',1,'sjsu::lpc17xx::SystemController']]],
   ['usbpllinputfrequency',['UsbPllInputFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da',1,'sjsu::lpc17xx::SystemController']]],
-  ['user_5fcallback',['user_callback',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#acbb4c80c2c01eaa6392a1e4819624692',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]]
+  ['user_5fcallback',['user_callback',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a9a9fcb71dfadbd8d6b194249c748d0cd',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]]
 ];

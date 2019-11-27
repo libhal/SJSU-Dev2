@@ -1,7 +1,8 @@
 #pragma once
 
+#include <algorithm>
+#include <array>
 #include <cstddef>
-#include <iterator>
 
 #include "L0_Platform/arm_cortex/m4/core_cm4.h"
 #include "L1_Peripheral/interrupt.hpp"
@@ -11,99 +12,129 @@ namespace sjsu
 {
 namespace cortex
 {
+/// Cortex M interrupt controller
+///
+/// @tparam kNumberOfInterrupts - the number of interrupts the microcontroller
+///         supports.
+/// @tparam kNvicPriorityBits - the number of bits dedicated to priority
+template <size_t kNumberOfInterrupts, uint32_t kNvicPriorityBits>
 class InterruptController final : public sjsu::InterruptController
 {
  public:
-  static constexpr int32_t kArmIrqOffset      = (-cortex::Reset_IRQn) + 1;
-  static constexpr size_t kNumberOfInterrupts = 64;
-
-  inline static SCB_Type * scb     = SCB;
+  static constexpr int32_t kArmExceptionOffset = (-cortex::Reset_IRQn) + 1;
+  /// Pointer to Cortex M system control block registers
+  inline static SCB_Type * scb = SCB;
+  /// Pointer to Cortex M Nested Vector Interrupt Controller registers
+  inline static NVIC_Type * nvic = NVIC;
+  /// Holds the current_vector that is running
   inline static int current_vector = cortex::Reset_IRQn;
 
-  static void UnregisteredArmExceptions() {}
-
-  static void UnregisteredInterruptHandler()
-  {
-    LOG_WARNING(
-        "No interrupt service routine found for the vector %d! Disabling ISR",
-        current_vector);
-    NVIC_DisableIRQ(current_vector - kArmIrqOffset);
-  }
-
+  /// Vector table container for Cortex M platforms.
   struct VectorTable_t
   {
-    IsrPointer vector[kNumberOfInterrupts];
-    void Print()
-    {
-      for (size_t i = 0; i < std::size(vector); i++)
-      {
-        LOG_INFO("vector[%zu] = %p", i, vector[i]);
-      }
-    }
-
-    static constexpr VectorTable_t GenerateDefaultTable()
-    {
-      VectorTable_t temp_table = { 0 };
-      // The Arm exceptions may be enabled by default and should simply be
-      // called and do nothing.
-      for (size_t i = 0; i < kArmIrqOffset; i++)
-      {
-        temp_table.vector[i] = UnregisteredArmExceptions;
-      }
-      // For all other exceptions, give a handler that will disable the ISR if
-      // it is enabled but has not been registered.
-      for (size_t i = kArmIrqOffset; i < std::size(temp_table.vector); i++)
-      {
-        temp_table.vector[i] = UnregisteredInterruptHandler;
-      }
-      return temp_table;
-    }
+    std::array<InterruptHandler, kNumberOfInterrupts + kArmExceptionOffset>
+        vector;
   };
 
-  inline static VectorTable_t table = VectorTable_t::GenerateDefaultTable();
-
-  static int IrqToIndex(int irq)
+  static int IRQToIndex(int irq)
   {
-    return irq + kArmIrqOffset;
+    return irq + kArmExceptionOffset;
+  }
+  static int IndexToIRQ(int index)
+  {
+    return index - kArmExceptionOffset;
   }
 
-  static int IndexToIrq(int index)
-  {
-    return index - kArmIrqOffset;
-  }
-
-  static IsrPointer * GetVector(int irq)
-  {
-    return &table.vector[IrqToIndex(irq)];
-  }
-  /// Program ends up here if an unexpected interrupt occurs or a specific
-  /// handler is not present in the application code.
+  /// This must be put into the interrupt vector table for all of the interrupts
+  /// this lookup handler will work for in ROM at compile time.
+  /// @note This must not be executed directly, only by the processor when an
+  ///       interrupt occurs.
   static void LookupHandler()
   {
-    int active_isr = (scb->ICSR & 0xFF);
-    current_vector = active_isr;
-    IsrPointer isr = table.vector[active_isr];
-    isr();
+    int active_interrupt     = (scb->ICSR & 0xFF);
+    current_vector           = IndexToIRQ(active_interrupt);
+    InterruptHandler handler = table.vector[active_interrupt];
+    handler();
   }
 
-  void Register(RegistrationInfo_t register_info) const override
+  void Initialize(
+      InterruptHandler unregistered_handler = UnregisteredHandler) override
   {
-    int irq         = register_info.interrupt_request_number;
-    *GetVector(irq) = register_info.interrupt_service_routine;
-    if (register_info.enable_interrupt && irq >= 0)
+    std::fill(table.vector.begin(), table.vector.end(), unregistered_handler);
+  }
+
+  void Enable(RegistrationInfo_t register_info) override
+  {
+    int irq = register_info.interrupt_request_number;
+    table.vector[IRQToIndex(irq)] = register_info.interrupt_handler;
+
+    if (irq >= 0)
     {
-      NVIC_EnableIRQ(irq);
+      NvicEnableIRQ(irq);
     }
     if (register_info.priority > -1)
     {
-      NVIC_SetPriority(irq, register_info.priority);
+      NvicSetPriority(irq, register_info.priority);
     }
   }
 
-  void Deregister(int irq) const override
+  void Disable(int interrupt_request_number) override
   {
-    NVIC_DisableIRQ(irq);
-    *GetVector(irq) = UnregisteredInterruptHandler;
+    if (interrupt_request_number >= 0)
+    {
+      NvicDisableIRQ(interrupt_request_number);
+    }
+    table.vector[IRQToIndex(interrupt_request_number)] = UnregisteredHandler;
+  }
+
+ private:
+  static inline VectorTable_t table;
+  /// Enable External Interrupt
+  /// Enables a device-specific interrupt in the NVIC interrupt controller.
+  ///
+  /// @param irq - External interrupt number. Value cannot be negative.
+  static void NvicEnableIRQ(int irq)
+  {
+    nvic->ISER[(irq >> 5)] = (1 << (irq & 0x1F));
+  }
+
+  /// Disable External Interrupt
+  /// Disables a device-specific interrupt in the NVIC interrupt controller.
+  ///
+  /// @param irq - External interrupt number. Value cannot be negative.
+  static void NvicDisableIRQ(int irq)
+  {
+    nvic->ICER[(irq >> 5)] = (1 << (irq & 0x1F));
+  }
+
+  /// Set Interrupt Priority
+  /// Sets the priority of an interrupt.
+  /// @note    The priority cannot be set for every core interrupt.
+  /// @param irq -  Interrupt number.
+  /// @param priority -  Priority to set.
+  static void NvicSetPriority(int irq, uint32_t priority)
+  {
+    uint32_t priority_mask = priority << (8U - kNvicPriorityBits);
+    if (irq < 0)
+    {
+      scb->SHP[(irq & 0xFUL) - 4UL] = static_cast<uint8_t>(priority_mask);
+    }
+    else
+    {
+      nvic->IP[irq] = static_cast<uint8_t>(priority_mask);
+    }
+  }
+
+  /// Program will call this if an unexpected interrupt occurs or a specific
+  /// handler is not present in the application code.
+  static void UnregisteredHandler()
+  {
+    LOG_DEBUG("No interrupt handler found. Disabling interrupt request %d!",
+              current_vector);
+    if (current_vector >= 0)
+    {
+      NvicDisableIRQ(current_vector);
+    }
   }
 };
 }  // namespace cortex

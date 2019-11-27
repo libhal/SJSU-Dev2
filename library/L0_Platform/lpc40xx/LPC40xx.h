@@ -110,7 +110,8 @@ enum IRQn
   PWM0_IRQn                     = 39,       /*!<  39  PWM0                                        */
   EEPROM_IRQn                   = 40,       /*!<  40  EEPROM                                      */
   CMP0_IRQn                     = 41,       /*!<  41  CMP0                                        */
-  CMP1_IRQn                     = 42        /*!<  42  CMP1                                        */
+  CMP1_IRQn                     = 42,       /*!<  42  CMP1                                        */
+  kNumberOfIrqs
 };
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */

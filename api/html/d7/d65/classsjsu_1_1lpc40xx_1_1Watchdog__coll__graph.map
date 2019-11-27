@@ -1,7 +1,4 @@
 <map id="sjsu::lpc40xx::Watchdog" name="sjsu::lpc40xx::Watchdog">
-<area shape="rect" id="node2" href="$d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="362,5,479,32"/>
-<area shape="rect" id="node3" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController" alt="" coords="311,56,531,83"/>
-<area shape="rect" id="node4" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="29,27,201,53"/>
-<area shape="rect" id="node5" href="$d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html" title="sjsu::cortex::InterruptController\l::VectorTable_t" alt="" coords="5,78,225,119"/>
-<area shape="rect" id="node6" href="$dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="335,107,507,149"/>
+<area shape="rect" id="node2" href="$d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="5,13,123,39"/>
+<area shape="rect" id="node3" href="$dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="147,5,319,47"/>
 </map>

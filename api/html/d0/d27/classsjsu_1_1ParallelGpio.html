@@ -135,8 +135,6 @@ Collaboration diagram for sjsu::ParallelGpio:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1440615db48fd86793c68dbb7bad297b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html#a1440615db48fd86793c68dbb7bad297b">ParallelGpio</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> *const array[], size_t width)</td></tr>
 <tr class="separator:a1440615db48fd86793c68dbb7bad297b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a926d3b26a8d7931fc129e0c38f9ba957"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html#a926d3b26a8d7931fc129e0c38f9ba957">ParallelGpio</a> (const std::initializer_list&lt; <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> * &gt; &amp;array)</td></tr>
-<tr class="separator:a926d3b26a8d7931fc129e0c38f9ba957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c7d06786960d9ddbb56dce1d9500081"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c7d06786960d9ddbb56dce1d9500081"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html#a9c7d06786960d9ddbb56dce1d9500081">Initialize</a> () override</td></tr>
 <tr class="memdesc:a9c7d06786960d9ddbb56dce1d9500081"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="../../d7/d86/classsjsu_1_1ParallelBus.html">ParallelBus</a> hardware. <br /></td></tr>
@@ -204,39 +202,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
   <table class="params">
     <tr><td class="paramname">array</td><td>- an array of pointers to mutable <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. ">sjsu::Gpio</a> objects. The const is a measure to make sure that this class does not attempt to change pointer values of the array. </td></tr>
     <tr><td class="paramname">width</td><td>- The size of the array of gpio. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a926d3b26a8d7931fc129e0c38f9ba957"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">sjsu::ParallelGpio::ParallelGpio </td>
-          <td>(</td>
-          <td class="paramtype">const std::initializer_list&lt; <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> * &gt; &amp;&#160;</td>
-          <td class="paramname"><em>array</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Constructor of <a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html" title="A parallel bus composed of sjsu::Gpio objects. ">ParallelGpio</a> that takes a std::initializer_list of <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. ">sjsu::Gpio</a> pointers. This simplifies the usage of parallel bus and helps to eliminate mistakes where the array size is not correct.</p>
-<p><a class="el" href="../../d4/d55/classsjsu_1_1Example.html">Example</a> Usage:</p>
-<p><a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html" title="A parallel bus composed of sjsu::Gpio objects. ">ParallelGpio</a> parallel_gpio({ gpio_led0, gpio_led1, gpio_led2, gpio_led3, });</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">array</td><td>- std::initializer_list of <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. ">sjsu::Gpio</a> pointers. </td></tr>
   </table>
   </dd>
 </dl>
