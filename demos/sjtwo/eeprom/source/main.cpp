@@ -1,6 +1,5 @@
 #include <cstdint>
 #include <iterator>
-#include <project_config.hpp>
 
 #include "L1_Peripheral/lpc40xx/eeprom.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"

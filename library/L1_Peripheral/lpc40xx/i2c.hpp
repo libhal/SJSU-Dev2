@@ -60,9 +60,8 @@ class I2c final : public sjsu::I2c
     kDoNothing                         = 0xF8
   };
 
-  /// PartialBus_t holds all of the information for an I2C bus on the LPC40xx
-  /// platform.
-  struct PartialBus_t
+  /// Bus_t holds all of the information for an I2C bus on the LPC40xx platform.
+  struct Bus_t
   {
     /// Holds a pointer to the LPC_I2C peripheral registers
     LPC_I2C_TypeDef * registers;
@@ -81,26 +80,7 @@ class I2c final : public sjsu::I2c
     /// Function code to set each pin to the appropriate SSP function.
     uint8_t pin_function_id;
   };
-  /// Bus_t completes the partial bus structure by including a ISR handler.
-  /// The ISR handler is intended to point to an instance of the I2cHandler
-  /// template function. The template parameter would be a const reference to a
-  /// statically allocated PartialBus_t. That way, The actual handler
-  /// (non-template) that requires a reference to a PartialBus_t can have it
-  /// passed to it via a template parameter.
-  struct Bus_t
-  {
-    /// Reference to partial bus, used as template parameter.
-    const PartialBus_t & bus;
-    /// Contains a pointer to the I2C Handler object.
-    InterruptHandler handler;
-  };
-  /// Template I2cHandler that passes a PartialBus_t reference to the actual I2C
-  /// handler via template parameter.
-  template <const PartialBus_t & i2c>
-  static void I2cHandler()
-  {
-    I2cHandler(i2c);
-  }
+
   /// Structure used as a namespace for predefined Bus definitions
   struct Bus  // NOLINT
   {
@@ -117,9 +97,15 @@ class I2c final : public sjsu::I2c
         sjsu::lpc40xx::Pin::CreatePin<0, 10>();
     inline static const sjsu::lpc40xx::Pin kI2c2SclPin =
         sjsu::lpc40xx::Pin::CreatePin<0, 11>();
-    // UM10562: Chapter 7: LPC408x/407x I/O configuration page 133
+
     inline static Transaction_t transaction_i2c0;
-    inline static const PartialBus_t kI2c0Partial = {
+    inline static Transaction_t transaction_i2c1;
+    inline static Transaction_t transaction_i2c2;
+
+   public:
+    // UM10562: Chapter 7: LPC408x/407x I/O configuration page 133
+    /// Definition for I2C bus 0 for LPC40xx.
+    inline static const Bus_t kI2c0 = {
       .registers = LPC_I2C0,
       .peripheral_power_id =
           sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
@@ -130,8 +116,8 @@ class I2c final : public sjsu::I2c
       .pin_function_id = 0b010,
     };
 
-    inline static Transaction_t transaction_i2c1;
-    inline static const PartialBus_t kI2c1Partial = {
+    /// Definition for I2C bus 1 for LPC40xx.
+    inline static const Bus_t kI2c1 = {
       .registers = LPC_I2C1,
       .peripheral_power_id =
           sjsu::lpc40xx::SystemController::Peripherals::kI2c1,
@@ -142,8 +128,8 @@ class I2c final : public sjsu::I2c
       .pin_function_id = 0b011,
     };
 
-    inline static Transaction_t transaction_i2c2;
-    inline static const PartialBus_t kI2c2Partial = {
+    /// Definition for I2C bus 2 for LPC40xx.
+    inline static const Bus_t kI2c2 = {
       .registers = LPC_I2C2,
       .peripheral_power_id =
           sjsu::lpc40xx::SystemController::Peripherals::kI2c2,
@@ -153,24 +139,13 @@ class I2c final : public sjsu::I2c
       .scl_pin         = kI2c2SclPin,
       .pin_function_id = 0b010,
     };
-
-   public:
-    /// Definition for I2C bus 0 for LPC40xx
-    inline static const Bus_t kI2c0 = { .bus     = kI2c0Partial,
-                                        .handler = I2cHandler<kI2c0Partial> };
-    /// Definition for I2C bus 1 for LPC40xx
-    inline static const Bus_t kI2c1 = { .bus     = kI2c1Partial,
-                                        .handler = I2cHandler<kI2c1Partial> };
-    /// Definition for I2C bus 2 for LPC40xx
-    inline static const Bus_t kI2c2 = { .bus     = kI2c2Partial,
-                                        .handler = I2cHandler<kI2c2Partial> };
   };
   /// I2C interrupt handler
   ///
   /// @param i2c - this function cannot normally be used as an ISR, so it needs
   ///        help from a template function, or some other static function to
-  ///        pass it the appropriate PartialBus_t object.
-  static void I2cHandler(const PartialBus_t & i2c)
+  ///        pass it the appropriate Bus_t object.
+  static void I2cHandler(const Bus_t & i2c)
   {
     MasterState state   = MasterState(i2c.registers->STAT);
     uint32_t clear_mask = 0;
@@ -341,38 +316,36 @@ class I2c final : public sjsu::I2c
   explicit constexpr I2c(const Bus_t & bus,
                          const sjsu::SystemController & system_controller =
                              DefaultSystemController())
-      : i2c_(bus),
-        system_controller_(system_controller)
+      : i2c_(bus), system_controller_(system_controller)
   {
   }
 
   Status Initialize() const override
   {
-    i2c_.bus.sda_pin.SetPinFunction(i2c_.bus.pin_function_id);
-    i2c_.bus.scl_pin.SetPinFunction(i2c_.bus.pin_function_id);
-    i2c_.bus.sda_pin.SetAsOpenDrain();
-    i2c_.bus.scl_pin.SetAsOpenDrain();
-    i2c_.bus.sda_pin.SetPull(sjsu::Pin::Resistor::kNone);
-    i2c_.bus.scl_pin.SetPull(sjsu::Pin::Resistor::kNone);
+    i2c_.sda_pin.SetPinFunction(i2c_.pin_function_id);
+    i2c_.scl_pin.SetPinFunction(i2c_.pin_function_id);
+    i2c_.sda_pin.SetAsOpenDrain();
+    i2c_.scl_pin.SetAsOpenDrain();
+    i2c_.sda_pin.SetPull(sjsu::Pin::Resistor::kNone);
+    i2c_.scl_pin.SetPull(sjsu::Pin::Resistor::kNone);
 
-    system_controller_.PowerUpPeripheral(i2c_.bus.peripheral_power_id);
+    system_controller_.PowerUpPeripheral(i2c_.peripheral_power_id);
 
-    float peripheral_frequency =
-        static_cast<float>(system_controller_.GetPeripheralFrequency(
-            i2c_.bus.peripheral_power_id));
+    float peripheral_frequency = static_cast<float>(
+        system_controller_.GetPeripheralFrequency(i2c_.peripheral_power_id));
     float scll = ((peripheral_frequency / 75'000.0f) / 2.0f) * 0.7f;
     float sclh = ((peripheral_frequency / 75'000.0f) / 2.0f) * 1.3f;
 
-    i2c_.bus.registers->SCLL = static_cast<uint32_t>(scll);
-    i2c_.bus.registers->SCLH = static_cast<uint32_t>(sclh);
+    i2c_.registers->SCLL = static_cast<uint32_t>(scll);
+    i2c_.registers->SCLH = static_cast<uint32_t>(sclh);
 
-    i2c_.bus.registers->CONCLR = Control::kAssertAcknowledge | Control::kStart |
-                                 Control::kStop | Control::kInterrupt;
-    i2c_.bus.registers->CONSET = Control::kInterfaceEnable;
+    i2c_.registers->CONCLR = Control::kAssertAcknowledge | Control::kStart |
+                             Control::kStop | Control::kInterrupt;
+    i2c_.registers->CONSET = Control::kInterfaceEnable;
 
     sjsu::InterruptController::GetPlatformController().Enable({
-        .interrupt_request_number  = i2c_.bus.irq_number,
-        .interrupt_handler = i2c_.handler,
+        .interrupt_request_number = i2c_.irq_number,
+        .interrupt_handler        = [this]() { I2cHandler(i2c_); },
     });
 
     return Status::kSuccess;
@@ -380,20 +353,20 @@ class I2c final : public sjsu::I2c
 
   Status Transaction(Transaction_t transaction) const override
   {
-    i2c_.bus.transaction       = transaction;
-    i2c_.bus.registers->CONSET = Control::kStart;
+    i2c_.transaction       = transaction;
+    i2c_.registers->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
   /// Special method that returns the current state of the transaction.
   const Transaction_t GetTransactionInfo()
   {
-    return i2c_.bus.transaction;
+    return i2c_.transaction;
   }
   /// Special method to check if the bus is currently initialized.
   /// @returns true if this bus has been initialized.
   bool IsIntialized() const
   {
-    return (i2c_.bus.registers->CONSET & Control::kInterfaceEnable);
+    return (i2c_.registers->CONSET & Control::kInterfaceEnable);
   }
 
  private:
@@ -405,7 +378,7 @@ class I2c final : public sjsu::I2c
     // Skip waiting on the interrupt if running a host unit test
     if constexpr (build::kTarget == build::Target::HostTest)
     {
-      return i2c_.bus.transaction.status;
+      return i2c_.transaction.status;
     }
 
     SJ2_ASSERT_FATAL(IsIntialized(),
@@ -413,26 +386,24 @@ class I2c final : public sjsu::I2c
                      "initialized! Be sure to run the Initialize() method "
                      "of this class, before using it.");
     auto wait_for_i2c_transaction = [this]() -> bool {
-      return !i2c_.bus.transaction.busy;
+      return !i2c_.transaction.busy;
     };
-    Status status =
-        Wait(i2c_.bus.transaction.timeout, wait_for_i2c_transaction);
+    Status status = Wait(i2c_.transaction.timeout, wait_for_i2c_transaction);
 
     if (status == Status::kTimedOut)
     {
       // Abort I2C communication if this point is reached!
-      i2c_.bus.registers->CONSET = Control::kAssertAcknowledge | Control::kStop;
+      i2c_.registers->CONSET = Control::kAssertAcknowledge | Control::kStop;
       SJ2_ASSERT_WARNING(
-          i2c_.bus.transaction.out_length == 0 ||
-              i2c_.bus.transaction.in_length == 0,
+          i2c_.transaction.out_length == 0 || i2c_.transaction.in_length == 0,
           "I2C took too long to process and timed out! If the "
           "transaction needs more time, you may want to increase the "
           "timeout time.");
-      i2c_.bus.transaction.status = Status::kTimedOut;
+      i2c_.transaction.status = Status::kTimedOut;
     }
     // Ensure that start is cleared before leaving this function
-    i2c_.bus.registers->CONCLR = Control::kStart;
-    return i2c_.bus.transaction.status;
+    i2c_.registers->CONCLR = Control::kStart;
+    return i2c_.transaction.status;
   }
   const Bus_t & i2c_;
   const sjsu::SystemController & system_controller_;

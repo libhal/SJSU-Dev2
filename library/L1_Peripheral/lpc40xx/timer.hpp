@@ -21,96 +21,43 @@ namespace lpc40xx
 class Timer final : public sjsu::Timer
 {
  public:
-  struct ChannelPartial_t
+  struct Peripheral_t
   {
-    LPC_TIM_TypeDef * timer_register;
-    sjsu::SystemController::PeripheralID power_id;
-    IRQn irq;
-    InterruptCallback * user_callback;
+    LPC_TIM_TypeDef * peripheral;
+    sjsu::SystemController::PeripheralID id;
+    int irq;
   };
 
-  template <const ChannelPartial_t & port>
-  static void TimerHandler()
+  struct Peripheral  // NOLINT
   {
-    TimerHandler(port);
-  }
-
-  struct Channel_t
-  {
-    const ChannelPartial_t & channel;
-    InterruptHandler handler;
-  };
-
-  struct Channel  // NOLINT
-  {
-   private:
-    inline static InterruptCallback timer0_callback     = nullptr;
-    inline static const ChannelPartial_t kTimerPartial0 = {
-      .timer_register = LPC_TIM0,
-      .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer0,
-      .irq            = IRQn::TIMER0_IRQn,
-      .user_callback  = &timer0_callback,
+    inline static const Peripheral_t kTimer0 = {
+      .peripheral = LPC_TIM0,
+      .id         = sjsu::lpc40xx::SystemController::Peripherals::kTimer0,
+      .irq        = IRQn::TIMER0_IRQn,
     };
 
-    inline static InterruptCallback timer1_callback     = nullptr;
-    inline static const ChannelPartial_t kTimerPartial1 = {
-      .timer_register = LPC_TIM1,
-      .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer1,
-      .irq            = IRQn::TIMER1_IRQn,
-      .user_callback  = &timer1_callback,
+    inline static const Peripheral_t kTimer1 = {
+      .peripheral = LPC_TIM1,
+      .id         = sjsu::lpc40xx::SystemController::Peripherals::kTimer1,
+      .irq        = IRQn::TIMER1_IRQn,
     };
 
-    inline static InterruptCallback timer2_callback     = nullptr;
-    inline static const ChannelPartial_t kTimerPartial2 = {
-      .timer_register = LPC_TIM2,
-      .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer2,
-      .irq            = IRQn::TIMER2_IRQn,
-      .user_callback  = &timer2_callback,
+    inline static const Peripheral_t kTimer2 = {
+      .peripheral = LPC_TIM2,
+      .id         = sjsu::lpc40xx::SystemController::Peripherals::kTimer2,
+      .irq        = IRQn::TIMER2_IRQn,
     };
 
-    inline static InterruptCallback timer3_callback     = nullptr;
-    inline static const ChannelPartial_t kTimerPartial3 = {
-      .timer_register = LPC_TIM3,
-      .power_id       = sjsu::lpc40xx::SystemController::Peripherals::kTimer3,
-      .irq            = IRQn::TIMER3_IRQn,
-      .user_callback  = &timer3_callback,
-    };
-
-   public:
-    inline static const Channel_t kTimer0 = {
-      .channel = kTimerPartial0,
-      .handler = TimerHandler<kTimerPartial0>,
-    };
-
-    inline static const Channel_t kTimer1 = {
-      .channel = kTimerPartial1,
-      .handler = TimerHandler<kTimerPartial1>,
-    };
-
-    inline static const Channel_t kTimer2 = {
-      .channel = kTimerPartial2,
-      .handler = TimerHandler<kTimerPartial2>,
-    };
-
-    inline static const Channel_t kTimer3 = {
-      .channel = kTimerPartial3,
-      .handler = TimerHandler<kTimerPartial3>,
+    inline static const Peripheral_t kTimer3 = {
+      .peripheral = LPC_TIM3,
+      .id         = sjsu::lpc40xx::SystemController::Peripherals::kTimer3,
+      .irq        = IRQn::TIMER3_IRQn,
     };
   };
-
-  static void TimerHandler(const ChannelPartial_t & channel)
-  {
-    if (*channel.user_callback != nullptr)
-    {
-      (*channel.user_callback)();
-    }
-    // Clear interrupts for all 4 match register interrupt flag
-    channel.timer_register->IR |= 0b1111;
-  }
 
   static constexpr uint8_t kMatchRegisterCount = 4;
 
-  explicit constexpr Timer(const Channel_t & timer,
+  explicit constexpr Timer(const Peripheral_t & timer,
                            const sjsu::SystemController & system_controller =
                                DefaultSystemController())
       : timer_(timer), system_controller_(system_controller)
@@ -121,22 +68,31 @@ class Timer final : public sjsu::Timer
                     InterruptCallback callback = nullptr,
                     int32_t priority           = -1) const override
   {
-    system_controller_.PowerUpPeripheral(timer_.channel.power_id);
+    system_controller_.PowerUpPeripheral(timer_.id);
     SJ2_ASSERT_FATAL(
         frequency.to<uint32_t>() != 0,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
     // Set Prescale register for Prescale Counter to milliseconds
     uint32_t prescaler =
-        system_controller_.GetPeripheralFrequency(timer_.channel.power_id) /
-        frequency;
-    timer_.channel.timer_register->PR = prescaler;
-    timer_.channel.timer_register->TCR |= (1 << 0);
-    *timer_.channel.user_callback = callback;
+        system_controller_.GetPeripheralFrequency(timer_.id) / frequency;
+    timer_.peripheral->PR = prescaler;
+    timer_.peripheral->TCR |= (1 << 0);
+
+    // Take the class's address and a copy of the callback for use in the
+    // interrupt handler.
+    auto interrupt_handler = [this, callback]() {
+      if (callback != nullptr)
+      {
+        callback();
+      }
+      // Clear interrupts for all 4 match register interrupt flag
+      timer_.peripheral->IR |= 0b1111;
+    };
 
     sjsu::InterruptController::GetPlatformController().Enable({
-        .interrupt_request_number  = timer_.channel.irq,
-        .interrupt_handler = timer_.handler,
-        .priority                  = priority,
+        .interrupt_request_number = timer_.irq,
+        .interrupt_handler        = interrupt_handler,
+        .priority                 = priority,
     });
 
     return Status::kSuccess;
@@ -151,8 +107,8 @@ class Timer final : public sjsu::Timer
                      "to set match register %d was attempted.",
                      match_register);
 
-    timer_.channel.timer_register->MCR =
-        bit::Insert(timer_.channel.timer_register->MCR,
+    timer_.peripheral->MCR =
+        bit::Insert(timer_.peripheral->MCR,
                     static_cast<uint32_t>(action),
                     {
                         .position = static_cast<uint8_t>(match_register * 3),
@@ -161,8 +117,7 @@ class Timer final : public sjsu::Timer
 
     // MR0, MR1, MR2, and MR3 are contiguous, so we can point to the first
     // match register and index from there to get the other match registers.
-    volatile uint32_t * match_register_ptr =
-        &timer_.channel.timer_register->MR0;
+    volatile uint32_t * match_register_ptr = &timer_.peripheral->MR0;
 
     match_register_ptr[match_register & 0b11] = ticks / 2;
   }
@@ -174,11 +129,11 @@ class Timer final : public sjsu::Timer
 
   uint32_t GetCount() const override
   {
-    return timer_.channel.timer_register->TC;
+    return timer_.peripheral->TC;
   }
 
  private:
-  const Channel_t & timer_;
+  const Peripheral_t & timer_;
   const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx

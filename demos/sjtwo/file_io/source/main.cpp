@@ -1,8 +1,6 @@
 #include <cstdint>
 #include <cstring>
 
-#include <project_config.hpp>
-
 #include "third_party/fatfs/source/ff.h"
 #include "utility/log.hpp"
 
