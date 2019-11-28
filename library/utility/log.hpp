@@ -79,6 +79,16 @@
     }                                                              \
   } while (0)
 
+/// Returns and prints statement if condition returns true
+#define SJ2_RETURN_IF(condition, warning_message, ...)             \
+  do                                                               \
+  {                                                                \
+    if ((condition))                                              \
+    {                                                              \
+      LOG_WARNING(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
+    }                                                              \
+  } while (0)
+
 /// When the condition is false, issue a critical level message to the user and
 /// halt the processor.
 #define SJ2_ASSERT_FATAL_WITH_DUMP(with_dump, condition, fatal_message, ...) \
