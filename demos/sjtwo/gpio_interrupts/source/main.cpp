@@ -28,7 +28,6 @@ int main()
   sjsu::lpc40xx::Gpio pin0_15(0, 15);
   pin0_15.GetPin().SetPull(sjsu::Pin::Resistor::kPullUp);
   pin0_15.AttachInterrupt(Port0Pin15ISR, sjsu::Gpio::Edge::kEdgeBoth);
-  pin0_15.EnableInterrupts();
   LOG_INFO("Use a jumper wire with gnd and pin0_15 to trigger Interrupt.\n");
 
   LOG_INFO("Setting up pin2_9 to interrupt on Rising and Falling edges...");
