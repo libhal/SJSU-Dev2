@@ -21,9 +21,11 @@ class Pwm
   ///
   /// @param frequency - starting frequency of PWM waveform
   virtual Status Initialize(units::frequency::hertz_t frequency) const = 0;
-  /// Set output pwm pin to the following duty cycle.
+  /// Set output pulse width to following duty cycle.
   ///
-  /// @param duty_cycle - duty cycle precent from 0 to 1
+  /// @param duty_cycle - duty cycle precent from 0 to 1. Where 0.5 would be a
+  ///        50% duty cycle meaning that the pulse will be on for 50% of the
+  ///        time and off for the other 50%.
   virtual void SetDutyCycle(float duty_cycle) const = 0;
   /// @return current duty cycle from hardware
   virtual float GetDutyCycle() const = 0;
