@@ -28,10 +28,10 @@ int main()
 {
   LOG_INFO("Timer Application Starting...");
 
-  sjsu::lpc40xx::Timer timer0(sjsu::lpc40xx::Timer::Channel::kTimer0);
-  sjsu::lpc40xx::Timer timer1(sjsu::lpc40xx::Timer::Channel::kTimer1);
-  sjsu::lpc40xx::Timer timer2(sjsu::lpc40xx::Timer::Channel::kTimer2);
-  sjsu::lpc40xx::Timer timer3(sjsu::lpc40xx::Timer::Channel::kTimer3);
+  sjsu::lpc40xx::Timer timer0(sjsu::lpc40xx::Timer::Peripheral::kTimer0);
+  sjsu::lpc40xx::Timer timer1(sjsu::lpc40xx::Timer::Peripheral::kTimer1);
+  sjsu::lpc40xx::Timer timer2(sjsu::lpc40xx::Timer::Peripheral::kTimer2);
+  sjsu::lpc40xx::Timer timer3(sjsu::lpc40xx::Timer::Peripheral::kTimer3);
 
   timer0.Initialize(1_MHz, Timer0ISR);
   timer1.Initialize(1_MHz, Timer1ISR);
