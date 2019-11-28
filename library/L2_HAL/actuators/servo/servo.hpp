@@ -31,7 +31,6 @@ class Servo
       units::frequency::hertz_t frequency = kDefaultFrequency)
   {
     servo_pwm_.Initialize(frequency);
-    SetFrequency(frequency);
   }
 
   virtual void SetFrequency(
@@ -42,8 +41,8 @@ class Servo
         std::chrono::microseconds((1_MHz / frequency).to<uint32_t>());
   }
 
-  // Sets the minimum and maximum pulse width lengths that the class will
-  // use to clamp its pulse width output when using SetAngle.
+  // Sets the minimum and maximum pulse width lengths that the class will use
+  // to clamp its pulse width output when using SetAngle.
   virtual void SetPulseBounds(std::chrono::microseconds lower,
                               std::chrono::microseconds upper)
   {
@@ -51,8 +50,8 @@ class Servo
     pulse_upper_bound_ = upper;
   }
 
-  // Sets your angle bounds that maps angles to microseconds when
-  // using SetAngle
+  // Sets your angle bounds that maps angles to microseconds when using
+  // SetAngle.
   virtual void SetAngleBounds(units::angle::degree_t min_angle,
                               units::angle::degree_t max_angle)
   {
