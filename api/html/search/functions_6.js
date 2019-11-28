@@ -25,7 +25,6 @@ var searchData=
   ['getinactive_3c_20sjsu_3a_3asystemtimer_20_3e',['GetInactive&lt; sjsu::SystemTimer &gt;',['../d0/d6b/namespacesjsu.html#aa63ff0762aadaf29bfd2021a1ac662c2',1,'sjsu']]],
   ['getinactive_3c_20sjsu_3a_3atimer_20_3e',['GetInactive&lt; sjsu::Timer &gt;',['../d0/d6b/namespacesjsu.html#a93bc33ecdc8a6544c7070de0313b7b2b',1,'sjsu']]],
   ['getinactive_3c_20sjsu_3a_3auart_20_3e',['GetInactive&lt; sjsu::Uart &gt;',['../d0/d6b/namespacesjsu.html#a23db71800841fa44ff4e665a9436b298',1,'sjsu']]],
-  ['getmatchregisters',['GetMatchRegisters',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a696b1f3e31a0260207d023e3b7ceeda4',1,'sjsu::lpc40xx::Pwm']]],
   ['getmaxilluminance',['GetMaxIlluminance',['../d3/da6/classsjsu_1_1Temt6000x01.html#a5fa69aa0a5b3fe5ca9463b069339535e',1,'sjsu::Temt6000x01']]],
   ['getname',['GetName',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ae5cc4e3179b3d0af42bca5b3ca7e6b51',1,'sjsu::rtos::Task']]],
   ['getpercentagebrightness',['GetPercentageBrightness',['../d3/da6/classsjsu_1_1Temt6000x01.html#a7339094d45d3f40e37571b480ab7f296',1,'sjsu::Temt6000x01']]],

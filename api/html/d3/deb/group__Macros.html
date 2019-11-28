@@ -134,6 +134,9 @@ Macros</h2></td></tr>
 <tr class="separator:gabffaf9cecb61026cac6db71a16ace9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga71e411ad5224734b36daa8f5e8abedad"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga71e411ad5224734b36daa8f5e8abedad">SJ2_ASSERT_WARNING</a>(condition,  warning_message, ...)</td></tr>
 <tr class="separator:ga71e411ad5224734b36daa8f5e8abedad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabae9011b7c98965174d43ac22f4be93a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#gabae9011b7c98965174d43ac22f4be93a">SJ2_RETURN_IF</a>(condition,  warning_message, ...)</td></tr>
+<tr class="memdesc:gabae9011b7c98965174d43ac22f4be93a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and prints statement if condition returns true.  <a href="#gabae9011b7c98965174d43ac22f4be93a">More...</a><br /></td></tr>
+<tr class="separator:gabae9011b7c98965174d43ac22f4be93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga091fa592071c28e5ad36aef40371ffbb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga091fa592071c28e5ad36aef40371ffbb">SJ2_ASSERT_FATAL_WITH_DUMP</a>(with_dump,  condition,  fatal_message, ...)</td></tr>
 <tr class="separator:ga091fa592071c28e5ad36aef40371ffbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7bcf00e18eb9e382f9a1273473782237"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga7bcf00e18eb9e382f9a1273473782237">SJ2_ASSERT_FATAL</a>(condition,  fatal_message, ...)&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga091fa592071c28e5ad36aef40371ffbb">SJ2_ASSERT_FATAL_WITH_DUMP</a>(true, (condition), fatal_message, ##__VA_ARGS__)</td></tr>
@@ -331,6 +334,41 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>SJ2_LOG_FUNCTION is an alias of <b>PRETTY_FUNCTION</b> in the event we would like to switch the function to something else. </p>
+
+</div>
+</div>
+<a class="anchor" id="gabae9011b7c98965174d43ac22f4be93a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SJ2_RETURN_IF</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">condition, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">warning_message, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                               \</div><div class="line">  {                                                                \</div><div class="line">    if ((condition))                                              \</div><div class="line">    {                                                              <a class="code" href="../../d3/deb/group__Macros.html#ga1c60134b1702d179d9b86bc618f416fe">\</a></div><div class="line"><a class="code" href="../../d3/deb/group__Macros.html#ga1c60134b1702d179d9b86bc618f416fe">      LOG_WARNING</a>(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \</div><div class="line">    }                                                              \</div><div class="line">  } <span class="keywordflow">while</span> (0)</div><div class="ttc" id="group__Macros_html_ga1c60134b1702d179d9b86bc618f416fe"><div class="ttname"><a href="../../d3/deb/group__Macros.html#ga1c60134b1702d179d9b86bc618f416fe">LOG_WARNING</a></div><div class="ttdeci">#define LOG_WARNING(format,...)</div><div class="ttdoc">Log with the WARNING level of log mesage. </div><div class="ttdef"><b>Definition:</b> log.hpp:57</div></div>
+</div><!-- fragment -->
+<p>Returns and prints statement if condition returns true. </p>
 
 </div>
 </div>

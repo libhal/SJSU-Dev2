@@ -166,12 +166,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aedcdb22b1de25219a2bda5bc2fd586e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62589b965cf37d46ab981e65c808e5ab"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a62589b965cf37d46ab981e65c808e5ab">GetFrequency</a> () const </td></tr>
 <tr class="separator:a62589b965cf37d46ab981e65c808e5ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad22e92fbe0d7de1101d3bd2fc4556827"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#ad22e92fbe0d7de1101d3bd2fc4556827">EnablePwm</a> (bool enable=true) const </td></tr>
-<tr class="separator:ad22e92fbe0d7de1101d3bd2fc4556827"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a696b1f3e31a0260207d023e3b7ceeda4"><td class="memItemLeft" align="right" valign="top">volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a696b1f3e31a0260207d023e3b7ceeda4">GetMatchRegisters</a> () const </td></tr>
-<tr class="separator:a696b1f3e31a0260207d023e3b7ceeda4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56732c8401d7fa5d8a66f10dba71104a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a56732c8401d7fa5d8a66f10dba71104a">CalculateDutyCycle</a> (float duty_cycle_percent) const </td></tr>
-<tr class="separator:a56732c8401d7fa5d8a66f10dba71104a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An implementation of the <a class="el" href="../../d6/ddf/classsjsu_1_1Pwm.html">sjsu::Pwm</a> peripheral for the LPC40xx family of microcontrollers.</p>
@@ -220,68 +214,6 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a56732c8401d7fa5d8a66f10dba71104a"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t sjsu::lpc40xx::Pwm::CalculateDutyCycle </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>duty_cycle_percent</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Converts a percent value from 0.0f to 1.0f to the closest approximate match register value and returns that value.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">duty_cycle_percent</td><td>- value from 0.0f to 1.0f indicating the duty cycle precent. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the nearest approximate match register value to achieve the supplied duty cycle. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ad22e92fbe0d7de1101d3bd2fc4556827"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::lpc40xx::Pwm::EnablePwm </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>enable</em> = <code>true</code></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper method for enabling and disabling this PWM channel. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">enable</td><td>- default to true, if set to false, will disable this PWM channel. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a8cc7d4fcaa4860db071ee8a9b0cf84ee"></a>
 <div class="memitem">
 <div class="memproto">
@@ -330,31 +262,6 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Helper method for converting the match register 0 to a frequency in Hz.</p>
 <dl class="section return"><dt>Returns</dt><dd>the current frequency of the PWM channel </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a696b1f3e31a0260207d023e3b7ceeda4"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint32_t* sjsu::lpc40xx::Pwm::GetMatchRegisters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper method to make getting a pointer to the Match Register 0 more readable in the code.</p>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the match 0 register. </dd></dl>
 
 </div>
 </div>
@@ -412,10 +319,10 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set output pwm pin to the following duty cycle.</p>
+<p>Set output pulse width to following duty cycle.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">duty_cycle</td><td>- duty cycle precent from 0 to 1 </td></tr>
+    <tr><td class="paramname">duty_cycle</td><td>- duty cycle precent from 0 to 1. Where 0.5 would be a 50% duty cycle meaning that the pulse will be on for 50% of the time and off for the other 50%. </td></tr>
   </table>
   </dd>
 </dl>

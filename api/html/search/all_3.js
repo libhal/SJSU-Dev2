@@ -1,7 +1,6 @@
 var searchData=
 [
   ['c',['c',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#a0c03ed9b3e3b512713d7a09e108f6bec',1,'sjsu::FallbackListNode_t']]],
-  ['calculatedutycycle',['CalculateDutyCycle',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a56732c8401d7fa5d8a66f10dba71104a',1,'sjsu::lpc40xx::Pwm']]],
   ['callback',['callback',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a40769f764fdfd4a35d7bc2f2c13e5f49',1,'sjsu::cortex::SystemTimer']]],
   ['can',['Can',['../da/d70/classsjsu_1_1Can.html',1,'sjsu']]],
   ['can',['Can',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html',1,'sjsu::lpc40xx']]],
@@ -39,9 +38,9 @@ var searchData=
   ['commandsignature',['CommandSignature',['../d0/d6b/namespacesjsu.html#a02cb0ed606f8c4fd6b0773de6b443ec5',1,'sjsu']]],
   ['configuration',['Configuration',['../de/d43/group__Config.html',1,'']]],
   ['configurecapture',['ConfigureCapture',['../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#a3c18b7b31700395b9cd1281a011b4cea',1,'sjsu::lpc40xx::PulseCapture::ConfigureCapture()'],['../d2/d96/classsjsu_1_1PulseCapture.html#a6e275666b6dcd09961a6d3297284dc4e',1,'sjsu::PulseCapture::ConfigureCapture()']]],
+  ['control',['Control',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#abb6543ba96f5ad9890ad8292e64667dc',1,'sjsu::lpc40xx::I2c']]],
   ['control',['Control',['../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html',1,'sjsu::lpc40xx::Dac']]],
   ['control',['Control',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html',1,'sjsu::lpc40xx::Adc']]],
-  ['control',['Control',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#abb6543ba96f5ad9890ad8292e64667dc',1,'sjsu::lpc40xx::I2c']]],
   ['controlbitmap',['ControlBitMap',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991',1,'sjsu::cortex::SystemTimer']]],
   ['controlpins_5ft',['ControlPins_t',['../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html',1,'sjsu::St7066u']]],
   ['controlregister0',['ControlRegister0',['../dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html',1,'sjsu::lpc40xx::Spi']]],
