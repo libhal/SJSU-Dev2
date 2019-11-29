@@ -1,5 +1,0 @@
-<map id="sjsu::lpc17xx::Gpio" name="sjsu::lpc17xx::Gpio">
-<area shape="rect" id="node2" href="$dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="65,5,149,32"/>
-<area shape="rect" id="node3" href="$d5/da3/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioPort__t.html" title="sjsu::lpc17xx::Gpio\l::GpioPort_t" alt="" coords="37,57,177,98"/>
-<area shape="rect" id="node4" href="$d0/de8/structsjsu_1_1lpc17xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html" title="Holds gpio interrupt port specific registers. Used to make the code more readable. " alt="" coords="5,122,209,163"/>
-</map>

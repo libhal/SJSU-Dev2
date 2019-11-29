@@ -22,6 +22,7 @@ enum class Target
 /// for.
 enum class Platform
 {
+  host,     // NOLINT
   lpc17xx,  // NOLINT
   lpc40xx,  // NOLINT
   linux,    // NOLINT
@@ -29,6 +30,11 @@ enum class Platform
 
 constexpr const Target kTarget     = Target::TARGET;
 constexpr const Platform kPlatform = Platform::PLATFORM;
+
+constexpr bool IsPlatform(Platform platform)
+{
+  return kPlatform == platform;
+}
 
 /// @param target - the target to convert to a string
 /// @return a string representation of the target.

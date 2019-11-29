@@ -31,7 +31,7 @@ var searchData=
   ['getperiodicsemaphore',['GetPeriodicSemaphore',['../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6b3087e7a017e141081326c1cc05eaed',1,'sjsu::rtos::PeriodicTaskInterface::GetPeriodicSemaphore()'],['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a65985f552554608817b3defc3d6f706b',1,'sjsu::rtos::PeriodicTask::GetPeriodicSemaphore()']]],
   ['getperipheralclockdivider',['GetPeripheralClockDivider',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6aa856bf5d1a239913fe4c7047764c48',1,'sjsu::lpc17xx::SystemController::GetPeripheralClockDivider()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a7b80f0fd057f8949bf4028686204583e',1,'sjsu::lpc40xx::SystemController::GetPeripheralClockDivider()'],['../df/d0e/classsjsu_1_1SystemController.html#a26af10c1584b8491c3ff9720f5660a60',1,'sjsu::SystemController::GetPeripheralClockDivider()']]],
   ['getperipheralfrequency',['GetPeripheralFrequency',['../df/d0e/classsjsu_1_1SystemController.html#a8448b6d38754e80b7fb9fd38fa11b477',1,'sjsu::SystemController']]],
-  ['getpin',['GetPin',['../dd/d3a/classsjsu_1_1Gpio.html#a1074eb7db45e5693269d8a4ae5355e5a',1,'sjsu::Gpio::GetPin()'],['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#a542c4d7e165b3e52232170fe944468b2',1,'sjsu::lpc17xx::Gpio::GetPin()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a4c71dae52920bbb18e24ab15fbeb8238',1,'sjsu::lpc40xx::Gpio::GetPin()'],['../d0/da9/classsjsu_1_1Pin.html#a260b81a7598f30528ad2e86dae0d44bc',1,'sjsu::Pin::GetPin()']]],
+  ['getpin',['GetPin',['../dd/d3a/classsjsu_1_1Gpio.html#a1074eb7db45e5693269d8a4ae5355e5a',1,'sjsu::Gpio::GetPin()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a4c71dae52920bbb18e24ab15fbeb8238',1,'sjsu::lpc40xx::Gpio::GetPin()'],['../d0/da9/classsjsu_1_1Pin.html#a260b81a7598f30528ad2e86dae0d44bc',1,'sjsu::Pin::GetPin()']]],
   ['getplatformcontroller',['GetPlatformController',['../dc/db2/classsjsu_1_1InterruptController.html#aa7f2132bfa7c4d5ca942d93c192b1557',1,'sjsu::InterruptController']]],
   ['getport',['GetPort',['../d0/da9/classsjsu_1_1Pin.html#af23cc3bdc37d03e92cd4f40deb04e61c',1,'sjsu::Pin']]],
   ['getpriority',['GetPriority',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a2890a85b5035849fdf07679c99f2972c',1,'sjsu::rtos::Task']]],
@@ -48,8 +48,8 @@ var searchData=
   ['gettransactioninfo',['GetTransactionInfo',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a1aab2429685ff4d31764246480566ee2',1,'sjsu::lpc40xx::I2c']]],
   ['getvolume',['GetVolume',['../de/d29/classsjsu_1_1Buzzer.html#aedf2952a1214bb003cb5574b3a0f61af',1,'sjsu::Buzzer']]],
   ['getwidth',['GetWidth',['../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a',1,'sjsu::Ssd1306::GetWidth()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a6d136302e6266d6fbc773d49fd487670',1,'sjsu::PixelDisplay::GetWidth()']]],
-  ['gpio',['Gpio',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#aa9c44f0a92df3510064fff0072597dca',1,'sjsu::lpc17xx::Gpio::Gpio()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a53b4720ce5145ffd3a3da33fd98400eb',1,'sjsu::lpc40xx::Gpio::Gpio()']]],
+  ['gpio',['Gpio',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a44098198c4b9b33cb88d08ea1a182722',1,'sjsu::lpc40xx::Gpio']]],
   ['gpiocounter',['GpioCounter',['../d0/d57/classsjsu_1_1GpioCounter.html#af3cd11a9d7278cef82dcfa175a9b0693',1,'sjsu::GpioCounter']]],
-  ['gpiointerrupthandler',['GpioInterruptHandler',['../d6/df1/classsjsu_1_1lpc17xx_1_1Gpio.html#ae1966c59a4ddd0b3330ae8cfb6e2aa6d',1,'sjsu::lpc17xx::Gpio']]],
+  ['gpioregister',['GpioRegister',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ac0c6f8bd80e6b9adb3fb9e03e5fccb50',1,'sjsu::lpc40xx::Gpio']]],
   ['graphics',['Graphics',['../d7/d8c/classsjsu_1_1Graphics.html#a5656c64043cbecdcec6bb561fdd22e9e',1,'sjsu::Graphics']]]
 ];

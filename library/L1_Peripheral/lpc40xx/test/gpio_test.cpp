@@ -1,9 +1,9 @@
 #include <cstdint>
+
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
-#include "utility/log.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -15,23 +15,28 @@ TEST_CASE("Testing lpc40xx Gpio", "[lpc40xx-gpio]")
   // of this unit test
   constexpr uint8_t kPin0 = 0;
   constexpr uint8_t kPin7 = 7;
-  // Simulated local version of LPC_IOCON.
-  // This is necessary since a Gpio is also a Pin.
-  LPC_IOCON_TypeDef local_iocon;
-  memset(&local_iocon, 0, sizeof(local_iocon));
-  // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
-  // Redirects manipulation to the 'local_iocon'
-  Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
+
   // Initialized local LPC_GPIO_TypeDef objects with 0 to observe how the Gpio
   // class manipulates the data in the registers
   LPC_GPIO_TypeDef local_gpio_port[2];
   memset(&local_gpio_port, 0, sizeof(local_gpio_port));
+
+  // Create mock pins
+  Mock<sjsu::Pin> mock_pin0;
+  Mock<sjsu::Pin> mock_pin1;
+  Fake(Method(mock_pin0, SetPinFunction));
+  Fake(Method(mock_pin1, SetPinFunction));
+
+  // Get gpio register pointer and replace the address with the local GPIOs.
   // Only GPIO port 1 & 2 will be used in this unit test
-  Gpio::gpio_port[0] = &local_gpio_port[0];
-  Gpio::gpio_port[1] = &local_gpio_port[1];
-  // Pins that are to be used in the unit test
-  Gpio p0_00(0, 0);
-  Gpio p1_07(1, 7);
+  auto ** gpio_register0 = sjsu::lpc40xx::Gpio::GpioRegister(0);
+  auto ** gpio_register1 = sjsu::lpc40xx::Gpio::GpioRegister(1);
+  *gpio_register0        = &local_gpio_port[0];
+  *gpio_register1        = &local_gpio_port[1];
+
+  // Create
+  Gpio p0_00(0, 0, &mock_pin0.get());
+  Gpio p1_07(1, 7, &mock_pin1.get());
 
   SECTION("Set as Output and Input")
   {
@@ -41,21 +46,25 @@ TEST_CASE("Testing lpc40xx Gpio", "[lpc40xx-gpio]")
 
     p0_00.SetAsInput();
     p1_07.SetAsOutput();
+
+    Verify(Method(mock_pin0, SetPinFunction).Using(0));
+    Verify(Method(mock_pin1, SetPinFunction).Using(0));
+
     // Check bit 0 of local_gpio_port[0].DIR (port 0 pin 0)
     // to see if it is cleared
-    CHECK(((local_gpio_port[0].DIR >> kPin0) & 1) == kInputSet);
+    CHECK(bit::Read(local_gpio_port[0].DIR, kPin0) == kInputSet);
     // Check bit 7 of local_gpio_port[1].DIR (port 1 pin 7)
     // to see if it is set
-    CHECK(((local_gpio_port[1].DIR >> kPin7) & 1) == kOutputSet);
+    CHECK(bit::Read(local_gpio_port[1].DIR, kPin7) == kOutputSet);
 
     p0_00.SetDirection(sjsu::Gpio::kOutput);
     p1_07.SetDirection(sjsu::Gpio::kInput);
     // Check bit 0 of local_gpio_port[0].DIR (port 0 pin 0)
     // to see if it is set
-    CHECK(((local_gpio_port[0].DIR >> kPin0) & 1) == kOutputSet);
+    CHECK(bit::Read(local_gpio_port[0].DIR, kPin0) == kOutputSet);
     // Check bit 7 of local_gpio_port[1].DIR (port 1 pin 7)
     // to see if it is cleared
-    CHECK(((local_gpio_port[1].DIR >> kPin7) & 1) == kInputSet);
+    CHECK(bit::Read(local_gpio_port[1].DIR, kPin7) == kInputSet);
   }
   SECTION("Set High")
   {
@@ -98,8 +107,6 @@ TEST_CASE("Testing lpc40xx Gpio", "[lpc40xx-gpio]")
 
     CHECK(p0_00.Read() == false);
     CHECK(p1_07.Read() == true);
-    CHECK(p0_00.Read() == Gpio::State::kLow);
-    CHECK(p1_07.Read() == Gpio::State::kHigh);
   }
   SECTION("Toggle")
   {
@@ -117,13 +124,7 @@ TEST_CASE("Testing lpc40xx Gpio", "[lpc40xx-gpio]")
     CHECK(p0_00.Read() == true);
     CHECK(p1_07.Read() == false);
   }
-  Gpio::gpio_port[0] = LPC_GPIO0;
-  Gpio::gpio_port[1] = LPC_GPIO1;
-  Gpio::gpio_port[2] = LPC_GPIO2;
-  Gpio::gpio_port[3] = LPC_GPIO3;
-  Gpio::gpio_port[4] = LPC_GPIO4;
-  Gpio::gpio_port[5] = LPC_GPIO5;
-  Pin::pin_map       = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
+  Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(LPC_IOCON);
 }
 
 FAKE_VOID_FUNC(InterruptCallback0);
@@ -146,20 +147,20 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   LPC_GPIOINT_TypeDef local_eint;
   memset(&local_eint, 0, sizeof(local_eint));
 
+  auto * interrupt0 = Gpio::InterruptRegister(0);
+  auto * interrupt2 = Gpio::InterruptRegister(1);
   // Reassign external interrupt registers to simulated LPC_GPIOINT
-  Gpio::interrupt[kPort0].rising_edge_status  = &(local_eint.IO0IntStatR);
-  Gpio::interrupt[kPort0].falling_edge_status = &(local_eint.IO0IntStatF);
-  Gpio::interrupt[kPort0].clear               = &(local_eint.IO0IntClr);
-  Gpio::interrupt[kPort0].enable_rising_edge  = &(local_eint.IO0IntEnR);
-  Gpio::interrupt[kPort0].enable_falling_edge = &(local_eint.IO0IntEnF);
+  interrupt0->rising_status  = &(local_eint.IO0IntStatR);
+  interrupt0->falling_status = &(local_eint.IO0IntStatF);
+  interrupt0->clear          = &(local_eint.IO0IntClr);
+  interrupt0->rising_enable  = &(local_eint.IO0IntEnR);
+  interrupt0->falling_enable = &(local_eint.IO0IntEnF);
 
-  Gpio::interrupt[kPort2].rising_edge_status  = &(local_eint.IO2IntStatR);
-  Gpio::interrupt[kPort2].falling_edge_status = &(local_eint.IO2IntStatF);
-  Gpio::interrupt[kPort2].clear               = &(local_eint.IO2IntClr);
-  Gpio::interrupt[kPort2].enable_rising_edge  = &(local_eint.IO2IntEnR);
-  Gpio::interrupt[kPort2].enable_falling_edge = &(local_eint.IO2IntEnF);
-
-  Gpio::port_status = &(local_eint.IntStatus);
+  interrupt2->rising_status  = &(local_eint.IO2IntStatR);
+  interrupt2->falling_status = &(local_eint.IO2IntStatF);
+  interrupt2->clear          = &(local_eint.IO2IntClr);
+  interrupt2->rising_enable  = &(local_eint.IO2IntEnR);
+  interrupt2->falling_enable = &(local_eint.IO2IntEnF);
 
   // Pins that are to be used in the unit test
   Mock<sjsu::InterruptController> mock_interrupt_controller;
@@ -168,116 +169,62 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 
-  Gpio p0_15(0, 15);
-  Gpio p2_7(2, 7);
+  // Create mock pin
+  Mock<sjsu::Pin> mock_pin;
+  Fake(Method(mock_pin, SetPinFunction));
+
+  Gpio p0_15(0, 15, &mock_pin.get());
+  Gpio p2_7(2, 7, &mock_pin.get());
 
   SECTION("Attach then Detattach Interrupt from pin")
   {
-    // Attach Interrupt to Pin.
+    // Setup & Execute
     p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
     p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
-    // Check Edge Setup
+    // Verify
     CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
     CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
     CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
     // Check Developer's ISR is attached
     auto * save_callback0 =
-        p0_15.interrupt_handlers[kPort0][kPin15].target<void (*)(void)>();
+        p0_15.handlers[kPort0][kPin15].target<void (*)(void)>();
     auto * save_callback1 =
-        p2_7.interrupt_handlers[kPort2][kPin7].target<void (*)(void)>();
+        p2_7.handlers[kPort2][kPin7].target<void (*)(void)>();
     REQUIRE(save_callback0 != nullptr);
     REQUIRE(save_callback1 != nullptr);
     CHECK(&InterruptCallback0 == *save_callback0);
     CHECK(&InterruptCallback1 == *save_callback1);
 
-    // Detach Interrupt from Pin.
+    // Setup & Execute
     p0_15.DetachInterrupt();
     p2_7.DetachInterrupt();
+
+    // Verify
     CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
     CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
     CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
     CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
-    CHECK(p0_15.interrupt_handlers[kPort0][kPin15] == nullptr);
-    CHECK(p2_7.interrupt_handlers[kPort2][kPin7] == nullptr);
-  }
-
-  SECTION("Set and clear Interrupt Edges")
-  {
-    // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
-    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
-    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
-    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
-    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
-
-    // Clear Interrupt Edge Rising
-    p0_15.ClearInterruptEdge(sjsu::Gpio::Edge::kEdgeRising);
-    p2_7.ClearInterruptEdge(sjsu::Gpio::Edge::kEdgeRising);
-    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
-    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
-    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
-    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
-
-    // Clear Interrupt Edge Falling
-    p0_15.ClearInterruptEdge(sjsu::Gpio::Edge::kEdgeFalling);
-    p2_7.ClearInterruptEdge(sjsu::Gpio::Edge::kEdgeFalling);
-    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
-    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
-    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
-    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
-
-    // Set Interrupt Edge Rising
-    p0_15.SetInterruptEdge(sjsu::Gpio::Edge::kEdgeRising);
-    p2_7.SetInterruptEdge(sjsu::Gpio::Edge::kEdgeRising);
-    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
-    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
-    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
-    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
-
-    // Set Interrupt Edge Falling
-    p0_15.SetInterruptEdge(sjsu::Gpio::Edge::kEdgeFalling);
-    p2_7.SetInterruptEdge(sjsu::Gpio::Edge::kEdgeFalling);
-    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
-    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
-    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
-    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
-  }
-
-  SECTION("Enable and Disable all Interrupts")
-  {
-    // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
-
-    // Enable all Interrupts
-    p0_15.EnableInterrupts();
-    Verify(
-        Method(mock_interrupt_controller, Enable)
-            .Matching([](sjsu::InterruptController::RegistrationInfo_t info) {
-              return (info.interrupt_request_number == GPIO_IRQn) &&
-                     (info.priority == -1);
-            }));
-
-    // Disable all Interrupts
-    p0_15.DisableInterrupts();
-    Verify(Method(mock_interrupt_controller, Disable).Using(GPIO_IRQn));
+    CHECK(p0_15.handlers[kPort0][kPin15] == nullptr);
+    CHECK(p2_7.handlers[kPort2][kPin7] == nullptr);
   }
 
   SECTION("Call the Interrupt handler to service the pin.")
   {
-    // Attach Interrupt to Pin.
-    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
-
-    // Manually trigger an Interrupt
-    local_eint.IntStatus |= (1 << kPort0);
+    // Setup
+    bool was_called = false;
+    p0_15.AttachInterrupt([&was_called]() { was_called = true; },
+                          sjsu::Gpio::Edge::kEdgeBoth);
+    // Setup: Manually trigger an Interrupt
+    *Gpio::InterruptStatus() |= (1 << kPort0);
     local_eint.IO0IntStatR |= (1 << kPin15);
 
-    // Manually call interrupt handler
+    // Execute
     p0_15.InterruptHandler();
-    CHECK(InterruptCallback0_fake.call_count == 1);
-    CHECK(((local_eint.IO0IntClr >> kPin15) & 1) == kSet);
+
+    // Verify
+    CHECK(bit::Read(local_eint.IO0IntClr, kPin15) == kSet);
+    CHECK(was_called);
   }
 }
 }  // namespace sjsu::lpc40xx
