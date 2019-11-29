@@ -17,7 +17,7 @@ ARCH=$(uname -m)
 # Get System Operating System
 OS=$(uname -s)
 # Define name of the arm version we are downloading
-TOOLS_BUNDLE_BASE_URL="https://github.com/kammce/SJSU-Dev2/releases/download/v2.1/tools-bundle"
+TOOLS_BUNDLE_BASE_URL="https://github.com/kammce/SJSU-Dev2/releases/download/v2.2/tools-bundle"
 TOOLS_BUNDLE_URL_LINUX="$TOOLS_BUNDLE_BASE_URL-linux.tar.bz2"
 TOOLS_BUNDLE_URL_OSX="$TOOLS_BUNDLE_BASE_URL-osx.tar.bz2"
 # Set later
@@ -109,8 +109,7 @@ function install_mac_osx_prerequisites() {
   return $(($xcodebuild_status + $git_status + $pip_install_status))
 }
 
-function install_python_tools()
-{
+function install_python_tools() {
   echo " ───────────────────────────────────────────────────┐"
   echo "                  Upgrading PIP                      "
   echo "└─────────────────────────────────────────────────── "
@@ -130,8 +129,7 @@ function install_python_tools()
   return $(($pip_status + $gcovr_status + $virtualenv_status))
 }
 
-function get_file_count()
-{
+function get_file_count() {
   if [ ! -d "$1" ]; then
     echo 0
   else
@@ -139,8 +137,7 @@ function get_file_count()
   fi
 }
 
-function download_and_extract_tool_bundle()
-{
+function download_and_extract_tool_bundle() {
   local tools_bundle_file_count=9621
   cd "$TOOLDIR/"
   echo " ───────────────────────────────────────────────────┐"
@@ -153,7 +150,9 @@ function download_and_extract_tool_bundle()
     # Store file in temporary name first, so if this fails, this step does not
     # get skipped.
     echo "$TOOLS_BUNDLE_URL"
-    curl -L0 -o $temporary_name "$TOOLS_BUNDLE_URL"
+    curl -L0 \
+       -o $temporary_name \
+       -z "$(basename $TOOLS_BUNDLE_URL)" "$TOOLS_BUNDLE_URL"
     mv $temporary_name "$(basename $TOOLS_BUNDLE_URL)"
   else
     echo "Tools bundle \"$(basename $TOOLS_BUNDLE_URL)\" already downloaded!"
@@ -168,35 +167,34 @@ function download_and_extract_tool_bundle()
   local openocd_file_count=$(get_file_count "openocd")
   local gcc_arm_file_count=$(get_file_count gcc-arm*)
   local clang_llvm_file_count=$(get_file_count clang+llvm*)
-  local total=$((openocd_file_count+gcc_arm_file_count+clang_llvm_file_count))
+  local total=$((openocd_file_count + gcc_arm_file_count + clang_llvm_file_count))
 
-  if [ "$total" -eq "$TOOLS_FILE_COUNT" ] && \
-     [ "$skipped_download" -eq "1" ]
-  then
+  if [ "$total" -eq "$TOOLS_FILE_COUNT" ] &&
+    [ "$skipped_download" -eq "1" ]; then
     echo "Tools bundle \"$(basename $TOOLS_BUNDLE_URL)\" already extracted!"
     echo "Skipping extraction..."
     return 0
   else
     # Delete old toolkit folders
-    rm -r "openocd*" &> /dev/null
-    rm -r "gcc-arm*" &> /dev/null
-    rm -r "clang+llvm*" &> /dev/null
+    rm -r "openocd*" &>/dev/null
+    rm -r "gcc-arm*" &>/dev/null
+    rm -r "clang+llvm*" &>/dev/null
 
     tar --verbose --extract --bzip --file="$(basename $TOOLS_BUNDLE_URL)" \
-      2> /dev/null |
-    while read line; do
-        x=$((x+1))
-        echo -en "\rExtracting Progress: $(($x*100/$TOOLS_FILE_COUNT))% "
-    done
+      2>/dev/null |
+      while read line; do
+        x=$((x + 1))
+        echo -en "\rExtracting Progress: $(($x * 100 / $TOOLS_FILE_COUNT))% "
+      done
     local extract=$?
     echo -en "\rExtracting Progress: 100% \n"
 
     # Verify that each directory exists
-    ls clang+llvm-*/ &> /dev/null
+    ls clang+llvm-*/ &>/dev/null
     local clang_exists=$?
-    ls gcc-arm*/ &> /dev/null
+    ls gcc-arm*/ &>/dev/null
     local gcc_exists=$?
-    ls openocd/ &> /dev/null
+    ls openocd/ &>/dev/null
     local openocd_exists=$?
 
     return $(($extract + $clang_exists + $gcc_exists + $openocd_exists))
@@ -204,8 +202,7 @@ function download_and_extract_tool_bundle()
   return 1
 }
 
-function install_nxpprog()
-{
+function install_nxpprog() {
   cd "$TOOLDIR"
   echo " ───────────────────────────────────────────────────┐"
   echo "                Setting Up nxpprog                   "
@@ -225,8 +222,7 @@ function install_nxpprog()
   return $(($git_clone + $setup_status + $git_checkout))
 }
 
-function generate_location_file()
-{
+function generate_location_file() {
   echo " ───────────────────────────────────────────────────┐"
   echo "         Generating SJSU-Dev2 Location File          "
   echo "└─────────────────────────────────────────────────── "
@@ -249,8 +245,7 @@ EOL
   return $?
 }
 
-function link_projects()
-{
+function link_projects() {
   cd "$BASE"
   echo " ───────────────────────────────────────────────────┐"
   echo "      Linking Files to Firmware Project Folder       "
@@ -259,69 +254,72 @@ function link_projects()
   return $?
 }
 
-function print_status
-{
-  if [[ $1 -ne 0 ]]
-  then
+function print_status() {
+  if [[ $1 -ne 0 ]]; then
     printf "\e[31m✘\e[0;31m"
   else
     printf "\e[32m✔\e[0;31m"
   fi
 }
 
-function final_install_check
-{
+function final_install_check() {
   local prerequisites="$(print_status $PREREQUISITES)"
   local tool_bundle="$(print_status $TOOL_BUNDLE)"
   local python_tools="$(print_status $PYTHON_TOOLS)"
   local nxpprog="$(print_status $NXPPROG)"
-  local location_file="$(print_status $LOCATION_FILE)"
   local project_link="$(print_status $LINK_PROJECTS)"
 
-  local install_was_successful=$(($PREREQUISITES + $TOOL_BUNDLE + \
-                                  $PYTHON_TOOLS + $NXPPROG + $LOCATION_FILE + \
-                                  $LINK_PROJECTS))
+  local install_was_successful=$(($PREREQUISITES + $TOOL_BUNDLE + $PYTHON_TOOLS + $NXPPROG + $LINK_PROJECTS))
 
-  if [[ $install_was_successful -ne "0" ]]
-    then
+  if [[ $install_was_successful -ne "0" ]]; then
     printf "\e[0;31m"
-    echo   " =========================== "
-    echo   "|   Something went wrong!   |"
-    echo   "|                           |"
-    echo   "|      (╯°□ °)╯︵ ┻━┻       |"  ; printf "\e[0;31m"
-    echo   "|                           |"
-    echo   "| Prerequisites Install . %b |" $prerequisites ; printf "\n"
-    echo   "| Tools Install ......... %b |" $tool_bundle   ; printf "\n"
-    echo   "| Python Tools .......... %b |" $python_tools  ; printf "\n"
-    echo   "| Setup nxpprog ......... %b |" $nxpprog       ; printf "\n"
-    echo   "| Setup Location File ... %b |" $location_file ; printf "\n"
-    echo   "| Project Linking ....... %b |" $project_link  ; printf "\n"
-    echo   "|                           |"
-    echo   " =========================== "
+    echo " =========================== "
+    echo "|   Something went wrong!   |"
+    echo "|                           |"
+    echo "|      (╯°□ °)╯︵ ┻━┻       |"
+    printf "\e[0;31m"
+    echo "|                           |"
+    echo "| Prerequisites Install . %b |" $prerequisites
+    printf "\n"
+    echo "| Tools Install ......... %b |" $tool_bundle
+    printf "\n"
+    echo "| Python Tools .......... %b |" $python_tools
+    printf "\n"
+    echo "| Setup nxpprog ......... %b |" $nxpprog
+    printf "\n"
+    echo "| Project Linking ....... %b |" $project_link
+    printf "\n"
+    echo "|                           |"
+    echo " =========================== "
     printf "\e[0m\n"
     exit 1
   else
     printf "\e[0;32m"
-    echo   " =========================== "
-    echo   "|                           |"
-    printf "| Prerequisites Install . %b " $prerequisites ; printf "\e[0;32m|\n"
-    printf "| Tools Install ......... %b " $tool_bundle   ; printf "\e[0;32m|\n"
-    printf "| Python Tools .......... %b " $python_tools  ; printf "\e[0;32m|\n"
-    printf "| Setup nxpprog ......... %b " $nxpprog       ; printf "\e[0;32m|\n"
-    printf "| Setup Location File ... %b " $location_file ; printf "\e[0;32m|\n"
-    printf "| Project Linking ....... %b " $project_link  ; printf "\e[0;32m|\n"
-    echo   "|                           |"
+    echo " =========================== "
+    echo "|                           |"
+    printf "| Prerequisites Install . %b " $prerequisites
+    printf "\e[0;32m|\n"
+    printf "| Tools Install ......... %b " $tool_bundle
+    printf "\e[0;32m|\n"
+    printf "| Python Tools .......... %b " $python_tools
+    printf "\e[0;32m|\n"
+    printf "| Setup nxpprog ......... %b " $nxpprog
+    printf "\e[0;32m|\n"
+    printf "| Project Linking ....... %b " $project_link
+    printf "\e[0;32m|\n"
+    echo "|                           |"
     printf "|          (•_•)            |\r"
     sleep .5
     printf "|          ( •_•)>⌐▪-▪      |\r"
     sleep .5
     printf "|          (⌐▪_▪)           |\n"
     sleep .5
-    echo   "|                           |"
-    echo   "|      SETUP COMPLETE!      |"
-    echo   "|                           |"
+    echo "|                           |"
+    echo "|      SETUP COMPLETE!      |"
+    echo "|                           |"
     printf " =========================== "
     printf "\e[0m\n"
+    generate_location_file
     exit 0
   fi
 }
@@ -351,16 +349,16 @@ echo "    Starting SJSU-Dev2 Environment Setup Script     "
 echo ""
 echo "└────────────────────────────────────────────────── "
 
-if [[ "$OS" == "Linux" ]] # Linux or Windows WSL
-then
+if [[ "$OS" == "Linux" ]]; then # Linux or Windows WSL
   echo "Operating System: Linux"
   TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_LINUX
-  install_linux_prerequisites   ; PREREQUISITES=$?
-elif [[ "$OS" == "Darwin" ]] # Mac OSX
-then
+  install_linux_prerequisites
+  PREREQUISITES=$?
+elif [[ "$OS" == "Darwin" ]]; then # Mac OSX
   echo "Operating System: Mac OSX Darvin"
   TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_OSX
-  install_mac_osx_prerequisites ; PREREQUISITES=$?
+  install_mac_osx_prerequisites
+  PREREQUISITES=$?
 else
   # Default if Operating System other than Mac or Linux
   echo -n "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems "
@@ -374,20 +372,23 @@ if [ "$PREREQUISITES" -ne "0" ]; then
   echo ""
   printf "                 Prequisite Install Failed.                "
   echo ""
-  echo  "  Make sure:                                               "
-  echo  "     - Nothing else is currently being installed using APT "
-  echo  "     - You are connected to the internet                   "
+  echo "  Make sure:                                               "
+  echo "     - Nothing else is currently being installed using APT "
+  echo "     - You are connected to the internet                   "
   echo ""
   printf "└───────────────────────────────────────────────────────── "
   printf "\e[0m\n"
   exit 1
 fi
 
-download_and_extract_tool_bundle  ; TOOL_BUNDLE=$?
-install_python_tools              ; PYTHON_TOOLS=$?
-install_nxpprog                   ; NXPPROG=$?
-generate_location_file            ; LOCATION_FILE=$?
-link_projects                     ; LINK_PROJECTS=$?
+download_and_extract_tool_bundle
+TOOL_BUNDLE=$?
+install_python_tools
+PYTHON_TOOLS=$?
+install_nxpprog
+NXPPROG=$?
+link_projects
+LINK_PROJECTS=$?
 
 echo ""
 
