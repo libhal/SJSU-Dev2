@@ -119,16 +119,16 @@ Collaboration diagram for sjsu::lpc17xx::I2cBus:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d4a/structsjsu_1_1lpc17xx_1_1I2cBus__coll__graph.png" border="0" usemap="#sjsu_1_1lpc17xx_1_1I2cBus_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc17xx_1_1I2cBus_coll__map" id="sjsu_1_1lpc17xx_1_1I2cBus_coll__map">
-<area shape="rect" id="node2" href="../../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html" title="sjsu::lpc40xx::I2c\l::Bus_t" alt="" coords="50,228,179,269"/>
-<area shape="rect" id="node3" href="../../d7/d13/structsjsu_1_1lpc40xx_1_1I2c_1_1PartialBus__t.html" title="sjsu::lpc40xx::I2c\l::PartialBus_t" alt="" coords="50,124,179,165"/>
-<area shape="rect" id="node4" href="../../d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
-<area shape="rect" id="node5" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="103,5,270,47"/>
+<area shape="rect" id="node2" href="../../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html" title="Bus_t holds all of the information for an I2C bus on the LPC40xx platform. " alt="" coords="50,124,179,165"/>
+<area shape="rect" id="node3" href="../../d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
+<area shape="rect" id="node4" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="103,5,270,47"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a73fb5ec172f6655def96e50973247894"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="../../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html">lpc40xx::I2c::Bus_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d9a/structsjsu_1_1lpc17xx_1_1I2cBus.html#a73fb5ec172f6655def96e50973247894">kI2c0</a></td></tr>
+<tr class="memdesc:a73fb5ec172f6655def96e50973247894"><td class="mdescLeft">&#160;</td><td class="mdescRight">NOTE: I2C0 is not available for the 80-pin package.  <a href="#a73fb5ec172f6655def96e50973247894">More...</a><br /></td></tr>
 <tr class="separator:a73fb5ec172f6655def96e50973247894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f274d5d2cf0a0fd13e48fc02db781ce"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="../../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html">lpc40xx::I2c::Bus_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d9a/structsjsu_1_1lpc17xx_1_1I2cBus.html#a5f274d5d2cf0a0fd13e48fc02db781ce">kI2c1</a></td></tr>
 <tr class="memdesc:a5f274d5d2cf0a0fd13e48fc02db781ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition for I2C bus 1 for LPC17xx.  <a href="#a5f274d5d2cf0a0fd13e48fc02db781ce">More...</a><br /></td></tr>
@@ -157,7 +157,8 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .bus     = kI2c0Partial,</div><div class="line">    .handler = lpc40xx::I2c::I2cHandler&lt;kI2c0Partial&gt;,</div><div class="line">  }</div></div><!-- fragment --><p>Definition for I2C bus 0 for LPC17xx. NOTE: I2C0 is not available for the 80-pin package. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C0),</div><div class="line">    .peripheral_power_id = SystemController::Peripherals::kI2c0,</div><div class="line">    .irq_number          = I2C0_IRQn,</div><div class="line">    .transaction         = transaction_i2c0,</div><div class="line">    .sda_pin             = kI2c0SdaPin,</div><div class="line">    .scl_pin             = kI2c0SclPin,</div><div class="line">    .pin_function_id     = 0b01,</div><div class="line">  }</div></div><!-- fragment -->
+<p>NOTE: I2C0 is not available for the 80-pin package. </p>
 
 </div>
 </div>
@@ -178,7 +179,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .bus     = kI2c1Partial,</div><div class="line">    .handler = lpc40xx::I2c::I2cHandler&lt;kI2c1Partial&gt;,</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C1),</div><div class="line">    .peripheral_power_id = SystemController::Peripherals::kI2c1,</div><div class="line">    .irq_number          = I2C1_IRQn,</div><div class="line">    .transaction         = transaction_i2c1,</div><div class="line">    .sda_pin             = kI2c1SdaPin,</div><div class="line">    .scl_pin             = kI2c1SclPin,</div><div class="line">    .pin_function_id     = 0b11,</div><div class="line">  }</div></div><!-- fragment -->
 <p>Definition for I2C bus 1 for LPC17xx. </p>
 
 </div>
@@ -200,7 +201,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .bus     = kI2c2Partial,</div><div class="line">    .handler = lpc40xx::I2c::I2cHandler&lt;kI2c2Partial&gt;,</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C2),</div><div class="line">    .peripheral_power_id = SystemController::Peripherals::kI2c2,</div><div class="line">    .irq_number          = I2C2_IRQn,</div><div class="line">    .transaction         = transaction_i2c2,</div><div class="line">    .sda_pin             = kI2c2SdaPin,</div><div class="line">    .scl_pin             = kI2c2SclPin,</div><div class="line">    .pin_function_id     = 0b10,</div><div class="line">  }</div></div><!-- fragment -->
 <p>Definition for I2C bus 2 for LPC17xx. </p>
 
 </div>

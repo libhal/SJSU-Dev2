@@ -150,9 +150,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a85fa79ae10b9cf4353af1528bdd68a0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85fa79ae10b9cf4353af1528bdd68a0f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>WatchdogIrqHandler</b> ()</td></tr>
 <tr class="separator:a85fa79ae10b9cf4353af1528bdd68a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6950fec6b75ac3d1a4ccebac560e000b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6950fec6b75ac3d1a4ccebac560e000b"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultWatchdogHandler</b> ()</td></tr>
-<tr class="separator:a6950fec6b75ac3d1a4ccebac560e000b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a265f66b99054d5d3f7b9abec061adbcc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a265f66b99054d5d3f7b9abec061adbcc"></a>
 static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertDurationToWatchdogTicks</b> (uint32_t watchdog_ticks, std::chrono::seconds duration)</td></tr>
 <tr class="separator:a265f66b99054d5d3f7b9abec061adbcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,7 +195,7 @@ static LPC_WDT_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><b>w
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">        .interrupt_request_number  = WDT_IRQn,</div><div class="line">        .interrupt_handler = &amp;WatchdogIrqHandler,</div><div class="line">      }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">        .interrupt_request_number = WDT_IRQn,</div><div class="line">        .interrupt_handler        = &amp;WatchdogIrqHandler,</div><div class="line">      }</div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

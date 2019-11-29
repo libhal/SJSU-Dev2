@@ -1,5 +1,0 @@
-<map id="sjsu::lpc17xx::TimerChannel" name="sjsu::lpc17xx::TimerChannel">
-<area shape="rect" id="node2" href="$d6/dbc/structsjsu_1_1lpc40xx_1_1Timer_1_1Channel__t.html" title="sjsu::lpc40xx::Timer\l::Channel_t" alt="" coords="31,213,178,255"/>
-<area shape="rect" id="node3" href="$d1/d78/structsjsu_1_1lpc40xx_1_1Timer_1_1ChannelPartial__t.html" title="sjsu::lpc40xx::Timer\l::ChannelPartial_t" alt="" coords="31,109,178,151"/>
-<area shape="rect" id="node4" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="21,5,188,47"/>
-</map>
