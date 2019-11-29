@@ -382,9 +382,9 @@ class Can final : public sjsu::Can
 
   inline static const InterruptController::RegistrationInfo_t
       kCanInterruptInfo = {
-        .interrupt_request_number  = CAN_IRQn,
-        .interrupt_handler = &CanIrqHandler,
-        .priority                  = 5,
+        .interrupt_request_number = CAN_IRQn,
+        .interrupt_handler        = &CanIrqHandler,
+        .priority                 = 5,
       };
 
   inline static const sjsu::lpc40xx::SystemController kDefaultSystemController =
@@ -421,37 +421,35 @@ class Can final : public sjsu::Can
 
   Status Initialize() const override
   {
-    Status status = Status::kSuccess;
     if (controller_ > kNumberOfControllers)
     {
-      status = Status::kDeviceNotFound;
+      return Status::kDeviceNotFound;
     }
-    else
-    {
-      SJ2_ASSERT_FATAL(
-          !(transmit_queue[controller_] == NULL),
-          "CAN message queues have not been created! Please call "
-          "CreateQueues() from this class before calling Initialize().");
-      EnablePower();
-      ConfigurePins();
-      // Enable reset mode in order to write to CAN registers.
-      SetControllerMode(kReset, true);
-      // Enable local buffer priority mode.
-      SetControllerMode(kTxPriority, true);
-      // CAN bus clock (on the wire)
-      SetBaudRate();
-      // Accept all messages
-      // TODO(#343): Allow the user to configure their own filter.
-      EnableAcceptanceFilter();
-      EnableInterrupts();
-      // Enable core interrupt
-      sjsu::InterruptController::GetPlatformController().Enable(
-          kCanInterruptInfo);
-      // Disable reset mode and enter operating mode.
-      SetControllerMode(kReset, false);
-      is_controller_initialized[controller_] = true;
-    }
-    return status;
+
+    SJ2_ASSERT_FATAL(
+        !(transmit_queue[controller_] == NULL),
+        "CAN message queues have not been created! Please call "
+        "CreateQueues() from this class before calling Initialize().");
+    EnablePower();
+    ConfigurePins();
+    // Enable reset mode in order to write to CAN registers.
+    SetControllerMode(kReset, true);
+    // Enable local buffer priority mode.
+    SetControllerMode(kTxPriority, true);
+    // CAN bus clock (on the wire)
+    SetBaudRate();
+    // Accept all messages
+    // TODO(#343): Allow the user to configure their own filter.
+    EnableAcceptanceFilter();
+    EnableInterrupts();
+    // Enable core interrupt
+    sjsu::InterruptController::GetPlatformController().Enable(
+        kCanInterruptInfo);
+    // Disable reset mode and enter operating mode.
+    SetControllerMode(kReset, false);
+    is_controller_initialized[controller_] = true;
+
+    return Status::kSuccess;
   }
 
   // TODO(#344):
