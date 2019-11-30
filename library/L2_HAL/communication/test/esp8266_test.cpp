@@ -30,7 +30,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // is supposed to read a confirmation response
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == (sizeof(kConfirmationResponse) - 1));
 
         for (size_t i = 0; i < size; i++)
@@ -42,7 +42,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // The second uart read is used to flush the serial buffer
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 
@@ -87,7 +87,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // is supposed to read a confirmation response
       if (count == 2)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == (sizeof(kConfirmationResponse) - 1));
 
         for (size_t i = 0; i < size; i++)
@@ -99,7 +99,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // This part is primarily used for the FlushSerialBuffer method
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
         count++;
       }
@@ -175,7 +175,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // Reads kTest to buffer and checks if timeout and size are correct
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 128);
 
         for (size_t i = 0; i < (sizeof(kTest)-1); i++)
@@ -188,7 +188,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // Checks FlushSerialBuffer has right timeout and size
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 
@@ -225,7 +225,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // Reads kTest to buffer and checks if timeout and size are correct
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 68);
 
         for (size_t i = 0; i < (sizeof(kTest)-1); i++)
@@ -238,7 +238,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // Checks FlushSerialBuffer has right timeout and size
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 
@@ -289,7 +289,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // is supposed to read a confirmation response
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == (sizeof(kConfirmationResponse) - 1));
 
         for (size_t i = 0; i < size; i++)
@@ -301,7 +301,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // The second uart read is used to flush the serial buffer
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 
@@ -315,7 +315,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
          Status(uint8_t *, size_t, std::chrono::microseconds)))
       .AlwaysDo(uart_response);
     CHECK(test_wifi_module.ConnectToAccessPoint(kSsid, kPassword,
-          Esp8266::kReadTimeout) == true);
+          Esp8266::kDefaultTimeout) == true);
     Verify(
       // Checks to see if uart read was called once
       ConstOverloadedMethod(mock_uart, Read, Status(uint8_t *, size_t,
@@ -352,7 +352,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // Reads kTest to buffer and checks if timeout and size are correct
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 68);
 
         for (size_t i = 0; i < (sizeof(kTest)-1); i++)
@@ -365,7 +365,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // Checks FlushSerialBuffer has right timeout and size
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 
@@ -408,7 +408,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // is supposed to read a confirmation response
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == (sizeof(kErrorResponse) - 1));
 
         for (size_t i = 0; i < size; i++)
@@ -420,7 +420,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // The second uart read is used to flush the serial buffer
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 
@@ -435,7 +435,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
          Status(uint8_t *, size_t, std::chrono::microseconds)))
       .AlwaysDo(uart_response);
     CHECK(test_wifi_module.ConnectToServer(kServer, 1000,
-          Esp8266::kReadTimeout, Esp8266::ConnectionType::kUdp) == false);
+          Esp8266::kDefaultTimeout, Esp8266::ConnectionType::kUdp) == false);
     Verify(
       // Checks to see if uart read was called once
       ConstOverloadedMethod(mock_uart, Read, Status(uint8_t *, size_t,
@@ -472,7 +472,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // Reads kTest to buffer and checks if timeout and size are correct
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 68);
 
         for (size_t i = 0; i < (sizeof(kTest)-1); i++)
@@ -485,7 +485,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       // Checks FlushSerialBuffer has right timeout and size
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 
@@ -542,7 +542,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
 
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
 
         data[0] = '>';
@@ -553,7 +553,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       }
       else if (count == 1)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 9);
 
         for (size_t i = 0; i < (sizeof(kTest)-1); i++)
@@ -564,7 +564,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       }
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 
@@ -629,7 +629,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
 
       if (count == 0)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
 
         data[0] = '>';
@@ -640,7 +640,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       }
       else if (count == 1)
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 9);
 
         for (size_t i = 0; i < (sizeof(kTest)-1); i++)
@@ -651,7 +651,7 @@ TEST_CASE("Esp8266 Test", "[esp8266]")
       }
       else
       {
-        CHECK(timeout == Esp8266::kReadTimeout);
+        CHECK(timeout == Esp8266::kDefaultTimeout);
         CHECK(size == 1);
       }
 

@@ -9,6 +9,7 @@
 #include "config.hpp"
 #include "L1_Peripheral/uart.hpp"
 #include "utility/status.hpp"
+#include "utility/time.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -23,11 +24,13 @@ class Esp8266
   };
   struct ModuleVersion_t
   {
-    uint8_t module_info[128];
+    static constexpr size_t kModuleInfoLength = 128;
+    uint8_t module_info[kModuleInfoLength];
   };
   struct NetworkConnection_t
   {
-    uint8_t connection_info[68];
+    static constexpr size_t kConnectionInfoLength = 68;
+    uint8_t connection_info[kConnectionInfoLength];
   };
   enum ConnectionType : uint8_t
   {
@@ -42,6 +45,7 @@ class Esp8266
   static constexpr uint32_t kBaudRate = 115200;
   // Confirmation responses recieved from the ESP8266 module
   static constexpr uint8_t kConfirmationResponse[] = "\r\nOK";
+  static constexpr uint8_t kAPConfirmationResponse[] = "WIFI";
   static constexpr uint8_t kSendRequestConfirmationResponse[] = "\r\nSEND OK";
   // Error response recieved from ESP8266 module
   static constexpr uint8_t kErrorResponse[] = "\r\nERROR";
@@ -76,8 +80,8 @@ class Esp8266
     "\r\n"
     "%s\r\n"
     "\r\n";
-  // Timeout for uart read
-  static constexpr std::chrono::microseconds kReadTimeout = 100ms;
+  // Default timeout for uart read
+  static constexpr std::chrono::microseconds kDefaultTimeout = 5000ms;
 
   // Pass in a Uart channel
   explicit constexpr Esp8266(const Uart & port)
@@ -88,12 +92,16 @@ class Esp8266
   // response is received
   virtual bool TestModule()
   {
-    uint8_t receive_buffer[4];
+    uint8_t receive_buffer[5];
+    receive_buffer[4] = '\0';
 
     Write(kTestCommand);
 
-    uart_port_.Read(receive_buffer, sizeof(receive_buffer), kReadTimeout);
+    uart_port_.Read(receive_buffer, sizeof(receive_buffer-1), kDefaultTimeout);
     FlushSerialBuffer();
+
+    printf("--Test--\n");
+    printf("Expected: %s, Actual: %s\n", kConfirmationResponse, receive_buffer);
 
     return CompareResponse(kConfirmationResponse,
                            (sizeof(kConfirmationResponse)-1),
@@ -102,17 +110,27 @@ class Esp8266
   // Sends reset command to ESP8266
   virtual void ResetModule()
   {
+    printf("--Reset--\n");
     Write(kResetCommand);
+    Wait(200ms);
+    Write(kDisconnectFromServerCommand);
+    Wait(200ms);
+    FlushSerialBuffer();
+    Write(kDisconnectFromAccessPointCommand);
+    Wait(200ms);
     FlushSerialBuffer();
   }
   // Initializes Uart driver and resets the wifi module. Returns true if
   // TestCommand method returns true.
   virtual bool Initialize()
   {
+    printf("--Initialize--\n");
     uart_port_.Initialize(kBaudRate);
 
-    Write(kDisableEchoCommand);
+    FlushSerialBuffer();
     ResetModule();
+    Write(kDisableEchoCommand);
+    FlushSerialBuffer();
     Write(kClientModeCommand);
     FlushSerialBuffer();
 
@@ -140,7 +158,7 @@ class Esp8266
 
     Write(kGetModuleVersionCommand);
     uart_port_.Read(version.module_info, sizeof(version.module_info),
-                    kReadTimeout);
+                    kDefaultTimeout);
     FlushSerialBuffer();
 
     AppendNullToResponse(version.module_info, sizeof(version.module_info));
@@ -154,7 +172,7 @@ class Esp8266
 
     Write(kGetNetworkConnectionInfoCommand);
     uart_port_.Read(network.connection_info,
-                    sizeof(network.connection_info), kReadTimeout);
+                    sizeof(network.connection_info), kDefaultTimeout);
     FlushSerialBuffer();
 
     AppendNullToResponse(network.connection_info,
@@ -165,21 +183,29 @@ class Esp8266
   // Connect to access point. Returns true if connection is established.
   virtual bool ConnectToAccessPoint(const char * ssid,
                                     const char * password,
-                                    std::chrono::microseconds uart_timeout)
+                                    std::chrono::microseconds read_timeout =
+                                      kDefaultTimeout)
   {
     char command_buffer[80];
-    uint8_t receive_buffer[4];
+    uint8_t receive_buffer[16];
+    receive_buffer[15] = '\0';
 
     snprintf(command_buffer, sizeof(command_buffer),
              kConnectToAccessPointCommand, ssid, password);
 
-    WriteFromNullTerminatedBuffer(reinterpret_cast<uint8_t*>(command_buffer));
+    printf("%s", command_buffer);
 
-    uart_port_.Read(receive_buffer, sizeof(receive_buffer), uart_timeout);
+    WriteFromNullTerminatedBuffer(reinterpret_cast<uint8_t*>(command_buffer));
+    uart_port_.Read(receive_buffer, sizeof(receive_buffer-1), read_timeout);
+    printf("Afte Wifi: %s", receive_buffer[5]);
+    Wait(200ms);
     FlushSerialBuffer();
 
-    return CompareResponse(kConfirmationResponse,
-                           (sizeof(kConfirmationResponse)-1),
+    printf("--Connect to ap--\n");
+    printf("Expected: %s, Actual: %s\n", kAPConfirmationResponse, receive_buffer);
+
+    return CompareResponse(kAPConfirmationResponse,
+                           (sizeof(kAPConfirmationResponse)-1),
                            receive_buffer);
   }
   // Disconnects ESP8266 from access point
@@ -197,8 +223,10 @@ class Esp8266
     return (network.connection_info[kStatus] != '5');
   }
   // Connects ESP8266 to hostname. Returns true if connection is estabilshed.
-  virtual bool ConnectToServer(const char * server, uint16_t port,
-                               std::chrono::microseconds uart_timeout,
+  virtual bool ConnectToServer(const char * server,
+                               uint16_t port,
+                               std::chrono::microseconds read_timeout =
+                                 kDefaultTimeout,
                                ConnectionType type = ConnectionType::kTcp)
   {
     char command_buffer[43];
@@ -209,8 +237,11 @@ class Esp8266
 
     WriteFromNullTerminatedBuffer(reinterpret_cast<uint8_t*>(command_buffer));
 
-    uart_port_.Read(receive_buffer, sizeof(receive_buffer), uart_timeout);
+    uart_port_.Read(receive_buffer, sizeof(receive_buffer), read_timeout);
     FlushSerialBuffer();
+
+    printf("--Server connect--\n");
+    printf("Not Expected: %s, Actual: %s\n", kErrorResponse, receive_buffer);
 
     return !(CompareResponse(kErrorResponse, (sizeof(kErrorResponse)-1),
                              receive_buffer));
@@ -233,14 +264,22 @@ class Esp8266
   // url example format: sjsu.edu/ or sjsu.edu/parkingtransportationmaps/
   // Returns number of characters not written to buffer
   // Stores request response in buffer
-  virtual int32_t SendGetRequest(const char * url, Buffer_t buffer)
+  virtual int32_t SendGetRequest(const char * url,
+                                 Buffer_t buffer,
+                                 std::chrono::microseconds read_timeout =
+                                   kDefaultTimeout)
   {
     size_t end_of_hostname = 0;
-    uint32_t url_size = static_cast<uint32_t>(strlen(url));
-    uint32_t get_request_size = 25 + url_size;
+    size_t url_size = strlen(url);
+    uint32_t get_request_size = 25 + static_cast<uint32_t>(url_size);
     char send_data_command_buffer[23];
     char get_request_buffer[128];
     uint8_t dummy_buffer;
+
+    for (uint32_t k = 0; k < buffer.size; k++)
+    {
+      buffer.address[k] = '\0';
+    }
 
     snprintf(send_data_command_buffer, sizeof(send_data_command_buffer),
              kSendDataCommand, get_request_size);
@@ -259,27 +298,29 @@ class Esp8266
 
     snprintf(get_request_buffer, sizeof(get_request_buffer), kGetRequest,
              &url[end_of_hostname], static_cast<int>(end_of_hostname), url);
-
+    printf("%s", send_data_command_buffer);
     WriteFromNullTerminatedBuffer(
       reinterpret_cast<uint8_t*>(send_data_command_buffer));
 
-    if (uart_port_.Read(&dummy_buffer, 1, kReadTimeout) == Status::kTimedOut)
+    if (uart_port_.Read(&dummy_buffer, 1, kDefaultTimeout) == Status::kTimedOut)
     {
       return -1;
     }
 
+    printf("dummy buffer: %c", dummy_buffer);
+
     if (dummy_buffer == '>')
     {
       int16_t missed_char = 0;
-
+      printf("%s", get_request_buffer);
       WriteFromNullTerminatedBuffer(
         reinterpret_cast<uint8_t*>(get_request_buffer));
 
-      uart_port_.Read(buffer.address, buffer.size, kReadTimeout);
+      uart_port_.Read(buffer.address, (buffer.size-1), read_timeout);
 
       for (uint32_t j = 0; j < 500; j++)
       {
-        if (uart_port_.Read(&dummy_buffer, 1, kReadTimeout) !=
+        if (uart_port_.Read(&dummy_buffer, 1, read_timeout) !=
           Status::kTimedOut)
         {
           missed_char++;
@@ -302,17 +343,26 @@ class Esp8266
   // payload example format: stuff=4 or stuff=12&things=13
   // Returns true if info was sent
   // Stores request response in buffer
-  virtual int32_t SendPostRequest(const char * url, const char * payload,
-                                  Buffer_t buffer)
+  virtual int32_t SendPostRequest(const char * url,
+                                  const char * payload,
+                                  Buffer_t buffer,
+                                  std::chrono::microseconds read_timeout =
+                                    kDefaultTimeout)
   {
     size_t end_of_hostname = 0;
-    uint32_t url_size = static_cast<uint32_t>(strlen(url));
+    size_t url_size = strlen(url);
     uint32_t payload_size = static_cast<uint32_t>(strlen(payload));
     int temp_payload_size = payload_size;
-    uint32_t post_request_size = 97 + payload_size + url_size;
+    uint32_t post_request_size = 97 + payload_size +
+      static_cast<uint32_t>(url_size);
     char send_data_command_buffer[23];
     char post_request_buffer[256];
     uint8_t dummy_buffer;
+
+    for (uint32_t k = 0; k < buffer.size; k++)
+    {
+      buffer.address[k] = '\0';
+    }
 
     while (temp_payload_size != 0)
     {
@@ -342,7 +392,7 @@ class Esp8266
     WriteFromNullTerminatedBuffer(
       reinterpret_cast<uint8_t*>(send_data_command_buffer));
 
-    if (uart_port_.Read(&dummy_buffer, 1, kReadTimeout) == Status::kTimedOut)
+    if (uart_port_.Read(&dummy_buffer, 1, kDefaultTimeout) == Status::kTimedOut)
     {
       return -1;
     }
@@ -354,11 +404,11 @@ class Esp8266
       WriteFromNullTerminatedBuffer(
         reinterpret_cast<uint8_t*>(post_request_buffer));
 
-      uart_port_.Read(buffer.address, buffer.size, kReadTimeout);
+      uart_port_.Read(buffer.address, (buffer.size-1), read_timeout);
 
       for (uint32_t j = 0; j < 500; j++)
       {
-        if (uart_port_.Read(&dummy_buffer, 1, kReadTimeout) !=
+        if (uart_port_.Read(&dummy_buffer, 1, read_timeout) !=
           Status::kTimedOut)
         {
           missed_char++;
@@ -395,6 +445,9 @@ class Esp8266
     {
       if (expected_response[i] != actual_response[i])
       {
+        printf("Iteration: %i\n", i);
+        printf("Expected: %c\n", expected_response[i]);
+        printf("Actual: %c\n", actual_response[i]);
         match = false;
         break;
       }
@@ -405,13 +458,15 @@ class Esp8266
   // Writes responses to ESP8266 from buffer
   virtual void FlushSerialBuffer()
   {
-    constexpr uint8_t kFlushCount = 10;
+    printf("--Buffer Flush--\n");
+    constexpr uint8_t kFlushCount = 100;
     uint8_t buffer;
 
     for (uint8_t i = 0; i < kFlushCount; i++)
     {
-      if (uart_port_.Read(&buffer, 1, kReadTimeout) != Status::kTimedOut)
+      if (uart_port_.Read(&buffer, 1, kDefaultTimeout) != Status::kTimedOut)
       {
+        printf("%c", buffer);
         continue;
       }
       else
