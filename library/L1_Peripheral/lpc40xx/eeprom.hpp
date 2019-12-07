@@ -27,7 +27,8 @@ class Eeprom final : public sjsu::Eeprom
   static constexpr bit::Mask kAddressMask = bit::CreateMaskFromRange(0, 1);
 
   /// Masks for the program status bits and read/write status bits
-  struct Status {  // NOLINT
+  struct Status  // NOLINT
+  {
     /// Mask to get value of programming status bit
     static constexpr bit::Mask kProgramStatusMask =
         bit::CreateMaskFromRange(28);
@@ -38,34 +39,22 @@ class Eeprom final : public sjsu::Eeprom
 
   /// EEPROM Command codes for reading from, writing to, and programming the
   /// device
-  enum command_codes {
-    kRead32Bits    = 0b010,
-    kWrite32Bits   = 0b101,
-    kEraseProgram  = 0b110
+  enum command_codes
+  {
+    kRead32Bits   = 0b010,
+    kWrite32Bits  = 0b101,
+    kEraseProgram = 0b110
   };
 
   /// Max timeout for program/write operations in milliseconds
   static constexpr std::chrono::milliseconds kMaxTimeout = 20ms;
 
-  /// Getting actual SystemController Object
-  static constexpr sjsu::lpc40xx::SystemController kLpc40xxSystemController =
-      sjsu::lpc40xx::SystemController();
-
-  /// Constructor has an optional SystemController parameter which can be
-  /// specified for testing purposes. Otherwise, the actual SystemController
-  /// object is used (kLpc40xxSystemController)
-  explicit constexpr Eeprom(const sjsu::SystemController & system_controller =
-                             kLpc40xxSystemController)
-      : system_controller_(system_controller)
-  {
-  }
-
   /// Initializing the EEPROM requires setting the wait state register, setting
   /// the clock divider register, and ensuring that the device is powered on.
   void Initialize() const override
   {
-    const float kSystemClock    = static_cast<float>
-                                    (system_controller_.GetSystemFrequency());
+    const float kSystemClock = static_cast<float>(
+        sjsu::SystemController::GetPlatformController().GetSystemFrequency());
     // The EEPROM runs at 375 kHz
     constexpr float kEepromClk  = 375'000;
     constexpr float kNanosecond = 1E-9f;
@@ -96,7 +85,8 @@ class Eeprom final : public sjsu::Eeprom
   /// @param wdata        - array of data to be written to EEPROM
   /// @param full_address - address where data will start being written to
   /// @param count        - number of bytes that have to be transferred
-  void Write(const uint8_t * wdata, uint32_t full_address,
+  void Write(const uint8_t * wdata,
+             uint32_t full_address,
              size_t count) const override
   {
     constexpr bit::Mask kLower6Bits = bit::CreateMaskFromRange(0, 5);
@@ -115,7 +105,7 @@ class Eeprom final : public sjsu::Eeprom
 
     uint16_t address;
 
-    for (size_t i = 0; i*4 < count; i++)
+    for (size_t i = 0; i * 4 < count; i++)
     {
       // Page offset is incremented by 4 because we're writing 32 bits
       constexpr uint8_t kOffsetInterval = 4;
@@ -127,8 +117,7 @@ class Eeprom final : public sjsu::Eeprom
       eeprom_register->WDATA = write_data[i];
 
       // Poll status register bit to see when writing is finished
-      auto check_register = [] ()
-      {
+      auto check_register = []() {
         return !(bit::Read(eeprom_register->INT_STATUS,
                            Status::kReadWriteStatusMask));
       };
@@ -137,7 +126,7 @@ class Eeprom final : public sjsu::Eeprom
 
       // Clear write interrupt
       eeprom_register->INT_CLR_STATUS =
-              (bit::Set(0, Status::kReadWriteStatusMask));
+          (bit::Set(0, Status::kReadWriteStatusMask));
 
       page_offset = static_cast<uint8_t>(page_offset + kOffsetInterval);
 
@@ -163,17 +152,16 @@ class Eeprom final : public sjsu::Eeprom
     eeprom_register->CMD  = kEraseProgram;
 
     // Poll status register bit to see when writing is finished
-    auto check_register = [] ()
-    {
-      return !(bit::Read(eeprom_register->INT_STATUS,
-                         Status::kProgramStatusMask));
+    auto check_register = []() {
+      return !(
+          bit::Read(eeprom_register->INT_STATUS, Status::kProgramStatusMask));
     };
 
     Wait(kMaxTimeout, check_register);
 
     // Clear program interrupt
     eeprom_register->INT_CLR_STATUS =
-            (bit::Set(0, Status::kReadWriteStatusMask));
+        (bit::Set(0, Status::kReadWriteStatusMask));
   }
 
   /// This function will return however much 32-bit data from the EEPROM
@@ -197,9 +185,6 @@ class Eeprom final : public sjsu::Eeprom
       read_data[index]      = eeprom_register->RDATA;
     }
   }
-
- private:
-  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

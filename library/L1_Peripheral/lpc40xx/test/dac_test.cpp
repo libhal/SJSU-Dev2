@@ -10,22 +10,21 @@ EMIT_ALL_METHODS(Dac);
 TEST_CASE("Testing lpc40xx Dac", "[lpc40xx-dac]")
 {
   LPC_IOCON_TypeDef local_iocon;
-  LPC_DAC_TypeDef local_dac_port;
-
   memset(&local_iocon, 0, sizeof(local_iocon));
-  memset(&local_dac_port, 0, sizeof(local_dac_port));
+  // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
+  // Redirects manipulation to the 'local_iocon'
+  // This is necessary because we have to cast the pin interface back to a Pin
+  // object which will attempt to manipulate hardware registers.
+  Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
 
+  LPC_DAC_TypeDef local_dac_port;
+  memset(&local_dac_port, 0, sizeof(local_dac_port));
   Dac::dac_register = &local_dac_port;
 
   Mock<sjsu::Pin> mock_dac_pin;
   Fake(Method(mock_dac_pin, SetPinFunction),
        Method(mock_dac_pin, SetAsAnalogMode),
        Method(mock_dac_pin, SetPull));
-  // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
-  // Redirects manipulation to the 'local_iocon'
-  // This is necessary because we have to cast the pin interface back to a Pin
-  // object which will attempt to manipulate hardware registers.
-  Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);
 
   Dac test_subject(mock_dac_pin.get());
 

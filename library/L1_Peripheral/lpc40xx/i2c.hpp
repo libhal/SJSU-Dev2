@@ -310,15 +310,7 @@ class I2c final : public sjsu::I2c
   ///
   /// @param bus - pass a reference to a constant lpc40xx::I2c::Bus_t
   ///        definition.
-  /// @param system_controller - reference to system controller. Uses the
-  ///        default lpc40xx system controller. This is typically only used for
-  ///        unit testing.
-  explicit constexpr I2c(const Bus_t & bus,
-                         const sjsu::SystemController & system_controller =
-                             DefaultSystemController())
-      : i2c_(bus), system_controller_(system_controller)
-  {
-  }
+  explicit constexpr I2c(const Bus_t & bus) : i2c_(bus) {}
 
   Status Initialize() const override
   {
@@ -329,10 +321,12 @@ class I2c final : public sjsu::I2c
     i2c_.sda_pin.SetPull(sjsu::Pin::Resistor::kNone);
     i2c_.scl_pin.SetPull(sjsu::Pin::Resistor::kNone);
 
-    system_controller_.PowerUpPeripheral(i2c_.peripheral_power_id);
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
+        i2c_.peripheral_power_id);
 
     float peripheral_frequency = static_cast<float>(
-        system_controller_.GetPeripheralFrequency(i2c_.peripheral_power_id));
+        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
+            i2c_.peripheral_power_id));
     float scll = ((peripheral_frequency / 75'000.0f) / 2.0f) * 0.7f;
     float sclh = ((peripheral_frequency / 75'000.0f) / 2.0f) * 1.3f;
 
@@ -406,7 +400,6 @@ class I2c final : public sjsu::I2c
     return i2c_.transaction.status;
   }
   const Bus_t & i2c_;
-  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

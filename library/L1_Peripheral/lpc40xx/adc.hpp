@@ -169,7 +169,7 @@ class Adc final : public sjsu::Adc
     };
   };
 
-  /// The default and highest frequence that the ADC can operate at.
+  /// The default and highest frequency that the ADC can operate at.
   static constexpr units::frequency::hertz_t kClockFrequency = 1_MHz;
   /// A pointer holding the address to the LPC40xx ADC peripheral.
   /// This variable is a dependency injection point for unit testing thus it is
@@ -188,10 +188,10 @@ class Adc final : public sjsu::Adc
   /// conversion, one must wait until the conversion is complete before
   /// retrieving the converted analog voltage to digital value.
   ///
-  /// Burst mode is an ADC mode that makes the ADC peripheral continously sample
-  /// it's input channels without CPU intervention, meaning that the CPU can
-  /// simply read back the value in the conversion register to get the current
-  /// converted voltage.
+  /// Burst mode is an ADC mode that makes the ADC peripheral continuously
+  /// sample it's input channels without CPU intervention, meaning that the CPU
+  /// can simply read back the value in the conversion register to get the
+  /// current converted voltage.
   ///
   /// @param turn_burst_mode_on: if true, will turn on burst mode.
   static void BurstMode(bool turn_burst_mode_on = true)
@@ -204,22 +204,13 @@ class Adc final : public sjsu::Adc
   {
     return bit::Read(adc_base->CR, Control::kBurstEnable);
   }
+
   /// @param channel: Passed channel descriptor object. See Channel_t and
   ///        Channel documentation for more details about how to use this.
-  ///
-  /// @param system_controller: pass a system controller object to the ADC.
-  ///        typically this parameter is used for testing this class and for
-  ///        choosing the lpc17xx system controller when using this class on
-  ///        that platform.
-  explicit constexpr Adc(const Channel_t & channel,
-                         const sjsu::SystemController & system_controller =
-                             DefaultSystemController())
-      : channel_(channel), system_controller_(system_controller)
-  {
-  }
+  explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
   Status Initialize() const override
   {
-    system_controller_.PowerUpPeripheral(
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
         sjsu::lpc40xx::SystemController::Peripherals::kAdc);
 
     channel_.adc_pin.SetPinFunction(channel_.pin_function);
@@ -227,7 +218,7 @@ class Adc final : public sjsu::Adc
     channel_.adc_pin.SetAsAnalogMode(true);
 
     const units::frequency::hertz_t kPeripheralFrequency =
-        system_controller_.GetPeripheralFrequency(
+        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
             sjsu::lpc40xx::SystemController::Peripherals::kAdc);
     uint32_t clock_divider =
         (kPeripheralFrequency / kClockFrequency).to<uint32_t>();
@@ -238,7 +229,7 @@ class Adc final : public sjsu::Adc
     control = bit::Insert(control, clock_divider, Control::kClockDivider);
 
     // If burst mode is enabled, the bits in the select area of the control
-    // register, are enables for each corrisponding ADC channel. Otherwise, this
+    // register, are enables for each corresponding ADC channel. Otherwise, this
     // field should only hold a single set 1 when using software conversion.
     if (BurstModeIsEnabled())
     {
@@ -288,7 +279,6 @@ class Adc final : public sjsu::Adc
     }
   }
   const Channel_t & channel_;
-  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

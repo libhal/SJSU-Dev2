@@ -198,18 +198,10 @@ class PulseCapture final : public sjsu::PulseCapture
   /// @param timer - timer to capture from
   /// @param channel - which channel of associated timer to capture from
   /// @param kFrequency - rate at which capture events are monitored
-  /// @param system_controller - reference to system controller.
-  ///        Uses the default LPC40xx system controller.
-  explicit constexpr PulseCapture(
-      const CaptureChannel_t & timer,
-      const CaptureChannelNumber & channel,
-      const units::frequency::hertz_t kFrequency,
-      const sjsu::SystemController & system_controller =
-          DefaultSystemController())
-      : timer_(timer),
-        channel_(channel),
-        frequency_(kFrequency),
-        system_controller_(system_controller)
+  explicit constexpr PulseCapture(const CaptureChannel_t & timer,
+                                  const CaptureChannelNumber & channel,
+                                  const units::frequency::hertz_t kFrequency)
+      : timer_(timer), channel_(channel), frequency_(kFrequency)
   {
     *timer_.channel.channel_number = channel_;
   };
@@ -221,14 +213,16 @@ class PulseCapture final : public sjsu::PulseCapture
                     int32_t interrupt_priority = -1) const override
   {
     // NOTE: Same initialization as Timer library's Initialize()
-    system_controller_.PowerUpPeripheral(timer_.channel.power_id);
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
+        timer_.channel.power_id);
     SJ2_ASSERT_FATAL(
         frequency_ != 0_Hz,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
 
     // Configure prescaler
     uint32_t prescaler =
-        system_controller_.GetPeripheralFrequency(timer_.channel.power_id) /
+        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
+            timer_.channel.power_id) /
         this->frequency_;
     timer_.channel.timer_register->PR = prescaler;
 
@@ -244,9 +238,9 @@ class PulseCapture final : public sjsu::PulseCapture
     // Install capture ISR
     *timer_.channel.user_callback = callback;
     sjsu::InterruptController::GetPlatformController().Enable(
-        { .interrupt_request_number  = timer_.channel.irq,
-          .interrupt_handler = timer_.handler,
-          .priority                  = interrupt_priority });
+        { .interrupt_request_number = timer_.channel.irq,
+          .interrupt_handler        = timer_.handler,
+          .priority                 = interrupt_priority });
 
     return Status::kSuccess;
   }
@@ -309,7 +303,6 @@ class PulseCapture final : public sjsu::PulseCapture
   const CaptureChannel_t & timer_;
   const CaptureChannelNumber channel_;         // NOLINT
   const units::frequency::hertz_t frequency_;  // NOLINT
-  const sjsu::SystemController & system_controller_;
 };  // class Capture
 };  // namespace lpc40xx
 };  // namespace sjsu

@@ -12,8 +12,7 @@ void DemoSystemIsr()
 int main()
 {
   LOG_INFO("System Timer Application Starting...");
-  sjsu::cortex::SystemTimer system_timer(
-      sjsu::GetInactive<sjsu::SystemController>());
+  sjsu::cortex::SystemTimer system_timer;
 
   system_timer.SetCallback(DemoSystemIsr);
   system_timer.SetTickFrequency(10_Hz);

@@ -9,7 +9,28 @@ namespace sjsu
 {
 class SystemController
 {
+ private:
+  /// Global platform system controller scoped within this class. Most
+  /// systems only need a single platform system controller, and thus this
+  /// can hold a general/default platform system controller that can be
+  /// retrieved via SetPlatformController and GetPlatformController.
+  static inline SystemController * platform_system_controller = nullptr;
+
  public:
+  /// Set the controller for the platform
+  ///
+  /// @param system_controller - a pointer to the current platform's
+  ///        system controller.
+  static void SetPlatformController(SystemController * system_controller)
+  {
+    platform_system_controller = system_controller;
+  }
+  /// Retrieve a reference of the platforms system controller
+  static sjsu::SystemController & GetPlatformController()
+  {
+    return *platform_system_controller;
+  }
+
   // ==============================
   // Interface Defintions
   // ==============================
@@ -19,6 +40,7 @@ class SystemController
    public:
     uint8_t device_id = -1;
   };
+
   template <size_t kDeviceId>
   class AddPeripheralID : public PeripheralID
   {

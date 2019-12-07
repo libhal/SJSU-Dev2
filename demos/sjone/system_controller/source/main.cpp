@@ -14,9 +14,10 @@ int main()
   controller.SetSystemClockFrequency(kDesiredFrequency);
   controller.SetPeripheralClockDivider(
       sjsu::lpc17xx::SystemController::Peripherals::kUart0, 2);
+  sjsu::SystemController::SetPlatformController(&controller);
 
   // re-configuring uart0 after changing cpu speed
-  sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0, controller);
+  sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0);
   uart0.SetBaudRate(config::kBaudRate);
 
   using sjsu::lpc17xx::LPC_SC_TypeDef;

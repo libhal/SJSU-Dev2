@@ -57,24 +57,22 @@ class Timer final : public sjsu::Timer
 
   static constexpr uint8_t kMatchRegisterCount = 4;
 
-  explicit constexpr Timer(const Peripheral_t & timer,
-                           const sjsu::SystemController & system_controller =
-                               DefaultSystemController())
-      : timer_(timer), system_controller_(system_controller)
-  {
-  }
+  explicit constexpr Timer(const Peripheral_t & timer) : timer_(timer) {}
 
   Status Initialize(units::frequency::hertz_t frequency,
                     InterruptCallback callback = nullptr,
                     int32_t priority           = -1) const override
   {
-    system_controller_.PowerUpPeripheral(timer_.id);
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
+        timer_.id);
     SJ2_ASSERT_FATAL(
         frequency.to<uint32_t>() != 0,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
     // Set Prescale register for Prescale Counter to milliseconds
-    uint32_t prescaler =
-        system_controller_.GetPeripheralFrequency(timer_.id) / frequency;
+    auto peripheral_frequency =
+        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
+            timer_.id);
+    uint32_t prescaler    = peripheral_frequency / frequency;
     timer_.peripheral->PR = prescaler;
     timer_.peripheral->TCR |= (1 << 0);
 
@@ -134,7 +132,6 @@ class Timer final : public sjsu::Timer
 
  private:
   const Peripheral_t & timer_;
-  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu
