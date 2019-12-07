@@ -24,6 +24,7 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
+  sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Set up Mock for PinCongiure
   Mock<sjsu::Pin> mock_mosi;
@@ -44,7 +45,7 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
     .pin_function_id = 0b110,
   };
 
-  Spi test_spi(kMockSpi, mock_system_controller.get());
+  Spi test_spi(kMockSpi);
   test_spi.SetSpiDefault();
   test_spi.Initialize();
 

@@ -26,6 +26,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   Mock<SystemController> mock_system_controller;
   When(Method(mock_system_controller, GetSystemFrequency))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
+  sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;
   Fake(Method(mock_interrupt_controller, Enable));
@@ -33,7 +34,8 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 
-  SystemTimer test_subject(mock_system_controller.get());
+  constexpr uint8_t kExpectedPriority = 3;
+  SystemTimer test_subject(kExpectedPriority);
 
   SECTION("SetTickFrequency generate desired frequency")
   {
@@ -77,7 +79,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
         Method(mock_interrupt_controller, Enable)
             .Matching([](sjsu::InterruptController::RegistrationInfo_t info) {
               return (info.interrupt_request_number == cortex::SysTick_IRQn) &&
-                     (info.priority == -1);
+                     (info.priority == kExpectedPriority);
             }));
   }
 

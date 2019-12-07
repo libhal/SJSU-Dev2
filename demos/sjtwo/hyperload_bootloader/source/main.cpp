@@ -222,8 +222,7 @@ void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
 
 int main()
 {
-  const sjsu::lpc40xx::SystemController kLpc40xxSystemController;
-  sjsu::cortex::SystemTimer system_timer(kLpc40xxSystemController);
+  sjsu::cortex::SystemTimer system_timer;
   sjsu::lpc40xx::Gpio button0(1, 19);
   sjsu::lpc40xx::Gpio button1(1, 15);
   sjsu::lpc40xx::Gpio button2(0, 30);

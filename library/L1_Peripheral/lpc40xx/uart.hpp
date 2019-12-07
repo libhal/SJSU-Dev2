@@ -287,22 +287,15 @@ class Uart final : public sjsu::Uart
       .rx_function_id = 0b011,
     };
   };
-  ///
+
   /// @param port - a reference to a constant lpc40xx::Uart::Port_t definition
-  /// @param system_controller - reference to system controller. Uses the
-  ///        default lpc40xx system controller. This is typically only used for
-  ///        unit testing.
-  explicit constexpr Uart(const Port_t & port,
-                          const sjsu::SystemController & system_controller =
-                              DefaultSystemController())
-      : port_(port), system_controller_(system_controller)
-  {
-  }
+  explicit constexpr Uart(const Port_t & port) : port_(port) {}
 
   Status Initialize(uint32_t baud_rate) const override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
-    system_controller_.PowerUpPeripheral(port_.power_on_id);
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
+        port_.power_on_id);
 
     SetBaudRate(baud_rate);
 
@@ -317,9 +310,12 @@ class Uart final : public sjsu::Uart
 
   bool SetBaudRate(uint32_t baud_rate) const override
   {
-    uart::UartCalibration_t calibration = uart::GenerateUartCalibration(
-        baud_rate,
-        system_controller_.GetPeripheralFrequency(port_.power_on_id));
+    auto peripheral_frequency =
+        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
+            port_.power_on_id);
+
+    uart::UartCalibration_t calibration =
+        uart::GenerateUartCalibration(baud_rate, peripheral_frequency);
 
     constexpr uint8_t kDlabBit = (1 << 7);
 
@@ -380,8 +376,6 @@ class Uart final : public sjsu::Uart
   }
   /// const reference to lpc40xx::Uart::Port_t definition
   const Port_t & port_;
-  /// Const reference to an lpc40xx::SystemController.
-  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

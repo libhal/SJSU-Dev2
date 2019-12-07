@@ -387,9 +387,6 @@ class Can final : public sjsu::Can
         .priority                 = 5,
       };
 
-  inline static const sjsu::lpc40xx::SystemController kDefaultSystemController =
-      sjsu::lpc40xx::SystemController();
-
   inline static const lpc40xx::Pin kPort1ReadPin     = Pin(0, 0);
   inline static const lpc40xx::Pin kPort1TransmitPin = Pin(0, 1);
   inline static const lpc40xx::Pin kPort2ReadPin     = Pin(2, 7);
@@ -400,22 +397,15 @@ class Can final : public sjsu::Can
       : controller_(kCan1),
         baud_rate_(BaudRates::kBaud100Kbps),
         rd_(kPort1ReadPin),
-        td_(kPort1TransmitPin),
-        system_controller_(kDefaultSystemController)
+        td_(kPort1TransmitPin)
   {
   }
 
   constexpr Can(Controllers controller,
                 BaudRates baud_rate,
                 const sjsu::Pin & td_pin = GetInactive<sjsu::Pin>(),
-                const sjsu::Pin & rd_pin = GetInactive<sjsu::Pin>(),
-                const sjsu::lpc40xx::SystemController & system_controller =
-                    kDefaultSystemController)
-      : controller_(controller),
-        baud_rate_(baud_rate),
-        rd_(td_pin),
-        td_(rd_pin),
-        system_controller_(system_controller)
+                const sjsu::Pin & rd_pin = GetInactive<sjsu::Pin>())
+      : controller_(controller), baud_rate_(baud_rate), rd_(td_pin), td_(rd_pin)
   {
   }
 
@@ -518,7 +508,8 @@ class Can final : public sjsu::Can
   }
 
   [[gnu::always_inline]] bool Receive(
-      RxMessage_t * const kMessage) const override {
+      RxMessage_t * const kMessage) const override
+  {
     bool success = false;
     if (xQueueReceive(receive_queue[controller_], kMessage, 0) == pdPASS)
     {
@@ -682,7 +673,8 @@ class Can final : public sjsu::Can
     can_registers[controller]->CMR = kReleaseRxBuffer;
   }
 
-  [[gnu::always_inline]] void CaptureRegisterData() {
+  [[gnu::always_inline]] void CaptureRegisterData()
+  {
     interrupts[controller_].ICR    = can_registers[controller_]->ICR;
     status[controller_].SR         = can_registers[controller_]->SR;
     global_status[controller_].GSR = can_registers[controller_]->GSR;
@@ -704,12 +696,12 @@ class Can final : public sjsu::Can
   {
     if (controller_ == kCan1)
     {
-      system_controller_.PowerUpPeripheral(
+      sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
           sjsu::lpc40xx::SystemController::Peripherals::kCan1);
     }
     else
     {
-      system_controller_.PowerUpPeripheral(
+      sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
           sjsu::lpc40xx::SystemController::Peripherals::kCan2);
     }
   }
@@ -799,7 +791,6 @@ class Can final : public sjsu::Can
   BaudRates baud_rate_;
   const sjsu::Pin & rd_;
   const sjsu::Pin & td_;
-  const sjsu::lpc40xx::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

@@ -5,6 +5,7 @@
 #include "newlib/newlib.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
+#include "L1_Peripheral/inactive.hpp"
 
 // Private namespace to make sure that these do not conflict with other globals
 namespace
@@ -19,7 +20,7 @@ int LinuxStdIn(char * data, size_t length)
   return read(STDIN_FILENO, data, length);
 }
 
-extern "C" int _write(int, const char* ptr, int length)  // NOLINT
+extern "C" int _write(int, const char * ptr, int length)  // NOLINT
 {
   return LinuxStdOut(ptr, length);
 }
@@ -51,6 +52,11 @@ class InitializePlatformLinux
  public:
   InitializePlatformLinux()
   {
+    auto & interrupt_controller =
+        sjsu::GetInactive<sjsu::InterruptController>();
+    auto & system_controller = sjsu::GetInactive<sjsu::SystemController>();
+    sjsu::InterruptController::SetPlatformController(&interrupt_controller);
+    sjsu::SystemController::SetPlatformController(&system_controller);
     sjsu::newlib::SetStdout(LinuxStdOut);
     sjsu::newlib::SetStdin(LinuxStdIn);
     sjsu::SetUptimeFunction(LinuxUptime);

@@ -13,8 +13,8 @@ EMIT_ALL_METHODS(Watchdog);
 
 TEST_CASE("Testing lpc40xx watchdog", "[lpc40xx-watchdog]")
 {
-  constexpr std::chrono::seconds kTimerConstantSeconds = 10s;
-  constexpr uint32_t kTimerConstant                    = 1250000;
+  constexpr std::chrono::seconds kTimerConstantSeconds = 1s;
+  constexpr uint32_t kTimerConstant                    = 125000;
   constexpr uint8_t kTimerMode                         = 0x3;
   constexpr uint32_t kTimerWarning                     = 1023;
   constexpr uint8_t kFeedSequence                      = 0x55;

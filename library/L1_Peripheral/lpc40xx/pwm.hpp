@@ -42,6 +42,7 @@ class Pwm final : public sjsu::Pwm
     /// corrissponds to a PWM channel.
     constexpr static bit::Mask kEnableOutput = bit::CreateMaskFromRange(8, 14);
   };
+
   /// Match register control bit masks.
   struct MatchControl  // NOLINT
   {
@@ -49,6 +50,7 @@ class Pwm final : public sjsu::Pwm
     /// register to be reset to 0 when it is equal to the match register 0.
     constexpr static bit::Mask kPwm0Reset = bit::CreateMaskFromRange(1);
   };
+
   /// Register controls PWM peripheral wide timer control.
   struct Timer  // NOLINT
   {
@@ -64,6 +66,7 @@ class Pwm final : public sjsu::Pwm
     /// set to 0, to allow both of them to work independently.
     constexpr static bit::Mask kMasterDisable = bit::CreateMaskFromRange(4);
   };
+
   /// PWM channel count control register
   struct CountControl  // NOLINT
   {
@@ -75,6 +78,7 @@ class Pwm final : public sjsu::Pwm
     /// zero, since we want to utilize the internal peripheral clock source.
     constexpr static bit::Mask kCountInput = bit::CreateMaskFromRange(2, 3);
   };
+
   /// Defines a LPC PWM peripheral definition that contains all of the
   /// information needed to use it.
   struct Peripheral_t
@@ -84,6 +88,7 @@ class Pwm final : public sjsu::Pwm
     /// The power on id for the above LPC PWM peripheral.
     sjsu::SystemController::PeripheralID id;
   };
+
   /// Defines all information necessary to control a specific PWM channel.
   struct Channel_t
   {
@@ -96,6 +101,7 @@ class Pwm final : public sjsu::Pwm
     /// Contains the pin function id, used to select PWM output for the pin.
     uint8_t pin_function_code : 3;
   };
+
   /// Structure used as a namespace for predefined Channel definitions
   struct Channel  // NOLINT
   {
@@ -167,26 +173,19 @@ class Pwm final : public sjsu::Pwm
       .pin_function_code = 0b001,
     };
   };
+
   /// Constructor for a LPC40xx PWM channel.
   ///
   /// @param channel - Reference to a const channel description for this
   ///        instance of the PWM driver.
-  /// @param system_controller - Reference to a system controller object. Used
-  ///        to power on the peripheral and get the current peripheral
-  ///        frequency. Typically only changed from the default for unit testing
-  ///        purposes.
-  explicit constexpr Pwm(const Channel_t & channel,
-                         const sjsu::SystemController & system_controller =
-                             DefaultSystemController())
-      : channel_(channel), system_controller_(system_controller)
-  {
-  }
+  explicit constexpr Pwm(const Channel_t & channel) : channel_(channel) {}
   Status Initialize(units::frequency::hertz_t frequency_hz) const override
   {
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");
 
-    system_controller_.PowerUpPeripheral(channel_.peripheral.id);
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
+        channel_.peripheral.id);
 
     auto * pwm = channel_.peripheral.registers;
     // Set prescalar to 1 so the input frequency to the PWM peripheral is equal
@@ -209,7 +208,8 @@ class Pwm final : public sjsu::Pwm
     // Match register 0 is used to generate the desired frequency. If the time
     // counter TC is equal to MR0
     const units::frequency::hertz_t kPeripheralFrequency =
-        system_controller_.GetPeripheralFrequency(channel_.peripheral.id);
+        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
+            channel_.peripheral.id);
 
     pwm->MR0 = (kPeripheralFrequency / frequency_hz).to<uint32_t>();
 
@@ -256,7 +256,8 @@ class Pwm final : public sjsu::Pwm
         "Cannot set frequency to 0Hz! This call will have no effect!");
 
     auto peripheral_frequency =
-        system_controller_.GetPeripheralFrequency(channel_.peripheral.id);
+        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
+            channel_.peripheral.id);
     // Get the current duty cycle so we can match it to the updated frequency.
     float previous_duty_cycle = GetDutyCycle();
 
@@ -281,8 +282,8 @@ class Pwm final : public sjsu::Pwm
     units::frequency::hertz_t result = 0_Hz;
     if (match_register0 != 0)
     {
-      auto pwm_frequency =
-          system_controller_.GetPeripheralFrequency(channel_.peripheral.id);
+      auto pwm_frequency = sjsu::SystemController::GetPlatformController()
+                               .GetPeripheralFrequency(channel_.peripheral.id);
 
       result = pwm_frequency / match_register0;
     }
@@ -348,9 +349,6 @@ class Pwm final : public sjsu::Pwm
   /// Reference to a const channel description for this instance of the PWM
   /// driver.
   const Channel_t & channel_;
-  /// Reference to a system controller object. Used to power on the peripheral
-  /// and get the current peripheral frequency.
-  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

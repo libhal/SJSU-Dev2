@@ -10,8 +10,9 @@ int main()
   sjsu::lpc17xx::SystemController system_controller;
   system_controller.SetPeripheralClockDivider(
       sjsu::lpc17xx::SystemController::Peripherals::kI2c2, 4);
+  sjsu::SystemController::SetPlatformController(&system_controller);
 
-  sjsu::lpc17xx::I2c i2c2(sjsu::lpc17xx::I2cBus::kI2c2, system_controller);
+  sjsu::lpc17xx::I2c i2c2(sjsu::lpc17xx::I2cBus::kI2c2);
   sjsu::Tmp102 temperature_sensor(i2c2, sjsu::Tmp102::DeviceAddress::kGround);
   units::temperature::celsius_t temperature;
 
