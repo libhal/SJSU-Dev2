@@ -24,34 +24,15 @@ class Watchdog final : public sjsu::Watchdog
   static constexpr units::frequency::hertz_t kWatchdogClockDivider   = 4_Hz;
   inline static LPC_WDT_TypeDef * wdt_base                           = LPC_WDT;
 
-  static void WatchdogIrqHandler()
-  {
-    SJ2_ASSERT_FATAL(false, "Watch Dog timer overflowed");
-  }
-
-  // This function converts duration back into watchdog ticks to write to the TC
-  // register
-  static uint32_t ConvertDurationToWatchdogTicks(uint32_t watchdog_ticks,
-                                                 std::chrono::seconds duration)
-  {
-    uint32_t watchdog_clock_scalar =
-        (kWatchdogClockFrequency / kWatchdogClockDivider).to<uint32_t>();
-    watchdog_ticks =
-        (watchdog_clock_scalar * static_cast<uint32_t>(duration.count()));
-    return watchdog_ticks;
-  }
-
-  inline static const InterruptController::RegistrationInfo_t
-      kWatchdogInterruptInfo = {
-        .interrupt_request_number = WDT_IRQn,
-        .interrupt_handler        = &WatchdogIrqHandler,
-      };
+  explicit Watchdog(uint8_t priority = -1) : priority_(priority) {}
 
   // Initializes the watchdog timer
   Status Initialize(std::chrono::seconds duration) const override
   {
-    uint32_t timer_constant = 0x0000'0000;
-    timer_constant = ConvertDurationToWatchdogTicks(timer_constant, duration);
+    uint32_t watchdog_clock_scalar =
+        (kWatchdogClockFrequency / kWatchdogClockDivider).to<uint32_t>();
+    uint32_t timer_constant =
+        (watchdog_clock_scalar * static_cast<uint32_t>(duration.count()));
 
     // Insert timer_constant value into TC register
     wdt_base->TC = bit::Extract(timer_constant, { .position = 0, .width = 24 });
@@ -68,8 +49,11 @@ class Watchdog final : public sjsu::Watchdog
   void Enable() const override
   {
     // Register WDT_IRQ defined by the structure
-    sjsu::InterruptController::GetPlatformController().Enable(
-        kWatchdogInterruptInfo);
+    sjsu::InterruptController::GetPlatformController().Enable({
+        .interrupt_request_number = WDT_IRQn,
+        .interrupt_handler        = []() {},
+        .priority                 = priority_,
+    });
   }
 
   // Feeds the watchdog timer
@@ -84,6 +68,7 @@ class Watchdog final : public sjsu::Watchdog
   {
     return wdt_base->TV;
   }
+  uint8_t priority_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

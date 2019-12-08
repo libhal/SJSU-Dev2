@@ -174,8 +174,8 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a78464ca63a55f0d64d1f50d2849e146c"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#a78464ca63a55f0d64d1f50d2849e146c">PulseCapture</a> (const <a class="el" href="../../dd/dd8/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannel__t.html">CaptureChannel_t</a> &amp;timer, const <a class="el" href="../../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#af33a3ce648f45f12ee0e6752c27eb83d">CaptureChannelNumber</a> &amp;channel, const units::frequency::hertz_t kFrequency, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
-<tr class="separator:a78464ca63a55f0d64d1f50d2849e146c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6323e2e21cfaf2b9d977e63e7e7a398"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#ab6323e2e21cfaf2b9d977e63e7e7a398">PulseCapture</a> (const <a class="el" href="../../dd/dd8/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannel__t.html">CaptureChannel_t</a> &amp;timer, const <a class="el" href="../../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#af33a3ce648f45f12ee0e6752c27eb83d">CaptureChannelNumber</a> &amp;channel, const units::frequency::hertz_t kFrequency)</td></tr>
+<tr class="separator:ab6323e2e21cfaf2b9d977e63e7e7a398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab67b39a6d617ab4082a15a0123be165b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#ab67b39a6d617ab4082a15a0123be165b">Initialize</a> (<a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#a4fa4abf74b4edd9674360f43352244e1">CaptureCallback</a> callback=nullptr, int32_t interrupt_priority=-1) const override</td></tr>
 <tr class="separator:ab67b39a6d617ab4082a15a0123be165b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c18b7b31700395b9cd1281a011b4cea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#a3c18b7b31700395b9cd1281a011b4cea">ConfigureCapture</a> (<a class="el" href="../../d2/d96/classsjsu_1_1PulseCapture.html#a60d7b48cf59703107bc569a6d27e01db">CaptureEdgeMode</a> mode) const override</td></tr>
@@ -198,7 +198,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Pulse capture library. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a78464ca63a55f0d64d1f50d2849e146c"></a>
+<a class="anchor" id="ab6323e2e21cfaf2b9d977e63e7e7a398"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -221,13 +221,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const units::frequency::hertz_t&#160;</td>
-          <td class="paramname"><em>kFrequency</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
-          <td class="paramname"><em>system_controller</em> = <code>DefaultSystemController()</code>&#160;</td>
+          <td class="paramname"><em>kFrequency</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -247,7 +241,6 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
     <tr><td class="paramname">timer</td><td>- timer to capture from </td></tr>
     <tr><td class="paramname">channel</td><td>- which channel of associated timer to capture from </td></tr>
     <tr><td class="paramname">kFrequency</td><td>- rate at which capture events are monitored </td></tr>
-    <tr><td class="paramname">system_controller</td><td>- reference to system controller. Uses the default LPC40xx system controller. </td></tr>
   </table>
   </dd>
 </dl>

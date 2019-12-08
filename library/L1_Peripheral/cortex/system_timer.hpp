@@ -67,12 +67,8 @@ class SystemTimer final : public sjsu::SystemTimer
   }
   /// Constructor for ARM Cortex M system timer.
   ///
-  /// @param system_controller - used specifically to get platform's frequency.
-  explicit constexpr SystemTimer(
-      const sjsu::SystemController & system_controller)
-      : system_controller_(system_controller)
-  {
-  }
+  /// @param priority - the interrupt priority of
+  explicit constexpr SystemTimer(uint8_t priority = -1) : priority_(priority) {}
 
   void Initialize() const override {}
 
@@ -94,6 +90,7 @@ class SystemTimer final : public sjsu::SystemTimer
       sjsu::InterruptController::GetPlatformController().Enable({
           .interrupt_request_number = cortex::SysTick_IRQn,
           .interrupt_handler        = SystemTimerHandler,
+          .priority                 = priority_,
       });
       // Set all flags required to enable the counter
       uint32_t ctrl_mask = (1 << ControlBitMap::kTickInterupt) |
@@ -126,7 +123,7 @@ class SystemTimer final : public sjsu::SystemTimer
     }
 
     units::frequency::hertz_t system_frequency =
-        system_controller_.GetSystemFrequency();
+        sjsu::SystemController::GetPlatformController().GetSystemFrequency();
 
     uint32_t reload_value =
         units::unit_cast<uint32_t>((system_frequency / frequency) - 1);
@@ -145,7 +142,7 @@ class SystemTimer final : public sjsu::SystemTimer
   }
 
  private:
-  const sjsu::SystemController & system_controller_;
+  uint8_t priority_;
 };
 }  // namespace cortex
 }  // namespace sjsu

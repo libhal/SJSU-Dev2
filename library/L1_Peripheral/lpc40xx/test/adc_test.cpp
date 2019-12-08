@@ -28,6 +28,8 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
 
+  sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
+
   // Set mock for sjsu::Pin
   Mock<sjsu::Pin> mock_adc_pin0;
   Fake(Method(mock_adc_pin0, SetAsAnalogMode),
@@ -52,8 +54,8 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
   };
 
   // Create ports and pins to test and mock
-  Adc channel0_mock(kMockChannel0, mock_system_controller.get());
-  Adc channel1_mock(kMockChannel1, mock_system_controller.get());
+  Adc channel0_mock(kMockChannel0);
+  Adc channel1_mock(kMockChannel1);
 
   auto setup_adc_channel = [&](Adc::Channel_t channel,
                                uint32_t expected_value) {

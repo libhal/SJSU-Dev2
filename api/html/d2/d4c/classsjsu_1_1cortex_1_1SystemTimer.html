@@ -142,8 +142,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9fcc33685f07a7370d76649f8b50fe66"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fcc33685f07a7370d76649f8b50fe66">SystemTimer</a> (const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller)</td></tr>
-<tr class="separator:a9fcc33685f07a7370d76649f8b50fe66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bbb04b07858ac575b07fc58ecbfe524"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a5bbb04b07858ac575b07fc58ecbfe524">SystemTimer</a> (uint8_t priority=-1)</td></tr>
+<tr class="separator:a5bbb04b07858ac575b07fc58ecbfe524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fecf977b3d1f5f8d1c8be0a297a6618"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fecf977b3d1f5f8d1c8be0a297a6618">Initialize</a> () const override</td></tr>
 <tr class="memdesc:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize system timer hardware. <br /></td></tr>
@@ -194,7 +194,7 @@ static SysTick_Type *&#160;</td><td class="memItemRight" valign="bottom"><a clas
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a9fcc33685f07a7370d76649f8b50fe66"></a>
+<a class="anchor" id="a5bbb04b07858ac575b07fc58ecbfe524"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -204,8 +204,8 @@ static SysTick_Type *&#160;</td><td class="memItemRight" valign="bottom"><a clas
         <tr>
           <td class="memname">constexpr sjsu::cortex::SystemTimer::SystemTimer </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
-          <td class="paramname"><em>system_controller</em></td><td>)</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>priority</em> = <code>-1</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -218,7 +218,7 @@ static SysTick_Type *&#160;</td><td class="memItemRight" valign="bottom"><a clas
 <p>Constructor for ARM Cortex M system timer.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">system_controller</td><td>- used specifically to get platform's frequency. </td></tr>
+    <tr><td class="paramname">priority</td><td>- the interrupt priority of </td></tr>
   </table>
   </dd>
 </dl>

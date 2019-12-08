@@ -32,7 +32,7 @@ var searchData=
   ['setperipheralclockdivider',['SetPeripheralClockDivider',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a1bd4699304c6d6857f1ae8bcf6f5ade9',1,'sjsu::lpc17xx::SystemController::SetPeripheralClockDivider()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a0bf6087b21049eb43cd8a15d4b3110a5',1,'sjsu::lpc40xx::SystemController::SetPeripheralClockDivider()'],['../df/d0e/classsjsu_1_1SystemController.html#ae229951062e7c3196831d8cd11c425c1',1,'sjsu::SystemController::SetPeripheralClockDivider()']]],
   ['setpinfunction',['SetPinFunction',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a495b36f5b0d154c819db581db04c6561',1,'sjsu::lpc17xx::Pin::SetPinFunction()'],['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a79c5b2e4558199c4cbb2a41fec0f86e7',1,'sjsu::lpc40xx::Pin::SetPinFunction()'],['../d0/da9/classsjsu_1_1Pin.html#aa270c92d27abcc181e1c8f7f5f2a03e7',1,'sjsu::Pin::SetPinFunction()']]],
   ['setpinregister',['SetPinRegister',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6d97dd6fc69b5005d2ccb25575c9d11c',1,'sjsu::lpc40xx::Pin']]],
-  ['setplatformcontroller',['SetPlatformController',['../dc/db2/classsjsu_1_1InterruptController.html#a4219cd628944b3bde57c1c01fecbe30f',1,'sjsu::InterruptController']]],
+  ['setplatformcontroller',['SetPlatformController',['../dc/db2/classsjsu_1_1InterruptController.html#a4219cd628944b3bde57c1c01fecbe30f',1,'sjsu::InterruptController::SetPlatformController()'],['../df/d0e/classsjsu_1_1SystemController.html#ad7fc2d2c3afc4837e19e84a19ef78698',1,'sjsu::SystemController::SetPlatformController()']]],
   ['setpull',['SetPull',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ae5a0995b82daecbf6eaee43152cb33ac',1,'sjsu::lpc17xx::Pin::SetPull()'],['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa83501ab5e87a9a734bc62e4ba88a614',1,'sjsu::lpc40xx::Pin::SetPull()'],['../d0/da9/classsjsu_1_1Pin.html#af059b120d4e4897e50dd4253fef724ab',1,'sjsu::Pin::SetPull()']]],
   ['setspidefault',['SetSpiDefault',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a9790b3b3b9d4d102c6aa1e90b25833c1',1,'sjsu::lpc40xx::Spi']]],
   ['setsystemclockfrequency',['SetSystemClockFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#acfc8395713d77b504ce9455be1192039',1,'sjsu::lpc17xx::SystemController::SetSystemClockFrequency()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#af1b9eae3603baa747b5fb8e441100e02',1,'sjsu::lpc40xx::SystemController::SetSystemClockFrequency()'],['../df/d0e/classsjsu_1_1SystemController.html#a6b96dcf70b180b4f224cbadb5adef362',1,'sjsu::SystemController::SetSystemClockFrequency()']]],
@@ -61,7 +61,7 @@ var searchData=
   ['sjsu_2ddev2',['SJSU-Dev2',['../d9/dd4/group__SJSU-Dev2.html',1,'']]],
   ['sjtwo',['sjtwo',['../db/dc5/structsjtwo.html',1,'']]],
   ['spi',['Spi',['../d3/de6/classsjsu_1_1Spi.html',1,'sjsu']]],
-  ['spi',['Spi',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a6f4668b9ff75733163c7e4e5b29e1e9b',1,'sjsu::lpc40xx::Spi']]],
+  ['spi',['Spi',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#ac95a80469a6edf2b6e832c63093ac132',1,'sjsu::lpc40xx::Spi']]],
   ['spi',['Spi',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html',1,'sjsu::lpc40xx']]],
   ['spibus',['SpiBus',['../da/d85/structsjsu_1_1lpc17xx_1_1SpiBus.html',1,'sjsu::lpc17xx']]],
   ['spificlock',['SpiFiClock',['../db/d64/structsjsu_1_1lpc40xx_1_1SystemController_1_1SpiFiClock.html',1,'sjsu::lpc40xx::SystemController']]],
@@ -87,6 +87,6 @@ var searchData=
   ['systemcontroller',['SystemController',['../df/d0e/classsjsu_1_1SystemController.html',1,'sjsu']]],
   ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html',1,'sjsu::cortex']]],
   ['systemtimer',['SystemTimer',['../de/d0c/classsjsu_1_1SystemTimer.html',1,'sjsu']]],
-  ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fcc33685f07a7370d76649f8b50fe66',1,'sjsu::cortex::SystemTimer']]],
+  ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a5bbb04b07858ac575b07fc58ecbfe524',1,'sjsu::cortex::SystemTimer']]],
   ['systemtimerhandler',['SystemTimerHandler',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a876dd71b2d954db5401a44bda10eaf64',1,'sjsu::cortex::SystemTimer']]]
 ];

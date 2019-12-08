@@ -104,7 +104,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../d0/dfd/classsjsu_1_1lpc40xx_1_1Watchdog-members.html">List of all members</a>  </div>
@@ -125,13 +124,15 @@ Collaboration diagram for sjsu::lpc40xx::Watchdog:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d7/d65/classsjsu_1_1lpc40xx_1_1Watchdog__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Watchdog_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Watchdog_coll__map" id="sjsu_1_1lpc40xx_1_1Watchdog_coll__map">
-<area shape="rect" id="node2" href="../../d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="5,13,123,39"/>
-<area shape="rect" id="node3" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html" title="sjsu::InterruptController\l::RegistrationInfo_t" alt="" coords="147,5,319,47"/>
+<area shape="rect" id="node2" href="../../d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="33,5,151,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:adeab2cf39a25d949926fee68278909a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adeab2cf39a25d949926fee68278909a8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Watchdog</b> (uint8_t priority=-1)</td></tr>
+<tr class="separator:adeab2cf39a25d949926fee68278909a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ced32f9b77753675102b2ad0dd0d131"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ced32f9b77753675102b2ad0dd0d131"></a>
 <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (std::chrono::seconds duration) const override</td></tr>
 <tr class="separator:a6ced32f9b77753675102b2ad0dd0d131"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,15 +146,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>FeedSequence</b> () c
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>CheckTimeout</b> () const override</td></tr>
 <tr class="separator:ad5ea166a0227906a6698074926f89464"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a85fa79ae10b9cf4353af1528bdd68a0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85fa79ae10b9cf4353af1528bdd68a0f"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>WatchdogIrqHandler</b> ()</td></tr>
-<tr class="separator:a85fa79ae10b9cf4353af1528bdd68a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a265f66b99054d5d3f7b9abec061adbcc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a265f66b99054d5d3f7b9abec061adbcc"></a>
-static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertDurationToWatchdogTicks</b> (uint32_t watchdog_ticks, std::chrono::seconds duration)</td></tr>
-<tr class="separator:a265f66b99054d5d3f7b9abec061adbcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ad91de88a5c3a2b969b75f4e72f222cbe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad91de88a5c3a2b969b75f4e72f222cbe"></a>
@@ -162,6 +154,9 @@ const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kWatchdogRes
 <tr class="memitem:a132dfd0cce27b23c0a45fe4e46621486"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a132dfd0cce27b23c0a45fe4e46621486"></a>
 const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>kTimerWarningMax</b> = 0b11'1111'1111</td></tr>
 <tr class="separator:a132dfd0cce27b23c0a45fe4e46621486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ad5760938eb636fc208988f8d595de8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ad5760938eb636fc208988f8d595de8"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>priority_</b></td></tr>
+<tr class="separator:a3ad5760938eb636fc208988f8d595de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -174,30 +169,7 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
 <tr class="memitem:a999d5dbb73a733a481d9bf43768a7663"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a999d5dbb73a733a481d9bf43768a7663"></a>
 static LPC_WDT_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><b>wdt_base</b> = LPC_WDT</td></tr>
 <tr class="separator:a999d5dbb73a733a481d9bf43768a7663"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9bad0ae2842220d3f7fed7c5485defc"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kWatchdogInterruptInfo</b></td></tr>
-<tr class="separator:ad9bad0ae2842220d3f7fed7c5485defc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="ad9bad0ae2842220d3f7fed7c5485defc"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a> sjsu::lpc40xx::Watchdog::kWatchdogInterruptInfo</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">        .interrupt_request_number = WDT_IRQn,</div><div class="line">        .interrupt_handler        = &amp;WatchdogIrqHandler,</div><div class="line">      }</div></div><!-- fragment -->
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/lpc40xx/<a class="el" href="../../d8/d25/lpc40xx_2watchdog_8hpp_source.html">watchdog.hpp</a></li>
 </ul>

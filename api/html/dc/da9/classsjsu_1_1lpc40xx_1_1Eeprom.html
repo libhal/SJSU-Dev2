@@ -127,10 +127,8 @@ Collaboration diagram for sjsu::lpc40xx::Eeprom:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d5a/classsjsu_1_1lpc40xx_1_1Eeprom__coll__graph.png" border="0" usemap="#sjsu_1_1lpc40xx_1_1Eeprom_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc40xx_1_1Eeprom_coll__map" id="sjsu_1_1lpc40xx_1_1Eeprom_coll__map">
-<area shape="rect" id="node2" href="../../d9/df3/classsjsu_1_1Eeprom.html" title="An abstract interface for communicating with EEPROM devices. " alt="" coords="5,81,111,108"/>
-<area shape="rect" id="node3" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="134,81,246,108"/>
-<area shape="rect" id="node4" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="269,81,492,108"/>
-<area shape="rect" id="node5" href="../../df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="297,5,464,32"/>
+<area shape="rect" id="node2" href="../../d9/df3/classsjsu_1_1Eeprom.html" title="An abstract interface for communicating with EEPROM devices. " alt="" coords="5,5,111,32"/>
+<area shape="rect" id="node3" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="134,5,246,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -150,8 +148,6 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a165a81bf628190020bef130504105672"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a165a81bf628190020bef130504105672">Eeprom</a> (const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=<a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afa2b165f318ca821d1f62e82dd133b51">kLpc40xxSystemController</a>)</td></tr>
-<tr class="separator:a165a81bf628190020bef130504105672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9625b589a8ff0f752652c92c3c5ba9e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a9625b589a8ff0f752652c92c3c5ba9e7">Initialize</a> () const override</td></tr>
 <tr class="separator:a9625b589a8ff0f752652c92c3c5ba9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a881ddad19bb9ab33dbac9aece443d7f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a881ddad19bb9ab33dbac9aece443d7f1">Write</a> (const uint8_t *wdata, uint32_t full_address, size_t count) const override</td></tr>
@@ -174,9 +170,6 @@ static LPC_EEPROM_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><
 static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a66ffe664a475b8859da7348e2d3fbe69">kMaxTimeout</a> = 20ms</td></tr>
 <tr class="memdesc:a66ffe664a475b8859da7348e2d3fbe69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max timeout for program/write operations in milliseconds. <br /></td></tr>
 <tr class="separator:a66ffe664a475b8859da7348e2d3fbe69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa2b165f318ca821d1f62e82dd133b51"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">sjsu::lpc40xx::SystemController</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afa2b165f318ca821d1f62e82dd133b51">kLpc40xxSystemController</a></td></tr>
-<tr class="memdesc:afa2b165f318ca821d1f62e82dd133b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting actual <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">SystemController</a> Object.  <a href="#afa2b165f318ca821d1f62e82dd133b51">More...</a><br /></td></tr>
-<tr class="separator:afa2b165f318ca821d1f62e82dd133b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the EEPROM interface for the LPC40xx family of microcontrollers. </p>
@@ -191,32 +184,6 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
       </table>
 </div><div class="memdoc">
 <p>EEPROM <a class="el" href="../../d9/d71/classCommand.html">Command</a> codes for reading from, writing to, and programming the device </p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a165a81bf628190020bef130504105672"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr sjsu::lpc40xx::Eeprom::Eeprom </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
-          <td class="paramname"><em>system_controller</em> = <code><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afa2b165f318ca821d1f62e82dd133b51">kLpc40xxSystemController</a></code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Constructor has an optional <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">SystemController</a> parameter which can be specified for testing purposes. Otherwise, the actual <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">SystemController</a> object is used (kLpc40xxSystemController) </p>
 
 </div>
 </div>
@@ -394,28 +361,6 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 </table>
 </div><div class="memdoc">
 <p>This driver only supports reading and writing to the EEPROM in 32-bit mode, which means addresses must be multiples of 4 to avoid hard faults. To enforce this, all addresses used to read/write to the EEPROM have to be masked. </p>
-
-</div>
-</div>
-<a class="anchor" id="afa2b165f318ca821d1f62e82dd133b51"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">sjsu::lpc40xx::SystemController</a> sjsu::lpc40xx::Eeprom::kLpc40xxSystemController</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      <a class="code" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">sjsu::lpc40xx::SystemController</a>()</div></div><!-- fragment -->
-<p>Getting actual <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html">SystemController</a> Object. </p>
 
 </div>
 </div>

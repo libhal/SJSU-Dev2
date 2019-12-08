@@ -176,15 +176,7 @@ class Spi final : public sjsu::Spi
   ///
   /// @param bus - pass a reference to a constant lpc40xx::Spi::Bus_t
   ///        definition.
-  /// @param system_controller - reference to system controller. Uses the
-  ///        default lpc40xx system controller. This is typically only used for
-  ///        unit testing.
-  explicit constexpr Spi(const Bus_t & bus,
-                         const sjsu::SystemController & system_controller =
-                             DefaultSystemController())
-      : bus_(bus), system_controller_(system_controller)
-  {
-  }
+  explicit constexpr Spi(const Bus_t & bus) : bus_(bus) {}
   /// This METHOD MUST BE EXECUTED before any other method can be called.
   /// Powers on the peripheral, activates the SSP pins and enables the SSP
   /// peripheral.
@@ -194,7 +186,8 @@ class Spi final : public sjsu::Spi
     constexpr uint8_t kSpiFormatCode = 0b00;
 
     // Power up peripheral
-    system_controller_.PowerUpPeripheral(bus_.power_on_bit);
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
+        bus_.power_on_bit);
     // Enable SSP pins
     bus_.mosi.SetPinFunction(bus_.pin_function_id);
     bus_.miso.SetPinFunction(bus_.pin_function_id);
@@ -279,11 +272,12 @@ class Spi final : public sjsu::Spi
     bus_.registers->CR0 = bit::Insert(
         bus_.registers->CR0, read_miso_on_rising, ControlRegister0::kPhaseBit);
 
-    uint16_t prescaler =
-        (system_controller_.GetPeripheralFrequency(bus_.power_on_bit) /
-         frequency)
-            .to<uint16_t>();
-    // Store lower half of precalar in clock prescalar register
+    auto system_frequency =
+        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
+            bus_.power_on_bit);
+
+    uint16_t prescaler = (system_frequency / frequency).to<uint16_t>();
+    // Store lower half of prescalar in clock prescalar register
     bus_.registers->CPSR = prescaler & 0xFF;
     // Store upper 8 bit half of the prescalar in control register 0
     bus_.registers->CR0 = bit::Insert(
@@ -292,7 +286,6 @@ class Spi final : public sjsu::Spi
 
  private:
   const Bus_t & bus_;
-  const sjsu::SystemController & system_controller_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

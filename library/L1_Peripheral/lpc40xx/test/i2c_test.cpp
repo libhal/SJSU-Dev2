@@ -37,6 +37,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
       .AlwaysReturn(kDummySystemControllerClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
+  sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;
   Fake(Method(mock_interrupt_controller, Enable));
@@ -57,8 +58,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     .scl_pin             = mock_scl_pin.get(),
     .pin_function_id     = 0b010,
   };
-
-  I2c test_subject(kMockI2c, mock_system_controller.get());
+  I2c test_subject(kMockI2c);
 
   SECTION("Initialize")
   {

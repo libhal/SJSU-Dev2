@@ -25,6 +25,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
       .AlwaysReturn(kPeriperhalClockFrequency);
   When(Method(mock_system_controller, GetPeripheralClockDivider))
       .AlwaysReturn(1);
+  sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Creating mock of Pin class
   Mock<sjsu::Pin> mock_pwm_pin;
@@ -45,7 +46,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
     .pin_function_code = 0b101,
   };
 
-  Pwm test_pwm(mock_channel, mock_system_controller.get());
+  Pwm test_pwm(mock_channel);
 
   SECTION("Initialization values")
   {

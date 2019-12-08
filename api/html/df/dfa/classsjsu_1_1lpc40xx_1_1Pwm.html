@@ -154,8 +154,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa6edc69232cfcbb62b5c4d8a137b84f6"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#aa6edc69232cfcbb62b5c4d8a137b84f6">Pwm</a> (const <a class="el" href="../../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html">Channel_t</a> &amp;channel, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
-<tr class="separator:aa6edc69232cfcbb62b5c4d8a137b84f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b1b10a1410e7663c394adb4fed1213f"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a2b1b10a1410e7663c394adb4fed1213f">Pwm</a> (const <a class="el" href="../../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html">Channel_t</a> &amp;channel)</td></tr>
+<tr class="separator:a2b1b10a1410e7663c394adb4fed1213f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab029ca68c8e371191e45024cbfdf9465"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#ab029ca68c8e371191e45024cbfdf9465">Initialize</a> (units::frequency::hertz_t frequency_hz) const override</td></tr>
 <tr class="separator:ab029ca68c8e371191e45024cbfdf9465"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8350020c7e10e61b10fc58e8bf4cbb3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a8350020c7e10e61b10fc58e8bf4cbb3b">SetDutyCycle</a> (float duty_cycle) const override</td></tr>
@@ -171,7 +171,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>An implementation of the <a class="el" href="../../d6/ddf/classsjsu_1_1Pwm.html">sjsu::Pwm</a> peripheral for the LPC40xx family of microcontrollers.</p>
 <dl class="section warning"><dt>Warning</dt><dd>- Changing the frequency of 1 PWM channel, changes the frequency for all other PWM channels. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aa6edc69232cfcbb62b5c4d8a137b84f6"></a>
+<a class="anchor" id="a2b1b10a1410e7663c394adb4fed1213f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -182,18 +182,8 @@ Public Member Functions</h2></td></tr>
           <td class="memname">constexpr sjsu::lpc40xx::Pwm::Pwm </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html">Channel_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>channel</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>channel</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
-          <td class="paramname"><em>system_controller</em> = <code>DefaultSystemController()</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -206,7 +196,6 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">channel</td><td>- Reference to a const channel description for this instance of the PWM driver. </td></tr>
-    <tr><td class="paramname">system_controller</td><td>- Reference to a system controller object. Used to power on the peripheral and get the current peripheral frequency. Typically only changed from the default for unit testing purposes. </td></tr>
   </table>
   </dd>
 </dl>

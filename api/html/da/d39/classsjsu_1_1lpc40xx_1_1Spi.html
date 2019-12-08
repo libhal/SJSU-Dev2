@@ -150,8 +150,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6f4668b9ff75733163c7e4e5b29e1e9b"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a6f4668b9ff75733163c7e4e5b29e1e9b">Spi</a> (const <a class="el" href="../../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html">Bus_t</a> &amp;bus, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
-<tr class="separator:a6f4668b9ff75733163c7e4e5b29e1e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac95a80469a6edf2b6e832c63093ac132"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#ac95a80469a6edf2b6e832c63093ac132">Spi</a> (const <a class="el" href="../../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html">Bus_t</a> &amp;bus)</td></tr>
+<tr class="separator:ac95a80469a6edf2b6e832c63093ac132"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ae3aba9ecc4d5d5a3f30e16ce148dfb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a7ae3aba9ecc4d5d5a3f30e16ce148dfb">Initialize</a> () const override</td></tr>
 <tr class="separator:a7ae3aba9ecc4d5d5a3f30e16ce148dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9790b3b3b9d4d102c6aa1e90b25833c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a9790b3b3b9d4d102c6aa1e90b25833c1">SetSpiDefault</a> () const </td></tr>
@@ -199,7 +199,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the SPI interface for the LPC40xx family of microcontrollers. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6f4668b9ff75733163c7e4e5b29e1e9b"></a>
+<a class="anchor" id="ac95a80469a6edf2b6e832c63093ac132"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -210,18 +210,8 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">constexpr sjsu::lpc40xx::Spi::Spi </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html">Bus_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>bus</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>bus</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
-          <td class="paramname"><em>system_controller</em> = <code>DefaultSystemController()</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -234,7 +224,6 @@ Additional Inherited Members</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bus</td><td>- pass a reference to a constant <a class="el" href="../../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html" title="Bus_t holds all of the information for an SPI bus on the LPC40xx platform. ">lpc40xx::Spi::Bus_t</a> definition. </td></tr>
-    <tr><td class="paramname">system_controller</td><td>- reference to system controller. Uses the default lpc40xx system controller. This is typically only used for unit testing. </td></tr>
   </table>
   </dd>
 </dl>

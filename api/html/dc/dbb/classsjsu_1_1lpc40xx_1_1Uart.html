@@ -140,8 +140,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6f3bad70771d2c879bbd14cdb44c1b50"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a6f3bad70771d2c879bbd14cdb44c1b50">Uart</a> (const <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">Port_t</a> &amp;port, const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;system_controller=DefaultSystemController())</td></tr>
-<tr class="separator:a6f3bad70771d2c879bbd14cdb44c1b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c61d06f7cd58e8fea55558c795bc1d8"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a0c61d06f7cd58e8fea55558c795bc1d8">Uart</a> (const <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">Port_t</a> &amp;port)</td></tr>
+<tr class="separator:a0c61d06f7cd58e8fea55558c795bc1d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67c158b4cc48c2b65733afce101a3484"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a67c158b4cc48c2b65733afce101a3484">Initialize</a> (uint32_t baud_rate) const override</td></tr>
 <tr class="separator:a67c158b4cc48c2b65733afce101a3484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab98d20df99623e52f0899f350208658"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab98d20df99623e52f0899f350208658"></a>
@@ -172,7 +172,7 @@ static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a c
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the UART interface for the LPC40xx family of microcontrollers. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6f3bad70771d2c879bbd14cdb44c1b50"></a>
+<a class="anchor" id="a0c61d06f7cd58e8fea55558c795bc1d8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -183,18 +183,8 @@ static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a c
           <td class="memname">constexpr sjsu::lpc40xx::Uart::Uart </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">Port_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>port</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a> &amp;&#160;</td>
-          <td class="paramname"><em>system_controller</em> = <code>DefaultSystemController()</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -206,7 +196,6 @@ static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a c
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">port</td><td>- a reference to a constant <a class="el" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html">lpc40xx::Uart::Port_t</a> definition </td></tr>
-    <tr><td class="paramname">system_controller</td><td>- reference to system controller. Uses the default lpc40xx system controller. This is typically only used for unit testing. </td></tr>
   </table>
   </dd>
 </dl>

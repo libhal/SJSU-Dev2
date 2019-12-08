@@ -50,7 +50,6 @@ var searchData=
   ['ki2ctimeout',['kI2cTimeout',['../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921',1,'sjsu::I2c']]],
   ['kinputinvert',['kInputInvert',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a879bb451244d3203cffb018e4e00bd03',1,'sjsu::lpc40xx::Pin']]],
   ['kinterruptports',['kInterruptPorts',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a61f4fa5d3dee985b5d2b36359ac810e3',1,'sjsu::lpc40xx::Gpio']]],
-  ['klpc40xxsystemcontroller',['kLpc40xxSystemController',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afa2b165f318ca821d1f62e82dd133b51',1,'sjsu::lpc40xx::Eeprom']]],
   ['kmasterdisable',['kMasterDisable',['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html#ac48f636441e558c588ece5a159b348e5',1,'sjsu::lpc40xx::Pwm::Timer']]],
   ['kmaximumvalue',['kMaximumValue',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aef44a1f54473eb577d94c6217d04ad8c',1,'sjsu::lpc40xx::Dac']]],
   ['kmaxtimeout',['kMaxTimeout',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a66ffe664a475b8859da7348e2d3fbe69',1,'sjsu::lpc40xx::Eeprom']]],
