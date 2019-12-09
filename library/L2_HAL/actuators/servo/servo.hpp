@@ -31,6 +31,7 @@ class Servo
       units::frequency::hertz_t frequency = kDefaultFrequency)
   {
     servo_pwm_.Initialize(frequency);
+    SetFrequency(frequency);
   }
 
   virtual void SetFrequency(
