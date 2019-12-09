@@ -12,6 +12,7 @@ class Servo
 {
  public:
   static constexpr units::frequency::hertz_t kDefaultFrequency = 50_Hz;
+  static constexpr std::chrono::microseconds kDefaultPeriod    = 20'000us;
   static constexpr units::angle::degree_t kDefaultMinAngle     = 0_deg;
   static constexpr units::angle::degree_t kDefaultMaxAngle     = 90_deg;
   static constexpr std::chrono::microseconds kDefaultMinPulse  = 1000us;
@@ -19,7 +20,7 @@ class Servo
 
   explicit constexpr Servo(const sjsu::Pwm & pwm)
       : servo_pwm_(pwm),
-        waveform_period_(0),
+        waveform_period_(kDefaultPeriod),
         pulse_lower_bound_(kDefaultMinPulse),
         pulse_upper_bound_(kDefaultMaxPulse),
         min_angle_(kDefaultMinAngle),
