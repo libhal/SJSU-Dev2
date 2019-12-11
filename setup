@@ -143,39 +143,27 @@ function download_and_extract_tool_bundle() {
   echo " ───────────────────────────────────────────────────┐"
   echo "             Downloading Tools Bundle                "
   echo "└─────────────────────────────────────────────────── "
-  local skipped_download=0
   local temporary_name=temp_toolkit.tar.bz2
-  # Check that the file exists, if not, download it
-  if [ ! -f $(basename $TOOLS_BUNDLE_URL) ]; then
-    # Store file in temporary name first, so if this fails, this step does not
-    # get skipped.
-    echo "$TOOLS_BUNDLE_URL"
-    curl -L0 \
-       -o $temporary_name \
-       -z "$(basename $TOOLS_BUNDLE_URL)" "$TOOLS_BUNDLE_URL"
-    mv $temporary_name "$(basename $TOOLS_BUNDLE_URL)"
-  else
-    echo "Tools bundle \"$(basename $TOOLS_BUNDLE_URL)\" already downloaded!"
-    echo "Skipping download..."
-    skipped_download=1
-  fi
+  # Remove an old temporary file if it exists
+  rm $temporary_name &>/dev/null
+  # -z argument checks the online modification date with the file online and
+  # the current toolkit file. If the online one is newer, then it is
+  # downloaded. If it is older, it is ignored and no temporary file is created.
+  echo "Downloading: $TOOLS_BUNDLE_URL"
+  curl -z "$(basename $TOOLS_BUNDLE_URL)" -o $temporary_name \
+       -L0 "$TOOLS_BUNDLE_URL"
+  # This will have an expected failure if curl ignored downloading the file,
+  # which would result in the temp file not existing. mv does nothing if the
+  # source file does not exist.
+  mv $temporary_name "$(basename $TOOLS_BUNDLE_URL)" &>/dev/null
+  local tools_bundle_was_updated=$?
 
-  echo " ──────────────────────────────────────────────────┐"
-  echo "             Extracting tools bundle                "
-  echo "└────────────────────────────────────────────────── "
-  # Check to see if tools have already been extracted
-  local openocd_file_count=$(get_file_count "openocd")
-  local gcc_arm_file_count=$(get_file_count gcc-arm*)
-  local clang_llvm_file_count=$(get_file_count clang+llvm*)
-  local total=$((openocd_file_count + gcc_arm_file_count + clang_llvm_file_count))
+  if [[ $tools_bundle_was_updated -eq "0" ]]; then
+    echo " ──────────────────────────────────────────────────┐"
+    echo "             Extracting tools bundle                "
+    echo "└────────────────────────────────────────────────── "
 
-  if [ "$total" -eq "$TOOLS_FILE_COUNT" ] &&
-    [ "$skipped_download" -eq "1" ]; then
-    echo "Tools bundle \"$(basename $TOOLS_BUNDLE_URL)\" already extracted!"
-    echo "Skipping extraction..."
-    return 0
-  else
-    # Delete old toolkit folders
+    # Delete old toolkit folders to be re-extracted
     rm -r "openocd*" &>/dev/null
     rm -r "gcc-arm*" &>/dev/null
     rm -r "clang+llvm*" &>/dev/null
@@ -197,9 +185,15 @@ function download_and_extract_tool_bundle() {
     ls openocd/ &>/dev/null
     local openocd_exists=$?
 
+    # Linux or Windows WSL
+    if [[ "$OS" == "Linux" ]]; then
+      ls openocd-wsl/ &>/dev/null
+      openocd_exists=$(($openocd_exists+$?))
+    fi
+
     return $(($extract + $clang_exists + $gcc_exists + $openocd_exists))
   fi
-  return 1
+  return 0
 }
 
 function install_nxpprog() {
