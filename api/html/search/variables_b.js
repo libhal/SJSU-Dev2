@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['num_5fticks',['num_ticks',['../d4/da5/structsjsu_1_1Ltc4150_1_1Battery__t.html#ac67c00e0eac52f86d3f6716dc7c4a714',1,'sjsu::Ltc4150::Battery_t']]],
-  ['nvic',['nvic',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#a7f894cf74085c68e20277324ec09d163',1,'sjsu::cortex::InterruptController']]]
+  ['miso',['miso',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a70275f2510b3058f77b8f2964731a05e',1,'sjsu::lpc40xx::Spi::Bus_t']]],
+  ['mosi',['mosi',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ae3cf6225b5c2b9bb40f74830df712b31',1,'sjsu::lpc40xx::Spi::Bus_t']]],
+  ['multiply',['multiply',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t']]]
 ];

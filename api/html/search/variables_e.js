@@ -1,11 +1,19 @@
 var searchData=
 [
-  ['red',['red',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a596009e322e1a7fbb2f28838bbaf390c',1,'sjsu::PixelDisplay::Color_t']]],
-  ['register_5fmatrix',['register_matrix',['../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html#a24f9558dd4d59675b8aa5cbb69c25943',1,'sjsu::lpc40xx::Pin::PinMap_t']]],
-  ['registers',['registers',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a1d4996b1a80f5e287c8cea5a4aa16ad7',1,'sjsu::lpc40xx::I2c::Bus_t::registers()'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#aa923cd4323e1c5d138931772fb5339d0',1,'sjsu::lpc40xx::Pwm::Peripheral_t::registers()'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a0de8224161b549d610104270aed3b8b3',1,'sjsu::lpc40xx::Spi::Bus_t::registers()'],['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#ad0d4a145aa5415f9399e1353ad8fb107',1,'sjsu::lpc40xx::Uart::Port_t::registers()']]],
-  ['repeated',['repeated',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adc0985997e4b61df23608c071b2422e7',1,'sjsu::I2c::Transaction_t']]],
-  ['resistor_5fmap',['resistor_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#af61d2da32f1f3363c10d6c8b2204bcd9',1,'sjsu::lpc17xx::Pin']]],
-  ['run_5fcount_5f',['run_count_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a2a52810dad462e3fff1c2f9d9e33b102',1,'sjsu::rtos::PeriodicTask']]],
-  ['rx',['rx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a0bfb6e9a1a73dbd7e23faf3a40f8805a',1,'sjsu::lpc40xx::Uart::Port_t']]],
-  ['rx_5ffunction_5fid',['rx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a9430e0d1d6216f3f7b6ddfb82096b757',1,'sjsu::lpc40xx::Uart::Port_t']]]
+  ['peripheral',['peripheral',['../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#ac0389b277bb9ccf85420f6eeef511bcd',1,'sjsu::lpc40xx::Pwm::Channel_t']]],
+  ['peripheral_5fpower_5fid',['peripheral_power_id',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a3134b6626073e00ba603df48525477c4',1,'sjsu::lpc40xx::I2c::Bus_t']]],
+  ['pin',['pin',['../d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html#a89b060554a4c9147153810e10efb4a79',1,'sjsu::lpc17xx::Pin::PinTable_t::pin()'],['../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#abc2a83e7693f6b06b7e547fd3ad53df7',1,'sjsu::lpc40xx::Pwm::Channel_t::pin()']]],
+  ['pin_5f',['pin_',['../d0/da9/classsjsu_1_1Pin.html#a41a8c139acdc313bc5f27065f8142d9b',1,'sjsu::Pin']]],
+  ['pin_5ffunction',['pin_function',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a446885d6584043680e012d7d72010870',1,'sjsu::lpc40xx::Adc::Channel_t']]],
+  ['pin_5ffunction_5fcode',['pin_function_code',['../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#a05ed2ad16840dfe7a12f3042918f32ac',1,'sjsu::lpc40xx::Pwm::Channel_t']]],
+  ['pin_5ffunction_5fid',['pin_function_id',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#ae49470c838ff1dfbfd45add3f0ad1c2e',1,'sjsu::lpc40xx::I2c::Bus_t::pin_function_id()'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ad1ab73518e259ee519abb767283d170c',1,'sjsu::lpc40xx::Spi::Bus_t::pin_function_id()']]],
+  ['pin_5fmap',['pin_map',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1ace573d9b1e8866a17e99f72fcb06bc',1,'sjsu::lpc40xx::Pin']]],
+  ['port_5f',['port_',['../d0/da9/classsjsu_1_1Pin.html#a4932425145eb6c974042da8065cfd22b',1,'sjsu::Pin']]],
+  ['position',['position',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a804a6e4a713c843a032f33227e78ae3c',1,'sjsu::I2c::Transaction_t::position()'],['../d9/dd3/structsjsu_1_1bit_1_1Mask.html#acbcd50634190665afede7ce01bb43f7b',1,'sjsu::bit::Mask::position()']]],
+  ['power_5fid',['power_id',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a8a3a5aa040003b7e0634764260718fc6',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
+  ['power_5fon_5fbit',['power_on_bit',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#af7a8a2bffc3c807a307ef0f2746eae04',1,'sjsu::lpc40xx::Spi::Bus_t']]],
+  ['power_5fon_5fid',['power_on_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a35be89e626200386b8726bd69eff1b84',1,'sjsu::lpc40xx::Uart::Port_t']]],
+  ['priority',['priority',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#ad501f59b6cf62779ca06dcfa61c6de90',1,'sjsu::InterruptController::RegistrationInfo_t']]],
+  ['pulse_5fbuffer',['pulse_buffer',['../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#ae418d752845253f8cd9ce08ce949dd51',1,'sjsu::infrared::DataFrame_t']]],
+  ['pulse_5fbuffer_5flength',['pulse_buffer_length',['../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#a4c34c1181080883c253895e89eef2e73',1,'sjsu::infrared::DataFrame_t']]]
 ];

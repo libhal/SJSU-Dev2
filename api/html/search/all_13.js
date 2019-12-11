@@ -1,9 +1,9 @@
 var searchData=
 [
   ['utility_20macros',['Utility Macros',['../d3/deb/group__Macros.html',1,'']]],
-  ['uart',['Uart',['../d0/ddc/classsjsu_1_1Uart.html',1,'sjsu']]],
-  ['uart',['Uart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a0c61d06f7cd58e8fea55558c795bc1d8',1,'sjsu::lpc40xx::Uart']]],
   ['uart',['Uart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html',1,'sjsu::lpc40xx']]],
+  ['uart',['Uart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a0c61d06f7cd58e8fea55558c795bc1d8',1,'sjsu::lpc40xx::Uart']]],
+  ['uart',['Uart',['../d0/ddc/classsjsu_1_1Uart.html',1,'sjsu']]],
   ['uartcalibration_5ft',['UartCalibration_t',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html',1,'sjsu::lpc40xx::uart']]],
   ['uartport',['UartPort',['../d4/d2f/structsjsu_1_1lpc17xx_1_1UartPort.html',1,'sjsu::lpc17xx']]],
   ['unsupportedinactiveperipheral_5ft',['UnsupportedInactivePeripheral_t',['../df/dbc/structsjsu_1_1UnsupportedInactivePeripheral__t.html',1,'sjsu']]],
@@ -11,5 +11,6 @@ var searchData=
   ['usbclock',['UsbClock',['../d2/d0a/structsjsu_1_1lpc40xx_1_1SystemController_1_1UsbClock.html',1,'sjsu::lpc40xx::SystemController']]],
   ['usbpll',['UsbPll',['../d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html',1,'sjsu::lpc17xx::SystemController']]],
   ['usbpllinputfrequency',['UsbPllInputFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da',1,'sjsu::lpc17xx::SystemController']]],
-  ['user_5fcallback',['user_callback',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a9a9fcb71dfadbd8d6b194249c748d0cd',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]]
+  ['user_5fcallback',['user_callback',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a9a9fcb71dfadbd8d6b194249c748d0cd',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
+  ['uses_5frepeat_5fframes',['uses_repeat_frames',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#ae0767f9ef1f5e26701de8e13a2b2d68d',1,'sjsu::infrared::PulseDurationConfiguration_t']]]
 ];

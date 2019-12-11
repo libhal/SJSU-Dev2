@@ -14,14 +14,15 @@ var searchData=
   ['enablehysteresis',['EnableHysteresis',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1fec5e4fe1429f55ea836fdc8a22a4ec',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6cae6a6642d6d810bf67a52a137e2d74',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a65e30196ce68adf18a1094613c281713',1,'sjsu::lpc40xx::Pin']]],
+  ['encoding_5ftype',['encoding_type',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a929ee806fb3a9ab1ab2868366c4f6284',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
   ['errorwarninglimit_5ft',['ErrorWarningLimit_t',['../dd/de5/structsjsu_1_1lpc40xx_1_1Can_1_1ErrorWarningLimit__t.html',1,'sjsu::lpc40xx::Can']]],
   ['esp8266',['Esp8266',['../dc/d4f/classsjsu_1_1Esp8266.html',1,'sjsu']]],
   ['example',['Example',['../d4/d55/classsjsu_1_1Example.html',1,'sjsu']]],
   ['example',['Example',['../d8/d93/classsjsu_1_1example_1_1Example.html',1,'sjsu::example']]],
   ['examplehal',['ExampleHal',['../d7/d23/classsjsu_1_1ExampleHal.html',1,'sjsu']]],
-  ['examplehalimplementation',['ExampleHalImplementation',['../d7/d4f/classsjsu_1_1ExampleHalImplementation.html',1,'sjsu']]],
   ['examplehalimplementation',['ExampleHalImplementation',['../d7/d4f/classsjsu_1_1ExampleHalImplementation.html#ad8b1d5af72ed6d3c668262a38831153f',1,'sjsu::ExampleHalImplementation']]],
-  ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#afd407530822417a5ce69c2a131bea9b0',1,'sjsu::ExampleSingleImplementationHal']]],
+  ['examplehalimplementation',['ExampleHalImplementation',['../d7/d4f/classsjsu_1_1ExampleHalImplementation.html',1,'sjsu']]],
   ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html',1,'sjsu']]],
+  ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#afd407530822417a5ce69c2a131bea9b0',1,'sjsu::ExampleSingleImplementationHal']]],
   ['empty_20now',['Empty now',['../md__home_travis_build_kammce_SJSU-Dev2_library_readme.html',1,'']]]
 ];

@@ -18,8 +18,27 @@ Interface
 
 # Background
 Infrared (IR) receivers typically use a photo-diode to convert IR light into an
-electrical signal that can be processed by a micro-controller. One of the common
-applications of infrared communication is remote control systems.
+electrical signal that can be processed by a micro-controller. Common
+applications include continuous data communication and consumer remote control
+systems.
+
+IrDA is the standard used for continuous data transmission applications;
+however, the receiver/transceiver device must be IrDA compatible. The standard
+mode for IrDA, serial Infrared (SIR), allows serial data to be transmitted or
+received through standard UART.
+
+For consumer IR remote applications, commonly used data formats include:
+1. Bi-phase Encoding (ie.
+   [RC-5](https://www.sbprojects.net/knowledge/ir/rc5.php),
+   [RC-6](https://www.sbprojects.net/knowledge/ir/rc6.php))
+2. Pulse Distance Encoding (ie.
+   [NEC](https://www.sbprojects.net/knowledge/ir/nec.php))
+3. Pulse Length Encoding (ie.
+   [SIRC](https://www.sbprojects.net/knowledge/ir/sirc.php))
+
+More information regarding these three data formats can be found
+[here](https://www.vishay.com/docs/80071/dataform.pdf). Additionally
+[LIRC](http://www.lirc.org/) contains a large database of remote control codes.
 
 # Overview
 The `InfraredReceiver` interface should be inherited by communication drivers
@@ -33,16 +52,9 @@ namespace sjsu
 class InfraredReceiver
 {
  public:
-  struct DataFrame_t
-  {
-    inline static constexpr uint32_t kMaxPulseBufferSize = 100;
-    uint32_t pulse_buffer[kMaxPulseBufferSize];
-    uint32_t number_of_pulses;
-  };
+  using DataReceivedHandler = std::function<void(const DataFrame_t *)>;
 
-  using DataReceivedHandler = std::function<void(DataFrame_t *)>;
-
-  virtual Status Initialize()                                   const = 0;
+  virtual Status Initialize()                                    const = 0;
   virtual void SetInterruptCallback(DataReceivedHandler handler) const = 0;
 };
 }
