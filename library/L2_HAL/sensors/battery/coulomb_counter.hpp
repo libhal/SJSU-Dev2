@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utility/units.hpp"
+
 namespace sjsu
 {
 /// Abstraction Interface for a coulomb counter. This device can give us
@@ -9,8 +11,9 @@ class CoulombCounter
  public:
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual void Initialize() const = 0;
-  /// Returns the battery's milliamp hours at a given ppint in time.
-  virtual float GetBatterymAh() const = 0;
+  virtual void Initialize() = 0;
+  /// Returns the cumulative amount of charge that has passed through the
+  /// coulomb counter.
+  virtual units::charge::milliampere_hour_t GetCharge() const = 0;
 };
 }  // namespace sjsu
