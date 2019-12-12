@@ -1,11 +1,10 @@
 // Tests for the TaskScheduler singleton class.
-#include "L3_Application/task.hpp"
-
 #include <iterator>
 
+#include "L3_Application/task.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
-namespace sjsu
+namespace  // private namespace for custom fakes
 {
 EventGroupHandle_t test_event_group_handle;
 EventGroupHandle_t xEventGroupCreateStatic_custom_fake(  // NOLINT
@@ -13,24 +12,24 @@ EventGroupHandle_t xEventGroupCreateStatic_custom_fake(  // NOLINT
 {
   return test_event_group_handle;
 }
+}  // namespace
 
+namespace sjsu::rtos
+{
 TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
 {
-  using namespace rtos;  // NOLINT
-
-  const char * task_names[] = {
+  constexpr std::array kTaskNames = {
     "Task 1",  "Task 2",  "Task 3",  "Task 4",  "Task 5",  "Task 6",
     "Task 7",  "Task 8",  "Task 9",  "Task 10", "Task 11", "Task 12",
     "Task 13", "Task 14", "Task 15", "Task 16", "Task 17",
   };
-  constexpr uint8_t kTotalTestTaskCount          = std::size(task_names);
-  TaskHandle_t task_handles[kTotalTestTaskCount] = { NULL };
-  Mock<TaskInterface> mock_tasks[kTotalTestTaskCount];
+  std::array<TaskHandle_t, kTaskNames.size()> task_handles;
+  std::array<Mock<TaskInterface>, kTaskNames.size()> mock_tasks;
 
-  // stub each mock task
-  for (uint8_t i = 0; i < kTotalTestTaskCount; i++)
+  for (size_t i = 0; i < kTaskNames.size(); i++)
   {
-    When(Method(mock_tasks[i], GetName)).AlwaysReturn(task_names[i]);
+    INFO("Stubbing mock task: " << i);
+    When(Method(mock_tasks[i], GetName)).AlwaysReturn(kTaskNames[i]);
     When(Method(mock_tasks[i], Setup)).AlwaysReturn(true);
     When(Method(mock_tasks[i], Run)).AlwaysReturn(true);
     When(Method(mock_tasks[i], GetHandle)).AlwaysReturn(&task_handles[i]);
@@ -42,14 +41,15 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
 
   SECTION("AddTask")
   {
-    TaskScheduler scheduler         = TaskScheduler::Instance();
-    TaskInterface ** task_list      = scheduler.GetAllTasks();
-    constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
-    uint8_t task_count              = 0;
+    TaskScheduler scheduler           = TaskScheduler();
+    TaskInterface * const * task_list = scheduler.GetAllTasks();
+    constexpr uint8_t kMaxTaskCount   = config::kTaskSchedulerSize;
+    uint8_t task_count                = 0;
     // scheduler should be initially empty
     CHECK(scheduler.GetTaskCount() == 0);
-    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+    for (size_t i = 0; i < kMaxTaskCount; i++)
     {
+      INFO("Testing AddTask() for task at index: " << i);
       TaskInterface & task = mock_tasks[i].get();
       scheduler.AddTask(&task);
       task_count++;
@@ -62,89 +62,119 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
     CHECK(scheduler.GetTaskCount() == task_count);
     CHECK(strcmp(task_list[kMaxTaskCount - 1]->GetName(), task.GetName()));
   }
+
   SECTION("GetTask")
   {
-    TaskScheduler scheduler         = TaskScheduler::Instance();
+    TaskScheduler scheduler;
     constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
     uint8_t task_count              = 0;
     CHECK(scheduler.GetTaskCount() == 0);
-    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+
+    SECTION("Getting a task that has been scheduled")
     {
-      TaskInterface & task = mock_tasks[i].get();
-      scheduler.AddTask(&task);
-      task_count++;
-      CHECK(scheduler.GetTaskCount() == task_count);
-      TaskInterface * retreived_task = scheduler.GetTask(task_names[i]);
-      CHECK(retreived_task != nullptr);
-      CHECK(!strcmp(retreived_task->GetName(), task.GetName()));
+      for (size_t i = 0; i < kMaxTaskCount; i++)
+      {
+        INFO("Testing GetTask() for task at index: " << i);
+        TaskInterface & task = mock_tasks[i].get();
+        scheduler.AddTask(&task);
+        task_count++;
+        CHECK(scheduler.GetTaskCount() == task_count);
+        TaskInterface * retrieved_task = scheduler.GetTask(kTaskNames[i]);
+        CHECK(retrieved_task != nullptr);
+        CHECK(!strcmp(retrieved_task->GetName(), task.GetName()));
+      }
     }
-    TaskInterface * non_existent_task =
-        scheduler.GetTask(task_names[kMaxTaskCount]);
-    CHECK(non_existent_task == nullptr);
+    SECTION("Getting a task that has not been scheduled")
+    {
+      TaskInterface * non_existent_task =
+          scheduler.GetTask(kTaskNames[kMaxTaskCount]);
+      CHECK(non_existent_task == nullptr);
+    }
   }
+
   SECTION("GetTaskIndex")
   {
-    TaskScheduler scheduler         = TaskScheduler::Instance();
+    TaskScheduler scheduler;
     constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
     uint8_t task_count              = 0;
-    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+
+    SECTION("Getting the task indices of scheduled tasks")
     {
-      TaskInterface & task = mock_tasks[i].get();
-      scheduler.AddTask(&task);
-      CHECK(scheduler.GetTaskIndex(task.GetName()) == task_count);
-      task_count++;
-      CHECK(scheduler.GetTaskCount() == task_count);
+      for (size_t i = 0; i < kMaxTaskCount; i++)
+      {
+        INFO("Testing GetTaskIndex() for task at index: " << i);
+        TaskInterface & task = mock_tasks[i].get();
+        scheduler.AddTask(&task);
+        CHECK(scheduler.GetTaskIndex(task.GetName()) == task_count);
+        task_count++;
+        CHECK(scheduler.GetTaskCount() == task_count);
+      }
     }
-    // If retreiving the index of a task that is not scheduled, GetTaskIndex
-    // should return kTaskSchedulerSize + 1
-    CHECK(scheduler.GetTaskIndex("Does not exist") == (kMaxTaskCount + 1));
+    SECTION("Getting the task index of a task that has not been scheduled")
+    {
+      // If retreiving the index of a task that is not scheduled, GetTaskIndex
+      // should return kTaskSchedulerSize + 1
+      CHECK(scheduler.GetTaskIndex("Does not exist") == (kMaxTaskCount + 1));
+    }
   }
-  SECTION("RemoveTask when scheduler is empty")
+
+  SECTION("RemoveTask")
   {
-    TaskScheduler scheduler = TaskScheduler::Instance();
-    // should do nothing since this task is not scheduled
-    scheduler.RemoveTask("Task A");
-    CHECK(vTaskDelete_fake.call_count == 0);
+    RESET_FAKE(vTaskDelete);
+
+    SECTION("When scheduler is empty")
+    {
+      TaskScheduler scheduler;
+      // should do nothing since this task is not scheduled
+      scheduler.RemoveTask("Task A");
+      CHECK(vTaskDelete_fake.call_count == 0);
+    }
+    SECTION("When scheduler is not empty")
+    {
+      constexpr size_t kExpectedTaskCount = 4;
+      TaskScheduler scheduler;
+      TaskInterface * const * task_list = scheduler.GetAllTasks();
+      for (size_t i = 0; i < kExpectedTaskCount; i++)
+      {
+        scheduler.AddTask(&(mock_tasks[i].get()));
+      }
+      CHECK(scheduler.GetTaskCount() == kExpectedTaskCount);
+      // Remove task named "Task 3"
+      constexpr uint8_t kTaskIndexToRemove = 2;
+      scheduler.RemoveTask(mock_tasks[kTaskIndexToRemove].get().GetName());
+      CHECK(vTaskDelete_fake.call_count == 1);
+      CHECK(scheduler.GetTaskCount() == (kExpectedTaskCount - 1));
+      CHECK(task_list[kTaskIndexToRemove] == nullptr);
+    }
   }
-  SECTION("RemoveTask when scheduler is not empty")
-  {
-    TaskScheduler scheduler    = TaskScheduler::Instance();
-    TaskInterface ** task_list = scheduler.GetAllTasks();
-    scheduler.AddTask(&(mock_tasks[0].get()));
-    scheduler.AddTask(&(mock_tasks[1].get()));
-    scheduler.AddTask(&(mock_tasks[2].get()));
-    scheduler.AddTask(&(mock_tasks[3].get()));
-    CHECK(scheduler.GetTaskCount() == 4);
-    scheduler.RemoveTask(mock_tasks[2].get().GetName());
-    CHECK(scheduler.GetTaskCount() == 3);
-    CHECK(task_list[2] == nullptr);
-    CHECK(vTaskDelete_fake.call_count == 1);
-  }
+
   SECTION("Start")
   {
+    RESET_FAKE(xTaskCreateStatic);
+    RESET_FAKE(xEventGroupCreateStatic);
+    RESET_FAKE(vTaskStartScheduler);
+
     constexpr uint32_t kPreRunSyncBits = 0xFFFF;
     xEventGroupCreateStatic_fake.custom_fake =
         xEventGroupCreateStatic_custom_fake;
-    TaskScheduler scheduler         = TaskScheduler::Instance();
+    TaskScheduler scheduler;
     constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
-    uint8_t task_count              = 0;
-    for (uint8_t i = 0; i < kMaxTaskCount; i++)
+    size_t task_count               = 0;
+    // Add tasks 1-16 to the scheduler
+    for (size_t i = 0; i < kMaxTaskCount; i++)
     {
       scheduler.AddTask(&(mock_tasks[i].get()));
       task_count++;
     }
     CHECK(scheduler.GetTaskCount() == task_count);
+
     scheduler.Start();
     // xTaskCreateStatic and Setup should be invoked for each scheduled task
-    Verify(Method(mock_tasks[0], Setup), Method(mock_tasks[1], Setup),
-           Method(mock_tasks[2], Setup), Method(mock_tasks[3], Setup),
-           Method(mock_tasks[4], Setup), Method(mock_tasks[5], Setup),
-           Method(mock_tasks[6], Setup), Method(mock_tasks[7], Setup),
-           Method(mock_tasks[8], Setup), Method(mock_tasks[9], Setup),
-           Method(mock_tasks[10], Setup), Method(mock_tasks[11], Setup),
-           Method(mock_tasks[12], Setup), Method(mock_tasks[13], Setup),
-           Method(mock_tasks[14], Setup), Method(mock_tasks[15], Setup))
-        .Exactly(1);
+    for (size_t i = 0; i < task_count; i++)
+    {
+      INFO("Checking Setup invocation for task at index: " << i);
+      Verify(Method(mock_tasks[i], Setup)).Once();
+    }
     CHECK(xTaskCreateStatic_fake.call_count == kMaxTaskCount);
     CHECK(xEventGroupCreateStatic_fake.call_count == 1);
     CHECK(scheduler.GetPreRunEventGroupHandle() == test_event_group_handle);
@@ -152,4 +182,4 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
     CHECK(vTaskStartScheduler_fake.call_count == 1);
   }
 }
-}  // namespace sjsu
+}  // namespace sjsu::rtos

@@ -1,34 +1,31 @@
 #include "L3_Application/periodic_scheduler.hpp"
 #include "utility/log.hpp"
+/// Task function to prints a message every 1s
+sjsu::rtos::PeriodicTaskInterface::TaskFunction task_function_1_hz =
+    [](uint32_t run_count) { LOG_INFO("1 Hz counter: %lu", run_count); };
+/// Task function to prints a message every 100ms
+sjsu::rtos::PeriodicTaskInterface::TaskFunction task_function_10_hz =
+    [](uint32_t run_count) { LOG_INFO("10 Hz counter: %lu", run_count); };
 
-/// Toggles the led every 1s
-void Print1Hz(uint32_t)
-{
-  static int counter = 0;
-  printf("1 Hz counter: %d\n", counter++);
-}
-/// Toggles the led every 0.1s
-void Print10Hz(uint32_t)
-{
-  static int counter = 0;
-  printf("10 Hz counter: %d\n", counter++);
-}
-
-sjsu::rtos::PeriodicScheduler scheduler = sjsu::rtos::PeriodicScheduler();
-sjsu::rtos::PeriodicTask<512> blinker_1_hz_task("Print1Hz",
+sjsu::rtos::TaskScheduler scheduler;
+sjsu::rtos::PeriodicScheduler periodic_scheduler("PeriodicScheduler",
+                                                 scheduler);
+sjsu::rtos::PeriodicTask<512> printer_1_hz_task("Print1Hz",
                                                 sjsu::rtos::Priority::kLow,
-                                                Print1Hz);
-sjsu::rtos::PeriodicTask<512> blinker_10_hz_task("Print10Hz",
+                                                &task_function_1_hz,
+                                                scheduler);
+sjsu::rtos::PeriodicTask<512> printer_10_hz_task("Print10Hz",
                                                  sjsu::rtos::Priority::kLow,
-                                                 Print10Hz);
+                                                 &task_function_10_hz,
+                                                 scheduler);
 
 int main()
 {
   LOG_INFO("Starting PeriodicScheduler example...");
-  scheduler.SetTask(&blinker_1_hz_task,
-                    sjsu::rtos::PeriodicScheduler::Frequency::k1Hz);
-  scheduler.SetTask(&blinker_10_hz_task,
-                    sjsu::rtos::PeriodicScheduler::Frequency::k10Hz);
-  sjsu::rtos::TaskScheduler::Instance().Start();
+  periodic_scheduler.SetTask(&printer_1_hz_task,
+                             sjsu::rtos::PeriodicScheduler::Frequency::k1Hz);
+  periodic_scheduler.SetTask(&printer_10_hz_task,
+                             sjsu::rtos::PeriodicScheduler::Frequency::k10Hz);
+  scheduler.Start();
   return 0;
 }
