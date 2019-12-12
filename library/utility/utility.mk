@@ -9,4 +9,5 @@ TESTS += $(LIBRARY_DIR)/utility/test/enum_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/fatfs_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/map_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/stopwatch_test.cpp
+TESTS += $(LIBRARY_DIR)/utility/test/time_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/math/test/average_test.cpp
