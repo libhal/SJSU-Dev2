@@ -10,34 +10,48 @@
 
 namespace sjsu
 {
-// Definition of an UptimeFunction
-using UptimeFunction = std::chrono::microseconds (*)();
+/// Definition of an UptimeFunction
+using UptimeFunction = std::function<std::chrono::microseconds(void)>;
 
+/// A default uptime function that is used for testing or platforms without a
+/// means to keep time. It should not be used in production.
+///
+/// @return the current number of fake uptime microseconds that increments each
+/// time this function is called.
 inline std::chrono::microseconds DefaultUptime()
 {
   static std::chrono::microseconds default_uptime = 0us;
-  return default_uptime++;
+  return ++default_uptime;
 }
 
+/// Global Uptime function, preset to DefaultUptime() for testing purposes.
+/// In general, this function is overwritten by
 inline UptimeFunction Uptime = DefaultUptime;  // NOLINT
 
-// Returns the system uptime in microseconds, do not use this function directly
+/// Returns the system uptime in microseconds, do not use this function directly
+///
+/// @param uptime_function - new system wide uptime function to override the
+///        previous one.
 inline void SetUptimeFunction(UptimeFunction uptime_function)
 {
   Uptime = uptime_function;
 }
-// Wait will until the is_done parameter returns true
-//
-// @param timeout the maximum amount of time to wait for the is_done to
-//        return true.
-// @param is_done will be run in a tight loop until it returns true or the
-//        timeout time has elapsed.
-[[gnu::always_inline]] inline Status Wait(std::chrono::microseconds timeout,
-                                          std::function<bool()> is_done)
+
+/// Wait will until the is_done parameter returns true
+///
+/// @param timeout the maximum amount of time to wait for the is_done to
+///        return true.
+/// @param is_done will be run in a tight loop until it returns true or the
+///        timeout time has elapsed.
+inline Status Wait(std::chrono::microseconds timeout,
+                   std::function<bool()> is_done)
 {
   std::chrono::microseconds timeout_time;
   if (timeout == std::chrono::microseconds::max())
   {
+    // TODO(#983): This is a cheap hack to keep overflows from happening, but
+    // what if the system hsa been on for a long period of time and a new
+    // timeout overflows? This needs to be handled properly.
     timeout_time = timeout;
   }
   else
@@ -56,7 +70,11 @@ inline void SetUptimeFunction(UptimeFunction uptime_function)
   }
   return status;
 }
+
 /// Overload of `Wait` that merely takes a timeout.
+///
+/// @param timeout - the amount of time to wait.
+/// @return always returns Status::kTimedOut
 inline Status Wait(std::chrono::microseconds timeout)
 {
   return Wait(timeout, []() -> bool { return false; });
@@ -65,19 +83,10 @@ inline Status Wait(std::chrono::microseconds timeout)
 /// Delay the system for a duration of time
 inline void Delay(std::chrono::microseconds delay_time)
 {
-  if constexpr (sjsu::build::kTarget == sjsu::build::Target::HostTest)
-  {
-    // TODO(#): Have this increment the global uptime counter by the number of
-    // microseconds we want to delay.
-    return;
-  }
-  else
-  {
-    Wait(delay_time);
-  }
+  Wait(delay_time);
 }
 /// Halt system by putting it into infinite loop
-[[gnu::always_inline]] inline void Halt()
+inline void Halt()
 {
   while (true)
   {

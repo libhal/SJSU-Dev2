@@ -46,4 +46,3 @@ utility/allocator.hpp
 utility/ansi_terminal_codes.hpp
 utility/math/average.hpp
 utility/stopwatch.hpp
-utility/time.hpp
