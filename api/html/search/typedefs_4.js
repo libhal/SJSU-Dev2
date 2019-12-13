@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vector',['Vector',['../d0/d6b/namespacesjsu.html#a19c1a327b04630c754e1cb8784f53290',1,'sjsu']]]
+  ['uptimefunction',['UptimeFunction',['../d0/d6b/namespacesjsu.html#ac5d8bad0a4f11ec7df61878748d05e00',1,'sjsu']]]
 ];

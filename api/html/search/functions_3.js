@@ -3,6 +3,7 @@ var searchData=
   ['dac',['Dac',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae4d9b92052810adbe2c9c3e1c1abff1a',1,'sjsu::lpc40xx::Dac']]],
   ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena']]],
   ['declaredonstackcheck',['DeclaredOnStackCheck',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83',1,'sjsu::rtos::Task']]],
+  ['defaultuptime',['DefaultUptime',['../d0/d6b/namespacesjsu.html#a8744125900419599388b2a125e2fbc55',1,'sjsu']]],
   ['delay',['Delay',['../d0/d6b/namespacesjsu.html#ad90da361581fb6ebcc50f118c5696ec6',1,'sjsu']]],
   ['delete',['Delete',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab6f2cee2c287b9068c4ab0357140c9af',1,'sjsu::rtos::Task']]],
   ['detachinterrupt',['DetachInterrupt',['../dd/d3a/classsjsu_1_1Gpio.html#a0657f0c0777ec9cd10cc1d31e9f8d5a4',1,'sjsu::Gpio::DetachInterrupt()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ad7fcbd8e572440d339a1c8e492e49f24',1,'sjsu::lpc40xx::Gpio::DetachInterrupt()']]],

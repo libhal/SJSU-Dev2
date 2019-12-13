@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['wait',['Wait',['../d0/d6b/namespacesjsu.html#a5b14641f8bcd6cd0c17bcad47c0209b8',1,'sjsu']]],
+  ['wait',['Wait',['../d0/d6b/namespacesjsu.html#a8ebae2d1aa4a854629bbfddaf05935b5',1,'sjsu::Wait(std::chrono::microseconds timeout, std::function&lt; bool()&gt; is_done)'],['../d0/d6b/namespacesjsu.html#a5b14641f8bcd6cd0c17bcad47c0209b8',1,'sjsu::Wait(std::chrono::microseconds timeout)']]],
   ['waitforinput',['WaitForInput',['../dd/d02/classCommandLine.html#a1de508cf6515128fb9d3d8f2f2d64bd3',1,'CommandLine']]],
   ['watchdog',['Watchdog',['../d5/da1/classsjsu_1_1Watchdog.html',1,'sjsu']]],
   ['watchdog',['Watchdog',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html',1,'sjsu::lpc40xx']]],

@@ -17,6 +17,7 @@ var searchData=
   ['debugsdcard_5ft',['DebugSdCard_t',['../df/dc2/structsjsu_1_1Sd_1_1DebugSdCard__t.html',1,'sjsu::Sd']]],
   ['declaredonstackcheck',['DeclaredOnStackCheck',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83',1,'sjsu::rtos::Task']]],
   ['decodedframe_5ft',['DecodedFrame_t',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html',1,'sjsu::infrared']]],
+  ['defaultuptime',['DefaultUptime',['../d0/d6b/namespacesjsu.html#a8744125900419599388b2a125e2fbc55',1,'sjsu']]],
   ['delay',['Delay',['../d0/d6b/namespacesjsu.html#ad90da361581fb6ebcc50f118c5696ec6',1,'sjsu']]],
   ['delay_5ftime_5f',['delay_time_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5be244105265971ef530ad246b030c7b',1,'sjsu::rtos::Task']]],
   ['delete',['Delete',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab6f2cee2c287b9068c4ab0357140c9af',1,'sjsu::rtos::Task']]],
