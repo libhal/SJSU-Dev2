@@ -10,7 +10,11 @@ int main()
 {
   LOG_INFO("Starting OledPrint Application...");
   sjsu::Graphics & oled_graphics = sjtwo::Oled();
-  sjsu::GraphicalTerminal oled_terminal(&oled_graphics);
+  sjsu::TerminalCache_t<
+      sjsu::Ssd1306::kHeight / sjsu::GraphicalTerminal::kCharacterHeight,
+      sjsu::Ssd1306::kWidth / sjsu::GraphicalTerminal::kCharacterWidth>
+      cache;
+  sjsu::GraphicalTerminal oled_terminal(&oled_graphics, &cache);
 
   oled_terminal.Initialize();
 
