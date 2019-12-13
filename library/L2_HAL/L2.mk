@@ -19,7 +19,6 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/communication/test/tsop752_test.cpp
 # ==============================================================================
 # Displays
 # ==============================================================================
-TESTS += $(LIBRARY_DIR)/L2_HAL/displays/led/test/onboard_led_test.cpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/displays/oled/test/ssd1306_test.cpp
 # TESTS += $(LIBRARY_DIR)/L2_HAL/displays/lcd/test/st7066u_test.cpp
 # ==============================================================================

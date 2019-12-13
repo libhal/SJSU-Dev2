@@ -6,7 +6,7 @@
 
 #include "config.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/displays/led/onboard_led.hpp"
+#include "L2_HAL/boards/sjtwo.hpp"
 #include "L2_HAL/switches/button.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
@@ -16,24 +16,25 @@
 // Using anonymous namespace so these tasks are only visible to this file
 namespace
 {
-sjsu::OnBoardLed leds;
-
 void LedToggle(void * parameters)
 {
   LOG_INFO("Setting up task...");
   LOG_INFO("Retrieving delay amount from parameters...");
   auto delay = sjsu::rtos::RetrieveParameter(parameters);
   LOG_INFO("Initializing LEDs...");
-  leds.Off(0);
-  leds.On(1);
+  sjtwo::led0.SetAsOutput();
+  sjtwo::led1.SetAsOutput();
+
+  sjtwo::led0.SetHigh();
+  sjtwo::led1.SetLow();
   LOG_INFO("LEDs Initialized...");
   // Loop blinks the LEDs back and forth at a rate that depends on the
   // pvParameter's value.
   LOG_INFO("Toggling LEDs...");
   while (true)
   {
-    leds.Toggle(0);
-    leds.Toggle(1);
+    sjtwo::led0.Toggle();
+    sjtwo::led1.Toggle();
     vTaskDelay(delay);
   }
 }
@@ -47,7 +48,8 @@ void ButtonReader([[maybe_unused]] void * parameters)
   sjsu::Button switch3(button_gpio3);
 
   switch3.Initialize();
-  leds.Off(3);
+  sjtwo::led3.SetAsOutput();
+  sjtwo::led3.SetLow();
 
   LOG_INFO("SW3 Initialized...");
   LOG_INFO("Press and release SW3 to toggle LED3 state...");
@@ -57,7 +59,7 @@ void ButtonReader([[maybe_unused]] void * parameters)
   {
     if (switch3.Released())
     {
-      leds.Toggle(3);
+      sjtwo::led3.Toggle();
     }
     vTaskDelay(50);
   }
@@ -65,12 +67,11 @@ void ButtonReader([[maybe_unused]] void * parameters)
 
 }  // namespace
 
+TaskHandle_t handle = NULL;
+
 int main()
 {
-  TaskHandle_t handle = NULL;
   LOG_INFO("Starting FreeRTOS Blinker Example...");
-  LOG_INFO("Initializing LEDs...");
-  leds.Initialize();
   LOG_INFO("Creating Tasks...");
   sjsu::Delay(1s);
   // See https://www.freertos.org/a00125.html for the xTaskCreate API
@@ -80,7 +81,7 @@ int main()
               sjsu::rtos::StackSize(1024),  // Size of stack allocated to task
               sjsu::rtos::PassParameter(100),  // Parameter to be passed to task
               sjsu::rtos::Priority::kLow,      // Give this task low priority
-              &handle);                        // Optional feference to the task
+              &handle);                        // Optional reference to the task
   xTaskCreate(ButtonReader,        // Make function ButtonReader a task
               "ButtonReaderTask",  // Give this task the name "ButtonReaderTask"
               sjsu::rtos::StackSize(1024),    // Size of stack allocated to task

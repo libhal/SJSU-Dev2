@@ -118,6 +118,8 @@ Collaboration diagram for sjtwo:</div>
 <area shape="rect" id="node5" href="../../d3/de6/classsjsu_1_1Spi.html" title="sjsu::Spi" alt="" coords="186,5,261,32"/>
 <area shape="rect" id="node6" href="../../d8/d93/classsjsu_1_1example_1_1Example.html" title="sjsu::example::Example" alt="" coords="313,81,486,108"/>
 <area shape="rect" id="node7" href="../../d4/d55/classsjsu_1_1Example.html" title="sjsu::Example" alt="" coords="344,5,455,32"/>
+<area shape="rect" id="node8" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="511,81,651,108"/>
+<area shape="rect" id="node9" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="539,5,623,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -129,9 +131,6 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7a7ca38b7476bf00283b26f38b97b579"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a7ca38b7476bf00283b26f38b97b579"></a>
-static <a class="el" href="../../de/db7/classsjsu_1_1OnBoardLed.html">sjsu::OnBoardLed</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Leds</b> ()</td></tr>
-<tr class="separator:a7a7ca38b7476bf00283b26f38b97b579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae29e5c4359ad5fb762654251afbbbb84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae29e5c4359ad5fb762654251afbbbb84"></a>
 static <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html">sjsu::Mma8452q</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Accelerometer</b> ()</td></tr>
 <tr class="separator:ae29e5c4359ad5fb762654251afbbbb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,9 +143,6 @@ static <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html">sjsu::Tmp102</
 <tr class="memitem:ae5391ad56fbae459afc44c531c95591a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5391ad56fbae459afc44c531c95591a"></a>
 static <a class="el" href="../../d7/d8c/classsjsu_1_1Graphics.html">sjsu::Graphics</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Oled</b> ()</td></tr>
 <tr class="separator:ae5391ad56fbae459afc44c531c95591a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a7ca38b7476bf00283b26f38b97b579"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a7ca38b7476bf00283b26f38b97b579"></a>
-static <a class="el" href="../../de/db7/classsjsu_1_1OnBoardLed.html">sjsu::OnBoardLed</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Leds</b> ()</td></tr>
-<tr class="separator:a7a7ca38b7476bf00283b26f38b97b579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae29e5c4359ad5fb762654251afbbbb84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae29e5c4359ad5fb762654251afbbbb84"></a>
 static <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html">sjsu::Mma8452q</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Accelerometer</b> ()</td></tr>
 <tr class="separator:ae29e5c4359ad5fb762654251afbbbb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,6 +172,18 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a13c4711bbdea2564416318e6171c08b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84edb4861f322c4afcdf0e569df50d07"><td class="memItemLeft" align="right" valign="top">static sjsu::lpc17xx::I2c&#160;</td><td class="memItemRight" valign="bottom"><b>i2c2</b></td></tr>
 <tr class="separator:a84edb4861f322c4afcdf0e569df50d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d547f921e2a15839b29c216f6e9d873"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d547f921e2a15839b29c216f6e9d873"></a>
+static <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html">sjsu::lpc40xx::Gpio</a>&#160;</td><td class="memItemRight" valign="bottom"><b>led0</b> = <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html">sjsu::lpc40xx::Gpio</a>(1, 0)</td></tr>
+<tr class="separator:a1d547f921e2a15839b29c216f6e9d873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a499e281626ae20960e711990becae4e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a499e281626ae20960e711990becae4e3"></a>
+static <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html">sjsu::lpc40xx::Gpio</a>&#160;</td><td class="memItemRight" valign="bottom"><b>led1</b> = <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html">sjsu::lpc40xx::Gpio</a>(1, 1)</td></tr>
+<tr class="separator:a499e281626ae20960e711990becae4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aceb646b63ec970e9aa4abe766315d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5aceb646b63ec970e9aa4abe766315d9"></a>
+static <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html">sjsu::lpc40xx::Gpio</a>&#160;</td><td class="memItemRight" valign="bottom"><b>led2</b> = <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html">sjsu::lpc40xx::Gpio</a>(1, 4)</td></tr>
+<tr class="separator:a5aceb646b63ec970e9aa4abe766315d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade0eadb67ec1f4f45f54ba97d64f8ab5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade0eadb67ec1f4f45f54ba97d64f8ab5"></a>
+static <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html">sjsu::lpc40xx::Gpio</a>&#160;</td><td class="memItemRight" valign="bottom"><b>led3</b> = <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html">sjsu::lpc40xx::Gpio</a>(1, 8)</td></tr>
+<tr class="separator:ade0eadb67ec1f4f45f54ba97d64f8ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3bcf9254b30b163ecfe7886ea3735d9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html">sjsu::lpc40xx::Spi</a>&#160;</td><td class="memItemRight" valign="bottom"><b>spi0</b></td></tr>
 <tr class="separator:ab3bcf9254b30b163ecfe7886ea3735d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81d5d2f5ba3110f1aecc151e907f7403"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html">sjsu::lpc40xx::Spi</a>&#160;</td><td class="memItemRight" valign="bottom"><b>spi1</b></td></tr>
