@@ -3,8 +3,8 @@
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L1_Peripheral/lpc40xx/spi.hpp"
-#include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L2_HAL/displays/oled/ssd1306.hpp"
+#include "L2_HAL/boards/sjtwo.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
 
@@ -117,23 +117,31 @@ class FactoryTest
   {
     // Turn on all LEDs if all tests pass else none.
     // LED Test
-    sjsu::OnBoardLed leds;
-    leds.Initialize();
+    sjtwo::led0.SetAsOutput();
+    sjtwo::led1.SetAsOutput();
+    sjtwo::led2.SetAsOutput();
+    sjtwo::led3.SetAsOutput();
+
+    sjtwo::led0.SetHigh();
+    sjtwo::led1.SetHigh();
+    sjtwo::led2.SetHigh();
+    sjtwo::led3.SetHigh();
+
     if (gesture_test)
     {
-      leds.Set(0);
+      sjtwo::led0.SetLow();
     }
     if (accelerometer_test)
     {
-      leds.Set(1);
+      sjtwo::led1.SetLow();
     }
     if (temp_test)
     {
-      leds.Set(2);
+      sjtwo::led2.SetLow();
     }
     if (flash_test)
     {
-      leds.Set(3);
+      sjtwo::led3.SetLow();
     }
 
     printf("\n=========== TEST RESULTS ===========\n\n");

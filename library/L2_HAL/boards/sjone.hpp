@@ -3,7 +3,6 @@
 #include "L1_Peripheral/lpc17xx/gpio.hpp"
 #include "L1_Peripheral/lpc17xx/i2c.hpp"
 #include "L1_Peripheral/lpc17xx/spi.hpp"
-#include "L2_HAL/displays/led/onboard_led.hpp"
 #include "L2_HAL/memory/sd.hpp"
 #include "L2_HAL/sensors/environment/temperature/tmp102.hpp"
 #include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
@@ -24,11 +23,10 @@ struct sjtwo // NOLINT
   inline static sjsu::lpc17xx::I2c i2c2 =
       sjsu::lpc17xx::I2c(sjsu::lpc17xx::I2c::Bus::kI2c2);
 
-  [[gnu::always_inline]] inline static sjsu::OnBoardLed & Leds()
-  {
-    static sjsu::OnBoardLed leds;
-    return leds;
-  }
+  inline static sjsu::lpc40xx::Gpio led0 = sjsu::lpc40xx::Gpio(1, 0);
+  inline static sjsu::lpc40xx::Gpio led1 = sjsu::lpc40xx::Gpio(1, 1);
+  inline static sjsu::lpc40xx::Gpio led2 = sjsu::lpc40xx::Gpio(1, 4);
+  inline static sjsu::lpc40xx::Gpio led3 = sjsu::lpc40xx::Gpio(1, 8);
 
   [[gnu::always_inline]] inline static sjsu::Mma8452q & Accelerometer()
   {
