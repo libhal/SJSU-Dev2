@@ -1,0 +1,171 @@
+#include <FreeRTOS.h>
+#include <task.h>
+
+#include <cstdint>
+#include <cstring>
+#include <iterator>
+
+#include "L0_Platform/ram.hpp"
+#include "L0_Platform/startup.hpp"
+#include "L1_Peripheral/cortex/dwt_counter.hpp"
+#include "L1_Peripheral/cortex/system_timer.hpp"
+#include "L1_Peripheral/interrupt.hpp"
+#include "L1_Peripheral/stm32f10x/system_controller.hpp"
+#include "L1_Peripheral/inactive.hpp"
+#include "utility/log.hpp"
+#include "utility/macros.hpp"
+#include "utility/time.hpp"
+
+// Private namespace to make sure that these do not conflict with other globals
+namespace
+{
+using sjsu::cortex::InterruptController;
+// Create stm32f10x system controller to be used by low level initialization.
+sjsu::stm32f10x::SystemController system_controller;
+// Create timer0 to be used by lower level initialization for uptime calculation
+sjsu::cortex::DwtCounter arm_dwt_counter;
+// System timer is used to count milliseconds of time and to run the RTOS
+// scheduler.
+sjsu::cortex::SystemTimer system_timer;
+// Cortex NVIC interrupt controller used to setup FreeRTOS ISRs
+sjsu::cortex::InterruptController<sjsu::lpc40xx::kNumberOfIrqs,
+                                  __NVIC_PRIO_BITS>
+    interrupt_controller;
+
+int Stm32f10xStdOut([[maybe_unused]] const char * data,
+                    [[maybe_unused]] size_t length)
+{
+  return length;
+}
+
+int Stm32f10xStdIn([[maybe_unused]] char * data, [[maybe_unused]] size_t length)
+{
+  return length;
+}
+}  // namespace
+
+extern "C" uint32_t ThreadRuntimeCounter()
+{
+  return arm_dwt_counter.GetCount();
+}
+
+// The entry point for the C++ library startup
+extern "C"
+{
+  // These are defined after the compilation of the FreeRTOS port for Cortex M4F
+  // These will link to those definitions.
+  extern void xPortPendSVHandler(void);   // NOLINT
+  extern void vPortSVCHandler(void);      // NOLINT
+  extern void xPortSysTickHandler(void);  // NOLINT
+  // Forward declaration of the default handlers. These are aliased.
+  // When the application defines a handler (with the same name), the
+  // application's handler will automatically take precedence over these weak
+  // definitions.
+  extern void ArmHardFaultHandler(void);
+  extern void ArmResetHandler(void);
+
+  void vPortSetupTimerInterrupt(void)  // NOLINT
+  {
+    interrupt_controller.Enable({
+        .interrupt_request_number = sjsu::cortex::SVCall_IRQn,
+        .interrupt_handler        = vPortSVCHandler,
+    });
+    interrupt_controller.Enable({
+        .interrupt_request_number = sjsu::cortex::PendSV_IRQn,
+        .interrupt_handler        = xPortPendSVHandler,
+    });
+    // Set the SystemTick frequency to the RTOS tick frequency
+    // It is critical that this happens before you set the system_clock,
+    // since The system_timer keeps the time that the system_clock uses to
+    // delay itself.
+    system_timer.SetCallback(xPortSysTickHandler);
+  }
+}
+
+SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
+
+// The Interrupt vector table.
+// This relies on the linker script to place at correct location in memory.
+SJ2_SECTION(".isr_vector")
+// NOLINTNEXTLINE(readability-identifier-naming)
+const sjsu::InterruptVectorAddress kInterruptVectorTable[] = {
+  // Core Level - CM4
+  &StackTop,                           // 0, The initial stack pointer
+  ArmResetHandler,                     // 1, The reset handler
+  interrupt_controller.LookupHandler,  // 2, The NMI handler
+  ArmHardFaultHandler,                 // 3, The hard fault handler
+  interrupt_controller.LookupHandler,  // 4, The MPU fault handler
+  interrupt_controller.LookupHandler,  // 5, The bus fault handler
+  interrupt_controller.LookupHandler,  // 6, The usage fault handler
+  nullptr,                             // 7, Reserved
+  nullptr,                             // 8, Reserved
+  nullptr,                             // 9, Reserved
+  nullptr,                             // 10, Reserved
+  interrupt_controller.LookupHandler,  // 11, SVCall handler
+  interrupt_controller.LookupHandler,  // 12, Debug monitor handler
+  nullptr,                             // 13, Reserved
+  interrupt_controller.LookupHandler,  // 14, FreeRTOS PendSV Handler
+  interrupt_controller.LookupHandler,  // 15, The SysTick handler
+  // Chip Level - stm32f10x
+  interrupt_controller.LookupHandler,  // 16, 0x40 - WDT
+  interrupt_controller.LookupHandler,  // 17, 0x44 - TIMER0
+  interrupt_controller.LookupHandler,  // 18, 0x48 - TIMER1
+  interrupt_controller.LookupHandler,  // 19, 0x4c - TIMER2
+  interrupt_controller.LookupHandler,  // 20, 0x50 - TIMER3
+  interrupt_controller.LookupHandler,  // 21, 0x54 - UART0
+  interrupt_controller.LookupHandler,  // 22, 0x58 - UART1
+  interrupt_controller.LookupHandler,  // 23, 0x5c - UART2
+  interrupt_controller.LookupHandler,  // 24, 0x60 - UART3
+  interrupt_controller.LookupHandler,  // 25, 0x64 - PWM1
+  interrupt_controller.LookupHandler,  // 26, 0x68 - I2C0
+  interrupt_controller.LookupHandler,  // 27, 0x6c - I2C1
+  interrupt_controller.LookupHandler,  // 28, 0x70 - I2C2
+  interrupt_controller.LookupHandler,  // 29, 0x74 - SPI0
+  interrupt_controller.LookupHandler,  // 30, 0x78 - SSP0
+  interrupt_controller.LookupHandler,  // 31, 0x7c - SSP1
+  interrupt_controller.LookupHandler,  // 32, 0x80 - PLL0 (Main PLL)
+  interrupt_controller.LookupHandler,  // 33, 0x84 - RTC
+  interrupt_controller.LookupHandler,  // 34, 0x88 - EINT0
+  interrupt_controller.LookupHandler,  // 35, 0x8c - EINT1
+  interrupt_controller.LookupHandler,  // 36, 0x90 - EINT2
+  interrupt_controller.LookupHandler,  // 37, 0x94 - EINT3
+  interrupt_controller.LookupHandler,  // 38, 0x98 - ADC
+  interrupt_controller.LookupHandler,  // 39, 0x9c - BOD
+  interrupt_controller.LookupHandler,  // 40, 0xA0 - USB
+  interrupt_controller.LookupHandler,  // 41, 0xa4 - CAN
+  interrupt_controller.LookupHandler,  // 42, 0xa8 - GP DMA
+  interrupt_controller.LookupHandler,  // 43, 0xac - I2S
+  interrupt_controller.LookupHandler,  // 44, 0xb0 - Ethernet
+  interrupt_controller.LookupHandler,  // 45, 0xb4 - RIT
+  interrupt_controller.LookupHandler,  // 46, 0xb8 - Motor Control PWM
+  interrupt_controller.LookupHandler,  // 47, 0xbc - Quadrature Encoder
+  interrupt_controller.LookupHandler,  // 48, 0xc0 - PLL1 (USB PLL)
+  interrupt_controller.LookupHandler,  // 49, 0xc4 - USB Activity interrupt to
+                                       // wakeup
+  interrupt_controller.LookupHandler,  // 50, 0xc8 - CAN Activity interrupt to
+                                       // wakeup
+};
+
+namespace sjsu
+{
+SJ2_WEAK(void InitializePlatform());
+void InitializePlatform()
+{
+  sjsu::newlib::SetStdout(Stm32f10xStdOut);
+  sjsu::newlib::SetStdin(Stm32f10xStdIn);
+
+  // Set the platform's interrupt controller.
+  // This will be used by other libraries to enable and disable interrupts.
+  sjsu::InterruptController::SetPlatformController(&interrupt_controller);
+  sjsu::SystemController::SetPlatformController(&system_controller);
+
+  system_timer.SetTickFrequency(config::kRtosFrequency);
+  sjsu::Status timer_start_status = system_timer.StartTimer();
+
+  SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
+                   "System Timer (used by FreeRTOS) has FAILED to start!");
+
+  arm_dwt_counter.Initialize();
+  sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);
+}
+}  // namespace sjsu
