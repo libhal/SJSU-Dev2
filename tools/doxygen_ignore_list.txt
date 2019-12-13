@@ -19,7 +19,6 @@ L2_HAL/boards/sjtwo.hpp
 L2_HAL/communication/esp8266.hpp
 L2_HAL/device_memory_map.hpp
 L2_HAL/displays/lcd/st7066u.hpp
-L2_HAL/displays/led/onboard_led.hpp
 L2_HAL/displays/oled/ssd1306.hpp
 L2_HAL/memory/sd.hpp
 L2_HAL/sensors/distance/distance_sensor.hpp
