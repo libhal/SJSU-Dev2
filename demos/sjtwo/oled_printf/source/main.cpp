@@ -46,7 +46,7 @@ int main()
     oled_terminal.printf("%1s", buffer);
   }
   LOG_INFO("Finished printing message!");
-  sjsu::Delay(3000ms);
+  sjsu::Delay(6000ms);
 
   LOG_INFO("Clearing screen...");
   oled_terminal.Clear();

@@ -62,6 +62,18 @@ class Graphics
     color_ = color;
   }
 
+  /// Get the current color of drawn elements.
+  PixelDisplay::Color_t GetColor()
+  {
+    return color_;
+  }
+
+  /// Get available colors of the display.
+  PixelDisplay::Color_t GetAvailableColor()
+  {
+    return display_.AvailableColors();
+  }
+
   /// Draw a horizontal line
   ///
   /// @param x - starting x coordinate
@@ -203,9 +215,8 @@ class Graphics
       {
         if (font8x8_basic[letter_position][y] & (1 << x))
         {
-          color_ = foreground;
+          DrawPixel(x0 + x, y0 + y);
         }
-        DrawPixel(x0 + x, y0 + y);
       }
     }
     color_ = foreground;
