@@ -113,45 +113,40 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a60b26d574b3e2edb8841977afd585a2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60b26d574b3e2edb8841977afd585a2a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>GraphicalTerminal</b> (<a class="el" href="../../d7/d8c/classsjsu_1_1Graphics.html">Graphics</a> *graphics)</td></tr>
-<tr class="separator:a60b26d574b3e2edb8841977afd585a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b901286d629204062df18ac3bd2d98c"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5b901286d629204062df18ac3bd2d98c"></a>
+template&lt;uint32_t kMaxRows, uint32_t kMaxColumns&gt; </td></tr>
+<tr class="memitem:a5b901286d629204062df18ac3bd2d98c"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GraphicalTerminal</b> (<a class="el" href="../../d7/d8c/classsjsu_1_1Graphics.html">Graphics</a> *graphics, <a class="el" href="../../d4/d59/structsjsu_1_1TerminalCache__t.html">TerminalCache_t</a>&lt; kMaxRows, kMaxColumns &gt; *cache)</td></tr>
+<tr class="separator:a5b901286d629204062df18ac3bd2d98c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b992841ccde443fa5907450b7c2dba0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b992841ccde443fa5907450b7c2dba0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
 <tr class="separator:a8b992841ccde443fa5907450b7c2dba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61f22706308d0b4e1e2f8214cc9af38b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61f22706308d0b4e1e2f8214cc9af38b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>printf</b> (const char *format,...)</td></tr>
 <tr class="separator:a61f22706308d0b4e1e2f8214cc9af38b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abce33b18ead8f3b1ab9730d9d3bd19b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abce33b18ead8f3b1ab9730d9d3bd19b4"></a>
-<a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html">GraphicalTerminal</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>SetCursor</b> (size_t x, size_t y)</td></tr>
-<tr class="separator:abce33b18ead8f3b1ab9730d9d3bd19b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c01af3b72b9bacf547029d2eeb4d726"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c01af3b72b9bacf547029d2eeb4d726"></a>
+<a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html">GraphicalTerminal</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>SetCursor</b> (uint32_t x, uint32_t y)</td></tr>
+<tr class="separator:a8c01af3b72b9bacf547029d2eeb4d726"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05b2be125e0004307303f5097ed271cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05b2be125e0004307303f5097ed271cc"></a>
 <a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html">GraphicalTerminal</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>MoveToLineStart</b> ()</td></tr>
 <tr class="separator:a05b2be125e0004307303f5097ed271cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf2022683c383ddcb56fed1e44810cd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf2022683c383ddcb56fed1e44810cd7"></a>
 <a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html">GraphicalTerminal</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></tr>
 <tr class="separator:adf2022683c383ddcb56fed1e44810cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab55d7f7fdd7f0d3d7a912a86f5653fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab55d7f7fdd7f0d3d7a912a86f5653fa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearRow</b> (size_t row_location)</td></tr>
-<tr class="separator:aab55d7f7fdd7f0d3d7a912a86f5653fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a375b37cd25787a872c2b499be9b0d386"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a375b37cd25787a872c2b499be9b0d386"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</td></tr>
-<tr class="separator:a375b37cd25787a872c2b499be9b0d386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9117f73a0f48af21a7f40cbcbeeeb12a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9117f73a0f48af21a7f40cbcbeeeb12a"></a>
+<a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html">GraphicalTerminal</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ClearRow</b> (uint32_t row_location)</td></tr>
+<tr class="separator:a9117f73a0f48af21a7f40cbcbeeeb12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac212c2eebebe0a2112795d398950a332"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac212c2eebebe0a2112795d398950a332"></a>
+<a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html">GraphicalTerminal</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</td></tr>
+<tr class="separator:ac212c2eebebe0a2112795d398950a332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a1c362b7dc4f047b67de5ce4b8630ddcb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c362b7dc4f047b67de5ce4b8630ddcb"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kCharacterHeight</b> = 8</td></tr>
-<tr class="separator:a1c362b7dc4f047b67de5ce4b8630ddcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84b0e965f85d5749e69d856b3e19db58"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84b0e965f85d5749e69d856b3e19db58"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kCharacterWidth</b> = 8</td></tr>
-<tr class="separator:a84b0e965f85d5749e69d856b3e19db58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf74f350b3572358a515947b6cb7886"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedf74f350b3572358a515947b6cb7886"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMaxColumns</b> = Ssd1306::kWidth / kCharacterWidth</td></tr>
-<tr class="separator:aedf74f350b3572358a515947b6cb7886"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ae28793e363f2eb86f68c1aa92d0ac1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ae28793e363f2eb86f68c1aa92d0ac1"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMaxRows</b> = Ssd1306::kHeight / kCharacterHeight</td></tr>
-<tr class="separator:a3ae28793e363f2eb86f68c1aa92d0ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd823fc02982460e3854f131db428882"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd823fc02982460e3854f131db428882"></a>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kCharacterHeight</b> = 8</td></tr>
+<tr class="separator:abd823fc02982460e3854f131db428882"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03c8ad89ab22e2df3f092a9122d30cba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a03c8ad89ab22e2df3f092a9122d30cba"></a>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kCharacterWidth</b> = 8</td></tr>
+<tr class="separator:a03c8ad89ab22e2df3f092a9122d30cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L3_Application/<a class="el" href="../../db/d80/graphical__terminal_8hpp_source.html">graphical_terminal.hpp</a></li>
