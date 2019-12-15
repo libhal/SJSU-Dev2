@@ -77,17 +77,17 @@ inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
 ///
 /// @param address - location to start reading bytes from
 /// @param length - the number of bytes to read from the starting location
-inline void Hexdump(void * address, uint32_t length)
+inline void Hexdump(void * address, size_t length)
 {
   uint8_t * bytes = static_cast<uint8_t *>(address);
-  for (uint32_t i = 0; i < length; i += 16)
+  for (size_t i = 0; i < length; i += 16)
   {
-    printf("%08" PRIX32 "  ", i);
+    printf("%08zX  ", i);
     size_t bytes_to_print = (i + 15 > length) ? (length % 16) : 16;
     PrintHexBytesRow(&bytes[i], bytes_to_print);
     PrintCharacterRow(&bytes[i], bytes_to_print);
   }
-  printf("%08" PRIX32 "  \n", length);
+  printf("%08zX  \n", length);
 }
 
 // ==============================================

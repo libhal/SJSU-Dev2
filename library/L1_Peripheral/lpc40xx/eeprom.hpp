@@ -100,8 +100,8 @@ class Eeprom final : public sjsu::Eeprom
 
     // The first 6 bits in the address (MSB) dictate which page is being written
     // to in the EEPROM, and the last 6 bits (LSB) dictate offset in the page
-    uint8_t page_count  = bit::Read(full_address, kUpper6Bits);
-    uint8_t page_offset = bit::Read(full_address, kLower6Bits);
+    uint32_t page_count  = bit::Extract(full_address, kUpper6Bits);
+    uint32_t page_offset = bit::Extract(full_address, kLower6Bits);
 
     uint16_t address;
 
@@ -172,7 +172,7 @@ class Eeprom final : public sjsu::Eeprom
   /// @param count   - number of bytes that have to be read
   void Read(uint8_t * data, uint32_t address, size_t count) const override
   {
-    address = bit::Clear(address, kAddressMask);
+    address = bit::Insert(address, 0b00, kAddressMask);
 
     // Because the EEPROM uses 32-bit communication, read_data will be casted
     // into a uint32_t *
