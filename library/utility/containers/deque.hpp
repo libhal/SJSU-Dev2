@@ -7,9 +7,6 @@
 #if defined(__GLIBCXX__)
 #define DEQUE_BUFFER_SIZE(type) std::__deque_buf_size(sizeof(T))
 #else
-#warning \
-    "Could not determine std::deque<T> buffer size, so assuming size 512 * " \
-    "sizeof(T)"
 #define DEQUE_BUFFER_SIZE(type) 512 * sizeof(type)
 #endif
 
