@@ -98,6 +98,7 @@ class GraphicalTerminal
 
   GraphicalTerminal & Update()
   {
+    graphics_->Clear();
     for (int32_t i = 0; i < static_cast<int32_t>(max_rows_); i++)
     {
       for (int32_t j = 0; j < static_cast<int32_t>(max_columns_); j++)
@@ -105,10 +106,9 @@ class GraphicalTerminal
         int32_t x = j * kCharacterWidth;
         int32_t y = i * kCharacterHeight;
         graphics_->DrawCharacter(
-            x, y, GetChar(j, (i + row_start_) % max_rows_));
+            x, y, GetChar(((i + row_start_) % max_rows_), j));
       }
     }
-
     graphics_->Update();
     return *this;
   }

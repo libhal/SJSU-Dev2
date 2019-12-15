@@ -24,7 +24,7 @@ var searchData=
   ['tmp102',['Tmp102',['../d8/db2/classsjsu_1_1Tmp102.html',1,'sjsu']]],
   ['toggle',['Toggle',['../dd/d3a/classsjsu_1_1Gpio.html#a92833a30a38cd1ad87a2e27e4d25d054',1,'sjsu::Gpio::Toggle()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb35937b1d802aeff724c192c64af517',1,'sjsu::lpc40xx::Gpio::Toggle()']]],
   ['tolerance',['tolerance',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a9e31735c7c631e650aecea83c5069082',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
-  ['transaction',['transaction',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#aa609967e272a71337ccc24e950236e29',1,'sjsu::lpc40xx::I2c::Bus_t::transaction()'],['../d0/d9b/classsjsu_1_1I2c.html#ad5f74263207d178f3d9e1402b4a0a525',1,'sjsu::I2c::Transaction()'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#adcd3f4d566c68e7617c7aadb3202ae6e',1,'sjsu::lpc40xx::I2c::Transaction()']]],
+  ['transaction',['Transaction',['../d0/d9b/classsjsu_1_1I2c.html#ad5f74263207d178f3d9e1402b4a0a525',1,'sjsu::I2c::Transaction()'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#adcd3f4d566c68e7617c7aadb3202ae6e',1,'sjsu::lpc40xx::I2c::Transaction()'],['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#aa609967e272a71337ccc24e950236e29',1,'sjsu::lpc40xx::I2c::Bus_t::transaction()']]],
   ['transaction_5ft',['Transaction_t',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html',1,'sjsu::I2c']]],
   ['transfer',['Transfer',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a53a54924e1b6ac531c2f2c6df3836014',1,'sjsu::lpc40xx::Spi::Transfer()'],['../d3/de6/classsjsu_1_1Spi.html#a7ae6d25113c04de85317facc25ac70a4',1,'sjsu::Spi::Transfer()']]],
   ['tsop752',['Tsop752',['../d2/de6/classsjsu_1_1Tsop752.html#a3df82c34b64e68b2d2f714248b8b9e90',1,'sjsu::Tsop752']]],
