@@ -43,6 +43,15 @@ struct sjtwo // NOLINT
   /// Predefined SJTwo led3 peripheral
   inline static sjsu::lpc40xx::Gpio led3 = sjsu::lpc40xx::Gpio(1, 18);
 
+  /// Predefined SJTwo button0 peripheral
+  inline static sjsu::lpc40xx::Gpio button0 = sjsu::lpc40xx::Gpio(1, 19);
+  /// Predefined SJTwo button1 peripheral
+  inline static sjsu::lpc40xx::Gpio button1 = sjsu::lpc40xx::Gpio(1, 15);
+  /// Predefined SJTwo button2 peripheral
+  inline static sjsu::lpc40xx::Gpio button2 = sjsu::lpc40xx::Gpio(0, 30);
+  /// Predefined SJTwo button3 peripheral
+  inline static sjsu::lpc40xx::Gpio button3 = sjsu::lpc40xx::Gpio(0, 29);
+
   /// @returns fully constructed onboard Oled device driver
   [[gnu::always_inline]] inline static sjsu::Graphics & Oled()
   {
