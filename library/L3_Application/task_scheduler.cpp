@@ -38,7 +38,7 @@ void TaskScheduler::RunTask(void * task_ptr)
     if (!task.Run())
     {
       SJ2_ASSERT_WARNING(
-          false, "An error occured, the following task will be suspended: %s",
+          false, "An error occurred, the following task will be suspended: %s",
           task.GetName());
       vTaskSuspend(NULL);
     }

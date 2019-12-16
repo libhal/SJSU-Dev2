@@ -48,7 +48,7 @@ class Example final : public sjsu::Example
   // The predefined structures can be used to create a channel profile that
   // isn't already included in this set of Channel_t within the Channel struct.
   //
-  // The structure is also an injetion point. You can have, in this case below,
+  // The structure is also an injection point. You can have, in this case below,
   // the iocon pointer, point to a local version of LPC_IOCON_TypeDef and check
   // that it maniuplates the registers correctly.
   struct Channel_t

@@ -61,7 +61,7 @@ extern "C"
 }
 
 // 11. Define default instance of InitializePlatform() function.
-//     Here you construct everything that is needed to run the micrcontroller.
+//     Here you construct everything that is needed to run the microcontroller.
 [[gnu::weak]] void InitializePlatform() {
   // Platform 1. Enable any coprocessors or peripherals that keep the following
   // functions from being executed, for example, activating the floating point

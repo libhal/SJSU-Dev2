@@ -28,7 +28,7 @@ class Pin
   // ==============================
   // Interface Defintions
   // ==============================
-  /// Defines the set of internal resistence connections to a pin. Read specific
+  /// Defines the set of internal resistance connections to a pin. Read specific
   /// enumeration constant comments/documentation to understand more about what
   /// each one does.
   enum class Resistor : uint8_t
@@ -37,10 +37,10 @@ class Pin
     /// not connected to anything then the pin will be floating. Its value will
     /// not undefined.
     kNone = 0,
-    /// Connect pin to ground using weak (high resistence) resistor.
+    /// Connect pin to ground using weak (high resistance) resistor.
     kPullDown,
     /// Connect pin to controller digital voltage (VCC) using a weak (high
-    /// resistence) resistor.
+    /// resistance) resistor.
     kPullUp,
     /// Connect pin to a pull up or pull down resistor based what the pin's
     /// previous state was.

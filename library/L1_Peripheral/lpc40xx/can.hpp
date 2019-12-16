@@ -546,7 +546,7 @@ class Can final : public sjsu::Can
 
     // Get the message; the ISR (interrupt service routine)
     // will read the message from the rx buffer
-    // and enqeue it into the rx queue.
+    // and enqueue it into the rx queue.
     Receive(&test_message_rx);
 
     // Check if the received message matches the one we sent

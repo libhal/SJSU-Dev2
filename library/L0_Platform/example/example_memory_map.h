@@ -18,7 +18,7 @@ extern "C"
   // 2. Replace this file with the memory map definitions file for your
   //    microcontroller.
 
-#if defined(cplus_plus__)
+#if defined(__cplusplus)
 }  // extern "C"
 }  // namespace sjsu::example
 #endif
