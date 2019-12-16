@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <atomic>
 
+#include "L1_Peripheral/hardware_counter.hpp"
 #include "L2_HAL/sensors/battery/coulomb_counter.hpp"
-#include "L1_Peripheral/gpio.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -25,19 +25,15 @@ class Ltc4150 : public CoulombCounter
     kDischarging,
     kCharging,
   };
-  /// @param int_pin - gpio pin for handling handling interrupts from the
-  ///        LTC4150
+
+  /// @param counter - a hardware counter that must count on rising edge pulses.
   /// @param pol - gpio pin to determine the polarity output of the LTC4150.
   /// @param resistance - value of impedance represented in ohms for
   ///        calculating battery charge
-  explicit constexpr Ltc4150(sjsu::Gpio & int_pin,
+  explicit constexpr Ltc4150(sjsu::HardwareCounter & counter,
                              sjsu::Gpio & pol,
                              units::impedance::ohm_t resistance)
-      : int_pin_(int_pin),
-        pol_pin_(pol),
-        resistance_(resistance),
-        pulses_(0),
-        polarity_(Polarity::kDischarging)
+      : counter_(counter), pol_pin_(pol), resistance_(resistance)
   {
   }
 
@@ -45,36 +41,48 @@ class Ltc4150 : public CoulombCounter
   /// the interrupt pin.
   void Initialize() override
   {
-    auto pol_isr = [this]() {
-      polarity_ =
-          (pol_pin_.Read()) ? Polarity::kDischarging : Polarity::kCharging;
+    auto polarity_interrupt = [this]() {
+      if (pol_pin_.Read())
+      {
+        counter_.SetDirection(sjsu::HardwareCounter::Direction::kUp);
+      }
+      else
+      {
+        counter_.SetDirection(sjsu::HardwareCounter::Direction::kDown);
+      }
     };
-    auto int_pin_isr = [this]() {
-      pulses_ =
-          (polarity_ == Polarity::kDischarging) ? pulses_ - 1 : pulses_ + 1;
-    };
+
+    counter_.Initialize();
+
     pol_pin_.SetAsInput();
-    int_pin_.SetAsInput();
-    pol_isr();
-    pol_pin_.AttachInterrupt(pol_isr, Gpio::Edge::kEdgeFalling);
-    int_pin_.AttachInterrupt(int_pin_isr, Gpio::Edge::kEdgeFalling);
+    // Sets whether we are charging (counting down) or discharging (counting up)
+    polarity_interrupt();
+    pol_pin_.AttachInterrupt(polarity_interrupt, Gpio::Edge::kEdgeFalling);
+    // Start counting
+    counter_.Enable();
   }
 
   /// @return the calculated mAh
   units::charge::milliampere_hour_t GetCharge() const override
   {
     /// We cast the pulses to scalar so we can calculate mAh
-    float pulses = static_cast<float>(pulses_);
+    float pulses = static_cast<float>(counter_.GetCount());
     return units::charge::milliampere_hour_t{
       pulses / (kCoulombsPerAh * kGvf.to<float>() * resistance_.to<float>())
     };
   }
 
+  /// Destructor of this object will detach the interrupt from the polarity
+  /// GPIO pin. The counter_ class member valriable automatically detatches
+  /// the interrupt from the tick pin.
+  ~Ltc4150()
+  {
+    pol_pin_.DetachInterrupt();
+  }
+
  private:
-  sjsu::Gpio & int_pin_;
+  sjsu::HardwareCounter & counter_;
   sjsu::Gpio & pol_pin_;
   units::impedance::ohm_t resistance_;
-  std::atomic<int32_t> pulses_;
-  std::atomic<Polarity> polarity_;
 };
 }  // namespace sjsu
