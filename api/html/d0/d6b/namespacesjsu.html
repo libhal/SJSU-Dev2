@@ -505,7 +505,7 @@ template&lt;class T , const size_t length&gt; </div>
 <div class="fragment"><div class="line"><a class="code" href="../../d0/d6b/namespacesjsu.html#a760e51a8f8eb86be0d5ae883e5206d07">sjsu::List&lt;int, 8&gt;</a> list(<a class="code" href="../../d0/d6b/namespacesjsu.html#a760e51a8f8eb86be0d5ae883e5206d07">sjsu::List&lt;int, 8&gt;::allocator_type</a>{});</div></div><!-- fragment --> <hr/>
  <h2>List Usage Notes </h2>
 <p>The example list can store up to exactly 8 elements. Resize to your needs. Lists allocate nodes individually and never allocate more then a single list node size, thus no need to pre-allocate memory.</p>
-<p>The <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a>'s third template parameter must be std::_List_node&lt;typename&gt;. This 3rd parameter specifies the type of the element that will be allocated by the allocator. For each allocation, std::list will allocate a std::_List_node&lt;typename&gt; and not the original type of the list value. </p>
+<p>The <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a> third template parameter must be std::_List_node&lt;typename&gt;. This 3rd parameter specifies the type of the element that will be allocated by the allocator. For each allocation, std::list will allocate a std::_List_node&lt;typename&gt; and not the original type of the list value. </p>
 
 </div>
 </div>
@@ -525,7 +525,7 @@ template&lt;size_t length&gt; </div>
 <div class="fragment"><div class="line"><a class="code" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">sjsu::FixedAllocator&lt;char, 128&gt;</a> fixed_allocator;</div><div class="line">std::basic_string&lt;char, std::char_traits&lt;char&gt;, decltype(fixed_allocator)&gt;</div><div class="line">   str(fixed_allocator);</div><div class="line">str.reserve(decltype(str)::allocator_type::size);</div></div><!-- fragment --><p> or</p>
 <div class="fragment"><div class="line"><a class="code" href="../../d0/d6b/namespacesjsu.html#a32bf2a58de0d1a9bdd40c8445f743e9c">sjsu::String&lt;128&gt;</a> str(<a class="code" href="../../d0/d6b/namespacesjsu.html#a32bf2a58de0d1a9bdd40c8445f743e9c">sjsu::String&lt;128&gt;::allocator_type</a>{});</div><div class="line">str.reserve(decltype(str)::allocator_type::size - 1);</div></div><!-- fragment --> <hr/>
  <h2>String Usage Notes </h2>
-<p>The string in the above example can hold up to exactly 127 characters. Note that the last character is used up for a null cahracter.</p>
+<p>The string in the above example can hold up to exactly 127 characters. Note that the last character is used up for a null character.</p>
 <p>Reserve 1 minus the total size to leave space for the null character. When specifying a reserve space, the string object will increment the reserve amount by 1 to hold the null character.</p>
 <p>The rest follows the "Vector Usage Notes". </p>
 
@@ -548,7 +548,7 @@ template&lt;class T , const size_t length&gt; </div>
 <div class="fragment"><div class="line"><a class="code" href="../../d0/d6b/namespacesjsu.html#a19c1a327b04630c754e1cb8784f53290">sjsu::Vector&lt;int, 8&gt;</a> vec(<a class="code" href="../../d0/d6b/namespacesjsu.html#a19c1a327b04630c754e1cb8784f53290">sjsu::Vector&lt;int, 8&gt;::allocator_type</a>{});</div><div class="line">vec.reserve(decltype(vec)::allocator_type::size);</div></div><!-- fragment --> <hr/>
  <h2>Vector Usage Notes </h2>
 <p>The fixed allocator can hold up to exactly 8 elements in this example. Resize to any amount needed.</p>
-<p>The call to reserve will allocate the maximum amount from the allocator. This is very important as not doing so will cause vector to allocate an arbitary amount of data, which may overflow our fixed buffer. Doing this means we allocate as much space as we need. Allocator will fault if we attempt to allocate beyond this. </p>
+<p>The call to reserve will allocate the maximum amount from the allocator. This is very important as not doing so will cause vector to allocate an arbitrary amount of data, which may overflow our fixed buffer. Doing this means we allocate as much space as we need. Allocator will fault if we attempt to allocate beyond this. </p>
 
 </div>
 </div>

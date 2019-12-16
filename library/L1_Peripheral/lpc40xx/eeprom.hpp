@@ -82,10 +82,10 @@ class Eeprom final : public sjsu::Eeprom
   /// This function will write however much data to the EEPROM that the user
   /// specifies. The maximum size of the EEPROM is 64 KB.
   ///
-  /// @param wdata        - array of data to be written to EEPROM
+  /// @param data         - array of data to be written to EEPROM
   /// @param full_address - address where data will start being written to
   /// @param count        - number of bytes that have to be transferred
-  void Write(const uint8_t * wdata,
+  void Write(const uint8_t * data,
              uint32_t full_address,
              size_t count) const override
   {
@@ -96,7 +96,7 @@ class Eeprom final : public sjsu::Eeprom
 
     // Because the EEPROM uses 32-bit communication, write_data will be casted
     // into a uint32_t *
-    const uint32_t * write_data = reinterpret_cast<const uint32_t *>(wdata);
+    const uint32_t * write_data = reinterpret_cast<const uint32_t *>(data);
 
     // The first 6 bits in the address (MSB) dictate which page is being written
     // to in the EEPROM, and the last 6 bits (LSB) dictate offset in the page
@@ -167,16 +167,16 @@ class Eeprom final : public sjsu::Eeprom
   /// This function will return however much 32-bit data from the EEPROM
   /// starting at address and continuing on for how large count is.
   ///
-  /// @param rdata   - array that read data will be stored in
+  /// @param data    - array that read data will be stored in
   /// @param address - address where data will start being read from
   /// @param count   - number of bytes that have to be read
-  void Read(uint8_t * rdata, uint32_t address, size_t count) const override
+  void Read(uint8_t * data, uint32_t address, size_t count) const override
   {
     address = bit::Clear(address, kAddressMask);
 
     // Because the EEPROM uses 32-bit communication, read_data will be casted
     // into a uint32_t *
-    uint32_t * read_data = reinterpret_cast<uint32_t *>(rdata);
+    uint32_t * read_data = reinterpret_cast<uint32_t *>(data);
 
     for (uint16_t index = 0; (index * 4) < count; index++)
     {

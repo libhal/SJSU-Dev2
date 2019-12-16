@@ -20,7 +20,7 @@ class Adc final : public sjsu::Adc
 {
  public:
   /// Namespace containing the bitmask objects that are used to manipulate the
-  /// lpc40xx's ADC Control register.
+  /// lpc40xx ADC Control register.
   struct Control  // NOLINT
   {
     /// In burst mode, sets the ADC channels to be automatically converted.
@@ -46,7 +46,7 @@ class Adc final : public sjsu::Adc
     static constexpr bit::Mask kStartEdge = bit::CreateMaskFromRange(27);
   };
   /// Namespace containing the bitmask objects that are used to manipulate the
-  /// lpc40xx's ADC Global Data register.
+  /// lpc40xx ADC Global Data register.
   struct DataRegister  // NOLINT
   {
     /// Result mask holds the latest result from the last ADC that was converted

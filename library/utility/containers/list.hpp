@@ -52,7 +52,7 @@ struct FallbackListNode_t
 /// Lists allocate nodes individually and never allocate more then a single
 /// list node size, thus no need to pre-allocate memory.
 ///
-/// The FixedAllocator's third template parameter must be
+/// The FixedAllocator third template parameter must be
 /// std::_List_node<typename>. This 3rd parameter specifies the type of the
 /// element that will be allocated by the allocator. For each allocation,
 /// std::list will allocate a std::_List_node<typename> and not the original

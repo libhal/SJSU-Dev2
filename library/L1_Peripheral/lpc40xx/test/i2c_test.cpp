@@ -228,11 +228,11 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK(((kAddress << 1) | 1) == local_i2c.DAT);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
-  SECTION("I2C State Machine: kSlaveAddressWriteSentRecievedAck")
+  SECTION("I2C State Machine: kSlaveAddressWriteSentreceivedAck")
   {
     SECTION("Non-zero length buffer")
     {
-      setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentRecievedAck);
+      setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentreceivedAck);
       uint8_t write_buffer[] = { 0x55, 0x22, 0xAA };
       test_subject.Write(kAddress, write_buffer, sizeof(write_buffer));
       test_subject.I2cHandler(kMockI2c);
@@ -244,7 +244,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     }
     SECTION("Zero length buffer")
     {
-      setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentRecievedAck);
+      setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentreceivedAck);
 
       test_subject.Write(kAddress, nullptr, 0);
       test_subject.I2cHandler(kMockI2c);
@@ -257,9 +257,9 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
       CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
   }
-  SECTION("I2C State Machine: kSlaveAddressWriteSentRecievedNack")
+  SECTION("I2C State Machine: kSlaveAddressWriteSentreceivedNack")
   {
-    setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentRecievedNack);
+    setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentreceivedNack);
 
     test_subject.I2cHandler(kMockI2c);
     sjsu::I2c::Transaction_t actual_transaction =
@@ -270,9 +270,9 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
-  SECTION("I2C State Machine: kTransmittedDataRecievedAck wo/ repeat start")
+  SECTION("I2C State Machine: kTransmittedDatareceivedAck wo/ repeat start")
   {
-    setup_state_machine(I2c::MasterState::kTransmittedDataRecievedAck);
+    setup_state_machine(I2c::MasterState::kTransmittedDatareceivedAck);
     uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
     test_subject.Write(kAddress, write_buffer, sizeof(write_buffer));
     sjsu::I2c::Transaction_t actual_transaction;
@@ -280,7 +280,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     // the local_i2c.DAT
     for (size_t i = 0; i < sizeof(write_buffer); i++)
     {
-      setup_state_machine(I2c::MasterState::kTransmittedDataRecievedAck);
+      setup_state_machine(I2c::MasterState::kTransmittedDatareceivedAck);
 
       test_subject.I2cHandler(kMockI2c);
 
@@ -296,9 +296,9 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK(!actual_transaction.busy);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
   }
-  SECTION("I2C State Machine: kTransmittedDataRecievedAck w/ repeat start")
+  SECTION("I2C State Machine: kTransmittedDatareceivedAck w/ repeat start")
   {
-    setup_state_machine(I2c::MasterState::kTransmittedDataRecievedAck);
+    setup_state_machine(I2c::MasterState::kTransmittedDatareceivedAck);
     uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
     test_subject.WriteThenRead(
         kAddress, write_buffer, sizeof(write_buffer), nullptr, 0);
@@ -307,7 +307,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     // the local_i2c.DAT
     for (size_t i = 0; i < sizeof(write_buffer); i++)
     {
-      setup_state_machine(I2c::MasterState::kTransmittedDataRecievedAck);
+      setup_state_machine(I2c::MasterState::kTransmittedDatareceivedAck);
 
       test_subject.I2cHandler(kMockI2c);
 
@@ -324,9 +324,9 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK(actual_transaction.position == 0);
     CHECK_BITS(I2c::Control::kStart, local_i2c.CONSET);
   }
-  SECTION("I2C State Machine: kTransmittedDataRecievedNack")
+  SECTION("I2C State Machine: kTransmittedDatareceivedNack")
   {
-    setup_state_machine(I2c::MasterState::kTransmittedDataRecievedNack);
+    setup_state_machine(I2c::MasterState::kTransmittedDatareceivedNack);
 
     test_subject.I2cHandler(kMockI2c);
     sjsu::I2c::Transaction_t actual_transaction =
@@ -345,11 +345,11 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK_BITS(I2c::Control::kStart, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
-  SECTION("I2C State Machine: kSlaveAddressReadSentRecievedAck")
+  SECTION("I2C State Machine: kSlaveAddressReadSentreceivedAck")
   {
     SECTION("Non-zero length buffer")
     {
-      setup_state_machine(I2c::MasterState::kSlaveAddressReadSentRecievedAck);
+      setup_state_machine(I2c::MasterState::kSlaveAddressReadSentreceivedAck);
       uint8_t read_buffer[3];
       test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));
 
@@ -361,7 +361,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     }
     SECTION("Zero length buffer")
     {
-      setup_state_machine(I2c::MasterState::kSlaveAddressReadSentRecievedAck);
+      setup_state_machine(I2c::MasterState::kSlaveAddressReadSentreceivedAck);
       test_subject.Read(kAddress, nullptr, 0);
 
       test_subject.I2cHandler(kMockI2c);
@@ -370,9 +370,9 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
       CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
   }
-  SECTION("I2C State Machine: kSlaveAddressReadSentRecievedNack")
+  SECTION("I2C State Machine: kSlaveAddressReadSentreceivedNack")
   {
-    setup_state_machine(I2c::MasterState::kSlaveAddressReadSentRecievedNack);
+    setup_state_machine(I2c::MasterState::kSlaveAddressReadSentreceivedNack);
 
     test_subject.I2cHandler(kMockI2c);
     sjsu::I2c::Transaction_t actual_transaction =
@@ -384,7 +384,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
-  SECTION("I2C State Machine: kRecievedDataRecievedAck")
+  SECTION("I2C State Machine: kReceivedDatareceivedAck")
   {
     constexpr uint8_t kI2cReadData[]          = { 'A', 'B', 'C', 'D' };
     uint8_t read_buffer[sizeof(kI2cReadData)] = { 0 };
@@ -394,7 +394,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     // read_buffer array;
     for (size_t i = 0; i < sizeof(read_buffer) - 1; i++)
     {
-      setup_state_machine(I2c::MasterState::kRecievedDataRecievedAck);
+      setup_state_machine(I2c::MasterState::kReceivedDatareceivedAck);
       local_i2c.DAT = kI2cReadData[i];
 
       test_subject.I2cHandler(kMockI2c);
@@ -414,7 +414,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
       }
     }
     // Last byte should be transferred
-    setup_state_machine(I2c::MasterState::kRecievedDataRecievedAck);
+    setup_state_machine(I2c::MasterState::kReceivedDatareceivedAck);
     constexpr size_t kEnd = sizeof(read_buffer) - 1;
     local_i2c.DAT         = kI2cReadData[kEnd];
 
@@ -428,7 +428,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
 
     // Another is loaded into the DAT register, but it should not be found
     // in the read_buffer
-    setup_state_machine(I2c::MasterState::kRecievedDataRecievedAck);
+    setup_state_machine(I2c::MasterState::kReceivedDatareceivedAck);
     local_i2c.DAT = 'F';
     test_subject.I2cHandler(kMockI2c);
 
@@ -441,9 +441,9 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
-  SECTION("I2C State Machine: kRecievedDataRecievedNack")
+  SECTION("I2C State Machine: kReceivedDatareceivedNack")
   {
-    setup_state_machine(I2c::MasterState::kRecievedDataRecievedNack);
+    setup_state_machine(I2c::MasterState::kReceivedDatareceivedNack);
     local_i2c.DAT = 0xDE;
     uint8_t read_buffer[5];
     test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));

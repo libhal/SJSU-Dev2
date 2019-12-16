@@ -25,14 +25,14 @@ class SystemController final : public sjsu::SystemController
   {
     kBaseClock         = 0b00,
     kMainPllClock      = 0b01,
-    kALternatePllClock = 0b10,
+    kAlternatePllClock = 0b10,
   };
 
   enum class SpifiSource : uint16_t
   {
     kBaseClock         = 0b00,
     kMainPllClock      = 0b01,
-    kALternatePllClock = 0b10,
+    kAlternatePllClock = 0b10,
   };
 
   enum class OscillatorSource : uint16_t

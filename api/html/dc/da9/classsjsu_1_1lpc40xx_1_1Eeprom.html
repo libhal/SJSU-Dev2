@@ -150,13 +150,13 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9625b589a8ff0f752652c92c3c5ba9e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a9625b589a8ff0f752652c92c3c5ba9e7">Initialize</a> () const override</td></tr>
 <tr class="separator:a9625b589a8ff0f752652c92c3c5ba9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a881ddad19bb9ab33dbac9aece443d7f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a881ddad19bb9ab33dbac9aece443d7f1">Write</a> (const uint8_t *wdata, uint32_t full_address, size_t count) const override</td></tr>
-<tr class="memdesc:a881ddad19bb9ab33dbac9aece443d7f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will write however much data to the EEPROM that the user specifies. The maximum size of the EEPROM is 64 KB.  <a href="#a881ddad19bb9ab33dbac9aece443d7f1">More...</a><br /></td></tr>
-<tr class="separator:a881ddad19bb9ab33dbac9aece443d7f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eda8732d3b5b477f502e7c35743fdc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a1eda8732d3b5b477f502e7c35743fdc9">Write</a> (const uint8_t *data, uint32_t full_address, size_t count) const override</td></tr>
+<tr class="memdesc:a1eda8732d3b5b477f502e7c35743fdc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will write however much data to the EEPROM that the user specifies. The maximum size of the EEPROM is 64 KB.  <a href="#a1eda8732d3b5b477f502e7c35743fdc9">More...</a><br /></td></tr>
+<tr class="separator:a1eda8732d3b5b477f502e7c35743fdc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22c46f30e7ae1646082c3a1f89dc494c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a22c46f30e7ae1646082c3a1f89dc494c">Program</a> (uint32_t address) const </td></tr>
 <tr class="separator:a22c46f30e7ae1646082c3a1f89dc494c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05d7768f0627db935ded2b433187103f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a05d7768f0627db935ded2b433187103f">Read</a> (uint8_t *rdata, uint32_t address, size_t count) const override</td></tr>
-<tr class="separator:a05d7768f0627db935ded2b433187103f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab57a5d39d8f34da33bce87016f47d526"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ab57a5d39d8f34da33bce87016f47d526">Read</a> (uint8_t *data, uint32_t address, size_t count) const override</td></tr>
+<tr class="separator:ab57a5d39d8f34da33bce87016f47d526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -239,7 +239,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 
 </div>
 </div>
-<a class="anchor" id="a05d7768f0627db935ded2b433187103f"></a>
+<a class="anchor" id="ab57a5d39d8f34da33bce87016f47d526"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -250,7 +250,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
           <td class="memname">void sjsu::lpc40xx::Eeprom::Read </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>rdata</em>, </td>
+          <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -279,18 +279,18 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 <p>This function will return however much 32-bit data from the EEPROM starting at address and continuing on for how large count is.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rdata</td><td>- array that read data will be stored in </td></tr>
+    <tr><td class="paramname">data</td><td>- array that read data will be stored in </td></tr>
     <tr><td class="paramname">address</td><td>- address where data will start being read from </td></tr>
     <tr><td class="paramname">count</td><td>- number of bytes that have to be read </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#af919e1a4ada2efb34bf830db1509bff5">sjsu::Eeprom</a>.</p>
+<p>Implements <a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#a0db2055c3e15c38ec4b3a994d1b234d5">sjsu::Eeprom</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a881ddad19bb9ab33dbac9aece443d7f1"></a>
+<a class="anchor" id="a1eda8732d3b5b477f502e7c35743fdc9"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -301,7 +301,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
           <td class="memname">void sjsu::lpc40xx::Eeprom::Write </td>
           <td>(</td>
           <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>wdata</em>, </td>
+          <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -331,14 +331,14 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 <p>This function will write however much data to the EEPROM that the user specifies. The maximum size of the EEPROM is 64 KB. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">wdata</td><td>- array of data to be written to EEPROM </td></tr>
+    <tr><td class="paramname">data</td><td>- array of data to be written to EEPROM </td></tr>
     <tr><td class="paramname">full_address</td><td>- address where data will start being written to </td></tr>
     <tr><td class="paramname">count</td><td>- number of bytes that have to be transferred </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#aba4129ba0750b8f87b0054a2928e83fb">sjsu::Eeprom</a>.</p>
+<p>Implements <a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#a676db1c9aeef8a93b9c7c71ae74373e6">sjsu::Eeprom</a>.</p>
 
 </div>
 </div>

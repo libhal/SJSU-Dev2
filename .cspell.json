@@ -1,0 +1,163 @@
+// cSpell Settings
+{
+  // Version of the setting file.  Always 0.1
+  "version": "0.1",
+  // language - current active spelling language
+  "language": "en",
+  // words - list of words to be always considered correct
+  "words": [
+    // Platform names
+    "sjsu",
+    // Linting directives
+    "NOLINT",
+    "NOLINTNEXTLINE",
+    // embedded terms
+    "rtos",
+    "poweron",
+    "mcu",
+    // fatfs
+    "fatfs",
+    "dstatus",
+    "nodisk",
+    "dresult",
+    "NOINIT",
+    "fresult",
+    "mkfs",
+    // board
+    "sjtwo",
+    // platforms
+    "lpc40xx",
+    "lpc17xx",
+    "linux",
+    // interrupts
+    "nvic",
+    "eint",
+    "ICER",
+    "irqs",
+    // Devices
+    "oled",
+    "Apds",
+    "led",
+    "leds",
+    "Temt",
+    "Tsop",
+    // SD Card
+    "SDXC",
+    "SDHC",
+    "SDSC",
+    "crc",
+    "crcs",
+    // APDS9960
+    "Wtime",
+    "Pilt",
+    "Piht",
+    "Pers",
+    "Ppulse",
+    "Poffset",
+    "Gconfig",
+    "GoffsetUpDown",
+    "GoffsetLeftRight",
+    "Gconfig3",
+    "Gconfig4",
+    "Ailt",
+    "Aiht",
+    "Avago",
+    "gfifo",
+    // SSD1306
+    "Vcomh",
+    // Gpio
+    "gpio",
+    "gpioint",
+    "iocon",
+    "GPIOs",
+    // I2C
+    "scll",
+    "sclh",
+    // SPI
+    "spi",
+    "mosi",
+    "miso",
+    "CPSR",
+    // PWM
+    "CTCR",
+    // Uart
+    "FIFO",
+    "FIFOs",
+    "divf",
+    "mulf",
+    "Dlab",
+    "Dlab",
+    // Others peripherals
+    "SPIFISEL",
+    "eeprom",
+    "PWRDWN",
+    "WDATA",
+    "TSCL",
+    "AFMR",
+    "kbps",
+    "mbps",
+    "cclk",
+    "pclk",
+    "PCONP",
+    "gpdma",
+    "spifi",
+    // CAN
+    "srtr",
+    "canaf",
+    // Clocks
+    "pll",
+    "PLLs",
+    "pclksel",
+    "cclksel",
+    "emcclksel",
+    "fcco",
+    "pllcgg",
+    "cclkcfg",
+    // Internet
+    "wifi",
+    "ssid",
+    "GSLP",
+    "CWJAP",
+    "CWQAP",
+    // third party
+    "microrl",
+    "fakeit",
+    "fff",
+    // misc
+    "XXXX'XXXX",
+    "Wpedantic",
+    "qword",
+    "DEMCR",
+    "CPACR",
+    "ICSR",
+    "ISER",
+    "ICER",
+    "Vref",
+    "PLL's",
+    "MCUs"
+  ],
+  // flagWords - list of words to be always considered incorrect
+  // This is useful for offensive words and common spelling errors.
+  // For example "hte" should be "the"
+  "flagWords": [],
+  "languageSettings": [
+    {
+      // VSCode languageId. i.e. typescript, java, go, cpp, javascript, markdown, latex
+      // * will match against any file type.
+      "languageId": "c,cpp",
+      // Language local. i.e. en-US, de-AT, or ru. * will match all locals.
+      // Multiple locals can be specified like: "en, en-US" to match both English and English US.
+      "local": "*",
+      // To exclude patterns, add them to "ignoreRegExpList"
+      "ignoreRegExpList": [
+        "/#include.*/"
+      ],
+      // List of dictionaries to enable by name in `dictionaryDefinitions`
+      "dictionaries": [
+        "cpp"
+      ],
+      // Dictionary definitions can also be supplied here. They are only used iff "languageId" and "local" match.
+      "dictionaryDefinitions": []
+    }
+  ]
+}

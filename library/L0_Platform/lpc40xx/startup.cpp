@@ -161,7 +161,7 @@ namespace sjsu
 SJ2_WEAK(void InitializePlatform());
 void InitializePlatform()
 {
-  // Enable FPU (F.loating P.oint U.nit)
+  // Enable FPU (Floating Point Unit)
   // System will crash if floating point instruction is executed before
   // Initializing the FPU first.
   sjsu::cortex::InitializeFloatingPointUnit();

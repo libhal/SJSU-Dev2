@@ -122,7 +122,7 @@ template <typename T>
 constexpr void * PassParameter(T value)
 {
   static_assert(sizeof(T) <= sizeof(intptr_t),
-                "The size of the type must be, smaller than or equalt to the "
+                "The size of the type must be, smaller than or equal to the "
                 "size of a pointer.");
   return reinterpret_cast<void *>(value);
 }
