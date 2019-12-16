@@ -103,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="../../d1/df7/classsjsu_1_1Ltc4150-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -129,31 +129,29 @@ Collaboration diagram for sjsu::Ltc4150:</div>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da5/structsjsu_1_1Ltc4150_1_1Battery__t.html">Battery_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dc2/classsjsu_1_1Ltc4150_1_1TickHandler.html">TickHandler</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:adf65026068cee571c64936b91526a1fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adf65026068cee571c64936b91526a1fa"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#adf65026068cee571c64936b91526a1fa">Polarity</a> : uint8_t { <b>kDischarging</b>, 
+<b>kCharging</b>
+ }<tr class="memdesc:adf65026068cee571c64936b91526a1fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines what state the Polarity pin can be in. <br /></td></tr>
+</td></tr>
+<tr class="separator:adf65026068cee571c64936b91526a1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9854ee0891d7235eb2e9437594b88a44"><td class="memTemplParams" colspan="2">template&lt;int id&gt; </td></tr>
-<tr class="memitem:a9854ee0891d7235eb2e9437594b88a44"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a9854ee0891d7235eb2e9437594b88a44">Ltc4150</a> (const <a class="el" href="../../d7/dc2/classsjsu_1_1Ltc4150_1_1TickHandler.html">TickHandler</a>&lt; id &gt; &amp;isr, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;int_pin, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;pol)</td></tr>
-<tr class="separator:a9854ee0891d7235eb2e9437594b88a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c9cbc3d562a27c3ac01b69805b73b9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a8c9cbc3d562a27c3ac01b69805b73b9c">Initialize</a> () const override</td></tr>
-<tr class="separator:a8c9cbc3d562a27c3ac01b69805b73b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9040595d13f9d1fe7c3243b93887f8e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#ae9040595d13f9d1fe7c3243b93887f8e">GetBatterymAh</a> () const override</td></tr>
-<tr class="separator:ae9040595d13f9d1fe7c3243b93887f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e74fabc6e61aaf836bfe0a4889b3754"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a1e74fabc6e61aaf836bfe0a4889b3754">Ltc4150</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;int_pin, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;pol, units::impedance::ohm_t resistance)</td></tr>
+<tr class="separator:a1e74fabc6e61aaf836bfe0a4889b3754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cc5856f826fe970b9d4a1fd49c642e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a8cc5856f826fe970b9d4a1fd49c642e0">Initialize</a> () override</td></tr>
+<tr class="separator:a8cc5856f826fe970b9d4a1fd49c642e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd4e260a3cb098f964f8c84824d0afea"><td class="memItemLeft" align="right" valign="top">units::charge::milliampere_hour_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#abd4e260a3cb098f964f8c84824d0afea">GetCharge</a> () const override</td></tr>
+<tr class="separator:abd4e260a3cb098f964f8c84824d0afea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LTC4150 control driver for the LPC40xx and LPC17xx microcontrollers. It keeps track of a connected battery's current milliamp hours. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a9854ee0891d7235eb2e9437594b88a44"></a>
+<a class="anchor" id="a1e74fabc6e61aaf836bfe0a4889b3754"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;int id&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -161,20 +159,20 @@ template&lt;int id&gt; </div>
         <tr>
           <td class="memname">constexpr sjsu::Ltc4150::Ltc4150 </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d7/dc2/classsjsu_1_1Ltc4150_1_1TickHandler.html">TickHandler</a>&lt; id &gt; &amp;&#160;</td>
-          <td class="paramname"><em>isr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;&#160;</td>
           <td class="paramname"><em>int_pin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;&#160;</td>
-          <td class="paramname"><em>pol</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;&#160;</td>
+          <td class="paramname"><em>pol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">units::impedance::ohm_t&#160;</td>
+          <td class="paramname"><em>resistance</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -190,9 +188,9 @@ template&lt;int id&gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">isr</td><td>- handler for coulomb counter ticks. </td></tr>
     <tr><td class="paramname">int_pin</td><td>- gpio pin for handling handling interrupts from the LTC4150 </td></tr>
     <tr><td class="paramname">pol</td><td>- gpio pin to determine the polarity output of the LTC4150. </td></tr>
+    <tr><td class="paramname">resistance</td><td>- value of impedance represented in ohms for calculating battery charge </td></tr>
   </table>
   </dd>
 </dl>
@@ -200,7 +198,7 @@ template&lt;int id&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ae9040595d13f9d1fe7c3243b93887f8e"></a>
+<a class="anchor" id="abd4e260a3cb098f964f8c84824d0afea"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -208,7 +206,7 @@ template&lt;int id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float sjsu::Ltc4150::GetBatterymAh </td>
+          <td class="memname">units::charge::milliampere_hour_t sjsu::Ltc4150::GetCharge </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -220,13 +218,14 @@ template&lt;int id&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the calculated mAh from the <a class="el" href="../../d7/dc2/classsjsu_1_1Ltc4150_1_1TickHandler.html">TickHandler</a> instance </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the calculated mAh </dd></dl>
+<p>We cast the pulses to scalar so we can calculate mAh </p>
 
-<p>Implements <a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#a36e1d5aadb2dd874072cca430a62e9f5">sjsu::CoulombCounter</a>.</p>
+<p>Implements <a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#a994d8876ee0b67a2ee4af9ced7392eed">sjsu::CoulombCounter</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8c9cbc3d562a27c3ac01b69805b73b9c"></a>
+<a class="anchor" id="a8cc5856f826fe970b9d4a1fd49c642e0"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -237,7 +236,7 @@ template&lt;int id&gt; </div>
           <td class="memname">void sjsu::Ltc4150::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -248,7 +247,7 @@ template&lt;int id&gt; </div>
 </div><div class="memdoc">
 <p>Initialize hardware, setting pins as inputs and attaching ISR handlers to the interrupt pin. </p>
 
-<p>Implements <a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#a676a8abac9237c0c0fe7ad4969d8a317">sjsu::CoulombCounter</a>.</p>
+<p>Implements <a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#a52a4169d4d99dd11eaa909990b2e4929">sjsu::CoulombCounter</a>.</p>
 
 </div>
 </div>

@@ -1,5 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="5,31,172,57"/>
-<area shape="rect" id="node2" href="$d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html" title="sjsu::lpc17xx::SystemController" alt="" coords="220,5,443,32"/>
-<area shape="rect" id="node3" href="$d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="220,56,443,83"/>
+<area shape="rect" id="node1" href="$de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="5,5,145,32"/>
+<area shape="rect" id="node2" href="$d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html" title="sjsu::cortex::SystemTimer" alt="" coords="193,5,381,32"/>
 </map>

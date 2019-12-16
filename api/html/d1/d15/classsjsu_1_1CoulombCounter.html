@@ -122,17 +122,15 @@ Inheritance diagram for sjsu::CoulombCounter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a676a8abac9237c0c0fe7ad4969d8a317"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#a676a8abac9237c0c0fe7ad4969d8a317">Initialize</a> () const =0</td></tr>
-<tr class="separator:a676a8abac9237c0c0fe7ad4969d8a317"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36e1d5aadb2dd874072cca430a62e9f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a36e1d5aadb2dd874072cca430a62e9f5"></a>
-virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#a36e1d5aadb2dd874072cca430a62e9f5">GetBatterymAh</a> () const =0</td></tr>
-<tr class="memdesc:a36e1d5aadb2dd874072cca430a62e9f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the battery's milliamp hours at a given ppint in time. <br /></td></tr>
-<tr class="separator:a36e1d5aadb2dd874072cca430a62e9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52a4169d4d99dd11eaa909990b2e4929"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#a52a4169d4d99dd11eaa909990b2e4929">Initialize</a> ()=0</td></tr>
+<tr class="separator:a52a4169d4d99dd11eaa909990b2e4929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a994d8876ee0b67a2ee4af9ced7392eed"><td class="memItemLeft" align="right" valign="top">virtual units::charge::milliampere_hour_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#a994d8876ee0b67a2ee4af9ced7392eed">GetCharge</a> () const =0</td></tr>
+<tr class="separator:a994d8876ee0b67a2ee4af9ced7392eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstraction Interface for a coulomb counter. This device can give us information about a connected battery's power level. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a676a8abac9237c0c0fe7ad4969d8a317"></a>
+<a class="anchor" id="a994d8876ee0b67a2ee4af9ced7392eed"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -140,7 +138,7 @@ virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void sjsu::CoulombCounter::Initialize </td>
+          <td class="memname">virtual units::charge::milliampere_hour_t sjsu::CoulombCounter::GetCharge </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -152,9 +150,35 @@ virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Returns the cumulative amount of charge that has passed through the coulomb counter. </p>
+
+<p>Implemented in <a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#abd4e260a3cb098f964f8c84824d0afea">sjsu::Ltc4150</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a52a4169d4d99dd11eaa909990b2e4929"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::CoulombCounter::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 <p>Initialize and enable hardware. This must be called before any other method in this interface is called. </p>
 
-<p>Implemented in <a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a8c9cbc3d562a27c3ac01b69805b73b9c">sjsu::Ltc4150</a>.</p>
+<p>Implemented in <a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a8cc5856f826fe970b9d4a1fd49c642e0">sjsu::Ltc4150</a>.</p>
 
 </div>
 </div>

@@ -1,5 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d9/d2e/classsjsu_1_1Temperature.html" title="sjsu::Temperature" alt="" coords="5,31,141,57"/>
-<area shape="rect" id="node2" href="$df/ddc/classsjsu_1_1Si7060.html" title="sjsu::Si7060" alt="" coords="193,5,292,32"/>
-<area shape="rect" id="node3" href="$d8/db2/classsjsu_1_1Tmp102.html" title="sjsu::Tmp102" alt="" coords="189,56,296,83"/>
+<area shape="rect" id="node1" href="$dd/d31/classsjsu_1_1Timer.html" title="sjsu::Timer" alt="" coords="5,5,96,32"/>
+<area shape="rect" id="node2" href="$d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html" title="sjsu::lpc40xx::Timer" alt="" coords="144,5,291,32"/>
 </map>

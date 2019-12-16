@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['battery_5ft',['Battery_t',['../d4/da5/structsjsu_1_1Ltc4150_1_1Battery__t.html',1,'sjsu::Ltc4150']]],
   ['buffer_5ft',['Buffer_t',['../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html',1,'sjsu::Esp8266']]],
-  ['bus',['Bus',['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html',1,'sjsu::lpc40xx::Spi']]],
   ['bus',['Bus',['../db/d99/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus.html',1,'sjsu::lpc40xx::I2c']]],
+  ['bus',['Bus',['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html',1,'sjsu::lpc40xx::Spi']]],
   ['bus_5ft',['Bus_t',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html',1,'sjsu::lpc40xx::I2c']]],
   ['bus_5ft',['Bus_t',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html',1,'sjsu::lpc40xx::Spi']]],
   ['bustiming_5ft',['BusTiming_t',['../db/de0/structsjsu_1_1lpc40xx_1_1Can_1_1BusTiming__t.html',1,'sjsu::lpc40xx::Can']]],
