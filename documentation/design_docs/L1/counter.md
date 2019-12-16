@@ -9,6 +9,7 @@
   - [Interface](#interface)
     - [void Initialize()](#void-initialize)
     - [void Set(uint32_t new_count_value)](#void-setuint32t-newcountvalue)
+    - [void SetDirection(Direction direction)](#void-setdirectiondirection-direction)
     - [void Enable()](#void-enable)
     - [void Disable()](#void-disable)
     - [uint32_t GetCount()](#uint32t-getcount)
@@ -86,8 +87,15 @@ A `HardwareCounter` can be implemented in three ways:
 class HardwareCounter
 {
  public:
+  enum class Direction : int8_t
+  {
+    kDown = -1,
+    kUp   = 1,
+  };
+
   virtual void Initialize() = 0;
   virtual void Set(uint32_t new_count_value) = 0;
+  virtual void SetDirection(Direction direction) = 0;
   virtual void Enable() = 0;
   virtual void Disable() = 0;
   virtual uint32_t GetCount() = 0;
@@ -103,6 +111,9 @@ In order to start counting based on an external input, an explicit invocation of
 ### void Set(uint32_t new_count_value)
 Set counter to a specific value. There is no guarantee that counts will not be
 missed during the invocation of this call.
+
+### void SetDirection(Direction direction)
+Set the counting direction to either up or down.
 
 ### void Enable()
 Starts counting from clock input. Must be called after `Initialize()` to begin
