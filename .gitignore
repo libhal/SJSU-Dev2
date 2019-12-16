@@ -22,6 +22,7 @@ tools/**/*
 !tools/doxygen_ignore_list.txt
 !tools/common.sh
 !tools/gdb_dashboard
+!spell_checker.sh
 
 api/doxygen_stderr.txt
 

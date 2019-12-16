@@ -486,7 +486,7 @@ const TickType_t xBlockTime = pdMS_TO_TICKS( 20 );
 
     if( xReceivedBytes > 0 )
     {
-        // A ucRxData contains another xRecievedBytes bytes of data, which can
+        // A ucRxData contains another xreceivedBytes bytes of data, which can
         // be processed here....
     }
 }

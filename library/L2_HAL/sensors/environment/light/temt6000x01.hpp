@@ -24,7 +24,7 @@ class Temt6000x01 final : public LightSensor
   bool Initialize() const override
   {
     SJ2_ASSERT_FATAL(adc_.Initialize() == Status::kSuccess,
-                     "Failed to initalize ADC channel.");
+                     "Failed to initialize ADC channel.");
     return true;
   }
   /// @returns The illuminance in units of lux ranging from 1 - 1'000.
@@ -76,7 +76,7 @@ class Temt6000x01 final : public LightSensor
   const units::voltage::microvolt_t kAdcReferenceVoltage;
   const units::impedance::ohm_t kPullDownResistance;
   /// This value varies base on the number of bits supported by the ADC.
-  /// The resoltuion is determined by: (2^(# of bits)) - 1.
+  /// The resolution is determined by: (2^(# of bits)) - 1.
   float adc_resolution_;
 };
 }  // namespace sjsu

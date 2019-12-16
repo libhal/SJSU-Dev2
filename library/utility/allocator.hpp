@@ -135,10 +135,10 @@ class FixedAllocator
   {
   }
 
-  template <class Tbind>
+  template <class Bind>
   struct rebind  // NOLINT
   {
-    using other = FixedAllocator<Tbind, N, Tbind>;
+    using other = FixedAllocator<Bind, N, Bind>;
   };
 
   T * allocate(size_t n)  // NOLINT

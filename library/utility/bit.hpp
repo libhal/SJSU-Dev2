@@ -82,7 +82,7 @@ template <typename T>
 {
   return Extract(target, bitmask.position, bitmask.width);
 }
-/// Insert a set of continguous bits into a target value.
+/// Insert a set of contiguous bits into a target value.
 ///
 /// target   =        0xXXXX'XXXX
 ///                        ^
@@ -221,7 +221,7 @@ template <typename T>
 }
 
 /// @returns a value that is the target value with the bit set to a 1 at the bit
-/// position within the bitmask. For exmaple if your bitmask has field position
+/// position within the bitmask. For example if your bitmask has field position
 /// set to 5, then this function will return the target value with the 5th bits
 /// set to a 1.
 template <typename T>
@@ -243,7 +243,7 @@ template <typename T>
   return Toggle(target, bitmask.position);
 }
 /// @returns the bit in the value at the "position" field of the bitmask. For
-/// exmaple, if the passed bitmask has position set to 5, then this function
+/// example, if the passed bitmask has position set to 5, then this function
 /// will return the 5th bits value, regardless of the "width" field is.
 template <typename T>
 [[nodiscard]] constexpr bool Read(T target, Mask bitmask)

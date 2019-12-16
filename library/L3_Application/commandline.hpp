@@ -265,7 +265,7 @@ class CommandLine
   /// of command names and if one of them is found, that command will be
   /// executed.
   ///
-  /// Note: Mircrorl will not run this if there is not at least a letter
+  /// Note: Microrl will not run this if there is not at least a letter
   /// entered into the terminal, so no need to check if argc == 0.
   static int ExecuteCommand(int argc, const char * const argv[])
   {

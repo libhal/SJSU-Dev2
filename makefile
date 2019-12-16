@@ -536,6 +536,9 @@ test: $(TEST_EXEC)
 # Evaluate library files and check them for linting errors.
 lint:
 	@python3 $(TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
+# Finds all library files without tests
+spellcheck:
+	@$(TOOLS_DIR)/spell_checker.sh $(LINT_FILES)
 # Evaluate library files for proper code naming conventions
 tidy: $(TIDY_FILES_PHONY)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'

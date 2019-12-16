@@ -169,9 +169,9 @@ class TFMini final : public DistanceSensor
       }
       if (checksum == device_data[8])
       {
-        uint32_t stren = device_data[4];
-        stren |= device_data[5] << 8;
-        *strength = (stren / kStrengthUpperBound);
+        uint32_t strength_bytes = device_data[4];
+        strength_bytes |= device_data[5] << 8;
+        *strength = (strength_bytes / kStrengthUpperBound);
       }
       else
       {
