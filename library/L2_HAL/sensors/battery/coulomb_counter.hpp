@@ -15,5 +15,7 @@ class CoulombCounter
   /// Returns the cumulative amount of charge that has passed through the
   /// coulomb counter.
   virtual units::charge::milliampere_hour_t GetCharge() const = 0;
+  /// Default virtual destructor
+  virtual ~CoulombCounter() = default;
 };
 }  // namespace sjsu

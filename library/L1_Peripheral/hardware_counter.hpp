@@ -46,7 +46,7 @@ class HardwareCounter
   virtual void Disable() = 0;
 
   /// Get the current count from hardware timer.
-  virtual uint32_t GetCount() = 0;
+  virtual int32_t GetCount() = 0;
 
   /// Default virtual destructor
   virtual ~HardwareCounter() = default;
@@ -73,7 +73,6 @@ class GpioCounter : public HardwareCounter
     gpio_.GetPin().SetPull(pull_);
     gpio_.SetAsInput();
   }
-
   void Set(int32_t new_count_value) override
   {
     count_ = new_count_value;
@@ -95,7 +94,7 @@ class GpioCounter : public HardwareCounter
     gpio_.DetachInterrupt();
   }
 
-  uint32_t GetCount() override
+  int32_t GetCount() override
   {
     return count_;
   }
