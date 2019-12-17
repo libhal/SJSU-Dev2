@@ -27,7 +27,7 @@ sjsu::cortex::DwtCounter arm_dwt_counter;
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
 sjsu::cortex::SystemTimer system_timer;
-// Cortex NVIC interrupt controller used to setup FreeRTOS ISRs
+// Cortex NVIC interrupt controller used to setup interrupt service routines
 sjsu::cortex::InterruptController<sjsu::lpc40xx::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>
     interrupt_controller;
