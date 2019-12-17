@@ -54,7 +54,13 @@
 
 #pragma GCC system_header
 
-#ifdef __cplusplus
+#include "L0_Platform/arm_cortex/m4/core_cm4.h"
+#include <cstdint>
+
+#if defined(__cplusplus)
+// SJSU-Dev2: Putting contents of this include in sjsu::lpc17xx
+namespace sjsu::stm32f10x
+{
 extern "C"
 {
 #endif
@@ -65,7 +71,7 @@ extern "C"
 
 /* Uncomment the line below according to the target STM32 device used in your
    application
-  
+
 
 #if !defined(STM32F10X_LD) && !defined(STM32F10X_LD_VL) && \
   !defined(STM32F10X_MD) && !defined(STM32F10X_MD_VL) && \
@@ -134,13 +140,6 @@ extern "C"
 /**
  * @brief In the following line adjust the value of External High Speed
  oscillator (HSE) used in your application
-   
-
-
-
-
-
-
    Tip: To avoid modifying this file each time you need to use different HSE,
  you can define the HSE value in your toolchain compiler preprocessor.
   */
@@ -158,9 +157,9 @@ extern "C"
  * @brief In the following line adjust the External High Speed oscillator (HSE)
  Startup Timeout value
    */
-#define HSE_STARTUP_TIMEOUT                                   \
-  ((uint16_t)0x0500) /*!< Time out for HSE start up \ \ \ \ \ \
-                      */
+
+/*!< Time out for HSE start up  */
+#define HSE_STARTUP_TIMEOUT ((uint16_t)0x0500)
 
 #define HSI_VALUE \
   ((uint32_t)8000000) /*!< Value of the Internal oscillator in Hz*/
@@ -171,8 +170,13 @@ extern "C"
 #define __STM32F10X_STDPERIPH_VERSION_MAIN (0x03) /*!< [31:24] main version */
 #define __STM32F10X_STDPERIPH_VERSION_SUB1 (0x05) /*!< [23:16] sub1 version */
 #define __STM32F10X_STDPERIPH_VERSION_SUB2 (0x00) /*!< [15:8]  sub2 version */
-#define __STM32F10X_STDPERIPH_VERSION_RC         \
-  (0x00) /*!< [7:0]  release candidate \ \ \ \ \ \
+#define __STM32F10X_STDPERIPH_VERSION_RC                                       \
+  (0x00) /*!< [7:0]  release candidate \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+          * \                                                                  \
+          * \ \                                                                             \
+          * \ \ \                                                                             \
+          * \ \ \ \                                                                             \
+          * \ \ \ \ \                                                                             \
           */
 #define __STM32F10X_STDPERIPH_VERSION           \
   ((__STM32F10X_STDPERIPH_VERSION_MAIN << 24) | \
@@ -204,7 +208,7 @@ extern "C"
    * @brief STM32F10x Interrupt Number Definition, according to the selected
    * device in @ref Library_configuration_section
    */
-  typedef enum IRQn
+  enum IRQn
   {
     /******  Cortex-M3 Processor Exceptions Numbers
      ***************************************************/
@@ -542,9 +546,6 @@ extern "C"
   /**
    * @}
    */
-
-#include "L0_Platform/arm_cortex/m4/core_cm4.h"
-#include <stdint.h>
 
   /** @addtogroup Exported_types
    * @{
@@ -1352,122 +1353,117 @@ extern "C"
    * @{
    */
 
-#define FLASH_BASE \
-  ((uint32_t)0x08000000) /*!< FLASH base address in the alias region */
-#define SRAM_BASE \
-  ((uint32_t)0x20000000) /*!< SRAM base address in the alias region */
-#define PERIPH_BASE \
-  ((uint32_t)0x40000000) /*!< Peripheral base address in the alias region */
+  /*!< FLASH base address in the alias region */
+  constexpr intptr_t FLASH_BASE = 0x08000000;
+  /*!< SRAM base address in the alias region */
+  constexpr intptr_t SRAM_BASE = 0x20000000;
+  /*!< Peripheral base address in the alias region */
+  constexpr intptr_t PERIPH_BASE = 0x40000000;
+  /*!< SRAM base address in the bit-band region */
+  constexpr intptr_t SRAM_BB_BASE = 0x22000000;
 
-#define SRAM_BB_BASE \
-  ((uint32_t)0x22000000) /*!< SRAM base address in the bit-band region */
-#define PERIPH_BB_BASE                                                         \
-  ((uint32_t)0x42000000) /*!< Peripheral base address in the bit-band region \ \
-                          * \                                                  \
-                          * \ \                                                                             \
-                          * \ \ \                                                                             \
-                          * \ \ \ \                                                                             \
-                          */
+  /*!< Peripheral base address in the bit-band region */
+  constexpr intptr_t PERIPH_BB_BASE = 0x42000000;
+  /*!< FSMC registers base address */
+  constexpr intptr_t FSMC_R_BASE = 0xA0000000;
 
-#define FSMC_R_BASE ((uint32_t)0xA0000000) /*!< FSMC registers base address */
+  /*!< Peripheral memory map */
+  constexpr intptr_t APB1PERIPH_BASE = PERIPH_BASE;
+  constexpr intptr_t APB2PERIPH_BASE = (PERIPH_BASE + 0x10000);
+  constexpr intptr_t AHBPERIPH_BASE  = (PERIPH_BASE + 0x20000);
 
-/*!< Peripheral memory map */
-#define APB1PERIPH_BASE PERIPH_BASE
-#define APB2PERIPH_BASE (PERIPH_BASE + 0x10000)
-#define AHBPERIPH_BASE (PERIPH_BASE + 0x20000)
+  constexpr intptr_t TIM2_BASE   = (APB1PERIPH_BASE + 0x0000);
+  constexpr intptr_t TIM3_BASE   = (APB1PERIPH_BASE + 0x0400);
+  constexpr intptr_t TIM4_BASE   = (APB1PERIPH_BASE + 0x0800);
+  constexpr intptr_t TIM5_BASE   = (APB1PERIPH_BASE + 0x0C00);
+  constexpr intptr_t TIM6_BASE   = (APB1PERIPH_BASE + 0x1000);
+  constexpr intptr_t TIM7_BASE   = (APB1PERIPH_BASE + 0x1400);
+  constexpr intptr_t TIM12_BASE  = (APB1PERIPH_BASE + 0x1800);
+  constexpr intptr_t TIM13_BASE  = (APB1PERIPH_BASE + 0x1C00);
+  constexpr intptr_t TIM14_BASE  = (APB1PERIPH_BASE + 0x2000);
+  constexpr intptr_t RTC_BASE    = (APB1PERIPH_BASE + 0x2800);
+  constexpr intptr_t WWDG_BASE   = (APB1PERIPH_BASE + 0x2C00);
+  constexpr intptr_t IWDG_BASE   = (APB1PERIPH_BASE + 0x3000);
+  constexpr intptr_t SPI2_BASE   = (APB1PERIPH_BASE + 0x3800);
+  constexpr intptr_t SPI3_BASE   = (APB1PERIPH_BASE + 0x3C00);
+  constexpr intptr_t USART2_BASE = (APB1PERIPH_BASE + 0x4400);
+  constexpr intptr_t USART3_BASE = (APB1PERIPH_BASE + 0x4800);
+  constexpr intptr_t UART4_BASE  = (APB1PERIPH_BASE + 0x4C00);
+  constexpr intptr_t UART5_BASE  = (APB1PERIPH_BASE + 0x5000);
+  constexpr intptr_t I2C1_BASE   = (APB1PERIPH_BASE + 0x5400);
+  constexpr intptr_t I2C2_BASE   = (APB1PERIPH_BASE + 0x5800);
+  constexpr intptr_t CAN1_BASE   = (APB1PERIPH_BASE + 0x6400);
+  constexpr intptr_t CAN2_BASE   = (APB1PERIPH_BASE + 0x6800);
+  constexpr intptr_t BKP_BASE    = (APB1PERIPH_BASE + 0x6C00);
+  constexpr intptr_t PWR_BASE    = (APB1PERIPH_BASE + 0x7000);
+  constexpr intptr_t DAC_BASE    = (APB1PERIPH_BASE + 0x7400);
+  constexpr intptr_t CEC_BASE    = (APB1PERIPH_BASE + 0x7800);
 
-#define TIM2_BASE (APB1PERIPH_BASE + 0x0000)
-#define TIM3_BASE (APB1PERIPH_BASE + 0x0400)
-#define TIM4_BASE (APB1PERIPH_BASE + 0x0800)
-#define TIM5_BASE (APB1PERIPH_BASE + 0x0C00)
-#define TIM6_BASE (APB1PERIPH_BASE + 0x1000)
-#define TIM7_BASE (APB1PERIPH_BASE + 0x1400)
-#define TIM12_BASE (APB1PERIPH_BASE + 0x1800)
-#define TIM13_BASE (APB1PERIPH_BASE + 0x1C00)
-#define TIM14_BASE (APB1PERIPH_BASE + 0x2000)
-#define RTC_BASE (APB1PERIPH_BASE + 0x2800)
-#define WWDG_BASE (APB1PERIPH_BASE + 0x2C00)
-#define IWDG_BASE (APB1PERIPH_BASE + 0x3000)
-#define SPI2_BASE (APB1PERIPH_BASE + 0x3800)
-#define SPI3_BASE (APB1PERIPH_BASE + 0x3C00)
-#define USART2_BASE (APB1PERIPH_BASE + 0x4400)
-#define USART3_BASE (APB1PERIPH_BASE + 0x4800)
-#define UART4_BASE (APB1PERIPH_BASE + 0x4C00)
-#define UART5_BASE (APB1PERIPH_BASE + 0x5000)
-#define I2C1_BASE (APB1PERIPH_BASE + 0x5400)
-#define I2C2_BASE (APB1PERIPH_BASE + 0x5800)
-#define CAN1_BASE (APB1PERIPH_BASE + 0x6400)
-#define CAN2_BASE (APB1PERIPH_BASE + 0x6800)
-#define BKP_BASE (APB1PERIPH_BASE + 0x6C00)
-#define PWR_BASE (APB1PERIPH_BASE + 0x7000)
-#define DAC_BASE (APB1PERIPH_BASE + 0x7400)
-#define CEC_BASE (APB1PERIPH_BASE + 0x7800)
+  constexpr intptr_t AFIO_BASE   = (APB2PERIPH_BASE + 0x0000);
+  constexpr intptr_t EXTI_BASE   = (APB2PERIPH_BASE + 0x0400);
+  constexpr intptr_t GPIOA_BASE  = (APB2PERIPH_BASE + 0x0800);
+  constexpr intptr_t GPIOB_BASE  = (APB2PERIPH_BASE + 0x0C00);
+  constexpr intptr_t GPIOC_BASE  = (APB2PERIPH_BASE + 0x1000);
+  constexpr intptr_t GPIOD_BASE  = (APB2PERIPH_BASE + 0x1400);
+  constexpr intptr_t GPIOE_BASE  = (APB2PERIPH_BASE + 0x1800);
+  constexpr intptr_t GPIOF_BASE  = (APB2PERIPH_BASE + 0x1C00);
+  constexpr intptr_t GPIOG_BASE  = (APB2PERIPH_BASE + 0x2000);
+  constexpr intptr_t ADC1_BASE   = (APB2PERIPH_BASE + 0x2400);
+  constexpr intptr_t ADC2_BASE   = (APB2PERIPH_BASE + 0x2800);
+  constexpr intptr_t TIM1_BASE   = (APB2PERIPH_BASE + 0x2C00);
+  constexpr intptr_t SPI1_BASE   = (APB2PERIPH_BASE + 0x3000);
+  constexpr intptr_t TIM8_BASE   = (APB2PERIPH_BASE + 0x3400);
+  constexpr intptr_t USART1_BASE = (APB2PERIPH_BASE + 0x3800);
+  constexpr intptr_t ADC3_BASE   = (APB2PERIPH_BASE + 0x3C00);
+  constexpr intptr_t TIM15_BASE  = (APB2PERIPH_BASE + 0x4000);
+  constexpr intptr_t TIM16_BASE  = (APB2PERIPH_BASE + 0x4400);
+  constexpr intptr_t TIM17_BASE  = (APB2PERIPH_BASE + 0x4800);
+  constexpr intptr_t TIM9_BASE   = (APB2PERIPH_BASE + 0x4C00);
+  constexpr intptr_t TIM10_BASE  = (APB2PERIPH_BASE + 0x5000);
+  constexpr intptr_t TIM11_BASE  = (APB2PERIPH_BASE + 0x5400);
 
-#define AFIO_BASE (APB2PERIPH_BASE + 0x0000)
-#define EXTI_BASE (APB2PERIPH_BASE + 0x0400)
-#define GPIOA_BASE (APB2PERIPH_BASE + 0x0800)
-#define GPIOB_BASE (APB2PERIPH_BASE + 0x0C00)
-#define GPIOC_BASE (APB2PERIPH_BASE + 0x1000)
-#define GPIOD_BASE (APB2PERIPH_BASE + 0x1400)
-#define GPIOE_BASE (APB2PERIPH_BASE + 0x1800)
-#define GPIOF_BASE (APB2PERIPH_BASE + 0x1C00)
-#define GPIOG_BASE (APB2PERIPH_BASE + 0x2000)
-#define ADC1_BASE (APB2PERIPH_BASE + 0x2400)
-#define ADC2_BASE (APB2PERIPH_BASE + 0x2800)
-#define TIM1_BASE (APB2PERIPH_BASE + 0x2C00)
-#define SPI1_BASE (APB2PERIPH_BASE + 0x3000)
-#define TIM8_BASE (APB2PERIPH_BASE + 0x3400)
-#define USART1_BASE (APB2PERIPH_BASE + 0x3800)
-#define ADC3_BASE (APB2PERIPH_BASE + 0x3C00)
-#define TIM15_BASE (APB2PERIPH_BASE + 0x4000)
-#define TIM16_BASE (APB2PERIPH_BASE + 0x4400)
-#define TIM17_BASE (APB2PERIPH_BASE + 0x4800)
-#define TIM9_BASE (APB2PERIPH_BASE + 0x4C00)
-#define TIM10_BASE (APB2PERIPH_BASE + 0x5000)
-#define TIM11_BASE (APB2PERIPH_BASE + 0x5400)
+  constexpr intptr_t SDIO_BASE = (PERIPH_BASE + 0x18000);
 
-#define SDIO_BASE (PERIPH_BASE + 0x18000)
+  constexpr intptr_t DMA1_BASE          = (AHBPERIPH_BASE + 0x0000);
+  constexpr intptr_t DMA1_Channel1_BASE = (AHBPERIPH_BASE + 0x0008);
+  constexpr intptr_t DMA1_Channel2_BASE = (AHBPERIPH_BASE + 0x001C);
+  constexpr intptr_t DMA1_Channel3_BASE = (AHBPERIPH_BASE + 0x0030);
+  constexpr intptr_t DMA1_Channel4_BASE = (AHBPERIPH_BASE + 0x0044);
+  constexpr intptr_t DMA1_Channel5_BASE = (AHBPERIPH_BASE + 0x0058);
+  constexpr intptr_t DMA1_Channel6_BASE = (AHBPERIPH_BASE + 0x006C);
+  constexpr intptr_t DMA1_Channel7_BASE = (AHBPERIPH_BASE + 0x0080);
+  constexpr intptr_t DMA2_BASE          = (AHBPERIPH_BASE + 0x0400);
+  constexpr intptr_t DMA2_Channel1_BASE = (AHBPERIPH_BASE + 0x0408);
+  constexpr intptr_t DMA2_Channel2_BASE = (AHBPERIPH_BASE + 0x041C);
+  constexpr intptr_t DMA2_Channel3_BASE = (AHBPERIPH_BASE + 0x0430);
+  constexpr intptr_t DMA2_Channel4_BASE = (AHBPERIPH_BASE + 0x0444);
+  constexpr intptr_t DMA2_Channel5_BASE = (AHBPERIPH_BASE + 0x0458);
+  constexpr intptr_t RCC_BASE           = (AHBPERIPH_BASE + 0x1000);
+  constexpr intptr_t CRC_BASE           = (AHBPERIPH_BASE + 0x3000);
 
-#define DMA1_BASE (AHBPERIPH_BASE + 0x0000)
-#define DMA1_Channel1_BASE (AHBPERIPH_BASE + 0x0008)
-#define DMA1_Channel2_BASE (AHBPERIPH_BASE + 0x001C)
-#define DMA1_Channel3_BASE (AHBPERIPH_BASE + 0x0030)
-#define DMA1_Channel4_BASE (AHBPERIPH_BASE + 0x0044)
-#define DMA1_Channel5_BASE (AHBPERIPH_BASE + 0x0058)
-#define DMA1_Channel6_BASE (AHBPERIPH_BASE + 0x006C)
-#define DMA1_Channel7_BASE (AHBPERIPH_BASE + 0x0080)
-#define DMA2_BASE (AHBPERIPH_BASE + 0x0400)
-#define DMA2_Channel1_BASE (AHBPERIPH_BASE + 0x0408)
-#define DMA2_Channel2_BASE (AHBPERIPH_BASE + 0x041C)
-#define DMA2_Channel3_BASE (AHBPERIPH_BASE + 0x0430)
-#define DMA2_Channel4_BASE (AHBPERIPH_BASE + 0x0444)
-#define DMA2_Channel5_BASE (AHBPERIPH_BASE + 0x0458)
-#define RCC_BASE (AHBPERIPH_BASE + 0x1000)
-#define CRC_BASE (AHBPERIPH_BASE + 0x3000)
+  /*!< Flash registers base address */
+  constexpr intptr_t FLASH_R_BASE = (AHBPERIPH_BASE + 0x2000);
+  /*!< Flash Option Bytes base address */
+  constexpr intptr_t OB_BASE = ((uint32_t)0x1FFFF800);
 
-#define FLASH_R_BASE \
-  (AHBPERIPH_BASE + 0x2000)            /*!< Flash registers base address */
-#define OB_BASE ((uint32_t)0x1FFFF800) /*!< Flash Option Bytes base address */
+  constexpr intptr_t ETH_BASE     = (AHBPERIPH_BASE + 0x8000);
+  constexpr intptr_t ETH_MAC_BASE = (ETH_BASE);
+  constexpr intptr_t ETH_MMC_BASE = (ETH_BASE + 0x0100);
+  constexpr intptr_t ETH_PTP_BASE = (ETH_BASE + 0x0700);
+  constexpr intptr_t ETH_DMA_BASE = (ETH_BASE + 0x1000);
 
-#define ETH_BASE (AHBPERIPH_BASE + 0x8000)
-#define ETH_MAC_BASE (ETH_BASE)
-#define ETH_MMC_BASE (ETH_BASE + 0x0100)
-#define ETH_PTP_BASE (ETH_BASE + 0x0700)
-#define ETH_DMA_BASE (ETH_BASE + 0x1000)
-
-#define FSMC_Bank1_R_BASE \
-  (FSMC_R_BASE + 0x0000) /*!< FSMC Bank1 registers base address */
-#define FSMC_Bank1E_R_BASE \
-  (FSMC_R_BASE + 0x0104) /*!< FSMC Bank1E registers base address */
-#define FSMC_Bank2_R_BASE \
-  (FSMC_R_BASE + 0x0060) /*!< FSMC Bank2 registers base address */
-#define FSMC_Bank3_R_BASE \
-  (FSMC_R_BASE + 0x0080) /*!< FSMC Bank3 registers base address */
-#define FSMC_Bank4_R_BASE \
-  (FSMC_R_BASE + 0x00A0) /*!< FSMC Bank4 registers base address */
-
-#define DBGMCU_BASE \
-  ((uint32_t)0xE0042000) /*!< Debug MCU registers base address */
+  /*!< FSMC Bank1 registers base address */
+  constexpr intptr_t FSMC_Bank1_R_BASE = (FSMC_R_BASE + 0x0000);
+  /*!< FSMC Bank1E registers base address */
+  constexpr intptr_t FSMC_Bank1E_R_BASE = (FSMC_R_BASE + 0x0104);
+  /*!< FSMC Bank2 registers base address */
+  constexpr intptr_t FSMC_Bank2_R_BASE = (FSMC_R_BASE + 0x0060);
+  /*!< FSMC Bank3 registers base address */
+  constexpr intptr_t FSMC_Bank3_R_BASE = (FSMC_R_BASE + 0x0080);
+  /*!< FSMC Bank4 registers base address */
+  constexpr intptr_t FSMC_Bank4_R_BASE = (FSMC_R_BASE + 0x00A0);
+  /*!< Debug MCU registers base address */
+  constexpr intptr_t DBGMCU_BASE = 0xE0042000;
 
   /**
    * @}
@@ -1477,83 +1473,101 @@ extern "C"
    * @{
    */
 
-#define TIM2 ((TIM_TypeDef *)TIM2_BASE)
-#define TIM3 ((TIM_TypeDef *)TIM3_BASE)
-#define TIM4 ((TIM_TypeDef *)TIM4_BASE)
-#define TIM5 ((TIM_TypeDef *)TIM5_BASE)
-#define TIM6 ((TIM_TypeDef *)TIM6_BASE)
-#define TIM7 ((TIM_TypeDef *)TIM7_BASE)
-#define TIM12 ((TIM_TypeDef *)TIM12_BASE)
-#define TIM13 ((TIM_TypeDef *)TIM13_BASE)
-#define TIM14 ((TIM_TypeDef *)TIM14_BASE)
-#define RTC ((RTC_TypeDef *)RTC_BASE)
-#define WWDG ((WWDG_TypeDef *)WWDG_BASE)
-#define IWDG ((IWDG_TypeDef *)IWDG_BASE)
-#define SPI2 ((SPI_TypeDef *)SPI2_BASE)
-#define SPI3 ((SPI_TypeDef *)SPI3_BASE)
-#define USART2 ((USART_TypeDef *)USART2_BASE)
-#define USART3 ((USART_TypeDef *)USART3_BASE)
-#define UART4 ((USART_TypeDef *)UART4_BASE)
-#define UART5 ((USART_TypeDef *)UART5_BASE)
-#define I2C1 ((I2C_TypeDef *)I2C1_BASE)
-#define I2C2 ((I2C_TypeDef *)I2C2_BASE)
-#define CAN1 ((CAN_TypeDef *)CAN1_BASE)
-#define CAN2 ((CAN_TypeDef *)CAN2_BASE)
-#define BKP ((BKP_TypeDef *)BKP_BASE)
-#define PWR ((PWR_TypeDef *)PWR_BASE)
-#define DAC ((DAC_TypeDef *)DAC_BASE)
-#define CEC ((CEC_TypeDef *)CEC_BASE)
-#define AFIO ((AFIO_TypeDef *)AFIO_BASE)
-#define EXTI ((EXTI_TypeDef *)EXTI_BASE)
-#define GPIOA ((GPIO_TypeDef *)GPIOA_BASE)
-#define GPIOB ((GPIO_TypeDef *)GPIOB_BASE)
-#define GPIOC ((GPIO_TypeDef *)GPIOC_BASE)
-#define GPIOD ((GPIO_TypeDef *)GPIOD_BASE)
-#define GPIOE ((GPIO_TypeDef *)GPIOE_BASE)
-#define GPIOF ((GPIO_TypeDef *)GPIOF_BASE)
-#define GPIOG ((GPIO_TypeDef *)GPIOG_BASE)
-#define ADC1 ((ADC_TypeDef *)ADC1_BASE)
-#define ADC2 ((ADC_TypeDef *)ADC2_BASE)
-#define TIM1 ((TIM_TypeDef *)TIM1_BASE)
-#define SPI1 ((SPI_TypeDef *)SPI1_BASE)
-#define TIM8 ((TIM_TypeDef *)TIM8_BASE)
-#define USART1 ((USART_TypeDef *)USART1_BASE)
-#define ADC3 ((ADC_TypeDef *)ADC3_BASE)
-#define TIM15 ((TIM_TypeDef *)TIM15_BASE)
-#define TIM16 ((TIM_TypeDef *)TIM16_BASE)
-#define TIM17 ((TIM_TypeDef *)TIM17_BASE)
-#define TIM9 ((TIM_TypeDef *)TIM9_BASE)
-#define TIM10 ((TIM_TypeDef *)TIM10_BASE)
-#define TIM11 ((TIM_TypeDef *)TIM11_BASE)
-#define SDIO ((SDIO_TypeDef *)SDIO_BASE)
-#define DMA1 ((DMA_TypeDef *)DMA1_BASE)
-#define DMA2 ((DMA_TypeDef *)DMA2_BASE)
-#define DMA1_Channel1 ((DMA_Channel_TypeDef *)DMA1_Channel1_BASE)
-#define DMA1_Channel2 ((DMA_Channel_TypeDef *)DMA1_Channel2_BASE)
-#define DMA1_Channel3 ((DMA_Channel_TypeDef *)DMA1_Channel3_BASE)
-#define DMA1_Channel4 ((DMA_Channel_TypeDef *)DMA1_Channel4_BASE)
-#define DMA1_Channel5 ((DMA_Channel_TypeDef *)DMA1_Channel5_BASE)
-#define DMA1_Channel6 ((DMA_Channel_TypeDef *)DMA1_Channel6_BASE)
-#define DMA1_Channel7 ((DMA_Channel_TypeDef *)DMA1_Channel7_BASE)
-#define DMA2_Channel1 ((DMA_Channel_TypeDef *)DMA2_Channel1_BASE)
-#define DMA2_Channel2 ((DMA_Channel_TypeDef *)DMA2_Channel2_BASE)
-#define DMA2_Channel3 ((DMA_Channel_TypeDef *)DMA2_Channel3_BASE)
-#define DMA2_Channel4 ((DMA_Channel_TypeDef *)DMA2_Channel4_BASE)
-#define DMA2_Channel5 ((DMA_Channel_TypeDef *)DMA2_Channel5_BASE)
-#define RCC ((RCC_TypeDef *)RCC_BASE)
-#define CRC ((CRC_TypeDef *)CRC_BASE)
-#define FLASH ((FLASH_TypeDef *)FLASH_R_BASE)
-#define OB ((OB_TypeDef *)OB_BASE)
-#define ETH ((ETH_TypeDef *)ETH_BASE)
-#define FSMC_Bank1 ((FSMC_Bank1_TypeDef *)FSMC_Bank1_R_BASE)
-#define FSMC_Bank1E ((FSMC_Bank1E_TypeDef *)FSMC_Bank1E_R_BASE)
-#define FSMC_Bank2 ((FSMC_Bank2_TypeDef *)FSMC_Bank2_R_BASE)
-#define FSMC_Bank3 ((FSMC_Bank3_TypeDef *)FSMC_Bank3_R_BASE)
-#define FSMC_Bank4 ((FSMC_Bank4_TypeDef *)FSMC_Bank4_R_BASE)
-#define DBGMCU ((DBGMCU_TypeDef *)DBGMCU_BASE)
+  inline auto * const TIM2   = reinterpret_cast<TIM_TypeDef *>(TIM2_BASE);
+  inline auto * const TIM3   = reinterpret_cast<TIM_TypeDef *>(TIM3_BASE);
+  inline auto * const TIM4   = reinterpret_cast<TIM_TypeDef *>(TIM4_BASE);
+  inline auto * const TIM5   = reinterpret_cast<TIM_TypeDef *>(TIM5_BASE);
+  inline auto * const TIM6   = reinterpret_cast<TIM_TypeDef *>(TIM6_BASE);
+  inline auto * const TIM7   = reinterpret_cast<TIM_TypeDef *>(TIM7_BASE);
+  inline auto * const TIM12  = reinterpret_cast<TIM_TypeDef *>(TIM12_BASE);
+  inline auto * const TIM13  = reinterpret_cast<TIM_TypeDef *>(TIM13_BASE);
+  inline auto * const TIM14  = reinterpret_cast<TIM_TypeDef *>(TIM14_BASE);
+  inline auto * const RTC    = reinterpret_cast<RTC_TypeDef *>(RTC_BASE);
+  inline auto * const WWDG   = reinterpret_cast<WWDG_TypeDef *>(WWDG_BASE);
+  inline auto * const IWDG   = reinterpret_cast<IWDG_TypeDef *>(IWDG_BASE);
+  inline auto * const SPI2   = reinterpret_cast<SPI_TypeDef *>(SPI2_BASE);
+  inline auto * const SPI3   = reinterpret_cast<SPI_TypeDef *>(SPI3_BASE);
+  inline auto * const USART2 = reinterpret_cast<USART_TypeDef *>(USART2_BASE);
+  inline auto * const USART3 = reinterpret_cast<USART_TypeDef *>(USART3_BASE);
+  inline auto * const UART4  = reinterpret_cast<USART_TypeDef *>(UART4_BASE);
+  inline auto * const UART5  = reinterpret_cast<USART_TypeDef *>(UART5_BASE);
+  inline auto * const I2C1   = reinterpret_cast<I2C_TypeDef *>(I2C1_BASE);
+  inline auto * const I2C2   = reinterpret_cast<I2C_TypeDef *>(I2C2_BASE);
+  inline auto * const CAN1   = reinterpret_cast<CAN_TypeDef *>(CAN1_BASE);
+  inline auto * const CAN2   = reinterpret_cast<CAN_TypeDef *>(CAN2_BASE);
+  inline auto * const BKP    = reinterpret_cast<BKP_TypeDef *>(BKP_BASE);
+  inline auto * const PWR    = reinterpret_cast<PWR_TypeDef *>(PWR_BASE);
+  inline auto * const DAC    = reinterpret_cast<DAC_TypeDef *>(DAC_BASE);
+  inline auto * const CEC    = reinterpret_cast<CEC_TypeDef *>(CEC_BASE);
+  inline auto * const AFIO   = reinterpret_cast<AFIO_TypeDef *>(AFIO_BASE);
+  inline auto * const EXTI   = reinterpret_cast<EXTI_TypeDef *>(EXTI_BASE);
+  inline auto * const GPIOA  = reinterpret_cast<GPIO_TypeDef *>(GPIOA_BASE);
+  inline auto * const GPIOB  = reinterpret_cast<GPIO_TypeDef *>(GPIOB_BASE);
+  inline auto * const GPIOC  = reinterpret_cast<GPIO_TypeDef *>(GPIOC_BASE);
+  inline auto * const GPIOD  = reinterpret_cast<GPIO_TypeDef *>(GPIOD_BASE);
+  inline auto * const GPIOE  = reinterpret_cast<GPIO_TypeDef *>(GPIOE_BASE);
+  inline auto * const GPIOF  = reinterpret_cast<GPIO_TypeDef *>(GPIOF_BASE);
+  inline auto * const GPIOG  = reinterpret_cast<GPIO_TypeDef *>(GPIOG_BASE);
+  inline auto * const ADC1   = reinterpret_cast<ADC_TypeDef *>(ADC1_BASE);
+  inline auto * const ADC2   = reinterpret_cast<ADC_TypeDef *>(ADC2_BASE);
+  inline auto * const TIM1   = reinterpret_cast<TIM_TypeDef *>(TIM1_BASE);
+  inline auto * const SPI1   = reinterpret_cast<SPI_TypeDef *>(SPI1_BASE);
+  inline auto * const TIM8   = reinterpret_cast<TIM_TypeDef *>(TIM8_BASE);
+  inline auto * const USART1 = reinterpret_cast<USART_TypeDef *>(USART1_BASE);
+  inline auto * const ADC3   = reinterpret_cast<ADC_TypeDef *>(ADC3_BASE);
+  inline auto * const TIM15  = reinterpret_cast<TIM_TypeDef *>(TIM15_BASE);
+  inline auto * const TIM16  = reinterpret_cast<TIM_TypeDef *>(TIM16_BASE);
+  inline auto * const TIM17  = reinterpret_cast<TIM_TypeDef *>(TIM17_BASE);
+  inline auto * const TIM9   = reinterpret_cast<TIM_TypeDef *>(TIM9_BASE);
+  inline auto * const TIM10  = reinterpret_cast<TIM_TypeDef *>(TIM10_BASE);
+  inline auto * const TIM11  = reinterpret_cast<TIM_TypeDef *>(TIM11_BASE);
+  inline auto * const SDIO   = reinterpret_cast<SDIO_TypeDef *>(SDIO_BASE);
+  inline auto * const DMA1   = reinterpret_cast<DMA_TypeDef *>(DMA1_BASE);
+  inline auto * const DMA2   = reinterpret_cast<DMA_TypeDef *>(DMA2_BASE);
+  inline auto * const DMA1_Channel1 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA1_Channel1_BASE);
+  inline auto * const DMA1_Channel2 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA1_Channel2_BASE);
+  inline auto * const DMA1_Channel3 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA1_Channel3_BASE);
+  inline auto * const DMA1_Channel4 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA1_Channel4_BASE);
+  inline auto * const DMA1_Channel5 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA1_Channel5_BASE);
+  inline auto * const DMA1_Channel6 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA1_Channel6_BASE);
+  inline auto * const DMA1_Channel7 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA1_Channel7_BASE);
+  inline auto * const DMA2_Channel1 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA2_Channel1_BASE);
+  inline auto * const DMA2_Channel2 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA2_Channel2_BASE);
+  inline auto * const DMA2_Channel3 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA2_Channel3_BASE);
+  inline auto * const DMA2_Channel4 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA2_Channel4_BASE);
+  inline auto * const DMA2_Channel5 =
+      reinterpret_cast<DMA_Channel_TypeDef *>(DMA2_Channel5_BASE);
+  inline auto * const RCC   = reinterpret_cast<RCC_TypeDef *>(RCC_BASE);
+  inline auto * const CRC   = reinterpret_cast<CRC_TypeDef *>(CRC_BASE);
+  inline auto * const FLASH = reinterpret_cast<FLASH_TypeDef *>(FLASH_R_BASE);
+  inline auto * const OB    = reinterpret_cast<OB_TypeDef *>(OB_BASE);
+  inline auto * const ETH   = reinterpret_cast<ETH_TypeDef *>(ETH_BASE);
+  inline auto * const FSMC_Bank1 =
+      reinterpret_cast<FSMC_Bank1_TypeDef *>(FSMC_Bank1_R_BASE);
+  inline auto * const FSMC_Bank1E =
+      reinterpret_cast<FSMC_Bank1E_TypeDef *>(FSMC_Bank1E_R_BASE);
+  inline auto * const FSMC_Bank2 =
+      reinterpret_cast<FSMC_Bank2_TypeDef *>(FSMC_Bank2_R_BASE);
+  inline auto * const FSMC_Bank3 =
+      reinterpret_cast<FSMC_Bank3_TypeDef *>(FSMC_Bank3_R_BASE);
+  inline auto * const FSMC_Bank4 =
+      reinterpret_cast<FSMC_Bank4_TypeDef *>(FSMC_Bank4_R_BASE);
+  inline auto * const DBGMCU = reinterpret_cast<DBGMCU_TypeDef *>(DBGMCU_BASE);
 
-#ifdef __cplusplus
-}
+#if defined(__cplusplus)
+  // SJSU-Dev2: Putting contents of this include in sjsu::stm32f10x
+}  // namespace sjsu::stm32f10x
+}  // extern "C"
 #endif /* __STM32F10x_H */
-
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
