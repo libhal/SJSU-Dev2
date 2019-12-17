@@ -108,8 +108,8 @@ class Sd
   /// @brief  a collection of SPI-supported command codes to be used with
   ///         SendCmd()
   ///
-  /// @note  OR'ing of b0100_0000 is meant to conform with the SD
-  ///        protocol (i.e. first bits must be b01)
+  /// @note  OR of b0100_0000 is meant to conform with the SD protocol
+  ///        (i.e. first bits must be b01)
   enum class Command
   {
     kGarbage = 0xFF,           // "SendGarbage" command; instructs
@@ -145,7 +145,7 @@ class Sd
                                // application-specific command
     kGetOcr = 0x40 | 58,       // CMD58: request data from the
                                // operational conditions register
-    kAcInit = 0x40 | 41        // ACMD41: application-specific version of
+    kAcInit = 0x40 | 41        // CMD41: application-specific version of
                                // CMD1 (must precede with CMD55)
   };
 
@@ -253,9 +253,9 @@ class Sd
     else if (sd->response.data.byte[3] &
              (supported_voltage == static_cast<uint64_t>(0x00)))
     {
-      // If the 2nd-to-last byte of the reponse AND'ed with our host
-      // device's supported voltage range is 0x00, the SD card doesn't
-      // support our device's operating voltage
+      // If the 2nd-to-last byte of the reponse AND with our host device's
+      // supported voltage range is 0x00, the SD card doesn't support our
+      // device's operating voltage
       LOG_ERROR("Unsupported voltage in use. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage,
                                     0xFFFFFFFF,

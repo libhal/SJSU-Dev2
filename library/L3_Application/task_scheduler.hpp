@@ -113,7 +113,7 @@ class TaskScheduler
   }
 
  private:
-  /// Function used during InitalizeAllTasks() for xTaskCreate() for running
+  /// Function used during InitializeAllTasks() for xTaskCreate() for running
   /// scheduled tasks.
   ///
   /// @param task_ptr Pointer reference of the task to run.
@@ -134,7 +134,8 @@ class TaskScheduler
   uint8_t task_count_;
   /// Buffer to hold the static allocation of the PreRun Event Group.
   StaticEventGroup_t pre_run_event_group_buffer_;
-  /// Event Group handle of for notfiying all PreRun are complete.
+  /// Event Group handle to be used by tasks running their PreRun callback to
+  /// indicate that all of them have completed it.
   EventGroupHandle_t pre_run_event_group_handle_;
   /// All PreRun sync bits for PreRun Event Group.
   EventBits_t pre_run_sync_bits_;

@@ -111,7 +111,7 @@ class Spi final : public sjsu::Spi
     /// Refernce to the M.ASTER-I.N-S.LAVE-O.UT (input to microcontroller) spi
     /// pin.
     const sjsu::Pin & miso;
-    /// Refernce to S.erial-C.lock spi pin.
+    /// Refernce to serial clock spi pin.
     const sjsu::Pin & sck;
     /// Function code to set each pin to the appropriate SSP function.
     uint8_t pin_function_id;

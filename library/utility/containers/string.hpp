@@ -27,7 +27,7 @@ namespace sjsu
 /// String Usage Notes
 /// ----------------------------------------------------------------------------
 /// The string in the above example can hold up to exactly 127 characters. Note
-/// that the last character is used up for a null cahracter.
+/// that the last character is used up for a null character.
 ///
 /// Reserve 1 minus the total size to leave space for the null character. When
 /// specifying a reserve space, the string object will increment the reserve

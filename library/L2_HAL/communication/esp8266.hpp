@@ -40,10 +40,10 @@ class Esp8266
     "UDP"
   };
   static constexpr uint32_t kBaudRate = 115200;
-  // Confirmation responses recieved from the ESP8266 module
+  // Confirmation responses received from the ESP8266 module
   static constexpr uint8_t kConfirmationResponse[] = "\r\nOK";
   static constexpr uint8_t kSendRequestConfirmationResponse[] = "\r\nSEND OK";
-  // Error response recieved from ESP8266 module
+  // Error response received from ESP8266 module
   static constexpr uint8_t kErrorResponse[] = "\r\nERROR";
   // Commands being sent to the ESP8266 module
   static constexpr uint8_t kTestCommand[] = "AT\r\n";
@@ -195,7 +195,7 @@ class Esp8266
 
     return (network.connection_info[kStatus] != '5');
   }
-  // Connects ESP8266 to hostname. Returns true if connection is estabilshed.
+  // Connects ESP8266 to hostname. Returns true if connection is established.
   virtual bool ConnectToServer(const char * server, uint16_t port,
                                std::chrono::microseconds uart_timeout,
                                ConnectionType type = ConnectionType::kTcp)

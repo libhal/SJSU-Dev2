@@ -4,7 +4,7 @@
 //      Pwm p2_0(1);
 //      p2_0.Initialize(500);
 //      p2_0.SetDutyCycle(0.75);
-//      p2_0.SetFrequeny(1'000);
+//      p2_0.SetFrequency(1'000);
 #pragma once
 
 #include <cstdint>

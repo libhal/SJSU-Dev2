@@ -29,7 +29,7 @@ int main()
       LOG_INFO("Sending characters now.");
       uart2.Write(message[i]);
     }
-    LOG_INFO("Recieving characters that arrived at Rx pin and printing them");
+    LOG_INFO("receiving characters that arrived at Rx pin and printing them");
     // This second loop receives all the sent data and prints it out
     for (size_t i = 0; i < std::size(message) - 1; i++)
     {

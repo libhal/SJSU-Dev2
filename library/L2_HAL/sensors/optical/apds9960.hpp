@@ -126,7 +126,7 @@ class Apds9960
   static constexpr uint8_t kMaxDataSize = 8;
   static constexpr uint8_t kMaxFIFOLevel = 33;
 
-  // Defualt values for Gesture sensor initialization
+  // Default values for Gesture sensor initialization
   enum DefaultValues : uint8_t
   {
     kNoMode                 = 0x00,
@@ -282,7 +282,7 @@ class Apds9960
     uint16_t value = gesture_.memory.gesture_configuration_3_4;
     return (value & 0x0100);
   }
-  virtual bool CheckIfGestureOccured()
+  virtual bool CheckIfGestureOccurred()
   {
     return (gesture_.memory.gesture_status & 0b1);
   }
@@ -431,7 +431,7 @@ class Apds9960
   virtual Gesture GetGesture()
   {
     Gesture result = kError;
-    if (CheckIfGestureOccured())
+    if (CheckIfGestureOccurred())
     {
       // check if gesture ended
       if (ReadGestureMode() == 0)

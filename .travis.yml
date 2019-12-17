@@ -7,9 +7,13 @@ matrix:
           before_install:
             - sudo apt-get -y install doxygen graphviz
             - pip install --user cpp-coveralls
+            - sudo apt install -y nodejs
+            - sudo apt install -y npm
+            - sudo npm install -g cspell
           script:
             - cd projects/hello_world/
             - make presubmit
+            - make spellcheck
             - cd ../../tools/
             - ./generate_doxygen_docs.sh
           after_success:

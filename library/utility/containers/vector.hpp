@@ -30,7 +30,7 @@ namespace sjsu
 ///
 /// The call to reserve will allocate the maximum amount from the allocator.
 /// This is very important as not doing so will cause vector to allocate an
-/// arbitary amount of data, which may overflow our fixed buffer.
+/// arbitrary amount of data, which may overflow our fixed buffer.
 /// Doing this means we allocate as much space as we need. Allocator will fault
 /// if we attempt to allocate beyond this.
 template <class T, const size_t length>

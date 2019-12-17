@@ -13,7 +13,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
-#include "L2_HAL/displays/led/onboard_led.hpp"
+#include "L2_HAL/boards/sjtwo.hpp"
 #include "L4_Testing/factory_test.hpp"
 #include "utility/build_info.hpp"
 #include "utility/debug.hpp"
@@ -220,6 +220,14 @@ void SetFlashAcceleratorSpeed(int32_t clocks_per_flash_access)
       (clocks_per_flash_access << 12);
 }
 
+void TurnOffAllLeds()
+{
+  sjtwo::led0.SetHigh();
+  sjtwo::led1.SetHigh();
+  sjtwo::led2.SetHigh();
+  sjtwo::led3.SetHigh();
+}
+
 int main()
 {
   sjsu::cortex::SystemTimer system_timer;
@@ -239,9 +247,12 @@ int main()
 
   debug_print_button_was_pressed = button3.Read();
 
-  sjsu::OnBoardLed leds;
-  leds.Initialize();
-  leds.SetAll(0);
+  sjtwo::led0.SetAsOutput();
+  sjtwo::led1.SetAsOutput();
+  sjtwo::led2.SetAsOutput();
+  sjtwo::led3.SetAsOutput();
+
+  TurnOffAllLeds();
 
   uart0.Initialize(38400);
   uart3.Initialize(115200);
@@ -293,13 +304,19 @@ int main()
       IapResult result = FlashSector(&ram_sector, sector_number);
       if (result == IapResult::kCmdSuccess)
       {
-        leds.SetAll(0);
+        TurnOffAllLeds();
+
         puts3("Sector Flash Successful!\n");
       }
       else
       {
         uint8_t error = static_cast<uint8_t>(result);
-        leds.SetAll(error);
+
+        sjtwo::led0.Set(error & 0b1 ? sjsu::Gpio::kLow : sjsu::Gpio::kHigh);
+        sjtwo::led1.Set(error & 0b01 ? sjsu::Gpio::kLow : sjsu::Gpio::kHigh);
+        sjtwo::led2.Set(error & 0b001 ? sjsu::Gpio::kLow : sjsu::Gpio::kHigh);
+        sjtwo::led3.Set(error & 0b0001 ? sjsu::Gpio::kLow : sjsu::Gpio::kHigh);
+
         printf3("Flashing error %s!\n",
                 kIapResultString[static_cast<uint32_t>(result)]);
         uart0.Write(kOtherError);
@@ -346,14 +363,18 @@ int main()
 
   printf("Application Reset ISR value = %p\n", application_entry_isr);
   sjsu::Delay(500ms);
-  leds.SetAll(0);
+
+  TurnOffAllLeds();
+
   // SystemTimerIrq must be disabled, otherwise it will continue to fire,
   // after the application is  executed. This can lead to a lot of problems
   // depending on the how the application is written.
   system_timer.DisableTimer();
+
   // Move the interrupt vector table register address to the application's IVT
   using sjsu::cortex::SCB_Type;
   SCB->VTOR = reinterpret_cast<intptr_t>(application_vector_table);
+
   // Jump to application code
   puts("Booting Application...");
   application_entry_isr();

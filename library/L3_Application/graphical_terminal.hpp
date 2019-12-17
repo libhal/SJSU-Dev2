@@ -10,15 +10,27 @@
 
 namespace sjsu
 {
+template <uint32_t kMaxRows, uint32_t kMaxColumns>
+struct TerminalCache_t
+{
+  char buffer[kMaxRows * kMaxColumns] = { 0 };
+};
+
 class GraphicalTerminal
 {
  public:
-  static constexpr size_t kCharacterHeight = 8;
-  static constexpr size_t kCharacterWidth  = 8;
-  static constexpr size_t kMaxColumns      = Ssd1306::kWidth / kCharacterWidth;
-  static constexpr size_t kMaxRows = Ssd1306::kHeight / kCharacterHeight;
+  static constexpr uint8_t kCharacterHeight = 8;
+  static constexpr uint8_t kCharacterWidth  = 8;
 
-  explicit GraphicalTerminal(Graphics * graphics): graphics_(graphics) {}
+  template <uint32_t kMaxRows, uint32_t kMaxColumns>
+  explicit GraphicalTerminal(Graphics * graphics,
+                             TerminalCache_t<kMaxRows, kMaxColumns> * cache)
+      : max_rows_(kMaxRows),
+        max_columns_(kMaxColumns),
+        graphics_(graphics),
+        cache_(cache->buffer)
+  {
+  }
 
   void Initialize()
   {
@@ -33,10 +45,13 @@ class GraphicalTerminal
 
     va_list args;
     va_start(args, format);
-    size_t characters = vsnprintf(buffer, sizeof(buffer), format, args);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+    uint32_t characters = vsnprintf(buffer, sizeof(buffer), format, args);
+#pragma GCC diagnostic pop
     va_end(args);
 
-    size_t pos = 0;
+    uint32_t pos = 0;
     for (; pos < characters; pos++)
     {
       char character = buffer[pos];
@@ -47,9 +62,9 @@ class GraphicalTerminal
           row_++;
           break;
         default:
-          terminal_[(row_ + row_start_) % kMaxRows][column_] = character;
+          GetChar((row_ + row_start_) % max_rows_, column_) = character;
           column_++;
-          if (column_ >= kMaxColumns)
+          if (column_ >= max_columns_)
           {
             column_ = 0;
             row_++;
@@ -58,62 +73,76 @@ class GraphicalTerminal
       }
     }
     Update();
-    if (row_ >= kMaxRows)
+    if (row_ >= max_rows_)
     {
-      row_start_ = (row_start_ + 1) % kMaxRows;
-      row_       = kMaxRows - 1;
-      ClearRow((row_ + row_start_) % kMaxRows);
+      row_start_ = (row_start_ + 1) % max_rows_;
+      row_       = max_rows_ - 1;
+      ClearRow((row_ + row_start_) % max_rows_);
     }
     return pos;
   }
-  GraphicalTerminal & SetCursor(size_t x, size_t y)
+
+  GraphicalTerminal & SetCursor(uint32_t x, uint32_t y)
   {
     column_    = x;
     row_       = y;
     row_start_ = 0;
     return *this;
   }
+
   GraphicalTerminal & MoveToLineStart()
   {
     column_ = 0;
     return *this;
   }
+
   GraphicalTerminal & Update()
   {
-    for (size_t i = 0; i < kMaxRows; i++)
+    graphics_->Clear();
+    for (int32_t i = 0; i < static_cast<int32_t>(max_rows_); i++)
     {
-      for (size_t j = 0; j < kMaxColumns; j++)
+      for (int32_t j = 0; j < static_cast<int32_t>(max_columns_); j++)
       {
-        size_t x = j * kCharacterWidth;
-        size_t y = i * kCharacterHeight;
-        graphics_->DrawCharacter(x, y,
-                                terminal_[(i + row_start_) % kMaxRows][j]);
+        int32_t x = j * kCharacterWidth;
+        int32_t y = i * kCharacterHeight;
+        graphics_->DrawCharacter(
+            x, y, GetChar(((i + row_start_) % max_rows_), j));
       }
     }
     graphics_->Update();
     return *this;
   }
-  void ClearRow(size_t row_location)
+
+  GraphicalTerminal & ClearRow(uint32_t row_location)
   {
-    for (size_t i = 0; i < kMaxColumns; i++)
+    for (uint32_t i = 0; i < max_columns_; i++)
     {
-      terminal_[row_location][i] = ' ';
+      GetChar(row_location, i) = ' ';
     }
+    return *this;
   }
-  void Clear()
+
+  GraphicalTerminal & Clear()
   {
     graphics_->Clear();
-    memset(terminal_, '\0', sizeof(terminal_));
+    memset(cache_, '\0', max_rows_ * max_columns_);
     SetCursor(0, 0);
     graphics_->Update();
+    return *this;
   }
 
  private:
-  Graphics * graphics_;
+  char & GetChar(uint32_t row, uint32_t column)
+  {
+    return cache_[(row * max_columns_) + column];
+  }
 
-  size_t row_                           = 0;
-  size_t column_                        = 0;
-  size_t row_start_                     = 0;
-  char terminal_[kMaxRows][kMaxColumns] = { 0 };
+  uint32_t row_       = 0;
+  uint32_t column_    = 0;
+  uint32_t row_start_ = 0;
+  uint32_t max_rows_;
+  uint32_t max_columns_;
+  Graphics * graphics_;
+  char * cache_;
 };
 }  // namespace sjsu

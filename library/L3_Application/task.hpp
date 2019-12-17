@@ -62,7 +62,7 @@ class Task : public TaskInterface
   {
     vTaskSuspend(handle_);
   }
-  /// Resumes the task if it has been suspened.
+  /// Resumes the task if it has been suspended.
   void Resume() override
   {
     vTaskResume(handle_);

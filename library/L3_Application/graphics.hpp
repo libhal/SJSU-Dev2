@@ -25,17 +25,55 @@ class Graphics
     height_ = display.GetHeight();
     color_  = display.AvailableColors();
   }
+
+  /// Initialize display hardware.
+  void Initialize()
+  {
+    display_.Initialize();
+  }
+
+  /// Update the display.
+  void Update()
+  {
+    display_.Update();
+  }
+
+  /// Enable the display.
+  void Enable()
+  {
+    display_.Enable();
+  }
+
+  /// Disable the display.
+  void Disable()
+  {
+    display_.Disable();
+  }
+
+  /// Clears the display.
+  void Clear()
+  {
+    display_.Clear();
+  }
+
   /// Set the current color of drawn elements.
   void SetColor(PixelDisplay::Color_t color)
   {
     color_ = color;
   }
-  /// Initialize display hardware.
-  void Initialize()
+
+  /// Get the current color of drawn elements.
+  PixelDisplay::Color_t GetColor()
   {
-    display_.Initialize();
-    display_.Enable();
+    return color_;
   }
+
+  /// Get available colors of the display.
+  PixelDisplay::Color_t GetAvailableColor()
+  {
+    return display_.AvailableColors();
+  }
+
   /// Draw a horizontal line
   ///
   /// @param x - starting x coordinate
@@ -43,12 +81,14 @@ class Graphics
   /// @param line_width - length of the line going to the right
   void DrawHorizontalLine(int32_t x, int32_t y, int32_t line_width)
   {
-    line_width = std::clamp(x + line_width, int32_t(0), int32_t(width_ - x));
+    line_width = std::clamp(
+        x + line_width, int32_t{ 0 }, static_cast<int32_t>(width_ - x));
     for (int32_t column = x; column < line_width; column++)
     {
       DrawPixel(column, y);
     }
   }
+
   /// Draw a vertical line
   ///
   /// @param x - start x coordinate
@@ -56,12 +96,14 @@ class Graphics
   /// @param line_height - length of the line going down.
   void DrawVerticalLine(int32_t x, int32_t y, int32_t line_height)
   {
-    line_height = std::clamp(y + line_height, int32_t(0), int32_t(height_ - y));
+    line_height = std::clamp(
+        y + line_height, int32_t{ 0 }, static_cast<int32_t>(height_ - y));
     for (int32_t row = y; row < line_height; row++)
     {
       DrawPixel(x, row);
     }
   }
+
   /// Draw a line.
   ///
   /// @param x0 - start x position
@@ -87,6 +129,7 @@ class Graphics
                 static_cast<uint32_t>(std::lround(y)));
     }
   }
+
   /// Draw a circle on the display.
   ///
   /// @param x0 - center x position of the circle.
@@ -124,6 +167,7 @@ class Graphics
       }
     }
   }
+
   /// Draw a character on the screen
   ///
   /// @param x - x coordinate
@@ -153,6 +197,7 @@ class Graphics
     // ----------------------
     DrawVerticalLine(x + width, y, height);
   }
+
   /// Draw a character on the display.
   ///
   /// @param x0 - X coordinate to start printing to the screen
@@ -160,7 +205,7 @@ class Graphics
   /// @param letter - The character to write to the screen
   void DrawCharacter(int32_t x0, int32_t y0, char letter)
   {
-    int32_t letter_position = static_cast<int32_t>(letter);
+    int32_t letter_position = int32_t{ letter };
 
     PixelDisplay::Color_t foreground = color_;
 
@@ -170,13 +215,13 @@ class Graphics
       {
         if (font8x8_basic[letter_position][y] & (1 << x))
         {
-          color_ = foreground;
+          DrawPixel(x0 + x, y0 + y);
         }
-        DrawPixel(x0 + x, y0 + y);
       }
     }
     color_ = foreground;
   }
+
   /// Put a pixel on a specific position.
   ///
   /// @param x - x coordinate to place the coordinate.
@@ -188,16 +233,6 @@ class Graphics
     {
       display_.DrawPixel(x, y, color_);
     }
-  }
-  /// Update the display.
-  void Update()
-  {
-    display_.Update();
-  }
-  /// Clears the display.
-  void Clear()
-  {
-    display_.Clear();
   }
 
  private:

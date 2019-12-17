@@ -92,7 +92,7 @@ constexpr float RoundFloat(float value)
 /// @param value input float value.
 /// @return true if value is within our threshold of a decimal number, false
 ///         otherwise.
-constexpr bool IsDecmial(float value)
+constexpr bool IsDecimal(float value)
 {
   bool result         = false;
   float rounded_value = RoundFloat(value);
@@ -142,7 +142,7 @@ constexpr static UartCalibration_t GenerateUartCalibration(
           uart_calibration.divide_latch = 0;
           state                         = States::kDone;
         }
-        else if (IsDecmial(divide_estimate))
+        else if (IsDecimal(divide_estimate))
         {
           uart_calibration.divide_latch =
               static_cast<uint32_t>(divide_estimate);
