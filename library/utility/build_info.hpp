@@ -22,10 +22,11 @@ enum class Target
 /// for.
 enum class Platform
 {
-  host,     // NOLINT
-  lpc17xx,  // NOLINT
-  lpc40xx,  // NOLINT
-  linux,    // NOLINT
+  host,       // NOLINT
+  lpc17xx,    // NOLINT
+  lpc40xx,    // NOLINT
+  linux,      // NOLINT
+  stm32f10x,  // NOLINT
 };
 
 constexpr const Target kTarget     = Target::TARGET;
@@ -59,6 +60,7 @@ constexpr const char * Stringify(Platform platform)
     case Platform::lpc17xx: result = "lpc17xx"; break;
     case Platform::lpc40xx: result = "lpc40xx"; break;
     case Platform::linux: result = "linux"; break;
+    case Platform::stm32f10x: result = "stm32f10x"; break;
     default: break;
   }
   return result;
