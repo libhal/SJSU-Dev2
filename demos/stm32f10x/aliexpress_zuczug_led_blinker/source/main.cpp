@@ -7,12 +7,14 @@
 int main()
 {
   LOG_INFO("Starting Bluepill LED Blinker Application...");
-  ///////////// Setup LED GPIO /////////////
 
+  ///////////// Setup LED GPIO /////////////
   // Power I/O Port C Peripheral
-  sjsu::stm32f10x::RCC->APB2ENR |= (1 << 4);
+  sjsu::stm32f10x::RCC->APB2ENR |= (1 << 2);
   // Set as output with 10Mhz clock source
-  sjsu::stm32f10x::GPIOC->CRH |= (1 << 20);
+  sjsu::stm32f10x::GPIOA->CRL |= (1 << 4);
+  sjsu::stm32f10x::GPIOA->CRL &= ~(1 << 6);
+  sjsu::stm32f10x::GPIOA->CRL &= ~(1 << 7);
 
   int counter = 0;
   while (true)
@@ -22,12 +24,12 @@ int main()
     printf("Hello World %d\n", counter++);
 
     // Reset Port C Pin 13
-    sjsu::stm32f10x::GPIOC->BSRR = (1 << 29);
-    sjsu::Delay(250ms);
+    sjsu::stm32f10x::GPIOA->BSRR = (1 << 17);
+    sjsu::Delay(100ms);
 
     // Set Port C Pin 13
-    sjsu::stm32f10x::GPIOC->BSRR = (1 << 13);
-    sjsu::Delay(250ms);
+    sjsu::stm32f10x::GPIOA->BSRR = (1 << 1);
+    sjsu::Delay(100ms);
   }
   return 0;
 }
