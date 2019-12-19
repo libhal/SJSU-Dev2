@@ -1,6 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="5,56,172,83"/>
+<area shape="rect" id="node1" href="$df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="5,81,172,108"/>
 <area shape="rect" id="node2" href="$d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html" title="sjsu::lpc17xx::SystemController" alt="" coords="230,5,453,32"/>
 <area shape="rect" id="node3" href="$d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="230,56,453,83"/>
 <area shape="rect" id="node4" href="$db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html" title="sjsu::stm32f10x::SystemController" alt="" coords="220,107,463,133"/>
+<area shape="rect" id="node5" href="$d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html" title="sjsu::stm32f4xx::SystemController" alt="" coords="221,157,462,184"/>
 </map>
