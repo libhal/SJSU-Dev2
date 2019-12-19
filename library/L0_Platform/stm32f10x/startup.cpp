@@ -7,6 +7,7 @@
 
 #include "L0_Platform/ram.hpp"
 #include "L0_Platform/startup.hpp"
+#include "L0_Platform/stm32f10x/stm32f10x.h"
 #include "L1_Peripheral/cortex/dwt_counter.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/interrupt.hpp"
@@ -92,58 +93,91 @@ const sjsu::InterruptVectorAddress kInterruptVectorTable[] = {
   // Core Level - CM4
   &StackTop,                           // 0, The initial stack pointer
   ArmResetHandler,                     // 1, The reset handler
-  interrupt_controller.LookupHandler,  // 2, The NMI handler
+  interrupt_controller.LookupHandler,  // 1, The NMI  handler
   ArmHardFaultHandler,                 // 3, The hard fault handler
-  interrupt_controller.LookupHandler,  // 4, The MPU fault handler
-  interrupt_controller.LookupHandler,  // 5, The bus fault handler
-  interrupt_controller.LookupHandler,  // 6, The usage fault handler
+  interrupt_controller.LookupHandler,  // 2, The MPU fault  handler
+  interrupt_controller.LookupHandler,  // 3, The bus fault  handler
+  interrupt_controller.LookupHandler,  // 4, The usage fault  handler
   nullptr,                             // 7, Reserved
   nullptr,                             // 8, Reserved
   nullptr,                             // 9, Reserved
   nullptr,                             // 10, Reserved
-  interrupt_controller.LookupHandler,  // 11, SVCall handler
-  interrupt_controller.LookupHandler,  // 12, Debug monitor handler
+  interrupt_controller.LookupHandler,  // 5, SVCall  handler
+  interrupt_controller.LookupHandler,  // 6, Debug monitor  handler
   nullptr,                             // 13, Reserved
-  interrupt_controller.LookupHandler,  // 14, FreeRTOS PendSV Handler
-  interrupt_controller.LookupHandler,  // 15, The SysTick handler
+  interrupt_controller.LookupHandler,  // 7, FreeRTOS PendSV  Handler
+  interrupt_controller.LookupHandler,  // 8, The SysTick  handler
   // Chip Level - stm32f10x
-  interrupt_controller.LookupHandler,  // 16, 0x40 - WDT
-  interrupt_controller.LookupHandler,  // 17, 0x44 - TIMER0
-  interrupt_controller.LookupHandler,  // 18, 0x48 - TIMER1
-  interrupt_controller.LookupHandler,  // 19, 0x4c - TIMER2
-  interrupt_controller.LookupHandler,  // 20, 0x50 - TIMER3
-  interrupt_controller.LookupHandler,  // 21, 0x54 - UART0
-  interrupt_controller.LookupHandler,  // 22, 0x58 - UART1
-  interrupt_controller.LookupHandler,  // 23, 0x5c - UART2
-  interrupt_controller.LookupHandler,  // 24, 0x60 - UART3
-  interrupt_controller.LookupHandler,  // 25, 0x64 - PWM1
-  interrupt_controller.LookupHandler,  // 26, 0x68 - I2C0
-  interrupt_controller.LookupHandler,  // 27, 0x6c - I2C1
-  interrupt_controller.LookupHandler,  // 28, 0x70 - I2C2
-  interrupt_controller.LookupHandler,  // 29, 0x74 - SPI0
-  interrupt_controller.LookupHandler,  // 30, 0x78 - SSP0
-  interrupt_controller.LookupHandler,  // 31, 0x7c - SSP1
-  interrupt_controller.LookupHandler,  // 32, 0x80 - PLL0 (Main PLL)
-  interrupt_controller.LookupHandler,  // 33, 0x84 - RTC
-  interrupt_controller.LookupHandler,  // 34, 0x88 - EINT0
-  interrupt_controller.LookupHandler,  // 35, 0x8c - EINT1
-  interrupt_controller.LookupHandler,  // 36, 0x90 - EINT2
-  interrupt_controller.LookupHandler,  // 37, 0x94 - EINT3
-  interrupt_controller.LookupHandler,  // 38, 0x98 - ADC
-  interrupt_controller.LookupHandler,  // 39, 0x9c - BOD
-  interrupt_controller.LookupHandler,  // 40, 0xA0 - USB
-  interrupt_controller.LookupHandler,  // 41, 0xa4 - CAN
-  interrupt_controller.LookupHandler,  // 42, 0xa8 - GP DMA
-  interrupt_controller.LookupHandler,  // 43, 0xac - I2S
-  interrupt_controller.LookupHandler,  // 44, 0xb0 - Ethernet
-  interrupt_controller.LookupHandler,  // 45, 0xb4 - RIT
-  interrupt_controller.LookupHandler,  // 46, 0xb8 - Motor Control PWM
-  interrupt_controller.LookupHandler,  // 47, 0xbc - Quadrature Encoder
-  interrupt_controller.LookupHandler,  // 48, 0xc0 - PLL1 (USB PLL)
-  interrupt_controller.LookupHandler,  // 49, 0xc4 - USB Activity interrupt to
-                                       // wakeup
-  interrupt_controller.LookupHandler,  // 50, 0xc8 - CAN Activity interrupt to
-                                       // wakeup
+  interrupt_controller.LookupHandler,  // 0, Window WatchDog
+  interrupt_controller.LookupHandler,  // 1, PVD through EXTI Line detection
+  interrupt_controller.LookupHandler,  // 2, Tamper
+  interrupt_controller.LookupHandler,  // 3, RTC
+  interrupt_controller.LookupHandler,  // 4, FLASH
+  interrupt_controller.LookupHandler,  // 5, RCC
+  interrupt_controller.LookupHandler,  // 6, EXTI Line0
+  interrupt_controller.LookupHandler,  // 7, EXTI Line1
+  interrupt_controller.LookupHandler,  // 8, EXTI Line2
+  interrupt_controller.LookupHandler,  // 9, EXTI Line3
+  interrupt_controller.LookupHandler,  // 10, EXTI Line4
+  interrupt_controller.LookupHandler,  // 11, DMA1 Channel 1
+  interrupt_controller.LookupHandler,  // 12, DMA1 Channel 2
+  interrupt_controller.LookupHandler,  // 13, DMA1 Channel 3
+  interrupt_controller.LookupHandler,  // 14, DMA1 Channel 4
+  interrupt_controller.LookupHandler,  // 15, DMA1 Channel 5
+  interrupt_controller.LookupHandler,  // 16, DMA1 Channel 6
+  interrupt_controller.LookupHandler,  // 17, DMA1 Channel 7
+  // All of the exceptions beyond this point are different depending on the
+  // variant of stm32f10x you are using
+  interrupt_controller.LookupHandler,  // 18
+  interrupt_controller.LookupHandler,  // 19
+  interrupt_controller.LookupHandler,  // 20
+  interrupt_controller.LookupHandler,  // 21
+  interrupt_controller.LookupHandler,  // 22
+  interrupt_controller.LookupHandler,  // 23
+  interrupt_controller.LookupHandler,  // 24
+  interrupt_controller.LookupHandler,  // 25
+  interrupt_controller.LookupHandler,  // 26
+  interrupt_controller.LookupHandler,  // 27
+  interrupt_controller.LookupHandler,  // 28
+  interrupt_controller.LookupHandler,  // 29
+  interrupt_controller.LookupHandler,  // 30
+  interrupt_controller.LookupHandler,  // 31
+  interrupt_controller.LookupHandler,  // 32
+  interrupt_controller.LookupHandler,  // 33
+  interrupt_controller.LookupHandler,  // 34
+  interrupt_controller.LookupHandler,  // 35
+  interrupt_controller.LookupHandler,  // 36
+  interrupt_controller.LookupHandler,  // 37
+  interrupt_controller.LookupHandler,  // 38
+  interrupt_controller.LookupHandler,  // 39
+  interrupt_controller.LookupHandler,  // 40
+  interrupt_controller.LookupHandler,  // 41
+  interrupt_controller.LookupHandler,  // 42
+  interrupt_controller.LookupHandler,  // 43
+  interrupt_controller.LookupHandler,  // 44
+  interrupt_controller.LookupHandler,  // 45
+  interrupt_controller.LookupHandler,  // 46
+  interrupt_controller.LookupHandler,  // 47
+  interrupt_controller.LookupHandler,  // 48
+  interrupt_controller.LookupHandler,  // 49
+  interrupt_controller.LookupHandler,  // 50
+  interrupt_controller.LookupHandler,  // 51
+  interrupt_controller.LookupHandler,  // 52
+  interrupt_controller.LookupHandler,  // 53
+  interrupt_controller.LookupHandler,  // 54
+  interrupt_controller.LookupHandler,  // 55
+  interrupt_controller.LookupHandler,  // 56
+  interrupt_controller.LookupHandler,  // 57
+  interrupt_controller.LookupHandler,  // 58
+  interrupt_controller.LookupHandler,  // 59
+  interrupt_controller.LookupHandler,  // 60
+  interrupt_controller.LookupHandler,  // 61
+  interrupt_controller.LookupHandler,  // 62
+  interrupt_controller.LookupHandler,  // 63
+  interrupt_controller.LookupHandler,  // 64
+  interrupt_controller.LookupHandler,  // 65
+  interrupt_controller.LookupHandler,  // 66
+  interrupt_controller.LookupHandler,  // 67
 };
 
 namespace sjsu
