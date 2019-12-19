@@ -1,39 +1,8 @@
 MEMORY
 {
-    /* Flash memory region for the program, offset by the bootloader section */
-    FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 64k
-
-    /* 32K (Heap starts here) */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 20k
-
-    /* 32K (Globals at bottom, stack on top), heap continues from here */
-    /* SRAM (rwx) : ORIGIN = 0x2007c000, LENGTH = 32K */
-
-    /* Heap starts at SRAM because if heap starts from higher memory, then
-     * malloc tracking routines get confused when sbrk() system function
-     * returns higher heap memory first, and then lower heap memory.
-     * So we start heap from SRAM, and then move it up to SRAM if SRAM
-     * portion runs out completely.
-     */
-
-     /* Symbol Table */
-     /*FLASH_SYMBOL_TABLE : ORIGIN = 0x1000, LENGTH = 32K*/
+  FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 64k
+  SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 20k
 }
-
-  /* Define a symbol for the top of each memory region */
-  __base_MFlash512 = 0x0  ; /* MFlash512 */
-  __base_Flash = 0x0 ; /* Flash */
-  __top_MFlash512 = 0x0 + 0x80000 ; /* 512K bytes */
-  __top_Flash = 0x0 + 0x80000 ; /* 512K bytes */
-  __base_RamLoc64 = 0x10000000  ; /* RamLoc64 */
-  __base_RAM = 0x10000000 ; /* RAM */
-  __top_RamLoc64 = 0x10000000 + 32K ; /* 64K bytes */
-  __top_RAM = 0x10000000 + 32K ; /* 64K bytes */
-  __base_RamPeriph32 = 0x2007c000  ; /* RamPeriph32 */
-  __base_RAM2 = 0x2007c000 ; /* RAM2 */
-  __top_RamPeriph32 = 0x2007c000 + 0x8000 ; /* 32K bytes */
-  __top_RAM2 = 0x2007c000 + 0x8000 ; /* 32K bytes */
-  __user_heap_base = __base_RAM2 ; /* SJSU-Dev2: RAM2 is solely for heap */
 
 /* Program entry point */
 ENTRY(ArmResetHandler)
@@ -149,18 +118,9 @@ SECTIONS
     PROVIDE(end = .);
   } > SRAM
 
-  /*
-  .symbol_table : ALIGN(4)
-    {
-        __symbol_table_start = .;
-        KEEP(*(.symbol_table))
-        __symbol_table_end = .;
-    } > FLASH_SYMBOL_TABLE
-  */
-
   /* Provide a symbol of the heap pointer to C/C++ code */
-  PROVIDE(heap = DEFINED(__user_heap_base) ? __user_heap_base : .);
-  PROVIDE(heap_end = __top_RAM2);
+  PROVIDE(heap = .);
+  PROVIDE(heap_end = ORIGIN(SRAM) + LENGTH(SRAM) - 32);
 
   /* Provide the start of the initial stack pointer
    * Debugger and ISP may use 32-bytes of space?

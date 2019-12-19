@@ -27,6 +27,7 @@ enum class Platform
   lpc40xx,    // NOLINT
   linux,      // NOLINT
   stm32f10x,  // NOLINT
+  stm32f4xx,  // NOLINT
 };
 
 constexpr const Target kTarget     = Target::TARGET;
@@ -61,6 +62,7 @@ constexpr const char * Stringify(Platform platform)
     case Platform::lpc40xx: result = "lpc40xx"; break;
     case Platform::linux: result = "linux"; break;
     case Platform::stm32f10x: result = "stm32f10x"; break;
+    case Platform::stm32f4xx: result = "stm32f4xx"; break;
     default: break;
   }
   return result;
