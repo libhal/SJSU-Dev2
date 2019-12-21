@@ -13,7 +13,7 @@ int main()
 
   sjsu::stm32f4xx::Gpio button('A', 15);
   button.SetAsInput();
-  button.GetPin().SetPull(sjsu::Pin::Resistor::kPullUp);
+  button.GetPin().PullUp();
 
   while (true)
   {

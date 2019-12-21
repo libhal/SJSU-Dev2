@@ -11,10 +11,10 @@ int main()
   sjsu::lpc40xx::Gpio pin0_30(0, 30);
   sjsu::lpc40xx::Gpio pin0_29(0, 29);
 
-  pin0_15.GetPin().SetPull(sjsu::Pin::Resistor::kPullUp);
-  pin2_9.GetPin().SetPull(sjsu::Pin::Resistor::kPullUp);
-  pin0_30.GetPin().SetPull(sjsu::Pin::Resistor::kPullUp);
-  pin0_29.GetPin().SetPull(sjsu::Pin::Resistor::kPullUp);
+  pin0_15.GetPin().PullUp();
+  pin2_9.GetPin().PullUp();
+  pin0_30.GetPin().PullUp();
+  pin0_29.GetPin().PullUp();
 
   pin0_15.AttachInterrupt([]() { LOG_INFO("Pin0_15_ISR"); },
                           sjsu::Gpio::Edge::kEdgeBoth);

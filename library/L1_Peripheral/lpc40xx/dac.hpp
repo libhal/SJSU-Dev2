@@ -61,7 +61,7 @@ class Dac final : public sjsu::Dac
         reinterpret_cast<const sjsu::lpc40xx::Pin &>(dac_pin_);
     lpc40xx_dac_pin.EnableDac();
     dac_pin_.SetAsAnalogMode();
-    dac_pin_.SetPull(Pin::Resistor::kNone);
+    dac_pin_.SetFloating();
     // Disable interrupt and DMA
     dac_register->CTRL = 0;
     // Set Update Rate to 1MHz

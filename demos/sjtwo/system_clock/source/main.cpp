@@ -12,7 +12,7 @@ int main()
   sjsu::lpc40xx::Pin clock_pin(1, 25);
 
   clock_pin.SetPinFunction(0b101);  //  set clock to putput mode
-  clock_pin.SetPull(sjsu::Pin::Resistor::kNone);
+  clock_pin.SetFloating();
   clock_pin.EnableHysteresis(false);
   clock_pin.SetAsActiveLow(false);
   clock_pin.EnableFastMode(false);

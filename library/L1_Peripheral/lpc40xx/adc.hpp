@@ -214,7 +214,7 @@ class Adc final : public sjsu::Adc
         sjsu::lpc40xx::SystemController::Peripherals::kAdc);
 
     channel_.adc_pin.SetPinFunction(channel_.pin_function);
-    channel_.adc_pin.SetPull(sjsu::Pin::Resistor::kNone);
+    channel_.adc_pin.SetFloating();
     channel_.adc_pin.SetAsAnalogMode(true);
 
     const units::frequency::hertz_t kPeripheralFrequency =
