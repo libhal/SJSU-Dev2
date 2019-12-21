@@ -14,21 +14,21 @@ int main()
   // This is discouraged, since this constructor does not perform any compile
   // time checks on the port or pin value
   sjsu::lpc40xx::Pin p0_0(0, 7);
-  p0_0.SetPull(sjsu::lpc40xx::Pin::Resistor::kNone);
+  p0_0.SetFloating();
   LOG_INFO("Disabling both pull up and down resistors for P0.0...");
-  // Prefered option of constructing Pin, since this factory call is
+  // Preferred option of constructing Pin, since this factory call is
   // done in compile time and will perform compile time validation on the port
   // and pin template parameters.
   sjsu::lpc40xx::Pin p1_24 = sjsu::lpc40xx::Pin::CreatePin<1, 24>();
-  p1_24.SetPull(sjsu::lpc40xx::Pin::Resistor::kPullDown);
+  p1_24.PullDown();
   LOG_INFO("Enabling P1.24 pull down resistor...");
 
   sjsu::lpc40xx::Pin p2_0 = sjsu::lpc40xx::Pin::CreatePin<2, 0>();
-  p2_0.SetPull(sjsu::lpc40xx::Pin::Resistor::kPullUp);
+  p2_0.PullUp();
   LOG_INFO("Enabling P2.0 pull up resistor...");
 
   sjsu::lpc40xx::Pin p4_28 = sjsu::lpc40xx::Pin::CreatePin<4, 29>();
-  p4_28.SetPull(sjsu::lpc40xx::Pin::Resistor::kRepeater);
+  p4_28.SetPull(sjsu::Pin::Resistor::kRepeater);
   LOG_INFO("Setting P4.29 to repeater mode...");
 
   LOG_INFO(

@@ -228,7 +228,7 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
 
       {
         // Exercise
-        test[i].pin.SetPull(Pin::Resistor::kNone);
+        test[i].pin.SetFloating();
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedNoPull);
@@ -236,7 +236,7 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
 
       {
         // Exercise
-        test[i].pin.SetPull(Pin::Resistor::kPullUp);
+        test[i].pin.PullUp();
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedPullUp);
@@ -244,7 +244,7 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
 
       {
         // Exercise
-        test[i].pin.SetPull(Pin::Resistor::kPullDown);
+        test[i].pin.PullDown();
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedPullDown);

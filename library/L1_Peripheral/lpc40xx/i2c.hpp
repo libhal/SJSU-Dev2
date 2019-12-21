@@ -318,8 +318,8 @@ class I2c final : public sjsu::I2c
     i2c_.scl_pin.SetPinFunction(i2c_.pin_function_id);
     i2c_.sda_pin.SetAsOpenDrain();
     i2c_.scl_pin.SetAsOpenDrain();
-    i2c_.sda_pin.SetPull(sjsu::Pin::Resistor::kNone);
-    i2c_.scl_pin.SetPull(sjsu::Pin::Resistor::kNone);
+    i2c_.sda_pin.SetFloating();
+    i2c_.scl_pin.SetFloating();
 
     sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
         i2c_.peripheral_power_id);

@@ -301,8 +301,8 @@ class Uart final : public sjsu::Uart
 
     port_.rx.SetPinFunction(port_.rx_function_id);
     port_.tx.SetPinFunction(port_.tx_function_id);
-    port_.rx.SetPull(sjsu::Pin::Resistor::kPullUp);
-    port_.tx.SetPull(sjsu::Pin::Resistor::kPullUp);
+    port_.rx.PullUp();
+    port_.tx.PullUp();
     port_.registers->FCR |= kFIFOEnableAndReset;
 
     return Status::kSuccess;
