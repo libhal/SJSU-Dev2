@@ -144,7 +144,6 @@ extern "C"
 /**
  * @brief Configuration of the Cortex-M4 Processor and Core Peripherals
  */
-#define __CM4_REV 0x0001 /*!< Core revision r0p1                            */
 #define __MPU_PRESENT 1  /*!< STM32F4XX provides an MPU                     */
 #undef __NVIC_PRIO_BITS
 #define __NVIC_PRIO_BITS                               \

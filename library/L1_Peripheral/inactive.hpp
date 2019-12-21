@@ -47,6 +47,7 @@ inline sjsu::Pin & GetInactive<sjsu::Pin>()
   {
    public:
     InactivePin() : sjsu::Pin(0, 0) {}
+    void Initialize() const override {}
     void SetPinFunction(uint8_t) const override {}
     void SetPull(Resistor) const override {}
     void SetAsOpenDrain(bool) const override {}
