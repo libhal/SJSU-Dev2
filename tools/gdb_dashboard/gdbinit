@@ -288,7 +288,10 @@ def format_value(value, compact=None):
     # (TYPE_CODE_RVALUE_REF is not supported by old GDB)
     if value.type.code in (getattr(gdb, 'TYPE_CODE_REF', None),
                            getattr(gdb, 'TYPE_CODE_RVALUE_REF', None)):
-        value = value.referenced_value()
+        try:
+            value = value.referenced_value()
+        except gdb.error as e:
+            return ansi(e, R.style_error)
     # format the value
     out = to_string(value)
     # dereference up to the actual value if requested
@@ -338,6 +341,9 @@ def fetch_breakpoints(watchpoints=False, pending=False):
                 is_enabled = fields[1] == 'y'
                 address_info = address, is_enabled
                 parsed_breakpoints[number][0].append(address_info)
+            else:
+                # watchpoints
+                parsed_breakpoints[number] = [], False
         except ValueError:
             pass
     # fetch breakpoints from the API and complement with address and source
@@ -574,22 +580,24 @@ class Dashboard(gdb.Command):
 
     @staticmethod
     def get_term_size(fd=1):  # defaults to the main terminal
-        if sys.platform == 'win32':
-            try:
+        try:
+            if sys.platform == 'win32':
                 import curses
                 # XXX always neglects the fd parameter
                 height, width = curses.initscr().getmaxyx()
                 curses.endwin()
                 return int(width), int(height)
-            except ImportError:
-                return 80, 24  # hardcoded fallback value
-        else:
-            import termios
-            import fcntl
-            # first 2 shorts (4 byte) of struct winsize
-            raw = fcntl.ioctl(fd, termios.TIOCGWINSZ, ' ' * 4)
-            height, width = struct.unpack('hh', raw)
-            return int(width), int(height)
+            else:
+                import termios
+                import fcntl
+                # first 2 shorts (4 byte) of struct winsize
+                raw = fcntl.ioctl(fd, termios.TIOCGWINSZ, ' ' * 4)
+                height, width = struct.unpack('hh', raw)
+                return int(width), int(height)
+        except (ImportError, OSError):
+            # this happens when no curses library is found on windows or when
+            # the terminal is not properly configured
+            return 80, 24  # hardcoded fallback value
 
     @staticmethod
     def set_custom_prompt(dashboard):
@@ -1210,7 +1218,10 @@ class Source(Dashboard.Module):
                 addresses = breakpoint['addresses']
                 is_root_enabled = addresses[0]['enabled']
                 for address in addresses:
-                    if address['file_line'] == number:
+                    # note, despite the lookup path always use the relative
+                    # (sal.symtab.filename) file name to match source files with
+                    # breakpoints
+                    if address['file_line'] == number and address['file_name'] == sal.symtab.filename:
                         enabled = enabled or (address['enabled'] and is_root_enabled)
             if enabled is None:
                 breakpoint = ' '
@@ -1475,7 +1486,7 @@ class Variables(Dashboard.Module):
 
     def lines(self, term_width, term_height, style_changed):
         return Variables.format_frame(
-            gdb.selected_frame(), self.show_arguments, self.show_locals, self.compact)
+            gdb.selected_frame(), self.show_arguments, self.show_locals, self.compact, self.align)
 
     def attributes(self):
         return {
@@ -1495,11 +1506,16 @@ class Variables(Dashboard.Module):
                 'doc': 'Single-line display flag.',
                 'default': True,
                 'type': bool
+            },
+            'align': {
+                'doc': 'Align variables in column flag (only if not compact).',
+                'default': False,
+                'type': bool
             }
         }
 
     @staticmethod
-    def format_frame(frame, show_arguments, show_locals, compact):
+    def format_frame(frame, show_arguments, show_locals, compact, align):
         out = []
         # fetch frame arguments and locals
         decorator = gdb.FrameDecorator.FrameDecorator(frame)
@@ -1508,7 +1524,7 @@ class Variables(Dashboard.Module):
             def prefix(line):
                 return Stack.format_line('arg', line)
             frame_args = decorator.frame_args()
-            args_lines = Variables.fetch(frame, frame_args, compact)
+            args_lines = Variables.fetch(frame, frame_args, compact, align)
             if args_lines:
                 if compact:
                     args_line = separator.join(args_lines)
@@ -1520,7 +1536,7 @@ class Variables(Dashboard.Module):
             def prefix(line):
                 return Stack.format_line('loc', line)
             frame_locals = decorator.frame_locals()
-            locals_lines = Variables.fetch(frame, frame_locals, compact)
+            locals_lines = Variables.fetch(frame, frame_locals, compact, align)
             if locals_lines:
                 if compact:
                     locals_line = separator.join(locals_lines)
@@ -1531,10 +1547,13 @@ class Variables(Dashboard.Module):
         return out
 
     @staticmethod
-    def fetch(frame, data, compact):
+    def fetch(frame, data, compact, align):
         lines = []
+        name_width = 0
+        if align and not compact:
+            name_width = max(len(str(elem.sym)) for elem in data) if data else 0
         for elem in data or []:
-            name = ansi(elem.sym, R.style_high)
+            name = ansi(elem.sym, R.style_high) + ' ' * (name_width - len(str(elem.sym)))
             equal = ansi('=', R.style_low)
             value = format_value(elem.sym.value(frame), compact)
             lines.append('{} {} {}'.format(name, equal, value))
@@ -1574,7 +1593,7 @@ Optionally list the frame arguments and locals too.'''
             frame_lines = []
             frame_lines.append('[{}] {}'.format(frame_id, info))
             # add frame arguments and locals
-            variables = Variables.format_frame(frame, self.show_arguments, self.show_locals, self.compact)
+            variables = Variables.format_frame(frame, self.show_arguments, self.show_locals, self.compact, self.align)
             frame_lines.extend(variables)
             # add frame
             frames.append(frame_lines)
@@ -1618,6 +1637,11 @@ Optionally list the frame arguments and locals too.'''
             },
             'compact': {
                 'doc': 'Single-line display flag.',
+                'default': False,
+                'type': bool
+            },
+            'align': {
+                'doc': 'Align variables in column flag (only if not compact).',
                 'default': False,
                 'type': bool
             }
@@ -2014,6 +2038,9 @@ class Expressions(Dashboard.Module):
 
     def lines(self, term_width, term_height, style_changed):
         out = []
+        label_width = 0
+        if self.align:
+            label_width = max(len(expression) for expression in self.table) if self.table else 0
         default_radix = Expressions.get_default_radix()
         for expression in self.table:
             label = expression
@@ -2028,9 +2055,9 @@ class Expressions(Dashboard.Module):
             finally:
                 if match:
                     run('set output-radix {}'.format(default_radix))
-            expression = ansi(label, R.style_high)
+            label = ansi(expression, R.style_high) + ' ' * (label_width - len(expression))
             equal = ansi('=', R.style_low)
-            out.append('{} {} {}'.format(expression, equal, value))
+            out.append('{} {} {}'.format(label, equal, value))
         return out
 
     def commands(self):
@@ -2048,6 +2075,15 @@ class Expressions(Dashboard.Module):
             'clear': {
                 'action': self.clear,
                 'doc': 'Clear all the watched expressions.'
+            }
+        }
+
+    def attributes(self):
+        return {
+            'align': {
+                'doc': 'Align variables in column flag.',
+                'default': False,
+                'type': bool
             }
         }
 

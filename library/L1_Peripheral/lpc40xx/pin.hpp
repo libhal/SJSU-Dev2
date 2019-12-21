@@ -81,6 +81,9 @@ class Pin final : public sjsu::Pin
   /// @param pin - pin number for the pin you want to construct.
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
+  /// NOTE: GPIO hardare is enabled and ready by default on reset.
+  void Initialize() const override {}
+
   void SetPinFunction(uint8_t function) const override
   {
     SetPinRegister(function, kFunction);
