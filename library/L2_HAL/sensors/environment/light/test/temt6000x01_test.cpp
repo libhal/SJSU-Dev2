@@ -23,7 +23,6 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
 
   Mock<Adc> mock_adc;
   Fake(Method(mock_adc, GetActiveBits));
-  When(Method(mock_adc, Initialize)).AlwaysReturn(Status::kSuccess);
   When(Method(mock_adc, GetActiveBits)).AlwaysReturn(kAdcActiveBits);
   When(Method(mock_adc, Read)).AlwaysReturn(kAdcTestOutput);
 
@@ -32,10 +31,17 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
 
   SECTION("Initialize")
   {
-    const bool kIsInitialized = light_sensor.Initialize();
+    Status expected_status = Status::kInvalidSettings;
+    When(Method(mock_adc, Initialize)).AlwaysReturn(expected_status);
 
+    CHECK(light_sensor.Initialize() == expected_status);
     Verify(Method(mock_adc, Initialize)).Once();
-    CHECK(kIsInitialized);
+    mock_adc.ClearInvocationHistory();
+
+    expected_status = Status::kSuccess;
+    When(Method(mock_adc, Initialize)).AlwaysReturn(expected_status);
+    CHECK(light_sensor.Initialize() == expected_status);
+    Verify(Method(mock_adc, Initialize)).Once();
   }
 
   SECTION("GetIlluminance")
