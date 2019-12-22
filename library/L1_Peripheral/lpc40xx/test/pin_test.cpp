@@ -51,19 +51,19 @@ TEST_CASE("Testing lpc40xx Pin", "[lpc40xx-pin_configure]")
     constexpr uint32_t kExpectedForRepeater =
         static_cast<uint8_t>(sjsu::Pin::Resistor::kRepeater) << kModePosition;
 
-    test_subject00.SetPull(sjsu::Pin::Resistor::kNone);
-    test_subject25.SetPull(sjsu::Pin::Resistor::kNone);
+    test_subject00.SetFloating();
+    test_subject25.SetFloating();
     CHECK(kExpectedForInactive == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForInactive == (local_iocon.P2_5 & kMask));
 
-    test_subject00.SetPull(sjsu::Pin::Resistor::kPullDown);
-    test_subject25.SetPull(sjsu::Pin::Resistor::kPullDown);
+    test_subject00.PullDown();
+    test_subject25.PullDown();
 
     CHECK(kExpectedForPullDown == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForPullDown == (local_iocon.P2_5 & kMask));
 
-    test_subject00.SetPull(sjsu::Pin::Resistor::kPullUp);
-    test_subject25.SetPull(sjsu::Pin::Resistor::kPullUp);
+    test_subject00.PullUp();
+    test_subject25.PullUp();
 
     CHECK(kExpectedForPullUp == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForPullUp == (local_iocon.P2_5 & kMask));

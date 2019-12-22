@@ -113,6 +113,24 @@ class Pin
   // Utility Methods
   // ==============================
 
+  /// Attach internal pull up resistor to pin
+  void PullUp() const
+  {
+    SetPull(Resistor::kPullUp);
+  }
+
+  /// Attach internal pull down resistor to pin
+  void PullDown() const
+  {
+    SetPull(Resistor::kPullDown);
+  }
+
+  /// Detach internal pull resistor from pin and allow the pin to float
+  void SetFloating() const
+  {
+    SetPull(Resistor::kNone);
+  }
+
   /// Getter method for the pin's port.
   uint8_t GetPort() const
   {
