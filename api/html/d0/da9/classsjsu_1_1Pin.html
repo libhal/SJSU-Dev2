@@ -120,6 +120,7 @@ Inheritance diagram for sjsu::Pin:</div>
 <map name="sjsu_1_1Pin_inherit__map" id="sjsu_1_1Pin_inherit__map">
 <area shape="rect" id="node2" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="5,80,136,107"/>
 <area shape="rect" id="node3" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="160,80,291,107"/>
+<area shape="rect" id="node4" href="../../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html" title="Implementation of a Pin in stm32f4xx. " alt="" coords="315,80,464,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -138,6 +139,8 @@ Public Member Functions</h2></td></tr>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#a1c859e3dbd78a0841a43d0d6b823a902">Pin</a> (uint8_t port, uint8_t pin)</td></tr>
 <tr class="memdesc:a1c859e3dbd78a0841a43d0d6b823a902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set internal port and pin values. <br /></td></tr>
 <tr class="separator:a1c859e3dbd78a0841a43d0d6b823a902"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3934cdcf320d76d7d2b0ee448e1ea53"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3934cdcf320d76d7d2b0ee448e1ea53">Initialize</a> () const =0</td></tr>
+<tr class="separator:af3934cdcf320d76d7d2b0ee448e1ea53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa270c92d27abcc181e1c8f7f5f2a03e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#aa270c92d27abcc181e1c8f7f5f2a03e7">SetPinFunction</a> (uint8_t function) const =0</td></tr>
 <tr class="separator:aa270c92d27abcc181e1c8f7f5f2a03e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af059b120d4e4897e50dd4253fef724ab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af059b120d4e4897e50dd4253fef724ab">SetPull</a> (<a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95">Resistor</a> resistor) const =0</td></tr>
@@ -211,6 +214,32 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af3934cdcf320d76d7d2b0ee448e1ea53"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Pin::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Setup the required hardware to enable usage of the pin. Must be called first before calling any othe methods. </p>
+
+<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a197c03293513c62d1df297c33bd61a54">sjsu::lpc40xx::Pin</a>, <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ad9d406ffd7076e50b311f6243662ad0d">sjsu::lpc17xx::Pin</a>, and <a class="el" href="../../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#acc95fde913330281a677a51b4004aeae">sjsu::stm32f4xx::Pin</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a02715a050637b44259c96d3b857473cc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -240,7 +269,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a3849d96d5d02d71c696df1dce1022ae7">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#abaa5bf87c7ecb6deb2d5cdd3707bc48b">sjsu::lpc17xx::Pin</a>.</p>
+<p>Implemented in <a class="el" href="../../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#ad7641f564f30ca72b9f947a444a53ba0">sjsu::stm32f4xx::Pin</a>, <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a3849d96d5d02d71c696df1dce1022ae7">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#abaa5bf87c7ecb6deb2d5cdd3707bc48b">sjsu::lpc17xx::Pin</a>.</p>
 
 </div>
 </div>
@@ -273,7 +302,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6ea3c9456d597fb32ad7efab1975da83">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a908cc2f89c81eecb1216d1ece4129d18">sjsu::lpc17xx::Pin</a>.</p>
+<p>Implemented in <a class="el" href="../../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#a3a48d4a5505949a1e6a54f22ee53ff5d">sjsu::stm32f4xx::Pin</a>, <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6ea3c9456d597fb32ad7efab1975da83">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a908cc2f89c81eecb1216d1ece4129d18">sjsu::lpc17xx::Pin</a>.</p>
 
 </div>
 </div>
@@ -316,7 +345,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a79c5b2e4558199c4cbb2a41fec0f86e7">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a495b36f5b0d154c819db581db04c6561">sjsu::lpc17xx::Pin</a>.</p>
+<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a79c5b2e4558199c4cbb2a41fec0f86e7">sjsu::lpc40xx::Pin</a>, <a class="el" href="../../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#aac90ed8b9c0435db0eae8a112f64b142">sjsu::stm32f4xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a495b36f5b0d154c819db581db04c6561">sjsu::lpc17xx::Pin</a>.</p>
 
 </div>
 </div>
@@ -349,7 +378,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa83501ab5e87a9a734bc62e4ba88a614">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ae5a0995b82daecbf6eaee43152cb33ac">sjsu::lpc17xx::Pin</a>.</p>
+<p>Implemented in <a class="el" href="../../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#aea902634e0b6837a333e348a2b538a41">sjsu::stm32f4xx::Pin</a>, <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa83501ab5e87a9a734bc62e4ba88a614">sjsu::lpc40xx::Pin</a>, and <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ae5a0995b82daecbf6eaee43152cb33ac">sjsu::lpc17xx::Pin</a>.</p>
 
 </div>
 </div>

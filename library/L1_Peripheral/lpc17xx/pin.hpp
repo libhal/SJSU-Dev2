@@ -58,6 +58,9 @@ class Pin final : public sjsu::Pin
   {
   }
 
+  /// NOTE: GPIO hardare is enabled and ready by default on reset.
+  void Initialize() const override {}
+
   void SetPinFunction(uint8_t function) const override
   {
     uint32_t pin_reg_select = PinRegisterLookup();

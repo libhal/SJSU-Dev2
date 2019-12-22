@@ -41,6 +41,11 @@ class Gpio
   // ==============================
 
   /// Set pin as an output or an input
+  ///
+  /// NOTE: this method acts is the GPIO initialization, and must be called
+  ///       first before calling any other method
+  ///
+  /// @param direction - which direction to set the pin to.
   virtual void SetDirection(Direction direction) const = 0;
   /// Set the pin state as HIGH voltage or LOW voltage
   virtual void Set(State output) const = 0;

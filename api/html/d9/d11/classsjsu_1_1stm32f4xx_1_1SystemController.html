@@ -103,10 +103,12 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../dc/d04/classsjsu_1_1stm32f4xx_1_1SystemController-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::stm32f4xx::SystemController Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
+<div class="title">sjsu::stm32f4xx::SystemController Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -128,6 +130,11 @@ Collaboration diagram for sjsu::stm32f4xx::SystemController:</div>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d68/classsjsu_1_1stm32f4xx_1_1SystemController_1_1Peripherals.html">Peripherals</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad5c2bf3bdee4645188b212eb60edbbd5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#ad5c2bf3bdee4645188b212eb60edbbd5">SetSystemClockFrequency</a> (units::frequency::megahertz_t) const override</td></tr>
@@ -140,19 +147,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:a10a774925c4292d05f548e4fd5192f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08acddfb2e5f0f03550f9d6f1d89ad4a"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a08acddfb2e5f0f03550f9d6f1d89ad4a">GetSystemFrequency</a> () const override</td></tr>
 <tr class="separator:a08acddfb2e5f0f03550f9d6f1d89ad4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c1bf6e9229c260c8ccebf7a8db1b0cd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a6c1bf6e9229c260c8ccebf7a8db1b0cd">IsPeripheralPoweredUp</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;) const override</td></tr>
-<tr class="separator:a6c1bf6e9229c260c8ccebf7a8db1b0cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f1208c2639f07bc379c4495d8b7daad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f1208c2639f07bc379c4495d8b7daad"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a3f1208c2639f07bc379c4495d8b7daad">PowerUpPeripheral</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;) const override</td></tr>
-<tr class="memdesc:a3f1208c2639f07bc379c4495d8b7daad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powers up the supplied peripheral. <br /></td></tr>
-<tr class="separator:a3f1208c2639f07bc379c4495d8b7daad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bfddcda05db7a26997132c2854e06f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0bfddcda05db7a26997132c2854e06f0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a0bfddcda05db7a26997132c2854e06f0">PowerDownPeripheral</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;) const override</td></tr>
-<tr class="memdesc:a0bfddcda05db7a26997132c2854e06f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powers down the supplied peripheral. <br /></td></tr>
-<tr class="separator:a0bfddcda05db7a26997132c2854e06f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33dcb21a736de5d4f0e402fba27a1df5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33dcb21a736de5d4f0e402fba27a1df5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a33dcb21a736de5d4f0e402fba27a1df5">IsPeripheralPoweredUp</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;id) const override</td></tr>
+<tr class="memdesc:a33dcb21a736de5d4f0e402fba27a1df5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks hardware and determines if the peripheral is powered up. <br /></td></tr>
+<tr class="separator:a33dcb21a736de5d4f0e402fba27a1df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1362ec2b8709476be44401e2c454e9eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1362ec2b8709476be44401e2c454e9eb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a1362ec2b8709476be44401e2c454e9eb">PowerUpPeripheral</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;id) const override</td></tr>
+<tr class="memdesc:a1362ec2b8709476be44401e2c454e9eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powers up the supplied peripheral. <br /></td></tr>
+<tr class="separator:a1362ec2b8709476be44401e2c454e9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70db5250b9cb0f6318f42ff6c46e7d85"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70db5250b9cb0f6318f42ff6c46e7d85"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a70db5250b9cb0f6318f42ff6c46e7d85">PowerDownPeripheral</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;id) const override</td></tr>
+<tr class="memdesc:a70db5250b9cb0f6318f42ff6c46e7d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powers down the supplied peripheral. <br /></td></tr>
+<tr class="separator:a70db5250b9cb0f6318f42ff6c46e7d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1SystemController"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1SystemController')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a></td></tr>
 <tr class="memitem:a8448b6d38754e80b7fb9fd38fa11b477 inherit pub_methods_classsjsu_1_1SystemController"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a8448b6d38754e80b7fb9fd38fa11b477">GetPeripheralFrequency</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const </td></tr>
 <tr class="separator:a8448b6d38754e80b7fb9fd38fa11b477 inherit pub_methods_classsjsu_1_1SystemController"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a71e9119fdb7b48bfa08ec516dd8b1b5d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71e9119fdb7b48bfa08ec516dd8b1b5d"></a>
+static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a71e9119fdb7b48bfa08ec516dd8b1b5d">kBits</a> = 32</td></tr>
+<tr class="memdesc:a71e9119fdb7b48bfa08ec516dd8b1b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bits between each enable register. <br /></td></tr>
+<tr class="separator:a71e9119fdb7b48bfa08ec516dd8b1b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae794b67ab281d30f238e9d9f278fedb2"><td class="memItemLeft" align="right" valign="top">static volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#ae794b67ab281d30f238e9d9f278fedb2">enable</a> []</td></tr>
+<tr class="separator:ae794b67ab281d30f238e9d9f278fedb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -220,33 +238,6 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
 
 </div>
 </div>
-<a class="anchor" id="a6c1bf6e9229c260c8ccebf7a8db1b0cd"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sjsu::stm32f4xx::SystemController::IsPeripheralPoweredUp </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Check if a peripheral is powered up by checking the power connection register. Should typically only be used for unit testing code and debugging. </p>
-
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a53bbbee7e58753f05cdaeb5132bcd034">sjsu::SystemController</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="ad5c2bf3bdee4645188b212eb60edbbd5"></a>
 <div class="memitem">
 <div class="memproto">
@@ -272,6 +263,28 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
 <dl class="section return"><dt>Returns</dt><dd>the difference between the frequency supplied and the frequency achieved. </dd></dl>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a6b96dcf70b180b4f224cbadb5adef362">sjsu::SystemController</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ae794b67ab281d30f238e9d9f278fedb2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint32_t* sjsu::stm32f4xx::SystemController::enable[]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    &amp;RCC-&gt;AHB1ENR, &amp;RCC-&gt;AHB2ENR, &amp;RCC-&gt;AHB3ENR, &amp;RCC-&gt;APB1ENR, &amp;RCC-&gt;APB2ENR,</div><div class="line">  }</div></div><!-- fragment --><p>List of all of the enable registers in the order corresponding to the their constants in the <a class="el" href="../../de/d68/classsjsu_1_1stm32f4xx_1_1SystemController_1_1Peripherals.html">Peripherals</a> namespace. </p>
 
 </div>
 </div>

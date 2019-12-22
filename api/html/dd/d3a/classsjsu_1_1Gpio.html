@@ -121,6 +121,7 @@ Inheritance diagram for sjsu::Gpio:</div>
 <div class="center"><img src="../../d3/d72/classsjsu_1_1Gpio__inherit__graph.png" border="0" usemap="#sjsu_1_1Gpio_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Gpio_inherit__map" id="sjsu_1_1Gpio_inherit__map">
 <area shape="rect" id="node2" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="5,80,145,107"/>
+<area shape="rect" id="node3" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="169,80,328,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -145,9 +146,7 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a783a6c7de21ed585fbe7269ad3ca0905"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a783a6c7de21ed585fbe7269ad3ca0905"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a783a6c7de21ed585fbe7269ad3ca0905">SetDirection</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">Direction</a> direction) const =0</td></tr>
-<tr class="memdesc:a783a6c7de21ed585fbe7269ad3ca0905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin as an output or an input. <br /></td></tr>
+<tr class="memitem:a783a6c7de21ed585fbe7269ad3ca0905"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a783a6c7de21ed585fbe7269ad3ca0905">SetDirection</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">Direction</a> direction) const =0</td></tr>
 <tr class="separator:a783a6c7de21ed585fbe7269ad3ca0905"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addc9edc1a2f660388af1e2208897e48b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addc9edc1a2f660388af1e2208897e48b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#addc9edc1a2f660388af1e2208897e48b">Set</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f">State</a> output) const =0</td></tr>
@@ -225,7 +224,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb9ed5adab76ec04ac94364f325d3e1e">sjsu::lpc40xx::Gpio</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb9ed5adab76ec04ac94364f325d3e1e">sjsu::lpc40xx::Gpio</a>, and <a class="el" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a9ed0d0b05d6229e20bef39f9e0c0cc3c">sjsu::stm32f4xx::Gpio</a>.</p>
 
 </div>
 </div>
@@ -251,7 +250,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>underlying pin object </dd></dl>
 
-<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a4c71dae52920bbb18e24ab15fbeb8238">sjsu::lpc40xx::Gpio</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a4c71dae52920bbb18e24ab15fbeb8238">sjsu::lpc40xx::Gpio</a>, and <a class="el" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#af9cafdb2a6d84d66560a42460581df63">sjsu::stm32f4xx::Gpio</a>.</p>
 
 </div>
 </div>
@@ -277,7 +276,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the state of the pin, note that this method does not consider whether or not the active level is high or low. Simply returns the state as depicted in memory </dd></dl>
 
-<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab0345f741e89a03b78689da6188a8d49">sjsu::lpc40xx::Gpio</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab0345f741e89a03b78689da6188a8d49">sjsu::lpc40xx::Gpio</a>, and <a class="el" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a0145116a1c69e0a38086ed921a18d129">sjsu::stm32f4xx::Gpio</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a783a6c7de21ed585fbe7269ad3ca0905"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Gpio::SetDirection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a6debc89a7e5406a6aed8ef7f24739e81">Direction</a>&#160;</td>
+          <td class="paramname"><em>direction</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set pin as an output or an input</p>
+<p>NOTE: this method acts is the GPIO initialization, and must be called first before calling any other method</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>- which direction to set the pin to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a0332e4de952be02aa38782051cb8b08d">sjsu::lpc40xx::Gpio</a>, and <a class="el" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#aa4e811c79ba32998283608c1a880cfa9">sjsu::stm32f4xx::Gpio</a>.</p>
 
 </div>
 </div>
@@ -303,7 +336,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </div><div class="memdoc">
 <p>Toggles pin state. If the pin is HIGH, after this call it will be LOW and vise versa. </p>
 
-<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb35937b1d802aeff724c192c64af517">sjsu::lpc40xx::Gpio</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb35937b1d802aeff724c192c64af517">sjsu::lpc40xx::Gpio</a>, and <a class="el" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a0a7d3fad0729e140153500a02ea0ccc2">sjsu::stm32f4xx::Gpio</a>.</p>
 
 </div>
 </div>
