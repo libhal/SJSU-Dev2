@@ -5,11 +5,11 @@
 
 namespace sjsu
 {
-// Used specifically for defining an interrupt vector table of addresses.
+/// Used specifically for defining an interrupt vector table of addresses.
 using InterruptVectorAddress = void (*)(void);
-// Define an alias for an interrupt service routine callable object.
+/// Define an alias for an interrupt service routine callable object.
 using InterruptHandler = std::function<void(void)>;
-// Standard callback that should be executed when interrupts fire.
+/// Standard callback that should be executed when interrupts fire.
 using InterruptCallback = std::function<void(void)>;
 /// An abstract interface for a platforms interrupt controller. This allows a
 /// developer to enable and disable interrupts as well as assign handlers for
