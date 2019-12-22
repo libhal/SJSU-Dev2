@@ -20,15 +20,14 @@ int main()
 
   sjsu::Temt6000x01 light_sensor(
       adc2, kAdcReferenceVoltage, kPullDownResistance);
-
-  SJ2_ASSERT_FATAL(light_sensor.Initialize(),
+  SJ2_ASSERT_FATAL(light_sensor.Initialize() == sjsu::Status::kSuccess,
                    "Failed to initialized light sensor!");
-  adc2.BurstMode(true);
 
-  while (1)
+  while (true)
   {
-    const units::illuminance::lux_t kLux = light_sensor.GetIlluminance();
-    LOG_INFO("%.4f", kLux.to<double>());
+    LOG_INFO("Lux: %.4f, Brightness Percentage: %.2f%%",
+             light_sensor.GetIlluminance().to<double>(),
+             static_cast<double>(light_sensor.GetPercentageBrightness() * 100));
     sjsu::Delay(1s);
   }
 
