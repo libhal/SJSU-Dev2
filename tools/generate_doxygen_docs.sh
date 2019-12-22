@@ -9,9 +9,15 @@ SJBASE=$(cd "$SJBASE/.." ; pwd -P)
 print_divider "Generating API Reference Documentation using Doxygen"
 
 cd "$SJBASE/api/"
-# Store everything from stderr (includes warnings and errors) and store it into
-# the doxygen_stderr.txt file
-doxygen sjsu-dev2-doxygen.conf 2> doxygen_stderr.txt
+
+if [[ "$1" == "--verbose" ]]
+then
+  # Store everything from stderr (includes warnings and errors) and store it
+  # into the doxygen_stderr.txt file
+  doxygen sjsu-dev2-doxygen.conf 2> doxygen_stderr.txt
+else
+  doxygen sjsu-dev2-doxygen.conf 1> /dev/null 2> doxygen_stderr.txt
+fi
 
 print_divider \
     "Verifying that Documentation is not Missing or Contains Mistakes"
