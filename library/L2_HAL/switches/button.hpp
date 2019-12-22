@@ -21,7 +21,7 @@ class Button
   virtual void Initialize()
   {
     button_.SetDirection(sjsu::Gpio::Direction::kInput);
-    button_.GetPin().SetPull(sjsu::Pin::Resistor::kPullDown);
+    button_.GetPin().PullDown();
   }
   /// Call this function continuously to detect if a button has been released.
   /// This method must be called at least twice before it can return true for a

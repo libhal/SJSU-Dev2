@@ -3,7 +3,7 @@
 //   Usage:
 //      Pin P0_0(0, 0);
 //      P0_0.SetAsActiveLow();
-//      P0_0.SetPull(sjsu::Pin::Resistor::pullUp);
+//      P0_0.PullUp();
 #pragma once
 
 #include <cstdio>

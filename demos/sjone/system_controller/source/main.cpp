@@ -41,7 +41,7 @@ int main()
   // configure the CLKOUT pin, P1.27, to output system clock
   sjsu::lpc17xx::Pin clock_pin(1, 27);
   clock_pin.SetPinFunction(0b01);
-  clock_pin.SetPull(sjsu::Pin::Resistor::kNone);
+  clock_pin.SetFloating();
   clock_pin.SetAsOpenDrain(false);
 
   constexpr uint8_t kClockOutEnableBit = 8;
