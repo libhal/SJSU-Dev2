@@ -11,7 +11,7 @@ int main()
   sjsu::lpc40xx::Gpio p1_19(1, 19);
   sjsu::lpc40xx::Gpio p2_03(2, 3);
 
-  p1_19.GetPin().SetPull(sjsu::Pin::Resistor::kPullDown);
+  p1_19.GetPin().PullDown();
   p1_19.SetAsInput();
   LOG_INFO("Configured port 1, pin 19 as input");
 

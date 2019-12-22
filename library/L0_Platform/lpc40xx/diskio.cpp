@@ -27,7 +27,7 @@ extern "C" DSTATUS disk_status([[maybe_unused]] BYTE drive_number)
   DSTATUS result = STA_NODISK;
   sjsu::lpc40xx::Gpio card_detect(1, 9);
   card_detect.SetAsInput();
-  card_detect.GetPin().SetPull(sjsu::lpc40xx::Pin::Resistor::kPullUp);
+  card_detect.GetPin().PullUp();
   // Card detect is active low
   if (!card_detect.Read())
   {
