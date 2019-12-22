@@ -109,12 +109,14 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Temt6000x01 Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../dc/d18/temt6000x01_8hpp_source.html">temt6000x01.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Temt6000x01:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/d16/classsjsu_1_1Temt6000x01__inherit__graph.png" border="0" usemap="#sjsu_1_1Temt6000x01_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Temt6000x01_inherit__map" id="sjsu_1_1Temt6000x01_inherit__map">
-<area shape="rect" id="node2" href="../../d7/d75/classsjsu_1_1LightSensor.html" title="sjsu::LightSensor" alt="" coords="11,5,141,32"/>
+<area shape="rect" id="node2" href="../../d7/d75/classsjsu_1_1LightSensor.html" title="An abstract interface for light sensing device drivers. " alt="" coords="11,5,141,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -122,25 +124,75 @@ Collaboration diagram for sjsu::Temt6000x01:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d4f/classsjsu_1_1Temt6000x01__coll__graph.png" border="0" usemap="#sjsu_1_1Temt6000x01_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1Temt6000x01_coll__map" id="sjsu_1_1Temt6000x01_coll__map">
-<area shape="rect" id="node2" href="../../d7/d75/classsjsu_1_1LightSensor.html" title="sjsu::LightSensor" alt="" coords="11,5,141,32"/>
+<area shape="rect" id="node2" href="../../d7/d75/classsjsu_1_1LightSensor.html" title="An abstract interface for light sensing device drivers. " alt="" coords="11,5,141,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af129a0be2d287ad61972b506eed160bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af129a0be2d287ad61972b506eed160bf"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Temt6000x01</b> (<a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html">Adc</a> &amp;adc, units::voltage::volt_t adc_reference_voltage, units::impedance::ohm_t pull_down_resistance)</td></tr>
-<tr class="separator:af129a0be2d287ad61972b506eed160bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae413a90dbe4f421f7691ddf1a47a8dac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae413a90dbe4f421f7691ddf1a47a8dac"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () const override</td></tr>
-<tr class="separator:ae413a90dbe4f421f7691ddf1a47a8dac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62c4dd5a51a03f80d783a3c7643fe713"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/da6/classsjsu_1_1Temt6000x01.html#a62c4dd5a51a03f80d783a3c7643fe713">Temt6000x01</a> (<a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html">sjsu::Adc</a> &amp;adc, units::voltage::volt_t adc_reference_voltage, units::impedance::ohm_t pull_down_resistance)</td></tr>
+<tr class="separator:a62c4dd5a51a03f80d783a3c7643fe713"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2404fb412dd4ea5067d93a5d3bcda193"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/da6/classsjsu_1_1Temt6000x01.html#a2404fb412dd4ea5067d93a5d3bcda193">Initialize</a> () const override</td></tr>
+<tr class="separator:a2404fb412dd4ea5067d93a5d3bcda193"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b20c55d0750ad1572d4064ffaeff1ac"><td class="memItemLeft" align="right" valign="top">units::illuminance::lux_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/da6/classsjsu_1_1Temt6000x01.html#a4b20c55d0750ad1572d4064ffaeff1ac">GetIlluminance</a> () const override</td></tr>
 <tr class="separator:a4b20c55d0750ad1572d4064ffaeff1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7339094d45d3f40e37571b480ab7f296"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/da6/classsjsu_1_1Temt6000x01.html#a7339094d45d3f40e37571b480ab7f296">GetPercentageBrightness</a> () const override</td></tr>
-<tr class="separator:a7339094d45d3f40e37571b480ab7f296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fa69aa0a5b3fe5ca9463b069339535e"><td class="memItemLeft" align="right" valign="top">units::illuminance::lux_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/da6/classsjsu_1_1Temt6000x01.html#a5fa69aa0a5b3fe5ca9463b069339535e">GetMaxIlluminance</a> () const override</td></tr>
 <tr class="separator:a5fa69aa0a5b3fe5ca9463b069339535e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classsjsu_1_1LightSensor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1LightSensor')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html">sjsu::LightSensor</a></td></tr>
+<tr class="memitem:a4cf3bf0b61480d2a3163f6500618b3f0 inherit pub_methods_classsjsu_1_1LightSensor"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html#a4cf3bf0b61480d2a3163f6500618b3f0">GetPercentageBrightness</a> () const </td></tr>
+<tr class="separator:a4cf3bf0b61480d2a3163f6500618b3f0 inherit pub_methods_classsjsu_1_1LightSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The TEMT6000X01 is an ambient light sensor that provides light readings that can be read using the ADC peripheral. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a62c4dd5a51a03f80d783a3c7643fe713"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::Temt6000x01::Temt6000x01 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html">sjsu::Adc</a> &amp;&#160;</td>
+          <td class="paramname"><em>adc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">units::voltage::volt_t&#160;</td>
+          <td class="paramname"><em>adc_reference_voltage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">units::impedance::ohm_t&#160;</td>
+          <td class="paramname"><em>pull_down_resistance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">adc</td><td>The ADC peripheral used to read the sensor data. </td></tr>
+    <tr><td class="paramname">adc_reference_voltage</td><td>The reference voltage of the ADC. This value will vary based on the chosen MCU. </td></tr>
+    <tr><td class="paramname">pull_down_resistance</td><td>The resistance of the pull down resistor used in the circuit. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a4b20c55d0750ad1572d4064ffaeff1ac"></a>
 <div class="memitem">
@@ -164,7 +216,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () con
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The illuminance in units of lux ranging from 1 - 1'000. </dd></dl>
 
-<p>Implements <a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html">sjsu::LightSensor</a>.</p>
+<p>Implements <a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html#aa93c64e9a8016b15d1d61f9d4fea6f64">sjsu::LightSensor</a>.</p>
 
 </div>
 </div>
@@ -190,11 +242,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () con
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The maximum illuminance that can be handled by the sensor. The device has an illumination range of 1 - 1000 lux. </dd></dl>
 
-<p>Implements <a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html">sjsu::LightSensor</a>.</p>
+<p>Implements <a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html#a8702331d86766abd2eb07e369f23ff78">sjsu::LightSensor</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7339094d45d3f40e37571b480ab7f296"></a>
+<a class="anchor" id="a2404fb412dd4ea5067d93a5d3bcda193"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -202,7 +254,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () con
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float sjsu::Temt6000x01::GetPercentageBrightness </td>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Temt6000x01::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -214,9 +266,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () con
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>The illuminance percentage ranging from 0.0f to 1.0f. </dd></dl>
+<p>Initializes the ADC driver.</p>
+<dl class="section return"><dt>Returns</dt><dd>The initialization status. </dd></dl>
 
-<p>Implements <a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html">sjsu::LightSensor</a>.</p>
+<p>Implements <a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html#afb4767e91000f569fca23243d38d5a5f">sjsu::LightSensor</a>.</p>
 
 </div>
 </div>
