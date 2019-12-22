@@ -1,14 +1,16 @@
 #pragma once
 
-#include "L2_HAL/sensors/environment/temperature.hpp"
+#include "L2_HAL/sensors/environment/temperature_sensor.hpp"
 
 #include "L1_Peripheral/i2c.hpp"
-#include "utility/bit.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
 {
-class Tmp102 final : public Temperature
+/// The Tmp102 temperature sensor is a device that utilizes I2C for
+/// communication and is capable of measuring temperatures ranging between -40˚C
+/// and +125˚C.
+class Tmp102 final : public TemperatureSensor
 {
  public:
   /// Device addresses based on the connection of the address pin, A0.
@@ -22,30 +24,43 @@ class Tmp102 final : public Temperature
     static constexpr uint8_t kSda         = 0b100'1010;
     static constexpr uint8_t kScl         = 0b100'1011;
   };
-
+  /// Register addresses of the device used to perform read/write operations.
   struct RegisterAddress  // NOLINT
   {
    public:
+    /// The address of the read-only register containing the temperature data.
     static constexpr uint8_t kTemperature   = 0x00;
+    /// The address of the register used to configure the device.
     static constexpr uint8_t kConfiguration = 0x01;
   };
-
+  /// The command to enable one-shot shutdown mode.
   static constexpr uint8_t kOneShotShutdownMode = 0x81;
   /// Max time for the device to complete one temperature conversion.
   static constexpr std::chrono::milliseconds kConversionTimeout = 30ms;
-
+  /// @param i2c The I2C peripheral used for communication with the device.
+  /// @param device_address The device address of the sensor. The addres is
+  ///                       configured by physically modifying the connection of
+  ///                       the P0 pin.
   explicit constexpr Tmp102(
-      I2c & i2c, uint8_t device_address = sjsu::Tmp102::DeviceAddress::kGround)
+      sjsu::I2c & i2c,
+      uint8_t device_address = sjsu::Tmp102::DeviceAddress::kGround)
       : i2c_(i2c), kDeviceAddress(device_address)
   {
   }
-
-  Status Initialize() override
+  /// Initializes the I2C peripheral to enable the device for use.
+  ///
+  /// @return The initialization status.
+  Status Initialize() const override
   {
     return i2c_.Initialize();
   }
-
-  Status GetTemperature(units::temperature::celsius_t * temperature) override
+  /// Retrieves the temperature reading from the device.
+  ///
+  /// @param temperature Pointer reference of the variable to write to.
+  /// @return Returns Status::kSuccess if the temperature measurement was
+  ///         successfully obtained.
+  Status GetTemperature(
+      units::temperature::celsius_t * temperature) const override
   {
     OneShotShutdown();
     constexpr uint8_t kBufferLength = 2;
@@ -66,13 +81,18 @@ class Tmp102 final : public Temperature
   }
 
  private:
+  /// Sets the device to use one-shot shutdown mode. This allows power to be
+  /// conserved by putting the device in the shutdown state once a reading is
+  /// obtained.
   void OneShotShutdown() const
   {
     i2c_.Write(kDeviceAddress,
                { RegisterAddress::kConfiguration, kOneShotShutdownMode });
   }
 
-  const I2c & i2c_;
+  /// The I2C peripheral used for communication with the device.
+  const sjsu::I2c & i2c_;
+  /// The configurable device address used for communication.
   const uint8_t kDeviceAddress;
 };
 }  // namespace sjsu
