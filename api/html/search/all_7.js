@@ -52,7 +52,7 @@ var searchData=
   ['getvolume',['GetVolume',['../de/d29/classsjsu_1_1Buzzer.html#aedf2952a1214bb003cb5574b3a0f61af',1,'sjsu::Buzzer']]],
   ['getwidth',['GetWidth',['../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a',1,'sjsu::Ssd1306::GetWidth()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a6d136302e6266d6fbc773d49fd487670',1,'sjsu::PixelDisplay::GetWidth()']]],
   ['globalstatus_5ft',['GlobalStatus_t',['../db/dcc/structsjsu_1_1lpc40xx_1_1Can_1_1GlobalStatus__t.html',1,'sjsu::lpc40xx::Can']]],
-  ['gpio',['gpio',['../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#a5a7668c6ab7f6e2b268fbae47608dd83',1,'sjsu::stm32f4xx::Pin::gpio()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a44098198c4b9b33cb88d08ea1a182722',1,'sjsu::lpc40xx::Gpio::Gpio()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a270be60e3c40c0c7db738c49b4a04034',1,'sjsu::stm32f4xx::Gpio::Gpio()']]],
+  ['gpio',['Gpio',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a44098198c4b9b33cb88d08ea1a182722',1,'sjsu::lpc40xx::Gpio::Gpio()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a270be60e3c40c0c7db738c49b4a04034',1,'sjsu::stm32f4xx::Gpio::Gpio()'],['../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#a5a7668c6ab7f6e2b268fbae47608dd83',1,'sjsu::stm32f4xx::Pin::gpio()']]],
   ['gpio',['Gpio',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html',1,'sjsu::lpc40xx']]],
   ['gpio',['Gpio',['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html',1,'sjsu::stm32f4xx']]],
   ['gpio',['Gpio',['../dd/d3a/classsjsu_1_1Gpio.html',1,'sjsu']]],

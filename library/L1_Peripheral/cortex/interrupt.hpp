@@ -21,6 +21,7 @@ template <size_t kNumberOfInterrupts, uint32_t kNvicPriorityBits>
 class InterruptController final : public sjsu::InterruptController
 {
  public:
+  /// The number of ARM exceptions before reaching the MCUs
   static constexpr int32_t kArmExceptionOffset = (-cortex::Reset_IRQn) + 1;
   /// Pointer to Cortex M system control block registers
   inline static SCB_Type * scb = SCB;
@@ -29,17 +30,15 @@ class InterruptController final : public sjsu::InterruptController
   /// Holds the current_vector that is running
   inline static int current_vector = cortex::Reset_IRQn;
 
-  /// Vector table container for Cortex M platforms.
-  struct VectorTable_t
-  {
-    std::array<InterruptHandler, kNumberOfInterrupts + kArmExceptionOffset>
-        vector;
-  };
-
+  /// @param irq - irq number to convert
+  /// @return A convert an irq number into lookup table index
   static int IRQToIndex(int irq)
   {
     return irq + kArmExceptionOffset;
   }
+
+  /// @param index - index to convert
+  /// @return A convert a lookup table index into an irq number.
   static int IndexToIRQ(int index)
   {
     return index - kArmExceptionOffset;
@@ -53,20 +52,20 @@ class InterruptController final : public sjsu::InterruptController
   {
     int active_interrupt     = (scb->ICSR & 0xFF);
     current_vector           = IndexToIRQ(active_interrupt);
-    InterruptHandler handler = table.vector[active_interrupt];
+    InterruptHandler handler = table[active_interrupt];
     handler();
   }
 
   void Initialize(
       InterruptHandler unregistered_handler = UnregisteredHandler) override
   {
-    std::fill(table.vector.begin(), table.vector.end(), unregistered_handler);
+    std::fill(table.begin(), table.end(), unregistered_handler);
   }
 
   void Enable(RegistrationInfo_t register_info) override
   {
-    int irq = register_info.interrupt_request_number;
-    table.vector[IRQToIndex(irq)] = register_info.interrupt_handler;
+    int irq                = register_info.interrupt_request_number;
+    table[IRQToIndex(irq)] = register_info.interrupt_handler;
 
     if (irq >= 0)
     {
@@ -84,11 +83,13 @@ class InterruptController final : public sjsu::InterruptController
     {
       NvicDisableIRQ(interrupt_request_number);
     }
-    table.vector[IRQToIndex(interrupt_request_number)] = UnregisteredHandler;
+    table[IRQToIndex(interrupt_request_number)] = UnregisteredHandler;
   }
 
  private:
-  static inline VectorTable_t table;
+  static inline std::array<InterruptHandler,
+                           kNumberOfInterrupts + kArmExceptionOffset>
+      table;
   /// Enable External Interrupt
   /// Enables a device-specific interrupt in the NVIC interrupt controller.
   ///

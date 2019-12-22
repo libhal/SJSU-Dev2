@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['vectortable_5ft',['VectorTable_t',['../d8/d7c/structsjsu_1_1cortex_1_1InterruptController_1_1VectorTable__t.html',1,'sjsu::cortex::InterruptController']]]
+  ['watchdog',['Watchdog',['../d5/da1/classsjsu_1_1Watchdog.html',1,'sjsu']]],
+  ['watchdog',['Watchdog',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html',1,'sjsu::lpc40xx']]]
 ];
