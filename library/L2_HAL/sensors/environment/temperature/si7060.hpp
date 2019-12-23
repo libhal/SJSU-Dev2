@@ -37,7 +37,7 @@ class Si7060 final : public TemperatureSensor
   ///       of the data-sheet.
   ///
   /// @param i2c The I2C peripheral used for communication with the device.
-  /// @param address_ The device's factory programmed I2c device address.
+  /// @param address The device's factory programmed I2c device address.
   explicit constexpr Si7060(sjsu::I2c & i2c, uint8_t address = kDefaultAddress)
       : i2c_(i2c), address_(address)
   {

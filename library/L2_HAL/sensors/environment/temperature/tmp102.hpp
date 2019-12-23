@@ -19,17 +19,21 @@ class Tmp102 final : public TemperatureSensor
   struct DeviceAddress  // NOLINT
   {
    public:
-    static constexpr uint8_t kGround      = 0b100'1000;
+    /// The device address when A0 is connected to GND.
+    static constexpr uint8_t kGround = 0b100'1000;
+    /// The device address when A0 is connected to V+.
     static constexpr uint8_t kVoltageHigh = 0b100'1001;
-    static constexpr uint8_t kSda         = 0b100'1010;
-    static constexpr uint8_t kScl         = 0b100'1011;
+    /// The device address when A0 is connected to SDA.
+    static constexpr uint8_t kSda = 0b100'1010;
+    /// The device address when A0 is connected to SCL.
+    static constexpr uint8_t kScl = 0b100'1011;
   };
   /// Register addresses of the device used to perform read/write operations.
   struct RegisterAddress  // NOLINT
   {
    public:
     /// The address of the read-only register containing the temperature data.
-    static constexpr uint8_t kTemperature   = 0x00;
+    static constexpr uint8_t kTemperature = 0x00;
     /// The address of the register used to configure the device.
     static constexpr uint8_t kConfiguration = 0x01;
   };
