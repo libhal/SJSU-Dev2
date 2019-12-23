@@ -68,14 +68,6 @@ extern "C"
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    interrupt_controller.Enable({
-        .interrupt_request_number = sjsu::cortex::SVCall_IRQn,
-        .interrupt_handler        = vPortSVCHandler,
-    });
-    interrupt_controller.Enable({
-        .interrupt_request_number = sjsu::cortex::PendSV_IRQn,
-        .interrupt_handler        = xPortPendSVHandler,
-    });
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
@@ -103,10 +95,10 @@ const sjsu::InterruptVectorAddress kInterruptVectorTable[] = {
   nullptr,                             // 8, Reserved
   nullptr,                             // 9, Reserved
   nullptr,                             // 10, Reserved
-  interrupt_controller.LookupHandler,  // 11, SVCall handler
+  vPortSVCHandler,                     // 11, SVCall handler
   interrupt_controller.LookupHandler,  // 12, Debug monitor handler
   nullptr,                             // 13, Reserved
-  interrupt_controller.LookupHandler,  // 14, FreeRTOS PendSV Handler
+  xPortPendSVHandler,                  // 14, FreeRTOS PendSV Handler
   interrupt_controller.LookupHandler,  // 15, The SysTick handler
   // Chip Level - LPC17xx
   interrupt_controller.LookupHandler,  // 16, 0x40 - WDT
