@@ -134,8 +134,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af3cd11a9d7278cef82dcfa175a9b0693"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca4f7e463acdad0ead4ba88da733ede9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d57/classsjsu_1_1GpioCounter.html#aca4f7e463acdad0ead4ba88da733ede9">Initialize</a> () override</td></tr>
 <tr class="separator:aca4f7e463acdad0ead4ba88da733ede9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a01de75d625f2eeff6356ac32057636"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d57/classsjsu_1_1GpioCounter.html#a6a01de75d625f2eeff6356ac32057636">Set</a> (uint32_t new_count_value) override</td></tr>
-<tr class="separator:a6a01de75d625f2eeff6356ac32057636"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a754c0ea2866d57d165bef660ef8baaef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d57/classsjsu_1_1GpioCounter.html#a754c0ea2866d57d165bef660ef8baaef">Set</a> (int32_t new_count_value) override</td></tr>
+<tr class="separator:a754c0ea2866d57d165bef660ef8baaef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7985ecfb784028449a72da2466bccbbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d57/classsjsu_1_1GpioCounter.html#a7985ecfb784028449a72da2466bccbbf">SetDirection</a> (<a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html#aa9f54d4260fcc46110ee66f6c3f61282">Direction</a> direction) override</td></tr>
+<tr class="separator:a7985ecfb784028449a72da2466bccbbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c09ff08eb8fde5adff7358dfd517ac5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d57/classsjsu_1_1GpioCounter.html#a4c09ff08eb8fde5adff7358dfd517ac5">Enable</a> () override</td></tr>
 <tr class="separator:a4c09ff08eb8fde5adff7358dfd517ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b2d3de9fa7b8ce18acd06d45bc7abc1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b2d3de9fa7b8ce18acd06d45bc7abc1"></a>
@@ -153,6 +155,15 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html#ab1422c0a0976ae32aa1dd5ac823e032e">~HardwareCounter</a> ()=default</td></tr>
 <tr class="memdesc:ab1422c0a0976ae32aa1dd5ac823e032e inherit pub_methods_classsjsu_1_1HardwareCounter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default virtual destructor. <br /></td></tr>
 <tr class="separator:ab1422c0a0976ae32aa1dd5ac823e032e inherit pub_methods_classsjsu_1_1HardwareCounter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classsjsu_1_1HardwareCounter"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classsjsu_1_1HardwareCounter')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html">sjsu::HardwareCounter</a></td></tr>
+<tr class="memitem:aa9f54d4260fcc46110ee66f6c3f61282 inherit pub_types_classsjsu_1_1HardwareCounter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9f54d4260fcc46110ee66f6c3f61282"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html#aa9f54d4260fcc46110ee66f6c3f61282">Direction</a> : int8_t { <b>kDown</b> = -1, 
+<b>kUp</b> = 1
+ }<tr class="memdesc:aa9f54d4260fcc46110ee66f6c3f61282"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definitions of the directions that a counter to count in. <br /></td></tr>
+</td></tr>
+<tr class="separator:aa9f54d4260fcc46110ee66f6c3f61282 inherit pub_types_classsjsu_1_1HardwareCounter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A class that utilizes a generic <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="An abstract interface for General Purpose I/O. ">sjsu::Gpio</a> implementation to implement a hardware </p>
@@ -197,7 +208,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gpio</td><td>- Reference to a gpio object </td></tr>
-    <tr><td class="paramname">edge</td><td>- The digital signal edge to count up on. </td></tr>
+    <tr><td class="paramname">edge</td><td>- The digital signal edge to count on. </td></tr>
     <tr><td class="paramname">pull</td><td>- Set the pull resistor for the pin, when the pin is not connected. </td></tr>
   </table>
   </dd>
@@ -282,7 +293,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 
 </div>
 </div>
-<a class="anchor" id="a6a01de75d625f2eeff6356ac32057636"></a>
+<a class="anchor" id="a754c0ea2866d57d165bef660ef8baaef"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -292,7 +303,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
         <tr>
           <td class="memname">void sjsu::GpioCounter::Set </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype">int32_t&#160;</td>
           <td class="paramname"><em>new_count_value</em></td><td>)</td>
           <td></td>
         </tr>
@@ -303,7 +314,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set counter to a specific value .There is no guarantee that counts will not be missed during the invocation of this call</p>
+<p>Set counter to a specific value. There is no guarantee that a count will not be missed during the invocation of this call.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">new_count_value</td><td>- the value to set the counter to. </td></tr>
@@ -311,7 +322,40 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html#a9cc96145071c2f1faea88744f806a2ed">sjsu::HardwareCounter</a>.</p>
+<p>Implements <a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html#a1fa43f413df599021d233b1b0af81d48">sjsu::HardwareCounter</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7985ecfb784028449a72da2466bccbbf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::GpioCounter::SetDirection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html#aa9f54d4260fcc46110ee66f6c3f61282">Direction</a>&#160;</td>
+          <td class="paramname"><em>direction</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the direction of the counter to either up or down. Doing so will cause the counter to begin counting in that direction as events occur.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">direction</td><td>- the direction (either up or down) to count. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html#a60787b466d2a39d859b316bf98ccc983">sjsu::HardwareCounter</a>.</p>
 
 </div>
 </div>
