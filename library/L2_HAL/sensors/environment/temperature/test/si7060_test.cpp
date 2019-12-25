@@ -24,17 +24,18 @@ TEST_CASE("Si7060", "[si7060]")
 
       When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedStatus);
       When(Method(mock_i2c, Transaction))
-          .AlwaysDo([&](I2c::Transaction_t) -> Status {
-            i2c_transaction_not_invoked = false;
-            return Status::kSuccess;
-          });
+          .AlwaysDo(
+              [&i2c_transaction_not_invoked](I2c::Transaction_t) -> Status {
+                i2c_transaction_not_invoked = false;
+                return Status::kSuccess;
+              });
 
       CHECK(temperature_sensor.Initialize() == kExpectedStatus);
       CHECK(i2c_transaction_not_invoked);
       Verify(Method(mock_i2c, Initialize)).Once();
       Verify(Method(mock_i2c, Transaction)).Never();
     }
-    SECTION("incorrect device information")
+    SECTION("Incorrect device information")
     {
       mock_i2c.Reset();
       constexpr Status kExpectedStatus     = Status::kDeviceNotFound;
@@ -42,7 +43,7 @@ TEST_CASE("Si7060", "[si7060]")
 
       When(Method(mock_i2c, Initialize)).AlwaysReturn(Status::kSuccess);
       When(Method(mock_i2c, Transaction))
-          .AlwaysDo([=](I2c::Transaction_t transaction) -> Status {
+          .AlwaysDo([](I2c::Transaction_t transaction) -> Status {
             transaction.data_in[0] = kIncorrectDeviceId;
             return Status::kSuccess;
           });
@@ -71,10 +72,11 @@ TEST_CASE("Si7060", "[si7060]")
 
   SECTION("GetTemperature")
   {
-    constexpr uint8_t kEnableOneBurstMode  = 0x04;
-    constexpr uint8_t kEnableAutoIncrement = 0x01;
+    constexpr uint8_t kEnableOneBurstMode         = 0x04;
+    constexpr uint8_t kEnableAutoIncrement        = 0x01;
     constexpr std::array kExpectedTemperatureData = { 0x66, 0xC1 };
     constexpr float kExpectedTemperature          = 117.006f;
+    constexpr float kMarginOfError                = 0.001f;
 
     // Retreiving temperature data should produce the following expected
     // transaction record:
@@ -151,14 +153,14 @@ TEST_CASE("Si7060", "[si7060]")
     };
 
     // Array to store the two transactions.
-    static I2c::Transaction_t * transactions =
-        new I2c::Transaction_t[kExpectedTransactions.size()];
+    I2c::Transaction_t transactions[kExpectedTransactions.size()];
     // Storing Transaction's data_out in separate array since it's read-only.
-    static uint8_t data_out[kExpectedTransactions.size()][kMaxDataLength];
+    uint8_t data_out[kExpectedTransactions.size()][kMaxDataLength];
     // Stub Transaction to extract each Transaction record and to inject data to
     // receive buffer when temperature data is expected to be received.
     When(Method(mock_i2c, Transaction))
-        .AlwaysDo([=](I2c::Transaction_t transaction) -> Status {
+        .AlwaysDo([&transactions, &data_out, &kExpectedTemperatureData](
+                      I2c::Transaction_t transaction) -> Status {
           static uint8_t transaction_id = 0;
           transactions[transaction_id]  = transaction;
           for (size_t i = 0; i < transaction.out_length; i++)
@@ -202,10 +204,8 @@ TEST_CASE("Si7060", "[si7060]")
         CHECK(data_out[i][j] == kExpectedTransactions[i].data_out[j]);
       }
     }
-
-    const float kError = fabs(temperature.to<float>() - kExpectedTemperature);
-    CHECK(0.0f <= kError);
-    CHECK(kError < 0.001f);
+    CHECK(temperature.to<float>() ==
+          Approx(kExpectedTemperature).epsilon(kMarginOfError));
   }
 }
 }  // namespace sjsu

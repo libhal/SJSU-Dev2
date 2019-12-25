@@ -17,8 +17,9 @@ class TemperatureSensor
   /// Retrieves the temperature reading and writes the value to the designated
   /// memory address.
   ///
-  /// @param temperature Pointer reference of the variable to write to.
-  /// @return The status of .
+  /// @param temperature Output parameter.
+  /// @return Returns Status::kSuccess if the temperature measurement was
+  ///         successfully obtained.
   virtual Status GetTemperature(
       units::temperature::celsius_t * temperature) const = 0;
 };

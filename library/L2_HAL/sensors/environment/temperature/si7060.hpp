@@ -70,7 +70,7 @@ class Si7060 final : public TemperatureSensor
   }
   /// Retrieves the temperature reading from the device.
   ///
-  /// @param temperature Pointer reference of the variable to write to.
+  /// @param temperature Output parameter.
   /// @return Returns Status::kSuccess if the temperature measurement was
   ///         successfully obtained.
   Status GetTemperature(
