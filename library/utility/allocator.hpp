@@ -119,15 +119,7 @@ class FixedAllocator
   FixedAllocator(const FixedAllocator &) = default;
   FixedAllocator & operator=(const FixedAllocator &) = delete;
 
-  FixedAllocator() noexcept : a_(buf_, sizeof(buf_))
-  {
-    LOG_DEBUG(
-        "FixedAllocator Constructor<size = %zu :: sizeof(T) = %zu :: "
-        "sizeof(buf_) = %zu>\n",
-        size,
-        sizeof(T),
-        sizeof(buf_));
-  }
+  FixedAllocator() noexcept : a_(buf_, sizeof(buf_)) {}
   // Used by node containers
   template <class T_copy, size_t N_copy, class U_copy>
   FixedAllocator(const FixedAllocator<T_copy, N_copy, U_copy> & a)

@@ -28,8 +28,9 @@ struct CrcTableConfig_t
   T crc_table[kTableSize] = { 0 };
 };
 
-/// This function acts as a compile-time CRC-7 table generator
-/// @returns The configured CRC-7 table container.
+/// This function acts as a compile-time CRC-7 table generator.
+/// @tparam T size of each element in the table
+/// @return constexpr CrcTableConfig_t<T> The configured CRC-7 table container.
 template <typename T>
 constexpr static CrcTableConfig_t<T> GenerateCrc7Table()
 {

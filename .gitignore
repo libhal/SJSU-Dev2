@@ -21,6 +21,8 @@ tools/**/*
 !tools/generate_doxygen_docs.sh
 !tools/doxygen_ignore_list.txt
 !tools/common.sh
+!tools/find_sources_without_tests.sh
+!tools/print_unused_test_files.sh
 !tools/gdb_dashboard
 !spell_checker.sh
 

@@ -14,6 +14,8 @@ matrix:
             - cd projects/hello_world/
             - make presubmit
             - make spellcheck
+            - make find-missing-tests
+            - make find-unused-tests
             - cd ../../tools/
             - ./generate_doxygen_docs.sh
           after_success:

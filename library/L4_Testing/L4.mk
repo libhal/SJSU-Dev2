@@ -7,3 +7,5 @@ TESTS += $(LIBRARY_DIR)/L4_Testing/main_test.cpp
 
 USER_TESTS += $(LIBRARY_DIR)/L4_Testing/freertos_mocks.cpp
 USER_TESTS += $(LIBRARY_DIR)/L4_Testing/main_test.cpp
+
+NO_TEST_NEEDED += $(LIBRARY_DIR)/L4_Testing/%

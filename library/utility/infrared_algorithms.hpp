@@ -27,6 +27,7 @@ struct DataFrame_t
   /// Current number of timestamps of pulse edges stored in pulse_buffer.
   size_t pulse_buffer_length;
 };
+
 /// A structure containing a decoded infrared data frame.
 struct DecodedFrame_t
 {
@@ -83,6 +84,7 @@ enum class PulseDurationType
   kLength,    // The mark is used to determine the logic level
   kDistance,  // The space is used to determine the logic level
 };
+
 /// A structure containing the configuration settings for infrared data formats
 /// that utilize pulse duration modulation.
 ///
@@ -116,6 +118,7 @@ struct PulseDurationConfiguration_t
   /// space is used.
   std::chrono::microseconds header_repeat_space = 0us;
 };
+
 /// Generic decoding function to decode data frames that is encoded using pulse
 /// duration modulation.
 ///

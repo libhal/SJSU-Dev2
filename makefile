@@ -286,6 +286,9 @@ USER_TESTS ?=
 COMMON_FLAGS ?=
 # List of folder or files that should be excluded from lint analysis
 LINT_FILTER ?=
+# List of folder or files that should be ignored in the list of files that
+# require a test.
+NO_TEST_NEEDED ?=
 # Openocd configuration file
 OPENOCD_CONFIG ?=
 # Include a project specific makefile. Using -include to keep make form exiting
@@ -386,6 +389,10 @@ LINT_FILES  = $(shell find $(PROJECTS_DIR)/hello_world \
                       -name "*.cpp" |  \
                       $(FILE_EXCLUDES) \
                       2> /dev/null)
+
+FILES_WITH_TESTS = $(filter-out $(NO_TEST_NEEDED), $(LINT_FILES))
+FIND_ALL_TEST_FILES = $(shell find $(LIBRARY_DIR) -name "*_test.cpp")
+UNUSED_TEST_FILES = $(filter-out $(TESTS), $(FIND_ALL_TEST_FILES))
 
 # TODO(kammce): Add these phony files back to make linting and tiding up
 # remember which files have already been linted/tidied.
@@ -539,6 +546,10 @@ lint:
 # Finds all library files without tests
 spellcheck:
 	@$(TOOLS_DIR)/spell_checker.sh $(LINT_FILES)
+find-missing-tests:
+	@$(TOOLS_DIR)/find_sources_without_tests.sh $(FILES_WITH_TESTS)
+find-unused-tests:
+	@$(TOOLS_DIR)/print_unused_test_files.sh $(UNUSED_TEST_FILES)
 # Evaluate library files for proper code naming conventions
 tidy: $(TIDY_FILES_PHONY)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
@@ -663,7 +674,7 @@ $(OBJECT_DIR)/%.tidy: %
 	@mkdir -p "$(dir $@)"
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 		-extra-arg="-std=c++2a") "$<"  -- \
-		-D TARGET=HostTest -D HOST_TEST=1 \
+		-D TARGET=HostTest -D PLATFORM=host -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@echo -e '$(GREEN)Evaluated file: $(RESET)$< '
