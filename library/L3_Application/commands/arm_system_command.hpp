@@ -12,26 +12,28 @@
 
 namespace sjsu
 {
+/// A reference to the StackTop label which is positioned at the top of the ARM
+/// devices stack.
 extern "C" void StackTop(void);
 /// The SystemInfoCommand allows the user to get runtime stats about the
-// processor like, memory left, heap left, etc ...
-class LpcSystemInfoCommand final : public Command
+/// processor like, memory left, heap left, etc ...
+class ArmSystemInfoCommand final : public Command
 {
  public:
-  static constexpr char kDescription[] =
-      "Get runtime stats about the  processor like, memory left, and system "
-      "speeds";
-
-  explicit constexpr LpcSystemInfoCommand(
-      const sjsu::SystemController & system_controller)
-      : Command("info", kDescription), system_(system_controller)
+  constexpr ArmSystemInfoCommand()
+      : Command("info",
+                "Get runtime stats about the  processor like, memory left, and "
+                "system speeds")
   {
   }
 
   int Program(int, const char * const[]) override
   {
-    uint32_t system_frequency     = system_.GetSystemFrequency() / 1_kHz;
-    uint32_t peripheral_frequency = system_.GetPeripheralFrequency({}) / 1_kHz;
+    uint32_t system_frequency =
+        SystemController::GetPlatformController().GetSystemFrequency() / 1_kHz;
+    uint32_t peripheral_frequency =
+        SystemController::GetPlatformController().GetPeripheralFrequency({}) /
+        1_kHz;
 
     intptr_t top_of_stack         = reinterpret_cast<intptr_t>(&StackTop);
     intptr_t master_stack_pointer = sjsu::cortex::__get_MSP();
@@ -55,6 +57,5 @@ class LpcSystemInfoCommand final : public Command
     printf("\n");
     return 0;
   }
-  const sjsu::SystemController & system_;
 };
 }  // namespace sjsu

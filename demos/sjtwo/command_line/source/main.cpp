@@ -29,8 +29,7 @@ sjsu::CommandList_t<32> command_list;
 sjsu::lpc40xx::I2c i2c2(sjsu::lpc40xx::I2c::Bus::kI2c2);
 sjsu::I2cCommand i2c_command(i2c2);
 sjsu::RtosCommand rtos_command;
-sjsu::lpc40xx::SystemController lpc40xx_system_controller;
-sjsu::LpcSystemInfoCommand system_command(lpc40xx_system_controller);
+sjsu::ArmSystemInfoCommand system_command;
 sjsu::CommandLine<command_list> ci;
 
 void TerminalTask([[maybe_unused]] void * ptr)
