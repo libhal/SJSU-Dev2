@@ -156,6 +156,7 @@ class I2c
         .status     = Status::kSuccess,
     });
   }
+
   /// Write to a device on the I2C bus
   ///
   /// Usage:
@@ -172,6 +173,7 @@ class I2c
   {
     return Write(address, transmit.begin(), transmit.size(), timeout);
   }
+
   /// Write to a device on the I2C bus, then read from that device.
   ///
   /// This is very common for most I2C devices, where the microcontroller must
@@ -207,6 +209,7 @@ class I2c
         .status     = Status::kSuccess,
     });
   }
+
   /// Write to a device on the I2C bus, then read from that device.
   ///
   /// Usage:

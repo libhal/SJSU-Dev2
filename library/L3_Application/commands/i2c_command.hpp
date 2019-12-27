@@ -244,7 +244,7 @@ class I2cCommand final : public Command
           }
         }
     }
-    return position;
+    return static_cast<int>(position);
   }
 
   int Program(int argc, const char * const argv[]) override

@@ -58,6 +58,7 @@ constexpr const char * Stringify(Platform platform)
   const char * result = "invalid";
   switch (platform)
   {
+    case Platform::host: result = "host"; break;
     case Platform::lpc17xx: result = "lpc17xx"; break;
     case Platform::lpc40xx: result = "lpc40xx"; break;
     case Platform::linux: result = "linux"; break;
