@@ -5,8 +5,8 @@
 #include <cstdint>
 #include <type_traits>
 
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/spi.hpp"
+#include "L1_Peripheral/gpio.hpp"
+#include "L1_Peripheral/spi.hpp"
 #include "utility/log.hpp"
 #include "utility/crc.hpp"
 

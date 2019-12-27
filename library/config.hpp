@@ -206,22 +206,37 @@ SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
 #if !defined(SJ2_PRINTF_SUPPORT_FLOAT)
 #define SJ2_PRINTF_SUPPORT_FLOAT true
 #endif  // !defined(PRINTF_SUPPORT_FLOAT)
-/// Enables FLOAT support for the 3rd party printf library.
-#define PRINTF_SUPPORT_FLOAT SJ2_PRINTF_SUPPORT_FLOAT
 
 /// Enable printing of 64 bit numbers. Setting to false will reduce binary size.
 #if !defined(SJ2_PRINTF_SUPPORT_LONG_LONG)
 #define SJ2_PRINTF_SUPPORT_LONG_LONG true
 #endif  // !defined(PRINTF_SUPPORT_LONG_LONG)
+
+/// Defines the largest floating point number that can be printed.
+#if !defined(SJ2_PRINTF_MAX_FLOAT)
+#define SJ2_PRINTF_MAX_FLOAT 1e9
+#endif  // !defined(PRINTF_SUPPORT_LONG_LONG)
 /// Enables LONG LONG support for the 3rd party printf library.
-#define PRINTF_SUPPORT_LONG_LONG SJ2_PRINTF_SUPPORT_LONG_LONG
+#define PRINTF_MAX_FLOAT SJ2_PRINTF_MAX_FLOAT
 
 /// Enable support for the ptrdiff_t type. Setting to false will reduce binary
 /// size.
 #if !defined(SJ2_PRINTF_SUPPORT_PTRDIFF_T)
 #define SJ2_PRINTF_SUPPORT_PTRDIFF_T true
 #endif  // !defined(PRINTF_SUPPORT_PTRDIFF_T)
+
+
+/// Enables FLOAT support for the 3rd party printf library.
+#if SJ2_PRINTF_SUPPORT_FLOAT == false
+#define PRINTF_DISABLE_SUPPORT_FLOAT
+#endif
+/// Enables LONG LONG support for the 3rd party printf library.
+#if SJ2_PRINTF_SUPPORT_LONG_LONG == false
+#define PRINTF_DISABLE_SUPPORT_LONG_LONG
+#endif
 /// Enables PTRDIFF support for the 3rd party printf library.
-#define PRINTF_SUPPORT_PTRDIFF_T SJ2_PRINTF_SUPPORT_PTRDIFF_T
+#if SJ2_PRINTF_SUPPORT_PTRDIFF_T == false
+#define PRINTF_DISABLE_SUPPORT_PTRDIFF_T
+#endif
 }  // namespace config
 /// @}

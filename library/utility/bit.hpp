@@ -72,7 +72,8 @@ template <typename T>
   constexpr size_t kTargetWidth = sizeof(T) * 8;
   // Create mask by shifting the set of 1s down so that the number of 1s from
   // bit position 0 is equal to the width parameter.
-  UnsignedT mask = kFieldOfOnes >> (kTargetWidth - width);
+  UnsignedT mask =
+      static_cast<UnsignedT>(kFieldOfOnes >> (kTargetWidth - width));
   // Shift target down to the right to get the bit position in the 0th bit
   // location.
   // Mask the value to clear any bit after the width's amount of bits.

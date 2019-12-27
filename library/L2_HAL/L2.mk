@@ -66,6 +66,7 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/switches/test/button_test.cpp
 # Memory
 # ==============================================================================
 TESTS += $(LIBRARY_DIR)/L2_HAL/memory/test/sd_test.cpp
+TESTS += $(LIBRARY_DIR)/L2_HAL/memory/test/sd_experimental_test.cpp
 # ==============================================================================
 # Actuators
 # ==============================================================================

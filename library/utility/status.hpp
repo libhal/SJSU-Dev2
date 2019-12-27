@@ -20,7 +20,7 @@ enum class Status
 /// @return a string representation of the status code.
 constexpr const char * Stringify(Status status)
 {
-  const char * result = "";
+  const char * result = "Unsupported Status";
   switch (status)
   {
     case Status::kSuccess: result = "Success"; break;
@@ -28,6 +28,9 @@ constexpr const char * Stringify(Status status)
     case Status::kBusError: result = "Bus Error"; break;
     case Status::kDeviceNotFound: result = "Device Not Found"; break;
     case Status::kNotImplemented: result = "Not Implemented"; break;
+    case Status::kInvalidSettings: result = "Invalid Settings"; break;
+    case Status::kUnfinished: result = "Unfinished"; break;
+    case Status::kUnknown: result = "Unknown"; break;
     default: break;
   }
   return result;
