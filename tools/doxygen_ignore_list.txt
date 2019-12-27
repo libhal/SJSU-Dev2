@@ -24,11 +24,6 @@ L2_HAL/sensors/distance/time_of_flight/tfmini.hpp
 L2_HAL/sensors/movement/accelerometer.hpp
 L2_HAL/sensors/movement/accelerometer/mma8452q.hpp
 L2_HAL/sensors/optical/apds9960.hpp
-L3_Application/commandline.hpp
-L3_Application/commands/arm_system_command.hpp
-L3_Application/commands/common.hpp
-L3_Application/commands/i2c_command.hpp
-L3_Application/commands/rtos_command.hpp
 L3_Application/graphical_terminal.hpp
 L3_Application/periodic_scheduler.hpp
 L3_Application/task.hpp

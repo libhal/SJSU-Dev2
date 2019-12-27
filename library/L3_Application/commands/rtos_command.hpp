@@ -10,19 +10,28 @@
 
 namespace sjsu
 {
-// Print RTOS runtime stats of FreeRTOS.
-class RtosCommand final: public Command
+/// Print RTOS runtime stats of FreeRTOS
+class RtosCommand final : public Command
 {
  public:
+  /// Starting description string
   static constexpr const char kDescription[] =
       "Display FreeRTOS runtime stats.";
-  static constexpr const char kDivider[] =
-      "+------------------+-----------+------+------------+-------------+";
+  /// Table header
   static constexpr const char kHeader[] =
       "|    Task Name     |   State   | CPU% | Stack Left |   Priority  |\n"
       "|                  |           |      |  in words  | Base : Curr |";
+  /// Table divider between tasks
+  static constexpr const char kDivider[] =
+      "+------------------+-----------+------+------------+-------------+";
 
+  /// Default constructor of RTOS Command
   constexpr RtosCommand() : Command("rtos", kDescription) {}
+
+  /// Returns the string representation of a FreeRTOS TaskState enumeration.
+  ///
+  /// @param state - The state of the task
+  /// @return const char* of the task state into a string
   static const char * RtosStateToString(eTaskState state)
   {
     switch (state)
@@ -65,8 +74,10 @@ class RtosCommand final: public Command
                " | %4lu : %-4lu |\n",
                task_status[x].pcTaskName,
                RtosStateToString(task_status[x].eCurrentState),
-               cpu_utilization_percent, task_status[x].usStackHighWaterMark,
-               task_status[x].uxBasePriority, task_status[x].uxCurrentPriority);
+               cpu_utilization_percent,
+               task_status[x].usStackHighWaterMark,
+               task_status[x].uxBasePriority,
+               task_status[x].uxCurrentPriority);
       }
       puts(kDivider);
     }
