@@ -5,7 +5,7 @@ var searchData=
   ['task_3c_20ktaskstacksize_20_3e',['Task&lt; kTaskStackSize &gt;',['../d3/d19/classsjsu_1_1rtos_1_1Task.html',1,'sjsu::rtos']]],
   ['taskinterface',['TaskInterface',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html',1,'sjsu::rtos']]],
   ['taskscheduler',['TaskScheduler',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html',1,'sjsu::rtos']]],
-  ['temperature',['Temperature',['../d9/d2e/classsjsu_1_1Temperature.html',1,'sjsu']]],
+  ['temperaturesensor',['TemperatureSensor',['../d9/d0b/classsjsu_1_1TemperatureSensor.html',1,'sjsu']]],
   ['temt6000x01',['Temt6000x01',['../d3/da6/classsjsu_1_1Temt6000x01.html',1,'sjsu']]],
   ['terminalcache_5ft',['TerminalCache_t',['../d4/d59/structsjsu_1_1TerminalCache__t.html',1,'sjsu']]],
   ['tfmini',['TFMini',['../d2/dc6/classsjsu_1_1TFMini.html',1,'sjsu']]],

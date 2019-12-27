@@ -111,12 +111,14 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Tmp102 Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d6/df5/tmp102_8hpp_source.html">tmp102.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Tmp102:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d0/d46/classsjsu_1_1Tmp102__inherit__graph.png" border="0" usemap="#sjsu_1_1Tmp102_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Tmp102_inherit__map" id="sjsu_1_1Tmp102_inherit__map">
-<area shape="rect" id="node2" href="../../d9/d2e/classsjsu_1_1Temperature.html" title="sjsu::Temperature" alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node2" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html" title="An abstract interface for temperature sensing device drivers. " alt="" coords="5,5,187,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -124,7 +126,7 @@ Collaboration diagram for sjsu::Tmp102:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d25/classsjsu_1_1Tmp102__coll__graph.png" border="0" usemap="#sjsu_1_1Tmp102_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1Tmp102_coll__map" id="sjsu_1_1Tmp102_coll__map">
-<area shape="rect" id="node2" href="../../d9/d2e/classsjsu_1_1Temperature.html" title="sjsu::Temperature" alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node2" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html" title="An abstract interface for temperature sensing device drivers. " alt="" coords="5,5,187,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -133,30 +135,135 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html">DeviceAddress</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/da2/structsjsu_1_1Tmp102_1_1RegisterAddress.html">RegisterAddress</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register addresses of the device used to perform read/write operations.  <a href="../../d8/da2/structsjsu_1_1Tmp102_1_1RegisterAddress.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae1efa470bf8ff11cb7f21ee87e2718fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1efa470bf8ff11cb7f21ee87e2718fc"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Tmp102</b> (<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;i2c, uint8_t device_address=sjsu::Tmp102::DeviceAddress::kGround)</td></tr>
-<tr class="separator:ae1efa470bf8ff11cb7f21ee87e2718fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d89422fa9c0d75e5cd4cee50cd2c5ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5d89422fa9c0d75e5cd4cee50cd2c5ef"></a>
-<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () override</td></tr>
-<tr class="separator:a5d89422fa9c0d75e5cd4cee50cd2c5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0caa97cdfee74f2cfeb2cb8d5f11d52b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0caa97cdfee74f2cfeb2cb8d5f11d52b"></a>
-<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetTemperature</b> (units::temperature::celsius_t *temperature) override</td></tr>
-<tr class="separator:a0caa97cdfee74f2cfeb2cb8d5f11d52b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf416039fdcdc96048adfa546add4dd1"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#aaf416039fdcdc96048adfa546add4dd1">Tmp102</a> (<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">sjsu::I2c</a> &amp;i2c, uint8_t device_address=<a class="el" href="../../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html#a6bc06a02a96d517198bf52f34f4c72d2">sjsu::Tmp102::DeviceAddress::kGround</a>)</td></tr>
+<tr class="separator:aaf416039fdcdc96048adfa546add4dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6390b7f88cb58260c69930335422c609"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a6390b7f88cb58260c69930335422c609">Initialize</a> () const override</td></tr>
+<tr class="separator:a6390b7f88cb58260c69930335422c609"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8adfd3cdf4b6a0527d7a08200450d13e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a8adfd3cdf4b6a0527d7a08200450d13e">GetTemperature</a> (units::temperature::celsius_t *temperature) const override</td></tr>
+<tr class="separator:a8adfd3cdf4b6a0527d7a08200450d13e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ae2a11ce6bb5f6f17e009520f441424b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2a11ce6bb5f6f17e009520f441424b6"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kOneShotShutdownMode</b> = 0x81</td></tr>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#ae2a11ce6bb5f6f17e009520f441424b6">kOneShotShutdownMode</a> = 0x81</td></tr>
+<tr class="memdesc:ae2a11ce6bb5f6f17e009520f441424b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The command to enable one-shot shutdown mode. <br /></td></tr>
 <tr class="separator:ae2a11ce6bb5f6f17e009520f441424b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae71f9e1b1560275d10a4117c75ab1187"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae71f9e1b1560275d10a4117c75ab1187"></a>
 static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#ae71f9e1b1560275d10a4117c75ab1187">kConversionTimeout</a> = 30ms</td></tr>
 <tr class="memdesc:ae71f9e1b1560275d10a4117c75ab1187"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max time for the device to complete one temperature conversion. <br /></td></tr>
 <tr class="separator:ae71f9e1b1560275d10a4117c75ab1187"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html">Tmp102</a> temperature sensor is a device that utilizes I2C for communication and is capable of measuring temperatures ranging between -40˚C and +125˚C. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="aaf416039fdcdc96048adfa546add4dd1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::Tmp102::Tmp102 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">sjsu::I2c</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>device_address</em> = <code><a class="el" href="../../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html#a6bc06a02a96d517198bf52f34f4c72d2">sjsu::Tmp102::DeviceAddress::kGround</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>The I2C peripheral used for communication with the device. </td></tr>
+    <tr><td class="paramname">device_address</td><td>The device address of the sensor. The addres is configured by physically modifying the connection of the P0 pin. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a8adfd3cdf4b6a0527d7a08200450d13e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Tmp102::GetTemperature </td>
+          <td>(</td>
+          <td class="paramtype">units::temperature::celsius_t *&#160;</td>
+          <td class="paramname"><em>temperature</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Retrieves the temperature reading from the device.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">temperature</td><td>Output parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns Status::kSuccess if the temperature measurement was successfully obtained. </dd></dl>
+
+<p>Implements <a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a8d9fe856155e726f586a5424cd71a5f1">sjsu::TemperatureSensor</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6390b7f88cb58260c69930335422c609"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Tmp102::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes the I2C peripheral to enable the device for use.</p>
+<dl class="section return"><dt>Returns</dt><dd>The initialization status. </dd></dl>
+
+<p>Implements <a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a68f20eda43e9fa3db158653f6dc14689">sjsu::TemperatureSensor</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/sensors/environment/temperature/<a class="el" href="../../d6/df5/tmp102_8hpp_source.html">tmp102.hpp</a></li>
 </ul>

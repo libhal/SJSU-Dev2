@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>SJSU-Dev2: sjsu::Temperature Class Reference</title>
+        <title>SJSU-Dev2: sjsu::TemperatureSensor Class Reference</title>
         <!--<link href="../../tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="../../dynsections.js"></script>
         <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
@@ -98,22 +98,27 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../d9/d2e/classsjsu_1_1Temperature.html">Temperature</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html">TemperatureSensor</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="../../da/d8e/classsjsu_1_1Temperature-members.html">List of all members</a>  </div>
+<a href="../../d7/d85/classsjsu_1_1TemperatureSensor-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::Temperature Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">sjsu::TemperatureSensor Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>An abstract interface for temperature sensing device drivers.  
+ <a href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../dd/d00/temperature__sensor_8hpp_source.html">temperature_sensor.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for sjsu::Temperature:</div>
+Inheritance diagram for sjsu::TemperatureSensor:</div>
 <div class="dyncontent">
-<div class="center"><img src="../../d1/d2a/classsjsu_1_1Temperature__inherit__graph.png" border="0" usemap="#sjsu_1_1Temperature_inherit__map" alt="Inheritance graph"/></div>
-<map name="sjsu_1_1Temperature_inherit__map" id="sjsu_1_1Temperature_inherit__map">
+<div class="center"><img src="../../de/d6a/classsjsu_1_1TemperatureSensor__inherit__graph.png" border="0" usemap="#sjsu_1_1TemperatureSensor_inherit__map" alt="Inheritance graph"/></div>
+<map name="sjsu_1_1TemperatureSensor_inherit__map" id="sjsu_1_1TemperatureSensor_inherit__map">
 <area shape="rect" id="node2" href="../../df/ddc/classsjsu_1_1Si7060.html" title="sjsu::Si7060" alt="" coords="5,80,104,107"/>
 <area shape="rect" id="node3" href="../../d8/db2/classsjsu_1_1Tmp102.html" title="sjsu::Tmp102" alt="" coords="128,80,235,107"/>
 </map>
@@ -121,15 +126,77 @@ Inheritance diagram for sjsu::Temperature:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acc2298d18ddbd3c3c7a398f424a98c9a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc2298d18ddbd3c3c7a398f424a98c9a"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()=0</td></tr>
-<tr class="separator:acc2298d18ddbd3c3c7a398f424a98c9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72dce0345fa771b0451aa0ba1257e4fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72dce0345fa771b0451aa0ba1257e4fa"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetTemperature</b> (units::temperature::celsius_t *temperature)=0</td></tr>
-<tr class="separator:a72dce0345fa771b0451aa0ba1257e4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68f20eda43e9fa3db158653f6dc14689"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a68f20eda43e9fa3db158653f6dc14689">Initialize</a> () const =0</td></tr>
+<tr class="separator:a68f20eda43e9fa3db158653f6dc14689"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9fe856155e726f586a5424cd71a5f1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a8d9fe856155e726f586a5424cd71a5f1">GetTemperature</a> (units::temperature::celsius_t *temperature) const =0</td></tr>
+<tr class="separator:a8d9fe856155e726f586a5424cd71a5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An abstract interface for temperature sensing device drivers. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a8d9fe856155e726f586a5424cd71a5f1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::TemperatureSensor::GetTemperature </td>
+          <td>(</td>
+          <td class="paramtype">units::temperature::celsius_t *&#160;</td>
+          <td class="paramname"><em>temperature</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Retrieves the temperature reading and writes the value to the designated memory address.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">temperature</td><td>Output parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns Status::kSuccess if the temperature measurement was successfully obtained. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#aba403bfa3429d2e915c736ed49b378bf">sjsu::Si7060</a>, and <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a8adfd3cdf4b6a0527d7a08200450d13e">sjsu::Tmp102</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a68f20eda43e9fa3db158653f6dc14689"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::TemperatureSensor::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize and enable hardware. This must be called before any other method in this interface is called.</p>
+<dl class="section return"><dt>Returns</dt><dd>The initialization status. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a6390b7f88cb58260c69930335422c609">sjsu::Tmp102</a>, and <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#aeb8f85787d489545bad33942d7777be0">sjsu::Si7060</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/sensors/environment/<a class="el" href="../../dc/d32/temperature_8hpp_source.html">temperature.hpp</a></li>
+<li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/sensors/environment/<a class="el" href="../../dd/d00/temperature__sensor_8hpp_source.html">temperature_sensor.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

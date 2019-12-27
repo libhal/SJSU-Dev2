@@ -110,12 +110,14 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::Si7060 Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d0/dfe/si7060_8hpp_source.html">si7060.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Si7060:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d1/d70/classsjsu_1_1Si7060__inherit__graph.png" border="0" usemap="#sjsu_1_1Si7060_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Si7060_inherit__map" id="sjsu_1_1Si7060_inherit__map">
-<area shape="rect" id="node2" href="../../d9/d2e/classsjsu_1_1Temperature.html" title="sjsu::Temperature" alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node2" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html" title="An abstract interface for temperature sensing device drivers. " alt="" coords="5,5,187,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -123,43 +125,231 @@ Collaboration diagram for sjsu::Si7060:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/dac/classsjsu_1_1Si7060__coll__graph.png" border="0" usemap="#sjsu_1_1Si7060_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1Si7060_coll__map" id="sjsu_1_1Si7060_coll__map">
-<area shape="rect" id="node2" href="../../d9/d2e/classsjsu_1_1Temperature.html" title="sjsu::Temperature" alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node2" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html" title="An abstract interface for temperature sensing device drivers. " alt="" coords="5,5,187,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a332a7c2ff9c24ac61232b7c810c4db41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a332a7c2ff9c24ac61232b7c810c4db41"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Si7060</b> (<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;i2c, uint8_t address=kDefaultAddress)</td></tr>
-<tr class="separator:a332a7c2ff9c24ac61232b7c810c4db41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a8ebd028ff0fd2fb8c93c3ef787e528"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a8ebd028ff0fd2fb8c93c3ef787e528"></a>
-<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () override</td></tr>
-<tr class="separator:a2a8ebd028ff0fd2fb8c93c3ef787e528"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a178f17d187d75b59de1b2f43e8f022f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a178f17d187d75b59de1b2f43e8f022f1"></a>
-<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetTemperature</b> (units::temperature::celsius_t *temperature) override</td></tr>
-<tr class="separator:a178f17d187d75b59de1b2f43e8f022f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63035540e8264a0b3480ed87268d689d"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#a63035540e8264a0b3480ed87268d689d">Si7060</a> (<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">sjsu::I2c</a> &amp;i2c, uint8_t address=<a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#ae174b287c74e3fb629c752077e0e4188">kDefaultAddress</a>)</td></tr>
+<tr class="separator:a63035540e8264a0b3480ed87268d689d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb8f85787d489545bad33942d7777be0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#aeb8f85787d489545bad33942d7777be0">Initialize</a> () const override</td></tr>
+<tr class="separator:aeb8f85787d489545bad33942d7777be0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba403bfa3429d2e915c736ed49b378bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#aba403bfa3429d2e915c736ed49b378bf">GetTemperature</a> (units::temperature::celsius_t *temperature) const override</td></tr>
+<tr class="separator:aba403bfa3429d2e915c736ed49b378bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ae174b287c74e3fb629c752077e0e4188"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae174b287c74e3fb629c752077e0e4188"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultAddress</b> = 0x31</td></tr>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#ae174b287c74e3fb629c752077e0e4188">kDefaultAddress</a> = 0x31</td></tr>
+<tr class="memdesc:ae174b287c74e3fb629c752077e0e4188"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> address of the device. <br /></td></tr>
 <tr class="separator:ae174b287c74e3fb629c752077e0e4188"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad18e80421cbff46f4e9f1a16020dbfbd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad18e80421cbff46f4e9f1a16020dbfbd"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kIdRegister</b> = 0xC0</td></tr>
+<tr class="memitem:ad18e80421cbff46f4e9f1a16020dbfbd"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#ad18e80421cbff46f4e9f1a16020dbfbd">kIdRegister</a> = 0xC0</td></tr>
 <tr class="separator:ad18e80421cbff46f4e9f1a16020dbfbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa9447d97932b62a22db91e818765b9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa9447d97932b62a22db91e818765b9e"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kExpectedSensorId</b> = 0x14</td></tr>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#aaa9447d97932b62a22db91e818765b9e">kExpectedSensorId</a> = 0x14</td></tr>
+<tr class="memdesc:aaa9447d97932b62a22db91e818765b9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The expected 8-bit chip id and revision id. <br /></td></tr>
 <tr class="separator:aaa9447d97932b62a22db91e818765b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab21cb098ec7da6bf5ed934bb02c67c36"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab21cb098ec7da6bf5ed934bb02c67c36"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kOneBurstRegister</b> = 0xC4</td></tr>
+<tr class="memitem:ab21cb098ec7da6bf5ed934bb02c67c36"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#ab21cb098ec7da6bf5ed934bb02c67c36">kOneBurstRegister</a> = 0xC4</td></tr>
 <tr class="separator:ab21cb098ec7da6bf5ed934bb02c67c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fe520f95280dc8d113f4e08558ee29b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fe520f95280dc8d113f4e08558ee29b"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kAutomaticBitRegister</b> = 0xC5</td></tr>
+<tr class="memitem:a0fe520f95280dc8d113f4e08558ee29b"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#a0fe520f95280dc8d113f4e08558ee29b">kAutomaticBitRegister</a> = 0xC5</td></tr>
 <tr class="separator:a0fe520f95280dc8d113f4e08558ee29b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9548589e33d9949b988ea992818f01d1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9548589e33d9949b988ea992818f01d1"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMostSignificantRegister</b> = 0xC1</td></tr>
+<tr class="memitem:a9548589e33d9949b988ea992818f01d1"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#a9548589e33d9949b988ea992818f01d1">kMostSignificantRegister</a> = 0xC1</td></tr>
 <tr class="separator:a9548589e33d9949b988ea992818f01d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html">Si7060</a> temperature sensor is a device capable of obtaining temperature measurements ranging between -47.4 °C to +157.39 °C. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a63035540e8264a0b3480ed87268d689d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::Si7060::Si7060 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">sjsu::I2c</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em> = <code><a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#ae174b287c74e3fb629c752077e0e4188">kDefaultAddress</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The device's <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> device address is factory programmed and can be one of four values.</p>
+<dl class="section note"><dt>Note</dt><dd>To determine the device address, refer to Section 5. Ordering Guide of the data-sheet.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>The I2C peripheral used for communication with the device. </td></tr>
+    <tr><td class="paramname">address</td><td>The device's factory programmed <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> device address. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aba403bfa3429d2e915c736ed49b378bf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Si7060::GetTemperature </td>
+          <td>(</td>
+          <td class="paramtype">units::temperature::celsius_t *&#160;</td>
+          <td class="paramname"><em>temperature</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Retrieves the temperature reading from the device.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">temperature</td><td>Output parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns Status::kSuccess if the temperature measurement was successfully obtained. </dd></dl>
+
+<p>Implements <a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a8d9fe856155e726f586a5424cd71a5f1">sjsu::TemperatureSensor</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aeb8f85787d489545bad33942d7777be0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Si7060::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes the I2C peripheral to enable the device for use.</p>
+<dl class="section return"><dt>Returns</dt><dd>The initialization status. </dd></dl>
+
+<p>Implements <a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a68f20eda43e9fa3db158653f6dc14689">sjsu::TemperatureSensor</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a0fe520f95280dc8d113f4e08558ee29b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::Si7060::kAutomaticBitRegister = 0xC5</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The address of the register to enable automatic incrementing of the <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> register pointer. </p>
+
+</div>
+</div>
+<a class="anchor" id="ad18e80421cbff46f4e9f1a16020dbfbd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::Si7060::kIdRegister = 0xC0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The address of the 8-bit read-only register containing the device's chip id (most significant 4-bits) and revision id (least significant 4-bits). </p>
+
+</div>
+</div>
+<a class="anchor" id="a9548589e33d9949b988ea992818f01d1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::Si7060::kMostSignificantRegister = 0xC1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The address of the register containing the most significant byte of the temperature data. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab21cb098ec7da6bf5ed934bb02c67c36"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::Si7060::kOneBurstRegister = 0xC4</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The address of the register to enabled one-burst mode. One-burst mode pauses the device after performing one temperature conversion. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/sensors/environment/temperature/<a class="el" href="../../d0/dfe/si7060_8hpp_source.html">si7060.hpp</a></li>
 </ul>

@@ -1,4 +1,4 @@
-<map id="sjsu::Temperature" name="sjsu::Temperature">
+<map id="sjsu::TemperatureSensor" name="sjsu::TemperatureSensor">
 <area shape="rect" id="node2" href="$df/ddc/classsjsu_1_1Si7060.html" title="sjsu::Si7060" alt="" coords="5,80,104,107"/>
 <area shape="rect" id="node3" href="$d8/db2/classsjsu_1_1Tmp102.html" title="sjsu::Tmp102" alt="" coords="128,80,235,107"/>
 </map>

@@ -48,6 +48,7 @@ var searchData=
   ['gettaskbuffer',['GetTaskBuffer',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a1b379ffed4324e3354999b31e52c669a',1,'sjsu::rtos::Task']]],
   ['gettaskcount',['GetTaskCount',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aa1a31b35ae26fa27a0d4aa62ade71143',1,'sjsu::rtos::TaskScheduler']]],
   ['gettaskindex',['GetTaskIndex',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#af369ceb720de477a42ca3e1d9edde2fe',1,'sjsu::rtos::TaskScheduler']]],
+  ['gettemperature',['GetTemperature',['../df/ddc/classsjsu_1_1Si7060.html#aba403bfa3429d2e915c736ed49b378bf',1,'sjsu::Si7060::GetTemperature()'],['../d8/db2/classsjsu_1_1Tmp102.html#a8adfd3cdf4b6a0527d7a08200450d13e',1,'sjsu::Tmp102::GetTemperature()'],['../d9/d0b/classsjsu_1_1TemperatureSensor.html#a8d9fe856155e726f586a5424cd71a5f1',1,'sjsu::TemperatureSensor::GetTemperature()']]],
   ['gettransactioninfo',['GetTransactionInfo',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a1aab2429685ff4d31764246480566ee2',1,'sjsu::lpc40xx::I2c']]],
   ['getvolume',['GetVolume',['../de/d29/classsjsu_1_1Buzzer.html#aedf2952a1214bb003cb5574b3a0f61af',1,'sjsu::Buzzer']]],
   ['getwidth',['GetWidth',['../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a',1,'sjsu::Ssd1306::GetWidth()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a6d136302e6266d6fbc773d49fd487670',1,'sjsu::PixelDisplay::GetWidth()']]],
