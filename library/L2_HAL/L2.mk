@@ -44,7 +44,7 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/environment/light/test/temt6000x01_test.c
 # ==============================================================================
 # Sensor/Temperature
 # ==============================================================================
-NO_TEST_NEEDED += $(LIBRARY_DIR)/L2_HAL/sensors/environment/temperature.hpp
+NO_TEST_NEEDED += $(LIBRARY_DIR)/L2_HAL/sensors/environment/temperature_sensor.hpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/environment/temperature/test/si7060_test.cpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/sensors/environment/temperature/test/tmp102_test.cpp
 # ==============================================================================
