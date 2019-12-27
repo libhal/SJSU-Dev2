@@ -1,29 +1,51 @@
 #pragma once
 
 #include "L1_Peripheral/i2c.hpp"
-#include "L2_HAL/sensors/environment/temperature.hpp"
+#include "L2_HAL/sensors/environment/temperature_sensor.hpp"
 #include "utility/bit.hpp"
 #include "utility/units.hpp"
 #include "utility/status.hpp"
 
 namespace sjsu
 {
-class Si7060 final : public Temperature
+/// The Si7060 temperature sensor is a device capable of obtaining temperature
+/// measurements ranging between  -47.4 °C  to +157.39 °C.
+class Si7060 final : public TemperatureSensor
 {
  public:
-  static constexpr uint8_t kDefaultAddress          = 0x31;
-  static constexpr uint8_t kIdRegister              = 0xC0;
-  static constexpr uint8_t kExpectedSensorId        = 0x14;
-  static constexpr uint8_t kOneBurstRegister        = 0xC4;
-  static constexpr uint8_t kAutomaticBitRegister    = 0xC5;
+  /// The default I2c address of the device.
+  static constexpr uint8_t kDefaultAddress = 0x31;
+  /// The address of the 8-bit read-only register containing the device's chip
+  /// id (most significant 4-bits) and revision id (least significant 4-bits).
+  static constexpr uint8_t kIdRegister = 0xC0;
+  /// The expected 8-bit chip id and revision id.
+  static constexpr uint8_t kExpectedSensorId = 0x14;
+  /// The address of the register to enabled one-burst mode. One-burst mode
+  /// pauses the device after performing one temperature conversion.
+  static constexpr uint8_t kOneBurstRegister = 0xC4;
+  /// The address of the register to enable automatic incrementing of the I2c
+  /// register pointer.
+  static constexpr uint8_t kAutomaticBitRegister = 0xC5;
+  /// The address of the register containing the most significant byte of the
+  /// temperature data.
   static constexpr uint8_t kMostSignificantRegister = 0xC1;
 
-  explicit Si7060(I2c & i2c, uint8_t address = kDefaultAddress)
+  /// The device's I2c device address is factory programmed and can be one of
+  /// four values.
+  ///
+  /// @note To determine the device address, refer to Section 5. Ordering Guide
+  ///       of the data-sheet.
+  ///
+  /// @param i2c The I2C peripheral used for communication with the device.
+  /// @param address The device's factory programmed I2c device address.
+  explicit constexpr Si7060(sjsu::I2c & i2c, uint8_t address = kDefaultAddress)
       : i2c_(i2c), address_(address)
   {
   }
-
-  Status Initialize() override
+  /// Initializes the I2C peripheral to enable the device for use.
+  ///
+  /// @return The initialization status.
+  Status Initialize() const override
   {
     Status status;
 
@@ -46,11 +68,16 @@ class Si7060 final : public Temperature
     }
     return status;
   }
-
-  Status GetTemperature(units::temperature::celsius_t * temperature) override
+  /// Retrieves the temperature reading from the device.
+  ///
+  /// @param temperature Output parameter.
+  /// @return Returns Status::kSuccess if the temperature measurement was
+  ///         successfully obtained.
+  Status GetTemperature(
+      units::temperature::celsius_t * temperature) const override
   {
     // Note that: 1 << 14 = 2^14 = 16384
-    constexpr int32_t kSubtractTemperatureData = 1 << 14;
+    constexpr int32_t kSubtractTemperatureData = (1 << 14);
 
     uint8_t most_significant_register;
     uint8_t least_significant_register;
@@ -82,7 +109,9 @@ class Si7060 final : public Temperature
   }
 
  private:
-  const I2c & i2c_;
+  /// The I2C peripheral used for communication with the device.
+  const sjsu::I2c & i2c_;
+  /// The device address used for communication.
   uint8_t address_;
 };
 }  // namespace sjsu
