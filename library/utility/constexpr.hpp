@@ -57,7 +57,7 @@ constexpr const char * FileBasename(const char * path)
 {
   const size_t kBasenameLength = BasenameLength(path);
   const size_t kPathLength     = StringLength(path);
-  const char * basename        = &path[kPathLength - (kBasenameLength - 1)];
+  const char * basename        = &path[kPathLength - kBasenameLength];
   return basename;
 }
 }  // namespace sjsu

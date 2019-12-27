@@ -1,5 +1,7 @@
 #include <cstdint>
 
+#include "L1_Peripheral/lpc40xx/spi.hpp"
+#include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L2_HAL/memory/sd.hpp"
 #include "utility/debug.hpp"  // sjsu::debug::Hexdump()
 #include "utility/log.hpp"

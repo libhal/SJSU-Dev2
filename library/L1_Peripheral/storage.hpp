@@ -70,42 +70,43 @@ class Storage
   virtual units::data::byte_t GetBlockSize() = 0;
 
   /// Must be called before a `Write()` operation. Erases the contents of the
-  /// storage media in the location specified, the number of bytes given.
+  /// storage media in the location specified, the number of bytes given. Some
+  /// storage media do not require an erasure before a write to be performed. In
+  /// those cases, the implementation should simply do nothing on erase.
   ///
-  /// @param address - Address location to erase
-  /// @param size - the number of bytes to erase
+  /// @param block_address - starting block to erase.
+  /// @param blocks_count - the number of bytes to erase.
   /// @return Status of if the operation was successful, otherwise, returns an
   /// appropriate status signal.
-  virtual sjsu::Status Erase(uint32_t address, size_t size) = 0;
+  virtual sjsu::Status Erase(uint32_t block_address, size_t blocks_count) = 0;
 
-  /// Write data to the storage media in the location specified. Underlying
-  /// implementation must handle things such as single byte write operations,
-  /// but will not guarantee that the operation is efficient. Try and keep write
-  /// operation sizes address locations aligned with the result of
-  /// `GetBlockSize()`.
-  /// Make sure to call Erase() on the memory location you plan to write to
-  /// before writing, otherwise, the data may be corrupted or unchanged.
+  /// Write data to the storage media in the location block specified. If the
+  /// block size for this media is not 1 byte, then single byte is not allowed
+  /// and transactions must be performed at a block level.
   ///
-  /// @param address - address to write data to.
+  /// Be sure to call Erase() on the memory location you plan to write to before
+  /// writing, otherwise, the data may be corrupted or unchanged.
+  ///
+  /// @param block_address - starting block to write to
   /// @param data - data to be stored in the location addressed above.
-  /// @param size - the number of bytes to write into memory.
+  /// @param size - the number of bytes to write into memory. Can be less than
+  ///               the size of a block.
   /// @return Status of if the operation was successful, otherwise, returns an
   /// appropriate status signal.
-  virtual sjsu::Status Write(uint32_t address,
+  virtual sjsu::Status Write(uint32_t block_address,
                              const void * data,
                              size_t size) = 0;
 
-  /// Read data from the storage media in the location specified. Underlying
-  /// implementation must handle things such as single byte read operations
-  /// but will not guarantee that the operation is efficient. Try and keep read
-  /// operation sizes address locations aligned with the result of
-  /// `GetBlockSize()`.
+  /// Read data from the storage media in the location specified.
   ///
-  /// @param address - address to read data from.
-  /// @param data - pointer to location to read data from storage into.
-  /// @param size - the number of bytes to read from memory.
+  /// @param block_address - starting block to read from.
+  /// @param data - pointer to where read data should be stored.
+  /// @param size - the number of bytes to read from memory. Can be less than
+  ///               the size of a block.
   /// @return Status of if the operation was successful, otherwise, return an
   /// appropriate status signal.
-  virtual sjsu::Status Read(uint32_t address, void * data, size_t size) = 0;
+  virtual sjsu::Status Read(uint32_t block_address,
+                            void * data,
+                            size_t size) = 0;
 };
 }  // namespace sjsu

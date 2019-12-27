@@ -71,21 +71,25 @@ class Gpio
   // ===========================================================================
   // Utility Methods
   // ===========================================================================
+
   /// Set pin to HIGH voltage
   void SetHigh() const
   {
     Set(State::kHigh);
   }
+
   /// Set pin to LOW voltage
   void SetLow() const
   {
     Set(State::kLow);
   }
+
   /// Set pin direction as input
   void SetAsInput() const
   {
     SetDirection(Direction::kInput);
   }
+
   /// Set pin direction as output
   void SetAsOutput() const
   {

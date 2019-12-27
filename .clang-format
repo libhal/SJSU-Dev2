@@ -4,6 +4,7 @@ UseTab: Never
 BreakBeforeBraces: Allman
 DerivePointerAlignment: false
 PointerAlignment: Middle
+BinPackArguments: true
 AlignConsecutiveAssignments: true
 AlignEscapedNewlines: Left
 BinPackParameters: false
@@ -13,7 +14,7 @@ AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: true
-BinPackArguments: false
+BinPackArguments: true
 BreakStringLiterals: true
 CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
