@@ -24,6 +24,7 @@ class DwtCounter
     dwt->CYCCNT = 0;
     dwt->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
   }
+
   /// Return the current number of ticks. Note that this is typically 2x the
   /// system frequency as it counts on rising and falling edges.
   uint32_t GetCount()

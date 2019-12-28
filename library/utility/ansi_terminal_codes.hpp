@@ -1,4 +1,5 @@
 #pragma once
+
 #include "config.hpp"
 
 #if defined(SJ2_ENABLE_ANSI_CODES) && SJ2_ENABLE_ANSI_CODES == true
