@@ -51,7 +51,7 @@ TEST_CASE("Testing Time Utility", "[time]")
     Delay(delay_time);
 
     // Verify
-    CHECK((current_timestamp + 2us + delay_time) == Uptime());
+    CHECK((current_timestamp + 1us + delay_time) == Uptime());
   }
 
   SECTION("Wait() with callback times out")
@@ -68,7 +68,7 @@ TEST_CASE("Testing Time Utility", "[time]")
 
     // Verify
     CHECK(wait_status == Status::kTimedOut);
-    CHECK((current_timestamp + 2us + timeout_time) == Uptime());
+    CHECK((current_timestamp + 1us + timeout_time) == Uptime());
   }
 
   SECTION("Wait() function times out")

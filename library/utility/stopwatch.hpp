@@ -1,54 +1,57 @@
-// stopwatch.hpp Overview
+// Usage:
+//
+//    sjsu::StopWatch stopwatch;
+//    stopwatch.Calibrate();
+//    stopwatch.Start();
+//
+//    // Do some work that takes some time to perform ...
+//
+//    auto time_delta = stopwatch.Stop();
+//
 #pragma once
-#include <cstdint>
+
+#include "utility/time.hpp"
 
 namespace sjsu
 {
+/// A stop watch class that can be used to determine the time between events.
 class StopWatch
 {
  public:
-  enum class DeltaScale
-  {
-    kSecond,
-    kMicrosecond,
-    kNanosecond
-  };
-
-  explicit StopWatch(uint32_t (*ticks)())
-      : tick_(ticks),
-        calibrate_delta_(0),
-        start_ticks_(0)
-  {
-  }
-
+  /// Calibrates the stopwatch by figuring out how much time it takes to Start()
+  /// and Stop() the stopwatch. Since it takes time to call the methods, this is
+  /// used to remove the call to Stop() and Start() from the time between
+  /// events, giving a more accurate time.
   void Calibrate()
   {
-    calibrate_delta_ = 0;
+    calibrate_delta_ = 0us;
     Start();
     calibrate_delta_ = Stop();
   }
 
-  // Gets the cycle counts
-  uint32_t CurrentTicks()
-  {
-    return tick_();
-  }
-
+  /// Acquires the current uptime and stores it for comparision against the time
+  /// in which Stop() is called.
   void Start()
   {
-    start_ticks_ = CurrentTicks();
+    start_ticks_ = Uptime();
   }
 
-  uint32_t Stop()
+  /// Calculates and returns the current lap/time delta from the previous time
+  /// Start() was called.
+  std::chrono::microseconds Stop()
   {
-    return (CurrentTicks() - start_ticks_) - calibrate_delta_;
+    auto current_uptime = Uptime();
+    return (current_uptime - start_ticks_) - calibrate_delta_;
+  }
+
+  /// This is used to inspect the calibration delta time.
+  std::chrono::microseconds GetCalibrationDelta()
+  {
+    return calibrate_delta_;
   }
 
  private:
-  uint32_t (*tick_)();
-  uint32_t calibrate_delta_;
-  uint32_t start_ticks_;
+  std::chrono::microseconds calibrate_delta_ = 0us;
+  std::chrono::microseconds start_ticks_     = 0us;
 };
-
 }  // namespace sjsu
-

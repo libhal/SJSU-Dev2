@@ -1,5 +1,7 @@
 #pragma once
 
+#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
+
 #include "third_party/catch2/catch.hpp"
 #include "third_party/fakeit/fakeit.hpp"
 #include "third_party/fff/fff.h"
