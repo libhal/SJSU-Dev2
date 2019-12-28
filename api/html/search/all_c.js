@@ -6,6 +6,7 @@ var searchData=
   ['masterstate',['MasterState',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a9a5a932d99ae273205a55913aedc1c22',1,'sjsu::lpc40xx::I2c']]],
   ['matchaction',['MatchAction',['../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8',1,'sjsu::Timer']]],
   ['matchcontrol',['MatchControl',['../d1/dd9/structsjsu_1_1lpc40xx_1_1Pwm_1_1MatchControl.html',1,'sjsu::lpc40xx::Pwm']]],
+  ['max_5fsize',['max_size',['../db/d4d/structsjsu_1_1CommandList__t.html#a6f328b8d5e3b7f1389470580652b82c9',1,'sjsu::CommandList_t']]],
   ['miso',['miso',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a70275f2510b3058f77b8f2964731a05e',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu']]],
   ['moduleversion_5ft',['ModuleVersion_t',['../d6/d07/structsjsu_1_1Esp8266_1_1ModuleVersion__t.html',1,'sjsu::Esp8266']]],

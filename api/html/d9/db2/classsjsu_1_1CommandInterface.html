@@ -114,24 +114,35 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
  <a href="../../d9/db2/classsjsu_1_1CommandInterface.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../d9/d91/commandline_8hpp_source.html">commandline.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for sjsu::CommandInterface:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d2/dfe/classsjsu_1_1CommandInterface__inherit__graph.png" border="0" usemap="#sjsu_1_1CommandInterface_inherit__map" alt="Inheritance graph"/></div>
+<map name="sjsu_1_1CommandInterface_inherit__map" id="sjsu_1_1CommandInterface_inherit__map">
+<area shape="rect" id="node2" href="../../d7/d56/classsjsu_1_1Command.html" title="sjsu::Command" alt="" coords="260,80,383,107"/>
+<area shape="rect" id="node3" href="../../df/d55/classsjsu_1_1ArmSystemInfoCommand.html" title="sjsu::ArmSystemInfoCommand" alt="" coords="5,155,227,181"/>
+<area shape="rect" id="node4" href="../../dd/d36/classsjsu_1_1I2cCommand.html" title="sjsu::I2cCommand" alt="" coords="251,155,391,181"/>
+<area shape="rect" id="node5" href="../../d3/d13/classsjsu_1_1RtosCommand.html" title="Print RTOS runtime stats of FreeRTOS. " alt="" coords="415,155,566,181"/>
+</map>
+<center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8eef588bb6062f43b83c8df5460b0cb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8eef588bb6062f43b83c8df5460b0cb9"></a>
-virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetName</b> ()=0</td></tr>
+<tr class="memitem:a8eef588bb6062f43b83c8df5460b0cb9"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html#a8eef588bb6062f43b83c8df5460b0cb9">GetName</a> ()=0</td></tr>
 <tr class="separator:a8eef588bb6062f43b83c8df5460b0cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5060769486cb3f1937bbb5012868e13c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5060769486cb3f1937bbb5012868e13c"></a>
-virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetDescription</b> ()=0</td></tr>
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html#a5060769486cb3f1937bbb5012868e13c">GetDescription</a> ()=0</td></tr>
+<tr class="memdesc:a5060769486cb3f1937bbb5012868e13c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a summary/help of what the command can do and how to use it. <br /></td></tr>
 <tr class="separator:a5060769486cb3f1937bbb5012868e13c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae305b4bb9776d60b30250dd6dba2e8ad"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html#ae305b4bb9776d60b30250dd6dba2e8ad">Program</a> (int argc, const char *const argv[])=0</td></tr>
 <tr class="separator:ae305b4bb9776d60b30250dd6dba2e8ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00b4ad214faf72ef3391ca6fd5f1b798"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html#a00b4ad214faf72ef3391ca6fd5f1b798">AutoComplete</a> ([[maybe_unused]] int argc, [[maybe_unused]] const char *const argv[], [[maybe_unused]] const char *completion_array[], [[maybe_unused]] const size_t kCompletionArrayLength)</td></tr>
-<tr class="separator:a00b4ad214faf72ef3391ca6fd5f1b798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67a2c34ab23faa24c56b0180bebcd6de"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html#a67a2c34ab23faa24c56b0180bebcd6de">AutoComplete</a> (int argc, const char *const argv[], const char *completion[], size_t completion_length)</td></tr>
+<tr class="separator:a67a2c34ab23faa24c56b0180bebcd6de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html" title="CommandInterface is the set of methods that every command must support. ">CommandInterface</a> is the set of methods that every command must support. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a00b4ad214faf72ef3391ca6fd5f1b798"></a>
+<a class="anchor" id="a67a2c34ab23faa24c56b0180bebcd6de"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -141,26 +152,26 @@ virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetDe
         <tr>
           <td class="memname">virtual int sjsu::CommandInterface::AutoComplete </td>
           <td>(</td>
-          <td class="paramtype">[[maybe_unused] ] int&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">[[maybe_unused] ] const char *const&#160;</td>
+          <td class="paramtype">const char *const&#160;</td>
           <td class="paramname"><em>argv</em>[], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">[[maybe_unused] ] const char *&#160;</td>
-          <td class="paramname"><em>completion_array</em>[], </td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>completion</em>[], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">[[maybe_unused] ] const size_t&#160;</td>
-          <td class="paramname"><em>kCompletionArrayLength</em>&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>completion_length</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -174,7 +185,45 @@ virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetDe
   </tr>
 </table>
 </div><div class="memdoc">
-<p>AutoComplete works by giving the user a set of options that they can use to complete their command. What options they are given is specific to the command implementation and at what stage the comment is at. For example lets say we have a command called "version" and this command can take one argument that could either be "bootloader" or "application". If you have typed "version boot" and then press the &lt;tab&gt; key, the command line will jump to show "version bootloader". If you had only typed "version" and pressed &lt;tab&gt;, then you will see "version &lt;newline&gt; bootloader application" as options. In order to make this happen, you need to load string pointers into the completion_array by evaluating the argc and argv parameters. Be sure not to exceed the length of the completion_array which is given by the kCompletionArrayLength. </p>
+<p>AutoComplete works by giving the user a set of options that they can use to complete their command. What options they are given is specific to the command implementation and at what stage the comment is at. For example lets say we have a command called "version" and this command can take one argument that could either be "bootloader" or "application". If you have typed "version boot" and then press the <code>tab</code> key, the command line will jump to show "version bootloader". If you had only typed "version" and pressed <code>tab</code>, then you will see "version `newline` bootloader application" as options. In order to make this happen, you need to load string pointers into the completion_array by evaluating the argc and argv parameters. Be sure not to exceed the length of the completion_array which is given by the kCompletionArrayLength.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argc</td><td>- Number of arguments in argv </td></tr>
+    <tr><td class="paramname">argv</td><td>- list of strings containing argument parameter text </td></tr>
+    <tr><td class="paramname">completion</td><td>- a modifable array of char pointers. For every auto complete option that is valid given the supplied argc + argv parameters, return the results into this array. </td></tr>
+    <tr><td class="paramname">completion_length</td><td>- the number of char pointers that the completion array can hold. When the max is hit, the overriding AutoComplete should stop writing into the buffer and return. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns the number of completion strings written into the completion_array. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#a6839ea845073f32dfa406d38efd00e2a">sjsu::I2cCommand</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8eef588bb6062f43b83c8df5460b0cb9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const char* sjsu::CommandInterface::GetName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Return the command's name which is used to call this command from a command line handler. </p>
+
+<p>Implemented in <a class="el" href="../../d7/d56/classsjsu_1_1Command.html#ab664ef7a2b12b379a00ac8eab4ecec70">sjsu::Command</a>.</p>
 
 </div>
 </div>
@@ -210,6 +259,8 @@ virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetDe
 </table>
 </div><div class="memdoc">
 <p>The implementing class will have this method run when its command has been called </p>
+
+<p>Implemented in <a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#aca73175eef1cfe43724e3ab32fb45b50">sjsu::I2cCommand</a>, <a class="el" href="../../d7/d56/classsjsu_1_1Command.html#a06cd3cf7f339b8d971aadd66cdab0e8f">sjsu::Command</a>, <a class="el" href="../../d3/d13/classsjsu_1_1RtosCommand.html#a5f9fe38ae4eb75db174647c8f2f8f751">sjsu::RtosCommand</a>, and <a class="el" href="../../df/d55/classsjsu_1_1ArmSystemInfoCommand.html#afd78c172c23eedf5c64886393cff3007">sjsu::ArmSystemInfoCommand</a>.</p>
 
 </div>
 </div>

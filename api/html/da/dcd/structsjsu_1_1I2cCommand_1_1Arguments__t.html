@@ -109,25 +109,57 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <div class="title">sjsu::I2cCommand::Arguments_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d0/dd3/i2c__command_8hpp_source.html">i2c_command.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a3263d894c71f11021ddbb89af2798acd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3263d894c71f11021ddbb89af2798acd"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>operation</b> = nullptr</td></tr>
+char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a3263d894c71f11021ddbb89af2798acd">operation</a> = nullptr</td></tr>
+<tr class="memdesc:a3263d894c71f11021ddbb89af2798acd"><td class="mdescLeft">&#160;</td><td class="mdescRight">String containing which operation to perform. <br /></td></tr>
 <tr class="separator:a3263d894c71f11021ddbb89af2798acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad06cae1b08802fda54085f0cec74322b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad06cae1b08802fda54085f0cec74322b"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>device_address</b> = 0x00</td></tr>
+<tr class="memitem:ad06cae1b08802fda54085f0cec74322b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#ad06cae1b08802fda54085f0cec74322b">device_address</a> = 0x00</td></tr>
 <tr class="separator:ad06cae1b08802fda54085f0cec74322b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0668c341fd35eac915345585e558c4c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0668c341fd35eac915345585e558c4c1"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>register_address</b> = 0x00</td></tr>
+<tr class="memitem:a0668c341fd35eac915345585e558c4c1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a0668c341fd35eac915345585e558c4c1">register_address</a> = 0x00</td></tr>
 <tr class="separator:a0668c341fd35eac915345585e558c4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9eadbdd9f2b1e3f88c6dda26ea11245"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa9eadbdd9f2b1e3f88c6dda26ea11245"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>length</b> = 0</td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#aa9eadbdd9f2b1e3f88c6dda26ea11245">length</a> = 0</td></tr>
+<tr class="memdesc:aa9eadbdd9f2b1e3f88c6dda26ea11245"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many bytes to read or write to the device. <br /></td></tr>
 <tr class="separator:aa9eadbdd9f2b1e3f88c6dda26ea11245"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5770211c812053ec7d4faf8b7483f4e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5770211c812053ec7d4faf8b7483f4e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>invalid</b> = false</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#ad5770211c812053ec7d4faf8b7483f4e">invalid</a> = false</td></tr>
+<tr class="memdesc:ad5770211c812053ec7d4faf8b7483f4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets set when the1. <br /></td></tr>
 <tr class="separator:ad5770211c812053ec7d4faf8b7483f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Holds the information needed to perform the I2C transaction with an external device. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ad06cae1b08802fda54085f0cec74322b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sjsu::I2cCommand::Arguments_t::device_address = 0x00</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Holds the i2c address of the external device to communicate with. NOTE: Only handles 8-bit i2c addresses currently. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0668c341fd35eac915345585e558c4c1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sjsu::I2cCommand::Arguments_t::register_address = 0x00</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Holds the memory location mapped within the device. NOTE: Only supports 8-bit i2c register addresses currently. </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L3_Application/commands/<a class="el" href="../../d0/dd3/i2c__command_8hpp_source.html">i2c_command.hpp</a></li>
 </ul>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bias',['Bias',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246',1,'sjsu::lpc40xx::Dac']]]
+  ['args',['Args',['../dd/d36/classsjsu_1_1I2cCommand.html#a43331db48a59d2cffbeb76f8ef9546a1',1,'sjsu::I2cCommand']]]
 ];

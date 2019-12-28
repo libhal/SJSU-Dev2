@@ -119,7 +119,8 @@ Inheritance diagram for sjsu::I2cCommand:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/dea/classsjsu_1_1I2cCommand__inherit__graph.png" border="0" usemap="#sjsu_1_1I2cCommand_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1I2cCommand_inherit__map" id="sjsu_1_1I2cCommand_inherit__map">
-<area shape="rect" id="node2" href="../../d9/d71/classCommand.html" title="Command" alt="" coords="33,80,123,107"/>
+<area shape="rect" id="node2" href="../../d7/d56/classsjsu_1_1Command.html" title="sjsu::Command" alt="" coords="33,80,156,107"/>
+<area shape="rect" id="node3" href="../../d9/db2/classsjsu_1_1CommandInterface.html" title="CommandInterface is the set of methods that every command must support. " alt="" coords="5,5,184,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -127,20 +128,22 @@ Collaboration diagram for sjsu::I2cCommand:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d8/d88/classsjsu_1_1I2cCommand__coll__graph.png" border="0" usemap="#sjsu_1_1I2cCommand_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1I2cCommand_coll__map" id="sjsu_1_1I2cCommand_coll__map">
-<area shape="rect" id="node2" href="../../d9/d71/classCommand.html" title="Command" alt="" coords="33,80,123,107"/>
+<area shape="rect" id="node2" href="../../d7/d56/classsjsu_1_1Command.html" title="sjsu::Command" alt="" coords="33,80,156,107"/>
+<area shape="rect" id="node3" href="../../d9/db2/classsjsu_1_1CommandInterface.html" title="CommandInterface is the set of methods that every command must support. " alt="" coords="5,5,184,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html">AddressString_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for each address found when running i2c "discover".  <a href="../../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html">Arguments_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a43331db48a59d2cffbeb76f8ef9546a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43331db48a59d2cffbeb76f8ef9546a1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Args</b> { <br />
+<tr class="memitem:a43331db48a59d2cffbeb76f8ef9546a1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#a43331db48a59d2cffbeb76f8ef9546a1">Args</a> { <br />
 &#160;&#160;<b>kName</b> = 0, 
 <b>kOperation</b> = 1, 
 <b>kDeviceAddress</b> = 2, 
@@ -155,58 +158,169 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae2c9db1ca8f249ad0b23b7b480a23e19"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2c9db1ca8f249ad0b23b7b480a23e19"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>I2cCommand</b> (const <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;i2c)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#ae2c9db1ca8f249ad0b23b7b480a23e19">I2cCommand</a> (const <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;i2c)</td></tr>
+<tr class="memdesc:ae2c9db1ca8f249ad0b23b7b480a23e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sole constructor of the <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> command. <br /></td></tr>
 <tr class="separator:ae2c9db1ca8f249ad0b23b7b480a23e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a631c2a50e7f48cfaed0287c7fd8cd16e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a631c2a50e7f48cfaed0287c7fd8cd16e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
+<tr class="memitem:a631c2a50e7f48cfaed0287c7fd8cd16e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#a631c2a50e7f48cfaed0287c7fd8cd16e">Initialize</a> ()</td></tr>
 <tr class="separator:a631c2a50e7f48cfaed0287c7fd8cd16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8967d422a23dc70922e1092aa16a6b1e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8967d422a23dc70922e1092aa16a6b1e"></a>
-std::tuple&lt; uint8_t, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ParseByte</b> (const char *const kArgument, uint8_t radix)</td></tr>
-<tr class="separator:a8967d422a23dc70922e1092aa16a6b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac836bfa504fc968a92f5d3c5705cf688"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac836bfa504fc968a92f5d3c5705cf688"></a>
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetI2cOperation</b> (const char *const kOperationArgument)</td></tr>
-<tr class="separator:ac836bfa504fc968a92f5d3c5705cf688"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a919fa80608da0a19312baaf9c43bd11b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a919fa80608da0a19312baaf9c43bd11b"></a>
-<a class="el" href="../../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html">Arguments_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ParseArguments</b> (int, const char *const argv[])</td></tr>
-<tr class="separator:a919fa80608da0a19312baaf9c43bd11b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2ad4fab1dffd9ea227c66e070fec6f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad2ad4fab1dffd9ea227c66e070fec6f1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>I2cDiscover</b> ()</td></tr>
-<tr class="separator:ad2ad4fab1dffd9ea227c66e070fec6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a857d4ec40c6ee52ecce532b80b382b53"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a857d4ec40c6ee52ecce532b80b382b53"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>PerformReadOperation</b> (int argc, const char *const argv[])</td></tr>
-<tr class="separator:a857d4ec40c6ee52ecce532b80b382b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9acbfef2654a9d87c9a920d4ec74d5de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9acbfef2654a9d87c9a920d4ec74d5de"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>PerformWriteOperation</b> (int argc, const char *const argv[])</td></tr>
-<tr class="separator:a9acbfef2654a9d87c9a920d4ec74d5de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb7e0f9268f6bcb697e03065a6bed4e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb7e0f9268f6bcb697e03065a6bed4e3"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>PerformDiscoveryOperation</b> ()</td></tr>
-<tr class="separator:adb7e0f9268f6bcb697e03065a6bed4e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ecfb514fcab08fd6ab765bf4aab3282"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4ecfb514fcab08fd6ab765bf4aab3282"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>AutoComplete</b> (int argc, const char *const argv[], const char *completion[], const size_t) override</td></tr>
-<tr class="separator:a4ecfb514fcab08fd6ab765bf4aab3282"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca73175eef1cfe43724e3ab32fb45b50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca73175eef1cfe43724e3ab32fb45b50"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Program</b> (int argc, const char *const argv[]) override</td></tr>
+<tr class="memitem:a6839ea845073f32dfa406d38efd00e2a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#a6839ea845073f32dfa406d38efd00e2a">AutoComplete</a> (int argc, const char *const argv[], const char *completion[], size_t completion_length) override</td></tr>
+<tr class="separator:a6839ea845073f32dfa406d38efd00e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca73175eef1cfe43724e3ab32fb45b50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#aca73175eef1cfe43724e3ab32fb45b50">Program</a> (int argc, const char *const argv[]) override</td></tr>
 <tr class="separator:aca73175eef1cfe43724e3ab32fb45b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classCommand"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classCommand')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d9/d71/classCommand.html">Command</a></td></tr>
-<tr class="memitem:a825c7da8253a22ca7af9243b06549ec4 inherit pub_methods_classCommand"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d71/classCommand.html#a825c7da8253a22ca7af9243b06549ec4">Command</a> (const char *name, const char *description, CommandSignature program=DoNothingCommand)</td></tr>
-<tr class="separator:a825c7da8253a22ca7af9243b06549ec4 inherit pub_methods_classCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af30547ee12ba3580d3629f118c8b3fa2 inherit pub_methods_classCommand"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af30547ee12ba3580d3629f118c8b3fa2"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetName</b> () override</td></tr>
-<tr class="separator:af30547ee12ba3580d3629f118c8b3fa2 inherit pub_methods_classCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95bd5b5901078f2557d697f50976c3b1 inherit pub_methods_classCommand"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95bd5b5901078f2557d697f50976c3b1"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetDescription</b> () override</td></tr>
-<tr class="separator:a95bd5b5901078f2557d697f50976c3b1 inherit pub_methods_classCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa85aa6f2ed8d697378e1ffe04bc01f71 inherit pub_methods_classCommand"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d71/classCommand.html#aa85aa6f2ed8d697378e1ffe04bc01f71">Program</a> (int argc, const char *const argv[]) override</td></tr>
-<tr class="separator:aa85aa6f2ed8d697378e1ffe04bc01f71 inherit pub_methods_classCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classsjsu_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1Command')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d7/d56/classsjsu_1_1Command.html">sjsu::Command</a></td></tr>
+<tr class="memitem:a84d7e7a94bf4deb48b03fdd9465deb97 inherit pub_methods_classsjsu_1_1Command"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d56/classsjsu_1_1Command.html#a84d7e7a94bf4deb48b03fdd9465deb97">Command</a> (const char *name, const char *description, <a class="el" href="../../d0/d6b/namespacesjsu.html#a02cb0ed606f8c4fd6b0773de6b443ec5">CommandSignature</a> program=DoNothingCommand)</td></tr>
+<tr class="separator:a84d7e7a94bf4deb48b03fdd9465deb97 inherit pub_methods_classsjsu_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab664ef7a2b12b379a00ac8eab4ecec70 inherit pub_methods_classsjsu_1_1Command"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d56/classsjsu_1_1Command.html#ab664ef7a2b12b379a00ac8eab4ecec70">GetName</a> () override</td></tr>
+<tr class="separator:ab664ef7a2b12b379a00ac8eab4ecec70 inherit pub_methods_classsjsu_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6dad075e6a5be27869fe68b85d968e8 inherit pub_methods_classsjsu_1_1Command"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6dad075e6a5be27869fe68b85d968e8"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d56/classsjsu_1_1Command.html#aa6dad075e6a5be27869fe68b85d968e8">GetDescription</a> () override</td></tr>
+<tr class="memdesc:aa6dad075e6a5be27869fe68b85d968e8 inherit pub_methods_classsjsu_1_1Command"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a summary/help of what the command can do and how to use it. <br /></td></tr>
+<tr class="separator:aa6dad075e6a5be27869fe68b85d968e8 inherit pub_methods_classsjsu_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a02fec276240685073e9627404b1e6764"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kDescription</b> []</td></tr>
+<tr class="memitem:a02fec276240685073e9627404b1e6764"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#a02fec276240685073e9627404b1e6764">kDescription</a> []</td></tr>
+<tr class="memdesc:a02fec276240685073e9627404b1e6764"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> usage description and details.  <a href="#a02fec276240685073e9627404b1e6764">More...</a><br /></td></tr>
 <tr class="separator:a02fec276240685073e9627404b1e6764"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html">I2cCommand</a> [will] allows the user to discover, read, and write to devices on the I2C bus. </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="a43331db48a59d2cffbeb76f8ef9546a1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#a43331db48a59d2cffbeb76f8ef9546a1">sjsu::I2cCommand::Args</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>An enumeration that specifies the locations of each command argument in the command line. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a6839ea845073f32dfa406d38efd00e2a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sjsu::I2cCommand::AutoComplete </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *const&#160;</td>
+          <td class="paramname"><em>argv</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>completion</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>completion_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>AutoComplete works by giving the user a set of options that they can use to complete their command. What options they are given is specific to the command implementation and at what stage the comment is at. For example lets say we have a command called "version" and this command can take one argument that could either be "bootloader" or "application". If you have typed "version boot" and then press the <code>tab</code> key, the command line will jump to show "version bootloader". If you had only typed "version" and pressed <code>tab</code>, then you will see "version `newline` bootloader application" as options. In order to make this happen, you need to load string pointers into the completion_array by evaluating the argc and argv parameters. Be sure not to exceed the length of the completion_array which is given by the kCompletionArrayLength.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argc</td><td>- Number of arguments in argv </td></tr>
+    <tr><td class="paramname">argv</td><td>- list of strings containing argument parameter text </td></tr>
+    <tr><td class="paramname">completion</td><td>- a modifable array of char pointers. For every auto complete option that is valid given the supplied argc + argv parameters, return the results into this array. </td></tr>
+    <tr><td class="paramname">completion_length</td><td>- the number of char pointers that the completion array can hold. When the max is hit, the overriding AutoComplete should stop writing into the buffer and return. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns the number of completion strings written into the completion_array. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../d9/db2/classsjsu_1_1CommandInterface.html#a67a2c34ab23faa24c56b0180bebcd6de">sjsu::CommandInterface</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a631c2a50e7f48cfaed0287c7fd8cd16e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::I2cCommand::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes i2c peripheral. MUST be called before calling any other method in this class. </p>
+
+</div>
+</div>
+<a class="anchor" id="aca73175eef1cfe43724e3ab32fb45b50"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sjsu::I2cCommand::Program </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *const&#160;</td>
+          <td class="paramname"><em>argv</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This class method will execute the function that was passed to this object via the constructor. </p>
+
+<p>Reimplemented from <a class="el" href="../../d7/d56/classsjsu_1_1Command.html#a06cd3cf7f339b8d971aadd66cdab0e8f">sjsu::Command</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a02fec276240685073e9627404b1e6764"></a>
 <div class="memitem">
 <div class="memproto">
@@ -225,6 +339,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= R<span class="stringliteral">&quot;(Read and write to the i2c bus.</span></div><div class="line"><span class="stringliteral">                i2c write &lt;device address&gt; &lt;register address&gt; &lt;data0&gt; ...</span></div><div class="line"><span class="stringliteral">                i2c read &lt;device address&gt; &lt;register address&gt; &lt;length&gt;</span></div><div class="line"><span class="stringliteral">                i2c discover</span></div><div class="line"><span class="stringliteral">  )&quot;</span></div></div><!-- fragment -->
+<p><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> usage description and details. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

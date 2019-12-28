@@ -6,5 +6,7 @@ var searchData=
   ['reset',['Reset',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ad116fb0c5f8b55b880367f9253ce542f',1,'sjsu::lpc40xx::Timer::Reset()'],['../dd/d31/classsjsu_1_1Timer.html#acb6c77042b4e115cb241cfdc0be69d79',1,'sjsu::Timer::Reset()']]],
   ['resetstate',['ResetState',['../d1/de1/classsjsu_1_1Button.html#a443067d0f1e9958793a3c5c292d70999',1,'sjsu::Button']]],
   ['resume',['Resume',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a9ad6add41a523ef5948d8407bdfcccad',1,'sjsu::rtos::Task']]],
+  ['rtoscommand',['RtosCommand',['../d3/d13/classsjsu_1_1RtosCommand.html#a459cb1bf60a22e2a3568ebb1de3e597d',1,'sjsu::RtosCommand']]],
+  ['rtosstatetostring',['RtosStateToString',['../d3/d13/classsjsu_1_1RtosCommand.html#a6dbef8064083ac5af412d212779c53aa',1,'sjsu::RtosCommand']]],
   ['runhalroutine0',['RunHalRoutine0',['../d7/d23/classsjsu_1_1ExampleHal.html#afa39db425d234c1d1df7a37f4334d5cf',1,'sjsu::ExampleHal::RunHalRoutine0()'],['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#a159c764b6118f94f5164626fd90f7e41',1,'sjsu::ExampleSingleImplementationHal::RunHalRoutine0()']]]
 ];
