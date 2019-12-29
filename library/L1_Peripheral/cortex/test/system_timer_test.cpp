@@ -11,6 +11,17 @@ EMIT_ALL_METHODS(SystemTimer);
 
 TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
 {
+  cortex::DWT_Type local_dwt = {
+    .PCSR = 0,
+  };
+  cortex::CoreDebug_Type local_core;
+
+  memset(&local_dwt, 0, sizeof(local_dwt));
+  memset(&local_core, 0, sizeof(local_core));
+
+  DwtCounter::dwt  = &local_dwt;
+  DwtCounter::core = &local_core;
+
   // Simulated local version of SysTick register to verify register
   // manipulation by side effect of Pin method calls
   // Default figure 552 page 703
@@ -20,12 +31,11 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   SystemTimer::sys_tick = &local_systick;
 
   // Set mock for sjsu::SystemController
-  constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
-      12_MHz;
+  constexpr units::frequency::hertz_t kClockFrequency = 10_MHz;
 
   Mock<SystemController> mock_system_controller;
   When(Method(mock_system_controller, GetSystemFrequency))
-      .AlwaysReturn(kDummySystemControllerClockFrequency);
+      .AlwaysReturn(kClockFrequency);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;
@@ -37,6 +47,28 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   constexpr uint8_t kExpectedPriority = 3;
   SystemTimer test_subject(kExpectedPriority);
 
+  SECTION("Initialize()")
+  {
+    // Setup
+    constexpr uint32_t kClockFrequencyInt = kClockFrequency.to<uint32_t>();
+    constexpr auto kExpectedTicksPerMillisecond =
+        kClockFrequencyInt / 1000 /* ms/s */;
+    constexpr auto kExpectedNanosecondsPerTick =
+        (SystemTimer::kFixedPointScaling * 1'000'000'000ns) /
+        kClockFrequencyInt;
+
+    // Exercise
+    test_subject.Initialize();
+
+    // Verify
+    CHECK(CoreDebug_DEMCR_TRCENA_Msk == local_core.DEMCR);
+    CHECK(0 == local_dwt.CYCCNT);
+    CHECK(DWT_CTRL_CYCCNTENA_Msk == local_dwt.CTRL);
+
+    CHECK(kExpectedTicksPerMillisecond == SystemTimer::ticks_per_millisecond);
+    CHECK(kExpectedNanosecondsPerTick == SystemTimer::nanoseconds_per_tick);
+  }
+
   SECTION("SetTickFrequency generate desired frequency")
   {
     constexpr auto kDivisibleFrequency = 1_kHz;
@@ -44,20 +76,21 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
 
     CHECK(0 == test_subject.SetTickFrequency(kDivisibleFrequency));
     constexpr uint32_t kExpectedLoadValue =
-        (kDummySystemControllerClockFrequency / kDivisibleFrequency) - 1;
+        (kClockFrequency / kDivisibleFrequency) - 1;
     CHECK(kExpectedLoadValue == local_systick.LOAD);
   }
+
   SECTION("SetTickFrequency should return remainder of ticks mismatch")
   {
     constexpr auto kOddFrequency = 7_Hz;
     local_systick.LOAD           = 0;
 
-    CHECK(kDummySystemControllerClockFrequency.to<uint32_t>() %
-              kOddFrequency.to<uint32_t>() ==
+    CHECK(kClockFrequency.to<uint32_t>() % kOddFrequency.to<uint32_t>() ==
           test_subject.SetTickFrequency(kOddFrequency));
-    CHECK(((kDummySystemControllerClockFrequency / kOddFrequency) - 1)
-              .to<uint32_t>() == local_systick.LOAD);
+    CHECK(((kClockFrequency / kOddFrequency) - 1).to<uint32_t>() ==
+          local_systick.LOAD);
   }
+
   SECTION("Start Timer should set necessary SysTick Ctrl bits and set VAL to 0")
   {
     // Setup
@@ -103,6 +136,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     CHECK(0xBEEF == local_systick.VAL);
     Verify(Method(mock_interrupt_controller, Enable)).Never();
   }
+
   SECTION("DisableTimer should clear all bits")
   {
     // Setup
@@ -120,6 +154,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     // Verify
     CHECK(0 == local_systick.CTRL);
   }
+
   SECTION(
       "SetInterrupt set SystemTimer::system_timer_callback to dummy_function")
   {
@@ -135,6 +170,26 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
     CHECK(was_called);
   }
 
+  SECTION("GetCount()")
+  {
+    // Setup
+    constexpr uint32_t kDebugCountTicks = 128;
+    constexpr auto kMilliseconds        = 1ms;
+    SystemTimer::millisecond_count      = kMilliseconds;
+    constexpr auto kExpectedUptime = kMilliseconds + (kDebugCountTicks * 100ns);
+
+    // Exercise
+    test_subject.Initialize();
+    local_dwt.CYCCNT = kDebugCountTicks;
+    auto uptime      = test_subject.GetCount();
+
+    // Verify
+    CHECK(kExpectedUptime == uptime);
+  }
+
+  // Cleanup
   SystemTimer::sys_tick = SysTick;
+  DwtCounter::dwt       = DWT;
+  DwtCounter::core      = CoreDebug;
 }
 }  // namespace sjsu::cortex
