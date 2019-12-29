@@ -21,7 +21,7 @@ using UptimeFunction = std::function<std::chrono::microseconds(void)>;
 inline std::chrono::microseconds DefaultUptime()
 {
   static std::chrono::microseconds default_uptime = 0us;
-  return ++default_uptime;
+  return default_uptime++;
 }
 
 /// Global Uptime function, preset to DefaultUptime() for testing purposes.
@@ -54,13 +54,28 @@ inline Status Wait(std::chrono::microseconds timeout,
     // timeout overflows? This needs to be handled properly.
     timeout_time = timeout;
   }
+  else if (timeout == 0us)
+  {
+    return Status::kTimedOut;
+  }
   else
   {
-    timeout_time = Uptime() + timeout;
+    if constexpr (build::IsPlatform(build::Platform::host))
+    {
+      // NOTE: During host tests the default uptime counter will auto increment
+      // by 1, which will resulting in the default uptime being 1us additional
+      // then it should. To counter act the calls to extra calls to Uptime() in
+      // this function, we substract 2us.
+      timeout_time = (Uptime() + timeout) - 2us;
+    }
+    else
+    {
+      timeout_time = Uptime() + timeout;
+    }
   }
 
   Status status = Status::kTimedOut;
-  while (Uptime() < timeout_time)
+  while (Uptime() <= timeout_time)
   {
     if (is_done())
     {

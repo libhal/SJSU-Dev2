@@ -1,6 +1,7 @@
 var searchData=
 [
   ['c',['c',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#a0c03ed9b3e3b512713d7a09e108f6bec',1,'sjsu::FallbackListNode_t']]],
+  ['calibrate',['Calibrate',['../d0/dab/classsjsu_1_1StopWatch.html#abed47c2598a289745ee58d50cd0b97e8',1,'sjsu::StopWatch']]],
   ['callback',['callback',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a40769f764fdfd4a35d7bc2f2c13e5f49',1,'sjsu::cortex::SystemTimer']]],
   ['can',['Can',['../da/d70/classsjsu_1_1Can.html',1,'sjsu']]],
   ['can',['Can',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html',1,'sjsu::lpc40xx']]],
@@ -30,8 +31,8 @@ var searchData=
   ['command_5fcodes',['command_codes',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a3a970a8d24f3ab2923d8cc3c3f154795',1,'sjsu::lpc40xx::Eeprom']]],
   ['commandinterface',['CommandInterface',['../d9/db2/classsjsu_1_1CommandInterface.html',1,'sjsu']]],
   ['commandline',['CommandLine',['../d1/d42/classsjsu_1_1CommandLine.html',1,'sjsu']]],
-  ['commandlist_5ft',['CommandList_t',['../db/d4d/structsjsu_1_1CommandList__t.html',1,'sjsu']]],
   ['commandlist_5ft',['CommandList_t',['../db/d4d/structsjsu_1_1CommandList__t.html#a5f3cf9dbcfd76685f741c392b9a5133d',1,'sjsu::CommandList_t']]],
+  ['commandlist_5ft',['CommandList_t',['../db/d4d/structsjsu_1_1CommandList__t.html',1,'sjsu']]],
   ['commands',['commands',['../db/d4d/structsjsu_1_1CommandList__t.html#adcf263f5169af79c4db93aa3979c218e',1,'sjsu::CommandList_t']]],
   ['commandsignature',['CommandSignature',['../d0/d6b/namespacesjsu.html#a02cb0ed606f8c4fd6b0773de6b443ec5',1,'sjsu']]],
   ['configuration',['Configuration',['../de/d43/group__Config.html',1,'']]],

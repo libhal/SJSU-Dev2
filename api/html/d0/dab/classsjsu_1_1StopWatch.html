@@ -103,40 +103,106 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="../../da/d89/classsjsu_1_1StopWatch-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::StopWatch Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A stop watch class that can be used to determine the time between events.  
+ <a href="../../d0/dab/classsjsu_1_1StopWatch.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../dd/d41/stopwatch_8hpp_source.html">stopwatch.hpp</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a3d7d2f480d9aa9e9a522b6f508a8f0a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d7d2f480d9aa9e9a522b6f508a8f0a1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DeltaScale</b> { <b>kSecond</b>, 
-<b>kMicrosecond</b>, 
-<b>kNanosecond</b>
- }</td></tr>
-<tr class="separator:a3d7d2f480d9aa9e9a522b6f508a8f0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0ce73895ada28fd818ef79725d1fd16b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0ce73895ada28fd818ef79725d1fd16b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>StopWatch</b> (uint32_t(*ticks)())</td></tr>
-<tr class="separator:a0ce73895ada28fd818ef79725d1fd16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abed47c2598a289745ee58d50cd0b97e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abed47c2598a289745ee58d50cd0b97e8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Calibrate</b> ()</td></tr>
+<tr class="memitem:abed47c2598a289745ee58d50cd0b97e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#abed47c2598a289745ee58d50cd0b97e8">Calibrate</a> ()</td></tr>
 <tr class="separator:abed47c2598a289745ee58d50cd0b97e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52f8b2df445fe90544bb012e4943847a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52f8b2df445fe90544bb012e4943847a"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>CurrentTicks</b> ()</td></tr>
-<tr class="separator:a52f8b2df445fe90544bb012e4943847a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25e5de2eb10cc35d0441df273ad7f39f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25e5de2eb10cc35d0441df273ad7f39f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Start</b> ()</td></tr>
+<tr class="memitem:a25e5de2eb10cc35d0441df273ad7f39f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start</a> ()</td></tr>
 <tr class="separator:a25e5de2eb10cc35d0441df273ad7f39f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90d0ccd042929322a4fe83d23eb9c02c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90d0ccd042929322a4fe83d23eb9c02c"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>Stop</b> ()</td></tr>
-<tr class="separator:a90d0ccd042929322a4fe83d23eb9c02c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a110bb8976dcad6f3e62ea93d4c89e849"><td class="memItemLeft" align="right" valign="top">std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849">Stop</a> ()</td></tr>
+<tr class="separator:a110bb8976dcad6f3e62ea93d4c89e849"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f5bd36669d04942c64adc7ff5906532"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f5bd36669d04942c64adc7ff5906532"></a>
+std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a7f5bd36669d04942c64adc7ff5906532">GetCalibrationDelta</a> ()</td></tr>
+<tr class="memdesc:a7f5bd36669d04942c64adc7ff5906532"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to inspect the calibration delta time. <br /></td></tr>
+<tr class="separator:a7f5bd36669d04942c64adc7ff5906532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A stop watch class that can be used to determine the time between events. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="abed47c2598a289745ee58d50cd0b97e8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::StopWatch::Calibrate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Calibrates the stopwatch by figuring out how much time it takes to <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start()</a> and <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849">Stop()</a> the stopwatch. Since it takes time to call the methods, this is used to remove the call to <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849">Stop()</a> and <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start()</a> from the time between events, giving a more accurate time. </p>
+
+</div>
+</div>
+<a class="anchor" id="a25e5de2eb10cc35d0441df273ad7f39f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::StopWatch::Start </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Acquires the current uptime and stores it for comparision against the time in which <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849">Stop()</a> is called. </p>
+
+</div>
+</div>
+<a class="anchor" id="a110bb8976dcad6f3e62ea93d4c89e849"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::chrono::microseconds sjsu::StopWatch::Stop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Calculates and returns the current lap/time delta from the previous time <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start()</a> was called. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/utility/<a class="el" href="../../dd/d41/stopwatch_8hpp_source.html">stopwatch.hpp</a></li>
 </ul>

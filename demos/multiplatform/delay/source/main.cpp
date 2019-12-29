@@ -1,5 +1,6 @@
-#include <inttypes.h>
+#include <cinttypes>
 #include <cstdint>
+
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
