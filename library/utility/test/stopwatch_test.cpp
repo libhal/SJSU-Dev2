@@ -27,11 +27,11 @@ TEST_CASE("Testing StopWatch Utilities", "[stopwatch]")
     StopWatch test_subject;
     test_subject.Calibrate();
 
-    constexpr std::chrono::microseconds kDelay[] = {
-      200us, 1215us, 1124us, 65513us, 10us, 5us, 0xDEADBEEFus
+    constexpr std::chrono::nanoseconds kDelay[] = {
+      200us, 1215us, 1124us, 6752us, 10us, 5us, 983us,
     };
-    constexpr std::chrono::microseconds kAfterDelay[] = {
-      111us, 451us, 972us, 248us, 463us, 1045us, 0us
+    constexpr std::chrono::nanoseconds kAfterDelay[] = {
+      111us, 451us, 972us, 248us, 0us, 463us, 1045us,
     };
 
     // Exercise

@@ -174,6 +174,7 @@ void InitializePlatform()
   sjsu::newlib::SetStdout(Lpc40xxStdOut);
   sjsu::newlib::SetStdin(Lpc40xxStdIn);
 
+  system_timer.Initialize();
   system_timer.SetTickFrequency(config::kRtosFrequency);
   sjsu::Status timer_start_status = system_timer.StartTimer();
 

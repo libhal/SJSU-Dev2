@@ -20,7 +20,7 @@ ifneq ($(MAKECMDGOALS), \
        $(filter $(MAKECMDGOALS), \
         presubmit openocd debug debug-test flash jtag-flash platform-flash \
         platform-jtag-flash lint ))
-MAKEFLAGS += --output-sync=target
+# MAKEFLAGS += --output-sync=target
 endif
 #
 # Setting the number of threads
