@@ -13,6 +13,7 @@ var searchData=
   ['temt6000x01',['Temt6000x01',['../d3/da6/classsjsu_1_1Temt6000x01.html',1,'sjsu']]],
   ['terminalcache_5ft',['TerminalCache_t',['../d4/d59/structsjsu_1_1TerminalCache__t.html',1,'sjsu']]],
   ['tfmini',['TFMini',['../d2/dc6/classsjsu_1_1TFMini.html',1,'sjsu']]],
+  ['ticks_5fper_5fmillisecond',['ticks_per_millisecond',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa56845f054040a5d4c91899d3987dcc6',1,'sjsu::cortex::SystemTimer']]],
   ['timeout',['timeout',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a050e7f7988d762c4099178e8842e32b6',1,'sjsu::I2c::Transaction_t']]],
   ['timer',['Timer',['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html',1,'sjsu::lpc40xx::Pwm']]],
   ['timer',['Timer',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html',1,'sjsu::lpc40xx']]],

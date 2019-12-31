@@ -286,10 +286,10 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>ReadFnt</b> = void(*
 <tr class="memitem:a19c1a327b04630c754e1cb8784f53290"><td class="memTemplParams" colspan="2">template&lt;class T , const size_t length&gt; </td></tr>
 <tr class="memitem:a19c1a327b04630c754e1cb8784f53290"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a19c1a327b04630c754e1cb8784f53290">Vector</a> = std::vector&lt; T, <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a>&lt; T, length &gt;&gt;</td></tr>
 <tr class="separator:a19c1a327b04630c754e1cb8784f53290"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5d8bad0a4f11ec7df61878748d05e00"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5d8bad0a4f11ec7df61878748d05e00"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac5d8bad0a4f11ec7df61878748d05e00">UptimeFunction</a> = std::function&lt; std::chrono::microseconds(void)&gt;</td></tr>
-<tr class="memdesc:ac5d8bad0a4f11ec7df61878748d05e00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of an UptimeFunction. <br /></td></tr>
-<tr class="separator:ac5d8bad0a4f11ec7df61878748d05e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80c4ba087f4b101fd4d7714bb9fb32f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80c4ba087f4b101fd4d7714bb9fb32f9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a80c4ba087f4b101fd4d7714bb9fb32f9">UptimeFunction</a> = std::function&lt; std::chrono::nanoseconds(void)&gt;</td></tr>
+<tr class="memdesc:a80c4ba087f4b101fd4d7714bb9fb32f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of an UptimeFunction. <br /></td></tr>
+<tr class="separator:a80c4ba087f4b101fd4d7714bb9fb32f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -400,18 +400,18 @@ template&lt;class T , size_t N, class U , class V , size_t M, class W &gt; </td>
 <tr class="separator:aab8ca257071bdc5d7a663c24d44b518b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a348f1e255225c6385c2759b49c111c5f"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a348f1e255225c6385c2759b49c111c5f">Stringify</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> status)</td></tr>
 <tr class="separator:a348f1e255225c6385c2759b49c111c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8744125900419599388b2a125e2fbc55"><td class="memItemLeft" align="right" valign="top">std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8744125900419599388b2a125e2fbc55">DefaultUptime</a> ()</td></tr>
-<tr class="separator:a8744125900419599388b2a125e2fbc55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e2cb4b7be14a36c3477dcae3a3010a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8e2cb4b7be14a36c3477dcae3a3010a0">SetUptimeFunction</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#ac5d8bad0a4f11ec7df61878748d05e00">UptimeFunction</a> uptime_function)</td></tr>
+<tr class="memitem:a0f84f67b465422655089cda4b4a60877"><td class="memItemLeft" align="right" valign="top">std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877">DefaultUptime</a> ()</td></tr>
+<tr class="separator:a0f84f67b465422655089cda4b4a60877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e2cb4b7be14a36c3477dcae3a3010a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8e2cb4b7be14a36c3477dcae3a3010a0">SetUptimeFunction</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#a80c4ba087f4b101fd4d7714bb9fb32f9">UptimeFunction</a> uptime_function)</td></tr>
 <tr class="separator:a8e2cb4b7be14a36c3477dcae3a3010a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ebae2d1aa4a854629bbfddaf05935b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8ebae2d1aa4a854629bbfddaf05935b5">Wait</a> (std::chrono::microseconds timeout, std::function&lt; bool()&gt; is_done)</td></tr>
-<tr class="separator:a8ebae2d1aa4a854629bbfddaf05935b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b14641f8bcd6cd0c17bcad47c0209b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a5b14641f8bcd6cd0c17bcad47c0209b8">Wait</a> (std::chrono::microseconds timeout)</td></tr>
-<tr class="separator:a5b14641f8bcd6cd0c17bcad47c0209b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad90da361581fb6ebcc50f118c5696ec6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad90da361581fb6ebcc50f118c5696ec6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ad90da361581fb6ebcc50f118c5696ec6">Delay</a> (std::chrono::microseconds delay_time)</td></tr>
-<tr class="memdesc:ad90da361581fb6ebcc50f118c5696ec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay the system for a duration of time. <br /></td></tr>
-<tr class="separator:ad90da361581fb6ebcc50f118c5696ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a320210b51d2d24ec0b9a5a8009d39f85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a320210b51d2d24ec0b9a5a8009d39f85">Wait</a> (std::chrono::nanoseconds timeout, std::function&lt; bool()&gt; is_done)</td></tr>
+<tr class="separator:a320210b51d2d24ec0b9a5a8009d39f85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a13b55bdb9bf8aa1ea29726df478dce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a5a13b55bdb9bf8aa1ea29726df478dce">Wait</a> (std::chrono::nanoseconds timeout)</td></tr>
+<tr class="separator:a5a13b55bdb9bf8aa1ea29726df478dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7296da8e9d2335075c51565cc1a0060f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7296da8e9d2335075c51565cc1a0060f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7296da8e9d2335075c51565cc1a0060f">Delay</a> (std::chrono::nanoseconds delay_time)</td></tr>
+<tr class="memdesc:a7296da8e9d2335075c51565cc1a0060f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delay the system for a duration of time. <br /></td></tr>
+<tr class="separator:a7296da8e9d2335075c51565cc1a0060f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e0c84e1acf85469e214a02be7b0049a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e0c84e1acf85469e214a02be7b0049a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a9e0c84e1acf85469e214a02be7b0049a">Halt</a> ()</td></tr>
 <tr class="memdesc:a9e0c84e1acf85469e214a02be7b0049a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Halt system by putting it into infinite loop. <br /></td></tr>
@@ -455,7 +455,7 @@ const units::voltage::millivolt_t&#160;</td><td class="memItemRight" valign="bot
 const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac50163c51bcf95af4b4383bdad7a5c8a">kCoulombsPerAh</a> = 3600.0f</td></tr>
 <tr class="memdesc:ac50163c51bcf95af4b4383bdad7a5c8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">3600 is the number of coulombs per amp hour <br /></td></tr>
 <tr class="separator:ac50163c51bcf95af4b4383bdad7a5c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1015ce029891b6ea23685a883ebd664"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac5d8bad0a4f11ec7df61878748d05e00">UptimeFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac1015ce029891b6ea23685a883ebd664">Uptime</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#a8744125900419599388b2a125e2fbc55">DefaultUptime</a></td></tr>
+<tr class="memitem:ac1015ce029891b6ea23685a883ebd664"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a80c4ba087f4b101fd4d7714bb9fb32f9">UptimeFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac1015ce029891b6ea23685a883ebd664">Uptime</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877">DefaultUptime</a></td></tr>
 <tr class="separator:ac1015ce029891b6ea23685a883ebd664"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -626,7 +626,7 @@ template&lt;template&lt; auto &gt; class CommandLineType, template&lt; size_t &g
 
 </div>
 </div>
-<a class="anchor" id="a8744125900419599388b2a125e2fbc55"></a>
+<a class="anchor" id="a0f84f67b465422655089cda4b4a60877"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -634,7 +634,7 @@ template&lt;template&lt; auto &gt; class CommandLineType, template&lt; size_t &g
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::chrono::microseconds sjsu::DefaultUptime </td>
+          <td class="memname">std::chrono::nanoseconds sjsu::DefaultUptime </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -647,7 +647,7 @@ template&lt;template&lt; auto &gt; class CommandLineType, template&lt; size_t &g
 </table>
 </div><div class="memdoc">
 <p>A default uptime function that is used for testing or platforms without a means to keep time. It should not be used in production.</p>
-<dl class="section return"><dt>Returns</dt><dd>the current number of fake uptime microseconds that increments each time this function is called. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the current number of fake uptime nanoseconds that increments each time this function is called. </dd></dl>
 
 </div>
 </div>
@@ -785,7 +785,7 @@ template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMask
         <tr>
           <td class="memname">void sjsu::SetUptimeFunction </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac5d8bad0a4f11ec7df61878748d05e00">UptimeFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d0/d6b/namespacesjsu.html#a80c4ba087f4b101fd4d7714bb9fb32f9">UptimeFunction</a>&#160;</td>
           <td class="paramname"><em>uptime_function</em></td><td>)</td>
           <td></td>
         </tr>
@@ -796,7 +796,7 @@ template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMask
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Returns the system uptime in microseconds, do not use this function directly</p>
+<p>Returns the system uptime in nanoseconds, do not use this function directly</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">uptime_function</td><td>- new system wide uptime function to override the previous one. </td></tr>
@@ -934,7 +934,7 @@ template&lt;typename Enum &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a8ebae2d1aa4a854629bbfddaf05935b5"></a>
+<a class="anchor" id="a320210b51d2d24ec0b9a5a8009d39f85"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -944,7 +944,7 @@ template&lt;typename Enum &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Wait </td>
           <td>(</td>
-          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramtype">std::chrono::nanoseconds&#160;</td>
           <td class="paramname"><em>timeout</em>, </td>
         </tr>
         <tr>
@@ -976,7 +976,7 @@ template&lt;typename Enum &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a5b14641f8bcd6cd0c17bcad47c0209b8"></a>
+<a class="anchor" id="a5a13b55bdb9bf8aa1ea29726df478dce"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -986,7 +986,7 @@ template&lt;typename Enum &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Wait </td>
           <td>(</td>
-          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramtype">std::chrono::nanoseconds&#160;</td>
           <td class="paramname"><em>timeout</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1017,7 +1017,7 @@ template&lt;typename Enum &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac5d8bad0a4f11ec7df61878748d05e00">UptimeFunction</a> sjsu::Uptime = <a class="el" href="../../d0/d6b/namespacesjsu.html#a8744125900419599388b2a125e2fbc55">DefaultUptime</a></td>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a80c4ba087f4b101fd4d7714bb9fb32f9">UptimeFunction</a> sjsu::Uptime = <a class="el" href="../../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877">DefaultUptime</a></td>
         </tr>
       </table>
   </td>
@@ -1026,7 +1026,7 @@ template&lt;typename Enum &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Global Uptime function, preset to <a class="el" href="../../d0/d6b/namespacesjsu.html#a8744125900419599388b2a125e2fbc55">DefaultUptime()</a> for testing purposes. In general, this function is overwritten by </p>
+<p>Global Uptime function, preset to <a class="el" href="../../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877">DefaultUptime()</a> for testing purposes. In general, this function is overwritten by </p>
 
 </div>
 </div>

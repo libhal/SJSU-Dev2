@@ -30,7 +30,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-void SineDac(const Dac & dac, std::chrono::microseconds delay)
+void SineDac(const Dac & dac, std::chrono::milliseconds delay)
 {
   for (uint8_t i = 0; i < 255; i++)
   {
@@ -38,7 +38,7 @@ void SineDac(const Dac & dac, std::chrono::microseconds delay)
     sjsu::Delay(delay);
   }
 }
-void SawtoothDac(const Dac & dac, std::chrono::microseconds delay)
+void SawtoothDac(const Dac & dac, std::chrono::milliseconds delay)
 {
   int sawtooth = 0;
   for (uint8_t i = 0; i < 255; i++)
@@ -49,7 +49,7 @@ void SawtoothDac(const Dac & dac, std::chrono::microseconds delay)
     sjsu::Delay(delay);
   }
 }
-void TriangleDac(const Dac & dac, std::chrono::microseconds delay)
+void TriangleDac(const Dac & dac, std::chrono::milliseconds delay)
 {
   int triangle = 0;
   for (uint8_t i = 0; i < 127; i++)
@@ -67,7 +67,7 @@ void TriangleDac(const Dac & dac, std::chrono::microseconds delay)
     sjsu::Delay(delay);
   }
 }
-void SerratedDac(const Dac & dac, std::chrono::microseconds delay)
+void SerratedDac(const Dac & dac, std::chrono::milliseconds delay)
 {
   int serrated = 0;
   for (uint8_t i = 0; i < 127; i++)
@@ -87,7 +87,7 @@ void SerratedDac(const Dac & dac, std::chrono::microseconds delay)
   }
 }
 
-void StartDemo(const Dac & dac, std::chrono::microseconds input_cycles)
+void StartDemo(const Dac & dac, std::chrono::milliseconds input_cycles)
 {
   for (uint32_t i = 0; i < 4; i++)
   {

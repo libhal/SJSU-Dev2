@@ -24,7 +24,7 @@ class StopWatch
   /// events, giving a more accurate time.
   void Calibrate()
   {
-    calibrate_delta_ = 0us;
+    calibrate_delta_ = 0ns;
     Start();
     calibrate_delta_ = Stop();
   }
@@ -38,20 +38,20 @@ class StopWatch
 
   /// Calculates and returns the current lap/time delta from the previous time
   /// Start() was called.
-  std::chrono::microseconds Stop()
+  std::chrono::nanoseconds Stop()
   {
     auto current_uptime = Uptime();
     return (current_uptime - start_ticks_) - calibrate_delta_;
   }
 
   /// This is used to inspect the calibration delta time.
-  std::chrono::microseconds GetCalibrationDelta()
+  std::chrono::nanoseconds GetCalibrationDelta()
   {
     return calibrate_delta_;
   }
 
  private:
-  std::chrono::microseconds calibrate_delta_ = 0us;
-  std::chrono::microseconds start_ticks_     = 0us;
+  std::chrono::nanoseconds calibrate_delta_ = 0ns;
+  std::chrono::nanoseconds start_ticks_     = 0ns;
 };
 }  // namespace sjsu

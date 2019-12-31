@@ -9,5 +9,6 @@ var searchData=
   ['device_5faddress',['device_address',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#ad06cae1b08802fda54085f0cec74322b',1,'sjsu::I2cCommand::Arguments_t']]],
   ['divide_5fadd',['divide_add',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a805a337d0ddac02557b190af81a8f49e',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
   ['divide_5flatch',['divide_latch',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a811d5016449d3f36725712edd9f93500',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
-  ['dwt',['dwt',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a2c6afc4851e31f71ede5b40973b5eac1',1,'sjsu::cortex::DwtCounter']]]
+  ['dwt',['dwt',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a2c6afc4851e31f71ede5b40973b5eac1',1,'sjsu::cortex::DwtCounter']]],
+  ['dwt_5fcounter',['dwt_counter',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a0f8af5180e2f318f756c4aa6887cd207',1,'sjsu::cortex::SystemTimer']]]
 ];

@@ -81,7 +81,7 @@ var searchData=
   ['status',['Status',['../d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html',1,'sjsu::lpc40xx::Eeprom']]],
   ['status_5ft',['Status_t',['../df/dc0/structsjsu_1_1lpc40xx_1_1Can_1_1Status__t.html',1,'sjsu::lpc40xx::Can']]],
   ['statusregister',['StatusRegister',['../d9/d20/structsjsu_1_1lpc40xx_1_1Spi_1_1StatusRegister.html',1,'sjsu::lpc40xx::Spi']]],
-  ['stop',['Stop',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#aed7997ea81a68d6d1315bb23ef882cee',1,'sjsu::lpc40xx::Timer::Stop()'],['../dd/d31/classsjsu_1_1Timer.html#a3a001128facce75522d8b9811c5649a3',1,'sjsu::Timer::Stop()'],['../de/d29/classsjsu_1_1Buzzer.html#a21f5618521643c54bd651c42248feef2',1,'sjsu::Buzzer::Stop()'],['../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849',1,'sjsu::StopWatch::Stop()']]],
+  ['stop',['Stop',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#aed7997ea81a68d6d1315bb23ef882cee',1,'sjsu::lpc40xx::Timer::Stop()'],['../dd/d31/classsjsu_1_1Timer.html#a3a001128facce75522d8b9811c5649a3',1,'sjsu::Timer::Stop()'],['../de/d29/classsjsu_1_1Buzzer.html#a21f5618521643c54bd651c42248feef2',1,'sjsu::Buzzer::Stop()'],['../d0/dab/classsjsu_1_1StopWatch.html#a6e9465459efed0ef7eb1380b78a35c1f',1,'sjsu::StopWatch::Stop()']]],
   ['stopwatch',['StopWatch',['../d0/dab/classsjsu_1_1StopWatch.html',1,'sjsu']]],
   ['str',['str',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html#a1e8caafdbebd22880a692db6f7c4b5c9',1,'sjsu::I2cCommand::AddressString_t']]],
   ['string',['String',['../d0/d6b/namespacesjsu.html#a32bf2a58de0d1a9bdd40c8445f743e9c',1,'sjsu']]],

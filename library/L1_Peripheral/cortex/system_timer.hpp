@@ -6,6 +6,7 @@
 
 #include "L0_Platform/arm_cortex/m4/core_cm4.h"
 #include "L1_Peripheral/cortex/interrupt.hpp"
+#include "L1_Peripheral/cortex/dwt_counter.hpp"
 #include "L1_Peripheral/system_controller.hpp"
 #include "L1_Peripheral/system_timer.hpp"
 #include "utility/status.hpp"
@@ -31,16 +32,33 @@ class SystemTimer final : public sjsu::SystemTimer
     kClkSource     = 2,
     kCountFlag     = 16
   };
+
   /// Address of the ARM Cortex SysTick peripheral.
   inline static SysTick_Type * sys_tick = SysTick;
+
   /// callback defaults to nullptr. The actual SystemTickHandler
   /// should check if the isr is set to nullptr, and if it is, turn off the
   /// timer, if set a proper function then execute it.
   inline static InterruptCallback callback = nullptr;
+
   /// Used to count the number of times system_timer has executed. If the
   /// frequency of the SystemTimer is set to 1kHz, this could be used as a
   /// milliseconds counter.
-  inline static std::chrono::microseconds counter = 0us;
+  inline static std::chrono::nanoseconds millisecond_count = 0us;
+
+  /// Higher precision counter that counts on every system clock cycle
+  inline static DwtCounter dwt_counter;
+
+  /// Holds the converstion from ticks to nanoseconds
+  inline static std::chrono::nanoseconds nanoseconds_per_tick = 1us;
+
+  /// Holds the conversion from ticks to milliseconds
+  inline static uint32_t ticks_per_millisecond = 1;
+
+  /// Fixed point scale in order to boost the precision of GetCount() method
+  /// while also keeping most of the arithmetic as integer math.
+  static constexpr uint32_t kFixedPointScaling = 1'000'000;
+
   /// Disables this system timer.
   /// @warning: Calling this function so will disable FreeRTOS.
   static void DisableTimer()
@@ -49,28 +67,59 @@ class SystemTimer final : public sjsu::SystemTimer
     sys_tick->VAL  = 0;
     sys_tick->CTRL = 0;
   }
-  /// Universal default system timer interrupt handler.
+
+  /// System timer interrupt handler.
   static void SystemTimerHandler()
   {
     // This assumes that SysTickHandler is called every millisecond.
     // Changing that frequency will distort the milliseconds time.
-    counter += 1ms;
+    millisecond_count += 1ms;
     if (callback)
     {
       callback();
     }
   }
+
   /// @return returns the current system_timer counter value.
-  static std::chrono::microseconds GetCount()
+  static std::chrono::nanoseconds GetCount()
   {
-    return counter;
+    // Capture all count variables at this instant.
+    uint32_t high_speed_ticks = dwt_counter.GetCount();
+    auto current_millis_count = millisecond_count;
+
+    // Get rid of the portion of the dwt tick count that is above 1ms.
+    // We only want the information about the ticks that is below 1ms, since we
+    // get the 1ms count from the SysTick timer interrupt.
+    uint32_t sub_millis_ticks = (high_speed_ticks % ticks_per_millisecond);
+    // Perform the conversion from ticks to nanoseconds
+    auto nanoseconds_unscaled = (sub_millis_ticks * nanoseconds_per_tick);
+    // Nanoseconds per tick is actually scaled up by the kFixedPointScaling
+    // factor, meaning it needs to be divided by that value to get the correct
+    // nanosecond_uptime.
+    auto nanoseconds_uptime_scaled = nanoseconds_unscaled / kFixedPointScaling;
+
+    // Result is simply the uptime milliseconds (represented in nanoseconds) +
+    // the added nanoseconds
+    return current_millis_count + nanoseconds_uptime_scaled;
   }
+
   /// Constructor for ARM Cortex M system timer.
   ///
   /// @param priority - the interrupt priority of
   explicit constexpr SystemTimer(uint8_t priority = -1) : priority_(priority) {}
 
-  void Initialize() const override {}
+  void Initialize() const override
+  {
+    dwt_counter.Initialize();
+
+    auto system_frequency = SystemController::GetPlatformController()
+                                .GetSystemFrequency()
+                                .to<uint32_t>();
+
+    ticks_per_millisecond = system_frequency / 1000 /* ms/s */;
+    nanoseconds_per_tick =
+        (kFixedPointScaling * 1'000'000'000ns) / system_frequency;
+  }
 
   void SetCallback(InterruptCallback isr) const override
   {
@@ -105,6 +154,7 @@ class SystemTimer final : public sjsu::SystemTimer
 
     return status;
   }
+
   /// @param frequency set the frequency that SystemTick counter will run.
   ///        If it is above the maximum SystemTick value 2^24
   ///        [SysTick_LOAD_RELOAD_Msk], the value is ceiled to

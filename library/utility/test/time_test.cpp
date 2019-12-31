@@ -77,13 +77,13 @@ TEST_CASE("Testing Time Utility", "[time]")
     SetUptimeFunction(DefaultUptime);
     auto current_timestamp   = Uptime();
     auto timeout_time        = 500us;
-    auto time_until_complete = 100us;
-    int callback_counter     = 0;
+    auto time_until_complete = 10us;
+    auto callback_counter    = 0us;
 
     // Exercise
     Status wait_status =
         Wait(timeout_time, [&callback_counter, time_until_complete]() {
-          if (callback_counter > time_until_complete.count())
+          if (callback_counter > time_until_complete)
           {
             return true;
           }
@@ -94,8 +94,7 @@ TEST_CASE("Testing Time Utility", "[time]")
     // Verify
     auto final_uptime = Uptime();
     CHECK(wait_status == Status::kSuccess);
-    CHECK((current_timestamp + 4us + time_until_complete).count() ==
-          final_uptime.count());
+    CHECK((current_timestamp + 4us + time_until_complete) == final_uptime);
     CHECK((current_timestamp + 4us + timeout_time) != final_uptime);
   }
 
@@ -104,9 +103,9 @@ TEST_CASE("Testing Time Utility", "[time]")
     // Setup
     SetUptimeFunction(DefaultUptime);
     auto current_timestamp   = Uptime();
-    auto timeout_time        = std::chrono::microseconds::max();
+    auto timeout_time        = std::chrono::nanoseconds::max();
     auto time_until_complete = 5us;
-    int callback_counter     = 0;
+    auto callback_counter    = 0us;
 
     // Exercise: If I waited for the actual max time, this test would not end
     //           for a very long time. The problem with using max() is that it
@@ -118,7 +117,7 @@ TEST_CASE("Testing Time Utility", "[time]")
     //           the max has been ceiled.
     Status wait_status =
         Wait(timeout_time, [&callback_counter, time_until_complete]() {
-          if (callback_counter > time_until_complete.count())
+          if (callback_counter > time_until_complete)
           {
             return true;
           }
@@ -129,8 +128,7 @@ TEST_CASE("Testing Time Utility", "[time]")
     // Verify
     auto final_uptime = Uptime();
     CHECK(wait_status == Status::kSuccess);
-    CHECK((current_timestamp + 3us + time_until_complete).count() ==
-          final_uptime.count());
+    CHECK((current_timestamp + 3us + time_until_complete) == final_uptime);
     CHECK((current_timestamp + 3us + timeout_time) != final_uptime);
   }
 }

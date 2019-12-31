@@ -9,7 +9,6 @@ var searchData=
   ['commands',['commands',['../db/d4d/structsjsu_1_1CommandList__t.html#adcf263f5169af79c4db93aa3979c218e',1,'sjsu::CommandList_t']]],
   ['core',['core',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a132ec893313a5c0d5c5f980b070c7e5d',1,'sjsu::cortex::DwtCounter']]],
   ['count',['count',['../d0/ded/structsjsu_1_1PulseCapture_1_1CaptureStatus__t.html#aedb7331f896891f21669df7c45c4c99d',1,'sjsu::PulseCapture::CaptureStatus_t']]],
-  ['counter',['counter',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff29823fac884a5fb58c52cd0568f653',1,'sjsu::cortex::SystemTimer']]],
   ['crc_5ftable',['crc_table',['../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html#a944edd71e78b59e8fc9e505b829d815a',1,'sjsu::crc::CrcTableConfig_t']]],
   ['current_5fvector',['current_vector',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#a1f2ac1be5bc720c47b373d32ada0dccb',1,'sjsu::cortex::InterruptController']]]
 ];

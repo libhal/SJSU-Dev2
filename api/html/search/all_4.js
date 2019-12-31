@@ -17,8 +17,8 @@ var searchData=
   ['debugsdcard_5ft',['DebugSdCard_t',['../df/dc2/structsjsu_1_1Sd_1_1DebugSdCard__t.html',1,'sjsu::Sd']]],
   ['declaredonstackcheck',['DeclaredOnStackCheck',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83',1,'sjsu::rtos::Task']]],
   ['decodedframe_5ft',['DecodedFrame_t',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html',1,'sjsu::infrared']]],
-  ['defaultuptime',['DefaultUptime',['../d0/d6b/namespacesjsu.html#a8744125900419599388b2a125e2fbc55',1,'sjsu']]],
-  ['delay',['Delay',['../d0/d6b/namespacesjsu.html#ad90da361581fb6ebcc50f118c5696ec6',1,'sjsu']]],
+  ['defaultuptime',['DefaultUptime',['../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877',1,'sjsu']]],
+  ['delay',['Delay',['../d0/d6b/namespacesjsu.html#a7296da8e9d2335075c51565cc1a0060f',1,'sjsu']]],
   ['delay_5ftime_5f',['delay_time_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5be244105265971ef530ad246b030c7b',1,'sjsu::rtos::Task']]],
   ['delete',['Delete',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab6f2cee2c287b9068c4ab0357140c9af',1,'sjsu::rtos::Task']]],
   ['deque',['Deque',['../d0/d6b/namespacesjsu.html#acf630480e38ef3983d3d839db5ee8454',1,'sjsu']]],
@@ -42,5 +42,6 @@ var searchData=
   ['drawrectangle',['DrawRectangle',['../d7/d8c/classsjsu_1_1Graphics.html#afe37ee2c43e7a7384feb4f2c488c9000',1,'sjsu::Graphics']]],
   ['drawverticalline',['DrawVerticalLine',['../d7/d8c/classsjsu_1_1Graphics.html#a5ec2ae4017c3ad75baf7b85209d2e5fb',1,'sjsu::Graphics']]],
   ['dwt',['dwt',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a2c6afc4851e31f71ede5b40973b5eac1',1,'sjsu::cortex::DwtCounter']]],
+  ['dwt_5fcounter',['dwt_counter',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a0f8af5180e2f318f756c4aa6887cd207',1,'sjsu::cortex::SystemTimer']]],
   ['dwtcounter',['DwtCounter',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html',1,'sjsu::cortex']]]
 ];

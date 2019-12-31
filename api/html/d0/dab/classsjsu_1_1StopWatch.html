@@ -121,12 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abed47c2598a289745ee58d50cd0b97e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25e5de2eb10cc35d0441df273ad7f39f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start</a> ()</td></tr>
 <tr class="separator:a25e5de2eb10cc35d0441df273ad7f39f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a110bb8976dcad6f3e62ea93d4c89e849"><td class="memItemLeft" align="right" valign="top">std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849">Stop</a> ()</td></tr>
-<tr class="separator:a110bb8976dcad6f3e62ea93d4c89e849"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f5bd36669d04942c64adc7ff5906532"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f5bd36669d04942c64adc7ff5906532"></a>
-std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a7f5bd36669d04942c64adc7ff5906532">GetCalibrationDelta</a> ()</td></tr>
-<tr class="memdesc:a7f5bd36669d04942c64adc7ff5906532"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to inspect the calibration delta time. <br /></td></tr>
-<tr class="separator:a7f5bd36669d04942c64adc7ff5906532"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e9465459efed0ef7eb1380b78a35c1f"><td class="memItemLeft" align="right" valign="top">std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a6e9465459efed0ef7eb1380b78a35c1f">Stop</a> ()</td></tr>
+<tr class="separator:a6e9465459efed0ef7eb1380b78a35c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e7940a604f42f04fe7fc334a5f278ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e7940a604f42f04fe7fc334a5f278ab"></a>
+std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a0e7940a604f42f04fe7fc334a5f278ab">GetCalibrationDelta</a> ()</td></tr>
+<tr class="memdesc:a0e7940a604f42f04fe7fc334a5f278ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is used to inspect the calibration delta time. <br /></td></tr>
+<tr class="separator:a0e7940a604f42f04fe7fc334a5f278ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A stop watch class that can be used to determine the time between events. </p>
@@ -151,7 +151,7 @@ std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a 
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Calibrates the stopwatch by figuring out how much time it takes to <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start()</a> and <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849">Stop()</a> the stopwatch. Since it takes time to call the methods, this is used to remove the call to <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849">Stop()</a> and <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start()</a> from the time between events, giving a more accurate time. </p>
+<p>Calibrates the stopwatch by figuring out how much time it takes to <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start()</a> and <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a6e9465459efed0ef7eb1380b78a35c1f">Stop()</a> the stopwatch. Since it takes time to call the methods, this is used to remove the call to <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a6e9465459efed0ef7eb1380b78a35c1f">Stop()</a> and <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f">Start()</a> from the time between events, giving a more accurate time. </p>
 
 </div>
 </div>
@@ -175,11 +175,11 @@ std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a 
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Acquires the current uptime and stores it for comparision against the time in which <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a110bb8976dcad6f3e62ea93d4c89e849">Stop()</a> is called. </p>
+<p>Acquires the current uptime and stores it for comparision against the time in which <a class="el" href="../../d0/dab/classsjsu_1_1StopWatch.html#a6e9465459efed0ef7eb1380b78a35c1f">Stop()</a> is called. </p>
 
 </div>
 </div>
-<a class="anchor" id="a110bb8976dcad6f3e62ea93d4c89e849"></a>
+<a class="anchor" id="a6e9465459efed0ef7eb1380b78a35c1f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -187,7 +187,7 @@ std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::chrono::microseconds sjsu::StopWatch::Stop </td>
+          <td class="memname">std::chrono::nanoseconds sjsu::StopWatch::Stop </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

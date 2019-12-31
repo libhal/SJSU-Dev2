@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['wait',['Wait',['../d0/d6b/namespacesjsu.html#a8ebae2d1aa4a854629bbfddaf05935b5',1,'sjsu::Wait(std::chrono::microseconds timeout, std::function&lt; bool()&gt; is_done)'],['../d0/d6b/namespacesjsu.html#a5b14641f8bcd6cd0c17bcad47c0209b8',1,'sjsu::Wait(std::chrono::microseconds timeout)']]],
+  ['wait',['Wait',['../d0/d6b/namespacesjsu.html#a320210b51d2d24ec0b9a5a8009d39f85',1,'sjsu::Wait(std::chrono::nanoseconds timeout, std::function&lt; bool()&gt; is_done)'],['../d0/d6b/namespacesjsu.html#a5a13b55bdb9bf8aa1ea29726df478dce',1,'sjsu::Wait(std::chrono::nanoseconds timeout)']]],
   ['waitforinput',['WaitForInput',['../d1/d42/classsjsu_1_1CommandLine.html#a4eaf573a214cc6dd46027c3441ec7ed1',1,'sjsu::CommandLine']]],
   ['watchdog',['Watchdog',['../d5/da1/classsjsu_1_1Watchdog.html',1,'sjsu']]],
   ['watchdog',['Watchdog',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html',1,'sjsu::lpc40xx']]],

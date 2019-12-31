@@ -53,6 +53,7 @@ var searchData=
   ['kenabledoubleedge',['kEnableDoubleEdge',['../d3/d69/structsjsu_1_1lpc40xx_1_1Pwm_1_1OutputControl.html#a07095a125467b1456392837afb78ffe6',1,'sjsu::lpc40xx::Pwm::OutputControl']]],
   ['kenableoutput',['kEnableOutput',['../d3/d69/structsjsu_1_1lpc40xx_1_1Pwm_1_1OutputControl.html#a6b1ed1df274bcae917928e7940571ece',1,'sjsu::lpc40xx::Pwm::OutputControl']]],
   ['kexpectedsensorid',['kExpectedSensorId',['../df/ddc/classsjsu_1_1Si7060.html#aaa9447d97932b62a22db91e818765b9e',1,'sjsu::Si7060']]],
+  ['kfixedpointscaling',['kFixedPointScaling',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#afceab64a17cb45c34f4a8b4f1f7d100f',1,'sjsu::cortex::SystemTimer']]],
   ['kframebit',['kFrameBit',['../dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html#a1ae3eba4ec21313d6f79d885de86b3ad',1,'sjsu::lpc40xx::Spi::ControlRegister0']]],
   ['kfunction',['kFunction',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a5e2b02144699e9e2a3a7c2fd65321b7a',1,'sjsu::lpc40xx::Pin']]],
   ['kground',['kGround',['../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html#a6bc06a02a96d517198bf52f34f4c72d2',1,'sjsu::Tmp102::DeviceAddress']]],
