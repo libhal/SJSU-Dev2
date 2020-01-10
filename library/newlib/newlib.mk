@@ -9,7 +9,4 @@ TESTS += $(LIBRARY_DIR)/newlib/newlib.cpp
 USER_TESTS += $(LIBRARY_DIR)/newlib/newlib.cpp
 endif
 
-TESTS += $(LIBRARY_DIR)/newlib/stdio.cpp
-USER_TESTS += $(LIBRARY_DIR)/newlib/stdio.cpp
-
-$(eval $(call BUILD_LIRBARY,libnewlib,LIBRARY_NEWLIB))
+$(eval $(call BUILD_LIBRARY,libnewlib,LIBRARY_NEWLIB))
