@@ -190,12 +190,12 @@ LINT_FILTER += $(LIB_DIR)/L0_Platform/lpc40xx/LPC40xx.h
 LINT_FILTER += $(LIB_DIR)/L0_Platform/lpc40xx/system_LPC407x_8x_177x_8x.h
 
 # This call generates a static library for your platform
-# $(eval $(call BUILD_LIRBARY, - calls the build library macros
+# $(eval $(call BUILD_LIBRARY, - calls the build library macros
 # liblpc40xx - is the name of the library file created and to be linked in.
 #              must be unique.
 # LIBRARY_LPC40XX - is the variable holding the list of sources files to
 #                   build in to the static library.
-$(eval $(call BUILD_LIRBARY,liblpc40xx,LIBRARY_LPC40XX))
+$(eval $(call BUILD_LIBRARY,liblpc40xx,LIBRARY_LPC40XX))
 
 # (optional) include additional sub directory make files if applicable
 # in this case, the LPC40xx uses an Arm Cortex-M4 so we want to add its

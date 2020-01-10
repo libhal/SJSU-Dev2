@@ -73,8 +73,8 @@ class Ltc4150 : public CoulombCounter
   }
 
   /// Destructor of this object will detach the interrupt from the polarity
-  /// GPIO pin. The counter_ class member valriable automatically detatches
-  /// the interrupt from the tick pin.
+  /// GPIO pin. The counter_ class member variable automatically detaches the
+  /// interrupt from the tick pin on destruction.
   ~Ltc4150()
   {
     pol_pin_.DetachInterrupt();

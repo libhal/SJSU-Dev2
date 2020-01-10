@@ -6,11 +6,12 @@ LIBRARY_EXAMPLE += $(LIBRARY_DIR)/L0_Platform/example/startup.cpp
 LIBRARY_EXAMPLE += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/ARM_CM4F/port.c
 
 # Give a path to the OPENOCD configuration file
-OPENOCD_CONFIG = $(LIBRARY_DIR)/L0_Platform/example/example.cfg
+OPENOCD_CONFIG := $(or $(OPENOCD_CONFIG), \
+                       $(LIBRARY_DIR)/L0_Platform/example/example.cfg)
 
 # This calls the BUILD_LIBRARY macro that generates the the example platform
 # static library.
-$(eval $(call BUILD_LIRBARY,libexample,LIBRARY_EXAMPLE))
+$(eval $(call BUILD_LIBRARY,libexample,LIBRARY_EXAMPLE))
 
 # Include any additional platform sub make files. For example, if you are using
 # an ARM Cortex M4, you should include the line below.
