@@ -139,17 +139,24 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e74fabc6e61aaf836bfe0a4889b3754"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a1e74fabc6e61aaf836bfe0a4889b3754">Ltc4150</a> (<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;int_pin, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;pol, units::impedance::ohm_t resistance)</td></tr>
-<tr class="separator:a1e74fabc6e61aaf836bfe0a4889b3754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86eb7f036b14e8c8b552fe9767a4b199"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a86eb7f036b14e8c8b552fe9767a4b199">Ltc4150</a> (<a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html">sjsu::HardwareCounter</a> &amp;counter, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;pol, units::impedance::ohm_t resistance)</td></tr>
+<tr class="separator:a86eb7f036b14e8c8b552fe9767a4b199"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cc5856f826fe970b9d4a1fd49c642e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a8cc5856f826fe970b9d4a1fd49c642e0">Initialize</a> () override</td></tr>
 <tr class="separator:a8cc5856f826fe970b9d4a1fd49c642e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd4e260a3cb098f964f8c84824d0afea"><td class="memItemLeft" align="right" valign="top">units::charge::milliampere_hour_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#abd4e260a3cb098f964f8c84824d0afea">GetCharge</a> () const override</td></tr>
 <tr class="separator:abd4e260a3cb098f964f8c84824d0afea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc7cc390e99921db89b66d10aaee309d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#afc7cc390e99921db89b66d10aaee309d">~Ltc4150</a> ()</td></tr>
+<tr class="separator:afc7cc390e99921db89b66d10aaee309d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classsjsu_1_1CoulombCounter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1CoulombCounter')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html">sjsu::CoulombCounter</a></td></tr>
+<tr class="memitem:aab77c674cfdfd0760affb2cf39fb108b inherit pub_methods_classsjsu_1_1CoulombCounter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab77c674cfdfd0760affb2cf39fb108b"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d15/classsjsu_1_1CoulombCounter.html#aab77c674cfdfd0760affb2cf39fb108b">~CoulombCounter</a> ()=default</td></tr>
+<tr class="memdesc:aab77c674cfdfd0760affb2cf39fb108b inherit pub_methods_classsjsu_1_1CoulombCounter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default virtual destructor. <br /></td></tr>
+<tr class="separator:aab77c674cfdfd0760affb2cf39fb108b inherit pub_methods_classsjsu_1_1CoulombCounter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LTC4150 control driver for the LPC40xx and LPC17xx microcontrollers. It keeps track of a connected battery's current milliamp hours. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a1e74fabc6e61aaf836bfe0a4889b3754"></a>
+<a class="anchor" id="a86eb7f036b14e8c8b552fe9767a4b199"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -159,8 +166,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">constexpr sjsu::Ltc4150::Ltc4150 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;&#160;</td>
-          <td class="paramname"><em>int_pin</em>, </td>
+          <td class="paramtype"><a class="el" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html">sjsu::HardwareCounter</a> &amp;&#160;</td>
+          <td class="paramname"><em>counter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -188,12 +195,36 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">int_pin</td><td>- gpio pin for handling handling interrupts from the LTC4150 </td></tr>
+    <tr><td class="paramname">counter</td><td>- a hardware counter that must count on rising edge pulses. </td></tr>
     <tr><td class="paramname">pol</td><td>- gpio pin to determine the polarity output of the LTC4150. </td></tr>
     <tr><td class="paramname">resistance</td><td>- value of impedance represented in ohms for calculating battery charge </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="afc7cc390e99921db89b66d10aaee309d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">sjsu::Ltc4150::~Ltc4150 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor of this object will detach the interrupt from the polarity GPIO pin. The counter_ class member valriable automatically detatches the interrupt from the tick pin. </p>
 
 </div>
 </div>

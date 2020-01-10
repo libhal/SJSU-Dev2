@@ -11,5 +11,5 @@ var searchData=
   ['logic_5flow_5fduration',['logic_low_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a79c8ab455b690cbc4c3ee2a79c953d05',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
   ['lookuphandler',['LookupHandler',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#a45586571af8dbc8f77fa5f8d2237cd46',1,'sjsu::cortex::InterruptController']]],
   ['ltc4150',['Ltc4150',['../d9/d3a/classsjsu_1_1Ltc4150.html',1,'sjsu']]],
-  ['ltc4150',['Ltc4150',['../d9/d3a/classsjsu_1_1Ltc4150.html#a1e74fabc6e61aaf836bfe0a4889b3754',1,'sjsu::Ltc4150']]]
+  ['ltc4150',['Ltc4150',['../d9/d3a/classsjsu_1_1Ltc4150.html#a86eb7f036b14e8c8b552fe9767a4b199',1,'sjsu::Ltc4150']]]
 ];
