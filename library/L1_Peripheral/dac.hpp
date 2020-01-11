@@ -8,6 +8,7 @@ namespace sjsu
 {
 /// An abstract interface for hardware that can generate an analog voltage,
 /// typically called a Digital-to-Analog peripheral.
+/// @ingroup l1_peripheral
 class Dac
 {
  public:

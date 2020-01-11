@@ -12,6 +12,7 @@ namespace sjsu
 {
 /// An abstract interface for hardware that implements the Inter-integrated
 /// Circuit (I2C) or Two Wire Interface (TWI) hardware communication Protocol.
+/// @ingroup l1_peripheral
 class I2c
 {
  public:

@@ -8,6 +8,7 @@ namespace sjsu
 {
 /// Common abstraction interface for Analog-to-Digital (ADC) Converter. These
 /// peripherals are used to sense a voltage and convert it to a numeric value.
+/// @ingroup l1_peripheral
 class Adc
 {
  public:

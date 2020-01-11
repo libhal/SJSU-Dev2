@@ -9,6 +9,7 @@
 
 namespace sjsu
 {
+/// @ingroup l1_peripheral
 class Timer
 {
  public:
