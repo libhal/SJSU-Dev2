@@ -8,6 +8,7 @@
 
 namespace sjsu
 {
+/// @ingroup l1_peripheral
 class Can
 {
  public:

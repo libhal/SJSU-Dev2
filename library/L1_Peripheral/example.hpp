@@ -9,6 +9,9 @@
 // 0. Everything in the library folder must be within the sjsu namespace.
 namespace sjsu
 {
+/// @defgroup l1_peripheral L1 Peripheral Interfaces
+/// @brief Lists all of the peripheral interfaces in SJSU-Dev2
+/// @{
 class Example
 {
  public:
@@ -115,4 +118,6 @@ class Example
  private:
   // Private should almost never be used in the interface
 };
+/// @}
+
 }  // namespace sjsu

@@ -6,6 +6,7 @@
 
 namespace sjsu
 {
+/// @ingroup l1_peripheral
 class Watchdog
 {
   // TODO(#998): May need to expand the set of functions watchdogs perform.

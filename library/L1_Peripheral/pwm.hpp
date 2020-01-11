@@ -9,6 +9,7 @@ namespace sjsu
 {
 /// An abstract interface for hardware that can generate Pulse Width Modulation
 /// (PWM) waveforms.
+/// @ingroup l1_peripheral
 class Pwm
 {
  public:

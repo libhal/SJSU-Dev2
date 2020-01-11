@@ -1,7 +1,6 @@
-/// @ingroup SJSU-Dev2
 /// @defgroup Macros Utility Macros
-/// @brief This module is meant for general purpose macros that can be used
-/// across the SJSU-Dev2 environment.
+/// @brief General purpose macros that can be used across the SJSU-Dev2
+/// environment.
 /// @{
 #pragma once
 /// SJ2_SECTION will place a variable or function within a given section of the

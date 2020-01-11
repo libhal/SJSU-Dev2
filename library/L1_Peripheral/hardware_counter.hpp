@@ -10,6 +10,7 @@ namespace sjsu
 {
 /// An abstract interface for controlling a hardware counter, internal or
 /// external.
+/// @ingroup l1_peripheral
 class HardwareCounter
 {
  public:
@@ -54,6 +55,7 @@ class HardwareCounter
 
 /// A class that utilizes a generic sjsu::Gpio implementation to implement
 /// a hardware
+/// @ingroup l1_peripheral
 class GpioCounter : public HardwareCounter
 {
  public:

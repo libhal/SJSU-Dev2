@@ -14,6 +14,7 @@ namespace sjsu
 /// A system timer is a general timer used primarily for generating an interrupt
 /// at a fixed period, like 1ms or 10ms. Such interrupts are generally used to
 /// give control of the processor back to an operating.
+/// @ingroup l1_peripheral
 class SystemTimer
 {
  public:
