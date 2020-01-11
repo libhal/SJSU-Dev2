@@ -42,4 +42,6 @@ do
 done
 
 cspell --color --root $SJBASE --config $SJBASE/.cspell.json $all_sources
-echo "Return code = $?"
+SPELLING_RETURN_CODE=$?
+echo "Return code = $SPELLING_RETURN_CODE"
+exit $SPELLING_RETURN_CODE

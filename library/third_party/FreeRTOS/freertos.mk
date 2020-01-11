@@ -11,4 +11,4 @@ LIBRARY_FREERTOS += $(LIBRARY_DIR)/third_party/FreeRTOS/Source/queue.c
 LIBRARY_FREERTOS += \
   $(LIBRARY_DIR)/third_party/FreeRTOS/Source/portable/MemMang/heap_3.c
 
-$(eval $(call BUILD_LIRBARY,libfreertos,LIBRARY_FREERTOS))
+$(eval $(call BUILD_LIBRARY,libfreertos,LIBRARY_FREERTOS))

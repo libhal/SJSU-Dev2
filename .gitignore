@@ -14,6 +14,7 @@ tools/**/*
 !tools/FlashMagic
 !tools/Hercules.exe
 !tools/link_projects.sh
+!tools/makefile_help_menu.txt
 !tools/presubmit.sh
 !tools/putty32.exe
 !tools/putty64.exe
