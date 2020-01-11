@@ -20,7 +20,7 @@ pins or ports available for using an external debugger like a **STLink** or
 
 ### Step 1.1: Connecting JTAG
 Connect jumpers from the `GND`, `TDI`, `TMS`, `TCK`, and `TDO` pins on
-the **J-Link** to the board's JTAG headers.
+the JTAG debugger to the headers on the development board.
 
 ### Step 1.2: Connecting SWD
 Connect jumpers from `GND`, `SWDIO` and `SWDCLK` to the pins on the board. If
