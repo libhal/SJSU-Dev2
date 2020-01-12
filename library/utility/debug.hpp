@@ -140,12 +140,12 @@ inline void PrintBacktrace(bool show_make_command = false,
     {
       printf("\nRun: the following command in your project directory");
       printf("\n\n  " SJ2_BOLD_WHITE);
-      printf("make stacktrace-%s TRACES=\"", Stringify(build::kTarget));
+      printf("make stacktrace TRACES=\"");
 
       _Unwind_Backtrace(&PrintAddressInRow, &depth);
       if (final_address)
       {
-        printf(" 0x%p", final_address);
+        printf("0x%p ", final_address);
       }
 
       printf("\"\n\n" SJ2_COLOR_RESET);

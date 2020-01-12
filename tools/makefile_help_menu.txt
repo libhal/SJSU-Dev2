@@ -86,9 +86,9 @@ DEVELOPER TARGETS ______________________________________________________________
   debug-test -------------------------------------------------------------------
     Allows you to debug your test executable in GDB.
 
-  stacktrace-application -------------------------------------------------------
+  stacktrace -------------------------------------------------------------------
     Usage:
-      make stacktrace-application TRACES="0x80000000 0x800001FC0 ..."
+      make stacktrace TRACES="0x80000000 0x800001FC0 ..."
 
     Description:
       Will show the stack trace based on the program counter trace addresses in

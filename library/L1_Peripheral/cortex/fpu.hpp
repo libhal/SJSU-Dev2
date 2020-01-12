@@ -13,7 +13,7 @@ namespace cortex
 // // NOLINT
 inline void InitializeFloatingPointUnit()
 {
-  if constexpr (build::kTarget != build::Target::HostTest)
+  if constexpr (build::kPlatform != build::Platform::host)
   {
     __asm(
         // CPACR is located at address 0xE000ED88
