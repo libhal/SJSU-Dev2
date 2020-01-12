@@ -84,9 +84,9 @@ class FactoryTest
     cs.SetAsOutput();
     cs.SetHigh();
 
+    spi2.Initialize();
     spi2.SetDataSize(Spi::DataSize::kEight);
     spi2.SetClock(100_kHz);
-    spi2.Initialize();
 
     uint8_t array[5];
     cs.SetLow();
@@ -160,7 +160,7 @@ class FactoryTest
     constexpr uint8_t kApds9960IdRegisterAddress = 0x92;
     bool result                                  = false;
 
-    result = CheckDeviceId(kGestureAddress, kApds9960IdRegisterAddress, 0xAB);
+    result = CheckDeviceId(kGestureAddress, kApds9960IdRegisterAddress, 0xA8);
     printf("End of Gesture Sensor Test...\n\n");
 
     return result;

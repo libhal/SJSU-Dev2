@@ -370,7 +370,7 @@ class I2c final : public sjsu::I2c
   Status BlockUntilFinished() const
   {
     // Skip waiting on the interrupt if running a host unit test
-    if constexpr (build::kTarget == build::Target::HostTest)
+    if constexpr (build::kPlatform == build::Platform::host)
     {
       return i2c_.transaction.status;
     }

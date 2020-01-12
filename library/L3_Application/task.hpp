@@ -20,7 +20,6 @@ namespace sjsu
 {
 namespace rtos
 {
-
 class TaskInterface
 {
  public:
@@ -145,30 +144,32 @@ class Task : public TaskInterface
   /// usually results in a crash at some point in the code.
   bool DeclaredOnStackCheck()
   {
-#if !defined(HOST_TEST) && !defined(__unix__)
-    // This task's position in memory
-    intptr_t address = reinterpret_cast<intptr_t>(this);
-    // The .data section starts at RAM address 0. The .bss section follows
-    // after the .data section. The last variable in the .bss is the also the
-    // end of the data section.
-    intptr_t end_of_data_and_bss =
-        reinterpret_cast<intptr_t>(bss_section_table[0].ram_location) +
-        static_cast<intptr_t>(bss_section_table[0].length);
+    if constexpr (build::kPlatform != build::Platform::linux &&
+                  build::kPlatform != build::Platform::host)
+    {
+      // This task's position in memory
+      intptr_t address = reinterpret_cast<intptr_t>(this);
+      // The .data section starts at RAM address 0. The .bss section follows
+      // after the .data section. The last variable in the .bss is the also the
+      // end of the data section.
+      intptr_t end_of_data_and_bss =
+          reinterpret_cast<intptr_t>(bss_section_table[0].ram_location) +
+          static_cast<intptr_t>(bss_section_table[0].length);
 
-    intptr_t start_of_heap = reinterpret_cast<intptr_t>(&heap);
-    intptr_t end_of_heap   = reinterpret_cast<intptr_t>(&heap_end);
+      intptr_t start_of_heap = reinterpret_cast<intptr_t>(&heap);
+      intptr_t end_of_heap   = reinterpret_cast<intptr_t>(&heap_end);
 
-    LOG_DEBUG("This Task's Address: 0x%08X", address);
-    LOG_DEBUG("End of .data & .bss: 0x%08X", end_of_data_and_bss);
-    LOG_DEBUG("Start of Heap      : 0x%08X", start_of_heap);
-    LOG_DEBUG("End of Heap        : 0x%08X", end_of_heap);
+      LOG_DEBUG("This Task's Address: 0x%08X", address);
+      LOG_DEBUG("End of .data & .bss: 0x%08X", end_of_data_and_bss);
+      LOG_DEBUG("Start of Heap      : 0x%08X", start_of_heap);
+      LOG_DEBUG("End of Heap        : 0x%08X", end_of_heap);
 
-    SJ2_ASSERT_FATAL(
-        address < end_of_data_and_bss ||
-            (start_of_heap <= address && address <= end_of_heap),
-        "Must define tasks globally or within heap using new or malloc. "
-        "Cannot exist on the stack.\n");
-#endif
+      SJ2_ASSERT_FATAL(
+          address < end_of_data_and_bss ||
+              (start_of_heap <= address && address <= end_of_heap),
+          "Must define tasks globally or within heap using new or malloc. "
+          "Cannot exist on the stack.\n");
+    }
     return true;
   }
 

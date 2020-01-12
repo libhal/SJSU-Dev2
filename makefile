@@ -312,14 +312,14 @@ CPP_FLAGS := -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
              $(WARNINGS) $(WARNINGS_ARE_ERRORS) \
              -Winconsistent-missing-override \
              -Wno-sign-conversion -Wno-format-nonliteral \
-             -D HOST_TEST=1 -D TARGET=HostTest -D PLATFORM=$(PLATFORM) \
+             -D HOST_TEST=1 -D PLATFORM=$(PLATFORM) \
              -D SJ2_BACKTRACE_DEPTH=1024 -D CATCH_CONFIG_FAST_COMPILE \
              $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG_FLAG) \
              $(DISABLED_WARNINGS) \
              -O0 -MMD -MP -c
 C_FLAGS   := $(CPP_FLAGS)
 else
-C_FLAGS   := $(C_FLAGS_COMMON) -D TARGET=Application -D PLATFORM=$(PLATFORM) \
+C_FLAGS   := $(C_FLAGS_COMMON) -D PLATFORM=$(PLATFORM) \
              -DTRACE -DOS_USE_TRACE_SEMIHOSTING_STDOUT
 CPP_FLAGS := $(C_FLAGS) $(CPP_WARNINGS) $(CPP_OPTIMIZE) $(WARNINGS) \
              -Wlogical-op -Wduplicated-cond -Wsuggest-final-types \
@@ -488,7 +488,7 @@ presubmit:
 	@$(TOOLS_DIR)/presubmit.sh
 
 
-stacktrace-application:
+stacktrace:
 	@$(DEVICE_ADDR2LINE) -e $(EXECUTABLE) $(TRACES)
 
 
@@ -573,7 +573,7 @@ $(OBJECT_DIR)/%.tidy: %
 	@mkdir -p "$(dir $@)"
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 		-extra-arg="-std=c++2a") "$<"  -- \
-		-D TARGET=HostTest -D PLATFORM=host -D HOST_TEST=1 \
+		-D PLATFORM=host -D HOST_TEST=1 \
 		-isystem"$(SJCLANG)/include/c++/v1/" \
 		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@echo -e '$(GREEN)Evaluated file: $(RESET)$< '
