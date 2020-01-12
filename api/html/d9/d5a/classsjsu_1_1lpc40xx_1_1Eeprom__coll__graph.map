@@ -1,4 +1,4 @@
 <map id="sjsu::lpc40xx::Eeprom" name="sjsu::lpc40xx::Eeprom">
-<area shape="rect" id="node2" href="$d9/df3/classsjsu_1_1Eeprom.html" title="An abstract interface for communicating with EEPROM devices. " alt="" coords="5,5,111,32"/>
+<area shape="rect" id="node2" href="$d9/df3/classsjsu_1_1Eeprom.html" title="sjsu::Eeprom" alt="" coords="5,5,111,32"/>
 <area shape="rect" id="node3" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="134,5,246,32"/>
 </map>

@@ -6,6 +6,7 @@
 namespace sjsu
 {
 /// An abstract interface for communicating with EEPROM devices.
+/// @ingroup l1_peripheral
 class Eeprom
 {
  public:

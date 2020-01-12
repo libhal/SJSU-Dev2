@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['third_20party_20support_20defines',['Third party support defines',['../db/d74/group__P.html',1,'']]],
   ['task',['Task',['../d3/d19/classsjsu_1_1rtos_1_1Task.html',1,'sjsu::rtos']]],
   ['task',['Task',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#acdcd498b9703e6f6d61ae30944156330',1,'sjsu::rtos::Task']]],
   ['task_3c_20512_20_3e',['Task&lt; 512 &gt;',['../d3/d19/classsjsu_1_1rtos_1_1Task.html',1,'sjsu::rtos']]],

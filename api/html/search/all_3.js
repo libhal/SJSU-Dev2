@@ -35,7 +35,7 @@ var searchData=
   ['commandlist_5ft',['CommandList_t',['../db/d4d/structsjsu_1_1CommandList__t.html#a5f3cf9dbcfd76685f741c392b9a5133d',1,'sjsu::CommandList_t']]],
   ['commands',['commands',['../db/d4d/structsjsu_1_1CommandList__t.html#adcf263f5169af79c4db93aa3979c218e',1,'sjsu::CommandList_t']]],
   ['commandsignature',['CommandSignature',['../d0/d6b/namespacesjsu.html#a02cb0ed606f8c4fd6b0773de6b443ec5',1,'sjsu']]],
-  ['configuration',['Configuration',['../de/d43/group__Config.html',1,'']]],
+  ['configuration',['Configuration',['../d8/d26/group__config__group.html',1,'']]],
   ['configurecapture',['ConfigureCapture',['../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#a3c18b7b31700395b9cd1281a011b4cea',1,'sjsu::lpc40xx::PulseCapture::ConfigureCapture()'],['../d2/d96/classsjsu_1_1PulseCapture.html#a6e275666b6dcd09961a6d3297284dc4e',1,'sjsu::PulseCapture::ConfigureCapture()']]],
   ['control',['Control',['../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html',1,'sjsu::lpc40xx::Dac']]],
   ['control',['Control',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html',1,'sjsu::lpc40xx::Adc']]],

@@ -54,7 +54,7 @@ extern "C"
 
   void ArmHardFaultHandler(void)
   {
-    if constexpr (sjsu::build::kTarget != sjsu::build::Target::HostTest)
+    if constexpr (sjsu::build::kPlatform != sjsu::build::Platform::host)
     {
       __asm volatile(
           " tst lr, #4                                          \n"

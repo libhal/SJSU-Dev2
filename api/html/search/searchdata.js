@@ -8,8 +8,8 @@ var indexSectionsWithContent =
   5: "cdilsuv",
   6: "abcdekmoprstu",
   7: "k",
-  8: "cstu",
-  9: "e"
+  8: "cilu",
+  9: "es"
 };
 
 var indexSectionNames =

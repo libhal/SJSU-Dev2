@@ -16,19 +16,29 @@ develop firmware for the SJTwo board.
 ## Operating System Supported
 
 <p align="center">
-<img src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png" height="100px"/>
+<img
+src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png"
+height="100px"/>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<img src="http://cdn.osxdaily.com/wp-content/uploads/2010/10/giant-apple-logo-bw.png" height="100px" />
+<img
+src="http://cdn.osxdaily.com/wp-content/uploads/2010/10/giant-apple-logo-bw.png"
+height="100px" />
 &nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://cdn.worldvectorlogo.com/logos/microsoft-windows-22.svg" height="100px" />
+<img
+src="https://cdn.worldvectorlogo.com/logos/microsoft-windows-22.svg"
+height="100px" />
 </p>
 
 Built for **Ubuntu**, **Mac OSX**, and **Windows 10 WSL**.
 
-## Documentation and Installation Guide
+## Full Documentation and Installation Guide
 
-See **[documentation](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)**
-for a full guide.
+For full guide follow this link:
+**[documentation](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)**
+
+## Code Reference and APIs
+
+See **[APIs](https://kammce.github.io/SJSU-Dev2/api/html/)**
 
 ## Using a Prebuilt Virtual Machine
 One of the easiest ways to get started with SJSU-Dev2 is to use a VM with all of

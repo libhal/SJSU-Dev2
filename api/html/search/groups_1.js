@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sjsu_2ddev2',['SJSU-Dev2',['../d9/dd4/group__SJSU-Dev2.html',1,'']]]
+  ['inactive_20peripherals',['Inactive Peripherals',['../d2/dd9/group__inactives__module.html',1,'']]]
 ];

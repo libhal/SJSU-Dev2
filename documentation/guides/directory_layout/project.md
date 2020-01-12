@@ -6,6 +6,9 @@ The default starter projects are:
 
 - **hello_world** Simple project that prints hello world continuously.
 - **starter** An empty template project for use in creating new projects.
+- **barebones** An empty project with ALL features turned off and highest size
+  optimizations turn on. Used to see the size of the barest version of an
+  application is.
 
 !!! Note
     A project folder need not be in the project directory. You can use it if you

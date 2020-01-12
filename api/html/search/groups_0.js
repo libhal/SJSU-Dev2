@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['configuration',['Configuration',['../de/d43/group__Config.html',1,'']]]
+  ['configuration',['Configuration',['../d8/d26/group__config__group.html',1,'']]]
 ];

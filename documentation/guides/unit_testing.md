@@ -34,8 +34,8 @@ Unit tests are compiled with the following addons enabled:
     - When the test is run, code coverage files are generated,
       which are used after a `make run-test` to generate code
       coverage html reports.
-- `-D TARGET=HostTest`
-    - This defines a macro `TARGET` which can be used within the
+- `-D PLATFORM=host`
+    - This defines a macro `PLATFORM` which can be used within the
       `build_info.hpp` source files which can be used to remove or add source
       code that can be used for tests only using `if constexpr`.
 

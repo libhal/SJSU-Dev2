@@ -9,6 +9,7 @@
 namespace sjsu
 {
 /// Pulse capture library
+/// @ingroup l1_peripheral
 class PulseCapture
 {
  public:

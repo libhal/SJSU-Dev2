@@ -11,6 +11,7 @@ namespace sjsu
 {
 /// An abstract interface for hardware that implements the Universal
 /// Asynchronous Receiver Transmitter (UART) hardware communication Protocol.
+/// @ingroup l1_peripheral
 class Uart
 {
  public:

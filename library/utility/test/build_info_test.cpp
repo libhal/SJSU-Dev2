@@ -16,13 +16,7 @@ TEST_CASE("Testing Build Info", "[build-info]")
     static_assert(!IsPlatform(Platform::linux));
   }
 
-  SECTION("Stringify(Target)")
-  {
-    CHECK_THAT(Stringify(Target::Application), Catch::Equals("application"));
-    CHECK_THAT(Stringify(Target::HostTest), Catch::Equals("host test"));
-  }
-
-  SECTION("Stringify(Target)")
+  SECTION("Stringify(Platform)")
   {
     CHECK_THAT(Stringify(Platform::host), Catch::Equals("host"));
     CHECK_THAT(Stringify(Platform::lpc17xx), Catch::Equals("lpc17xx"));

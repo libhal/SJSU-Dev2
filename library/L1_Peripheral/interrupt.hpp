@@ -14,6 +14,7 @@ using InterruptCallback = std::function<void(void)>;
 /// An abstract interface for a platforms interrupt controller. This allows a
 /// developer to enable and disable interrupts as well as assign handlers for
 /// each.
+/// @ingroup l1_peripheral
 class InterruptController
 {
  private:

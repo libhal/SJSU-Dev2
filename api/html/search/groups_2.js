@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['third_20party_20support_20defines',['Third party support defines',['../db/d74/group__P.html',1,'']]]
+  ['l1_20peripheral_20interfaces',['L1 Peripheral Interfaces',['../d4/da8/group__l1__peripheral.html',1,'']]]
 ];

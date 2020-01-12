@@ -2,8 +2,9 @@
 
 ## Supported Operating Systems
 
-Need a running version of Ubuntu 16.04 LTS or above, or Mac OS X (OS X
-Yosemite and above), or Windows 10 with WSL installed.
+* Ubuntu 16.04 LTS or above
+* Mac OS X Yosemite and above
+* Windows 10 with WSL installed.
 
 ## Installing WSL for Windows 10 Users
 
@@ -44,20 +45,19 @@ this link and download the driver for your computer.
 ## Installation
 
 ### Step 0: Find a download spot
-Open a terminal (also called a command line) and go to a directory
-where you would like to download SJSU-Dev2.
+Open a terminal (also called a command line) and go to a directory where you
+would like to download SJSU-Dev2.
 
 !!! Note
-    On Windows it is advised to install in the `/mnt/c/` directory as
-    you will have access to the files from your desktop. To go to this
-    folder type `cd /mnt/c` into your terminal and press enter.
+    On Windows it is advised to install in the `/mnt/c/` directory as you will
+    have access to the files from your desktop. To go to this folder type
+    `cd /mnt/c` into your terminal and press enter.
 
 ### Step 1: Download the platform
-Go to <https://github.com/kammce/SJSU-Dev2> and click on the "Clone
-or download" drop down button.
+Go to <https://github.com/kammce/SJSU-Dev2> and click on the "Clone or download"
+drop down button.
 
-Put the zip file in the directory you chose in step 0 and unzip it
-there.
+Put the zip file in the directory you chose in step 0 and unzip it there.
 
 ### Step 2: Move into SJSU-Dev2
 
@@ -67,9 +67,9 @@ there.
 
     ./setup
 
-This will install all of the necessary files and programs that
-SJSU-Dev2 needs in order to build your code. The downloaded files
-are placed in the `tools/` folder.
+This will install all of the necessary files and programs that SJSU-Dev2 needs
+in order to build your code. The downloaded files are placed in the `tools/`
+folder.
 
 ## Building and Loading the "Hello World" Application
 
@@ -81,10 +81,9 @@ are placed in the `tools/` folder.
 
     make application
 
-This will take all of the relevant source code files to your project
-and generate a binary file that can be loaded onto your board. These
-files can be found in the `build/application` folder with the
-project.
+This will take all of the relevant source code files to your project and
+generate a binary file that can be loaded onto your board. These files can be
+found in the `build/application` folder with the project.
 
 !!! Tip
     use the `make` by itself to get additional information on the
@@ -92,8 +91,9 @@ project.
 
 !!! Tip
     To build for a different board you can specify the platform like so:
-    `make application PLATFORM=lpc17xx`. This example will build the project for
-    the SJOne board.
+    `make application PLATFORM=lpc17xx`.
+    This example will build the project for the SJOne board or any other device
+    with an lpc17xx microcontroller on it.
 
 ### Step 2: Flash board
 To load the built binary file into your board, run:
@@ -132,8 +132,8 @@ To view output messages from board and interact with it, go to the following
 URL and following the setup instructions: <https://kammce.github.io/Telemetry>
 
 Once there, use the drop down menu on the upper right hand side of the web
-page to find and select the serial device that corresponds to your board
-press the **Connect** button.
+page to find and select the serial device that corresponds to your board press
+the **Connect** button.
 
 ## Creating Your Own Project
 

@@ -110,7 +110,7 @@
 
 /// If the condition if found ot be false, print the expression and dump the
 /// backtrace.
-#if defined HOST_TEST
+#if defined(HOST_TEST)
 #define SJ2_ASSERT_FATAL(condition, fatal_message, ...)                \
   /* Without the if statement using the (condition) and _SJ2_USED() */ \
   /* the compiler may complain about unused variables.              */ \
@@ -122,7 +122,7 @@
 #else
 #define SJ2_ASSERT_FATAL(condition, fatal_message, ...) \
   SJ2_ASSERT_FATAL_WITH_DUMP(true, (condition), fatal_message, ##__VA_ARGS__)
-#endif  // defined HOST_TEST
+#endif  // defined(HOST_TEST)
 /// Print a variable using the printf_specifier supplied.
 #define SJ2_PRINT_VARIABLE(variable, printf_specifier) \
   LOG_INFO(#variable " = " printf_specifier, (variable))

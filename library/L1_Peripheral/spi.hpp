@@ -7,7 +7,8 @@
 namespace sjsu
 {
 /// An abstract interface for hardware that implements the Serial Peripheral
-/// Interface (SPI) communication protocol
+/// Interface (SPI) communication protocol.
+/// @ingroup l1_peripheral
 class Spi
 {
  public:

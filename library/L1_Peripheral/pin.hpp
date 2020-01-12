@@ -22,6 +22,7 @@ namespace sjsu
 ///
 /// This interface represents a common set of functions that most controllers
 /// and systems support.
+/// @ingroup l1_peripheral
 class Pin
 {
  public:

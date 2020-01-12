@@ -7,6 +7,7 @@
 
 namespace sjsu
 {
+/// @ingroup l1_peripheral
 class SystemController
 {
  private:

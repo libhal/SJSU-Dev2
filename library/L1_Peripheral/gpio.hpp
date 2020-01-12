@@ -10,6 +10,7 @@
 namespace sjsu
 {
 /// An abstract interface for General Purpose I/O
+/// @ingroup l1_peripheral
 class Gpio
 {
  public:
