@@ -7,10 +7,16 @@
 
 namespace sjsu
 {
-/// Arena class is a memory management class
+/// Arena class is a memory management class that takes an external buffer and
+/// manages it.
 class Arena
 {
  public:
+  /// Typical constructor
+  ///
+  /// @param buf - buffer to manage
+  /// @param size - size of the buffer passed
+  /// @param ptr - starting offset position in the buffer
   Arena(uint8_t * buf, size_t size, uint8_t * ptr = nullptr) noexcept
       : buf_(buf), ptr_(ptr), size_(size), id_(arena_id++), d_ptr_(&ptr_)
   {
@@ -30,6 +36,11 @@ class Arena
   {
   }
 
+  /// Returns a pointer to a memory region within the buffer that has not been
+  /// allocated yet and fits the size requirement.
+  ///
+  /// @param requested_space - number of bytes requested
+  /// @return nullptr if not successful
   uint8_t * allocate(size_t requested_space)  // NOLINT
   {
     bool inside_of_allocatable_space = WithinAllocatableSpace(requested_space);
@@ -55,7 +66,12 @@ requested space    = %zu
                      requested_space);
     return nullptr;
   }
-  /// Only moves back pointer if it is at the end
+
+  /// This actually does nothing, but in the special case where the pointer to
+  /// be deallocated is at the end, the memory will be deallocated.
+  ///
+  /// @param pointer - position in memory to be deallocated
+  /// @param size - number of bytes to be deallocated
   void deallocate(uint8_t * pointer, size_t size) noexcept  // NOLINT
   {
     if (PointerInBuffer(pointer))
@@ -67,14 +83,19 @@ requested space    = %zu
     }
   }
 
+  /// @return size_t - size of the arena in total
   size_t size() noexcept  // NOLINT
   {
     return size_;
   }
+
+  /// @return size_t - number of bytes currently allocated
   size_t used() const noexcept  // NOLINT
   {
     return static_cast<size_t>(*d_ptr_ - buf_);
   }
+
+  /// Resets the arena back to its initial state freeing all allocated memory
   void reset() noexcept  // NOLINT
   {
     *d_ptr_ = buf_;
@@ -102,13 +123,17 @@ requested space    = %zu
   uint8_t ** d_ptr_ = nullptr;
 };
 
+/// Fixed size allocator
 template <class T, size_t N, class U = T>
 class FixedAllocator
 {
  public:
-  using value_type           = T;
+  /// Alias for the value of type
+  using value_type = T;
+  /// The size of the type
   static auto constexpr size = N;  // NOLINT
-  using arena_type           = Arena;
+  /// Alias of the arena type
+  using arena_type = Arena;
 
  private:
   arena_type a_;
@@ -116,40 +141,55 @@ class FixedAllocator
   uint8_t buf_[size * sizeof(U)] = { 0 };
 
  public:
+  //! @cond Doxygen_Suppress
   FixedAllocator(const FixedAllocator &) = default;
   FixedAllocator & operator=(const FixedAllocator &) = delete;
-
   FixedAllocator() noexcept : a_(buf_, sizeof(buf_)) {}
-  // Used by node containers
   template <class T_copy, size_t N_copy, class U_copy>
   FixedAllocator(const FixedAllocator<T_copy, N_copy, U_copy> & a)
       : a_(a.a_), a_ptr_(const_cast<arena_type *>(&a.a_))
   {
   }
+  //! @endcond
 
+  /// Required by the std library to change the type of the fixed allocator.
+  /// @tparam Bind - new type to bind to the allocator
   template <class Bind>
   struct rebind  // NOLINT
   {
+    /// Alias to the rebound allocator
     using other = FixedAllocator<Bind, N, Bind>;
   };
 
+  /// Allocate object from arena.
+  ///
+  /// @param n - number of bytes
+  /// @return T* - pointer to a type to allocate
   T * allocate(size_t n)  // NOLINT
   {
     return reinterpret_cast<T *>(a_ptr_->allocate(n * sizeof(T)));
   }
+
+  /// Deallocate the object.
+  ///
+  /// @param p - pointer to the object to deallocate
+  /// @param n - how large the object is
   void deallocate(T * p, size_t n) noexcept  // NOLINT
   {
     a_ptr_->deallocate(reinterpret_cast<uint8_t *>(p), n * sizeof(T));
   }
 
+  //! @cond Doxygen_Suppress
   template <class T1, size_t N1, class U1, size_t M1>
   friend bool operator==(const FixedAllocator<T1, N1> & x,
                          const FixedAllocator<U1, M1> & y) noexcept;
 
   template <class T1, size_t M1, class U1>
   friend class FixedAllocator;
+  //! @endcond
 };
 
+//! @cond Doxygen_Suppress
 template <class T, size_t N, class U, class V, size_t M, class W>
 inline bool operator==(const FixedAllocator<T, N, U> & x,
                        const FixedAllocator<V, M, W> & y) noexcept
@@ -163,4 +203,6 @@ inline bool operator!=(const FixedAllocator<T, N, U> & x,
 {
   return !(x == y);
 }
+//! @endcond
+
 }  // namespace sjsu
