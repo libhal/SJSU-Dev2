@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+
 #include "L0_Platform/stm32f4xx/stm32f4xx.h"
 #include "L1_Peripheral/system_controller.hpp"
 #include "utility/bit.hpp"

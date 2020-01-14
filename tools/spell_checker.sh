@@ -36,8 +36,7 @@ do
     continue
   fi
 
-  relative_path=$(realpath --relative-to="$SJBASE/" \
-                  "${source_file}")
+  relative_path=$(realpath --relative-to="$SJBASE/" "${source_file}")
   all_sources="$all_sources $relative_path"
 done
 
