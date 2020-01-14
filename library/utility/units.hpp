@@ -25,6 +25,7 @@
 #define ENABLE_PREDEFINED_CURRENT_UNITS
 #define ENABLE_PREDEFINED_TIME_UNITS
 #define ENABLE_PREDEFINED_CHARGE_UNITS
+#define ENABLE_PREDEFINED_DATA_UNITS
 
 #include "third_party/units/units.h"
 #include <chrono>
