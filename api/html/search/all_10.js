@@ -1,6 +1,7 @@
 var searchData=
 [
   ['read',['Read',['../d0/dc1/classsjsu_1_1Adc.html#ac91e91ae9c477778b078b4d5e6e8d77d',1,'sjsu::Adc::Read()'],['../d9/df3/classsjsu_1_1Eeprom.html#a0db2055c3e15c38ec4b3a994d1b234d5',1,'sjsu::Eeprom::Read()'],['../dd/d3a/classsjsu_1_1Gpio.html#a8adbc3a6738710cdff41a29e0abfee05',1,'sjsu::Gpio::Read()'],['../d0/d9b/classsjsu_1_1I2c.html#a930b720cb30b75417cd462422c6394c6',1,'sjsu::I2c::Read()'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ade2640b4ab7f6415693a44be0724dbce',1,'sjsu::lpc40xx::Adc::Read()'],['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ab57a5d39d8f34da33bce87016f47d526',1,'sjsu::lpc40xx::Eeprom::Read()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab0345f741e89a03b78689da6188a8d49',1,'sjsu::lpc40xx::Gpio::Read()'],['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a45a2b2d6e16ccf386904151500daf304',1,'sjsu::lpc40xx::Uart::Read()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a0145116a1c69e0a38086ed921a18d129',1,'sjsu::stm32f4xx::Gpio::Read()'],['../d0/ddc/classsjsu_1_1Uart.html#a787220b5a9cc3e1d019b4fa8f7ed04e7',1,'sjsu::Uart::Read(uint8_t *data, size_t size, std::chrono::microseconds timeout=std::chrono::microseconds::max()) const =0'],['../d0/ddc/classsjsu_1_1Uart.html#aabd493964dcf9941388fe46af8b01a70',1,'sjsu::Uart::Read(std::chrono::microseconds timeout=std::chrono::microseconds::max()) const '],['../d0/d27/classsjsu_1_1ParallelGpio.html#ab91e7dd55fa2dea3f51cc5a1fe368fb9',1,'sjsu::ParallelGpio::Read()'],['../d7/d86/classsjsu_1_1ParallelBus.html#ad38646785512577972b2fda9b95ce534',1,'sjsu::ParallelBus::Read()']]],
+  ['readuntil_5ft',['ReadUntil_t',['../d7/dbd/structsjsu_1_1Esp8266_1_1ReadUntil__t.html',1,'sjsu::Esp8266']]],
   ['rebind',['rebind',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html',1,'sjsu::FixedAllocator']]],
   ['red',['red',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a596009e322e1a7fbb2f28838bbaf390c',1,'sjsu::PixelDisplay::Color_t']]],
   ['register_5faddress',['register_address',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a0668c341fd35eac915345585e558c4c1',1,'sjsu::I2cCommand::Arguments_t']]],
@@ -18,8 +19,8 @@ var searchData=
   ['response_5ft',['Response_t',['../da/df2/structsjsu_1_1Sd_1_1Response__t.html',1,'sjsu::Sd']]],
   ['responsetype',['ResponseType',['../dc/d5f/classsjsu_1_1Sd.html#aae21a97bbd11f456310b6fc8f399a580',1,'sjsu::Sd']]],
   ['resume',['Resume',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a9ad6add41a523ef5948d8407bdfcccad',1,'sjsu::rtos::Task']]],
-  ['rtoscommand',['RtosCommand',['../d3/d13/classsjsu_1_1RtosCommand.html',1,'sjsu']]],
   ['rtoscommand',['RtosCommand',['../d3/d13/classsjsu_1_1RtosCommand.html#a459cb1bf60a22e2a3568ebb1de3e597d',1,'sjsu::RtosCommand']]],
+  ['rtoscommand',['RtosCommand',['../d3/d13/classsjsu_1_1RtosCommand.html',1,'sjsu']]],
   ['rtosstatetostring',['RtosStateToString',['../d3/d13/classsjsu_1_1RtosCommand.html#a6dbef8064083ac5af412d212779c53aa',1,'sjsu::RtosCommand']]],
   ['run_5fcount_5f',['run_count_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a2a52810dad462e3fff1c2f9d9e33b102',1,'sjsu::rtos::PeriodicTask']]],
   ['runhalroutine0',['RunHalRoutine0',['../d7/d23/classsjsu_1_1ExampleHal.html#afa39db425d234c1d1df7a37f4334d5cf',1,'sjsu::ExampleHal::RunHalRoutine0()'],['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#a159c764b6118f94f5164626fd90f7e41',1,'sjsu::ExampleSingleImplementationHal::RunHalRoutine0()']]],

@@ -15,11 +15,11 @@ var searchData=
   ['status_5ft',['Status_t',['../df/dc0/structsjsu_1_1lpc40xx_1_1Can_1_1Status__t.html',1,'sjsu::lpc40xx::Can']]],
   ['statusregister',['StatusRegister',['../d9/d20/structsjsu_1_1lpc40xx_1_1Spi_1_1StatusRegister.html',1,'sjsu::lpc40xx::Spi']]],
   ['stopwatch',['StopWatch',['../d0/dab/classsjsu_1_1StopWatch.html',1,'sjsu']]],
-  ['systemcontroller',['SystemController',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html',1,'sjsu::lpc40xx']]],
   ['systemcontroller',['SystemController',['../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html',1,'sjsu::stm32f4xx']]],
-  ['systemcontroller',['SystemController',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html',1,'sjsu::lpc17xx']]],
-  ['systemcontroller',['SystemController',['../df/d0e/classsjsu_1_1SystemController.html',1,'sjsu']]],
   ['systemcontroller',['SystemController',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html',1,'sjsu::stm32f10x']]],
-  ['systemtimer',['SystemTimer',['../de/d0c/classsjsu_1_1SystemTimer.html',1,'sjsu']]],
-  ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html',1,'sjsu::cortex']]]
+  ['systemcontroller',['SystemController',['../df/d0e/classsjsu_1_1SystemController.html',1,'sjsu']]],
+  ['systemcontroller',['SystemController',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html',1,'sjsu::lpc17xx']]],
+  ['systemcontroller',['SystemController',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html',1,'sjsu::lpc40xx']]],
+  ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html',1,'sjsu::cortex']]],
+  ['systemtimer',['SystemTimer',['../de/d0c/classsjsu_1_1SystemTimer.html',1,'sjsu']]]
 ];

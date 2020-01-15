@@ -121,6 +121,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd2/structsjsu_1_1Esp8266_1_1NetworkConnection__t.html">NetworkConnection_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dbd/structsjsu_1_1Esp8266_1_1ReadUntil__t.html">ReadUntil_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -152,30 +154,30 @@ virtual <a class="el" href="../../d6/d07/structsjsu_1_1Esp8266_1_1ModuleVersion_
 <tr class="memitem:ad28322148c0c005eb8eca9a581eb96f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad28322148c0c005eb8eca9a581eb96f5"></a>
 virtual <a class="el" href="../../d9/dd2/structsjsu_1_1Esp8266_1_1NetworkConnection__t.html">NetworkConnection_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetNetworkConnection</b> ()</td></tr>
 <tr class="separator:ad28322148c0c005eb8eca9a581eb96f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3e89317b083b814afb449dcbfd3d3e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3e89317b083b814afb449dcbfd3d3e0"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectToAccessPoint</b> (const char *ssid, const char *password, std::chrono::microseconds uart_timeout)</td></tr>
-<tr class="separator:ab3e89317b083b814afb449dcbfd3d3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35e508c0db67b280c94499214348ef17"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35e508c0db67b280c94499214348ef17"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectToAccessPoint</b> (const char *ssid, const char *password, std::chrono::milliseconds read_timeout=10s)</td></tr>
+<tr class="separator:a35e508c0db67b280c94499214348ef17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad13f862bab8fc3d16bc32c3f81d29c3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad13f862bab8fc3d16bc32c3f81d29c3e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectFromAccessPoint</b> ()</td></tr>
 <tr class="separator:ad13f862bab8fc3d16bc32c3f81d29c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a962a995426876ce4686579a0c530df1e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a962a995426876ce4686579a0c530df1e"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsConnectedToAccessPoint</b> ()</td></tr>
 <tr class="separator:a962a995426876ce4686579a0c530df1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc31196acb1686c88c227bafa0503845"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc31196acb1686c88c227bafa0503845"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectToServer</b> (const char *server, uint16_t port, std::chrono::microseconds uart_timeout, ConnectionType type=ConnectionType::kTcp)</td></tr>
-<tr class="separator:acc31196acb1686c88c227bafa0503845"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a499b41492e09e5da1ada2ca025979f6f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a499b41492e09e5da1ada2ca025979f6f"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectToServer</b> (const char *server, uint16_t port, std::chrono::milliseconds read_timeout=kDefaultTimeout, ConnectionType type=ConnectionType::kTcp)</td></tr>
+<tr class="separator:a499b41492e09e5da1ada2ca025979f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae538551f23b666ba2ff2cc4a2d67da5a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae538551f23b666ba2ff2cc4a2d67da5a"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectFromServer</b> ()</td></tr>
 <tr class="separator:ae538551f23b666ba2ff2cc4a2d67da5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab12aac294b0b686b4748e59eca5c2b74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab12aac294b0b686b4748e59eca5c2b74"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsConnectedToServer</b> ()</td></tr>
 <tr class="separator:ab12aac294b0b686b4748e59eca5c2b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afeb17cb626c1fe78ea7ab70b138245a6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afeb17cb626c1fe78ea7ab70b138245a6"></a>
-virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SendGetRequest</b> (const char *url, <a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">Buffer_t</a> buffer)</td></tr>
-<tr class="separator:afeb17cb626c1fe78ea7ab70b138245a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50df4c5d3f393d1f620d87eb9fcbe79e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50df4c5d3f393d1f620d87eb9fcbe79e"></a>
-virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SendPostRequest</b> (const char *url, const char *payload, <a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">Buffer_t</a> buffer)</td></tr>
-<tr class="separator:a50df4c5d3f393d1f620d87eb9fcbe79e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00f4ca2f2ff5ac3304285007c9d45260"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a00f4ca2f2ff5ac3304285007c9d45260"></a>
+virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SendGetRequest</b> (const char *url, <a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">Buffer_t</a> buffer, std::chrono::milliseconds read_timeout=kDefaultTimeout)</td></tr>
+<tr class="separator:a00f4ca2f2ff5ac3304285007c9d45260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1d8e1cff778d7a30e94711cc6891151"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1d8e1cff778d7a30e94711cc6891151"></a>
+virtual int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SendPostRequest</b> (const char *url, const char *payload, <a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">Buffer_t</a> buffer, std::chrono::milliseconds read_timeout=kDefaultTimeout)</td></tr>
+<tr class="separator:af1d8e1cff778d7a30e94711cc6891151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -184,44 +186,44 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a908faeaa34083d808e011e389d28e581"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a908faeaa34083d808e011e389d28e581"></a>
 static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>kBaudRate</b> = 115200</td></tr>
 <tr class="separator:a908faeaa34083d808e011e389d28e581"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d2c1a8c903b57630871476f6752a8d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d2c1a8c903b57630871476f6752a8d8"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kConfirmationResponse</b> [] = &quot;\r\nOK&quot;</td></tr>
-<tr class="separator:a8d2c1a8c903b57630871476f6752a8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c39e3cd0b38799897731e3eb5c7868f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c39e3cd0b38799897731e3eb5c7868f"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kSendRequestConfirmationResponse</b> [] = &quot;\r\nSEND OK&quot;</td></tr>
-<tr class="separator:a2c39e3cd0b38799897731e3eb5c7868f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d90e0b01b3de30506c7e437594431b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d90e0b01b3de30506c7e437594431b8"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kErrorResponse</b> [] = &quot;\r\nERROR&quot;</td></tr>
-<tr class="separator:a3d90e0b01b3de30506c7e437594431b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69ae59c0628ae61b120bb620fc30ca33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69ae59c0628ae61b120bb620fc30ca33"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kTestCommand</b> [] = &quot;AT\r\n&quot;</td></tr>
-<tr class="separator:a69ae59c0628ae61b120bb620fc30ca33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae40e26240d5c3334fc312f083286aa30"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae40e26240d5c3334fc312f083286aa30"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDisableEchoCommand</b> [] = &quot;ATE0\r\n&quot;</td></tr>
-<tr class="separator:ae40e26240d5c3334fc312f083286aa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab13c14d9f3fab5d343ac13f7adcd8b81"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab13c14d9f3fab5d343ac13f7adcd8b81"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kClientModeCommand</b> [] = &quot;AT+CWMODE=1\r\n&quot;</td></tr>
-<tr class="separator:ab13c14d9f3fab5d343ac13f7adcd8b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e96bfb42a5b63f8e618fc3445a6ae55"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e96bfb42a5b63f8e618fc3445a6ae55"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kResetCommand</b> [] = &quot;AT+RST\r\n&quot;</td></tr>
-<tr class="separator:a9e96bfb42a5b63f8e618fc3445a6ae55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a917d7d6815a97c555f1113fb8cecdc7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a917d7d6815a97c555f1113fb8cecdc7f"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kOk</b> [] = &quot;\r\nOK\r\n&quot;</td></tr>
+<tr class="separator:a917d7d6815a97c555f1113fb8cecdc7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22af2e5fda56af1514be893a5310fbb3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22af2e5fda56af1514be893a5310fbb3"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kAPConfirmationResponse</b> [] = &quot;WIFI GOT IP\r\n\r\nOK\r\n&quot;</td></tr>
+<tr class="separator:a22af2e5fda56af1514be893a5310fbb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9c4ff2c4a9fff81a226d2280e6bad39"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9c4ff2c4a9fff81a226d2280e6bad39"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kSendRequestConfirmationResponse</b> [] = &quot;\r\nSEND OK&quot;</td></tr>
+<tr class="separator:ad9c4ff2c4a9fff81a226d2280e6bad39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0283970b7eb942d9435ec8e11cb06913"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0283970b7eb942d9435ec8e11cb06913"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kTestCommand</b> [] = &quot;AT\r\n&quot;</td></tr>
+<tr class="separator:a0283970b7eb942d9435ec8e11cb06913"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addd00cce428a06c8c0fd80a7ed779e50"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addd00cce428a06c8c0fd80a7ed779e50"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kDisableEchoCommand</b> [] = &quot;ATE0\r\n&quot;</td></tr>
+<tr class="separator:addd00cce428a06c8c0fd80a7ed779e50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb59e0ed1131b250b94f0209ca86519d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb59e0ed1131b250b94f0209ca86519d"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kClientModeCommand</b> [] = &quot;AT+CWMODE=1\r\n&quot;</td></tr>
+<tr class="separator:acb59e0ed1131b250b94f0209ca86519d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0bdd170769bf879786967da74cf0d2d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0bdd170769bf879786967da74cf0d2d"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kResetCommand</b> [] = &quot;AT+RST\r\n&quot;</td></tr>
+<tr class="separator:ae0bdd170769bf879786967da74cf0d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7d140a580774bbf2e011638a8543c9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7d140a580774bbf2e011638a8543c9f"></a>
 static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kDeepSleepCommand</b> [] = &quot;AT+GSLP=%&quot; PRIu32 &quot;\r\n&quot;</td></tr>
 <tr class="separator:ae7d140a580774bbf2e011638a8543c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfde186ff70a0cb671c856406bcd485b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfde186ff70a0cb671c856406bcd485b"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kGetModuleVersionCommand</b> [] = &quot;AT+GMR\r\n&quot;</td></tr>
-<tr class="separator:abfde186ff70a0cb671c856406bcd485b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ed55433426aed8155bdbbc9b5731e6b"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kGetNetworkConnectionInfoCommand</b> []</td></tr>
-<tr class="separator:a4ed55433426aed8155bdbbc9b5731e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a679d8a2b18fd333e8796bea2b89401ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a679d8a2b18fd333e8796bea2b89401ba"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kGetModuleVersionCommand</b> [] = &quot;AT+GMR\r\n&quot;</td></tr>
+<tr class="separator:a679d8a2b18fd333e8796bea2b89401ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace7cf18cb1cdff0b4a943fafa34aad61"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kGetNetworkConnectionInfoCommand</b> []</td></tr>
+<tr class="separator:ace7cf18cb1cdff0b4a943fafa34aad61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a112be7b277b06181ebb75de7d9cfad"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kConnectToAccessPointCommand</b> []</td></tr>
 <tr class="separator:a6a112be7b277b06181ebb75de7d9cfad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94c79f18b9a0bfee6a9412425f67456d"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDisconnectFromAccessPointCommand</b> []</td></tr>
-<tr class="separator:a94c79f18b9a0bfee6a9412425f67456d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6744ede9b69ac1b3a9660b95ea20e91"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kDisconnectFromAccessPointCommand</b> []</td></tr>
+<tr class="separator:ac6744ede9b69ac1b3a9660b95ea20e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af287ee9c2ca7fe08b385054a2d0eca4d"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kConnectToServerCommand</b> []</td></tr>
 <tr class="separator:af287ee9c2ca7fe08b385054a2d0eca4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af29be099da884212db3a93cdc3db5e90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af29be099da884212db3a93cdc3db5e90"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDisconnectFromServerCommand</b> [] = &quot;AT+CIPCLOSE\r\n&quot;</td></tr>
-<tr class="separator:af29be099da884212db3a93cdc3db5e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85e5980c4dea5875797f083f30d5178a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85e5980c4dea5875797f083f30d5178a"></a>
+static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kDisconnectFromServerCommand</b> [] = &quot;AT+CIPCLOSE\r\n&quot;</td></tr>
+<tr class="separator:a85e5980c4dea5875797f083f30d5178a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1e32ee4d893ae90506c8c2f699b7739"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab1e32ee4d893ae90506c8c2f699b7739"></a>
 static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kSendDataCommand</b> [] = &quot;AT+CIPSEND=%&quot; PRIu32 &quot;\r\n&quot;</td></tr>
 <tr class="separator:ab1e32ee4d893ae90506c8c2f699b7739"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,9 +231,9 @@ static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kSen
 <tr class="separator:ab76549f411bd543f6c3a5555276c4680"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d4a31c2366e529fcf5d10fa51cbcad8"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><b>kPostRequest</b> []</td></tr>
 <tr class="separator:a3d4a31c2366e529fcf5d10fa51cbcad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af89365a4e9a4c780e1200ffcac9a0e0c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af89365a4e9a4c780e1200ffcac9a0e0c"></a>
-static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><b>kReadTimeout</b> = 100ms</td></tr>
-<tr class="separator:af89365a4e9a4c780e1200ffcac9a0e0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af19495f9ffd66917c588df1551c2979a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af19495f9ffd66917c588df1551c2979a"></a>
+static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultTimeout</b> = 500ms</td></tr>
+<tr class="separator:af19495f9ffd66917c588df1551c2979a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="a78b08581c1b1b98954c4565b137af534"></a>
@@ -271,7 +273,7 @@ static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" va
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">    <span class="stringliteral">&quot;AT+CWJAP=\&quot;%s\&quot;,\&quot;%s\&quot;\r\n&quot;</span></div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">    <span class="stringliteral">&quot;AT+CWJAP_CUR=\&quot;%s\&quot;,\&quot;%s\&quot;\r\n&quot;</span></div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="af287ee9c2ca7fe08b385054a2d0eca4d"></a>
@@ -294,7 +296,7 @@ static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" va
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">    <span class="stringliteral">&quot;AT+CIPSTART=\&quot;%s\&quot;,\&quot;%s\&quot;,%&quot;</span> PRIu16 <span class="stringliteral">&quot;\r\n&quot;</span></div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a94c79f18b9a0bfee6a9412425f67456d"></a>
+<a class="anchor" id="ac6744ede9b69ac1b3a9660b95ea20e91"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -302,7 +304,7 @@ static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" va
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::Esp8266::kDisconnectFromAccessPointCommand[]</td>
+          <td class="memname">constexpr char sjsu::Esp8266::kDisconnectFromAccessPointCommand[]</td>
         </tr>
       </table>
   </td>
@@ -314,7 +316,7 @@ static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" va
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">    <span class="stringliteral">&quot;AT+CWQAP\r\n&quot;</span></div></div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a4ed55433426aed8155bdbbc9b5731e6b"></a>
+<a class="anchor" id="ace7cf18cb1cdff0b4a943fafa34aad61"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -322,7 +324,7 @@ static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" va
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::Esp8266::kGetNetworkConnectionInfoCommand[]</td>
+          <td class="memname">constexpr char sjsu::Esp8266::kGetNetworkConnectionInfoCommand[]</td>
         </tr>
       </table>
   </td>

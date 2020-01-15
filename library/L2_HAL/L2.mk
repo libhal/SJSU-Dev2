@@ -17,7 +17,7 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/audio/test/buzzer_test.cpp
 # Communication
 # ==============================================================================
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L2_HAL/communication/infrared_receiver.hpp
-TESTS += $(LIBRARY_DIR)/L2_HAL/communication/test/esp8266_test.cpp
+NO_TEST_NEEDED += $(LIBRARY_DIR)/L2_HAL/communication/esp8266.hpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/communication/test/tsop752_test.cpp
 # ==============================================================================
 # Displays

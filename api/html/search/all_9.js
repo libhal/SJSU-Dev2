@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['i2c',['I2c',['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu']]],
   ['i2c',['I2c',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx']]],
+  ['i2c',['I2c',['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu']]],
   ['i2c',['I2c',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a94e70d507a3d8d6bbc237135ca46cdbf',1,'sjsu::lpc40xx::I2c']]],
   ['i2cbus',['I2cBus',['../d8/d9a/structsjsu_1_1lpc17xx_1_1I2cBus.html',1,'sjsu::lpc17xx']]],
   ['i2ccommand',['I2cCommand',['../dd/d36/classsjsu_1_1I2cCommand.html',1,'sjsu']]],
