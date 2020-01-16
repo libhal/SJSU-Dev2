@@ -31,17 +31,21 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
 
   SECTION("Initialization")
   {
-    test_eeprom.Initialize();
-
-    // Wait State Register Values should be 2, 3, and 1
+    // Setup
+    // Setup: Wait State Register Values should be 2, 3, and 1
     constexpr uint32_t kWaitStateValues = 0b00000010'00000011'00000001;
     constexpr uint32_t kClockDivider    = 128;
 
+    // Exercise
+    test_eeprom.Initialize();
+
+    // Verify
     CHECK(local_eeprom.WSTATE == kWaitStateValues);
     CHECK(local_eeprom.CLKDIV == kClockDivider);
   }
   SECTION("Writing")
   {
+    // Setup
     uint8_t wdata[4];
     constexpr uint16_t kAddress = 0x3F4;
     wdata[0]                    = 0b11110000;
@@ -52,11 +56,13 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
     const uint32_t kExpectedValue =
         (wdata[3] << 24) + (wdata[2] << 16) + (wdata[1] << 8) + (wdata[0]);
 
-    // Status register bits must be set to 1 so that Write doesn't block
+    // Setup: Status register bits must be set to 1 so that Write doesn't block
     local_eeprom.INT_STATUS = (1 << 26) | (1 << 28);
 
-    test_eeprom.Write(wdata, kAddress, kPayloadSize);
+    // Exercise
+    test_eeprom.Write(kAddress, wdata, kPayloadSize);
 
+    // Verify
     CHECK(local_eeprom.ADDR == kAddress);
     CHECK(local_eeprom.CMD == Eeprom::kEraseProgram);
     CHECK(local_eeprom.WDATA == kExpectedValue);
@@ -64,20 +70,56 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
 
   SECTION("Reading")
   {
+    // Setup
     constexpr uint16_t kAddress = 0x534;
     constexpr uint32_t kReadVal = 0x12345678;
     uint8_t rdata[4];
-
-    // Placing value in register which read function will be reading from
+    // Setup: Placing value in register which read function will be reading from
     local_eeprom.RDATA = kReadVal;
 
-    test_eeprom.Read(rdata, kAddress, kPayloadSize);
+    // Exercise
+    test_eeprom.Read(kAddress, rdata, kPayloadSize);
 
-    uint32_t expected_value =
+    // Verify
+    uint32_t read_value =
         (rdata[3] << 24) + (rdata[2] << 16) + (rdata[1] << 8) + (rdata[0]);
     CHECK(local_eeprom.ADDR == kAddress);
     CHECK(local_eeprom.CMD == Eeprom::kRead32Bits);
-    CHECK(expected_value == kReadVal);
+    CHECK(read_value == kReadVal);
+  }
+
+  SECTION("Methods that return constants")
+  {
+    CHECK(test_eeprom.GetBlockSize() == 4_B);
+    CHECK(test_eeprom.GetMemoryType() == Storage::Type::kEeprom);
+    CHECK(test_eeprom.GetCapacity() == 4_kB);
+    CHECK(test_eeprom.IsReadOnly() == false);
+    CHECK(test_eeprom.IsMediaPresent() == true);
+  }
+
+  SECTION("Enable")
+  {
+    // Setup
+    // Setup: Set to 1 indicating that eeprom is powered down.
+    local_eeprom.PWRDWN = 1;
+
+    // Exercise
+    CHECK(test_eeprom.Enable() == sjsu::Status::kSuccess);
+
+    // Verify
+    CHECK(local_eeprom.PWRDWN == 0);
+  }
+
+  SECTION("Disable")
+  {
+    // Setup
+    local_eeprom.PWRDWN = 0;
+
+    // Exercise
+    CHECK(test_eeprom.Disable() == sjsu::Status::kSuccess);
+
+    // Verify
+    CHECK(local_eeprom.PWRDWN == 1);
   }
 
   // Reset eeprom_register back to original value

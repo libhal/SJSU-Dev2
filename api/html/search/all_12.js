@@ -14,8 +14,8 @@ var searchData=
   ['tfmini',['TFMini',['../d2/dc6/classsjsu_1_1TFMini.html',1,'sjsu']]],
   ['ticks_5fper_5fmillisecond',['ticks_per_millisecond',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa56845f054040a5d4c91899d3987dcc6',1,'sjsu::cortex::SystemTimer']]],
   ['timeout',['timeout',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a050e7f7988d762c4099178e8842e32b6',1,'sjsu::I2c::Transaction_t']]],
-  ['timer',['Timer',['../dd/d31/classsjsu_1_1Timer.html',1,'sjsu']]],
   ['timer',['Timer',['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html',1,'sjsu::lpc40xx::Pwm']]],
+  ['timer',['Timer',['../dd/d31/classsjsu_1_1Timer.html',1,'sjsu']]],
   ['timer',['Timer',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html',1,'sjsu::lpc40xx']]],
   ['timer_5fregister',['timer_register',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a11d2efb01dc9c4ee5ad6de005590425f',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
   ['timercontrolregister',['TimerControlRegister',['../d5/daf/structsjsu_1_1lpc40xx_1_1Timer_1_1TimerControlRegister.html',1,'sjsu::lpc40xx::Timer']]],
@@ -33,5 +33,5 @@ var searchData=
   ['tx',['tx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a67f2ca56b242323c441088b74c7507c7',1,'sjsu::lpc40xx::Uart::Port_t']]],
   ['tx_5ffunction_5fid',['tx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a8fbfab57d6cf7237b51ed843e664b3f2',1,'sjsu::lpc40xx::Uart::Port_t']]],
   ['txmessage_5ft',['TxMessage_t',['../dc/d88/structsjsu_1_1Can_1_1TxMessage__t.html',1,'sjsu::Can']]],
-  ['type',['Type',['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd']]]
+  ['type',['Type',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878',1,'sjsu::Storage::Type()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()']]]
 ];

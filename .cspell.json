@@ -451,30 +451,9 @@
         "Wtime",
         "WUTR",
         "WWDG",
+        "emmc",
         "XXXX'XXXX"
     ],
-    // Platform names
-    // Linting directives
-    // embedded terms
-    // fatfs
-    // board
-    // platforms
-    // Devices
-    // SD Card
-    // APDS9960
-    // SSD1306
-    // Gpio
-    // I2C
-    // SPI
-    // Uart
-    // CAN
-    // Clocks
-    // Internet
-    // third party
-    // cortex
-    // lpc17xx + lpc40xx
-    // stm32f10x + stm32f4xx
-    // misc
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
     // For example "hte" should be "the"

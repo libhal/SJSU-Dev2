@@ -98,20 +98,29 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html">Eeprom</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">Storage</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">sjsu::Eeprom Member List</div>  </div>
+<div class="title">sjsu::Storage Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html">sjsu::Eeprom</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#a0ff5dcecc8002aae6b9eb094b4b458d0">Initialize</a>() const =0</td><td class="entry"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html">sjsu::Eeprom</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#a0db2055c3e15c38ec4b3a994d1b234d5">Read</a>(uint8_t *data, uint32_t address, size_t count) const =0</td><td class="entry"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html">sjsu::Eeprom</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html#a676db1c9aeef8a93b9c7c71ae74373e6">Write</a>(const uint8_t *data, uint32_t address, size_t count) const =0</td><td class="entry"><a class="el" href="../../d9/df3/classsjsu_1_1Eeprom.html">sjsu::Eeprom</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a36b4b822c28a66f279aef6f8246d0945">Disable</a>()=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a883aaced809ee6374f041dcd145acbe8">Enable</a>()=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4fbe3ecee798d0b6bab2ea6cf146b0fb">Erase</a>(uint32_t address, size_t size)=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a6b6e66b9f34d222216468e2c907b0835">GetBlockSize</a>()=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a624e7e90e62cec1e67ea753859d7ba35">GetCapacity</a>()=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4b9c5d361413a7057321736b0133412d">GetMemoryType</a>()=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#ae1d4e0eab174ad1593faf7957f857b03">Initialize</a>()=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a826db74f43c08271f1d15d11e2e91b8d">IsMediaPresent</a>()=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a08e39de5d53e9237b19d82034f0e1dc6">IsReadOnly</a>()=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#aca52236e474b5f0ab52626c6fd797577">Read</a>(uint32_t address, void *data, size_t size)=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878">Type</a> enum name</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a99908d2b1ac3cb39213d01b15f80e56e">Write</a>(uint32_t address, const void *data, size_t size)=0</td><td class="entry"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->

@@ -1,12 +1,12 @@
 #pragma once
 
 #include <chrono>
-#include "L1_Peripheral/eeprom.hpp"
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
-
+#include "L1_Peripheral/storage.hpp"
 #include "utility/bit.hpp"
+#include "utility/status.hpp"
 
 namespace sjsu
 {
@@ -14,7 +14,7 @@ namespace lpc40xx
 {
 /// Implementation of the EEPROM interface for the LPC40xx family of
 /// microcontrollers.
-class Eeprom final : public sjsu::Eeprom
+class Eeprom final : public sjsu::Storage
 {
  public:
   /// Pointer to the LPC EEPROM peripheral in memory
@@ -49,9 +49,14 @@ class Eeprom final : public sjsu::Eeprom
   /// Max timeout for program/write operations in milliseconds
   static constexpr std::chrono::milliseconds kMaxTimeout = 20ms;
 
+  Type GetMemoryType() override
+  {
+    return Type::kEeprom;
+  }
+
   /// Initializing the EEPROM requires setting the wait state register, setting
   /// the clock divider register, and ensuring that the device is powered on.
-  void Initialize() const override
+  sjsu::Status Initialize() override
   {
     const float kSystemClock = static_cast<float>(
         sjsu::SystemController::GetPlatformController().GetSystemFrequency());
@@ -61,7 +66,7 @@ class Eeprom final : public sjsu::Eeprom
 
     // The EEPROM is turned on by default, but in case it was somehow
     // turned off, we turn it on by writing 0 to the PWRDWN register
-    eeprom_register->PWRDWN = 0;
+    Enable();
 
     // Initialize EEPROM wait state register with number of wait states
     // for each of its internal phases
@@ -77,22 +82,53 @@ class Eeprom final : public sjsu::Eeprom
 
     // Initialize EEPROM clock
     eeprom_register->CLKDIV = static_cast<uint8_t>(kSystemClock / kEepromClk);
+    return sjsu::Status::kSuccess;
   }
 
-  /// This function will write however much data to the EEPROM that the user
-  /// specifies. The maximum size of the EEPROM is 64 KB.
-  ///
-  /// @param data         - array of data to be written to EEPROM
-  /// @param full_address - address where data will start being written to
-  /// @param count        - number of bytes that have to be transferred
-  void Write(const uint8_t * data,
-             uint32_t full_address,
-             size_t count) const override
+  /// EEPROM is apart of the lpc40xx silicon so it is always present.
+  bool IsMediaPresent() override
+  {
+    return true;
+  }
+
+  sjsu::Status Enable() override
+  {
+    eeprom_register->PWRDWN = 0;
+    return sjsu::Status::kSuccess;
+  }
+
+  sjsu::Status Disable() override
+  {
+    eeprom_register->PWRDWN = 1;
+    return sjsu::Status::kSuccess;
+  }
+
+  bool IsReadOnly() override
+  {
+    return false;
+  }
+
+  units::data::byte_t GetCapacity() override
+  {
+    return 4_kB;
+  }
+
+  units::data::byte_t GetBlockSize() override
+  {
+    return 4_B;
+  }
+
+  sjsu::Status Erase(uint32_t, size_t) override
+  {
+    return sjsu::Status::kSuccess;
+  }
+
+  sjsu::Status Write(uint32_t address, const void * data, size_t size) override
   {
     constexpr bit::Mask kLower6Bits = bit::CreateMaskFromRange(0, 5);
     constexpr bit::Mask kUpper6Bits = bit::CreateMaskFromRange(6, 11);
 
-    full_address = bit::Clear(full_address, kAddressMask);
+    address = bit::Clear(address, kAddressMask);
 
     // Because the EEPROM uses 32-bit communication, write_data will be casted
     // into a uint32_t *
@@ -100,19 +136,19 @@ class Eeprom final : public sjsu::Eeprom
 
     // The first 6 bits in the address (MSB) dictate which page is being written
     // to in the EEPROM, and the last 6 bits (LSB) dictate offset in the page
-    uint32_t page_count  = bit::Extract(full_address, kUpper6Bits);
-    uint32_t page_offset = bit::Extract(full_address, kLower6Bits);
+    uint32_t page_count  = bit::Extract(address, kUpper6Bits);
+    uint32_t page_offset = bit::Extract(address, kLower6Bits);
 
-    uint16_t address;
+    uint16_t eeprom_address;
 
-    for (size_t i = 0; i * 4 < count; i++)
+    for (size_t i = 0; (i * 4) < size; i++)
     {
       // Page offset is incremented by 4 because we're writing 32 bits
       constexpr uint8_t kOffsetInterval = 4;
 
-      address = static_cast<uint16_t>((page_count << 6) + page_offset);
+      eeprom_address = static_cast<uint16_t>((page_count << 6) + page_offset);
 
-      eeprom_register->ADDR  = address;
+      eeprom_register->ADDR  = eeprom_address;
       eeprom_register->CMD   = kWrite32Bits;
       eeprom_register->WDATA = write_data[i];
 
@@ -128,25 +164,45 @@ class Eeprom final : public sjsu::Eeprom
       eeprom_register->INT_CLR_STATUS =
           (bit::Set(0, Status::kReadWriteStatusMask));
 
-      page_offset = static_cast<uint8_t>(page_offset + kOffsetInterval);
+      page_offset += kOffsetInterval;
 
       // If the 64 byte page buffer fills up, then it must be programmed to the
       // programmed to the EEPROM before continuing.
       if (page_offset > 64)
       {
-        Program(address);
+        Program(eeprom_address);
         page_count++;
         page_offset = 0;
       }
     }
 
     // Program final information so that it's stored in the EEPROM
-    Program(address);
+    Program(eeprom_address);
+
+    return sjsu::Status::kSuccess;
   }
 
+  sjsu::Status Read(uint32_t address, void * data, size_t size) override
+  {
+    address = bit::Insert(address, 0b00, kAddressMask);
+
+    // Because the EEPROM uses 32-bit communication, read_data will be casted
+    // into a uint32_t *
+    uint32_t * read_data = reinterpret_cast<uint32_t *>(data);
+
+    for (uint16_t index = 0; (index * 4) < size; index++)
+    {
+      eeprom_register->ADDR = address + (index * 4);
+      eeprom_register->CMD  = kRead32Bits;
+      read_data[index]      = eeprom_register->RDATA;
+    }
+    return sjsu::Status::kSuccess;
+  }
+
+ private:
   /// The EEPROM is accessed through a 64 byte page buffer, and after it fills
   /// up, it must be programmed to the EEPROM. This function handles that.
-  void Program(uint32_t address) const
+  void Program(uint32_t address)
   {
     eeprom_register->ADDR = address;
     eeprom_register->CMD  = kEraseProgram;
@@ -162,28 +218,6 @@ class Eeprom final : public sjsu::Eeprom
     // Clear program interrupt
     eeprom_register->INT_CLR_STATUS =
         (bit::Set(0, Status::kReadWriteStatusMask));
-  }
-
-  /// This function will return however much 32-bit data from the EEPROM
-  /// starting at address and continuing on for how large count is.
-  ///
-  /// @param data    - array that read data will be stored in
-  /// @param address - address where data will start being read from
-  /// @param count   - number of bytes that have to be read
-  void Read(uint8_t * data, uint32_t address, size_t count) const override
-  {
-    address = bit::Insert(address, 0b00, kAddressMask);
-
-    // Because the EEPROM uses 32-bit communication, read_data will be casted
-    // into a uint32_t *
-    uint32_t * read_data = reinterpret_cast<uint32_t *>(data);
-
-    for (uint16_t index = 0; (index * 4) < count; index++)
-    {
-      eeprom_register->ADDR = address + (index * 4);
-      eeprom_register->CMD  = kRead32Bits;
-      read_data[index]      = eeprom_register->RDATA;
-    }
   }
 };
 }  // namespace lpc40xx
