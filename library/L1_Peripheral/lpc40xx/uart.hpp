@@ -332,11 +332,12 @@ class Uart final : public sjsu::Uart
     return true;
   }
 
-  void Write(const uint8_t * data, size_t size) const override
+  void Write(const void * data, size_t size) const override
   {
+    const uint8_t * data_buffer = reinterpret_cast<const uint8_t *>(data);
     for (size_t i = 0; i < size; i++)
     {
-      port_.registers->THR = data[i];
+      port_.registers->THR = data_buffer[i];
       while (!TransmissionComplete())
       {
         continue;
@@ -344,28 +345,24 @@ class Uart final : public sjsu::Uart
     }
   }
 
-  Status Read(uint8_t * data,
-              size_t size,
-              std::chrono::microseconds timeout =
-                  std::chrono::microseconds::max()) const override
+  size_t Read(void * data, size_t size) const override
   {
-    uint32_t position = 0;
-    // NOTE: Consider changing this to using a Wait() call.
-    return Wait(timeout, [this, &data, size, &position]() -> bool {
-      if (HasData())
+    uint8_t * data_buffer = reinterpret_cast<uint8_t *>(data);
+    size_t index          = 0;
+    while (FifoHasData())
+    {
+      if (index >= size)
       {
-        data[position++] = static_cast<uint8_t>(port_.registers->RBR);
+        break;
       }
-      if (position >= size)
-      {
-        return true;
-      }
-      return false;
-    });
+      data_buffer[index++] = port_.registers->RBR;
+    }
+    return index;
   }
+
   bool HasData() const override
   {
-    return bit::Read(port_.registers->LSR, 0);
+    return FifoHasData();
   }
 
  private:
@@ -374,8 +371,13 @@ class Uart final : public sjsu::Uart
   {
     return bit::Read(port_.registers->LSR, 5);
   }
+  /// @return true if fifo contains receive data.
+  bool FifoHasData() const
+  {
+    return bit::Read(port_.registers->LSR, 0);
+  }
   /// const reference to lpc40xx::Uart::Port_t definition
   const Port_t & port_;
-};
+};  // namespace lpc40xx
 }  // namespace lpc40xx
 }  // namespace sjsu

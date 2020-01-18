@@ -41,6 +41,11 @@ int Lpc17xxStdOut(const char * data, size_t length)
 
 int Lpc17xxStdIn(char * data, size_t length)
 {
+  // Wait until data comes in
+  while (!uart0.HasData())
+  {
+    continue;
+  }
   uart0.Read(reinterpret_cast<uint8_t *>(data), length);
   return length;
 }
