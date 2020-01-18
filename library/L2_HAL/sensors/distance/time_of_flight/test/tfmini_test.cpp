@@ -11,318 +11,320 @@
 namespace sjsu
 {
 EMIT_ALL_METHODS(TFMini);
-TEST_CASE("Testing tfmini", "[tfmini]")
+
+namespace
+{
+auto MockReadImplementation(size_t & read_count,
+                            std::initializer_list<uint8_t> list)
+{
+  return [list, &read_count](void * data_ptr, size_t size) -> size_t {
+    uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
+    for (int i = 0; i < size; i++)
+    {
+      data[i] = list.begin()[read_count++];
+    }
+    return size;
+  };
+}
+
+template <size_t length>
+auto MockReadImplementation(size_t & read_count,
+                            std::array<uint8_t, length> & list)
+{
+  return [&list, &read_count](void * data_ptr, size_t size) -> size_t {
+    uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
+    for (int i = 0; i < size; i++)
+    {
+      data[i] = list[read_count++];
+    }
+    return size;
+  };
+}
+}  // namespace
+
+TEST_CASE("Testing TFMini", "[tfmini]")
 {
   Mock<Uart> mock_uart;
   Fake(Method(mock_uart, Initialize),
-       ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t)));
+       ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)));
 
   Uart & uart = mock_uart.get();
   TFMini test(uart);
 
-  SECTION("Check Initialize")
+  SECTION("Initialize()")
   {
     constexpr uint32_t kBaudRate = 115200;
     // Assuming Uart Initialization is successful
     When(Method(mock_uart, Initialize)).Return(sjsu::Status::kSuccess);
-    auto init_read_callback =
-        [](uint8_t * data,
-           size_t size,
-           std::chrono::microseconds timeout) -> sjsu::Status {
-      static constexpr uint8_t kSuccessfulAck[8] = { 0x42, 0x57, 0x02, 0x01,
-                                                     0x00, 0x00, 0x01, 0x02 };
-      static constexpr uint8_t kExitConfig[8]    = { 0x42, 0x57, 0x02, 0x01,
-                                                  0x00, 0x00, 0x00, 0x02 };
-      static uint8_t count                       = 0;
-      count++;
+    size_t read_count       = 0;
+    auto init_read_callback = MockReadImplementation(
+        read_count,
+        {
+            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x00, 0x02,  // Exit Config
+        });
 
-      CHECK(timeout == TFMini::kTimeout);
-      // Each Write prompts an Acknowledge sequence sent by the device
-      // The driver first Writes to enter Config mode then send two
-      //   config commands
-      // --> Prompts 3 Acks from Device
-      // The fourth Write exits Config mode, which prompts an Exit Ack
-      if (count != 4)
-      {
-        for (size_t iterator = 0; iterator < size; iterator++)
-        {
-          data[iterator] = kSuccessfulAck[iterator];
-        }
-      }
-      else
-      {
-        for (size_t iterator = 0; iterator < size; iterator++)
-        {
-          data[iterator] = kExitConfig[iterator];
-        }
-      }
-      return sjsu::Status::kSuccess;
-    };
-    When(ConstOverloadedMethod(
-             mock_uart,
-             Read,
-             sjsu::Status(uint8_t *, size_t, std::chrono::microseconds)))
+    When(Method(mock_uart, HasData)).AlwaysReturn(true);
+    When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .AlwaysDo(init_read_callback);
-    CHECK(test.Initialize() == sjsu::Status::kSuccess);
-    // Check that uart initialization uses the correct Baud rate
+
+    // Exercise
+    CHECK(sjsu::Status::kSuccess == test.Initialize());
+
+    // Verify:
+    // Verify: Check that uart initialization uses the correct Baud rate
     Verify(Method(mock_uart, Initialize).Using(kBaudRate));
-    // Check the entering of Config mode
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t))
-            .Using(TFMini::kConfigCommand, TFMini::kCommandLength));
-    // Check setting of external trigger mode
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t))
-            .Using(TFMini::kSetExternalTriggerMode, TFMini::kCommandLength));
-    // Check Dist units are set to milimeters
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t))
-            .Using(TFMini::kSetDistUnitMM, TFMini::kCommandLength));
-    // Check that config mode was exited
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t))
-            .Using(TFMini::kExitConfigCommand, TFMini::kCommandLength));
-    // Check that we wrote commands exactly 4 different times
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t)))
+    // Verify: Check the entering of Config mode
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
+               .Using(TFMini::kConfigCommand, TFMini::kCommandLength));
+    // Verify: Check setting of external trigger mode
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
+               .Using(TFMini::kSetExternalTriggerMode, TFMini::kCommandLength));
+    // Verify: Check Dist units are set to millimeters
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
+               .Using(TFMini::kSetDistUnitMM, TFMini::kCommandLength));
+    // Verify: Check that config mode was exited
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
+               .Using(TFMini::kExitConfigCommand, TFMini::kCommandLength));
+    // Verify: Check that we wrote commands exactly 4 different times
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)))
         .Exactly(4);
   }
 
-  SECTION("Check GetDistance")
+  SECTION("GetDistance()")
   {
-    Status get_dist_status;
-    units::length::millimeter_t distance_check                     = 0_mm;
+    // Setup
     static constexpr units::length::millimeter_t kExpectedDistance = 291_mm;
-    auto dist_read_callback =
-        [](uint8_t * data,
-           size_t size,
-           std::chrono::microseconds timeout) -> sjsu::Status {
-      static constexpr uint8_t kReadData[8] = {
-        0x59,
-        0x59,
-        bit::Extract(kExpectedDistance.to<uint32_t>(), 0, 8),
-        bit::Extract(kExpectedDistance.to<uint32_t>(), 8, 8),
-        0xDC,
-        0x05,
-        0x02,
-        0x00
-      };
-      uint8_t checksum     = 0;
-      static uint8_t count = 0;
-      count++;
-
-      CHECK(timeout == TFMini::kTimeout);
-      for (int i = 0; i < 8; i++)
-      {
-        checksum += kReadData[i];
-      }
-      // =============================================================
-      // |Byte0-1|Byte2 | Byte3 | Byte4 | Byte5 |Byte6|Byte7| Byte8  |
-      // | 0x59  |Dist_L| Dist_H|Stren_L|Stren_H|Mode |0x00 |Checksum|
-      // =============================================================
-      // First test checks that expected values work.
-      // Second test observes change in the device header
-      // Third test observes an error in the checksum
-      for (size_t iterator = 0; iterator < (size - 1); iterator++)
-      {
-        data[iterator] = kReadData[iterator];
-      }
-      if (count == 2)
-      {
-        data[0]        = 0x00;
-        data[size - 1] = static_cast<uint8_t>(checksum - kReadData[0]);
-      }
-      else if (count == 3)
-      {
-        data[size - 1] = 0x00;
-      }
-      else
-      {
-        data[size - 1] = static_cast<uint8_t>(checksum);
-      }
-      return sjsu::Status::kSuccess;
+    size_t read_count                                              = 0;
+    constexpr uint8_t kLowerByte =
+        bit::Extract(kExpectedDistance.to<uint32_t>(), 0, 8);
+    constexpr uint8_t kHigherByte =
+        bit::Extract(kExpectedDistance.to<uint32_t>(), 8, 8);
+    // =========================================================================
+    // | Byte0-1 | Byte 2 | Byte 3 | Byte 4  | Byte 5  | Byte6 | Byte7| Byte8  |
+    // |  0x59   | Dist_L | Dist_H | Stren_L | Stren_H | Mode  | 0x00 |Checksum|
+    // =========================================================================
+    std::array<uint8_t, TFMini::kDeviceDataLength> device_result = {
+      0x59, 0x59, kLowerByte, kHigherByte, 0xDC, 0x05, 0x02, 0x00,
     };
-    When(ConstOverloadedMethod(
-             mock_uart,
-             Read,
-             sjsu::Status(uint8_t *, size_t, std::chrono::microseconds)))
+
+    // Setup: Generate the checksum
+    device_result.end()[-1] =
+        std::accumulate(device_result.begin(), &device_result.end()[-2], 0);
+
+    // Setup: Assume that we always have data available
+    When(Method(mock_uart, HasData)).AlwaysReturn(true);
+
+    auto dist_read_callback = MockReadImplementation(read_count, device_result);
+    When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .AlwaysDo(dist_read_callback);
 
-    // Checking Proper Operation
-    get_dist_status = test.GetDistance(&distance_check);
-    CHECK(get_dist_status == sjsu::Status::kSuccess);
-    CHECK(distance_check == kExpectedDistance);
+    SECTION("Success")
+    {
+      // Exercise
+      units::length::millimeter_t distance_check = 0_mm;
+      Status status = test.GetDistance(&distance_check);
+
+      // Verify
+      CHECK(status == sjsu::Status::kSuccess);
+      CHECK(distance_check == kExpectedDistance);
+      Verify(
+          ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
+              .Using(TFMini::kPromptMeasurementCommand, TFMini::kCommandLength))
+          .Exactly(1);
+    }
+
+    SECTION("BusError")
+    {
+      // Setup: throw one of the bytes off from the checksum
+      device_result[4] = 0x34;
+
+      // Exercise
+      units::length::millimeter_t distance_check = 0_mm;
+      Status status = test.GetDistance(&distance_check);
+
+      // Verify
+      CHECK(sjsu::Status::kBusError == status);
+      CHECK(std::numeric_limits<units::length::millimeter_t>::max() ==
+            distance_check);
+    }
+
+    SECTION("Device Not Found")
+    {
+      SECTION("First byte is invalid")
+      {
+        device_result[0] = 0x00;
+      }
+
+      SECTION("Second byte is invalid")
+      {
+        device_result[1] = 0x00;
+      }
+
+      // Exercise
+      units::length::millimeter_t distance_check = 0_mm;
+      Status status = test.GetDistance(&distance_check);
+
+      CHECK(status == sjsu::Status::kDeviceNotFound);
+      CHECK(distance_check ==
+            std::numeric_limits<units::length::millimeter_t>::max());
+    }
+
+    // Verify
     Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t))
+        ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
             .Using(TFMini::kPromptMeasurementCommand, TFMini::kCommandLength));
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t)))
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)))
         .Exactly(1);
-
-    // Checking Invalid Device Header
-    get_dist_status = test.GetDistance(&distance_check);
-    CHECK(get_dist_status == sjsu::Status::kDeviceNotFound);
-    CHECK(distance_check ==
-          std::numeric_limits<units::length::millimeter_t>::max());
-
-    // Checking Invalid Checksum
-    get_dist_status = test.GetDistance(&distance_check);
-    CHECK(get_dist_status == sjsu::Status::kBusError);
-    CHECK(distance_check ==
-          std::numeric_limits<units::length::millimeter_t>::max());
   }
 
-  SECTION("Check GetSignalStrengthPercent")
+  SECTION("GetSignalStrengthPercent()")
   {
-    Status get_stren_status;
-    float strength_check                 = 0;
     constexpr uint16_t kExpectedStrength = 0x05DC;
     constexpr float kExpectedStrengthRange =
         static_cast<float>(kExpectedStrength / TFMini::kStrengthUpperBound);
     constexpr float kExpectedError = -1.0f;
-    auto stren_read_callback =
-        [](uint8_t * data,
-           size_t size,
-           std::chrono::microseconds timeout) -> sjsu::Status {
-      static constexpr uint8_t kReadData[8] = {
-        0x59,
-        0x59,
-        0x23,
-        0x01,
-        bit::Extract(kExpectedStrength, 1, 8),
-        bit::Extract(kExpectedStrength, 9, 8),
-        0x02,
-        0x00
-      };
-      uint8_t checksum     = 0;
-      static uint8_t count = 0;
-      count++;
 
-      CHECK(timeout == TFMini::kTimeout);
-      for (int i = 0; i < 8; i++)
-      {
-        checksum += kReadData[i];
-      }
-      // =============================================================
-      // |Byte0-1|Byte2 | Byte3 | Byte4 | Byte5 |Byte6|Byte7| Byte8  |
-      // | 0x59  |Dist_L| Dist_H|Stren_L|Stren_H|Mode |0x00 |Checksum|
-      // =============================================================
-      // First call checks that expected values work.
-      // Second call observes change in the device header
-      // Third call observes an error in the checksum
-      for (size_t iterator = 0; iterator < (size - 1); iterator++)
-      {
-        data[iterator] = kReadData[iterator];
-      }
-      if (count == 2)
-      {
-        data[0]        = 0x00;
-        data[size - 1] = static_cast<uint8_t>(checksum - kReadData[0]);
-      }
-      else if (count == 3)
-      {
-        data[size - 1] = 0x00;
-      }
-      else
-      {
-        data[size - 1] = static_cast<uint8_t>(checksum);
-      }
-      return sjsu::Status::kSuccess;
+    constexpr uint8_t kLowerByte  = bit::Extract(kExpectedStrength, 1, 8);
+    constexpr uint8_t kHigherByte = bit::Extract(kExpectedStrength, 9, 8);
+
+    std::array<uint8_t, TFMini::kDeviceDataLength> device_result = {
+      0x59, 0x59, kLowerByte, kHigherByte, 0xDC, 0x05, 0x02, 0x00,
     };
-    When(ConstOverloadedMethod(
-             mock_uart,
-             Read,
-             sjsu::Status(uint8_t *, size_t, std::chrono::microseconds)))
-        .AlwaysDo(stren_read_callback);
 
-    // Checking Proper Operation
-    get_stren_status = test.GetSignalStrengthPercent(&strength_check);
-    CHECK(get_stren_status == sjsu::Status::kSuccess);
-    CHECK(strength_check < (kExpectedStrengthRange + 0.001f));
-    CHECK(strength_check > (kExpectedStrengthRange - 0.001f));
+    // Setup: Generate the checksum
+    device_result.end()[-1] =
+        std::accumulate(device_result.begin(), &device_result.end()[-2], 0);
+
+    // Setup: Assume that we always have data available
+    When(Method(mock_uart, HasData)).AlwaysReturn(true);
+
+    size_t read_count      = 0;
+    auto strength_callback = MockReadImplementation(read_count, device_result);
+    When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
+        .AlwaysDo(strength_callback);
+
+    constexpr float kEpsilon = 0.001f;
+
+    SECTION("Proper Operation")
+    {
+      // Setup
+      float strength_check = 0;
+
+      // Exercise
+      Status status = test.GetSignalStrengthPercent(&strength_check);
+
+      // Verify
+      CHECK(status == sjsu::Status::kSuccess);
+      CHECK(strength_check == Approx(kExpectedStrengthRange).epsilon(kEpsilon));
+    }
+
+    SECTION("Invalid Device Header")
+    {
+      SECTION("First byte is invalid")
+      {
+        device_result[0] = 0x00;
+      }
+
+      SECTION("Second byte is invalid")
+      {
+        device_result[1] = 0x00;
+      }
+
+      // Setup
+      float strength_check = 0;
+
+      // Exercise
+      Status status = test.GetSignalStrengthPercent(&strength_check);
+
+      // Verify
+      CHECK(status == sjsu::Status::kDeviceNotFound);
+      CHECK(strength_check == Approx(kExpectedError).epsilon(kEpsilon));
+    }
+
+    SECTION("Invalid Checksum")
+    {
+      // Setup
+      float strength_check = 0;
+      // Setup: throw one of the bytes off from the checksum
+      device_result[4] = 0x34;
+
+      // Exercise
+      Status status = test.GetSignalStrengthPercent(&strength_check);
+
+      // Verify
+      CHECK(status == sjsu::Status::kBusError);
+      CHECK(strength_check == Approx(kExpectedError).epsilon(kEpsilon));
+    }
+
     Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t))
+        ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
             .Using(TFMini::kPromptMeasurementCommand, TFMini::kCommandLength));
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t)))
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)))
         .Exactly(1);
-
-    // Checking Invalid Device Header
-    get_stren_status = test.GetSignalStrengthPercent(&strength_check);
-    CHECK(get_stren_status == sjsu::Status::kDeviceNotFound);
-    CHECK(strength_check < (kExpectedError + 0.001f));
-    CHECK(strength_check > (kExpectedError - 0.001f));
-
-    // Checking Invalid Checksum
-    get_stren_status = test.GetSignalStrengthPercent(&strength_check);
-    CHECK(get_stren_status == sjsu::Status::kBusError);
-    CHECK(strength_check < (kExpectedError + 0.001f));
-    CHECK(strength_check > (kExpectedError - 0.001f));
   }
 
-  SECTION("Check SetMinSignalThreshhold")
+  SECTION("SetMinSignalThreshhold()")
   {
-    uint8_t test_numbers[3] = { 0, 50, 100 };
-    auto min_threshold_update =
-        [](uint8_t * data,
-           size_t size,
-           std::chrono::microseconds timeout) -> sjsu::Status {
-      static constexpr uint8_t kSuccessfulAck[8] = { 0x42, 0x57, 0x02, 0x01,
-                                                     0x00, 0x00, 0x01, 0x02 };
-      static constexpr uint8_t kExitConfig[8]    = { 0x42, 0x57, 0x02, 0x01,
-                                                  0x00, 0x00, 0x00, 0x02 };
-      static uint8_t count                       = 0;
-      count++;
-
-      CHECK(timeout == TFMini::kTimeout);
-      // Each Write prompts an Acknowledge sequence sent by the device
-      // The driver first Writes to enter Config mode then send one
-      //   additional config commands
-      // --> Prompts 2 Acks from Device
-      // The third Write exits Config mode, which prompts an Exit Ack
-      if (count != 3)
-      {
-        for (size_t iterator = 0; iterator < size; iterator++)
-        {
-          data[iterator] = kSuccessfulAck[iterator];
-        }
-      }
-      else
-      {
-        for (size_t iterator = 0; iterator < size; iterator++)
-        {
-          data[iterator] = kExitConfig[iterator];
-        }
-      }
-      return sjsu::Status::kSuccess;
+    // Setup
+    std::array<uint8_t, TFMini::kCommandLength * 4> device_result = {
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // kSuccessfulAck
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // kSuccessfulAck
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x00, 0x02,  // kExitConfig
     };
-    When(ConstOverloadedMethod(
-             mock_uart,
-             Read,
-             sjsu::Status(uint8_t *, size_t, std::chrono::microseconds)))
-        .AlwaysDo(min_threshold_update);
 
-    // Verify successful return using edge case 0
-    CHECK(test.SetMinSignalThreshhold(test_numbers[0]) ==
-          sjsu::Status::kSuccess);
-    // Check that the command to enter config has been used
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t))
-            .Using(TFMini::kConfigCommand, TFMini::kCommandLength));
-    // Check that the command to exit config has been used
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t))
-            .Using(TFMini::kExitConfigCommand, TFMini::kCommandLength));
-    // Check that we wrote commands exactly 3 different times
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const uint8_t *, size_t)))
+    // Setup: Assume that we always have data available
+    When(Method(mock_uart, HasData)).AlwaysReturn(true);
+
+    size_t read_count      = 0;
+    auto strength_callback = MockReadImplementation(read_count, device_result);
+    When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
+        .AlwaysDo(strength_callback);
+
+    SECTION("Successfully return using edge case 0")
+    {
+      // Exercise
+      Status status = test.SetMinSignalThreshhold(0);
+
+      // Verify
+      CHECK(sjsu::Status::kSuccess == status);
+    }
+
+    SECTION("Successfully return in proper usage")
+    {
+      // Exercise
+      Status status = test.SetMinSignalThreshhold(50);
+
+      // Verify
+      CHECK(sjsu::Status::kSuccess == status);
+    }
+
+    SECTION("Successfully return using edge case: Above the threshold cap")
+    {
+      // Exercise
+      Status status = test.SetMinSignalThreshhold(100);
+
+      // Verify
+      CHECK(sjsu::Status::kSuccess == status);
+    }
+
+    // TODO(#1052): Missing verification for
+    //              SendCommandAndCheckEcho(updated_min_threshold_command)
+
+    // Verify
+    // Verify: that the command to enter config has been used
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
+               .Using(TFMini::kConfigCommand, TFMini::kCommandLength));
+    // Verify: that the command to exit config has been used
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
+               .Using(TFMini::kExitConfigCommand, TFMini::kCommandLength));
+    // Verify: that we wrote commands exactly 3 different times
+    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)))
         .Exactly(3);
-    // Verify successful return in proper usage
-    CHECK(test.SetMinSignalThreshhold(test_numbers[1]) ==
-          sjsu::Status::kSuccess);
-    // Verify successful return using edge case: Above the threshold cap
-    CHECK(test.SetMinSignalThreshhold(test_numbers[2]) ==
-          sjsu::Status::kSuccess);
   }
 }
 }  // namespace sjsu

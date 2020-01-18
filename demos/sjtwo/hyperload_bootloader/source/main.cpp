@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iterator>
+#include <numeric>
 
 #include <project_config.hpp>
 
@@ -123,7 +124,7 @@ SJ2_PACKED(struct) IapStatus_t
 
 SJ2_PACKED(struct) Block_t
 {
-  uint8_t data[kBlockSize];
+  std::array<uint8_t, kBlockSize> data;
 };
 
 SJ2_PACKED(struct) Sector_t
@@ -259,10 +260,14 @@ int main()
 
   printf3("Bootloader Debug Port Initialized!\n");
   // Flush any initial bytes
-  uart0.Read(kSerialReadTimeout);
+  uart0.Flush();
   uart0.Write(0xFF);
+
+  uint8_t handshake_byte;
+  uart0.Read(&handshake_byte, 1, 100ms);
+
   // Hyperload will send 0x55 to notify that it is alive!
-  if (0x55 == uart0.Read(kSerialReadTimeout))
+  if (0x55 == handshake_byte)
   {
     SetFlashAcceleratorSpeed(6);
     // Notify Hyperload that we're alive too!
@@ -273,10 +278,13 @@ int main()
       uint32_t word;
     };
     BaudRateControlWord control;
-    control.array[0] = uart0.Read(kSerialReadTimeout);
-    control.array[1] = uart0.Read(kSerialReadTimeout);
-    control.array[2] = uart0.Read(kSerialReadTimeout);
-    control.array[3] = uart0.Read(kSerialReadTimeout);
+    sjsu::Delay(kSerialReadTimeout);
+
+    uart0.Read(&control.array[0], 1, 100ms);
+    uart0.Read(&control.array[1], 1, 100ms);
+    uart0.Read(&control.array[2], 1, 100ms);
+    uart0.Read(&control.array[3], 1, 100ms);
+
     // Echo it back to verify
     uart0.Write(control.array[0]);
     sjsu::Delay(1ms);
@@ -381,18 +389,24 @@ int main()
   return 0;
 }
 
-// TODO(#177): All of the code below should be moved into the file
-// library/L0_Platform/lpc_flash.hpp
 uint8_t WriteUartToBlock(Block_t * block)
 {
   uint32_t checksum = 0;
-  for (uint32_t position = 0; position < kBlockSize; position++)
+
+  for (uint32_t position = 0; position < kBlockSize;)
   {
-    uint8_t byte          = uart0.Read(100ms);
-    block->data[position] = byte;
-    checksum += byte;
+    position += uart0.Read(&block->data[position], kBlockSize - position);
   }
+
   return static_cast<uint8_t>(checksum & 0xFF);
+}
+
+void WaitForNextByte()
+{
+  while (!uart0.HasData())
+  {
+    continue;
+  }
 }
 
 bool WriteUartToRamSector(Sector_t * sector)
@@ -405,8 +419,10 @@ bool WriteUartToRamSector(Sector_t * sector)
   uart0.Write(kHyperloadReady);
   while (blocks_written < kBlocksPerSector)
   {
-    uint8_t block_number_msb = uart0.Read(1s);
-    uint8_t block_number_lsb = uart0.Read(100ms);
+    WaitForNextByte();
+    uint8_t block_number_msb = uart0.Read();
+    WaitForNextByte();
+    uint8_t block_number_lsb = uart0.Read();
     uint32_t block_number    = (block_number_msb << 8) | block_number_lsb;
     if (0xFFFF == block_number)
     {
@@ -416,9 +432,10 @@ bool WriteUartToRamSector(Sector_t * sector)
     }
     else
     {
-      uint32_t partition        = block_number % kBlocksPerSector;
-      uint8_t checksum          = WriteUartToBlock(&sector->block[partition]);
-      uint8_t expected_checksum = uart0.Read(1s);
+      uint32_t partition = block_number % kBlocksPerSector;
+      uint8_t checksum   = WriteUartToBlock(&sector->block[partition]);
+      WaitForNextByte();
+      uint8_t expected_checksum = uart0.Read();
       if (checksum != expected_checksum)
       {
         uart0.Write(kChecksumError);
@@ -436,6 +453,7 @@ bool WriteUartToRamSector(Sector_t * sector)
   return finished;
 }
 
+// TODO(#177): All of the code below should be moved into a library file.
 IapResult PrepareSector(uint32_t start, uint32_t end)
 {
   IapCommand_t command  = { 0, { 0 } };
