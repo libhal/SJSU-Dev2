@@ -1,5 +1,3 @@
-#include <inttypes.h>
-#include <cstdint>
 #include "utility/log.hpp"
 
 void PrintLogDescription(int a)
