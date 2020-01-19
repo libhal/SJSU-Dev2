@@ -1,4 +1,3 @@
-#include <inttypes.h>
 #include <cstdint>
 
 #include "L1_Peripheral/lpc40xx/i2c.hpp"

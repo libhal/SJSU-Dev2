@@ -1,4 +1,3 @@
-#include <inttypes.h>
 #include "L1_Peripheral/lpc40xx/can.hpp"
 #include "utility/log.hpp"
 
