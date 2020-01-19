@@ -59,6 +59,9 @@ GENERAL TARGETS ________________________________________________________________
 
 DEVELOPER TARGETS ______________________________________________________________
 
+  all-projects -----------------------------------------------------------------
+    Checks that all projects compile without warnings or errors.
+
   lint -------------------------------------------------------------------------
     Check that source files abide by the SJSU-Dev2 coding standard.
 
@@ -75,7 +78,7 @@ DEVELOPER TARGETS ______________________________________________________________
   presubmit --------------------------------------------------------------------
     Runs the presubmit checks which is used for continuous integration. The
     following checks will be performed:
-      1. Checks that all projects compile without warnings or errors.
+      1. Performs `make all-projects`
       2. Performs `make lint`
       3. Performs `make tidy`
       4. Performs `make library-test`

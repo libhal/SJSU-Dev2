@@ -18,8 +18,9 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wdouble-promotion"
+#if !defined(__clang__)
 #pragma GCC diagnostic ignored "-Wuseless-cast"
-
+#endif
 #ifndef OS_INTEGER_TRACE_PRINTF_TMP_ARRAY_SIZE
 #define OS_INTEGER_TRACE_PRINTF_TMP_ARRAY_SIZE (256)
 #endif

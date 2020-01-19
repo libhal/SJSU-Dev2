@@ -10,6 +10,7 @@ library/static_libraries/*
 !library/static_libraries/keep_folder
 
 tools/**/*
+!tools/build_all_projects.sh
 !tools/cpplint
 !tools/FlashMagic
 !tools/Hercules.exe

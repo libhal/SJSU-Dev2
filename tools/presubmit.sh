@@ -50,73 +50,16 @@ function check
     exit 0
   fi
 }
-####################################
-#    All Projects Build Check      #
-####################################
-print_divider "Checking that all projects build"
-
-printf "$YELLOW    Building hello_world Project $RESET"
-# Change to the hello_world project
-cd "$SJBASE/projects/hello_world"
-# Purge repository of all application and framework build files and start
-# building from scratch
-SILENCE=$(make purge)
-# Check if the system can build without any warnings!
-SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
-# Set build capture to return code from the build
-BUILD_CAPTURE=$?
-print_status $BUILD_CAPTURE
-echo ""
-
-printf "$YELLOW    Building Starter Project $RESET"
-# Change to the Hyperload project
-cd "$SJBASE/projects/starter"
-# Clean the build and start building from scratch
-SILENCE=$(make clean)
-# Check if the system can build without any warnings!
-SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
-# Set build capture to return code from the build
-SPECIFIC_BUILD_CAPTURE=$?
-BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
-print_status $SPECIFIC_BUILD_CAPTURE
-echo ""
-
-printf "$YELLOW    Building Barebones Project $RESET"
-# Change to the Hyperload project
-cd "$SJBASE/projects/barebones"
-# Clean the build and start building from scratch
-SILENCE=$(make clean)
-# Check if the system can build without any warnings!
-SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
-# Set build capture to return code from the build
-SPECIFIC_BUILD_CAPTURE=$?
-BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
-print_status $SPECIFIC_BUILD_CAPTURE
-echo ""
-
-# Build all example projects
-cd $SJBASE/demos/
-
-LIST_OF_PROJECT=$(find ./ -name "makefile")
-for d in $LIST_OF_PROJECT
-do
-PROJECT_PATH=$(dirname $d)
-cd "$SJBASE/demos/$PROJECT_PATH"
-printf "$YELLOW    Building Example $d $RESET"
-# Clean the build and start building from scratch
-SILENCE=$(make clean)
-# Check if the system can build without any warnings!
-SILENCE=$(make application WARNINGS_ARE_ERRORS=-Werror)
-# Add the return codes of the previous build capture. None zero means that at
-# least one of the captures failed.
-SPECIFIC_BUILD_CAPTURE=$?
-BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
-print_status $SPECIFIC_BUILD_CAPTURE
-echo ""
-done
 
 # Return to home project
 cd $SJBASE/projects/hello_world
+
+####################################
+#        Build All Projects        #
+####################################
+make all-projects
+BUILD_CAPTURE=$?
+
 ####################################
 #           Lint Check             #
 ####################################
