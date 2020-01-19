@@ -16,7 +16,7 @@ DEVICE_GDB       := gdb
 
 COMMON_FLAGS += -m32
 
-LINKFLAGS = $(COMMON_FLAGS) -m32 -pthread -Wl,--gc-sections -Wl,-Map,"$(MAP)"
+LINK_FLAGS = $(COMMON_FLAGS) -m32 -pthread -Wl,--gc-sections -Wl,-Map,"$(MAP)"
 
 include $(LIBRARY_DIR)/L0_Platform/freertos/freertos.mk
 
