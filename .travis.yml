@@ -40,5 +40,12 @@ matrix:
           script:
             - cd projects/hello_world/
             - make presubmit
+        - os: osx
+          osx_image: xcode11.3
+          before_install:
+            - pip install --user cpp-coveralls
+          script:
+            - cd projects/hello_world/
+            - make presubmit
 install: ./setup
 

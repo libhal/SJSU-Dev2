@@ -572,6 +572,6 @@ $(OBJECT_DIR)/%.tidy: %
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 		-extra-arg="-std=c++2a") "$<"  -- \
 		-D PLATFORM=host -D HOST_TEST=1 \
-		-isystem"$(SJCLANG)/lib/clang/9.0.0/include/" \
+		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
 		$(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@printf '$(GREEN)Evaluated file: $(RESET)$< \n'
