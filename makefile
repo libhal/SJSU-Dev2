@@ -95,10 +95,12 @@ ifneq ($(PREVIOUS_SETUP_VERSION), $(CURRENT_SETUP_VERSION))
   $(info $(shell printf '$(RESET)'))
   $(warning )
 endif
+
 # ==============================================================================
 # Setting the number of threads
 # ==============================================================================
-ifneq ($(MAKECMDGOALS), presubmit)
+DO_NOT_MULTITHREAD = presubmit all-projects execute program
+ifneq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), $(DO_NOT_MULTITHREAD)))
   NPROCS := 1
   OS := $(shell uname -s)
 
@@ -182,8 +184,8 @@ DEBUG_FLAG    = -g
 WARNINGS      = -Wall -Wextra -Wshadow -Wfloat-equal -Wundef \
                 -Wno-format-nonliteral -Wconversion -Wdouble-promotion \
                 -Wswitch -Wnull-dereference -Wformat=2
-CPP_WARNINGS   = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
-                 -Wuseless-cast
+CPP_WARNINGS  = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
+                -Wsuggest-final-types -Wsuggest-final-methods
 DEFINES       = -D ELF_FILE=\"$(EXECUTABLE)\"
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # ==============================================================================
@@ -321,9 +323,7 @@ C_FLAGS   := $(CPP_FLAGS)
 else
 C_FLAGS   := $(C_FLAGS_COMMON) -D PLATFORM=$(PLATFORM) \
              -DTRACE -DOS_USE_TRACE_SEMIHOSTING_STDOUT
-CPP_FLAGS := $(C_FLAGS) $(CPP_WARNINGS) $(CPP_OPTIMIZE) $(WARNINGS) \
-             -Wlogical-op -Wduplicated-cond -Wsuggest-final-types \
-             -Wsuggest-final-methods
+CPP_FLAGS := $(C_FLAGS) $(CPP_WARNINGS) $(CPP_OPTIMIZE) $(WARNINGS)
 endif
 # ==============================================================================
 # Final products
@@ -371,10 +371,10 @@ application: $(LIST) $(HEX) $(BINARY) $(SIZE)
 
 execute: flash
 flash:
-	@$(MAKE) --quiet application
+	+@$(MAKE) --quiet application
 	@printf \
 	'$(MAGENTA)Programming chip via In-System Programming (ISP)...$(RESET)\n'
-	@$(MAKE) --quiet platform-flash
+	+@$(MAKE) --quiet platform-flash
 
 
 debug:
@@ -396,12 +396,11 @@ debug-test:
 
 jtag-flash: program
 program:
-	@$(MAKE) --quiet application
+	+@$(MAKE) --quiet application
 	@printf '$(MAGENTA)Programming chip via debug device...$(RESET)\n'
 	@$(OPENOCD_DIR)/bin/$(OPENOCD_EXE) -s $(OPENOCD_DIR)/scripts/ \
 			-c "source [find interface/$(JTAG).cfg]" -f $(OPENOCD_CONFIG) \
 			-c "program \"$(EXECUTABLE)\" reset exit"
-
 
 
 library-test: test $(TEST_EXEC)
@@ -468,6 +467,10 @@ spellcheck:
 	@$(TOOLS_DIR)/spell_checker.sh $(LINT_FILES)
 
 
+all-projects:
+	+@$(TOOLS_DIR)/build_all_projects.sh
+
+
 FILES_WITH_TESTS=$(filter-out $(NO_TEST_NEEDED), $(LINT_FILES))
 find-missing-tests:
 	@$(TOOLS_DIR)/find_sources_without_tests.sh $(FILES_WITH_TESTS)
@@ -527,13 +530,13 @@ $(SIZE): $(EXECUTABLE)
 
 
 $(LIST): $(EXECUTABLE)
-	@$(OBJDUMP) --disassemble --all-headers --source --demangle --wide "$<" > "$@"
+	@$(OBJDUMP) --disassemble --all-headers --source --demangle "$<" > "$@"
 	@echo -e '$(YELLOW)Disassembly Generated!$(RESET)  : $@'
 
 
 $(CORE_STATIC_LIBRARY): $(LIBRARIES)
 	@rm -f "$@"
-	@$(DEVICE_AR) -rcT "$@" $^
+	@$(DEVICE_AR) rcT "$@" $^
 	@$(DEVICE_RANLIB) "$@"
 	@echo -e '$(YELLOW)Final Library file ( A ) $(RESET): $@'
 

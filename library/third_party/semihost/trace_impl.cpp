@@ -13,7 +13,9 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #pragma GCC diagnostic ignored "-Wdouble-promotion"
+#if !defined(__clang__)
 #pragma GCC diagnostic ignored "-Wuseless-cast"
+#endif
 
 #include "trace.h"
 #include "L0_Platform/lpc40xx/LPC40xx.h"

@@ -17,11 +17,11 @@ int main()
       "more then that. This is due to the fact that we delay for a whole "
       "second, but it takes time to print each statement.");
 
-  uint32_t counter = 0;
+  int counter = 0;
 
   while (true)
   {
-    LOG_INFO("[%lu] Uptime = %" PRId64 "ns", counter++, sjsu::Uptime().count());
+    LOG_INFO("[%d] Uptime = %" PRId64 "ns", counter++, sjsu::Uptime().count());
     sjsu::Delay(1s);
   }
   return 0;
