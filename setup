@@ -31,6 +31,22 @@ NXPPROG=1
 LOCATION_FILE=1
 LINK_PROJECTS=1
 
+# Import SJSU-Dev2 common shell script functions
+. $BASE/tools/common.sh
+
+function print_status_nl
+{
+  if [ $1 -ne 0 ]
+  then
+    printf "$BOLD_RED"
+    printf "✘ - failure"
+  else
+    printf "$BOLD_GREEN"
+    printf "✔ - success"
+  fi
+  printf "$RESET\n"
+}
+
 # Make sure only non-root users can run our script
 function quit_if_script_was_run_as_root() {
   if [[ $EUID -eq 0 ]]; then
@@ -68,11 +84,14 @@ function install_linux_prerequisites() {
   sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   sudo apt update
   local apt_update=$?
+  print_status_nl $apt_update
   echo " ───────────────────────────────────────────────────┐"
-  echo " Installing git, make python3, pip3, curl, tar, tree "
+  echo " Installing git, make python3, pip3, curl, tar, g++  "
   echo "└─────────────────────────────────────────────────── "
-  sudo apt -y install git make python3 python3-pip curl tar tree g++-8
+  sudo apt -y install git make curl tar tree pv g++-8 \
+                      python3 python3-pip
   local apt_install=$?
+  print_status_nl $apt_install
   echo " ──────────────────────────────────────────────────┐"
   echo "       Adding current user to 'dialout' group        "
   echo "└────────────────────────────────────────────────── "
@@ -89,25 +108,34 @@ function install_mac_osx_prerequisites() {
   echo ""
   echo "└────────────────────────────────────────────────── "
   echo " ───────────────────────────────────────────────────┐"
-  echo "    Install XCode Command Line Tools (GCC, make)     "
-  echo "└─────────────────────────────────────────────────── "
-  # Install Command Line tools (make etc...)
-  xcode-select --install &>/dev/null
-  # Accept User Agreement
-  sudo xcodebuild -license accept
-  local xcodebuild_status=$?
-  echo " ───────────────────────────────────────────────────┐"
   echo "          Prompt Git installer by invoking it        "
   echo "└─────────────────────────────────────────────────── "
   git --version
   local git_status=$?
+  print_status_nl $git_status
   echo " ───────────────────────────────────────────────────┐"
-  echo "        Installing PIP via bootstrap.pypa.io         "
+  echo "               Installing Homebrew                   "
   echo "└─────────────────────────────────────────────────── "
-  curl https://bootstrap.pypa.io/get-pip.py | python3
-  local pip_install_status=$?
+  /usr/bin/ruby -e \
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
+    < /dev/null
+  local brew_install=$?
+  print_status_nl $brew_install
 
-  return $(($xcodebuild_status + $git_status + $pip_install_status))
+  echo " ───────────────────────────────────────────────────┐"
+  echo "               Brew Install Python@3                 "
+  echo "└─────────────────────────────────────────────────── "
+  brew install python@3
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                Brew Installing pv                   "
+  echo "└─────────────────────────────────────────────────── "
+  brew install pv
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                Brew Installing gcc                  "
+  echo "└─────────────────────────────────────────────────── "
+  brew install gcc@8
+
+  return $(($git_status + $brew_install))
 }
 
 function install_python_tools() {
@@ -116,30 +144,24 @@ function install_python_tools() {
   echo "└─────────────────────────────────────────────────── "
   sudo -H python3 -m pip install --upgrade pip
   local pip_status=$?
+  print_status_nl $pip_status
   echo " ───────────────────────────────────────────────────┐"
   echo "                 Installing Gcovr                    "
   echo "└─────────────────────────────────────────────────── "
   sudo -H python3 -m pip install gcovr
   local gcovr_status=$?
+  print_status_nl $gcovr_status
   echo " ───────────────────────────────────────────────────┐"
   echo "           Installing/Upgrading Virtualenv           "
   echo "└─────────────────────────────────────────────────── "
   sudo -H python3 -m pip install --upgrade virtualenv
   local virtualenv_status=$?
+  print_status_nl $virtualenv_status
 
   return $(($pip_status + $gcovr_status + $virtualenv_status))
 }
 
-function get_file_count() {
-  if [ ! -d "$1" ]; then
-    echo 0
-  else
-    echo $(tree -a "$1" | wc -l)
-  fi
-}
-
 function download_and_extract_tool_bundle() {
-  local tools_bundle_file_count=9621
   cd "$TOOLDIR/"
   echo " ───────────────────────────────────────────────────┐"
   echo "             Downloading Tools Bundle                "
@@ -151,13 +173,21 @@ function download_and_extract_tool_bundle() {
   # the current toolkit file. If the online one is newer, then it is
   # downloaded. If it is older, it is ignored and no temporary file is created.
   echo "Downloading: $TOOLS_BUNDLE_URL"
-  curl -z "$(basename $TOOLS_BUNDLE_URL)" -o $temporary_name \
-       -L0 "$TOOLS_BUNDLE_URL"
+  TOOLS_BUNDLE_PATH=$(basename $TOOLS_BUNDLE_URL)
+
+  if [[ -f $TOOLS_BUNDLE_PATH ]]; then
+    curl -z $TOOLS_BUNDLE_PATH -o $temporary_name \
+          -L0 "$TOOLS_BUNDLE_URL"
+  else
+    curl -o $temporary_name -L0 "$TOOLS_BUNDLE_URL"
+  fi
   # This will have an expected failure if curl ignored downloading the file,
   # which would result in the temp file not existing. mv does nothing if the
   # source file does not exist.
-  mv $temporary_name "$(basename $TOOLS_BUNDLE_URL)" &>/dev/null
+  printf "Verify tools download/update was successful... "
+  mv $temporary_name $TOOLS_BUNDLE_PATH &>/dev/null
   local tools_bundle_was_updated=$?
+  print_status_nl $tools_bundle_was_updated
 
   if [[ $tools_bundle_was_updated -eq "0" ]]; then
     echo " ──────────────────────────────────────────────────┐"
@@ -169,27 +199,32 @@ function download_and_extract_tool_bundle() {
     rm -r "gcc-arm*" &>/dev/null
     rm -r "clang+llvm*" &>/dev/null
 
-    tar --verbose --extract --bzip --file="$(basename $TOOLS_BUNDLE_URL)" \
-      2>/dev/null |
-      while read line; do
-        x=$((x + 1))
-        echo -en "\rExtracting Progress: $(($x * 100 / $TOOLS_FILE_COUNT))% "
-      done
+    pv $TOOLS_BUNDLE_PATH | tar --extract --bzip --file="-"
     local extract=$?
-    echo -en "\rExtracting Progress: 100% \n"
+    print_status_nl $extract
 
     # Verify that each directory exists
-    ls clang+llvm-*/ &>/dev/null
+    ls clang+llvm-*/ &> /dev/null
+    printf "Verify that Clang tools were extracted... "
     local clang_exists=$?
-    ls gcc-arm*/ &>/dev/null
+    print_status_nl $clang_exists
+
+    ls gcc-arm*/ &> /dev/null
+    printf "Verify that ARM toolchain was extracted... "
     local gcc_exists=$?
-    ls openocd/ &>/dev/null
+    print_status_nl $gcc_exists
+
+    printf "Verify that OpenOCD debug tools were extracted... "
+    ls openocd/ &> /dev/null
     local openocd_exists=$?
+    print_status_nl $openocd_exists
 
     # Linux or Windows WSL
     if [[ "$OS" == "Linux" ]]; then
+      printf "Verify that OpenOCD debug tools for windows was extracted... "
       ls openocd-wsl/ &>/dev/null
       openocd_exists=$(($openocd_exists+$?))
+      print_status_nl $openocd_exists
     fi
 
     return $(($extract + $clang_exists + $gcc_exists + $openocd_exists))
@@ -205,14 +240,19 @@ function install_nxpprog() {
   rm -rf "nxpprog/"
   git clone https://github.com/kammce/nxpprog.git "nxpprog/"
   local git_clone=$?
+  print_status_nl $git_clone
 
   cd "nxpprog/"
 
   git checkout --quiet ea28bd0
   local git_checkout=$?
+  printf "Verify nxpprog commit checkout... "
+  print_status_nl $git_checkout
 
   ./setup
   local setup_status=$?
+  printf "Verify nxpprog setup... "
+  print_status_nl $setup_status
 
   return $(($git_clone + $setup_status + $git_checkout))
 }
@@ -237,24 +277,10 @@ ifeq (,\$(wildcard \$(SJSU_DEV2_BASE)/))
 endif
 
 EOL
-  return $?
-}
-
-function link_projects() {
-  cd "$BASE"
-  echo " ───────────────────────────────────────────────────┐"
-  echo "      Linking Files to Firmware Project Folder       "
-  echo "└─────────────────────────────────────────────────── "
-  ./tools/link_projects.sh
-  return $?
-}
-
-function print_status() {
-  if [[ $1 -ne 0 ]]; then
-    printf "\e[31m✘\e[0;31m"
-  else
-    printf "\e[32m✔\e[0;31m"
-  fi
+  printf "Verify location file generation was successful... "
+  local generation_successful=$?
+  print_status_nl $generation_successful
+  return $generation_successful
 }
 
 function final_install_check() {
@@ -262,9 +288,8 @@ function final_install_check() {
   local tool_bundle="$(print_status $TOOL_BUNDLE)"
   local python_tools="$(print_status $PYTHON_TOOLS)"
   local nxpprog="$(print_status $NXPPROG)"
-  local project_link="$(print_status $LINK_PROJECTS)"
 
-  local install_was_successful=$(($PREREQUISITES + $TOOL_BUNDLE + $PYTHON_TOOLS + $NXPPROG + $LINK_PROJECTS))
+  local install_was_successful=$(($PREREQUISITES + $TOOL_BUNDLE + $PYTHON_TOOLS + $NXPPROG))
 
   if [[ $install_was_successful -ne "0" ]]; then
     printf "\e[0;31m"
@@ -282,8 +307,6 @@ function final_install_check() {
     printf "\n"
     echo "| Setup nxpprog ......... %b |" $nxpprog
     printf "\n"
-    echo "| Project Linking ....... %b |" $project_link
-    printf "\n"
     echo "|                           |"
     echo " =========================== "
     printf "\e[0m\n"
@@ -299,8 +322,6 @@ function final_install_check() {
     printf "| Python Tools .......... %b " $python_tools
     printf "\e[0;32m|\n"
     printf "| Setup nxpprog ......... %b " $nxpprog
-    printf "\e[0;32m|\n"
-    printf "| Project Linking ....... %b " $project_link
     printf "\e[0;32m|\n"
     echo "|                           |"
     printf "|          (•_•)            |\r"
@@ -368,7 +389,6 @@ if [ "$PREREQUISITES" -ne "0" ]; then
   printf "                 Prequisite Install Failed.                "
   echo ""
   echo "  Make sure:                                               "
-  echo "     - Nothing else is currently being installed using APT "
   echo "     - You are connected to the internet                   "
   echo ""
   printf "└───────────────────────────────────────────────────────── "
@@ -382,8 +402,6 @@ install_python_tools
 PYTHON_TOOLS=$?
 install_nxpprog
 NXPPROG=$?
-link_projects
-LINK_PROJECTS=$?
 
 echo ""
 

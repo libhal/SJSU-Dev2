@@ -20,7 +20,7 @@ matrix:
             - ./generate_doxygen_docs.sh
           after_success:
             - cd ../
-            - coveralls --gcov "$(pwd)/tools/clang+llvm-7.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/llvm-cov gcov"
+            - coveralls --gcov "gcov-8"
               --include "library/L0_Platform"
               --include "library/L1_Peripheral"
               --include "library/L2_HAL"
