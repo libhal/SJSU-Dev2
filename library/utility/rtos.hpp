@@ -2,10 +2,10 @@
 // FreeRTOS.
 #pragma once
 
-#include <FreeRTOS.h>
-#include <task.h>
-
 #include <cstdint>
+#include <FreeRTOS.h>
+#include <semphr.h>
+#include <task.h>
 
 #if defined(HOST_TEST)
 #include "event_groups.h"

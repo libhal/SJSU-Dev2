@@ -1,6 +1,6 @@
 #include "L3_Application/task.hpp"
-#include "semphr.h"
 #include "utility/log.hpp"
+#include "utility/rtos.hpp"
 
 class PrinterTask final : public sjsu::rtos::Task<512>
 {
@@ -19,8 +19,8 @@ class PrinterTask final : public sjsu::rtos::Task<512>
   {
     if (print_mutex == NULL)
     {
-      print_mutex = xSemaphoreCreateMutexStatic(&print_mutex_stack_buffer);
-      // print_mutex = xSemaphoreCreateMutex();
+      // print_mutex = xSemaphoreCreateMutexStatic(&print_mutex_stack_buffer);
+      print_mutex = xSemaphoreCreateMutex();
     }
     LOG_INFO("Completed Setup() for: %s", GetName());
     return true;
@@ -49,11 +49,16 @@ class PrinterTask final : public sjsu::rtos::Task<512>
   }
 
  private:
-  inline static StaticSemaphore_t print_mutex_stack_buffer;
+  // inline static StaticSemaphore_t print_mutex_stack_buffer;
   inline static SemaphoreHandle_t print_mutex;
 
+<<<<<<< HEAD
   const char * message_;
   int run_count_;
+=======
+  const char * const message_;
+  uint32_t run_count_;
+>>>>>>> Resolving issues from PR
 };
 
 sjsu::rtos::TaskScheduler scheduler;

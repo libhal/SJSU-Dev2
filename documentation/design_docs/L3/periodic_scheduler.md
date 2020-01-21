@@ -37,13 +37,7 @@ the desired code that will be executed at a fixed frequency of 1Hz, 10Hz, 100Hz,
 or 1000Hz. The scheduler manages the execution of each task through the use of
 [FreeRTOS software timers](https://www.freertos.org/RTOS-software-timer.html).
 
-FreeRTOS for the system is configured to be 1 tick = 1ms. Therefore, the period
-required for a timer of a desired frequency can be determined by the following:
-```
-period = (1 / frequency) / 1ms
-```
-For example, a periodic task specified to execute at 1Hz would require a timer
-with a timeout period of 1000ms since period = (1 / 1) / 1ms = 1000ms.
+The FreeRTOS tick period must be set to 1ms per 1 tick.
 
 # Detailed Design
 ## API

@@ -102,12 +102,15 @@ class Task : public TaskInterface
 ```
 
 ## Static Allocation of Tasks
-Scheduled tasks are statically allocated by the `TaskScheduler`. To enable the
-static allocation of tasks, the `configSUPPORT_STATIC_ALLOCATION` definition is
-set to 1 in [FreeRTOSConfig.h](/library/L0_Platform/freertos/FreeRTOSConfig.h)
-and the implementation of `vApplicationGetIdleTaskMemory()` must also be
-provided to statically allocate memory for the FreeRTOS idle task when
+Tasks are statically allocated and the FreeRTOS task handle is created and
+managed by the `TaskScheduler`. To enable the static allocation of tasks, the
+`configSUPPORT_STATIC_ALLOCATION` definition is set to 1 in
+[FreeRTOSConfig.h](/library/L0_Platform/freertos/FreeRTOSConfig.h) and the
+implementation of `vApplicationGetIdleTaskMemory()` must also be provided to
+statically allocate memory for the FreeRTOS idle task when
 `vTaskStartScheduler()` is invoked.
+
+> **Note:** Static allocation for FreeRTOS is enabled by default in SJSU-Dev2.
 
 ```c++
 static StaticTask_t idle_task_tcb;

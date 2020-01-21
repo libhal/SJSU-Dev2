@@ -175,7 +175,7 @@ class Task : public TaskInterface
   /// the bounds of those sections meaning it must be on the heap, which means
   /// that the object may not live for the total lifetime of program. This
   /// usually results in a crash at some point in the code.
-  bool DeclaredOnStackCheck() const
+  bool DeclaredOnStackCheck()
   {
     if constexpr (build::kPlatform != build::Platform::linux &&
                   build::kPlatform != build::Platform::host)
