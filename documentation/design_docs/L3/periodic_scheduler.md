@@ -57,8 +57,8 @@ class PeriodicTaskInterface
 };
 
 template <size_t kTaskStackSize>
-class PeriodicTask : public Task<kTaskStackSize>,
-                     public virtual PeriodicTaskInterface
+class PeriodicTask final : public Task<kTaskStackSize>,
+                           public virtual PeriodicTaskInterface
 {
  public:
   explicit PeriodicTask(const char * name,

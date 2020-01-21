@@ -52,13 +52,8 @@ class PrinterTask final : public sjsu::rtos::Task<512>
   // inline static StaticSemaphore_t print_mutex_stack_buffer;
   inline static SemaphoreHandle_t print_mutex;
 
-<<<<<<< HEAD
   const char * message_;
-  int run_count_;
-=======
-  const char * const message_;
   uint32_t run_count_;
->>>>>>> Resolving issues from PR
 };
 
 sjsu::rtos::TaskScheduler scheduler;
