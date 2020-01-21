@@ -7,10 +7,7 @@ namespace sjsu
 {
 namespace rtos
 {
-<<<<<<< HEAD
-=======
 /// An abstract interface for the Task interface class.
->>>>>>> Removing singleton pattern from rtos::TaskScheduler and rtos::Task
 class TaskInterface
 {
  public:
