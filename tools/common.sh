@@ -45,7 +45,7 @@ function print_status
     printf "$BOLD_RED"
     printf "✘"
   else
-    printf "$BOLDGREEN"
+    printf "$BOLD_GREEN"
     printf "✔"
   fi
   printf "$RED"
