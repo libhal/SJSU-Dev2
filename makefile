@@ -165,13 +165,10 @@ OPENOCD_DIR    = $(shell grep -q Microsoft /proc/version && \
 OPENOCD_EXE    = $(shell grep -q Microsoft /proc/version && \
                    echo "openocd.exe" || echo "openocd")
 GDBINIT_PATH   = $(SJSU_DEV2_BASE)/tools/gdb_dashboard/gdbinit
-# NOTE: Updating the LD_LIBRARY_PATH used to run executables using the clang
-# libc++ linked library which are created via the "test" target
-LD_LIBRARY_PATH := $(LD_LIBRARY_PATH):$(SJCLANG)/lib/
 # ==============================================================================
 # Tool Definitions
 # ==============================================================================
-CODE_COVERAGE_TOOL = $(SJCLANG)/bin/llvm-cov
+CODE_COVERAGE_TOOL = gcov-8
 CLANG_TIDY         = $(SJCLANG)/bin/clang-tidy
 HOST_SYMBOLIZER    = $(SJCLANG)/bin/llvm-symbolizer
 # ==============================================================================
@@ -272,21 +269,21 @@ include $(LIBRARY_DIR)/library.mk
 # A bit of post processing on the source variables
 # ==============================================================================
 ifeq ($(MAKECMDGOALS), library-test)
-  CC          := $(SJCLANG)/bin/clang
-  CPPC        := $(SJCLANG)/bin/clang++
-  OBJDUMP     := $(SJCLANG)/bin/llvm-objdump
-  SIZEC       := $(SJCLANG)/bin/llvm-size
-  OBJCOPY     := $(SJCLANG)/bin/llvm-objcopy
-  NM          := $(SJCLANG)/bin/llvm-nm
+  CC          := gcc-8
+  CPPC        := g++-8
+  OBJDUMP     := objdump
+  SIZEC       := size
+  OBJCOPY     := objcopy
+  NM          := nm
   COMPILABLES := $(TESTS)
   TEST_SOURCE_DIRECTORIES = --filter="$(LIBRARY_DIR)"
 else ifeq ($(MAKECMDGOALS), test)
-  CC          := $(SJCLANG)/bin/clang
-  CPPC        := $(SJCLANG)/bin/clang++
-  OBJDUMP     := $(SJCLANG)/bin/llvm-objdump
-  SIZEC       := $(SJCLANG)/bin/llvm-size
-  OBJCOPY     := $(SJCLANG)/bin/llvm-objcopy
-  NM          := $(SJCLANG)/bin/llvm-nm
+  CC          := gcc-8
+  CPPC        := g++-8
+  OBJDUMP     := objdump
+  SIZEC       := size
+  OBJCOPY     := objcopy
+  NM          := nm
   COMPILABLES := $(USER_TESTS)
   TEST_SOURCE_DIRECTORIES = --filter="$(LIBRARY_DIR)" \
       $(addsuffix ", $(addprefix --filter=", $(USER_TESTS)))
@@ -308,12 +305,13 @@ OBJECTS          := $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
 CPP_FLAGS := -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
-             -fprofile-instr-generate -fcoverage-mapping \
+             -fprofile-generate -ftest-coverage -fbranch-probabilities \
              -fno-elide-constructors -ftest-coverage -fno-omit-frame-pointer \
-             -fsanitize=address -stdlib=libc++ -fdiagnostics-color \
+             -fsanitize=address -fdiagnostics-color \
              $(WARNINGS) $(WARNINGS_ARE_ERRORS) \
-             -Winconsistent-missing-override \
-             -Wno-sign-conversion -Wno-format-nonliteral \
+             -Wsuggest-override -Wno-sign-conversion \
+             -Wno-sign-compare -Wno-conversion -Wno-format-nonliteral \
+             -Wno-missing-field-initializers \
              -D HOST_TEST=1 -D PLATFORM=$(PLATFORM) \
              -D SJ2_BACKTRACE_DEPTH=1024 -D CATCH_CONFIG_FAST_COMPILE \
              $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG_FLAG) \
@@ -391,7 +389,7 @@ debug:
 
 
 debug-test:
-	export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && gdb build/tests.exe
+	gdb build/tests.exe
 
 
 jtag-flash: program
@@ -409,8 +407,7 @@ library-test: test $(TEST_EXEC)
 # executable will complain that the coverage files are out of date or corrupted.
 test: $(TEST_EXEC)
 	@rm -f $(COVERAGE_FILES) 2> /dev/null
-	@export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) && \
-	 export ASAN_SYMBOLIZER_PATH=$(HOST_SYMBOLIZER) && \
+	@export ASAN_SYMBOLIZER_PATH=$(HOST_SYMBOLIZER) && \
 	 ASAN_OPTIONS="symbolize=1 color=always" \
 	 $(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
 	@mkdir -p "$(COVERAGE_DIR)"
@@ -566,8 +563,7 @@ $(TEST_EXEC): $(OBJECTS)
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \
 					 -fno-inline-small-functions -fno-default-inline \
 					 -fkeep-inline-functions -fno-elide-constructors  \
-					 -ftest-coverage -O0 -fsanitize=address \
-					 -std=c++2a -stdlib=libc++ -lc++ -lc++abi \
+					 -ftest-coverage -fsanitize=address -O0 -std=c++2a \
 					 -o $(TEST_EXEC) $(OBJECTS)
 	@echo -e '$(GREEN)Test Executable Generated!$(RESET)'
 
@@ -577,6 +573,6 @@ $(OBJECT_DIR)/%.tidy: %
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
 		-extra-arg="-std=c++2a") "$<"  -- \
 		-D PLATFORM=host -D HOST_TEST=1 \
-		-isystem"$(SJCLANG)/include/c++/v1/" \
-		-stdlib=libc++ $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
+		-isystem"$(SJCLANG)/lib/clang/9.0.0/include/" \
+		$(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@echo -e '$(GREEN)Evaluated file: $(RESET)$< '

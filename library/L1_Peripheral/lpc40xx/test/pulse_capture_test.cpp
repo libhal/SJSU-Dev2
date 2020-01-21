@@ -64,11 +64,15 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
 
   const PulseCapture::CaptureChannel_t kTestTimerCh0 = {
     .channel = kTestTimerPartial0,
-    .handler = PulseCapture::TimerHandler<kTestTimerPartial0>
+    .handler = []() {
+      PulseCapture::TimerHandler(kTestTimerPartial0);
+    }
   };
   const PulseCapture::CaptureChannel_t kTestTimerCh1 = {
     .channel = kTestTimerPartial1,
-    .handler = PulseCapture::TimerHandler<kTestTimerPartial1>
+    .handler = []() {
+      PulseCapture::TimerHandler(kTestTimerPartial1);
+    }
   };
 
   memset(&test_timer_register, 0, sizeof(test_timer_register));
