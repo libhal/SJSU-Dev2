@@ -4,12 +4,11 @@
 
 #include <cstdint>
 #include <FreeRTOS.h>
-#include <semphr.h>
-#include <task.h>
+#include "semphr.h"
+#include "task.h"
 
 #if defined(HOST_TEST)
 #include "event_groups.h"
-#include "semphr.h"
 #include "timers.h"
 
 #include "L4_Testing/testing_frameworks.hpp"

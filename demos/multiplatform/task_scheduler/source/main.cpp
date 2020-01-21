@@ -38,7 +38,7 @@ class PrinterTask final : public sjsu::rtos::Task<512>
   {
     run_count_ += 1;
     xSemaphoreTake(print_mutex, portMAX_DELAY);
-    LOG_INFO("%s: %d", message_, run_count_);
+    LOG_INFO("%s: %lu", message_, run_count_);
     xSemaphoreGive(print_mutex);
     if (run_count_ == 10)
     {
