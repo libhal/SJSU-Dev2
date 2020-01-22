@@ -4,13 +4,12 @@
 /*
  *  FakeIt - A Simplified C++ Mocking Framework
  *  Copyright (c) Eran Pe'er 2013
- *  Generated: 2018-06-14 21:17:38.569427
+ *  Generated: 2019-06-01 12:15:07.986646
  *  Distributed under the MIT License. Please refer to the LICENSE file at:
  *  https://github.com/eranpeer/FakeIt
  */
 
-#ifndef fakeit_h__
-#define fakeit_h__
+
 
 
 
@@ -252,6 +251,35 @@ namespace fakeit {
 			s += val;
 			s += "'";
 			return s;
+		}
+	};
+
+	template <>
+	struct Formatter<char const*>
+	{
+		static std::string format(char const* const &val)
+		{
+			std::string s;
+			if(val != nullptr)
+			{
+				s += '"';
+				s += val;
+				s += '"';
+			}
+			else
+			{
+				s = "[nullptr]";
+			}
+			return s;
+		}
+	};
+
+	template <>
+	struct Formatter<char*>
+	{
+		static std::string format(char* const &val)
+		{
+			return Formatter<char const*>::format( val );
 		}
 	};
 
@@ -744,6 +772,9 @@ namespace fakeit {
     };
 
 }
+#ifdef FAKEIT_ASSERT_ON_UNEXPECTED_METHOD_INVOCATION
+#include <cassert>
+#endif
 
 namespace fakeit {
 
@@ -833,7 +864,7 @@ namespace fakeit {
             out << "Unexpected method invocation: ";
             out << e.getInvocation().format() << std::endl;
             if (UnexpectedType::Unmatched == e.getUnexpectedType()) {
-                out << "  Could not find Any recorded behavior to support this method call.";
+                out << "  Could not find any recorded behavior to support this method call.";
             } else {
                 out << "  An unmocked method was invoked. All used virtual methods must be stubbed!";
             }
@@ -870,7 +901,7 @@ namespace fakeit {
         virtual std::string format(const NoMoreInvocationsVerificationEvent &e) override {
             std::ostringstream out;
             out << "Verification error" << std::endl;
-            out << "Expected no more invocations!! But the following unverified invocations were found:" << std::endl;
+            out << "Expected no more invocations!! but the following unverified invocations were found:" << std::endl;
             formatInvocationList(out, e.unverifedIvocations());
             return out.str();
         }
@@ -917,8 +948,8 @@ namespace fakeit {
 
         static void formatInvocationList(std::ostream &out, const std::vector<fakeit::Invocation *> &actualSequence) {
             size_t max_size = actualSequence.size();
-            if (max_size > 5)
-                max_size = 5;
+            if (max_size > 50)
+                max_size = 50;
 
             for (unsigned int i = 0; i < max_size; i++) {
                 out << "  ";
@@ -953,7 +984,19 @@ namespace fakeit {
         }
     };
 }
+#include <exception>
+
+
 namespace fakeit {
+#if __cplusplus >= 201703L
+    inline bool UncaughtException () {
+        return std::uncaught_exceptions() >= 1;
+    }
+#else
+    inline bool UncaughtException () {
+      return std::uncaught_exception();
+    }
+#endif
 
     struct FakeitException {
         std::exception err;
@@ -1092,65 +1135,59 @@ namespace fakeit {
 
 namespace fakeit {
 
-    struct VerificationException : public FakeitException {
-        virtual ~VerificationException() = default;
+    struct VerificationException : public std::exception {
+        virtual ~VerificationException() NO_THROWS{};
 
-        void setFileInfo(const char *file, int line, const char *callingMethod) {
-            _file = file;
-            _callingMethod = callingMethod;
-            _line = line;
+        VerificationException(std::string format) :
+            _format(format) {
         }
 
-        const char *file() const {
+        friend std::ostream &operator<<(std::ostream &os, const VerificationException &val) {
+            os << val.what();
+            return os;
+        }
+
+        void setFileInfo(std::string aFile, int aLine, std::string aCallingMethod) {
+            _file = aFile;
+            _callingMethod = aCallingMethod;
+            _line = aLine;
+        }
+
+        const std::string& file() const {
             return _file;
         }
-
         int line() const {
             return _line;
         }
-
-        const char *callingMethod() const {
+        const std::string& callingMethod() const {
             return _callingMethod;
         }
 
+        const char* what() const NO_THROWS override{
+            return _format.c_str();
+        }
     private:
-        const char *_file;
+        std::string _file;
         int _line;
-        const char *_callingMethod;
+        std::string _callingMethod;
+        std::string _format;
     };
 
     struct NoMoreInvocationsVerificationException : public VerificationException {
-
         NoMoreInvocationsVerificationException(std::string format) :
-                _format(format) {
+            VerificationException(format) {
         }
-
-        virtual std::string what() const override {
-            return _format;
-        }
-
-    private:
-        std::string _format;
     };
 
     struct SequenceVerificationException : public VerificationException {
-        SequenceVerificationException(const std::string &format) :
-                _format(format)
-        {
+        SequenceVerificationException(std::string format) :
+            VerificationException(format) {
         }
-
-        virtual std::string what() const override {
-            return _format;
-        }
-
-    private:
-        std::string _format;
     };
 
-    class CatchAdapter : public EventHandler {
-        EventFormatter &_formatter;
+    struct StandaloneAdapter : public EventHandler {
 
-        std::string formatLineNumber(std::string file, int num) {
+        std::string formatLineNumner(std::string file, int num){
 #ifndef __GNUG__
             return file + std::string("(") + fakeit::to_string(num) + std::string(")");
 #else
@@ -1158,94 +1195,75 @@ namespace fakeit {
 #endif
         }
 
-    public:
+        virtual ~StandaloneAdapter() = default;
 
-        virtual ~CatchAdapter() = default;
-
-        CatchAdapter(EventFormatter &formatter)
-                : _formatter(formatter) {}
-
-        void fail(
-                std::string vetificationType,
-                Catch::SourceLineInfo sourceLineInfo,
-                std::string failingExpression,
-                std::string fomattedMessage,
-                Catch::ResultWas::OfType resultWas = Catch::ResultWas::OfType::ExpressionFailed ){
-            Catch::AssertionHandler catchAssertionHandler( vetificationType, sourceLineInfo, failingExpression, Catch::ResultDisposition::Normal );
-            INTERNAL_CATCH_TRY { \
-                CATCH_INTERNAL_SUPPRESS_PARENTHESES_WARNINGS \
-                catchAssertionHandler.handleMessage(resultWas, fomattedMessage); \
-                CATCH_INTERNAL_UNSUPPRESS_PARENTHESES_WARNINGS \
-            } INTERNAL_CATCH_CATCH(catchAssertionHandler) { \
-                INTERNAL_CATCH_REACT(catchAssertionHandler) \
-            }
+        StandaloneAdapter(EventFormatter &formatter)
+            : _formatter(formatter) {
         }
 
         virtual void handle(const UnexpectedMethodCallEvent &evt) override {
             std::string format = _formatter.format(evt);
-            fail("UnexpectedMethodCall",::Catch::SourceLineInfo("Unknown file",0),"",format, Catch::ResultWas::OfType::ExplicitFailure);
+            UnexpectedMethodCallException ex(format);
+            throw ex;
         }
 
         virtual void handle(const SequenceVerificationEvent &evt) override {
-            std::string format(formatLineNumber(evt.file(), evt.line()) + ": " + _formatter.format(evt));
-            std::string expectedPattern {DefaultEventFormatter::formatExpectedPattern(evt.expectedPattern())};
-            fail("Verify",::Catch::SourceLineInfo(evt.file(),evt.line()),expectedPattern,format);
+            std::string format(formatLineNumner(evt.file(), evt.line()) + ": " + _formatter.format(evt));
+            SequenceVerificationException e(format);
+            e.setFileInfo(evt.file(), evt.line(), evt.callingMethod());
+            throw e;
         }
-
 
         virtual void handle(const NoMoreInvocationsVerificationEvent &evt) override {
-            std::string format(formatLineNumber(evt.file(), evt.line()) + ": " + _formatter.format(evt));
-            fail("VerifyNoMoreInvocations",::Catch::SourceLineInfo(evt.file(),evt.line()),"",format);
+            std::string format(formatLineNumner(evt.file(), evt.line()) + ": " + _formatter.format(evt));
+            NoMoreInvocationsVerificationException e(format);
+            e.setFileInfo(evt.file(), evt.line(), evt.callingMethod());
+            throw e;
         }
 
+    private:
+        EventFormatter &_formatter;
     };
 
-
-    class CatchFakeit : public DefaultFakeit {
-
+    class StandaloneFakeit : public DefaultFakeit {
 
     public:
+        virtual ~StandaloneFakeit() = default;
 
-        virtual ~CatchFakeit() = default;
+        StandaloneFakeit() : _standaloneAdapter(*this) {
+        }
 
-        CatchFakeit() : _formatter(), _catchAdapter(_formatter) {}
-
-        static CatchFakeit &getInstance() {
-            static CatchFakeit instance;
+        static StandaloneFakeit &getInstance() {
+            static StandaloneFakeit instance;
             return instance;
         }
 
     protected:
 
         fakeit::EventHandler &accessTestingFrameworkAdapter() override {
-            return _catchAdapter;
-        }
-
-        EventFormatter &accessEventFormatter() override {
-            return _formatter;
+            return _standaloneAdapter;
         }
 
     private:
 
-        DefaultEventFormatter _formatter;
-        CatchAdapter _catchAdapter;
+        StandaloneAdapter _standaloneAdapter;
     };
-
 }
 
-static fakeit::DefaultFakeit& Fakeit = fakeit::CatchFakeit::getInstance();
+static fakeit::DefaultFakeit& Fakeit = fakeit::StandaloneFakeit::getInstance();
 
 
 #include <type_traits>
 #include <unordered_set>
 
 #include <memory>
-#include <limits>
+#undef max
 #include <functional>
 #include <type_traits>
 #include <vector>
 #include <array>
 #include <new>
+#include <limits>
 
 #include <functional>
 #include <type_traits>
@@ -5285,7 +5303,9 @@ namespace fakeit {
 }
 
 namespace fakeit {
-    class NoVirtualDtor {
+    class NoVirtualDtor : public std::runtime_error {
+    public:
+		NoVirtualDtor() :std::runtime_error("Can't mock the destructor. No virtual destructor was found") {}
     };
 
     class VTUtils {
@@ -5311,6 +5331,18 @@ namespace fakeit {
         getDestructorOffset() {
             throw NoVirtualDtor();
         }
+
+		template<typename C>
+		static typename std::enable_if<std::has_virtual_destructor<C>::value, bool>::type
+			hasVirtualDestructor() {
+			return true;
+		}
+
+		template<typename C>
+		static typename std::enable_if<!std::has_virtual_destructor<C>::value, bool>::type
+			hasVirtualDestructor() {
+			return false;
+		}
 
         template<typename C>
         static unsigned int getVTSize() {
@@ -5423,6 +5455,7 @@ namespace fakeit {
 			signature(0), offset(0), cdOffset(0),
 			typeDescriptorOffset(0), classDescriptorOffset(0)
 		{
+                    (void)unused;
 		}
 
 		dword_ signature;
@@ -5776,6 +5809,7 @@ namespace fakeit {
 
 #ifdef __GNUG__
 #ifndef __clang__
+#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 #endif
@@ -5941,7 +5975,7 @@ namespace fakeit {
                 _methodMocks(methodMocks), _offsets(offsets) {
 			for (std::vector<unsigned int>::iterator it = _offsets.begin(); it != _offsets.end(); ++it)
 			{
-				*it = std::numeric_limits<unsigned int>::max();
+				*it = std::numeric_limits<int>::max();
 			}
         }
 
@@ -7908,21 +7942,12 @@ namespace fakeit {
         }
 
         MockImpl(FakeitContext &fakeit)
-                : MockImpl<C, baseclasses...>(fakeit, *(createFakeInstance()), false) {
-            FakeObject<C, baseclasses...> *fake = reinterpret_cast<FakeObject<C, baseclasses...> *>(_instance);
+                : MockImpl<C, baseclasses...>(fakeit, *(createFakeInstance()), false){
+            FakeObject<C, baseclasses...> *fake = asFakeObject(_instanceOwner.get());
             fake->getVirtualTable().setCookie(1, this);
         }
 
         virtual ~MockImpl() NO_THROWS {
-            _proxy.detach();
-            if (_isOwner) {
-                FakeObject<C, baseclasses...> *fake = reinterpret_cast<FakeObject<C, baseclasses...> *>(_instance);
-                delete fake;
-            }
-        }
-
-        void detach() {
-            _isOwner = false;
             _proxy.detach();
         }
 
@@ -7937,8 +7962,8 @@ namespace fakeit {
 
 	    void initDataMembersIfOwner()
 	    {
-		    if (_isOwner) {
-			    FakeObject<C, baseclasses...> *fake = reinterpret_cast<FakeObject<C, baseclasses...> *>(_instance);
+		    if (isOwner()) {
+			    FakeObject<C, baseclasses...> *fake = asFakeObject(_instanceOwner.get());
 			    fake->initializeDataMembersArea();
 		    }
 	    }
@@ -7982,11 +8007,34 @@ namespace fakeit {
             return DtorMockingContext(new DtorMockingContextImpl(*this));
         }
 
+
+
+
+
+
+
     private:
-        DynamicProxy<C, baseclasses...> _proxy;
-        C *_instance;
-        bool _isOwner;
+
+
+
+
+
+
+
+
+
+		std::shared_ptr<FakeObject<C, baseclasses...>> _instanceOwner;
+		DynamicProxy<C, baseclasses...> _proxy;
         FakeitContext &_fakeit;
+
+        MockImpl(FakeitContext &fakeit, C &obj, bool isSpy)
+                : _instanceOwner(isSpy ? nullptr : asFakeObject(&obj))
+				, _proxy{obj}
+				, _fakeit(fakeit) {}
+
+        static FakeObject<C, baseclasses...>* asFakeObject(void* instance){
+            return reinterpret_cast<FakeObject<C, baseclasses...> *>(instance);
+        }
 
         template<typename R, typename ... arglist>
         class MethodMockingContextBase : public MethodMockingContext<R, arglist...>::Context {
@@ -8094,11 +8142,15 @@ namespace fakeit {
         };
 
         static MockImpl<C, baseclasses...> *getMockImpl(void *instance) {
-            FakeObject<C, baseclasses...> *fake = reinterpret_cast<FakeObject<C, baseclasses...> *>(instance);
+            FakeObject<C, baseclasses...> *fake = asFakeObject(instance);
             MockImpl<C, baseclasses...> *mock = reinterpret_cast<MockImpl<C, baseclasses...> *>(fake->getVirtualTable().getCookie(
                     1));
             return mock;
         }
+
+        bool isOwner(){ return _instanceOwner != nullptr;}
+
+		void unmockedDtor() {}
 
         void unmocked() {
             ActualInvocation<> invocation(Invocation::nextInvocationOrdinal(), UnknownMethod::instance());
@@ -8114,8 +8166,11 @@ namespace fakeit {
         static C *createFakeInstance() {
             FakeObject<C, baseclasses...> *fake = new FakeObject<C, baseclasses...>();
             void *unmockedMethodStubPtr = union_cast<void *>(&MockImpl<C, baseclasses...>::unmocked);
-            fake->getVirtualTable().initAll(unmockedMethodStubPtr);
-            return reinterpret_cast<C *>(fake);
+			void *unmockedDtorStubPtr = union_cast<void *>(&MockImpl<C, baseclasses...>::unmockedDtor);
+			fake->getVirtualTable().initAll(unmockedMethodStubPtr);
+			if (VTUtils::hasVirtualDestructor<C>())
+				fake->setDtor(unmockedDtorStubPtr);
+			return reinterpret_cast<C *>(fake);
         }
 
         template<typename R, typename ... arglist>
@@ -8153,10 +8208,6 @@ namespace fakeit {
             return *dtorMock;
         }
 
-        MockImpl(FakeitContext &fakeit, C &obj, bool isSpy)
-                : _proxy{obj}, _instance(&obj), _isOwner(!isSpy), _fakeit(fakeit) {
-        }
-
         template<typename R, typename ... arglist>
         static RecordedMethodBody<R, arglist...> *createRecordedMethodBody(MockObject<C> &mock,
                                                                            R(C::*vMethod)(arglist...)) {
@@ -8166,7 +8217,6 @@ namespace fakeit {
         static RecordedMethodBody<void> *createRecordedDtorBody(MockObject<C> &mock) {
             return new RecordedMethodBody<void>(mock.getFakeIt(), "dtor");
         }
-
     };
 }
 namespace fakeit {
@@ -8240,7 +8290,11 @@ namespace fakeit {
             return impl.get();
         }
 
-        C &operator()() {
+
+
+
+
+		C &operator()() {
             return get();
         }
 
@@ -8410,7 +8464,7 @@ namespace fakeit {
 
             virtual ~StubbingChange() THROWS {
 
-                if (std::uncaught_exception()) {
+                if (UncaughtException()) {
                     return;
                 }
 
@@ -8670,7 +8724,7 @@ namespace fakeit {
         friend class SequenceVerificationProgress;
 
         ~SequenceVerificationExpectation() THROWS {
-            if (std::uncaught_exception()) {
+            if (UncaughtException()) {
                 return;
             }
             VerifyExpectation(_fakeit);
@@ -8761,12 +8815,12 @@ namespace fakeit {
             return !isAtLeastVerification();
         }
 
-        bool atLeastLimitNotReached(int count) {
-            return count < -_expectedCount;
+        bool atLeastLimitNotReached(int actualCount) {
+            return actualCount < -_expectedCount;
         }
 
-        bool exactLimitNotMatched(int count) {
-            return count != _expectedCount;
+        bool exactLimitNotMatched(int actualCount) {
+            return actualCount != _expectedCount;
         }
 
         void handleExactVerificationEvent(VerificationEventHandler &verificationErrorHandler,
@@ -9018,7 +9072,7 @@ namespace fakeit {
             friend class VerifyNoOtherInvocationsVerificationProgress;
 
             ~VerifyNoOtherInvocationsExpectation() THROWS {
-                if (std::uncaught_exception()) {
+                if (UncaughtException()) {
                     return;
                 }
 
@@ -9305,6 +9359,3 @@ namespace fakeit {
 
 #define When(call) \
     When(call)
-
-
-#endif
