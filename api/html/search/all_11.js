@@ -48,7 +48,7 @@ var searchData=
   ['shutdown',['Shutdown',['../d7/d23/classsjsu_1_1ExampleHal.html#a1b0053d126eb84b893b628204c1763c6',1,'sjsu::ExampleHal::Shutdown()'],['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#a264e5bfc9c19c076e9cdc2d1ccb95a09',1,'sjsu::ExampleSingleImplementationHal::Shutdown()']]],
   ['si7060',['Si7060',['../df/ddc/classsjsu_1_1Si7060.html#a63035540e8264a0b3480ed87268d689d',1,'sjsu::Si7060']]],
   ['si7060',['Si7060',['../df/ddc/classsjsu_1_1Si7060.html',1,'sjsu']]],
-  ['size',['size',['../db/d4d/structsjsu_1_1CommandList__t.html#a3dbfb107363cdeb4320a94615666f9b8',1,'sjsu::CommandList_t']]],
+  ['size',['size',['../d1/df0/classsjsu_1_1FixedAllocator.html#a3abce1c109d029e51a0c9dc34942d58f',1,'sjsu::FixedAllocator::size()'],['../db/d4d/structsjsu_1_1CommandList__t.html#a3dbfb107363cdeb4320a94615666f9b8',1,'sjsu::CommandList_t::size()'],['../df/ddd/classsjsu_1_1Arena.html#aa93416d3c42c252da5f71703e97c5463',1,'sjsu::Arena::size()']]],
   ['sj2_5fassert_5ffatal',['SJ2_ASSERT_FATAL',['../d3/deb/group__Macros.html#ga7bcf00e18eb9e382f9a1273473782237',1,'log.hpp']]],
   ['sj2_5fassert_5ffatal_5fwith_5fdump',['SJ2_ASSERT_FATAL_WITH_DUMP',['../d3/deb/group__Macros.html#ga091fa592071c28e5ad36aef40371ffbb',1,'log.hpp']]],
   ['sj2_5fassert_5fwarning',['SJ2_ASSERT_WARNING',['../d3/deb/group__Macros.html#ga71e411ad5224734b36daa8f5e8abedad',1,'log.hpp']]],

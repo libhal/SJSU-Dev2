@@ -29,6 +29,5 @@ L3_Application/periodic_scheduler.hpp
 L3_Application/task.hpp
 L3_Application/task_scheduler.hpp
 L4_Testing/factory_test.hpp
-utility/allocator.hpp
 utility/ansi_terminal_codes.hpp
 utility/math/average.hpp

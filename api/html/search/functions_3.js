@@ -1,7 +1,7 @@
 var searchData=
 [
   ['dac',['Dac',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae4d9b92052810adbe2c9c3e1c1abff1a',1,'sjsu::lpc40xx::Dac']]],
-  ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena']]],
+  ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena::deallocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af19f79283a8c595f6f2a16c9679357ed',1,'sjsu::FixedAllocator::deallocate()']]],
   ['declaredonstackcheck',['DeclaredOnStackCheck',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83',1,'sjsu::rtos::Task']]],
   ['defaultuptime',['DefaultUptime',['../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877',1,'sjsu']]],
   ['delay',['Delay',['../d0/d6b/namespacesjsu.html#a7296da8e9d2335075c51565cc1a0060f',1,'sjsu']]],

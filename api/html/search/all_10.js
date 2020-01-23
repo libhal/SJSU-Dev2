@@ -12,7 +12,7 @@ var searchData=
   ['released',['Released',['../d1/de1/classsjsu_1_1Button.html#ad8f2f73d51afc10ea5479c2b0685f2ac',1,'sjsu::Button']]],
   ['removetask',['RemoveTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#abffd7e8f29082ec825c11a8fcf2fd3e9',1,'sjsu::rtos::TaskScheduler']]],
   ['repeated',['repeated',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adc0985997e4b61df23608c071b2422e7',1,'sjsu::I2c::Transaction_t']]],
-  ['reset',['Reset',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ad116fb0c5f8b55b880367f9253ce542f',1,'sjsu::lpc40xx::Timer::Reset()'],['../dd/d31/classsjsu_1_1Timer.html#acb6c77042b4e115cb241cfdc0be69d79',1,'sjsu::Timer::Reset()']]],
+  ['reset',['reset',['../df/ddd/classsjsu_1_1Arena.html#a513539b5c55ff0e458d3635aacaedb90',1,'sjsu::Arena::reset()'],['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ad116fb0c5f8b55b880367f9253ce542f',1,'sjsu::lpc40xx::Timer::Reset()'],['../dd/d31/classsjsu_1_1Timer.html#acb6c77042b4e115cb241cfdc0be69d79',1,'sjsu::Timer::Reset()']]],
   ['resetstate',['ResetState',['../d1/de1/classsjsu_1_1Button.html#a443067d0f1e9958793a3c5c292d70999',1,'sjsu::Button']]],
   ['resistor',['Resistor',['../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95',1,'sjsu::Pin']]],
   ['resistor_5fmap',['resistor_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#af61d2da32f1f3363c10d6c8b2204bcd9',1,'sjsu::lpc17xx::Pin']]],

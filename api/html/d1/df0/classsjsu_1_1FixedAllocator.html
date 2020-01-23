@@ -107,12 +107,16 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#friends">Friends</a> &#124;
 <a href="../../d8/dd3/classsjsu_1_1FixedAllocator-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::FixedAllocator&lt; T, N, U &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Fixed size allocator.  
+ <a href="../../d1/df0/classsjsu_1_1FixedAllocator.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d5/d61/allocator_8hpp_source.html">allocator.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -122,48 +126,112 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a59cd85ce7c8e1807e3d6497fe21e09ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59cd85ce7c8e1807e3d6497fe21e09ab"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b> = T</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html#a59cd85ce7c8e1807e3d6497fe21e09ab">value_type</a> = T</td></tr>
+<tr class="memdesc:a59cd85ce7c8e1807e3d6497fe21e09ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for the value of type. <br /></td></tr>
 <tr class="separator:a59cd85ce7c8e1807e3d6497fe21e09ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5fdaee3f7297a29cfdc7eb841fd80d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5fdaee3f7297a29cfdc7eb841fd80d9"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>arena_type</b> = <a class="el" href="../../df/ddd/classsjsu_1_1Arena.html">Arena</a></td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html#ad5fdaee3f7297a29cfdc7eb841fd80d9">arena_type</a> = <a class="el" href="../../df/ddd/classsjsu_1_1Arena.html">Arena</a></td></tr>
+<tr class="memdesc:ad5fdaee3f7297a29cfdc7eb841fd80d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias of the arena type. <br /></td></tr>
 <tr class="separator:ad5fdaee3f7297a29cfdc7eb841fd80d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae0ae2e95170d3f93add966eb2109ea98"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0ae2e95170d3f93add966eb2109ea98"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>FixedAllocator</b> (const <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a> &amp;)=default</td></tr>
-<tr class="separator:ae0ae2e95170d3f93add966eb2109ea98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0723c1f6bcbe4fa52e7d9b2889663298"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0723c1f6bcbe4fa52e7d9b2889663298"></a>
-<a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a> &amp;)=delete</td></tr>
-<tr class="separator:a0723c1f6bcbe4fa52e7d9b2889663298"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d688477806323ee22745d83bcaec46d"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5d688477806323ee22745d83bcaec46d"></a>
-template&lt;class T_copy , size_t N_copy, class U_copy &gt; </td></tr>
-<tr class="memitem:a5d688477806323ee22745d83bcaec46d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>FixedAllocator</b> (const <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a>&lt; T_copy, N_copy, U_copy &gt; &amp;a)</td></tr>
-<tr class="separator:a5d688477806323ee22745d83bcaec46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5afc7393b5ab8bc8db1c727e59fa12b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5afc7393b5ab8bc8db1c727e59fa12b"></a>
-T *&#160;</td><td class="memItemRight" valign="bottom"><b>allocate</b> (size_t n)</td></tr>
+<tr class="memitem:af5afc7393b5ab8bc8db1c727e59fa12b"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html#af5afc7393b5ab8bc8db1c727e59fa12b">allocate</a> (size_t n)</td></tr>
 <tr class="separator:af5afc7393b5ab8bc8db1c727e59fa12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af19f79283a8c595f6f2a16c9679357ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af19f79283a8c595f6f2a16c9679357ed"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>deallocate</b> (T *p, size_t n) noexcept</td></tr>
+<tr class="memitem:af19f79283a8c595f6f2a16c9679357ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html#af19f79283a8c595f6f2a16c9679357ed">deallocate</a> (T *p, size_t n) noexcept</td></tr>
 <tr class="separator:af19f79283a8c595f6f2a16c9679357ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a3abce1c109d029e51a0c9dc34942d58f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3abce1c109d029e51a0c9dc34942d58f"></a>
-static auto constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> = N</td></tr>
+static auto constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html#a3abce1c109d029e51a0c9dc34942d58f">size</a> = N</td></tr>
+<tr class="memdesc:a3abce1c109d029e51a0c9dc34942d58f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of the type. <br /></td></tr>
 <tr class="separator:a3abce1c109d029e51a0c9dc34942d58f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:af856f10b66aa7958b378eaf7fce4c3b7"><td class="memTemplParams" colspan="2"><a class="anchor" id="af856f10b66aa7958b378eaf7fce4c3b7"></a>
-template&lt;class T1 , size_t M1, class U1 &gt; </td></tr>
-<tr class="memitem:af856f10b66aa7958b378eaf7fce4c3b7"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><b>FixedAllocator</b></td></tr>
-<tr class="separator:af856f10b66aa7958b378eaf7fce4c3b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e3d799303b572a4b39f8fe7d3976653"><td class="memTemplParams" colspan="2"><a class="anchor" id="a6e3d799303b572a4b39f8fe7d3976653"></a>
-template&lt;class T1 , size_t N1, class U1 , size_t M1&gt; </td></tr>
-<tr class="memitem:a6e3d799303b572a4b39f8fe7d3976653"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a>&lt; T1, N1 &gt; &amp;x, const <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a>&lt; U1, M1 &gt; &amp;y) noexcept</td></tr>
-<tr class="separator:a6e3d799303b572a4b39f8fe7d3976653"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class T, size_t N, class U = T&gt;<br />
+class sjsu::FixedAllocator&lt; T, N, U &gt;</h3>
+
+<p>Fixed size allocator. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af5afc7393b5ab8bc8db1c727e59fa12b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t N, class U = T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T* <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">sjsu::FixedAllocator</a>&lt; T, N, U &gt;::allocate </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allocate object from arena.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>- number of bytes </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>T* - pointer to a type to allocate </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af19f79283a8c595f6f2a16c9679357ed"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t N, class U = T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">sjsu::FixedAllocator</a>&lt; T, N, U &gt;::deallocate </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Deallocate the object.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">p</td><td>- pointer to the object to deallocate </td></tr>
+    <tr><td class="paramname">n</td><td>- how large the object is </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/utility/<a class="el" href="../../d5/d61/allocator_8hpp_source.html">allocator.hpp</a></li>
 </ul>

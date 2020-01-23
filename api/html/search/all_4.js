@@ -13,7 +13,7 @@ var searchData=
   ['datareceivedhandler',['DataReceivedHandler',['../dd/d21/classsjsu_1_1InfraredReceiver.html#ad26a58ba23cb48bc5e47c3732c99a1fd',1,'sjsu::InfraredReceiver']]],
   ['dataregister',['DataRegister',['../df/d35/structsjsu_1_1lpc40xx_1_1Adc_1_1DataRegister.html',1,'sjsu::lpc40xx::Adc']]],
   ['datasize',['DataSize',['../d3/de6/classsjsu_1_1Spi.html#ae229950b482a3d995f7834da1aaa1931',1,'sjsu::Spi']]],
-  ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena']]],
+  ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena::deallocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af19f79283a8c595f6f2a16c9679357ed',1,'sjsu::FixedAllocator::deallocate()']]],
   ['debugsdcard_5ft',['DebugSdCard_t',['../df/dc2/structsjsu_1_1Sd_1_1DebugSdCard__t.html',1,'sjsu::Sd']]],
   ['declaredonstackcheck',['DeclaredOnStackCheck',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83',1,'sjsu::rtos::Task']]],
   ['decodedframe_5ft',['DecodedFrame_t',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html',1,'sjsu::infrared']]],
