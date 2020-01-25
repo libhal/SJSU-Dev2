@@ -306,13 +306,13 @@ OBJECTS          := $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
 CPP_FLAGS := -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
              -fprofile-generate -ftest-coverage -fbranch-probabilities \
-             -fsanitize=address -fdiagnostics-color \
+             -fsanitize=address -fdiagnostics-color -fprofile-correction \
              $(WARNINGS) $(WARNINGS_ARE_ERRORS) \
              -Wsuggest-override -Wno-sign-conversion \
              -Wno-sign-compare -Wno-conversion -Wno-format-nonliteral \
-             -Wno-missing-field-initializers -Wno-missing-profile \
-             -D HOST_TEST=1 -D PLATFORM=$(PLATFORM) \
+             -Wno-missing-field-initializers \
              -D SJ2_BACKTRACE_DEPTH=1024 -D CATCH_CONFIG_FAST_COMPILE \
+             -D HOST_TEST=1 -D PLATFORM=$(PLATFORM) \
              $(INCLUDES) $(SYSTEM_INCLUDES) $(DEFINES) $(DEBUG_FLAG) \
              $(DISABLED_WARNINGS) \
              -O0 -MMD -MP -c
@@ -350,7 +350,8 @@ LINK_FLAGS := $(or $(LINK_FLAGS), $(DEFAULT_LINK_FLAGS))
 # Set the recipes without end products
 # ==============================================================================
 .PHONY: flash telemetry show-lists clean library-clean purge  \
-        telemetry presubmit openocd debug test library-test $(SIZE)
+        telemetry presubmit openocd debug clean-coverage-files test \
+        library-test $(SIZE)
 # ==============================================================================
 # Rebuild source files if header file dependencies changes
 # ==============================================================================
@@ -415,7 +416,7 @@ test: $(TEST_EXEC)
 		-e "$(LIBRARY_DIR)/newlib" \
 		-e "$(LIBRARY_DIR)/third_party" \
 		-e "$(LIBRARY_DIR)/L4_Testing" \
-		--html --html-details --gcov-executable="$(CODE_COVERAGE_TOOL) gcov" \
+		--html --html-details --gcov-executable="$(CODE_COVERAGE_TOOL)" \
 		-o $(COVERAGE_DIR)/coverage.html
 
 
@@ -496,6 +497,8 @@ show-lists:
 		$(if $(filter-out environment% default automatic, $(origin $V)),\
 			$(warning $V=$($V) ($(value $V))$newline)))
 
+clean-coverage-files:
+	@rm -f $(COVERAGE_FILES) 2> /dev/null
 
 # ====================================================================
 #
@@ -556,7 +559,7 @@ $(OBJECT_DIR)/%.o: %
 	@printf '$(YELLOW)Built file (C++) $(RESET): $<\n'
 
 
-$(TEST_EXEC): $(OBJECTS)
+$(TEST_EXEC): clean-coverage-files $(OBJECTS)
 	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@\n'
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) -fprofile-arcs -fPIC -fexceptions -fno-inline \

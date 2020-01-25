@@ -325,10 +325,10 @@ inline sjsu::Uart & GetInactive<sjsu::Uart>()
     {
       return true;
     }
-    void Write(const uint8_t *, size_t) const override {}
-    Status Read(uint8_t *, size_t, std::chrono::microseconds) const override
+    void Write(const void *, size_t) const override {}
+    size_t Read(void *, size_t) const override
     {
-      return Status::kNotImplemented;
+      return 0;
     }
     bool HasData() const override
     {

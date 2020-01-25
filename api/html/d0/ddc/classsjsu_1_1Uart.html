@@ -124,26 +124,55 @@ Inheritance diagram for sjsu::Uart:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa2299630acd8937d532ae0d100526b5a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#aa2299630acd8937d532ae0d100526b5a">Initialize</a> (uint32_t baud_rate) const =0</td></tr>
 <tr class="separator:aa2299630acd8937d532ae0d100526b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6eccb9f4114220c75d53187a41044fd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6eccb9f4114220c75d53187a41044fd2"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a6eccb9f4114220c75d53187a41044fd2">SetBaudRate</a> (uint32_t baud_rate) const =0</td></tr>
-<tr class="memdesc:a6eccb9f4114220c75d53187a41044fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set baud rate. <br /></td></tr>
+<tr class="memitem:a6eccb9f4114220c75d53187a41044fd2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a6eccb9f4114220c75d53187a41044fd2">SetBaudRate</a> (uint32_t baud_rate) const =0</td></tr>
 <tr class="separator:a6eccb9f4114220c75d53187a41044fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2c65267ec9c37d617c217d497eb4c67"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#ab2c65267ec9c37d617c217d497eb4c67">Write</a> (const uint8_t *data, size_t size) const =0</td></tr>
-<tr class="separator:ab2c65267ec9c37d617c217d497eb4c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a787220b5a9cc3e1d019b4fa8f7ed04e7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a787220b5a9cc3e1d019b4fa8f7ed04e7">Read</a> (uint8_t *data, size_t size, std::chrono::microseconds timeout=std::chrono::microseconds::max()) const =0</td></tr>
-<tr class="separator:a787220b5a9cc3e1d019b4fa8f7ed04e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a018e450d642c39889b8598f80598831f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a018e450d642c39889b8598f80598831f">Write</a> (const void *data, size_t size) const =0</td></tr>
+<tr class="separator:a018e450d642c39889b8598f80598831f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45920b923b0f0dff051aa249b3feb8dd"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a45920b923b0f0dff051aa249b3feb8dd">Read</a> (void *data, size_t size) const =0</td></tr>
+<tr class="separator:a45920b923b0f0dff051aa249b3feb8dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90f16341ec8921e784a8a5d6d2044f2d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a90f16341ec8921e784a8a5d6d2044f2d">HasData</a> () const =0</td></tr>
 <tr class="separator:a90f16341ec8921e784a8a5d6d2044f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2676b7f91aa40e02262bf63eba9ec143"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a2676b7f91aa40e02262bf63eba9ec143">Flush</a> () const </td></tr>
+<tr class="separator:a2676b7f91aa40e02262bf63eba9ec143"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21be4544fe9630586e9306b66f197114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a21be4544fe9630586e9306b66f197114">Write</a> (uint8_t byte) const </td></tr>
 <tr class="separator:a21be4544fe9630586e9306b66f197114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56d0ce94b777eb2c2605dfe8cc532cb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a56d0ce94b777eb2c2605dfe8cc532cb9">Write</a> (std::initializer_list&lt; uint8_t &gt; data) const </td></tr>
 <tr class="separator:a56d0ce94b777eb2c2605dfe8cc532cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabd493964dcf9941388fe46af8b01a70"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#aabd493964dcf9941388fe46af8b01a70">Read</a> (std::chrono::microseconds timeout=std::chrono::microseconds::max()) const </td></tr>
-<tr class="separator:aabd493964dcf9941388fe46af8b01a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af898a30f420d4b891f6a0f6ec1553352"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#af898a30f420d4b891f6a0f6ec1553352">Read</a> () const </td></tr>
+<tr class="separator:af898a30f420d4b891f6a0f6ec1553352"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86aa059ed13969377752fd26d6ec3869"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a86aa059ed13969377752fd26d6ec3869">PollingFlush</a> () const </td></tr>
+<tr class="separator:a86aa059ed13969377752fd26d6ec3869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a941c6fbe2372947628758f70039841b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a941c6fbe2372947628758f70039841b4">Read</a> (void *data, size_t size, std::chrono::nanoseconds timeout) const </td></tr>
+<tr class="separator:a941c6fbe2372947628758f70039841b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An abstract interface for hardware that implements the Universal Asynchronous Receiver Transmitter (UART) hardware communication Protocol. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a2676b7f91aa40e02262bf63eba9ec143"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Uart::Flush </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Will flush all bytes currently head with the UART peripherals buffers.</p>
+<p>The default implementation reads out all of the bytes by checking <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a90f16341ec8921e784a8a5d6d2044f2d">HasData()</a> repeatedly and use <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a45920b923b0f0dff051aa249b3feb8dd">Read()</a> to read each. Some implementations may have more efficient methods of clearing their buffers. </p>
+
+</div>
+</div>
 <a class="anchor" id="a90f16341ec8921e784a8a5d6d2044f2d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -203,7 +232,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a class="anchor" id="a787220b5a9cc3e1d019b4fa8f7ed04e7"></a>
+<a class="anchor" id="a86aa059ed13969377752fd26d6ec3869"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -211,64 +240,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Uart::Read </td>
+          <td class="memname">void sjsu::Uart::PollingFlush </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::chrono::microseconds&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>std::chrono::microseconds::max()</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Initialize and enable hardware. This must be called before any other method in this interface is called.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>- buffer to data to write to the uart serial port </td></tr>
-    <tr><td class="paramname">size</td><td>- the number of bytes to write to the uart serial port </td></tr>
-    <tr><td class="paramname">timeout</td><td>- timeout in milliseconds</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Status::kTimeout if buffer was not filled all the way before timeout </dd>
-<dd>
-Status::kSuccess if read was successful </dd></dl>
-
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a45a2b2d6e16ccf386904151500daf304">sjsu::lpc40xx::Uart</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aabd493964dcf9941388fe46af8b01a70"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t sjsu::Uart::Read </td>
-          <td>(</td>
-          <td class="paramtype">std::chrono::microseconds&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>std::chrono::microseconds::max()</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -278,17 +252,12 @@ Status::kSuccess if read was successful </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Wait to receive just 1 byte</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">timeout</td><td>- The maximum amount of time to wait for a byte to be transmitted. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Will flush all bytes currently head with the UART peripherals buffers.</p>
+<p>by checking <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a90f16341ec8921e784a8a5d6d2044f2d">HasData()</a> repeatedly and use <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a45920b923b0f0dff051aa249b3feb8dd">Read()</a> to read each. Some implementations may have more efficient methods of clearing their buffers. </p>
 
 </div>
 </div>
-<a class="anchor" id="ab2c65267ec9c37d617c217d497eb4c67"></a>
+<a class="anchor" id="a45920b923b0f0dff051aa249b3feb8dd"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -296,9 +265,9 @@ Status::kSuccess if read was successful </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void sjsu::Uart::Write </td>
+          <td class="memname">virtual size_t sjsu::Uart::Read </td>
           <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
@@ -319,7 +288,164 @@ Status::kSuccess if read was successful </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Write data to the UART</p>
+<p>Retrieve bytes from the RX line. If no data is available, this method should return early.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>- pointer to a buffer to load bytes from the uart RX line. </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to read from the uart serial port</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of bytes actually read into the data buffer. Will be less than or equal to the number of bytes passed by size. More bytes can exist in the uart's buffer if the returned size is equal to the passed size. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a1dc438d15bae19fe9fef4ef46e66680f">sjsu::lpc40xx::Uart</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af898a30f420d4b891f6a0f6ec1553352"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sjsu::Uart::Read </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>Retrieves a single byte from UART RX line. Users must ensure that <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a90f16341ec8921e784a8a5d6d2044f2d">HasData()</a> is true before reading using this method. Otherwise contents of read data will not be correct and the returned byte will be 0xFF. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a941c6fbe2372947628758f70039841b4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a> sjsu::Uart::Read </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::nanoseconds&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method will handle waiting for bytes to be received via UART for the duration of the timeout.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>- buffer to read bytes into. </td></tr>
+    <tr><td class="paramname">size</td><td>- number of bytes to read before timeout. </td></tr>
+    <tr><td class="paramname">timeout</td><td>- duration to wait for incoming data before timeout. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>sjsu::Status::kSuccess if bytes were read before timeout. </dd>
+<dd>
+sjsu::Status::kTimeout if bytes could not be read before before timeout. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6eccb9f4114220c75d53187a41044fd2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool sjsu::Uart::SetBaudRate </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>baud_rate</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set UART baud rate</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">baud_rate</td><td>the speed of the UART transmit and receive. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true - if baud rate was able to be set correctly. </dd>
+<dd>
+false - if baud rate is not possible to be set. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aab98d20df99623e52f0899f350208658">sjsu::lpc40xx::Uart</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a018e450d642c39889b8598f80598831f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Uart::Write </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sends bytes via UART port via the TX line</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>- buffer to data to write to the uart serial port </td></tr>
@@ -328,7 +454,7 @@ Status::kSuccess if read was successful </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a59f61f04c5f7075c8b92a5d1b9195136">sjsu::lpc40xx::Uart</a>.</p>
+<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a6cf922781ce5454d24ff14a01d3d0916">sjsu::lpc40xx::Uart</a>.</p>
 
 </div>
 </div>
@@ -355,7 +481,7 @@ Status::kSuccess if read was successful </dd></dl>
 </div><div class="memdoc">
 <p>Transmit just 1 byte </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">byte</td><td>- Write a single byte to the UART port. </td></tr>
+    <tr><td class="paramname">byte</td><td>- Write a single byte to the UART line. </td></tr>
   </table>
   </dd>
 </dl>

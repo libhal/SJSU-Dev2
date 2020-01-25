@@ -30,4 +30,11 @@ constexpr const char * Stringify(Status status)
   }
   return result;
 }
+
+/// @param status - status to check
+/// @return true if the status is equal to kSuccess.
+constexpr bool IsOk(Status status)
+{
+  return status == Status::kSuccess;
+}
 }  // namespace sjsu
