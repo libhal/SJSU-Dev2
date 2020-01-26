@@ -25,9 +25,6 @@ L2_HAL/sensors/movement/accelerometer.hpp
 L2_HAL/sensors/movement/accelerometer/mma8452q.hpp
 L2_HAL/sensors/optical/apds9960.hpp
 L3_Application/graphical_terminal.hpp
-L3_Application/periodic_scheduler.hpp
-L3_Application/task.hpp
-L3_Application/task_scheduler.hpp
 L4_Testing/factory_test.hpp
 utility/ansi_terminal_codes.hpp
 utility/math/average.hpp
