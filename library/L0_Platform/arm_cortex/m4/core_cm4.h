@@ -276,12 +276,12 @@
     \li for automatic generation of peripheral register debug information.
 */
 #ifdef __cplusplus
-  #define   __I     volatile             /*!< Defines 'read only' permissions */
+  #define   _I     volatile             /*!< Defines 'read only' permissions */
 #else
-  #define   __I     volatile const       /*!< Defines 'read only' permissions */
+  #define   _I     volatile const       /*!< Defines 'read only' permissions */
 #endif
-#define     __O     volatile             /*!< Defines 'write only' permissions */
-#define     __IO    volatile             /*!< Defines 'read / write' permissions */
+#define     _O     volatile             /*!< Defines 'write only' permissions */
+#define     _IO    volatile             /*!< Defines 'read / write' permissions */
 
 /* following defines should be used for structure members */
 #define     __IM     volatile const      /*! Defines 'read only' structure member permissions */

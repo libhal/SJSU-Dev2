@@ -25,10 +25,10 @@ extern "C" int _write(int, const char * ptr, int length)  // NOLINT
   return LinuxStdOut(ptr, length);
 }
 
-std::chrono::microseconds LinuxUptime()
+std::chrono::nanoseconds LinuxUptime()
 {
-  return std::chrono::duration_cast<std::chrono::microseconds>(
-      std::chrono::high_resolution_clock::now().time_since_epoch());
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::steady_clock::now().time_since_epoch());
 }
 }  // namespace
 
@@ -39,8 +39,8 @@ extern "C"
   uint32_t ThreadRuntimeCounter()
   {
     return static_cast<uint32_t>(
-        std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::high_resolution_clock::now().time_since_epoch())
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now().time_since_epoch())
             .count());
   }
 }

@@ -11,6 +11,7 @@ TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/i2c_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/interrupt_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/pin_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/pwm_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/uart_test.cpp
 
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/adc.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/can.hpp
@@ -24,6 +25,5 @@ NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/storage.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/system_controller.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/system_timer.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/timer.hpp
-NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/uart.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/watchdog.hpp
 

@@ -13,33 +13,6 @@ SJBASE=$(cd "$SJBASE/.." ; pwd -P)
 ####################################
 print_divider "Checking that all projects build"
 
-# Get all multiplatform projects
-LIST_OF_PROJECT=$(find $SJBASE/demos/multiplatform -name "makefile")
-LIST_OF_PLATFORMS=(lpc40xx lpc17xx stm32f4xx stm32f10x)
-
-for d in $LIST_OF_PROJECT
-do
-  for p in "${LIST_OF_PLATFORMS[@]}"
-  do
-    PROJECT_PATH=$(dirname $d)
-    cd "$PROJECT_PATH"
-    printf "$YELLOW"
-    printf "    Building Multiplatform Demo ($p)\n"
-    printf "        $PROJECT_PATH"
-    printf "$RESET "
-    # Clean the build and start building from scratch
-    SILENCE=$(make clean)
-    # Check if the system can build without any warnings!
-    SILENCE=$(make application WARNINGS_ARE_ERRORS=-Werror PLATFORM=$p)
-    # Add the return codes of the previous build capture. None zero means that
-    # at least one of the captures failed.
-    SPECIFIC_BUILD_CAPTURE=$?
-    BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
-    print_status $SPECIFIC_BUILD_CAPTURE
-    echo ""
-  done
-done
-
 printf "$YELLOW    Building hello_world Project $RESET"
 # Change to the hello_world project
 cd "$SJBASE/projects/hello_world"
@@ -100,6 +73,33 @@ do
   BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
   print_status $SPECIFIC_BUILD_CAPTURE
   echo ""
+done
+
+# Get all multiplatform projects
+LIST_OF_PROJECT=$(find $SJBASE/demos/multiplatform -name "makefile")
+LIST_OF_PLATFORMS=(lpc40xx lpc17xx stm32f4xx stm32f10x)
+
+for d in $LIST_OF_PROJECT
+do
+  for p in "${LIST_OF_PLATFORMS[@]}"
+  do
+    PROJECT_PATH=$(dirname $d)
+    cd "$PROJECT_PATH"
+    printf "$YELLOW"
+    printf "    Building Multiplatform Demo ($p)\n"
+    printf "        $PROJECT_PATH"
+    printf "$RESET "
+    # Clean the build and start building from scratch
+    SILENCE=$(make clean)
+    # Check if the system can build without any warnings!
+    SILENCE=$(make application WARNINGS_ARE_ERRORS=-Werror PLATFORM=$p)
+    # Add the return codes of the previous build capture. None zero means that
+    # at least one of the captures failed.
+    SPECIFIC_BUILD_CAPTURE=$?
+    BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
+    print_status $SPECIFIC_BUILD_CAPTURE
+    echo ""
+  done
 done
 
 exit $BUILD_CAPTURE

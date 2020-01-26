@@ -26,6 +26,5 @@ L2_HAL/sensors/movement/accelerometer/mma8452q.hpp
 L2_HAL/sensors/optical/apds9960.hpp
 L3_Application/graphical_terminal.hpp
 L4_Testing/factory_test.hpp
-utility/allocator.hpp
 utility/ansi_terminal_codes.hpp
 utility/math/average.hpp

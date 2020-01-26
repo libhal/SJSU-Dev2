@@ -53,7 +53,7 @@ TEST_CASE("Testing stm32f4xx SystemController", "[stm32f4xx-system-controller]")
     // Setup
     std::fill(local_enables.begin(), local_enables.end(), 0);
 
-    for (size_t i = 0; i < std::size(id); i++)
+    for (size_t i = 0; i < id.size(); i++)
     {
       INFO("Failed on index: " << i);
 
@@ -65,6 +65,7 @@ TEST_CASE("Testing stm32f4xx SystemController", "[stm32f4xx-system-controller]")
       CHECK(bit::Read(enable_word, id[i]->device_id % 32));
     }
   }
+
   SECTION("PowerDownPeripheral()")
   {
     // Setup
@@ -74,7 +75,7 @@ TEST_CASE("Testing stm32f4xx SystemController", "[stm32f4xx-system-controller]")
     // bits to 1.
     std::fill(local_enables.begin(), local_enables.end(), kAllOnes);
 
-    for (size_t i = 0; i < std::size(id); i++)
+    for (size_t i = 0; i < id.size(); i++)
     {
       INFO("Failed on index: " << i);
 
@@ -116,7 +117,7 @@ TEST_CASE("Testing stm32f4xx SystemController", "[stm32f4xx-system-controller]")
           bit::Insert(enable_word, is_set[i], id[i]->device_id % 32, 1);
     }
 
-    for (size_t i = 0; i < std::size(id); i++)
+    for (size_t i = 0; i < id.size(); i++)
     {
       INFO("Failed on index: " << i);
       // Exercise + Verify
