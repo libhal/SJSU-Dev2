@@ -103,12 +103,18 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="../../d3/dcd/classsjsu_1_1rtos_1_1PeriodicTaskInterface-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::rtos::PeriodicTaskInterface Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>An abstract interace for the <a class="el" href="../../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html">PeriodicTask</a> class.  
+ <a href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../dd/d2a/periodic__scheduler_8hpp_source.html">periodic_scheduler.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::rtos::PeriodicTaskInterface:</div>
 <div class="dyncontent">
@@ -118,18 +124,45 @@ Inheritance diagram for sjsu::rtos::PeriodicTaskInterface:</div>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a6486fbda098337c90c9c794601b41ad3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6486fbda098337c90c9c794601b41ad3">TaskFunction</a> = std::function&lt; void(uint32_t count)&gt;</td></tr>
+<tr class="separator:a6486fbda098337c90c9c794601b41ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abfcdfa64f530349a76225bbcdfe711d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfcdfa64f530349a76225bbcdfe711d7"></a>
-virtual PeriodicTaskFunction&#160;</td><td class="memItemRight" valign="bottom"><b>GetTaskFunction</b> () const =0</td></tr>
-<tr class="separator:abfcdfa64f530349a76225bbcdfe711d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b3087e7a017e141081326c1cc05eaed"><td class="memItemLeft" align="right" valign="top">virtual SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6b3087e7a017e141081326c1cc05eaed">GetPeriodicSemaphore</a> ()=0</td></tr>
-<tr class="separator:a6b3087e7a017e141081326c1cc05eaed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2de1650399965c284d53b81d2c7aa340"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a2de1650399965c284d53b81d2c7aa340">GetRunCount</a> ()=0</td></tr>
-<tr class="separator:a2de1650399965c284d53b81d2c7aa340"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89b555507cf39a4049755ac023465ea1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6486fbda098337c90c9c794601b41ad3">TaskFunction</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a89b555507cf39a4049755ac023465ea1">GetTaskFunction</a> () const =0</td></tr>
+<tr class="separator:a89b555507cf39a4049755ac023465ea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c633fee67eb1d6bb83dd2efb6697aa"><td class="memItemLeft" align="right" valign="top">virtual SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a40c633fee67eb1d6bb83dd2efb6697aa">GetPeriodicSemaphore</a> () const =0</td></tr>
+<tr class="separator:a40c633fee67eb1d6bb83dd2efb6697aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7883bfd09ef20a874d73cc3ebc99822a"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a7883bfd09ef20a874d73cc3ebc99822a">GetRunCount</a> () const =0</td></tr>
+<tr class="separator:a7883bfd09ef20a874d73cc3ebc99822a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An abstract interace for the <a class="el" href="../../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html">PeriodicTask</a> class. </p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a class="anchor" id="a6486fbda098337c90c9c794601b41ad3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6486fbda098337c90c9c794601b41ad3">sjsu::rtos::PeriodicTaskInterface::TaskFunction</a> =  std::function&lt;void(uint32_t count)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Function containing the code to be executed periodically.</p>
+<dl class="section warning"><dt>Warning</dt><dd>The function should not contain any blocking code. For example, vTaskDelay() and vTaskDelayUntil() should not be used within the function.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">count</td><td>Number of times the task function has been run. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a6b3087e7a017e141081326c1cc05eaed"></a>
+<a class="anchor" id="a40c633fee67eb1d6bb83dd2efb6697aa"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -140,7 +173,7 @@ virtual PeriodicTaskFunction&#160;</td><td class="memItemRight" valign="bottom">
           <td class="memname">virtual SemaphoreHandle_t sjsu::rtos::PeriodicTaskInterface::GetPeriodicSemaphore </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -149,13 +182,13 @@ virtual PeriodicTaskFunction&#160;</td><td class="memItemRight" valign="bottom">
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>Returns the periodic semaphore that is used by the <a class="el" href="../../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html">PeriodicScheduler</a> to manage the <a class="el" href="../../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html">PeriodicTask</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The semaphore used by the <a class="el" href="../../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html">PeriodicScheduler</a> to manage the execution of the task function. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a65985f552554608817b3defc3d6f706b">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>.</p>
+<p>Implemented in <a class="el" href="../../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a6f60ba808060a80a8e75a61596ecb3c5">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2de1650399965c284d53b81d2c7aa340"></a>
+<a class="anchor" id="a7883bfd09ef20a874d73cc3ebc99822a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -166,7 +199,7 @@ virtual PeriodicTaskFunction&#160;</td><td class="memItemRight" valign="bottom">
           <td class="memname">virtual uint32_t sjsu::rtos::PeriodicTaskInterface::GetRunCount </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -175,9 +208,35 @@ virtual PeriodicTaskFunction&#160;</td><td class="memItemRight" valign="bottom">
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>Returns the number of times the task has been executed. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of times the task has successfully executed. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a5e87d71f799518c5f710d5d26fad1861">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>.</p>
+<p>Implemented in <a class="el" href="../../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a6017fe9ea42f89bb1a22f558c3acbe3d">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a89b555507cf39a4049755ac023465ea1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6486fbda098337c90c9c794601b41ad3">TaskFunction</a>* sjsu::rtos::PeriodicTaskInterface::GetTaskFunction </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The task function that is executed periodically by the task. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a9914d6a1c6953f3bba984eabdc66d6b8">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>.</p>
 
 </div>
 </div>

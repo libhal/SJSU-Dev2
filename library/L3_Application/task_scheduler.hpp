@@ -1,58 +1,93 @@
-// This file contains the TaskScheduler class used to scheduler task classes
-// that inherit TaskInterface.
-// Tasks inheriting TaskInterface are automatically added to the scheduler when
-// constructed. Simply start the scheduler after constructing and configuring
-// desired tasks.
-// Usage:
-//      sjsu::rtos::TaskScheduler::Instance().Start();
 #pragma once
-
-#include <cstddef>
-#include <cstdint>
 
 #include "FreeRTOS.h"
 #include "event_groups.h"
 
 #include "config.hpp"
 #include "utility/log.hpp"
-#include "utility/macros.hpp"
 #include "utility/rtos.hpp"
 
 namespace sjsu
 {
 namespace rtos
 {
+// Forward declaration of TaskInterface to prevent cyclic references.
 class TaskInterface;
-
-class TaskScheduler
+/// An abstact interface for the TaskScheduler class.
+class TaskSchedulerInterface
 {
  public:
-  static TaskScheduler & Instance()
+  /// @return The PreRun event group handler used to notify that PreRun of all
+  ///         tasks have completed successfully.
+  virtual EventGroupHandle_t GetPreRunEventGroupHandle() const = 0;
+  /// @return The sync bits of the PreRun event group.
+  virtual EventBits_t GetPreRunSyncBits() const = 0;
+  /// @return The current number of scheduled tasks.
+  virtual uint8_t GetTaskCount() const = 0;
+  /// Add a task to the task scheduler. If the scheduler is full, the task will
+  /// not be added and a fatal error will be asserted.
+  ///
+  /// @param task Task to add.
+  virtual void AddTask(TaskInterface * task) = 0;
+  /// Removes a specified task by its name and updates the task_list_ and
+  /// task_count_.
+  ///
+  /// @param task_name  Name of the task to remove.
+  virtual void RemoveTask(const char * task_name) = 0;
+  /// Retreive a task by its task name.
+  ///
+  /// @param  task_name Name of the task.
+  /// @return A nullptr if the task does not exist. Otherwise, returns a pointer
+  ///         reference to the retrieved task with the matching name.
+  virtual TaskInterface * GetTask(const char * task_name) = 0;
+  /// Used to get a task's index to determine the sync bit for the PreRun event
+  /// group.
+  ///
+  /// @param  task_name Name of the task.
+  /// @return The index of the specified task. If the task is not scheduled,
+  ///         kTaskSchedulerSize + 1 will be returned.
+  virtual uint8_t GetTaskIndex(const char * task_name) const = 0;
+  /// @return A pointer reference to an immutable array of all currently
+  ///         scheduled tasks.
+  virtual TaskInterface * const * GetAllTasks() const = 0;
+};
+/// A FreeRTOS task scheduler responsible for scheduling tasks that inherit the
+/// Task interface.Tasks inheriting Task interface are automatically added to
+/// the scheduler when constructed.
+class TaskScheduler final : public TaskSchedulerInterface
+{
+ public:
+  TaskScheduler()
+      : task_list_{ nullptr },
+        task_count_(0),
+        pre_run_event_group_handle_(NULL),
+        pre_run_sync_bits_(0x0)
   {
-    static TaskScheduler instance;
-    return instance;
-  };
-  EventGroupHandle_t GetPreRunEventGroupHandle()
+  }
+  /// @return The PreRun event group handler used to notify that PreRun of all
+  ///         tasks have completed successfully.
+  EventGroupHandle_t GetPreRunEventGroupHandle() const override
   {
     return pre_run_event_group_handle_;
-  };
-  EventBits_t GetPreRunSyncBits()
+  }
+  /// @return The sync bits of the PreRun event group.
+  EventBits_t GetPreRunSyncBits() const override
   {
     return pre_run_sync_bits_;
-  };
-  /// @return Returns the current number of scheduled tasks.
-  uint8_t GetTaskCount()
+  }
+  /// @return The current number of scheduled tasks.
+  uint8_t GetTaskCount() const override
   {
     return task_count_;
-  };
+  }
   /// Add a task to the task scheduler. If the scheduler is full, the task will
   /// not be added and a fatal error will be asserted.
   ///
   /// @note When a task inheriting the TaskInterface is constructed, it will
-  /// automatically call this function to add itself to the scheduler.
+  ///       automatically call this function to add itself to the scheduler.
   ///
-  /// @param task  Task to add.
-  void AddTask(TaskInterface * task)
+  /// @param task Task to add.
+  void AddTask(TaskInterface * task) override
   {
     SJ2_ASSERT_FATAL(
         task_count_ + 1 < config::kTaskSchedulerSize,
@@ -70,14 +105,15 @@ class TaskScheduler
   }
   /// Removes a specified task by its name and updates the task_list_ and
   /// task_count_.
+  ///
   /// @param task_name  Name of the task to remove.
-  void RemoveTask(const char * task_name);
+  void RemoveTask(const char * task_name) override;
   /// Retreive a task by its task name.
   ///
-  /// @param   task_name Name of the task.
-  /// @return  Returns nullptr if the task does not exist. Otherwise, returns a
-  ///          pointer reference to the retrieved task with the matching name.
-  TaskInterface * GetTask(const char * task_name)
+  /// @param  task_name Name of the task.
+  /// @return A nullptr if the task does not exist. Otherwise, returns a pointer
+  ///         reference to the retrieved task with the matching name.
+  TaskInterface * GetTask(const char * task_name) override
   {
     const uint32_t kTaskIndex = GetTaskIndex(task_name);
     if (kTaskIndex > task_count_)
@@ -89,12 +125,13 @@ class TaskScheduler
   /// Used to get a task's index to determine the sync bit for the PreRun event
   /// group.
   ///
-  /// @param   task_name Name of the task.
-  /// @return  Returns the index of the specified task. If the task is not
-  ///          scheduled, kTaskSchedulerSize + 1 will be returned.
-  uint8_t GetTaskIndex(const char * task_name);
-  /// @return Returns a pointer reference to all currently scheduled tasks.
-  TaskInterface ** GetAllTasks()
+  /// @param  task_name Name of the task.
+  /// @return The index of the specified task. If the task is not scheduled,
+  ///         kTaskSchedulerSize + 1 will be returned.
+  uint8_t GetTaskIndex(const char * task_name) const override;
+  /// @return A pointer reference to an immutable array of all currently
+  ///         scheduled tasks.
+  TaskInterface * const * GetAllTasks() const override
   {
     return task_list_;
   }
@@ -116,16 +153,11 @@ class TaskScheduler
   /// Function used during InitializeAllTasks() for xTaskCreate() for running
   /// scheduled tasks.
   ///
-  /// @param task_ptr Pointer reference of the task to run.
-  static void RunTask(void * task_ptr);
-
-  TaskScheduler()
-      : task_count_(0),
-        pre_run_event_group_handle_(NULL),
-        pre_run_sync_bits_(0x0){};
+  /// @param task_pointer Pointer reference of the task to run.
+  static void RunTask(void * task_pointer);
   /// Attempt to initialize each scheduled task with xTaskCreate() and execute
-  /// each task's Setup().
-  /// A fatal error is asserted if either xTaskCreate() or Setup() fails.
+  /// each task's Setup(). A fatal error is asserted if either
+  /// xTaskCreateStatic() or Setup() fails.
   void InitializeAllTasks();
 
   /// Array containing all scheduled tasks.

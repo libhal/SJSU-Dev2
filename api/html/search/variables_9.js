@@ -73,6 +73,7 @@ var searchData=
   ['kmasterdisable',['kMasterDisable',['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html#ac48f636441e558c588ece5a159b348e5',1,'sjsu::lpc40xx::Pwm::Timer']]],
   ['kmaximumvalue',['kMaximumValue',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aef44a1f54473eb577d94c6217d04ad8c',1,'sjsu::lpc40xx::Dac']]],
   ['kmaxpulsebuffersize',['kMaxPulseBufferSize',['../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#aa600340a041635f85b9ae9cb0e124d21',1,'sjsu::infrared::DataFrame_t']]],
+  ['kmaxtaskcount',['kMaxTaskCount',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a9516c44d26480c64037512cb520a92c4',1,'sjsu::rtos::PeriodicScheduler']]],
   ['kmaxtimeout',['kMaxTimeout',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a66ffe664a475b8859da7348e2d3fbe69',1,'sjsu::lpc40xx::Eeprom']]],
   ['kmode',['kMode',['../d3/d2d/structsjsu_1_1lpc40xx_1_1Pwm_1_1CountControl.html#ab289047b98a83519d3c45d29e62d4ad7',1,'sjsu::lpc40xx::Pwm::CountControl']]],
   ['kmostsignificantregister',['kMostSignificantRegister',['../df/ddc/classsjsu_1_1Si7060.html#a9548589e33d9949b988ea992818f01d1',1,'sjsu::Si7060']]],

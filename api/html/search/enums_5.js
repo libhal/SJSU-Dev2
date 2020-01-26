@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keepalive',['KeepAlive',['../dc/d5f/classsjsu_1_1Sd.html#aea755e43d994ae5941d08cd00c4541b2',1,'sjsu::Sd']]]
+  ['frequency',['Frequency',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a598178103e64537a0dd2abe6838327b6',1,'sjsu::rtos::PeriodicScheduler']]]
 ];

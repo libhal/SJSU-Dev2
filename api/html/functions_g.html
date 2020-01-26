@@ -143,7 +143,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ace0b148664a123566a3679cdbaf42a3f">sjsu::lpc40xx::Dac</a>
 </li>
 <li>GetAllTasks()
-: <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a7d3f9cec15e3660387c92247f00b403b">sjsu::rtos::TaskScheduler</a>
+: <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a441e2f152fb12ad7358c3dd34c8e8d43">sjsu::rtos::TaskScheduler</a>
+, <a class="el" href="d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a230e77beb2d3728129eedbf46e013c0f">sjsu::rtos::TaskSchedulerInterface</a>
 </li>
 <li>GetAvailableColor()
 : <a class="el" href="d7/d8c/classsjsu_1_1Graphics.html#a9c68dbd733abe3930dda7a243d367e56">sjsu::Graphics</a>
@@ -179,7 +180,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="dd/d31/classsjsu_1_1Timer.html#a5aac4d65af93fd8fde22bdbf007db478">sjsu::Timer</a>
 </li>
 <li>GetDelayTime()
-: <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#ac5b48503b69c363ad1998b454678fcb1">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+: <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#aa8df315e045d2e23af5582361a1d47ef">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a2959d40d0f55ae8d9ce85a86174f2dfe">sjsu::rtos::TaskInterface</a>
 </li>
 <li>GetDescription()
 : <a class="el" href="d7/d56/classsjsu_1_1Command.html#aa6dad075e6a5be27869fe68b85d968e8">sjsu::Command</a>
@@ -200,6 +202,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>GetHandle()
 : <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#ab0b5901f7f1ac3a18d8d6664d7812857">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#abbcaf43eb1826bb0c6ecebb1806f4320">sjsu::rtos::TaskInterface</a>
 </li>
 <li>GetHeight()
 : <a class="el" href="df/d96/classsjsu_1_1PixelDisplay.html#a726c225c675804f71fb0fecc3c23565d">sjsu::PixelDisplay</a>
@@ -220,14 +223,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>GetName()
 : <a class="el" href="d7/d56/classsjsu_1_1Command.html#ab664ef7a2b12b379a00ac8eab4ecec70">sjsu::Command</a>
 , <a class="el" href="d9/db2/classsjsu_1_1CommandInterface.html#a8eef588bb6062f43b83c8df5460b0cb9">sjsu::CommandInterface</a>
-, <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#ae5cc4e3179b3d0af42bca5b3ca7e6b51">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#a5c76ab0fd2f68e57496ec4d89ed25598">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a27385f1784e067f8fe75f379fb78f6b4">sjsu::rtos::TaskInterface</a>
 </li>
 <li>GetPercentageBrightness()
 : <a class="el" href="d7/d75/classsjsu_1_1LightSensor.html#a4cf3bf0b61480d2a3163f6500618b3f0">sjsu::LightSensor</a>
 </li>
 <li>GetPeriodicSemaphore()
-: <a class="el" href="d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a65985f552554608817b3defc3d6f706b">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>
-, <a class="el" href="de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6b3087e7a017e141081326c1cc05eaed">sjsu::rtos::PeriodicTaskInterface</a>
+: <a class="el" href="d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a6f60ba808060a80a8e75a61596ecb3c5">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>
+, <a class="el" href="de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a40c633fee67eb1d6bb83dd2efb6697aa">sjsu::rtos::PeriodicTaskInterface</a>
 </li>
 <li>GetPeripheralClockDivider()
 : <a class="el" href="d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6aa856bf5d1a239913fe4c7047764c48">sjsu::lpc17xx::SystemController</a>
@@ -252,24 +256,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>GetPort()
 : <a class="el" href="d0/da9/classsjsu_1_1Pin.html#af23cc3bdc37d03e92cd4f40deb04e61c">sjsu::Pin</a>
 </li>
+<li>GetPreRunEventGroupHandle()
+: <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a73719d60dc794cca9a69e5cdf33dfac1">sjsu::rtos::TaskScheduler</a>
+, <a class="el" href="d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#ad43a6b45aa222cf20fb17afe2b822bad">sjsu::rtos::TaskSchedulerInterface</a>
+</li>
+<li>GetPreRunSyncBits()
+: <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aa426df6fcce42a11a6794102eb636704">sjsu::rtos::TaskScheduler</a>
+, <a class="el" href="d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a5042ba8f6c8581bfdddd1135d73beda1">sjsu::rtos::TaskSchedulerInterface</a>
+</li>
 <li>GetPriority()
-: <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#a2890a85b5035849fdf07679c99f2972c">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+: <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#ad9156f8c541120c00efa0e48c44b9931">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a61f3677eb9e1e7ccba1b216a1bdecece">sjsu::rtos::TaskInterface</a>
 </li>
 <li>GetProperAddress()
 : <a class="el" href="dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ad9e66eebc47547b675aeb10b7dbe453e">sjsu::I2c::Transaction_t</a>
 </li>
 <li>GetRunCount()
-: <a class="el" href="d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a5e87d71f799518c5f710d5d26fad1861">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>
-, <a class="el" href="de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a2de1650399965c284d53b81d2c7aa340">sjsu::rtos::PeriodicTaskInterface</a>
+: <a class="el" href="d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a6017fe9ea42f89bb1a22f558c3acbe3d">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>
+, <a class="el" href="de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a7883bfd09ef20a874d73cc3ebc99822a">sjsu::rtos::PeriodicTaskInterface</a>
 </li>
 <li>GetSignalStrengthPercent()
 : <a class="el" href="d2/dc6/classsjsu_1_1TFMini.html#aa0f3a97374838a88bb28223899b3ae00">sjsu::TFMini</a>
 </li>
 <li>GetStack()
 : <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#adc475e736e0966aabfa4943065d10381">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a35d51bde0f2ec73c0034179cbfa98e62">sjsu::rtos::TaskInterface</a>
 </li>
 <li>GetStackSize()
-: <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#a0521497c7ccb70026740be1faee7d179">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+: <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#a5d5f73984ec730bde3ad5f566ede0c4e">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#aa9893b7a3a200bc7d55a183a71ff309a">sjsu::rtos::TaskInterface</a>
 </li>
 <li>GetSystemFrequency()
 : <a class="el" href="d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a5cdb3e659dbe4e2f4e7113ce47a54e47">sjsu::lpc17xx::SystemController</a>
@@ -280,16 +295,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>GetTask()
 : <a class="el" href="dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#ac20e8e217c0ff6bfb1ab46aa64a461ba">sjsu::rtos::PeriodicScheduler</a>
-, <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a0affae60dfd5326b0b2af0f805f5ab84">sjsu::rtos::TaskScheduler</a>
+, <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a07581c715aaab7f8af398b25474b9047">sjsu::rtos::TaskScheduler</a>
+, <a class="el" href="d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#ae922aa35ad92d67106c0cbaf3ebd8181">sjsu::rtos::TaskSchedulerInterface</a>
 </li>
 <li>GetTaskBuffer()
 : <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#a1b379ffed4324e3354999b31e52c669a">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#ac24f506db7cb3c7f5e4f24b6cd368c25">sjsu::rtos::TaskInterface</a>
 </li>
 <li>GetTaskCount()
-: <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aa1a31b35ae26fa27a0d4aa62ade71143">sjsu::rtos::TaskScheduler</a>
+: <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a87a5614e9d28c990f3d8a6f484fa7574">sjsu::rtos::TaskScheduler</a>
+, <a class="el" href="d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a9c68575b19ff685d206038532bae2dcc">sjsu::rtos::TaskSchedulerInterface</a>
+</li>
+<li>GetTaskFunction()
+: <a class="el" href="d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a9914d6a1c6953f3bba984eabdc66d6b8">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>
+, <a class="el" href="de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a89b555507cf39a4049755ac023465ea1">sjsu::rtos::PeriodicTaskInterface</a>
 </li>
 <li>GetTaskIndex()
-: <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#af369ceb720de477a42ca3e1d9edde2fe">sjsu::rtos::TaskScheduler</a>
+: <a class="el" href="d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a1b3f5966df9e7c23a99a68988b63302c">sjsu::rtos::TaskScheduler</a>
+, <a class="el" href="d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a626e0e8d8a7bab5deeb8c82fd4eb756f">sjsu::rtos::TaskSchedulerInterface</a>
+</li>
+<li>GetTaskScheduler()
+: <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#aeed4e7512f28e4656aabe5c41238b72f">sjsu::rtos::Task&lt; kStackSize &gt;</a>
+, <a class="el" href="d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a55c01da5d358caff728eebf5d1d6fc3b">sjsu::rtos::TaskInterface</a>
 </li>
 <li>GetTemperature()
 : <a class="el" href="df/ddc/classsjsu_1_1Si7060.html#aba403bfa3429d2e915c736ed49b378bf">sjsu::Si7060</a>

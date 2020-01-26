@@ -1,36 +1,33 @@
-#include "L3_Application/task_scheduler.hpp"
-
 #include <cstring>
 
 #include "L3_Application/task.hpp"
-#include "utility/log.hpp"
+#include "L3_Application/task_scheduler.hpp"
 
 namespace sjsu
 {
 namespace rtos
 {
-void TaskScheduler::RunTask(void * task_ptr)
+void TaskScheduler::RunTask(void * task_pointer)
 {
-  TaskInterface & task = *(reinterpret_cast<TaskInterface *>(task_ptr));
+  TaskInterface & task = *(reinterpret_cast<TaskInterface *>(task_pointer));
+  TaskSchedulerInterface & task_scheduler = task.GetTaskScheduler();
 
-  const uint8_t kTaskCount = TaskScheduler::Instance().GetTaskCount();
-  const uint8_t kTaskIndex =
-      TaskScheduler::Instance().GetTaskIndex(task.GetName());
+  const uint8_t kTaskCount = task_scheduler.GetTaskCount();
+  const uint8_t kTaskIndex = task_scheduler.GetTaskIndex(task.GetName());
   SJ2_ASSERT_FATAL(kTaskIndex < kTaskCount,
                    "The task index should not exceed the task count.");
   // Perform PreRun for the task and then set the event group sync bit to
   // broadcast this task's PreRun has completed
   EventGroupHandle_t pre_run_event_group_handle =
-      TaskScheduler::Instance().GetPreRunEventGroupHandle();
-  const EventBits_t kPreRunSyncBits =
-      TaskScheduler::Instance().GetPreRunSyncBits();
-  const uint32_t kSyncBit = (1 << kTaskIndex);
+      task_scheduler.GetPreRunEventGroupHandle();
+  const EventBits_t kPreRunSyncBits = task_scheduler.GetPreRunSyncBits();
+  const uint32_t kSyncBit           = (1 << kTaskIndex);
   SJ2_ASSERT_FATAL(task.PreRun(),
                    "PreRun() failed for task: %s, terminating scheduler!",
                    task.GetName());
   // wait for all other PreRun() of other tasks to finish
-  xEventGroupSync(pre_run_event_group_handle, kSyncBit, kPreRunSyncBits,
-                  portMAX_DELAY);
+  xEventGroupSync(
+      pre_run_event_group_handle, kSyncBit, kPreRunSyncBits, portMAX_DELAY);
   // All PreRun() complete, each Task's Run() can now start executing...
   TickType_t last_wake_time = xTaskGetTickCount();
   while (true)
@@ -58,14 +55,17 @@ void TaskScheduler::InitializeAllTasks()
     TaskInterface * task = task_list_[i];
     *(task->GetHandle()) = xTaskCreateStatic(
         RunTask,  // function to execute the task
-        task->GetName(), static_cast<uint16_t>(StackSize(task->GetStackSize())),
+        task->GetName(),
+        static_cast<uint16_t>(StackSize(task->GetStackSize())),
         PassParameter(task),  // pointer of task to run
         task->GetPriority(),
         task->GetStack(),        // the task's statically allocated memory
         task->GetTaskBuffer());  // task TCB
-    SJ2_ASSERT_FATAL(task->GetHandle() != nullptr, "Unable to create task: %s",
+    SJ2_ASSERT_FATAL(task->GetHandle() != nullptr,
+                     "Unable to create task: %s",
                      task->GetName());
-    SJ2_ASSERT_FATAL(task->Setup(), "Failed to complete Setup() for task: %s",
+    SJ2_ASSERT_FATAL(task->Setup(),
+                     "Failed to complete Setup() for task: %s",
                      task->GetName());
     pre_run_sync_bits_ |= (1 << i);
   }
@@ -91,7 +91,7 @@ void TaskScheduler::RemoveTask(const char * task_name)
   task_count_--;
 }
 
-uint8_t TaskScheduler::GetTaskIndex(const char * task_name)
+uint8_t TaskScheduler::GetTaskIndex(const char * task_name) const
 {
   for (uint8_t i = 0; i < config::kTaskSchedulerSize; i++)
   {

@@ -13,7 +13,7 @@ var searchData=
   ['addperipheralid',['AddPeripheralID',['../de/db5/classsjsu_1_1SystemController_1_1AddPeripheralID.html',1,'sjsu::SystemController']]],
   ['address',['address',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adce62b3d21f5e350471cd087a0262e3a',1,'sjsu::I2c::Transaction_t']]],
   ['addressstring_5ft',['AddressString_t',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html',1,'sjsu::I2cCommand']]],
-  ['addtask',['AddTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab2cb704019734dfbe774efe8f257d443',1,'sjsu::rtos::TaskScheduler']]],
+  ['addtask',['AddTask',['../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#acb6db6c322e87e3a94015b3a87dfd903',1,'sjsu::rtos::TaskSchedulerInterface::AddTask()'],['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a9686ddf80e42d7c1ca8ffa8c9e575310',1,'sjsu::rtos::TaskScheduler::AddTask()']]],
   ['allocate',['allocate',['../df/ddd/classsjsu_1_1Arena.html#ad68341c9db5759077d4d0b20b6c2ef10',1,'sjsu::Arena::allocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af5afc7393b5ab8bc8db1c727e59fa12b',1,'sjsu::FixedAllocator::allocate()']]],
   ['alpha',['alpha',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a188ba3108004e6099d90d8701cdcec3b',1,'sjsu::PixelDisplay::Color_t']]],
   ['apds9960',['Apds9960',['../d8/d99/classsjsu_1_1Apds9960.html',1,'sjsu']]],

@@ -8,5 +8,6 @@ var searchData=
   ['flags',['flags',['../d0/ded/structsjsu_1_1PulseCapture_1_1CaptureStatus__t.html#a80895faf1e21d66c5d9f5d016682f63e',1,'sjsu::PulseCapture::CaptureStatus_t']]],
   ['flush',['Flush',['../d0/ddc/classsjsu_1_1Uart.html#a2676b7f91aa40e02262bf63eba9ec143',1,'sjsu::Uart']]],
   ['frameerror_5ft',['FrameError_t',['../df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html',1,'sjsu::lpc40xx::Can']]],
+  ['frequency',['Frequency',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a598178103e64537a0dd2abe6838327b6',1,'sjsu::rtos::PeriodicScheduler']]],
   ['function_5fmap',['function_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a362622236e910dba04f12d5cb7fddcf6',1,'sjsu::lpc17xx::Pin']]]
 ];
