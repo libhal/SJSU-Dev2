@@ -22,7 +22,7 @@ namespace uart
 {
 /// UART baud error threshold. Used to check if a fractional value is reasonable
 /// close to the desired value.
-constexpr float kThreshold = 0.05f;
+constexpr float kThreshold = 0.01f;
 /// Structure containing all of the information that a lpc40xx UART needs to
 /// achieve its desired baud rate.
 struct UartCalibration_t

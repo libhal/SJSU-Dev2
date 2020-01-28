@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>SJSU-Dev2: sjsu::Esp8266::Buffer_t Struct Reference</title>
+        <title>SJSU-Dev2: sjsu::WiFi::NetworkConnection_t Struct Reference</title>
         <!--<link href="../../tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="../../dynsections.js"></script>
         <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
@@ -98,29 +98,38 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html">Esp8266</a></li><li class="navelem"><a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">Buffer_t</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">WiFi</a></li><li class="navelem"><a class="el" href="../../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html">NetworkConnection_t</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="../../da/d67/structsjsu_1_1Esp8266_1_1Buffer__t-members.html">List of all members</a>  </div>
+<a href="../../d3/de7/structsjsu_1_1WiFi_1_1NetworkConnection__t-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::Esp8266::Buffer_t Struct Reference</div>  </div>
+<div class="title">sjsu::WiFi::NetworkConnection_t Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a790470a3cbcf0ef005408a72aaf072b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a790470a3cbcf0ef005408a72aaf072b9"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
-<tr class="separator:a790470a3cbcf0ef005408a72aaf072b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e5f87b43eae0ada8d8537e8b09f1853"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e5f87b43eae0ada8d8537e8b09f1853"></a>
-uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>address</b></td></tr>
-<tr class="separator:a1e5f87b43eae0ada8d8537e8b09f1853"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dd93e8fae4f60fe41cbbba0d385a10e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7dd93e8fae4f60fe41cbbba0d385a10e"></a>
+<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>status</b></td></tr>
+<tr class="separator:a7dd93e8fae4f60fe41cbbba0d385a10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a3e5db0b35c96ac7462a4daf21503a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a3e5db0b35c96ac7462a4daf21503a0"></a>
+std::array&lt; uint8_t, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ip</b></td></tr>
+<tr class="separator:a5a3e5db0b35c96ac7462a4daf21503a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a566999c2e12ee0e430862256aa6671"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a566999c2e12ee0e430862256aa6671"></a>
+std::array&lt; uint8_t, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>netmask</b></td></tr>
+<tr class="separator:a1a566999c2e12ee0e430862256aa6671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5124de1615ec60daed7be9648d73c6d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5124de1615ec60daed7be9648d73c6d"></a>
+std::array&lt; uint8_t, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>gateway</b></td></tr>
+<tr class="separator:ac5124de1615ec60daed7be9648d73c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac496c58a4c6fe4cd87415b730a993772"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac496c58a4c6fe4cd87415b730a993772"></a>
+std::array&lt; uint8_t, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mac</b></td></tr>
+<tr class="separator:ac496c58a4c6fe4cd87415b730a993772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/communication/<a class="el" href="../../dd/dae/esp8266_8hpp_source.html">esp8266.hpp</a></li>
+<li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/communication/<a class="el" href="../../db/d15/internet__socket_8hpp_source.html">internet_socket.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

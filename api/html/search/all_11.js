@@ -104,13 +104,13 @@ var searchData=
   ['stringlength',['StringLength',['../d0/d6b/namespacesjsu.html#a11e9a8820c447020c5b3206659e6b116',1,'sjsu']]],
   ['suspend',['Suspend',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#aecff455c36bae8969bbb41d4948a6013',1,'sjsu::rtos::TaskInterface::Suspend()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a99221ff7671d9cbaaa811ce401b3a336',1,'sjsu::rtos::Task::Suspend()']]],
   ['sys_5ftick',['sys_tick',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8',1,'sjsu::cortex::SystemTimer']]],
-  ['systemcontroller',['SystemController',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html',1,'sjsu::lpc40xx']]],
-  ['systemcontroller',['SystemController',['../df/d0e/classsjsu_1_1SystemController.html',1,'sjsu']]],
   ['systemcontroller',['SystemController',['../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html',1,'sjsu::stm32f4xx']]],
-  ['systemcontroller',['SystemController',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html',1,'sjsu::stm32f10x']]],
+  ['systemcontroller',['SystemController',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html',1,'sjsu::lpc40xx']]],
   ['systemcontroller',['SystemController',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html',1,'sjsu::lpc17xx']]],
+  ['systemcontroller',['SystemController',['../df/d0e/classsjsu_1_1SystemController.html',1,'sjsu']]],
+  ['systemcontroller',['SystemController',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html',1,'sjsu::stm32f10x']]],
   ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a5bbb04b07858ac575b07fc58ecbfe524',1,'sjsu::cortex::SystemTimer']]],
-  ['systemtimer',['SystemTimer',['../de/d0c/classsjsu_1_1SystemTimer.html',1,'sjsu']]],
   ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html',1,'sjsu::cortex']]],
+  ['systemtimer',['SystemTimer',['../de/d0c/classsjsu_1_1SystemTimer.html',1,'sjsu']]],
   ['systemtimerhandler',['SystemTimerHandler',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a876dd71b2d954db5401a44bda10eaf64',1,'sjsu::cortex::SystemTimer']]]
 ];

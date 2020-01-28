@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>SJSU-Dev2: Member List</title>
+        <title>SJSU-Dev2: sjsu::InternetSocket Class Reference</title>
         <!--<link href="../../tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="../../dynsections.js"></script>
         <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
@@ -98,20 +98,60 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html">Esp8266</a></li><li class="navelem"><a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">Buffer_t</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html">InternetSocket</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="../../dd/df8/classsjsu_1_1InternetSocket-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::Esp8266::Buffer_t Member List</div>  </div>
+<div class="title">sjsu::InternetSocket Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">sjsu::Esp8266::Buffer_t</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>address</b> (defined in <a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">sjsu::Esp8266::Buffer_t</a>)</td><td class="entry"><a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">sjsu::Esp8266::Buffer_t</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>size</b> (defined in <a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">sjsu::Esp8266::Buffer_t</a>)</td><td class="entry"><a class="el" href="../../de/dcb/structsjsu_1_1Esp8266_1_1Buffer__t.html">sjsu::Esp8266::Buffer_t</a></td><td class="entry"></td></tr>
-</table></div><!-- contents -->
+<p>Modeled after Berkley Sockets (POSIX sockets)  
+ <a href="../../db/dcb/classsjsu_1_1InternetSocket.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../db/d15/internet__socket_8hpp_source.html">internet_socket.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for sjsu::InternetSocket:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d2/d64/classsjsu_1_1InternetSocket__inherit__graph.png" border="0" usemap="#sjsu_1_1InternetSocket_inherit__map" alt="Inheritance graph"/></div>
+<map name="sjsu_1_1InternetSocket_inherit__map" id="sjsu_1_1InternetSocket_inherit__map">
+<area shape="rect" id="node2" href="../../dc/d4f/classsjsu_1_1Esp8266.html" title="sjsu::Esp8266" alt="" coords="25,80,135,107"/>
+</map>
+<center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a1ba82ae7b2309972b7d7ff0fa4a0cb28"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ba82ae7b2309972b7d7ff0fa4a0cb28"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Protocol</b> { <b>kTCP</b>, 
+<b>kUDP</b>
+ }</td></tr>
+<tr class="separator:a1ba82ae7b2309972b7d7ff0fa4a0cb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a5e1d7293ef0b8db5da2bd8845b43ed8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e1d7293ef0b8db5da2bd8845b43ed8e"></a>
+virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Connect</b> (Protocol protocol, std::string_view address, uint16_t port, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="separator:a5e1d7293ef0b8db5da2bd8845b43ed8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9134ed677da7bc256299d20a9a71aeb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9134ed677da7bc256299d20a9a71aeb"></a>
+virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (const void *data, size_t size, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="separator:af9134ed677da7bc256299d20a9a71aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69736f100d3b639ff92ee42a90c77159"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69736f100d3b639ff92ee42a90c77159"></a>
+virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (void *buffer, size_t size, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="separator:a69736f100d3b639ff92ee42a90c77159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cb3ae22bf916abef040be841e9b0c44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cb3ae22bf916abef040be841e9b0c44"></a>
+virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Close</b> ()=0</td></tr>
+<tr class="separator:a7cb3ae22bf916abef040be841e9b0c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Modeled after Berkley Sockets (POSIX sockets) </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/communication/<a class="el" href="../../db/d15/internet__socket_8hpp_source.html">internet_socket.hpp</a></li>
+</ul>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
 </div>

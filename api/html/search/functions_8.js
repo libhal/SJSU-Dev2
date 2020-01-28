@@ -11,6 +11,7 @@ var searchData=
   ['irqtoindex',['IRQToIndex',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#aa63417f84aa1a11886960bafcd17d09f',1,'sjsu::cortex::InterruptController']]],
   ['isblank',['IsBlank',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a0eef47d4e25c7300ea70d1a90bc57216',1,'sjsu::PixelDisplay::Color_t']]],
   ['isbusbusy',['IsBusBusy',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a8d6e1ea0b21ac7519a193e1430ef4f12',1,'sjsu::lpc40xx::Spi']]],
+  ['isconnected',['IsConnected',['../dc/d4f/classsjsu_1_1Esp8266.html#a8910ede1b41e9f6188526179b1261ab7',1,'sjsu::Esp8266']]],
   ['isintialized',['IsIntialized',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#aa37049a60058bdd767150b32a0f6cbab',1,'sjsu::lpc40xx::I2c']]],
   ['ismediapresent',['IsMediaPresent',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a675baf4b9500cf99753fed44a09cd29e',1,'sjsu::lpc40xx::Eeprom::IsMediaPresent()'],['../dc/da6/classsjsu_1_1Storage.html#a826db74f43c08271f1d15d11e2e91b8d',1,'sjsu::Storage::IsMediaPresent()']]],
   ['ismonochrome',['IsMonoChrome',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a8c05af6fb8b71208ada059c2595e61ec',1,'sjsu::PixelDisplay::Color_t']]],

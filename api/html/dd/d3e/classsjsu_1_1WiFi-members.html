@@ -98,19 +98,23 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html">Esp8266</a></li><li class="navelem"><a class="el" href="../../d6/d07/structsjsu_1_1Esp8266_1_1ModuleVersion__t.html">ModuleVersion_t</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">WiFi</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">sjsu::Esp8266::ModuleVersion_t Member List</div>  </div>
+<div class="title">sjsu::WiFi Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="../../d6/d07/structsjsu_1_1Esp8266_1_1ModuleVersion__t.html">sjsu::Esp8266::ModuleVersion_t</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>kModuleInfoLength</b> (defined in <a class="el" href="../../d6/d07/structsjsu_1_1Esp8266_1_1ModuleVersion__t.html">sjsu::Esp8266::ModuleVersion_t</a>)</td><td class="entry"><a class="el" href="../../d6/d07/structsjsu_1_1Esp8266_1_1ModuleVersion__t.html">sjsu::Esp8266::ModuleVersion_t</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>module_info</b> (defined in <a class="el" href="../../d6/d07/structsjsu_1_1Esp8266_1_1ModuleVersion__t.html">sjsu::Esp8266::ModuleVersion_t</a>)</td><td class="entry"><a class="el" href="../../d6/d07/structsjsu_1_1Esp8266_1_1ModuleVersion__t.html">sjsu::Esp8266::ModuleVersion_t</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>ConnectToAccessPoint</b>(std::string_view ssid, std::string_view password, std::chrono::nanoseconds timeout)=0 (defined in <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a>)</td><td class="entry"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>DisconnectFromAccessPoint</b>()=0 (defined in <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a>)</td><td class="entry"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>GetInternetSocket</b>()=0 (defined in <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a>)</td><td class="entry"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>GetNetworkConnectionInfo</b>()=0 (defined in <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a>)</td><td class="entry"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Initialize</b>()=0 (defined in <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a>)</td><td class="entry"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>IsConnected</b>()=0 (defined in <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a>)</td><td class="entry"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">sjsu::WiFi</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->

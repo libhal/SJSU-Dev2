@@ -13,6 +13,8 @@ enum class Status
   kNotImplemented,
   kNotReadyYet,
   kInvalidParameters,
+  kUnfinished,
+  kUnknown,
 };
 /// @param status - the status code to convert to a string
 /// @return a string representation of the status code.

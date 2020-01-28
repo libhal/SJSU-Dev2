@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>SJSU-Dev2: Member List</title>
+        <title>SJSU-Dev2: sjsu::WiFi Class Reference</title>
         <!--<link href="../../tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="../../dynsections.js"></script>
         <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
@@ -98,20 +98,57 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html">Esp8266</a></li><li class="navelem"><a class="el" href="../../d9/dd2/structsjsu_1_1Esp8266_1_1NetworkConnection__t.html">NetworkConnection_t</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">WiFi</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="../../dd/d3e/classsjsu_1_1WiFi-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::Esp8266::NetworkConnection_t Member List</div>  </div>
+<div class="title">sjsu::WiFi Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="../../d9/dd2/structsjsu_1_1Esp8266_1_1NetworkConnection__t.html">sjsu::Esp8266::NetworkConnection_t</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>connection_info</b> (defined in <a class="el" href="../../d9/dd2/structsjsu_1_1Esp8266_1_1NetworkConnection__t.html">sjsu::Esp8266::NetworkConnection_t</a>)</td><td class="entry"><a class="el" href="../../d9/dd2/structsjsu_1_1Esp8266_1_1NetworkConnection__t.html">sjsu::Esp8266::NetworkConnection_t</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>kConnectionInfoLength</b> (defined in <a class="el" href="../../d9/dd2/structsjsu_1_1Esp8266_1_1NetworkConnection__t.html">sjsu::Esp8266::NetworkConnection_t</a>)</td><td class="entry"><a class="el" href="../../d9/dd2/structsjsu_1_1Esp8266_1_1NetworkConnection__t.html">sjsu::Esp8266::NetworkConnection_t</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-</table></div><!-- contents -->
+<div class="dynheader">
+Inheritance diagram for sjsu::WiFi:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d8f/classsjsu_1_1WiFi__inherit__graph.png" border="0" usemap="#sjsu_1_1WiFi_inherit__map" alt="Inheritance graph"/></div>
+<map name="sjsu_1_1WiFi_inherit__map" id="sjsu_1_1WiFi_inherit__map">
+<area shape="rect" id="node2" href="../../dc/d4f/classsjsu_1_1Esp8266.html" title="sjsu::Esp8266" alt="" coords="5,80,116,107"/>
+</map>
+<center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html">NetworkConnection_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:affb4519b491eded5121b699c2c48b4ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affb4519b491eded5121b699c2c48b4ee"></a>
+virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()=0</td></tr>
+<tr class="separator:affb4519b491eded5121b699c2c48b4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bc768a0e2741c539b208efd709c9ae1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2bc768a0e2741c539b208efd709c9ae1"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsConnected</b> ()=0</td></tr>
+<tr class="separator:a2bc768a0e2741c539b208efd709c9ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a729e60498dbc9ce101964f06fb895df7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a729e60498dbc9ce101964f06fb895df7"></a>
+virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectToAccessPoint</b> (std::string_view ssid, std::string_view password, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="separator:a729e60498dbc9ce101964f06fb895df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7acc92e269afcc38ee89673d8793c1d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7acc92e269afcc38ee89673d8793c1d6"></a>
+virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectFromAccessPoint</b> ()=0</td></tr>
+<tr class="separator:a7acc92e269afcc38ee89673d8793c1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09215d8c68e54363eeea5e701f2d41e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09215d8c68e54363eeea5e701f2d41e8"></a>
+virtual <a class="el" href="../../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html">NetworkConnection_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetNetworkConnectionInfo</b> ()=0</td></tr>
+<tr class="separator:a09215d8c68e54363eeea5e701f2d41e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a92c9bef0e931d1fdf3ee60d53f24c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a92c9bef0e931d1fdf3ee60d53f24c2"></a>
+virtual <a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html">InternetSocket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetInternetSocket</b> ()=0</td></tr>
+<tr class="separator:a1a92c9bef0e931d1fdf3ee60d53f24c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/communication/<a class="el" href="../../db/d15/internet__socket_8hpp_source.html">internet_socket.hpp</a></li>
+</ul>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
 </div>
