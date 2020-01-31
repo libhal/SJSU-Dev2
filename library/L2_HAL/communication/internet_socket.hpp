@@ -18,6 +18,7 @@ class InternetSocket
     kTCP,
     kUDP,
   };
+
   virtual Status Connect(Protocol protocol,
                          std::string_view address,
                          uint16_t port,
@@ -37,11 +38,26 @@ class WiFi
  public:
   struct NetworkConnection_t
   {
-    Status status;
+    Status status = Status::kNotImplemented;
     std::array<uint8_t, 4> ip;
     std::array<uint8_t, 4> netmask;
     std::array<uint8_t, 4> gateway;
     std::array<uint8_t, 6> mac;
+  };
+
+  enum class AccessPointSecurity
+  {
+    kOpen       = 0,
+    kWpaPsk     = 2,
+    kWpa2Psk    = 3,
+    kWpaWpa2Psk = 4,
+  };
+
+  enum class WifiMode
+  {
+    kClient = 1,
+    kAccessPoint,
+    kBoth,
   };
 
   virtual Status Initialize()                                           = 0;

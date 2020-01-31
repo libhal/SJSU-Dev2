@@ -16,6 +16,7 @@ TESTS += $(LIBRARY_DIR)/utility/test/rtos_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/status_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/stopwatch_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/time_test.cpp
+TESTS += $(LIBRARY_DIR)/utility/test/timeout_timer_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/math/test/average_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/containers/test/string_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/containers/test/vector_test.cpp

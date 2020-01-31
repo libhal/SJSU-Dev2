@@ -26,6 +26,7 @@
 #include "utility/debug.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
+#include "utility/status.hpp"
 
 namespace sjsu
 {
@@ -245,6 +246,17 @@ LogError(const char * format, Params...)->LogError<Params...>;
     {                                                                     \
       ::sjsu::LogWarning(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
     }                                                                     \
+  } while (0)
+
+/// Logs the expression if it returns any but Status::kSuccess
+#define LOG_ON_FAILURE(expression)                              \
+  do                                                            \
+  {                                                             \
+    sjsu::Status log_on_failure_status = (expression);          \
+    if (log_on_failure_status != sjsu::Status::kSuccess)        \
+    {                                                           \
+      ::sjsu::LogWarning("Expression Failed: %s", #expression); \
+    }                                                           \
   } while (0)
 
 /// When the condition is false, issue a critical level message to the user and
