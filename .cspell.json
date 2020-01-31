@@ -397,6 +397,8 @@
         "SDRAM",
         "SDSC",
         "SDXC",
+        "CWSAP",
+        "CWLIF",
         "SHIFTR",
         "LLVM's",
         "SIRQ",
