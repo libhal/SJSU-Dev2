@@ -77,7 +77,7 @@ done
 
 # Get all multiplatform projects
 LIST_OF_PROJECT=$(find $SJBASE/demos/multiplatform -name "makefile")
-LIST_OF_PLATFORMS=(lpc40xx lpc17xx stm32f4xx stm32f10x)
+LIST_OF_PLATFORMS=(lpc40xx lpc17xx stm32f4xx stm32f10x msp432p401r)
 
 for d in $LIST_OF_PROJECT
 do
