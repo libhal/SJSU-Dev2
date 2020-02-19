@@ -13,34 +13,36 @@ SJSU-Dev2.
 
 ## Memory map definition .h files
 
-Typically these are written in C and use macro judiciously. For
-SJSU-Dev2 we need to put those definitions within the platform's
+Typically these are written in C and use macro judiciously.
+This is a problem as macro definitions cannot be namespaced and are very likely to create
+
+For SJSU-Dev2 we need to put those definitions within the platform's
 namespace as follows:
 
 ``` c++
-// Sample name for this file could be "LPC40xx.hpp"
 #pragma once
 
 namespace sjsu
 {
 namespace lpc40xx
 {
-#include "LPC40xx.h"
+// Put the rest of the header definitions here
 } // lpc40xx
 } // sjsu
 ```
 
-The original header file must NOT be included in any library in SJSU-Dev2 to
-prevent the global namespace from being contaminated.
+Convert all `#define` to `constexpr` if possible and if not convert to `inline`
+variables. See this commit to see how this was done for the
+`L0_Platform/lpc40xx/LPC40xx.h` register definitions file:
+
+https://github.com/kammce/SJSU-Dev2/commit/40d89452260e043e0e1092525e5f3210b7cfe1ef#diff-1eae1a62a8a18ba66cfce475cf17db5a
 
 ## Linker Script
 
 All platforms will require a linker script to describe to format of the
-binary to the GCC linker. Typically vendor linker scripts do not need to
+binary to the GCC linker. Typically vendor linker scripts do not require too much
 modified when brought into SJSU-Dev2. But the name of the linker script
-must become `application.ld` and/or `bootloader.ld`. `application.ld`
-will be used when the user uses `make application` and `bootloader.ld`
-will be used when users use `make bootloader`.
+must be `linker.ld`.
 
 ### Definitions required for linker script
 
@@ -82,12 +84,11 @@ PROVIDE(heap_start =  .);
 PROVIDE(heap_end = __RAM_TOP);
 ```
 
-The best option is to choose a defined region of ram just for heap such
-that the stack pointer and heap pointer never cross each other. The
-LPC40xx boards, has 96kB ram with 64kB used for RAM1 and 32kB for RAM2.
-RAM1 and RAM2 are not contiguous blocks of ram in LPC40xx, so RAM1 is
-used for `.data`, `.bss` and stack, where RAM2 is defined just for heap
-memory.
+If possible the best option is to choose a defined region of ram just for heap
+such that the stack pointer and heap pointer never cross each other. The LPC40xx
+boards, has 96kB ram with 64kB used for RAM1 and 32kB for RAM2. RAM1 and RAM2
+are not contiguous blocks of ram in LPC40xx, so RAM1 is used for `.data`, `.bss`
+and stack, where RAM2 is defined just for heap memory.
 
 ## Startup
 
@@ -118,7 +119,7 @@ main()` is called:
   acceptable, but UART tends to be the easiest.
 - Update the STDOUT and STDIN callback functions by using
   `SetStdout` and `SetStdin`, found in the
-  `library/newblib/newlib.h` Example:
+  `library/newlib/newlib.h` Example:
 
 ``` c++
 int Lpc40xxStdOut(const char * data, size_t length)
@@ -136,7 +137,8 @@ int Lpc40xxStdIn(char * data, size_t length)
 
 ### malloc & new
 
-Following Linker script part 2 for heap should handle this for you.
+Instructions for LinkerScript part 2 for heap should handle this for you, so no
+needed work on your side.
 
 ## Millisecond Timer:
 
@@ -170,9 +172,83 @@ Following Linker script part 2 for heap should handle this for you.
 
 ## Interrupt Vector Table
 
-For organization purposes it is preferred that the interrupt vector table
-(IVT) is placed in the L0 folder as its own file rather than putting it
-in the `startup.cpp` file as many vendors do.
+For organization purposes it is preferred that the interrupt vector table (IVT)
+is placed in the `startup.cpp` file as many vendors do. SJSU-Dev2 utilizes a
+single interrupt vector that redirects to the assigned interrupt handler using.
+
+Example using Cortex M3/M4/M7:
+
+``` C++
+// Platform interrupt controller for Arm Cortex microcontrollers.
+sjsu::cortex::InterruptController<sjsu::lpc40xx::kNumberOfIrqs,
+                                  __NVIC_PRIO_BITS>
+    interrupt_controller;
+
+SJ2_SECTION(".isr_vector")
+const sjsu::InterruptVectorAddress kInterruptVectorTable[] = {
+  // Core Level - CM4
+  &StackTop,                           // 0, The initial stack pointer
+  ArmResetHandler,                     // 1, The reset handler
+  interrupt_controller.LookupHandler,  // 2, The NMI handler
+  ArmHardFaultHandler,                 // 3, The hard fault handler
+  interrupt_controller.LookupHandler,  // 4, The MPU fault handler
+  interrupt_controller.LookupHandler,  // 5, The bus fault handler
+  interrupt_controller.LookupHandler,  // 6, The usage fault handler
+  nullptr,                             // 7, Reserved
+  nullptr,                             // 8, Reserved
+  nullptr,                             // 9, Reserved
+  nullptr,                             // 10, Reserved
+  vPortSVCHandler,                     // 11, SVCall handler
+  interrupt_controller.LookupHandler,  // 12, Debug monitor handler
+  nullptr,                             // 13, Reserved
+  xPortPendSVHandler,                  // 14, FreeRTOS PendSV Handler
+  interrupt_controller.LookupHandler,  // 15, The SysTick handler
+  // Chip Level - LPC40xx
+  interrupt_controller.LookupHandler,  // 16, 0x40 - WDT
+  interrupt_controller.LookupHandler,  // 17, 0x44 - TIMER0
+  interrupt_controller.LookupHandler,  // 18, 0x48 - TIMER1
+  interrupt_controller.LookupHandler,  // 19, 0x4c - TIMER2
+  interrupt_controller.LookupHandler,  // 20, 0x50 - TIMER3
+  interrupt_controller.LookupHandler,  // 21, 0x54 - UART0
+  interrupt_controller.LookupHandler,  // 22, 0x58 - UART1
+  interrupt_controller.LookupHandler,  // 23, 0x5c - UART2
+  interrupt_controller.LookupHandler,  // 24, 0x60 - UART3
+  interrupt_controller.LookupHandler,  // 25, 0x64 - PWM1
+  interrupt_controller.LookupHandler,  // 26, 0x68 - I2C0
+  interrupt_controller.LookupHandler,  // 27, 0x6c - I2C1
+  interrupt_controller.LookupHandler,  // 28, 0x70 - I2C2
+  interrupt_controller.LookupHandler,  // 29, Not used
+  interrupt_controller.LookupHandler,  // 30, 0x78 - SSP0
+  interrupt_controller.LookupHandler,  // 31, 0x7c - SSP1
+  interrupt_controller.LookupHandler,  // 32, 0x80 - PLL0 (Main PLL)
+  interrupt_controller.LookupHandler,  // 33, 0x84 - RTC
+  interrupt_controller.LookupHandler,  // 34, 0x88 - EINT0
+  interrupt_controller.LookupHandler,  // 35, 0x8c - EINT1
+  interrupt_controller.LookupHandler,  // 36, 0x90 - EINT2
+  interrupt_controller.LookupHandler,  // 37, 0x94 - EINT3
+  interrupt_controller.LookupHandler,  // 38, 0x98 - ADC
+  interrupt_controller.LookupHandler,  // 39, 0x9c - BOD
+  interrupt_controller.LookupHandler,  // 40, 0xA0 - USB
+  interrupt_controller.LookupHandler,  // 41, 0xa4 - CAN
+  interrupt_controller.LookupHandler,  // 42, 0xa8 - GP DMA
+  interrupt_controller.LookupHandler,  // 43, 0xac - I2S
+  interrupt_controller.LookupHandler,  // 44, 0xb0 - Ethernet
+  interrupt_controller.LookupHandler,  // 45, 0xb4 - SD/MMC card I/F
+  interrupt_controller.LookupHandler,  // 46, 0xb8 - Motor Control PWM
+  interrupt_controller.LookupHandler,  // 47, 0xbc - Quadrature Encoder
+  interrupt_controller.LookupHandler,  // 48, 0xc0 - PLL1 (USB PLL)
+  interrupt_controller.LookupHandler,  // 49, 0xc4 - USB Activity interrupt to
+                                       // wakeup
+  interrupt_controller.LookupHandler,  // 50, 0xc8 - CAN Activity interrupt to
+                                       // wakeup
+  interrupt_controller.LookupHandler,  // 51, 0xcc - UART4
+  interrupt_controller.LookupHandler,  // 52, 0xd0 - SSP2
+  interrupt_controller.LookupHandler,  // 53, 0xd4 - LCD
+  interrupt_controller.LookupHandler,  // 54, 0xd8 - GPIO
+  interrupt_controller.LookupHandler,  // 55, 0xdc - PWM0
+  interrupt_controller.LookupHandler,  // 56, 0xe0 - EEPROM
+};
+```
 
 ## Writing .mk file
 
@@ -181,10 +257,10 @@ in the `startup.cpp` file as many vendors do.
 LIBRARY_LPC40XX += $(LIB_DIR)/L0_Platform/lpc40xx/startup.cpp
 LIBRARY_LPC40XX += $(LIB_DIR)/L1_Peripheral/cortex/interrupt_vector_table.cpp
 
-# Add test source files if applicable
+# (Optional) Add test source files if applicable
 TESTS += $(LIB_DIR)/L0_Platform/lpc40xx/startup_test.cpp
 
-# Add any files or folders that should NOT be evaluated via the linter.
+# (Optional) Add any files or folders that should NOT be evaluated via the linter.
 # System headers and register description files to be ignored.
 LINT_FILTER += $(LIB_DIR)/L0_Platform/lpc40xx/LPC40xx.h
 LINT_FILTER += $(LIB_DIR)/L0_Platform/lpc40xx/system_LPC407x_8x_177x_8x.h
@@ -201,22 +277,14 @@ $(eval $(call BUILD_LIBRARY,liblpc40xx,LIBRARY_LPC40XX))
 # in this case, the LPC40xx uses an Arm Cortex-M4 so we want to add its
 # system headers to our include path.
 include $(LIB_DIR)/L0_Platform/arm_cortex/m4/m4.mk
+
+# Defines a means of programming a device in a way that does not utilize jtag
+platform-flash:
+	@echo
+	@bash -c "\
+	source $(TOOLS_DIR)/nxpprog/modules/bin/activate && \
+	python3 $(TOOLS_DIR)/nxpprog/nxpprog.py \
+	--binary=\"$(BINARY)\" --device=\"$(SJDEV)\" \
+	--osfreq=12000000 --baud=115200 --control"
+	@echo
 ```
-
-## Testing L0 Platform
-
-!!! Error
-    Testing of IVT and and startup sequence has not been integrated into
-    SJSU-Dev2.
-
-## Optional things to port
-
-### FatFS
-
-Add a file `diskio.cpp` in the platform folder. Follow the code example
-below:
-
-!!! Warning
-    This section is currently missing. Add a section for this after github
-    issue #400_ is resolved which adds how to dependency inject a callback
-    function FatFS.

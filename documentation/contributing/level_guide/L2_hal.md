@@ -2,8 +2,7 @@
 
 ## Adding a device driver (HAL)
 
-First, you will need to figure out which folder to put it in. Lets take
-the
+First, you will need to figure out which folder to put it in. Lets take the
 [Sharp GP2Y0A21YK0F Analog Distance Sensor]
 (http://www.sharp-world.com/products/device/lineup/data/pdf/datasheet/gp2y0a21yk_e.pdf)
 for example. For the sharp distance sensor it should be placed in the

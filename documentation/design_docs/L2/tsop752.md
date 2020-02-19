@@ -1,6 +1,6 @@
-# Tsop752 Infrared Receiver Design Document
+# Tsop752 Infrared Receiver
 
-- [Tsop752 Infrared Receiver Design Document](#tsop752-infrared-receiver-design-document)
+- [Tsop752 Infrared Receiver](#tsop752-infrared-receiver)
 - [Location](#location)
 - [Type](#type)
 - [Background](#background)
