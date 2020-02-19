@@ -1,6 +1,6 @@
-# Light Sensor Interface Design Document
+# Light Sensor
 
-- [Light Sensor Interface Design Document](#light-sensor-interface-design-document)
+- [Light Sensor](#light-sensor)
 - [Location](#location)
 - [Type](#type)
 - [Background](#background)
@@ -13,7 +13,7 @@
 - [Future Advancements](#future-advancements)
 
 # Location
-`L2_HAL`.
+`L2_HAL`
 
 # Type
 Interface

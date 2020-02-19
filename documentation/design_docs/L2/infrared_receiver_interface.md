@@ -1,6 +1,6 @@
-# Infrared Receiver Interface Design Document
+# Infrared Receiver
 
-- [Infrared Receiver Interface Design Document](#infrared-receiver-interface-design-document)
+- [Infrared Receiver](#infrared-receiver)
 - [Location](#location)
 - [Type](#type)
 - [Background](#background)
@@ -11,7 +11,7 @@
 - [Future Advancements](#future-advancements)
 
 # Location
-`L2_HAL`.
+`L2_HAL`
 
 # Type
 Interface

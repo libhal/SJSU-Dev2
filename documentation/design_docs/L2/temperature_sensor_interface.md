@@ -1,6 +1,6 @@
-# Temperature Sensor Interface Design Document
+# Temperature Sensor
 
-- [Temperature Sensor Interface Design Document](#temperature-sensor-interface-design-document)
+- [Temperature Sensor](#temperature-sensor)
 - [Location](#location)
 - [Type](#type)
 - [Background](#background)
@@ -13,7 +13,7 @@
 - [Future Advancements](#future-advancements)
 
 # Location
-`L2_HAL`.
+`L2_HAL`
 
 # Type
 Interface

@@ -1,11 +1,10 @@
 # Presubmit Checks
 
-Before you can merge anything to SJSU-Dev2 repo, you need to preform a
-few presubmit checks.
+Before anything is merged into SJSU-Dev2, various health and system checks are
+preformed. These are called "presubmit" checks.
 
-The presubmit checks will build, test, and lint the code, as well as
-check to make sure that the current commit stage is clean. The following
-sections will go into detail about these processes and wha thtey do.
+The presubmit checks will build, test, check the style of the code, and much
+more.
 
 ## Building & Testing
 
@@ -18,7 +17,7 @@ test software. Even small changes can break the whole system.
 Linting code is the process of running a program, in this case we use
 Google's `cpplint.py` script, to evaluate each source file to make sure
 that they conform to our coding style standards as well as do some
-rudamentory checks for code pratices that may be dangerous or produce
+rudimentary checks for code practices that may be dangerous or produce
 bugs.
 
 Cpplint follows the [Google C++ style
