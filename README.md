@@ -1,6 +1,6 @@
 # SJSU-Dev2
 
-[![Build Status](https://travis-ci.com/kammce/SJSU-Dev2.svg?branch=master)](https://travis-ci.org/kammce/SJSU-Dev2)
+[![Build Status](https://travis-ci.com/kammce/SJSU-Dev2.svg?branch=master)](https://travis-ci.com/kammce/SJSU-Dev2)
 [![Documentation Status](https://readthedocs.org/projects/sjsu-dev/badge/?version=latest)](http://sjsu-dev2.readthedocs.io/en/latest)
 [![Coverage Status](https://coveralls.io/repos/github/kammce/SJSU-Dev2/badge.svg)](https://coveralls.io/github/kammce/SJSU-Dev2)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f004895337c42459f881db938e84885)](https://www.codacy.com/app/kammce/SJSU-Dev2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kammce/SJSU-Dev2&amp;utm_campaign=Badge_Grade)
