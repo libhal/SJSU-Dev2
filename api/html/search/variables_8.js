@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['i2c0',['i2c0',['../db/dc0/structsjone.html#acd934660401331ad1c5992a8542bd183',1,'sjone::i2c0()'],['../db/dc5/structsjtwo.html#abf5330654c0cfb42de768115ed7d90e5',1,'sjtwo::i2c0()']]],
+  ['i2c1',['i2c1',['../db/dc0/structsjone.html#ad492142aeaf9cbb65ebe63b69807a2da',1,'sjone::i2c1()'],['../db/dc5/structsjtwo.html#aac9b09af97527c13c15a9aa4eb8fa48d',1,'sjtwo::i2c1()']]],
+  ['i2c2',['i2c2',['../db/dc0/structsjone.html#aa53e622fc374b1f52ede2c3388257249',1,'sjone::i2c2()'],['../db/dc5/structsjtwo.html#a9f7a57223364c8c34446dc1822c73222',1,'sjtwo::i2c2()']]],
   ['id',['id',['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#addd92f8d20080404cedb894908ae9d15',1,'sjsu::lpc40xx::Pwm::Peripheral_t']]],
   ['in_5flength',['in_length',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ad780c3a4397f73fdfa36390237495eac',1,'sjsu::I2c::Transaction_t']]],
   ['interrupt_5fhandler',['interrupt_handler',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#a8f02c27e02ebca4f78f9733be8a174d4',1,'sjsu::InterruptController::RegistrationInfo_t']]],

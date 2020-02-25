@@ -55,11 +55,26 @@ nav:
     - L1 Peripheral:
       - 'design_docs/L1/counter.md'
     - L2 Hardware Abstraction:
-      - 'design_docs/L2/accelerometer.md'
-      - Accelerometer:
-        - 'design_docs/L2/accelerometer/mma8452q.md'
+      - Sensors:
+        - 'design_docs/L2/accelerometer.md'
+        - Accelerometers Drivers:
+          - 'design_docs/L2/accelerometer/mma8452q.md'
+        - Environment:
+          - 'design_docs/L2/light_sensor_interface.md'
+          - 'design_docs/L2/temperature_sensor_interface.md'
+          - Light Sensor Drivers:
+            - 'design_docs/L2/temt6000x01.md'
+          - Temperature Sensor Driver:
+            - 'design_docs/L2/si7060.md'
+            - 'design_docs/L2/tmp102.md'
+      - Communication:
+        - 'design_docs/L2/infrared_receiver_interface.md'
+        - Infrared:
+          - 'design_docs/L2/tsop752.md'
     - L3 Application:
-      - 'design_docs/L3/none.md'
+      - 'design_docs/L3/periodic_scheduler.md'
+      - 'design_docs/L3/task_interface.md'
+      - 'design_docs/L3/task_scheduler.md'
     - Utility:
       - 'design_docs/utility/none.md'
     - Testing:

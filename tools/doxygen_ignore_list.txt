@@ -11,9 +11,6 @@ L1_Peripheral/system_controller.hpp
 L1_Peripheral/timer.hpp
 L1_Peripheral/watchdog.hpp
 L2_HAL/actuators/servo/servo.hpp
-L2_HAL/boards/example_board.hpp
-L2_HAL/boards/sjone.hpp
-L2_HAL/boards/sjtwo.hpp
 L2_HAL/communication/esp8266.hpp
 L2_HAL/device_memory_map.hpp
 L2_HAL/displays/lcd/st7066u.hpp

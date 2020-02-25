@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html" title="sjsu::WiFi::NetworkConnection_t" alt="" coords="5,5,228,32"/>
+<area shape="rect" id="node1" href="$db/dcb/classsjsu_1_1InternetSocket.html" title="Modeled after Berkley Sockets (POSIX sockets) " alt="" coords="5,5,156,32"/>
+<area shape="rect" id="node2" href="$dc/d4f/classsjsu_1_1Esp8266.html" title="sjsu::Esp8266" alt="" coords="204,31,315,57"/>
+<area shape="rect" id="node3" href="$dc/d16/classsjsu_1_1WiFi.html" title="sjsu::WiFi" alt="" coords="39,56,122,83"/>
 </map>

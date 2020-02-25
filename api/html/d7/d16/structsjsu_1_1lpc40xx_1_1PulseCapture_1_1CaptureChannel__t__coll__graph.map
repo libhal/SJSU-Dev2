@@ -1,5 +1,5 @@
 <map id="sjsu::lpc40xx::PulseCapture::CaptureChannel_t" name="sjsu::lpc40xx::PulseCapture::CaptureChannel_t">
-<area shape="rect" id="node2" href="$da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html" title="Structure used to define attributes of a timer capture channel. " alt="" coords="17,124,213,165"/>
-<area shape="rect" id="node3" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
-<area shape="rect" id="node4" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="103,5,270,47"/>
+<area shape="rect" id="node2" href="$da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html" title="Structure used to define attributes of a timer capture channel. " alt="" coords="16,124,217,165"/>
+<area shape="rect" id="node3" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,81,39"/>
+<area shape="rect" id="node4" href="$d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html" title="sjsu::SystemController\l::PeripheralID" alt="" coords="105,5,275,47"/>
 </map>

@@ -1,5 +1,5 @@
 <map id="sjsu::rtos::PeriodicScheduler" name="sjsu::rtos::PeriodicScheduler">
-<area shape="rect" id="node2" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; 512 \&gt;" alt="" coords="105,109,274,136"/>
-<area shape="rect" id="node3" href="$d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="An abstract interface for the Task interface class. " alt="" coords="5,13,176,39"/>
-<area shape="rect" id="node4" href="$d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html" title="An abstact interface for the TaskScheduler class. " alt="" coords="200,5,379,47"/>
+<area shape="rect" id="node2" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; 512 \&gt;" alt="" coords="109,109,281,136"/>
+<area shape="rect" id="node3" href="$d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="An abstract interface for the Task interface class. " alt="" coords="5,13,181,39"/>
+<area shape="rect" id="node4" href="$d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html" title="An abstact interface for the TaskScheduler class. " alt="" coords="206,5,389,47"/>
 </map>

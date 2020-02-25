@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['dac',['Dac',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html',1,'sjsu::lpc40xx']]],
-  ['dac',['Dac',['../da/d01/classsjsu_1_1Dac.html',1,'sjsu']]],
-  ['dac',['Dac',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae4d9b92052810adbe2c9c3e1c1abff1a',1,'sjsu::lpc40xx::Dac']]],
+  ['dac',['Dac',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html',1,'sjsu::lpc40xx::Dac'],['../da/d01/classsjsu_1_1Dac.html',1,'sjsu::Dac'],['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae4d9b92052810adbe2c9c3e1c1abff1a',1,'sjsu::lpc40xx::Dac::Dac()']]],
   ['dac_5fregister',['dac_register',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ac2169bfd0263658e25fc448605ace49c',1,'sjsu::lpc40xx::Dac']]],
   ['data',['data',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#affb6dca340b09f52aba1b435e683f922',1,'sjsu::infrared::DecodedFrame_t']]],
   ['data_5fduration',['data_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a3fb686a930b8ff5d7491852177fd1771',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
@@ -21,7 +19,7 @@ var searchData=
   ['delay',['Delay',['../d0/d6b/namespacesjsu.html#a7296da8e9d2335075c51565cc1a0060f',1,'sjsu']]],
   ['delay_5ftime_5f',['delay_time_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5be244105265971ef530ad246b030c7b',1,'sjsu::rtos::Task']]],
   ['delete',['Delete',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a481ac77148be00467ef08270b2ec5b9b',1,'sjsu::rtos::TaskInterface::Delete()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a3e60b11d2c6ad1d9241db2498ac1f44a',1,'sjsu::rtos::Task::Delete()']]],
-  ['deque',['Deque',['../d0/d6b/namespacesjsu.html#acf630480e38ef3983d3d839db5ee8454',1,'sjsu']]],
+  ['deque',['Deque',['../d0/d6b/namespacesjsu.html#a865fcb8b7a13fb94e1443d0932983026',1,'sjsu']]],
   ['detachinterrupt',['DetachInterrupt',['../dd/d3a/classsjsu_1_1Gpio.html#a0657f0c0777ec9cd10cc1d31e9f8d5a4',1,'sjsu::Gpio::DetachInterrupt()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ad7fcbd8e572440d339a1c8e492e49f24',1,'sjsu::lpc40xx::Gpio::DetachInterrupt()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#ad8507069ab3e33fda5fc459bfddf2a0b',1,'sjsu::stm32f4xx::Gpio::DetachInterrupt()']]],
   ['device',['Device',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],
   ['device_3c_20i2cdevice_3c_20kdeviceaddress_2c_20endianess_2c_20memorymap_20_3e_2c_20endianess_2c_20memorymap_20_3e',['Device&lt; I2cDevice&lt; kDeviceAddress, endianess, MemoryMap &gt;, endianess, MemoryMap &gt;',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],

@@ -1,5 +1,5 @@
 <map id="sjsu::lpc40xx::Pin" name="sjsu::lpc40xx::Pin">
-<area shape="rect" id="node2" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,80,39"/>
-<area shape="rect" id="node3" href="$d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="Pin map table for maping pins and ports to registers. " alt="" coords="104,5,235,47"/>
-<area shape="rect" id="node4" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="259,13,371,39"/>
+<area shape="rect" id="node2" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,81,39"/>
+<area shape="rect" id="node3" href="$d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="Pin map table for maping pins and ports to registers. " alt="" coords="105,5,240,47"/>
+<area shape="rect" id="node4" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="265,13,379,39"/>
 </map>

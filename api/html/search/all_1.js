@@ -1,10 +1,9 @@
 var searchData=
 [
   ['a',['a',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#a9c48cd871987d2e96432228bd6f3bc6f',1,'sjsu::FallbackListNode_t']]],
-  ['accelerometer',['Accelerometer',['../d2/d7b/classsjsu_1_1Accelerometer.html',1,'sjsu']]],
-  ['adc',['Adc',['../d0/dc1/classsjsu_1_1Adc.html',1,'sjsu']]],
-  ['adc',['Adc',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html',1,'sjsu::lpc40xx']]],
-  ['adc',['Adc',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a16ab193c6f60deb833b70c93cdcba981',1,'sjsu::lpc40xx::Adc']]],
+  ['accelerometer',['Accelerometer',['../d2/d7b/classsjsu_1_1Accelerometer.html',1,'sjsu::Accelerometer'],['../db/dc0/structsjone.html#a252df24f22db272648cbaa5cb1cf9313',1,'sjone::Accelerometer()'],['../db/dc5/structsjtwo.html#ae29e5c4359ad5fb762654251afbbbb84',1,'sjtwo::Accelerometer()']]],
+  ['adc',['Adc',['../d0/dc1/classsjsu_1_1Adc.html',1,'sjsu::Adc'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html',1,'sjsu::lpc40xx::Adc'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a16ab193c6f60deb833b70c93cdcba981',1,'sjsu::lpc40xx::Adc::Adc()']]],
+  ['adc2',['adc2',['../db/dc0/structsjone.html#af58a3c74d0e7e6704d35ebf3c0378f81',1,'sjone']]],
   ['adc_5fbase',['adc_base',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a38438a89c9cf7dcd697e2674521417c9',1,'sjsu::lpc40xx::Adc']]],
   ['adc_5fpin',['adc_pin',['../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a68e0d6ae5228171b9550537579ac8984',1,'sjsu::lpc40xx::Adc::Channel_t']]],
   ['adcchannel',['AdcChannel',['../db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html',1,'sjsu::lpc17xx']]],
@@ -17,8 +16,7 @@ var searchData=
   ['allocate',['allocate',['../df/ddd/classsjsu_1_1Arena.html#ad68341c9db5759077d4d0b20b6c2ef10',1,'sjsu::Arena::allocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af5afc7393b5ab8bc8db1c727e59fa12b',1,'sjsu::FixedAllocator::allocate()']]],
   ['alpha',['alpha',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a188ba3108004e6099d90d8701cdcec3b',1,'sjsu::PixelDisplay::Color_t']]],
   ['apds9960',['Apds9960',['../d8/d99/classsjsu_1_1Apds9960.html',1,'sjsu']]],
-  ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu']]],
-  ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html#acbbf1fbb2830f352f94728bba8082208',1,'sjsu::Arena::Arena(uint8_t *buf, size_t size, uint8_t *ptr=nullptr) noexcept'],['../df/ddd/classsjsu_1_1Arena.html#a5f9b57a035215dbf0686c93a724fa190',1,'sjsu::Arena::Arena(const Arena &amp;a)']]],
+  ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu::Arena'],['../df/ddd/classsjsu_1_1Arena.html#acbbf1fbb2830f352f94728bba8082208',1,'sjsu::Arena::Arena(uint8_t *buf, size_t size, uint8_t *ptr=nullptr) noexcept'],['../df/ddd/classsjsu_1_1Arena.html#a5f9b57a035215dbf0686c93a724fa190',1,'sjsu::Arena::Arena(const Arena &amp;a)']]],
   ['arena_5ftype',['arena_type',['../d1/df0/classsjsu_1_1FixedAllocator.html#ad5fdaee3f7297a29cfdc7eb841fd80d9',1,'sjsu::FixedAllocator']]],
   ['args',['Args',['../dd/d36/classsjsu_1_1I2cCommand.html#a43331db48a59d2cffbeb76f8ef9546a1',1,'sjsu::I2cCommand']]],
   ['arguments_5ft',['Arguments_t',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html',1,'sjsu::I2cCommand']]],
