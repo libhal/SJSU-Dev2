@@ -29,7 +29,7 @@ src="https://cdn.worldvectorlogo.com/logos/microsoft-windows-22.svg"
 height="100px" />
 </p>
 
-Built for **Ubuntu (16.04 or above)**, **Mac OSX (High Sierra or above)**, and
+Built for **Ubuntu (18.04 or above)**, **Mac OSX (High Sierra or above)**, and
 **Windows 10 WSL**.
 
 ## Full Documentation and Installation Guide
