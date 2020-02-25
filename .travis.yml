@@ -3,7 +3,7 @@ matrix:
     include:
         - os: linux
           sudo: required
-          dist: xenial
+          dist: bionic
           before_install:
             - sudo apt-get -y install doxygen graphviz
             - pip install --user cpp-coveralls
