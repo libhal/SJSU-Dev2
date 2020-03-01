@@ -122,7 +122,7 @@ SECTIONS
     PROVIDE(end = .);
   } > SRAM_CODE
 
-  PROVIDE(heap_start = .);
+  PROVIDE(heap = .);
   PROVIDE(heap_end = ORIGIN(SRAM_CODE) + LENGTH(SRAM_CODE) - 32);
   PROVIDE(StackTop = ORIGIN(SRAM_CODE) + LENGTH(SRAM_CODE) - 32);
 }
