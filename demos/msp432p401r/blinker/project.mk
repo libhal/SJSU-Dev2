@@ -1,0 +1,1 @@
+PLATFORM = msp432p401r

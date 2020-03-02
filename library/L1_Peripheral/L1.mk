@@ -4,6 +4,7 @@ include $(LIBRARY_DIR)/L1_Peripheral/lpc17xx/L1_lpc17xx.mk
 include $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/L1_lpc40xx.mk
 include $(LIBRARY_DIR)/L1_Peripheral/stm32f10x/L1_stm32f10x.mk
 include $(LIBRARY_DIR)/L1_Peripheral/stm32f4xx/L1_stm32f4xx.mk
+include $(LIBRARY_DIR)/L1_Peripheral/msp432p401r/L1_msp432p401r.mk
 
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/gpio_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/hardware_counter_test.cpp
