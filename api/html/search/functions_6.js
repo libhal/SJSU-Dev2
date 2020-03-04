@@ -15,7 +15,7 @@ var searchData=
   ['getdescription',['GetDescription',['../d9/db2/classsjsu_1_1CommandInterface.html#a5060769486cb3f1937bbb5012868e13c',1,'sjsu::CommandInterface::GetDescription()'],['../d7/d56/classsjsu_1_1Command.html#aa6dad075e6a5be27869fe68b85d968e8',1,'sjsu::Command::GetDescription()']]],
   ['getdistance',['GetDistance',['../d2/dc6/classsjsu_1_1TFMini.html#ab3c0345be5f2811555b916284f5c3fd4',1,'sjsu::TFMini']]],
   ['getdutycycle',['GetDutyCycle',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a8cc7d4fcaa4860db071ee8a9b0cf84ee',1,'sjsu::lpc40xx::Pwm::GetDutyCycle()'],['../d6/ddf/classsjsu_1_1Pwm.html#af88f83b8b493df9a9c419df13bdb61a9',1,'sjsu::Pwm::GetDutyCycle()']]],
-  ['getfrequency',['GetFrequency',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#acfb050cb32d4a111947260a5310cd349',1,'sjsu::lpc40xx::Pwm']]],
+  ['getfrequency',['GetFrequency',['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a4076a5bdcb7719daee16f55794f07851',1,'sjsu::FrequencyCounter::GetFrequency()'],['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#acfb050cb32d4a111947260a5310cd349',1,'sjsu::lpc40xx::Pwm::GetFrequency()']]],
   ['getgpio',['GetGpio',['../d1/de1/classsjsu_1_1Button.html#adeb2387018ceb0bec02c7ca813d36b97',1,'sjsu::Button']]],
   ['gethandle',['GetHandle',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#abbcaf43eb1826bb0c6ecebb1806f4320',1,'sjsu::rtos::TaskInterface::GetHandle()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab0b5901f7f1ac3a18d8d6664d7812857',1,'sjsu::rtos::Task::GetHandle()']]],
   ['getheight',['GetHeight',['../db/d32/classsjsu_1_1Ssd1306.html#a47e47d288886889be9ce67510312a93d',1,'sjsu::Ssd1306::GetHeight()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a726c225c675804f71fb0fecc3c23565d',1,'sjsu::PixelDisplay::GetHeight()']]],

@@ -14,5 +14,9 @@ var searchData=
   ['buswidth',['BusWidth',['../d0/d27/classsjsu_1_1ParallelGpio.html#ae000150c6072e359621b90a639d84562',1,'sjsu::ParallelGpio::BusWidth()'],['../d7/d86/classsjsu_1_1ParallelBus.html#a61682645483824342e5f504db8a58398',1,'sjsu::ParallelBus::BusWidth()']]],
   ['busy',['busy',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#acb59f1b6bb072d4b3da9f36d3619a8dd',1,'sjsu::I2c::Transaction_t']]],
   ['button',['Button',['../d1/de1/classsjsu_1_1Button.html',1,'sjsu::Button'],['../d1/de1/classsjsu_1_1Button.html#a4dd1bebfea9188c392073bf7233f1d95',1,'sjsu::Button::Button()']]],
+  ['button0',['button0',['../db/dc5/structsjtwo.html#a5e68250597fe0bc7273fe6d84b7c34eb',1,'sjtwo']]],
+  ['button1',['button1',['../db/dc5/structsjtwo.html#aa50a936174072daf18e368bd9a8862f1',1,'sjtwo']]],
+  ['button2',['button2',['../db/dc5/structsjtwo.html#af1144995cca35c728341b2042027aef3',1,'sjtwo']]],
+  ['button3',['button3',['../db/dc5/structsjtwo.html#ac1791cf80adee1ed870187ffb7eacec5',1,'sjtwo']]],
   ['buzzer',['Buzzer',['../de/d29/classsjsu_1_1Buzzer.html',1,'sjsu::Buzzer'],['../de/d29/classsjsu_1_1Buzzer.html#a1b68d1d57788fa4b654567b332812ac7',1,'sjsu::Buzzer::Buzzer()']]]
 ];

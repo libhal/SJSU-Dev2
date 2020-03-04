@@ -13,6 +13,7 @@ TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/interrupt_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/pin_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/pwm_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/uart_test.cpp
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/frequency_counter_test.cpp
 
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/adc.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/can.hpp
