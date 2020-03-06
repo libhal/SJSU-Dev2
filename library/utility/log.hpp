@@ -1,10 +1,19 @@
 /// @ingroup SJSU-Dev2
-/// @defgroup Macros Utility Macros
+/// @defgroup Log Utility Functions
 /// @brief This module is meant for general purpose macros that can be used
 /// across the SJSU-Dev2 environment.
 /// @{
 #pragma once
+
+#if defined(__clang_analyzer__)
+#include "utility/dummy/source_location"
+#else
+#include <experimental/source_location>
+#endif
+
+#include <cinttypes>
 #include <cstdio>
+#include <cstring>
 
 #include "config.hpp"
 #include "log_levels.hpp"
@@ -15,78 +24,224 @@
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
 
-/// SJ2_LOG_FUNCTION is an alias of __PRETTY_FUNCTION__ in the event we would
-/// like to switch the function to something else.
-#if SJ2_DESCRIPTIVE_FUNCTION_NAME
-#define SJ2_LOG_FUNCTION __PRETTY_FUNCTION__
-#else
-#define SJ2_LOG_FUNCTION ""
-#endif
-/// Printf style logging with filename, function name, and line number
-#define _LOG_PRINT(log_message, format, ...)                                  \
-  do                                                                          \
-  {                                                                           \
-    static constexpr ::sjsu::FileBasename_t<::sjsu::StringLength(__FILE__),   \
-                                            ::sjsu::BasenameLength(__FILE__)> \
-        file(__FILE__);                                                       \
-    printf(log_message SJ2_HI_BLUE ":%s:" SJ2_HI_GREEN "%s:" SJ2_HI_YELLOW    \
-                                   "%d> " SJ2_WHITE format SJ2_COLOR_RESET    \
-                                   "\n",                                      \
-           file.basename,                                                     \
-           SJ2_LOG_FUNCTION,                                                  \
-           __LINE__,                                                          \
-           ##__VA_ARGS__);                                                    \
-  } while (0)
+namespace sjsu
+{
+/// Variadic Log object that labels the log with a preceeding "DEBUG" label.
+/// Will only log if the SJ2_LOG_LEVEL is level SJ2_LOG_LEVEL_DEBUG or greater.
+///
+/// @tparam Params - Variadic type array to describe the params variable pack.
+template <typename... Params>
+struct Log  // NOLINT
+{
+  /// On construction this object will print a log statement with the "DEBUG"
+  /// label preceeding it. See example below:
+  /// Example:
+  ///
+  ///     INFO:main.cpp:main():13> Hello World 0x4
+  ///
+  /// @param log_type - the log prefix like "INFO", "DEBUG", "ERROR", etc...
+  /// @param format - format string to be used for logging
+  /// @param params - variadic list of parameters to be passed to the log object
+  /// @param location - the location in the source code where this object was
+  ///        constructed.
+  Log(const char * log_type,
+      const char * format,
+      Params... params,
+      const std::experimental::source_location & location =
+          std::experimental::source_location::current())
+  {
+    printf("%s" SJ2_HI_BLUE ":%s:" SJ2_HI_GREEN "%s():" SJ2_HI_YELLOW
+           "%" PRIuLEAST32 "> " SJ2_WHITE,
+           log_type,
+           FileBasename(location.file_name()),
+           location.function_name(),
+           location.line());
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-security"
+    // Without the pragmas disabling the format security warning, this will give
+    // a warning everytime it is used.
+    printf(format, params...);
+#pragma GCC diagnostic pop
+
+    puts(SJ2_COLOR_RESET);
+  }
+};
+
+/// Specialized log object that labels the log with a preceeding "DEBUG" label.
+/// Will only log if the SJ2_LOG_LEVEL is level SJ2_LOG_LEVEL_DEBUG or greater.
+///
+/// @tparam Params - Variadic type array to describe the params variable pack.
+template <typename... Params>
+struct LogDebug  // NOLINT
+{
+  /// On construction this object will print a log statement with the "DEBUG"
+  /// label preceeding it.
+  ///
+  /// @param format - format string to be used for logging
+  /// @param params - variadic list of parameters to be passed to the log object
+  /// @param location - the location in the source code where this object was
+  ///        constructed.
+  LogDebug(const char * format,
+           Params... params,
+           const std::experimental::source_location & location =
+               std::experimental::source_location::current())
+  {
+    // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
+    // attribute for constructor's first argument
+    _SJ2_USED(format);
+    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_DEBUG)
+    {
+      Log<Params...>(
+          SJ2_BACKGROUND_PURPLE "   DEBUG", format, params..., location);
+    }
+  }
+};
+
+/// Specialized log object that labels the log with a preceeding "INFO" label.
+/// Will only log if the SJ2_LOG_LEVEL is level SJ2_LOG_LEVEL_INFO or greater.
+///
+/// @tparam Params - Variadic type array to describe the params variable pack.
+template <typename... Params>
+struct LogInfo  // NOLINT
+{
+  /// On construction this object will print a log statement with the "INFO"
+  /// label preceeding it.
+  ///
+  /// @param format - format string to be used for logging
+  /// @param params - variadic list of parameters to be passed to the log object
+  /// @param location - the location in the source code where this object was
+  ///        constructed.
+  LogInfo(const char * format,
+          Params... params,
+          const std::experimental::source_location & location =
+              std::experimental::source_location::current())
+  {
+    // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
+    // attribute for constructor's first argument
+    _SJ2_USED(format);
+    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_INFO)
+    {
+      Log<Params...>(
+          SJ2_BACKGROUND_GREEN "    INFO", format, params..., location);
+    }
+  }
+};
+
+/// Specialized log object that labels the log with a preceeding "WARNING"
+/// label.
+/// Will only log if the SJ2_LOG_LEVEL is level SJ2_LOG_LEVEL_WARNING or
+/// greater.
+///
+/// @tparam Params - Variadic type array to describe the params variable pack.
+template <typename... Params>
+struct LogWarning  // NOLINT
+{
+  /// On construction this object will print a log statement with the "WARNING"
+  /// label preceeding it.
+  ///
+  /// @param format - format string to be used for logging
+  /// @param params - variadic list of parameters to be passed to the log object
+  /// @param location - the location in the source code where this object was
+  ///        constructed.
+  LogWarning(const char * format,
+             Params... params,
+             const std::experimental::source_location & location =
+                 std::experimental::source_location::current())
+  {
+    // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
+    // attribute for constructor's first argument
+    _SJ2_USED(format);
+    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_WARNING)
+    {
+      Log<Params...>(
+          SJ2_BACKGROUND_YELLOW " WARNING", format, params..., location);
+    }
+  }
+};
+
+/// Specialized log object that labels the log with a preceeding "ERROR" label.
+/// Will only log if the SJ2_LOG_LEVEL is level SJ2_LOG_LEVEL_ERROR or greater.
+///
+/// @tparam Params - Variadic type array to describe the params variable pack.
+template <typename... Params>
+struct LogError  // NOLINT
+{
+  /// On construction this object will print a log statement with the "ERROR"
+  /// label preceeding it.
+  ///
+  /// @param format - format string to be used for logging
+  /// @param params - variadic list of parameters to be passed to the log object
+  /// @param location - the location in the source code where this object was
+  ///        constructed.
+  LogError(const char * format,
+           Params... params,
+           const std::experimental::source_location & location =
+               std::experimental::source_location::current())
+  {
+    // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
+    // attribute for constructor's first argument
+    _SJ2_USED(format);
+    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_ERROR)
+    {
+      Log<Params...>(
+          SJ2_BACKGROUND_RED "   ERROR", format, params..., location);
+    }
+  }
+};
+
+/// Deduction guide for Log
+template <typename... Params>
+Log(const char * log_type, const char * format, Params...)->Log<Params...>;
+
+/// Deduction guide for LogDebug
+template <typename... Params>
+LogDebug(const char * format, Params...)->LogDebug<Params...>;
+
+/// Deduction guide for LogInfo
+template <typename... Params>
+LogInfo(const char * format, Params...)->LogInfo<Params...>;
+
+/// Deduction guide for LogWarning
+template <typename... Params>
+LogWarning(const char * format, Params...)->LogWarning<Params...>;
+
+/// Deduction guide for LogError
+template <typename... Params>
+LogError(const char * format, Params...)->LogError<Params...>;
+}  // namespace sjsu
+
 /// Log with the DEBUG level of log mesage.
-#if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_DEBUG
-#define LOG_DEBUG(format, ...) _LOG_PRINT("   DEBUG", format, ##__VA_ARGS__)
-#else
-#define LOG_DEBUG(format, ...)
-#endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_DEBUG
+#define LOG_DEBUG(format, ...) ::sjsu::LogDebug(format, ##__VA_ARGS__)
 
 /// Log with the INFO level of log mesage.
-#if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_INFO
-#define LOG_INFO(format, ...) \
-  _LOG_PRINT(SJ2_BACKGROUND_GREEN "    INFO", format, ##__VA_ARGS__)
-#else
-#define LOG_INFO(format, ...)
-#endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_INFO
+#define LOG_INFO(format, ...) ::sjsu::LogInfo(format, ##__VA_ARGS__)
 
 /// Log with the WARNING level of log mesage.
-#if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_WARNING
-#define LOG_WARNING(format, ...) \
-  _LOG_PRINT(SJ2_BACKGROUND_YELLOW " WARNING", format, ##__VA_ARGS__)
-#else
-#define LOG_WARNING(format, ...)
-#endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_WARNING
+#define LOG_WARNING(format, ...) ::sjsu::LogWarning(format, ##__VA_ARGS__)
 
 /// Log with the ERROR level of log mesage.
-#if SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_ERROR
-#define LOG_ERROR(format, ...) \
-  _LOG_PRINT(SJ2_BACKGROUND_PURPLE "   ERROR", format, ##__VA_ARGS__)
-#else
-#define LOG_ERROR(format, ...)
-#endif  // SJ2_LOG_LEVEL <= SJ2_LOG_LEVEL_ERROR
+#define LOG_ERROR(format, ...) ::sjsu::LogError(format, ##__VA_ARGS__)
 
 /// When the condition is false, issue a warning to the user with a warning
 /// message. Warning message format acts like printf.
-#define SJ2_ASSERT_WARNING(condition, warning_message, ...)        \
-  do                                                               \
-  {                                                                \
-    if (!(condition))                                              \
-    {                                                              \
-      LOG_WARNING(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
-    }                                                              \
+#define SJ2_ASSERT_WARNING(condition, warning_message, ...) \
+  do                                                        \
+  {                                                         \
+    if (!(condition))                                       \
+    {                                                       \
+      ::sjsu::LogWarning(warning_message, ##__VA_ARGS__);   \
+    }                                                       \
   } while (0)
 
-/// Returns and prints statement if condition returns true
-#define SJ2_RETURN_IF(condition, warning_message, ...)             \
-  do                                                               \
-  {                                                                \
-    if ((condition))                                              \
-    {                                                              \
-      LOG_WARNING(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
-    }                                                              \
+/// Returns and prinparams statement if condition returns true
+#define SJ2_RETURN_IF(condition, warning_message, ...)                    \
+  do                                                                      \
+  {                                                                       \
+    if ((condition))                                                      \
+    {                                                                     \
+      ::sjsu::LogWarning(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
+    }                                                                     \
   } while (0)
 
 /// When the condition is false, issue a critical level message to the user and
@@ -96,9 +251,9 @@
   {                                                                          \
     if (!(condition))                                                        \
     {                                                                        \
-      LOG_ERROR("Assertion Failure, Condition Tested: " #condition           \
-                "\n          " fatal_message SJ2_COLOR_RESET,                \
-                ##__VA_ARGS__);                                              \
+      ::sjsu::LogError("Assertion Failure, Condition Tested: " #condition    \
+                       "\n          " fatal_message SJ2_COLOR_RESET,         \
+                       ##__VA_ARGS__);                                       \
       if ((with_dump))                                                       \
       {                                                                      \
         printf("\nPrinting Stack Trace:\n\n");                               \
@@ -125,5 +280,5 @@
 #endif  // defined(HOST_TEST)
 /// Print a variable using the printf_specifier supplied.
 #define SJ2_PRINT_VARIABLE(variable, printf_specifier) \
-  LOG_INFO(#variable " = " printf_specifier, (variable))
+  ::sjsu::LogError(#variable " = " printf_specifier, (variable))
 /// @}
