@@ -5,6 +5,9 @@
 /// @{
 #pragma once
 
+/// This is required for Apple/OSX as source_location is not available on
+/// Apple's CLANG 10 which is the default clang headers on OSX. Not to be
+/// confused by LLVM's actual CLANG 10.
 #if defined(__clang_analyzer__)
 #include "utility/dummy/source_location"
 #else
@@ -211,16 +214,16 @@ template <typename... Params>
 LogError(const char * format, Params...)->LogError<Params...>;
 }  // namespace sjsu
 
-/// Log with the DEBUG level of log mesage.
+/// Deprecated log macro with the DEBUG level of log message.
 #define LOG_DEBUG(format, ...) ::sjsu::LogDebug(format, ##__VA_ARGS__)
 
-/// Log with the INFO level of log mesage.
+/// Deprecated log macro with the INFO level of log message.
 #define LOG_INFO(format, ...) ::sjsu::LogInfo(format, ##__VA_ARGS__)
 
-/// Log with the WARNING level of log mesage.
+/// Deprecated log macro with the WARNING level of log message.
 #define LOG_WARNING(format, ...) ::sjsu::LogWarning(format, ##__VA_ARGS__)
 
-/// Log with the ERROR level of log mesage.
+/// Deprecated log macro with the ERROR level of log message.
 #define LOG_ERROR(format, ...) ::sjsu::LogError(format, ##__VA_ARGS__)
 
 /// When the condition is false, issue a warning to the user with a warning

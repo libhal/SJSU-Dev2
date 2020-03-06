@@ -3,7 +3,7 @@
 
 int main()
 {
-  LOG_INFO("Data Watchdog & Trace Counter Application Starting...");
+  sjsu::LogInfo("Data Watchdog & Trace Counter Application Starting...");
   sjsu::cortex::DwtCounter dwt_counter;
   dwt_counter.Initialize();
 
@@ -24,7 +24,7 @@ int main()
 
   for (size_t i = 0; i < kCountTotal; i++)
   {
-    LOG_INFO("Cycle count = %lu @ %zu\n", counts[i], i);
+    sjsu::LogInfo("Cycle count = %lu @ %zu\n", counts[i], i);
   }
 
   return 0;

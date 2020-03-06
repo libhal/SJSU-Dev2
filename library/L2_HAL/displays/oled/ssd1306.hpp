@@ -60,7 +60,7 @@ class Ssd1306 final : public PixelDisplay
       uint8_t send = static_cast<uint8_t>(data >> (((size - 1) - i) * 8));
       if (transaction == Transaction::kCommand)
       {
-        LOG_DEBUG("send = 0x%X", send);
+        sjsu::LogDebug("send = 0x%X", send);
       }
       spi_.Transfer(send);
     }

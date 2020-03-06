@@ -82,9 +82,10 @@ class Pin final : public sjsu::Pin
                     kPinMask);
   }
   /// Implement SetAsAnalogMode as deprecated and unsupported
-  [[deprecated("Unsupported operation")]]
-  void SetAsAnalogMode(bool) const override {
-    LOG_WARNING("Unsupported operation");
+  [[deprecated("Unsupported operation")]] void SetAsAnalogMode(
+      bool) const override
+  {
+    sjsu::LogWarning("Unsupported operation");
   }
 
   void SetAsOpenDrain(bool set_as_open_drain = true) const override

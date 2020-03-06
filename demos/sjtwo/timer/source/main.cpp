@@ -7,26 +7,26 @@
 // and you can use the timer to trigger whatever event you want.
 void Timer0ISR(void)
 {
-  LOG_INFO("Successfully triggered interrupt from timer 0");
+  sjsu::LogInfo("Successfully triggered interrupt from timer 0");
 }
 void Timer1ISR(void)
 {
-  LOG_INFO("Successfully triggered interrupt from timer 1");
+  sjsu::LogInfo("Successfully triggered interrupt from timer 1");
 }
 void Timer2ISR(void)
 {
-  LOG_INFO("Successfully triggered interrupt from timer 2");
+  sjsu::LogInfo("Successfully triggered interrupt from timer 2");
 }
 void Timer3ISR(void)
 {
-  LOG_INFO("Successfully triggered interrupt from timer 3");
+  sjsu::LogInfo("Successfully triggered interrupt from timer 3");
 }
 
 // In this example all timers are initialized to 1 MHz, or 1 micro second per
 // timer register count.
 int main()
 {
-  LOG_INFO("Timer Application Starting...");
+  sjsu::LogInfo("Timer Application Starting...");
 
   sjsu::lpc40xx::Timer timer0(sjsu::lpc40xx::Timer::Peripheral::kTimer0);
   sjsu::lpc40xx::Timer timer1(sjsu::lpc40xx::Timer::Peripheral::kTimer1);

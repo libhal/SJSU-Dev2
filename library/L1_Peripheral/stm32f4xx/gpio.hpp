@@ -75,12 +75,12 @@ class Gpio : public sjsu::Gpio
 
   void AttachInterrupt(InterruptCallback, Edge) override
   {
-    LOG_INFO("Not Implemented");
+    sjsu::LogInfo("Not Implemented");
   }
 
   void DetachInterrupt() const override
   {
-    LOG_INFO("Not Implemented");
+    sjsu::LogInfo("Not Implemented");
   }
 
  private:

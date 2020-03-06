@@ -2,7 +2,7 @@
 
 int main()
 {
-  LOG_INFO("Print Return Codes Starting... And then immediately end!");
+  sjsu::LogInfo("Print Return Codes Starting... And then immediately end!");
   // If the returned value is greater than or equal to 0, text is printed green
   // Otherwise, printed text is red.
   //

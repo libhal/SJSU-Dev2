@@ -22,14 +22,14 @@ class PrinterTask final : public sjsu::rtos::Task<512>
       // print_mutex = xSemaphoreCreateMutexStatic(&print_mutex_stack_buffer);
       print_mutex = xSemaphoreCreateMutex();
     }
-    LOG_INFO("Completed Setup() for: %s", GetName());
+    sjsu::LogInfo("Completed Setup() for: %s", GetName());
     return true;
   }
 
   bool PreRun() override
   {
     xSemaphoreTake(print_mutex, portMAX_DELAY);
-    LOG_INFO("Completed PreRun() for: %s", GetName());
+    sjsu::LogInfo("Completed PreRun() for: %s", GetName());
     xSemaphoreGive(print_mutex);
     return true;
   }
@@ -38,11 +38,11 @@ class PrinterTask final : public sjsu::rtos::Task<512>
   {
     run_count_ += 1;
     xSemaphoreTake(print_mutex, portMAX_DELAY);
-    LOG_INFO("%s: %lu", message_, run_count_);
+    sjsu::LogInfo("%s: %lu", message_, run_count_);
     xSemaphoreGive(print_mutex);
     if (run_count_ == 10)
     {
-      LOG_INFO("Deleting: %s", GetName());
+      sjsu::LogInfo("Deleting: %s", GetName());
       Delete();
     }
     return true;
@@ -62,26 +62,26 @@ PrinterTask printer_two("Printer B", "I am also a printer", scheduler);
 
 int main()
 {
-  LOG_INFO("Starting TaskScheduler example...");
+  sjsu::LogInfo("Starting TaskScheduler example...");
   // setting Printer A to print 2 times faster than Printer B
   printer_one.SetDelayTime(500);
   printer_two.SetDelayTime(1000);
 
-  LOG_INFO("Attempting to search for Printer A in the scheduler...");
+  sjsu::LogInfo("Attempting to search for Printer A in the scheduler...");
   sjsu::rtos::TaskInterface * task = scheduler.GetTask("Printer A");
 
   if (task != nullptr)
   {
-    LOG_INFO("Found task: %s", task->GetName());
+    sjsu::LogInfo("Found task: %s", task->GetName());
   }
   else
   {
-    LOG_ERROR("Could not find task \"Printer A\", Halt System.");
+    sjsu::LogError("Could not find task \"Printer A\", Halt System.");
     sjsu::Halt();
   }
 
-  LOG_INFO("Starting scheduler");
+  sjsu::LogInfo("Starting scheduler");
   scheduler.Start();
-  LOG_INFO("This point should not be reached!");
+  sjsu::LogInfo("This point should not be reached!");
   return 0;
 }

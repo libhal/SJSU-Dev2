@@ -23,7 +23,7 @@ bool initialized = false;
 // NOLINTNEXTLINE
 extern "C" DSTATUS disk_status([[maybe_unused]] BYTE drive_number)
 {
-  LOG_DEBUG("Getting Disk Status!");
+  sjsu::LogDebug("Getting Disk Status!");
   DSTATUS result = STA_NODISK;
   sjsu::lpc40xx::Gpio card_detect(1, 9);
   card_detect.SetAsInput();
@@ -31,12 +31,12 @@ extern "C" DSTATUS disk_status([[maybe_unused]] BYTE drive_number)
   // Card detect is active low
   if (!card_detect.Read())
   {
-    LOG_DEBUG("Card IS present!");
+    sjsu::LogDebug("Card IS present!");
     result = (initialized) ? 0 : STA_NOINIT;
   }
   else
   {
-    LOG_DEBUG("Card is NOT present!");
+    sjsu::LogDebug("Card is NOT present!");
   }
   return result;
 }
@@ -44,7 +44,7 @@ extern "C" DSTATUS disk_status([[maybe_unused]] BYTE drive_number)
 // NOLINTNEXTLINE
 extern "C" DSTATUS disk_initialize([[maybe_unused]] BYTE drive_number)
 {
-  LOG_DEBUG("DISK INIT!");
+  sjsu::LogDebug("DISK INIT!");
   sjtwo::SdCard().Initialize();
   sjsu::Sd::CardInfo_t card_info;
   DSTATUS status = sjtwo::SdCard().Mount(&card_info) ? 0 : STA_NOINIT;
@@ -56,11 +56,15 @@ extern "C" DSTATUS disk_initialize([[maybe_unused]] BYTE drive_number)
 }
 
 // NOLINTNEXTLINE
-extern "C" DRESULT disk_read([[maybe_unused]] BYTE drive_number, BYTE * buffer,
-                             DWORD sector, UINT count)
+extern "C" DRESULT disk_read([[maybe_unused]] BYTE drive_number,
+                             BYTE * buffer,
+                             DWORD sector,
+                             UINT count)
 {
-  LOG_DEBUG("drive_number: %u :: sector: %ld :: count: %u", drive_number,
-            sector, count);
+  sjsu::LogDebug("drive_number: %u :: sector: %ld :: count: %u",
+                 drive_number,
+                 sector,
+                 count);
 
   sjtwo::SdCard().ReadBlock(sector, buffer, static_cast<uint32_t>(count));
   return RES_OK;
@@ -69,10 +73,14 @@ extern "C" DRESULT disk_read([[maybe_unused]] BYTE drive_number, BYTE * buffer,
 #if FF_FS_READONLY == 0
 // NOLINTNEXTLINE
 extern "C" DRESULT disk_write([[maybe_unused]] BYTE drive_number,
-                              const BYTE * buffer, DWORD sector, UINT count)
+                              const BYTE * buffer,
+                              DWORD sector,
+                              UINT count)
 {
-  LOG_DEBUG("drive_number: %u :: sector: %ld :: count: %u", drive_number,
-            sector, count);
+  sjsu::LogDebug("drive_number: %u :: sector: %ld :: count: %u",
+                 drive_number,
+                 sector,
+                 count);
   sjtwo::SdCard().WriteBlock(sector, buffer, static_cast<uint32_t>(count));
   return RES_OK;
 }

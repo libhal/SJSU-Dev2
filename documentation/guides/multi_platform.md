@@ -1,7 +1,7 @@
-# How to Build a Multi-Platform Application
+#How to Build a Multi - Platform Application
 
 At some point, you are going to build something that you may wish to port to
-another microcontroller or system. SJSU-Dev2 is architectued in a way that
+another microcontroller or system. SJSU-Dev2 is designed in a way that
 makes doing this, without bloating your application's binary size with
 implementation details from each platform you want to support.
 
@@ -12,7 +12,7 @@ more details.
 
 ## Phase 1: Create interface pointers
 In this phase you will want to define all of the peripherals you plan to use as
-pointers. Typically, references are prefered for interfaces, but references
+pointers. Typically, references are preferred for interfaces, but references
 cannot be re-assigned at runtime, thus we must use pointers.
 
 ``` C++
@@ -27,7 +27,7 @@ const sjsu::Gpio * motor_direction_gpio;
 const sjsu::Pwm * motor_controller_pwm;
 ```
 
-## Phase 2: Assign pointers in `if constepxr` blocks per platform
+## Phase 2: Assign pointers in `if constexpr` blocks per platform
 Now that we have made our list of peripherals or application needs, we need to
 assign these pointers to real peripheral driver objects for the specified
 platform.
@@ -38,11 +38,11 @@ support.
 Within each block a `static` peripheral object will need to be created and
 constructed for each of the pointers in phase 1. After construction, each
 peripheral pointer will need to be assigned to the address of each `static`
-peripheral object. In this phase you can also create temperary objects within
+peripheral object. In this phase you can also create temporary objects within
 the block if this is found useful.
 
 The `static` keyword is required for objects that have their addresses
-referenced outside the scope of the `if constepxr` block. Using the `static`
+referenced outside the scope of the `if constexpr` block. Using the `static`
 keyword will allocate the object statically and will make the object available
 for the whole lifetime of the application. Not doing this means that the objects
 will be destructed after the program leaves the scope of the `if constexpr`
@@ -81,7 +81,7 @@ else if constexpr (sjsu::build::kPlatform == sjsu::build::Platform::linux)
 }
 else
 {
-  LOG_ERROR("Invalid platform for this application!");
+  sjsu::LogError("Invalid platform for this application!");
   sjsu::Halt();
 }
 ```
@@ -94,7 +94,9 @@ objects. A small example below
 
 ``` C++
 sjsu::Button poweron_button(*poweron_gpio);
-sjsu::RCCarController rc_controller(*motor_direction_gpio, *motor_controller_pwm, /* etc ... */);
+sjsu::RCCarController rc_controller(*motor_direction_gpio,
+                                    *motor_controller_pwm,
+                                    /* etc ... */);
 ```
 
 ## Done

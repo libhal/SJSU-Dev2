@@ -12,7 +12,7 @@ int main()
   // Define all of the peripheral you plan to use as pointers. Pointers must be
   // used in order to do the next step
   const sjsu::Gpio * button_gpio = &sjsu::GetInactive<sjsu::Gpio>();
-  const sjsu::Gpio * led_gpio = &sjsu::GetInactive<sjsu::Gpio>();
+  const sjsu::Gpio * led_gpio    = &sjsu::GetInactive<sjsu::Gpio>();
   // Phase #2:
   // Use "constexpr if" to instantiate the peripherals for each platform
   if constexpr (sjsu::build::kPlatform == sjsu::build::Platform::lpc17xx)
@@ -35,7 +35,7 @@ int main()
   }
   else
   {
-    LOG_ERROR("Invalid platform for this application!");
+    sjsu::LogError("Invalid platform for this application!");
     sjsu::Halt();
   }
   // Phase #3:

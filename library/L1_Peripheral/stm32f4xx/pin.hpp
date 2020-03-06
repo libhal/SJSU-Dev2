@@ -108,7 +108,7 @@ class Pin final : public sjsu::Pin
       case Resistor::kNone: mask = 0b00; break;
       case Resistor::kPullUp: mask = 0b01; break;
       case Resistor::kPullDown: mask = 0b10; break;
-      default: LOG_INFO("Invalid pull resistor for this pin."); return;
+      default: sjsu::LogInfo("Invalid pull resistor for this pin."); return;
     }
 
     Port()->PUPDR = bit::Insert(Port()->PUPDR, mask, Mask());

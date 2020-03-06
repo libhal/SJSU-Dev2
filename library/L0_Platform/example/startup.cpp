@@ -62,7 +62,8 @@ extern "C"
 
 // 11. Define default instance of InitializePlatform() function.
 //     Here you construct everything that is needed to run the microcontroller.
-[[gnu::weak]] void InitializePlatform() {
+[[gnu::weak]] void InitializePlatform()
+{
   // Platform 1. Enable any coprocessors or peripherals that keep the following
   // functions from being executed, for example, activating the floating point
   // unit in the Cortex M4 before running any floating point arithmetic.
@@ -104,7 +105,7 @@ extern "C" void ResetHandler()
 #pragma GCC diagnostic pop
   // main() shouldn't return, but if it does, we'll just enter an infinite
   // loop
-  LOG_ERROR("main() returned with value %" PRId32, result);
+  sjsu::LogError("main() returned with value %" PRId32, result);
   sjsu::Halt();
 }
 // Add section variables. Typically this includes checksums or security lock

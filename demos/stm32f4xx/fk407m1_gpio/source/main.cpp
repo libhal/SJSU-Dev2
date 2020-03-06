@@ -6,7 +6,7 @@
 
 int main()
 {
-  LOG_INFO("Starting FK407M1 Gpio Application...");
+  sjsu::LogInfo("Starting FK407M1 Gpio Application...");
   ///////////// Setup LED GPIO /////////////
   sjsu::stm32f4xx::Gpio led('C', 13);
   led.SetAsOutput();
