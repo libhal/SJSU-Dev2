@@ -10,16 +10,16 @@
 
 int main(void)
 {
-  LOG_INFO("Starting EEPROM Example");
+  sjsu::LogInfo("Starting EEPROM Example");
   constexpr size_t kPayloadSize = 128;
   constexpr uint32_t kAddress   = 0b0110'0011'1000;
 
-  LOG_INFO("Initializing button");
+  sjsu::LogInfo("Initializing button");
   sjsu::lpc40xx::Gpio button_gpio3(0, 29);
   sjsu::Button button3(button_gpio3);
   button3.Initialize();
 
-  LOG_INFO("Initializing EEPROM");
+  sjsu::LogInfo("Initializing EEPROM");
   sjsu::lpc40xx::Eeprom eeprom;
   eeprom.Initialize();
 
@@ -33,28 +33,28 @@ int main(void)
 
   while (true)
   {
-    LOG_INFO("Starting Write");
+    sjsu::LogInfo("Starting Write");
     eeprom.Write(kAddress, list.data(), kPayloadSize);
 
-    LOG_INFO("Starting Read");
+    sjsu::LogInfo("Starting Read");
     std::array<uint8_t, kPayloadSize> results;
     eeprom.Read(kAddress, results.data(), kPayloadSize);
 
-    LOG_INFO("Results:");
+    sjsu::LogInfo("Results:");
     for (size_t i = 0; i < list.size(); i++)
     {
       if (results[i] == i * 2)
       {
-        LOG_INFO("%i: %u", i, results[i]);
+        sjsu::LogInfo("%i: %u", i, results[i]);
       }
       else
       {
-        LOG_INFO("%i: %u ERROR", i, results[i]);
+        sjsu::LogInfo("%i: %u ERROR", i, results[i]);
       }
     }
     printf("\n");
 
-    LOG_INFO("Please press button 3 to restart demo");
+    sjsu::LogInfo("Please press button 3 to restart demo");
     while (true)
     {
       if (button3.Pressed())

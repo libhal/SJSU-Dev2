@@ -123,7 +123,7 @@ class Apds9960
   // User may change kMaxDataSize to adjust how many Direction Data points
   // to be collected, then DecodeGestureData(uint8_t) can be overloaded to
   // take care of new patterns of Direction points for different gestures
-  static constexpr uint8_t kMaxDataSize = 8;
+  static constexpr uint8_t kMaxDataSize  = 8;
   static constexpr uint8_t kMaxFIFOLevel = 33;
 
   // Default values for Gesture sensor initialization
@@ -297,11 +297,11 @@ class Apds9960
   {
     constexpr uint8_t kOverflowFlagPosition = 1;
     uint8_t value                           = 0;
-    uint8_t gesture_status = gesture_.memory.gesture_status;
+    uint8_t gesture_status                  = gesture_.memory.gesture_status;
     if (bit::Read(gesture_status,
-                    kOverflowFlagPosition))  // if overflow, clear FIFO data
+                  kOverflowFlagPosition))  // if overflow, clear FIFO data
     {
-      LOG_INFO("Overflow. No Gesture Detected");
+      sjsu::LogInfo("Overflow. No Gesture Detected");
       value = kMaxFIFOLevel;  // Overflow happens at FIFO level 33
     }
     else
@@ -340,7 +340,7 @@ class Apds9960
         }
       }
       else if (abs((gfifo_data_[i] - gfifo_data_[i + 1])) <
-          abs((gfifo_data_[i + 2] - gfifo_data_[i + 3])))
+               abs((gfifo_data_[i + 2] - gfifo_data_[i + 3])))
       {
         // If a photodiode has a smaller value,
         // then that photodiode was covered and movement detected
@@ -372,13 +372,13 @@ class Apds9960
   }
   virtual Gesture DecodeGestureData(uint8_t level)
   {
-    Gesture result = kError;
-    constexpr uint8_t kFarNearSensitivity = 15;
+    Gesture result                         = kError;
+    constexpr uint8_t kFarNearSensitivity  = 15;
     constexpr uint8_t kNearFarCountMinimum = 5;
 
     if (level == kMaxFIFOLevel)
     {
-        result = kError;
+      result = kError;
     }
     else if (level > kFarNearSensitivity)
     {

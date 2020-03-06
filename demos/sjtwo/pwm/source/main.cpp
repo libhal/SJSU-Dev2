@@ -5,20 +5,20 @@
 
 int main()
 {
-  LOG_INFO("Pwm Application Starting...");
+  sjsu::LogInfo("Pwm Application Starting...");
 
-  LOG_INFO("Creating Gpio powered LED...P4.28");
-  LOG_INFO("This Gpio powered LED represents the maximum brightness");
-  LOG_INFO("and is used as reference against the Pwm powered LED");
-  LOG_INFO("during its sweep.");
-  LOG_INFO("Connect a 470 ohm resistor between the power line and");
-  LOG_INFO("the anode of the LED. The cathode is then connected to");
-  LOG_INFO("P4.28 and P2.0(Pwm1).");
+  sjsu::LogInfo("Creating Gpio powered LED...P4.28");
+  sjsu::LogInfo("This Gpio powered LED represents the maximum brightness");
+  sjsu::LogInfo("and is used as reference against the Pwm powered LED");
+  sjsu::LogInfo("during its sweep.");
+  sjsu::LogInfo("Connect a 470 ohm resistor between the power line and");
+  sjsu::LogInfo("the anode of the LED. The cathode is then connected to");
+  sjsu::LogInfo("P4.28 and P2.0(Pwm1).");
   sjsu::lpc40xx::Gpio p4_28(4, 28);
   p4_28.SetAsOutput();
   p4_28.SetLow();
 
-  LOG_INFO("Creating Pwm powered LED...P2.0 (Pwm1)");
+  sjsu::LogInfo("Creating Pwm powered LED...P2.0 (Pwm1)");
   sjsu::lpc40xx::Pwm p2_0(sjsu::lpc40xx::Pwm::Channel::kPwm0);
   // Initialize Pwm at 1 kHz
   p2_0.Initialize(1_kHz);

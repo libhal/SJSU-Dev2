@@ -14,37 +14,37 @@ int main()
   sjsu::Ssd1306 oled_display(ssp1, cs_gpio, dc_gpio);
   oled_display.Initialize();
   sjsu::Graphics graphics(oled_display);
-  LOG_INFO("Starting OLED Hardware Test in 5s...");
+  sjsu::LogInfo("Starting OLED Hardware Test in 5s...");
   sjsu::Delay(5000ms);
 
-  LOG_INFO("Initializing Graphics library along with OLED Hardware...");
+  sjsu::LogInfo("Initializing Graphics library along with OLED Hardware...");
   graphics.Initialize();
   sjsu::Delay(1s);
 
-  LOG_INFO("Clearing Screen...");
+  sjsu::LogInfo("Clearing Screen...");
   graphics.Clear();
   graphics.Update();
   sjsu::Delay(1s);
 
-  LOG_INFO("Clearing Screen finished. Waiting 1 second...");
+  sjsu::LogInfo("Clearing Screen finished. Waiting 1 second...");
   sjsu::Delay(1s);
 
-  LOG_INFO("Drawing Some Shapes...");
+  sjsu::LogInfo("Drawing Some Shapes...");
 
-  graphics.DrawHorizontalLine(0, sjsu::Ssd1306::kHeight / 2,
-                              sjsu::Ssd1306::kWidth);
+  graphics.DrawHorizontalLine(
+      0, sjsu::Ssd1306::kHeight / 2, sjsu::Ssd1306::kWidth);
   graphics.Update();
 
-  graphics.DrawVerticalLine(sjsu::Ssd1306::kWidth / 2, 0,
-                            sjsu::Ssd1306::kHeight);
+  graphics.DrawVerticalLine(
+      sjsu::Ssd1306::kWidth / 2, 0, sjsu::Ssd1306::kHeight);
   graphics.Update();
 
-  graphics.DrawRectangle(sjsu::Ssd1306::kWidth / 2 - 10,
-                         sjsu::Ssd1306::kHeight / 2 - 10, 20, 20);
+  graphics.DrawRectangle(
+      sjsu::Ssd1306::kWidth / 2 - 10, sjsu::Ssd1306::kHeight / 2 - 10, 20, 20);
   graphics.Update();
 
-  graphics.DrawRectangle(sjsu::Ssd1306::kWidth / 2 - 20,
-                         sjsu::Ssd1306::kHeight / 2 - 20, 40, 40);
+  graphics.DrawRectangle(
+      sjsu::Ssd1306::kWidth / 2 - 20, sjsu::Ssd1306::kHeight / 2 - 20, 40, 40);
   graphics.Update();
 
   graphics.DrawLine(0, 0, sjsu::Ssd1306::kWidth, sjsu::Ssd1306::kHeight);
@@ -53,23 +53,23 @@ int main()
   graphics.DrawLine(0, sjsu::Ssd1306::kHeight, sjsu::Ssd1306::kWidth, 0);
   graphics.Update();
 
-  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
-                      20);
+  graphics.DrawCircle(
+      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 20);
   graphics.Update();
 
-  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
-                      30);
+  graphics.DrawCircle(
+      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 30);
   graphics.Update();
 
-  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
-                      40);
+  graphics.DrawCircle(
+      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 40);
   graphics.Update();
 
-  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
-                      60);
+  graphics.DrawCircle(
+      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 60);
   graphics.Update();
 
-  LOG_INFO("Drawing Some names...");
+  sjsu::LogInfo("Drawing Some names...");
   const char * names[] = { "Name1", "Name2", "Name3", "Name4" };
   for (size_t i = 0; i < std::strlen(names[0]); i++)
   {
@@ -96,10 +96,10 @@ int main()
 
   while (1)
   {
-    LOG_INFO("Inverting Screen Colors...");
+    sjsu::LogInfo("Inverting Screen Colors...");
     oled_display.InvertScreenColor();
     sjsu::Delay(5000ms);
-    LOG_INFO("Normalizing Screen Colors...");
+    sjsu::LogInfo("Normalizing Screen Colors...");
     oled_display.NormalScreenColor();
     sjsu::Delay(5000ms);
   }

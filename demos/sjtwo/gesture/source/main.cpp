@@ -11,22 +11,22 @@ int main(void)
   sjsu::Apds9960 sensor(i2c);
   i2c.Initialize();
 
-  LOG_INFO("Starting Apds9960 Example\n");
+  sjsu::LogInfo("Starting Apds9960 Example\n");
   if (sensor.FindDevice())
   {
-    LOG_INFO("Found it!\n");
-    LOG_INFO("Initializing Gesture Sensor...\n");
+    sjsu::LogInfo("Found it!\n");
+    sjsu::LogInfo("Initializing Gesture Sensor...\n");
     sensor.Initialize();
     sensor.EnableGesture();
   }
   else
   {
-    LOG_INFO("Couldn't initialize sensor");
+    sjsu::LogInfo("Couldn't initialize sensor");
     sjsu::Halt();
   }
 
   sjsu::Apds9960::Gesture value;
-  LOG_INFO("Start collecting gestures:\n");
+  sjsu::LogInfo("Start collecting gestures:\n");
 
   while (true)
   {
@@ -34,23 +34,19 @@ int main(void)
     switch (value)
     {
       case sensor.kSwipeUP:
-        LOG_INFO("Detected gesture: Swipe Up\n");
-      break;
+        sjsu::LogInfo("Detected gesture: Swipe Up\n");
+        break;
       case sensor.kSwipeDOWN:
-        LOG_INFO("Detected gesture: Swipe Down\n");
-      break;
+        sjsu::LogInfo("Detected gesture: Swipe Down\n");
+        break;
       case sensor.kSwipeLEFT:
-        LOG_INFO("Detected gesture: Swipe Left\n");
-      break;
+        sjsu::LogInfo("Detected gesture: Swipe Left\n");
+        break;
       case sensor.kSwipeRIGHT:
-        LOG_INFO("Detected gesture: Swipe Right\n");
-      break;
-      case sensor.kNEAR:
-        LOG_INFO("Detected gesture: Near\n");
-      break;
-      case sensor.kFAR:
-        LOG_INFO("Detected gesture: Far\n");
-      break;
+        sjsu::LogInfo("Detected gesture: Swipe Right\n");
+        break;
+      case sensor.kNEAR: sjsu::LogInfo("Detected gesture: Near\n"); break;
+      case sensor.kFAR: sjsu::LogInfo("Detected gesture: Far\n"); break;
       default: break;
     }
     sjsu::Delay(500ms);  // Do other code here

@@ -18,19 +18,19 @@ namespace
 {
 void LedToggle(void * parameters)
 {
-  LOG_INFO("Setting up task...");
-  LOG_INFO("Retrieving delay amount from parameters...");
+  sjsu::LogInfo("Setting up task...");
+  sjsu::LogInfo("Retrieving delay amount from parameters...");
   auto delay = sjsu::rtos::RetrieveParameter(parameters);
-  LOG_INFO("Initializing LEDs...");
+  sjsu::LogInfo("Initializing LEDs...");
   sjtwo::led0.SetAsOutput();
   sjtwo::led1.SetAsOutput();
 
   sjtwo::led0.SetHigh();
   sjtwo::led1.SetLow();
-  LOG_INFO("LEDs Initialized...");
+  sjsu::LogInfo("LEDs Initialized...");
   // Loop blinks the LEDs back and forth at a rate that depends on the
   // pvParameter's value.
-  LOG_INFO("Toggling LEDs...");
+  sjsu::LogInfo("Toggling LEDs...");
   while (true)
   {
     sjtwo::led0.Toggle();
@@ -41,8 +41,8 @@ void LedToggle(void * parameters)
 
 void ButtonReader([[maybe_unused]] void * parameters)
 {
-  LOG_INFO("Setting up task...");
-  LOG_INFO("Initializing SW3...");
+  sjsu::LogInfo("Setting up task...");
+  sjsu::LogInfo("Initializing SW3...");
 
   sjsu::lpc40xx::Gpio button_gpio3(1, 19);
   sjsu::Button switch3(button_gpio3);
@@ -51,8 +51,8 @@ void ButtonReader([[maybe_unused]] void * parameters)
   sjtwo::led3.SetAsOutput();
   sjtwo::led3.SetLow();
 
-  LOG_INFO("SW3 Initialized...");
-  LOG_INFO("Press and release SW3 to toggle LED3 state...");
+  sjsu::LogInfo("SW3 Initialized...");
+  sjsu::LogInfo("Press and release SW3 to toggle LED3 state...");
   // Loop detects when the button has been released and changes the LED state
   // accordingly.
   while (true)
@@ -71,8 +71,8 @@ TaskHandle_t handle = NULL;
 
 int main()
 {
-  LOG_INFO("Starting FreeRTOS Blinker Example...");
-  LOG_INFO("Creating Tasks...");
+  sjsu::LogInfo("Starting FreeRTOS Blinker Example...");
+  sjsu::LogInfo("Creating Tasks...");
   sjsu::Delay(1s);
   // See https://www.freertos.org/a00125.html for the xTaskCreate API
   // See utility/rtos.hpp for the sjsu::rtos:: namespace utility functions
@@ -88,7 +88,7 @@ int main()
               sjsu::rtos::kNoParameter,       // Pass nothing to this task
               sjsu::rtos::Priority::kMedium,  // Give this task medium priority
               sjsu::rtos::kNoHandle);         // Do not supply a task handle
-  LOG_INFO("Starting Scheduler...");
+  sjsu::LogInfo("Starting Scheduler...");
   vTaskStartScheduler();
   return 0;
 }

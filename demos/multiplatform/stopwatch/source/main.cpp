@@ -6,21 +6,23 @@
 
 int main()
 {
-  LOG_INFO("Stopwatch Application Starting...");
+  sjsu::LogInfo("Stopwatch Application Starting...");
   sjsu::StopWatch stopwatch;
 
-  LOG_INFO("Calibrating stop watch...");
+  sjsu::LogInfo("Calibrating stop watch...");
   stopwatch.Calibrate();
-  LOG_INFO("Time it takes to Start() and Stop() the stopwatch = %" PRId32 "ns.",
-           static_cast<int32_t>(stopwatch.GetCalibrationDelta().count()));
+  sjsu::LogInfo("Time it takes to Start() and Stop() the stopwatch = %" PRId32
+                "ns.",
+                static_cast<int32_t>(stopwatch.GetCalibrationDelta().count()));
 
-  LOG_INFO("Calibration figures out how much time it takes to call Uptime()");
-  LOG_INFO("This time can differ depending on the platform.");
+  sjsu::LogInfo(
+      "Calibration figures out how much time it takes to call Uptime()");
+  sjsu::LogInfo("This time can differ depending on the platform.");
 
   while (true)
   {
     // Setup
-    LOG_INFO(
+    sjsu::LogInfo(
         "Starting timer and executing code that will take time perform...");
     stopwatch.Start();
 
@@ -38,8 +40,8 @@ int main()
 
     // Displaying to the user the amount of time it took.
     // The time delta shouldn't be greater than what a 32-bit number can hold
-    LOG_INFO("Printing the message above took = %" PRId32 "ns",
-             static_cast<int32_t>(time_delta.count()));
+    sjsu::LogInfo("Printing the message above took = %" PRId32 "ns",
+                  static_cast<int32_t>(time_delta.count()));
 
     sjsu::Delay(1s);
   }

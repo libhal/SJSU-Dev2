@@ -5,7 +5,7 @@
 
 int main()
 {
-  LOG_INFO("Starting LPC176x/5x SystemController example...");
+  sjsu::LogInfo("Starting LPC176x/5x SystemController example...");
 
   constexpr units::frequency::hertz_t kInputFrequency =
       sjsu::lpc17xx::SystemController::kDefaultIRCFrequency;
@@ -36,7 +36,8 @@ int main()
       ((2 * (kMultiplier + 1) * kInputFrequency) / (kPreDivider + 1)) /
       (kCpuDivider + 1);
 
-  LOG_INFO("CPU Clock Frequency: %" PRIu32, kClockFrequency.to<uint32_t>());
+  sjsu::LogInfo("CPU Clock Frequency: %" PRIu32,
+                kClockFrequency.to<uint32_t>());
 
   // configure the CLKOUT pin, P1.27, to output system clock
   sjsu::lpc17xx::Pin clock_pin(1, 27);

@@ -5,7 +5,7 @@
 
 int main()
 {
-  LOG_INFO("Starting LPC176x/5x Temperature Sensor Example...");
+  sjsu::LogInfo("Starting LPC176x/5x Temperature Sensor Example...");
 
   sjsu::lpc17xx::SystemController system_controller;
   system_controller.SetPeripheralClockDivider(
@@ -22,7 +22,7 @@ int main()
   while (1)
   {
     temperature_sensor.GetTemperature(&temperature);
-    LOG_INFO("Temperature: %.2f C", temperature.to<double>());
+    sjsu::LogInfo("Temperature: %.2f C", temperature.to<double>());
     sjsu::Delay(1s);
   }
 

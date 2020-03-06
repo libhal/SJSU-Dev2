@@ -189,10 +189,10 @@ class Task : public TaskInterface
       intptr_t start_of_heap = reinterpret_cast<intptr_t>(&heap);
       intptr_t end_of_heap   = reinterpret_cast<intptr_t>(&heap_end);
 
-      LOG_DEBUG("This Task's Address: 0x%08X", address);
-      LOG_DEBUG("End of .data & .bss: 0x%08X", end_of_data_and_bss);
-      LOG_DEBUG("Start of Heap      : 0x%08X", start_of_heap);
-      LOG_DEBUG("End of Heap        : 0x%08X", end_of_heap);
+      sjsu::LogDebug("This Task's Address: 0x%08X", address);
+      sjsu::LogDebug("End of .data & .bss: 0x%08X", end_of_data_and_bss);
+      sjsu::LogDebug("Start of Heap      : 0x%08X", start_of_heap);
+      sjsu::LogDebug("End of Heap        : 0x%08X", end_of_heap);
 
       SJ2_ASSERT_FATAL(
           address < end_of_data_and_bss ||

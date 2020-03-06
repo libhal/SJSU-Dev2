@@ -107,8 +107,8 @@ int main()
 {
   sjsu::lpc40xx::Dac dac;
   dac.Initialize();
-  LOG_INFO("Hook up pin p0.26 to an oscilloscope to test if it works!\n");
-  LOG_INFO("Starting Output of waves...\n");
+  sjsu::LogInfo("Hook up pin p0.26 to an oscilloscope to test if it works!\n");
+  sjsu::LogInfo("Starting Output of waves...\n");
   while (true)
   {
     StartDemo(dac, 1ms);

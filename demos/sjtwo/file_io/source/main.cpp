@@ -47,20 +47,20 @@ FRESULT ScanFiles(char * start_path, size_t path_length)
 
 int main()
 {
-  LOG_INFO("Starting FileIO Application...");
+  sjsu::LogInfo("Starting FileIO Application...");
   // Read a text file and display it
   /* Register work area to the default drive */
-  LOG_INFO("Mounting filesystem...");
+  sjsu::LogInfo("Mounting filesystem...");
   FATFS fat_fs;
   f_mount(&fat_fs, "", 0);
-  LOG_INFO("Filesystem mounted!");
+  sjsu::LogInfo("Filesystem mounted!");
 
-  LOG_INFO("Scanning files in SD card...");
+  sjsu::LogInfo("Scanning files in SD card...");
   char path[1024] = "/";
   ScanFiles(path, sizeof(path));
-  LOG_INFO("SD card file scan complete!");
+  sjsu::LogInfo("SD card file scan complete!");
 
-  LOG_INFO("FileIO Application Complete!");
+  sjsu::LogInfo("FileIO Application Complete!");
   sjsu::Halt();
   return 0;
 }
