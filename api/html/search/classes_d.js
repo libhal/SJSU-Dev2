@@ -6,7 +6,7 @@ var searchData=
   ['periodictask',['PeriodicTask',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html',1,'sjsu::rtos']]],
   ['periodictaskinterface',['PeriodicTaskInterface',['../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html',1,'sjsu::rtos']]],
   ['peripheral',['Peripheral',['../d5/d23/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral.html',1,'sjsu::lpc40xx::Timer']]],
-  ['peripheral_5ft',['Peripheral_t',['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html',1,'sjsu::lpc40xx::Pwm::Peripheral_t'],['../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html',1,'sjsu::lpc40xx::Timer::Peripheral_t']]],
+  ['peripheral_5ft',['Peripheral_t',['../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html',1,'sjsu::lpc40xx::Timer::Peripheral_t'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html',1,'sjsu::lpc40xx::Pwm::Peripheral_t']]],
   ['peripheralclock',['PeripheralClock',['../d2/d50/structsjsu_1_1lpc40xx_1_1SystemController_1_1PeripheralClock.html',1,'sjsu::lpc40xx::SystemController']]],
   ['peripheralid',['PeripheralID',['../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html',1,'sjsu::SystemController']]],
   ['peripherals',['Peripherals',['../d7/d9f/classsjsu_1_1lpc17xx_1_1SystemController_1_1Peripherals.html',1,'sjsu::lpc17xx::SystemController::Peripherals'],['../d9/d78/classsjsu_1_1lpc40xx_1_1SystemController_1_1Peripherals.html',1,'sjsu::lpc40xx::SystemController::Peripherals'],['../dd/d68/classsjsu_1_1stm32f10x_1_1SystemController_1_1Peripherals.html',1,'sjsu::stm32f10x::SystemController::Peripherals'],['../de/d68/classsjsu_1_1stm32f4xx_1_1SystemController_1_1Peripherals.html',1,'sjsu::stm32f4xx::SystemController::Peripherals']]],

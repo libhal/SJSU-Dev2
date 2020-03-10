@@ -569,6 +569,10 @@ $(TEST_EXEC): clean-coverage-files $(OBJECTS)
 					 -o $(TEST_EXEC) $(OBJECTS)
 	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
+# Catalina/Mojave
+#    /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+# High Sierra
+#    /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ \
 
 $(OBJECT_DIR)/%.tidy: %
 	@mkdir -p "$(dir $@)"
@@ -576,5 +580,6 @@ $(OBJECT_DIR)/%.tidy: %
 		-extra-arg="-std=c++2a") "$<"  -- \
 		-D PLATFORM=host -D HOST_TEST=1 \
 		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+		-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ \
 		$(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@printf '$(GREEN)Evaluated file: $(RESET)$< \n'

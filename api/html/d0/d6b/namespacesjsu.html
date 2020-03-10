@@ -77,7 +77,7 @@ $(function() {
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu Namespace Reference</div>  </div>
+<div class="title">sjsu Namespace Reference<div class="ingroups"><a class="el" href="../../de/d7a/group__Log.html">Utility Functions</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
@@ -131,8 +131,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d1b/structsjsu_1_1FallbackListNode__t.html">FallbackListNode_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback list Node for compilers not defined in the macro below.  <a href="../../da/d1b/structsjsu_1_1FallbackListNode__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddb/structsjsu_1_1FileBasename__t.html">FileBasename_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df0/classsjsu_1_1FixedAllocator.html">FixedAllocator</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed size allocator.  <a href="../../d1/df0/classsjsu_1_1FixedAllocator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,6 +162,16 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d75/classsjsu_1_1LightSensor.html">LightSensor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An abstract interface for light sensing device drivers.  <a href="../../d7/d75/classsjsu_1_1LightSensor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d1e/structsjsu_1_1Log.html">Log</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dbb/structsjsu_1_1LogDebug.html">LogDebug</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d2c/structsjsu_1_1LogError.html">LogError</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d37/structsjsu_1_1LogInfo.html">LogInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d18/structsjsu_1_1LogWarning.html">LogWarning</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html">Ltc4150</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -364,11 +372,41 @@ template&lt;&gt; </td></tr>
 <tr class="separator:a11e9a8820c447020c5b3206659e6b116"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ead998e2ac62523001932e91dbd793d"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a9ead998e2ac62523001932e91dbd793d">BasenameLength</a> (const char *path)</td></tr>
 <tr class="separator:a9ead998e2ac62523001932e91dbd793d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0100494866cb454bdaad16e2d4c31525"><td class="memTemplParams" colspan="2">template&lt;size_t kPathLength&gt; </td></tr>
+<tr class="memitem:a0100494866cb454bdaad16e2d4c31525"><td class="memTemplItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a0100494866cb454bdaad16e2d4c31525">FileBasename</a> (const char(&amp;path)[kPathLength])</td></tr>
+<tr class="separator:a0100494866cb454bdaad16e2d4c31525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c6279c539e2978eccc5ccf84afc2222"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7c6279c539e2978eccc5ccf84afc2222">FileBasename</a> (const char *path)</td></tr>
+<tr class="separator:a7c6279c539e2978eccc5ccf84afc2222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f02778e34f958f03f01da8e11a5ad98"><td class="memTemplParams" colspan="2">template&lt;typename Enum &gt; </td></tr>
 <tr class="memitem:a6f02778e34f958f03f01da8e11a5ad98"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a6f02778e34f958f03f01da8e11a5ad98">Value</a> (Enum enum_type_value)</td></tr>
 <tr class="separator:a6f02778e34f958f03f01da8e11a5ad98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa79e71ad78594c5dc7af1a5b5bffdd90"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#aa79e71ad78594c5dc7af1a5b5bffdd90">Stringify</a> (FRESULT result)</td></tr>
 <tr class="separator:aa79e71ad78594c5dc7af1a5b5bffdd90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7607f7d0dc5d543e111a331baabf12c0"><td class="memTemplParams" colspan="2"><a id="a7607f7d0dc5d543e111a331baabf12c0"></a>
+template&lt;typename... Params&gt; </td></tr>
+<tr class="memitem:a7607f7d0dc5d543e111a331baabf12c0"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7607f7d0dc5d543e111a331baabf12c0">Log</a> (const char *log_type, const char *format, Params...) -&gt; <a class="el" href="../../d4/d1e/structsjsu_1_1Log.html">Log</a>&lt; Params... &gt;</td></tr>
+<tr class="memdesc:a7607f7d0dc5d543e111a331baabf12c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deduction guide for <a class="el" href="../../d4/d1e/structsjsu_1_1Log.html">Log</a>. <br /></td></tr>
+<tr class="separator:a7607f7d0dc5d543e111a331baabf12c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab44f75eb531e1cf14e5b327a1c64f77e"><td class="memTemplParams" colspan="2"><a id="ab44f75eb531e1cf14e5b327a1c64f77e"></a>
+template&lt;typename... Params&gt; </td></tr>
+<tr class="memitem:ab44f75eb531e1cf14e5b327a1c64f77e"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ab44f75eb531e1cf14e5b327a1c64f77e">LogDebug</a> (const char *format, Params...) -&gt; <a class="el" href="../../d2/dbb/structsjsu_1_1LogDebug.html">LogDebug</a>&lt; Params... &gt;</td></tr>
+<tr class="memdesc:ab44f75eb531e1cf14e5b327a1c64f77e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deduction guide for <a class="el" href="../../d2/dbb/structsjsu_1_1LogDebug.html">LogDebug</a>. <br /></td></tr>
+<tr class="separator:ab44f75eb531e1cf14e5b327a1c64f77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a538872c7676467a657bd5b3a1b7afae8"><td class="memTemplParams" colspan="2"><a id="a538872c7676467a657bd5b3a1b7afae8"></a>
+template&lt;typename... Params&gt; </td></tr>
+<tr class="memitem:a538872c7676467a657bd5b3a1b7afae8"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a538872c7676467a657bd5b3a1b7afae8">LogInfo</a> (const char *format, Params...) -&gt; <a class="el" href="../../d9/d37/structsjsu_1_1LogInfo.html">LogInfo</a>&lt; Params... &gt;</td></tr>
+<tr class="memdesc:a538872c7676467a657bd5b3a1b7afae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deduction guide for <a class="el" href="../../d9/d37/structsjsu_1_1LogInfo.html">LogInfo</a>. <br /></td></tr>
+<tr class="separator:a538872c7676467a657bd5b3a1b7afae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad971fcd4934a41284bc09920f00c5109"><td class="memTemplParams" colspan="2"><a id="ad971fcd4934a41284bc09920f00c5109"></a>
+template&lt;typename... Params&gt; </td></tr>
+<tr class="memitem:ad971fcd4934a41284bc09920f00c5109"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ad971fcd4934a41284bc09920f00c5109">LogWarning</a> (const char *format, Params...) -&gt; <a class="el" href="../../d1/d18/structsjsu_1_1LogWarning.html">LogWarning</a>&lt; Params... &gt;</td></tr>
+<tr class="memdesc:ad971fcd4934a41284bc09920f00c5109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deduction guide for <a class="el" href="../../d1/d18/structsjsu_1_1LogWarning.html">LogWarning</a>. <br /></td></tr>
+<tr class="separator:ad971fcd4934a41284bc09920f00c5109"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a176db8436ca10f664ea360284a96cb87"><td class="memTemplParams" colspan="2"><a id="a176db8436ca10f664ea360284a96cb87"></a>
+template&lt;typename... Params&gt; </td></tr>
+<tr class="memitem:a176db8436ca10f664ea360284a96cb87"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a176db8436ca10f664ea360284a96cb87">LogError</a> (const char *format, Params...) -&gt; <a class="el" href="../../d2/d2c/structsjsu_1_1LogError.html">LogError</a>&lt; Params... &gt;</td></tr>
+<tr class="memdesc:a176db8436ca10f664ea360284a96cb87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deduction guide for <a class="el" href="../../d2/d2c/structsjsu_1_1LogError.html">LogError</a>. <br /></td></tr>
+<tr class="separator:a176db8436ca10f664ea360284a96cb87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab8ca257071bdc5d7a663c24d44b518b"><td class="memTemplParams" colspan="2">template&lt;typename Input , typename Range , typename NewRange &gt; </td></tr>
 <tr class="memitem:aab8ca257071bdc5d7a663c24d44b518b"><td class="memTemplItemLeft" align="right" valign="top">constexpr NewRange&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#aab8ca257071bdc5d7a663c24d44b518b">Map</a> (Input value, Range min, Range max, NewRange new_min, NewRange new_max)</td></tr>
 <tr class="separator:aab8ca257071bdc5d7a663c24d44b518b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -640,6 +678,64 @@ template&lt;template&lt; auto &gt; class CommandLineType, template&lt; size_t &g
 </div><div class="memdoc">
 <p>A default uptime function that is used for testing or platforms without a means to keep time. It should not be used in production.</p>
 <dl class="section return"><dt>Returns</dt><dd>the current number of fake uptime nanoseconds that increments each time this function is called. </dd></dl>
+
+</div>
+</div>
+<a id="a0100494866cb454bdaad16e2d4c31525"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0100494866cb454bdaad16e2d4c31525">&#9670;&nbsp;</a></span>FileBasename() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t kPathLength&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char* sjsu::FileBasename </td>
+          <td>(</td>
+          <td class="paramtype">const char(&amp;)&#160;</td>
+          <td class="paramname"><em>path</em>[kPathLength]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a pointer to path's basename in the basename pointer. If one is not found then the whole path will be returned. <a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> only be used on string literals.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">kPathLength</td><td>- length of the full string path </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>- path to find the base name of. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7c6279c539e2978eccc5ccf84afc2222"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c6279c539e2978eccc5ccf84afc2222">&#9670;&nbsp;</a></span>FileBasename() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const char* sjsu::FileBasename </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a pointer to path's basename in the basename pointer. If one is not found then the whole path will be returned. This implementation, if used outside of a constexpr context will occur at runtime.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>- path to find the base name of. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -77,45 +77,11 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>This module is meant for general purpose macros that can be used across the SJSU-Dev2 environment.  
+<p>General purpose macros that can be used across the SJSU-Dev2 environment.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga0c772f89374e4f0aa9ef1fa361135d95"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga0c772f89374e4f0aa9ef1fa361135d95">SJ2_LOG_FUNCTION</a>&#160;&#160;&#160;&quot;&quot;</td></tr>
-<tr class="separator:ga0c772f89374e4f0aa9ef1fa361135d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga26c3150e4e56fc99dd205882c4fea46f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga26c3150e4e56fc99dd205882c4fea46f">_LOG_PRINT</a>(log_message,  format, ...)</td></tr>
-<tr class="memdesc:ga26c3150e4e56fc99dd205882c4fea46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Printf style logging with filename, function name, and line number.  <a href="#ga26c3150e4e56fc99dd205882c4fea46f">More...</a><br /></td></tr>
-<tr class="separator:ga26c3150e4e56fc99dd205882c4fea46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabd0b0523397fb05f0ed46fc217fb630f"><td class="memItemLeft" align="right" valign="top"><a id="gabd0b0523397fb05f0ed46fc217fb630f"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#gabd0b0523397fb05f0ed46fc217fb630f">LOG_DEBUG</a>(format, ...)&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga26c3150e4e56fc99dd205882c4fea46f">_LOG_PRINT</a>(&quot;   DEBUG&quot;, format, ##__VA_ARGS__)</td></tr>
-<tr class="memdesc:gabd0b0523397fb05f0ed46fc217fb630f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log with the DEBUG level of log mesage. <br /></td></tr>
-<tr class="separator:gabd0b0523397fb05f0ed46fc217fb630f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga89681da4efde0b54dc7f2839665082c8"><td class="memItemLeft" align="right" valign="top"><a id="ga89681da4efde0b54dc7f2839665082c8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga89681da4efde0b54dc7f2839665082c8">LOG_INFO</a>(format, ...)&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga26c3150e4e56fc99dd205882c4fea46f">_LOG_PRINT</a>(SJ2_BACKGROUND_GREEN &quot;    INFO&quot;, format, ##__VA_ARGS__)</td></tr>
-<tr class="memdesc:ga89681da4efde0b54dc7f2839665082c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log with the INFO level of log mesage. <br /></td></tr>
-<tr class="separator:ga89681da4efde0b54dc7f2839665082c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1c60134b1702d179d9b86bc618f416fe"><td class="memItemLeft" align="right" valign="top"><a id="ga1c60134b1702d179d9b86bc618f416fe"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga1c60134b1702d179d9b86bc618f416fe">LOG_WARNING</a>(format, ...)&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga26c3150e4e56fc99dd205882c4fea46f">_LOG_PRINT</a>(SJ2_BACKGROUND_YELLOW &quot; WARNING&quot;, format, ##__VA_ARGS__)</td></tr>
-<tr class="memdesc:ga1c60134b1702d179d9b86bc618f416fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log with the WARNING level of log mesage. <br /></td></tr>
-<tr class="separator:ga1c60134b1702d179d9b86bc618f416fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabffaf9cecb61026cac6db71a16ace9c5"><td class="memItemLeft" align="right" valign="top"><a id="gabffaf9cecb61026cac6db71a16ace9c5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#gabffaf9cecb61026cac6db71a16ace9c5">LOG_ERROR</a>(format, ...)&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga26c3150e4e56fc99dd205882c4fea46f">_LOG_PRINT</a>(SJ2_BACKGROUND_PURPLE &quot;   ERROR&quot;, format, ##__VA_ARGS__)</td></tr>
-<tr class="memdesc:gabffaf9cecb61026cac6db71a16ace9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log with the ERROR level of log mesage. <br /></td></tr>
-<tr class="separator:gabffaf9cecb61026cac6db71a16ace9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga71e411ad5224734b36daa8f5e8abedad"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga71e411ad5224734b36daa8f5e8abedad">SJ2_ASSERT_WARNING</a>(condition,  warning_message, ...)</td></tr>
-<tr class="separator:ga71e411ad5224734b36daa8f5e8abedad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabae9011b7c98965174d43ac22f4be93a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#gabae9011b7c98965174d43ac22f4be93a">SJ2_RETURN_IF</a>(condition,  warning_message, ...)</td></tr>
-<tr class="memdesc:gabae9011b7c98965174d43ac22f4be93a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns and prints statement if condition returns true.  <a href="#gabae9011b7c98965174d43ac22f4be93a">More...</a><br /></td></tr>
-<tr class="separator:gabae9011b7c98965174d43ac22f4be93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga091fa592071c28e5ad36aef40371ffbb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga091fa592071c28e5ad36aef40371ffbb">SJ2_ASSERT_FATAL_WITH_DUMP</a>(with_dump,  condition,  fatal_message, ...)</td></tr>
-<tr class="separator:ga091fa592071c28e5ad36aef40371ffbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7bcf00e18eb9e382f9a1273473782237"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga7bcf00e18eb9e382f9a1273473782237">SJ2_ASSERT_FATAL</a>(condition,  fatal_message, ...)&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga091fa592071c28e5ad36aef40371ffbb">SJ2_ASSERT_FATAL_WITH_DUMP</a>(true, (condition), fatal_message, ##__VA_ARGS__)</td></tr>
-<tr class="separator:ga7bcf00e18eb9e382f9a1273473782237"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85a3cd2a242e13555003a23598c548c2"><td class="memItemLeft" align="right" valign="top"><a id="ga85a3cd2a242e13555003a23598c548c2"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga85a3cd2a242e13555003a23598c548c2">SJ2_PRINT_VARIABLE</a>(variable,  printf_specifier)&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga89681da4efde0b54dc7f2839665082c8">LOG_INFO</a>(#variable &quot; = &quot; printf_specifier, (variable))</td></tr>
-<tr class="memdesc:ga85a3cd2a242e13555003a23598c548c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a variable using the printf_specifier supplied. <br /></td></tr>
-<tr class="separator:ga85a3cd2a242e13555003a23598c548c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf5d9d5aecf1c18b835d0eca11d142858"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#gaf5d9d5aecf1c18b835d0eca11d142858">SJ2_SECTION</a>(section_name)&#160;&#160;&#160;__attribute__((used, section(section_name)))</td></tr>
 <tr class="separator:gaf5d9d5aecf1c18b835d0eca11d142858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga33d64951132f6a4ce8b4977e8f911683"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga33d64951132f6a4ce8b4977e8f911683">_SJ2_USED</a>(variable)&#160;&#160;&#160;((void)variable)</td></tr>
@@ -134,46 +100,8 @@ Macros</h2></td></tr>
 <tr class="separator:ga5cf9ee28fa3e0c027a9514a73ba3f0ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>This module is meant for general purpose macros that can be used across the SJSU-Dev2 environment. </p>
-<p>General purpose macros that can be used across the SJSU-Dev2 environment.</p>
+<p>General purpose macros that can be used across the SJSU-Dev2 environment. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga26c3150e4e56fc99dd205882c4fea46f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga26c3150e4e56fc99dd205882c4fea46f">&#9670;&nbsp;</a></span>_LOG_PRINT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define _LOG_PRINT</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">log_message, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">format, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                          \</div><div class="line">  {                                                                           \</div><div class="line">    static constexpr ::sjsu::FileBasename_t&lt;::sjsu::StringLength(__FILE__),   \</div><div class="line">                                            ::sjsu::BasenameLength(__FILE__)&gt; \</div><div class="line">        file(__FILE__);                                                       \</div><div class="line">    printf(log_message SJ2_HI_BLUE <span class="stringliteral">&quot;:%s:&quot;</span> SJ2_HI_GREEN <span class="stringliteral">&quot;%s:&quot;</span> SJ2_HI_YELLOW    \</div><div class="line">                                   <span class="stringliteral">&quot;%d&gt; &quot;</span> SJ2_WHITE format SJ2_COLOR_RESET    \</div><div class="line">                                   <span class="stringliteral">&quot;\n&quot;</span>,                                      \</div><div class="line">           file.basename,                                                     \</div><div class="line">           <a class="code" href="../../d3/deb/group__Macros.html#ga0c772f89374e4f0aa9ef1fa361135d95">SJ2_LOG_FUNCTION</a>,                                                  \</div><div class="line">           __LINE__,                                                          \</div><div class="line">           ##__VA_ARGS__);                                                    \</div><div class="line">  } <span class="keywordflow">while</span> (0)</div><div class="ttc" id="group__Macros_html_ga0c772f89374e4f0aa9ef1fa361135d95"><div class="ttname"><a href="../../d3/deb/group__Macros.html#ga0c772f89374e4f0aa9ef1fa361135d95">SJ2_LOG_FUNCTION</a></div><div class="ttdeci">#define SJ2_LOG_FUNCTION</div><div class="ttdef"><b>Definition:</b> log.hpp:23</div></div>
-</div><!-- fragment -->
-<p>Printf style logging with filename, function name, and line number. </p>
-
-</div>
-</div>
 <a id="ga33d64951132f6a4ce8b4977e8f911683"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga33d64951132f6a4ce8b4977e8f911683">&#9670;&nbsp;</a></span>_SJ2_USED</h2>
 
@@ -190,168 +118,6 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>DO NOT USE this macro directly. Use the C++17 attribute [[maybe_unused]] instead. _SJ2_USED will use void casting as a means to convince the compiler that the variable has been used in the software, to remove compiler warnings about unused variables. NOTE: this will not stop the compiler from optimizing this variable out. </p>
-
-</div>
-</div>
-<a id="ga7bcf00e18eb9e382f9a1273473782237"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga7bcf00e18eb9e382f9a1273473782237">&#9670;&nbsp;</a></span>SJ2_ASSERT_FATAL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SJ2_ASSERT_FATAL</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">condition, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">fatal_message, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga091fa592071c28e5ad36aef40371ffbb">SJ2_ASSERT_FATAL_WITH_DUMP</a>(true, (condition), fatal_message, ##__VA_ARGS__)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>If the condition if found ot be false, print the expression and dump the backtrace. </p>
-
-</div>
-</div>
-<a id="ga091fa592071c28e5ad36aef40371ffbb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga091fa592071c28e5ad36aef40371ffbb">&#9670;&nbsp;</a></span>SJ2_ASSERT_FATAL_WITH_DUMP</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SJ2_ASSERT_FATAL_WITH_DUMP</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">with_dump, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">condition, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">fatal_message, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                         \</div><div class="line">  {                                                                          \</div><div class="line">    if (!(condition))                                                        \</div><div class="line">    {                                                                        \</div><div class="line">      LOG_ERROR(<span class="stringliteral">&quot;Assertion Failure, Condition Tested: &quot;</span> #condition           \</div><div class="line">                <span class="stringliteral">&quot;\n          &quot;</span> fatal_message SJ2_COLOR_RESET,                \</div><div class="line">                ##__VA_ARGS__);                                              \</div><div class="line">      if ((with_dump))                                                       \</div><div class="line">      {                                                                      \</div><div class="line">        printf(<span class="stringliteral">&quot;\nPrinting Stack Trace:\n\n&quot;</span>);                               \</div><div class="line">        ::sjsu::debug::PrintBacktrace(<span class="keyword">true</span>);                                 \</div><div class="line">      }                                                                      \</div><div class="line">      ::sjsu::Halt();                                                        \</div><div class="line">    }                                                                        \</div><div class="line">  } <span class="keywordflow">while</span> (0)</div></div><!-- fragment --><p>When the condition is false, issue a critical level message to the user and halt the processor. </p>
-
-</div>
-</div>
-<a id="ga71e411ad5224734b36daa8f5e8abedad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga71e411ad5224734b36daa8f5e8abedad">&#9670;&nbsp;</a></span>SJ2_ASSERT_WARNING</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SJ2_ASSERT_WARNING</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">condition, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">warning_message, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                               \</div><div class="line">  {                                                                \</div><div class="line">    if (!(condition))                                              \</div><div class="line">    {                                                              \</div><div class="line">      LOG_WARNING(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \</div><div class="line">    }                                                              \</div><div class="line">  } <span class="keywordflow">while</span> (0)</div></div><!-- fragment --><p>When the condition is false, issue a warning to the user with a warning message. Warning message format acts like printf. </p>
-
-</div>
-</div>
-<a id="ga0c772f89374e4f0aa9ef1fa361135d95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0c772f89374e4f0aa9ef1fa361135d95">&#9670;&nbsp;</a></span>SJ2_LOG_FUNCTION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SJ2_LOG_FUNCTION&#160;&#160;&#160;&quot;&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>SJ2_LOG_FUNCTION is an alias of <b>PRETTY_FUNCTION</b> in the event we would like to switch the function to something else. </p>
-
-</div>
-</div>
-<a id="gabae9011b7c98965174d43ac22f4be93a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabae9011b7c98965174d43ac22f4be93a">&#9670;&nbsp;</a></span>SJ2_RETURN_IF</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SJ2_RETURN_IF</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">condition, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">warning_message, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                               \</div><div class="line">  {                                                                \</div><div class="line">    if ((condition))                                              \</div><div class="line">    {                                                              \</div><div class="line">      LOG_WARNING(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \</div><div class="line">    }                                                              \</div><div class="line">  } <span class="keywordflow">while</span> (0)</div></div><!-- fragment -->
-<p>Returns and prints statement if condition returns true. </p>
 
 </div>
 </div>

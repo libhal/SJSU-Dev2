@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html" title="sjsu::WiFi::NetworkConnection_t" alt="" coords="5,5,236,32"/>
+<area shape="rect" id="node1" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="5,5,89,32"/>
+<area shape="rect" id="node2" href="$dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html" title="sjsu::lpc40xx::Uart" alt="" coords="137,5,280,32"/>
 </map>
