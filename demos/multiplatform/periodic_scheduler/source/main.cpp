@@ -2,10 +2,10 @@
 #include "utility/log.hpp"
 /// Task function to prints a message every 1s
 sjsu::rtos::PeriodicTaskInterface::TaskFunction task_function_1_hz =
-    [](uint32_t run_count) { LOG_INFO("1 Hz counter: %lu", run_count); };
+    [](uint32_t run_count) { sjsu::LogInfo("1 Hz counter: %lu", run_count); };
 /// Task function to prints a message every 100ms
 sjsu::rtos::PeriodicTaskInterface::TaskFunction task_function_10_hz =
-    [](uint32_t run_count) { LOG_INFO("10 Hz counter: %lu", run_count); };
+    [](uint32_t run_count) { sjsu::LogInfo("10 Hz counter: %lu", run_count); };
 
 sjsu::rtos::TaskScheduler scheduler;
 sjsu::rtos::PeriodicScheduler periodic_scheduler("PeriodicScheduler",
@@ -21,7 +21,7 @@ sjsu::rtos::PeriodicTask<512> printer_10_hz_task("Print10Hz",
 
 int main()
 {
-  LOG_INFO("Starting PeriodicScheduler example...");
+  sjsu::LogInfo("Starting PeriodicScheduler example...");
   periodic_scheduler.SetTask(&printer_1_hz_task,
                              sjsu::rtos::PeriodicScheduler::Frequency::k1Hz);
   periodic_scheduler.SetTask(&printer_10_hz_task,

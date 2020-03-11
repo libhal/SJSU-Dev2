@@ -150,20 +150,20 @@ inline const DecodedFrame_t Decode(
   constexpr uint8_t kMinimumPulseCount = 3;
   if (data_frame->pulse_buffer_length < kMinimumPulseCount)
   {
-    LOG_DEBUG("Invalid frame too short");
+    sjsu::LogDebug("Invalid frame too short");
     return kInvalidFrame;
   }
   // Validate the frame's header by checking the first two pulses
   const uint16_t kHeaderMark  = data_frame->pulse_buffer[0];
   const uint16_t kHeaderSpace = data_frame->pulse_buffer[1];
-  LOG_DEBUG("%d %d", kHeaderMark, kHeaderSpace);
+  sjsu::LogDebug("%d %d", kHeaderMark, kHeaderSpace);
   const bool kHeaderMarkIsValid =
       IsDurationWithinTolerance(kHeaderMark,
                                 configurations.header_mark_duration,
                                 configurations.tolerance);
   if (!kHeaderMarkIsValid)
   {
-    LOG_DEBUG("Invalid header mark: %d", kHeaderMark);
+    sjsu::LogDebug("Invalid header mark: %d", kHeaderMark);
     return kInvalidFrame;
   }
   // If the encoding utilizes a repeat frame, check for the repeat duration in
@@ -195,7 +195,7 @@ inline const DecodedFrame_t Decode(
                                 configurations.tolerance);
   if (!kHeaderSpaceIsValid)
   {
-    LOG_DEBUG("Invalid header space: %d", kHeaderSpace);
+    sjsu::LogDebug("Invalid header space: %d", kHeaderSpace);
     return kInvalidFrame;
   }
   // Set all bits to be logically low and only set to high if needed during
@@ -215,7 +215,7 @@ inline const DecodedFrame_t Decode(
   {
     const uint16_t kDataMark  = data_frame->pulse_buffer[i];
     const uint16_t kDataSpace = data_frame->pulse_buffer[i + 1];
-    LOG_DEBUG("%d %d", kDataMark, kDataSpace);
+    sjsu::LogDebug("%d %d", kDataMark, kDataSpace);
 
     uint16_t fixed_data_duration;
     uint16_t duration_for_logic_level;

@@ -28,7 +28,7 @@ int main()
     clock.SetSystemClockFrequency(48_MHz);
     sjsu::Delay(5000ms);
     auto speed = clock.GetSystemFrequency();
-    LOG_INFO("Speed is %" PRIu32, speed.to<uint32_t>());
+    sjsu::LogInfo("Speed is %" PRIu32, speed.to<uint32_t>());
   }
   return 0;
 }

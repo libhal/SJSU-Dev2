@@ -125,7 +125,7 @@ class Command : public CommandInterface
   /// have not yet been defined.
   static int DoNothingCommand(int, const char * const[])
   {
-    LOG_INFO("This command hasn't been implemented yet.");
+    sjsu::LogInfo("This command hasn't been implemented yet.");
     return 0;
   }
 
@@ -188,7 +188,7 @@ inline void Print(const char * str)
 ///     {
 ///       CommandLine<command_list> command_line; // Create CommandLine Object
 ///       command_line.AddCommand(&command_one); // Add a command
-///       LOG_INFO("Press Enter To Start Command Line"); // Prompt the user
+///       sjsu::LogInfo("Press Enter To Start Command Line"); // Prompt the user
 ///       command_line.WaitForInput(); // Start interactive command line
 ///     }
 ///
@@ -329,7 +329,7 @@ class CommandLine
     }
     if (!command_was_handled)
     {
-      LOG_WARNING("Command: '%s' Not found", argv[0]);
+      sjsu::LogWarning("Command: '%s' Not found", argv[0]);
     }
     return result;
   }

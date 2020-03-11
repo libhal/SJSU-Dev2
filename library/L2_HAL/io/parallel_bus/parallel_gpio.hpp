@@ -30,7 +30,7 @@ class ParallelGpio : public sjsu::ParallelBus
       if (io_[i] == nullptr)
       {
         parallel_gpio_bus_initialized_successfully = false;
-        LOG_ERROR("Gpio %zu of parallel bus is NULL.", i);
+        sjsu::LogError("Gpio %zu of parallel bus is NULL.", i);
       }
     }
 

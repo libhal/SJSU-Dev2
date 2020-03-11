@@ -34,11 +34,11 @@ sjsu::CommandLine<command_list> ci;
 
 void TerminalTask([[maybe_unused]] void * ptr)
 {
-  LOG_INFO("Press Enter to Start Command Line!");
+  sjsu::LogInfo("Press Enter to Start Command Line!");
 
   ci.WaitForInput();
 
-  LOG_WARNING("\nUser has quit from terminal!");
+  sjsu::LogWarning("\nUser has quit from terminal!");
   vTaskDelete(nullptr);
 }
 
@@ -58,22 +58,22 @@ void BusyTask([[maybe_unused]] void * ptr)
 
 int main()
 {
-  LOG_INFO("Staring Command Line Application");
+  sjsu::LogInfo("Staring Command Line Application");
 
-  LOG_INFO("Adding common SJTwo commands to command line...");
+  sjsu::LogInfo("Adding common SJTwo commands to command line...");
   AddCommonCommands(ci);
 
-  LOG_INFO("Adding i2c command to command line...");
+  sjsu::LogInfo("Adding i2c command to command line...");
   i2c_command.Initialize();
   ci.AddCommand(&i2c_command);
 
-  LOG_INFO("Adding system command to command line...");
+  sjsu::LogInfo("Adding system command to command line...");
   ci.AddCommand(&system_command);
 
-  LOG_INFO("Adding sjsu::rtos command to command line...");
+  sjsu::LogInfo("Adding sjsu::rtos command to command line...");
   ci.AddCommand(&rtos_command);
 
-  LOG_INFO("Initializing CommandLine object...");
+  sjsu::LogInfo("Initializing CommandLine object...");
   ci.Initialize();
 
   xTaskCreate(

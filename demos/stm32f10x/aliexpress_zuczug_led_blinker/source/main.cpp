@@ -6,7 +6,7 @@
 
 int main()
 {
-  LOG_INFO("Starting Bluepill LED Blinker Application...");
+  sjsu::LogInfo("Starting Bluepill LED Blinker Application...");
 
   ///////////// Setup LED GPIO /////////////
   // Power I/O Port A Peripheral

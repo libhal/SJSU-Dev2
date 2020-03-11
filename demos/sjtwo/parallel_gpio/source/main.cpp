@@ -11,11 +11,11 @@ sjsu::lpc40xx::Gpio led2(1, 24);
 sjsu::lpc40xx::Gpio led3(1, 18);
 int main()
 {
-  LOG_INFO("Staring Parallel Gpio Application");
+  sjsu::LogInfo("Staring Parallel Gpio Application");
 
-  LOG_INFO("Creating gpio (led) objects...");
+  sjsu::LogInfo("Creating gpio (led) objects...");
 
-  LOG_INFO("Creating ParallelGpio object using led Gpios...");
+  sjsu::LogInfo("Creating ParallelGpio object using led Gpios...");
   sjsu::Gpio * leds[] = {
     &led0,
     &led1,
@@ -28,7 +28,7 @@ int main()
   {
     for (uint8_t i = 0; i < 16; i++)
     {
-      LOG_INFO("Displaying 0x%X in binary on leds", i);
+      sjsu::LogInfo("Displaying 0x%X in binary on leds", i);
       // Each LED above the 4 buttons on the SJTwo is active low, meaning it
       // turns on when the pin is set to state LOW. In order to make an LED
       // shine when the corrissponding bit is 1, I need to invert the value of

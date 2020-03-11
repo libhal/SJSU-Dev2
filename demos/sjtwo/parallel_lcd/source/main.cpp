@@ -9,7 +9,7 @@ int main()
   constexpr uint8_t kMaxLines        = 4;
   constexpr uint8_t kMaxDisplayWidth = 20;
 
-  LOG_INFO("Starting Parallel LCD Demo\n");
+  sjsu::LogInfo("Starting Parallel LCD Demo\n");
 
   // set up control pins for lcd
   sjsu::lpc40xx::Gpio rs(0, 15);  // RS:    Register Select
@@ -28,7 +28,8 @@ int main()
 
   sjsu::St7066u lcd(sjsu::St7066u::BusMode::kEightBit,
                     sjsu::St7066u::DisplayMode::kMultiLine,
-                    sjsu::St7066u::FontStyle::kFont5x8, pins);
+                    sjsu::St7066u::FontStyle::kFont5x8,
+                    pins);
 
   lcd.Initialize();
 

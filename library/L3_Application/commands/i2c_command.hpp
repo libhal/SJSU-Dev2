@@ -123,9 +123,9 @@ class I2cCommand final : public Command
   {
     if (argc - 1 < kOperation)
     {
-      LOG_ERROR("Invalid number of arguments, required %d, supplied %d",
-                kOperation,
-                argc);
+      sjsu::LogError("Invalid number of arguments, required %d, supplied %d",
+                     kOperation,
+                     argc);
       return 1;
     }
 
@@ -191,14 +191,14 @@ class I2cCommand final : public Command
     args.operation = GetI2cOperation(argv[Args::kOperation]);
     if (args.operation == nullptr)
     {
-      LOG_ERROR("Invalid operation %s", argv[Args::kOperation]);
+      sjsu::LogError("Invalid operation %s", argv[Args::kOperation]);
       args.invalid = true;
     }
 
     auto [device_address, s0] = ParseByte(argv[Args::kDeviceAddress], 16);
     if (!s0)
     {
-      LOG_ERROR(
+      sjsu::LogError(
           "Invalid device address %u, must be a hex number of format 0xAA",
           device_address);
       args.invalid = true;
@@ -207,7 +207,7 @@ class I2cCommand final : public Command
     auto [register_address, s1] = ParseByte(argv[Args::kRegisterAddress], 16);
     if (!s1)
     {
-      LOG_ERROR(
+      sjsu::LogError(
           "Invalid register address %u, must be a hex number of format 0xAA",
           register_address);
       args.invalid = true;
@@ -244,7 +244,7 @@ class I2cCommand final : public Command
   {
     if (argc - 1 < kLength)
     {
-      LOG_ERROR(
+      sjsu::LogError(
           "Invalid number of arguments for read operation, required %d, "
           "supplied %d",
           kRegisterAddress,
@@ -264,7 +264,7 @@ class I2cCommand final : public Command
     }
     else
     {
-      LOG_ERROR("Length cannot be more then 128 bytes.");
+      sjsu::LogError("Length cannot be more then 128 bytes.");
       return 1;
     }
     return 0;
@@ -274,7 +274,7 @@ class I2cCommand final : public Command
   {
     if (argc - 1 < kRegisterAddress)
     {
-      LOG_ERROR(
+      sjsu::LogError(
           "Invalid number of arguments for write operation, required %d, "
           "supplied %d",
           kRegisterAddress,

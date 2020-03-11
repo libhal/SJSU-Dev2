@@ -172,18 +172,18 @@ class Sd
 
   virtual void Initialize()
   {
-    LOG_DEBUG("Begin initialization:");
-    LOG_DEBUG("Setting CS as output...");
+    sjsu::LogDebug("Begin initialization:");
+    sjsu::LogDebug("Setting CS as output...");
     chip_select_.SetDirection(Gpio::Direction::kOutput);
     chip_select_.Set(Gpio::State::kHigh);
 
-    LOG_DEBUG("Initializing SPI Clock Speed...");
+    sjsu::LogDebug("Initializing SPI Clock Speed...");
     spi_.Initialize();
-    LOG_DEBUG("Setting SPI Clock Speed...");
+    sjsu::LogDebug("Setting SPI Clock Speed...");
     spi_.SetClock(12_MHz);
-    LOG_DEBUG("Setting Peripheral Mode...");
+    sjsu::LogDebug("Setting Peripheral Mode...");
     spi_.SetDataSize(Spi::DataSize::kEight);
-    LOG_DEBUG("Starting SPI Peripheral...");
+    sjsu::LogDebug("Starting SPI Peripheral...");
   }
 
   // Initialize SD Card
@@ -195,12 +195,12 @@ class Sd
 
     // Reset the card and force it to go to idle state at <400kHz with a
     // CMD0 + (active-low) CS
-    LOG_DEBUG("Sending SD Card to Idle State...");
+    sjsu::LogDebug("Sending SD Card to Idle State...");
     sd->response.length = SendCmd(
         Command::kReset, 0x00000000, sd->response.data.byte, KeepAlive::kYes);
 
     // Reset the card again to trigger SPI mode
-    LOG_DEBUG("Initializing SPI mode...");
+    sjsu::LogDebug("Initializing SPI mode...");
     do
     {
       tries++;
@@ -218,10 +218,10 @@ class Sd
       }
       Delay(10ms);
     } while (tries < kBusTimeout && !card_is_idle);
-    LOG_DEBUG("%d tries", tries);
+    sjsu::LogDebug("%d tries", tries);
     if (tries >= kBusTimeout)
     {
-      LOG_ERROR("Failed to initiate SPI mode within timeout. Aborting!");
+      sjsu::LogError("Failed to initiate SPI mode within timeout. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage,
                                     0xFFFFFFFF,
                                     sd->response.data.byte,
@@ -231,7 +231,7 @@ class Sd
 
     // Send the host's supported voltage (3.3V) and ask if the card
     // supports it
-    LOG_DEBUG("Checking Current SD Card Voltage Level...");
+    sjsu::LogDebug("Checking Current SD Card Voltage Level...");
     constexpr uint8_t kCheckPattern = 0xAB;
     uint64_t supported_voltage      = 0x00000001;
     sd->response.length =
@@ -243,7 +243,7 @@ class Sd
     {
       // If the last byte is not an exact echo of the LSB of the kGetOp
       // command's argument, this response is invalid
-      LOG_ERROR("Response integrity check failed. Aborting!");
+      sjsu::LogError("Response integrity check failed. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage,
                                     0xFFFFFFFF,
                                     sd->response.data.byte,
@@ -256,7 +256,7 @@ class Sd
       // If the 2nd-to-last byte of the reponse AND with our host device's
       // supported voltage range is 0x00, the SD card doesn't support our
       // device's operating voltage
-      LOG_ERROR("Unsupported voltage in use. Aborting!");
+      sjsu::LogError("Unsupported voltage in use. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage,
                                     0xFFFFFFFF,
                                     sd->response.data.byte,
@@ -266,7 +266,7 @@ class Sd
 
     // Indicate that the host supports SDHC/SDXC and wait for card to
     // shift out of idle state
-    LOG_DEBUG("Expressing High-Capacity SD Card Support...");
+    sjsu::LogDebug("Expressing High-Capacity SD Card Support...");
     tries = 0;
     do
     {
@@ -277,7 +277,7 @@ class Sd
     } while (tries < kBusTimeout && sd->response.data.byte[0] & 0x01);
     if (tries == kBusTimeout)
     {
-      LOG_ERROR("SD Card timed out. Aborting!");
+      sjsu::LogError("SD Card timed out. Aborting!");
       sd->response.length = SendCmd(Command::kGarbage,
                                     0xFFFFFFFF,
                                     sd->response.data.byte,
@@ -287,20 +287,20 @@ class Sd
 
     // After card is ready, acquire card capacity info using kGetOcr a
     // second time
-    LOG_DEBUG("Reading Card Capacity Information...");
+    sjsu::LogDebug("Reading Card Capacity Information...");
     // Read CCS
     sd->response.length = SendCmd(
         Command::kGetOcr, 0x00, sd->response.data.byte, KeepAlive::kYes);
     if (sd->response.data.byte[1] & 0x40)
     {
       // The card is either high or extended capacity
-      LOG_DEBUG("SD Card is HC/XC");
+      sjsu::LogDebug("SD Card is HC/XC");
       sd->type = Type::kSDHC;
     }
     else
     {
       // The card is standard capacity
-      LOG_DEBUG("SD Card is SC");
+      sjsu::LogDebug("SD Card is SC");
       sd->type = Type::kSDSC;
     }
 
@@ -357,18 +357,18 @@ class Sd
     // DEBUG: Check the value of the wait byte
     if (wait_byte == 0xFE)
     {
-      LOG_DEBUG(
+      sjsu::LogDebug(
           "Received GO Byte 0xFE; SD Card is now sending block payload...");
     }
     else if ((wait_byte & 0xE0) == 0x00)
     {
-      LOG_DEBUG("Error: SD Card Rejected Read Cmd [Response: 0x%02X]",
-                wait_byte);
-      LOG_DEBUG("Card Locked?: %s", ToBool(wait_byte & 0x10));
-      LOG_DEBUG("Addr Out of Range?: %s", ToBool(wait_byte & 0x08));
-      LOG_DEBUG("Card ECC Failed?: %s", ToBool(wait_byte & 0x04));
-      LOG_DEBUG("CC Error?: %s", ToBool(wait_byte & 0x02));
-      LOG_DEBUG("Error?: %s", ToBool(wait_byte & 0x01));
+      sjsu::LogDebug("Error: SD Card Rejected Read Cmd [Response: 0x%02X]",
+                     wait_byte);
+      sjsu::LogDebug("Card Locked?: %s", ToBool(wait_byte & 0x10));
+      sjsu::LogDebug("Addr Out of Range?: %s", ToBool(wait_byte & 0x08));
+      sjsu::LogDebug("Card ECC Failed?: %s", ToBool(wait_byte & 0x04));
+      sjsu::LogDebug("CC Error?: %s", ToBool(wait_byte & 0x02));
+      sjsu::LogDebug("Error?: %s", ToBool(wait_byte & 0x01));
     }
   }
 
@@ -379,12 +379,12 @@ class Sd
     // Wait for the card to finish programming (i.e. when the
     // bytes return to 0xFF)
     uint8_t busy_byte = 0x00;
-    LOG_DEBUG("Card is busy. Waiting for it to finish...");
+    sjsu::LogDebug("Card is busy. Waiting for it to finish...");
     do
     {
       busy_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
     } while (busy_byte != 0xFF);
-    LOG_DEBUG("Card finished!");
+    sjsu::LogDebug("Card finished!");
   }
 
   // Read any number of blocks from the SD card
@@ -392,10 +392,10 @@ class Sd
                             uint8_t * array,
                             uint32_t blocks = 1)
   {
-    LOG_DEBUG("Block %" PRId32 " :: 0x%" PRIX32 " for %" PRId32 " blocks",
-              address,
-              address,
-              blocks);
+    sjsu::LogDebug("Block %" PRId32 " :: 0x%" PRIX32 " for %" PRId32 " blocks",
+                   address,
+                   address,
+                   blocks);
     // Wait for a previous command to finish
     WaitWhileBusy();
 
@@ -422,8 +422,8 @@ class Sd
     // Send initial read command
     sd.response.length =
         SendCmd(read_cmd, address, sd.response.data.byte, KeepAlive::kYes);
-    LOG_DEBUG("Sent Read Cmd");
-    LOG_DEBUG("[R1 Response:0x%02X]", sd.response.data.byte[0]);
+    sjsu::LogDebug("Sent Read Cmd");
+    sjsu::LogDebug("[R1 Response:0x%02X]", sd.response.data.byte[0]);
 
     // Check if the command was acknowledged properly
     if (sd.response.data.byte[0] == 0x00)
@@ -462,16 +462,17 @@ class Sd
         // valid).
         uint16_t expected_block_crc = GetCrc16(block_store, 512);
 
-        LOG_DEBUG("Block #%d @ 0x%" PRIX32 " acquired", block_count, address);
-        LOG_DEBUG("Expecting block crc16 '0x%04X'", expected_block_crc);
-        LOG_DEBUG("Got '0x%04X'", block_crc);
+        sjsu::LogDebug(
+            "Block #%d @ 0x%" PRIX32 " acquired", block_count, address);
+        sjsu::LogDebug("Expecting block crc16 '0x%04X'", expected_block_crc);
+        sjsu::LogDebug("Got '0x%04X'", block_crc);
         if (expected_block_crc != block_crc)
         {
           // If they do not match, set the bad crc status
           payload_had_bad_crc = true;
-          LOG_ERROR("While Reading Block #%d CRC16:", block_count);
-          LOG_ERROR("Expected '0x%04X'", expected_block_crc);
-          LOG_ERROR("Got '0x%04X'", block_crc);
+          sjsu::LogError("While Reading Block #%d CRC16:", block_count);
+          sjsu::LogError("Expected '0x%04X'", expected_block_crc);
+          sjsu::LogError("Got '0x%04X'", block_crc);
         }
       }
 
@@ -486,8 +487,8 @@ class Sd
       }
 
       // DEBUG: Print out the latest response byte
-      LOG_DEBUG("Response Byte");
-      LOG_DEBUG("0x%02X", sd.response.data.byte[0]);
+      sjsu::LogDebug("Response Byte");
+      sjsu::LogDebug("0x%02X", sd.response.data.byte[0]);
 
       // If there was a bad crc from the payload, manually set the
       // CRC error flag in the command response byte
@@ -498,28 +499,34 @@ class Sd
     }
     else
     {
-      LOG_ERROR("Read Cmd was not acknowledged properly!");
-      LOG_ERROR("Parameter Err: %s", ToBool(sd.response.data.byte[0] & 0x40));
-      LOG_ERROR("Addr Err: %s", ToBool(sd.response.data.byte[0] & 0x20));
-      LOG_ERROR("Erase Seq Err: %s", ToBool(sd.response.data.byte[0] & 0x10));
-      LOG_ERROR("Com CRC Err: %s", ToBool(sd.response.data.byte[0] & 0x08));
-      LOG_ERROR("Illegal Cmd Err: %s", ToBool(sd.response.data.byte[0] & 0x04));
-      LOG_ERROR("Erase Reset: %s", ToBool(sd.response.data.byte[0] & 0x02));
-      LOG_ERROR("In Idle: %s", ToBool(sd.response.data.byte[0] & 0x01));
+      sjsu::LogError("Read Cmd was not acknowledged properly!");
+      sjsu::LogError("Parameter Err: %s",
+                     ToBool(sd.response.data.byte[0] & 0x40));
+      sjsu::LogError("Addr Err: %s", ToBool(sd.response.data.byte[0] & 0x20));
+      sjsu::LogError("Erase Seq Err: %s",
+                     ToBool(sd.response.data.byte[0] & 0x10));
+      sjsu::LogError("Com CRC Err: %s",
+                     ToBool(sd.response.data.byte[0] & 0x08));
+      sjsu::LogError("Illegal Cmd Err: %s",
+                     ToBool(sd.response.data.byte[0] & 0x04));
+      sjsu::LogError("Erase Reset: %s",
+                     ToBool(sd.response.data.byte[0] & 0x02));
+      sjsu::LogError("In Idle: %s", ToBool(sd.response.data.byte[0] & 0x01));
     }
 
     // Wait for the SD card to go out of idle state
-    LOG_DEBUG("Now waiting for SD Card to exit Idle Mode...");
+    sjsu::LogDebug("Now waiting for SD Card to exit Idle Mode...");
     do
     {
       // Query the status register
       sd.response.length = SendCmd(
           Command::kGetStatus, 32, sd.response.data.byte, KeepAlive::kNo);
     } while (sd.response.data.byte[0] & 0x01);
-    LOG_DEBUG("SD Card is out of Idle Mode!");
+    sjsu::LogDebug("SD Card is out of Idle Mode!");
 
     // Return the status
-    LOG_DEBUG("Read Complete! [R1 Response: 0x%02X]", sd.response.data.byte[0]);
+    sjsu::LogDebug("Read Complete! [R1 Response: 0x%02X]",
+                   sd.response.data.byte[0]);
     return sd.response.data.byte[0];
   }
 
@@ -551,8 +558,8 @@ class Sd
     // Send initial write command
     sd.response.length =
         SendCmd(write_cmd, address, sd.response.data.byte, KeepAlive::kYes);
-    LOG_DEBUG("Sent Write Cmd");
-    LOG_DEBUG("[R1 Response:0x%02X]", sd.response.data.byte[0]);
+    sjsu::LogDebug("Sent Write Cmd");
+    sjsu::LogDebug("[R1 Response:0x%02X]", sd.response.data.byte[0]);
 
     // Check if the response was acknowledged properly
     if (sd.response.data.byte[0] == 0x00)
@@ -569,7 +576,7 @@ class Sd
         spi_.Transfer(write_start_tkn);
 
         // Write all 512-bytes of the given block
-        LOG_DEBUG("Writing block #%d", current_block_num);
+        sjsu::LogDebug("Writing block #%d", current_block_num);
         for (uint16_t current_byte = 0; current_byte < kBlockSize;
              current_byte++)
         {
@@ -578,13 +585,13 @@ class Sd
 
         // Read the data response token after writing the block
         uint8_t data_response_tkn = static_cast<uint8_t>(spi_.Transfer(0xFF));
-        LOG_DEBUG("Response Byte");
-        LOG_DEBUG("[Data Response Token: 0x%02X]", data_response_tkn);
-        LOG_DEBUG("Data Accepted?: %s", ToBool(data_response_tkn & 0x05));
-        LOG_DEBUG("Data Rejected (bad crc)?: %s",
-                  ToBool(data_response_tkn & 0x0B));
-        LOG_DEBUG("Data Rejected (write err)?: %s",
-                  ToBool(data_response_tkn & 0x0D));
+        sjsu::LogDebug("Response Byte");
+        sjsu::LogDebug("[Data Response Token: 0x%02X]", data_response_tkn);
+        sjsu::LogDebug("Data Accepted?: %s", ToBool(data_response_tkn & 0x05));
+        sjsu::LogDebug("Data Rejected (bad crc)?: %s",
+                       ToBool(data_response_tkn & 0x0B));
+        sjsu::LogDebug("Data Rejected (write err)?: %s",
+                       ToBool(data_response_tkn & 0x0D));
 
         // If writing multiple blocks and the previous block was rejected
         if (blocks > 1 && !(data_response_tkn & 0x05))
@@ -594,8 +601,8 @@ class Sd
                                        0xFFFFFFFF,
                                        sd.response.data.byte,
                                        KeepAlive::kYes);
-          LOG_DEBUG("Stopped Transmission due to rejection...");
-          LOG_DEBUG("[R1 Response: 0x%02X]", sd.response.data.byte[0]);
+          sjsu::LogDebug("Stopped Transmission due to rejection...");
+          sjsu::LogDebug("[R1 Response: 0x%02X]", sd.response.data.byte[0]);
 
           // In the case of a write error, ask for the reason why
           if (data_response_tkn & 0x0D)
@@ -604,10 +611,10 @@ class Sd
                                          0xFFFFFFFF,
                                          sd.response.data.byte,
                                          KeepAlive::kYes);
-            LOG_DEBUG(
+            sjsu::LogDebug(
                 "Checking Status Register to see cause of Write Error...");
-            LOG_DEBUG("[R2 Response: 0x%04" PRIX32 "]",
-                      sd.response.data.dWord.lo);
+            sjsu::LogDebug("[R2 Response: 0x%04" PRIX32 "]",
+                           sd.response.data.dWord.lo);
           }
         }
         WaitWhileBusy();
@@ -625,14 +632,19 @@ class Sd
     }
     else
     {
-      LOG_DEBUG("Error: Write Cmd was not acknowledged properly!");
-      LOG_DEBUG("Parameter Err: %s", ToBool(sd.response.data.byte[0] & 0x40));
-      LOG_DEBUG("Addr Err: %s", ToBool(sd.response.data.byte[0] & 0x20));
-      LOG_DEBUG("Erase Seq Err: %s", ToBool(sd.response.data.byte[0] & 0x10));
-      LOG_DEBUG("Com CRC Err: %s", ToBool(sd.response.data.byte[0] & 0x08));
-      LOG_DEBUG("Illegal Cmd Err: %s", ToBool(sd.response.data.byte[0] & 0x04));
-      LOG_DEBUG("Erase Reset: %s", ToBool(sd.response.data.byte[0] & 0x02));
-      LOG_DEBUG("In Idle: %s", ToBool(sd.response.data.byte[0] & 0x01));
+      sjsu::LogDebug("Error: Write Cmd was not acknowledged properly!");
+      sjsu::LogDebug("Parameter Err: %s",
+                     ToBool(sd.response.data.byte[0] & 0x40));
+      sjsu::LogDebug("Addr Err: %s", ToBool(sd.response.data.byte[0] & 0x20));
+      sjsu::LogDebug("Erase Seq Err: %s",
+                     ToBool(sd.response.data.byte[0] & 0x10));
+      sjsu::LogDebug("Com CRC Err: %s",
+                     ToBool(sd.response.data.byte[0] & 0x08));
+      sjsu::LogDebug("Illegal Cmd Err: %s",
+                     ToBool(sd.response.data.byte[0] & 0x04));
+      sjsu::LogDebug("Erase Reset: %s",
+                     ToBool(sd.response.data.byte[0] & 0x02));
+      sjsu::LogDebug("In Idle: %s", ToBool(sd.response.data.byte[0] & 0x01));
     }
 
     return sd.response.data.byte[0];
@@ -649,7 +661,7 @@ class Sd
     bool delete_failed = false;
 
     // Set the delete start address
-    LOG_DEBUG("Setting Delete Start Address...");
+    sjsu::LogDebug("Setting Delete Start Address...");
     sd.response.length = SendCmd(
         Command::kDelFrom, start, sd.response.data.byte, KeepAlive::kYes);
 
@@ -659,14 +671,14 @@ class Sd
     // Force return if an error occurred
     if (sd.response.data.byte[0] != 0x00)
     {
-      LOG_ERROR("Failed to set Start Address!");
+      sjsu::LogError("Failed to set Start Address!");
       delete_failed = true;
     }
 
     // Set the delete end address
     if (!delete_failed)
     {
-      LOG_DEBUG("Setting Delete End Address...");
+      sjsu::LogDebug("Setting Delete End Address...");
       sd.response.length =
           SendCmd(Command::kDelTo, end, sd.response.data.byte, KeepAlive::kYes);
     }
@@ -677,7 +689,7 @@ class Sd
     // Force return if an error occurred
     if (sd.response.data.byte[0] != 0x00)
     {
-      LOG_ERROR("Failed to set End Address!");
+      sjsu::LogError("Failed to set End Address!");
       delete_failed = true;
     }
 
@@ -685,7 +697,7 @@ class Sd
     if (!delete_failed)
     {
       // Issue the delete command to delete from our from:to range
-      LOG_DEBUG("Issuing Delete Command...");
+      sjsu::LogDebug("Issuing Delete Command...");
       sd.response.length = SendCmd(
           Command::kDel, 0xFFFFFFFF, sd.response.data.byte, KeepAlive::kYes);
 
@@ -693,8 +705,8 @@ class Sd
       WaitWhileBusy();
 
       // Check response
-      LOG_DEBUG("[R1 Response: 0x%02X]", sd.response.data.byte[0]);
-      LOG_DEBUG("Deletion Complete...");
+      sjsu::LogDebug("[R1 Response: 0x%02X]", sd.response.data.byte[0]);
+      sjsu::LogDebug("Deletion Complete...");
     }
 
     // Return status
@@ -736,7 +748,7 @@ class Sd
       case Command::kDelTo: res_type = ResponseType::kR1; break;
       case Command::kDel: res_type = ResponseType::kR1b; break;
       default:
-        LOG_ERROR("Unknown response type. Aborting!");
+        sjsu::LogError("Unknown response type. Aborting!");
         return -1;
         break;
     }
@@ -800,7 +812,7 @@ class Sd
       case ResponseType::kR3: res_len = 5; break;
       case ResponseType::kR7: res_len = 5; break;
       default:
-        LOG_ERROR("Response unsupported in SPI mode. Aborting!");
+        sjsu::LogError("Response unsupported in SPI mode. Aborting!");
         return -1;
         break;
     }

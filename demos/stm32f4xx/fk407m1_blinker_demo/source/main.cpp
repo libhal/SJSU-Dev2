@@ -6,7 +6,7 @@
 
 int main()
 {
-  LOG_INFO("Starting FK407M1 LED Blinker Application...");
+  sjsu::LogInfo("Starting FK407M1 LED Blinker Application...");
   ///////////// Setup LED GPIO /////////////
 
   // Power I/O Port C Peripheral

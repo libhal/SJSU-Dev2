@@ -130,8 +130,9 @@ class InterruptController final : public sjsu::InterruptController
   /// handler is not present in the application code.
   static void UnregisteredHandler()
   {
-    LOG_DEBUG("No interrupt handler found. Disabling interrupt request %d!",
-              current_vector);
+    sjsu::LogDebug(
+        "No interrupt handler found. Disabling interrupt request %d!",
+        current_vector);
     if (current_vector >= 0)
     {
       NvicDisableIRQ(current_vector);

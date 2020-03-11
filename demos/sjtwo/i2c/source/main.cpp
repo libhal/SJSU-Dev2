@@ -10,16 +10,16 @@ const uint8_t kAccelerometerIdRegister  = 0x0D;
 
 int main()
 {
-  LOG_INFO("I2C Application Starting...");
-  LOG_INFO(
+  sjsu::LogInfo("I2C Application Starting...");
+  sjsu::LogInfo(
       "This example will scan I2C Bus 2 for any devices. If the transaction "
       "comes back with Status::kSuccess, then we know that an I2C device has "
       "acknowledged our call and it exists.");
 
-  LOG_INFO("Initializing I2C Port 2...");
+  sjsu::LogInfo("Initializing I2C Port 2...");
   sjsu::lpc40xx::I2c i2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
   i2c.Initialize();
-  LOG_INFO("Initializing Onboard Accelerometer using I2C.2...");
+  sjsu::LogInfo("Initializing Onboard Accelerometer using I2C.2...");
   // Accelerometer initialization sequence of setting register 0x2A, Control
   // register 1, to value 0x01. This sets the first bit, ACTIVE, to enabled and
   // clears the rest.
@@ -27,7 +27,7 @@ int main()
 
   while (true)
   {
-    LOG_INFO("Starting Scan...");
+    sjsu::LogInfo("Starting Scan...");
     sjsu::Status status;
     for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
          address++)
@@ -35,7 +35,7 @@ int main()
       status = i2c.Write(address, nullptr, 0, 50ms);
       if (status == sjsu::Status::kSuccess)
       {
-        LOG_INFO("    Found device at address: 0x%02X", address);
+        sjsu::LogInfo("    Found device at address: 0x%02X", address);
       }
     }
 
@@ -43,10 +43,11 @@ int main()
 
     status = i2c.WriteThenRead(
         kAccelerometerAddress, &kAccelerometerIdRegister, 1, &id, 1);
-    LOG_INFO("I2C transaction Status = 0x%02X", static_cast<uint8_t>(status));
-    LOG_INFO("Accelerometer ID = 0x%02X", id);
+    sjsu::LogInfo("I2C transaction Status = 0x%02X",
+                  static_cast<uint8_t>(status));
+    sjsu::LogInfo("Accelerometer ID = 0x%02X", id);
 
-    LOG_INFO("Waiting 5s before starting the scan again...");
+    sjsu::LogInfo("Waiting 5s before starting the scan again...");
     sjsu::Delay(5000ms);
   }
   return 0;

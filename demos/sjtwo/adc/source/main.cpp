@@ -9,25 +9,25 @@
 
 int main()
 {
-  LOG_INFO("Analog-to-Ditial Application Starting...");
+  sjsu::LogInfo("Analog-to-Ditial Application Starting...");
 
-  LOG_INFO("Creating ADC object and selecting ADC channel 4 & 5");
-  LOG_INFO("ADC channel 4 is connected to pin P1.30");
+  sjsu::LogInfo("Creating ADC object and selecting ADC channel 4 & 5");
+  sjsu::LogInfo("ADC channel 4 is connected to pin P1.30");
   sjsu::lpc40xx::Adc adc4(sjsu::lpc40xx::Adc::Channel::kChannel4);
-  LOG_INFO("ADC channel 5 is connected to pin P1.31");
+  sjsu::LogInfo("ADC channel 5 is connected to pin P1.31");
   sjsu::lpc40xx::Adc adc5(sjsu::lpc40xx::Adc::Channel::kChannel5);
 
-  LOG_INFO(
+  sjsu::LogInfo(
       "If you leave a channel disconnected, then the pin will be in a floating "
       "state, and in this state, the voltage read from this pin will be "
       "random.");
 
-  LOG_INFO("Initializing ADC ...");
+  sjsu::LogInfo("Initializing ADC ...");
   adc5.Initialize();
   adc4.Initialize();
-  LOG_INFO("Initializing ADC Complete!");
+  sjsu::LogInfo("Initializing ADC Complete!");
 
-  LOG_INFO(
+  sjsu::LogInfo(
       "Apply a voltage from 0 to 3.3V (BE SUPER SURE not to accidently apply "
       "more then 3.3V or you WILL damage your board).");
 
@@ -48,11 +48,11 @@ int main()
     voltage[0] = sjsu::Map(adc_digital_value[0], 0, 4095, 0.0f, 3.3f);
     voltage[1] = sjsu::Map(adc_digital_value[1], 0, 4095, 0.0f, 3.3f);
 
-    LOG_INFO("voltage[0] = %f V (%lu) :: voltage[1] = %f V (%lu)",
-             static_cast<double>(voltage[0]),
-             adc_digital_value[0],
-             static_cast<double>(voltage[1]),
-             adc_digital_value[1]);
+    sjsu::LogInfo("voltage[0] = %f V (%lu) :: voltage[1] = %f V (%lu)",
+                  static_cast<double>(voltage[0]),
+                  adc_digital_value[0],
+                  static_cast<double>(voltage[1]),
+                  adc_digital_value[1]);
     sjsu::Delay(250ms);
   }
   return 0;
