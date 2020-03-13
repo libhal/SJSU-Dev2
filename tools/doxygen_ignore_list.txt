@@ -8,7 +8,6 @@ L1_Peripheral/lpc40xx/system_controller.hpp
 L1_Peripheral/lpc40xx/timer.hpp
 L1_Peripheral/lpc40xx/watchdog.hpp
 L1_Peripheral/system_controller.hpp
-L1_Peripheral/timer.hpp
 L1_Peripheral/watchdog.hpp
 L2_HAL/actuators/servo/servo.hpp
 L2_HAL/communication/esp8266.hpp
@@ -24,5 +23,3 @@ L2_HAL/sensors/optical/apds9960.hpp
 L2_HAL/communication/internet_socket.hpp
 L3_Application/graphical_terminal.hpp
 L4_Testing/factory_test.hpp
-utility/ansi_terminal_codes.hpp
-utility/math/average.hpp
