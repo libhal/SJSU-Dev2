@@ -9,11 +9,13 @@
 
 int Baz(void)
 {
-  LOG_INFO("Calling backtrace application directly within Baz() function...");
-  LOG_INFO("Each line shows the address of the function that was called.");
-  LOG_INFO("The 0th address is the first function that was called from main.");
-  LOG_INFO("The last address is where the stack trace was called from.");
-  LOG_INFO(
+  sjsu::LogInfo(
+      "Calling backtrace application directly within Baz() function...");
+  sjsu::LogInfo("Each line shows the address of the function that was called.");
+  sjsu::LogInfo(
+      "The 0th address is the first function that was called from main.");
+  sjsu::LogInfo("The last address is where the stack trace was called from.");
+  sjsu::LogInfo(
       "Everything in the middle is the sequence of calls that got you to this "
       "point.\n");
   sjsu::debug::PrintBacktrace();
@@ -50,7 +52,7 @@ int Foo(void)
 int main()
 {
   // This application assumes that all pins are set to function 0 (GPIO)
-  LOG_INFO("Backtrace Application Starting...");
+  sjsu::LogInfo("Backtrace Application Starting...");
   Foo();
   return 0;
 }

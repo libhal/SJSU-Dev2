@@ -8,7 +8,7 @@
 
 int main()
 {
-  LOG_INFO("Gpio Frequency Counter Application Starting...");
+  sjsu::LogInfo("Gpio Frequency Counter Application Starting...");
   // Create a GPIO to read from. This can be any GPIO that supports GPIO
   // interrupts. On the LPC40xx, that would be pins on port 0 and port 2.
   //
@@ -27,13 +27,13 @@ int main()
   // Required: Enable the counter.
   frequency.Enable();
 
-  LOG_INFO(
+  sjsu::LogInfo(
       "With every rising edge of pin P%u.%u, the counter will increase and its "
       "value will be printed to stdout.",
       gpio.GetPin().GetPort(),
       gpio.GetPin().GetPin());
 
-  LOG_INFO(
+  sjsu::LogInfo(
       "The more rising edges per second on that pin will result in a higher "
       "frequency that is calculated by the frequency counter.");
 

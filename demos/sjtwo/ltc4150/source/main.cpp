@@ -13,7 +13,7 @@ bool ApproxEquality(float expected, float actual, float resolution)
 int main()
 {
   constexpr float kResolution = 0.001f;
-  LOG_INFO("Ltc4150 application starting...");
+  sjsu::LogInfo("Ltc4150 application starting...");
 
   // Creating GPIO on pin 2.0
   sjsu::lpc40xx::Gpio tick_pin(2, 0);
@@ -49,7 +49,7 @@ int main()
                         recent_charge.to<float>(),
                         kResolution))
     {
-      LOG_INFO("Current Charge: %f mAh", recent_charge.to<double>());
+      sjsu::LogInfo("Current Charge: %f mAh", recent_charge.to<double>());
       previous_charge = recent_charge;
     }
     // This limits how often we print as well as demonstrates that the

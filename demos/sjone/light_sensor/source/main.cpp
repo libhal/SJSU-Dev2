@@ -5,7 +5,7 @@
 
 int main()
 {
-  LOG_INFO("Starting LPC176x/5x Light Sensor Example...");
+  sjsu::LogInfo("Starting LPC176x/5x Light Sensor Example...");
 
   sjsu::lpc17xx::SystemController system_controller;
   system_controller.SetPeripheralClockDivider(
@@ -25,9 +25,10 @@ int main()
 
   while (true)
   {
-    LOG_INFO("Lux: %.4f, Brightness Percentage: %.2f%%",
-             light_sensor.GetIlluminance().to<double>(),
-             static_cast<double>(light_sensor.GetPercentageBrightness() * 100));
+    sjsu::LogInfo(
+        "Lux: %.4f, Brightness Percentage: %.2f%%",
+        light_sensor.GetIlluminance().to<double>(),
+        static_cast<double>(light_sensor.GetPercentageBrightness() * 100));
     sjsu::Delay(1s);
   }
 

@@ -6,7 +6,7 @@
 
 int main()
 {
-  LOG_INFO("Button application starting...");
+  sjsu::LogInfo("Button application starting...");
   sjsu::lpc40xx::Gpio button_gpio0(1, 19);
   sjsu::lpc40xx::Gpio button_gpio1(1, 15);
   sjsu::lpc40xx::Gpio button_gpio2(0, 30);

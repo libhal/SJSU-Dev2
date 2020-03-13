@@ -9,9 +9,9 @@
 int main()
 {
   sjsu::Vector<int, 10> vec(sjsu::Vector<int, 10>::allocator_type{});
-  LOG_INFO("Starting Allocator Demonstration...");
+  sjsu::LogInfo("Starting Allocator Demonstration...");
 
-  LOG_INFO("============ std::vector ============ \n");
+  sjsu::LogInfo("============ std::vector ============ \n");
   // Creating vector that uses a stack based memory arena
   vec.reserve(decltype(vec)::allocator_type::size);
   vec.push_back(1);
@@ -29,7 +29,7 @@ int main()
   //
   // vec.push_back(11);
 
-  LOG_INFO("List of elements in vector:");
+  sjsu::LogInfo("List of elements in vector:");
 
   for (auto element : vec)
   {
@@ -37,28 +37,28 @@ int main()
   }
   puts("");
 
-  LOG_INFO("============ std::basic_string ============ \n");
+  sjsu::LogInfo("============ std::basic_string ============ \n");
 
   sjsu::String<128> str(sjsu::String<128>::allocator_type{});
   str.reserve(decltype(str)::allocator_type::size - 1);
 
   str = "hello, world";
-  LOG_INFO("str = %.128s", str.c_str());
+  sjsu::LogInfo("str = %.128s", str.c_str());
   str.append(". Appending more text to this string!");
-  LOG_INFO("str = %.128s", str.c_str());
+  sjsu::LogInfo("str = %.128s", str.c_str());
   str.append(" More more more text!!!");
-  LOG_INFO("str = %.128s", str.c_str());
-  LOG_INFO("Inserting 5x'-' at the start of the string");
+  sjsu::LogInfo("str = %.128s", str.c_str());
+  sjsu::LogInfo("Inserting 5x'-' at the start of the string");
   str.insert(0, 5, '-');
 
-  LOG_INFO("str = %.128s", str.c_str());
+  sjsu::LogInfo("str = %.128s", str.c_str());
 
   str += "...testing...";
-  LOG_INFO("str = %.128s", str.c_str());
+  sjsu::LogInfo("str = %.128s", str.c_str());
   str = "...testing...";
-  LOG_INFO("str = %.128s", str.c_str());
+  sjsu::LogInfo("str = %.128s", str.c_str());
 
-  LOG_INFO("============ std::deque ============ \n");
+  sjsu::LogInfo("============ std::deque ============ \n");
 
   // Create a deque containing integers
   sjsu::Deque<int, 8> deque({ 7, 5, 16, 8 },
@@ -70,14 +70,14 @@ int main()
   deque.push_front(13);
   deque.push_back(25);
 
-  LOG_INFO("List of elements in deque:");
+  sjsu::LogInfo("List of elements in deque:");
   for (int element : deque)
   {
     printf("%d, ", element);
   }
   puts("");
 
-  LOG_INFO("============ std::list ============ \n");
+  sjsu::LogInfo("============ std::list ============ \n");
 
   sjsu::List<int, 11> list({ 7, 5, 16, 8 },
                            sjsu::List<int, 11>::allocator_type{});
@@ -95,7 +95,7 @@ int main()
 
   list.push_back(55);
 
-  LOG_INFO("List of elements in list:");
+  sjsu::LogInfo("List of elements in list:");
   for (int element : list)
   {
     printf("%d, ", element);

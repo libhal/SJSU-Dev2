@@ -27,8 +27,8 @@ void FeedTask([[maybe_unused]] void * param)
 
 void HighCPUTask([[maybe_unused]] void * param)
 {
-  LOG_INFO("Press button 3 to have this task hog the CPU for 2 seconds.");
-  LOG_INFO("Doing so will cause the watchdog to reset the system.");
+  sjsu::LogInfo("Press button 3 to have this task hog the CPU for 2 seconds.");
+  sjsu::LogInfo("Doing so will cause the watchdog to reset the system.");
   while (true)
   {
     // While inside this task, LED3 turns on.
@@ -37,7 +37,7 @@ void HighCPUTask([[maybe_unused]] void * param)
     // the watchdog and trigger the watchdog interrupt.
     if (button3.Read())
     {
-      LOG_INFO("High priority task is now hogging the CPU for 2 second.");
+      sjsu::LogInfo("High priority task is now hogging the CPU for 2 second.");
       led3.SetLow();
       // Because the LowPriorityFeedTask() does not get a chance to run during
       // the delay the watchdog is starved, thus causing a reset. When the
@@ -52,7 +52,7 @@ void HighCPUTask([[maybe_unused]] void * param)
 
 int main()
 {
-  LOG_INFO("Watchdog Timer Application Starting...");
+  sjsu::LogInfo("Watchdog Timer Application Starting...");
 
   button3.SetAsInput();
   led3.SetDirection(sjsu::Gpio::Direction::kOutput);

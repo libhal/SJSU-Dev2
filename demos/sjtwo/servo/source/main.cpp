@@ -5,7 +5,7 @@
 
 int main()
 {
-  LOG_INFO("Servo application starting...");
+  sjsu::LogInfo("Servo application starting...");
 
   // Creating PWM on pin 2.0
   sjsu::lpc40xx::Pwm p2_0(sjsu::lpc40xx::Pwm::Channel::kPwm0);

@@ -12,6 +12,7 @@ var searchData=
   ['log_5fdebug',['LOG_DEBUG',['../de/d7a/group__Log.html#gabd0b0523397fb05f0ed46fc217fb630f',1,'log.hpp']]],
   ['log_5ferror',['LOG_ERROR',['../de/d7a/group__Log.html#gabffaf9cecb61026cac6db71a16ace9c5',1,'log.hpp']]],
   ['log_5finfo',['LOG_INFO',['../de/d7a/group__Log.html#ga89681da4efde0b54dc7f2839665082c8',1,'log.hpp']]],
+  ['log_5fon_5ffailure',['LOG_ON_FAILURE',['../de/d7a/group__Log.html#ga89a27f3a3b9b196970e21a4b07b46daa',1,'log.hpp']]],
   ['log_5fwarning',['LOG_WARNING',['../de/d7a/group__Log.html#ga1c60134b1702d179d9b86bc618f416fe',1,'log.hpp']]],
   ['logdebug',['LogDebug',['../d2/dbb/structsjsu_1_1LogDebug.html',1,'sjsu::LogDebug&lt; Params &gt;'],['../d2/dbb/structsjsu_1_1LogDebug.html#a984e87956ec9a06bef152692edd5a7ed',1,'sjsu::LogDebug::LogDebug()'],['../d0/d6b/namespacesjsu.html#ab44f75eb531e1cf14e5b327a1c64f77e',1,'sjsu::LogDebug()']]],
   ['logerror',['LogError',['../d2/d2c/structsjsu_1_1LogError.html',1,'sjsu::LogError&lt; Params &gt;'],['../d2/d2c/structsjsu_1_1LogError.html#a85052fbb3e6d7566eb584d5ef83f905c',1,'sjsu::LogError::LogError()'],['../d0/d6b/namespacesjsu.html#a176db8436ca10f664ea360284a96cb87',1,'sjsu::LogError()']]],

@@ -33,19 +33,19 @@ void CaptureISR(sjsu::PulseCapture::CaptureStatus_t status)
 int main()
 {
   // Configure P1.14 as T2_CAP0
-  LOG_INFO("Configure P1.14 as capture input T2_CAP0");
+  sjsu::LogInfo("Configure P1.14 as capture input T2_CAP0");
 
   // Have capture unit sample T2_CAP0 at 1 MHz
   capture_unit.Initialize(CaptureISR);
 
   // Create 60 Hz square wave on P2.0, that we can capture
-  LOG_INFO("Creating PWM output on P2.0");
+  sjsu::LogInfo("Creating PWM output on P2.0");
   sjsu::lpc40xx::Pwm signal_generator(sjsu::lpc40xx::Pwm::Channel::kPwm0);
   signal_generator.Initialize(kGeneratorFrequency);
   signal_generator.SetDutyCycle(kGeneratorDutyCycle);
 
   // Enable capture interrupt for both edges
-  LOG_INFO("Enabling capture");
+  sjsu::LogInfo("Enabling capture");
   capture_unit.ConfigureCapture(sjsu::PulseCapture::CaptureEdgeMode::kBoth);
   capture_unit.EnableCaptureInterrupt(true);
 
@@ -58,9 +58,9 @@ int main()
         static_cast<float>(delta_accumulator) / static_cast<float>(num_samples);
     float frequency =
         1.0f / (average_count * (1.0f / kCaptureFrequency.to<float>())) / 2.0f;
-    LOG_INFO("Input frequency = %.3f Hz, Expected = %d",
-             static_cast<double>(frequency),
-             kGeneratorFrequency.to<int>());
+    sjsu::LogInfo("Input frequency = %.3f Hz, Expected = %d",
+                  static_cast<double>(frequency),
+                  kGeneratorFrequency.to<int>());
     delta_accumulator = 0;
     num_samples       = 0;
   }

@@ -39,7 +39,7 @@ void HandleDataFrame(const sjsu::infrared::DataFrame_t * data_frame)
   // frame is continuously sent while a button is held down.
   if (kDecodedFrame.is_repeat)
   {
-    LOG_INFO("Button is held down repeating previous action.");
+    sjsu::LogInfo("Button is held down repeating previous action.");
   }
   else
   {
@@ -48,20 +48,20 @@ void HandleDataFrame(const sjsu::infrared::DataFrame_t * data_frame)
         sjsu::bit::Extract(kDecodedFrame.data, kCommandMask));
     switch (kCommand)
     {
-      case RemoteCode::kPower: LOG_INFO("Power Button Pressed"); break;
-      case RemoteCode::kVolumeUp: LOG_INFO("Increasing Volume"); break;
-      case RemoteCode::kVolumeDown: LOG_INFO("Decreasing Volume"); break;
+      case RemoteCode::kPower: sjsu::LogInfo("Power Button Pressed"); break;
+      case RemoteCode::kVolumeUp: sjsu::LogInfo("Increasing Volume"); break;
+      case RemoteCode::kVolumeDown: sjsu::LogInfo("Decreasing Volume"); break;
       case RemoteCode::kToggleBluetooth:
-        LOG_INFO("Toggling Bluetooth Mode");
+        sjsu::LogInfo("Toggling Bluetooth Mode");
         break;
-      default: LOG_INFO("Button Pressed"); break;
+      default: sjsu::LogInfo("Button Pressed"); break;
     }
   }
 }
 
 int main()
 {
-  LOG_INFO("Starting Tsop752 IR Receiver Example...");
+  sjsu::LogInfo("Starting Tsop752 IR Receiver Example...");
   // Using timeout of 9ms since the header mark of the NEC remote is 9ms long.
   constexpr std::chrono::microseconds kTimeout               = 9ms;
   constexpr units::frequency::hertz_t kPulseCaptureFrequency = 1_MHz;

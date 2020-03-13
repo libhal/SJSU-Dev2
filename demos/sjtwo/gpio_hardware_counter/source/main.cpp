@@ -6,7 +6,7 @@
 
 int main()
 {
-  LOG_INFO("Gpio Hardware Counter Application Starting...");
+  sjsu::LogInfo("Gpio Hardware Counter Application Starting...");
   // Create a GPIO to read from. This can be any GPIO that supports GPIO
   // interrupts. On the LPC40xx, that would be pins on port 0 and port 2.
   //
@@ -22,7 +22,7 @@ int main()
   // Required: Enable the counter.
   counter.Enable();
 
-  LOG_INFO(
+  sjsu::LogInfo(
       "With every rising edge of pin P%u.%u, the counter will increase and its "
       "value will be printed to stdout.",
       gpio.GetPin().GetPort(),
@@ -35,7 +35,7 @@ int main()
     // Anytime the count changes, we print out the latest count.
     if (previous_count != current_count)
     {
-      LOG_INFO("Hardare Count %" PRIu32 "\n", current_count);
+      sjsu::LogInfo("Hardare Count %" PRIu32 "\n", current_count);
       previous_count = current_count;
     }
     // This throttles how often we print as well as demonstrates that the

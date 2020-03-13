@@ -8,5 +8,6 @@ var searchData=
   ['infraredreceiver',['InfraredReceiver',['../dd/d21/classsjsu_1_1InfraredReceiver.html',1,'sjsu']]],
   ['internetsocket',['InternetSocket',['../db/dcb/classsjsu_1_1InternetSocket.html',1,'sjsu']]],
   ['interruptcontroller',['InterruptController',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html',1,'sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;'],['../dc/db2/classsjsu_1_1InterruptController.html',1,'sjsu::InterruptController']]],
-  ['interrupts_5ft',['Interrupts_t',['../d2/d34/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts__t.html',1,'sjsu::lpc40xx::Can']]]
+  ['interrupts_5ft',['Interrupts_t',['../d2/d34/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts__t.html',1,'sjsu::lpc40xx::Can']]],
+  ['ipaddress_5ft',['IpAddress_t',['../d3/d2e/structsjsu_1_1Esp8266_1_1IpAddress__t.html',1,'sjsu::Esp8266']]]
 ];

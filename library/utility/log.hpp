@@ -5,6 +5,9 @@
 /// @{
 #pragma once
 
+/// This is required for Apple/OSX as source_location is not available on
+/// Apple's CLANG 10 which is the default clang headers on OSX. Not to be
+/// confused by LLVM's actual CLANG 10.
 #if defined(__clang_analyzer__)
 #include "utility/dummy/source_location"
 #else
@@ -23,6 +26,7 @@
 #include "utility/debug.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
+#include "utility/status.hpp"
 
 namespace sjsu
 {
@@ -211,16 +215,16 @@ template <typename... Params>
 LogError(const char * format, Params...)->LogError<Params...>;
 }  // namespace sjsu
 
-/// Log with the DEBUG level of log mesage.
+/// Deprecated log macro with the DEBUG level of log message.
 #define LOG_DEBUG(format, ...) ::sjsu::LogDebug(format, ##__VA_ARGS__)
 
-/// Log with the INFO level of log mesage.
+/// Deprecated log macro with the INFO level of log message.
 #define LOG_INFO(format, ...) ::sjsu::LogInfo(format, ##__VA_ARGS__)
 
-/// Log with the WARNING level of log mesage.
+/// Deprecated log macro with the WARNING level of log message.
 #define LOG_WARNING(format, ...) ::sjsu::LogWarning(format, ##__VA_ARGS__)
 
-/// Log with the ERROR level of log mesage.
+/// Deprecated log macro with the ERROR level of log message.
 #define LOG_ERROR(format, ...) ::sjsu::LogError(format, ##__VA_ARGS__)
 
 /// When the condition is false, issue a warning to the user with a warning
@@ -242,6 +246,17 @@ LogError(const char * format, Params...)->LogError<Params...>;
     {                                                                     \
       ::sjsu::LogWarning(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
     }                                                                     \
+  } while (0)
+
+/// Logs the expression if it returns any but Status::kSuccess
+#define LOG_ON_FAILURE(expression)                              \
+  do                                                            \
+  {                                                             \
+    sjsu::Status log_on_failure_status = (expression);          \
+    if (log_on_failure_status != sjsu::Status::kSuccess)        \
+    {                                                           \
+      ::sjsu::LogWarning("Expression Failed: %s", #expression); \
+    }                                                           \
   } while (0)
 
 /// When the condition is false, issue a critical level message to the user and

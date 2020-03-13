@@ -6,10 +6,10 @@
 
 int main()
 {
-  LOG_INFO("Starting Bluepill LED Blinker Application...");
+  sjsu::LogInfo("Starting Bluepill LED Blinker Application...");
 
   ///////////// Setup LED GPIO /////////////
-  // Power I/O Port C Peripheral
+  // Power I/O Port A Peripheral
   sjsu::stm32f10x::RCC->APB2ENR |= (1 << 2);
   // Set as output with 10Mhz clock source
   sjsu::stm32f10x::GPIOA->CRL |= (1 << 4);

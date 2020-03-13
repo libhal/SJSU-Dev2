@@ -7,7 +7,7 @@
 
 int main()
 {
-  LOG_INFO("Starting MSP432P401R LED Blinker Demo...");
+  sjsu::LogInfo("Starting MSP432P401R LED Blinker Demo...");
   // Configure the on-board P1.0 LED to be initially turned on.
   constexpr sjsu::bit::Mask kLedBitMask = sjsu::bit::CreateMaskFromRange(0);
   sjsu::msp432p401r::P1->DIR            = sjsu::bit::Set(

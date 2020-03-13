@@ -51,6 +51,7 @@ var searchData=
   ['kdatasizelut',['kDataSizeLUT',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a532e5d13af6f2d556464d03d8fed984d',1,'sjsu::lpc40xx::Spi']]],
   ['kdefaultaddress',['kDefaultAddress',['../df/ddc/classsjsu_1_1Si7060.html#ae174b287c74e3fb629c752077e0e4188',1,'sjsu::Si7060']]],
   ['kdefaultbaudrate',['kDefaultBaudRate',['../dc/d4f/classsjsu_1_1Esp8266.html#a7993989a5c8d64f752136c81c8ea6028',1,'sjsu::Esp8266']]],
+  ['kdefaultlongtimeout',['kDefaultLongTimeout',['../dc/d4f/classsjsu_1_1Esp8266.html#a3ebbbc008a0a0d61578b058b10903dff',1,'sjsu::Esp8266']]],
   ['kdefaulttimeout',['kDefaultTimeout',['../dc/d4f/classsjsu_1_1Esp8266.html#a2d2279a18710591a052e9e12bdc2d100',1,'sjsu::Esp8266']]],
   ['kdescription',['kDescription',['../dd/d36/classsjsu_1_1I2cCommand.html#a02fec276240685073e9627404b1e6764',1,'sjsu::I2cCommand::kDescription()'],['../d3/d13/classsjsu_1_1RtosCommand.html#a89de1f6979a464e0909d47c2c9c3ff80',1,'sjsu::RtosCommand::kDescription()']]],
   ['kdigitalfilter',['kDigitalFilter',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1b36c83fa9e37f0a778dca19775b57b3',1,'sjsu::lpc40xx::Pin']]],
