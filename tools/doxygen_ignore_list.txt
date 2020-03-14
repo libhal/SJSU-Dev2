@@ -6,9 +6,7 @@ L1_Peripheral/lpc17xx/timer.hpp
 L1_Peripheral/lpc40xx/can.hpp
 L1_Peripheral/lpc40xx/system_controller.hpp
 L1_Peripheral/lpc40xx/timer.hpp
-L1_Peripheral/lpc40xx/watchdog.hpp
 L1_Peripheral/system_controller.hpp
-L1_Peripheral/watchdog.hpp
 L2_HAL/actuators/servo/servo.hpp
 L2_HAL/communication/esp8266.hpp
 L2_HAL/device_memory_map.hpp
