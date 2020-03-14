@@ -9,13 +9,17 @@
 
 namespace sjsu
 {
+/// An abstract interface for timer peripherals. This interface can be used for
+/// keeping time, starting and stopping a hardware timer, and causing interrupts
+/// when the timer reaches a certain condition. This is not meant to be used for
+/// PWM generation, or other advanced feature.
 /// @ingroup l1_peripheral
 class Timer
 {
  public:
-  // ==============================
+  // ===========================================================================
   // Interface Definitions
-  // ==============================
+  // ===========================================================================
 
   /// Actions the timer can perform when the time counter equals one of the
   /// match registers.
@@ -30,9 +34,9 @@ class Timer
     kInterruptRestartStop = 0b111
   };
 
-  // ==============================
+  // ===========================================================================
   // Interface Methods
-  // ==============================
+  // ===========================================================================
 
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
@@ -46,7 +50,8 @@ class Timer
   ///        -1 which uses the platforms default priority.
   virtual Status Initialize(units::frequency::hertz_t counter_frequency,
                             InterruptCallback callback = nullptr,
-                            int32_t priority                   = -1) const = 0;
+                            int32_t priority           = -1) const = 0;
+
   /// Set a timer to execute your timer command when the time counter equals the
   /// match register. time in ticks dependent on initialization Functionality is
   /// defined by mode: interrupt, stop, or reset on match.
@@ -60,14 +65,19 @@ class Timer
   virtual void SetMatchBehavior(uint32_t match_count,
                                 MatchAction action,
                                 uint8_t match_register) const = 0;
+
   /// @return number of available match registers
   virtual uint8_t GetAvailableMatchRegisters() const = 0;
+
   /// Get the current count in the count register
   virtual uint32_t GetCount() const = 0;
+
   /// Starts the timer.
   virtual void Start() const = 0;
+
   /// Stops the timer.
-  virtual void Stop() const  = 0;
+  virtual void Stop() const = 0;
+
   /// Resets the timer.
   virtual void Reset() const = 0;
 };
