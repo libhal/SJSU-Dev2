@@ -34,18 +34,18 @@ class Example
   // 5. Refrain from interface constructors (Best Practice)
   // Interfaces should refrain from having their own constructor.
 
-  // 6. Every peripheral must have an Initialize() method (Required)
-  // Every peripheral must have an Initialize() method that the user can use to
-  // turn on and enable the hardware. This is the first method the user must
-  // execute before running any other methods of the peripheral. Initialize
-  // should return a status indicating if it was successful, or if some error
-  // occurred.
+  /// 6. Every peripheral must have an Initialize() method (Required)
+  /// Every peripheral must have an Initialize() method that the user can use to
+  /// turn on and enable the hardware. This is the first method the user must
+  /// execute before running any other methods of the peripheral. Initialize
+  /// should return a status indicating if it was successful, or if some error
+  /// occurred.
   virtual Status Initialize() const = 0;
-  // 7. API for data transfer
-  // If your peripheral is a communication protocol, the standard for sending
-  // and receiving data is to follow the method signature. A write or read that
-  // only transfer a single byte is not optimal as a function call is not
-  // optimal when stream large amounts of data.
+  /// 7. API for data transfer
+  /// If your peripheral is a communication protocol, the standard for sending
+  /// and receiving data is to follow the method signature. A write or read that
+  /// only transfer a single byte is not optimal as a function call is not
+  /// optimal when stream large amounts of data.
   virtual bool Write(const uint8_t * data, size_t length) const = 0;
   // 7.1 Read Timeouts
   // Timeout should not be apart of the API if it doesn't make sense for the
@@ -55,12 +55,15 @@ class Example
   virtual Status Read(uint8_t * data,
                       size_t length,
                       uint32_t timeout) const = 0;
+
   // 8. Setters
   // Should be prefixed with the word "Set". Setters are good for
   // configuring the peripheral after Initialize() has run.
   // Here are a few examples.
   virtual void SetValue(uint32_t value) const         = 0;
+
   virtual void SetClockRate(uint32_t frequency) const = 0;
+
   // 9. Getters
   // Should be prefixed with the word "Get". Getters should retrieve
   // the current configuration of the peripheral. These are generally
@@ -68,11 +71,14 @@ class Example
   // Rather than supply Getters, unit tests should make sure that the setters
   // actually work.
   virtual float GetValue() const        = 0;
+
   virtual uint32_t GetClockRate() const = 0;
+
   // 10. Status methods
   // Methods that indicate the status of the peripheral should be prefixed
   // with the word "Has". These must return bool.
   virtual bool HasCompletedAction() const = 0;
+
   // 11. Utility methods:
   // The follow methods use the virtual methods to control the peripheral. They
   // should give a variety use methods for using the API.
@@ -85,21 +91,25 @@ class Example
   {
     Write(&byte, 1);
   }
-  // Write bytes using an array literal
-  // @param data - array literal of bytes.
-  // @usage
-  //    example.Write({ 0xAA, 0xBB, 0x02, 0x54 });
-  //
+
+  /// Write bytes using an array literal
+  ///
+  /// Usage:
+  ///    example.Write({ 0xAA, 0xBB, 0x02, 0x54 });
+  ///
+  /// @param data - array literal of bytes.
+  ///
   void Write(std::initializer_list<uint8_t> data)
   {
     Write(data.begin(), data.size());
   }
+
   // Overload of Read that waits forever if a timeout was not supplied.
   Status Read(uint8_t * data, size_t size)
   {
     return Read(data, size, UINT32_MAX);
   }
-  // Wait to receive just 1 byte
+  /// Wait to receive just 1 byte
   uint8_t Read(uint32_t timeout = UINT32_MAX)
   {
     uint8_t byte;
