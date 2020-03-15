@@ -15,8 +15,6 @@ L2_HAL/displays/oled/ssd1306.hpp
 L2_HAL/memory/sd.hpp
 L2_HAL/sensors/distance/distance_sensor.hpp
 L2_HAL/sensors/distance/time_of_flight/tfmini.hpp
-L2_HAL/sensors/movement/accelerometer.hpp
-L2_HAL/sensors/movement/accelerometer/mma8452q.hpp
 L2_HAL/sensors/optical/apds9960.hpp
 L2_HAL/communication/internet_socket.hpp
 L3_Application/graphical_terminal.hpp
