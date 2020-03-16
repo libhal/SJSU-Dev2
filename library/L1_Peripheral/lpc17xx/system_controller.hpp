@@ -16,30 +16,42 @@ namespace sjsu
 {
 namespace lpc17xx
 {
+/// System controller for the LPC40xx series of MCUs.
 class SystemController final : public sjsu::SystemController
 {
  public:
+  /// System input oscillator source select contants
   enum class OscillatorSource : uint8_t
   {
-    kIrc      = 0b00,
+    /// Internal RC oscillator as main. Not very precise oscillator cannot be
+    /// used for USB or high speed CAN.
+    kIrc = 0b00,
+    /// Use external oscillator (typically a crystal). See PllInput for options
+    /// that can be used for the oscillator.
     kExternal = 0b01,
-    kRtc      = 0b10,
+    /// Use the RTC oscillator as the main oscillator, approximate 32kHz.
+    kRtc = 0b10,
   };
 
+  /// PLL codes for selecting the PLL to be connected to a clock input
   enum class PllSelect : uint8_t
   {
-    kMainPll = 0,  // PLL0
-    kUsbPll,       // PLL1
+    /// PLL0, Main PLL code
+    kMainPll = 0,
+    /// PLL1: USB PLL code
+    kUsbPll,
   };
+
   /// Available frequencies of the external oscillator for use by PLL1 to
   /// produce the required USB clock.
   enum class UsbPllInputFrequency : uint8_t
   {
-    k12MHz = 0,  // NOLINT
-    k16MHz,      // NOLINT
-    k24MHz,      // NOLINT
+    kF12MHz = 0,
+    kF16MHz,
+    kF24MHz,
   };
 
+  /// USB PLL Multiplier codes
   enum class UsbPllMultiplier : uint8_t
   {
     kMultiplyBy4 = 0b0'0011,
@@ -47,6 +59,7 @@ class SystemController final : public sjsu::SystemController
     kMultiplyBy2 = 0b0'0001,
   };
 
+  /// USB PLL Divider codes
   enum class UsbPllDivider : uint8_t
   {
     kDivideBy1 = 0b00,
@@ -55,10 +68,15 @@ class SystemController final : public sjsu::SystemController
     kDivideBy8 = 0b11,
   };
 
-  struct Pll0Settings_t
+  /// Used to hold calculated PLL settings
+  struct PllSettings_t
   {
+    /// Multiplies the input oscillator by this amount
     uint16_t multiplier;
+    /// Pre-divide the input source to drive the multiplier even higher.
     uint8_t pre_divider;
+    /// Final output divider to bring the frequency down to a reasonable level
+    /// for the system.
     uint8_t cpu_divider;
   };
 
@@ -71,6 +89,7 @@ class SystemController final : public sjsu::SystemController
   class Peripherals
   {
    public:
+    //! @cond Doxygen_Suppress
     static constexpr auto kTimer0            = AddPeripheralID<1>();
     static constexpr auto kTimer1            = AddPeripheralID<2>();
     static constexpr auto kUart0             = AddPeripheralID<3>();
@@ -98,43 +117,71 @@ class SystemController final : public sjsu::SystemController
     static constexpr auto kGpdma             = AddPeripheralID<29>();
     static constexpr auto kEthernet          = AddPeripheralID<30>();
     static constexpr auto kUsb               = AddPeripheralID<31>();
+    //! @endcond
   };
 
+  /// Namespace of Oscillator register bitmasks
   struct Oscillator  // NOLINT
   {
+    /// IRC, main, or RTC oscillator select bits
     static constexpr bit::Mask kSelect = bit::CreateMaskFromRange(0, 1);
   };
 
+  /// Namespace of Clock register bitmasks
   struct CpuClock  // NOLINT
   {
+    /// CPU clock divider amount bitmask
     static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0, 7);
   };
 
+  /// Bit masks for the Main PLL register
   struct MainPll  // NOLINT
   {
-    // The following bit masks apply to the PLL0STAT and PLL0CFG registers.
+    // The following bit masks apply to the PLL0STAT and PLL0CFG registers
+    /// PLL multiplier mask
     static constexpr bit::Mask kMultiplier = bit::CreateMaskFromRange(0, 14);
+    /// PLL Pre-divider mask
     static constexpr bit::Mask kPreDivider = bit::CreateMaskFromRange(16, 23);
-    // The following bit masks only apply to the PLL0STAT register.
-    static constexpr bit::Mask kMode       = bit::CreateMaskFromRange(24, 25);
+
+    // The following bit masks only apply to the PLL0STAT register
+    /// PLL Mode control mask
+    static constexpr bit::Mask kMode = bit::CreateMaskFromRange(24, 25);
+    /// PLL Lock status bit
     static constexpr bit::Mask kLockStatus = bit::CreateMaskFromRange(26);
   };
 
+  /// Bit masks for the USB PLL register
   struct UsbPll  // NOLINT
   {
+    /// PLL multiplier mask
     static constexpr bit::Mask kMultiplier = bit::CreateMaskFromRange(0, 4);
-    static constexpr bit::Mask kDivider    = bit::CreateMaskFromRange(5, 6);
-    static constexpr bit::Mask kMode       = bit::CreateMaskFromRange(8, 9);
+    /// PLL Pre-divider mask
+    static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(5, 6);
+    /// PLL Mode control mask
+    static constexpr bit::Mask kMode = bit::CreateMaskFromRange(8, 9);
+    /// PLL Lock status bit
     static constexpr bit::Mask kLockStatus = bit::CreateMaskFromRange(10);
   };
 
-  static constexpr uint32_t kPllEnableBit  = 0;
-  static constexpr uint32_t kPllConnectBit = 1;
+  /// Common bit masks across PLLs
+  struct Pll  // NOLINT
+  {
+    /// PLL enable bit
+    static constexpr bit::Mask kEnableBit = bit::CreateMaskFromRange(0);
+    /// PLL connect/disconnect bit
+    static constexpr bit::Mask kConnectBit = bit::CreateMaskFromRange(1);
+  };
 
+  /// Fixed IRC frequency
   static constexpr units::frequency::hertz_t kDefaultIRCFrequency = 4_MHz;
-  static constexpr units::frequency::hertz_t kUsbClockFrequency   = 48_MHz;
-  static constexpr units::frequency::hertz_t kRTCFrequency        = 32'768_Hz;
 
+  /// Required frequency for the USB clock
+  static constexpr units::frequency::hertz_t kUsbClockFrequency = 48_MHz;
+
+  /// Fixed RTC frequency
+  static constexpr units::frequency::hertz_t kRTCFrequency = 32'768_Hz;
+
+  /// Pointer to the system controller peripheral in memory.
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
   /// Sets a desired CPU speed by using the internal RC as the oscillator source
@@ -158,11 +205,11 @@ class SystemController final : public sjsu::SystemController
 
     // 1. Disconnect PLL0 with one feed sequence if PLL0 is already connected.
     system_controller->PLL0CON =
-        bit::Clear(system_controller->PLL0CON, kPllConnectBit);
+        bit::Clear(system_controller->PLL0CON, Pll::kConnectBit);
     WritePllFeedSequence(PllSelect::kMainPll);
     // 2. Disable PLL0 with one feed sequence.
     system_controller->PLL0CON =
-        bit::Clear(system_controller->PLL0CON, kPllEnableBit);
+        bit::Clear(system_controller->PLL0CON, Pll::kEnableBit);
     WritePllFeedSequence(PllSelect::kMainPll);
     // 3. Change the CPU Clock Divider setting to speed up operation without
     //    PLL0, if desired.
@@ -174,7 +221,7 @@ class SystemController final : public sjsu::SystemController
     SelectOscillatorSource(OscillatorSource::kIrc);
     // 5. Write to the PLL0CFG and make it effective with one feed sequence.
     //    The PLL0CFG can only be updated when PLL0 is disabled.
-    const Pll0Settings_t kPll0Settings =
+    const PllSettings_t kPll0Settings =
         CalculatePll0(kDefaultIRCFrequency, frequency);
     system_controller->PLL0CFG = bit::Insert(system_controller->PLL0CFG,
                                              kPll0Settings.multiplier,
@@ -185,7 +232,7 @@ class SystemController final : public sjsu::SystemController
     WritePllFeedSequence(PllSelect::kMainPll);
     // 6. Enable PLL0 with one feed sequence.
     system_controller->PLL0CON =
-        bit::Set(system_controller->PLL0CON, kPllEnableBit);
+        bit::Set(system_controller->PLL0CON, Pll::kEnableBit);
     WritePllFeedSequence(PllSelect::kMainPll);
     // 7. Change the CPU Clock Divider setting for the operation with PLL0.
     //    It is critical to do this before connecting PLL0.
@@ -197,7 +244,7 @@ class SystemController final : public sjsu::SystemController
                      "PLL0 lock could not be established before timeout");
     // 9. Connect PLL0 with one feed sequence.
     system_controller->PLL0CON =
-        bit::Set(system_controller->PLL0CON, kPllConnectBit);
+        bit::Set(system_controller->PLL0CON, Pll::kConnectBit);
     WritePllFeedSequence(PllSelect::kMainPll);
 
     SJ2_ASSERT_FATAL(WaitForPllConnectionStatus(PllSelect::kMainPll),
@@ -217,11 +264,11 @@ class SystemController final : public sjsu::SystemController
 
     // 1. Disconnect PLL1 with one feed sequence if PLL1 is already connected.
     system_controller->PLL1CON =
-        bit::Clear(system_controller->PLL1CON, kPllConnectBit);
+        bit::Clear(system_controller->PLL1CON, Pll::kConnectBit);
     WritePllFeedSequence(PllSelect::kUsbPll);
     // 2. Disable PLL1 with one feed sequence.
     system_controller->PLL1CON =
-        bit::Clear(system_controller->PLL1CON, kPllEnableBit);
+        bit::Clear(system_controller->PLL1CON, Pll::kEnableBit);
     WritePllFeedSequence(PllSelect::kUsbPll);
     // 3. Write to the PLL1CFG and make it effective with one feed sequence.
     constexpr uint8_t kDivider = Value(UsbPllDivider::kDivideBy1);
@@ -232,23 +279,22 @@ class SystemController final : public sjsu::SystemController
       Value(UsbPllMultiplier::kMultiplyBy3),
       Value(UsbPllMultiplier::kMultiplyBy2),
     };
-    system_controller->PLL1CFG =
-        bit::Insert(system_controller->PLL1CFG,
-                    kMultiplier[Value(frequency)],
-                    UsbPll::kMultiplier);
+    system_controller->PLL1CFG = bit::Insert(system_controller->PLL1CFG,
+                                             kMultiplier[Value(frequency)],
+                                             UsbPll::kMultiplier);
     system_controller->PLL1CFG =
         bit::Insert(system_controller->PLL1CFG, kDivider, UsbPll::kDivider);
     WritePllFeedSequence(PllSelect::kUsbPll);
     // 4. Enable PLL1 with one feed sequence.
     system_controller->PLL1CON =
-        bit::Set(system_controller->PLL1CON, kPllEnableBit);
+        bit::Set(system_controller->PLL1CON, Pll::kEnableBit);
     WritePllFeedSequence(PllSelect::kUsbPll);
     // 5. Configurations to the PLL must be locked before it can be connected.
     SJ2_ASSERT_FATAL(WaitForPllLockStatus(PllSelect::kUsbPll),
                      "PLL1 lock could not be established before timeout");
     // 6. Connect PLL1 with one feed sequence.
     system_controller->PLL1CON =
-        bit::Set(system_controller->PLL1CON, kPllConnectBit);
+        bit::Set(system_controller->PLL1CON, Pll::kConnectBit);
     WritePllFeedSequence(PllSelect::kUsbPll);
 
     SJ2_ASSERT_FATAL(WaitForPllConnectionStatus(PllSelect::kUsbPll),
@@ -306,6 +352,7 @@ class SystemController final : public sjsu::SystemController
         CalculatePeripheralClockDividerMask(peripheral_select);
     *pclk_sel = bit::Insert(*pclk_sel, divider_select, kDividerMask);
   }
+
   /// @returns The clock divider for the specified peripheral.
   uint32_t GetPeripheralClockDivider(
       const PeripheralID & peripheral_select) const override
@@ -376,6 +423,7 @@ class SystemController final : public sjsu::SystemController
                                                static_cast<uint32_t>(source),
                                                Oscillator::kSelect);
   }
+
   /// Calculates the multiplier. pre-divider, and CPU clock divider required to
   /// generated the desired CPU clock with PLL0 based on the specified input
   /// frequency.
@@ -383,8 +431,8 @@ class SystemController final : public sjsu::SystemController
   /// @param input_frequency Input of PLL0 should be 32 kHz to 50 MHz.
   /// @param desired_speed   Desired CPU clock to achieve. Should not
   ///                        exceed the maximum allowed CPU clock.
-  Pll0Settings_t CalculatePll0(units::frequency::hertz_t input_frequency,
-                               units::frequency::hertz_t desired_speed) const
+  PllSettings_t CalculatePll0(units::frequency::hertz_t input_frequency,
+                              units::frequency::hertz_t desired_speed) const
   {
     // minimum/maximum input and output frequencies of PLL0 in kHz
     constexpr units::frequency::hertz_t kMinimumPll0InputFrequency = 32_kHz;
@@ -435,10 +483,10 @@ class SystemController final : public sjsu::SystemController
                 kFcco / (cpu_divider + 1);
             if (kCpuClock == desired_speed)
             {
-              return Pll0Settings_t{ .multiplier  = m,
-                                     .pre_divider = n,
-                                     .cpu_divider =
-                                         static_cast<uint8_t>(cpu_divider) };
+              return PllSettings_t{ .multiplier  = m,
+                                    .pre_divider = n,
+                                    .cpu_divider =
+                                        static_cast<uint8_t>(cpu_divider) };
             }
           }  // cpu_divider loop
         }
@@ -447,10 +495,9 @@ class SystemController final : public sjsu::SystemController
     SJ2_ASSERT_FATAL(
         false,
         "Failed to calculate the PLL0 settings for the desired frequency.");
-    return Pll0Settings_t{
-      .multiplier = 0, .pre_divider = 0, .cpu_divider = 0
-    };
+    return PllSettings_t{ .multiplier = 0, .pre_divider = 0, .cpu_divider = 0 };
   }
+
   /// Writes the feed sequence that is necessary to lock in any changes to the
   /// PLLCON and PLLCGG registers.
   void WritePllFeedSequence(PllSelect pll) const
@@ -475,11 +522,10 @@ class SystemController final : public sjsu::SystemController
       &(system_controller->PLL0STAT),  // NOLINT
       &(system_controller->PLL1STAT)
     };
-    const bit::Mask kLockStatusMasks[] = { MainPll::kLockStatus,
+    const bit::Mask kLockStatusMasks[]  = { MainPll::kLockStatus,
                                            UsbPll::kLockStatus };
-    volatile uint32_t * status_register =
-        pll_status_registers[Value(pll)];
-    const bit::Mask kLockStatusMask = kLockStatusMasks[Value(pll)];
+    volatile uint32_t * status_register = pll_status_registers[Value(pll)];
+    const bit::Mask kLockStatusMask     = kLockStatusMasks[Value(pll)];
 
     while (!bit::Read(*status_register, kLockStatusMask.position))
     {
@@ -503,10 +549,9 @@ class SystemController final : public sjsu::SystemController
       &(system_controller->PLL0STAT),  // NOLINT
       &(system_controller->PLL1STAT)
     };
-    const bit::Mask kMasks[] = { MainPll::kMode, UsbPll::kMode };
-    volatile uint32_t * status_register =
-        pll_status_registers[Value(pll)];
-    const bit::Mask kPllModeMask = kMasks[Value(pll)];
+    const bit::Mask kMasks[]            = { MainPll::kMode, UsbPll::kMode };
+    volatile uint32_t * status_register = pll_status_registers[Value(pll)];
+    const bit::Mask kPllModeMask        = kMasks[Value(pll)];
 
     while (!bit::Read(*status_register, kPllModeMask.position))
     {
@@ -531,6 +576,7 @@ class SystemController final : public sjsu::SystemController
     system_controller->CCLKCFG = bit::Insert(
         system_controller->CCLKCFG, cpu_divider, CpuClock::kDivider);
   }
+
   /// @returns  Pointer to the PCLKSEL0 or PCLKSEL1 register based on the
   ///           peripheral's device_id.
   volatile uint32_t * GetPeripheralClockSelectRegister(
@@ -542,6 +588,7 @@ class SystemController final : public sjsu::SystemController
     }
     return &(system_controller->PCLKSEL0);
   }
+
   /// @returns  The bit mask for the 2-bit position of the specified
   ///           peripheral's divider select in the PCLKSEL0 or PCLKSEL1
   ///           register.
