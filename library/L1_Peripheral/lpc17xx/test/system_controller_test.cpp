@@ -56,8 +56,10 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
 
     system_controller.SetSystemClockFrequency(kExpectedFrequency);
 
-    CHECK(bit::Read(local_sc.PLL0CON, SystemController::kPllEnableBit) == 0b1);
-    CHECK(bit::Read(local_sc.PLL0CON, SystemController::kPllConnectBit) == 0b1);
+    CHECK(bit::Read(local_sc.PLL0CON, SystemController::Pll::kEnableBit) ==
+          0b1);
+    CHECK(bit::Read(local_sc.PLL0CON, SystemController::Pll::kConnectBit) ==
+          0b1);
     // Reading the multiplier, pre-divider, and cpu clock dividers from their
     // corrensponding registers to re-calculate the desired cpu frequency to
     // check at the correct values were written
@@ -84,9 +86,9 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
   SECTION("Set USB PLL Input Frequency")
   {
     const SystemController::UsbPllInputFrequency kInputFrequencies[] = {
-      SystemController::UsbPllInputFrequency::k12MHz,
-      SystemController::UsbPllInputFrequency::k16MHz,
-      SystemController::UsbPllInputFrequency::k24MHz
+      SystemController::UsbPllInputFrequency::kF12MHz,
+      SystemController::UsbPllInputFrequency::kF16MHz,
+      SystemController::UsbPllInputFrequency::kF24MHz
     };
     const uint8_t kExpectedMultiplier[] = {
       Value(SystemController::UsbPllMultiplier::kMultiplyBy4),
@@ -105,8 +107,8 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
       const uint32_t kDivider =
           bit::Extract(local_sc.PLL1CFG, SystemController::UsbPll::kDivider);
 
-      CHECK(bit::Read(local_sc.PLL1CON, SystemController::kPllEnableBit));
-      CHECK(bit::Read(local_sc.PLL1CON, SystemController::kPllConnectBit));
+      CHECK(bit::Read(local_sc.PLL1CON, SystemController::Pll::kEnableBit));
+      CHECK(bit::Read(local_sc.PLL1CON, SystemController::Pll::kConnectBit));
       CHECK(kMultiplier == kExpectedMultiplier[i]);
       CHECK(kDivider == kExpectedDivider);
     }
