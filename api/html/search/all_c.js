@@ -9,7 +9,7 @@ var searchData=
   ['max_5fsize',['max_size',['../db/d4d/structsjsu_1_1CommandList__t.html#a6f328b8d5e3b7f1389470580652b82c9',1,'sjsu::CommandList_t']]],
   ['millisecond_5fcount',['millisecond_count',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a4b3de8f56a24d2ff25838f07052776ae',1,'sjsu::cortex::SystemTimer']]],
   ['miso',['miso',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a70275f2510b3058f77b8f2964731a05e',1,'sjsu::lpc40xx::Spi::Bus_t']]],
-  ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu']]],
+  ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu::Mma8452q'],['../d5/d82/classsjsu_1_1Mma8452q.html#ac25e7d66b9531cd385721ba1757fab7a',1,'sjsu::Mma8452q::Mma8452q()']]],
   ['mosi',['mosi',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ae3cf6225b5c2b9bb40f74830df712b31',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['multiply',['multiply',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t']]]
 ];

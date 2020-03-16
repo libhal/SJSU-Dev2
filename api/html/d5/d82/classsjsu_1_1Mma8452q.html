@@ -77,12 +77,16 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../d0/dbb/classsjsu_1_1Mma8452q-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::Mma8452q Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Driver for the MMA8452Q 3-axis accelerometer.  
+ <a href="../../d5/d82/classsjsu_1_1Mma8452q.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../dc/d47/mma8452q_8hpp_source.html">mma8452q.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Mma8452q:</div>
 <div class="dyncontent">
@@ -102,74 +106,77 @@ Collaboration diagram for sjsu::Mma8452q:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a3a47ce4de7d7451f4eaf90dd5cc8d193"><td class="memItemLeft" align="right" valign="top"><a id="a3a47ce4de7d7451f4eaf90dd5cc8d193"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>RegisterMap</b> : uint8_t { <br />
-&#160;&#160;<b>kStatus</b> = 0x00, 
-<b>kX</b> = 0x01, 
-<b>kY</b> = 0x03, 
-<b>kZ</b> = 0x05, 
+<tr class="memitem:a2e56debebb95bd316bbac2b76bb1cdd4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4">RegisterAddress</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ac6317b10b4bb1c35a6f4b93871038e56">kStatus</a> = 0x00, 
+<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ad8990dc2506d44a6c8ff25d993c2b009">kX</a> = 0x01, 
+<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ae30eb130408f5a56b7c5e1eaecd77a42">kY</a> = 0x03, 
+<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4a628724ec998a08ac3e39658b09be19cb">kZ</a> = 0x05, 
 <br />
-&#160;&#160;<b>kWhoAmI</b> = 0x0d, 
-<b>kDataConfig</b> = 0x0e
+&#160;&#160;<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4a2a8d861caa9afffd9b644cbedcf8a71b">kWhoAmI</a> = 0x0d, 
+<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4afc9167fe957ba5d1b27394378195385b">kDataConfig</a> = 0x0e
 <br />
- }</td></tr>
-<tr class="separator:a3a47ce4de7d7451f4eaf90dd5cc8d193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+ }<tr class="memdesc:a2e56debebb95bd316bbac2b76bb1cdd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of all of the used device addresses in this driver.  <a href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a2e56debebb95bd316bbac2b76bb1cdd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac25e7d66b9531cd385721ba1757fab7a"><td class="memItemLeft" align="right" valign="top"><a id="ac25e7d66b9531cd385721ba1757fab7a"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Mma8452q</b> (const <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;i2c, uint8_t address=0x1c)</td></tr>
+<tr class="memitem:ac25e7d66b9531cd385721ba1757fab7a"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#ac25e7d66b9531cd385721ba1757fab7a">Mma8452q</a> (const <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;i2c, uint8_t address=0x1c)</td></tr>
 <tr class="separator:ac25e7d66b9531cd385721ba1757fab7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23668d0a57d6ced7a8499695c9f6a09c"><td class="memItemLeft" align="right" valign="top"><a id="a23668d0a57d6ced7a8499695c9f6a09c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> () override</td></tr>
+<tr class="memitem:a23668d0a57d6ced7a8499695c9f6a09c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a23668d0a57d6ced7a8499695c9f6a09c">Initialize</a> () override</td></tr>
 <tr class="separator:a23668d0a57d6ced7a8499695c9f6a09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54a5ad1fb4f7862683e5a7712aca7a49"><td class="memItemLeft" align="right" valign="top"><a id="a54a5ad1fb4f7862683e5a7712aca7a49"></a>
-int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetAxisValue</b> (uint8_t register_number) const</td></tr>
-<tr class="separator:a54a5ad1fb4f7862683e5a7712aca7a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78fb2ba5ef832e2972c81f31df848ecf"><td class="memItemLeft" align="right" valign="top"><a id="a78fb2ba5ef832e2972c81f31df848ecf"></a>
-int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>X</b> () const override</td></tr>
-<tr class="separator:a78fb2ba5ef832e2972c81f31df848ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f19bad1ff06d8b5e00e515a115cd92f"><td class="memItemLeft" align="right" valign="top"><a id="a5f19bad1ff06d8b5e00e515a115cd92f"></a>
-int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>Y</b> () const override</td></tr>
-<tr class="separator:a5f19bad1ff06d8b5e00e515a115cd92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af12eb024a91a8ed43909260dab9e107d"><td class="memItemLeft" align="right" valign="top"><a id="af12eb024a91a8ed43909260dab9e107d"></a>
-int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>Z</b> () const override</td></tr>
-<tr class="separator:af12eb024a91a8ed43909260dab9e107d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c91c76f92e09c11d2ceb9dd527ea6ae"><td class="memItemLeft" align="right" valign="top"><a id="a0c91c76f92e09c11d2ceb9dd527ea6ae"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Pitch</b> () const override</td></tr>
-<tr class="separator:a0c91c76f92e09c11d2ceb9dd527ea6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ff6317a67eaa5f347881113b9eaad77"><td class="memItemLeft" align="right" valign="top"><a id="a2ff6317a67eaa5f347881113b9eaad77"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Roll</b> () const override</td></tr>
-<tr class="separator:a2ff6317a67eaa5f347881113b9eaad77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae37ab7346fc8e2e65a2198cd8d13ff2b"><td class="memItemLeft" align="right" valign="top"><a id="ae37ab7346fc8e2e65a2198cd8d13ff2b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetFullScaleRange</b> () const override</td></tr>
+<tr class="memitem:ac00bcddaad912b1308ae56e0c8d42bc4"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#ac00bcddaad912b1308ae56e0c8d42bc4">X</a> () const override</td></tr>
+<tr class="separator:ac00bcddaad912b1308ae56e0c8d42bc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1767b87afdec3b00dc025387a3ad60eb"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a1767b87afdec3b00dc025387a3ad60eb">Y</a> () const override</td></tr>
+<tr class="separator:a1767b87afdec3b00dc025387a3ad60eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb9ea3087094f3fea156dd50a64387ea"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#afb9ea3087094f3fea156dd50a64387ea">Z</a> () const override</td></tr>
+<tr class="separator:afb9ea3087094f3fea156dd50a64387ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae37ab7346fc8e2e65a2198cd8d13ff2b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#ae37ab7346fc8e2e65a2198cd8d13ff2b">GetFullScaleRange</a> () const override</td></tr>
 <tr class="separator:ae37ab7346fc8e2e65a2198cd8d13ff2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9491b561554b6fff72fb6027afc11c1e"><td class="memItemLeft" align="right" valign="top"><a id="a9491b561554b6fff72fb6027afc11c1e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFullScaleRange</b> (uint8_t range_value) override</td></tr>
+<tr class="memitem:a9491b561554b6fff72fb6027afc11c1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a9491b561554b6fff72fb6027afc11c1e">SetFullScaleRange</a> (uint8_t range_value) override</td></tr>
 <tr class="separator:a9491b561554b6fff72fb6027afc11c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:ac600cce8375c23eb67ccc3393f544326"><td class="memItemLeft" align="right" valign="top"><a id="ac600cce8375c23eb67ccc3393f544326"></a>
-static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDataOffset</b> = 16</td></tr>
-<tr class="separator:ac600cce8375c23eb67ccc3393f544326"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30c5cb0225eab9f1de63df30f5b75e42"><td class="memItemLeft" align="right" valign="top"><a id="a30c5cb0225eab9f1de63df30f5b75e42"></a>
-static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><b>kRadiansToDegree</b> = 180.0f / 3.14f</td></tr>
-<tr class="separator:a30c5cb0225eab9f1de63df30f5b75e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66982f6b17b064fbac0bb8eba5d29a42"><td class="memItemLeft" align="right" valign="top"><a id="a66982f6b17b064fbac0bb8eba5d29a42"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kWhoAmIExpectedValue</b> = 0x2a</td></tr>
-<tr class="separator:a66982f6b17b064fbac0bb8eba5d29a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a007851b0f66e0fdd2567a8667b9aaf36"><td class="memItemLeft" align="right" valign="top"><a id="a007851b0f66e0fdd2567a8667b9aaf36"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMsbShift</b> = 8</td></tr>
-<tr class="separator:a007851b0f66e0fdd2567a8667b9aaf36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7f2564bf7542c40954336f1a7aebba7"><td class="memItemLeft" align="right" valign="top"><a id="ad7f2564bf7542c40954336f1a7aebba7"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>kMaxAccelerationScale</b> [4] = { 2, 4, 8, -1 }</td></tr>
-<tr class="separator:ad7f2564bf7542c40954336f1a7aebba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa97471bff94f25a89f2cc5147be7e3a6"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kSetMaxAccelerationScale</b> [16]</td></tr>
-<tr class="separator:aa97471bff94f25a89f2cc5147be7e3a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classsjsu_1_1Accelerometer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1Accelerometer')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html">sjsu::Accelerometer</a></td></tr>
+<tr class="memitem:adc8aedebdf5241b774033108b6d43146 inherit pub_methods_classsjsu_1_1Accelerometer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#adc8aedebdf5241b774033108b6d43146">Pitch</a> () const</td></tr>
+<tr class="separator:adc8aedebdf5241b774033108b6d43146 inherit pub_methods_classsjsu_1_1Accelerometer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad56ebdb7e6815354653e7d0c4b0d57f6 inherit pub_methods_classsjsu_1_1Accelerometer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#ad56ebdb7e6815354653e7d0c4b0d57f6">Roll</a> () const</td></tr>
+<tr class="separator:ad56ebdb7e6815354653e7d0c4b0d57f6 inherit pub_methods_classsjsu_1_1Accelerometer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa97471bff94f25a89f2cc5147be7e3a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa97471bff94f25a89f2cc5147be7e3a6">&#9670;&nbsp;</a></span>kSetMaxAccelerationScale</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Driver for the MMA8452Q 3-axis accelerometer. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a2e56debebb95bd316bbac2b76bb1cdd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e56debebb95bd316bbac2b76bb1cdd4">&#9670;&nbsp;</a></span>RegisterAddress</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4">sjsu::Mma8452q::RegisterAddress</a> : uint8_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Map of all of the used device addresses in this driver. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2e56debebb95bd316bbac2b76bb1cdd4ac6317b10b4bb1c35a6f4b93871038e56"></a>kStatus&#160;</td><td class="fielddoc"><p><a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> status register address. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e56debebb95bd316bbac2b76bb1cdd4ad8990dc2506d44a6c8ff25d993c2b009"></a>kX&#160;</td><td class="fielddoc"><p>Register address of the the first byte of the X axis. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e56debebb95bd316bbac2b76bb1cdd4ae30eb130408f5a56b7c5e1eaecd77a42"></a>kY&#160;</td><td class="fielddoc"><p>Register address of the the first byte of the Y axis. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e56debebb95bd316bbac2b76bb1cdd4a628724ec998a08ac3e39658b09be19cb"></a>kZ&#160;</td><td class="fielddoc"><p>Register address of the the first byte of the Z axis. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e56debebb95bd316bbac2b76bb1cdd4a2a8d861caa9afffd9b644cbedcf8a71b"></a>kWhoAmI&#160;</td><td class="fielddoc"><p><a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> ID register address. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a2e56debebb95bd316bbac2b76bb1cdd4afc9167fe957ba5d1b27394378195385b"></a>kDataConfig&#160;</td><td class="fielddoc"><p><a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> configuration starting address. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ac25e7d66b9531cd385721ba1757fab7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac25e7d66b9531cd385721ba1757fab7a">&#9670;&nbsp;</a></span>Mma8452q()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,16 +185,212 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>kMaxA
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::Mma8452q::kSetMaxAccelerationScale[16]</td>
+          <td class="memname">constexpr sjsu::Mma8452q::Mma8452q </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em> = <code>0x1c</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,</div><div class="line">    0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00</div><div class="line">  }</div></div><!-- fragment -->
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>- i2c peripheral used to commnicate with device. </td></tr>
+    <tr><td class="paramname">address</td><td>- device address. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae37ab7346fc8e2e65a2198cd8d13ff2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae37ab7346fc8e2e65a2198cd8d13ff2b">&#9670;&nbsp;</a></span>GetFullScaleRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sjsu::Mma8452q::GetFullScaleRange </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the scale multiplier of gravity. If this returns 1, then the maximum returned acceleration will be 9.8 m/s^2. If it is 2, then the maximum acceleration value would be 2 time that. </dd></dl>
+
+<p>Implements <a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a341ef355a39e57028c3532fafa8a80a7">sjsu::Accelerometer</a>.</p>
+
+</div>
+</div>
+<a id="a23668d0a57d6ced7a8499695c9f6a09c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23668d0a57d6ced7a8499695c9f6a09c">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sjsu::Mma8452q::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize peripherals required to communicate with device, enables accelerometer device. After running this function, code can read from the X, Y, and Z methods as well as configure other settings of the device. This method must be called before any others are called in this class. </p>
+
+<p>Implements <a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#aa1cc88d6407b27d67f981d1f63d00e0b">sjsu::Accelerometer</a>.</p>
+
+</div>
+</div>
+<a id="a9491b561554b6fff72fb6027afc11c1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9491b561554b6fff72fb6027afc11c1e">&#9670;&nbsp;</a></span>SetFullScaleRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Mma8452q::SetFullScaleRange </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>range_value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the full scale range </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">range_value</td><td>- full scale multiplier. If set to 2 then the maximum value of any axis will represent 2 x 9.8m/s^2. If it was set to 1 then the maximum value of any axis will represent 9.8m/s^2. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a0dced39ee69f11bb39b12ece9dc7e203">sjsu::Accelerometer</a>.</p>
+
+</div>
+</div>
+<a id="ac00bcddaad912b1308ae56e0c8d42bc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac00bcddaad912b1308ae56e0c8d42bc4">&#9670;&nbsp;</a></span>X()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t sjsu::Mma8452q::X </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the acceleration on the X axis. </dd></dl>
+
+<p>Implements <a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#ac2f46d87fd9d6d9e6918f6dea3d9dfbe">sjsu::Accelerometer</a>.</p>
+
+</div>
+</div>
+<a id="a1767b87afdec3b00dc025387a3ad60eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1767b87afdec3b00dc025387a3ad60eb">&#9670;&nbsp;</a></span>Y()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t sjsu::Mma8452q::Y </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the acceleration on the Y axis. </dd></dl>
+
+<p>Implements <a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a316f7d76aa7d8d8cf9868f9e68b7eb51">sjsu::Accelerometer</a>.</p>
+
+</div>
+</div>
+<a id="afb9ea3087094f3fea156dd50a64387ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb9ea3087094f3fea156dd50a64387ea">&#9670;&nbsp;</a></span>Z()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t sjsu::Mma8452q::Z </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the acceleration on the Z axis. </dd></dl>
+
+<p>Implements <a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a6119bc2ab0e85e299bbf86701918c2aa">sjsu::Accelerometer</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

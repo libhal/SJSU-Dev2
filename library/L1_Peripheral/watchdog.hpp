@@ -7,15 +7,31 @@
 namespace sjsu
 {
 /// @ingroup l1_peripheral
+///
+/// Abstract interface for a hardware watchdog timer peripheral which can be
+/// used to determine if the system has become locked up, and if so, restarts
+/// the system.
 class Watchdog
 {
   // TODO(#998): May need to expand the set of functions watchdogs perform.
   //             At this moment, all watchdog implementations reset the
   //             processor.
  public:
-  virtual Status Initialize(std::chrono::seconds duration) const = 0;
-  virtual void Enable() const                                    = 0;
-  virtual void FeedSequence() const                              = 0;
-  virtual uint32_t CheckTimeout() const                          = 0;
+  /// Initialize watchdog peripheral and give it an initial feeding interval.
+  ///
+  /// @param interval - feeding interval. Not feeding the watch dog in this
+  ///        time will result in the system restarting.
+  /// @return status indicating the failure type for the watchdog.
+  virtual Status Initialize(std::chrono::seconds interval) const = 0;
+
+  /// Enables the watchdog. After this point, the watch dog must be feed before
+  /// the interval duration is exceeded, otherwise the system will restart.
+  virtual void Enable() const = 0;
+
+  /// Feeds the watchdog and restarts the sequence.
+  virtual void FeedSequence() const = 0;
+
+  /// Reads the current counter value of the watchdog timer.
+  virtual uint32_t CheckTimeout() const = 0;
 };
 }  // namespace sjsu

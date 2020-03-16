@@ -5,6 +5,7 @@ var searchData=
   ['k10hz',['k10Hz',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a598178103e64537a0dd2abe6838327b6ab34d0b96337eacfd044f343c48e43d95',1,'sjsu::rtos::PeriodicScheduler']]],
   ['k1hz',['k1Hz',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a598178103e64537a0dd2abe6838327b6a1c9a56eb33449e5a31aaff8b42b0fd9e',1,'sjsu::rtos::PeriodicScheduler']]],
   ['kcount',['kCount',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a598178103e64537a0dd2abe6838327b6a5a162d352f3b3603e03fc9b2f043fb40',1,'sjsu::rtos::PeriodicScheduler']]],
+  ['kdataconfig',['kDataConfig',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4afc9167fe957ba5d1b27394378195385b',1,'sjsu::Mma8452q']]],
   ['keeprom',['kEeprom',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a2ad4ffc87714c82ce899a673fd8dcca1',1,'sjsu::Storage']]],
   ['kemmc',['kEMMC',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a1db1a52ec0dcbd7a7922f8bd20d60317',1,'sjsu::Storage']]],
   ['kfram',['kFRam',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878ad214cae8da968d40f8e3b923bb2d796e',1,'sjsu::Storage']]],
@@ -16,5 +17,10 @@ var searchData=
   ['kpullup',['kPullUp',['../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95aef7e3f1637f99b1b8619308ee2dab8e9',1,'sjsu::Pin']]],
   ['kram',['kRam',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a5864f668bf8aaf9b7549c17e265c3f9e',1,'sjsu::Storage']]],
   ['krepeater',['kRepeater',['../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95a4e01a1ad92574d898bd8319b9ceb958f',1,'sjsu::Pin']]],
-  ['ksd',['kSD',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a5bba813e3c87c8796a238d53e13987c8',1,'sjsu::Storage']]]
+  ['ksd',['kSD',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a5bba813e3c87c8796a238d53e13987c8',1,'sjsu::Storage']]],
+  ['kstatus',['kStatus',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ac6317b10b4bb1c35a6f4b93871038e56',1,'sjsu::Mma8452q']]],
+  ['kwhoami',['kWhoAmI',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4a2a8d861caa9afffd9b644cbedcf8a71b',1,'sjsu::Mma8452q']]],
+  ['kx',['kX',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ad8990dc2506d44a6c8ff25d993c2b009',1,'sjsu::Mma8452q']]],
+  ['ky',['kY',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ae30eb130408f5a56b7c5e1eaecd77a42',1,'sjsu::Mma8452q']]],
+  ['kz',['kZ',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4a628724ec998a08ac3e39658b09be19cb',1,'sjsu::Mma8452q']]]
 ];

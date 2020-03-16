@@ -47,6 +47,7 @@ var searchData=
   ['kdacenable',['kDacEnable',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a10fb982b459575b2c1ae8896a011d661',1,'sjsu::lpc40xx::Pin']]],
   ['kdacpin',['kDacPin',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae53c19c534567bb10c74f9576d8b0203',1,'sjsu::lpc40xx::Dac']]],
   ['kdatabit',['kDataBit',['../dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html#acf2a959d676c58a19807cab92b2f40f4',1,'sjsu::lpc40xx::Spi::ControlRegister0']]],
+  ['kdataconfig',['kDataConfig',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4afc9167fe957ba5d1b27394378195385b',1,'sjsu::Mma8452q']]],
   ['kdatalinebusybit',['kDataLineBusyBit',['../d9/d20/structsjsu_1_1lpc40xx_1_1Spi_1_1StatusRegister.html#a0bf65b52704e0777a858504979ee650f',1,'sjsu::lpc40xx::Spi::StatusRegister']]],
   ['kdatasizelut',['kDataSizeLUT',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a532e5d13af6f2d556464d03d8fed984d',1,'sjsu::lpc40xx::Spi']]],
   ['kdefaultaddress',['kDefaultAddress',['../df/ddc/classsjsu_1_1Si7060.html#ae174b287c74e3fb629c752077e0e4188',1,'sjsu::Si7060']]],
@@ -137,6 +138,7 @@ var searchData=
   ['kstandarduart',['kStandardUart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aa4bbcf7ccfa5a5de3c14906ca231d9f8',1,'sjsu::lpc40xx::Uart']]],
   ['kstartcode',['kStartCode',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a2126f6b386de2a1c5caec235551a19be',1,'sjsu::lpc40xx::Adc::Control']]],
   ['kstartedge',['kStartEdge',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ad4870d5d17da8adf84d54dd6e1de1577',1,'sjsu::lpc40xx::Adc::Control']]],
+  ['kstatus',['kStatus',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ac6317b10b4bb1c35a6f4b93871038e56',1,'sjsu::Mma8452q']]],
   ['ktablesize',['kTableSize',['../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html#af3ead5ce460f64124a7ce85b5796a1e9',1,'sjsu::crc::CrcTableConfig_t']]],
   ['ktemperature',['kTemperature',['../d8/da2/structsjsu_1_1Tmp102_1_1RegisterAddress.html#a68c15f1d5036eaff29b855617ee5581b',1,'sjsu::Tmp102::RegisterAddress']]],
   ['kuart0',['kUart0',['../d4/d2f/structsjsu_1_1lpc17xx_1_1UartPort.html#a35b3c4f569e040a6897f7372b0b8358f',1,'sjsu::lpc17xx::UartPort::kUart0()'],['../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html#a59cfbddd48f9cb1860034630feb1848f',1,'sjsu::lpc40xx::Uart::Port::kUart0()']]],
@@ -145,5 +147,9 @@ var searchData=
   ['kuart4',['kUart4',['../d6/dbb/structsjsu_1_1lpc40xx_1_1Uart_1_1Port.html#a558b963afdbd545e6d2039f33151b081',1,'sjsu::lpc40xx::Uart::Port']]],
   ['kvalue',['kValue',['../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html#a2d9313144228334456bf739d0b790055',1,'sjsu::lpc40xx::Dac::Control']]],
   ['kvoltagehigh',['kVoltageHigh',['../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html#a12150736cffa2fc4e4596a7b35f40287',1,'sjsu::Tmp102::DeviceAddress']]],
-  ['kvref',['kVref',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a30431206431b0f96b87a19b5aaa11e6c',1,'sjsu::lpc40xx::Dac']]]
+  ['kvref',['kVref',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a30431206431b0f96b87a19b5aaa11e6c',1,'sjsu::lpc40xx::Dac']]],
+  ['kwhoami',['kWhoAmI',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4a2a8d861caa9afffd9b644cbedcf8a71b',1,'sjsu::Mma8452q']]],
+  ['kx',['kX',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ad8990dc2506d44a6c8ff25d993c2b009',1,'sjsu::Mma8452q']]],
+  ['ky',['kY',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4ae30eb130408f5a56b7c5e1eaecd77a42',1,'sjsu::Mma8452q']]],
+  ['kz',['kZ',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4a628724ec998a08ac3e39658b09be19cb',1,'sjsu::Mma8452q']]]
 ];

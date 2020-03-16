@@ -81,30 +81,99 @@ $(function() {
 <div class="title">sjsu::Watchdog Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="../../d4/da8/group__l1__peripheral.html">L1 Peripheral Interfaces</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d6/d0f/watchdog_8hpp_source.html">watchdog.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Watchdog:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/dc3/classsjsu_1_1Watchdog__inherit__graph.png" border="0" usemap="#sjsu_1_1Watchdog_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Watchdog_inherit__map" id="sjsu_1_1Watchdog_inherit__map">
-<area shape="rect" id="node2" href="../../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html" title="sjsu::lpc40xx::Watchdog" alt="" coords="5,80,184,107"/>
+<area shape="rect" id="node2" href="../../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html" title="Watchdog driver for the lpc40xx. " alt="" coords="5,80,184,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab156b2f263129e5fdc9125991c6db779"><td class="memItemLeft" align="right" valign="top"><a id="ab156b2f263129e5fdc9125991c6db779"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (std::chrono::seconds duration) const =0</td></tr>
-<tr class="separator:ab156b2f263129e5fdc9125991c6db779"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf7935fca4079a2b27dd454fef036d8c"><td class="memItemLeft" align="right" valign="top"><a id="aaf7935fca4079a2b27dd454fef036d8c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Enable</b> () const =0</td></tr>
+<tr class="memitem:a700457e0d42a454019a3da04c9dcdcfc"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/da1/classsjsu_1_1Watchdog.html#a700457e0d42a454019a3da04c9dcdcfc">Initialize</a> (std::chrono::seconds interval) const =0</td></tr>
+<tr class="separator:a700457e0d42a454019a3da04c9dcdcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf7935fca4079a2b27dd454fef036d8c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/da1/classsjsu_1_1Watchdog.html#aaf7935fca4079a2b27dd454fef036d8c">Enable</a> () const =0</td></tr>
 <tr class="separator:aaf7935fca4079a2b27dd454fef036d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee0713947074d1af74fb830f89392a17"><td class="memItemLeft" align="right" valign="top"><a id="aee0713947074d1af74fb830f89392a17"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>FeedSequence</b> () const =0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/da1/classsjsu_1_1Watchdog.html#aee0713947074d1af74fb830f89392a17">FeedSequence</a> () const =0</td></tr>
+<tr class="memdesc:aee0713947074d1af74fb830f89392a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Feeds the watchdog and restarts the sequence. <br /></td></tr>
 <tr class="separator:aee0713947074d1af74fb830f89392a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58b096fc6e905a7d0b3dddab79eefb42"><td class="memItemLeft" align="right" valign="top"><a id="a58b096fc6e905a7d0b3dddab79eefb42"></a>
-virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>CheckTimeout</b> () const =0</td></tr>
+virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/da1/classsjsu_1_1Watchdog.html#a58b096fc6e905a7d0b3dddab79eefb42">CheckTimeout</a> () const =0</td></tr>
+<tr class="memdesc:a58b096fc6e905a7d0b3dddab79eefb42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the current counter value of the watchdog timer. <br /></td></tr>
 <tr class="separator:a58b096fc6e905a7d0b3dddab79eefb42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Abstract interface for a hardware watchdog timer peripheral which can be used to determine if the system has become locked up, and if so, restarts the system. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aaf7935fca4079a2b27dd454fef036d8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf7935fca4079a2b27dd454fef036d8c">&#9670;&nbsp;</a></span>Enable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Watchdog::Enable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enables the watchdog. After this point, the watch dog must be feed before the interval duration is exceeded, otherwise the system will restart. </p>
+
+<p>Implemented in <a class="el" href="../../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#a1def8925ffdfb31ff9629202e021c99f">sjsu::lpc40xx::Watchdog</a>.</p>
+
+</div>
+</div>
+<a id="a700457e0d42a454019a3da04c9dcdcfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a700457e0d42a454019a3da04c9dcdcfc">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Watchdog::Initialize </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::seconds&#160;</td>
+          <td class="paramname"><em>interval</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize watchdog peripheral and give it an initial feeding interval.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interval</td><td>- feeding interval. Not feeding the watch dog in this time will result in the system restarting. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>status indicating the failure type for the watchdog. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#a6ced32f9b77753675102b2ad0dd0d131">sjsu::lpc40xx::Watchdog</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L1_Peripheral/<a class="el" href="../../d6/d0f/watchdog_8hpp_source.html">watchdog.hpp</a></li>
 </ul>
