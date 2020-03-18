@@ -21,11 +21,13 @@ TEST_CASE("Testing L1 example::Example", "[l1-example]")
   sjsu::lpc40xx::LPC_IOCON_TypeDef local_iocon;
 
   // Create a custom Channel_t with the data we plan to inspect.
-  Example::Channel_t dependency_injection = { .iocon = &local_iocon,
-                                              .data  = mock_pin_data.get(),
-                                              .clock = mock_pin_clock.get(),
-                                              .data_pin_function  = 0b100,
-                                              .clock_pin_function = 0b111 };
+  Example::Channel_t dependency_injection = {
+    .iocon              = &local_iocon,
+    .data               = mock_pin_data.get(),
+    .clock              = mock_pin_clock.get(),
+    .data_pin_function  = 0b100,
+    .clock_pin_function = 0b111,
+  };
 
   // Create the object with the custom Channel_t structure with our mocked data.
   Example test_subject(dependency_injection);
@@ -44,10 +46,7 @@ TEST_CASE("Testing L1 example::Example", "[l1-example]")
   }
   SECTION("GetValue()")
   {
-    // Check that the expected value is returned
-    constexpr float kExpectedValue = 1.5f;
-    CHECK((kExpectedValue - 1 <= test_subject.GetValue() &&
-           test_subject.GetValue() <= kExpectedValue + 1));
+    CHECK(1'000'000 == test_subject.GetClockRate());
   }
 }
 }  // namespace sjsu::example
