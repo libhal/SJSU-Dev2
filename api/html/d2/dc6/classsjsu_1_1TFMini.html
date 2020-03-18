@@ -82,6 +82,8 @@ $(function() {
 <div class="title">sjsu::TFMini Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../df/d38/tfmini_8hpp_source.html">tfmini.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::TFMini:</div>
 <div class="dyncontent">
@@ -101,8 +103,7 @@ Collaboration diagram for sjsu::TFMini:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a03903d84757b74fb427b61a489e13445"><td class="memItemLeft" align="right" valign="top"><a id="a03903d84757b74fb427b61a489e13445"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TFMini</b> (<a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html">Uart</a> &amp;uart)</td></tr>
+<tr class="memitem:a03903d84757b74fb427b61a489e13445"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a03903d84757b74fb427b61a489e13445">TFMini</a> (<a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html">Uart</a> &amp;uart)</td></tr>
 <tr class="separator:a03903d84757b74fb427b61a489e13445"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acecfca1e84cb4938c0819368daad3734"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#acecfca1e84cb4938c0819368daad3734">Initialize</a> () override</td></tr>
 <tr class="separator:acecfca1e84cb4938c0819368daad3734"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,59 +116,79 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>TFMini</b> (<a c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a3dac2f2c5bda1905c311e65c4ea6fd03"><td class="memItemLeft" align="right" valign="top"><a id="a3dac2f2c5bda1905c311e65c4ea6fd03"></a>
-static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>kBaudRate</b> = 115200</td></tr>
-<tr class="separator:a3dac2f2c5bda1905c311e65c4ea6fd03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55dd4d777efcb269321fc3e99075c84d"><td class="memItemLeft" align="right" valign="top"><a id="a55dd4d777efcb269321fc3e99075c84d"></a>
-static constexpr std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><b>kTimeout</b> = 1s</td></tr>
+<tr class="memitem:a55dd4d777efcb269321fc3e99075c84d"><td class="memItemLeft" align="right" valign="top">static constexpr std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a55dd4d777efcb269321fc3e99075c84d">kTimeout</a> = 3 * 10ms</td></tr>
 <tr class="separator:a55dd4d777efcb269321fc3e99075c84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7e67413f88612c388000502d2fb33b0"><td class="memItemLeft" align="right" valign="top"><a id="aa7e67413f88612c388000502d2fb33b0"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kFrameHeader</b> = 0x59</td></tr>
+<tr class="memitem:aa7e67413f88612c388000502d2fb33b0"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#aa7e67413f88612c388000502d2fb33b0">kFrameHeader</a> = 0x59</td></tr>
 <tr class="separator:aa7e67413f88612c388000502d2fb33b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a584d5624d7954672ef0a343852d26607"><td class="memItemLeft" align="right" valign="top"><a id="a584d5624d7954672ef0a343852d26607"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kLongDistMode</b> = 0x07</td></tr>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a584d5624d7954672ef0a343852d26607">kLongDistMode</a> = 0x07</td></tr>
+<tr class="memdesc:a584d5624d7954672ef0a343852d26607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to set the device to long range mode (currently not utilized) <br /></td></tr>
 <tr class="separator:a584d5624d7954672ef0a343852d26607"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab725c34cb4ec5f8f767187e2bc901a77"><td class="memItemLeft" align="right" valign="top"><a id="ab725c34cb4ec5f8f767187e2bc901a77"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kCommandLength</b> = 8</td></tr>
-<tr class="separator:ab725c34cb4ec5f8f767187e2bc901a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef930a53ee8b8952a81b956d9987ed2e"><td class="memItemLeft" align="right" valign="top"><a id="aef930a53ee8b8952a81b956d9987ed2e"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDeviceDataLength</b> = 9</td></tr>
-<tr class="separator:aef930a53ee8b8952a81b956d9987ed2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9258ca404f304cb518365c33ed8ed00"><td class="memItemLeft" align="right" valign="top"><a id="aa9258ca404f304cb518365c33ed8ed00"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kThresholdByte</b> = 4</td></tr>
-<tr class="separator:aa9258ca404f304cb518365c33ed8ed00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a231eb58309dbbfac0e3b9ad25093a442"><td class="memItemLeft" align="right" valign="top"><a id="a231eb58309dbbfac0e3b9ad25093a442"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kStrengthLowerLimitCap</b> = 80</td></tr>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a231eb58309dbbfac0e3b9ad25093a442">kStrengthLowerLimitCap</a> = 80</td></tr>
+<tr class="memdesc:a231eb58309dbbfac0e3b9ad25093a442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sensor signal strength lower bounds. <br /></td></tr>
 <tr class="separator:a231eb58309dbbfac0e3b9ad25093a442"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9025d2fdef06705d90512c8db5b48de5"><td class="memItemLeft" align="right" valign="top"><a id="a9025d2fdef06705d90512c8db5b48de5"></a>
-static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>kStrengthUpperBound</b> = 3000</td></tr>
+static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a9025d2fdef06705d90512c8db5b48de5">kStrengthUpperBound</a> = 3000</td></tr>
+<tr class="memdesc:a9025d2fdef06705d90512c8db5b48de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sensor signal strength upper bounds. <br /></td></tr>
 <tr class="separator:a9025d2fdef06705d90512c8db5b48de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76611c96addc0ed25d5bb89ba77de1d3"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kConfigCommand</b> [kCommandLength]</td></tr>
+<tr class="memitem:aef930a53ee8b8952a81b956d9987ed2e"><td class="memItemLeft" align="right" valign="top"><a id="aef930a53ee8b8952a81b956d9987ed2e"></a>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#aef930a53ee8b8952a81b956d9987ed2e">kDeviceDataLength</a> = 9</td></tr>
+<tr class="memdesc:aef930a53ee8b8952a81b956d9987ed2e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> response packet length. <br /></td></tr>
+<tr class="separator:aef930a53ee8b8952a81b956d9987ed2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab725c34cb4ec5f8f767187e2bc901a77"><td class="memItemLeft" align="right" valign="top"><a id="ab725c34cb4ec5f8f767187e2bc901a77"></a>
+static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a> = 8</td></tr>
+<tr class="memdesc:ab725c34cb4ec5f8f767187e2bc901a77"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> command packet length. <br /></td></tr>
+<tr class="separator:ab725c34cb4ec5f8f767187e2bc901a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76611c96addc0ed25d5bb89ba77de1d3"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a76611c96addc0ed25d5bb89ba77de1d3">kConfigCommand</a> [<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td></tr>
+<tr class="memdesc:a76611c96addc0ed25d5bb89ba77de1d3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d7/d56/classsjsu_1_1Command.html">Command</a> packet to enable configuration of device.  <a href="#a76611c96addc0ed25d5bb89ba77de1d3">More...</a><br /></td></tr>
 <tr class="separator:a76611c96addc0ed25d5bb89ba77de1d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29cb66a2ebd0754a3b262f27e27d80e9"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kExitConfigCommand</b> [kCommandLength]</td></tr>
+<tr class="memitem:a29cb66a2ebd0754a3b262f27e27d80e9"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a29cb66a2ebd0754a3b262f27e27d80e9">kExitConfigCommand</a> [<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td></tr>
+<tr class="memdesc:a29cb66a2ebd0754a3b262f27e27d80e9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d7/d56/classsjsu_1_1Command.html">Command</a> packet to disable configuration of device.  <a href="#a29cb66a2ebd0754a3b262f27e27d80e9">More...</a><br /></td></tr>
 <tr class="separator:a29cb66a2ebd0754a3b262f27e27d80e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a507ef8e5a3f0c8a77697ada87a77c3c8"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kSetExternalTriggerMode</b> [kCommandLength]</td></tr>
-<tr class="separator:a507ef8e5a3f0c8a77697ada87a77c3c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b9d77678ce31412065eaa3f22c2b173"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kPromptMeasurementCommand</b> [kCommandLength]</td></tr>
-<tr class="separator:a2b9d77678ce31412065eaa3f22c2b173"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30dc64022d55126779250e79fa1bdeb9"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kSetDistUnitMM</b> [kCommandLength]</td></tr>
+<tr class="memitem:a30dc64022d55126779250e79fa1bdeb9"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a30dc64022d55126779250e79fa1bdeb9">kSetDistUnitMM</a> [<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td></tr>
+<tr class="memdesc:a30dc64022d55126779250e79fa1bdeb9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d7/d56/classsjsu_1_1Command.html">Command</a> packet to set device units to millimeters.  <a href="#a30dc64022d55126779250e79fa1bdeb9">More...</a><br /></td></tr>
 <tr class="separator:a30dc64022d55126779250e79fa1bdeb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fc4f5134e05a356eb99779af8880449"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kEchoSuccess</b> [kCommandLength]</td></tr>
-<tr class="separator:a4fc4f5134e05a356eb99779af8880449"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa44fea4ebff0656777bb22561746dfc5"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kConfigExit</b> [kCommandLength]</td></tr>
-<tr class="separator:aa44fea4ebff0656777bb22561746dfc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d5c7c40806bc71faad93874130259bc"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kUpdateMinThresholdCommand</b> [kCommandLength]</td></tr>
-<tr class="separator:a1d5c7c40806bc71faad93874130259bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6a61e4b61f9f98cc9e1b10931d98785"><td class="memItemLeft" align="right" valign="top"><a id="ad6a61e4b61f9f98cc9e1b10931d98785"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kShortDistMode15</b> = 0x02</td></tr>
-<tr class="separator:ad6a61e4b61f9f98cc9e1b10931d98785"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33fe6443fdb3a10fbb900784040e7a93"><td class="memItemLeft" align="right" valign="top"><a id="a33fe6443fdb3a10fbb900784040e7a93"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kShortDistMode16</b> = 0x00</td></tr>
-<tr class="separator:a33fe6443fdb3a10fbb900784040e7a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a163740d53858d56c1fed6cb74d62f971"><td class="memItemLeft" align="right" valign="top"><a id="a163740d53858d56c1fed6cb74d62f971"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMidDistMode16</b> = 0x03</td></tr>
-<tr class="separator:a163740d53858d56c1fed6cb74d62f971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a507ef8e5a3f0c8a77697ada87a77c3c8"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a507ef8e5a3f0c8a77697ada87a77c3c8">kSetExternalTriggerMode</a> [<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td></tr>
+<tr class="separator:a507ef8e5a3f0c8a77697ada87a77c3c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b9d77678ce31412065eaa3f22c2b173"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a2b9d77678ce31412065eaa3f22c2b173">kPromptMeasurementCommand</a> [<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td></tr>
+<tr class="separator:a2b9d77678ce31412065eaa3f22c2b173"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Distance sensor driver for the <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html">TFMini</a> LiDAR module Find link here: <a href="https://www.sparkfun.com/products/14588">https://www.sparkfun.com/products/14588</a> </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a03903d84757b74fb427b61a489e13445"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03903d84757b74fb427b61a489e13445">&#9670;&nbsp;</a></span>TFMini()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::TFMini::TFMini </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html">Uart</a> &amp;&#160;</td>
+          <td class="paramname"><em>uart</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uart</td><td>- UART peripheral connected to the RX and TX of the <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html">TFMini</a> module. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab3c0345be5f2811555b916284f5c3fd4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab3c0345be5f2811555b916284f5c3fd4">&#9670;&nbsp;</a></span>GetDistance()</h2>
@@ -205,7 +226,7 @@ Status::kBusError if data read from device is inconsistent </dd>
 <dd>
 Status::kSuccess if device is successfully read from </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html">sjsu::DistanceSensor</a>.</p>
+<p>Implements <a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#a74f6e6649466aaba8243facb5ae0b04a">sjsu::DistanceSensor</a>.</p>
 
 </div>
 </div>
@@ -245,7 +266,7 @@ Status::kBusError if data read from device is inconsistent </dd>
 <dd>
 Status::kSuccess if device is successfully read from </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html">sjsu::DistanceSensor</a>.</p>
+<p>Implements <a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#a2477e53ebb3415ebf4500047b8ca79a2">sjsu::DistanceSensor</a>.</p>
 
 </div>
 </div>
@@ -276,7 +297,7 @@ Status::kSuccess if device is successfully read from </dd></dl>
 <dd>
 Status::kSuccess if initialization succeeds </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html">sjsu::DistanceSensor</a>.</p>
+<p>Implements <a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#a04937d8208ea4058f8e9af5701f5e28e">sjsu::DistanceSensor</a>.</p>
 
 </div>
 </div>
@@ -327,7 +348,7 @@ Status::kSuccess if device is successfully updated </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::TFMini::kConfigCommand[kCommandLength]</td>
+          <td class="memname">constexpr uint8_t sjsu::TFMini::kConfigCommand[<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td>
         </tr>
       </table>
   </td>
@@ -337,50 +358,8 @@ Status::kSuccess if device is successfully updated </dd></dl>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x01, 0x02,</div><div class="line">  }</div></div><!-- fragment -->
-</div>
-</div>
-<a id="aa44fea4ebff0656777bb22561746dfc5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa44fea4ebff0656777bb22561746dfc5">&#9670;&nbsp;</a></span>kConfigExit</h2>
+<p><a class="el" href="../../d7/d56/classsjsu_1_1Command.html">Command</a> packet to enable configuration of device. </p>
 
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr uint8_t sjsu::TFMini::kConfigExit[kCommandLength]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x00, 0x02,</div><div class="line">  }</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a4fc4f5134e05a356eb99779af8880449"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fc4f5134e05a356eb99779af8880449">&#9670;&nbsp;</a></span>kEchoSuccess</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr uint8_t sjsu::TFMini::kEchoSuccess[kCommandLength]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,</div><div class="line">  }</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a29cb66a2ebd0754a3b262f27e27d80e9"></a>
@@ -393,7 +372,7 @@ Status::kSuccess if device is successfully updated </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::TFMini::kExitConfigCommand[kCommandLength]</td>
+          <td class="memname">constexpr uint8_t sjsu::TFMini::kExitConfigCommand[<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td>
         </tr>
       </table>
   </td>
@@ -403,6 +382,31 @@ Status::kSuccess if device is successfully updated </dd></dl>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x02</div><div class="line">  }</div></div><!-- fragment -->
+<p><a class="el" href="../../d7/d56/classsjsu_1_1Command.html">Command</a> packet to disable configuration of device. </p>
+
+</div>
+</div>
+<a id="aa7e67413f88612c388000502d2fb33b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7e67413f88612c388000502d2fb33b0">&#9670;&nbsp;</a></span>kFrameHeader</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::TFMini::kFrameHeader = 0x59</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Response packet frame header used for detecting the start of a proper response packet. </p>
+
 </div>
 </div>
 <a id="a2b9d77678ce31412065eaa3f22c2b173"></a>
@@ -415,7 +419,7 @@ Status::kSuccess if device is successfully updated </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::TFMini::kPromptMeasurementCommand[kCommandLength]</td>
+          <td class="memname">constexpr uint8_t sjsu::TFMini::kPromptMeasurementCommand[<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td>
         </tr>
       </table>
   </td>
@@ -424,7 +428,8 @@ Status::kSuccess if device is successfully updated </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x41</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x41</div><div class="line">  }</div></div><!-- fragment --><p><a class="el" href="../../d7/d56/classsjsu_1_1Command.html">Command</a> packet to request distance measurement data along with signal strength data. </p>
+
 </div>
 </div>
 <a id="a30dc64022d55126779250e79fa1bdeb9"></a>
@@ -437,7 +442,7 @@ Status::kSuccess if device is successfully updated </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::TFMini::kSetDistUnitMM[kCommandLength]</td>
+          <td class="memname">constexpr uint8_t sjsu::TFMini::kSetDistUnitMM[<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td>
         </tr>
       </table>
   </td>
@@ -447,6 +452,8 @@ Status::kSuccess if device is successfully updated </dd></dl>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x1A,</div><div class="line">  }</div></div><!-- fragment -->
+<p><a class="el" href="../../d7/d56/classsjsu_1_1Command.html">Command</a> packet to set device units to millimeters. </p>
+
 </div>
 </div>
 <a id="a507ef8e5a3f0c8a77697ada87a77c3c8"></a>
@@ -459,7 +466,7 @@ Status::kSuccess if device is successfully updated </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::TFMini::kSetExternalTriggerMode[kCommandLength]</td>
+          <td class="memname">constexpr uint8_t sjsu::TFMini::kSetExternalTriggerMode[<a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#ab725c34cb4ec5f8f767187e2bc901a77">kCommandLength</a>]</td>
         </tr>
       </table>
   </td>
@@ -468,11 +475,12 @@ Status::kSuccess if device is successfully updated </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x40</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x40</div><div class="line">  }</div></div><!-- fragment --><p><a class="el" href="../../d7/d56/classsjsu_1_1Command.html">Command</a> packet to allow distance capture on kPromptMeasurementCommand command. </p>
+
 </div>
 </div>
-<a id="a1d5c7c40806bc71faad93874130259bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d5c7c40806bc71faad93874130259bc">&#9670;&nbsp;</a></span>kUpdateMinThresholdCommand</h2>
+<a id="a55dd4d777efcb269321fc3e99075c84d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55dd4d777efcb269321fc3e99075c84d">&#9670;&nbsp;</a></span>kTimeout</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -481,7 +489,7 @@ Status::kSuccess if device is successfully updated </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::TFMini::kUpdateMinThresholdCommand[kCommandLength]</td>
+          <td class="memname">constexpr std::chrono::nanoseconds sjsu::TFMini::kTimeout = 3 * 10ms</td>
         </tr>
       </table>
   </td>
@@ -490,7 +498,8 @@ Status::kSuccess if device is successfully updated </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    0x42, 0x57, 0x02, 0x00, 0xEE, 0x00, 0x00, 0x20</div><div class="line">  }</div></div><!-- fragment -->
+<p>Default timeout for reading responses from the <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html">TFMini</a> LiDar module. The device's test latency is 100Hz, which is 10ms per sample, thus a timeout time of 3x that should give enough time to acquire the sample and respond back via UART. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
