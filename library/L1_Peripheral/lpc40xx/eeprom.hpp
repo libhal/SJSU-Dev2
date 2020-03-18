@@ -12,7 +12,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-/// Implementation of the EEPROM interface for the LPC40xx family of
+/// Implementation of the EEPROM peripheral for the LPC40xx family of
 /// microcontrollers.
 class Eeprom final : public sjsu::Storage
 {

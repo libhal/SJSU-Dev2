@@ -18,8 +18,8 @@ namespace sjsu
 {
 namespace cortex
 {
-/// Implementation of the sjsu::SystemTimer for all ARM Cortex-M series
-/// microcontrollers.
+/// Implementation of the SystemTimer peripheral for all ARM Cortex-M series
+/// processors.
 class SystemTimer final : public sjsu::SystemTimer
 {
  public:
