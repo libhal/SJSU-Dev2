@@ -22,7 +22,7 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-/// Implementation of the I2C interface for the LPC40xx family of
+/// Implementation of the I2C peripheral for the LPC40xx family of
 /// microcontrollers.
 class I2c final : public sjsu::I2c
 {
