@@ -193,8 +193,7 @@ class SystemController final : public sjsu::SystemController
     constexpr uint32_t kDividerValues[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
     const uint32_t kDividerSelect =
         bit::Extract(clock_system->CTL1,
-                     Control1Register::kSubsystemClockDividerSelect.position,
-                     Control1Register::kSubsystemClockDividerSelect.width);
+                     Control1Register::kSubsystemClockDividerSelect);
     return kDividerValues[kDividerSelect];
   }
 
