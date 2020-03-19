@@ -9,6 +9,9 @@
 
 namespace
 {
+/// Configures P4.2, P4.3, P4.4, and P7.0 to output ACLK, MCLK, HSMCLK, and
+/// SMCLK respectively. This allows the use of an oscilloscope to examine each
+/// of the clock signals through the corresponding pin.
 void ConfigureClockOutPins()
 {
   // Configure P4.2 to output ACLK
@@ -53,6 +56,7 @@ int main()
 {
   LOG_INFO("Starting MSP432P401R System Controller Demo...");
   // Configure the on-board P1.0 LED to be initially turned on.
+  // TODO(#869): Should initialize the pin using the GPIO class.
   constexpr sjsu::bit::Mask kLedBitMask = sjsu::bit::CreateMaskFromRange(0);
   sjsu::msp432p401r::P1->DIR            = sjsu::bit::Set(
       sjsu::msp432p401r::P1->DIR, sjsu::bit::CreateMaskFromRange(0));
@@ -75,6 +79,7 @@ int main()
 
   while (true)
   {
+    // TODO(#869): Should use the Toggle() function from GPIO class.
     sjsu::msp432p401r::P1->OUT =
         sjsu::bit::Toggle(sjsu::msp432p401r::P1->OUT, kLedBitMask);
     sjsu::Delay(1s);

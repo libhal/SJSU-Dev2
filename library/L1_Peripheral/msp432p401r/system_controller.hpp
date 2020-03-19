@@ -13,10 +13,9 @@ namespace sjsu
 {
 namespace msp432p401r
 {
-/// @ingroup l1_peripheral
-///
 /// SystemController class used to manage power control and various clock system
 /// resources on the MSP432P401R MCU.
+/// @ingroup l1_peripheral
 class SystemController final : public sjsu::SystemController
 {
  public:
@@ -40,6 +39,7 @@ class SystemController final : public sjsu::SystemController
     /// 48 Mhz.
     kHighFrequency = 0b101,
   };
+
   /// The available system clocks used to drive various peripheral modules where
   /// kAuxiliary, kMaster, kSubsystemMaster, kLowSpeedSubsystemMaster, and
   /// kBackup are the primary clock signals.
@@ -72,6 +72,7 @@ class SystemController final : public sjsu::SystemController
     /// System oscillator clock (SYSCLK).
     kSystem,
   };
+
   /// Namespace containing the bit masks for the Key Register (CS) which locks
   /// or unlocks the other clock system registers.
   struct KeyRegister  // NOLINT
@@ -81,6 +82,7 @@ class SystemController final : public sjsu::SystemController
     /// registers.
     static constexpr bit::Mask kCsKey = bit::CreateMaskFromRange(0, 15);
   };
+
   /// Namespace containing the bit masks for the Control 0 Register (CSCTL0)
   /// which controls the configurations for the digitally controlled oscillator.
   struct Control0Register  // NOLINT
@@ -94,6 +96,7 @@ class SystemController final : public sjsu::SystemController
     /// DCO enable bit mask.
     static constexpr bit::Mask kEnable = bit::CreateMaskFromRange(23);
   };
+
   /// Namespace containing the bit masks for the Control 1 Register (CSCTL1)
   /// which controls the configurations for selecting the oscillator source and
   /// clock divider for the primary clock signals.
@@ -125,6 +128,7 @@ class SystemController final : public sjsu::SystemController
     static constexpr bit::Mask kLowSpeedSubsystemClockDividerSelect =
         bit::CreateMaskFromRange(28, 30);
   };
+
   /// Structure containing the necessary DCO configurations to generate a
   /// desired frequency.
   struct DcoConfiguration_t
@@ -137,6 +141,7 @@ class SystemController final : public sjsu::SystemController
 
   /// Reference to the structure containing the clock system control registers.
   inline static CS_Type * clock_system = msp432p401r::CS;
+
   /// Reference to the device descriptor tag-length-value (TLV) structure
   /// containing the clock system calibration constants.
   inline static TLV_Type * device_descriptors = msp432p401r::TLV;
@@ -170,6 +175,7 @@ class SystemController final : public sjsu::SystemController
 
     speed_in_hertz = frequency;
   }
+
   /// Sets the divider for the subsystem master clock (HSMCLK).
   ///
   /// @param peripheral_divider Divider value to set. Only the following
@@ -180,21 +186,24 @@ class SystemController final : public sjsu::SystemController
   {
     SetClockDivider(Clock::kSubsystemMaster, peripheral_divider);
   }
+
   /// @returns The current clock divider used for the subsystem master clock.
   uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
   {
-    constexpr uint8_t kDividerValues[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-    const uint8_t kDividerSelect       = static_cast<uint8_t>(
+    constexpr uint32_t kDividerValues[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+    const uint32_t kDividerSelect =
         bit::Extract(clock_system->CTL1,
                      Control1Register::kSubsystemClockDividerSelect.position,
-                     Control1Register::kSubsystemClockDividerSelect.width));
+                     Control1Register::kSubsystemClockDividerSelect.width);
     return kDividerValues[kDividerSelect];
   }
+
   /// @returns The current system clock frequency.
   units::frequency::hertz_t GetSystemFrequency() const override
   {
     return speed_in_hertz;
   }
+
   /// Configures the clock divider for one of the four primary clock signals
   /// (ACLK, MCLK, HSMCLK, or SMCLK).
   ///
@@ -243,8 +252,16 @@ class SystemController final : public sjsu::SystemController
   {
     return false;
   }
-  void PowerUpPeripheral(const PeripheralID &) const override {}
-  void PowerDownPeripheral(const PeripheralID &) const override {}
+
+  void PowerUpPeripheral(const PeripheralID &) const override
+  {
+    SJ2_ASSERT_FATAL(false, "This function is not implemented.");
+  }
+
+  void PowerDownPeripheral(const PeripheralID &) const override
+  {
+    SJ2_ASSERT_FATAL(false, "This function is not implemented.");
+  }
 
  private:
   /// Unlocks the clock system registers by writing the necessary value to the
@@ -255,6 +272,7 @@ class SystemController final : public sjsu::SystemController
     clock_system->KEY =
         bit::Insert(clock_system->KEY, kUnlockKey, KeyRegister::kCsKey);
   }
+
   /// Locks the clock system registers by writing the necessary value to the
   /// CSKEY register.
   void LockClockSystemRegisters() const
@@ -263,6 +281,7 @@ class SystemController final : public sjsu::SystemController
     clock_system->KEY =
         bit::Insert(clock_system->KEY, kLockKey, KeyRegister::kCsKey);
   }
+
   /// Checks and waits for a clock signal to become stable after a frequency or
   /// divider configuration.
   ///
@@ -289,6 +308,7 @@ class SystemController final : public sjsu::SystemController
       continue;
     }
   }
+
   /// Configures one of the five primary clock signals (ACLK, MCLK,
   /// HSMCLK / SMCLK, and BCLK) to be sourced by the specified oscillator.
   ///
@@ -343,6 +363,7 @@ class SystemController final : public sjsu::SystemController
                                      select_value,
                                      kPrimaryClockSelectMasks[Value(clock)]);
   }
+
   /// Determines the target frequency range select value and the DCO tuning
   /// value necessary to generate a desired target frequency.
   ///
@@ -407,10 +428,13 @@ class SystemController final : public sjsu::SystemController
     // Calculate the signed 10-bit tuning value using Equation 6 from
     // https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=387
     const auto kCenterFrequency = kDcoCenterFrequencies[dco_frequency_select];
-    const int16_t kTuneValue    = static_cast<int16_t>(
-        (((frequency - kCenterFrequency).to<float>() *
-          (1.0f + dco_constant * static_cast<float>(768 - dco_calibration))) /
-         (frequency.to<float>() * dco_constant)));
+    const float kFrequencyDifference =
+        (frequency - kCenterFrequency).to<float>();
+    const float kCalibration =
+        (1.0f + dco_constant * static_cast<float>(768 - dco_calibration));
+    const int16_t kTuneValue =
+        static_cast<int16_t>((kFrequencyDifference * kCalibration) /
+                             (frequency.to<float>() * dco_constant));
 
     return DcoConfiguration_t{
       .frequency_select = dco_frequency_select,
