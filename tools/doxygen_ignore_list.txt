@@ -7,6 +7,5 @@ L2_HAL/displays/lcd/st7066u.hpp
 L2_HAL/displays/oled/ssd1306.hpp
 L2_HAL/memory/sd.hpp
 L2_HAL/sensors/optical/apds9960.hpp
-L2_HAL/communication/internet_socket.hpp
 L3_Application/graphical_terminal.hpp
 L4_Testing/factory_test.hpp
