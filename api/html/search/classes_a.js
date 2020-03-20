@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['mainpll',['MainPll',['../d0/d83/structsjsu_1_1lpc17xx_1_1SystemController_1_1MainPll.html',1,'sjsu::lpc17xx::SystemController']]],
-  ['mask',['Mask',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html',1,'sjsu::bit']]],
-  ['matchcontrol',['MatchControl',['../d1/dd9/structsjsu_1_1lpc40xx_1_1Pwm_1_1MatchControl.html',1,'sjsu::lpc40xx::Pwm']]],
-  ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu']]]
+  ['lightsensor',['LightSensor',['../d7/d75/classsjsu_1_1LightSensor.html',1,'sjsu']]],
+  ['log',['Log',['../d4/d1e/structsjsu_1_1Log.html',1,'sjsu']]],
+  ['logdebug',['LogDebug',['../d2/dbb/structsjsu_1_1LogDebug.html',1,'sjsu']]],
+  ['logerror',['LogError',['../d2/d2c/structsjsu_1_1LogError.html',1,'sjsu']]],
+  ['loginfo',['LogInfo',['../d9/d37/structsjsu_1_1LogInfo.html',1,'sjsu']]],
+  ['logwarning',['LogWarning',['../d1/d18/structsjsu_1_1LogWarning.html',1,'sjsu']]],
+  ['ltc4150',['Ltc4150',['../d9/d3a/classsjsu_1_1Ltc4150.html',1,'sjsu']]]
 ];

@@ -9,6 +9,7 @@ var searchData=
   ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae0250a624094081b9ca08accfbbabc6b',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a62684c9056be5f64a86d23046167565e',1,'sjsu::lpc40xx::Pin']]],
   ['erase',['Erase',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad4c7ef4b57fdbc01deaea42ac0938a00',1,'sjsu::lpc40xx::Eeprom::Erase()'],['../dc/da6/classsjsu_1_1Storage.html#a4fbe3ecee798d0b6bab2ea6cf146b0fb',1,'sjsu::Storage::Erase()']]],
+  ['example',['Example',['../d8/d93/classsjsu_1_1example_1_1Example.html#a6543d9de209a0ec2e8a51046a344c167',1,'sjsu::example::Example']]],
   ['examplehalimplementation',['ExampleHalImplementation',['../d7/d4f/classsjsu_1_1ExampleHalImplementation.html#ad8b1d5af72ed6d3c668262a38831153f',1,'sjsu::ExampleHalImplementation']]],
   ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#afd407530822417a5ce69c2a131bea9b0',1,'sjsu::ExampleSingleImplementationHal']]]
 ];

@@ -1,4 +1,4 @@
 <map id="sjsu::Esp8266" name="sjsu::Esp8266">
-<area shape="rect" id="node2" href="$db/dcb/classsjsu_1_1InternetSocket.html" title="Modeled after Berkley Sockets (POSIX sockets) " alt="" coords="5,5,156,32"/>
+<area shape="rect" id="node2" href="$db/dcb/classsjsu_1_1InternetSocket.html" title="sjsu::InternetSocket" alt="" coords="5,5,156,32"/>
 <area shape="rect" id="node3" href="$dc/d16/classsjsu_1_1WiFi.html" title="sjsu::WiFi" alt="" coords="181,5,263,32"/>
 </map>

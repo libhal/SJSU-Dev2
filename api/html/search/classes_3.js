@@ -4,6 +4,7 @@ var searchData=
   ['data_5ft',['Data_t',['../d0/dd2/unionsjsu_1_1Can_1_1Data__t.html',1,'sjsu::Can']]],
   ['dataframe_5ft',['DataFrame_t',['../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html',1,'sjsu::infrared']]],
   ['dataregister',['DataRegister',['../df/d35/structsjsu_1_1lpc40xx_1_1Adc_1_1DataRegister.html',1,'sjsu::lpc40xx::Adc']]],
+  ['dcoconfiguration_5ft',['DcoConfiguration_t',['../d6/d89/structsjsu_1_1msp432p401r_1_1SystemController_1_1DcoConfiguration__t.html',1,'sjsu::msp432p401r::SystemController']]],
   ['debugsdcard_5ft',['DebugSdCard_t',['../df/dc2/structsjsu_1_1Sd_1_1DebugSdCard__t.html',1,'sjsu::Sd']]],
   ['decodedframe_5ft',['DecodedFrame_t',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html',1,'sjsu::infrared']]],
   ['device',['Device',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],

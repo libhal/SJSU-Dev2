@@ -83,13 +83,15 @@ $(function() {
 <div class="title">sjsu::SystemController Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="../../d4/da8/group__l1__peripheral.html">L1 Peripheral Interfaces</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d7/df3/system__controller_8hpp_source.html">system_controller.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::SystemController:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/dec/classsjsu_1_1SystemController__inherit__graph.png" border="0" usemap="#sjsu_1_1SystemController_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1SystemController_inherit__map" id="sjsu_1_1SystemController_inherit__map">
-<area shape="rect" id="node2" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html" title="sjsu::lpc17xx::SystemController" alt="" coords="232,5,460,32"/>
-<area shape="rect" id="node3" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="sjsu::lpc40xx::SystemController" alt="" coords="232,56,460,83"/>
+<area shape="rect" id="node2" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html" title="System controller for the LPC40xx series of MCUs. " alt="" coords="232,5,460,32"/>
+<area shape="rect" id="node3" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html" title="System controller for the LPC40xx series of MCUs. " alt="" coords="232,56,460,83"/>
 <area shape="rect" id="node4" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html" title="sjsu::msp432p401r::\lSystemController" alt="" coords="269,107,423,149"/>
 <area shape="rect" id="node5" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html" title="sjsu::stm32f10x::SystemController" alt="" coords="223,173,469,200"/>
 <area shape="rect" id="node6" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html" title="sjsu::stm32f4xx::SystemController" alt="" coords="223,224,469,251"/>
@@ -100,34 +102,26 @@ Inheritance diagram for sjsu::SystemController:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/db5/classsjsu_1_1SystemController_1_1AddPeripheralID.html">AddPeripheralID</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6b96dcf70b180b4f224cbadb5adef362"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a6b96dcf70b180b4f224cbadb5adef362">SetSystemClockFrequency</a> (units::frequency::megahertz_t frequency_in_mhz) const =0</td></tr>
 <tr class="separator:a6b96dcf70b180b4f224cbadb5adef362"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae229951062e7c3196831d8cd11c425c1"><td class="memItemLeft" align="right" valign="top"><a id="ae229951062e7c3196831d8cd11c425c1"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#ae229951062e7c3196831d8cd11c425c1">SetPeripheralClockDivider</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;, uint8_t peripheral_divider) const =0</td></tr>
-<tr class="memdesc:ae229951062e7c3196831d8cd11c425c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the peripheral/bus clock frequency divider. <br /></td></tr>
-<tr class="separator:ae229951062e7c3196831d8cd11c425c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26af10c1584b8491c3ff9720f5660a60"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a26af10c1584b8491c3ff9720f5660a60">GetPeripheralClockDivider</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;) const =0</td></tr>
-<tr class="separator:a26af10c1584b8491c3ff9720f5660a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accc7f3d7839bf3964f4bac97e2680ada"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#accc7f3d7839bf3964f4bac97e2680ada">SetPeripheralClockDivider</a> (const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;id, uint8_t peripheral_divider) const =0</td></tr>
+<tr class="separator:accc7f3d7839bf3964f4bac97e2680ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a843747555ba40ecc7d05381444c26800"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a843747555ba40ecc7d05381444c26800">GetPeripheralClockDivider</a> (const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;id) const =0</td></tr>
+<tr class="separator:a843747555ba40ecc7d05381444c26800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97e1b74c74a3cea65ac0b6b4fe17d6ca"><td class="memItemLeft" align="right" valign="top">virtual units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a97e1b74c74a3cea65ac0b6b4fe17d6ca">GetSystemFrequency</a> () const =0</td></tr>
 <tr class="separator:a97e1b74c74a3cea65ac0b6b4fe17d6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53bbbee7e58753f05cdaeb5132bcd034"><td class="memItemLeft" align="right" valign="top"><a id="a53bbbee7e58753f05cdaeb5132bcd034"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a53bbbee7e58753f05cdaeb5132bcd034">IsPeripheralPoweredUp</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const =0</td></tr>
-<tr class="memdesc:a53bbbee7e58753f05cdaeb5132bcd034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks hardware and determines if the peripheral is powered up. <br /></td></tr>
+<tr class="memitem:a53bbbee7e58753f05cdaeb5132bcd034"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a53bbbee7e58753f05cdaeb5132bcd034">IsPeripheralPoweredUp</a> (const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const =0</td></tr>
 <tr class="separator:a53bbbee7e58753f05cdaeb5132bcd034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc4dbcdcd3fb543b7e2d846c0a9bc9d7"><td class="memItemLeft" align="right" valign="top"><a id="afc4dbcdcd3fb543b7e2d846c0a9bc9d7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#afc4dbcdcd3fb543b7e2d846c0a9bc9d7">PowerUpPeripheral</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const =0</td></tr>
-<tr class="memdesc:afc4dbcdcd3fb543b7e2d846c0a9bc9d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powers up the supplied peripheral. <br /></td></tr>
+<tr class="memitem:afc4dbcdcd3fb543b7e2d846c0a9bc9d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#afc4dbcdcd3fb543b7e2d846c0a9bc9d7">PowerUpPeripheral</a> (const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const =0</td></tr>
 <tr class="separator:afc4dbcdcd3fb543b7e2d846c0a9bc9d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2daf290ce909701e09e9a0f017273170"><td class="memItemLeft" align="right" valign="top"><a id="a2daf290ce909701e09e9a0f017273170"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a2daf290ce909701e09e9a0f017273170">PowerDownPeripheral</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const =0</td></tr>
-<tr class="memdesc:a2daf290ce909701e09e9a0f017273170"><td class="mdescLeft">&#160;</td><td class="mdescRight">Powers down the supplied peripheral. <br /></td></tr>
+<tr class="memitem:a2daf290ce909701e09e9a0f017273170"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a2daf290ce909701e09e9a0f017273170">PowerDownPeripheral</a> (const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const =0</td></tr>
 <tr class="separator:a2daf290ce909701e09e9a0f017273170"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d1c0d319722ee4bf24b79225ceae1b0"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a7d1c0d319722ee4bf24b79225ceae1b0">GetPeripheralFrequency</a> (const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const</td></tr>
+<tr class="memitem:a7d1c0d319722ee4bf24b79225ceae1b0"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a7d1c0d319722ee4bf24b79225ceae1b0">GetPeripheralFrequency</a> (const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;peripheral_select) const</td></tr>
 <tr class="separator:a7d1c0d319722ee4bf24b79225ceae1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -139,9 +133,16 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
 <tr class="memdesc:a1290b6cec051b149f5717dca273b36e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a reference of the platforms system controller. <br /></td></tr>
 <tr class="separator:a1290b6cec051b149f5717dca273b36e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a26af10c1584b8491c3ff9720f5660a60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26af10c1584b8491c3ff9720f5660a60">&#9670;&nbsp;</a></span>GetPeripheralClockDivider()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Abstract interface for a platform's System Controller. A System controller manages a platforms:</p><ul>
+<li>Clocks and their speeds</li>
+<li>PLLs feeding into the system's clocks</li>
+<li>Manages power systems of peripherals and system blocks</li>
+</ul>
+<p>The System controller also gives information about the system such as, what speed is a peripheral running at so that their peripheral drivers can calculate things such as the clock rates for serial communicate or the clock cycles before an event or interrupt is planned to occur. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a843747555ba40ecc7d05381444c26800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a843747555ba40ecc7d05381444c26800">&#9670;&nbsp;</a></span>GetPeripheralClockDivider()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -152,8 +153,8 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
         <tr>
           <td class="memname">virtual uint32_t sjsu::SystemController::GetPeripheralClockDivider </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -163,9 +164,16 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>peripheral clock divider </dd></dl>
+<p>Get the peripheral's clock divider constant</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>- peripheral to retrieve the clock divider from </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the clock divider constant </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6aa856bf5d1a239913fe4c7047764c48">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a7b80f0fd057f8949bf4028686204583e">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a10a774925c4292d05f548e4fd5192f49">sjsu::stm32f4xx::SystemController</a>, <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a96b76fbc3fcde1d9b14426ae7c77f00f">sjsu::stm32f10x::SystemController</a>, and <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a0d096abc3698b0ad7048f72c493303ca">sjsu::msp432p401r::SystemController</a>.</p>
+<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6aa856bf5d1a239913fe4c7047764c48">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a7b80f0fd057f8949bf4028686204583e">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a0d096abc3698b0ad7048f72c493303ca">sjsu::msp432p401r::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a10a774925c4292d05f548e4fd5192f49">sjsu::stm32f4xx::SystemController</a>, and <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a96b76fbc3fcde1d9b14426ae7c77f00f">sjsu::stm32f10x::SystemController</a>.</p>
 
 </div>
 </div>
@@ -181,7 +189,7 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
         <tr>
           <td class="memname">units::frequency::hertz_t sjsu::SystemController::GetPeripheralFrequency </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d9/d58/classsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
           <td class="paramname"><em>peripheral_select</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -192,7 +200,13 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>current bus/peripheral operating frequency </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>current bus/peripheral operating frequency</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">peripheral_select</td><td>- which peripheral to calculate the operating frequency of. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -218,9 +232,163 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>system clock frequency </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>system clock's current frequency </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a5cdb3e659dbe4e2f4e7113ce47a54e47">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#acb6dd9baaa9c514001663d7456d03b5b">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a08acddfb2e5f0f03550f9d6f1d89ad4a">sjsu::stm32f4xx::SystemController</a>, <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a007f571b218f4fd9c31fad138411e085">sjsu::stm32f10x::SystemController</a>, and <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a9795cdbc3562eed16496fb4db56efa18">sjsu::msp432p401r::SystemController</a>.</p>
+<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a5cdb3e659dbe4e2f4e7113ce47a54e47">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#acb6dd9baaa9c514001663d7456d03b5b">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a9795cdbc3562eed16496fb4db56efa18">sjsu::msp432p401r::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a08acddfb2e5f0f03550f9d6f1d89ad4a">sjsu::stm32f4xx::SystemController</a>, and <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a007f571b218f4fd9c31fad138411e085">sjsu::stm32f10x::SystemController</a>.</p>
+
+</div>
+</div>
+<a id="a53bbbee7e58753f05cdaeb5132bcd034"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53bbbee7e58753f05cdaeb5132bcd034">&#9670;&nbsp;</a></span>IsPeripheralPoweredUp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool sjsu::SystemController::IsPeripheralPoweredUp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
+          <td class="paramname"><em>peripheral_select</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks hardware and determines if the peripheral is powered up</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">peripheral_select</td><td>- which peripheral to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true - it is currently powered up </dd>
+<dd>
+false - it is currently powered down </dd></dl>
+
+<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ad1c4e42e74711a9ab017d5be99bf3557">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a2b9bd204dc8b076e7c727b0c4928bfa6">sjsu::msp432p401r::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#adcd9455a113fb009e46709d4d89dc3c3">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a33dcb21a736de5d4f0e402fba27a1df5">sjsu::stm32f4xx::SystemController</a>, and <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a836c27563d59ad16c620a8c1e0931467">sjsu::stm32f10x::SystemController</a>.</p>
+
+</div>
+</div>
+<a id="a2daf290ce909701e09e9a0f017273170"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2daf290ce909701e09e9a0f017273170">&#9670;&nbsp;</a></span>PowerDownPeripheral()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::SystemController::PowerDownPeripheral </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
+          <td class="paramname"><em>peripheral_select</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Powers down the selected peripheral</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">peripheral_select</td><td>- which peripheral to power down </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#acf1f16f4bab4565259033b1c416dab0c">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a12a90ec27dc269cbbd24ebc552bb2849">sjsu::msp432p401r::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#aacd74933e60e57829e2511ac14862cb7">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a70db5250b9cb0f6318f42ff6c46e7d85">sjsu::stm32f4xx::SystemController</a>, and <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#aeb0c035d46d56f3707e56e1cbf211488">sjsu::stm32f10x::SystemController</a>.</p>
+
+</div>
+</div>
+<a id="afc4dbcdcd3fb543b7e2d846c0a9bc9d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc4dbcdcd3fb543b7e2d846c0a9bc9d7">&#9670;&nbsp;</a></span>PowerUpPeripheral()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::SystemController::PowerUpPeripheral </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
+          <td class="paramname"><em>peripheral_select</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Powers up the selected peripheral</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">peripheral_select</td><td>- which peripheral to power up </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#aca426a3141d4ecfbb3f034152c99ec1f">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a05104456d738f7ba2750661ca50f24ed">sjsu::msp432p401r::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a363dc99641b504ca364f0995d7c6aca3">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a1362ec2b8709476be44401e2c454e9eb">sjsu::stm32f4xx::SystemController</a>, and <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#aa71dc3a4a8a1c480fe8e64427d9d0c01">sjsu::stm32f10x::SystemController</a>.</p>
+
+</div>
+</div>
+<a id="accc7f3d7839bf3964f4bac97e2680ada"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accc7f3d7839bf3964f4bac97e2680ada">&#9670;&nbsp;</a></span>SetPeripheralClockDivider()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::SystemController::SetPeripheralClockDivider </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> &amp;&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>peripheral_divider</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the peripheral or bus clock frequency divider</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>- the peripheral that will have its clock divider changed </td></tr>
+    <tr><td class="paramname">peripheral_divider</td><td>- how much to divide the peripheral's clock. typically must be a power of 2. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a1bd4699304c6d6857f1ae8bcf6f5ade9">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a0bf6087b21049eb43cd8a15d4b3110a5">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a40c30b4455f1cd7b81257528021144cd">sjsu::msp432p401r::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a112dfb679e532f3051c5c312baa74ac4">sjsu::stm32f4xx::SystemController</a>, and <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a2d7b1f56a0021d8c4331fd5b5c057319">sjsu::stm32f10x::SystemController</a>.</p>
 
 </div>
 </div>
@@ -247,7 +415,7 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Set the controller for the platform</p>
+<p>Set the controller for the platform. This is set by the system's L0_Platform startup code which and does not need to be executed by the user. This can be run by the user if they want to inject their own Platform Controller into the system to be used by the whole system.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">system_controller</td><td>- a pointer to the current platform's system controller. </td></tr>
@@ -281,9 +449,14 @@ static <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu
 </table>
 </div><div class="memdoc">
 <p>Control PLLs and dividers to set the system clock rate</p>
-<dl class="section return"><dt>Returns</dt><dd>the difference between the frequency supplied and the frequency achieved. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frequency_in_mhz</td><td>- Set the main system frequency to this frequency </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Implemented in <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#af1b9eae3603baa747b5fb8e441100e02">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#acfc8395713d77b504ce9455be1192039">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#ad5c2bf3bdee4645188b212eb60edbbd5">sjsu::stm32f4xx::SystemController</a>, <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#af7c28dfd8adda63e35318afd35bf0f6f">sjsu::stm32f10x::SystemController</a>, and <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a71924b618069e481f6393205c02bdc6b">sjsu::msp432p401r::SystemController</a>.</p>
+<p>Implemented in <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#af1b9eae3603baa747b5fb8e441100e02">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#acfc8395713d77b504ce9455be1192039">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a72a2196a65f391995a3881340e1c30fa">sjsu::msp432p401r::SystemController</a>, <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#ad5c2bf3bdee4645188b212eb60edbbd5">sjsu::stm32f4xx::SystemController</a>, and <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#af7c28dfd8adda63e35318afd35bf0f6f">sjsu::stm32f10x::SystemController</a>.</p>
 
 </div>
 </div>

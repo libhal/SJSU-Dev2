@@ -77,12 +77,13 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../d8/d0a/classsjsu_1_1lpc40xx_1_1Timer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::lpc40xx::Timer Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../d0/da8/lpc40xx_2timer_8hpp_source.html">timer.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::lpc40xx::Timer:</div>
 <div class="dyncontent">
@@ -103,16 +104,17 @@ Collaboration diagram for sjsu::lpc40xx::Timer:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d23/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral.html">Peripheral</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace containing the available peripherals for the LPC40xx platform.  <a href="../../d5/d23/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html">Peripheral_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/daf/structsjsu_1_1lpc40xx_1_1Timer_1_1TimerControlRegister.html">TimerControlRegister</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains common registers for timer control register.  <a href="../../d5/daf/structsjsu_1_1lpc40xx_1_1Timer_1_1TimerControlRegister.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac38fc2715d1024909ff4cc314bc14cb6"><td class="memItemLeft" align="right" valign="top"><a id="ac38fc2715d1024909ff4cc314bc14cb6"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Timer</b> (const <a class="el" href="../../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html">Peripheral_t</a> &amp;timer)</td></tr>
+<tr class="memitem:ac38fc2715d1024909ff4cc314bc14cb6"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ac38fc2715d1024909ff4cc314bc14cb6">Timer</a> (const <a class="el" href="../../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html">Peripheral_t</a> &amp;timer)</td></tr>
 <tr class="separator:ac38fc2715d1024909ff4cc314bc14cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a915c334eb9f41fbaf338bb21143b5d08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#a915c334eb9f41fbaf338bb21143b5d08">Initialize</a> (units::frequency::hertz_t frequency, <a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> callback=nullptr, int32_t priority=-1) const override</td></tr>
 <tr class="separator:a915c334eb9f41fbaf338bb21143b5d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,12 +139,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memdesc:ad116fb0c5f8b55b880367f9253ce542f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the timer. <br /></td></tr>
 <tr class="separator:ad116fb0c5f8b55b880367f9253ce542f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:af78ddd21c51244ba555f94a152647a5d"><td class="memItemLeft" align="right" valign="top"><a id="af78ddd21c51244ba555f94a152647a5d"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>kMatchRegisterCount</b> = 4</td></tr>
-<tr class="separator:af78ddd21c51244ba555f94a152647a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classsjsu_1_1Timer"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classsjsu_1_1Timer')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html">sjsu::Timer</a></td></tr>
@@ -159,6 +155,42 @@ Additional Inherited Members</h2></td></tr>
  }</td></tr>
 <tr class="separator:a33fef2b3a0dc21152ab7fb42eda7b0b8 inherit pub_types_classsjsu_1_1Timer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementation of the <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html">Timer</a> peripheral for the LPC40xx family of microcontrollers. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ac38fc2715d1024909ff4cc314bc14cb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac38fc2715d1024909ff4cc314bc14cb6">&#9670;&nbsp;</a></span>Timer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::lpc40xx::Timer::Timer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html">Peripheral_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>timer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor of the LPC40xx <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html">Timer</a> implementation</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timer</td><td>- a timer peripheral descriptor that, which is the the timer peripheral to be used with this object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac6e6bc69b3c07a9b7a145266899984be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac6e6bc69b3c07a9b7a145266899984be">&#9670;&nbsp;</a></span>GetAvailableMatchRegisters()</h2>

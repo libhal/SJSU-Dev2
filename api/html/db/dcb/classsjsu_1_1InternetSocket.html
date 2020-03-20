@@ -79,12 +79,9 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="../../dd/df8/classsjsu_1_1InternetSocket-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::InternetSocket Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">sjsu::InternetSocket Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="../../d2/d7b/group__communication.html">Communication Interfaces</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>Modeled after Berkley Sockets (POSIX sockets)  
- <a href="../../db/dcb/classsjsu_1_1InternetSocket.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../db/d15/internet__socket_8hpp_source.html">internet_socket.hpp</a>&gt;</code></p>
 <div class="dynheader">
@@ -98,29 +95,266 @@ Inheritance diagram for sjsu::InternetSocket:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a1ba82ae7b2309972b7d7ff0fa4a0cb28"><td class="memItemLeft" align="right" valign="top"><a id="a1ba82ae7b2309972b7d7ff0fa4a0cb28"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Protocol</b> { <b>kTCP</b>, 
+<tr class="memitem:a1ba82ae7b2309972b7d7ff0fa4a0cb28"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a1ba82ae7b2309972b7d7ff0fa4a0cb28">Protocol</a> { <b>kTCP</b>, 
 <b>kUDP</b>
  }</td></tr>
 <tr class="separator:a1ba82ae7b2309972b7d7ff0fa4a0cb28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5e1d7293ef0b8db5da2bd8845b43ed8e"><td class="memItemLeft" align="right" valign="top"><a id="a5e1d7293ef0b8db5da2bd8845b43ed8e"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Connect</b> (Protocol protocol, std::string_view address, uint16_t port, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="memitem:a5e1d7293ef0b8db5da2bd8845b43ed8e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a5e1d7293ef0b8db5da2bd8845b43ed8e">Connect</a> (<a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a1ba82ae7b2309972b7d7ff0fa4a0cb28">Protocol</a> protocol, std::string_view address, uint16_t port, std::chrono::nanoseconds timeout)=0</td></tr>
 <tr class="separator:a5e1d7293ef0b8db5da2bd8845b43ed8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9134ed677da7bc256299d20a9a71aeb"><td class="memItemLeft" align="right" valign="top"><a id="af9134ed677da7bc256299d20a9a71aeb"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (const void *data, size_t size, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="memitem:af9134ed677da7bc256299d20a9a71aeb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#af9134ed677da7bc256299d20a9a71aeb">Write</a> (const void *data, size_t size, std::chrono::nanoseconds timeout)=0</td></tr>
 <tr class="separator:af9134ed677da7bc256299d20a9a71aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69736f100d3b639ff92ee42a90c77159"><td class="memItemLeft" align="right" valign="top"><a id="a69736f100d3b639ff92ee42a90c77159"></a>
-virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Read</b> (void *buffer, size_t size, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="memitem:a69736f100d3b639ff92ee42a90c77159"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a69736f100d3b639ff92ee42a90c77159">Read</a> (void *buffer, size_t size, std::chrono::nanoseconds timeout)=0</td></tr>
 <tr class="separator:a69736f100d3b639ff92ee42a90c77159"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cb3ae22bf916abef040be841e9b0c44"><td class="memItemLeft" align="right" valign="top"><a id="a7cb3ae22bf916abef040be841e9b0c44"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Close</b> ()=0</td></tr>
+<tr class="memitem:a7cb3ae22bf916abef040be841e9b0c44"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a7cb3ae22bf916abef040be841e9b0c44">Close</a> ()=0</td></tr>
 <tr class="separator:a7cb3ae22bf916abef040be841e9b0c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Modeled after Berkley Sockets (POSIX sockets) </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<div class="textblock"><p>A network socket is an internal endpoint for sending or receiving data from within computer network. It is an endpoint in networking software. Modeled after Berkley Sockets (POSIX sockets) </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a1ba82ae7b2309972b7d7ff0fa4a0cb28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ba82ae7b2309972b7d7ff0fa4a0cb28">&#9670;&nbsp;</a></span>Protocol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a1ba82ae7b2309972b7d7ff0fa4a0cb28">sjsu::InternetSocket::Protocol</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Which Internet Protocol to use for communicating with the remote host server. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7cb3ae22bf916abef040be841e9b0c44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cb3ae22bf916abef040be841e9b0c44">&#9670;&nbsp;</a></span>Close()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::InternetSocket::Close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Closes the connection established by the <a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a5e1d7293ef0b8db5da2bd8845b43ed8e">Connect()</a> method.</p>
+<dl class="section return"><dt>Returns</dt><dd>Status::kTimeout if this function runs out of time based on timeout. </dd>
+<dd>
+Status::kSuccess if this function is successful. </dd>
+<dd>
+Status::kNotReadyYet if this was called before Connect was used. </dd>
+<dd>
+<a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> potentially return any other status. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a03e13444c85fb0bed35a994b769349e9">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<a id="a5e1d7293ef0b8db5da2bd8845b43ed8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e1d7293ef0b8db5da2bd8845b43ed8e">&#9670;&nbsp;</a></span>Connect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::InternetSocket::Connect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a1ba82ae7b2309972b7d7ff0fa4a0cb28">Protocol</a>&#160;</td>
+          <td class="paramname"><em>protocol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::nanoseconds&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Establishes a direct communication link to a specific remote host identified by its address, port, and the communication protocol.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">protocol</td><td>- Using TCP or UDP </td></tr>
+    <tr><td class="paramname">address</td><td>- URL of the device you want to connect to. </td></tr>
+    <tr><td class="paramname">port</td><td>- The port you want to use to connect to the host. </td></tr>
+    <tr><td class="paramname">timeout</td><td>- Amount of time before this function should gives up. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status::kTimeout if this function runs out of time based on timeout. </dd>
+<dd>
+Status::kSuccess if this function is successful. </dd>
+<dd>
+<a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> potentially return any other status. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a9e82fdd35e3560c5d68e4a85bbe9d0e5">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<a id="a69736f100d3b639ff92ee42a90c77159"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69736f100d3b639ff92ee42a90c77159">&#9670;&nbsp;</a></span>Read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t sjsu::InternetSocket::Read </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::nanoseconds&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read data received from the connected host. Must have used <a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a5e1d7293ef0b8db5da2bd8845b43ed8e">Connect()</a> before using this.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>- location to read information from </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to write. </td></tr>
+    <tr><td class="paramname">timeout</td><td>- Amount of time before this function should gives up. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status::kTimeout if this function runs out of time based on timeout. </dd>
+<dd>
+Status::kSuccess if this function is successful. </dd>
+<dd>
+<a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> potentially return any other status. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a09369906e14b0e770da2d75623461d2d">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<a id="af9134ed677da7bc256299d20a9a71aeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9134ed677da7bc256299d20a9a71aeb">&#9670;&nbsp;</a></span>Write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::InternetSocket::Write </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::nanoseconds&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Send data to the connected host. Must have used <a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html#a5e1d7293ef0b8db5da2bd8845b43ed8e">Connect()</a> before using this.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>- data to write to socket </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to write. </td></tr>
+    <tr><td class="paramname">timeout</td><td>- Amount of time before this function should gives up. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status::kTimeout if this function runs out of time based on timeout. </dd>
+<dd>
+Status::kSuccess if this function is successful. </dd>
+<dd>
+<a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> potentially return any other status. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a836dec20b55a9903fc9e91e9615e468a">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/communication/<a class="el" href="../../db/d15/internet__socket_8hpp_source.html">internet_socket.hpp</a></li>
 </ul>
 </div><!-- contents -->

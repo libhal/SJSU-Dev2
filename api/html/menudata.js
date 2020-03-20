@@ -115,7 +115,22 @@ var menudata={children:[
 {text:"u",url:"functions_vars_u.html#index_u"},
 {text:"w",url:"functions_vars_w.html#index_w"}]},
 {text:"Typedefs",url:"functions_type.html"},
-{text:"Enumerations",url:"functions_enum.html"},
+{text:"Enumerations",url:"functions_enum.html",children:[
+{text:"a",url:"functions_enum.html#index_a"},
+{text:"b",url:"functions_enum.html#index_b"},
+{text:"c",url:"functions_enum.html#index_c"},
+{text:"d",url:"functions_enum.html#index_d"},
+{text:"e",url:"functions_enum.html#index_e"},
+{text:"f",url:"functions_enum.html#index_f"},
+{text:"k",url:"functions_enum.html#index_k"},
+{text:"m",url:"functions_enum.html#index_m"},
+{text:"o",url:"functions_enum.html#index_o"},
+{text:"p",url:"functions_enum.html#index_p"},
+{text:"r",url:"functions_enum.html#index_r"},
+{text:"s",url:"functions_enum.html#index_s"},
+{text:"t",url:"functions_enum.html#index_t"},
+{text:"u",url:"functions_enum.html#index_u"},
+{text:"w",url:"functions_enum.html#index_w"}]},
 {text:"Enumerator",url:"functions_eval.html"}]}]},
 {text:"Files",url:"files.html",children:[
 {text:"File List",url:"files.html"}]}]}

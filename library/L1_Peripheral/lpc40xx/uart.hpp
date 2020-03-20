@@ -203,7 +203,7 @@ constexpr static UartCalibration_t GenerateUartCalibration(
 }
 }  // namespace uart
 
-/// Implementation of the UART interface for the LPC40xx family of
+/// Implementation of the UART peripheral for the LPC40xx family of
 /// microcontrollers.
 class Uart final : public sjsu::Uart
 {

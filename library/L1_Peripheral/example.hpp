@@ -12,6 +12,8 @@ namespace sjsu
 /// @defgroup l1_peripheral L1 Peripheral Interfaces
 /// @brief Lists all of the peripheral interfaces in SJSU-Dev2
 /// @{
+
+/// Example class is a template for "L1_Peripheral" peripherals.
 class Example
 {
  public:
@@ -47,46 +49,44 @@ class Example
   /// only transfer a single byte is not optimal as a function call is not
   /// optimal when stream large amounts of data.
   virtual bool Write(const uint8_t * data, size_t length) const = 0;
-  // 7.1 Read Timeouts
-  // Timeout should not be apart of the API if it doesn't make sense for the
-  // protocol. Example would be something like SPI where the master drives the
-  // read operation. This is useful for something like UART where the event of
-  // receiving data is asynchronous.
+  /// 7.1 Read Timeouts
+  /// Timeout should not be apart of the API if it doesn't make sense for the
+  /// protocol. Example would be something like SPI where the master drives the
+  /// read operation. This is useful for something like UART where the event of
+  /// receiving data is asynchronous.
   virtual Status Read(uint8_t * data,
                       size_t length,
                       uint32_t timeout) const = 0;
 
-  // 8. Setters
-  // Should be prefixed with the word "Set". Setters are good for
-  // configuring the peripheral after Initialize() has run.
-  // Here are a few examples.
-  virtual void SetValue(uint32_t value) const         = 0;
-
+  /// 8. Setters
+  /// Should be prefixed with the word "Set". Setters are good for
+  /// configuring the peripheral after Initialize() has run.
+  /// Here are a few examples.
   virtual void SetClockRate(uint32_t frequency) const = 0;
 
-  // 9. Getters
-  // Should be prefixed with the word "Get". Getters should retrieve
-  // the current configuration of the peripheral. These are generally
-  // discouraged as adding them increases the vtable without bring much value.
-  // Rather than supply Getters, unit tests should make sure that the setters
-  // actually work.
-  virtual float GetValue() const        = 0;
-
+  /// 9. Getters
+  /// Should be prefixed with the word "Get". Getters should retrieve
+  /// the current configuration of the peripheral. These are generally
+  /// discouraged as adding them increases the vtable without bring much value.
+  /// Rather than supply Getters, unit tests should make sure that the setters
+  /// actually work.
   virtual uint32_t GetClockRate() const = 0;
 
-  // 10. Status methods
-  // Methods that indicate the status of the peripheral should be prefixed
-  // with the word "Has". These must return bool.
+  /// 10. Status methods
+  /// Methods that indicate the status of the peripheral should be prefixed
+  /// with the word "Has". These must return bool.
   virtual bool HasCompletedAction() const = 0;
 
-  // 11. Utility methods:
-  // The follow methods use the virtual methods to control the peripheral. They
-  // should give a variety use methods for using the API.
-
+  /// 11. Utility methods:
+  /// The follow methods use the virtual methods to control the peripheral. They
+  /// should give a variety use methods for using the API.
+  ///
+  /// Usage:
+  ///
+  ///    example.Write(0x22);
+  ///
   /// Write a single byte
   /// @param byte - the byte you would like to write.
-  /// @usage
-  ///    example.Write(0x22);
   void Write(uint8_t byte)
   {
     Write(&byte, 1);
@@ -104,7 +104,7 @@ class Example
     Write(data.begin(), data.size());
   }
 
-  // Overload of Read that waits forever if a timeout was not supplied.
+  /// Overload of Read that waits forever if a timeout was not supplied.
   Status Read(uint8_t * data, size_t size)
   {
     return Read(data, size, UINT32_MAX);

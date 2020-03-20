@@ -17,36 +17,48 @@ namespace sjsu
 {
 namespace lpc40xx
 {
+/// Implementation of the Timer peripheral for the LPC40xx family of
+/// microcontrollers.
 class Timer final : public sjsu::Timer
 {
  public:
+  /// LPC40xx Peripheral descriptor object with all of the information to manage
+  /// the Timer peripheral.
   struct Peripheral_t
   {
+    /// Address to the timer peripheral registers
     LPC_TIM_TypeDef * peripheral;
+    /// ID of the timer peripheral (used to power on the peripheral)
     sjsu::SystemController::PeripheralID id;
+    /// Interrupt Request Number for this timer
     int irq;
   };
 
+  /// Namespace containing the available peripherals for the LPC40xx platform
   struct Peripheral  // NOLINT
   {
+    /// Peripheral descriptor for TIMER 0
     inline static const Peripheral_t kTimer0 = {
       .peripheral = LPC_TIM0,
       .id         = sjsu::lpc40xx::SystemController::Peripherals::kTimer0,
       .irq        = IRQn::TIMER0_IRQn,
     };
 
+    /// Peripheral descriptor for TIMER 1
     inline static const Peripheral_t kTimer1 = {
       .peripheral = LPC_TIM1,
       .id         = sjsu::lpc40xx::SystemController::Peripherals::kTimer1,
       .irq        = IRQn::TIMER1_IRQn,
     };
 
+    /// Peripheral descriptor for TIMER 2
     inline static const Peripheral_t kTimer2 = {
       .peripheral = LPC_TIM2,
       .id         = sjsu::lpc40xx::SystemController::Peripherals::kTimer2,
       .irq        = IRQn::TIMER2_IRQn,
     };
 
+    /// Peripheral descriptor for TIMER 3
     inline static const Peripheral_t kTimer3 = {
       .peripheral = LPC_TIM3,
       .id         = sjsu::lpc40xx::SystemController::Peripherals::kTimer3,
@@ -54,15 +66,20 @@ class Timer final : public sjsu::Timer
     };
   };
 
+  /// Contains common registers for timer control register
   struct TimerControlRegister  // NOLINT
   {
    public:
+    /// Enable bit
     inline static constexpr bit::Mask kEnableBit = bit::CreateMaskFromRange(0);
-    inline static constexpr bit::Mask kResetBit  = bit::CreateMaskFromRange(1);
+    /// Reset bit
+    inline static constexpr bit::Mask kResetBit = bit::CreateMaskFromRange(1);
   };
 
-  static constexpr uint8_t kMatchRegisterCount = 4;
-
+  /// Constructor of the LPC40xx Timer implementation
+  ///
+  /// @param timer - a timer peripheral descriptor that, which is the the timer
+  /// peripheral to be used with this object
   explicit constexpr Timer(const Peripheral_t & timer) : timer_(timer) {}
 
   Status Initialize(units::frequency::hertz_t frequency,
@@ -105,7 +122,7 @@ class Timer final : public sjsu::Timer
                         MatchAction action,
                         uint8_t match_register = 0) const override
   {
-    SJ2_ASSERT_FATAL(match_register < kMatchRegisterCount,
+    SJ2_ASSERT_FATAL(match_register < GetAvailableMatchRegisters(),
                      "LPC40xx can only has 3 match registers. An attempt "
                      "to set match register %d was attempted.",
                      match_register);
@@ -127,7 +144,7 @@ class Timer final : public sjsu::Timer
 
   uint8_t GetAvailableMatchRegisters() const override
   {
-    return kMatchRegisterCount;
+    return 4;
   }
 
   uint32_t GetCount() const override

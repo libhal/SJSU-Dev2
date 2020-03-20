@@ -10,8 +10,12 @@ var searchData=
   ['uptime',['Uptime',['../d0/d6b/namespacesjsu.html#ac1015ce029891b6ea23685a883ebd664',1,'sjsu']]],
   ['uptimefunction',['UptimeFunction',['../d0/d6b/namespacesjsu.html#a80c4ba087f4b101fd4d7714bb9fb32f9',1,'sjsu']]],
   ['usbclock',['UsbClock',['../d2/d0a/structsjsu_1_1lpc40xx_1_1SystemController_1_1UsbClock.html',1,'sjsu::lpc40xx::SystemController']]],
+  ['usbdivider',['UsbDivider',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a8643fe1fcc2ef831ae790a43d98f8a73',1,'sjsu::lpc40xx::SystemController']]],
   ['usbpll',['UsbPll',['../d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html',1,'sjsu::lpc17xx::SystemController']]],
+  ['usbplldivider',['UsbPllDivider',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab5a079dcf9f8d5d3194aef8fdc665290',1,'sjsu::lpc17xx::SystemController']]],
   ['usbpllinputfrequency',['UsbPllInputFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da',1,'sjsu::lpc17xx::SystemController']]],
+  ['usbpllmultiplier',['UsbPllMultiplier',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9a822339e5e9c8a98b9196a179e4bd9e',1,'sjsu::lpc17xx::SystemController']]],
+  ['usbsource',['UsbSource',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a532be32b5b14dae38a982b1e5fabefe0',1,'sjsu::lpc40xx::SystemController']]],
   ['used',['used',['../df/ddd/classsjsu_1_1Arena.html#a6193b0ea357c7877cce07b4c3b15e77f',1,'sjsu::Arena']]],
   ['user_5fcallback',['user_callback',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a9a9fcb71dfadbd8d6b194249c748d0cd',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
   ['uses_5frepeat_5fframes',['uses_repeat_frames',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#ae0767f9ef1f5e26701de8e13a2b2d68d',1,'sjsu::infrared::PulseDurationConfiguration_t']]]

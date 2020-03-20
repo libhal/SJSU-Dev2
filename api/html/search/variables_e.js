@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['peripheral',['peripheral',['../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#ac0389b277bb9ccf85420f6eeef511bcd',1,'sjsu::lpc40xx::Pwm::Channel_t']]],
+  ['peripheral',['peripheral',['../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#ac0389b277bb9ccf85420f6eeef511bcd',1,'sjsu::lpc40xx::Pwm::Channel_t::peripheral()'],['../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html#a781a76e93527326ead2b35604b06153c',1,'sjsu::lpc40xx::Timer::Peripheral_t::peripheral()']]],
   ['peripheral_5fpower_5fid',['peripheral_power_id',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a3134b6626073e00ba603df48525477c4',1,'sjsu::lpc40xx::I2c::Bus_t']]],
   ['pin',['pin',['../d5/ddf/structsjsu_1_1lpc17xx_1_1Pin_1_1PinTable__t.html#a89b060554a4c9147153810e10efb4a79',1,'sjsu::lpc17xx::Pin::PinTable_t::pin()'],['../d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#abc2a83e7693f6b06b7e547fd3ad53df7',1,'sjsu::lpc40xx::Pwm::Channel_t::pin()']]],
   ['pin_5f',['pin_',['../d0/da9/classsjsu_1_1Pin.html#a41a8c139acdc313bc5f27065f8142d9b',1,'sjsu::Pin']]],
@@ -13,6 +13,7 @@ var searchData=
   ['power_5fid',['power_id',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a8a3a5aa040003b7e0634764260718fc6',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
   ['power_5fon_5fbit',['power_on_bit',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#af7a8a2bffc3c807a307ef0f2746eae04',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['power_5fon_5fid',['power_on_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a35be89e626200386b8726bd69eff1b84',1,'sjsu::lpc40xx::Uart::Port_t']]],
+  ['pre_5fdivider',['pre_divider',['../df/d55/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllSettings__t.html#a2bffbc27db42307646f42a9133cfc3bb',1,'sjsu::lpc17xx::SystemController::PllSettings_t']]],
   ['priority',['priority',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#ad501f59b6cf62779ca06dcfa61c6de90',1,'sjsu::InterruptController::RegistrationInfo_t']]],
   ['pulse_5fbuffer',['pulse_buffer',['../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#ae418d752845253f8cd9ce08ce949dd51',1,'sjsu::infrared::DataFrame_t']]],
   ['pulse_5fbuffer_5flength',['pulse_buffer_length',['../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#a4c34c1181080883c253895e89eef2e73',1,'sjsu::infrared::DataFrame_t']]]

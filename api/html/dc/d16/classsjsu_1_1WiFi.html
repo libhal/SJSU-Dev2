@@ -80,9 +80,11 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="../../dd/d3e/classsjsu_1_1WiFi-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::WiFi Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">sjsu::WiFi Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="../../d2/d7b/group__communication.html">Communication Interfaces</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../db/d15/internet__socket_8hpp_source.html">internet_socket.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::WiFi:</div>
 <div class="dyncontent">
@@ -99,13 +101,17 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a879eea56dbddcd758b97ee59d1f3757b"><td class="memItemLeft" align="right" valign="top"><a id="a879eea56dbddcd758b97ee59d1f3757b"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>AccessPointSecurity</b> { <b>kOpen</b> = 0, 
+<tr class="memitem:a879eea56dbddcd758b97ee59d1f3757b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a879eea56dbddcd758b97ee59d1f3757b">AccessPointSecurity</a> { <br />
+&#160;&#160;<b>kOpen</b> = 0, 
+<b>kWep</b> = 1, 
 <b>kWpaPsk</b> = 2, 
 <b>kWpa2Psk</b> = 3, 
-<b>kWpaWpa2Psk</b> = 4
+<br />
+&#160;&#160;<b>kWpaWpa2Psk</b> = 4
+<br />
  }</td></tr>
 <tr class="separator:a879eea56dbddcd758b97ee59d1f3757b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fdf8912419cef12a832de546105b2fc"><td class="memItemLeft" align="right" valign="top"><a id="a9fdf8912419cef12a832de546105b2fc"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>WifiMode</b> { <b>kClient</b> = 1, 
+<tr class="memitem:a9fdf8912419cef12a832de546105b2fc"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a9fdf8912419cef12a832de546105b2fc">WifiMode</a> { <b>kClient</b> = 1, 
 <b>kAccessPoint</b>, 
 <b>kBoth</b>
  }</td></tr>
@@ -113,25 +119,267 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:affb4519b491eded5121b699c2c48b4ee"><td class="memItemLeft" align="right" valign="top"><a id="affb4519b491eded5121b699c2c48b4ee"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()=0</td></tr>
+<tr class="memitem:affb4519b491eded5121b699c2c48b4ee"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#affb4519b491eded5121b699c2c48b4ee">Initialize</a> ()=0</td></tr>
 <tr class="separator:affb4519b491eded5121b699c2c48b4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bc768a0e2741c539b208efd709c9ae1"><td class="memItemLeft" align="right" valign="top"><a id="a2bc768a0e2741c539b208efd709c9ae1"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsConnected</b> ()=0</td></tr>
+<tr class="memitem:a2bc768a0e2741c539b208efd709c9ae1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a2bc768a0e2741c539b208efd709c9ae1">IsConnected</a> ()=0</td></tr>
 <tr class="separator:a2bc768a0e2741c539b208efd709c9ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a729e60498dbc9ce101964f06fb895df7"><td class="memItemLeft" align="right" valign="top"><a id="a729e60498dbc9ce101964f06fb895df7"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectToAccessPoint</b> (std::string_view ssid, std::string_view password, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="memitem:a729e60498dbc9ce101964f06fb895df7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a729e60498dbc9ce101964f06fb895df7">ConnectToAccessPoint</a> (std::string_view ssid, std::string_view password, std::chrono::nanoseconds timeout)=0</td></tr>
 <tr class="separator:a729e60498dbc9ce101964f06fb895df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7acc92e269afcc38ee89673d8793c1d6"><td class="memItemLeft" align="right" valign="top"><a id="a7acc92e269afcc38ee89673d8793c1d6"></a>
-virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectFromAccessPoint</b> ()=0</td></tr>
+<tr class="memitem:a7acc92e269afcc38ee89673d8793c1d6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a7acc92e269afcc38ee89673d8793c1d6">DisconnectFromAccessPoint</a> ()=0</td></tr>
 <tr class="separator:a7acc92e269afcc38ee89673d8793c1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09215d8c68e54363eeea5e701f2d41e8"><td class="memItemLeft" align="right" valign="top"><a id="a09215d8c68e54363eeea5e701f2d41e8"></a>
-virtual <a class="el" href="../../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html">NetworkConnection_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetNetworkConnectionInfo</b> ()=0</td></tr>
+<tr class="memitem:a09215d8c68e54363eeea5e701f2d41e8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html">NetworkConnection_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a09215d8c68e54363eeea5e701f2d41e8">GetNetworkConnectionInfo</a> ()=0</td></tr>
 <tr class="separator:a09215d8c68e54363eeea5e701f2d41e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a92c9bef0e931d1fdf3ee60d53f24c2"><td class="memItemLeft" align="right" valign="top"><a id="a1a92c9bef0e931d1fdf3ee60d53f24c2"></a>
-virtual <a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html">InternetSocket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetInternetSocket</b> ()=0</td></tr>
+<tr class="memitem:a1a92c9bef0e931d1fdf3ee60d53f24c2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html">InternetSocket</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a1a92c9bef0e931d1fdf3ee60d53f24c2">GetInternetSocket</a> ()=0</td></tr>
 <tr class="separator:a1a92c9bef0e931d1fdf3ee60d53f24c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An interface for devices that can communicate wirelessly via the Wifi protocol. This interface is used for connecting a device to a Wifi hotspot (client). </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a879eea56dbddcd758b97ee59d1f3757b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a879eea56dbddcd758b97ee59d1f3757b">&#9670;&nbsp;</a></span>AccessPointSecurity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a879eea56dbddcd758b97ee59d1f3757b">sjsu::WiFi::AccessPointSecurity</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The type of password security used for the access point. NOTE: Used within the ESP8266 code but not in the interface </p>
+
+</div>
+</div>
+<a id="a9fdf8912419cef12a832de546105b2fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fdf8912419cef12a832de546105b2fc">&#9670;&nbsp;</a></span>WifiMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a9fdf8912419cef12a832de546105b2fc">sjsu::WiFi::WifiMode</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The type of mode to put the device into. NOTE: Used within the ESP8266 code but not in the interface </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a729e60498dbc9ce101964f06fb895df7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a729e60498dbc9ce101964f06fb895df7">&#9670;&nbsp;</a></span>ConnectToAccessPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::WiFi::ConnectToAccessPoint </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>ssid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>password</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::nanoseconds&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Requests to connects to an access point.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ssid</td><td>- SSID of the access point you would like to connect to. </td></tr>
+    <tr><td class="paramname">password</td><td>- the password to the access point. </td></tr>
+    <tr><td class="paramname">timeout</td><td>- Amount of time before this function should gives up. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Status - Status::kSuccess if it is successful </dd>
+<dd>
+Status - Status::kTimeout if it is not successful </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#ae6665e172251487f46c5c26faee33862">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<a id="a7acc92e269afcc38ee89673d8793c1d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7acc92e269afcc38ee89673d8793c1d6">&#9670;&nbsp;</a></span>DisconnectFromAccessPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::WiFi::DisconnectFromAccessPoint </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Disconnect from the access point. </p><dl class="section return"><dt>Returns</dt><dd>Status </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a3ae040c2c531250546b33b479729d7bd">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<a id="a1a92c9bef0e931d1fdf3ee60d53f24c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a92c9bef0e931d1fdf3ee60d53f24c2">&#9670;&nbsp;</a></span>GetInternetSocket()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html">InternetSocket</a>&amp; sjsu::WiFi::GetInternetSocket </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../db/dcb/classsjsu_1_1InternetSocket.html">InternetSocket</a>&amp; that can be used to connect and communicate over TCP or UDP. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a0e5d29e75931710d1afc9bb12d4a2118">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<a id="a09215d8c68e54363eeea5e701f2d41e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09215d8c68e54363eeea5e701f2d41e8">&#9670;&nbsp;</a></span>GetNetworkConnectionInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html">NetworkConnection_t</a> sjsu::WiFi::GetNetworkConnectionInfo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html">NetworkConnection_t</a> - Get connection information such as IP address. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a57c972e4f91b9e289720e9027b17b728">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<a id="affb4519b491eded5121b699c2c48b4ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affb4519b491eded5121b699c2c48b4ee">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::WiFi::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize the <a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html">WiFi</a> hardware and necessary peripherals needed to communicate with it. </p><dl class="section return"><dt>Returns</dt><dd>Any status. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a88103b913924792712f70f923c9dcc5f">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
+<a id="a2bc768a0e2741c539b208efd709c9ae1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bc768a0e2741c539b208efd709c9ae1">&#9670;&nbsp;</a></span>IsConnected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool sjsu::WiFi::IsConnected </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true - if this Wifi instance is connected to an access point </dd>
+<dd>
+false - it this Wifi instance is not connected to an access point </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a8910ede1b41e9f6188526179b1261ab7">sjsu::Esp8266</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/communication/<a class="el" href="../../db/d15/internet__socket_8hpp_source.html">internet_socket.hpp</a></li>
 </ul>

@@ -5,6 +5,7 @@ var searchData=
   ['temt6000x01',['Temt6000x01',['../d3/da6/classsjsu_1_1Temt6000x01.html#a62c4dd5a51a03f80d783a3c7643fe713',1,'sjsu::Temt6000x01']]],
   ['tfmini',['TFMini',['../d2/dc6/classsjsu_1_1TFMini.html#a03903d84757b74fb427b61a489e13445',1,'sjsu::TFMini']]],
   ['timeouttimer',['TimeoutTimer',['../d6/d98/classsjsu_1_1TimeoutTimer.html#a83d5c206c62999ae502fad63f24699ae',1,'sjsu::TimeoutTimer']]],
+  ['timer',['Timer',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ac38fc2715d1024909ff4cc314bc14cb6',1,'sjsu::lpc40xx::Timer']]],
   ['timerhandler',['TimerHandler',['../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#adc03f85c6fdf2d1d0828c6fd6cd0fb92',1,'sjsu::lpc40xx::PulseCapture::TimerHandler()'],['../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#a1bc00783c52e9b8986adf3430bbb919b',1,'sjsu::lpc40xx::PulseCapture::TimerHandler(const CaptureChannelPartial_t &amp;channel)']]],
   ['tmp102',['Tmp102',['../d8/db2/classsjsu_1_1Tmp102.html#aaf416039fdcdc96048adfa546add4dd1',1,'sjsu::Tmp102']]],
   ['toggle',['Toggle',['../dd/d3a/classsjsu_1_1Gpio.html#a92833a30a38cd1ad87a2e27e4d25d054',1,'sjsu::Gpio::Toggle()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb35937b1d802aeff724c192c64af517',1,'sjsu::lpc40xx::Gpio::Toggle()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a0a7d3fad0729e140153500a02ea0ccc2',1,'sjsu::stm32f4xx::Gpio::Toggle()']]],
