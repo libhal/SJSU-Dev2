@@ -45,9 +45,9 @@ class Si7060 final : public TemperatureSensor
   /// Initializes the I2C peripheral to enable the device for use.
   ///
   /// @return The initialization status.
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
-    Status status;
+    Status_t status;
 
     status = i2c_.Initialize();
     if (status != Status::kSuccess)
@@ -73,7 +73,7 @@ class Si7060 final : public TemperatureSensor
   /// @param temperature Output parameter.
   /// @return Returns Status::kSuccess if the temperature measurement was
   ///         successfully obtained.
-  Status GetTemperature(
+  Status_t GetTemperature(
       units::temperature::celsius_t * temperature) const override
   {
     // Note that: 1 << 14 = 2^14 = 16384

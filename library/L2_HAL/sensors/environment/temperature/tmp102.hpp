@@ -54,7 +54,7 @@ class Tmp102 final : public TemperatureSensor
   /// Initializes the I2C peripheral to enable the device for use.
   ///
   /// @return The initialization status.
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
     return i2c_.Initialize();
   }
@@ -63,7 +63,7 @@ class Tmp102 final : public TemperatureSensor
   /// @param temperature Output parameter.
   /// @return Returns Status::kSuccess if the temperature measurement was
   ///         successfully obtained.
-  Status GetTemperature(
+  Status_t GetTemperature(
       units::temperature::celsius_t * temperature) const override
   {
     OneShotShutdown();

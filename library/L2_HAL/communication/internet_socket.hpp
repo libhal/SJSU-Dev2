@@ -37,7 +37,7 @@ class InternetSocket
   ///         timeout.
   /// @return Status::kSuccess if this function is successful.
   /// @return Can potentially return any other status.
-  virtual Status Connect(Protocol protocol,
+  virtual Status_t Connect(Protocol protocol,
                          std::string_view address,
                          uint16_t port,
                          std::chrono::nanoseconds timeout) = 0;
@@ -52,7 +52,7 @@ class InternetSocket
   ///         timeout.
   /// @return Status::kSuccess if this function is successful.
   /// @return Can potentially return any other status.
-  virtual Status Write(const void * data,
+  virtual Status_t Write(const void * data,
                        size_t size,
                        std::chrono::nanoseconds timeout) = 0;
 
@@ -77,7 +77,7 @@ class InternetSocket
   /// @return Status::kSuccess if this function is successful.
   /// @return Status::kNotReadyYet if this was called before Connect was used.
   /// @return Can potentially return any other status.
-  virtual Status Close() = 0;
+  virtual Status_t Close() = 0;
 };
 
 /// An interface for devices that can communicate wirelessly via the Wifi
@@ -93,7 +93,7 @@ class WiFi
   {
     /// If `status` is Status::kSuccess then the fields below are correct.
     /// Otherwise, this status holds what went wrong.
-    Status status = Status::kNotImplemented;
+    Status_t status = Status::kNotImplemented;
     /// IPv4 IP address
     std::array<uint8_t, 4> ip;
     /// IPv4 IP address netmask
@@ -127,7 +127,7 @@ class WiFi
   /// Initialize the WiFi hardware and necessary peripherals needed to
   /// communicate with it.
   /// @return Any status.
-  virtual Status Initialize() = 0;
+  virtual Status_t Initialize() = 0;
 
   /// @return true - if this Wifi instance is connected to an access point
   /// @return false - it this Wifi instance is not connected to an access point
@@ -140,13 +140,13 @@ class WiFi
   /// @param timeout - Amount of time before this function should gives up.
   /// @return Status - Status::kSuccess if it is successful
   /// @return Status - Status::kTimeout if it is not successful
-  virtual Status ConnectToAccessPoint(std::string_view ssid,
+  virtual Status_t ConnectToAccessPoint(std::string_view ssid,
                                       std::string_view password,
                                       std::chrono::nanoseconds timeout) = 0;
 
   /// Disconnect from the access point.
   /// @return Status
-  virtual Status DisconnectFromAccessPoint() = 0;
+  virtual Status_t DisconnectFromAccessPoint() = 0;
 
   /// @return NetworkConnection_t - Get connection information such as IP
   ///         address.

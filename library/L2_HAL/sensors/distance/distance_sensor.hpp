@@ -19,18 +19,18 @@ class DistanceSensor
  public:
   /// Initialize distance sensor hardware. Must be called before running any
   /// other methods.
-  virtual Status Initialize() = 0;
+  virtual Status_t Initialize() = 0;
 
   /// Trigger a capture of the current distance reading and return it.
   ///
   /// @param distance - output parameter to contain the distance results.
-  virtual Status GetDistance(units::length::millimeter_t * distance) = 0;
+  virtual Status_t GetDistance(units::length::millimeter_t * distance) = 0;
 
   /// Get the signal strength from the distance sensor.
   ///
   /// @param strength - output parameter to contain the strength of the system.
   ///        The exact value
   /// @return Status
-  virtual Status GetSignalStrengthPercent(float * strength) = 0;
+  virtual Status_t GetSignalStrengthPercent(float * strength) = 0;
 };
 }  // namespace sjsu

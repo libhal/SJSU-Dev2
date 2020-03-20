@@ -30,7 +30,7 @@ class Temt6000x01 final : public LightSensor
   /// Initializes the ADC driver.
   ///
   /// @return The initialization status.
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
     return adc_.Initialize();
   }

@@ -291,7 +291,7 @@ class Uart final : public sjsu::Uart
   /// @param port - a reference to a constant lpc40xx::Uart::Port_t definition
   explicit constexpr Uart(const Port_t & port) : port_(port) {}
 
-  Status Initialize(uint32_t baud_rate) const override
+  Status_t Initialize(uint32_t baud_rate) const override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
     sjsu::SystemController::GetPlatformController().PowerUpPeripheral(

@@ -73,7 +73,7 @@ inline sjsu::Adc & GetInactive<sjsu::Adc>()
   class InactiveAdc : public sjsu::Adc
   {
    public:
-    sjsu::Status Initialize() const override
+    sjsu::Status_t Initialize() const override
     {
       return sjsu::Status::kNotImplemented;
     }
@@ -98,7 +98,7 @@ inline sjsu::Dac & GetInactive<sjsu::Dac>()
   class InactiveDac : public sjsu::Dac
   {
    public:
-    Status Initialize() const override
+    Status_t Initialize() const override
     {
       return Status::kNotImplemented;
     }
@@ -147,11 +147,11 @@ inline sjsu::I2c & GetInactive<sjsu::I2c>()
   class InactiveI2c : public sjsu::I2c
   {
    public:
-    Status Initialize() const override
+    Status_t Initialize() const override
     {
       return Status::kNotImplemented;
     }
-    Status Transaction(Transaction_t) const override
+    Status_t Transaction(Transaction_t) const override
     {
       return Status::kNotImplemented;
     }
@@ -168,7 +168,7 @@ inline sjsu::Pwm & GetInactive<sjsu::Pwm>()
   class InactivePwm : public sjsu::Pwm
   {
    public:
-    Status Initialize(units::frequency::hertz_t) const override
+    Status_t Initialize(units::frequency::hertz_t) const override
     {
       return Status::kNotImplemented;
     }
@@ -191,7 +191,7 @@ inline sjsu::Spi & GetInactive<sjsu::Spi>()
   class InactiveSpi : public sjsu::Spi
   {
    public:
-    Status Initialize() const override
+    Status_t Initialize() const override
     {
       return Status::kNotImplemented;
     }
@@ -265,7 +265,7 @@ inline sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
    public:
     void Initialize() const override {}
     void SetCallback(InterruptCallback) const override {}
-    Status StartTimer() const override
+    Status_t StartTimer() const override
     {
       return Status::kNotImplemented;
     }
@@ -286,9 +286,9 @@ inline sjsu::Timer & GetInactive<sjsu::Timer>()
   class InactiveTimer : public sjsu::Timer
   {
    public:
-    Status Initialize(units::frequency::hertz_t,
-                      InterruptCallback,
-                      int32_t) const override
+    Status_t Initialize(units::frequency::hertz_t,
+                        InterruptCallback,
+                        int32_t) const override
     {
       return Status::kNotImplemented;
     }
@@ -317,7 +317,7 @@ inline sjsu::Uart & GetInactive<sjsu::Uart>()
   class InactiveUart : public sjsu::Uart
   {
    public:
-    Status Initialize(uint32_t) const override
+    Status_t Initialize(uint32_t) const override
     {
       return Status::kNotImplemented;
     }

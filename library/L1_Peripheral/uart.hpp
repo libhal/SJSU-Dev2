@@ -23,7 +23,7 @@ class Uart
   /// method in this interface is called.
   ///
   /// @param baud_rate - set the communication speed
-  virtual Status Initialize(uint32_t baud_rate) const = 0;
+  virtual Status_t Initialize(uint32_t baud_rate) const = 0;
 
   /// Set UART baud rate
   ///
@@ -118,7 +118,7 @@ class Uart
   /// @return sjsu::Status::kSuccess if bytes were read before timeout.
   /// @return sjsu::Status::kTimeout if bytes could not be read before before
   ///         timeout.
-  sjsu::Status Read(void * data,
+  sjsu::Status_t Read(void * data,
                     size_t size,
                     std::chrono::nanoseconds timeout) const
   {

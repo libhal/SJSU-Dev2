@@ -40,6 +40,6 @@ class SystemTimer
   ///
   /// @return Status::kSuccess if the system timer started correctly. Otherwise,
   ///         the exact status is implementation dependent.
-  virtual Status StartTimer() const = 0;
+  virtual Status_t StartTimer() const = 0;
 };
 }  // namespace sjsu

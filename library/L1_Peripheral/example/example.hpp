@@ -100,7 +100,7 @@ class Example final : public sjsu::Example
 
   // 7. Methods that override the parent's implementation must use the keyword
   // "override".
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
     // Add implementation here.
     // Example implementation where we set the functions of the pins.
@@ -125,7 +125,7 @@ class Example final : public sjsu::Example
     return true;
   }
 
-  Status Read(uint8_t * data, size_t length, uint32_t timeout) const override
+  Status_t Read(uint8_t * data, size_t length, uint32_t timeout) const override
   {
     // This is a trick to make the compiler think we used these variables.
     // Only using this for an example. Otherwise, use the [[maybe_unused]]

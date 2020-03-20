@@ -252,7 +252,7 @@ LogError(const char * format, Params...)->LogError<Params...>;
 #define LOG_ON_FAILURE(expression)                              \
   do                                                            \
   {                                                             \
-    sjsu::Status log_on_failure_status = (expression);          \
+    sjsu::Status_t log_on_failure_status = (expression);          \
     if (log_on_failure_status != sjsu::Status::kSuccess)        \
     {                                                           \
       ::sjsu::LogWarning("Expression Failed: %s", #expression); \

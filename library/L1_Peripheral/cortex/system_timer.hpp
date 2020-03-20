@@ -126,9 +126,9 @@ class SystemTimer final : public sjsu::SystemTimer
     callback = isr;
   }
 
-  Status StartTimer() const override
+  Status_t StartTimer() const override
   {
-    Status status = Status::kInvalidSettings;
+    Status_t status = Status::kInvalidSettings;
 
     if (sys_tick->LOAD != 0)
     {

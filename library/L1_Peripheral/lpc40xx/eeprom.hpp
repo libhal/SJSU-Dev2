@@ -27,7 +27,7 @@ class Eeprom final : public sjsu::Storage
   static constexpr bit::Mask kAddressMask = bit::CreateMaskFromRange(0, 1);
 
   /// Masks for the program status bits and read/write status bits
-  struct Status  // NOLINT
+  struct Status_t  // NOLINT
   {
     /// Mask to get value of programming status bit
     static constexpr bit::Mask kProgramStatusMask =
@@ -56,7 +56,7 @@ class Eeprom final : public sjsu::Storage
 
   /// Initializing the EEPROM requires setting the wait state register, setting
   /// the clock divider register, and ensuring that the device is powered on.
-  sjsu::Status Initialize() override
+  sjsu::Status_t Initialize() override
   {
     const float kSystemClock = static_cast<float>(
         sjsu::SystemController::GetPlatformController().GetSystemFrequency());
@@ -91,13 +91,13 @@ class Eeprom final : public sjsu::Storage
     return true;
   }
 
-  sjsu::Status Enable() override
+  sjsu::Status_t Enable() override
   {
     eeprom_register->PWRDWN = 0;
     return sjsu::Status::kSuccess;
   }
 
-  sjsu::Status Disable() override
+  sjsu::Status_t Disable() override
   {
     eeprom_register->PWRDWN = 1;
     return sjsu::Status::kSuccess;
@@ -118,12 +118,12 @@ class Eeprom final : public sjsu::Storage
     return 4_B;
   }
 
-  sjsu::Status Erase(uint32_t, size_t) override
+  sjsu::Status_t Erase(uint32_t, size_t) override
   {
     return sjsu::Status::kSuccess;
   }
 
-  sjsu::Status Write(uint32_t address, const void * data, size_t size) override
+  sjsu::Status_t Write(uint32_t address, const void * data, size_t size) override
   {
     constexpr bit::Mask kLower6Bits = bit::CreateMaskFromRange(0, 5);
     constexpr bit::Mask kUpper6Bits = bit::CreateMaskFromRange(6, 11);
@@ -182,7 +182,7 @@ class Eeprom final : public sjsu::Storage
     return sjsu::Status::kSuccess;
   }
 
-  sjsu::Status Read(uint32_t address, void * data, size_t size) override
+  sjsu::Status_t Read(uint32_t address, void * data, size_t size) override
   {
     address = bit::Insert(address, 0b00, kAddressMask);
 

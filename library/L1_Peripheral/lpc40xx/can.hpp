@@ -287,7 +287,7 @@ class Can final : public sjsu::Can
   {
   }
 
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
     /// Power on CANBUS peripheral
     auto & platform = sjsu::SystemController::GetPlatformController();

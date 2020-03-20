@@ -12,7 +12,7 @@ namespace sjsu
 ///
 /// Example Usage:
 ///
-///   Status GetWaterLevel(std::chrono::nanoseconds timeout)
+///   Status_t GetWaterLevel(std::chrono::nanoseconds timeout)
 ///   {
 ///     // Construct TimeoutTimer with the given timeout above. Lets assume it
 ///     // is 1 second.
@@ -20,7 +20,7 @@ namespace sjsu
 ///     // An example device that takes time to perform its operations.
 ///     WaterLevelDevice water_level;
 ///     // Reusable status variable
-///     Status status;
+///     Status_t status;
 ///
 ///     // In this case, we give the remaining time left for calibration
 ///     // operation. Lets assume that the time is still around 1 second. The

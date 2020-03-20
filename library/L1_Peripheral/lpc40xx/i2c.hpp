@@ -157,8 +157,9 @@ class I2c final : public sjsu::I2c
     {
       case MasterState::kBusError:  // 0x00
       {
+        // Error(Status::kBusError, "Bus Error Occurred on LPC40xx I2C bus");
         i2c.transaction.status = Status::kBusError;
-        set_mask               = Control::kAssertAcknowledge | Control::kStop;
+        set_mask = Control::kAssertAcknowledge | Control::kStop;
         break;
       }
       case MasterState::kStartCondition:  // 0x08
@@ -178,7 +179,7 @@ class I2c final : public sjsu::I2c
         if (i2c.transaction.out_length == 0)
         {
           i2c.transaction.busy   = false;
-          i2c.transaction.status = Status::kSuccess;
+          i2c.transaction.status = {};
           set_mask               = Control::kStop;
         }
         else
@@ -193,7 +194,10 @@ class I2c final : public sjsu::I2c
         clear_mask             = Control::kStart;
         i2c.transaction.busy   = false;
         i2c.transaction.status = Status::kDeviceNotFound;
-        set_mask               = Control::kStop;
+        // Error(
+        //     Status::kDeviceNotFound,
+        //     "No devices on I2C bus responded to this transactions address.");
+        set_mask = Control::kStop;
         break;
       }
       case MasterState::kTransmittedDatareceivedAck:  // 0x28
@@ -253,9 +257,10 @@ class I2c final : public sjsu::I2c
       case MasterState::kSlaveAddressReadSentreceivedNack:  // 0x48
       {
         clear_mask             = Control::kStart;
+        // "No devices on I2C bus responded to this transactions address."
         i2c.transaction.status = Status::kDeviceNotFound;
-        i2c.transaction.busy   = false;
-        set_mask               = Control::kStop;
+        i2c.transaction.busy = false;
+        set_mask             = Control::kStop;
         break;
       }
       case MasterState::kReceivedDatareceivedAck:  // 0x50
@@ -315,7 +320,7 @@ class I2c final : public sjsu::I2c
   ///        definition.
   explicit constexpr I2c(const Bus_t & bus) : i2c_(bus) {}
 
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
     i2c_.sda_pin.SetPinFunction(i2c_.pin_function_id);
     i2c_.scl_pin.SetPinFunction(i2c_.pin_function_id);
@@ -348,7 +353,7 @@ class I2c final : public sjsu::I2c
     return Status::kSuccess;
   }
 
-  Status Transaction(Transaction_t transaction) const override
+  Status_t Transaction(Transaction_t transaction) const override
   {
     i2c_.transaction       = transaction;
     i2c_.registers->CONSET = Control::kStart;
@@ -370,7 +375,7 @@ class I2c final : public sjsu::I2c
   /// Since this I2C implementation utilizes interrupts, while the transaction
   /// is happening, on the bus, block the sequence of execution until the
   /// transaction has completed, OR the timeout has elapsed.
-  Status BlockUntilFinished() const
+  Status_t BlockUntilFinished() const
   {
     // Skip waiting on the interrupt if running a host unit test
     if constexpr (build::kPlatform == build::Platform::host)
@@ -378,29 +383,42 @@ class I2c final : public sjsu::I2c
       return i2c_.transaction.status;
     }
 
-    SJ2_ASSERT_FATAL(IsIntialized(),
-                     "Attempted to use I2C, but peripheral was not "
-                     "initialized! Be sure to run the Initialize() method "
-                     "of this class, before using it.");
+    if (!IsIntialized())
+    {
+      // "Attempted to use I2C, but peripheral was not "
+      // "initialized! Be sure to run the Initialize() method "
+      // "of this class, before using it.";
+      return Status::kInvalidSettings;
+    }
+
     auto wait_for_i2c_transaction = [this]() -> bool {
       return !i2c_.transaction.busy;
     };
-    Status status = Wait(i2c_.transaction.timeout, wait_for_i2c_transaction);
 
-    if (status == Status::kTimedOut)
+    auto transaction_finished =
+        Wait(i2c_.transaction.timeout, wait_for_i2c_transaction);
+
+    if (!transaction_finished)
     {
       // Abort I2C communication if this point is reached!
-      i2c_.registers->CONSET = Control::kAssertAcknowledge | Control::kStop;
-      SJ2_ASSERT_WARNING(
-          i2c_.transaction.out_length == 0 || i2c_.transaction.in_length == 0,
-          "I2C took too long to process and timed out! If the "
-          "transaction needs more time, you may want to increase the "
-          "timeout time.");
+      i2c_.registers->CONSET  = Control::kAssertAcknowledge | Control::kStop;
       i2c_.transaction.status = Status::kTimedOut;
+      //  "I2C took too long to process and timed out! If the "
+      //  "transaction needs more time, you may want to increase the "
+      //  "timeout time.");
+      return Status::kTimedOut;
     }
+
+
     // Ensure that start is cleared before leaving this function
     i2c_.registers->CONCLR = Control::kStart;
-    return i2c_.transaction.status;
+
+    if (!IsOk(i2c_.transaction.status))
+    {
+      return i2c_.transaction.status;
+    }
+
+    return Status::kSuccess;
   }
   const Bus_t & i2c_;
 };

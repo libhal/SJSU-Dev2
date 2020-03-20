@@ -147,7 +147,7 @@ class SystemController final : public sjsu::SystemController
     /// PLL Mode control mask
     static constexpr bit::Mask kMode = bit::CreateMaskFromRange(24, 25);
     /// PLL Lock status bit
-    static constexpr bit::Mask kLockStatus = bit::CreateMaskFromRange(26);
+    static constexpr bit::Mask kLockStatus_t = bit::CreateMaskFromRange(26);
   };
 
   /// Bit masks for the USB PLL register
@@ -160,7 +160,7 @@ class SystemController final : public sjsu::SystemController
     /// PLL Mode control mask
     static constexpr bit::Mask kMode = bit::CreateMaskFromRange(8, 9);
     /// PLL Lock status bit
-    static constexpr bit::Mask kLockStatus = bit::CreateMaskFromRange(10);
+    static constexpr bit::Mask kLockStatus_t = bit::CreateMaskFromRange(10);
   };
 
   /// Common bit masks across PLLs
@@ -523,7 +523,7 @@ class SystemController final : public sjsu::SystemController
       &(system_controller->PLL1STAT)
     };
     const bit::Mask kLockStatusMasks[]  = { MainPll::kLockStatus,
-                                           UsbPll::kLockStatus };
+                                           UsbPll::kLockStatus_t };
     volatile uint32_t * status_register = pll_status_registers[Value(pll)];
     const bit::Mask kLockStatusMask     = kLockStatusMasks[Value(pll)];
 

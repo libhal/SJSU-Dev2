@@ -209,7 +209,7 @@ class PulseCapture final : public sjsu::PulseCapture
   /// This METHOD MUST BE EXECUTED before any other method can be called.
   /// Powers on the peripheral, configures the timer pins.
   /// See page 687 of the user manual UM10562 LPC408x/407x for more details.
-  Status Initialize(CaptureCallback callback   = nullptr,
+  Status_t Initialize(CaptureCallback callback   = nullptr,
                     int32_t interrupt_priority = -1) const override
   {
     // NOTE: Same initialization as Timer library's Initialize()

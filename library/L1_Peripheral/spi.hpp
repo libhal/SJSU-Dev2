@@ -42,7 +42,7 @@ class Spi
 
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual Status Initialize() const = 0;
+  virtual Status_t Initialize() const = 0;
   /// Send a value via SPI and receive a value back from the serial port
   ///
   /// @param data - transfer data to external device via spi port

@@ -21,7 +21,7 @@ class Pwm
   /// method in this interface is called.
   ///
   /// @param frequency - starting frequency of PWM waveform
-  virtual Status Initialize(units::frequency::hertz_t frequency) const = 0;
+  virtual Status_t Initialize(units::frequency::hertz_t frequency) const = 0;
   /// Set output pulse width to following duty cycle.
   ///
   /// @param duty_cycle - duty cycle precent from 0 to 1. Where 0.5 would be a

@@ -13,14 +13,14 @@ class TemperatureSensor
   /// method in this interface is called.
   ///
   /// @return The initialization status.
-  virtual Status Initialize() const = 0;
+  virtual Status_t Initialize() const = 0;
   /// Retrieves the temperature reading and writes the value to the designated
   /// memory address.
   ///
   /// @param temperature Output parameter.
   /// @return Returns Status::kSuccess if the temperature measurement was
   ///         successfully obtained.
-  virtual Status GetTemperature(
+  virtual Status_t GetTemperature(
       units::temperature::celsius_t * temperature) const = 0;
 };
 }  // namespace sjsu

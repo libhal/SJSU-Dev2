@@ -18,7 +18,7 @@ class InfraredReceiver
       std::function<void(const infrared::DataFrame_t *)>;
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual Status Initialize() = 0;
+  virtual Status_t Initialize() = 0;
   /// Sets the callback handler that is invoked when a data frame is received.
   ///
   /// @param handler Callback handler to invoke.

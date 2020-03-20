@@ -50,7 +50,7 @@ class Dac final : public sjsu::Dac
   ///        not be changed from its default.
   explicit constexpr Dac(const sjsu::Pin & pin = kDacPin) : dac_pin_(pin) {}
   /// Initialize DAC hardware, enable dac Pin, initial Bias level set to 0.
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
     static constexpr uint8_t kDacMode = 0b010;
     dac_pin_.SetPinFunction(kDacMode);

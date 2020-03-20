@@ -208,7 +208,7 @@ class Adc final : public sjsu::Adc
   /// @param channel: Passed channel descriptor object. See Channel_t and
   ///        Channel documentation for more details about how to use this.
   explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
     sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
         sjsu::lpc40xx::SystemController::Peripherals::kAdc);

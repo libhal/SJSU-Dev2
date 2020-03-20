@@ -181,7 +181,7 @@ void InitializePlatform()
 
   system_timer.Initialize();
   system_timer.SetTickFrequency(config::kRtosFrequency);
-  sjsu::Status timer_start_status = system_timer.StartTimer();
+  sjsu::Status_t timer_start_status = system_timer.StartTimer();
 
   SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
                    "System Timer (used by FreeRTOS) has FAILED to start!");

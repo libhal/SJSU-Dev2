@@ -13,7 +13,7 @@ class LightSensor
   /// method in this interface is called.
   ///
   /// @return The initialization status.
-  virtual Status Initialize() const = 0;
+  virtual Status_t Initialize() const = 0;
   /// @return The sensor reading in units of lux.
   virtual units::illuminance::lux_t GetIlluminance() const = 0;
   /// @return The maximum illuminance reading supported by the device.

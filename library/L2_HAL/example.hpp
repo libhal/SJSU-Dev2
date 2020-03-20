@@ -27,12 +27,12 @@ class ExampleHal
   ///    via, I2C, SPI, UART and parallel GPIO. Each implementation can be its
   ///    own implementation of the LCD interface. They would implement the
   ///    Initialize() and Write() methods for their specific peripheral.
-  virtual Status Initialize() = 0;
+  virtual Status_t Initialize() = 0;
   /// Example Write() method.
-  virtual Status Write(const uint8_t * data, size_t size) = 0;
+  virtual Status_t Write(const uint8_t * data, size_t size) = 0;
   /// 3. Define any supporting methods that use the core methods below. These
   ///    must not be virtual.
-  Status Write(std::initializer_list<uint8_t> data)
+  Status_t Write(std::initializer_list<uint8_t> data)
   {
     return Write(data.begin(), data.size());
   }
@@ -76,14 +76,14 @@ class ExampleHalImplementation : public ExampleHal
   /// 5. Implement the methods that are required as an implementaiton of the
   ///    interface. Add additional supporting methods if it makes writting these
   ///    two methods easier.
-  Status Initialize() override
+  Status_t Initialize() override
   {
-    Status example_init_status = example_.Initialize();
+    Status_t example_init_status = example_.Initialize();
     return example_init_status;
   }
-  Status Write(const uint8_t * data, size_t size) override
+  Status_t Write(const uint8_t * data, size_t size) override
   {
-    Status status = Status::kSuccess;
+    Status_t status = Status::kSuccess;
 
     if (!example_.HasCompletedAction())
     {
@@ -116,21 +116,21 @@ class ExampleSingleImplementationHal
   {
   }
   /// Example Initialize() method
-  Status Initialize()
+  Status_t Initialize()
   {
     return Status::kSuccess;
   }
   /// 7. Declare core methods of this HAL, that are used by the other supporting
   ///    methods below as virtual so that testing software can replace or spy on
   ///    this method.
-  virtual Status Write(const uint8_t * data, size_t size)
+  virtual Status_t Write(const uint8_t * data, size_t size)
   {
     example_.Write(data, size);
     return Status::kSuccess;
   }
   /// 8. Utility methods that use the core methods above should not be declare
   ///    as virtual.
-  Status Write(std::initializer_list<uint8_t> data)
+  Status_t Write(std::initializer_list<uint8_t> data)
   {
     return Write(data.begin(), data.size());
   }

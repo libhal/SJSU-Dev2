@@ -103,9 +103,9 @@ class Sd
     kIs18vOk    = 24,    // OCR bit 24: Switching to 1.8V is
                          // accepted (S18A)
     kIsUhs2 = 29,        // OCR bit 29: Card is UHS-II Compatible
-    kCcs    = 30,        // OCR bit 30: Card Capacity Status (used)
+    kCcs    = 30,        // OCR bit 30: Card Capacity Status_t (used)
                          // to determine if a card is SDSC or not
-    kPwrUpComplete = 31  // OCR bit 31: Card Power Up Status (i.e.
+    kPwrUpComplete = 31  // OCR bit 31: Card Power Up Status_t (i.e.
                          // if card has finished the power cycle
                          // process)
   };
@@ -613,7 +613,7 @@ class Sd
                                          sd.response.data.byte,
                                          KeepAlive::kYes);
             sjsu::LogDebug(
-                "Checking Status Register to see cause of Write Error...");
+                "Checking Status_t Register to see cause of Write Error...");
             sjsu::LogDebug("[R2 Response: 0x%04" PRIX32 "]",
                            sd.response.data.dWord.lo);
           }

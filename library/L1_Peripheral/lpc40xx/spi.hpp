@@ -73,7 +73,7 @@ class Spi final : public sjsu::Spi
     /// Setting this bit to 1 will enable spi slave mode.
     static constexpr bit::Mask kSlaveModeBit = bit::CreateMaskFromRange(2);
   };
-  /// SSPn Status Register
+  /// SSPn Status_t Register
   struct StatusRegister  // NOLINT
   {
     /// This bit is 0 if the SSPn controller is idle, or 1 if it is currently
@@ -181,7 +181,7 @@ class Spi final : public sjsu::Spi
   /// Powers on the peripheral, activates the SSP pins and enables the SSP
   /// peripheral.
   /// See page 601 of user manual UM10562 LPC408x/407x for more details.
-  Status Initialize() const override
+  Status_t Initialize() const override
   {
     constexpr uint8_t kSpiFormatCode = 0b00;
 

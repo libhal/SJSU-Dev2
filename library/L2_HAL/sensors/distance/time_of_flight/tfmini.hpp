@@ -85,10 +85,10 @@ class TFMini final : public DistanceSensor
   ///
   /// @returns Status::kBusError if initialization fails
   /// @returns Status::kSuccess if initialization succeeds
-  Status Initialize() override
+  Status_t Initialize() override
   {
     constexpr uint32_t kBaudRate = 115200;
-    Status init_success          = uart_pin_.Initialize(kBaudRate);
+    Status_t init_success          = uart_pin_.Initialize(kBaudRate);
 
     if (IsOk(init_success))
     {
@@ -114,7 +114,7 @@ class TFMini final : public DistanceSensor
   /// @returns Status::kDeviceNotFound if device is not recognized
   /// @returns Status::kBusError if data read from device is inconsistent
   /// @returns Status::kSuccess if device is successfully read from
-  Status GetDistance(units::length::millimeter_t * distance) override
+  Status_t GetDistance(units::length::millimeter_t * distance) override
   {
     std::array<uint8_t, kDeviceDataLength> device_data = { 0 };
 
@@ -151,7 +151,7 @@ class TFMini final : public DistanceSensor
   /// @returns Status::kDeviceNotFound if device is not recognized
   /// @returns Status::kBusError if data read from device is inconsistent
   /// @returns Status::kSuccess if device is successfully read from
-  Status GetSignalStrengthPercent(float * strength) override
+  Status_t GetSignalStrengthPercent(float * strength) override
   {
     std::array<uint8_t, kDeviceDataLength> device_data = { 0 };
 
@@ -188,7 +188,7 @@ class TFMini final : public DistanceSensor
   ///
   /// @returns Status::kBusError if updating the TFMini fails
   /// @returns Status::kSuccess if device is successfully updated
-  Status SetMinSignalThreshhold(uint8_t lower_threshold = 20)
+  Status_t SetMinSignalThreshhold(uint8_t lower_threshold = 20)
   {
     constexpr uint8_t kUpdateMinThresholdCommand[kCommandLength] = {
       0x42, 0x57, 0x02, 0x00, 0xEE, 0x00, 0x00, 0x20

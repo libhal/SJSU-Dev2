@@ -33,9 +33,9 @@ class Tsop752 final : public InfraredReceiver
   ///
   /// @return The initialization status. Returns Status::kSuccess if the driver
   ///         has been successfully initialized.
-  Status Initialize() override
+  Status_t Initialize() override
   {
-    Status status = capture_.Initialize(
+    Status_t status = capture_.Initialize(
         [this](auto capture_status) { HandlePulseCaptured(capture_status); });
     if (status != Status::kSuccess)
     {
@@ -68,7 +68,7 @@ class Tsop752 final : public InfraredReceiver
   ///   IR Receiver Output:    |__|   |__|  |__|
   ///   pulse_buffer_length: 0 1  2   3  4  5  6
   ///
-  /// @param status Status of the interrupt.
+  /// @param status Status_t of the interrupt.
   void HandlePulseCaptured(PulseCapture::CaptureStatus_t status)
   {
     timer_.Reset();

@@ -42,7 +42,7 @@ class Example
   /// execute before running any other methods of the peripheral. Initialize
   /// should return a status indicating if it was successful, or if some error
   /// occurred.
-  virtual Status Initialize() const = 0;
+  virtual Status_t Initialize() const = 0;
   /// 7. API for data transfer
   /// If your peripheral is a communication protocol, the standard for sending
   /// and receiving data is to follow the method signature. A write or read that
@@ -54,7 +54,7 @@ class Example
   /// protocol. Example would be something like SPI where the master drives the
   /// read operation. This is useful for something like UART where the event of
   /// receiving data is asynchronous.
-  virtual Status Read(uint8_t * data,
+  virtual Status_t Read(uint8_t * data,
                       size_t length,
                       uint32_t timeout) const = 0;
 
@@ -72,7 +72,7 @@ class Example
   /// actually work.
   virtual uint32_t GetClockRate() const = 0;
 
-  /// 10. Status methods
+  /// 10. Status_t methods
   /// Methods that indicate the status of the peripheral should be prefixed
   /// with the word "Has". These must return bool.
   virtual bool HasCompletedAction() const = 0;
@@ -105,7 +105,7 @@ class Example
   }
 
   /// Overload of Read that waits forever if a timeout was not supplied.
-  Status Read(uint8_t * data, size_t size)
+  Status_t Read(uint8_t * data, size_t size)
   {
     return Read(data, size, UINT32_MAX);
   }

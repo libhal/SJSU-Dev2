@@ -15,7 +15,7 @@ class Mma8452q : public Accelerometer
   enum RegisterAddress : uint8_t
   {
     /// Device status register address
-    kStatus = 0x00,
+    kStatus_t = 0x00,
     /// Register address of the the first byte of the X axis
     kX = 0x01,
     /// Register address of the the first byte of the Y axis

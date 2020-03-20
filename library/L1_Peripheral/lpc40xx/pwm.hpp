@@ -179,7 +179,7 @@ class Pwm final : public sjsu::Pwm
   /// @param channel - Reference to a const channel description for this
   ///        instance of the PWM driver.
   explicit constexpr Pwm(const Channel_t & channel) : channel_(channel) {}
-  Status Initialize(units::frequency::hertz_t frequency_hz) const override
+  Status_t Initialize(units::frequency::hertz_t frequency_hz) const override
   {
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");

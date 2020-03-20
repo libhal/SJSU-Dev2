@@ -30,7 +30,7 @@ class Watchdog final : public sjsu::Watchdog
   {
   }
 
-  Status Initialize(std::chrono::seconds duration) const override
+  Status_t Initialize(std::chrono::seconds duration) const override
   {
     constexpr units::frequency::hertz_t kWatchdogClockDivider   = 4_Hz;
     constexpr units::frequency::hertz_t kWatchdogClockFrequency = 500_kHz;

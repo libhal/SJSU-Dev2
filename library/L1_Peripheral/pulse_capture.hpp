@@ -35,7 +35,7 @@ class PulseCapture
   };
 
   /// Initialize timer for capturing
-  virtual Status Initialize(CaptureCallback isr        = nullptr,
+  virtual Status_t Initialize(CaptureCallback isr        = nullptr,
                             int32_t interrupt_priority = -1) const = 0;
 
   /// Select edge type to capture on

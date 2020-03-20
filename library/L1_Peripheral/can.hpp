@@ -53,7 +53,7 @@ class Can
 
   /// Initialize the CANBUS peripheral. Must be called before calling anything
   /// else in the driver.
-  virtual Status Initialize() const = 0;
+  virtual Status_t Initialize() const = 0;
 
   /// Enables CANBUS and allows communication. Must be called after Initialize()
   /// before using this driver.

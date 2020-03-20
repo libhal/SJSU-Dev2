@@ -82,7 +82,7 @@ class Timer final : public sjsu::Timer
   /// peripheral to be used with this object
   explicit constexpr Timer(const Peripheral_t & timer) : timer_(timer) {}
 
-  Status Initialize(units::frequency::hertz_t frequency,
+  Status_t Initialize(units::frequency::hertz_t frequency,
                     InterruptCallback callback = nullptr,
                     int32_t priority           = -1) const override
   {

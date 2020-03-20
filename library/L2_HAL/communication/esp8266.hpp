@@ -48,7 +48,7 @@ class Esp8266 : public InternetSocket, public WiFi
 
   /// Tests that the ESP8266 can respond to commands.
   /// @return Status::kTimeout if it could not.
-  Status TestModule()
+  Status_t TestModule()
   {
     WifiWrite("AT\r\n");
     return ConvertReadUntilToStatus(ReadUntil(kOk));
@@ -65,7 +65,7 @@ class Esp8266 : public InternetSocket, public WiFi
     ReadUntil<1024>("\r\n\r\nready\r\n", kDefaultLongTimeout);
   }
 
-  Status Initialize() override
+  Status_t Initialize() override
   {
     uart_port_.Initialize(baud_rate_);
     uart_port_.Flush();
@@ -83,7 +83,7 @@ class Esp8266 : public InternetSocket, public WiFi
     return TestModule();
   }
 
-  Status ConnectToAccessPoint(
+  Status_t ConnectToAccessPoint(
       std::string_view ssid,
       std::string_view password,
       std::chrono::nanoseconds read_timeout = kDefaultLongTimeout) override
@@ -103,7 +103,7 @@ class Esp8266 : public InternetSocket, public WiFi
         ReadUntil("WIFI GOT IP\r\n\r\nOK\r\n", read_timeout));
   }
 
-  Status DisconnectFromAccessPoint() override
+  Status_t DisconnectFromAccessPoint() override
   {
     WifiWrite("AT+CWQAP\r\n");
     return ConvertReadUntilToStatus(ReadUntil(kOk));
@@ -120,7 +120,7 @@ class Esp8266 : public InternetSocket, public WiFi
   }
 
   /// @param mode - Which mode to put the ESP8266 WiFi module into.
-  Status SetMode(WifiMode mode)
+  Status_t SetMode(WifiMode mode)
   {
     std::array<char, 32> command_buffer;
 
@@ -142,7 +142,7 @@ class Esp8266 : public InternetSocket, public WiFi
   /// @param channel_id - which wifi channel to use
   /// @param security - password security of the access point
   /// @return Status
-  Status ConfigureAccessPoint(std::string_view ssid,
+  Status_t ConfigureAccessPoint(std::string_view ssid,
                               std::string_view password,
                               uint8_t channel_id,
                               AccessPointSecurity security)
@@ -167,7 +167,7 @@ class Esp8266 : public InternetSocket, public WiFi
   struct IpAddress_t
   {
     /// A status indicating if the IP Address is valid.
-    Status status = Status::kDeviceNotFound;
+    Status_t status = Status::kDeviceNotFound;
 
     /// Contains each digit of the IPv4 address
     std::array<uint8_t, 4> data;
@@ -224,7 +224,7 @@ class Esp8266 : public InternetSocket, public WiFi
   // ===========================================================================
   // InternetProtocol
   // ===========================================================================
-  Status Connect(Protocol protocol,
+  Status_t Connect(Protocol protocol,
                  std::string_view address,
                  uint16_t port,
                  std::chrono::nanoseconds timeout) override
@@ -253,7 +253,7 @@ class Esp8266 : public InternetSocket, public WiFi
   /// HTTP requests and send back responses.
   ///
   /// @param port - which port should be used for the server
-  Status Bind(uint16_t port = 333)
+  Status_t Bind(uint16_t port = 333)
   {
     WifiWrite("AT+CIPMUX=1\r\n");
     ReadUntil(kOk);
@@ -274,7 +274,7 @@ class Esp8266 : public InternetSocket, public WiFi
     return false;
   }
 
-  Status Write(const void * data,
+  Status_t Write(const void * data,
                size_t size,
                std::chrono::nanoseconds timeout) override
   {
@@ -326,7 +326,7 @@ class Esp8266 : public InternetSocket, public WiFi
     uint8_t * byte_buffer = reinterpret_cast<uint8_t *>(buffer);
     bytes_to_read         = std::min(size - position, received_bytes);
 
-    Status status = uart_port_.Read(
+    Status_t status = uart_port_.Read(
         &byte_buffer[position], bytes_to_read, timer.GetTimeLeft());
 
     if (!IsOk(status))
@@ -339,7 +339,7 @@ class Esp8266 : public InternetSocket, public WiFi
     return position;
   }
 
-  Status Close() override
+  Status_t Close() override
   {
     WifiWrite("AT+CIPCLOSE\r\n");
     return ConvertReadUntilToStatus(ReadUntil(kOk));
@@ -454,7 +454,7 @@ class Esp8266 : public InternetSocket, public WiFi
     return length;
   }
 
-  Status ConvertReadUntilToStatus(int result)
+  Status_t ConvertReadUntilToStatus(int result)
   {
     if (result != -1)
     {

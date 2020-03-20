@@ -48,7 +48,7 @@ class Timer
   ///        SetTimer method has occurred.
   /// @param priority - sets the Timer interrupt's priority level, defaults to
   ///        -1 which uses the platforms default priority.
-  virtual Status Initialize(units::frequency::hertz_t counter_frequency,
+  virtual Status_t Initialize(units::frequency::hertz_t counter_frequency,
                             InterruptCallback callback = nullptr,
                             int32_t priority           = -1) const = 0;
 

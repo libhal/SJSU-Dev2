@@ -310,7 +310,7 @@ class I2cDevice : public Device<I2cDevice<kDeviceAddress, endianess, MemoryMap>,
     payload[0] = static_cast<uint8_t>(address);
     memcpy(&payload[1], target, size);
     // Size + 1 to account for the 1-byte register address
-    Status status = i2c->Write(kDeviceAddress, payload, size + 1);
+    Status_t status = i2c->Write(kDeviceAddress, payload, size + 1);
     return (status == Status::kSuccess);
   }
 

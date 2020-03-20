@@ -41,7 +41,7 @@ class Storage
   /// media possible.
   /// MUST be called before calling any method in this interface with the
   /// exception of `GetMemoryType()`
-  virtual sjsu::Status Initialize() = 0;
+  virtual Status_t Initialize() = 0;
 
   /// @return true if the storage is present. For cases where the memory cannot
   /// be removed or is physically located within a device, this should always
@@ -51,10 +51,10 @@ class Storage
 
   /// Should prepare and configure the storage media for communication such as
   /// Write(), Read(), Erase()
-  virtual sjsu::Status Enable() = 0;
+  virtual Status_t Enable() = 0;
 
   /// Should shutdown the device.
-  virtual sjsu::Status Disable() = 0;
+  virtual Status_t Disable() = 0;
 
   /// @return true if device is not writable.
   virtual bool IsReadOnly() = 0;
@@ -78,7 +78,7 @@ class Storage
   /// @param blocks_count - the number of bytes to erase.
   /// @return Status of if the operation was successful, otherwise, returns an
   /// appropriate status signal.
-  virtual sjsu::Status Erase(uint32_t block_address, size_t blocks_count) = 0;
+  virtual Status_t Erase(uint32_t block_address, size_t blocks_count) = 0;
 
   /// Write data to the storage media in the location block specified. If the
   /// block size for this media is not 1 byte, then single byte is not allowed
@@ -93,7 +93,7 @@ class Storage
   ///               the size of a block.
   /// @return Status of if the operation was successful, otherwise, returns an
   /// appropriate status signal.
-  virtual sjsu::Status Write(uint32_t block_address,
+  virtual Status_t Write(uint32_t block_address,
                              const void * data,
                              size_t size) = 0;
 
@@ -105,7 +105,7 @@ class Storage
   ///               the size of a block.
   /// @return Status of if the operation was successful, otherwise, return an
   /// appropriate status signal.
-  virtual sjsu::Status Read(uint32_t block_address,
+  virtual Status_t Read(uint32_t block_address,
                             void * data,
                             size_t size) = 0;
 };
