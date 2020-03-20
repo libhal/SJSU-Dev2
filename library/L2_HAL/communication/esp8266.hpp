@@ -22,6 +22,10 @@
 
 namespace sjsu
 {
+/// Serial driver for the ESP8266 wifi device that implements the WiFi and
+/// InternetSocket interfaces.
+/// Can be used to connect to a WiFi host device.
+/// Can be used to communicate over the internet using this driver.
 class Esp8266 : public InternetSocket, public WiFi
 {
  public:
@@ -34,12 +38,16 @@ class Esp8266 : public InternetSocket, public WiFi
   /// Confirmation responses received from the ESP8266 module
   static constexpr char kOk[] = "\r\nOK\r\n";
 
+  /// @param port - uart port to use to communicate with the ESP8266 device
+  /// @param baud_rate - operating baudrate of the uart device.
   explicit constexpr Esp8266(const sjsu::Uart & port,
                              uint32_t baud_rate = kDefaultBaudRate)
       : uart_port_(port), baud_rate_(baud_rate)
   {
   }
 
+  /// Tests that the ESP8266 can respond to commands.
+  /// @return Status::kTimeout if it could not.
   Status TestModule()
   {
     WifiWrite("AT\r\n");
@@ -111,6 +119,7 @@ class Esp8266 : public InternetSocket, public WiFi
     return *this;
   }
 
+  /// @param mode - Which mode to put the ESP8266 WiFi module into.
   Status SetMode(WifiMode mode)
   {
     std::array<char, 32> command_buffer;
@@ -126,6 +135,13 @@ class Esp8266 : public InternetSocket, public WiFi
     return ConvertReadUntilToStatus(ReadUntil("OK\r\n", 100ms));
   }
 
+  /// Connect to an access point
+  ///
+  /// @param ssid - ssid of the acces point
+  /// @param password - password of the access point
+  /// @param channel_id - which wifi channel to use
+  /// @param security - password security of the access point
+  /// @return Status
   Status ConfigureAccessPoint(std::string_view ssid,
                               std::string_view password,
                               uint8_t channel_id,
@@ -147,11 +163,16 @@ class Esp8266 : public InternetSocket, public WiFi
     return ConvertReadUntilToStatus(ReadUntil("OK\r\n", 100ms));
   }
 
+  /// Contains IPv4 address information.
   struct IpAddress_t
   {
-    std::array<uint8_t, 4> data;
+    /// A status indicating if the IP Address is valid.
     Status status = Status::kDeviceNotFound;
 
+    /// Contains each digit of the IPv4 address
+    std::array<uint8_t, 4> data;
+
+    /// Converts IP Address numeric representation into a std::array string.
     std::array<char, 16> ToString()
     {
       std::array<char, 16> ip_string;
@@ -168,6 +189,7 @@ class Esp8266 : public InternetSocket, public WiFi
     }
   };
 
+  /// @return the first IP address in the list of connected devices
   IpAddress_t ListConnections()
   {
     WifiWrite("AT+CWLIF\r\n");
@@ -227,6 +249,10 @@ class Esp8266 : public InternetSocket, public WiFi
     return ConvertReadUntilToStatus(ReadUntil(kOk, timer.GetTimeLeft(), true));
   }
 
+  /// Starts a web server which allows the esp8266 to be connected to, retrieve
+  /// HTTP requests and send back responses.
+  ///
+  /// @param port - which port should be used for the server
   Status Bind(uint16_t port = 333)
   {
     WifiWrite("AT+CIPMUX=1\r\n");
@@ -282,24 +308,6 @@ class Esp8266 : public InternetSocket, public WiFi
     return Status::kSuccess;
   }
 
-  size_t GetReceiveLength(TimeoutTimer & timer)
-  {
-    size_t incoming_bytes = 0;
-    std::array<uint8_t, 64> total_buffer;
-
-    ReadUntil(
-        total_buffer.data(), total_buffer.size(), "+IPD,", timer.GetTimeLeft());
-    ReadUntil(
-        total_buffer.data(), total_buffer.size(), ":", timer.GetTimeLeft());
-
-    const char * receive_length =
-        reinterpret_cast<const char *>(total_buffer.data());
-
-    sscanf(receive_length, "%zu:", &incoming_bytes);
-
-    return incoming_bytes;
-  }
-
   size_t Read(void * buffer,
               size_t size,
               std::chrono::nanoseconds timeout) override
@@ -338,6 +346,29 @@ class Esp8266 : public InternetSocket, public WiFi
   }
 
  private:
+  /// Gets the number of incoming bytes coming from a network connection.
+  ///
+  /// @param timer - timeout timer reference with the remaining amount of time
+  ///                left to perform this operation.
+  /// @return size_t number of bytes to return
+  size_t GetReceiveLength(TimeoutTimer & timer)
+  {
+    size_t incoming_bytes = 0;
+    std::array<uint8_t, 64> total_buffer;
+
+    ReadUntil(
+        total_buffer.data(), total_buffer.size(), "+IPD,", timer.GetTimeLeft());
+    ReadUntil(
+        total_buffer.data(), total_buffer.size(), ":", timer.GetTimeLeft());
+
+    const char * receive_length =
+        reinterpret_cast<const char *>(total_buffer.data());
+
+    sscanf(receive_length, "%zu:", &incoming_bytes);
+
+    return incoming_bytes;
+  }
+
   // Writes command array to Esp8266
   template <size_t kLength>
   void WifiWrite(const char (&str)[kLength])
