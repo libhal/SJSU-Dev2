@@ -10,18 +10,38 @@
 
 namespace sjsu
 {
+/// Character storage for a terminal. Used with classes such as
+/// GraphicalTerminal to hold and buffer the characters to be drawn on a
+/// display.
+///
+/// @tparam kMaxRows - number of rows
+/// @tparam kMaxColumns - number of columns
 template <uint32_t kMaxRows, uint32_t kMaxColumns>
 struct TerminalCache_t
 {
+  /// Buffer containing the characters to display on the terminal
   char buffer[kMaxRows * kMaxColumns] = { 0 };
 };
 
+/// Utilizes a pixel display and a terminal character cache to create a
+/// Graphical Terminal on that display.
 class GraphicalTerminal
 {
  public:
+  /// Maximum height of the font used for the graphical display
   static constexpr uint8_t kCharacterHeight = 8;
-  static constexpr uint8_t kCharacterWidth  = 8;
+  /// Maximum width of the font used for the graphical display
+  static constexpr uint8_t kCharacterWidth = 8;
 
+  /// Constructs the GraphicalTerminal Object
+  ///
+  /// @tparam kMaxRows - Do not enter these in manually. These are deduced by
+  ///         the passed in TerminalCache object.
+  /// @tparam kMaxColumns - Do not enter these in manually. These are deduced by
+  ///         the passed in TerminalCache object.
+  /// @param graphics - graphical pixel display driver
+  /// @param cache - terminal cache to hold the characters to be written to the
+  ///                display.
   template <uint32_t kMaxRows, uint32_t kMaxColumns>
   explicit GraphicalTerminal(Graphics * graphics,
                              TerminalCache_t<kMaxRows, kMaxColumns> * cache)
@@ -32,6 +52,7 @@ class GraphicalTerminal
   {
   }
 
+  /// Initialize the graphics driver.
   void Initialize()
   {
     graphics_->Initialize();
@@ -39,6 +60,11 @@ class GraphicalTerminal
     graphics_->Update();
   }
 
+  /// Prints to the screen as printf would to STDOUT.
+  ///
+  /// @param format - format string.
+  /// @param ... - set of variables to write into the format.
+  /// @return int - number of characters written to the screen.
   int printf(const char * format, ...)  // NOLINT
   {
     char buffer[256];
@@ -82,6 +108,12 @@ class GraphicalTerminal
     return pos;
   }
 
+  /// Move the position where text will be written from to this x & y location.
+  ///
+  /// @param x - x position to place cursor (column)
+  /// @param y - y position to place cursor (row)
+  /// @return GraphicalTerminal& - a reference to itself so that these methods
+  ///        can be chained.
   GraphicalTerminal & SetCursor(uint32_t x, uint32_t y)
   {
     column_    = x;
@@ -90,12 +122,20 @@ class GraphicalTerminal
     return *this;
   }
 
+  /// Moves the cursor back to the start of the line, the first column.
+  ///
+  /// @return GraphicalTerminal& - a reference to itself so that these methods
+  ///         can be chained.
   GraphicalTerminal & MoveToLineStart()
   {
     column_ = 0;
     return *this;
   }
 
+  /// Update the screen with the contents of the graphical display.
+  ///
+  /// @return GraphicalTerminal& - a reference to itself so that these methods
+  ///        can be chained.
   GraphicalTerminal & Update()
   {
     graphics_->Clear();
@@ -113,6 +153,11 @@ class GraphicalTerminal
     return *this;
   }
 
+  /// Clear an entire row of its contents
+  ///
+  /// @param row_location - which row to clear
+  /// @return GraphicalTerminal& - a reference to itself so that these methods
+  ///        can be chained.
   GraphicalTerminal & ClearRow(uint32_t row_location)
   {
     for (uint32_t i = 0; i < max_columns_; i++)
@@ -122,6 +167,10 @@ class GraphicalTerminal
     return *this;
   }
 
+  /// Clear the whole terminal of its contents and updates the screen.
+  ///
+  /// @return GraphicalTerminal& - a reference to itself so that these methods
+  ///        can be chained.
   GraphicalTerminal & Clear()
   {
     graphics_->Clear();
