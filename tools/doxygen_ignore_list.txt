@@ -4,4 +4,3 @@ L2_HAL/device_memory_map.hpp
 L2_HAL/displays/lcd/st7066u.hpp
 L2_HAL/memory/sd.hpp
 L2_HAL/sensors/optical/apds9960.hpp
-L4_Testing/factory_test.hpp
