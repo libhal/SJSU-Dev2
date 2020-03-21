@@ -2,4 +2,3 @@ L1_Peripheral/can.hpp
 L1_Peripheral/lpc40xx/can.hpp
 L2_HAL/displays/lcd/st7066u.hpp
 L2_HAL/memory/sd.hpp
-L2_HAL/sensors/optical/apds9960.hpp

@@ -1,5 +1,6 @@
-// Low level Gesture Driver for setting up APDS-9960 device
-// Usage:
+// interfaces, and to expand its functionality to all of its capabilities. Low
+// level Gesture Driver for setting up APDS-9960 device Usage:
+//
 //  Apds9960 sensor;
 //  sensor.Initialize();
 //  sensor.EnableGesture();
@@ -18,13 +19,23 @@
 
 namespace sjsu
 {
+// TODO(#1098): Rewrite this code to work properly, to inherit the appropriate.
+/// Apds9960 is a gesture sensor, ambient light sensor, color sensor, and short
+/// distance sensor.
+/// Currently only support gesture sense.
 class Apds9960
 {
  public:
+  /// Memory map of the APDS-9960 used to abstract the boilerplate code required
+  /// to communicate over I2C to the device.
+  ///
+  /// @tparam endianess - endianness of the memory map
+  /// @tparam write - write function associated with the memory map
+  /// @tparam read - read function associated with the memory map
   template <device::Endian endianess, WriteFnt write, ReadFnt read>
-  SJ2_PACKED(struct)
-  MemoryMap_t  // APDS-9960
+  struct [[gnu::packed]] MemoryMap_t
   {
+    //! @cond Doxygen_Suppress
     template <typename Int>
     using Register = device::Register_t<Int, endianess, write, read>;
 
@@ -85,7 +96,10 @@ class Apds9960
         Register<uint8_t> right_value;
       };
     };
+    //! @endcond
   };
+
+  /// The possible directions the gesture sensor can see
   enum Direction : char
   {
     kNone  = 'x',
@@ -96,6 +110,8 @@ class Apds9960
     kFar   = 'f',
     kNear  = 'n'
   };
+
+  /// Characters for each gesture possible
   enum Gesture : char
   {
     kSwipeUP    = 'U',
@@ -106,6 +122,8 @@ class Apds9960
     kFAR        = 'F',
     kError      = 'E'
   };
+
+  /// The possible device modes that the device can be put into.
   enum Mode : uint8_t
   {
     kPOWERON = 0,
@@ -117,16 +135,21 @@ class Apds9960
     kGESTURE
   };
 
+  /// Device's I2C address
   static constexpr uint8_t kApds9960Address = 0x39;
-  // Avago-APDS-9960 : 32 x 4 byte FIFO = 128-bytes of data to store (page 33)
+
+  /// Avago-APDS-9960 : 32 x 4 byte FIFO = 128-bytes of data to store (page 33)
   static constexpr uint8_t kMaxFifoSize = 128;
-  // User may change kMaxDataSize to adjust how many Direction Data points
-  // to be collected, then DecodeGestureData(uint8_t) can be overloaded to
-  // take care of new patterns of Direction points for different gestures
-  static constexpr uint8_t kMaxDataSize  = 8;
+
+  /// User may change kMaxDataSize to adjust how many Direction Data points
+  /// to be collected, then DecodeGestureData(uint8_t) can be overloaded to
+  /// take care of new patterns of Direction points for different gestures
+  static constexpr uint8_t kMaxDataSize = 8;
+
+  /// APDS-9960's maximum number of samples that it can store
   static constexpr uint8_t kMaxFIFOLevel = 33;
 
-  // Default values for Gesture sensor initialization
+  /// Default values for Gesture sensor initialization
   enum DefaultValues : uint8_t
   {
     kNoMode                 = 0x00,
@@ -154,6 +177,7 @@ class Apds9960
     kAiht                   = 0x00
   };
 
+  /// @param i2c - i2c peripheral connected to the device
   explicit Apds9960(const I2c & i2c)
       : i2c_(i2c),
         up_sensitivity_(-75),
@@ -175,6 +199,9 @@ class Apds9960
       gfifo_data_[i] = 0;
     }
   }
+
+  /// Reads back the device id to confirm that the device is present and can
+  /// communicate.
   virtual bool FindDevice()
   {
     bool device_found = false;
@@ -185,6 +212,8 @@ class Apds9960
     }
     return device_found;
   }
+
+  /// Initialize and enable the device
   virtual void Initialize()
   {
     i2c_.Initialize();
@@ -222,11 +251,10 @@ class Apds9960
       SJ2_ASSERT_WARNING(false, "Error Initializing Gesture Sensor");
     }
   }
-  /// SetMode(uint8_t mode, bool enable)
-  /// @param mode -> enables/disables individual bits of the ENABLE register
-  /// Modes:
-  /// 7: reserved | 6: Gesture | 5: Proximity Interrupt | 4: ALS Interrupt
-  /// 3: Wait   | 2: Proximity | 1: ALS  | 0: Power ON
+
+  /// Determines which mode of the device you would like to set the device to.
+  ///
+  /// @param mode - determins which mode to enable/disable
   /// @param enable -> true: sets bit; false: resets bit
   /// @return -> true if successful; false otherwise
   virtual bool SetMode(Mode mode, bool enable)
@@ -250,6 +278,8 @@ class Apds9960
     gesture_.memory.enable = static_cast<uint8_t>(reg_value);
     return result;
   }
+
+  /// Enable gesture sensing
   virtual void EnableGesture()
   {
     SetMode(Mode::kPOWERON, false);
@@ -268,24 +298,65 @@ class Apds9960
     SetMode(Mode::kPROXIMITYDETECT, true);
     SetMode(Mode::kGESTURE, true);
   }
+
+  /// Disable gesture control
+  ///
+  /// @return true - if this operation was successful
+  /// @return false - if this operation failed
   virtual bool DisableGesture()
   {
-    bool result = true;
-    if (!SetMode(Mode::kGESTURE, 0))
-    {
-      result = false;
-    }
-    return result;
+    return !SetMode(Mode::kGESTURE, 0);
   }
+
+  /// @return Read the gesture sensor mode and dermine if it is enabled.
   virtual bool ReadGestureMode()
   {
     uint16_t value = gesture_.memory.gesture_configuration_3_4;
     return (value & 0x0100);
   }
+
+  /// @return true - if a gesture was found
+  /// @return false - if a gesture was not found
   virtual bool CheckIfGestureOccurred()
   {
     return (gesture_.memory.gesture_status & 0b1);
   }
+
+  /// Calculates and returns the detected gesture
+  virtual Gesture GetGesture()
+  {
+    Gesture result = kError;
+    if (CheckIfGestureOccurred())
+    {
+      // check if gesture ended
+      if (ReadGestureMode() == 0)
+      {
+        uint8_t level = 0;
+        level         = (GetGestureFIFOLevel());
+        ReadGestureFIFO(gfifo_data_, level);
+
+        // reset processing variables
+        index_      = 0;
+        near_count_ = 0;
+        far_count_  = 0;
+        for (int i = 0; i < 8; i++)
+        {
+          points_[i] = Direction::kNone;
+        }
+
+        ProcessGestureData(level);
+
+        result = DecodeGestureData(level);
+      }
+    }
+    return result;
+  }
+
+ private:
+  /// Read from gesture sensor's FIFO
+  ///
+  /// @param data - buffer to store the fifo data into
+  /// @param fifolevel - the depth of the fifo
   virtual void ReadGestureFIFO(uint8_t * data, uint8_t fifolevel)
   {
     int amount_of_data_to_read = (4 * fifolevel);
@@ -293,6 +364,8 @@ class Apds9960
         reinterpret_cast<intptr_t>(&gesture_.memory.gesture_fifo_data[0]);
     gesture_.Read(address, amount_of_data_to_read, data);
   }
+
+  /// @return uint8_t - get the depth of the gesture fifo level
   virtual uint8_t GetGestureFIFOLevel()
   {
     constexpr uint8_t kOverflowFlagPosition = 1;
@@ -310,6 +383,7 @@ class Apds9960
     }
     return value;
   }
+
   virtual void ProcessGestureData(uint8_t level)
   {
     constexpr uint8_t kMaxPointsIndex = 7;
@@ -370,6 +444,7 @@ class Apds9960
       }
     }
   }
+
   virtual Gesture DecodeGestureData(uint8_t level)
   {
     Gesture result                         = kError;
@@ -428,36 +503,7 @@ class Apds9960
     }
     return result;
   }
-  virtual Gesture GetGesture()
-  {
-    Gesture result = kError;
-    if (CheckIfGestureOccurred())
-    {
-      // check if gesture ended
-      if (ReadGestureMode() == 0)
-      {
-        uint8_t level = 0;
-        level         = (GetGestureFIFOLevel());
-        ReadGestureFIFO(gfifo_data_, level);
 
-        // reset processing variables
-        index_      = 0;
-        near_count_ = 0;
-        far_count_  = 0;
-        for (int i = 0; i < 8; i++)
-        {
-          points_[i] = Direction::kNone;
-        }
-
-        ProcessGestureData(level);
-
-        result = DecodeGestureData(level);
-      }
-    }
-    return result;
-  }
-
- private:
   const I2c & i2c_;
   I2cDevice<0x39, device::Endian::kLittle, MemoryMap_t> gesture_ =
       I2cDevice<0x39, device::Endian::kLittle, MemoryMap_t>(&i2c_);
