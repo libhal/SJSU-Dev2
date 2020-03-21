@@ -1,3 +1,5 @@
+// Relevant Datasheet:
+// https://www.sdcard.org/downloads/pls/pdf/index.php?p=Part1_Physical_Layer_Simplified_Specification_Ver6.00.jpg&f=Part1_Physical_Layer_Simplified_Specification_Ver6.00.pdf&e=EN_SS1
 #pragma once
 
 #include <cstdint>
@@ -10,12 +12,10 @@
 
 namespace sjsu
 {
-// NOLINTNEXTLINE(readability-identifier-naming)
-// Relevant Datasheet:
-// https://www.sdcard.org/downloads/pls/pdf/index.php?p=Part1_Physical_Layer_Simplified_Specification_Ver6.00.jpg&f=Part1_Physical_Layer_Simplified_Specification_Ver6.00.pdf&e=EN_SS1
 // TODO(#348):  Write a class to represent a single Sd Card Block to make use
 //              of block-related functions easier.
 
+/// SD card controller utilizing the SPI peripheral
 class Sd
 {
  public:
@@ -25,27 +25,32 @@ class Sd
   /// See https://luckyresistor.me/cat-protector/software/sdcard-2/
   static constexpr uint8_t kBusTimeout = 250;
 
-  struct DebugSdCard_t
-  {
-  };
-
   /// Enforcing block-size cross-compatibility
   static constexpr uint16_t kBlockSize = 512;
+
+  /// Table holding CRC8 tokens used to verify SD card transactions.
   static constexpr sjsu::crc::CrcTableConfig_t<uint8_t> kCrcTable8 =
       sjsu::crc::GenerateCrc7Table<uint8_t>();
+
+  /// Table holding CRC16 tokens used to verify SD card transactions.
   static constexpr sjsu::crc::CrcTableConfig_t<uint16_t> kCrcTable16 =
       sjsu::crc::GenerateCrc16Table();
 
+  /// SD Card constructor
+  ///
+  /// @param spi - spi peripheral connected to SD card
+  /// @param chip_select - gpio connected to SD card's chip select
   explicit constexpr Sd(const Spi & spi, const Gpio & chip_select)
       : spi_(spi), chip_select_(chip_select)
   {
   }
 
-  /// @brief  a response frame struct to contain the various responses
-  ///         sent by the card after commands are issued (response type
-  ///         and length depend on the command sent)
+  /// A response frame struct to contain the various responses sent by the card
+  /// after commands are issued (response type and length depend on the command
+  /// sent)
   struct Response_t
   {
+    /// Holds the contents of the response
     union {
       uint64_t qWord;
       struct
@@ -55,11 +60,11 @@ class Sd
       } dWord;
       uint8_t byte[8];
     } data;
+    /// Length of the response
     uint32_t length;
   };
 
-  /// @brief  Enumerator for response type codes (See Physical Layer V6.00
-  ///         p.225)
+  /// Enumerator for response type codes (See Physical Layer V6.00 p.225)
   enum class ResponseType
   {
     kR1,
@@ -72,7 +77,7 @@ class Sd
     kR7
   };
 
-  /// @brief  Enumerator for SD Card Capacity type codes
+  /// Enumerator for SD Card Capacity type codes
   enum class Type
   {
     kSDSC,  // up to 2GB
@@ -80,8 +85,8 @@ class Sd
     kSDXC   // up to 256GB
   };
 
-  /// @brief bit shift counts provided to allow easy checking of
-  ///        the OCR flag bits for the card's operating conditions
+  /// bit shift counts provided to allow easy checking of the OCR flag bits for
+  /// the card's operating conditions
   enum class Ocr
   {
     kIsDualVoltage = 7,  // OCR bit 7: Supports both Low and High
@@ -105,8 +110,7 @@ class Sd
                          // process)
   };
 
-  /// @brief  a collection of SPI-supported command codes to be used with
-  ///         SendCmd()
+  /// A collection of SPI-supported command codes to be used with SendCmd()
   ///
   /// @note  OR of b0100_0000 is meant to conform with the SD protocol
   ///        (i.e. first bits must be b01)
@@ -149,27 +153,30 @@ class Sd
                                // CMD1 (must precede with CMD55)
   };
 
-  /// @brief     Enumerations to allow CS keep-alive during command byte
-  ///                  exchanges
+  /// Enumerations to allow CS keep-alive during command byte exchanges
   enum class KeepAlive : bool
   {
     kYes = true,
     kNo  = false
   };
 
-  /// @brief Structure for recording information about the SD Card
   // TODO(#350): Add support for CID/CSD Registers
+  /// Structure for recording information about the SD Card
   struct CardInfo_t
   {
+    /// Operation conditions register, such as operating voltage.
     union {
       uint32_t dWord;
       uint16_t word[2];
       uint8_t byte[4];
     } ocr;
+    /// Card Capacity type
     Type type;
+    /// Buffer for responses
     Response_t response;
   };
 
+  /// Initialize peripherals
   virtual void Initialize()
   {
     sjsu::LogDebug("Begin initialization:");
@@ -186,8 +193,8 @@ class Sd
     sjsu::LogDebug("Starting SPI Peripheral...");
   }
 
-  // Initialize SD Card
   // TODO(#349): Split method into smaller piece with single jobs
+  /// Initialize and enable SD Card
   virtual bool Mount(CardInfo_t * sd)
   {
     uint8_t tries     = 0;
@@ -324,14 +331,8 @@ class Sd
     return true;
   }
 
-  // Returns string to represent a boolean value
-  virtual const char * ToBool(bool condition)
-  {
-    return (condition) ? "true" : "false";
-  }
-
-  // Waits for the card to respond after a single or multi block read cmd is
-  // sent.
+  /// Waits for the card to respond after a single or multi block read cmd is
+  /// sent.
   virtual void WaitToReadBlock()
   {
     // Since the command encountered no errors, we can now begin to
@@ -372,8 +373,8 @@ class Sd
     }
   }
 
-  // Waits for the card to be ready to receive a new block after one has
-  // been written or erased
+  /// Waits for the card to be ready to receive a new block after one has
+  /// been written or erased
   virtual void WaitWhileBusy()
   {
     // Wait for the card to finish programming (i.e. when the
@@ -387,7 +388,7 @@ class Sd
     sjsu::LogDebug("Card finished!");
   }
 
-  // Read any number of blocks from the SD card
+  /// Read any number of blocks from the SD card
   virtual uint8_t ReadBlock(uint32_t address,
                             uint8_t * array,
                             uint32_t blocks = 1)
@@ -530,7 +531,7 @@ class Sd
     return sd.response.data.byte[0];
   }
 
-  // Writes any number of 512-byte blocks to the SD Card
+  /// Writes any number of 512-byte blocks to the SD Card
   virtual uint8_t WriteBlock(uint32_t address,
                              const uint8_t * array,
                              uint32_t blocks = 1)
@@ -650,7 +651,7 @@ class Sd
     return sd.response.data.byte[0];
   }
 
-  // Deletes any number of blocks (inclusively) within a range of address.
+  /// Deletes any number of blocks (inclusively) within a range of address.
   virtual uint8_t DeleteBlock(uint32_t start, uint32_t end)
   {
     // Wait for a previous command to finish
@@ -713,7 +714,14 @@ class Sd
     return sd.response.data.byte[0];
   }
 
-  // Send a command
+  /// Send a SD Card command
+  ///
+  /// @param sdc - the type of SD card command
+  /// @param arg - value to send with the command
+  /// @param response_buffer - buffer to contain the response returned.
+  /// @param keep_alive - set to true in order to keep the connection with SD
+  ///                     card alive.
+  /// @return uint32_t response length
   virtual uint32_t SendCmd(Command sdc,
                            uint32_t arg,
                            uint8_t response_buffer[],
@@ -851,14 +859,15 @@ class Sd
     return res_len;
   }
 
-  // Adds a message byte to the current CRC-7 to get a the new CRC-7
-  virtual uint8_t Crc7Add(uint8_t crc, uint8_t message_byte)
+ private:
+  /// Adds a message byte to the current CRC-7 to get a the new CRC-7
+  uint8_t Crc7Add(uint8_t crc, uint8_t message_byte)
   {
     return kCrcTable8.crc_table[(crc << 1) ^ message_byte];
   }
 
-  // Returns the CRC-7 for a message of "length" bytes
-  virtual uint8_t GetCrc7(uint8_t * message, uint8_t length)
+  /// Returns the CRC-7 for a message of "length" bytes
+  uint8_t GetCrc7(uint8_t * message, uint8_t length)
   {
     uint8_t crc = 0;
     for (int i = 0; i < length; i++)
@@ -868,8 +877,8 @@ class Sd
     return crc;
   }
 
-  // Returns CCITT CRC-16 for a message of "length" bytes
-  virtual uint16_t GetCrc16(uint8_t * message, uint16_t length)
+  /// Returns CCITT CRC-16 for a message of "length" bytes
+  uint16_t GetCrc16(uint8_t * message, uint16_t length)
   {
     uint64_t crc = 0x0000;
     uint64_t temp;
@@ -884,10 +893,18 @@ class Sd
     return static_cast<uint16_t>(crc ^ final_value);
   }
 
- private:
-  /// @brief the object reference to use when using SPI/SPI
+  /// Returns string to represent a boolean value
+  ///
+  /// @param condition - bool to be converted into a string
+  /// @return const char* - string representation of the bool.
+  const char * ToBool(bool condition)
+  {
+    return (condition) ? "true" : "false";
+  }
+
+  /// the object reference to use when using SPI/SPI
   const Spi & spi_;
-  /// @brief the object reference to use when using CS (GPIO)
+  /// the object reference to use when using CS (GPIO)
   const Gpio & chip_select_;
 };
 }  // namespace sjsu
