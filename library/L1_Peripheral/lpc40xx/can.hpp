@@ -20,15 +20,16 @@ namespace sjsu
 {
 namespace lpc40xx
 {
+/// CANBUS implemenation for the LPC40xx series of devices.
 class Can final : public sjsu::Can
 {
  public:
-  // Adding this so Send() with the std::initializer_list is within the scope of
-  // this class.
+  /// Adding this so Send() with the std::initializer_list is within the scope
+  /// of this class.
   using sjsu::Can::Send;
 
-  // This struct holds bit timing values. It is used to configure the CAN bus
-  // clock. It is HW mapped to a 32-bit register: BTR (pg. 562)
+  /// This struct holds bit timing values. It is used to configure the CAN bus
+  /// clock. It is HW mapped to a 32-bit register: BTR (pg. 562)
   struct [[gnu::packed]] BusTiming_t
   {
     union {
@@ -49,10 +50,12 @@ class Can final : public sjsu::Can
       } values;
     };
   };
-  // This struct holds interrupt flags and capture flag status. It is HW mapped
-  // to a 16-bit register: ICR (pg. 557)
+
+  /// This struct holds interrupt flags and capture flag status. It is HW mapped
+  /// to a 16-bit register: ICR (pg. 557)
   struct [[gnu::packed]] Interrupts_t
   {
+    //! @cond Doxygen_Suppress
     union {
       // ICR - Interrupt and Capture Register
       // NOTE: Bits 1-10 are cleared by the CAN controller
@@ -80,12 +83,15 @@ class Can final : public sjsu::Can
         uint8_t arbitration_lost_location : 8;
       } flags;
     };
+    //! @endcond
   };
-  // This struct holds CAN controller global status information.
-  // It is a condensed version of the status register.
-  // It is HW mapped to a 32-bit register: GSR (pg. 555)
+
+  /// This struct holds CAN controller global status information.
+  /// It is a condensed version of the status register.
+  /// It is HW mapped to a 32-bit register: GSR (pg. 555)
   struct [[gnu::packed]] GlobalStatus_t
   {
+    //! @cond Doxygen_Suppress
     union {
       // GSR - Global Status Register
       uint32_t GSR;
@@ -104,12 +110,15 @@ class Can final : public sjsu::Can
         uint8_t tx_error_count : 8;
       } flags;
     };
+    //! @endcond
   };
-  // This struct holds a R/W value. This value is compared against
-  // the Tx and Rx error counts
-  // It is HW mapped to a 32-bit register: EWL (pg. 563)
+
+  /// This struct holds a R/W value. This value is compared against
+  /// the Tx and Rx error counts
+  /// It is HW mapped to a 32-bit register: EWL (pg. 563)
   struct [[gnu::packed]] ErrorWarningLimit_t
   {
+    //! @cond Doxygen_Suppress
     union {
       // EWL - Error Warning Limit Register
       uint32_t EWL;
@@ -119,12 +128,15 @@ class Can final : public sjsu::Can
         uint32_t reserved : 24;
       } error;
     };
+    //! @endcond
   };
-  // This struct holds CAN controller status information. It is HW mapped to a
-  // 32-bit register: SR (pg. 564) Each "not_used_x" is already covered in the
-  // GSR (global status register).
+
+  /// This struct holds CAN controller status information. It is HW mapped to a
+  /// 32-bit register: SR (pg. 564) Each "not_used_x" is already covered in the
+  /// GSR (global status register).
   struct [[gnu::packed]] Status_t
   {
+    //! @cond Doxygen_Suppress
     union {
       // SR - Status Register
       uint32_t SR;
@@ -157,8 +169,10 @@ class Can final : public sjsu::Can
         uint8_t reserved : 8;
       } flags;
     };
+    //! @endcond
   };
 
+  /// Enumeration of the possible CAN bus peripherals supported on LPC40xx.
   enum Controllers : uint8_t
   {
     kCan1 = 0,
@@ -166,55 +180,67 @@ class Can final : public sjsu::Can
     kNumberOfControllers
   };
 
+  /// Contains initialization information for both CAN peripherals
   inline static bool is_controller_initialized[kNumberOfControllers] = {
     [kCan1] = false, [kCan2] = false
   };
 
+  /// Contains Interrupt_t information for both CAN peripherals
   inline static Interrupts_t interrupts[kNumberOfControllers];
+
+  /// Status look up table
   inline static Status_t status[kNumberOfControllers];
+
+  /// GlobalStatus look up table
   inline static GlobalStatus_t global_status[kNumberOfControllers];
 
-  // Registers
+  /// Registers look up table
   inline static LPC_CAN_TypeDef * can_registers[kNumberOfControllers] = {
     [kCan1] = LPC_CAN1, [kCan2] = LPC_CAN2
   };
 
+  /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
   inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
 
-  // Queue transmit handles
+  /// Queue transmit handles
   inline static QueueHandle_t transmit_queue[kNumberOfControllers] = {
     [kCan1] = NULL, [kCan2] = NULL
   };
 
-  // Queue receive handles
+  /// Queue receive handles
   inline static QueueHandle_t receive_queue[kNumberOfControllers] = {
     [kCan1] = NULL, [kCan2] = NULL
   };
 
-  // Templated struct the user can configure and then pass to
-  // CreateStaticQueues()
+  /// Templated struct the user can configure and then pass to
+  /// CreateStaticQueues()
   template <size_t kTxLength, size_t kRxLength>
   struct StaticQueueConfig_t
   {
-    // Queue data structures
+    /// Tx queue data structures
     inline static StaticQueue_t tx_static_queue;
+    /// Rx queue data structures
     inline static StaticQueue_t rx_static_queue;
 
-    // Queue lengths
+    /// Tx queue lengths
     inline static constexpr uint8_t kTxQueueLength = kTxLength;
+    /// Rx queue lengths
     inline static constexpr uint8_t kRxQueueLength = kRxLength;
 
-    // Queue item sizes
+    /// Transmit queue item sizes
     inline static constexpr uint8_t kTxQueueItemSize = sizeof(TxMessage_t *);
+    /// Receive queue item sizes
     inline static constexpr uint8_t kRxQueueItemSize = sizeof(RxMessage_t);
 
-    // Queue storage area
+    /// Static buffer for the transmit buffer
     inline static uint8_t
         tx_queue_storage_area[kTxQueueLength * kTxQueueItemSize];
+    /// Static buffer for the receive buffer
     inline static uint8_t
         rx_queue_storage_area[kRxQueueLength * kRxQueueItemSize];
   };
 
+  /// Pin Functions for CANBUS operation
   enum PinFunctions : uint8_t
   {
     kRd1FunctionBit = 1,
@@ -223,6 +249,7 @@ class Can final : public sjsu::Can
     kTd2FunctionBit = 1
   };
 
+  /// Interrupts enable bits
   enum Interrupts : uint8_t
   {
     kRxBufferIntEnableBit  = 0,
@@ -231,6 +258,7 @@ class Can final : public sjsu::Can
     kTxBuffer3IntEnableBit = 10
   };
 
+  /// CANBUS modes
   enum Modes : uint8_t
   {
     kReset      = 0,
@@ -242,11 +270,13 @@ class Can final : public sjsu::Can
     kTest       = 7
   };
 
+  /// The set of baud rates that are supported
   enum BaudRates : uint8_t
   {
     kBaud100Kbps = 100
   };
 
+  /// The available TxBuffer buffer to store message data into
   enum TxBuffers : uint8_t
   {
     kBuffer1 = 0,
@@ -254,7 +284,7 @@ class Can final : public sjsu::Can
     kBuffer3 = 2
   };
 
-  // https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 554)
+  /// https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 554)
   enum Commands : uint8_t
   {
     kReleaseRxBuffer            = 0x04,
@@ -265,8 +295,8 @@ class Can final : public sjsu::Can
     kAcceptAllMessages          = 0x02
   };
 
-  // https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 560)
-  // CAN frame format: https://goo.gl/images/XLjzn5
+  /// https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 560)
+  /// CAN frame format: https://goo.gl/images/XLjzn5
   enum FrameErrorCodes : uint8_t
   {
     kStartOfFrame         = 0x03,
@@ -290,12 +320,16 @@ class Can final : public sjsu::Can
     kIntermission         = 0x12
   };
 
+  /// Frame Error container with error codes and error messages.
   struct FrameError_t
   {
+    /// Error code
     uint8_t errorCode;
+    /// Error message string
     const char * errorMessage;
   };
 
+  /// Lookup table with all of the CANBUS FrameErrors.
   inline static FrameError_t frame_error_table[19] = {
     { kStartOfFrame, "Start of Frame" },
     { kID28toID21, "ID28 ... ID21" },
@@ -318,7 +352,8 @@ class Can final : public sjsu::Can
     { kIntermission, "Intermission" }
   };
 
-  static void ProcessIrq()
+  /// Interrupt service routine for CANBUS
+  static void CanIrqHandler()
   {
     TxMessage_t * message_ptr;
     bool transmit_interrupt, receive_interrupt;
@@ -375,11 +410,7 @@ class Can final : public sjsu::Can
     }
   }
 
-  static void CanIrqHandler()
-  {
-    ProcessIrq();
-  }
-
+  /// Interrupt registration information.
   inline static const InterruptController::RegistrationInfo_t
       kCanInterruptInfo = {
         .interrupt_request_number = CAN_IRQn,
@@ -387,12 +418,14 @@ class Can final : public sjsu::Can
         .priority                 = 5,
       };
 
+  //! @cond Doxygen_Suppress
   inline static const lpc40xx::Pin kPort1ReadPin     = Pin(0, 0);
   inline static const lpc40xx::Pin kPort1TransmitPin = Pin(0, 1);
   inline static const lpc40xx::Pin kPort2ReadPin     = Pin(2, 7);
   inline static const lpc40xx::Pin kPort2TransmitPin = Pin(2, 8);
+  //! @endcond
 
-  // Default constructor that defaults to CAN 1
+  /// Default constructor that defaults to CAN 1
   constexpr Can()
       : controller_(kCan1),
         baud_rate_(BaudRates::kBaud100Kbps),
@@ -401,8 +434,12 @@ class Can final : public sjsu::Can
   {
   }
 
+  /// @param controller - Which CANBUS controller
+  /// @param baud_rate - which baudrate to set the CANBUS to
+  /// @param td_pin - transmit pin
+  /// @param rd_pin - read pin
   constexpr Can(Controllers controller,
-                BaudRates baud_rate,
+                BaudRates baud_rate      = BaudRates::kBaud100Kbps,
                 const sjsu::Pin & td_pin = GetInactive<sjsu::Pin>(),
                 const sjsu::Pin & rd_pin = GetInactive<sjsu::Pin>())
       : controller_(controller), baud_rate_(baud_rate), rd_(td_pin), td_(rd_pin)
@@ -507,8 +544,7 @@ class Can final : public sjsu::Can
     return success;
   }
 
-  [[gnu::always_inline]] bool Receive(
-      RxMessage_t * const kMessage) const override
+  bool Receive(RxMessage_t * const kMessage) const override
   {
     bool success = false;
     if (xQueueReceive(receive_queue[controller_], kMessage, 0) == pdPASS)
@@ -591,6 +627,7 @@ class Can final : public sjsu::Can
     SetControllerMode(kReset, false);
   }
 
+  /// Creates the static FreeRTOS queues for the the system
   template <typename T>
   void CreateStaticQueues(T static_queue_config)
   {
@@ -607,10 +644,9 @@ class Can final : public sjsu::Can
   }
 
  private:
-  [[gnu::always_inline]] static void WriteMessageToBuffer(
-      const TxMessage_t * const kMessage,
-      TxBuffers buffer_number,
-      Controllers controller)
+  static void WriteMessageToBuffer(const TxMessage_t * const kMessage,
+                                   TxBuffers buffer_number,
+                                   Controllers controller)
   {
     volatile TxMessage_t * ptr_to_buffer_offset;
     Commands command;
@@ -652,8 +688,7 @@ class Can final : public sjsu::Can
         kCanInterruptInfo);
   }
 
-  [[gnu::always_inline]] static void ReadMessageFromBuffer(
-      Controllers controller)
+  static void ReadMessageFromBuffer(Controllers controller)
   {
     RxMessage_t message;
     memset(&message, 0, sizeof(RxMessage_t));
@@ -673,7 +708,7 @@ class Can final : public sjsu::Can
     can_registers[controller]->CMR = kReleaseRxBuffer;
   }
 
-  [[gnu::always_inline]] void CaptureRegisterData()
+  void CaptureRegisterData()
   {
     interrupts[controller_].ICR    = can_registers[controller_]->ICR;
     status[controller_].SR         = can_registers[controller_]->SR;

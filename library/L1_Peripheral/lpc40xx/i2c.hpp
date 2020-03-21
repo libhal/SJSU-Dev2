@@ -32,6 +32,7 @@ class I2c final : public sjsu::I2c
   using sjsu::I2c::Read;
   using sjsu::I2c::Write;
   using sjsu::I2c::WriteThenRead;
+
   /// lpc40xx i2c peripheral control register flags
   enum Control : uint32_t
   {
@@ -41,6 +42,7 @@ class I2c final : public sjsu::I2c
     kStart             = 1 << 5,  // STA
     kInterfaceEnable   = 1 << 6   // I2EN
   };
+
   /// lpc40xx I2C peripheral state numbers
   enum class MasterState : uint32_t
   {
@@ -140,6 +142,7 @@ class I2c final : public sjsu::I2c
       .pin_function_id = 0b010,
     };
   };
+
   /// I2C interrupt handler
   ///
   /// @param i2c - this function cannot normally be used as an ISR, so it needs
