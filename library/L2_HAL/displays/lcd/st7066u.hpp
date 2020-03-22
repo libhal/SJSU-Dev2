@@ -1,17 +1,11 @@
-// This file contains the driver class for Parallel LCD Screens that utilize the
-// ST7066U controller.
-// Usage:
-//      St7066u lcd(St7066u::BusMode::kEightBit,
-//                  St7066u::DisplayMode::kMultiLine,
-//                  St7066u::FontStyle::kFont5x8, pins);
-//      lcd.Initialize();
-//      lcd.DisplayText("Example Text.");
 #pragma once
 
 #include <cstdint>
 #include <cstring>
 
 #include "L1_Peripheral/gpio.hpp"
+#include "L2_HAL/io/parallel_bus.hpp"
+#include "utility/enum.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
@@ -96,69 +90,51 @@ class St7066u
     kFont5x11 = 1 << 2
   };
 
-  /// Parallel Control Pins structure
-  struct ControlPins_t
-  {
-    //! @cond Doxygen_Suppress
-    sjsu::Gpio & rs;  // Register Selection
-    sjsu::Gpio & rw;  // Read/Write
-    sjsu::Gpio & e;   // Chip Enable
-    sjsu::Gpio & d7;
-    sjsu::Gpio & d6;
-    sjsu::Gpio & d5;
-    sjsu::Gpio & d4;
-    sjsu::Gpio & d3;
-    sjsu::Gpio & d2;
-    sjsu::Gpio & d1;
-    sjsu::Gpio & d0;
-    //! @endcond
-  };
-
   /// Default cursor position at line 0, position 0.
   static constexpr CursorPosition_t kDefaultCursorPosition =
       CursorPosition_t{ 0, 0 };
 
   /// Constructor for the display driver with desired configurations.
   ///
-  /// @param bus_mode     4-bit or 8-bit data transfer bus mode.
+  /// @param bus_mode 4-bit or 8-bit data transfer bus mode.
   /// @param display_mode Number of lines used for displaying characters.
-  /// @param font_style   Character font style
-  /// @param pins         GPIO control pins for controlling the display.
-  constexpr St7066u(BusMode bus_mode,
-                    DisplayMode display_mode,
-                    FontStyle font_style,
-                    const ControlPins_t & pins)
+  /// @param font_style Character font style
+  /// @param register_select_pin Pin that outputs whether the instructor or data
+  ///                            register is selected.
+  /// @param read_write_pin Pin that outputs whether the operation is
+  ///                       read/write.
+  /// @param enable_pin Enable pin used for triggering read/write operations.
+  /// @param data_bus 4-bit or 8-bit GPIO parallel bus depending on the
+  ///                 specified bus_mode.
+  explicit constexpr St7066u(BusMode bus_mode,
+                             DisplayMode display_mode,
+                             FontStyle font_style,
+                             sjsu::Gpio & register_select_pin,
+                             sjsu::Gpio & read_write_pin,
+                             sjsu::Gpio & enable_pin,
+                             ParallelBus & data_bus)
       : kBusMode(bus_mode),
         kDisplayMode(display_mode),
         kFontStyle(font_style),
-        kControlPins(pins)
+        kRegisterSelectPin(register_select_pin),
+        kReadWritePin(read_write_pin),
+        kEnablePin(enable_pin),
+        kDataBus(data_bus)
   {
   }
 
   /// Initialize the pins needed to communicate with the LCD screen
-  void Initialize()
+  void Initialize() const
   {
-    kControlPins.rs.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kControlPins.rw.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kControlPins.e.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kControlPins.e.Set(sjsu::Gpio::kHigh);
-    kControlPins.d7.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kControlPins.d6.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kControlPins.d5.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kControlPins.d4.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kRegisterSelectPin.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kReadWritePin.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kEnablePin.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kEnablePin.Set(sjsu::Gpio::kHigh);
+    kDataBus.Initialize();
+    kDataBus.SetDirection(sjsu::Gpio::Direction::kOutput);
 
-    if (kBusMode == BusMode::kEightBit)
-    {
-      kControlPins.d3.SetDirection(sjsu::Gpio::Direction::kOutput);
-      kControlPins.d2.SetDirection(sjsu::Gpio::Direction::kOutput);
-      kControlPins.d1.SetDirection(sjsu::Gpio::Direction::kOutput);
-      kControlPins.d0.SetDirection(sjsu::Gpio::Direction::kOutput);
-    }
-
-    WriteCommand(static_cast<uint8_t>(Command::kDefaultDisplayConfiguration) |
-                 static_cast<uint8_t>(kBusMode) |
-                 static_cast<uint8_t>(kDisplayMode) |
-                 static_cast<uint8_t>(kFontStyle));
+    WriteCommand(Value(Command::kDefaultDisplayConfiguration) |
+                 Value(kBusMode) | Value(kDisplayMode) | Value(kFontStyle));
     SetDisplayOn();
     ClearDisplay();
   }
@@ -167,48 +143,38 @@ class St7066u
   ///
   /// @param operation Operation transfer type.
   /// @param nibble    4-bit data to transfer.
-  void WriteNibble(WriteOperation operation, uint8_t nibble)
+  void WriteNibble(WriteOperation operation, uint8_t nibble) const
   {
-    kControlPins.e.Set(sjsu::Gpio::State::kHigh);
-    kControlPins.rs.Set(sjsu::Gpio::State(operation));
-    kControlPins.rw.Set(sjsu::Gpio::State::kLow);
-    // set nibble on 4-bit data bus
-    kControlPins.d7.Set(sjsu::Gpio::State((nibble >> 3) & 0x01));
-    kControlPins.d6.Set(sjsu::Gpio::State((nibble >> 2) & 0x01));
-    kControlPins.d5.Set(sjsu::Gpio::State((nibble >> 1) & 0x01));
-    kControlPins.d4.Set(sjsu::Gpio::State((nibble >> 0) & 0x01));
+    kEnablePin.Set(sjsu::Gpio::State::kHigh);
+    kRegisterSelectPin.Set(sjsu::Gpio::State(operation));
+    kReadWritePin.Set(sjsu::Gpio::State::kLow);
+
+    kDataBus.Write(nibble);
     sjsu::Delay(1ms);
     // Toggle chip enable to trigger write on falling edge
-    kControlPins.e.Set(sjsu::Gpio::State::kLow);
-    kControlPins.e.Set(sjsu::Gpio::State::kHigh);
+    kEnablePin.Set(sjsu::Gpio::State::kLow);
+    kEnablePin.Set(sjsu::Gpio::State::kHigh);
   }
 
   /// Transfers a command or data byte to the device.
   ///
   /// @param operation Operation transfer type.
   /// @param byte      Byte to transfer.
-  void WriteByte(WriteOperation operation, uint8_t byte)
+  void WriteByte(WriteOperation operation, uint8_t byte) const
   {
-    kControlPins.e.Set(sjsu::Gpio::State::kHigh);
-    kControlPins.rs.Set(sjsu::Gpio::State(operation));
-    kControlPins.rw.Set(sjsu::Gpio::State::kLow);
-    // set byte on 8-bit data bus
-    kControlPins.d7.Set(sjsu::Gpio::State((byte >> 7) & 0x01));
-    kControlPins.d6.Set(sjsu::Gpio::State((byte >> 6) & 0x01));
-    kControlPins.d5.Set(sjsu::Gpio::State((byte >> 5) & 0x01));
-    kControlPins.d4.Set(sjsu::Gpio::State((byte >> 4) & 0x01));
-    kControlPins.d3.Set(sjsu::Gpio::State((byte >> 3) & 0x01));
-    kControlPins.d2.Set(sjsu::Gpio::State((byte >> 2) & 0x01));
-    kControlPins.d1.Set(sjsu::Gpio::State((byte >> 1) & 0x01));
-    kControlPins.d0.Set(sjsu::Gpio::State((byte >> 0) & 0x01));
+    kEnablePin.Set(sjsu::Gpio::State::kHigh);
+    kRegisterSelectPin.Set(sjsu::Gpio::State(operation));
+    kReadWritePin.Set(sjsu::Gpio::State::kLow);
+
+    kDataBus.Write(byte);
     sjsu::Delay(1ms);
     // Toggle chip enable to trigger write on falling edge
-    kControlPins.e.Set(sjsu::Gpio::State::kLow);
-    kControlPins.e.Set(sjsu::Gpio::State::kHigh);
+    kEnablePin.Set(sjsu::Gpio::State::kLow);
+    kEnablePin.Set(sjsu::Gpio::State::kHigh);
   }
 
   /// @param command 8-bit command to send.
-  void WriteCommand(Command command)
+  void WriteCommand(Command command) const
   {
     WriteCommand(static_cast<uint8_t>(command));
   }
@@ -216,7 +182,7 @@ class St7066u
   /// Perform a write command
   ///
   /// @param command - the command to send to the LCD screen.
-  virtual void WriteCommand(uint8_t command)
+  void WriteCommand(uint8_t command) const
   {
     switch (kBusMode)
     {
@@ -233,7 +199,7 @@ class St7066u
   /// Writes a byte to the current cursor address position.
   ///
   /// @param data Byte to send to device.
-  virtual void WriteData(uint8_t data)
+  void WriteData(uint8_t data) const
   {
     switch (kBusMode)
     {
@@ -247,14 +213,14 @@ class St7066u
 
   /// Clears all characters on the display by sending the clear display command
   /// to the device.
-  virtual void ClearDisplay()
+  void ClearDisplay() const
   {
     WriteCommand(Command::kClearDisplay);
     sjsu::Delay(2ms);  // Clear display operation requires 1.52ms
   }
 
   /// @param on Toggles the display on if TRUe.
-  virtual void SetDisplayOn(bool on = true)
+  void SetDisplayOn(bool on = true) const
   {
     WriteCommand(on ? Command::kTurnDisplayOn : Command::kTurnDisplayOff);
   }
@@ -262,13 +228,13 @@ class St7066u
   /// Make the cursor hidden
   ///
   /// @param hidden - set to false to make the cursor appear.
-  virtual void SetCursorHidden(bool hidden = true)
+  void SetCursorHidden(bool hidden = true) const
   {
     WriteCommand(hidden ? Command::kTurnDisplayOn : Command::kTurnCursorOn);
   }
 
   /// Set the drawing direction of the cursor and characters
-  virtual void SetCursorDirection(CursorDirection direction)
+  void SetCursorDirection(CursorDirection direction) const
   {
     switch (direction)
     {
@@ -285,7 +251,7 @@ class St7066u
   ///
   /// @param position Line number (row) and character position to move cursor
   ///                 to.
-  virtual void SetCursorPosition(CursorPosition_t position)
+  void SetCursorPosition(CursorPosition_t position) const
   {
     SJ2_ASSERT_FATAL(position.line_number < 5,
                      "SetCursorPosition() - The driver does not support "
@@ -306,7 +272,7 @@ class St7066u
   }
 
   /// Move cursor back to the starting position.
-  virtual void ResetCursorPosition()
+  void ResetCursorPosition() const
   {
     WriteCommand(Command::kResetCursor);
     sjsu::Delay(2ms);  // requires 1.52ms
@@ -316,8 +282,8 @@ class St7066u
   ///
   /// @param text     String to write on the display.
   /// @param position Position to start writing the characters
-  virtual void DisplayText(const char * text,
-                           CursorPosition_t position = kDefaultCursorPosition)
+  void DisplayText(const char * text,
+                   CursorPosition_t position = kDefaultCursorPosition) const
   {
     constexpr uint8_t kMaxDisplayWidth = 20;
     const uint8_t kStartOffset         = position.position;
@@ -344,6 +310,13 @@ class St7066u
   const BusMode kBusMode;
   const DisplayMode kDisplayMode;
   const FontStyle kFontStyle;
-  const ControlPins_t & kControlPins;  // NOLINT
+  /// Pin that outputs whether the instructor or data register is selected.
+  const Gpio & kRegisterSelectPin;  // NOLINT
+  /// Pin that outputs whether the operation is read/write.
+  const Gpio & kReadWritePin;  // NOLINT
+  /// Enable pin used for triggering read/write operations.
+  const Gpio & kEnablePin;  // NOLINT
+  /// 4-bit or 8-bit data bus.
+  ParallelBus & kDataBus;  // NOLINT
 };
 }  // namespace sjsu
