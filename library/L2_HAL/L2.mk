@@ -24,8 +24,7 @@ TESTS += $(LIBRARY_DIR)/L2_HAL/communication/test/tsop752_test.cpp
 # Displays
 # ==============================================================================
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L2_HAL/displays/pixel_display.hpp
-# TODO: Remove this when st7066u_test.cpp doesn't take 15 minutes to compile
-NO_TEST_NEEDED += $(LIBRARY_DIR)/L2_HAL/displays/lcd/st7066u.hpp
+TESTS += $(LIBRARY_DIR)/L2_HAL/displays/lcd/test/st7066u_test.cpp
 TESTS += $(LIBRARY_DIR)/L2_HAL/displays/oled/test/ssd1306_test.cpp
 # TESTS += $(LIBRARY_DIR)/L2_HAL/displays/lcd/test/st7066u_test.cpp
 # ==============================================================================
