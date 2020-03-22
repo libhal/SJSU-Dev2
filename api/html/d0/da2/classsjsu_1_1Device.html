@@ -76,83 +76,91 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../de/dec/classsjsu_1_1Device-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::Device&lt; DeviceProtocol, endianess, MemoryMap &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../dd/dbb/device__memory__map_8hpp_source.html">device_memory_map.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a1bb7916d1f646b0b9b1f18f57f5b9e71"><td class="memItemLeft" align="right" valign="top"><a id="a1bb7916d1f646b0b9b1f18f57f5b9e71"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>MapType</b> = std::remove_reference_t&lt; decltype(memory)&gt;</td></tr>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da2/classsjsu_1_1Device.html#a1bb7916d1f646b0b9b1f18f57f5b9e71">MapType</a> = std::remove_reference_t&lt; decltype(<a class="el" href="../../d0/da2/classsjsu_1_1Device.html#a96ac14e9ee4e05dd094ea50ba33a9a90">memory</a>)&gt;</td></tr>
+<tr class="memdesc:a1bb7916d1f646b0b9b1f18f57f5b9e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">MapType is a none-reference alias to the memory object. <br /></td></tr>
 <tr class="separator:a1bb7916d1f646b0b9b1f18f57f5b9e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ab8dfff14bd7f2f6c6332016aa980d0e9"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da2/classsjsu_1_1Device.html#ab8dfff14bd7f2f6c6332016aa980d0e9">Device</a> ()</td></tr>
+<tr class="separator:ab8dfff14bd7f2f6c6332016aa980d0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a96ac14e9ee4e05dd094ea50ba33a9a90"><td class="memItemLeft" align="right" valign="top"><a id="a96ac14e9ee4e05dd094ea50ba33a9a90"></a>
-MemoryMap&lt; endianess, Device::Write&lt; DeviceProtocol &gt;, Device::Read&lt; DeviceProtocol &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>memory</b></td></tr>
+<tr class="memitem:a96ac14e9ee4e05dd094ea50ba33a9a90"><td class="memItemLeft" align="right" valign="top">MemoryMap&lt; endianess, Device::Write&lt; DeviceProtocol &gt;, Device::Read&lt; DeviceProtocol &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da2/classsjsu_1_1Device.html#a96ac14e9ee4e05dd094ea50ba33a9a90">memory</a></td></tr>
 <tr class="separator:a96ac14e9ee4e05dd094ea50ba33a9a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a81bd31e2fdc41ae13c64c21556a0bd48"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>kWriteExists</b></td></tr>
-<tr class="separator:a81bd31e2fdc41ae13c64c21556a0bd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af700d887242d2fb94fb11cd86f9e2096"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>kReadExists</b></td></tr>
-<tr class="separator:af700d887242d2fb94fb11cd86f9e2096"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7d9a15f0c7c579b42a03749fa624b00"><td class="memItemLeft" align="right" valign="top"><a id="ac7d9a15f0c7c579b42a03749fa624b00"></a>
-static constexpr MapType *&#160;</td><td class="memItemRight" valign="bottom"><b>kMapAtAddressZero</b> = static_cast&lt;MapType *&gt;(0)</td></tr>
-<tr class="separator:ac7d9a15f0c7c579b42a03749fa624b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class DeviceProtocol, device::Endian endianess, template&lt; device::Endian endian, WriteFnt write, ReadFnt read &gt; class MemoryMap&gt;<br />
+class sjsu::Device&lt; DeviceProtocol, endianess, MemoryMap &gt;</h3>
+
+<p><a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> takes a MemoryMap structure and a <a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> communication protocol and combines them to create a hardware abstraction that allows the remote device to be accessed as if it were apart of the local memory map.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">DeviceProtocol</td><td>- <a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> communicate protocol </td></tr>
+    <tr><td class="paramname">endianess</td><td>- the endianess of the device to communicate with </td></tr>
+    <tr><td class="paramname">MemoryMap</td><td>- the memory map structure to use. </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ab8dfff14bd7f2f6c6332016aa980d0e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8dfff14bd7f2f6c6332016aa980d0e9">&#9670;&nbsp;</a></span>Device()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class DeviceProtocol, device::Endian endianess, template&lt; device::Endian endian, WriteFnt write, ReadFnt read &gt; class MemoryMap&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../d0/da2/classsjsu_1_1Device.html">sjsu::Device</a>&lt; DeviceProtocol, endianess, MemoryMap &gt;::<a class="el" href="../../d0/da2/classsjsu_1_1Device.html">Device</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The <a class="el" href="../../d9/dd7/classsjsu_1_1I2cDevice.html">I2cDevice</a> constructor's only job in this case is to set the memory ptr to 0. This will align the memory map to address zero. So when the registers lookup their own address location, what they are really getting is their position in the memory map. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="af700d887242d2fb94fb11cd86f9e2096"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af700d887242d2fb94fb11cd86f9e2096">&#9670;&nbsp;</a></span>kReadExists</h2>
+<a id="a96ac14e9ee4e05dd094ea50ba33a9a90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96ac14e9ee4e05dd094ea50ba33a9a90">&#9670;&nbsp;</a></span>memory</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class DeviceProtocol, device::Endian endianess, template&lt; device::Endian endian, WriteFnt write, ReadFnt read &gt; class MemoryMap&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool <a class="el" href="../../d0/da2/classsjsu_1_1Device.html">sjsu::Device</a>&lt; DeviceProtocol, endianess, MemoryMap &gt;::kReadExists</td>
+          <td class="memname">MemoryMap&lt;endianess, Device::Write&lt;DeviceProtocol&gt;, Device::Read&lt;DeviceProtocol&gt; &gt;&amp; <a class="el" href="../../d0/da2/classsjsu_1_1Device.html">sjsu::Device</a>&lt; DeviceProtocol, endianess, MemoryMap &gt;::memory</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      (<span class="keyword">sizeof</span>(TestReadExists&lt;DeviceProtocol&gt;(0)) == <span class="keyword">sizeof</span>(success))</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a81bd31e2fdc41ae13c64c21556a0bd48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81bd31e2fdc41ae13c64c21556a0bd48">&#9670;&nbsp;</a></span>kWriteExists</h2>
+<p>Pointer to the memory map object. Such an object should never be constructed as it would take up a large amount of space. </p>
 
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class DeviceProtocol, device::Endian endianess, template&lt; device::Endian endian, WriteFnt write, ReadFnt read &gt; class MemoryMap&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr bool <a class="el" href="../../d0/da2/classsjsu_1_1Device.html">sjsu::Device</a>&lt; DeviceProtocol, endianess, MemoryMap &gt;::kWriteExists</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      (<span class="keyword">sizeof</span>(TestWriteExists&lt;DeviceProtocol&gt;(0)) == <span class="keyword">sizeof</span>(success))</div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

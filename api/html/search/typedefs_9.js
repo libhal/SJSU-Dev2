@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['value_5ftype',['value_type',['../d1/df0/classsjsu_1_1FixedAllocator.html#a59cd85ce7c8e1807e3d6497fe21e09ab',1,'sjsu::FixedAllocator']]],
-  ['vector',['Vector',['../d0/d6b/namespacesjsu.html#a66617a2d1e908afe21967587eb99d91d',1,'sjsu']]]
+  ['taskfunction',['TaskFunction',['../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6486fbda098337c90c9c794601b41ad3',1,'sjsu::rtos::PeriodicTaskInterface']]]
 ];

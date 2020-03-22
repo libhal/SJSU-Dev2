@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['usbdivider',['UsbDivider',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a8643fe1fcc2ef831ae790a43d98f8a73',1,'sjsu::lpc40xx::SystemController']]],
-  ['usbplldivider',['UsbPllDivider',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab5a079dcf9f8d5d3194aef8fdc665290',1,'sjsu::lpc17xx::SystemController']]],
-  ['usbpllinputfrequency',['UsbPllInputFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da',1,'sjsu::lpc17xx::SystemController']]],
-  ['usbpllmultiplier',['UsbPllMultiplier',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9a822339e5e9c8a98b9196a179e4bd9e',1,'sjsu::lpc17xx::SystemController']]],
-  ['usbsource',['UsbSource',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a532be32b5b14dae38a982b1e5fabefe0',1,'sjsu::lpc40xx::SystemController']]]
+  ['transaction',['Transaction',['../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0',1,'sjsu::Ssd1306']]],
+  ['type',['Type',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878',1,'sjsu::Storage::Type()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()']]]
 ];

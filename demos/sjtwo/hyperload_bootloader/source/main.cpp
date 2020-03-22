@@ -15,7 +15,6 @@
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
 #include "L2_HAL/boards/sjtwo.hpp"
-#include "L4_Testing/factory_test.hpp"
 #include "utility/build_info.hpp"
 #include "utility/debug.hpp"
 #include "utility/macros.hpp"
@@ -359,8 +358,6 @@ int main()
   // If button1 is held down, run factory test
   else if (button0.Read())
   {
-    // FactoryTest factory_test;
-    // factory_test.RunFactoryTest();
     sjsu::Halt();
   }
   else if (application_entry_isr == reinterpret_cast<void *>(0xFFFFFFFFUL))

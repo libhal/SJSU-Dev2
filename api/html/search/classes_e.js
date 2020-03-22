@@ -22,6 +22,6 @@ var searchData=
   ['pulsecapture',['PulseCapture',['../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html',1,'sjsu::lpc40xx::PulseCapture'],['../d2/d96/classsjsu_1_1PulseCapture.html',1,'sjsu::PulseCapture']]],
   ['pulsecapturechannel',['PulseCaptureChannel',['../d4/d79/structsjsu_1_1lpc17xx_1_1PulseCaptureChannel.html',1,'sjsu::lpc17xx']]],
   ['pulsedurationconfiguration_5ft',['PulseDurationConfiguration_t',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html',1,'sjsu::infrared']]],
-  ['pwm',['Pwm',['../d6/ddf/classsjsu_1_1Pwm.html',1,'sjsu::Pwm'],['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html',1,'sjsu::lpc40xx::Pwm']]],
+  ['pwm',['Pwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html',1,'sjsu::lpc40xx::Pwm'],['../d6/ddf/classsjsu_1_1Pwm.html',1,'sjsu::Pwm']]],
   ['pwmchannel',['PwmChannel',['../d0/d71/structsjsu_1_1lpc17xx_1_1PwmChannel.html',1,'sjsu::lpc17xx']]]
 ];

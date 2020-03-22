@@ -256,11 +256,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../
 using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> = std::function&lt; void(void)&gt;</td></tr>
 <tr class="memdesc:aaed1ac5d25f4e9f920a8542577b803d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard callback that should be executed when interrupts fire. <br /></td></tr>
 <tr class="separator:aaed1ac5d25f4e9f920a8542577b803d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3337f5c03e3713b3368a993fd78339a"><td class="memItemLeft" align="right" valign="top"><a id="ac3337f5c03e3713b3368a993fd78339a"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>WriteFnt</b> = bool(*)(intptr_t, size_t, uint8_t *)</td></tr>
+<tr class="memitem:ac3337f5c03e3713b3368a993fd78339a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac3337f5c03e3713b3368a993fd78339a">WriteFnt</a> = bool(*)(intptr_t, size_t, uint8_t *)</td></tr>
 <tr class="separator:ac3337f5c03e3713b3368a993fd78339a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af58d76c3cad5e9919acc8ac7f79e8d92"><td class="memItemLeft" align="right" valign="top"><a id="af58d76c3cad5e9919acc8ac7f79e8d92"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>ReadFnt</b> = void(*)(intptr_t, size_t, uint8_t *)</td></tr>
+<tr class="memitem:af58d76c3cad5e9919acc8ac7f79e8d92"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#af58d76c3cad5e9919acc8ac7f79e8d92">ReadFnt</a> = void(*)(intptr_t, size_t, uint8_t *)</td></tr>
 <tr class="separator:af58d76c3cad5e9919acc8ac7f79e8d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02cb0ed606f8c4fd6b0773de6b443ec5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a02cb0ed606f8c4fd6b0773de6b443ec5">CommandSignature</a> = int(*)(int argc, const char *const argv[])</td></tr>
 <tr class="separator:a02cb0ed606f8c4fd6b0773de6b443ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -544,6 +542,21 @@ template&lt;class T , const size_t length&gt; </div>
 
 </div>
 </div>
+<a id="af58d76c3cad5e9919acc8ac7f79e8d92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af58d76c3cad5e9919acc8ac7f79e8d92">&#9670;&nbsp;</a></span>ReadFnt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d0/d6b/namespacesjsu.html#af58d76c3cad5e9919acc8ac7f79e8d92">sjsu::ReadFnt</a> = typedef void (*)(intptr_t, size_t, uint8_t *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Function prototype for a function that performs a read operation for a system. </p>
+
+</div>
+</div>
 <a id="ae9e203bc306049463b76f25e60303bd3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9e203bc306049463b76f25e60303bd3">&#9670;&nbsp;</a></span>String</h2>
 
@@ -588,6 +601,21 @@ template&lt;class T , const size_t length&gt; </div>
  <h2>Vector Usage Notes </h2>
 <p>The fixed allocator can hold up to exactly 8 elements in this example. Resize to any amount needed.</p>
 <p>The call to reserve will allocate the maximum amount from the allocator. This is very important as not doing so will cause vector to allocate an arbitrary amount of data, which may overflow our fixed buffer. Doing this means we allocate as much space as we need. Allocator will fault if we attempt to allocate beyond this. </p>
+
+</div>
+</div>
+<a id="ac3337f5c03e3713b3368a993fd78339a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3337f5c03e3713b3368a993fd78339a">&#9670;&nbsp;</a></span>WriteFnt</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d0/d6b/namespacesjsu.html#ac3337f5c03e3713b3368a993fd78339a">sjsu::WriteFnt</a> = typedef bool (*)(intptr_t, size_t, uint8_t *)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Function prototype for a function that performs a write operation for a system. </p>
 
 </div>
 </div>

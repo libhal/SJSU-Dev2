@@ -95,12 +95,21 @@ $(function() {
 <li>semaphore_buffer_
 : <a class="el" href="d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#ae53ad672ea8ea07e4919ffc5b4d04fad">sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;</a>
 </li>
+<li>Servo()
+: <a class="el" href="d9/dc9/classsjsu_1_1Servo.html#aa1057bf28c7f9f89893af1adf961c9f9">sjsu::Servo</a>
+</li>
 <li>Set()
 : <a class="el" href="dd/d3a/classsjsu_1_1Gpio.html#addc9edc1a2f660388af1e2208897e48b">sjsu::Gpio</a>
 , <a class="el" href="d0/d57/classsjsu_1_1GpioCounter.html#a754c0ea2866d57d165bef660ef8baaef">sjsu::GpioCounter</a>
 , <a class="el" href="d7/ddd/classsjsu_1_1HardwareCounter.html#a1fa43f413df599021d233b1b0af81d48">sjsu::HardwareCounter</a>
 , <a class="el" href="db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a2cf5b87e957522f3bce8079f90436265">sjsu::lpc40xx::Gpio</a>
 , <a class="el" href="dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a1ff2ca846d80c1c61669e7a29f7eb081">sjsu::stm32f4xx::Gpio</a>
+</li>
+<li>SetAngle()
+: <a class="el" href="d9/dc9/classsjsu_1_1Servo.html#a82dfaf8648a3307a41cfc4c1451405eb">sjsu::Servo</a>
+</li>
+<li>SetAngleBounds()
+: <a class="el" href="d9/dc9/classsjsu_1_1Servo.html#a5b0d253aca1e90f48ca6ee1b4023cee2">sjsu::Servo</a>
 </li>
 <li>SetAsActiveLow()
 : <a class="el" href="df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#af77617d19a8d485b85bfd1a6ae7a34b7">sjsu::lpc40xx::Pin</a>
@@ -152,6 +161,9 @@ $(function() {
 <li>SetColor()
 : <a class="el" href="d7/d8c/classsjsu_1_1Graphics.html#a5aab37ed1ff044fb0b4de8517d4fde9a">sjsu::Graphics</a>
 </li>
+<li>SetCursor()
+: <a class="el" href="d6/dde/classsjsu_1_1GraphicalTerminal.html#a8c01af3b72b9bacf547029d2eeb4d726">sjsu::GraphicalTerminal</a>
+</li>
 <li>SetDataSize()
 : <a class="el" href="da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#aa134e99edc315bc077c681f071d16ae8">sjsu::lpc40xx::Spi</a>
 , <a class="el" href="d3/de6/classsjsu_1_1Spi.html#a042759d1f201f45964216280f6f5d980">sjsu::Spi</a>
@@ -179,6 +191,7 @@ $(function() {
 <li>SetFrequency()
 : <a class="el" href="df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#aedcdb22b1de25219a2bda5bc2fd586e4">sjsu::lpc40xx::Pwm</a>
 , <a class="el" href="d6/ddf/classsjsu_1_1Pwm.html#a17925286801d4d918e11699a6f27b5ba">sjsu::Pwm</a>
+, <a class="el" href="d9/dc9/classsjsu_1_1Servo.html#aebe197bf95c522b200946dccf84b53d5">sjsu::Servo</a>
 </li>
 <li>SetFullScaleRange()
 : <a class="el" href="d2/d7b/classsjsu_1_1Accelerometer.html#a0dced39ee69f11bb39b12ece9dc7e203">sjsu::Accelerometer</a>
@@ -207,6 +220,7 @@ $(function() {
 </li>
 <li>SetMode()
 : <a class="el" href="d8/d99/classsjsu_1_1Apds9960.html#a5ecf2b23f354f645283faf75de2bba11">sjsu::Apds9960</a>
+, <a class="el" href="dc/d4f/classsjsu_1_1Esp8266.html#a3815ff5e11b3fda98716609dd0c3e510">sjsu::Esp8266</a>
 </li>
 <li>SetNewTimeout()
 : <a class="el" href="d6/d98/classsjsu_1_1TimeoutTimer.html#a64d536f5307b21cf33ee739c035343c7">sjsu::TimeoutTimer</a>
@@ -237,6 +251,12 @@ $(function() {
 , <a class="el" href="df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa83501ab5e87a9a734bc62e4ba88a614">sjsu::lpc40xx::Pin</a>
 , <a class="el" href="d0/da9/classsjsu_1_1Pin.html#af059b120d4e4897e50dd4253fef724ab">sjsu::Pin</a>
 , <a class="el" href="dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#aea902634e0b6837a333e348a2b538a41">sjsu::stm32f4xx::Pin</a>
+</li>
+<li>SetPulseBounds()
+: <a class="el" href="d9/dc9/classsjsu_1_1Servo.html#abc4860ce3a89b501d2975a7452a288ec">sjsu::Servo</a>
+</li>
+<li>SetPulseWidthInMicroseconds()
+: <a class="el" href="d9/dc9/classsjsu_1_1Servo.html#acb9b1abe9d423e9c10aeaec0376f7ea4">sjsu::Servo</a>
 </li>
 <li>SetSpiDefault()
 : <a class="el" href="da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a724c8b252fdea1a7700c74a62fd1d846">sjsu::lpc40xx::Spi</a>
@@ -296,6 +316,9 @@ $(function() {
 <li>SpifiSource
 : <a class="el" href="d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a336ca56b427b42d8426a24621f6cb890">sjsu::lpc40xx::SystemController</a>
 </li>
+<li>Ssd1306()
+: <a class="el" href="db/d32/classsjsu_1_1Ssd1306.html#afb36d6a1b47b9b597530f389a78f2cb2">sjsu::Ssd1306</a>
+</li>
 <li>stack_
 : <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#a5fccf7fa785a8f0a807496cec063f027">sjsu::rtos::Task&lt; kStackSize &gt;</a>
 </li>
@@ -313,7 +336,8 @@ $(function() {
 : <a class="el" href="dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f">sjsu::Gpio</a>
 </li>
 <li>status
-: <a class="el" href="dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adfccef243357bbb8518ce19faa60e22e">sjsu::I2c::Transaction_t</a>
+: <a class="el" href="d3/d2e/structsjsu_1_1Esp8266_1_1IpAddress__t.html#ab4353752cb1cfeba874272deddbaeedc">sjsu::Esp8266::IpAddress_t</a>
+, <a class="el" href="dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adfccef243357bbb8518ce19faa60e22e">sjsu::I2c::Transaction_t</a>
 , <a class="el" href="d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#a7dd93e8fae4f60fe41cbbba0d385a10e">sjsu::WiFi::NetworkConnection_t</a>
 </li>
 <li>Stop()

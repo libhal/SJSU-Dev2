@@ -5,10 +5,12 @@ var searchData=
   ['enabledac',['EnableDac',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a6777204240f13d3f6f6ea7446707e241',1,'sjsu::lpc40xx::Pin']]],
   ['enabledigitalfilter',['EnableDigitalFilter',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1790707e10cd2872f95b37179cf53192',1,'sjsu::lpc40xx::Pin']]],
   ['enablefastmode',['EnableFastMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a55c65a9724761b91c0ab64b82f0bc4a5',1,'sjsu::lpc40xx::Pin']]],
+  ['enablegesture',['EnableGesture',['../d8/d99/classsjsu_1_1Apds9960.html#a9dc1a748537449f5144243a89ca01fe7',1,'sjsu::Apds9960']]],
   ['enablehysteresis',['EnableHysteresis',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ac778f80d582fb2b9b91098f3f328e253',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae0250a624094081b9ca08accfbbabc6b',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a62684c9056be5f64a86d23046167565e',1,'sjsu::lpc40xx::Pin']]],
   ['erase',['Erase',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad4c7ef4b57fdbc01deaea42ac0938a00',1,'sjsu::lpc40xx::Eeprom::Erase()'],['../dc/da6/classsjsu_1_1Storage.html#a4fbe3ecee798d0b6bab2ea6cf146b0fb',1,'sjsu::Storage::Erase()']]],
+  ['esp8266',['Esp8266',['../dc/d4f/classsjsu_1_1Esp8266.html#ac0ddbdd40f24de276666fb9e27b919bf',1,'sjsu::Esp8266']]],
   ['example',['Example',['../d8/d93/classsjsu_1_1example_1_1Example.html#a6543d9de209a0ec2e8a51046a344c167',1,'sjsu::example::Example']]],
   ['examplehalimplementation',['ExampleHalImplementation',['../d7/d4f/classsjsu_1_1ExampleHalImplementation.html#ad8b1d5af72ed6d3c668262a38831153f',1,'sjsu::ExampleHalImplementation']]],
   ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#afd407530822417a5ce69c2a131bea9b0',1,'sjsu::ExampleSingleImplementationHal']]]

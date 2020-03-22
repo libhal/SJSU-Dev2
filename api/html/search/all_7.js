@@ -1,7 +1,7 @@
 var searchData=
 [
   ['gateway',['gateway',['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#ac5124de1615ec60daed7be9648d73c6d',1,'sjsu::WiFi::NetworkConnection_t']]],
-  ['gesture',['Gesture',['../db/dc5/structsjtwo.html#a0f8b659c0f682ca2c102cdf63fea2292',1,'sjtwo']]],
+  ['gesture',['Gesture',['../d8/d99/classsjsu_1_1Apds9960.html#a7f814cdc9c00bbc3b5cb06fc9c742e21',1,'sjsu::Apds9960::Gesture()'],['../db/dc5/structsjtwo.html#a0f8b659c0f682ca2c102cdf63fea2292',1,'sjtwo::Gesture()']]],
   ['getactivebits',['GetActiveBits',['../d0/dc1/classsjsu_1_1Adc.html#aad0f82c8674acc5916171b9c654797cf',1,'sjsu::Adc::GetActiveBits()'],['../da/d01/classsjsu_1_1Dac.html#a701eca7eb9b1cbb37a403e3c4df39c6d',1,'sjsu::Dac::GetActiveBits()'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a3f886549ab4444d418c8586ede018fea',1,'sjsu::lpc40xx::Adc::GetActiveBits()'],['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ace0b148664a123566a3679cdbaf42a3f',1,'sjsu::lpc40xx::Dac::GetActiveBits()']]],
   ['getalltasks',['GetAllTasks',['../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a230e77beb2d3728129eedbf46e013c0f',1,'sjsu::rtos::TaskSchedulerInterface::GetAllTasks()'],['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a441e2f152fb12ad7358c3dd34c8e8d43',1,'sjsu::rtos::TaskScheduler::GetAllTasks()']]],
   ['getavailablecolor',['GetAvailableColor',['../d7/d8c/classsjsu_1_1Graphics.html#a9c68dbd733abe3930dda7a243d367e56',1,'sjsu::Graphics']]],
@@ -19,6 +19,7 @@ var searchData=
   ['getdutycycle',['GetDutyCycle',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a8cc7d4fcaa4860db071ee8a9b0cf84ee',1,'sjsu::lpc40xx::Pwm::GetDutyCycle()'],['../d6/ddf/classsjsu_1_1Pwm.html#af88f83b8b493df9a9c419df13bdb61a9',1,'sjsu::Pwm::GetDutyCycle()']]],
   ['getfrequency',['GetFrequency',['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a4076a5bdcb7719daee16f55794f07851',1,'sjsu::FrequencyCounter::GetFrequency()'],['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#acfb050cb32d4a111947260a5310cd349',1,'sjsu::lpc40xx::Pwm::GetFrequency()']]],
   ['getfullscalerange',['GetFullScaleRange',['../d5/d82/classsjsu_1_1Mma8452q.html#ae37ab7346fc8e2e65a2198cd8d13ff2b',1,'sjsu::Mma8452q::GetFullScaleRange()'],['../d2/d7b/classsjsu_1_1Accelerometer.html#a341ef355a39e57028c3532fafa8a80a7',1,'sjsu::Accelerometer::GetFullScaleRange()']]],
+  ['getgesture',['GetGesture',['../d8/d99/classsjsu_1_1Apds9960.html#a5375437f7d0bad02d4c2ebc872a67e29',1,'sjsu::Apds9960']]],
   ['getgpio',['GetGpio',['../d1/de1/classsjsu_1_1Button.html#adeb2387018ceb0bec02c7ca813d36b97',1,'sjsu::Button']]],
   ['gethandle',['GetHandle',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#abbcaf43eb1826bb0c6ecebb1806f4320',1,'sjsu::rtos::TaskInterface::GetHandle()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab0b5901f7f1ac3a18d8d6664d7812857',1,'sjsu::rtos::Task::GetHandle()']]],
   ['getheight',['GetHeight',['../db/d32/classsjsu_1_1Ssd1306.html#a47e47d288886889be9ce67510312a93d',1,'sjsu::Ssd1306::GetHeight()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a726c225c675804f71fb0fecc3c23565d',1,'sjsu::PixelDisplay::GetHeight()']]],
@@ -73,7 +74,7 @@ var searchData=
   ['gpiocounter',['GpioCounter',['../d0/d57/classsjsu_1_1GpioCounter.html',1,'sjsu::GpioCounter'],['../d0/d57/classsjsu_1_1GpioCounter.html#af3cd11a9d7278cef82dcfa175a9b0693',1,'sjsu::GpioCounter::GpioCounter()']]],
   ['gpiointerruptregistermap_5ft',['GpioInterruptRegisterMap_t',['../d9/d34/structsjsu_1_1lpc40xx_1_1Gpio_1_1GpioInterruptRegisterMap__t.html',1,'sjsu::lpc40xx::Gpio']]],
   ['gpioregister',['GpioRegister',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ac0c6f8bd80e6b9adb3fb9e03e5fccb50',1,'sjsu::lpc40xx::Gpio']]],
-  ['graphicalterminal',['GraphicalTerminal',['../d6/dde/classsjsu_1_1GraphicalTerminal.html',1,'sjsu']]],
+  ['graphicalterminal',['GraphicalTerminal',['../d6/dde/classsjsu_1_1GraphicalTerminal.html',1,'sjsu::GraphicalTerminal'],['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a5b901286d629204062df18ac3bd2d98c',1,'sjsu::GraphicalTerminal::GraphicalTerminal()']]],
   ['graphics',['Graphics',['../d7/d8c/classsjsu_1_1Graphics.html',1,'sjsu::Graphics'],['../d7/d8c/classsjsu_1_1Graphics.html#a5656c64043cbecdcec6bb561fdd22e9e',1,'sjsu::Graphics::Graphics()']]],
   ['green',['green',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a713270880c3d736c7aaa9dd786a771d8',1,'sjsu::PixelDisplay::Color_t']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['string',['String',['../d0/d6b/namespacesjsu.html#ae9e203bc306049463b76f25e60303bd3',1,'sjsu']]]
+  ['other',['other',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html#a4ab76b649d80090a9331b9d58292ced4',1,'sjsu::FixedAllocator::rebind']]]
 ];

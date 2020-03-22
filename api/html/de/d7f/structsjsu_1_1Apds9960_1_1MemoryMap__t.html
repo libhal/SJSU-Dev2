@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.13"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>SJSU-Dev2: Member List</title>
+        <title>SJSU-Dev2: sjsu::Apds9960::MemoryMap_t&lt; endianess, write, read &gt; Struct Template Reference</title>
         <!--<link href="../../tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="../../dynsections.js"></script>
         <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
@@ -70,22 +70,33 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><b>lpc40xx</b></li><li class="navelem"><a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">FactoryTest</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../d8/d99/classsjsu_1_1Apds9960.html">Apds9960</a></li><li class="navelem"><a class="el" href="../../de/d7f/structsjsu_1_1Apds9960_1_1MemoryMap__t.html">MemoryMap_t</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">sjsu::lpc40xx::FactoryTest Member List</div>  </div>
+<div class="title">sjsu::Apds9960::MemoryMap_t&lt; endianess, write, read &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>kAccelerometerAddress</b> (defined in <a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a>)</td><td class="entry"><a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>kGestureAddress</b> (defined in <a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a>)</td><td class="entry"><a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>kTemperatureAddress</b> (defined in <a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a>)</td><td class="entry"><a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>RunFactoryTest</b>() (defined in <a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a>)</td><td class="entry"><a class="el" href="../../db/d3d/classsjsu_1_1lpc40xx_1_1FactoryTest.html">sjsu::lpc40xx::FactoryTest</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-</table></div><!-- contents -->
+<p><code>#include &lt;<a class="el" href="../../de/d03/apds9960_8hpp_source.html">apds9960.hpp</a>&gt;</code></p>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;device::Endian endianess, WriteFnt write, ReadFnt read&gt;<br />
+struct sjsu::Apds9960::MemoryMap_t&lt; endianess, write, read &gt;</h3>
+
+<p>Memory map of the APDS-9960 used to abstract the boilerplate code required to communicate over I2C to the device.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">endianess</td><td>- endianness of the memory map </td></tr>
+    <tr><td class="paramname">write</td><td>- write function associated with the memory map </td></tr>
+    <tr><td class="paramname">read</td><td>- read function associated with the memory map </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/sensors/optical/<a class="el" href="../../de/d03/apds9960_8hpp_source.html">apds9960.hpp</a></li>
+</ul>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['other',['other',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html#a4ab76b649d80090a9331b9d58292ced4',1,'sjsu::FixedAllocator::rebind']]]
+  ['maptype',['MapType',['../d0/da2/classsjsu_1_1Device.html#a1bb7916d1f646b0b9b1f18f57f5b9e71',1,'sjsu::Device']]]
 ];

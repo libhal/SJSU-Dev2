@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d0/da2/classsjsu_1_1Device.html" title="sjsu::Device\&lt; I2cDevice\l\&lt; kDeviceAddress, endianess,\l MemoryMap \&gt;, endianess, MemoryMap \&gt;" alt="" coords="5,5,304,61"/>
-<area shape="rect" id="node2" href="$d9/dd7/classsjsu_1_1I2cDevice.html" title="sjsu::I2cDevice\&lt; kDevice\lAddress, endianess, MemoryMap \&gt;" alt="" coords="352,13,603,54"/>
+<area shape="rect" id="node1" href="$da/d01/classsjsu_1_1Dac.html" title="sjsu::Dac" alt="" coords="5,5,87,32"/>
+<area shape="rect" id="node2" href="$d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html" title="Implementation of digital&#45;to&#45;analog converter for lpc40xx. " alt="" coords="135,5,275,32"/>
 </map>

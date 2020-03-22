@@ -82,52 +82,316 @@ $(function() {
 <div class="title">sjsu::Servo Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="../../dc/d10/servo_8hpp_source.html">servo.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa1057bf28c7f9f89893af1adf961c9f9"><td class="memItemLeft" align="right" valign="top"><a id="aa1057bf28c7f9f89893af1adf961c9f9"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Servo</b> (const <a class="el" href="../../d6/ddf/classsjsu_1_1Pwm.html">sjsu::Pwm</a> &amp;pwm)</td></tr>
+<tr class="memitem:aa1057bf28c7f9f89893af1adf961c9f9"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#aa1057bf28c7f9f89893af1adf961c9f9">Servo</a> (const <a class="el" href="../../d6/ddf/classsjsu_1_1Pwm.html">sjsu::Pwm</a> &amp;pwm)</td></tr>
+<tr class="memdesc:aa1057bf28c7f9f89893af1adf961c9f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct the servo object.  <a href="#aa1057bf28c7f9f89893af1adf961c9f9">More...</a><br /></td></tr>
 <tr class="separator:aa1057bf28c7f9f89893af1adf961c9f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b3743b525f2adaf38a738c1af5ce7be"><td class="memItemLeft" align="right" valign="top"><a id="a5b3743b525f2adaf38a738c1af5ce7be"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> (units::frequency::hertz_t frequency=kDefaultFrequency)</td></tr>
+<tr class="memitem:a5b3743b525f2adaf38a738c1af5ce7be"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a5b3743b525f2adaf38a738c1af5ce7be">Initialize</a> (units::frequency::hertz_t frequency=<a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a6e410467afb82d2571e5df3deeec5b29">kDefaultFrequency</a>)</td></tr>
+<tr class="memdesc:a5b3743b525f2adaf38a738c1af5ce7be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize PWM peripheral and setup device to support the required frequency.  <a href="#a5b3743b525f2adaf38a738c1af5ce7be">More...</a><br /></td></tr>
 <tr class="separator:a5b3743b525f2adaf38a738c1af5ce7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebe197bf95c522b200946dccf84b53d5"><td class="memItemLeft" align="right" valign="top"><a id="aebe197bf95c522b200946dccf84b53d5"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetFrequency</b> (units::frequency::hertz_t frequency=kDefaultFrequency)</td></tr>
+<tr class="memitem:aebe197bf95c522b200946dccf84b53d5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#aebe197bf95c522b200946dccf84b53d5">SetFrequency</a> (units::frequency::hertz_t frequency=<a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a6e410467afb82d2571e5df3deeec5b29">kDefaultFrequency</a>)</td></tr>
+<tr class="memdesc:aebe197bf95c522b200946dccf84b53d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the RC servo signal's operating frequency.  <a href="#aebe197bf95c522b200946dccf84b53d5">More...</a><br /></td></tr>
 <tr class="separator:aebe197bf95c522b200946dccf84b53d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc4860ce3a89b501d2975a7452a288ec"><td class="memItemLeft" align="right" valign="top"><a id="abc4860ce3a89b501d2975a7452a288ec"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPulseBounds</b> (std::chrono::microseconds lower, std::chrono::microseconds upper)</td></tr>
+<tr class="memitem:abc4860ce3a89b501d2975a7452a288ec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#abc4860ce3a89b501d2975a7452a288ec">SetPulseBounds</a> (std::chrono::microseconds lower, std::chrono::microseconds upper)</td></tr>
 <tr class="separator:abc4860ce3a89b501d2975a7452a288ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b0d253aca1e90f48ca6ee1b4023cee2"><td class="memItemLeft" align="right" valign="top"><a id="a5b0d253aca1e90f48ca6ee1b4023cee2"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAngleBounds</b> (units::angle::degree_t min_angle, units::angle::degree_t max_angle)</td></tr>
+<tr class="memitem:a5b0d253aca1e90f48ca6ee1b4023cee2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a5b0d253aca1e90f48ca6ee1b4023cee2">SetAngleBounds</a> (units::angle::degree_t min_angle, units::angle::degree_t max_angle)</td></tr>
 <tr class="separator:a5b0d253aca1e90f48ca6ee1b4023cee2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb9b1abe9d423e9c10aeaec0376f7ea4"><td class="memItemLeft" align="right" valign="top"><a id="acb9b1abe9d423e9c10aeaec0376f7ea4"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPulseWidthInMicroseconds</b> (std::chrono::microseconds pulse_width)</td></tr>
+<tr class="memitem:acb9b1abe9d423e9c10aeaec0376f7ea4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#acb9b1abe9d423e9c10aeaec0376f7ea4">SetPulseWidthInMicroseconds</a> (std::chrono::microseconds pulse_width)</td></tr>
 <tr class="separator:acb9b1abe9d423e9c10aeaec0376f7ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82dfaf8648a3307a41cfc4c1451405eb"><td class="memItemLeft" align="right" valign="top"><a id="a82dfaf8648a3307a41cfc4c1451405eb"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetAngle</b> (units::angle::degree_t angle)</td></tr>
+<tr class="memitem:a82dfaf8648a3307a41cfc4c1451405eb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a82dfaf8648a3307a41cfc4c1451405eb">SetAngle</a> (units::angle::degree_t angle)</td></tr>
 <tr class="separator:a82dfaf8648a3307a41cfc4c1451405eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a6e410467afb82d2571e5df3deeec5b29"><td class="memItemLeft" align="right" valign="top"><a id="a6e410467afb82d2571e5df3deeec5b29"></a>
-static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultFrequency</b> = 50_Hz</td></tr>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a6e410467afb82d2571e5df3deeec5b29">kDefaultFrequency</a> = 50_Hz</td></tr>
+<tr class="memdesc:a6e410467afb82d2571e5df3deeec5b29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typical Frequency of a generic hobby RC servo. <br /></td></tr>
 <tr class="separator:a6e410467afb82d2571e5df3deeec5b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee72f7556bd9b3f4af6d2740cbc8f48b"><td class="memItemLeft" align="right" valign="top"><a id="aee72f7556bd9b3f4af6d2740cbc8f48b"></a>
-static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultPeriod</b> = 20'000us</td></tr>
+static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#aee72f7556bd9b3f4af6d2740cbc8f48b">kDefaultPeriod</a> = 20'000us</td></tr>
+<tr class="memdesc:aee72f7556bd9b3f4af6d2740cbc8f48b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typical Period of a generic hobby RC servo. <br /></td></tr>
 <tr class="separator:aee72f7556bd9b3f4af6d2740cbc8f48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4049990f0dae64b94232916512b2ab3"><td class="memItemLeft" align="right" valign="top"><a id="ab4049990f0dae64b94232916512b2ab3"></a>
-static constexpr units::angle::degree_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultMinAngle</b> = 0_deg</td></tr>
+static constexpr units::angle::degree_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#ab4049990f0dae64b94232916512b2ab3">kDefaultMinAngle</a> = 0_deg</td></tr>
+<tr class="memdesc:ab4049990f0dae64b94232916512b2ab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typical Min Angle of a generic hobby RC servo. <br /></td></tr>
 <tr class="separator:ab4049990f0dae64b94232916512b2ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ab3515ee9b1d15bd8207c8b0154a23b"><td class="memItemLeft" align="right" valign="top"><a id="a5ab3515ee9b1d15bd8207c8b0154a23b"></a>
-static constexpr units::angle::degree_t&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultMaxAngle</b> = 90_deg</td></tr>
+static constexpr units::angle::degree_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a5ab3515ee9b1d15bd8207c8b0154a23b">kDefaultMaxAngle</a> = 90_deg</td></tr>
+<tr class="memdesc:a5ab3515ee9b1d15bd8207c8b0154a23b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typical Max Angle of a generic hobby RC servo. <br /></td></tr>
 <tr class="separator:a5ab3515ee9b1d15bd8207c8b0154a23b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7a859b9b2c9ef013e53ce826df3741f"><td class="memItemLeft" align="right" valign="top"><a id="af7a859b9b2c9ef013e53ce826df3741f"></a>
-static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultMinPulse</b> = 1000us</td></tr>
+static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#af7a859b9b2c9ef013e53ce826df3741f">kDefaultMinPulse</a> = 1000us</td></tr>
+<tr class="memdesc:af7a859b9b2c9ef013e53ce826df3741f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typical Min Pulse of a generic hobby RC servo. <br /></td></tr>
 <tr class="separator:af7a859b9b2c9ef013e53ce826df3741f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a1ced0c7f713d07d94779acfae409bd"><td class="memItemLeft" align="right" valign="top"><a id="a1a1ced0c7f713d07d94779acfae409bd"></a>
-static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultMaxPulse</b> = 2000us</td></tr>
+static constexpr std::chrono::microseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a1a1ced0c7f713d07d94779acfae409bd">kDefaultMaxPulse</a> = 2000us</td></tr>
+<tr class="memdesc:a1a1ced0c7f713d07d94779acfae409bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typical Max Pulse of a generic hobby RC servo. <br /></td></tr>
 <tr class="separator:a1a1ced0c7f713d07d94779acfae409bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>RC servo controller that can control servos or other systems that can respond to such signals. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aa1057bf28c7f9f89893af1adf961c9f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1057bf28c7f9f89893af1adf961c9f9">&#9670;&nbsp;</a></span>Servo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::Servo::Servo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d6/ddf/classsjsu_1_1Pwm.html">sjsu::Pwm</a> &amp;&#160;</td>
+          <td class="paramname"><em>pwm</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Construct the servo object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pwm</td><td>- pwm peripheral to use to generate the PWM signal </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5b3743b525f2adaf38a738c1af5ce7be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b3743b525f2adaf38a738c1af5ce7be">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Servo::Initialize </td>
+          <td>(</td>
+          <td class="paramtype">units::frequency::hertz_t&#160;</td>
+          <td class="paramname"><em>frequency</em> = <code><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a6e410467afb82d2571e5df3deeec5b29">kDefaultFrequency</a></code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize PWM peripheral and setup device to support the required frequency. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frequency</td><td>- the frequency to operate the pulses of the servo. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a82dfaf8648a3307a41cfc4c1451405eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82dfaf8648a3307a41cfc4c1451405eb">&#9670;&nbsp;</a></span>SetAngle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Servo::SetAngle </td>
+          <td>(</td>
+          <td class="paramtype">units::angle::degree_t&#160;</td>
+          <td class="paramname"><em>angle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Should only be used after pulse bounds and angle bounds have been set.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angle</td><td>- angle to position the servo to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5b0d253aca1e90f48ca6ee1b4023cee2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b0d253aca1e90f48ca6ee1b4023cee2">&#9670;&nbsp;</a></span>SetAngleBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Servo::SetAngleBounds </td>
+          <td>(</td>
+          <td class="paramtype">units::angle::degree_t&#160;</td>
+          <td class="paramname"><em>min_angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">units::angle::degree_t&#160;</td>
+          <td class="paramname"><em>max_angle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets your angle bounds that maps angles to microseconds when using SetAngle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_angle</td><td>- The minimum angle to limit the servo is bound to. </td></tr>
+    <tr><td class="paramname">max_angle</td><td>- The maximum angle to limit the servo is bound to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aebe197bf95c522b200946dccf84b53d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebe197bf95c522b200946dccf84b53d5">&#9670;&nbsp;</a></span>SetFrequency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Servo::SetFrequency </td>
+          <td>(</td>
+          <td class="paramtype">units::frequency::hertz_t&#160;</td>
+          <td class="paramname"><em>frequency</em> = <code><a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a6e410467afb82d2571e5df3deeec5b29">kDefaultFrequency</a></code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the RC servo signal's operating frequency. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frequency</td><td>- the frequency to operate the pulses of the servo. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abc4860ce3a89b501d2975a7452a288ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc4860ce3a89b501d2975a7452a288ec">&#9670;&nbsp;</a></span>SetPulseBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Servo::SetPulseBounds </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>lower</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>upper</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the minimum and maximum pulse width lengths that the class will use to clamp its pulse width output when using SetAngle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lower</td><td>- the minimum microseconds pulse that the servo can handle. </td></tr>
+    <tr><td class="paramname">upper</td><td>- the maximum microseconds pulse that the servo can handle. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acb9b1abe9d423e9c10aeaec0376f7ea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb9b1abe9d423e9c10aeaec0376f7ea4">&#9670;&nbsp;</a></span>SetPulseWidthInMicroseconds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Servo::SetPulseWidthInMicroseconds </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>pulse_width</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the pulse width in microsecond of the RC servo signal directly.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pulse_width</td><td>- how long the high side of the RC pulse should be. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/kammce/SJSU-Dev2/library/L2_HAL/actuators/servo/<a class="el" href="../../dc/d10/servo_8hpp_source.html">servo.hpp</a></li>
 </ul>

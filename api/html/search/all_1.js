@@ -16,7 +16,7 @@ var searchData=
   ['addtask',['AddTask',['../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#acb6db6c322e87e3a94015b3a87dfd903',1,'sjsu::rtos::TaskSchedulerInterface::AddTask()'],['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a9686ddf80e42d7c1ca8ffa8c9e575310',1,'sjsu::rtos::TaskScheduler::AddTask()']]],
   ['allocate',['allocate',['../df/ddd/classsjsu_1_1Arena.html#ad68341c9db5759077d4d0b20b6c2ef10',1,'sjsu::Arena::allocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af5afc7393b5ab8bc8db1c727e59fa12b',1,'sjsu::FixedAllocator::allocate()']]],
   ['alpha',['alpha',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a188ba3108004e6099d90d8701cdcec3b',1,'sjsu::PixelDisplay::Color_t']]],
-  ['apds9960',['Apds9960',['../d8/d99/classsjsu_1_1Apds9960.html',1,'sjsu']]],
+  ['apds9960',['Apds9960',['../d8/d99/classsjsu_1_1Apds9960.html',1,'sjsu::Apds9960'],['../d8/d99/classsjsu_1_1Apds9960.html#a84c844a923d6f58540f94bdb1c5309f1',1,'sjsu::Apds9960::Apds9960()']]],
   ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu::Arena'],['../df/ddd/classsjsu_1_1Arena.html#acbbf1fbb2830f352f94728bba8082208',1,'sjsu::Arena::Arena(uint8_t *buf, size_t size, uint8_t *ptr=nullptr) noexcept'],['../df/ddd/classsjsu_1_1Arena.html#a5f9b57a035215dbf0686c93a724fa190',1,'sjsu::Arena::Arena(const Arena &amp;a)']]],
   ['arena_5ftype',['arena_type',['../d1/df0/classsjsu_1_1FixedAllocator.html#ad5fdaee3f7297a29cfdc7eb841fd80d9',1,'sjsu::FixedAllocator']]],
   ['args',['Args',['../dd/d36/classsjsu_1_1I2cCommand.html#a43331db48a59d2cffbeb76f8ef9546a1',1,'sjsu::I2cCommand']]],

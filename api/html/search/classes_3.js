@@ -9,7 +9,7 @@ var searchData=
   ['decodedframe_5ft',['DecodedFrame_t',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html',1,'sjsu::infrared']]],
   ['device',['Device',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],
   ['device_3c_20i2cdevice_3c_20kdeviceaddress_2c_20endianess_2c_20memorymap_20_3e_2c_20endianess_2c_20memorymap_20_3e',['Device&lt; I2cDevice&lt; kDeviceAddress, endianess, MemoryMap &gt;, endianess, MemoryMap &gt;',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],
-  ['device_3c_20i2cdevice_3c_20kdeviceaddress_2c_20endianess_2c_20memorymap_5ft_20_3e_2c_20endianess_2c_20memorymap_5ft_20_3e',['Device&lt; I2cDevice&lt; kDeviceAddress, endianess, MemoryMap_t &gt;, endianess, MemoryMap_t &gt;',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],
+  ['device_3c_20i2cdevice_3c_20kdeviceaddress_2c_20endianess_2c_20sjsu_3a_3aapds9960_3a_3amemorymap_5ft_20_3e_2c_20endianess_2c_20sjsu_3a_3aapds9960_3a_3amemorymap_5ft_20_3e',['Device&lt; I2cDevice&lt; kDeviceAddress, endianess, sjsu::Apds9960::MemoryMap_t &gt;, endianess, sjsu::Apds9960::MemoryMap_t &gt;',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],
   ['deviceaddress',['DeviceAddress',['../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html',1,'sjsu::Tmp102']]],
   ['distancesensor',['DistanceSensor',['../df/d5c/classsjsu_1_1DistanceSensor.html',1,'sjsu']]],
   ['dwtcounter',['DwtCounter',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html',1,'sjsu::cortex']]]

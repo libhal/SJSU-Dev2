@@ -18,6 +18,7 @@ var searchData=
   ['getdutycycle',['GetDutyCycle',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a8cc7d4fcaa4860db071ee8a9b0cf84ee',1,'sjsu::lpc40xx::Pwm::GetDutyCycle()'],['../d6/ddf/classsjsu_1_1Pwm.html#af88f83b8b493df9a9c419df13bdb61a9',1,'sjsu::Pwm::GetDutyCycle()']]],
   ['getfrequency',['GetFrequency',['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a4076a5bdcb7719daee16f55794f07851',1,'sjsu::FrequencyCounter::GetFrequency()'],['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#acfb050cb32d4a111947260a5310cd349',1,'sjsu::lpc40xx::Pwm::GetFrequency()']]],
   ['getfullscalerange',['GetFullScaleRange',['../d5/d82/classsjsu_1_1Mma8452q.html#ae37ab7346fc8e2e65a2198cd8d13ff2b',1,'sjsu::Mma8452q::GetFullScaleRange()'],['../d2/d7b/classsjsu_1_1Accelerometer.html#a341ef355a39e57028c3532fafa8a80a7',1,'sjsu::Accelerometer::GetFullScaleRange()']]],
+  ['getgesture',['GetGesture',['../d8/d99/classsjsu_1_1Apds9960.html#a5375437f7d0bad02d4c2ebc872a67e29',1,'sjsu::Apds9960']]],
   ['getgpio',['GetGpio',['../d1/de1/classsjsu_1_1Button.html#adeb2387018ceb0bec02c7ca813d36b97',1,'sjsu::Button']]],
   ['gethandle',['GetHandle',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#abbcaf43eb1826bb0c6ecebb1806f4320',1,'sjsu::rtos::TaskInterface::GetHandle()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab0b5901f7f1ac3a18d8d6664d7812857',1,'sjsu::rtos::Task::GetHandle()']]],
   ['getheight',['GetHeight',['../db/d32/classsjsu_1_1Ssd1306.html#a47e47d288886889be9ce67510312a93d',1,'sjsu::Ssd1306::GetHeight()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a726c225c675804f71fb0fecc3c23565d',1,'sjsu::PixelDisplay::GetHeight()']]],
@@ -70,5 +71,6 @@ var searchData=
   ['gpio',['Gpio',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a44098198c4b9b33cb88d08ea1a182722',1,'sjsu::lpc40xx::Gpio::Gpio()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a270be60e3c40c0c7db738c49b4a04034',1,'sjsu::stm32f4xx::Gpio::Gpio()']]],
   ['gpiocounter',['GpioCounter',['../d0/d57/classsjsu_1_1GpioCounter.html#af3cd11a9d7278cef82dcfa175a9b0693',1,'sjsu::GpioCounter']]],
   ['gpioregister',['GpioRegister',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ac0c6f8bd80e6b9adb3fb9e03e5fccb50',1,'sjsu::lpc40xx::Gpio']]],
+  ['graphicalterminal',['GraphicalTerminal',['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a5b901286d629204062df18ac3bd2d98c',1,'sjsu::GraphicalTerminal']]],
   ['graphics',['Graphics',['../d7/d8c/classsjsu_1_1Graphics.html#a5656c64043cbecdcec6bb561fdd22e9e',1,'sjsu::Graphics']]]
 ];
