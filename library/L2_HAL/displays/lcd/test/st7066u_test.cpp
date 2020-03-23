@@ -139,126 +139,161 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
         Method(mock_e, Set).Using(Gpio::State::kHigh));
   }
 
-  SECTION("ClearDisplay")
+  SECTION("Write Command using 4-bit Bus")
   {
-    constexpr uint8_t kClearDisplay =
-        static_cast<uint8_t>(St7066u::Command::kClearDisplay);
-    St7066u lcd = kEightBitBusLcd;
+    constexpr Gpio::State kExpectedRegisterSelect =
+        Gpio::State(St7066u::WriteOperation::kCommand);
+    uint8_t expected_data;
+    St7066u lcd = kFourBitBusLcd;
 
-    lcd.ClearDisplay();
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
+    SECTION("ClearDisplay")
+    {
+      expected_data = static_cast<uint8_t>(St7066u::Command::kClearDisplay);
+      lcd.ClearDisplay();
+    }
+    SECTION("SetDisplayOn")
+    {
+      SECTION("true")
+      {
+        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
+        lcd.SetDisplayOn();
+      }
+      SECTION("false")
+      {
+        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOff);
+        lcd.SetDisplayOn(false);
+      }
+    }
+    SECTION("SetCursorHidden")
+    {
+      SECTION("false")
+      {
+        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnCursorOn);
+        lcd.SetCursorHidden(false);
+      }
+      SECTION("true")
+      {
+        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
+        lcd.SetCursorHidden();
+      }
+    }
+    SECTION("SetCursorDirection")
+    {
+      SECTION("kBackward")
+      {
+        expected_data =
+            static_cast<uint8_t>(St7066u::Command::kCursorDirectionBackward);
+        lcd.SetCursorDirection(St7066u::CursorDirection::kBackward);
+      }
+      SECTION("kForward")
+      {
+        expected_data =
+            static_cast<uint8_t>(St7066u::Command::kCursorDirectionForward);
+        lcd.SetCursorDirection(St7066u::CursorDirection::kForward);
+      }
+    }
+    SECTION("SetCursorPosition")
+    {
+      constexpr uint8_t kLineNumber = 2;
+      constexpr uint8_t kPosition   = 0x12;
+      // Address should be 0x94 + 0x12 = 0xA6
+      expected_data =
+          static_cast<uint8_t>(St7066u::Command::kDisplayLineAddress2) +
+          kPosition;
+      lcd.SetCursorPosition(
+          St7066u::CursorPosition_t{ kLineNumber, kPosition });
+    }
+    SECTION("Reset Cursor Position")
+    {
+      expected_data = static_cast<uint8_t>(St7066u::Command::kResetCursor);
+      lcd.ResetCursorPosition();
+    }
+
+    Verify(Method(mock_rs, Set).Using(kExpectedRegisterSelect),
            Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kClearDisplay),
+           Method(mock_data_bus, Write).Using(expected_data >> 4),
+           Method(mock_e, Set).Using(Gpio::State::kLow),
+           Method(mock_e, Set).Using(Gpio::State::kHigh));
+    Verify(Method(mock_rs, Set).Using(kExpectedRegisterSelect),
+           Method(mock_rw, Set).Using(Gpio::State::kLow),
+           Method(mock_data_bus, Write).Using(expected_data & 0xF),
            Method(mock_e, Set).Using(Gpio::State::kLow),
            Method(mock_e, Set).Using(Gpio::State::kHigh));
   }
 
-  SECTION("SetDisplayOn")
+  SECTION("Write Command using 8-bit Bus")
   {
-    const uint8_t kDisplayOn =
-        static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
-    const uint8_t kDisplayOff =
-        static_cast<uint8_t>(St7066u::Command::kTurnDisplayOff);
+    constexpr Gpio::State kExpectedRegisterSelect =
+        Gpio::State(St7066u::WriteOperation::kCommand);
+    uint8_t expected_data;
     St7066u lcd = kEightBitBusLcd;
 
-    lcd.SetDisplayOn(true);
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
+    SECTION("ClearDisplay")
+    {
+      expected_data = static_cast<uint8_t>(St7066u::Command::kClearDisplay);
+      lcd.ClearDisplay();
+    }
+    SECTION("SetDisplayOn")
+    {
+      SECTION("true")
+      {
+        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
+        lcd.SetDisplayOn();
+      }
+      SECTION("false")
+      {
+        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOff);
+        lcd.SetDisplayOn(false);
+      }
+    }
+    SECTION("SetCursorHidden")
+    {
+      SECTION("false")
+      {
+        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnCursorOn);
+        lcd.SetCursorHidden(false);
+      }
+      SECTION("true")
+      {
+        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
+        lcd.SetCursorHidden();
+      }
+    }
+    SECTION("SetCursorDirection")
+    {
+      SECTION("kBackward")
+      {
+        expected_data =
+            static_cast<uint8_t>(St7066u::Command::kCursorDirectionBackward);
+        lcd.SetCursorDirection(St7066u::CursorDirection::kBackward);
+      }
+      SECTION("kForward")
+      {
+        expected_data =
+            static_cast<uint8_t>(St7066u::Command::kCursorDirectionForward);
+        lcd.SetCursorDirection(St7066u::CursorDirection::kForward);
+      }
+    }
+    SECTION("SetCursorPosition")
+    {
+      constexpr uint8_t kLineNumber = 2;
+      constexpr uint8_t kPosition   = 0x12;
+      // Address should be 0x94 + 0x12 = 0xA6
+      expected_data =
+          static_cast<uint8_t>(St7066u::Command::kDisplayLineAddress2) +
+          kPosition;
+      lcd.SetCursorPosition(
+          St7066u::CursorPosition_t{ kLineNumber, kPosition });
+    }
+    SECTION("Reset Cursor Position")
+    {
+      expected_data = static_cast<uint8_t>(St7066u::Command::kResetCursor);
+      lcd.ResetCursorPosition();
+    }
+
+    Verify(Method(mock_rs, Set).Using(kExpectedRegisterSelect),
            Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kDisplayOn),
-           Method(mock_e, Set).Using(Gpio::State::kLow),
-           Method(mock_e, Set).Using(Gpio::State::kHigh));
-
-    lcd.SetDisplayOn(false);
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-           Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kDisplayOff),
-           Method(mock_e, Set).Using(Gpio::State::kLow),
-           Method(mock_e, Set).Using(Gpio::State::kHigh));
-  }
-
-  SECTION("SetCursorHidden")
-  {
-    const uint8_t kShowCursor =
-        static_cast<uint8_t>(St7066u::Command::kTurnCursorOn);
-    const uint8_t kHideCursor =
-        static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
-    St7066u lcd = kEightBitBusLcd;
-
-    lcd.SetCursorHidden(false);
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-           Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kShowCursor),
-           Method(mock_e, Set).Using(Gpio::State::kLow),
-           Method(mock_e, Set).Using(Gpio::State::kHigh));
-
-    lcd.SetCursorHidden();
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-           Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kHideCursor),
-           Method(mock_e, Set).Using(Gpio::State::kLow),
-           Method(mock_e, Set).Using(Gpio::State::kHigh));
-  }
-
-  SECTION("Setting Cursor Direction")
-  {
-    constexpr uint8_t kCursorDirectionBackward =
-        static_cast<uint8_t>(St7066u::Command::kCursorDirectionBackward);
-    constexpr uint8_t kCursorDirectionForward =
-        static_cast<uint8_t>(St7066u::Command::kCursorDirectionForward);
-    St7066u lcd = kEightBitBusLcd;
-
-    lcd.SetCursorDirection(St7066u::CursorDirection::kBackward);
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-           Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kCursorDirectionBackward),
-           Method(mock_e, Set).Using(Gpio::State::kLow),
-           Method(mock_e, Set).Using(Gpio::State::kHigh));
-
-    lcd.SetCursorDirection(St7066u::CursorDirection::kForward);
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-           Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kCursorDirectionForward),
-           Method(mock_e, Set).Using(Gpio::State::kLow),
-           Method(mock_e, Set).Using(Gpio::State::kHigh));
-  }
-
-  SECTION("Setting Cursor Position")
-  {
-    constexpr uint8_t kLineNumber = 2;
-    constexpr uint8_t kPosition   = 0x12;
-    // Address should be 0x94 + 0x12 = 0xA6
-    constexpr uint8_t kCursorAddress =
-        static_cast<uint8_t>(St7066u::Command::kDisplayLineAddress2) +
-        kPosition;
-    St7066u lcd = kEightBitBusLcd;
-
-    lcd.SetCursorPosition(St7066u::CursorPosition_t{ kLineNumber, kPosition });
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-           Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kCursorAddress),
-           Method(mock_e, Set).Using(Gpio::State::kLow),
-           Method(mock_e, Set).Using(Gpio::State::kHigh));
-  }
-
-  SECTION("Reset Cursor Position")
-  {
-    constexpr uint8_t kResetCursor =
-        static_cast<uint8_t>(St7066u::Command::kResetCursor);
-    St7066u lcd = kEightBitBusLcd;
-
-    lcd.ResetCursorPosition();
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-           Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kResetCursor),
+           Method(mock_data_bus, Write).Using(expected_data),
            Method(mock_e, Set).Using(Gpio::State::kLow),
            Method(mock_e, Set).Using(Gpio::State::kHigh));
   }
@@ -266,17 +301,42 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
   SECTION("Display Text")
   {
     const char kText[] = "Text String";
-    St7066u lcd        = kEightBitBusLcd;
 
-    lcd.DisplayText(kText);
-    for (uint8_t i = 0; i < strlen(kText); i++)
+    SECTION("With 4-bit Bus")
     {
-      Verify(Method(mock_rs, Set)
-                 .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-             Method(mock_rw, Set).Using(Gpio::State::kLow),
-             Method(mock_data_bus, Write).Using(kText[i]),
-             Method(mock_e, Set).Using(Gpio::State::kLow),
-             Method(mock_e, Set).Using(Gpio::State::kHigh));
+      kFourBitBusLcd.DisplayText(kText);
+      for (uint8_t i = 0; i < strlen(kText); i++)
+      {
+        INFO("character: " << kText[i]);
+        const uint8_t kExpectedHighNibble = kText[i] >> 4;
+        const uint8_t kExpectedLowNibble  = kText[i] & 0xF;
+        Verify(Method(mock_rs, Set)
+                   .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
+               Method(mock_rw, Set).Using(Gpio::State::kLow),
+               Method(mock_data_bus, Write).Using(kExpectedHighNibble),
+               Method(mock_e, Set).Using(Gpio::State::kLow),
+               Method(mock_e, Set).Using(Gpio::State::kHigh));
+        Verify(Method(mock_rs, Set)
+                   .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
+               Method(mock_rw, Set).Using(Gpio::State::kLow),
+               Method(mock_data_bus, Write).Using(kExpectedLowNibble),
+               Method(mock_e, Set).Using(Gpio::State::kLow),
+               Method(mock_e, Set).Using(Gpio::State::kHigh));
+      }
+    }
+    SECTION("With 8-bit Bus")
+    {
+      kEightBitBusLcd.DisplayText(kText);
+      for (uint8_t i = 0; i < strlen(kText); i++)
+      {
+        INFO("character: " << kText[i]);
+        Verify(Method(mock_rs, Set)
+                   .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
+               Method(mock_rw, Set).Using(Gpio::State::kLow),
+               Method(mock_data_bus, Write).Using(kText[i]),
+               Method(mock_e, Set).Using(Gpio::State::kLow),
+               Method(mock_e, Set).Using(Gpio::State::kHigh));
+      }
     }
   }
 }
