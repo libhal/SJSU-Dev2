@@ -99,8 +99,8 @@ class St7066u
   /// @param bus_mode 4-bit or 8-bit data transfer bus mode.
   /// @param display_mode Number of lines used for displaying characters.
   /// @param font_style Character font style
-  /// @param register_select_pin Pin that outputs whether the instructor or data
-  ///                            register is selected.
+  /// @param register_select_pin Pin that outputs whether the instruction or
+  ///                            data register is selected.
   /// @param read_write_pin Pin that outputs whether the operation is
   ///                       read/write.
   /// @param enable_pin Enable pin used for triggering read/write operations.
@@ -310,7 +310,7 @@ class St7066u
   const BusMode kBusMode;
   const DisplayMode kDisplayMode;
   const FontStyle kFontStyle;
-  /// Pin that outputs whether the instructor or data register is selected.
+  /// Pin that outputs whether the instruction or data register is selected.
   const Gpio & kRegisterSelectPin;  // NOLINT
   /// Pin that outputs whether the operation is read/write.
   const Gpio & kReadWritePin;  // NOLINT
