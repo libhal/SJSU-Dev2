@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['pllselect',['PllSelect',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a723961a2cc409a46d483e5259946b252',1,'sjsu::lpc17xx::SystemController']]],
-  ['polarity',['Polarity',['../d9/d3a/classsjsu_1_1Ltc4150.html#adf65026068cee571c64936b91526a1fa',1,'sjsu::Ltc4150']]],
-  ['protocol',['Protocol',['../db/dcb/classsjsu_1_1InternetSocket.html#a1ba82ae7b2309972b7d7ff0fa4a0cb28',1,'sjsu::InternetSocket']]]
+  ['ocr',['Ocr',['../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698',1,'sjsu::Sd']]],
+  ['operation',['Operation',['../d0/d9b/classsjsu_1_1I2c.html#a539a41100567dee1b59b3c43d5cd480c',1,'sjsu::I2c']]],
+  ['oscillator',['Oscillator',['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a972984247412665055486d10b60c4d4d',1,'sjsu::msp432p401r::SystemController']]],
+  ['oscillatorsource',['OscillatorSource',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a7b51085a443ea84ccaac8d87af70e0ab',1,'sjsu::lpc17xx::SystemController::OscillatorSource()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a965cc6bc2b1e06c754cdaacc234ba3ca',1,'sjsu::lpc40xx::SystemController::OscillatorSource()']]]
 ];

@@ -12,7 +12,7 @@ var searchData=
   ['commandinterface',['CommandInterface',['../d9/db2/classsjsu_1_1CommandInterface.html',1,'sjsu']]],
   ['commandline',['CommandLine',['../d1/d42/classsjsu_1_1CommandLine.html',1,'sjsu']]],
   ['commandlist_5ft',['CommandList_t',['../db/d4d/structsjsu_1_1CommandList__t.html',1,'sjsu']]],
-  ['control',['Control',['../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html',1,'sjsu::lpc40xx::Dac::Control'],['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html',1,'sjsu::lpc40xx::Adc::Control']]],
+  ['control',['Control',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html',1,'sjsu::lpc40xx::Adc::Control'],['../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html',1,'sjsu::lpc40xx::Dac::Control']]],
   ['control0register',['Control0Register',['../d7/d9d/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control0Register.html',1,'sjsu::msp432p401r::SystemController']]],
   ['control1register',['Control1Register',['../d8/d36/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control1Register.html',1,'sjsu::msp432p401r::SystemController']]],
   ['controlpins_5ft',['ControlPins_t',['../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html',1,'sjsu::St7066u']]],

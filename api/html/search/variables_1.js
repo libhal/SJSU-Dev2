@@ -7,5 +7,6 @@ var searchData=
   ['button0',['button0',['../db/dc5/structsjtwo.html#a5e68250597fe0bc7273fe6d84b7c34eb',1,'sjtwo']]],
   ['button1',['button1',['../db/dc5/structsjtwo.html#aa50a936174072daf18e368bd9a8862f1',1,'sjtwo']]],
   ['button2',['button2',['../db/dc5/structsjtwo.html#af1144995cca35c728341b2042027aef3',1,'sjtwo']]],
-  ['button3',['button3',['../db/dc5/structsjtwo.html#ac1791cf80adee1ed870187ffb7eacec5',1,'sjtwo']]]
+  ['button3',['button3',['../db/dc5/structsjtwo.html#ac1791cf80adee1ed870187ffb7eacec5',1,'sjtwo']]],
+  ['bytes',['bytes',['../d0/dd2/unionsjsu_1_1Can_1_1Data__t.html#a5ee1fe018192d2ab111fe92329486413',1,'sjsu::Can::Data_t']]]
 ];

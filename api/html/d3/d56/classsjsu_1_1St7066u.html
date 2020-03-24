@@ -79,136 +79,591 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="../../d7/d56/classsjsu_1_1St7066u-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::St7066u Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
+<div class="title">sjsu::St7066u Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Driver for the <a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html" title="Driver for the St7066u driver of a LCD character display. ">St7066u</a> driver of a LCD character display.  
+ <a href="../../d3/d56/classsjsu_1_1St7066u.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d3/d4e/st7066u_8hpp_source.html">st7066u.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for sjsu::St7066u:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../db/dc1/classsjsu_1_1St7066u__coll__graph.png" border="0" usemap="#sjsu_1_1St7066u_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1St7066u_coll__map" id="sjsu_1_1St7066u_coll__map">
-<area shape="rect" id="node2" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html" title="sjsu::St7066u::CursorPosition_t" alt="" coords="5,241,228,268"/>
-<area shape="rect" id="node3" href="../../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html" title="sjsu::St7066u::ControlPins_t" alt="" coords="253,241,455,268"/>
-<area shape="rect" id="node4" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="311,5,397,32"/>
+<area shape="rect" id="node2" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html" title="Structure the holds where the position of the character cursor is. " alt="" coords="5,5,228,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html">ControlPins_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parallel Control Pins structure.  <a href="../../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure the holds where the position of the character cursor is.  <a href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa2e5d376f5f330b74da9fcf2e7831c79"><td class="memItemLeft" align="right" valign="top"><a id="aa2e5d376f5f330b74da9fcf2e7831c79"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>WriteOperation</b> : uint8_t { <b>kCommand</b> = 0, 
+<tr class="memitem:aa2e5d376f5f330b74da9fcf2e7831c79"><td class="memItemLeft" align="right" valign="top"><a id="aa2e5d376f5f330b74da9fcf2e7831c79"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aa2e5d376f5f330b74da9fcf2e7831c79">WriteOperation</a> : uint8_t { <b>kCommand</b> = 0, 
 <b>kData</b> = 1
- }</td></tr>
+ }<tr class="memdesc:aa2e5d376f5f330b74da9fcf2e7831c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data transfer operation types. <br /></td></tr>
+</td></tr>
 <tr class="separator:aa2e5d376f5f330b74da9fcf2e7831c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cb73254d7a0d7a6df16d91e41f3eeb6"><td class="memItemLeft" align="right" valign="top"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Command</b> : uint8_t { <br />
-&#160;&#160;<b>kClearDisplay</b> = 0x01, 
-<b>kResetCursor</b> = 0x02, 
-<b>kCursorDirectionBackward</b> = 0x04, 
-<b>kCursorDirectionForward</b> = 0x06, 
+<tr class="memitem:a8cb73254d7a0d7a6df16d91e41f3eeb6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6">Command</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6ad6ace672b7822a5f7fc65ab2feaa3b75">Command::kClearDisplay</a> = 0x01, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6a057f60f6f6abeb3fa40039d87dbcabe4">Command::kResetCursor</a> = 0x02, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6ae774dcd55feec0b8b336fd6739d7f29c">Command::kCursorDirectionBackward</a> = 0x04, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6ae855f906125f8a48357a42fecba3d851">Command::kCursorDirectionForward</a> = 0x06, 
 <br />
-&#160;&#160;<b>kTurnDisplayOff</b> = 0x08, 
-<b>kTurnDisplayOn</b> = 0x0C, 
-<b>kTurnCursorOn</b> = 0x0F, 
-<b>kDefaultDisplayConfiguration</b> = 0x20, 
+&#160;&#160;<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6abee162a0bb3f138b68829056e0e72bc7">Command::kTurnDisplayOff</a> = 0x08, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6a66e7ef7f4c51526fdf5cdcf621b436b7">Command::kTurnDisplayOn</a> = 0x0C, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6a29359b0fdedbf9e6d7cb1fe310c7fece">Command::kTurnCursorOn</a> = 0x0F, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6a2e3949f17f6c4390c28f1fa7d5ad8e13">Command::kDefaultDisplayConfiguration</a> = 0x20, 
 <br />
-&#160;&#160;<b>kDisplayLineAddress0</b> = 0x80, 
-<b>kDisplayLineAddress1</b> = 0xC0, 
-<b>kDisplayLineAddress2</b> = 0x94, 
-<b>kDisplayLineAddress3</b> = 0xD4
+&#160;&#160;<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6a49c0e5e8026c042cb7a23fa241599823">Command::kDisplayLineAddress0</a> = 0x80, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6a3768ab3cb06ced116ecd6be46395f1aa">Command::kDisplayLineAddress1</a> = 0xC0, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6ab7ff7431f730439e9a0616922f38b9f5">Command::kDisplayLineAddress2</a> = 0x94, 
+<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6ae580fe8cc2ec21f7c0a92b8960eeb421">Command::kDisplayLineAddress3</a> = 0xD4
 <br />
- }</td></tr>
+ }<tr class="memdesc:a8cb73254d7a0d7a6df16d91e41f3eeb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">LCD screen commands.  <a href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6">More...</a><br /></td></tr>
+</td></tr>
 <tr class="separator:a8cb73254d7a0d7a6df16d91e41f3eeb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9c1b505643608b402487911fb9f3919"><td class="memItemLeft" align="right" valign="top"><a id="af9c1b505643608b402487911fb9f3919"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>CursorDirection</b> : uint8_t { <b>kForward</b> = 0, 
+<tr class="memitem:af9c1b505643608b402487911fb9f3919"><td class="memItemLeft" align="right" valign="top"><a id="af9c1b505643608b402487911fb9f3919"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#af9c1b505643608b402487911fb9f3919">CursorDirection</a> : uint8_t { <b>kForward</b> = 0, 
 <b>kBackward</b> = 1
- }</td></tr>
+ }<tr class="memdesc:af9c1b505643608b402487911fb9f3919"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cursor direction when writing new characters to the display. <br /></td></tr>
+</td></tr>
 <tr class="separator:af9c1b505643608b402487911fb9f3919"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a2918722dc21b079dae228d7a3ebc37"><td class="memItemLeft" align="right" valign="top"><a id="a9a2918722dc21b079dae228d7a3ebc37"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>BusMode</b> : uint8_t { <b>kFourBit</b> = 0 &lt;&lt; 4, 
+<tr class="memitem:a9a2918722dc21b079dae228d7a3ebc37"><td class="memItemLeft" align="right" valign="top"><a id="a9a2918722dc21b079dae228d7a3ebc37"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a9a2918722dc21b079dae228d7a3ebc37">BusMode</a> : uint8_t { <b>kFourBit</b> = 0 &lt;&lt; 4, 
 <b>kEightBit</b> = 1 &lt;&lt; 4
- }</td></tr>
+ }<tr class="memdesc:a9a2918722dc21b079dae228d7a3ebc37"><td class="mdescLeft">&#160;</td><td class="mdescRight">The two forms of bus modes for the LCD screen. <br /></td></tr>
+</td></tr>
 <tr class="separator:a9a2918722dc21b079dae228d7a3ebc37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf8cbd56f6e5276a7760a78488df2e95"><td class="memItemLeft" align="right" valign="top"><a id="abf8cbd56f6e5276a7760a78488df2e95"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DisplayMode</b> : uint8_t { <b>kSingleLine</b> = 0 &lt;&lt; 3, 
+<tr class="memitem:abf8cbd56f6e5276a7760a78488df2e95"><td class="memItemLeft" align="right" valign="top"><a id="abf8cbd56f6e5276a7760a78488df2e95"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#abf8cbd56f6e5276a7760a78488df2e95">DisplayMode</a> : uint8_t { <b>kSingleLine</b> = 0 &lt;&lt; 3, 
 <b>kMultiLine</b> = 1 &lt;&lt; 3
- }</td></tr>
+ }<tr class="memdesc:abf8cbd56f6e5276a7760a78488df2e95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Available display modes. <br /></td></tr>
+</td></tr>
 <tr class="separator:abf8cbd56f6e5276a7760a78488df2e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b936555ac9cc7ec812869824ff6e7a1"><td class="memItemLeft" align="right" valign="top"><a id="a6b936555ac9cc7ec812869824ff6e7a1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>FontStyle</b> : uint8_t { <b>kFont5x8</b> = 0 &lt;&lt; 2, 
+<tr class="memitem:a6b936555ac9cc7ec812869824ff6e7a1"><td class="memItemLeft" align="right" valign="top"><a id="a6b936555ac9cc7ec812869824ff6e7a1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a6b936555ac9cc7ec812869824ff6e7a1">FontStyle</a> : uint8_t { <b>kFont5x8</b> = 0 &lt;&lt; 2, 
 <b>kFont5x11</b> = 1 &lt;&lt; 2
- }</td></tr>
+ }<tr class="memdesc:a6b936555ac9cc7ec812869824ff6e7a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Available font styles. <br /></td></tr>
+</td></tr>
 <tr class="separator:a6b936555ac9cc7ec812869824ff6e7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0297caf564e0a5529f601a6d79d3a3c0"><td class="memItemLeft" align="right" valign="top"><a id="a0297caf564e0a5529f601a6d79d3a3c0"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>St7066u</b> (BusMode bus_mode, DisplayMode display_mode, FontStyle font_style, const <a class="el" href="../../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html">ControlPins_t</a> &amp;pins)</td></tr>
+<tr class="memitem:a0297caf564e0a5529f601a6d79d3a3c0"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a0297caf564e0a5529f601a6d79d3a3c0">St7066u</a> (<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a9a2918722dc21b079dae228d7a3ebc37">BusMode</a> bus_mode, <a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#abf8cbd56f6e5276a7760a78488df2e95">DisplayMode</a> display_mode, <a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a6b936555ac9cc7ec812869824ff6e7a1">FontStyle</a> font_style, const <a class="el" href="../../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html">ControlPins_t</a> &amp;pins)</td></tr>
 <tr class="separator:a0297caf564e0a5529f601a6d79d3a3c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63213c2b7c63b0276f91488447f8e232"><td class="memItemLeft" align="right" valign="top"><a id="a63213c2b7c63b0276f91488447f8e232"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a63213c2b7c63b0276f91488447f8e232">Initialize</a> ()</td></tr>
+<tr class="memdesc:a63213c2b7c63b0276f91488447f8e232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the pins needed to communicate with the LCD screen. <br /></td></tr>
 <tr class="separator:a63213c2b7c63b0276f91488447f8e232"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a0e49ea1c56c50183023034c80f900c"><td class="memItemLeft" align="right" valign="top"><a id="a6a0e49ea1c56c50183023034c80f900c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteNibble</b> (WriteOperation operation, uint8_t nibble)</td></tr>
+<tr class="memitem:a6a0e49ea1c56c50183023034c80f900c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a6a0e49ea1c56c50183023034c80f900c">WriteNibble</a> (<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aa2e5d376f5f330b74da9fcf2e7831c79">WriteOperation</a> operation, uint8_t nibble)</td></tr>
 <tr class="separator:a6a0e49ea1c56c50183023034c80f900c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29f70f799f5bba668eeb435efe37ad5e"><td class="memItemLeft" align="right" valign="top"><a id="a29f70f799f5bba668eeb435efe37ad5e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteByte</b> (WriteOperation operation, uint8_t byte)</td></tr>
+<tr class="memitem:a29f70f799f5bba668eeb435efe37ad5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a29f70f799f5bba668eeb435efe37ad5e">WriteByte</a> (<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aa2e5d376f5f330b74da9fcf2e7831c79">WriteOperation</a> operation, uint8_t byte)</td></tr>
 <tr class="separator:a29f70f799f5bba668eeb435efe37ad5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13bfe1d7d714e5756740a961c20d532a"><td class="memItemLeft" align="right" valign="top"><a id="a13bfe1d7d714e5756740a961c20d532a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteCommand</b> (Command command)</td></tr>
+<tr class="memitem:a13bfe1d7d714e5756740a961c20d532a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a13bfe1d7d714e5756740a961c20d532a">WriteCommand</a> (<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6">Command</a> command)</td></tr>
 <tr class="separator:a13bfe1d7d714e5756740a961c20d532a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e22a86407ae07f5e7eeffc23c894410"><td class="memItemLeft" align="right" valign="top"><a id="a2e22a86407ae07f5e7eeffc23c894410"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteCommand</b> (uint8_t command)</td></tr>
+<tr class="memitem:a2e22a86407ae07f5e7eeffc23c894410"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a2e22a86407ae07f5e7eeffc23c894410">WriteCommand</a> (uint8_t command)</td></tr>
 <tr class="separator:a2e22a86407ae07f5e7eeffc23c894410"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59a392528a5430f97cc7d91499571bf6"><td class="memItemLeft" align="right" valign="top"><a id="a59a392528a5430f97cc7d91499571bf6"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>WriteData</b> (uint8_t data)</td></tr>
+<tr class="memitem:a59a392528a5430f97cc7d91499571bf6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a59a392528a5430f97cc7d91499571bf6">WriteData</a> (uint8_t data)</td></tr>
 <tr class="separator:a59a392528a5430f97cc7d91499571bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a556ccfc1ac30b070dea6c7613271a9bc"><td class="memItemLeft" align="right" valign="top"><a id="a556ccfc1ac30b070dea6c7613271a9bc"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearDisplay</b> ()</td></tr>
+<tr class="memitem:a556ccfc1ac30b070dea6c7613271a9bc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a556ccfc1ac30b070dea6c7613271a9bc">ClearDisplay</a> ()</td></tr>
 <tr class="separator:a556ccfc1ac30b070dea6c7613271a9bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d2b442e2f1952e42d4fc5543c32cf69"><td class="memItemLeft" align="right" valign="top"><a id="a4d2b442e2f1952e42d4fc5543c32cf69"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDisplayOn</b> (bool on=true)</td></tr>
+<tr class="memitem:a4d2b442e2f1952e42d4fc5543c32cf69"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a4d2b442e2f1952e42d4fc5543c32cf69">SetDisplayOn</a> (bool on=true)</td></tr>
 <tr class="separator:a4d2b442e2f1952e42d4fc5543c32cf69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa46952fa1881aa400262beea6b541ccf"><td class="memItemLeft" align="right" valign="top"><a id="aa46952fa1881aa400262beea6b541ccf"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCursorHidden</b> (bool hidden=true)</td></tr>
+<tr class="memitem:aa46952fa1881aa400262beea6b541ccf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aa46952fa1881aa400262beea6b541ccf">SetCursorHidden</a> (bool hidden=true)</td></tr>
 <tr class="separator:aa46952fa1881aa400262beea6b541ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab68ca68090517a2d9334eb93eeb251cf"><td class="memItemLeft" align="right" valign="top"><a id="ab68ca68090517a2d9334eb93eeb251cf"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCursorDirection</b> (CursorDirection direction)</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#ab68ca68090517a2d9334eb93eeb251cf">SetCursorDirection</a> (<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#af9c1b505643608b402487911fb9f3919">CursorDirection</a> direction)</td></tr>
+<tr class="memdesc:ab68ca68090517a2d9334eb93eeb251cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the drawing direction of the cursor and characters. <br /></td></tr>
 <tr class="separator:ab68ca68090517a2d9334eb93eeb251cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac176b78a001dc4a86622ddeae2393155"><td class="memItemLeft" align="right" valign="top"><a id="ac176b78a001dc4a86622ddeae2393155"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetCursorPosition</b> (<a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a> position)</td></tr>
+<tr class="memitem:ac176b78a001dc4a86622ddeae2393155"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#ac176b78a001dc4a86622ddeae2393155">SetCursorPosition</a> (<a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a> position)</td></tr>
 <tr class="separator:ac176b78a001dc4a86622ddeae2393155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abecede2ec7d3b3a627af7bc704cad68c"><td class="memItemLeft" align="right" valign="top"><a id="abecede2ec7d3b3a627af7bc704cad68c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetCursorPosition</b> ()</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#abecede2ec7d3b3a627af7bc704cad68c">ResetCursorPosition</a> ()</td></tr>
+<tr class="memdesc:abecede2ec7d3b3a627af7bc704cad68c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move cursor back to the starting position. <br /></td></tr>
 <tr class="separator:abecede2ec7d3b3a627af7bc704cad68c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e9218ddcf6701c7e6dd775523eba467"><td class="memItemLeft" align="right" valign="top"><a id="a1e9218ddcf6701c7e6dd775523eba467"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayText</b> (const char *text, <a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a> position=kDefaultCursorPosition)</td></tr>
+<tr class="memitem:a1e9218ddcf6701c7e6dd775523eba467"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a1e9218ddcf6701c7e6dd775523eba467">DisplayText</a> (const char *text, <a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a> position=<a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aebe4b14d04a5caba1b7a4bd5992c79d2">kDefaultCursorPosition</a>)</td></tr>
 <tr class="separator:a1e9218ddcf6701c7e6dd775523eba467"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:aebe4b14d04a5caba1b7a4bd5992c79d2"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>kDefaultCursorPosition</b></td></tr>
+<tr class="memitem:aebe4b14d04a5caba1b7a4bd5992c79d2"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aebe4b14d04a5caba1b7a4bd5992c79d2">kDefaultCursorPosition</a></td></tr>
+<tr class="memdesc:aebe4b14d04a5caba1b7a4bd5992c79d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default cursor position at line 0, position 0.  <a href="#aebe4b14d04a5caba1b7a4bd5992c79d2">More...</a><br /></td></tr>
 <tr class="separator:aebe4b14d04a5caba1b7a4bd5992c79d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a093c4bbf73530f902d0c0172d4f750bd"><td class="memItemLeft" align="right" valign="top"><a id="a093c4bbf73530f902d0c0172d4f750bd"></a>
-const BusMode&#160;</td><td class="memItemRight" valign="bottom"><b>kBusMode</b></td></tr>
-<tr class="separator:a093c4bbf73530f902d0c0172d4f750bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43944b41f24d187a03ebf3afec2f0250"><td class="memItemLeft" align="right" valign="top"><a id="a43944b41f24d187a03ebf3afec2f0250"></a>
-const DisplayMode&#160;</td><td class="memItemRight" valign="bottom"><b>kDisplayMode</b></td></tr>
-<tr class="separator:a43944b41f24d187a03ebf3afec2f0250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac957d7fe31fcae5a61c5ae5e714a0ef4"><td class="memItemLeft" align="right" valign="top"><a id="ac957d7fe31fcae5a61c5ae5e714a0ef4"></a>
-const FontStyle&#160;</td><td class="memItemRight" valign="bottom"><b>kFontStyle</b></td></tr>
-<tr class="separator:ac957d7fe31fcae5a61c5ae5e714a0ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ce0d60a4f102dac341a7adcf0e3f0ae"><td class="memItemLeft" align="right" valign="top"><a id="a2ce0d60a4f102dac341a7adcf0e3f0ae"></a>
-const <a class="el" href="../../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html">ControlPins_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>kControlPins</b></td></tr>
-<tr class="separator:a2ce0d60a4f102dac341a7adcf0e3f0ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Driver for the <a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html" title="Driver for the St7066u driver of a LCD character display. ">St7066u</a> driver of a LCD character display. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a8cb73254d7a0d7a6df16d91e41f3eeb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cb73254d7a0d7a6df16d91e41f3eeb6">&#9670;&nbsp;</a></span>Command</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6">sjsu::St7066u::Command</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>LCD screen commands. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6ad6ace672b7822a5f7fc65ab2feaa3b75"></a>kClearDisplay&#160;</td><td class="fielddoc"><p>Clears all characters on the display. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6a057f60f6f6abeb3fa40039d87dbcabe4"></a>kResetCursor&#160;</td><td class="fielddoc"><p>Resets the cursor to line 0, position 0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6ae774dcd55feec0b8b336fd6739d7f29c"></a>kCursorDirectionBackward&#160;</td><td class="fielddoc"><p>Sets the cursor direction to write backwards direction. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6ae855f906125f8a48357a42fecba3d851"></a>kCursorDirectionForward&#160;</td><td class="fielddoc"><p>Sets the cursor direction to write in a forward direction. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6abee162a0bb3f138b68829056e0e72bc7"></a>kTurnDisplayOff&#160;</td><td class="fielddoc"><p>Toggles the display OFF. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6a66e7ef7f4c51526fdf5cdcf621b436b7"></a>kTurnDisplayOn&#160;</td><td class="fielddoc"><p>Toggles the display ON, with cursor blink OFF. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6a29359b0fdedbf9e6d7cb1fe310c7fece"></a>kTurnCursorOn&#160;</td><td class="fielddoc"><p>Toggles the diplay ON, with cursor blink ON. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6a2e3949f17f6c4390c28f1fa7d5ad8e13"></a>kDefaultDisplayConfiguration&#160;</td><td class="fielddoc"><p>Default mask for display configuration. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6a49c0e5e8026c042cb7a23fa241599823"></a>kDisplayLineAddress0&#160;</td><td class="fielddoc"><p>Base cursor address position for line 0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6a3768ab3cb06ced116ecd6be46395f1aa"></a>kDisplayLineAddress1&#160;</td><td class="fielddoc"><p>Base cursor address position for line 1. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6ab7ff7431f730439e9a0616922f38b9f5"></a>kDisplayLineAddress2&#160;</td><td class="fielddoc"><p>Base cursor address position for line 2, only available if the display supports more than 2 display lines. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8cb73254d7a0d7a6df16d91e41f3eeb6ae580fe8cc2ec21f7c0a92b8960eeb421"></a>kDisplayLineAddress3&#160;</td><td class="fielddoc"><p>Base cursor address position for line 3, only available if the display supports more than 2 display lines. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a0297caf564e0a5529f601a6d79d3a3c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0297caf564e0a5529f601a6d79d3a3c0">&#9670;&nbsp;</a></span>St7066u()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::St7066u::St7066u </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a9a2918722dc21b079dae228d7a3ebc37">BusMode</a>&#160;</td>
+          <td class="paramname"><em>bus_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#abf8cbd56f6e5276a7760a78488df2e95">DisplayMode</a>&#160;</td>
+          <td class="paramname"><em>display_mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a6b936555ac9cc7ec812869824ff6e7a1">FontStyle</a>&#160;</td>
+          <td class="paramname"><em>font_style</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.html">ControlPins_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>pins</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor for the display driver with desired configurations.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bus_mode</td><td>4-bit or 8-bit data transfer bus mode. </td></tr>
+    <tr><td class="paramname">display_mode</td><td>Number of lines used for displaying characters. </td></tr>
+    <tr><td class="paramname">font_style</td><td>Character font style </td></tr>
+    <tr><td class="paramname">pins</td><td>GPIO control pins for controlling the display. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a556ccfc1ac30b070dea6c7613271a9bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a556ccfc1ac30b070dea6c7613271a9bc">&#9670;&nbsp;</a></span>ClearDisplay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::St7066u::ClearDisplay </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Clears all characters on the display by sending the clear display command to the device. </p>
+
+</div>
+</div>
+<a id="a1e9218ddcf6701c7e6dd775523eba467"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e9218ddcf6701c7e6dd775523eba467">&#9670;&nbsp;</a></span>DisplayText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::St7066u::DisplayText </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a>&#160;</td>
+          <td class="paramname"><em>position</em> = <code><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aebe4b14d04a5caba1b7a4bd5992c79d2">kDefaultCursorPosition</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Displays a desired text string on the display.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>String to write on the display. </td></tr>
+    <tr><td class="paramname">position</td><td>Position to start writing the characters </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa46952fa1881aa400262beea6b541ccf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa46952fa1881aa400262beea6b541ccf">&#9670;&nbsp;</a></span>SetCursorHidden()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::St7066u::SetCursorHidden </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>hidden</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Make the cursor hidden</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hidden</td><td>- set to false to make the cursor appear. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac176b78a001dc4a86622ddeae2393155"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac176b78a001dc4a86622ddeae2393155">&#9670;&nbsp;</a></span>SetCursorPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::St7066u::SetCursorPosition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html">CursorPosition_t</a>&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the cursor at a specified position.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>Line number (row) and character position to move cursor to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4d2b442e2f1952e42d4fc5543c32cf69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2b442e2f1952e42d4fc5543c32cf69">&#9670;&nbsp;</a></span>SetDisplayOn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::St7066u::SetDisplayOn </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>on</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">on</td><td>Toggles the display on if TRUe. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a29f70f799f5bba668eeb435efe37ad5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29f70f799f5bba668eeb435efe37ad5e">&#9670;&nbsp;</a></span>WriteByte()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::St7066u::WriteByte </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aa2e5d376f5f330b74da9fcf2e7831c79">WriteOperation</a>&#160;</td>
+          <td class="paramname"><em>operation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Transfers a command or data byte to the device.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">operation</td><td>Operation transfer type. </td></tr>
+    <tr><td class="paramname">byte</td><td>Byte to transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a13bfe1d7d714e5756740a961c20d532a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13bfe1d7d714e5756740a961c20d532a">&#9670;&nbsp;</a></span>WriteCommand() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::St7066u::WriteCommand </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6">Command</a>&#160;</td>
+          <td class="paramname"><em>command</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">command</td><td>8-bit command to send. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2e22a86407ae07f5e7eeffc23c894410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e22a86407ae07f5e7eeffc23c894410">&#9670;&nbsp;</a></span>WriteCommand() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::St7066u::WriteCommand </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>command</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Perform a write command</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">command</td><td>- the command to send to the LCD screen. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a59a392528a5430f97cc7d91499571bf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59a392528a5430f97cc7d91499571bf6">&#9670;&nbsp;</a></span>WriteData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::St7066u::WriteData </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Writes a byte to the current cursor address position.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Byte to send to device. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6a0e49ea1c56c50183023034c80f900c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a0e49ea1c56c50183023034c80f900c">&#9670;&nbsp;</a></span>WriteNibble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::St7066u::WriteNibble </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#aa2e5d376f5f330b74da9fcf2e7831c79">WriteOperation</a>&#160;</td>
+          <td class="paramname"><em>operation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>nibble</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Transfers 4-bits of a command or data to the device.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">operation</td><td>Operation transfer type. </td></tr>
+    <tr><td class="paramname">nibble</td><td>4-bit data to transfer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="aebe4b14d04a5caba1b7a4bd5992c79d2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebe4b14d04a5caba1b7a4bd5992c79d2">&#9670;&nbsp;</a></span>kDefaultCursorPosition</h2>
@@ -230,6 +685,8 @@ const <a class="el" href="../../d8/dfa/structsjsu_1_1St7066u_1_1ControlPins__t.h
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      CursorPosition_t{ 0, 0 }</div></div><!-- fragment -->
+<p>Default cursor position at line 0, position 0. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

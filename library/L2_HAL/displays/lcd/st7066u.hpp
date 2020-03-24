@@ -17,81 +17,89 @@
 
 namespace sjsu
 {
-class St7066u final
+/// Driver for the St7066u driver of a LCD character display
+class St7066u
 {
  public:
-  // Data transfer operation types.
+  /// Data transfer operation types.
   enum class WriteOperation : uint8_t
   {
     kCommand = 0,
     kData    = 1
   };
 
+  /// LCD screen commands
   enum class Command : uint8_t
   {
-    // Clears all characters on the display.
+    /// Clears all characters on the display.
     kClearDisplay = 0x01,
-    // Resets the cursor to line 0, position 0.
+    /// Resets the cursor to line 0, position 0.
     kResetCursor = 0x02,
-    // Sets the cursor direction to write backwards direction.
+    /// Sets the cursor direction to write backwards direction.
     kCursorDirectionBackward = 0x04,
-    // Sets the cursor direction to write in a forward direction.
+    /// Sets the cursor direction to write in a forward direction.
     kCursorDirectionForward = 0x06,
-    // Toggles the display OFF.
+    /// Toggles the display OFF.
     kTurnDisplayOff = 0x08,
-    // Toggles the display ON, with cursor blink OFF.
+    /// Toggles the display ON, with cursor blink OFF.
     kTurnDisplayOn = 0x0C,
-    // Toggles the diplay ON, with cursor blink ON.
+    /// Toggles the diplay ON, with cursor blink ON.
     kTurnCursorOn = 0x0F,
-    // Default mask for display configuration.
+    /// Default mask for display configuration.
     kDefaultDisplayConfiguration = 0x20,
-    // Base cursor address position for line 0.
+    /// Base cursor address position for line 0.
     kDisplayLineAddress0 = 0x80,
-    // Base cursor address position for line 1.
+    /// Base cursor address position for line 1.
     kDisplayLineAddress1 = 0xC0,
-    // Base cursor address position for line 2, only available if the
-    // display supports more than 2 display lines.
+    /// Base cursor address position for line 2, only available if the
+    /// display supports more than 2 display lines.
     kDisplayLineAddress2 = 0x94,
-    // Base cursor address position for line 3, only available if the
-    // display supports more than 2 display lines.
+    /// Base cursor address position for line 3, only available if the
+    /// display supports more than 2 display lines.
     kDisplayLineAddress3 = 0xD4,
   };
 
-  // Cursor direction when writing new characters to the display.
+  /// Cursor direction when writing new characters to the display.
   enum class CursorDirection : uint8_t
   {
     kForward  = 0,
     kBackward = 1
   };
 
+  /// Structure the holds where the position of the character cursor is.
   struct CursorPosition_t
   {
-    // Display line number starting at 0 for the first line.
+    /// Display line number starting at 0 for the first line.
     uint8_t line_number;
-    // Character column position
+    /// Character column position
     uint8_t position;
   };
 
+  /// The two forms of bus modes for the LCD screen
   enum class BusMode : uint8_t
   {
     kFourBit  = 0 << 4,
     kEightBit = 1 << 4
   };
 
+  /// Available display modes
   enum class DisplayMode : uint8_t
   {
     kSingleLine = 0 << 3,
     kMultiLine  = 1 << 3
   };
 
+  /// Available font styles
   enum class FontStyle : uint8_t
   {
     kFont5x8  = 0 << 2,
     kFont5x11 = 1 << 2
   };
 
+  /// Parallel Control Pins structure
   struct ControlPins_t
   {
+    //! @cond Doxygen_Suppress
     sjsu::Gpio & rs;  // Register Selection
     sjsu::Gpio & rw;  // Read/Write
     sjsu::Gpio & e;   // Chip Enable
@@ -103,20 +111,23 @@ class St7066u final
     sjsu::Gpio & d2;
     sjsu::Gpio & d1;
     sjsu::Gpio & d0;
+    //! @endcond
   };
 
-  // Default cursor position at line 0, position 0.
+  /// Default cursor position at line 0, position 0.
   static constexpr CursorPosition_t kDefaultCursorPosition =
       CursorPosition_t{ 0, 0 };
 
-  // Constructor for the display driver with desired configurations.
-  //
-  // @param bus_mode     4-bit or 8-bit data transfer bus mode.
-  // @param display_mode Number of lines used for displaying characters.
-  // @param font_style   Character font style
-  // @param pins         GPIO control pins for controlling the display.
-  constexpr St7066u(BusMode bus_mode, DisplayMode display_mode,
-                    FontStyle font_style, const ControlPins_t & pins)
+  /// Constructor for the display driver with desired configurations.
+  ///
+  /// @param bus_mode     4-bit or 8-bit data transfer bus mode.
+  /// @param display_mode Number of lines used for displaying characters.
+  /// @param font_style   Character font style
+  /// @param pins         GPIO control pins for controlling the display.
+  constexpr St7066u(BusMode bus_mode,
+                    DisplayMode display_mode,
+                    FontStyle font_style,
+                    const ControlPins_t & pins)
       : kBusMode(bus_mode),
         kDisplayMode(display_mode),
         kFontStyle(font_style),
@@ -124,6 +135,7 @@ class St7066u final
   {
   }
 
+  /// Initialize the pins needed to communicate with the LCD screen
   void Initialize()
   {
     kControlPins.rs.SetDirection(sjsu::Gpio::Direction::kOutput);
@@ -151,10 +163,10 @@ class St7066u final
     ClearDisplay();
   }
 
-  // Transfers 4-bits of a command or data to the device.
-  //
-  // @param operation Operation transfer type.
-  // @param nibble    4-bit data to transfer.
+  /// Transfers 4-bits of a command or data to the device.
+  ///
+  /// @param operation Operation transfer type.
+  /// @param nibble    4-bit data to transfer.
   void WriteNibble(WriteOperation operation, uint8_t nibble)
   {
     kControlPins.e.Set(sjsu::Gpio::State::kHigh);
@@ -171,10 +183,10 @@ class St7066u final
     kControlPins.e.Set(sjsu::Gpio::State::kHigh);
   }
 
-  // Transfers a command or data byte to the device.
-  //
-  // @param operation Operation transfer type.
-  // @param byte      Byte to transfer.
+  /// Transfers a command or data byte to the device.
+  ///
+  /// @param operation Operation transfer type.
+  /// @param byte      Byte to transfer.
   void WriteByte(WriteOperation operation, uint8_t byte)
   {
     kControlPins.e.Set(sjsu::Gpio::State::kHigh);
@@ -195,11 +207,15 @@ class St7066u final
     kControlPins.e.Set(sjsu::Gpio::State::kHigh);
   }
 
-  // @param command 8-bit command to send.
-  [[gnu::always_inline]] void WriteCommand(Command command)
+  /// @param command 8-bit command to send.
+  void WriteCommand(Command command)
   {
     WriteCommand(static_cast<uint8_t>(command));
   }
+
+  /// Perform a write command
+  ///
+  /// @param command - the command to send to the LCD screen.
   virtual void WriteCommand(uint8_t command)
   {
     switch (kBusMode)
@@ -214,9 +230,9 @@ class St7066u final
     }
   }
 
-  // Writes a byte to the current cursor address position.
-  //
-  // @param data Byte to send to device.
+  /// Writes a byte to the current cursor address position.
+  ///
+  /// @param data Byte to send to device.
   virtual void WriteData(uint8_t data)
   {
     switch (kBusMode)
@@ -229,25 +245,29 @@ class St7066u final
     }
   }
 
-  // Clears all characters on the display by sending the clear display command
-  // to the device.
+  /// Clears all characters on the display by sending the clear display command
+  /// to the device.
   virtual void ClearDisplay()
   {
     WriteCommand(Command::kClearDisplay);
     sjsu::Delay(2ms);  // Clear display operation requires 1.52ms
   }
 
-  // @param on Toggles the display on if TRUe.
+  /// @param on Toggles the display on if TRUe.
   virtual void SetDisplayOn(bool on = true)
   {
     WriteCommand(on ? Command::kTurnDisplayOn : Command::kTurnDisplayOff);
   }
 
+  /// Make the cursor hidden
+  ///
+  /// @param hidden - set to false to make the cursor appear.
   virtual void SetCursorHidden(bool hidden = true)
   {
     WriteCommand(hidden ? Command::kTurnDisplayOn : Command::kTurnCursorOn);
   }
 
+  /// Set the drawing direction of the cursor and characters
   virtual void SetCursorDirection(CursorDirection direction)
   {
     switch (direction)
@@ -261,10 +281,10 @@ class St7066u final
     }
   }
 
-  // Sets the cursor at a specified position.
-  //
-  // @param line Line number to move cursor to.
-  // @param pos  Character position to move cursor to.
+  /// Sets the cursor at a specified position.
+  ///
+  /// @param position Line number (row) and character position to move cursor
+  ///                 to.
   virtual void SetCursorPosition(CursorPosition_t position)
   {
     SJ2_ASSERT_FATAL(position.line_number < 5,
@@ -285,18 +305,19 @@ class St7066u final
     WriteCommand(uint8_t(line_address + position.position));
   }
 
-  [[gnu::always_inline]] virtual void ResetCursorPosition()
+  /// Move cursor back to the starting position.
+  virtual void ResetCursorPosition()
   {
     WriteCommand(Command::kResetCursor);
     sjsu::Delay(2ms);  // requires 1.52ms
   }
 
-  // Displays a desired text string on the display.
-  //
-  // @param text     String to write on the display.
-  // @param position Position to start writing the characters
+  /// Displays a desired text string on the display.
+  ///
+  /// @param text     String to write on the display.
+  /// @param position Position to start writing the characters
   virtual void DisplayText(const char * text,
-                   CursorPosition_t position = kDefaultCursorPosition)
+                           CursorPosition_t position = kDefaultCursorPosition)
   {
     constexpr uint8_t kMaxDisplayWidth = 20;
     const uint8_t kStartOffset         = position.position;
@@ -319,10 +340,10 @@ class St7066u final
     }
   }
 
- protected:
+ private:
   const BusMode kBusMode;
   const DisplayMode kDisplayMode;
   const FontStyle kFontStyle;
-  const ControlPins_t & kControlPins;
+  const ControlPins_t & kControlPins;  // NOLINT
 };
 }  // namespace sjsu

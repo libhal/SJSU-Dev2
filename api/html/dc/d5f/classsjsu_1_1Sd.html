@@ -84,6 +84,11 @@ $(function() {
 <div class="title">sjsu::Sd Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>SD card controller utilizing the SPI peripheral.  
+ <a href="../../dc/d5f/classsjsu_1_1Sd.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../d5/d98/sd_8hpp_source.html">sd.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for sjsu::Sd:</div>
 <div class="dyncontent">
@@ -99,10 +104,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html">CardInfo_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure for recording information about the SD Card.  <a href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dc2/structsjsu_1_1Sd_1_1DebugSdCard__t.html">DebugSdCard_t</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/df2/structsjsu_1_1Sd_1_1Response__t.html">Response_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">a response frame struct to contain the various responses sent by the card after commands are issued (response type and length depend on the command sent)  <a href="../../da/df2/structsjsu_1_1Sd_1_1Response__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -127,7 +129,7 @@ Public Types</h2></td></tr>
  }<tr class="memdesc:ab0be829c25921b7453bcc4c76b76b946"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerator for SD Card Capacity type codes. <br /></td></tr>
 </td></tr>
 <tr class="separator:ab0be829c25921b7453bcc4c76b76b946"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2c9a4b50af56678d9c11ef018593698"><td class="memItemLeft" align="right" valign="top"><a id="ab2c9a4b50af56678d9c11ef018593698"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698">Ocr</a> { <br />
+<tr class="memitem:ab2c9a4b50af56678d9c11ef018593698"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698">Ocr</a> { <br />
 &#160;&#160;<b>kIsDualVoltage</b> = 7, 
 <b>kIs27vTo28v</b> = 15, 
 <b>kIs28vTo29v</b> = 16, 
@@ -146,8 +148,7 @@ Public Types</h2></td></tr>
 &#160;&#160;<b>kCcs</b> = 30, 
 <b>kPwrUpComplete</b> = 31
 <br />
- }<tr class="memdesc:ab2c9a4b50af56678d9c11ef018593698"><td class="mdescLeft">&#160;</td><td class="mdescRight">bit shift counts provided to allow easy checking of the OCR flag bits for the card's operating conditions <br /></td></tr>
-</td></tr>
+ }</td></tr>
 <tr class="separator:ab2c9a4b50af56678d9c11ef018593698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bc3cffccc21dfabc605f4b1d82e3934"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a9bc3cffccc21dfabc605f4b1d82e3934">Command</a> { <br />
 &#160;&#160;<b>kGarbage</b> = 0xFF, 
@@ -173,8 +174,7 @@ Public Types</h2></td></tr>
 &#160;&#160;<b>kGetOcr</b> = 0x40 | 58, 
 <b>kAcInit</b> = 0x40 | 41
 <br />
- }<tr class="memdesc:a9bc3cffccc21dfabc605f4b1d82e3934"><td class="mdescLeft">&#160;</td><td class="mdescRight">a collection of SPI-supported command codes to be used with SendCmd()  <a href="../../dc/d5f/classsjsu_1_1Sd.html#a9bc3cffccc21dfabc605f4b1d82e3934">More...</a><br /></td></tr>
-</td></tr>
+ }</td></tr>
 <tr class="separator:a9bc3cffccc21dfabc605f4b1d82e3934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea755e43d994ae5941d08cd00c4541b2"><td class="memItemLeft" align="right" valign="top"><a id="aea755e43d994ae5941d08cd00c4541b2"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aea755e43d994ae5941d08cd00c4541b2">KeepAlive</a> : bool { <b>kYes</b> = true, 
 <b>kNo</b> = false
@@ -184,45 +184,34 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a34005d8da234cc37f2e6aaaa7638fc23"><td class="memItemLeft" align="right" valign="top"><a id="a34005d8da234cc37f2e6aaaa7638fc23"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Sd</b> (const <a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">Spi</a> &amp;spi, const <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;chip_select)</td></tr>
+<tr class="memitem:a34005d8da234cc37f2e6aaaa7638fc23"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a34005d8da234cc37f2e6aaaa7638fc23">Sd</a> (const <a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">Spi</a> &amp;spi, const <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;chip_select)</td></tr>
 <tr class="separator:a34005d8da234cc37f2e6aaaa7638fc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34b8158aa3bde3ba8fe344022388a17f"><td class="memItemLeft" align="right" valign="top"><a id="a34b8158aa3bde3ba8fe344022388a17f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a34b8158aa3bde3ba8fe344022388a17f">Initialize</a> ()</td></tr>
+<tr class="memdesc:a34b8158aa3bde3ba8fe344022388a17f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize peripherals. <br /></td></tr>
 <tr class="separator:a34b8158aa3bde3ba8fe344022388a17f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebdf692b25d5b539a3415d040d309407"><td class="memItemLeft" align="right" valign="top"><a id="aebdf692b25d5b539a3415d040d309407"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Mount</b> (<a class="el" href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html">CardInfo_t</a> *sd)</td></tr>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aebdf692b25d5b539a3415d040d309407">Mount</a> (<a class="el" href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html">CardInfo_t</a> *sd)</td></tr>
+<tr class="memdesc:aebdf692b25d5b539a3415d040d309407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize and enable SD Card. <br /></td></tr>
 <tr class="separator:aebdf692b25d5b539a3415d040d309407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86c84f828c07a00d21f66829ae03b130"><td class="memItemLeft" align="right" valign="top"><a id="a86c84f828c07a00d21f66829ae03b130"></a>
-virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>ToBool</b> (bool condition)</td></tr>
-<tr class="separator:a86c84f828c07a00d21f66829ae03b130"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e596f032324def60480d573060194d0"><td class="memItemLeft" align="right" valign="top"><a id="a4e596f032324def60480d573060194d0"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>WaitToReadBlock</b> ()</td></tr>
+<tr class="memitem:a4e596f032324def60480d573060194d0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a4e596f032324def60480d573060194d0">WaitToReadBlock</a> ()</td></tr>
 <tr class="separator:a4e596f032324def60480d573060194d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a365fc041ceb89dc328086b5503280625"><td class="memItemLeft" align="right" valign="top"><a id="a365fc041ceb89dc328086b5503280625"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>WaitWhileBusy</b> ()</td></tr>
+<tr class="memitem:a365fc041ceb89dc328086b5503280625"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a365fc041ceb89dc328086b5503280625">WaitWhileBusy</a> ()</td></tr>
 <tr class="separator:a365fc041ceb89dc328086b5503280625"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55c25412311485e0b6697baf64a0d3ef"><td class="memItemLeft" align="right" valign="top"><a id="a55c25412311485e0b6697baf64a0d3ef"></a>
-virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>ReadBlock</b> (uint32_t address, uint8_t *array, uint32_t blocks=1)</td></tr>
+virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a55c25412311485e0b6697baf64a0d3ef">ReadBlock</a> (uint32_t address, uint8_t *array, uint32_t blocks=1)</td></tr>
+<tr class="memdesc:a55c25412311485e0b6697baf64a0d3ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read any number of blocks from the SD card. <br /></td></tr>
 <tr class="separator:a55c25412311485e0b6697baf64a0d3ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afab16467fb810533f8fe569bd14c5054"><td class="memItemLeft" align="right" valign="top"><a id="afab16467fb810533f8fe569bd14c5054"></a>
-virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>WriteBlock</b> (uint32_t address, const uint8_t *array, uint32_t blocks=1)</td></tr>
+virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#afab16467fb810533f8fe569bd14c5054">WriteBlock</a> (uint32_t address, const uint8_t *array, uint32_t blocks=1)</td></tr>
+<tr class="memdesc:afab16467fb810533f8fe569bd14c5054"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes any number of 512-byte blocks to the SD Card. <br /></td></tr>
 <tr class="separator:afab16467fb810533f8fe569bd14c5054"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8257f7a0c775cb1c0b55f366aad96cda"><td class="memItemLeft" align="right" valign="top"><a id="a8257f7a0c775cb1c0b55f366aad96cda"></a>
-virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>DeleteBlock</b> (uint32_t start, uint32_t end)</td></tr>
+virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a8257f7a0c775cb1c0b55f366aad96cda">DeleteBlock</a> (uint32_t start, uint32_t end)</td></tr>
+<tr class="memdesc:a8257f7a0c775cb1c0b55f366aad96cda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes any number of blocks (inclusively) within a range of address. <br /></td></tr>
 <tr class="separator:a8257f7a0c775cb1c0b55f366aad96cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3f86bfce15e93e1a026e22fcbd0006e"><td class="memItemLeft" align="right" valign="top"><a id="ad3f86bfce15e93e1a026e22fcbd0006e"></a>
-virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>SendCmd</b> (<a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a9bc3cffccc21dfabc605f4b1d82e3934">Command</a> sdc, uint32_t arg, uint8_t response_buffer[], <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aea755e43d994ae5941d08cd00c4541b2">KeepAlive</a> keep_alive)</td></tr>
+<tr class="memitem:ad3f86bfce15e93e1a026e22fcbd0006e"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ad3f86bfce15e93e1a026e22fcbd0006e">SendCmd</a> (<a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a9bc3cffccc21dfabc605f4b1d82e3934">Command</a> sdc, uint32_t arg, uint8_t response_buffer[], <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aea755e43d994ae5941d08cd00c4541b2">KeepAlive</a> keep_alive)</td></tr>
 <tr class="separator:ad3f86bfce15e93e1a026e22fcbd0006e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab32f3910d88edd08e6e2a89124a6ce99"><td class="memItemLeft" align="right" valign="top"><a id="ab32f3910d88edd08e6e2a89124a6ce99"></a>
-virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>Crc7Add</b> (uint8_t crc, uint8_t message_byte)</td></tr>
-<tr class="separator:ab32f3910d88edd08e6e2a89124a6ce99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62694147fb6dc5df31281a20501c9856"><td class="memItemLeft" align="right" valign="top"><a id="a62694147fb6dc5df31281a20501c9856"></a>
-virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetCrc7</b> (uint8_t *message, uint8_t length)</td></tr>
-<tr class="separator:a62694147fb6dc5df31281a20501c9856"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6986f1d97ced1b47bd7e67e3db22696"><td class="memItemLeft" align="right" valign="top"><a id="ac6986f1d97ced1b47bd7e67e3db22696"></a>
-virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetCrc16</b> (uint8_t *message, uint16_t length)</td></tr>
-<tr class="separator:ac6986f1d97ced1b47bd7e67e3db22696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -232,12 +221,16 @@ Static Public Attributes</h2></td></tr>
 static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a392f2c4132fdf3b0656a766004347f17">kBlockSize</a> = 512</td></tr>
 <tr class="memdesc:a392f2c4132fdf3b0656a766004347f17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enforcing block-size cross-compatibility. <br /></td></tr>
 <tr class="separator:a392f2c4132fdf3b0656a766004347f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52efdddde29bb63f54f60ea294cf1b48"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html">sjsu::crc::CrcTableConfig_t</a>&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>kCrcTable8</b></td></tr>
+<tr class="memitem:a52efdddde29bb63f54f60ea294cf1b48"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html">sjsu::crc::CrcTableConfig_t</a>&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a52efdddde29bb63f54f60ea294cf1b48">kCrcTable8</a></td></tr>
+<tr class="memdesc:a52efdddde29bb63f54f60ea294cf1b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table holding CRC8 tokens used to verify SD card transactions.  <a href="#a52efdddde29bb63f54f60ea294cf1b48">More...</a><br /></td></tr>
 <tr class="separator:a52efdddde29bb63f54f60ea294cf1b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabaf4e5b6de5fd0912874fe94cb5a9cc"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html">sjsu::crc::CrcTableConfig_t</a>&lt; uint16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>kCrcTable16</b></td></tr>
+<tr class="memitem:aabaf4e5b6de5fd0912874fe94cb5a9cc"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html">sjsu::crc::CrcTableConfig_t</a>&lt; uint16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aabaf4e5b6de5fd0912874fe94cb5a9cc">kCrcTable16</a></td></tr>
+<tr class="memdesc:aabaf4e5b6de5fd0912874fe94cb5a9cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table holding CRC16 tokens used to verify SD card transactions.  <a href="#aabaf4e5b6de5fd0912874fe94cb5a9cc">More...</a><br /></td></tr>
 <tr class="separator:aabaf4e5b6de5fd0912874fe94cb5a9cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>SD card controller utilizing the SPI peripheral. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a9bc3cffccc21dfabc605f4b1d82e3934"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9bc3cffccc21dfabc605f4b1d82e3934">&#9670;&nbsp;</a></span>Command</h2>
 
@@ -257,9 +250,188 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>a collection of SPI-supported command codes to be used with SendCmd() </p>
+<p>A collection of SPI-supported command codes to be used with <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ad3f86bfce15e93e1a026e22fcbd0006e">SendCmd()</a></p>
 <dl class="section note"><dt>Note</dt><dd>OR of b0100_0000 is meant to conform with the SD protocol (i.e. first bits must be b01) </dd></dl>
+
+</div>
+</div>
+<a id="ab2c9a4b50af56678d9c11ef018593698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2c9a4b50af56678d9c11ef018593698">&#9670;&nbsp;</a></span>Ocr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698">sjsu::Sd::Ocr</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>bit shift counts provided to allow easy checking of the OCR flag bits for the card's operating conditions </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a34005d8da234cc37f2e6aaaa7638fc23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34005d8da234cc37f2e6aaaa7638fc23">&#9670;&nbsp;</a></span>Sd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::Sd::Sd </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">Spi</a> &amp;&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;&#160;</td>
+          <td class="paramname"><em>chip_select</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>SD Card constructor</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>- spi peripheral connected to SD card </td></tr>
+    <tr><td class="paramname">chip_select</td><td>- gpio connected to SD card's chip select </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad3f86bfce15e93e1a026e22fcbd0006e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3f86bfce15e93e1a026e22fcbd0006e">&#9670;&nbsp;</a></span>SendCmd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint32_t sjsu::Sd::SendCmd </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a9bc3cffccc21dfabc605f4b1d82e3934">Command</a>&#160;</td>
+          <td class="paramname"><em>sdc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>response_buffer</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aea755e43d994ae5941d08cd00c4541b2">KeepAlive</a>&#160;</td>
+          <td class="paramname"><em>keep_alive</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Send a SD Card command</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sdc</td><td>- the type of SD card command </td></tr>
+    <tr><td class="paramname">arg</td><td>- value to send with the command </td></tr>
+    <tr><td class="paramname">response_buffer</td><td>- buffer to contain the response returned. </td></tr>
+    <tr><td class="paramname">keep_alive</td><td>- set to true in order to keep the connection with SD card alive. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>uint32_t response length </dd></dl>
+
+</div>
+</div>
+<a id="a4e596f032324def60480d573060194d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e596f032324def60480d573060194d0">&#9670;&nbsp;</a></span>WaitToReadBlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Sd::WaitToReadBlock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Waits for the card to respond after a single or multi block read cmd is sent. </p>
+
+</div>
+</div>
+<a id="a365fc041ceb89dc328086b5503280625"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a365fc041ceb89dc328086b5503280625">&#9670;&nbsp;</a></span>WaitWhileBusy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Sd::WaitWhileBusy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Waits for the card to be ready to receive a new block after one has been written or erased </p>
 
 </div>
 </div>
@@ -307,6 +479,8 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      sjsu::crc::GenerateCrc16Table()</div></div><!-- fragment -->
+<p>Table holding CRC16 tokens used to verify SD card transactions. </p>
+
 </div>
 </div>
 <a id="a52efdddde29bb63f54f60ea294cf1b48"></a>
@@ -329,6 +503,8 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      sjsu::crc::GenerateCrc7Table&lt;uint8_t&gt;()</div></div><!-- fragment -->
+<p>Table holding CRC8 tokens used to verify SD card transactions. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
