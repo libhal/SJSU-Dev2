@@ -20,8 +20,10 @@ sjsu::lpc17xx::Gpio d2(2, 5);
 sjsu::lpc17xx::Gpio d1(2, 6);
 sjsu::lpc17xx::Gpio d0(2, 7);
 
-sjsu::Gpio * data_pins[] = { &d0, &d1, &d2, &d3, &d4, &d5, &d6, &d7 };
-sjsu::ParallelGpio data_bus(data_pins, std::size(data_pins));
+std::array<sjsu::Gpio *, 8> data_pins = {
+  &d0, &d1, &d2, &d3, &d4, &d5, &d6, &d7
+};
+sjsu::ParallelGpio data_bus(data_pins.data(), data_pins.size());
 }  // namespace
 
 int main()
