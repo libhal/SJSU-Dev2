@@ -7,7 +7,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(St7066u);
 
-TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
+TEST_CASE("Testing St7066u Parallel LCD Driver", "[st7066u]")
 {
   Mock<Gpio> mock_rs;  // RS: Register Select
   Mock<Gpio> mock_rw;  // RW: Read / Write
@@ -17,24 +17,17 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
   Fake(Method(mock_rs, SetDirection), Method(mock_rs, Set));
   Fake(Method(mock_rw, SetDirection), Method(mock_rw, Set));
   Fake(Method(mock_e, SetDirection), Method(mock_e, Set));
-  Fake(Method(mock_data_bus, Initialize),
-       Method(mock_data_bus, SetDirection),
+  Fake(Method(mock_data_bus, Initialize), Method(mock_data_bus, SetDirection),
        Method(mock_data_bus, Write));
 
-  const St7066u kFourBitBusLcd(St7066u::BusMode::kFourBit,
-                               St7066u::DisplayMode::kSingleLine,
-                               St7066u::FontStyle::kFont5x8,
-                               mock_rs.get(),
-                               mock_rw.get(),
-                               mock_e.get(),
-                               mock_data_bus.get());
-  const St7066u kEightBitBusLcd(St7066u::BusMode::kEightBit,
-                                St7066u::DisplayMode::kSingleLine,
-                                St7066u::FontStyle::kFont5x8,
-                                mock_rs.get(),
-                                mock_rw.get(),
-                                mock_e.get(),
-                                mock_data_bus.get());
+  const St7066u kFourBitBusLcd(
+      St7066u::BusMode::kFourBit, St7066u::DisplayMode::kSingleLine,
+      St7066u::FontStyle::kFont5x8, mock_rs.get(), mock_rw.get(), mock_e.get(),
+      mock_data_bus.get());
+  const St7066u kEightBitBusLcd(
+      St7066u::BusMode::kEightBit, St7066u::DisplayMode::kSingleLine,
+      St7066u::FontStyle::kFont5x8, mock_rs.get(), mock_rw.get(), mock_e.get(),
+      mock_data_bus.get());
 
   SECTION("Initialize")
   {
@@ -64,6 +57,9 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
                                          Value(kFontStyle);
       // For 4-bit bus mode, the most significant nibble is sent first followed
       // by the least significant nibble.
+      //
+      // The data will be checked in the following order in the AlwaysDo() of
+      // the stubbed Write() function.
       expected_data = {
         static_cast<uint8_t>(kConfigurationData >> 4),
         static_cast<uint8_t>(kConfigurationData & 0xF),
@@ -95,34 +91,12 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
            Method(mock_data_bus, SetDirection).Using(Gpio::Direction::kOutput));
   }
 
-  SECTION("Write Nibble")
-  {
-    constexpr uint8_t kExpectedNibble = 0b1010;
-    St7066u lcd                       = kFourBitBusLcd;
-
-    lcd.WriteNibble(St7066u::WriteOperation::kCommand, kExpectedNibble);
-    Verify(Method(mock_rs, Set)
-               .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
-           Method(mock_rw, Set).Using(Gpio::State::kLow),
-           Method(mock_data_bus, Write).Using(kExpectedNibble),
-           Method(mock_e, Set).Using(Gpio::State::kLow),
-           Method(mock_e, Set).Using(Gpio::State::kHigh));
-
-    lcd.WriteNibble(St7066u::WriteOperation::kData, kExpectedNibble);
-    Verify(
-        Method(mock_rs, Set).Using(Gpio::State(St7066u::WriteOperation::kData)),
-        Method(mock_rw, Set).Using(Gpio::State::kLow),
-        Method(mock_data_bus, Write).Using(kExpectedNibble),
-        Method(mock_e, Set).Using(Gpio::State::kLow),
-        Method(mock_e, Set).Using(Gpio::State::kHigh));
-  }
-
-  SECTION("WriteByte")
+  SECTION("Write")
   {
     constexpr uint8_t kExpectedByte = 0b1010'1010;
     St7066u lcd                     = kEightBitBusLcd;
 
-    lcd.WriteNibble(St7066u::WriteOperation::kCommand, kExpectedByte);
+    lcd.Write(St7066u::WriteOperation::kCommand, kExpectedByte);
     Verify(Method(mock_rs, Set)
                .Using(Gpio::State(St7066u::WriteOperation::kCommand)),
            Method(mock_rw, Set).Using(Gpio::State::kLow),
@@ -130,7 +104,7 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
            Method(mock_e, Set).Using(Gpio::State::kLow),
            Method(mock_e, Set).Using(Gpio::State::kHigh));
 
-    lcd.WriteNibble(St7066u::WriteOperation::kData, kExpectedByte);
+    lcd.Write(St7066u::WriteOperation::kData, kExpectedByte);
     Verify(
         Method(mock_rs, Set).Using(Gpio::State(St7066u::WriteOperation::kData)),
         Method(mock_rw, Set).Using(Gpio::State::kLow),
@@ -148,19 +122,19 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
 
     SECTION("ClearDisplay")
     {
-      expected_data = static_cast<uint8_t>(St7066u::Command::kClearDisplay);
+      expected_data = Value(St7066u::Command::kClearDisplay);
       lcd.ClearDisplay();
     }
     SECTION("SetDisplayOn")
     {
       SECTION("true")
       {
-        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
+        expected_data = Value(St7066u::Command::kTurnDisplayOn);
         lcd.SetDisplayOn();
       }
       SECTION("false")
       {
-        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOff);
+        expected_data = Value(St7066u::Command::kTurnDisplayOff);
         lcd.SetDisplayOn(false);
       }
     }
@@ -168,12 +142,12 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     {
       SECTION("false")
       {
-        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnCursorOn);
+        expected_data = Value(St7066u::Command::kTurnCursorOn);
         lcd.SetCursorHidden(false);
       }
       SECTION("true")
       {
-        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
+        expected_data = Value(St7066u::Command::kTurnDisplayOn);
         lcd.SetCursorHidden();
       }
     }
@@ -181,14 +155,12 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     {
       SECTION("kBackward")
       {
-        expected_data =
-            static_cast<uint8_t>(St7066u::Command::kCursorDirectionBackward);
+        expected_data = Value(St7066u::Command::kCursorDirectionBackward);
         lcd.SetCursorDirection(St7066u::CursorDirection::kBackward);
       }
       SECTION("kForward")
       {
-        expected_data =
-            static_cast<uint8_t>(St7066u::Command::kCursorDirectionForward);
+        expected_data = Value(St7066u::Command::kCursorDirectionForward);
         lcd.SetCursorDirection(St7066u::CursorDirection::kForward);
       }
     }
@@ -197,15 +169,13 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
       constexpr uint8_t kLineNumber = 2;
       constexpr uint8_t kPosition   = 0x12;
       // Address should be 0x94 + 0x12 = 0xA6
-      expected_data =
-          static_cast<uint8_t>(St7066u::Command::kDisplayLineAddress2) +
-          kPosition;
+      expected_data = Value(St7066u::Command::kDisplayLineAddress2) + kPosition;
       lcd.SetCursorPosition(
           St7066u::CursorPosition_t{ kLineNumber, kPosition });
     }
     SECTION("Reset Cursor Position")
     {
-      expected_data = static_cast<uint8_t>(St7066u::Command::kResetCursor);
+      expected_data = Value(St7066u::Command::kResetCursor);
       lcd.ResetCursorPosition();
     }
 
@@ -230,19 +200,19 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
 
     SECTION("ClearDisplay")
     {
-      expected_data = static_cast<uint8_t>(St7066u::Command::kClearDisplay);
+      expected_data = Value(St7066u::Command::kClearDisplay);
       lcd.ClearDisplay();
     }
     SECTION("SetDisplayOn")
     {
       SECTION("true")
       {
-        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
+        expected_data = Value(St7066u::Command::kTurnDisplayOn);
         lcd.SetDisplayOn();
       }
       SECTION("false")
       {
-        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOff);
+        expected_data = Value(St7066u::Command::kTurnDisplayOff);
         lcd.SetDisplayOn(false);
       }
     }
@@ -250,12 +220,12 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     {
       SECTION("false")
       {
-        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnCursorOn);
+        expected_data = Value(St7066u::Command::kTurnCursorOn);
         lcd.SetCursorHidden(false);
       }
       SECTION("true")
       {
-        expected_data = static_cast<uint8_t>(St7066u::Command::kTurnDisplayOn);
+        expected_data = Value(St7066u::Command::kTurnDisplayOn);
         lcd.SetCursorHidden();
       }
     }
@@ -263,14 +233,12 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
     {
       SECTION("kBackward")
       {
-        expected_data =
-            static_cast<uint8_t>(St7066u::Command::kCursorDirectionBackward);
+        expected_data = Value(St7066u::Command::kCursorDirectionBackward);
         lcd.SetCursorDirection(St7066u::CursorDirection::kBackward);
       }
       SECTION("kForward")
       {
-        expected_data =
-            static_cast<uint8_t>(St7066u::Command::kCursorDirectionForward);
+        expected_data = Value(St7066u::Command::kCursorDirectionForward);
         lcd.SetCursorDirection(St7066u::CursorDirection::kForward);
       }
     }
@@ -279,15 +247,13 @@ TEST_CASE("Testing St7066u Parallel LCD Driver", "[st70668]")
       constexpr uint8_t kLineNumber = 2;
       constexpr uint8_t kPosition   = 0x12;
       // Address should be 0x94 + 0x12 = 0xA6
-      expected_data =
-          static_cast<uint8_t>(St7066u::Command::kDisplayLineAddress2) +
-          kPosition;
+      expected_data = Value(St7066u::Command::kDisplayLineAddress2) + kPosition;
       lcd.SetCursorPosition(
           St7066u::CursorPosition_t{ kLineNumber, kPosition });
     }
     SECTION("Reset Cursor Position")
     {
-      expected_data = static_cast<uint8_t>(St7066u::Command::kResetCursor);
+      expected_data = Value(St7066u::Command::kResetCursor);
       lcd.ResetCursorPosition();
     }
 

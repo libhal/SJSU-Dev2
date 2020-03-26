@@ -126,12 +126,12 @@ class St7066u
   /// Initialize the pins needed to communicate with the LCD screen
   void Initialize() const
   {
-    kRegisterSelectPin.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kReadWritePin.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kEnablePin.SetDirection(sjsu::Gpio::Direction::kOutput);
-    kEnablePin.Set(sjsu::Gpio::kHigh);
+    kRegisterSelectPin.SetAsOutput();
+    kReadWritePin.SetAsOutput();
+    kEnablePin.SetAsOutput();
+    kEnablePin.SetHigh();
     kDataBus.Initialize();
-    kDataBus.SetDirection(sjsu::Gpio::Direction::kOutput);
+    kDataBus.SetAsOutput();
 
     WriteCommand(Value(Command::kDefaultDisplayConfiguration) |
                  Value(kBusMode) | Value(kDisplayMode) | Value(kFontStyle));
@@ -139,44 +139,26 @@ class St7066u
     ClearDisplay();
   }
 
-  /// Transfers 4-bits of a command or data to the device.
-  ///
   /// @param operation Operation transfer type.
-  /// @param nibble    4-bit data to transfer.
-  void WriteNibble(WriteOperation operation, uint8_t nibble) const
+  /// @param data      The 4-bit or 8-bit data to write to the device.
+  void Write(WriteOperation operation, uint8_t data) const
   {
-    kEnablePin.Set(sjsu::Gpio::State::kHigh);
+    kEnablePin.SetHigh();
     kRegisterSelectPin.Set(sjsu::Gpio::State(operation));
-    kReadWritePin.Set(sjsu::Gpio::State::kLow);
+    kReadWritePin.SetLow();
 
-    kDataBus.Write(nibble);
-    sjsu::Delay(1ms);
+    kDataBus.Write(data);
+    sjsu::Delay(80ns);  // Data setup time minimum of 80ns
     // Toggle chip enable to trigger write on falling edge
-    kEnablePin.Set(sjsu::Gpio::State::kLow);
-    kEnablePin.Set(sjsu::Gpio::State::kHigh);
-  }
-
-  /// Transfers a command or data byte to the device.
-  ///
-  /// @param operation Operation transfer type.
-  /// @param byte      Byte to transfer.
-  void WriteByte(WriteOperation operation, uint8_t byte) const
-  {
-    kEnablePin.Set(sjsu::Gpio::State::kHigh);
-    kRegisterSelectPin.Set(sjsu::Gpio::State(operation));
-    kReadWritePin.Set(sjsu::Gpio::State::kLow);
-
-    kDataBus.Write(byte);
-    sjsu::Delay(1ms);
-    // Toggle chip enable to trigger write on falling edge
-    kEnablePin.Set(sjsu::Gpio::State::kLow);
-    kEnablePin.Set(sjsu::Gpio::State::kHigh);
+    kEnablePin.SetLow();
+    sjsu::Delay(10ns);  // Data hold time minimum of 10ns
+    kEnablePin.SetHigh();
   }
 
   /// @param command 8-bit command to send.
   void WriteCommand(Command command) const
   {
-    WriteCommand(static_cast<uint8_t>(command));
+    WriteCommand(Value(command));
   }
 
   /// Perform a write command
@@ -187,12 +169,10 @@ class St7066u
     switch (kBusMode)
     {
       case BusMode::kFourBit:
-        WriteNibble(WriteOperation::kCommand, (command >> 4) & 0xF);
-        WriteNibble(WriteOperation::kCommand, (command >> 0) & 0xF);
+        Write(WriteOperation::kCommand, (command >> 4) & 0xF);
+        Write(WriteOperation::kCommand, (command >> 0) & 0xF);
         break;
-      case BusMode::kEightBit:
-        WriteByte(WriteOperation::kCommand, command);
-        break;
+      case BusMode::kEightBit: Write(WriteOperation::kCommand, command); break;
     }
   }
 
@@ -204,10 +184,10 @@ class St7066u
     switch (kBusMode)
     {
       case BusMode::kFourBit:
-        WriteNibble(WriteOperation::kData, (data >> 4) & 0xF);
-        WriteNibble(WriteOperation::kData, (data >> 0) & 0xF);
+        Write(WriteOperation::kData, (data >> 4) & 0xF);
+        Write(WriteOperation::kData, (data >> 0) & 0xF);
         break;
-      case BusMode::kEightBit: WriteByte(WriteOperation::kData, data); break;
+      case BusMode::kEightBit: Write(WriteOperation::kData, data); break;
     }
   }
 
@@ -216,7 +196,7 @@ class St7066u
   void ClearDisplay() const
   {
     WriteCommand(Command::kClearDisplay);
-    sjsu::Delay(2ms);  // Clear display operation requires 1.52ms
+    sjsu::Delay(1600us);  // Clear display operation requires 1.52ms
   }
 
   /// @param on Toggles the display on if TRUe.
@@ -268,14 +248,14 @@ class St7066u
     };
     uint8_t line_address =
         static_cast<uint8_t>(kLineAddresses[position.line_number]);
-    WriteCommand(uint8_t(line_address + position.position));
+    WriteCommand(static_cast<uint8_t>(line_address + position.position));
   }
 
   /// Move cursor back to the starting position.
   void ResetCursorPosition() const
   {
     WriteCommand(Command::kResetCursor);
-    sjsu::Delay(2ms);  // requires 1.52ms
+    sjsu::Delay(1600us);  // requires 1.52ms
   }
 
   /// Displays a desired text string on the display.
