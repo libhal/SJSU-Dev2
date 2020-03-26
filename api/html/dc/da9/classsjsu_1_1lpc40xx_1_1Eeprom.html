@@ -235,13 +235,13 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
           <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a> sjsu::lpc40xx::Eeprom::Erase </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
+          <td class="paramname"><em>block_address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
+          <td class="paramname"><em>blocks_count</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -255,17 +255,17 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Must be called before a <code><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ac1ae63f613f529938b07ee1050f9c662">Write()</a></code> operation. Erases the contents of the storage media in the location specified, the number of bytes given.</p>
+<p>Must be called before a <code><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ac1ae63f613f529938b07ee1050f9c662">Write()</a></code> operation. Erases the contents of the storage media in the location specified, the number of bytes given. Some storage media do not require an erasure before a write to be performed. In those cases, the implementation should simply do nothing on erase.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">address</td><td>- Address location to erase </td></tr>
-    <tr><td class="paramname">size</td><td>- the number of bytes to erase </td></tr>
+    <tr><td class="paramname">block_address</td><td>- starting block to erase. </td></tr>
+    <tr><td class="paramname">blocks_count</td><td>- the number of bytes to erase. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html" title="Masks for the program status bits and read/write status bits. ">Status</a> of if the operation was successful, otherwise, returns an appropriate status signal. </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4fbe3ecee798d0b6bab2ea6cf146b0fb">sjsu::Storage</a>.</p>
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#aa0bba1c28cd0a79e7d49d565572caa11">sjsu::Storage</a>.</p>
 
 </div>
 </div>
@@ -422,7 +422,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
           <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a> sjsu::lpc40xx::Eeprom::Read </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
+          <td class="paramname"><em>block_address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -448,18 +448,18 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Read data from the storage media in the location specified. Underlying implementation must handle things such as single byte read operations but will not guarantee that the operation is efficient. Try and keep read operation sizes address locations aligned with the result of <code><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a29a753abf3d07a56c304b1e0fea28a40">GetBlockSize()</a></code>.</p>
+<p>Read data from the storage media in the location specified.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">address</td><td>- address to read data from. </td></tr>
-    <tr><td class="paramname">data</td><td>- pointer to location to read data from storage into. </td></tr>
-    <tr><td class="paramname">size</td><td>- the number of bytes to read from memory. </td></tr>
+    <tr><td class="paramname">block_address</td><td>- starting block to read from. </td></tr>
+    <tr><td class="paramname">data</td><td>- pointer to where read data should be stored. </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to read from memory. <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html" title="CANBUS implemenation for the LPC40xx series of devices. ">Can</a> be less than the size of a block. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html" title="Masks for the program status bits and read/write status bits. ">Status</a> of if the operation was successful, otherwise, return an appropriate status signal. </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#aca52236e474b5f0ab52626c6fd797577">sjsu::Storage</a>.</p>
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a7a51a224bd957736cd020affe62c559e">sjsu::Storage</a>.</p>
 
 </div>
 </div>
@@ -476,7 +476,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
           <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a> sjsu::lpc40xx::Eeprom::Write </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
+          <td class="paramname"><em>block_address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -502,18 +502,19 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Write data to the storage media in the location specified. Underlying implementation must handle things such as single byte write operations, but will not guarantee that the operation is efficient. Try and keep write operation sizes address locations aligned with the result of <code><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a29a753abf3d07a56c304b1e0fea28a40">GetBlockSize()</a></code>. Make sure to call <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad4c7ef4b57fdbc01deaea42ac0938a00">Erase()</a> on the memory location you plan to write to before writing, otherwise, the data may be corrupted or unchanged.</p>
+<p>Write data to the storage media in the location block specified. If the block size for this media is not 1 byte, then single byte is not allowed and transactions must be performed at a block level.</p>
+<p>Be sure to call <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad4c7ef4b57fdbc01deaea42ac0938a00">Erase()</a> on the memory location you plan to write to before writing, otherwise, the data may be corrupted or unchanged.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">address</td><td>- address to write data to. </td></tr>
+    <tr><td class="paramname">block_address</td><td>- starting block to write to </td></tr>
     <tr><td class="paramname">data</td><td>- data to be stored in the location addressed above. </td></tr>
-    <tr><td class="paramname">size</td><td>- the number of bytes to write into memory. </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to write into memory. <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html" title="CANBUS implemenation for the LPC40xx series of devices. ">Can</a> be less than the size of a block. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html" title="Masks for the program status bits and read/write status bits. ">Status</a> of if the operation was successful, otherwise, returns an appropriate status signal. </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a99908d2b1ac3cb39213d01b15f80e56e">sjsu::Storage</a>.</p>
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a692a9644074fb4fafbfdf2985fd53482">sjsu::Storage</a>.</p>
 
 </div>
 </div>

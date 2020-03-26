@@ -127,6 +127,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a042759d1f201f45964216280f6f5d980"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43c9506161b89b9e7c5c148a3b02a019"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#a43c9506161b89b9e7c5c148a3b02a019">SetClock</a> (units::frequency::hertz_t frequency, bool positive_clock_on_idle=false, bool read_miso_on_rising=false) const =0</td></tr>
 <tr class="separator:a43c9506161b89b9e7c5c148a3b02a019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a303aca0a693ff18bcf417bd6f1951b1a"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t length&gt; </td></tr>
+<tr class="memitem:a303aca0a693ff18bcf417bd6f1951b1a"><td class="memTemplItemLeft" align="right" valign="top">std::array&lt; T, length &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html#a303aca0a693ff18bcf417bd6f1951b1a">Transfer</a> (const std::array&lt; T, length &gt; &amp;data)</td></tr>
+<tr class="separator:a303aca0a693ff18bcf417bd6f1951b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An abstract interface for hardware that implements the Serial Peripheral Interface (SPI) communication protocol. </p>
@@ -248,7 +251,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a7ae6d25113c04de85317facc25ac70a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ae6d25113c04de85317facc25ac70a4">&#9670;&nbsp;</a></span>Transfer()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ae6d25113c04de85317facc25ac70a4">&#9670;&nbsp;</a></span>Transfer() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -280,6 +283,51 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>byte read from the external device. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a53a54924e1b6ac531c2f2c6df3836014">sjsu::lpc40xx::Spi</a>.</p>
+
+</div>
+</div>
+<a id="a303aca0a693ff18bcf417bd6f1951b1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a303aca0a693ff18bcf417bd6f1951b1a">&#9670;&nbsp;</a></span>Transfer() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t length&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;T, length&gt; sjsu::Spi::Transfer </td>
+          <td>(</td>
+          <td class="paramtype">const std::array&lt; T, length &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Transfer a std::array of data</p>
+<p>Usage:</p>
+<p>std::array&lt;uint8_t, 4&gt; data = {1, 2, 3, 4}; spi.Transfer(data);</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- deduced data type of the array. Must be less than or equal to uint16_t. </td></tr>
+    <tr><td class="paramname">length</td><td>- deduced length of the array. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>- the array to be sent via SPI. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::array&lt;T, length&gt; - the results of the tranfer. The result can be ignored with little cost to the program. C++20 performs copy ellision, preventing a memcpy from occuring when the result is returned. </dd></dl>
 
 </div>
 </div>

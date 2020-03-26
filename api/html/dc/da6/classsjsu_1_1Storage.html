@@ -92,7 +92,8 @@ Inheritance diagram for sjsu::Storage:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dd/d64/classsjsu_1_1Storage__inherit__graph.png" border="0" usemap="#sjsu_1_1Storage_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Storage_inherit__map" id="sjsu_1_1Storage_inherit__map">
-<area shape="rect" id="node2" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html" title="sjsu::lpc40xx::Eeprom" alt="" coords="5,80,171,107"/>
+<area shape="rect" id="node2" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html" title="SD card controller utilizing the SPI peripheral. " alt="" coords="5,80,172,107"/>
+<area shape="rect" id="node3" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html" title="sjsu::lpc40xx::Eeprom" alt="" coords="197,80,362,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -133,12 +134,12 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
 <tr class="separator:a624e7e90e62cec1e67ea753859d7ba35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b6e66b9f34d222216468e2c907b0835"><td class="memItemLeft" align="right" valign="top">virtual units::data::byte_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a6b6e66b9f34d222216468e2c907b0835">GetBlockSize</a> ()=0</td></tr>
 <tr class="separator:a6b6e66b9f34d222216468e2c907b0835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fbe3ecee798d0b6bab2ea6cf146b0fb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4fbe3ecee798d0b6bab2ea6cf146b0fb">Erase</a> (uint32_t address, size_t size)=0</td></tr>
-<tr class="separator:a4fbe3ecee798d0b6bab2ea6cf146b0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99908d2b1ac3cb39213d01b15f80e56e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a99908d2b1ac3cb39213d01b15f80e56e">Write</a> (uint32_t address, const void *data, size_t size)=0</td></tr>
-<tr class="separator:a99908d2b1ac3cb39213d01b15f80e56e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca52236e474b5f0ab52626c6fd797577"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#aca52236e474b5f0ab52626c6fd797577">Read</a> (uint32_t address, void *data, size_t size)=0</td></tr>
-<tr class="separator:aca52236e474b5f0ab52626c6fd797577"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0bba1c28cd0a79e7d49d565572caa11"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#aa0bba1c28cd0a79e7d49d565572caa11">Erase</a> (uint32_t block_address, size_t blocks_count)=0</td></tr>
+<tr class="separator:aa0bba1c28cd0a79e7d49d565572caa11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a692a9644074fb4fafbfdf2985fd53482"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a692a9644074fb4fafbfdf2985fd53482">Write</a> (uint32_t block_address, const void *data, size_t size)=0</td></tr>
+<tr class="separator:a692a9644074fb4fafbfdf2985fd53482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a51a224bd957736cd020affe62c559e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a7a51a224bd957736cd020affe62c559e">Read</a> (uint32_t block_address, void *data, size_t size)=0</td></tr>
+<tr class="separator:a7a51a224bd957736cd020affe62c559e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract interface for persistent memory storage systems. </p>
@@ -208,14 +209,14 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Should prepare and configure the storage media for communication such as <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a99908d2b1ac3cb39213d01b15f80e56e">Write()</a>, <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#aca52236e474b5f0ab52626c6fd797577">Read()</a>, <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4fbe3ecee798d0b6bab2ea6cf146b0fb">Erase()</a> </p>
+<p>Should prepare and configure the storage media for communication such as <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a692a9644074fb4fafbfdf2985fd53482">Write()</a>, <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a7a51a224bd957736cd020affe62c559e">Read()</a>, <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#aa0bba1c28cd0a79e7d49d565572caa11">Erase()</a> </p>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a94ef84e5e5e64da9b8c19d819c9469cf">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a5c43e541a5b1b7492d369736b58ba4e9">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a94ef84e5e5e64da9b8c19d819c9469cf">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
-<a id="a4fbe3ecee798d0b6bab2ea6cf146b0fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fbe3ecee798d0b6bab2ea6cf146b0fb">&#9670;&nbsp;</a></span>Erase()</h2>
+<a id="aa0bba1c28cd0a79e7d49d565572caa11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0bba1c28cd0a79e7d49d565572caa11">&#9670;&nbsp;</a></span>Erase()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,13 +228,13 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
           <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a> sjsu::Storage::Erase </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
+          <td class="paramname"><em>block_address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
+          <td class="paramname"><em>blocks_count</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -247,17 +248,17 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Must be called before a <code><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a99908d2b1ac3cb39213d01b15f80e56e">Write()</a></code> operation. Erases the contents of the storage media in the location specified, the number of bytes given.</p>
+<p>Must be called before a <code><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a692a9644074fb4fafbfdf2985fd53482">Write()</a></code> operation. Erases the contents of the storage media in the location specified, the number of bytes given. Some storage media do not require an erasure before a write to be performed. In those cases, the implementation should simply do nothing on erase.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">address</td><td>- Address location to erase </td></tr>
-    <tr><td class="paramname">size</td><td>- the number of bytes to erase </td></tr>
+    <tr><td class="paramname">block_address</td><td>- starting block to erase. </td></tr>
+    <tr><td class="paramname">blocks_count</td><td>- the number of bytes to erase. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status of if the operation was successful, otherwise, returns an appropriate status signal. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad4c7ef4b57fdbc01deaea42ac0938a00">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#aab189e6b51fef30e583c127069b62892">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad4c7ef4b57fdbc01deaea42ac0938a00">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
@@ -285,7 +286,7 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the number of bytes per block. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a29a753abf3d07a56c304b1e0fea28a40">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a7d4f2a9681d87a3642eb4c802dbba4c0">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a29a753abf3d07a56c304b1e0fea28a40">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
@@ -313,7 +314,7 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the maximum capacity of this storage media. This includes areas that have already been written to. This does not include sections of the memory that are not accessible. For example, if the first 2kB of the memory cannot be accessed via this driver, then it should not be considered as apart of the capacity. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ab7c1b21db73226fa8f396d194c1be52b">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a38183e60f8b255407f1a574588ce63ca">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ab7c1b21db73226fa8f396d194c1be52b">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
@@ -341,7 +342,7 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the type of memory this driver controls. <a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> be called without calling <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#ae1d4e0eab174ad1593faf7957f857b03">Initialize()</a> first. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ab59792fbfcfaab4b528e340572a2ab40">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#ade505bb2bfeae0505d2b219efe93523b">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ab59792fbfcfaab4b528e340572a2ab40">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
@@ -369,7 +370,7 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
 </div><div class="memdoc">
 <p>Initialize all peripherals required to make communicate with the storage media possible. MUST be called before calling any method in this interface with the exception of <code><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4b9c5d361413a7057321736b0133412d">GetMemoryType()</a></code> </p>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#abd41a43d1433434239fe656f6f7bc8f1">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a9419a98a3c2631c4105f7b855f816808">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#abd41a43d1433434239fe656f6f7bc8f1">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
@@ -399,7 +400,7 @@ virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847
 <dd>
 false if storage media is not present. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a675baf4b9500cf99753fed44a09cd29e">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#ac696d3369f462e31bc595ee64ae9da49">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a675baf4b9500cf99753fed44a09cd29e">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
@@ -427,12 +428,12 @@ false if storage media is not present. </dd></dl>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true if device is not writable. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a1c028abb99b070a99eb9ba78995b71d9">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#adb9ca2b438cef38ce740c74546519b86">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a1c028abb99b070a99eb9ba78995b71d9">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
-<a id="aca52236e474b5f0ab52626c6fd797577"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca52236e474b5f0ab52626c6fd797577">&#9670;&nbsp;</a></span>Read()</h2>
+<a id="a7a51a224bd957736cd020affe62c559e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a51a224bd957736cd020affe62c559e">&#9670;&nbsp;</a></span>Read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -444,7 +445,7 @@ false if storage media is not present. </dd></dl>
           <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a> sjsu::Storage::Read </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
+          <td class="paramname"><em>block_address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -470,23 +471,23 @@ false if storage media is not present. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Read data from the storage media in the location specified. Underlying implementation must handle things such as single byte read operations but will not guarantee that the operation is efficient. Try and keep read operation sizes address locations aligned with the result of <code><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a6b6e66b9f34d222216468e2c907b0835">GetBlockSize()</a></code>.</p>
+<p>Read data from the storage media in the location specified.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">address</td><td>- address to read data from. </td></tr>
-    <tr><td class="paramname">data</td><td>- pointer to location to read data from storage into. </td></tr>
-    <tr><td class="paramname">size</td><td>- the number of bytes to read from memory. </td></tr>
+    <tr><td class="paramname">block_address</td><td>- starting block to read from. </td></tr>
+    <tr><td class="paramname">data</td><td>- pointer to where read data should be stored. </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to read from memory. <a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> be less than the size of a block. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status of if the operation was successful, otherwise, return an appropriate status signal. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#abcee6330b39ee78ca073e74f3acb7623">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#aeb2b537218bbcb0f9917d3db54f3892f">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#abcee6330b39ee78ca073e74f3acb7623">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>
-<a id="a99908d2b1ac3cb39213d01b15f80e56e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99908d2b1ac3cb39213d01b15f80e56e">&#9670;&nbsp;</a></span>Write()</h2>
+<a id="a692a9644074fb4fafbfdf2985fd53482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a692a9644074fb4fafbfdf2985fd53482">&#9670;&nbsp;</a></span>Write()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -498,7 +499,7 @@ false if storage media is not present. </dd></dl>
           <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a> sjsu::Storage::Write </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
+          <td class="paramname"><em>block_address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -524,18 +525,19 @@ false if storage media is not present. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Write data to the storage media in the location specified. Underlying implementation must handle things such as single byte write operations, but will not guarantee that the operation is efficient. Try and keep write operation sizes address locations aligned with the result of <code><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a6b6e66b9f34d222216468e2c907b0835">GetBlockSize()</a></code>. Make sure to call <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4fbe3ecee798d0b6bab2ea6cf146b0fb">Erase()</a> on the memory location you plan to write to before writing, otherwise, the data may be corrupted or unchanged.</p>
+<p>Write data to the storage media in the location block specified. If the block size for this media is not 1 byte, then single byte is not allowed and transactions must be performed at a block level.</p>
+<p>Be sure to call <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#aa0bba1c28cd0a79e7d49d565572caa11">Erase()</a> on the memory location you plan to write to before writing, otherwise, the data may be corrupted or unchanged.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">address</td><td>- address to write data to. </td></tr>
+    <tr><td class="paramname">block_address</td><td>- starting block to write to </td></tr>
     <tr><td class="paramname">data</td><td>- data to be stored in the location addressed above. </td></tr>
-    <tr><td class="paramname">size</td><td>- the number of bytes to write into memory. </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to write into memory. <a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> be less than the size of a block. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Status of if the operation was successful, otherwise, returns an appropriate status signal. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ac1ae63f613f529938b07ee1050f9c662">sjsu::lpc40xx::Eeprom</a>.</p>
+<p>Implemented in <a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a5787e3adc08ee56532133deb162f1d9d">sjsu::experimental::Sd</a>, and <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ac1ae63f613f529938b07ee1050f9c662">sjsu::lpc40xx::Eeprom</a>.</p>
 
 </div>
 </div>

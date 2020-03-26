@@ -12,6 +12,6 @@ var searchData=
   ['toggle',['Toggle',['../dd/d3a/classsjsu_1_1Gpio.html#a92833a30a38cd1ad87a2e27e4d25d054',1,'sjsu::Gpio::Toggle()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb35937b1d802aeff724c192c64af517',1,'sjsu::lpc40xx::Gpio::Toggle()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a0a7d3fad0729e140153500a02ea0ccc2',1,'sjsu::stm32f4xx::Gpio::Toggle()']]],
   ['tostring',['ToString',['../d3/d2e/structsjsu_1_1Esp8266_1_1IpAddress__t.html#a2e6cb12838a1d11f6d6fa2f7f2edf140',1,'sjsu::Esp8266::IpAddress_t']]],
   ['transaction',['Transaction',['../d0/d9b/classsjsu_1_1I2c.html#ad5f74263207d178f3d9e1402b4a0a525',1,'sjsu::I2c::Transaction()'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#adcd3f4d566c68e7617c7aadb3202ae6e',1,'sjsu::lpc40xx::I2c::Transaction()']]],
-  ['transfer',['Transfer',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a53a54924e1b6ac531c2f2c6df3836014',1,'sjsu::lpc40xx::Spi::Transfer()'],['../d3/de6/classsjsu_1_1Spi.html#a7ae6d25113c04de85317facc25ac70a4',1,'sjsu::Spi::Transfer()']]],
+  ['transfer',['Transfer',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a53a54924e1b6ac531c2f2c6df3836014',1,'sjsu::lpc40xx::Spi::Transfer()'],['../d3/de6/classsjsu_1_1Spi.html#a7ae6d25113c04de85317facc25ac70a4',1,'sjsu::Spi::Transfer(uint16_t data) const =0'],['../d3/de6/classsjsu_1_1Spi.html#a303aca0a693ff18bcf417bd6f1951b1a',1,'sjsu::Spi::Transfer(const std::array&lt; T, length &gt; &amp;data)']]],
   ['tsop752',['Tsop752',['../d2/de6/classsjsu_1_1Tsop752.html#a3df82c34b64e68b2d2f714248b8b9e90',1,'sjsu::Tsop752']]]
 ];

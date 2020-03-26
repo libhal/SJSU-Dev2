@@ -2,7 +2,7 @@ var searchData=
 [
   ['utility_20functions',['Utility Functions',['../de/d7a/group__Log.html',1,'']]],
   ['utility_20macros',['Utility Macros',['../d3/deb/group__Macros.html',1,'']]],
-  ['uart',['Uart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html',1,'sjsu::lpc40xx::Uart'],['../d0/ddc/classsjsu_1_1Uart.html',1,'sjsu::Uart'],['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a0c61d06f7cd58e8fea55558c795bc1d8',1,'sjsu::lpc40xx::Uart::Uart()']]],
+  ['uart',['Uart',['../d0/ddc/classsjsu_1_1Uart.html',1,'sjsu::Uart'],['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html',1,'sjsu::lpc40xx::Uart'],['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a0c61d06f7cd58e8fea55558c795bc1d8',1,'sjsu::lpc40xx::Uart::Uart()']]],
   ['uartcalibration_5ft',['UartCalibration_t',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html',1,'sjsu::lpc40xx::uart']]],
   ['uartport',['UartPort',['../d4/d2f/structsjsu_1_1lpc17xx_1_1UartPort.html',1,'sjsu::lpc17xx']]],
   ['unsupportedinactiveperipheral_5ft',['UnsupportedInactivePeripheral_t',['../df/dbc/structsjsu_1_1UnsupportedInactivePeripheral__t.html',1,'sjsu']]],

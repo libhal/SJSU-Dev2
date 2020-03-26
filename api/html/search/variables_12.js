@@ -16,5 +16,5 @@ var searchData=
   ['tx_5fpriority',['tx_priority',['../dc/d88/structsjsu_1_1Can_1_1TxMessage__t.html#aedf87b75eac2dbf8a4eff00edc948f88',1,'sjsu::Can::TxMessage_t']]],
   ['tx_5fqueue_5fstorage_5farea',['tx_queue_storage_area',['../db/d1f/structsjsu_1_1lpc40xx_1_1Can_1_1StaticQueueConfig__t.html#a47308c6facb890aadcb0eeb38937ab22',1,'sjsu::lpc40xx::Can::StaticQueueConfig_t']]],
   ['tx_5fstatic_5fqueue',['tx_static_queue',['../db/d1f/structsjsu_1_1lpc40xx_1_1Can_1_1StaticQueueConfig__t.html#a6c18e665510a68f586d76dd744d62a08',1,'sjsu::lpc40xx::Can::StaticQueueConfig_t']]],
-  ['type',['type',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a078fb34df8715dcc8f1d5739a3ad9966',1,'sjsu::Sd::CardInfo_t']]]
+  ['type',['type',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a078fb34df8715dcc8f1d5739a3ad9966',1,'sjsu::Sd::CardInfo_t::type()'],['../d5/d39/structsjsu_1_1experimental_1_1Sd_1_1CardInfo__t.html#a3c4051077c6c4fabae7bb18b00cd6cff',1,'sjsu::experimental::Sd::CardInfo_t::type()']]]
 ];
