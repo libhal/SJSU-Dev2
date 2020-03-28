@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <cstddef>
 #include <limits>
@@ -7,6 +8,13 @@
 
 namespace sjsu
 {
+/// The Endianess of the system
+enum class Endian
+{
+  kLittle,
+  kBig
+};
+
 namespace bit
 {
 /// Definition of a bit mask. Can be used in various bit manipulation functions
@@ -17,7 +25,40 @@ struct Mask  // NOLINT
   uint8_t position;
   /// Number of bits of the bitfield
   uint8_t width;
+
+  /// Comparison operator for the mask structure
+  constexpr bool operator==(const Mask & rhs) const
+  {
+    return (position == rhs.position && width == rhs.width);
+  }
+
+  /// Comparison operator for the mask structure
+  constexpr bool operator==(const Mask && rhs) const
+  {
+    return (position == rhs.position && width == rhs.width);
+  }
+
+  /// Move the position of the mask down by the shift amount
+  ///
+  /// @param shift_amount - amount to reduce the position by
+  constexpr Mask operator>>(int shift_amount) const
+  {
+    Mask new_mask     = *this;
+    new_mask.position = static_cast<uint8_t>(position - shift_amount);
+    return new_mask;
+  }
+
+  /// Move the position of the mask up by the shift amount
+  ///
+  /// @param shift_amount - amount to increase the position by
+  constexpr Mask operator<<(int shift_amount) const
+  {
+    Mask new_mask     = *this;
+    new_mask.position = static_cast<uint8_t>(position + shift_amount);
+    return new_mask;
+  }
 };
+
 /// @param low_bit_position - the starting bit of the bit field.
 /// @param high_bit_position - the last bit of the bit field.
 /// @return constexpr Mask from the low bit position to the high bit position.
@@ -251,6 +292,151 @@ template <typename T>
 [[nodiscard]] constexpr bool Read(T target, Mask bitmask)
 {
   return Read(target, bitmask.position);
+}
+
+/// Extract a set of contiguous bits from an array of bytes. The byte stream and
+/// the result are both assumed to be the same endianness.
+///
+/// Example (Little Endian bit aligned):
+///
+///    uint8_t array[] = { 0xAB, 0xCD, 0xEF };
+///    uint16_t result = StreamExtract<uint16_t>(array,
+///                                              sizeof(array),
+///                                              { .position = 0, width = 16 },
+///                                              Endian::kLittle);
+///    result => 0xCDEF
+///
+/// Example (Big Endian bit aligned):
+///
+///    uint8_t array[] = { 0xAB, 0xCD, 0xEF };
+///    uint16_t result = StreamExtract<uint16_t>(array,
+///                                              sizeof(array),
+///                                              { .position = 0, width = 16 },
+///                                              Endian::kBig);
+///    result => 0xCDAB
+///
+/// Example (Little Endian bit unaligned):
+///
+///    uint8_t array[] = { 0xAB, 0xCD, 0xEF };
+///    uint16_t result = StreamExtract<uint16_t>(array,
+///                                              sizeof(array),
+///                                              { .position = 4, width = 16 },
+///                                              Endian::kLittle);
+///    result => 0xBCDE
+///
+/// Example (Big Endian bit unaligned):
+///
+///    uint8_t array[] = { 0xAB, 0xCD, 0xEF };
+///    uint16_t result = StreamExtract<uint16_t>(array,
+///                                              sizeof(array),
+///                                              { .position = 4, width = 16 },
+///                                              Endian::kBig);
+///    result => 0xFCDB
+///
+/// @tparam T - numeric type to be returned. Can only be uint8_t, 16, 32 and 64.
+/// @param stream - byte array containing the bits to be extracted
+/// @param size - number of bytes of the byte array
+/// @param mask - the mask containing the location of the bits to be extracted.
+/// @return constexpr T - bits extracted from the stream.
+template <typename T>
+constexpr T StreamExtract(const uint8_t * stream,
+                          size_t size,
+                          Mask mask,
+                          sjsu::Endian endian = sjsu::Endian::kLittle)
+{
+  static_assert(
+      std::is_same<T, uint8_t>::value || std::is_same<T, uint16_t>::value ||
+          std::is_same<T, uint32_t>::value || std::is_same<T, uint64_t>::value,
+      "only unsigned integers are allowed to be used in "
+      "sjsu::bit::StreamExtract().");
+
+  // Diving the starting position by 8 will give you the starting byte position.
+  // The fractional part is truncated, which gives the correct answer. If it
+  // were rounded, the answer would be incorrect and would require the use of
+  // the floor() function.
+  const size_t kStartByte = mask.position / 8;
+  // We need to figure out if the bit position is not byte aligned. We can do
+  // this by taking the modulus of the mask's bit starting position.
+  const size_t kStartingBitOffset = mask.position % 8;
+  // We need to figure out if the bit position of the last bits not byte
+  // aligned. This is simply to determine if we need to consume an extra byte
+  // from the stream.
+  const size_t kEndingBitOffset = (mask.position + mask.width) % 8;
+
+  // Contains the total number of bytes that will need to extracted from the
+  // byte stream. The number of bytes can be calculated by taking the bit width
+  // desired and dividing it by the size of a byte (8-bits).
+  size_t total_bytes = mask.width / 8;
+
+  if (kStartingBitOffset != 0)
+  {
+    total_bytes++;
+  }
+
+  if (kEndingBitOffset != 0)
+  {
+    total_bytes++;
+  }
+
+  T result = 0;
+
+  // A pointer to the starting byte of the sequence to pull bytes from.
+  const uint8_t * next_byte_ptr = &stream[kStartByte];
+  // The direction in which we will pull bytes. This is assumed BIG Endian,
+  // thus, the LSB is the first byte. Going forward will pull out more
+  // significant bytes.
+  int scan_direction = 1;
+
+  if (endian == sjsu::Endian::kLittle)
+  {
+    // Little Endian has its LSB at the end of the array, thus we will pull
+    // bytes from the end of the byte array.
+    next_byte_ptr = &stream[(size - 1) - kStartByte];
+    // To get the more significate bytes, we need to progress through the array
+    // backwards, so we need to increase backwards.
+    scan_direction = -1;
+  }
+
+  for (uint32_t i = 0; i < total_bytes && kStartByte + i < size; i++)
+  {
+    const int kShiftAmount  = (8 * i) - kStartingBitOffset;
+    const uint8_t kNextByte = *next_byte_ptr;
+    next_byte_ptr += scan_direction;
+    T finished_byte = 0;
+
+    if (kShiftAmount > 0)
+    {
+      finished_byte = kNextByte << kShiftAmount;
+    }
+    else
+    {
+      finished_byte = kNextByte >> -kShiftAmount;
+    }
+    result |= finished_byte;
+  }
+
+  Mask trimming_mask     = mask;
+  trimming_mask.position = 0;
+  result                 = Extract(result, trimming_mask);
+
+  return result;
+}
+
+/// Extract a set of contiguous bits from a std::array of bytes. See
+/// StreamExtract() above for further details.
+///
+/// @tparam T - numeric type to be returned. Can only be uint8_t, 16, 32 and 64.
+/// @tparam size - deduced size of the std::array that was passed in.
+/// @param stream - byte array containing the bits to be extracted
+/// @param size - number of bytes of the byte array
+/// @param mask - the mask containing the location of the bits to be extracted.
+/// @return constexpr T - bits extracted from the stream.
+template <typename T, size_t size>
+constexpr T StreamExtract(const std::array<uint8_t, size> & stream,
+                          Mask mask,
+                          Endian endian = Endian::kLittle)
+{
+  return StreamExtract<T>(stream.data(), stream.size(), mask, endian);
 }
 }  // namespace bit
 }  // namespace sjsu

@@ -8,6 +8,8 @@ BinPackArguments: true
 AlignConsecutiveAssignments: true
 AlignEscapedNewlines: Left
 BinPackParameters: false
+AlignAfterOpenBracket: Align
+AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Empty

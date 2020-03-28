@@ -3,14 +3,15 @@
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L2_HAL/device_memory_map.hpp"
 #include "utility/log.hpp"
+#include "utility/bit.hpp"
 
 constexpr uint8_t kAccelerometerAddress = 0x1C;
 constexpr uint8_t kGestureAddress       = 0x39;
 
+using sjsu::Endian;
 using sjsu::ReadFnt;
 using sjsu::WriteFnt;
 using sjsu::device::Array_t;
-using sjsu::device::Endian;
 using sjsu::device::Register_t;
 using sjsu::device::Reserved_t;
 
@@ -71,15 +72,11 @@ GestureMemoryMap_t  // APDS-9960
 
 sjsu::lpc40xx::I2c i2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
 
-sjsu::I2cDevice<kAccelerometerAddress,
-                sjsu::device::Endian::kBig,
-                AccelerometerMemoryMap_t>
+sjsu::I2cDevice<kAccelerometerAddress, Endian::kBig, AccelerometerMemoryMap_t>
     accelerometer(&i2c);
 
-sjsu::I2cDevice<kGestureAddress,
-                sjsu::device::Endian::kLittle,
-                GestureMemoryMap_t>
-    gesture(&i2c);
+sjsu::I2cDevice<kGestureAddress, Endian::kLittle, GestureMemoryMap_t> gesture(
+    &i2c);
 
 int main()
 {

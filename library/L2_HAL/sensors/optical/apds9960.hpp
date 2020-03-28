@@ -32,7 +32,7 @@ class Apds9960
   /// @tparam endianess - endianness of the memory map
   /// @tparam write - write function associated with the memory map
   /// @tparam read - read function associated with the memory map
-  template <device::Endian endianess, WriteFnt write, ReadFnt read>
+  template <Endian endianess, WriteFnt write, ReadFnt read>
   struct [[gnu::packed]] MemoryMap_t
   {
     //! @cond Doxygen_Suppress
@@ -505,8 +505,8 @@ class Apds9960
   }
 
   const I2c & i2c_;
-  I2cDevice<0x39, device::Endian::kLittle, MemoryMap_t> gesture_ =
-      I2cDevice<0x39, device::Endian::kLittle, MemoryMap_t>(&i2c_);
+  I2cDevice<0x39, Endian::kLittle, MemoryMap_t> gesture_ =
+      I2cDevice<0x39, Endian::kLittle, MemoryMap_t>(&i2c_);
 
   int8_t up_sensitivity_;
   int8_t down_sensitivity_;
