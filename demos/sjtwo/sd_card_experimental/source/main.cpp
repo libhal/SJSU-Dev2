@@ -121,6 +121,8 @@ int main()
                 block_size.to<int>());
   sjsu::LogInfo("Is Read Only       = " SJ2_HI_BOLD_BLUE "%d", is_read_only);
 
+  return 0;
+
   // Beyond this point, information on the SD card will be overwritten
   sjsu::LogInfo("Deleting blocks");
   card.Erase(0, 1);

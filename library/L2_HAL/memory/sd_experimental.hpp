@@ -61,6 +61,9 @@ class Sd : public Storage
     kR7
   };
 
+  static constexpr bit::Mask kIllegalCommand = bit::CreateMaskFromRange(2);
+  static constexpr bit::Mask kIdle           = bit::CreateMaskFromRange(0);
+
   /// Enumerator for SD Card Capacity type codes
   enum class Type
   {
@@ -234,19 +237,11 @@ class Sd : public Storage
 
   sjsu::Status Enable() override
   {
-    // Lower the clock speed for mounting
-    spi_.SetClock(400_kHz);
-
     Status status = Mount();
-
     if (!IsOk(status))
     {
       SendCommand(Command::kGarbage, 0xFFFFFFFF, KeepAlive::kNo);
     }
-
-    // Bring the clock speed back up for typical use
-    spi_.SetClock(spi_clock_rate_);
-
     return status;
   }
 
@@ -269,11 +264,9 @@ class Sd : public Storage
   units::data::byte_t GetCapacity() override
   {
     // The c_size register's contents can be found in bits [48:69]
-    uint32_t c_size =
-        sd_.csd.byte[7] << 16 | sd_.csd.byte[8] << 8 | sd_.csd.byte[9];
-
-    // Pull out only bits from 0 to 22
-    c_size = bit::Extract(c_size, bit::CreateMaskFromRange(0, 22));
+    constexpr bit::Mask kCSizeMask = { .position = 56, .width = 21 };
+    uint32_t c_size = bit::StreamExtract<uint32_t>(sd_.csd.byte, kCSizeMask);
+    LogDebug("c_size = 0x%08X", c_size);
 
     // Calculate the actual card size with the equation = (c_size + 1) * 512kB
     units::data::byte_t card_size = (c_size + 1) * 512_kB;
@@ -756,7 +749,7 @@ class Sd : public Storage
                          KeepAlive keep_alive)
   {
     // Select the SD Card
-    chip_select_.Set(Gpio::State::kLow);
+    chip_select_.SetLow();
 
     // Send command to the SD Card
     SendCommandParameters(command, parameter);
@@ -821,45 +814,111 @@ class Sd : public Storage
     if (keep_alive == KeepAlive::kNo)
     {
       // Deselect the SPI comm board
-      chip_select_.Set(Gpio::State::kHigh);
+      chip_select_.SetHigh();
     }
 
     return response_result;
   }
 
+  void ClockCard(int number_of_cycles)
+  {
+    for (int i = 0; i < number_of_cycles / 8; i++)
+    {
+      spi_.Transfer(0xFF);
+    }
+  }
+
   // Initialize and enable the SD Card
   Status Mount()
   {
+    // As found in the "Application Note Secure Digital Card Interface for the
+    // MSP430" we need to assert the chip select and clock for more than 74
+    // cycles.
+
+    // Lower the clock speed to 400kHz for mounting
+    spi_.SetClock(400_kHz);
+
+    // So we assert the chip select
+    chip_select_.SetLow();
+    // Clock out 10 bytes or 80 clock cycles, to get the SD Card's internal
+    // state ready for transmission.
+    ClockCard(80);
+    // Then de-assert chip select
+    chip_select_.SetHigh();
+    // And finally clock for 16 more cycles to finish off the necessary time for
+    // the SD card to finish its internal work.
+    ClockCard(16);
+
     // Reset the card and force it to go to idle state at <400kHz with a
     // CMD0 + (active-low) CS
-    LogDebug("Sending SD Card to Idle State...");
-    SendCommand(Command::kReset, 0, KeepAlive::kYes);
-
-    // =========================================================================
-    // Reset the card again to trigger SPI mode
-    // =========================================================================
-    bool reset_was_successful = WaitForCardToIdle();
-    if (!reset_was_successful)
-    {
-      LogError("Failed to initiate SPI mode within timeout. Aborting!");
-      return Status::kTimedOut;
-    }
+    LogDebug("Resetting SD Card...");
+    SendCommand(Command::kReset, 0, KeepAlive::kNo);
 
     // =========================================================================
     // Ask if supported voltage of 3v3 is supported
     // =========================================================================
-    Status voltage_set_status = ConfigureCardVoltage();
+    Status voltage_set_status = CheckSupportedVoltages();
     if (!IsOk(voltage_set_status))
     {
       return voltage_set_status;
     }
 
-    Status card_initialization_status = InitializeSDCard();
-    if (!IsOk(card_initialization_status))
+    bool initialization_successful = false;
+    for (int i = 0; i < kRetryLimit * 10; i++)
     {
-      LogError("SD Card Initialization timed out. Aborting!");
+      Response_t begin_response =
+          SendCommand(Command::kAcBegin, 0, KeepAlive::kNo);
+
+      if (bit::Read(begin_response.byte[0], kIllegalCommand))
+      {
+        LogDebug("ACMD Begin is illegal!!");
+        break;
+      }
+
+      uint32_t init_settings = (0b0101'0000 << 24);
+
+      Response_t init_response =
+          SendCommand(Command::kAcInit, init_settings, KeepAlive::kNo);
+      // If this bit is a 1, then the init process is still going.
+      // If it is 0, then the init process has finished.
+      if (!bit::Read(init_response.byte[0], kIdle))
+      {
+        LogDebug("Initialization Successful (0x%02X)", init_response.byte[0]);
+        initialization_successful = true;
+        break;
+      }
+    }
+
+    if (!initialization_successful)
+    {
+      LogDebug("Initialization Failed!");
       return Status::kTimedOut;
     }
+
+    // =========================================================================
+    // Reset the card again to trigger SPI mode
+    // =========================================================================
+    // bool reset_was_successful = WaitForCardToIdle();
+    // if (!reset_was_successful)
+    // {
+    //   LogError("Failed to initiate SPI mode within timeout. Aborting!");
+    //   return Status::kTimedOut;
+    // }
+
+    // LogDebug("Check if 3v3 is supported!");
+    // Response_t response = SendCommand(Command::kGetOcr, 0, KeepAlive::kNo);
+    // if ((response.byte[2] & 0xC0) == 0xC0)
+    // {
+    //   LogDebug("3v3 is NOT supported!");
+    //   return Status::kInvalidSettings;
+    // }
+
+    // Status card_initialization_status = InitializeSDCard();
+    // if (!IsOk(card_initialization_status))
+    // {
+    //   LogError("SD Card Initialization timed out. Aborting!");
+    //   return Status::kTimedOut;
+    // }
 
     // =========================================================================
     // Get Card Capacity Type
@@ -881,6 +940,9 @@ class Sd : public Storage
     {
       return sd_.csd.status;
     }
+
+    // Bring the clock speed back up for typical use
+    spi_.SetClock(spi_clock_rate_);
 
     return Status::kSuccess;
   }
@@ -906,30 +968,46 @@ class Sd : public Storage
   }
 
   /// Send the host's supported voltage (3.3V) and ask if the card supports it.
-  Status ConfigureCardVoltage()
+  Status CheckSupportedVoltages()
   {
     LogDebug("Checking Current SD Card Voltage Level...");
-    constexpr uint8_t kCheckPattern = 0xAB;
-    uint32_t supported_voltage      = 0x00000001;
-    uint32_t voltage_pattern        = (supported_voltage << 8) | kCheckPattern;
+    constexpr bit::Mask kVoltageCodeMask = bit::CreateMaskFromRange(8, 11) >> 8;
+    constexpr uint8_t kCheckPattern      = 0xAB;
+    uint8_t voltage_code                 = 0x01;
+    uint32_t voltage_pattern             = (voltage_code << 8) | kCheckPattern;
 
     Response_t response =
         SendCommand(Command::kGetOp, voltage_pattern, KeepAlive::kYes);
+
+    LogDebug("Detecting if device is SD version +2.0 or not");
+    if (bit::Read(response.byte[0], kIllegalCommand))
+    {
+      LogDebug(
+          "Card responded with Illegal Command, this is not a supported SD "
+          "card.");
+      return Status::kInvalidSettings;
+    }
+
+    if (bit::Extract(response.byte[3], kVoltageCodeMask) != voltage_code)
+    {
+      // If the 2nd-to-last byte of the reponse AND with our host device's
+      // supported voltage range is 0x00, the SD card doesn't support our
+      // device's operating voltage
+      LogError("Unsupported voltage in use. Aborting! (0x%02X) :: (0x%02X)",
+               response.byte[3],
+               bit::Extract(response.byte[3], kVoltageCodeMask));
+      debug::Hexdump(response.byte.data(), response.byte.size());
+      return Status::kInvalidSettings;
+    }
 
     if (response.byte[4] != kCheckPattern)
     {
       // If the last byte is not an exact echo of the LSB of the kGetOp
       // command's argument, this response is invalid
-      LogError("Response integrity check failed. Aborting!");
+      LogError("Response integrity check failed. Aborting! (0x%02X)",
+               response.byte[4]);
+      debug::Hexdump(response.byte.data(), response.byte.size());
       return Status::kBusError;
-    }
-    else if (response.byte[3] != supported_voltage)
-    {
-      // If the 2nd-to-last byte of the reponse AND with our host device's
-      // supported voltage range is 0x00, the SD card doesn't support our
-      // device's operating voltage
-      LogError("Unsupported voltage in use. Aborting!");
-      return Status::kInvalidSettings;
     }
 
     return Status::kSuccess;
