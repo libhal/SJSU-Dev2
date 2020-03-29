@@ -43,9 +43,7 @@ class Sd : public Storage
   struct Response_t
   {
     /// Array buffer to hold the response bytes
-    std::array<uint8_t, 8> byte;
-    /// The number of bytes in the response.
-    uint32_t length;
+    std::array<uint8_t, 5> byte;
   };
 
   /// Enumerator for response type codes (See Physical Layer V6.00 p.225
@@ -451,8 +449,8 @@ class Sd : public Storage
     // Then read the last two bytes to get the 16-bit CRC
     uint16_t crc_higher_byte = spi_.Transfer(0xFF);
     uint16_t crc_lower_byte  = spi_.Transfer(0xFF);
-    uint32_t actual_crc     = crc_higher_byte << 8 | crc_lower_byte;
-    uint32_t expected_crc   = GetCrc16(csd.byte.data(), csd.byte.size());
+    uint32_t actual_crc      = crc_higher_byte << 8 | crc_lower_byte;
+    uint32_t expected_crc    = GetCrc16(csd.byte.data(), csd.byte.size());
 
     if (expected_crc != actual_crc)
     {
@@ -621,12 +619,12 @@ class Sd : public Storage
   // sent.
   void WaitToReadBlock()
   {
-    // Since the command encountered no errors, we can now begin to
-    // read data. The card will enter "BUSY" mode following reception
-    // of the read command and sending of a response soon after; we
-    // must wait until either the data token "OxFE" or the error token
-    // "b000X_XXXX" is received. The error token's flags have the
-    // following meanings:
+    // Since the command encountered no errors, we can now begin to read data.
+    // The card will enter "BUSY" mode following reception of the read command
+    // and sending of a response soon after; we must wait until either the data
+    // token "OxFE" or the error token "b000X_XXXX" is received. The error
+    // token's flags have the following meanings:
+    //
     // MSB   -->  0 (irrelevant)
     // Bit 6 -->  0 (irrelevant)
     // Bit 5 -->  0 (irrelevant)
@@ -659,43 +657,48 @@ class Sd : public Storage
     }
   }
 
-  // Waits for the card to be ready to receive a new block after one has
-  // been written or erased
-  void WaitWhileBusy()
+  /// Waits for the card to be ready to receive a new block after one has
+  /// been written or erased
+  ///
+  /// @param retry - defaults to -1 to simulate a near infinite loop.
+  /// @return true - if the card finished
+  /// @return false
+  bool WaitWhileBusy(int retry = -1)
   {
     // Wait for the card to finish programming (i.e. when the
     // bytes return to 0xFF)
-    LogDebug("Card is busy. Waiting for it to finish...");
-    while (spi_.Transfer(0xFF) != 0xFF)
+    for (int i = 0; i < retry; i++)
     {
-      continue;
+      if (spi_.Transfer(0xFF) != 0xFF)
+      {
+        LogDebug("Card finished!");
+        return true;
+      }
     }
-    LogDebug("Card finished!");
+    LogDebug("Card Timed Out!");
+    return false;
   }
 
   void SendCommandParameters(Command sdc, uint32_t arg)
   {
     // Calculate the 7-bit CRC (i.e. CRC7) using the SD card standard's
     // algorithm
-    uint8_t payload[] = { static_cast<uint8_t>(sdc),
-                          static_cast<uint8_t>(arg >> 24),
-                          static_cast<uint8_t>(arg >> 16),
-                          static_cast<uint8_t>(arg >> 8),
-                          static_cast<uint8_t>(arg >> 0) };
+    std::array<uint8_t, 5> payload = { static_cast<uint8_t>(sdc),
+                                       static_cast<uint8_t>(arg >> 24),
+                                       static_cast<uint8_t>(arg >> 16),
+                                       static_cast<uint8_t>(arg >> 8),
+                                       static_cast<uint8_t>(arg >> 0) };
 
-    uint8_t crc = GetCrc7(payload, sizeof(payload));
+    spi_.Transfer(payload);
+
+    uint8_t crc = GetCrc7(payload.data(), payload.size());
     if (sdc == Command::kGarbage)
     {
       crc = 0xFF;
     }
 
-    // Send the desired command frame to the SD card board
-    for (uint8_t byte : payload)
-    {
-      spi_.Transfer(byte);
-    }
-    // Send 7-bit CRC and LSB stop addr (as b1)
-    crc = static_cast<uint8_t>((crc << 1) | 0x01);
+    // Send 7-bit CRC and LSB stop addr must be set to a 1
+    crc = static_cast<uint8_t>((crc << 1) | 0b1);
     spi_.Transfer(crc);
   }
 
@@ -756,70 +759,39 @@ class Sd : public Storage
     // Send command to the SD Card
     SendCommandParameters(command, parameter);
 
-    // Need to send at least 1 byte of garbage before checking for a response
-    spi_.Transfer(0xFF);
+    // Creating the response object to return
+    Response_t response;
 
-    // Continuously poll SD card and when we get a byte that is not 0xFF, figure
-    // out where the bit offset is and record the byte that no longer is 0xFF.
-    uint32_t bit_offset    = 0;
-    uint64_t response_data = 0;
-    // Stores the response byte from the for-loop below for later use.
-    uint8_t response_byte = 0;
+    // If the most significant bit of the response byte is a zero, then this
+    // indicates that the start of a response sequence.
+    bit::Mask kResponseFlag = bit::CreateMaskFromRange(7);
 
     for (uint32_t tries = 0; tries < kRetryLimit; tries++)
     {
-      response_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
-      if (response_byte != 0xFF)
+      uint8_t response_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
+
+      if (bit::Read(response_byte, kResponseFlag) == 0)
       {
-        // Determine the offset, since the first byte of a
-        // response will always be 0.
-        while (response_byte & (0x80 >> bit_offset))
+        const uint32_t response_length = GetResponseLength(command);
+
+        // Store all of the response bytes into the response object.
+        for (uint32_t i = 0; i < response_length; i++)
         {
-          bit_offset++;
+          response.byte[i] = response_byte;
+          response_byte    = static_cast<uint8_t>(spi_.Transfer(0xFF));
         }
         break;
       }
     }
 
-    uint32_t response_length = GetResponseLength(command);
-    uint32_t bytes_to_read   = response_length;
-    if (bit_offset > 0)
-    {
-      // Read an extra 8 bits since the response was offset
-      bytes_to_read++;
-    }
-
-    for (uint32_t i = 0; i < bytes_to_read; i++)
-    {
-      // Make space for the next byte
-      response_data = response_data << 8;
-      // Add response byte to response data
-      response_data |= response_byte;
-      // Collect the next byte in the response
-      response_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
-    }
-
-    // Compensate for the bit offset
-    response_data = response_data >> bit_offset;
-
-    // Creating the response object to return
-    Response_t response_result;
-    response_result.length = response_length;
-
-    for (uint32_t i = 0; i < response_length; i++)
-    {
-      uint64_t res = (response_data >> 8 * (response_length - 1 - i));
-      response_result.byte[i] = static_cast<uint8_t>(res);
-    }
-
     // Only end the transaction if keep_alive isn't requested
     if (keep_alive == KeepAlive::kNo)
     {
-      // Deselect the SPI comm board
+      // Deselect the SD card
       chip_select_.SetHigh();
     }
 
-    return response_result;
+    return response;
   }
 
   void ClockCard(int number_of_cycles)
