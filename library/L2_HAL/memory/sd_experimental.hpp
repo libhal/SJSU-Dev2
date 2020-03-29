@@ -403,7 +403,8 @@ class Sd : public Storage
 
   bool CommandWasAcknowledged(Response_t & response)
   {
-    if (response.byte[0] == 0x00 || response.byte[0] == 0x01)
+    // If none of the bits for the R1 response are set, then no errors occurred.
+    if (response.byte[0] == 0x00)
     {
       return true;
     }
