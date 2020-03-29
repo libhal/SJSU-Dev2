@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstdint>
+#include <limits>
 #include <type_traits>
 
 #include "L1_Peripheral/gpio.hpp"
@@ -58,9 +59,6 @@ class Sd : public Storage
     kR6,
     kR7
   };
-
-  static constexpr bit::Mask kIllegalCommand = bit::CreateMaskFromRange(2);
-  static constexpr bit::Mask kIdle           = bit::CreateMaskFromRange(0);
 
   /// Enumerator for SD Card Capacity type codes
   enum class Type
@@ -174,6 +172,11 @@ class Sd : public Storage
     CsdBuffer_t csd;
   };
 
+  /// R1 Response error flag "Illegal Command" bit position
+  static constexpr bit::Mask kIllegalCommand = bit::CreateMaskFromRange(2);
+  /// R1 Response error flag "In Idle Mode" bit position
+  static constexpr bit::Mask kIdle = bit::CreateMaskFromRange(0);
+
   /// @param spi         - spi peripheral connected to an SD card.
   /// @param chip_select - gpio connected to the chip select pin of the SD card.
   /// @param card_detect - gpio connected to the card detect pin of the SD card
@@ -202,9 +205,9 @@ class Sd : public Storage
 
   Status Initialize() override
   {
-    chip_select_.SetDirection(Gpio::Direction::kOutput);
-    chip_select_.Set(Gpio::State::kHigh);
-    card_detect_.SetDirection(Gpio::Direction::kInput);
+    chip_select_.SetAsOutput();
+    chip_select_.SetHigh();
+    card_detect_.SetAsInput();
 
     spi_.Initialize();
     /// Defaulting to 400 kHz as that is the frequency that allows mounting to
@@ -640,7 +643,7 @@ class Sd : public Storage
     // Bit 1 -->  If set, CC error occurred
     // Bit 0 -->  If set, a generic error occurred
 
-    bit::Mask kErrorIndicator = bit::CreateMaskFromRange(5, 7);
+    constexpr bit::Mask kErrorIndicator = bit::CreateMaskFromRange(5, 7);
 
     for (uint32_t i = 0; i < kRetryLimit * 100; i++)
     {
@@ -675,13 +678,13 @@ class Sd : public Storage
   /// @param retry - defaults to -1 to simulate a near infinite loop.
   /// @return true - if the card finished
   /// @return false
-  bool WaitWhileBusy(int retry = -1)
+  bool WaitWhileBusy(uint32_t retry = std::numeric_limits<uint32_t>::max())
   {
-    // Wait for the card to finish programming (i.e. when the
-    // bytes return to 0xFF)
-    for (int i = 0; i < retry; i++)
+    // Wait for the card to finish programming (i.e. when the bytes return to
+    // 0xFF)
+    for (uint32_t i = 0; i < retry; i++)
     {
-      if (spi_.Transfer(0xFF) != 0xFF)
+      if (spi_.Transfer(0xFF) == 0xFF)
       {
         LogDebug("Card finished!");
         return true;
@@ -776,7 +779,7 @@ class Sd : public Storage
 
     // If the most significant bit of the response byte is a zero, then this
     // indicates that the start of a response sequence.
-    bit::Mask kResponseFlag = bit::CreateMaskFromRange(7);
+    constexpr bit::Mask kResponseFlag = bit::CreateMaskFromRange(7);
 
     for (uint32_t tries = 0; tries < kRetryLimit; tries++)
     {
@@ -784,10 +787,10 @@ class Sd : public Storage
 
       if (bit::Read(response_byte, kResponseFlag) == 0)
       {
-        const uint32_t response_length = GetResponseLength(command);
+        const uint32_t kResponseLength = GetResponseLength(command);
 
         // Store all of the response bytes into the response object.
-        for (uint32_t i = 0; i < response_length; i++)
+        for (uint32_t i = 0; i < kResponseLength; i++)
         {
           response.byte[i] = response_byte;
           response_byte    = static_cast<uint8_t>(spi_.Transfer(0xFF));
@@ -895,6 +898,7 @@ class Sd : public Storage
     // =========================================================================
     // Get and store CSD Register
     // =========================================================================
+    LogDebug("Getting CSD register contents");
     sd_.csd = GetCsdRegisterBlock();
 
     if (!IsOk(sd_.csd.status))
