@@ -154,7 +154,7 @@ class Sd : public Storage
   struct CsdBuffer_t
   {
     /// Length of the CSD buffer +2 for CRC
-    static constexpr size_t kBytesInCsdRegister = 16 + 2;
+    static constexpr size_t kBytesInCsdRegister = 16;
     /// CSD contents
     std::array<uint8_t, kBytesInCsdRegister> byte;
     /// Determines if hte CSD contents are valid.
@@ -264,12 +264,13 @@ class Sd : public Storage
   units::data::byte_t GetCapacity() override
   {
     // The c_size register's contents can be found in bits [48:69]
-    constexpr bit::Mask kCSizeMask = { .position = 56, .width = 21 };
-    uint32_t c_size = bit::StreamExtract<uint32_t>(sd_.csd.byte, kCSizeMask);
+    constexpr bit::Mask kCSizeMask = bit::CreateMaskFromRange(48, 69);
+    uint32_t c_size =
+        bit::StreamExtract<uint32_t>(sd_.csd.byte, kCSizeMask, Endian::kLittle);
     LogDebug("c_size = 0x%08X", c_size);
 
-    // Calculate the actual card size with the equation = (c_size + 1) * 512kB
-    units::data::byte_t card_size = (c_size + 1) * 512_kB;
+    // Calculate the actual card size with the equation = (c_size + 1) * 512KiB
+    units::data::byte_t card_size = (c_size + 1) * 512_KiB;
 
     return card_size;
   };
@@ -442,15 +443,16 @@ class Sd : public Storage
     WaitToReadBlock();
 
     // Read all the bytes of a single csd
-    for (uint16_t i = 0; i < CsdBuffer_t::kBytesInCsdRegister; i++)
+    for (uint16_t i = 0; i < csd.byte.size(); i++)
     {
       csd.byte[i] = static_cast<uint8_t>(spi_.Transfer(0xFF));
     }
 
     // Then read the last two bytes to get the 16-bit CRC
-    uint32_t actual_crc = csd.byte.end()[-2] << 8 | csd.byte.end()[-1];
-    uint32_t expected_crc =
-        GetCrc16(csd.byte.data(), CsdBuffer_t::kBytesInCsdRegister - 2);
+    uint16_t crc_higher_byte = spi_.Transfer(0xFF);
+    uint16_t crc_lower_byte  = spi_.Transfer(0xFF);
+    uint32_t actual_crc     = crc_higher_byte << 8 | crc_lower_byte;
+    uint32_t expected_crc   = GetCrc16(csd.byte.data(), csd.byte.size());
 
     if (expected_crc != actual_crc)
     {
@@ -896,31 +898,6 @@ class Sd : public Storage
     }
 
     // =========================================================================
-    // Reset the card again to trigger SPI mode
-    // =========================================================================
-    // bool reset_was_successful = WaitForCardToIdle();
-    // if (!reset_was_successful)
-    // {
-    //   LogError("Failed to initiate SPI mode within timeout. Aborting!");
-    //   return Status::kTimedOut;
-    // }
-
-    // LogDebug("Check if 3v3 is supported!");
-    // Response_t response = SendCommand(Command::kGetOcr, 0, KeepAlive::kNo);
-    // if ((response.byte[2] & 0xC0) == 0xC0)
-    // {
-    //   LogDebug("3v3 is NOT supported!");
-    //   return Status::kInvalidSettings;
-    // }
-
-    // Status card_initialization_status = InitializeSDCard();
-    // if (!IsOk(card_initialization_status))
-    // {
-    //   LogError("SD Card Initialization timed out. Aborting!");
-    //   return Status::kTimedOut;
-    // }
-
-    // =========================================================================
     // Get Card Capacity Type
     // =========================================================================
     sd_.type = GetCardType();
@@ -943,26 +920,6 @@ class Sd : public Storage
 
     // Bring the clock speed back up for typical use
     spi_.SetClock(spi_clock_rate_);
-
-    return Status::kSuccess;
-  }
-
-  Status InitializeSDCard()
-  {
-    Response_t response;
-    constexpr uint32_t kBusyBit = 0x1;
-    int tries                   = 0;
-    for (tries = 0; tries < kRetryLimit && response.byte[0] & kBusyBit; tries++)
-    {
-      // Send host's operating conditions
-      response = SendCommand(Command::kInit, 0x40000000, KeepAlive::kYes);
-    }
-
-    if (tries > kRetryLimit)
-    {
-      LogError("SD Card timed out. Aborting!");
-      return Status::kTimedOut;
-    }
 
     return Status::kSuccess;
   }
@@ -1011,31 +968,6 @@ class Sd : public Storage
     }
 
     return Status::kSuccess;
-  }
-
-  bool WaitForCardToIdle()
-  {
-    int tries = 0;
-    for (tries = 0; tries < kRetryLimit; tries++)
-    {
-      Response_t response = SendCommand(Command::kReset, 0, KeepAlive::kYes);
-
-      // Check if R1 response frame's bit 1 is set (to ensure that
-      // card is in idle state)
-      if (response.byte[0] != 0xFF && (response.byte[0] & 0x01))
-      {
-        // If it is, we can move on; otherwise, keep trying for a set
-        // amount of tries
-        break;
-      }
-      Delay(10ms);
-    }
-
-    if (tries > kRetryLimit)
-    {
-      return false;
-    }
-    return true;
   }
 
   Type GetCardType()
