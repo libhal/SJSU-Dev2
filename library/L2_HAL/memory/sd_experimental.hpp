@@ -21,10 +21,10 @@ class Sd : public Storage
   /// via research) is to wait at least 1-8 bytes after sending a command's CRC
   /// before expecting a response from the card.
   /// See https://luckyresistor.me/cat-protector/software/sdcard-2/
-  static constexpr uint8_t kRetryLimit = 250;
+  static constexpr uint32_t kRetryLimit = 250;
 
   /// Enforcing block-size cross-compatibility
-  static constexpr uint16_t kBlockSize = 512;
+  static constexpr uint32_t kBlockSize = 512;
 
   /// Table holding CRC8 tokens used to verify SD card transactions.
   static constexpr sjsu::crc::CrcTableConfig_t<uint8_t> kCrcTable8 =
@@ -461,13 +461,22 @@ class Sd : public Storage
       return csd;
     }
 
-    // Wait for the SD card to go out of idle state
-    do
-    {
-      response = SendCommand(Command::kGetStatus, 32, KeepAlive::kNo);
-    } while (response.byte[0] & 0x01);
+    WaitForDeviceToLeaveIdle();
 
     return csd;
+  }
+
+  void WaitForDeviceToLeaveIdle()
+  {
+    while (true)
+    {
+      Response_t response =
+          SendCommand(Command::kGetStatus, 32, KeepAlive::kNo);
+      if (response.byte[0] & 0x01)
+      {
+        break;
+      }
+    }
   }
 
   /// Read any number of blocks from the SD card
@@ -510,11 +519,7 @@ class Sd : public Storage
       block.status = sjsu::Status::kBusError;
     }
 
-    // Wait for the SD card to go out of idle state
-    do
-    {
-      response = SendCommand(Command::kGetStatus, 32, KeepAlive::kNo);
-    } while (response.byte[0] & 0x01);
+    WaitForDeviceToLeaveIdle();
 
     return block;
   }
@@ -529,7 +534,7 @@ class Sd : public Storage
     Response_t response =
         SendCommand(Command::kWriteSingle, address, KeepAlive::kYes);
     sjsu::LogDebug("Sent Write Cmd");
-    sjsu::LogDebug("[R1 Response:0x%02X]", response.byte[0]);
+    sjsu::LogDebug("[R1 Response: 0x%02X]", response.byte[0]);
 
     // Check if the response was acknowledged properly
     if (response.byte[0] != 0x00)
@@ -618,7 +623,7 @@ class Sd : public Storage
 
   // Waits for the card to respond after a single or multi block read cmd is
   // sent.
-  void WaitToReadBlock()
+  bool WaitToReadBlock()
   {
     // Since the command encountered no errors, we can now begin to read data.
     // The card will enter "BUSY" mode following reception of the read command
@@ -634,28 +639,34 @@ class Sd : public Storage
     // Bit 2 -->  If set, card ECC failed
     // Bit 1 -->  If set, CC error occurred
     // Bit 0 -->  If set, a generic error occurred
-    uint8_t wait_byte = 0x00;
-    do
-    {
-      wait_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
-    } while (wait_byte != 0xFE && (wait_byte & 0xE0) != 0x00);
 
-    // DEBUG: Check the value of the wait byte
-    if (wait_byte == 0xFE)
+    bit::Mask kErrorIndicator = bit::CreateMaskFromRange(5, 7);
+
+    for (uint32_t i = 0; i < kRetryLimit * 100; i++)
     {
-      LogDebug(
-          "Received GO Byte 0xFE; SD Card is now sending block payload...");
+      uint8_t wait_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
+
+      if (wait_byte == 0xFE)
+      {
+        LogDebug("Received GO Byte 0xFE;");
+        LogDebug("SD Card is now sending block payload...");
+        return true;
+      }
+
+      if (bit::Extract(wait_byte, kErrorIndicator) == 0x00)
+      {
+        LogDebug("Error: SD Card Rejected Read Cmd [Response: 0x%02X]",
+                 wait_byte);
+        LogDebug("Card Locked?: %s", ToBool(wait_byte & 0x10));
+        LogDebug("Addr Out of Range?: %s", ToBool(wait_byte & 0x08));
+        LogDebug("Card ECC Failed?: %s", ToBool(wait_byte & 0x04));
+        LogDebug("CC Error?: %s", ToBool(wait_byte & 0x02));
+        LogDebug("Error?: %s", ToBool(wait_byte & 0x01));
+        return false;
+      }
     }
-    else if ((wait_byte & 0xE0) == 0x00)
-    {
-      LogDebug("Error: SD Card Rejected Read Cmd [Response: 0x%02X]",
-               wait_byte);
-      LogDebug("Card Locked?: %s", ToBool(wait_byte & 0x10));
-      LogDebug("Addr Out of Range?: %s", ToBool(wait_byte & 0x08));
-      LogDebug("Card ECC Failed?: %s", ToBool(wait_byte & 0x04));
-      LogDebug("CC Error?: %s", ToBool(wait_byte & 0x02));
-      LogDebug("Error?: %s", ToBool(wait_byte & 0x01));
-    }
+
+    return false;
   }
 
   /// Waits for the card to be ready to receive a new block after one has
@@ -839,14 +850,14 @@ class Sd : public Storage
     }
 
     bool initialization_successful = false;
-    for (int i = 0; i < kRetryLimit * 10; i++)
+    for (uint32_t i = 0; i < kRetryLimit * 10; i++)
     {
       Response_t begin_response =
           SendCommand(Command::kAcBegin, 0, KeepAlive::kNo);
 
       if (bit::Read(begin_response.byte[0], kIllegalCommand))
       {
-        LogDebug("ACMD Begin is illegal!!");
+        LogDebug("ACMD Begin is illegal!");
         break;
       }
 
