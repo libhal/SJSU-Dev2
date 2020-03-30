@@ -17,6 +17,7 @@ var searchData=
   ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae0250a624094081b9ca08accfbbabc6b',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a62684c9056be5f64a86d23046167565e',1,'sjsu::lpc40xx::Pin']]],
   ['encoding_5ftype',['encoding_type',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a929ee806fb3a9ab1ab2868366c4f6284',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
+  ['endian',['Endian',['../d0/d6b/namespacesjsu.html#a18160a1f80da5769d7c6e4cfadec54c7',1,'sjsu']]],
   ['erase',['Erase',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ad4c7ef4b57fdbc01deaea42ac0938a00',1,'sjsu::lpc40xx::Eeprom::Erase()'],['../dc/da6/classsjsu_1_1Storage.html#aa0bba1c28cd0a79e7d49d565572caa11',1,'sjsu::Storage::Erase()'],['../db/d57/classsjsu_1_1experimental_1_1Sd.html#aab189e6b51fef30e583c127069b62892',1,'sjsu::experimental::Sd::Erase()']]],
   ['errorcode',['errorCode',['../df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html#a9a0b6b5a554d1b0099d2ec74714d3bfc',1,'sjsu::lpc40xx::Can::FrameError_t']]],
   ['errormessage',['errorMessage',['../df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html#a81d292acd5329fc970959bf9806351a6',1,'sjsu::lpc40xx::Can::FrameError_t']]],

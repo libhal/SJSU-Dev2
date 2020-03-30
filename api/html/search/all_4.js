@@ -38,7 +38,7 @@ var searchData=
   ['disabletimer',['DisableTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa13190bddfc1da090d3b3a445ee2eb5d',1,'sjsu::cortex::SystemTimer']]],
   ['disconnectfromaccesspoint',['DisconnectFromAccessPoint',['../dc/d4f/classsjsu_1_1Esp8266.html#a3ae040c2c531250546b33b479729d7bd',1,'sjsu::Esp8266::DisconnectFromAccessPoint()'],['../dc/d16/classsjsu_1_1WiFi.html#a7acc92e269afcc38ee89673d8793c1d6',1,'sjsu::WiFi::DisconnectFromAccessPoint()']]],
   ['displaymode',['DisplayMode',['../d3/d56/classsjsu_1_1St7066u.html#abf8cbd56f6e5276a7760a78488df2e95',1,'sjsu::St7066u']]],
-  ['displaytext',['DisplayText',['../d3/d56/classsjsu_1_1St7066u.html#a1e9218ddcf6701c7e6dd775523eba467',1,'sjsu::St7066u']]],
+  ['displaytext',['DisplayText',['../d3/d56/classsjsu_1_1St7066u.html#a671f9cc88b0d9af9803e1e04348d48fa',1,'sjsu::St7066u']]],
   ['distancesensor',['DistanceSensor',['../df/d5c/classsjsu_1_1DistanceSensor.html',1,'sjsu']]],
   ['divide_5fadd',['divide_add',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a805a337d0ddac02557b190af81a8f49e',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
   ['divide_5flatch',['divide_latch',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a811d5016449d3f36725712edd9f93500',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],

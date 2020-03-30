@@ -11,6 +11,7 @@
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
+#include "utility/bit.hpp"
 
 /// Boiler plate for defining memory comparision operations
 #define MEMORY_OPERATION(op)                                \
@@ -44,13 +45,6 @@ using ReadFnt = void (*)(intptr_t, size_t, uint8_t *);
 
 namespace device
 {
-/// The Endianess of the system
-enum class Endian
-{
-  kLittle,
-  kBig
-};
-
 /// Represents a register within the memory map of a device.
 ///
 /// @tparam Int - the int type to represent this register. This can be uint8_t,
@@ -227,8 +221,8 @@ Array_t
 /// @tparam endianess - the endianess of the device to communicate with
 /// @tparam MemoryMap - the memory map structure to use.
 template <class DeviceProtocol,
-          device::Endian endianess,
-          template <device::Endian endian, WriteFnt write, ReadFnt read>
+          Endian endianess,
+          template <Endian endian, WriteFnt write, ReadFnt read>
           class MemoryMap>
 class Device
 {
@@ -294,8 +288,8 @@ class Device
 /// @tparam endianess - The endianess of the I2C device
 /// @tparam MemoryMap - The memory map structure of the device
 template <const uint8_t kDeviceAddress,
-          device::Endian endianess,
-          template <device::Endian endian, WriteFnt write, ReadFnt read>
+          Endian endianess,
+          template <Endian endian, WriteFnt write, ReadFnt read>
           class MemoryMap>
 class I2cDevice : public Device<I2cDevice<kDeviceAddress, endianess, MemoryMap>,
                                 endianess,
