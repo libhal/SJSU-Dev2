@@ -25,7 +25,6 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
   };
   std::array<TaskHandle_t, kTaskNames.size()> task_handles;
   std::array<Mock<TaskInterface>, kTaskNames.size()> mock_tasks;
-
   for (size_t i = 0; i < kTaskNames.size(); i++)
   {
     INFO("Stubbing mock task: " << i);
@@ -39,33 +38,46 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
     When(Method(mock_tasks[i], GetTaskBuffer)).AlwaysReturn(0);
   }
 
+  /// The TaskScheduler object to test.
+  TaskScheduler scheduler;
+
   SECTION("AddTask")
   {
-    TaskScheduler scheduler           = TaskScheduler();
     TaskInterface * const * task_list = scheduler.GetAllTasks();
     constexpr uint8_t kMaxTaskCount   = config::kTaskSchedulerSize;
     uint8_t task_count                = 0;
+
     // scheduler should be initially empty
     CHECK(scheduler.GetTaskCount() == 0);
+
     for (size_t i = 0; i < kMaxTaskCount; i++)
     {
       INFO("Testing AddTask() for task at index: " << i);
+      // Setup
       TaskInterface & task = mock_tasks[i].get();
+
+      // Exercise
       scheduler.AddTask(&task);
       task_count++;
+
+      // Verify
       CHECK(scheduler.GetTaskCount() == task_count);
       CHECK(!strcmp(task_list[i]->GetName(), task.GetName()));
     }
+
     // scheduler should now be full and new tasks should not be added
     TaskInterface & task = mock_tasks[kMaxTaskCount].get();
+
+    // Exercise
     scheduler.AddTask(&task);
+
+    // Verify
     CHECK(scheduler.GetTaskCount() == task_count);
     CHECK(strcmp(task_list[kMaxTaskCount - 1]->GetName(), task.GetName()));
   }
 
   SECTION("GetTask")
   {
-    TaskScheduler scheduler;
     constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
     uint8_t task_count              = 0;
     CHECK(scheduler.GetTaskCount() == 0);
@@ -75,26 +87,35 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
       for (size_t i = 0; i < kMaxTaskCount; i++)
       {
         INFO("Testing GetTask() for task at index: " << i);
+
+        // Setup
         TaskInterface & task = mock_tasks[i].get();
         scheduler.AddTask(&task);
         task_count++;
-        CHECK(scheduler.GetTaskCount() == task_count);
+
+        // Exercise
         TaskInterface * retrieved_task = scheduler.GetTask(kTaskNames[i]);
+
+        // Verify
+        CHECK(scheduler.GetTaskCount() == task_count);
         CHECK(retrieved_task != nullptr);
         CHECK(!strcmp(retrieved_task->GetName(), task.GetName()));
       }
     }
+
     SECTION("Getting a task that has not been scheduled")
     {
+      // Exercise
       TaskInterface * non_existent_task =
           scheduler.GetTask(kTaskNames[kMaxTaskCount]);
+
+      // Verify
       CHECK(non_existent_task == nullptr);
     }
   }
 
   SECTION("GetTaskIndex")
   {
-    TaskScheduler scheduler;
     constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
     uint8_t task_count              = 0;
 
@@ -104,12 +125,17 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
       {
         INFO("Testing GetTaskIndex() for task at index: " << i);
         TaskInterface & task = mock_tasks[i].get();
+
+        // Exercise
         scheduler.AddTask(&task);
+
+        // Verify
         CHECK(scheduler.GetTaskIndex(task.GetName()) == task_count);
         task_count++;
         CHECK(scheduler.GetTaskCount() == task_count);
       }
     }
+
     SECTION("Getting the task index of a task that has not been scheduled")
     {
       // If retreiving the index of a task that is not scheduled, GetTaskIndex
@@ -124,24 +150,30 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
 
     SECTION("When scheduler is empty")
     {
-      TaskScheduler scheduler;
-      // should do nothing since this task is not scheduled
+      // Exercise
       scheduler.RemoveTask("Task A");
+
+      // Verify: Should do nothing since "Task A" is not scheduled
       CHECK(vTaskDelete_fake.call_count == 0);
     }
+
     SECTION("When scheduler is not empty")
     {
-      constexpr size_t kExpectedTaskCount = 4;
-      TaskScheduler scheduler;
-      TaskInterface * const * task_list = scheduler.GetAllTasks();
+      // Setup
+      constexpr size_t kExpectedTaskCount  = 4;
+      TaskInterface * const * task_list    = scheduler.GetAllTasks();
+      constexpr uint8_t kTaskIndexToRemove = 2;
+
       for (size_t i = 0; i < kExpectedTaskCount; i++)
       {
         scheduler.AddTask(&(mock_tasks[i].get()));
       }
       CHECK(scheduler.GetTaskCount() == kExpectedTaskCount);
-      // Remove task named "Task 3"
-      constexpr uint8_t kTaskIndexToRemove = 2;
+
+      // Exercise: Remove task named "Task 3"
       scheduler.RemoveTask(mock_tasks[kTaskIndexToRemove].get().GetName());
+
+      // Verify
       CHECK(vTaskDelete_fake.call_count == 1);
       CHECK(scheduler.GetTaskCount() == (kExpectedTaskCount - 1));
       CHECK(task_list[kTaskIndexToRemove] == nullptr);
@@ -154,10 +186,10 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
     RESET_FAKE(xEventGroupCreateStatic);
     RESET_FAKE(vTaskStartScheduler);
 
+    // Setup
     constexpr uint32_t kPreRunSyncBits = 0xFFFF;
     xEventGroupCreateStatic_fake.custom_fake =
         xEventGroupCreateStatic_custom_fake;
-    TaskScheduler scheduler;
     constexpr uint8_t kMaxTaskCount = config::kTaskSchedulerSize;
     size_t task_count               = 0;
     // Add tasks 1-16 to the scheduler
@@ -168,6 +200,7 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
     }
     CHECK(scheduler.GetTaskCount() == task_count);
 
+    // Exercise
     scheduler.Start();
     // xTaskCreateStatic and Setup should be invoked for each scheduled task
     for (size_t i = 0; i < task_count; i++)
@@ -175,6 +208,8 @@ TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
       INFO("Checking Setup invocation for task at index: " << i);
       Verify(Method(mock_tasks[i], Setup)).Once();
     }
+
+    // Verify
     CHECK(xTaskCreateStatic_fake.call_count == kMaxTaskCount);
     CHECK(xEventGroupCreateStatic_fake.call_count == 1);
     CHECK(scheduler.GetPreRunEventGroupHandle() == test_event_group_handle);

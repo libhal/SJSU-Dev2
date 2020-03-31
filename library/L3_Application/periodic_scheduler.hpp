@@ -24,14 +24,18 @@ class PeriodicTaskInterface
   ///
   /// @param count Number of times the task function has been run.
   using TaskFunction = std::function<void(uint32_t count)>;
+
   /// @return The task function that is executed periodically by the task.
   virtual TaskFunction * GetTaskFunction() const = 0;
+
   /// @return The semaphore used by the PeriodicScheduler to manage the
   ///         execution of the task function.
   virtual SemaphoreHandle_t GetPeriodicSemaphore() const = 0;
+
   /// @return The number of times the task has successfully executed.
   virtual uint32_t GetRunCount() const = 0;
 };
+
 /// An abstract layer for FreeRTOS tasks that are scheduled and executed at
 /// periodic intervals by the PeriodicScheduler.
 ///
@@ -47,24 +51,19 @@ class PeriodicTask final : public Task<kTaskStackSize>,
   /// @param name The name used to identify this task.
   /// @param priority The priority of this task.
   /// @param task_function The task function that is periodically executed.
-  /// @param task_scheduler The TaskScheduler responsible for scheduling this
-  ///                       task.
   explicit PeriodicTask(const char * name,
                         Priority priority,
-                        TaskFunction * task_function,
-                        TaskSchedulerInterface & task_scheduler)
-      : Task<kTaskStackSize>(name, priority, task_scheduler),
-        task_function_(task_function)
+                        TaskFunction * task_function)
+      : Task<kTaskStackSize>(name, priority), task_function_(task_function)
   {
     SJ2_ASSERT_FATAL(task_function_ != nullptr,
-                     "Task function cannot be null for task: %s",
-                     name);
+                     "Task function cannot be null for task: %s", name);
     semaphore_ = xSemaphoreCreateBinaryStatic(&semaphore_buffer_);
     SJ2_ASSERT_FATAL(semaphore_ != nullptr,
-                     "Error creating periodic semaphore for task: %s",
-                     name);
+                     "Error creating periodic semaphore for task: %s", name);
     run_count_ = 0;
   }
+
   /// @returns Returns true each time the task_function_ is executed.
   bool Run() override
   {
@@ -74,17 +73,20 @@ class PeriodicTask final : public Task<kTaskStackSize>,
     }
     return true;
   }
+
   /// @return The task function that is executed periodically by the task.
   TaskFunction * GetTaskFunction() const override
   {
     return task_function_;
   }
+
   /// @return The semaphore used by the PeriodicScheduler to manage the
   ///         execution of the task function.
   SemaphoreHandle_t GetPeriodicSemaphore() const override
   {
     return semaphore_;
   }
+
   /// @return The number of times the task has successfully executed.
   uint32_t GetRunCount() const override
   {
@@ -102,6 +104,7 @@ class PeriodicTask final : public Task<kTaskStackSize>,
   /// Number of times the task function has been executed.
   uint32_t run_count_;
 };
+
 /// A Task responsible for executing PeriodicTasks at fixed frequencies of 1Hz,
 /// 10Hz, 100Hz, and 1000Hz.
 ///
@@ -114,34 +117,28 @@ class PeriodicScheduler final : public Task<512>
   enum class Frequency : uint8_t
   {
     /// Frequency option to execute the periodic task at 1 Hz.
-    // NOLINTNEXTLINE(readability-identifier-naming)
-    k1Hz = 0,
+    kF1Hz = 0,
     /// Frequency option to execute the periodic task at 10 Hz.
-    // NOLINTNEXTLINE(readability-identifier-naming)
-    k10Hz,
+    kF10Hz,
     /// Frequency option to execute the periodic task at 100 Hz.
-    // NOLINTNEXTLINE(readability-identifier-naming)
-    k100Hz,
+    kF100Hz,
     /// Frequency option to execute the periodic task at 1000 Hz.
-    // NOLINTNEXTLINE(readability-identifier-naming)
-    k1000Hz,
+    kF1000Hz,
     /// The total number of frequency options.
     kCount,
   };
+
   /// The total number of PeriodicTasks that can be scheduled. One PeriodicTask
   /// can be scheduled for each frequency option.
   static constexpr size_t kMaxTaskCount = Value(Frequency::kCount);
-  /// @param task_scheduler The TaskScheduler responsible for managing and
-  ///                       scheduling the PeriodicScheduler.
+
   /// @param name The name used to identify this scheduler.
-  explicit PeriodicScheduler(const char * name,
-                             TaskSchedulerInterface & task_scheduler)
-      : Task(name, Priority::kLow, task_scheduler), task_list_{ nullptr }
+  explicit PeriodicScheduler(const char * name)
+      : Task(name, Priority::kLow), task_list_{ nullptr }
   {
     const uint32_t kPeriods[]  = { 1000, 100, 10, 1 };
-    const char * timer_names[] = {
-      "Timer_1Hz", "Timer_10Hz", "Timer_100Hz", "Timer_1000Hz"
-    };
+    const char * timer_names[] = { "Timer_1Hz", "Timer_10Hz", "Timer_100Hz",
+                                   "Timer_1000Hz" };
     for (uint8_t i = 0; i < kMaxTaskCount; i++)
     {
       timers_[i] =
@@ -152,18 +149,19 @@ class PeriodicScheduler final : public Task<512>
                              HandlePeriodicTimer,  // pxCallbackFunction
                              &(timer_buffers_[i]));
       SJ2_ASSERT_FATAL(timers_[i] != nullptr,
-                       "Failed to create timer for: %s\n",
-                       timer_names[i]);
+                       "Failed to create timer for: %s\n", timer_names[i]);
       SJ2_ASSERT_FATAL(xTimerStart(timers_[i], 0) == pdPASS,
                        "Failed to set timer into the active state for: %s\n",
                        timer_names[i]);
     }
   }
+
   /// @returns Always returns true.
   bool Run() override
   {
     return true;
   }
+
   /// Adds a periodic task to the scheduler.
   ///
   /// @param task      Pointer to the task that is to be executed periodically.
@@ -177,6 +175,7 @@ class PeriodicScheduler final : public Task<512>
     // identify which task should be handled in the callback.
     vTimerSetTimerID(timers_[Value(frequency)], static_cast<void *>(task));
   }
+
   /// @return The scheduled task for a specified frequency. If no task has been
   ///         scheduled then a nullptr is returned.
   PeriodicTaskInterface * GetTask(Frequency frequency) const
