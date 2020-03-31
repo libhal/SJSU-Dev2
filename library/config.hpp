@@ -85,7 +85,6 @@ namespace config
 ///    can only be between 1Hz and 100Mhz, then kSystemClockRate should be
 ///    checked if it is within range.
 ///
-/// @{
 
 /// Creates a typed constexpr version of the macro defintion which should be
 /// used rather than using the macro directly.
@@ -239,4 +238,4 @@ SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
 #define PRINTF_DISABLE_SUPPORT_PTRDIFF_T
 #endif
 }  // namespace config
-/// @}
+
