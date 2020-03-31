@@ -10,7 +10,7 @@ namespace rtos
 void TaskScheduler::RunTask(void * task_pointer)
 {
   TaskInterface & task = *(reinterpret_cast<TaskInterface *>(task_pointer));
-  TaskSchedulerInterface & task_scheduler = task.GetTaskScheduler();
+  TaskScheduler & task_scheduler = *(task.GetTaskScheduler());
 
   const uint8_t kTaskCount = task_scheduler.GetTaskCount();
   const uint8_t kTaskIndex = task_scheduler.GetTaskIndex(task.GetName());
@@ -26,8 +26,8 @@ void TaskScheduler::RunTask(void * task_pointer)
                    "PreRun() failed for task: %s, terminating scheduler!",
                    task.GetName());
   // wait for all other PreRun() of other tasks to finish
-  xEventGroupSync(
-      pre_run_event_group_handle, kSyncBit, kPreRunSyncBits, portMAX_DELAY);
+  xEventGroupSync(pre_run_event_group_handle, kSyncBit, kPreRunSyncBits,
+                  portMAX_DELAY);
   // All PreRun() complete, each Task's Run() can now start executing...
   TickType_t last_wake_time = xTaskGetTickCount();
   while (true)
@@ -61,11 +61,9 @@ void TaskScheduler::InitializeAllTasks()
         task->GetPriority(),
         task->GetStack(),        // the task's statically allocated memory
         task->GetTaskBuffer());  // task TCB
-    SJ2_ASSERT_FATAL(task->GetHandle() != nullptr,
-                     "Unable to create task: %s",
+    SJ2_ASSERT_FATAL(task->GetHandle() != nullptr, "Unable to create task: %s",
                      task->GetName());
-    SJ2_ASSERT_FATAL(task->Setup(),
-                     "Failed to complete Setup() for task: %s",
+    SJ2_ASSERT_FATAL(task->Setup(), "Failed to complete Setup() for task: %s",
                      task->GetName());
     pre_run_sync_bits_ |= (1 << i);
   }
@@ -73,6 +71,24 @@ void TaskScheduler::InitializeAllTasks()
       xEventGroupCreateStatic(&pre_run_event_group_buffer_);
   SJ2_ASSERT_FATAL(pre_run_event_group_handle_ != nullptr,
                    "Failed to create PreRun Event Group!");
+}
+
+void TaskScheduler::AddTask(TaskInterface * task)
+{
+  SJ2_ASSERT_FATAL(
+      task_count_ + 1 < config::kTaskSchedulerSize,
+      "The scheduler is currently full, the task will not be "
+      "added. Consider increasing the scheduler size configuration.");
+  for (uint8_t i = 0; i < config::kTaskSchedulerSize; i++)
+  {
+    if (task_list_[i] == nullptr)
+    {
+      task_list_[i] = task;
+      task_count_++;
+      task->SetTaskScheduler(this);
+      return;
+    }
+  }
 }
 
 void TaskScheduler::RemoveTask(const char * task_name)

@@ -24,31 +24,34 @@ TEST_CASE("Testing PeriodicTask", "[periodic_task]")
   constexpr Priority kTaskPriority                       = Priority::kLow;
   PeriodicTaskInterface::TaskFunction mock_task_function = [](uint32_t) {};
 
-  Mock<TaskSchedulerInterface> mock_task_scheduler;
-  Fake(Method(mock_task_scheduler, AddTask));
-
   RESET_FAKE(xQueueGenericCreateStatic);
   RESET_FAKE(xQueueSemaphoreTake);
 
   SECTION("Get periodic semaphore")
   {
+    // Setup
     xQueueGenericCreateStatic_fake.custom_fake =
         xQueueGenericCreateStatic_custom_fake;
-    PeriodicTask<512> test_task(kTaskName,
-                                kTaskPriority,
-                                &mock_task_function,
-                                mock_task_scheduler.get());
+    PeriodicTask<512> test_task(kTaskName, kTaskPriority, &mock_task_function);
+
+    // Exercise
+    auto actual_result = test_task.GetPeriodicSemaphore();
+
+    // Verify
     CHECK(xQueueGenericCreateStatic_fake.call_count == 1);
-    CHECK(test_task.GetPeriodicSemaphore() == test_semaphore);
+    CHECK(actual_result == test_semaphore);
   }
 
   SECTION("Get task function")
   {
-    PeriodicTask<512> test_task(kTaskName,
-                                kTaskPriority,
-                                &mock_task_function,
-                                mock_task_scheduler.get());
-    CHECK(test_task.GetTaskFunction() == (&mock_task_function));
+    // Setup
+    PeriodicTask<512> test_task(kTaskName, kTaskPriority, &mock_task_function);
+
+    // Exercise
+    auto actual_result = test_task.GetTaskFunction();
+
+    // Verify
+    CHECK(actual_result == (&mock_task_function));
   }
 }
 
@@ -58,33 +61,35 @@ TEST_CASE("Testing PeriodicScheduler", "[periodic_scheduler]")
   RESET_FAKE(xTimerGenericCommand);
 
   const char kPeriodicSchedulerName[] = "Periodic Scheduler";
-  Mock<TaskSchedulerInterface> mock_task_scheduler;
-  Fake(Method(mock_task_scheduler, AddTask));
+  PeriodicScheduler scheduler = PeriodicScheduler(kPeriodicSchedulerName);
 
   SECTION("Initialization")
   {
-    PeriodicScheduler scheduler =
-        PeriodicScheduler(kPeriodicSchedulerName, mock_task_scheduler.get());
-    CHECK(scheduler.GetPriority() == Priority::kLow);
     // A total of four timers should be created for each of the task frequencies
     // with each timer set to its active state
     constexpr uint8_t kExpectedTimerCount = PeriodicScheduler::kMaxTaskCount;
+
+    // Verify
+    CHECK(scheduler.GetPriority() == Priority::kLow);
     CHECK(xTimerCreateStatic_fake.call_count == kExpectedTimerCount);
     CHECK(xTimerGenericCommand_fake.call_count == kExpectedTimerCount);
   }
 
   SECTION("GetTask")
   {
-    PeriodicScheduler scheduler =
-        PeriodicScheduler(kPeriodicSchedulerName, mock_task_scheduler.get());
-
     SECTION("Getting a task that was not scheduled")
     {
       for (size_t i = 0; i < PeriodicScheduler::kMaxTaskCount; i++)
       {
+        // Setup
         PeriodicScheduler::Frequency frequency =
             PeriodicScheduler::Frequency(i);
-        CHECK(scheduler.GetTask(frequency) == nullptr);
+
+        // Exercise
+        auto actual_result = scheduler.GetTask(frequency);
+
+        // Verify
+        CHECK(actual_result == nullptr);
       }
     }
 
@@ -110,13 +115,17 @@ TEST_CASE("Testing PeriodicScheduler", "[periodic_scheduler]")
 
       for (size_t i = 0; i < mock_task_functions.size(); i++)
       {
+        // Setup
         INFO("Testing set/get task function for task at index: " << i);
         PeriodicScheduler::Frequency frequency =
             PeriodicScheduler::Frequency(i);
         PeriodicTaskInterface * task = &(mock_tasks[i].get());
 
+        // Exercise
         scheduler.SetTask(task, frequency);
         PeriodicTaskInterface * retrieved_task = scheduler.GetTask(frequency);
+
+        // Verify
         CHECK(retrieved_task == task);
         CHECK(retrieved_task->GetTaskFunction() == &(mock_task_functions[i]));
         CHECK(vTimerSetTimerID_fake.call_count == (i + 1));

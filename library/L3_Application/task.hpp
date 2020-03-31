@@ -10,37 +10,66 @@ namespace rtos
 /// An abstract interface for the Task interface class.
 class TaskInterface
 {
+ protected:
+  /// TaskScheduler responsible for scheduling this task.
+  TaskScheduler * task_scheduler_;
+
  public:
-  /// @return The TaskScheduler responsible for scheduling this task.
-  virtual TaskSchedulerInterface & GetTaskScheduler() const = 0;
+  /// @param task_scheduler Reference to the TaskScheduler responsible for
+  ///                       scheduling this task.
+  void SetTaskScheduler(TaskScheduler * task_scheduler)
+  {
+    task_scheduler_ = task_scheduler;
+  }
+
+  /// @returns A reference to the TaskScheduler responsible for scheduling this
+  ///          task.
+  TaskScheduler * GetTaskScheduler() const
+  {
+    return task_scheduler_;
+  }
+
   /// Setup is performed before the task begins to execute.
   /// The function should be overridden with any initialization code that the
   /// task requires.
   virtual bool Setup() = 0;
+
   /// Called once before Run() is invoked.
   virtual bool PreRun() = 0;
+
   /// Execute the task.
   virtual bool Run() = 0;
+
   /// Suspends the task until it is resumed.
   virtual void Suspend() const = 0;
+
   /// Resumes the task if it has been suspended.
   virtual void Resume() const = 0;
+
   /// Remove the task from the scheduler and delete the task.
   virtual void Delete() const = 0;
+
   /// @return The name of this task.
   virtual const char * GetName() const = 0;
+
   /// @return The priority of the task.
   virtual Priority GetPriority() const = 0;
+
   /// @return The pre-allocated stack size for the task in bytes.
   virtual size_t GetStackSize() const = 0;
+
   /// Set task handle for this task object.
   virtual void SetHandle(TaskHandle_t * handle) = 0;
+
   /// @return The task handle for this task object.
   virtual TaskHandle_t * GetHandle() = 0;
+
   /// @return A pointer to the task's statically allocated buffer.
   virtual StaticTask_t * GetTaskBuffer() = 0;
+
   /// @return A pointer reference of the task's statically allocated stack.
   virtual StackType_t * GetStack() = 0;
+
   /// Sets the delay time to ensure Run() is called at a desired frequency for
   /// periodic tasks.
   ///
@@ -49,9 +78,11 @@ class TaskInterface
   ///
   /// @param time Desired delay time in sjsu::rtos ticks.
   virtual void SetDelayTime(uint32_t time) = 0;
+
   /// @return Returns the delay time in sjsu::rtos ticks.
   virtual uint32_t GetDelayTime() const = 0;
 };
+
 /// An abstraction layer for FreeRTOS tasks. All tasks must inherit this
 /// interface and override the Run() function.
 ///
@@ -62,11 +93,6 @@ template <size_t kStackSize>
 class Task : public TaskInterface
 {
  public:
-  /// @return The TaskScheduler responsible for scheduling this task.
-  TaskSchedulerInterface & GetTaskScheduler() const override
-  {
-    return task_scheduler_;
-  }
   /// Setup is performed before the task begins to execute.
   /// The function should be overridden with any initialization code that the
   /// task requires.
@@ -74,62 +100,74 @@ class Task : public TaskInterface
   {
     return true;
   }
+
   /// Called once before Run() is invoked.
   bool PreRun() override
   {
     return true;
   }
+
   /// Suspends the task until it is resumed.
   void Suspend() const override
   {
     vTaskSuspend(handle_);
   }
+
   /// Resumes the task if it has been suspended.
   void Resume() const override
   {
     vTaskResume(handle_);
   }
+
   /// Remove the task from the scheduler and delete the task.
   void Delete() const override
   {
     vTaskSuspend(handle_);
-    task_scheduler_.RemoveTask(kName);
+    task_scheduler_->RemoveTask(kName);
   }
+
   /// @return The name of this task.
   const char * GetName() const override
   {
     return kName;
   }
+
   /// @return The priority of the task.
   Priority GetPriority() const override
   {
     return kPriority;
   }
+
   /// @return The pre-allocated stack size for the task in bytes.
   size_t GetStackSize() const override
   {
     return kStackSize;
   }
+
   /// Set task handle for this task object.
   void SetHandle(TaskHandle_t * handle) override
   {
     handle_ = handle;
   }
+
   /// @return The task handle for this task object.
   TaskHandle_t * GetHandle() override
   {
     return &handle_;
   }
+
   /// @return A pointer to the task's statically allocated buffer.
   StaticTask_t * GetTaskBuffer() override
   {
     return &task_buffer_;
   }
+
   /// @return A pointer reference of the task's statically allocated stack.
   StackType_t * GetStack() override
   {
     return stack_;
   }
+
   /// Sets the delay time to ensure Run() is called at a desired frequency for
   /// periodic tasks.
   ///
@@ -141,11 +179,14 @@ class Task : public TaskInterface
   {
     delay_time_ = time;
   }
+
   /// @return Returns the delay time in sjsu::rtos ticks.
   uint32_t GetDelayTime() const override
   {
     return delay_time_;
   }
+
+  /// Default destructor.
   virtual ~Task() {}
 
  protected:
@@ -154,19 +195,12 @@ class Task : public TaskInterface
   ///
   /// @param name           Name used to easily identify the task.
   /// @param priority       Priority of the task.
-  /// @param task_scheduler TaskScheduler responsible for scheduling this task.
-  explicit constexpr Task(const char * name,
-                          Priority priority,
-                          TaskSchedulerInterface & task_scheduler)
-      : task_scheduler_(task_scheduler),
-        kName(name),
-        kPriority(priority),
-        handle_(NULL),
-        delay_time_(0)
+  explicit constexpr Task(const char * name, Priority priority)
+      : kName(name), kPriority(priority), handle_(NULL), delay_time_(0)
   {
     DeclaredOnStackCheck();
-    task_scheduler_.AddTask(this);
   }
+
   /// Checks if the object was statically allocated either in the .data, .bss,
   /// or on the heap. Returns false if the position of this object is not within
   /// the bounds of those sections meaning it must be on the heap, which means
@@ -203,8 +237,6 @@ class Task : public TaskInterface
     return true;
   }
 
-  /// TaskScheduler responsible for scheduling this task.
-  TaskSchedulerInterface & task_scheduler_;
   /// Holds a pointer to the name of the task.
   const char * const kName;
   /// Holds the task's priority. This is constant so it will not reflect if this
