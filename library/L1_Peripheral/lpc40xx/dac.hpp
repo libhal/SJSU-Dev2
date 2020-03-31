@@ -33,6 +33,7 @@ class Dac final : public sjsu::Dac
     /// about how this bit works.
     static constexpr bit::Mask kBias = bit::CreateMaskFromRange(16);
   };
+
   /// The only DAC output pin on the lpc40xx.
   static constexpr sjsu::lpc40xx::Pin kDacPin = Pin::CreatePin<0, 26>();
   /// Voltage reference for the lpc40xx voltage.

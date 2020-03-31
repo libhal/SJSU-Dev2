@@ -26,7 +26,7 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
       .AlwaysReturn(1);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
-  // Set up Mock for PinCongiure
+  // Set up Mock for Pin
   Mock<sjsu::Pin> mock_mosi;
   Mock<sjsu::Pin> mock_miso;
   Mock<sjsu::Pin> mock_sck;

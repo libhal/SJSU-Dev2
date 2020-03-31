@@ -44,6 +44,7 @@ struct EnableBitMaskOperators_t
   /// If true, unlocks the enum bitwise operations on the enum class.
   static constexpr bool kEnable = false;
 };
+
 /// This macro, when used on an enum class type, will create a specialized
 /// version of the "EnableBitMaskOperators_t" that enables that enum class
 /// to use bitwise operators without the need of static_cast.
@@ -63,10 +64,6 @@ struct EnableBitMaskOperators_t
     static constexpr bool kEnable = true; \
   }
 
-//@{
-/// The following is the same for all operators beyond this point.
-///
-///
 /// @tparam Enum is the type used in this operator overload
 /// @tparam class= is used as a select. The compiler will use this
 ///                implementation of the | operator if that type has a
@@ -84,6 +81,14 @@ constexpr Enum operator|(Enum lhs, Enum rhs)
   return static_cast<Enum>(static_cast<underlying>(lhs) |
                            static_cast<underlying>(rhs));
 }
+/// @tparam Enum is the type used in this operator overload
+/// @tparam class= is used as a select. The compiler will use this
+///                implementation of the & operator if that type has a
+///                EnableBitMaskOperators_t<> specialization of the Enum type
+///                or, in other words, the SJ2_ENABLE_BITMASK_OPERATORS was used
+///                on it.
+///
+/// @return an enum class that is the & of the two input enum operators.
 
 template <typename Enum,
           class = typename std::
@@ -95,6 +100,14 @@ constexpr Enum operator&(Enum lhs, Enum rhs)
                            static_cast<underlying>(rhs));
 }
 
+/// @tparam Enum is the type used in this operator overload
+/// @tparam class= is used as a select. The compiler will use this
+///                implementation of the ^ operator if that type has a
+///                EnableBitMaskOperators_t<> specialization of the Enum type
+///                or, in other words, the SJ2_ENABLE_BITMASK_OPERATORS was used
+///                on it.
+///
+/// @return an enum class that is the ^ of the two input enum operators.
 template <typename Enum,
           class = typename std::
               enable_if_t<EnableBitMaskOperators_t<Enum>::kEnable, Enum>>
@@ -105,6 +118,14 @@ constexpr Enum operator^(Enum lhs, Enum rhs)
                            static_cast<underlying>(rhs));
 }
 
+/// @tparam Enum is the type used in this operator overload
+/// @tparam class= is used as a select. The compiler will use this
+///                implementation of the ~ operator if that type has a
+///                EnableBitMaskOperators_t<> specialization of the Enum type
+///                or, in other words, the SJ2_ENABLE_BITMASK_OPERATORS was used
+///                on it.
+///
+/// @return an enum class that is the ~ of the two input enum operators.
 template <typename Enum,
           class = typename std::
               enable_if_t<EnableBitMaskOperators_t<Enum>::kEnable, Enum>>
@@ -114,6 +135,14 @@ constexpr Enum operator~(Enum rhs)
   return static_cast<Enum>(~static_cast<underlying>(rhs));
 }
 
+/// @tparam Enum is the type used in this operator overload
+/// @tparam class= is used as a select. The compiler will use this
+///                implementation of the |= operator if that type has a
+///                EnableBitMaskOperators_t<> specialization of the Enum type
+///                or, in other words, the SJ2_ENABLE_BITMASK_OPERATORS was used
+///                on it.
+///
+/// @return an enum class that is the |= of the two input enum operators.
 template <typename Enum,
           class = typename std::
               enable_if_t<EnableBitMaskOperators_t<Enum>::kEnable, Enum>>
@@ -125,6 +154,14 @@ constexpr Enum & operator|=(Enum & lhs, Enum rhs)
   return lhs;
 }
 
+/// @tparam Enum is the type used in this operator overload
+/// @tparam class= is used as a select. The compiler will use this
+///                implementation of the &= operator if that type has a
+///                EnableBitMaskOperators_t<> specialization of the Enum type
+///                or, in other words, the SJ2_ENABLE_BITMASK_OPERATORS was used
+///                on it.
+///
+/// @return an enum class that is the &= of the two input enum operators.
 template <typename Enum,
           class = typename std::
               enable_if_t<EnableBitMaskOperators_t<Enum>::kEnable, Enum>>
@@ -136,6 +173,14 @@ constexpr Enum & operator&=(Enum & lhs, Enum rhs)
   return lhs;
 }
 
+/// @tparam Enum is the type used in this operator overload
+/// @tparam class= is used as a select. The compiler will use this
+///                implementation of the ^= operator if that type has a
+///                EnableBitMaskOperators_t<> specialization of the Enum type
+///                or, in other words, the SJ2_ENABLE_BITMASK_OPERATORS was used
+///                on it.
+///
+/// @return an enum class that is the ^= of the two input enum operators.
 template <typename Enum,
           class = typename std::
               enable_if_t<EnableBitMaskOperators_t<Enum>::kEnable, Enum>>
@@ -146,5 +191,4 @@ constexpr Enum & operator^=(Enum & lhs, Enum rhs)
                           static_cast<underlying>(rhs));
   return lhs;
 }
-//@}
 }  // namespace sjsu

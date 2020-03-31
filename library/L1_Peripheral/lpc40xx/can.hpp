@@ -1,10 +1,7 @@
 #pragma once
 
-#include <FreeRTOS.h>
-#include <queue.h>
-
 #include <initializer_list>
-#include <cstring>
+#include <string_view>
 
 #include "L1_Peripheral/can.hpp"
 
@@ -15,6 +12,7 @@
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/macros.hpp"
 #include "utility/status.hpp"
+#include "utility/enum.hpp"
 
 namespace sjsu
 {
@@ -30,269 +28,142 @@ class Can final : public sjsu::Can
 
   /// This struct holds bit timing values. It is used to configure the CAN bus
   /// clock. It is HW mapped to a 32-bit register: BTR (pg. 562)
-  struct [[gnu::packed]] BusTiming_t
+  struct BusTiming  // NOLINT
   {
-    union {
-      uint32_t BTR;
-      struct
-      {
-        // The peripheral bus clock is divided by this value
-        uint16_t baud_rate_prescaler : 10;
-        uint8_t reserved_1 : 4;
-        // Used to compensate for positive and negative edge phase errors
-        uint8_t sync_jump_width : 2;
-        // Determines the location of the sample point
-        uint8_t time_segment_1 : 4;
-        uint8_t time_segment_2 : 3;
-        // How many times the bus is sampled; 0 == once, 1 == 3 times
-        uint8_t sampling : 1;
-        uint8_t reserved_2 : 8;
-      } values;
-    };
+    /// The peripheral bus clock is divided by this value
+    static constexpr bit::Mask kPrescalar = bit::CreateMaskFromRange(0, 9);
+    /// Used to compensate for positive and negative edge phase errors
+    static constexpr bit::Mask kSyncJumpWidth =
+        bit::CreateMaskFromRange(14, 15);
+    /// The delay from the nominal Sync point to the sample point is (this value
+    /// plus one) CAN clocks.
+    static constexpr bit::Mask kTimeSegment1 = bit::CreateMaskFromRange(16, 19);
+    /// The delay from the sample point to the next nominal sync point isCAN
+    /// clocks. The nominal CAN bit time is (this value plus the value in
+    /// kTimeSegment1 plus 3) CAN clocks.
+    static constexpr bit::Mask kTimeSegment2 = bit::CreateMaskFromRange(20, 22);
+    /// How many times the bus is sampled; 0 == once, 1 == 3 times
+    static constexpr bit::Mask kSampling = bit::CreateMaskFromRange(23);
   };
 
   /// This struct holds interrupt flags and capture flag status. It is HW mapped
   /// to a 16-bit register: ICR (pg. 557)
-  struct [[gnu::packed]] Interrupts_t
+  struct Interrupts  // NOLINT
   {
-    //! @cond Doxygen_Suppress
-    union {
-      // ICR - Interrupt and Capture Register
-      // NOTE: Bits 1-10 are cleared by the CAN controller
-      //       as soon as they are read.
-      //       Bits 16-23 & 24-31 are released by the CAN
-      //       controller as soon as they are read.
-      uint32_t ICR;
-      struct
-      {
-        uint8_t rx_buffer_full : 1;
-        uint8_t tx_buffer_1_ready : 1;
-        uint8_t error_warning : 1;
-        uint8_t data_overrun : 1;
-        uint8_t wake_up : 1;
-        uint8_t error_passive : 1;
-        uint8_t arbitration_lost : 1;
-        uint8_t bus_error : 1;
-        uint8_t identifier_ready : 1;
-        uint8_t tx_buffer_2_ready : 1;
-        uint8_t tx_buffer_3_ready : 1;
-        uint8_t reserved : 5;
-        uint8_t error_code_location : 5;
-        uint8_t error_code_direction : 1;
-        uint8_t error_code_type : 2;
-        uint8_t arbitration_lost_location : 8;
-      } flags;
-    };
-    //! @endcond
+    // ICR - Interrupt and Capture Register
+    // NOTE: Bits 1-10 are cleared by the CAN controller
+    //       as soon as they are read.
+    //       Bits 16-23 & 24-31 are released by the CAN
+    //       controller as soon as they are read.
+
+    /// Assert interrupt when the receive buffer is full
+    static constexpr bit::Mask kRxBufferFull = bit::CreateMaskFromRange(0);
+    /// Assert interrupt when TX Buffer 1 has finished or aborted its
+    /// transmission.
+    static constexpr bit::Mask kTx1Ready = bit::CreateMaskFromRange(1);
+    /// Assert interrupt when bus status or error status is asserted.
+    static constexpr bit::Mask kErrorWarning = bit::CreateMaskFromRange(2);
+    /// Assert interrupt on data overrun occurs
+    static constexpr bit::Mask kDataOverrun = bit::CreateMaskFromRange(3);
+    /// Assert interrupt when CAN controller is sleeping and was woken up from
+    /// bus activity.
+    static constexpr bit::Mask kWakeup = bit::CreateMaskFromRange(4);
+    /// Assert interrupt when the CAN Controller has reached the Error Passive
+    /// Status (error counter exceeds 127)
+    static constexpr bit::Mask kErrorPassive = bit::CreateMaskFromRange(5);
+    /// Assert interrupt when arbitration is lost
+    static constexpr bit::Mask kArbitrationLost = bit::CreateMaskFromRange(6);
+    /// Assert interrupt on bus error
+    static constexpr bit::Mask kBusError = bit::CreateMaskFromRange(7);
+    /// Assert interrupt when any message has been successfully transmitted.
+    static constexpr bit::Mask kIdentifierReady = bit::CreateMaskFromRange(8);
+    /// Assert interrupt when TX Buffer 2 has finished or aborted its
+    /// transmission.
+    static constexpr bit::Mask kTx2Ready = bit::CreateMaskFromRange(9);
+    /// Assert interrupt when TX Buffer 3 has finished or aborted its
+    /// transmission.
+    static constexpr bit::Mask kTx3Ready = bit::CreateMaskFromRange(10);
+    /// Error Code Capture status bits to be read during an interrupt
+    static constexpr bit::Mask kErrorCodeLocation =
+        bit::CreateMaskFromRange(16, 20);
+    /// Indicates if the error occurred during transmission (0) or receiving (1)
+    static constexpr bit::Mask kErrorCodeDirection =
+        bit::CreateMaskFromRange(21);
+    /// The type of bus error that occurred such as bit error, stuff error, etc
+    static constexpr bit::Mask kErrorCodeType =
+        bit::CreateMaskFromRange(22, 23);
+    /// Bit location of where arbitration was lost.
+    static constexpr bit::Mask kArbitrationLostLocation =
+        bit::CreateMaskFromRange(24, 31);
   };
 
   /// This struct holds CAN controller global status information.
   /// It is a condensed version of the status register.
   /// It is HW mapped to a 32-bit register: GSR (pg. 555)
-  struct [[gnu::packed]] GlobalStatus_t
+  struct GlobalStatus  // NOLINT
   {
-    //! @cond Doxygen_Suppress
-    union {
-      // GSR - Global Status Register
-      uint32_t GSR;
-      struct
-      {
-        uint8_t rx_buffer_full : 1;
-        uint8_t data_overrun : 1;
-        uint8_t tx_buffer_ready : 1;
-        uint8_t tx_complete : 1;
-        uint8_t receiving_message : 1;
-        uint8_t transmitting_message : 1;
-        uint8_t bus_error : 1;
-        uint8_t bus_status : 1;
-        uint8_t reserved : 8;
-        uint8_t rx_error_count : 8;
-        uint8_t tx_error_count : 8;
-      } flags;
-    };
-    //! @endcond
-  };
-
-  /// This struct holds a R/W value. This value is compared against
-  /// the Tx and Rx error counts
-  /// It is HW mapped to a 32-bit register: EWL (pg. 563)
-  struct [[gnu::packed]] ErrorWarningLimit_t
-  {
-    //! @cond Doxygen_Suppress
-    union {
-      // EWL - Error Warning Limit Register
-      uint32_t EWL;
-      struct
-      {
-        uint8_t error_warning_limit : 8;
-        uint32_t reserved : 24;
-      } error;
-    };
-    //! @endcond
+    /// If 1, receive buffer has at least 1 complete message stored
+    static constexpr bit::Mask kReceiveBuffer = bit::CreateMaskFromRange(0);
+    /// Bus status bit. If this is '1' then the bus is active, otherwise the bus
+    /// is bus off.
+    static constexpr bit::Mask kBusError = bit::CreateMaskFromRange(7);
   };
 
   /// This struct holds CAN controller status information. It is HW mapped to a
-  /// 32-bit register: SR (pg. 564) Each "not_used_x" is already covered in the
-  /// GSR (global status register).
-  struct [[gnu::packed]] Status_t
+  /// 32-bit register: SR (pg. 564). Many of them are not here because they have
+  /// counter parts in GSR (global status register).
+  struct BufferStatus  // NOLINT
   {
-    //! @cond Doxygen_Suppress
-    union {
-      // SR - Status Register
-      uint32_t SR;
-      struct
-      {
-        uint8_t not_used_1 : 1;
-        uint8_t not_used_2 : 1;
-        uint8_t tx_buffer_1_released : 1;
-        uint8_t tx_buffer_1_complete : 1;
-        uint8_t not_used_3 : 1;
-        uint8_t tx_buffer_1_transmitting : 1;
-        uint8_t bus_error : 1;
-        uint8_t not_used_4 : 1;
-        uint8_t not_used_5 : 1;
-        uint8_t not_used_6 : 1;
-        uint8_t tx_buffer_2_released : 1;
-        uint8_t tx_buffer_2_complete : 1;
-        uint8_t not_used_7 : 1;
-        uint8_t tx_buffer_2_transmitting : 1;
-        uint8_t not_used_8 : 1;
-        uint8_t not_used_9 : 1;
-        uint8_t not_used_10 : 1;
-        uint8_t not_used_11 : 1;
-        uint8_t tx_buffer_3_released : 1;
-        uint8_t tx_buffer_3_complete : 1;
-        uint8_t not_used_12 : 1;
-        uint8_t tx_buffer_3_transmitting : 1;
-        uint8_t not_used_13 : 1;
-        uint8_t not_used_14 : 1;
-        uint8_t reserved : 8;
-      } flags;
-    };
-    //! @endcond
-  };
-
-  /// Enumeration of the possible CAN bus peripherals supported on LPC40xx.
-  enum Controllers : uint8_t
-  {
-    kCan1 = 0,
-    kCan2 = 1,
-    kNumberOfControllers
-  };
-
-  /// Contains initialization information for both CAN peripherals
-  inline static bool is_controller_initialized[kNumberOfControllers] = {
-    [kCan1] = false, [kCan2] = false
-  };
-
-  /// Contains Interrupt_t information for both CAN peripherals
-  inline static Interrupts_t interrupts[kNumberOfControllers];
-
-  /// Status look up table
-  inline static Status_t status[kNumberOfControllers];
-
-  /// GlobalStatus look up table
-  inline static GlobalStatus_t global_status[kNumberOfControllers];
-
-  /// Registers look up table
-  inline static LPC_CAN_TypeDef * can_registers[kNumberOfControllers] = {
-    [kCan1] = LPC_CAN1, [kCan2] = LPC_CAN2
-  };
-
-  /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
-  inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
-
-  /// Queue transmit handles
-  inline static QueueHandle_t transmit_queue[kNumberOfControllers] = {
-    [kCan1] = NULL, [kCan2] = NULL
-  };
-
-  /// Queue receive handles
-  inline static QueueHandle_t receive_queue[kNumberOfControllers] = {
-    [kCan1] = NULL, [kCan2] = NULL
-  };
-
-  /// Templated struct the user can configure and then pass to
-  /// CreateStaticQueues()
-  template <size_t kTxLength, size_t kRxLength>
-  struct StaticQueueConfig_t
-  {
-    /// Tx queue data structures
-    inline static StaticQueue_t tx_static_queue;
-    /// Rx queue data structures
-    inline static StaticQueue_t rx_static_queue;
-
-    /// Tx queue lengths
-    inline static constexpr uint8_t kTxQueueLength = kTxLength;
-    /// Rx queue lengths
-    inline static constexpr uint8_t kRxQueueLength = kRxLength;
-
-    /// Transmit queue item sizes
-    inline static constexpr uint8_t kTxQueueItemSize = sizeof(TxMessage_t *);
-    /// Receive queue item sizes
-    inline static constexpr uint8_t kRxQueueItemSize = sizeof(RxMessage_t);
-
-    /// Static buffer for the transmit buffer
-    inline static uint8_t
-        tx_queue_storage_area[kTxQueueLength * kTxQueueItemSize];
-    /// Static buffer for the receive buffer
-    inline static uint8_t
-        rx_queue_storage_area[kRxQueueLength * kRxQueueItemSize];
-  };
-
-  /// Pin Functions for CANBUS operation
-  enum PinFunctions : uint8_t
-  {
-    kRd1FunctionBit = 1,
-    kTd1FunctionBit = 1,
-    kRd2FunctionBit = 1,
-    kTd2FunctionBit = 1
-  };
-
-  /// Interrupts enable bits
-  enum Interrupts : uint8_t
-  {
-    kRxBufferIntEnableBit  = 0,
-    kTxBuffer1IntEnableBit = 1,
-    kTxBuffer2IntEnableBit = 9,
-    kTxBuffer3IntEnableBit = 10
+    /// TX1 Buffer has been released
+    static constexpr bit::Mask kTx1Released = bit::CreateMaskFromRange(2);
+    /// TX2 Buffer has been released
+    static constexpr bit::Mask kTx2Released = bit::CreateMaskFromRange(10);
+    /// TX3 Buffer has been released
+    static constexpr bit::Mask kTx3Released = bit::CreateMaskFromRange(18);
   };
 
   /// CANBUS modes
-  enum Modes : uint8_t
+  struct Mode  // NOLINT
   {
-    kReset      = 0,
-    kListenOnly = 1,
-    kSelfTest   = 2,
-    kTxPriority = 3,
-    kSleepMode  = 4,
-    kRxPolarity = 5,
-    kTest       = 7
+    /// Reset CAN Controller, allows configuration registers to be modified.
+    static constexpr bit::Mask kReset = bit::CreateMaskFromRange(0);
+    /// Put device into Listen Only Mode, device will not acknowledge, messages.
+    static constexpr bit::Mask kListenOnly = bit::CreateMaskFromRange(1);
+    /// Put device on self test mode.
+    static constexpr bit::Mask kSelfTest = bit::CreateMaskFromRange(2);
+    /// Enable transmit priority control. When enabled, allows a particular
+    static constexpr bit::Mask kTxPriority = bit::CreateMaskFromRange(3);
+    /// Put device to Sleep Mode.
+    static constexpr bit::Mask kSleepMode = bit::CreateMaskFromRange(4);
+    /// Receive polarity mode. If 1 RD input is active high
+    static constexpr bit::Mask kRxPolarity = bit::CreateMaskFromRange(5);
+    /// Put CAN into test mode, which allows the TD pin to reflect its bits ot
+    /// the RD pin.
+    static constexpr bit::Mask kTest = bit::CreateMaskFromRange(7);
   };
 
-  /// The set of baud rates that are supported
-  enum BaudRates : uint8_t
+  /// CANBus frame bit masks for the TFM and RFM registers
+  struct FrameInfo  // NOLINT
   {
-    kBaud100Kbps = 100
-  };
-
-  /// The available TxBuffer buffer to store message data into
-  enum TxBuffers : uint8_t
-  {
-    kBuffer1 = 0,
-    kBuffer2 = 1,
-    kBuffer3 = 2
+    /// The message priority bits (not used in this implementation)
+    static constexpr bit::Mask kPriority = bit::CreateMaskFromRange(0, 7);
+    /// The length of the data
+    static constexpr bit::Mask kLength = bit::CreateMaskFromRange(16, 19);
+    /// If set to 1, the message becomes a remote request message
+    static constexpr bit::Mask kRemoteRequest = bit::CreateMaskFromRange(30);
+    /// If 0, the ID is 11-bits, if 1, the ID is 29-bits.
+    static constexpr bit::Mask kFormat = bit::CreateMaskFromRange(31);
   };
 
   /// https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 554)
-  enum Commands : uint8_t
+  enum class Commands : uint8_t
   {
     kReleaseRxBuffer            = 0x04,
     kSendTxBuffer1              = 0x21,
     kSendTxBuffer2              = 0x41,
     kSendTxBuffer3              = 0x81,
     kSelfReceptionSendTxBuffer1 = 0x30,
-    kAcceptAllMessages          = 0x02
+    kAcceptAllMessages          = 0x02,
   };
 
   /// https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 560)
@@ -324,258 +195,247 @@ class Can final : public sjsu::Can
   struct FrameError_t
   {
     /// Error code
-    uint8_t errorCode;
+    uint8_t error_code;
     /// Error message string
-    const char * errorMessage;
+    std::string_view error_message;
   };
 
   /// Lookup table with all of the CANBUS FrameErrors.
-  inline static FrameError_t frame_error_table[19] = {
-    { kStartOfFrame, "Start of Frame" },
-    { kID28toID21, "ID28 ... ID21" },
-    { kID20toID18, "ID20 ... ID18" },
-    { kSrtrBit, "SRTR Bit" },
-    { kIdeBit, "IDE Bit" },
-    { kID17toID13, "ID17 ... ID13" },
-    { kID12toID5, "ID12 ... ID5" },
-    { kID4toID0, "ID4 ... ID0" },
-    { kRtrBit, "RTR Bit" },
-    { kReservedBit1, "Reserved Bit 1" },
-    { kReservedBit0, "Reserved Bit 0" },
-    { kDataLengthCode, "Data Length Code" },
-    { kDataField, "Data Field" },
-    { kCrcSequence, "CRC Sequence" },
-    { kCrcDelimiter, "CRC Delimiter" },
-    { kAcknowledgeSlot, "Acknowledge Slot" },
-    { kAcknowledgeDelimiter, "Acknowledge Delimiter" },
-    { kEndOfFrame, "End of Frame" },
-    { kIntermission, "Intermission" }
+  static constexpr std::array<FrameError_t, 19> kFrameErrorTable = {
+    FrameError_t{ kStartOfFrame, "Start of Frame" },
+    FrameError_t{ kID28toID21, "ID28 ... ID21" },
+    FrameError_t{ kID20toID18, "ID20 ... ID18" },
+    FrameError_t{ kSrtrBit, "SRTR Bit" },
+    FrameError_t{ kIdeBit, "IDE Bit" },
+    FrameError_t{ kID17toID13, "ID17 ... ID13" },
+    FrameError_t{ kID12toID5, "ID12 ... ID5" },
+    FrameError_t{ kID4toID0, "ID4 ... ID0" },
+    FrameError_t{ kRtrBit, "RTR Bit" },
+    FrameError_t{ kReservedBit1, "Reserved Bit 1" },
+    FrameError_t{ kReservedBit0, "Reserved Bit 0" },
+    FrameError_t{ kDataLengthCode, "Data Length Code" },
+    FrameError_t{ kDataField, "Data Field" },
+    FrameError_t{ kCrcSequence, "CRC Sequence" },
+    FrameError_t{ kCrcDelimiter, "CRC Delimiter" },
+    FrameError_t{ kAcknowledgeSlot, "Acknowledge Slot" },
+    FrameError_t{ kAcknowledgeDelimiter, "Acknowledge Delimiter" },
+    FrameError_t{ kEndOfFrame, "End of Frame" },
+    FrameError_t{ kIntermission, "Intermission" }
   };
 
-  /// Interrupt service routine for CANBUS
-  static void CanIrqHandler()
+  /// Contains all of the information for to control and configure a CANBUS bus
+  /// on the LPC40xx platform.
+  struct Channel_t
   {
-    TxMessage_t * message_ptr;
-    bool transmit_interrupt, receive_interrupt;
+    /// Reference to transmit pin object
+    const sjsu::Pin & td_pin;
+    /// Pin function code for transmit
+    uint8_t td_function_code;
+    /// Reference to read pin object
+    const sjsu::Pin & rd_pin;
+    /// Pin function code for receive
+    uint8_t rd_function_code;
+    /// Pointer to the LPC CAN peripheral in memory
+    LPC_CAN_TypeDef * registers;
+    /// Peripheral's ID
+    sjsu::SystemController::PeripheralID id;
+  };
 
-    for (uint8_t controller = 0; controller < kNumberOfControllers;
-         controller++)
-    {
-      if (is_controller_initialized[controller] == true)
-      {
-        // Capture interrupt register
-        // Bits are cleared when you read the ICR register
-        interrupts[controller].ICR = can_registers[controller]->ICR;
-
-        transmit_interrupt = interrupts[controller].flags.tx_buffer_1_ready ||
-                             interrupts[controller].flags.tx_buffer_2_ready ||
-                             interrupts[controller].flags.tx_buffer_3_ready;
-
-        receive_interrupt = interrupts[controller].flags.rx_buffer_full;
-
-        if (transmit_interrupt == true)
-        {
-          if (xQueueIsQueueEmptyFromISR(transmit_queue[controller]) == pdFALSE)
-          {
-            // dequeue message pointer
-            xQueueReceiveFromISR(transmit_queue[controller], &message_ptr, 0);
-            // send it to the available buffer
-            if (interrupts[controller].flags.tx_buffer_1_ready)
-            {
-              WriteMessageToBuffer(
-                  message_ptr, kBuffer1, static_cast<Controllers>(controller));
-            }
-            else if (interrupts[controller].flags.tx_buffer_2_ready)
-            {
-              WriteMessageToBuffer(
-                  message_ptr, kBuffer2, static_cast<Controllers>(controller));
-            }
-            else if (interrupts[controller].flags.tx_buffer_3_ready)
-            {
-              WriteMessageToBuffer(
-                  message_ptr, kBuffer3, static_cast<Controllers>(controller));
-            }
-            else
-            {
-              // will never occur
-            }
-          }
-        }
-
-        if (receive_interrupt == true)
-        {
-          ReadMessageFromBuffer(static_cast<Controllers>(controller));
-        }
-      }
-    }
-  }
-
-  /// Interrupt registration information.
-  inline static const InterruptController::RegistrationInfo_t
-      kCanInterruptInfo = {
-        .interrupt_request_number = CAN_IRQn,
-        .interrupt_handler        = &CanIrqHandler,
-        .priority                 = 5,
-      };
-
-  //! @cond Doxygen_Suppress
-  inline static const lpc40xx::Pin kPort1ReadPin     = Pin(0, 0);
-  inline static const lpc40xx::Pin kPort1TransmitPin = Pin(0, 1);
-  inline static const lpc40xx::Pin kPort2ReadPin     = Pin(2, 7);
-  inline static const lpc40xx::Pin kPort2TransmitPin = Pin(2, 8);
-  //! @endcond
-
-  /// Default constructor that defaults to CAN 1
-  constexpr Can()
-      : controller_(kCan1),
-        baud_rate_(BaudRates::kBaud100Kbps),
-        rd_(kPort1ReadPin),
-        td_(kPort1TransmitPin)
+  /// List of supported CANBUS channels
+  struct Channel  // NOLINT
   {
-  }
+   private:
+    inline static const lpc40xx::Pin kPort1TransmitPin = Pin(0, 1);
+    inline static const lpc40xx::Pin kPort1ReadPin     = Pin(0, 0);
+    inline static const lpc40xx::Pin kPort2TransmitPin = Pin(2, 8);
+    inline static const lpc40xx::Pin kPort2ReadPin     = Pin(2, 7);
 
-  /// @param controller - Which CANBUS controller
-  /// @param baud_rate - which baudrate to set the CANBUS to
-  /// @param td_pin - transmit pin
-  /// @param rd_pin - read pin
-  constexpr Can(Controllers controller,
-                BaudRates baud_rate      = BaudRates::kBaud100Kbps,
-                const sjsu::Pin & td_pin = GetInactive<sjsu::Pin>(),
-                const sjsu::Pin & rd_pin = GetInactive<sjsu::Pin>())
-      : controller_(controller), baud_rate_(baud_rate), rd_(td_pin), td_(rd_pin)
+   public:
+    /// Predefined definition for CAN1
+    inline static const Channel_t kCan1 = {
+      .td_pin           = kPort1TransmitPin,
+      .td_function_code = 1,
+      .rd_pin           = kPort1ReadPin,
+      .rd_function_code = 1,
+      .registers        = lpc40xx::LPC_CAN1,
+      .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan1,
+    };
+
+    /// Predefined definition for CAN2
+    inline static const Channel_t kCan2 = {
+      .td_pin           = kPort2TransmitPin,
+      .td_function_code = 1,
+      .rd_pin           = kPort2ReadPin,
+      .rd_function_code = 1,
+      .registers        = lpc40xx::LPC_CAN2,
+      .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan2,
+    };
+  };
+
+  /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
+  inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
+
+  /// Standard baud rate for most CANBUS networks
+  static constexpr units::frequency::hertz_t kStandardBaudRate = 100_kHz;
+
+  /// @param channel - Which CANBUS channel to use
+  /// @param baud - communication speed for CANBUS. Highly recommended to
+  ///                    stick with the standard 100kHz frequency.
+  constexpr Can(const Channel_t & channel,
+                units::frequency::hertz_t baud = kStandardBaudRate)
+      : channel_(channel), baud_rate_(baud)
   {
   }
 
   Status Initialize() const override
   {
-    if (controller_ > kNumberOfControllers)
-    {
-      return Status::kDeviceNotFound;
-    }
+    /// Power on CANBUS peripheral
+    auto & platform = sjsu::SystemController::GetPlatformController();
+    platform.PowerUpPeripheral(channel_.id);
 
-    SJ2_ASSERT_FATAL(
-        !(transmit_queue[controller_] == NULL),
-        "CAN message queues have not been created! Please call "
-        "CreateQueues() from this class before calling Initialize().");
-    EnablePower();
-    ConfigurePins();
+    /// Configure pins
+    channel_.td_pin.SetPinFunction(channel_.td_function_code);
+    channel_.rd_pin.SetPinFunction(channel_.rd_function_code);
+
     // Enable reset mode in order to write to CAN registers.
-    SetControllerMode(kReset, true);
-    // Enable local buffer priority mode.
-    SetControllerMode(kTxPriority, true);
+    SetMode(Mode::kReset, true);
+
     // CAN bus clock (on the wire)
     SetBaudRate();
+
     // Accept all messages
     // TODO(#343): Allow the user to configure their own filter.
     EnableAcceptanceFilter();
-    EnableInterrupts();
-    // Enable core interrupt
-    sjsu::InterruptController::GetPlatformController().Enable(
-        kCanInterruptInfo);
+
     // Disable reset mode and enter operating mode.
-    SetControllerMode(kReset, false);
-    is_controller_initialized[controller_] = true;
+    SetMode(Mode::kReset, false);
 
     return Status::kSuccess;
   }
 
-  // TODO(#344):
-  // If this Send() function gets a pointer that only has scope within a
-  // function call, then once that function goes out of scope, the pointer will
-  // become a dangling pointer (pointer to invalid data). Afterwards, when
-  // WriteMessageToBuffer() tries to access the data to write it to the HW
-  // buffers, it will get corrupt data. This problem can arise if the user wants
-  // to send a 1 time message. However, if the user is sending cyclic messages,
-  // it is assumed that global message handles exist somewhere in the user's app
-  // layer since they need to be updated periodically.
-  bool Send(TxMessage_t * const kMessage,
-            uint32_t id,
-            const uint8_t * const kPayload,
-            size_t length) const override
+  void Enable() const override
   {
-    bool success = false;
+    SetMode(Mode::kReset, false);
+  }
+
+  void Send(const Message_t & message) const override
+  {
+    uint32_t frame_info = 0;
+    frame_info = bit::Insert(frame_info, message.length, FrameInfo::kLength);
+    frame_info = bit::Insert(frame_info, message.is_remote_request,
+                             FrameInfo::kRemoteRequest);
+    frame_info =
+        bit::Insert(frame_info, Value(message.format), FrameInfo::kFormat);
+
+    uint32_t data_a = 0;
+    data_a |= message.payload[0] << (0 * 8);
+    data_a |= message.payload[1] << (1 * 8);
+    data_a |= message.payload[2] << (2 * 8);
+    data_a |= message.payload[3] << (3 * 8);
+
+    uint32_t data_b = 0;
+    data_b |= message.payload[4] << (0 * 8);
+    data_b |= message.payload[5] << (1 * 8);
+    data_b |= message.payload[6] << (2 * 8);
+    data_b |= message.payload[7] << (3 * 8);
 
     // Capture status flag register
-    status[controller_].SR = can_registers[controller_]->SR;
 
-    // Assemble the CAN message with the user provided data.
-    //
-    // Since this memory location is written to by this function and is read by
-    // the ISR (to eventually write the data at this memory location into the
-    // transmit buffer), we disable the CAN interrupt to ensure that complete
-    // and valid data is written before it is accessed by the ISR.
-    sjsu::InterruptController::GetPlatformController().Disable(CAN_IRQn);
-    kMessage->id                           = id;
-    kMessage->frame_data.data_length       = (length & 0xF);
-    kMessage->frame_data.remote_tx_request = 0;
-    for (uint8_t i = 0; i < length; i++)
+    // Wait for one of the buffers to be free so we can transmit a message
+    // through it.
+    bool sent = false;
+    while (!sent)
     {
-      kMessage->data.bytes[i] = kPayload[i];
-    }
-    sjsu::InterruptController::GetPlatformController().Enable(
-        kCanInterruptInfo);
-
-    // Check if any buffer is available.
-    if (status[controller_].flags.tx_buffer_1_released)
-    {
-      WriteMessageToBuffer(kMessage, kBuffer1, controller_);
-      success = true;
-    }
-    else if (status[controller_].flags.tx_buffer_2_released)
-    {
-      WriteMessageToBuffer(kMessage, kBuffer2, controller_);
-      success = true;
-    }
-    else if (status[controller_].flags.tx_buffer_3_released)
-    {
-      WriteMessageToBuffer(kMessage, kBuffer3, controller_);
-      success = true;
-    }
-    else
-    {
-      // All buffers busy, enqueue the message pointer.
-      // TODO(#345): Ideally this should be a priority queue based on message
-      // ID.
-      if (xQueueSend(transmit_queue[controller_], &kMessage, 0) == pdPASS)
+      uint32_t status_register = channel_.registers->SR;
+      // Check if any buffer is available.
+      if (bit::Read(status_register, BufferStatus::kTx1Released))
       {
-        success = true;
+        channel_.registers->TFI1 = frame_info;
+        channel_.registers->TID1 = message.id;
+        channel_.registers->TDA1 = data_a;
+        channel_.registers->TDB1 = data_b;
+        channel_.registers->CMR  = Value(Commands::kSendTxBuffer1);
+        sent                     = true;
+      }
+      else if (bit::Read(status_register, BufferStatus::kTx2Released))
+      {
+        channel_.registers->TFI2 = frame_info;
+        channel_.registers->TID2 = message.id;
+        channel_.registers->TDA2 = data_a;
+        channel_.registers->TDB2 = data_b;
+        channel_.registers->CMR  = Value(Commands::kSendTxBuffer2);
+        sent                     = true;
+      }
+      else if (bit::Read(status_register, BufferStatus::kTx3Released))
+      {
+        channel_.registers->TFI3 = frame_info;
+        channel_.registers->TID3 = message.id;
+        channel_.registers->TDA3 = data_a;
+        channel_.registers->TDB3 = data_b;
+        channel_.registers->CMR  = Value(Commands::kSendTxBuffer3);
+        sent                     = true;
       }
     }
-    return success;
   }
 
-  bool Receive(RxMessage_t * const kMessage) const override
+  bool HasData() const override
   {
-    bool success = false;
-    if (xQueueReceive(receive_queue[controller_], kMessage, 0) == pdPASS)
-    {
-      success = true;
-    }
-    return success;
+    // GlobalStatus::kReceiveBuffer returns 1 (true) if it has data.
+    return bit::Read(channel_.registers->GSR, GlobalStatus::kReceiveBuffer);
   }
 
-  bool SelfTestBus(uint32_t id) const override
+  Message_t Receive() const override
+  {
+    Message_t message;
+
+    uint32_t frame = channel_.registers->RFS;
+
+    // Extract all of the information from the message frame
+    bool is_remote_request = bit::Extract(frame, FrameInfo::kRemoteRequest);
+    uint32_t length        = bit::Extract(frame, FrameInfo::kLength);
+    uint32_t format        = bit::Extract(frame, FrameInfo::kFormat);
+
+    message.is_remote_request = is_remote_request;
+    message.length            = static_cast<uint8_t>(length);
+    message.format            = static_cast<Message_t::Format>(format);
+
+    // Get the frame ID
+    message.id = channel_.registers->RID;
+
+    // Pull the bytes from RDA into the payload array
+    message.payload[0] = (channel_.registers->RDA >> (0 * 8)) & 0xFF;
+    message.payload[1] = (channel_.registers->RDA >> (1 * 8)) & 0xFF;
+    message.payload[2] = (channel_.registers->RDA >> (2 * 8)) & 0xFF;
+    message.payload[3] = (channel_.registers->RDA >> (3 * 8)) & 0xFF;
+    // Pull the bytes from RDB into the payload array
+    message.payload[4] = (channel_.registers->RDB >> (0 * 8)) & 0xFF;
+    message.payload[5] = (channel_.registers->RDB >> (1 * 8)) & 0xFF;
+    message.payload[6] = (channel_.registers->RDB >> (2 * 8)) & 0xFF;
+    message.payload[7] = (channel_.registers->RDB >> (3 * 8)) & 0xFF;
+
+    // Release the RX buffer and allow another buffer to be read.
+    channel_.registers->CMR = Value(Commands::kReleaseRxBuffer);
+
+    return message;
+  }
+
+  bool SelfTest(uint32_t id) const override
   {
     bool success = false;
 
-    TxMessage_t test_message_tx;
-    RxMessage_t test_message_rx;
-
-    memset(&test_message_tx, 0, sizeof(TxMessage_t));
-    memset(&test_message_rx, 0, sizeof(RxMessage_t));
-
-    test_message_tx.id = id;
+    Message_t test_message;
+    test_message.id = id;
 
     // Enable reset mode in order to write to registers
-    SetControllerMode(kReset, true);
+    SetMode(Mode::kReset, true);
     // Enable self-test mode
-    SetControllerMode(kSelfTest, true);
+    SetMode(Mode::kSelfTest, true);
     // Disable reset mode
-    SetControllerMode(kReset, false);
+    SetMode(Mode::kReset, false);
     // Write test message to tx buffer 1
-    WriteMessageToBuffer(&test_message_tx, kBuffer1, controller_);
+    Send(test_message);
     // Set self-test request and send buffer 1
-    can_registers[controller_]->CMR = kSelfReceptionSendTxBuffer1;
+    channel_.registers->CMR = Value(Commands::kSelfReceptionSendTxBuffer1);
 
     // Allow time for RX interrupt to fire
     sjsu::Delay(2ms);
@@ -583,249 +443,98 @@ class Can final : public sjsu::Can
     // Get the message; the ISR (interrupt service routine)
     // will read the message from the rx buffer
     // and enqueue it into the rx queue.
-    Receive(&test_message_rx);
+    Message_t received_message = Receive();
 
     // Check if the received message matches the one we sent
-    if (test_message_rx.id == test_message_tx.id)
+    if (received_message.id == test_message.id)
     {
       success = true;
     }
 
     // Disable self-test mode
-    SetControllerMode(kReset, true);
-    SetControllerMode(kSelfTest, false);
-    SetControllerMode(kReset, false);
+    SetMode(Mode::kReset, true);
+    SetMode(Mode::kSelfTest, false);
+    SetMode(Mode::kReset, false);
 
     return success;
   }
 
   bool IsBusOff() const override
   {
-    status[controller_].SR = can_registers[controller_]->SR;
-    return status[controller_].flags.bus_error;
-  }
-
-  bool GetFrameErrorLocation(const char *& error_message) const override
-  {
-    bool success                = false;
-    interrupts[controller_].ICR = can_registers[controller_]->ICR;
-
-    for (uint8_t i = 0; i < 19; i++)
-    {
-      if (frame_error_table[i].errorCode ==
-          interrupts[controller_].flags.error_code_location)
-      {
-        error_message = frame_error_table[i].errorMessage;
-        success       = true;
-      }
-    }
-    return success;
-  }
-
-  void EnableBus() const override
-  {
-    SetControllerMode(kReset, false);
-  }
-
-  /// Creates the static FreeRTOS queues for the the system
-  template <typename T>
-  void CreateStaticQueues(T static_queue_config)
-  {
-    transmit_queue[controller_] =
-        xQueueCreateStatic(static_queue_config.kTxQueueLength,
-                           static_queue_config.kTxQueueItemSize,
-                           static_queue_config.tx_queue_storage_area,
-                           &static_queue_config.tx_static_queue);
-    receive_queue[controller_] =
-        xQueueCreateStatic(static_queue_config.kRxQueueLength,
-                           static_queue_config.kRxQueueItemSize,
-                           static_queue_config.rx_queue_storage_area,
-                           &static_queue_config.rx_static_queue);
+    return bit::Read(channel_.registers->GSR, GlobalStatus::kBusError);
   }
 
  private:
-  static void WriteMessageToBuffer(const TxMessage_t * const kMessage,
-                                   TxBuffers buffer_number,
-                                   Controllers controller)
+  /// Enable/Disable controller modes
+  ///
+  /// @param mode - which mode to enable/disable
+  /// @param enable_mode - true if you want to enable the mode. False otherwise.
+  void SetMode(bit::Mask mode, bool enable_mode) const
   {
-    volatile TxMessage_t * ptr_to_buffer_offset;
-    Commands command;
-
-    switch (buffer_number)
-    {
-      case kBuffer1:
-      {
-        ptr_to_buffer_offset = reinterpret_cast<volatile TxMessage_t *>(
-            &can_registers[controller]->TFI1);
-        command = kSendTxBuffer1;
-      }
-      break;
-      case kBuffer2:
-      {
-        ptr_to_buffer_offset = reinterpret_cast<volatile TxMessage_t *>(
-            &can_registers[controller]->TFI2);
-        command = kSendTxBuffer2;
-      }
-      break;
-      case kBuffer3:
-      {
-        ptr_to_buffer_offset = reinterpret_cast<volatile TxMessage_t *>(
-            &can_registers[controller]->TFI3);
-        command = kSendTxBuffer3;
-      }
-      break;
-      default:
-        // should never occur
-        break;
-    }
-
-    sjsu::InterruptController::GetPlatformController().Disable(CAN_IRQn);
-    ptr_to_buffer_offset->TFI        = kMessage->TFI;
-    ptr_to_buffer_offset->id         = kMessage->id;
-    ptr_to_buffer_offset->data.qword = kMessage->data.qword;
-    can_registers[controller]->CMR   = command;
-    sjsu::InterruptController::GetPlatformController().Enable(
-        kCanInterruptInfo);
+    channel_.registers->MOD =
+        bit::Insert(channel_.registers->MOD, enable_mode, mode);
   }
 
-  static void ReadMessageFromBuffer(Controllers controller)
-  {
-    RxMessage_t message;
-    memset(&message, 0, sizeof(RxMessage_t));
-
-    volatile RxMessage_t * ptr_to_buffer_offset =
-        reinterpret_cast<volatile RxMessage_t *>(
-            &can_registers[controller]->RFS);
-
-    sjsu::InterruptController::GetPlatformController().Disable(CAN_IRQn);
-    message.RFS        = ptr_to_buffer_offset->RFS;
-    message.id         = ptr_to_buffer_offset->id;
-    message.data.qword = ptr_to_buffer_offset->data.qword;
-    sjsu::InterruptController::GetPlatformController().Enable(
-        kCanInterruptInfo);
-
-    xQueueSendFromISR(receive_queue[controller], &message, 0);
-    can_registers[controller]->CMR = kReleaseRxBuffer;
-  }
-
-  void CaptureRegisterData()
-  {
-    interrupts[controller_].ICR    = can_registers[controller_]->ICR;
-    status[controller_].SR         = can_registers[controller_]->SR;
-    global_status[controller_].GSR = can_registers[controller_]->GSR;
-  }
-
-  void SetControllerMode(const Modes kModeBitPos, bool enable_mode) const
-  {
-    if (enable_mode == true)
-    {
-      can_registers[controller_]->MOD |= (1 << kModeBitPos);
-    }
-    else
-    {
-      can_registers[controller_]->MOD &= ~(1 << kModeBitPos);
-    }
-  }
-
-  void EnablePower() const
-  {
-    if (controller_ == kCan1)
-    {
-      sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
-          sjsu::lpc40xx::SystemController::Peripherals::kCan1);
-    }
-    else
-    {
-      sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
-          sjsu::lpc40xx::SystemController::Peripherals::kCan2);
-    }
-  }
-
-  void ConfigurePins() const
-  {
-    // Configure internal pin MUX to map board I/O pins to controller
-    //                       _
-    //                      / |<--x-->[GPIOx]
-    //                     /  |<--x-->[SPIx]
-    // [Board I/O Pin]<-->|Mux|<----->[CANx]
-    //                     \  |<--x-->[UARTx]
-    //                      \_|<--x-->[I2Cx]
-    //
-    if (controller_ == kCan1)
-    {
-      rd_.SetPinFunction(kRd1FunctionBit);
-      td_.SetPinFunction(kTd1FunctionBit);
-    }
-    else
-    {
-      rd_.SetPinFunction(kRd2FunctionBit);
-      td_.SetPinFunction(kTd2FunctionBit);
-    }
-  }
-
-  void EnableInterrupts() const
-  {
-    can_registers[controller_]->IER |= (1 << kRxBufferIntEnableBit);
-    can_registers[controller_]->IER |= (1 << kTxBuffer1IntEnableBit);
-    can_registers[controller_]->IER |= (1 << kTxBuffer2IntEnableBit);
-    can_registers[controller_]->IER |= (1 << kTxBuffer3IntEnableBit);
-  }
-
-  // TODO(#346): Add more baud rates and look into dynamically calculating baud
-  // rates for different peripheral bus clock speeds.
-  // TODO(#346): Make this function public so the user can set their own baud
-  // rate
-  // TODO(#346): This function should use GetPeripheralFrequency() to calculate
-  // baud rates.
-  // TODO(#347): Add details about these calculations in documentation.
   void SetBaudRate() const
   {
-    BusTiming_t bus_timing;
-    memset(&bus_timing, 0, sizeof(BusTiming_t));
-    // Assumes 48Mhz peripheral bus clock
-    if (baud_rate_ == kBaud100Kbps)
+    // According to the BOSCH CAN spec, the nominal bit time is divided into 4
+    // time segments. These segments need to be programmed for the internal
+    // bit timing logic/state machine. Refer to the link below for more
+    // details about the importance of these time segments:
+    // http://www.keil.com/dd/docs/datashts/silabs/boschcan_ug.pdf
+    //
+    // Nominal Bit Time : 1 / 100 000 == 10^-5s
+    //
+    //   0_______________________________10^-5
+    //  _/             1 bit             \_
+    //   \_______________________________/
+    //
+    //   | SYNC | PROP | PHASE1 | PHASE2 |        BOSCH
+    //   | TSCL |     TSEG1     | TSEG2  |        LPC
+    //                          ^
+    //                    sample point (industry standard: 80%)
+
+    // Hold the results in RAM rather than altering the register directly
+    // multiple times.
+    uint32_t bus_timing = 0;
+
+    // Configure the baud rate divider
+    auto & platform           = sjsu::SystemController::GetPlatformController();
+    auto peripheral_frequency = platform.GetPeripheralFrequency(channel_.id);
+    // Equation found p.563 of the user manual
+    //    tSCL = CANsuppliedCLK * (prescaler -  1)
+    uint32_t prescaler = (peripheral_frequency / baud_rate_) - 1;
+    bus_timing = bit::Insert(bus_timing, prescaler, BusTiming::kPrescalar);
+
+    // Used to compensate for positive and negative edge phase errors. Defines
+    // how much the sample point can be shifted.
+    bus_timing = bit::Insert(bus_timing, 3, BusTiming::kSyncJumpWidth);
+
+    // These time segments determine the location of the "sample point".
+    bus_timing = bit::Insert(bus_timing, 6, BusTiming::kTimeSegment1);
+    bus_timing = bit::Insert(bus_timing, 1, BusTiming::kTimeSegment2);
+
+    if (baud_rate_ < 100_kHz)
     {
-      // According to the BOSCH CAN spec, the nominal bit time is divided into 4
-      // time segments. These segments need to be programmed for the internal
-      // bit timing logic/state machine. Refer to the link below for more
-      // details about the importance of these time segments:
-      // http://www.keil.com/dd/docs/datashts/silabs/boschcan_ug.pdf
-      //
-      // Nominal Bit Time : 1 / 100 000 == 10^-5s
-      //
-      //   0_______________________________10^-5
-      //  _/             1 bit             \_
-      //   \_______________________________/
-      //
-      //   | SYNC | PROP | PHASE1 | PHASE2 |        BOSCH
-      //   | TSCL |     TSEG1     | TSEG2  |        LPC
-      //                          ^
-      //                    sample point (industry standard: 80%)
-
-      // Scaled down to 1Mhz
-      bus_timing.values.baud_rate_prescaler = 47;
-      // Used to compensate for positive and negative edge phase errors. Defines
-      // how much the sample point can be shifted.
-      bus_timing.values.sync_jump_width = 3;
-      // These time segments determine the location of the "sample point".
-      bus_timing.values.time_segment_1 = 6;
-      bus_timing.values.time_segment_2 = 1;
-      // The bus is sampled 3 times (recommended for low speeds).
-      bus_timing.values.sampling = 0;
-
-      can_registers[controller_]->BTR = bus_timing.BTR;
+      // The bus is sampled 3 times (recommended for low speeds, 100kHz is
+      // considered HIGH).
+      bus_timing = bit::Insert(bus_timing, 1, BusTiming::kSampling);
     }
+    else
+    {
+      bus_timing = bit::Insert(bus_timing, 0, BusTiming::kSampling);
+    }
+
+    channel_.registers->BTR = bus_timing;
   }
 
   static void EnableAcceptanceFilter()
   {
-    can_acceptance_filter_register->AFMR = kAcceptAllMessages;
+    can_acceptance_filter_register->AFMR = Value(Commands::kAcceptAllMessages);
   }
 
-  Controllers controller_;
-  BaudRates baud_rate_;
-  const sjsu::Pin & rd_;
-  const sjsu::Pin & td_;
+  const Channel_t & channel_;
+  units::frequency::hertz_t baud_rate_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu
