@@ -103,8 +103,9 @@ Collaboration diagram for sjsu::experimental::Sd:</div>
 <div class="center"><img src="../../d5/d0f/classsjsu_1_1experimental_1_1Sd__coll__graph.png" border="0" usemap="#sjsu_1_1experimental_1_1Sd_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1experimental_1_1Sd_coll__map" id="sjsu_1_1experimental_1_1Sd_coll__map">
 <area shape="rect" id="node2" href="../../dc/da6/classsjsu_1_1Storage.html" title="Abstract interface for persistent memory storage systems. " alt="" coords="41,5,148,32"/>
-<area shape="rect" id="node3" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint8_t \&gt;" alt="" coords="5,57,184,98"/>
-<area shape="rect" id="node4" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint16_t \&gt;" alt="" coords="5,122,184,163"/>
+<area shape="rect" id="node3" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="37,56,152,83"/>
+<area shape="rect" id="node4" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint8_t \&gt;" alt="" coords="5,107,184,149"/>
+<area shape="rect" id="node5" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint16_t \&gt;" alt="" coords="5,173,184,214"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -244,12 +245,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a68542fe61f9226924eca4ae814e51a3d"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a68542fe61f9226924eca4ae814e51a3d">kRetryLimit</a> = 250</td></tr>
-<tr class="separator:a68542fe61f9226924eca4ae814e51a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8928a0fc2f1c0e1d60250caffa8ab8d3"><td class="memItemLeft" align="right" valign="top"><a id="a8928a0fc2f1c0e1d60250caffa8ab8d3"></a>
-static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a8928a0fc2f1c0e1d60250caffa8ab8d3">kBlockSize</a> = 512</td></tr>
-<tr class="memdesc:a8928a0fc2f1c0e1d60250caffa8ab8d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enforcing block-size cross-compatibility. <br /></td></tr>
-<tr class="separator:a8928a0fc2f1c0e1d60250caffa8ab8d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0516a51d6d0ef166c270545f5ccee2c5"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a0516a51d6d0ef166c270545f5ccee2c5">kRetryLimit</a> = 250</td></tr>
+<tr class="separator:a0516a51d6d0ef166c270545f5ccee2c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a029528211f676768199b284929ccc437"><td class="memItemLeft" align="right" valign="top"><a id="a029528211f676768199b284929ccc437"></a>
+static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a029528211f676768199b284929ccc437">kBlockSize</a> = 512</td></tr>
+<tr class="memdesc:a029528211f676768199b284929ccc437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enforcing block-size cross-compatibility. <br /></td></tr>
+<tr class="separator:a029528211f676768199b284929ccc437"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a008320aca910a714ee57423d4bda0529"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html">sjsu::crc::CrcTableConfig_t</a>&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a008320aca910a714ee57423d4bda0529">kCrcTable8</a></td></tr>
 <tr class="memdesc:a008320aca910a714ee57423d4bda0529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table holding CRC8 tokens used to verify SD card transactions.  <a href="#a008320aca910a714ee57423d4bda0529">More...</a><br /></td></tr>
 <tr class="separator:a008320aca910a714ee57423d4bda0529"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,6 +265,14 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
 static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#afbe33d77e4c03197f21f96101e9d14c1">kCommandBase</a> = 0x40</td></tr>
 <tr class="memdesc:afbe33d77e4c03197f21f96101e9d14c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The start bits for every command. <br /></td></tr>
 <tr class="separator:afbe33d77e4c03197f21f96101e9d14c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2100f1335e1bc89232e10e6c77c7fad8"><td class="memItemLeft" align="right" valign="top"><a id="a2100f1335e1bc89232e10e6c77c7fad8"></a>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#a2100f1335e1bc89232e10e6c77c7fad8">kIllegalCommand</a> = bit::CreateMaskFromRange(2)</td></tr>
+<tr class="memdesc:a2100f1335e1bc89232e10e6c77c7fad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">R1 Response error flag "Illegal Command" bit position. <br /></td></tr>
+<tr class="separator:a2100f1335e1bc89232e10e6c77c7fad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae290d02209069cb5443d98bf332c1ee4"><td class="memItemLeft" align="right" valign="top"><a id="ae290d02209069cb5443d98bf332c1ee4"></a>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d57/classsjsu_1_1experimental_1_1Sd.html#ae290d02209069cb5443d98bf332c1ee4">kIdle</a> = bit::CreateMaskFromRange(0)</td></tr>
+<tr class="memdesc:ae290d02209069cb5443d98bf332c1ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">R1 Response error flag "In Idle Mode" bit position. <br /></td></tr>
+<tr class="separator:ae290d02209069cb5443d98bf332c1ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SD card controller utilizing the SPI peripheral. </p>
@@ -783,8 +792,8 @@ false if storage media is not present. </dd></dl>
 
 </div>
 </div>
-<a id="a68542fe61f9226924eca4ae814e51a3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68542fe61f9226924eca4ae814e51a3d">&#9670;&nbsp;</a></span>kRetryLimit</h2>
+<a id="a0516a51d6d0ef166c270545f5ccee2c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0516a51d6d0ef166c270545f5ccee2c5">&#9670;&nbsp;</a></span>kRetryLimit</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -793,7 +802,7 @@ false if storage media is not present. </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t sjsu::experimental::Sd::kRetryLimit = 250</td>
+          <td class="memname">constexpr uint32_t sjsu::experimental::Sd::kRetryLimit = 250</td>
         </tr>
       </table>
   </td>

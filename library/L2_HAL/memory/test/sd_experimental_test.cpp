@@ -131,7 +131,7 @@ TEST_CASE("Testing [experimental] SD Card Driver Class", "[sd-experimental]")
     card_info.csd.byte[8] = (kCSize >> 8) & 0xFF;
     card_info.csd.byte[9] = (kCSize >> 0) & 0xFF;
 
-    const units::data::byte_t kExpectedSize = (kCSize + 1) * 512_kB;
+    const units::data::byte_t kExpectedSize = (kCSize + 1) * 512_KiB;
 
     // Exercise
     auto actual_size = sd.GetCapacity();
@@ -142,7 +142,7 @@ TEST_CASE("Testing [experimental] SD Card Driver Class", "[sd-experimental]")
     CHECK(kExpectedSize == actual_size);
   }
 
-  SECTION("Mount()")
+  SECTION("Enable()")
   {
     // NOT TESTED!
   }

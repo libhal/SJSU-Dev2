@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstdint>
+#include <limits>
 #include <type_traits>
 
 #include "L1_Peripheral/gpio.hpp"
@@ -21,10 +22,10 @@ class Sd : public Storage
   /// via research) is to wait at least 1-8 bytes after sending a command's CRC
   /// before expecting a response from the card.
   /// See https://luckyresistor.me/cat-protector/software/sdcard-2/
-  static constexpr uint8_t kRetryLimit = 250;
+  static constexpr uint32_t kRetryLimit = 250;
 
   /// Enforcing block-size cross-compatibility
-  static constexpr uint16_t kBlockSize = 512;
+  static constexpr uint32_t kBlockSize = 512;
 
   /// Table holding CRC8 tokens used to verify SD card transactions.
   static constexpr sjsu::crc::CrcTableConfig_t<uint8_t> kCrcTable8 =
@@ -43,9 +44,7 @@ class Sd : public Storage
   struct Response_t
   {
     /// Array buffer to hold the response bytes
-    std::array<uint8_t, 8> byte;
-    /// The number of bytes in the response.
-    uint32_t length;
+    std::array<uint8_t, 5> byte;
   };
 
   /// Enumerator for response type codes (See Physical Layer V6.00 p.225
@@ -151,7 +150,7 @@ class Sd : public Storage
   struct CsdBuffer_t
   {
     /// Length of the CSD buffer +2 for CRC
-    static constexpr size_t kBytesInCsdRegister = 16 + 2;
+    static constexpr size_t kBytesInCsdRegister = 16;
     /// CSD contents
     std::array<uint8_t, kBytesInCsdRegister> byte;
     /// Determines if hte CSD contents are valid.
@@ -172,6 +171,11 @@ class Sd : public Storage
     /// Container for the CSD registers contents
     CsdBuffer_t csd;
   };
+
+  /// R1 Response error flag "Illegal Command" bit position
+  static constexpr bit::Mask kIllegalCommand = bit::CreateMaskFromRange(2);
+  /// R1 Response error flag "In Idle Mode" bit position
+  static constexpr bit::Mask kIdle = bit::CreateMaskFromRange(0);
 
   /// @param spi         - spi peripheral connected to an SD card.
   /// @param chip_select - gpio connected to the chip select pin of the SD card.
@@ -201,9 +205,9 @@ class Sd : public Storage
 
   Status Initialize() override
   {
-    chip_select_.SetDirection(Gpio::Direction::kOutput);
-    chip_select_.Set(Gpio::State::kHigh);
-    card_detect_.SetDirection(Gpio::Direction::kInput);
+    chip_select_.SetAsOutput();
+    chip_select_.SetHigh();
+    card_detect_.SetAsInput();
 
     spi_.Initialize();
     /// Defaulting to 400 kHz as that is the frequency that allows mounting to
@@ -234,19 +238,11 @@ class Sd : public Storage
 
   sjsu::Status Enable() override
   {
-    // Lower the clock speed for mounting
-    spi_.SetClock(400_kHz);
-
     Status status = Mount();
-
     if (!IsOk(status))
     {
       SendCommand(Command::kGarbage, 0xFFFFFFFF, KeepAlive::kNo);
     }
-
-    // Bring the clock speed back up for typical use
-    spi_.SetClock(spi_clock_rate_);
-
     return status;
   }
 
@@ -269,14 +265,13 @@ class Sd : public Storage
   units::data::byte_t GetCapacity() override
   {
     // The c_size register's contents can be found in bits [48:69]
+    constexpr bit::Mask kCSizeMask = bit::CreateMaskFromRange(48, 69);
     uint32_t c_size =
-        sd_.csd.byte[7] << 16 | sd_.csd.byte[8] << 8 | sd_.csd.byte[9];
+        bit::StreamExtract<uint32_t>(sd_.csd.byte, kCSizeMask, Endian::kLittle);
+    LogDebug("c_size = 0x%08X", c_size);
 
-    // Pull out only bits from 0 to 22
-    c_size = bit::Extract(c_size, bit::CreateMaskFromRange(0, 22));
-
-    // Calculate the actual card size with the equation = (c_size + 1) * 512kB
-    units::data::byte_t card_size = (c_size + 1) * 512_kB;
+    // Calculate the actual card size with the equation = (c_size + 1) * 512KiB
+    units::data::byte_t card_size = (c_size + 1) * 512_KiB;
 
     return card_size;
   };
@@ -411,7 +406,8 @@ class Sd : public Storage
 
   bool CommandWasAcknowledged(Response_t & response)
   {
-    if (response.byte[0] == 0x00 || response.byte[0] == 0x01)
+    // If none of the bits for the R1 response are set, then no errors occurred.
+    if (response.byte[0] == 0x00)
     {
       return true;
     }
@@ -449,15 +445,16 @@ class Sd : public Storage
     WaitToReadBlock();
 
     // Read all the bytes of a single csd
-    for (uint16_t i = 0; i < CsdBuffer_t::kBytesInCsdRegister; i++)
+    for (uint16_t i = 0; i < csd.byte.size(); i++)
     {
       csd.byte[i] = static_cast<uint8_t>(spi_.Transfer(0xFF));
     }
 
     // Then read the last two bytes to get the 16-bit CRC
-    uint32_t actual_crc = csd.byte.end()[-2] << 8 | csd.byte.end()[-1];
-    uint32_t expected_crc =
-        GetCrc16(csd.byte.data(), CsdBuffer_t::kBytesInCsdRegister - 2);
+    uint16_t crc_higher_byte = spi_.Transfer(0xFF);
+    uint16_t crc_lower_byte  = spi_.Transfer(0xFF);
+    uint32_t actual_crc      = crc_higher_byte << 8 | crc_lower_byte;
+    uint32_t expected_crc    = GetCrc16(csd.byte.data(), csd.byte.size());
 
     if (expected_crc != actual_crc)
     {
@@ -467,13 +464,22 @@ class Sd : public Storage
       return csd;
     }
 
-    // Wait for the SD card to go out of idle state
-    do
-    {
-      response = SendCommand(Command::kGetStatus, 32, KeepAlive::kNo);
-    } while (response.byte[0] & 0x01);
+    WaitForDeviceToLeaveIdle();
 
     return csd;
+  }
+
+  void WaitForDeviceToLeaveIdle()
+  {
+    while (true)
+    {
+      Response_t response =
+          SendCommand(Command::kGetStatus, 32, KeepAlive::kNo);
+      if (response.byte[0] & 0x01)
+      {
+        break;
+      }
+    }
   }
 
   /// Read any number of blocks from the SD card
@@ -516,11 +522,7 @@ class Sd : public Storage
       block.status = sjsu::Status::kBusError;
     }
 
-    // Wait for the SD card to go out of idle state
-    do
-    {
-      response = SendCommand(Command::kGetStatus, 32, KeepAlive::kNo);
-    } while (response.byte[0] & 0x01);
+    WaitForDeviceToLeaveIdle();
 
     return block;
   }
@@ -535,7 +537,7 @@ class Sd : public Storage
     Response_t response =
         SendCommand(Command::kWriteSingle, address, KeepAlive::kYes);
     sjsu::LogDebug("Sent Write Cmd");
-    sjsu::LogDebug("[R1 Response:0x%02X]", response.byte[0]);
+    sjsu::LogDebug("[R1 Response: 0x%02X]", response.byte[0]);
 
     // Check if the response was acknowledged properly
     if (response.byte[0] != 0x00)
@@ -624,14 +626,14 @@ class Sd : public Storage
 
   // Waits for the card to respond after a single or multi block read cmd is
   // sent.
-  void WaitToReadBlock()
+  bool WaitToReadBlock()
   {
-    // Since the command encountered no errors, we can now begin to
-    // read data. The card will enter "BUSY" mode following reception
-    // of the read command and sending of a response soon after; we
-    // must wait until either the data token "OxFE" or the error token
-    // "b000X_XXXX" is received. The error token's flags have the
-    // following meanings:
+    // Since the command encountered no errors, we can now begin to read data.
+    // The card will enter "BUSY" mode following reception of the read command
+    // and sending of a response soon after; we must wait until either the data
+    // token "OxFE" or the error token "b000X_XXXX" is received. The error
+    // token's flags have the following meanings:
+    //
     // MSB   -->  0 (irrelevant)
     // Bit 6 -->  0 (irrelevant)
     // Bit 5 -->  0 (irrelevant)
@@ -640,67 +642,78 @@ class Sd : public Storage
     // Bit 2 -->  If set, card ECC failed
     // Bit 1 -->  If set, CC error occurred
     // Bit 0 -->  If set, a generic error occurred
-    uint8_t wait_byte = 0x00;
-    do
-    {
-      wait_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
-    } while (wait_byte != 0xFE && (wait_byte & 0xE0) != 0x00);
 
-    // DEBUG: Check the value of the wait byte
-    if (wait_byte == 0xFE)
+    constexpr bit::Mask kErrorIndicator = bit::CreateMaskFromRange(5, 7);
+
+    for (uint32_t i = 0; i < kRetryLimit * 100; i++)
     {
-      LogDebug(
-          "Received GO Byte 0xFE; SD Card is now sending block payload...");
+      uint8_t wait_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
+
+      if (wait_byte == 0xFE)
+      {
+        LogDebug("Received GO Byte 0xFE;");
+        LogDebug("SD Card is now sending block payload...");
+        return true;
+      }
+
+      if (bit::Extract(wait_byte, kErrorIndicator) == 0x00)
+      {
+        LogDebug("Error: SD Card Rejected Read Cmd [Response: 0x%02X]",
+                 wait_byte);
+        LogDebug("Card Locked?: %s", ToBool(wait_byte & 0x10));
+        LogDebug("Addr Out of Range?: %s", ToBool(wait_byte & 0x08));
+        LogDebug("Card ECC Failed?: %s", ToBool(wait_byte & 0x04));
+        LogDebug("CC Error?: %s", ToBool(wait_byte & 0x02));
+        LogDebug("Error?: %s", ToBool(wait_byte & 0x01));
+        return false;
+      }
     }
-    else if ((wait_byte & 0xE0) == 0x00)
-    {
-      LogDebug("Error: SD Card Rejected Read Cmd [Response: 0x%02X]",
-               wait_byte);
-      LogDebug("Card Locked?: %s", ToBool(wait_byte & 0x10));
-      LogDebug("Addr Out of Range?: %s", ToBool(wait_byte & 0x08));
-      LogDebug("Card ECC Failed?: %s", ToBool(wait_byte & 0x04));
-      LogDebug("CC Error?: %s", ToBool(wait_byte & 0x02));
-      LogDebug("Error?: %s", ToBool(wait_byte & 0x01));
-    }
+
+    return false;
   }
 
-  // Waits for the card to be ready to receive a new block after one has
-  // been written or erased
-  void WaitWhileBusy()
+  /// Waits for the card to be ready to receive a new block after one has
+  /// been written or erased
+  ///
+  /// @param retry - defaults to -1 to simulate a near infinite loop.
+  /// @return true - if the card finished
+  /// @return false
+  bool WaitWhileBusy(uint32_t retry = std::numeric_limits<uint32_t>::max())
   {
-    // Wait for the card to finish programming (i.e. when the
-    // bytes return to 0xFF)
-    LogDebug("Card is busy. Waiting for it to finish...");
-    while (spi_.Transfer(0xFF) != 0xFF)
+    // Wait for the card to finish programming (i.e. when the bytes return to
+    // 0xFF)
+    for (uint32_t i = 0; i < retry; i++)
     {
-      continue;
+      if (spi_.Transfer(0xFF) == 0xFF)
+      {
+        LogDebug("Card finished!");
+        return true;
+      }
     }
-    LogDebug("Card finished!");
+    LogDebug("Card Timed Out!");
+    return false;
   }
 
   void SendCommandParameters(Command sdc, uint32_t arg)
   {
     // Calculate the 7-bit CRC (i.e. CRC7) using the SD card standard's
     // algorithm
-    uint8_t payload[] = { static_cast<uint8_t>(sdc),
-                          static_cast<uint8_t>(arg >> 24),
-                          static_cast<uint8_t>(arg >> 16),
-                          static_cast<uint8_t>(arg >> 8),
-                          static_cast<uint8_t>(arg >> 0) };
+    std::array<uint8_t, 5> payload = { static_cast<uint8_t>(sdc),
+                                       static_cast<uint8_t>(arg >> 24),
+                                       static_cast<uint8_t>(arg >> 16),
+                                       static_cast<uint8_t>(arg >> 8),
+                                       static_cast<uint8_t>(arg >> 0) };
 
-    uint8_t crc = GetCrc7(payload, sizeof(payload));
+    spi_.Transfer(payload);
+
+    uint8_t crc = GetCrc7(payload.data(), payload.size());
     if (sdc == Command::kGarbage)
     {
       crc = 0xFF;
     }
 
-    // Send the desired command frame to the SD card board
-    for (uint8_t byte : payload)
-    {
-      spi_.Transfer(byte);
-    }
-    // Send 7-bit CRC and LSB stop addr (as b1)
-    crc = static_cast<uint8_t>((crc << 1) | 0x01);
+    // Send 7-bit CRC and LSB stop addr must be set to a 1
+    crc = static_cast<uint8_t>((crc << 1) | 0b1);
     spi_.Transfer(crc);
   }
 
@@ -756,108 +769,118 @@ class Sd : public Storage
                          KeepAlive keep_alive)
   {
     // Select the SD Card
-    chip_select_.Set(Gpio::State::kLow);
+    chip_select_.SetLow();
 
     // Send command to the SD Card
     SendCommandParameters(command, parameter);
 
-    // Need to send at least 1 byte of garbage before checking for a response
-    spi_.Transfer(0xFF);
+    // Creating the response object to return
+    Response_t response;
 
-    // Continuously poll SD card and when we get a byte that is not 0xFF, figure
-    // out where the bit offset is and record the byte that no longer is 0xFF.
-    uint32_t bit_offset    = 0;
-    uint64_t response_data = 0;
-    // Stores the response byte from the for-loop below for later use.
-    uint8_t response_byte = 0;
+    // If the most significant bit of the response byte is a zero, then this
+    // indicates that the start of a response sequence.
+    constexpr bit::Mask kResponseFlag = bit::CreateMaskFromRange(7);
 
     for (uint32_t tries = 0; tries < kRetryLimit; tries++)
     {
-      response_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
-      if (response_byte != 0xFF)
+      uint8_t response_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
+
+      if (bit::Read(response_byte, kResponseFlag) == 0)
       {
-        // Determine the offset, since the first byte of a
-        // response will always be 0.
-        while (response_byte & (0x80 >> bit_offset))
+        const uint32_t kResponseLength = GetResponseLength(command);
+
+        // Store all of the response bytes into the response object.
+        for (uint32_t i = 0; i < kResponseLength; i++)
         {
-          bit_offset++;
+          response.byte[i] = response_byte;
+          response_byte    = static_cast<uint8_t>(spi_.Transfer(0xFF));
         }
         break;
       }
     }
 
-    uint32_t response_length = GetResponseLength(command);
-    uint32_t bytes_to_read   = response_length;
-    if (bit_offset > 0)
-    {
-      // Read an extra 8 bits since the response was offset
-      bytes_to_read++;
-    }
-
-    for (uint32_t i = 0; i < bytes_to_read; i++)
-    {
-      // Make space for the next byte
-      response_data = response_data << 8;
-      // Add response byte to response data
-      response_data |= response_byte;
-      // Collect the next byte in the response
-      response_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
-    }
-
-    // Compensate for the bit offset
-    response_data = response_data >> bit_offset;
-
-    // Creating the response object to return
-    Response_t response_result;
-    response_result.length = response_length;
-
-    for (uint32_t i = 0; i < response_length; i++)
-    {
-      uint64_t res = (response_data >> 8 * (response_length - 1 - i));
-      response_result.byte[i] = static_cast<uint8_t>(res);
-    }
-
     // Only end the transaction if keep_alive isn't requested
     if (keep_alive == KeepAlive::kNo)
     {
-      // Deselect the SPI comm board
-      chip_select_.Set(Gpio::State::kHigh);
+      // Deselect the SD card
+      chip_select_.SetHigh();
     }
 
-    return response_result;
+    return response;
+  }
+
+  void ClockCard(int number_of_cycles)
+  {
+    for (int i = 0; i < number_of_cycles / 8; i++)
+    {
+      spi_.Transfer(0xFF);
+    }
   }
 
   // Initialize and enable the SD Card
   Status Mount()
   {
+    // As found in the "Application Note Secure Digital Card Interface for the
+    // MSP430" we need to assert the chip select and clock for more than 74
+    // cycles.
+
+    // Lower the clock speed to 400kHz for mounting
+    spi_.SetClock(400_kHz);
+
+    // So we assert the chip select
+    chip_select_.SetLow();
+    // Clock out 10 bytes or 80 clock cycles, to get the SD Card's internal
+    // state ready for transmission.
+    ClockCard(80);
+    // Then de-assert chip select
+    chip_select_.SetHigh();
+    // And finally clock for 16 more cycles to finish off the necessary time for
+    // the SD card to finish its internal work.
+    ClockCard(16);
+
     // Reset the card and force it to go to idle state at <400kHz with a
     // CMD0 + (active-low) CS
-    LogDebug("Sending SD Card to Idle State...");
-    SendCommand(Command::kReset, 0, KeepAlive::kYes);
-
-    // =========================================================================
-    // Reset the card again to trigger SPI mode
-    // =========================================================================
-    bool reset_was_successful = WaitForCardToIdle();
-    if (!reset_was_successful)
-    {
-      LogError("Failed to initiate SPI mode within timeout. Aborting!");
-      return Status::kTimedOut;
-    }
+    LogDebug("Resetting SD Card...");
+    SendCommand(Command::kReset, 0, KeepAlive::kNo);
 
     // =========================================================================
     // Ask if supported voltage of 3v3 is supported
     // =========================================================================
-    Status voltage_set_status = ConfigureCardVoltage();
+    Status voltage_set_status = CheckSupportedVoltages();
     if (!IsOk(voltage_set_status))
     {
       return voltage_set_status;
     }
 
-    Status card_initialization_status = InitializeSDCard();
-    if (!IsOk(card_initialization_status))
+    bool initialization_successful = false;
+    for (uint32_t i = 0; i < kRetryLimit * 10; i++)
     {
-      LogError("SD Card Initialization timed out. Aborting!");
+      Response_t begin_response =
+          SendCommand(Command::kAcBegin, 0, KeepAlive::kNo);
+
+      if (bit::Read(begin_response.byte[0], kIllegalCommand))
+      {
+        LogDebug("ACMD Begin is illegal!");
+        break;
+      }
+
+      uint32_t init_settings = (0b0101'0000 << 24);
+
+      Response_t init_response =
+          SendCommand(Command::kAcInit, init_settings, KeepAlive::kNo);
+      // If this bit is a 1, then the init process is still going.
+      // If it is 0, then the init process has finished.
+      if (!bit::Read(init_response.byte[0], kIdle))
+      {
+        LogDebug("Initialization Successful (0x%02X)", init_response.byte[0]);
+        initialization_successful = true;
+        break;
+      }
+    }
+
+    if (!initialization_successful)
+    {
+      LogDebug("Initialization Failed!");
       return Status::kTimedOut;
     }
 
@@ -875,6 +898,7 @@ class Sd : public Storage
     // =========================================================================
     // Get and store CSD Register
     // =========================================================================
+    LogDebug("Getting CSD register contents");
     sd_.csd = GetCsdRegisterBlock();
 
     if (!IsOk(sd_.csd.status))
@@ -882,82 +906,56 @@ class Sd : public Storage
       return sd_.csd.status;
     }
 
-    return Status::kSuccess;
-  }
-
-  Status InitializeSDCard()
-  {
-    Response_t response;
-    constexpr uint32_t kBusyBit = 0x1;
-    int tries                   = 0;
-    for (tries = 0; tries < kRetryLimit && response.byte[0] & kBusyBit; tries++)
-    {
-      // Send host's operating conditions
-      response = SendCommand(Command::kInit, 0x40000000, KeepAlive::kYes);
-    }
-
-    if (tries > kRetryLimit)
-    {
-      LogError("SD Card timed out. Aborting!");
-      return Status::kTimedOut;
-    }
+    // Bring the clock speed back up for typical use
+    spi_.SetClock(spi_clock_rate_);
 
     return Status::kSuccess;
   }
 
   /// Send the host's supported voltage (3.3V) and ask if the card supports it.
-  Status ConfigureCardVoltage()
+  Status CheckSupportedVoltages()
   {
     LogDebug("Checking Current SD Card Voltage Level...");
-    constexpr uint8_t kCheckPattern = 0xAB;
-    uint32_t supported_voltage      = 0x00000001;
-    uint32_t voltage_pattern        = (supported_voltage << 8) | kCheckPattern;
+    constexpr bit::Mask kVoltageCodeMask = bit::CreateMaskFromRange(8, 11) >> 8;
+    constexpr uint8_t kCheckPattern      = 0xAB;
+    uint8_t voltage_code                 = 0x01;
+    uint32_t voltage_pattern             = (voltage_code << 8) | kCheckPattern;
 
     Response_t response =
         SendCommand(Command::kGetOp, voltage_pattern, KeepAlive::kYes);
+
+    LogDebug("Detecting if device is SD version +2.0 or not");
+    if (bit::Read(response.byte[0], kIllegalCommand))
+    {
+      LogDebug(
+          "Card responded with Illegal Command, this is not a supported SD "
+          "card.");
+      return Status::kInvalidSettings;
+    }
+
+    if (bit::Extract(response.byte[3], kVoltageCodeMask) != voltage_code)
+    {
+      // If the 2nd-to-last byte of the reponse AND with our host device's
+      // supported voltage range is 0x00, the SD card doesn't support our
+      // device's operating voltage
+      LogError("Unsupported voltage in use. Aborting! (0x%02X) :: (0x%02X)",
+               response.byte[3],
+               bit::Extract(response.byte[3], kVoltageCodeMask));
+      debug::Hexdump(response.byte.data(), response.byte.size());
+      return Status::kInvalidSettings;
+    }
 
     if (response.byte[4] != kCheckPattern)
     {
       // If the last byte is not an exact echo of the LSB of the kGetOp
       // command's argument, this response is invalid
-      LogError("Response integrity check failed. Aborting!");
+      LogError("Response integrity check failed. Aborting! (0x%02X)",
+               response.byte[4]);
+      debug::Hexdump(response.byte.data(), response.byte.size());
       return Status::kBusError;
-    }
-    else if (response.byte[3] != supported_voltage)
-    {
-      // If the 2nd-to-last byte of the reponse AND with our host device's
-      // supported voltage range is 0x00, the SD card doesn't support our
-      // device's operating voltage
-      LogError("Unsupported voltage in use. Aborting!");
-      return Status::kInvalidSettings;
     }
 
     return Status::kSuccess;
-  }
-
-  bool WaitForCardToIdle()
-  {
-    int tries = 0;
-    for (tries = 0; tries < kRetryLimit; tries++)
-    {
-      Response_t response = SendCommand(Command::kReset, 0, KeepAlive::kYes);
-
-      // Check if R1 response frame's bit 1 is set (to ensure that
-      // card is in idle state)
-      if (response.byte[0] != 0xFF && (response.byte[0] & 0x01))
-      {
-        // If it is, we can move on; otherwise, keep trying for a set
-        // amount of tries
-        break;
-      }
-      Delay(10ms);
-    }
-
-    if (tries > kRetryLimit)
-    {
-      return false;
-    }
-    return true;
   }
 
   Type GetCardType()
