@@ -137,14 +137,24 @@ class SystemController final : public sjsu::SystemController
     //! @endcond
   };
 
-  // TODO(#1083): Migrate these constants to bit::Mask(s)
-  //! @cond Doxygen_Suppress
-  static constexpr uint32_t kEnablePll              = (0b1 << 0);
-  static constexpr uint32_t kPlock                  = 10;
-  static constexpr uint32_t kClearPllMultiplier     = (0x1f << 0);
-  static constexpr uint32_t kClearPllDivider        = (0b11 << 5);
-  static constexpr uint32_t kClearPeripheralDivider = (0b1'1111);
-  //! @endcond
+  /// Namespace for PLL configuration bit masks
+  struct Pll  // NOLINT
+  {
+    /// In PLLCON register: When 1, and after a valid PLL feed, this bit
+    /// will activate the related PLL and allow it to lock to the requested
+    /// frequency.
+    static constexpr bit::Mask kEnable = bit::CreateMaskFromRange(0);
+    /// In PLLCFG register: PLL multiplier value, the amount to multiply the
+    /// input frequency by.
+    static constexpr bit::Mask kMultiplier = bit::CreateMaskFromRange(0, 4);
+    /// In PLLCFG register: PLL divider value, the amount to divide the output
+    /// of the multiplier stage to bring the frequency down to a
+    /// reasonable/usable level.
+    static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(5, 6);
+    /// In PLLSTAT register: if set to 1 by hardware, the PLL has accepted
+    /// the configuration and is locked.
+    static constexpr bit::Mask kPllLockStatus = bit::CreateMaskFromRange(10);
+  };
 
   /// Namespace of Oscillator register bitmasks
   struct Oscillator  // NOLINT
@@ -263,29 +273,32 @@ class SystemController final : public sjsu::SystemController
  private:
   void SelectOscillatorSource(OscillatorSource source) const
   {
-    system_controller->CLKSRCSEL = bit::Insert(system_controller->CLKSRCSEL,
-                                               static_cast<uint32_t>(source),
-                                               Oscillator::kSelect);
+    system_controller->CLKSRCSEL =
+        bit::Insert(system_controller->CLKSRCSEL, static_cast<uint32_t>(source),
+                    Oscillator::kSelect);
   }
+
   void SelectMainClockSource(MainClockSource source) const
   {
-    system_controller->CCLKSEL = bit::Insert(system_controller->CCLKSEL,
-                                             static_cast<uint32_t>(source),
-                                             CpuClock::kSelect);
+    system_controller->CCLKSEL =
+        bit::Insert(system_controller->CCLKSEL, static_cast<uint32_t>(source),
+                    CpuClock::kSelect);
   }
+
   void SelectUsbClockSource(UsbSource usb_clock) const
   {
-    system_controller->USBCLKSEL = bit::Insert(system_controller->USBCLKSEL,
-                                               static_cast<uint32_t>(usb_clock),
-                                               UsbClock::kSelect);
+    system_controller->USBCLKSEL =
+        bit::Insert(system_controller->USBCLKSEL,
+                    static_cast<uint32_t>(usb_clock), UsbClock::kSelect);
   }
+
   void SelectSpifiClockSource(SpifiSource spifi_clock) const
   {
     system_controller->SPIFISEL =
         bit::Insert(system_controller->SPIFISEL,
-                    static_cast<uint32_t>(spifi_clock),
-                    SpiFiClock::kSelect);
+                    static_cast<uint32_t>(spifi_clock), SpiFiClock::kSelect);
   }
+
   uint32_t CalculatePll(units::frequency::megahertz_t input_frequency,
                         units::frequency::megahertz_t desired_frequency) const
   {
@@ -296,15 +309,15 @@ class SystemController final : public sjsu::SystemController
     uint32_t multiplier_value;
     if ((desired_frequency.to<uint32_t>() % input_frequency.to<uint32_t>()) > 0)
     {
-      multiplier_value =
-          static_cast<uint32_t>((desired_frequency / input_frequency) + 1);
+      multiplier_value = (desired_frequency / input_frequency) + 1;
     }
     else
     {
-      multiplier_value =
-          static_cast<uint32_t>(desired_frequency / input_frequency);
+      multiplier_value = desired_frequency / input_frequency;
     }
+
     uint16_t divider_value = 1;
+
     while (calculating)
     {
       uint16_t current_controlled_oscillator_frequency;
@@ -339,18 +352,23 @@ class SystemController final : public sjsu::SystemController
     SelectMainClockSource(MainClockSource::kBaseClock);
     SelectUsbClockSource(UsbSource::kBaseClock);
     SelectSpifiClockSource(SpifiSource::kBaseClock);
+
+    uint32_t config = 0;
     // must subtract 1 from multiplier value as specified in datasheet
-    system_controller->PLL0CFG =
-        (system_controller->PLL0CFG & ~kClearPllMultiplier) |
-        (multiplier_value - 1);
-    system_controller->PLL0CFG =
-        (system_controller->PLL0CFG & ~kClearPllDivider) | (divider_value << 5);
-    system_controller->PLL0CON |= kEnablePll;
+    config = bit::Insert(config, multiplier_value - 1, Pll::kMultiplier);
+    config = bit::Insert(config, divider_value, Pll::kDivider);
+    // Set the PLL multiply and divide values
+    system_controller->PLL0CFG = config;
+
+    // Enable PLL
+    system_controller->PLL0CON =
+        bit::Set(system_controller->PLL0CON, Pll::kEnable);
+
     // Necessary feed sequence to ensure the changes are intentional
     system_controller->PLL0FEED = 0xAA;
     system_controller->PLL0FEED = 0x55;
 
-    while (!bit::Read(system_controller->PLL0STAT, kPlock))
+    while (!bit::Read(system_controller->PLL0STAT, Pll::kPllLockStatus))
     {
       continue;
     }
@@ -364,18 +382,23 @@ class SystemController final : public sjsu::SystemController
         CalculatePll(input_frequency, desired_frequency);
     SelectUsbClockSource(UsbSource::kBaseClock);
     SelectSpifiClockSource(SpifiSource::kBaseClock);
+
+    uint32_t config = 0;
     // must subtract 1 from multiplier value as specified in datasheet
-    system_controller->PLL1CFG =
-        (system_controller->PLL1CFG & ~kClearPllMultiplier) |
-        (multiplier_value - 1);
-    system_controller->PLL1CFG =
-        (system_controller->PLL1CFG & ~kClearPllDivider) | (divider_value << 5);
-    system_controller->PLL1CON |= kEnablePll;
+    config = bit::Insert(config, multiplier_value - 1, Pll::kMultiplier);
+    config = bit::Insert(config, divider_value, Pll::kDivider);
+    // Set the PLL multiply and divide values
+    system_controller->PLL1CFG = config;
+
+    // Enable PLL
+    system_controller->PLL1CON =
+        bit::Set(system_controller->PLL1CON, Pll::kEnable);
+
     // Necessary feed sequence to ensure the changes are intentional
     system_controller->PLL1FEED = 0xAA;
     system_controller->PLL1FEED = 0x55;
 
-    while (!bit::Read(system_controller->PLL1STAT, kPlock))
+    while (!bit::Read(system_controller->PLL1STAT, Pll::kPllLockStatus))
     {
       continue;
     }
@@ -385,16 +408,15 @@ class SystemController final : public sjsu::SystemController
   {
     SJ2_ASSERT_FATAL(cpu_divider < 32, "Divider mustn't exceed 32");
 
-    system_controller->CCLKSEL = bit::Insert(
-        system_controller->CCLKSEL, cpu_divider, CpuClock::kDivider);
+    system_controller->CCLKSEL = bit::Insert(system_controller->CCLKSEL,
+                                             cpu_divider, CpuClock::kDivider);
   }
 
   void SetEmcClockDivider(EmcDivider emc_divider) const
   {
     system_controller->EMCCLKSEL =
         bit::Insert(system_controller->EMCCLKSEL,
-                    static_cast<uint32_t>(emc_divider),
-                    EmcClock::kDivider);
+                    static_cast<uint32_t>(emc_divider), EmcClock::kDivider);
   }
   // TODO(#181): Set USB and Spifi clock rates
   inline static units::frequency::hertz_t speed_in_hertz = kDefaultIRCFrequency;
