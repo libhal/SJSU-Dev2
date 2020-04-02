@@ -41,10 +41,9 @@ int main()
 
     uint8_t id = 0;
 
-    status = i2c.WriteThenRead(
-        kAccelerometerAddress, &kAccelerometerIdRegister, 1, &id, 1);
-    sjsu::LogInfo("I2C transaction Status = 0x%02X",
-                  static_cast<uint8_t>(status));
+    status = i2c.WriteThenRead(kAccelerometerAddress, &kAccelerometerIdRegister,
+                               1, &id, 1);
+    sjsu::LogInfo("I2C transaction Status = 0x%02X", status.code);
     sjsu::LogInfo("Accelerometer ID = 0x%02X", id);
 
     sjsu::LogInfo("Waiting 5s before starting the scan again...");
