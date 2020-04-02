@@ -19,9 +19,6 @@ void PrintLogDescription(int a)
       "something possibly going wrong in the program.");
   sjsu::LogError(
       "Error messages should alert the user or developer of a possible error.");
-  sjsu::LogError(
-      "Critical messages should always be shown and typically occur when a "
-      "fatal error has occurred during the runtime of the program.");
 }
 
 int main()
@@ -32,7 +29,6 @@ int main()
   sjsu::LogInfo("This is an info message.");
   sjsu::LogWarning("This is an warning message.");
   sjsu::LogError("This is an error message.");
-  sjsu::LogError("This is an critical message.");
 
   PrintLogDescription(5);
   return 0;

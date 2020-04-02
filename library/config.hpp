@@ -54,7 +54,6 @@
 #include "log_levels.hpp"
 #include "utility/units.hpp"
 
-
 namespace config
 {
 /// @defgroup config_group Configuration
@@ -177,7 +176,10 @@ SJ2_DECLARE_CONSTANT(TASK_SCHEDULER_SIZE, uint8_t, kTaskSchedulerSize);
 /// Delcare Constant ESP8266_BUFFER_SIZE
 SJ2_DECLARE_CONSTANT(ESP8266_BUFFER_SIZE, size_t, kEsp8266BufferSize);
 
-/// Used to define the log level of the build
+/// Used to define the log level of the build. The log level will determine
+/// which logs will show up and which won't. For example, if the log level is
+/// set to "warning" then "info", "debug" will not show up, but "warning" and
+/// above will show up.
 #if !defined(SJ2_LOG_LEVEL)
 #define SJ2_LOG_LEVEL SJ2_LOG_LEVEL_INFO
 #endif  // !defined(SJ2_LOG_LEVEL)
@@ -185,20 +187,32 @@ SJ2_DECLARE_CONSTANT(ESP8266_BUFFER_SIZE, size_t, kEsp8266BufferSize);
 SJ2_DECLARE_CONSTANT(LOG_LEVEL, uint8_t, kLogLevel);
 
 static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
-              kLogLevel == SJ2_LOG_LEVEL_DEBUG ||
-              kLogLevel == SJ2_LOG_LEVEL_INFO ||
-              kLogLevel == SJ2_LOG_LEVEL_WARNING ||
-              kLogLevel == SJ2_LOG_LEVEL_ERROR,
+                  kLogLevel == SJ2_LOG_LEVEL_DEBUG ||
+                  kLogLevel == SJ2_LOG_LEVEL_INFO ||
+                  kLogLevel == SJ2_LOG_LEVEL_WARNING ||
+                  kLogLevel == SJ2_LOG_LEVEL_ERROR,
               "SJ2_LOG_LEVEL must equal to one of the predefined log levels "
               "such as SJ2_LOG_LEVEL_INFO.");
 
-/// If set to true, will display function name in LOG_* function calls.
-/// Otherwise omit writing function names.
-#if !defined(SJ2_DESCRIPTIVE_FUNCTION_NAME)
-#define SJ2_DESCRIPTIVE_FUNCTION_NAME true
-#endif  // !defined(SJ2_DESCRIPTIVE_FUNCTION_NAME)
-/// Delcare Constant DESCRIPTIVE_FUNCTION_NAME
-SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
+/// If true, will store error messages into error objects. Setting this to false
+/// will reduce your binary size when using any optimization setting above O0,
+/// as the compiler will deduce that the strings are not being used, and remove
+/// them from the binary.
+#if !defined(SJ2_STORE_ERROR_MESSAGE)
+#define SJ2_STORE_ERROR_MESSAGE true
+#endif  // !defined(SJ2_STORE_ERROR_MESSAGE)
+/// Delcare Constant STORE_ERROR_MESSAGE
+SJ2_DECLARE_CONSTANT(STORE_ERROR_MESSAGE, bool, kStoreErrorMessages);
+
+/// If true, will automatically print errors that occur in the system along with
+/// a stacktrace from when the error occurred.
+#if !defined(SJ2_AUTOMATICALLY_PRINT_ON_ERROR)
+#define SJ2_AUTOMATICALLY_PRINT_ON_ERROR true
+#endif  // !defined(SJ2_AUTOMATICALLY_PRINT_ON_ERROR)
+/// Delcare Constant AUTOMATICALLY_PRINT_ON_ERROR
+SJ2_DECLARE_CONSTANT(AUTOMATICALLY_PRINT_ON_ERROR,
+                     bool,
+                     kAutomaticallyPrintOnError);
 
 /// Enable or disable float support in printf statements. Setting to false will
 /// reduce binary size.
@@ -224,7 +238,6 @@ SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
 #define SJ2_PRINTF_SUPPORT_PTRDIFF_T true
 #endif  // !defined(PRINTF_SUPPORT_PTRDIFF_T)
 
-
 /// Enables FLOAT support for the 3rd party printf library.
 #if SJ2_PRINTF_SUPPORT_FLOAT == false
 #define PRINTF_DISABLE_SUPPORT_FLOAT
@@ -238,4 +251,3 @@ SJ2_DECLARE_CONSTANT(DESCRIPTIVE_FUNCTION_NAME, bool, kDescriptiveFunctionName);
 #define PRINTF_DISABLE_SUPPORT_PTRDIFF_T
 #endif
 }  // namespace config
-
