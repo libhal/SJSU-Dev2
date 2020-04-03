@@ -6,9 +6,8 @@ class PrinterTask final : public sjsu::rtos::Task<512>
 {
  public:
   PrinterTask(const char * task_name,
-              const char * message,
-              sjsu::rtos::TaskSchedulerInterface & task_scheduler)
-      : Task(task_name, sjsu::rtos::Priority::kMedium, task_scheduler),
+              const char * message)
+      : Task(task_name, sjsu::rtos::Priority::kMedium),
         message_(message),
         run_count_(0)
   {
@@ -19,7 +18,6 @@ class PrinterTask final : public sjsu::rtos::Task<512>
   {
     if (print_mutex == NULL)
     {
-      // print_mutex = xSemaphoreCreateMutexStatic(&print_mutex_stack_buffer);
       print_mutex = xSemaphoreCreateMutex();
     }
     sjsu::LogInfo("Completed Setup() for: %s", GetName());
@@ -49,7 +47,6 @@ class PrinterTask final : public sjsu::rtos::Task<512>
   }
 
  private:
-  // inline static StaticSemaphore_t print_mutex_stack_buffer;
   inline static SemaphoreHandle_t print_mutex;
 
   const char * message_;
@@ -57,12 +54,16 @@ class PrinterTask final : public sjsu::rtos::Task<512>
 };
 
 sjsu::rtos::TaskScheduler scheduler;
-PrinterTask printer_one("Printer A", "I am a printer, I am faster", scheduler);
-PrinterTask printer_two("Printer B", "I am also a printer", scheduler);
+PrinterTask printer_one("Printer A", "I am a printer, I am faster");
+PrinterTask printer_two("Printer B", "I am also a printer");
 
 int main()
 {
   sjsu::LogInfo("Starting TaskScheduler example...");
+
+  scheduler.AddTask(&printer_one);
+  scheduler.AddTask(&printer_two);
+
   // setting Printer A to print 2 times faster than Printer B
   printer_one.SetDelayTime(500);
   printer_two.SetDelayTime(1000);

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['i2c',['I2c',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx::I2c'],['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a94e70d507a3d8d6bbc237135ca46cdbf',1,'sjsu::lpc40xx::I2c::I2c()']]],
+  ['i2c',['I2c',['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a94e70d507a3d8d6bbc237135ca46cdbf',1,'sjsu::lpc40xx::I2c::I2c()']]],
   ['i2c0',['i2c0',['../db/dc0/structsjone.html#acd934660401331ad1c5992a8542bd183',1,'sjone::i2c0()'],['../db/dc5/structsjtwo.html#abf5330654c0cfb42de768115ed7d90e5',1,'sjtwo::i2c0()']]],
   ['i2c1',['i2c1',['../db/dc0/structsjone.html#ad492142aeaf9cbb65ebe63b69807a2da',1,'sjone::i2c1()'],['../db/dc5/structsjtwo.html#aac9b09af97527c13c15a9aa4eb8fa48d',1,'sjtwo::i2c1()']]],
   ['i2c2',['i2c2',['../db/dc0/structsjone.html#aa53e622fc374b1f52ede2c3388257249',1,'sjone::i2c2()'],['../db/dc5/structsjtwo.html#a9f7a57223364c8c34446dc1822c73222',1,'sjtwo::i2c2()']]],
@@ -9,7 +9,7 @@ var searchData=
   ['i2cdevice',['I2cDevice',['../d9/dd7/classsjsu_1_1I2cDevice.html',1,'sjsu::I2cDevice&lt; kDeviceAddress, endianess, MemoryMap &gt;'],['../d9/dd7/classsjsu_1_1I2cDevice.html#a956c5ec720f23f2b7c353c7903a4db95',1,'sjsu::I2cDevice::I2cDevice()']]],
   ['i2cdevice_3c_200x39_2c_20endian_3a_3aklittle_2c_20sjsu_3a_3aapds9960_3a_3amemorymap_5ft_20_3e',['I2cDevice&lt; 0x39, Endian::kLittle, sjsu::Apds9960::MemoryMap_t &gt;',['../d9/dd7/classsjsu_1_1I2cDevice.html',1,'sjsu']]],
   ['i2chandler',['I2cHandler',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a3394da7b10ba7c9eeaf2bff0f6e4e912',1,'sjsu::lpc40xx::I2c']]],
-  ['id',['id',['../dc/d88/structsjsu_1_1Can_1_1TxMessage__t.html#a7691305e3b96d6b82333d9b9e5ac9e47',1,'sjsu::Can::TxMessage_t::id()'],['../d8/d53/structsjsu_1_1Can_1_1RxMessage__t.html#af8b03a19a5ef583e3fd59083ec751c83',1,'sjsu::Can::RxMessage_t::id()'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#addd92f8d20080404cedb894908ae9d15',1,'sjsu::lpc40xx::Pwm::Peripheral_t::id()'],['../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html#acf99c303979aaa40b123a4a99cb29b51',1,'sjsu::lpc40xx::Timer::Peripheral_t::id()']]],
+  ['id',['id',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a856e262a4e837740c47e5d257fb467db',1,'sjsu::Can::Message_t::id()'],['../d2/d5c/structsjsu_1_1lpc40xx_1_1Can_1_1Channel__t.html#ac74e482d453b34cacf338691d303b993',1,'sjsu::lpc40xx::Can::Channel_t::id()'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#addd92f8d20080404cedb894908ae9d15',1,'sjsu::lpc40xx::Pwm::Peripheral_t::id()'],['../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html#acf99c303979aaa40b123a4a99cb29b51',1,'sjsu::lpc40xx::Timer::Peripheral_t::id()']]],
   ['in_5flength',['in_length',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ad780c3a4397f73fdfa36390237495eac',1,'sjsu::I2c::Transaction_t']]],
   ['inactive_20peripherals',['Inactive Peripherals',['../d2/dd9/group__inactives__module.html',1,'']]],
   ['indextoirq',['IndexToIRQ',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#a0782119ac686a9ef4df3c4db90ef6ae9',1,'sjsu::cortex::InterruptController']]],
@@ -19,11 +19,10 @@ var searchData=
   ['interrupt_5fhandler',['interrupt_handler',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#a8f02c27e02ebca4f78f9733be8a174d4',1,'sjsu::InterruptController::RegistrationInfo_t']]],
   ['interrupt_5frequest_5fnumber',['interrupt_request_number',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#aa55f42dfba230e94a6b4546858f39735',1,'sjsu::InterruptController::RegistrationInfo_t']]],
   ['interruptcallback',['InterruptCallback',['../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7',1,'sjsu']]],
-  ['interruptcontroller',['InterruptController',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html',1,'sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;'],['../dc/db2/classsjsu_1_1InterruptController.html',1,'sjsu::InterruptController']]],
+  ['interruptcontroller',['InterruptController',['../dc/db2/classsjsu_1_1InterruptController.html',1,'sjsu::InterruptController'],['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html',1,'sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;']]],
   ['interrupthandler',['InterruptHandler',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab46af7625e1f93fa997050cfb6940e37',1,'sjsu::lpc40xx::Gpio::InterruptHandler()'],['../d0/d6b/namespacesjsu.html#ae026ae4849a8724377e6b3d4c0988830',1,'sjsu::InterruptHandler()']]],
   ['interruptregister',['InterruptRegister',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a3394298a0c28bbbf631b4d85b65029d9',1,'sjsu::lpc40xx::Gpio']]],
-  ['interrupts',['interrupts',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#aa0800dcd6e7e1fc541239c312ae83eb8',1,'sjsu::lpc40xx::Can::interrupts()'],['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a3c840261b5904103c37c5c8037f53f73',1,'sjsu::lpc40xx::Can::Interrupts()']]],
-  ['interrupts_5ft',['Interrupts_t',['../d2/d34/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts__t.html',1,'sjsu::lpc40xx::Can']]],
+  ['interrupts',['Interrupts',['../d8/d38/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts.html',1,'sjsu::lpc40xx::Can']]],
   ['interruptstatus',['InterruptStatus',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ad1f117c4e9d14ebbeee427041b2c19fc',1,'sjsu::lpc40xx::Gpio']]],
   ['interruptvectoraddress',['InterruptVectorAddress',['../d0/d6b/namespacesjsu.html#abbf3b3c62aa36a07f9aec53b8a735b61',1,'sjsu']]],
   ['invalid',['invalid',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#ad5770211c812053ec7d4faf8b7483f4e',1,'sjsu::I2cCommand::Arguments_t']]],
@@ -34,7 +33,7 @@ var searchData=
   ['irq',['irq',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#ae075288c1872150dc015462ff0542082',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t::irq()'],['../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html#ad7052e18907f8fec70dbc1b0d9291b7b',1,'sjsu::lpc40xx::Timer::Peripheral_t::irq()']]],
   ['irq_5fnumber',['irq_number',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#ad5ebdc62dde51c917b9ef8770ced4e60',1,'sjsu::lpc40xx::I2c::Bus_t']]],
   ['irqtoindex',['IRQToIndex',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#aa63417f84aa1a11886960bafcd17d09f',1,'sjsu::cortex::InterruptController']]],
-  ['is_5fcontroller_5finitialized',['is_controller_initialized',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a7762afdbfcfce7dd856347734d492ec6',1,'sjsu::lpc40xx::Can']]],
+  ['is_5fremote_5frequest',['is_remote_request',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a4aefc088b7ce71993193cf4091f36639',1,'sjsu::Can::Message_t']]],
   ['is_5frepeat',['is_repeat',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07d03c94231cab76332cf16b0ccff9a6',1,'sjsu::infrared::DecodedFrame_t']]],
   ['is_5fvalid',['is_valid',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07c2ff4ead66e7ec2b1892dc1c0d21ee',1,'sjsu::infrared::DecodedFrame_t']]],
   ['isblank',['IsBlank',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a0eef47d4e25c7300ea70d1a90bc57216',1,'sjsu::PixelDisplay::Color_t']]],
@@ -44,7 +43,7 @@ var searchData=
   ['isintialized',['IsIntialized',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#af6a3d9c711e437eaa236a44f69493176',1,'sjsu::lpc40xx::I2c']]],
   ['ismediapresent',['IsMediaPresent',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a675baf4b9500cf99753fed44a09cd29e',1,'sjsu::lpc40xx::Eeprom::IsMediaPresent()'],['../dc/da6/classsjsu_1_1Storage.html#a826db74f43c08271f1d15d11e2e91b8d',1,'sjsu::Storage::IsMediaPresent()'],['../db/d57/classsjsu_1_1experimental_1_1Sd.html#ac696d3369f462e31bc595ee64ae9da49',1,'sjsu::experimental::Sd::IsMediaPresent()']]],
   ['ismonochrome',['IsMonoChrome',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a8c05af6fb8b71208ada059c2595e61ec',1,'sjsu::PixelDisplay::Color_t']]],
-  ['isok',['IsOk',['../d0/d6b/namespacesjsu.html#a9762c23fcde055c07d21969b8a58844c',1,'sjsu']]],
+  ['isok',['IsOk',['../d0/d6b/namespacesjsu.html#a01a69592289ad8946bff4b3591ef0005',1,'sjsu']]],
   ['isperipheralpoweredup',['IsPeripheralPoweredUp',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ad1c4e42e74711a9ab017d5be99bf3557',1,'sjsu::lpc17xx::SystemController::IsPeripheralPoweredUp()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#adcd9455a113fb009e46709d4d89dc3c3',1,'sjsu::lpc40xx::SystemController::IsPeripheralPoweredUp()'],['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a2b9bd204dc8b076e7c727b0c4928bfa6',1,'sjsu::msp432p401r::SystemController::IsPeripheralPoweredUp()'],['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a836c27563d59ad16c620a8c1e0931467',1,'sjsu::stm32f10x::SystemController::IsPeripheralPoweredUp()'],['../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a33dcb21a736de5d4f0e402fba27a1df5',1,'sjsu::stm32f4xx::SystemController::IsPeripheralPoweredUp()'],['../df/d0e/classsjsu_1_1SystemController.html#a53bbbee7e58753f05cdaeb5132bcd034',1,'sjsu::SystemController::IsPeripheralPoweredUp()']]],
   ['isreadonly',['IsReadOnly',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a1c028abb99b070a99eb9ba78995b71d9',1,'sjsu::lpc40xx::Eeprom::IsReadOnly()'],['../dc/da6/classsjsu_1_1Storage.html#a08e39de5d53e9237b19d82034f0e1dc6',1,'sjsu::Storage::IsReadOnly()'],['../db/d57/classsjsu_1_1experimental_1_1Sd.html#adb9ca2b438cef38ce740c74546519b86',1,'sjsu::experimental::Sd::IsReadOnly()']]]
 ];

@@ -32,7 +32,7 @@
 #ifndef _PRINTF_H_
 #define _PRINTF_H_
 
-// SJSU-Dev2:
+// SJSU-Dev2: ignore warnings in this file
 #pragma GCC system_header
 
 #include <stdarg.h>

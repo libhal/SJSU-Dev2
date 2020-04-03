@@ -97,11 +97,11 @@ Inheritance diagram for sjsu::Example:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abe60ad87126ca8aeec1114db417b3614"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#abe60ad87126ca8aeec1114db417b3614">Initialize</a> () const =0</td></tr>
+<tr class="memitem:abe60ad87126ca8aeec1114db417b3614"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#abe60ad87126ca8aeec1114db417b3614">Initialize</a> () const =0</td></tr>
 <tr class="separator:abe60ad87126ca8aeec1114db417b3614"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a519f377e6f06514497835952d21ff951"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a519f377e6f06514497835952d21ff951">Write</a> (const uint8_t *data, size_t length) const =0</td></tr>
 <tr class="separator:a519f377e6f06514497835952d21ff951"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ce8da1e12909f0e97c34ccc4bc1ee5c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a1ce8da1e12909f0e97c34ccc4bc1ee5c">Read</a> (uint8_t *data, size_t length, uint32_t timeout) const =0</td></tr>
+<tr class="memitem:a1ce8da1e12909f0e97c34ccc4bc1ee5c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a1ce8da1e12909f0e97c34ccc4bc1ee5c">Read</a> (uint8_t *data, size_t length, uint32_t timeout) const =0</td></tr>
 <tr class="separator:a1ce8da1e12909f0e97c34ccc4bc1ee5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b09fb86bcbba365990f5047ee71368c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a7b09fb86bcbba365990f5047ee71368c">SetClockRate</a> (uint32_t frequency) const =0</td></tr>
 <tr class="separator:a7b09fb86bcbba365990f5047ee71368c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,7 +114,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a91e27bd4656aa2e28cb1a883d4bf7c7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a91e27bd4656aa2e28cb1a883d4bf7c7f">Write</a> (std::initializer_list&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:a91e27bd4656aa2e28cb1a883d4bf7c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10f7a8a80888bc239374aba84cc77815"><td class="memItemLeft" align="right" valign="top"><a id="a10f7a8a80888bc239374aba84cc77815"></a>
-<a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a10f7a8a80888bc239374aba84cc77815">Read</a> (uint8_t *data, size_t size)</td></tr>
+<a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a10f7a8a80888bc239374aba84cc77815">Read</a> (uint8_t *data, size_t size)</td></tr>
 <tr class="memdesc:a10f7a8a80888bc239374aba84cc77815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of Read that waits forever if a timeout was not supplied. <br /></td></tr>
 <tr class="separator:a10f7a8a80888bc239374aba84cc77815"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a169c7b12e58f0ca0a18a264d9e5e401a"><td class="memItemLeft" align="right" valign="top"><a id="a169c7b12e58f0ca0a18a264d9e5e401a"></a>
@@ -178,7 +178,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 </table>
 </div><div class="memdoc">
 <ol type="1">
-<li>Status methods Methods that indicate the status of the peripheral should be prefixed with the word "Has". These must return bool. </li>
+<li><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> methods Methods that indicate the status of the peripheral should be prefixed with the word "Has". These must return bool. </li>
 </ol>
 
 <p>Implemented in <a class="el" href="../../d8/d93/classsjsu_1_1example_1_1Example.html#ae79118fcc47b2d1474690e5faa218776">sjsu::example::Example</a>.</p>
@@ -195,7 +195,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Example::Initialize </td>
+          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::Example::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -225,7 +225,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Example::Read </td>
+          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::Example::Read </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>

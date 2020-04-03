@@ -1,17 +1,18 @@
 var searchData=
 [
-  ['receive_5fqueue',['receive_queue',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a6c96ba120165ad1ac7e7f040b5583f01',1,'sjsu::lpc40xx::Can']]],
-  ['red',['red',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a596009e322e1a7fbb2f28838bbaf390c',1,'sjsu::PixelDisplay::Color_t']]],
-  ['register_5faddress',['register_address',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a0668c341fd35eac915345585e558c4c1',1,'sjsu::I2cCommand::Arguments_t']]],
-  ['register_5fmatrix',['register_matrix',['../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html#a24f9558dd4d59675b8aa5cbb69c25943',1,'sjsu::lpc40xx::Pin::PinMap_t']]],
-  ['registers',['registers',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a1d4996b1a80f5e287c8cea5a4aa16ad7',1,'sjsu::lpc40xx::I2c::Bus_t::registers()'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#aa923cd4323e1c5d138931772fb5339d0',1,'sjsu::lpc40xx::Pwm::Peripheral_t::registers()'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a0de8224161b549d610104270aed3b8b3',1,'sjsu::lpc40xx::Spi::Bus_t::registers()'],['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#ad0d4a145aa5415f9399e1353ad8fb107',1,'sjsu::lpc40xx::Uart::Port_t::registers()']]],
-  ['remote_5ftx_5frequest',['remote_tx_request',['../dc/d88/structsjsu_1_1Can_1_1TxMessage__t.html#ad8d5032eda3ea71cd74e8ad9059fccd3',1,'sjsu::Can::TxMessage_t']]],
-  ['repeated',['repeated',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adc0985997e4b61df23608c071b2422e7',1,'sjsu::I2c::Transaction_t']]],
-  ['resistor_5fmap',['resistor_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#af61d2da32f1f3363c10d6c8b2204bcd9',1,'sjsu::lpc17xx::Pin']]],
-  ['response',['response',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a83df6062feb86215aeb4566a98e56c98',1,'sjsu::Sd::CardInfo_t']]],
-  ['run_5fcount_5f',['run_count_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a2a52810dad462e3fff1c2f9d9e33b102',1,'sjsu::rtos::PeriodicTask']]],
-  ['rx',['rx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a0bfb6e9a1a73dbd7e23faf3a40f8805a',1,'sjsu::lpc40xx::Uart::Port_t']]],
-  ['rx_5ffunction_5fid',['rx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a9430e0d1d6216f3f7b6ddfb82096b757',1,'sjsu::lpc40xx::Uart::Port_t']]],
-  ['rx_5fqueue_5fstorage_5farea',['rx_queue_storage_area',['../db/d1f/structsjsu_1_1lpc40xx_1_1Can_1_1StaticQueueConfig__t.html#a37b9a66f5861e4d286e14394f6f8bf79',1,'sjsu::lpc40xx::Can::StaticQueueConfig_t']]],
-  ['rx_5fstatic_5fqueue',['rx_static_queue',['../db/d1f/structsjsu_1_1lpc40xx_1_1Can_1_1StaticQueueConfig__t.html#acd12b7ad1d6761d73e656744cf33fd83',1,'sjsu::lpc40xx::Can::StaticQueueConfig_t']]]
+  ['scb',['scb',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#ab64deee3a1bab3aefe2b07f086896af0',1,'sjsu::cortex::InterruptController']]],
+  ['sck',['sck',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ae43749c815d89a304082344729583899',1,'sjsu::lpc40xx::Spi::Bus_t']]],
+  ['scl_5fpin',['scl_pin',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#ad2eb46ce5367a18a0c3692467ddf7d72',1,'sjsu::lpc40xx::I2c::Bus_t']]],
+  ['sda_5fpin',['sda_pin',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a77b1f45d8e7870eb99010dea980bb861',1,'sjsu::lpc40xx::I2c::Bus_t']]],
+  ['semaphore_5f',['semaphore_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#abf739cf54a2f35b206c3ca90d970f072',1,'sjsu::rtos::PeriodicTask']]],
+  ['semaphore_5fbuffer_5f',['semaphore_buffer_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#ae53ad672ea8ea07e4919ffc5b4d04fad',1,'sjsu::rtos::PeriodicTask']]],
+  ['size',['size',['../d1/df0/classsjsu_1_1FixedAllocator.html#a3abce1c109d029e51a0c9dc34942d58f',1,'sjsu::FixedAllocator']]],
+  ['spi0',['spi0',['../db/dc0/structsjone.html#a36d0478d37e04f16fa5611126315ef83',1,'sjone::spi0()'],['../db/dc5/structsjtwo.html#ab3bcf9254b30b163ecfe7886ea3735d9',1,'sjtwo::spi0()']]],
+  ['spi1',['spi1',['../db/dc0/structsjone.html#adf079f49bdfdf8d6f02d4bf7d7f3caa8',1,'sjone::spi1()'],['../db/dc5/structsjtwo.html#a81d5d2f5ba3110f1aecc151e907f7403',1,'sjtwo::spi1()']]],
+  ['spi2',['spi2',['../db/dc5/structsjtwo.html#a9bcef747550a2b721ee903987b9e7e15',1,'sjtwo']]],
+  ['stack_5f',['stack_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5fccf7fa785a8f0a807496cec063f027',1,'sjsu::rtos::Task']]],
+  ['status',['status',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adfccef243357bbb8518ce19faa60e22e',1,'sjsu::I2c::Transaction_t::status()'],['../d3/d2e/structsjsu_1_1Esp8266_1_1IpAddress__t.html#ab4353752cb1cfeba874272deddbaeedc',1,'sjsu::Esp8266::IpAddress_t::status()'],['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#a7dd93e8fae4f60fe41cbbba0d385a10e',1,'sjsu::WiFi::NetworkConnection_t::status()'],['../d3/da7/structsjsu_1_1experimental_1_1Sd_1_1CsdBuffer__t.html#a05fd694f0bdc15b7f5a02f7b0bdc4094',1,'sjsu::experimental::Sd::CsdBuffer_t::status()'],['../d1/d7c/structsjsu_1_1Error__t.html#a0e6df183c33f5bd28bfe5d5a4967ae10',1,'sjsu::Error_t::status()']]],
+  ['str',['str',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html#a1e8caafdbebd22880a692db6f7c4b5c9',1,'sjsu::I2cCommand::AddressString_t']]],
+  ['sys_5ftick',['sys_tick',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8',1,'sjsu::cortex::SystemTimer']]],
+  ['system_5fcontroller',['system_controller',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab1db7a0dd2837d0cf38ad57ced9ee6e3',1,'sjsu::lpc17xx::SystemController::system_controller()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a00f89874933f930a777bb75dc507ca60',1,'sjsu::lpc40xx::SystemController::system_controller()']]]
 ];

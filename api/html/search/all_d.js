@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['name',['name',['../dd/dee/structsjsu_1_1Status__t.html#aad74f5f7148bd07310e0cdee53a24cff',1,'sjsu::Status_t']]],
   ['nanoseconds_5fper_5ftick',['nanoseconds_per_tick',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a7632a3af1a43c787bcefb8516cd36bb2',1,'sjsu::cortex::SystemTimer']]],
   ['netmask',['netmask',['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#a1a566999c2e12ee0e430862256aa6671',1,'sjsu::WiFi::NetworkConnection_t']]],
   ['networkconnection_5ft',['NetworkConnection_t',['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html',1,'sjsu::WiFi']]],

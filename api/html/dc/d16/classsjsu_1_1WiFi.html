@@ -119,13 +119,13 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:affb4519b491eded5121b699c2c48b4ee"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#affb4519b491eded5121b699c2c48b4ee">Initialize</a> ()=0</td></tr>
+<tr class="memitem:affb4519b491eded5121b699c2c48b4ee"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#affb4519b491eded5121b699c2c48b4ee">Initialize</a> ()=0</td></tr>
 <tr class="separator:affb4519b491eded5121b699c2c48b4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bc768a0e2741c539b208efd709c9ae1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a2bc768a0e2741c539b208efd709c9ae1">IsConnected</a> ()=0</td></tr>
 <tr class="separator:a2bc768a0e2741c539b208efd709c9ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a729e60498dbc9ce101964f06fb895df7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a729e60498dbc9ce101964f06fb895df7">ConnectToAccessPoint</a> (std::string_view ssid, std::string_view password, std::chrono::nanoseconds timeout)=0</td></tr>
+<tr class="memitem:a729e60498dbc9ce101964f06fb895df7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a729e60498dbc9ce101964f06fb895df7">ConnectToAccessPoint</a> (std::string_view ssid, std::string_view password, std::chrono::nanoseconds timeout)=0</td></tr>
 <tr class="separator:a729e60498dbc9ce101964f06fb895df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7acc92e269afcc38ee89673d8793c1d6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a7acc92e269afcc38ee89673d8793c1d6">DisconnectFromAccessPoint</a> ()=0</td></tr>
+<tr class="memitem:a7acc92e269afcc38ee89673d8793c1d6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a7acc92e269afcc38ee89673d8793c1d6">DisconnectFromAccessPoint</a> ()=0</td></tr>
 <tr class="separator:a7acc92e269afcc38ee89673d8793c1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09215d8c68e54363eeea5e701f2d41e8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html">NetworkConnection_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d16/classsjsu_1_1WiFi.html#a09215d8c68e54363eeea5e701f2d41e8">GetNetworkConnectionInfo</a> ()=0</td></tr>
 <tr class="separator:a09215d8c68e54363eeea5e701f2d41e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,7 +192,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::WiFi::ConnectToAccessPoint </td>
+          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::WiFi::ConnectToAccessPoint </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>ssid</em>, </td>
@@ -230,9 +230,9 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Status - Status::kSuccess if it is successful </dd>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> - <a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a96b13230012af6002196c0556984e409">Status::kSuccess</a> if it is successful </dd>
 <dd>
-Status - Status::kTimeout if it is not successful </dd></dl>
+<a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> - Status::kTimeout if it is not successful </dd></dl>
 
 <p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#ae6665e172251487f46c5c26faee33862">sjsu::Esp8266</a>.</p>
 
@@ -248,7 +248,7 @@ Status - Status::kTimeout if it is not successful </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::WiFi::DisconnectFromAccessPoint </td>
+          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::WiFi::DisconnectFromAccessPoint </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -260,7 +260,7 @@ Status - Status::kTimeout if it is not successful </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Disconnect from the access point. </p><dl class="section return"><dt>Returns</dt><dd>Status </dd></dl>
+<p>Disconnect from the access point. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> </dd></dl>
 
 <p>Implemented in <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a3ae040c2c531250546b33b479729d7bd">sjsu::Esp8266</a>.</p>
 
@@ -332,7 +332,7 @@ Status - Status::kTimeout if it is not successful </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::WiFi::Initialize </td>
+          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::WiFi::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

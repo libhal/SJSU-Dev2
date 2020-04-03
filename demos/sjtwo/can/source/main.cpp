@@ -1,32 +1,12 @@
+#include <algorithm>
+
 #include "L1_Peripheral/lpc40xx/can.hpp"
 #include "utility/log.hpp"
 
 int main(void)
 {
-  // Using default constructor for CAN 1
-  sjsu::lpc40xx::Can can1;
-  // Using parameterized constructor for CAN 2
-  sjsu::lpc40xx::Can can2(sjsu::lpc40xx::Can::Controllers::kCan2,
-                          sjsu::lpc40xx::Can::BaudRates::kBaud100Kbps,
-                          sjsu::lpc40xx::Can::kPort2TransmitPin,
-                          sjsu::lpc40xx::Can::kPort2ReadPin);
-  // Tx Messages
-  sjsu::lpc40xx::Can::TxMessage_t tx_message1;
-  memset(&tx_message1, 0, sizeof(sjsu::lpc40xx::Can::TxMessage_t));
-  sjsu::lpc40xx::Can::TxMessage_t tx_message2;
-  memset(&tx_message2, 0, sizeof(sjsu::lpc40xx::Can::TxMessage_t));
-
-  // Rx Messages
-  sjsu::lpc40xx::Can::RxMessage_t rx_message1;
-  memset(&rx_message1, 0, sizeof(sjsu::lpc40xx::Can::RxMessage_t));
-  sjsu::lpc40xx::Can::RxMessage_t rx_message2;
-  memset(&rx_message2, 0, sizeof(sjsu::lpc40xx::Can::RxMessage_t));
-
-  constexpr uint8_t kTxQueueSize       = 10;
-  constexpr uint8_t kRxQueueSize       = 10;
-  constexpr uint16_t kMessageId        = 580;
-  constexpr uint8_t kMessagePayload[4] = { 1, 3, 3, 7 };
-  constexpr size_t kMessagePayloadSize = 4;
+  sjsu::lpc40xx::Can can1(sjsu::lpc40xx::Can::Channel::kCan1);
+  sjsu::lpc40xx::Can can2(sjsu::lpc40xx::Can::Channel::kCan2);
 
   sjsu::LogInfo("CAN application starting...");
   sjsu::LogInfo(
@@ -46,98 +26,88 @@ int main(void)
   sjsu::LogInfo("and the controller will be re-enabled.");
 
   sjsu::LogInfo("Initializing CAN 1 with a bit rate of 100 kBit/s...");
-  sjsu::lpc40xx::Can::StaticQueueConfig_t<kTxQueueSize, kRxQueueSize> can1_q;
-  can1.CreateStaticQueues(can1_q);
   can1.Initialize();
 
   sjsu::LogInfo("Starting local self-test for CAN 1...");
-  if (can1.SelfTestBus(146) == true)
+  if (can1.SelfTest(146))
   {
     sjsu::LogInfo("CAN 1 self-test passed!");
   }
   else
   {
-    sjsu::LogInfo("CAN 1 self-test failed!");
+    sjsu::LogError("CAN 1 self-test failed!");
   }
 
   sjsu::LogInfo("Initializing CAN 2 with a bit rate of 100 kBit/s...");
-  sjsu::lpc40xx::Can::StaticQueueConfig_t<kTxQueueSize, kRxQueueSize> can2_q;
-  can2.CreateStaticQueues(can2_q);
   can2.Initialize();
 
   sjsu::LogInfo("Starting local self-test for CAN 2...");
-  if (can2.SelfTestBus(244) == true)
+  if (can2.SelfTest(244))
   {
     sjsu::LogInfo("CAN 2 self-test passed!");
-    // For this example, if CAN 1 is on the same network,
-    // then it will have received the self-test
-    // message and stored it in its receive buffer. As a result, we call
-    // Receive() here to "dump" that message.
-    can1.Receive(&rx_message1);
   }
   else
   {
-    sjsu::LogInfo("CAN 2 self-test failed!");
+    sjsu::LogError("CAN 2 self-test failed!");
+    sjsu::LogError("CAN busses are not on the same network, stopping program");
+    return -1;
   }
 
   while (true)
   {
-    if (can1.Send(&tx_message1, 326, { 1, 2, 3, 4, 5, 6, 7, 8 }) == true)
-    {
-      sjsu::LogInfo(
-          "Sent message 0x146 with a data length of 8 bytes from CAN 1...");
-    }
+    // Demonstrate using array literals
+    can1.Send(326, { 1, 2, 3, 4, 5, 6, 7, 8 });
+    sjsu::LogInfo(
+        "Sent message 0x146 with a data length of 8 bytes from CAN 1...");
 
-    if (can2.Receive(&rx_message1) == true)
+    // See the array appear back on the device
+    if (can2.HasData())
     {
+      sjsu::Can::Message_t message = can2.Receive();
       sjsu::LogInfo("CAN 2 received a message!");
-      sjsu::LogInfo("ID: 0x%0" PRIx32, rx_message1.id);
-      for (uint8_t i = 0; i < rx_message1.frame_data.data_length; i++)
+      sjsu::LogInfo("ID: 0x%0" PRIX32, message.id);
+      for (uint8_t i = 0; i < message.length; i++)
       {
-        sjsu::LogInfo("Data[%i]: 0x%x", i, rx_message1.data.bytes[i]);
+        sjsu::LogInfo("Data[%i]: 0x%x", i, message.payload[i]);
       }
     }
 
-    if (can2.Send(
-            &tx_message2, kMessageId, kMessagePayload, kMessagePayloadSize) ==
-        true)
-    {
-      sjsu::LogInfo(
-          "Sent message 0x244 with a data length of 4 bytes from CAN 2...");
-    }
+    // Demonstrate constructing a CAN message from scratch
+    constexpr uint8_t kMessagePayload[] = { 1, 3, 3, 7 };
+    sjsu::Can::Message_t tx_message;
+    tx_message.id     = 0x244;
+    tx_message.length = sizeof(kMessagePayload);
 
-    if (can1.Receive(&rx_message2) == true)
+    std::copy_n(kMessagePayload, sizeof(kMessagePayload),
+                tx_message.payload.begin());
+
+    can2.Send(tx_message);
+    sjsu::LogInfo(
+        "Sent message 0x244 with a data length of 4 bytes from CAN 2...");
+
+    if (can1.HasData())
     {
+      sjsu::Can::Message_t message = can1.Receive();
       sjsu::LogInfo("CAN 1 received a message!");
-      sjsu::LogInfo("ID: 0x%0" PRIx32, rx_message2.id);
-      for (uint8_t i = 0; i < rx_message2.frame_data.data_length; i++)
+      sjsu::LogInfo("ID: 0x%0" PRIx32, message.id);
+      for (uint8_t i = 0; i < message.length; i++)
       {
-        sjsu::LogInfo("Data[%i]: 0x%x", i, rx_message2.data.bytes[i]);
+        sjsu::LogInfo("Data[%i]: 0x%x", i, message.payload[i]);
       }
     }
 
-    if (can1.IsBusOff() == true)
+    if (can1.IsBusOff())
     {
-      const char * error_message;
       sjsu::LogInfo("CAN 1 is in a BUS-OFF error state and is disabled!");
-      if (can1.GetFrameErrorLocation(error_message) == true)
-      {
-        sjsu::LogInfo("Retrieved frame error location: %s", error_message);
-      }
       sjsu::LogInfo("Re-enabling CAN 1...");
-      can1.EnableBus();
+      can1.Enable();
     }
 
-    if (can2.IsBusOff() == true)
+    if (can2.IsBusOff())
     {
-      const char * error_message;
       sjsu::LogInfo("CAN 2 is in a BUS-OFF error state and is disabled!");
-      if (can2.GetFrameErrorLocation(error_message) == true)
-      {
-        sjsu::LogInfo("Retrieved frame error location: %s", error_message);
-      }
       sjsu::LogInfo("Re-enabling CAN 2...");
-      can2.EnableBus();
+      can2.Enable();
     }
     sjsu::Delay(1s);
   }

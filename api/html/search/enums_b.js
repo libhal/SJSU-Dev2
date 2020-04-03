@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['pinfunctions',['PinFunctions',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a7fc8b610dae55648157986fbf241ed48',1,'sjsu::lpc40xx::Can']]],
-  ['pllselect',['PllSelect',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a723961a2cc409a46d483e5259946b252',1,'sjsu::lpc17xx::SystemController']]],
-  ['polarity',['Polarity',['../d9/d3a/classsjsu_1_1Ltc4150.html#adf65026068cee571c64936b91526a1fa',1,'sjsu::Ltc4150']]],
-  ['protocol',['Protocol',['../db/dcb/classsjsu_1_1InternetSocket.html#a1ba82ae7b2309972b7d7ff0fa4a0cb28',1,'sjsu::InternetSocket']]]
+  ['registeraddress',['RegisterAddress',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4',1,'sjsu::Mma8452q']]],
+  ['registers',['Registers',['../d8/d93/classsjsu_1_1example_1_1Example.html#aaaf3a87a0c22577eeb23c23505b95fdf',1,'sjsu::example::Example']]],
+  ['resistor',['Resistor',['../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95',1,'sjsu::Pin']]],
+  ['responsetype',['ResponseType',['../dc/d5f/classsjsu_1_1Sd.html#aae21a97bbd11f456310b6fc8f399a580',1,'sjsu::Sd::ResponseType()'],['../db/d57/classsjsu_1_1experimental_1_1Sd.html#a1d674ec53f50fa5dd7841b203b6add0a',1,'sjsu::experimental::Sd::ResponseType()']]]
 ];

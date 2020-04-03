@@ -83,55 +83,36 @@ $(function() {
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="../../d6/db9/task__scheduler_8hpp_source.html">task_scheduler.hpp</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for sjsu::rtos::TaskScheduler:</div>
-<div class="dyncontent">
-<div class="center"><img src="../../d6/d0f/classsjsu_1_1rtos_1_1TaskScheduler__inherit__graph.png" border="0" usemap="#sjsu_1_1rtos_1_1TaskScheduler_inherit__map" alt="Inheritance graph"/></div>
-<map name="sjsu_1_1rtos_1_1TaskScheduler_inherit__map" id="sjsu_1_1rtos_1_1TaskScheduler_inherit__map">
-<area shape="rect" id="node2" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html" title="An abstact interface for the TaskScheduler class. " alt="" coords="5,5,188,47"/>
-</map>
-<center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for sjsu::rtos::TaskScheduler:</div>
-<div class="dyncontent">
-<div class="center"><img src="../../dd/d32/classsjsu_1_1rtos_1_1TaskScheduler__coll__graph.png" border="0" usemap="#sjsu_1_1rtos_1_1TaskScheduler_coll__map" alt="Collaboration graph"/></div>
-<map name="sjsu_1_1rtos_1_1TaskScheduler_coll__map" id="sjsu_1_1rtos_1_1TaskScheduler_coll__map">
-<area shape="rect" id="node2" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html" title="An abstact interface for the TaskScheduler class. " alt="" coords="5,5,188,47"/>
-</map>
-<center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a73719d60dc794cca9a69e5cdf33dfac1"><td class="memItemLeft" align="right" valign="top">EventGroupHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a73719d60dc794cca9a69e5cdf33dfac1">GetPreRunEventGroupHandle</a> () const override</td></tr>
-<tr class="separator:a73719d60dc794cca9a69e5cdf33dfac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa426df6fcce42a11a6794102eb636704"><td class="memItemLeft" align="right" valign="top">EventBits_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aa426df6fcce42a11a6794102eb636704">GetPreRunSyncBits</a> () const override</td></tr>
-<tr class="separator:aa426df6fcce42a11a6794102eb636704"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87a5614e9d28c990f3d8a6f484fa7574"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a87a5614e9d28c990f3d8a6f484fa7574">GetTaskCount</a> () const override</td></tr>
-<tr class="separator:a87a5614e9d28c990f3d8a6f484fa7574"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9686ddf80e42d7c1ca8ffa8c9e575310"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a9686ddf80e42d7c1ca8ffa8c9e575310">AddTask</a> (<a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">TaskInterface</a> *task) override</td></tr>
-<tr class="separator:a9686ddf80e42d7c1ca8ffa8c9e575310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3de934374af47f2348e7c42ea5bacaa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a3de934374af47f2348e7c42ea5bacaa8">RemoveTask</a> (const char *task_name) override</td></tr>
-<tr class="separator:a3de934374af47f2348e7c42ea5bacaa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07581c715aaab7f8af398b25474b9047"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">TaskInterface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a07581c715aaab7f8af398b25474b9047">GetTask</a> (const char *task_name) override</td></tr>
-<tr class="separator:a07581c715aaab7f8af398b25474b9047"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b3f5966df9e7c23a99a68988b63302c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a1b3f5966df9e7c23a99a68988b63302c">GetTaskIndex</a> (const char *task_name) const override</td></tr>
-<tr class="separator:a1b3f5966df9e7c23a99a68988b63302c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a441e2f152fb12ad7358c3dd34c8e8d43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">TaskInterface</a> *const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a441e2f152fb12ad7358c3dd34c8e8d43">GetAllTasks</a> () const override</td></tr>
-<tr class="separator:a441e2f152fb12ad7358c3dd34c8e8d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2387d88e73ff126375952334ddd8ff76"><td class="memItemLeft" align="right" valign="top">EventGroupHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a2387d88e73ff126375952334ddd8ff76">GetPreRunEventGroupHandle</a> () const</td></tr>
+<tr class="separator:a2387d88e73ff126375952334ddd8ff76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ddf24331d72ab016efd928715d45881"><td class="memItemLeft" align="right" valign="top">EventBits_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a8ddf24331d72ab016efd928715d45881">GetPreRunSyncBits</a> () const</td></tr>
+<tr class="separator:a8ddf24331d72ab016efd928715d45881"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4e6af14a4973125c9d2be5923a889ae"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ad4e6af14a4973125c9d2be5923a889ae">GetTaskCount</a> () const</td></tr>
+<tr class="separator:ad4e6af14a4973125c9d2be5923a889ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2cb704019734dfbe774efe8f257d443"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab2cb704019734dfbe774efe8f257d443">AddTask</a> (<a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">TaskInterface</a> *task)</td></tr>
+<tr class="separator:ab2cb704019734dfbe774efe8f257d443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abffd7e8f29082ec825c11a8fcf2fd3e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#abffd7e8f29082ec825c11a8fcf2fd3e9">RemoveTask</a> (const char *task_name)</td></tr>
+<tr class="separator:abffd7e8f29082ec825c11a8fcf2fd3e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabaec0100ede4a1cffecad6f9ebab5c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">TaskInterface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#aabaec0100ede4a1cffecad6f9ebab5c5">GetTask</a> (const char *task_name) const</td></tr>
+<tr class="separator:aabaec0100ede4a1cffecad6f9ebab5c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab53fd96b35d0aee319661b87545395b3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab53fd96b35d0aee319661b87545395b3">GetTaskIndex</a> (const char *task_name) const</td></tr>
+<tr class="separator:ab53fd96b35d0aee319661b87545395b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fbdbb0b4cc79b3259d78914178fbb96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">TaskInterface</a> *const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a6fbdbb0b4cc79b3259d78914178fbb96">GetAllTasks</a> () const</td></tr>
+<tr class="separator:a6fbdbb0b4cc79b3259d78914178fbb96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf030b7e79fe165fcf8d5240aff82510"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#acf030b7e79fe165fcf8d5240aff82510">Start</a> ()</td></tr>
 <tr class="separator:acf030b7e79fe165fcf8d5240aff82510"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A FreeRTOS task scheduler responsible for scheduling tasks that inherit the <a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html">Task</a> interface.Tasks inheriting <a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html">Task</a> interface are automatically added to the scheduler when constructed. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9686ddf80e42d7c1ca8ffa8c9e575310"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9686ddf80e42d7c1ca8ffa8c9e575310">&#9670;&nbsp;</a></span>AddTask()</h2>
+<a id="ab2cb704019734dfbe774efe8f257d443"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2cb704019734dfbe774efe8f257d443">&#9670;&nbsp;</a></span>AddTask()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void sjsu::rtos::TaskScheduler::AddTask </td>
@@ -141,11 +122,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Add a task to the task scheduler. If the scheduler is full, the task will not be added and a fatal error will be asserted.</p>
 <dl class="section note"><dt>Note</dt><dd>When a task inheriting the <a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="An abstract interface for the Task interface class. ">TaskInterface</a> is constructed, it will automatically call this function to add itself to the scheduler.</dd></dl>
@@ -156,12 +132,10 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#acb6db6c322e87e3a94015b3a87dfd903">sjsu::rtos::TaskSchedulerInterface</a>.</p>
-
 </div>
 </div>
-<a id="a441e2f152fb12ad7358c3dd34c8e8d43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a441e2f152fb12ad7358c3dd34c8e8d43">&#9670;&nbsp;</a></span>GetAllTasks()</h2>
+<a id="a6fbdbb0b4cc79b3259d78914178fbb96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fbdbb0b4cc79b3259d78914178fbb96">&#9670;&nbsp;</a></span>GetAllTasks()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,18 +152,16 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A pointer reference to an immutable array of all currently scheduled tasks. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a230e77beb2d3728129eedbf46e013c0f">sjsu::rtos::TaskSchedulerInterface</a>.</p>
-
 </div>
 </div>
-<a id="a73719d60dc794cca9a69e5cdf33dfac1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73719d60dc794cca9a69e5cdf33dfac1">&#9670;&nbsp;</a></span>GetPreRunEventGroupHandle()</h2>
+<a id="a2387d88e73ff126375952334ddd8ff76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2387d88e73ff126375952334ddd8ff76">&#9670;&nbsp;</a></span>GetPreRunEventGroupHandle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,18 +178,16 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The PreRun event group handler used to notify that PreRun of all tasks have completed successfully. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#ad43a6b45aa222cf20fb17afe2b822bad">sjsu::rtos::TaskSchedulerInterface</a>.</p>
-
 </div>
 </div>
-<a id="aa426df6fcce42a11a6794102eb636704"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa426df6fcce42a11a6794102eb636704">&#9670;&nbsp;</a></span>GetPreRunSyncBits()</h2>
+<a id="a8ddf24331d72ab016efd928715d45881"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ddf24331d72ab016efd928715d45881">&#9670;&nbsp;</a></span>GetPreRunSyncBits()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,18 +204,16 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The sync bits of the PreRun event group. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a5042ba8f6c8581bfdddd1135d73beda1">sjsu::rtos::TaskSchedulerInterface</a>.</p>
-
 </div>
 </div>
-<a id="a07581c715aaab7f8af398b25474b9047"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07581c715aaab7f8af398b25474b9047">&#9670;&nbsp;</a></span>GetTask()</h2>
+<a id="aabaec0100ede4a1cffecad6f9ebab5c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabaec0100ede4a1cffecad6f9ebab5c5">&#9670;&nbsp;</a></span>GetTask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,12 +226,12 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>task_name</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -276,12 +244,10 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A nullptr if the task does not exist. Otherwise, returns a pointer reference to the retrieved task with the matching name. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#ae922aa35ad92d67106c0cbaf3ebd8181">sjsu::rtos::TaskSchedulerInterface</a>.</p>
-
 </div>
 </div>
-<a id="a87a5614e9d28c990f3d8a6f484fa7574"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87a5614e9d28c990f3d8a6f484fa7574">&#9670;&nbsp;</a></span>GetTaskCount()</h2>
+<a id="ad4e6af14a4973125c9d2be5923a889ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4e6af14a4973125c9d2be5923a889ae">&#9670;&nbsp;</a></span>GetTaskCount()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -298,24 +264,19 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The current number of scheduled tasks. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a9c68575b19ff685d206038532bae2dcc">sjsu::rtos::TaskSchedulerInterface</a>.</p>
-
 </div>
 </div>
-<a id="a1b3f5966df9e7c23a99a68988b63302c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b3f5966df9e7c23a99a68988b63302c">&#9670;&nbsp;</a></span>GetTaskIndex()</h2>
+<a id="ab53fd96b35d0aee319661b87545395b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab53fd96b35d0aee319661b87545395b3">&#9670;&nbsp;</a></span>GetTaskIndex()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">uint8_t sjsu::rtos::TaskScheduler::GetTaskIndex </td>
@@ -325,11 +286,6 @@ Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Used to get a task's index to determine the sync bit for the PreRun event group.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -340,18 +296,13 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The index of the specified task. If the task is not scheduled, kTaskSchedulerSize + 1 will be returned. </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a626e0e8d8a7bab5deeb8c82fd4eb756f">sjsu::rtos::TaskSchedulerInterface</a>.</p>
-
 </div>
 </div>
-<a id="a3de934374af47f2348e7c42ea5bacaa8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3de934374af47f2348e7c42ea5bacaa8">&#9670;&nbsp;</a></span>RemoveTask()</h2>
+<a id="abffd7e8f29082ec825c11a8fcf2fd3e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abffd7e8f29082ec825c11a8fcf2fd3e9">&#9670;&nbsp;</a></span>RemoveTask()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void sjsu::rtos::TaskScheduler::RemoveTask </td>
@@ -361,11 +312,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Removes a specified task by its name and updates the task_list_ and task_count_.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -374,8 +320,6 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p>Implements <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#a982595ebaed484d113ec6ad676e585cb">sjsu::rtos::TaskSchedulerInterface</a>.</p>
 
 </div>
 </div>

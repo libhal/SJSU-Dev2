@@ -4,7 +4,7 @@ var searchData=
   ['adc',['Adc',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a16ab193c6f60deb833b70c93cdcba981',1,'sjsu::lpc40xx::Adc']]],
   ['addcommand',['AddCommand',['../d1/d42/classsjsu_1_1CommandLine.html#a497ab38b6832e3e9b3cb650dd1112d1d',1,'sjsu::CommandLine']]],
   ['addcommoncommands',['AddCommonCommands',['../d0/d6b/namespacesjsu.html#a2fa6f1085c361722df3294bb5c60011d',1,'sjsu']]],
-  ['addtask',['AddTask',['../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html#acb6db6c322e87e3a94015b3a87dfd903',1,'sjsu::rtos::TaskSchedulerInterface::AddTask()'],['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a9686ddf80e42d7c1ca8ffa8c9e575310',1,'sjsu::rtos::TaskScheduler::AddTask()']]],
+  ['addtask',['AddTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab2cb704019734dfbe774efe8f257d443',1,'sjsu::rtos::TaskScheduler']]],
   ['allocate',['allocate',['../df/ddd/classsjsu_1_1Arena.html#ad68341c9db5759077d4d0b20b6c2ef10',1,'sjsu::Arena::allocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af5afc7393b5ab8bc8db1c727e59fa12b',1,'sjsu::FixedAllocator::allocate()']]],
   ['apds9960',['Apds9960',['../d8/d99/classsjsu_1_1Apds9960.html#a84c844a923d6f58540f94bdb1c5309f1',1,'sjsu::Apds9960']]],
   ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html#acbbf1fbb2830f352f94728bba8082208',1,'sjsu::Arena::Arena(uint8_t *buf, size_t size, uint8_t *ptr=nullptr) noexcept'],['../df/ddd/classsjsu_1_1Arena.html#a5f9b57a035215dbf0686c93a724fa190',1,'sjsu::Arena::Arena(const Arena &amp;a)']]],

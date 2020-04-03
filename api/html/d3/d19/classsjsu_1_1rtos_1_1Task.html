@@ -98,15 +98,13 @@ Collaboration diagram for sjsu::rtos::Task&lt; kStackSize &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/d02/classsjsu_1_1rtos_1_1Task__coll__graph.png" border="0" usemap="#sjsu_1_1rtos_1_1Task_3_01kStackSize_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1rtos_1_1Task_3_01kStackSize_01_4_coll__map" id="sjsu_1_1rtos_1_1Task_3_01kStackSize_01_4_coll__map">
-<area shape="rect" id="node2" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="An abstract interface for the Task interface class. " alt="" coords="5,13,181,39"/>
-<area shape="rect" id="node3" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html" title="An abstact interface for the TaskScheduler class. " alt="" coords="206,5,389,47"/>
+<area shape="rect" id="node2" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="An abstract interface for the Task interface class. " alt="" coords="9,95,185,121"/>
+<area shape="rect" id="node3" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html" title="sjsu::rtos::TaskScheduler" alt="" coords="5,5,188,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aeed4e7512f28e4656aabe5c41238b72f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html">TaskSchedulerInterface</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#aeed4e7512f28e4656aabe5c41238b72f">GetTaskScheduler</a> () const override</td></tr>
-<tr class="separator:aeed4e7512f28e4656aabe5c41238b72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96bef5b9a687a25deffd7c9ad013e2a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#a96bef5b9a687a25deffd7c9ad013e2a7">Setup</a> () override</td></tr>
 <tr class="separator:a96bef5b9a687a25deffd7c9ad013e2a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59f0291e67429b3218c654662fb14d47"><td class="memItemLeft" align="right" valign="top"><a id="a59f0291e67429b3218c654662fb14d47"></a>
@@ -145,7 +143,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:ae3815d3fbe071f3a6c0f892c6d44607a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8df315e045d2e23af5582361a1d47ef"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa8df315e045d2e23af5582361a1d47ef">GetDelayTime</a> () const override</td></tr>
 <tr class="separator:aa8df315e045d2e23af5582361a1d47ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37b1622757af4cc18a074b134477fd0e"><td class="memItemLeft" align="right" valign="top"><a id="a37b1622757af4cc18a074b134477fd0e"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#a37b1622757af4cc18a074b134477fd0e">~Task</a> ()</td></tr>
+<tr class="memdesc:a37b1622757af4cc18a074b134477fd0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default destructor. <br /></td></tr>
+<tr class="separator:a37b1622757af4cc18a074b134477fd0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1rtos_1_1TaskInterface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1rtos_1_1TaskInterface')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">sjsu::rtos::TaskInterface</a></td></tr>
+<tr class="memitem:a5ffa65c363aa059dcea6c7eed3285132 inherit pub_methods_classsjsu_1_1rtos_1_1TaskInterface"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a5ffa65c363aa059dcea6c7eed3285132">SetTaskScheduler</a> (<a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html">TaskScheduler</a> *task_scheduler)</td></tr>
+<tr class="separator:a5ffa65c363aa059dcea6c7eed3285132 inherit pub_methods_classsjsu_1_1rtos_1_1TaskInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02dab34cd71b9970220f7c4d560c4f78 inherit pub_methods_classsjsu_1_1rtos_1_1TaskInterface"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html">TaskScheduler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a02dab34cd71b9970220f7c4d560c4f78">GetTaskScheduler</a> () const</td></tr>
+<tr class="separator:a02dab34cd71b9970220f7c4d560c4f78 inherit pub_methods_classsjsu_1_1rtos_1_1TaskInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29f53d679c7a3f5847495c3c6a2f8629 inherit pub_methods_classsjsu_1_1rtos_1_1TaskInterface"><td class="memItemLeft" align="right" valign="top"><a id="a29f53d679c7a3f5847495c3c6a2f8629"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a29f53d679c7a3f5847495c3c6a2f8629">Run</a> ()=0</td></tr>
 <tr class="memdesc:a29f53d679c7a3f5847495c3c6a2f8629 inherit pub_methods_classsjsu_1_1rtos_1_1TaskInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute the task. <br /></td></tr>
@@ -153,17 +159,13 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aaaed3bd7de7367e2907e952366577623"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#aaaed3bd7de7367e2907e952366577623">Task</a> (const char *name, Priority priority, <a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html">TaskSchedulerInterface</a> &amp;task_scheduler)</td></tr>
-<tr class="separator:aaaed3bd7de7367e2907e952366577623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdcd498b9703e6f6d61ae30944156330"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#acdcd498b9703e6f6d61ae30944156330">Task</a> (const char *name, Priority priority)</td></tr>
+<tr class="separator:acdcd498b9703e6f6d61ae30944156330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa76073083428bbb198344ae0c30acb83"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83">DeclaredOnStackCheck</a> ()</td></tr>
 <tr class="separator:aa76073083428bbb198344ae0c30acb83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ae64f9fb849493e73a40e502ddf86bf56"><td class="memItemLeft" align="right" valign="top"><a id="ae64f9fb849493e73a40e502ddf86bf56"></a>
-<a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html">TaskSchedulerInterface</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#ae64f9fb849493e73a40e502ddf86bf56">task_scheduler_</a></td></tr>
-<tr class="memdesc:ae64f9fb849493e73a40e502ddf86bf56"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html">TaskScheduler</a> responsible for scheduling this task. <br /></td></tr>
-<tr class="separator:ae64f9fb849493e73a40e502ddf86bf56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a7a81b7a00e4ed82935d1c357bba91f"><td class="memItemLeft" align="right" valign="top"><a id="a0a7a81b7a00e4ed82935d1c357bba91f"></a>
 const char *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#a0a7a81b7a00e4ed82935d1c357bba91f">kName</a></td></tr>
 <tr class="memdesc:a0a7a81b7a00e4ed82935d1c357bba91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds a pointer to the name of the task. <br /></td></tr>
@@ -184,6 +186,11 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 StackType_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5fccf7fa785a8f0a807496cec063f027">stack_</a> [kStackSize]</td></tr>
 <tr class="memdesc:a5fccf7fa785a8f0a807496cec063f027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer reference to the pre-allocated stack. <br /></td></tr>
 <tr class="separator:a5fccf7fa785a8f0a807496cec063f027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classsjsu_1_1rtos_1_1TaskInterface"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classsjsu_1_1rtos_1_1TaskInterface')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">sjsu::rtos::TaskInterface</a></td></tr>
+<tr class="memitem:a2e2a463e2a10bec479c328de6372c8c4 inherit pro_attribs_classsjsu_1_1rtos_1_1TaskInterface"><td class="memItemLeft" align="right" valign="top"><a id="a2e2a463e2a10bec479c328de6372c8c4"></a>
+<a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html">TaskScheduler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a2e2a463e2a10bec479c328de6372c8c4">task_scheduler_</a></td></tr>
+<tr class="memdesc:a2e2a463e2a10bec479c328de6372c8c4 inherit pro_attribs_classsjsu_1_1rtos_1_1TaskInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html">TaskScheduler</a> responsible for scheduling this task. <br /></td></tr>
+<tr class="separator:a2e2a463e2a10bec479c328de6372c8c4 inherit pro_attribs_classsjsu_1_1rtos_1_1TaskInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;size_t kStackSize&gt;<br />
@@ -198,8 +205,8 @@ class sjsu::rtos::Task&lt; kStackSize &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aaaed3bd7de7367e2907e952366577623"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaed3bd7de7367e2907e952366577623">&#9670;&nbsp;</a></span>Task()</h2>
+<a id="acdcd498b9703e6f6d61ae30944156330"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdcd498b9703e6f6d61ae30944156330">&#9670;&nbsp;</a></span>Task()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,13 +226,7 @@ template&lt;size_t kStackSize&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Priority&#160;</td>
-          <td class="paramname"><em>priority</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html">TaskSchedulerInterface</a> &amp;&#160;</td>
-          <td class="paramname"><em>task_scheduler</em>&#160;</td>
+          <td class="paramname"><em>priority</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -244,7 +245,6 @@ template&lt;size_t kStackSize&gt; </div>
   <table class="params">
     <tr><td class="paramname">name</td><td>Name used to easily identify the task. </td></tr>
     <tr><td class="paramname">priority</td><td>Priority of the task. </td></tr>
-    <tr><td class="paramname">task_scheduler</td><td><a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html">TaskScheduler</a> responsible for scheduling this task. </td></tr>
   </table>
   </dd>
 </dl>
@@ -487,36 +487,6 @@ template&lt;size_t kStackSize&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the task's statically allocated buffer. </dd></dl>
 
 <p>Implements <a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#ac24f506db7cb3c7f5e4f24b6cd368c25">sjsu::rtos::TaskInterface</a>.</p>
-
-</div>
-</div>
-<a id="aeed4e7512f28e4656aabe5c41238b72f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeed4e7512f28e4656aabe5c41238b72f">&#9670;&nbsp;</a></span>GetTaskScheduler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t kStackSize&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d5/d7a/classsjsu_1_1rtos_1_1TaskSchedulerInterface.html">TaskSchedulerInterface</a>&amp; <a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html">sjsu::rtos::Task</a>&lt; kStackSize &gt;::GetTaskScheduler </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="../../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html">TaskScheduler</a> responsible for scheduling this task. </dd></dl>
-
-<p>Implements <a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a55c01da5d358caff728eebf5d1d6fc3b">sjsu::rtos::TaskInterface</a>.</p>
 
 </div>
 </div>

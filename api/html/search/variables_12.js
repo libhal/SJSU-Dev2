@@ -1,20 +1,6 @@
 var searchData=
 [
-  ['task_5fbuffer_5f',['task_buffer_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a915f029c6374cb2cfe4b602bffead087',1,'sjsu::rtos::Task']]],
-  ['task_5ffunction_5f',['task_function_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a21c34fdb580714ad78a6eb8dd8644504',1,'sjsu::rtos::PeriodicTask']]],
-  ['task_5fscheduler_5f',['task_scheduler_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ae64f9fb849493e73a40e502ddf86bf56',1,'sjsu::rtos::Task']]],
-  ['tfi',['TFI',['../dc/d88/structsjsu_1_1Can_1_1TxMessage__t.html#aef6fd41aa96a05547323e3db0018e0be',1,'sjsu::Can::TxMessage_t']]],
-  ['ticks_5fper_5fmillisecond',['ticks_per_millisecond',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa56845f054040a5d4c91899d3987dcc6',1,'sjsu::cortex::SystemTimer']]],
-  ['timeout',['timeout',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a050e7f7988d762c4099178e8842e32b6',1,'sjsu::I2c::Transaction_t']]],
-  ['timer_5fregister',['timer_register',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a11d2efb01dc9c4ee5ad6de005590425f',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
-  ['tolerance',['tolerance',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a9e31735c7c631e650aecea83c5069082',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
-  ['transaction',['transaction',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#aa609967e272a71337ccc24e950236e29',1,'sjsu::lpc40xx::I2c::Bus_t']]],
-  ['transmit_5fqueue',['transmit_queue',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a954c4410baca3cbb4c4de6173680e4ed',1,'sjsu::lpc40xx::Can']]],
-  ['tuning_5fvalue',['tuning_value',['../d6/d89/structsjsu_1_1msp432p401r_1_1SystemController_1_1DcoConfiguration__t.html#a2628b9b2db78e71f9d6b511e9c5fc48e',1,'sjsu::msp432p401r::SystemController::DcoConfiguration_t']]],
-  ['tx',['tx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a67f2ca56b242323c441088b74c7507c7',1,'sjsu::lpc40xx::Uart::Port_t']]],
-  ['tx_5ffunction_5fid',['tx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a8fbfab57d6cf7237b51ed843e664b3f2',1,'sjsu::lpc40xx::Uart::Port_t']]],
-  ['tx_5fpriority',['tx_priority',['../dc/d88/structsjsu_1_1Can_1_1TxMessage__t.html#aedf87b75eac2dbf8a4eff00edc948f88',1,'sjsu::Can::TxMessage_t']]],
-  ['tx_5fqueue_5fstorage_5farea',['tx_queue_storage_area',['../db/d1f/structsjsu_1_1lpc40xx_1_1Can_1_1StaticQueueConfig__t.html#a47308c6facb890aadcb0eeb38937ab22',1,'sjsu::lpc40xx::Can::StaticQueueConfig_t']]],
-  ['tx_5fstatic_5fqueue',['tx_static_queue',['../db/d1f/structsjsu_1_1lpc40xx_1_1Can_1_1StaticQueueConfig__t.html#a6c18e665510a68f586d76dd744d62a08',1,'sjsu::lpc40xx::Can::StaticQueueConfig_t']]],
-  ['type',['type',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a078fb34df8715dcc8f1d5739a3ad9966',1,'sjsu::Sd::CardInfo_t::type()'],['../d5/d39/structsjsu_1_1experimental_1_1Sd_1_1CardInfo__t.html#a3c4051077c6c4fabae7bb18b00cd6cff',1,'sjsu::experimental::Sd::CardInfo_t::type()']]]
+  ['uptime',['Uptime',['../d0/d6b/namespacesjsu.html#ac1015ce029891b6ea23685a883ebd664',1,'sjsu']]],
+  ['user_5fcallback',['user_callback',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a9a9fcb71dfadbd8d6b194249c748d0cd',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
+  ['uses_5frepeat_5fframes',['uses_repeat_frames',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#ae0767f9ef1f5e26701de8e13a2b2d68d',1,'sjsu::infrared::PulseDurationConfiguration_t']]]
 ];

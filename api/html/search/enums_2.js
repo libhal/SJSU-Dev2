@@ -9,6 +9,5 @@ var searchData=
   ['commands',['Commands',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a3ae21f959ba5fcda4d5904ac3d898d46',1,'sjsu::lpc40xx::Can']]],
   ['control',['Control',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#abb6543ba96f5ad9890ad8292e64667dc',1,'sjsu::lpc40xx::I2c']]],
   ['controlbitmap',['ControlBitMap',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991',1,'sjsu::cortex::SystemTimer']]],
-  ['controllers',['Controllers',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a4ebb61e9ca200c9463e2a2eabaadd50b',1,'sjsu::lpc40xx::Can']]],
   ['cursordirection',['CursorDirection',['../d3/d56/classsjsu_1_1St7066u.html#af9c1b505643608b402487911fb9f3919',1,'sjsu::St7066u']]]
 ];

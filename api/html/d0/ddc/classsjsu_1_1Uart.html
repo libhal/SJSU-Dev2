@@ -94,7 +94,7 @@ Inheritance diagram for sjsu::Uart:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa2299630acd8937d532ae0d100526b5a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#aa2299630acd8937d532ae0d100526b5a">Initialize</a> (uint32_t baud_rate) const =0</td></tr>
+<tr class="memitem:aa2299630acd8937d532ae0d100526b5a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#aa2299630acd8937d532ae0d100526b5a">Initialize</a> (uint32_t baud_rate) const =0</td></tr>
 <tr class="separator:aa2299630acd8937d532ae0d100526b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6eccb9f4114220c75d53187a41044fd2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a6eccb9f4114220c75d53187a41044fd2">SetBaudRate</a> (uint32_t baud_rate) const =0</td></tr>
 <tr class="separator:a6eccb9f4114220c75d53187a41044fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,7 +114,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2088945da7c58af8cffcdd6ede11583e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a548981496b8d6c342b34e1a10e286e9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a548981496b8d6c342b34e1a10e286e9d">PollingFlush</a> () const</td></tr>
 <tr class="separator:a548981496b8d6c342b34e1a10e286e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad032033653ee110a2eb8d18a9d20431d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#ad032033653ee110a2eb8d18a9d20431d">Read</a> (void *data, size_t size, std::chrono::nanoseconds timeout) const</td></tr>
+<tr class="memitem:ad032033653ee110a2eb8d18a9d20431d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">sjsu::Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#ad032033653ee110a2eb8d18a9d20431d">Read</a> (void *data, size_t size, std::chrono::nanoseconds timeout) const</td></tr>
 <tr class="separator:ad032033653ee110a2eb8d18a9d20431d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -185,7 +185,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">Status</a> sjsu::Uart::Initialize </td>
+          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::Uart::Initialize </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>baud_rate</em></td><td>)</td>
@@ -320,7 +320,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8354cf87fb610918847695d576d419d2">sjsu::Status</a> sjsu::Uart::Read </td>
+          <td class="memname"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">sjsu::Status</a> sjsu::Uart::Read </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -358,7 +358,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>sjsu::Status::kSuccess if bytes were read before timeout. </dd>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a96b13230012af6002196c0556984e409">sjsu::Status::kSuccess</a> if bytes were read before timeout. </dd>
 <dd>
 sjsu::Status::kTimeout if bytes could not be read before before timeout. </dd></dl>
 
