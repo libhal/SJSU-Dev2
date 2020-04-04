@@ -1,24 +1,22 @@
 #include <cstdio>
 
 #include "L0_Platform/msp432p401r/msp432p401r.h"
-#include "utility/bit.hpp"
+#include "L1_Peripheral/msp432p401r/gpio.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
 int main()
 {
   sjsu::LogInfo("Starting MSP432P401R LED Blinker Demo...");
+
   // Configure the on-board P1.0 LED to be initially turned on.
-  constexpr sjsu::bit::Mask kLedBitMask = sjsu::bit::CreateMaskFromRange(0);
-  sjsu::msp432p401r::P1->DIR            = sjsu::bit::Set(
-      sjsu::msp432p401r::P1->DIR, sjsu::bit::CreateMaskFromRange(0));
-  sjsu::msp432p401r::P1->OUT =
-      sjsu::bit::Set(sjsu::msp432p401r::P1->OUT, kLedBitMask);
+  sjsu::msp432p401r::Gpio p1_0(1, 0);
+  p1_0.SetAsOutput();
+  p1_0.SetHigh();
 
   while (true)
   {
-    sjsu::msp432p401r::P1->OUT =
-        sjsu::bit::Toggle(sjsu::msp432p401r::P1->OUT, kLedBitMask);
+    p1_0.Toggle();
     sjsu::Delay(1s);
   }
   return 0;
