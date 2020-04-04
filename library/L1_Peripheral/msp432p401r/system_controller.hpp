@@ -15,7 +15,6 @@ namespace msp432p401r
 {
 /// SystemController class used to manage power control and various clock system
 /// resources on the MSP432P401R MCU.
-/// @ingroup l1_peripheral
 class SystemController final : public sjsu::SystemController
 {
  public:

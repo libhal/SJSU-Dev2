@@ -100,19 +100,18 @@ int main()
     return -1;
   }
 
-  sjsu::Status enable_status = card.Enable();
-  if (!sjsu::IsOk(enable_status))
+  auto enable_status = card.Enable();
+  if (!enable_status)
   {
-    sjsu::LogInfo("Failed to mount SD Card (%d:%s)!", Value(enable_status),
-                  sjsu::Stringify(enable_status));
+    sjsu::LogError("Failed to mount SD Card!");
     return -2;
   }
 
   sjsu::LogInfo("Mounting of SD Card was" SJ2_HI_BOLD_GREEN " successful!");
 
   sjsu::LogInfo("Gather SD Card information...");
-  units::data::gigabyte_t capacity = card.GetCapacity();
-  units::data::byte_t block_size   = card.GetBlockSize();
+  units::data::gigabyte_t capacity = card.GetCapacity().value_or(0_B);
+  units::data::byte_t block_size   = card.GetBlockSize().value_or(0_B);
   bool is_read_only                = card.IsReadOnly();
 
   sjsu::LogInfo("SD Card Capacity   = " SJ2_HI_BOLD_GREEN "%f GB",
@@ -123,35 +122,36 @@ int main()
 
   // Beyond this point, information on the SD card will be overwritten
   sjsu::LogInfo("Deleting blocks");
-  card.Erase(0, 1);
+  SJ2_RETURN_VALUE_ON_ERROR(card.Erase(0, 1), -3);
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Writing Hello World to block 0");
-  card.Write(0, kHelloWorld, sizeof(kHelloWorld));
+  SJ2_RETURN_VALUE_ON_ERROR(card.Write(0, kHelloWorld, sizeof(kHelloWorld)),
+                            -4);
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 0");
   uint8_t buffer[512];
-  card.Read(0, buffer, sizeof(buffer));
+  SJ2_RETURN_VALUE_ON_ERROR(card.Read(0, buffer, sizeof(buffer)), -5);
   sjsu::debug::Hexdump(buffer, sizeof(buffer));
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Deleting block 5");
-  card.Erase(5, 1);
+  SJ2_RETURN_VALUE_ON_ERROR(card.Erase(5, 1), -6);
 
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 5 after delete");
-  card.Read(5, buffer, sizeof(buffer));
+  SJ2_RETURN_VALUE_ON_ERROR(card.Read(5, buffer, sizeof(buffer)), -6);
   sjsu::debug::Hexdump(buffer, sizeof(buffer));
 
   sjsu::LogInfo("Writing to block 5 after delete");
-  card.Write(5, kLongText, sizeof(kLongText));
+  SJ2_RETURN_VALUE_ON_ERROR(card.Write(5, kLongText, sizeof(kLongText)), -7);
 
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 5 after write");
-  card.Read(5, buffer, sizeof(buffer));
+  SJ2_RETURN_VALUE_ON_ERROR(card.Read(5, buffer, sizeof(buffer)), -8);
   sjsu::debug::Hexdump(buffer, sizeof(buffer));
 
   sjsu::LogInfo("End SD Card Driver Example...");
