@@ -2,7 +2,7 @@
 #include "utility/log.hpp"
 #include "utility/rtos.hpp"
 
-class PrinterTask final : public sjsu::rtos::Task<512>
+class PrinterTask final : public sjsu::rtos::Task<1024>
 {
  public:
   PrinterTask(const char * task_name,
