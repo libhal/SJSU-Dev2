@@ -4,5 +4,6 @@
 #pragma once
 
 #define SJ2_LOG_LEVEL SJ2_LOG_LEVEL_INFO
+#define SJ2_AUTOMATICALLY_PRINT_ON_ERROR false
 
 #include "config.hpp"

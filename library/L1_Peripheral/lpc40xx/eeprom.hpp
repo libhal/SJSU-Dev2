@@ -56,7 +56,7 @@ class Eeprom final : public sjsu::Storage
 
   /// Initializing the EEPROM requires setting the wait state register, setting
   /// the clock divider register, and ensuring that the device is powered on.
-  sjsu::Status Initialize() override
+  Returns<void> Initialize() override
   {
     const float kSystemClock = static_cast<float>(
         sjsu::SystemController::GetPlatformController().GetSystemFrequency());
@@ -82,7 +82,7 @@ class Eeprom final : public sjsu::Storage
 
     // Initialize EEPROM clock
     eeprom_register->CLKDIV = static_cast<uint8_t>(kSystemClock / kEepromClk);
-    return sjsu::Status::kSuccess;
+    return {};
   }
 
   /// EEPROM is apart of the lpc40xx silicon so it is always present.
@@ -91,16 +91,16 @@ class Eeprom final : public sjsu::Storage
     return true;
   }
 
-  sjsu::Status Enable() override
+  Returns<void> Enable() override
   {
     eeprom_register->PWRDWN = 0;
-    return sjsu::Status::kSuccess;
+    return {};
   }
 
-  sjsu::Status Disable() override
+  Returns<void> Disable() override
   {
     eeprom_register->PWRDWN = 1;
-    return sjsu::Status::kSuccess;
+    return {};
   }
 
   bool IsReadOnly() override
@@ -108,22 +108,22 @@ class Eeprom final : public sjsu::Storage
     return false;
   }
 
-  units::data::byte_t GetCapacity() override
+  Returns<units::data::byte_t> GetCapacity() override
   {
     return 4_kB;
   }
 
-  units::data::byte_t GetBlockSize() override
+  Returns<units::data::byte_t> GetBlockSize() override
   {
     return 4_B;
   }
 
-  sjsu::Status Erase(uint32_t, size_t) override
+  Returns<void> Erase(uint32_t, size_t) override
   {
-    return sjsu::Status::kSuccess;
+    return {};
   }
 
-  sjsu::Status Write(uint32_t address, const void * data, size_t size) override
+  Returns<void> Write(uint32_t address, const void * data, size_t size) override
   {
     constexpr bit::Mask kLower6Bits = bit::CreateMaskFromRange(0, 5);
     constexpr bit::Mask kUpper6Bits = bit::CreateMaskFromRange(6, 11);
@@ -154,11 +154,15 @@ class Eeprom final : public sjsu::Storage
 
       // Poll status register bit to see when writing is finished
       auto check_register = []() {
-        return !(bit::Read(eeprom_register->INT_STATUS,
-                           Status::kReadWriteStatusMask));
+        return bit::Read(eeprom_register->INT_STATUS,
+                         Status::kReadWriteStatusMask);
       };
 
-      Wait(kMaxTimeout, check_register);
+      auto timeout_status = Wait(kMaxTimeout, check_register);
+      if (!IsOk(timeout_status))
+      {
+        return Error(timeout_status, "Could not write to EEPROM in time.");
+      }
 
       // Clear write interrupt
       eeprom_register->INT_CLR_STATUS =
@@ -179,10 +183,10 @@ class Eeprom final : public sjsu::Storage
     // Program final information so that it's stored in the EEPROM
     Program(eeprom_address);
 
-    return sjsu::Status::kSuccess;
+    return {};
   }
 
-  sjsu::Status Read(uint32_t address, void * data, size_t size) override
+  Returns<void> Read(uint32_t address, void * data, size_t size) override
   {
     address = bit::Insert(address, 0b00, kAddressMask);
 
@@ -196,7 +200,8 @@ class Eeprom final : public sjsu::Storage
       eeprom_register->CMD  = kRead32Bits;
       read_data[index]      = eeprom_register->RDATA;
     }
-    return sjsu::Status::kSuccess;
+
+    return {};
   }
 
  private:

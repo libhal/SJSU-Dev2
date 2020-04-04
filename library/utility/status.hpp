@@ -342,4 +342,17 @@ constexpr auto GetReturnValue(Returns<T> & result)
     }                                         \
     GetReturnValue(_result);                  \
   })
+
+/// Does the same as SJ2_RETURN_ON_ERROR, except this can be used to return any
+/// sort of value, in the value parameter.
+#define SJ2_RETURN_VALUE_ON_ERROR(expression, value) \
+  ({                                                 \
+    auto _result = (expression);                     \
+    if (!_result)                                    \
+    {                                                \
+      return value;                                  \
+    }                                                \
+    GetReturnValue(_result);                         \
+  })
+
 }  // namespace sjsu
