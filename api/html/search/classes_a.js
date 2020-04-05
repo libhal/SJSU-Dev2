@@ -6,5 +6,6 @@ var searchData=
   ['logerror',['LogError',['../d2/d2c/structsjsu_1_1LogError.html',1,'sjsu']]],
   ['loginfo',['LogInfo',['../d9/d37/structsjsu_1_1LogInfo.html',1,'sjsu']]],
   ['logwarning',['LogWarning',['../d1/d18/structsjsu_1_1LogWarning.html',1,'sjsu']]],
+  ['lpcregisters_5ft',['LpcRegisters_t',['../d8/d77/structsjsu_1_1lpc40xx_1_1Can_1_1LpcRegisters__t.html',1,'sjsu::lpc40xx::Can']]],
   ['ltc4150',['Ltc4150',['../d9/d3a/classsjsu_1_1Ltc4150.html',1,'sjsu']]]
 ];

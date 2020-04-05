@@ -24,5 +24,6 @@ var searchData=
   ['loginfo',['LogInfo',['../d9/d37/structsjsu_1_1LogInfo.html',1,'sjsu::LogInfo&lt; Params &gt;'],['../d9/d37/structsjsu_1_1LogInfo.html#a9969f60bcec08085988b056a4fbdefd7',1,'sjsu::LogInfo::LogInfo()'],['../d0/d6b/namespacesjsu.html#a538872c7676467a657bd5b3a1b7afae8',1,'sjsu::LogInfo()']]],
   ['logwarning',['LogWarning',['../d1/d18/structsjsu_1_1LogWarning.html',1,'sjsu::LogWarning&lt; Params &gt;'],['../d1/d18/structsjsu_1_1LogWarning.html#a1f2aef87506ed3c45661f83ea369f2f8',1,'sjsu::LogWarning::LogWarning()'],['../d0/d6b/namespacesjsu.html#ad971fcd4934a41284bc09920f00c5109',1,'sjsu::LogWarning()']]],
   ['lookuphandler',['LookupHandler',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#a45586571af8dbc8f77fa5f8d2237cd46',1,'sjsu::cortex::InterruptController']]],
+  ['lpcregisters_5ft',['LpcRegisters_t',['../d8/d77/structsjsu_1_1lpc40xx_1_1Can_1_1LpcRegisters__t.html',1,'sjsu::lpc40xx::Can']]],
   ['ltc4150',['Ltc4150',['../d9/d3a/classsjsu_1_1Ltc4150.html',1,'sjsu::Ltc4150'],['../d9/d3a/classsjsu_1_1Ltc4150.html#a86eb7f036b14e8c8b552fe9767a4b199',1,'sjsu::Ltc4150::Ltc4150()']]]
 ];

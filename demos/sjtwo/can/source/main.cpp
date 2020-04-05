@@ -25,32 +25,34 @@ int main(void)
       "disabled, then the frame error location will be printed to the console");
   sjsu::LogInfo("and the controller will be re-enabled.");
 
-  sjsu::LogInfo("Initializing CAN 1 with a bit rate of 100 kBit/s...");
+  sjsu::LogInfo("Initializing CAN 1 with default bit rate of 100 kBit/s...");
   can1.Initialize();
+  sjsu::LogInfo("Initializing CAN 2 with default bit rate of 100 kBit/s...");
+  can2.Initialize();
+
+  sjsu::LogInfo("Enabling CAN 1...");
+  can1.Enable();
+  sjsu::LogInfo("Enabling CAN 2...");
+  can2.Enable();
 
   sjsu::LogInfo("Starting local self-test for CAN 1...");
   if (can1.SelfTest(146))
   {
-    sjsu::LogInfo("CAN 1 self-test passed!");
+    sjsu::LogInfo("CAN 1 self-test" SJ2_HI_BOLD_GREEN " passed!");
   }
   else
   {
-    sjsu::LogError("CAN 1 self-test failed!");
+    sjsu::LogError("CAN 1 self-test" SJ2_HI_BOLD_RED " failed!");
   }
-
-  sjsu::LogInfo("Initializing CAN 2 with a bit rate of 100 kBit/s...");
-  can2.Initialize();
 
   sjsu::LogInfo("Starting local self-test for CAN 2...");
-  if (can2.SelfTest(244))
+  if (can1.SelfTest(244))
   {
-    sjsu::LogInfo("CAN 2 self-test passed!");
+    sjsu::LogInfo("CAN 2 self-test" SJ2_HI_BOLD_GREEN " passed!");
   }
   else
   {
-    sjsu::LogError("CAN 2 self-test failed!");
-    sjsu::LogError("CAN busses are not on the same network, stopping program");
-    return -1;
+    sjsu::LogError("CAN 2 self-test" SJ2_HI_BOLD_RED " failed!");
   }
 
   while (true)

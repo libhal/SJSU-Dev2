@@ -156,7 +156,7 @@ class Can final : public sjsu::Can
   };
 
   /// https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 554)
-  enum class Commands : uint8_t
+  enum class Commands : uint32_t
   {
     kReleaseRxBuffer            = 0x04,
     kSendTxBuffer1              = 0x21,
@@ -241,6 +241,19 @@ class Can final : public sjsu::Can
     sjsu::SystemController::PeripheralID id;
   };
 
+  /// Container for the LPC40xx CANBUS registers
+  struct LpcRegisters_t
+  {
+    /// TFI register contents
+    uint32_t frame = 0;
+    /// TID register contents
+    uint32_t id = 0;
+    /// TDA register contents
+    uint32_t data_a = 0;
+    /// TDB register contents
+    uint32_t data_b = 0;
+  };
+
   /// List of supported CANBUS channels
   struct Channel  // NOLINT
   {
@@ -275,17 +288,8 @@ class Can final : public sjsu::Can
   /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
   inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
 
-  /// Standard baud rate for most CANBUS networks
-  static constexpr units::frequency::hertz_t kStandardBaudRate = 100_kHz;
-
   /// @param channel - Which CANBUS channel to use
-  /// @param baud - communication speed for CANBUS. Highly recommended to
-  ///                    stick with the standard 100kHz frequency.
-  constexpr Can(const Channel_t & channel,
-                units::frequency::hertz_t baud = kStandardBaudRate)
-      : channel_(channel), baud_rate_(baud)
-  {
-  }
+  explicit constexpr Can(const Channel_t & channel) : channel_(channel) {}
 
   Status Initialize() const override
   {
@@ -301,7 +305,7 @@ class Can final : public sjsu::Can
     SetMode(Mode::kReset, true);
 
     // CAN bus clock (on the wire)
-    SetBaudRate();
+    SetBaudRate(kStandardBaudRate);
 
     // Accept all messages
     // TODO(#343): Allow the user to configure their own filter.
@@ -320,26 +324,7 @@ class Can final : public sjsu::Can
 
   void Send(const Message_t & message) const override
   {
-    uint32_t frame_info = 0;
-    frame_info = bit::Insert(frame_info, message.length, FrameInfo::kLength);
-    frame_info = bit::Insert(frame_info, message.is_remote_request,
-                             FrameInfo::kRemoteRequest);
-    frame_info =
-        bit::Insert(frame_info, Value(message.format), FrameInfo::kFormat);
-
-    uint32_t data_a = 0;
-    data_a |= message.payload[0] << (0 * 8);
-    data_a |= message.payload[1] << (1 * 8);
-    data_a |= message.payload[2] << (2 * 8);
-    data_a |= message.payload[3] << (3 * 8);
-
-    uint32_t data_b = 0;
-    data_b |= message.payload[4] << (0 * 8);
-    data_b |= message.payload[5] << (1 * 8);
-    data_b |= message.payload[6] << (2 * 8);
-    data_b |= message.payload[7] << (3 * 8);
-
-    // Capture status flag register
+    LpcRegisters_t registers = ConvertMessageToRegisters(message);
 
     // Wait for one of the buffers to be free so we can transmit a message
     // through it.
@@ -350,28 +335,28 @@ class Can final : public sjsu::Can
       // Check if any buffer is available.
       if (bit::Read(status_register, BufferStatus::kTx1Released))
       {
-        channel_.registers->TFI1 = frame_info;
-        channel_.registers->TID1 = message.id;
-        channel_.registers->TDA1 = data_a;
-        channel_.registers->TDB1 = data_b;
+        channel_.registers->TFI1 = registers.frame;
+        channel_.registers->TID1 = registers.id;
+        channel_.registers->TDA1 = registers.data_a;
+        channel_.registers->TDB1 = registers.data_b;
         channel_.registers->CMR  = Value(Commands::kSendTxBuffer1);
         sent                     = true;
       }
       else if (bit::Read(status_register, BufferStatus::kTx2Released))
       {
-        channel_.registers->TFI2 = frame_info;
-        channel_.registers->TID2 = message.id;
-        channel_.registers->TDA2 = data_a;
-        channel_.registers->TDB2 = data_b;
+        channel_.registers->TFI2 = registers.frame;
+        channel_.registers->TID2 = registers.id;
+        channel_.registers->TDA2 = registers.data_a;
+        channel_.registers->TDB2 = registers.data_b;
         channel_.registers->CMR  = Value(Commands::kSendTxBuffer2);
         sent                     = true;
       }
       else if (bit::Read(status_register, BufferStatus::kTx3Released))
       {
-        channel_.registers->TFI3 = frame_info;
-        channel_.registers->TID3 = message.id;
-        channel_.registers->TDA3 = data_a;
-        channel_.registers->TDB3 = data_b;
+        channel_.registers->TFI3 = registers.frame;
+        channel_.registers->TID3 = registers.id;
+        channel_.registers->TDA3 = registers.data_a;
+        channel_.registers->TDB3 = registers.data_b;
         channel_.registers->CMR  = Value(Commands::kSendTxBuffer3);
         sent                     = true;
       }
@@ -433,16 +418,35 @@ class Can final : public sjsu::Can
     // Disable reset mode
     SetMode(Mode::kReset, false);
     // Write test message to tx buffer 1
-    Send(test_message);
-    // Set self-test request and send buffer 1
-    channel_.registers->CMR = Value(Commands::kSelfReceptionSendTxBuffer1);
+    LpcRegisters_t registers = ConvertMessageToRegisters(test_message);
 
-    // Allow time for RX interrupt to fire
+    // Set self-test request and send buffer 1
+    while (true)
+    {
+      uint32_t status_register = channel_.registers->SR;
+      // Check if any buffer is available.
+      if (bit::Read(status_register, BufferStatus::kTx1Released))
+      {
+        channel_.registers->TFI1 = registers.frame;
+        channel_.registers->TID1 = registers.id;
+        channel_.registers->TDA1 = 0;
+        channel_.registers->TDB1 = 0;
+        channel_.registers->CMR  = Value(Commands::kSelfReceptionSendTxBuffer1);
+        break;
+      }
+    }
+
+    // Allow time for RX to fire
     sjsu::Delay(2ms);
 
-    // Get the message; the ISR (interrupt service routine)
-    // will read the message from the rx buffer
-    // and enqueue it into the rx queue.
+    auto wait_status = Wait(100ms, [this]() { return HasData(); });
+
+    if (!IsOk(wait_status))
+    {
+      return false;
+    }
+
+    // Read the message from the rx buffer and enqueue it into the rx queue.
     Message_t received_message = Receive();
 
     // Check if the received message matches the one we sent
@@ -464,18 +468,8 @@ class Can final : public sjsu::Can
     return bit::Read(channel_.registers->GSR, GlobalStatus::kBusError);
   }
 
- private:
-  /// Enable/Disable controller modes
-  ///
-  /// @param mode - which mode to enable/disable
-  /// @param enable_mode - true if you want to enable the mode. False otherwise.
-  void SetMode(bit::Mask mode, bool enable_mode) const
-  {
-    channel_.registers->MOD =
-        bit::Insert(channel_.registers->MOD, enable_mode, mode);
-  }
-
-  void SetBaudRate() const
+  /// @param baud - baud rate to configure the CANBUS to
+  void SetBaudRate(units::frequency::hertz_t baud) const override
   {
     // According to the BOSCH CAN spec, the nominal bit time is divided into 4
     // time segments. These segments need to be programmed for the internal
@@ -498,14 +492,6 @@ class Can final : public sjsu::Can
     // multiple times.
     uint32_t bus_timing = 0;
 
-    // Configure the baud rate divider
-    auto & platform           = sjsu::SystemController::GetPlatformController();
-    auto peripheral_frequency = platform.GetPeripheralFrequency(channel_.id);
-    // Equation found p.563 of the user manual
-    //    tSCL = CANsuppliedCLK * (prescaler -  1)
-    uint32_t prescaler = (peripheral_frequency / baud_rate_) - 1;
-    bus_timing = bit::Insert(bus_timing, prescaler, BusTiming::kPrescalar);
-
     // Used to compensate for positive and negative edge phase errors. Defines
     // how much the sample point can be shifted.
     bus_timing = bit::Insert(bus_timing, 3, BusTiming::kSyncJumpWidth);
@@ -514,7 +500,19 @@ class Can final : public sjsu::Can
     bus_timing = bit::Insert(bus_timing, 6, BusTiming::kTimeSegment1);
     bus_timing = bit::Insert(bus_timing, 1, BusTiming::kTimeSegment2);
 
-    if (baud_rate_ < 100_kHz)
+    // The above sampling sifts alters the baud rate by the sum, which is 10,
+    // thus we need to increase the baud rate by that amount.
+    const uint32_t kBaudRateAdjust = 10;
+
+    // Equation found p.563 of the user manual
+    //    tSCL = CANsuppliedCLK * ((prescaler * kBaudRateAdjust) -  1)
+    // Configure the baud rate divider
+    auto & platform           = sjsu::SystemController::GetPlatformController();
+    auto peripheral_frequency = platform.GetPeripheralFrequency(channel_.id);
+    uint32_t prescaler = (peripheral_frequency / (baud * kBaudRateAdjust)) - 1;
+    bus_timing = bit::Insert(bus_timing, prescaler, BusTiming::kPrescalar);
+
+    if (baud < kStandardBaudRate)
     {
       // The bus is sampled 3 times (recommended for low speeds, 100kHz is
       // considered HIGH).
@@ -528,13 +526,57 @@ class Can final : public sjsu::Can
     channel_.registers->BTR = bus_timing;
   }
 
+ private:
+  /// Convert message into the registers LPC40xx can bus registers.
+  ///
+  /// @param message - message to convert.
+  LpcRegisters_t ConvertMessageToRegisters(const Message_t & message) const
+  {
+    LpcRegisters_t registers;
+
+    uint32_t frame_info = 0;
+    frame_info = bit::Insert(frame_info, message.length, FrameInfo::kLength);
+    frame_info = bit::Insert(frame_info, message.is_remote_request,
+                             FrameInfo::kRemoteRequest);
+    frame_info =
+        bit::Insert(frame_info, Value(message.format), FrameInfo::kFormat);
+
+    uint32_t data_a = 0;
+    data_a |= message.payload[0] << (0 * 8);
+    data_a |= message.payload[1] << (1 * 8);
+    data_a |= message.payload[2] << (2 * 8);
+    data_a |= message.payload[3] << (3 * 8);
+
+    uint32_t data_b = 0;
+    data_b |= message.payload[4] << (0 * 8);
+    data_b |= message.payload[5] << (1 * 8);
+    data_b |= message.payload[6] << (2 * 8);
+    data_b |= message.payload[7] << (3 * 8);
+
+    registers.frame  = frame_info;
+    registers.id     = message.id;
+    registers.data_a = data_a;
+    registers.data_b = data_b;
+
+    return registers;
+  }
+
+  /// Enable/Disable controller modes
+  ///
+  /// @param mode - which mode to enable/disable
+  /// @param enable_mode - true if you want to enable the mode. False otherwise.
+  void SetMode(bit::Mask mode, bool enable_mode) const
+  {
+    channel_.registers->MOD =
+        bit::Insert(channel_.registers->MOD, enable_mode, mode);
+  }
+
   static void EnableAcceptanceFilter()
   {
     can_acceptance_filter_register->AFMR = Value(Commands::kAcceptAllMessages);
   }
 
   const Channel_t & channel_;
-  units::frequency::hertz_t baud_rate_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

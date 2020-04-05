@@ -1,7 +1,7 @@
 var searchData=
 [
   ['calibrate',['Calibrate',['../d0/dab/classsjsu_1_1StopWatch.html#abed47c2598a289745ee58d50cd0b97e8',1,'sjsu::StopWatch']]],
-  ['can',['Can',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ad3d9c57fcaf046e4408ff17465995f7c',1,'sjsu::lpc40xx::Can']]],
+  ['can',['Can',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a1ea8330f753104b964f129c0f621d7bb',1,'sjsu::lpc40xx::Can']]],
   ['checkifgestureoccurred',['CheckIfGestureOccurred',['../d8/d99/classsjsu_1_1Apds9960.html#a0c59750499d0c0b2659f42e85140addf',1,'sjsu::Apds9960']]],
   ['checktimeout',['CheckTimeout',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#ad5ea166a0227906a6698074926f89464',1,'sjsu::lpc40xx::Watchdog::CheckTimeout()'],['../d5/da1/classsjsu_1_1Watchdog.html#a58b096fc6e905a7d0b3dddab79eefb42',1,'sjsu::Watchdog::CheckTimeout()']]],
   ['clear',['Clear',['../db/d32/classsjsu_1_1Ssd1306.html#abec7db550df0e97d8e586d99af29a243',1,'sjsu::Ssd1306::Clear()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a0ee59c54a2f2918b8866c89f7e2f1fdd',1,'sjsu::PixelDisplay::Clear()'],['../d6/dde/classsjsu_1_1GraphicalTerminal.html#ac212c2eebebe0a2112795d398950a332',1,'sjsu::GraphicalTerminal::Clear()'],['../d7/d8c/classsjsu_1_1Graphics.html#a8e1e7f91244e6728e1df1fc325b6a3df',1,'sjsu::Graphics::Clear()']]],

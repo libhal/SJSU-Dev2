@@ -255,7 +255,7 @@ var searchData=
   ['kspi2',['kSpi2',['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html#acc3ee18f38d695b0b7d2a150ec2315f1',1,'sjsu::lpc40xx::Spi::Bus']]],
   ['kspienable',['kSpiEnable',['../d7/dde/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister1.html#a0aaf7d2c5e901e2395d4d45fced263f5',1,'sjsu::lpc40xx::Spi::ControlRegister1']]],
   ['kstandard',['kStandard',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdda821da62632c491ea619ead7b31c094bf',1,'sjsu::Can::Message_t']]],
-  ['kstandardbaudrate',['kStandardBaudRate',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a8b167b9a5781bf6904109e279231285c',1,'sjsu::lpc40xx::Can']]],
+  ['kstandardbaudrate',['kStandardBaudRate',['../da/d70/classsjsu_1_1Can.html#a3b8c50971995dad8c040317429703957',1,'sjsu::Can']]],
   ['kstandarduart',['kStandardUart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aa4bbcf7ccfa5a5de3c14906ca231d9f8',1,'sjsu::lpc40xx::Uart']]],
   ['kstartcode',['kStartCode',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a2126f6b386de2a1c5caec235551a19be',1,'sjsu::lpc40xx::Adc::Control']]],
   ['kstartedge',['kStartEdge',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ad4870d5d17da8adf84d54dd6e1de1577',1,'sjsu::lpc40xx::Adc::Control']]],

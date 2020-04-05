@@ -47,6 +47,9 @@ class Can
     bool is_remote_request = false;
   };
 
+  /// Standard baud rate for most CANBUS networks
+  static constexpr units::frequency::hertz_t kStandardBaudRate = 100'000_Hz;
+
   // ===========================================================================
   // Interface Methods
   // ===========================================================================
@@ -86,6 +89,10 @@ class Can
   /// @return true - if the device is "bus Off"
   /// @return false - if the device is NOT "bus off"
   virtual bool IsBusOff() const = 0;
+
+  /// @param baud - baud rate to configure the CANBUS to
+  virtual void SetBaudRate(
+      units::frequency::hertz_t baud = kStandardBaudRate) const = 0;
 
   // ===========================================================================
   // Utility Methods

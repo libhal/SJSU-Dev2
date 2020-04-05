@@ -420,7 +420,7 @@ class Sd : public Storage
     LogDebug("Erase Reset: %s", ToBool(response.byte[0] & 0x02));
     LogDebug("In Idle: %s", ToBool(response.byte[0] & 0x01));
 
-    return true;
+    return false;
   }
 
   // Read any number of blocks from the SD card
@@ -442,10 +442,14 @@ class Sd : public Storage
     }
 
     // Wait for the card to respond with a ready signal
-    WaitToReadBlock();
+    if (!WaitToReadBlock())
+    {
+      csd.status = sjsu::Status::kBusError;
+      return csd;
+    }
 
     // Read all the bytes of a single csd
-    for (uint16_t i = 0; i < csd.byte.size(); i++)
+    for (size_t i = 0; i < csd.byte.size(); i++)
     {
       csd.byte[i] = static_cast<uint8_t>(spi_.Transfer(0xFF));
     }
@@ -475,7 +479,7 @@ class Sd : public Storage
     {
       Response_t response =
           SendCommand(Command::kGetStatus, 32, KeepAlive::kNo);
-      if (response.byte[0] & 0x01)
+      if (bit::Read(response.byte[0], 1) == 0)
       {
         break;
       }
@@ -643,7 +647,7 @@ class Sd : public Storage
     // Bit 1 -->  If set, CC error occurred
     // Bit 0 -->  If set, a generic error occurred
 
-    constexpr bit::Mask kErrorIndicator = bit::CreateMaskFromRange(5, 7);
+    constexpr bit::Mask kErrorIndicator = bit::CreateMaskFromRange(4, 7);
 
     for (uint32_t i = 0; i < kRetryLimit * 100; i++)
     {
@@ -652,19 +656,17 @@ class Sd : public Storage
       if (wait_byte == 0xFE)
       {
         LogDebug("Received GO Byte 0xFE;");
-        LogDebug("SD Card is now sending block payload...");
+        LogDebug("Card is now sending block payload...");
         return true;
       }
 
       if (bit::Extract(wait_byte, kErrorIndicator) == 0x00)
       {
-        LogDebug("Error: SD Card Rejected Read Cmd [Response: 0x%02X]",
-                 wait_byte);
-        LogDebug("Card Locked?: %s", ToBool(wait_byte & 0x10));
-        LogDebug("Addr Out of Range?: %s", ToBool(wait_byte & 0x08));
-        LogDebug("Card ECC Failed?: %s", ToBool(wait_byte & 0x04));
-        LogDebug("CC Error?: %s", ToBool(wait_byte & 0x02));
-        LogDebug("Error?: %s", ToBool(wait_byte & 0x01));
+        LogDebug("Error: Card Rejected Read Cmd [Response: 0x%02X]", wait_byte);
+        LogDebug("            Error: %s", ToBool(bit::Read(wait_byte, 0)));
+        LogDebug("         CC Error: %s", ToBool(bit::Read(wait_byte, 1)));
+        LogDebug("  Card ECC Failed: %s", ToBool(bit::Read(wait_byte, 2)));
+        LogDebug("Addr Out of Range: %s", ToBool(bit::Read(wait_byte, 3)));
         return false;
       }
     }
@@ -771,6 +773,12 @@ class Sd : public Storage
     // Select the SD Card
     chip_select_.SetLow();
 
+    // NOTE: So because SanDisk SD Cards are garbage, they need a few clock
+    // cycles as padding before sending the command sequence. We send "0xFF"
+    // because a zero constitutes the start of a command and we don't want to
+    // start the command sequence at this point.
+    spi_.Transfer(0xFF);
+
     // Send command to the SD Card
     SendCommandParameters(command, parameter);
 
@@ -783,17 +791,19 @@ class Sd : public Storage
 
     for (uint32_t tries = 0; tries < kRetryLimit; tries++)
     {
-      uint8_t response_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
+      /// Store the response into the first byte of the response
+      response.byte[0] = static_cast<uint8_t>(spi_.Transfer(0xFF));
 
-      if (bit::Read(response_byte, kResponseFlag) == 0)
+      /// If the MSB of the byte is 0 then this is the true first byte of the
+      /// response.
+      if (bit::Read(response.byte[0], kResponseFlag) == 0)
       {
         const uint32_t kResponseLength = GetResponseLength(command);
 
-        // Store all of the response bytes into the response object.
-        for (uint32_t i = 0; i < kResponseLength; i++)
+        // Store all additional of the response bytes into the response object.
+        for (uint32_t i = 1; i < kResponseLength; i++)
         {
-          response.byte[i] = response_byte;
-          response_byte    = static_cast<uint8_t>(spi_.Transfer(0xFF));
+          response.byte[i] = static_cast<uint8_t>(spi_.Transfer(0xFF));
         }
         break;
       }
@@ -847,6 +857,7 @@ class Sd : public Storage
     // Ask if supported voltage of 3v3 is supported
     // =========================================================================
     Status voltage_set_status = CheckSupportedVoltages();
+
     if (!IsOk(voltage_set_status))
     {
       return voltage_set_status;

@@ -77,6 +77,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../d1/d0e/classsjsu_1_1Can-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::Can Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="../../d4/da8/group__l1__peripheral.html">L1 Peripheral Interfaces</a></div></div>  </div>
@@ -100,54 +101,44 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aeea277014027e50ad1358b3cbb9fea29"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29">Initialize</a> () const =0</td></tr>
+<tr class="memitem:aeea277014027e50ad1358b3cbb9fea29"><td class="memItemLeft" align="right" valign="top"><a id="aeea277014027e50ad1358b3cbb9fea29"></a>
+virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29">Initialize</a> () const =0</td></tr>
+<tr class="memdesc:aeea277014027e50ad1358b3cbb9fea29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the CANBUS peripheral. Must be called before calling anything else in the driver. <br /></td></tr>
 <tr class="separator:aeea277014027e50ad1358b3cbb9fea29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71bec9e767f2c579185e1a7dcf51e579"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a71bec9e767f2c579185e1a7dcf51e579">Enable</a> () const =0</td></tr>
+<tr class="memitem:a71bec9e767f2c579185e1a7dcf51e579"><td class="memItemLeft" align="right" valign="top"><a id="a71bec9e767f2c579185e1a7dcf51e579"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a71bec9e767f2c579185e1a7dcf51e579">Enable</a> () const =0</td></tr>
+<tr class="memdesc:a71bec9e767f2c579185e1a7dcf51e579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables CANBUS and allows communication. Must be called after <a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29" title="Initialize the CANBUS peripheral. Must be called before calling anything else in the driver...">Initialize()</a> before using this driver. <br /></td></tr>
 <tr class="separator:a71bec9e767f2c579185e1a7dcf51e579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af58022a44edf1b21cf3086fd2b8d4458"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#af58022a44edf1b21cf3086fd2b8d4458">Send</a> (const <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a> &amp;message) const =0</td></tr>
+<tr class="memdesc:af58022a44edf1b21cf3086fd2b8d4458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message via CANBUS to the designated device with the supplied ID.  <a href="#af58022a44edf1b21cf3086fd2b8d4458">More...</a><br /></td></tr>
 <tr class="separator:af58022a44edf1b21cf3086fd2b8d4458"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19768dd4fb97bee4e9d63ece226c5412"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a19768dd4fb97bee4e9d63ece226c5412">Receive</a> () const =0</td></tr>
+<tr class="memdesc:a19768dd4fb97bee4e9d63ece226c5412"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive data via CANBUS.  <a href="#a19768dd4fb97bee4e9d63ece226c5412">More...</a><br /></td></tr>
 <tr class="separator:a19768dd4fb97bee4e9d63ece226c5412"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a2487dafdff3420378558c2ac453123"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a8a2487dafdff3420378558c2ac453123">HasData</a> () const =0</td></tr>
+<tr class="memdesc:a8a2487dafdff3420378558c2ac453123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there is a message available for this channel.  <a href="#a8a2487dafdff3420378558c2ac453123">More...</a><br /></td></tr>
 <tr class="separator:a8a2487dafdff3420378558c2ac453123"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1043548a51c801bcf3e09aafd8613bd1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a1043548a51c801bcf3e09aafd8613bd1">SelfTest</a> (uint32_t id) const =0</td></tr>
+<tr class="memdesc:a1043548a51c801bcf3e09aafd8613bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if you can communicate over the bus.  <a href="#a1043548a51c801bcf3e09aafd8613bd1">More...</a><br /></td></tr>
 <tr class="separator:a1043548a51c801bcf3e09aafd8613bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef40b9e7d2848e6dde779e2a929a3270"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#aef40b9e7d2848e6dde779e2a929a3270">IsBusOff</a> () const =0</td></tr>
 <tr class="separator:aef40b9e7d2848e6dde779e2a929a3270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a945a44415d74f1c25466847b3ae6249d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a945a44415d74f1c25466847b3ae6249d">SetBaudRate</a> (units::frequency::hertz_t baud=<a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3b8c50971995dad8c040317429703957">kStandardBaudRate</a>) const =0</td></tr>
+<tr class="separator:a945a44415d74f1c25466847b3ae6249d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b15a74dceb3a35942f65a6add1a7503"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a5b15a74dceb3a35942f65a6add1a7503">Send</a> (uint32_t id, std::initializer_list&lt; uint8_t &gt; payload) const</td></tr>
+<tr class="memdesc:a5b15a74dceb3a35942f65a6add1a7503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message via CANBUS to the designated device with the supplied ID.  <a href="#a5b15a74dceb3a35942f65a6add1a7503">More...</a><br /></td></tr>
 <tr class="separator:a5b15a74dceb3a35942f65a6add1a7503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a3b8c50971995dad8c040317429703957"><td class="memItemLeft" align="right" valign="top"><a id="a3b8c50971995dad8c040317429703957"></a>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3b8c50971995dad8c040317429703957">kStandardBaudRate</a> = 100'000_Hz</td></tr>
+<tr class="memdesc:a3b8c50971995dad8c040317429703957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard baud rate for most CANBUS networks. <br /></td></tr>
+<tr class="separator:a3b8c50971995dad8c040317429703957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The common interface for the CANBUS peripherals. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a71bec9e767f2c579185e1a7dcf51e579"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71bec9e767f2c579185e1a7dcf51e579">&#9670;&nbsp;</a></span>Enable()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void sjsu::Can::Enable </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Enables CANBUS and allows communication. Must be called after <a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29">Initialize()</a> before using this driver. </p>
-
-<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ab1e8585e59aaee6d53bceaec0cfd8466">sjsu::lpc40xx::Can</a>.</p>
-
-</div>
-</div>
 <a id="a8a2487dafdff3420378558c2ac453123"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a2487dafdff3420378558c2ac453123">&#9670;&nbsp;</a></span>HasData()</h2>
 
@@ -170,38 +161,11 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks if there is a message available for this channel.</p>
+
+<p>Checks if there is a message available for this channel. </p>
 <dl class="section return"><dt>Returns</dt><dd>true a message was received. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a47c58f6d354e04f5891dcb7d6f25c47d">sjsu::lpc40xx::Can</a>.</p>
-
-</div>
-</div>
-<a id="aeea277014027e50ad1358b3cbb9fea29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeea277014027e50ad1358b3cbb9fea29">&#9670;&nbsp;</a></span>Initialize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::Can::Initialize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Initialize the CANBUS peripheral. Must be called before calling anything else in the driver. </p>
-
-<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a29a4ca15f7f526bc8081245a1a047d3f">sjsu::lpc40xx::Can</a>.</p>
 
 </div>
 </div>
@@ -257,7 +221,8 @@ false - if the device is NOT "bus off" </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Receive data via CANBUS</p>
+
+<p>Receive data via CANBUS. </p>
 <dl class="section return"><dt>Returns</dt><dd>retrieved can message. Will return with length field = 0 if no messages exist. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a0a4f9a5763566bf629397b350693996c">sjsu::lpc40xx::Can</a>.</p>
@@ -287,7 +252,8 @@ false - if the device is NOT "bus off" </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Determine if you can communicate over the bus.</p>
+
+<p>Determine if you can communicate over the bus. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>- device you want to ping to determine if you can communicate on the bus. </td></tr>
@@ -325,7 +291,8 @@ false - on failure </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Send a message via CANBUS to the designated device with the supplied ID</p>
+
+<p>Send a message via CANBUS to the designated device with the supplied ID. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">message</td><td>- Message containing the CANBUS contents. </td></tr>
@@ -370,7 +337,8 @@ false - on failure </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Send a message via CANBUS to the designated device with the supplied ID</p>
+
+<p>Send a message via CANBUS to the designated device with the supplied ID. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>- ID to send the data to. </td></tr>
@@ -381,6 +349,40 @@ false - on failure </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>true - on success </dd>
 <dd>
 false - on failure </dd></dl>
+
+</div>
+</div>
+<a id="a945a44415d74f1c25466847b3ae6249d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a945a44415d74f1c25466847b3ae6249d">&#9670;&nbsp;</a></span>SetBaudRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Can::SetBaudRate </td>
+          <td>(</td>
+          <td class="paramtype">units::frequency::hertz_t&#160;</td>
+          <td class="paramname"><em>baud</em> = <code><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3b8c50971995dad8c040317429703957">kStandardBaudRate</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">baud</td><td>- baud rate to configure the CANBUS to </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#adb43bb7a79870a7ff5c48838616b40c6">sjsu::lpc40xx::Can</a>.</p>
 
 </div>
 </div>
