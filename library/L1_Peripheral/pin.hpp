@@ -63,7 +63,7 @@ class Pin
   // Interface Methods
   // ==============================
   /// Setup the required hardware to enable usage of the pin. Must be called
-  /// first before calling any othe methods.
+  /// first before calling any of the methods.
   virtual void Initialize() const = 0;
   /// Set the pin's function using a function code.
   /// The function code is very specific to the controller being used.

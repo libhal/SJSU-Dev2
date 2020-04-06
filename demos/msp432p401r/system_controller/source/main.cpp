@@ -2,8 +2,9 @@
 
 #include "L0_Platform/msp432p401r/msp432p401r.h"
 #include "L1_Peripheral/cortex/system_timer.hpp"
+#include "L1_Peripheral/msp432p401r/gpio.hpp"
+#include "L1_Peripheral/msp432p401r/pin.hpp"
 #include "L1_Peripheral/msp432p401r/system_controller.hpp"
-#include "utility/bit.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
@@ -14,54 +15,34 @@ namespace
 /// of the clock signals through the corresponding pin.
 void ConfigureClockOutPins()
 {
+  constexpr uint8_t kClockOutFunction = 0b101;
+
   // Configure P4.2 to output ACLK
-  constexpr sjsu::bit::Mask kAclkBitMask = sjsu::bit::CreateMaskFromRange(2);
-  sjsu::msp432p401r::P4->SEL1 =
-      sjsu::bit::Clear(sjsu::msp432p401r::P4->SEL1, kAclkBitMask);
-  sjsu::msp432p401r::P4->SEL0 =
-      sjsu::bit::Set(sjsu::msp432p401r::P4->SEL0, kAclkBitMask);
-  sjsu::msp432p401r::P4->DIR =
-      sjsu::bit::Set(sjsu::msp432p401r::P4->DIR, kAclkBitMask);
+  sjsu::msp432p401r::Pin aclk_out_pin(4, 2);
+  aclk_out_pin.SetPinFunction(kClockOutFunction);
 
   // Configure P4.3 to output MCLK
-  constexpr sjsu::bit::Mask kMclkBitMask = sjsu::bit::CreateMaskFromRange(3);
-  sjsu::msp432p401r::P4->SEL1 =
-      sjsu::bit::Clear(sjsu::msp432p401r::P4->SEL1, kMclkBitMask);
-  sjsu::msp432p401r::P4->SEL0 =
-      sjsu::bit::Set(sjsu::msp432p401r::P4->SEL0, kMclkBitMask);
-  sjsu::msp432p401r::P4->DIR =
-      sjsu::bit::Set(sjsu::msp432p401r::P4->DIR, kMclkBitMask);
+  sjsu::msp432p401r::Pin mclk_out_pin(4, 3);
+  mclk_out_pin.SetPinFunction(kClockOutFunction);
 
   // Configure P4.4 to output HSMCLK
-  constexpr sjsu::bit::Mask kHsmclkBitMask = sjsu::bit::CreateMaskFromRange(4);
-  sjsu::msp432p401r::P4->SEL1 =
-      sjsu::bit::Clear(sjsu::msp432p401r::P4->SEL1, kHsmclkBitMask);
-  sjsu::msp432p401r::P4->SEL0 =
-      sjsu::bit::Set(sjsu::msp432p401r::P4->SEL0, kHsmclkBitMask);
-  sjsu::msp432p401r::P4->DIR =
-      sjsu::bit::Set(sjsu::msp432p401r::P4->DIR, kHsmclkBitMask);
+  sjsu::msp432p401r::Pin hsmclk_out_pin(4, 4);
+  hsmclk_out_pin.SetPinFunction(kClockOutFunction);
 
   // Configure P7.0 to output SMCLK
-  constexpr sjsu::bit::Mask kSmclkBitMask = sjsu::bit::CreateMaskFromRange(0);
-  sjsu::msp432p401r::P7->SEL1 =
-      sjsu::bit::Clear(sjsu::msp432p401r::P7->SEL1, kSmclkBitMask);
-  sjsu::msp432p401r::P7->SEL0 =
-      sjsu::bit::Set(sjsu::msp432p401r::P7->SEL0, kSmclkBitMask);
-  sjsu::msp432p401r::P7->DIR =
-      sjsu::bit::Set(sjsu::msp432p401r::P7->DIR, kSmclkBitMask);
+  sjsu::msp432p401r::Pin smclk_out_pin(7, 0);
+  smclk_out_pin.SetPinFunction(kClockOutFunction);
 }
 }  // namespace
 
 int main()
 {
   LOG_INFO("Starting MSP432P401R System Controller Demo...");
+
   // Configure the on-board P1.0 LED to be initially turned on.
-  // TODO(#869): Should initialize the pin using the GPIO class.
-  constexpr sjsu::bit::Mask kLedBitMask = sjsu::bit::CreateMaskFromRange(0);
-  sjsu::msp432p401r::P1->DIR            = sjsu::bit::Set(
-      sjsu::msp432p401r::P1->DIR, sjsu::bit::CreateMaskFromRange(0));
-  sjsu::msp432p401r::P1->OUT =
-      sjsu::bit::Set(sjsu::msp432p401r::P1->OUT, kLedBitMask);
+  sjsu::msp432p401r::Gpio p1_0(1, 0);
+  p1_0.SetAsOutput();
+  p1_0.SetHigh();
 
   sjsu::msp432p401r::SystemController system_controller;
   // MCLK P4.3 should output ~12MHz
@@ -79,9 +60,7 @@ int main()
 
   while (true)
   {
-    // TODO(#869): Should use the Toggle() function from GPIO class.
-    sjsu::msp432p401r::P1->OUT =
-        sjsu::bit::Toggle(sjsu::msp432p401r::P1->OUT, kLedBitMask);
+    p1_0.Toggle();
     sjsu::Delay(1s);
   }
 
