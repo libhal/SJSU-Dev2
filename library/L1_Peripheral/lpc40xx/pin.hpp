@@ -52,17 +52,20 @@ class Pin final : public sjsu::Pin
   static constexpr bit::Mask kOpenDrain = bit::CreateMaskFromRange(10);
   /// Bitmask for enabling/disabling digital to analog pin mode.
   static constexpr bit::Mask kDacEnable = bit::CreateMaskFromRange(16);
+
   /// Pin map table for maping pins and ports to registers.
   struct PinMap_t
   {
     /// Register matrix that maps against the 6 ports and the 32 pins per port
     volatile uint32_t register_matrix[6][32];
   };
+
   /// A pointer holding the address to the LPC40xx PIN peripheral.
   /// This variable is a dependency injection point for unit testing thus it is
   /// public and mutable. This is needed to perform the "test by side effect"
   /// technique for this class.
   inline static PinMap_t * pin_map = reinterpret_cast<PinMap_t *>(LPC_IOCON);
+
   /// Compile time Pin factory that test the port and pin variables to make sure
   /// they are within bounds of the pin map register.
   template <unsigned port_, unsigned pin_>
@@ -82,25 +85,42 @@ class Pin final : public sjsu::Pin
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
   /// NOTE: GPIO hardare is enabled and ready by default on reset.
-  void Initialize() const override {}
-
-  void SetPinFunction(uint8_t function) const override
+  Returns<void> Initialize() const override
   {
-    SetPinRegister(function, kFunction);
+    return {};
   }
-  void SetPull(Resistor resistor) const override
+
+  Returns<void> SetPinFunction(uint8_t function) const override
+  {
+    if (function > 0b111)
+    {
+      return Error(
+          Status::kInvalidParameters,
+          "The function code must be a 3-bit value between 0b000 and 0b111.");
+    }
+    SetPinRegister(function, kFunction);
+    return {};
+  }
+
+  Returns<void> SetPull(Resistor resistor) const override
   {
     SetPinRegister(static_cast<uint8_t>(resistor), kResistor);
+    return {};
   }
-  void SetAsAnalogMode(bool set_as_analog = true) const override
+
+  Returns<void> SetAsAnalogMode(bool set_as_analog = true) const override
   {
     // Invert the bool because the bit must be set to 0 to enable analog mode.
     SetPinRegister(!set_as_analog, kAnalogDigitalMode);
+    return {};
   }
-  void SetAsOpenDrain(bool set_as_open_drain = true) const override
+
+  Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override
   {
     SetPinRegister(set_as_open_drain, kOpenDrain);
+    return {};
   }
+
   /// Enable pin hysteresis. This allows the pin to remember which state is was
   /// previously when it was driven.
   ///
@@ -109,6 +129,7 @@ class Pin final : public sjsu::Pin
   {
     SetPinRegister(enable_hysteresis, kHysteresis);
   }
+
   /// Set the pin to be active low. Only works for input pin functions.
   /// Undefined behavior, possibly dangerous, if used with output pin function.
   ///
@@ -117,6 +138,7 @@ class Pin final : public sjsu::Pin
   {
     SetPinRegister(set_as_active_low, kInputInvert);
   }
+
   /// Enable by setting bit to 0 to enable digital filter.
   ///
   /// @param enable_digital_filter - set to false to disable this mode.
@@ -124,6 +146,7 @@ class Pin final : public sjsu::Pin
   {
     SetPinRegister(!enable_digital_filter, kDigitalFilter);
   }
+
   /// Enable fast IO mode this pin.
   ///
   /// @param enable_fast_mode - set to false to disable this mode.
@@ -145,6 +168,7 @@ class Pin final : public sjsu::Pin
   {
     SetPinRegister(enable_high_current, kI2cHighCurrentDrive);
   }
+
   /// Enable digital-to-analog mode on pin.
   ///
   /// @param enable_dac - set to false to disable this mode.
@@ -162,7 +186,8 @@ class Pin final : public sjsu::Pin
   {
     *PinRegister() = bit::Insert(*PinRegister(), data, mask);
   }
-  /// @returns a pointer to the pin's registor in the pin_map matrix.
+
+  /// @returns A pointer to the pin's registor in the pin_map matrix.
   [[gnu::always_inline]] volatile uint32_t * PinRegister() const
   {
     return &pin_map->register_matrix[GetPort()][GetPin()];

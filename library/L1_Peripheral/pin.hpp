@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "utility/status.hpp"
+
 namespace sjsu
 {
 /// Abstraction interface for physical electrical "pins".
@@ -26,9 +28,10 @@ namespace sjsu
 class Pin
 {
  public:
-  // ==============================
+  // ===========================================================================
   // Interface Defintions
-  // ==============================
+  // ===========================================================================
+
   /// Defines the set of internal resistance connections to a pin. Read specific
   /// enumeration constant comments/documentation to understand more about what
   /// each one does.
@@ -59,12 +62,14 @@ class Pin
   /// Set internal port and pin values.
   constexpr Pin(uint8_t port, uint8_t pin) : port_(port), pin_(pin) {}
 
-  // ==============================
+  // ===========================================================================
   // Interface Methods
-  // ==============================
+  // ===========================================================================
+
   /// Setup the required hardware to enable usage of the pin. Must be called
-  /// first before calling any of the methods.
-  virtual void Initialize() const = 0;
+  /// first before calling any othe methods.
+  virtual Returns<void> Initialize() const = 0;
+
   /// Set the pin's function using a function code.
   /// The function code is very specific to the controller being used.
   ///
@@ -93,26 +98,36 @@ class Pin
   /// the job of the L1 peripheral that uses this pin to manage its own function
   /// code usage.
   ///
-  /// @param function - pin function code
-  virtual void SetPinFunction(uint8_t function) const = 0;
+  /// @param function pin function code
+  /// @returns Status::kInvalidParameter only if the function code is invalid.
+  virtual Returns<void> SetPinFunction(uint8_t function) const = 0;
+
   /// Set pin's resistor pull, setting ot either no resistor pull, pull down,
   /// pull up and repeater.
   ///
   /// @param resistor - which resistor setup you would like.
-  virtual void SetPull(Resistor resistor) const = 0;
+  /// @returns An Error only if the resistor setting is not
+  ///          supported.
+  virtual Returns<void> SetPull(Resistor resistor) const = 0;
+
   /// Set pin to open drain mode
   ///
-  /// @param set_as_open_drain - if false, disable open drain feature, pin
+  /// @param set_as_open_drain If false, disable open drain feature, pin
   ///        becomes push-pull (a.k.a totem pole).
-  virtual void SetAsOpenDrain(bool set_as_open_drain = true) const = 0;
+  /// @returns Status::kNotImplemented only if open drain configuration is not
+  ///          supported by the MCU.
+  virtual Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const = 0;
+
   /// Set pin as analog mode
   ///
-  /// @param set_as_analog - if false, disable analog mode for pin
-  virtual void SetAsAnalogMode(bool set_as_analog = true) const = 0;
+  /// @param set_as_analog If false, disable analog mode for pin
+  /// @returns Status::kNotImplemented only if analog mode configuration is not
+  ///          supported by the MCU.
+  virtual Returns<void> SetAsAnalogMode(bool set_as_analog = true) const = 0;
 
-  // ==============================
+  // ===========================================================================
   // Utility Methods
-  // ==============================
+  // ===========================================================================
 
   /// Attach internal pull up resistor to pin
   void PullUp() const
@@ -133,11 +148,16 @@ class Pin
   }
 
   /// Getter method for the pin's port.
+  ///
+  /// @returns The pin's port.
   uint8_t GetPort() const
   {
     return port_;
   }
+
   /// Getter method for the pin's pin.
+  ///
+  /// @returns The pin's pin.
   uint8_t GetPin() const
   {
     return pin_;

@@ -177,51 +177,67 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
 
   SECTION("SetPinFunction()")
   {
-    // Setup
-    constexpr uint8_t kGpioFullSpeedCode        = 0b0011;
-    constexpr uint8_t kAlternativeFullSpeedCode = 0b1011;
-
-    for (size_t i = 0; i < test.size(); i++)
+    SECTION("Gpio full speed")
     {
-      INFO("Set as GPIO: Failure on test index: " << i);
-      // Setup
-      // Setup: Fill with 1s so that by setting it to input they get replaced
-      //        with the correct input code of zero.
-      test[i].reg.CRL = 0xFFFF'FFFF;
-      test[i].reg.CRH = 0xFFFF'FFFF;
+      constexpr uint8_t kGpioFullSpeedCode = 0b0011;
 
-      // Exercise
-      test[i].pin.SetPinFunction(0);
-      // Exercise: Combine the two registers into 1 variable to make
-      //           extraction easier.
-      uint64_t crh = test[i].reg.CRH;
-      uint64_t crl = test[i].reg.CRL;
-      uint64_t cr  = (crh << 32) | crl;
+      for (size_t i = 0; i < test.size(); i++)
+      {
+        INFO("Set as GPIO: Failure on test index: " << i);
+        // Setup
+        // Setup: Fill with 1s so that by setting it to input they get replaced
+        //        with the correct input code of zero.
+        test[i].reg.CRL = 0xFFFF'FFFF;
+        test[i].reg.CRH = 0xFFFF'FFFF;
 
-      // Verify
-      CHECK(bit::Extract(cr, Mask4Bit(test[i].pin)) == kGpioFullSpeedCode);
+        // Exercise
+        test[i].pin.SetPinFunction(0);
+        // Exercise: Combine the two registers into 1 variable to make
+        //           extraction easier.
+        uint64_t crh = test[i].reg.CRH;
+        uint64_t crl = test[i].reg.CRL;
+        uint64_t cr  = (crh << 32) | crl;
+
+        // Verify
+        CHECK(bit::Extract(cr, Mask4Bit(test[i].pin)) == kGpioFullSpeedCode);
+      }
     }
 
-    for (size_t i = 0; i < test.size(); i++)
+    SECTION("Alternative function full speed")
     {
-      INFO("Set as Alternative: Failure on test index: " << i);
-      // Setup
-      // Setup: Fill with 1s so that by setting it to input they get replaced
-      //        with the correct input code of zero.
-      test[i].reg.CRL = 0xFFFF'FFFF;
-      test[i].reg.CRH = 0xFFFF'FFFF;
+      constexpr uint8_t kAlternativeFullSpeedCode = 0b1011;
 
-      // Exercise
-      test[i].pin.SetPinFunction(1);
-      // Exercise: Combine the two registers into 1 variable to make
-      //           extraction easier.
-      uint64_t crh = test[i].reg.CRH;
-      uint64_t crl = test[i].reg.CRL;
-      uint64_t cr  = (crh << 32) | crl;
+      for (size_t i = 0; i < test.size(); i++)
+      {
+        INFO("Set as Alternative: Failure on test index: " << i);
+        // Setup
+        // Setup: Fill with 1s so that by setting it to input they get replaced
+        //        with the correct input code of zero.
+        test[i].reg.CRL = 0xFFFF'FFFF;
+        test[i].reg.CRH = 0xFFFF'FFFF;
 
-      // Verify
-      CHECK(bit::Extract(cr, Mask4Bit(test[i].pin)) ==
-            kAlternativeFullSpeedCode);
+        // Exercise
+        test[i].pin.SetPinFunction(1);
+        // Exercise: Combine the two registers into 1 variable to make
+        //           extraction easier.
+        uint64_t crh = test[i].reg.CRH;
+        uint64_t crl = test[i].reg.CRL;
+        uint64_t cr  = (crh << 32) | crl;
+
+        // Verify
+        CHECK(bit::Extract(cr, Mask4Bit(test[i].pin)) ==
+              kAlternativeFullSpeedCode);
+      }
+    }
+
+    SECTION("Invalid function")
+    {
+      for (size_t i = 0; i < test.size(); i++)
+      {
+        // Exercise & Verify
+        CHECK(test[i].pin.SetPinFunction(0b10).error().status ==
+              Status::kInvalidParameters);
+      }
     }
   }
 
@@ -285,6 +301,12 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
         CHECK(bit::Extract(cr, Mask4Bit(test[i].pin)) == kPullDownCode);
         // Verify: ODR bit is 0 for pull up
         CHECK(!bit::Read(odr, test[i].pin.GetPin()));
+      }
+
+      {
+        // Exercise & Verify
+        CHECK(test[i].pin.SetPull(Pin::Resistor::kRepeater).error().status ==
+              Status::kInvalidSettings);
       }
     }
   }

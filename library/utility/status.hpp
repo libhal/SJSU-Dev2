@@ -278,10 +278,8 @@ struct Error_t
 /// @param status - The status associated with this error
 /// @param message - The custom message to go with the status
 /// @param location - Default initialized and should almost never be supplied
-/// by
-///                   the user. Will be defaulted to the location in which
-///                   this
-///                   ///                   function was called.
+///                   by the user. Will be defaulted to the location in which
+///                   this function was called.
 /// @return constexpr tl::unexpected<Error_t>
 constexpr tl::unexpected<Error_t> Error(
     Status status,
@@ -309,13 +307,11 @@ using Returns = tl::expected<T, Error_t>;
 /// in this case int 0.
 ///
 /// @tparam T - deduced type of the `Returns<T>` object. This value should not
-/// be
-///             supplied.
+///             be supplied.
 /// @param result - the result of an expression that returns a `Returns<T>`
 ///                 object.
 /// @return constexpr auto - returns 0 if the type is void, otherwise this
-/// will
-///         return the value held within the result object.
+///         will return the value held within the result object.
 template <typename T>
 constexpr auto GetReturnValue(Returns<T> & result)
 {
