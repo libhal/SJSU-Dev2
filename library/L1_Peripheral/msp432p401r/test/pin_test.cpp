@@ -98,49 +98,85 @@ TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
     },
   };
 
+  SECTION("Initialize")
+  {
+    SECTION("Invalid port")
+    {
+      // Setup
+      uint8_t invalid_port_number = GENERATE(0, 11, 'A', 'Z');
+      Pin pin(invalid_port_number, 0);
+
+      // Verify & Exercise
+      CHECK(pin.Initialize().error().status == Status::kInvalidSettings);
+    }
+    SECTION("Invalid pin")
+    {
+      // Setup
+      uint8_t invalid_pin_number = GENERATE(8, 10, 16);
+      Pin pin(1, invalid_pin_number);
+
+      // Verify & Exercise
+      CHECK(pin.Initialize().error().status == Status::kInvalidSettings);
+    }
+  }
+
   SECTION("PinFunction")
   {
-    constexpr auto kDirectionBit = bit::CreateMaskFromRange(2);
-    constexpr auto kSel1Bit      = bit::CreateMaskFromRange(1);
-    constexpr auto kSel0Bit      = bit::CreateMaskFromRange(0);
-
-    for (size_t i = 0; i < test_pins.size(); i++)
+    SECTION("Valid function codes")
     {
-      Pin & pin                 = test_pins[i].pin;
-      const uint8_t kPortNumber = pin.GetPort();
-      const uint8_t kPinNumber  = pin.GetPin();
+      constexpr auto kDirectionBit = bit::CreateMaskFromRange(2);
+      constexpr auto kSel1Bit      = bit::CreateMaskFromRange(1);
+      constexpr auto kSel0Bit      = bit::CreateMaskFromRange(0);
 
-      INFO("port: " << static_cast<size_t>(kPortNumber));
-      INFO("pin: " << static_cast<size_t>(kPinNumber));
-
-      for (uint8_t function_code = 0; function_code <= 0b111; function_code++)
+      for (size_t i = 0; i < test_pins.size(); i++)
       {
-        // Setup
-        INFO("function: 0b" << std::bitset<3>(function_code));
-        // By default, assume port number is even and use high register
-        volatile uint8_t * direction_register = &test_pins[i].registers.DIR_H;
-        volatile uint8_t * sel1_register      = &test_pins[i].registers.SEL1_H;
-        volatile uint8_t * sel0_register      = &test_pins[i].registers.SEL0_H;
-        // use low register if port number is odd
-        if ((kPortNumber % 2) || (kPortNumber == 'J'))
+        Pin & pin                 = test_pins[i].pin;
+        const uint8_t kPortNumber = pin.GetPort();
+        const uint8_t kPinNumber  = pin.GetPin();
+
+        INFO("port: " << static_cast<size_t>(kPortNumber));
+        INFO("pin: " << static_cast<size_t>(kPinNumber));
+
+        for (uint8_t function_code = 0; function_code <= 0b111; function_code++)
         {
-          direction_register = &test_pins[i].registers.DIR_L;
-          sel1_register      = &test_pins[i].registers.SEL1_L;
-          sel0_register      = &test_pins[i].registers.SEL0_L;
+          // Setup
+          INFO("function: 0b" << std::bitset<3>(function_code));
+          // By default, assume port number is even and use high register
+          volatile uint8_t * direction_register = &test_pins[i].registers.DIR_H;
+          volatile uint8_t * sel1_register = &test_pins[i].registers.SEL1_H;
+          volatile uint8_t * sel0_register = &test_pins[i].registers.SEL0_H;
+          // use low register if port number is odd
+          if ((kPortNumber % 2) || (kPortNumber == 'J'))
+          {
+            direction_register = &test_pins[i].registers.DIR_L;
+            sel1_register      = &test_pins[i].registers.SEL1_L;
+            sel0_register      = &test_pins[i].registers.SEL0_L;
+          }
+
+          bool expected_direction = bit::Read(function_code, kDirectionBit);
+          bool expected_sel1      = bit::Read(function_code, kSel1Bit);
+          bool expected_sel0      = bit::Read(function_code, kSel0Bit);
+
+          // Exercise
+          pin.SetPinFunction(function_code);
+
+          // Verify
+          CHECK(bit::Read(*direction_register, kPinNumber) ==
+                expected_direction);
+          CHECK(bit::Read(*sel1_register, kPinNumber) == expected_sel1);
+          CHECK(bit::Read(*sel0_register, kPinNumber) == expected_sel0);
         }
-
-        bool expected_direction = bit::Read(function_code, kDirectionBit);
-        bool expected_sel1      = bit::Read(function_code, kSel1Bit);
-        bool expected_sel0      = bit::Read(function_code, kSel0Bit);
-
-        // Exercise
-        pin.SetPinFunction(function_code);
-
-        // Verify
-        CHECK(bit::Read(*direction_register, kPinNumber) == expected_direction);
-        CHECK(bit::Read(*sel1_register, kPinNumber) == expected_sel1);
-        CHECK(bit::Read(*sel0_register, kPinNumber) == expected_sel0);
       }
+    }
+
+    SECTION("Invalid function codes")
+    {
+      // Setup
+      uint8_t function_code = GENERATE(0b1111, 0b1101, 0b1000);
+
+      // Exercise & Verify
+      CHECK(test_pins[0].pin.SetPinFunction(function_code).error().status ==
+            Status::kInvalidParameters);
     }
   }
 
@@ -169,6 +205,10 @@ TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
 
       bool actual_resistor_enable;
       bool actual_out;
+
+      // Exercise & Verify - Setting pull as repeater
+      CHECK(pin.SetPull(Pin::Resistor::kRepeater).error().status ==
+            Status::kInvalidSettings);
 
       // Exercise - Setting pull up resistor
       pin.SetPull(Pin::Resistor::kPullUp);
@@ -229,6 +269,23 @@ TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
 
       // Verify
       CHECK(bit::Read(*driver_strength_register, pin.GetPin()) == false);
+    }
+  }
+
+  SECTION("SetAsOpenDrain")
+  {
+    for (size_t i = 0; i < test_pins.size(); i++)
+    {
+      // Setup
+      Pin & pin                 = test_pins[i].pin;
+      const uint8_t kPortNumber = pin.GetPort();
+      const uint8_t kPinNumber  = pin.GetPin();
+
+      INFO("port: " << static_cast<size_t>(kPortNumber));
+      INFO("pin: " << static_cast<size_t>(kPinNumber));
+
+      // Exercise and Verify
+      CHECK(pin.SetAsOpenDrain({}).error().status == Status::kNotImplemented);
     }
   }
 

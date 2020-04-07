@@ -152,60 +152,94 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
 
   SECTION("Initialize()")
   {
-    auto power_up_matcher =
-        [](sjsu::SystemController::PeripheralID expected_id) {
-          return [expected_id](sjsu::SystemController::PeripheralID actual_id) {
-            return expected_id.device_id == actual_id.device_id;
+    SECTION("Valid port")
+    {
+      auto power_up_matcher =
+          [](sjsu::SystemController::PeripheralID expected_id) {
+            return
+                [expected_id](sjsu::SystemController::PeripheralID actual_id) {
+                  return expected_id.device_id == actual_id.device_id;
+                };
           };
-        };
 
-    for (size_t i = 0; i < test.size(); i++)
+      for (size_t i = 0; i < test.size(); i++)
+      {
+        // Setup
+        INFO("Failure on test index: " << i);
+
+        // Exercise
+        test[i].pin.Initialize();
+
+        // Verify
+        Verify(Method(mock_system_controller, PowerUpPeripheral)
+                   .Matching(power_up_matcher(test[i].id)));
+        // Cleanup
+        mock_system_controller.ClearInvocationHistory();
+      }
+    }
+
+    SECTION("Invalid port")
     {
       // Setup
-      INFO("Failure on test index: " << i);
+      uint8_t port = GENERATE('J', 1, '3');
+      stm32f4xx::Pin invalid_pin(port, 0);
 
-      // Exercise
-      test[i].pin.Initialize();
-
-      // Verify
-      Verify(Method(mock_system_controller, PowerUpPeripheral)
-                 .Matching(power_up_matcher(test[i].id)));
-      // Cleanup
-      mock_system_controller.ClearInvocationHistory();
+      // Exercise & Verify
+      CHECK(invalid_pin.Initialize().error().status ==
+            Status::kInvalidSettings);
     }
   }
 
   SECTION("SetPinFunction()")
   {
-    auto get_4bit_pin_mask = [](const sjsu::Pin & pin) -> bit::Mask {
-      return {
-        .position = static_cast<uint32_t>((pin.GetPin() % 8) * 4),
-        .width    = 4,
-      };
-    };
-    // Setup
-    constexpr uint8_t kExpectedFunction[] = {
-      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-    };
-    constexpr uint8_t kAlternativeFunctionCode = 0b10;
-
-    for (size_t i = 0; i < test.size(); i++)
+    SECTION("Valid function code")
     {
+      auto get_4bit_pin_mask = [](const sjsu::Pin & pin) -> bit::Mask {
+        return {
+          .position = static_cast<uint32_t>((pin.GetPin() % 8) * 4),
+          .width    = 4,
+        };
+      };
       // Setup
-      INFO("Failure on test index: " << i);
-      test[i].pin.Initialize();
+      constexpr uint8_t kExpectedFunction[] = {
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+      };
+      constexpr uint8_t kAlternativeFunctionCode = 0b10;
 
-      // Exercise
-      test[i].pin.SetPinFunction(kExpectedFunction[i]);
+      for (size_t i = 0; i < test.size(); i++)
+      {
+        // Setup
+        INFO("Failure on test index: " << i);
+        test[i].pin.Initialize();
 
-      // Verify
-      CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
-            kAlternativeFunctionCode);
+        // Exercise
+        test[i].pin.SetPinFunction(kExpectedFunction[i]);
 
-      uint32_t afr_index = test[i].pin.GetPin() / 8;
-      CHECK(bit::Extract(test[i].gpio.AFR[afr_index],
-                         get_4bit_pin_mask(test[i].pin)) ==
-            kExpectedFunction[i]);
+        // Verify
+        CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
+              kAlternativeFunctionCode);
+
+        uint32_t afr_index = test[i].pin.GetPin() / 8;
+        CHECK(bit::Extract(test[i].gpio.AFR[afr_index],
+                           get_4bit_pin_mask(test[i].pin)) ==
+              kExpectedFunction[i]);
+      }
+    }
+
+    SECTION("Invalid function code")
+    {
+      uint8_t invalid_function = 20;
+
+      for (size_t i = 0; i < test.size(); i++)
+      {
+        // Setup
+        INFO("Failure on test index: " << i);
+        test[i].pin.Initialize();
+
+        // Exercise & Verify
+        CHECK(test[i].pin.SetPinFunction(invalid_function).error().status ==
+              Status::kInvalidParameters);
+      }
     }
   }
 
@@ -248,6 +282,12 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedPullDown);
+      }
+
+      {
+        // Exercise & Verify
+        CHECK(test[i].pin.SetPull(Pin::Resistor::kRepeater).error().status ==
+              Status::kInvalidSettings);
       }
     }
   }
