@@ -1,5 +1,5 @@
 <map id="sjsu::experimental::Sd" name="sjsu::experimental::Sd">
-<area shape="rect" id="node2" href="$dc/da6/classsjsu_1_1Storage.html" title="Abstract interface for persistent memory storage systems. " alt="" coords="41,5,148,32"/>
+<area shape="rect" id="node2" href="$dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="41,5,148,32"/>
 <area shape="rect" id="node3" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="37,56,152,83"/>
 <area shape="rect" id="node4" href="$d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint8_t \&gt;" alt="" coords="5,107,184,149"/>
 <area shape="rect" id="node5" href="$d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint16_t \&gt;" alt="" coords="5,173,184,214"/>

@@ -106,12 +106,12 @@ TEST_CASE("Testing [experimental] SD Card Driver Class", "[sd-experimental]")
 
   SECTION("Disable()")
   {
-    CHECK(Status::kNotImplemented == sd.Disable());
+    CHECK(Status::kNotImplemented == sd.Disable().error().status);
   }
 
   SECTION("GetBlockSize()")
   {
-    CHECK(512_B == sd.GetBlockSize());
+    CHECK(512_B == sd.GetBlockSize().value());
   }
 
   SECTION("IsReadOnly()")
@@ -134,7 +134,7 @@ TEST_CASE("Testing [experimental] SD Card Driver Class", "[sd-experimental]")
     const units::data::byte_t kExpectedSize = (kCSize + 1) * 512_KiB;
 
     // Exercise
-    auto actual_size = sd.GetCapacity();
+    auto actual_size = sd.GetCapacity().value();
 
     // Verify
     INFO("Expected = " << kExpectedSize.to<float>()

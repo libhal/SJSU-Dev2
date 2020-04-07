@@ -37,7 +37,7 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
     constexpr uint32_t kClockDivider    = 128;
 
     // Exercise
-    test_eeprom.Initialize();
+    CHECK(test_eeprom.Initialize());
 
     // Verify
     CHECK(local_eeprom.WSTATE == kWaitStateValues);
@@ -60,7 +60,7 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
     local_eeprom.INT_STATUS = (1 << 26) | (1 << 28);
 
     // Exercise
-    test_eeprom.Write(kAddress, wdata, kPayloadSize);
+    CHECK(test_eeprom.Write(kAddress, wdata, kPayloadSize));
 
     // Verify
     CHECK(local_eeprom.ADDR == kAddress);
@@ -78,7 +78,7 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
     local_eeprom.RDATA = kReadVal;
 
     // Exercise
-    test_eeprom.Read(kAddress, rdata, kPayloadSize);
+    CHECK(test_eeprom.Read(kAddress, rdata, kPayloadSize));
 
     // Verify
     uint32_t read_value =
@@ -90,9 +90,9 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
 
   SECTION("Methods that return constants")
   {
-    CHECK(test_eeprom.GetBlockSize() == 4_B);
+    CHECK(test_eeprom.GetBlockSize().value() == 4_B);
     CHECK(test_eeprom.GetMemoryType() == Storage::Type::kEeprom);
-    CHECK(test_eeprom.GetCapacity() == 4_kB);
+    CHECK(test_eeprom.GetCapacity().value() == 4_kB);
     CHECK(test_eeprom.IsReadOnly() == false);
     CHECK(test_eeprom.IsMediaPresent() == true);
   }
@@ -104,7 +104,7 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
     local_eeprom.PWRDWN = 1;
 
     // Exercise
-    CHECK(test_eeprom.Enable() == sjsu::Status::kSuccess);
+    CHECK(test_eeprom.Enable());
 
     // Verify
     CHECK(local_eeprom.PWRDWN == 0);
@@ -116,7 +116,7 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
     local_eeprom.PWRDWN = 0;
 
     // Exercise
-    CHECK(test_eeprom.Disable() == sjsu::Status::kSuccess);
+    CHECK(test_eeprom.Disable());
 
     // Verify
     CHECK(local_eeprom.PWRDWN == 1);
