@@ -1,14 +1,15 @@
-/****************************************************************************************************//**
+/*************************************************************************
+*
 * $Id$		LPC407x_8x.h			2012-04-25
-*//**
- * @file     LPC407x_8x.h
- *
- * @brief    CMSIS Cortex-M4 Peripheral Access Layer Header File for
- *           NXP LPC407x_8x.
- * @version  V0.5
- * @date     17. May 2012
- * @author	NXP MCU SW Application Team
- * @modified: August 9, 2019
+*
+* @file     LPC407x_8x.h
+*
+* @brief    CMSIS Cortex-M4 Peripheral Access Layer Header File for
+*           NXP LPC407x_8x.
+* @version  V0.5
+* @date     17. May 2012
+* @author	NXP MCU SW Application Team
+* @modified: August 9, 2019
 *
 * Copyright(C) 2012, NXP Semiconductor
 * All rights reserved.

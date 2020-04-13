@@ -21,15 +21,25 @@
 // Private namespace to make sure that these do not conflict with other globals
 namespace
 {
+// Clock configuration object for LPC40xx devices.
+sjsu::lpc40xx::SystemController::ClockConfiguration clock_configuration;
+
 // Create LPC40xx system controller to be used by low level initialization.
-sjsu::lpc40xx::SystemController system_controller;
+sjsu::lpc40xx::SystemController system_controller(clock_configuration);
+
 // Create timer0 to be used by lower level initialization for uptime calculation
 sjsu::cortex::DwtCounter arm_dwt_counter;
+
 // Uart port 0 is used to communicate back to the host computer
 sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
+
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
-sjsu::cortex::SystemTimer system_timer(configKERNEL_INTERRUPT_PRIORITY);
+// Has the same clock rate as the cpu.
+sjsu::cortex::SystemTimer system_timer(
+    sjsu::lpc40xx::SystemController::Peripherals::kCpu,
+    configKERNEL_INTERRUPT_PRIORITY);
+
 // Platform interrupt controller for Arm Cortex microcontrollers.
 sjsu::cortex::InterruptController<sjsu::lpc40xx::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>
@@ -166,14 +176,28 @@ void InitializePlatform()
   // This will be used by other libraries to enable and disable interrupts.
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
-  // Set Clock Speed
-  // SetSystemClockFrequency will timeout return the offset between desire
-  // clockspeed and actual clockspeed if the PLL doesn't get a frequency fix
-  // within a defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
-  system_controller.SetSystemClockFrequency(config::kSystemClockRateMhz);
-  // Enable Peripheral Clock and set its divider to 1 meaning the clock speed
-  // fed to all peripherals will be 48Mhz.
-  system_controller.SetPeripheralClockDivider({}, 1);
+
+  // TODO(#1136): Remove this on June 1st as the Spring 2020 semester will be
+  // over.
+  {
+    using ClockConfig = sjsu::lpc40xx::SystemController::ClockConfiguration;
+    using SysCtrl     = sjsu::lpc40xx::SystemController;
+    auto & system     = sjsu::SystemController::GetPlatformController();
+    auto & config     = system.GetClockConfiguration<ClockConfig>();
+    // Make sure we are using the internal oscillator of 12 MHz
+    config.system_oscillator = SysCtrl::OscillatorSource::kIrc;
+    // Enable PLL 0
+    config.pll[0].enabled = true;
+    // Multiply the internal 12 MHz oscillator by 4 to get 48 MHz.
+    config.pll[0].multiply = 4;
+    // Set the CPU clock to the main PLL (PLL0)
+    config.cpu.clock   = SysCtrl::CpuClockSelect::kPll0;
+    config.cpu.divider = 1;
+  }
+
+  // Initialize system controller and its clocks with the default configuration.
+  system_controller.Initialize();
+
   // Set UART0 baudrate, which is required for printf and scanf to work properly
   uart0.Initialize(config::kBaudRate);
   sjsu::newlib::SetStdout(Lpc40xxStdOut);

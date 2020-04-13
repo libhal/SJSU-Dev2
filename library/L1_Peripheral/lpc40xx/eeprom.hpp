@@ -58,8 +58,9 @@ class Eeprom final : public sjsu::Storage
   /// the clock divider register, and ensuring that the device is powered on.
   Returns<void> Initialize() override
   {
-    const float kSystemClock = static_cast<float>(
-        sjsu::SystemController::GetPlatformController().GetSystemFrequency());
+    auto & system            = sjsu::SystemController::GetPlatformController();
+    const float kSystemClock = static_cast<float>(system.GetClockRate(
+        sjsu::lpc40xx::SystemController::Peripherals::kEeprom));
     // The EEPROM runs at 375 kHz
     constexpr float kEepromClk  = 375'000;
     constexpr float kNanosecond = 1E-9f;

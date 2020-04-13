@@ -34,7 +34,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   constexpr units::frequency::hertz_t kClockFrequency = 10_MHz;
 
   Mock<SystemController> mock_system_controller;
-  When(Method(mock_system_controller, GetSystemFrequency))
+  When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kClockFrequency);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
@@ -44,8 +44,11 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 
+  using PeripheralID = sjsu::SystemController::PeripheralID;
+
   constexpr uint8_t kExpectedPriority = 3;
-  SystemTimer test_subject(kExpectedPriority);
+  constexpr PeripheralID kId = PeripheralID::Define<0>();
+  SystemTimer test_subject(kId, kExpectedPriority);
 
   SECTION("Initialize()")
   {

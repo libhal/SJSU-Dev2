@@ -22,7 +22,7 @@
 
 namespace
 {
-sjsu::lpc40xx::SystemController system_controller;
+units::frequency::hertz_t system_clock_rate = 0_Hz;
 sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
 sjsu::lpc40xx::Uart uart3(sjsu::lpc40xx::Uart::Port::kUart3);
 bool debug_print_button_was_pressed                    = false;
@@ -230,7 +230,29 @@ void TurnOffAllLeds()
 
 int main()
 {
-  sjsu::cortex::SystemTimer system_timer;
+  using ClockConfig = sjsu::lpc40xx::SystemController::ClockConfiguration;
+  using SysCtrl     = sjsu::lpc40xx::SystemController;
+
+  auto & system_controller = sjsu::SystemController::GetPlatformController();
+  auto & clock_config = system_controller.GetClockConfiguration<ClockConfig>();
+
+  // Use internal IRC since we are guaranteed to have this for each LPC40xx chip
+  clock_config.system_oscillator = SysCtrl::OscillatorSource::kIrc;
+  // Turn on PLL0
+  clock_config.pll[0].enabled = true;
+  // Multiply its output by 4 to get => 4 x 12 MHz = 48 MHz
+  clock_config.pll[0].multiply = 4;
+  // Use the main pll (PLL0) to get a frequency of 48 MHz
+  clock_config.cpu.clock = SysCtrl::CpuClockSelect::kPll0;
+  // Make sure to divide by 1 so we keep 48 MHz
+  clock_config.cpu.divider = 1;
+
+  system_controller.Initialize();
+  system_clock_rate =
+      system_controller.GetClockRate(SysCtrl::Peripherals::kCpu);
+
+  sjsu::cortex::SystemTimer system_timer(
+      sjsu::lpc40xx::SystemController::Peripherals::kCpu);
   sjsu::lpc40xx::Gpio button0(1, 19);
   sjsu::lpc40xx::Gpio button1(1, 15);
   sjsu::lpc40xx::Gpio button2(0, 30);
@@ -256,6 +278,15 @@ int main()
 
   uart0.Initialize(38400);
   uart3.Initialize(115200);
+
+  if (system_clock_rate != 48_MHz)
+  {
+    printf3(
+        "Bootloader Failed to Initialize, system clock rate is not correct %d "
+        "Hz\n",
+        system_clock_rate.to<int>());
+    sjsu::Halt();
+  }
 
   printf3("Bootloader Debug Port Initialized!\n");
   // Flush any initial bytes
@@ -291,9 +322,8 @@ int main()
     // Hyperload Frequency should be set to 48,000,000 for this to work
     // correctly It calculates the baud rate by: 48Mhz/(16//BAUD) - 1 = CW
     // (control word) So we solve for BAUD:  BAUD = (48/(CW + 1))/16
-    float control_word_f = static_cast<float>(control.word);
-    float system_frequency =
-        static_cast<float>(system_controller.GetSystemFrequency());
+    float control_word_f   = static_cast<float>(control.word);
+    float system_frequency = static_cast<float>(system_clock_rate);
     float approx_baud = (system_frequency / (control_word_f + 1.0f)) / 16.0f;
     uint32_t baud_rate =
         static_cast<uint32_t>(hyperload::FindNearestBaudRate(approx_baud));
@@ -467,12 +497,13 @@ IapResult EraseSector(uint32_t start, uint32_t end)
   IapCommand_t command   = { 0, { 0 } };
   IapStatus_t status     = { IapResult(0), { 0 } };
   IapResult flash_status = PrepareSector(start, end);
+
   if (flash_status == IapResult::kCmdSuccess)
   {
     command.command       = IapCommands::kEraseSector;
     command.parameters[0] = start;
     command.parameters[1] = end;
-    command.parameters[2] = system_controller.GetSystemFrequency() / 1_kHz;
+    command.parameters[2] = system_clock_rate / 1_kHz;
     iap(&command, &status);
   }
   else
@@ -492,16 +523,16 @@ IapResult FlashBlock(Block_t * block,
   uint32_t app_sector    = sector_number - kStartSector;
   Block_t * flash_address =
       &(flash->application[app_sector].block[block_number]);
+
   if (flash_status == IapResult::kCmdSuccess)
   {
     command.command       = IapCommands::kCopyRamToFlash;
     command.parameters[0] = reinterpret_cast<intptr_t>(flash_address);
     command.parameters[1] = reinterpret_cast<intptr_t>(block);
     command.parameters[2] = kBlockSize;
-    command.parameters[3] = system_controller.GetSystemFrequency() / 1_kHz;
+    command.parameters[3] = system_clock_rate / 1_kHz;
     iap(&command, &status);
-    printf3("Flash Attempted! %p %s\n",
-            flash_address,
+    printf3("Flash Attempted! %p %s\n", flash_address,
             kIapResultString[static_cast<uint32_t>(status.result)]);
   }
   else

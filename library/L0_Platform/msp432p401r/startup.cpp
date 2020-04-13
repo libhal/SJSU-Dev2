@@ -28,7 +28,10 @@ sjsu::msp432p401r::SystemController system_controller;
 sjsu::cortex::DwtCounter arm_dwt_counter;
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
-sjsu::cortex::SystemTimer system_timer;
+constexpr auto kDummySystemTimerPeripheralID =
+    sjsu::SystemController::PeripheralID::Define<0>();
+sjsu::cortex::SystemTimer system_timer(kDummySystemTimerPeripheralID,
+                                       configKERNEL_INTERRUPT_PRIORITY);
 // Cortex NVIC interrupt controller used to setup interrupt service routines
 sjsu::cortex::InterruptController<sjsu::msp432p401r::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>

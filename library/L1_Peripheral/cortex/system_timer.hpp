@@ -105,15 +105,21 @@ class SystemTimer final : public sjsu::SystemTimer
 
   /// Constructor for ARM Cortex M system timer.
   ///
+  /// @param id - id of the system controller for this platform. This is used to
+  /// recover the operating speed of the SystemTimer.
   /// @param priority - the interrupt priority of
-  explicit constexpr SystemTimer(uint8_t priority = -1) : priority_(priority) {}
+  explicit constexpr SystemTimer(sjsu::SystemController::PeripheralID id,
+                                 uint8_t priority = -1)
+      : id_(id), priority_(priority)
+  {
+  }
 
   void Initialize() const override
   {
     dwt_counter.Initialize();
 
     auto system_frequency = SystemController::GetPlatformController()
-                                .GetSystemFrequency()
+                                .GetClockRate(id_)
                                 .to<uint32_t>();
 
     ticks_per_millisecond = system_frequency / 1000 /* ms/s */;
@@ -173,7 +179,7 @@ class SystemTimer final : public sjsu::SystemTimer
     }
 
     units::frequency::hertz_t system_frequency =
-        sjsu::SystemController::GetPlatformController().GetSystemFrequency();
+        sjsu::SystemController::GetPlatformController().GetClockRate(id_);
 
     uint32_t reload_value =
         units::unit_cast<uint32_t>((system_frequency / frequency) - 1);
@@ -192,6 +198,7 @@ class SystemTimer final : public sjsu::SystemTimer
   }
 
  private:
+  sjsu::SystemController::PeripheralID id_;
   uint8_t priority_;
 };
 }  // namespace cortex

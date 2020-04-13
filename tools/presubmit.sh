@@ -57,7 +57,7 @@ cd $SJBASE/projects/hello_world
 ####################################
 #        Build All Projects        #
 ####################################
-make all-projects
+make --no-print-directory all-projects
 BUILD_CAPTURE=$?
 
 ####################################
