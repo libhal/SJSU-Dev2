@@ -22,7 +22,7 @@ namespace lpc40xx
 class SystemController final : public sjsu::SystemController
 {
  public:
-  /// System input oscillator source select contants
+  /// System clock input oscillator options
   enum class OscillatorSource : uint16_t
   {
     /// Internal RC oscillator as main. Not very precise oscillator cannot be
@@ -30,27 +30,27 @@ class SystemController final : public sjsu::SystemController
     kIrc = 0b0,
     /// Use external oscillator (typically a crystal). See PllInput for options
     /// that can be used for the oscillator.
-    kMain = 0b1,
+    kExternal = 0b1,
   };
 
-  /// Main system clock source
-  enum class MainClockSource : uint16_t
+  /// Clock source for the CPU and all Peripherals except for USB and SPIFI
+  enum class CpuClockSelect : uint16_t
   {
-    /// Use IRC clock directly, without using a PLL
-    kBaseClock = 0b0,
-    /// Use PLL Clock as clock source for the system clock
-    kPllClock = 0b1,
+    /// Use IRC or External oscillator directly
+    kSystemClock = 0b00,
+    /// Use PLL0 main PLL as the clock source
+    kPll0 = 0b01,
   };
 
   /// USB oscillator source contants (not used)
-  enum class UsbSource : uint16_t
+  enum class UsbClockSelect : uint8_t
   {
-    /// Use IRC clock directly
-    kBaseClock = 0b00,
-    /// Use main PLL as the clock source
-    kMainPllClock = 0b01,
-    /// Use alternative PLL as the clock source
-    kAlternatePllClock = 0b10,
+    /// Use IRC or external oscillator directly
+    kSystemClock = 0b00,
+    /// Use PLL0 main PLL as the clock source
+    kPll0 = 0b01,
+    /// Use PLL1 alternative PLL as the clock source
+    kPll1 = 0b10,
   };
 
   /// USB Clock divider constants
@@ -62,38 +62,26 @@ class SystemController final : public sjsu::SystemController
     kDivideBy4,
   };
 
-  /// SPIFI oscillator source contants (not used)
-  enum class SpifiSource : uint16_t
+  /// SPIFI clock options
+  enum class SpifiClockSelect : uint8_t
   {
-    /// Use IRC clock directly
-    kBaseClock = 0b00,
-    /// Use main PLL as the clock source
-    kMainPllClock = 0b01,
-    /// Use alternative PLL as the clock source
-    kAlternatePllClock = 0b10,
+    /// Use IRC or external oscillator directly
+    kSystemClock = 0b00,
+    /// Use PLL0 main PLL as the clock source
+    kPll0 = 0b01,
+    /// Use PLL1 alternative PLL as the clock source
+    kPll1 = 0b10,
   };
 
   /// EMC storage clock speed constants
-  enum class EmcDivider : uint8_t
+  enum class EmcDivider : bool
   {
-    /// Same speed as CPU
-    kSameSpeedAsCpu = 0,
-    /// Cut speed in half
+    kSameSpeedAsCpu    = 0,
     kHalfTheSpeedOfCpu = 1,
   };
 
-  /// Speed of possible clock frequencies that can be put into the PLLs
-  struct PllInput  // NOLINT
-  {
-    /// Speed of the Internal RC oscillator
-    static constexpr units::frequency::megahertz_t kIrc = 12_MHz;
-    /// Allowable speed from an external clock source/crystal oscillator
-    static constexpr units::frequency::megahertz_t kF12MHz = 12_MHz;
-    /// Allowable speed from an external clock source/crystal oscillator
-    static constexpr units::frequency::megahertz_t kF16MHz = 16_MHz;
-    /// Allowable speed from an external clock source/crystal oscillator
-    static constexpr units::frequency::megahertz_t kF24MHz = 24_MHz;
-  };
+  /// Internal RC oscillator fixed frequency
+  static constexpr units::frequency::megahertz_t kDefaultIRCFrequency = 12_MHz;
 
   /// LPC40xx Peripheral Power On Values:
   /// The kDeviceId of each peripheral corresponds to the peripheral's power on
@@ -102,43 +90,46 @@ class SystemController final : public sjsu::SystemController
   {
    public:
     //! @cond Doxygen_Suppress
-    static constexpr auto kLcd               = AddPeripheralID<0>();
-    static constexpr auto kTimer0            = AddPeripheralID<1>();
-    static constexpr auto kTimer1            = AddPeripheralID<2>();
-    static constexpr auto kUart0             = AddPeripheralID<3>();
-    static constexpr auto kUart1             = AddPeripheralID<4>();
-    static constexpr auto kPwm0              = AddPeripheralID<5>();
-    static constexpr auto kPwm1              = AddPeripheralID<6>();
-    static constexpr auto kI2c0              = AddPeripheralID<7>();
-    static constexpr auto kUart4             = AddPeripheralID<8>();
-    static constexpr auto kRtc               = AddPeripheralID<9>();
-    static constexpr auto kSsp1              = AddPeripheralID<10>();
-    static constexpr auto kEmc               = AddPeripheralID<11>();
-    static constexpr auto kAdc               = AddPeripheralID<12>();
-    static constexpr auto kCan1              = AddPeripheralID<13>();
-    static constexpr auto kCan2              = AddPeripheralID<14>();
-    static constexpr auto kGpio              = AddPeripheralID<15>();
-    static constexpr auto kSpifi             = AddPeripheralID<16>();
-    static constexpr auto kMotorControlPwm   = AddPeripheralID<17>();
-    static constexpr auto kQuadratureEncoder = AddPeripheralID<18>();
-    static constexpr auto kI2c1              = AddPeripheralID<19>();
-    static constexpr auto kSsp2              = AddPeripheralID<20>();
-    static constexpr auto kSsp0              = AddPeripheralID<21>();
-    static constexpr auto kTimer2            = AddPeripheralID<22>();
-    static constexpr auto kTimer3            = AddPeripheralID<23>();
-    static constexpr auto kUart2             = AddPeripheralID<24>();
-    static constexpr auto kUart3             = AddPeripheralID<25>();
-    static constexpr auto kI2c2              = AddPeripheralID<26>();
-    static constexpr auto kI2s               = AddPeripheralID<27>();
-    static constexpr auto kSdCard            = AddPeripheralID<28>();
-    static constexpr auto kGpdma             = AddPeripheralID<29>();
-    static constexpr auto kEthernet          = AddPeripheralID<30>();
-    static constexpr auto kUsb               = AddPeripheralID<31>();
+    static constexpr auto kLcd               = PeripheralID::Define<0>();
+    static constexpr auto kTimer0            = PeripheralID::Define<1>();
+    static constexpr auto kTimer1            = PeripheralID::Define<2>();
+    static constexpr auto kUart0             = PeripheralID::Define<3>();
+    static constexpr auto kUart1             = PeripheralID::Define<4>();
+    static constexpr auto kPwm0              = PeripheralID::Define<5>();
+    static constexpr auto kPwm1              = PeripheralID::Define<6>();
+    static constexpr auto kI2c0              = PeripheralID::Define<7>();
+    static constexpr auto kUart4             = PeripheralID::Define<8>();
+    static constexpr auto kRtc               = PeripheralID::Define<9>();
+    static constexpr auto kSsp1              = PeripheralID::Define<10>();
+    static constexpr auto kEmc               = PeripheralID::Define<11>();
+    static constexpr auto kAdc               = PeripheralID::Define<12>();
+    static constexpr auto kCan1              = PeripheralID::Define<13>();
+    static constexpr auto kCan2              = PeripheralID::Define<14>();
+    static constexpr auto kGpio              = PeripheralID::Define<15>();
+    static constexpr auto kSpifi             = PeripheralID::Define<16>();
+    static constexpr auto kMotorControlPwm   = PeripheralID::Define<17>();
+    static constexpr auto kQuadratureEncoder = PeripheralID::Define<18>();
+    static constexpr auto kI2c1              = PeripheralID::Define<19>();
+    static constexpr auto kSsp2              = PeripheralID::Define<20>();
+    static constexpr auto kSsp0              = PeripheralID::Define<21>();
+    static constexpr auto kTimer2            = PeripheralID::Define<22>();
+    static constexpr auto kTimer3            = PeripheralID::Define<23>();
+    static constexpr auto kUart2             = PeripheralID::Define<24>();
+    static constexpr auto kUart3             = PeripheralID::Define<25>();
+    static constexpr auto kI2c2              = PeripheralID::Define<26>();
+    static constexpr auto kI2s               = PeripheralID::Define<27>();
+    static constexpr auto kSdCard            = PeripheralID::Define<28>();
+    static constexpr auto kGpdma             = PeripheralID::Define<29>();
+    static constexpr auto kEthernet          = PeripheralID::Define<30>();
+    static constexpr auto kUsb               = PeripheralID::Define<31>();
+    static constexpr auto kEeprom            = PeripheralID::Define<32>();
+    // Definitions not associated with a specific peripheral.
+    static constexpr auto kCpu = PeripheralID::Define<33>();
     //! @endcond
   };
 
   /// Namespace for PLL configuration bit masks
-  struct Pll  // NOLINT
+  struct PllRegister  // NOLINT
   {
     /// In PLLCON register: When 1, and after a valid PLL feed, this bit
     /// will activate the related PLL and allow it to lock to the requested
@@ -157,14 +148,21 @@ class SystemController final : public sjsu::SystemController
   };
 
   /// Namespace of Oscillator register bitmasks
-  struct Oscillator  // NOLINT
+  struct OscillatorRegister  // NOLINT
   {
     /// IRC or Main oscillator select bit
     static constexpr bit::Mask kSelect = bit::CreateMaskFromRange(0);
+
+    /// SCS: Main oscillator range select
+    static constexpr bit::Mask kRangeSelect = bit::CreateMaskFromRange(4);
+    /// SCS: Main oscillator enable
+    static constexpr bit::Mask kExternalEnable = bit::CreateMaskFromRange(5);
+    /// SCS: Main oscillator ready status
+    static constexpr bit::Mask kExternalReady = bit::CreateMaskFromRange(6);
   };
 
   /// Namespace of Clock register bitmasks
-  struct CpuClock  // NOLINT
+  struct CpuClockRegister  // NOLINT
   {
     /// CPU clock divider amount
     static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0, 4);
@@ -173,7 +171,7 @@ class SystemController final : public sjsu::SystemController
   };
 
   /// Namespace of Peripheral register bitmasks
-  struct PeripheralClock  // NOLINT
+  struct PeripheralClockRegister  // NOLINT
   {
     /// Main single peripheral clock divider shared across all peripherals,
     /// except for USB and SPIFI.
@@ -181,14 +179,14 @@ class SystemController final : public sjsu::SystemController
   };
 
   /// Namespace of EMC register bitmasks
-  struct EmcClock  // NOLINT
+  struct EmcClockRegister  // NOLINT
   {
-    /// EMC Clock divider bit
+    /// EMC Clock Register divider bit
     static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0);
   };
 
   /// Namespace of USB register bitmasks
-  struct UsbClock  // NOLINT
+  struct UsbClockRegister  // NOLINT
   {
     /// USB clock divider constant
     static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0, 4);
@@ -197,7 +195,7 @@ class SystemController final : public sjsu::SystemController
   };
 
   /// Namespace of SPIFI register bitmasks
-  struct SpiFiClock  // NOLINT
+  struct SpiFiClockRegister  // NOLINT
   {
     /// SPIFI clock divider constant
     static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0, 4);
@@ -205,221 +203,371 @@ class SystemController final : public sjsu::SystemController
     static constexpr bit::Mask kSelect = bit::CreateMaskFromRange(8, 9);
   };
 
+  /// Clock configuration structure for use the lpc40xx microcontrollers
+  /// See page 21 of a diagram of the clock tree that this datastructure
+  /// represents: datasheets/sjtwo/LPC40xx/UM10562.pdf
+  struct ClockConfiguration  // NOLINT
+  {
+    // =========================================================================
+    // Oscillator Settings
+    // =========================================================================
+
+    /// The frequency of the external oscillator crystal. This field must not be
+    /// set to 0_Mhz if an external oscillator is to be used anywhere in the
+    /// system.
+    units::frequency::megahertz_t external_oscillator_frequency = 0_MHz;
+
+    /// The choice for system oscillator. If the external oscillator is used,
+    /// then the `external_oscillator_frequency` must be some non-zero value.
+    OscillatorSource system_oscillator = OscillatorSource::kIrc;
+
+    // =========================================================================
+    // PLL Configuration
+    // =========================================================================
+
+    /// Represents the two PLLs in the clock tree
+    struct
+    {
+      /// Whether the PLL should be enabled or not.
+      bool enabled = false;
+      /// The output rate multiplication factor of the PLL. If the input is 12
+      /// MHz and the multiply constant is 2, then the output frequency will be
+      /// 24 MHz. The limit for this can be found in the
+      ///    datasheets/sjtwo/LPC40xx/UM10562.pdf
+      ///     or
+      ///    datasheets/lpc40xx/UM10562.pdf
+      uint8_t multiply = 1;
+    } pll[2] = {};
+
+    // =========================================================================
+    // Clock Sources and Dividers
+    // =========================================================================
+
+    /// Represents the configuration options for the CPU
+    struct
+    {
+      CpuClockSelect clock = CpuClockSelect::kSystemClock;
+      uint8_t divider      = 1;
+    } cpu = {};
+
+    /// Represents the configuration options for USB
+    struct
+    {
+      UsbClockSelect clock = UsbClockSelect::kSystemClock;
+      UsbDivider divider   = UsbDivider::kDivideBy1;
+    } usb = {};
+
+    /// Represents the configuration options for SPIFI
+    struct
+    {
+      SpifiClockSelect clock = SpifiClockSelect::kSystemClock;
+      uint8_t divider        = 1;
+    } spifi = {};
+
+    /// Defines the peripheral clock divider amount
+    uint8_t peripheral_divider = 1;
+    /// Defines the EMC clock divider amount
+    EmcDivider emc_divider = EmcDivider::kSameSpeedAsCpu;
+  };
+
   /// Pointer to the system controller peripheral in memory.
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
-  /// Internal RC oscillator fixed frequency
-  static constexpr units::frequency::megahertz_t kDefaultIRCFrequency = 12_MHz;
-
-  void SetSystemClockFrequency(
-      units::frequency::megahertz_t frequency) const override
+  /// @param clock_configuration - Must have a valid clock configuration object
+  /// for lpc40xx passed to this object for it to work. A default initialized
+  /// ClockConfiguration will work if passed.
+  explicit constexpr SystemController(ClockConfiguration & clock_configuration)
+      : clock_configuration_(clock_configuration)
   {
-    SelectOscillatorSource(OscillatorSource::kIrc);
-    if (frequency > 12_MHz)
-    {
-      SetMainPll(PllInput::kIrc, frequency);
-      SelectMainClockSource(MainClockSource::kPllClock);
-      speed_in_hertz = frequency;
-    }
-    else
-    {
-      SelectMainClockSource(MainClockSource::kBaseClock);
-      speed_in_hertz = kDefaultIRCFrequency;
-    }
-    SetCpuClockDivider(1);
-    SetPeripheralClockDivider({}, 1);
-    SetEmcClockDivider(EmcDivider::kSameSpeedAsCpu);
   }
 
-  void SetPeripheralClockDivider(const PeripheralID &,
-                                 uint8_t peripheral_divider) const override
+  void * GetClockConfiguration() override
   {
-    SJ2_ASSERT_FATAL(peripheral_divider <= 4, "Divider mustn't exceed 32");
-    system_controller->PCLKSEL = peripheral_divider;
+    return &clock_configuration_;
   }
 
-  uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
+  bool IsPeripheralPoweredUp(PeripheralID peripheral_select) const override
   {
-    return system_controller->PCLKSEL;
+    return bit::Read(system_controller->PCONP, peripheral_select.device_id);
   }
 
-  units::frequency::hertz_t GetSystemFrequency() const override
-  {
-    return speed_in_hertz;
-  }
-
-  bool IsPeripheralPoweredUp(
-      const PeripheralID & peripheral_select) const override
-  {
-    bool peripheral_is_powered_on =
-        system_controller->PCONP & (1 << peripheral_select.device_id);
-
-    return peripheral_is_powered_on;
-  }
-
-  void PowerUpPeripheral(const PeripheralID & peripheral_select) const override
+  void PowerUpPeripheral(PeripheralID peripheral_select) const override
   {
     system_controller->PCONP =
         bit::Set(system_controller->PCONP, peripheral_select.device_id);
   }
 
-  void PowerDownPeripheral(
-      const PeripheralID & peripheral_select) const override
+  void PowerDownPeripheral(PeripheralID peripheral_select) const override
   {
     system_controller->PCONP =
         bit::Clear(system_controller->PCONP, peripheral_select.device_id);
   }
 
- private:
-  void SelectOscillatorSource(OscillatorSource source) const
+  units::frequency::hertz_t GetClockRate(PeripheralID peripheral) const override
   {
-    system_controller->CLKSRCSEL =
-        bit::Insert(system_controller->CLKSRCSEL, static_cast<uint32_t>(source),
-                    Oscillator::kSelect);
-  }
-
-  void SelectMainClockSource(MainClockSource source) const
-  {
-    system_controller->CCLKSEL =
-        bit::Insert(system_controller->CCLKSEL, static_cast<uint32_t>(source),
-                    CpuClock::kSelect);
-  }
-
-  void SelectUsbClockSource(UsbSource usb_clock) const
-  {
-    system_controller->USBCLKSEL =
-        bit::Insert(system_controller->USBCLKSEL,
-                    static_cast<uint32_t>(usb_clock), UsbClock::kSelect);
-  }
-
-  void SelectSpifiClockSource(SpifiSource spifi_clock) const
-  {
-    system_controller->SPIFISEL =
-        bit::Insert(system_controller->SPIFISEL,
-                    static_cast<uint32_t>(spifi_clock), SpiFiClock::kSelect);
-  }
-
-  uint32_t CalculatePll(units::frequency::megahertz_t input_frequency,
-                        units::frequency::megahertz_t desired_frequency) const
-  {
-    SJ2_ASSERT_FATAL(desired_frequency < 384_MHz && desired_frequency > 12_MHz,
-                     "Frequency must be lower than 384 MHz"
-                     "and greater than or equal to 12 MHz");
-    bool calculating = true;
-    uint32_t multiplier_value;
-    if ((desired_frequency.to<uint32_t>() % input_frequency.to<uint32_t>()) > 0)
+    switch (peripheral.device_id)
     {
-      multiplier_value = (desired_frequency / input_frequency) + 1;
-    }
-    else
-    {
-      multiplier_value = desired_frequency / input_frequency;
-    }
-
-    uint16_t divider_value = 1;
-
-    while (calculating)
-    {
-      uint16_t current_controlled_oscillator_frequency;
-      current_controlled_oscillator_frequency = static_cast<uint16_t>(
-          (static_cast<uint16_t>(input_frequency) * multiplier_value * 2) *
-          divider_value);
-      if (current_controlled_oscillator_frequency >= 156)
+      case Peripherals::kUsb.device_id:
       {
-        calculating = false;
+        return usb_clock_rate_;
+      }
+      case Peripherals::kSpifi.device_id:
+      {
+        return spifi_clock_rate_;
+      }
+      case Peripherals::kEmc.device_id:
+      {
+        return emc_clock_rate_;
+      }
+      case Peripherals::kCpu.device_id:
+      {
+        return cpu_clock_rate_;
+      }
+      default:  // All other peripherals
+      {
+        return peripheral_clock_rate_;
+      }
+    }
+  }
+
+  void Initialize() override
+  {
+    LPC_SC_TypeDef * sys = system_controller;
+    auto config          = clock_configuration_;
+
+    units::frequency::hertz_t system_clock = 0_Hz;
+    units::frequency::hertz_t pll0         = 0_Hz;
+    units::frequency::hertz_t pll1         = 0_Hz;
+
+    // Reset all of the cached clock frequency values
+    units::frequency::hertz_t cpu   = 0_Hz;
+    units::frequency::hertz_t usb   = 0_Hz;
+    units::frequency::hertz_t spifi = 0_Hz;
+
+    // =========================================================================
+    // Step 1. Select IRC as clock source for everything.
+    //         Make sure PLLs are not clock sources for everything.
+    // =========================================================================
+    // Set CPU clock to system clock
+    sys->CCLKSEL =
+        bit::Insert(sys->CCLKSEL, Value(CpuClockSelect::kSystemClock),
+                    CpuClockRegister::kSelect);
+    // Set USB clock to system clock
+    sys->USBCLKSEL =
+        bit::Insert(sys->USBCLKSEL, Value(UsbClockSelect::kSystemClock),
+                    UsbClockRegister::kSelect);
+    // Set SPIFI clock to system clock
+    sys->SPIFISEL =
+        bit::Insert(sys->SPIFISEL, Value(SpifiClockSelect::kSystemClock),
+                    SpiFiClockRegister::kSelect);
+
+    // Set the clock source to IRC and not external oscillator. The next phase
+    // disables that clock source, which will stop the system if this is not
+    // switched.
+    sys->CLKSRCSEL = Value(OscillatorSource::kIrc);
+
+    // =========================================================================
+    // Step 2. Disable PLLs
+    // =========================================================================
+    // NOTE: The only bit in this register that is used is bit 0 which indicates
+    // enabled or disabled status, thus a single assignment is needed.
+    sys->PLL0CON = 0;
+    sys->PLL1CON = 0;
+    // Disabling external oscillator if it is not going to be used
+    system_controller->SCS =
+        bit::Clear(system_controller->SCS, OscillatorRegister::kExternalEnable);
+
+    // =========================================================================
+    // Step 3. Select oscillator source for System Clock and Main PLL
+    // =========================================================================
+    // Enable the external oscillator if we are using it, which would be the
+    // case if the alternative PLL is enabled or external oscillator is
+    // selected.
+    if (config.system_oscillator == OscillatorSource::kExternal ||
+        config.pll[1].enabled)
+    {
+      EnableExternalOscillator();
+    }
+
+    sys->CLKSRCSEL = Value(config.system_oscillator);
+
+    switch (config.system_oscillator)
+    {
+      case OscillatorSource::kIrc: system_clock = kDefaultIRCFrequency; break;
+      case OscillatorSource::kExternal:
+        system_clock = config.external_oscillator_frequency;
+        break;
+    }
+
+    // =========================================================================
+    // Step 4. Configure PLLs
+    // =========================================================================
+    pll0 = SetupPll(&sys->PLL0CON, &sys->PLL0CFG, &sys->PLL0FEED,
+                    &sys->PLL0STAT, 0);
+
+    pll1 = SetupPll(&sys->PLL1CON, &sys->PLL1CFG, &sys->PLL1FEED,
+                    &sys->PLL1STAT, 1);
+
+    // =========================================================================
+    // Step 5. Set clock sources for each clock
+    // =========================================================================
+    // Set CPU clock the source defined in the configuration
+    sys->CCLKSEL = bit::Insert(sys->CCLKSEL, Value(config.cpu.clock),
+                               CpuClockRegister::kSelect);
+
+    // Set USB clock the source defined in the configuration
+    sys->USBCLKSEL = bit::Insert(sys->USBCLKSEL, Value(config.usb.clock),
+                                 UsbClockRegister::kSelect);
+
+    // Set SPIFI clock the source defined in the configuration
+    sys->SPIFISEL = bit::Insert(sys->SPIFISEL, Value(config.spifi.clock),
+                                SpiFiClockRegister::kSelect);
+
+    switch (config.cpu.clock)
+    {
+      case CpuClockSelect::kSystemClock: cpu = system_clock; break;
+      case CpuClockSelect::kPll0: cpu = pll0; break;
+    }
+
+    switch (config.usb.clock)
+    {
+      case UsbClockSelect::kSystemClock: usb = system_clock; break;
+      case UsbClockSelect::kPll0: usb = pll0; break;
+      case UsbClockSelect::kPll1: usb = pll1; break;
+    }
+
+    switch (config.spifi.clock)
+    {
+      case SpifiClockSelect::kSystemClock: spifi = system_clock; break;
+      case SpifiClockSelect::kPll0: spifi = pll0; break;
+      case SpifiClockSelect::kPll1: spifi = pll1; break;
+    }
+
+    // =========================================================================
+    // Step 6. Set clock dividers for each clock
+    // =========================================================================
+    // Set CPU clock divider
+    sys->CCLKSEL = bit::Insert(sys->CCLKSEL, config.cpu.divider,
+                               CpuClockRegister::kDivider);
+    // Set EMC clock divider
+    sys->EMCCLKSEL = bit::Insert(sys->EMCCLKSEL, Value(config.emc_divider),
+                                 EmcClockRegister::kDivider);
+    // Set Peripheral clock divider
+    sys->PCLKSEL = bit::Insert(sys->PCLKSEL, config.peripheral_divider,
+                               PeripheralClockRegister::kDivider);
+    // Set USB clock divider
+    sys->USBCLKSEL = bit::Insert(sys->USBCLKSEL, Value(config.usb.divider),
+                                 UsbClockRegister::kDivider);
+    // Set SPIFI clock divider
+    sys->SPIFISEL = bit::Insert(sys->SPIFISEL, config.spifi.divider,
+                                SpiFiClockRegister::kDivider);
+
+    cpu_clock_rate_        = cpu / config.cpu.divider;
+    peripheral_clock_rate_ = cpu / config.peripheral_divider;
+    emc_clock_rate_        = cpu / (Value(config.emc_divider) + 1);
+    usb_clock_rate_        = usb / Value(config.usb.divider);
+    spifi_clock_rate_      = spifi / config.spifi.divider;
+  }
+
+ private:
+  units::frequency::hertz_t SetupPll(volatile uint32_t * control,
+                                     volatile uint32_t * config,
+                                     volatile uint32_t * feed,
+                                     volatile uint32_t * stat,
+                                     int pll_index) const
+  {
+    const auto & pll_config = clock_configuration_.pll[pll_index];
+    units::frequency::hertz_t fcco;
+
+    if (pll_config.enabled)
+    {
+      *config = bit::Insert(*config, pll_config.multiply - 1,
+                            PllRegister::kMultiplier);
+
+      if (clock_configuration_.system_oscillator == OscillatorSource::kIrc &&
+          pll_index == 0)
+      {
+        fcco = kDefaultIRCFrequency * pll_config.multiply;
       }
       else
       {
-        divider_value = static_cast<uint16_t>(divider_value * 2);
-        SJ2_ASSERT_FATAL(divider_value < 8,
-                         "PLL divider value went out of bounds");
+        fcco = clock_configuration_.external_oscillator_frequency *
+               pll_config.multiply;
+      }
+
+      // In the datasheet this is the divider, but it acts to multiply the
+      // frequency higher to a point where the fcco is stable.
+      //
+      // fcco must be between 156 MHz to 320 MHz.
+      uint32_t fcco_divide = 0;
+      for (int divide_codes : { 0, 1, 2, 3 })
+      {
+        // Multiply the fcco by 2^divide_code
+        units::frequency::hertz_t final_fcco = fcco * (1 << divide_codes);
+        if (156_MHz <= final_fcco && final_fcco <= 320_MHz)
+        {
+          fcco_divide = divide_codes;
+          break;
+        }
+      }
+
+      SJ2_ASSERT_FATAL(
+          fcco_divide != 0,
+          "The provided multiply value and oscillator choices results in "
+          "FCCO frequency outside of 156 MHz and 320 MHz. See page 65 "
+          "UM10562 LPC408x/407x User manual for more details.");
+
+      *config = bit::Insert(*config, fcco_divide, PllRegister::kDivider);
+      // Enable PLL
+      *control = 1;
+      // Feed PLL in order to start the locking process
+      *feed = 0xAA;
+      *feed = 0x55;
+
+      while (!bit::Read(*stat, PllRegister::kPllLockStatus))
+      {
+        continue;
       }
     }
 
-    return multiplier_value;
+    return fcco;
   }
 
-  void SetMainPll(units::frequency::megahertz_t input_frequency,
-                  units::frequency::megahertz_t desired_frequency) const
+  void EnableExternalOscillator() const
   {
-    uint16_t divider_value = 1;
-    uint32_t multiplier_value =
-        CalculatePll(input_frequency, desired_frequency);
-    // units::frequency::megahertz_t actual_speed =
-    //     input_frequency * multiplier_value;
-    // TO DO: use registers to retreive values
-    SelectOscillatorSource(OscillatorSource::kIrc);
-    SelectMainClockSource(MainClockSource::kBaseClock);
-    SelectUsbClockSource(UsbSource::kBaseClock);
-    SelectSpifiClockSource(SpifiSource::kBaseClock);
+    auto frequency = clock_configuration_.external_oscillator_frequency;
+    if (1_MHz <= frequency && frequency <= 20_MHz)
+    {
+      system_controller->SCS =
+          bit::Clear(system_controller->SCS, OscillatorRegister::kRangeSelect);
+    }
+    else if (20_MHz <= frequency && frequency <= 25_MHz)
+    {
+      system_controller->SCS =
+          bit::Set(system_controller->SCS, OscillatorRegister::kRangeSelect);
+    }
 
-    uint32_t config = 0;
-    // must subtract 1 from multiplier value as specified in datasheet
-    config = bit::Insert(config, multiplier_value - 1, Pll::kMultiplier);
-    config = bit::Insert(config, divider_value, Pll::kDivider);
-    // Set the PLL multiply and divide values
-    system_controller->PLL0CFG = config;
+    SJ2_ASSERT_FATAL(
+        1_MHz <= frequency && frequency <= 25_MHz,
+        "External Oscillator Frequency is outside of the the acceptable 1 "
+        "MHz <--> 25 MHz.");
 
-    // Enable PLL
-    system_controller->PLL0CON =
-        bit::Set(system_controller->PLL0CON, Pll::kEnable);
+    system_controller->SCS =
+        bit::Set(system_controller->SCS, OscillatorRegister::kExternalEnable);
 
-    // Necessary feed sequence to ensure the changes are intentional
-    system_controller->PLL0FEED = 0xAA;
-    system_controller->PLL0FEED = 0x55;
-
-    while (!bit::Read(system_controller->PLL0STAT, Pll::kPllLockStatus))
+    while (
+        !bit::Read(system_controller->SCS, OscillatorRegister::kExternalReady))
     {
       continue;
     }
   }
 
-  void SetAlternatePll(units::frequency::megahertz_t input_frequency,
-                       units::frequency::megahertz_t desired_frequency) const
-  {
-    uint16_t divider_value = 1;
-    uint32_t multiplier_value =
-        CalculatePll(input_frequency, desired_frequency);
-    SelectUsbClockSource(UsbSource::kBaseClock);
-    SelectSpifiClockSource(SpifiSource::kBaseClock);
-
-    uint32_t config = 0;
-    // must subtract 1 from multiplier value as specified in datasheet
-    config = bit::Insert(config, multiplier_value - 1, Pll::kMultiplier);
-    config = bit::Insert(config, divider_value, Pll::kDivider);
-    // Set the PLL multiply and divide values
-    system_controller->PLL1CFG = config;
-
-    // Enable PLL
-    system_controller->PLL1CON =
-        bit::Set(system_controller->PLL1CON, Pll::kEnable);
-
-    // Necessary feed sequence to ensure the changes are intentional
-    system_controller->PLL1FEED = 0xAA;
-    system_controller->PLL1FEED = 0x55;
-
-    while (!bit::Read(system_controller->PLL1STAT, Pll::kPllLockStatus))
-    {
-      continue;
-    }
-  }
-
-  void SetCpuClockDivider(uint8_t cpu_divider) const
-  {
-    SJ2_ASSERT_FATAL(cpu_divider < 32, "Divider mustn't exceed 32");
-
-    system_controller->CCLKSEL = bit::Insert(system_controller->CCLKSEL,
-                                             cpu_divider, CpuClock::kDivider);
-  }
-
-  void SetEmcClockDivider(EmcDivider emc_divider) const
-  {
-    system_controller->EMCCLKSEL =
-        bit::Insert(system_controller->EMCCLKSEL,
-                    static_cast<uint32_t>(emc_divider), EmcClock::kDivider);
-  }
-  // TODO(#181): Set USB and Spifi clock rates
-  inline static units::frequency::hertz_t speed_in_hertz = kDefaultIRCFrequency;
+  ClockConfiguration & clock_configuration_;
+  units::frequency::hertz_t cpu_clock_rate_        = 0_Hz;
+  units::frequency::hertz_t peripheral_clock_rate_ = 0_Hz;
+  units::frequency::hertz_t emc_clock_rate_        = 0_Hz;
+  units::frequency::hertz_t usb_clock_rate_        = 0_Hz;
+  units::frequency::hertz_t spifi_clock_rate_      = 0_Hz;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

@@ -53,7 +53,9 @@ int main()
   system_controller.SetClockDivider(
       sjsu::msp432p401r::SystemController::Clock::kLowSpeedSubsystemMaster, 8);
 
-  sjsu::cortex::SystemTimer system_timer;
+  constexpr auto kDummySystemTimerPeripheralID =
+      sjsu::SystemController::PeripheralID::Define<0>();
+  sjsu::cortex::SystemTimer system_timer(kDummySystemTimerPeripheralID);
   system_timer.SetTickFrequency(config::kRtosFrequency);
 
   ConfigureClockOutPins();

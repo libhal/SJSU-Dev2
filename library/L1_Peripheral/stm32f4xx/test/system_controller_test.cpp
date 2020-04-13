@@ -43,9 +43,10 @@ TEST_CASE("Testing stm32f4xx SystemController", "[stm32f4xx-system-controller]")
 
   SystemController test_subject;
 
-  SECTION("GetSystemFrequency()")
+  SECTION("GetClockRate()")
   {
-    CHECK(16_MHz <= test_subject.GetSystemFrequency());
+    CHECK(16_MHz <= test_subject.GetClockRate(
+                        stm32f4xx::SystemController::Peripherals::kCpu));
   }
 
   SECTION("PowerUpPeripheral()")

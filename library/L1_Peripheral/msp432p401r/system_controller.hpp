@@ -145,12 +145,31 @@ class SystemController final : public sjsu::SystemController
   /// containing the clock system calibration constants.
   inline static TLV_Type * device_descriptors = msp432p401r::TLV;
 
+  // TODO(#1137): Migrate to SystemController V2.0
+  void Initialize() override
+  {
+    return;
+  }
+
+  /// @return the a pointer to the clock configuration object used to configure
+  /// this system controller.
+  void * GetClockConfiguration() override
+  {
+    return nullptr;
+  }
+
+  /// @return the clock rate frequency of a peripheral
+  units::frequency::hertz_t GetClockRate(PeripheralID peripheral) const override
+  {
+    return GetSystemFrequency() / GetPeripheralClockDivider(peripheral);
+  }
+
   /// Configures the digitally controlled clock (DCO) to produce the desired
   /// target nominal frequency to drive the master clock.
   ///
   /// @param frequency The desired target frequency between 1 MHz and 48 MHz.
   void SetSystemClockFrequency(
-      units::frequency::megahertz_t frequency) const override
+      units::frequency::megahertz_t frequency) const
   {
     const DcoConfiguration_t kDcoConfiguration =
         CalculateDcoConfiguration(frequency);
@@ -180,14 +199,14 @@ class SystemController final : public sjsu::SystemController
   /// @param peripheral_divider Divider value to set. Only the following
   ///                           dividers are available: 1, 2, 4, 8, 16, 32, 64,
   ///                           128.
-  void SetPeripheralClockDivider(const PeripheralID &,
-                                 uint8_t peripheral_divider) const override
+  void SetPeripheralClockDivider(PeripheralID,
+                                 uint8_t peripheral_divider) const
   {
     SetClockDivider(Clock::kSubsystemMaster, peripheral_divider);
   }
 
   /// @returns The current clock divider used for the subsystem master clock.
-  uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
+  uint32_t GetPeripheralClockDivider(PeripheralID) const override
   {
     constexpr uint32_t kDividerValues[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
     const uint32_t kDividerSelect =
@@ -246,17 +265,17 @@ class SystemController final : public sjsu::SystemController
     WaitForClockReadyStatus(clock);
   }
 
-  bool IsPeripheralPoweredUp(const PeripheralID &) const override
+  bool IsPeripheralPoweredUp(PeripheralID) const override
   {
     return false;
   }
 
-  void PowerUpPeripheral(const PeripheralID &) const override
+  void PowerUpPeripheral(PeripheralID) const override
   {
     SJ2_ASSERT_FATAL(false, "This function is not implemented.");
   }
 
-  void PowerDownPeripheral(const PeripheralID &) const override
+  void PowerDownPeripheral(PeripheralID) const override
   {
     SJ2_ASSERT_FATAL(false, "This function is not implemented.");
   }
