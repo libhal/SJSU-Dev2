@@ -1,5 +1,6 @@
 #include <cstdio>
 
+#include "L0_Platform/startup.hpp"
 #include "L0_Platform/msp432p401r/msp432p401r.h"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/msp432p401r/gpio.hpp"
@@ -10,6 +11,22 @@
 
 namespace
 {
+void ConfigureSystemClocks()
+{
+  auto & system_controller    = sjsu::SystemController::GetPlatformController();
+  auto & clock_configuration = system_controller.GetClockConfiguration<
+      sjsu::msp432p401r::SystemController::ClockConfiguration_t>();
+  clock_configuration.dco.frequency = 12_MHz;
+  // Set HSMCLK P4.4 to output ~3 MHz
+  clock_configuration.subsystem_master.divider =
+      sjsu::msp432p401r::SystemController::ClockDivider::kDivideBy4;
+  // Set SMCLK P7.0 to output ~1.5 MHz
+  clock_configuration.subsystem_master.low_speed_divider =
+      sjsu::msp432p401r::SystemController::ClockDivider::kDivideBy8;
+
+  sjsu::InitializePlatform();
+}
+
 /// Configures P4.2, P4.3, P4.4, and P7.0 to output ACLK, MCLK, HSMCLK, and
 /// SMCLK respectively. This allows the use of an oscilloscope to examine each
 /// of the clock signals through the corresponding pin.
@@ -44,20 +61,7 @@ int main()
   p1_0.SetAsOutput();
   p1_0.SetHigh();
 
-  sjsu::msp432p401r::SystemController system_controller;
-  // MCLK P4.3 should output ~12MHz
-  // HSMCLK P4.4 should output ~3MHz
-  // SMCLK P7.0 should output ~1.5MHz
-  system_controller.SetSystemClockFrequency(12_MHz);
-  system_controller.SetPeripheralClockDivider({}, 4);
-  system_controller.SetClockDivider(
-      sjsu::msp432p401r::SystemController::Clock::kLowSpeedSubsystemMaster, 8);
-
-  constexpr auto kDummySystemTimerPeripheralID =
-      sjsu::SystemController::PeripheralID::Define<0>();
-  sjsu::cortex::SystemTimer system_timer(kDummySystemTimerPeripheralID);
-  system_timer.SetTickFrequency(config::kRtosFrequency);
-
+  ConfigureSystemClocks();
   ConfigureClockOutPins();
 
   while (true)
