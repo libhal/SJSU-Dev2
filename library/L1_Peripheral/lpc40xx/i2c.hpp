@@ -68,7 +68,7 @@ class I2c final : public sjsu::I2c
     /// Holds a pointer to the LPC_I2C peripheral registers
     LPC_I2C_TypeDef * registers;
     /// PeripheralID of the I2C peripheral to power on at initialization.
-    sjsu::SystemController::PeripheralID peripheral_power_id;
+    sjsu::SystemController::PeripheralID id;
     /// IRQ number for this I2C port.
     sjsu::cortex::IRQn_Type irq_number;
     /// A reference to the transaction structure for this specific port. Each
@@ -79,8 +79,8 @@ class I2c final : public sjsu::I2c
     const sjsu::Pin & sda_pin;
     /// Refernce to I2C clock pin.
     const sjsu::Pin & scl_pin;
-    /// Function code to set each pin to the appropriate SSP function.
-    uint8_t pin_function_id;
+    /// Function code to set each pin to the appropriate I2C function.
+    uint8_t pin_function;
   };
 
   /// Structure used as a namespace for predefined Bus definitions
@@ -108,38 +108,35 @@ class I2c final : public sjsu::I2c
     // UM10562: Chapter 7: LPC408x/407x I/O configuration page 133
     /// Definition for I2C bus 0 for LPC40xx.
     inline static const Bus_t kI2c0 = {
-      .registers = LPC_I2C0,
-      .peripheral_power_id =
-          sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
-      .irq_number      = I2C0_IRQn,
-      .transaction     = transaction_i2c0,
-      .sda_pin         = kI2c0SdaPin,
-      .scl_pin         = kI2c0SclPin,
-      .pin_function_id = 0b010,
+      .registers    = LPC_I2C0,
+      .id           = sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
+      .irq_number   = I2C0_IRQn,
+      .transaction  = transaction_i2c0,
+      .sda_pin      = kI2c0SdaPin,
+      .scl_pin      = kI2c0SclPin,
+      .pin_function = 0b010,
     };
 
     /// Definition for I2C bus 1 for LPC40xx.
     inline static const Bus_t kI2c1 = {
-      .registers = LPC_I2C1,
-      .peripheral_power_id =
-          sjsu::lpc40xx::SystemController::Peripherals::kI2c1,
-      .irq_number      = I2C1_IRQn,
-      .transaction     = transaction_i2c1,
-      .sda_pin         = kI2c1SdaPin,
-      .scl_pin         = kI2c1SclPin,
-      .pin_function_id = 0b011,
+      .registers    = LPC_I2C1,
+      .id           = sjsu::lpc40xx::SystemController::Peripherals::kI2c1,
+      .irq_number   = I2C1_IRQn,
+      .transaction  = transaction_i2c1,
+      .sda_pin      = kI2c1SdaPin,
+      .scl_pin      = kI2c1SclPin,
+      .pin_function = 0b011,
     };
 
     /// Definition for I2C bus 2 for LPC40xx.
     inline static const Bus_t kI2c2 = {
-      .registers = LPC_I2C2,
-      .peripheral_power_id =
-          sjsu::lpc40xx::SystemController::Peripherals::kI2c2,
-      .irq_number      = I2C2_IRQn,
-      .transaction     = transaction_i2c2,
-      .sda_pin         = kI2c2SdaPin,
-      .scl_pin         = kI2c2SclPin,
-      .pin_function_id = 0b010,
+      .registers    = LPC_I2C2,
+      .id           = sjsu::lpc40xx::SystemController::Peripherals::kI2c2,
+      .irq_number   = I2C2_IRQn,
+      .transaction  = transaction_i2c2,
+      .sda_pin      = kI2c2SdaPin,
+      .scl_pin      = kI2c2SclPin,
+      .pin_function = 0b010,
     };
   };
 
@@ -317,24 +314,25 @@ class I2c final : public sjsu::I2c
 
   Status Initialize() const override
   {
-    i2c_.sda_pin.SetPinFunction(i2c_.pin_function_id);
-    i2c_.scl_pin.SetPinFunction(i2c_.pin_function_id);
+    i2c_.sda_pin.SetPinFunction(i2c_.pin_function);
+    i2c_.scl_pin.SetPinFunction(i2c_.pin_function);
     i2c_.sda_pin.SetAsOpenDrain();
     i2c_.scl_pin.SetAsOpenDrain();
     i2c_.sda_pin.SetFloating();
     i2c_.scl_pin.SetFloating();
 
-    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
-        i2c_.peripheral_power_id);
+    auto & system = sjsu::SystemController::GetPlatformController();
+    system.PowerUpPeripheral(i2c_.id);
+    auto peripheral_frequency = system.GetClockRate(i2c_.id);
 
-    float peripheral_frequency = static_cast<float>(
-        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
-            i2c_.peripheral_power_id));
-    float scll = ((peripheral_frequency / 75'000.0f) / 2.0f) * 0.7f;
-    float sclh = ((peripheral_frequency / 75'000.0f) / 2.0f) * 1.3f;
-
-    i2c_.registers->SCLL = static_cast<uint32_t>(scll);
-    i2c_.registers->SCLH = static_cast<uint32_t>(sclh);
+    // Calculating and setting the I2C Clock rate
+    // Weight the high side duty cycle more than the lower side by 30% in order
+    // to give more time for the bus to charge up.s
+    float clock_frequency = (peripheral_frequency / 75'000_Hz) / 2.0f;
+    float scll            = clock_frequency * 0.7f;
+    float sclh            = clock_frequency * 1.3f;
+    i2c_.registers->SCLL  = static_cast<uint32_t>(scll);
+    i2c_.registers->SCLH  = static_cast<uint32_t>(sclh);
 
     i2c_.registers->CONCLR = Control::kAssertAcknowledge | Control::kStart |
                              Control::kStop | Control::kInterrupt;

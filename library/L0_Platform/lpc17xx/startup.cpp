@@ -156,6 +156,9 @@ void InitializePlatform()
   // This will be used by other libraries to enable and disable interrupts.
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
+
+  // TODO(#1136): remove this when lpc17xx::SystemController no longer uses
+  //              SetSystemClockFrequency.
   // Set Clock Speed
   // SetSystemClockFrequency will timeout return the offset between desire
   // clockspeed and actual clockspeed if the PLL doesn't get a frequency fix

@@ -117,7 +117,8 @@ enum class States
 /// @return UartCalibration_t that will get the output baud rate as close to the
 ///         desired baud_rate as possible.
 constexpr static UartCalibration_t GenerateUartCalibration(
-    uint32_t baud_rate, units::frequency::hertz_t peripheral_frequency)
+    uint32_t baud_rate,
+    units::frequency::hertz_t peripheral_frequency)
 {
   uint32_t integer_peripheral_frequency =
       units::unit_cast<uint32_t>(peripheral_frequency);
@@ -158,8 +159,8 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       {
         divide_estimate = RoundFloat(DividerEstimate(
             baud_rate_float, decimal, integer_peripheral_frequency));
-        decimal         = FractionalEstimate(
-            baud_rate_float, divide_estimate, integer_peripheral_frequency);
+        decimal         = FractionalEstimate(baud_rate_float, divide_estimate,
+                                     integer_peripheral_frequency);
         if (1.1f <= decimal && decimal <= 1.9f)
         {
           state = States::kGenerateFractionFromDecimal;
@@ -310,9 +311,9 @@ class Uart final : public sjsu::Uart
 
   bool SetBaudRate(uint32_t baud_rate) const override
   {
-    auto peripheral_frequency =
-        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
-            port_.power_on_id);
+    auto & system = sjsu::SystemController::GetPlatformController();
+
+    auto peripheral_frequency = system.GetClockRate(port_.power_on_id);
 
     uart::UartCalibration_t calibration =
         uart::GenerateUartCalibration(baud_rate, peripheral_frequency);

@@ -23,10 +23,9 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
       12_MHz;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetSystemFrequency))
+  When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
-  When(Method(mock_system_controller, GetPeripheralClockDivider))
-      .AlwaysReturn(1);
+
 
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 

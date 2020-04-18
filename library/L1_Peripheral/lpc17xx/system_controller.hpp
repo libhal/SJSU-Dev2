@@ -374,7 +374,7 @@ class SystemController final : public sjsu::SystemController
 
   /// @returns The clock divider for the specified peripheral.
   uint32_t GetPeripheralClockDivider(
-      PeripheralID peripheral_select) const override
+      PeripheralID peripheral_select) const
   {
     volatile uint32_t * pclk_sel =
         GetPeripheralClockSelectRegister(peripheral_select);
@@ -409,7 +409,7 @@ class SystemController final : public sjsu::SystemController
   }
 
   /// Returns the last set frequency of the system
-  units::frequency::hertz_t GetSystemFrequency() const override
+  units::frequency::hertz_t GetSystemFrequency() const
   {
     return speed_in_hertz;
   }
