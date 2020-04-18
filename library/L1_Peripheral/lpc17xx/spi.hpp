@@ -32,7 +32,7 @@ struct SpiBus  // NOLINT
     .mosi            = kMosi0,
     .miso            = kMiso0,
     .sck             = kSck0,
-    .pin_function_id = 0b10,
+    .pin_function = 0b10,
   };
   /// Definition for SPI bus 1 for LPC17xx
   inline static const lpc40xx::Spi::Bus_t kSpi1 = {
@@ -41,7 +41,7 @@ struct SpiBus  // NOLINT
     .mosi            = kMosi1,
     .miso            = kMiso1,
     .sck             = kSck1,
-    .pin_function_id = 0b10,
+    .pin_function = 0b10,
   };
 };
 }  // namespace lpc17xx

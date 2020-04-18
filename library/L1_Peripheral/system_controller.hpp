@@ -158,35 +158,5 @@ class SystemController
   {
     return *reinterpret_cast<ClockConfiguration *>(GetClockConfiguration());
   }
-
-  // TODO(#1136): Remove `GetPeripheralFrequency()`, `GetPeripheralDivider()`,
-  // and `GetSystemFrequency()` once no other parts of the internal library are
-  // using it. Note that this is virtual because unit tests require runtime
-  // overloading of this method to work.
-  /// @deprecated
-  /// @return uint32_t - return the peripheral's clock divider value
-  virtual uint32_t GetPeripheralClockDivider(PeripheralID) const
-  {
-    return 1;
-  }
-
-  /// @deprecated
-  /// @return frequency of the system
-  virtual units::frequency::hertz_t GetSystemFrequency() const
-  {
-    return GetClockRate(PeripheralID{});
-  }
-
-  /// Returns the operating frequency of a peripheral.
-  ///
-  /// @deprecated
-  /// @param peripheral - the peripheral to get the operating frequency of.
-  /// @return units::frequency::hertz_t the frequency of the clock signal
-  /// supplied to the peripheral.
-  units::frequency::hertz_t GetPeripheralFrequency(
-      PeripheralID peripheral) const
-  {
-    return GetSystemFrequency() / GetPeripheralClockDivider(peripheral);
-  }
 };
 }  // namespace sjsu

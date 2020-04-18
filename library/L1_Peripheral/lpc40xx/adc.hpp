@@ -101,6 +101,7 @@ class Adc final : public sjsu::Adc
       kCh0123Pins = 0b001,
       kCh4567Pins = 0b011
     };
+
     inline static const Pin kAdcPinChannel0 = Pin::CreatePin<0, 23>();
     inline static const Pin kAdcPinChannel1 = Pin::CreatePin<0, 24>();
     inline static const Pin kAdcPinChannel2 = Pin::CreatePin<0, 25>();
@@ -118,6 +119,7 @@ class Adc final : public sjsu::Adc
       .channel      = 0,
       .pin_function = AdcMode::kCh0123Pins,
     };
+
     /// Predefined channel information for channel 1.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel1.
     inline static const Channel_t kChannel1 = {
@@ -125,6 +127,7 @@ class Adc final : public sjsu::Adc
       .channel      = 1,
       .pin_function = AdcMode::kCh0123Pins,
     };
+
     /// Predefined channel information for channel 2.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel2.
     inline static const Channel_t kChannel2 = {
@@ -132,6 +135,7 @@ class Adc final : public sjsu::Adc
       .channel      = 2,
       .pin_function = AdcMode::kCh0123Pins,
     };
+
     /// Predefined channel information for channel 3.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel3.
     inline static const Channel_t kChannel3 = {
@@ -139,6 +143,7 @@ class Adc final : public sjsu::Adc
       .channel      = 3,
       .pin_function = AdcMode::kCh0123Pins,
     };
+
     /// Predefined channel information for channel 4.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel4.
     inline static const Channel_t kChannel4 = {
@@ -146,6 +151,7 @@ class Adc final : public sjsu::Adc
       .channel      = 4,
       .pin_function = AdcMode::kCh4567Pins,
     };
+
     /// Predefined channel information for channel 5.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel5.
     inline static const Channel_t kChannel5 = {
@@ -153,6 +159,7 @@ class Adc final : public sjsu::Adc
       .channel      = 5,
       .pin_function = AdcMode::kCh4567Pins,
     };
+
     /// Predefined channel information for channel 6.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel6.
     inline static const Channel_t kChannel6 = {
@@ -160,6 +167,7 @@ class Adc final : public sjsu::Adc
       .channel      = 6,
       .pin_function = AdcMode::kCh4567Pins,
     };
+
     /// Predefined channel information for channel 7.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel7.
     inline static const Channel_t kChannel7 = {
@@ -171,14 +179,17 @@ class Adc final : public sjsu::Adc
 
   /// The default and highest frequency that the ADC can operate at.
   static constexpr units::frequency::hertz_t kClockFrequency = 1_MHz;
+
   /// A pointer holding the address to the LPC40xx ADC peripheral.
   /// This variable is a dependency injection point for unit testing thus it is
   /// public and mutable. This is needed to perform the "test by side effect"
   /// technique for this class.
   inline static LPC_ADC_TypeDef * adc_base = LPC_ADC;
+
   /// Number of active bits of the ADC. The ADC is a 12-bit ADC meaning that the
   /// largest value it can have is 2^12 = 4096
   static constexpr uint8_t kActiveBits = 12;
+
   /// Turn on or off burst mode for the whole ADC peripheral.
   ///
   /// WARNING: if you are using this mode, call this before intializing any of
@@ -199,6 +210,7 @@ class Adc final : public sjsu::Adc
     adc_base->CR =
         bit::Insert(adc_base->CR, turn_burst_mode_on, Control::kBurstEnable);
   }
+
   /// @returns true if burst mode is enabled and false otherwise.
   static bool BurstModeIsEnabled()
   {
@@ -210,18 +222,19 @@ class Adc final : public sjsu::Adc
   explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
   Status Initialize() const override
   {
-    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
-        sjsu::lpc40xx::SystemController::Peripherals::kAdc);
+    auto & system     = sjsu::SystemController::GetPlatformController();
+    const auto kAdcId = sjsu::lpc40xx::SystemController::Peripherals::kAdc;
 
+    system.PowerUpPeripheral(kAdcId);
+
+    // It is required for proper operation of analog pins for the LPC40xx that
+    // the pins be floating.
     channel_.adc_pin.SetPinFunction(channel_.pin_function);
     channel_.adc_pin.SetFloating();
     channel_.adc_pin.SetAsAnalogMode(true);
 
-    const units::frequency::hertz_t kPeripheralFrequency =
-        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
-            sjsu::lpc40xx::SystemController::Peripherals::kAdc);
-    uint32_t clock_divider =
-        (kPeripheralFrequency / kClockFrequency).to<uint32_t>();
+    const auto kPeripheralFrequency = system.GetClockRate(kAdcId);
+    uint32_t clock_divider          = kPeripheralFrequency / kClockFrequency;
 
     uint32_t control = adc_base->CR;
 
@@ -240,6 +253,7 @@ class Adc final : public sjsu::Adc
 
     return Status::kSuccess;
   }
+
   uint32_t Read() const override
   {
     // Convert analog value from analog to a digital value
@@ -248,6 +262,7 @@ class Adc final : public sjsu::Adc
         bit::Extract(adc_base->DR[channel_.channel], DataRegister::kResult);
     return result;
   }
+
   uint8_t GetActiveBits() const override
   {
     return kActiveBits;
@@ -258,6 +273,7 @@ class Adc final : public sjsu::Adc
   {
     return bit::Read(adc_base->DR[channel_.channel], DataRegister::kDone);
   }
+
   void Conversion() const
   {
     if (BurstModeIsEnabled())
@@ -278,6 +294,7 @@ class Adc final : public sjsu::Adc
       }
     }
   }
+
   const Channel_t & channel_;
 };
 }  // namespace lpc40xx

@@ -20,10 +20,9 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
       12_MHz;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetSystemFrequency))
+  When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
-  When(Method(mock_system_controller, GetPeripheralClockDivider))
-      .AlwaysReturn(1);
+
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Set up Mock for Pin
@@ -37,12 +36,12 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
 
   // Set up SSP Bus configuration object
   const Spi::Bus_t kMockSpi = {
-    .registers       = &local_ssp,
-    .power_on_bit    = sjsu::lpc40xx::SystemController::Peripherals::kSsp0,
-    .mosi            = mock_mosi.get(),
-    .miso            = mock_miso.get(),
-    .sck             = mock_sck.get(),
-    .pin_function_id = 0b110,
+    .registers    = &local_ssp,
+    .power_on_bit = sjsu::lpc40xx::SystemController::Peripherals::kSsp0,
+    .mosi         = mock_mosi.get(),
+    .miso         = mock_miso.get(),
+    .sck          = mock_sck.get(),
+    .pin_function = 0b110,
   };
 
   Spi test_spi(kMockSpi);
@@ -57,11 +56,11 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
                             .device_id == id.device_id;
                }));
 
-    Verify(Method(mock_mosi, SetPinFunction).Using(kMockSpi.pin_function_id))
+    Verify(Method(mock_mosi, SetPinFunction).Using(kMockSpi.pin_function))
         .Once();
-    Verify(Method(mock_miso, SetPinFunction).Using(kMockSpi.pin_function_id))
+    Verify(Method(mock_miso, SetPinFunction).Using(kMockSpi.pin_function))
         .Once();
-    Verify(Method(mock_sck, SetPinFunction).Using(kMockSpi.pin_function_id))
+    Verify(Method(mock_sck, SetPinFunction).Using(kMockSpi.pin_function))
         .Once();
 
     constexpr uint8_t kSspEnable = 0b10;

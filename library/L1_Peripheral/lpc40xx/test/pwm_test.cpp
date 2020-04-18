@@ -21,10 +21,9 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
   constexpr units::frequency::hertz_t kPeriperhalClockFrequency = 12_MHz;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetSystemFrequency))
+  When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kPeriperhalClockFrequency);
-  When(Method(mock_system_controller, GetPeripheralClockDivider))
-      .AlwaysReturn(1);
+
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Creating mock of Pin class
@@ -40,9 +39,9 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
 
   // Creating mock channel configuration
   Pwm::Channel_t mock_channel = {
-    .peripheral      = mock_peripheral,
-    .pin             = mock_pwm_pin.get(),
-    .channel         = 5,
+    .peripheral        = mock_peripheral,
+    .pin               = mock_pwm_pin.get(),
+    .channel           = 5,
     .pin_function_code = 0b101,
   };
 

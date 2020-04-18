@@ -507,9 +507,10 @@ class Can final : public sjsu::Can
     // Equation found p.563 of the user manual
     //    tSCL = CANsuppliedCLK * ((prescaler * kBaudRateAdjust) -  1)
     // Configure the baud rate divider
-    auto & platform           = sjsu::SystemController::GetPlatformController();
-    auto peripheral_frequency = platform.GetPeripheralFrequency(channel_.id);
+    auto & system             = sjsu::SystemController::GetPlatformController();
+    auto peripheral_frequency = system.GetClockRate(channel_.id);
     uint32_t prescaler = (peripheral_frequency / (baud * kBaudRateAdjust)) - 1;
+
     bus_timing = bit::Insert(bus_timing, prescaler, BusTiming::kPrescalar);
 
     if (baud < kStandardBaudRate)

@@ -31,35 +31,35 @@ struct I2cBus  // NOLINT
   // Definition for I2C bus 0 for LPC17xx.
   /// NOTE: I2C0 is not available for the 80-pin package.
   inline static const lpc40xx::I2c::Bus_t kI2c0 = {
-    .registers = reinterpret_cast<lpc40xx::LPC_I2C_TypeDef *>(LPC_I2C0),
-    .peripheral_power_id = SystemController::Peripherals::kI2c0,
-    .irq_number          = I2C0_IRQn,
-    .transaction         = transaction_i2c0,
-    .sda_pin             = kI2c0SdaPin,
-    .scl_pin             = kI2c0SclPin,
-    .pin_function_id     = 0b01,
+    .registers    = reinterpret_cast<lpc40xx::LPC_I2C_TypeDef *>(LPC_I2C0),
+    .id           = SystemController::Peripherals::kI2c0,
+    .irq_number   = I2C0_IRQn,
+    .transaction  = transaction_i2c0,
+    .sda_pin      = kI2c0SdaPin,
+    .scl_pin      = kI2c0SclPin,
+    .pin_function = 0b01,
   };
 
   /// Definition for I2C bus 1 for LPC17xx.
   inline static const lpc40xx::I2c::Bus_t kI2c1 = {
-    .registers = reinterpret_cast<lpc40xx::LPC_I2C_TypeDef *>(LPC_I2C1),
-    .peripheral_power_id = SystemController::Peripherals::kI2c1,
-    .irq_number          = I2C1_IRQn,
-    .transaction         = transaction_i2c1,
-    .sda_pin             = kI2c1SdaPin,
-    .scl_pin             = kI2c1SclPin,
-    .pin_function_id     = 0b11,
+    .registers    = reinterpret_cast<lpc40xx::LPC_I2C_TypeDef *>(LPC_I2C1),
+    .id           = SystemController::Peripherals::kI2c1,
+    .irq_number   = I2C1_IRQn,
+    .transaction  = transaction_i2c1,
+    .sda_pin      = kI2c1SdaPin,
+    .scl_pin      = kI2c1SclPin,
+    .pin_function = 0b11,
   };
 
   /// Definition for I2C bus 2 for LPC17xx.
   inline static const lpc40xx::I2c::Bus_t kI2c2 = {
-    .registers = reinterpret_cast<lpc40xx::LPC_I2C_TypeDef *>(LPC_I2C2),
-    .peripheral_power_id = SystemController::Peripherals::kI2c2,
-    .irq_number          = I2C2_IRQn,
-    .transaction         = transaction_i2c2,
-    .sda_pin             = kI2c2SdaPin,
-    .scl_pin             = kI2c2SclPin,
-    .pin_function_id     = 0b10,
+    .registers    = reinterpret_cast<lpc40xx::LPC_I2C_TypeDef *>(LPC_I2C2),
+    .id           = SystemController::Peripherals::kI2c2,
+    .irq_number   = I2C2_IRQn,
+    .transaction  = transaction_i2c2,
+    .sda_pin      = kI2c2SdaPin,
+    .scl_pin      = kI2c2SclPin,
+    .pin_function = 0b10,
   };
 };
 }  // namespace lpc17xx
