@@ -19,7 +19,7 @@ sjsu::SystemController::PeripheralID GetSystemTimerID()
 {
   if constexpr (sjsu::build::IsPlatform(sjsu::build::Platform::lpc17xx))
   {
-    return sjsu::lpc17xx::SystemController::Peripherals::kCpu;
+    return sjsu::lpc17xx::SystemController::Clocks::kCpu;
   }
   else if constexpr (sjsu::build::IsPlatform(sjsu::build::Platform::lpc40xx))
   {
