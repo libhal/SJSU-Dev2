@@ -22,17 +22,22 @@
 namespace
 {
 using sjsu::cortex::InterruptController;
-// Create msp432p401r system controller to be used by low level initialization.
-sjsu::msp432p401r::SystemController system_controller;
-// Create timer0 to be used by lower level initialization for uptime calculation
+
+/// Clock configuration object for MSP432P401R devices.
+sjsu::msp432p401r::SystemController::ClockConfiguration_t clock_configuration;
+/// Create msp432p401r system controller to be used by low level initialization.
+sjsu::msp432p401r::SystemController system_controller(clock_configuration);
+
+/// Create timer0 to be used by lower level initialization for uptime
+/// calculation
 sjsu::cortex::DwtCounter arm_dwt_counter;
-// System timer is used to count milliseconds of time and to run the RTOS
-// scheduler.
-constexpr auto kDummySystemTimerPeripheralID =
-    sjsu::SystemController::PeripheralID::Define<0>();
-sjsu::cortex::SystemTimer system_timer(kDummySystemTimerPeripheralID,
-                                       configKERNEL_INTERRUPT_PRIORITY);
-// Cortex NVIC interrupt controller used to setup interrupt service routines
+
+/// System timer is used to count milliseconds of time and to run the RTOS
+/// scheduler.
+sjsu::cortex::SystemTimer system_timer(
+    sjsu::msp432p401r::SystemController::Modules::kMasterClock,
+    configKERNEL_INTERRUPT_PRIORITY);
+/// Cortex NVIC interrupt controller used to setup interrupt service routines
 sjsu::cortex::InterruptController<sjsu::msp432p401r::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>
     interrupt_controller;
@@ -164,6 +169,9 @@ void InitializePlatform()
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
 
+  system_controller.Initialize();
+
+  system_timer.Initialize();
   system_timer.SetTickFrequency(config::kRtosFrequency);
   sjsu::Status timer_start_status = system_timer.StartTimer();
 
