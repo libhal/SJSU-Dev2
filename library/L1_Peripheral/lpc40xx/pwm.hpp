@@ -184,8 +184,9 @@ class Pwm final : public sjsu::Pwm
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");
 
-    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
-        channel_.peripheral.id);
+    auto & system = sjsu::SystemController::GetPlatformController();
+
+    system.PowerUpPeripheral(channel_.peripheral.id);
 
     auto * pwm = channel_.peripheral.registers;
     // Set prescalar to 1 so the input frequency to the PWM peripheral is equal
@@ -208,8 +209,7 @@ class Pwm final : public sjsu::Pwm
     // Match register 0 is used to generate the desired frequency. If the time
     // counter TC is equal to MR0
     const units::frequency::hertz_t kPeripheralFrequency =
-        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
-            channel_.peripheral.id);
+        system.GetClockRate(channel_.peripheral.id);
 
     pwm->MR0 = (kPeripheralFrequency / frequency_hz).to<uint32_t>();
 
@@ -255,9 +255,9 @@ class Pwm final : public sjsu::Pwm
         frequency_hz == 0_Hz,
         "Cannot set frequency to 0Hz! This call will have no effect!");
 
-    auto peripheral_frequency =
-        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
-            channel_.peripheral.id);
+    auto & system = sjsu::SystemController::GetPlatformController();
+
+    auto peripheral_frequency = system.GetClockRate(channel_.peripheral.id);
     // Get the current duty cycle so we can match it to the updated frequency.
     float previous_duty_cycle = GetDutyCycle();
 
@@ -282,9 +282,8 @@ class Pwm final : public sjsu::Pwm
     units::frequency::hertz_t result = 0_Hz;
     if (match_register0 != 0)
     {
-      auto pwm_frequency = sjsu::SystemController::GetPlatformController()
-                               .GetPeripheralFrequency(channel_.peripheral.id);
-
+      auto & system      = sjsu::SystemController::GetPlatformController();
+      auto pwm_frequency = system.GetClockRate(channel_.peripheral.id);
       result = pwm_frequency / match_register0;
     }
     return result;

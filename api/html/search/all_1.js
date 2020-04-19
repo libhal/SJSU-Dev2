@@ -10,7 +10,6 @@ var searchData=
   ['adcchannel',['AdcChannel',['../db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html',1,'sjsu::lpc17xx']]],
   ['addcommand',['AddCommand',['../d1/d42/classsjsu_1_1CommandLine.html#a497ab38b6832e3e9b3cb650dd1112d1d',1,'sjsu::CommandLine']]],
   ['addcommoncommands',['AddCommonCommands',['../d0/d6b/namespacesjsu.html#a2fa6f1085c361722df3294bb5c60011d',1,'sjsu']]],
-  ['addperipheralid',['AddPeripheralID',['../de/db5/classsjsu_1_1SystemController_1_1AddPeripheralID.html',1,'sjsu::SystemController']]],
   ['address',['address',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adce62b3d21f5e350471cd087a0262e3a',1,'sjsu::I2c::Transaction_t']]],
   ['addressstring_5ft',['AddressString_t',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html',1,'sjsu::I2cCommand']]],
   ['addtask',['AddTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab2cb704019734dfbe774efe8f257d443',1,'sjsu::rtos::TaskScheduler']]],
@@ -24,5 +23,6 @@ var searchData=
   ['armsysteminfocommand',['ArmSystemInfoCommand',['../df/d55/classsjsu_1_1ArmSystemInfoCommand.html',1,'sjsu']]],
   ['attachinterrupt',['AttachInterrupt',['../dd/d3a/classsjsu_1_1Gpio.html#abc1a9fe294588f09dfac89fa487781b5',1,'sjsu::Gpio::AttachInterrupt()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb9ed5adab76ec04ac94364f325d3e1e',1,'sjsu::lpc40xx::Gpio::AttachInterrupt()'],['../d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html#acccc3fdc3577567387f6748003d8633d',1,'sjsu::msp432p401r::Gpio::AttachInterrupt()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a9ed0d0b05d6229e20bef39f9e0c0cc3c',1,'sjsu::stm32f4xx::Gpio::AttachInterrupt()']]],
   ['autocomplete',['AutoComplete',['../d9/db2/classsjsu_1_1CommandInterface.html#a67a2c34ab23faa24c56b0180bebcd6de',1,'sjsu::CommandInterface::AutoComplete()'],['../dd/d36/classsjsu_1_1I2cCommand.html#a6839ea845073f32dfa406d38efd00e2a',1,'sjsu::I2cCommand::AutoComplete()']]],
+  ['auxiliary',['auxiliary',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a3426dc47dc409c0f4c51c652ba19ec20',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['availablecolors',['AvailableColors',['../db/d32/classsjsu_1_1Ssd1306.html#ae14b7eb5dcbfdf040f1ffdc29229774c',1,'sjsu::Ssd1306::AvailableColors()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a30f0c480bec0edb9f0d56a06a35b00cb',1,'sjsu::PixelDisplay::AvailableColors()']]]
 ];

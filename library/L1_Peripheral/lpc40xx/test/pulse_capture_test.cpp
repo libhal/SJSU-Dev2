@@ -44,7 +44,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
 
   static const PulseCapture::CaptureChannelPartial_t kTestTimerPartial0 = {
     .timer_register = &test_timer_register,
-    .power_id       = SystemController::Peripherals::kTimer0,
+    .id             = SystemController::Peripherals::kTimer0,
     .irq            = IRQn::TIMER0_IRQn,
     .user_callback  = &test_timer_callback,
     .capture_pin0   = capture0_input_pin,
@@ -54,7 +54,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
 
   static const PulseCapture::CaptureChannelPartial_t kTestTimerPartial1 = {
     .timer_register = &test_timer_register,
-    .power_id       = SystemController::Peripherals::kTimer0,
+    .id             = SystemController::Peripherals::kTimer0,
     .irq            = IRQn::TIMER0_IRQn,
     .user_callback  = &test_timer_callback,
     .capture_pin0   = capture0_input_pin,
@@ -64,15 +64,11 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
 
   const PulseCapture::CaptureChannel_t kTestTimerCh0 = {
     .channel = kTestTimerPartial0,
-    .handler = []() {
-      PulseCapture::TimerHandler(kTestTimerPartial0);
-    }
+    .handler = []() { PulseCapture::TimerHandler(kTestTimerPartial0); }
   };
   const PulseCapture::CaptureChannel_t kTestTimerCh1 = {
     .channel = kTestTimerPartial1,
-    .handler = []() {
-      PulseCapture::TimerHandler(kTestTimerPartial1);
-    }
+    .handler = []() { PulseCapture::TimerHandler(kTestTimerPartial1); }
   };
 
   memset(&test_timer_register, 0, sizeof(test_timer_register));
@@ -82,10 +78,8 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
 
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetSystemFrequency))
+  When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kTestSystemFrequency);
-  When(Method(mock_system_controller, GetPeripheralClockDivider))
-      .AlwaysReturn(kTestPeripheralClockDivider);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;

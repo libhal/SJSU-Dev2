@@ -22,21 +22,18 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   Mock<sjsu::Pin> mock_sda_pin;
   Mock<sjsu::Pin> mock_scl_pin;
   Fake(Method(mock_sda_pin, SetPinFunction),
-       Method(mock_sda_pin, SetAsOpenDrain),
-       Method(mock_sda_pin, SetPull));
+       Method(mock_sda_pin, SetAsOpenDrain), Method(mock_sda_pin, SetPull));
   Fake(Method(mock_scl_pin, SetPinFunction),
-       Method(mock_scl_pin, SetAsOpenDrain),
-       Method(mock_scl_pin, SetPull));
+       Method(mock_scl_pin, SetAsOpenDrain), Method(mock_scl_pin, SetPull));
 
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
       12_MHz;
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetSystemFrequency))
+  When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
-  When(Method(mock_system_controller, GetPeripheralClockDivider))
-      .AlwaysReturn(1);
+
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   Mock<sjsu::InterruptController> mock_interrupt_controller;
@@ -50,13 +47,13 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   // object in the stack cannot be used as a template parameter for creating
   // a I2c::I2cHandler<kMockI2c> below in Bus_t kMockI2c.
   const I2c::Bus_t kMockI2c = {
-    .registers           = &local_i2c,
-    .peripheral_power_id = sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
-    .irq_number          = I2C0_IRQn,
-    .transaction         = mock_i2c_transaction,
-    .sda_pin             = mock_sda_pin.get(),
-    .scl_pin             = mock_scl_pin.get(),
-    .pin_function_id     = 0b010,
+    .registers    = &local_i2c,
+    .id           = sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
+    .irq_number   = I2C0_IRQn,
+    .transaction  = mock_i2c_transaction,
+    .sda_pin      = mock_sda_pin.get(),
+    .scl_pin      = mock_scl_pin.get(),
+    .pin_function = 0b010,
   };
   I2c test_subject(kMockI2c);
 
@@ -95,13 +92,13 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
                      (info.priority == -1);
             }));
 
-    Verify(Method(mock_sda_pin, SetPinFunction).Using(kMockI2c.pin_function_id))
+    Verify(Method(mock_sda_pin, SetPinFunction).Using(kMockI2c.pin_function))
         .Once();
     Verify(Method(mock_sda_pin, SetAsOpenDrain)).Once();
     Verify(Method(mock_sda_pin, SetPull).Using(sjsu::Pin::Resistor::kNone))
         .Once();
 
-    Verify(Method(mock_scl_pin, SetPinFunction).Using(kMockI2c.pin_function_id))
+    Verify(Method(mock_scl_pin, SetPinFunction).Using(kMockI2c.pin_function))
         .Once();
     Verify(Method(mock_scl_pin, SetAsOpenDrain)).Once();
     Verify(Method(mock_scl_pin, SetPull).Using(sjsu::Pin::Resistor::kNone))
@@ -170,11 +167,8 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     uint8_t read_buffer[10];
     uint8_t write_buffer[15];
 
-    test_subject.WriteThenRead(kAddress,
-                               write_buffer,
-                               sizeof(write_buffer),
-                               read_buffer,
-                               sizeof(read_buffer));
+    test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
+                               read_buffer, sizeof(read_buffer));
     sjsu::I2c::Transaction_t actual_transaction =
         test_subject.GetTransactionInfo();
 
@@ -300,8 +294,8 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   {
     setup_state_machine(I2c::MasterState::kTransmittedDatareceivedAck);
     uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
-    test_subject.WriteThenRead(
-        kAddress, write_buffer, sizeof(write_buffer), nullptr, 0);
+    test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
+                               nullptr, 0);
     sjsu::I2c::Transaction_t actual_transaction;
     // Each iteration should be load the next byte from write_buffer into
     // the local_i2c.DAT

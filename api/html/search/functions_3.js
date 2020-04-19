@@ -4,6 +4,7 @@ var searchData=
   ['deallocate',['deallocate',['../df/ddd/classsjsu_1_1Arena.html#a93e2a516b949cfd5027da7f445e52532',1,'sjsu::Arena::deallocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af19f79283a8c595f6f2a16c9679357ed',1,'sjsu::FixedAllocator::deallocate()']]],
   ['declaredonstackcheck',['DeclaredOnStackCheck',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#aa76073083428bbb198344ae0c30acb83',1,'sjsu::rtos::Task']]],
   ['defaultuptime',['DefaultUptime',['../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877',1,'sjsu']]],
+  ['define',['Define',['../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html#af21967154607d2d6e45629edea866669',1,'sjsu::SystemController::PeripheralID']]],
   ['delay',['Delay',['../d0/d6b/namespacesjsu.html#a7296da8e9d2335075c51565cc1a0060f',1,'sjsu']]],
   ['delete',['Delete',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a481ac77148be00467ef08270b2ec5b9b',1,'sjsu::rtos::TaskInterface::Delete()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a3e60b11d2c6ad1d9241db2498ac1f44a',1,'sjsu::rtos::Task::Delete()']]],
   ['deleteblock',['DeleteBlock',['../dc/d5f/classsjsu_1_1Sd.html#a8257f7a0c775cb1c0b55f366aad96cda',1,'sjsu::Sd']]],

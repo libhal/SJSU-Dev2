@@ -10,12 +10,11 @@ TEST_CASE("Testing lpc40xx Timer", "[lpc40xx-timer]")
   LPC_TIM_TypeDef local_timer_registers;
   memset(&local_timer_registers, 0, sizeof(local_timer_registers));
 
-  constexpr units::frequency::hertz_t kSystemControllerClockFrequency = 12_MHz;
-  constexpr uint32_t kExpectedPeripheralClockDivider                  = 1;
   constexpr SystemController::PeripheralID kExpectedPeripheralId =
       SystemController::Peripherals::kTimer0;
-  constexpr int kExpectedIrq                   = 0;
-  constexpr size_t kExpectedMatchRegisterCount = 4;
+  constexpr units::frequency::hertz_t kClockFrequency = 12_MHz;
+  constexpr int kExpectedIrq                          = 0;
+  constexpr size_t kExpectedMatchRegisterCount        = 4;
 
   // Setup mock interrupt controller
   Mock<sjsu::InterruptController> mock_interrupt_controller;
@@ -26,10 +25,8 @@ TEST_CASE("Testing lpc40xx Timer", "[lpc40xx-timer]")
   // Setup mock system controller
   Mock<sjsu::SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
-  When(Method(mock_system_controller, GetSystemFrequency))
-      .AlwaysReturn(kSystemControllerClockFrequency);
-  When(Method(mock_system_controller, GetPeripheralClockDivider))
-      .AlwaysReturn(kExpectedPeripheralClockDivider);
+  When(Method(mock_system_controller, GetClockRate))
+      .AlwaysReturn(kClockFrequency);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   const Timer::Peripheral_t kTimerPeripheral = {
@@ -44,7 +41,7 @@ TEST_CASE("Testing lpc40xx Timer", "[lpc40xx-timer]")
     // Setup
     constexpr units::frequency::hertz_t kExpectedFrequency = 1_MHz;
     constexpr uint32_t kExpectedPrescaler =
-        kSystemControllerClockFrequency / kExpectedFrequency;
+        kClockFrequency / kExpectedFrequency;
 
     // Exercise
     const Status kStatus = timer.Initialize(kExpectedFrequency);

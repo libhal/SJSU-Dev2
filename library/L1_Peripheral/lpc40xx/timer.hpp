@@ -86,17 +86,17 @@ class Timer final : public sjsu::Timer
                     InterruptCallback callback = nullptr,
                     int32_t priority           = -1) const override
   {
-    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
-        timer_.id);
+    auto & system = sjsu::SystemController::GetPlatformController();
+    system.PowerUpPeripheral(timer_.id);
+
     SJ2_ASSERT_FATAL(
         frequency.to<uint32_t>() != 0,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
+
     // Set Prescale register for Prescale Counter to milliseconds
-    auto peripheral_frequency =
-        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
-            timer_.id);
-    uint32_t prescaler    = peripheral_frequency / frequency;
-    timer_.peripheral->PR = prescaler;
+    auto peripheral_frequency = system.GetClockRate(timer_.id);
+    uint32_t prescaler        = peripheral_frequency / frequency;
+    timer_.peripheral->PR     = prescaler;
 
     // Take the class's address and a copy of the callback for use in the
     // interrupt handler.
@@ -128,8 +128,7 @@ class Timer final : public sjsu::Timer
                      match_register);
 
     timer_.peripheral->MCR =
-        bit::Insert(timer_.peripheral->MCR,
-                    static_cast<uint32_t>(action),
+        bit::Insert(timer_.peripheral->MCR, static_cast<uint32_t>(action),
                     {
                         .position = static_cast<uint8_t>(match_register * 3),
                         .width    = 3,

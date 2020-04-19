@@ -29,12 +29,6 @@ class ArmSystemInfoCommand final : public Command
 
   int Program(int, const char * const[]) override
   {
-    uint32_t system_frequency =
-        SystemController::GetPlatformController().GetSystemFrequency() / 1_kHz;
-    uint32_t peripheral_frequency =
-        SystemController::GetPlatformController().GetPeripheralFrequency({}) /
-        1_kHz;
-
     intptr_t top_of_stack         = reinterpret_cast<intptr_t>(&StackTop);
     intptr_t master_stack_pointer = sjsu::cortex::__get_MSP();
     intptr_t used_stack           = top_of_stack - master_stack_pointer;
@@ -44,8 +38,6 @@ class ArmSystemInfoCommand final : public Command
 
     printf("System Information:\n");
     printf("-------------------\n");
-    printf("    System Clock: %" PRIu32 " kHz\n", system_frequency);
-    printf("Peripheral Clock: %" PRIu32 " kHz\n", peripheral_frequency);
     printf("       Stack Top: 0x%" PRIXPTR "\n", top_of_stack);
     printf("   Stack Pointer: 0x%" PRIXPTR "\n", master_stack_pointer);
     printf("      Stack Used: %" PRIuPTR " Bytes\n", used_stack);

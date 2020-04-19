@@ -90,33 +90,34 @@ class SystemController final : public sjsu::SystemController
   {
    public:
     //! @cond Doxygen_Suppress
-    static constexpr auto kTimer0            = AddPeripheralID<1>();
-    static constexpr auto kTimer1            = AddPeripheralID<2>();
-    static constexpr auto kUart0             = AddPeripheralID<3>();
-    static constexpr auto kUart1             = AddPeripheralID<4>();
-    static constexpr auto kPwm1              = AddPeripheralID<6>();
-    static constexpr auto kI2c0              = AddPeripheralID<7>();
-    static constexpr auto kSpi               = AddPeripheralID<8>();
-    static constexpr auto kRtc               = AddPeripheralID<9>();
-    static constexpr auto kSsp1              = AddPeripheralID<10>();
-    static constexpr auto kAdc               = AddPeripheralID<12>();
-    static constexpr auto kCan1              = AddPeripheralID<13>();
-    static constexpr auto kCan2              = AddPeripheralID<14>();
-    static constexpr auto kGpio              = AddPeripheralID<15>();
-    static constexpr auto kRit               = AddPeripheralID<16>();
-    static constexpr auto kMotorControlPwm   = AddPeripheralID<17>();
-    static constexpr auto kQuadratureEncoder = AddPeripheralID<18>();
-    static constexpr auto kI2c1              = AddPeripheralID<19>();
-    static constexpr auto kSsp0              = AddPeripheralID<21>();
-    static constexpr auto kTimer2            = AddPeripheralID<22>();
-    static constexpr auto kTimer3            = AddPeripheralID<23>();
-    static constexpr auto kUart2             = AddPeripheralID<24>();
-    static constexpr auto kUart3             = AddPeripheralID<25>();
-    static constexpr auto kI2c2              = AddPeripheralID<26>();
-    static constexpr auto kI2s               = AddPeripheralID<27>();
-    static constexpr auto kGpdma             = AddPeripheralID<29>();
-    static constexpr auto kEthernet          = AddPeripheralID<30>();
-    static constexpr auto kUsb               = AddPeripheralID<31>();
+    static constexpr auto kTimer0            = PeripheralID::Define<1>();
+    static constexpr auto kTimer1            = PeripheralID::Define<2>();
+    static constexpr auto kUart0             = PeripheralID::Define<3>();
+    static constexpr auto kUart1             = PeripheralID::Define<4>();
+    static constexpr auto kPwm1              = PeripheralID::Define<6>();
+    static constexpr auto kI2c0              = PeripheralID::Define<7>();
+    static constexpr auto kSpi               = PeripheralID::Define<8>();
+    static constexpr auto kRtc               = PeripheralID::Define<9>();
+    static constexpr auto kSsp1              = PeripheralID::Define<10>();
+    static constexpr auto kAdc               = PeripheralID::Define<12>();
+    static constexpr auto kCan1              = PeripheralID::Define<13>();
+    static constexpr auto kCan2              = PeripheralID::Define<14>();
+    static constexpr auto kGpio              = PeripheralID::Define<15>();
+    static constexpr auto kRit               = PeripheralID::Define<16>();
+    static constexpr auto kMotorControlPwm   = PeripheralID::Define<17>();
+    static constexpr auto kQuadratureEncoder = PeripheralID::Define<18>();
+    static constexpr auto kI2c1              = PeripheralID::Define<19>();
+    static constexpr auto kSsp0              = PeripheralID::Define<21>();
+    static constexpr auto kTimer2            = PeripheralID::Define<22>();
+    static constexpr auto kTimer3            = PeripheralID::Define<23>();
+    static constexpr auto kUart2             = PeripheralID::Define<24>();
+    static constexpr auto kUart3             = PeripheralID::Define<25>();
+    static constexpr auto kI2c2              = PeripheralID::Define<26>();
+    static constexpr auto kI2s               = PeripheralID::Define<27>();
+    static constexpr auto kGpdma             = PeripheralID::Define<29>();
+    static constexpr auto kEthernet          = PeripheralID::Define<30>();
+    static constexpr auto kUsb               = PeripheralID::Define<31>();
+    static constexpr auto kCpu               = PeripheralID::Define<32>();
     //! @endcond
   };
 
@@ -184,6 +185,25 @@ class SystemController final : public sjsu::SystemController
   /// Pointer to the system controller peripheral in memory.
   inline static LPC_SC_TypeDef * system_controller = LPC_SC;
 
+  // TODO(#1140): Migrate to SystemController V2.0
+  void Initialize() override
+  {
+    return;
+  }
+
+  /// @return the a pointer to the clock configuration object used to configure
+  /// this system controller.
+  void * GetClockConfiguration() override
+  {
+    return nullptr;
+  }
+
+  /// @return the clock rate frequency of a peripheral
+  units::frequency::hertz_t GetClockRate(PeripheralID peripheral) const override
+  {
+    return GetSystemFrequency() / GetPeripheralClockDivider(peripheral);
+  }
+
   /// Sets a desired CPU speed by using the internal RC as the oscillator source
   /// and configuring PLL0.
   ///
@@ -192,8 +212,7 @@ class SystemController final : public sjsu::SystemController
   ///       generate a precise enough clock to be used by the USB subsystem.
   ///
   /// @param frequency The desired CPU Clock frequency in megahertz.
-  void SetSystemClockFrequency(
-      units::frequency::megahertz_t frequency) const override
+  void SetSystemClockFrequency(units::frequency::megahertz_t frequency) const
   {
     // The following sequence is specified in the LPC176x/5x User Manual
     // Section 4.5.13 and must be followed step by step in order to have PLL0
@@ -223,12 +242,12 @@ class SystemController final : public sjsu::SystemController
     //    The PLL0CFG can only be updated when PLL0 is disabled.
     const PllSettings_t kPll0Settings =
         CalculatePll0(kDefaultIRCFrequency, frequency);
-    system_controller->PLL0CFG = bit::Insert(system_controller->PLL0CFG,
-                                             kPll0Settings.multiplier,
-                                             MainPll::kMultiplier);
-    system_controller->PLL0CFG = bit::Insert(system_controller->PLL0CFG,
-                                             kPll0Settings.pre_divider,
-                                             MainPll::kPreDivider);
+    system_controller->PLL0CFG =
+        bit::Insert(system_controller->PLL0CFG, kPll0Settings.multiplier,
+                    MainPll::kMultiplier);
+    system_controller->PLL0CFG =
+        bit::Insert(system_controller->PLL0CFG, kPll0Settings.pre_divider,
+                    MainPll::kPreDivider);
     WritePllFeedSequence(PllSelect::kMainPll);
     // 6. Enable PLL0 with one feed sequence.
     system_controller->PLL0CON =
@@ -279,9 +298,9 @@ class SystemController final : public sjsu::SystemController
       Value(UsbPllMultiplier::kMultiplyBy3),
       Value(UsbPllMultiplier::kMultiplyBy2),
     };
-    system_controller->PLL1CFG = bit::Insert(system_controller->PLL1CFG,
-                                             kMultiplier[Value(frequency)],
-                                             UsbPll::kMultiplier);
+    system_controller->PLL1CFG =
+        bit::Insert(system_controller->PLL1CFG, kMultiplier[Value(frequency)],
+                    UsbPll::kMultiplier);
     system_controller->PLL1CFG =
         bit::Insert(system_controller->PLL1CFG, kDivider, UsbPll::kDivider);
     WritePllFeedSequence(PllSelect::kUsbPll);
@@ -308,8 +327,8 @@ class SystemController final : public sjsu::SystemController
   ///
   /// @param peripheral_select  Peripheral to configure.
   /// @param peripheral_divider Peripheral clock divider value.
-  void SetPeripheralClockDivider(const PeripheralID & peripheral_select,
-                                 uint8_t peripheral_divider) const override
+  void SetPeripheralClockDivider(PeripheralID peripheral_select,
+                                 uint8_t peripheral_divider) const
   {
     const bool kIsCanPeripheral =
         peripheral_select.device_id == Peripherals::kCan1.device_id ||
@@ -355,7 +374,7 @@ class SystemController final : public sjsu::SystemController
 
   /// @returns The clock divider for the specified peripheral.
   uint32_t GetPeripheralClockDivider(
-      const PeripheralID & peripheral_select) const override
+      PeripheralID peripheral_select) const
   {
     volatile uint32_t * pclk_sel =
         GetPeripheralClockSelectRegister(peripheral_select);
@@ -389,26 +408,27 @@ class SystemController final : public sjsu::SystemController
     return peripheral_clock_divider;
   }
 
-  units::frequency::hertz_t GetSystemFrequency() const override
+  /// Returns the last set frequency of the system
+  units::frequency::hertz_t GetSystemFrequency() const
   {
     return speed_in_hertz;
   }
+
   /// Check if a peripheral is powered up by checking the power connection
   /// register. Should typically only be used for unit testing code and
   /// debugging.
-  bool IsPeripheralPoweredUp(
-      const PeripheralID & peripheral_select) const override
+  bool IsPeripheralPoweredUp(PeripheralID peripheral_select) const override
   {
     return bit::Read(system_controller->PCONP, peripheral_select.device_id);
   }
-  void PowerUpPeripheral(const PeripheralID & peripheral_select) const override
+
+  void PowerUpPeripheral(PeripheralID peripheral_select) const override
   {
     system_controller->PCONP =
         bit::Set(system_controller->PCONP, peripheral_select.device_id);
   }
 
-  void PowerDownPeripheral(
-      const PeripheralID & peripheral_select) const override
+  void PowerDownPeripheral(PeripheralID peripheral_select) const override
   {
     system_controller->PCONP =
         bit::Clear(system_controller->PCONP, peripheral_select.device_id);
@@ -419,9 +439,9 @@ class SystemController final : public sjsu::SystemController
 
   void SelectOscillatorSource(OscillatorSource source) const
   {
-    system_controller->CLKSRCSEL = bit::Insert(system_controller->CLKSRCSEL,
-                                               static_cast<uint32_t>(source),
-                                               Oscillator::kSelect);
+    system_controller->CLKSRCSEL =
+        bit::Insert(system_controller->CLKSRCSEL, static_cast<uint32_t>(source),
+                    Oscillator::kSelect);
   }
 
   /// Calculates the multiplier. pre-divider, and CPU clock divider required to
@@ -573,14 +593,14 @@ class SystemController final : public sjsu::SystemController
   /// @param cpu_divider 8-bit divider ranging from 0 - 255.
   void SetCpuClockDivider(uint8_t cpu_divider) const
   {
-    system_controller->CCLKCFG = bit::Insert(
-        system_controller->CCLKCFG, cpu_divider, CpuClock::kDivider);
+    system_controller->CCLKCFG = bit::Insert(system_controller->CCLKCFG,
+                                             cpu_divider, CpuClock::kDivider);
   }
 
   /// @returns  Pointer to the PCLKSEL0 or PCLKSEL1 register based on the
   ///           peripheral's device_id.
   volatile uint32_t * GetPeripheralClockSelectRegister(
-      const PeripheralID & peripheral_select) const
+      PeripheralID peripheral_select) const
   {
     if (peripheral_select.device_id > 15)
     {
@@ -593,7 +613,7 @@ class SystemController final : public sjsu::SystemController
   ///           peripheral's divider select in the PCLKSEL0 or PCLKSEL1
   ///           register.
   bit::Mask CalculatePeripheralClockDividerMask(
-      const PeripheralID & peripheral_select) const
+      PeripheralID peripheral_select) const
   {
     constexpr uint8_t kMaxBitWidth = 32;
     const uint8_t kLowBit  = (peripheral_select.device_id * 2) % kMaxBitWidth;

@@ -214,26 +214,21 @@ inline sjsu::SystemController & GetInactive<sjsu::SystemController>()
   class InactiveSystemController : public sjsu::SystemController
   {
    public:
-    void SetSystemClockFrequency(units::frequency::megahertz_t) const override
+    void Initialize() override {}
+    void * GetClockConfiguration() override
     {
+      return nullptr;
     }
-    uint32_t GetPeripheralClockDivider(const PeripheralID &) const override
+    units::frequency::hertz_t GetClockRate(PeripheralID) const override
     {
-      return 1;
+      return 0_Hz;
     }
-    units::frequency::hertz_t GetSystemFrequency() const override
-    {
-      return config::kSystemClockRateMhz;
-    }
-    bool IsPeripheralPoweredUp(const PeripheralID &) const override
+    bool IsPeripheralPoweredUp(PeripheralID) const override
     {
       return false;
     }
-    void SetPeripheralClockDivider(const PeripheralID &, uint8_t) const override
-    {
-    }
-    void PowerUpPeripheral(const PeripheralID &) const override {}
-    void PowerDownPeripheral(const PeripheralID &) const override {}
+    void PowerUpPeripheral(PeripheralID) const override {}
+    void PowerDownPeripheral(PeripheralID) const override {}
   };
 
   static InactiveSystemController inactive;

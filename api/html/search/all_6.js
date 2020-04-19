@@ -14,8 +14,8 @@ var searchData=
   ['frameerror_5ft',['FrameError_t',['../df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html',1,'sjsu::lpc40xx::Can']]],
   ['frameerrorcodes',['FrameErrorCodes',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a06ff56d88ad8726d7475313d6d806b93',1,'sjsu::lpc40xx::Can']]],
   ['frameinfo',['FrameInfo',['../d5/d45/structsjsu_1_1lpc40xx_1_1Can_1_1FrameInfo.html',1,'sjsu::lpc40xx::Can']]],
-  ['frequency',['Frequency',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a598178103e64537a0dd2abe6838327b6',1,'sjsu::rtos::PeriodicScheduler']]],
-  ['frequency_5fselect',['frequency_select',['../d6/d89/structsjsu_1_1msp432p401r_1_1SystemController_1_1DcoConfiguration__t.html#a1b0ad718a0d58b0cb6f0e3e0cf73c54c',1,'sjsu::msp432p401r::SystemController::DcoConfiguration_t']]],
+  ['frequency',['Frequency',['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a598178103e64537a0dd2abe6838327b6',1,'sjsu::rtos::PeriodicScheduler::Frequency()'],['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a8c904662b9fbee848d398db51ca60594',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t::frequency()']]],
+  ['frequency_5fselect',['frequency_select',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#ac5e3694262a26951a7b514fa97eea3ae',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['frequencycounter',['FrequencyCounter',['../d6/d0f/classsjsu_1_1FrequencyCounter.html',1,'sjsu::FrequencyCounter'],['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a2416155f94eeb4b1bf8998f5e6b6296e',1,'sjsu::FrequencyCounter::FrequencyCounter()']]],
   ['function_5fmap',['function_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a362622236e910dba04f12d5cb7fddcf6',1,'sjsu::lpc17xx::Pin']]]
 ];

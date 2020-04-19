@@ -1,11 +1,11 @@
 var searchData=
 [
   ['mac',['mac',['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#ac496c58a4c6fe4cd87415b730a993772',1,'sjsu::WiFi::NetworkConnection_t']]],
-  ['mainclocksource',['MainClockSource',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a068bfd7027cfccc749df4b76f04bf0d1',1,'sjsu::lpc40xx::SystemController']]],
   ['mainpll',['MainPll',['../d0/d83/structsjsu_1_1lpc17xx_1_1SystemController_1_1MainPll.html',1,'sjsu::lpc17xx::SystemController']]],
   ['map',['Map',['../d0/d6b/namespacesjsu.html#aab8ca257071bdc5d7a663c24d44b518b',1,'sjsu']]],
   ['maptype',['MapType',['../d0/da2/classsjsu_1_1Device.html#a1bb7916d1f646b0b9b1f18f57f5b9e71',1,'sjsu::Device']]],
   ['mask',['Mask',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html',1,'sjsu::bit']]],
+  ['master',['master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a55d71625d5ebddc796c2e04dab54363a',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['masterstate',['MasterState',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a9a5a932d99ae273205a55913aedc1c22',1,'sjsu::lpc40xx::I2c']]],
   ['matchaction',['MatchAction',['../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8',1,'sjsu::Timer']]],
   ['matchcontrol',['MatchControl',['../d1/dd9/structsjsu_1_1lpc40xx_1_1Pwm_1_1MatchControl.html',1,'sjsu::lpc40xx::Pwm']]],
@@ -19,9 +19,10 @@ var searchData=
   ['miso',['miso',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a70275f2510b3058f77b8f2964731a05e',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu::Mma8452q'],['../d5/d82/classsjsu_1_1Mma8452q.html#ac25e7d66b9531cd385721ba1757fab7a',1,'sjsu::Mma8452q::Mma8452q()']]],
   ['mode',['Mode',['../d0/d98/structsjsu_1_1lpc40xx_1_1Can_1_1Mode.html',1,'sjsu::lpc40xx::Can::Mode'],['../d8/d99/classsjsu_1_1Apds9960.html#a155e7ccfaca8504191453e3a395b3c82',1,'sjsu::Apds9960::Mode()']]],
+  ['modules',['Modules',['../d5/d44/classsjsu_1_1msp432p401r_1_1SystemController_1_1Modules.html',1,'sjsu::msp432p401r::SystemController']]],
   ['mosi',['mosi',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ae3cf6225b5c2b9bb40f74830df712b31',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['mount',['Mount',['../dc/d5f/classsjsu_1_1Sd.html#aebdf692b25d5b539a3415d040d309407',1,'sjsu::Sd']]],
   ['movetolinestart',['MoveToLineStart',['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a05b2be125e0004307303f5097ed271cc',1,'sjsu::GraphicalTerminal']]],
   ['multiplier',['multiplier',['../df/d55/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllSettings__t.html#a8512307eb0db5885392ad3713aa0f971',1,'sjsu::lpc17xx::SystemController::PllSettings_t']]],
-  ['multiply',['multiply',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t']]]
+  ['multiply',['multiply',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#ae4dfb55b5ee86ca42d9243ca04f0fd8c',1,'sjsu::lpc40xx::SystemController::ClockConfiguration::multiply()'],['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t::multiply()']]]
 ];

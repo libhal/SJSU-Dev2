@@ -115,8 +115,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5bbb04b07858ac575b07fc58ecbfe524"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a5bbb04b07858ac575b07fc58ecbfe524">SystemTimer</a> (uint8_t priority=-1)</td></tr>
-<tr class="separator:a5bbb04b07858ac575b07fc58ecbfe524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4b66a919d4f7c7c96a34d2575e17792"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ae4b66a919d4f7c7c96a34d2575e17792">SystemTimer</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">sjsu::SystemController::PeripheralID</a> id, uint8_t priority=-1)</td></tr>
+<tr class="separator:ae4b66a919d4f7c7c96a34d2575e17792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memItemLeft" align="right" valign="top"><a id="a9fecf977b3d1f5f8d1c8be0a297a6618"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fecf977b3d1f5f8d1c8be0a297a6618">Initialize</a> () const override</td></tr>
 <tr class="memdesc:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize system timer hardware. <br /></td></tr>
@@ -183,8 +183,8 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5bbb04b07858ac575b07fc58ecbfe524"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bbb04b07858ac575b07fc58ecbfe524">&#9670;&nbsp;</a></span>SystemTimer()</h2>
+<a id="ae4b66a919d4f7c7c96a34d2575e17792"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4b66a919d4f7c7c96a34d2575e17792">&#9670;&nbsp;</a></span>SystemTimer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,9 +195,19 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
         <tr>
           <td class="memname">constexpr sjsu::cortex::SystemTimer::SystemTimer </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>priority</em> = <code>-1</code></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">sjsu::SystemController::PeripheralID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>priority</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -209,6 +219,7 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p>Constructor for ARM Cortex M system timer.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">id</td><td>- id of the system controller for this platform. This is used to recover the operating speed of the <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html">SystemTimer</a>. </td></tr>
     <tr><td class="paramname">priority</td><td>- the interrupt priority of </td></tr>
   </table>
   </dd>

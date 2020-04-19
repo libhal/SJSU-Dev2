@@ -19,7 +19,7 @@
 // Private namespace to make sure that these do not conflict with other globals
 namespace
 {
-// Create LPC40xx system controller to be used by low level initialization.
+// Create LPC17xx system controller to be used by low level initialization.
 sjsu::lpc17xx::SystemController system_controller;
 // Create timer0 to be used by lower level initialization for uptime calculation
 sjsu::cortex::DwtCounter arm_dwt_counter;
@@ -27,7 +27,9 @@ sjsu::cortex::DwtCounter arm_dwt_counter;
 sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0);
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
-sjsu::cortex::SystemTimer system_timer(configKERNEL_INTERRUPT_PRIORITY);
+sjsu::cortex::SystemTimer system_timer(
+    sjsu::lpc40xx::SystemController::Peripherals::kCpu,
+    configKERNEL_INTERRUPT_PRIORITY);
 // Platform interrupt controller for Arm Cortex microcontrollers.
 sjsu::cortex::InterruptController<sjsu::lpc17xx::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>
@@ -154,6 +156,9 @@ void InitializePlatform()
   // This will be used by other libraries to enable and disable interrupts.
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
+
+  // TODO(#1136): remove this when lpc17xx::SystemController no longer uses
+  //              SetSystemClockFrequency.
   // Set Clock Speed
   // SetSystemClockFrequency will timeout return the offset between desire
   // clockspeed and actual clockspeed if the PLL doesn't get a frequency fix

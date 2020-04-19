@@ -8,5 +8,6 @@ var searchData=
   ['line_5fnumber',['line_number',['../d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html#a75e9868670c3fc35cea39f6f59a330b3',1,'sjsu::St7066u::CursorPosition_t']]],
   ['location',['location',['../d1/d7c/structsjsu_1_1Error__t.html#ace6b05991298446d2ad8d893a689f3a7',1,'sjsu::Error_t']]],
   ['logic_5fhigh_5fduration',['logic_high_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#ad58abf81cb19141f2bbb884028466ee0',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
-  ['logic_5flow_5fduration',['logic_low_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a79c8ab455b690cbc4c3ee2a79c953d05',1,'sjsu::infrared::PulseDurationConfiguration_t']]]
+  ['logic_5flow_5fduration',['logic_low_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a79c8ab455b690cbc4c3ee2a79c953d05',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
+  ['low_5fspeed_5fdivider',['low_speed_divider',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a3ac43a6164c75e3eae05f539b3d533a6',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]]
 ];

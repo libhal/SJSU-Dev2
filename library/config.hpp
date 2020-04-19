@@ -100,7 +100,9 @@ namespace config
 /// Delcare Constant ENABLE_ANSI_CODES
 SJ2_DECLARE_CONSTANT(ENABLE_ANSI_CODES, bool, kEnableAnsiCodes);
 
-/// Used to set the system clock speed for the LPC4078 in MHz
+// TODO(#1136): Remove when nothing depends on this anymore.
+/// Used to set the system clock speed in MHz
+/// @deprecated
 #if !defined(SJ2_SYSTEM_CLOCK_RATE_MHZ)
 #define SJ2_SYSTEM_CLOCK_RATE_MHZ 48_MHz
 #endif  // !defined(SJ2_SYSTEM_CLOCK_RATE)

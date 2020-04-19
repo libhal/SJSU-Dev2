@@ -46,7 +46,7 @@ class PulseCapture final : public sjsu::PulseCapture
     /// Pointer to memory-mapped timer peripheral registres
     LPC_TIM_TypeDef * timer_register;
     /// Peripheral ID of the timer peripheral to power on at initialization
-    sjsu::SystemController::PeripheralID power_id;
+    sjsu::SystemController::PeripheralID id;
     /// Interrupt number associated with this timer
     IRQn irq;
     /// Callback invoked during a capture event
@@ -87,7 +87,7 @@ class PulseCapture final : public sjsu::PulseCapture
     inline static const Pin kCapture0Channel1Pin               = Pin(1, 27);
     inline static const CaptureChannelPartial_t kTimerPartial0 = {
       .timer_register = LPC_TIM0,
-      .power_id       = SystemController::Peripherals::kTimer0,
+      .id             = SystemController::Peripherals::kTimer0,
       .irq            = IRQn::TIMER0_IRQn,
       .user_callback  = &timer0_callback,
       .capture_pin0   = kCapture0Channel0Pin,
@@ -103,7 +103,7 @@ class PulseCapture final : public sjsu::PulseCapture
     inline static const Pin kCapture1Pin                       = Pin(1, 14);
     inline static const CaptureChannelPartial_t kTimerPartial1 = {
       .timer_register = LPC_TIM1,
-      .power_id       = SystemController::Peripherals::kTimer1,
+      .id             = SystemController::Peripherals::kTimer1,
       .irq            = IRQn::TIMER1_IRQn,
       .user_callback  = &timer1_callback,
       .capture_pin0   = kCapture1Channel0Pin,
@@ -118,7 +118,7 @@ class PulseCapture final : public sjsu::PulseCapture
     inline static const Pin kCapture2Channel1Pin               = Pin(0, 5);
     inline static const CaptureChannelPartial_t kTimerPartial2 = {
       .timer_register = LPC_TIM2,
-      .power_id       = SystemController::Peripherals::kTimer2,
+      .id             = SystemController::Peripherals::kTimer2,
       .irq            = IRQn::TIMER2_IRQn,
       .user_callback  = &timer2_callback,
       .capture_pin0   = kCapture2Channel0Pin,
@@ -133,7 +133,7 @@ class PulseCapture final : public sjsu::PulseCapture
     inline static const Pin kCapture3Channel1Pin               = Pin(0, 24);
     inline static const CaptureChannelPartial_t kTimerPartial3 = {
       .timer_register = LPC_TIM3,
-      .power_id       = SystemController::Peripherals::kTimer3,
+      .id             = SystemController::Peripherals::kTimer3,
       .irq            = IRQn::TIMER3_IRQn,
       .user_callback  = &timer3_callback,
       .capture_pin0   = kCapture3Channel0Pin,
@@ -162,7 +162,8 @@ class PulseCapture final : public sjsu::PulseCapture
 
     /// Structure that defines the capture channels associated with timer 3
     inline static const CaptureChannel_t kCaptureTimer3 = {
-      .channel = kTimerPartial3, .handler = TimerHandler<kTimerPartial3>
+      .channel = kTimerPartial3,
+      .handler = TimerHandler<kTimerPartial3>
     };
   };  // struct Channel
 
@@ -189,9 +190,9 @@ class PulseCapture final : public sjsu::PulseCapture
 
       (*channel.user_callback)(status);
     }
-    channel.timer_register->IR = bit::Insert(channel.timer_register->IR,
-                                             kResetCaptureInterrupts,
-                                             kCaptureInterruptFlagBit);
+    channel.timer_register->IR =
+        bit::Insert(channel.timer_register->IR, kResetCaptureInterrupts,
+                    kCaptureInterruptFlagBit);
   }
   /// Constructor for LPC40xx timer peripheral
   ///
@@ -209,21 +210,19 @@ class PulseCapture final : public sjsu::PulseCapture
   /// This METHOD MUST BE EXECUTED before any other method can be called.
   /// Powers on the peripheral, configures the timer pins.
   /// See page 687 of the user manual UM10562 LPC408x/407x for more details.
+  /// NOTE: Same initialization as Timer library's Initialize()
   Status Initialize(CaptureCallback callback   = nullptr,
                     int32_t interrupt_priority = -1) const override
   {
-    // NOTE: Same initialization as Timer library's Initialize()
-    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
-        timer_.channel.power_id);
+    auto & system = sjsu::SystemController::GetPlatformController();
+
+    system.PowerUpPeripheral(timer_.channel.id);
     SJ2_ASSERT_FATAL(
         frequency_ != 0_Hz,
         "Cannot have zero ticks per microsecond, please choose 1 or more.");
 
     // Configure prescaler
-    uint32_t prescaler =
-        sjsu::SystemController::GetPlatformController().GetPeripheralFrequency(
-            timer_.channel.power_id) /
-        this->frequency_;
+    uint32_t prescaler = system.GetClockRate(timer_.channel.id) / frequency_;
     timer_.channel.timer_register->PR = prescaler;
 
     // Enable timer
@@ -270,8 +269,7 @@ class PulseCapture final : public sjsu::PulseCapture
 
     timer_.channel.timer_register->CCR =
         bit::Insert(timer_.channel.timer_register->CCR,
-                    static_cast<uint32_t>(mode),
-                    kModeBits[which]);
+                    static_cast<uint32_t>(mode), kModeBits[which]);
   }
 
   /// Enables or disables the capture event interrupt
@@ -293,8 +291,7 @@ class PulseCapture final : public sjsu::PulseCapture
 
     timer_.channel.timer_register->CCR =
         bit::Insert(timer_.channel.timer_register->CCR,
-                    static_cast<uint32_t>(enabled),
-                    kEnableBits[which]);
+                    static_cast<uint32_t>(enabled), kEnableBits[which]);
     timer_.channel.timer_register->IR = bit::Set(
         timer_.channel.timer_register->IR, kPendingBits[which].position);
   }
@@ -303,6 +300,6 @@ class PulseCapture final : public sjsu::PulseCapture
   const CaptureChannel_t & timer_;
   const CaptureChannelNumber channel_;         // NOLINT
   const units::frequency::hertz_t frequency_;  // NOLINT
-};  // class Capture
-};  // namespace lpc40xx
-};  // namespace sjsu
+};                                             // class Capture
+};                                             // namespace lpc40xx
+};                                             // namespace sjsu

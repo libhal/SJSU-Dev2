@@ -129,6 +129,10 @@ $(function() {
 <li>kBackupClockSourceSelect
 : <a class="el" href="d8/d36/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control1Register.html#a7069b03ecb56c4e7d76ac599bde53d1e">sjsu::msp432p401r::SystemController::Control1Register</a>
 </li>
+<li>kBeyond
+: <a class="el" href="dd/d68/classsjsu_1_1stm32f10x_1_1SystemController_1_1Peripherals.html#a6d8cfd2035c66c62913a78e4582e47d3">sjsu::stm32f10x::SystemController::Peripherals</a>
+, <a class="el" href="de/d68/classsjsu_1_1stm32f4xx_1_1SystemController_1_1Peripherals.html#a38c3554934327d7d41a07a44fd9ad9f0">sjsu::stm32f4xx::SystemController::Peripherals</a>
+</li>
 <li>kBias
 : <a class="el" href="dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html#aa98aaa5479a5da965d827fa510ecf34f">sjsu::lpc40xx::Dac::Control</a>
 </li>
@@ -222,6 +226,9 @@ $(function() {
 </li>
 <li>kClockFrequency
 : <a class="el" href="dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a81bdaa0efc54b01da70afa55fd4c44f9">sjsu::lpc40xx::Adc</a>
+</li>
+<li>kClockPeripheralCount
+: <a class="el" href="dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a6e847d7cf61b8bb8a0656237527b0b7b">sjsu::msp432p401r::SystemController</a>
 </li>
 <li>kColumnHeight
 : <a class="el" href="db/d32/classsjsu_1_1Ssd1306.html#adb13a9458ce8e8c3aff30b9faefa396d">sjsu::Ssd1306</a>
@@ -344,12 +351,12 @@ $(function() {
 <li>kDivider
 : <a class="el" href="d9/d69/structsjsu_1_1lpc17xx_1_1SystemController_1_1CpuClock.html#ae98fe5b9387299ed1707718068bfabfa">sjsu::lpc17xx::SystemController::CpuClock</a>
 , <a class="el" href="d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html#aa6111986a126fe3310b6c71c36410e62">sjsu::lpc17xx::SystemController::UsbPll</a>
-, <a class="el" href="d2/d80/structsjsu_1_1lpc40xx_1_1SystemController_1_1CpuClock.html#aa3f9db20699f7be8ff52ffa519f5ab06">sjsu::lpc40xx::SystemController::CpuClock</a>
-, <a class="el" href="dc/d31/structsjsu_1_1lpc40xx_1_1SystemController_1_1EmcClock.html#acdab760fd21d0c6df80fc962afcd39ab">sjsu::lpc40xx::SystemController::EmcClock</a>
-, <a class="el" href="d2/d50/structsjsu_1_1lpc40xx_1_1SystemController_1_1PeripheralClock.html#a0660cd23a3b0de0e961f0b0655114e97">sjsu::lpc40xx::SystemController::PeripheralClock</a>
-, <a class="el" href="d7/dde/structsjsu_1_1lpc40xx_1_1SystemController_1_1Pll.html#ac725440e381104382e463948fa00e5d4">sjsu::lpc40xx::SystemController::Pll</a>
-, <a class="el" href="db/d64/structsjsu_1_1lpc40xx_1_1SystemController_1_1SpiFiClock.html#a6ac21d22ccf338d8e6a262cc57b1130f">sjsu::lpc40xx::SystemController::SpiFiClock</a>
-, <a class="el" href="d2/d0a/structsjsu_1_1lpc40xx_1_1SystemController_1_1UsbClock.html#a6b02d1a7c69909dbd8f91928e42651f9">sjsu::lpc40xx::SystemController::UsbClock</a>
+, <a class="el" href="d5/d18/structsjsu_1_1lpc40xx_1_1SystemController_1_1CpuClockRegister.html#abc2b16a93bb236b8ea6adec0bf7475c8">sjsu::lpc40xx::SystemController::CpuClockRegister</a>
+, <a class="el" href="de/d44/structsjsu_1_1lpc40xx_1_1SystemController_1_1EmcClockRegister.html#a32e5f135c2ea70969e5bef394cf302a3">sjsu::lpc40xx::SystemController::EmcClockRegister</a>
+, <a class="el" href="d8/df0/structsjsu_1_1lpc40xx_1_1SystemController_1_1PeripheralClockRegister.html#ab1be1e26646d9e66a46173f4c1297461">sjsu::lpc40xx::SystemController::PeripheralClockRegister</a>
+, <a class="el" href="d0/dcb/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllRegister.html#ac414c3f5a2fcd1a2e2651c4d2e006c6b">sjsu::lpc40xx::SystemController::PllRegister</a>
+, <a class="el" href="da/d74/structsjsu_1_1lpc40xx_1_1SystemController_1_1SpiFiClockRegister.html#a34f36795318612ee4a0e8793318b5b11">sjsu::lpc40xx::SystemController::SpiFiClockRegister</a>
+, <a class="el" href="d3/d03/structsjsu_1_1lpc40xx_1_1SystemController_1_1UsbClockRegister.html#a4d77aa4c9d73e040ab1315c3e80ef234">sjsu::lpc40xx::SystemController::UsbClockRegister</a>
 , <a class="el" href="d3/d13/classsjsu_1_1RtosCommand.html#ae354ef950b9880b38297b9d0763b0cc2">sjsu::RtosCommand</a>
 </li>
 <li>kDividerBit
@@ -363,7 +370,7 @@ $(function() {
 </li>
 <li>kEnable
 : <a class="el" href="db/dc2/structsjsu_1_1EnableBitMaskOperators__t.html#a231e2b72425ff832d7e971a2650089b0">sjsu::EnableBitMaskOperators_t&lt; typename &gt;</a>
-, <a class="el" href="d7/dde/structsjsu_1_1lpc40xx_1_1SystemController_1_1Pll.html#aaf9263b0443ac10b299f854d1a1855ff">sjsu::lpc40xx::SystemController::Pll</a>
+, <a class="el" href="d0/dcb/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllRegister.html#af7e0c1ee90d1671a516cdec00a7c16b2">sjsu::lpc40xx::SystemController::PllRegister</a>
 , <a class="el" href="d7/d9d/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control0Register.html#abf60b9b274cb345cdf2037030c0775f2">sjsu::msp432p401r::SystemController::Control0Register</a>
 </li>
 <li>kEnableBit
@@ -400,14 +407,11 @@ $(function() {
 <li>kExpectedSensorId
 : <a class="el" href="df/ddc/classsjsu_1_1Si7060.html#aaa9447d97932b62a22db91e818765b9e">sjsu::Si7060</a>
 </li>
-<li>kF12MHz
-: <a class="el" href="d5/df0/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllInput.html#abe8133c6d06869cc41e60311fd85df0e">sjsu::lpc40xx::SystemController::PllInput</a>
+<li>kExternalEnable
+: <a class="el" href="de/dc4/structsjsu_1_1lpc40xx_1_1SystemController_1_1OscillatorRegister.html#a7268112e2ca98e1b76fd61694e551050">sjsu::lpc40xx::SystemController::OscillatorRegister</a>
 </li>
-<li>kF16MHz
-: <a class="el" href="d5/df0/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllInput.html#a3b4077c78c08085081e1299d168c6be5">sjsu::lpc40xx::SystemController::PllInput</a>
-</li>
-<li>kF24MHz
-: <a class="el" href="d5/df0/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllInput.html#af72d2dbfcb75b2fde5d0f7052e9088e6">sjsu::lpc40xx::SystemController::PllInput</a>
+<li>kExternalReady
+: <a class="el" href="de/dc4/structsjsu_1_1lpc40xx_1_1SystemController_1_1OscillatorRegister.html#a5893e0f15c5cb65c0e5d40a37ad2ee39">sjsu::lpc40xx::SystemController::OscillatorRegister</a>
 </li>
 <li>kFixedPointScaling
 : <a class="el" href="d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#afceab64a17cb45c34f4a8b4f1f7d100f">sjsu::cortex::SystemTimer</a>
@@ -438,6 +442,9 @@ $(function() {
 </li>
 <li>kHeight
 : <a class="el" href="db/d32/classsjsu_1_1Ssd1306.html#a599b05247bd6f5d3247ec48e6be14a0a">sjsu::Ssd1306</a>
+</li>
+<li>kHighFrequency
+: <a class="el" href="d0/d49/structsjsu_1_1msp432p401r_1_1SystemController_1_1ExternalOscillator.html#a324f16242f1f796e92c5b03ce93e3c0c">sjsu::msp432p401r::SystemController::ExternalOscillator</a>
 </li>
 <li>kHysteresis
 : <a class="el" href="df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a59b732ceb7f9b1747e1ed7b722fc9e25">sjsu::lpc40xx::Pin</a>
@@ -487,9 +494,6 @@ $(function() {
 <li>kInvalidSettings
 : <a class="el" href="dc/d10/structsjsu_1_1Status.html#a5deabb1a188f78a240e91f154eb510aa">sjsu::Status</a>
 </li>
-<li>kIrc
-: <a class="el" href="d5/df0/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllInput.html#a0f819806764dfc416a8b6eb63434c9ca">sjsu::lpc40xx::SystemController::PllInput</a>
-</li>
 <li>kLength
 : <a class="el" href="d5/d45/structsjsu_1_1lpc40xx_1_1Can_1_1FrameInfo.html#afbed9110af762e94aad112a84f551098">sjsu::lpc40xx::Can::FrameInfo</a>
 </li>
@@ -502,6 +506,9 @@ $(function() {
 </li>
 <li>kLongDistMode
 : <a class="el" href="d2/dc6/classsjsu_1_1TFMini.html#a584d5624d7954672ef0a343852d26607">sjsu::TFMini</a>
+</li>
+<li>kLowFrequency
+: <a class="el" href="d0/d49/structsjsu_1_1msp432p401r_1_1SystemController_1_1ExternalOscillator.html#a6a62c5c6fe2d55b48f2057ecef098acb">sjsu::msp432p401r::SystemController::ExternalOscillator</a>
 </li>
 <li>kLowSpeedSubsystemClockDividerSelect
 : <a class="el" href="d8/d36/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control1Register.html#adbe6b2c657ec83c85b5927e825b25f12">sjsu::msp432p401r::SystemController::Control1Register</a>
@@ -541,13 +548,16 @@ $(function() {
 , <a class="el" href="d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html#a9377fbb57dfe695dcf0d53391c7459fb">sjsu::lpc17xx::SystemController::UsbPll</a>
 , <a class="el" href="d3/d2d/structsjsu_1_1lpc40xx_1_1Pwm_1_1CountControl.html#ab289047b98a83519d3c45d29e62d4ad7">sjsu::lpc40xx::Pwm::CountControl</a>
 </li>
+<li>kModule
+: <a class="el" href="d9/d26/structsjsu_1_1msp432p401r_1_1SystemController_1_1InternalOscillator.html#ac9cc452b650a4933fd73d37f8ad00e3b">sjsu::msp432p401r::SystemController::InternalOscillator</a>
+</li>
 <li>kMostSignificantRegister
 : <a class="el" href="df/ddc/classsjsu_1_1Si7060.html#a9548589e33d9949b988ea992818f01d1">sjsu::Si7060</a>
 </li>
 <li>kMultiplier
 : <a class="el" href="d0/d83/structsjsu_1_1lpc17xx_1_1SystemController_1_1MainPll.html#ad1d2cfba2111b4734c2bff212007c84f">sjsu::lpc17xx::SystemController::MainPll</a>
 , <a class="el" href="d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html#aec34e3048a59dacea4c6e6d86ee9a441">sjsu::lpc17xx::SystemController::UsbPll</a>
-, <a class="el" href="d7/dde/structsjsu_1_1lpc40xx_1_1SystemController_1_1Pll.html#aa23b895ec622d678216dc6adfb9fcfc7">sjsu::lpc40xx::SystemController::Pll</a>
+, <a class="el" href="d0/dcb/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllRegister.html#accb4f2625abc1733c59fc108f4a7b56b">sjsu::lpc40xx::SystemController::PllRegister</a>
 </li>
 <li>kName
 : <a class="el" href="d3/d19/classsjsu_1_1rtos_1_1Task.html#a0a7a81b7a00e4ed82935d1c357bba91f">sjsu::rtos::Task&lt; kStackSize &gt;</a>
@@ -583,7 +593,7 @@ $(function() {
 : <a class="el" href="db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a68ca49187d386d159f92b09f8de65668">sjsu::lpc40xx::Gpio</a>
 </li>
 <li>kPllLockStatus
-: <a class="el" href="d7/dde/structsjsu_1_1lpc40xx_1_1SystemController_1_1Pll.html#aeda831e151cbf3566d7f6a438c3898e7">sjsu::lpc40xx::SystemController::Pll</a>
+: <a class="el" href="d0/dcb/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllRegister.html#ad080db560479306ecdd7b5fa9bafe943">sjsu::lpc40xx::SystemController::PllRegister</a>
 </li>
 <li>kPolarityBit
 : <a class="el" href="dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html#a30962c43899333e5822757dd68d8d536">sjsu::lpc40xx::Spi::ControlRegister0</a>
@@ -650,11 +660,20 @@ $(function() {
 <li>kPwmEnable
 : <a class="el" href="d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html#a8a0bc107ff543263f239e2842d23b821">sjsu::lpc40xx::Pwm::Timer</a>
 </li>
+<li>kRangeSelect
+: <a class="el" href="de/dc4/structsjsu_1_1lpc40xx_1_1SystemController_1_1OscillatorRegister.html#a4e124f6f5de3f09b8d5a731ef97c495f">sjsu::lpc40xx::SystemController::OscillatorRegister</a>
+</li>
 <li>kReadWriteStatusMask
 : <a class="el" href="d4/daa/structsjsu_1_1lpc40xx_1_1Eeprom_1_1Status.html#af5a4fff1c4d463b8ea5bdc5fd57a5f05">sjsu::lpc40xx::Eeprom::Status</a>
 </li>
 <li>kReceiveBuffer
 : <a class="el" href="d9/dcb/structsjsu_1_1lpc40xx_1_1Can_1_1GlobalStatus.html#adb9aac74b876a0235b5f89b26bd87b1b">sjsu::lpc40xx::Can::GlobalStatus</a>
+</li>
+<li>kReference
+: <a class="el" href="d9/d26/structsjsu_1_1msp432p401r_1_1SystemController_1_1InternalOscillator.html#afcbedf3698527362261fdb5ee789b361">sjsu::msp432p401r::SystemController::InternalOscillator</a>
+</li>
+<li>kReferenceFrequencySelect
+: <a class="el" href="da/d65/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockEnableRegister.html#a6ee456137683a29e688bc938e321a59b">sjsu::msp432p401r::SystemController::ClockEnableRegister</a>
 </li>
 <li>kRemoteRequest
 : <a class="el" href="d5/d45/structsjsu_1_1lpc40xx_1_1Can_1_1FrameInfo.html#a4cb9081e2060ccba2fa190fe5d209355">sjsu::lpc40xx::Can::FrameInfo</a>
@@ -697,10 +716,10 @@ $(function() {
 </li>
 <li>kSelect
 : <a class="el" href="d7/d12/structsjsu_1_1lpc17xx_1_1SystemController_1_1Oscillator.html#a8fe4341d486be5cb9de8fbd432423d3c">sjsu::lpc17xx::SystemController::Oscillator</a>
-, <a class="el" href="d2/d80/structsjsu_1_1lpc40xx_1_1SystemController_1_1CpuClock.html#aacfa1a9d096d131c9b70e89c9064a24a">sjsu::lpc40xx::SystemController::CpuClock</a>
-, <a class="el" href="d9/dc1/structsjsu_1_1lpc40xx_1_1SystemController_1_1Oscillator.html#a52e193aa929e87abe901cfd16c60a396">sjsu::lpc40xx::SystemController::Oscillator</a>
-, <a class="el" href="db/d64/structsjsu_1_1lpc40xx_1_1SystemController_1_1SpiFiClock.html#ae7f52a3f2444645e77d47939e90dd4a0">sjsu::lpc40xx::SystemController::SpiFiClock</a>
-, <a class="el" href="d2/d0a/structsjsu_1_1lpc40xx_1_1SystemController_1_1UsbClock.html#a616394f8ae8d4155a8542074ba1f82da">sjsu::lpc40xx::SystemController::UsbClock</a>
+, <a class="el" href="d5/d18/structsjsu_1_1lpc40xx_1_1SystemController_1_1CpuClockRegister.html#aadcff7f3183faaebd5d1f14cbdc5b3c6">sjsu::lpc40xx::SystemController::CpuClockRegister</a>
+, <a class="el" href="de/dc4/structsjsu_1_1lpc40xx_1_1SystemController_1_1OscillatorRegister.html#aff1af9166de52eb7523e69adafd78586">sjsu::lpc40xx::SystemController::OscillatorRegister</a>
+, <a class="el" href="da/d74/structsjsu_1_1lpc40xx_1_1SystemController_1_1SpiFiClockRegister.html#a4b2654025024272eef789e373db605a6">sjsu::lpc40xx::SystemController::SpiFiClockRegister</a>
+, <a class="el" href="d3/d03/structsjsu_1_1lpc40xx_1_1SystemController_1_1UsbClockRegister.html#aff66fd08b4c60960193a3a55975122fb">sjsu::lpc40xx::SystemController::UsbClockRegister</a>
 </li>
 <li>kSelfTest
 : <a class="el" href="d0/d98/structsjsu_1_1lpc40xx_1_1Can_1_1Mode.html#a9a6d1c30a8df162c125b05fe2bc55210">sjsu::lpc40xx::Can::Mode</a>
@@ -763,6 +782,9 @@ $(function() {
 </li>
 <li>kSyncJumpWidth
 : <a class="el" href="d1/dd3/structsjsu_1_1lpc40xx_1_1Can_1_1BusTiming.html#a444f2a2ea4ba50cb670aea2ddc79bb25">sjsu::lpc40xx::Can::BusTiming</a>
+</li>
+<li>kSystem
+: <a class="el" href="d9/d26/structsjsu_1_1msp432p401r_1_1SystemController_1_1InternalOscillator.html#a07ab82bf8d052157d206e54222c36b32">sjsu::msp432p401r::SystemController::InternalOscillator</a>
 </li>
 <li>kTableSize
 : <a class="el" href="d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html#af3ead5ce460f64124a7ce85b5796a1e9">sjsu::crc::CrcTableConfig_t&lt; T &gt;</a>
@@ -848,6 +870,9 @@ $(function() {
 </li>
 <li>kValue
 : <a class="el" href="dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html#a2d9313144228334456bf739d0b790055">sjsu::lpc40xx::Dac::Control</a>
+</li>
+<li>kVeryLowFrequency
+: <a class="el" href="d9/d26/structsjsu_1_1msp432p401r_1_1SystemController_1_1InternalOscillator.html#ab6002c6e65fadf3e221b4fed70ccf1be">sjsu::msp432p401r::SystemController::InternalOscillator</a>
 </li>
 <li>kVoltageHigh
 : <a class="el" href="dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html#a12150736cffa2fc4e4596a7b35f40287">sjsu::Tmp102::DeviceAddress</a>

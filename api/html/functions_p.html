@@ -89,8 +89,8 @@ $(function() {
 : <a class="el" href="d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#ac0389b277bb9ccf85420f6eeef511bcd">sjsu::lpc40xx::Pwm::Channel_t</a>
 , <a class="el" href="d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html#a781a76e93527326ead2b35604b06153c">sjsu::lpc40xx::Timer::Peripheral_t</a>
 </li>
-<li>peripheral_power_id
-: <a class="el" href="d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a3134b6626073e00ba603df48525477c4">sjsu::lpc40xx::I2c::Bus_t</a>
+<li>peripheral_divider
+: <a class="el" href="d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#a34bf123419de6d7b9a6fb6ceb9454133">sjsu::lpc40xx::SystemController::ClockConfiguration</a>
 </li>
 <li>Pin()
 : <a class="el" href="d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#ad75d106139c74c056ade11459852a7c5">sjsu::lpc17xx::Pin</a>
@@ -114,13 +114,11 @@ $(function() {
 </li>
 <li>pin_function
 : <a class="el" href="d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html#a446885d6584043680e012d7d72010870">sjsu::lpc40xx::Adc::Channel_t</a>
+, <a class="el" href="d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a550fe0933a0358b2cb6a4e30185d92ac">sjsu::lpc40xx::I2c::Bus_t</a>
+, <a class="el" href="d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a5a8c2853b74cfe933f911e166425cd63">sjsu::lpc40xx::Spi::Bus_t</a>
 </li>
 <li>pin_function_code
 : <a class="el" href="d5/ddb/structsjsu_1_1lpc40xx_1_1Pwm_1_1Channel__t.html#a05ed2ad16840dfe7a12f3042918f32ac">sjsu::lpc40xx::Pwm::Channel_t</a>
-</li>
-<li>pin_function_id
-: <a class="el" href="d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#ae49470c838ff1dfbfd45add3f0ad1c2e">sjsu::lpc40xx::I2c::Bus_t</a>
-, <a class="el" href="d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ad1ab73518e259ee519abb767283d170c">sjsu::lpc40xx::Spi::Bus_t</a>
 </li>
 <li>pin_map
 : <a class="el" href="df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1ace573d9b1e8866a17e99f72fcb06bc">sjsu::lpc40xx::Pin</a>
@@ -130,6 +128,9 @@ $(function() {
 </li>
 <li>Pitch()
 : <a class="el" href="d2/d7b/classsjsu_1_1Accelerometer.html#adc8aedebdf5241b774033108b6d43146">sjsu::Accelerometer</a>
+</li>
+<li>pll
+: <a class="el" href="d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#a1c50516b906d622290edd9e5dc9f9047">sjsu::lpc40xx::SystemController::ClockConfiguration</a>
 </li>
 <li>PllSelect
 : <a class="el" href="d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a723961a2cc409a46d483e5259946b252">sjsu::lpc17xx::SystemController</a>
@@ -151,9 +152,6 @@ $(function() {
 , <a class="el" href="dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a804a6e4a713c843a032f33227e78ae3c">sjsu::I2c::Transaction_t</a>
 , <a class="el" href="d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html#acb15ddb76ed58d76f4cdfd51b1753bc7">sjsu::St7066u::CursorPosition_t</a>
 </li>
-<li>power_id
-: <a class="el" href="da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a8a3a5aa040003b7e0634764260718fc6">sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t</a>
-</li>
 <li>power_on_bit
 : <a class="el" href="d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a95089fde8d476a6c88e589e29d3c387d">sjsu::lpc40xx::Spi::Bus_t</a>
 </li>
@@ -161,20 +159,20 @@ $(function() {
 : <a class="el" href="d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a35be89e626200386b8726bd69eff1b84">sjsu::lpc40xx::Uart::Port_t</a>
 </li>
 <li>PowerDownPeripheral()
-: <a class="el" href="d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#acf1f16f4bab4565259033b1c416dab0c">sjsu::lpc17xx::SystemController</a>
-, <a class="el" href="d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#aacd74933e60e57829e2511ac14862cb7">sjsu::lpc40xx::SystemController</a>
-, <a class="el" href="dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a12a90ec27dc269cbbd24ebc552bb2849">sjsu::msp432p401r::SystemController</a>
-, <a class="el" href="db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#aeb0c035d46d56f3707e56e1cbf211488">sjsu::stm32f10x::SystemController</a>
-, <a class="el" href="d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a70db5250b9cb0f6318f42ff6c46e7d85">sjsu::stm32f4xx::SystemController</a>
-, <a class="el" href="df/d0e/classsjsu_1_1SystemController.html#a2daf290ce909701e09e9a0f017273170">sjsu::SystemController</a>
+: <a class="el" href="d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ad2d4a7ebeb399ab959d929623315fd76">sjsu::lpc17xx::SystemController</a>
+, <a class="el" href="d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#ad4c91bc19fba729b947fffff45024e82">sjsu::lpc40xx::SystemController</a>
+, <a class="el" href="dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a26f53813cc9bf9f286467c46b424a40c">sjsu::msp432p401r::SystemController</a>
+, <a class="el" href="db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a9b26f59b06d272c7e3daaafe7832d377">sjsu::stm32f10x::SystemController</a>
+, <a class="el" href="d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a78a4e569a69789781fc4ebfe767450fe">sjsu::stm32f4xx::SystemController</a>
+, <a class="el" href="df/d0e/classsjsu_1_1SystemController.html#abadcdda4e98661666ee03c7fafb19930">sjsu::SystemController</a>
 </li>
 <li>PowerUpPeripheral()
-: <a class="el" href="d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#aca426a3141d4ecfbb3f034152c99ec1f">sjsu::lpc17xx::SystemController</a>
-, <a class="el" href="d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a363dc99641b504ca364f0995d7c6aca3">sjsu::lpc40xx::SystemController</a>
-, <a class="el" href="dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a05104456d738f7ba2750661ca50f24ed">sjsu::msp432p401r::SystemController</a>
-, <a class="el" href="db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#aa71dc3a4a8a1c480fe8e64427d9d0c01">sjsu::stm32f10x::SystemController</a>
-, <a class="el" href="d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a1362ec2b8709476be44401e2c454e9eb">sjsu::stm32f4xx::SystemController</a>
-, <a class="el" href="df/d0e/classsjsu_1_1SystemController.html#afc4dbcdcd3fb543b7e2d846c0a9bc9d7">sjsu::SystemController</a>
+: <a class="el" href="d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a09c1992f4d089f45a3d7b80de4a0de6e">sjsu::lpc17xx::SystemController</a>
+, <a class="el" href="d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a1948c46a082c29701076e53419195355">sjsu::lpc40xx::SystemController</a>
+, <a class="el" href="dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a387a58a75be1e70fde65f15a0aec325f">sjsu::msp432p401r::SystemController</a>
+, <a class="el" href="db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac3a51a4cd8127265da07f2c25c752a63">sjsu::stm32f10x::SystemController</a>
+, <a class="el" href="d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a2a7c6b568829e0d87da8a66602ec02e6">sjsu::stm32f4xx::SystemController</a>
+, <a class="el" href="df/d0e/classsjsu_1_1SystemController.html#aacaa203fe605743d735d841293dea419">sjsu::SystemController</a>
 </li>
 <li>pre_divider
 : <a class="el" href="df/d55/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllSettings__t.html#a2bffbc27db42307646f42a9133cfc3bb">sjsu::lpc17xx::SystemController::PllSettings_t</a>

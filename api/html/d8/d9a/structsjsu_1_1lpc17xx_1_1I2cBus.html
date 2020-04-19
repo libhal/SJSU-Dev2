@@ -131,7 +131,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C0),</div><div class="line">    .peripheral_power_id = SystemController::Peripherals::kI2c0,</div><div class="line">    .irq_number          = I2C0_IRQn,</div><div class="line">    .transaction         = transaction_i2c0,</div><div class="line">    .sda_pin             = kI2c0SdaPin,</div><div class="line">    .scl_pin             = kI2c0SclPin,</div><div class="line">    .pin_function_id     = 0b01,</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers    = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C0),</div><div class="line">    .<span class="keywordtype">id</span>           = SystemController::Peripherals::kI2c0,</div><div class="line">    .irq_number   = I2C0_IRQn,</div><div class="line">    .transaction  = transaction_i2c0,</div><div class="line">    .sda_pin      = kI2c0SdaPin,</div><div class="line">    .scl_pin      = kI2c0SclPin,</div><div class="line">    .pin_function = 0b01,</div><div class="line">  }</div></div><!-- fragment -->
 <p>NOTE: I2C0 is not available for the 80-pin package. </p>
 
 </div>
@@ -155,7 +155,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C1),</div><div class="line">    .peripheral_power_id = SystemController::Peripherals::kI2c1,</div><div class="line">    .irq_number          = I2C1_IRQn,</div><div class="line">    .transaction         = transaction_i2c1,</div><div class="line">    .sda_pin             = kI2c1SdaPin,</div><div class="line">    .scl_pin             = kI2c1SclPin,</div><div class="line">    .pin_function_id     = 0b11,</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers    = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C1),</div><div class="line">    .<span class="keywordtype">id</span>           = SystemController::Peripherals::kI2c1,</div><div class="line">    .irq_number   = I2C1_IRQn,</div><div class="line">    .transaction  = transaction_i2c1,</div><div class="line">    .sda_pin      = kI2c1SdaPin,</div><div class="line">    .scl_pin      = kI2c1SclPin,</div><div class="line">    .pin_function = 0b11,</div><div class="line">  }</div></div><!-- fragment -->
 <p>Definition for I2C bus 1 for LPC17xx. </p>
 
 </div>
@@ -179,7 +179,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C2),</div><div class="line">    .peripheral_power_id = SystemController::Peripherals::kI2c2,</div><div class="line">    .irq_number          = I2C2_IRQn,</div><div class="line">    .transaction         = transaction_i2c2,</div><div class="line">    .sda_pin             = kI2c2SdaPin,</div><div class="line">    .scl_pin             = kI2c2SclPin,</div><div class="line">    .pin_function_id     = 0b10,</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers    = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_I2C_TypeDef *<span class="keyword">&gt;</span>(LPC_I2C2),</div><div class="line">    .<span class="keywordtype">id</span>           = SystemController::Peripherals::kI2c2,</div><div class="line">    .irq_number   = I2C2_IRQn,</div><div class="line">    .transaction  = transaction_i2c2,</div><div class="line">    .sda_pin      = kI2c2SdaPin,</div><div class="line">    .scl_pin      = kI2c2SclPin,</div><div class="line">    .pin_function = 0b10,</div><div class="line">  }</div></div><!-- fragment -->
 <p>Definition for I2C bus 2 for LPC17xx. </p>
 
 </div>
