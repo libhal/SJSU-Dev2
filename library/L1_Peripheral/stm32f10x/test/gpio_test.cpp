@@ -1,25 +1,25 @@
 #include <cstdint>
 
-#include "L0_Platform/stm32f4xx/stm32f4xx.h"
-#include "L1_Peripheral/stm32f4xx/gpio.hpp"
+#include "L0_Platform/stm32f10x/stm32f10x.h"
+#include "L1_Peripheral/stm32f10x/gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
-namespace sjsu::stm32f4xx
+namespace sjsu::stm32f10x
 {
 EMIT_ALL_METHODS(Gpio);
 
 namespace
 {
-bit::Mask Mask2Bit(const sjsu::Gpio & gpio)
+bit::Mask Mask4Bit(const sjsu::Gpio & gpio)
 {
   return {
-    .position = static_cast<uint8_t>(gpio.GetPin().GetPin() * 2),
-    .width    = 2,
+    .position = static_cast<uint32_t>(gpio.GetPin().GetPin() * 4),
+    .width    = 4,
   };
 }
 }  // namespace
 
-TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
+TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
 {
   Mock<SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
@@ -32,8 +32,6 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
   GPIO_TypeDef local_gpio_e;
   GPIO_TypeDef local_gpio_f;
   GPIO_TypeDef local_gpio_g;
-  GPIO_TypeDef local_gpio_h;
-  GPIO_TypeDef local_gpio_i;
 
   memset(&local_gpio_a, 0, sizeof(local_gpio_a));
   memset(&local_gpio_b, 0, sizeof(local_gpio_b));
@@ -42,10 +40,8 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
   memset(&local_gpio_e, 0, sizeof(local_gpio_e));
   memset(&local_gpio_f, 0, sizeof(local_gpio_f));
   memset(&local_gpio_g, 0, sizeof(local_gpio_g));
-  memset(&local_gpio_h, 0, sizeof(local_gpio_h));
-  memset(&local_gpio_i, 0, sizeof(local_gpio_i));
 
-  // The stm32f4xx::Gpio class uses the stm32f4xx::Pin registers directly
+  // The stm32f10x::Gpio class uses the stm32f10x::Pin registers directly
   Pin::gpio[0] = &local_gpio_a;
   Pin::gpio[1] = &local_gpio_b;
   Pin::gpio[2] = &local_gpio_c;
@@ -53,86 +49,74 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
   Pin::gpio[4] = &local_gpio_e;
   Pin::gpio[5] = &local_gpio_f;
   Pin::gpio[6] = &local_gpio_g;
-  Pin::gpio[7] = &local_gpio_h;
-  Pin::gpio[8] = &local_gpio_i;
 
   struct TestStruct_t
   {
-    sjsu::stm32f4xx::Gpio gpio;
+    sjsu::stm32f10x::Gpio gpio = stm32f10x::Gpio('A', 0);
     GPIO_TypeDef & reg;
-    const SystemController::PeripheralID & id;
+    SystemController::PeripheralID id;
   };
 
-  std::array<TestStruct_t, 14> test = {
+  std::array<TestStruct_t, 12> test = {
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('A', 0),  // A
+        .gpio = stm32f10x::Gpio('A', 0),  // A
         .reg  = local_gpio_a,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioA,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioA,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('A', 4),  // Middle of first half word
+        .gpio = stm32f10x::Gpio('A', 4),  // Middle of first half word
         .reg  = local_gpio_a,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioA,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioA,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('B', 0),  // B
+        .gpio = stm32f10x::Gpio('B', 0),  // B
         .reg  = local_gpio_b,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioB,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioB,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('B', 7),  // End of first half word
+        .gpio = stm32f10x::Gpio('B', 7),  // End of first half word
         .reg  = local_gpio_b,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioB,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioB,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('C', 0),  // C
+        .gpio = stm32f10x::Gpio('C', 0),  // C
         .reg  = local_gpio_c,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioC,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioC,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('C', 8),  // First of last half word
+        .gpio = stm32f10x::Gpio('C', 8),  // First of last half word
         .reg  = local_gpio_c,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioC,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioC,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('D', 0),  // D
+        .gpio = stm32f10x::Gpio('D', 0),  // D
         .reg  = local_gpio_d,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioD,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioD,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('D', 12),  // Middle of last half word
+        .gpio = stm32f10x::Gpio('D', 12),  // Middle of last half word
         .reg  = local_gpio_d,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioD,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioD,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('E', 0),  // E
+        .gpio = stm32f10x::Gpio('E', 0),  // E
         .reg  = local_gpio_e,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioE,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioE,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('E', 15),  // Last of last half word
+        .gpio = stm32f10x::Gpio('E', 15),  // Last of last half word
         .reg  = local_gpio_e,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioE,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioE,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('F', 0),  // F
+        .gpio = stm32f10x::Gpio('F', 0),  // F
         .reg  = local_gpio_f,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioF,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioF,
     },
     TestStruct_t{
-        .gpio = stm32f4xx::Gpio('G', 0),  // G
+        .gpio = stm32f10x::Gpio('G', 0),  // G
         .reg  = local_gpio_g,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioG,
-    },
-    TestStruct_t{
-        .gpio = stm32f4xx::Gpio('H', 0),  // H
-        .reg  = local_gpio_h,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioH,
-    },
-    TestStruct_t{
-        .gpio = stm32f4xx::Gpio('I', 0),  // I
-        .reg  = local_gpio_i,
-        .id   = stm32f4xx::SystemController::Peripherals::kGpioI,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioG,
     },
   };
 
@@ -145,15 +129,8 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
           };
         };
 
-    // RM0090 p.281
-    //
-    // --> 00: Input (reset state)
-    // --> 01: General purpose output mode
-    //     10: Alternate function mode
-    //     11: Analog mode
-
-    constexpr uint8_t kInputCode  = 0b00;
-    constexpr uint8_t kOutputCode = 0b01;
+    constexpr uint8_t kInputFloatingCode   = 0b0100;
+    constexpr uint8_t kOutputFullSpeedCode = 0b0011;
 
     for (uint32_t i = 0; i < test.size(); i++)
     {
@@ -161,10 +138,16 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
       INFO("Failure at index: " << i);
       // Setup: Fill with 1s so that by setting it to input they get replaced
       //        with the correct input code of zero.
-      test[i].reg.MODER = 0xFFFF'FFFF;
+      test[i].reg.CRL = 0xFFFF'FFFF;
+      test[i].reg.CRH = 0xFFFF'FFFF;
 
       // Exercise
       test[i].gpio.SetAsInput();
+      // Exercise: Combine the two registers into 1 variable to make extraction
+      //           easier.
+      uint64_t crh = test[i].reg.CRH;
+      uint64_t crl = test[i].reg.CRL;
+      uint64_t cr  = (crh << 32) | crl;
 
       // Verify
       // Verify: Should call Pin's Initialize method which simply calls
@@ -172,8 +155,7 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
       Verify(Method(mock_system_controller, PowerUpPeripheral)
                  .Matching(power_up_matcher(test[i].id)));
       mock_system_controller.ClearInvocationHistory();
-      CHECK(bit::Extract(test[i].reg.MODER, Mask2Bit(test[i].gpio)) ==
-            kInputCode);
+      CHECK(kInputFloatingCode == bit::Extract(cr, Mask4Bit(test[i].gpio)));
     }
 
     for (uint32_t i = 0; i < test.size(); i++)
@@ -182,58 +164,63 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
       INFO("Failure at index: " << i);
       // Setup: Fill with 1s so that by setting it to input they get replaced
       //        with the correct input code of zero.
-      test[i].reg.MODER = 0xFFFF'FFFF;
+      test[i].reg.CRL = 0xFFFF'FFFF;
+      test[i].reg.CRH = 0xFFFF'FFFF;
 
       // Exercise
       test[i].gpio.SetAsOutput();
+      // Exercise: Combine the two registers into 1 variable to make extraction
+      //           easier. They should contain the newly updated control
+      //           information.
+      uint64_t crh = test[i].reg.CRH;
+      uint64_t crl = test[i].reg.CRL;
+      uint64_t cr  = (crh << 32) | crl;
 
       // Verify
       // Verify: Should call Pin's Initialize method which simply calls
       //         PowerUpPeripheral()
       Verify(Method(mock_system_controller, PowerUpPeripheral)
                  .Matching(power_up_matcher(test[i].id)));
+      CHECK(kOutputFullSpeedCode == bit::Extract(cr, Mask4Bit(test[i].gpio)));
       mock_system_controller.ClearInvocationHistory();
-      CHECK(bit::Extract(test[i].reg.MODER, Mask2Bit(test[i].gpio)) ==
-            kOutputCode);
     }
   }
+
   SECTION("Set()")
   {
     for (uint32_t i = 0; i < test.size(); i++)
     {
       // Setup
       INFO("Failure at index: " << i);
-      // Setup: Set register to all zeros. A 1 in this field will set the bit if
-      //        its in the first 15 bits. A 1 in the last 15 bits of the
-      //        register will clear the output.
-      test[i].reg.BSRRH = 0;
-      test[i].reg.BSRRL = 0;
+      // Setup: Set register to all zeros.
+      //        A 1 in bits [0:15] will set the output HIGH.
+      //        A 1 in bits [16:31] will set the output LOW.
+      test[i].reg.BSRR = 0;
 
       // Exercise
       test[i].gpio.SetLow();
 
       // Verify
-      CHECK(bit::Read(test[i].reg.BSRRH, test[i].gpio.GetPin().GetPin()));
-      CHECK(!bit::Read(test[i].reg.BSRRL, test[i].gpio.GetPin().GetPin()));
+      CHECK(1 << (test[i].gpio.GetPin().GetPin() + 16) == test[i].reg.BSRR);
     }
 
     for (uint32_t i = 0; i < test.size(); i++)
     {
       // Setup
       INFO("Failure at index: " << i);
-      // Setup: Fill with 1s so that by setting it to input they get replaced
-      //        with the correct input code of zero.
-      test[i].reg.BSRRH = 0;
-      test[i].reg.BSRRL = 0;
+      // Setup: Set register to all zeros.
+      //        A 1 in bits [0:15] will set the output HIGH.
+      //        A 1 in bits [16:31] will set the output LOW.
+      test[i].reg.BSRR = 0;
 
       // Exercise
       test[i].gpio.SetHigh();
 
       // Verify
-      CHECK(!bit::Read(test[i].reg.BSRRH, test[i].gpio.GetPin().GetPin()));
-      CHECK(bit::Read(test[i].reg.BSRRL, test[i].gpio.GetPin().GetPin()));
+      CHECK(1 << test[i].gpio.GetPin().GetPin() == test[i].reg.BSRR);
     }
   }
+
   SECTION("Toggle()")
   {
     for (uint32_t i = 0; i < test.size(); i++)
@@ -279,5 +266,14 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
       }
     }
   }
+
+  // The stm32f10x::Gpio class uses the stm32f10x::Pin registers directly
+  Pin::gpio[0] = GPIOA;
+  Pin::gpio[1] = GPIOB;
+  Pin::gpio[2] = GPIOC;
+  Pin::gpio[3] = GPIOD;
+  Pin::gpio[4] = GPIOE;
+  Pin::gpio[5] = GPIOF;
+  Pin::gpio[6] = GPIOG;
 }
-}  // namespace sjsu::stm32f4xx
+}  // namespace sjsu::stm32f10x
