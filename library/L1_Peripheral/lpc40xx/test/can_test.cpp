@@ -242,7 +242,7 @@ TEST_CASE("Testing lpc40xx Can", "[lpc40xx-can]")
       local_can.SR = bit::Clear(local_can.SR, Can::BufferStatus::kTx3Released);
 
       std::thread open_up_tx3([&local_can]() {
-        std::this_thread::sleep_for(10ms);
+        std::this_thread::sleep_for(1ms);
         local_can.SR = bit::Set(local_can.SR, Can::BufferStatus::kTx3Released);
       });
 
@@ -325,7 +325,7 @@ TEST_CASE("Testing lpc40xx Can", "[lpc40xx-can]")
     std::thread open_up_tx3([&local_can, expected_frame, kID, alter_id,
                              clear_receive_flag]() {
       // Sleep to allow time for SelfTest() To be called
-      std::this_thread::sleep_for(10ms);
+      std::this_thread::sleep_for(1ms);
 
       // Set the receive bit to 0, to indicate that no message is present.
       local_can.GSR =

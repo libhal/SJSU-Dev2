@@ -181,8 +181,7 @@ DEBUG_FLAG    = -g
 WARNINGS      = -Wall -Wextra -Wshadow -Wfloat-equal -Wundef \
                 -Wno-format-nonliteral -Wconversion -Wdouble-promotion \
                 -Wswitch -Wnull-dereference -Wformat=2
-CPP_WARNINGS  = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override \
-                -Wsuggest-final-types -Wsuggest-final-methods
+CPP_WARNINGS  = -Wold-style-cast -Woverloaded-virtual -Wsuggest-override
 DEFINES       = -D ELF_FILE=\"$(EXECUTABLE)\"
 DISABLED_WARNINGS = -Wno-main -Wno-variadic-macros
 # ==============================================================================
