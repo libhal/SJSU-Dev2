@@ -13,7 +13,7 @@ namespace
 bit::Mask Mask2Bit(const sjsu::Pin & pin)
 {
   return {
-    .position = static_cast<uint8_t>(pin.GetPin() * 2),
+    .position = static_cast<uint32_t>(pin.GetPin() * 2),
     .width    = 2,
   };
 }
@@ -179,7 +179,7 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
   {
     auto get_4bit_pin_mask = [](const sjsu::Pin & pin) -> bit::Mask {
       return {
-        .position = static_cast<uint8_t>((pin.GetPin() % 8) * 4),
+        .position = static_cast<uint32_t>((pin.GetPin() % 8) * 4),
         .width    = 4,
       };
     };

@@ -10,7 +10,7 @@ TEST_CASE("Testing Button", "[button]")
   // Make a mock pin to work with
   Mock<sjsu::Pin> mock_pin;
   // Retrieve a reference to the Pin to be injected as the return value
-  // of Gpios's GetPin() method.
+  // of GPIOs GetPin() method.
   sjsu::Pin & test_pin = mock_pin.get();
   // Fake the implementation of SetAsActiveLow and SetPull to be inspected later
   Fake(Method(mock_pin, SetPull));
@@ -34,8 +34,7 @@ TEST_CASE("Testing Button", "[button]")
   SECTION("Initialize")
   {
     test_subject.Initialize();
-    Verify(Method(mock_gpio, SetDirection).Using(Gpio::Direction::kInput),
-           Method(mock_pin, SetPull).Using(Pin::Resistor::kPullDown));
+    Verify(Method(mock_gpio, SetDirection).Using(Gpio::Direction::kInput));
   }
   SECTION("Button Released")
   {
