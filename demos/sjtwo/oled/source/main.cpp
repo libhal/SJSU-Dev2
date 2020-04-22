@@ -11,7 +11,10 @@ int main()
   sjsu::lpc40xx::Gpio cs_gpio(1, 22);
   sjsu::lpc40xx::Gpio dc_gpio(1, 25);
 
-  sjsu::Ssd1306 oled_display(ssp1, cs_gpio, dc_gpio);
+  // Using an Inactive GPIO for the reset, as it is not needed for the SJTwo
+  // board.
+  sjsu::Ssd1306 oled_display(ssp1, cs_gpio, dc_gpio,
+                             sjsu::GetInactive<sjsu::Gpio>());
   oled_display.Initialize();
   sjsu::Graphics graphics(oled_display);
   sjsu::LogInfo("Starting OLED Hardware Test in 5s...");
@@ -31,20 +34,20 @@ int main()
 
   sjsu::LogInfo("Drawing Some Shapes...");
 
-  graphics.DrawHorizontalLine(
-      0, sjsu::Ssd1306::kHeight / 2, sjsu::Ssd1306::kWidth);
+  graphics.DrawHorizontalLine(0, sjsu::Ssd1306::kHeight / 2,
+                              sjsu::Ssd1306::kWidth);
   graphics.Update();
 
-  graphics.DrawVerticalLine(
-      sjsu::Ssd1306::kWidth / 2, 0, sjsu::Ssd1306::kHeight);
+  graphics.DrawVerticalLine(sjsu::Ssd1306::kWidth / 2, 0,
+                            sjsu::Ssd1306::kHeight);
   graphics.Update();
 
-  graphics.DrawRectangle(
-      sjsu::Ssd1306::kWidth / 2 - 10, sjsu::Ssd1306::kHeight / 2 - 10, 20, 20);
+  graphics.DrawRectangle(sjsu::Ssd1306::kWidth / 2 - 10,
+                         sjsu::Ssd1306::kHeight / 2 - 10, 20, 20);
   graphics.Update();
 
-  graphics.DrawRectangle(
-      sjsu::Ssd1306::kWidth / 2 - 20, sjsu::Ssd1306::kHeight / 2 - 20, 40, 40);
+  graphics.DrawRectangle(sjsu::Ssd1306::kWidth / 2 - 20,
+                         sjsu::Ssd1306::kHeight / 2 - 20, 40, 40);
   graphics.Update();
 
   graphics.DrawLine(0, 0, sjsu::Ssd1306::kWidth, sjsu::Ssd1306::kHeight);
@@ -53,20 +56,20 @@ int main()
   graphics.DrawLine(0, sjsu::Ssd1306::kHeight, sjsu::Ssd1306::kWidth, 0);
   graphics.Update();
 
-  graphics.DrawCircle(
-      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 20);
+  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
+                      20);
   graphics.Update();
 
-  graphics.DrawCircle(
-      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 30);
+  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
+                      30);
   graphics.Update();
 
-  graphics.DrawCircle(
-      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 40);
+  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
+                      40);
   graphics.Update();
 
-  graphics.DrawCircle(
-      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 60);
+  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
+                      60);
   graphics.Update();
 
   sjsu::LogInfo("Drawing Some names...");

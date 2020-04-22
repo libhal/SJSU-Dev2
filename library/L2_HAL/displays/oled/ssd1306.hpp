@@ -38,13 +38,27 @@ class Ssd1306 final : public PixelDisplay
 
   /// Construct SSD1306 driver
   ///
-  /// @param spi - reference to the spi bus that is connected to the device
-  /// @param cs - reference to the gpio that is connected to the chip select pin
-  ///             of the device.
-  /// @param dc - reference to the gpio that is connected to the data/command
-  ///             pin of the device.
-  constexpr Ssd1306(sjsu::Spi & spi, sjsu::Gpio & cs, sjsu::Gpio & dc)
-      : spi_(spi), cs_(cs), dc_(dc), bitmap_{}
+  /// @param spi   - spi bus that is connected to the device
+  /// @param cs    - gpio that is connected to the chip select pin of the
+  ///                device.
+  /// @param dc    - gpio that is connected to the data/command
+  ///                pin of the device.
+  /// @param reset - gpio connected to the reset line. If an RC reset circuit is
+  ///                used, this can be replaced with
+  ///                `sjsu::GetInactive<sjsu::Gpio>()`
+  /// @param clock_rate - clock rate to communication with the OLED display
+  ///                     with.
+  constexpr Ssd1306(sjsu::Spi & spi,
+                    sjsu::Gpio & cs,
+                    sjsu::Gpio & dc,
+                    sjsu::Gpio & reset,
+                    units::frequency::hertz_t clock_rate = 2_MHz)
+      : spi_(spi),
+        cs_(cs),
+        dc_(dc),
+        reset_(reset),
+        clock_rate_(clock_rate),
+        bitmap_{}
   {
   }
 
@@ -70,14 +84,20 @@ class Ssd1306 final : public PixelDisplay
 
   void Initialize() override
   {
-    cs_.SetDirection(sjsu::Gpio::Direction::kOutput);
-    dc_.SetDirection(sjsu::Gpio::Direction::kOutput);
-    cs_.Set(sjsu::Gpio::State::kHigh);
-    dc_.Set(sjsu::Gpio::State::kHigh);
+    cs_.SetAsOutput();
+    dc_.SetAsOutput();
+    reset_.SetAsOutput();
+    cs_.SetHigh();
+    dc_.SetHigh();
+
+    reset_.SetLow();
+    Delay(100us);
+    reset_.SetHigh();
+    Delay(100us);
 
     spi_.Initialize();
     spi_.SetDataSize(sjsu::Spi::DataSize::kEight);
-    spi_.SetClock(2_MHz);
+    spi_.SetClock(clock_rate_);
 
     Clear();
     InitializationPanel();
@@ -235,21 +255,26 @@ class Ssd1306 final : public PixelDisplay
   {
     dc_.Set(static_cast<sjsu::Gpio::State>(transaction));
     cs_.Set(sjsu::Gpio::State::kLow);
+
+    bit::Mask mask = {
+      .position = static_cast<uint32_t>((size - 1) * 8),
+      .width    = 8,
+    };
+
     for (size_t i = 0; i < size; i++)
     {
-      uint8_t send = static_cast<uint8_t>(data >> (((size - 1) - i) * 8));
-      if (transaction == Transaction::kCommand)
-      {
-        sjsu::LogDebug("send = 0x%X", send);
-      }
-      spi_.Transfer(send);
+      spi_.Transfer(static_cast<uint8_t>(bit::Extract(data, mask)));
+      mask = mask >> 8;
     }
+
     cs_.Set(sjsu::Gpio::State::kHigh);
   }
 
   sjsu::Spi & spi_;
   sjsu::Gpio & cs_;
   sjsu::Gpio & dc_;
+  sjsu::Gpio & reset_;
+  units::frequency::hertz_t clock_rate_;
 
   uint8_t bitmap_[kRows + 5][kColumns + 5];
 };
