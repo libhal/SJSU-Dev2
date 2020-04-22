@@ -43,16 +43,19 @@ class Spi
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
   virtual Status Initialize() const = 0;
+
   /// Send a value via SPI and receive a value back from the serial port
   ///
   /// @param data - transfer data to external device via spi port
   ///
   /// @return byte read from the external device.
   virtual uint16_t Transfer(uint16_t data) const = 0;
+
   /// Set the number of bits to transmit over SPI
   ///
   /// @param size - number of bits to transmit over spi
   virtual void SetDataSize(DataSize size) const = 0;
+
   /// Set the clock frequency
   ///
   /// @param frequency - the clock rate in hertz to set the SPI device to.

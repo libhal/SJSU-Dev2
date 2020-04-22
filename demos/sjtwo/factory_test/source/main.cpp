@@ -39,7 +39,7 @@ class FactoryTest
     sjsu::lpc40xx::Gpio dc(1, 25);
 
     Spi spi1(Spi::Bus::kSpi1);
-    Ssd1306 display(spi1, cs, dc);
+    Ssd1306 display(spi1, cs, dc, sjsu::GetInactive<sjsu::Gpio>());
 
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting OLED Hardware Test...\n\n");
@@ -93,11 +93,8 @@ class FactoryTest
     array[1] = static_cast<uint8_t>(spi2.Transfer(0x00));
     array[2] = static_cast<uint8_t>(spi2.Transfer(0x00));
     array[3] = static_cast<uint8_t>(spi2.Transfer(0x00));
-    sjsu::LogInfo("Returned 0x%02X 0x%02X 0x%02X 0x%02X",
-                  array[0],
-                  array[1],
-                  array[2],
-                  array[3]);
+    sjsu::LogInfo("Returned 0x%02X 0x%02X 0x%02X 0x%02X", array[0], array[1],
+                  array[2], array[3]);
     cs.SetHigh();
     sjsu::Delay(1ms);
     printf("End of External Flash Test.\n\n");
@@ -222,15 +219,13 @@ class FactoryTest
     uint8_t temperature_ms = 0xC1;
     uint8_t temperature_ls = 0xC2;
     int temperature_data   = 0;
-    temperature_i2c.WriteThenRead(
-        kTemperatureAddress, &temperature_ms, 1, &temperature_ms, 1);
+    temperature_i2c.WriteThenRead(kTemperatureAddress, &temperature_ms, 1,
+                                  &temperature_ms, 1);
     temperature_i2c.Read(kTemperatureAddress, &temperature_ls, 1);
 
     temperature_data = ((temperature_ms & 0x7F) << 8) | temperature_ls;
-    printf("  Temperature Data: 0x%02X, 0x%02X, 0x%04X\n\n",
-           temperature_ms,
-           temperature_ls,
-           temperature_data);
+    printf("  Temperature Data: 0x%02X, 0x%02X, 0x%04X\n\n", temperature_ms,
+           temperature_ls, temperature_data);
     // Compute the actual temperature in Celsius
     return (55 + ((temperature_data - 16384) / 160));
   }

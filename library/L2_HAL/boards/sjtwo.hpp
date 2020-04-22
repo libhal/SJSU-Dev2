@@ -3,6 +3,7 @@
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L1_Peripheral/lpc40xx/spi.hpp"
+#include "L1_Peripheral/inactive.hpp"
 #include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "L2_HAL/memory/sd.hpp"
 #include "L2_HAL/sensors/environment/temperature/si7060.hpp"
@@ -12,7 +13,7 @@
 #include "L3_Application/graphics.hpp"
 
 /// Namespace for SJTwo board peripheral and device definitions
-struct sjtwo // NOLINT
+struct sjtwo  // NOLINT
 {
   /// Predefined SJTwo spi0 peripheral
   inline static sjsu::lpc40xx::Spi spi0 =
@@ -57,7 +58,8 @@ struct sjtwo // NOLINT
   {
     static sjsu::lpc40xx::Gpio oled_cs = sjsu::lpc40xx::Gpio(1, 22);
     static sjsu::lpc40xx::Gpio oled_dc = sjsu::lpc40xx::Gpio(1, 25);
-    static sjsu::Ssd1306 oled_display(spi1, oled_cs, oled_dc);
+    static sjsu::Ssd1306 oled_display(spi1, oled_cs, oled_dc,
+                                      sjsu::GetInactive<sjsu::Gpio>());
     static sjsu::Graphics oled(oled_display);
     return oled;
   }
