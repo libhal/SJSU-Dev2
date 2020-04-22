@@ -104,6 +104,13 @@ class SystemController
     }
     /// ID associated with the peripheral defined for this object
     uint32_t device_id = -1;
+
+    /// @param compare - the other peripheral to compare to this one
+    /// @return true if their device_id's are equal
+    bool operator==(const PeripheralID & compare) const
+    {
+      return device_id == compare.device_id;
+    }
   };
 
   // ===========================================================================

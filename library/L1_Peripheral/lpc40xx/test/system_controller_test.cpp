@@ -107,7 +107,7 @@ TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx-system-controller]")
     }
   }
 
-  SECTION("Initialize() + GetClockRate()")
+  SECTION("Initialize()")
   {
     auto external_oscillator_becomes_available = [&local_sc]() {
       std::this_thread::sleep_for(1ms);
