@@ -14,6 +14,9 @@ namespace sjsu::stm32f10x
 class Pin final : public sjsu::Pin
 {
  public:
+  /// Pointer to the alternative function I/O register
+  static inline AFIO_TypeDef * afio = AFIO;
+
   /// List of GPIO peripherals
   static inline std::array<GPIO_TypeDef *, 7> gpio = {
     GPIOA,  // => 'A'
@@ -25,42 +28,62 @@ class Pin final : public sjsu::Pin
     GPIOG,  // => 'G'
   };
 
+  /// The GPIO pins PB3, PB4, and PA15 are default initalized to be used for
+  /// JTAG purposes. If you are using SWD and want to use these pins as GPIO or
+  /// as other alternative functions, this function MUST be called.
+  static void ReleaseJTAGPins()
+  {
+    auto & system = SystemController::GetPlatformController();
+
+    // Enable the usage of alternative pin configurations
+    system.PowerUpPeripheral(stm32f10x::SystemController::Peripherals::kAFIO);
+
+    // Set the JTAG Release
+    afio->MAPR = sjsu::bit::Insert(afio->MAPR, 0b010,
+                                   sjsu::bit::CreateMaskFromRange(24, 26));
+  }
+
   /// @param port - must be a capitol letter from 'A' to 'I'
   /// @param pin - must be between 0 to 15
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
   void Initialize() const override
   {
+    auto & system = SystemController::GetPlatformController();
+
+    // Enable the usage of alternative pin configurations
+    system.PowerUpPeripheral(stm32f10x::SystemController::Peripherals::kAFIO);
+
     SJ2_ASSERT_FATAL('A' <= port_ && port_ <= 'I',
                      "Invalid port choosen for this pin implementation");
     switch (port_)
     {
       case 'A':
-        SystemController::GetPlatformController().PowerUpPeripheral(
+        system.PowerUpPeripheral(
             stm32f10x::SystemController::Peripherals::kGpioA);
         break;
       case 'B':
-        SystemController::GetPlatformController().PowerUpPeripheral(
+        system.PowerUpPeripheral(
             stm32f10x::SystemController::Peripherals::kGpioB);
         break;
       case 'C':
-        SystemController::GetPlatformController().PowerUpPeripheral(
+        system.PowerUpPeripheral(
             stm32f10x::SystemController::Peripherals::kGpioC);
         break;
       case 'D':
-        SystemController::GetPlatformController().PowerUpPeripheral(
+        system.PowerUpPeripheral(
             stm32f10x::SystemController::Peripherals::kGpioD);
         break;
       case 'E':
-        SystemController::GetPlatformController().PowerUpPeripheral(
+        system.PowerUpPeripheral(
             stm32f10x::SystemController::Peripherals::kGpioE);
         break;
       case 'F':
-        SystemController::GetPlatformController().PowerUpPeripheral(
+        system.PowerUpPeripheral(
             stm32f10x::SystemController::Peripherals::kGpioF);
         break;
       case 'G':
-        SystemController::GetPlatformController().PowerUpPeripheral(
+        system.PowerUpPeripheral(
             stm32f10x::SystemController::Peripherals::kGpioG);
         break;
     }
