@@ -34,6 +34,7 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
   GPIO_TypeDef local_gpio_g;
   GPIO_TypeDef local_gpio_h;
   GPIO_TypeDef local_gpio_i;
+  AFIO_TypeDef local_afio;
 
   memset(&local_gpio_a, 0, sizeof(local_gpio_a));
   memset(&local_gpio_b, 0, sizeof(local_gpio_b));
@@ -44,6 +45,7 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
   memset(&local_gpio_g, 0, sizeof(local_gpio_g));
   memset(&local_gpio_h, 0, sizeof(local_gpio_h));
   memset(&local_gpio_i, 0, sizeof(local_gpio_i));
+  memset(&local_afio, 0, sizeof(local_afio));
 
   Pin::gpio[0] = &local_gpio_a;
   Pin::gpio[1] = &local_gpio_b;
@@ -52,6 +54,7 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
   Pin::gpio[4] = &local_gpio_e;
   Pin::gpio[5] = &local_gpio_f;
   Pin::gpio[6] = &local_gpio_g;
+  Pin::afio    = &local_afio;
 
   stm32f10x::Pin pin_a0('A', 0);    // A
   stm32f10x::Pin pin_a4('A', 4);    // Middle of first half word
@@ -66,6 +69,12 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
   stm32f10x::Pin pin_f0('F', 0);    // F
   stm32f10x::Pin pin_g0('G', 0);    // G
 
+  auto power_up_matcher = [](sjsu::SystemController::PeripheralID expected_id) {
+    return [expected_id](sjsu::SystemController::PeripheralID actual_id) {
+      return expected_id.device_id == actual_id.device_id;
+    };
+  };
+
   struct TestStruct_t
   {
     sjsu::Pin & pin;
@@ -74,62 +83,74 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
   };
 
   std::array<TestStruct_t, 12> test = {
-    TestStruct_t{  // 0
+    TestStruct_t{
+        // 0
         .pin = pin_a0,
         .reg = local_gpio_a,
         .id  = stm32f10x::SystemController::Peripherals::kGpioA,
     },
-    TestStruct_t{  // 1
+    TestStruct_t{
+        // 1
         .pin = pin_a4,
         .reg = local_gpio_a,
         .id  = stm32f10x::SystemController::Peripherals::kGpioA,
     },
-    TestStruct_t{  // 2
+    TestStruct_t{
+        // 2
         .pin = pin_b0,
         .reg = local_gpio_b,
         .id  = stm32f10x::SystemController::Peripherals::kGpioB,
     },
-    TestStruct_t{  // 3
+    TestStruct_t{
+        // 3
         .pin = pin_b7,
         .reg = local_gpio_b,
         .id  = stm32f10x::SystemController::Peripherals::kGpioB,
     },
-    TestStruct_t{  // 4
+    TestStruct_t{
+        // 4
         .pin = pin_c0,
         .reg = local_gpio_c,
         .id  = stm32f10x::SystemController::Peripherals::kGpioC,
     },
-    TestStruct_t{  // 5
+    TestStruct_t{
+        // 5
         .pin = pin_c8,
         .reg = local_gpio_c,
         .id  = stm32f10x::SystemController::Peripherals::kGpioC,
     },
-    TestStruct_t{  // 6
+    TestStruct_t{
+        // 6
         .pin = pin_d0,
         .reg = local_gpio_d,
         .id  = stm32f10x::SystemController::Peripherals::kGpioD,
     },
-    TestStruct_t{  // 7
+    TestStruct_t{
+        // 7
         .pin = pin_d12,
         .reg = local_gpio_d,
         .id  = stm32f10x::SystemController::Peripherals::kGpioD,
     },
-    TestStruct_t{  // 8
+    TestStruct_t{
+        // 8
         .pin = pin_e0,
         .reg = local_gpio_e,
         .id  = stm32f10x::SystemController::Peripherals::kGpioE,
     },
-    TestStruct_t{  // 9
+    TestStruct_t{
+        // 9
         .pin = pin_e15,
         .reg = local_gpio_e,
         .id  = stm32f10x::SystemController::Peripherals::kGpioE,
     },
-    TestStruct_t{  // 10
+    TestStruct_t{
+        // 10
         .pin = pin_f0,
         .reg = local_gpio_f,
         .id  = stm32f10x::SystemController::Peripherals::kGpioF,
     },
-    TestStruct_t{  // 11
+    TestStruct_t{
+        // 11
         .pin = pin_g0,
         .reg = local_gpio_g,
         .id  = stm32f10x::SystemController::Peripherals::kGpioG,
@@ -138,13 +159,6 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
 
   SECTION("Initialize()")
   {
-    auto power_up_matcher =
-        [](sjsu::SystemController::PeripheralID expected_id) {
-          return [expected_id](sjsu::SystemController::PeripheralID actual_id) {
-            return expected_id.device_id == actual_id.device_id;
-          };
-        };
-
     for (size_t i = 0; i < test.size(); i++)
     {
       // Setup
@@ -355,6 +369,24 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
     }
   }
 
+  SECTION("ReleaseJTAGPins()")
+  {
+    // Setup
+    local_afio.MAPR = 0;
+
+    // Exercise
+    Pin::ReleaseJTAGPins();
+
+    // Verify
+    Verify(Method(mock_system_controller, PowerUpPeripheral)
+               .Matching(power_up_matcher(
+                   stm32f10x::SystemController::Peripherals::kAFIO)));
+
+    // Set the JTAG Release
+    CHECK(0b010 == sjsu::bit::Extract(local_afio.MAPR,
+                                      sjsu::bit::CreateMaskFromRange(24, 26)));
+  }
+
   Pin::gpio[0] = GPIOA;
   Pin::gpio[1] = GPIOB;
   Pin::gpio[2] = GPIOC;
@@ -362,5 +394,6 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
   Pin::gpio[4] = GPIOE;
   Pin::gpio[5] = GPIOF;
   Pin::gpio[6] = GPIOG;
+  Pin::afio    = AFIO;
 }
 }  // namespace sjsu::stm32f10x
