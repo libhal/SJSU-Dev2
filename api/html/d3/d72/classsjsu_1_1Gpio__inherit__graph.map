@@ -1,5 +1,6 @@
 <map id="sjsu::Gpio" name="sjsu::Gpio">
-<area shape="rect" id="node2" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="5,80,151,107"/>
-<area shape="rect" id="node3" href="$d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html" title="GPIO implementation for the MSP432P401R platform. " alt="" coords="175,80,357,107"/>
-<area shape="rect" id="node4" href="$dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="381,80,545,107"/>
+<area shape="rect" id="node2" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="159,5,304,32"/>
+<area shape="rect" id="node3" href="$d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html" title="GPIO implementation for the MSP432P401R platform. " alt="" coords="140,56,323,83"/>
+<area shape="rect" id="node4" href="$dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="149,107,313,133"/>
+<area shape="rect" id="node5" href="$dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="149,157,313,184"/>
 </map>

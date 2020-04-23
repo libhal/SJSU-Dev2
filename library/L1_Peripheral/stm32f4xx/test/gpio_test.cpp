@@ -203,8 +203,9 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
     {
       // Setup
       INFO("Failure at index: " << i);
-      // Setup: Fill with 1s so that by setting it to input they get replaced
-      //        with the correct input code of zero.
+      // Setup: Set register to all zeros. A 1 in this field will set the bit if
+      //        its in the first 15 bits. A 1 in the last 15 bits of the
+      //        register will clear the output.
       test[i].reg.BSRRH = 0;
       test[i].reg.BSRRL = 0;
 

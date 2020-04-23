@@ -12,7 +12,7 @@ namespace stm32f10x
 {
 /// System controller for stm32f10x that controls clock sources, clock speed,
 /// clock outputs control, and peripheral enabling
-class SystemController final : public sjsu::SystemController
+class SystemController : public sjsu::SystemController
 {
  public:
   /// Number of bits between each enable register

@@ -143,10 +143,11 @@ class Pin final : public sjsu::Pin
   bit::Mask Mask() const
   {
     return {
-      .position = static_cast<uint8_t>(pin_ * 2),
+      .position = (pin_ * 2U),
       .width    = 2,
     };
   }
+
   uint8_t PortToIndex() const
   {
     return static_cast<uint8_t>(port_ - 'A');

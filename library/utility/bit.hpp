@@ -22,9 +22,9 @@ namespace bit
 struct Mask  // NOLINT
 {
   /// Starting position of the bitfield
-  uint8_t position;
+  uint32_t position;
   /// Number of bits of the bitfield
-  uint8_t width;
+  uint32_t width;
 
   /// Comparison operator for the mask structure
   constexpr bool operator==(const Mask & rhs) const
@@ -44,7 +44,7 @@ struct Mask  // NOLINT
   constexpr Mask operator>>(int shift_amount) const
   {
     Mask new_mask     = *this;
-    new_mask.position = static_cast<uint8_t>(position - shift_amount);
+    new_mask.position = (position - shift_amount);
     return new_mask;
   }
 
@@ -54,7 +54,7 @@ struct Mask  // NOLINT
   constexpr Mask operator<<(int shift_amount) const
   {
     Mask new_mask     = *this;
-    new_mask.position = static_cast<uint8_t>(position + shift_amount);
+    new_mask.position = (position + shift_amount);
     return new_mask;
   }
 };
@@ -64,23 +64,25 @@ struct Mask  // NOLINT
 /// @return constexpr Mask from the low bit position to the high bit position.
 ///         If the low_bit_position > high_bit_position, the result is
 ///         undefined.
-constexpr Mask CreateMaskFromRange(uint8_t low_bit_position,
-                                   uint8_t high_bit_position)
+constexpr Mask CreateMaskFromRange(uint32_t low_bit_position,
+                                   uint32_t high_bit_position)
 {
   return Mask({
       .position = low_bit_position,
-      .width = static_cast<uint8_t>(1 + (high_bit_position - low_bit_position)),
+      .width    = (1 + (high_bit_position - low_bit_position)),
   });
 }
+
 /// @param bit_position - bit field composed of a single bit with bit width 1.
 /// @return a bit mask with of width 1 and position = bit_position.
-constexpr Mask CreateMaskFromRange(uint8_t bit_position)
+constexpr Mask CreateMaskFromRange(uint32_t bit_position)
 {
   return Mask({
       .position = bit_position,
       .width    = 1,
   });
 }
+
 /// Extract a set of contiguous bits from a target value.
 ///
 /// target   =        0x00FE'DCBA
@@ -120,11 +122,13 @@ template <typename T>
   // Mask the value to clear any bit after the width's amount of bits.
   return static_cast<T>((target >> position) & mask);
 }
+
 template <typename T>
 [[nodiscard]] constexpr T Extract(T target, Mask bitmask)
 {
   return Extract(target, bitmask.position, bitmask.width);
 }
+
 /// Insert a set of contiguous bits into a target value.
 ///
 /// target   =        0xXXXX'XXXX
@@ -176,11 +180,13 @@ template <typename T, typename U>
   target |= (value & mask) << position;
   return static_cast<T>(target);
 }
+
 template <typename T, typename U>
 [[nodiscard]] constexpr T Insert(T target, U value, Mask bitmask)
 {
   return Insert(target, value, bitmask.position, bitmask.width);
 }
+
 /// Set a bit in the target value at the position specifed to a 1 and return
 ///
 /// target   =        0b0000'1001
@@ -198,8 +204,11 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Set only accepts intergers.");
-  return static_cast<T>(target | (1 << position));
+  T mask = static_cast<T>(1);
+  mask   = static_cast<T>(mask << position);
+  return static_cast<T>(target | mask);
 }
+
 /// Set a bit in the target value at the position specifed to a 0 and return
 ///
 /// target   =        0b0000'1001
@@ -217,8 +226,11 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Clear only accepts intergers.");
-  return static_cast<T>(target & ~(1 << position));
+  T mask = static_cast<T>(1);
+  mask   = static_cast<T>(mask << position);
+  return static_cast<T>(target & ~mask);
 }
+
 /// Toggle a bit in the target value at the position specifed.
 /// If the bit was a 1, it will be changed to a 0.
 /// If the bit was a 0, it will be changed to a 1.
@@ -238,8 +250,11 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Toggle only accepts intergers.");
-  return static_cast<T>(target ^ (1 << position));
+  T mask = static_cast<T>(1);
+  mask   = static_cast<T>(mask << position);
+  return static_cast<T>(target ^ mask);
 }
+
 /// Read a bit from the target value at the position specifed.
 /// If the bit is 1 at the position given, return true.
 /// If the bit is 0 at the position given, return false.
@@ -260,7 +275,9 @@ template <typename T>
 {
   static_assert(std::numeric_limits<T>::is_integer,
                 "Read only accepts intergers.");
-  return static_cast<bool>(target & (1 << position));
+  T mask = static_cast<T>(1);
+  mask   = static_cast<T>(mask << position);
+  return static_cast<bool>(target & mask);
 }
 
 /// @returns a value that is the target value with the bit set to a 1 at the bit
@@ -272,6 +289,7 @@ template <typename T>
 {
   return Set(target, bitmask.position);
 }
+
 /// Operates the same way as the Set(T target, Mask bitmask) function except it
 /// clears the bit.
 template <typename T>
@@ -279,12 +297,14 @@ template <typename T>
 {
   return Clear(target, bitmask.position);
 }
+
 /// Operates the same way as the Set() function except it toggles the bit.
 template <typename T>
 [[nodiscard]] constexpr bool Toggle(T target, Mask bitmask)
 {
   return Toggle(target, bitmask.position);
 }
+
 /// @returns the bit in the value at the "position" field of the bitmask. For
 /// example, if the passed bitmask has position set to 5, then this function
 /// will return the 5th bits value, regardless of the "width" field is.

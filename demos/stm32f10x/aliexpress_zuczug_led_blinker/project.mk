@@ -1,1 +1,1 @@
-PLATFORM = stm32f10x#
+PLATFORM = stm32f10x
