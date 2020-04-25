@@ -3,6 +3,10 @@
 #include <cmath>
 #include <cstdint>
 
+#include "utility/log.hpp"
+#include "utility/status.hpp"
+#include "utility/units.hpp"
+
 // TODO(#1080): Refactor Accelerometer
 namespace sjsu
 {
@@ -15,56 +19,47 @@ namespace sjsu
 class Accelerometer
 {
  public:
-  /// Initialize peripherals required to communicate with device, enables
-  /// accelerometer device. After running this function, code can read from the
-  /// X, Y, and Z methods as well as configure other settings of the device.
-  /// This method must be called before any others are called in this class.
-  virtual bool Initialize() = 0;
-
-  /// @return the acceleration on the X axis.
-  virtual int32_t X() const = 0;
-
-  /// @return the acceleration on the Y axis.
-  virtual int32_t Y() const = 0;
-
-  /// @return the acceleration on the Z axis.
-  virtual int32_t Z() const = 0;
-
-  /// @return the scale multiplier of gravity. If this returns 1, then the
-  /// maximum returned acceleration will be 9.8 m/s^2. If it is 2, then the
-  /// maximum acceleration value would be 2 time that.
-  virtual int GetFullScaleRange() const = 0;
-
-  /// Set the full scale range
-  /// @param range_value - full scale multiplier. If set to 2 then the maximum
-  /// value of any axis will represent 2 x 9.8m/s^2. If it was set to 1 then the
-  /// maximum value of any axis will represent 9.8m/s^2.
-  virtual void SetFullScaleRange(uint8_t range_value) = 0;
-
-  /// Computes the pitch orientation of the accelerometer
-  ///
-  /// @return the degrees of pitch from -90 to 90 degrees as a float.
-  float Pitch() const
+  /// Acceleration along each axis of detection
+  struct Acceleration_t
   {
-    static constexpr float kRadiansToDegree = 180.0f / 3.14f;
-    float x                                 = static_cast<float>(X());
-    float y                                 = static_cast<float>(Y());
-    float z                                 = static_cast<float>(Z());
-    float pitch_numerator                   = x * -1.0f;
-    float pitch_denominator                 = sqrtf((y * y) + (z * z));
-    float pitch = atan2f(pitch_numerator, pitch_denominator) * kRadiansToDegree;
-    return pitch;
-  }
+    units::acceleration::meters_per_second_squared_t x;
+    units::acceleration::meters_per_second_squared_t y;
+    units::acceleration::meters_per_second_squared_t z;
 
-  /// Computes the roll orientation of the device.
+    void Print()
+    {
+      sjsu::LogInfo("{  x: %.4f m/s^2,  y: %.4f m/s^2,  z: %.4f m/s^2 }",
+                    x.to<double>(), y.to<double>(), z.to<double>());
+    }
+  };
+
+  /// Initialize peripherals required to communicate with device. Must be the
+  /// first method called on this driver. After this is called, `Enable()` can
+  /// be called to enable the device and begin gathering acceleration data.
   ///
-  /// @return the degrees of roll in -90 to 90 degrees
-  float Roll() const
-  {
-    static constexpr float kRadiansToDegree = 180.0f / 3.14f;
-    float y                                 = static_cast<float>(Y());
-    float z                                 = static_cast<float>(Z());
-    return (atan2f(y, z) * kRadiansToDegree);
-  }
+  /// @return Error_t if an error occurred. Typically occurs when I2C peripheral
+  ///         fails to initialize.
+  virtual Returns<void> Initialize() = 0;
+
+  /// This method must be called before running `Read()`. This function will
+  /// configure the device settings as defined through the constructor of this
+  /// interface's implementation. Some implementations have more detail or
+  /// settings than others. For example, the MMA8452q device allows for the
+  /// full-scale value to be changed based on the values supplied to the
+  /// constructor.
+  ///
+  /// @return Error_t if an error occurred. Typically occurs if
+  ///         (1) I2C peripheral could not speak to the device due to
+  ///             connection issue.
+  ///         (2) Device address is incorrect.
+  ///         (3) Detected Device ID does not match the driver.
+  virtual Returns<void> Enable() = 0;
+
+  /// Accelerometer driver will read each axis of acceleration and convert the
+  /// data to m/s^2.
+  ///
+  /// @return An Acceleration object which contains the acceleration in the
+  ///         X, Y, and Z axis.
+  virtual Returns<Acceleration_t> Read() = 0;
 };
 }  // namespace sjsu
