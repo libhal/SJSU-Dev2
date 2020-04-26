@@ -3,7 +3,6 @@
 #include "L1_Peripheral/stm32f10x/gpio.hpp"
 #include "utility/time.hpp"
 #include "utility/log.hpp"
-#include "L2_HAL/switches/button.hpp"
 
 int main()
 {

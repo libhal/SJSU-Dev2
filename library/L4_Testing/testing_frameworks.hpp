@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cinttypes>
+
 #define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
 #include "third_party/catch2/catch.hpp"
@@ -34,3 +36,14 @@ int HostRead(char * payload, size_t length);
   }                                                          \
   auto __full_##class_name = __LetsGo_##class_name(nullptr); \
   }  // namespace
+
+namespace sjsu::testing
+{
+inline void ClearRegister(void * ptr, size_t size)
+{
+  for (size_t i = 0; i < size; i++)
+  {
+    reinterpret_cast<uint8_t *>(ptr)[i] = 0;
+  }
+}
+}  // namespace sjsu::testing
