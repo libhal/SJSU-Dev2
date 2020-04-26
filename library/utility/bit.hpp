@@ -171,13 +171,14 @@ template <typename T, typename U>
   constexpr size_t kTargetWidth = sizeof(T) * 8;
   // Create mask by shifting the set of 1s down so that the number of 1s from
   // bit position 0 is equal to the width parameter.
-  UnsignedT mask = kFieldOfOnes >> (kTargetWidth - width);
+  UnsignedT mask =
+      static_cast<UnsignedT>(kFieldOfOnes >> (kTargetWidth - width));
   // Clear width's number of bits in the target value at the bit position
   // specified.
-  target &= ~(mask << position);
+  target = static_cast<UnsignedT>(target & ~(mask << position));
   // AND value with mask to remove any bits beyond the specified width.
   // Shift masked value into bit position and OR with target value.
-  target |= (value & mask) << position;
+  target = static_cast<UnsignedT>(target | (value & mask) << position);
   return static_cast<T>(target);
 }
 
@@ -458,5 +459,152 @@ constexpr T StreamExtract(const std::array<uint8_t, size> & stream,
 {
   return StreamExtract<T>(stream.data(), stream.size(), mask, endian);
 }
+
+// TODO(#1173): Add unit tests for this class.
+///
+/// @tparam T - the numeric type of the register. This should not be explicitly
+///             defined.
+template <typename T>
+class Register
+{
+ public:
+  /// @param reg - address of the register to manipulate the bits of.
+  explicit constexpr Register(volatile T * reg) : reg_(reg), value_(*reg) {}
+
+  /// Set bit in the bitmask starting position. Value will not be
+  /// saved to the register until the `Save()` method has been called.
+  ///
+  /// @param mask - the location of the bit to be set.
+  /// @return constexpr Value& - return reference to itself to allow for method
+  ///                            chaining.
+  constexpr Register & Set(Mask mask)
+  {
+    value_ = sjsu::bit::Set(value_, mask);
+    return *this;
+  }
+
+  /// Clear bit in the bitmask starting position. Value will not be
+  /// saved to the register until the `Save()` method has been called.
+  ///
+  /// @param mask - the location of the bit to be cleared.
+  /// @return constexpr Value& - return reference to itself to allow for method
+  ///                            chaining.
+  constexpr Register & Clear(Mask mask)
+  {
+    value_ = sjsu::bit::Clear(value_, mask);
+    return *this;
+  }
+
+  /// Insert the value into the bitmask location of the value. Value will not be
+  /// saved to the register until the `Save()` method has been called.
+  ///
+  /// @param value - value to insert into the bitmask location
+  /// @param bitmask - the location to insert the value into
+  /// @return constexpr Value& - return reference to itself to allow for method
+  ///                            chaining.
+  constexpr Register & Insert(T value, Mask bitmask)
+  {
+    value_ = sjsu::bit::Insert<T>(value_, static_cast<T>(value), bitmask);
+    return *this;
+  }
+
+  /// Save the value into the register
+  ///
+  /// @return constexpr Value& - return reference to itself to allow for method
+  ///                            chaining.
+  constexpr Register & Save()
+  {
+    *reg_ = value_;
+    return *this;
+  }
+
+  /// Extract bits from register
+  ///
+  /// @param bitmask - location in the register to extract bits from.
+  /// @return constexpr T - the extracted bits from the register.
+  constexpr T Extract(Mask bitmask)
+  {
+    return sjsu::bit::Extract(*reg_, bitmask);
+  }
+
+  /// @return constexpr T - return the value of the register.
+  constexpr T Get()
+  {
+    return *reg_;
+  }
+
+  /// Read a bit from the target value at the position specifed.
+  ///
+  /// @param mask - location in the register to read from.
+  /// @return true - if the starting position of the mask is set high.
+  constexpr bool Read(Mask mask)
+  {
+    return sjsu::bit::Read(*reg_, mask);
+  }
+
+ private:
+  volatile T * reg_;
+  T value_;
+};
+
+// TODO(#1173): Add unit tests for this class.
+/// @tparam T - the size of the bit::Value register. Defaults to uint32_t.
+template <typename T = uint32_t>
+class Value
+{
+ public:
+  /// Construct value with its value default initialized to zero
+  constexpr Value() : value_(0) {}
+
+  /// Construct value with its value default initalized to `initial_value`
+  ///
+  /// @param initial_value - the initial value of this class.
+  constexpr explicit Value(T initial_value) : value_(initial_value) {}
+
+  /// Set bit in the bitmask starting position
+  ///
+  /// @param mask - the location of the bit to be set.
+  /// @return constexpr Value& - return reference to itself to allow for method
+  ///                            chaining.
+  constexpr Value & Set(Mask mask)
+  {
+    value_ = sjsu::bit::Set(value_, mask);
+    return *this;
+  }
+
+  /// Clear bit in the bitmask starting position.
+  ///
+  /// @param mask - the location of the bit to be cleared.
+  /// @return constexpr Value& - return reference to itself to allow for method
+  ///                            chaining.
+  constexpr Value & Clear(Mask mask)
+  {
+    value_ = sjsu::bit::Clear(value_, mask);
+    return *this;
+  }
+
+  /// Insert the value into the bitmask location of the value.
+  ///
+  /// @param value - value to insert into the bitmask location
+  /// @param bitmask - the location to insert the value into
+  /// @return constexpr Value& - return reference to itself to allow for method
+  ///                            chaining.
+  constexpr Value & Insert(T value, Mask bitmask)
+  {
+    value_ = sjsu::bit::Insert<T>(value_, static_cast<T>(value), bitmask);
+    return *this;
+  }
+
+  /// Allows implicit conversion from this type into the integer type.
+  /// @return T - the type of this value
+  constexpr operator T() const
+  {
+    return value_;
+  }
+
+ private:
+  T value_;
+};
+
 }  // namespace bit
 }  // namespace sjsu

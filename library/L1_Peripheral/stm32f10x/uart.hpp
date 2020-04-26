@@ -1,0 +1,452 @@
+#pragma once
+
+#include "L0_Platform/stm32f10x/stm32f10x.h"
+#include "L1_Peripheral/uart.hpp"
+#include "L1_Peripheral/stm32f10x/pin.hpp"
+
+namespace sjsu::stm32f10x
+{
+/// Uart Driver for the stm32f10x platform.
+/// Usart 1 will occupy DMA1 channel 5
+/// Usart 2 will occupy DMA1 channel 6
+/// Usart 3 will occupy DMA1 channel 3
+class UartBase : public sjsu::Uart
+{
+ public:
+  using sjsu::Uart::Read;
+  using sjsu::Uart::Write;
+
+  /// Uart port definition object.
+  /// Defines all of the elements needed to enable uart.
+  struct Port_t
+  {
+    /// Reference to the UART TX pin.
+    /// This driver will not handle remapping (muxing) the pin. So for example,
+    /// For USART3 the default TX is PB10 and the default RX is PB11. But PC10
+    /// and PC11 can be remapped to USART3. In order to use those other pins,
+    /// the AFIO->MAPR register must be configured for this before using this
+    /// library, otherwise, the default mapping will be used.
+    const sjsu::Pin & tx;
+
+    /// Reference to the UART RX pin
+    /// This driver will not handle remapping (muxing) the pin. So for example,
+    /// For USART3 the default TX is PB10 and the default RX is PB11. But PC10
+    /// and PC11 can be remapped to USART3. In order to use those other pins,
+    /// the AFIO->MAPR register must be configured for this before using this
+    /// library, otherwise, the default mapping will be used.
+    const sjsu::Pin & rx;
+
+    /// Address to the UART peripheral to use
+    USART_TypeDef * uart;
+
+    /// The ID of the UART peripheral to be used. This is used to enable the
+    /// peripheral clock of th UART peripheral.
+    SystemController::PeripheralID id;
+
+    /// Address of the DMA channel for this UART. The STM32F10x UART does not
+    /// have a FIFO or buffer of any sort, thus DMA is required for reasonable
+    /// usage.
+    DMA_Channel_TypeDef * dma;
+  };
+
+  /// Namespace for the predefined UART configuration objects
+  struct Port  // NOLINT
+  {
+   private:
+    const inline static auto kTx1 = sjsu::stm32f10x::Pin('A', 9);
+    const inline static auto kRx1 = sjsu::stm32f10x::Pin('A', 10);
+
+    const inline static auto kRx2 = sjsu::stm32f10x::Pin('A', 3);
+    const inline static auto kTx2 = sjsu::stm32f10x::Pin('A', 2);
+
+    const inline static auto kTx3 = sjsu::stm32f10x::Pin('B', 10);
+    const inline static auto kRx3 = sjsu::stm32f10x::Pin('B', 11);
+
+   public:
+    /// Predefined port for UART1
+    const inline static Port_t kUart1 = {
+      .tx   = kTx1,
+      .rx   = kRx1,
+      .uart = USART1,
+      .id   = SystemController::Peripherals::kUsart1,
+      .dma  = DMA1_Channel5,
+    };
+
+    /// Predefined port for UART2
+    const inline static Port_t kUart2 = {
+      .tx   = kTx2,
+      .rx   = kRx2,
+      .uart = USART2,
+      .id   = SystemController::Peripherals::kUsart2,
+      .dma  = DMA1_Channel6,
+    };
+
+    /// Predefined port for UART3
+    const inline static Port_t kUart3 = {
+      .tx   = kTx3,
+      .rx   = kRx3,
+      .uart = USART3,
+      .id   = SystemController::Peripherals::kUsart3,
+      .dma  = DMA1_Channel3,
+    };
+  };
+
+  /// Namespace for the status registers (SR) bit masks
+  struct StatusReg  // NOLINT
+  {
+    /// Indicates if the transmit data register is empty and can be loaded with
+    /// another byte.
+    static constexpr auto kTransitEmpty = bit::CreateMaskFromRange(7);
+  };
+
+  /// Namespace for the control registers (CR1, CR3) bit masks and predefined
+  /// settings constants.
+  struct ControlReg  // NOLINT
+  {
+    /// When this bit is cleared the USART prescalers and outputs are stopped
+    /// and the end of the current byte transfer in order to reduce power
+    /// consumption. (CR1)
+    static constexpr auto kUsartEnable = bit::CreateMaskFromRange(13);
+
+    /// Enables DMA receiver (CR3)
+    static constexpr auto kDmaReceiverEnable = bit::CreateMaskFromRange(6);
+
+    /// This bit enables the transmitter. (CR1)
+    static constexpr auto kTransmitterEnable = bit::CreateMaskFromRange(3);
+
+    /// This bit enables the receiver. (CR1)
+    static constexpr auto kReceiveEnable = bit::CreateMaskFromRange(2);
+
+    /// Enable USART + Enable Receive + Enable Transmitter
+    static constexpr uint16_t kControlSettings1 =
+        bit::Value<uint16_t>()
+            .Set(ControlReg::kUsartEnable)
+            .Set(ControlReg::kReceiveEnable)
+            .Set(ControlReg::kTransmitterEnable);
+
+    /// Make sure that DMA is enabled for receive only
+    static constexpr uint16_t kControlSettings3 =
+        bit::Value<uint16_t>().Set(ControlReg::kDmaReceiverEnable);
+  };
+
+  /// Namespace for the baud rate (BRR) registers bit masks
+  struct BaudRateReg  // NOLINT
+  {
+    /// Mantissa of USART DIV
+    static constexpr auto kMantissa = bit::CreateMaskFromRange(4, 15);
+
+    /// Fraction of USART DIV
+    static constexpr auto kFraction = bit::CreateMaskFromRange(0, 3);
+  };
+
+  /// Namespace for the control registers (DMA->CCR) bit masks and predefined
+  /// settings constants.
+  struct DmaReg  // NOLINT
+  {
+    /// Declare this channel for Memory to memory mode
+    static constexpr auto kMemoryToMemory = bit::CreateMaskFromRange(14);
+
+    /// Configure the channel priority for this channel.
+    /// 0b00: Low
+    /// 0b01: Medium
+    /// 0b10: High
+    /// 0b11: Very high
+    static constexpr auto kChannelPriority = bit::CreateMaskFromRange(12, 13);
+
+    /// The size of each element of the memory.
+    /// 0b00: 8-bits
+    /// 0b01: 16-bits
+    /// 0b10: 32-bits
+    /// 0b11: Reserved
+    static constexpr auto kMemorySize = bit::CreateMaskFromRange(10, 11);
+
+    /// The peripheral register size.
+    /// 0b00: 8-bits
+    /// 0b01: 16-bits
+    /// 0b10: 32-bits
+    /// 0b11: Reserved
+    static constexpr auto kPeripheralSize = bit::CreateMaskFromRange(8, 9);
+
+    /// Activate memory increment mode, which will increment the memory address
+    /// with each transfer
+    static constexpr auto kMemoryIncrementEnable = bit::CreateMaskFromRange(7);
+
+    /// Activate memory increment mode, which will increment the peripheral
+    /// address with each transfer
+    static constexpr auto kPeripheralIncrementEnable =
+        bit::CreateMaskFromRange(6);
+
+    /// DMA will continuous load bytes into the buffer supplied in a circular
+    /// buffer manner.
+    static constexpr auto kCircularMode = bit::CreateMaskFromRange(5);
+
+    /// Data transfer direction
+    /// 0: Read from peripheral
+    /// 1: Read from memory
+    static constexpr auto kDataTransferDirection = bit::CreateMaskFromRange(4);
+
+    /// Enable interrupt on transfer error
+    static constexpr auto kTransferErrorInterruptEnable =
+        bit::CreateMaskFromRange(3);
+
+    /// Enable interrupt on half of data transferred
+    static constexpr auto kHalfTransferInterruptEnable =
+        bit::CreateMaskFromRange(2);
+
+    /// Enable interrupt on complete transfer
+    static constexpr auto kTransferCompleteInterruptEnable =
+        bit::CreateMaskFromRange(1);
+
+    /// Enable this DMA channel
+    static constexpr auto kEnable = bit::CreateMaskFromRange(0);
+
+    /// Setup the DMA channel with all of the options specific to handling UART
+    static constexpr uint32_t kDmaSettings =
+        bit::Value{}
+            .Clear(DmaReg::kTransferCompleteInterruptEnable)
+            .Clear(DmaReg::kHalfTransferInterruptEnable)
+            .Clear(DmaReg::kTransferErrorInterruptEnable)
+            .Clear(DmaReg::kDataTransferDirection)  // Read from peripheral
+            .Set(DmaReg::kCircularMode)
+            .Clear(DmaReg::kPeripheralIncrementEnable)
+            .Set(DmaReg::kMemoryIncrementEnable)
+            .Insert(0b00, DmaReg::kPeripheralSize)  // size = 8 bits
+            .Insert(0b00, DmaReg::kMemorySize)      // size = 8 bits
+            .Insert(0b10,
+                    DmaReg::kChannelPriority)  // Low Medium [High] Very_High
+            .Clear(DmaReg::kMemoryToMemory)
+            .Set(DmaReg::kEnable);
+  };
+
+  /// @tparam size - size of the array
+  /// @param port - reference to the port configuration object
+  /// @param buffer - reference to the array buffer to hold the received bytes
+  template <size_t size>
+  constexpr UartBase(const Port_t & port, std::array<uint8_t, size> & buffer)
+      : port_(port),
+        read_pointer_(0),
+        queue_(buffer.data()),
+        queue_size_(buffer.size())
+  {
+  }
+
+  /// @param port - reference to the port configuration object
+  /// @param buffer - pointer to the array buffer to hold the received bytes
+  /// @param size - size of the buffer in bytes
+  constexpr UartBase(const Port_t & port, uint8_t * buffer, size_t size)
+      : port_(port), read_pointer_(0), queue_(buffer), queue_size_(size)
+  {
+  }
+
+  /// @tparam size - size of the array
+  /// @param port - reference to the port configuration object
+  /// @param buffer - reference to the array buffer to hold the received bytes
+  template <size_t size>
+  constexpr UartBase(const Port_t & port, uint8_t (&buffer)[size])
+      : port_(port), read_pointer_(0), queue_(buffer), queue_size_(size)
+  {
+  }
+
+  /// Disables DMA channel, USART DMA receiver mode, and the UART peripheral
+  ~UartBase()
+  {
+    // It is important to disable the DMA control of the UART peripheral after
+    // destruction, as the queue_ member variable's address location may no
+    // longer be a valid and thus should not be accessed.
+    // Without doing this, the enabled DMA will continue to use up port cycles.
+
+    // Disable DMA channel for this UART
+    bit::Register(&port_.dma->CCR).Clear(DmaReg::kEnable).Save();
+    // Disable DMA flag Receive flag in UART control register
+    bit::Register(&port_.uart->CR3)
+        .Clear(ControlReg::kDmaReceiverEnable)
+        .Save();
+    // Disable UART peripheral
+    bit::Register(&port_.uart->CR1).Clear(ControlReg::kUsartEnable).Save();
+  }
+
+  Status Initialize(uint32_t baud_rate) const override
+  {
+    auto & system = SystemController::GetPlatformController();
+
+    SJ2_ASSERT_FATAL(
+        queue_size_ < 65'535,
+        "UART Queue size must not exceed the DMA transfer limit of "
+        "65'535 (2^16 - 1).");
+
+    // Supply clock to UART
+    system.PowerUpPeripheral(port_.id);
+    system.PowerUpPeripheral(SystemController::Peripherals::kDma1);
+
+    // Setup TX as output with alternative control (TXD)
+    port_.tx.SetPinFunction(1);
+    // Set pin as input with internal PULL UP (RXD)
+    port_.rx.PullUp();
+
+    // Configure the baud rate of the device
+    SetBaudRate(baud_rate);
+
+    // Setup RX DMA channel
+    auto data_register_address = reinterpret_cast<intptr_t>(&port_.uart->DR);
+    auto queue_address         = reinterpret_cast<intptr_t>(queue_);
+
+    port_.dma->CNDTR = queue_size_;
+    port_.dma->CPAR  = static_cast<uint32_t>(data_register_address);
+    port_.dma->CMAR  = static_cast<uint32_t>(queue_address);
+
+    // Setup DMA Channel Settings
+    port_.dma->CCR = DmaReg::kDmaSettings;
+    // Setup UART Control Settings 1
+    port_.uart->CR1 = ControlReg::kControlSettings1;
+    // Setup UART Control Settings 3
+    port_.uart->CR3 = ControlReg::kControlSettings3;
+    // NOTE: We leave control settings 2 alone as it is for features beyond
+    //       basic UART such as USART clock, USART port network (LIN), and other
+    //       things.
+
+    return Status::kSuccess;
+  }
+
+  bool SetBaudRate(uint32_t baud_rate) const override
+  {
+    auto & system  = SystemController::GetPlatformController();
+    auto frequency = system.GetClockRate(port_.id);
+
+    float float_baud_rate = static_cast<float>(baud_rate);
+    float usart_divider =
+        static_cast<float>(frequency) / (16.0f * float_baud_rate);
+
+    // Truncate off the decimal values
+    uint16_t mantissa = static_cast<uint16_t>(usart_divider);
+
+    // Subtract the whole number to leave just the decimal
+    float fraction = static_cast<float>(usart_divider - mantissa);
+
+    uint16_t fractional_int = static_cast<uint16_t>(std::roundf(fraction * 16));
+
+    if (fractional_int >= 16)
+    {
+      mantissa       = static_cast<uint16_t>(mantissa + 1U);
+      fractional_int = 0;
+    }
+
+    port_.uart->BRR = bit::Value<uint16_t>()
+                          .Insert(mantissa, BaudRateReg::kMantissa)
+                          .Insert(fractional_int, BaudRateReg::kFraction);
+    return true;
+  }
+
+  void Write(const void * data, size_t size) const override
+  {
+    const uint8_t * data_buffer = reinterpret_cast<const uint8_t *>(data);
+
+    for (size_t i = 0; i < size; i++)
+    {
+      while (!bit::Read(port_.uart->SR, StatusReg::kTransitEmpty))
+      {
+        continue;
+      }
+
+      // Load the next byte into the data register
+      port_.uart->DR = data_buffer[i];
+    }
+  }
+
+  size_t Read(void * data, size_t size) const override
+  {
+    uint8_t * data_buffer = reinterpret_cast<uint8_t *>(data);
+    size_t index          = 0;
+
+    while (HasData())
+    {
+      if (index >= size)
+      {
+        break;
+      }
+      data_buffer[index++] = queue_[read_pointer_++];
+      read_pointer_        = read_pointer_ % queue_size_;
+    }
+
+    return index;
+  }
+
+  bool HasData() const override
+  {
+    // When write and read position are equal, the receive queue is empty.
+    // WARNING: if DMA overruns the queue, the information will be lost.
+    return !(DmaWritePosition() == read_pointer_);
+  }
+
+  void Flush() const override
+  {
+    read_pointer_ = DmaWritePosition();
+  }
+
+ private:
+  size_t DmaWritePosition() const
+  {
+    size_t write_position = queue_size_ - port_.dma->CNDTR;
+    return write_position % queue_size_;
+  }
+
+  const Port_t & port_;
+  /// This is made mutable
+  mutable size_t read_pointer_ = 0;
+  uint8_t * queue_;
+  size_t queue_size_;
+};
+
+/// Uart Driver for the stm32f10x platform.
+///
+/// @tparam - defaults to 32 bytes for the queue size. You can configure this
+///           for a higher or lower number of bytes. Note: that the larger this
+///           value, the larger this object's size is.
+template <const size_t kQueueSize = 32>
+class Uart : public sjsu::Uart
+{
+ public:
+  using sjsu::Uart::Read;
+  using sjsu::Uart::Write;
+
+  ///
+  /// @param port
+  explicit constexpr Uart(const sjsu::stm32f10x::UartBase::Port_t & port)
+      : kUart(port, queue_), queue_{}
+  {
+  }
+
+  Status Initialize(uint32_t baud_rate) const override
+  {
+    return kUart.Initialize(baud_rate);
+  }
+
+  bool SetBaudRate(uint32_t baud_rate) const override
+  {
+    return kUart.SetBaudRate(baud_rate);
+  }
+
+  void Write(const void * data, size_t size) const override
+  {
+    return kUart.Write(data, size);
+  }
+
+  size_t Read(void * data, size_t size) const override
+  {
+    return kUart.Read(data, size);
+  }
+
+  bool HasData() const override
+  {
+    return kUart.HasData();
+  }
+
+  void Flush() const override
+  {
+    kUart.Flush();
+  }
+
+ private:
+  const sjsu::stm32f10x::UartBase kUart;
+  std::array<uint8_t, kQueueSize> queue_;
+};
+}  // namespace sjsu::stm32f10x
