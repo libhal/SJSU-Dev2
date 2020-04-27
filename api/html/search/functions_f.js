@@ -62,7 +62,7 @@ var searchData=
   ['si7060',['Si7060',['../df/ddc/classsjsu_1_1Si7060.html#a63035540e8264a0b3480ed87268d689d',1,'sjsu::Si7060']]],
   ['size',['size',['../db/d4d/structsjsu_1_1CommandList__t.html#a3dbfb107363cdeb4320a94615666f9b8',1,'sjsu::CommandList_t::size()'],['../df/ddd/classsjsu_1_1Arena.html#aa93416d3c42c252da5f71703e97c5463',1,'sjsu::Arena::size()']]],
   ['spi',['Spi',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#ac95a80469a6edf2b6e832c63093ac132',1,'sjsu::lpc40xx::Spi']]],
-  ['ssd1306',['Ssd1306',['../db/d32/classsjsu_1_1Ssd1306.html#afb36d6a1b47b9b597530f389a78f2cb2',1,'sjsu::Ssd1306']]],
+  ['ssd1306',['Ssd1306',['../db/d32/classsjsu_1_1Ssd1306.html#accdeb8f579635a2217fd802454c77036',1,'sjsu::Ssd1306']]],
   ['st7066u',['St7066u',['../d3/d56/classsjsu_1_1St7066u.html#a51c91f1fc12094d59f698bc32695d95e',1,'sjsu::St7066u']]],
   ['stacktop',['StackTop',['../d0/d6b/namespacesjsu.html#a565473fd2bab10f0fce4e6fd476ea647',1,'sjsu']]],
   ['start',['Start',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ae2574bedeb19007ea5bda021cd106f74',1,'sjsu::lpc40xx::Timer::Start()'],['../dd/d31/classsjsu_1_1Timer.html#a12ec807c8c85044230465edfc64b5eea',1,'sjsu::Timer::Start()'],['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#acf030b7e79fe165fcf8d5240aff82510',1,'sjsu::rtos::TaskScheduler::Start()'],['../d0/dab/classsjsu_1_1StopWatch.html#a25e5de2eb10cc35d0441df273ad7f39f',1,'sjsu::StopWatch::Start()']]],
@@ -72,7 +72,7 @@ var searchData=
   ['stringify',['Stringify',['../d0/d6b/namespacesjsu.html#aa79e71ad78594c5dc7af1a5b5bffdd90',1,'sjsu::Stringify(FRESULT result)'],['../d0/d6b/namespacesjsu.html#ad012d4cec8669cbd475e24254d79ea6f',1,'sjsu::Stringify(const Status_t &amp;status)']]],
   ['stringlength',['StringLength',['../d0/d6b/namespacesjsu.html#a11e9a8820c447020c5b3206659e6b116',1,'sjsu']]],
   ['suspend',['Suspend',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#aecff455c36bae8969bbb41d4948a6013',1,'sjsu::rtos::TaskInterface::Suspend()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a99221ff7671d9cbaaa811ce401b3a336',1,'sjsu::rtos::Task::Suspend()']]],
-  ['systemcontroller',['SystemController',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#aa465f3deecc87221945ef9cde93ec8bb',1,'sjsu::lpc40xx::SystemController::SystemController()'],['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a89cd73a5e0f0b948ff6b3e32581807cd',1,'sjsu::msp432p401r::SystemController::SystemController()']]],
+  ['systemcontroller',['SystemController',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#aa465f3deecc87221945ef9cde93ec8bb',1,'sjsu::lpc40xx::SystemController::SystemController()'],['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a89cd73a5e0f0b948ff6b3e32581807cd',1,'sjsu::msp432p401r::SystemController::SystemController()'],['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#af0b0808d821c9e62b0c53f9a03d9119d',1,'sjsu::stm32f10x::SystemController::SystemController()']]],
   ['systemtimer',['SystemTimer',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ae4b66a919d4f7c7c96a34d2575e17792',1,'sjsu::cortex::SystemTimer']]],
   ['systemtimerhandler',['SystemTimerHandler',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a876dd71b2d954db5401a44bda10eaf64',1,'sjsu::cortex::SystemTimer']]]
 ];

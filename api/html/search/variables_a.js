@@ -9,5 +9,6 @@ var searchData=
   ['location',['location',['../d1/d7c/structsjsu_1_1Error__t.html#ace6b05991298446d2ad8d893a689f3a7',1,'sjsu::Error_t']]],
   ['logic_5fhigh_5fduration',['logic_high_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#ad58abf81cb19141f2bbb884028466ee0',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
   ['logic_5flow_5fduration',['logic_low_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a79c8ab455b690cbc4c3ee2a79c953d05',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
-  ['low_5fspeed_5fdivider',['low_speed_divider',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a3ac43a6164c75e3eae05f539b3d533a6',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]]
+  ['low_5fspeed_5fdivider',['low_speed_divider',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a3ac43a6164c75e3eae05f539b3d533a6',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['low_5fspeed_5fexternal',['low_speed_external',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a59a1f1237899f6996f9629211dbe3bd7',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]]
 ];

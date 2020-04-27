@@ -12,5 +12,6 @@ var searchData=
   ['hasexpired',['HasExpired',['../d6/d98/classsjsu_1_1TimeoutTimer.html#a2b259c7feaf77585e8095cfae19e808c',1,'sjsu::TimeoutTimer']]],
   ['header_5fmark_5fduration',['header_mark_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a02236d63e2f098e7516cf074c2cad67b',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
   ['header_5frepeat_5fspace',['header_repeat_space',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#aa9068a958d1ffc0459b1ef4fa72780e5',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
-  ['header_5fspace_5fduration',['header_space_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#aed283c7b791d7a3898f116daa42743ae',1,'sjsu::infrared::PulseDurationConfiguration_t']]]
+  ['header_5fspace_5fduration',['header_space_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#aed283c7b791d7a3898f116daa42743ae',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
+  ['high_5fspeed_5fexternal',['high_speed_external',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#ae80352deb50eef1479edbe1834fd52ec',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]]
 ];

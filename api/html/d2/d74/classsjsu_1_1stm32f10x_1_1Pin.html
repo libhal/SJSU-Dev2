@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="../../dc/dd6/classsjsu_1_1stm32f10x_1_1Pin-members.html">List of all members</a>  </div>
@@ -149,8 +150,17 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 <tr class="memdesc:a2f5aa6d554a026f39526664fbb2879a6 inherit pub_methods_classsjsu_1_1Pin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter method for the pin's pin. <br /></td></tr>
 <tr class="separator:a2f5aa6d554a026f39526664fbb2879a6 inherit pub_methods_classsjsu_1_1Pin"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a932838b83dc39ce3107a3e435ed518e9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html#a932838b83dc39ce3107a3e435ed518e9">ReleaseJTAGPins</a> ()</td></tr>
+<tr class="separator:a932838b83dc39ce3107a3e435ed518e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:a6b6e4a2e9ad26537a19e7341d45a18fe"><td class="memItemLeft" align="right" valign="top"><a id="a6b6e4a2e9ad26537a19e7341d45a18fe"></a>
+static AFIO_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html#a6b6e4a2e9ad26537a19e7341d45a18fe">afio</a> = AFIO</td></tr>
+<tr class="memdesc:a6b6e4a2e9ad26537a19e7341d45a18fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the alternative function I/O register. <br /></td></tr>
+<tr class="separator:a6b6e4a2e9ad26537a19e7341d45a18fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76aaa21f49b31f8c672b4ccf90640a17"><td class="memItemLeft" align="right" valign="top">static std::array&lt; GPIO_TypeDef *, 7 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html#a76aaa21f49b31f8c672b4ccf90640a17">gpio</a></td></tr>
 <tr class="memdesc:a76aaa21f49b31f8c672b4ccf90640a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of GPIO peripherals.  <a href="#a76aaa21f49b31f8c672b4ccf90640a17">More...</a><br /></td></tr>
 <tr class="separator:a76aaa21f49b31f8c672b4ccf90640a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,6 +262,32 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 <p>Setup the required hardware to enable usage of the pin. Must be called first before calling any of the methods. </p>
 
 <p>Implements <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html#af3934cdcf320d76d7d2b0ee448e1ea53">sjsu::Pin</a>.</p>
+
+</div>
+</div>
+<a id="a932838b83dc39ce3107a3e435ed518e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a932838b83dc39ce3107a3e435ed518e9">&#9670;&nbsp;</a></span>ReleaseJTAGPins()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void sjsu::stm32f10x::Pin::ReleaseJTAGPins </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The GPIO pins PB3, PB4, and PA15 are default initalized to be used for JTAG purposes. If you are using SWD and want to use these pins as GPIO or as other alternative functions, this function MUST be called. </p>
 
 </div>
 </div>

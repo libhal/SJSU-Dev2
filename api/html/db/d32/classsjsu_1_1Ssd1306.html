@@ -112,8 +112,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afb36d6a1b47b9b597530f389a78f2cb2"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#afb36d6a1b47b9b597530f389a78f2cb2">Ssd1306</a> (<a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">sjsu::Spi</a> &amp;spi, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;cs, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;dc)</td></tr>
-<tr class="separator:afb36d6a1b47b9b597530f389a78f2cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdeb8f579635a2217fd802454c77036"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#accdeb8f579635a2217fd802454c77036">Ssd1306</a> (<a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">sjsu::Spi</a> &amp;spi, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;cs, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;dc, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;reset, units::frequency::hertz_t clock_rate=2_MHz)</td></tr>
+<tr class="separator:accdeb8f579635a2217fd802454c77036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2602eabd5f405febf399123933e0d8a"><td class="memItemLeft" align="right" valign="top"><a id="ab2602eabd5f405febf399123933e0d8a"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a">GetWidth</a> () override</td></tr>
 <tr class="memdesc:ab2602eabd5f405febf399123933e0d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of pixels wide the display is. <br /></td></tr>
@@ -182,8 +182,8 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a cl
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Display driver for the SSD1306 OLED display driver chip, usually found on 0.98" oled displays. User manual: <a href="https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf">https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf</a> </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afb36d6a1b47b9b597530f389a78f2cb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb36d6a1b47b9b597530f389a78f2cb2">&#9670;&nbsp;</a></span>Ssd1306()</h2>
+<a id="accdeb8f579635a2217fd802454c77036"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accdeb8f579635a2217fd802454c77036">&#9670;&nbsp;</a></span>Ssd1306()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,7 +207,19 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a cl
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;&#160;</td>
-          <td class="paramname"><em>dc</em>&#160;</td>
+          <td class="paramname"><em>dc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;&#160;</td>
+          <td class="paramname"><em>reset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">units::frequency::hertz_t&#160;</td>
+          <td class="paramname"><em>clock_rate</em> = <code>2_MHz</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -224,9 +236,11 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a cl
 <p>Construct SSD1306 driver</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>- reference to the spi bus that is connected to the device </td></tr>
-    <tr><td class="paramname">cs</td><td>- reference to the gpio that is connected to the chip select pin of the device. </td></tr>
-    <tr><td class="paramname">dc</td><td>- reference to the gpio that is connected to the data/command pin of the device. </td></tr>
+    <tr><td class="paramname">spi</td><td>- spi bus that is connected to the device </td></tr>
+    <tr><td class="paramname">cs</td><td>- gpio that is connected to the chip select pin of the device. </td></tr>
+    <tr><td class="paramname">dc</td><td>- gpio that is connected to the data/command pin of the device. </td></tr>
+    <tr><td class="paramname">reset</td><td>- gpio connected to the reset line. If an RC reset circuit is used, this can be replaced with <code><a class="el" href="../../d2/dd9/group__inactives__module.html#gaf99c1c6aececb5f8b63b89c991138a8f">sjsu::GetInactive</a>&lt;<a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a>&gt;()</code> </td></tr>
+    <tr><td class="paramname">clock_rate</td><td>- clock rate to communication with the OLED display with. </td></tr>
   </table>
   </dd>
 </dl>

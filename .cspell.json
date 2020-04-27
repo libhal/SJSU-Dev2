@@ -17,6 +17,8 @@
         "AFMR",
         "AHBENR",
         "AHBRAM",
+        "JTAG",
+        "MAPR",
         "Aiht",
         "Ailt",
         "ALDOM",

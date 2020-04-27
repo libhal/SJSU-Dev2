@@ -8,7 +8,7 @@
 int main()
 {
   sjsu::LogInfo(
-      "Starting GPIO Application (targeted for AliExpress ZucZug board)...");
+      "Starting GPIO Application (targeted for Super Bluepill board)...");
   sjsu::stm32f10x::Gpio key_button('A', 8);
   sjsu::stm32f10x::Gpio led('A', 1);
 

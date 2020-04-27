@@ -12,7 +12,7 @@ var searchData=
   ['usb',['usb',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#a42cc9b78fa6376e88131ac46d843e95b',1,'sjsu::lpc40xx::SystemController::ClockConfiguration']]],
   ['usbclockregister',['UsbClockRegister',['../d3/d03/structsjsu_1_1lpc40xx_1_1SystemController_1_1UsbClockRegister.html',1,'sjsu::lpc40xx::SystemController']]],
   ['usbclockselect',['UsbClockSelect',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a13463e5bf70d424aabe083577641200c',1,'sjsu::lpc40xx::SystemController']]],
-  ['usbdivider',['UsbDivider',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a8643fe1fcc2ef831ae790a43d98f8a73',1,'sjsu::lpc40xx::SystemController']]],
+  ['usbdivider',['UsbDivider',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a8643fe1fcc2ef831ae790a43d98f8a73',1,'sjsu::lpc40xx::SystemController::UsbDivider()'],['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac649916b096a6be9c5195c08bf1bf8eb',1,'sjsu::stm32f10x::SystemController::UsbDivider()']]],
   ['usbpll',['UsbPll',['../d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html',1,'sjsu::lpc17xx::SystemController']]],
   ['usbplldivider',['UsbPllDivider',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab5a079dcf9f8d5d3194aef8fdc665290',1,'sjsu::lpc17xx::SystemController']]],
   ['usbpllinputfrequency',['UsbPllInputFrequency',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da',1,'sjsu::lpc17xx::SystemController']]],

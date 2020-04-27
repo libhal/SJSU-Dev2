@@ -21,14 +21,22 @@
 namespace
 {
 using sjsu::cortex::InterruptController;
+
+// Default initialized clock configuration object for use in the system
+// controller.
+sjsu::stm32f10x::SystemController::ClockConfiguration clock_configuration;
+
 // Create stm32f10x system controller to be used by low level initialization.
-sjsu::stm32f10x::SystemController system_controller;
+sjsu::stm32f10x::SystemController system_controller(clock_configuration);
+
 // Create timer0 to be used by lower level initialization for uptime calculation
 sjsu::cortex::DwtCounter arm_dwt_counter;
+
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
 sjsu::cortex::SystemTimer system_timer(
     sjsu::stm32f10x::SystemController::Peripherals::kSystemTimer);
+
 // Cortex NVIC interrupt controller used to setup interrupt service routines
 sjsu::cortex::InterruptController<sjsu::lpc40xx::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>
@@ -193,6 +201,8 @@ void InitializePlatform()
   // This will be used by other libraries to enable and disable interrupts.
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
+
+  system_controller.Initialize();
 
   system_timer.SetTickFrequency(config::kRtosFrequency);
   sjsu::Status timer_start_status = system_timer.StartTimer();

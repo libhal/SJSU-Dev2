@@ -13,6 +13,7 @@ var searchData=
   ['kdisplaylineaddress1',['kDisplayLineAddress1',['../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6a3768ab3cb06ced116ecd6be46395f1aa',1,'sjsu::St7066u']]],
   ['kdisplaylineaddress2',['kDisplayLineAddress2',['../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6ab7ff7431f730439e9a0616922f38b9f5',1,'sjsu::St7066u']]],
   ['kdisplaylineaddress3',['kDisplayLineAddress3',['../d3/d56/classsjsu_1_1St7066u.html#a8cb73254d7a0d7a6df16d91e41f3eeb6ae580fe8cc2ec21f7c0a92b8960eeb421',1,'sjsu::St7066u']]],
+  ['kdivideby1point5',['kDivideBy1Point5',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac649916b096a6be9c5195c08bf1bf8eba42c0806d0f655911797589ffead1c025',1,'sjsu::stm32f10x::SystemController']]],
   ['keeprom',['kEeprom',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a2ad4ffc87714c82ce899a673fd8dcca1',1,'sjsu::Storage']]],
   ['kemmc',['kEMMC',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a1db1a52ec0dcbd7a7922f8bd20d60317',1,'sjsu::Storage']]],
   ['kextended',['kExtended',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdda025a008fdf5f9fe660e711fd3973bd69',1,'sjsu::Can::Message_t']]],

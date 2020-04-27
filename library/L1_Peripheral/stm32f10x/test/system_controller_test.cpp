@@ -1,6 +1,7 @@
 #include <array>
 #include <cstdint>
 #include <numeric>
+#include <thread>
 
 #include "L0_Platform/stm32f10x/stm32f10x.h"
 #include "L1_Peripheral/stm32f10x/system_controller.hpp"
@@ -32,17 +33,51 @@ TEST_CASE("Testing stm32f10x SystemController", "[stm32f10x-systemcontroller]")
   std::array<volatile uint32_t, 3> local_enables;
   std::fill(local_enables.begin(), local_enables.end(), 0);
 
-  stm32f10x::SystemController::enable[0] = &local_enables[0];
-  stm32f10x::SystemController::enable[1] = &local_enables[1];
-  stm32f10x::SystemController::enable[2] = &local_enables[2];
+  FLASH_TypeDef local_flash;
+  memset(&local_flash, 0, sizeof(local_flash));
 
-  SystemController test_subject;
+  RCC_TypeDef local_rcc;
+  memset(&local_rcc, 0, sizeof(local_rcc));
 
-  SECTION("GetClockRate()")
-  {
-    CHECK(8_MHz <= test_subject.GetClockRate(
-                       stm32f10x::SystemController::Peripherals::kCpu));
-  }
+  stm32f10x::SystemController::enable[0]     = &local_enables[0];
+  stm32f10x::SystemController::enable[1]     = &local_enables[1];
+  stm32f10x::SystemController::enable[2]     = &local_enables[2];
+  stm32f10x::SystemController::clock_control = &local_rcc;
+  stm32f10x::SystemController::flash         = &local_flash;
+
+  SystemController::ClockConfiguration config;
+
+  SystemController test_subject(config);
+
+  auto system_clock_becomes_ready = [&local_rcc, &config]() {
+    // Delay by 10ms to give enough time for other simulated triggers to
+    // operate before this cancels.
+    std::this_thread::sleep_for(10ms);
+    local_rcc.CFGR = bit::Insert(
+        local_rcc.CFGR, Value(config.system_clock),
+        SystemController::ClockConfigurationRegisters::kSystemClockStatus);
+  };
+
+  auto pll_lock = [&local_rcc]() {
+    std::this_thread::sleep_for(1ms);
+    local_rcc.CR = bit::Set(local_rcc.CR,
+                            SystemController::ClockControlRegisters::kPllReady);
+  };
+
+  auto high_oscillator_ready = [&local_rcc]() {
+    std::this_thread::sleep_for(1ms);
+
+    local_rcc.CR =
+        bit::Set(local_rcc.CR,
+                 SystemController::ClockControlRegisters::kExternalOscReady);
+  };
+
+  auto low_oscillator_ready = [&local_rcc]() {
+    std::this_thread::sleep_for(1ms);
+
+    local_rcc.BDCR = bit::Set(
+        local_rcc.BDCR, SystemController::RtcRegisters::kLowSpeedOscReady);
+  };
 
   SECTION("PowerUpPeripheral()")
   {
@@ -112,8 +147,635 @@ TEST_CASE("Testing stm32f10x SystemController", "[stm32f10x-systemcontroller]")
     }
   }
 
-  stm32f10x::SystemController::enable[0] = &RCC->AHBENR;
-  stm32f10x::SystemController::enable[1] = &RCC->APB1ENR;
-  stm32f10x::SystemController::enable[2] = &RCC->APB2ENR;
+  SECTION("GetClockConfiguration()")
+  {
+    REQUIRE(&config == test_subject.GetClockConfiguration());
+  }
+
+  SECTION("Initialize() + GetClockRate()")
+  {
+    // Setup
+    std::thread simulated_system_clock_ready(system_clock_becomes_ready);
+
+    SECTION("Default Initialize")
+    {
+      // Exercise
+      test_subject.Initialize();
+    }
+
+    SECTION("Enable high speed external oscillator")
+    {
+      // Setup
+      std::thread simulate_high_oscillator_ready(high_oscillator_ready);
+      config.high_speed_external = 8_MHz;
+
+      // Exercise
+      test_subject.Initialize();
+      simulate_high_oscillator_ready.join();
+
+      // Verify
+      CHECK(bit::Read(
+          local_rcc.CR,
+          SystemController::ClockControlRegisters::kExternalOscEnable));
+    }
+
+    SECTION("Enable low speed external oscillator")
+    {
+      // Setup
+      std::thread simulate_high_oscillator_ready(low_oscillator_ready);
+      config.low_speed_external = 8_MHz;
+
+      // Exercise
+      test_subject.Initialize();
+      simulate_high_oscillator_ready.join();
+
+      // Verify
+      CHECK(bit::Read(local_rcc.BDCR,
+                      SystemController::RtcRegisters::kLowSpeedOscEnable));
+    }
+
+    SECTION("PLL External Oscillator Configuration")
+    {
+      SECTION("Using HSE /2")
+      {
+        // Setup
+        config.pll.source =
+            SystemController::PllSource::kHighSpeedExternalDividedBy2;
+
+        // Exercise
+        test_subject.Initialize();
+
+        // Verify
+        CHECK(bit::Read(
+            local_rcc.CFGR,
+            SystemController::ClockConfigurationRegisters::kHsePreDivider));
+      }
+
+      SECTION("Using HSE /1")
+      {
+        SECTION("Using Internal")
+        {
+          // Setup
+          config.pll.source = SystemController::PllSource::kHighSpeedInternal;
+        }
+
+        SECTION("Using External")
+        {
+          // Setup
+          config.pll.source = SystemController::PllSource::kHighSpeedExternal;
+        }
+
+        // Exercise
+        test_subject.Initialize();
+
+        // Verify
+        CHECK(!bit::Read(
+            local_rcc.CFGR,
+            SystemController::ClockConfigurationRegisters::kHsePreDivider));
+      }
+    }
+
+    SECTION("PLL Configuration Enable")
+    {
+      // Setup
+      std::thread simulate_pll_locks(pll_lock);
+
+      // Exercise
+      test_subject.Initialize();
+      simulate_pll_locks.join();
+
+      // Verify
+      CHECK(
+          Value(config.pll.multiply) ==
+          bit::Extract(local_rcc.CFGR,
+                       SystemController::ClockConfigurationRegisters::kPllMul));
+
+      CHECK(Value(config.pll.multiply) ==
+            bit::Read(local_rcc.CR,
+                      SystemController::ClockControlRegisters::kPllEnable));
+    }
+
+    SECTION("Flash Wait State Configuration")
+    {
+      // Setup
+      std::thread simulate_pll_locks(pll_lock);
+      std::thread simulate_high_oscillator_ready(high_oscillator_ready);
+      uint32_t flash_code = 0b000;
+
+      // Setup: Make sure we are using the PLL source
+      config.system_clock = SystemController::SystemClockSelect::kPll;
+
+      SECTION("Pll speed = 16 MHz")
+      {
+        // Setup
+        // Setup: Internal is divided by 2 to get 4 MHz
+        config.pll.source   = SystemController::PllSource::kHighSpeedInternal;
+        config.pll.enable   = true;
+        config.pll.multiply = SystemController::PllMultiply::kMultiplyBy4;
+        config.system_clock = SystemController::SystemClockSelect::kPll;
+        flash_code          = 0b000;
+      }
+
+      SECTION("Pll speed = 32 MHz")
+      {
+        // Setup
+        // Setup: Internal is divided by 2 to get 4 MHz
+        config.pll.source   = SystemController::PllSource::kHighSpeedInternal;
+        config.pll.enable   = true;
+        config.pll.multiply = SystemController::PllMultiply::kMultiplyBy8;
+        config.system_clock = SystemController::SystemClockSelect::kPll;
+        flash_code          = 0b001;
+      }
+
+      SECTION("Pll speed = 64 MHz")
+      {
+        // Setup
+        // Setup: Internal is divided by 2 to get 4 MHz
+        config.pll.source   = SystemController::PllSource::kHighSpeedInternal;
+        config.pll.enable   = true;
+        config.pll.multiply = SystemController::PllMultiply::kMultiplyBy16;
+        config.system_clock = SystemController::SystemClockSelect::kPll;
+        flash_code          = 0b010;
+      }
+
+      SECTION("Pll speed = 72 MHz, using external")
+      {
+        // Setup
+        // Setup: External Oscillator set to 8_Mhz
+        config.high_speed_external = 8_MHz;
+        config.pll.source   = SystemController::PllSource::kHighSpeedExternal;
+        config.pll.enable   = true;
+        config.pll.multiply = SystemController::PllMultiply::kMultiplyBy9;
+        config.system_clock = SystemController::SystemClockSelect::kPll;
+        flash_code          = 0b010;
+      }
+
+      // Exercise
+      test_subject.Initialize();
+      simulate_pll_locks.join();
+      simulate_high_oscillator_ready.join();
+
+      // Verify
+      CHECK(flash_code == bit::Extract(local_flash.ACR,
+                                       sjsu::bit::CreateMaskFromRange(0, 2)));
+    }
+
+    SECTION("Changing dividers")
+    {
+      // Setup
+      config.ahb.divider          = SystemController::AHBDivider::kDivideBy512;
+      config.ahb.apb1.divider     = SystemController::APBDivider::kDivideBy2;
+      config.ahb.apb2.divider     = SystemController::APBDivider::kDivideBy4;
+      config.ahb.apb2.adc.divider = SystemController::AdcDivider::kDivideBy6;
+
+      // Exercise
+      test_subject.Initialize();
+    }
+
+    SECTION("Set System Clock to High Speed External")
+    {
+      // Setup
+      config.system_clock =
+          SystemController::SystemClockSelect::kHighSpeedExternal;
+
+      // Exercise
+      test_subject.Initialize();
+    }
+
+    SECTION("RTC dividers")
+    {
+      // Setup
+      config.rtc.enable = true;
+      SECTION("kHighSpeedExternalDividedBy128")
+      {
+        config.rtc.source =
+            SystemController::RtcSource::kHighSpeedExternalDividedBy128;
+      }
+      SECTION("kLowSpeedExternal")
+      {
+        config.rtc.source = SystemController::RtcSource::kLowSpeedExternal;
+      }
+      SECTION("kLowSpeedInternal")
+      {
+        config.rtc.source = SystemController::RtcSource::kLowSpeedInternal;
+      }
+      SECTION("kNoClock")
+      {
+        config.rtc.source = SystemController::RtcSource::kNoClock;
+      }
+
+      // Exercise
+      test_subject.Initialize();
+    }
+
+    simulated_system_clock_ready.join();
+
+    // Verify
+    // Verify: Set the RTC oscillator source
+    CHECK(Value(config.rtc.source) ==
+          bit::Extract(local_rcc.BDCR,
+                       SystemController::RtcRegisters::kRtcSourceSelect));
+
+    // Verify: Enable/Disable the RTC
+    CHECK(config.rtc.enable ==
+          bit::Extract(local_rcc.BDCR,
+                       SystemController::RtcRegisters::kRtcEnable));
+
+    // Verify: Set System Clock Source
+    CHECK(
+        Value(config.system_clock) ==
+        bit::Extract(
+            local_rcc.CFGR,
+            SystemController::ClockConfigurationRegisters::kSystemClockSelect));
+
+    // Verify: Set PLL Source
+    // Verify: Need to clear the second bit used to select the high speed
+    //         external divide by 2.
+    CHECK((Value(config.pll.source) & ~(0b10)) ==
+          bit::Extract(
+              local_rcc.CFGR,
+              SystemController::ClockConfigurationRegisters::kPllSource));
+
+    // Verify: Set USB Divider
+    CHECK(Value(config.pll.usb.divider) ==
+          bit::Extract(
+              local_rcc.CFGR,
+              SystemController::ClockConfigurationRegisters::kUsbPrescalar));
+
+    // Verify: Set AHB divider
+    CHECK(Value(config.ahb.divider) ==
+          bit::Extract(
+              local_rcc.CFGR,
+              SystemController::ClockConfigurationRegisters::kAHBDivider));
+
+    // Verify: Set APB1 divider
+    CHECK(Value(config.ahb.apb1.divider) ==
+          bit::Extract(
+              local_rcc.CFGR,
+              SystemController::ClockConfigurationRegisters::kAPB1Divider));
+
+    // Verify: Set APB2 divider
+    CHECK(Value(config.ahb.apb2.divider) ==
+          bit::Extract(
+              local_rcc.CFGR,
+              SystemController::ClockConfigurationRegisters::kAPB2Divider));
+
+    // Verify: Set ADC divider
+    CHECK(Value(config.ahb.apb2.adc.divider) ==
+          bit::Extract(
+              local_rcc.CFGR,
+              SystemController::ClockConfigurationRegisters::kAdcDivider));
+  }
+
+  SECTION("GetClockRate()")
+  {
+    // Setup
+    config.high_speed_external = 16_MHz;
+    config.low_speed_external  = 32_kHz;
+
+    config.system_clock = SystemController::SystemClockSelect::kPll;
+
+    config.pll.enable   = true;
+    config.pll.multiply = SystemController::PllMultiply::kMultiplyBy9;
+    config.pll.source =
+        SystemController::PllSource::kHighSpeedExternalDividedBy2;
+
+    // Setup: Set the registers with all of the enable bits so keep looping form
+    //        happening.
+    local_rcc.CFGR = bit::Insert(
+        local_rcc.CFGR, Value(config.system_clock),
+        SystemController::ClockConfigurationRegisters::kSystemClockStatus);
+    local_rcc.CR = bit::Set(local_rcc.CR,
+                            SystemController::ClockControlRegisters::kPllReady);
+    local_rcc.CR =
+        bit::Set(local_rcc.CR,
+                 SystemController::ClockControlRegisters::kExternalOscReady);
+    local_rcc.BDCR = bit::Set(
+        local_rcc.BDCR, SystemController::RtcRegisters::kLowSpeedOscReady);
+
+    SECTION("AHB Devices")
+    {
+      // Setup
+      std::array<std::tuple<int, SystemController::AHBDivider>, 9> dividers = {
+        std::make_tuple(1, SystemController::AHBDivider::kDivideBy1),
+        std::make_tuple(2, SystemController::AHBDivider::kDivideBy2),
+        std::make_tuple(4, SystemController::AHBDivider::kDivideBy4),
+        std::make_tuple(8, SystemController::AHBDivider::kDivideBy8),
+        std::make_tuple(16, SystemController::AHBDivider::kDivideBy16),
+        std::make_tuple(64, SystemController::AHBDivider::kDivideBy64),
+        std::make_tuple(128, SystemController::AHBDivider::kDivideBy128),
+        std::make_tuple(256, SystemController::AHBDivider::kDivideBy256),
+        std::make_tuple(512, SystemController::AHBDivider::kDivideBy512),
+      };
+
+      for (size_t i = 0; i < dividers.size(); i++)
+      {
+        // Setup
+        INFO("Failure on index [" << i
+                                  << "] divider: " << std::get<0>(dividers[i]));
+        auto ahb_frequency = 72_MHz / std::get<0>(dividers[i]);
+        config.ahb.divider = std::get<1>(dividers[i]);
+
+        // Exercise
+        test_subject.Initialize();
+
+        // Exercise + Verify
+        CHECK(ahb_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kDma1));
+        CHECK(ahb_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kDma2));
+        CHECK(ahb_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kSram));
+        CHECK(ahb_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kCrc));
+        CHECK(ahb_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kFsmc));
+        CHECK(ahb_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kSdio));
+      }
+    }
+
+    SECTION("APB1 Devices")
+    {
+      // Setup
+      config.ahb.divider = SystemController::AHBDivider::kDivideBy1;
+
+      std::array<std::tuple<int, SystemController::APBDivider>, 5> dividers = {
+        std::make_tuple(1, SystemController::APBDivider::kDivideBy1),
+        std::make_tuple(2, SystemController::APBDivider::kDivideBy2),
+        std::make_tuple(4, SystemController::APBDivider::kDivideBy4),
+        std::make_tuple(8, SystemController::APBDivider::kDivideBy8),
+        std::make_tuple(16, SystemController::APBDivider::kDivideBy16),
+      };
+
+      for (size_t i = 0; i < dividers.size(); i++)
+      {
+        // Setup
+        INFO("Failure on index [" << i
+                                  << "] divider: " << std::get<0>(dividers[i]));
+        auto expected_frequency = 72_MHz / std::get<0>(dividers[i]);
+        config.ahb.apb1.divider = std::get<1>(dividers[i]);
+
+        // Exercise
+        test_subject.Initialize();
+
+        // Exercise + Verify
+        int timer_frequency_doubler = (i == 0) ? 1 : 2;
+
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer2));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer3));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer4));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer5));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer6));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer7));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer12));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer13));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer14));
+
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(
+                  SystemController::Peripherals::kWindowWatchdog));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kSpi2));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kSpi3));
+        CHECK(
+            expected_frequency ==
+            test_subject.GetClockRate(SystemController::Peripherals::kUsart2));
+        CHECK(
+            expected_frequency ==
+            test_subject.GetClockRate(SystemController::Peripherals::kUsart3));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kUart4));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kUart5));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kI2c1));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kI2c2));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kCan1));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(
+                  SystemController::Peripherals::kBackupClock));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kPower));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kDac));
+      }
+    }
+
+    SECTION("APB2 Devices")
+    {
+      // Setup
+      config.ahb.divider = SystemController::AHBDivider::kDivideBy1;
+
+      std::array<std::tuple<int, SystemController::APBDivider>, 5> dividers = {
+        std::make_tuple(1, SystemController::APBDivider::kDivideBy1),
+        std::make_tuple(2, SystemController::APBDivider::kDivideBy2),
+        std::make_tuple(4, SystemController::APBDivider::kDivideBy4),
+        std::make_tuple(8, SystemController::APBDivider::kDivideBy8),
+        std::make_tuple(16, SystemController::APBDivider::kDivideBy16),
+      };
+
+      for (size_t i = 0; i < dividers.size(); i++)
+      {
+        // Setup
+        INFO("Failure on index [" << i
+                                  << "] divider: " << std::get<0>(dividers[i]));
+        units::frequency::hertz_t expected_frequency =
+            72_MHz / std::get<0>(dividers[i]);
+        config.ahb.apb2.divider = std::get<1>(dividers[i]);
+
+        // Exercise
+        test_subject.Initialize();
+
+        // Exercise + Verify
+        int timer_frequency_doubler = (i == 0) ? 1 : 2;
+
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kAFIO));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kGpioA));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kGpioB));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kGpioC));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kGpioD));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kGpioE));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kGpioF));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kGpioG));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer1));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kSpi1));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer8));
+        CHECK(
+            expected_frequency ==
+            test_subject.GetClockRate(SystemController::Peripherals::kUsart1));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer9));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer10));
+        CHECK(
+            expected_frequency * timer_frequency_doubler ==
+            test_subject.GetClockRate(SystemController::Peripherals::kTimer11));
+      }
+    }
+
+    SECTION("ADC Devices")
+    {
+      // Setup
+      config.ahb.divider      = SystemController::AHBDivider::kDivideBy1;
+      config.ahb.apb2.divider = SystemController::APBDivider::kDivideBy1;
+
+      std::array<std::tuple<int, SystemController::AdcDivider>, 4> dividers = {
+        std::make_tuple(2, SystemController::AdcDivider::kDivideBy2),
+        std::make_tuple(4, SystemController::AdcDivider::kDivideBy4),
+        std::make_tuple(6, SystemController::AdcDivider::kDivideBy6),
+        std::make_tuple(8, SystemController::AdcDivider::kDivideBy8),
+      };
+
+      for (size_t i = 0; i < dividers.size(); i++)
+      {
+        // Setup
+        INFO("Failure on index [" << i
+                                  << "] divider: " << std::get<0>(dividers[i]));
+        units::frequency::hertz_t expected_frequency =
+            72_MHz / std::get<0>(dividers[i]);
+        config.ahb.apb2.adc.divider = std::get<1>(dividers[i]);
+
+        // Exercise
+        test_subject.Initialize();
+
+        // Exercise + Verify
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kAdc1));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kAdc2));
+        CHECK(expected_frequency ==
+              test_subject.GetClockRate(SystemController::Peripherals::kAdc3));
+      }
+    }
+
+    SECTION("USB Clock Rate")
+    {
+      config.ahb.divider      = SystemController::AHBDivider::kDivideBy1;
+      config.ahb.apb2.divider = SystemController::APBDivider::kDivideBy1;
+
+      SECTION("Divide by 1")
+      {
+        // Setup
+        config.pll.usb.divider = SystemController::UsbDivider::kDivideBy1;
+
+        // Exercise
+        test_subject.Initialize();
+
+        // Verify
+        CHECK(72_MHz ==
+              test_subject.GetClockRate(SystemController::Peripherals::kUsb));
+      }
+
+      SECTION("Divide by 1.5")
+      {
+        // Setup
+        config.pll.usb.divider = SystemController::UsbDivider::kDivideBy1Point5;
+
+        // Exercise
+        test_subject.Initialize();
+
+        // Verify
+        CHECK(48_MHz ==
+              test_subject.GetClockRate(SystemController::Peripherals::kUsb));
+      }
+    }
+
+    SECTION("CPU Clock Rate")
+    {
+      // Setup
+      config.ahb.divider      = SystemController::AHBDivider::kDivideBy1;
+      config.ahb.apb2.divider = SystemController::APBDivider::kDivideBy1;
+
+      // Exercise
+      test_subject.Initialize();
+
+      // Verify
+      CHECK(72_MHz ==
+            test_subject.GetClockRate(SystemController::Peripherals::kCpu));
+      CHECK(72_MHz == test_subject.GetClockRate(
+                          SystemController::Peripherals::kSystemTimer));
+    }
+
+    SECTION("FLINTF Clock Rate")
+    {
+      // Setup
+      config.ahb.divider      = SystemController::AHBDivider::kDivideBy1;
+      config.ahb.apb2.divider = SystemController::APBDivider::kDivideBy1;
+
+      // Exercise
+      test_subject.Initialize();
+
+      // Verify
+      CHECK(SystemController::kHighSpeedInternal ==
+            test_subject.GetClockRate(SystemController::Peripherals::kFlitf));
+    }
+
+    SECTION("I2S Clock Rate")
+    {
+      // Setup
+      // Make sure that I2S is not following the AHB divider
+      config.ahb.divider = SystemController::AHBDivider::kDivideBy512;
+
+      // Exercise
+      test_subject.Initialize();
+
+      // Verify
+      CHECK(72_MHz ==
+            test_subject.GetClockRate(SystemController::Peripherals::kI2s));
+    }
+
+    SECTION("Invalid Peripheral")
+    {
+      // Exercise
+      test_subject.Initialize();
+
+      // Verify
+      CHECK(0_Hz == test_subject.GetClockRate(
+                        SystemController::PeripheralID::Define<0xFFFF>()));
+    }
+  }
+
+  stm32f10x::SystemController::enable[0]     = &RCC->AHBENR;
+  stm32f10x::SystemController::enable[1]     = &RCC->APB1ENR;
+  stm32f10x::SystemController::enable[2]     = &RCC->APB2ENR;
+  stm32f10x::SystemController::clock_control = RCC;
+  stm32f10x::SystemController::flash         = FLASH;
 }
 }  // namespace sjsu::stm32f10x

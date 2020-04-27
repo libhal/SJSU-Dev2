@@ -1,7 +1,7 @@
 var searchData=
 [
   ['dac_5fregister',['dac_register',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ac2169bfd0263658e25fc448605ace49c',1,'sjsu::lpc40xx::Dac']]],
-  ['data',['data',['../da/d47/structsjsu_1_1example_1_1Example_1_1Channel__t.html#a2b5b957509014d7638c1947c691b7f7c',1,'sjsu::example::Example::Channel_t::data()'],['../d3/d2e/structsjsu_1_1Esp8266_1_1IpAddress__t.html#aefa2067bb0fcdf51be80486614f4802a',1,'sjsu::Esp8266::IpAddress_t::data()'],['../da/df2/structsjsu_1_1Sd_1_1Response__t.html#ac3aeff46cec0cfae23289b69914eb2b7',1,'sjsu::Sd::Response_t::data()'],['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#affb6dca340b09f52aba1b435e683f922',1,'sjsu::infrared::DecodedFrame_t::data()']]],
+  ['data',['data',['../da/d47/structsjsu_1_1example_1_1Example_1_1Channel__t.html#a2b5b957509014d7638c1947c691b7f7c',1,'sjsu::example::Example::Channel_t::data()'],['../d3/d2e/structsjsu_1_1Esp8266_1_1IpAddress__t.html#aefa2067bb0fcdf51be80486614f4802a',1,'sjsu::Esp8266::IpAddress_t::data()'],['../da/df2/structsjsu_1_1Sd_1_1Response__t.html#a7fa955b48a13f33695fefc16cae37d6f',1,'sjsu::Sd::Response_t::data()'],['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#affb6dca340b09f52aba1b435e683f922',1,'sjsu::infrared::DecodedFrame_t::data()']]],
   ['data_5fa',['data_a',['../d8/d77/structsjsu_1_1lpc40xx_1_1Can_1_1LpcRegisters__t.html#ad50c86118909cca47a3bff7361da2f4c',1,'sjsu::lpc40xx::Can::LpcRegisters_t']]],
   ['data_5fb',['data_b',['../d8/d77/structsjsu_1_1lpc40xx_1_1Can_1_1LpcRegisters__t.html#ac5935189552b9a62bf8b900d9c53ce6d',1,'sjsu::lpc40xx::Can::LpcRegisters_t']]],
   ['data_5fduration',['data_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a3fb686a930b8ff5d7491852177fd1771',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
@@ -15,7 +15,7 @@ var searchData=
   ['device_5fid',['device_id',['../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html#a42d0d1c9a6a2f860c6960150a59df133',1,'sjsu::SystemController::PeripheralID']]],
   ['divide_5fadd',['divide_add',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a805a337d0ddac02557b190af81a8f49e',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
   ['divide_5flatch',['divide_latch',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a811d5016449d3f36725712edd9f93500',1,'sjsu::lpc40xx::uart::UartCalibration_t']]],
-  ['divider',['divider',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a224f10bb6e708a022ea5fab96fb7907c',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['divider',['divider',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a224f10bb6e708a022ea5fab96fb7907c',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t::divider()'],['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#aca62dd37b2268c348788de56bf4a9f87',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::divider()']]],
   ['dwt',['dwt',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a2c6afc4851e31f71ede5b40973b5eac1',1,'sjsu::cortex::DwtCounter']]],
   ['dwt_5fcounter',['dwt_counter',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a0f8af5180e2f318f756c4aa6887cd207',1,'sjsu::cortex::SystemTimer']]]
 ];

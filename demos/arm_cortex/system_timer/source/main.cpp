@@ -28,8 +28,7 @@ sjsu::SystemController::PeripheralID GetSystemTimerID()
   else if constexpr (sjsu::build::IsPlatform(
                          sjsu::build::Platform::msp432p401r))
   {
-    // TODO(#1137): Migrate to SystemController v2
-    return sjsu::SystemController::PeripheralID::Define<0>();
+    return sjsu::msp432p401r::SystemController::Modules::kMasterClock;
   }
   else if constexpr (sjsu::build::IsPlatform(sjsu::build::Platform::stm32f10x))
   {

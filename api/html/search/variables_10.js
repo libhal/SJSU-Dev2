@@ -16,6 +16,7 @@ var searchData=
   ['str',['str',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html#a1e8caafdbebd22880a692db6f7c4b5c9',1,'sjsu::I2cCommand::AddressString_t']]],
   ['subsystem_5fmaster',['subsystem_master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#aab1f8c7fd926923b94f18c40dc4d01c7',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['sys_5ftick',['sys_tick',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8',1,'sjsu::cortex::SystemTimer']]],
+  ['system_5fclock',['system_clock',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a1756096351027800073b3eac4c2b6397',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['system_5fcontroller',['system_controller',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab1db7a0dd2837d0cf38ad57ced9ee6e3',1,'sjsu::lpc17xx::SystemController::system_controller()'],['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a00f89874933f930a777bb75dc507ca60',1,'sjsu::lpc40xx::SystemController::system_controller()']]],
   ['system_5foscillator',['system_oscillator',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#a9d90f5092479c41dbccb63b29dfa5bfa',1,'sjsu::lpc40xx::SystemController::ClockConfiguration']]]
 ];
