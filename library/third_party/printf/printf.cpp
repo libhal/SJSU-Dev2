@@ -144,11 +144,9 @@ typedef struct {
 extern "C" int _write(int file, char * ptr, int length);
 // internal chunk output
 
-#define PRINTF_BUFFER_CHUNK_SIZE 512
-
 void _out_chunk(char character, void* buffer, size_t idx, size_t)
 {
-  size_t string_limit = PRINTF_BUFFER_CHUNK_SIZE - 2;
+  size_t string_limit = SJ2_PRINTF_BUFFER_SIZE - 2;
   size_t proper_index = idx % (string_limit);
   ((char*)buffer)[proper_index] = character;
   // if character == '\0', flush the buffer.
@@ -899,7 +897,7 @@ int printf(const char* format, ...)
 {
   va_list va;
   va_start(va, format);
-  char buffer[PRINTF_BUFFER_CHUNK_SIZE];
+  char buffer[SJ2_PRINTF_BUFFER_SIZE];
   const int ret = _vsnprintf(_out_chunk, buffer, (size_t)-1, format, va);
   va_end(va);
   return ret;
