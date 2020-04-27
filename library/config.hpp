@@ -1,6 +1,6 @@
-/// \mainpage SJSU-Dev2 Reference Page
+/// @mainpage SJSU-Dev2 Reference Page
 ///
-/// \section welcome_sec Welcome
+/// @section welcome_sec Welcome
 /// This is the reference API documentation for the SJSU-Dev2 Project. The
 /// reference material should be used as such. This page is not a good place to
 /// learn how to use SJSU-Dev2, but instead should be used to get details about
@@ -9,14 +9,14 @@
 ///
 /// <br />
 ///
-/// \section class_api_sec Finding Class APIs
+/// @section class_api_sec Finding Class APIs
 /// The easiest way to get started with the reference material is to go to the
 /// "classes list" page to see all of the classes and data structures used in
 /// SJSU-Dev2.
 ///
 /// <br />
 ///
-/// \section namespace_sec Finding everything within the SJSU Namespace
+/// @section namespace_sec Finding everything within the SJSU Namespace
 /// See the the "namespace" page and open the sjsu drop down to see everything
 /// contained within the sjsu namespace. This will include data structures,
 /// templated functions, class interfaces (not their descendants), and
@@ -24,7 +24,7 @@
 ///
 /// <br />
 ///
-/// \section support_sec Contact & Support
+/// @section support_sec Contact & Support
 /// If you want to contribute to SJSU-Dev2, check out the documentation
 /// <a
 ///  href="https://sjsu-dev2.readthedocs.io/en/latest/contributing/philosophy/">
@@ -36,7 +36,7 @@
 ///
 /// <br />
 ///
-/// \section license_sec License
+/// @section license_sec License
 ///
 /// <a href="https://github.com/kammce/SJSU-Dev2/blob/master/LICENSE">
 /// Apache License Version 2.0
@@ -66,8 +66,8 @@ namespace config
 /// don't forget to include the config:: scope for the kConstant. Example:
 /// config::kConstant.
 ///
-/// How to create a new global configuration option:
-/// ================================================
+/// How to add a new global configuration option:
+/// ==============================================
 /// 1) Check if the macro is already defined. The macros should only be changed
 ///    in the <project_config.hpp> file
 ///
@@ -215,6 +215,14 @@ SJ2_DECLARE_CONSTANT(STORE_ERROR_MESSAGE, bool, kStoreErrorMessages);
 SJ2_DECLARE_CONSTANT(AUTOMATICALLY_PRINT_ON_ERROR,
                      bool,
                      kAutomaticallyPrintOnError);
+
+/// Enable or disable float support in printf statements. Setting to false will
+/// reduce binary size.
+#if !defined(SJ2_PRINTF_BUFFER_SIZE)
+#define SJ2_PRINTF_BUFFER_SIZE 256
+#endif  // !defined(PRINTF_SUPPORT_FLOAT)
+/// Delcare Constant AUTOMATICALLY_PRINT_ON_ERROR
+SJ2_DECLARE_CONSTANT(PRINTF_BUFFER_SIZE, size_t, kPrintfBufferSize);
 
 /// Enable or disable float support in printf statements. Setting to false will
 /// reduce binary size.
