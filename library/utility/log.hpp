@@ -298,7 +298,7 @@ LogError(const char * format, Params...)->LogError<Params...>;
       ::sjsu::LogError("Assertion Failure, Condition Tested: " #condition    \
                        "\n          " fatal_message SJ2_COLOR_RESET,         \
                        ##__VA_ARGS__);                                       \
-      if ((with_dump))                                                       \
+      if ((with_dump) && ::config::kIncludeBacktrace)                        \
       {                                                                      \
         printf("\nPrinting Stack Trace:\n\n");                               \
         ::sjsu::debug::PrintBacktrace(true);                                 \
