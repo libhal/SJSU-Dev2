@@ -138,7 +138,7 @@ static_assert(4'800 <= kBaudRate && kBaudRate <= 4'000'000,
 /// Disable this to omit getting these logs and reduce the binary size by ~5kB
 /// to ~10kB
 #if !defined(SJ2_INCLUDE_BACKTRACE)
-#define SJ2_INCLUDE_BACKTRACE true
+#define SJ2_INCLUDE_BACKTRACE false
 #endif  // !defined(SJ2_INCLUDE_BACKTRACE)
 /// Delcare Constant INCLUDE_BACKTRACE
 SJ2_DECLARE_CONSTANT(INCLUDE_BACKTRACE, bool, kIncludeBacktrace);
