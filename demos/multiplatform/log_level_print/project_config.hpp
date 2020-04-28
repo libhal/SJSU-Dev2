@@ -4,7 +4,6 @@
 #pragma once
 #include "log_levels.hpp"
 
-#define SJ2_DESCRIPTIVE_FUNCTION_NAME true
 // Be sure to enable ANSI color for the terminal. Disable this if your terminal
 // application does not support colored text.
 #define SJ2_ENABLE_ANSI_CODES true
