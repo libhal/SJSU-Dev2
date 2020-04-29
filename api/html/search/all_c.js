@@ -1,14 +1,15 @@
 var searchData=
 [
   ['mac',['mac',['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#ac496c58a4c6fe4cd87415b730a993772',1,'sjsu::WiFi::NetworkConnection_t']]],
-  ['mainpll',['MainPll',['../d0/d83/structsjsu_1_1lpc17xx_1_1SystemController_1_1MainPll.html',1,'sjsu::lpc17xx::SystemController']]],
+  ['main_5foscillator',['main_oscillator',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a5570676973ec583bb4a922a2b5d74608',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t']]],
   ['map',['Map',['../d0/d6b/namespacesjsu.html#aab8ca257071bdc5d7a663c24d44b518b',1,'sjsu']]],
   ['maptype',['MapType',['../d0/da2/classsjsu_1_1Device.html#a1bb7916d1f646b0b9b1f18f57f5b9e71',1,'sjsu::Device']]],
   ['mask',['Mask',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html',1,'sjsu::bit']]],
-  ['master',['master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a55d71625d5ebddc796c2e04dab54363a',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['master',['master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#abbbb89329f310c3666d1e6329ee428ef',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['masterstate',['MasterState',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a9a5a932d99ae273205a55913aedc1c22',1,'sjsu::lpc40xx::I2c']]],
   ['matchaction',['MatchAction',['../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8',1,'sjsu::Timer']]],
   ['matchcontrol',['MatchControl',['../d1/dd9/structsjsu_1_1lpc40xx_1_1Pwm_1_1MatchControl.html',1,'sjsu::lpc40xx::Pwm']]],
+  ['max_5fcpu_5fclock_5frate',['max_cpu_clock_rate',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a262a9463b764059a46f3eadc42af8608',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t']]],
   ['max_5fsize',['max_size',['../db/d4d/structsjsu_1_1CommandList__t.html#a6f328b8d5e3b7f1389470580652b82c9',1,'sjsu::CommandList_t']]],
   ['memory',['memory',['../d0/da2/classsjsu_1_1Device.html#a96ac14e9ee4e05dd094ea50ba33a9a90',1,'sjsu::Device']]],
   ['memorymap_5ft',['MemoryMap_t',['../de/d7f/structsjsu_1_1Apds9960_1_1MemoryMap__t.html',1,'sjsu::Apds9960']]],
@@ -23,6 +24,6 @@ var searchData=
   ['mosi',['mosi',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ae3cf6225b5c2b9bb40f74830df712b31',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['mount',['Mount',['../dc/d5f/classsjsu_1_1Sd.html#aebdf692b25d5b539a3415d040d309407',1,'sjsu::Sd']]],
   ['movetolinestart',['MoveToLineStart',['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a05b2be125e0004307303f5097ed271cc',1,'sjsu::GraphicalTerminal']]],
-  ['multiplier',['multiplier',['../df/d55/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllSettings__t.html#a8512307eb0db5885392ad3713aa0f971',1,'sjsu::lpc17xx::SystemController::PllSettings_t']]],
+  ['multiplier',['multiplier',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#ae729c2515c9fa282f28fd2469293c5da',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::multiplier()'],['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a682053e71c1225fcb0ac7776a369e8ec',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::multiplier()'],['../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1f',1,'sjsu::lpc17xx::SystemController::Pll1::Multiplier()']]],
   ['multiply',['multiply',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#ae4dfb55b5ee86ca42d9243ca04f0fd8c',1,'sjsu::lpc40xx::SystemController::ClockConfiguration::multiply()'],['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t::multiply()']]]
 ];

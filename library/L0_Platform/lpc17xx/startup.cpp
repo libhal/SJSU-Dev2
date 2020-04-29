@@ -19,18 +19,26 @@
 // Private namespace to make sure that these do not conflict with other globals
 namespace
 {
-// Create LPC17xx system controller to be used by low level initialization.
-sjsu::lpc17xx::SystemController system_controller;
-// Create timer0 to be used by lower level initialization for uptime calculation
+/// Clock configuration object for LPC17xx devices.
+sjsu::lpc17xx::SystemController::ClockConfiguration_t clock_configuration;
+
+/// Create LPC17xx system controller to be used by low level initialization.
+sjsu::lpc17xx::SystemController system_controller(clock_configuration);
+
+/// Create timer0 to be used by lower level initialization for uptime
+/// calculation
 sjsu::cortex::DwtCounter arm_dwt_counter;
-// Uart port 0 is used to communicate back to the host computer
+
+/// Uart port 0 is used to communicate back to the host computer
 sjsu::lpc17xx::Uart uart0(sjsu::lpc17xx::UartPort::kUart0);
-// System timer is used to count milliseconds of time and to run the RTOS
-// scheduler.
+
+/// System timer is used to count milliseconds of time and to run the RTOS
+/// scheduler.
 sjsu::cortex::SystemTimer system_timer(
     sjsu::lpc40xx::SystemController::Peripherals::kCpu,
     configKERNEL_INTERRUPT_PRIORITY);
-// Platform interrupt controller for Arm Cortex microcontrollers.
+
+/// Platform interrupt controller for Arm Cortex microcontrollers.
 sjsu::cortex::InterruptController<sjsu::lpc17xx::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>
     interrupt_controller;
@@ -157,21 +165,14 @@ void InitializePlatform()
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
 
-  // TODO(#1136): remove this when lpc17xx::SystemController no longer uses
-  //              SetSystemClockFrequency.
-  // Set Clock Speed
-  // SetSystemClockFrequency will timeout return the offset between desire
-  // clockspeed and actual clockspeed if the PLL doesn't get a frequency fix
-  // within a defined timeout (see L1/system_clock.hpp:kDefaultTimeout)
-  system_controller.SetSystemClockFrequency(config::kSystemClockRateMhz);
-  // Set UART0 baudrate, which is required for printf and scanf to work properly
-  system_controller.SetPeripheralClockDivider(
-      sjsu::lpc17xx::SystemController::Peripherals::kUart0, 1);
-  uart0.Initialize(config::kBaudRate);
+  system_controller.Initialize();
 
+  // Set UART0 baudrate, which is required for printf and scanf to work properly
+  uart0.Initialize(config::kBaudRate);
   sjsu::newlib::SetStdout(Lpc17xxStdOut);
   sjsu::newlib::SetStdin(Lpc17xxStdIn);
 
+  system_timer.Initialize();
   system_timer.SetTickFrequency(config::kRtosFrequency);
   sjsu::Status timer_start_status = system_timer.StartTimer();
 

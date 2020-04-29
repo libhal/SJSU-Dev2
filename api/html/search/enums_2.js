@@ -11,5 +11,6 @@ var searchData=
   ['control',['Control',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#abb6543ba96f5ad9890ad8292e64667dc',1,'sjsu::lpc40xx::I2c']]],
   ['controlbitmap',['ControlBitMap',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991',1,'sjsu::cortex::SystemTimer']]],
   ['cpuclockselect',['CpuClockSelect',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a6ed8891e6daee636c5149c31128e5312',1,'sjsu::lpc40xx::SystemController']]],
+  ['cpuclocksource',['CpuClockSource',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a50995143c6d0aaf8a7c4bce5d8723468',1,'sjsu::lpc17xx::SystemController']]],
   ['cursordirection',['CursorDirection',['../d3/d56/classsjsu_1_1St7066u.html#af9c1b505643608b402487911fb9f3919',1,'sjsu::St7066u']]]
 ];

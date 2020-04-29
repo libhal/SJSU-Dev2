@@ -85,7 +85,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>System controller for the LPC40xx series of MCUs.  
+<p>System controller for the LPC17xx series of MCUs.  
  <a href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../dc/d0f/lpc17xx_2system__controller_8hpp_source.html">system_controller.hpp</a>&gt;</code></p>
@@ -108,91 +108,70 @@ Collaboration diagram for sjsu::lpc17xx::SystemController:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d69/structsjsu_1_1lpc17xx_1_1SystemController_1_1CpuClock.html">CpuClock</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace of Clock register bitmasks.  <a href="../../d9/d69/structsjsu_1_1lpc17xx_1_1SystemController_1_1CpuClock.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html">ClockConfiguration_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d83/structsjsu_1_1lpc17xx_1_1SystemController_1_1MainPll.html">MainPll</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit masks for the Main PLL register.  <a href="../../d0/d83/structsjsu_1_1lpc17xx_1_1SystemController_1_1MainPll.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dbb/classsjsu_1_1lpc17xx_1_1SystemController_1_1Clocks.html">Clocks</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d12/structsjsu_1_1lpc17xx_1_1SystemController_1_1Oscillator.html">Oscillator</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace of <a class="el" href="../../d7/d12/structsjsu_1_1lpc17xx_1_1SystemController_1_1Oscillator.html" title="Namespace of Oscillator register bitmasks. ">Oscillator</a> register bitmasks.  <a href="../../d7/d12/structsjsu_1_1lpc17xx_1_1SystemController_1_1Oscillator.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d34/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockSourceSelectRegister.html">ClockSourceSelectRegister</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/db8/structsjsu_1_1lpc17xx_1_1SystemController_1_1CpuClockRegister.html">CpuClockRegister</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace containing the bit masks for the CPU Clock Configuration register (CCLKCFG).  <a href="../../dd/db8/structsjsu_1_1lpc17xx_1_1SystemController_1_1CpuClockRegister.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d9f/classsjsu_1_1lpc17xx_1_1SystemController_1_1Peripherals.html">Peripherals</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">LPC17xx Peripheral Power On Values: The kDeviceId of each peripheral corresponds to the peripheral's power on.  <a href="../../d7/d9f/classsjsu_1_1lpc17xx_1_1SystemController_1_1Peripherals.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d75/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll.html">Pll</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common bit masks across PLLs.  <a href="../../d7/d75/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/df6/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll0.html">Pll0</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace containing definitions for PLL0 (Main PLL).  <a href="../../d2/df6/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll0.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d55/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllSettings__t.html">PllSettings_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to hold calculated PLL settings.  <a href="../../df/d55/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllSettings__t.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html">Pll1</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace containing definitions for PLL1 (USB PLL).  <a href="../../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html">UsbPll</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit masks for the USB PLL register.  <a href="../../d9/dc6/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbPll.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/df5/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllControlRegister.html">PllControlRegister</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace containing the common bit masks for the PLL Control registers (PLL0CON and PLL1CON).  <a href="../../d8/df5/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllControlRegister.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dc0/structsjsu_1_1lpc17xx_1_1SystemController_1_1SystemControlsRegister.html">SystemControlsRegister</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d68/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbClockRegister.html">UsbClockRegister</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace containing the bit masks for the USB Clock Configuration register (USBCLKCFG).  <a href="../../dc/d68/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbClockRegister.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a7b51085a443ea84ccaac8d87af70e0ab"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a7b51085a443ea84ccaac8d87af70e0ab">OscillatorSource</a> : uint8_t { <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a7b51085a443ea84ccaac8d87af70e0abae799e6790948998b8640e2fd5c38c73e">OscillatorSource::kIrc</a> = 0b00, 
-<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a7b51085a443ea84ccaac8d87af70e0aba2d147c7119731e0732790134e089e4b3">OscillatorSource::kExternal</a> = 0b01, 
-<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a7b51085a443ea84ccaac8d87af70e0aba88dddd4167e9dc3e5c842a3eea3ebc6b">OscillatorSource::kRtc</a> = 0b10
- }<tr class="memdesc:a7b51085a443ea84ccaac8d87af70e0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">System input oscillator source select contants.  <a href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a7b51085a443ea84ccaac8d87af70e0ab">More...</a><br /></td></tr>
-</td></tr>
-<tr class="separator:a7b51085a443ea84ccaac8d87af70e0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a723961a2cc409a46d483e5259946b252"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a723961a2cc409a46d483e5259946b252">PllSelect</a> : uint8_t { <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a723961a2cc409a46d483e5259946b252a4e9857c05be26d11e9836920fa5dc015">PllSelect::kMainPll</a> = 0, 
-<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a723961a2cc409a46d483e5259946b252aa8c649746b4a45a03f1bfeb76e09d879">PllSelect::kUsbPll</a>
- }<tr class="memdesc:a723961a2cc409a46d483e5259946b252"><td class="mdescLeft">&#160;</td><td class="mdescRight">PLL codes for selecting the PLL to be connected to a clock input.  <a href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a723961a2cc409a46d483e5259946b252">More...</a><br /></td></tr>
-</td></tr>
-<tr class="separator:a723961a2cc409a46d483e5259946b252"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d1eeeebbd188864dab4440cd69da6da"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da">UsbPllInputFrequency</a> : uint8_t { <b>kF12MHz</b> = 0, 
-<b>kF16MHz</b>, 
-<b>kF24MHz</b>
+<tr class="memitem:a9c849274116aa0b58ce80f712b6a31a4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9c849274116aa0b58ce80f712b6a31a4">Oscillator</a> : uint8_t { <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9c849274116aa0b58ce80f712b6a31a4ae799e6790948998b8640e2fd5c38c73e">Oscillator::kIrc</a> = 0b00, 
+<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9c849274116aa0b58ce80f712b6a31a4a04ed0d17680a76a1a906aed4ff47cd07">Oscillator::kMain</a> = 0b01, 
+<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9c849274116aa0b58ce80f712b6a31a4a88dddd4167e9dc3e5c842a3eea3ebc6b">Oscillator::kRtc</a> = 0b10
  }</td></tr>
-<tr class="separator:a6d1eeeebbd188864dab4440cd69da6da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a822339e5e9c8a98b9196a179e4bd9e"><td class="memItemLeft" align="right" valign="top"><a id="a9a822339e5e9c8a98b9196a179e4bd9e"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9a822339e5e9c8a98b9196a179e4bd9e">UsbPllMultiplier</a> : uint8_t { <b>kMultiplyBy4</b> = 0b0'0011, 
-<b>kMultiplyBy3</b> = 0b0'0010, 
-<b>kMultiplyBy2</b> = 0b0'0001
- }<tr class="memdesc:a9a822339e5e9c8a98b9196a179e4bd9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB PLL Multiplier codes. <br /></td></tr>
+<tr class="separator:a9c849274116aa0b58ce80f712b6a31a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50995143c6d0aaf8a7c4bce5d8723468"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a50995143c6d0aaf8a7c4bce5d8723468">CpuClockSource</a> : uint8_t { <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a50995143c6d0aaf8a7c4bce5d8723468adf8fa8a63c3843576c00c51803320692">CpuClockSource::kSystemClock</a> = 0b0, 
+<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a50995143c6d0aaf8a7c4bce5d8723468adfaa01ab6223e684fdae5e070bbd8cf4">CpuClockSource::kPll0</a> = 0b1
+ }<tr class="memdesc:a50995143c6d0aaf8a7c4bce5d8723468"><td class="mdescLeft">&#160;</td><td class="mdescRight">The available CPU clock sources.  <a href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a50995143c6d0aaf8a7c4bce5d8723468">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:a9a822339e5e9c8a98b9196a179e4bd9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5a079dcf9f8d5d3194aef8fdc665290"><td class="memItemLeft" align="right" valign="top"><a id="ab5a079dcf9f8d5d3194aef8fdc665290"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab5a079dcf9f8d5d3194aef8fdc665290">UsbPllDivider</a> : uint8_t { <b>kDivideBy1</b> = 0b00, 
-<b>kDivideBy2</b> = 0b01, 
-<b>kDivideBy4</b> = 0b10, 
-<b>kDivideBy8</b> = 0b11
- }<tr class="memdesc:ab5a079dcf9f8d5d3194aef8fdc665290"><td class="mdescLeft">&#160;</td><td class="mdescRight">USB PLL Divider codes. <br /></td></tr>
-</td></tr>
-<tr class="separator:ab5a079dcf9f8d5d3194aef8fdc665290"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a50995143c6d0aaf8a7c4bce5d8723468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18ec8835f53b968c732122dc56e55944"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a18ec8835f53b968c732122dc56e55944">UsbClockSource</a> : uint8_t { <b>kPll0</b> = 0b0, 
+<b>kPll1</b> = 0b1
+ }</td></tr>
+<tr class="separator:a18ec8835f53b968c732122dc56e55944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7e9d86e2996b1ea5dd06456026101dd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#af7e9d86e2996b1ea5dd06456026101dd">UsbClockDivider</a> : uint8_t { <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#af7e9d86e2996b1ea5dd06456026101dda7fb432232d83b261a7b2ca58ec060c7e">UsbClockDivider::kDivideBy6</a> = 0b0101, 
+<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#af7e9d86e2996b1ea5dd06456026101ddac3c7e5ada406d9296bcacd69b641c2c7">UsbClockDivider::kDivideBy8</a> = 0b0111, 
+<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#af7e9d86e2996b1ea5dd06456026101dda606b01d16e6b1d83a5b66913ef4d889f">UsbClockDivider::kDivideBy10</a> = 0b1001
+ }</td></tr>
+<tr class="separator:af7e9d86e2996b1ea5dd06456026101dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a1f8c76c5715a0a2ef4fdb8416ddc607b"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a1f8c76c5715a0a2ef4fdb8416ddc607b">SystemController</a> (<a class="el" href="../../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html">ClockConfiguration_t</a> &amp;clock_configuration)</td></tr>
+<tr class="separator:a1f8c76c5715a0a2ef4fdb8416ddc607b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cfd159c02c1a01d00c0d79238eb0b10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a2cfd159c02c1a01d00c0d79238eb0b10">Initialize</a> () override</td></tr>
 <tr class="separator:a2cfd159c02c1a01d00c0d79238eb0b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10758bb595eb534949b912d30bf83387"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a10758bb595eb534949b912d30bf83387">GetClockConfiguration</a> () override</td></tr>
 <tr class="separator:a10758bb595eb534949b912d30bf83387"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b3dae5b14aaf104d863db797e9218bd"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a8b3dae5b14aaf104d863db797e9218bd">GetClockRate</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral) const override</td></tr>
-<tr class="separator:a8b3dae5b14aaf104d863db797e9218bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8190ffa01ee27e32ecdaa8c1792026a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#aa8190ffa01ee27e32ecdaa8c1792026a">SetSystemClockFrequency</a> (units::frequency::megahertz_t frequency) const</td></tr>
-<tr class="memdesc:aa8190ffa01ee27e32ecdaa8c1792026a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a desired CPU speed by using the internal RC as the oscillator source and configuring PLL0.  <a href="#aa8190ffa01ee27e32ecdaa8c1792026a">More...</a><br /></td></tr>
-<tr class="separator:aa8190ffa01ee27e32ecdaa8c1792026a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43dcadedf6c97250fa8e59b0d83e9a99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a43dcadedf6c97250fa8e59b0d83e9a99">SetUsbPllInputFrequency</a> (<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da">UsbPllInputFrequency</a> frequency)</td></tr>
-<tr class="memdesc:a43dcadedf6c97250fa8e59b0d83e9a99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the USB PLL (PLL1) to produce the required 48 MHz clock based on the input frequency provided to the PLL.  <a href="#a43dcadedf6c97250fa8e59b0d83e9a99">More...</a><br /></td></tr>
-<tr class="separator:a43dcadedf6c97250fa8e59b0d83e9a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a234b522fbbed8210b826a646ecec01af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a234b522fbbed8210b826a646ecec01af">SetPeripheralClockDivider</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral_select, uint8_t peripheral_divider) const</td></tr>
-<tr class="memdesc:a234b522fbbed8210b826a646ecec01af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the divider to control the desired peripheral clock rate (PCLK) for a specified peripheral where PCLK = CCLK / divider.  <a href="#a234b522fbbed8210b826a646ecec01af">More...</a><br /></td></tr>
-<tr class="separator:a234b522fbbed8210b826a646ecec01af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f4bbabff7ead9e74723dc763bf78b56"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a4f4bbabff7ead9e74723dc763bf78b56">GetPeripheralClockDivider</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral_select) const</td></tr>
-<tr class="separator:a4f4bbabff7ead9e74723dc763bf78b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8bf33495e5b1a7a929ac48c828625bb"><td class="memItemLeft" align="right" valign="top"><a id="ac8bf33495e5b1a7a929ac48c828625bb"></a>
-units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ac8bf33495e5b1a7a929ac48c828625bb">GetSystemFrequency</a> () const</td></tr>
-<tr class="memdesc:ac8bf33495e5b1a7a929ac48c828625bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last set frequency of the system. <br /></td></tr>
-<tr class="separator:ac8bf33495e5b1a7a929ac48c828625bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b18e4103dc425a20cd3b01c5f8e8637"><td class="memItemLeft" align="right" valign="top"><a id="a8b18e4103dc425a20cd3b01c5f8e8637"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a8b18e4103dc425a20cd3b01c5f8e8637">IsPeripheralPoweredUp</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral_select) const override</td></tr>
-<tr class="memdesc:a8b18e4103dc425a20cd3b01c5f8e8637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a peripheral is powered up by checking the power connection register. Should typically only be used for unit testing code and debugging. <br /></td></tr>
+<tr class="memitem:a8b18e4103dc425a20cd3b01c5f8e8637"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a8b18e4103dc425a20cd3b01c5f8e8637">IsPeripheralPoweredUp</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral_select) const override</td></tr>
 <tr class="separator:a8b18e4103dc425a20cd3b01c5f8e8637"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09c1992f4d089f45a3d7b80de4a0de6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a09c1992f4d089f45a3d7b80de4a0de6e">PowerUpPeripheral</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral_select) const override</td></tr>
 <tr class="separator:a09c1992f4d089f45a3d7b80de4a0de6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2d4a7ebeb399ab959d929623315fd76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ad2d4a7ebeb399ab959d929623315fd76">PowerDownPeripheral</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral_select) const override</td></tr>
 <tr class="separator:ad2d4a7ebeb399ab959d929623315fd76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b3dae5b14aaf104d863db797e9218bd"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a8b3dae5b14aaf104d863db797e9218bd">GetClockRate</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral) const override</td></tr>
+<tr class="separator:a8b3dae5b14aaf104d863db797e9218bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1SystemController"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1SystemController')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a></td></tr>
 <tr class="memitem:a46fbb6e21f1abce223a1116c2caa8307 inherit pub_methods_classsjsu_1_1SystemController"><td class="memTemplParams" colspan="2">template&lt;class ClockConfiguration &gt; </td></tr>
 <tr class="memitem:a46fbb6e21f1abce223a1116c2caa8307 inherit pub_methods_classsjsu_1_1SystemController"><td class="memTemplItemLeft" align="right" valign="top">ClockConfiguration &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a46fbb6e21f1abce223a1116c2caa8307">GetClockConfiguration</a> ()</td></tr>
@@ -200,21 +179,21 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:aed81584ecc705fe269b2f43b05f31231"><td class="memItemLeft" align="right" valign="top"><a id="aed81584ecc705fe269b2f43b05f31231"></a>
-static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#aed81584ecc705fe269b2f43b05f31231">kDefaultIRCFrequency</a> = 4_MHz</td></tr>
-<tr class="memdesc:aed81584ecc705fe269b2f43b05f31231"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed IRC frequency. <br /></td></tr>
-<tr class="separator:aed81584ecc705fe269b2f43b05f31231"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="memItemLeft" align="right" valign="top"><a id="ae48127fbdcbf061f82a3e780e8d46e2f"></a>
-static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ae48127fbdcbf061f82a3e780e8d46e2f">kUsbClockFrequency</a> = 48_MHz</td></tr>
-<tr class="memdesc:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Required frequency for the USB clock. <br /></td></tr>
-<tr class="separator:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6301bd2156708c6e971fd756f9896842"><td class="memItemLeft" align="right" valign="top"><a id="a6301bd2156708c6e971fd756f9896842"></a>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6301bd2156708c6e971fd756f9896842">kIrcFrequency</a> = 4_MHz</td></tr>
+<tr class="memdesc:a6301bd2156708c6e971fd756f9896842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed Internal RC frequency. <br /></td></tr>
+<tr class="separator:a6301bd2156708c6e971fd756f9896842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8432d08a021135dff956e6c25e523038"><td class="memItemLeft" align="right" valign="top"><a id="a8432d08a021135dff956e6c25e523038"></a>
 static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a8432d08a021135dff956e6c25e523038">kRTCFrequency</a> = 32'768_Hz</td></tr>
 <tr class="memdesc:a8432d08a021135dff956e6c25e523038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed RTC frequency. <br /></td></tr>
 <tr class="separator:a8432d08a021135dff956e6c25e523038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="memItemLeft" align="right" valign="top"><a id="ae48127fbdcbf061f82a3e780e8d46e2f"></a>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ae48127fbdcbf061f82a3e780e8d46e2f">kUsbClockFrequency</a> = 48_MHz</td></tr>
+<tr class="memdesc:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The required frequency for the USB clock. <br /></td></tr>
+<tr class="separator:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="memItemLeft" align="right" valign="top"><a id="ab1db7a0dd2837d0cf38ad57ced9ee6e3"></a>
 static LPC_SC_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab1db7a0dd2837d0cf38ad57ced9ee6e3">system_controller</a> = LPC_SC</td></tr>
-<tr class="memdesc:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the system controller peripheral in memory. <br /></td></tr>
+<tr class="memdesc:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer reference to the system controller peripheral in memory. <br /></td></tr>
 <tr class="separator:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
@@ -226,10 +205,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a8b7a98b0da777a9f3d3632f778a12fed inherit pub_static_methods_classsjsu_1_1SystemController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>System controller for the LPC40xx series of MCUs. </p>
+<div class="textblock"><p>System controller for the LPC17xx series of MCUs. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a7b51085a443ea84ccaac8d87af70e0ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b51085a443ea84ccaac8d87af70e0ab">&#9670;&nbsp;</a></span>OscillatorSource</h2>
+<a id="a50995143c6d0aaf8a7c4bce5d8723468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50995143c6d0aaf8a7c4bce5d8723468">&#9670;&nbsp;</a></span>CpuClockSource</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,7 +217,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a7b51085a443ea84ccaac8d87af70e0ab">sjsu::lpc17xx::SystemController::OscillatorSource</a> : uint8_t</td>
+          <td class="memname">enum <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a50995143c6d0aaf8a7c4bce5d8723468">sjsu::lpc17xx::SystemController::CpuClockSource</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -248,20 +227,18 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>System input oscillator source select contants. </p>
+<p>The available CPU clock sources. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7b51085a443ea84ccaac8d87af70e0abae799e6790948998b8640e2fd5c38c73e"></a>kIrc&#160;</td><td class="fielddoc"><p>Internal RC oscillator as main. Not very precise oscillator cannot be used for USB or high speed CAN. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a50995143c6d0aaf8a7c4bce5d8723468adf8fa8a63c3843576c00c51803320692"></a>kSystemClock&#160;</td><td class="fielddoc"><p>Uses the system clock. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a7b51085a443ea84ccaac8d87af70e0aba2d147c7119731e0732790134e089e4b3"></a>kExternal&#160;</td><td class="fielddoc"><p>Use external oscillator (typically a crystal). See PllInput for options that can be used for the oscillator. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a7b51085a443ea84ccaac8d87af70e0aba88dddd4167e9dc3e5c842a3eea3ebc6b"></a>kRtc&#160;</td><td class="fielddoc"><p>Use the RTC oscillator as the main oscillator, approximate 32kHz. </p>
+<tr><td class="fieldname"><a id="a50995143c6d0aaf8a7c4bce5d8723468adfaa01ab6223e684fdae5e070bbd8cf4"></a>kPll0&#160;</td><td class="fielddoc"><p>Uses the PLL0 clock. </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="a723961a2cc409a46d483e5259946b252"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a723961a2cc409a46d483e5259946b252">&#9670;&nbsp;</a></span>PllSelect</h2>
+<a id="a9c849274116aa0b58ce80f712b6a31a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c849274116aa0b58ce80f712b6a31a4">&#9670;&nbsp;</a></span>Oscillator</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,7 +247,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a723961a2cc409a46d483e5259946b252">sjsu::lpc17xx::SystemController::PllSelect</a> : uint8_t</td>
+          <td class="memname">enum <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9c849274116aa0b58ce80f712b6a31a4">sjsu::lpc17xx::SystemController::Oscillator</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -279,19 +256,21 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>PLL codes for selecting the PLL to be connected to a clock input. </p>
+<p>The available oscillators that can be used to drive the system clock and subsequently the CPU clock.</p>
+<dl class="section see"><dt>See also</dt><dd>4.4.1 Clock Source Select register <a href="https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=36">https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=36</a> </dd></dl>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a723961a2cc409a46d483e5259946b252a4e9857c05be26d11e9836920fa5dc015"></a>kMainPll&#160;</td><td class="fielddoc"><p>PLL0, Main PLL code. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9c849274116aa0b58ce80f712b6a31a4ae799e6790948998b8640e2fd5c38c73e"></a>kIrc&#160;</td><td class="fielddoc"><p>Internal RC oscillator as main. </p><pre class="fragment">@warning This oscillator is not a very precise oscillator and cannot
+         be used for USB or high speed CAN &gt; 100 kBits/s.  </pre> </td></tr>
+<tr><td class="fieldname"><a id="a9c849274116aa0b58ce80f712b6a31a4a04ed0d17680a76a1a906aed4ff47cd07"></a>kMain&#160;</td><td class="fielddoc"><p>The main oscillator (typically a crystal). This oscillator is connected externally and can have a frequency raning between 1 MHz to 25 MHz. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a723961a2cc409a46d483e5259946b252aa8c649746b4a45a03f1bfeb76e09d879"></a>kUsbPll&#160;</td><td class="fielddoc"><p>PLL1: USB PLL code. </p>
+<tr><td class="fieldname"><a id="a9c849274116aa0b58ce80f712b6a31a4a88dddd4167e9dc3e5c842a3eea3ebc6b"></a>kRtc&#160;</td><td class="fielddoc"><p>The RTC oscillator which has a frequency of approximately 32kHz. </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="a6d1eeeebbd188864dab4440cd69da6da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d1eeeebbd188864dab4440cd69da6da">&#9670;&nbsp;</a></span>UsbPllInputFrequency</h2>
+<a id="af7e9d86e2996b1ea5dd06456026101dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7e9d86e2996b1ea5dd06456026101dd">&#9670;&nbsp;</a></span>UsbClockDivider</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,7 +279,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da">sjsu::lpc17xx::SystemController::UsbPllInputFrequency</a> : uint8_t</td>
+          <td class="memname">enum <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#af7e9d86e2996b1ea5dd06456026101dd">sjsu::lpc17xx::SystemController::UsbClockDivider</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -309,7 +288,72 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Available frequencies of the external oscillator for use by PLL1 to produce the required USB clock. </p>
+<p>The available USB clock dividers that can be selected when the USB clock is driven by PLL0. Since PLL0 has an output between 275 MHz to 550 MHz, only dividers values of 6, 8, and 10 are available in order to obtain a 48 MHz USB clock. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af7e9d86e2996b1ea5dd06456026101dda7fb432232d83b261a7b2ca58ec060c7e"></a>kDivideBy6&#160;</td><td class="fielddoc"><p>The divider to use when PLL0 is configured to output 288 MHz. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af7e9d86e2996b1ea5dd06456026101ddac3c7e5ada406d9296bcacd69b641c2c7"></a>kDivideBy8&#160;</td><td class="fielddoc"><p>The divider to use when PLL0 is configured to output 384 MHz. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="af7e9d86e2996b1ea5dd06456026101dda606b01d16e6b1d83a5b66913ef4d889f"></a>kDivideBy10&#160;</td><td class="fielddoc"><p>The divider to use when PLL0 is configured to output 480 MHz. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a18ec8835f53b968c732122dc56e55944"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18ec8835f53b968c732122dc56e55944">&#9670;&nbsp;</a></span>UsbClockSource</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a18ec8835f53b968c732122dc56e55944">sjsu::lpc17xx::SystemController::UsbClockSource</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The available USB subsystem clock sources.</p>
+<dl class="section warning"><dt>Warning</dt><dd>PLL0 should not be used as a source if PLL0 is driven by the internal oscillator as the clock signal will not be precise enough for the USB subsystem. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a1f8c76c5715a0a2ef4fdb8416ddc607b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f8c76c5715a0a2ef4fdb8416ddc607b">&#9670;&nbsp;</a></span>SystemController()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::lpc17xx::SystemController::SystemController </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html">ClockConfiguration_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>clock_configuration</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clock_configuration</td><td>The desired clock configurations for the system. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -336,7 +380,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the a pointer to the clock configuration object used to configure this system controller. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>void*- the a pointer to the clock configuration object used to configure this system controller. </dd></dl>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#afd6de3837bc1add77ed81860cb163cd0">sjsu::SystemController</a>.</p>
 
@@ -371,33 +415,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a4f4bbabff7ead9e74723dc763bf78b56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f4bbabff7ead9e74723dc763bf78b56">&#9670;&nbsp;</a></span>GetPeripheralClockDivider()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t sjsu::lpc17xx::SystemController::GetPeripheralClockDivider </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
-          <td class="paramname"><em>peripheral_select</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>The clock divider for the specified peripheral. </dd></dl>
-
-</div>
-</div>
 <a id="a2cfd159c02c1a01d00c0d79238eb0b10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2cfd159c02c1a01d00c0d79238eb0b10">&#9670;&nbsp;</a></span>Initialize()</h2>
 
@@ -423,6 +440,44 @@ Additional Inherited Members</h2></td></tr>
 <p>Initialize the system controller. Typically this handles configuring the clocks for the system based on the ClockConfiguration object passed to the controller. This may also need to power any systems on that are required to operate at a minimum level. </p>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a3e3a1b895c0cbf7ddd1f33c61331877c">sjsu::SystemController</a>.</p>
+
+</div>
+</div>
+<a id="a8b18e4103dc425a20cd3b01c5f8e8637"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b18e4103dc425a20cd3b01c5f8e8637">&#9670;&nbsp;</a></span>IsPeripheralPoweredUp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sjsu::lpc17xx::SystemController::IsPeripheralPoweredUp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
+          <td class="paramname"><em>peripheral</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks hardware and determines if the peripheral is powered up</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">peripheral</td><td>- which peripheral to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true - the peripheral is currently powered up </dd>
+<dd>
+false - the peripheral is currently powered down </dd></dl>
+
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aed4799738f18a9ce85dce8250ab7289d">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
@@ -493,121 +548,6 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aacaa203fe605743d735d841293dea419">sjsu::SystemController</a>.</p>
-
-</div>
-</div>
-<a id="a234b522fbbed8210b826a646ecec01af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a234b522fbbed8210b826a646ecec01af">&#9670;&nbsp;</a></span>SetPeripheralClockDivider()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::lpc17xx::SystemController::SetPeripheralClockDivider </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
-          <td class="paramname"><em>peripheral_select</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>peripheral_divider</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the divider to control the desired peripheral clock rate (PCLK) for a specified peripheral where PCLK = CCLK / divider. </p>
-<p>The following dividers are supported for non-CAN peripherals: 1, 2, 4, 8. For CAN the following dividers are supported: 1, 2, 4, 6.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">peripheral_select</td><td>Peripheral to configure. </td></tr>
-    <tr><td class="paramname">peripheral_divider</td><td>Peripheral clock divider value. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aa8190ffa01ee27e32ecdaa8c1792026a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8190ffa01ee27e32ecdaa8c1792026a">&#9670;&nbsp;</a></span>SetSystemClockFrequency()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::lpc17xx::SystemController::SetSystemClockFrequency </td>
-          <td>(</td>
-          <td class="paramtype">units::frequency::megahertz_t&#160;</td>
-          <td class="paramname"><em>frequency</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets a desired CPU speed by using the internal RC as the oscillator source and configuring PLL0. </p>
-<dl class="section note"><dt>Note</dt><dd>The USB subsystem should be configured to obtain its input clock from the USB PLL. The internal RC is used for PLL0 and will not generate a precise enough clock to be used by the USB subsystem.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">frequency</td><td>The desired CPU Clock frequency in megahertz. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a43dcadedf6c97250fa8e59b0d83e9a99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43dcadedf6c97250fa8e59b0d83e9a99">&#9670;&nbsp;</a></span>SetUsbPllInputFrequency()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::lpc17xx::SystemController::SetUsbPllInputFrequency </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6d1eeeebbd188864dab4440cd69da6da">UsbPllInputFrequency</a>&#160;</td>
-          <td class="paramname"><em>frequency</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Configures the USB PLL (PLL1) to produce the required 48 MHz clock based on the input frequency provided to the PLL. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">frequency</td><td>Frequency of the external oscillator used to drive PLL1. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

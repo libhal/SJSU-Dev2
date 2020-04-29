@@ -15,11 +15,11 @@ var searchData=
   ['addressstring_5ft',['AddressString_t',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html',1,'sjsu::I2cCommand']]],
   ['addtask',['AddTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab2cb704019734dfbe774efe8f257d443',1,'sjsu::rtos::TaskScheduler']]],
   ['afio',['afio',['../d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html#a6b6e4a2e9ad26537a19e7341d45a18fe',1,'sjsu::stm32f10x::Pin']]],
-  ['ahb',['ahb',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#ae7f6f3448e99efe893d57b5afa306fcc',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
+  ['ahb',['ahb',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a08bdcf7e446d5aa953d284e129eae980',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['ahbdivider',['AHBDivider',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ab05ea60ebf52eb7d4a00dbbe323ea21a',1,'sjsu::stm32f10x::SystemController']]],
   ['allocate',['allocate',['../df/ddd/classsjsu_1_1Arena.html#ad68341c9db5759077d4d0b20b6c2ef10',1,'sjsu::Arena::allocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af5afc7393b5ab8bc8db1c727e59fa12b',1,'sjsu::FixedAllocator::allocate()']]],
   ['alpha',['alpha',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a188ba3108004e6099d90d8701cdcec3b',1,'sjsu::PixelDisplay::Color_t']]],
-  ['apb1',['apb1',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a5b2c276d43f512745457e2a49ce5b416',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
+  ['apb1',['apb1',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a6991e860ff6ffdf22a4cad274db7c1a7',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['apbdivider',['APBDivider',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a0ed1e6e8d32ded047e5328cb7fcb1c63',1,'sjsu::stm32f10x::SystemController']]],
   ['apds9960',['Apds9960',['../d8/d99/classsjsu_1_1Apds9960.html',1,'sjsu::Apds9960'],['../d8/d99/classsjsu_1_1Apds9960.html#a84c844a923d6f58540f94bdb1c5309f1',1,'sjsu::Apds9960::Apds9960()']]],
   ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu::Arena'],['../df/ddd/classsjsu_1_1Arena.html#acbbf1fbb2830f352f94728bba8082208',1,'sjsu::Arena::Arena(uint8_t *buf, size_t size, uint8_t *ptr=nullptr) noexcept'],['../df/ddd/classsjsu_1_1Arena.html#a5f9b57a035215dbf0686c93a724fa190',1,'sjsu::Arena::Arena(const Arena &amp;a)']]],
@@ -29,6 +29,6 @@ var searchData=
   ['armsysteminfocommand',['ArmSystemInfoCommand',['../df/d55/classsjsu_1_1ArmSystemInfoCommand.html',1,'sjsu']]],
   ['attachinterrupt',['AttachInterrupt',['../dd/d3a/classsjsu_1_1Gpio.html#abc1a9fe294588f09dfac89fa487781b5',1,'sjsu::Gpio::AttachInterrupt()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#afb9ed5adab76ec04ac94364f325d3e1e',1,'sjsu::lpc40xx::Gpio::AttachInterrupt()'],['../d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html#acccc3fdc3577567387f6748003d8633d',1,'sjsu::msp432p401r::Gpio::AttachInterrupt()'],['../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#ac40aed838f854b8402b10de56a4f0377',1,'sjsu::stm32f10x::Gpio::AttachInterrupt()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a9ed0d0b05d6229e20bef39f9e0c0cc3c',1,'sjsu::stm32f4xx::Gpio::AttachInterrupt()']]],
   ['autocomplete',['AutoComplete',['../d9/db2/classsjsu_1_1CommandInterface.html#a67a2c34ab23faa24c56b0180bebcd6de',1,'sjsu::CommandInterface::AutoComplete()'],['../dd/d36/classsjsu_1_1I2cCommand.html#a6839ea845073f32dfa406d38efd00e2a',1,'sjsu::I2cCommand::AutoComplete()']]],
-  ['auxiliary',['auxiliary',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a3426dc47dc409c0f4c51c652ba19ec20',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['auxiliary',['auxiliary',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a73b5a6c626cabf5483ecf105267c00e9',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['availablecolors',['AvailableColors',['../db/d32/classsjsu_1_1Ssd1306.html#ae14b7eb5dcbfdf040f1ffdc29229774c',1,'sjsu::Ssd1306::AvailableColors()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a30f0c480bec0edb9f0d56a06a35b00cb',1,'sjsu::PixelDisplay::AvailableColors()']]]
 ];

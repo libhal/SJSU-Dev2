@@ -33,6 +33,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <cinttypes>
 
 #include "printf.h"
 #include "config.hpp"
@@ -64,6 +65,12 @@
 // default: activated
 #ifndef PRINTF_DISABLE_SUPPORT_FLOAT
 #define PRINTF_SUPPORT_FLOAT
+#endif
+
+// support for the floating point type (%f)
+// default: activated
+#ifndef PRINTF_DISABLE_PRECISION_SUPPORT_FLOAT
+#define PRINTF_SUPPORT_PRECISION_FLOAT
 #endif
 
 // support for exponential floating point notation (%e/%g)
@@ -113,11 +120,8 @@
 #define FLAGS_PRECISION (1U << 10U)
 #define FLAGS_ADAPT_EXP (1U << 11U)
 
-
 // import float.h for DBL_MAX
-#if defined(PRINTF_SUPPORT_FLOAT)
 #include <float.h>
-#endif
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wall"
@@ -144,11 +148,9 @@ typedef struct {
 extern "C" int _write(int file, char * ptr, int length);
 // internal chunk output
 
-#define PRINTF_BUFFER_CHUNK_SIZE 512
-
 void _out_chunk(char character, void* buffer, size_t idx, size_t)
 {
-  size_t string_limit = PRINTF_BUFFER_CHUNK_SIZE - 2;
+  size_t string_limit = SJ2_PRINTF_BUFFER_SIZE - 2;
   size_t proper_index = idx % (string_limit);
   ((char*)buffer)[proper_index] = character;
   // if character == '\0', flush the buffer.
@@ -362,16 +364,61 @@ static size_t _ntoa_long_long(out_fct_type out, char* buffer, size_t idx, size_t
 }
 #endif  // PRINTF_SUPPORT_LONG_LONG
 
-
-#if defined(PRINTF_SUPPORT_FLOAT)
-
-#if defined(PRINTF_SUPPORT_EXPONENTIAL)
 // forward declaration so that _ftoa can switch to exp notation for values > PRINTF_MAX_FLOAT
+[[maybe_unused]]
 static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags);
-#endif
 
+static float _PowerOf10(uint32_t exponent)
+{
+  float result = 1;
+  for (uint32_t i = 0; i < exponent; i++)
+  {
+    result *= 10.0f;
+  }
+  return result;
+}
+
+// SJSU-Dev2: Added to minimize the cost of utilizing floating point arithmetic
+[[maybe_unused]] static size_t _imprecise_ftoa(out_fct_type,
+                                               char * buffer,
+                                               size_t idx,
+                                               size_t maxlen,
+                                               float value,
+                                               unsigned int precision,
+                                               unsigned int flags)
+{
+  static constexpr float kRounders[] = {
+    0.5f, 0.05f, 0.005f, 0.0005f, 0.00005f, 0.000005f, 0.0000005f, 0.00000005f,
+  };
+
+  const char * negative = "";
+
+  if (value < 0)
+  {
+    negative = "-";
+    value    = -value;
+  }
+
+  // set default precision, if not set explicitly
+  if (!(flags & FLAGS_PRECISION))
+  {
+    precision = PRINTF_DEFAULT_FLOAT_PRECISION;
+  }
+
+  precision = std::min(precision, PRINTF_DEFAULT_FLOAT_PRECISION);
+  value += kRounders[precision];
+
+  int32_t whole       = static_cast<int32_t>(value);
+  float whole_float   = static_cast<float>(whole);
+  float decimal_float = (value - whole_float) * _PowerOf10(precision);
+  int32_t decimal     = static_cast<int32_t>(decimal_float);
+  int next_position   = snprintf(&buffer[idx], maxlen, "%s%" PRId32 ".%" PRId32,
+                               negative, whole, decimal);
+  return idx + next_position;
+}
 
 // internal ftoa for fixed decimal floating point
+[[maybe_unused]]
 static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags)
 {
   char buf[PRINTF_FTOA_BUFFER_SIZE];
@@ -497,9 +544,8 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   return _out_rev(out, buffer, idx, maxlen, buf, len, width, flags);
 }
 
-
-#if defined(PRINTF_SUPPORT_EXPONENTIAL)
 // internal ftoa variant for exponential floating-point type, contributed by Martijn Jasperse <m.jasperse@gmail.com>
+[[maybe_unused]]
 static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags)
 {
   // check for NaN and special values
@@ -605,13 +651,13 @@ static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   }
   return idx;
 }
-#endif  // PRINTF_SUPPORT_EXPONENTIAL
-#endif  // PRINTF_SUPPORT_FLOAT
-
 
 // internal vsnprintf
 static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const char* format, va_list va)
 {
+#if defined(SJ2_INCLUDE_VSNPRINTF) && SJ2_INCLUDE_VSNPRINTF == false
+  return 0;
+#endif
   unsigned int flags, width, precision, n;
   size_t idx = 0U;
 
@@ -790,7 +836,8 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
         format++;
         break;
       }
-#if defined(PRINTF_SUPPORT_FLOAT)
+
+#if defined(PRINTF_SUPPORT_PRECISION_FLOAT)
       case 'f' :
       case 'F' :
         if (*format == 'F') flags |= FLAGS_UPPERCASE;
@@ -808,7 +855,15 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
         format++;
         break;
 #endif  // PRINTF_SUPPORT_EXPONENTIAL
+#elif defined(PRINTF_SUPPORT_FLOAT)
+      case 'f':
+      case 'F':
+        idx = _imprecise_ftoa(out, buffer, idx, maxlen,
+                              (float)va_arg(va, double), precision, flags);
+        format++;
+        break;
 #endif  // PRINTF_SUPPORT_FLOAT
+
       case 'c' : {
         unsigned int l = 1U;
         // pre padding
@@ -899,7 +954,7 @@ int printf(const char* format, ...)
 {
   va_list va;
   va_start(va, format);
-  char buffer[PRINTF_BUFFER_CHUNK_SIZE];
+  char buffer[SJ2_PRINTF_BUFFER_SIZE];
   const int ret = _vsnprintf(_out_chunk, buffer, (size_t)-1, format, va);
   va_end(va);
   return ret;

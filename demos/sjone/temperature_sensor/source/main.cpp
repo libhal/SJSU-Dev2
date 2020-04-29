@@ -7,13 +7,8 @@ int main()
 {
   sjsu::LogInfo("Starting LPC176x/5x Temperature Sensor Example...");
 
-  sjsu::lpc17xx::SystemController system_controller;
-  system_controller.SetPeripheralClockDivider(
-      sjsu::lpc17xx::SystemController::Peripherals::kI2c2, 4);
-  sjsu::SystemController::SetPlatformController(&system_controller);
-
   sjsu::lpc17xx::I2c i2c2(sjsu::lpc17xx::I2cBus::kI2c2);
-  sjsu::Tmp102 temperature_sensor(i2c2, sjsu::Tmp102::DeviceAddress::kGround);
+  sjsu::Tmp102 temperature_sensor(i2c2);
   units::temperature::celsius_t temperature;
 
   SJ2_ASSERT_FATAL(temperature_sensor.Initialize() == sjsu::Status::kSuccess,

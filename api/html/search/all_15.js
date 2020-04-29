@@ -4,7 +4,7 @@ var searchData=
   ['waitforinput',['WaitForInput',['../d1/d42/classsjsu_1_1CommandLine.html#a4eaf573a214cc6dd46027c3441ec7ed1',1,'sjsu::CommandLine']]],
   ['waittoreadblock',['WaitToReadBlock',['../dc/d5f/classsjsu_1_1Sd.html#a4e596f032324def60480d573060194d0',1,'sjsu::Sd']]],
   ['waitwhilebusy',['WaitWhileBusy',['../dc/d5f/classsjsu_1_1Sd.html#a365fc041ceb89dc328086b5503280625',1,'sjsu::Sd']]],
-  ['watchdog',['Watchdog',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html',1,'sjsu::lpc40xx::Watchdog'],['../d5/da1/classsjsu_1_1Watchdog.html',1,'sjsu::Watchdog'],['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#af0761efd4e541f4348091cca8719be19',1,'sjsu::lpc40xx::Watchdog::Watchdog()']]],
+  ['watchdog',['Watchdog',['../d5/da1/classsjsu_1_1Watchdog.html',1,'sjsu::Watchdog'],['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html',1,'sjsu::lpc40xx::Watchdog'],['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#af0761efd4e541f4348091cca8719be19',1,'sjsu::lpc40xx::Watchdog::Watchdog()']]],
   ['wdt_5fbase',['wdt_base',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#a999d5dbb73a733a481d9bf43768a7663',1,'sjsu::lpc40xx::Watchdog']]],
   ['width',['width',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html#af593b8c1f946c517d37b5dc9e1c5975a',1,'sjsu::bit::Mask']]],
   ['wifi',['WiFi',['../dc/d16/classsjsu_1_1WiFi.html',1,'sjsu']]],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['b',['b',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#adb16414448c0857eea4a638fbe8f717d',1,'sjsu::FallbackListNode_t']]],
-  ['backup',['backup',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a71b09387102db9b3ad6fb651c6977fd8',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['backup',['backup',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a512f59bcb4848104b0775612b8893e50',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['basenamelength',['BasenameLength',['../d0/d6b/namespacesjsu.html#a9ead998e2ac62523001932e91dbd793d',1,'sjsu']]],
   ['beep',['Beep',['../de/d29/classsjsu_1_1Buzzer.html#ab1397d0c5093422c2a7d119e4b8fe61f',1,'sjsu::Buzzer']]],
   ['bias',['Bias',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246',1,'sjsu::lpc40xx::Dac']]],
@@ -11,8 +11,8 @@ var searchData=
   ['bufferstatus',['BufferStatus',['../d5/dff/structsjsu_1_1lpc40xx_1_1Can_1_1BufferStatus.html',1,'sjsu::lpc40xx::Can']]],
   ['burstmode',['BurstMode',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae3771dcd8323f29bbee55c9c61871899',1,'sjsu::lpc40xx::Adc']]],
   ['burstmodeisenabled',['BurstModeIsEnabled',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#af66237fedb28bab973744ea61bf73099',1,'sjsu::lpc40xx::Adc']]],
-  ['bus',['Bus',['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html',1,'sjsu::lpc40xx::Spi::Bus'],['../db/d99/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus.html',1,'sjsu::lpc40xx::I2c::Bus']]],
-  ['bus_5ft',['Bus_t',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html',1,'sjsu::lpc40xx::Spi::Bus_t'],['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html',1,'sjsu::lpc40xx::I2c::Bus_t']]],
+  ['bus',['Bus',['../db/d99/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus.html',1,'sjsu::lpc40xx::I2c::Bus'],['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html',1,'sjsu::lpc40xx::Spi::Bus']]],
+  ['bus_5ft',['Bus_t',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html',1,'sjsu::lpc40xx::I2c::Bus_t'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['busmode',['BusMode',['../d3/d56/classsjsu_1_1St7066u.html#a9a2918722dc21b079dae228d7a3ebc37',1,'sjsu::St7066u']]],
   ['bustiming',['BusTiming',['../d1/dd3/structsjsu_1_1lpc40xx_1_1Can_1_1BusTiming.html',1,'sjsu::lpc40xx::Can']]],
   ['buswidth',['BusWidth',['../d0/d27/classsjsu_1_1ParallelGpio.html#ae000150c6072e359621b90a639d84562',1,'sjsu::ParallelGpio::BusWidth()'],['../d7/d86/classsjsu_1_1ParallelBus.html#a61682645483824342e5f504db8a58398',1,'sjsu::ParallelBus::BusWidth()']]],
