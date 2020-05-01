@@ -12,6 +12,6 @@ var searchData=
   ['response',['response',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a83df6062feb86215aeb4566a98e56c98',1,'sjsu::Sd::CardInfo_t']]],
   ['rtc',['rtc',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a000a3ede9415ca5e9a7ff039c278fae5',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['run_5fcount_5f',['run_count_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a2a52810dad462e3fff1c2f9d9e33b102',1,'sjsu::rtos::PeriodicTask']]],
-  ['rx',['rx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a0bfb6e9a1a73dbd7e23faf3a40f8805a',1,'sjsu::lpc40xx::Uart::Port_t']]],
+  ['rx',['rx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a0bfb6e9a1a73dbd7e23faf3a40f8805a',1,'sjsu::lpc40xx::Uart::Port_t::rx()'],['../d6/d49/structsjsu_1_1stm32f10x_1_1UartBase_1_1Port__t.html#ac73e7244365ec3f08361eda499861a32',1,'sjsu::stm32f10x::UartBase::Port_t::rx()']]],
   ['rx_5ffunction_5fid',['rx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a9430e0d1d6216f3f7b6ddfb82096b757',1,'sjsu::lpc40xx::Uart::Port_t']]]
 ];

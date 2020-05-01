@@ -1,5 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$db/dcb/classsjsu_1_1InternetSocket.html" title="sjsu::InternetSocket" alt="" coords="5,5,156,32"/>
-<area shape="rect" id="node2" href="$dc/d4f/classsjsu_1_1Esp8266.html" title="sjsu::Esp8266" alt="" coords="204,31,315,57"/>
-<area shape="rect" id="node3" href="$dc/d16/classsjsu_1_1WiFi.html" title="sjsu::WiFi" alt="" coords="39,56,122,83"/>
+<area shape="rect" id="node1" href="$d4/d59/structsjsu_1_1TerminalCache__t.html" title="sjsu::TerminalCache\l_t\&lt; kMaxRows, kMaxColumns \&gt;" alt="" coords="5,5,239,47"/>
 </map>

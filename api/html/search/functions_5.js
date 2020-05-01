@@ -4,6 +4,6 @@ var searchData=
   ['filebasename',['FileBasename',['../d0/d6b/namespacesjsu.html#a0100494866cb454bdaad16e2d4c31525',1,'sjsu::FileBasename(const char(&amp;path)[kPathLength])'],['../d0/d6b/namespacesjsu.html#a7c6279c539e2978eccc5ccf84afc2222',1,'sjsu::FileBasename(const char *path)']]],
   ['fill',['Fill',['../db/d32/classsjsu_1_1Ssd1306.html#ab089ba1b2d17602cb03b7242def6ac60',1,'sjsu::Ssd1306']]],
   ['finddevice',['FindDevice',['../d8/d99/classsjsu_1_1Apds9960.html#a67ce1ca8a3203f209823c5cecdf5ae62',1,'sjsu::Apds9960']]],
-  ['flush',['Flush',['../d0/ddc/classsjsu_1_1Uart.html#a121d444f33008f78dbc94a27120d6043',1,'sjsu::Uart']]],
+  ['flush',['Flush',['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a077cff60586da2451d5fa8e3272322bc',1,'sjsu::stm32f10x::UartBase::Flush()'],['../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#ab6ae99f7a7e24c76392aa9025c9124b0',1,'sjsu::stm32f10x::Uart::Flush()'],['../d0/ddc/classsjsu_1_1Uart.html#a121d444f33008f78dbc94a27120d6043',1,'sjsu::Uart::Flush()']]],
   ['frequencycounter',['FrequencyCounter',['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a2416155f94eeb4b1bf8998f5e6b6296e',1,'sjsu::FrequencyCounter']]]
 ];

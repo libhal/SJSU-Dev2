@@ -9,5 +9,6 @@ var searchData=
   ['device_3c_20i2cdevice_3c_20kdeviceaddress_2c_20endianess_2c_20sjsu_3a_3aapds9960_3a_3amemorymap_5ft_20_3e_2c_20endianess_2c_20sjsu_3a_3aapds9960_3a_3amemorymap_5ft_20_3e',['Device&lt; I2cDevice&lt; kDeviceAddress, endianess, sjsu::Apds9960::MemoryMap_t &gt;, endianess, sjsu::Apds9960::MemoryMap_t &gt;',['../d0/da2/classsjsu_1_1Device.html',1,'sjsu']]],
   ['deviceaddress',['DeviceAddress',['../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html',1,'sjsu::Tmp102']]],
   ['distancesensor',['DistanceSensor',['../df/d5c/classsjsu_1_1DistanceSensor.html',1,'sjsu']]],
+  ['dmareg',['DmaReg',['../de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html',1,'sjsu::stm32f10x::UartBase']]],
   ['dwtcounter',['DwtCounter',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html',1,'sjsu::cortex']]]
 ];

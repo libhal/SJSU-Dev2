@@ -8,7 +8,7 @@ var searchData=
   ['fixedallocator',['FixedAllocator',['../d1/df0/classsjsu_1_1FixedAllocator.html',1,'sjsu']]],
   ['flags',['flags',['../d0/ded/structsjsu_1_1PulseCapture_1_1CaptureStatus__t.html#a80895faf1e21d66c5d9f5d016682f63e',1,'sjsu::PulseCapture::CaptureStatus_t']]],
   ['flash',['flash',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac1a0a910dd8a6d686af5ffe1a5e6637b',1,'sjsu::stm32f10x::SystemController']]],
-  ['flush',['Flush',['../d0/ddc/classsjsu_1_1Uart.html#a121d444f33008f78dbc94a27120d6043',1,'sjsu::Uart']]],
+  ['flush',['Flush',['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a077cff60586da2451d5fa8e3272322bc',1,'sjsu::stm32f10x::UartBase::Flush()'],['../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#ab6ae99f7a7e24c76392aa9025c9124b0',1,'sjsu::stm32f10x::Uart::Flush()'],['../d0/ddc/classsjsu_1_1Uart.html#a121d444f33008f78dbc94a27120d6043',1,'sjsu::Uart::Flush()']]],
   ['fontstyle',['FontStyle',['../d3/d56/classsjsu_1_1St7066u.html#a6b936555ac9cc7ec812869824ff6e7a1',1,'sjsu::St7066u']]],
   ['format',['Format',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdd',1,'sjsu::Can::Message_t::Format()'],['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a03d2bf17e786c546c5a287ae53dd8058',1,'sjsu::Can::Message_t::format()']]],
   ['frame',['frame',['../d8/d77/structsjsu_1_1lpc40xx_1_1Can_1_1LpcRegisters__t.html#ae81d03e595f1af0326f882765cb84ecd',1,'sjsu::lpc40xx::Can::LpcRegisters_t']]],

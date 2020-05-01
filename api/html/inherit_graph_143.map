@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html" title="Describes the color space and resolution of the display. " alt="" coords="5,5,143,47"/>
+<area shape="rect" id="node1" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,107,81,133"/>
+<area shape="rect" id="node2" href="$d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="149,5,283,32"/>
+<area shape="rect" id="node3" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="149,56,283,83"/>
+<area shape="rect" id="node4" href="$d2/dc5/classsjsu_1_1msp432p401r_1_1Pin.html" title="Pin control driver for MSP432P401R MCUs. " alt="" coords="129,107,303,133"/>
+<area shape="rect" id="node5" href="$d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html" title="Implementation of a Pin in stm32f10x. " alt="" coords="139,157,293,184"/>
+<area shape="rect" id="node6" href="$dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html" title="Implementation of a Pin in stm32f4xx. " alt="" coords="139,208,293,235"/>
 </map>

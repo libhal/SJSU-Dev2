@@ -211,8 +211,10 @@ class Uart final : public sjsu::Uart
  public:
   using sjsu::Uart::Read;
   using sjsu::Uart::Write;
+
   /// Code for enabling standard uart mode.
   static constexpr uint8_t kStandardUart = 0b011;
+
   /// Port contains all of the information that the lpc40xx uart port needs to
   /// operate.
   struct Port_t
@@ -260,6 +262,7 @@ class Uart final : public sjsu::Uart
       .tx_function_id = 0b001,
       .rx_function_id = 0b001,
     };
+
     /// Definition for uart port 1 for lpc40xx.
     inline static const Port_t kUart2 = {
       .registers      = LPC_UART2,
@@ -269,6 +272,7 @@ class Uart final : public sjsu::Uart
       .tx_function_id = 0b010,
       .rx_function_id = 0b010,
     };
+
     /// Definition for uart port 2 for lpc40xx.
     inline static const Port_t kUart3 = {
       .registers      = LPC_UART3,
@@ -278,6 +282,7 @@ class Uart final : public sjsu::Uart
       .tx_function_id = 0b010,
       .rx_function_id = 0b010,
     };
+
     /// Definition for uart port 3 for lpc40xx.
     inline static const Port_t kUart4 = {
       .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4),

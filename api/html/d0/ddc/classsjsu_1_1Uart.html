@@ -88,7 +88,9 @@ Inheritance diagram for sjsu::Uart:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/dcb/classsjsu_1_1Uart__inherit__graph.png" border="0" usemap="#sjsu_1_1Uart_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Uart_inherit__map" id="sjsu_1_1Uart_inherit__map">
-<area shape="rect" id="node2" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html" title="sjsu::lpc40xx::Uart" alt="" coords="5,80,148,107"/>
+<area shape="rect" id="node2" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html" title="sjsu::lpc40xx::Uart" alt="" coords="5,87,148,114"/>
+<area shape="rect" id="node3" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. " alt="" coords="173,80,335,121"/>
+<area shape="rect" id="node4" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="359,87,554,114"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -145,6 +147,8 @@ Public Member Functions</h2></td></tr>
 <p>Will flush all bytes currently head with the UART peripherals buffers.</p>
 <p>The default implementation reads out all of the bytes by checking <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a90f16341ec8921e784a8a5d6d2044f2d">HasData()</a> repeatedly and use <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a45920b923b0f0dff051aa249b3feb8dd">Read()</a> to read each. Some implementations may have more efficient methods of clearing their buffers. </p>
 
+<p>Reimplemented in <a class="el" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#ab6ae99f7a7e24c76392aa9025c9124b0">sjsu::stm32f10x::Uart&lt; kQueueSize &gt;</a>, and <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a077cff60586da2451d5fa8e3272322bc">sjsu::stm32f10x::UartBase</a>.</p>
+
 </div>
 </div>
 <a id="a90f16341ec8921e784a8a5d6d2044f2d"></a>
@@ -171,7 +175,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Checks if there is data available for this port. </p><dl class="section return"><dt>Returns</dt><dd>true if the UART port has received some data. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#ac046fe03411044562f72761af3b59a37">sjsu::lpc40xx::Uart</a>.</p>
+<p>Implemented in <a class="el" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#aa85a5e008ad56f0ca1663e564632fabe">sjsu::stm32f10x::Uart&lt; kQueueSize &gt;</a>, <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a22a9b2cb4d27802ef4b684699412c627">sjsu::stm32f10x::UartBase</a>, and <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#ac046fe03411044562f72761af3b59a37">sjsu::lpc40xx::Uart</a>.</p>
 
 </div>
 </div>
@@ -206,7 +210,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a67c158b4cc48c2b65733afce101a3484">sjsu::lpc40xx::Uart</a>.</p>
+<p>Implemented in <a class="el" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#a9e86040f5e5250d78ee4ecab7b75ffd1">sjsu::stm32f10x::Uart&lt; kQueueSize &gt;</a>, <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a67c158b4cc48c2b65733afce101a3484">sjsu::lpc40xx::Uart</a>, and <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a129ea489bdd7c00f4b4e4e46c71ffb26">sjsu::stm32f10x::UartBase</a>.</p>
 
 </div>
 </div>
@@ -280,7 +284,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>number of bytes actually read into the data buffer. Will be less than or equal to the number of bytes passed by size. More bytes can exist in the uart's buffer if the returned size is equal to the passed size. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a1dc438d15bae19fe9fef4ef46e66680f">sjsu::lpc40xx::Uart</a>.</p>
+<p>Implemented in <a class="el" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#a290ab33e5aa06c45f39ceba1c0092967">sjsu::stm32f10x::Uart&lt; kQueueSize &gt;</a>, <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#ad2a0baf21f1716f16904e19360ca8e50">sjsu::stm32f10x::UartBase</a>, and <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a1dc438d15bae19fe9fef4ef46e66680f">sjsu::lpc40xx::Uart</a>.</p>
 
 </div>
 </div>
@@ -398,7 +402,7 @@ sjsu::Status::kTimeout if bytes could not be read before before timeout. </dd></
 <dd>
 false - if baud rate is not possible to be set. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aab98d20df99623e52f0899f350208658">sjsu::lpc40xx::Uart</a>.</p>
+<p>Implemented in <a class="el" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#ac7d8a3fc79adcbd7a76f6f73a9ecfc1d">sjsu::stm32f10x::Uart&lt; kQueueSize &gt;</a>, <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aab98d20df99623e52f0899f350208658">sjsu::lpc40xx::Uart</a>, and <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#ac67ac7668f6a51261dd50b6639c3557f">sjsu::stm32f10x::UartBase</a>.</p>
 
 </div>
 </div>
@@ -444,7 +448,7 @@ false - if baud rate is not possible to be set. </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a6cf922781ce5454d24ff14a01d3d0916">sjsu::lpc40xx::Uart</a>.</p>
+<p>Implemented in <a class="el" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#aa4d6fd1600346ad9ab9438673b4e58f9">sjsu::stm32f10x::Uart&lt; kQueueSize &gt;</a>, <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a6cf922781ce5454d24ff14a01d3d0916">sjsu::lpc40xx::Uart</a>, and <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a0c834395b15465037f76233b82ca5f18">sjsu::stm32f10x::UartBase</a>.</p>
 
 </div>
 </div>

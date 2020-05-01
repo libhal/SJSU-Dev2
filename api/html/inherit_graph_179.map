@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$db/dc5/structsjtwo.html" title="Namespace for SJTwo board peripheral and device definitions. " alt="" coords="5,5,63,32"/>
+<area shape="rect" id="node1" href="$dd/d31/classsjsu_1_1Timer.html" title="sjsu::Timer" alt="" coords="5,5,100,32"/>
+<area shape="rect" id="node2" href="$d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html" title="sjsu::lpc40xx::Timer" alt="" coords="148,5,301,32"/>
 </map>

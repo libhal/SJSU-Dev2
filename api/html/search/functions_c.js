@@ -4,6 +4,7 @@ var searchData=
   ['operator_20_26',['operator &amp;',['../d0/d6b/namespacesjsu.html#ab16806d14e7cff6945107c75e5b6d24f',1,'sjsu']]],
   ['operator_20_26_3d',['operator &amp;=',['../d0/d6b/namespacesjsu.html#ab9c11fb4b8f68b1d8bde067470fb8d12',1,'sjsu']]],
   ['operator_20int',['operator int',['../dd/dee/structsjsu_1_1Status__t.html#aff71e5bbfbfb0a6e0243840b32e22a43',1,'sjsu::Status_t']]],
+  ['operator_20t',['operator T',['../df/d21/classsjsu_1_1bit_1_1Value.html#aaea2887d5255a5a6b8ad75b85ca118d5',1,'sjsu::bit::Value']]],
   ['operator_21_3d',['operator!=',['../d0/d6b/namespacesjsu.html#aca998e654da87b437ecabef861ecc78b',1,'sjsu']]],
   ['operator_3c_3c',['operator&lt;&lt;',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html#aa1379aed7e0340cb59dff04fa64421c3',1,'sjsu::bit::Mask']]],
   ['operator_3d',['operator=',['../dc/d10/structsjsu_1_1Status.html#a7b0485b56eabfb5c6ed3fe9f1f4c3bcb',1,'sjsu::Status::operator=(const Status_t &amp;status)'],['../dc/d10/structsjsu_1_1Status.html#a8f16ff5a314f409e11c259b24308e63a',1,'sjsu::Status::operator=(const Status_t &amp;&amp;status)']]],

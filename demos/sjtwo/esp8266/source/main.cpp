@@ -25,7 +25,7 @@ int main()
   while (true)
   {
     sjsu::LogInfo("Connecting to WiFi...");
-    auto status = wifi.ConnectToAccessPoint("wifi-ssid", "password");
+    auto status = wifi.ConnectToAccessPoint("KAMMCE-PHONE", "roverteam");
     if (status == sjsu::Status::kSuccess)
     {
       break;

@@ -15,5 +15,6 @@ var searchData=
   ['esp8266',['Esp8266',['../dc/d4f/classsjsu_1_1Esp8266.html#ac0ddbdd40f24de276666fb9e27b919bf',1,'sjsu::Esp8266']]],
   ['example',['Example',['../d8/d93/classsjsu_1_1example_1_1Example.html#a6543d9de209a0ec2e8a51046a344c167',1,'sjsu::example::Example']]],
   ['examplehalimplementation',['ExampleHalImplementation',['../d7/d4f/classsjsu_1_1ExampleHalImplementation.html#ad8b1d5af72ed6d3c668262a38831153f',1,'sjsu::ExampleHalImplementation']]],
-  ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#afd407530822417a5ce69c2a131bea9b0',1,'sjsu::ExampleSingleImplementationHal']]]
+  ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#afd407530822417a5ce69c2a131bea9b0',1,'sjsu::ExampleSingleImplementationHal']]],
+  ['extract',['Extract',['../dd/dbe/classsjsu_1_1bit_1_1Register.html#a8825dd7dea15b937476425c8bdaf0763',1,'sjsu::bit::Register']]]
 ];

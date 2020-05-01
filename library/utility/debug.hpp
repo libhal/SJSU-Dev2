@@ -2,6 +2,8 @@
 
 #include <unwind.h>
 
+#include <array>
+#include <algorithm>
 #include <cctype>
 #include <cinttypes>
 #include <cstdint>
@@ -21,41 +23,50 @@ namespace debug
 // =====================================
 // Hidden utility functions for Hexdump
 // =====================================
-inline void PrintCharacterRow(uint8_t * bytes, size_t length)
+inline void PrintCharacterRow(uint8_t * bytes,
+                              size_t length,
+                              char * buffer,
+                              int position)
 {
-  putchar('|');
+  buffer[position++] = '|';
   for (size_t j = 0; j < length; j++)
   {
     if (isprint(bytes[j]))
     {
-      putchar(bytes[j]);
+      buffer[position++] = bytes[j];
     }
     else
     {
-      putchar('.');
+      buffer[position++] = '.';
     }
   }
-  puts("|");
+  buffer[position++] = '|';
+  buffer[position++] = '\n';
 }
 
-inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
+inline int PrintHexBytesRow(uint8_t * bytes,
+                            size_t length,
+                            char * buffer,
+                            int position)
 {
   for (size_t j = 0; j < 16; j++)
   {
     if (j < length)
     {
-      printf("%02X ", bytes[j]);
+      position += snprintf(&buffer[position], 4, "%02X ", bytes[j]);  // NOLINT
     }
     else
     {
-      printf("   ");
+      position += snprintf(&buffer[position], 4, "   ");  // NOLINT
     }
+
     if (j == 7)
     {
-      putchar(' ');
+      buffer[position++] = ' ';
     }
   }
-  putchar(' ');
+  buffer[position++] = ' ';
+  return position;
 }
 
 /// Similar to the UNIX hexdump program, this function will read the bytes from
@@ -77,16 +88,57 @@ inline void PrintHexBytesRow(uint8_t * bytes, size_t length)
 ///
 /// @param address - location to start reading bytes from
 /// @param length - the number of bytes to read from the starting location
+template <size_t kNumberOfRowsBuffered = 1>
 inline void Hexdump(void * address, size_t length)
 {
+  // Verify that the number of rows specified is 1 or more
+  static_assert(kNumberOfRowsBuffered > 0,
+                "Number of buffered rows must be greater than zero.");
+
+  // The number of bytes required to hold a row of hexdump data + newline
+  static constexpr size_t kRowMaximumLength = 79;
+
+  // Define a buffer that will contain the bytes for each row of the hex dump.
+  // +1 to size for NULL CHARACTER.
+  std::array<char, (kNumberOfRowsBuffered * kRowMaximumLength) + 1> rows;
+
+  // Fill the rows
+  std::fill(rows.begin(), rows.end(), '\0');
+
+  // Convert the void* to a uint8_t* so that the value are interpreted as
+  // numerical bytes.
   uint8_t * bytes = static_cast<uint8_t *>(address);
-  for (size_t i = 0; i < length; i += 16)
+
+  size_t row_position = 0;
+
+  for (size_t i = 0; i < length; i += 16, row_position++)
   {
-    printf("%08zX  ", i);
+    // If the row position goes above the number rows, reset the rows and print
+    // them.
+    if (row_position >= kNumberOfRowsBuffered)
+    {
+      printf("%s", rows.data());
+      std::fill(rows.begin(), rows.end(), '\0');
+      row_position = 0;
+    }
+
+    // Point to the start of the current rows.
+    char * row = &rows[row_position * kRowMaximumLength];
+
+    // Print the starting address position of the row
+    int position = snprintf(row, 11, "%08zX  ", i);  // NOLINT
+
+    // Figure out the number of bytes to display
     size_t bytes_to_print = (i + 15 > length) ? (length % 16) : 16;
-    PrintHexBytesRow(&bytes[i], bytes_to_print);
-    PrintCharacterRow(&bytes[i], bytes_to_print);
+
+    position = PrintHexBytesRow(&bytes[i], bytes_to_print, row, position);
+    PrintCharacterRow(&bytes[i], bytes_to_print, row, position);
   }
+
+  // Print out the last of the data rows
+  printf("%s", rows.data());
+
+  // Print out the amount of data
   printf("%08zX  \n", length);
 }
 
@@ -94,7 +146,7 @@ inline void Hexdump(void * address, size_t length)
 // Hidden Backtrace Utility Functions
 // ==============================================
 inline _Unwind_Reason_Code PrintAddressAsList(_Unwind_Context * context,
-                                                     void * depth_pointer)
+                                              void * depth_pointer)
 {
   int * depth      = static_cast<int *>(depth_pointer);
   intptr_t address = static_cast<intptr_t>(_Unwind_GetIP(context));
@@ -104,7 +156,7 @@ inline _Unwind_Reason_Code PrintAddressAsList(_Unwind_Context * context,
   return _URC_NO_REASON;
 }
 inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
-                                                    void * depth_pointer)
+                                             void * depth_pointer)
 {
   int * depth      = static_cast<int *>(depth_pointer);
   intptr_t address = static_cast<intptr_t>(_Unwind_GetIP(context));

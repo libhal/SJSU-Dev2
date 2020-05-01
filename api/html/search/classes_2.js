@@ -23,6 +23,7 @@ var searchData=
   ['control',['Control',['../dd/dc9/structsjsu_1_1lpc40xx_1_1Dac_1_1Control.html',1,'sjsu::lpc40xx::Dac::Control'],['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html',1,'sjsu::lpc40xx::Adc::Control']]],
   ['control0register',['Control0Register',['../d7/d9d/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control0Register.html',1,'sjsu::msp432p401r::SystemController']]],
   ['control1register',['Control1Register',['../d8/d36/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control1Register.html',1,'sjsu::msp432p401r::SystemController']]],
+  ['controlreg',['ControlReg',['../d0/d54/structsjsu_1_1stm32f10x_1_1UartBase_1_1ControlReg.html',1,'sjsu::stm32f10x::UartBase']]],
   ['controlregister0',['ControlRegister0',['../dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html',1,'sjsu::lpc40xx::Spi']]],
   ['controlregister1',['ControlRegister1',['../d7/dde/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister1.html',1,'sjsu::lpc40xx::Spi']]],
   ['coulombcounter',['CoulombCounter',['../d1/d15/classsjsu_1_1CoulombCounter.html',1,'sjsu']]],

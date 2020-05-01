@@ -1,6 +1,7 @@
 var searchData=
 [
   ['gesture',['Gesture',['../db/dc5/structsjtwo.html#a0f8b659c0f682ca2c102cdf63fea2292',1,'sjtwo']]],
+  ['get',['Get',['../dd/dbe/classsjsu_1_1bit_1_1Register.html#a2ce5d6e0e2d14a760c47a0cb6a126bad',1,'sjsu::bit::Register']]],
   ['getactivebits',['GetActiveBits',['../d0/dc1/classsjsu_1_1Adc.html#aad0f82c8674acc5916171b9c654797cf',1,'sjsu::Adc::GetActiveBits()'],['../da/d01/classsjsu_1_1Dac.html#a701eca7eb9b1cbb37a403e3c4df39c6d',1,'sjsu::Dac::GetActiveBits()'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a3f886549ab4444d418c8586ede018fea',1,'sjsu::lpc40xx::Adc::GetActiveBits()'],['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ace0b148664a123566a3679cdbaf42a3f',1,'sjsu::lpc40xx::Dac::GetActiveBits()']]],
   ['getalltasks',['GetAllTasks',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a6fbdbb0b4cc79b3259d78914178fbb96',1,'sjsu::rtos::TaskScheduler']]],
   ['getavailablecolor',['GetAvailableColor',['../d7/d8c/classsjsu_1_1Graphics.html#a9c68dbd733abe3930dda7a243d367e56',1,'sjsu::Graphics']]],
