@@ -79,7 +79,7 @@ TEST_CASE("Testing stm32f10x Uart")
     CHECK(receieve_queue.size() == local_dma.CNDTR);
     CHECK(data_address == local_dma.CPAR);
     CHECK(queue_address == local_dma.CMAR);
-    CHECK(UartBase::DmaReg::kDmaSettings == local_dma.CCR);
+    CHECK(UartBase::kDmaSettings == local_dma.CCR);
     CHECK(UartBase::ControlReg::kControlSettings1 == local_usart.CR1);
     CHECK(UartBase::ControlReg::kControlSettings3 == local_usart.CR3);
   }
@@ -223,31 +223,32 @@ TEST_CASE("Testing stm32f10x Uart")
 
     // Setup: Make sure that the Write sees that the transmit is not currently
     //        empty, meaning it must wait.
-    bit::Register(&local_usart.SR)
-        .Clear(UartBase::StatusReg::kTransitEmpty)
-        .Save();
-
-    std::thread initial_transmit_wait([&local_usart]() {
-      // Allow some time to pass
-      std::this_thread::sleep_for(1us);
-
-      // Make sure that the DR register has not been populated with any data
-      // from the payload.
-      REQUIRE(0 == local_usart.DR);
-
-      // Allow some time to pass
-      std::this_thread::sleep_for(1us);
-
-      // Now set the transmit empty flag to allow byte transmission to begin.
-      bit::Register(&local_usart.SR)
-          .Set(UartBase::StatusReg::kTransitEmpty)
-          .Save();
+    testing::PollingVerification({
+        .locking_function =
+            [&local_usart]() {
+              bit::Register(&local_usart.SR)
+                  .Clear(UartBase::StatusReg::kTransitEmpty)
+                  .Save();
+            },
+        .polling_function =
+            [&test_subject, &local_usart, &payload, &payload_size]() {
+              // Make sure that the DR register has not been populated with any
+              // data from the payload.
+              REQUIRE(0 == local_usart.DR);
+              test_subject.Write(
+                  std::span<const uint8_t>(payload.data(), payload_size));
+            },
+        .release_function =
+            [&local_usart]() {
+              // Now set the transmit empty flag to allow byte transmission to
+              // begin.
+              bit::Register(&local_usart.SR)
+                  .Set(UartBase::StatusReg::kTransitEmpty)
+                  .Save();
+            },
     });
 
     // Exercise
-    test_subject.Write(std::span<const uint8_t>(payload.data(), payload_size));
-    initial_transmit_wait.join();
-
     // Verify
     // Verify: The last byte in the payload, based on the value of
     //         `payload_size` should show up here.
@@ -365,7 +366,7 @@ TEST_CASE("Testing stm32f10x Uart")
   {
     // Setup
     bit::Register(&local_dma.CCR)
-        .Set(UartBase::UartBase::DmaReg::kEnable)
+        .Set(Dma::Reg::kEnable)
         .Save();
 
     bit::Register(&local_usart.CR3)
@@ -381,7 +382,7 @@ TEST_CASE("Testing stm32f10x Uart")
 
     // Verify
     CHECK(!bit::Register(&local_dma.CCR)
-               .Read(UartBase::UartBase::DmaReg::kEnable));
+               .Read(Dma::Reg::kEnable));
     CHECK(!bit::Register(&local_usart.CR3)
                .Read(UartBase::ControlReg::kDmaReceiverEnable));
     CHECK(!bit::Register(&local_usart.CR1)
