@@ -1,9 +1,31 @@
 #pragma once
 
-#include "third_party/fatfs/source/ff.h"
+#include <ff.h>
+
+#include "L1_Peripheral/storage.hpp"
+#include "utility/status.hpp"
 
 namespace sjsu
 {
+/// Register a storage device to the list of devices that can be controlled by
+/// fatfs.
+///
+/// NOTE: Driver 0 is special in that you do not need to specify the drive
+/// number in the file path.
+///
+/// For example:
+///
+///     Drive Number 0: f_open("/path/to/file", ...);
+///     Drive Number 1: f_open("1:/path/to/file", ...);
+///
+/// For all other driver numbers a prefix of `<number>:` is required.
+///
+/// @param storage - reference to the storage device that contains a fatfs
+///                  filesystem.
+/// @param drive_number - the drive designation number for device.
+/// @return Returns<int> - an error if there is one.
+Returns<void> RegisterFatFsDrive(Storage * storage, uint8_t drive_number = 0);
+
 /// @param result - the fatfs result to convert to a string description.
 /// @return a string description of the passed fatfs result.
 inline const char * Stringify(FRESULT result)

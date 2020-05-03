@@ -196,6 +196,20 @@ static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
               "SJ2_LOG_LEVEL must equal to one of the predefined log levels "
               "such as SJ2_LOG_LEVEL_INFO.");
 
+/// Defines the number of FatFS drives that the system can support. By default
+/// the count is a single FatFS drive. If you system has more than 1 storage
+/// media with a FAT filesystem on it, change this value to exactly the number
+/// needed by your project in order to not waste space.
+/// The memory taken up by this is:
+///
+///     (sizeof(void*) + sizeof(bool)) * kFatDriveCount
+///
+#if !defined(SJ2_FAT_DRIVE_COUNT)
+#define SJ2_FAT_DRIVE_COUNT 1
+#endif  // !defined(SJ2_FAT_DRIVE_COUNT)
+/// Delcare Constant FAT_DRIVE_COUNT
+SJ2_DECLARE_CONSTANT(FAT_DRIVE_COUNT, uint8_t, kFatDriveCount);
+
 /// If true, will store error messages into error objects. Setting this to false
 /// will reduce your binary size when using any optimization setting above O0,
 /// as the compiler will deduce that the strings are not being used, and remove

@@ -1,4 +1,3 @@
-LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/lpc40xx/diskio.cpp
 LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/lpc40xx/startup.cpp
 LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/ARM_CM4F/port.c
 LIBRARY_LPC40XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/exceptions.cpp
