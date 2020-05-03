@@ -5,4 +5,3 @@ COMMON_FLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
                 -D ARM_MATH_CM4=1 -D __FPU_PRESENT=1U
 
 include $(LIBRARY_DIR)/L0_Platform/arm_cortex/arm_cortex.mk
-include $(LIBRARY_DIR)/third_party/fatfs/fatfs.mk

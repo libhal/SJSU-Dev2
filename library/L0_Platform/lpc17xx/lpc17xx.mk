@@ -2,7 +2,6 @@ INCLUDES += $(LIBRARY_DIR)/L0_Platform/freertos
 
 SYSTEM_INCLUDES +=
 
-LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/lpc17xx/diskio.cpp
 LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/lpc17xx/startup.cpp
 LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m3/ARM_CM3/port.c
 LIBRARY_LPC17XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/exceptions.cpp
