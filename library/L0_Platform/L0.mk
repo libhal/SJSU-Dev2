@@ -1,5 +1,7 @@
 INCLUDES += $(LIBRARY_DIR)/L0_Platform/freertos
 
+TESTS += $(LIBRARY_DIR)/L0_Platform/test/ram_test.cpp
+
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L0_Platform/%
 
 # FreeRTOS
