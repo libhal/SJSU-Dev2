@@ -76,14 +76,6 @@ extern "C"
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    interrupt_controller.Enable({
-        .interrupt_request_number = sjsu::cortex::SVCall_IRQn,
-        .interrupt_handler        = vPortSVCHandler,
-    });
-    interrupt_controller.Enable({
-        .interrupt_request_number = sjsu::cortex::PendSV_IRQn,
-        .interrupt_handler        = xPortPendSVHandler,
-    });
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
