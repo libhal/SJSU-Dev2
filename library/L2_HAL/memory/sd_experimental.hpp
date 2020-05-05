@@ -321,7 +321,7 @@ class Sd : public Storage
       block.SetCrcBytes();
 
       // Convert the block address into a byte address
-      uint32_t block_byte_address = (block_address + block_offset) * kBlockSize;
+      uint32_t block_byte_address = block_address + block_offset;
       SJ2_RETURN_ON_ERROR(WriteBlock(block_byte_address, block));
     }
 
@@ -343,8 +343,8 @@ class Sd : public Storage
 
     for (size_t block_offset = 0; !finished; block_offset++)
     {
-      Block_t block = SJ2_RETURN_ON_ERROR(
-          ReadBlock((block_address + block_offset) * kBlockSize));
+      Block_t block;
+      SJ2_RETURN_ON_ERROR(ReadBlock(block, block_address + block_offset));
 
       // Start the position of the index pointer at the position
       for (uint32_t index = 0; index < kBlockSize; index++)
@@ -381,9 +381,8 @@ class Sd : public Storage
  private:
   struct Block_t
   {
-    sjsu::Status status = sjsu::Status::kSuccess;
     // +2 for CRC
-    std::array<uint8_t, kBlockSize + 2> byte = { 0 };
+    std::array<uint8_t, kBlockSize + 2> byte;
 
     void SetCrcBytes()
     {
@@ -477,10 +476,8 @@ class Sd : public Storage
   }
 
   /// Read any number of blocks from the SD card
-  Returns<Block_t> ReadBlock(uint32_t block_address)
+  Returns<void> ReadBlock(Block_t & block, uint32_t block_address)
   {
-    Block_t block;
-
     LogDebug("Block %" PRId32, block_address);
     // Wait for a previous command to finish
     WaitWhileBusy();
@@ -517,7 +514,7 @@ class Sd : public Storage
 
     WaitForDeviceToLeaveIdle();
 
-    return block;
+    return {};
   }
 
   // Writes any number of 512-byte blocks to the SD Card
