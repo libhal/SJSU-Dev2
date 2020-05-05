@@ -91,23 +91,23 @@ SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
 SJ2_SECTION(".isr_vector")
 // NOLINTNEXTLINE(readability-identifier-naming)
 const sjsu::InterruptVectorAddress kInterruptVectorTable[] = {
-  // Core Level - CM4
+  // Core Level - CM3/4
   &StackTop,                           // 0, The initial stack pointer
   ArmResetHandler,                     // 1, The reset handler
-  interrupt_controller.LookupHandler,  // 1, The NMI  handler
+  interrupt_controller.LookupHandler,  // 2, The NMI handler
   ArmHardFaultHandler,                 // 3, The hard fault handler
-  interrupt_controller.LookupHandler,  // 2, The MPU fault  handler
-  interrupt_controller.LookupHandler,  // 3, The bus fault  handler
-  interrupt_controller.LookupHandler,  // 4, The usage fault  handler
+  interrupt_controller.LookupHandler,  // 4, The MPU fault handler
+  interrupt_controller.LookupHandler,  // 5, The bus fault handler
+  interrupt_controller.LookupHandler,  // 6, The usage fault handler
   nullptr,                             // 7, Reserved
   nullptr,                             // 8, Reserved
   nullptr,                             // 9, Reserved
   nullptr,                             // 10, Reserved
-  interrupt_controller.LookupHandler,  // 5, SVCall  handler
-  interrupt_controller.LookupHandler,  // 6, Debug monitor  handler
+  vPortSVCHandler,                     // 11, SVCall handler
+  interrupt_controller.LookupHandler,  // 12, Debug monitor handler
   nullptr,                             // 13, Reserved
-  interrupt_controller.LookupHandler,  // 7, FreeRTOS PendSV  Handler
-  interrupt_controller.LookupHandler,  // 8, The SysTick  handler
+  xPortPendSVHandler,                  // 14, FreeRTOS PendSV Handler
+  interrupt_controller.LookupHandler,  // 15, The SysTick handler
   // Chip Level - stm32f10x
   interrupt_controller.LookupHandler,  // 0, Window WatchDog
   interrupt_controller.LookupHandler,  // 1, PVD through EXTI Line detection
