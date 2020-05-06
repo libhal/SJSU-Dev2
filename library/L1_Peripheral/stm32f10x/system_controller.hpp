@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "L0_Platform/stm32f10x/stm32f10x.h"
+#include "L0_Platform/startup.hpp"
 #include "L1_Peripheral/system_controller.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
@@ -756,5 +757,106 @@ class SystemController : public sjsu::SystemController
   units::frequency::hertz_t timer_apb2_clock_rate_ = 0_Hz;
   units::frequency::hertz_t adc_clock_rate_        = 0_Hz;
 };
+
+/// Sets the clock rate for all clock systems to their maximum allowable by the
+/// ST specification for the stm32f10x.
+///
+///     - System clock = 72 MHz (maximum)
+///     - AHB clock    = 72 MHz (maximum)
+///     - APB1 clock   = 36 MHz (maximum)
+///     - APB2 clock   = 72 MHz (maximum)
+///     - USB clock    = 48 MHz (proper)
+///     - ADC clock    = 12 MHz (2 MHz below maximum of 14 MHz)
+///
+/// @note This will call InitializePlatform() at the end, thus this should not
+///       be called within an implementation of `InitializePlatform()` otherwise
+///       this will recurse and crash the application.
+///
+/// @note This function assumes a 8 MHz external crystal to be used.
+inline void SetMaximumClockSpeed()
+{
+  using sjsu::stm32f10x::SystemController;
+  auto & config =
+      sjsu::SystemController::GetPlatformController()
+          .GetClockConfiguration<SystemController::ClockConfiguration>();
+
+  // Set the speed of the high speed external oscillator.
+  // NOTE: Change this if its different for your board.
+  config.high_speed_external = 8_MHz;
+  // Set the source of the PLL's oscillator to 4MHz.
+  // See page 93 in RM0008 to see that the internal high speed oscillator,
+  // which is 8MHz, is divided by 2 before being fed to the PLL to get 4MHz.
+  config.pll.source = SystemController::PllSource::kHighSpeedExternal;
+  // Enable PLL to increase the frequency of the system
+  config.pll.enable = true;
+  // Multiply the 8MHz * 9 => 72 MHz
+  config.pll.multiply = SystemController::PllMultiply::kMultiplyBy9;
+  // Set the system clock to the PLL
+  config.system_clock = SystemController::SystemClockSelect::kPll;
+  // APB1's maximum frequency is 36 MHz, so we divide 72 MHz / 2 => 36 MHz.
+  config.ahb.apb1.divider = SystemController::APBDivider::kDivideBy2;
+  // Keep APB1's clock undivided as it can handle up to 72 MHz.
+  config.ahb.apb2.divider = SystemController::APBDivider::kDivideBy1;
+  // Maximum frequency for ADC is 14 MHz, thus the best we can do is divide
+  // 72 MHz / 6 to get 12 MHz.
+  config.ahb.apb2.adc.divider = SystemController::AdcDivider::kDivideBy6;
+  // Set USB to divide by 1.5 which will give you 48 MHz which is needed for USB
+  // usage.
+  config.pll.usb.divider = SystemController::UsbDivider::kDivideBy1Point5;
+
+  // Initialize platform with new clock configuration settings.
+  sjsu::InitializePlatform();
+}
+
+/// Sets the clock rate for all clock systems to their maximum allowable by the
+/// ST specification for the stm32f10x using the internal oscillator.
+///
+///     - System clock = 64 MHz (maximum)
+///     - AHB clock    = 64 MHz (maximum)
+///     - APB1 clock   = 32 MHz (maximum)
+///     - APB2 clock   = 64 MHz (maximum)
+///     - USB clock    = 42 MHz (cannot be used)
+///     - ADC clock    = 12 MHz (2 MHz below maximum of 14 MHz)
+///
+/// @note This will call InitializePlatform() at the end, thus this should not
+///       be called within an implementation of `InitializePlatform()` otherwise
+///       this will recurse and crash the application.
+///
+/// @note This will direct everything to use the internal oscillator and will
+///       make USB unusable.
+inline void SetMaximumClockSpeedUsingInternalOscillator()
+{
+  using sjsu::stm32f10x::SystemController;
+  auto & config =
+      sjsu::SystemController::GetPlatformController()
+          .GetClockConfiguration<SystemController::ClockConfiguration>();
+
+  // Set the speed of the high speed external oscillator.
+  // NOTE: Change this if its different for your board.
+  config.high_speed_external = 0_MHz;
+  // Set the source of the PLL's oscillator to 4MHz.
+  // See page 93 in RM0008 to see that the internal high speed oscillator,
+  // which is 8MHz, is divided by 2 before being fed to the PLL to get 4MHz.
+  config.pll.source = SystemController::PllSource::kHighSpeedInternal;
+  // Enable PLL to increase the frequency of the system
+  config.pll.enable = true;
+  // Multiply the 8MHz / 2 * 16 => 64 MHz
+  config.pll.multiply = SystemController::PllMultiply::kMultiplyBy16;
+  // Set the system clock to the PLL
+  config.system_clock = SystemController::SystemClockSelect::kPll;
+  // APB1's maximum frequency is 32 MHz, so we divide 64 MHz / 2 => 32 MHz.
+  config.ahb.apb1.divider = SystemController::APBDivider::kDivideBy2;
+  // Keep APB1's clock undivided as it can handle up to 64 MHz.
+  config.ahb.apb2.divider = SystemController::APBDivider::kDivideBy1;
+  // Maximum frequency for ADC is 14 MHz, thus we divide 64 MHz / 6 to get
+  // 12.8 MHz.
+  config.ahb.apb2.adc.divider = SystemController::AdcDivider::kDivideBy6;
+  // Set USB to divide by 1.5 which will give you 48 MHz which is needed for USB
+  // usage.
+  config.pll.usb.divider = SystemController::UsbDivider::kDivideBy1Point5;
+
+  // Initialize platform with new clock configuration settings.
+  sjsu::InitializePlatform();
+}
 }  // namespace stm32f10x
 }  // namespace sjsu
