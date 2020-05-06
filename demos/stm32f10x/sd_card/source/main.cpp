@@ -1,5 +1,6 @@
 #include "L0_Platform/startup.hpp"
 #include "L1_Peripheral/stm32f10x/gpio.hpp"
+#include "L1_Peripheral/stm32f10x/system_controller.hpp"
 #include "L2_HAL/memory/sd_experimental.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
@@ -83,46 +84,18 @@ class BitBangSpi : public sjsu::Spi
   mutable bool delay_ = false;
 };
 
-void SetMaximumClockSpeed()
-{
-  using sjsu::stm32f10x::SystemController;
-  auto & config =
-      sjsu::SystemController::GetPlatformController()
-          .GetClockConfiguration<SystemController::ClockConfiguration>();
-
-  // Set the speed of the high speed external oscillator.
-  // NOTE: Change this if its different for your board.
-  config.high_speed_external = 8_MHz;
-  // Set the source of the PLL's oscillator to 4MHz.
-  // See page 93 in RM0008 to see that the internal high speed oscillator,
-  // which is 8MHz, is divided by 2 before being fed to the PLL to get 4MHz.
-  config.pll.source = SystemController::PllSource::kHighSpeedExternal;
-  // Enable PLL to increase the frequency of the system
-  config.pll.enable = true;
-  // Multiply the 8MHz * 9 => 72 MHz
-  config.pll.multiply = SystemController::PllMultiply::kMultiplyBy9;
-  // Set the system clock to the PLL
-  config.system_clock = SystemController::SystemClockSelect::kPll;
-  // APB1's maximum frequency is 36 MHz, so we divide 72 MHz / 2 => 36 MHz.
-  config.ahb.apb1.divider = SystemController::APBDivider::kDivideBy2;
-  // Keep APB1's clock undivided as it can handle up to 72 MHz.
-  config.ahb.apb2.divider = SystemController::APBDivider::kDivideBy1;
-  // Maximum frequency for ADC is 12 MHz, thus we divide 72 MHz / 6 to get
-  // 12 MHz.
-  config.ahb.apb2.adc.divider = SystemController::AdcDivider::kDivideBy6;
-
-  // Initialize platform with new clock configuration settings.
-  sjsu::InitializePlatform();
-}
-
 int main()
 {
-  sjsu::LogInfo("BEGIN SD Card Driver Example...");
+  sjsu::LogInfo("begin SD Card Driver Example...");
 
-  SetMaximumClockSpeed();
+  // In order to utilize the full 12 MHz clock rate of the SD card, the speed
+  // of the platform needs to be increased to at least 2x of what the SPI
+  // peripheral is running at in order to achieve it. With 64 MHz set using the
+  // internal oscillator using this function, we have more than high enough of
+  // a clock rate.
+  sjsu::stm32f10x::SetMaximumClockSpeedUsingInternalOscillator();
 
-  sjsu::stm32f10x::Pin::ReleaseJTAGPins();
-
+  // TODO(#): Replace this with a proper SPI peripheral implementation.
   sjsu::stm32f10x::Gpio miso('A', 6);
   sjsu::stm32f10x::Gpio mosi('A', 7);
   sjsu::stm32f10x::Gpio sck('A', 5);
