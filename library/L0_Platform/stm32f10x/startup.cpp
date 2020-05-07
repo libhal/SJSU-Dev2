@@ -190,13 +190,6 @@ void InitializePlatform()
   sjsu::newlib::SetStdout(Stm32f10xStdOut);
   sjsu::newlib::SetStdin(Stm32f10xStdIn);
 
-  // The GPIO pins PB3, PB4, and PA15 are default initalized to be used for
-  // JTAG purposes. They are not needed for SWD and are commonly used for other
-  // functions, so releasing them from their usage as JTAG pins will enable
-  // more these pins for use in application software. They are so commonly used
-  // that, it makes sense to simply release them at platform initialization.
-  sjsu::stm32f10x::Pin::ReleaseJTAGPins();
-
   // Set the platform's interrupt controller.
   // This will be used by other libraries to enable and disable interrupts.
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
@@ -212,5 +205,12 @@ void InitializePlatform()
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);
+
+  // The GPIO pins PB3, PB4, and PA15 are default initalized to be used for
+  // JTAG purposes. They are not needed for SWD and are commonly used for other
+  // functions, so releasing them from their usage as JTAG pins will enable
+  // more these pins for use in application software. They are so commonly used
+  // that, it makes sense to simply release them at platform initialization.
+  sjsu::stm32f10x::Pin::ReleaseJTAGPins();
 }
 }  // namespace sjsu
