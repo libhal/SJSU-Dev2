@@ -142,6 +142,12 @@ class SystemController final : public sjsu::SystemController
   /// or unlocks the other clock system registers.
   struct KeyRegister  // NOLINT
   {
+    /// @returns The CSKEY bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&clock_system->KEY);
+    }
+
     /// The CSKEY bit mask used for locking or unlocking the clock system
     /// registers.
     static constexpr bit::Mask kCsKey = bit::CreateMaskFromRange(0, 15);
@@ -151,6 +157,12 @@ class SystemController final : public sjsu::SystemController
   /// which controls the configurations for the digitally controlled oscillator.
   struct Control0Register  // NOLINT
   {
+    /// @returns The CSCTL0 bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&clock_system->CTL0);
+    }
+
     /// DCO tuning value bit mask.
     static constexpr bit::Mask kTuningSelect = bit::CreateMaskFromRange(0, 9);
     /// DCO frequency seelect bit mask.
@@ -165,6 +177,12 @@ class SystemController final : public sjsu::SystemController
   /// clock divider for the primary clock signals.
   struct Control1Register  // NOLINT
   {
+    /// @returns The CSCTL1 bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&clock_system->CTL1);
+    }
+
     /// Master clock source select bit mask.
     static constexpr bit::Mask kMasterClockSourceSelect =
         bit::CreateMaskFromRange(0, 2);
@@ -194,6 +212,12 @@ class SystemController final : public sjsu::SystemController
   /// Namespace containing the bit masks for the Clock Enable Register (CLKEN).
   struct ClockEnableRegister  // NOLINT
   {
+    /// @returns The CSCLKEN bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&clock_system->CLKEN);
+    }
+
     /// Reference clock frequency select bit mask.
     static constexpr bit::Mask kReferenceFrequencySelect =
         bit::CreateMaskFromRange(15);
@@ -427,8 +451,9 @@ class SystemController final : public sjsu::SystemController
     };
     UnlockClockSystemRegisters();
     {
-      clock_system->CTL1 = bit::Insert(clock_system->CTL1, Value(divider),
-                                       kDividerSelectMasks[Value(clock)]);
+      Control1Register::Register()
+          .Insert(Value(divider), kDividerSelectMasks[Value(clock)])
+          .Save();
     }
     LockClockSystemRegisters();
     WaitForClockReadyStatus(clock);
@@ -457,8 +482,7 @@ class SystemController final : public sjsu::SystemController
   void UnlockClockSystemRegisters() const
   {
     constexpr uint16_t kUnlockKey = 0x695A;
-    clock_system->KEY =
-        bit::Insert(clock_system->KEY, kUnlockKey, KeyRegister::kCsKey);
+    KeyRegister::Register().Insert(kUnlockKey, KeyRegister::kCsKey).Save();
   }
 
   /// Locks the clock system registers by writing the necessary value to the
@@ -466,8 +490,7 @@ class SystemController final : public sjsu::SystemController
   void LockClockSystemRegisters() const
   {
     constexpr uint16_t kLockKey = 0x0000;
-    clock_system->KEY =
-        bit::Insert(clock_system->KEY, kLockKey, KeyRegister::kCsKey);
+    KeyRegister::Register().Insert(kLockKey, KeyRegister::kCsKey).Save();
   }
 
   /// Checks and waits for a clock signal to become stable after a frequency or
@@ -484,6 +507,7 @@ class SystemController final : public sjsu::SystemController
     {
       return;
     }
+
     SJ2_ASSERT_FATAL(
         Value(clock) <= Value(Clock::kBackup),
         "Only the following clocks have a ready status: kAuxiliary, kMaster, "
@@ -493,6 +517,7 @@ class SystemController final : public sjsu::SystemController
     const uint8_t kOffset            = Value(clock);
     const bit::Mask kReadyBitMask    = bit::CreateMaskFromRange(
         static_cast<uint8_t>(kClockReadyBit + kOffset));
+
     while (!bit::Read(clock_system->STAT, kReadyBitMask))
     {
       continue;
@@ -521,6 +546,7 @@ class SystemController final : public sjsu::SystemController
       Control1Register::kBackupClockSourceSelect,
     };
     uint8_t select_value = Value(source);
+
     switch (clock)
     {
       case Clock::kMaster: [[fallthrough]];
@@ -555,8 +581,10 @@ class SystemController final : public sjsu::SystemController
             "kMaster, kSubsystemMaster, kLowSpeedSubsystemMaster, or kBackup.");
         return;
     }
-    clock_system->CTL1 = bit::Insert(clock_system->CTL1, select_value,
-                                     kPrimaryClockSelectMasks[Value(clock)]);
+
+    Control1Register::Register()
+        .Insert(select_value, kPrimaryClockSelectMasks[Value(clock)])
+        .Save();
   }
 
   /// Configures the DCO clock to generate a desired target frequency.
@@ -654,14 +682,11 @@ class SystemController final : public sjsu::SystemController
       // =======================================================================
       UnlockClockSystemRegisters();
       {
-        uint32_t control0register = clock_system->CTL0;
-        control0register          = bit::Insert(control0register, kTuningValue,
-                                       Control0Register::kTuningSelect);
-        control0register = bit::Insert(control0register, dco_frequency_select,
-                                       Control0Register::kFrequencySelect);
-        control0register =
-            bit::Set(control0register, Control0Register::kEnable);
-        clock_system->CTL0 = control0register;
+        Control0Register::Register()
+            .Insert(kTuningValue, Control0Register::kTuningSelect)
+            .Insert(dco_frequency_select, Control0Register::kFrequencySelect)
+            .Set(Control0Register::kEnable)
+            .Save();
       }
       LockClockSystemRegisters();
     }
@@ -686,9 +711,10 @@ class SystemController final : public sjsu::SystemController
                      "Invalid frequency_select code for configuring the "
                      "reference clock frequency.");
 
-    clock_system->CLKEN =
-        bit::Insert(clock_system->CLKEN, kFrequencySelect,
-                    ClockEnableRegister::kReferenceFrequencySelect);
+    ClockEnableRegister::Register()
+        .Insert(kFrequencySelect,
+                ClockEnableRegister::kReferenceFrequencySelect)
+        .Save();
 
     return InternalOscillator::kReference[kFrequencySelect];
   }
