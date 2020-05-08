@@ -24,12 +24,13 @@ TEST_CASE("Testing msp432p401r SystemController",
   memset(&local_tlv, 0, sizeof(local_tlv));
   SystemController::device_descriptors = &local_tlv;
 
-  SystemController::ClockConfiguration_t default_clock_configuration;
-  SystemController system_controller(default_clock_configuration);
-  sjsu::SystemController::SetPlatformController(&system_controller);
-  SystemController::ClockConfiguration_t & clock_configuration =
-      sjsu::SystemController::GetPlatformController()
-          .GetClockConfiguration<SystemController::ClockConfiguration_t>();
+  SystemController::ClockConfiguration_t clock_configuration;
+  SystemController system_controller(clock_configuration);
+
+  SECTION("GetClockConfiguration()")
+  {
+    CHECK(&clock_configuration == system_controller.GetClockConfiguration());
+  }
 
   SECTION("Initialize")
   {
@@ -301,6 +302,13 @@ TEST_CASE("Testing msp432p401r SystemController",
       // Setup
       expected_clock_rate = SystemController::InternalOscillator::kModule;
       clock_peripheral    = SystemController::Modules::kModuleClock;
+    }
+
+    SECTION("System clock")
+    {
+      // Setup
+      expected_clock_rate = SystemController::InternalOscillator::kSystem;
+      clock_peripheral    = SystemController::Modules::kSystemClock;
     }
 
     INFO("reference clock frequency select: 0b"
