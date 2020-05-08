@@ -1,12 +1,9 @@
 #include "L0_Platform/startup.hpp"
-
 #include "L1_Peripheral/stm32f10x/gpio.hpp"
+#include "L1_Peripheral/stm32f10x/system_controller.hpp"
 #include "L1_Peripheral/spi.hpp"
-
 #include "L2_HAL/displays/oled/ssd1306.hpp"
-
 #include "L3_Application/graphics.hpp"
-
 #include "utility/time.hpp"
 #include "utility/log.hpp"
 
@@ -58,38 +55,6 @@ class BitBangSpi : public sjsu::Spi
   sjsu::Gpio & mosi_;
   mutable DataSize size_;
 };
-
-void SetMaximumClockSpeed()
-{
-  using sjsu::stm32f10x::SystemController;
-  auto & config =
-      sjsu::SystemController::GetPlatformController()
-          .GetClockConfiguration<SystemController::ClockConfiguration>();
-
-  // Set the speed of the high speed external oscillator.
-  // NOTE: Change this if its different for your board.
-  config.high_speed_external = 8_MHz;
-  // Set the source of the PLL's oscillator to 4MHz.
-  // See page 93 in RM0008 to see that the internal high speed oscillator,
-  // which is 8MHz, is divided by 2 before being fed to the PLL to get 4MHz.
-  config.pll.source = SystemController::PllSource::kHighSpeedExternal;
-  // Enable PLL to increase the frequency of the system
-  config.pll.enable = true;
-  // Multiply the 8MHz * 9 => 72 MHz
-  config.pll.multiply = SystemController::PllMultiply::kMultiplyBy9;
-  // Set the system clock to the PLL
-  config.system_clock = SystemController::SystemClockSelect::kPll;
-  // APB1's maximum frequency is 36 MHz, so we divide 72 MHz / 2 => 36 MHz.
-  config.ahb.apb1.divider = SystemController::APBDivider::kDivideBy2;
-  // Keep APB1's clock undivided as it can handle up to 72 MHz.
-  config.ahb.apb2.divider = SystemController::APBDivider::kDivideBy1;
-  // Maximum frequency for ADC is 12 MHz, thus we divide 72 MHz / 6 to get
-  // 12 MHz.
-  config.ahb.apb2.adc.divider = SystemController::AdcDivider::kDivideBy6;
-
-  // Initialize platform with new clock configuration settings.
-  sjsu::InitializePlatform();
-}
 }  // namespace
 
 int main()
@@ -97,12 +62,10 @@ int main()
   sjsu::LogWarning(
       "Starting OLED Application (targeted for Super Bluepill board)...");
 
-  // Pin PB3 is used by JTAG and the OLED display's data pin.
-  // We need to release the PB3 pin from being used as a JTAG pin so we can use
-  // it for transmitting data to the OLED display.
-  sjsu::stm32f10x::Pin::ReleaseJTAGPins();
-
-  SetMaximumClockSpeed();
+  /// OLED display for this chip is not connected to a SPI bus, thus clocking is
+  /// done manually by the MCU, which will require clocking the system up to its
+  /// maximum to get a decent framerate.
+  sjsu::stm32f10x::SetMaximumClockSpeedUsingInternalOscillator();
 
   sjsu::stm32f10x::Gpio sck('B', 1);
   sjsu::stm32f10x::Gpio mosi('B', 3);

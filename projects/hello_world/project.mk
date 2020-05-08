@@ -1,1 +1,1 @@
-USER_TESTS += $(LIBRARY_DIR)/utility/test/bit_test.cpp
+USER_TESTS += $(LIBRARY_DIR)/L0_Platform/test/ram_test.cpp

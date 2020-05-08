@@ -39,32 +39,26 @@ inline uint8_t * heap_position = &heap;
 
 namespace sjsu
 {
-// Functions to carry out the initialization of RW and BSS data sections.
+/// Copies the defined variabes within the .data section in ROM into RAM
 inline void InitializeDataSection()
 {
-  for (int i = 0; &data_section_table[i] < &data_section_table_end; i++)
+  uint32_t * rom_location = data_section_table[0].rom_location;
+  uint32_t * ram_location = data_section_table[0].ram_location;
+  uint32_t length         = data_section_table[0].length / sizeof(uint32_t);
+  for (size_t j = 0; j < length; j++)
   {
-    uint32_t * rom_location = data_section_table[i].rom_location;
-    uint32_t * ram_location = data_section_table[i].ram_location;
-    uint32_t length         = data_section_table[i].length;
-    for (size_t j = 0; j < length; j++)
-    {
-      ram_location[j] = rom_location[j];
-    }
+    ram_location[j] = rom_location[j];
   }
 }
-// Functions to initialization BSS data sections. This is important because
-// the std c libs assume that BSS is set to zero.
+/// Initializes the .bss section of RAM. The STD C libraries assume that BSS is
+/// set to zero and will fault otherwise.
 inline void InitializeBssSection()
 {
-  for (int i = 0; &bss_section_table[i] < &bss_section_table_end; i++)
+  uint32_t * ram_location = bss_section_table[0].ram_location;
+  uint32_t length         = bss_section_table[0].length / sizeof(uint32_t);
+  for (size_t j = 0; j < length; j++)
   {
-    uint32_t * ram_location = bss_section_table[i].ram_location;
-    uint32_t length         = bss_section_table[i].length;
-    for (size_t j = 0; j < length; j++)
-    {
-      ram_location[j] = 0;
-    }
+    ram_location[j] = 0;
   }
 }
 }  // namespace sjsu

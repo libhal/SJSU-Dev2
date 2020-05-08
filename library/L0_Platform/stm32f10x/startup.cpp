@@ -11,6 +11,7 @@
 #include "L1_Peripheral/cortex/dwt_counter.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/interrupt.hpp"
+#include "L1_Peripheral/stm32f10x/pin.hpp"
 #include "L1_Peripheral/stm32f10x/system_controller.hpp"
 #include "L1_Peripheral/inactive.hpp"
 #include "utility/log.hpp"
@@ -204,5 +205,12 @@ void InitializePlatform()
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);
+
+  // The GPIO pins PB3, PB4, and PA15 are default initalized to be used for
+  // JTAG purposes. They are not needed for SWD and are commonly used for other
+  // functions, so releasing them from their usage as JTAG pins will enable
+  // more these pins for use in application software. They are so commonly used
+  // that, it makes sense to simply release them at platform initialization.
+  sjsu::stm32f10x::Pin::ReleaseJTAGPins();
 }
 }  // namespace sjsu
