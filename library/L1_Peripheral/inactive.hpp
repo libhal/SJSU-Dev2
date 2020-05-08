@@ -85,6 +85,10 @@ inline sjsu::Adc & GetInactive<sjsu::Adc>()
     {
       return 12;
     }
+    units::voltage::microvolt_t ReferenceVoltage() const override
+    {
+      return 0_V;
+    }
   };
 
   static InactiveAdc inactive;

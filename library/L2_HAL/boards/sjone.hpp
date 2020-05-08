@@ -67,12 +67,9 @@ struct sjone  // NOLINT
   /// @returns fully constructed onboard Temt6000x01 device driver
   [[gnu::always_inline]] inline static sjsu::Temt6000x01 & LightSensor()
   {
-    // The LPC176x/5x ADC has a reference voltage of 3.3V.
-    constexpr units::voltage::volt_t kAdcReferenceVoltage = 3.3_V;
     // A 10kOhm pull-down resistor is used on the SJOne board.
     constexpr units::impedance::ohm_t kPullDownResistance = 10_kOhm;
-    static sjsu::Temt6000x01 temt6000(
-        adc2, kAdcReferenceVoltage, kPullDownResistance);
+    static sjsu::Temt6000x01 temt6000(adc2, kPullDownResistance);
     return temt6000;
   }
 };
