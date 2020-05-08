@@ -1,4 +1,4 @@
-# FreeRTOS Task Interface Design Document
+# FreeRTOS Task Interface
 
 - [FreeRTOS Task Interface Design Document](#freertos-task-interface-design-document)
 - [Location](#location)
@@ -9,11 +9,28 @@
   - [API](#api)
   - [Static Allocation of Tasks](#static-allocation-of-tasks)
   - [Initialization](#initialization)
+    - [bool DeclaredOnStack()](#bool-declaredonstack)
+    - [explicit constexpr Task(const char *, Priority, TaskSchedulerInterface &)](#explicit-constexpr-taskconst-char--priority-taskschedulerinterface)
   - [Inheriting the Task Interface class](#inheriting-the-task-interface-class)
+    - [void Setup() override](#void-setup-override)
+    - [void PreRun() override](#void-prerun-override)
+    - [void Run() override](#void-run-override)
   - [Suspending and Resuming a Task](#suspending-and-resuming-a-task)
+    - [void Suspend() const override](#void-suspend-const-override)
+    - [void Resume() const override](#void-resume-const-override)
   - [Removing a Task](#removing-a-task)
+    - [void Delete() override](#void-delete-override)
   - [Configuring Execution Frequency](#configuring-execution-frequency)
+    - [void SetDelayTime(uint32_t time) override](#void-setdelaytimeuint32t-time-override)
+    - [const uint32_t GetDelayTime() const override](#const-uint32t-getdelaytime-const-override)
   - [Additional Utility Methods](#additional-utility-methods)
+    - [const char * GetName() const override](#const-char--getname-const-override)
+    - [Priority GetPriority() const override](#priority-getpriority-const-override)
+    - [size_t GetStackSize() const override](#sizet-getstacksize-const-override)
+    - [void SetHandle(TaskHandle_t * handle) override](#void-sethandletaskhandlet--handle-override)
+    - [TaskHandle_t * GetHandle() override](#taskhandlet--gethandle-override)
+    - [StaticTask_t * GetTaskBuffer() override](#statictaskt--gettaskbuffer-override)
+    - [StackType_t * GetStack() override](#stacktypet--getstack-override)
 - [Caveats](#caveats)
 - [Future Advancements](#future-advancements)
 
@@ -37,10 +54,6 @@ Task objects must inherit the `Task` interface.
 # Detailed Design
 ## API
 ```C++
-namespace sjsu
-{
-namespace rtos
-{
 class TaskInterface
 {
  public:
@@ -97,8 +110,6 @@ class Task : public TaskInterface
   StaticTask_t task_buffer_;
   StackType_t stack_[kStackSize];
 };
-}  // namespace rtos
-}  // namespace sjsu
 ```
 
 ## Static Allocation of Tasks
@@ -126,23 +137,19 @@ extern "C" void vApplicationGetIdleTaskMemory(
 }
 ```
 
-More information regarding static allocation of FreeRTOS objects can be found
-[here](https://www.freertos.org/a00110.html#configSUPPORT_STATIC_ALLOCATION).
+> More information regarding static allocation of FreeRTOS objects can be found
+> [here](https://www.freertos.org/a00110.html#configSUPPORT_STATIC_ALLOCATION).
 
 ## Initialization
-```c++
-bool DeclaredOnStack()
-```
+
+### bool DeclaredOnStack()
 The `DeclaredOnStack()` method checks if the address position of the `Task`
 object is within the bounds of the heap or the .bss and data segments. A fatal
 error is asserted if the tasks exists on the stack.
 
-```c++
-explicit constexpr Task(const char * name,
-                        Priority priority,
-                        TaskSchedulerInterface & task_scheduler);
-```
+### explicit constexpr Task(const char *, Priority, TaskSchedulerInterface &)
 The following is performed when the task is constructed:
+
 1. Store the specified name, priority, and designated `TaskScheduler`.
 2. Set the initial delay time to 0.
 3. Invoke `DeclaredOnStack()` to check the task exists in the heap or is
@@ -153,6 +160,7 @@ The following is performed when the task is constructed:
 ## Inheriting the Task Interface class
 When a task begins, the methods Setup(), PreRun(), and Run() are invoked in
 the following order:
+
 1. Setup()
 2. PreRun()
 3. Run()
@@ -160,45 +168,35 @@ the following order:
 These methods should be overridden in the inheriting class to provide any
 initialization and/or execution code that are performed by the task.
 
-```c++
-void Setup() override
-```
+### void Setup() override
 Setup is performed when `Start()` of the TaskScheduler is invoked. If the
 `Setup()` of a scheduler task fails to complete, the scheduler will not start
 and a fatal error will be asserted. The function should be overridden with any
 initialization code that the task requires.
 
-```c++
-void PreRun() override
-```
+### void PreRun() override
 PreRun() is invoked after starting the task scheduler once before `Run()` is
 ever called. `PreRun()` is performed after `Setup()` of all scheduled Tasks are
 complete. Therefore, this method should be overridden if the task requires a
 different `Task` to be setup first.
 
-```c++
-void Run() override
-```
+### void Run() override
 Continuously invoked until the task has been temporarily suspended by
 `Suspend()` or terminated.
 
 **The `Run()` method MUST be overridden with the desired task execution code.**
 
 ## Suspending and Resuming a Task
-```c++
-void Suspend() const override
-```
+
+### void Suspend() const override
 Suspends the task until resumed by `Resume()`.
 
-```c++
-void Resume() const override
-```
+### void Resume() const override
 Resumes the task if the task was suspended by `Suspend()`.
 
 ## Removing a Task
-```c++
-void Delete() override
-```
+
+### void Delete() override
 Suspends the task if it is running and invokes the `TaskScheduler`’s
 `RemoveTask()` method to remove this task from the scheduler.
 
@@ -206,54 +204,36 @@ Suspends the task if it is running and invokes the `TaskScheduler`’s
 A task can be configured to be executed at a constant desired frequency through
 the `SetDelayTime()` function.
 
-```c++
-void SetDelayTime(uint32_t time) override
-```
+### void SetDelayTime(uint32_t time) override
 Sets the delay time in FreeRTOS ticks to ensure `Run()` is called at a desired
 frequency for periodic tasks. For example, if time = 1000 and the rtos tick
 period is 1ms, then `Run()` will be invoked every 1 second.
 
-```c++
-const uint32_t GetDelayTime() const override
-```
+### const uint32_t GetDelayTime() const override
 Returns the delay time that was set by SetDelayTime() in milliseconds.
 
 ## Additional Utility Methods
-```c++
-const char * GetName() const override
-```
+### const char * GetName() const override
 Returns the name used to identify the task.
 
-```c++
-Priority GetPriority() const override
-```
+### Priority GetPriority() const override
 Returns the priority of the task.
 
-```c++
-size_t GetStackSize() const override
-```
+### size_t GetStackSize() const override
 Returns the pre-allocated stack size for the task in bytes.
 
-```c++
-void SetHandle(TaskHandle_t * handle) override
-```
+### void SetHandle(TaskHandle_t * handle) override
 This method is used by the `TaskScheduler` to set the task FreeRTOS task handle
 when the task is created. This handle is used for suspending, resuming, or
 deleting the task.
 
-```c++
-TaskHandle_t * GetHandle() override
-```
+### TaskHandle_t * GetHandle() override
 Returns a pointer reference of the task's handle.
 
-```c++
-StaticTask_t * GetTaskBuffer() override
-```
+### StaticTask_t * GetTaskBuffer() override
 Returns a pointer reference to the task's Task Control Block (TCB);
 
-```c++
-StackType_t * GetStack() override
-```
+### StackType_t * GetStack() override
 Returns a pointer reference of the task's pre-allocated stack.
 
 # Caveats

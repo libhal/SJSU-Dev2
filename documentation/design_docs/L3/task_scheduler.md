@@ -1,6 +1,6 @@
-# FreeRTOS Task Scheduler Design Document
+# FreeRTOS Task Scheduler
 
-- [FreeRTOS Task Scheduler Design Document](#freertos-task-scheduler-design-document)
+- [FreeRTOS Task Scheduler](#freertos-task-scheduler)
 - [Location](#location)
 - [Type](#type)
 - [Background](#background)
@@ -9,14 +9,27 @@
   - [API](#api)
   - [Configuring the Scheduler Size](#configuring-the-scheduler-size)
   - [Adding a Task to the Scheduler](#adding-a-task-to-the-scheduler)
+    - [void AddTask(TaskInterface * task) override](#void-addtasktaskinterface--task-override)
   - [Starting the Scheduler](#starting-the-scheduler)
+    - [void Start() override](#void-start-override)
+    - [void InitializeAllTasks() override](#void-initializealltasks-override)
   - [Task Execution](#task-execution)
+    - [static void RunTask(void * task_pointer)](#static-void-runtaskvoid--taskpointer)
   - [Retrieving a Task](#retrieving-a-task)
+    - [TaskInterface * GetTask(const char * task_name) override](#taskinterface--gettaskconst-char--taskname-override)
+    - [uint8_t GetTaskIndex(const char * task_name) const override](#uint8t-gettaskindexconst-char--taskname-const-override)
+    - [TaskInterface * const * GetAllTasks() const override](#taskinterface--const--getalltasks-const-override)
   - [Removing a Task from the Scheduler](#removing-a-task-from-the-scheduler)
+    - [void RemoveTask(const char * task_name) override](#void-removetaskconst-char--taskname-override)
 - [Caveats](#caveats)
 - [Future Advancements](#future-advancements)
 - [Testing Plan](#testing-plan)
   - [Unit Testing Scheme](#unit-testing-scheme)
+    - [AddTask()](#addtask)
+    - [GetTask()](#gettask)
+    - [GetTaskIndex()](#gettaskindex)
+    - [RemoveTask()](#removetask)
+    - [Start()](#start)
   - [Demonstration Project](#demonstration-project)
 
 # Location
@@ -27,7 +40,7 @@ Implementation
 
 # Background
 The `TaskScheduler` along with the
-[`Task interface`](/documentation/design_docs/L3/task_interface.md) provide an
+[`Task Interface`](/documentation/design_docs/L3/task_interface.md) provide an
 abstraction layer for the management of FreeRTOS tasks.
 
 # Overview
@@ -39,10 +52,6 @@ to the execution any task.
 # Detailed Design
 ## API
 ```c++
-namespace sjsu
-{
-namespace rtos
-{
 class TaskInterface;
 
 class TaskSchedulerInterface
@@ -82,8 +91,6 @@ class TaskScheduler : public TaskSchedulerInterface
   EventGroupHandle_t pre_run_event_group_handle_;
   EventBits_t pre_run_sync_bits_;
 };
-}  // namespace rtos
-}  // namespace sjsu
 ```
 
 ## Configuring the Scheduler Size
@@ -102,29 +109,25 @@ SJ2_DECLARE_CONSTANT(TASK_SCHEDULER_SIZE, uint32_t, kTaskSchedulerSize);
 All tasks inheriting the `Task` interface is automatically added to the
 scheduler when constructed.
 
-```c++
-void AddTask(TaskInterface * task) override
-```
+### void AddTask(TaskInterface * task) override
 Adds a task to the scheduler. If the scheduler is full, an error is asserted to
 recommend an increase in the default task scheduler size.
 
 ## Starting the Scheduler
 The `TaskScheduler` can be started by invoking the `Start()` method.
 
-```c++
-void Start() override
-```
+### void Start() override
 Invoked to start the scheduler. The following sequence is performed:
+
 1. Check the task_list_ to ensure that there is at least one task added to the
    scheduler. If no tasks are added, output a warning message to notify the user
    that there a currently no scheduled tasks.
 2. Invoke `InitializeAllTasks()` to initialize all scheduled tasks.
 3. Invoke `vTaskStartScheduler()` to start executing the scheduled tasks.
 
-```c++
-void InitializeAllTasks() override
-```
+### void InitializeAllTasks() override
 The following sequence is performed when initializing scheduled tasks:
+
 1. Statically create a FreeRTOS task through the `xTaskCreateStatic()` method
    for each task scheduled in the `task_list_`.
 2. Check the returned handle from `xTaskCreateStatic()`. If the handle is a
@@ -154,46 +157,40 @@ bit and waits for all other task sync bits to be set.
 More information regarding FreeRTOS Event Groups can be found
 [here](https://www.freertos.org/FreeRTOS-Event-Groups.html).
 
-```c++
-static void RunTask(void * task_pointer)
-```
+### static void RunTask(void * task_pointer)
 The following sequence is performed, where Step 1 is only performed once:
+
 1. Get the PreRun Event Group handle and determine the running task’s sync bit
    by retrieving its task index from the scheduler's task list.
 2. Invoke the task’s `PreRun()` and assert a fatal error if the task’s
    `PreRun()` fails to complete. If PreRun() completes successfully, set the
    task’s sync bit in the Event Group and wait for all other task’s sync bits
    to be set.
-4. When all sync bits are set, `Run()` can now begin. If a desired delay time is
+3. When all sync bits are set, `Run()` can now begin. If a desired delay time is
    set, invoke `vTaskDelayUntil()`.
 
 ## Retrieving a Task
-```c++
-TaskInterface * GetTask(const char * task_name) override
-```
+
+### TaskInterface * GetTask(const char * task_name) override
 Returns a pointer reference of the task by its task name. If the task does not
 exist in the scheduler, a `nullptr` is returned.
 
-```c++
-uint8_t GetTaskIndex(const char * task_name) const override
-```
+### uint8_t GetTaskIndex(const char * task_name) const override
 Returns the index of a task in the `task_list_` by the provided `task_name`.
 This method is used by the scheduler the manage a task's PreRun Event Group sync
 bit. If the task does not exist in the scheduler, the maximum task count + 1 is
 returned. For example, if the maximum task count is 16, then 17 is returned if
 the task does not exist.
 
-```c++
-TaskInterface * const * GetAllTasks() const override
-```
+### TaskInterface * const * GetAllTasks() const override
 Returns a pointer reference to an immutable array of all currently scheduled
 tasks.
 
 ## Removing a Task from the Scheduler
-```c++
-void RemoveTask(const char * task_name) override
-```
+
+### void RemoveTask(const char * task_name) override
 The following is performed to remove a specified task by its `task_name`:
+
 1. Retrieves the task using `GetTask()` and removes the task by invoking
   `vTaskDelete()`.
 2. Sets the reference in `task_list_` to `nullptr`.
@@ -210,47 +207,58 @@ N/A
 A total of 17 tasks shall be mocked and stubbed to be used as test inputs for
 the scheduler. Additionally the following methods from the FreeRTOS library
 shall be faked:
-- `vTaskCreateStatic()`
-- `xEventGroupCreateStatic()`
-- `vTaskStartScheduler()`
-- `vTaskDelete()`
 
-The following functions of the TaskScheduler are tested:
-- `AddTask()`
-  1. Each mock task shall be added to the scheduler.
-     - The task count should be incremented for each added task.
-     - The task count should not exceed `16`.
-- `GetTask()`
-  1. Tasks 1-17 shall be added to the scheduler, with each addition:
-     - Should return a scheduled task corresponding to the specified task name.
-  2. Task named "Task 17" shall be retrieved.
-     - Should return `nullptr`.
-- `GetTaskIndex()`
-  1. Tasks 1-17 shall be added to the scheduler, with each addition:
-     - Should return the index of the task with the matching task name of the
-       task that is being added.
-     - The task count should be incremented by 1.
-  2. The index of task named "Does not exist" shall be retrieved.
-     - Should return `17`.
-- `RemoveTask()`
-  1. The scheduler shall be empty, and a task named "Task A" shall be removed:
-     - `vTaskDelete()` should have a call count of `0`.
-  2. Mock tasks named "Task 1", "Task 2", "Task 3", and "Task 4" shall be added
-     to simulate a scheduler that is not empty:
-     - `GetTaskCount()` should return `4`.
-     - The mock task at index = 2, "Task 3", shall be removed:
-       - `vTaskDelete()` should have a call count of `1`.
-       - Total task count should be `3`.
-       - Checking index 2 of the task list should be a `nullptr`.
-- `Start()`
-  1. Tasks 1-16 shall be added to the scheduler:
-     - Each mock task's `Setup()` should be invoked once.
-     - `vTaskCreateStatic()` should have a call count of `16`.
-     - `xEventGroupCreateStatic()` should have a call count of `1`.
-     - `GetPreRunEventGroupHandle()` should return the dummy event group
-       handler.
-     - `GetPreRunSyncBits()` should return `0xFFFF`.
-     - `vTaskStartScheduler()` should have a call count of `1`.
+- vTaskCreateStatic()
+- xEventGroupCreateStatic()
+- vTaskStartScheduler()
+- vTaskDelete()
+
+The following functions of the `TaskScheduler` are tested:
+
+### AddTask()
+
+1. Each mock task shall be added to the scheduler:
+   - The task count should be incremented for each added task.
+   - The task count should not exceed `16`.
+
+### GetTask()
+
+1. Tasks 1-17 shall be added to the scheduler, with each addition:
+   - The function should return a scheduled task corresponding to the specified
+     task name.
+2. Task named "Task 17" shall be retrieved.
+   - The function should return `nullptr`.
+
+### GetTaskIndex()
+
+1. Tasks 1-17 shall be added to the scheduler, with each addition:
+   - The function should return the index of the task with the matching task
+     name of the task that is being added.
+   - The task count should be incremented by 1.
+2. The index of task named "Does not exist" shall be retrieved.
+     - The function should return `17`.
+
+### RemoveTask()
+
+1. The scheduler shall be empty, and a task named "Task A" shall be removed:
+   - `vTaskDelete()` should have a call count of `0`.
+2. Mock tasks named "Task 1", "Task 2", "Task 3", and "Task 4" shall be added
+   to simulate a scheduler that is not empty:
+   - `GetTaskCount()` should return `4`.
+   - The mock task at index = 2, "Task 3", shall be removed:
+     - `vTaskDelete()` should have a call count of `1`.
+     - Total task count should be `3`.
+     - Checking index `2` of the task list should be a `nullptr`.
+
+### Start()
+Tasks 1-16 shall be added to the scheduler where:
+
+1. Each mock task's `Setup()` should be invoked once.
+2. `vTaskCreateStatic()` should have a call count of `16`.
+3. `xEventGroupCreateStatic()` should have a call count of `1`.
+4. `GetPreRunEventGroupHandle()` should return the dummy event group handler.
+5. `GetPreRunSyncBits()` should return `0xFFFF`.
+6. `vTaskStartScheduler()` should have a call count of `1`.
 
 ## Demonstration Project
 A demonstration project can be found
