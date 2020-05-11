@@ -1,21 +1,34 @@
-# MSP432P401R System Controller
+# MSP432P4xx System Controller
 
-- [MSP432P401R System Controller](#msp432p401r-system-controller)
+- [MSP432P4xx System Controller](#msp432p4xx-system-controller)
 - [Location](#location)
 - [Type](#type)
 - [Background](#background)
 - [Overview](#overview)
 - [Detailed Design](#detailed-design)
   - [API](#api)
-  - [Clock Configuration on Reset](#clock-configuration-on-reset)
-  - [Configuring Clock Signals](#configuring-clock-signals)
-    - [CPU Clock](#cpu-clock)
-    - [Peripheral Clock](#peripheral-clock)
+  - [Clock System on Reset](#clock-system-on-reset)
+  - [Writing Changes to the Clock System registers](#writing-changes-to-the-clock-system-registers)
+    - [void UnlockClockSystemRegister() const](#void-unlockclocksystemregister-const)
+    - [void LockClockSystemRegister() const](#void-lockclocksystemregister-const)
+  - [Initialization](#initialization)
+    - [Returns\<void> Initialize() override](#returnsvoid-initialize-override)
+    - [Returns\<units::frequency::hertz_t> ConfigureDcoClock() const](#returnsunitsfrequencyhertzt-configuredcoclock-const)
+    - [Returns\<units::frequency::hertz_t> ConfigureReferenceClock() const](#returnsunitsfrequencyhertzt-configurereferenceclock-const)
+    - [Returns\<void> SetClockSource(Clock clock, Oscillator oscillator) const](#returnsvoid-setclocksourceclock-clock-oscillator-oscillator-const)
+    - [Returns\<void> SetClockDivider(Clock clock, ClockDivider divider) const](#returnsvoid-setclockdividerclock-clock-clockdivider-divider-const)
+    - [void WaitForClockReadyStatus(Clock clock) const](#void-waitforclockreadystatusclock-clock-const)
+  - [Getting the Clock Rate of a Clock Signal](#getting-the-clock-rate-of-a-clock-signal)
+    - [Returns\<units::frequency::hertz_t> GetClockRate(PeripheralID peripheral) const override](#returnsunitsfrequencyhertzt-getclockrateperipheralid-peripheral-const-override)
   - [Unused Functions](#unused-functions)
 - [Caveats](#caveats)
 - [Future Advancements](#future-advancements)
 - [Testing Plan](#testing-plan)
   - [Unit Testing Scheme](#unit-testing-scheme)
+    - [Initialize()](#initialize)
+    - [GetClockRate(PeripheralID peripheral)](#getclockrateperipheralid-peripheral)
+    - [SetClockDivider(Clock clock, ClockDivider divider)](#setclockdividerclock-clock-clockdivider-divider)
+    - [IsPeripheralPoweredUp()](#isperipheralpoweredup)
   - [Demonstration Project](#demonstration-project)
 
 # Location
@@ -35,7 +48,7 @@ The following internal oscillators are available in the clock system module:
 6. Low-power oscillator (MODOSC).
 7. System oscillator (SYSOSC).
 
-The MSP432P401R has five primary clock signals which can be driven by the
+The MSP432P4xx MCUs have five primary clock signals which can be driven by the
 oscillators mentioned above to drive the individual peripheral modules:
 
 1. Auxiliary clock (ACLK).
@@ -44,128 +57,136 @@ oscillators mentioned above to drive the individual peripheral modules:
 4. Low-speed subsystem clock (SMCLK).
 5. Low-speed backup domain clock (BCLK).
 
-The primary clocks signals can be configured to drive the CPU clock or a desired
-peripheral module. Additionally, the following clock dividers can be selected
-for each of the primary clock signals except for BCLK: 1, 2, 4, 8, 16, 32, 64,
-and 128.
-
-More information regarding the clock system module can be found in the
+> More information regarding the clock system module can be found in the
 [Ti MSP432P4xx Technical Reference Manual](https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=378).
 
 # Overview
-The system controller allows the configuration of the clock system module. The
-CPU clock shall be driven by the digitally controlled oscillator (DCO). This
-oscillator can be configured to produce a target nominal frequency between 1 MHz
-and 48 MHz.
+The system controller allows the configuration of the clock system module. By
+default the Master clock and subsequently the CPU clock, shall be driven by the
+digitally controlled oscillator (DCOCLK). The DCOCLK can be configured to
+produce a target nominal frequency between 1 MHz and 48 MHz. For the SJSU-Dev2
+platform, a default CPU clock rate of 48 MHz is used.
 
 # Detailed Design
 ## API
 ```c++
-class SystemController final : public sjsu::SystemController
+class SystemController : public sjsu::SystemController
 {
  public:
-  inline static CS_Type * system_controller = msp432p401r::CS;
+  enum class Oscillator : uint8_t;
+  enum class Clock : uint8_t;
+  enum class ClockDivider : uint8_t;
 
-  void SetSystemClockFrequency(
-      units::frequency::megahertz_t frequency) const override;
-  void SetPeripheralClockDivider(const PeripheralID & peripheral_select,
-                                 uint8_t peripheral_divider) const override;
-  uint32_t GetPeripheralClockDivider(
-      const PeripheralID & peripheral_select) const override;
-  units::frequency::hertz_t GetSystemFrequency() const override;
+  struct ClockConfiguration_t;
 
-  bool IsPeripheralPoweredUp(const PeripheralID &) const override;
-  void PowerUpPeripheral(const PeripheralID &) const override;
-  void PowerDownPeripheral(const PeripheralID &) const override;
+  explicit constexpr SystemController(
+      ClockConfiguration_t & clock_configuration);
+
+  Returns<void> Initialize() override;
+  void * GetClockConfiguration() override;
+  Returns<units::frequency::hertz_t> GetClockRate(
+     PeripheralID peripheral) const override;
+  Returns<void> SetClockDivider(Clock clock, ClockDivider divider) const;
+
+  bool IsPeripheralPoweredUp(PeripheralID) const override;
+  void PowerUpPeripheral(PeripheralID) const override;
+  void PowerDownPeripheral(PeripheralID) const override;
 
  private:
   void UnlockClockSystemRegisters() const;
   void LockClockSystemRegisters() const;
   void WaitForClockReadyStatus(Clock clock) const;
-  void SetClockSource(Clock clock, Oscillator source) const;
-
-  inline static units::frequency::hertz_t speed_in_hertz = 3_MHz;
+  Returns<void> SetClockSource(Clock clock, Oscillator source) const;
+  Returns<units::frequency::hertz_t> ConfigureDcoClock() const;
+  Returns<units::frequency::hertz_t> ConfigureReferenceClock() const;
 };
 ```
 
-## Clock Configuration on Reset
-See [6.2 Clock System Operation](https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=381)
-in the Reference Manual.
+## Clock System on Reset
+> See [6.2 Clock System Operation](https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=381).
 
-## Configuring Clock Signals
+## Writing Changes to the Clock System registers
 The clock system registers are locked and a 16-bit key, `0x695A`, must be
 written to the Clock System Key register (CSKEY) to unlock the registers before
 any configurations can be made. The registers can be locked again by writing any
 other value after the desired configurations are set.
 
-```c++
-void UnlockClockSystemRegister() const
-```
+### void UnlockClockSystemRegister() const
 Unlocks the clock system registers by writing `0x0695A`.
 
-```c++
-void LockClockSystemRegister() const
-```
+### void LockClockSystemRegister() const
 Locks the clock system registers by writing `0x0000`.
 
-```c++
-void SetClockSource(Clock clock, Oscillator oscillator) const
-```
-Sets the desired oscillator to drive a primary clock signal. See
-[Reference Manual Table 6-5](https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=397)
-for available sources for each primary clock signal.
+## Initialization
 
-```c++
-void WaitForClockReadyStatus(Clock clock) const
-```
-Checks and waits for a clock signal to become stable after a frequency or
-divider configuration.
+### Returns\<void> Initialize() override
+Performs the following sequence to configure various clock modules:
 
-### CPU Clock
-On reset, the digitally controlled clock (DCOCLK) drives the master clock (MCLK)
-with a default frequency of 3 MHz. DCOCLK can be configured by adjusting the
-tuning values to obtain a target frequency between 1 MHz to 48 MHz.
+1. Configure the DCO clock and reference clock by invoking `ConfigureDcoClock()`
+   and `ConfigureReferenceClock()`.
+2. Set then clock divider for each of the primary clocks.
+3. Set the clock source for the available primary clocks.
+4. Determine and store the running clock rates for the primary clocks and the
+   reference clock.
 
-```c++
-void SetSystemClockFrequency(
-      units::frequency::megahertz_t frequency) const override
-```
-Performs the following sequence to configure the master clock:
-1. Check the desired `frequency` and assert an error if it is not between 1 MHz
-   to 48 MHz.
-2. Determine the DCOCLK frequency range based on the specified target frequency
-   and calculate the DCOCLK tune value to obtain the target frequency. The
-   calculations required for tuning DCOCLK can be found in
-   [6.2.8.3 DCO Ranges and Tuning](https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=386)
-   of the Reference Manual.
-3. Unlock the clock system registers to allow configuration changes.
-4. Write the source select value to the CSCTL1 register to configure DCOCLK as
-   the source for MCLK and HSMCLK.
-5. Write the DCOCLK tuning range and select values to the CSCTL0 register to
-   configure DCOCLK frequency.
-6. Lock the clock system registers.
-7. Wait for the clock ready status.
+An **Error_t** is returned if:
 
-### Peripheral Clock
-The subsystem master clock (HSMCLK) is driven by the digitally controlled clock
-(DCO) and can be used to drive most peripherals. The speed can be adjusted by
-configuring through `SetPeripheralClockDivider`.
+1. ConfigureDcoClock() returns an error.
+2. ConfigureReferenceClock() returns an error.
+3. The configured clock source for the auxiliary clock is not
+   `Oscillator::kLowFrequency`, `Oscillator::kVeryLowFrequency`, or
+   `Oscillator::kReference`.
+4. The configured clock source for the backup clock is not
+   `Oscillator::kLowFrequency` or `Oscillator::kReference`.
 
-```c++
-void SetPeripheralClockDivider(const PeripheralID & peripheral_select,
-                               uint8_t peripheral_divider) const override
-```
-Sets the clock divider for HSMCLK. The available divider values are: 1, 2, 4, 8,
-16, 32, 64, and 128.
+### Returns\<units::frequency::hertz_t> ConfigureDcoClock() const
+Performs the following sequence to configure the DCO clock:
 
-```c++
-uint32_t GetPeripheralClockDivider(
-      const PeripheralID & peripheral_select) const override
-```
-Returns the current divider value used for HSMCLK.
+1. Ensure the target frequency is between 1 MHz and 48 MHz.
+2. Determine the DCO tuning configuration values by finding the DCO frequency
+   range, DCO constant, and DCO calibration values based on the desired target
+   frequency.
+3. Calculate the signed 10-bit tuning value.
+4. Write the configurations to the CSCTL0 register.
+
+> See [6.2.8.3 DCO Ranges and Tuning](https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=386)
+> for more information regarding configuring the DCO clock.
+>
+An **Error_t** is returned if the target frequency is not between 1 MHz and 48
+MHz.
+
+### Returns\<units::frequency::hertz_t> ConfigureReferenceClock() const
+Configures the reference clock to run at 32.768 kHz or 128 kHz.
+
+An **Error_t** is returned if the frequency select value in the clock
+configuration for the reference clock is not `0b0` or `0b1`.
+
+### Returns\<void> SetClockSource(Clock clock, Oscillator oscillator) const
+Sets the desired clock source to drive a primary clock signal.
+
+An **Error_t** is returned if `clock` is not one of the primary clocks.
+
+### Returns\<void> SetClockDivider(Clock clock, ClockDivider divider) const
+Sets the desired clock divider for a primary clock signal.
+
+An **Error_t** is returned if `clock` is not one of the primary clocks
+(excluding the backup clock).
+
+### void WaitForClockReadyStatus(Clock clock) const
+Checks and waits for the specified primary clock signal to become stable before
+proceeding. This is necessary when changing the a clock signal's frequency or
+divider.
+
+## Getting the Clock Rate of a Clock Signal
+
+### Returns\<units::frequency::hertz_t> GetClockRate(PeripheralID peripheral) const override
+Gets the clock rate of one of the 10 available clock modules.
+
+An **Error_t** is returned if `peripheral` is not one of the defined peripherals
+in the `Modules` namespace.
 
 ## Unused Functions
-The following functions are not used:
+The following functions are not implemented or used:
 
 ```c++
 bool IsPeripheralPoweredUp(const PeripheralID &) const override
@@ -174,16 +195,104 @@ void PowerDownPeripheral(const PeripheralID &) const override
 ```
 
 # Caveats
-To be added...
+N/A
 
 # Future Advancements
 N/A
 
 # Testing Plan
-To be added...
 
 ## Unit Testing Scheme
-To be added...
+The following functions shall be tested:
+
+### Initialize()
+Each of the internal oscillators shall be used as a clock source to configure
+each primary clock. Additionally, clock divider values of 1, 2, 4, 8, 16, 32,
+64, and 128 shall be set for each configuration:
+
+1. Configure auxiliary clock:
+   - The function should:
+     - Set the selected auxiliary clock source select value in the CSCTL1
+       register.
+     - Set the selected auxiliary clock divider select value in the CSCTL1
+       register.
+     - Have a running auxiliary clock frequency that is equivalent of the
+       selected clock source divided by the selected clock divider.
+   - The function should return an error if the clock source is not
+     `Oscillator::kLowFrequency`, `Oscillator::kVeryLowFrequency`, or
+     `Oscillator::kReference`.
+2. Configure master clock:
+   - The function should:
+     - Set the selected master clock source select value in the CSCTL1 register.
+     - Set the selected master clock divider select value in the CSCTL1
+       register.
+     - Have a running master clock frequency that is equivalent of the selected
+       clock source divided by the selected clock divider.
+3. Configure subsystem master clocks:
+   - The function should:
+     - Set the selected subsystem master clock source select value in the CSCTL1
+       register.
+     - Set the selected subsystem master clock divider select value in the
+       CSCTL1 register.
+     - Have a running subsystem master clock frequency that is equivalent of the
+       selected clock source divided by the selected clock divider.
+     - Set the selected low-speed subsystem master clock source select value in
+       the CSCTL1 register.
+     - Set the selected low-speed subsystem master clock divider select value in
+       the CSCTL1 register.
+     - Have a running low-speed subsystem master clock frequency that is
+       equivalent of the selected clock source divided by the selected clock
+       divider.
+4. Configure backup clock:
+   - The function should:
+     - Set the selected backup clock source select value in the CSCTL1 register.
+     - Have a running backup clock frequency that is equivalent of the select
+       clock source.
+   - The function should return an error if the clock source is not
+     `Oscillator::kLowFrequency`, or `Oscillator::kReference`.
+
+### GetClockRate(PeripheralID peripheral)
+The clock rates of clock signals that have a fixed frequency are verified.
+
+1. When `peripheral` = `Modules::kLowFrequencyClock`
+   - The function should return 32,768 Hz.
+2. When `peripheral` = `Modules::kVeryLowFrequencyClock`
+   - The function should return 9,400 Hz.
+3. When `peripheral` = `Modules::kReferenceClock` and
+   reference clock is configured for 32.768 kHz
+   - The function should return 32,768 Hz.
+4. When `peripheral` = `Modules::kReferenceClock` and
+   reference clock is configured for 128 kHz
+   - The function should return 128,000 Hz.
+5. When `peripheral` = `Modules::kModuleClock`
+   - The function should return 25,000,000 Hz.
+6. When `peripheral` = `Modules::kSystemClock`
+   - The function should return 5,000,000 Hz.
+
+### SetClockDivider(Clock clock, ClockDivider divider)
+Clock divider values of 1, 2, 4, 8, 16, 32, 64, and 128 shall be set for each
+of the available primary clocks except for the backup clock.
+
+1. When `divider` = `ClockDivider::kDivideBy1`
+   - The function should set a clock divider select value of `0b000`.
+2. When `divider` = `ClockDivider::kDivideBy2`
+   - The function should set a clock divider select value of `0b001`.
+3. When `divider` = `ClockDivider::kDivideBy4`
+   - The function should set a clock divider select value of `0b010`.
+4. When `divider` = `ClockDivider::kDivideBy8`
+   - The function should set a clock divider select value of `0b011`.
+5. When `divider` = `ClockDivider::kDivideBy16`
+   - The function should set a clock divider select value of `0b100`.
+6. When `divider` = `ClockDivider::kDivideBy32`
+   - The function should set a clock divider select value of `0b101`.
+7. When `divider` = `ClockDivider::kDivideBy64`
+   - The function should set a clock divider select value of `0b110`.
+8. When `divider` = `ClockDivider::kDivideBy128`
+   - The function should set a clock divider select value of `0b111`.
+
+### IsPeripheralPoweredUp()
+- Should always return `false`.
 
 ## Demonstration Project
-To be added...
+An example project using the system controller can be found
+[here](/demos/msp432p401r/system_controller/source/main.cpp).
