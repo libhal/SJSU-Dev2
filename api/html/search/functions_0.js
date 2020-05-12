@@ -1,7 +1,7 @@
 var searchData=
 [
   ['accelerometer',['Accelerometer',['../db/dc0/structsjone.html#a252df24f22db272648cbaa5cb1cf9313',1,'sjone::Accelerometer()'],['../db/dc5/structsjtwo.html#ae29e5c4359ad5fb762654251afbbbb84',1,'sjtwo::Accelerometer()']]],
-  ['adc',['Adc',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a16ab193c6f60deb833b70c93cdcba981',1,'sjsu::lpc40xx::Adc']]],
+  ['adc',['Adc',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a87771be4c890aa7270e852b2d6f60673',1,'sjsu::lpc40xx::Adc']]],
   ['addcommand',['AddCommand',['../d1/d42/classsjsu_1_1CommandLine.html#a497ab38b6832e3e9b3cb650dd1112d1d',1,'sjsu::CommandLine']]],
   ['addcommoncommands',['AddCommonCommands',['../d0/d6b/namespacesjsu.html#a2fa6f1085c361722df3294bb5c60011d',1,'sjsu']]],
   ['addtask',['AddTask',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab2cb704019734dfbe774efe8f257d443',1,'sjsu::rtos::TaskScheduler']]],

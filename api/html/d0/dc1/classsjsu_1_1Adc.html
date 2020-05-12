@@ -100,6 +100,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac91e91ae9c477778b078b4d5e6e8d77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad0f82c8674acc5916171b9c654797cf"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#aad0f82c8674acc5916171b9c654797cf">GetActiveBits</a> () const =0</td></tr>
 <tr class="separator:aad0f82c8674acc5916171b9c654797cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c7d2416701e0839732e4ba45ba72678"><td class="memItemLeft" align="right" valign="top">virtual units::voltage::microvolt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#a1c7d2416701e0839732e4ba45ba72678">ReferenceVoltage</a> () const =0</td></tr>
+<tr class="separator:a1c7d2416701e0839732e4ba45ba72678"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeea4d9b3a85873680a37c2eaf818a690"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#aeea4d9b3a85873680a37c2eaf818a690">GetMaximumValue</a> () const</td></tr>
+<tr class="separator:aeea4d9b3a85873680a37c2eaf818a690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ceb495da14cbff810c1b78ab985f469"><td class="memItemLeft" align="right" valign="top">units::voltage::microvolt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#a2ceb495da14cbff810c1b78ab985f469">Voltage</a> () const</td></tr>
+<tr class="separator:a2ceb495da14cbff810c1b78ab985f469"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Common abstraction interface for Analog-to-Digital (ADC) Converter. These peripherals are used to sense a voltage and convert it to a numeric value. </p>
@@ -126,9 +132,35 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>number of active bits for the ADC. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of active bits for the ADC. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a3f886549ab4444d418c8586ede018fea">sjsu::lpc40xx::Adc</a>.</p>
+
+</div>
+</div>
+<a id="aeea4d9b3a85873680a37c2eaf818a690"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeea4d9b3a85873680a37c2eaf818a690">&#9670;&nbsp;</a></span>GetMaximumValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t sjsu::Adc::GetMaximumValue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The ADC resolution based on the active bits. </dd></dl>
 
 </div>
 </div>
@@ -183,9 +215,65 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Read the analog signal's value. The number active bits depends on the ADC being used and be known by running the <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#aad0f82c8674acc5916171b9c654797cf">GetActiveBits()</a>.</p>
-<dl class="section return"><dt>Returns</dt><dd>Returns the digital representation of the analog. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The digital representation of the analog. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ade2640b4ab7f6415693a44be0724dbce">sjsu::lpc40xx::Adc</a>.</p>
+
+</div>
+</div>
+<a id="a1c7d2416701e0839732e4ba45ba72678"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c7d2416701e0839732e4ba45ba72678">&#9670;&nbsp;</a></span>ReferenceVoltage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual units::voltage::microvolt_t sjsu::Adc::ReferenceVoltage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The ADC reference voltage. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#afa5bbe75585606f0ebdd010e8e50bc25">sjsu::lpc40xx::Adc</a>.</p>
+
+</div>
+</div>
+<a id="a2ceb495da14cbff810c1b78ab985f469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ceb495da14cbff810c1b78ab985f469">&#9670;&nbsp;</a></span>Voltage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">units::voltage::microvolt_t sjsu::Adc::Voltage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Utility method to convert and return the ADC result in voltage using the following equation:</p>
+<p>voltage = adc_output * adc_reference_voltage / adc_resolution</p>
+<dl class="section return"><dt>Returns</dt><dd>The measured voltage. </dd></dl>
 
 </div>
 </div>

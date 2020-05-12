@@ -6,6 +6,7 @@ include $(LIBRARY_DIR)/L1_Peripheral/stm32f10x/L1_stm32f10x.mk
 include $(LIBRARY_DIR)/L1_Peripheral/stm32f4xx/L1_stm32f4xx.mk
 include $(LIBRARY_DIR)/L1_Peripheral/msp432p401r/L1_msp432p401r.mk
 
+TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/adc_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/gpio_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/hardware_counter_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/i2c_test.cpp
@@ -15,7 +16,6 @@ TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/pwm_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/uart_test.cpp
 TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/frequency_counter_test.cpp
 
-NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/adc.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/can.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/dac.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/example.hpp

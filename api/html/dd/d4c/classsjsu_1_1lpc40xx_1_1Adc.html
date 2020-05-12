@@ -119,14 +119,21 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a16ab193c6f60deb833b70c93cdcba981"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a16ab193c6f60deb833b70c93cdcba981">Adc</a> (const <a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">Channel_t</a> &amp;channel)</td></tr>
-<tr class="separator:a16ab193c6f60deb833b70c93cdcba981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87771be4c890aa7270e852b2d6f60673"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a87771be4c890aa7270e852b2d6f60673">Adc</a> (const <a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">Channel_t</a> &amp;channel, units::voltage::microvolt_t reference_voltage=3.3_V)</td></tr>
+<tr class="separator:a87771be4c890aa7270e852b2d6f60673"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a003cf91d55b3a8401b098e36b9634d90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a003cf91d55b3a8401b098e36b9634d90">Initialize</a> () const override</td></tr>
 <tr class="separator:a003cf91d55b3a8401b098e36b9634d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade2640b4ab7f6415693a44be0724dbce"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ade2640b4ab7f6415693a44be0724dbce">Read</a> () const override</td></tr>
 <tr class="separator:ade2640b4ab7f6415693a44be0724dbce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f886549ab4444d418c8586ede018fea"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a3f886549ab4444d418c8586ede018fea">GetActiveBits</a> () const override</td></tr>
 <tr class="separator:a3f886549ab4444d418c8586ede018fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa5bbe75585606f0ebdd010e8e50bc25"><td class="memItemLeft" align="right" valign="top">units::voltage::microvolt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#afa5bbe75585606f0ebdd010e8e50bc25">ReferenceVoltage</a> () const override</td></tr>
+<tr class="separator:afa5bbe75585606f0ebdd010e8e50bc25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classsjsu_1_1Adc"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1Adc')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html">sjsu::Adc</a></td></tr>
+<tr class="memitem:aeea4d9b3a85873680a37c2eaf818a690 inherit pub_methods_classsjsu_1_1Adc"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#aeea4d9b3a85873680a37c2eaf818a690">GetMaximumValue</a> () const</td></tr>
+<tr class="separator:aeea4d9b3a85873680a37c2eaf818a690 inherit pub_methods_classsjsu_1_1Adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ceb495da14cbff810c1b78ab985f469 inherit pub_methods_classsjsu_1_1Adc"><td class="memItemLeft" align="right" valign="top">units::voltage::microvolt_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#a2ceb495da14cbff810c1b78ab985f469">Voltage</a> () const</td></tr>
+<tr class="separator:a2ceb495da14cbff810c1b78ab985f469 inherit pub_methods_classsjsu_1_1Adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -149,8 +156,8 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ADC driver for the LPC40xx and LPC17xx microcontrollers. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a16ab193c6f60deb833b70c93cdcba981"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16ab193c6f60deb833b70c93cdcba981">&#9670;&nbsp;</a></span>Adc()</h2>
+<a id="a87771be4c890aa7270e852b2d6f60673"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87771be4c890aa7270e852b2d6f60673">&#9670;&nbsp;</a></span>Adc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,8 +169,18 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
           <td class="memname">constexpr sjsu::lpc40xx::Adc::Adc </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">Channel_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>channel</em></td><td>)</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">units::voltage::microvolt_t&#160;</td>
+          <td class="paramname"><em>reference_voltage</em> = <code>3.3_V</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -175,6 +192,7 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">channel</td><td>Passed channel descriptor object. See <a class="el" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html">Channel_t</a> and <a class="el" href="../../d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html">Channel</a> documentation for more details about how to use this. </td></tr>
+    <tr><td class="paramname">reference_voltage</td><td>The ADC reference voltage in microvolts. </td></tr>
   </table>
   </dd>
 </dl>
@@ -266,7 +284,7 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>number of active bits for the ADC. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of active bits for the ADC. </dd></dl>
 
 <p>Implements <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#aad0f82c8674acc5916171b9c654797cf">sjsu::Adc</a>.</p>
 
@@ -323,9 +341,37 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
 </table>
 </div><div class="memdoc">
 <p>Read the analog signal's value. The number active bits depends on the ADC being used and be known by running the <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a3f886549ab4444d418c8586ede018fea">GetActiveBits()</a>.</p>
-<dl class="section return"><dt>Returns</dt><dd>Returns the digital representation of the analog. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The digital representation of the analog. </dd></dl>
 
 <p>Implements <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#ac91e91ae9c477778b078b4d5e6e8d77d">sjsu::Adc</a>.</p>
+
+</div>
+</div>
+<a id="afa5bbe75585606f0ebdd010e8e50bc25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa5bbe75585606f0ebdd010e8e50bc25">&#9670;&nbsp;</a></span>ReferenceVoltage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">units::voltage::microvolt_t sjsu::lpc40xx::Adc::ReferenceVoltage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The ADC reference voltage. </dd></dl>
+
+<p>Implements <a class="el" href="../../d0/dc1/classsjsu_1_1Adc.html#a1c7d2416701e0839732e4ba45ba72678">sjsu::Adc</a>.</p>
 
 </div>
 </div>
