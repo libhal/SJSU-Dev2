@@ -17,63 +17,62 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
       kAdcTestOutput * (kReferenceVoltage / kAdcResolution));
   constexpr units::current::microampere_t kExpectedCurrent(kExpectedVoltage /
                                                            kPullDownResistor);
-  constexpr units::illuminance::lux_t kExpectedLux(
-      2 * kExpectedCurrent.to<float>());
-  constexpr units::illuminance::lux_t kExpectedMaxLux(1'000_lx);
+
+  units::illuminance::lux_t expected_lux(2.0f * kExpectedCurrent.to<float>());
+  units::illuminance::lux_t expected_max_lux(1'000_lx);
 
   Mock<Adc> mock_adc;
-  Fake(Method(mock_adc, GetActiveBits));
   When(Method(mock_adc, GetActiveBits)).AlwaysReturn(kAdcActiveBits);
   When(Method(mock_adc, Read)).AlwaysReturn(kAdcTestOutput);
+  When(Method(mock_adc, ReferenceVoltage)).AlwaysReturn(kReferenceVoltage);
 
-  Temt6000x01 light_sensor(
-      mock_adc.get(), kReferenceVoltage, kPullDownResistor);
+  Temt6000x01 test_subject(mock_adc.get(), kPullDownResistor);
 
   SECTION("Initialize")
   {
-    Status expected_status = Status::kInvalidSettings;
+    // Setup
+    Status expected_status =
+        GENERATE(Status::kSuccess, Status::kInvalidSettings);
+
     When(Method(mock_adc, Initialize)).AlwaysReturn(expected_status);
 
-    CHECK(light_sensor.Initialize() == expected_status);
-    Verify(Method(mock_adc, Initialize)).Once();
-    mock_adc.ClearInvocationHistory();
+    // Exercise
+    auto actual_status = test_subject.Initialize();
 
-    expected_status = Status::kSuccess;
-    When(Method(mock_adc, Initialize)).AlwaysReturn(expected_status);
-    CHECK(light_sensor.Initialize() == expected_status);
+    // Verify
     Verify(Method(mock_adc, Initialize)).Once();
+    CHECK(actual_status == expected_status);
   }
 
   SECTION("GetIlluminance")
   {
-    const units::illuminance::lux_t kLux = light_sensor.GetIlluminance();
-    const float kFloatError = fabs(kLux.to<float>() - kExpectedLux.to<float>());
+    // Exercise
+    units::illuminance::lux_t actual_lux = test_subject.GetIlluminance();
 
+    // Verify
     Verify(Method(mock_adc, Read)).Once();
-    CHECK(0.0f <= kFloatError);
-    CHECK(kFloatError < 0.001f);
+    CHECK(actual_lux == expected_lux);
   }
 
   SECTION("GetMaxIlluminance")
   {
-    const units::illuminance::lux_t kMaxLux = light_sensor.GetMaxIlluminance();
-    const float kFloatError =
-        fabs(kMaxLux.to<float>() - kExpectedMaxLux.to<float>());
+    // Exercise
+    units::illuminance::lux_t actual_max_lux = test_subject.GetMaxIlluminance();
 
-    CHECK(0.0f <= kFloatError);
-    CHECK(kFloatError < 0.001f);
+    // Verify
+    CHECK(actual_max_lux == expected_max_lux);
   }
 
   SECTION("GetIlluminancePercentage")
   {
-    constexpr float kExpectedPercentage =
-        (kExpectedLux / kExpectedMaxLux).to<float>();
-    const float kPercentage = light_sensor.GetPercentageBrightness();
-    const float kFloatError = fabs(kPercentage - kExpectedPercentage);
+    float expected_percentage = (expected_lux / expected_max_lux).to<float>();
 
+    // Exercise
+    float actual_percentage = test_subject.GetPercentageBrightness();
+
+    // Verify
     Verify(Method(mock_adc, Read)).Once();
-    CHECK(0.0f <= kFloatError);
-    CHECK(kFloatError < 0.1f);
+    CHECK(actual_percentage == Approx(expected_percentage).epsilon(0.01f));
   }
 }
 }  // namespace sjsu

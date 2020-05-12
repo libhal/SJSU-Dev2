@@ -217,9 +217,15 @@ class Adc final : public sjsu::Adc
     return bit::Read(adc_base->CR, Control::kBurstEnable);
   }
 
-  /// @param channel: Passed channel descriptor object. See Channel_t and
+  /// @param channel Passed channel descriptor object. See Channel_t and
   ///        Channel documentation for more details about how to use this.
-  explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
+  /// @param reference_voltage The ADC reference voltage in microvolts.
+  explicit constexpr Adc(const Channel_t & channel,
+                         units::voltage::microvolt_t reference_voltage = 3.3_V)
+      : channel_(channel), kReferenceVoltage(reference_voltage)
+  {
+  }
+
   Status Initialize() const override
   {
     auto & system     = sjsu::SystemController::GetPlatformController();
@@ -268,6 +274,11 @@ class Adc final : public sjsu::Adc
     return kActiveBits;
   }
 
+  units::voltage::microvolt_t ReferenceVoltage() const override
+  {
+    return kReferenceVoltage;
+  }
+
  private:
   bool HasConversionFinished() const
   {
@@ -296,6 +307,7 @@ class Adc final : public sjsu::Adc
   }
 
   const Channel_t & channel_;
+  const units::voltage::microvolt_t kReferenceVoltage;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

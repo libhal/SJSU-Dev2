@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "utility/status.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -15,13 +16,39 @@ class Adc
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
   virtual Status Initialize() const = 0;
+
   /// Read the analog signal's value.
   /// The number active bits depends on the ADC being used and be known by
   /// running the GetActiveBits().
   ///
-  /// @return Returns the digital representation of the analog.
+  /// @returns The digital representation of the analog.
   virtual uint32_t Read() const = 0;
-  /// @return number of active bits for the ADC.
+
+  /// @returns The number of active bits for the ADC.
   virtual uint8_t GetActiveBits() const = 0;
+
+  /// @returns The ADC reference voltage.
+  virtual units::voltage::microvolt_t ReferenceVoltage() const = 0;
+
+  // ===========================================================================
+  // Utility Methods
+  // ===========================================================================
+
+  /// @returns The ADC resolution based on the active bits.
+  uint32_t GetMaximumValue() const
+  {
+    return (1 << GetActiveBits()) - 1;
+  }
+
+  /// Utility method to convert and return the ADC result in voltage using the
+  /// following equation:
+  ///
+  /// voltage = adc_output * adc_reference_voltage / adc_resolution
+  ///
+  /// @returns The measured voltage.
+  units::voltage::microvolt_t Voltage() const
+  {
+    return Read() * ReferenceVoltage() / GetMaximumValue();
+  }
 };
 }  // namespace sjsu
