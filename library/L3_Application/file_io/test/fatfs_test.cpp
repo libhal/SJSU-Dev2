@@ -217,8 +217,7 @@ TEST_CASE("Testing FAT FS", "[fatfs]")
                                        << ", block size: " << block_size);
             const uint32_t kExpectedSector = (sector * FF_MIN_SS) / block_size;
             const uint32_t kLength         = (count * FF_MIN_SS);
-            Returns<units::data::byte_t> result =
-                units::data::byte_t{ static_cast<float>(block_size) };
+            auto result = units::data::byte_t{ static_cast<float>(block_size) };
 
             When(Method(mock_storage, GetBlockSize)).AlwaysReturn(result);
 
@@ -322,8 +321,7 @@ TEST_CASE("Testing FAT FS", "[fatfs]")
                                        << ", block size: " << block_size);
             const uint32_t kExpectedSector = (sector * FF_MIN_SS) / block_size;
             const uint32_t kLength         = (count * FF_MIN_SS);
-            Returns<units::data::byte_t> result =
-                units::data::byte_t{ static_cast<float>(block_size) };
+            auto result = units::data::byte_t{ static_cast<float>(block_size) };
 
             When(Method(mock_storage, GetBlockSize)).AlwaysReturn(result);
 

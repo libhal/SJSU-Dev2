@@ -362,19 +362,15 @@ inline sjsu::Storage & GetInactive<sjsu::Storage>()
     {
       return {};
     }
-    Returns<void> Disable() override
-    {
-      return {};
-    }
     bool IsReadOnly() override
     {
       return {};
     }
-    Returns<units::data::byte_t> GetCapacity() override
+    units::data::byte_t GetCapacity() override
     {
       return 0_B;
     }
-    Returns<units::data::byte_t> GetBlockSize() override
+    units::data::byte_t GetBlockSize() override
     {
       return 0_B;
     }
@@ -387,6 +383,10 @@ inline sjsu::Storage & GetInactive<sjsu::Storage>()
       return {};
     }
     Returns<void> Read(uint32_t, void *, size_t) override
+    {
+      return {};
+    }
+    Returns<void> Disable() override
     {
       return {};
     }

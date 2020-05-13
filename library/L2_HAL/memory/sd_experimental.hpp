@@ -11,6 +11,7 @@
 #include "L1_Peripheral/inactive.hpp"
 #include "utility/log.hpp"
 #include "utility/crc.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu::experimental
 {
@@ -254,12 +255,12 @@ class Sd : public Storage
     return false;
   }
 
-  Returns<units::data::byte_t> GetBlockSize() override
+  units::data::byte_t GetBlockSize() override
   {
     return units::data::byte_t{ kBlockSize };
   }
 
-  Returns<units::data::byte_t> GetCapacity() override
+  units::data::byte_t GetCapacity() override
   {
     // The c_size register's contents can be found in bits [48:69]
     constexpr bit::Mask kCSizeMask = bit::CreateMaskFromRange(48, 69);

@@ -144,8 +144,7 @@ extern "C" DRESULT disk_read(BYTE drive_number,
   auto & storage = drive[drive_number];
 
   // Get the number of bytes per block for this media.
-  units::data::byte_t block_size =
-      SJ2_RETURN_VALUE_ON_ERROR(storage.media->GetBlockSize(), RES_ERROR);
+  units::data::byte_t block_size = storage.media->GetBlockSize();
 
   auto location = CorrectedLocation(block_size.to<uint32_t>(), sector, count);
   uint32_t location_block = std::get<0>(location);
@@ -173,8 +172,7 @@ extern "C" DRESULT disk_write(BYTE drive_number,
   auto & storage = drive[drive_number];
 
   // Get the number of bytes per block for this media.
-  units::data::byte_t block_size =
-      SJ2_RETURN_VALUE_ON_ERROR(storage.media->GetBlockSize(), RES_ERROR);
+  units::data::byte_t block_size = storage.media->GetBlockSize();
 
   auto location = CorrectedLocation(block_size.to<uint32_t>(), sector, count);
   uint32_t location_block = std::get<0>(location);
