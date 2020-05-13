@@ -35,40 +35,49 @@ class Storage
   };
 
   /// @return the type of memory this driver controls. Can be called without
-  /// calling Initialize() first.
+  ///         calling Initialize() first.
   virtual Type GetMemoryType() = 0;
 
   /// Initialize all peripherals required to make communicate with the storage
-  /// media possible.
-  /// MUST be called before calling any method in this interface with the
-  /// exception of `GetMemoryType()`
+  /// media possible. MUST be called before calling any method in this interface
+  /// with the exception of `GetMemoryType()`
   virtual Returns<void> Initialize() = 0;
 
-  /// @return true if the storage is present. For cases where the memory cannot
-  /// be removed or is physically located within a device, this should always
-  /// return true.
-  /// @return false if storage media is not present.
-  virtual bool IsMediaPresent() = 0;
-
-  /// Should prepare and configure the storage media for communication such as
-  /// Write(), Read(), Erase()
+  /// Will prepare and configure storage media for communication.
+  /// This method can only be called after `Initialize()` was called
+  /// successfully without returning an `Error_t`.
+  /// This method MUST be called in order for the following methods to operate:
+  ///
+  ///    bool IsReadOnly()
+  ///    units::data::byte_t GetCapacity()
+  ///    units::data::byte_t GetBlockSize()
+  ///    Returns<void> Erase(uint32_t, size_t)
+  ///    Returns<void> Write(uint32_t, const void *, size_t)
+  ///    Returns<void> Read(uint32_t, void *, size_t)
+  ///    Returns<void> Disable()
+  ///
+  /// Calling any of these methods before `Enable()` has been called
+  /// successfully, will result in undefined behavior.
   virtual Returns<void> Enable() = 0;
 
-  /// Should shutdown the device.
-  virtual Returns<void> Disable() = 0;
+  /// @return true if the storage is present. For cases where the memory cannot
+  ///         be removed or is physically located within a device, this should
+  ///         always return true.
+  /// @return false if storage media is not present.
+  virtual bool IsMediaPresent() = 0;
 
   /// @return true if device is not writable.
   virtual bool IsReadOnly() = 0;
 
   /// @return the maximum capacity of this storage media. This includes areas
-  /// that have already been written to. This does not include sections of the
-  /// memory that are not accessible. For example, if the first 2kB of the
-  /// memory cannot be accessed via this driver, then it should not be
-  /// considered as apart of the capacity.
-  virtual Returns<units::data::byte_t> GetCapacity() = 0;
+  ///         that have already been written to. This does not include sections
+  ///         of the memory that are not accessible. For example, if the first
+  ///         2kB of the memory cannot be accessed via this driver, then it
+  ///         should not be considered as apart of the capacity.
+  virtual units::data::byte_t GetCapacity() = 0;
 
   /// @return the number of bytes per block.
-  virtual Returns<units::data::byte_t> GetBlockSize() = 0;
+  virtual units::data::byte_t GetBlockSize() = 0;
 
   /// Must be called before a `Write()` operation. Erases the contents of the
   /// storage media in the location specified, the number of bytes given. Some
@@ -78,7 +87,7 @@ class Storage
   /// @param block_address - starting block to erase.
   /// @param blocks_count - the number of bytes to erase.
   /// @return Status of if the operation was successful, otherwise, returns an
-  /// appropriate status signal.
+  ///         appropriate status signal.
   virtual Returns<void> Erase(uint32_t block_address, size_t blocks_count) = 0;
 
   /// Write data to the storage media in the location block specified. If the
@@ -93,7 +102,7 @@ class Storage
   /// @param size - the number of bytes to write into memory. Can be less than
   ///               the size of a block.
   /// @return Status of if the operation was successful, otherwise, returns an
-  /// appropriate status signal.
+  ///         appropriate status signal.
   virtual Returns<void> Write(uint32_t block_address,
                               const void * data,
                               size_t size) = 0;
@@ -105,9 +114,12 @@ class Storage
   /// @param size - the number of bytes to read from memory. Can be less than
   ///               the size of a block.
   /// @return Status of if the operation was successful, otherwise, return an
-  /// appropriate status signal.
+  ///         appropriate status signal.
   virtual Returns<void> Read(uint32_t block_address,
                              void * data,
                              size_t size) = 0;
+
+  /// Should shutdown the device.
+  virtual Returns<void> Disable() = 0;
 };
 }  // namespace sjsu

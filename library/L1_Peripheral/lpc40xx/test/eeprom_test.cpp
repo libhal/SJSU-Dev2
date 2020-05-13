@@ -90,9 +90,9 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
 
   SECTION("Methods that return constants")
   {
-    CHECK(test_eeprom.GetBlockSize().value() == 4_B);
+    CHECK(test_eeprom.GetBlockSize() == 4_B);
     CHECK(test_eeprom.GetMemoryType() == Storage::Type::kEeprom);
-    CHECK(test_eeprom.GetCapacity().value() == 4_kB);
+    CHECK(test_eeprom.GetCapacity() == 4_kB);
     CHECK(test_eeprom.IsReadOnly() == false);
     CHECK(test_eeprom.IsMediaPresent() == true);
   }
