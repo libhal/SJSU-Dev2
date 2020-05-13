@@ -227,10 +227,13 @@ struct Error_t
     if constexpr (config::kAutomaticallyPrintOnError)
     {
       Print();
-      printf(SJ2_HI_BOLD_WHITE "\nBacktrace:" SJ2_COLOR_RESET);
-      int depth = 0;
-      _Unwind_Backtrace(&debug::PrintAddressInRow, &depth);
-      puts("");
+      if constexpr (config::kIncludeBacktrace)
+      {
+        printf(SJ2_HI_BOLD_WHITE "\nBacktrace:" SJ2_COLOR_RESET);
+        int depth = 0;
+        _Unwind_Backtrace(&debug::PrintAddressInRow, &depth);
+        puts("");
+      }
     }
   }
 
