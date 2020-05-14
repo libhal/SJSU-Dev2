@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dd/d21/classsjsu_1_1InfraredReceiver.html" title="sjsu::InfraredReceiver" alt="" coords="5,5,168,32"/>
-<area shape="rect" id="node2" href="$d2/de6/classsjsu_1_1Tsop752.html" title="sjsu::Tsop752" alt="" coords="216,5,325,32"/>
+<area shape="rect" id="node1" href="$d7/d75/classsjsu_1_1LightSensor.html" title="An abstract interface for light sensing device drivers. " alt="" coords="5,5,137,32"/>
+<area shape="rect" id="node2" href="$d3/da6/classsjsu_1_1Temt6000x01.html" title="sjsu::Temt6000x01" alt="" coords="185,5,329,32"/>
 </map>

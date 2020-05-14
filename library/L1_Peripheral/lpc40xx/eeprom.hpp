@@ -109,12 +109,12 @@ class Eeprom final : public sjsu::Storage
     return false;
   }
 
-  Returns<units::data::byte_t> GetCapacity() override
+  units::data::byte_t GetCapacity() override
   {
     return 4_kB;
   }
 
-  Returns<units::data::byte_t> GetBlockSize() override
+  units::data::byte_t GetBlockSize() override
   {
     return 4_B;
   }

@@ -151,10 +151,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:afd205dfbb19798e1649ac2b89d01d994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c028abb99b070a99eb9ba78995b71d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a1c028abb99b070a99eb9ba78995b71d9">IsReadOnly</a> () override</td></tr>
 <tr class="separator:a1c028abb99b070a99eb9ba78995b71d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e24a34e8d7e0159a2b902d004d087f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; units::data::byte_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a8e24a34e8d7e0159a2b902d004d087f8">GetCapacity</a> () override</td></tr>
-<tr class="separator:a8e24a34e8d7e0159a2b902d004d087f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc5778d2d1997b07f1cd18165f0026f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; units::data::byte_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afc5778d2d1997b07f1cd18165f0026f3">GetBlockSize</a> () override</td></tr>
-<tr class="separator:afc5778d2d1997b07f1cd18165f0026f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7c1b21db73226fa8f396d194c1be52b"><td class="memItemLeft" align="right" valign="top">units::data::byte_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ab7c1b21db73226fa8f396d194c1be52b">GetCapacity</a> () override</td></tr>
+<tr class="separator:ab7c1b21db73226fa8f396d194c1be52b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29a753abf3d07a56c304b1e0fea28a40"><td class="memItemLeft" align="right" valign="top">units::data::byte_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a29a753abf3d07a56c304b1e0fea28a40">GetBlockSize</a> () override</td></tr>
+<tr class="separator:a29a753abf3d07a56c304b1e0fea28a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebbdb60f356670558cf1971932eabac7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#aebbdb60f356670558cf1971932eabac7">Erase</a> (uint32_t, size_t) override</td></tr>
 <tr class="separator:aebbdb60f356670558cf1971932eabac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae141910c55a95dec24bfa97539d3966d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ae141910c55a95dec24bfa97539d3966d">Write</a> (uint32_t address, const void *data, size_t size) override</td></tr>
@@ -216,7 +216,9 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Should prepare and configure the storage media for communication such as <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ae141910c55a95dec24bfa97539d3966d">Write()</a>, <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#abb7fb8713e5552e53f227f68ea28d789">Read()</a>, <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#aebbdb60f356670558cf1971932eabac7">Erase()</a> </p>
+<p>Will prepare and configure storage media for communication. This method can only be called after <code><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a009ad106b2101850f151ad31c4ca0725">Initialize()</a></code> was called successfully without returning an <code><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">Error_t</a></code>. This method MUST be called in order for the following methods to operate:</p>
+<p>bool <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a1c028abb99b070a99eb9ba78995b71d9">IsReadOnly()</a> units::data::byte_t <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ab7c1b21db73226fa8f396d194c1be52b">GetCapacity()</a> units::data::byte_t <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a29a753abf3d07a56c304b1e0fea28a40">GetBlockSize()</a> Returns&lt;void&gt; <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#aebbdb60f356670558cf1971932eabac7">Erase(uint32_t, size_t)</a> Returns&lt;void&gt; <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#ae141910c55a95dec24bfa97539d3966d">Write(uint32_t, const void *, size_t)</a> Returns&lt;void&gt; <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#abb7fb8713e5552e53f227f68ea28d789">Read(uint32_t, void *, size_t)</a> Returns&lt;void&gt; <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#afd205dfbb19798e1649ac2b89d01d994" title="Should shutdown the device. ">Disable()</a></p>
+<p>Calling any of these methods before <code><a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#af87ba070544c23cf68fdc50fd501fdd2">Enable()</a></code> has been called successfully, will result in undefined behavior. </p>
 
 <p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4903778414bf73f61d15169b3653af03">sjsu::Storage</a>.</p>
 
@@ -269,8 +271,8 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 
 </div>
 </div>
-<a id="afc5778d2d1997b07f1cd18165f0026f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc5778d2d1997b07f1cd18165f0026f3">&#9670;&nbsp;</a></span>GetBlockSize()</h2>
+<a id="a29a753abf3d07a56c304b1e0fea28a40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29a753abf3d07a56c304b1e0fea28a40">&#9670;&nbsp;</a></span>GetBlockSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -279,7 +281,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;units::data::byte_t&gt; sjsu::lpc40xx::Eeprom::GetBlockSize </td>
+          <td class="memname">units::data::byte_t sjsu::lpc40xx::Eeprom::GetBlockSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -293,12 +295,12 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the number of bytes per block. </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a9d0328df531550185cd812e19237c4e6">sjsu::Storage</a>.</p>
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a6b6e66b9f34d222216468e2c907b0835">sjsu::Storage</a>.</p>
 
 </div>
 </div>
-<a id="a8e24a34e8d7e0159a2b902d004d087f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e24a34e8d7e0159a2b902d004d087f8">&#9670;&nbsp;</a></span>GetCapacity()</h2>
+<a id="ab7c1b21db73226fa8f396d194c1be52b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7c1b21db73226fa8f396d194c1be52b">&#9670;&nbsp;</a></span>GetCapacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -307,7 +309,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;units::data::byte_t&gt; sjsu::lpc40xx::Eeprom::GetCapacity </td>
+          <td class="memname">units::data::byte_t sjsu::lpc40xx::Eeprom::GetCapacity </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -321,7 +323,7 @@ static constexpr std::chrono::milliseconds&#160;</td><td class="memItemRight" va
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the maximum capacity of this storage media. This includes areas that have already been written to. This does not include sections of the memory that are not accessible. For example, if the first 2kB of the memory cannot be accessed via this driver, then it should not be considered as apart of the capacity. </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#ab9591e0b3d80325b9a3faafc35aecf6e">sjsu::Storage</a>.</p>
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a624e7e90e62cec1e67ea753859d7ba35">sjsu::Storage</a>.</p>
 
 </div>
 </div>

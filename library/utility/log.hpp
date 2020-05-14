@@ -19,6 +19,7 @@
 #include <cinttypes>
 #include <cstdio>
 #include <cstring>
+#include <string_view>
 
 #include "config.hpp"
 #include "log_levels.hpp"

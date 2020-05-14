@@ -13,6 +13,7 @@
 #include "L1_Peripheral/pin.hpp"
 #include "L1_Peripheral/pwm.hpp"
 #include "L1_Peripheral/spi.hpp"
+#include "L1_Peripheral/storage.hpp"
 #include "L1_Peripheral/system_controller.hpp"
 #include "L1_Peripheral/system_timer.hpp"
 #include "L1_Peripheral/timer.hpp"
@@ -55,11 +56,26 @@ inline sjsu::Pin & GetInactive<sjsu::Pin>()
   {
    public:
     InactivePin() : sjsu::Pin(0, 0) {}
-    void Initialize() const override {}
-    void SetPinFunction(uint8_t) const override {}
-    void SetPull(Resistor) const override {}
-    void SetAsOpenDrain(bool) const override {}
-    void SetAsAnalogMode(bool) const override {}
+    Returns<void> Initialize() const override
+    {
+      return {};
+    }
+    Returns<void> SetPinFunction(uint8_t) const override
+    {
+      return {};
+    }
+    Returns<void> SetPull(Resistor) const override
+    {
+      return {};
+    }
+    Returns<void> SetAsOpenDrain(bool) const override
+    {
+      return {};
+    }
+    Returns<void> SetAsAnalogMode(bool) const override
+    {
+      return {};
+    }
   };
 
   static InactivePin inactive;
@@ -336,6 +352,62 @@ inline sjsu::Uart & GetInactive<sjsu::Uart>()
   };
 
   static InactiveUart inactive;
+  return inactive;
+}
+/// Template specialization that generates an inactive sjsu::Uart.
+template <>
+inline sjsu::Storage & GetInactive<sjsu::Storage>()
+{
+  class InactiveStorage : public sjsu::Storage
+  {
+   public:
+    Type GetMemoryType() override
+    {
+      return Type::kRam;
+    }
+    Returns<void> Initialize() override
+    {
+      return {};
+    }
+    bool IsMediaPresent() override
+    {
+      return {};
+    }
+    Returns<void> Enable() override
+    {
+      return {};
+    }
+    bool IsReadOnly() override
+    {
+      return {};
+    }
+    units::data::byte_t GetCapacity() override
+    {
+      return 0_B;
+    }
+    units::data::byte_t GetBlockSize() override
+    {
+      return 0_B;
+    }
+    Returns<void> Erase(uint32_t, size_t) override
+    {
+      return {};
+    }
+    Returns<void> Write(uint32_t, const void *, size_t) override
+    {
+      return {};
+    }
+    Returns<void> Read(uint32_t, void *, size_t) override
+    {
+      return {};
+    }
+    Returns<void> Disable() override
+    {
+      return {};
+    }
+  };
+
+  static InactiveStorage inactive;
   return inactive;
 }
 /// @}

@@ -90,12 +90,22 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="../../d5/d98/sd_8hpp_source.html">sd.hpp</a>&gt;</code></p>
 <div class="dynheader">
+Inheritance diagram for sjsu::Sd:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../df/dda/classsjsu_1_1Sd__inherit__graph.png" border="0" usemap="#sjsu_1_1Sd_inherit__map" alt="Inheritance graph"/></div>
+<map name="sjsu_1_1Sd_inherit__map" id="sjsu_1_1Sd_inherit__map">
+<area shape="rect" id="node2" href="../../dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="5,5,112,32"/>
+</map>
+<center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
 Collaboration diagram for sjsu::Sd:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d8/d03/classsjsu_1_1Sd__coll__graph.png" border="0" usemap="#sjsu_1_1Sd_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1Sd_coll__map" id="sjsu_1_1Sd_coll__map">
-<area shape="rect" id="node2" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint8_t \&gt;" alt="" coords="5,5,184,47"/>
-<area shape="rect" id="node3" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint16_t \&gt;" alt="" coords="208,5,387,47"/>
+<area shape="rect" id="node2" href="../../dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="41,5,148,32"/>
+<area shape="rect" id="node3" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="37,56,152,83"/>
+<area shape="rect" id="node4" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint8_t \&gt;" alt="" coords="5,107,184,149"/>
+<area shape="rect" id="node5" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint16_t \&gt;" alt="" coords="5,173,184,214"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -103,6 +113,9 @@ Collaboration diagram for sjsu::Sd:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html">CardInfo_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure for recording information about the SD Card.  <a href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d50/structsjsu_1_1Sd_1_1CsdBuffer__t.html">CsdBuffer_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Card Data Buffer.  <a href="../../df/d50/structsjsu_1_1Sd_1_1CsdBuffer__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/df2/structsjsu_1_1Sd_1_1Response__t.html">Response_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,7 +133,7 @@ Public Types</h2></td></tr>
 <b>kR6</b>, 
 <b>kR7</b>
 <br />
- }<tr class="memdesc:aae21a97bbd11f456310b6fc8f399a580"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerator for response type codes (See Physical Layer V6.00 p.225) <br /></td></tr>
+ }<tr class="memdesc:aae21a97bbd11f456310b6fc8f399a580"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerator for response type codes (See Physical Layer V6.00 p.225. <br /></td></tr>
 </td></tr>
 <tr class="separator:aae21a97bbd11f456310b6fc8f399a580"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0be829c25921b7453bcc4c76b76b946"><td class="memItemLeft" align="right" valign="top"><a id="ab0be829c25921b7453bcc4c76b76b946"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946">Type</a> { <b>kSDSC</b>, 
@@ -152,27 +165,27 @@ Public Types</h2></td></tr>
 <tr class="separator:ab2c9a4b50af56678d9c11ef018593698"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bc3cffccc21dfabc605f4b1d82e3934"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a9bc3cffccc21dfabc605f4b1d82e3934">Command</a> { <br />
 &#160;&#160;<b>kGarbage</b> = 0xFF, 
-<b>kReset</b> = 0x40 | 0, 
-<b>kInit</b> = 0x40 | 1, 
-<b>kGetOp</b> = 0x40 | 8, 
+<b>kReset</b> = kCommandBase | 0, 
+<b>kInit</b> = kCommandBase | 1, 
+<b>kGetOp</b> = kCommandBase | 8, 
 <br />
-&#160;&#160;<b>kGetCsd</b> = 0x40 | 9, 
-<b>kStopTrans</b> = 0x40 | 12, 
-<b>kGetStatus</b> = 0x40 | 13, 
-<b>kChgBlkLen</b> = 0x40 | 16, 
+&#160;&#160;<b>kGetCsd</b> = kCommandBase | 9, 
+<b>kStopTrans</b> = kCommandBase | 12, 
+<b>kGetStatus</b> = kCommandBase | 13, 
+<b>kChgBlkLen</b> = kCommandBase | 16, 
 <br />
-&#160;&#160;<b>kReadSingle</b> = 0x40 | 17, 
-<b>kReadMulti</b> = 0x40 | 18, 
-<b>kWriteSingle</b> = 0x40 | 24, 
-<b>kWriteMulti</b> = 0x40 | 25, 
+&#160;&#160;<b>kReadSingle</b> = kCommandBase | 17, 
+<b>kReadMulti</b> = kCommandBase | 18, 
+<b>kWriteSingle</b> = kCommandBase | 24, 
+<b>kWriteMulti</b> = kCommandBase | 25, 
 <br />
-&#160;&#160;<b>kDelFrom</b> = 0x40 | 32, 
-<b>kDelTo</b> = 0x40 | 33, 
-<b>kDel</b> = 0x40 | 38, 
-<b>kAcBegin</b> = 0x40 | 55, 
+&#160;&#160;<b>kDelFrom</b> = kCommandBase | 32, 
+<b>kDelTo</b> = kCommandBase | 33, 
+<b>kDel</b> = kCommandBase | 38, 
+<b>kAcBegin</b> = kCommandBase | 55, 
 <br />
-&#160;&#160;<b>kGetOcr</b> = 0x40 | 58, 
-<b>kAcInit</b> = 0x40 | 41
+&#160;&#160;<b>kGetOcr</b> = kCommandBase | 58, 
+<b>kAcInit</b> = kCommandBase | 41
 <br />
  }</td></tr>
 <tr class="separator:a9bc3cffccc21dfabc605f4b1d82e3934"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,52 +194,85 @@ Public Types</h2></td></tr>
  }<tr class="memdesc:aea755e43d994ae5941d08cd00c4541b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerations to allow CS keep-alive during command byte exchanges. <br /></td></tr>
 </td></tr>
 <tr class="separator:aea755e43d994ae5941d08cd00c4541b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classsjsu_1_1Storage"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classsjsu_1_1Storage')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a></td></tr>
+<tr class="memitem:a4d7a2e245eff968badaaa8492a91b878 inherit pub_types_classsjsu_1_1Storage"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878">Type</a> { <br />
+&#160;&#160;<a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a5864f668bf8aaf9b7549c17e265c3f9e">Type::kRam</a>, 
+<a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a557ddd5e2d22e0a52218d15eec69c9b6">Type::kNor</a>, 
+<a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a99e72fc669e7ae921f6a7876bb91aec0">Type::kNand</a>, 
+<a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a5bba813e3c87c8796a238d53e13987c8">Type::kSD</a>, 
+<br />
+&#160;&#160;<a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a1db1a52ec0dcbd7a7922f8bd20d60317">Type::kEMMC</a>, 
+<a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a2ad4ffc87714c82ce899a673fd8dcca1">Type::kEeprom</a>, 
+<a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878a5d86e84d05ea3278f98a56378c854656">Type::kNvRam</a>, 
+<a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878ad214cae8da968d40f8e3b923bb2d796e">Type::kFRam</a>
+<br />
+ }<tr class="memdesc:a4d7a2e245eff968badaaa8492a91b878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the types of storage media.  <a href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a4d7a2e245eff968badaaa8492a91b878 inherit pub_types_classsjsu_1_1Storage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a34005d8da234cc37f2e6aaaa7638fc23"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a34005d8da234cc37f2e6aaaa7638fc23">Sd</a> (const <a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">Spi</a> &amp;spi, const <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;chip_select)</td></tr>
-<tr class="separator:a34005d8da234cc37f2e6aaaa7638fc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34b8158aa3bde3ba8fe344022388a17f"><td class="memItemLeft" align="right" valign="top"><a id="a34b8158aa3bde3ba8fe344022388a17f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a34b8158aa3bde3ba8fe344022388a17f">Initialize</a> ()</td></tr>
-<tr class="memdesc:a34b8158aa3bde3ba8fe344022388a17f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize peripherals. <br /></td></tr>
-<tr class="separator:a34b8158aa3bde3ba8fe344022388a17f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebdf692b25d5b539a3415d040d309407"><td class="memItemLeft" align="right" valign="top"><a id="aebdf692b25d5b539a3415d040d309407"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aebdf692b25d5b539a3415d040d309407">Mount</a> (<a class="el" href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html">CardInfo_t</a> *sd)</td></tr>
-<tr class="memdesc:aebdf692b25d5b539a3415d040d309407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize and enable SD Card. <br /></td></tr>
-<tr class="separator:aebdf692b25d5b539a3415d040d309407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e596f032324def60480d573060194d0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a4e596f032324def60480d573060194d0">WaitToReadBlock</a> ()</td></tr>
-<tr class="separator:a4e596f032324def60480d573060194d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a365fc041ceb89dc328086b5503280625"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a365fc041ceb89dc328086b5503280625">WaitWhileBusy</a> ()</td></tr>
-<tr class="separator:a365fc041ceb89dc328086b5503280625"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55c25412311485e0b6697baf64a0d3ef"><td class="memItemLeft" align="right" valign="top"><a id="a55c25412311485e0b6697baf64a0d3ef"></a>
-virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a55c25412311485e0b6697baf64a0d3ef">ReadBlock</a> (uint32_t address, uint8_t *array, uint32_t blocks=1)</td></tr>
-<tr class="memdesc:a55c25412311485e0b6697baf64a0d3ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read any number of blocks from the SD card. <br /></td></tr>
-<tr class="separator:a55c25412311485e0b6697baf64a0d3ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afab16467fb810533f8fe569bd14c5054"><td class="memItemLeft" align="right" valign="top"><a id="afab16467fb810533f8fe569bd14c5054"></a>
-virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#afab16467fb810533f8fe569bd14c5054">WriteBlock</a> (uint32_t address, const uint8_t *array, uint32_t blocks=1)</td></tr>
-<tr class="memdesc:afab16467fb810533f8fe569bd14c5054"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes any number of 512-byte blocks to the SD Card. <br /></td></tr>
-<tr class="separator:afab16467fb810533f8fe569bd14c5054"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8257f7a0c775cb1c0b55f366aad96cda"><td class="memItemLeft" align="right" valign="top"><a id="a8257f7a0c775cb1c0b55f366aad96cda"></a>
-virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a8257f7a0c775cb1c0b55f366aad96cda">DeleteBlock</a> (uint32_t start, uint32_t end)</td></tr>
-<tr class="memdesc:a8257f7a0c775cb1c0b55f366aad96cda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes any number of blocks (inclusively) within a range of address. <br /></td></tr>
-<tr class="separator:a8257f7a0c775cb1c0b55f366aad96cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3f86bfce15e93e1a026e22fcbd0006e"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ad3f86bfce15e93e1a026e22fcbd0006e">SendCmd</a> (<a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a9bc3cffccc21dfabc605f4b1d82e3934">Command</a> sdc, uint32_t arg, uint8_t response_buffer[], <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aea755e43d994ae5941d08cd00c4541b2">KeepAlive</a> keep_alive)</td></tr>
-<tr class="separator:ad3f86bfce15e93e1a026e22fcbd0006e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab75051a0f5cd397fe88d1395e1ff45f9"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ab75051a0f5cd397fe88d1395e1ff45f9">Sd</a> (<a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">Spi</a> &amp;spi, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;chip_select, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;card_detect, units::frequency::hertz_t spi_clock_rate=<a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a241cb4ecf81dc85b44ce367e581aaab6">kDefaultSpiFrequency</a>, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f">Gpio::State</a> active_level=Gpio::State::kLow)</td></tr>
+<tr class="separator:ab75051a0f5cd397fe88d1395e1ff45f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a787fe69f01c4e946031f7c410950335e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878">Storage::Type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a787fe69f01c4e946031f7c410950335e">GetMemoryType</a> () override</td></tr>
+<tr class="separator:a787fe69f01c4e946031f7c410950335e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a315057468deefcea3a9aa555487141dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a315057468deefcea3a9aa555487141dd">Initialize</a> () override</td></tr>
+<tr class="separator:a315057468deefcea3a9aa555487141dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabd2e86689ae232ecb8c21f1aa2dac87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aabd2e86689ae232ecb8c21f1aa2dac87">IsMediaPresent</a> () override</td></tr>
+<tr class="separator:aabd2e86689ae232ecb8c21f1aa2dac87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a16743f97da9fc6bab82c4b329f710b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a4a16743f97da9fc6bab82c4b329f710b">Enable</a> () override</td></tr>
+<tr class="separator:a4a16743f97da9fc6bab82c4b329f710b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb06b1beb58a11e390f268cf4cd35e4d"><td class="memItemLeft" align="right" valign="top"><a id="aeb06b1beb58a11e390f268cf4cd35e4d"></a>
+<a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aeb06b1beb58a11e390f268cf4cd35e4d">Disable</a> () override</td></tr>
+<tr class="memdesc:aeb06b1beb58a11e390f268cf4cd35e4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should shutdown the device. <br /></td></tr>
+<tr class="separator:aeb06b1beb58a11e390f268cf4cd35e4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4954b2af89db6655585a996c87e4cb14"><td class="memItemLeft" align="right" valign="top"><a id="a4954b2af89db6655585a996c87e4cb14"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a4954b2af89db6655585a996c87e4cb14">IsReadOnly</a> () override</td></tr>
+<tr class="memdesc:a4954b2af89db6655585a996c87e4cb14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assumes that write protection is never enabled. <br /></td></tr>
+<tr class="separator:a4954b2af89db6655585a996c87e4cb14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a284495cb76906ca4eb0cf0a980b3903e"><td class="memItemLeft" align="right" valign="top">units::data::byte_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a284495cb76906ca4eb0cf0a980b3903e">GetBlockSize</a> () override</td></tr>
+<tr class="separator:a284495cb76906ca4eb0cf0a980b3903e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30f10df1483f0a280e0cfd2e7b33585a"><td class="memItemLeft" align="right" valign="top">units::data::byte_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a30f10df1483f0a280e0cfd2e7b33585a">GetCapacity</a> () override</td></tr>
+<tr class="separator:a30f10df1483f0a280e0cfd2e7b33585a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34de0a4725d328732eb92ff2de6ca55c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a34de0a4725d328732eb92ff2de6ca55c">Erase</a> (uint32_t block_address, size_t block_count) override</td></tr>
+<tr class="separator:a34de0a4725d328732eb92ff2de6ca55c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a262054239f0b25bfe32f73f82fad18dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a262054239f0b25bfe32f73f82fad18dc">Write</a> (uint32_t block_address, const void *data, size_t size) override</td></tr>
+<tr class="separator:a262054239f0b25bfe32f73f82fad18dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2468260a4a387dbb880336c28bf30312"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a2468260a4a387dbb880336c28bf30312">Read</a> (uint32_t block_address, void *data, size_t size) override</td></tr>
+<tr class="separator:a2468260a4a387dbb880336c28bf30312"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5753b6d521ef627ef5d6540833616b9e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html">CardInfo_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a5753b6d521ef627ef5d6540833616b9e">GetCardInfo</a> ()</td></tr>
+<tr class="separator:a5753b6d521ef627ef5d6540833616b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a8a1c1492e8b1848d9269b152522c98a2"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a8a1c1492e8b1848d9269b152522c98a2">kBusTimeout</a> = 250</td></tr>
-<tr class="separator:a8a1c1492e8b1848d9269b152522c98a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a392f2c4132fdf3b0656a766004347f17"><td class="memItemLeft" align="right" valign="top"><a id="a392f2c4132fdf3b0656a766004347f17"></a>
-static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a392f2c4132fdf3b0656a766004347f17">kBlockSize</a> = 512</td></tr>
-<tr class="memdesc:a392f2c4132fdf3b0656a766004347f17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enforcing block-size cross-compatibility. <br /></td></tr>
-<tr class="separator:a392f2c4132fdf3b0656a766004347f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2f98d1b49431a2831f3765f719c2b64"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ab2f98d1b49431a2831f3765f719c2b64">kRetryLimit</a> = 250</td></tr>
+<tr class="separator:ab2f98d1b49431a2831f3765f719c2b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21ed102d294ddc3c43a00d0acaea3381"><td class="memItemLeft" align="right" valign="top"><a id="a21ed102d294ddc3c43a00d0acaea3381"></a>
+static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a21ed102d294ddc3c43a00d0acaea3381">kBlockSize</a> = 512</td></tr>
+<tr class="memdesc:a21ed102d294ddc3c43a00d0acaea3381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enforcing block-size cross-compatibility. <br /></td></tr>
+<tr class="separator:a21ed102d294ddc3c43a00d0acaea3381"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52efdddde29bb63f54f60ea294cf1b48"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html">sjsu::crc::CrcTableConfig_t</a>&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a52efdddde29bb63f54f60ea294cf1b48">kCrcTable8</a></td></tr>
 <tr class="memdesc:a52efdddde29bb63f54f60ea294cf1b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table holding CRC8 tokens used to verify SD card transactions.  <a href="#a52efdddde29bb63f54f60ea294cf1b48">More...</a><br /></td></tr>
 <tr class="separator:a52efdddde29bb63f54f60ea294cf1b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabaf4e5b6de5fd0912874fe94cb5a9cc"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html">sjsu::crc::CrcTableConfig_t</a>&lt; uint16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aabaf4e5b6de5fd0912874fe94cb5a9cc">kCrcTable16</a></td></tr>
 <tr class="memdesc:aabaf4e5b6de5fd0912874fe94cb5a9cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table holding CRC16 tokens used to verify SD card transactions.  <a href="#aabaf4e5b6de5fd0912874fe94cb5a9cc">More...</a><br /></td></tr>
 <tr class="separator:aabaf4e5b6de5fd0912874fe94cb5a9cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a241cb4ecf81dc85b44ce367e581aaab6"><td class="memItemLeft" align="right" valign="top"><a id="a241cb4ecf81dc85b44ce367e581aaab6"></a>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a241cb4ecf81dc85b44ce367e581aaab6">kDefaultSpiFrequency</a> = 12_MHz</td></tr>
+<tr class="memdesc:a241cb4ecf81dc85b44ce367e581aaab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default SPI frequency for SD card communication. <br /></td></tr>
+<tr class="separator:a241cb4ecf81dc85b44ce367e581aaab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c0f0240dbee60636045174b245360a6"><td class="memItemLeft" align="right" valign="top"><a id="a4c0f0240dbee60636045174b245360a6"></a>
+static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a4c0f0240dbee60636045174b245360a6">kCommandBase</a> = 0x40</td></tr>
+<tr class="memdesc:a4c0f0240dbee60636045174b245360a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The start bits for every command. <br /></td></tr>
+<tr class="separator:a4c0f0240dbee60636045174b245360a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa19f690993cbdf97b4021374e4a0f31b"><td class="memItemLeft" align="right" valign="top"><a id="aa19f690993cbdf97b4021374e4a0f31b"></a>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aa19f690993cbdf97b4021374e4a0f31b">kIllegalCommand</a> = bit::CreateMaskFromRange(2)</td></tr>
+<tr class="memdesc:aa19f690993cbdf97b4021374e4a0f31b"><td class="mdescLeft">&#160;</td><td class="mdescRight">R1 Response error flag "Illegal Command" bit position. <br /></td></tr>
+<tr class="separator:aa19f690993cbdf97b4021374e4a0f31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ce436e4b6135fb674ea5e5506e8fd8f"><td class="memItemLeft" align="right" valign="top"><a id="a1ce436e4b6135fb674ea5e5506e8fd8f"></a>
+static constexpr <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">bit::Mask</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a1ce436e4b6135fb674ea5e5506e8fd8f">kIdle</a> = bit::CreateMaskFromRange(0)</td></tr>
+<tr class="memdesc:a1ce436e4b6135fb674ea5e5506e8fd8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">R1 Response error flag "In Idle Mode" bit position. <br /></td></tr>
+<tr class="separator:a1ce436e4b6135fb674ea5e5506e8fd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SD card controller utilizing the SPI peripheral. </p>
@@ -250,7 +296,7 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
   </tr>
 </table>
 </div><div class="memdoc">
-<p>A collection of SPI-supported command codes to be used with <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#ad3f86bfce15e93e1a026e22fcbd0006e">SendCmd()</a></p>
+<p>A collection of SPI-supported command codes to be used with SendCommand()</p>
 <dl class="section note"><dt>Note</dt><dd>OR of b0100_0000 is meant to conform with the SD protocol (i.e. first bits must be b01) </dd></dl>
 
 </div>
@@ -274,13 +320,13 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
   </tr>
 </table>
 </div><div class="memdoc">
-<p>bit shift counts provided to allow easy checking of the OCR flag bits for the card's operating conditions </p>
+<p>Bit shift counts provided to allow easy checking of the OCR flag bits for the card's operating conditions </p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a34005d8da234cc37f2e6aaaa7638fc23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34005d8da234cc37f2e6aaaa7638fc23">&#9670;&nbsp;</a></span>Sd()</h2>
+<a id="ab75051a0f5cd397fe88d1395e1ff45f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab75051a0f5cd397fe88d1395e1ff45f9">&#9670;&nbsp;</a></span>Sd()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,14 +337,32 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
         <tr>
           <td class="memname">constexpr sjsu::Sd::Sd </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">Spi</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">Spi</a> &amp;&#160;</td>
           <td class="paramname"><em>spi</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;&#160;</td>
-          <td class="paramname"><em>chip_select</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;&#160;</td>
+          <td class="paramname"><em>chip_select</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">Gpio</a> &amp;&#160;</td>
+          <td class="paramname"><em>card_detect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">units::frequency::hertz_t&#160;</td>
+          <td class="paramname"><em>spi_clock_rate</em> = <code><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a241cb4ecf81dc85b44ce367e581aaab6">kDefaultSpiFrequency</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f">Gpio::State</a>&#160;</td>
+          <td class="paramname"><em>active_level</em> = <code>Gpio::State::kLow</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -308,15 +372,17 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>SD Card constructor</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>- spi peripheral connected to SD card </td></tr>
-    <tr><td class="paramname">chip_select</td><td>- gpio connected to SD card's chip select </td></tr>
+    <tr><td class="paramname">spi</td><td>- spi peripheral connected to an SD card. </td></tr>
+    <tr><td class="paramname">chip_select</td><td>- gpio connected to the chip select pin of the SD card. </td></tr>
+    <tr><td class="paramname">card_detect</td><td>- gpio connected to the card detect pin of the SD card socket. </td></tr>
+    <tr><td class="paramname">spi_clock_rate</td><td>- clock frequency for the SPI communication with the SD card. </td></tr>
+    <tr><td class="paramname">active_level</td><td>- the active voltage level of the card detect signal. </td></tr>
   </table>
   </dd>
 </dl>
@@ -324,8 +390,8 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad3f86bfce15e93e1a026e22fcbd0006e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3f86bfce15e93e1a026e22fcbd0006e">&#9670;&nbsp;</a></span>SendCmd()</h2>
+<a id="a4a16743f97da9fc6bab82c4b329f710b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a16743f97da9fc6bab82c4b329f710b">&#9670;&nbsp;</a></span>Enable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -334,28 +400,46 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint32_t sjsu::Sd::SendCmd </td>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::Sd::Enable </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a9bc3cffccc21dfabc605f4b1d82e3934">Command</a>&#160;</td>
-          <td class="paramname"><em>sdc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Will prepare and configure storage media for communication. This method can only be called after <code><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a315057468deefcea3a9aa555487141dd">Initialize()</a></code> was called successfully without returning an <code><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">Error_t</a></code>. This method MUST be called in order for the following methods to operate:</p>
+<p>bool <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a4954b2af89db6655585a996c87e4cb14" title="Assumes that write protection is never enabled. ">IsReadOnly()</a> units::data::byte_t <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a30f10df1483f0a280e0cfd2e7b33585a">GetCapacity()</a> units::data::byte_t <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a284495cb76906ca4eb0cf0a980b3903e">GetBlockSize()</a> Returns&lt;void&gt; <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a34de0a4725d328732eb92ff2de6ca55c">Erase(uint32_t, size_t)</a> Returns&lt;void&gt; <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a262054239f0b25bfe32f73f82fad18dc">Write(uint32_t, const void *, size_t)</a> Returns&lt;void&gt; <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a2468260a4a387dbb880336c28bf30312">Read(uint32_t, void *, size_t)</a> Returns&lt;void&gt; <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aeb06b1beb58a11e390f268cf4cd35e4d" title="Should shutdown the device. ">Disable()</a></p>
+<p>Calling any of these methods before <code><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a4a16743f97da9fc6bab82c4b329f710b">Enable()</a></code> has been called successfully, will result in undefined behavior. </p>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4903778414bf73f61d15169b3653af03">sjsu::Storage</a>.</p>
+
+</div>
+</div>
+<a id="a34de0a4725d328732eb92ff2de6ca55c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34de0a4725d328732eb92ff2de6ca55c">&#9670;&nbsp;</a></span>Erase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::Sd::Erase </td>
+          <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>arg</em>, </td>
+          <td class="paramname"><em>block_address</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>response_buffer</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#aea755e43d994ae5941d08cd00c4541b2">KeepAlive</a>&#160;</td>
-          <td class="paramname"><em>keep_alive</em>&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>blocks_count</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -365,52 +449,26 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Send a SD Card command</p>
+<p>Must be called before a <code><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a262054239f0b25bfe32f73f82fad18dc">Write()</a></code> operation. Erases the contents of the storage media in the location specified, the number of bytes given. Some storage media do not require an erasure before a write to be performed. In those cases, the implementation should simply do nothing on erase.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sdc</td><td>- the type of SD card command </td></tr>
-    <tr><td class="paramname">arg</td><td>- value to send with the command </td></tr>
-    <tr><td class="paramname">response_buffer</td><td>- buffer to contain the response returned. </td></tr>
-    <tr><td class="paramname">keep_alive</td><td>- set to true in order to keep the connection with SD card alive. </td></tr>
+    <tr><td class="paramname">block_address</td><td>- starting block to erase. </td></tr>
+    <tr><td class="paramname">blocks_count</td><td>- the number of bytes to erase. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>uint32_t response length </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> of if the operation was successful, otherwise, returns an appropriate status signal. </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a8ee35125b70666a7717b83db70ea66cf">sjsu::Storage</a>.</p>
 
 </div>
 </div>
-<a id="a4e596f032324def60480d573060194d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e596f032324def60480d573060194d0">&#9670;&nbsp;</a></span>WaitToReadBlock()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void sjsu::Sd::WaitToReadBlock </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Waits for the card to respond after a single or multi block read cmd is sent. </p>
-
-</div>
-</div>
-<a id="a365fc041ceb89dc328086b5503280625"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a365fc041ceb89dc328086b5503280625">&#9670;&nbsp;</a></span>WaitWhileBusy()</h2>
+<a id="a284495cb76906ca4eb0cf0a980b3903e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a284495cb76906ca4eb0cf0a980b3903e">&#9670;&nbsp;</a></span>GetBlockSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -419,7 +477,7 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void sjsu::Sd::WaitWhileBusy </td>
+          <td class="memname">units::data::byte_t sjsu::Sd::GetBlockSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -427,38 +485,267 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Waits for the card to be ready to receive a new block after one has been written or erased </p>
+<dl class="section return"><dt>Returns</dt><dd>the number of bytes per block. </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a6b6e66b9f34d222216468e2c907b0835">sjsu::Storage</a>.</p>
+
+</div>
+</div>
+<a id="a30f10df1483f0a280e0cfd2e7b33585a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30f10df1483f0a280e0cfd2e7b33585a">&#9670;&nbsp;</a></span>GetCapacity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">units::data::byte_t sjsu::Sd::GetCapacity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the maximum capacity of this storage media. This includes areas that have already been written to. This does not include sections of the memory that are not accessible. For example, if the first 2kB of the memory cannot be accessed via this driver, then it should not be considered as apart of the capacity. </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a624e7e90e62cec1e67ea753859d7ba35">sjsu::Storage</a>.</p>
+
+</div>
+</div>
+<a id="a5753b6d521ef627ef5d6540833616b9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5753b6d521ef627ef5d6540833616b9e">&#9670;&nbsp;</a></span>GetCardInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html">CardInfo_t</a>&amp; sjsu::Sd::GetCardInfo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the SD card's information as a reference. Used for testing purposes and should not be used in production code. In production code, the <a class="el" href="../../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html" title="Structure for recording information about the SD Card. ">CardInfo_t</a> object returned is a dummy object and is NOT the one used by the object. </p>
+
+</div>
+</div>
+<a id="a787fe69f01c4e946031f7c410950335e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a787fe69f01c4e946031f7c410950335e">&#9670;&nbsp;</a></span>GetMemoryType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878">Storage::Type</a> sjsu::Sd::GetMemoryType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the type of memory this driver controls. <a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> be called without calling <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a315057468deefcea3a9aa555487141dd">Initialize()</a> first. </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a4b9c5d361413a7057321736b0133412d">sjsu::Storage</a>.</p>
+
+</div>
+</div>
+<a id="a315057468deefcea3a9aa555487141dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a315057468deefcea3a9aa555487141dd">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::Sd::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize all peripherals required to make communicate with the storage media possible. MUST be called before calling any method in this interface with the exception of <code><a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a787fe69f01c4e946031f7c410950335e">GetMemoryType()</a></code> </p>
+<p>Defaulting to 400 kHz as that is the frequency that allows mounting to be possible. </p>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a0bf610324b09292fb2a12f799fae540a">sjsu::Storage</a>.</p>
+
+</div>
+</div>
+<a id="aabd2e86689ae232ecb8c21f1aa2dac87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabd2e86689ae232ecb8c21f1aa2dac87">&#9670;&nbsp;</a></span>IsMediaPresent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool sjsu::Sd::IsMediaPresent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>true if the storage is present. For cases where the memory cannot be removed or is physically located within a device, this should always return true. </dd>
+<dd>
+false if storage media is not present. </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a826db74f43c08271f1d15d11e2e91b8d">sjsu::Storage</a>.</p>
+
+</div>
+</div>
+<a id="a2468260a4a387dbb880336c28bf30312"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2468260a4a387dbb880336c28bf30312">&#9670;&nbsp;</a></span>Read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::Sd::Read </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>block_address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read data from the storage media in the location specified.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">block_address</td><td>- starting block to read from. </td></tr>
+    <tr><td class="paramname">data</td><td>- pointer to where read data should be stored. </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to read from memory. <a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> be less than the size of a block. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> of if the operation was successful, otherwise, return an appropriate status signal. </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a933e2f95e1b77c3e018b02a4f35f5125">sjsu::Storage</a>.</p>
+
+</div>
+</div>
+<a id="a262054239f0b25bfe32f73f82fad18dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a262054239f0b25bfe32f73f82fad18dc">&#9670;&nbsp;</a></span>Write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::Sd::Write </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>block_address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write data to the storage media in the location block specified. If the block size for this media is not 1 byte, then single byte is not allowed and transactions must be performed at a block level.</p>
+<p>Be sure to call <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a34de0a4725d328732eb92ff2de6ca55c">Erase()</a> on the memory location you plan to write to before writing, otherwise, the data may be corrupted or unchanged.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">block_address</td><td>- starting block to write to </td></tr>
+    <tr><td class="paramname">data</td><td>- data to be stored in the location addressed above. </td></tr>
+    <tr><td class="paramname">size</td><td>- the number of bytes to write into memory. <a class="el" href="../../da/d70/classsjsu_1_1Can.html">Can</a> be less than the size of a block. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> of if the operation was successful, otherwise, returns an appropriate status signal. </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/da6/classsjsu_1_1Storage.html#a59933e2056a578786f0409f0c7109c13">sjsu::Storage</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a8a1c1492e8b1848d9269b152522c98a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a1c1492e8b1848d9269b152522c98a2">&#9670;&nbsp;</a></span>kBusTimeout</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr uint8_t sjsu::Sd::kBusTimeout = 250</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This value was found through experimentation. The suggested value (found via research) is to wait at least 1-8 bytes after sending a command's CRC before expecting a response from the card. See <a href="https://luckyresistor.me/cat-protector/software/sdcard-2/">https://luckyresistor.me/cat-protector/software/sdcard-2/</a> </p>
-
-</div>
-</div>
 <a id="aabaf4e5b6de5fd0912874fe94cb5a9cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aabaf4e5b6de5fd0912874fe94cb5a9cc">&#9670;&nbsp;</a></span>kCrcTable16</h2>
 
@@ -504,6 +791,29 @@ static constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a 
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      sjsu::crc::GenerateCrc7Table&lt;uint8_t&gt;()</div></div><!-- fragment -->
 <p>Table holding CRC8 tokens used to verify SD card transactions. </p>
+
+</div>
+</div>
+<a id="ab2f98d1b49431a2831f3765f719c2b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2f98d1b49431a2831f3765f719c2b64">&#9670;&nbsp;</a></span>kRetryLimit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint32_t sjsu::Sd::kRetryLimit = 250</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This value was found through experimentation. The suggested value (found via research) is to wait at least 1-8 bytes after sending a command's CRC before expecting a response from the card. See <a href="https://luckyresistor.me/cat-protector/software/sdcard-2/">https://luckyresistor.me/cat-protector/software/sdcard-2/</a> </p>
 
 </div>
 </div>

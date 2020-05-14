@@ -17,6 +17,7 @@
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
+#include "L1_Peripheral/inactive.hpp"
 
 // Private namespace to make sure that these do not conflict with other globals
 namespace

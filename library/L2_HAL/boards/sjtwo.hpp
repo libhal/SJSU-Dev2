@@ -75,7 +75,7 @@ struct sjtwo  // NOLINT
   [[gnu::always_inline]] inline static sjsu::Sd & SdCard()
   {
     static sjsu::lpc40xx::Gpio sd_cs = sjsu::lpc40xx::Gpio(1, 8);
-    static sjsu::Sd sd(spi2, sd_cs);
+    static sjsu::Sd sd(spi2, sd_cs, sjsu::GetInactive<sjsu::Gpio>());
     return sd;
   }
 

@@ -54,6 +54,7 @@ nav:
       - 'design_docs/L0/none.md'
     - L1 Peripheral:
       - 'design_docs/L1/counter.md'
+      - 'design_docs/L1/pin.md'
     - L2 Hardware Abstraction:
       - Sensors:
         - 'design_docs/L2/accelerometer.md'

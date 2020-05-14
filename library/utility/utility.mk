@@ -9,7 +9,6 @@ TESTS += $(LIBRARY_DIR)/utility/test/constexpr_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/crc_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/debug_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/enum_test.cpp
-TESTS += $(LIBRARY_DIR)/utility/test/fatfs_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/infrared_algorithms_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/map_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/rtos_test.cpp

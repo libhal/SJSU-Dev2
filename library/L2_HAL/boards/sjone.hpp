@@ -53,7 +53,7 @@ struct sjone  // NOLINT
   [[gnu::always_inline]] inline static sjsu::Sd & SdCard()
   {
     static sjsu::lpc17xx::Gpio sd_cs = sjsu::lpc17xx::Gpio(2, 6);
-    static sjsu::Sd sd(spi1, sd_cs);
+    static sjsu::Sd sd(spi1, sd_cs, sjsu::GetInactive<sjsu::Gpio>());
     return sd;
   }
 

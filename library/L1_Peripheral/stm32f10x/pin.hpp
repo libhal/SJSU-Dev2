@@ -47,15 +47,19 @@ class Pin final : public sjsu::Pin
   /// @param pin - must be between 0 to 15
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
-  void Initialize() const override
+  Returns<void> Initialize() const override
   {
     auto & system = SystemController::GetPlatformController();
 
     // Enable the usage of alternative pin configurations
     system.PowerUpPeripheral(stm32f10x::SystemController::Peripherals::kAFIO);
 
-    SJ2_ASSERT_FATAL('A' <= port_ && port_ <= 'I',
-                     "Invalid port choosen for this pin implementation");
+    if (!('A' <= port_ && port_ <= 'I'))
+    {
+      return Error(Status::kInvalidParameters,
+                   "Invalid port choosen for this pin implementation");
+    }
+
     switch (port_)
     {
       case 'A':
@@ -87,6 +91,7 @@ class Pin final : public sjsu::Pin
             stm32f10x::SystemController::Peripherals::kGpioG);
         break;
     }
+    return {};
   }
 
   /// Will not change the function of the pin but does change the
@@ -97,12 +102,17 @@ class Pin final : public sjsu::Pin
   ///
   /// @param alternative_function - set to 0 for gpio mode and set to 1 for
   ///        alternative mode.
-  void SetPinFunction(uint8_t alternative_function) const override
+  Returns<void> SetPinFunction(uint8_t alternative_function) const override
   {
     static constexpr auto kMode = bit::CreateMaskFromRange(0, 1);
     static constexpr auto kCFN1 = bit::CreateMaskFromRange(3);
 
-    Initialize();
+    SJ2_RETURN_ON_ERROR(Initialize());
+
+    if (alternative_function > 0b1)
+    {
+      return Error(Status::kInvalidParameters, "Invalid function.");
+    }
 
     uint32_t config = 0;
     // Set the alternative bit flag
@@ -111,11 +121,12 @@ class Pin final : public sjsu::Pin
     config = bit::Insert(config, 0b11, kMode);
 
     SetConfig(config);
+    return {};
   }
 
   /// Should only be used for inputs. This method will change the pin's mode
   /// form out to input.
-  void SetPull(Resistor resistor) const override
+  Returns<void> SetPull(Resistor resistor) const override
   {
     bool pull_up   = true;
     uint8_t config = 0;
@@ -126,15 +137,16 @@ class Pin final : public sjsu::Pin
       case Resistor::kNone: config = 0b0100; break;
       case Resistor::kPullDown: pull_up = false; [[fallthrough]];
       case Resistor::kPullUp: config = 0b1000; break;
-      default: sjsu::LogInfo("Invalid pull resistor for this pin"); return;
+      default: return Error(Status::kInvalidSettings, "Invalid resistor pull.");
     }
 
     SetConfig(config);
     Port()->ODR = bit::Insert(Port()->ODR, pull_up, pin_);
+    return {};
   }
 
   /// This function MUST NOT be called for pins set as inputs.
-  void SetAsOpenDrain(bool set_as_open_drain = true) const override
+  Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override
   {
     static constexpr auto kCFN0 = bit::CreateMaskFromRange(2);
 
@@ -143,13 +155,15 @@ class Pin final : public sjsu::Pin
     config = bit::Insert(config, set_as_open_drain, kCFN0);
 
     SetConfig(config);
+    return {};
   }
 
   /// This function can only be used to set the pin as analog.
-  void SetAsAnalogMode(bool = true) const override
+  Returns<void> SetAsAnalogMode(bool = true) const override
   {
     // Configuration for analog input mode. See Table 20 on page 161 on RM0008
     SetConfig(0b0100);
+    return {};
   }
 
  private:

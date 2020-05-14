@@ -29,6 +29,7 @@ class Pin final : public sjsu::Pin
     /// this structure holds an array of 11 uint32_t.
     volatile uint32_t pin[11];
   };
+
   /// Pointer to the pin function code map
   inline static volatile PinTable_t * function_map =
       reinterpret_cast<volatile PinTable_t *>(&LPC_PINCON->PINSEL0);
@@ -38,6 +39,7 @@ class Pin final : public sjsu::Pin
   /// Pointer to the open drain control map
   inline static volatile PinTable_t * open_drain_map =
       reinterpret_cast<volatile PinTable_t *>(&LPC_PINCON->PINMODE_OD0);
+
   /// Compile time Pin factory that test the port and pin variables to make sure
   /// they are within bounds of the pin_config_register.
   template <unsigned port_, unsigned pin_>
@@ -49,6 +51,7 @@ class Pin final : public sjsu::Pin
                   "For port 5, the pin number must be equal to or below 4");
     return Pin(port_, pin_);
   }
+
   /// Construct a pin for the specified port and pin numbers.
   ///
   /// @param port - port number for the pin you want to construct.
@@ -58,19 +61,24 @@ class Pin final : public sjsu::Pin
   {
   }
 
-  /// NOTE: GPIO hardare is enabled and ready by default on reset.
-  void Initialize() const override {}
+  /// @note GPIO hardare is enabled and ready by default on reset.
+  Returns<void> Initialize() const override
+  {
+    return {};
+  }
 
-  void SetPinFunction(uint8_t function) const override
+  Returns<void> SetPinFunction(uint8_t function) const override
   {
     uint32_t pin_reg_select = PinRegisterLookup();
     function_map->pin[pin_reg_select] =
         bit::Insert(function_map->pin[pin_reg_select], function, kPinMask);
+    return {};
   }
-  void SetPull(Resistor resistor) const override
+
+  Returns<void> SetPull(Resistor resistor) const override
   {
     static constexpr uint8_t kResistorModes[4] = {
-      0b10,  // kNone [0]
+      0b10,  // kNone     [0]
       0b11,  // kPullDown [1]
       0b00,  // kPullUp   [2]
       0b01,  // kRepeater [3]
@@ -78,24 +86,26 @@ class Pin final : public sjsu::Pin
     uint32_t pin_reg_select = PinRegisterLookup();
     resistor_map->pin[pin_reg_select] =
         bit::Insert(resistor_map->pin[pin_reg_select],
-                    kResistorModes[Value(resistor)],
-                    kPinMask);
-  }
-  /// Implement SetAsAnalogMode as deprecated and unsupported
-  [[deprecated("Unsupported operation")]] void SetAsAnalogMode(
-      bool) const override
-  {
-    sjsu::LogWarning("Unsupported operation");
+                    kResistorModes[Value(resistor)], kPinMask);
+    return {};
   }
 
-  void SetAsOpenDrain(bool set_as_open_drain = true) const override
+  /// Implement SetAsAnalogMode as deprecated and unsupported
+  [[deprecated("Unsupported operation")]] Returns<void> SetAsAnalogMode(
+      bool) const override
   {
-    open_drain_map->pin[port_] = bit::Insert(open_drain_map->pin[port_],
-                                             set_as_open_drain,
-                                             {
-                                                 .position = pin_,
-                                                 .width    = 1,
-                                             });
+    return Error(Status::kNotImplemented, "Unsupported operation");
+  }
+
+  Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override
+  {
+    open_drain_map->pin[port_] =
+        bit::Insert(open_drain_map->pin[port_], set_as_open_drain,
+                    {
+                        .position = pin_,
+                        .width    = 1,
+                    });
+    return {};
   }
 
  private:
@@ -107,15 +117,17 @@ class Pin final : public sjsu::Pin
       .width    = 2,
     };
   }
+
   /// Performs the necessary math to figure out which register corresponds to
   /// this objects port.
   ///
-  /// @returns index of register in PinTable_t map.
+  /// @returns Index of register in PinTable_t map.
   uint32_t PinRegisterLookup() const
   {
     uint32_t odd_register = (pin_ > 15) ? 1 : 0;
     return (port_ * 2) + odd_register;
   }
+
   /// Bitmask for the pin
   const bit::Mask kPinMask;
 };

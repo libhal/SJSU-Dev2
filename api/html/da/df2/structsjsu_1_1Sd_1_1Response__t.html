@@ -86,31 +86,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a50962c625620f24f0b8e77af4eed99c1"><td class="memItemLeft" ><a id="a50962c625620f24f0b8e77af4eed99c1"></a>
-union {</td></tr>
-<tr class="memitem:a0dd2ade5f0c625cc6e0440c021f3f580"><td class="memItemLeft" >
-&#160;&#160;&#160;uint64_t&#160;&#160;&#160;<b>qWord</b></td></tr>
-<tr class="separator:a0dd2ade5f0c625cc6e0440c021f3f580"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7b98c11cf0cd4a47d65981cfcb50c8d"><td class="memItemLeft" >
-&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:ad56e16a2ae065306f4fff649511eb020"><td class="memItemLeft" >
-&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<b>hi</b></td></tr>
-<tr class="separator:ad56e16a2ae065306f4fff649511eb020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaed073a5937b52ed0978fd87be0bc4e9"><td class="memItemLeft" >
-&#160;&#160;&#160;&#160;&#160;&#160;uint32_t&#160;&#160;&#160;<b>lo</b></td></tr>
-<tr class="separator:aaed073a5937b52ed0978fd87be0bc4e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7b98c11cf0cd4a47d65981cfcb50c8d"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<b>dWord</b></td></tr>
-<tr class="separator:af7b98c11cf0cd4a47d65981cfcb50c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae600ce4e79b269b31d3104458e95ee92"><td class="memItemLeft" >
-&#160;&#160;&#160;uint8_t&#160;&#160;&#160;<b>byte</b> [8]</td></tr>
-<tr class="separator:ae600ce4e79b269b31d3104458e95ee92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50962c625620f24f0b8e77af4eed99c1"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/df2/structsjsu_1_1Sd_1_1Response__t.html#a50962c625620f24f0b8e77af4eed99c1">data</a></td></tr>
-<tr class="memdesc:a50962c625620f24f0b8e77af4eed99c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the contents of the response. <br /></td></tr>
-<tr class="separator:a50962c625620f24f0b8e77af4eed99c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af60813c50f5f64fea7dc5247e8b22bf5"><td class="memItemLeft" align="right" valign="top"><a id="af60813c50f5f64fea7dc5247e8b22bf5"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/df2/structsjsu_1_1Sd_1_1Response__t.html#af60813c50f5f64fea7dc5247e8b22bf5">length</a></td></tr>
-<tr class="memdesc:af60813c50f5f64fea7dc5247e8b22bf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of the response. <br /></td></tr>
-<tr class="separator:af60813c50f5f64fea7dc5247e8b22bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa38255a751f9ff6a198ebc01f6ed642f"><td class="memItemLeft" align="right" valign="top"><a id="aa38255a751f9ff6a198ebc01f6ed642f"></a>
+std::array&lt; uint8_t, 5 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/df2/structsjsu_1_1Sd_1_1Response__t.html#aa38255a751f9ff6a198ebc01f6ed642f">byte</a></td></tr>
+<tr class="memdesc:aa38255a751f9ff6a198ebc01f6ed642f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array buffer to hold the response bytes. <br /></td></tr>
+<tr class="separator:aa38255a751f9ff6a198ebc01f6ed642f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A response frame struct to contain the various responses sent by the card after commands are issued (response type and length depend on the command sent) </p>

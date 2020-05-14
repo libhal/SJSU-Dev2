@@ -1,7 +1,7 @@
 #include "L0_Platform/startup.hpp"
 #include "L1_Peripheral/stm32f10x/gpio.hpp"
 #include "L1_Peripheral/stm32f10x/system_controller.hpp"
-#include "L2_HAL/memory/sd_experimental.hpp"
+#include "L2_HAL/memory/sd.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
@@ -103,8 +103,7 @@ int main()
   BitBangSpi spi(sck, mosi, miso);
   sjsu::stm32f10x::Gpio sd_chip_select('A', 4);
 
-  sjsu::experimental::Sd card(spi, sd_chip_select,
-                              sjsu::GetInactive<sjsu::Gpio>());
+  sjsu::Sd card(spi, sd_chip_select, sjsu::GetInactive<sjsu::Gpio>());
 
   // Must always initialize the hardware before usage.
   card.Initialize();
@@ -130,8 +129,8 @@ int main()
   sjsu::LogInfo("Mounting of SD Card was" SJ2_HI_BOLD_GREEN " successful!");
 
   sjsu::LogInfo("Gather SD Card information...");
-  units::data::gigabyte_t capacity = card.GetCapacity().value_or(0_B);
-  units::data::byte_t block_size   = card.GetBlockSize().value_or(0_B);
+  units::data::gigabyte_t capacity = card.GetCapacity();
+  units::data::byte_t block_size   = card.GetBlockSize();
   bool is_read_only                = card.IsReadOnly();
 
   sjsu::LogInfo("SD Card Capacity   = " SJ2_HI_BOLD_GREEN "%f GB",
