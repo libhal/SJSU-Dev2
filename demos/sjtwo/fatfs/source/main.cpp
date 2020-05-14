@@ -5,7 +5,7 @@
 
 #include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/memory/sd_experimental.hpp"
+#include "L2_HAL/memory/sd.hpp"
 #include "L3_Application/file_io/fatfs.hpp"
 #include "utility/log.hpp"
 
@@ -60,7 +60,7 @@ int main()
   sjsu::lpc40xx::Spi spi2(sjsu::lpc40xx::Spi::Bus::kSpi2);
   sjsu::lpc40xx::Gpio sd_chip_select(1, 8);
   sjsu::lpc40xx::Gpio sd_card_detect(1, 9);
-  sjsu::experimental::Sd card(spi2, sd_chip_select, sd_card_detect);
+  sjsu::Sd card(spi2, sd_chip_select, sd_card_detect);
 
   // In order to use the SD card as a FAT filesystem drive, the storage media
   // needs to be registered. Register SD Card as driver number 0.
