@@ -1,7 +1,7 @@
 #include "L0_Platform/startup.hpp"
 #include "L1_Peripheral/stm32f10x/gpio.hpp"
 #include "L1_Peripheral/stm32f10x/system_controller.hpp"
-#include "L2_HAL/memory/sd_experimental.hpp"
+#include "L2_HAL/memory/sd.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
@@ -103,8 +103,7 @@ int main()
   BitBangSpi spi(sck, mosi, miso);
   sjsu::stm32f10x::Gpio sd_chip_select('A', 4);
 
-  sjsu::experimental::Sd card(spi, sd_chip_select,
-                              sjsu::GetInactive<sjsu::Gpio>());
+  sjsu::Sd card(spi, sd_chip_select, sjsu::GetInactive<sjsu::Gpio>());
 
   // Must always initialize the hardware before usage.
   card.Initialize();
