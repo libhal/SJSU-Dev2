@@ -209,6 +209,8 @@ static_assert(kLogLevel == SJ2_LOG_LEVEL_NONESET ||
 #endif  // !defined(SJ2_FAT_DRIVE_COUNT)
 /// Delcare Constant FAT_DRIVE_COUNT
 SJ2_DECLARE_CONSTANT(FAT_DRIVE_COUNT, uint8_t, kFatDriveCount);
+static_assert(1 <= kFatDriveCount && kFatDriveCount <= 10,
+              "The number of FAT drives is limited to between 1 and 10.");
 
 /// If true, will store error messages into error objects. Setting this to false
 /// will reduce your binary size when using any optimization setting above O0,

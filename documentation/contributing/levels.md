@@ -2,7 +2,7 @@
 
 ## Hierarchy of inclusion
 
-![Inclusion Hierarchy](img/inclusion-hierarchy.png)
+![Inclusion Hierarchy](levels/img/inclusion-hierarchy.png)
 
 ### Explanation
 

@@ -1,4 +1,4 @@
-#How to Build a Multi - Platform Application
+# Multi-Platform Applications
 
 At some point, you are going to build something that you may wish to port to
 another microcontroller or system. SJSU-Dev2 is designed in a way that

@@ -7,8 +7,8 @@ tools that allow you to inspect the inner workings of a device. These debugging
 interfaces are called JTAG debugger or "in-circuit" debugger.
 
 Some development boards have debugging hardware built in. Many others will have
-pins or ports available for using an external debugger like a **STLink** or
-**Segger Jlink**.
+pins or ports available for using an external debugger like a **STLink V2**
+(preferred) or **Segger Jlink**.
 
 ## Step 1: Connecting the Debugger
 !!! Danger
@@ -43,28 +43,28 @@ name of the debugging device. Collaborators typically use the `jlink`  or
 with.
 
 The `make` target to start debugging is `make debug`. In order for this to work
-you need to set the variables `DEBUG_DEVICE` and `PLATFORM`.
+you need to set the variables `JTAG` and `PLATFORM`.
 
 For example if you are using the `lpc40xx` platform and the `stlink` branded
 debugger your command would look something like this:
 
 ```bash
 # Automatically works for any stlink debugger
-make debug DEBUG_DEVICE=stlink PLATFORM=lpc40xx
+make debug JTAG=stlink PLATFORM=lpc40xx
 ```
 
 Example for `lpc17xx` and `jlink`
 
 ```bash
 # Automatically works for any jlink debugger
-make debug DEBUG_DEVICE=jlink PLATFORM=lpc17xx
+make debug JTAG=jlink PLATFORM=lpc17xx
 ```
 
 !!! Tip
     For advanced users that want to use a different debugger, all you need to do
     in order to use it is to use the name of the debugging interface that can be
     found in the `tools/openocd/scripts/interface/` such as the `buspirate` or
-    `cmsis-dap`. The `DEBUG_DEVICE` variable is literally the name of the file
+    `cmsis-dap`. The `JTAG` variable is literally the name of the file
     without the `.cfg` extension.
 
 !!! Tip
