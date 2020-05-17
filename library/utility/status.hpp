@@ -229,7 +229,7 @@ struct Error_t
       Print();
       if constexpr (config::kIncludeBacktrace)
       {
-        printf(SJ2_HI_BOLD_WHITE "\nBacktrace:" SJ2_COLOR_RESET);
+        printf(SJ2_HI_BOLD_WHITE "Backtrace:" SJ2_COLOR_RESET);
         int depth = 0;
         _Unwind_Backtrace(&debug::PrintAddressInRow, &depth);
         puts("");
@@ -242,14 +242,9 @@ struct Error_t
   {
     /// Print the colored error text to STDOUT
     printf(SJ2_BOLD_YELLOW "Error:" SJ2_HI_BOLD_RED "%s(%d)" SJ2_HI_BOLD_WHITE
-                           ":%s:%" PRIuLEAST32 ":%s(): " SJ2_COLOR_RESET,
+                           ":%s:%" PRIuLEAST32 ":%s(): %s\n" SJ2_COLOR_RESET,
            status.name.data(), status.code, location.file_name(),
-           location.line(), location.function_name());
-
-    if (kEmptyMessage != message)
-    {
-      printf("%s", message.data());
-    }
+           location.line(), location.function_name(), message.data());
   }
 
   /// The status associated with this error
