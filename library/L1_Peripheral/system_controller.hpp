@@ -116,15 +116,17 @@ class SystemController
   // ===========================================================================
   // Interface Methods
   // ===========================================================================
-
-  /// Initialize the system controller. Typically this handles configuring the
-  /// clocks for the system based on the ClockConfiguration object passed to the
-  /// controller. This may also need to power any systems on that are required
-  /// to operate at a minimum level.
+  /// Handles self initialization and clock configuration based on the
+  /// ClockConfiguration object passed to the controller's constructor. Like
+  /// other initialize methods, this may be called multiple times during the
+  /// applications runtime. Note that calling this will return the system's
+  /// clocks back to their safest operating modes, and will then times This will
+  /// power on any systems required to operate based on the ClockConfiguration
+  /// object.
   virtual void Initialize() = 0;
 
-  /// @return void*- the a pointer to the clock configuration object used to
-  /// configure this system controller.
+  /// @returns a pointer to the clock configuration object used to configure
+  ///          this system controller.
   virtual void * GetClockConfiguration() = 0;
 
   /// @return the clock rate frequency of a peripheral
