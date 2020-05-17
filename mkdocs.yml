@@ -31,7 +31,7 @@ nav:
     - Getting started: 'getting_started/getting_started.md'
     - How to Use Make: 'getting_started/using_make.md'
   - Guides:
-    - Understanding the Library Directory Structure:
+    - Directory Structure:
       - 'guides/directory_layout/project.md'
       - 'guides/directory_layout/demos.md'
       - 'guides/directory_layout/library.md'
@@ -39,6 +39,7 @@ nav:
     - 'guides/firmware_debugging.md'
     - 'guides/unit_testing.md'
     - 'guides/multi_platform.md'
+    - 'guides/fatfs.md'
   - Contributing:
     - 'contributing/philosophy.md'
     - 'contributing/levels.md'
@@ -55,6 +56,8 @@ nav:
     - L1 Peripheral:
       - 'design_docs/L1/counter.md'
       - 'design_docs/L1/pin.md'
+      - System Controllers:
+        - 'design_docs/L1/msp432p401r/system_controller.md'
     - L2 Hardware Abstraction:
       - Sensors:
         - 'design_docs/L2/accelerometer.md'
