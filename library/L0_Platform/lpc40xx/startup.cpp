@@ -178,24 +178,6 @@ void InitializePlatform()
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
 
-  // TODO(#1136): Remove this on June 1st as the Spring 2020 semester will be
-  // over.
-  {
-    using ClockConfig = sjsu::lpc40xx::SystemController::ClockConfiguration;
-    using SysCtrl     = sjsu::lpc40xx::SystemController;
-    auto & system     = sjsu::SystemController::GetPlatformController();
-    auto & config     = system.GetClockConfiguration<ClockConfig>();
-    // Make sure we are using the internal oscillator of 12 MHz
-    config.system_oscillator = SysCtrl::OscillatorSource::kIrc;
-    // Enable PLL 0
-    config.pll[0].enabled = true;
-    // Multiply the internal 12 MHz oscillator by 4 to get 48 MHz.
-    config.pll[0].multiply = 4;
-    // Set the CPU clock to the main PLL (PLL0)
-    config.cpu.clock   = SysCtrl::CpuClockSelect::kPll0;
-    config.cpu.divider = 1;
-  }
-
   // Initialize system controller and its clocks with the default configuration.
   system_controller.Initialize();
 

@@ -13,17 +13,6 @@ int main()
   auto & system = sjsu::SystemController::GetPlatformController();
   auto & config = system.GetClockConfiguration<
       sjsu::lpc40xx::SystemController::ClockConfiguration>();
-  // Select system clock (use crystal oscillator directly)
-  config.cpu.clock =
-      sjsu::lpc40xx::SystemController::CpuClockSelect::kSystemClock;
-  // Make sure to utilize the internal oscillator only.
-  config.system_oscillator =
-      sjsu::lpc40xx::SystemController::OscillatorSource::kIrc;
-  // Make sure PLL0 is enabled and available
-  config.pll[0].enabled  = true;
-  config.pll[0].multiply = 4;
-
-  sjsu::InitializePlatform();
 
   // Set the function of the pin to output the clock signal
   // This is NOT needed to change the clock rate, but is used to inspect and
@@ -36,8 +25,7 @@ int main()
   clock_pin.SetAsActiveLow(false);
   clock_pin.EnableFastMode(false);
   clock_pin.SetAsOpenDrain(false);
-  sjsu::LogInfo(
-      "Connect a probe to pin P1[25] to measure the clock rate of the device.");
+  sjsu::LogInfo("Connect a probe to pin P1[25] to measure the clock rate");
 
   constexpr sjsu::bit::Mask kClockSelect = sjsu::bit::CreateMaskFromRange(0, 3);
   constexpr sjsu::bit::Mask kDivide      = sjsu::bit::CreateMaskFromRange(4, 7);
@@ -52,9 +40,10 @@ int main()
   // NOTE: Dividing the output by 16 brings the output signal frequency low
   // enough for most digital analyzers and oscilloscopes to sample the signal
   // without aliasing.
-  uint32_t clock_out_reg = sjsu::bit::Set(0, kEnable);
-  clock_out_reg          = sjsu::bit::Insert(clock_out_reg, 0xF, kDivide);
-  clock_out_reg          = sjsu::bit::Insert(clock_out_reg, 0, kClockSelect);
+  uint32_t clock_out_reg = sjsu::bit::Value(0)
+                               .Set(kEnable)
+                               .Insert(0xF, kDivide)
+                               .Insert(0, kClockSelect);
   sjsu::lpc40xx::LPC_SC->CLKOUTCFG = clock_out_reg;
 
   while (true)
@@ -62,11 +51,22 @@ int main()
     using sjsu::lpc40xx::SystemController;
     units::frequency::hertz_t speed;
 
-    config.cpu.clock = SystemController::CpuClockSelect::kPll0;
+    // Make sure PLL0 is enabled
+    config.pll[0].enabled = true;
+    // IRC (12_MHz) * 10 => 120 MHz (maximum cpu clock rate)
+    config.pll[0].multiply = 10;
+
+    // Set clock source to PLL0
+    config.cpu.clock   = SystemController::CpuClockSelect::kPll0;
+    config.cpu.divider = 1;
+
+    // Initialize the platform with the current configuration settings.
     sjsu::InitializePlatform();
+
     speed = system.GetClockRate(SystemController::Peripherals::kCpu);
-    sjsu::LogInfo("CPU clock rate is %" PRIu32 " Hz", speed.to<uint32_t>());
-    sjsu::LogInfo("Waiting 5s before switching the CPU frequency");
+    sjsu::LogInfo("CPU clock rate from PLL0 is %" PRIu32 " Hz",
+                  speed.to<uint32_t>());
+    sjsu::LogInfo("Waiting 5s before switching the CPU frequency\n");
     sjsu::Delay(5000ms);
 
     // Change function back to GPIO and pull the signal low to show a transition
@@ -81,8 +81,9 @@ int main()
     config.cpu.clock = SystemController::CpuClockSelect::kSystemClock;
     sjsu::InitializePlatform();
     speed = system.GetClockRate(SystemController::Peripherals::kCpu);
-    sjsu::LogInfo("CPU clock rate is %" PRIu32 " Hz", speed.to<uint32_t>());
-    sjsu::LogInfo("Waiting 5s before switching the CPU frequency");
+    sjsu::LogInfo("CPU clock rate from System Clock %" PRIu32 " Hz",
+                  speed.to<uint32_t>());
+    sjsu::LogInfo("Waiting 5s before switching the CPU frequency\n");
     sjsu::Delay(5000ms);
   }
 

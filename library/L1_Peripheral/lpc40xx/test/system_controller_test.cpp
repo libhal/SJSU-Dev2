@@ -266,6 +266,96 @@ TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx-system-controller]")
                                 SystemController::PllRegister::kDivider));
       }
 
+      SECTION("CPU Speed is <= 20MHz")
+      {
+        config.cpu.clock       = SystemController::CpuClockSelect::kPll0;
+        config.pll[0].multiply = 1;  // 12_MHz
+
+        // Exercise
+        test_subject.Initialize();
+        simulate_pll0_locks.join();
+
+        // Verify
+        CHECK(local_sc.FLASHCFG ==
+              Value(SystemController::FlashConfiguration::kClock1));
+        CHECK(local_sc.PBOOST == 0b00);
+      }
+
+      SECTION("20MHz <= CPU Speed <= 40MHz")
+      {
+        config.cpu.clock       = SystemController::CpuClockSelect::kPll0;
+        config.pll[0].multiply = 2;  // 24_MHz
+
+        // Exercise
+        test_subject.Initialize();
+        simulate_pll0_locks.join();
+
+        // Verify
+        CHECK(local_sc.FLASHCFG ==
+              Value(SystemController::FlashConfiguration::kClock2));
+        CHECK(local_sc.PBOOST == 0b00);
+      }
+
+      SECTION("40MHz <= CPU Speed <= 60MHz")
+      {
+        config.cpu.clock       = SystemController::CpuClockSelect::kPll0;
+        config.pll[0].multiply = 4;  // 48_MHz
+
+        // Exercise
+        test_subject.Initialize();
+        simulate_pll0_locks.join();
+
+        // Verify
+        CHECK(local_sc.FLASHCFG ==
+              Value(SystemController::FlashConfiguration::kClock3));
+        CHECK(local_sc.PBOOST == 0b00);
+      }
+
+      SECTION("60MHz <= CPU Speed <= 80MHz")
+      {
+        config.cpu.clock       = SystemController::CpuClockSelect::kPll0;
+        config.pll[0].multiply = 5;  // 60_MHz
+
+        // Exercise
+        test_subject.Initialize();
+        simulate_pll0_locks.join();
+
+        // Verify
+        CHECK(local_sc.FLASHCFG ==
+              Value(SystemController::FlashConfiguration::kClock4));
+        CHECK(local_sc.PBOOST == 0b00);
+      }
+
+      SECTION("80MHz <= CPU Speed <= 100MHz")
+      {
+        config.cpu.clock       = SystemController::CpuClockSelect::kPll0;
+        config.pll[0].multiply = 7;  // 84_MHz
+
+        // Exercise
+        test_subject.Initialize();
+        simulate_pll0_locks.join();
+
+        // Verify
+        CHECK(local_sc.FLASHCFG ==
+              Value(SystemController::FlashConfiguration::kClock5));
+        CHECK(local_sc.PBOOST == 0b00);
+      }
+
+      SECTION("100MHz >= CPU Speed")
+      {
+        config.cpu.clock       = SystemController::CpuClockSelect::kPll0;
+        config.pll[0].multiply = 10;  // 120_MHz (max)
+
+        // Exercise
+        test_subject.Initialize();
+        simulate_pll0_locks.join();
+
+        // Verify
+        CHECK(local_sc.FLASHCFG ==
+              Value(SystemController::FlashConfiguration::kClock5));
+        CHECK(local_sc.PBOOST == 0b11);
+      }
+
       // Verify
       CHECK(1 == local_sc.PLL0CON);
       CHECK(0x55 == local_sc.PLL0FEED);
