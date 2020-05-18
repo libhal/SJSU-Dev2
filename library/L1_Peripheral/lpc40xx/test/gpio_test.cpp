@@ -19,7 +19,7 @@ TEST_CASE("Testing lpc40xx Gpio", "[lpc40xx-gpio]")
   // Initialized local LPC_GPIO_TypeDef objects with 0 to observe how the Gpio
   // class manipulates the data in the registers
   LPC_GPIO_TypeDef local_gpio_port[2];
-  memset(&local_gpio_port, 0, sizeof(local_gpio_port));
+  testing::ClearStructure(&local_gpio_port);
 
   // Create mock pins
   Mock<sjsu::Pin> mock_pin0;
@@ -145,7 +145,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
 
   // Simulated version of LPC_GPIOINT
   LPC_GPIOINT_TypeDef local_eint;
-  memset(&local_eint, 0, sizeof(local_eint));
+  testing::ClearStructure(&local_eint);
 
   auto * interrupt0 = Gpio::InterruptRegister(0);
   auto * interrupt2 = Gpio::InterruptRegister(1);

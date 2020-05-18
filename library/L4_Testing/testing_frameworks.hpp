@@ -39,11 +39,16 @@ int HostRead(char * payload, size_t length);
 
 namespace sjsu::testing
 {
-inline void ClearRegister(void * ptr, size_t size)
+/// Best practice way to clear a structure of its contents to all zeros for
+/// testing. Test developers should not call memset directly in their code. This
+/// will handle deducing the size of the structure which an lead to problems if
+/// there is a typo.
+///
+/// @tparam T - type of the structure (used to deduce the size of the type)
+/// @param data_structure - data structure to set to all zeros.
+template <class T>
+inline void ClearStructure(T * data_structure)
 {
-  for (size_t i = 0; i < size; i++)
-  {
-    reinterpret_cast<uint8_t *>(ptr)[i] = 0;
-  }
+  memset(data_structure, 0, sizeof(*data_structure));
 }
 }  // namespace sjsu::testing

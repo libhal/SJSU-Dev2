@@ -16,12 +16,12 @@ TEST_CASE("Testing msp432p401r SystemController",
 {
   // Simulate local version of clock system (CS) registers.
   CS_Type local_cs;
-  memset(&local_cs, 0, sizeof(local_cs));
+  testing::ClearStructure(&local_cs);
   SystemController::clock_system = &local_cs;
 
   // Simulate local version of tag length value (TLV) registers.
   TLV_Type local_tlv;
-  memset(&local_tlv, 0, sizeof(local_tlv));
+  testing::ClearStructure(&local_tlv);
   SystemController::device_descriptors = &local_tlv;
 
   SystemController::ClockConfiguration_t clock_configuration;

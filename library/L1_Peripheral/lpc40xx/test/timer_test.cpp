@@ -8,7 +8,7 @@ EMIT_ALL_METHODS(Timer);
 TEST_CASE("Testing lpc40xx Timer", "[lpc40xx-timer]")
 {
   LPC_TIM_TypeDef local_timer_registers;
-  memset(&local_timer_registers, 0, sizeof(local_timer_registers));
+  testing::ClearStructure(&local_timer_registers);
 
   constexpr SystemController::PeripheralID kExpectedPeripheralId =
       SystemController::Peripherals::kTimer0;

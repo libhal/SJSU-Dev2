@@ -17,11 +17,11 @@ TEST_CASE("Testing cortex interrupt", "[cortex-interrupt]")
     .CPUID = 0,
   };
 
-  memset(&local_scb, 0, sizeof(local_scb));
+  testing::ClearStructure(&local_scb);
   test_subject.scb = &local_scb;
 
   NVIC_Type local_nvic;
-  memset(&local_nvic, 0, sizeof(local_nvic));
+  testing::ClearStructure(&local_nvic);
   test_subject.nvic = &local_nvic;
 
   // Making the unregistered handler nullptr guarantees that an exception will

@@ -12,7 +12,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
   // Create local version of LPC_ADC
   LPC_ADC_TypeDef local_adc;
   // Clear local adc registers
-  memset(&local_adc, 0, sizeof(local_adc));
+  testing::ClearStructure(&local_adc);
   // Set base registers to respective local variables to check
   // for any bit manipulations
   // Any manipulation will be directed to the respective local registers

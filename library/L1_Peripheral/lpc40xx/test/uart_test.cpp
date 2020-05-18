@@ -10,7 +10,7 @@ TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
 {
   // Simulated local version of LPC_UART2 to verify registers
   LPC_UART_TypeDef local_uart;
-  memset(&local_uart, 0, sizeof(local_uart));
+  testing::ClearStructure(&local_uart);
 
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =

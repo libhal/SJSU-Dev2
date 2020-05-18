@@ -18,12 +18,12 @@ TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
   DIO_PORT_Interruptable_Type local_dio_e;
   DIO_PORT_Not_Interruptable_Type local_dio_j;
 
-  memset(&local_dio_a, 0, sizeof(local_dio_a));
-  memset(&local_dio_b, 0, sizeof(local_dio_b));
-  memset(&local_dio_c, 0, sizeof(local_dio_c));
-  memset(&local_dio_d, 0, sizeof(local_dio_d));
-  memset(&local_dio_e, 0, sizeof(local_dio_e));
-  memset(&local_dio_e, 0, sizeof(local_dio_j));
+  testing::ClearStructure(&local_dio_a);
+  testing::ClearStructure(&local_dio_b);
+  testing::ClearStructure(&local_dio_c);
+  testing::ClearStructure(&local_dio_d);
+  testing::ClearStructure(&local_dio_e);
+  testing::ClearStructure(&local_dio_e);
 
   Pin::ports[0] = &local_dio_a;
   Pin::ports[1] = &local_dio_b;

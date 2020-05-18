@@ -11,7 +11,7 @@ TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx-system-controller]")
 {
   // Creating local instance of System Control (SC) registers
   LPC_SC_TypeDef local_sc;
-  memset(&local_sc, 0, sizeof(local_sc));
+  testing::ClearStructure(&local_sc);
 
   // Point system controller to modify our local instance of LPC_SC_TypeDef for
   // testing.
