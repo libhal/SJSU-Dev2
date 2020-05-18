@@ -5,42 +5,43 @@ int main()
 {
   sjsu::LogInfo("Staring GPIO Interrupt Application...\n");
 
-  sjsu::LogInfo(
-      "Setting up pin0_15 to interrupt on Rising and Falling edges...");
-  sjsu::lpc40xx::Gpio pin0_15(0, 15);
-  sjsu::lpc40xx::Gpio pin2_9(2, 9);
-  sjsu::lpc40xx::Gpio pin0_30(0, 30);
-  sjsu::lpc40xx::Gpio pin0_29(0, 29);
+  sjsu::lpc40xx::Gpio pin0(0, 15);
+  sjsu::lpc40xx::Gpio pin1(2, 9);
+  sjsu::lpc40xx::Gpio pin2(0, 30);
+  sjsu::lpc40xx::Gpio pin3(0, 29);
 
-  pin0_15.GetPin().PullUp();
-  pin2_9.GetPin().PullUp();
-  pin0_30.GetPin().PullUp();
-  pin0_29.GetPin().PullUp();
+  pin0.SetAsInput();
+  pin0.GetPin().PullUp();
+  pin1.SetAsInput();
+  pin1.GetPin().PullUp();
+  pin2.SetAsInput();
+  pin2.GetPin().PullUp();
+  pin3.SetAsInput();
+  pin3.GetPin().PullUp();
 
-  pin0_15.AttachInterrupt([]() { sjsu::LogInfo("Pin0_15_ISR"); },
-                          sjsu::Gpio::Edge::kEdgeBoth);
-  pin2_9.AttachInterrupt([]() { sjsu::LogInfo("Pin2_9_ISR"); },
-                         sjsu::Gpio::Edge::kEdgeBoth);
-  pin0_30.AttachInterrupt([]() { sjsu::LogInfo("Switch 2 has been pressed!"); },
-                          sjsu::Gpio::Edge::kEdgeRising);
-  pin0_29.AttachInterrupt([]() { sjsu::LogInfo("Switch 3 has been pressed!"); },
-                          sjsu::Gpio::Edge::kEdgeFalling);
+  sjsu::LogInfo("Setup P0[15] to interrupt on only Falling edges...");
+  pin0.AttachInterrupt([]() { sjsu::LogInfo("P0[15] interrupt!"); },
+                       sjsu::Gpio::Edge::kEdgeFalling);
+
+  sjsu::LogInfo("Setup P2[9] to interrupt on only Rising edges...");
+  pin1.AttachInterrupt([]() { sjsu::LogInfo("P2[9] interrupt!"); },
+                       sjsu::Gpio::Edge::kEdgeRising);
+
+  sjsu::LogInfo("Setup P0[29] to interrupt on Rising and Falling edges...");
+  pin2.AttachInterrupt([]() { sjsu::LogInfo("P0[29] interrupt!"); },
+                       sjsu::Gpio::Edge::kEdgeBoth);
+
+  sjsu::LogInfo("Setup P0[30] to interrupt on Rising and Falling edges...");
+  pin2.AttachInterrupt([]() { sjsu::LogInfo("P0[30] interrupt!"); },
+                       sjsu::Gpio::Edge::kEdgeBoth);
 
   sjsu::LogInfo(
-      "Setup pin0_29 (Switch 3) to interrupt on only Falling edges...");
-  sjsu::LogInfo(
-      "Setup pin0_30 (Switch 2) to interrupt on only Rising edges...");
-  sjsu::LogInfo("Setup pin0_15 to interrupt on Rising and Falling edges...");
-  sjsu::LogInfo("Setup pin2_9 to interrupt on Rising and Falling edges...");
+      "All of the pins are currently pulled high using an internal pull-up "
+      "resistor. Create a rising or falling edge by connecting any of the pins "
+      "to GND using a jumper to trigger Interrupt.");
 
-  sjsu::LogInfo(
-      "Connect pin0_15 to gnd using a jumper wire to trigger Interrupt.");
-  sjsu::LogInfo(
-      "Connect pin2_9 to gnd using a jumper wire to trigger Interrupt.");
-  sjsu::LogInfo("Press Switch 2 to trigger Interrupt for pin0_30.");
-  sjsu::LogInfo("Press Switch 3 to trigger Interrupt for pin0_29.");
-
-  sjsu::LogInfo("Halting any action.");
+  sjsu::LogInfo("Halting program to keep main from exiting.");
   sjsu::Halt();
+
   return 0;
 }
