@@ -17,6 +17,30 @@ bit::Mask Mask4Bit(const sjsu::Gpio & gpio)
     .width    = 4,
   };
 }
+
+IRQn GetIrqForPin(uint8_t pin)
+{
+  switch (pin)
+  {
+    case 0: return stm32f10x::EXTI0_IRQn; break;
+    case 1: return stm32f10x::EXTI1_IRQn; break;
+    case 2: return stm32f10x::EXTI2_IRQn; break;
+    case 3: return stm32f10x::EXTI3_IRQn; break;
+    case 4: return stm32f10x::EXTI4_IRQn; break;
+    case 5: [[fallthrough]];
+    case 6: [[fallthrough]];
+    case 7: [[fallthrough]];
+    case 8: [[fallthrough]];
+    case 9: return stm32f10x::EXTI9_5_IRQn; break;
+    case 10: [[fallthrough]];
+    case 11: [[fallthrough]];
+    case 12: [[fallthrough]];
+    case 13: [[fallthrough]];
+    case 14: [[fallthrough]];
+    case 15: return stm32f10x::EXTI15_10_IRQn; break;
+    default: return static_cast<stm32f10x::IRQn>(0xFFFF);
+  }
+}
 }  // namespace
 
 TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
@@ -25,6 +49,10 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
   Fake(Method(mock_system_controller, PowerUpPeripheral));
   SystemController::SetPlatformController(&mock_system_controller.get());
 
+  Mock<InterruptController> mock_interrupt_controller;
+  Fake(Method(mock_interrupt_controller, Enable));
+  InterruptController::SetPlatformController(&mock_interrupt_controller.get());
+
   GPIO_TypeDef local_gpio_a;
   GPIO_TypeDef local_gpio_b;
   GPIO_TypeDef local_gpio_c;
@@ -32,6 +60,8 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
   GPIO_TypeDef local_gpio_e;
   GPIO_TypeDef local_gpio_f;
   GPIO_TypeDef local_gpio_g;
+  AFIO_TypeDef local_afio;
+  EXTI_TypeDef local_exti;
 
   memset(&local_gpio_a, 0, sizeof(local_gpio_a));
   memset(&local_gpio_b, 0, sizeof(local_gpio_b));
@@ -40,6 +70,8 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
   memset(&local_gpio_e, 0, sizeof(local_gpio_e));
   memset(&local_gpio_f, 0, sizeof(local_gpio_f));
   memset(&local_gpio_g, 0, sizeof(local_gpio_g));
+  memset(&local_afio, 0, sizeof(local_afio));
+  memset(&local_exti, 0, sizeof(local_exti));
 
   // The stm32f10x::Gpio class uses the stm32f10x::Pin registers directly
   Pin::gpio[0] = &local_gpio_a;
@@ -49,6 +81,9 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
   Pin::gpio[4] = &local_gpio_e;
   Pin::gpio[5] = &local_gpio_f;
   Pin::gpio[6] = &local_gpio_g;
+  Pin::afio    = &local_afio;
+
+  Gpio::external_interrupt = &local_exti;
 
   struct TestStruct_t
   {
@@ -57,7 +92,7 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
     SystemController::PeripheralID id;
   };
 
-  std::array<TestStruct_t, 12> test = {
+  std::array<TestStruct_t, 15> test = {
     TestStruct_t{
         .gpio = stm32f10x::Gpio('A', 0),  // A
         .reg  = local_gpio_a,
@@ -115,6 +150,21 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
     },
     TestStruct_t{
         .gpio = stm32f10x::Gpio('G', 0),  // G
+        .reg  = local_gpio_g,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioG,
+    },
+    TestStruct_t{
+        .gpio = stm32f10x::Gpio('G', 1),  // G
+        .reg  = local_gpio_g,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioG,
+    },
+    TestStruct_t{
+        .gpio = stm32f10x::Gpio('G', 2),  // G
+        .reg  = local_gpio_g,
+        .id   = stm32f10x::SystemController::Peripherals::kGpioG,
+    },
+    TestStruct_t{
+        .gpio = stm32f10x::Gpio('G', 3),  // G
         .reg  = local_gpio_g,
         .id   = stm32f10x::SystemController::Peripherals::kGpioG,
     },
@@ -243,6 +293,7 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
       CHECK(should_be_cleared == false);
     }
   }
+
   SECTION("Read()")
   {
     constexpr std::array<uint32_t, 2> kIdr = {
@@ -267,13 +318,105 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
     }
   }
 
+  SECTION("AttachInterrupt() + InterruptHandler()")
+  {
+    for (uint32_t j = 0; j < test.size(); j++)
+    {
+      // Setup
+      INFO("Failure at index: " << j);
+
+      // Setup: Clear the EXTI register
+      memset(&local_exti, 0, sizeof(local_exti));
+      memset(&local_afio, 0, sizeof(local_afio));
+
+      // Setup: Create shorthand variables for port, pin and IRQ
+      uint8_t pin       = test[j].gpio.GetPin().GetPin();
+      uint8_t port      = test[j].gpio.GetPin().GetPort();
+      auto expected_irq = GetIrqForPin(pin);
+
+      // Setup: A function to determine if the InterruptHandler() is calling the
+      //        correct callback.
+      bool callback_was_called   = false;
+      InterruptCallback callback = [&callback_was_called]() {
+        callback_was_called = true;
+      };
+
+      // Setup: The expected interrupt registration information to be used
+      //        when AttachInterrupt() is called.
+      auto expected_registration = InterruptController::RegistrationInfo_t{
+        .interrupt_request_number = expected_irq,
+        .interrupt_handler        = Gpio::InterruptHandler,
+      };
+
+      // Setup: Store the EXTICR control register into a variable to make the
+      //        code cleaner.
+      volatile uint32_t * control = &local_afio.EXTICR[pin / 4];
+
+      // Setup: Define the mask within the EXTICR register for code clarity.
+      auto interrupt_mask = bit::Mask{
+        .position = static_cast<uint32_t>((pin * 4) % 16),
+        .width    = 4,
+      };
+
+      // Setup: Set Pending Register (PR) for this interrupt to a 1, asserting
+      //        that there was an interrupt event for this pin. This should
+      //        cause Gpio::InterruptHandler() to call `callback()`.
+      local_exti.PR = (1 << pin);
+
+      // Exercise
+      test[j].gpio.AttachInterrupt(callback, Gpio::Edge::kEdgeBoth);
+
+      // Exercise: Call the handler directly
+      Gpio::InterruptHandler();
+
+      // Verify
+      CHECK(callback_was_called);
+      CHECK(local_exti.RTSR == 1 << pin);
+      CHECK(local_exti.FTSR == 1 << pin);
+      CHECK(local_exti.IMR == 1 << pin);
+      CHECK(*control == bit::Value(0).Insert(port - 'A', interrupt_mask));
+      CHECK(local_exti.PR == (1 << pin));
+      Verify(Method(mock_interrupt_controller, Enable)
+                 .Using(expected_registration));
+    }
+  }
+
+  SECTION("DetachInterrupt()")
+  {
+    for (uint32_t j = 0; j < test.size(); j++)
+    {
+      // Setup
+      INFO("Failure at index: " << j);
+
+      // Setup: Create shorthand variables for port, pin and IRQ
+      uint8_t pin = test[j].gpio.GetPin().GetPin();
+
+      // Setup: Set both registers to all 1s
+      local_exti.RTSR = std::numeric_limits<decltype(local_exti.RTSR)>::max();
+      local_exti.FTSR = std::numeric_limits<decltype(local_exti.FTSR)>::max();
+
+      // Setup: The register should contain all 1s except for a single 0 in the
+      //        pin bit location.
+      uint32_t expected_result = ~(1 << pin);
+
+      // Exercise
+      test[j].gpio.DetachInterrupt();
+
+      // Verify
+      // Verify: That the specific
+      CHECK(local_exti.RTSR == expected_result);
+      CHECK(local_exti.FTSR == expected_result);
+    }
+  }
+
   // The stm32f10x::Gpio class uses the stm32f10x::Pin registers directly
-  Pin::gpio[0] = GPIOA;
-  Pin::gpio[1] = GPIOB;
-  Pin::gpio[2] = GPIOC;
-  Pin::gpio[3] = GPIOD;
-  Pin::gpio[4] = GPIOE;
-  Pin::gpio[5] = GPIOF;
-  Pin::gpio[6] = GPIOG;
+  Pin::gpio[0]             = GPIOA;
+  Pin::gpio[1]             = GPIOB;
+  Pin::gpio[2]             = GPIOC;
+  Pin::gpio[3]             = GPIOD;
+  Pin::gpio[4]             = GPIOE;
+  Pin::gpio[5]             = GPIOF;
+  Pin::gpio[6]             = GPIOG;
+  Gpio::external_interrupt = EXTI;
 }
 }  // namespace sjsu::stm32f10x
