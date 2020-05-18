@@ -25,8 +25,8 @@ TEST_CASE("Testing stm32f10x Uart", "[stm32f10x-uart]")
   DMA_Channel_TypeDef local_dma;
   USART_TypeDef local_usart;
 
-  testing::ClearRegister(&local_usart, sizeof(local_usart));
-  testing::ClearRegister(&local_dma, sizeof(local_dma));
+  testing::ClearStructure(&local_usart);
+  testing::ClearStructure(&local_dma);
 
   UartBase::Port_t mock_port = {
     .tx   = mock_tx.get(),

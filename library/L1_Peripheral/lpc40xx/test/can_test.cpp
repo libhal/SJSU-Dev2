@@ -13,9 +13,9 @@ TEST_CASE("Testing lpc40xx Can", "[lpc40xx-can]")
   // Simulate local version of LPC_CAN
   LPC_CAN_TypeDef local_can;
   // Clear memory locations
-  memset(&local_can, 0, sizeof(local_can));
+  testing::ClearStructure(&local_can);
   LPC_CANAF_TypeDef local_can_acceptance;
-  memset(&local_can_acceptance, 0, sizeof(local_can_acceptance));
+  testing::ClearStructure(&local_can_acceptance);
 
   // Set acceptance filter to the local acceptance filter
   Can::can_acceptance_filter_register = &local_can_acceptance;

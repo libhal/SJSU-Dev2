@@ -13,7 +13,7 @@ TEST_CASE("Testing EEPROM", "[Eeprom]")
   LPC_EEPROM_TypeDef local_eeprom;
 
   // Clear memory locations and assign eeprom_register to local variable
-  memset(&local_eeprom, 0, sizeof(local_eeprom));
+  testing::ClearStructure(&local_eeprom);
   Eeprom::eeprom_register = &local_eeprom;
 
   // Set mock for sjsu::SystemController

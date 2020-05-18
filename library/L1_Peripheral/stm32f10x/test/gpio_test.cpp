@@ -63,15 +63,15 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
   AFIO_TypeDef local_afio;
   EXTI_TypeDef local_exti;
 
-  memset(&local_gpio_a, 0, sizeof(local_gpio_a));
-  memset(&local_gpio_b, 0, sizeof(local_gpio_b));
-  memset(&local_gpio_c, 0, sizeof(local_gpio_c));
-  memset(&local_gpio_d, 0, sizeof(local_gpio_d));
-  memset(&local_gpio_e, 0, sizeof(local_gpio_e));
-  memset(&local_gpio_f, 0, sizeof(local_gpio_f));
-  memset(&local_gpio_g, 0, sizeof(local_gpio_g));
-  memset(&local_afio, 0, sizeof(local_afio));
-  memset(&local_exti, 0, sizeof(local_exti));
+  testing::ClearStructure(&local_gpio_a);
+  testing::ClearStructure(&local_gpio_b);
+  testing::ClearStructure(&local_gpio_c);
+  testing::ClearStructure(&local_gpio_d);
+  testing::ClearStructure(&local_gpio_e);
+  testing::ClearStructure(&local_gpio_f);
+  testing::ClearStructure(&local_gpio_g);
+  testing::ClearStructure(&local_afio);
+  testing::ClearStructure(&local_exti);
 
   // The stm32f10x::Gpio class uses the stm32f10x::Pin registers directly
   Pin::gpio[0] = &local_gpio_a;
@@ -326,8 +326,8 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
       INFO("Failure at index: " << j);
 
       // Setup: Clear the EXTI register
-      memset(&local_exti, 0, sizeof(local_exti));
-      memset(&local_afio, 0, sizeof(local_afio));
+      testing::ClearStructure(&local_exti);
+      testing::ClearStructure(&local_afio);
 
       // Setup: Create shorthand variables for port, pin and IRQ
       uint8_t pin       = test[j].gpio.GetPin().GetPin();

@@ -15,7 +15,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
   // Creating local instances of register structures
   LPC_PWM_TypeDef local_pwm;
   // Setting local register structures to all zeros
-  memset(&local_pwm, 0, sizeof(local_pwm));
+  testing::ClearStructure(&local_pwm);
 
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kPeriperhalClockFrequency = 12_MHz;

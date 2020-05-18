@@ -35,15 +35,15 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
   GPIO_TypeDef local_gpio_h;
   GPIO_TypeDef local_gpio_i;
 
-  memset(&local_gpio_a, 0, sizeof(local_gpio_a));
-  memset(&local_gpio_b, 0, sizeof(local_gpio_b));
-  memset(&local_gpio_c, 0, sizeof(local_gpio_c));
-  memset(&local_gpio_d, 0, sizeof(local_gpio_d));
-  memset(&local_gpio_e, 0, sizeof(local_gpio_e));
-  memset(&local_gpio_f, 0, sizeof(local_gpio_f));
-  memset(&local_gpio_g, 0, sizeof(local_gpio_g));
-  memset(&local_gpio_h, 0, sizeof(local_gpio_h));
-  memset(&local_gpio_i, 0, sizeof(local_gpio_i));
+  testing::ClearStructure(&local_gpio_a);
+  testing::ClearStructure(&local_gpio_b);
+  testing::ClearStructure(&local_gpio_c);
+  testing::ClearStructure(&local_gpio_d);
+  testing::ClearStructure(&local_gpio_e);
+  testing::ClearStructure(&local_gpio_f);
+  testing::ClearStructure(&local_gpio_g);
+  testing::ClearStructure(&local_gpio_h);
+  testing::ClearStructure(&local_gpio_i);
 
   // The stm32f4xx::Gpio class uses the stm32f4xx::Pin registers directly
   Pin::gpio[0] = &local_gpio_a;

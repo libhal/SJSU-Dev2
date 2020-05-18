@@ -13,7 +13,7 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
   // Simulate local version of LPC_SSP
   LPC_SSP_TypeDef local_ssp;
   // Clear memory locations
-  memset(&local_ssp, 0, sizeof(local_ssp));
+  testing::ClearStructure(&local_ssp);
 
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =

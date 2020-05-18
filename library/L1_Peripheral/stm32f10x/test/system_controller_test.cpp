@@ -34,10 +34,10 @@ TEST_CASE("Testing stm32f10x SystemController", "[stm32f10x-systemcontroller]")
   std::fill(local_enables.begin(), local_enables.end(), 0);
 
   FLASH_TypeDef local_flash;
-  memset(&local_flash, 0, sizeof(local_flash));
+  testing::ClearStructure(&local_flash);
 
   RCC_TypeDef local_rcc;
-  memset(&local_rcc, 0, sizeof(local_rcc));
+  testing::ClearStructure(&local_rcc);
 
   stm32f10x::SystemController::enable[0]     = &local_enables[0];
   stm32f10x::SystemController::enable[1]     = &local_enables[1];

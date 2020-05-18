@@ -54,7 +54,7 @@ TEST_CASE("Testing Ram Initialization", "[ram-init]")
   SECTION(".data")
   {
     // Setup
-    memset(&ram, 0, sizeof(ram));
+    testing::ClearStructure(&ram);
 
     // Exercise
     sjsu::InitializeDataSection();

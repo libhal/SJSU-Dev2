@@ -17,7 +17,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
   // Create a local register
   LPC_I2C_TypeDef local_i2c;
   // Clear local i2c registers
-  memset(&local_i2c, 0, sizeof(local_i2c));
+  testing::ClearStructure(&local_i2c);
 
   Mock<sjsu::Pin> mock_sda_pin;
   Mock<sjsu::Pin> mock_scl_pin;
