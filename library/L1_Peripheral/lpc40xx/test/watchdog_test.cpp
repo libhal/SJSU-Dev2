@@ -24,7 +24,7 @@ TEST_CASE("Testing lpc40xx watchdog", "[lpc40xx-watchdog]")
   LPC_WDT_TypeDef local_wdt;
 
   // Clear local wdt registers
-  memset(&local_wdt, 0, sizeof(local_wdt));
+  testing::ClearStructure(&local_wdt);
 
   // Set base registers to local registers
   Watchdog::wdt_base = &local_wdt;

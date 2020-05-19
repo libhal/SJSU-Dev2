@@ -64,6 +64,14 @@ Use `make test` to compile and run your tests.
 
 Use `make library-test` to compile every library test file and run that test.
 
+### Adding and Running a Successful Test
+<a href="https://asciinema.org/a/MCOkPcrCeIx7O093nC1BrzDrk" target="_blank">
+<img src="https://asciinema.org/a/MCOkPcrCeIx7O093nC1BrzDrk.svg" /></a>
+
+### Showing Test Failure
+<a href="https://asciinema.org/a/331088" target="_blank">
+<img src="https://asciinema.org/a/331088.svg" /></a>
+
 !!! Warning
     If you are running on a mac and see an error like this:
 
@@ -80,6 +88,6 @@ Use `make library-test` to compile every library test file and run that test.
 
 ## Finding Example Test Files
 
-If you are not sure how to start unit testing, search the library folder
-for **test** folders. Within them should be test files that you can
-examine in order to get an idea of how certain bits of code are tested.
+If you are not sure how to start unit testing, search the library folder for
+**test** folders. Within them should be test files that you can examine in order
+to get an idea of how certain bits of code are tested.

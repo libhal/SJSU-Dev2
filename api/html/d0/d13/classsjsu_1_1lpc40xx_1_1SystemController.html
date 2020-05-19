@@ -170,6 +170,17 @@ Public Types</h2></td></tr>
  }<tr class="memdesc:a523d98f246952d5d70a84d695b818fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">EMC storage clock speed constants. <br /></td></tr>
 </td></tr>
 <tr class="separator:a523d98f246952d5d70a84d695b818fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a713218dad66d9e5cbdf460d8c3e15074"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a713218dad66d9e5cbdf460d8c3e15074">FlashConfiguration</a> : uint32_t { <br />
+&#160;&#160;<a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a713218dad66d9e5cbdf460d8c3e15074a40d6424aaa697a5b1ece0d3dfa8d2836">FlashConfiguration::kClock1</a> = 0b0000 &lt;&lt; 12, 
+<a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a713218dad66d9e5cbdf460d8c3e15074ad326bdfbecfdb1c609ddcc9955c7107c">FlashConfiguration::kClock2</a> = 0b0001 &lt;&lt; 12, 
+<a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a713218dad66d9e5cbdf460d8c3e15074ab3364f40f16f5aeea06b056be3372ee9">FlashConfiguration::kClock3</a> = 0b0010 &lt;&lt; 12, 
+<a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a713218dad66d9e5cbdf460d8c3e15074a61f9aa5bc17b898a10e4c285514f8733">FlashConfiguration::kClock4</a> = 0b0011 &lt;&lt; 12, 
+<br />
+&#160;&#160;<a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a713218dad66d9e5cbdf460d8c3e15074a5a1325f8b284caf27afd35fea6fdaac2">FlashConfiguration::kClock5</a> = 0b0100 &lt;&lt; 12, 
+<a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a713218dad66d9e5cbdf460d8c3e15074ae6e8a2537c165d75d0123d7d7d660a76">FlashConfiguration::kClock6</a> = 0b0101 &lt;&lt; 12
+<br />
+ }</td></tr>
+<tr class="separator:a713218dad66d9e5cbdf460d8c3e15074"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -239,6 +250,43 @@ Additional Inherited Members</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6ed8891e6daee636c5149c31128e5312adf8fa8a63c3843576c00c51803320692"></a>kSystemClock&#160;</td><td class="fielddoc"><p>Use IRC or External oscillator directly. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a6ed8891e6daee636c5149c31128e5312adfaa01ab6223e684fdae5e070bbd8cf4"></a>kPll0&#160;</td><td class="fielddoc"><p>Use PLL0 main PLL as the clock source. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a713218dad66d9e5cbdf460d8c3e15074"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a713218dad66d9e5cbdf460d8c3e15074">&#9670;&nbsp;</a></span>FlashConfiguration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a713218dad66d9e5cbdf460d8c3e15074">sjsu::lpc40xx::SystemController::FlashConfiguration</a> : uint32_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Defines the codes for the flash access clock cycles required based on the CPU clocks speed. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a713218dad66d9e5cbdf460d8c3e15074a40d6424aaa697a5b1ece0d3dfa8d2836"></a>kClock1&#160;</td><td class="fielddoc"><p>Flash accesses use 1 CPU clock. Use for up to 20 MHz CPU clock with power boost off. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a713218dad66d9e5cbdf460d8c3e15074ad326bdfbecfdb1c609ddcc9955c7107c"></a>kClock2&#160;</td><td class="fielddoc"><p>Flash accesses use 2 CPU clocks. Use for up to 40 MHz CPU clock with power boost off. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a713218dad66d9e5cbdf460d8c3e15074ab3364f40f16f5aeea06b056be3372ee9"></a>kClock3&#160;</td><td class="fielddoc"><p>Flash accesses use 3 CPU clocks. Use for up to 60 MHz CPU clock with power boost off. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a713218dad66d9e5cbdf460d8c3e15074a61f9aa5bc17b898a10e4c285514f8733"></a>kClock4&#160;</td><td class="fielddoc"><p>Flash accesses use 4 CPU clocks. Use for up to 80 MHz CPU clock with power boost off. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a713218dad66d9e5cbdf460d8c3e15074a5a1325f8b284caf27afd35fea6fdaac2"></a>kClock5&#160;</td><td class="fielddoc"><p>Flash accesses use 5 CPU clocks. Use for up to 100 MHz CPU clock with power boost off. If CPU clock is above 100 MHz, use this but with power boost on. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a713218dad66d9e5cbdf460d8c3e15074ae6e8a2537c165d75d0123d7d7d660a76"></a>kClock6&#160;</td><td class="fielddoc"><p>Flash accesses use 6 CPU clocks. "Safe" setting for any allowed conditions. </p>
 </td></tr>
 </table>
 
@@ -394,7 +442,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>void*- the a pointer to the clock configuration object used to configure this system controller. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the clock configuration object used to configure this system controller. </dd></dl>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#afd6de3837bc1add77ed81860cb163cd0">sjsu::SystemController</a>.</p>
 
@@ -451,7 +499,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialize the system controller. Typically this handles configuring the clocks for the system based on the <a class="el" href="../../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html">ClockConfiguration</a> object passed to the controller. This may also need to power any systems on that are required to operate at a minimum level. </p>
+<p>Handles self initialization and clock configuration based on the <a class="el" href="../../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html">ClockConfiguration</a> object passed to the controller's constructor. Like other initialize methods, this may be called multiple times during the applications runtime. Note that calling this will return the system's clocks back to their safest operating modes, and will then times This will power on any systems required to operate based on the <a class="el" href="../../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html">ClockConfiguration</a> object. </p>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a3e3a1b895c0cbf7ddd1f33c61331877c">sjsu::SystemController</a>.</p>
 

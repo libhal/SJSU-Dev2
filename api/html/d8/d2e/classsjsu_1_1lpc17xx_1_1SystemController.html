@@ -380,7 +380,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>void*- the a pointer to the clock configuration object used to configure this system controller. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the clock configuration object used to configure this system controller. </dd></dl>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#afd6de3837bc1add77ed81860cb163cd0">sjsu::SystemController</a>.</p>
 
@@ -437,7 +437,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialize the system controller. Typically this handles configuring the clocks for the system based on the ClockConfiguration object passed to the controller. This may also need to power any systems on that are required to operate at a minimum level. </p>
+<p>Handles self initialization and clock configuration based on the ClockConfiguration object passed to the controller's constructor. Like other initialize methods, this may be called multiple times during the applications runtime. Note that calling this will return the system's clocks back to their safest operating modes, and will then times This will power on any systems required to operate based on the ClockConfiguration object. </p>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a3e3a1b895c0cbf7ddd1f33c61331877c">sjsu::SystemController</a>.</p>
 

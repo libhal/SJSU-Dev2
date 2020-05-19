@@ -367,6 +367,8 @@ template&lt;&gt; </td></tr>
 <tr class="memitem:gad369593238c43e05c1d3617ba50f02b6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../dc/da6/classsjsu_1_1Storage.html">sjsu::Storage</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d2/dd9/group__inactives__module.html#gad369593238c43e05c1d3617ba50f02b6">GetInactive&lt; sjsu::Storage &gt;</a> ()</td></tr>
 <tr class="memdesc:gad369593238c43e05c1d3617ba50f02b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Template specialization that generates an inactive <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html">sjsu::Uart</a>. <br /></td></tr>
 <tr class="separator:gad369593238c43e05c1d3617ba50f02b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a9466c5ace8fd637e6114dab144e352"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a0a9466c5ace8fd637e6114dab144e352">operator==</a> (const <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a> &amp;lhs, const <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a> &amp;rhs)</td></tr>
+<tr class="separator:a0a9466c5ace8fd637e6114dab144e352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a565473fd2bab10f0fce4e6fd476ea647"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a565473fd2bab10f0fce4e6fd476ea647">StackTop</a> (void)</td></tr>
 <tr class="separator:a565473fd2bab10f0fce4e6fd476ea647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fa6f1085c361722df3294bb5c60011d"><td class="memTemplParams" colspan="2">template&lt;template&lt; auto &gt; class CommandLineType, template&lt; size_t &gt; class CommandListType, size_t kSize, CommandListType&lt; kSize &gt; &amp; list&gt; </td></tr>
@@ -1127,8 +1129,46 @@ template&lt;typename Enum , class  = typename std:: enable_if_t&lt;EnableBitMask
 
 </div>
 </div>
+<a id="a0a9466c5ace8fd637e6114dab144e352"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a9466c5ace8fd637e6114dab144e352">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool sjsu::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Compare operator between two <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a> objects.</p>
+<dl class="section note"><dt>Note</dt><dd>this cannot compare if the callbacks are equal</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>- left hand <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a> </td></tr>
+    <tr><td class="paramname">rhs</td><td>- right hand <a class="el" href="../../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html">InterruptController::RegistrationInfo_t</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true - request number and priority are the same. </dd></dl>
+
+</div>
+</div>
 <a id="a306892bf913667e5a4744f4cb49fdc23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a306892bf913667e5a4744f4cb49fdc23">&#9670;&nbsp;</a></span>operator==()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a306892bf913667e5a4744f4cb49fdc23">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

@@ -14,7 +14,7 @@ TEST_CASE("Testing lpc40xx Pin", "[lpc40xx-pin_configure]")
   // Simulated local version of LPC_IOCON register to verify register
   // manipulation by side effect of Pin method calls
   LPC_IOCON_TypeDef local_iocon;
-  memset(&local_iocon, 0, sizeof(local_iocon));
+  testing::ClearStructure(&local_iocon);
   // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
   // Redirects manipulation to the 'local_iocon'
   Pin::pin_map = reinterpret_cast<Pin::PinMap_t *>(&local_iocon);

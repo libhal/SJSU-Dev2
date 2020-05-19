@@ -196,6 +196,7 @@ var searchData=
   ['kperipheralsize',['kPeripheralSize',['../de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#afb4b47827bf6cdc14204014a1cdefae2',1,'sjsu::stm32f10x::UartBase::DmaReg']]],
   ['kphasebit',['kPhaseBit',['../dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html#a7febda268fb2139556472af903fea500',1,'sjsu::lpc40xx::Spi::ControlRegister0']]],
   ['kpincount',['kPinCount',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a68ca49187d386d159f92b09f8de65668',1,'sjsu::lpc40xx::Gpio']]],
+  ['kpinmaximum',['kPinMaximum',['../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#adb3e7bf8e4342fdbe8e82c86f4477eb6',1,'sjsu::stm32f10x::Gpio']]],
   ['kpllenable',['kPllEnable',['../d3/d50/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockControlRegisters.html#a959d09ff1ca3deadf7c055564efb66f4',1,'sjsu::stm32f10x::SystemController::ClockControlRegisters']]],
   ['kplllockstatus',['kPllLockStatus',['../d0/dcb/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllRegister.html#ad080db560479306ecdd7b5fa9bafe943',1,'sjsu::lpc40xx::SystemController::PllRegister']]],
   ['kpllmul',['kPllMul',['../dd/ddb/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfigurationRegisters.html#a78d45d7e8990ce35d4dc036b35da60e9',1,'sjsu::stm32f10x::SystemController::ClockConfigurationRegisters']]],

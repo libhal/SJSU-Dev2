@@ -76,6 +76,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../d4/d51/classsjsu_1_1stm32f10x_1_1Gpio-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::stm32f10x::Gpio Class Reference</div>  </div>
@@ -119,8 +121,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:a7fb2cc8cb9a4095b98e03eeccd5614a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e432abcc5d8623c4e8fc2fa4bf74852"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d0/da9/classsjsu_1_1Pin.html">sjsu::Pin</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#a3e432abcc5d8623c4e8fc2fa4bf74852">GetPin</a> () const override</td></tr>
 <tr class="separator:a3e432abcc5d8623c4e8fc2fa4bf74852"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac40aed838f854b8402b10de56a4f0377"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#ac40aed838f854b8402b10de56a4f0377">AttachInterrupt</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a>, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a>) override</td></tr>
-<tr class="separator:ac40aed838f854b8402b10de56a4f0377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1995447cca1266c3990efcfc16bf7df0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#a1995447cca1266c3990efcfc16bf7df0">AttachInterrupt</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> callback, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149">Edge</a> edge) override</td></tr>
+<tr class="separator:a1995447cca1266c3990efcfc16bf7df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca13aea12bc8fd1380ad496fe213a6c7"><td class="memItemLeft" align="right" valign="top"><a id="aca13aea12bc8fd1380ad496fe213a6c7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#aca13aea12bc8fd1380ad496fe213a6c7">DetachInterrupt</a> () const override</td></tr>
 <tr class="memdesc:aca13aea12bc8fd1380ad496fe213a6c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove interrupt call from pin and deactivate interrupts for this pin. <br /></td></tr>
@@ -142,6 +144,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#ab89a4b03e3aace7fe2f1834670c2ebd7">SetAsOutput</a> () const</td></tr>
 <tr class="memdesc:ab89a4b03e3aace7fe2f1834670c2ebd7 inherit pub_methods_classsjsu_1_1Gpio"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin direction as output. <br /></td></tr>
 <tr class="separator:ab89a4b03e3aace7fe2f1834670c2ebd7 inherit pub_methods_classsjsu_1_1Gpio"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9d2ecd3a4ff67037e6adb711dd6054ac"><td class="memItemLeft" align="right" valign="top"><a id="a9d2ecd3a4ff67037e6adb711dd6054ac"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#a9d2ecd3a4ff67037e6adb711dd6054ac">InterruptHandler</a> ()</td></tr>
+<tr class="memdesc:a9d2ecd3a4ff67037e6adb711dd6054ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">The gpio interrupt handler that calls the attached interrupt callbacks. <br /></td></tr>
+<tr class="separator:a9d2ecd3a4ff67037e6adb711dd6054ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:adb3e7bf8e4342fdbe8e82c86f4477eb6"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#adb3e7bf8e4342fdbe8e82c86f4477eb6">kPinMaximum</a> = 16</td></tr>
+<tr class="separator:adb3e7bf8e4342fdbe8e82c86f4477eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c556460128b360befd5560ac2301fd5"><td class="memItemLeft" align="right" valign="top"><a id="a9c556460128b360befd5560ac2301fd5"></a>
+static <a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#a9c556460128b360befd5560ac2301fd5">handlers</a> [<a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#adb3e7bf8e4342fdbe8e82c86f4477eb6">kPinMaximum</a>]</td></tr>
+<tr class="memdesc:a9c556460128b360befd5560ac2301fd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lookup table that holds developer gpio interrupt handlers. <br /></td></tr>
+<tr class="separator:a9c556460128b360befd5560ac2301fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae26e2a1438bd2888600eb8bbf5da733a"><td class="memItemLeft" align="right" valign="top"><a id="ae26e2a1438bd2888600eb8bbf5da733a"></a>
+static EXTI_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#ae26e2a1438bd2888600eb8bbf5da733a">external_interrupt</a> = EXTI</td></tr>
+<tr class="memdesc:ae26e2a1438bd2888600eb8bbf5da733a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the external interrupt peripheral. <br /></td></tr>
+<tr class="separator:ae26e2a1438bd2888600eb8bbf5da733a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -210,8 +232,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac40aed838f854b8402b10de56a4f0377"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac40aed838f854b8402b10de56a4f0377">&#9670;&nbsp;</a></span>AttachInterrupt()</h2>
+<a id="a1995447cca1266c3990efcfc16bf7df0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1995447cca1266c3990efcfc16bf7df0">&#9670;&nbsp;</a></span>AttachInterrupt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -373,6 +395,30 @@ Additional Inherited Members</h2></td></tr>
 <p>Toggles pin state. If the pin is HIGH, after this call it will be LOW and vise versa. </p>
 
 <p>Implements <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a92833a30a38cd1ad87a2e27e4d25d054">sjsu::Gpio</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="adb3e7bf8e4342fdbe8e82c86f4477eb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb3e7bf8e4342fdbe8e82c86f4477eb6">&#9670;&nbsp;</a></span>kPinMaximum</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::stm32f10x::Gpio::kPinMaximum = 16</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The highest pin value for stm32f10x MCUs is 0 to 15, thus we have a limit of 15 pins per port. </p>
 
 </div>
 </div>

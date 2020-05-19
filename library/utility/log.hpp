@@ -60,7 +60,7 @@ struct Log  // NOLINT
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-security"
 
-    // Container for the formated log string
+    // Container for the formatted log string
     std::array<char, config::kPrintfBufferSize> buffer;
 
     // Write log prefix statement to the buffer.

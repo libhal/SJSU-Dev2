@@ -76,4 +76,19 @@ class InterruptController
   ///        disabled.
   virtual void Disable(int interrupt_request_number) = 0;
 };
+
+/// Compare operator between two InterruptController::RegistrationInfo_t
+/// objects.
+///
+/// @note this cannot compare if the callbacks are equal
+///
+/// @param lhs - left hand InterruptController::RegistrationInfo_t
+/// @param rhs - right hand InterruptController::RegistrationInfo_t
+/// @return true - request number and priority are the same.
+constexpr bool operator==(const InterruptController::RegistrationInfo_t & lhs,
+                          const InterruptController::RegistrationInfo_t & rhs)
+{
+  return lhs.interrupt_request_number == rhs.interrupt_request_number &&
+         lhs.priority == rhs.priority;
+}
 }  // namespace sjsu

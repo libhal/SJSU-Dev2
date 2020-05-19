@@ -128,6 +128,31 @@ class SystemController final : public sjsu::SystemController
     //! @endcond
   };
 
+  /// Defines the codes for the flash access clock cycles required based on the
+  /// CPU clocks speed.
+  enum class FlashConfiguration : uint32_t
+  {
+    /// Flash accesses use 1 CPU clock. Use for up to 20 MHz CPU clock with
+    /// power boost off.
+    kClock1 = 0b0000 << 12,
+    /// Flash accesses use 2 CPU clocks. Use for up to 40 MHz CPU clock with
+    /// power boost off.
+    kClock2 = 0b0001 << 12,
+    /// Flash accesses use 3 CPU clocks. Use for up to 60 MHz CPU clock with
+    /// power boost off.
+    kClock3 = 0b0010 << 12,
+    /// Flash accesses use 4 CPU clocks. Use for up to 80 MHz CPU clock with
+    /// power boost off.
+    kClock4 = 0b0011 << 12,
+    /// Flash accesses use 5 CPU clocks. Use for up to 100 MHz CPU clock with
+    /// power boost off. If CPU clock is above 100 MHz, use this but with power
+    /// boost on.
+    kClock5 = 0b0100 << 12,
+    /// Flash accesses use 6 CPU clocks. "Safe" setting for any allowed
+    /// conditions.
+    kClock6 = 0b0101 << 12,
+  };
+
   /// Namespace for PLL configuration bit masks
   struct PllRegister  // NOLINT
   {
@@ -409,19 +434,23 @@ class SystemController final : public sjsu::SystemController
                     &sys->PLL1STAT, 1);
 
     // =========================================================================
-    // Step 5. Set clock sources for each clock
+    // Step 5. Set clock dividers for each clock source
     // =========================================================================
-    // Set CPU clock the source defined in the configuration
-    sys->CCLKSEL = bit::Insert(sys->CCLKSEL, Value(config.cpu.clock),
-                               CpuClockRegister::kSelect);
-
-    // Set USB clock the source defined in the configuration
-    sys->USBCLKSEL = bit::Insert(sys->USBCLKSEL, Value(config.usb.clock),
-                                 UsbClockRegister::kSelect);
-
-    // Set SPIFI clock the source defined in the configuration
-    sys->SPIFISEL = bit::Insert(sys->SPIFISEL, Value(config.spifi.clock),
-                                SpiFiClockRegister::kSelect);
+    // Set CPU clock divider
+    sys->CCLKSEL = bit::Insert(sys->CCLKSEL, config.cpu.divider,
+                               CpuClockRegister::kDivider);
+    // Set EMC clock divider
+    sys->EMCCLKSEL = bit::Insert(sys->EMCCLKSEL, Value(config.emc_divider),
+                                 EmcClockRegister::kDivider);
+    // Set Peripheral clock divider
+    sys->PCLKSEL = bit::Insert(sys->PCLKSEL, config.peripheral_divider,
+                               PeripheralClockRegister::kDivider);
+    // Set USB clock divider
+    sys->USBCLKSEL = bit::Insert(sys->USBCLKSEL, Value(config.usb.divider),
+                                 UsbClockRegister::kDivider);
+    // Set SPIFI clock divider
+    sys->SPIFISEL = bit::Insert(sys->SPIFISEL, config.spifi.divider,
+                                SpiFiClockRegister::kDivider);
 
     switch (config.cpu.clock)
     {
@@ -443,30 +472,57 @@ class SystemController final : public sjsu::SystemController
       case SpifiClockSelect::kPll1: spifi = pll1; break;
     }
 
-    // =========================================================================
-    // Step 6. Set clock dividers for each clock
-    // =========================================================================
-    // Set CPU clock divider
-    sys->CCLKSEL = bit::Insert(sys->CCLKSEL, config.cpu.divider,
-                               CpuClockRegister::kDivider);
-    // Set EMC clock divider
-    sys->EMCCLKSEL = bit::Insert(sys->EMCCLKSEL, Value(config.emc_divider),
-                                 EmcClockRegister::kDivider);
-    // Set Peripheral clock divider
-    sys->PCLKSEL = bit::Insert(sys->PCLKSEL, config.peripheral_divider,
-                               PeripheralClockRegister::kDivider);
-    // Set USB clock divider
-    sys->USBCLKSEL = bit::Insert(sys->USBCLKSEL, Value(config.usb.divider),
-                                 UsbClockRegister::kDivider);
-    // Set SPIFI clock divider
-    sys->SPIFISEL = bit::Insert(sys->SPIFISEL, config.spifi.divider,
-                                SpiFiClockRegister::kDivider);
-
     cpu_clock_rate_        = cpu / config.cpu.divider;
     peripheral_clock_rate_ = cpu / config.peripheral_divider;
     emc_clock_rate_        = cpu / (Value(config.emc_divider) + 1);
     usb_clock_rate_        = usb / Value(config.usb.divider);
     spifi_clock_rate_      = spifi / config.spifi.divider;
+
+    // =========================================================================
+    // Step 6. Configure flash cycles per load
+    // =========================================================================
+    sys->PBOOST   = 0b00;
+
+    if (cpu_clock_rate_ < 20_MHz)
+    {
+      sys->FLASHCFG = Value(FlashConfiguration::kClock1);
+    }
+    else if (20_MHz <= cpu_clock_rate_ && cpu_clock_rate_ < 40_MHz)
+    {
+      sys->FLASHCFG = Value(FlashConfiguration::kClock2);
+    }
+    else if (40_MHz <= cpu_clock_rate_ && cpu_clock_rate_ < 60_MHz)
+    {
+      sys->FLASHCFG = Value(FlashConfiguration::kClock3);
+    }
+    else if (60_MHz <= cpu_clock_rate_ && cpu_clock_rate_ < 80_MHz)
+    {
+      sys->FLASHCFG = Value(FlashConfiguration::kClock4);
+    }
+    else if (80_MHz <= cpu_clock_rate_ && cpu_clock_rate_ < 100_MHz)
+    {
+      sys->FLASHCFG = Value(FlashConfiguration::kClock5);
+    }
+    else if (cpu_clock_rate_ >= 100_MHz)
+    {
+      sys->FLASHCFG = Value(FlashConfiguration::kClock5);
+      sys->PBOOST   = 0b11;
+    }
+
+    // =========================================================================
+    // Step 7. Finally select the sources for each clock
+    // =========================================================================
+    // Set CPU clock the source defined in the configuration
+    sys->CCLKSEL = bit::Insert(sys->CCLKSEL, Value(config.cpu.clock),
+                               CpuClockRegister::kSelect);
+
+    // Set USB clock the source defined in the configuration
+    sys->USBCLKSEL = bit::Insert(sys->USBCLKSEL, Value(config.usb.clock),
+                                 UsbClockRegister::kSelect);
+
+    // Set SPIFI clock the source defined in the configuration
+    sys->SPIFISEL = bit::Insert(sys->SPIFISEL, Value(config.spifi.clock),
+                                SpiFiClockRegister::kSelect);
   }
 
  private:

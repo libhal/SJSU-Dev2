@@ -71,6 +71,8 @@ This will install all of the necessary files and programs that SJSU-Dev2 needs
 in order to build your code. The downloaded files are placed in the `tools/`
 folder.
 
+<script id="asciicast-314687" src="https://asciinema.org/a/314687.js" async></script>
+
 ## Building and Loading the "Hello World" Application
 
 ### Step 0: Move into project
@@ -84,6 +86,8 @@ folder.
 This will take all of the relevant source code files to your project and
 generate a binary file that can be loaded onto your board. These files can be
 found in the `build/application` folder with the project.
+
+<script id="asciicast-314699" src="https://asciinema.org/a/314699.js" async></script>
 
 !!! Tip
     use the `make` by itself to get additional information on the

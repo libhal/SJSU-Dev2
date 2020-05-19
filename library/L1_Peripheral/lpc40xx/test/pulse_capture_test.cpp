@@ -71,7 +71,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
     .handler = []() { PulseCapture::TimerHandler(kTestTimerPartial1); }
   };
 
-  memset(&test_timer_register, 0, sizeof(test_timer_register));
+  testing::ClearStructure(&test_timer_register);
 
   constexpr units::frequency::hertz_t kTestSystemFrequency = 4_MHz;
   constexpr int kTestPeripheralClockDivider                = 1;
@@ -182,7 +182,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
 
   SECTION("Capture Interrupt Handler Acknowledge (Common)")
   {
-    memset(&isr_result, 0, sizeof(PulseCapture::CaptureStatus_t));
+    testing::ClearStructure(&isr_result);
     kTestTimerCh0.handler();
     CHECK(bit::Extract(test_timer_register.IR, 4, 2) == 0b11);
   }
@@ -190,7 +190,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
   SECTION("Capture Interrupt Handler Channel 0")
   {
     constexpr uint32_t kCr0TestPattern = 0x22226666;
-    memset(&isr_result, 0, sizeof(PulseCapture::CaptureStatus_t));
+    testing::ClearStructure(&isr_result);
     test_timer_register.CR0 = kCr0TestPattern;
     kTestTimerCh0.handler();
     CHECK(isr_result.count == kCr0TestPattern);
@@ -199,7 +199,7 @@ TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
   SECTION("Capture Interrupt Handler Channel 0")
   {
     constexpr uint32_t kCr1TestPattern = 0x33337777;
-    memset(&isr_result, 0, sizeof(PulseCapture::CaptureStatus_t));
+    testing::ClearStructure(&isr_result);
     test_timer_register.CR1 = kCr1TestPattern;
     kTestTimerCh1.handler();
     CHECK(isr_result.count == kCr1TestPattern);

@@ -16,8 +16,8 @@ TEST_CASE("Testing ARM Cortex Data Watchdog Trace Counter",
   };
   CoreDebug_Type local_core;
 
-  memset(&local_dwt, 0, sizeof(local_dwt));
-  memset(&local_core, 0, sizeof(local_core));
+  testing::ClearStructure(&local_dwt);
+  testing::ClearStructure(&local_core);
 
   DwtCounter::dwt  = &local_dwt;
   DwtCounter::core = &local_core;

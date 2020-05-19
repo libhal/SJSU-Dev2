@@ -12,7 +12,7 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
 {
   // Simulate local version of LPC_SC
   LPC_SC_TypeDef local_sc;
-  memset(&local_sc, 0, sizeof(local_sc));
+  testing::ClearStructure(&local_sc);
   SystemController::system_controller = &local_sc;
 
   SystemController::ClockConfiguration_t clock_configuration;

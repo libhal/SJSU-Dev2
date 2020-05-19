@@ -166,7 +166,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>void*- the a pointer to the clock configuration object used to configure this system controller. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the clock configuration object used to configure this system controller. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a6a64ecc3f9b3def0953dc4bdb1961e3b">sjsu::stm32f10x::SystemController</a>, <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a10758bb595eb534949b912d30bf83387">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a40d66e6679be5711fa28383f91ccd868">sjsu::msp432p401r::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a84e0ef593b58badd3a629d157bb68aba">sjsu::lpc40xx::SystemController</a>, and <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a966fb92146737f0a93ce3b1ec4951597">sjsu::stm32f4xx::SystemController</a>.</p>
 
@@ -284,9 +284,9 @@ template&lt;class ClockConfiguration &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialize the system controller. Typically this handles configuring the clocks for the system based on the ClockConfiguration object passed to the controller. This may also need to power any systems on that are required to operate at a minimum level. </p>
+<p>Handles self initialization and clock configuration based on the ClockConfiguration object passed to the controller's constructor. Like other initialize methods, this may be called multiple times during the applications runtime. Note that calling this will return the system's clocks back to their safest operating modes, and will then times This will power on any systems required to operate based on the ClockConfiguration object. </p>
 
-<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a2cfd159c02c1a01d00c0d79238eb0b10">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac4a36700fd2c25f68a343b9e61337d47">sjsu::stm32f10x::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#af201ef758c462fc2ac34e25ac43db1a5">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#afd054d7cf154265d35139dc09113692f">sjsu::msp432p401r::SystemController</a>, and <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#af374813b4b1e30c0bbf29703f1da6c20">sjsu::stm32f4xx::SystemController</a>.</p>
+<p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a2cfd159c02c1a01d00c0d79238eb0b10">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#af201ef758c462fc2ac34e25ac43db1a5">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac4a36700fd2c25f68a343b9e61337d47">sjsu::stm32f10x::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#afd054d7cf154265d35139dc09113692f">sjsu::msp432p401r::SystemController</a>, and <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#af374813b4b1e30c0bbf29703f1da6c20">sjsu::stm32f4xx::SystemController</a>.</p>
 
 </div>
 </div>
