@@ -12,14 +12,14 @@
     - [void UnlockClockSystemRegister() const](#void-unlockclocksystemregister-const)
     - [void LockClockSystemRegister() const](#void-lockclocksystemregister-const)
   - [Initialization](#initialization)
-    - [Returns\<void> Initialize() override](#returnsvoid-initialize-override)
-    - [Returns\<units::frequency::hertz_t> ConfigureDcoClock() const](#returnsunitsfrequencyhertzt-configuredcoclock-const)
-    - [Returns\<units::frequency::hertz_t> ConfigureReferenceClock() const](#returnsunitsfrequencyhertzt-configurereferenceclock-const)
-    - [Returns\<void> SetClockSource(Clock clock, Oscillator oscillator) const](#returnsvoid-setclocksourceclock-clock-oscillator-oscillator-const)
-    - [Returns\<void> SetClockDivider(Clock clock, ClockDivider divider) const](#returnsvoid-setclockdividerclock-clock-clockdivider-divider-const)
+    - [Returns&lt;void> Initialize() override](#returnsvoid-initialize-override)
+    - [Returns&lt;units::frequency::hertz_t> ConfigureDcoClock() const](#returnsunitsfrequencyhertzt-configuredcoclock-const)
+    - [Returns&lt;units::frequency::hertz_t> ConfigureReferenceClock() const](#returnsunitsfrequencyhertzt-configurereferenceclock-const)
+    - [Returns&lt;void> SetClockSource(Clock clock, Oscillator oscillator) const](#returnsvoid-setclocksourceclock-clock-oscillator-oscillator-const)
+    - [Returns&lt;void> SetClockDivider(Clock clock, ClockDivider divider) const](#returnsvoid-setclockdividerclock-clock-clockdivider-divider-const)
     - [void WaitForClockReadyStatus(Clock clock) const](#void-waitforclockreadystatusclock-clock-const)
   - [Getting the Clock Rate of a Clock Signal](#getting-the-clock-rate-of-a-clock-signal)
-    - [Returns\<units::frequency::hertz_t> GetClockRate(PeripheralID peripheral) const override](#returnsunitsfrequencyhertzt-getclockrateperipheralid-peripheral-const-override)
+    - [Returns&lt;units::frequency::hertz_t> GetClockRate(PeripheralID peripheral) const override](#returnsunitsfrequencyhertzt-getclockrateperipheralid-peripheral-const-override)
   - [Unused Functions](#unused-functions)
 - [Caveats](#caveats)
 - [Future Advancements](#future-advancements)
@@ -119,7 +119,7 @@ Locks the clock system registers by writing `0x0000`.
 
 ## Initialization
 
-### Returns\<void> Initialize() override
+### Returns&lt;void> Initialize() override
 Performs the following sequence to configure various clock modules:
 
 1. Configure the DCO clock and reference clock by invoking `ConfigureDcoClock()`
@@ -139,7 +139,7 @@ An **Error_t** is returned if:
 4. The configured clock source for the backup clock is not
    `Oscillator::kLowFrequency` or `Oscillator::kReference`.
 
-### Returns\<units::frequency::hertz_t> ConfigureDcoClock() const
+### Returns&lt;units::frequency::hertz_t> ConfigureDcoClock() const
 Performs the following sequence to configure the DCO clock:
 
 1. Ensure the target frequency is between 1 MHz and 48 MHz.
@@ -151,22 +151,22 @@ Performs the following sequence to configure the DCO clock:
 
 > See [6.2.8.3 DCO Ranges and Tuning](https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=386)
 > for more information regarding configuring the DCO clock.
->
+
 An **Error_t** is returned if the target frequency is not between 1 MHz and 48
 MHz.
 
-### Returns\<units::frequency::hertz_t> ConfigureReferenceClock() const
+### Returns&lt;units::frequency::hertz_t> ConfigureReferenceClock() const
 Configures the reference clock to run at 32.768 kHz or 128 kHz.
 
 An **Error_t** is returned if the frequency select value in the clock
 configuration for the reference clock is not `0b0` or `0b1`.
 
-### Returns\<void> SetClockSource(Clock clock, Oscillator oscillator) const
+### Returns&lt;void> SetClockSource(Clock clock, Oscillator oscillator) const
 Sets the desired clock source to drive a primary clock signal.
 
 An **Error_t** is returned if `clock` is not one of the primary clocks.
 
-### Returns\<void> SetClockDivider(Clock clock, ClockDivider divider) const
+### Returns&lt;void> SetClockDivider(Clock clock, ClockDivider divider) const
 Sets the desired clock divider for a primary clock signal.
 
 An **Error_t** is returned if `clock` is not one of the primary clocks
@@ -179,7 +179,7 @@ divider.
 
 ## Getting the Clock Rate of a Clock Signal
 
-### Returns\<units::frequency::hertz_t> GetClockRate(PeripheralID peripheral) const override
+### Returns&lt;units::frequency::hertz_t> GetClockRate(PeripheralID peripheral) const override
 Gets the clock rate of one of the 10 available clock modules.
 
 An **Error_t** is returned if `peripheral` is not one of the defined peripherals

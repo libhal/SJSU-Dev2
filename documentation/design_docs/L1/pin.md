@@ -9,11 +9,11 @@
   - [Interface](#interface)
   - [Pin Configuration](#pin-configuration)
     - [constexpr Pin(uint8_t port, uint8_t pin)](#constexpr-pinuint8t-port-uint8t-pin)
-    - [Returns\<void> Initialize() const](#returnsvoid-initialize-const)
-    - [Returns\<void> SetPinFunction(uint8_t function) const](#returnsvoid-setpinfunctionuint8t-function-const)
-    - [Returns\<void> SetPull(Resistor resistor) const](#returnsvoid-setpullresistor-resistor-const)
-    - [Returns\<void> SetAsOpenDrain(bool set_as_open_drain) const](#returnsvoid-setasopendrainbool-setasopendrain-const)
-    - [Returns\<void> SetAsAnalogMode(bool set_as_analog) const](#returnsvoid-setasanalogmodebool-setasanalog-const)
+    - [Returns&lt;void> Initialize() const](#returnsvoid-initialize-const)
+    - [Returns&lt;void> SetPinFunction(uint8_t function) const](#returnsvoid-setpinfunctionuint8t-function-const)
+    - [Returns&lt;void> SetPull(Resistor resistor) const](#returnsvoid-setpullresistor-resistor-const)
+    - [Returns&lt;void> SetAsOpenDrain(bool set_as_open_drain) const](#returnsvoid-setasopendrainbool-setasopendrain-const)
+    - [Returns&lt;void> SetAsAnalogMode(bool set_as_analog) const](#returnsvoid-setasanalogmodebool-setasanalog-const)
   - [Utility Functions](#utility-functions)
     - [void PullUp() const](#void-pullup-const)
     - [void PullDown() const](#void-pulldown-const)
@@ -90,27 +90,27 @@ class Pin
 ### constexpr Pin(uint8_t port, uint8_t pin)
 Constructs the `Pin` object with the specified port and pin identifier.
 
-### Returns\<void> Initialize() const
+### Returns&lt;void> Initialize() const
 Performs the necessary operations to initialize the hardware pin for use. An
 **Error_t** should be returned when the pin fails to initialize.
 
-### Returns\<void> SetPinFunction(uint8_t function) const
+### Returns&lt;void> SetPinFunction(uint8_t function) const
 Configures the pin based on the specified function code. An **Error_t** should
 be returned if the specified function code is invalid.
 
-### Returns\<void> SetPull(Resistor resistor) const
+### Returns&lt;void> SetPull(Resistor resistor) const
 Configures the pin based on the specified resistor pull. An **Error_t** should
 be returned if the specified resistor pull is not supported.
 
 > **NOTE:** Not all MCUs or pins have support pull up/down resistors.
 
-### Returns\<void> SetAsOpenDrain(bool set_as_open_drain) const
+### Returns&lt;void> SetAsOpenDrain(bool set_as_open_drain) const
 Configures the pin to be an open drain pin when `set_as_open_drain` is `true`.
 
 > **Note:** Not all MCUs support this hardware feature. If this is the case,
 > then this function should be left unimplemented.
 
-### Returns\<void> SetAsAnalogMode(bool set_as_analog) const
+### Returns&lt;void> SetAsAnalogMode(bool set_as_analog) const
 Enables the pin's analog mode when `set_as_analog` is `true`.
 
 > **Note:** Not all MCUs support the need to set the pin in analog mode. If this
