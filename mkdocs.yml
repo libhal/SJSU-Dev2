@@ -37,6 +37,7 @@ nav:
       - 'guides/directory_layout/library.md'
       - 'guides/directory_layout/reference.md'
     - 'guides/firmware_debugging.md'
+    - 'guides/bit.md'
     - 'guides/unit_testing.md'
     - 'guides/multi_platform.md'
     - 'guides/fatfs.md'
