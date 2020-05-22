@@ -137,9 +137,6 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   // of this unit test
   constexpr uint8_t kPin15 = 15;
   constexpr uint8_t kPin7  = 7;
-
-  constexpr uint8_t kSet    = 0b1;
-  constexpr uint8_t kNotSet = 0b0;
   constexpr uint8_t kPort0  = 0;
   constexpr uint8_t kPort2  = 1;
 
@@ -180,13 +177,14 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   {
     // Setup & Execute
     p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeBoth);
+    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeRising);
     // Verify
-    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kSet);
-    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kSet);
-    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kSet);
-    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kSet);
-    // Check Developer's ISR is attached
+    CHECK(bit::Read(local_eint.IO0IntEnR, kPin15));
+    CHECK(bit::Read(local_eint.IO0IntEnF, kPin15));
+    CHECK(bit::Read(local_eint.IO2IntEnR, kPin7));
+    CHECK(!bit::Read(local_eint.IO2IntEnF, kPin7));
+
+    // Verify: Check Developer's ISR is attached
     auto * save_callback0 =
         p0_15.handlers[kPort0][kPin15].target<void (*)(void)>();
     auto * save_callback1 =
@@ -201,10 +199,10 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
     p2_7.DetachInterrupt();
 
     // Verify
-    CHECK(((local_eint.IO0IntEnR >> kPin15) & 1) == kNotSet);
-    CHECK(((local_eint.IO0IntEnF >> kPin15) & 1) == kNotSet);
-    CHECK(((local_eint.IO2IntEnR >> kPin7) & 1) == kNotSet);
-    CHECK(((local_eint.IO2IntEnF >> kPin7) & 1) == kNotSet);
+    CHECK(!bit::Read(local_eint.IO0IntEnR, kPin15));
+    CHECK(!bit::Read(local_eint.IO0IntEnF, kPin15));
+    CHECK(!bit::Read(local_eint.IO2IntEnR, kPin7));
+    CHECK(!bit::Read(local_eint.IO2IntEnF, kPin7));
     CHECK(p0_15.handlers[kPort0][kPin15] == nullptr);
     CHECK(p2_7.handlers[kPort2][kPin7] == nullptr);
   }
@@ -223,7 +221,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
     p0_15.InterruptHandler();
 
     // Verify
-    CHECK(bit::Read(local_eint.IO0IntClr, kPin15) == kSet);
+    CHECK(bit::Read(local_eint.IO0IntClr, kPin15));
     CHECK(was_called);
   }
 }

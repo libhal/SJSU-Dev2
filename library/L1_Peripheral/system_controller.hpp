@@ -9,15 +9,15 @@ namespace sjsu
 {
 /// Abstract interface for a platform's System Controller.
 ///
-/// A System controller manages a platforms:
+/// A System controller manages a platform's:
 ///     - Clocks and their speeds
 ///     - PLLs feeding into the system's clocks
 ///     - Manages power systems of peripherals and system blocks
 ///
-/// The System controller also gives information about the system such as, what
-/// speed is a clock is running at so that their peripheral drivers can
-/// calculate things such as the clock rates for serial communicate or the clock
-/// cycles before an event or interrupt is planned to occur.
+/// The System controller also gives information about the system such as what
+/// speed a clock is running at so that their peripheral drivers can calculate
+/// things such as the clock rates for serial communicate or the clock cycles
+/// before an event or interrupt is planned to occur.
 ///
 /// Every SystemController should take a custom ClockConfiguration data
 /// structure reference as an input in their constructor, unless a system does
@@ -120,9 +120,9 @@ class SystemController
   /// ClockConfiguration object passed to the controller's constructor. Like
   /// other initialize methods, this may be called multiple times during the
   /// applications runtime. Note that calling this will return the system's
-  /// clocks back to their safest operating modes, and will then times This will
-  /// power on any systems required to operate based on the ClockConfiguration
-  /// object.
+  /// clocks back to their safest operating modes, and will then times. This
+  /// will power on any systems required to operate based on the
+  /// ClockConfiguration object.
   virtual void Initialize() = 0;
 
   /// @returns a pointer to the clock configuration object used to configure

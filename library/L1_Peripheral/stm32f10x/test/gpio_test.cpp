@@ -320,64 +320,87 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
 
   SECTION("AttachInterrupt() + InterruptHandler()")
   {
-    for (uint32_t j = 0; j < test.size(); j++)
+    for (auto edge : {
+             Gpio::Edge::kEdgeFalling,
+             Gpio::Edge::kEdgeRising,
+             Gpio::Edge::kEdgeBoth,
+         })
     {
-      // Setup
-      INFO("Failure at index: " << j);
+      for (uint32_t j = 0; j < test.size(); j++)
+      {
+        // Setup
+        INFO("Failure at index: " << j);
 
-      // Setup: Clear the EXTI register
-      testing::ClearStructure(&local_exti);
-      testing::ClearStructure(&local_afio);
+        // Setup: Clear the EXTI register
+        testing::ClearStructure(&local_exti);
+        testing::ClearStructure(&local_afio);
 
-      // Setup: Create shorthand variables for port, pin and IRQ
-      uint8_t pin       = test[j].gpio.GetPin().GetPin();
-      uint8_t port      = test[j].gpio.GetPin().GetPort();
-      auto expected_irq = GetIrqForPin(pin);
+        // Setup: Create shorthand variables for port, pin and IRQ
+        uint8_t pin       = test[j].gpio.GetPin().GetPin();
+        uint8_t port      = test[j].gpio.GetPin().GetPort();
+        auto expected_irq = GetIrqForPin(pin);
 
-      // Setup: A function to determine if the InterruptHandler() is calling the
-      //        correct callback.
-      bool callback_was_called   = false;
-      InterruptCallback callback = [&callback_was_called]() {
-        callback_was_called = true;
-      };
+        // Setup: A function to determine if the InterruptHandler() is calling
+        // the
+        //        correct callback.
+        bool callback_was_called   = false;
+        InterruptCallback callback = [&callback_was_called]() {
+          callback_was_called = true;
+        };
 
-      // Setup: The expected interrupt registration information to be used
-      //        when AttachInterrupt() is called.
-      auto expected_registration = InterruptController::RegistrationInfo_t{
-        .interrupt_request_number = expected_irq,
-        .interrupt_handler        = Gpio::InterruptHandler,
-      };
+        // Setup: The expected interrupt registration information to be used
+        //        when AttachInterrupt() is called.
+        auto expected_registration = InterruptController::RegistrationInfo_t{
+          .interrupt_request_number = expected_irq,
+          .interrupt_handler        = Gpio::InterruptHandler,
+        };
 
-      // Setup: Store the EXTICR control register into a variable to make the
-      //        code cleaner.
-      volatile uint32_t * control = &local_afio.EXTICR[pin / 4];
+        // Setup: Store the EXTICR control register into a variable to make the
+        //        code cleaner.
+        volatile uint32_t * control = &local_afio.EXTICR[pin / 4];
 
-      // Setup: Define the mask within the EXTICR register for code clarity.
-      auto interrupt_mask = bit::Mask{
-        .position = static_cast<uint32_t>((pin * 4) % 16),
-        .width    = 4,
-      };
+        // Setup: Define the mask within the EXTICR register for code clarity.
+        auto interrupt_mask = bit::Mask{
+          .position = static_cast<uint32_t>((pin * 4) % 16),
+          .width    = 4,
+        };
 
-      // Setup: Set Pending Register (PR) for this interrupt to a 1, asserting
-      //        that there was an interrupt event for this pin. This should
-      //        cause Gpio::InterruptHandler() to call `callback()`.
-      local_exti.PR = (1 << pin);
+        // Setup: Set Pending Register (PR) for this interrupt to a 1, asserting
+        //        that there was an interrupt event for this pin. This should
+        //        cause Gpio::InterruptHandler() to call `callback()`.
+        local_exti.PR = (1 << pin);
 
-      // Exercise
-      test[j].gpio.AttachInterrupt(callback, Gpio::Edge::kEdgeBoth);
+        // Exercise
+        test[j].gpio.AttachInterrupt(callback, edge);
 
-      // Exercise: Call the handler directly
-      Gpio::InterruptHandler();
+        // Exercise: Call the handler directly
+        Gpio::InterruptHandler();
 
-      // Verify
-      CHECK(callback_was_called);
-      CHECK(local_exti.RTSR == 1 << pin);
-      CHECK(local_exti.FTSR == 1 << pin);
-      CHECK(local_exti.IMR == 1 << pin);
-      CHECK(*control == bit::Value(0).Insert(port - 'A', interrupt_mask));
-      CHECK(local_exti.PR == (1 << pin));
-      Verify(Method(mock_interrupt_controller, Enable)
-                 .Using(expected_registration));
+        // Verify
+        CHECK(callback_was_called);
+
+        if (edge == Gpio::Edge::kEdgeBoth)
+        {
+          CHECK(local_exti.RTSR == 1 << pin);
+          CHECK(local_exti.FTSR == 1 << pin);
+        }
+        else if (edge == Gpio::Edge::kEdgeRising)
+        {
+          CHECK(local_exti.RTSR == 1 << pin);
+          CHECK(local_exti.FTSR == 0);
+        }
+        else if (edge == Gpio::Edge::kEdgeFalling)
+        {
+          CHECK(local_exti.RTSR == 0);
+          CHECK(local_exti.FTSR == 1 << pin);
+        }
+
+        CHECK(local_exti.IMR == 1 << pin);
+        CHECK(*control == bit::Value(0).Insert(port - 'A', interrupt_mask));
+        CHECK(local_exti.PR == (1 << pin));
+        Verify(Method(mock_interrupt_controller, Enable)
+                   .Using(expected_registration));
+      }
     }
   }
 

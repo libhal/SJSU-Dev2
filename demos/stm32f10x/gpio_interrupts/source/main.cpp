@@ -20,13 +20,15 @@ int main()
   pin0.AttachInterrupt([]() { sjsu::LogInfo("PB[8] interrupt!"); },
                        sjsu::Gpio::Edge::kEdgeFalling);
 
+  // Using shorthand function to enable the attach interrupts to this pin for
+  // both rising edges.
   sjsu::LogInfo("Setup PB[10] to interrupt on only Rising edges...");
-  pin1.AttachInterrupt([]() { sjsu::LogInfo("PB[10] interrupt!"); },
-                       sjsu::Gpio::Edge::kEdgeRising);
+  pin1.OnRisingEdge([]() { sjsu::LogInfo("PB[10] interrupt!"); });
 
+  // Using shorthand function to enable the attach interrupts to this pin for
+  // both rising and falling edges.
   sjsu::LogInfo("Setup PB[12] to interrupt on Rising and Falling edges...");
-  pin2.AttachInterrupt([]() { sjsu::LogInfo("PB[12] interrupt!"); },
-                       sjsu::Gpio::Edge::kEdgeBoth);
+  pin2.OnChange([]() { sjsu::LogInfo("PB[12] interrupt!"); });
 
   sjsu::LogInfo(
       "All of the pins are currently pulled high using an internal pull-up "

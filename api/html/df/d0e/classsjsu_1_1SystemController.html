@@ -130,12 +130,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract interface for a platform's System Controller.</p>
-<p>A System controller manages a platforms:</p><ul>
+<p>A System controller manages a platform's:</p><ul>
 <li>Clocks and their speeds</li>
 <li>PLLs feeding into the system's clocks</li>
 <li>Manages power systems of peripherals and system blocks</li>
 </ul>
-<p>The System controller also gives information about the system such as, what speed is a clock is running at so that their peripheral drivers can calculate things such as the clock rates for serial communicate or the clock cycles before an event or interrupt is planned to occur.</p>
+<p>The System controller also gives information about the system such as what speed a clock is running at so that their peripheral drivers can calculate things such as the clock rates for serial communicate or the clock cycles before an event or interrupt is planned to occur.</p>
 <p>Every <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">SystemController</a> should take a custom ClockConfiguration data structure reference as an input in their constructor, unless a system does not incorporate any form of clock tree.</p>
 <p>A simplified example of a basic ClockConfiguration data structure. Notice that man of the elements within the structure are enumerations to make them readable: </p><pre class="fragment">struct ClockConfiguration
 {
@@ -284,7 +284,7 @@ template&lt;class ClockConfiguration &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Handles self initialization and clock configuration based on the ClockConfiguration object passed to the controller's constructor. Like other initialize methods, this may be called multiple times during the applications runtime. Note that calling this will return the system's clocks back to their safest operating modes, and will then times This will power on any systems required to operate based on the ClockConfiguration object. </p>
+<p>Handles self initialization and clock configuration based on the ClockConfiguration object passed to the controller's constructor. Like other initialize methods, this may be called multiple times during the applications runtime. Note that calling this will return the system's clocks back to their safest operating modes, and will then times. This will power on any systems required to operate based on the ClockConfiguration object. </p>
 
 <p>Implemented in <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a2cfd159c02c1a01d00c0d79238eb0b10">sjsu::lpc17xx::SystemController</a>, <a class="el" href="../../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#af201ef758c462fc2ac34e25ac43db1a5">sjsu::lpc40xx::SystemController</a>, <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac4a36700fd2c25f68a343b9e61337d47">sjsu::stm32f10x::SystemController</a>, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#afd054d7cf154265d35139dc09113692f">sjsu::msp432p401r::SystemController</a>, and <a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#af374813b4b1e30c0bbf29703f1da6c20">sjsu::stm32f4xx::SystemController</a>.</p>
 

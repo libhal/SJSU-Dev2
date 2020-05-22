@@ -9,16 +9,16 @@
 
 namespace sjsu
 {
-/// Represents the voltage to frequency gain in millivolts.
-const units::voltage::millivolt_t kGvf = 32.55_mV;
-/// 3600 is the number of coulombs per amp hour
-const float kCoulombsPerAh = 3600.0f;
-
 /// LTC4150 control driver for the LPC40xx and LPC17xx microcontrollers. It
 /// keeps track of a connected battery's current milliamp hours.
 class Ltc4150 : public CoulombCounter
 {
  public:
+  /// Represents the voltage to frequency gain in millivolts.
+  static constexpr units::voltage::millivolt_t kGvf = 32.55_mV;
+  /// 3600 is the number of coulombs per amp hour
+  static constexpr float kCoulombsPerAh = 3600.0f;
+
   /// Defines what state the Polarity pin can be in.
   enum class Polarity : uint8_t
   {
@@ -52,12 +52,21 @@ class Ltc4150 : public CoulombCounter
       }
     };
 
+    // Initialize the hardware counter to allow counting of signal transitions.
     counter_.Initialize();
 
+    // Set the polarity pin as an input as we need to use it to read the state
+    // polarity signal.
     pol_pin_.SetAsInput();
-    // Sets whether we are charging (counting down) or discharging (counting up)
+
+    // Sets the initial state of charging (counting down) or discharging
+    // (counting up)
     polarity_interrupt();
-    pol_pin_.AttachInterrupt(polarity_interrupt, Gpio::Edge::kEdgeFalling);
+
+    // Every time the polarity changes, this interrupt to be called to determine
+    // the direction of the counter.
+    pol_pin_.OnChange(polarity_interrupt);
+
     // Start counting
     counter_.Enable();
   }

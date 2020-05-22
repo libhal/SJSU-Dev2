@@ -57,6 +57,7 @@ nav:
     - L1 Peripheral:
       - 'design_docs/L1/counter.md'
       - 'design_docs/L1/pin.md'
+      - 'design_docs/L1/system_controller.md'
       - System Controllers:
         - 'design_docs/L1/msp432p401r/system_controller.md'
     - L2 Hardware Abstraction:

@@ -1,6 +1,9 @@
 var searchData=
 [
   ['oled',['Oled',['../db/dc5/structsjtwo.html#affe396d98953fc6a8ef3429a9615ea42',1,'sjtwo::Oled()'],['../db/dc5/structsjtwo.html#ae5391ad56fbae459afc44c531c95591a',1,'sjtwo::Oled()']]],
+  ['onchange',['OnChange',['../dd/d3a/classsjsu_1_1Gpio.html#aa50b322d9399f08346154b5f43b47484',1,'sjsu::Gpio']]],
+  ['onfallingedge',['OnFallingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#aa9709aa81ffe199781e2f73b2f95167c',1,'sjsu::Gpio']]],
+  ['onrisingedge',['OnRisingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#a340de686d13d8a299f9fa313c56327ba',1,'sjsu::Gpio']]],
   ['operator_20_26',['operator &amp;',['../d0/d6b/namespacesjsu.html#ab16806d14e7cff6945107c75e5b6d24f',1,'sjsu']]],
   ['operator_20_26_3d',['operator &amp;=',['../d0/d6b/namespacesjsu.html#ab9c11fb4b8f68b1d8bde067470fb8d12',1,'sjsu']]],
   ['operator_20int',['operator int',['../dd/dee/structsjsu_1_1Status__t.html#aff71e5bbfbfb0a6e0243840b32e22a43',1,'sjsu::Status_t']]],

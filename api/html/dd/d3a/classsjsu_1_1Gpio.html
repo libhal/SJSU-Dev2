@@ -151,6 +151,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#ab89a4b03e3aace7fe2f1834670c2ebd7">SetAsOutput</a> () const</td></tr>
 <tr class="memdesc:ab89a4b03e3aace7fe2f1834670c2ebd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pin direction as output. <br /></td></tr>
 <tr class="separator:ab89a4b03e3aace7fe2f1834670c2ebd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a340de686d13d8a299f9fa313c56327ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#a340de686d13d8a299f9fa313c56327ba">OnRisingEdge</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> callback)</td></tr>
+<tr class="separator:a340de686d13d8a299f9fa313c56327ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9709aa81ffe199781e2f73b2f95167c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#aa9709aa81ffe199781e2f73b2f95167c">OnFallingEdge</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> callback)</td></tr>
+<tr class="separator:aa9709aa81ffe199781e2f73b2f95167c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa50b322d9399f08346154b5f43b47484"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html#aa50b322d9399f08346154b5f43b47484">OnChange</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> callback)</td></tr>
+<tr class="separator:aa50b322d9399f08346154b5f43b47484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An abstract interface for General Purpose I/O </p>
@@ -226,6 +232,105 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <dl class="section return"><dt>Returns</dt><dd>underlying pin object </dd></dl>
 
 <p>Implemented in <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a4c71dae52920bbb18e24ab15fbeb8238">sjsu::lpc40xx::Gpio</a>, <a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#a3e432abcc5d8623c4e8fc2fa4bf74852">sjsu::stm32f10x::Gpio</a>, <a class="el" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#af9cafdb2a6d84d66560a42460581df63">sjsu::stm32f4xx::Gpio</a>, and <a class="el" href="../../d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html#aaaec3d3f492525007d477d2fee18848b">sjsu::msp432p401r::Gpio</a>.</p>
+
+</div>
+</div>
+<a id="aa50b322d9399f08346154b5f43b47484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa50b322d9399f08346154b5f43b47484">&#9670;&nbsp;</a></span>OnChange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Gpio::OnChange </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set pin to run callback when the pin sees a change on the pin's state.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>- the function to be called when a rising edge or falling edge event occurs on this pin. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa9709aa81ffe199781e2f73b2f95167c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9709aa81ffe199781e2f73b2f95167c">&#9670;&nbsp;</a></span>OnFallingEdge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Gpio::OnFallingEdge </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set pin to run callback when the pin sees a falling edge</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>- the function to be called when a falling edge event occurs on this pin. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a340de686d13d8a299f9fa313c56327ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a340de686d13d8a299f9fa313c56327ba">&#9670;&nbsp;</a></span>OnRisingEdge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Gpio::OnRisingEdge </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set pin to run callback when the pin sees a rising edge</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>- the function to be called when a rising edge event occurs on this pin. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

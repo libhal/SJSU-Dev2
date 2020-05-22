@@ -24,16 +24,13 @@ int main()
                        sjsu::Gpio::Edge::kEdgeFalling);
 
   sjsu::LogInfo("Setup P2[9] to interrupt on only Rising edges...");
-  pin1.AttachInterrupt([]() { sjsu::LogInfo("P2[9] interrupt!"); },
-                       sjsu::Gpio::Edge::kEdgeRising);
+  pin1.OnRisingEdge([]() { sjsu::LogInfo("P2[9] interrupt!"); });
 
   sjsu::LogInfo("Setup P0[29] to interrupt on Rising and Falling edges...");
-  pin2.AttachInterrupt([]() { sjsu::LogInfo("P0[29] interrupt!"); },
-                       sjsu::Gpio::Edge::kEdgeBoth);
+  pin2.OnChange([]() { sjsu::LogInfo("P0[29] interrupt!"); });
 
   sjsu::LogInfo("Setup P0[30] to interrupt on Rising and Falling edges...");
-  pin2.AttachInterrupt([]() { sjsu::LogInfo("P0[30] interrupt!"); },
-                       sjsu::Gpio::Edge::kEdgeBoth);
+  pin2.OnChange([]() { sjsu::LogInfo("P0[30] interrupt!"); });
 
   sjsu::LogInfo(
       "All of the pins are currently pulled high using an internal pull-up "
