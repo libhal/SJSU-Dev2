@@ -31,8 +31,8 @@ This example places the value `0xABC` at bit position 4 on to bit position 15.
 The first half using the `&` operator clears those bits and the second half with
 the `|` places the `0xABC` into the appropriate position.
 
-If you are not following, it may be good to brush up/learn how to perform
-bitwise operations before proceeding.
+It may be good to brush up/learn how to perform bitwise operations before
+proceeding.
 
 ## Why make an API for this
 
@@ -57,14 +57,14 @@ we meant to manipulate. Looking at our list of issues how does this mistake fit?
    correct location is a reasonably easy typo to make.
 2. **Readability**: For experienced embedded software developers this is a very
    familiar pattern, but at the same time, just like it is easy to forget to
-   apply the `~`, it is easy to overlook the missing `~`. This makes the ability
-   to reasonable about the correctness of this line harder.
+   apply the `~`, it is easy to overlook the missing `~`. This increases the
+   need to reason about the correctness of this line.
 3. **Debuggability**: This example is a good type of failure mode because this
    is easy to detect in unit tests. At runtime there is a potential that wiping
    out the other bits doesn't crash the program but changes the configurations
-   enough to make something look like its kinda working but not quite. And this
-   can lead you to think that the issue could be with hardware or some other
-   part of the code.
+   enough to make something look like it's kind of working but not quite.
+   Additionally, this can lead developers to think that the issue could be with
+   hardware or some other part of the code.
 
 Now lets throw in a curve ball. Lets say we fix this and add back in the `~`.
 Is there anything wrong with it?
@@ -73,16 +73,16 @@ Is there anything wrong with it?
 REG->CONTROL = (REG->CONTROL & ~(0xFFFF << 4)) | (0xABC << 4);
 ```
 
-I will guess that most will say no, it seems fine. But what if I told you that
-the width of the bit field isn't 16 bits, as indicated by the `0xFFFF`, but that
-it was 12 bits, thus the mask should be `0xFFF`. The current implementation will
-clear out additional bits outside of the desired field. One could make that
-guess by the value `0xABC`. But the data being put into the field can tell you
-nothing about the size of the field, unless the width of the input is larger
-than the clearing mask (i.e. `value = 0xABCD` and `mask = 0xFF`).
+It is likely most will assume no, it seems fine. But what if the actual width of
+the bit field isn't 16 bits as indicated by the `0xFFFF`, but that it was 12
+bits, thus the mask should be `0xFFF`. The current implementation will clear
+out additional bits outside of the desired field. One could make that guess by
+the value `0xABC`. But the data being put into the field can tell you nothing
+about the size of the field, unless the width of the input is larger than the
+clearing mask (i.e. `value = 0xABCD` and `mask = 0xFF`).
 
 Again, this to is not easy to reason about, is easy to typo, and is hard to
-notice at runtime. Units test code could also miss this, if the other fields in
+notice at runtime. Unit test code could also miss this, if the other fields in
 the value are not evaluated as well.
 
 ## Bit API
@@ -105,10 +105,10 @@ A wishlist of features for a bit manipulation library would be the following:
 The bit API establishes a `bit::Mask` structure that contains the bit position
 and width of a field within a value. This mask can be used with the bit
 manipulation APIs in order to specify the location of the bits needed to be
-modified. There are a couple of ways to construct a `bit::Mask` objects.
-Each area below will go over these methods and when you should use them.
-The idea of when one would have to use one method or another is simple, the
-amount of cognitive work required to verify if a bit mask is correct.
+modified. There are a couple of ways to construct `bit::Mask` objects.
+Each area below will go over these methods and when they should be used.
+The idea of when one would have to use one method or another is simple: it is
+the amount of cognitive work required to verify if a bit mask is correct.
 
 #### 1. bit::Mask{}
 
@@ -124,13 +124,13 @@ auto mask      = bit::Mask{.position = 5, .width = 3};
 In this case, we are constructing the data structure directly. This method
 should be used if the reference material documents their registers or data
 blocks using the starting bit position and the width of the field. This way,
-cognitive load is reduced on the developer because they they simple cross
-reference the bit position and width in the reference material and the code and
+cognitive load is reduced on the developer because they can simple cross
+reference the bit position and width in the reference material and the code to
 see if they match or not.
 
 #### 2. bit::MaskFromRange()
 
-This is the most used API for generated bit masks in SJSU-Dev2 because most
+This is the most used API for generating bit masks in SJSU-Dev2 because most
 reference material (data sheets, user manuals, technical specifications, etc.)
 use the paradigms of bit start and bit end position. With that in mind, there
 are two APIs for generating masks for this.
@@ -210,22 +210,22 @@ PLL->CONFIG = bit::Insert(PLL->CONFIG, 0x5, kPllMultiply);
 
 ### bit::StreamExtract(), Bit Extract from an Array
 
-`bit::StreamExtract()` works the same way as `bit::Extract()` except that you
-can supply `bit::StreamExtract()` with an array of bytes.
+`bit::StreamExtract()` works the same way as `bit::Extract()` except that an
+array of bytes can passed to `bit::StreamExtract()`.
 
 See the
 [sd card](https://github.com/kammce/SJSU-Dev2/blob/master/library/L2_HAL/memory/sd.hpp)
 implementation source code for an example of its usage.
 
-## Register & Value Class
+## bit::Register & bit::Value Class
 
-Along with the functional APIs SJSU-Dev2 also provides classes for manipulating
+Along with the functional APIs, SJSU-Dev2 also provides classes for manipulating
 and constructing bit values in an expressive and efficient manner.
 
-### Register()
+### bit::Register
 
-One of the issues with using the functional bit APIs is that it is easy to typo
-it by doing the following:
+One of the issues with using the functional bit APIs is that it is easy to
+produce a typo by doing the following:
 
 ```C++
 static constexpr auto kPllMultiply = bit::MaskFromRange(15, 21);
@@ -235,10 +235,10 @@ PLL->CONFIG = bit::Insert(REG->STATE, 0x5, kPllMultiply);
 The input register is not the same as the output register. This is not a bug or
 mistake in the API. A developer may want to use to a different input value,
 such as a local variable, as the input to `Insert()` rather than reading from
-the register directly. But when you do want the source and destination to be the
-same, this posses a problem.
+the register directly. But when the source and destination should be the same,
+this posses a problem.
 
-The `Register()` class comes in to prevent this. It has the same functional APIs
+The `Register` class comes in to prevent this. It has the same functional APIs
 as the bit API but all nested within a single class. For example:
 
 ```C++
@@ -267,9 +267,9 @@ what is happening.
     a bus cycle. A bus cycle is where data must leave the CPU in order to talk
     to hardware outside of itself and this takes longer than simply modifying
     registers or CPU internal cache memory. Multiple bus cycles results in a
-    lower performance code and emits more instructions into the binary bloating
-    the code. Save should be used as few times as possible to improve runtime
-    performance and to reduce code bloat.
+    lower performance code and requires more instructions to be emitted bloating
+    the size of the binary. `Save()` should be used as few times as possible to
+    improve runtime performance and to reduce binary size.
 
 Register objects can be saved into a variable for multiple uses. This is a good
 practice if the register needs to be used multiple times within a function or
@@ -280,15 +280,15 @@ auto config = bit::Register(&PLL->CONFIG);
 ```
 
 !!! NOTE
-    In order to keep RAM usage low, only store `Registers()` objects as local
+    In order to keep RAM usage low, only store `Register` objects as local
     variables within functions. The performance cost of constructing a
-    `Register()` is very low and does not warrant wasting space by storing them
+    `Register` is very low and does not warrant wasting space by storing them
     as member variables or as static variables.
 
-### Value()
+### bit::Value
 
 Value is used to generate fully to mostly constructed register values in an
-expressive way. Works in the same way as the `bit::Register()` class, except
+expressive way. Works in the same way as the `bit::Register` class, except
 that it only takes an initial value. It can also be implicitly converted from a
 `bit::Value` object into its underlying type (defaults to `uint32_t`).
 
@@ -322,8 +322,8 @@ will tend to not even statically allocate space for the value, but instead,
 embed the value into the instructions of the code. No ram, no stack, and
 nearly no ROM usage.
 
-It is a best practice to use this for peripheral settings that are knowable
-at compile time.
+It is a best practice to use this for peripheral settings that can be known at
+compile time.
 
 ## Finding examples
 
@@ -331,5 +331,5 @@ The entire codebase of SJSU-Dev2 uses the bit APIs. Some of the older codes and
 tests still uses direct bit manipulation, but going forward everything will go
 through the bit API. A good place to find usage of the bit APIs are in the
 `L1_Peripheral/<insert mcu name here>` directories. Each MCU implementation of a
-peripheral will necessarily need to perform bit manipulation, thus they are a
-hot spot its usage.
+peripheral will need to perform bit manipulation, thus they are a hot spot its
+usage.
