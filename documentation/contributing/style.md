@@ -203,7 +203,7 @@ Every file must end with a newline character.
 Never use decimal or octal when doing bitwise operations. You may use
 hex `0x32`, or binary `0b0011'0010`.
 
-Please **DO** use the single quote `'` to separate your numbers for
+**DO** use the single quote `'` to separate your numbers for
 example: `0b0110'1000'0101'1110` and `12'000'000`.
 
 Making the number segments more visible if there are obvious mistakes.
@@ -212,6 +212,13 @@ Make sure that the radix of the number you are using from data sheets or
 manuals matching the radix in those manuals. If the data sheet says that
 at address `0xABCD`, you should also use 0xABCD rather then converting
 it to `43981`.
+
+# Bitwise Operators
+
+Refrain from using bit wise operators directly. Prefer to use the bit API for
+bit manipulation.
+
+See the [bit API guide](../guides/bit.md) for more details.
 
 ## Use third party library "units" whenever appropriate
 

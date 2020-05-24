@@ -1,3 +1,6 @@
+/// @file bit.hpp
+/// Stand alone bit manipulation library to make performing bit
+/// manipulation on target registers and values easy, expressive, and readable.
 #pragma once
 
 #include <array>
@@ -85,14 +88,14 @@ constexpr Mask CreateMaskFromRange(uint32_t bit_position)
 
 /// Extract a set of contiguous bits from a target value.
 ///
-/// target   =        0x00FE'DCBA
-///                            ^
-///                           /
-///                          /
-/// value  = 4 -----------+
-/// width    = 8
+///     target   =        0x00FE'DCBA
+///                                ^
+///                               /
+///                              /
+///     value    = 4 -----------+
+///     width    = 8
 ///
-/// return   = 0xCB
+///     return   = 0xCB
 ///
 /// @param target the target containing the bits to be extracted.
 /// @param position the starting position of the bits to extracted.
@@ -131,15 +134,15 @@ template <typename T>
 
 /// Insert a set of contiguous bits into a target value.
 ///
-/// target   =        0xXXXX'XXXX
-///                        ^
-///                       /
-///                      /
-/// value   = 0xABCD --+
-/// position = 16
-/// width    = 16
+///     target   =        0xXXXX'XXXX
+///                            ^
+///                           /
+///                          /
+///     value    = 0xABCD --+
+///     position = 16
+///     width    = 16
 ///
-/// return   =        0xABCD'XXXX
+///     return   =        0xABCD'XXXX
 ///
 /// @param target the target that will have bits inserted into it.
 /// @param value the bits to be inserted into the target
@@ -190,13 +193,13 @@ template <typename T, typename U>
 
 /// Set a bit in the target value at the position specifed to a 1 and return
 ///
-/// target   =        0b0000'1001
-///                        ^
-///                       /
-///                      /
-/// position = 4 -------+
+///    target   =        0b0000'1001
+///                           ^
+///                          /
+///                         /
+///    position = 4 -------+
 ///
-/// return   =        0b0001'1001
+///    return   =        0b0001'1001
 ///
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to change to 1
@@ -212,13 +215,13 @@ template <typename T>
 
 /// Set a bit in the target value at the position specifed to a 0 and return
 ///
-/// target   =        0b0000'1001
-///                          ^
-///                         /
-///                        /
-/// position = 3 ---------+
+///     target   =        0b0000'1001
+///                              ^
+///                             /
+///                            /
+///     position = 3 ---------+
 ///
-/// return   =        0b0000'0001
+///     return   =        0b0000'0001
 ///
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to change to 0
@@ -236,13 +239,13 @@ template <typename T>
 /// If the bit was a 1, it will be changed to a 0.
 /// If the bit was a 0, it will be changed to a 1.
 ///
-/// target   =        0b0000'1001
-///                          ^
-///                         /
-///                        /
-/// position = 3 ---------+
+///     target   =        0b0000'1001
+///                              ^
+///                             /
+///                            /
+///     position = 3 ---------+
 ///
-/// return   =        0b0000'0001
+///     return   =        0b0000'0001
 ///
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to toggle
@@ -260,14 +263,13 @@ template <typename T>
 /// If the bit is 1 at the position given, return true.
 /// If the bit is 0 at the position given, return false.
 ///
-/// target   =        0b0000'1001
-///                          |
-///                         /|
-///                        / |
-/// position = 3 ---------+  |
-///                         \|/
-///
-/// return   =               true
+///     target   =        0b0000'1001
+///                              |
+///                             /|
+///                            / |
+///     position = 3 ---------+  |
+///                             \|/
+///     return   =              true
 ///
 /// @param target the value you want to change
 /// @param position the position of the bit you would like to toggle
@@ -291,8 +293,8 @@ template <typename T>
   return Set(target, bitmask.position);
 }
 
-/// Operates the same way as the Set(T target, Mask bitmask) function except it
-/// clears the bit.
+/// Operates the same way as the Set() function except it clears the bit (set
+/// the bit's value to zero).
 template <typename T>
 [[nodiscard]] constexpr T Clear(T target, Mask bitmask)
 {
@@ -358,6 +360,7 @@ template <typename T>
 /// @param stream - byte array containing the bits to be extracted
 /// @param size - number of bytes of the byte array
 /// @param mask - the mask containing the location of the bits to be extracted.
+/// @param endian - indicates if the value is little or big endian.
 /// @return constexpr T - bits extracted from the stream.
 template <typename T>
 constexpr T StreamExtract(const uint8_t * stream,
@@ -449,8 +452,8 @@ constexpr T StreamExtract(const uint8_t * stream,
 /// @tparam T - numeric type to be returned. Can only be uint8_t, 16, 32 and 64.
 /// @tparam size - deduced size of the std::array that was passed in.
 /// @param stream - byte array containing the bits to be extracted
-/// @param size - number of bytes of the byte array
 /// @param mask - the mask containing the location of the bits to be extracted.
+/// @param endian - indicates if the value is little or big endian.
 /// @return constexpr T - bits extracted from the stream.
 template <typename T, size_t size>
 constexpr T StreamExtract(const std::array<uint8_t, size> & stream,
