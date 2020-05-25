@@ -49,8 +49,8 @@ int main()
 
   // Clockout Configuration register (CLKOUTCFG) bit masks,
   constexpr uint8_t kClockOutEnableBit = 8;
-  constexpr auto kClockOutSelectMask   = sjsu::bit::CreateMaskFromRange(0, 3);
-  constexpr auto kClockOutDividerMask  = sjsu::bit::CreateMaskFromRange(4, 7);
+  constexpr auto kClockOutSelectMask   = sjsu::bit::MaskFromRange(0, 3);
+  constexpr auto kClockOutDividerMask  = sjsu::bit::MaskFromRange(4, 7);
 
   /// The select code to output CPU clock.
   constexpr uint8_t kClockOutSelect = 0b000;

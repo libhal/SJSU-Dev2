@@ -27,9 +27,9 @@ int main()
   clock_pin.SetAsOpenDrain(false);
   sjsu::LogInfo("Connect a probe to pin P1[25] to measure the clock rate");
 
-  constexpr sjsu::bit::Mask kClockSelect = sjsu::bit::CreateMaskFromRange(0, 3);
-  constexpr sjsu::bit::Mask kDivide      = sjsu::bit::CreateMaskFromRange(4, 7);
-  constexpr sjsu::bit::Mask kEnable      = sjsu::bit::CreateMaskFromRange(8);
+  constexpr sjsu::bit::Mask kClockSelect = sjsu::bit::MaskFromRange(0, 3);
+  constexpr sjsu::bit::Mask kDivide      = sjsu::bit::MaskFromRange(4, 7);
+  constexpr sjsu::bit::Mask kEnable      = sjsu::bit::MaskFromRange(8);
 
   // The following register configurations do the following:
   //

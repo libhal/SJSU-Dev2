@@ -124,9 +124,9 @@ TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
   {
     SECTION("Valid function codes")
     {
-      constexpr auto kDirectionBit = bit::CreateMaskFromRange(2);
-      constexpr auto kSel1Bit      = bit::CreateMaskFromRange(1);
-      constexpr auto kSel0Bit      = bit::CreateMaskFromRange(0);
+      constexpr auto kDirectionBit = bit::MaskFromRange(2);
+      constexpr auto kSel1Bit      = bit::MaskFromRange(1);
+      constexpr auto kSel0Bit      = bit::MaskFromRange(0);
 
       for (size_t i = 0; i < test_pins.size(); i++)
       {

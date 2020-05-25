@@ -96,7 +96,7 @@ class UartBase : public sjsu::Uart
   {
     /// Indicates if the transmit data register is empty and can be loaded with
     /// another byte.
-    static constexpr auto kTransitEmpty = bit::CreateMaskFromRange(7);
+    static constexpr auto kTransitEmpty = bit::MaskFromRange(7);
   };
 
   /// Namespace for the control registers (CR1, CR3) bit masks and predefined
@@ -106,16 +106,16 @@ class UartBase : public sjsu::Uart
     /// When this bit is cleared the USART prescalers and outputs are stopped
     /// and the end of the current byte transfer in order to reduce power
     /// consumption. (CR1)
-    static constexpr auto kUsartEnable = bit::CreateMaskFromRange(13);
+    static constexpr auto kUsartEnable = bit::MaskFromRange(13);
 
     /// Enables DMA receiver (CR3)
-    static constexpr auto kDmaReceiverEnable = bit::CreateMaskFromRange(6);
+    static constexpr auto kDmaReceiverEnable = bit::MaskFromRange(6);
 
     /// This bit enables the transmitter. (CR1)
-    static constexpr auto kTransmitterEnable = bit::CreateMaskFromRange(3);
+    static constexpr auto kTransmitterEnable = bit::MaskFromRange(3);
 
     /// This bit enables the receiver. (CR1)
-    static constexpr auto kReceiveEnable = bit::CreateMaskFromRange(2);
+    static constexpr auto kReceiveEnable = bit::MaskFromRange(2);
 
     /// Enable USART + Enable Receive + Enable Transmitter
     static constexpr uint16_t kControlSettings1 =
@@ -133,10 +133,10 @@ class UartBase : public sjsu::Uart
   struct BaudRateReg  // NOLINT
   {
     /// Mantissa of USART DIV
-    static constexpr auto kMantissa = bit::CreateMaskFromRange(4, 15);
+    static constexpr auto kMantissa = bit::MaskFromRange(4, 15);
 
     /// Fraction of USART DIV
-    static constexpr auto kFraction = bit::CreateMaskFromRange(0, 3);
+    static constexpr auto kFraction = bit::MaskFromRange(0, 3);
   };
 
   /// Namespace for the control registers (DMA->CCR) bit masks and predefined
@@ -144,78 +144,74 @@ class UartBase : public sjsu::Uart
   struct DmaReg  // NOLINT
   {
     /// Declare this channel for Memory to memory mode
-    static constexpr auto kMemoryToMemory = bit::CreateMaskFromRange(14);
+    static constexpr auto kMemoryToMemory = bit::MaskFromRange(14);
 
     /// Configure the channel priority for this channel.
     /// 0b00: Low
     /// 0b01: Medium
     /// 0b10: High
     /// 0b11: Very high
-    static constexpr auto kChannelPriority = bit::CreateMaskFromRange(12, 13);
+    static constexpr auto kChannelPriority = bit::MaskFromRange(12, 13);
 
     /// The size of each element of the memory.
     /// 0b00: 8-bits
     /// 0b01: 16-bits
     /// 0b10: 32-bits
     /// 0b11: Reserved
-    static constexpr auto kMemorySize = bit::CreateMaskFromRange(10, 11);
+    static constexpr auto kMemorySize = bit::MaskFromRange(10, 11);
 
     /// The peripheral register size.
     /// 0b00: 8-bits
     /// 0b01: 16-bits
     /// 0b10: 32-bits
     /// 0b11: Reserved
-    static constexpr auto kPeripheralSize = bit::CreateMaskFromRange(8, 9);
+    static constexpr auto kPeripheralSize = bit::MaskFromRange(8, 9);
 
     /// Activate memory increment mode, which will increment the memory address
     /// with each transfer
-    static constexpr auto kMemoryIncrementEnable = bit::CreateMaskFromRange(7);
+    static constexpr auto kMemoryIncrementEnable = bit::MaskFromRange(7);
 
     /// Activate memory increment mode, which will increment the peripheral
     /// address with each transfer
-    static constexpr auto kPeripheralIncrementEnable =
-        bit::CreateMaskFromRange(6);
+    static constexpr auto kPeripheralIncrementEnable = bit::MaskFromRange(6);
 
     /// DMA will continuous load bytes into the buffer supplied in a circular
     /// buffer manner.
-    static constexpr auto kCircularMode = bit::CreateMaskFromRange(5);
+    static constexpr auto kCircularMode = bit::MaskFromRange(5);
 
     /// Data transfer direction
     /// 0: Read from peripheral
     /// 1: Read from memory
-    static constexpr auto kDataTransferDirection = bit::CreateMaskFromRange(4);
+    static constexpr auto kDataTransferDirection = bit::MaskFromRange(4);
 
     /// Enable interrupt on transfer error
-    static constexpr auto kTransferErrorInterruptEnable =
-        bit::CreateMaskFromRange(3);
+    static constexpr auto kTransferErrorInterruptEnable = bit::MaskFromRange(3);
 
     /// Enable interrupt on half of data transferred
-    static constexpr auto kHalfTransferInterruptEnable =
-        bit::CreateMaskFromRange(2);
+    static constexpr auto kHalfTransferInterruptEnable = bit::MaskFromRange(2);
 
     /// Enable interrupt on complete transfer
     static constexpr auto kTransferCompleteInterruptEnable =
-        bit::CreateMaskFromRange(1);
+        bit::MaskFromRange(1);
 
     /// Enable this DMA channel
-    static constexpr auto kEnable = bit::CreateMaskFromRange(0);
+    static constexpr auto kEnable = bit::MaskFromRange(0);
 
     /// Setup the DMA channel with all of the options specific to handling UART
     static constexpr uint32_t kDmaSettings =
         bit::Value{}
-            .Clear(DmaReg::kTransferCompleteInterruptEnable)
-            .Clear(DmaReg::kHalfTransferInterruptEnable)
-            .Clear(DmaReg::kTransferErrorInterruptEnable)
-            .Clear(DmaReg::kDataTransferDirection)  // Read from peripheral
-            .Set(DmaReg::kCircularMode)
-            .Clear(DmaReg::kPeripheralIncrementEnable)
-            .Set(DmaReg::kMemoryIncrementEnable)
-            .Insert(0b00, DmaReg::kPeripheralSize)  // size = 8 bits
-            .Insert(0b00, DmaReg::kMemorySize)      // size = 8 bits
-            .Insert(0b10,
-                    DmaReg::kChannelPriority)  // Low Medium [High] Very_High
-            .Clear(DmaReg::kMemoryToMemory)
-            .Set(DmaReg::kEnable);
+            .Clear(kTransferCompleteInterruptEnable)
+            .Clear(kHalfTransferInterruptEnable)
+            .Clear(kTransferErrorInterruptEnable)
+            .Clear(kDataTransferDirection)  // Read from peripheral
+            .Set(kCircularMode)
+            .Clear(kPeripheralIncrementEnable)
+            .Set(kMemoryIncrementEnable)
+            .Insert(0b00, kPeripheralSize)   // size = 8 bits
+            .Insert(0b00, kMemorySize)       // size = 8 bits
+            .Insert(0b10, kChannelPriority)  // Low Medium [High] Very_High
+            .Clear(kMemoryToMemory)
+            .Set(kEnable);
   };
 
   /// @tparam size - size of the array

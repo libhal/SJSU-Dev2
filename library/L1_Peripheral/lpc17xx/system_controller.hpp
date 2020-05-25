@@ -157,7 +157,7 @@ class SystemController final : public sjsu::SystemController
   struct ClockSourceSelectRegister  // NOLINT
   {
     /// Clock source select bit mask.
-    static constexpr auto kSelectMask = bit::CreateMaskFromRange(0, 1);
+    static constexpr auto kSelectMask = bit::MaskFromRange(0, 1);
   };
 
   /// Namespace containing the bit masks for the System Controls and Status
@@ -165,11 +165,11 @@ class SystemController final : public sjsu::SystemController
   struct SystemControlsRegister  // NOLINT
   {
     /// Main oscillator frequency range select bit mask.
-    static constexpr auto kOscillatorRangeMask = bit::CreateMaskFromRange(4);
+    static constexpr auto kOscillatorRangeMask = bit::MaskFromRange(4);
     /// Main oscillator enable bit mask.
-    static constexpr auto kOscillatorEnableMask = bit::CreateMaskFromRange(5);
+    static constexpr auto kOscillatorEnableMask = bit::MaskFromRange(5);
     /// Main oscillator status bit mask.
-    static constexpr auto kOscillatorStatusMask = bit::CreateMaskFromRange(6);
+    static constexpr auto kOscillatorStatusMask = bit::MaskFromRange(6);
   };
 
   /// Namespace containing definitions for PLL0 (Main PLL).
@@ -180,9 +180,9 @@ class SystemController final : public sjsu::SystemController
     struct ConfigurationRegister  // NOLINT
     {
       /// PLL0 multiplier bit mask.
-      static constexpr auto kMultiplierMask = bit::CreateMaskFromRange(0, 14);
+      static constexpr auto kMultiplierMask = bit::MaskFromRange(0, 14);
       /// PLL0 pre-divider bit mask.
-      static constexpr auto kPreDividerMask = bit::CreateMaskFromRange(16, 23);
+      static constexpr auto kPreDividerMask = bit::MaskFromRange(16, 23);
     };
 
     /// Namespace containing the bit masks for the PLL0 Status register
@@ -190,15 +190,15 @@ class SystemController final : public sjsu::SystemController
     struct StatusRegister  // NOLINT
     {
       /// PLL0 multiplier bit mask.
-      static constexpr auto kMultiplierMask = bit::CreateMaskFromRange(0, 14);
+      static constexpr auto kMultiplierMask = bit::MaskFromRange(0, 14);
       /// PLL0 pre-divider bit mask.
-      static constexpr auto kPreDividerMask = bit::CreateMaskFromRange(16, 23);
+      static constexpr auto kPreDividerMask = bit::MaskFromRange(16, 23);
       /// PLL0 enable status bit mask.
-      static constexpr auto kEnableMask = bit::CreateMaskFromRange(24);
+      static constexpr auto kEnableMask = bit::MaskFromRange(24);
       /// PLL0 connection status bit mask.
-      static constexpr auto kConnectMask = bit::CreateMaskFromRange(25);
+      static constexpr auto kConnectMask = bit::MaskFromRange(25);
       /// PLL0 lock status bit mask.
-      static constexpr auto kLockStatusMask = bit::CreateMaskFromRange(26);
+      static constexpr auto kLockStatusMask = bit::MaskFromRange(26);
     };
   };
 
@@ -221,9 +221,9 @@ class SystemController final : public sjsu::SystemController
     struct ConfigurationRegister  // NOLINT
     {
       /// PLL1 multiplier bit mask
-      static constexpr auto kMultiplierMask = bit::CreateMaskFromRange(0, 4);
+      static constexpr auto kMultiplierMask = bit::MaskFromRange(0, 4);
       /// PLL1 pre-divider bit mask
-      static constexpr auto kDividerMask = bit::CreateMaskFromRange(5, 6);
+      static constexpr auto kDividerMask = bit::MaskFromRange(5, 6);
     };
 
     /// Namespace containing the bit masks for the PLL1 Status register
@@ -231,15 +231,15 @@ class SystemController final : public sjsu::SystemController
     struct StatusRegister  // NOLINT
     {
       /// PLL1 multiplier bit mask
-      static constexpr auto kMultiplierMask = bit::CreateMaskFromRange(0, 4);
+      static constexpr auto kMultiplierMask = bit::MaskFromRange(0, 4);
       /// PLL1 pre-divider bit mask
-      static constexpr auto kDividerMask = bit::CreateMaskFromRange(5, 6);
+      static constexpr auto kDividerMask = bit::MaskFromRange(5, 6);
       /// PLL1 enable status bit mask.
-      static constexpr auto kEnableMask = bit::CreateMaskFromRange(8);
+      static constexpr auto kEnableMask = bit::MaskFromRange(8);
       /// PLL1 connection status bit mask.
-      static constexpr auto kConnectMask = bit::CreateMaskFromRange(9);
+      static constexpr auto kConnectMask = bit::MaskFromRange(9);
       /// PLL1 lock status bit
-      static constexpr auto kLockStatusMask = bit::CreateMaskFromRange(10);
+      static constexpr auto kLockStatusMask = bit::MaskFromRange(10);
     };
   };
 
@@ -248,9 +248,9 @@ class SystemController final : public sjsu::SystemController
   struct PllControlRegister  // NOLINT
   {
     /// PLL enable bit mask.
-    static constexpr auto kEnableMask = bit::CreateMaskFromRange(0);
+    static constexpr auto kEnableMask = bit::MaskFromRange(0);
     /// PLL connect/disconnect bit mask.
-    static constexpr auto kConnectMask = bit::CreateMaskFromRange(1);
+    static constexpr auto kConnectMask = bit::MaskFromRange(1);
   };
 
   /// Namespace containing the bit masks for the CPU Clock Configuration
@@ -258,7 +258,7 @@ class SystemController final : public sjsu::SystemController
   struct CpuClockRegister  // NOLINT
   {
     /// The 8-bit CPU clock divider bitmask.
-    static constexpr auto kDividerMask = bit::CreateMaskFromRange(0, 7);
+    static constexpr auto kDividerMask = bit::MaskFromRange(0, 7);
   };
 
   /// Namespace containing the bit masks for the USB Clock Configuration
@@ -266,7 +266,7 @@ class SystemController final : public sjsu::SystemController
   struct UsbClockRegister  // NOLINT
   {
     /// The 4-bit USB clock divider bitmask.
-    static constexpr auto kDividerMask = bit::CreateMaskFromRange(0, 3);
+    static constexpr auto kDividerMask = bit::MaskFromRange(0, 3);
   };
 
   /// @see 4.1 Summary of clocking and power control functions

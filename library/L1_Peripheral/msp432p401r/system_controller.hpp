@@ -115,10 +115,13 @@ class SystemController final : public sjsu::SystemController
   {
     /// Clock rate for the very low power oscillator.
     static constexpr units::frequency::hertz_t kVeryLowFrequency = 9'400_Hz;
+
     /// Clock rate for the low power oscillator.
     static constexpr units::frequency::hertz_t kModule = 25_MHz;
+
     /// Internal system oscillator.
     static constexpr units::frequency::hertz_t kSystem = 5_MHz;
+
     /// Clock rates for the reference oscillator The reference oscillator is
     /// configuration to be either 32.768 kHz or 128 kHz.
     static constexpr std::array<units::frequency::hertz_t, 2> kReference = {
@@ -134,6 +137,7 @@ class SystemController final : public sjsu::SystemController
   {
     /// Clock rate for the on-board external low frequency oscillator.
     static constexpr units::frequency::hertz_t kLowFrequency = 32'768_Hz;
+
     /// Clock rate for the on-board external high frequency oscillator.
     static constexpr units::frequency::hertz_t kHighFrequency = 48_MHz;
   };
@@ -150,7 +154,7 @@ class SystemController final : public sjsu::SystemController
 
     /// The CSKEY bit mask used for locking or unlocking the clock system
     /// registers.
-    static constexpr bit::Mask kCsKey = bit::CreateMaskFromRange(0, 15);
+    static constexpr auto kCsKey = bit::MaskFromRange(0, 15);
   };
 
   /// Namespace containing the bit masks for the Control 0 Register (CTL0)
@@ -164,12 +168,13 @@ class SystemController final : public sjsu::SystemController
     }
 
     /// DCO tuning value bit mask.
-    static constexpr bit::Mask kTuningSelect = bit::CreateMaskFromRange(0, 9);
+    static constexpr auto kTuningSelect = bit::MaskFromRange(0, 9);
+
     /// DCO frequency seelect bit mask.
-    static constexpr bit::Mask kFrequencySelect =
-        bit::CreateMaskFromRange(16, 18);
+    static constexpr auto kFrequencySelect = bit::MaskFromRange(16, 18);
+
     /// DCO enable bit mask.
-    static constexpr bit::Mask kEnable = bit::CreateMaskFromRange(23);
+    static constexpr auto kEnable = bit::MaskFromRange(23);
   };
 
   /// Namespace containing the bit masks for the Control 1 Register (CTL1)
@@ -184,29 +189,34 @@ class SystemController final : public sjsu::SystemController
     }
 
     /// Master clock source select bit mask.
-    static constexpr bit::Mask kMasterClockSourceSelect =
-        bit::CreateMaskFromRange(0, 2);
+    static constexpr auto kMasterClockSourceSelect = bit::MaskFromRange(0, 2);
+
     /// Subsystem master clock source select bit mask.
-    static constexpr bit::Mask kSubsystemClockSourceSelect =
-        bit::CreateMaskFromRange(4, 6);
+    static constexpr auto kSubsystemClockSourceSelect =
+        bit::MaskFromRange(4, 6);
+
     /// Auxiliary clock source select bit mask.
-    static constexpr bit::Mask kAuxiliaryClockSourceSelect =
-        bit::CreateMaskFromRange(8, 10);
+    static constexpr auto kAuxiliaryClockSourceSelect =
+        bit::MaskFromRange(8, 10);
+
     /// Backup clock source select bit mask.
-    static constexpr bit::Mask kBackupClockSourceSelect =
-        bit::CreateMaskFromRange(12);
+    static constexpr auto kBackupClockSourceSelect = bit::MaskFromRange(12);
+
     /// Master clock divider select bit mask.
-    static constexpr bit::Mask kMasterClockDividerSelect =
-        bit::CreateMaskFromRange(16, 18);
+    static constexpr auto kMasterClockDividerSelect =
+        bit::MaskFromRange(16, 18);
+
     /// Subsystem master clock divider select bit mask.
-    static constexpr bit::Mask kSubsystemClockDividerSelect =
-        bit::CreateMaskFromRange(20, 22);
+    static constexpr auto kSubsystemClockDividerSelect =
+        bit::MaskFromRange(20, 22);
+
     /// Auxiliary clock divider select bit mask.
-    static constexpr bit::Mask kAuxiliaryClockDividerSelect =
-        bit::CreateMaskFromRange(24, 26);
+    static constexpr auto kAuxiliaryClockDividerSelect =
+        bit::MaskFromRange(24, 26);
+
     /// Low speed subsystem master clock divider select bit mask.
-    static constexpr bit::Mask kLowSpeedSubsystemClockDividerSelect =
-        bit::CreateMaskFromRange(28, 30);
+    static constexpr auto kLowSpeedSubsystemClockDividerSelect =
+        bit::MaskFromRange(28, 30);
   };
 
   /// Namespace containing the bit masks for the Clock Enable Register (CLKEN).
@@ -219,8 +229,7 @@ class SystemController final : public sjsu::SystemController
     }
 
     /// Reference clock frequency select bit mask.
-    static constexpr bit::Mask kReferenceFrequencySelect =
-        bit::CreateMaskFromRange(15);
+    static constexpr auto kReferenceFrequencySelect = bit::MaskFromRange(15);
   };
 
   /// @see Figure 6-1. Clock System Block Diagram
@@ -515,8 +524,8 @@ class SystemController final : public sjsu::SystemController
 
     constexpr uint8_t kClockReadyBit = 24;
     const uint8_t kOffset            = Value(clock);
-    const bit::Mask kReadyBitMask    = bit::CreateMaskFromRange(
-        static_cast<uint8_t>(kClockReadyBit + kOffset));
+    const bit::Mask kReadyBitMask =
+        bit::MaskFromRange(static_cast<uint8_t>(kClockReadyBit + kOffset));
 
     while (!bit::Read(clock_system->STAT, kReadyBitMask))
     {

@@ -170,9 +170,8 @@ class PulseCapture final : public sjsu::PulseCapture
   /// Handler used to collect capture event status and pass to a user callback
   static void TimerHandler(const CaptureChannelPartial_t & channel)
   {
-    constexpr bit::Mask kCaptureInterruptFlagBit =
-        bit::CreateMaskFromRange(4, 5);
-    constexpr uint8_t kResetCaptureInterrupts = 0b11;
+    constexpr bit::Mask kCaptureInterruptFlagBit = bit::MaskFromRange(4, 5);
+    constexpr uint8_t kResetCaptureInterrupts    = 0b11;
 
     if (*channel.user_callback != nullptr)
     {
@@ -194,6 +193,7 @@ class PulseCapture final : public sjsu::PulseCapture
         bit::Insert(channel.timer_register->IR, kResetCaptureInterrupts,
                     kCaptureInterruptFlagBit);
   }
+
   /// Constructor for LPC40xx timer peripheral
   ///
   /// @param timer - timer to capture from
@@ -226,7 +226,7 @@ class PulseCapture final : public sjsu::PulseCapture
     timer_.channel.timer_register->PR = prescaler;
 
     // Enable timer
-    constexpr bit::Mask kTimerEnableBit = bit::CreateMaskFromRange(0);
+    constexpr bit::Mask kTimerEnableBit = bit::MaskFromRange(0);
     timer_.channel.timer_register->TCR =
         bit::Set(timer_.channel.timer_register->TCR, kTimerEnableBit.position);
 
@@ -257,9 +257,8 @@ class PulseCapture final : public sjsu::PulseCapture
       timer_.channel.capture_pin0.SetPinFunction(3);
     }
 
-    static constexpr bit::Mask kModeBits[2] = {
-      bit::CreateMaskFromRange(0, 1), bit::CreateMaskFromRange(3, 4)
-    };
+    static constexpr bit::Mask kModeBits[2] = { bit::MaskFromRange(0, 1),
+                                                bit::MaskFromRange(3, 4) };
 
     int which = 0;
     if (channel_ == CaptureChannelNumber::kChannel1)
@@ -276,12 +275,11 @@ class PulseCapture final : public sjsu::PulseCapture
   /// @param enabled - enable or disable the interrupt
   void EnableCaptureInterrupt(bool enabled) const override
   {
-    static constexpr bit::Mask kPendingBits[2] = {
-      bit::CreateMaskFromRange(4), bit::CreateMaskFromRange(5)
-    };
+    static constexpr bit::Mask kPendingBits[2] = { bit::MaskFromRange(4),
+                                                   bit::MaskFromRange(5) };
 
-    static constexpr bit::Mask kEnableBits[2] = { bit::CreateMaskFromRange(2),
-                                                  bit::CreateMaskFromRange(5) };
+    static constexpr bit::Mask kEnableBits[2] = { bit::MaskFromRange(2),
+                                                  bit::MaskFromRange(5) };
 
     int which = 0;
     if (channel_ == CaptureChannelNumber::kChannel1)
@@ -300,6 +298,6 @@ class PulseCapture final : public sjsu::PulseCapture
   const CaptureChannel_t & timer_;
   const CaptureChannelNumber channel_;         // NOLINT
   const units::frequency::hertz_t frequency_;  // NOLINT
-};                                             // class Capture
-};                                             // namespace lpc40xx
-};                                             // namespace sjsu
+};
+}  // namespace lpc40xx
+}  // namespace sjsu

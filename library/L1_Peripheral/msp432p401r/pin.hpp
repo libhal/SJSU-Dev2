@@ -76,9 +76,9 @@ class Pin final : public sjsu::Pin
           "The function code must be a 3-bit value between 0b000 and 0b111.");
     }
 
-    constexpr auto kDirectionBit = bit::CreateMaskFromRange(2);
-    constexpr auto kSel1Bit      = bit::CreateMaskFromRange(1);
-    constexpr auto kSel0Bit      = bit::CreateMaskFromRange(0);
+    constexpr auto kDirectionBit = bit::MaskFromRange(2);
+    constexpr auto kSel1Bit      = bit::MaskFromRange(1);
+    constexpr auto kSel0Bit      = bit::MaskFromRange(0);
 
     volatile uint8_t * select1_register = RegisterAddress(&Port()->SEL1);
     volatile uint8_t * select0_register = RegisterAddress(&Port()->SEL0);

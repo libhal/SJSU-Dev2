@@ -317,7 +317,7 @@ TEST_CASE("Testing stm32f10x SystemController", "[stm32f10x-systemcontroller]")
 
       // Verify
       CHECK(flash_code == bit::Extract(local_flash.ACR,
-                                       sjsu::bit::CreateMaskFromRange(0, 2)));
+                                       sjsu::bit::MaskFromRange(0, 2)));
     }
 
     SECTION("Changing dividers")

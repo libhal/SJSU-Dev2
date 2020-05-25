@@ -24,17 +24,16 @@ class Eeprom final : public sjsu::Storage
   /// mode, which means addresses must be multiples of 4 to avoid hard faults.
   /// To enforce this, all addresses used to read/write to the EEPROM have to
   /// be masked.
-  static constexpr bit::Mask kAddressMask = bit::CreateMaskFromRange(0, 1);
+  static constexpr bit::Mask kAddressMask = bit::MaskFromRange(0, 1);
 
   /// Masks for the program status bits and read/write status bits
   struct Status  // NOLINT
   {
     /// Mask to get value of programming status bit
-    static constexpr bit::Mask kProgramStatusMask =
-        bit::CreateMaskFromRange(28);
+    static constexpr bit::Mask kProgramStatusMask = bit::MaskFromRange(28);
+
     /// Mask to get value of read/write status bit
-    static constexpr bit::Mask kReadWriteStatusMask =
-        bit::CreateMaskFromRange(26);
+    static constexpr bit::Mask kReadWriteStatusMask = bit::MaskFromRange(26);
   };
 
   /// EEPROM Command codes for reading from, writing to, and programming the
@@ -126,8 +125,8 @@ class Eeprom final : public sjsu::Storage
 
   Returns<void> Write(uint32_t address, const void * data, size_t size) override
   {
-    constexpr bit::Mask kLower6Bits = bit::CreateMaskFromRange(0, 5);
-    constexpr bit::Mask kUpper6Bits = bit::CreateMaskFromRange(6, 11);
+    constexpr bit::Mask kLower6Bits = bit::MaskFromRange(0, 5);
+    constexpr bit::Mask kUpper6Bits = bit::MaskFromRange(6, 11);
 
     address = bit::Clear(address, kAddressMask);
 

@@ -43,7 +43,7 @@ void HandleDataFrame(const sjsu::infrared::DataFrame_t * data_frame)
   }
   else
   {
-    constexpr auto kCommandMask = sjsu::bit::CreateMaskFromRange(0, 15);
+    constexpr auto kCommandMask = sjsu::bit::MaskFromRange(0, 15);
     const uint16_t kCommand     = static_cast<uint16_t>(
         sjsu::bit::Extract(kDecodedFrame.data, kCommandMask));
     switch (kCommand)
