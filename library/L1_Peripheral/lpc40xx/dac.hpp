@@ -28,18 +28,23 @@ class Dac final : public sjsu::Dac
   {
     /// This bit field holds the output value of the DAC. This bit field is also
     /// the exact bit resolution of the DAC output.
-    static constexpr bit::Mask kValue = bit::CreateMaskFromRange(6, 15);
+    static constexpr bit::Mask kValue = bit::MaskFromRange(6, 15);
+
     /// Bias bit position in control register. See Bias enumeration for details
     /// about how this bit works.
-    static constexpr bit::Mask kBias = bit::CreateMaskFromRange(16);
+    static constexpr bit::Mask kBias = bit::MaskFromRange(16);
   };
+
 
   /// The only DAC output pin on the lpc40xx.
   static constexpr sjsu::lpc40xx::Pin kDacPin = Pin::CreatePin<0, 26>();
+
   /// Voltage reference for the lpc40xx voltage.
   static constexpr float kVref = 3.3f;
+
   /// Maximum numeric value of the ADC value register.
   static constexpr uint32_t kMaximumValue = (1 << Control::kValue.width) - 1;
+
   /// Pointer to the LPC DAC peripheral in memory
   inline static LPC_DAC_TypeDef * dac_register = LPC_DAC;
 
@@ -49,6 +54,7 @@ class Dac final : public sjsu::Dac
   ///        use this parameter would be for unit testing. Otherwise, it should
   ///        not be changed from its default.
   explicit constexpr Dac(const sjsu::Pin & pin = kDacPin) : dac_pin_(pin) {}
+
   /// Initialize DAC hardware, enable dac Pin, initial Bias level set to 0.
   Status Initialize() const override
   {
@@ -70,6 +76,7 @@ class Dac final : public sjsu::Dac
 
     return Status::kSuccess;
   }
+
   void Write(uint32_t dac_output) const override
   {
     // The DAC output is a 10 bit input and thus it is necessary to
@@ -88,6 +95,7 @@ class Dac final : public sjsu::Dac
         "DAC output was set above 3.3V. Must be between 0V and 3.3V.");
     Write(conversion);
   }
+
   /// Sets the Bias for the Dac, which determines the settling time, max
   /// current, and the allowed maximum update rate
   void SetBias(Bias bias_level) const
@@ -95,6 +103,7 @@ class Dac final : public sjsu::Dac
     bool bias        = static_cast<bool>(bias_level);
     dac_register->CR = bit::Insert(dac_register->CR, bias, Control::kBias);
   }
+
   uint8_t GetActiveBits() const override
   {
     return Control::kValue.width;

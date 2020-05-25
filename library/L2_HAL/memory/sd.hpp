@@ -174,9 +174,9 @@ class Sd : public Storage
   };
 
   /// R1 Response error flag "Illegal Command" bit position
-  static constexpr bit::Mask kIllegalCommand = bit::CreateMaskFromRange(2);
+  static constexpr bit::Mask kIllegalCommand = bit::MaskFromRange(2);
   /// R1 Response error flag "In Idle Mode" bit position
-  static constexpr bit::Mask kIdle = bit::CreateMaskFromRange(0);
+  static constexpr bit::Mask kIdle = bit::MaskFromRange(0);
 
   /// @param spi         - spi peripheral connected to an SD card.
   /// @param chip_select - gpio connected to the chip select pin of the SD card.
@@ -263,7 +263,7 @@ class Sd : public Storage
   units::data::byte_t GetCapacity() override
   {
     // The c_size register's contents can be found in bits [48:69]
-    constexpr bit::Mask kCSizeMask = bit::CreateMaskFromRange(48, 69);
+    constexpr bit::Mask kCSizeMask = bit::MaskFromRange(48, 69);
     uint32_t c_size =
         bit::StreamExtract<uint32_t>(sd_.csd.byte, kCSizeMask, Endian::kLittle);
     LogDebug("c_size = 0x%08X", c_size);
@@ -632,7 +632,7 @@ class Sd : public Storage
     // Bit 1 -->  If set, CC error occurred
     // Bit 0 -->  If set, a generic error occurred
 
-    constexpr bit::Mask kErrorIndicator = bit::CreateMaskFromRange(4, 7);
+    constexpr bit::Mask kErrorIndicator = bit::MaskFromRange(4, 7);
 
     for (uint32_t i = 0; i < kRetryLimit * 100; i++)
     {
@@ -773,7 +773,7 @@ class Sd : public Storage
 
     // If the most significant bit of the response byte is a zero, then this
     // indicates that the start of a response sequence.
-    constexpr bit::Mask kResponseFlag = bit::CreateMaskFromRange(7);
+    constexpr bit::Mask kResponseFlag = bit::MaskFromRange(7);
 
     for (uint32_t tries = 0; tries < kRetryLimit; tries++)
     {
@@ -902,7 +902,7 @@ class Sd : public Storage
   Returns<void> CheckSupportedVoltages()
   {
     LogDebug("Checking Current SD Card Voltage Level...");
-    constexpr bit::Mask kVoltageCodeMask = bit::CreateMaskFromRange(8, 11) >> 8;
+    constexpr bit::Mask kVoltageCodeMask = bit::MaskFromRange(8, 11) >> 8;
     constexpr uint8_t kCheckPattern      = 0xAB;
     uint8_t voltage_code                 = 0x01;
     uint32_t voltage_pattern             = (voltage_code << 8) | kCheckPattern;

@@ -89,7 +89,7 @@ int main()
 
   // Bitmask of the Clock out bit position in the RCC_CFGR register.
   // See page. 101 of RM0008.
-  static constexpr auto kMCO = sjsu::bit::CreateMaskFromRange(24, 26);
+  static constexpr auto kMCO = sjsu::bit::MaskFromRange(24, 26);
   // Grabbing a pointer to the clock configuration register to reduce the
   // verbosity of the code.
   volatile uint32_t * clock_config = &sjsu::stm32f10x::RCC->CFGR;

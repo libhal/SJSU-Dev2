@@ -27,39 +27,48 @@ class Adc final : public sjsu::Adc
     /// It bit position represents 1 channel with this 8 channel ADC.
     /// In software mode, this should hold only a single 1 for the single
     /// channel to be converted.
-    static constexpr bit::Mask kChannelSelect = bit::CreateMaskFromRange(0, 7);
+    static constexpr bit::Mask kChannelSelect = bit::MaskFromRange(0, 7);
+
     /// Sets the channel's clock divider. Potentially saving power if clock is
     /// reduced further.
-    static constexpr bit::Mask kClockDivider = bit::CreateMaskFromRange(8, 15);
+    static constexpr bit::Mask kClockDivider = bit::MaskFromRange(8, 15);
+
     /// Enable Burst Mode for the ADC. See BurstMode() method of this class to
     /// learn more about what it is and how it works.
-    static constexpr bit::Mask kBurstEnable = bit::CreateMaskFromRange(16);
+    static constexpr bit::Mask kBurstEnable = bit::MaskFromRange(16);
+
     /// Power on the ADC
-    static constexpr bit::Mask kPowerEnable = bit::CreateMaskFromRange(21);
+    static constexpr bit::Mask kPowerEnable = bit::MaskFromRange(21);
+
     /// In order to start a conversion a start code must be inserted into this
     /// bit location.
-    static constexpr bit::Mask kStartCode = bit::CreateMaskFromRange(24, 26);
+    static constexpr bit::Mask kStartCode = bit::MaskFromRange(24, 26);
+
     /// Not used in this driver, but allows the use of an external pins to
     /// trigger a conversion. This flag indicates if rising or falling edges
     /// trigger the conversion.
     /// 1 = falling, 0 = rising.
-    static constexpr bit::Mask kStartEdge = bit::CreateMaskFromRange(27);
+    static constexpr bit::Mask kStartEdge = bit::MaskFromRange(27);
   };
+
   /// Namespace containing the bitmask objects that are used to manipulate the
   /// lpc40xx ADC Global Data register.
   struct DataRegister  // NOLINT
   {
     /// Result mask holds the latest result from the last ADC that was converted
-    static constexpr bit::Mask kResult = bit::CreateMaskFromRange(4, 15);
+    static constexpr bit::Mask kResult = bit::MaskFromRange(4, 15);
+
     /// Converted channel mask indicates which channel was converted in the
     /// latest conversion.
-    static constexpr bit::Mask kConvertedChannel =
-        bit::CreateMaskFromRange(24, 26);
+    static constexpr bit::Mask kConvertedChannel = bit::MaskFromRange(24, 26);
+
     /// Holds whether or not the ADC overran its conversion.
-    static constexpr bit::Mask kOverrun = bit::CreateMaskFromRange(30);
+    static constexpr bit::Mask kOverrun = bit::MaskFromRange(30);
+
     /// Indicates when the ADC conversion is complete.
-    static constexpr bit::Mask kDone = bit::CreateMaskFromRange(31);
+    static constexpr bit::Mask kDone = bit::MaskFromRange(31);
   };
+
   /// Structure that defines a channel's pin, pin's function code and channel
   /// number.
   ///

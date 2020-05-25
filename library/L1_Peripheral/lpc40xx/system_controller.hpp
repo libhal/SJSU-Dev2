@@ -159,40 +159,46 @@ class SystemController final : public sjsu::SystemController
     /// In PLLCON register: When 1, and after a valid PLL feed, this bit
     /// will activate the related PLL and allow it to lock to the requested
     /// frequency.
-    static constexpr bit::Mask kEnable = bit::CreateMaskFromRange(0);
+    static constexpr bit::Mask kEnable = bit::MaskFromRange(0);
+
     /// In PLLCFG register: PLL multiplier value, the amount to multiply the
     /// input frequency by.
-    static constexpr bit::Mask kMultiplier = bit::CreateMaskFromRange(0, 4);
+    static constexpr bit::Mask kMultiplier = bit::MaskFromRange(0, 4);
+
     /// In PLLCFG register: PLL divider value, the amount to divide the output
     /// of the multiplier stage to bring the frequency down to a
     /// reasonable/usable level.
-    static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(5, 6);
+    static constexpr bit::Mask kDivider = bit::MaskFromRange(5, 6);
+
     /// In PLLSTAT register: if set to 1 by hardware, the PLL has accepted
     /// the configuration and is locked.
-    static constexpr bit::Mask kPllLockStatus = bit::CreateMaskFromRange(10);
+    static constexpr bit::Mask kPllLockStatus = bit::MaskFromRange(10);
   };
 
   /// Namespace of Oscillator register bitmasks
   struct OscillatorRegister  // NOLINT
   {
     /// IRC or Main oscillator select bit
-    static constexpr bit::Mask kSelect = bit::CreateMaskFromRange(0);
+    static constexpr bit::Mask kSelect = bit::MaskFromRange(0);
 
     /// SCS: Main oscillator range select
-    static constexpr bit::Mask kRangeSelect = bit::CreateMaskFromRange(4);
+    static constexpr bit::Mask kRangeSelect = bit::MaskFromRange(4);
+
     /// SCS: Main oscillator enable
-    static constexpr bit::Mask kExternalEnable = bit::CreateMaskFromRange(5);
+    static constexpr bit::Mask kExternalEnable = bit::MaskFromRange(5);
+
     /// SCS: Main oscillator ready status
-    static constexpr bit::Mask kExternalReady = bit::CreateMaskFromRange(6);
+    static constexpr bit::Mask kExternalReady = bit::MaskFromRange(6);
   };
 
   /// Namespace of Clock register bitmasks
   struct CpuClockRegister  // NOLINT
   {
     /// CPU clock divider amount
-    static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0, 4);
+    static constexpr bit::Mask kDivider = bit::MaskFromRange(0, 4);
+
     /// CPU clock source select bit
-    static constexpr bit::Mask kSelect = bit::CreateMaskFromRange(8);
+    static constexpr bit::Mask kSelect = bit::MaskFromRange(8);
   };
 
   /// Namespace of Peripheral register bitmasks
@@ -200,32 +206,34 @@ class SystemController final : public sjsu::SystemController
   {
     /// Main single peripheral clock divider shared across all peripherals,
     /// except for USB and SPIFI.
-    static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0, 4);
+    static constexpr bit::Mask kDivider = bit::MaskFromRange(0, 4);
   };
 
   /// Namespace of EMC register bitmasks
   struct EmcClockRegister  // NOLINT
   {
     /// EMC Clock Register divider bit
-    static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0);
+    static constexpr bit::Mask kDivider = bit::MaskFromRange(0);
   };
 
   /// Namespace of USB register bitmasks
   struct UsbClockRegister  // NOLINT
   {
     /// USB clock divider constant
-    static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0, 4);
+    static constexpr bit::Mask kDivider = bit::MaskFromRange(0, 4);
+
     /// USB clock source select bit
-    static constexpr bit::Mask kSelect = bit::CreateMaskFromRange(8, 9);
+    static constexpr bit::Mask kSelect = bit::MaskFromRange(8, 9);
   };
 
   /// Namespace of SPIFI register bitmasks
   struct SpiFiClockRegister  // NOLINT
   {
     /// SPIFI clock divider constant
-    static constexpr bit::Mask kDivider = bit::CreateMaskFromRange(0, 4);
+    static constexpr bit::Mask kDivider = bit::MaskFromRange(0, 4);
+
     /// SPIFI clock source select bit
-    static constexpr bit::Mask kSelect = bit::CreateMaskFromRange(8, 9);
+    static constexpr bit::Mask kSelect = bit::MaskFromRange(8, 9);
   };
 
   /// Clock configuration structure for use the lpc40xx microcontrollers
@@ -481,7 +489,7 @@ class SystemController final : public sjsu::SystemController
     // =========================================================================
     // Step 6. Configure flash cycles per load
     // =========================================================================
-    sys->PBOOST   = 0b00;
+    sys->PBOOST = 0b00;
 
     if (cpu_clock_rate_ < 20_MHz)
     {

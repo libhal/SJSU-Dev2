@@ -43,16 +43,19 @@ class Spi final : public sjsu::Spi
   {
     /// Data Size Select. This field controls the number of bits transferred in
     /// each frame. Values 0000-0010 are not supported and should not be used.
-    static constexpr bit::Mask kDataBit = bit::CreateMaskFromRange(0, 3);
+    static constexpr auto kDataBit = bit::MaskFromRange(0, 3);
+
     /// Frame Format bitmask.
     /// 00 = SPI, 01 = TI, 10 = Microwire, 11 = Invalid
-    static constexpr bit::Mask kFrameBit = bit::CreateMaskFromRange(4, 5);
+    static constexpr auto kFrameBit = bit::MaskFromRange(4, 5);
+
     /// If bit is set to 0 SSP controller maintains the bus clock low between
     /// frames.
     ///
     /// If bit is set to 1 SSP controller maintains the bus clock high between
     /// frames.
-    static constexpr bit::Mask kPolarityBit = bit::CreateMaskFromRange(6);
+    static constexpr auto kPolarityBit = bit::MaskFromRange(6);
+
     /// If bit is set to 0 SSP controller captures serial data on the first
     /// clock transition of the frame, that is, the transition away from the
     /// inter-frame state of the clock line.
@@ -60,25 +63,27 @@ class Spi final : public sjsu::Spi
     /// If bit is set to 1 SSP controller captures serial data on the second
     /// clock transition of the frame, that is, the transition back to the
     /// inter-frame state of the clock line.
-    static constexpr bit::Mask kPhaseBit = bit::CreateMaskFromRange(7);
+    static constexpr auto kPhaseBit = bit::MaskFromRange(7);
+
     /// Bitmask for dividing the peripheral clock to set the SPI clock
     /// frequency.
-    static constexpr bit::Mask kDividerBit = bit::CreateMaskFromRange(8, 15);
+    static constexpr auto kDividerBit = bit::MaskFromRange(8, 15);
   };
   /// SSPn Control Register 1
   struct ControlRegister1  // NOLINT
   {
     /// Setting this bit to 1 will enable the peripheral for communication.
-    static constexpr bit::Mask kSpiEnable = bit::CreateMaskFromRange(1);
+    static constexpr auto kSpiEnable = bit::MaskFromRange(1);
+
     /// Setting this bit to 1 will enable spi slave mode.
-    static constexpr bit::Mask kSlaveModeBit = bit::CreateMaskFromRange(2);
+    static constexpr auto kSlaveModeBit = bit::MaskFromRange(2);
   };
   /// SSPn Status Register
   struct StatusRegister  // NOLINT
   {
     /// This bit is 0 if the SSPn controller is idle, or 1 if it is currently
     /// sending/receiving a frame and/or the Tx FIFO is not empty.
-    static constexpr bit::Mask kDataLineBusyBit = bit::CreateMaskFromRange(4);
+    static constexpr auto kDataLineBusyBit = bit::MaskFromRange(4);
   };
 
   /// SSP data size for frame packets
@@ -103,16 +108,21 @@ class Spi final : public sjsu::Spi
   {
     /// Pointer to the LPC SSP peripheral in memory
     LPC_SSP_TypeDef * registers;
+
     /// PeripheralID of the SSP peripheral to power on at initialization
     sjsu::SystemController::PeripheralID power_on_bit;
+
     /// Refernce to the M.ASTER-O.UT-S.LAVE-I.N (output from microcontroller)
     /// spi pin.
     const sjsu::Pin & mosi;
+
     /// Refernce to the M.ASTER-I.N-S.LAVE-O.UT (input to microcontroller) spi
     /// pin.
     const sjsu::Pin & miso;
+
     /// Refernce to serial clock spi pin.
     const sjsu::Pin & sck;
+
     /// Function code to set each pin to the appropriate SSP function.
     uint8_t pin_function;
   };
@@ -153,6 +163,7 @@ class Spi final : public sjsu::Spi
       .sck          = kSck0,
       .pin_function = 0b010,
     };
+
     /// Definition for SPI bus 1 for LPC40xx
     inline static const Bus_t kSpi1 = {
       .registers    = LPC_SSP1,
@@ -172,11 +183,13 @@ class Spi final : public sjsu::Spi
       .pin_function = 0b100,
     };
   };
+
   /// Constructor for LPC40xx Spi peripheral
   ///
   /// @param bus - pass a reference to a constant lpc40xx::Spi::Bus_t
   ///        definition.
   explicit constexpr Spi(const Bus_t & bus) : bus_(bus) {}
+
   /// This METHOD MUST BE EXECUTED before any other method can be called.
   /// Powers on the peripheral, activates the SSP pins and enables the SSP
   /// peripheral.

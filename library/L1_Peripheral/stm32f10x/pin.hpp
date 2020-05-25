@@ -39,8 +39,8 @@ class Pin final : public sjsu::Pin
     system.PowerUpPeripheral(stm32f10x::SystemController::Peripherals::kAFIO);
 
     // Set the JTAG Release
-    afio->MAPR = sjsu::bit::Insert(afio->MAPR, 0b010,
-                                   sjsu::bit::CreateMaskFromRange(24, 26));
+    afio->MAPR =
+        sjsu::bit::Insert(afio->MAPR, 0b010, sjsu::bit::MaskFromRange(24, 26));
   }
 
   /// @param port - must be a capitol letter from 'A' to 'I'
@@ -104,8 +104,8 @@ class Pin final : public sjsu::Pin
   ///        alternative mode.
   Returns<void> SetPinFunction(uint8_t alternative_function) const override
   {
-    static constexpr auto kMode = bit::CreateMaskFromRange(0, 1);
-    static constexpr auto kCFN1 = bit::CreateMaskFromRange(3);
+    static constexpr auto kMode = bit::MaskFromRange(0, 1);
+    static constexpr auto kCFN1 = bit::MaskFromRange(3);
 
     SJ2_RETURN_ON_ERROR(Initialize());
 
@@ -148,7 +148,7 @@ class Pin final : public sjsu::Pin
   /// This function MUST NOT be called for pins set as inputs.
   Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override
   {
-    static constexpr auto kCFN0 = bit::CreateMaskFromRange(2);
+    static constexpr auto kCFN0 = bit::MaskFromRange(2);
 
     uint32_t config = GetConfig();
 
