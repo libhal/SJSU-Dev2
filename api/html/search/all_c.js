@@ -1,8 +1,10 @@
 var searchData=
 [
   ['mac',['mac',['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#ac496c58a4c6fe4cd87415b730a993772',1,'sjsu::WiFi::NetworkConnection_t']]],
+  ['macros_2ehpp',['macros.hpp',['../db/dbe/macros_8hpp.html',1,'']]],
   ['main_5foscillator',['main_oscillator',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a5570676973ec583bb4a922a2b5d74608',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t']]],
   ['map',['Map',['../d0/d6b/namespacesjsu.html#aab8ca257071bdc5d7a663c24d44b518b',1,'sjsu']]],
+  ['map_2ehpp',['map.hpp',['../df/d7c/map_8hpp.html',1,'']]],
   ['maptype',['MapType',['../d0/da2/classsjsu_1_1Device.html#a1bb7916d1f646b0b9b1f18f57f5b9e71',1,'sjsu::Device']]],
   ['mask',['Mask',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html',1,'sjsu::bit']]],
   ['master',['master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#abbbb89329f310c3666d1e6329ee428ef',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
@@ -12,6 +14,7 @@ var searchData=
   ['max_5fcpu_5fclock_5frate',['max_cpu_clock_rate',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a262a9463b764059a46f3eadc42af8608',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t']]],
   ['max_5fsize',['max_size',['../db/d4d/structsjsu_1_1CommandList__t.html#a6f328b8d5e3b7f1389470580652b82c9',1,'sjsu::CommandList_t']]],
   ['memory',['memory',['../d0/da2/classsjsu_1_1Device.html#a96ac14e9ee4e05dd094ea50ba33a9a90',1,'sjsu::Device']]],
+  ['memory_5foperation',['MEMORY_OPERATION',['../dd/dbb/device__memory__map_8hpp.html#a9c30ac6005d6a0ec737a9671059e9910',1,'device_memory_map.hpp']]],
   ['memorymap_5ft',['MemoryMap_t',['../de/d7f/structsjsu_1_1Apds9960_1_1MemoryMap__t.html',1,'sjsu::Apds9960']]],
   ['memorymap_5ft_3c_20endianess_2c_20device_3a_3awrite_3c_20i2cdevice_3c_20kdeviceaddress_2c_20endianess_2c_20sjsu_3a_3aapds9960_3a_3amemorymap_5ft_20_3e_20_3e_2c_20device_3a_3aread_3c_20i2cdevice_3c_20kdeviceaddress_2c_20endianess_2c_20sjsu_3a_3aapds9960_3a_3amemorymap_5ft_20_3e_20_3e_20_3e',['MemoryMap_t&lt; endianess, Device::Write&lt; I2cDevice&lt; kDeviceAddress, endianess, sjsu::Apds9960::MemoryMap_t &gt; &gt;, Device::Read&lt; I2cDevice&lt; kDeviceAddress, endianess, sjsu::Apds9960::MemoryMap_t &gt; &gt; &gt;',['../de/d7f/structsjsu_1_1Apds9960_1_1MemoryMap__t.html',1,'sjsu::Apds9960']]],
   ['message',['message',['../d1/d7c/structsjsu_1_1Error__t.html#a26025e219b43d78024c429deac0e43ad',1,'sjsu::Error_t']]],
@@ -19,10 +22,12 @@ var searchData=
   ['millisecond_5fcount',['millisecond_count',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a4b3de8f56a24d2ff25838f07052776ae',1,'sjsu::cortex::SystemTimer']]],
   ['miso',['miso',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a70275f2510b3058f77b8f2964731a05e',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu::Mma8452q'],['../d5/d82/classsjsu_1_1Mma8452q.html#ac25e7d66b9531cd385721ba1757fab7a',1,'sjsu::Mma8452q::Mma8452q()']]],
+  ['mma8452q_2ehpp',['mma8452q.hpp',['../dc/d47/mma8452q_8hpp.html',1,'']]],
   ['mode',['Mode',['../d0/d98/structsjsu_1_1lpc40xx_1_1Can_1_1Mode.html',1,'sjsu::lpc40xx::Can::Mode'],['../d8/d99/classsjsu_1_1Apds9960.html#a155e7ccfaca8504191453e3a395b3c82',1,'sjsu::Apds9960::Mode()']]],
   ['modules',['Modules',['../d5/d44/classsjsu_1_1msp432p401r_1_1SystemController_1_1Modules.html',1,'sjsu::msp432p401r::SystemController']]],
   ['mosi',['mosi',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ae3cf6225b5c2b9bb40f74830df712b31',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['movetolinestart',['MoveToLineStart',['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a05b2be125e0004307303f5097ed271cc',1,'sjsu::GraphicalTerminal']]],
+  ['msp432p401r',['msp432p401r',['../d6/d36/namespacesjsu_1_1build.html#a7cd3fc249a4045bc9f897bab66447d92a781b08b2845d4be560a4adf3f62951e4',1,'sjsu::build']]],
   ['multiplier',['Multiplier',['../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1f',1,'sjsu::lpc17xx::SystemController::Pll1::Multiplier()'],['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#ae729c2515c9fa282f28fd2469293c5da',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::multiplier()'],['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a682053e71c1225fcb0ac7776a369e8ec',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::multiplier()']]],
-  ['multiply',['multiply',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#ae4dfb55b5ee86ca42d9243ca04f0fd8c',1,'sjsu::lpc40xx::SystemController::ClockConfiguration::multiply()'],['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t::multiply()']]]
+  ['multiply',['multiply',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#ae4dfb55b5ee86ca42d9243ca04f0fd8c',1,'sjsu::lpc40xx::SystemController::ClockConfiguration::multiply()'],['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t::multiply()'],['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a797da42e3805d6a99769c5601685ed4a',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::multiply()']]]
 ];

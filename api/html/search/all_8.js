@@ -6,6 +6,7 @@ var searchData=
   ['handlepulsecaptured',['HandlePulseCaptured',['../d2/de6/classsjsu_1_1Tsop752.html#a79a330095aa40f116a191d19c83c6ac1',1,'sjsu::Tsop752']]],
   ['handler',['handler',['../dd/dd8/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannel__t.html#a71c23f3d2418f70ad0f5620e10c82d91',1,'sjsu::lpc40xx::PulseCapture::CaptureChannel_t']]],
   ['handlers',['handlers',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a149bc917edf6edc3f98bdb4c85a8df12',1,'sjsu::lpc40xx::Gpio::handlers()'],['../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#a9c556460128b360befd5560ac2301fd5',1,'sjsu::stm32f10x::Gpio::handlers()']]],
+  ['hardware_5fcounter_2ehpp',['hardware_counter.hpp',['../d2/d6d/hardware__counter_8hpp.html',1,'']]],
   ['hardwarecounter',['HardwareCounter',['../d7/ddd/classsjsu_1_1HardwareCounter.html',1,'sjsu']]],
   ['hascompletedaction',['HasCompletedAction',['../d8/d93/classsjsu_1_1example_1_1Example.html#ae79118fcc47b2d1474690e5faa218776',1,'sjsu::example::Example::HasCompletedAction()'],['../d4/d55/classsjsu_1_1Example.html#a3fd504c60fab1bb0e0add0c87e25b75d',1,'sjsu::Example::HasCompletedAction()']]],
   ['hasdata',['HasData',['../da/d70/classsjsu_1_1Can.html#a8a2487dafdff3420378558c2ac453123',1,'sjsu::Can::HasData()'],['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a47c58f6d354e04f5891dcb7d6f25c47d',1,'sjsu::lpc40xx::Can::HasData()'],['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#ac046fe03411044562f72761af3b59a37',1,'sjsu::lpc40xx::Uart::HasData()'],['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a22a9b2cb4d27802ef4b684699412c627',1,'sjsu::stm32f10x::UartBase::HasData()'],['../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#aa85a5e008ad56f0ca1663e564632fabe',1,'sjsu::stm32f10x::Uart::HasData()'],['../d0/ddc/classsjsu_1_1Uart.html#a90f16341ec8921e784a8a5d6d2044f2d',1,'sjsu::Uart::HasData()']]],
@@ -13,5 +14,10 @@ var searchData=
   ['header_5fmark_5fduration',['header_mark_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a02236d63e2f098e7516cf074c2cad67b',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
   ['header_5frepeat_5fspace',['header_repeat_space',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#aa9068a958d1ffc0459b1ef4fa72780e5',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
   ['header_5fspace_5fduration',['header_space_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#aed283c7b791d7a3898f116daa42743ae',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
-  ['high_5fspeed_5fexternal',['high_speed_external',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#ae80352deb50eef1479edbe1834fd52ec',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]]
+  ['help',['help',['../d0/d0f/namespacesjsu_1_1command.html#adb3b81cccef9b59f1baa8e6c79b35661',1,'sjsu::command']]],
+  ['hexdump',['Hexdump',['../d8/df0/namespacesjsu_1_1debug.html#aa174a60fc9de6bdb16b3ba2727319f20',1,'sjsu::debug']]],
+  ['high_5fspeed_5fexternal',['high_speed_external',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#ae80352deb50eef1479edbe1834fd52ec',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
+  ['host',['host',['../d6/d36/namespacesjsu_1_1build.html#a7cd3fc249a4045bc9f897bab66447d92a67b3dba8bc6778101892eb77249db32e',1,'sjsu::build']]],
+  ['hostread',['HostRead',['../d0/daf/testing__frameworks_8hpp.html#a721acad9c45378d30695a8f1468fa3d5',1,'testing_frameworks.hpp']]],
+  ['hostwrite',['HostWrite',['../d0/daf/testing__frameworks_8hpp.html#aca7d71c22db8ffab1666c48d879a6955',1,'testing_frameworks.hpp']]]
 ];

@@ -70,7 +70,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><b>cortex</b></li><li class="navelem"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html">SystemTimer</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../dc/dc0/namespacesjsu_1_1cortex.html">cortex</a></li><li class="navelem"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html">SystemTimer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -106,10 +106,10 @@ Collaboration diagram for sjsu::cortex::SystemTimer:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aff5684f22abe41dfad000cfd9df31991"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991">ControlBitMap</a> : uint8_t { <b>kEnableCounter</b> = 0, 
-<b>kTickInterupt</b> = 1, 
-<b>kClkSource</b> = 2, 
-<b>kCountFlag</b> = 16
+<tr class="memitem:aff5684f22abe41dfad000cfd9df31991"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991">ControlBitMap</a> : uint8_t { <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991afb546b932787cbc51c07164fb8ec2686">kEnableCounter</a> = 0, 
+<a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991ab940d7ecb4b0360b70cbc7b35f17a460">kTickInterupt</a> = 1, 
+<a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991ab63fa7471d56c7a20136563d7e947319">kClkSource</a> = 2, 
+<a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991a150ab0c2842137c560de2391e250717d">kCountFlag</a> = 16
  }</td></tr>
 <tr class="separator:aff5684f22abe41dfad000cfd9df31991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -117,9 +117,8 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae4b66a919d4f7c7c96a34d2575e17792"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ae4b66a919d4f7c7c96a34d2575e17792">SystemTimer</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">sjsu::SystemController::PeripheralID</a> id, uint8_t priority=-1)</td></tr>
 <tr class="separator:ae4b66a919d4f7c7c96a34d2575e17792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memItemLeft" align="right" valign="top"><a id="a9fecf977b3d1f5f8d1c8be0a297a6618"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fecf977b3d1f5f8d1c8be0a297a6618">Initialize</a> () const override</td></tr>
-<tr class="memdesc:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize system timer hardware. <br /></td></tr>
+<tr class="memitem:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fecf977b3d1f5f8d1c8be0a297a6618">Initialize</a> () const override</td></tr>
+<tr class="memdesc:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize system timer hardware.  <a href="#a9fecf977b3d1f5f8d1c8be0a297a6618">More...</a><br /></td></tr>
 <tr class="separator:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc2d3bf8f5a4a566759167111232b722"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#abc2d3bf8f5a4a566759167111232b722">SetCallback</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> isr) const override</td></tr>
 <tr class="separator:abc2d3bf8f5a4a566759167111232b722"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,34 +131,29 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aa13190bddfc1da090d3b3a445ee2eb5d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa13190bddfc1da090d3b3a445ee2eb5d">DisableTimer</a> ()</td></tr>
 <tr class="separator:aa13190bddfc1da090d3b3a445ee2eb5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a876dd71b2d954db5401a44bda10eaf64"><td class="memItemLeft" align="right" valign="top"><a id="a876dd71b2d954db5401a44bda10eaf64"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a876dd71b2d954db5401a44bda10eaf64">SystemTimerHandler</a> ()</td></tr>
-<tr class="memdesc:a876dd71b2d954db5401a44bda10eaf64"><td class="mdescLeft">&#160;</td><td class="mdescRight">System timer interrupt handler. <br /></td></tr>
+<tr class="memitem:a876dd71b2d954db5401a44bda10eaf64"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a876dd71b2d954db5401a44bda10eaf64">SystemTimerHandler</a> ()</td></tr>
+<tr class="memdesc:a876dd71b2d954db5401a44bda10eaf64"><td class="mdescLeft">&#160;</td><td class="mdescRight">System timer interrupt handler.  <a href="#a876dd71b2d954db5401a44bda10eaf64">More...</a><br /></td></tr>
 <tr class="separator:a876dd71b2d954db5401a44bda10eaf64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0fdab6bfdf3ed185102ca6aca910116"><td class="memItemLeft" align="right" valign="top">static std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ac0fdab6bfdf3ed185102ca6aca910116">GetCount</a> ()</td></tr>
 <tr class="separator:ac0fdab6bfdf3ed185102ca6aca910116"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a2072bd1bdcfc860636a16021693ed4b8"><td class="memItemLeft" align="right" valign="top"><a id="a2072bd1bdcfc860636a16021693ed4b8"></a>
-static SysTick_Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8">sys_tick</a> = SysTick</td></tr>
-<tr class="memdesc:a2072bd1bdcfc860636a16021693ed4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of the ARM Cortex SysTick peripheral. <br /></td></tr>
+<tr class="memitem:a2072bd1bdcfc860636a16021693ed4b8"><td class="memItemLeft" align="right" valign="top">static SysTick_Type *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8">sys_tick</a> = SysTick</td></tr>
+<tr class="memdesc:a2072bd1bdcfc860636a16021693ed4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Address of the ARM Cortex SysTick peripheral.  <a href="#a2072bd1bdcfc860636a16021693ed4b8">More...</a><br /></td></tr>
 <tr class="separator:a2072bd1bdcfc860636a16021693ed4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40769f764fdfd4a35d7bc2f2c13e5f49"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a40769f764fdfd4a35d7bc2f2c13e5f49">callback</a> = nullptr</td></tr>
 <tr class="separator:a40769f764fdfd4a35d7bc2f2c13e5f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b3de8f56a24d2ff25838f07052776ae"><td class="memItemLeft" align="right" valign="top">static std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a4b3de8f56a24d2ff25838f07052776ae">millisecond_count</a> = 0us</td></tr>
 <tr class="separator:a4b3de8f56a24d2ff25838f07052776ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f8af5180e2f318f756c4aa6887cd207"><td class="memItemLeft" align="right" valign="top"><a id="a0f8af5180e2f318f756c4aa6887cd207"></a>
-static <a class="el" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html">DwtCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a0f8af5180e2f318f756c4aa6887cd207">dwt_counter</a></td></tr>
-<tr class="memdesc:a0f8af5180e2f318f756c4aa6887cd207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Higher precision counter that counts on every system clock cycle. <br /></td></tr>
+<tr class="memitem:a0f8af5180e2f318f756c4aa6887cd207"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html">DwtCounter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a0f8af5180e2f318f756c4aa6887cd207">dwt_counter</a></td></tr>
+<tr class="memdesc:a0f8af5180e2f318f756c4aa6887cd207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Higher precision counter that counts on every system clock cycle.  <a href="#a0f8af5180e2f318f756c4aa6887cd207">More...</a><br /></td></tr>
 <tr class="separator:a0f8af5180e2f318f756c4aa6887cd207"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7632a3af1a43c787bcefb8516cd36bb2"><td class="memItemLeft" align="right" valign="top"><a id="a7632a3af1a43c787bcefb8516cd36bb2"></a>
-static std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a7632a3af1a43c787bcefb8516cd36bb2">nanoseconds_per_tick</a> = 1us</td></tr>
-<tr class="memdesc:a7632a3af1a43c787bcefb8516cd36bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the converstion from ticks to nanoseconds. <br /></td></tr>
+<tr class="memitem:a7632a3af1a43c787bcefb8516cd36bb2"><td class="memItemLeft" align="right" valign="top">static std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a7632a3af1a43c787bcefb8516cd36bb2">nanoseconds_per_tick</a> = 1us</td></tr>
+<tr class="memdesc:a7632a3af1a43c787bcefb8516cd36bb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the converstion from ticks to nanoseconds.  <a href="#a7632a3af1a43c787bcefb8516cd36bb2">More...</a><br /></td></tr>
 <tr class="separator:a7632a3af1a43c787bcefb8516cd36bb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa56845f054040a5d4c91899d3987dcc6"><td class="memItemLeft" align="right" valign="top"><a id="aa56845f054040a5d4c91899d3987dcc6"></a>
-static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa56845f054040a5d4c91899d3987dcc6">ticks_per_millisecond</a> = 1</td></tr>
-<tr class="memdesc:aa56845f054040a5d4c91899d3987dcc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the conversion from ticks to milliseconds. <br /></td></tr>
+<tr class="memitem:aa56845f054040a5d4c91899d3987dcc6"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa56845f054040a5d4c91899d3987dcc6">ticks_per_millisecond</a> = 1</td></tr>
+<tr class="memdesc:aa56845f054040a5d4c91899d3987dcc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the conversion from ticks to milliseconds.  <a href="#aa56845f054040a5d4c91899d3987dcc6">More...</a><br /></td></tr>
 <tr class="separator:aa56845f054040a5d4c91899d3987dcc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afceab64a17cb45c34f4a8b4f1f7d100f"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#afceab64a17cb45c34f4a8b4f1f7d100f">kFixedPointScaling</a> = 1'000'000</td></tr>
 <tr class="separator:afceab64a17cb45c34f4a8b4f1f7d100f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,6 +173,12 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
       </table>
 </div><div class="memdoc">
 <p>Enumeration holding the bit positions of used flags. Source: "UM10562 LPC408x/407x User manual" table 83 page 132 </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aff5684f22abe41dfad000cfd9df31991afb546b932787cbc51c07164fb8ec2686"></a>kEnableCounter&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aff5684f22abe41dfad000cfd9df31991ab940d7ecb4b0360b70cbc7b35f17a460"></a>kTickInterupt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aff5684f22abe41dfad000cfd9df31991ab63fa7471d56c7a20136563d7e947319"></a>kClkSource&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aff5684f22abe41dfad000cfd9df31991a150ab0c2842137c560de2391e250717d"></a>kCountFlag&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
 </div>
 </div>
@@ -277,6 +277,35 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>returns the current system_timer counter value. </dd></dl>
+
+</div>
+</div>
+<a id="a9fecf977b3d1f5f8d1c8be0a297a6618"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fecf977b3d1f5f8d1c8be0a297a6618">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::cortex::SystemTimer::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize system timer hardware. </p>
+
+<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#a07b5f947f4877beb5026f469bb3f623d">sjsu::SystemTimer</a>.</p>
 
 </div>
 </div>
@@ -379,6 +408,33 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 
 </div>
 </div>
+<a id="a876dd71b2d954db5401a44bda10eaf64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a876dd71b2d954db5401a44bda10eaf64">&#9670;&nbsp;</a></span>SystemTimerHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void sjsu::cortex::SystemTimer::SystemTimerHandler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>System timer interrupt handler. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a40769f764fdfd4a35d7bc2f2c13e5f49"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a40769f764fdfd4a35d7bc2f2c13e5f49">&#9670;&nbsp;</a></span>callback</h2>
@@ -400,6 +456,30 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 <p>callback defaults to nullptr. The actual SystemTickHandler should check if the isr is set to nullptr, and if it is, turn off the timer, if set a proper function then execute it. </p>
+
+</div>
+</div>
+<a id="a0f8af5180e2f318f756c4aa6887cd207"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f8af5180e2f318f756c4aa6887cd207">&#9670;&nbsp;</a></span>dwt_counter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html">DwtCounter</a> sjsu::cortex::SystemTimer::dwt_counter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Higher precision counter that counts on every system clock cycle. </p>
 
 </div>
 </div>
@@ -446,6 +526,78 @@ static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table>
 </div><div class="memdoc">
 <p>Used to count the number of times system_timer has executed. If the frequency of the <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html">SystemTimer</a> is set to 1kHz, this could be used as a milliseconds counter. </p>
+
+</div>
+</div>
+<a id="a7632a3af1a43c787bcefb8516cd36bb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7632a3af1a43c787bcefb8516cd36bb2">&#9670;&nbsp;</a></span>nanoseconds_per_tick</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::chrono::nanoseconds sjsu::cortex::SystemTimer::nanoseconds_per_tick = 1us</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Holds the converstion from ticks to nanoseconds. </p>
+
+</div>
+</div>
+<a id="a2072bd1bdcfc860636a16021693ed4b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2072bd1bdcfc860636a16021693ed4b8">&#9670;&nbsp;</a></span>sys_tick</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SysTick_Type* sjsu::cortex::SystemTimer::sys_tick = SysTick</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Address of the ARM Cortex SysTick peripheral. </p>
+
+</div>
+</div>
+<a id="aa56845f054040a5d4c91899d3987dcc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56845f054040a5d4c91899d3987dcc6">&#9670;&nbsp;</a></span>ticks_per_millisecond</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t sjsu::cortex::SystemTimer::ticks_per_millisecond = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Holds the conversion from ticks to milliseconds. </p>
 
 </div>
 </div>

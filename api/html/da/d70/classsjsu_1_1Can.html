@@ -101,13 +101,11 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aeea277014027e50ad1358b3cbb9fea29"><td class="memItemLeft" align="right" valign="top"><a id="aeea277014027e50ad1358b3cbb9fea29"></a>
-virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29">Initialize</a> () const =0</td></tr>
-<tr class="memdesc:aeea277014027e50ad1358b3cbb9fea29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the CANBUS peripheral. Must be called before calling anything else in the driver. <br /></td></tr>
+<tr class="memitem:aeea277014027e50ad1358b3cbb9fea29"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29">Initialize</a> () const =0</td></tr>
+<tr class="memdesc:aeea277014027e50ad1358b3cbb9fea29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the CANBUS peripheral. Must be called before calling anything else in the driver.  <a href="#aeea277014027e50ad1358b3cbb9fea29">More...</a><br /></td></tr>
 <tr class="separator:aeea277014027e50ad1358b3cbb9fea29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71bec9e767f2c579185e1a7dcf51e579"><td class="memItemLeft" align="right" valign="top"><a id="a71bec9e767f2c579185e1a7dcf51e579"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a71bec9e767f2c579185e1a7dcf51e579">Enable</a> () const =0</td></tr>
-<tr class="memdesc:a71bec9e767f2c579185e1a7dcf51e579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables CANBUS and allows communication. Must be called after <a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29" title="Initialize the CANBUS peripheral. Must be called before calling anything else in the driver...">Initialize()</a> before using this driver. <br /></td></tr>
+<tr class="memitem:a71bec9e767f2c579185e1a7dcf51e579"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a71bec9e767f2c579185e1a7dcf51e579">Enable</a> () const =0</td></tr>
+<tr class="memdesc:a71bec9e767f2c579185e1a7dcf51e579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables CANBUS and allows communication. Must be called after <a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29" title="Initialize the CANBUS peripheral. Must be called before calling anything else in the driver...">Initialize()</a> before using this driver.  <a href="#a71bec9e767f2c579185e1a7dcf51e579">More...</a><br /></td></tr>
 <tr class="separator:a71bec9e767f2c579185e1a7dcf51e579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af58022a44edf1b21cf3086fd2b8d4458"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#af58022a44edf1b21cf3086fd2b8d4458">Send</a> (const <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a> &amp;message) const =0</td></tr>
 <tr class="memdesc:af58022a44edf1b21cf3086fd2b8d4458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message via CANBUS to the designated device with the supplied ID.  <a href="#af58022a44edf1b21cf3086fd2b8d4458">More...</a><br /></td></tr>
@@ -131,14 +129,42 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a3b8c50971995dad8c040317429703957"><td class="memItemLeft" align="right" valign="top"><a id="a3b8c50971995dad8c040317429703957"></a>
-static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3b8c50971995dad8c040317429703957">kStandardBaudRate</a> = 100'000_Hz</td></tr>
-<tr class="memdesc:a3b8c50971995dad8c040317429703957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard baud rate for most CANBUS networks. <br /></td></tr>
+<tr class="memitem:a3b8c50971995dad8c040317429703957"><td class="memItemLeft" align="right" valign="top">static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3b8c50971995dad8c040317429703957">kStandardBaudRate</a> = 100'000_Hz</td></tr>
+<tr class="memdesc:a3b8c50971995dad8c040317429703957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard baud rate for most CANBUS networks.  <a href="#a3b8c50971995dad8c040317429703957">More...</a><br /></td></tr>
 <tr class="separator:a3b8c50971995dad8c040317429703957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The common interface for the CANBUS peripherals. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a71bec9e767f2c579185e1a7dcf51e579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71bec9e767f2c579185e1a7dcf51e579">&#9670;&nbsp;</a></span>Enable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Can::Enable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enables CANBUS and allows communication. Must be called after <a class="el" href="../../da/d70/classsjsu_1_1Can.html#aeea277014027e50ad1358b3cbb9fea29" title="Initialize the CANBUS peripheral. Must be called before calling anything else in the driver...">Initialize()</a> before using this driver. </p>
+
+<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ab1e8585e59aaee6d53bceaec0cfd8466">sjsu::lpc40xx::Can</a>.</p>
+
+</div>
+</div>
 <a id="a8a2487dafdff3420378558c2ac453123"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a2487dafdff3420378558c2ac453123">&#9670;&nbsp;</a></span>HasData()</h2>
 
@@ -166,6 +192,35 @@ static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" va
 <dl class="section return"><dt>Returns</dt><dd>true a message was received. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a47c58f6d354e04f5891dcb7d6f25c47d">sjsu::lpc40xx::Can</a>.</p>
+
+</div>
+</div>
+<a id="aeea277014027e50ad1358b3cbb9fea29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeea277014027e50ad1358b3cbb9fea29">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::Can::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize the CANBUS peripheral. Must be called before calling anything else in the driver. </p>
+
+<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a29a4ca15f7f526bc8081245a1a047d3f">sjsu::lpc40xx::Can</a>.</p>
 
 </div>
 </div>
@@ -383,6 +438,31 @@ false - on failure </dd></dl>
 </dl>
 
 <p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#adb43bb7a79870a7ff5c48838616b40c6">sjsu::lpc40xx::Can</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a3b8c50971995dad8c040317429703957"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b8c50971995dad8c040317429703957">&#9670;&nbsp;</a></span>kStandardBaudRate</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr units::frequency::hertz_t sjsu::Can::kStandardBaudRate = 100'000_Hz</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Standard baud rate for most CANBUS networks. </p>
 
 </div>
 </div>

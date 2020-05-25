@@ -113,13 +113,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae2acaa0a7e949194c4fff62c0e1b334b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91e27bd4656aa2e28cb1a883d4bf7c7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a91e27bd4656aa2e28cb1a883d4bf7c7f">Write</a> (std::initializer_list&lt; uint8_t &gt; data)</td></tr>
 <tr class="separator:a91e27bd4656aa2e28cb1a883d4bf7c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10f7a8a80888bc239374aba84cc77815"><td class="memItemLeft" align="right" valign="top"><a id="a10f7a8a80888bc239374aba84cc77815"></a>
-<a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a10f7a8a80888bc239374aba84cc77815">Read</a> (uint8_t *data, size_t size)</td></tr>
-<tr class="memdesc:a10f7a8a80888bc239374aba84cc77815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of Read that waits forever if a timeout was not supplied. <br /></td></tr>
+<tr class="memitem:a10f7a8a80888bc239374aba84cc77815"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a10f7a8a80888bc239374aba84cc77815">Read</a> (uint8_t *data, size_t size)</td></tr>
+<tr class="memdesc:a10f7a8a80888bc239374aba84cc77815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of Read that waits forever if a timeout was not supplied.  <a href="#a10f7a8a80888bc239374aba84cc77815">More...</a><br /></td></tr>
 <tr class="separator:a10f7a8a80888bc239374aba84cc77815"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a169c7b12e58f0ca0a18a264d9e5e401a"><td class="memItemLeft" align="right" valign="top"><a id="a169c7b12e58f0ca0a18a264d9e5e401a"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a169c7b12e58f0ca0a18a264d9e5e401a">Read</a> (uint32_t timeout=UINT32_MAX)</td></tr>
-<tr class="memdesc:a169c7b12e58f0ca0a18a264d9e5e401a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait to receive just 1 byte. <br /></td></tr>
+<tr class="memitem:a169c7b12e58f0ca0a18a264d9e5e401a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d55/classsjsu_1_1Example.html#a169c7b12e58f0ca0a18a264d9e5e401a">Read</a> (uint32_t timeout=UINT32_MAX)</td></tr>
+<tr class="memdesc:a169c7b12e58f0ca0a18a264d9e5e401a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait to receive just 1 byte.  <a href="#a169c7b12e58f0ca0a18a264d9e5e401a">More...</a><br /></td></tr>
 <tr class="separator:a169c7b12e58f0ca0a18a264d9e5e401a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -216,7 +214,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 </div>
 </div>
 <a id="a1ce8da1e12909f0e97c34ccc4bc1ee5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ce8da1e12909f0e97c34ccc4bc1ee5c">&#9670;&nbsp;</a></span>Read()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce8da1e12909f0e97c34ccc4bc1ee5c">&#9670;&nbsp;</a></span>Read() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -257,6 +255,72 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 <p>7.1 Read Timeouts Timeout should not be apart of the API if it doesn't make sense for the protocol. <a class="el" href="../../d4/d55/classsjsu_1_1Example.html" title="Example class is a template for &quot;L1_Peripheral&quot; peripherals. ">Example</a> would be something like SPI where the master drives the read operation. This is useful for something like UART where the event of receiving data is asynchronous. </p>
 
 <p>Implemented in <a class="el" href="../../d8/d93/classsjsu_1_1example_1_1Example.html#ab9758a62f55889e3810971fbad73da33">sjsu::example::Example</a>.</p>
+
+</div>
+</div>
+<a id="a10f7a8a80888bc239374aba84cc77815"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10f7a8a80888bc239374aba84cc77815">&#9670;&nbsp;</a></span>Read() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::Example::Read </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Overload of Read that waits forever if a timeout was not supplied. </p>
+
+</div>
+</div>
+<a id="a169c7b12e58f0ca0a18a264d9e5e401a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a169c7b12e58f0ca0a18a264d9e5e401a">&#9670;&nbsp;</a></span>Read() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sjsu::Example::Read </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>UINT32_MAX</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wait to receive just 1 byte. </p>
 
 </div>
 </div>

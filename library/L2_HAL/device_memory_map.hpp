@@ -67,8 +67,6 @@ Register_t
   /// Handler for value assignment of the register. This will attempt to write
   /// use the write function to write to the register in the defined memory map.
   ///
-  /// @param value - value to write into the register defined within the memory
-  ///                map.
   /// @return true - if the assignment was successful
   /// @return false - if the assignment was a failure
   bool operator=(Int value)
@@ -187,7 +185,6 @@ Array_t
   }
 
   /// Accesses a register from the array via the index
-  /// @param index - array index
   Register_t<Int, Endian::kLittle, write, read> & operator[](size_t index)
   {
     return member_[index];

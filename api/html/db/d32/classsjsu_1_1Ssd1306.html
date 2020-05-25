@@ -104,9 +104,9 @@ Collaboration diagram for sjsu::Ssd1306:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a0b2dc658cec9be8d3b73234c9370bdf0"><td class="memItemLeft" align="right" valign="top"><a id="a0b2dc658cec9be8d3b73234c9370bdf0"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0">Transaction</a> { <b>kCommand</b> = 0, 
-<b>kData</b> = 1
- }<tr class="memdesc:a0b2dc658cec9be8d3b73234c9370bdf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the types of communication that can occur with the display driver. <br /></td></tr>
+<tr class="memitem:a0b2dc658cec9be8d3b73234c9370bdf0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0">Transaction</a> { <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0ab2d91e76914f511272426507e9d48e9a">Transaction::kCommand</a> = 0, 
+<a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0a0ac87546e8b36fcb3034694d4d909ea3">Transaction::kData</a> = 1
+ }<tr class="memdesc:a0b2dc658cec9be8d3b73234c9370bdf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the types of communication that can occur with the display driver.  <a href="../../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a0b2dc658cec9be8d3b73234c9370bdf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -114,74 +114,90 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:accdeb8f579635a2217fd802454c77036"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#accdeb8f579635a2217fd802454c77036">Ssd1306</a> (<a class="el" href="../../d3/de6/classsjsu_1_1Spi.html">sjsu::Spi</a> &amp;spi, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;cs, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;dc, <a class="el" href="../../dd/d3a/classsjsu_1_1Gpio.html">sjsu::Gpio</a> &amp;reset, units::frequency::hertz_t clock_rate=2_MHz)</td></tr>
 <tr class="separator:accdeb8f579635a2217fd802454c77036"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2602eabd5f405febf399123933e0d8a"><td class="memItemLeft" align="right" valign="top"><a id="ab2602eabd5f405febf399123933e0d8a"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a">GetWidth</a> () override</td></tr>
-<tr class="memdesc:ab2602eabd5f405febf399123933e0d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of pixels wide the display is. <br /></td></tr>
+<tr class="memitem:ab2602eabd5f405febf399123933e0d8a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a">GetWidth</a> () override</td></tr>
+<tr class="memdesc:ab2602eabd5f405febf399123933e0d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of pixels wide the display is.  <a href="#ab2602eabd5f405febf399123933e0d8a">More...</a><br /></td></tr>
 <tr class="separator:ab2602eabd5f405febf399123933e0d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47e47d288886889be9ce67510312a93d"><td class="memItemLeft" align="right" valign="top"><a id="a47e47d288886889be9ce67510312a93d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a47e47d288886889be9ce67510312a93d">GetHeight</a> () override</td></tr>
-<tr class="memdesc:a47e47d288886889be9ce67510312a93d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of pixels high the display is. <br /></td></tr>
+<tr class="memitem:a47e47d288886889be9ce67510312a93d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a47e47d288886889be9ce67510312a93d">GetHeight</a> () override</td></tr>
+<tr class="memdesc:a47e47d288886889be9ce67510312a93d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of pixels high the display is.  <a href="#a47e47d288886889be9ce67510312a93d">More...</a><br /></td></tr>
 <tr class="separator:a47e47d288886889be9ce67510312a93d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae14b7eb5dcbfdf040f1ffdc29229774c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html">Color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ae14b7eb5dcbfdf040f1ffdc29229774c">AvailableColors</a> () override</td></tr>
 <tr class="separator:ae14b7eb5dcbfdf040f1ffdc29229774c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4baf83722d75d479b006f99b6fdfc92d"><td class="memItemLeft" align="right" valign="top"><a id="a4baf83722d75d479b006f99b6fdfc92d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a4baf83722d75d479b006f99b6fdfc92d">Initialize</a> () override</td></tr>
-<tr class="memdesc:a4baf83722d75d479b006f99b6fdfc92d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure hardware peripherals and initialize external display hardware. <br /></td></tr>
+<tr class="memitem:a4baf83722d75d479b006f99b6fdfc92d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a4baf83722d75d479b006f99b6fdfc92d">Initialize</a> () override</td></tr>
+<tr class="memdesc:a4baf83722d75d479b006f99b6fdfc92d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure hardware peripherals and initialize external display hardware.  <a href="#a4baf83722d75d479b006f99b6fdfc92d">More...</a><br /></td></tr>
 <tr class="separator:a4baf83722d75d479b006f99b6fdfc92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abec7db550df0e97d8e586d99af29a243"><td class="memItemLeft" align="right" valign="top"><a id="abec7db550df0e97d8e586d99af29a243"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#abec7db550df0e97d8e586d99af29a243">Clear</a> () override</td></tr>
-<tr class="memdesc:abec7db550df0e97d8e586d99af29a243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the internal bitmap_ to zero (or a user defined clear_value) <br /></td></tr>
+<tr class="memitem:abec7db550df0e97d8e586d99af29a243"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#abec7db550df0e97d8e586d99af29a243">Clear</a> () override</td></tr>
+<tr class="memdesc:abec7db550df0e97d8e586d99af29a243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the internal bitmap_ to zero (or a user defined clear_value)  <a href="#abec7db550df0e97d8e586d99af29a243">More...</a><br /></td></tr>
 <tr class="separator:abec7db550df0e97d8e586d99af29a243"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab089ba1b2d17602cb03b7242def6ac60"><td class="memItemLeft" align="right" valign="top"><a id="ab089ba1b2d17602cb03b7242def6ac60"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ab089ba1b2d17602cb03b7242def6ac60">Fill</a> ()</td></tr>
-<tr class="memdesc:ab089ba1b2d17602cb03b7242def6ac60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the screen with white (or what ever color the screen is) <br /></td></tr>
+<tr class="memitem:ab089ba1b2d17602cb03b7242def6ac60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ab089ba1b2d17602cb03b7242def6ac60">Fill</a> ()</td></tr>
+<tr class="memdesc:ab089ba1b2d17602cb03b7242def6ac60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the screen with white (or what ever color the screen is)  <a href="#ab089ba1b2d17602cb03b7242def6ac60">More...</a><br /></td></tr>
 <tr class="separator:ab089ba1b2d17602cb03b7242def6ac60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23537e08e643eb02a7d21bda108045a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a23537e08e643eb02a7d21bda108045a5">DrawPixel</a> (int32_t x, int32_t y, <a class="el" href="../../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html">Color_t</a> color) override</td></tr>
 <tr class="separator:a23537e08e643eb02a7d21bda108045a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3abd909600703b0a2cfe8b5bd0fc2077"><td class="memItemLeft" align="right" valign="top"><a id="a3abd909600703b0a2cfe8b5bd0fc2077"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a3abd909600703b0a2cfe8b5bd0fc2077">Update</a> () override</td></tr>
-<tr class="memdesc:a3abd909600703b0a2cfe8b5bd0fc2077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes internal bitmap_ to the screen. <br /></td></tr>
+<tr class="memitem:a3abd909600703b0a2cfe8b5bd0fc2077"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a3abd909600703b0a2cfe8b5bd0fc2077">Update</a> () override</td></tr>
+<tr class="memdesc:a3abd909600703b0a2cfe8b5bd0fc2077"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes internal bitmap_ to the screen.  <a href="#a3abd909600703b0a2cfe8b5bd0fc2077">More...</a><br /></td></tr>
 <tr class="separator:a3abd909600703b0a2cfe8b5bd0fc2077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7cb520f9af81e7bc452f2aa36717c52"><td class="memItemLeft" align="right" valign="top"><a id="aa7cb520f9af81e7bc452f2aa36717c52"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#aa7cb520f9af81e7bc452f2aa36717c52">InvertScreenColor</a> ()</td></tr>
-<tr class="memdesc:aa7cb520f9af81e7bc452f2aa36717c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert the colors of the screen in a single command. <br /></td></tr>
+<tr class="memitem:aa7cb520f9af81e7bc452f2aa36717c52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#aa7cb520f9af81e7bc452f2aa36717c52">InvertScreenColor</a> ()</td></tr>
+<tr class="memdesc:aa7cb520f9af81e7bc452f2aa36717c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert the colors of the screen in a single command.  <a href="#aa7cb520f9af81e7bc452f2aa36717c52">More...</a><br /></td></tr>
 <tr class="separator:aa7cb520f9af81e7bc452f2aa36717c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a156629e32b411cbd40e9ef259a637499"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a156629e32b411cbd40e9ef259a637499">NormalScreenColor</a> ()</td></tr>
 <tr class="separator:a156629e32b411cbd40e9ef259a637499"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1PixelDisplay"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1PixelDisplay')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html">sjsu::PixelDisplay</a></td></tr>
-<tr class="memitem:a1004fd12da67314f8cdae8a80fd95fd1 inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="memItemLeft" align="right" valign="top"><a id="a1004fd12da67314f8cdae8a80fd95fd1"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#a1004fd12da67314f8cdae8a80fd95fd1">Enable</a> ()</td></tr>
-<tr class="memdesc:a1004fd12da67314f8cdae8a80fd95fd1 inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional method to turn on display if applicable. <br /></td></tr>
+<tr class="memitem:a1004fd12da67314f8cdae8a80fd95fd1 inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#a1004fd12da67314f8cdae8a80fd95fd1">Enable</a> ()</td></tr>
+<tr class="memdesc:a1004fd12da67314f8cdae8a80fd95fd1 inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional method to turn on display if applicable.  <a href="../../df/d96/classsjsu_1_1PixelDisplay.html#a1004fd12da67314f8cdae8a80fd95fd1">More...</a><br /></td></tr>
 <tr class="separator:a1004fd12da67314f8cdae8a80fd95fd1 inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f470d25a1fbb6128df65468c4074c1b inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#a0f470d25a1fbb6128df65468c4074c1b">Disable</a> ()</td></tr>
 <tr class="separator:a0f470d25a1fbb6128df65468c4074c1b inherit pub_methods_classsjsu_1_1PixelDisplay"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:aed0e05f2ba4899fde5c9953526578ed2"><td class="memItemLeft" align="right" valign="top"><a id="aed0e05f2ba4899fde5c9953526578ed2"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#aed0e05f2ba4899fde5c9953526578ed2">kColumns</a> = 128</td></tr>
-<tr class="memdesc:aed0e05f2ba4899fde5c9953526578ed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the number of columns the device has. <br /></td></tr>
+<tr class="memitem:aed0e05f2ba4899fde5c9953526578ed2"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#aed0e05f2ba4899fde5c9953526578ed2">kColumns</a> = 128</td></tr>
+<tr class="memdesc:aed0e05f2ba4899fde5c9953526578ed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the number of columns the device has.  <a href="#aed0e05f2ba4899fde5c9953526578ed2">More...</a><br /></td></tr>
 <tr class="separator:aed0e05f2ba4899fde5c9953526578ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a615427dec68f13dc38ca34fb1559ddfa"><td class="memItemLeft" align="right" valign="top"><a id="a615427dec68f13dc38ca34fb1559ddfa"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a615427dec68f13dc38ca34fb1559ddfa">kWidth</a> = <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#aed0e05f2ba4899fde5c9953526578ed2">kColumns</a></td></tr>
-<tr class="memdesc:a615427dec68f13dc38ca34fb1559ddfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the width in pixels, which is simply the columns. <br /></td></tr>
+<tr class="memitem:a615427dec68f13dc38ca34fb1559ddfa"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a615427dec68f13dc38ca34fb1559ddfa">kWidth</a> = <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#aed0e05f2ba4899fde5c9953526578ed2">kColumns</a></td></tr>
+<tr class="memdesc:a615427dec68f13dc38ca34fb1559ddfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the width in pixels, which is simply the columns.  <a href="#a615427dec68f13dc38ca34fb1559ddfa">More...</a><br /></td></tr>
 <tr class="separator:a615427dec68f13dc38ca34fb1559ddfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a599b05247bd6f5d3247ec48e6be14a0a"><td class="memItemLeft" align="right" valign="top"><a id="a599b05247bd6f5d3247ec48e6be14a0a"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a599b05247bd6f5d3247ec48e6be14a0a">kHeight</a> = 64</td></tr>
-<tr class="memdesc:a599b05247bd6f5d3247ec48e6be14a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the height in pixels. <br /></td></tr>
+<tr class="memitem:a599b05247bd6f5d3247ec48e6be14a0a"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a599b05247bd6f5d3247ec48e6be14a0a">kHeight</a> = 64</td></tr>
+<tr class="memdesc:a599b05247bd6f5d3247ec48e6be14a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the height in pixels.  <a href="#a599b05247bd6f5d3247ec48e6be14a0a">More...</a><br /></td></tr>
 <tr class="separator:a599b05247bd6f5d3247ec48e6be14a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb13a9458ce8e8c3aff30b9faefa396d"><td class="memItemLeft" align="right" valign="top"><a id="adb13a9458ce8e8c3aff30b9faefa396d"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#adb13a9458ce8e8c3aff30b9faefa396d">kColumnHeight</a> = 8</td></tr>
-<tr class="memdesc:adb13a9458ce8e8c3aff30b9faefa396d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the column height which is a single byte or 8 bits. <br /></td></tr>
+<tr class="memitem:adb13a9458ce8e8c3aff30b9faefa396d"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#adb13a9458ce8e8c3aff30b9faefa396d">kColumnHeight</a> = 8</td></tr>
+<tr class="memdesc:adb13a9458ce8e8c3aff30b9faefa396d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the column height which is a single byte or 8 bits.  <a href="#adb13a9458ce8e8c3aff30b9faefa396d">More...</a><br /></td></tr>
 <tr class="separator:adb13a9458ce8e8c3aff30b9faefa396d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4ad6803291f9ec0174fa6f7f1e4897b"><td class="memItemLeft" align="right" valign="top"><a id="af4ad6803291f9ec0174fa6f7f1e4897b"></a>
-static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#af4ad6803291f9ec0174fa6f7f1e4897b">kRows</a> = <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a599b05247bd6f5d3247ec48e6be14a0a">kHeight</a> / <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#adb13a9458ce8e8c3aff30b9faefa396d">kColumnHeight</a></td></tr>
-<tr class="memdesc:af4ad6803291f9ec0174fa6f7f1e4897b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the number of rows that exist for the device. <br /></td></tr>
+<tr class="memitem:af4ad6803291f9ec0174fa6f7f1e4897b"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#af4ad6803291f9ec0174fa6f7f1e4897b">kRows</a> = <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a599b05247bd6f5d3247ec48e6be14a0a">kHeight</a> / <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#adb13a9458ce8e8c3aff30b9faefa396d">kColumnHeight</a></td></tr>
+<tr class="memdesc:af4ad6803291f9ec0174fa6f7f1e4897b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the number of rows that exist for the device.  <a href="#af4ad6803291f9ec0174fa6f7f1e4897b">More...</a><br /></td></tr>
 <tr class="separator:af4ad6803291f9ec0174fa6f7f1e4897b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Display driver for the SSD1306 OLED display driver chip, usually found on 0.98" oled displays. User manual: <a href="https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf">https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf</a> </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a0b2dc658cec9be8d3b73234c9370bdf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b2dc658cec9be8d3b73234c9370bdf0">&#9670;&nbsp;</a></span>Transaction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0">sjsu::Ssd1306::Transaction</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines the types of communication that can occur with the display driver. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0b2dc658cec9be8d3b73234c9370bdf0ab2d91e76914f511272426507e9d48e9a"></a>kCommand&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a0b2dc658cec9be8d3b73234c9370bdf0a0ac87546e8b36fcb3034694d4d909ea3"></a>kData&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="accdeb8f579635a2217fd802454c77036"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#accdeb8f579635a2217fd802454c77036">&#9670;&nbsp;</a></span>Ssd1306()</h2>
 
@@ -276,6 +292,35 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a cl
 
 </div>
 </div>
+<a id="abec7db550df0e97d8e586d99af29a243"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abec7db550df0e97d8e586d99af29a243">&#9670;&nbsp;</a></span>Clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Ssd1306::Clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clears the internal bitmap_ to zero (or a user defined clear_value) </p>
+
+<p>Implements <a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#a0ee59c54a2f2918b8866c89f7e2f1fdd">sjsu::PixelDisplay</a>.</p>
+
+</div>
+</div>
 <a id="a23537e08e643eb02a7d21bda108045a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a23537e08e643eb02a7d21bda108045a5">&#9670;&nbsp;</a></span>DrawPixel()</h2>
 
@@ -329,6 +374,147 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a cl
 
 </div>
 </div>
+<a id="ab089ba1b2d17602cb03b7242def6ac60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab089ba1b2d17602cb03b7242def6ac60">&#9670;&nbsp;</a></span>Fill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Ssd1306::Fill </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fill the screen with white (or what ever color the screen is) </p>
+
+</div>
+</div>
+<a id="a47e47d288886889be9ce67510312a93d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47e47d288886889be9ce67510312a93d">&#9670;&nbsp;</a></span>GetHeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t sjsu::Ssd1306::GetHeight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of pixels high the display is. </p>
+
+<p>Implements <a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#a726c225c675804f71fb0fecc3c23565d">sjsu::PixelDisplay</a>.</p>
+
+</div>
+</div>
+<a id="ab2602eabd5f405febf399123933e0d8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2602eabd5f405febf399123933e0d8a">&#9670;&nbsp;</a></span>GetWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t sjsu::Ssd1306::GetWidth </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of pixels wide the display is. </p>
+
+<p>Implements <a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#a6d136302e6266d6fbc773d49fd487670">sjsu::PixelDisplay</a>.</p>
+
+</div>
+</div>
+<a id="a4baf83722d75d479b006f99b6fdfc92d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4baf83722d75d479b006f99b6fdfc92d">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Ssd1306::Initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure hardware peripherals and initialize external display hardware. </p>
+
+<p>Implements <a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#a4f976c4636c3dcebcc54479809df070c">sjsu::PixelDisplay</a>.</p>
+
+</div>
+</div>
+<a id="aa7cb520f9af81e7bc452f2aa36717c52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7cb520f9af81e7bc452f2aa36717c52">&#9670;&nbsp;</a></span>InvertScreenColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Ssd1306::InvertScreenColor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Invert the colors of the screen in a single command. </p>
+
+</div>
+</div>
 <a id="a156629e32b411cbd40e9ef259a637499"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a156629e32b411cbd40e9ef259a637499">&#9670;&nbsp;</a></span>NormalScreenColor()</h2>
 
@@ -352,6 +538,156 @@ static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a cl
 </table>
 </div><div class="memdoc">
 <p>Change the color scheme of the screen back to the normal color scheme. Usually done after executing <code><a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#aa7cb520f9af81e7bc452f2aa36717c52" title="Invert the colors of the screen in a single command. ">InvertScreenColor()</a></code>. </p>
+
+</div>
+</div>
+<a id="a3abd909600703b0a2cfe8b5bd0fc2077"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3abd909600703b0a2cfe8b5bd0fc2077">&#9670;&nbsp;</a></span>Update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::Ssd1306::Update </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Writes internal bitmap_ to the screen. </p>
+
+<p>Reimplemented from <a class="el" href="../../df/d96/classsjsu_1_1PixelDisplay.html#accaf6672d7dd8d147bc133289decd2ff">sjsu::PixelDisplay</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="adb13a9458ce8e8c3aff30b9faefa396d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb13a9458ce8e8c3aff30b9faefa396d">&#9670;&nbsp;</a></span>kColumnHeight</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t sjsu::Ssd1306::kColumnHeight = 8</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines the column height which is a single byte or 8 bits. </p>
+
+</div>
+</div>
+<a id="aed0e05f2ba4899fde5c9953526578ed2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed0e05f2ba4899fde5c9953526578ed2">&#9670;&nbsp;</a></span>kColumns</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t sjsu::Ssd1306::kColumns = 128</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines the number of columns the device has. </p>
+
+</div>
+</div>
+<a id="a599b05247bd6f5d3247ec48e6be14a0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a599b05247bd6f5d3247ec48e6be14a0a">&#9670;&nbsp;</a></span>kHeight</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t sjsu::Ssd1306::kHeight = 64</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines the height in pixels. </p>
+
+</div>
+</div>
+<a id="af4ad6803291f9ec0174fa6f7f1e4897b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ad6803291f9ec0174fa6f7f1e4897b">&#9670;&nbsp;</a></span>kRows</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t sjsu::Ssd1306::kRows = <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a599b05247bd6f5d3247ec48e6be14a0a">kHeight</a> / <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#adb13a9458ce8e8c3aff30b9faefa396d">kColumnHeight</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculates the number of rows that exist for the device. </p>
+
+</div>
+</div>
+<a id="a615427dec68f13dc38ca34fb1559ddfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a615427dec68f13dc38ca34fb1559ddfa">&#9670;&nbsp;</a></span>kWidth</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t sjsu::Ssd1306::kWidth = <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#aed0e05f2ba4899fde5c9953526578ed2">kColumns</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines the width in pixels, which is simply the columns. </p>
 
 </div>
 </div>

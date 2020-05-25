@@ -70,7 +70,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><b>stm32f4xx</b></li><li class="navelem"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html">SystemController</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../df/d84/namespacesjsu_1_1stm32f4xx.html">stm32f4xx</a></li><li class="navelem"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html">SystemController</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -128,9 +128,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a71e9119fdb7b48bfa08ec516dd8b1b5d"><td class="memItemLeft" align="right" valign="top"><a id="a71e9119fdb7b48bfa08ec516dd8b1b5d"></a>
-static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a71e9119fdb7b48bfa08ec516dd8b1b5d">kBits</a> = 32</td></tr>
-<tr class="memdesc:a71e9119fdb7b48bfa08ec516dd8b1b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bits between each enable register. <br /></td></tr>
+<tr class="memitem:a71e9119fdb7b48bfa08ec516dd8b1b5d"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#a71e9119fdb7b48bfa08ec516dd8b1b5d">kBits</a> = 32</td></tr>
+<tr class="memdesc:a71e9119fdb7b48bfa08ec516dd8b1b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of bits between each enable register.  <a href="#a71e9119fdb7b48bfa08ec516dd8b1b5d">More...</a><br /></td></tr>
 <tr class="separator:a71e9119fdb7b48bfa08ec516dd8b1b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae794b67ab281d30f238e9d9f278fedb2"><td class="memItemLeft" align="right" valign="top">static volatile uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d11/classsjsu_1_1stm32f4xx_1_1SystemController.html#ae794b67ab281d30f238e9d9f278fedb2">enable</a> []</td></tr>
 <tr class="separator:ae794b67ab281d30f238e9d9f278fedb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,7 +143,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a8b7a98b0da777a9f3d3632f778a12fed inherit pub_static_methods_classsjsu_1_1SystemController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>System controller for stm32f4xx that controls clock sources, clock speed, clock outputs control, and peripheral enabling </p>
+<div class="textblock"><p>System controller for <a class="el" href="../../df/d84/namespacesjsu_1_1stm32f4xx.html">stm32f4xx</a> that controls clock sources, clock speed, clock outputs control, and peripheral enabling </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a966fb92146737f0a93ce3b1ec4951597"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a966fb92146737f0a93ce3b1ec4951597">&#9670;&nbsp;</a></span>GetClockConfiguration()</h2>
@@ -360,6 +359,30 @@ false - the peripheral is currently powered down </dd></dl>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    &amp;RCC-&gt;AHB1ENR, &amp;RCC-&gt;AHB2ENR, &amp;RCC-&gt;AHB3ENR, &amp;RCC-&gt;APB1ENR, &amp;RCC-&gt;APB2ENR,</div><div class="line">  }</div></div><!-- fragment --><p>List of all of the enable registers in the order corresponding to the their constants in the <a class="el" href="../../de/d68/classsjsu_1_1stm32f4xx_1_1SystemController_1_1Peripherals.html">Peripherals</a> namespace. </p>
+
+</div>
+</div>
+<a id="a71e9119fdb7b48bfa08ec516dd8b1b5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71e9119fdb7b48bfa08ec516dd8b1b5d">&#9670;&nbsp;</a></span>kBits</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint32_t sjsu::stm32f4xx::SystemController::kBits = 32</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of bits between each enable register. </p>
 
 </div>
 </div>

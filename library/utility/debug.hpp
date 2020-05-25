@@ -164,6 +164,7 @@ inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
   (*depth)++;
   return _URC_NO_REASON;
 }
+
 /// Similar to the UNIX hexdump program, this function will read the bytes from
 /// the starting address and print them in hex. Any characters that can be
 /// translated into a viewable character will be display.
@@ -175,7 +176,7 @@ inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
 /// @param show_make_command - if true, print the make command that can be used
 ///        to print the file and line number that corresponds to the printed
 ///        addresses.
-/// @param length - the number of bytes to read from the starting location
+/// @param final_address - when this address is spotted, terminate the backtrace
 inline void PrintBacktrace(bool show_make_command = false,
                            void * final_address   = nullptr)
 {

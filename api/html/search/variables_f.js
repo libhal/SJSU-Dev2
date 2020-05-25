@@ -2,6 +2,7 @@ var searchData=
 [
   ['rd_5ffunction_5fcode',['rd_function_code',['../d2/d5c/structsjsu_1_1lpc40xx_1_1Can_1_1Channel__t.html#a2186f02e85fe5b639cf3c30bcd3bc7cb',1,'sjsu::lpc40xx::Can::Channel_t']]],
   ['rd_5fpin',['rd_pin',['../d2/d5c/structsjsu_1_1lpc40xx_1_1Can_1_1Channel__t.html#ac8e411939c408e26d849702c46b18ac7',1,'sjsu::lpc40xx::Can::Channel_t']]],
+  ['reboot',['reboot',['../d0/d0f/namespacesjsu_1_1command.html#a8a376e18ca4a72b06c2b46f79af91905',1,'sjsu::command']]],
   ['red',['red',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a596009e322e1a7fbb2f28838bbaf390c',1,'sjsu::PixelDisplay::Color_t']]],
   ['reference',['reference',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#ab5ed5f2f85c80efe07c3dad51dd7cc94',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['register_5faddress',['register_address',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a0668c341fd35eac915345585e558c4c1',1,'sjsu::I2cCommand::Arguments_t']]],
