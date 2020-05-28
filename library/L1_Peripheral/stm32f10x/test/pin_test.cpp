@@ -406,7 +406,7 @@ TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
 
     // Set the JTAG Release
     CHECK(0b010 == sjsu::bit::Extract(local_afio.MAPR,
-                                      sjsu::bit::CreateMaskFromRange(24, 26)));
+                                      sjsu::bit::MaskFromRange(24, 26)));
   }
 
   Pin::gpio[0] = GPIOA;

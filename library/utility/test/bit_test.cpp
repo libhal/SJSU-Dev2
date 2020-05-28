@@ -7,51 +7,51 @@ namespace sjsu
 {
 TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
 {
-  SECTION("CreateMaskFromRange()")
+  SECTION("MaskFromRange()")
   {
     SECTION("(start, end)")
     {
       CHECK(bit::Mask{ .position = 5, .width = 16 - 4 } ==
-            bit::CreateMaskFromRange(5, 16));
+            bit::MaskFromRange(5, 16));
       static_assert(bit::Mask{ .position = 5, .width = 16 - 4 } ==
-                    bit::CreateMaskFromRange(5, 16));
+                    bit::MaskFromRange(5, 16));
 
       CHECK(bit::Mask{ .position = 16, .width = 47 - 15 } ==
-            bit::CreateMaskFromRange(16, 47));
+            bit::MaskFromRange(16, 47));
       static_assert(bit::Mask{ .position = 16, .width = 47 - 15 } ==
-                    bit::CreateMaskFromRange(16, 47));
+                    bit::MaskFromRange(16, 47));
 
       CHECK(bit::Mask{ .position = 1, .width = 61 } ==
-            bit::CreateMaskFromRange(1, 61));
+            bit::MaskFromRange(1, 61));
       static_assert(bit::Mask{ .position = 1, .width = 61 } ==
-                    bit::CreateMaskFromRange(1, 61));
+                    bit::MaskFromRange(1, 61));
 
       CHECK(bit::Mask{ .position = 55, .width = 89 - 54 } ==
-            bit::CreateMaskFromRange(55, 89));
+            bit::MaskFromRange(55, 89));
       static_assert(bit::Mask{ .position = 55, .width = 89 - 54 } ==
-                    bit::CreateMaskFromRange(55, 89));
+                    bit::MaskFromRange(55, 89));
     }
     SECTION("Single Bit")
     {
       CHECK(bit::Mask{ .position = 5, .width = 1 } ==
-            bit::CreateMaskFromRange(5));
+            bit::MaskFromRange(5));
       static_assert(bit::Mask{ .position = 5, .width = 1 } ==
-                    bit::CreateMaskFromRange(5));
+                    bit::MaskFromRange(5));
 
       CHECK(bit::Mask{ .position = 47, .width = 1 } ==
-            bit::CreateMaskFromRange(47));
+            bit::MaskFromRange(47));
       static_assert(bit::Mask{ .position = 47, .width = 1 } ==
-                    bit::CreateMaskFromRange(47));
+                    bit::MaskFromRange(47));
 
       CHECK(bit::Mask{ .position = 61, .width = 1 } ==
-            bit::CreateMaskFromRange(61));
+            bit::MaskFromRange(61));
       static_assert(bit::Mask{ .position = 61, .width = 1 } ==
-                    bit::CreateMaskFromRange(61));
+                    bit::MaskFromRange(61));
 
       CHECK(bit::Mask{ .position = 7, .width = 1 } ==
-            bit::CreateMaskFromRange(7));
+            bit::MaskFromRange(7));
       static_assert(bit::Mask{ .position = 7, .width = 1 } ==
-                    bit::CreateMaskFromRange(7));
+                    bit::MaskFromRange(7));
     }
   }
 
@@ -376,7 +376,7 @@ TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
       SECTION("8 bit value in a single byte stream")
       {
         std::array<uint8_t, 1> test = { 0b0011'1100 };
-        bit::Mask mask              = bit::CreateMaskFromRange(2, 5);
+        bit::Mask mask              = bit::MaskFromRange(2, 5);
         CHECK(0b1111 == bit::StreamExtract<uint8_t>(test, mask));
       }
 
@@ -401,7 +401,7 @@ TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
         };
 
         // Bits in SD card driver are [48:69]
-        constexpr bit::Mask kCSizeMask = bit::CreateMaskFromRange(48, 69);
+        constexpr bit::Mask kCSizeMask = bit::MaskFromRange(48, 69);
         // C_SIZE should equal 15159 & 0x3b37
         constexpr uint32_t kCSizeBytes = kCSD[7] << 16 | kCSD[8] << 8 | kCSD[9];
         constexpr uint32_t kExpected =
@@ -455,7 +455,7 @@ TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
       SECTION("8 bit value in a single byte stream")
       {
         std::array<uint8_t, 1> test = { 0b0011'1100 };
-        bit::Mask mask              = bit::CreateMaskFromRange(2, 5);
+        bit::Mask mask              = bit::MaskFromRange(2, 5);
         CHECK(0b1111 == bit::StreamExtract<uint8_t>(test, mask, Endian::kBig));
       }
 

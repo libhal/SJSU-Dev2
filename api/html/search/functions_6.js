@@ -6,6 +6,7 @@ var searchData=
   ['findclosestfractional',['FindClosestFractional',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#a30393ed9717dbd31bffacb61a08ca0f8',1,'sjsu::lpc40xx::uart']]],
   ['finddevice',['FindDevice',['../d8/d99/classsjsu_1_1Apds9960.html#a67ce1ca8a3203f209823c5cecdf5ae62',1,'sjsu::Apds9960']]],
   ['flush',['Flush',['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a077cff60586da2451d5fa8e3272322bc',1,'sjsu::stm32f10x::UartBase::Flush()'],['../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#ab6ae99f7a7e24c76392aa9025c9124b0',1,'sjsu::stm32f10x::Uart::Flush()'],['../d0/ddc/classsjsu_1_1Uart.html#a121d444f33008f78dbc94a27120d6043',1,'sjsu::Uart::Flush()']]],
+  ['fputs',['fputs',['../d0/d21/newlib_8cpp.html#a3f07e5855650a9d6b307446642341546',1,'newlib.cpp']]],
   ['fractionalestimate',['FractionalEstimate',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#ac9d42a921ce81d039297beb31b2fd11b',1,'sjsu::lpc40xx::uart']]],
   ['frequencycounter',['FrequencyCounter',['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a2416155f94eeb4b1bf8998f5e6b6296e',1,'sjsu::FrequencyCounter']]]
 ];

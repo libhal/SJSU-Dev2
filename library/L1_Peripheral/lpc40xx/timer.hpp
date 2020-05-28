@@ -71,9 +71,10 @@ class Timer final : public sjsu::Timer
   {
    public:
     /// Enable bit
-    inline static constexpr bit::Mask kEnableBit = bit::CreateMaskFromRange(0);
+    inline static constexpr bit::Mask kEnableBit = bit::MaskFromRange(0);
+
     /// Reset bit
-    inline static constexpr bit::Mask kResetBit = bit::CreateMaskFromRange(1);
+    inline static constexpr bit::Mask kResetBit = bit::MaskFromRange(1);
   };
 
   /// Constructor of the LPC40xx Timer implementation

@@ -15,6 +15,7 @@ var searchData=
   ['fontstyle',['FontStyle',['../d3/d56/classsjsu_1_1St7066u.html#a6b936555ac9cc7ec812869824ff6e7a1',1,'sjsu::St7066u']]],
   ['format',['Format',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdd',1,'sjsu::Can::Message_t::Format()'],['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a03d2bf17e786c546c5a287ae53dd8058',1,'sjsu::Can::Message_t::format()']]],
   ['fpu_2ehpp',['fpu.hpp',['../de/dd9/fpu_8hpp.html',1,'']]],
+  ['fputs',['fputs',['../d0/d21/newlib_8cpp.html#a3f07e5855650a9d6b307446642341546',1,'newlib.cpp']]],
   ['fractionalestimate',['FractionalEstimate',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#ac9d42a921ce81d039297beb31b2fd11b',1,'sjsu::lpc40xx::uart']]],
   ['frame',['frame',['../d8/d77/structsjsu_1_1lpc40xx_1_1Can_1_1LpcRegisters__t.html#ae81d03e595f1af0326f882765cb84ecd',1,'sjsu::lpc40xx::Can::LpcRegisters_t']]],
   ['frameerror_5ft',['FrameError_t',['../df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html',1,'sjsu::lpc40xx::Can']]],

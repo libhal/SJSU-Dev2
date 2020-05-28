@@ -67,7 +67,7 @@ struct Mask  // NOLINT
 /// @return constexpr Mask from the low bit position to the high bit position.
 ///         If the low_bit_position > high_bit_position, the result is
 ///         undefined.
-constexpr Mask CreateMaskFromRange(uint32_t low_bit_position,
+constexpr Mask MaskFromRange(uint32_t low_bit_position,
                                    uint32_t high_bit_position)
 {
   return Mask({
@@ -78,7 +78,7 @@ constexpr Mask CreateMaskFromRange(uint32_t low_bit_position,
 
 /// @param bit_position - bit field composed of a single bit with bit width 1.
 /// @return a bit mask with of width 1 and position = bit_position.
-constexpr Mask CreateMaskFromRange(uint32_t bit_position)
+constexpr Mask MaskFromRange(uint32_t bit_position)
 {
   return Mask({
       .position = bit_position,

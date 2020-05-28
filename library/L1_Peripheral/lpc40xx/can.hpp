@@ -31,19 +31,23 @@ class Can final : public sjsu::Can
   struct BusTiming  // NOLINT
   {
     /// The peripheral bus clock is divided by this value
-    static constexpr bit::Mask kPrescalar = bit::CreateMaskFromRange(0, 9);
+    static constexpr bit::Mask kPrescalar = bit::MaskFromRange(0, 9);
+
     /// Used to compensate for positive and negative edge phase errors
     static constexpr bit::Mask kSyncJumpWidth =
-        bit::CreateMaskFromRange(14, 15);
+
+        bit::MaskFromRange(14, 15);
     /// The delay from the nominal Sync point to the sample point is (this value
     /// plus one) CAN clocks.
-    static constexpr bit::Mask kTimeSegment1 = bit::CreateMaskFromRange(16, 19);
+    static constexpr bit::Mask kTimeSegment1 = bit::MaskFromRange(16, 19);
+
     /// The delay from the sample point to the next nominal sync point isCAN
     /// clocks. The nominal CAN bit time is (this value plus the value in
     /// kTimeSegment1 plus 3) CAN clocks.
-    static constexpr bit::Mask kTimeSegment2 = bit::CreateMaskFromRange(20, 22);
+    static constexpr bit::Mask kTimeSegment2 = bit::MaskFromRange(20, 22);
+
     /// How many times the bus is sampled; 0 == once, 1 == 3 times
-    static constexpr bit::Mask kSampling = bit::CreateMaskFromRange(23);
+    static constexpr bit::Mask kSampling = bit::MaskFromRange(23);
   };
 
   /// This struct holds interrupt flags and capture flag status. It is HW mapped
@@ -57,44 +61,59 @@ class Can final : public sjsu::Can
     //       controller as soon as they are read.
 
     /// Assert interrupt when the receive buffer is full
-    static constexpr bit::Mask kRxBufferFull = bit::CreateMaskFromRange(0);
+    static constexpr bit::Mask kRxBufferFull = bit::MaskFromRange(0);
+
     /// Assert interrupt when TX Buffer 1 has finished or aborted its
     /// transmission.
-    static constexpr bit::Mask kTx1Ready = bit::CreateMaskFromRange(1);
+    static constexpr bit::Mask kTx1Ready = bit::MaskFromRange(1);
+
     /// Assert interrupt when bus status or error status is asserted.
-    static constexpr bit::Mask kErrorWarning = bit::CreateMaskFromRange(2);
+    static constexpr bit::Mask kErrorWarning = bit::MaskFromRange(2);
+
     /// Assert interrupt on data overrun occurs
-    static constexpr bit::Mask kDataOverrun = bit::CreateMaskFromRange(3);
+    static constexpr bit::Mask kDataOverrun = bit::MaskFromRange(3);
+
     /// Assert interrupt when CAN controller is sleeping and was woken up from
     /// bus activity.
-    static constexpr bit::Mask kWakeup = bit::CreateMaskFromRange(4);
+    static constexpr bit::Mask kWakeup = bit::MaskFromRange(4);
+
     /// Assert interrupt when the CAN Controller has reached the Error Passive
     /// Status (error counter exceeds 127)
-    static constexpr bit::Mask kErrorPassive = bit::CreateMaskFromRange(5);
+    static constexpr bit::Mask kErrorPassive = bit::MaskFromRange(5);
+
     /// Assert interrupt when arbitration is lost
-    static constexpr bit::Mask kArbitrationLost = bit::CreateMaskFromRange(6);
+    static constexpr bit::Mask kArbitrationLost = bit::MaskFromRange(6);
+
     /// Assert interrupt on bus error
-    static constexpr bit::Mask kBusError = bit::CreateMaskFromRange(7);
+    static constexpr bit::Mask kBusError = bit::MaskFromRange(7);
+
     /// Assert interrupt when any message has been successfully transmitted.
-    static constexpr bit::Mask kIdentifierReady = bit::CreateMaskFromRange(8);
+    static constexpr bit::Mask kIdentifierReady = bit::MaskFromRange(8);
+
     /// Assert interrupt when TX Buffer 2 has finished or aborted its
     /// transmission.
-    static constexpr bit::Mask kTx2Ready = bit::CreateMaskFromRange(9);
+    static constexpr bit::Mask kTx2Ready = bit::MaskFromRange(9);
+
     /// Assert interrupt when TX Buffer 3 has finished or aborted its
     /// transmission.
-    static constexpr bit::Mask kTx3Ready = bit::CreateMaskFromRange(10);
+    static constexpr bit::Mask kTx3Ready = bit::MaskFromRange(10);
+
     /// Error Code Capture status bits to be read during an interrupt
     static constexpr bit::Mask kErrorCodeLocation =
-        bit::CreateMaskFromRange(16, 20);
+
+        bit::MaskFromRange(16, 20);
     /// Indicates if the error occurred during transmission (0) or receiving (1)
     static constexpr bit::Mask kErrorCodeDirection =
-        bit::CreateMaskFromRange(21);
+
+        bit::MaskFromRange(21);
     /// The type of bus error that occurred such as bit error, stuff error, etc
     static constexpr bit::Mask kErrorCodeType =
-        bit::CreateMaskFromRange(22, 23);
+
+        bit::MaskFromRange(22, 23);
     /// Bit location of where arbitration was lost.
     static constexpr bit::Mask kArbitrationLostLocation =
-        bit::CreateMaskFromRange(24, 31);
+
+        bit::MaskFromRange(24, 31);
   };
 
   /// This struct holds CAN controller global status information.
@@ -103,10 +122,11 @@ class Can final : public sjsu::Can
   struct GlobalStatus  // NOLINT
   {
     /// If 1, receive buffer has at least 1 complete message stored
-    static constexpr bit::Mask kReceiveBuffer = bit::CreateMaskFromRange(0);
+    static constexpr bit::Mask kReceiveBuffer = bit::MaskFromRange(0);
+
     /// Bus status bit. If this is '1' then the bus is active, otherwise the bus
     /// is bus off.
-    static constexpr bit::Mask kBusError = bit::CreateMaskFromRange(7);
+    static constexpr bit::Mask kBusError = bit::MaskFromRange(7);
   };
 
   /// This struct holds CAN controller status information. It is HW mapped to a
@@ -115,44 +135,55 @@ class Can final : public sjsu::Can
   struct BufferStatus  // NOLINT
   {
     /// TX1 Buffer has been released
-    static constexpr bit::Mask kTx1Released = bit::CreateMaskFromRange(2);
+    static constexpr bit::Mask kTx1Released = bit::MaskFromRange(2);
+
     /// TX2 Buffer has been released
-    static constexpr bit::Mask kTx2Released = bit::CreateMaskFromRange(10);
+    static constexpr bit::Mask kTx2Released = bit::MaskFromRange(10);
+
     /// TX3 Buffer has been released
-    static constexpr bit::Mask kTx3Released = bit::CreateMaskFromRange(18);
+    static constexpr bit::Mask kTx3Released = bit::MaskFromRange(18);
   };
 
   /// CANBUS modes
   struct Mode  // NOLINT
   {
     /// Reset CAN Controller, allows configuration registers to be modified.
-    static constexpr bit::Mask kReset = bit::CreateMaskFromRange(0);
+    static constexpr bit::Mask kReset = bit::MaskFromRange(0);
+
     /// Put device into Listen Only Mode, device will not acknowledge, messages.
-    static constexpr bit::Mask kListenOnly = bit::CreateMaskFromRange(1);
+    static constexpr bit::Mask kListenOnly = bit::MaskFromRange(1);
+
     /// Put device on self test mode.
-    static constexpr bit::Mask kSelfTest = bit::CreateMaskFromRange(2);
+    static constexpr bit::Mask kSelfTest = bit::MaskFromRange(2);
+
     /// Enable transmit priority control. When enabled, allows a particular
-    static constexpr bit::Mask kTxPriority = bit::CreateMaskFromRange(3);
+    static constexpr bit::Mask kTxPriority = bit::MaskFromRange(3);
+
     /// Put device to Sleep Mode.
-    static constexpr bit::Mask kSleepMode = bit::CreateMaskFromRange(4);
+    static constexpr bit::Mask kSleepMode = bit::MaskFromRange(4);
+
     /// Receive polarity mode. If 1 RD input is active high
-    static constexpr bit::Mask kRxPolarity = bit::CreateMaskFromRange(5);
+    static constexpr bit::Mask kRxPolarity = bit::MaskFromRange(5);
+
     /// Put CAN into test mode, which allows the TD pin to reflect its bits ot
     /// the RD pin.
-    static constexpr bit::Mask kTest = bit::CreateMaskFromRange(7);
+    static constexpr bit::Mask kTest = bit::MaskFromRange(7);
   };
 
   /// CANBus frame bit masks for the TFM and RFM registers
   struct FrameInfo  // NOLINT
   {
     /// The message priority bits (not used in this implementation)
-    static constexpr bit::Mask kPriority = bit::CreateMaskFromRange(0, 7);
+    static constexpr bit::Mask kPriority = bit::MaskFromRange(0, 7);
+
     /// The length of the data
-    static constexpr bit::Mask kLength = bit::CreateMaskFromRange(16, 19);
+    static constexpr bit::Mask kLength = bit::MaskFromRange(16, 19);
+
     /// If set to 1, the message becomes a remote request message
-    static constexpr bit::Mask kRemoteRequest = bit::CreateMaskFromRange(30);
+    static constexpr bit::Mask kRemoteRequest = bit::MaskFromRange(30);
+
     /// If 0, the ID is 11-bits, if 1, the ID is 29-bits.
-    static constexpr bit::Mask kFormat = bit::CreateMaskFromRange(31);
+    static constexpr bit::Mask kFormat = bit::MaskFromRange(31);
   };
 
   /// https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 554)

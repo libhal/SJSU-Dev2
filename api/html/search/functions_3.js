@@ -17,7 +17,6 @@ var searchData=
   ['connect',['Connect',['../dc/d4f/classsjsu_1_1Esp8266.html#a9e82fdd35e3560c5d68e4a85bbe9d0e5',1,'sjsu::Esp8266::Connect()'],['../db/dcb/classsjsu_1_1InternetSocket.html#a5e1d7293ef0b8db5da2bd8845b43ed8e',1,'sjsu::InternetSocket::Connect()']]],
   ['connecttoaccesspoint',['ConnectToAccessPoint',['../dc/d4f/classsjsu_1_1Esp8266.html#ae6665e172251487f46c5c26faee33862',1,'sjsu::Esp8266::ConnectToAccessPoint()'],['../dc/d16/classsjsu_1_1WiFi.html#a729e60498dbc9ce101964f06fb895df7',1,'sjsu::WiFi::ConnectToAccessPoint()']]],
   ['correctedlocation',['CorrectedLocation',['../d0/d07/diskio_8cpp.html#a944fc1b6b99e5405fa3d99a0c590d543',1,'diskio.cpp']]],
-  ['createmaskfromrange',['CreateMaskFromRange',['../de/df8/namespacesjsu_1_1bit.html#a71a7a51d0b48431a228b6a23e7f94df7',1,'sjsu::bit::CreateMaskFromRange(uint32_t low_bit_position, uint32_t high_bit_position)'],['../de/df8/namespacesjsu_1_1bit.html#ac4ab2c08e7021716f68e4a5e7dd5714a',1,'sjsu::bit::CreateMaskFromRange(uint32_t bit_position)']]],
   ['createpin',['CreatePin',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a1accbb7cbf636a2cad153366e0a00e1d',1,'sjsu::lpc17xx::Pin::CreatePin()'],['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa8a3e1bbd8958f5153d72939c6220648',1,'sjsu::lpc40xx::Pin::CreatePin()']]],
   ['createstatus',['CreateStatus',['../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43',1,'sjsu']]]
 ];

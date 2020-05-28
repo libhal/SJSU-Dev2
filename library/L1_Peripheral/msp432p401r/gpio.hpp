@@ -20,8 +20,8 @@ class Gpio final : public sjsu::Gpio
 
   void SetDirection(Direction direction) const override
   {
-    constexpr auto kDirectionBit = bit::CreateMaskFromRange(2);
-    uint32_t function_code        = 0b00;
+    constexpr auto kDirectionBit = bit::MaskFromRange(2);
+    uint32_t function_code       = 0b00;
     function_code = bit::Insert(function_code, Value(direction), kDirectionBit);
     pin_.SetPinFunction(static_cast<uint8_t>(function_code));
   }

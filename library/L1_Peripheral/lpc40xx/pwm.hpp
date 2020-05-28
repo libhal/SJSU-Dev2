@@ -36,11 +36,11 @@ class Pwm final : public sjsu::Pwm
   {
     /// Enables/disables double edge PWM for each channel. Each bit in this
     /// field corrissponds to a channel.
-    constexpr static bit::Mask kEnableDoubleEdge =
-        bit::CreateMaskFromRange(2, 6);
+    static constexpr auto kEnableDoubleEdge = bit::MaskFromRange(2, 6);
+
     /// Enables/disables output of PWM channels. Each bit from the start
     /// corrissponds to a PWM channel.
-    constexpr static bit::Mask kEnableOutput = bit::CreateMaskFromRange(8, 14);
+    static constexpr auto kEnableOutput = bit::MaskFromRange(8, 14);
   };
 
   /// Match register control bit masks.
@@ -48,7 +48,7 @@ class Pwm final : public sjsu::Pwm
   {
     /// If set to a 1, tells the PWM hardare to reset the PWM total count
     /// register to be reset to 0 when it is equal to the match register 0.
-    constexpr static bit::Mask kPwm0Reset = bit::CreateMaskFromRange(1);
+    static constexpr auto kPwm0Reset = bit::MaskFromRange(1);
   };
 
   /// Register controls PWM peripheral wide timer control.
@@ -56,15 +56,18 @@ class Pwm final : public sjsu::Pwm
   {
     /// When set to a 1, enables the TC (total count) register and begins
     /// counting.
-    constexpr static bit::Mask kCounterEnable = bit::CreateMaskFromRange(0);
+    static constexpr auto kCounterEnable = bit::MaskFromRange(0);
+
     /// When set to a 1, will reset the total count register.
-    constexpr static bit::Mask kCounterReset = bit::CreateMaskFromRange(1);
+    static constexpr auto kCounterReset = bit::MaskFromRange(1);
+
     /// Enables PWM mode. Without setting the match registers cannot operate
     /// with the timer.
-    constexpr static bit::Mask kPwmEnable = bit::CreateMaskFromRange(3);
+    static constexpr auto kPwmEnable = bit::MaskFromRange(3);
+
     /// Allows PWM0 peripheral to control the PWM1 peripheral. This is generally
     /// set to 0, to allow both of them to work independently.
-    constexpr static bit::Mask kMasterDisable = bit::CreateMaskFromRange(4);
+    static constexpr auto kMasterDisable = bit::MaskFromRange(4);
   };
 
   /// PWM channel count control register
@@ -73,10 +76,11 @@ class Pwm final : public sjsu::Pwm
     /// Controls the counting mode of the PWM peripheral. When set to 0, counts
     /// using the internal prescale counter which is driven by the peripheral
     /// clock. Other modes involve use of an external clock source.
-    constexpr static bit::Mask kMode = bit::CreateMaskFromRange(0, 1);
+    static constexpr auto kMode = bit::MaskFromRange(0, 1);
+
     /// Controls the count input source. For this driver, this should be kept to
     /// zero, since we want to utilize the internal peripheral clock source.
-    constexpr static bit::Mask kCountInput = bit::CreateMaskFromRange(2, 3);
+    static constexpr auto kCountInput = bit::MaskFromRange(2, 3);
   };
 
   /// Defines a LPC PWM peripheral definition that contains all of the
@@ -125,11 +129,13 @@ class Pwm final : public sjsu::Pwm
       .registers = LPC_PWM0,
       .id        = sjsu::lpc40xx::SystemController::Peripherals::kPwm1,
     };
+
     /// Definition of the PWM 1 peripheral.
     inline static const Peripheral_t kPwm1Peripheral = {
       .registers = LPC_PWM1,
       .id        = sjsu::lpc40xx::SystemController::Peripherals::kPwm1,
     };
+
     /// Definition for channel 0 of PWM peripheral 1.
     inline static const Channel_t kPwm0 = {
       .peripheral        = kPwm1Peripheral,
@@ -137,6 +143,7 @@ class Pwm final : public sjsu::Pwm
       .channel           = 1,
       .pin_function_code = 0b001,
     };
+
     /// Definition for channel 1 of PWM peripheral 1.
     inline static const Channel_t kPwm1 = {
       .peripheral        = kPwm1Peripheral,
@@ -144,6 +151,7 @@ class Pwm final : public sjsu::Pwm
       .channel           = 2,
       .pin_function_code = 0b001,
     };
+
     /// Definition for channel 2 of PWM peripheral 1.
     inline static const Channel_t kPwm2 = {
       .peripheral        = kPwm1Peripheral,
@@ -151,6 +159,7 @@ class Pwm final : public sjsu::Pwm
       .channel           = 3,
       .pin_function_code = 0b001,
     };
+
     /// Definition for channel 3 of PWM peripheral 1.
     inline static const Channel_t kPwm3 = {
       .peripheral        = kPwm1Peripheral,
@@ -158,6 +167,7 @@ class Pwm final : public sjsu::Pwm
       .channel           = 4,
       .pin_function_code = 0b001,
     };
+
     /// Definition for channel 4 of PWM peripheral 1.
     inline static const Channel_t kPwm4 = {
       .peripheral        = kPwm1Peripheral,
@@ -165,6 +175,7 @@ class Pwm final : public sjsu::Pwm
       .channel           = 5,
       .pin_function_code = 0b001,
     };
+
     /// Definition for channel 5 of PWM peripheral 1.
     inline static const Channel_t kPwm5 = {
       .peripheral        = kPwm1Peripheral,
@@ -179,6 +190,7 @@ class Pwm final : public sjsu::Pwm
   /// @param channel - Reference to a const channel description for this
   ///        instance of the PWM driver.
   explicit constexpr Pwm(const Channel_t & channel) : channel_(channel) {}
+
   Status Initialize(units::frequency::hertz_t frequency_hz) const override
   {
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
@@ -284,7 +296,7 @@ class Pwm final : public sjsu::Pwm
     {
       auto & system      = sjsu::SystemController::GetPlatformController();
       auto pwm_frequency = system.GetClockRate(channel_.peripheral.id);
-      result = pwm_frequency / match_register0;
+      result             = pwm_frequency / match_register0;
     }
     return result;
   }

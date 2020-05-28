@@ -25,33 +25,43 @@ class Pin final : public sjsu::Pin
  public:
   // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
   /// Bitmask for setting pin mux function code.
-  static constexpr bit::Mask kFunction = bit::CreateMaskFromRange(0, 2);
+  static constexpr bit::Mask kFunction = bit::MaskFromRange(0, 2);
+
   /// Bitmask for setting resistor mode of pin.
-  static constexpr bit::Mask kResistor = bit::CreateMaskFromRange(3, 4);
+  static constexpr bit::Mask kResistor = bit::MaskFromRange(3, 4);
+
   /// Bitmask for setting pin hysteresis mode.
-  static constexpr bit::Mask kHysteresis = bit::CreateMaskFromRange(5);
+  static constexpr bit::Mask kHysteresis = bit::MaskFromRange(5);
+
   /// Bitmask for setting inputs as active low or active high. This will behave
   /// badly if the pin is set to a mode that is an output or set to analog. See
   /// usermanual for more details.
-  static constexpr bit::Mask kInputInvert = bit::CreateMaskFromRange(6);
+  static constexpr bit::Mask kInputInvert = bit::MaskFromRange(6);
+
   /// Bitmask for setting a pin to analog mode.
-  static constexpr bit::Mask kAnalogDigitalMode = bit::CreateMaskFromRange(7);
+  static constexpr bit::Mask kAnalogDigitalMode = bit::MaskFromRange(7);
+
   /// Bitmask for enabling/disabling digital filter. This can be used to
   /// ignore/reject noise, reflections, or signal bounce (from something like a
   /// switch).
-  static constexpr bit::Mask kDigitalFilter = bit::CreateMaskFromRange(8);
+  static constexpr bit::Mask kDigitalFilter = bit::MaskFromRange(8);
+
   /// Bitmask to enable/disable high speed I2C mode
-  static constexpr bit::Mask kI2cHighSpeed = bit::CreateMaskFromRange(8);
+  static constexpr bit::Mask kI2cHighSpeed = bit::MaskFromRange(8);
+
   /// Bitmask to change the slew rate of signal transitions for outputs for a
   /// pin.
-  static constexpr bit::Mask kSlew = bit::CreateMaskFromRange(9);
+  static constexpr bit::Mask kSlew = bit::MaskFromRange(9);
+
   /// Bitmask to enable I2C high current drain. This can allow for even faster
   /// I2C communications, as well as allow for more devices on the bus.
-  static constexpr bit::Mask kI2cHighCurrentDrive = bit::CreateMaskFromRange(9);
+  static constexpr bit::Mask kI2cHighCurrentDrive = bit::MaskFromRange(9);
+
   /// Bitmask to enable/disable open drain mode.
-  static constexpr bit::Mask kOpenDrain = bit::CreateMaskFromRange(10);
+  static constexpr bit::Mask kOpenDrain = bit::MaskFromRange(10);
+
   /// Bitmask for enabling/disabling digital to analog pin mode.
-  static constexpr bit::Mask kDacEnable = bit::CreateMaskFromRange(16);
+  static constexpr bit::Mask kDacEnable = bit::MaskFromRange(16);
 
   /// Pin map table for maping pins and ports to registers.
   struct PinMap_t

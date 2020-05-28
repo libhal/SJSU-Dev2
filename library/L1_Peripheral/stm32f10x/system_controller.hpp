@@ -160,41 +160,51 @@ class SystemController : public sjsu::SystemController
   struct ClockConfigurationRegisters  // NOLINT
   {
     /// Controls which clock signal is sent to the MCO pin
-    static constexpr auto kMco = bit::CreateMaskFromRange(24, 26);
+    static constexpr auto kMco = bit::MaskFromRange(24, 26);
+
     /// Sets the USB clock divider
-    static constexpr auto kUsbPrescalar = bit::CreateMaskFromRange(22);
+    static constexpr auto kUsbPrescalar = bit::MaskFromRange(22);
+
     /// Sets the PLL multiplier
-    static constexpr auto kPllMul = bit::CreateMaskFromRange(18, 21);
+    static constexpr auto kPllMul = bit::MaskFromRange(18, 21);
+
     /// If set to 1, will divide the HSE signal by 2 before sending to PLL
-    static constexpr auto kHsePreDivider = bit::CreateMaskFromRange(17);
+    static constexpr auto kHsePreDivider = bit::MaskFromRange(17);
+
     /// Sets which source the PLL will take as input
-    static constexpr auto kPllSource = bit::CreateMaskFromRange(16);
+    static constexpr auto kPllSource = bit::MaskFromRange(16);
+
     /// Sets the clock divider for the ADC peripherals
-    static constexpr auto kAdcDivider = bit::CreateMaskFromRange(14, 15);
+    static constexpr auto kAdcDivider = bit::MaskFromRange(14, 15);
+
     /// Sets the divider for peripherals on the APB2 bus
-    static constexpr auto kAPB2Divider = bit::CreateMaskFromRange(11, 13);
+    static constexpr auto kAPB2Divider = bit::MaskFromRange(11, 13);
+
     /// Sets the divider for peripherals on the APB1 bus
-    static constexpr auto kAPB1Divider = bit::CreateMaskFromRange(8, 10);
+    static constexpr auto kAPB1Divider = bit::MaskFromRange(8, 10);
+
     /// Sets the divider for peripherals on the AHB bus
-    static constexpr auto kAHBDivider = bit::CreateMaskFromRange(4, 7);
+    static constexpr auto kAHBDivider = bit::MaskFromRange(4, 7);
+
     /// Used to check if the system clock has taken the new system clock
     /// settings.
-    static constexpr auto kSystemClockStatus = bit::CreateMaskFromRange(2, 3);
-    /// Set which clock will be used for the system clock .
-    static constexpr auto kSystemClockSelect = bit::CreateMaskFromRange(0, 1);
+    static constexpr auto kSystemClockStatus = bit::MaskFromRange(2, 3);
+
+    /// Set which clock will be used for the system clock.
+    static constexpr auto kSystemClockSelect = bit::MaskFromRange(0, 1);
   };
 
   /// Bit masks for the CR register
   struct ClockControlRegisters  // NOLINT
   {
     /// Indicates if the PLL is enabled and ready
-    static constexpr auto kPllReady = bit::CreateMaskFromRange(25);
+    static constexpr auto kPllReady = bit::MaskFromRange(25);
     /// Used to enable the PLL
-    static constexpr auto kPllEnable = bit::CreateMaskFromRange(24);
+    static constexpr auto kPllEnable = bit::MaskFromRange(24);
     /// Indicates if the external oscillator is ready for use
-    static constexpr auto kExternalOscReady = bit::CreateMaskFromRange(17);
+    static constexpr auto kExternalOscReady = bit::MaskFromRange(17);
     /// Used to enable the external oscillator
-    static constexpr auto kExternalOscEnable = bit::CreateMaskFromRange(16);
+    static constexpr auto kExternalOscEnable = bit::MaskFromRange(16);
   };
 
   /// PLL frequency multiplication options.
@@ -221,15 +231,15 @@ class SystemController : public sjsu::SystemController
   struct RtcRegisters  // NOLINT
   {
     /// Will reset all clock states for the RTC
-    static constexpr auto kBackupDomainReset = bit::CreateMaskFromRange(16);
+    static constexpr auto kBackupDomainReset = bit::MaskFromRange(16);
     /// Enables the RTC clock
-    static constexpr auto kRtcEnable = bit::CreateMaskFromRange(15);
+    static constexpr auto kRtcEnable = bit::MaskFromRange(15);
     /// Selects the clock source for the RTC
-    static constexpr auto kRtcSourceSelect = bit::CreateMaskFromRange(8, 9);
+    static constexpr auto kRtcSourceSelect = bit::MaskFromRange(8, 9);
     /// Indicates if the LSE is ready for use
-    static constexpr auto kLowSpeedOscReady = bit::CreateMaskFromRange(1);
+    static constexpr auto kLowSpeedOscReady = bit::MaskFromRange(1);
     /// Used to enable the LSE
-    static constexpr auto kLowSpeedOscEnable = bit::CreateMaskFromRange(0);
+    static constexpr auto kLowSpeedOscEnable = bit::MaskFromRange(0);
   };
 
   /// Available clock sources for the RTC
@@ -490,19 +500,19 @@ class SystemController : public sjsu::SystemController
       {
         // 0 Wait states
         flash->ACR = sjsu::bit::Insert(flash->ACR, 0b000,
-                                       sjsu::bit::CreateMaskFromRange(0, 2));
+                                       sjsu::bit::MaskFromRange(0, 2));
       }
       else if (24_MHz <= pll_clock_rate_ && pll_clock_rate_ <= 48_MHz)
       {
         // 1 Wait state
         flash->ACR = sjsu::bit::Insert(flash->ACR, 0b001,
-                                       sjsu::bit::CreateMaskFromRange(0, 2));
+                                       sjsu::bit::MaskFromRange(0, 2));
       }
       else
       {
         // 2 Wait states
         flash->ACR = sjsu::bit::Insert(flash->ACR, 0b010,
-                                       sjsu::bit::CreateMaskFromRange(0, 2));
+                                       sjsu::bit::MaskFromRange(0, 2));
       }
     }
 

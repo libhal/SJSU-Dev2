@@ -7,6 +7,7 @@ var searchData=
   ['map_2ehpp',['map.hpp',['../df/d7c/map_8hpp.html',1,'']]],
   ['maptype',['MapType',['../d0/da2/classsjsu_1_1Device.html#a1bb7916d1f646b0b9b1f18f57f5b9e71',1,'sjsu::Device']]],
   ['mask',['Mask',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html',1,'sjsu::bit']]],
+  ['maskfromrange',['MaskFromRange',['../de/df8/namespacesjsu_1_1bit.html#a7a418a8a1944b0c1954b0bb4e20b2a0c',1,'sjsu::bit::MaskFromRange(uint32_t low_bit_position, uint32_t high_bit_position)'],['../de/df8/namespacesjsu_1_1bit.html#ae8dd8917b7bd15a7ba73e704114126da',1,'sjsu::bit::MaskFromRange(uint32_t bit_position)']]],
   ['master',['master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#abbbb89329f310c3666d1e6329ee428ef',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['masterstate',['MasterState',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a9a5a932d99ae273205a55913aedc1c22',1,'sjsu::lpc40xx::I2c']]],
   ['matchaction',['MatchAction',['../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8',1,'sjsu::Timer']]],

@@ -87,9 +87,23 @@ extern "C"
   {
     int string_length = static_cast<int>(strlen(str));
     int result        = 0;
+
     result += _write(0, str, string_length);
     result += _write(0, "\n", 1);
-    // + 1 because puts adds an additional newline '\n' character.
+
+    return result;
+  }
+
+  // Overload default libnano puts() with a more optimal version that does
+  // not use dynamic memory
+  int fputs(const char * str, FILE * file)  // NOLINT
+  {
+    int string_length    = static_cast<int>(strlen(str));
+    int result           = 0;
+    intptr_t file_intptr = reinterpret_cast<intptr_t>(file);
+    int file_int         = static_cast<int>(file_intptr);
+
+    result += _write(static_cast<int>(file_int), str, string_length);
     return result;
   }
 

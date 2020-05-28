@@ -83,7 +83,6 @@ var searchData=
   ['crctableconfig_5ft',['CrcTableConfig_t',['../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html',1,'sjsu::crc']]],
   ['crctableconfig_5ft_3c_20uint16_5ft_20_3e',['CrcTableConfig_t&lt; uint16_t &gt;',['../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html',1,'sjsu::crc']]],
   ['crctableconfig_5ft_3c_20uint8_5ft_20_3e',['CrcTableConfig_t&lt; uint8_t &gt;',['../d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html',1,'sjsu::crc']]],
-  ['createmaskfromrange',['CreateMaskFromRange',['../de/df8/namespacesjsu_1_1bit.html#a71a7a51d0b48431a228b6a23e7f94df7',1,'sjsu::bit::CreateMaskFromRange(uint32_t low_bit_position, uint32_t high_bit_position)'],['../de/df8/namespacesjsu_1_1bit.html#ac4ab2c08e7021716f68e4a5e7dd5714a',1,'sjsu::bit::CreateMaskFromRange(uint32_t bit_position)']]],
   ['createpin',['CreatePin',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a1accbb7cbf636a2cad153366e0a00e1d',1,'sjsu::lpc17xx::Pin::CreatePin()'],['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#aa8a3e1bbd8958f5153d72939c6220648',1,'sjsu::lpc40xx::Pin::CreatePin()']]],
   ['createstatus',['CreateStatus',['../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43',1,'sjsu']]],
   ['csd',['csd',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#aab93bbb0dbf1e87b8dcb083c85200d22',1,'sjsu::Sd::CardInfo_t']]],
