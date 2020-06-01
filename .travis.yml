@@ -7,7 +7,7 @@ matrix:
           before_install:
             - sudo apt-get -y install doxygen graphviz
             - pip install --user cpp-coveralls
-            - sudo apt install -y nodejs
+            - sudo apt install -y nodejs nodejs-dev node-gyp libssl1.0-dev
             - sudo apt install -y npm
             - sudo npm install -g cspell@4.0.38
           script:
