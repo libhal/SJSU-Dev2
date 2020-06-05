@@ -214,7 +214,7 @@ PLL->CONFIG = bit::Insert(PLL->CONFIG, 0x5, kPllMultiply);
 array of bytes can passed to `bit::StreamExtract()`.
 
 See the
-[sd card](https://github.com/kammce/SJSU-Dev2/blob/master/library/L2_HAL/memory/sd.hpp)
+[sd card](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/library/L2_HAL/memory/sd.hpp)
 implementation source code for an example of its usage.
 
 ## bit::Register & bit::Value Class

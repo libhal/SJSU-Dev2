@@ -1,12 +1,12 @@
 # SJSU-Dev2
 
-[![Build Status](https://travis-ci.com/kammce/SJSU-Dev2.svg?branch=master)](https://travis-ci.com/kammce/SJSU-Dev2)
+[![Build Status](https://travis-ci.com/SJSU-Dev2/SJSU-Dev2.svg?branch=master)](https://travis-ci.com/SJSU-Dev2/SJSU-Dev2)
 [![Documentation Status](https://readthedocs.org/projects/sjsu-dev/badge/?version=latest)](http://sjsu-dev2.readthedocs.io/en/latest)
-[![Coverage Status](https://coveralls.io/repos/github/kammce/SJSU-Dev2/badge.svg)](https://coveralls.io/github/kammce/SJSU-Dev2)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f004895337c42459f881db938e84885)](https://www.codacy.com/app/kammce/SJSU-Dev2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kammce/SJSU-Dev2&amp;utm_campaign=Badge_Grade)
-[![GitHub stars](https://img.shields.io/github/stars/kammce/SJSU-Dev2.svg)](https://github.com/kammce/SJSU-Dev2/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/kammce/SJSU-Dev2.svg)](https://github.com/kammce/SJSU-Dev2/network)
-[![GitHub issues](https://img.shields.io/github/issues/kammce/SJSU-Dev2.svg)](https://github.com/kammce/SJSU-Dev2/issues)
+[![Coverage Status](https://coveralls.io/repos/github/SJSU-Dev2/SJSU-Dev2/badge.svg)](https://coveralls.io/github/SJSU-Dev2/SJSU-Dev2)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f004895337c42459f881db938e84885)](https://www.codacy.com/app/SJSU-Dev2/SJSU-Dev2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SJSU-Dev2/SJSU-Dev2&amp;utm_campaign=Badge_Grade)
+[![GitHub stars](https://img.shields.io/github/stars/SJSU-Dev2/SJSU-Dev2.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/SJSU-Dev2/SJSU-Dev2.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/network)
+[![GitHub issues](https://img.shields.io/github/issues/SJSU-Dev2/SJSU-Dev2.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/issues)
 [![Slack Chat](https://img.shields.io/badge/join-slack-purple.svg?logo=slack&longCache=true&style=flat)](https://slofile.com/slack/sjsu-dev2)
 
 Cross platform firmware framework written by students, alumni, and faculty of
@@ -44,7 +44,7 @@ To download and setup the environment, simply copy and paste this into a
 terminal:
 
 ```
-git clone https://github.com/kammce/SJSU-Dev2.git
+git clone https://github.com/SJSU-Dev2/SJSU-Dev2.git
 cd SJSU-Dev2
 ./setup
 ```
@@ -74,7 +74,7 @@ if you have a JTAG or SWD debugger.
 ## Full Documentation and Installation Guide
 
 - **[Full Documentation](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)**
-- **[Library APIs](https://kammce.github.io/SJSU-Dev2/api/html/)**
+- **[Library APIs](https://SJSU-Dev2.github.io/SJSU-Dev2/api/html/)**
 
 ## Using a Prebuilt Virtual Machine
 One of the easiest ways to get started with SJSU-Dev2 is to use a VM with all of
@@ -101,7 +101,7 @@ Steps to install virtual box and the virtual machine are listed below:
 ### Viewing Serial Output
 The preferred method for communicating with a serial device is via Google
 Chrome, using the online serial terminal tool,
-**[Telemetry](https://kammce.github.io/Telemetry)**.
+**[Telemetry](https://SJSU-Dev2.github.io/Telemetry)**.
 You can also open this up on your browser using the `make telemetry` command in
 a project directory.
 

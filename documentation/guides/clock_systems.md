@@ -19,7 +19,7 @@ performance but will also decrease power consumption.
 ## How this is handled in SJSU-Dev2
 
 Clocking and power management is handled by the platform's
-[`L1/SystemController`](https://github.com/kammce/SJSU-Dev2/blob/master/library/L1_Peripheral/system_controller.hpp).
+[`L1/SystemController`](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/library/L1_Peripheral/system_controller.hpp).
 Clocking system can be quite unique across platforms. So unique that a
 functional API for controlling clock systems is not feasible. Thus the
 `SystemController` interface only exposes two functions for controlling the
@@ -43,6 +43,7 @@ Read the API comments in the code block above to get an idea of what these two
 methods do.
 
 ## Clock Configuration In Main
+
 At startup, before main is called, the default `InitializePlatform()` will set
 the platform's system controller as the global platform controller. This means
 you can retrieve a reference to the platform controller using:
@@ -52,6 +53,7 @@ auto & controller = sjsu::SystemController::GetPlatformController();
 ```
 
 ### Example of ClockConfiguration object
+
 Lets use the LPC40xx platform as an example as its clock tree is quite small.
 A clock tree is the path and interconnection of clock sources to each other in
 the system.
@@ -187,6 +189,7 @@ perform as expected. The behavior is undefined and can potentially lock up the
 platform.
 
 #### Method 2 (best practice)
+
 ```C++
 sjsu::InitializePlatform();
 ```
@@ -201,15 +204,17 @@ peripherals based on the new clock settings.
     application.
 
 ## Clock Configuration Examples
+
 Clock configuration examples can be found in the `demos/` folder with the name
 `clock_configuration`.
 
-- [demos/stm32f10x/clock_configuration](https://github.com/kammce/SJSU-Dev2/tree/master/demos/stm32f10x/clock_configuration)
-- [demos/lpc40xx/clock_configuration](https://github.com/kammce/SJSU-Dev2/tree/master/demos/sjtwo/clock_configuration)
+- [demos/stm32f10x/clock_configuration](https://github.com/SJSU-Dev2/SJSU-Dev2/tree/master/demos/stm32f10x/clock_configuration)
+- [demos/lpc40xx/clock_configuration](https://github.com/SJSU-Dev2/SJSU-Dev2/tree/master/demos/sjtwo/clock_configuration)
 
 ## Best practices
 
 ### Best time to change clocks
+
 The best time to change the clock rate for the platform is at the beginning of
 the main() function before any peripherals or drivers have been initialized.
 Prefer to only change the clock rate once during runtime.
@@ -223,6 +228,7 @@ initialization, which tends to reduce code complexity and size. Failure to do
 this will lead to undefined behavior.
 
 ### Changing clock rates in a thread
+
 First off, DON'T! But if you feel the need to, prefer to have just 1 thread
 manage this, or have a mutex lock usage of this resource. The clock tree is a
 single hardware resource and the configuration object is a single statically
@@ -230,6 +236,7 @@ allocated object, thus are not thread safe to manipulate without some sort of
 protection.
 
 ### Power Savings
+
 Set the clock rates to the lowest values possible that still fit your
 performance needs. This will very likely require testing of the platform to
 verify that the platform is performing as expected.
@@ -240,6 +247,7 @@ into a low power or sleep mode. Do not adjust the clocks dynamically at runtime
 in order to reduce power. Use the platform's low power modes.
 
 ### Resetting Configuration Objects
+
 All configuration objects come default initialized to a state that reflects the
 reset state of the platform, but in the case where it has been changed and needs
 to be reset to a known state, simply creating an instance of that clock
@@ -259,12 +267,13 @@ sjsu::InitializePlatform();
 ```
 
 ## Debugging
+
 - I ran `sjsu::InitializePlatform()` and my platform stopped working, hard
   faulted or crashed.
-     - It is likely that the settings you gave to the configuration object are
-       outside of the bounds of what is acceptable for the platform, causing
-       this issue. Consult the user manual to see if there is anything you have
-       done incorrectly.
+      - It is likely that the settings you gave to the configuration object are
+        outside of the bounds of what is acceptable for the platform, causing
+        this issue. Consult the user manual to see if there is anything you have
+        done incorrectly.
 
 ## Information For Collaborators
 

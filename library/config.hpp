@@ -32,13 +32,13 @@
 ///
 /// If you spotted a bug, need a feature or have an awesome idea, post an issue
 /// on the SJSU-Dev2 github
-/// <a href="https://github.com/kammce/SJSU-Dev2/issues">issues</a> page.
+/// <a href="https://github.com/SJSU-Dev2/SJSU-Dev2/issues">issues</a> page.
 ///
 /// <br />
 ///
 /// @section license_sec License
 ///
-/// <a href="https://github.com/kammce/SJSU-Dev2/blob/master/LICENSE">
+/// <a href="https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/LICENSE">
 /// Apache License Version 2.0
 /// </a>
 ///
