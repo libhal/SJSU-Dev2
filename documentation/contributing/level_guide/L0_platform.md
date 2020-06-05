@@ -35,7 +35,7 @@ Convert all `#define` to `constexpr` if possible and if not convert to `inline`
 variables. See this commit to see how this was done for the
 `L0_Platform/lpc40xx/LPC40xx.h` register definitions file:
 
-https://github.com/kammce/SJSU-Dev2/commit/40d89452260e043e0e1092525e5f3210b7cfe1ef#diff-1eae1a62a8a18ba66cfce475cf17db5a
+https://github.com/SJSU-Dev2/SJSU-Dev2/commit/40d89452260e043e0e1092525e5f3210b7cfe1ef#diff-1eae1a62a8a18ba66cfce475cf17db5a
 
 ## Linker Script
 

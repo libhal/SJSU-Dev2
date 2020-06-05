@@ -17,9 +17,10 @@ ARCH=$(uname -m)
 # Get System Operating System
 OS=$(uname -s)
 # Define name of the arm version we are downloading
-TOOLS_BUNDLE_BASE_URL="https://github.com/kammce/SJSU-Dev2/releases/download/v2.3/tools-bundle"
-TOOLS_BUNDLE_URL_LINUX="$TOOLS_BUNDLE_BASE_URL-linux.tar.bz2"
-TOOLS_BUNDLE_URL_OSX="$TOOLS_BUNDLE_BASE_URL-osx.tar.bz2"
+BASE_URL="https://github.com/SJSU-Dev2"
+TOOLS_BUNDLE="$BASE_URL/SJSU-Dev2/releases/download/v2.3/tools-bundle"
+TOOLS_BUNDLE_URL_LINUX="$TOOLS_BUNDLE-linux.tar.bz2"
+TOOLS_BUNDLE_URL_OSX="$TOOLS_BUNDLE-osx.tar.bz2"
 # Set later
 TOOLS_BUNDLE_URL=
 TOOLS_FILE_COUNT=9642
@@ -238,7 +239,7 @@ function install_nxpprog() {
   echo "                Setting Up nxpprog                   "
   echo "└─────────────────────────────────────────────────── "
   rm -rf "nxpprog/"
-  git clone https://github.com/kammce/nxpprog.git "nxpprog/"
+  git clone "$BASE_URL/nxpprog.git" "nxpprog/"
   local git_clone=$?
   print_status_nl $git_clone
 

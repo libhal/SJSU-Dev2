@@ -91,10 +91,10 @@ found [here](http://elm-chan.org/fsw/ff/00index_e.html).
 Examples of its usage in SJSU-Dev2 can be found in the `demos/` folder for
 projects labeled `fatfs`. A few examples are
 
-- [demos/stm32f10x/fatfs](https://github.com/kammce/SJSU-Dev2/tree/master/demos/stm32f10x/fatfs)
-- [demos/lpc40xx/fatfs](https://github.com/kammce/SJSU-Dev2/tree/master/demos/sjtwo/fatfs)
+- [demos/stm32f10x/fatfs](https://github.com/SJSU-Dev2/SJSU-Dev2/tree/master/demos/stm32f10x/fatfs)
+- [demos/lpc40xx/fatfs](https://github.com/SJSU-Dev2/SJSU-Dev2/tree/master/demos/sjtwo/fatfs)
 
 The configuration options for FatFS can be found in
-[library/third_party/fatfs/source/ffconf.h](https://github.com/kammce/SJSU-Dev2/tree/master/library/third_party/fatfs/source/ffconf.h)
+[library/third_party/fatfs/source/ffconf.h](https://github.com/SJSU-Dev2/SJSU-Dev2/tree/master/library/third_party/fatfs/source/ffconf.h)
 Long file names are not supported to reduce code size. In the future, this may
 be changed to allow configuration of this option.

@@ -45,6 +45,7 @@ this link and download the driver for your computer.
 ## Installation
 
 ### Step 0: Find a download spot
+
 Open a terminal (also called a command line) and go to a directory where you
 would like to download SJSU-Dev2.
 
@@ -54,8 +55,9 @@ would like to download SJSU-Dev2.
     `cd /mnt/c` into your terminal and press enter.
 
 ### Step 1: Download the platform
-Go to <https://github.com/kammce/SJSU-Dev2> and click on the "Clone or download"
-drop down button.
+
+Go to <https://github.com/SJSU-Dev2/SJSU-Dev2> and click on the
+"Clone or download" drop down button.
 
 Put the zip file in the directory you chose in step 0 and unzip it there.
 
@@ -63,7 +65,7 @@ Put the zip file in the directory you chose in step 0 and unzip it there.
 
     cd SJSU-Dev2
 
-### Step 3: Run `setup` script.
+### Step 3: Run `setup` script
 
     ./setup
 
@@ -71,7 +73,8 @@ This will install all of the necessary files and programs that SJSU-Dev2 needs
 in order to build your code. The downloaded files are placed in the `tools/`
 folder.
 
-<script id="asciicast-314687" src="https://asciinema.org/a/314687.js" async></script>
+<script id="asciicast-314687" src="https://asciinema.org/a/314687.js" async>
+</script>
 
 ## Building and Loading the "Hello World" Application
 
@@ -87,7 +90,8 @@ This will take all of the relevant source code files to your project and
 generate a binary file that can be loaded onto your board. These files can be
 found in the `build/application` folder with the project.
 
-<script id="asciicast-314699" src="https://asciinema.org/a/314699.js" async></script>
+<script id="asciicast-314699" src="https://asciinema.org/a/314699.js" async>
+</script>
 
 !!! Tip
     use the `make` by itself to get additional information on the
@@ -100,6 +104,7 @@ found in the `build/application` folder with the project.
     with an lpc17xx microcontroller on it.
 
 ### Step 2: Flash board
+
 To load the built binary file into your board, run:
 
     make flash
@@ -132,6 +137,7 @@ For Mac OSX:
     Hercules, putty or minicom
 
 ### Step 3: Interacting with device
+
 To view output messages from board and interact with it, go to the following
 URL and following the setup instructions: <https://kammce.github.io/Telemetry>
 
