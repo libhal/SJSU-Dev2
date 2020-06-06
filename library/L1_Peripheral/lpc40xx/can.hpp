@@ -269,7 +269,7 @@ class Can final : public sjsu::Can
     /// Pointer to the LPC CAN peripheral in memory
     LPC_CAN_TypeDef * registers;
     /// Peripheral's ID
-    sjsu::SystemController::PeripheralID id;
+    sjsu::SystemController::ResourceID id;
   };
 
   /// Container for the LPC40xx CANBUS registers

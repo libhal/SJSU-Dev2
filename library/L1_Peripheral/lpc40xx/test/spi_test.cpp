@@ -51,7 +51,7 @@ TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
   SECTION("Initialize")
   {
     Verify(Method(mock_system_controller, PowerUpPeripheral)
-               .Matching([](sjsu::SystemController::PeripheralID id) {
+               .Matching([](sjsu::SystemController::ResourceID id) {
                  return sjsu::lpc40xx::SystemController::Peripherals::kSsp0
                             .device_id == id.device_id;
                }));

@@ -55,7 +55,7 @@ TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
     constexpr uint32_t kExpectedFdr = (kExpectedMul << 4) | kExpectedDivAdd;
 
     Verify(Method(mock_system_controller, PowerUpPeripheral)
-               .Matching([](sjsu::SystemController::PeripheralID id) {
+               .Matching([](sjsu::SystemController::ResourceID id) {
                  return sjsu::lpc40xx::SystemController::Peripherals::kUart2
                             .device_id == id.device_id;
                }));
