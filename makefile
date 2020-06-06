@@ -435,7 +435,7 @@ purge: clean
 
 
 telemetry:
-	google-chrome https://kammce.github.io/Telemetry
+	google-chrome https://sjsu-dev2.github.io/Telemetry
 
 
 format-code:

@@ -21,7 +21,7 @@ Each of the following files are needed in your project directory:
 
 * **Makefile** used to find the project's main makefile and execute your make
   target requests. If your project does not have one, simply copy one from
-  [`projects/starter/makefile`](https://github.com/kammce/SJSU-Dev2/blob/master/projects/starter/makefile).
+  [`projects/starter/makefile`](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/projects/starter/makefile).
 * **source/** where all of your source code go. Typically these will hold a
   `main.cpp` file. Somewhere within this folder needs to exist a `int main()`
   function so that the startup code knows where to start the application.
@@ -32,14 +32,14 @@ Each of the following files are needed in your project directory:
   debugging of a specific project. The `projects/starter/project.mk` is the
   template `project.mk` file that includes documentation within it as comments.
   You can read and learn more about how to use this by going here
-  [`projects/starter/project.mk`](https://github.com/kammce/SJSU-Dev2/blob/master/projects/starter/project.mk).
+  [`projects/starter/project.mk`](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/projects/starter/project.mk).
 * **test/** directory holds test files for the project. Each test `.cpp` file
   needs to have a corresponding `USER_TEST` entry in the `project.mk` file.
 * **project_config.hpp** file is used to configure aspects of the applications
   code such as processor speed, log level, and more. See
-  [`config.hpp`](https://github.com/kammce/SJSU-Dev2/blob/master/library/config.hpp)
+  [`config.hpp`](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/library/config.hpp)
   for the complete list of configuration options. See `hello_world/`'s
-  [`project_config.hpp`](https://github.com/kammce/SJSU-Dev2/blob/master/projects/hello_world/project_config.hpp)
+  [`project_config.hpp`](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/projects/hello_world/project_config.hpp)
   for an example of how to use this.
 
 ## Build Folder
