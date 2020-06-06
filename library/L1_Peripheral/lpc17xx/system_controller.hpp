@@ -26,33 +26,33 @@ class SystemController final : public sjsu::SystemController
   {
    public:
     //! @cond Doxygen_Suppress
-    static constexpr auto kTimer0            = PeripheralID::Define<1>();
-    static constexpr auto kTimer1            = PeripheralID::Define<2>();
-    static constexpr auto kUart0             = PeripheralID::Define<3>();
-    static constexpr auto kUart1             = PeripheralID::Define<4>();
-    static constexpr auto kPwm1              = PeripheralID::Define<6>();
-    static constexpr auto kI2c0              = PeripheralID::Define<7>();
-    static constexpr auto kSpi               = PeripheralID::Define<8>();
-    static constexpr auto kRtc               = PeripheralID::Define<9>();
-    static constexpr auto kSsp1              = PeripheralID::Define<10>();
-    static constexpr auto kAdc               = PeripheralID::Define<12>();
-    static constexpr auto kCan1              = PeripheralID::Define<13>();
-    static constexpr auto kCan2              = PeripheralID::Define<14>();
-    static constexpr auto kGpio              = PeripheralID::Define<15>();
-    static constexpr auto kRit               = PeripheralID::Define<16>();
-    static constexpr auto kMotorControlPwm   = PeripheralID::Define<17>();
-    static constexpr auto kQuadratureEncoder = PeripheralID::Define<18>();
-    static constexpr auto kI2c1              = PeripheralID::Define<19>();
-    static constexpr auto kSsp0              = PeripheralID::Define<21>();
-    static constexpr auto kTimer2            = PeripheralID::Define<22>();
-    static constexpr auto kTimer3            = PeripheralID::Define<23>();
-    static constexpr auto kUart2             = PeripheralID::Define<24>();
-    static constexpr auto kUart3             = PeripheralID::Define<25>();
-    static constexpr auto kI2c2              = PeripheralID::Define<26>();
-    static constexpr auto kI2s               = PeripheralID::Define<27>();
-    static constexpr auto kGpdma             = PeripheralID::Define<29>();
-    static constexpr auto kEthernet          = PeripheralID::Define<30>();
-    static constexpr auto kUsb               = PeripheralID::Define<31>();
+    static constexpr auto kTimer0            = ResourceID::Define<1>();
+    static constexpr auto kTimer1            = ResourceID::Define<2>();
+    static constexpr auto kUart0             = ResourceID::Define<3>();
+    static constexpr auto kUart1             = ResourceID::Define<4>();
+    static constexpr auto kPwm1              = ResourceID::Define<6>();
+    static constexpr auto kI2c0              = ResourceID::Define<7>();
+    static constexpr auto kSpi               = ResourceID::Define<8>();
+    static constexpr auto kRtc               = ResourceID::Define<9>();
+    static constexpr auto kSsp1              = ResourceID::Define<10>();
+    static constexpr auto kAdc               = ResourceID::Define<12>();
+    static constexpr auto kCan1              = ResourceID::Define<13>();
+    static constexpr auto kCan2              = ResourceID::Define<14>();
+    static constexpr auto kGpio              = ResourceID::Define<15>();
+    static constexpr auto kRit               = ResourceID::Define<16>();
+    static constexpr auto kMotorControlPwm   = ResourceID::Define<17>();
+    static constexpr auto kQuadratureEncoder = ResourceID::Define<18>();
+    static constexpr auto kI2c1              = ResourceID::Define<19>();
+    static constexpr auto kSsp0              = ResourceID::Define<21>();
+    static constexpr auto kTimer2            = ResourceID::Define<22>();
+    static constexpr auto kTimer3            = ResourceID::Define<23>();
+    static constexpr auto kUart2             = ResourceID::Define<24>();
+    static constexpr auto kUart3             = ResourceID::Define<25>();
+    static constexpr auto kI2c2              = ResourceID::Define<26>();
+    static constexpr auto kI2s               = ResourceID::Define<27>();
+    static constexpr auto kGpdma             = ResourceID::Define<29>();
+    static constexpr auto kEthernet          = ResourceID::Define<30>();
+    static constexpr auto kUsb               = ResourceID::Define<31>();
     //! @endcond
   };
 
@@ -64,37 +64,37 @@ class SystemController final : public sjsu::SystemController
   {
    public:
     //! @cond Doxygen_Suppress
-    static constexpr auto kWdt                = PeripheralID::Define<0>();
-    static constexpr auto kTimer0             = PeripheralID::Define<1>();
-    static constexpr auto kTimer1             = PeripheralID::Define<2>();
-    static constexpr auto kUart0              = PeripheralID::Define<3>();
-    static constexpr auto kUart1              = PeripheralID::Define<4>();
-    static constexpr auto kPwm1               = PeripheralID::Define<6>();
-    static constexpr auto kI2c0               = PeripheralID::Define<7>();
-    static constexpr auto kSpi                = PeripheralID::Define<8>();
-    static constexpr auto kSsp1               = PeripheralID::Define<10>();
-    static constexpr auto kDac                = PeripheralID::Define<11>();
-    static constexpr auto kAdc                = PeripheralID::Define<12>();
-    static constexpr auto kCan1               = PeripheralID::Define<13>();
-    static constexpr auto kCan2               = PeripheralID::Define<14>();
-    static constexpr auto kAcf                = PeripheralID::Define<15>();
-    static constexpr auto kQuadratureEncoder  = PeripheralID::Define<16>();
-    static constexpr auto kGpioInt            = PeripheralID::Define<17>();
-    static constexpr auto kPowerControlBlock  = PeripheralID::Define<18>();
-    static constexpr auto kI2c1               = PeripheralID::Define<19>();
-    static constexpr auto kSsp0               = PeripheralID::Define<21>();
-    static constexpr auto kTimer2             = PeripheralID::Define<22>();
-    static constexpr auto kTimer3             = PeripheralID::Define<23>();
-    static constexpr auto kUart2              = PeripheralID::Define<24>();
-    static constexpr auto kUart3              = PeripheralID::Define<25>();
-    static constexpr auto kI2c2               = PeripheralID::Define<26>();
-    static constexpr auto kI2s                = PeripheralID::Define<27>();
-    static constexpr auto kRit                = PeripheralID::Define<29>();
-    static constexpr auto kSystemControlBlock = PeripheralID::Define<30>();
-    static constexpr auto kMotorControlPwm    = PeripheralID::Define<31>();
+    static constexpr auto kWdt                = ResourceID::Define<0>();
+    static constexpr auto kTimer0             = ResourceID::Define<1>();
+    static constexpr auto kTimer1             = ResourceID::Define<2>();
+    static constexpr auto kUart0              = ResourceID::Define<3>();
+    static constexpr auto kUart1              = ResourceID::Define<4>();
+    static constexpr auto kPwm1               = ResourceID::Define<6>();
+    static constexpr auto kI2c0               = ResourceID::Define<7>();
+    static constexpr auto kSpi                = ResourceID::Define<8>();
+    static constexpr auto kSsp1               = ResourceID::Define<10>();
+    static constexpr auto kDac                = ResourceID::Define<11>();
+    static constexpr auto kAdc                = ResourceID::Define<12>();
+    static constexpr auto kCan1               = ResourceID::Define<13>();
+    static constexpr auto kCan2               = ResourceID::Define<14>();
+    static constexpr auto kAcf                = ResourceID::Define<15>();
+    static constexpr auto kQuadratureEncoder  = ResourceID::Define<16>();
+    static constexpr auto kGpioInt            = ResourceID::Define<17>();
+    static constexpr auto kPowerControlBlock  = ResourceID::Define<18>();
+    static constexpr auto kI2c1               = ResourceID::Define<19>();
+    static constexpr auto kSsp0               = ResourceID::Define<21>();
+    static constexpr auto kTimer2             = ResourceID::Define<22>();
+    static constexpr auto kTimer3             = ResourceID::Define<23>();
+    static constexpr auto kUart2              = ResourceID::Define<24>();
+    static constexpr auto kUart3              = ResourceID::Define<25>();
+    static constexpr auto kI2c2               = ResourceID::Define<26>();
+    static constexpr auto kI2s                = ResourceID::Define<27>();
+    static constexpr auto kRit                = ResourceID::Define<29>();
+    static constexpr auto kSystemControlBlock = ResourceID::Define<30>();
+    static constexpr auto kMotorControlPwm    = ResourceID::Define<31>();
     // Definitions not associated with a specific peripheral.
-    static constexpr auto kCpu = PeripheralID::Define<32>();
-    static constexpr auto kUsb = PeripheralID::Define<33>();
+    static constexpr auto kCpu = ResourceID::Define<32>();
+    static constexpr auto kUsb = ResourceID::Define<33>();
     //! @endcond
   };
 
@@ -151,11 +151,24 @@ class SystemController final : public sjsu::SystemController
     kDivideBy10 = 0b1001,
   };
 
+  // ===========================================================================
+  // Register and Bit Mask Definitions
+  // ===========================================================================
+
   /// Namespace for the Clock Source Select register (CLKSRCSEL) bit masks. The
   /// CLKSRCSEL register is used to select the oscillator used to drive the
   /// system clock and PLL0.
   struct ClockSourceSelectRegister  // NOLINT
   {
+    /// @see 4.4.1 Clock Source Select register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=36
+    ///
+    /// @returns The CLKSRCSEL bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->CLKSRCSEL);
+    }
+
     /// Clock source select bit mask.
     static constexpr auto kSelectMask = bit::MaskFromRange(0, 1);
   };
@@ -164,6 +177,15 @@ class SystemController final : public sjsu::SystemController
   /// register (SCS) used to configure the main oscillator.
   struct SystemControlsRegister  // NOLINT
   {
+    /// @see 3.7.1 System Controls and Status register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=30
+    ///
+    /// @returns The SCS bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->SCS);
+    }
+
     /// Main oscillator frequency range select bit mask.
     static constexpr auto kOscillatorRangeMask = bit::MaskFromRange(4);
     /// Main oscillator enable bit mask.
@@ -179,6 +201,15 @@ class SystemController final : public sjsu::SystemController
     /// (PLL0CFG).
     struct ConfigurationRegister  // NOLINT
     {
+      /// @see 4.5.4 PLL0 Configuration register
+      ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=39
+      ///
+      /// @returns The PLL0CFG bit register.
+      static bit::Register<uint32_t> Register()
+      {
+        return bit::Register(&system_controller->PLL0CFG);
+      }
+
       /// PLL0 multiplier bit mask.
       static constexpr auto kMultiplierMask = bit::MaskFromRange(0, 14);
       /// PLL0 pre-divider bit mask.
@@ -189,6 +220,15 @@ class SystemController final : public sjsu::SystemController
     /// (PLL0STAT).
     struct StatusRegister  // NOLINT
     {
+      /// @see 4.5.5 PLL0 Status register
+      ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=40
+      ///
+      /// @returns The PLL0STAT bit register.
+      static bit::Register<uint32_t> Register()
+      {
+        return bit::Register(&system_controller->PLL0STAT);
+      }
+
       /// PLL0 multiplier bit mask.
       static constexpr auto kMultiplierMask = bit::MaskFromRange(0, 14);
       /// PLL0 pre-divider bit mask.
@@ -206,6 +246,12 @@ class SystemController final : public sjsu::SystemController
   struct Pll1  // NOLINT
   {
     /// The available PLL1 multipliers.
+    ///
+    /// @note Since only the divider value of 2 is available for PLL1, the
+    ///       multiplier value should be selected based on the main oscillator.
+    ///
+    /// @see Table 37. PLL1 Multiplier values
+    ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=55
     enum class Multiplier : uint8_t
     {
       /// The multiplier to use when the main oscillator is 12 MHz.
@@ -220,6 +266,15 @@ class SystemController final : public sjsu::SystemController
     /// (PLL1CFG).
     struct ConfigurationRegister  // NOLINT
     {
+      /// @see 4.6.3 PLL1 Configuration register
+      ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=51
+      ///
+      /// @returns The PLL1CFG bit register.
+      static bit::Register<uint32_t> Register()
+      {
+        return bit::Register(&system_controller->PLL1CFG);
+      }
+
       /// PLL1 multiplier bit mask
       static constexpr auto kMultiplierMask = bit::MaskFromRange(0, 4);
       /// PLL1 pre-divider bit mask
@@ -230,6 +285,15 @@ class SystemController final : public sjsu::SystemController
     /// (PLL1STAT).
     struct StatusRegister  // NOLINT
     {
+      /// @see 4.6.4 PLL1 Status register
+      ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=51
+      ///
+      /// @returns The PLL1STAT bit register.
+      static bit::Register<uint32_t> Register()
+      {
+        return bit::Register(&system_controller->PLL1STAT);
+      }
+
       /// PLL1 multiplier bit mask
       static constexpr auto kMultiplierMask = bit::MaskFromRange(0, 4);
       /// PLL1 pre-divider bit mask
@@ -247,6 +311,19 @@ class SystemController final : public sjsu::SystemController
   /// (PLL0CON and PLL1CON).
   struct PllControlRegister  // NOLINT
   {
+    /// @see 4.5.3 PLL0 Control register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=38
+    /// @see 4.6.2 PLL1 Control register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=50
+    ///
+    /// @returns The PLL0CON bit register at index 0 and PLL1CON bit register at
+    ///          index 1.
+    static std::array<bit::Register<uint32_t>, 2> Register()
+    {
+      return { bit::Register(&system_controller->PLL0CON),
+               bit::Register(&system_controller->PLL1CON) };
+    }
+
     /// PLL enable bit mask.
     static constexpr auto kEnableMask = bit::MaskFromRange(0);
     /// PLL connect/disconnect bit mask.
@@ -257,6 +334,15 @@ class SystemController final : public sjsu::SystemController
   /// register (CCLKCFG).
   struct CpuClockRegister  // NOLINT
   {
+    /// @see 4.7.1 CPU Clock Configuration register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=56
+    ///
+    /// @returns The CCLKCFG bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->CCLKCFG);
+    }
+
     /// The 8-bit CPU clock divider bitmask.
     static constexpr auto kDividerMask = bit::MaskFromRange(0, 7);
   };
@@ -265,9 +351,22 @@ class SystemController final : public sjsu::SystemController
   /// register (USBCLKCFG).
   struct UsbClockRegister  // NOLINT
   {
+    /// @see 4.7.2 USB Clock Configuration register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=57
+    ///
+    /// @returns The USBCLKCFG bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->USBCLKCFG);
+    }
+
     /// The 4-bit USB clock divider bitmask.
     static constexpr auto kDividerMask = bit::MaskFromRange(0, 3);
   };
+
+  // ===========================================================================
+  // Clock Configuration
+  // ===========================================================================
 
   /// @see 4.1 Summary of clocking and power control functions
   ///      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=31
@@ -363,6 +462,13 @@ class SystemController final : public sjsu::SystemController
   {
   }
 
+  /// @attention If configuration of the system clocks is desired, one should
+  ///            consult the user manual of the target MCU in use to determine
+  ///            the valid clock configuration values that can/should be used.
+  ///            The Initialize() method is only responsible for configuring the
+  ///            clock system based on configurations in the ClockConfiguration.
+  ///            Incorrect configurations may result in a hard fault or cause
+  ///            the clock system(s) to supply incorrect clock rate(s).
   void Initialize() override
   {
     units::frequency::hertz_t osc_clk =
@@ -382,8 +488,9 @@ class SystemController final : public sjsu::SystemController
     DisableAndDisconnectPll(&system_controller->PLL1CON,
                             &system_controller->PLL1FEED);
     // Disable the main oscillator.
-    system_controller->SCS = bit::Clear(
-        system_controller->SCS, SystemControlsRegister::kOscillatorEnableMask);
+    SystemControlsRegister::Register()
+        .Clear(SystemControlsRegister::kOscillatorEnableMask)
+        .Save();
     SetSystemClockSource(Oscillator::kIrc);
 
     // =========================================================================
@@ -461,24 +568,13 @@ class SystemController final : public sjsu::SystemController
     {
       case UsbClockSource::kPll0:
       {
-        SJ2_ASSERT_FATAL(
-            clock_configuration_.cpu.clock_source == CpuClockSource::kPll0,
-            "The CPU clock source must be PLL0 in order to use PLL0 as a clock "
-            "source for the USB clock.");
-
         uint8_t usb_clock_divider_select =
             Value(clock_configuration_.usb.divider);
         uint32_t usb_clock_divider = usb_clock_divider_select + 1;
         usb_clk                    = pll_clk / usb_clock_divider;
-
-        SJ2_ASSERT_FATAL(usb_clk == kUsbClockFrequency,
-                         "Attempting to use PLL0 to drive the USB clock, but "
-                         "the PLL0 configuration and USB clock divider are not "
-                         "configured to produce a frequency of 48 MHz.");
-
-        system_controller->USBCLKCFG =
-            bit::Insert(system_controller->USBCLKCFG, usb_clock_divider_select,
-                        UsbClockRegister::kDividerMask);
+        UsbClockRegister::Register()
+            .Insert(usb_clock_divider_select, UsbClockRegister::kDividerMask)
+            .Save();
         break;
       }
       case UsbClockSource::kPll1:
@@ -513,24 +609,27 @@ class SystemController final : public sjsu::SystemController
     return &clock_configuration_;
   }
 
-  bool IsPeripheralPoweredUp(PeripheralID peripheral_select) const override
+  bool IsPeripheralPoweredUp(ResourceID peripheral_select) const override
   {
-    return bit::Read(system_controller->PCONP, peripheral_select.device_id);
+    return bit::Register(&system_controller->PCONP)
+        .Read(bit::MaskFromRange(peripheral_select.device_id));
   }
 
-  void PowerUpPeripheral(PeripheralID peripheral_select) const override
+  void PowerUpPeripheral(ResourceID peripheral_select) const override
   {
-    system_controller->PCONP =
-        bit::Set(system_controller->PCONP, peripheral_select.device_id);
+    bit::Register(&system_controller->PCONP)
+        .Set(bit::MaskFromRange(peripheral_select.device_id))
+        .Save();
   }
 
-  void PowerDownPeripheral(PeripheralID peripheral_select) const override
+  void PowerDownPeripheral(ResourceID peripheral_select) const override
   {
-    system_controller->PCONP =
-        bit::Clear(system_controller->PCONP, peripheral_select.device_id);
+    bit::Register(&system_controller->PCONP)
+        .Clear(bit::MaskFromRange(peripheral_select.device_id))
+        .Save();
   }
 
-  units::frequency::hertz_t GetClockRate(PeripheralID peripheral) const override
+  units::frequency::hertz_t GetClockRate(ResourceID peripheral) const override
   {
     switch (peripheral.device_id)
     {
@@ -555,9 +654,23 @@ class SystemController final : public sjsu::SystemController
   /// @param source The oscillator used to drive the system clock.
   void SetSystemClockSource(Oscillator source) const
   {
-    system_controller->CLKSRCSEL =
-        bit::Insert(system_controller->CLKSRCSEL, Value(source),
-                    ClockSourceSelectRegister::kSelectMask);
+    ClockSourceSelectRegister::Register()
+        .Insert(Value(source), ClockSourceSelectRegister::kSelectMask)
+        .Save();
+  }
+
+  /// Sets divider used for the CPU clock (CCLK).
+  ///
+  /// @note If PLL0 is connected, a divider value of 1 is not allowed since the
+  ///       produced clock rate must not exceed the maximum allowed CPU clock.
+  ///
+  /// @param cpu_divider 8-bit divider ranging from 1 to 255.
+  void SetCpuClockDivider(uint8_t cpu_divider) const
+  {
+    SJ2_ASSERT_FATAL(cpu_divider != 0, "The CPU clock cannot be divided by 0.");
+    CpuClockRegister::Register()
+        .Insert((cpu_divider - 1), CpuClockRegister::kDividerMask)
+        .Save();
   }
 
   /// Configures the System Controls register (SCS) to enable the use of the
@@ -566,39 +679,37 @@ class SystemController final : public sjsu::SystemController
   /// @see https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=30
   void EnableMainOscillator() const
   {
-    uint32_t system_controls = system_controller->SCS;
-    auto frequency           = clock_configuration_.main_oscillator.frequency;
-
-    constexpr units::frequency::hertz_t kMinFrequency = 1_MHz;
-    constexpr units::frequency::hertz_t kMaxFrequency = 25_MHz;
-    SJ2_ASSERT_FATAL(
-        (kMinFrequency <= frequency) && (frequency <= kMaxFrequency),
-        "The frequency of the main oscillator must be between 1 "
-        "MHz and 25 MHz.");
+    auto scs_register = SystemControlsRegister::Register();
+    auto frequency    = clock_configuration_.main_oscillator.frequency;
 
     if (1_MHz <= frequency && frequency <= 15_MHz)
     {
-      system_controls = bit::Clear(
-          system_controls, SystemControlsRegister::kOscillatorRangeMask);
+      scs_register.Clear(SystemControlsRegister::kOscillatorRangeMask);
     }
     else if (15_MHz <= frequency && frequency <= 25_MHz)
     {
-      system_controls = bit::Set(system_controls,
-                                 SystemControlsRegister::kOscillatorRangeMask);
+      scs_register.Set(SystemControlsRegister::kOscillatorRangeMask);
     }
-    system_controls = bit::Set(system_controls,
-                               SystemControlsRegister::kOscillatorEnableMask);
+    else
+    {
+      SJ2_ASSERT_FATAL(false,
+                       "The frequency of the main oscillator must be between 1 "
+                       "MHz and 25 MHz.");
+    }
 
-    system_controller->SCS = system_controls;
+    scs_register.Set(SystemControlsRegister::kOscillatorEnableMask).Save();
 
     // Wait for the main oscillator to become stable before proceeding with any
     // other operations.
-    while (!bit::Read(system_controller->SCS,
-                      SystemControlsRegister::kOscillatorStatusMask))
+    while (!scs_register.Read(SystemControlsRegister::kOscillatorStatusMask))
     {
       continue;
     }
   }
+
+  // ===========================================================================
+  // PLL Configuration Functions
+  // ===========================================================================
 
   /// Disconnect and then disable the specified PLL.
   ///
@@ -610,14 +721,14 @@ class SystemController final : public sjsu::SystemController
     // NOTE: It is very important not to merge any steps.
 
     // =========================================================================
-    // Step 1. Disconnect PLL0 with one feed sequence.
+    // Step 1. Disconnect PLL with one feed sequence.
     // =========================================================================
     *pll_control_register =
         bit::Clear(*pll_control_register, PllControlRegister::kConnectMask);
     WritePllFeedSequence(pll_feed_register);
 
     // =========================================================================
-    // Step 2. Disable PLL0 with one feed sequence.
+    // Step 2. Disable PLL with one feed sequence.
     // =========================================================================
     *pll_control_register =
         bit::Clear(*pll_control_register, PllControlRegister::kEnableMask);
@@ -710,19 +821,18 @@ class SystemController final : public sjsu::SystemController
     // =========================================================================
     uint16_t multiplier = clock_configuration_.pll0.multiplier;
     uint8_t pre_divider = clock_configuration_.pll0.pre_divider;
-    system_controller->PLL0CFG =
-        bit::Insert(system_controller->PLL0CFG, (multiplier - 1),
-                    Pll0::ConfigurationRegister::kMultiplierMask);
-    system_controller->PLL0CFG =
-        bit::Insert(system_controller->PLL0CFG, (pre_divider - 1),
-                    Pll0::ConfigurationRegister::kPreDividerMask);
+    Pll0::ConfigurationRegister::Register()
+        .Insert((multiplier - 1), Pll0::ConfigurationRegister::kMultiplierMask)
+        .Insert((pre_divider - 1), Pll0::ConfigurationRegister::kPreDividerMask)
+        .Save();
     WritePllFeedSequence(pll_feed_register);
 
     // =========================================================================
     // Step 6. Enable PLL0 with one feed sequence.
     // =========================================================================
-    system_controller->PLL0CON =
-        bit::Set(system_controller->PLL0CON, PllControlRegister::kEnableMask);
+    PllControlRegister::Register()[0]
+        .Set(PllControlRegister::kEnableMask)
+        .Save();
     WritePllFeedSequence(pll_feed_register);
 
     // =========================================================================
@@ -742,8 +852,9 @@ class SystemController final : public sjsu::SystemController
     // =========================================================================
     // Step 9. Connect PLL0 with one feed sequence.
     // =========================================================================
-    system_controller->PLL0CON =
-        bit::Set(system_controller->PLL0CON, PllControlRegister::kConnectMask);
+    PllControlRegister::Register()[0]
+        .Set(PllControlRegister::kConnectMask)
+        .Save();
     WritePllFeedSequence(pll_feed_register);
 
     WaitForPllConnectionStatus(pll_status_register,
@@ -776,20 +887,22 @@ class SystemController final : public sjsu::SystemController
     //         sequence.
     // =========================================================================
     uint8_t multiplier = Value(clock_configuration_.pll1.multiplier);
+    // NOTE: only the divider value of 2 is available.
+    // SEE: Table 36. PLL1 Divider values
+    //      https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=55
     constexpr uint8_t kDividerSelect = 0b01;
-    system_controller->PLL1CFG =
-        bit::Insert(system_controller->PLL1CFG, multiplier,
-                    Pll1::ConfigurationRegister::kMultiplierMask);
-    system_controller->PLL1CFG =
-        bit::Insert(system_controller->PLL1CFG, kDividerSelect,
-                    Pll1::ConfigurationRegister::kDividerMask);
+    Pll1::ConfigurationRegister::Register()
+        .Insert(multiplier, Pll1::ConfigurationRegister::kMultiplierMask)
+        .Insert(kDividerSelect, Pll1::ConfigurationRegister::kDividerMask)
+        .Save();
     WritePllFeedSequence(pll_feed_register);
 
     // =========================================================================
     // Step 4. Enable PLL1 with one feed sequence.
     // =========================================================================
-    system_controller->PLL1CON =
-        bit::Set(system_controller->PLL1CON, PllControlRegister::kEnableMask);
+    PllControlRegister::Register()[1]
+        .Set(PllControlRegister::kEnableMask)
+        .Save();
     WritePllFeedSequence(pll_feed_register);
 
     // =========================================================================
@@ -802,27 +915,14 @@ class SystemController final : public sjsu::SystemController
     // =========================================================================
     // Step 6. Connect PLL1 with one feed sequence.
     // =========================================================================
-    system_controller->PLL1CON =
-        bit::Set(system_controller->PLL1CON, PllControlRegister::kConnectMask);
+    PllControlRegister::Register()[1]
+        .Set(PllControlRegister::kConnectMask)
+        .Save();
     WritePllFeedSequence(pll_feed_register);
 
     WaitForPllConnectionStatus(pll_status_register,
                                Pll1::StatusRegister::kEnableMask,
                                Pll1::StatusRegister::kConnectMask);
-  }
-
-  /// Sets divider used for the CPU clock (CCLK).
-  ///
-  /// @note If PLL0 is connected, a divider value of 1 is not allowed since the
-  ///       produced clock rate must not exceed the maximum allowed CPU clock.
-  ///
-  /// @param cpu_divider 8-bit divider ranging from 1 to 255.
-  void SetCpuClockDivider(uint8_t cpu_divider) const
-  {
-    SJ2_ASSERT_FATAL(cpu_divider != 0, "The CPU clock cannot be divided by 0.");
-    system_controller->CCLKCFG =
-        bit::Insert(system_controller->CCLKCFG, (cpu_divider - 1),
-                    CpuClockRegister::kDividerMask);
   }
 
   /// Clock system configurations.
