@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/SJSU-Dev2/SJSU-Dev2.svg?branch=master)](https://travis-ci.com/SJSU-Dev2/SJSU-Dev2)
 [![Documentation Status](https://readthedocs.org/projects/sjsu-dev/badge/?version=latest)](http://sjsu-dev2.readthedocs.io/en/latest)
-[![Coverage Status](https://coveralls.io/repos/github/SJSU-Dev2/SJSU-Dev2/badge.svg)](https://coveralls.io/github/SJSU-Dev2/SJSU-Dev2)
+[![Coverage Status](https://coveralls.io/repos/github/SJSU-Dev2/SJSU-Dev2/badge.svg?branch=master)](https://coveralls.io/github/SJSU-Dev2/SJSU-Dev2?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f004895337c42459f881db938e84885)](https://www.codacy.com/app/SJSU-Dev2/SJSU-Dev2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SJSU-Dev2/SJSU-Dev2&amp;utm_campaign=Badge_Grade)
 [![GitHub stars](https://img.shields.io/github/stars/SJSU-Dev2/SJSU-Dev2.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/SJSU-Dev2/SJSU-Dev2.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/network)
