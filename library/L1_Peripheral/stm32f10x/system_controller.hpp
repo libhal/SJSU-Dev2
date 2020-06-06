@@ -14,6 +14,9 @@ namespace stm32f10x
 {
 /// System controller for stm32f10x that controls clock sources, clock speed,
 /// clock outputs control, and peripheral enabling
+///
+/// @see 8 Connectivity line devices: reset and clock control (RCC)
+///      https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=123
 class SystemController : public sjsu::SystemController
 {
  public:
@@ -29,75 +32,75 @@ class SystemController : public sjsu::SystemController
     static constexpr uint32_t kAHB = kBits * 0;
 
     //! @cond Doxygen_Suppress
-    static constexpr auto kDma1  = PeripheralID::Define<kAHB + 0>();
-    static constexpr auto kDma2  = PeripheralID::Define<kAHB + 1>();
-    static constexpr auto kSram  = PeripheralID::Define<kAHB + 2>();
-    static constexpr auto kFlitf = PeripheralID::Define<kAHB + 4>();
-    static constexpr auto kCrc   = PeripheralID::Define<kAHB + 6>();
-    static constexpr auto kFsmc  = PeripheralID::Define<kAHB + 8>();
-    static constexpr auto kSdio  = PeripheralID::Define<kAHB + 10>();
+    static constexpr auto kDma1  = ResourceID::Define<kAHB + 0>();
+    static constexpr auto kDma2  = ResourceID::Define<kAHB + 1>();
+    static constexpr auto kSram  = ResourceID::Define<kAHB + 2>();
+    static constexpr auto kFlitf = ResourceID::Define<kAHB + 4>();
+    static constexpr auto kCrc   = ResourceID::Define<kAHB + 6>();
+    static constexpr auto kFsmc  = ResourceID::Define<kAHB + 8>();
+    static constexpr auto kSdio  = ResourceID::Define<kAHB + 10>();
     //! @endcond
 
     /// Bit position of APB1
     static constexpr uint32_t kAPB1 = kBits * 1;
 
     //! @cond Doxygen_Suppress
-    static constexpr auto kTimer2         = PeripheralID::Define<kAPB1 + 0>();
-    static constexpr auto kTimer3         = PeripheralID::Define<kAPB1 + 1>();
-    static constexpr auto kTimer4         = PeripheralID::Define<kAPB1 + 2>();
-    static constexpr auto kTimer5         = PeripheralID::Define<kAPB1 + 3>();
-    static constexpr auto kTimer6         = PeripheralID::Define<kAPB1 + 4>();
-    static constexpr auto kTimer7         = PeripheralID::Define<kAPB1 + 5>();
-    static constexpr auto kTimer12        = PeripheralID::Define<kAPB1 + 6>();
-    static constexpr auto kTimer13        = PeripheralID::Define<kAPB1 + 7>();
-    static constexpr auto kTimer14        = PeripheralID::Define<kAPB1 + 8>();
-    static constexpr auto kWindowWatchdog = PeripheralID::Define<kAPB1 + 11>();
-    static constexpr auto kSpi2           = PeripheralID::Define<kAPB1 + 14>();
-    static constexpr auto kSpi3           = PeripheralID::Define<kAPB1 + 15>();
-    static constexpr auto kUsart2         = PeripheralID::Define<kAPB1 + 17>();
-    static constexpr auto kUsart3         = PeripheralID::Define<kAPB1 + 18>();
-    static constexpr auto kUart4          = PeripheralID::Define<kAPB1 + 19>();
-    static constexpr auto kUart5          = PeripheralID::Define<kAPB1 + 20>();
-    static constexpr auto kI2c1           = PeripheralID::Define<kAPB1 + 21>();
-    static constexpr auto kI2c2           = PeripheralID::Define<kAPB1 + 22>();
-    static constexpr auto kUsb            = PeripheralID::Define<kAPB1 + 23>();
-    static constexpr auto kCan1           = PeripheralID::Define<kAPB1 + 25>();
-    static constexpr auto kBackupClock    = PeripheralID::Define<kAPB1 + 27>();
-    static constexpr auto kPower          = PeripheralID::Define<kAPB1 + 28>();
-    static constexpr auto kDac            = PeripheralID::Define<kAPB1 + 29>();
+    static constexpr auto kTimer2         = ResourceID::Define<kAPB1 + 0>();
+    static constexpr auto kTimer3         = ResourceID::Define<kAPB1 + 1>();
+    static constexpr auto kTimer4         = ResourceID::Define<kAPB1 + 2>();
+    static constexpr auto kTimer5         = ResourceID::Define<kAPB1 + 3>();
+    static constexpr auto kTimer6         = ResourceID::Define<kAPB1 + 4>();
+    static constexpr auto kTimer7         = ResourceID::Define<kAPB1 + 5>();
+    static constexpr auto kTimer12        = ResourceID::Define<kAPB1 + 6>();
+    static constexpr auto kTimer13        = ResourceID::Define<kAPB1 + 7>();
+    static constexpr auto kTimer14        = ResourceID::Define<kAPB1 + 8>();
+    static constexpr auto kWindowWatchdog = ResourceID::Define<kAPB1 + 11>();
+    static constexpr auto kSpi2           = ResourceID::Define<kAPB1 + 14>();
+    static constexpr auto kSpi3           = ResourceID::Define<kAPB1 + 15>();
+    static constexpr auto kUsart2         = ResourceID::Define<kAPB1 + 17>();
+    static constexpr auto kUsart3         = ResourceID::Define<kAPB1 + 18>();
+    static constexpr auto kUart4          = ResourceID::Define<kAPB1 + 19>();
+    static constexpr auto kUart5          = ResourceID::Define<kAPB1 + 20>();
+    static constexpr auto kI2c1           = ResourceID::Define<kAPB1 + 21>();
+    static constexpr auto kI2c2           = ResourceID::Define<kAPB1 + 22>();
+    static constexpr auto kUsb            = ResourceID::Define<kAPB1 + 23>();
+    static constexpr auto kCan1           = ResourceID::Define<kAPB1 + 25>();
+    static constexpr auto kBackupClock    = ResourceID::Define<kAPB1 + 27>();
+    static constexpr auto kPower          = ResourceID::Define<kAPB1 + 28>();
+    static constexpr auto kDac            = ResourceID::Define<kAPB1 + 29>();
     //! @endcond
 
     /// Bit position of AHB2
     static constexpr uint32_t kAPB2 = kBits * 2;
 
     //! @cond Doxygen_Suppress
-    static constexpr auto kAFIO    = PeripheralID::Define<kAPB2 + 0>();
-    static constexpr auto kGpioA   = PeripheralID::Define<kAPB2 + 2>();
-    static constexpr auto kGpioB   = PeripheralID::Define<kAPB2 + 3>();
-    static constexpr auto kGpioC   = PeripheralID::Define<kAPB2 + 4>();
-    static constexpr auto kGpioD   = PeripheralID::Define<kAPB2 + 5>();
-    static constexpr auto kGpioE   = PeripheralID::Define<kAPB2 + 6>();
-    static constexpr auto kGpioF   = PeripheralID::Define<kAPB2 + 7>();
-    static constexpr auto kGpioG   = PeripheralID::Define<kAPB2 + 8>();
-    static constexpr auto kAdc1    = PeripheralID::Define<kAPB2 + 9>();
-    static constexpr auto kAdc2    = PeripheralID::Define<kAPB2 + 10>();
-    static constexpr auto kTimer1  = PeripheralID::Define<kAPB2 + 11>();
-    static constexpr auto kSpi1    = PeripheralID::Define<kAPB2 + 12>();
-    static constexpr auto kTimer8  = PeripheralID::Define<kAPB2 + 13>();
-    static constexpr auto kUsart1  = PeripheralID::Define<kAPB2 + 14>();
-    static constexpr auto kAdc3    = PeripheralID::Define<kAPB2 + 15>();
-    static constexpr auto kTimer9  = PeripheralID::Define<kAPB2 + 19>();
-    static constexpr auto kTimer10 = PeripheralID::Define<kAPB2 + 20>();
-    static constexpr auto kTimer11 = PeripheralID::Define<kAPB2 + 21>();
+    static constexpr auto kAFIO    = ResourceID::Define<kAPB2 + 0>();
+    static constexpr auto kGpioA   = ResourceID::Define<kAPB2 + 2>();
+    static constexpr auto kGpioB   = ResourceID::Define<kAPB2 + 3>();
+    static constexpr auto kGpioC   = ResourceID::Define<kAPB2 + 4>();
+    static constexpr auto kGpioD   = ResourceID::Define<kAPB2 + 5>();
+    static constexpr auto kGpioE   = ResourceID::Define<kAPB2 + 6>();
+    static constexpr auto kGpioF   = ResourceID::Define<kAPB2 + 7>();
+    static constexpr auto kGpioG   = ResourceID::Define<kAPB2 + 8>();
+    static constexpr auto kAdc1    = ResourceID::Define<kAPB2 + 9>();
+    static constexpr auto kAdc2    = ResourceID::Define<kAPB2 + 10>();
+    static constexpr auto kTimer1  = ResourceID::Define<kAPB2 + 11>();
+    static constexpr auto kSpi1    = ResourceID::Define<kAPB2 + 12>();
+    static constexpr auto kTimer8  = ResourceID::Define<kAPB2 + 13>();
+    static constexpr auto kUsart1  = ResourceID::Define<kAPB2 + 14>();
+    static constexpr auto kAdc3    = ResourceID::Define<kAPB2 + 15>();
+    static constexpr auto kTimer9  = ResourceID::Define<kAPB2 + 19>();
+    static constexpr auto kTimer10 = ResourceID::Define<kAPB2 + 20>();
+    static constexpr auto kTimer11 = ResourceID::Define<kAPB2 + 21>();
     //! @endcond
 
     /// Bit position of systems outside of any bus
     static constexpr uint32_t kBeyond = kBits * 3;
 
     //! @cond Doxygen_Suppress
-    static constexpr auto kCpu         = PeripheralID::Define<kBeyond + 0>();
-    static constexpr auto kSystemTimer = PeripheralID::Define<kBeyond + 1>();
-    static constexpr auto kI2s         = PeripheralID::Define<kBeyond + 2>();
+    static constexpr auto kCpu         = ResourceID::Define<kBeyond + 0>();
+    static constexpr auto kSystemTimer = ResourceID::Define<kBeyond + 1>();
+    static constexpr auto kI2s         = ResourceID::Define<kBeyond + 2>();
     //! @endcond
   };
 
@@ -159,6 +162,15 @@ class SystemController : public sjsu::SystemController
   /// Bit masks for the CFGR register
   struct ClockConfigurationRegisters  // NOLINT
   {
+    /// @see 8.3.2 Clock configuration register (RCC_CFGR)
+    ///      https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=134
+    ///
+    /// @returns The RCC_CFGR bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&clock_control->CFGR);
+    }
+
     /// Controls which clock signal is sent to the MCO pin
     static constexpr auto kMco = bit::MaskFromRange(24, 26);
 
@@ -197,6 +209,15 @@ class SystemController : public sjsu::SystemController
   /// Bit masks for the CR register
   struct ClockControlRegisters  // NOLINT
   {
+    /// @see 8.3.1 Clock control register (RCC_CR)
+    ///      https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=132
+    ///
+    /// @returns The RCC_CR bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&clock_control->CR);
+    }
+
     /// Indicates if the PLL is enabled and ready
     static constexpr auto kPllReady = bit::MaskFromRange(25);
     /// Used to enable the PLL
@@ -230,6 +251,15 @@ class SystemController : public sjsu::SystemController
   /// Bitmasks for the BDCR register
   struct RtcRegisters  // NOLINT
   {
+    /// @see 8.3.9 Backup domain control register (RCC_BDCR)
+    ///      https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=150
+    ///
+    /// @returns The RCC_BDCR bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&clock_control->BDCR);
+    }
+
     /// Will reset all clock states for the RTC
     static constexpr auto kBackupDomainReset = bit::MaskFromRange(16);
     /// Enables the RTC clock
@@ -267,7 +297,8 @@ class SystemController : public sjsu::SystemController
     kDivideBy1Point5 = 0,
   };
 
-  /// RM0008 page 126 describes the clock tree for the stm32f10x
+  /// @see Figure 11. Clock Tree
+  ///      https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=126
   struct ClockConfiguration  // NOLINT
   {
     /// Defines the frequency of the high speed external clock signal
@@ -301,7 +332,7 @@ class SystemController : public sjsu::SystemController
     {
       bool enable      = false;
       RtcSource source = RtcSource::kLowSpeedInternal;
-    } rtc;
+    } rtc = {};
 
     /// Defines the configuration of the dividers beyond system clock mux.
     struct
@@ -343,8 +374,16 @@ class SystemController : public sjsu::SystemController
   {
   }
 
-  // Clock tree 8. page 86
-
+  /// @attention If configuration of the system clocks is desired, one should
+  ///            consult the user manual of the target MCU in use to determine
+  ///            the valid clock configuration values that can/should be used.
+  ///            The Initialize() method is only responsible for configuring the
+  ///            clock system based on configurations in the ClockConfiguration.
+  ///            Incorrect configurations may result in a hard fault or cause
+  ///            the clock system(s) to supply incorrect clock rate(s).
+  ///
+  /// @see Figure 11. Clock Tree
+  ///      https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=126
   void Initialize() override
   {
     units::frequency::hertz_t system_clock = 0_Hz;
@@ -354,28 +393,25 @@ class SystemController : public sjsu::SystemController
     //         Make sure PLLs are not clock sources for everything.
     // =========================================================================
     // Step 1.1 Set SystemClock to HSI
-    clock_control->CFGR = bit::Insert(
-        clock_control->CFGR, Value(SystemClockSelect::kHighSpeedInternal),
-        ClockConfigurationRegisters::kSystemClockSelect);
+    ClockConfigurationRegisters::Register()
+        .Insert(Value(SystemClockSelect::kHighSpeedInternal),
+                ClockConfigurationRegisters::kSystemClockSelect)
+        .Save();
 
     // Step 1.4 Reset RTC clock registers
-    clock_control->BDCR =
-        bit::Set(clock_control->BDCR, RtcRegisters::kBackupDomainReset);
-
+    RtcRegisters::Register().Set(RtcRegisters::kBackupDomainReset).Save();
     // Manually clear the RTC reset bit
-    clock_control->BDCR =
-        bit::Clear(clock_control->BDCR, RtcRegisters::kBackupDomainReset);
+    RtcRegisters::Register().Clear(RtcRegisters::kBackupDomainReset).Save();
 
     // =========================================================================
     // Step 2. Disable PLL and external clock sources
     // =========================================================================
-    // Step 2.1 Disable PLLs
-    clock_control->CR =
-        bit::Clear(clock_control->CR, ClockControlRegisters::kPllEnable);
-
-    // Step 2.1 Disable External Oscillators
-    clock_control->CR = bit::Clear(clock_control->CR,
-                                   ClockControlRegisters::kExternalOscEnable);
+    ClockControlRegisters::Register()
+        // Step 2.1 Disable PLLs
+        .Clear(ClockControlRegisters::kPllEnable)
+        // Step 2.1 Disable External Oscillators
+        .Clear(ClockControlRegisters::kExternalOscEnable)
+        .Save();
 
     // =========================================================================
     // Step 3. Enable External Oscillators
@@ -383,11 +419,12 @@ class SystemController : public sjsu::SystemController
     // Step 3.1 Enable High speed external Oscillator
     if (config_.high_speed_external != 0_MHz)
     {
-      clock_control->CR = bit::Set(clock_control->CR,
-                                   ClockControlRegisters::kExternalOscEnable);
+      ClockControlRegisters::Register()
+          .Set(ClockControlRegisters::kExternalOscEnable)
+          .Save();
 
-      while (!bit::Read(clock_control->CR,
-                        ClockControlRegisters::kExternalOscReady))
+      while (!ClockControlRegisters::Register().Read(
+          ClockControlRegisters::kExternalOscReady))
       {
         continue;
       }
@@ -396,10 +433,9 @@ class SystemController : public sjsu::SystemController
     // Step 3.2 Enable Low speed external Oscillator
     if (config_.low_speed_external != 0_MHz)
     {
-      clock_control->BDCR =
-          bit::Insert(clock_control->BDCR, 1, RtcRegisters::kLowSpeedOscEnable);
+      RtcRegisters::Register().Set(RtcRegisters::kLowSpeedOscEnable).Save();
 
-      while (!bit::Read(clock_control->BDCR, RtcRegisters::kLowSpeedOscReady))
+      while (!RtcRegisters::Register().Read(RtcRegisters::kLowSpeedOscReady))
       {
         continue;
       }
@@ -408,34 +444,29 @@ class SystemController : public sjsu::SystemController
     // =========================================================================
     // Step 4. Set oscillator source for PLLs
     // =========================================================================
-    if (config_.pll.source == PllSource::kHighSpeedExternalDividedBy2)
-    {
-      clock_control->CFGR = bit::Set(
-          clock_control->CFGR, ClockConfigurationRegisters::kHsePreDivider);
-    }
-    else
-    {
-      clock_control->CFGR = bit::Clear(
-          clock_control->CFGR, ClockConfigurationRegisters::kHsePreDivider);
-    }
-
-    clock_control->CFGR =
-        bit::Insert(clock_control->CFGR, Value(config_.pll.source),
-                    ClockConfigurationRegisters::kPllSource);
+    ClockConfigurationRegisters::Register()
+        .Insert((config_.pll.source == PllSource::kHighSpeedExternalDividedBy2),
+                ClockConfigurationRegisters::kHsePreDivider)
+        .Insert(Value(config_.pll.source),
+                ClockConfigurationRegisters::kPllSource)
+        .Save();
 
     // =========================================================================
     // Step 5. Setup PLLs and enable them where necessary
     // =========================================================================
     if (config_.pll.enable)
     {
-      clock_control->CFGR =
-          bit::Insert(clock_control->CFGR, Value(config_.pll.multiply),
-                      ClockConfigurationRegisters::kPllMul);
+      ClockConfigurationRegisters::Register()
+          .Insert(Value(config_.pll.multiply),
+                  ClockConfigurationRegisters::kPllMul)
+          .Save();
 
-      clock_control->CR =
-          bit::Set(clock_control->CR, ClockControlRegisters::kPllEnable);
+      ClockControlRegisters::Register()
+          .Set(ClockControlRegisters::kPllEnable)
+          .Save();
 
-      while (!bit::Read(clock_control->CR, ClockControlRegisters::kPllReady))
+      while (!ClockControlRegisters::Register().Read(
+          ClockControlRegisters::kPllReady))
       {
         continue;
       }
@@ -460,30 +491,23 @@ class SystemController : public sjsu::SystemController
     // =========================================================================
     // Step 6. Setup peripheral dividers
     // =========================================================================
-    // Step 6.1 Set USB divider
-    clock_control->CFGR =
-        bit::Insert(clock_control->CFGR, Value(config_.pll.usb.divider),
-                    ClockConfigurationRegisters::kUsbPrescalar);
-
-    // Step 6.2 Set AHB divider
-    clock_control->CFGR =
-        bit::Insert(clock_control->CFGR, Value(config_.ahb.divider),
-                    ClockConfigurationRegisters::kAHBDivider);
-
-    // Step 6.3 Set APB1 divider
-    clock_control->CFGR =
-        bit::Insert(clock_control->CFGR, Value(config_.ahb.apb1.divider),
-                    ClockConfigurationRegisters::kAPB1Divider);
-
-    // Step 6.4 Set APB2 divider
-    clock_control->CFGR =
-        bit::Insert(clock_control->CFGR, Value(config_.ahb.apb2.divider),
-                    ClockConfigurationRegisters::kAPB2Divider);
-
-    // Step 6.5 Set ADC divider
-    clock_control->CFGR =
-        bit::Insert(clock_control->CFGR, Value(config_.ahb.apb2.adc.divider),
-                    ClockConfigurationRegisters::kAdcDivider);
+    ClockConfigurationRegisters::Register()
+        // Step 6.1 Set USB divider
+        .Insert(Value(config_.pll.usb.divider),
+                ClockConfigurationRegisters::kUsbPrescalar)
+        // Step 6.2 Set AHB divider
+        .Insert(Value(config_.ahb.divider),
+                ClockConfigurationRegisters::kAHBDivider)
+        // Step 6.3 Set APB1 divider
+        .Insert(Value(config_.ahb.apb1.divider),
+                ClockConfigurationRegisters::kAPB1Divider)
+        // Step 6.4 Set APB2 divider
+        .Insert(Value(config_.ahb.apb2.divider),
+                ClockConfigurationRegisters::kAPB2Divider)
+        // Step 6.5 Set ADC divider
+        .Insert(Value(config_.ahb.apb2.adc.divider),
+                ClockConfigurationRegisters::kAdcDivider)
+        .Save();
 
     // =========================================================================
     // Step 7. Set System Clock and RTC Clock
@@ -519,12 +543,13 @@ class SystemController : public sjsu::SystemController
     // Step 7.2 Set system clock source
     // NOTE: return error if clock = SystemClockSelect::kHighSpeedExternal and
     //       high speed external is not enabled.
-    clock_control->CFGR =
-        bit::Insert(clock_control->CFGR, Value(config_.system_clock),
-                    ClockConfigurationRegisters::kSystemClockSelect);
+    ClockConfigurationRegisters::Register()
+        .Insert(Value(config_.system_clock),
+                ClockConfigurationRegisters::kSystemClockSelect)
+        .Save();
 
-    while (bit::Extract(clock_control->CFGR,
-                        ClockConfigurationRegisters::kSystemClockStatus) !=
+    while (ClockConfigurationRegisters::Register().Extract(
+               ClockConfigurationRegisters::kSystemClockStatus) !=
            target_clock_source)
     {
       continue;
@@ -541,14 +566,12 @@ class SystemController : public sjsu::SystemController
       case SystemClockSelect::kPll: system_clock = pll_clock_rate_; break;
     }
 
-    // Step 7.3 Set the RTC oscillator source
-    clock_control->BDCR =
-        bit::Insert(clock_control->BDCR, Value(config_.rtc.source),
-                    RtcRegisters::kRtcSourceSelect);
-
-    // Step 7.4 Enable/Disable the RTC
-    clock_control->BDCR = bit::Insert(clock_control->BDCR, config_.rtc.enable,
-                                      RtcRegisters::kRtcEnable);
+    RtcRegisters::Register()
+        // Step 7.3 Set the RTC oscillator source
+        .Insert(Value(config_.rtc.source), RtcRegisters::kRtcSourceSelect)
+        // Step 7.4 Enable/Disable the RTC
+        .Insert(config_.rtc.enable, RtcRegisters::kRtcEnable)
+        .Save();
 
     // =========================================================================
     // Step 8. Define the clock rates for the system
@@ -673,7 +696,7 @@ class SystemController : public sjsu::SystemController
   }
 
   /// @return the clock rate frequency of a peripheral
-  units::frequency::hertz_t GetClockRate(PeripheralID id) const override
+  units::frequency::hertz_t GetClockRate(ResourceID id) const override
   {
     switch (id.device_id)
     {
@@ -729,29 +752,29 @@ class SystemController : public sjsu::SystemController
     return 0_Hz;
   }
 
-  bool IsPeripheralPoweredUp(PeripheralID id) const override
+  bool IsPeripheralPoweredUp(ResourceID id) const override
   {
     return bit::Read(*EnableRegister(id), EnableBitPosition(id));
   }
 
-  void PowerUpPeripheral(PeripheralID id) const override
+  void PowerUpPeripheral(ResourceID id) const override
   {
     *EnableRegister(id) = bit::Set(*EnableRegister(id), EnableBitPosition(id));
   }
 
-  void PowerDownPeripheral(PeripheralID id) const override
+  void PowerDownPeripheral(ResourceID id) const override
   {
     *EnableRegister(id) =
         bit::Clear(*EnableRegister(id), EnableBitPosition(id));
   }
 
  private:
-  volatile uint32_t * EnableRegister(PeripheralID id) const
+  volatile uint32_t * EnableRegister(ResourceID id) const
   {
     return enable[id.device_id / kBits];
   }
 
-  uint32_t EnableBitPosition(PeripheralID id) const
+  uint32_t EnableBitPosition(ResourceID id) const
   {
     return id.device_id % kBits;
   }
