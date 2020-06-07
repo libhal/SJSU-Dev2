@@ -3,10 +3,12 @@
 # ======================
 # If you want your project compile for a specific platform, you can define it
 # here. Defaults to lpc40xx (SJTwo).
-# This is usefule because you can go from writting:
+# This is useful because you can go from writing:
 #
 #   make application PLATFORM=lpc40xx
+#
 #      TO
+#
 #   make application
 #
 # NOTE: lpc40xx is for the SJTwo board
