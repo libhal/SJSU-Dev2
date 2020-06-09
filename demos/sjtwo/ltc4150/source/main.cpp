@@ -20,7 +20,7 @@ int main()
 
   // Pass the tick_pin GPIO to the gpio counter. We want to keep
   // track of a tick for a falling edge interrupt from the tick_pin.
-  sjsu::GpioCounter tick_counter(tick_pin, sjsu::Gpio::Edge::kEdgeFalling);
+  sjsu::GpioCounter tick_counter(tick_pin, sjsu::Gpio::Edge::kFalling);
 
   // Creating GPIO on pin 2.1
   sjsu::lpc40xx::Gpio polarity_pin(2, 1);

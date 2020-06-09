@@ -321,9 +321,9 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
   SECTION("AttachInterrupt() + InterruptHandler()")
   {
     for (auto edge : {
-             Gpio::Edge::kEdgeFalling,
-             Gpio::Edge::kEdgeRising,
-             Gpio::Edge::kEdgeBoth,
+             Gpio::Edge::kFalling,
+             Gpio::Edge::kRising,
+             Gpio::Edge::kBoth,
          })
     {
       for (uint32_t j = 0; j < test.size(); j++)
@@ -379,17 +379,17 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
         // Verify
         CHECK(callback_was_called);
 
-        if (edge == Gpio::Edge::kEdgeBoth)
+        if (edge == Gpio::Edge::kBoth)
         {
           CHECK(local_exti.RTSR == 1 << pin);
           CHECK(local_exti.FTSR == 1 << pin);
         }
-        else if (edge == Gpio::Edge::kEdgeRising)
+        else if (edge == Gpio::Edge::kRising)
         {
           CHECK(local_exti.RTSR == 1 << pin);
           CHECK(local_exti.FTSR == 0);
         }
-        else if (edge == Gpio::Edge::kEdgeFalling)
+        else if (edge == Gpio::Edge::kFalling)
         {
           CHECK(local_exti.RTSR == 0);
           CHECK(local_exti.FTSR == 1 << pin);
