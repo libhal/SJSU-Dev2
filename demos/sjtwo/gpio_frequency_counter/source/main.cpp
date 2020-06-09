@@ -18,7 +18,7 @@ int main()
   // The second parameter allows you to change which event triggers a count.
   // In this case, we want to trigger on rising and falling edges of the pin.
   // Note that this
-  sjsu::GpioCounter counter(gpio, sjsu::Gpio::Edge::kEdgeRising);
+  sjsu::GpioCounter counter(gpio, sjsu::Gpio::Edge::kRising);
   // Pass the gpio HardwareCounter object to the frequency counter object to be
   // used to calculate the frequency of the signal on that pin.
   sjsu::FrequencyCounter frequency(&counter);
