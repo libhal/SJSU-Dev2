@@ -21,7 +21,7 @@ int main()
 
   sjsu::LogInfo("Setup P0[15] to interrupt on only Falling edges...");
   pin0.AttachInterrupt([]() { sjsu::LogInfo("P0[15] interrupt!"); },
-                       sjsu::Gpio::Edge::kEdgeFalling);
+                       sjsu::Gpio::Edge::kFalling);
 
   sjsu::LogInfo("Setup P2[9] to interrupt on only Rising edges...");
   pin1.OnRisingEdge([]() { sjsu::LogInfo("P2[9] interrupt!"); });

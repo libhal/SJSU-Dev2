@@ -296,11 +296,11 @@ class Gpio final : public sjsu::Gpio
     handlers[interrupt_index_][pin_] = callback;
 
     auto * interrupt = LocalInterruptRegister();
-    if (edge == Edge::kEdgeBoth || edge == Edge::kEdgeRising)
+    if (edge == Edge::kBoth || edge == Edge::kRising)
     {
       *interrupt->rising_enable = bit::Set(*interrupt->rising_enable, pin_);
     }
-    if (edge == Edge::kEdgeBoth || edge == Edge::kEdgeFalling)
+    if (edge == Edge::kBoth || edge == Edge::kFalling)
     {
       *interrupt->falling_enable = bit::Set(*interrupt->falling_enable, pin_);
     }

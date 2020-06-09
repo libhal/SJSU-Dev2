@@ -18,7 +18,7 @@ int main()
 
   sjsu::LogInfo("Setup PB[8] to interrupt on only Falling edges...");
   pin0.AttachInterrupt([]() { sjsu::LogInfo("PB[8] interrupt!"); },
-                       sjsu::Gpio::Edge::kEdgeFalling);
+                       sjsu::Gpio::Edge::kFalling);
 
   // Using shorthand function to enable the attach interrupts to this pin for
   // both rising edges.
