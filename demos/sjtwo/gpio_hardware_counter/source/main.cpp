@@ -16,7 +16,7 @@ int main()
   // The second parameter allows you to change which event triggers a count.
   // In this case, we want to trigger on rising and falling edges of the pin.
   // Note that this
-  sjsu::GpioCounter counter(gpio, sjsu::Gpio::Edge::kEdgeRising);
+  sjsu::GpioCounter counter(gpio, sjsu::Gpio::Edge::kRising);
   // Required: Initialize the hardware.
   counter.Initialize();
   // Required: Enable the counter.
@@ -25,8 +25,7 @@ int main()
   sjsu::LogInfo(
       "With every rising edge of pin P%u.%u, the counter will increase and its "
       "value will be printed to stdout.",
-      gpio.GetPin().GetPort(),
-      gpio.GetPin().GetPin());
+      gpio.GetPin().GetPort(), gpio.GetPin().GetPin());
 
   uint32_t previous_count = 0;
   while (true)

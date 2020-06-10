@@ -34,9 +34,9 @@ class Gpio
   /// Defines the set of events that can trigger a GPIO interrupt.
   enum class Edge : uint8_t
   {
-    kEdgeRising  = 0,
-    kEdgeFalling = 1,
-    kEdgeBoth    = 2
+    kRising  = 0,
+    kFalling = 1,
+    kBoth    = 2
   };
 
   // ===========================================================================
@@ -110,7 +110,7 @@ class Gpio
   ///                   occurs on this pin.
   void OnRisingEdge(InterruptCallback callback)
   {
-    AttachInterrupt(callback, Edge::kEdgeRising);
+    AttachInterrupt(callback, Edge::kRising);
   }
 
   /// Set pin to run callback when the pin sees a falling edge
@@ -119,7 +119,7 @@ class Gpio
   ///                   occurs on this pin.
   void OnFallingEdge(InterruptCallback callback)
   {
-    AttachInterrupt(callback, Edge::kEdgeFalling);
+    AttachInterrupt(callback, Edge::kFalling);
   }
 
   /// Set pin to run callback when the pin sees a change on the pin's state.
@@ -128,7 +128,7 @@ class Gpio
   ///                   edge event occurs on this pin.
   void OnChange(InterruptCallback callback)
   {
-    AttachInterrupt(callback, Edge::kEdgeBoth);
+    AttachInterrupt(callback, Edge::kBoth);
   }
 };
 }  // namespace sjsu

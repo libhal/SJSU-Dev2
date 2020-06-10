@@ -48,5 +48,5 @@ var searchData=
   ['tsop752_2ehpp',['tsop752.hpp',['../d0/da1/tsop752_8hpp.html',1,'']]],
   ['tx',['tx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a67f2ca56b242323c441088b74c7507c7',1,'sjsu::lpc40xx::Uart::Port_t::tx()'],['../d6/d49/structsjsu_1_1stm32f10x_1_1UartBase_1_1Port__t.html#acc947254db6410009c377c27abdd6272',1,'sjsu::stm32f10x::UartBase::Port_t::tx()']]],
   ['tx_5ffunction_5fid',['tx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a8fbfab57d6cf7237b51ed843e664b3f2',1,'sjsu::lpc40xx::Uart::Port_t']]],
-  ['type',['Type',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878',1,'sjsu::Storage::Type()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()'],['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a078fb34df8715dcc8f1d5739a3ad9966',1,'sjsu::Sd::CardInfo_t::type()']]]
+  ['type',['type',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a078fb34df8715dcc8f1d5739a3ad9966',1,'sjsu::Sd::CardInfo_t::type()'],['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878',1,'sjsu::Storage::Type()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()']]]
 ];

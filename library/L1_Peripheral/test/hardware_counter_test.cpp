@@ -33,7 +33,7 @@ TEST_CASE("Testing L1 GpioCounter", "[gpio-counter]")
     SECTION("Default pull up resistor")
     {
       // Setup
-      GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kEdgeBoth);
+      GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kBoth);
 
       // Exercise
       test_subject.Initialize();
@@ -48,7 +48,7 @@ TEST_CASE("Testing L1 GpioCounter", "[gpio-counter]")
     {
       // Setup
       GpioCounter test_subject(mock_gpio.get(),
-                               sjsu::Gpio::Edge::kEdgeBoth,
+                               sjsu::Gpio::Edge::kBoth,
                                sjsu::Pin::Resistor::kPullDown);
 
       // Exercise
@@ -64,7 +64,7 @@ TEST_CASE("Testing L1 GpioCounter", "[gpio-counter]")
   SECTION("Set() & Get()")
   {
     // Setup
-    GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kEdgeBoth);
+    GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kBoth);
 
     // Exercise
     test_subject.Initialize();
@@ -82,7 +82,7 @@ TEST_CASE("Testing L1 GpioCounter", "[gpio-counter]")
     sjsu::InterruptCallback callback;
     When(Method(mock_gpio, AttachInterrupt)).AlwaysDo(GetLambda(callback));
     Fake(Method(mock_gpio, DetachInterrupt));
-    GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kEdgeBoth);
+    GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kBoth);
 
     // Exercise
     test_subject.Initialize();
@@ -114,7 +114,7 @@ TEST_CASE("Testing L1 GpioCounter", "[gpio-counter]")
     // Setup
     sjsu::InterruptCallback callback;
     Fake(Method(mock_gpio, DetachInterrupt));
-    GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kEdgeBoth);
+    GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kBoth);
 
     // Exercise
     test_subject.Disable();

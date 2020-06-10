@@ -137,8 +137,8 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   // of this unit test
   constexpr uint8_t kPin15 = 15;
   constexpr uint8_t kPin7  = 7;
-  constexpr uint8_t kPort0  = 0;
-  constexpr uint8_t kPort2  = 1;
+  constexpr uint8_t kPort0 = 0;
+  constexpr uint8_t kPort2 = 1;
 
   // Simulated version of LPC_GPIOINT
   LPC_GPIOINT_TypeDef local_eint;
@@ -176,8 +176,8 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
   SECTION("Attach then Detattach Interrupt from pin")
   {
     // Setup & Execute
-    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kEdgeBoth);
-    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kEdgeRising);
+    p0_15.AttachInterrupt(&InterruptCallback0, sjsu::Gpio::Edge::kBoth);
+    p2_7.AttachInterrupt(&InterruptCallback1, sjsu::Gpio::Edge::kRising);
     // Verify
     CHECK(bit::Read(local_eint.IO0IntEnR, kPin15));
     CHECK(bit::Read(local_eint.IO0IntEnF, kPin15));
@@ -212,7 +212,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts",
     // Setup
     bool was_called = false;
     p0_15.AttachInterrupt([&was_called]() { was_called = true; },
-                          sjsu::Gpio::Edge::kEdgeBoth);
+                          sjsu::Gpio::Edge::kBoth);
     // Setup: Manually trigger an Interrupt
     *Gpio::InterruptStatus() |= (1 << kPort0);
     local_eint.IO0IntStatR |= (1 << kPin15);

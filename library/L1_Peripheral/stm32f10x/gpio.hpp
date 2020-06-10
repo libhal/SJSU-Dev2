@@ -105,12 +105,12 @@ class Gpio : public sjsu::Gpio
     // Add callback to list of handlers
     handlers[pin_.GetPin()] = callback;
 
-    if (edge == Edge::kEdgeBoth || edge == Edge::kEdgeRising)
+    if (edge == Edge::kBoth || edge == Edge::kRising)
     {
       external_interrupt->RTSR =
           bit::Set(external_interrupt->RTSR, pin_.GetPin());
     }
-    if (edge == Edge::kEdgeBoth || edge == Edge::kEdgeFalling)
+    if (edge == Edge::kBoth || edge == Edge::kFalling)
     {
       external_interrupt->FTSR =
           bit::Set(external_interrupt->FTSR, pin_.GetPin());
