@@ -201,6 +201,7 @@ C_FLAGS_COMMON = $(COMMON_FLAGS) $(INCLUDES) $(SYSTEM_INCLUDES) -MMD -MP -c
 BUILD_DIRECTORY_NAME        = build
 SOURCE_DIR                  = source
 CURRENT_DIRECTORY           = $(shell pwd)
+LOCAL_LIBRARY               = $(CURRENT_DIRECTORY)/library
 LIBRARY_DIR                 = $(SJSU_DEV2_BASE)/library
 PROJECTS_DIR                = $(SJSU_DEV2_BASE)/projects
 DEMOS_DIR                   = $(SJSU_DEV2_BASE)/demos
@@ -223,7 +224,7 @@ COVERAGE_FILES              = $(shell find build -name "*.gcda")
 CORE_STATIC_LIBRARY = $(OBJECT_DIR)/libsjsudev2.a
 LIBRARIES          ?=
 SYSTEM_INCLUDES    ?=
-INCLUDES           += $(CURRENT_DIRECTORY) $(SOURCE_DIR)
+INCLUDES           += $(CURRENT_DIRECTORY) $(SOURCE_DIR) $(LOCAL_LIBRARY)
 # Start by gather source files within the source/ directory
 SOURCES = $(shell find source -name "*.c" -o -name "*.cpp" -print 2> /dev/null)
 # ==============================================================================
