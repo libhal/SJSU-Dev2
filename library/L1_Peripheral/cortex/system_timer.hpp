@@ -108,7 +108,7 @@ class SystemTimer final : public sjsu::SystemTimer
   /// @param id - id of the system controller for this platform. This is used to
   /// recover the operating speed of the SystemTimer.
   /// @param priority - the interrupt priority of
-  explicit constexpr SystemTimer(sjsu::SystemController::PeripheralID id,
+  explicit constexpr SystemTimer(sjsu::SystemController::ResourceID id,
                                  uint8_t priority = -1)
       : id_(id), priority_(priority)
   {
@@ -198,7 +198,7 @@ class SystemTimer final : public sjsu::SystemTimer
   }
 
  private:
-  sjsu::SystemController::PeripheralID id_;
+  sjsu::SystemController::ResourceID id_;
   uint8_t priority_;
 };
 }  // namespace cortex

@@ -34,7 +34,7 @@ TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx-system-controller]")
     {
       // Setup
       INFO("Error on peripheral ID " << i);
-      const sjsu::SystemController::PeripheralID kTestPeripheral = {
+      const sjsu::SystemController::ResourceID kTestPeripheral = {
         .device_id = i
       };
       // Setup: Set the power bits to all zero to isolate the change made by
@@ -56,7 +56,7 @@ TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx-system-controller]")
     {
       // Setup
       INFO("Error on peripheral ID " << i);
-      const sjsu::SystemController::PeripheralID kTestPeripheral = {
+      const sjsu::SystemController::ResourceID kTestPeripheral = {
         .device_id = i
       };
       // Setup: Set all of the power bits to all 1s to isolate the change made
@@ -80,7 +80,7 @@ TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx-system-controller]")
     {
       // Setup
       INFO("Error on peripheral ID " << i);
-      const sjsu::SystemController::PeripheralID kTestPeripheral = {
+      const sjsu::SystemController::ResourceID kTestPeripheral = {
         .device_id = i
       };
       // Setup: Set all of the power bits to all 1s to isolate the change made
@@ -95,7 +95,7 @@ TEST_CASE("sjsu::lpc40xx::SystemController", "[lpc40xx-system-controller]")
     {
       // Setup
       INFO("Error on peripheral ID " << i);
-      const sjsu::SystemController::PeripheralID kTestPeripheral = {
+      const sjsu::SystemController::ResourceID kTestPeripheral = {
         .device_id = i
       };
       // Setup: Set all of the power bits to all 1s to isolate the change made

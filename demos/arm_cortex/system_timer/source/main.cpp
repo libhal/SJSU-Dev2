@@ -15,7 +15,7 @@ void DemoSystemIsr()
   sjsu::LogInfo("System Timer Tick #%d ...", counter++);
 }
 
-sjsu::SystemController::PeripheralID GetSystemTimerID()
+sjsu::SystemController::ResourceID GetSystemTimerID()
 {
   if constexpr (sjsu::build::IsPlatform(sjsu::build::Platform::lpc17xx))
   {
@@ -41,7 +41,7 @@ sjsu::SystemController::PeripheralID GetSystemTimerID()
   else
   {
     // For all other systems just return some
-    return sjsu::SystemController::PeripheralID::Define<0xFF>();
+    return sjsu::SystemController::ResourceID::Define<0xFF>();
   }
 }
 
@@ -51,7 +51,7 @@ int main()
 
   // The specific clock associated with the system timer is different for
   // platform, thus we need to get the system timer's ID
-  sjsu::SystemController::PeripheralID system_timer_id = GetSystemTimerID();
+  sjsu::SystemController::ResourceID system_timer_id = GetSystemTimerID();
   sjsu::cortex::SystemTimer system_timer(system_timer_id);
 
   system_timer.SetCallback(DemoSystemIsr);

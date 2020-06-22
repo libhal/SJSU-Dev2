@@ -74,7 +74,7 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
   {
     sjsu::Pin & pin;
     GPIO_TypeDef & gpio;
-    const SystemController::PeripheralID & id;
+    const SystemController::ResourceID & id;
   };
 
   std::array<TestStruct_t, 14> test = {
@@ -155,9 +155,9 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
     SECTION("Valid port")
     {
       auto power_up_matcher =
-          [](sjsu::SystemController::PeripheralID expected_id) {
+          [](sjsu::SystemController::ResourceID expected_id) {
             return
-                [expected_id](sjsu::SystemController::PeripheralID actual_id) {
+                [expected_id](sjsu::SystemController::ResourceID actual_id) {
                   return expected_id.device_id == actual_id.device_id;
                 };
           };

@@ -13,7 +13,7 @@ EMIT_ALL_METHODS(SystemController);
 
 TEST_CASE("Testing stm32f4xx SystemController", "[stm32f4xx-system-controller]")
 {
-  std::array<const SystemController::PeripheralID *, 13> id = {
+  std::array<const SystemController::ResourceID *, 13> id = {
     &stm32f4xx::SystemController::Peripherals::kGpioA,
     &stm32f4xx::SystemController::Peripherals::kGpioH,
     &stm32f4xx::SystemController::Peripherals::kUsbOtgHS,

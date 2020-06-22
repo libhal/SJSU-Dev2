@@ -29,7 +29,7 @@ class Timer final : public sjsu::Timer
     /// Address to the timer peripheral registers
     LPC_TIM_TypeDef * peripheral;
     /// ID of the timer peripheral (used to power on the peripheral)
-    sjsu::SystemController::PeripheralID id;
+    sjsu::SystemController::ResourceID id;
     /// Interrupt Request Number for this timer
     int irq;
   };

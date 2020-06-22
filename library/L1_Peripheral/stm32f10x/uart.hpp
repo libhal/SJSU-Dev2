@@ -41,7 +41,7 @@ class UartBase : public sjsu::Uart
 
     /// The ID of the UART peripheral to be used. This is used to enable the
     /// peripheral clock of th UART peripheral.
-    SystemController::PeripheralID id;
+    SystemController::ResourceID id;
 
     /// Address of the DMA channel for this UART. The STM32F10x UART does not
     /// have a FIFO or buffer of any sort, thus DMA is required for reasonable

@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "utility/status.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -12,7 +13,7 @@ namespace sjsu
 /// A System controller manages a platform's:
 ///     - Clocks and their speeds
 ///     - PLLs feeding into the system's clocks
-///     - Manages power systems of peripherals and system blocks
+///     - Peripheral and system resource power systems
 ///
 /// The System controller also gives information about the system such as what
 /// speed a clock is running at so that their peripheral drivers can calculate
@@ -72,18 +73,19 @@ class SystemController
   // Interface Defintions
   // ===========================================================================
 
-  /// Peripheral is a base class that represents an ID associated with a
-  /// peripheral. That ID association is used for methods to determine which
-  /// peripheral needs to be powered up/down.
-  struct PeripheralID  // NOLINT
+  /// ResourceID is a base class that represents an ID associated with a
+  /// resource managed by the SystemController. That ID association may be used
+  /// for methods to determine which peripheral needs to be powered up/down or
+  /// to obtain the clock rate of a resource.
+  struct ResourceID  // NOLINT
   {
-    /// This helper class is used to make it easier to create additional
-    /// Peripherals.
+    /// This helper function is used to make it easier to create additional
+    /// ResourceID's.
     ///
     ///  Usage:
     ///
-    ///    static constexpr auto kUart0 = Peripheral::Define<5>();
-    ///    static constexpr auto kUart1 = Peripheral::Define<6>();
+    ///    static constexpr auto kUart0 = ResourceID::Define<5>();
+    ///    static constexpr auto kUart1 = ResourceID::Define<6>();
     ///    ...
     ///
     /// Typically the ID number used has some mapping to a register offset or
@@ -98,16 +100,16 @@ class SystemController
     ///
     /// @tparam id - compile time constant device ID for the peripheral
     template <size_t id>
-    static constexpr PeripheralID Define()
+    static constexpr ResourceID Define()
     {
       return { .device_id = id };
     }
-    /// ID associated with the peripheral defined for this object
+    /// ID associated with the resource defined for this object.
     uint32_t device_id = -1;
 
-    /// @param compare - the other peripheral to compare to this one
-    /// @return true if their device_id's are equal
-    bool operator==(const PeripheralID & compare) const
+    /// @param compare - the other resource to compare to this one to.
+    /// @return true if their device_id's are equal.
+    bool operator==(const ResourceID & compare) const
     {
       return device_id == compare.device_id;
     }
@@ -116,39 +118,49 @@ class SystemController
   // ===========================================================================
   // Interface Methods
   // ===========================================================================
+
   /// Handles self initialization and clock configuration based on the
   /// ClockConfiguration object passed to the controller's constructor. Like
   /// other initialize methods, this may be called multiple times during the
-  /// applications runtime. Note that calling this will return the system's
-  /// clocks back to their safest operating modes, and will then times. This
-  /// will power on any systems required to operate based on the
-  /// ClockConfiguration object.
+  /// applications runtime.
+  ///
+  /// @note Invoking this will return the system's clocks back to their safest
+  ///       operating modes. This will power on any systems required to operate
+  ///       based on the ClockConfiguration object.
+  ///
+  /// @attention If configuration of the system clocks is desired, one should
+  ///            consult the user manual of the target MCU in use to determine
+  ///            the valid clock configuration values that can/should be used.
+  ///            The Initialize() method is only responsible for configuring the
+  ///            clock system based on configurations in the ClockConfiguration.
+  ///            Incorrect configurations may result in a hard fault or cause
+  ///            the clock system(s) to supply incorrect clock rate(s).
   virtual void Initialize() = 0;
 
-  /// @returns a pointer to the clock configuration object used to configure
+  /// @returns A pointer to the clock configuration object used to configure
   ///          this system controller.
   virtual void * GetClockConfiguration() = 0;
 
-  /// @return the clock rate frequency of a peripheral
-  virtual units::frequency::hertz_t GetClockRate(
-      PeripheralID peripheral) const = 0;
+  /// @returns The clock rate frequency of a clock resource.
+  /// @returns 0 MHz when a unknown/invalid ResourceID is specified.
+  virtual units::frequency::hertz_t GetClockRate(ResourceID resource) const = 0;
 
-  /// Checks hardware and determines if the peripheral is powered up
+  /// Checks hardware and determines if the peripheral is powered up.
   ///
-  /// @param peripheral - which peripheral to check
-  /// @return true - the peripheral is currently powered up
-  /// @return false - the peripheral is currently powered down
-  virtual bool IsPeripheralPoweredUp(PeripheralID peripheral) const = 0;
+  /// @param peripheral The peripheral to check.
+  /// @returns true if the peripheral is currently powered up.
+  /// @returns false if the peripheral is currently powered down.
+  virtual bool IsPeripheralPoweredUp(ResourceID peripheral) const = 0;
 
-  /// Powers up the selected peripheral
+  /// Powers up the selected peripheral.
   ///
-  /// @param peripheral - which peripheral to power up
-  virtual void PowerUpPeripheral(PeripheralID peripheral) const = 0;
+  /// @param peripheral The peripheral to power up.
+  virtual void PowerUpPeripheral(ResourceID peripheral) const = 0;
 
-  /// Powers down the selected peripheral
+  /// Powers down the selected peripheral.
   ///
-  /// @param peripheral - which peripheral to power down
-  virtual void PowerDownPeripheral(PeripheralID peripheral) const = 0;
+  /// @param peripheral The peripheral to power down.
+  virtual void PowerDownPeripheral(ResourceID peripheral) const = 0;
 
   // ===========================================================================
   // Utility Methods

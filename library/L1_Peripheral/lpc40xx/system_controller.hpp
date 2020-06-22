@@ -90,41 +90,41 @@ class SystemController final : public sjsu::SystemController
   {
    public:
     //! @cond Doxygen_Suppress
-    static constexpr auto kLcd               = PeripheralID::Define<0>();
-    static constexpr auto kTimer0            = PeripheralID::Define<1>();
-    static constexpr auto kTimer1            = PeripheralID::Define<2>();
-    static constexpr auto kUart0             = PeripheralID::Define<3>();
-    static constexpr auto kUart1             = PeripheralID::Define<4>();
-    static constexpr auto kPwm0              = PeripheralID::Define<5>();
-    static constexpr auto kPwm1              = PeripheralID::Define<6>();
-    static constexpr auto kI2c0              = PeripheralID::Define<7>();
-    static constexpr auto kUart4             = PeripheralID::Define<8>();
-    static constexpr auto kRtc               = PeripheralID::Define<9>();
-    static constexpr auto kSsp1              = PeripheralID::Define<10>();
-    static constexpr auto kEmc               = PeripheralID::Define<11>();
-    static constexpr auto kAdc               = PeripheralID::Define<12>();
-    static constexpr auto kCan1              = PeripheralID::Define<13>();
-    static constexpr auto kCan2              = PeripheralID::Define<14>();
-    static constexpr auto kGpio              = PeripheralID::Define<15>();
-    static constexpr auto kSpifi             = PeripheralID::Define<16>();
-    static constexpr auto kMotorControlPwm   = PeripheralID::Define<17>();
-    static constexpr auto kQuadratureEncoder = PeripheralID::Define<18>();
-    static constexpr auto kI2c1              = PeripheralID::Define<19>();
-    static constexpr auto kSsp2              = PeripheralID::Define<20>();
-    static constexpr auto kSsp0              = PeripheralID::Define<21>();
-    static constexpr auto kTimer2            = PeripheralID::Define<22>();
-    static constexpr auto kTimer3            = PeripheralID::Define<23>();
-    static constexpr auto kUart2             = PeripheralID::Define<24>();
-    static constexpr auto kUart3             = PeripheralID::Define<25>();
-    static constexpr auto kI2c2              = PeripheralID::Define<26>();
-    static constexpr auto kI2s               = PeripheralID::Define<27>();
-    static constexpr auto kSdCard            = PeripheralID::Define<28>();
-    static constexpr auto kGpdma             = PeripheralID::Define<29>();
-    static constexpr auto kEthernet          = PeripheralID::Define<30>();
-    static constexpr auto kUsb               = PeripheralID::Define<31>();
-    static constexpr auto kEeprom            = PeripheralID::Define<32>();
+    static constexpr auto kLcd               = ResourceID::Define<0>();
+    static constexpr auto kTimer0            = ResourceID::Define<1>();
+    static constexpr auto kTimer1            = ResourceID::Define<2>();
+    static constexpr auto kUart0             = ResourceID::Define<3>();
+    static constexpr auto kUart1             = ResourceID::Define<4>();
+    static constexpr auto kPwm0              = ResourceID::Define<5>();
+    static constexpr auto kPwm1              = ResourceID::Define<6>();
+    static constexpr auto kI2c0              = ResourceID::Define<7>();
+    static constexpr auto kUart4             = ResourceID::Define<8>();
+    static constexpr auto kRtc               = ResourceID::Define<9>();
+    static constexpr auto kSsp1              = ResourceID::Define<10>();
+    static constexpr auto kEmc               = ResourceID::Define<11>();
+    static constexpr auto kAdc               = ResourceID::Define<12>();
+    static constexpr auto kCan1              = ResourceID::Define<13>();
+    static constexpr auto kCan2              = ResourceID::Define<14>();
+    static constexpr auto kGpio              = ResourceID::Define<15>();
+    static constexpr auto kSpifi             = ResourceID::Define<16>();
+    static constexpr auto kMotorControlPwm   = ResourceID::Define<17>();
+    static constexpr auto kQuadratureEncoder = ResourceID::Define<18>();
+    static constexpr auto kI2c1              = ResourceID::Define<19>();
+    static constexpr auto kSsp2              = ResourceID::Define<20>();
+    static constexpr auto kSsp0              = ResourceID::Define<21>();
+    static constexpr auto kTimer2            = ResourceID::Define<22>();
+    static constexpr auto kTimer3            = ResourceID::Define<23>();
+    static constexpr auto kUart2             = ResourceID::Define<24>();
+    static constexpr auto kUart3             = ResourceID::Define<25>();
+    static constexpr auto kI2c2              = ResourceID::Define<26>();
+    static constexpr auto kI2s               = ResourceID::Define<27>();
+    static constexpr auto kSdCard            = ResourceID::Define<28>();
+    static constexpr auto kGpdma             = ResourceID::Define<29>();
+    static constexpr auto kEthernet          = ResourceID::Define<30>();
+    static constexpr auto kUsb               = ResourceID::Define<31>();
+    static constexpr auto kEeprom            = ResourceID::Define<32>();
     // Definitions not associated with a specific peripheral.
-    static constexpr auto kCpu = PeripheralID::Define<33>();
+    static constexpr auto kCpu = ResourceID::Define<33>();
     //! @endcond
   };
 
@@ -153,6 +153,10 @@ class SystemController final : public sjsu::SystemController
     kClock6 = 0b0101 << 12,
   };
 
+  // ===========================================================================
+  // Register and Bit Mask Definitions
+  // ===========================================================================
+
   /// Namespace for PLL configuration bit masks
   struct PllRegister  // NOLINT
   {
@@ -178,6 +182,15 @@ class SystemController final : public sjsu::SystemController
   /// Namespace of Oscillator register bitmasks
   struct OscillatorRegister  // NOLINT
   {
+    /// @see Table 33. System Controls and Status register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10562.pdf#page=45
+    ///
+    /// @returns The SCS bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->SCS);
+    }
+
     /// IRC or Main oscillator select bit
     static constexpr bit::Mask kSelect = bit::MaskFromRange(0);
 
@@ -194,6 +207,15 @@ class SystemController final : public sjsu::SystemController
   /// Namespace of Clock register bitmasks
   struct CpuClockRegister  // NOLINT
   {
+    /// @see Table 20. CPU Clock Selection register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10562.pdf#page=33
+    ///
+    /// @returns The CCLKSEL bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->CCLKSEL);
+    }
+
     /// CPU clock divider amount
     static constexpr bit::Mask kDivider = bit::MaskFromRange(0, 4);
 
@@ -204,6 +226,15 @@ class SystemController final : public sjsu::SystemController
   /// Namespace of Peripheral register bitmasks
   struct PeripheralClockRegister  // NOLINT
   {
+    /// @see Table 23. Peripheral Clock Selection register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10562.pdf#page=34
+    ///
+    /// @returns The PCLKSEL bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->PCLKSEL);
+    }
+
     /// Main single peripheral clock divider shared across all peripherals,
     /// except for USB and SPIFI.
     static constexpr bit::Mask kDivider = bit::MaskFromRange(0, 4);
@@ -212,6 +243,15 @@ class SystemController final : public sjsu::SystemController
   /// Namespace of EMC register bitmasks
   struct EmcClockRegister  // NOLINT
   {
+    /// @see Table 19. EMC Clock Selection register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10562.pdf#page=32
+    ///
+    /// @returns The EMCCLKSEL bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->EMCCLKSEL);
+    }
+
     /// EMC Clock Register divider bit
     static constexpr bit::Mask kDivider = bit::MaskFromRange(0);
   };
@@ -219,6 +259,15 @@ class SystemController final : public sjsu::SystemController
   /// Namespace of USB register bitmasks
   struct UsbClockRegister  // NOLINT
   {
+    /// @see Table 21. USB Clock Selection register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10562.pdf#page=33
+    ///
+    /// @returns The USBCLKSEL bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->USBCLKSEL);
+    }
+
     /// USB clock divider constant
     static constexpr bit::Mask kDivider = bit::MaskFromRange(0, 4);
 
@@ -229,6 +278,15 @@ class SystemController final : public sjsu::SystemController
   /// Namespace of SPIFI register bitmasks
   struct SpiFiClockRegister  // NOLINT
   {
+    /// @see SPIFI Clock Selection register
+    ///      https://www.nxp.com/docs/en/user-guide/UM10562.pdf#page=35
+    ///
+    /// @returns The SPIFISEL bit register.
+    static bit::Register<uint32_t> Register()
+    {
+      return bit::Register(&system_controller->SPIFISEL);
+    }
+
     /// SPIFI clock divider constant
     static constexpr bit::Mask kDivider = bit::MaskFromRange(0, 4);
 
@@ -236,9 +294,16 @@ class SystemController final : public sjsu::SystemController
     static constexpr bit::Mask kSelect = bit::MaskFromRange(8, 9);
   };
 
+  // ===========================================================================
+  // Clock Configuration
+  // ===========================================================================
+
   /// Clock configuration structure for use the lpc40xx microcontrollers
   /// See page 21 of a diagram of the clock tree that this datastructure
   /// represents: datasheets/sjtwo/LPC40xx/UM10562.pdf
+  ///
+  /// @see Fig 4. Clock generation
+  ///      https://www.nxp.com/docs/en/user-guide/UM10562.pdf#page=21
   struct ClockConfiguration  // NOLINT
   {
     // =========================================================================
@@ -319,24 +384,27 @@ class SystemController final : public sjsu::SystemController
     return &clock_configuration_;
   }
 
-  bool IsPeripheralPoweredUp(PeripheralID peripheral_select) const override
+  bool IsPeripheralPoweredUp(ResourceID peripheral_select) const override
   {
-    return bit::Read(system_controller->PCONP, peripheral_select.device_id);
+    return bit::Register(&system_controller->PCONP)
+        .Read(bit::MaskFromRange(peripheral_select.device_id));
   }
 
-  void PowerUpPeripheral(PeripheralID peripheral_select) const override
+  void PowerUpPeripheral(ResourceID peripheral_select) const override
   {
-    system_controller->PCONP =
-        bit::Set(system_controller->PCONP, peripheral_select.device_id);
+    bit::Register(&system_controller->PCONP)
+        .Set(bit::MaskFromRange(peripheral_select.device_id))
+        .Save();
   }
 
-  void PowerDownPeripheral(PeripheralID peripheral_select) const override
+  void PowerDownPeripheral(ResourceID peripheral_select) const override
   {
-    system_controller->PCONP =
-        bit::Clear(system_controller->PCONP, peripheral_select.device_id);
+    bit::Register(&system_controller->PCONP)
+        .Clear(bit::MaskFromRange(peripheral_select.device_id))
+        .Save();
   }
 
-  units::frequency::hertz_t GetClockRate(PeripheralID peripheral) const override
+  units::frequency::hertz_t GetClockRate(ResourceID peripheral) const override
   {
     switch (peripheral.device_id)
     {
@@ -363,6 +431,13 @@ class SystemController final : public sjsu::SystemController
     }
   }
 
+  /// @attention If configuration of the system clocks is desired, one should
+  ///            consult the user manual of the target MCU in use to determine
+  ///            the valid clock configuration values that can/should be used.
+  ///            The Initialize() method is only responsible for configuring the
+  ///            clock system based on configurations in the ClockConfiguration.
+  ///            Incorrect configurations may result in a hard fault or cause
+  ///            the clock system(s) to supply incorrect clock rate(s).
   void Initialize() override
   {
     LPC_SC_TypeDef * sys = system_controller;
@@ -382,17 +457,18 @@ class SystemController final : public sjsu::SystemController
     //         Make sure PLLs are not clock sources for everything.
     // =========================================================================
     // Set CPU clock to system clock
-    sys->CCLKSEL =
-        bit::Insert(sys->CCLKSEL, Value(CpuClockSelect::kSystemClock),
-                    CpuClockRegister::kSelect);
+    CpuClockRegister::Register()
+        .Insert(Value(CpuClockSelect::kSystemClock), CpuClockRegister::kSelect)
+        .Save();
     // Set USB clock to system clock
-    sys->USBCLKSEL =
-        bit::Insert(sys->USBCLKSEL, Value(UsbClockSelect::kSystemClock),
-                    UsbClockRegister::kSelect);
+    UsbClockRegister::Register()
+        .Insert(Value(UsbClockSelect::kSystemClock), UsbClockRegister::kSelect)
+        .Save();
     // Set SPIFI clock to system clock
-    sys->SPIFISEL =
-        bit::Insert(sys->SPIFISEL, Value(SpifiClockSelect::kSystemClock),
-                    SpiFiClockRegister::kSelect);
+    SpiFiClockRegister::Register()
+        .Insert(Value(SpifiClockSelect::kSystemClock),
+                SpiFiClockRegister::kSelect)
+        .Save();
 
     // Set the clock source to IRC and not external oscillator. The next phase
     // disables that clock source, which will stop the system if this is not
@@ -407,8 +483,9 @@ class SystemController final : public sjsu::SystemController
     sys->PLL0CON = 0;
     sys->PLL1CON = 0;
     // Disabling external oscillator if it is not going to be used
-    system_controller->SCS =
-        bit::Clear(system_controller->SCS, OscillatorRegister::kExternalEnable);
+    OscillatorRegister::Register()
+        .Clear(OscillatorRegister::kExternalEnable)
+        .Save();
 
     // =========================================================================
     // Step 3. Select oscillator source for System Clock and Main PLL
@@ -445,20 +522,25 @@ class SystemController final : public sjsu::SystemController
     // Step 5. Set clock dividers for each clock source
     // =========================================================================
     // Set CPU clock divider
-    sys->CCLKSEL = bit::Insert(sys->CCLKSEL, config.cpu.divider,
-                               CpuClockRegister::kDivider);
+    CpuClockRegister::Register()
+        .Insert(config.cpu.divider, CpuClockRegister::kDivider)
+        .Save();
     // Set EMC clock divider
-    sys->EMCCLKSEL = bit::Insert(sys->EMCCLKSEL, Value(config.emc_divider),
-                                 EmcClockRegister::kDivider);
+    EmcClockRegister::Register()
+        .Insert(Value(config.emc_divider), EmcClockRegister::kDivider)
+        .Save();
     // Set Peripheral clock divider
-    sys->PCLKSEL = bit::Insert(sys->PCLKSEL, config.peripheral_divider,
-                               PeripheralClockRegister::kDivider);
+    PeripheralClockRegister::Register()
+        .Insert(config.peripheral_divider, PeripheralClockRegister::kDivider)
+        .Save();
     // Set USB clock divider
-    sys->USBCLKSEL = bit::Insert(sys->USBCLKSEL, Value(config.usb.divider),
-                                 UsbClockRegister::kDivider);
+    UsbClockRegister::Register()
+        .Insert(Value(config.usb.divider), UsbClockRegister::kDivider)
+        .Save();
     // Set SPIFI clock divider
-    sys->SPIFISEL = bit::Insert(sys->SPIFISEL, config.spifi.divider,
-                                SpiFiClockRegister::kDivider);
+    SpiFiClockRegister::Register()
+        .Insert(config.spifi.divider, SpiFiClockRegister::kDivider)
+        .Save();
 
     switch (config.cpu.clock)
     {
@@ -521,16 +603,19 @@ class SystemController final : public sjsu::SystemController
     // Step 7. Finally select the sources for each clock
     // =========================================================================
     // Set CPU clock the source defined in the configuration
-    sys->CCLKSEL = bit::Insert(sys->CCLKSEL, Value(config.cpu.clock),
-                               CpuClockRegister::kSelect);
+    CpuClockRegister::Register()
+        .Insert(Value(config.cpu.clock), CpuClockRegister::kSelect)
+        .Save();
 
     // Set USB clock the source defined in the configuration
-    sys->USBCLKSEL = bit::Insert(sys->USBCLKSEL, Value(config.usb.clock),
-                                 UsbClockRegister::kSelect);
+    UsbClockRegister::Register()
+        .Insert(Value(config.usb.clock), UsbClockRegister::kSelect)
+        .Save();
 
     // Set SPIFI clock the source defined in the configuration
-    sys->SPIFISEL = bit::Insert(sys->SPIFISEL, Value(config.spifi.clock),
-                                SpiFiClockRegister::kSelect);
+    SpiFiClockRegister::Register()
+        .Insert(Value(config.spifi.clock), SpiFiClockRegister::kSelect)
+        .Save();
   }
 
  private:
@@ -599,28 +684,27 @@ class SystemController final : public sjsu::SystemController
 
   void EnableExternalOscillator() const
   {
-    auto frequency = clock_configuration_.external_oscillator_frequency;
+    auto scs_register = OscillatorRegister::Register();
+    auto frequency    = clock_configuration_.external_oscillator_frequency;
     if (1_MHz <= frequency && frequency <= 20_MHz)
     {
-      system_controller->SCS =
-          bit::Clear(system_controller->SCS, OscillatorRegister::kRangeSelect);
+      scs_register.Clear(OscillatorRegister::kRangeSelect);
     }
     else if (20_MHz <= frequency && frequency <= 25_MHz)
     {
-      system_controller->SCS =
-          bit::Set(system_controller->SCS, OscillatorRegister::kRangeSelect);
+      scs_register.Set(OscillatorRegister::kRangeSelect);
+    }
+    else
+    {
+      SJ2_ASSERT_FATAL(
+          false,
+          "External Oscillator Frequency is outside of the the acceptable 1 "
+          "MHz <--> 25 MHz.");
     }
 
-    SJ2_ASSERT_FATAL(
-        1_MHz <= frequency && frequency <= 25_MHz,
-        "External Oscillator Frequency is outside of the the acceptable 1 "
-        "MHz <--> 25 MHz.");
+    scs_register.Set(OscillatorRegister::kExternalEnable).Save();
 
-    system_controller->SCS =
-        bit::Set(system_controller->SCS, OscillatorRegister::kExternalEnable);
-
-    while (
-        !bit::Read(system_controller->SCS, OscillatorRegister::kExternalReady))
+    while (!scs_register.Read(OscillatorRegister::kExternalReady))
     {
       continue;
     }

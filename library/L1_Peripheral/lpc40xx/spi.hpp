@@ -109,8 +109,8 @@ class Spi final : public sjsu::Spi
     /// Pointer to the LPC SSP peripheral in memory
     LPC_SSP_TypeDef * registers;
 
-    /// PeripheralID of the SSP peripheral to power on at initialization
-    sjsu::SystemController::PeripheralID power_on_bit;
+    /// ResourceID of the SSP peripheral to power on at initialization
+    sjsu::SystemController::ResourceID power_on_bit;
 
     /// Refernce to the M.ASTER-O.UT-S.LAVE-I.N (output from microcontroller)
     /// spi pin.

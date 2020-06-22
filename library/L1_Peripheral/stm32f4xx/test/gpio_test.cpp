@@ -60,7 +60,7 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
   {
     sjsu::stm32f4xx::Gpio gpio;
     GPIO_TypeDef & reg;
-    const SystemController::PeripheralID & id;
+    const SystemController::ResourceID & id;
   };
 
   std::array<TestStruct_t, 14> test = {
@@ -139,8 +139,8 @@ TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
   SECTION("SetDirection()")
   {
     auto power_up_matcher =
-        [](sjsu::SystemController::PeripheralID expected_id) {
-          return [expected_id](sjsu::SystemController::PeripheralID actual_id) {
+        [](sjsu::SystemController::ResourceID expected_id) {
+          return [expected_id](sjsu::SystemController::ResourceID actual_id) {
             return expected_id.device_id == actual_id.device_id;
           };
         };

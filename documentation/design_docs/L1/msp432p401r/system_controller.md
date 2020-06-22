@@ -13,20 +13,20 @@
     - [void LockClockSystemRegister() const](#void-lockclocksystemregister-const)
   - [Initialization](#initialization)
     - [Returns&lt;void> Initialize() override](#returnsvoid-initialize-override)
-    - [Returns&lt;units::frequency::hertz_t> ConfigureDcoClock() const](#returnsunitsfrequencyhertzt-configuredcoclock-const)
-    - [Returns&lt;units::frequency::hertz_t> ConfigureReferenceClock() const](#returnsunitsfrequencyhertzt-configurereferenceclock-const)
+    - [Returns&lt;units::frequency::hertz_t> ConfigureDcoClock() const](#returnsunitsfrequencyhertz_t-configuredcoclock-const)
+    - [Returns&lt;units::frequency::hertz_t> ConfigureReferenceClock() const](#returnsunitsfrequencyhertz_t-configurereferenceclock-const)
     - [Returns&lt;void> SetClockSource(Clock clock, Oscillator oscillator) const](#returnsvoid-setclocksourceclock-clock-oscillator-oscillator-const)
     - [Returns&lt;void> SetClockDivider(Clock clock, ClockDivider divider) const](#returnsvoid-setclockdividerclock-clock-clockdivider-divider-const)
     - [void WaitForClockReadyStatus(Clock clock) const](#void-waitforclockreadystatusclock-clock-const)
   - [Getting the Clock Rate of a Clock Signal](#getting-the-clock-rate-of-a-clock-signal)
-    - [Returns&lt;units::frequency::hertz_t> GetClockRate(PeripheralID peripheral) const override](#returnsunitsfrequencyhertzt-getclockrateperipheralid-peripheral-const-override)
+    - [Returns&lt;units::frequency::hertz_t> GetClockRate(ResourceID peripheral) const override](#returnsunitsfrequencyhertz_t-getclockrateresourceid-peripheral-const-override)
   - [Unused Functions](#unused-functions)
 - [Caveats](#caveats)
 - [Future Advancements](#future-advancements)
 - [Testing Plan](#testing-plan)
   - [Unit Testing Scheme](#unit-testing-scheme)
     - [Initialize()](#initialize)
-    - [GetClockRate(PeripheralID peripheral)](#getclockrateperipheralid-peripheral)
+    - [GetClockRate(ResourceID peripheral)](#getclockrateresourceid-peripheral)
     - [SetClockDivider(Clock clock, ClockDivider divider)](#setclockdividerclock-clock-clockdivider-divider)
     - [IsPeripheralPoweredUp()](#isperipheralpoweredup)
   - [Demonstration Project](#demonstration-project)
@@ -85,12 +85,12 @@ class SystemController : public sjsu::SystemController
   Returns<void> Initialize() override;
   void * GetClockConfiguration() override;
   Returns<units::frequency::hertz_t> GetClockRate(
-     PeripheralID peripheral) const override;
+     ResourceID peripheral) const override;
   Returns<void> SetClockDivider(Clock clock, ClockDivider divider) const;
 
-  bool IsPeripheralPoweredUp(PeripheralID) const override;
-  void PowerUpPeripheral(PeripheralID) const override;
-  void PowerDownPeripheral(PeripheralID) const override;
+  bool IsPeripheralPoweredUp(ResourceID) const override;
+  void PowerUpPeripheral(ResourceID) const override;
+  void PowerDownPeripheral(ResourceID) const override;
 
  private:
   void UnlockClockSystemRegisters() const;
@@ -179,7 +179,7 @@ divider.
 
 ## Getting the Clock Rate of a Clock Signal
 
-### Returns&lt;units::frequency::hertz_t> GetClockRate(PeripheralID peripheral) const override
+### Returns&lt;units::frequency::hertz_t> GetClockRate(ResourceID peripheral) const override
 Gets the clock rate of one of the 10 available clock modules.
 
 An **Error_t** is returned if `peripheral` is not one of the defined peripherals
@@ -189,9 +189,9 @@ in the `Modules` namespace.
 The following functions are not implemented or used:
 
 ```c++
-bool IsPeripheralPoweredUp(const PeripheralID &) const override
-void PowerUpPeripheral(const PeripheralID &) const override
-void PowerDownPeripheral(const PeripheralID &) const override
+bool IsPeripheralPoweredUp(const ResourceID &) const override
+void PowerUpPeripheral(const ResourceID &) const override
+void PowerDownPeripheral(const ResourceID &) const override
 ```
 
 # Caveats
@@ -251,7 +251,7 @@ each primary clock. Additionally, clock divider values of 1, 2, 4, 8, 16, 32,
    - The function should return an error if the clock source is not
      `Oscillator::kLowFrequency`, or `Oscillator::kReference`.
 
-### GetClockRate(PeripheralID peripheral)
+### GetClockRate(ResourceID peripheral)
 The clock rates of clock signals that have a fixed frequency are verified.
 
 1. When `peripheral` = `Modules::kLowFrequencyClock`

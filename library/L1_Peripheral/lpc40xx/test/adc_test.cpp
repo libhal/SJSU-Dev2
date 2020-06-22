@@ -81,7 +81,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
     // Verify
     // Verify that PowerUpPeripheral() was called with the ADC peripheral id
     Verify(Method(mock_system_controller, PowerUpPeripheral)
-               .Matching([](sjsu::SystemController::PeripheralID id) {
+               .Matching([](sjsu::SystemController::ResourceID id) {
                  return SystemController::Peripherals::kAdc.device_id ==
                         id.device_id;
                }));
