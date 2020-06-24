@@ -14,7 +14,7 @@ EMIT_ALL_METHODS(SystemController);
 
 TEST_CASE("Testing stm32f10x SystemController", "[stm32f10x-systemcontroller]")
 {
-  std::array<const SystemController::PeripheralID *, 10> id = {
+  std::array<const SystemController::ResourceID *, 10> id = {
     // AHB
     &stm32f10x::SystemController::Peripherals::kFlitf,
     &stm32f10x::SystemController::Peripherals::kCrc,
@@ -768,7 +768,7 @@ TEST_CASE("Testing stm32f10x SystemController", "[stm32f10x-systemcontroller]")
 
       // Verify
       CHECK(0_Hz == test_subject.GetClockRate(
-                        SystemController::PeripheralID::Define<0xFFFF>()));
+                        SystemController::ResourceID::Define<0xFFFF>()));
     }
   }
 

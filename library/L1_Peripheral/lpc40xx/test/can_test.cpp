@@ -52,7 +52,7 @@ TEST_CASE("Testing lpc40xx Can", "[lpc40xx-can]")
   SECTION("Initialize()")
   {
     // Setup
-    auto check_power_up = [](sjsu::SystemController::PeripheralID id) -> bool {
+    auto check_power_up = [](sjsu::SystemController::ResourceID id) -> bool {
       return sjsu::lpc40xx::SystemController::Peripherals::kCan1.device_id ==
              id.device_id;
     };

@@ -221,8 +221,8 @@ class Uart final : public sjsu::Uart
   {
     /// Address of the LPC_UART peripheral in memory
     LPC_UART_TypeDef * registers;
-    /// PeripheralID of the UART peripheral to power on at initialization.
-    sjsu::SystemController::PeripheralID power_on_id;
+    /// ResourceID of the UART peripheral to power on at initialization.
+    sjsu::SystemController::ResourceID power_on_id;
     /// Refernce to a uart transmitter pin
     const sjsu::Pin & tx;
     /// Refernce to a uart receiver pin

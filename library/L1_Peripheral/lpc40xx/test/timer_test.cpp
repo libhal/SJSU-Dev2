@@ -10,7 +10,7 @@ TEST_CASE("Testing lpc40xx Timer", "[lpc40xx-timer]")
   LPC_TIM_TypeDef local_timer_registers;
   testing::ClearStructure(&local_timer_registers);
 
-  constexpr SystemController::PeripheralID kExpectedPeripheralId =
+  constexpr SystemController::ResourceID kExpectedPeripheralId =
       SystemController::Peripherals::kTimer0;
   constexpr units::frequency::hertz_t kClockFrequency = 12_MHz;
   constexpr int kExpectedIrq                          = 0;
@@ -48,7 +48,7 @@ TEST_CASE("Testing lpc40xx Timer", "[lpc40xx-timer]")
 
     // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
-               .Matching([](sjsu::SystemController::PeripheralID id) {
+               .Matching([](sjsu::SystemController::ResourceID id) {
                  return kExpectedPeripheralId.device_id == id.device_id;
                }),
            Method(mock_interrupt_controller, Enable));

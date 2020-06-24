@@ -90,7 +90,7 @@ class Pwm final : public sjsu::Pwm
     /// Holds the address to the LPC PWM peripheral.
     LPC_PWM_TypeDef * registers;
     /// The power on id for the above LPC PWM peripheral.
-    sjsu::SystemController::PeripheralID id;
+    sjsu::SystemController::ResourceID id;
   };
 
   /// Defines all information necessary to control a specific PWM channel.

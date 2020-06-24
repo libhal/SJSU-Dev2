@@ -44,10 +44,10 @@ TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 
-  using PeripheralID = sjsu::SystemController::PeripheralID;
+  using ResourceID = sjsu::SystemController::ResourceID;
 
   constexpr uint8_t kExpectedPriority = 3;
-  constexpr PeripheralID kId = PeripheralID::Define<0>();
+  constexpr ResourceID kId = ResourceID::Define<0>();
   SystemTimer test_subject(kId, kExpectedPriority);
 
   SECTION("Initialize()")

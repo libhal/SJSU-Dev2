@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['referenceclockfrequency',['ReferenceClockFrequency',['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a3069929d8bd343b6b56585dc5e5c9ff6',1,'sjsu::msp432p401r::SystemController']]],
   ['registeraddress',['RegisterAddress',['../d5/d82/classsjsu_1_1Mma8452q.html#a2e56debebb95bd316bbac2b76bb1cdd4',1,'sjsu::Mma8452q']]],
   ['registers',['Registers',['../d8/d93/classsjsu_1_1example_1_1Example.html#aaaf3a87a0c22577eeb23c23505b95fdf',1,'sjsu::example::Example']]],
   ['resistor',['Resistor',['../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95',1,'sjsu::Pin']]],

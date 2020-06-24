@@ -67,8 +67,8 @@ class I2c final : public sjsu::I2c
   {
     /// Holds a pointer to the LPC_I2C peripheral registers
     LPC_I2C_TypeDef * registers;
-    /// PeripheralID of the I2C peripheral to power on at initialization.
-    sjsu::SystemController::PeripheralID id;
+    /// ResourceID of the I2C peripheral to power on at initialization.
+    sjsu::SystemController::ResourceID id;
     /// IRQ number for this I2C port.
     sjsu::cortex::IRQn_Type irq_number;
     /// A reference to the transaction structure for this specific port. Each

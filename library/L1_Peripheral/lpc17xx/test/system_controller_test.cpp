@@ -341,7 +341,7 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
     constexpr uint32_t kPeripheralCount = 32;
     for (uint32_t i = 0; i < kPeripheralCount; i++)
     {
-      SystemController::PeripheralID peripheral = { .device_id = i };
+      SystemController::ResourceID peripheral = { .device_id = i };
       CHECK(system_controller.GetClockRate(peripheral) ==
             expected_cpu_clock_rate);
     }

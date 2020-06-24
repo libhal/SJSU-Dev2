@@ -75,7 +75,7 @@ TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
     constexpr uint32_t kHigh = static_cast<uint32_t>(kSclh);
 
     Verify(Method(mock_system_controller, PowerUpPeripheral)
-               .Matching([](sjsu::SystemController::PeripheralID id) {
+               .Matching([](sjsu::SystemController::ResourceID id) {
                  return sjsu::lpc40xx::SystemController::Peripherals::kI2c0
                             .device_id == id.device_id;
                }));

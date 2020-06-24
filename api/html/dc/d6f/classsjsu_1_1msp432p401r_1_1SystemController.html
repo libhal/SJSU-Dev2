@@ -157,7 +157,23 @@ Public Types</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a89311fc91f33049fb95c52e0cb595ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70fa097ad658508bfa0171f073e240cd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cd">ClockDivider</a> : uint8_t <tr class="memdesc:a70fa097ad658508bfa0171f073e240cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The available clock dividers for the primary clocks.  <a href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cd">More...</a><br /></td></tr>
+<tr class="memitem:a3069929d8bd343b6b56585dc5e5c9ff6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a3069929d8bd343b6b56585dc5e5c9ff6">ReferenceClockFrequency</a> : uint8_t { <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a3069929d8bd343b6b56585dc5e5c9ff6acace9c8bc0a753f588626153a837357e">kF32768Hz</a> = 0b0, 
+<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a3069929d8bd343b6b56585dc5e5c9ff6a56d96f6ec497eee3aa15974e203c0f50">kF128kHz</a> = 0b1
+ }<tr class="memdesc:a3069929d8bd343b6b56585dc5e5c9ff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The available reference clock frequency options.  <a href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a3069929d8bd343b6b56585dc5e5c9ff6">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a3069929d8bd343b6b56585dc5e5c9ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70fa097ad658508bfa0171f073e240cd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cd">ClockDivider</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cda8e12f3d17ee40dd530c115f00c242a0e">ClockDivider::kDivideBy1</a> = 0b000, 
+<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cda70027c13c798a7e1764a80ef5ac854ac">ClockDivider::kDivideBy2</a> = 0b001, 
+<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cda15490fb193117840fe45822a955c0c62">ClockDivider::kDivideBy4</a> = 0b010, 
+<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cdac3c7e5ada406d9296bcacd69b641c2c7">ClockDivider::kDivideBy8</a> = 0b011, 
+<br />
+&#160;&#160;<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cda46b2240ec9d8f51aac1b0df4b1b84605">ClockDivider::kDivideBy16</a> = 0b100, 
+<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cda4039ccc65e98e73a597f96fb4a23024e">ClockDivider::kDivideBy32</a> = 0b101, 
+<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cda4b95aa3f305c803ab0dcdb4743a6579f">ClockDivider::kDivideBy64</a> = 0b110, 
+<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cda0f2fab68a37158fa8b6dd950a957a4ee">ClockDivider::kDivideBy128</a> = 0b111
+<br />
+ }<tr class="memdesc:a70fa097ad658508bfa0171f073e240cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The available clock dividers for the primary clocks.  <a href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cd">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a70fa097ad658508bfa0171f073e240cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -170,17 +186,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afd054d7cf154265d35139dc09113692f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40d66e6679be5711fa28383f91ccd868"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a40d66e6679be5711fa28383f91ccd868">GetClockConfiguration</a> () override</td></tr>
 <tr class="separator:a40d66e6679be5711fa28383f91ccd868"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5fc35950087232a322be24fc76ad293"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#aa5fc35950087232a322be24fc76ad293">GetClockRate</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> peripheral) const override</td></tr>
-<tr class="separator:aa5fc35950087232a322be24fc76ad293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ad898035bf2eb6ed5973f6118cf963f"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a7ad898035bf2eb6ed5973f6118cf963f">GetClockRate</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a> peripheral) const override</td></tr>
+<tr class="separator:a7ad898035bf2eb6ed5973f6118cf963f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30e15eb0631f6455296c1319c9519d36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a30e15eb0631f6455296c1319c9519d36">SetClockDivider</a> (<a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a89311fc91f33049fb95c52e0cb595ae1">Clock</a> clock, <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a70fa097ad658508bfa0171f073e240cd">ClockDivider</a> divider) const</td></tr>
 <tr class="memdesc:a30e15eb0631f6455296c1319c9519d36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the clock divider for one of the four primary clock signals (ACLK, MCLK, HSMCLK, or SMCLK).  <a href="#a30e15eb0631f6455296c1319c9519d36">More...</a><br /></td></tr>
 <tr class="separator:a30e15eb0631f6455296c1319c9519d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb3ddc67c2ac2aeec4c0c86e156fbfed"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#aeb3ddc67c2ac2aeec4c0c86e156fbfed">IsPeripheralPoweredUp</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>) const override</td></tr>
-<tr class="separator:aeb3ddc67c2ac2aeec4c0c86e156fbfed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a387a58a75be1e70fde65f15a0aec325f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a387a58a75be1e70fde65f15a0aec325f">PowerUpPeripheral</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>) const override</td></tr>
-<tr class="separator:a387a58a75be1e70fde65f15a0aec325f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26f53813cc9bf9f286467c46b424a40c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a26f53813cc9bf9f286467c46b424a40c">PowerDownPeripheral</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>) const override</td></tr>
-<tr class="separator:a26f53813cc9bf9f286467c46b424a40c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45a86fa52e03e60295a24dba4342b36c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a45a86fa52e03e60295a24dba4342b36c">IsPeripheralPoweredUp</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>) const override</td></tr>
+<tr class="separator:a45a86fa52e03e60295a24dba4342b36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4001f34c0bc16d31fb9d55279299624c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a4001f34c0bc16d31fb9d55279299624c">PowerUpPeripheral</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>) const override</td></tr>
+<tr class="separator:a4001f34c0bc16d31fb9d55279299624c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeefe577373023d86cc6be2396fbfbb3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#aeefe577373023d86cc6be2396fbfbb3f">PowerDownPeripheral</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>) const override</td></tr>
+<tr class="separator:aeefe577373023d86cc6be2396fbfbb3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1SystemController"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1SystemController')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a></td></tr>
 <tr class="memitem:a46fbb6e21f1abce223a1116c2caa8307 inherit pub_methods_classsjsu_1_1SystemController"><td class="memTemplParams" colspan="2">template&lt;class ClockConfiguration &gt; </td></tr>
 <tr class="memitem:a46fbb6e21f1abce223a1116c2caa8307 inherit pub_methods_classsjsu_1_1SystemController"><td class="memTemplItemLeft" align="right" valign="top">ClockConfiguration &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a46fbb6e21f1abce223a1116c2caa8307">GetClockConfiguration</a> ()</td></tr>
@@ -276,6 +292,16 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The available clock dividers for the primary clocks. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a70fa097ad658508bfa0171f073e240cda8e12f3d17ee40dd530c115f00c242a0e"></a>kDivideBy1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a70fa097ad658508bfa0171f073e240cda70027c13c798a7e1764a80ef5ac854ac"></a>kDivideBy2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a70fa097ad658508bfa0171f073e240cda15490fb193117840fe45822a955c0c62"></a>kDivideBy4&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a70fa097ad658508bfa0171f073e240cdac3c7e5ada406d9296bcacd69b641c2c7"></a>kDivideBy8&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a70fa097ad658508bfa0171f073e240cda46b2240ec9d8f51aac1b0df4b1b84605"></a>kDivideBy16&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a70fa097ad658508bfa0171f073e240cda4039ccc65e98e73a597f96fb4a23024e"></a>kDivideBy32&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a70fa097ad658508bfa0171f073e240cda4b95aa3f305c803ab0dcdb4743a6579f"></a>kDivideBy64&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a70fa097ad658508bfa0171f073e240cda0f2fab68a37158fa8b6dd950a957a4ee"></a>kDivideBy128&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
 </div>
 </div>
@@ -312,6 +338,28 @@ Additional Inherited Members</h2></td></tr>
 <tr><td class="fieldname"><a id="a972984247412665055486d10b60c4d4da3d3648ae94129252d325fda4deeb2724"></a>kModule&#160;</td><td class="fielddoc"><p>Low power oscillator with a typical frequency of 25 MHz. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a972984247412665055486d10b60c4d4daec0ab9091caa53651a6f2e14066daeb7"></a>kHighFrequency&#160;</td><td class="fielddoc"><p>High frequency oscillator (HFXT) which can be driven by an external oscillator or external square wave with frequency ranging from 1 MHz to 48 Mhz. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a3069929d8bd343b6b56585dc5e5c9ff6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3069929d8bd343b6b56585dc5e5c9ff6">&#9670;&nbsp;</a></span>ReferenceClockFrequency</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a3069929d8bd343b6b56585dc5e5c9ff6">sjsu::msp432p401r::SystemController::ReferenceClockFrequency</a> : uint8_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The available reference clock frequency options. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3069929d8bd343b6b56585dc5e5c9ff6acace9c8bc0a753f588626153a837357e"></a>kF32768Hz&#160;</td><td class="fielddoc"><p>32.768 kHz. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a3069929d8bd343b6b56585dc5e5c9ff6a56d96f6ec497eee3aa15974e203c0f50"></a>kF128kHz&#160;</td><td class="fielddoc"><p>128 kHz. </p>
 </td></tr>
 </table>
 
@@ -379,8 +427,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aa5fc35950087232a322be24fc76ad293"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5fc35950087232a322be24fc76ad293">&#9670;&nbsp;</a></span>GetClockRate()</h2>
+<a id="a7ad898035bf2eb6ed5973f6118cf963f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ad898035bf2eb6ed5973f6118cf963f">&#9670;&nbsp;</a></span>GetClockRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +439,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">units::frequency::hertz_t sjsu::msp432p401r::SystemController::GetClockRate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>&#160;</td>
           <td class="paramname"><em>peripheral</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -404,7 +452,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The clock rate frequency of a clock system module. </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a08fc8605c9e2d99979b7f3e38c754de0">sjsu::SystemController</a>.</p>
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aeb65184788389e817a0cca25c4923a72">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
@@ -437,8 +485,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aeb3ddc67c2ac2aeec4c0c86e156fbfed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb3ddc67c2ac2aeec4c0c86e156fbfed">&#9670;&nbsp;</a></span>IsPeripheralPoweredUp()</h2>
+<a id="a45a86fa52e03e60295a24dba4342b36c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45a86fa52e03e60295a24dba4342b36c">&#9670;&nbsp;</a></span>IsPeripheralPoweredUp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -449,8 +497,8 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">bool sjsu::msp432p401r::SystemController::IsPeripheralPoweredUp </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
-          <td class="paramname"><em>peripheral</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -460,23 +508,14 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks hardware and determines if the peripheral is powered up</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">peripheral</td><td>- which peripheral to check </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true - the peripheral is currently powered up </dd>
-<dd>
-false - the peripheral is currently powered down </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Always returns false. </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aed4799738f18a9ce85dce8250ab7289d">sjsu::SystemController</a>.</p>
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aa977664646d6092428dacdaf0a24096a">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
-<a id="a26f53813cc9bf9f286467c46b424a40c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26f53813cc9bf9f286467c46b424a40c">&#9670;&nbsp;</a></span>PowerDownPeripheral()</h2>
+<a id="aeefe577373023d86cc6be2396fbfbb3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeefe577373023d86cc6be2396fbfbb3f">&#9670;&nbsp;</a></span>PowerDownPeripheral()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -487,8 +526,8 @@ false - the peripheral is currently powered down </dd></dl>
         <tr>
           <td class="memname">void sjsu::msp432p401r::SystemController::PowerDownPeripheral </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
-          <td class="paramname"><em>peripheral</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -498,20 +537,14 @@ false - the peripheral is currently powered down </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Powers down the selected peripheral</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">peripheral</td><td>- which peripheral to power down </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section note"><dt>Note</dt><dd>This function does nothing. </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#abadcdda4e98661666ee03c7fafb19930">sjsu::SystemController</a>.</p>
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a34b1a24f531630312227102ef779d38c">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
-<a id="a387a58a75be1e70fde65f15a0aec325f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a387a58a75be1e70fde65f15a0aec325f">&#9670;&nbsp;</a></span>PowerUpPeripheral()</h2>
+<a id="a4001f34c0bc16d31fb9d55279299624c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4001f34c0bc16d31fb9d55279299624c">&#9670;&nbsp;</a></span>PowerUpPeripheral()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -522,8 +555,8 @@ false - the peripheral is currently powered down </dd></dl>
         <tr>
           <td class="memname">void sjsu::msp432p401r::SystemController::PowerUpPeripheral </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
-          <td class="paramname"><em>peripheral</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -533,15 +566,9 @@ false - the peripheral is currently powered down </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Powers up the selected peripheral</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">peripheral</td><td>- which peripheral to power up </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section note"><dt>Note</dt><dd>This function does nothing. </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aacaa203fe605743d735d841293dea419">sjsu::SystemController</a>.</p>
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a66acf14da8b949ba9e7f1ba9e3ed65fc">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
@@ -580,7 +607,6 @@ false - the peripheral is currently powered down </dd></dl>
 </div><div class="memdoc">
 
 <p>Configures the clock divider for one of the four primary clock signals (ACLK, MCLK, HSMCLK, or SMCLK). </p>
-<p>TODO(#): Migrate to using Error v2.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">clock</td><td>The clock to configure. </td></tr>

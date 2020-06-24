@@ -106,7 +106,6 @@ Collaboration diagram for sjsu::stm32f10x::SystemController:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html">ClockConfiguration</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RM0008 page 126 describes the clock tree for the <a class="el" href="../../dc/d92/namespacesjsu_1_1stm32f10x.html">stm32f10x</a>.  <a href="../../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/ddb/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfigurationRegisters.html">ClockConfigurationRegisters</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit masks for the CFGR register.  <a href="../../dd/ddb/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfigurationRegisters.html#details">More...</a><br /></td></tr>
@@ -212,14 +211,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac4a36700fd2c25f68a343b9e61337d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a64ecc3f9b3def0953dc4bdb1961e3b"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a6a64ecc3f9b3def0953dc4bdb1961e3b">GetClockConfiguration</a> () override</td></tr>
 <tr class="separator:a6a64ecc3f9b3def0953dc4bdb1961e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc6d39d8e373abc3bbeb3646017daddd"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#acc6d39d8e373abc3bbeb3646017daddd">GetClockRate</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> id) const override</td></tr>
-<tr class="separator:acc6d39d8e373abc3bbeb3646017daddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af68f3fdaa93e844523012ff544380ed0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#af68f3fdaa93e844523012ff544380ed0">IsPeripheralPoweredUp</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> id) const override</td></tr>
-<tr class="separator:af68f3fdaa93e844523012ff544380ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3a51a4cd8127265da07f2c25c752a63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac3a51a4cd8127265da07f2c25c752a63">PowerUpPeripheral</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> id) const override</td></tr>
-<tr class="separator:ac3a51a4cd8127265da07f2c25c752a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b26f59b06d272c7e3daaafe7832d377"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a9b26f59b06d272c7e3daaafe7832d377">PowerDownPeripheral</a> (<a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a> id) const override</td></tr>
-<tr class="separator:a9b26f59b06d272c7e3daaafe7832d377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0889af3c0680cc4fe0ecc238ca653ac"><td class="memItemLeft" align="right" valign="top">units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ad0889af3c0680cc4fe0ecc238ca653ac">GetClockRate</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a> id) const override</td></tr>
+<tr class="separator:ad0889af3c0680cc4fe0ecc238ca653ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70eff594403b0f1298d5303c2bccb0b0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a70eff594403b0f1298d5303c2bccb0b0">IsPeripheralPoweredUp</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a> id) const override</td></tr>
+<tr class="separator:a70eff594403b0f1298d5303c2bccb0b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a899955c42d1f8cc1ecaaca025d68b901"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a899955c42d1f8cc1ecaaca025d68b901">PowerUpPeripheral</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a> id) const override</td></tr>
+<tr class="separator:a899955c42d1f8cc1ecaaca025d68b901"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae42a17595a1b30200780361534be41e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ae42a17595a1b30200780361534be41e1">PowerDownPeripheral</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a> id) const override</td></tr>
+<tr class="separator:ae42a17595a1b30200780361534be41e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1SystemController"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1SystemController')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html">sjsu::SystemController</a></td></tr>
 <tr class="memitem:a46fbb6e21f1abce223a1116c2caa8307 inherit pub_methods_classsjsu_1_1SystemController"><td class="memTemplParams" colspan="2">template&lt;class ClockConfiguration &gt; </td></tr>
 <tr class="memitem:a46fbb6e21f1abce223a1116c2caa8307 inherit pub_methods_classsjsu_1_1SystemController"><td class="memTemplItemLeft" align="right" valign="top">ClockConfiguration &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a46fbb6e21f1abce223a1116c2caa8307">GetClockConfiguration</a> ()</td></tr>
@@ -260,7 +259,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a8b7a98b0da777a9f3d3632f778a12fed inherit pub_static_methods_classsjsu_1_1SystemController"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>System controller for <a class="el" href="../../dc/d92/namespacesjsu_1_1stm32f10x.html">stm32f10x</a> that controls clock sources, clock speed, clock outputs control, and peripheral enabling </p>
+<div class="textblock"><p>System controller for <a class="el" href="../../dc/d92/namespacesjsu_1_1stm32f10x.html">stm32f10x</a> that controls clock sources, clock speed, clock outputs control, and peripheral enabling</p>
+<dl class="section see"><dt>See also</dt><dd>8 Connectivity line devices: reset and clock control (RCC) <a href="https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=123">https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=123</a> </dd></dl>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a1cf4e79e6e2c799aecd7c9725ce9c0f8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1cf4e79e6e2c799aecd7c9725ce9c0f8">&#9670;&nbsp;</a></span>AdcDivider</h2>
@@ -578,8 +578,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="acc6d39d8e373abc3bbeb3646017daddd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc6d39d8e373abc3bbeb3646017daddd">&#9670;&nbsp;</a></span>GetClockRate()</h2>
+<a id="ad0889af3c0680cc4fe0ecc238ca653ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0889af3c0680cc4fe0ecc238ca653ac">&#9670;&nbsp;</a></span>GetClockRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -590,7 +590,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">units::frequency::hertz_t sjsu::stm32f10x::SystemController::GetClockRate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>&#160;</td>
           <td class="paramname"><em>id</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -603,7 +603,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the clock rate frequency of a peripheral </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a08fc8605c9e2d99979b7f3e38c754de0">sjsu::SystemController</a>.</p>
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aeb65184788389e817a0cca25c4923a72">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
@@ -629,14 +629,15 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Handles self initialization and clock configuration based on the <a class="el" href="../../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html" title="RM0008 page 126 describes the clock tree for the stm32f10x. ">ClockConfiguration</a> object passed to the controller's constructor. Like other initialize methods, this may be called multiple times during the applications runtime. Note that calling this will return the system's clocks back to their safest operating modes, and will then times. This will power on any systems required to operate based on the <a class="el" href="../../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html" title="RM0008 page 126 describes the clock tree for the stm32f10x. ">ClockConfiguration</a> object. </p>
+<dl class="section attention"><dt>Attention</dt><dd>If configuration of the system clocks is desired, one should consult the user manual of the target MCU in use to determine the valid clock configuration values that can/should be used. The <a class="el" href="../../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac4a36700fd2c25f68a343b9e61337d47">Initialize()</a> method is only responsible for configuring the clock system based on configurations in the <a class="el" href="../../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html">ClockConfiguration</a>. Incorrect configurations may result in a hard fault or cause the clock system(s) to supply incorrect clock rate(s).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Figure 11. Clock Tree <a href="https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=126">https://www.st.com/resource/en/reference_manual/cd00171190-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf#page=126</a> </dd></dl>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a3e3a1b895c0cbf7ddd1f33c61331877c">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
-<a id="af68f3fdaa93e844523012ff544380ed0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af68f3fdaa93e844523012ff544380ed0">&#9670;&nbsp;</a></span>IsPeripheralPoweredUp()</h2>
+<a id="a70eff594403b0f1298d5303c2bccb0b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70eff594403b0f1298d5303c2bccb0b0">&#9670;&nbsp;</a></span>IsPeripheralPoweredUp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -647,7 +648,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">bool sjsu::stm32f10x::SystemController::IsPeripheralPoweredUp </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>&#160;</td>
           <td class="paramname"><em>peripheral</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -658,23 +659,23 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks hardware and determines if the peripheral is powered up</p>
+<p>Checks hardware and determines if the peripheral is powered up.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">peripheral</td><td>- which peripheral to check </td></tr>
+    <tr><td class="paramname">peripheral</td><td>The peripheral to check. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true - the peripheral is currently powered up </dd>
+<dl class="section return"><dt>Returns</dt><dd>true if the peripheral is currently powered up. </dd>
 <dd>
-false - the peripheral is currently powered down </dd></dl>
+false if the peripheral is currently powered down. </dd></dl>
 
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aed4799738f18a9ce85dce8250ab7289d">sjsu::SystemController</a>.</p>
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aa977664646d6092428dacdaf0a24096a">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
-<a id="a9b26f59b06d272c7e3daaafe7832d377"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b26f59b06d272c7e3daaafe7832d377">&#9670;&nbsp;</a></span>PowerDownPeripheral()</h2>
+<a id="ae42a17595a1b30200780361534be41e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae42a17595a1b30200780361534be41e1">&#9670;&nbsp;</a></span>PowerDownPeripheral()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -685,7 +686,7 @@ false - the peripheral is currently powered down </dd></dl>
         <tr>
           <td class="memname">void sjsu::stm32f10x::SystemController::PowerDownPeripheral </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>&#160;</td>
           <td class="paramname"><em>peripheral</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -696,20 +697,20 @@ false - the peripheral is currently powered down </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Powers down the selected peripheral</p>
+<p>Powers down the selected peripheral.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">peripheral</td><td>- which peripheral to power down </td></tr>
+    <tr><td class="paramname">peripheral</td><td>The peripheral to power down. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#abadcdda4e98661666ee03c7fafb19930">sjsu::SystemController</a>.</p>
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a34b1a24f531630312227102ef779d38c">sjsu::SystemController</a>.</p>
 
 </div>
 </div>
-<a id="ac3a51a4cd8127265da07f2c25c752a63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3a51a4cd8127265da07f2c25c752a63">&#9670;&nbsp;</a></span>PowerUpPeripheral()</h2>
+<a id="a899955c42d1f8cc1ecaaca025d68b901"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a899955c42d1f8cc1ecaaca025d68b901">&#9670;&nbsp;</a></span>PowerUpPeripheral()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -720,7 +721,7 @@ false - the peripheral is currently powered down </dd></dl>
         <tr>
           <td class="memname">void sjsu::stm32f10x::SystemController::PowerUpPeripheral </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d55/structsjsu_1_1SystemController_1_1PeripheralID.html">PeripheralID</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">ResourceID</a>&#160;</td>
           <td class="paramname"><em>peripheral</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -731,15 +732,15 @@ false - the peripheral is currently powered down </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Powers up the selected peripheral</p>
+<p>Powers up the selected peripheral.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">peripheral</td><td>- which peripheral to power up </td></tr>
+    <tr><td class="paramname">peripheral</td><td>The peripheral to power up. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#aacaa203fe605743d735d841293dea419">sjsu::SystemController</a>.</p>
+<p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a66acf14da8b949ba9e7f1ba9e3ed65fc">sjsu::SystemController</a>.</p>
 
 </div>
 </div>

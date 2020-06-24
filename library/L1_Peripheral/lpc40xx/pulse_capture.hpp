@@ -46,7 +46,7 @@ class PulseCapture final : public sjsu::PulseCapture
     /// Pointer to memory-mapped timer peripheral registres
     LPC_TIM_TypeDef * timer_register;
     /// Peripheral ID of the timer peripheral to power on at initialization
-    sjsu::SystemController::PeripheralID id;
+    sjsu::SystemController::ResourceID id;
     /// Interrupt number associated with this timer
     IRQn irq;
     /// Callback invoked during a capture event

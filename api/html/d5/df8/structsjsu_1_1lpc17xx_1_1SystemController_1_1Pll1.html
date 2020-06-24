@@ -102,8 +102,7 @@ Public Types</h2></td></tr>
 <tr class="memitem:a4da75961cfc8e01fdfd45ffe8d8f7d1f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1f">Multiplier</a> : uint8_t { <a class="el" href="../../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1fae9f070a658f1e1029e6144317e30f7af">Multiplier::kMultiplyBy4</a> = 0b0'0011, 
 <a class="el" href="../../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1fafd54db507b3b74fb172d51d3a3e8346f">Multiplier::kMultiplyBy3</a> = 0b0'0010, 
 <a class="el" href="../../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1fa85a7d1b8556b165da51a45f00a8d3394">Multiplier::kMultiplyBy2</a> = 0b0'0001
- }<tr class="memdesc:a4da75961cfc8e01fdfd45ffe8d8f7d1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The available PLL1 multipliers.  <a href="../../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1f">More...</a><br /></td></tr>
-</td></tr>
+ }</td></tr>
 <tr class="separator:a4da75961cfc8e01fdfd45ffe8d8f7d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -128,8 +127,9 @@ Public Types</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>The available PLL1 multipliers. </p>
+<p>The available PLL1 multipliers.</p>
+<dl class="section note"><dt>Note</dt><dd>Since only the divider value of 2 is available for PLL1, the multiplier value should be selected based on the main oscillator.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>Table 37. PLL1 <a class="el" href="../../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1f">Multiplier</a> values <a href="https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=55">https://www.nxp.com/docs/en/user-guide/UM10360.pdf#page=55</a> </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4da75961cfc8e01fdfd45ffe8d8f7d1fae9f070a658f1e1029e6144317e30f7af"></a>kMultiplyBy4&#160;</td><td class="fielddoc"><p>The multiplier to use when the main oscillator is 12 MHz. </p>
 </td></tr>

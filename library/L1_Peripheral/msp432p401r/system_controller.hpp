@@ -23,17 +23,17 @@ class SystemController final : public sjsu::SystemController
   {
    public:
     //! @cond Doxygen_Suppress
-    static constexpr auto kAuxiliaryClock       = PeripheralID::Define<0>();
-    static constexpr auto kMasterClock          = PeripheralID::Define<1>();
-    static constexpr auto kSubsystemMasterClock = PeripheralID::Define<2>();
+    static constexpr auto kAuxiliaryClock       = ResourceID::Define<0>();
+    static constexpr auto kMasterClock          = ResourceID::Define<1>();
+    static constexpr auto kSubsystemMasterClock = ResourceID::Define<2>();
     static constexpr auto kLowSpeedSubsystemMasterClock =
-        PeripheralID::Define<3>();
-    static constexpr auto kBackupClock           = PeripheralID::Define<4>();
-    static constexpr auto kLowFrequencyClock     = PeripheralID::Define<5>();
-    static constexpr auto kVeryLowFrequencyClock = PeripheralID::Define<6>();
-    static constexpr auto kReferenceClock        = PeripheralID::Define<7>();
-    static constexpr auto kModuleClock           = PeripheralID::Define<8>();
-    static constexpr auto kSystemClock           = PeripheralID::Define<9>();
+        ResourceID::Define<3>();
+    static constexpr auto kBackupClock           = ResourceID::Define<4>();
+    static constexpr auto kLowFrequencyClock     = ResourceID::Define<5>();
+    static constexpr auto kVeryLowFrequencyClock = ResourceID::Define<6>();
+    static constexpr auto kReferenceClock        = ResourceID::Define<7>();
+    static constexpr auto kModuleClock           = ResourceID::Define<8>();
+    static constexpr auto kSystemClock           = ResourceID::Define<9>();
     //! @endcond
   };
 
@@ -91,10 +91,18 @@ class SystemController final : public sjsu::SystemController
     kSystem,
   };
 
+  /// The available reference clock frequency options.
+  enum ReferenceClockFrequency : uint8_t
+  {
+    /// 32.768 kHz.
+    kF32768Hz = 0b0,
+    /// 128 kHz.
+    kF128kHz = 0b1,
+  };
+
   /// The available clock dividers for the primary clocks.
   enum class ClockDivider : uint8_t
   {
-    //! @cond Doxygen_Suppress
     kDivideBy1   = 0b000,
     kDivideBy2   = 0b001,
     kDivideBy4   = 0b010,
@@ -103,7 +111,6 @@ class SystemController final : public sjsu::SystemController
     kDivideBy32  = 0b101,
     kDivideBy64  = 0b110,
     kDivideBy128 = 0b111,
-    //! @endcond
   };
 
   /// Namespace containing the fixed clock rates of the available internal
@@ -115,13 +122,10 @@ class SystemController final : public sjsu::SystemController
   {
     /// Clock rate for the very low power oscillator.
     static constexpr units::frequency::hertz_t kVeryLowFrequency = 9'400_Hz;
-
     /// Clock rate for the low power oscillator.
     static constexpr units::frequency::hertz_t kModule = 25_MHz;
-
     /// Internal system oscillator.
     static constexpr units::frequency::hertz_t kSystem = 5_MHz;
-
     /// Clock rates for the reference oscillator The reference oscillator is
     /// configuration to be either 32.768 kHz or 128 kHz.
     static constexpr std::array<units::frequency::hertz_t, 2> kReference = {
@@ -132,20 +136,27 @@ class SystemController final : public sjsu::SystemController
   /// Namespace containing the fixed clock rates of the available on-board
   /// external oscillators.
   ///
-  /// @see http://www.ti.com/lit/ug/slau597f/slau597f.pdf
+  /// @see 6.1 Clock System Introduction
+  ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=379
   struct ExternalOscillator  // NOLINT
   {
     /// Clock rate for the on-board external low frequency oscillator.
     static constexpr units::frequency::hertz_t kLowFrequency = 32'768_Hz;
-
     /// Clock rate for the on-board external high frequency oscillator.
     static constexpr units::frequency::hertz_t kHighFrequency = 48_MHz;
   };
+
+  // ===========================================================================
+  // Register and Bit Mask Definitions
+  // ===========================================================================
 
   /// Namespace containing the bit masks for the Key Register (KEY) which locks
   /// or unlocks the other clock system registers.
   struct KeyRegister  // NOLINT
   {
+    /// @see Table 6-3. CSKEY Register Description
+    ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=394
+    ///
     /// @returns The CSKEY bit register.
     static bit::Register<uint32_t> Register()
     {
@@ -161,6 +172,9 @@ class SystemController final : public sjsu::SystemController
   /// which controls the configurations for the digitally controlled oscillator.
   struct Control0Register  // NOLINT
   {
+    /// @see Table 6-4. CSCTL0 Register Description
+    ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=395
+    ///
     /// @returns The CSCTL0 bit register.
     static bit::Register<uint32_t> Register()
     {
@@ -169,10 +183,8 @@ class SystemController final : public sjsu::SystemController
 
     /// DCO tuning value bit mask.
     static constexpr auto kTuningSelect = bit::MaskFromRange(0, 9);
-
     /// DCO frequency seelect bit mask.
     static constexpr auto kFrequencySelect = bit::MaskFromRange(16, 18);
-
     /// DCO enable bit mask.
     static constexpr auto kEnable = bit::MaskFromRange(23);
   };
@@ -182,6 +194,9 @@ class SystemController final : public sjsu::SystemController
   /// clock divider for the primary clock signals.
   struct Control1Register  // NOLINT
   {
+    /// @see Table 6-5. CSCTL1 Register Description
+    ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=396
+    ///
     /// @returns The CSCTL1 bit register.
     static bit::Register<uint32_t> Register()
     {
@@ -190,30 +205,24 @@ class SystemController final : public sjsu::SystemController
 
     /// Master clock source select bit mask.
     static constexpr auto kMasterClockSourceSelect = bit::MaskFromRange(0, 2);
-
     /// Subsystem master clock source select bit mask.
     static constexpr auto kSubsystemClockSourceSelect =
         bit::MaskFromRange(4, 6);
-
     /// Auxiliary clock source select bit mask.
     static constexpr auto kAuxiliaryClockSourceSelect =
         bit::MaskFromRange(8, 10);
-
     /// Backup clock source select bit mask.
     static constexpr auto kBackupClockSourceSelect = bit::MaskFromRange(12);
 
     /// Master clock divider select bit mask.
     static constexpr auto kMasterClockDividerSelect =
         bit::MaskFromRange(16, 18);
-
     /// Subsystem master clock divider select bit mask.
     static constexpr auto kSubsystemClockDividerSelect =
         bit::MaskFromRange(20, 22);
-
     /// Auxiliary clock divider select bit mask.
     static constexpr auto kAuxiliaryClockDividerSelect =
         bit::MaskFromRange(24, 26);
-
     /// Low speed subsystem master clock divider select bit mask.
     static constexpr auto kLowSpeedSubsystemClockDividerSelect =
         bit::MaskFromRange(28, 30);
@@ -222,6 +231,9 @@ class SystemController final : public sjsu::SystemController
   /// Namespace containing the bit masks for the Clock Enable Register (CLKEN).
   struct ClockEnableRegister  // NOLINT
   {
+    /// @see Table 6-8. CSCLKEN Register Description
+    ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=401
+    ///
     /// @returns The CSCLKEN bit register.
     static bit::Register<uint32_t> Register()
     {
@@ -231,6 +243,10 @@ class SystemController final : public sjsu::SystemController
     /// Reference clock frequency select bit mask.
     static constexpr auto kReferenceFrequencySelect = bit::MaskFromRange(15);
   };
+
+  // ===========================================================================
+  // Clock Configuration
+  // ===========================================================================
 
   /// @see Figure 6-1. Clock System Block Diagram
   ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=380
@@ -285,9 +301,8 @@ class SystemController final : public sjsu::SystemController
     /// configurable to output 32.768 kHz or 128 kHz.
     struct
     {
-      /// When frequency_select = 0b0, the reference clock outputs 32.768 kHz.
-      /// When frequency_select = 0b1, the reference clock outputs 128 kHz.
-      uint8_t frequency_select = 0b0;
+      /// The reference clock outputs a default frequency of 32.768 kHz.
+      ReferenceClockFrequency frequency = ReferenceClockFrequency::kF32768Hz;
     } reference = {};
 
     /// Configurations for the digitally controlled (DCO) clock module.
@@ -427,7 +442,7 @@ class SystemController final : public sjsu::SystemController
   }
 
   /// @returns The clock rate frequency of a clock system module.
-  units::frequency::hertz_t GetClockRate(PeripheralID peripheral) const override
+  units::frequency::hertz_t GetClockRate(ResourceID peripheral) const override
   {
     if (peripheral.device_id >= kClockPeripheralCount)
     {
@@ -440,17 +455,17 @@ class SystemController final : public sjsu::SystemController
   /// Configures the clock divider for one of the four primary clock signals
   /// (ACLK, MCLK, HSMCLK, or SMCLK).
   ///
-  /// TODO(#): Migrate to using Error v2.
-  ///
   /// @param clock   The clock to configure.
   /// @param divider The desired clock divider value. Only the following
   ///                dividers are available: 1, 2, 4, 8, 16, 32, 64, 128.
   void SetClockDivider(Clock clock, ClockDivider divider) const
   {
-    SJ2_ASSERT_FATAL(
-        Value(clock) <= Value(Clock::kLowSpeedSubsystemMaster),
-        "Only the following clocks have a clock divider: kAuxiliary, kMaster, "
-        "kSubsystemMaster, or kLowSpeedSubsystemMaster.");
+    if (Value(clock) > Value(Clock::kLowSpeedSubsystemMaster))
+    {
+      LogWarning(
+          "Ignoring attempt to set clock divider for a non-primary clock.");
+      return;
+    }
 
     constexpr bit::Mask kDividerSelectMasks[] = {
       Control1Register::kAuxiliaryClockDividerSelect,
@@ -468,22 +483,17 @@ class SystemController final : public sjsu::SystemController
     WaitForClockReadyStatus(clock);
   }
 
-  bool IsPeripheralPoweredUp(PeripheralID) const override
+  /// @returns Always returns false.
+  bool IsPeripheralPoweredUp(ResourceID) const override
   {
     return false;
   }
 
-  // TODO(#): Migrate to using Error v2.
-  void PowerUpPeripheral(PeripheralID) const override
-  {
-    SJ2_ASSERT_FATAL(false, "This function is not implemented.");
-  }
+  /// @note This function does nothing.
+  void PowerUpPeripheral(ResourceID) const override {}
 
-  // TODO(#): Migrate to using Error v2.
-  void PowerDownPeripheral(PeripheralID) const override
-  {
-    SJ2_ASSERT_FATAL(false, "This function is not implemented.");
-  }
+  /// @note This function does nothing.
+  void PowerDownPeripheral(ResourceID) const override {}
 
  private:
   /// Unlocks the clock system registers by writing the necessary value to the
@@ -505,18 +515,11 @@ class SystemController final : public sjsu::SystemController
   /// Checks and waits for a clock signal to become stable after a frequency or
   /// divider configuration.
   ///
-  /// TODO(#): Migrate to using Error v2.
-  ///
   /// @note This feature is only available for the primary clock signals.
   ///
   /// @param clock The primary clock signal ready status to wait on.
   void WaitForClockReadyStatus(Clock clock) const
   {
-    if constexpr (build::kPlatform == build::Platform::host)
-    {
-      return;
-    }
-
     SJ2_ASSERT_FATAL(
         Value(clock) <= Value(Clock::kBackup),
         "Only the following clocks have a ready status: kAuxiliary, kMaster, "
@@ -535,8 +538,6 @@ class SystemController final : public sjsu::SystemController
 
   /// Configures one of the five primary clock signals (ACLK, MCLK,
   /// HSMCLK / SMCLK, and BCLK) to be sourced by the specified oscillator.
-  ///
-  /// TODO(#): Migrate to using Error v2.
   ///
   /// @note When selecting the oscillator source for either SMCLK or SMCLK, the
   ///       oscillator will applied to both clock signals.
@@ -562,20 +563,24 @@ class SystemController final : public sjsu::SystemController
       case Clock::kSubsystemMaster: [[fallthrough]];
       case Clock::kLowSpeedSubsystemMaster: break;
       case Clock::kAuxiliary:
-        SJ2_ASSERT_FATAL(
+      {
+        SJ2_ASSERT_WARNING(
             select_value <= Value(Oscillator::kReference),
             "The auxiliary clock can only be driven by kLowFrequency, "
-            "kVeryLowFrequency, or kReference.");
+            "kVeryLowFrequency, or kReference. The system will default to "
+            "using kReference");
         break;
+      }
       case Clock::kBackup:
+      {
         switch (source)
         {
           case Oscillator::kLowFrequency: break;
           case Oscillator::kReference:
           {
             select_value = 0b1;
+            break;
           }
-          break;
           default:
             SJ2_ASSERT_FATAL(false,
                              "The backup clock can only be driven by "
@@ -583,12 +588,16 @@ class SystemController final : public sjsu::SystemController
             return;
         }
         break;
+      }
       default:
+      {
         SJ2_ASSERT_FATAL(
             false,
             "clock must be one of the five primary clocks: kAuxiliary, "
-            "kMaster, kSubsystemMaster, kLowSpeedSubsystemMaster, or kBackup.");
+            "kMaster, kSubsystemMaster, kLowSpeedSubsystemMaster, or "
+            "kBackup.");
         return;
+      }
     }
 
     Control1Register::Register()
@@ -597,8 +606,6 @@ class SystemController final : public sjsu::SystemController
   }
 
   /// Configures the DCO clock to generate a desired target frequency.
-  ///
-  /// TODO(#): Migrate to using Error v2.
   ///
   /// @see 6.2.8.3 DCO Ranges and Tuning in the MSP432P4xx Reference Manual.
   ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=386
@@ -705,20 +712,14 @@ class SystemController final : public sjsu::SystemController
 
   /// Configures the reference clock to output either 32.768 kHz or 128 kHz.
   ///
-  /// TODO(#): Migrate to using Error v2.
-  ///
   /// @see Table 6-8. CSCLKEN Register Description
   ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=401
   ///
-  /// @returns The reference clock frequency.
+  /// @returns The running reference clock frequency.
   units::frequency::hertz_t ConfigureReferenceClock() const
   {
     const uint8_t kFrequencySelect =
-        clock_configuration_.reference.frequency_select;
-
-    SJ2_ASSERT_FATAL(kFrequencySelect <= 0b1,
-                     "Invalid frequency_select code for configuring the "
-                     "reference clock frequency.");
+        Value(clock_configuration_.reference.frequency);
 
     ClockEnableRegister::Register()
         .Insert(kFrequencySelect,

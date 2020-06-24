@@ -8,19 +8,20 @@
 - [Detailed Design](#detailed-design)
   - [Interface](#interface)
   - [Configuring the Default System Controller for the Platform](#configuring-the-default-system-controller-for-the-platform)
-    - [static void SetPlatformController(SystemController * system_controller)](#static-void-setplatformcontrollersystemcontroller--systemcontroller)
+    - [static void SetPlatformController(SystemController * system_controller)](#static-void-setplatformcontrollersystemcontroller--system_controller)
     - [static SystemController & GetPlatformController()](#static-systemcontroller--getplatformcontroller)
+  - [Defining System Controller Resources](#defining-system-controller-resources)
   - [Clock Configuration](#clock-configuration)
     - [void * GetClockConfiguration()](#void--getclockconfiguration)
-    - [ClockConfiguration & GetClockConfiguration()](#clockconfiguration--getclockconfiguration)
+    - [template &lt;class ClockConfiguration> ClockConfiguration & GetClockConfiguration()](#template-class-clockconfiguration-clockconfiguration--getclockconfiguration)
   - [Initialization & Clock Configuration](#initialization--clock-configuration)
-    - [Returns&lt;void> Initialize()](#returnsvoid-initialize)
+    - [void Initialize()](#void-initialize)
   - [Getting the Clock Rate of a Resource](#getting-the-clock-rate-of-a-resource)
-    - [Returns&lt;units::frequency::hertz_t> GetClockRate(ResourceID resource) const](#returnsunitsfrequencyhertzt-getclockrateresourceid-resource-const)
+    - [units::frequency::hertz_t GetClockRate(ResourceID resource) const](#unitsfrequencyhertz_t-getclockrateresourceid-resource-const)
   - [Peripheral Power Control](#peripheral-power-control)
-    - [Returns&lt;bool> IsPeripheralPoweredUp(ResourceID peripheral) const](#returnsbool-isperipheralpoweredupresourceid-peripheral-const)
-    - [Returns&lt;void> PowerUpPeripheral(ResourceID peripheral) const](#returnsvoid-powerupperipheralresourceid-peripheral-const)
-    - [Returns&lt;void> PowerDownPeripheral(ResourceID peripheral) const](#returnsvoid-powerdownperipheralresourceid-peripheral-const)
+    - [bool IsPeripheralPoweredUp(ResourceID peripheral) const](#bool-isperipheralpoweredupresourceid-peripheral-const)
+    - [void PowerUpPeripheral(ResourceID peripheral) const](#void-powerupperipheralresourceid-peripheral-const)
+    - [void PowerDownPeripheral(ResourceID peripheral) const](#void-powerdownperipheralresourceid-peripheral-const)
 - [Future Advancements](#future-advancements)
 - [Testing Plan](#testing-plan)
   - [Unit Testing Scheme](#unit-testing-scheme)
@@ -87,13 +88,13 @@ class SystemController
     bool operator==(const ResourceID & compare) const;
   };
 
-  virtual Returns<void> Initialize() = 0;
+  virtual void Initialize() = 0;
   virtual void * GetClockConfiguration() = 0;
-  virtual Returns<units::frequency::hertz_t> GetClockRate(
+  virtual units::frequency::hertz_t GetClockRate(
       ResourceID resource) const = 0;
-  virtual Returns<bool> IsPeripheralPoweredUp(ResourceID peripheral) const = 0;
-  virtual Returns<void> PowerUpPeripheral(ResourceID peripheral) const = 0;
-  virtual Returns<void> PowerDownPeripheral(ResourceID peripheral) const = 0;
+  virtual bool IsPeripheralPoweredUp(ResourceID peripheral) const = 0;
+  virtual void PowerUpPeripheral(ResourceID peripheral) const = 0;
+  virtual void PowerDownPeripheral(ResourceID peripheral) const = 0;
 
   template <class ClockConfiguration>
   ClockConfiguration & GetClockConfiguration();
@@ -118,6 +119,8 @@ clock configurations.
     This should not be used by `L2 HAL` or `L3 Application` as knowledge about
     the particular platform is not and should not be known at those levels.
 
+## Defining System Controller Resources
+
 ## Clock Configuration
 
 ### void * GetClockConfiguration()
@@ -125,7 +128,7 @@ Returns a pointer to the memory location of the system controller's
 `ClockConfiguration`. In general this should not be called directly. It is
 preferred to call `ClockConfiguration & GetClockConfiguration()` instead.
 
-### ClockConfiguration & GetClockConfiguration()
+### template &lt;class ClockConfiguration> ClockConfiguration & GetClockConfiguration()
 A shorthand for getting the clock configuration for the system controller of a
 specific platform by invoking `void * GetClockConfiguration()` and performing
 `reinterpret_cast<ClockConfiguration *>()` on the result to return the specified
@@ -134,24 +137,39 @@ desired clock configurations for the system.
 
 ## Initialization & Clock Configuration
 
-### Returns&lt;void> Initialize()
+### void Initialize()
 Initializes and configures the system clocks and/or PLLs with the configurations
 specified in the `ClockConfiguration`.
 
+!!! Attention
+    The `Initialize()` method shall only be responsible for configuring the
+    `SystemController` and its clocks and/or PLLs using the settings provided in
+    the `ClockConfiguration`.
+
+    `Initialize()` shall not be responsible for
+    verifying the configurations in `ClockConfiguration`. It is the developer's
+    responsibility to review and understand the system's configurations through
+    the user manual of the target MCU to ensure configurations set in the
+    `ClockConfiguration` are valid.
+
 ## Getting the Clock Rate of a Resource
 
-### Returns&lt;units::frequency::hertz_t> GetClockRate(ResourceID resource) const
-Returns the running clock rate of the specified resource.
+### units::frequency::hertz_t GetClockRate(ResourceID resource) const
+Returns the running clock rate of the specified resource. `0 Hz` shall be
+returned if the specified resource has not been previously defined by
+`ResourceID::Define<size_t>()`.
 
 ## Peripheral Power Control
 
-### Returns&lt;bool> IsPeripheralPoweredUp(ResourceID peripheral) const
-Returns a boolean of whether the specified peripheral is powered on or off.
+### bool IsPeripheralPoweredUp(ResourceID peripheral) const
+Returns a boolean of whether the specified peripheral is powered on or off. This
+function shall always return `false` if checking the power on status of a
+peripheral(s) is not supported.
 
-### Returns&lt;void> PowerUpPeripheral(ResourceID peripheral) const
+### void PowerUpPeripheral(ResourceID peripheral) const
 Power up the selected peripheral.
 
-### Returns&lt;void> PowerDownPeripheral(ResourceID peripheral) const
+### void PowerDownPeripheral(ResourceID peripheral) const
 Power down the selected peripheral.
 
 # Future Advancements
