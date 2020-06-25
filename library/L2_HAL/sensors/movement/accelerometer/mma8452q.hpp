@@ -6,6 +6,7 @@
 #include "L2_HAL/sensors/movement/accelerometer.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
+#include "utility/math/limits.hpp"
 #include "utility/map.hpp"
 
 namespace sjsu
@@ -112,7 +113,6 @@ class Mma8452q : public Accelerometer
     // 16 value. We do not shift yet because we want to get the signed bit in
     // the most significant bit position to allow for sign extension when we
     // shift to the right later.
-
     int16_t x = static_cast<int16_t>(xyz_data[0] << 8 | xyz_data[1]);
     int16_t y = static_cast<int16_t>(xyz_data[2] << 8 | xyz_data[3]);
     int16_t z = static_cast<int16_t>(xyz_data[4] << 8 | xyz_data[5]);
@@ -127,19 +127,18 @@ class Mma8452q : public Accelerometer
 
     // Convert the 12-bit signed value into a value from -1.0 to 1.0f so it can
     // be multiplied by the kFullScale in order to get the true acceleration.
+    constexpr int16_t kMin = sjsu::BitLimits<12, int16_t>::Min();
+    constexpr int16_t kMax = sjsu::BitLimits<12, int16_t>::Max();
 
-    int16_t max = ((1 << 12) / 2) * -1;
-    int16_t min = ((1 << 12) / 2) - 1;
+    float x_axis_ratio = sjsu::Map(x, kMin, kMax, -1.0f, 1.0f);
+    float y_axis_ratio = sjsu::Map(y, kMin, kMax, -1.0f, 1.0f);
+    float z_axis_ratio = sjsu::Map(z, kMin, kMax, -1.0f, 1.0f);
 
-    float final_x = sjsu::Map(x, min, max, -1.0f, 1.0f);
-    float final_y = sjsu::Map(y, min, max, -1.0f, 1.0f);
-    float final_z = sjsu::Map(z, min, max, -1.0f, 1.0f);
+    sjsu::LogDebug("x = %d :: y = %d :: z = %d", x, y, z);
 
-    sjsu::LogDebug("%d :: %d :: %d", x, y, z);
-
-    acceleration.x = kFullScale * final_x;
-    acceleration.y = kFullScale * final_y;
-    acceleration.z = kFullScale * final_z;
+    acceleration.x = kFullScale * x_axis_ratio;
+    acceleration.y = kFullScale * y_axis_ratio;
+    acceleration.z = kFullScale * z_axis_ratio;
 
     return acceleration;
   }
