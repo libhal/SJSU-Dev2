@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['acceleration_5ft',['Acceleration_t',['../d8/dc4/structsjsu_1_1Accelerometer_1_1Acceleration__t.html',1,'sjsu::Accelerometer']]],
   ['accelerometer',['Accelerometer',['../d2/d7b/classsjsu_1_1Accelerometer.html',1,'sjsu']]],
   ['adc',['Adc',['../d0/dc1/classsjsu_1_1Adc.html',1,'sjsu::Adc'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html',1,'sjsu::lpc40xx::Adc']]],
   ['adcchannel',['AdcChannel',['../db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html',1,'sjsu::lpc17xx']]],

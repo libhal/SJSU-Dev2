@@ -22,7 +22,7 @@ var searchData=
   ['message_5ft',['Message_t',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html',1,'sjsu::Can']]],
   ['millisecond_5fcount',['millisecond_count',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a4b3de8f56a24d2ff25838f07052776ae',1,'sjsu::cortex::SystemTimer']]],
   ['miso',['miso',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#a70275f2510b3058f77b8f2964731a05e',1,'sjsu::lpc40xx::Spi::Bus_t']]],
-  ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu::Mma8452q'],['../d5/d82/classsjsu_1_1Mma8452q.html#ac25e7d66b9531cd385721ba1757fab7a',1,'sjsu::Mma8452q::Mma8452q()']]],
+  ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu::Mma8452q'],['../d5/d82/classsjsu_1_1Mma8452q.html#a8d39b64e10b87ceefb5a4f49f92b5a16',1,'sjsu::Mma8452q::Mma8452q()']]],
   ['mma8452q_2ehpp',['mma8452q.hpp',['../dc/d47/mma8452q_8hpp.html',1,'']]],
   ['mode',['Mode',['../d0/d98/structsjsu_1_1lpc40xx_1_1Can_1_1Mode.html',1,'sjsu::lpc40xx::Can::Mode'],['../d8/d99/classsjsu_1_1Apds9960.html#a155e7ccfaca8504191453e3a395b3c82',1,'sjsu::Apds9960::Mode()']]],
   ['modules',['Modules',['../d5/d44/classsjsu_1_1msp432p401r_1_1SystemController_1_1Modules.html',1,'sjsu::msp432p401r::SystemController']]],

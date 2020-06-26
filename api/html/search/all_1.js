@@ -1,9 +1,11 @@
 var searchData=
 [
   ['a',['a',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#a9c48cd871987d2e96432228bd6f3bc6f',1,'sjsu::FallbackListNode_t']]],
+  ['acceleration_5ft',['Acceleration_t',['../d8/dc4/structsjsu_1_1Accelerometer_1_1Acceleration__t.html',1,'sjsu::Accelerometer']]],
   ['accelerometer',['Accelerometer',['../d2/d7b/classsjsu_1_1Accelerometer.html',1,'sjsu::Accelerometer'],['../db/dc0/structsjone.html#a252df24f22db272648cbaa5cb1cf9313',1,'sjone::Accelerometer()'],['../db/dc5/structsjtwo.html#ae29e5c4359ad5fb762654251afbbbb84',1,'sjtwo::Accelerometer()']]],
   ['accelerometer_2ehpp',['accelerometer.hpp',['../d8/d04/accelerometer_8hpp.html',1,'']]],
   ['accesspointsecurity',['AccessPointSecurity',['../dc/d16/classsjsu_1_1WiFi.html#a879eea56dbddcd758b97ee59d1f3757b',1,'sjsu::WiFi']]],
+  ['activemode',['ActiveMode',['../d5/d82/classsjsu_1_1Mma8452q.html#a35320eb01f1a5ed0ee7356c618526993',1,'sjsu::Mma8452q']]],
   ['adc',['Adc',['../d0/dc1/classsjsu_1_1Adc.html',1,'sjsu::Adc'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html',1,'sjsu::lpc40xx::Adc'],['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a8fa28b42f8fc2368d5fd0e9820653b3d',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::adc()'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a87771be4c890aa7270e852b2d6f60673',1,'sjsu::lpc40xx::Adc::Adc()']]],
   ['adc_2ehpp',['adc.hpp',['../d5/d90/adc_8hpp.html',1,'(Global Namespace)'],['../de/d44/lpc17xx_2adc_8hpp.html',1,'(Global Namespace)'],['../dd/d54/lpc40xx_2adc_8hpp.html',1,'(Global Namespace)']]],
   ['adc2',['adc2',['../db/dc0/structsjone.html#af58a3c74d0e7e6704d35ebf3c0378f81',1,'sjone']]],

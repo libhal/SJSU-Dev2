@@ -1,6 +1,7 @@
 var searchData=
 [
   ['emit_5fall_5fmethods',['EMIT_ALL_METHODS',['../d0/daf/testing__frameworks_8hpp.html#aa9b2d820e3d0b60447ba8912db128ee4',1,'testing_frameworks.hpp']]],
+  ['enable_5fpredefined_5facceleration_5funits',['ENABLE_PREDEFINED_ACCELERATION_UNITS',['../de/d06/units_8hpp.html#a5ac0c6a39d8c7a309082ffa4f2fdfa99',1,'units.hpp']]],
   ['enable_5fpredefined_5fangle_5funits',['ENABLE_PREDEFINED_ANGLE_UNITS',['../de/d06/units_8hpp.html#aabb93b8b8864f2c9a9de38cd7df9aa3d',1,'units.hpp']]],
   ['enable_5fpredefined_5fcharge_5funits',['ENABLE_PREDEFINED_CHARGE_UNITS',['../de/d06/units_8hpp.html#ae418cf5aff268c2a9ca8707a9bdbe23d',1,'units.hpp']]],
   ['enable_5fpredefined_5fcurrent_5funits',['ENABLE_PREDEFINED_CURRENT_UNITS',['../de/d06/units_8hpp.html#a2c02dd8d98f83f7c040750d67b1d5ca1',1,'units.hpp']]],

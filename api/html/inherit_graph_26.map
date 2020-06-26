@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/d5c/classsjsu_1_1DistanceSensor.html" title="sjsu::DistanceSensor" alt="" coords="5,5,163,32"/>
-<area shape="rect" id="node2" href="$d2/dc6/classsjsu_1_1TFMini.html" title="sjsu::TFMini" alt="" coords="211,5,309,32"/>
+<area shape="rect" id="node1" href="$d0/da2/classsjsu_1_1Device.html" title="sjsu::Device\&lt; I2cDevice\l\&lt; kDeviceAddress, endianess,\l sjsu::Apds9960::MemoryMap\l_t \&gt;, endianess, sjsu::Apds9960\l::MemoryMap_t \&gt;" alt="" coords="5,5,235,91"/>
+<area shape="rect" id="node2" href="$d9/dd7/classsjsu_1_1I2cDevice.html" title="sjsu::I2cDevice\&lt; 0x39,\l Endian::kLittle, sjsu\l::Apds9960::MemoryMap_t \&gt;" alt="" coords="283,20,492,76"/>
 </map>

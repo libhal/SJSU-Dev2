@@ -30,7 +30,7 @@ var searchData=
   ['timeout',['timeout',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a050e7f7988d762c4099178e8842e32b6',1,'sjsu::I2c::Transaction_t']]],
   ['timeout_5ftimer_2ehpp',['timeout_timer.hpp',['../d6/d1f/timeout__timer_8hpp.html',1,'']]],
   ['timeouttimer',['TimeoutTimer',['../d6/d98/classsjsu_1_1TimeoutTimer.html',1,'sjsu::TimeoutTimer'],['../d6/d98/classsjsu_1_1TimeoutTimer.html#a83d5c206c62999ae502fad63f24699ae',1,'sjsu::TimeoutTimer::TimeoutTimer()']]],
-  ['timer',['Timer',['../dd/d31/classsjsu_1_1Timer.html',1,'sjsu::Timer'],['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html',1,'sjsu::lpc40xx::Timer'],['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html',1,'sjsu::lpc40xx::Pwm::Timer'],['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ac38fc2715d1024909ff4cc314bc14cb6',1,'sjsu::lpc40xx::Timer::Timer()']]],
+  ['timer',['Timer',['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html',1,'sjsu::lpc40xx::Timer'],['../dd/d31/classsjsu_1_1Timer.html',1,'sjsu::Timer'],['../d6/d4b/structsjsu_1_1lpc40xx_1_1Pwm_1_1Timer.html',1,'sjsu::lpc40xx::Pwm::Timer'],['../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ac38fc2715d1024909ff4cc314bc14cb6',1,'sjsu::lpc40xx::Timer::Timer()']]],
   ['timer_2ehpp',['timer.hpp',['../d2/da7/lpc17xx_2timer_8hpp.html',1,'(Global Namespace)'],['../d0/da8/lpc40xx_2timer_8hpp.html',1,'(Global Namespace)'],['../df/d05/timer_8hpp.html',1,'(Global Namespace)']]],
   ['timer_5fregister',['timer_register',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a11d2efb01dc9c4ee5ad6de005590425f',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
   ['timercontrolregister',['TimerControlRegister',['../d5/daf/structsjsu_1_1lpc40xx_1_1Timer_1_1TimerControlRegister.html',1,'sjsu::lpc40xx::Timer']]],
@@ -48,5 +48,5 @@ var searchData=
   ['tsop752_2ehpp',['tsop752.hpp',['../d0/da1/tsop752_8hpp.html',1,'']]],
   ['tx',['tx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a67f2ca56b242323c441088b74c7507c7',1,'sjsu::lpc40xx::Uart::Port_t::tx()'],['../d6/d49/structsjsu_1_1stm32f10x_1_1UartBase_1_1Port__t.html#acc947254db6410009c377c27abdd6272',1,'sjsu::stm32f10x::UartBase::Port_t::tx()']]],
   ['tx_5ffunction_5fid',['tx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a8fbfab57d6cf7237b51ed843e664b3f2',1,'sjsu::lpc40xx::Uart::Port_t']]],
-  ['type',['Type',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878',1,'sjsu::Storage::Type()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()'],['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a078fb34df8715dcc8f1d5739a3ad9966',1,'sjsu::Sd::CardInfo_t::type()']]]
+  ['type',['type',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a078fb34df8715dcc8f1d5739a3ad9966',1,'sjsu::Sd::CardInfo_t::type()'],['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878',1,'sjsu::Storage::Type()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()']]]
 ];
