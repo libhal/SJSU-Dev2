@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing interrupt interface", "[interrupt-interface]")
+TEST_CASE("Testing interrupt interface")
 {
   SECTION("Should be able to Set and Get PlatformController()")
   {

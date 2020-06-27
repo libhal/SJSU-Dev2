@@ -5,7 +5,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Servo);
 
-TEST_CASE("Testing Servo", "[Servo]")
+TEST_CASE("Testing Servo")
 {
   Mock<Pwm> mock_pwm;
 

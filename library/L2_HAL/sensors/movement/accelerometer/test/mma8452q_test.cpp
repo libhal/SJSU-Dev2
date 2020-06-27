@@ -5,7 +5,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Mma8452q);
 
-TEST_CASE("Accelerometer", "[accelerometer]")
+TEST_CASE("Accelerometer")
 {
   Mock<sjsu::I2c> mock_i2c;
   Fake(Method(mock_i2c, Initialize));

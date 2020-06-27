@@ -7,7 +7,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Tsop752);
 
-TEST_CASE("Tsop752 Infrared Receiver Test", "[tsop752]")
+TEST_CASE("Tsop752 Infrared Receiver Test")
 {
   Mock<PulseCapture> mock_pulse_capture;
   Mock<Timer> mock_timer;

@@ -12,8 +12,7 @@ namespace msp432p401r
 {
 EMIT_ALL_METHODS(SystemController);
 
-TEST_CASE("Testing msp432p401r SystemController",
-          "[msp432p401r-system-controller]")
+TEST_CASE("Testing msp432p401r SystemController")
 {
   // Simulate local version of clock system (CS) registers.
   CS_Type local_cs;

@@ -7,7 +7,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Adc);
 
-TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
+TEST_CASE("Testing lpc40xx adc")
 {
   // Create local version of LPC_ADC
   LPC_ADC_TypeDef local_adc;
@@ -160,7 +160,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
     CHECK(adc_raw == bit::Extract(local_adc.DR[0], Adc::DataRegister::kResult));
     CHECK(kSoftwareStartCode ==
           bit::Extract(local_adc.CR, Adc::Control::kStartCode));
-    CHECK(1 << kMockChannel0.channel ==
+    CHECK((1 << kMockChannel0.channel) ==
           bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
   }
   SECTION("Read channel 1 using software mode")
@@ -177,7 +177,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
     CHECK(adc_raw == bit::Extract(local_adc.DR[1], Adc::DataRegister::kResult));
     CHECK(kSoftwareStartCode ==
           bit::Extract(local_adc.CR, Adc::Control::kStartCode));
-    CHECK(1 << kMockChannel1.channel ==
+    CHECK((1 << kMockChannel1.channel) ==
           bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
   }
   SECTION("Read using burst mode")
@@ -191,7 +191,7 @@ TEST_CASE("Testing lpc40xx adc", "[lpc40xx-adc]")
     // Exercise
     uint32_t adc_raw = channel0_mock.Read();
     // Verify
-    CHECK(1 << kMockChannel0.channel ==
+    CHECK((1 << kMockChannel0.channel) ==
           bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
     CHECK(adc_raw == bit::Extract(local_adc.DR[0], Adc::DataRegister::kResult));
     CHECK(kBurstStartCode ==

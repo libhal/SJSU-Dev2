@@ -5,7 +5,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Apds9960);
 
-TEST_CASE("Testing Gesture Sensor", "[apds_9960]")
+TEST_CASE("Testing Gesture Sensor")
 {
   SECTION("Initialize") {}
 }

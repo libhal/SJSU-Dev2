@@ -32,7 +32,7 @@ SJ2_ENABLE_BITMASK_OPERATORS(TestEnumClass);
   kActual op_eq TestEnumClass::kVal1;                                       \
   CHECK(kExpected == static_cast<uint8_t>(kActual));
 
-TEST_CASE("Testing Enumeration Bit Operators", "[enum-bit]")
+TEST_CASE("Testing Enumeration Bit Operators")
 {
   SECTION("Enum Class OR")
   {
@@ -72,7 +72,7 @@ TEST_CASE("Testing Enumeration Bit Operators", "[enum-bit]")
   }
 }
 
-TEST_CASE("Testing Enumeration Utilites", "[enum-value]")
+TEST_CASE("Testing Enumeration Utilites")
 {
   SECTION("Value() should return proper value")
   {

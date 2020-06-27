@@ -6,7 +6,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing L1 uart", "[uart]")
+TEST_CASE("Testing L1 uart")
 {
   Mock<Uart> mock_uart;
   Fake(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)));

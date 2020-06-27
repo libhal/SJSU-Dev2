@@ -7,7 +7,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Eeprom);
 
-TEST_CASE("Testing EEPROM", "[Eeprom]")
+TEST_CASE("Testing EEPROM")
 {
   // Simulate local version of LPC_EEPROM
   LPC_EEPROM_TypeDef local_eeprom;

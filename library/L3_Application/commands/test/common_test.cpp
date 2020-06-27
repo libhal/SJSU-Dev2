@@ -3,5 +3,5 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Common Command", "[common-command]") {}
+TEST_CASE("Testing Common Command") {}
 }  // namespace sjsu

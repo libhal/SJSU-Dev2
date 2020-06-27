@@ -16,7 +16,7 @@ auto GetLambda(sjsu::InterruptCallback & isr)
 }
 }  // namespace
 
-TEST_CASE("Testing L1 GpioCounter", "[gpio-counter]")
+TEST_CASE("Testing L1 GpioCounter")
 {
   Mock<sjsu::Pin> mock_pin;
   Fake(Method(mock_pin, SetPull));

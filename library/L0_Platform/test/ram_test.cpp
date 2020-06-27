@@ -49,7 +49,7 @@ BssSectionTable_t bss_section_table_end;
 
 namespace sjsu
 {
-TEST_CASE("Testing Ram Initialization", "[ram-init]")
+TEST_CASE("Testing Ram Initialization")
 {
   SECTION(".data")
   {

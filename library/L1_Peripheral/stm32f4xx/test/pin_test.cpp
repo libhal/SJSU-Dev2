@@ -19,7 +19,7 @@ bit::Mask Mask2Bit(const sjsu::Pin & pin)
 }
 }  // namespace
 
-TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
+TEST_CASE("Testing stm32f4xx Pin")
 {
   Mock<SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
@@ -156,10 +156,9 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
     {
       auto power_up_matcher =
           [](sjsu::SystemController::ResourceID expected_id) {
-            return
-                [expected_id](sjsu::SystemController::ResourceID actual_id) {
-                  return expected_id.device_id == actual_id.device_id;
-                };
+            return [expected_id](sjsu::SystemController::ResourceID actual_id) {
+              return expected_id.device_id == actual_id.device_id;
+            };
           };
 
       for (size_t i = 0; i < test.size(); i++)
@@ -181,7 +180,25 @@ TEST_CASE("Testing stm32f4xx Pin", "[stm32f4xx-pin]")
     SECTION("Invalid port")
     {
       // Setup
-      uint8_t port = GENERATE('J', 1, '3');
+      uint8_t port;
+
+      Status expected_status;
+
+      SUBCASE("Port 0")
+      {
+        port = 'J';
+      }
+
+      SUBCASE("Port 1")
+      {
+        port = 1;
+      }
+
+      SUBCASE("Port 2")
+      {
+        port = '3';
+      }
+
       stm32f4xx::Pin invalid_pin(port, 0);
 
       // Exercise & Verify

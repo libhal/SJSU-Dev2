@@ -7,7 +7,7 @@ namespace msp432p401r
 {
 EMIT_ALL_METHODS(Gpio);
 
-TEST_CASE("Testing Msp432p401r Gpio", "[msp432p401r-gpio]")
+TEST_CASE("Testing Msp432p401r Gpio")
 {
   DIO_PORT_Interruptable_Type local_dio_a;
   DIO_PORT_Interruptable_Type local_dio_b;

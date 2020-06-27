@@ -8,5 +8,5 @@ namespace sjsu::lpc17xx
 {
 EMIT_ALL_METHODS(Pin);
 
-TEST_CASE("Testing lpc17xx Pin", "[lpc17xx-pin]") {}
+TEST_CASE("Testing lpc17xx Pin") {}
 }  // namespace sjsu::lpc17xx

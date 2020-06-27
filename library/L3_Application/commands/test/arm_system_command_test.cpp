@@ -3,5 +3,5 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing ARM System Command", "[arm-system-command]") {}
+TEST_CASE("Testing ARM System Command") {}
 }  // namespace sjsu

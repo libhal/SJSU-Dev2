@@ -19,7 +19,7 @@ bit::Mask Mask2Bit(const sjsu::Gpio & gpio)
 }
 }  // namespace
 
-TEST_CASE("Testing stm32f4xx Gpio", "[stm32f4xx-gpio]")
+TEST_CASE("Testing stm32f4xx Gpio")
 {
   Mock<SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));

@@ -112,7 +112,7 @@ test and set the entries in the look up table to the address of local
 GPIO register description structure.
 
 ``` c++
-TEST_CASE("Testing Gpio", "[gpio]")
+TEST_CASE("Testing Gpio")
 {
   // Initialized local LPC_GPIO_TypeDef objects with 0 to observe how the
   // Gpio class manipulates the data in the registers
@@ -165,7 +165,7 @@ local created LPC_GPIO_TypeDef structure and pass that to your test subject
 peripheral object.
 
 ``` c++
-TEST_CASE("Testing Gpio", "[gpio]")
+TEST_CASE("Testing Gpio")
 {
   // Initialized local LPC_GPIO_TypeDef objects with 0 to observe how the
   // Gpio class manipulates the data in the registers

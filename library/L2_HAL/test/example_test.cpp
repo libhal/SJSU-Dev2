@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Example Implementation", "[example-implementation]")
+TEST_CASE("Testing Example Implementation")
 {
   // 1. Setup your mocks
   Mock<sjsu::Example> mock_example;
@@ -69,7 +69,7 @@ TEST_CASE("Testing Example Implementation", "[example-implementation]")
 
 // 12. If your interface contains utility methods, then a test of the interface
 //     itself must be created
-TEST_CASE("Testing Example Interface", "[example-interface]")
+TEST_CASE("Testing Example Interface")
 {
   // 13. Create a mock object of the example interface itself
   Mock<sjsu::ExampleHal> mock_example_interface;

@@ -8,7 +8,7 @@ namespace sjsu::example
 // EMIT_ALL_METHODS macro.
 EMIT_ALL_METHODS(Example);
 
-TEST_CASE("Testing L1 example::Example", "[l1-example]")
+TEST_CASE("Testing L1 example::Example")
 {
   // Create mocked versions of the sjsu::Pin
   Mock<sjsu::Pin> mock_pin_data;

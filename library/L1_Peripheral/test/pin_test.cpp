@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing L1 pin", "[pin]")
+TEST_CASE("Testing L1 pin")
 {
   Mock<sjsu::Pin> mock_pin;
   Fake(Method(mock_pin, SetPull));

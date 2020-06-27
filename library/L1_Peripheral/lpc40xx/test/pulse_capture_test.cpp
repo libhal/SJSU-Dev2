@@ -18,7 +18,7 @@ void DummyCallback(PulseCapture::CaptureStatus_t status)
   memcpy(&isr_result, &status, sizeof(PulseCapture::CaptureStatus_t));
 }
 
-TEST_CASE("Testing lpc40xx Pulse Capture", "[lpc40xx-pulse_capture]")
+TEST_CASE("Testing lpc40xx Pulse Capture")
 {
   LPC_TIM_TypeDef test_timer_register;
 
