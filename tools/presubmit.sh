@@ -69,9 +69,9 @@ make -s lint 1> /dev/null
 LINT_CAPTURE=$?
 print_status $LINT_CAPTURE
 echo ""
-####################################
-#         Clang Tidy Check         #
-####################################
+# ==============================================================================
+# Clang Tidy Check
+# ==============================================================================
 print_divider "Executing 'tidy' check"
 
 make -s tidy
