@@ -57,7 +57,7 @@ cd $SJBASE/projects/hello_world
 ####################################
 #        Build All Projects        #
 ####################################
-make --no-print-directory all-projects
+time make --no-print-directory all-projects
 BUILD_CAPTURE=$?
 
 ####################################
@@ -65,7 +65,7 @@ BUILD_CAPTURE=$?
 ####################################
 print_divider "Executing 'lint' check"
 
-make -s lint 1> /dev/null
+time make -s lint 1> /dev/null
 LINT_CAPTURE=$?
 print_status $LINT_CAPTURE
 echo ""
@@ -74,7 +74,7 @@ echo ""
 ####################################
 print_divider "Executing 'tidy' check"
 
-make -s tidy
+time make -s tidy
 TIDY_CAPTURE=$?
 print_status $TIDY_CAPTURE
 echo ""
@@ -83,7 +83,7 @@ echo ""
 ####################################
 print_divider "Building and running unit tests"
 
-make -s library-test WARNINGS_ARE_ERRORS=-Werror
+time make -s library-test WARNINGS_ARE_ERRORS=-Werror
 TEST_CAPTURE=$?
 print_status $TEST_CAPTURE
 echo ""
