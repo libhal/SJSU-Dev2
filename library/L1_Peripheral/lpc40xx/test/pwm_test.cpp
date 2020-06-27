@@ -10,7 +10,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Pwm);
 
-TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
+TEST_CASE("Testing lpc40xx PWM instantiation")
 {
   // Creating local instances of register structures
   LPC_PWM_TypeDef local_pwm;
@@ -94,7 +94,8 @@ TEST_CASE("Testing lpc40xx PWM instantiation", "[lpc40xx-pwm]")
 
     // Verify
     CHECK(kExpectedMR5 == local_pwm.MR5);
-    CHECK(fabs(kDutyCycle - test_pwm.GetDutyCycle()) < 0.001f);
+    CHECK(test_pwm.GetDutyCycle() ==
+          doctest::Approx(kDutyCycle).epsilon(0.001f));
     CHECK(bit::Read(local_pwm.LER, mock_channel.channel));
   }
 

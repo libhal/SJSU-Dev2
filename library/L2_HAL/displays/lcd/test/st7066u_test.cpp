@@ -7,7 +7,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(St7066u);
 
-TEST_CASE("Testing St7066u Parallel LCD Driver", "[st7066u]")
+TEST_CASE("Testing St7066u Parallel LCD Driver")
 {
   Mock<Gpio> mock_rs;  // RS: Register Select
   Mock<Gpio> mock_rw;  // RW: Read / Write

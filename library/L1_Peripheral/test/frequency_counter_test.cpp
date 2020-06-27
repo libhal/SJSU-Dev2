@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing FrequencyCounter", "[frequency-counter]")
+TEST_CASE("Testing FrequencyCounter")
 {
   Mock<HardwareCounter> mock_counter;
 

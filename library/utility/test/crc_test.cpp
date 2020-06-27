@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing crc", "[crc]")
+TEST_CASE("Testing crc")
 {
 }
 }  // namespace sjsu

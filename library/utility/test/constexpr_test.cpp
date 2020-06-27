@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Constexpr Utilities", "[constexpr]")
+TEST_CASE("Testing Constexpr Utilities")
 {
   SECTION("Empty test") {}
 }

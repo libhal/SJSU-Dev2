@@ -5,7 +5,7 @@ namespace sjsu::experimental
 {
 EMIT_ALL_METHODS(Sd);
 
-TEST_CASE("Testing SD Card Driver Class", "[sd]")
+TEST_CASE("Testing SD Card Driver Class")
 {
   Mock<sjsu::Spi> mock_spi;
   Mock<sjsu::Gpio> mock_card_detect;

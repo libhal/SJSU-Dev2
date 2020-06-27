@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing L1 gpio", "[gpio]")
+TEST_CASE("Testing L1 gpio")
 {
   Mock<sjsu::Gpio> mock_gpio;
   Fake(Method(mock_gpio, SetDirection));

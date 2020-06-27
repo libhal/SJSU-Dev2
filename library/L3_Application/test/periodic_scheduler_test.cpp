@@ -18,7 +18,7 @@ SemaphoreHandle_t xQueueGenericCreateStatic_custom_fake(  // NOLINT
 
 namespace sjsu::rtos
 {
-TEST_CASE("Testing PeriodicTask", "[periodic_task]")
+TEST_CASE("Testing PeriodicTask")
 {
   const char kTaskName[]                                 = "Test Periodic Task";
   constexpr Priority kTaskPriority                       = Priority::kLow;
@@ -55,7 +55,7 @@ TEST_CASE("Testing PeriodicTask", "[periodic_task]")
   }
 }
 
-TEST_CASE("Testing PeriodicScheduler", "[periodic_scheduler]")
+TEST_CASE("Testing PeriodicScheduler")
 {
   RESET_FAKE(xTimerCreateStatic);
   RESET_FAKE(xTimerGenericCommand);

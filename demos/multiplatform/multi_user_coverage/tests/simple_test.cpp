@@ -2,7 +2,7 @@
 
 namespace robotics
 {
-TEST_CASE("Testing robotics simple test", "[robotics-simple-test]")
+TEST_CASE("Testing robotics simple test")
 {
   SECTION("Initialization")
   {

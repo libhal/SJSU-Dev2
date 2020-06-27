@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing rtos", "[rtos]")
+TEST_CASE("Testing rtos")
 {
 }
 }  // namespace sjsu

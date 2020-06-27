@@ -5,7 +5,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Timer);
 
-TEST_CASE("Testing lpc40xx Timer", "[lpc40xx-timer]")
+TEST_CASE("Testing lpc40xx Timer")
 {
   LPC_TIM_TypeDef local_timer_registers;
   testing::ClearStructure(&local_timer_registers);

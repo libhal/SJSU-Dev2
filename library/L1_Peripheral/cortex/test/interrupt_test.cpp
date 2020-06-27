@@ -3,7 +3,7 @@
 
 namespace sjsu::cortex
 {
-TEST_CASE("Testing cortex interrupt", "[cortex-interrupt]")
+TEST_CASE("Testing cortex interrupt")
 {
   constexpr uint8_t kIRQ             = 7;
   constexpr uint8_t kPriority        = 2;

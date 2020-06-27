@@ -9,7 +9,7 @@ namespace sjsu::cortex
 {
 EMIT_ALL_METHODS(SystemTimer);
 
-TEST_CASE("Testing ARM Cortex SystemTimer", "[cortex-system-timer]")
+TEST_CASE("Testing ARM Cortex SystemTimer")
 {
   cortex::DWT_Type local_dwt = {
     .PCSR = 0,

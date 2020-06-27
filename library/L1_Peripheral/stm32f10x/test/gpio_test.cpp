@@ -43,7 +43,7 @@ IRQn GetIrqForPin(uint8_t pin)
 }
 }  // namespace
 
-TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
+TEST_CASE("Testing stm32f10x Gpio")
 {
   Mock<SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
@@ -204,7 +204,9 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
       //         PowerUpPeripheral()
       Verify(Method(mock_system_controller, PowerUpPeripheral)
                  .Matching(power_up_matcher(test[i].id)));
+
       mock_system_controller.ClearInvocationHistory();
+
       CHECK(kInputFloatingCode == bit::Extract(cr, Mask4Bit(test[i].gpio)));
     }
 
@@ -251,7 +253,7 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
       test[i].gpio.SetLow();
 
       // Verify
-      CHECK(1 << (test[i].gpio.GetPin().GetPin() + 16) == test[i].reg.BSRR);
+      CHECK((1 << (test[i].gpio.GetPin().GetPin() + 16)) == test[i].reg.BSRR);
     }
 
     for (uint32_t i = 0; i < test.size(); i++)
@@ -267,7 +269,7 @@ TEST_CASE("Testing stm32f10x Gpio", "[stm32f10x-gpio]")
       test[i].gpio.SetHigh();
 
       // Verify
-      CHECK(1 << test[i].gpio.GetPin().GetPin() == test[i].reg.BSRR);
+      CHECK((1 << test[i].gpio.GetPin().GetPin()) == test[i].reg.BSRR);
     }
   }
 

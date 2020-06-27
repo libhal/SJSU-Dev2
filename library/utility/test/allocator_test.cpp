@@ -5,7 +5,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Arena", "[arena]")
+TEST_CASE("Testing Arena")
 {
   uint8_t buffer[1024];
 
@@ -111,7 +111,7 @@ TEST_CASE("Testing Arena", "[arena]")
     CHECK(allocate_block1 == nullptr);
   }
 }
-TEST_CASE("Testing FixedAllocator", "[fixed-allocator]")
+TEST_CASE("Testing FixedAllocator")
 {
   SECTION("FixedAllocator<int, 32>")
   {

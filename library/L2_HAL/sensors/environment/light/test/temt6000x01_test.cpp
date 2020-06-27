@@ -5,7 +5,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Temt6000x01);
 
-TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
+TEST_CASE("Testing TEMP6000X01 Light Sensor")
 {
   constexpr units::voltage::microvolt_t kReferenceVoltage = 3.3_V;
   constexpr units::impedance::ohm_t kPullDownResistor     = 10'000_Ohm;
@@ -31,8 +31,17 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
   SECTION("Initialize")
   {
     // Setup
-    Status expected_status =
-        GENERATE(Status::kSuccess, Status::kInvalidSettings);
+    Status expected_status;
+
+    SUBCASE("On Success")
+    {
+      expected_status = Status::kSuccess;
+    }
+
+    SUBCASE("On Invalid Settings")
+    {
+      expected_status = Status::kInvalidSettings;
+    }
 
     When(Method(mock_adc, Initialize)).AlwaysReturn(expected_status);
 
@@ -72,7 +81,8 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor", "[temt6000x01]")
 
     // Verify
     Verify(Method(mock_adc, Read)).Once();
-    CHECK(actual_percentage == Approx(expected_percentage).epsilon(0.01f));
+    CHECK(actual_percentage ==
+          doctest::Approx(expected_percentage).epsilon(0.01f));
   }
 }
 }  // namespace sjsu

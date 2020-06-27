@@ -8,7 +8,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Spi);
 
-TEST_CASE("Testing lpc40xx SPI", "[lpc40xx-Spi]")
+TEST_CASE("Testing lpc40xx SPI")
 {
   // Simulate local version of LPC_SSP
   LPC_SSP_TypeDef local_ssp;

@@ -6,7 +6,7 @@ namespace sjsu
 // Uncomment this when can class has been created
 EMIT_ALL_METHODS(Si7060);
 
-TEST_CASE("Si7060", "[si7060]")
+TEST_CASE("Si7060")
 {
   constexpr uint8_t kDeviceAddress = Si7060::kDefaultAddress;
   Mock<I2c> mock_i2c;
@@ -205,7 +205,7 @@ TEST_CASE("Si7060", "[si7060]")
       }
     }
     CHECK(temperature.to<float>() ==
-          Approx(kExpectedTemperature).epsilon(kMarginOfError));
+          doctest::Approx(kExpectedTemperature).epsilon(kMarginOfError));
   }
 }
 }  // namespace sjsu

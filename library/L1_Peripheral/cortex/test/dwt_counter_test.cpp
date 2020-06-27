@@ -8,8 +8,7 @@ namespace sjsu::cortex
 {
 EMIT_ALL_METHODS(DwtCounter);
 
-TEST_CASE("Testing ARM Cortex Data Watchdog Trace Counter",
-          "[cortex-dwt-counter]")
+TEST_CASE("Testing ARM Cortex Data Watchdog Trace Counter")
 {
   DWT_Type local_dwt = {
     .PCSR = 0,

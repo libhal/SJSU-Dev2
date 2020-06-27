@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing String Container", "[string-container]")
+TEST_CASE("Testing String Container")
 {
   String<128> string;
 }

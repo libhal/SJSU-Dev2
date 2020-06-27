@@ -13,7 +13,7 @@ auto GetLambda(InterruptCallback & isr)
   return [&isr](InterruptCallback callback, Gpio::Edge) { isr = callback; };
 }
 
-TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge", "[ltc4150]")
+TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
 {
   constexpr float kResolution        = 0.001f;
   units::impedance::ohm_t resistance = 0.00050_Ohm;
@@ -51,11 +51,9 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge", "[ltc4150]")
   SECTION("LTC4150 Initialization")
   {
     Ltc4150 primary_counter = Ltc4150(mock_primary_hardware_counter.get(),
-                                      mock_primary_pol_pin.get(),
-                                      resistance);
+                                      mock_primary_pol_pin.get(), resistance);
     Ltc4150 backup_counter  = Ltc4150(mock_backup_hardware_counter.get(),
-                                     mock_backup_pol_pin.get(),
-                                     resistance);
+                                     mock_backup_pol_pin.get(), resistance);
 
     When(Method(mock_primary_pol_pin, Read)).Return(true);
     When(Method(mock_backup_pol_pin, Read)).Return(false);
@@ -79,31 +77,29 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge", "[ltc4150]")
     constexpr float kPrimaryCharge = -0.068271f;
     constexpr float kBackupCharge  = 0.102407f;
     Ltc4150 primary_counter = Ltc4150(mock_primary_hardware_counter.get(),
-                                      mock_primary_pol_pin.get(),
-                                      resistance);
+                                      mock_primary_pol_pin.get(), resistance);
     Ltc4150 backup_counter  = Ltc4150(mock_backup_hardware_counter.get(),
-                                     mock_backup_pol_pin.get(),
-                                     resistance);
+                                     mock_backup_pol_pin.get(), resistance);
     When(Method(mock_primary_pol_pin, Read)).Return(false);
     When(Method(mock_backup_pol_pin, Read)).Return(true);
     When(Method(mock_primary_hardware_counter, GetCount)).Return(-4);
     When(Method(mock_backup_hardware_counter, GetCount)).Return(6);
 
     primary_counter.Initialize();
-    CHECK(primary_counter.GetCharge().to<float>() == Approx(kPrimaryCharge));
+    CHECK(primary_counter.GetCharge().to<float>() ==
+          doctest::Approx(kPrimaryCharge));
 
     backup_counter.Initialize();
-    CHECK(backup_counter.GetCharge().to<float>() == Approx(kBackupCharge));
+    CHECK(backup_counter.GetCharge().to<float>() ==
+          doctest::Approx(kBackupCharge));
   }
 
   SECTION("Direction of Counter changes with the Polarity Pin's State Change")
   {
     Ltc4150 primary_counter = Ltc4150(mock_primary_hardware_counter.get(),
-                                      mock_primary_pol_pin.get(),
-                                      resistance);
+                                      mock_primary_pol_pin.get(), resistance);
     Ltc4150 backup_counter  = Ltc4150(mock_backup_hardware_counter.get(),
-                                     mock_backup_pol_pin.get(),
-                                     resistance);
+                                     mock_backup_pol_pin.get(), resistance);
     When(Method(mock_primary_pol_pin, Read)).Return(true, false);
     When(Method(mock_backup_pol_pin, Read)).Return(false, true);
 
@@ -129,28 +125,26 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge", "[ltc4150]")
     constexpr float kPositiveBackupCharge  = 0.0512f;
     constexpr float kNegativeBackupCharge  = -0.08534f;
     Ltc4150 primary_counter = Ltc4150(mock_primary_hardware_counter.get(),
-                                      mock_primary_pol_pin.get(),
-                                      resistance);
+                                      mock_primary_pol_pin.get(), resistance);
     Ltc4150 backup_counter  = Ltc4150(mock_backup_hardware_counter.get(),
-                                     mock_backup_pol_pin.get(),
-                                     resistance);
+                                     mock_backup_pol_pin.get(), resistance);
     When(Method(mock_primary_pol_pin, Read)).Return(false, true);
     When(Method(mock_backup_pol_pin, Read)).Return(true, false);
     When(Method(mock_primary_hardware_counter, GetCount)).Return(-3, 5);
     When(Method(mock_backup_hardware_counter, GetCount)).Return(3, -5);
     primary_counter.Initialize();
     CHECK(primary_counter.GetCharge().to<float>() ==
-          Approx(kNegativePrimaryCharge).epsilon(kResolution));
+          doctest::Approx(kNegativePrimaryCharge).epsilon(kResolution));
     primary_pol_isr();
     CHECK(primary_counter.GetCharge().to<float>() ==
-          Approx(kPositivePrimaryCharge).epsilon(kResolution));
+          doctest::Approx(kPositivePrimaryCharge).epsilon(kResolution));
 
     backup_counter.Initialize();
     CHECK(backup_counter.GetCharge().to<float>() ==
-          Approx(kPositiveBackupCharge).epsilon(kResolution));
+          doctest::Approx(kPositiveBackupCharge).epsilon(kResolution));
     backup_pol_isr();
     CHECK(backup_counter.GetCharge().to<float>() ==
-          Approx(kNegativeBackupCharge).epsilon(kResolution));
+          doctest::Approx(kNegativeBackupCharge).epsilon(kResolution));
   }
 }
 }  // namespace sjsu

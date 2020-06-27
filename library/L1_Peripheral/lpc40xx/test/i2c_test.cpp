@@ -10,7 +10,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(I2c);
 
-TEST_CASE("Testing lpc40xx I2C", "[lpc40xx-i2c]")
+TEST_CASE("Testing lpc40xx I2C")
 {
   // Dummy address used by test sections
   constexpr uint8_t kAddress = 0x33;

@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Infrared Algorithms", "[infrared-algorithms]")
+TEST_CASE("Testing Infrared Algorithms")
 {
 }
 }  // namespace sjsu

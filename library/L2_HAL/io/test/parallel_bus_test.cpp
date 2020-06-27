@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing ParallelBus Interface", "[parallelbus-interface]")
+TEST_CASE("Testing ParallelBus Interface")
 {
   Mock<ParallelBus> mock_parallel_bus;
 

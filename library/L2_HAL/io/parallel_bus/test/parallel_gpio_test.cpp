@@ -20,7 +20,7 @@ Mock<sjsu::Pin> mock_pin2;
 Mock<sjsu::Pin> mock_pin3;
 }  // namespace
 
-TEST_CASE("Testing Parallel Gpio Implementation", "[parallel-gpio]")
+TEST_CASE("Testing Parallel Gpio Implementation")
 {
   Fake(Method(mock_gpio0, SetDirection));
   Fake(Method(mock_gpio1, SetDirection));

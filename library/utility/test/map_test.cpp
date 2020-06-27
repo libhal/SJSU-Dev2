@@ -5,7 +5,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Numeric Range remapping utility function", "[map]")
+TEST_CASE("Testing Numeric Range remapping utility function")
 {
   SECTION("Mapping with number literals")
   {

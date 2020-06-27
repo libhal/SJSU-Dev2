@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("config.hpp test", "[config]")
+TEST_CASE("config.hpp test")
 {
   SECTION("Example usage of SJ2_DECLARE_CONSTANT")
   {

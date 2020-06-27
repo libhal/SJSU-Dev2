@@ -13,7 +13,7 @@ namespace sjsu
   static_assert(-resolution < (actual-expected)); \
   static_assert(resolution > (actual-expected));
 
-TEST_CASE("Testing Average Function", "[average]")
+TEST_CASE("Testing Average Function")
 {
   // Static_assert is used to make sure that the functions work at compile
   // time.

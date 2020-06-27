@@ -6,7 +6,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Ssd1306);
 
-TEST_CASE("SSD1306 Test", "[ssd1306]")
+TEST_CASE("SSD1306 Test")
 {
   Mock<sjsu::Spi> mock_spi;
   Mock<sjsu::Gpio> mock_cs;

@@ -5,7 +5,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Button);
 
-TEST_CASE("Testing Button", "[button]")
+TEST_CASE("Testing Button")
 {
   // Make a mock pin to work with
   Mock<sjsu::Pin> mock_pin;

@@ -30,7 +30,7 @@ extern "C" DRESULT disk_ioctl(BYTE drive_number, BYTE command, void * buffer);
 
 namespace sjsu
 {
-TEST_CASE("Testing FAT FS", "[fatfs]")
+TEST_CASE("Testing FAT FS")
 {
   SECTION("Stringify")
   {
