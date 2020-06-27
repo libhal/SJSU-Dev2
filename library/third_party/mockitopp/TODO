@@ -1,0 +1,10 @@
+* fix possible memory leaks and multiple free calls
+* clean up and add more test cases
+* clean up remaining boost dependencies (i.e. boost::tuple)
+* clean up class header/class nomenclature
+* add more documentation
+* add passed in arguments to incomplete stubbing exceptions?
+* add additional matchers
+* add pseudo-lambda function support
+* add equal matcher tolerance for floating point types
+* support multiple inheritance
