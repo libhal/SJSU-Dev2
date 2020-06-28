@@ -6,6 +6,7 @@ SJBASE=$(
   cd "$SJBASE/.."
   pwd -P
 )
+
 # Import SJSU-Dev2 common shell script functions
 . $SJBASE/tools/common.sh
 

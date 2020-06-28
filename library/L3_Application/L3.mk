@@ -32,3 +32,9 @@ TESTS += $(LIBRARY_DIR)/L3_Application/commands/test/rtos_command_test.cpp
 TESTS += $(LIBRARY_DIR)/L3_Application/commands/test/i2c_command_test.cpp
 TESTS += $(LIBRARY_DIR)/L3_Application/commands/test/common_test.cpp
 TESTS += $(LIBRARY_DIR)/L3_Application/test/commandline_test.cpp
+
+# ==============================================================================
+# Unity Test
+# ==============================================================================
+UNITY_TESTS += $(LIBRARY_DIR)/L3_Application/test/unity_test_l3.cpp
+UNITY_TESTS += $(LIBRARY_DIR)/L3_Application/file_io/diskio.cpp

@@ -1,13 +1,14 @@
 #pragma once
 
 #include <cstddef>
+#include <functional>
 
 namespace sjsu
 {
 namespace newlib
 {
-using Stdout = int (*)(const char *, size_t);
-using Stdin  = int (*)(char *, size_t);
+using Stdout = std::function<int(const char *, size_t)>;
+using Stdin  = std::function<int(char *, size_t)>;
 
 void SetStdout(Stdout);
 void SetStdin(Stdin);

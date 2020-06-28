@@ -9,34 +9,24 @@
 
 namespace sjsu
 {
-namespace
-{
-char memory_out[512];
-int memory_out_position = 0;
-void ResetTestStdoutBuffer()
-{
-  memory_out_position = 0;
-  memset(memory_out, 0x00, sizeof(memory_out));
-}
-int TestStandardOutput(const char * out_char, size_t length)
-{
-  for (size_t i = 0; i < length; i++)
-  {
-    memory_out[memory_out_position++] = out_char[i];
-  }
-  return 1;
-}
-using newlib::Stdout;
-}  // namespace
-
 TEST_CASE("Testing Debug Utilities")
 {
-  newlib::SetStdout(TestStandardOutput);
+  using newlib::Stdout;
+
+  char debug_memory_out[512]    = { 0 };
+  int debug_memory_out_position = 0;
+
+  sjsu::newlib::SetStdout([&debug_memory_out, &debug_memory_out_position](
+                        const char * out_char, size_t length) {
+    for (size_t i = 0; i < length; i++)
+    {
+      debug_memory_out[debug_memory_out_position++] = out_char[i];
+    }
+    return 1;
+  });
 
   SECTION("Hex dump byte array 16 byte aligned")
   {
-    ResetTestStdoutBuffer();
-
     uint8_t memory[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
                          0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF };
     constexpr char kExpected[] =
@@ -49,14 +39,12 @@ TEST_CASE("Testing Debug Utilities")
     for (size_t i = 0; i < sizeof(kExpected); i++)
     {
       CAPTURE(i);
-      CHECK(memory_out[i] == kExpected[i]);
+      CHECK(debug_memory_out[i] == kExpected[i]);
     }
   }
 
   SECTION("Hex dump string with \"hello!\", not aligned with 16")
   {
-    ResetTestStdoutBuffer();
-
     char memory[] = "hello!\n";
     constexpr char kExpected[] =
         "00000000  68 65 6C 6C 6F 21 0A 00                           "
@@ -68,14 +56,12 @@ TEST_CASE("Testing Debug Utilities")
     for (size_t i = 0; i < sizeof(kExpected); i++)
     {
       CAPTURE(i);
-      CHECK(memory_out[i] == kExpected[i]);
+      CHECK(debug_memory_out[i] == kExpected[i]);
     }
   }
 
   SECTION("Hex dump string with two rows 16 aligned")
   {
-    ResetTestStdoutBuffer();
-
     uint8_t memory[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
                          0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF,
                          0x01, 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78,
@@ -92,11 +78,11 @@ TEST_CASE("Testing Debug Utilities")
     for (size_t i = 0; i < sizeof(kExpected); i++)
     {
       CAPTURE(i);
-      CHECK(memory_out[i] == kExpected[i]);
+      CHECK(debug_memory_out[i] == kExpected[i]);
     }
   }
 
   // Restore stdout function
   newlib::SetStdout(HostWrite);
-}
+}  // namespace sjsu
 }  // namespace sjsu
