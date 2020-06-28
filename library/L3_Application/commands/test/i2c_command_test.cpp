@@ -3,5 +3,5 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing I2c Command", "[i2c-command]") {}
+TEST_CASE("Testing I2c Command") {}
 }  // namespace sjsu

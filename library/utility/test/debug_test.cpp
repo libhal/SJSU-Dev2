@@ -29,7 +29,7 @@ int TestStandardOutput(const char * out_char, size_t length)
 using newlib::Stdout;
 }  // namespace
 
-TEST_CASE("Testing Debug Utilities", "[hexdump]")
+TEST_CASE("Testing Debug Utilities")
 {
   newlib::SetStdout(TestStandardOutput);
 
@@ -46,7 +46,11 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
 
     sjsu::debug::Hexdump(memory, sizeof(memory));
 
-    CHECK_THAT(memory_out, Catch::Matchers::Equals(kExpected));
+    for (size_t i = 0; i < sizeof(kExpected); i++)
+    {
+      CAPTURE(i);
+      CHECK(memory_out[i] == kExpected[i]);
+    }
   }
 
   SECTION("Hex dump string with \"hello!\", not aligned with 16")
@@ -61,7 +65,11 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
 
     sjsu::debug::Hexdump(memory, sizeof(memory));
 
-    CHECK_THAT(memory_out, Catch::Matchers::Equals(kExpected));
+    for (size_t i = 0; i < sizeof(kExpected); i++)
+    {
+      CAPTURE(i);
+      CHECK(memory_out[i] == kExpected[i]);
+    }
   }
 
   SECTION("Hex dump string with two rows 16 aligned")
@@ -81,8 +89,13 @@ TEST_CASE("Testing Debug Utilities", "[hexdump]")
 
     sjsu::debug::Hexdump(memory, sizeof(memory));
 
-    CHECK_THAT(memory_out, Catch::Matchers::Equals(kExpected));
+    for (size_t i = 0; i < sizeof(kExpected); i++)
+    {
+      CAPTURE(i);
+      CHECK(memory_out[i] == kExpected[i]);
+    }
   }
+
   // Restore stdout function
   newlib::SetStdout(HostWrite);
 }

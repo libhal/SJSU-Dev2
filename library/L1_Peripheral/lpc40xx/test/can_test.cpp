@@ -8,7 +8,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Can);
 
-TEST_CASE("Testing lpc40xx Can", "[lpc40xx-can]")
+TEST_CASE("Testing lpc40xx Can")
 {
   // Simulate local version of LPC_CAN
   LPC_CAN_TypeDef local_can;

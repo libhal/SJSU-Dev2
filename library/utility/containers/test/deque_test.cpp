@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Deque Container", "[deque-container]")
+TEST_CASE("Testing Deque Container")
 {
   Deque<int, 128> deque;
 }

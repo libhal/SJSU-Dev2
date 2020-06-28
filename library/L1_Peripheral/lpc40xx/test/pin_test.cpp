@@ -9,7 +9,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Pin);
 
-TEST_CASE("Testing lpc40xx Pin", "[lpc40xx-pin_configure]")
+TEST_CASE("Testing lpc40xx Pin")
 {
   // Simulated local version of LPC_IOCON register to verify register
   // manipulation by side effect of Pin method calls

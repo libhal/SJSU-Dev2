@@ -6,7 +6,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Uart);
 
-TEST_CASE("Testing lpc40xx Uart", "[lpc40xx-Uart]")
+TEST_CASE("Testing lpc40xx Uart")
 {
   // Simulated local version of LPC_UART2 to verify registers
   LPC_UART_TypeDef local_uart;

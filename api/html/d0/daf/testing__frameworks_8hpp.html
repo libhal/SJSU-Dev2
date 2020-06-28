@@ -83,7 +83,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;cinttypes&gt;</code><br />
-<code>#include &quot;third_party/catch2/catch.hpp&quot;</code><br />
+<code>#include &quot;third_party/doctest/doctest/doctest.h&quot;</code><br />
 <code>#include &quot;third_party/fakeit/fakeit.hpp&quot;</code><br />
 <code>#include &quot;third_party/fff/fff.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -103,8 +103,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ae5ce616c3ba88e050008d20f8898a2e5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#ae5ce616c3ba88e050008d20f8898a2e5">CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER</a></td></tr>
-<tr class="separator:ae5ce616c3ba88e050008d20f8898a2e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5f41b3cefc075e35486583b52712b0d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#ac5f41b3cefc075e35486583b52712b0d">SECTION</a>&#160;&#160;&#160;SUBCASE</td></tr>
+<tr class="separator:ac5f41b3cefc075e35486583b52712b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9b2d820e3d0b60447ba8912db128ee4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#aa9b2d820e3d0b60447ba8912db128ee4">EMIT_ALL_METHODS</a>(class_name)</td></tr>
 <tr class="separator:aa9b2d820e3d0b60447ba8912db128ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -119,20 +119,6 @@ Functions</h2></td></tr>
 <tr class="separator:a38e6d215f447e7df811dca2bc3de535d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ae5ce616c3ba88e050008d20f8898a2e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5ce616c3ba88e050008d20f8898a2e5">&#9670;&nbsp;</a></span>CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aa9b2d820e3d0b60447ba8912db128ee4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa9b2d820e3d0b60447ba8912db128ee4">&#9670;&nbsp;</a></span>EMIT_ALL_METHODS</h2>
 
@@ -149,6 +135,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><span class="keyword">namespace                                                  </span>\</div><div class="line">  {                                                          \</div><div class="line">  template &lt;unsigned test_parameter&gt;                         \</div><div class="line">  using class_name##_Template = class_name;                  \</div><div class="line">  int __LetsGo_##class_name(class_name##_Template&lt;0&gt; * obj)  \</div><div class="line">  {                                                          \</div><div class="line">    bool never_true = <span class="keyword">false</span>;                                 \</div><div class="line">    bool * ptr      = &amp;never_true;                           \</div><div class="line">    <span class="comment">/* Emit destructors */</span>                                   \</div><div class="line">    if (*ptr)                                                \</div><div class="line">    {                                                        \</div><div class="line">      class_name##_Template&lt;0&gt; emitter = *obj;               \</div><div class="line">      (void)emitter;                                         \</div><div class="line">      return 1;                                              \</div><div class="line">    }                                                        \</div><div class="line">    return 0;                                                \</div><div class="line">  }                                                          \</div><div class="line">  auto __full_##class_name = __LetsGo_##class_name(<span class="keyword">nullptr</span>); \</div><div class="line">  }</div></div><!-- fragment --><p>This magical method does a lot of tricks to convince the compiler to emit as many of the class methods as possible for methods of a function that may only exist in a header file. </p>
+
+</div>
+</div>
+<a id="ac5f41b3cefc075e35486583b52712b0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5f41b3cefc075e35486583b52712b0d">&#9670;&nbsp;</a></span>SECTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SECTION&#160;&#160;&#160;SUBCASE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

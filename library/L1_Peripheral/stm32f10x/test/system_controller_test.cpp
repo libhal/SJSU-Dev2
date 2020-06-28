@@ -12,7 +12,7 @@ namespace sjsu::stm32f10x
 {
 EMIT_ALL_METHODS(SystemController);
 
-TEST_CASE("Testing stm32f10x SystemController", "[stm32f10x-systemcontroller]")
+TEST_CASE("Testing stm32f10x SystemController")
 {
   std::array<const SystemController::ResourceID *, 10> id = {
     // AHB
@@ -316,8 +316,8 @@ TEST_CASE("Testing stm32f10x SystemController", "[stm32f10x-systemcontroller]")
       simulate_high_oscillator_ready.join();
 
       // Verify
-      CHECK(flash_code == bit::Extract(local_flash.ACR,
-                                       sjsu::bit::MaskFromRange(0, 2)));
+      CHECK(flash_code ==
+            bit::Extract(local_flash.ACR, sjsu::bit::MaskFromRange(0, 2)));
     }
 
     SECTION("Changing dividers")

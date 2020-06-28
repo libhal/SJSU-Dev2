@@ -42,7 +42,7 @@ auto MockReadImplementation(size_t & read_count,
 }
 }  // namespace
 
-TEST_CASE("Testing TFMini", "[tfmini]")
+TEST_CASE("Testing TFMini")
 {
   Mock<Uart> mock_uart;
   Fake(Method(mock_uart, Initialize),
@@ -220,7 +220,8 @@ TEST_CASE("Testing TFMini", "[tfmini]")
 
       // Verify
       CHECK(status == sjsu::Status::kSuccess);
-      CHECK(strength_check == Approx(kExpectedStrengthRange).epsilon(kEpsilon));
+      CHECK(strength_check ==
+            doctest::Approx(kExpectedStrengthRange).epsilon(kEpsilon));
     }
 
     SECTION("Invalid Device Header")
@@ -243,7 +244,8 @@ TEST_CASE("Testing TFMini", "[tfmini]")
 
       // Verify
       CHECK(status == sjsu::Status::kDeviceNotFound);
-      CHECK(strength_check == Approx(kExpectedError).epsilon(kEpsilon));
+      CHECK(strength_check ==
+            doctest::Approx(kExpectedError).epsilon(kEpsilon));
     }
 
     SECTION("Invalid Checksum")
@@ -258,7 +260,8 @@ TEST_CASE("Testing TFMini", "[tfmini]")
 
       // Verify
       CHECK(status == sjsu::Status::kBusError);
-      CHECK(strength_check == Approx(kExpectedError).epsilon(kEpsilon));
+      CHECK(strength_check ==
+            doctest::Approx(kExpectedError).epsilon(kEpsilon));
     }
 
     Verify(

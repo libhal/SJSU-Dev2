@@ -6,7 +6,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing TimeoutTimer", "[timeout-timer]")
+TEST_CASE("Testing TimeoutTimer")
 {
   // Setup
   TimeoutTimer timer(1000us);

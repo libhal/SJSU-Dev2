@@ -9,7 +9,7 @@ namespace msp432p401r
 {
 EMIT_ALL_METHODS(Pin);
 
-TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
+TEST_CASE("Testing Msp432p401r Pin")
 {
   DIO_PORT_Interruptable_Type local_dio_a;
   DIO_PORT_Interruptable_Type local_dio_b;
@@ -103,7 +103,28 @@ TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
     SECTION("Invalid port")
     {
       // Setup
-      uint8_t invalid_port_number = GENERATE(0, 11, 'A', 'Z');
+      uint8_t invalid_port_number;
+
+      SUBCASE("0")
+      {
+        invalid_port_number = 0;
+      }
+
+      SUBCASE("1")
+      {
+        invalid_port_number = 11;
+      }
+
+      SUBCASE("2")
+      {
+        invalid_port_number = 'A';
+      }
+
+      SUBCASE("3")
+      {
+        invalid_port_number = 'Z';
+      }
+
       Pin pin(invalid_port_number, 0);
 
       // Verify & Exercise
@@ -112,7 +133,23 @@ TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
     SECTION("Invalid pin")
     {
       // Setup
-      uint8_t invalid_pin_number = GENERATE(8, 10, 16);
+      uint8_t invalid_pin_number;
+
+      SUBCASE("0")
+      {
+        invalid_pin_number = 8;
+      }
+
+      SUBCASE("1")
+      {
+        invalid_pin_number = 10;
+      }
+
+      SUBCASE("2")
+      {
+        invalid_pin_number = 16;
+      }
+
       Pin pin(1, invalid_pin_number);
 
       // Verify & Exercise
@@ -172,7 +209,22 @@ TEST_CASE("Testing Msp432p401r Pin", "[msp432p401r-pin_configure]")
     SECTION("Invalid function codes")
     {
       // Setup
-      uint8_t function_code = GENERATE(0b1111, 0b1101, 0b1000);
+      uint8_t function_code;
+
+      SUBCASE("0")
+      {
+        function_code = 0b1111;
+      }
+
+      SUBCASE("1")
+      {
+        function_code = 0b1101;
+      }
+
+      SUBCASE("2")
+      {
+        function_code = 0b1000;
+      }
 
       // Exercise & Verify
       CHECK(test_pins[0].pin.SetPinFunction(function_code).error().status ==

@@ -7,7 +7,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing StopWatch Utilities", "[stopwatch]")
+TEST_CASE("Testing StopWatch Utilities")
 {
   SECTION("Calibrate")
   {

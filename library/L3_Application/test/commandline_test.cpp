@@ -12,7 +12,7 @@ constexpr char kTestCommandName[]        = "test_command";
 constexpr char kTestCommandDescription[] = "A test command description";
 }  // namespace
 
-TEST_CASE("Command Test", "[command]")
+TEST_CASE("Command Test")
 {
   Command test_command(kTestCommandName, kTestCommandDescription, fake_command);
   SECTION("Get Command Name")
@@ -42,7 +42,7 @@ namespace
 [[maybe_unused]] CommandLine<command_list> command_line;
 }  // namespace
 
-TEST_CASE("CommandLine Test", "[commandline]")
+TEST_CASE("CommandLine Test")
 {
   SECTION("AddCommand")
   {

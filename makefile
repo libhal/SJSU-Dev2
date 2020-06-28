@@ -408,7 +408,7 @@ test: $(TEST_EXEC)
 	@rm -f $(COVERAGE_FILES) 2> /dev/null
 	@export ASAN_SYMBOLIZER_PATH=$(HOST_SYMBOLIZER) && \
 	 ASAN_OPTIONS="symbolize=1 color=always" \
-	 $(TEST_EXEC) $(TEST_ARGS) --use-colour="yes"
+	 $(TEST_EXEC) $(TEST_ARGS) --force-colour=true
 	@mkdir -p "$(COVERAGE_DIR)"
 	@gcovr $(TEST_SOURCE_DIRECTORIES) \
 		--object-directory="$(BUILD_DIRECTORY_NAME)/" \

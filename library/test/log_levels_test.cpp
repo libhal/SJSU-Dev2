@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Log Levels Test", "[log_levels]")
+TEST_CASE("Log Levels Test")
 {
   static_assert(SJ2_LOG_LEVEL_NONESET == 00,
                 "SJ2_LOG_LEVEL_NONESET must be equal to 00");

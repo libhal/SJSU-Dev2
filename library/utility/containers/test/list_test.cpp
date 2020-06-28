@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing List Container", "[list-container]")
+TEST_CASE("Testing List Container")
 {
   List<int, 128> list;
 }

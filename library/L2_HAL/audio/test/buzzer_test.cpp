@@ -6,7 +6,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Buzzer);
 
-TEST_CASE("Testing buzzer", "[buzzer]")
+TEST_CASE("Testing buzzer")
 {
   // Create mock for PWM class
   Mock<Pwm> mock_pwm_pin;

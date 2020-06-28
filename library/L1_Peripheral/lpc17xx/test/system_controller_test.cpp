@@ -8,7 +8,7 @@ namespace sjsu::lpc17xx
 {
 EMIT_ALL_METHODS(SystemController);
 
-TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
+TEST_CASE("Testing LPC176x/5x System Controller")
 {
   // Simulate local version of LPC_SC
   LPC_SC_TypeDef local_sc;
@@ -232,7 +232,22 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
         constexpr uint8_t kDefaultPll1Divider = 2;
 
         // Generate a test case for each of the main oscillator frequencies.
-        size_t oscillator_index = GENERATE(0, 1, 2);
+        size_t oscillator_index;
+
+        SECTION("Test with index 0")
+        {
+          oscillator_index = 0;
+        }
+
+        SECTION("Test with index 1")
+        {
+          oscillator_index = 1;
+        }
+
+        SECTION("Test with index 2")
+        {
+          oscillator_index = 2;
+        }
 
         clock_configuration.main_oscillator.frequency =
             kOscillatorClockRates[oscillator_index];
@@ -350,37 +365,110 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
   SECTION("Peripheral Power Control")
   {
     // Generate a test cases for each peripheral.
-    auto peripheral =
-        GENERATE(SystemController::Peripherals::kTimer0,
-                 SystemController::Peripherals::kTimer1,
-                 SystemController::Peripherals::kUart0,
-                 SystemController::Peripherals::kUart1,
-                 SystemController::Peripherals::kPwm1,
-                 SystemController::Peripherals::kI2c0,
-                 SystemController::Peripherals::kSpi,
-                 SystemController::Peripherals::kRtc,
-                 SystemController::Peripherals::kSsp1,
-                 SystemController::Peripherals::kAdc,
-                 SystemController::Peripherals::kCan1,
-                 SystemController::Peripherals::kCan2,
-                 SystemController::Peripherals::kGpio,
-                 SystemController::Peripherals::kRit,
-                 SystemController::Peripherals::kMotorControlPwm,
-                 SystemController::Peripherals::kQuadratureEncoder,
-                 SystemController::Peripherals::kI2c1,
-                 SystemController::Peripherals::kSsp0,
-                 SystemController::Peripherals::kTimer2,
-                 SystemController::Peripherals::kTimer3,
-                 SystemController::Peripherals::kUart2,
-                 SystemController::Peripherals::kUart3,
-                 SystemController::Peripherals::kI2c2,
-                 SystemController::Peripherals::kI2s);
+    SystemController::ResourceID peripheral;
+
+    SECTION("0")
+    {
+      peripheral = SystemController::Peripherals::kTimer0;
+    }
+    SECTION("1")
+    {
+      peripheral = SystemController::Peripherals::kTimer1;
+    }
+    SECTION("2")
+    {
+      peripheral = SystemController::Peripherals::kUart0;
+    }
+    SECTION("3")
+    {
+      peripheral = SystemController::Peripherals::kUart1;
+    }
+    SECTION("4")
+    {
+      peripheral = SystemController::Peripherals::kPwm1;
+    }
+    SECTION("5")
+    {
+      peripheral = SystemController::Peripherals::kI2c0;
+    }
+    SECTION("6")
+    {
+      peripheral = SystemController::Peripherals::kSpi;
+    }
+    SECTION("7")
+    {
+      peripheral = SystemController::Peripherals::kRtc;
+    }
+    SECTION("8")
+    {
+      peripheral = SystemController::Peripherals::kSsp1;
+    }
+    SECTION("9")
+    {
+      peripheral = SystemController::Peripherals::kAdc;
+    }
+    SECTION("10")
+    {
+      peripheral = SystemController::Peripherals::kCan1;
+    }
+    SECTION("11")
+    {
+      peripheral = SystemController::Peripherals::kCan2;
+    }
+    SECTION("12")
+    {
+      peripheral = SystemController::Peripherals::kGpio;
+    }
+    SECTION("13")
+    {
+      peripheral = SystemController::Peripherals::kRit;
+    }
+    SECTION("14")
+    {
+      peripheral = SystemController::Peripherals::kMotorControlPwm;
+    }
+    SECTION("15")
+    {
+      peripheral = SystemController::Peripherals::kQuadratureEncoder;
+    }
+    SECTION("16")
+    {
+      peripheral = SystemController::Peripherals::kI2c1;
+    }
+    SECTION("17")
+    {
+      peripheral = SystemController::Peripherals::kSsp0;
+    }
+    SECTION("18")
+    {
+      peripheral = SystemController::Peripherals::kTimer2;
+    }
+    SECTION("19")
+    {
+      peripheral = SystemController::Peripherals::kTimer3;
+    }
+    SECTION("20")
+    {
+      peripheral = SystemController::Peripherals::kUart2;
+    }
+    SECTION("21")
+    {
+      peripheral = SystemController::Peripherals::kUart3;
+    }
+    SECTION("22")
+    {
+      peripheral = SystemController::Peripherals::kI2c2;
+    }
+    SECTION("23")
+    {
+      peripheral = SystemController::Peripherals::kI2s;
+    }
 
     INFO("device id: " << peripheral.device_id);
 
-    SECTION("IsPeripheralPoweredUp")
+    // Test IsPeripheralPoweredUp
     {
-      SECTION("Peripheral is on")
+      // Peripheral is Test on
       {
         // Setup: Set all peripheral power bits to be off except for the
         //        peripheral to test
@@ -391,7 +479,7 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
         CHECK(system_controller.IsPeripheralPoweredUp(peripheral) == true);
       }
 
-      SECTION("Peripheral is off")
+      // Peripheral is Test off
       {
         // Setup: Set all peripheral power bits to be on except for the
         //        peripheral to test
@@ -403,7 +491,7 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
       }
     }
 
-    SECTION("PowerUpPeripheral")
+    // Test PowerUpPeripheral
     {
       // Setup: Set all peripherals power bits to be initially off
       local_sc.PCONP = 0;
@@ -415,7 +503,7 @@ TEST_CASE("Testing LPC176x/5x System Controller", "[lpc17xx-SystemController]")
       CHECK(local_sc.PCONP == (1 << peripheral.device_id));
     }
 
-    SECTION("PowerDownPeripheral")
+    // Test PowerDownPeripheral
     {
       // Setup: Set all peripherals power bits to be initially on
       local_sc.PCONP = std::numeric_limits<decltype(local_sc.PCONP)>::max();

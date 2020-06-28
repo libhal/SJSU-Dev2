@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <numeric>
 #include <thread>
 
 #include "L1_Peripheral/stm32f10x/uart.hpp"
@@ -7,7 +8,7 @@
 namespace sjsu::stm32f10x
 {
 EMIT_ALL_METHODS(UartBase);
-TEST_CASE("Testing stm32f10x Uart", "[stm32f10x-uart]")
+TEST_CASE("Testing stm32f10x Uart")
 {
   static constexpr units::frequency::hertz_t kDummyClockRate = 8_MHz;
   Mock<sjsu::SystemController> mock_controller;
@@ -79,8 +80,66 @@ TEST_CASE("Testing stm32f10x Uart", "[stm32f10x-uart]")
   SECTION("SetBaudRate()")
   {
     // Setup
-    uint32_t baud_rate = GENERATE(1200, 2400, 4800, 9600, 14400, 19200, 38400,
-                                  57600, 115200, 128000, 256000, 500000);
+    uint32_t baud_rate;
+    SUBCASE("baud rate 0")
+    {
+      baud_rate = 1200;
+    }
+
+    SUBCASE("baud rate 1")
+    {
+      baud_rate = 2400;
+    }
+
+    SUBCASE("baud rate 2")
+    {
+      baud_rate = 4800;
+    }
+
+    SUBCASE("baud rate 3")
+    {
+      baud_rate = 9600;
+    }
+
+    SUBCASE("baud rate 4")
+    {
+      baud_rate = 14400;
+    }
+
+    SUBCASE("baud rate 5")
+    {
+      baud_rate = 19200;
+    }
+
+    SUBCASE("baud rate 6")
+    {
+      baud_rate = 38400;
+    }
+
+    SUBCASE("baud rate 7")
+    {
+      baud_rate = 57600;
+    }
+
+    SUBCASE("baud rate 8")
+    {
+      baud_rate = 115200;
+    }
+
+    SUBCASE("baud rate 9")
+    {
+      baud_rate = 128000;
+    }
+
+    SUBCASE("baud rate 10")
+    {
+      baud_rate = 256000;
+    }
+
+    SUBCASE("baud rate 11")
+    {
+      baud_rate = 500000;
+    }
 
     INFO("Failure for baud rate " << baud_rate);
 
@@ -116,9 +175,44 @@ TEST_CASE("Testing stm32f10x Uart", "[stm32f10x-uart]")
     std::iota(payload.begin(), payload.end(), 'a');
 
     // Setup: Generate test cases for each number of payload lengths
-    uint32_t payload_size = GENERATE(1, 2, 3, 4, 5, 6, 7);
+    uint32_t payload_size;
 
-    INFO("Failure with payload size = " << payload_size)
+    SUBCASE("1")
+    {
+      payload_size = 1;
+    }
+
+    SUBCASE("2")
+    {
+      payload_size = 2;
+    }
+
+    SUBCASE("3")
+    {
+      payload_size = 3;
+    }
+
+    SUBCASE("4")
+    {
+      payload_size = 4;
+    }
+
+    SUBCASE("5")
+    {
+      payload_size = 5;
+    }
+
+    SUBCASE("6")
+    {
+      payload_size = 6;
+    }
+
+    SUBCASE("7")
+    {
+      payload_size = 7;
+    }
+
+    INFO("Failure with payload size = " << payload_size);
 
     // Setup: Make sure that the Write sees that the transmit is not currently
     //        empty, meaning it must wait.
@@ -162,7 +256,42 @@ TEST_CASE("Testing stm32f10x Uart", "[stm32f10x-uart]")
     std::fill(results.data(), results.end(), 0);
 
     // Setup: Generate test cases for each number of stored bytes
-    uint32_t stored_bytes = GENERATE(1, 2, 3, 4, 5, 6, 7);
+    uint32_t stored_bytes;
+
+    SUBCASE("1")
+    {
+      stored_bytes = 1;
+    }
+
+    SUBCASE("2")
+    {
+      stored_bytes = 2;
+    }
+
+    SUBCASE("3")
+    {
+      stored_bytes = 3;
+    }
+
+    SUBCASE("4")
+    {
+      stored_bytes = 4;
+    }
+
+    SUBCASE("5")
+    {
+      stored_bytes = 5;
+    }
+
+    SUBCASE("6")
+    {
+      stored_bytes = 6;
+    }
+
+    SUBCASE("7")
+    {
+      stored_bytes = 7;
+    }
 
     // Setup: fill receieve_queue with zeros.
     std::fill(receieve_queue.data(), receieve_queue.end(), 0);

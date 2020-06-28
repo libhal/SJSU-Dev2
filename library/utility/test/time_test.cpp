@@ -6,7 +6,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Time Utility", "[time]")
+TEST_CASE("Testing Time Utility")
 {
   // The behavior of DefaultUptime() should be a function that returns an
   // increasing up time counter each time it is called.

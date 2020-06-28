@@ -7,7 +7,7 @@ namespace sjsu::lpc40xx
 {
 EMIT_ALL_METHODS(Dac);
 
-TEST_CASE("Testing lpc40xx Dac", "[lpc40xx-dac]")
+TEST_CASE("Testing lpc40xx Dac")
 {
   LPC_IOCON_TypeDef local_iocon;
   testing::ClearStructure(&local_iocon);

@@ -5,7 +5,7 @@ namespace sjsu
 {
 EMIT_ALL_METHODS(Tmp102);
 
-TEST_CASE("Testing Tmp102 Temperature Sensor", "[tmp102]")
+TEST_CASE("Testing Tmp102 Temperature Sensor")
 {
   constexpr uint8_t kDeviceAddress = Tmp102::DeviceAddress::kGround;
   Mock<I2c> mock_i2c;
@@ -125,7 +125,7 @@ TEST_CASE("Testing Tmp102 Temperature Sensor", "[tmp102]")
       }
     }
     CHECK(temperature.to<float>() ==
-          Approx(kExpectedTemperature).epsilon(kMarginOfError));
+          doctest::Approx(kExpectedTemperature).epsilon(kMarginOfError));
   }
 }
 }  // namespace sjsu

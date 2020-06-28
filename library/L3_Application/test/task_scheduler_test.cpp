@@ -16,7 +16,7 @@ EventGroupHandle_t xEventGroupCreateStatic_custom_fake(  // NOLINT
 
 namespace sjsu::rtos
 {
-TEST_CASE("Testing TaskScheduler", "[task_scheduler]")
+TEST_CASE("Testing TaskScheduler")
 {
   constexpr std::array kTaskNames = {
     "Task 1",  "Task 2",  "Task 3",  "Task 4",  "Task 5",  "Task 6",

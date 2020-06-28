@@ -1,8 +1,7 @@
-// This tells Catch to provide a main() - only do this in one cpp file
-#define CATCH_CONFIG_RUNNER
 #include <unistd.h>
 
 #include "newlib/newlib.hpp"
+#define DOCTEST_CONFIG_IMPLEMENT
 #include "testing_frameworks.hpp"
 
 DEFINE_FFF_GLOBALS
@@ -18,10 +17,26 @@ int HostRead(char * payload, size_t length)
 
 int main(int argc, char * argv[])
 {
+  doctest::Context context;
+
   sjsu::newlib::SetStdout(HostWrite);
   sjsu::newlib::SetStdin(HostRead);
 
-  int result = Catch::Session().run(argc, argv);
+  context.applyCommandLine(argc, argv);
 
-  return result;
+  int res = context.run();  // run
+
+  // important - query flags (and --exit) rely on the user doing this propagate
+  // the result of the tests
+  if (context.shouldExit())
+  {
+    return res;
+  }
+
+  int client_stuff_return_code = 0;
+  // your program - if the testing framework is integrated in your production
+  // code
+
+  return res + client_stuff_return_code;  // the result from doctest is
+                                          // propagated here as well
 }

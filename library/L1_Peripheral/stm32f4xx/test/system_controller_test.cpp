@@ -11,7 +11,7 @@ namespace sjsu::stm32f4xx
 {
 EMIT_ALL_METHODS(SystemController);
 
-TEST_CASE("Testing stm32f4xx SystemController", "[stm32f4xx-system-controller]")
+TEST_CASE("Testing stm32f4xx SystemController")
 {
   std::array<const SystemController::ResourceID *, 13> id = {
     &stm32f4xx::SystemController::Peripherals::kGpioA,

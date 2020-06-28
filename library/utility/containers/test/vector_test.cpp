@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Vector Container", "[vector-container]")
+TEST_CASE("Testing Vector Container")
 {
   Vector<int, 128> vector;
 }

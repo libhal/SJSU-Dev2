@@ -19,7 +19,7 @@ bit::Mask Mask4Bit(const sjsu::Pin & pin)
 }
 }  // namespace
 
-TEST_CASE("Testing stm32f10x Pin", "[stm32f10x-pin]")
+TEST_CASE("Testing stm32f10x Pin")
 {
   Mock<SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));

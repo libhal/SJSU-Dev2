@@ -3,7 +3,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing ADC Interface", "[adc-interface]")
+TEST_CASE("Testing ADC Interface")
 {
   Mock<Adc> mock_adc;
 
@@ -89,7 +89,7 @@ TEST_CASE("Testing ADC Interface", "[adc-interface]")
     Verify(Method(mock_adc, ReferenceVoltage)).Once();
 
     CHECK(actual_voltage.to<float>() ==
-          Approx(expected_voltage.to<float>()).epsilon(0.01f));
+          doctest::Approx(expected_voltage.to<float>()).epsilon(0.01f));
   }
 }
 }  // namespace sjsu

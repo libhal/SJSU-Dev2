@@ -5,7 +5,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Bit Manipulations", "[bit manipulation]")
+TEST_CASE("Testing Bit Manipulations")
 {
   SECTION("MaskFromRange()")
   {

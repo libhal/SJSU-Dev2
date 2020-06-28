@@ -3,5 +3,5 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Task", "[task]") {}
+TEST_CASE("Testing Task") {}
 }  // namespace sjsu
