@@ -13,13 +13,14 @@ JTAG                ?= $(or $(DEBUG_DEVICE),)
 TEST_ARGS           ?=
 LINK_FLAGS          ?=
 USER_TESTS          ?=
-UNITY_TESTS          ?=
+UNITY_TESTS         ?=
 COMMON_FLAGS        ?=
 LINT_FILTER         ?=
 OPENOCD_CONFIG      ?=
 TESTS               ?=
 NO_TEST_NEEDED      ?=
 WARNINGS_ARE_ERRORS ?=
+
 # ==============================================================================
 #
 #
@@ -100,7 +101,7 @@ endif
 # ==============================================================================
 # Setting the number of threads
 # ==============================================================================
-DO_NOT_MULTITHREAD = presubmit all-projects execute program
+DO_NOT_MULTITHREAD = quick-presubmit presubmit all-projects execute program
 ifneq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), $(DO_NOT_MULTITHREAD)))
   NPROCS := 1
   OS := $(shell uname -s)
@@ -495,8 +496,19 @@ tidy: $(TIDY_FILES_PHONY)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 
 
+TIDY_COMMIT_SOURCES    = $(shell git show --name-only HEAD | grep ".[hc]pp")
+SHORT_TIDY_FILES_PHONY = $(addprefix $(OBJECT_DIR)/$(SJSU_DEV2_BASE)/, \
+                                     $(TIDY_COMMIT_SOURCES:=.tidy))
+commit-tidy: $(SHORT_TIDY_FILES_PHONY)
+	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
+
+
 presubmit:
-	@$(TOOLS_DIR)/presubmit.sh
+	+@$(TOOLS_DIR)/presubmit.sh
+
+
+quick-presubmit:
+	+@$(TOOLS_DIR)/presubmit.sh quick
 
 
 stacktrace:
@@ -507,6 +519,7 @@ show-lists:
 	@$(foreach V,$(sort $(.VARIABLES)), \
 		$(if $(filter-out environment% default automatic, $(origin $V)),\
 			$(warning $V=$($V) ($(value $V))$newline)))
+
 
 clean-coverage-files:
 	@rm -f $(COVERAGE_FILES) 2> /dev/null
@@ -580,17 +593,14 @@ $(TEST_EXEC): clean-coverage-files $(OBJECTS)
 					 -o $(TEST_EXEC) $(OBJECTS)
 	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
-# Catalina/Mojave
-#    /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
-# High Sierra
-#    /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ \
+
+MAC_TIDY_INCLUDES = \
+		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+		-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/
 
 $(OBJECT_DIR)/%.tidy: %
 	@mkdir -p "$(dir $@)"
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
-		-extra-arg="-std=c++2a") "$<"  -- \
-		-D PLATFORM=host -D HOST_TEST=1 \
-		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
-		-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ \
-		$(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
+		-extra-arg="-std=c++2a") "$<"  -- -D PLATFORM=host -D HOST_TEST=1 \
+		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@printf '$(GREEN)Evaluated file: $(RESET)$< \n'
