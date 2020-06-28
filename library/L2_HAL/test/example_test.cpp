@@ -6,7 +6,7 @@ namespace sjsu
 TEST_CASE("Testing Example Implementation")
 {
   // 1. Setup your mocks
-  Mock<sjsu::Example> mock_example;
+  mockitopp::mock_object<sjsu::Example> mock_example;
   sjsu::ExampleHalImplementation test_subject(mock_example.get());
 
   // 2. Test that your Initialize operates as intended
@@ -72,7 +72,7 @@ TEST_CASE("Testing Example Implementation")
 TEST_CASE("Testing Example Interface")
 {
   // 13. Create a mock object of the example interface itself
-  Mock<sjsu::ExampleHal> mock_example_interface;
+  mockitopp::mock_object<sjsu::ExampleHal> mock_example_interface;
 
   uint8_t test_buffer[32] = { 0 };
   size_t test_buffer_size = 0;
@@ -95,9 +95,9 @@ TEST_CASE("Testing Example Interface")
   //
   // Keep the folowing line commented out:
   //
-  //    Fake(Method(mock_example_interface, Initialize));
+  //    mock_example_interface(&::Initialize)).when(any<>()).thenReturn();
 
-  sjsu::ExampleHal & test_subject = mock_example_interface.get();
+  sjsu::ExampleHal & test_subject = mock_example_interface.getInstance();
 
   SECTION("RunHalRoutine0")
   {

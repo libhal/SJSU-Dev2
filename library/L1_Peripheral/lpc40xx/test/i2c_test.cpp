@@ -19,8 +19,8 @@ TEST_CASE("Testing lpc40xx I2C")
   // Clear local i2c registers
   testing::ClearStructure(&local_i2c);
 
-  Mock<sjsu::Pin> mock_sda_pin;
-  Mock<sjsu::Pin> mock_scl_pin;
+  mockitopp::mock_object<sjsu::Pin> mock_sda_pin;
+  mockitopp::mock_object<sjsu::Pin> mock_scl_pin;
   Fake(Method(mock_sda_pin, SetPinFunction),
        Method(mock_sda_pin, SetAsOpenDrain), Method(mock_sda_pin, SetPull));
   Fake(Method(mock_scl_pin, SetPinFunction),
@@ -29,16 +29,16 @@ TEST_CASE("Testing lpc40xx I2C")
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
       12_MHz;
-  Mock<sjsu::SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
-  Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Enable));
-  Fake(Method(mock_interrupt_controller, Disable));
+  mockitopp::mock_object<sjsu::InterruptController> mock_interrupt_controller;
+  mock_interrupt_controller(&::Enable)).when(any<>()).thenReturn();
+  mock_interrupt_controller(&::Disable)).when(any<>()).thenReturn();
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 

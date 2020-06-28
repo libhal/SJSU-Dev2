@@ -24,7 +24,7 @@ TEST_CASE("Testing TaskScheduler")
     "Task 13", "Task 14", "Task 15", "Task 16", "Task 17",
   };
   std::array<TaskHandle_t, kTaskNames.size()> task_handles;
-  std::array<Mock<TaskInterface>, kTaskNames.size()> mock_tasks;
+  std::array<mockitopp::mock_object<TaskInterface>, kTaskNames.size()> mock_tasks;
   for (size_t i = 0; i < kTaskNames.size(); i++)
   {
     INFO("Stubbing mock task: " << i);
@@ -54,7 +54,7 @@ TEST_CASE("Testing TaskScheduler")
     {
       INFO("Testing AddTask() for task at index: " << i);
       // Setup
-      TaskInterface & task = mock_tasks[i].get();
+      TaskInterface & task = mock_tasks[i].getInstance();
 
       // Exercise
       scheduler.AddTask(&task);
@@ -66,7 +66,7 @@ TEST_CASE("Testing TaskScheduler")
     }
 
     // scheduler should now be full and new tasks should not be added
-    TaskInterface & task = mock_tasks[kMaxTaskCount].get();
+    TaskInterface & task = mock_tasks[kMaxTaskCount].getInstance();
 
     // Exercise
     scheduler.AddTask(&task);
@@ -89,7 +89,7 @@ TEST_CASE("Testing TaskScheduler")
         INFO("Testing GetTask() for task at index: " << i);
 
         // Setup
-        TaskInterface & task = mock_tasks[i].get();
+        TaskInterface & task = mock_tasks[i].getInstance();
         scheduler.AddTask(&task);
         task_count++;
 
@@ -124,7 +124,7 @@ TEST_CASE("Testing TaskScheduler")
       for (size_t i = 0; i < kMaxTaskCount; i++)
       {
         INFO("Testing GetTaskIndex() for task at index: " << i);
-        TaskInterface & task = mock_tasks[i].get();
+        TaskInterface & task = mock_tasks[i].getInstance();
 
         // Exercise
         scheduler.AddTask(&task);

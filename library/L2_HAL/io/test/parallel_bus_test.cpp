@@ -5,11 +5,11 @@ namespace sjsu
 {
 TEST_CASE("Testing ParallelBus Interface")
 {
-  Mock<ParallelBus> mock_parallel_bus;
+  mockitopp::mock_object<ParallelBus> mock_parallel_bus;
 
-  Fake(Method(mock_parallel_bus, SetDirection));
+  mock_parallel_bus(&::SetDirection)).when(any<>()).thenReturn();
 
-  ParallelBus & test_subject = mock_parallel_bus.get();
+  ParallelBus & test_subject = mock_parallel_bus.getInstance();
 
   SECTION("SetAsOutput && SetAsInput")
   {

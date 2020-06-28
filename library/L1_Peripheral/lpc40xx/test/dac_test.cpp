@@ -21,7 +21,7 @@ TEST_CASE("Testing lpc40xx Dac")
   testing::ClearStructure(&local_dac_port);
   Dac::dac_register = &local_dac_port;
 
-  Mock<sjsu::Pin> mock_dac_pin;
+  mockitopp::mock_object<sjsu::Pin> mock_dac_pin;
   Fake(Method(mock_dac_pin, SetPinFunction),
        Method(mock_dac_pin, SetAsAnalogMode),
        Method(mock_dac_pin, SetPull));

@@ -1,56 +1,64 @@
 #include "L1_Peripheral/frequency_counter.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/mockitopp/include/mockitopp/mockitopp.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing FrequencyCounter")
 {
-  Mock<HardwareCounter> mock_counter;
+  using mockitopp::matcher::any;
+  mockitopp::mock_object<HardwareCounter> mock_counter;
 
-  Fake(Method(mock_counter, Initialize));
-  Fake(Method(mock_counter, Set));
-  Fake(Method(mock_counter, SetDirection));
-  Fake(Method(mock_counter, Enable));
-  Fake(Method(mock_counter, Disable));
-  Fake(Method(mock_counter, GetCount));
-
-  FrequencyCounter counter(&mock_counter.get());
+  FrequencyCounter counter(&mock_counter.getInstance());
 
   SECTION("Initialize()")
   {
-    // Setup + Exercise
+    // Setup
+    mock_counter(&HardwareCounter::Initialize).when().thenReturn();
+    mock_counter(&HardwareCounter::SetDirection)
+        .when(any<HardwareCounter::Direction>())
+        .thenReturn();
+
+    // Exercise
     counter.Initialize();
 
     // Verify
-    Verify(Method(mock_counter, Initialize)).Once();
-    Verify(Method(mock_counter, SetDirection)
-               .Using(HardwareCounter::Direction::kUp))
-        .Once();
+    CHECK(mock_counter(&HardwareCounter::Initialize).when().exactly(1));
+    CHECK(mock_counter(&HardwareCounter::SetDirection)
+              .when(HardwareCounter::Direction::kUp)
+              .exactly(1));
   }
 
   SECTION("Disable()")
   {
-    // Setup + Exercise
+    // Setup
+    mock_counter(&HardwareCounter::Disable).when().thenReturn();
+
+    // Exercise
     counter.Disable();
 
     // Verify
-    Verify(Method(mock_counter, Disable)).Once();
+    CHECK(mock_counter(&HardwareCounter::Disable).when().exactly(1));
   }
 
   SECTION("Typical Usage Test")
   {
     // Setup
-    When(Method(mock_counter, GetCount))
-        .Return(500)
-        .Return(750)
-        .Return(1000)
-        .Return(1800)
-        .Return(1000);
+    mock_counter(&HardwareCounter::Enable).when().thenReturn();
+
+    mock_counter(&HardwareCounter::GetCount)
+        .when()
+        .thenReturn(500)
+        .thenReturn(750)
+        .thenReturn(1000)
+        .thenReturn(1800)
+        .thenReturn(1000);
 
     // Exercise
     counter.Enable();
+
     // Exercise: No need to delay, Uptime() is called internally which will
-    // increment the uptime by 1us.
+    //           increment the uptime by 1us.
     //
     // Exercise: Will pull 500 and 750 from GetCount()
     auto actual_frequency = counter.GetFrequency();
@@ -75,7 +83,7 @@ TEST_CASE("Testing FrequencyCounter")
       CHECK(new_actual_frequency == 200_MHz);
     }
 
-    Verify(Method(mock_counter, Enable)).Once();
+    CHECK(mock_counter(&HardwareCounter::Enable).when().exactly(1));
   }
 }
 }  // namespace sjsu

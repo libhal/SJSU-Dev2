@@ -9,28 +9,28 @@ namespace sjsu
 {
 namespace
 {
-Mock<sjsu::Gpio> mock_gpio0;
-Mock<sjsu::Gpio> mock_gpio1;
-Mock<sjsu::Gpio> mock_gpio2;
-Mock<sjsu::Gpio> mock_gpio3;
+mockitopp::mock_object<sjsu::Gpio> mock_gpio0;
+mockitopp::mock_object<sjsu::Gpio> mock_gpio1;
+mockitopp::mock_object<sjsu::Gpio> mock_gpio2;
+mockitopp::mock_object<sjsu::Gpio> mock_gpio3;
 
-Mock<sjsu::Pin> mock_pin0;
-Mock<sjsu::Pin> mock_pin1;
-Mock<sjsu::Pin> mock_pin2;
-Mock<sjsu::Pin> mock_pin3;
+mockitopp::mock_object<sjsu::Pin> mock_pin0;
+mockitopp::mock_object<sjsu::Pin> mock_pin1;
+mockitopp::mock_object<sjsu::Pin> mock_pin2;
+mockitopp::mock_object<sjsu::Pin> mock_pin3;
 }  // namespace
 
 TEST_CASE("Testing Parallel Gpio Implementation")
 {
-  Fake(Method(mock_gpio0, SetDirection));
-  Fake(Method(mock_gpio1, SetDirection));
-  Fake(Method(mock_gpio2, SetDirection));
-  Fake(Method(mock_gpio3, SetDirection));
+  mock_gpio0(&::SetDirection)).when(any<>()).thenReturn();
+  mock_gpio1(&::SetDirection)).when(any<>()).thenReturn();
+  mock_gpio2(&::SetDirection)).when(any<>()).thenReturn();
+  mock_gpio3(&::SetDirection)).when(any<>()).thenReturn();
 
-  Fake(Method(mock_pin0, SetAsOpenDrain));
-  Fake(Method(mock_pin1, SetAsOpenDrain));
-  Fake(Method(mock_pin2, SetAsOpenDrain));
-  Fake(Method(mock_pin3, SetAsOpenDrain));
+  mock_pin0(&::SetAsOpenDrain)).when(any<>()).thenReturn();
+  mock_pin1(&::SetAsOpenDrain)).when(any<>()).thenReturn();
+  mock_pin2(&::SetAsOpenDrain)).when(any<>()).thenReturn();
+  mock_pin3(&::SetAsOpenDrain)).when(any<>()).thenReturn();
 
   When(Method(mock_gpio0, GetPin)).AlwaysReturn(mock_pin0.get());
   When(Method(mock_gpio1, GetPin)).AlwaysReturn(mock_pin1.get());

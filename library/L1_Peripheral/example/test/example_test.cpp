@@ -11,11 +11,11 @@ EMIT_ALL_METHODS(Example);
 TEST_CASE("Testing L1 example::Example")
 {
   // Create mocked versions of the sjsu::Pin
-  Mock<sjsu::Pin> mock_pin_data;
-  Fake(Method(mock_pin_data, SetPinFunction));
+  mockitopp::mock_object<sjsu::Pin> mock_pin_data;
+  mock_pin_data(&::SetPinFunction)).when(any<>()).thenReturn();
 
-  Mock<sjsu::Pin> mock_pin_clock;
-  Fake(Method(mock_pin_clock, SetPinFunction));
+  mockitopp::mock_object<sjsu::Pin> mock_pin_clock;
+  mock_pin_clock(&::SetPinFunction)).when(any<>()).thenReturn();
 
   // Create a version of the local_iocon
   sjsu::lpc40xx::LPC_IOCON_TypeDef local_iocon;

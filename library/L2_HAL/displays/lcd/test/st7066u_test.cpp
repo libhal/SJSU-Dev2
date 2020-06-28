@@ -9,14 +9,14 @@ EMIT_ALL_METHODS(St7066u);
 
 TEST_CASE("Testing St7066u Parallel LCD Driver")
 {
-  Mock<Gpio> mock_rs;  // RS: Register Select
-  Mock<Gpio> mock_rw;  // RW: Read / Write
-  Mock<Gpio> mock_e;   // E   Chip Enable
-  Mock<ParallelBus> mock_data_bus;
+  mockitopp::mock_object<Gpio> mock_rs;  // RS: Register Select
+  mockitopp::mock_object<Gpio> mock_rw;  // RW: Read / Write
+  mockitopp::mock_object<Gpio> mock_e;   // E   Chip Enable
+  mockitopp::mock_object<ParallelBus> mock_data_bus;
 
-  Fake(Method(mock_rs, SetDirection), Method(mock_rs, Set));
-  Fake(Method(mock_rw, SetDirection), Method(mock_rw, Set));
-  Fake(Method(mock_e, SetDirection), Method(mock_e, Set));
+  mock_rs, SetDirection), Method(mock_rs(&::Set)).when(any<>()).thenReturn();
+  mock_rw, SetDirection), Method(mock_rw(&::Set)).when(any<>()).thenReturn();
+  mock_e, SetDirection), Method(mock_e(&::Set)).when(any<>()).thenReturn();
   Fake(Method(mock_data_bus, Initialize), Method(mock_data_bus, SetDirection),
        Method(mock_data_bus, Write));
 

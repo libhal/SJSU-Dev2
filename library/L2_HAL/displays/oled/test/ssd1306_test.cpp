@@ -8,14 +8,14 @@ EMIT_ALL_METHODS(Ssd1306);
 
 TEST_CASE("SSD1306 Test")
 {
-  Mock<sjsu::Spi> mock_spi;
-  Mock<sjsu::Gpio> mock_cs;
-  Mock<sjsu::Gpio> mock_dc;
-  Mock<sjsu::Gpio> mock_reset;
+  mockitopp::mock_object<sjsu::Spi> mock_spi;
+  mockitopp::mock_object<sjsu::Gpio> mock_cs;
+  mockitopp::mock_object<sjsu::Gpio> mock_dc;
+  mockitopp::mock_object<sjsu::Gpio> mock_reset;
 
-  Fake(Method(mock_cs, SetDirection), Method(mock_cs, Set));
-  Fake(Method(mock_dc, SetDirection), Method(mock_dc, Set));
-  Fake(Method(mock_reset, SetDirection), Method(mock_reset, Set));
+  mock_cs, SetDirection), Method(mock_cs(&::Set)).when(any<>()).thenReturn();
+  mock_dc, SetDirection), Method(mock_dc(&::Set)).when(any<>()).thenReturn();
+  mock_reset, SetDirection), Method(mock_reset(&::Set)).when(any<>()).thenReturn();
   Fake(Method(mock_spi, Initialize), Method(mock_spi, SetDataSize),
        Method(mock_spi, SetClock));
 

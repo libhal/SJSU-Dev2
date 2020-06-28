@@ -8,15 +8,15 @@ EMIT_ALL_METHODS(Button);
 TEST_CASE("Testing Button")
 {
   // Make a mock pin to work with
-  Mock<sjsu::Pin> mock_pin;
+  mockitopp::mock_object<sjsu::Pin> mock_pin;
   // Retrieve a reference to the Pin to be injected as the return value
   // of GPIOs GetPin() method.
-  sjsu::Pin & test_pin = mock_pin.get();
+  sjsu::Pin & test_pin = mock_pin.getInstance();
   // Fake the implementation of SetAsActiveLow and SetPull to be inspected later
-  Fake(Method(mock_pin, SetPull));
+  mock_pin(&::SetPull)).when(any<>()).thenReturn();
 
   // Create a mock gpio object
-  Mock<sjsu::Gpio> mock_gpio;
+  mockitopp::mock_object<sjsu::Gpio> mock_gpio;
   // Fake Read and SetAsInput so we can inspect them later
   Fake(Method(mock_gpio, Read), Method(mock_gpio, Set),
        Method(mock_gpio, SetDirection));
@@ -26,7 +26,7 @@ TEST_CASE("Testing Button")
   When(Method(mock_gpio, GetPin)).AlwaysReturn(test_pin);
 
   // Retrieve Gpio reference ot be passed to the test subject
-  sjsu::Gpio & test_gpio = mock_gpio.get();
+  sjsu::Gpio & test_gpio = mock_gpio.getInstance();
 
   // Inject test_gpio into button object
   Button test_subject(test_gpio);

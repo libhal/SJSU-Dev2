@@ -1,1 +1,1 @@
-USER_TESTS += $(LIBRARY_DIR)/L0_Platform/test/ram_test.cpp
+USER_TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/frequency_counter_test.cpp

@@ -17,14 +17,14 @@ TEST_CASE("Testing lpc40xx Timer")
   constexpr size_t kExpectedMatchRegisterCount        = 4;
 
   // Setup mock interrupt controller
-  Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Enable));
+  mockitopp::mock_object<sjsu::InterruptController> mock_interrupt_controller;
+  mock_interrupt_controller(&::Enable)).when(any<>()).thenReturn();
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 
   // Setup mock system controller
-  Mock<sjsu::SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kClockFrequency);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());

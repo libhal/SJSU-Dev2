@@ -29,13 +29,13 @@ TEST_CASE("Testing lpc40xx Pulse Capture")
     PulseCapture::CaptureEdgeMode::kBoth
   };
 
-  static Mock<sjsu::Pin> mock_pin0;
-  static Mock<sjsu::Pin> mock_pin1;
+  static mockitopp::mock_object<sjsu::Pin> mock_pin0;
+  static mockitopp::mock_object<sjsu::Pin> mock_pin1;
 
-  Fake(Method(mock_pin0, SetPinFunction), Method(mock_pin1, SetPinFunction));
+  mock_pin0, SetPinFunction), Method(mock_pin1(&::SetPinFunction)).when(any<>()).thenReturn();
 
-  sjsu::Pin & capture0_input_pin = mock_pin0.get();
-  sjsu::Pin & capture1_input_pin = mock_pin1.get();
+  sjsu::Pin & capture0_input_pin = mock_pin0.getInstance();
+  sjsu::Pin & capture1_input_pin = mock_pin1.getInstance();
 
   PulseCapture::CaptureChannelNumber test_timer_channel_number0 =
       PulseCapture::kChannel0;
@@ -76,15 +76,15 @@ TEST_CASE("Testing lpc40xx Pulse Capture")
   constexpr units::frequency::hertz_t kTestSystemFrequency = 4_MHz;
   constexpr int kTestPeripheralClockDivider                = 1;
 
-  Mock<sjsu::SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kTestSystemFrequency);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
-  Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Enable));
-  Fake(Method(mock_interrupt_controller, Disable));
+  mockitopp::mock_object<sjsu::InterruptController> mock_interrupt_controller;
+  mock_interrupt_controller(&::Enable)).when(any<>()).thenReturn();
+  mock_interrupt_controller(&::Disable)).when(any<>()).thenReturn();
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 

@@ -9,7 +9,7 @@ EMIT_ALL_METHODS(Si7060);
 TEST_CASE("Si7060")
 {
   constexpr uint8_t kDeviceAddress = Si7060::kDefaultAddress;
-  Mock<I2c> mock_i2c;
+  mockitopp::mock_object<I2c> mock_i2c;
   Si7060 temperature_sensor(mock_i2c.get(), kDeviceAddress);
 
   SECTION("Initialize")

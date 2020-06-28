@@ -8,7 +8,7 @@ TEST_CASE("Testing interrupt interface")
   SECTION("Should be able to Set and Get PlatformController()")
   {
     // Setup
-    Mock<InterruptController> mock_controller;
+    mockitopp::mock_object<InterruptController> mock_controller;
 
     // Exercise
     InterruptController::SetPlatformController(&mock_controller.get());

@@ -18,7 +18,7 @@ TEST_CASE("Testing EEPROM")
 
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemClockFrequency = 48_MHz;
-  Mock<sjsu::SystemController> mock_system_controller;
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemClockFrequency);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());

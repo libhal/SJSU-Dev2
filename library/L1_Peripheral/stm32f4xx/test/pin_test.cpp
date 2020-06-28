@@ -21,8 +21,8 @@ bit::Mask Mask2Bit(const sjsu::Pin & pin)
 
 TEST_CASE("Testing stm32f4xx Pin")
 {
-  Mock<SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   SystemController::SetPlatformController(&mock_system_controller.get());
 
   GPIO_TypeDef local_gpio_a;

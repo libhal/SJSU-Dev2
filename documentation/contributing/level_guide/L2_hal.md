@@ -48,9 +48,9 @@ example, sharp a mock ADC would be created using the
 [FakeIt](https://github.com/eranpeer/FakeIt) mocking library.
 
 ``` c++
-Mock<sjsu::Adc> mock_adc;
+mockitopp::mock_object<sjsu::Adc> mock_adc;
 // We only need to fake the methods that our class uses
-Fake(Method(mock_adc, Initialize));
+mock_adc(&).when(any<>()).thenReturn();
 // Method mock.Read will return 512 once.
 When(Method(mock_adc, Read)).Return(512);
 // Pass mock ADC reference to sharp test object

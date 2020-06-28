@@ -106,7 +106,7 @@ TEST_CASE("Testing PeriodicScheduler")
             [](uint32_t) {},
           };
       // Stub PeriodicTask mocks with task functions.
-      Mock<PeriodicTaskInterface> mock_tasks[mock_task_functions.size()];
+      mockitopp::mock_object<PeriodicTaskInterface> mock_tasks[mock_task_functions.size()];
       for (size_t i = 0; i < mock_task_functions.size(); i++)
       {
         When(Method(mock_tasks[i], GetTaskFunction))

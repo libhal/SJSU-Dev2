@@ -1,15 +1,20 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "L1_Peripheral/gpio.hpp"
+#include "third_party/mockitopp/include/mockitopp/mockitopp.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing L1 gpio")
 {
-  Mock<sjsu::Gpio> mock_gpio;
-  Fake(Method(mock_gpio, SetDirection));
-  Fake(Method(mock_gpio, Set));
+  using mockitopp::matcher::any;
+  mockitopp::mock_object<sjsu::Gpio> mock_gpio;
 
-  sjsu::Gpio & gpio = mock_gpio.get();
+  mock_gpio(&sjsu::Gpio::SetDirection)
+      .when(any<sjsu::Gpio::Direction>())
+      .thenReturn();
+  mock_gpio(&sjsu::Gpio::Set).when(any<sjsu::Gpio::State>()).thenReturn();
+
+  sjsu::Gpio & gpio = mock_gpio.getInstance();
 
   SECTION("SetAsInput()")
   {
@@ -17,8 +22,9 @@ TEST_CASE("Testing L1 gpio")
     gpio.SetAsInput();
 
     // Verify
-    Verify(
-        Method(mock_gpio, SetDirection).Using(sjsu::Gpio::Direction::kInput));
+    CHECK(mock_gpio(&sjsu::Gpio::SetDirection)
+              .when(sjsu::Gpio::Direction::kInput)
+              .exactly(1));
   }
 
   SECTION("SetAsOutput()")
@@ -27,8 +33,9 @@ TEST_CASE("Testing L1 gpio")
     gpio.SetAsOutput();
 
     // Verify
-    Verify(
-        Method(mock_gpio, SetDirection).Using(sjsu::Gpio::Direction::kOutput));
+    CHECK(mock_gpio(&sjsu::Gpio::SetDirection)
+              .when(sjsu::Gpio::Direction::kOutput)
+              .exactly(1));
   }
 
   SECTION("SetHigh()")
@@ -37,7 +44,8 @@ TEST_CASE("Testing L1 gpio")
     gpio.SetHigh();
 
     // Verify
-    Verify(Method(mock_gpio, Set).Using(sjsu::Gpio::State::kHigh));
+    CHECK(
+        mock_gpio(&sjsu::Gpio::Set).when(sjsu::Gpio::State::kHigh).exactly(1));
   }
 
   SECTION("SetLow()")
@@ -46,7 +54,7 @@ TEST_CASE("Testing L1 gpio")
     gpio.SetLow();
 
     // Verify
-    Verify(Method(mock_gpio, Set).Using(sjsu::Gpio::State::kLow));
+    CHECK(mock_gpio(&sjsu::Gpio::Set).when(sjsu::Gpio::State::kLow).exactly(1));
   }
 }
 }  // namespace sjsu

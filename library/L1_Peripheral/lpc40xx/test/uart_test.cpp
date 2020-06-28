@@ -15,19 +15,19 @@ TEST_CASE("Testing lpc40xx Uart")
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
       48_MHz;
-  Mock<sjsu::SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
-  Mock<sjsu::Pin> mock_tx;
-  Fake(Method(mock_tx, SetPinFunction));
-  Fake(Method(mock_tx, SetPull));
-  Mock<sjsu::Pin> mock_rx;
-  Fake(Method(mock_rx, SetPinFunction));
-  Fake(Method(mock_rx, SetPull));
+  mockitopp::mock_object<sjsu::Pin> mock_tx;
+  mock_tx(&::SetPinFunction)).when(any<>()).thenReturn();
+  mock_tx(&::SetPull)).when(any<>()).thenReturn();
+  mockitopp::mock_object<sjsu::Pin> mock_rx;
+  mock_rx(&::SetPinFunction)).when(any<>()).thenReturn();
+  mock_rx(&::SetPull)).when(any<>()).thenReturn();
 
   // Set up for UART2
   // Parameters for constructor

@@ -21,8 +21,8 @@ TEST_CASE("Testing lpc40xx adc")
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
       12_MHz;
-  Mock<sjsu::SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
@@ -30,12 +30,12 @@ TEST_CASE("Testing lpc40xx adc")
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Set mock for sjsu::Pin
-  Mock<sjsu::Pin> mock_adc_pin0;
+  mockitopp::mock_object<sjsu::Pin> mock_adc_pin0;
   Fake(Method(mock_adc_pin0, SetAsAnalogMode),
        Method(mock_adc_pin0, SetPull),
        Method(mock_adc_pin0, SetPinFunction));
 
-  Mock<sjsu::Pin> mock_adc_pin1;
+  mockitopp::mock_object<sjsu::Pin> mock_adc_pin1;
   Fake(Method(mock_adc_pin1, SetAsAnalogMode),
        Method(mock_adc_pin1, SetPull),
        Method(mock_adc_pin1, SetPinFunction));

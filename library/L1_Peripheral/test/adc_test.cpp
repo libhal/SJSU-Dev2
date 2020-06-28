@@ -1,18 +1,13 @@
 #include "L1_Peripheral/adc.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/mockitopp/include/mockitopp/mockitopp.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing ADC Interface")
 {
-  Mock<Adc> mock_adc;
-
-  Fake(Method(mock_adc, Initialize));
-  Fake(Method(mock_adc, Read));
-  Fake(Method(mock_adc, GetActiveBits));
-  Fake(Method(mock_adc, ReferenceVoltage));
-
-  Adc & test_subject = mock_adc.get();
+  mockitopp::mock_object<sjsu::Adc> mock_adc;
+  sjsu::Adc & test_subject = mock_adc.getInstance();
 
   SECTION("GetMaximumValue")
   {
@@ -32,21 +27,21 @@ TEST_CASE("Testing ADC Interface")
       expected_active_bits = 12;
     }
 
-    When(Method(mock_adc, GetActiveBits)).AlwaysReturn(expected_active_bits);
+    mock_adc(&sjsu::Adc::GetActiveBits).when().thenReturn(expected_active_bits);
 
     // Exercise
     uint32_t actual_resolution   = test_subject.GetMaximumValue();
     uint32_t expected_resolution = (1 << expected_active_bits) - 1;
 
     // Verify
-    Verify(Method(mock_adc, GetActiveBits)).Once();
+    CHECK(mock_adc(&sjsu::Adc::GetActiveBits).when().exactly(1));
     CHECK(actual_resolution == expected_resolution);
   }
 
   SECTION("Voltage")
   {
     // Setup
-    uint32_t expected_active_bits = 12;
+    uint32_t expected_active_bits                          = 12;
     units::voltage::microvolt_t expected_reference_voltage = 3.3_V;
 
     uint32_t expected_adc_reading;
@@ -75,18 +70,19 @@ TEST_CASE("Testing ADC Interface")
       expected_voltage     = 3300_mV;
     }
 
-    When(Method(mock_adc, Read)).AlwaysReturn(expected_adc_reading);
-    When(Method(mock_adc, GetActiveBits)).AlwaysReturn(expected_active_bits);
-    When(Method(mock_adc, ReferenceVoltage))
-        .AlwaysReturn(expected_reference_voltage);
+    mock_adc(&sjsu::Adc::Read).when().thenReturn(expected_adc_reading);
+    mock_adc(&sjsu::Adc::GetActiveBits).when().thenReturn(expected_active_bits);
+    mock_adc(&sjsu::Adc::ReferenceVoltage)
+        .when()
+        .thenReturn(expected_reference_voltage);
 
     // Exercise
     auto actual_voltage = test_subject.Voltage();
 
     // Verify
-    Verify(Method(mock_adc, GetActiveBits)).Once();
-    Verify(Method(mock_adc, Read)).Once();
-    Verify(Method(mock_adc, ReferenceVoltage)).Once();
+    CHECK(mock_adc(&sjsu::Adc::GetActiveBits).when().exactly(1));
+    CHECK(mock_adc(&sjsu::Adc::Read).when().exactly(1));
+    CHECK(mock_adc(&sjsu::Adc::ReferenceVoltage).when().exactly(1));
 
     CHECK(actual_voltage.to<float>() ==
           doctest::Approx(expected_voltage.to<float>()).epsilon(0.01f));

@@ -7,11 +7,11 @@ EMIT_ALL_METHODS(Servo);
 
 TEST_CASE("Testing Servo")
 {
-  Mock<Pwm> mock_pwm;
+  mockitopp::mock_object<sjsu::Pwm> mock_pwm;
 
-  Fake(Method(mock_pwm, Initialize));
-  Fake(Method(mock_pwm, SetFrequency));
-  Fake(Method(mock_pwm, SetDutyCycle));
+  mock_pwm(&::Initialize)).when(any<>()).thenReturn();
+  mock_pwm(&::SetFrequency)).when(any<>()).thenReturn();
+  mock_pwm(&::SetDutyCycle)).when(any<>()).thenReturn();
 
   // Inject test_gpio into button object
   Servo test_servo(mock_pwm.get());

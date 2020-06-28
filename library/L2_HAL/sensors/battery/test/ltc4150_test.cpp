@@ -18,11 +18,11 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
   constexpr float kResolution        = 0.001f;
   units::impedance::ohm_t resistance = 0.00050_Ohm;
 
-  Mock<Gpio> mock_primary_pol_pin;
-  Mock<Gpio> mock_backup_pol_pin;
+  mockitopp::mock_object<Gpio> mock_primary_pol_pin;
+  mockitopp::mock_object<Gpio> mock_backup_pol_pin;
 
-  Mock<HardwareCounter> mock_primary_hardware_counter;
-  Mock<HardwareCounter> mock_backup_hardware_counter;
+  mockitopp::mock_object<HardwareCounter> mock_primary_hardware_counter;
+  mockitopp::mock_object<HardwareCounter> mock_backup_hardware_counter;
 
   InterruptCallback primary_input_isr;
   InterruptCallback primary_pol_isr;
@@ -34,19 +34,19 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
   When(Method(mock_backup_pol_pin, AttachInterrupt))
       .AlwaysDo(GetLambda(backup_pol_isr));
 
-  Fake(Method(mock_primary_hardware_counter, Initialize));
-  Fake(Method(mock_backup_hardware_counter, Initialize));
-  Fake(Method(mock_primary_hardware_counter, Enable));
-  Fake(Method(mock_backup_hardware_counter, Enable));
-  Fake(Method(mock_primary_hardware_counter, GetCount));
-  Fake(Method(mock_backup_hardware_counter, GetCount));
-  Fake(Method(mock_primary_hardware_counter, SetDirection));
-  Fake(Method(mock_backup_hardware_counter, SetDirection));
+  mock_primary_hardware_counter(&::Initialize)).when(any<>()).thenReturn();
+  mock_backup_hardware_counter(&::Initialize)).when(any<>()).thenReturn();
+  mock_primary_hardware_counter(&::Enable)).when(any<>()).thenReturn();
+  mock_backup_hardware_counter(&::Enable)).when(any<>()).thenReturn();
+  mock_primary_hardware_counter(&::GetCount)).when(any<>()).thenReturn();
+  mock_backup_hardware_counter(&::GetCount)).when(any<>()).thenReturn();
+  mock_primary_hardware_counter(&::SetDirection)).when(any<>()).thenReturn();
+  mock_backup_hardware_counter(&::SetDirection)).when(any<>()).thenReturn();
 
-  Fake(Method(mock_primary_pol_pin, SetDirection));
-  Fake(Method(mock_backup_pol_pin, SetDirection));
-  Fake(Method(mock_primary_pol_pin, DetachInterrupt));
-  Fake(Method(mock_backup_pol_pin, DetachInterrupt));
+  mock_primary_pol_pin(&::SetDirection)).when(any<>()).thenReturn();
+  mock_backup_pol_pin(&::SetDirection)).when(any<>()).thenReturn();
+  mock_primary_pol_pin(&::DetachInterrupt)).when(any<>()).thenReturn();
+  mock_backup_pol_pin(&::DetachInterrupt)).when(any<>()).thenReturn();
 
   SECTION("LTC4150 Initialization")
   {

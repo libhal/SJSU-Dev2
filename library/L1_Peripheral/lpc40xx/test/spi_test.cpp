@@ -18,21 +18,21 @@ TEST_CASE("Testing lpc40xx SPI")
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
       12_MHz;
-  Mock<sjsu::SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Set up Mock for Pin
-  Mock<sjsu::Pin> mock_mosi;
-  Mock<sjsu::Pin> mock_miso;
-  Mock<sjsu::Pin> mock_sck;
+  mockitopp::mock_object<sjsu::Pin> mock_mosi;
+  mockitopp::mock_object<sjsu::Pin> mock_miso;
+  mockitopp::mock_object<sjsu::Pin> mock_sck;
 
-  Fake(Method(mock_mosi, SetPinFunction));
-  Fake(Method(mock_miso, SetPinFunction));
-  Fake(Method(mock_sck, SetPinFunction));
+  mock_mosi(&::SetPinFunction)).when(any<>()).thenReturn();
+  mock_miso(&::SetPinFunction)).when(any<>()).thenReturn();
+  mock_sck(&::SetPinFunction)).when(any<>()).thenReturn();
 
   // Set up SSP Bus configuration object
   const Spi::Bus_t kMockSpi = {

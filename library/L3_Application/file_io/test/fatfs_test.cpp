@@ -80,7 +80,7 @@ TEST_CASE("Testing FAT FS")
   SECTION("disk_status()")
   {
     // Setup
-    Mock<sjsu::Storage> mock_storage;
+    mockitopp::mock_object<sjsu::Storage> mock_storage;
     RegisterFatFsDrive(&mock_storage.get());
 
     SECTION("Invalid drive number")
@@ -111,7 +111,7 @@ TEST_CASE("Testing FAT FS")
   SECTION("disk_initialize()")
   {
     // Setup
-    Mock<sjsu::Storage> mock_storage;
+    mockitopp::mock_object<sjsu::Storage> mock_storage;
     RegisterFatFsDrive(&mock_storage.get());
 
     SECTION("Invalid drive number")
@@ -175,7 +175,7 @@ TEST_CASE("Testing FAT FS")
   SECTION("RegisterFatFsDrive() Fails when driver number is out of bounds")
   {
     // Setup
-    Mock<sjsu::Storage> mock_storage;
+    mockitopp::mock_object<sjsu::Storage> mock_storage;
 
     // Exercise
     // Exercise: Take the drive count and add 1 to push it out of bounds.
@@ -189,7 +189,7 @@ TEST_CASE("Testing FAT FS")
   SECTION("disk_write()")
   {
     // Setup
-    Mock<sjsu::Storage> mock_storage;
+    mockitopp::mock_object<sjsu::Storage> mock_storage;
     RegisterFatFsDrive(&mock_storage.get());
 
     SECTION("Invalid drive number")
@@ -294,7 +294,7 @@ TEST_CASE("Testing FAT FS")
   SECTION("disk_read()")
   {
     // Setup
-    Mock<sjsu::Storage> mock_storage;
+    mockitopp::mock_object<sjsu::Storage> mock_storage;
     RegisterFatFsDrive(&mock_storage.get());
 
     SECTION("Invalid drive number")

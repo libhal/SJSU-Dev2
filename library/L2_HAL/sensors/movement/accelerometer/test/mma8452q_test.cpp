@@ -7,8 +7,8 @@ EMIT_ALL_METHODS(Mma8452q);
 
 TEST_CASE("Accelerometer")
 {
-  Mock<sjsu::I2c> mock_i2c;
-  Fake(Method(mock_i2c, Initialize));
+  mockitopp::mock_object<sjsu::I2c> mock_i2c;
+  mock_i2c(&::Initialize)).when(any<>()).thenReturn();
   Mma8452q test_subject(mock_i2c.get());
 
   SECTION("Initialize")

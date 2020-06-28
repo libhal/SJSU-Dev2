@@ -4,6 +4,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/mockitopp/include/mockitopp/mockitopp.hpp"
 
 namespace sjsu::cortex
 {
@@ -14,6 +15,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
   cortex::DWT_Type local_dwt = {
     .PCSR = 0,
   };
+
   cortex::CoreDebug_Type local_core;
 
   testing::ClearStructure(&local_dwt);
@@ -33,14 +35,14 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kClockFrequency = 10_MHz;
 
-  Mock<SystemController> mock_system_controller;
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kClockFrequency);
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
-  Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Enable));
-  Fake(Method(mock_interrupt_controller, Disable));
+  mockitopp::mock_object<sjsu::InterruptController> mock_interrupt_controller;
+  mock_interrupt_controller(&::Enable)).when(any<>()).thenReturn();
+  mock_interrupt_controller(&::Disable)).when(any<>()).thenReturn();
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 

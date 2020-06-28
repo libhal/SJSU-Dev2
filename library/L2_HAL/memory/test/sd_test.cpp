@@ -7,12 +7,12 @@ EMIT_ALL_METHODS(Sd);
 
 TEST_CASE("Testing SD Card Driver Class")
 {
-  Mock<sjsu::Spi> mock_spi;
-  Mock<sjsu::Gpio> mock_card_detect;
-  Mock<sjsu::Gpio> mock_chip_select;
+  mockitopp::mock_object<sjsu::Spi> mock_spi;
+  mockitopp::mock_object<sjsu::Gpio> mock_card_detect;
+  mockitopp::mock_object<sjsu::Gpio> mock_chip_select;
 
-  Fake(Method(mock_chip_select, SetDirection), Method(mock_chip_select, Set));
-  Fake(Method(mock_card_detect, SetDirection));
+  mock_chip_select, SetDirection), Method(mock_chip_select(&::Set)).when(any<>()).thenReturn();
+  mock_card_detect(&::SetDirection)).when(any<>()).thenReturn();
   Fake(Method(mock_spi, Initialize), Method(mock_spi, SetClock),
        Method(mock_spi, SetDataSize));
 

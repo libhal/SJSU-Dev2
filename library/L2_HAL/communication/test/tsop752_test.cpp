@@ -9,8 +9,8 @@ EMIT_ALL_METHODS(Tsop752);
 
 TEST_CASE("Tsop752 Infrared Receiver Test")
 {
-  Mock<PulseCapture> mock_pulse_capture;
-  Mock<Timer> mock_timer;
+  mockitopp::mock_object<PulseCapture> mock_pulse_capture;
+  mockitopp::mock_object<Timer> mock_timer;
 
   Fake(Method(mock_pulse_capture, ConfigureCapture),
        Method(mock_pulse_capture, EnableCaptureInterrupt));

@@ -1,5 +1,6 @@
 #include "L1_Peripheral/hardware_counter.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/mockitopp/include/mockitopp/mockitopp.hpp"
 
 namespace sjsu
 {
@@ -18,15 +19,16 @@ auto GetLambda(sjsu::InterruptCallback & isr)
 
 TEST_CASE("Testing L1 GpioCounter")
 {
-  Mock<sjsu::Pin> mock_pin;
-  Fake(Method(mock_pin, SetPull));
+  using mockitopp::matcher::any;
+  mockitopp::mock_object<sjsu::Pin> mock_pin;
+  mock_pin(&sjsu::Pin::SetPull).when(any<>()).thenReturn();
 
   // Create mocked versions of the sjsu::Pin
-  Mock<sjsu::Gpio> mock_gpio;
-  Fake(Method(mock_gpio, SetDirection));
-  Fake(Method(mock_gpio, AttachInterrupt));
-  Fake(Method(mock_gpio, DetachInterrupt));
-  When(Method(mock_gpio, GetPin)).AlwaysReturn(mock_pin.get());
+  mockitopp::mock_object<sjsu::Gpio> mock_gpio;
+  mock_gpio(&sjsu::Gpio::SetDirection).when(any<>()).thenReturn();
+  mock_gpio(&sjsu::Gpio::AttachInterrupt).when(any<>()).thenReturn();
+  mock_gpio(&sjsu::Gpio::DetachInterrupt).when(any<>()).thenReturn();
+  mock_gpio(&sjsu::Gpio::GetPin).when().thenReturn(mock_pin.get());
 
   SECTION("Initialize()")
   {
@@ -81,7 +83,7 @@ TEST_CASE("Testing L1 GpioCounter")
     constexpr int kCountDowns = 5;
     sjsu::InterruptCallback callback;
     When(Method(mock_gpio, AttachInterrupt)).AlwaysDo(GetLambda(callback));
-    Fake(Method(mock_gpio, DetachInterrupt));
+    mock_gpio(&::DetachInterrupt)).when(any<>()).thenReturn();
     GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kBoth);
 
     // Exercise
@@ -113,7 +115,7 @@ TEST_CASE("Testing L1 GpioCounter")
   {
     // Setup
     sjsu::InterruptCallback callback;
-    Fake(Method(mock_gpio, DetachInterrupt));
+    mock_gpio(&::DetachInterrupt)).when(any<>()).thenReturn();
     GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kBoth);
 
     // Exercise

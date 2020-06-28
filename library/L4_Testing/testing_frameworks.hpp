@@ -6,10 +6,7 @@
 // Quick and dirty way to have sub sections from Catch2 translate to SUBCASE in
 // doctest.
 #define SECTION SUBCASE
-#include "third_party/fakeit/fakeit.hpp"
 #include "third_party/fff/fff.h"
-
-using namespace fakeit;  // NOLINT
 
 int HostWrite(const char * payload, size_t length);
 int HostRead(char * payload, size_t length);

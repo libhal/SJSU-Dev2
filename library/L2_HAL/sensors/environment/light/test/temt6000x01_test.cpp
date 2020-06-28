@@ -21,7 +21,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
   units::illuminance::lux_t expected_lux(2.0f * kExpectedCurrent.to<float>());
   units::illuminance::lux_t expected_max_lux(1'000_lx);
 
-  Mock<Adc> mock_adc;
+  mockitopp::mock_object<Adc> mock_adc;
   When(Method(mock_adc, GetActiveBits)).AlwaysReturn(kAdcActiveBits);
   When(Method(mock_adc, Read)).AlwaysReturn(kAdcTestOutput);
   When(Method(mock_adc, ReferenceVoltage)).AlwaysReturn(kReferenceVoltage);

@@ -11,17 +11,17 @@ EMIT_ALL_METHODS(UartBase);
 TEST_CASE("Testing stm32f10x Uart")
 {
   static constexpr units::frequency::hertz_t kDummyClockRate = 8_MHz;
-  Mock<sjsu::SystemController> mock_controller;
-  Fake(Method(mock_controller, PowerUpPeripheral));
+  mockitopp::mock_object<sjsu::SystemController> mock_controller;
+  mock_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   When(Method(mock_controller, GetClockRate)).AlwaysReturn(kDummyClockRate);
   SystemController::SetPlatformController(&mock_controller.get());
 
-  Mock<sjsu::Pin> mock_rx;
-  Mock<sjsu::Pin> mock_tx;
-  Mock<sjsu::Pin> mock_pin;
+  mockitopp::mock_object<sjsu::Pin> mock_rx;
+  mockitopp::mock_object<sjsu::Pin> mock_tx;
+  mockitopp::mock_object<sjsu::Pin> mock_pin;
 
-  Fake(Method(mock_rx, SetPull));
-  Fake(Method(mock_tx, SetPinFunction));
+  mock_rx(&::SetPull)).when(any<>()).thenReturn();
+  mock_tx(&::SetPinFunction)).when(any<>()).thenReturn();
 
   DMA_Channel_TypeDef local_dma;
   USART_TypeDef local_usart;
@@ -46,8 +46,8 @@ TEST_CASE("Testing stm32f10x Uart")
     // Setup
     static constexpr uint32_t kExpectedBaudRate = 115200;
 
-    Mock<UartBase> spy(test_subject);
-    Fake(Method(spy, SetBaudRate));
+    mockitopp::mock_object<UartBase> spy(test_subject);
+    spy(&::SetBaudRate)).when(any<>()).thenReturn();
 
     intptr_t data_address_int = reinterpret_cast<intptr_t>(&local_usart.DR);
     intptr_t queue_address_int =

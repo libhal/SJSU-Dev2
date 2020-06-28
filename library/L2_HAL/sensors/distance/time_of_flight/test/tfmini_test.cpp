@@ -44,11 +44,11 @@ auto MockReadImplementation(size_t & read_count,
 
 TEST_CASE("Testing TFMini")
 {
-  Mock<Uart> mock_uart;
+  mockitopp::mock_object<Uart> mock_uart;
   Fake(Method(mock_uart, Initialize),
        ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)));
 
-  Uart & uart = mock_uart.get();
+  Uart & uart = mock_uart.getInstance();
   TFMini test(uart);
 
   SECTION("Initialize()")

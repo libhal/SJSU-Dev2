@@ -5,10 +5,10 @@ namespace sjsu
 {
 TEST_CASE("Testing L1 pin")
 {
-  Mock<sjsu::Pin> mock_pin;
-  Fake(Method(mock_pin, SetPull));
+  mockitopp::mock_object<sjsu::Pin> mock_pin;
+  mock_pin(&::SetPull)).when(any<>()).thenReturn();
 
-  sjsu::Pin & pin = mock_pin.get();
+  sjsu::Pin & pin = mock_pin.getInstance();
 
   SECTION("PullUp()")
   {

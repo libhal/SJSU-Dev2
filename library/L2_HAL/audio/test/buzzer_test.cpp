@@ -9,13 +9,13 @@ EMIT_ALL_METHODS(Buzzer);
 TEST_CASE("Testing buzzer")
 {
   // Create mock for PWM class
-  Mock<Pwm> mock_pwm_pin;
+  mockitopp::mock_object<sjsu::Pwm> mock_pwm_pin;
 
   Fake(Method(mock_pwm_pin, Initialize),
        Method(mock_pwm_pin, SetDutyCycle),
        Method(mock_pwm_pin, SetFrequency));
 
-  Pwm & pwm = mock_pwm_pin.get();
+  Pwm & pwm = mock_pwm_pin.getInstance();
 
   // Instantiate buzzer test objects
   Buzzer test1(pwm);

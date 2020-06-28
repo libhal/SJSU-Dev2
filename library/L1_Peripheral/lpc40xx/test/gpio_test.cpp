@@ -22,10 +22,10 @@ TEST_CASE("Testing lpc40xx Gpio")
   testing::ClearStructure(&local_gpio_port);
 
   // Create mock pins
-  Mock<sjsu::Pin> mock_pin0;
-  Mock<sjsu::Pin> mock_pin1;
-  Fake(Method(mock_pin0, SetPinFunction));
-  Fake(Method(mock_pin1, SetPinFunction));
+  mockitopp::mock_object<sjsu::Pin> mock_pin0;
+  mockitopp::mock_object<sjsu::Pin> mock_pin1;
+  mock_pin0(&::SetPinFunction)).when(any<>()).thenReturn();
+  mock_pin1(&::SetPinFunction)).when(any<>()).thenReturn();
 
   // Get gpio register pointer and replace the address with the local GPIOs.
   // Only GPIO port 1 & 2 will be used in this unit test
@@ -159,15 +159,15 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts")
   interrupt2->falling_enable = &(local_eint.IO2IntEnF);
 
   // Pins that are to be used in the unit test
-  Mock<sjsu::InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Enable));
-  Fake(Method(mock_interrupt_controller, Disable));
+  mockitopp::mock_object<sjsu::InterruptController> mock_interrupt_controller;
+  mock_interrupt_controller(&::Enable)).when(any<>()).thenReturn();
+  mock_interrupt_controller(&::Disable)).when(any<>()).thenReturn();
   sjsu::InterruptController::SetPlatformController(
       &mock_interrupt_controller.get());
 
   // Create mock pin
-  Mock<sjsu::Pin> mock_pin;
-  Fake(Method(mock_pin, SetPinFunction));
+  mockitopp::mock_object<sjsu::Pin> mock_pin;
+  mock_pin(&::SetPinFunction)).when(any<>()).thenReturn();
 
   Gpio p0_15(0, 15, &mock_pin.get());
   Gpio p2_7(2, 7, &mock_pin.get());

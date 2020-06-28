@@ -23,19 +23,19 @@ TEST_CASE("Testing lpc40xx Can")
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
       12_MHz;
-  Mock<sjsu::SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<sjsu::SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Set up Mock for Pin
-  Mock<sjsu::Pin> mock_td;
-  Mock<sjsu::Pin> mock_rd;
+  mockitopp::mock_object<sjsu::Pin> mock_td;
+  mockitopp::mock_object<sjsu::Pin> mock_rd;
 
-  Fake(Method(mock_td, SetPinFunction));
-  Fake(Method(mock_rd, SetPinFunction));
+  mock_td(&::SetPinFunction)).when(any<>()).thenReturn();
+  mock_rd(&::SetPinFunction)).when(any<>()).thenReturn();
 
   // Set up SSP Bus configuration object
   const Can::Channel_t kMockCan = {

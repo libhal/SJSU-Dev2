@@ -8,11 +8,11 @@ namespace sjsu
 {
 TEST_CASE("Testing L1 uart")
 {
-  Mock<Uart> mock_uart;
+  mockitopp::mock_object<sjsu::Uart> mock_uart;
   Fake(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)));
   Fake(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)));
-  Fake(Method(mock_uart, HasData));
-  Uart & uart = mock_uart.get();
+  mock_uart(&::HasData)).when(any<>()).thenReturn();
+  Uart & uart = mock_uart.getInstance();
 
   SECTION("Write() Byte")
   {

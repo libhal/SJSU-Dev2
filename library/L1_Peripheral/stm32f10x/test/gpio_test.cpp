@@ -45,12 +45,12 @@ IRQn GetIrqForPin(uint8_t pin)
 
 TEST_CASE("Testing stm32f10x Gpio")
 {
-  Mock<SystemController> mock_system_controller;
-  Fake(Method(mock_system_controller, PowerUpPeripheral));
+  mockitopp::mock_object<SystemController> mock_system_controller;
+  mock_system_controller(&::PowerUpPeripheral)).when(any<>()).thenReturn();
   SystemController::SetPlatformController(&mock_system_controller.get());
 
-  Mock<InterruptController> mock_interrupt_controller;
-  Fake(Method(mock_interrupt_controller, Enable));
+  mockitopp::mock_object<InterruptController> mock_interrupt_controller;
+  mock_interrupt_controller(&::Enable)).when(any<>()).thenReturn();
   InterruptController::SetPlatformController(&mock_interrupt_controller.get());
 
   GPIO_TypeDef local_gpio_a;
