@@ -6,7 +6,7 @@
 
 namespace sjsu
 {
-TEST_CASE("Testing Limits Function", "[limits]")
+TEST_CASE("Testing Limits Function")
 {
   SECTION("int8_t :: 3-bits")
   {

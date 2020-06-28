@@ -3,8 +3,6 @@
 
 namespace sjsu
 {
-namespace
-{
 template <Endian endianess, WriteFnt write, ReadFnt read>
 SJ2_PACKED(struct)
 TestMemoryMap_t
@@ -34,8 +32,6 @@ TestMemoryMap_t
 };
 
 lpc40xx::I2c test_i2c(lpc40xx::I2c::Bus::kI2c0);
-
-}  // namespace
 
 TEST_CASE("Testing Device Memory Map")
 {

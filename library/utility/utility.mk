@@ -27,3 +27,8 @@ NO_TEST_NEEDED += $(LIBRARY_DIR)/utility/ansi_terminal_codes.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/utility/macros.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/utility/log.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/utility/units.hpp
+
+# ==============================================================================
+# Unity Test
+# ==============================================================================
+UNITY_TESTS += $(LIBRARY_DIR)/utility/test/unity_test_utility.cpp
