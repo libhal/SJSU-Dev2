@@ -1,10 +1,12 @@
 #include "L1_Peripheral/interrupt.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing interrupt interface")
 {
+  using namespace fakeit;  // NOLINT
   SECTION("Should be able to Set and Get PlatformController()")
   {
     // Setup

@@ -4,6 +4,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::cortex
 {
@@ -11,6 +12,8 @@ EMIT_ALL_METHODS(SystemTimer);
 
 TEST_CASE("Testing ARM Cortex SystemTimer")
 {
+  using namespace fakeit;
+
   cortex::DWT_Type local_dwt = {
     .PCSR = 0,
   };
@@ -47,7 +50,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
   using ResourceID = sjsu::SystemController::ResourceID;
 
   constexpr uint8_t kExpectedPriority = 3;
-  constexpr ResourceID kId = ResourceID::Define<0>();
+  constexpr ResourceID kId            = ResourceID::Define<0>();
   SystemTimer test_subject(kId, kExpectedPriority);
 
   SECTION("Initialize()")

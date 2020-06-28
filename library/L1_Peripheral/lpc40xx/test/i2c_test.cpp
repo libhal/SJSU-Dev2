@@ -5,6 +5,7 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/enum.hpp"
 #include "utility/status.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -12,6 +13,8 @@ EMIT_ALL_METHODS(I2c);
 
 TEST_CASE("Testing lpc40xx I2C")
 {
+  using namespace fakeit;
+
   // Dummy address used by test sections
   constexpr uint8_t kAddress = 0x33;
   // Create a local register

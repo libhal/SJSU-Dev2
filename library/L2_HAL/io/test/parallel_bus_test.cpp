@@ -1,10 +1,13 @@
 #include "L2_HAL/io/parallel_bus.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing ParallelBus Interface")
 {
+  using namespace fakeit;
+
   Mock<ParallelBus> mock_parallel_bus;
 
   Fake(Method(mock_parallel_bus, SetDirection));

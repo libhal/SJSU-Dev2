@@ -5,6 +5,7 @@
 #include "utility/enum.hpp"
 #include "utility/status.hpp"
 #include "utility/units.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -20,6 +21,8 @@ void DummyCallback(PulseCapture::CaptureStatus_t status)
 
 TEST_CASE("Testing lpc40xx Pulse Capture")
 {
+  using namespace fakeit;
+
   LPC_TIM_TypeDef test_timer_register;
 
   constexpr PulseCapture::CaptureEdgeMode kModeList[] = {

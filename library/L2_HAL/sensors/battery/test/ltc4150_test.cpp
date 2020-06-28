@@ -5,6 +5,7 @@
 #include "L1_Peripheral/gpio.hpp"
 #include "utility/units.hpp"
 #include "utility/log.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -15,6 +16,8 @@ auto GetLambda(InterruptCallback & isr)
 
 TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
 {
+  using namespace fakeit;
+
   constexpr float kResolution        = 0.001f;
   units::impedance::ohm_t resistance = 0.00050_Ohm;
 

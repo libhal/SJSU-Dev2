@@ -2,6 +2,7 @@
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/bit.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -9,6 +10,8 @@ EMIT_ALL_METHODS(Dac);
 
 TEST_CASE("Testing lpc40xx Dac")
 {
+  using namespace fakeit;
+
   LPC_IOCON_TypeDef local_iocon;
   testing::ClearStructure(&local_iocon);
   // Substitute the memory mapped LPC_IOCON with the local_iocon test struture
@@ -23,15 +26,14 @@ TEST_CASE("Testing lpc40xx Dac")
 
   Mock<sjsu::Pin> mock_dac_pin;
   Fake(Method(mock_dac_pin, SetPinFunction),
-       Method(mock_dac_pin, SetAsAnalogMode),
-       Method(mock_dac_pin, SetPull));
+       Method(mock_dac_pin, SetAsAnalogMode), Method(mock_dac_pin, SetPull));
 
   Dac test_subject(mock_dac_pin.get());
 
   SECTION("Initialize Dac")
   {
     // Source: "UM10562 LPC408x/407x User manual" table 686 page 814
-    constexpr uint8_t kDacMode  = 0b010;
+    constexpr uint8_t kDacMode = 0b010;
     // Mocked out Initialize for the Verify Methods
     test_subject.Initialize();
     // Check Pin Mode DAC_OUT

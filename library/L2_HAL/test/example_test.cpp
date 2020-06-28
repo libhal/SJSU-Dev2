@@ -1,10 +1,13 @@
 #include "L2_HAL/example.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing Example Implementation")
 {
+  using namespace fakeit;
+
   // 1. Setup your mocks
   Mock<sjsu::Example> mock_example;
   sjsu::ExampleHalImplementation test_subject(mock_example.get());
@@ -71,6 +74,8 @@ TEST_CASE("Testing Example Implementation")
 //     itself must be created
 TEST_CASE("Testing Example Interface")
 {
+  using namespace fakeit;
+
   // 13. Create a mock object of the example interface itself
   Mock<sjsu::ExampleHal> mock_example_interface;
 
@@ -80,8 +85,8 @@ TEST_CASE("Testing Example Interface")
   //     utility methods actually use.
   //     In this special case, we take an array, so we need to replace its
   //     functionality
-  When(OverloadedMethod(
-           mock_example_interface, Write, Status(const uint8_t *, size_t)))
+  When(OverloadedMethod(mock_example_interface, Write,
+                        Status(const uint8_t *, size_t)))
       .AlwaysDo([&](const uint8_t * data, size_t size) -> Status {
         memcpy(&test_buffer[test_buffer_size], data, size);
         test_buffer_size += size;

@@ -1,6 +1,7 @@
 #include "L2_HAL/audio/buzzer.hpp"
 #include "L1_Peripheral/lpc40xx/pwm.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -8,11 +9,12 @@ EMIT_ALL_METHODS(Buzzer);
 
 TEST_CASE("Testing buzzer")
 {
+  using namespace fakeit;
+
   // Create mock for PWM class
   Mock<Pwm> mock_pwm_pin;
 
-  Fake(Method(mock_pwm_pin, Initialize),
-       Method(mock_pwm_pin, SetDutyCycle),
+  Fake(Method(mock_pwm_pin, Initialize), Method(mock_pwm_pin, SetDutyCycle),
        Method(mock_pwm_pin, SetFrequency));
 
   Pwm & pwm = mock_pwm_pin.get();

@@ -3,6 +3,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -10,6 +11,8 @@ EMIT_ALL_METHODS(Spi);
 
 TEST_CASE("Testing lpc40xx SPI")
 {
+  using namespace fakeit;
+
   // Simulate local version of LPC_SSP
   LPC_SSP_TypeDef local_ssp;
   // Clear memory locations

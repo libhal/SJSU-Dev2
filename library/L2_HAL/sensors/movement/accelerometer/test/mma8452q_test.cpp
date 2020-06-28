@@ -1,5 +1,6 @@
 #include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -7,6 +8,8 @@ EMIT_ALL_METHODS(Mma8452q);
 
 TEST_CASE("Accelerometer")
 {
+  using namespace fakeit;
+
   Mock<sjsu::I2c> mock_i2c;
   Fake(Method(mock_i2c, Initialize));
   Mma8452q test_subject(mock_i2c.get());

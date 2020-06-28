@@ -3,6 +3,7 @@
 
 #include "L3_Application/task.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace  // private namespace for custom fakes
 {
@@ -18,6 +19,8 @@ namespace sjsu::rtos
 {
 TEST_CASE("Testing TaskScheduler")
 {
+  using namespace fakeit;
+
   constexpr std::array kTaskNames = {
     "Task 1",  "Task 2",  "Task 3",  "Task 4",  "Task 5",  "Task 6",
     "Task 7",  "Task 8",  "Task 9",  "Task 10", "Task 11", "Task 12",

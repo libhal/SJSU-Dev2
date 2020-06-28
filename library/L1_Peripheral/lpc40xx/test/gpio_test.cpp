@@ -4,6 +4,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -11,6 +12,8 @@ EMIT_ALL_METHODS(Gpio);
 
 TEST_CASE("Testing lpc40xx Gpio")
 {
+  using namespace fakeit;  // NOLINT
+
   // Declared constants that are to be used within the different sections
   // of this unit test
   constexpr uint8_t kPin0 = 0;
@@ -132,6 +135,7 @@ FAKE_VOID_FUNC(InterruptCallback1);
 
 TEST_CASE("Testing lpc40xx Gpio External Interrupts")
 {
+  using namespace fakeit;  // NOLINT
   // Declared constants that are to be used within the different sections
   // of this unit test
   constexpr uint8_t kPin15 = 15;

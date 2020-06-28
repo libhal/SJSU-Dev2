@@ -4,12 +4,15 @@
 
 #include "L1_Peripheral/stm32f10x/uart.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::stm32f10x
 {
 EMIT_ALL_METHODS(UartBase);
 TEST_CASE("Testing stm32f10x Uart")
 {
+  using namespace fakeit;  // NOLINT
+
   static constexpr units::frequency::hertz_t kDummyClockRate = 8_MHz;
   Mock<sjsu::SystemController> mock_controller;
   Fake(Method(mock_controller, PowerUpPeripheral));

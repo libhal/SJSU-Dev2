@@ -7,6 +7,7 @@
 
 #include "L4_Testing/testing_frameworks.hpp"
 #include "L3_Application/file_io/fatfs.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 // NOLINTNEXTLINE
 extern "C" DSTATUS disk_status(BYTE drive_number);
@@ -32,6 +33,8 @@ namespace sjsu
 {
 TEST_CASE("Testing FAT FS")
 {
+  using namespace fakeit;
+
   SECTION("Stringify")
   {
     CHECK(0 == strcmp(Stringify(FR_OK), "(0) Succeeded"));

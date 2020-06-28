@@ -5,6 +5,5 @@ namespace sjsu
 {
 TEST_CASE("Testing L1 i2c")
 {
-  Mock<I2c> i2c;
 }
 }  // namespace sjsu

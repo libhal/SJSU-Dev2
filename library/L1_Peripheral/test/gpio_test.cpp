@@ -1,10 +1,12 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "L1_Peripheral/gpio.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing L1 gpio")
 {
+  using namespace fakeit;
   Mock<sjsu::Gpio> mock_gpio;
   Fake(Method(mock_gpio, SetDirection));
   Fake(Method(mock_gpio, Set));

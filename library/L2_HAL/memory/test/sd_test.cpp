@@ -1,5 +1,6 @@
 #include "L2_HAL/memory/sd.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::experimental
 {
@@ -7,6 +8,8 @@ EMIT_ALL_METHODS(Sd);
 
 TEST_CASE("Testing SD Card Driver Class")
 {
+  using namespace fakeit;
+
   Mock<sjsu::Spi> mock_spi;
   Mock<sjsu::Gpio> mock_card_detect;
   Mock<sjsu::Gpio> mock_chip_select;

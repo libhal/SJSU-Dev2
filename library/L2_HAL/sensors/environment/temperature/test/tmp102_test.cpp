@@ -1,5 +1,6 @@
 #include "L2_HAL/sensors/environment/temperature/tmp102.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -7,6 +8,8 @@ EMIT_ALL_METHODS(Tmp102);
 
 TEST_CASE("Testing Tmp102 Temperature Sensor")
 {
+  using namespace fakeit;
+
   constexpr uint8_t kDeviceAddress = Tmp102::DeviceAddress::kGround;
   Mock<I2c> mock_i2c;
   Tmp102 temperature_sensor(mock_i2c.get(), kDeviceAddress);

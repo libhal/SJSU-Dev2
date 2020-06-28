@@ -1,10 +1,12 @@
 #include "L1_Peripheral/adc.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing ADC Interface")
 {
+  using namespace fakeit;
   Mock<Adc> mock_adc;
 
   Fake(Method(mock_adc, Initialize));
@@ -46,7 +48,7 @@ TEST_CASE("Testing ADC Interface")
   SECTION("Voltage")
   {
     // Setup
-    uint32_t expected_active_bits = 12;
+    uint32_t expected_active_bits                          = 12;
     units::voltage::microvolt_t expected_reference_voltage = 3.3_V;
 
     uint32_t expected_adc_reading;

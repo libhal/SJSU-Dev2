@@ -2,6 +2,7 @@
 #include "L2_HAL/displays/lcd/st7066u.hpp"
 #include "L2_HAL/io/parallel_bus.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -9,6 +10,8 @@ EMIT_ALL_METHODS(St7066u);
 
 TEST_CASE("Testing St7066u Parallel LCD Driver")
 {
+  using namespace fakeit;
+
   Mock<Gpio> mock_rs;  // RS: Register Select
   Mock<Gpio> mock_rw;  // RW: Read / Write
   Mock<Gpio> mock_e;   // E   Chip Enable

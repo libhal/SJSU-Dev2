@@ -3,6 +3,7 @@
 #include "L0_Platform/stm32f4xx/stm32f4xx.h"
 #include "L1_Peripheral/stm32f4xx/gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::stm32f4xx
 {
@@ -21,6 +22,8 @@ bit::Mask Mask2Bit(const sjsu::Gpio & gpio)
 
 TEST_CASE("Testing stm32f4xx Gpio")
 {
+  using namespace fakeit;
+
   Mock<SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
   SystemController::SetPlatformController(&mock_system_controller.get());
@@ -138,12 +141,11 @@ TEST_CASE("Testing stm32f4xx Gpio")
 
   SECTION("SetDirection()")
   {
-    auto power_up_matcher =
-        [](sjsu::SystemController::ResourceID expected_id) {
-          return [expected_id](sjsu::SystemController::ResourceID actual_id) {
-            return expected_id.device_id == actual_id.device_id;
-          };
-        };
+    auto power_up_matcher = [](sjsu::SystemController::ResourceID expected_id) {
+      return [expected_id](sjsu::SystemController::ResourceID actual_id) {
+        return expected_id.device_id == actual_id.device_id;
+      };
+    };
 
     // RM0090 p.281
     //

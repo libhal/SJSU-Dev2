@@ -1,11 +1,11 @@
 #include "L1_Peripheral/hardware_counter.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 // EMIT_ALL_METHODS macro cannot be used with GpioCounter as it contains
 // atomics.
-
 namespace
 {
 auto GetLambda(sjsu::InterruptCallback & isr)
@@ -18,6 +18,7 @@ auto GetLambda(sjsu::InterruptCallback & isr)
 
 TEST_CASE("Testing L1 GpioCounter")
 {
+  using namespace fakeit;  // NOLINT
   Mock<sjsu::Pin> mock_pin;
   Fake(Method(mock_pin, SetPull));
 
@@ -39,16 +40,15 @@ TEST_CASE("Testing L1 GpioCounter")
       test_subject.Initialize();
 
       // Verify
-      Verify(Method(mock_gpio, SetDirection)
-                 .Using(sjsu::Gpio::Direction::kInput));
+      Verify(
+          Method(mock_gpio, SetDirection).Using(sjsu::Gpio::Direction::kInput));
       Verify(Method(mock_pin, SetPull).Using(sjsu::Pin::Resistor::kPullUp));
     }
 
     SECTION("Use passed pull resistor settings")
     {
       // Setup
-      GpioCounter test_subject(mock_gpio.get(),
-                               sjsu::Gpio::Edge::kBoth,
+      GpioCounter test_subject(mock_gpio.get(), sjsu::Gpio::Edge::kBoth,
                                sjsu::Pin::Resistor::kPullDown);
 
       // Exercise

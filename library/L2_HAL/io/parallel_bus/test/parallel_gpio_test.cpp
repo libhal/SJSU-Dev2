@@ -4,11 +4,13 @@
 #include "L1_Peripheral/gpio.hpp"
 #include "L2_HAL/io/parallel_bus/parallel_gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 namespace
 {
+using namespace fakeit;
 Mock<sjsu::Gpio> mock_gpio0;
 Mock<sjsu::Gpio> mock_gpio1;
 Mock<sjsu::Gpio> mock_gpio2;

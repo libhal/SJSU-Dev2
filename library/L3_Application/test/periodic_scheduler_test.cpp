@@ -1,6 +1,7 @@
 // Tests for the PeriodicTask and PeriodicScheduler class.
 #include "L3_Application/periodic_scheduler.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace  // private namespace for custom fakes
 {
@@ -20,6 +21,8 @@ namespace sjsu::rtos
 {
 TEST_CASE("Testing PeriodicTask")
 {
+  using namespace fakeit;  // NOLINT
+
   const char kTaskName[]                                 = "Test Periodic Task";
   constexpr Priority kTaskPriority                       = Priority::kLow;
   PeriodicTaskInterface::TaskFunction mock_task_function = [](uint32_t) {};
@@ -57,6 +60,7 @@ TEST_CASE("Testing PeriodicTask")
 
 TEST_CASE("Testing PeriodicScheduler")
 {
+  using namespace fakeit;  // NOLINT
   RESET_FAKE(xTimerCreateStatic);
   RESET_FAKE(xTimerGenericCommand);
 

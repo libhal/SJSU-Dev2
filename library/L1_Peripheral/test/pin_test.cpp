@@ -1,10 +1,12 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "L1_Peripheral/pin.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing L1 pin")
 {
+  using namespace fakeit;  // NOLINT
   Mock<sjsu::Pin> mock_pin;
   Fake(Method(mock_pin, SetPull));
 

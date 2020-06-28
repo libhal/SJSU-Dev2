@@ -2,6 +2,7 @@
 
 #include "L2_HAL/communication/tsop752.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -9,15 +10,15 @@ EMIT_ALL_METHODS(Tsop752);
 
 TEST_CASE("Tsop752 Infrared Receiver Test")
 {
+  using namespace fakeit;
+
   Mock<PulseCapture> mock_pulse_capture;
   Mock<Timer> mock_timer;
 
   Fake(Method(mock_pulse_capture, ConfigureCapture),
        Method(mock_pulse_capture, EnableCaptureInterrupt));
-  Fake(Method(mock_timer, SetMatchBehavior),
-       Method(mock_timer, Start),
-       Method(mock_timer, Stop),
-       Method(mock_timer, Reset));
+  Fake(Method(mock_timer, SetMatchBehavior), Method(mock_timer, Start),
+       Method(mock_timer, Stop), Method(mock_timer, Reset));
 
   const std::array kFailureStatus = {
     Status::kTimedOut,          Status::kBusError,
@@ -102,13 +103,12 @@ TEST_CASE("Tsop752 Infrared Receiver Test")
 
   SECTION("Interrupt Callbacks")
   {
-    constexpr std::array<uint32_t, 6> kTestTimestamps = {
-      0, 9'000, 13'500, 14'060, 15'750, 16'310
-    };
-    constexpr std::array<uint16_t, 5> kExpectedPulses = {
-      9'000, 4'500, 560, 1'690, 560
-    };
-    constexpr uint32_t kPulseCaptureFlags = 0x0;
+    constexpr std::array<uint32_t, 6> kTestTimestamps = { 0,      9'000,
+                                                          13'500, 14'060,
+                                                          15'750, 16'310 };
+    constexpr std::array<uint16_t, 5> kExpectedPulses = { 9'000, 4'500, 560,
+                                                          1'690, 560 };
+    constexpr uint32_t kPulseCaptureFlags             = 0x0;
 
     SECTION("Handle pulse captured")
     {

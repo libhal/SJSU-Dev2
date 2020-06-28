@@ -3,6 +3,7 @@
 
 #include "L1_Peripheral/lpc40xx/can.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -10,6 +11,8 @@ EMIT_ALL_METHODS(Can);
 
 TEST_CASE("Testing lpc40xx Can")
 {
+  using namespace fakeit;
+
   // Simulate local version of LPC_CAN
   LPC_CAN_TypeDef local_can;
   // Clear memory locations

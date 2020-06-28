@@ -1,6 +1,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/example/example.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::example
 {
@@ -10,6 +11,8 @@ EMIT_ALL_METHODS(Example);
 
 TEST_CASE("Testing L1 example::Example")
 {
+  using namespace fakeit;
+
   // Create mocked versions of the sjsu::Pin
   Mock<sjsu::Pin> mock_pin_data;
   Fake(Method(mock_pin_data, SetPinFunction));

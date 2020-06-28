@@ -3,6 +3,7 @@
 #include "L0_Platform/stm32f4xx/stm32f4xx.h"
 #include "L1_Peripheral/stm32f4xx/pin.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::stm32f4xx
 {
@@ -21,6 +22,8 @@ bit::Mask Mask2Bit(const sjsu::Pin & pin)
 
 TEST_CASE("Testing stm32f4xx Pin")
 {
+  using namespace fakeit;
+
   Mock<SystemController> mock_system_controller;
   Fake(Method(mock_system_controller, PowerUpPeripheral));
   SystemController::SetPlatformController(&mock_system_controller.get());

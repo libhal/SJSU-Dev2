@@ -1,5 +1,6 @@
 #include "L2_HAL/sensors/environment/light/temt6000x01.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -7,6 +8,8 @@ EMIT_ALL_METHODS(Temt6000x01);
 
 TEST_CASE("Testing TEMP6000X01 Light Sensor")
 {
+  using namespace fakeit;
+
   constexpr units::voltage::microvolt_t kReferenceVoltage = 3.3_V;
   constexpr units::impedance::ohm_t kPullDownResistor     = 10'000_Ohm;
   constexpr uint8_t kAdcActiveBits                        = 12;

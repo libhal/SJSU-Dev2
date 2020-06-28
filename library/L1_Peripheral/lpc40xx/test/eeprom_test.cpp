@@ -2,6 +2,7 @@
 
 #include "L1_Peripheral/lpc40xx/eeprom.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -9,6 +10,8 @@ EMIT_ALL_METHODS(Eeprom);
 
 TEST_CASE("Testing EEPROM")
 {
+  using namespace fakeit;
+
   // Simulate local version of LPC_EEPROM
   LPC_EEPROM_TypeDef local_eeprom;
 

@@ -1,6 +1,7 @@
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/uart.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -8,6 +9,8 @@ EMIT_ALL_METHODS(Uart);
 
 TEST_CASE("Testing lpc40xx Uart")
 {
+  using namespace fakeit;
+
   // Simulated local version of LPC_UART2 to verify registers
   LPC_UART_TypeDef local_uart;
   testing::ClearStructure(&local_uart);

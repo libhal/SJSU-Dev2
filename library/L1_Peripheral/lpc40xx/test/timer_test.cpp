@@ -1,5 +1,6 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "L1_Peripheral/lpc40xx/timer.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -7,6 +8,8 @@ EMIT_ALL_METHODS(Timer);
 
 TEST_CASE("Testing lpc40xx Timer")
 {
+  using namespace fakeit;
+
   LPC_TIM_TypeDef local_timer_registers;
   testing::ClearStructure(&local_timer_registers);
 

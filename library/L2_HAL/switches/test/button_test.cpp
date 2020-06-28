@@ -1,5 +1,6 @@
 #include "L2_HAL/switches/button.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -7,6 +8,8 @@ EMIT_ALL_METHODS(Button);
 
 TEST_CASE("Testing Button")
 {
+  using namespace fakeit;
+
   // Make a mock pin to work with
   Mock<sjsu::Pin> mock_pin;
   // Retrieve a reference to the Pin to be injected as the return value

@@ -1,5 +1,6 @@
 #include "L2_HAL/sensors/environment/temperature/si7060.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -8,6 +9,8 @@ EMIT_ALL_METHODS(Si7060);
 
 TEST_CASE("Si7060")
 {
+  using namespace fakeit;
+
   constexpr uint8_t kDeviceAddress = Si7060::kDefaultAddress;
   Mock<I2c> mock_i2c;
   Si7060 temperature_sensor(mock_i2c.get(), kDeviceAddress);

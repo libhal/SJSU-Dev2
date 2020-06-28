@@ -5,6 +5,7 @@
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/pwm.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -12,6 +13,8 @@ EMIT_ALL_METHODS(Pwm);
 
 TEST_CASE("Testing lpc40xx PWM instantiation")
 {
+  using namespace fakeit;
+
   // Creating local instances of register structures
   LPC_PWM_TypeDef local_pwm;
   // Setting local register structures to all zeros

@@ -2,6 +2,7 @@
 #include "L1_Peripheral/lpc40xx/adc.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/bit.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -9,6 +10,8 @@ EMIT_ALL_METHODS(Adc);
 
 TEST_CASE("Testing lpc40xx adc")
 {
+  using namespace fakeit;
+
   // Create local version of LPC_ADC
   LPC_ADC_TypeDef local_adc;
   // Clear local adc registers
@@ -26,18 +29,15 @@ TEST_CASE("Testing lpc40xx adc")
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
-
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Set mock for sjsu::Pin
   Mock<sjsu::Pin> mock_adc_pin0;
-  Fake(Method(mock_adc_pin0, SetAsAnalogMode),
-       Method(mock_adc_pin0, SetPull),
+  Fake(Method(mock_adc_pin0, SetAsAnalogMode), Method(mock_adc_pin0, SetPull),
        Method(mock_adc_pin0, SetPinFunction));
 
   Mock<sjsu::Pin> mock_adc_pin1;
-  Fake(Method(mock_adc_pin1, SetAsAnalogMode),
-       Method(mock_adc_pin1, SetPull),
+  Fake(Method(mock_adc_pin1, SetAsAnalogMode), Method(mock_adc_pin1, SetPull),
        Method(mock_adc_pin1, SetPinFunction));
 
   const Adc::Channel_t kMockChannel0 = {
@@ -63,9 +63,9 @@ TEST_CASE("Testing lpc40xx adc")
         bit::Set(local_adc.DR[channel.channel], Adc::DataRegister::kDone);
     // Set done bit so conversion does not loop forever
     // Set the expected results
-    local_adc.DR[channel.channel] = bit::Insert(local_adc.DR[channel.channel],
-                                                expected_value,
-                                                Adc::DataRegister::kResult);
+    local_adc.DR[channel.channel] =
+        bit::Insert(local_adc.DR[channel.channel], expected_value,
+                    Adc::DataRegister::kResult);
   };
 
   SECTION("Software Initialization")
@@ -215,12 +215,10 @@ TEST_CASE("Testing lpc40xx adc")
     // Set done bit so conversion does not loop forever
     // Set the expected results
     local_adc.DR[kMockChannel0.channel] =
-        bit::Insert(local_adc.DR[kMockChannel0.channel],
-                    kExpectedAdcValue[0],
+        bit::Insert(local_adc.DR[kMockChannel0.channel], kExpectedAdcValue[0],
                     Adc::DataRegister::kResult);
     local_adc.DR[kMockChannel1.channel] =
-        bit::Insert(local_adc.DR[kMockChannel1.channel],
-                    kExpectedAdcValue[2],
+        bit::Insert(local_adc.DR[kMockChannel1.channel], kExpectedAdcValue[2],
                     Adc::DataRegister::kResult);
     // Exercise
     adc_read_result[0] = channel0_mock.Read();
@@ -233,12 +231,10 @@ TEST_CASE("Testing lpc40xx adc")
 
     // Setup
     local_adc.DR[kMockChannel0.channel] =
-        bit::Insert(local_adc.DR[kMockChannel0.channel],
-                    kExpectedAdcValue[2],
+        bit::Insert(local_adc.DR[kMockChannel0.channel], kExpectedAdcValue[2],
                     Adc::DataRegister::kResult);
     local_adc.DR[kMockChannel1.channel] =
-        bit::Insert(local_adc.DR[kMockChannel1.channel],
-                    kExpectedAdcValue[1],
+        bit::Insert(local_adc.DR[kMockChannel1.channel], kExpectedAdcValue[1],
                     Adc::DataRegister::kResult);
     // Exercise
     adc_read_result[0] = channel0_mock.Read();
@@ -251,12 +247,10 @@ TEST_CASE("Testing lpc40xx adc")
 
     // Setup
     local_adc.DR[kMockChannel0.channel] =
-        bit::Insert(local_adc.DR[kMockChannel0.channel],
-                    kExpectedAdcValue[1],
+        bit::Insert(local_adc.DR[kMockChannel0.channel], kExpectedAdcValue[1],
                     Adc::DataRegister::kResult);
     local_adc.DR[kMockChannel1.channel] =
-        bit::Insert(local_adc.DR[kMockChannel1.channel],
-                    kExpectedAdcValue[0],
+        bit::Insert(local_adc.DR[kMockChannel1.channel], kExpectedAdcValue[0],
                     Adc::DataRegister::kResult);
     // Exercise
     adc_read_result[0] = channel0_mock.Read();

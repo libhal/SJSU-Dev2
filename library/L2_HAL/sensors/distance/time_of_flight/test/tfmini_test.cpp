@@ -7,6 +7,7 @@
 #include "utility/log.hpp"
 #include "utility/bit.hpp"
 #include "utility/units.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -44,6 +45,8 @@ auto MockReadImplementation(size_t & read_count,
 
 TEST_CASE("Testing TFMini")
 {
+  using namespace fakeit;
+
   Mock<Uart> mock_uart;
   Fake(Method(mock_uart, Initialize),
        ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)));

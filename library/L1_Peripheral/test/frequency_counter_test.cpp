@@ -1,10 +1,12 @@
 #include "L1_Peripheral/frequency_counter.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing FrequencyCounter")
 {
+  using namespace fakeit;
   Mock<HardwareCounter> mock_counter;
 
   Fake(Method(mock_counter, Initialize));

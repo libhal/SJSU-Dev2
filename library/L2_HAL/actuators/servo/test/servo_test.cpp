@@ -1,5 +1,6 @@
 #include "L2_HAL/actuators/servo/servo.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
@@ -7,6 +8,8 @@ EMIT_ALL_METHODS(Servo);
 
 TEST_CASE("Testing Servo")
 {
+  using namespace fakeit;
+
   Mock<Pwm> mock_pwm;
 
   Fake(Method(mock_pwm, Initialize));
@@ -50,8 +53,7 @@ TEST_CASE("Testing Servo")
         std::chrono::microseconds((1_MHz / kTestFrequency).to<uint32_t>());
 
     constexpr float kTestPulseWidth =
-        sjsu::Map(kTestAngle.to<float>(),
-                  kTestMinAngle.to<float>(),
+        sjsu::Map(kTestAngle.to<float>(), kTestMinAngle.to<float>(),
                   kTestMaxAngle.to<float>(),
                   static_cast<float>(kTestPulseWidthMin.count()),
                   static_cast<float>(kTestPulseWidthMax.count()));

@@ -3,11 +3,14 @@
 
 #include "L4_Testing/testing_frameworks.hpp"
 #include "L1_Peripheral/uart.hpp"
+#include "third_party/fakeit/fakeit.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing L1 uart")
 {
+  using namespace fakeit;  // NOLINT
+
   Mock<Uart> mock_uart;
   Fake(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)));
   Fake(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)));
@@ -115,9 +118,8 @@ TEST_CASE("Testing L1 uart")
     When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .AlwaysDo([&read_was_called](void * data_ptr, size_t size) -> size_t {
           uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-          std::array<uint8_t, kPayloadLength> response = {
-            0xAA, 0xBB, 0xCC, 0xDD
-          };
+          std::array<uint8_t, kPayloadLength> response = { 0xAA, 0xBB, 0xCC,
+                                                           0xDD };
           for (int i = 0; i < size; i++)
           {
             data[i] = response[read_was_called++];
@@ -157,9 +159,8 @@ TEST_CASE("Testing L1 uart")
     When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .AlwaysDo([&read_was_called](void * data_ptr, size_t size) -> size_t {
           uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-          std::array<uint8_t, kPayloadLength> response = {
-            0xAA, 0xBB, 0xCC, 0xDD
-          };
+          std::array<uint8_t, kPayloadLength> response = { 0xAA, 0xBB, 0xCC,
+                                                           0xDD };
           for (int i = 0; i < size; i++)
           {
             data[i] = response[read_was_called++];
