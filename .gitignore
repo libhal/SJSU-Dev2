@@ -10,23 +10,20 @@ library/static_libraries/*
 !library/static_libraries/keep_folder
 
 tools/**/*
-!tools/build_all_projects.sh
+!tools/gdb_dashboard
 !tools/cpplint
-!tools/FlashMagic
-!tools/Hercules.exe
-!tools/link_projects.sh
-!tools/makefile_help_menu.txt
+
+!tools/common.sh
+!tools/build_all_projects.sh
 !tools/presubmit.sh
-!tools/putty32.exe
-!tools/putty64.exe
 !tools/launch_openocd_gdb.sh
 !tools/generate_doxygen_docs.sh
-!tools/doxygen_ignore_list.txt
-!tools/common.sh
 !tools/find_sources_without_tests.sh
 !tools/print_unused_test_files.sh
-!tools/gdb_dashboard
-!spell_checker.sh
+!tools/spell_checker.sh
+
+!tools/makefile_help_menu.txt
+!tools/doxygen_ignore_list.txt
 
 api/doxygen_stderr.txt
 
