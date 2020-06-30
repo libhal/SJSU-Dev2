@@ -139,7 +139,7 @@ class Eeprom final : public sjsu::Storage
     uint32_t page_count  = bit::Extract(address, kUpper6Bits);
     uint32_t page_offset = bit::Extract(address, kLower6Bits);
 
-    uint16_t eeprom_address;
+    uint16_t eeprom_address = 0;
 
     for (size_t i = 0; (i * 4) < size; i++)
     {

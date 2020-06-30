@@ -52,7 +52,7 @@ function check
 }
 
 # Return to home project
-cd $SJBASE/projects/hello_world
+cd $SJBASE/projects/continuous_integration
 
 # ==============================================================================
 # Lint Check
@@ -70,13 +70,13 @@ echo ""
 
 if [ "$1" == "quick" ]; then
   print_divider "Executing 'commit-tidy' check"
-  time make -s commit-tidy
+  time make -s commit-tidy -j4
   TIDY_CAPTURE=$?
   print_status $TIDY_CAPTURE
   echo ""
 else
   print_divider "Executing 'tidy' check"
-  time make -s tidy
+  time make -s tidy -j4
   TIDY_CAPTURE=$?
   print_status $TIDY_CAPTURE
   echo ""
@@ -87,7 +87,7 @@ fi
 # ==============================================================================
 print_divider "Building and running unit tests"
 
-time make -s library-test WARNINGS_ARE_ERRORS=-Werror
+time make -s test -j4 WARNING_BECOME_ERRORS=-Werror
 TEST_CAPTURE=$?
 print_status $TEST_CAPTURE
 echo ""

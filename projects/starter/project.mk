@@ -29,16 +29,15 @@ PLATFORM = lpc40xx
 #
 # Example of adding your own tests:
 #
-#    USER_TESTS += source/gps_test.cpp
-#    USER_TESTS += source/gps.cpp
-#    USER_TESTS += source/sonar_test.cpp
-#    USER_TESTS += source/sonar.cpp
+#    TESTS += source/gps_test.cpp
+#    TESTS += source/gps.cpp
+#    TESTS += source/sonar_test.cpp
+#    TESTS += source/sonar.cpp
 #
 # Example of adding a test from the library folder:
 #
-#    USER_TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/adc_test.cpp
+#    TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/adc_test.cpp
 #
-USER_TESTS +=
 
 # =============================
 # ADDING FILES TO INCLUDE PATH
@@ -48,7 +47,6 @@ USER_TESTS +=
 #
 #    INCLUDES += source/plugin_folder/
 #
-INCLUDES +=
 
 # =========================================
 # INCLUDING PATHs for DOWNLOADED LIBRARIES
@@ -56,7 +54,6 @@ INCLUDES +=
 # Works the same as the above, but files included in this variable will not
 # cause the compile flag warnings to go off. This is very useful when using a
 # library from online.
-SYSTEM_INCLUDES +=
 
 # ======================
 # ADDING COMPILER FLAGS
@@ -64,9 +61,9 @@ SYSTEM_INCLUDES +=
 # Add additional compilation flags to your build.
 # Example:
 #
-#    COMMON_FLAGS += -Weverything
+#    CFLAGS += -Weverything
+#    CPPFLAGS += -fno-rtti
 #
-COMMON_FLAGS +=
 
 # =========================
 # IGNORING FILES FROM LINT
@@ -76,7 +73,6 @@ COMMON_FLAGS +=
 #
 #    LINT_FILTER += source/downloaded_library_file.hpp
 #
-LINT_FILTER +=
 
 # ==========================
 # OVERRIDING OPENOCD CONFIG
@@ -86,4 +82,4 @@ LINT_FILTER +=
 #
 #    OPENOCD_CONFIG = $(LIBRARY_DIR)/L0_Platform/lpc40xx/sjone.cfg
 #
-OPENOCD_CONFIG =
+OPENOCD_CONFIG :=

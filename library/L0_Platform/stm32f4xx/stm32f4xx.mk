@@ -1,7 +1,3 @@
-INCLUDES += $(LIBRARY_DIR)/L0_Platform/freertos
-
-SYSTEM_INCLUDES +=
-
 LIBRARY_STM32F4XX += $(LIBRARY_DIR)/L0_Platform/stm32f4xx/startup.cpp
 LIBRARY_STM32F4XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/ARM_CM4F/port.c
 LIBRARY_STM32F4XX += $(LIBRARY_DIR)/L0_Platform/arm_cortex/exceptions.cpp
