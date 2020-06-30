@@ -17,6 +17,7 @@ TESTS += $(LIBRARY_DIR)/utility/test/stopwatch_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/time_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/timeout_timer_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/math/test/average_test.cpp
+TESTS += $(LIBRARY_DIR)/utility/math/test/limits_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/containers/test/string_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/containers/test/vector_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/containers/test/list_test.cpp
@@ -26,3 +27,8 @@ NO_TEST_NEEDED += $(LIBRARY_DIR)/utility/ansi_terminal_codes.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/utility/macros.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/utility/log.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/utility/units.hpp
+
+# ==============================================================================
+# Unity Test
+# ==============================================================================
+UNITY_TESTS += $(LIBRARY_DIR)/utility/test/unity_test_utility.cpp

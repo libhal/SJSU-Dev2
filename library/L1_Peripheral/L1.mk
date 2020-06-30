@@ -29,3 +29,7 @@ NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/system_timer.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/timer.hpp
 NO_TEST_NEEDED += $(LIBRARY_DIR)/L1_Peripheral/watchdog.hpp
 
+# ==============================================================================
+# Unity Test
+# ==============================================================================
+UNITY_TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/unity_test_l1.cpp

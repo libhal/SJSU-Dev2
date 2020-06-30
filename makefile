@@ -13,12 +13,14 @@ JTAG                ?= $(or $(DEBUG_DEVICE),)
 TEST_ARGS           ?=
 LINK_FLAGS          ?=
 USER_TESTS          ?=
+UNITY_TESTS         ?=
 COMMON_FLAGS        ?=
 LINT_FILTER         ?=
 OPENOCD_CONFIG      ?=
 TESTS               ?=
 NO_TEST_NEEDED      ?=
 WARNINGS_ARE_ERRORS ?=
+
 # ==============================================================================
 #
 #
@@ -69,7 +71,7 @@ print-%  : ; @echo $* = $($*)
 # ==============================================================================
 # The following list of targets that opt-out of output sync
 # ==============================================================================
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test application library-test))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test application library-test unity-test))
 MAKEFLAGS += --output-sync=target
 endif
 #
@@ -99,7 +101,7 @@ endif
 # ==============================================================================
 # Setting the number of threads
 # ==============================================================================
-DO_NOT_MULTITHREAD = presubmit all-projects execute program
+DO_NOT_MULTITHREAD = quick-presubmit presubmit all-projects execute program
 ifneq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), $(DO_NOT_MULTITHREAD)))
   NPROCS := 1
   OS := $(shell uname -s)
@@ -143,7 +145,7 @@ endif
 # ==============================================================================
 # Transform platform -> "host" for testing targets
 # ==============================================================================
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test unity-test))
 PLATFORM := host
 endif
 # ==============================================================================
@@ -254,7 +256,7 @@ endef
 # exist.
 #===============================================================================
 -include project.mk
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test unity-test))
 PLATFORM := host
 endif
 #===============================================================================
@@ -267,7 +269,7 @@ include $(LIBRARY_DIR)/library.mk
 # ==============================================================================
 # A bit of post processing on the source variables
 # ==============================================================================
-ifeq ($(MAKECMDGOALS), library-test)
+ifeq ($(MAKECMDGOALS), distributed-test)
   CC          := gcc-8
   CPPC        := g++-8
   OBJDUMP     := objdump
@@ -286,6 +288,16 @@ else ifeq ($(MAKECMDGOALS), test)
   COMPILABLES := $(USER_TESTS)
   TEST_SOURCE_DIRECTORIES = --filter="$(LIBRARY_DIR)" \
       $(addsuffix ", $(addprefix --filter=", $(USER_TESTS)))
+else ifeq ($(MAKECMDGOALS), library-test)
+  CC          := gcc-8
+  CPPC        := g++-8
+  OBJDUMP     := objdump
+  SIZEC       := size
+  OBJCOPY     := objcopy
+  NM          := nm
+  COMPILABLES := $(UNITY_TESTS)
+  TEST_SOURCE_DIRECTORIES = --filter="$(LIBRARY_DIR)" \
+      $(addsuffix ", $(addprefix --filter=", $(UNITY_TESTS)))
 else
   CC          := $(DEVICE_CC)
   CPPC        := $(DEVICE_CPPC)
@@ -302,7 +314,7 @@ INCLUDES         := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
 SYSTEM_INCLUDES  := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
 OBJECTS          := $(addprefix $(OBJECT_DIR)/, $(COMPILABLES:=.o))
 
-ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test))
+ifeq ($(MAKECMDGOALS), $(filter $(MAKECMDGOALS), test library-test unity-test))
 CPP_FLAGS := -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
              -fprofile-generate -ftest-coverage -fbranch-probabilities \
              -fsanitize=address -fdiagnostics-color -fprofile-correction \
@@ -350,7 +362,7 @@ LINK_FLAGS := $(or $(LINK_FLAGS), $(DEFAULT_LINK_FLAGS))
 # ==============================================================================
 .PHONY: flash telemetry show-lists clean library-clean purge  \
         telemetry presubmit openocd debug clean-coverage-files test \
-        library-test $(SIZE)
+        library-test unity-test $(SIZE)
 # ==============================================================================
 # Rebuild source files if header file dependencies changes
 # ==============================================================================
@@ -400,6 +412,7 @@ program:
 			-c "program \"$(EXECUTABLE)\" reset exit"
 
 
+distributed-test: test $(TEST_EXEC)
 library-test: test $(TEST_EXEC)
 # NOTE: From issue #374, we found that we need to remove the old gcda files
 # otherwise if the test has been recompiled between executions of run-test, the
@@ -483,8 +496,19 @@ tidy: $(TIDY_FILES_PHONY)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 
 
+TIDY_COMMIT_SOURCES    = $(shell git show --name-only HEAD | grep ".[hc]pp")
+SHORT_TIDY_FILES_PHONY = $(addprefix $(OBJECT_DIR)/$(SJSU_DEV2_BASE)/, \
+                                     $(TIDY_COMMIT_SOURCES:=.tidy))
+commit-tidy: $(SHORT_TIDY_FILES_PHONY)
+	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
+
+
 presubmit:
-	@$(TOOLS_DIR)/presubmit.sh
+	+@$(TOOLS_DIR)/presubmit.sh
+
+
+quick-presubmit:
+	+@$(TOOLS_DIR)/presubmit.sh quick
 
 
 stacktrace:
@@ -495,6 +519,7 @@ show-lists:
 	@$(foreach V,$(sort $(.VARIABLES)), \
 		$(if $(filter-out environment% default automatic, $(origin $V)),\
 			$(warning $V=$($V) ($(value $V))$newline)))
+
 
 clean-coverage-files:
 	@rm -f $(COVERAGE_FILES) 2> /dev/null
@@ -568,17 +593,14 @@ $(TEST_EXEC): clean-coverage-files $(OBJECTS)
 					 -o $(TEST_EXEC) $(OBJECTS)
 	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
-# Catalina/Mojave
-#    /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
-# High Sierra
-#    /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ \
+
+MAC_TIDY_INCLUDES = \
+		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+		-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/
 
 $(OBJECT_DIR)/%.tidy: %
 	@mkdir -p "$(dir $@)"
 	@$(CLANG_TIDY) $(if $(or $(findstring .hpp,$<), $(findstring .cpp,$<)), \
-		-extra-arg="-std=c++2a") "$<"  -- \
-		-D PLATFORM=host -D HOST_TEST=1 \
-		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
-		-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ \
-		$(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
+		-extra-arg="-std=c++2a") "$<"  -- -D PLATFORM=host -D HOST_TEST=1 \
+		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@printf '$(GREEN)Evaluated file: $(RESET)$< \n'

@@ -8,6 +8,7 @@ var searchData=
   ['bias',['Bias',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246',1,'sjsu::lpc40xx::Dac']]],
   ['bind',['Bind',['../dc/d4f/classsjsu_1_1Esp8266.html#a84e77c3b453a19ff16adab598ab1f2fa',1,'sjsu::Esp8266']]],
   ['bit_2ehpp',['bit.hpp',['../d3/d51/bit_8hpp.html',1,'']]],
+  ['bitlimits',['BitLimits',['../d4/d0e/classsjsu_1_1BitLimits.html',1,'sjsu']]],
   ['blue',['blue',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a933905599c7cca0661282cc7109a7d1f',1,'sjsu::PixelDisplay::Color_t']]],
   ['buffer',['buffer',['../d4/d59/structsjsu_1_1TerminalCache__t.html#a972656f858ee95a5a8174172d7ecca51',1,'sjsu::TerminalCache_t']]],
   ['bufferstatus',['BufferStatus',['../d5/dff/structsjsu_1_1lpc40xx_1_1Can_1_1BufferStatus.html',1,'sjsu::lpc40xx::Can']]],

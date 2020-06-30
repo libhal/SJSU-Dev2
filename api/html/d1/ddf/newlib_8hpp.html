@@ -84,6 +84,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for newlib.hpp:</div>
 <div class="dyncontent">
@@ -159,10 +160,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ae4043404473c2a0cea08a941d3e9e8a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/de8/namespacesjsu_1_1newlib.html#ae4043404473c2a0cea08a941d3e9e8a2">sjsu::newlib::Stdout</a> = int(*)(const char *, size_t)</td></tr>
-<tr class="separator:ae4043404473c2a0cea08a941d3e9e8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a820496a62d884b822b1eff6044bc105c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/de8/namespacesjsu_1_1newlib.html#a820496a62d884b822b1eff6044bc105c">sjsu::newlib::Stdin</a> = int(*)(char *, size_t)</td></tr>
-<tr class="separator:a820496a62d884b822b1eff6044bc105c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac100344f3a3bb38618f5a343abda20d1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/de8/namespacesjsu_1_1newlib.html#ac100344f3a3bb38618f5a343abda20d1">sjsu::newlib::Stdout</a> = std::function&lt; int(const char *, size_t)&gt;</td></tr>
+<tr class="separator:ac100344f3a3bb38618f5a343abda20d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27a4a296a46487a96fc99f2eeb49313e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/de8/namespacesjsu_1_1newlib.html#a27a4a296a46487a96fc99f2eeb49313e">sjsu::newlib::Stdin</a> = std::function&lt; int(char *, size_t)&gt;</td></tr>
+<tr class="separator:a27a4a296a46487a96fc99f2eeb49313e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>

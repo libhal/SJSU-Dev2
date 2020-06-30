@@ -54,39 +54,49 @@ function check
 # Return to home project
 cd $SJBASE/projects/hello_world
 
-####################################
-#        Build All Projects        #
-####################################
-time make --no-print-directory all-projects
-BUILD_CAPTURE=$?
-
-####################################
-#           Lint Check             #
-####################################
+# ==============================================================================
+# Lint Check
+# ==============================================================================
 print_divider "Executing 'lint' check"
 
 time make -s lint 1> /dev/null
 LINT_CAPTURE=$?
 print_status $LINT_CAPTURE
 echo ""
-####################################
-#         Clang Tidy Check         #
-####################################
-print_divider "Executing 'tidy' check"
 
-time make -s tidy
-TIDY_CAPTURE=$?
-print_status $TIDY_CAPTURE
-echo ""
-####################################
-#         Unit Test Check          #
-####################################
+# ==============================================================================
+# Clang Tidy Check
+# ==============================================================================
+
+if [ "$1" == "quick" ]; then
+  print_divider "Executing 'commit-tidy' check"
+  time make -s commit-tidy
+  TIDY_CAPTURE=$?
+  print_status $TIDY_CAPTURE
+  echo ""
+else
+  print_divider "Executing 'tidy' check"
+  time make -s tidy
+  TIDY_CAPTURE=$?
+  print_status $TIDY_CAPTURE
+  echo ""
+fi
+
+# ==============================================================================
+# Unit Test Check
+# ==============================================================================
 print_divider "Building and running unit tests"
 
 time make -s library-test WARNINGS_ARE_ERRORS=-Werror
 TEST_CAPTURE=$?
 print_status $TEST_CAPTURE
 echo ""
+
+# ==============================================================================
+# Build All Projects
+# ==============================================================================
+time make --no-print-directory all-projects
+BUILD_CAPTURE=$?
 
 # Check if there were any errors. For this to succeed, this value should be 0
 check $(($BUILD_CAPTURE+$LINT_CAPTURE+$TIDY_CAPTURE+$TEST_CAPTURE))

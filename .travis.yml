@@ -12,7 +12,7 @@ matrix:
             - sudo npm install -g cspell@4.0.38
           script:
             - cd projects/hello_world/
-            - make presubmit
+            - make quick-presubmit
             - make spellcheck
             - make find-missing-tests
             - make find-unused-tests
@@ -37,11 +37,11 @@ matrix:
           osx_image: xcode10
           script:
             - cd projects/hello_world/
-            - make presubmit
+            - make quick-presubmit
         - os: osx
           osx_image: xcode11.3
           script:
             - cd projects/hello_world/
-            - make presubmit
+            - make quick-presubmit
 install: ./setup
 
