@@ -1,10 +1,8 @@
 // =============================================================================
 // Task Scheduler
 // =============================================================================
-#include "L3_Application/task_scheduler.cpp"                // NOLINT
 #include "L3_Application/test/task_scheduler_test.cpp"      // NOLINT
 #include "L3_Application/test/periodic_scheduler_test.cpp"  // NOLINT
-#include "L3_Application/test/task_test.cpp"                // NOLINT
 
 // =============================================================================
 // FILE I/O
