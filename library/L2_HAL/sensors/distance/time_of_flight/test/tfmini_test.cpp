@@ -19,7 +19,7 @@ auto MockReadImplementation(size_t & read_count,
 {
   return [list, &read_count](void * data_ptr, size_t size) -> size_t {
     uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-    for (int i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
     {
       data[i] = list.begin()[read_count++];
     }
@@ -33,7 +33,7 @@ auto MockReadImplementation(size_t & read_count,
 {
   return [&list, &read_count](void * data_ptr, size_t size) -> size_t {
     uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-    for (int i = 0; i < size; i++)
+    for (size_t i = 0; i < size; i++)
     {
       data[i] = list[read_count++];
     }

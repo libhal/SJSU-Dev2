@@ -1,1 +1,1 @@
-USER_TESTS += $(LIBRARY_DIR)/utility/test/time_test.cpp
+TESTS += $(LIBRARY_DIR)/utility/test/time_test.cpp

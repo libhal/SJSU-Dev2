@@ -98,7 +98,7 @@ Check that source files abide by the SJSU-Dev2 coding standard.
 Check that source file fit the SJSU-Dev2 naming convention.
 
 #### `test`
-Build all tests as defined in USER_TESTS, typically defined within the
+Build all tests as defined in TESTS, typically defined within the
 project.mk file.
 
 #### `library-test`
@@ -211,9 +211,9 @@ Displays the contents of make variables.
       Defines the arguments to be passed to the test executable.
       -h will return the test executable help menu.
 
-#### `COMMON_FLAGS`
+#### `CFLAGS`
     Usage:
-      make application COMMON_FLAGS="-Wall"
+      make application CFLAGS="-Wall"
 
     Description:
       Add additional compiler flags.

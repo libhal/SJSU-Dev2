@@ -118,7 +118,7 @@ TEST_CASE("Testing L1 uart")
           std::array<uint8_t, kPayloadLength> response = {
             0xAA, 0xBB, 0xCC, 0xDD
           };
-          for (int i = 0; i < size; i++)
+          for (size_t i = 0; i < size; i++)
           {
             data[i] = response[read_was_called++];
           }
@@ -160,7 +160,7 @@ TEST_CASE("Testing L1 uart")
           std::array<uint8_t, kPayloadLength> response = {
             0xAA, 0xBB, 0xCC, 0xDD
           };
-          for (int i = 0; i < size; i++)
+          for (size_t i = 0; i < size; i++)
           {
             data[i] = response[read_was_called++];
           }

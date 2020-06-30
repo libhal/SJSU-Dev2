@@ -1,7 +1,3 @@
-INCLUDES += $(LIBRARY_DIR)/L0_Platform/freertos
-
-SYSTEM_INCLUDES +=
-
 LIBRARY_MSP432P401R += $(LIBRARY_DIR)/L0_Platform/msp432p401r/startup.cpp
 LIBRARY_MSP432P401R += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/ARM_CM4F/port.c
 LIBRARY_MSP432P401R += $(LIBRARY_DIR)/L0_Platform/arm_cortex/exceptions.cpp

@@ -626,7 +626,7 @@ class SystemController final : public sjsu::SystemController
                                      int pll_index) const
   {
     const auto & pll_config = clock_configuration_.pll[pll_index];
-    units::frequency::hertz_t fcco;
+    units::frequency::hertz_t fcco = 0_Hz;
 
     if (pll_config.enabled)
     {

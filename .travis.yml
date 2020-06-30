@@ -11,11 +11,13 @@ matrix:
             - sudo apt install -y npm
             - sudo npm install -g cspell@4.0.38
           script:
-            - cd projects/hello_world/
+            - cd projects/continuous_integration/
             - make quick-presubmit
             - make spellcheck
-            - make find-missing-tests
-            - make find-unused-tests
+            # TODO(#1289): Add this back
+            # - make find-missing-tests
+            # TODO(#1290): Add this back
+            # - make find-unused-tests
             - cd ../../tools/
             - ./generate_doxygen_docs.sh
           after_success:
@@ -36,12 +38,12 @@ matrix:
         - os: osx
           osx_image: xcode10
           script:
-            - cd projects/hello_world/
+            - cd projects/continuous_integration/
             - make quick-presubmit
         - os: osx
           osx_image: xcode11.3
           script:
-            - cd projects/hello_world/
+            - cd projects/continuous_integration/
             - make quick-presubmit
 install: ./setup
 

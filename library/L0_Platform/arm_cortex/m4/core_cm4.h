@@ -1895,7 +1895,7 @@ __STATIC_INLINE uint32_t SysTick_Config(uint32_t ticks)
   @{
  */
 
-extern volatile int32_t ITM_RxBuffer;                    /*!< External variable to receive characters. */
+inline volatile int32_t ITM_RxBuffer;                    /*!< External variable to receive characters. */
 #define                 ITM_RXBUFFER_EMPTY   0x5AA55AA5U /*!< Value identifying \ref ITM_RxBuffer is ready for next character. */
 
 

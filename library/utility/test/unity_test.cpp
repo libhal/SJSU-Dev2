@@ -1,6 +1,8 @@
 // =============================================================================
 // Utilties
 // =============================================================================
+#include "utility/test/config_test.cpp"               // NOLINT
+#include "utility/test/log_levels_test.cpp"           // NOLINT
 #include "utility/test/allocator_test.cpp"            // NOLINT
 #include "utility/test/bit_test.cpp"                  // NOLINT
 #include "utility/test/build_info_test.cpp"           // NOLINT

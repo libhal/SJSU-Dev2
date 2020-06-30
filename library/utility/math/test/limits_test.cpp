@@ -79,8 +79,8 @@ TEST_CASE("Testing Limits Function")
   SECTION("int64_t :: 55-bits")
   {
     // Setup
-    constexpr auto kExpectedMax = 18014398509481983ULL;
-    constexpr auto kExpectedMin = -18014398509481984ULL;
+    constexpr int64_t kExpectedMax = 18014398509481983ULL;
+    constexpr int64_t kExpectedMin = -18014398509481984ULL;
 
     // Exercise
     constexpr auto kMax = BitLimits<55, int64_t>::Max();

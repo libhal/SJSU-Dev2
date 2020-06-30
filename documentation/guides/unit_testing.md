@@ -54,8 +54,8 @@ Add a `project.mk` file into your project folder if it doesn't already
 exist. Within it, add your source and test source files like so:
 
 ``` make
-USER_TESTS += test/servo_controller_test.cpp
-USER_TESTS += test/guidance_system_test.cpp
+TESTS += test/servo_controller_test.cpp
+TESTS += test/guidance_system_test.cpp
 # etc ...
 ```
 
