@@ -5,7 +5,7 @@
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L1_Peripheral/lpc40xx/watchdog.hpp"
-#include "L3_Application/task.hpp"
+#include "L3_Application/task_scheduler.hpp"
 #include "third_party/units/units.h"
 #include "utility/time.hpp"
 #include "utility/rtos.hpp"
