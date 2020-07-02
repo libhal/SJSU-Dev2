@@ -28,7 +28,7 @@ std::array<FatfsDevice_t, config::kFatDriveCount> drive;
 
 namespace sjsu
 {
-Returns<void> RegisterFatFsDrive(Storage * storage, uint8_t drive_number = 0)
+Returns<void> RegisterFatFsDrive(Storage * storage, uint8_t drive_number)
 {
   if (drive_number >= drive.size())
   {

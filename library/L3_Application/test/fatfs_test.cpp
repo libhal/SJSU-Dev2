@@ -6,7 +6,7 @@
 #include <cstring>
 
 #include "L4_Testing/testing_frameworks.hpp"
-#include "L3_Application/file_io/fatfs.hpp"
+#include "L3_Application/fatfs.hpp"
 
 // NOLINTNEXTLINE
 extern "C" DSTATUS disk_status(BYTE drive_number);

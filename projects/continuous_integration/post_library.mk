@@ -1,5 +1,5 @@
 # Ensures that any warnings become errors for both builds and tests.
-SJ2_FINAL_CFLAGS += -Werror
+CFLAGS += -Werror
 
 # ==============================================================================
 # Continuous Integration Recipes
@@ -20,9 +20,9 @@ tidy: $(TIDY_FILES)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 
 
-TIDY_COMMIT_SOURCES = $(shell git show --name-only HEAD | grep ".[hc]pp")
-SHORT_TIDY_FILES    = $(addprefix $(SJ2_OBJECT_DIR)/, \
-                                  $(TIDY_COMMIT_SOURCES:=.tidy))
+TIDY_COMMIT_SOURCES := $(shell git show --name-only HEAD | grep ".[hc]pp")
+SHORT_TIDY_FILES    := $(addprefix $(SJ2_OBJECT_DIR)/, \
+                                   $(TIDY_COMMIT_SOURCES\:=.tidy))
 commit-tidy: $(SHORT_TIDY_FILES)
 	@printf '$(GREEN)Commit Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 
