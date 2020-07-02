@@ -230,6 +230,7 @@ SJ2_COVERAGE_FILES := $(shell find $(SJ2_BUILD_DIRECTORY_NAME) -name "*.gcda" \
 
 -include       $(OBJECTS:.o=.d)
 -include       $(SJ2_TEST_OBJECTS:.o=.d)
+-include       $(LINKER_SCRIPT:.ld=.d)
 
 # ==============================================================================
 # Phony Targets Declaration
@@ -277,11 +278,11 @@ debug:
 			"$(DEVICE_GDB)" \
 			"$(GDBINIT_PATH)" \
 			"$(PLATFORM)" \
-			"$(CURRENT_DIRECTORY)/$(EXECUTABLE)" \
+			"$(SJ2_CURRENT_DIRECTORY)/$(EXECUTABLE)" \
 			"$(SJ2_OPENOCD_DIR)" \
 			"$(JTAG)" \
 			"$(OPENOCD_CONFIG)" \
-			"$(SJ2_OPENOCD_EX"E)
+			"$(SJ2_OPENOCD_EXE)"
 
 
 debug-test:
@@ -383,7 +384,7 @@ $(SJ2_CORE_STATIC_LIBRARY): $(SJ2_LIBRARIES)
 	@printf '$(CYAN)Final Library ( A ) $(RESET): $@\n'
 
 
-$(EXECUTABLE): $(OBJECTS) $(SJ2_CORE_STATIC_LIBRARY)
+$(EXECUTABLE): $(OBJECTS) $(SJ2_CORE_STATIC_LIBRARY) $(LINKER_SCRIPT)
 	@printf '$(GREEN)==================================================$(RESET)\n'
 	@printf '$(YELLOW)Linking Executable$(RESET)     : $@\n'
 	@mkdir -p "$(dir $@)"

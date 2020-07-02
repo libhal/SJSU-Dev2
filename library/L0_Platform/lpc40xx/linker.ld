@@ -66,12 +66,9 @@ SECTIONS
 
         *(.after_vectors*)
 
-        /* Code Read Protection data */
-        . = 0x000002FC ;
-        PROVIDE(__CRP_WORD_START__ = .) ;
-        KEEP(*(.crp))
-        PROVIDE(__CRP_WORD_END__ = .) ;
-        ASSERT(!(__CRP_WORD_START__ == __CRP_WORD_END__), "Linker CRP Enabled, but no CRP_WORD provided within application");
+        /* Set Code Read Protection data to INVALID so it is ignored */
+        . = 0x000002FC;
+        LONG(0xFFFFFFFF);
         /* End of Code Read Protection */
 
         /* C++ constructors etc */

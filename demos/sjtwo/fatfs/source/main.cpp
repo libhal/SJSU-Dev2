@@ -6,7 +6,7 @@
 #include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L2_HAL/memory/sd.hpp"
-#include "L3_Application/file_io/fatfs.hpp"
+#include "L3_Application/fatfs.hpp"
 #include "utility/log.hpp"
 
 FRESULT ScanFiles(char * start_path, size_t path_length)
