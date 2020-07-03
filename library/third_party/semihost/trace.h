@@ -34,7 +34,7 @@
 // compiled with #ifdef TRACE/#endif
 
 
-#if defined(TRACE)
+#if defined(ARM_CORTEX_M_TRACE_ENABLE)
 
 #if defined(__cplusplus)
 extern "C"
@@ -66,7 +66,7 @@ extern "C"
 }
 #endif
 
-#else // !defined(TRACE)
+#else // !defined(ARM_CORTEX_M_TRACE_ENABLE)
 
 #if defined(__cplusplus)
 extern "C"
@@ -139,7 +139,7 @@ trace_dump_args(int argc __attribute__((unused)),
 {
 }
 
-#endif // defined(TRACE)
+#endif // defined(ARM_CORTEX_M_TRACE_ENABLE)
 
 // ----------------------------------------------------------------------------
 
