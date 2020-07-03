@@ -215,9 +215,10 @@ INCLUDES        := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
 SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
 OBJECTS         := $(addprefix $(SJ2_OBJECT_DIR)/, $(SOURCES:=.o))
 
-CFLAGS          := $(SYSTEM_INCLUDES) $(INCLUDES) $(CFLAGS) -O$(OPTIMIZE)
+CFLAGS          := -O$(OPTIMIZE) -D PLATFORM=$(PLATFORM) \
+                   $(SYSTEM_INCLUDES) $(INCLUDES) $(CFLAGS)
 CPPFLAGS        := $(SYSTEM_INCLUDES) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
-LDFLAGS         := $(CFLAGS) $(LDFLAGS) -T $(LINKER_SCRIPT)
+LDFLAGS         := $(CFLAGS) $(LDFLAGS) $(addprefix -T ,$(LINKER_SCRIPT))
 TEST_FLAGS      := $(SYSTEM_INCLUDES) $(INCLUDES) $(SJ2_DEFAULT_TEST_FLAGS)
 
 SJ2_TEST_OBJECTS   := $(addprefix $(SJ2_TEST_OBJECT_DIR)/, $(TESTS:=.o))

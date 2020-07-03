@@ -5,7 +5,7 @@
 
 // ----------------------------------------------------------------------------
 
-#if defined(TRACE)
+#if defined(ARM_CORTEX_M_TRACE_ENABLE)
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wall"
@@ -272,7 +272,7 @@ _trace_write_semihosting_debug (const char* buf, size_t nbyte)
 
 #pragma GCC diagnostic pop
 
-#endif // TRACE
+#endif // if defined(ARM_CORTEX_M_TRACE_ENABLE)
 
 // ----------------------------------------------------------------------------
 

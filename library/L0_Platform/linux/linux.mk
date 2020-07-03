@@ -18,6 +18,8 @@ DEVICE_GDB       := gdb
 
 CFLAGS += -m32
 
+LINKER_SCRIPT :=
+
 LDFLAGS := $(CFLAGS) -pthread -Wl,--gc-sections -Wl,-Map,"$(MAP)"
 
 include $(LIBRARY_DIR)/L0_Platform/freertos/freertos.mk
