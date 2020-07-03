@@ -281,7 +281,7 @@ debug:
 			"$(SJ2_OPENOCD_DIR)" \
 			"$(JTAG)" \
 			"$(OPENOCD_CONFIG)" \
-			"$(SJ2_OPENOCD_EX"E)
+			"$(SJ2_OPENOCD_EXE)"
 
 
 debug-test:
