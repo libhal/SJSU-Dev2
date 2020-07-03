@@ -379,7 +379,7 @@ $(LIST): $(EXECUTABLE)
 
 
 $(SJ2_CORE_STATIC_LIBRARY): $(SJ2_LIBRARIES)
-	@rm -f "$@"
+	@mkdir -p "$(dir $@)"
 	@$(DEVICE_AR) rcT "$@" $^
 	@$(DEVICE_RANLIB) "$@"
 	@printf '$(CYAN)Final Library ( A ) $(RESET): $@\n'
