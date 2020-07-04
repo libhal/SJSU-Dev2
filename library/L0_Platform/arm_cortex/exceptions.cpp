@@ -35,17 +35,11 @@ extern "C"
     printf("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32
            ", "
            "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 "\n",
-           r0,
-           r1,
-           r2,
-           r3);
+           r0, r1, r2, r3);
     printf("r12: 0x%08" PRIX32 ", lr: 0x%08" PRIX32
            ", "
            "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "\n",
-           r12,
-           lr,
-           pc,
-           psr);
+           r12, lr, pc, psr);
     sjsu::debug::PrintBacktrace(true, reinterpret_cast<void *>(pc));
     // When the following line is hit, the variables contain the register values
     // Use a JTAG debugger to inspect these variables
@@ -88,7 +82,7 @@ extern "C"
       using sjsu::cortex::CoreDebug_Type;
       if (CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk)
       {
-          trace_initialize();  // Enable debug tracing
+        trace_initialize();  // Enable debug tracing
       }
     }
     sjsu::InitializePlatform();
@@ -113,5 +107,4 @@ extern "C"
     }
     sjsu::Halt();
   }
-
 }  // extern "C"

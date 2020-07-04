@@ -131,7 +131,7 @@ TEST_CASE("Testing Bit Manipulations")
     static_assert(0b0000'1111 == bit::Insert(0, 0b1111, 0, 4));
 
     CHECK(0xAB00'0000 == bit::Insert(0, 0xAB, 24, 8));
-    static_assert(0xAB00'0000 == bit::Insert(0, 0xAB, 24, 8));
+    static_assert(0xAB00'0000UL == bit::Insert(0UL, 0xAB, 24, 8));
 
     CHECK(0xDEAD'BEEF == bit::Insert(0xD00D'BEEF, 0xEA, 20, 8));
     static_assert(0xDEAD'BEEF == bit::Insert(0xD00D'BEEF, 0xEA, 20, 8));
@@ -194,7 +194,7 @@ TEST_CASE("Testing Bit Manipulations")
                                          .position = 24,
                                          .width    = 8,
                                      }));
-    static_assert(0xAB00'0000 == bit::Insert(0, 0xAB,
+    static_assert(0xAB00'0000UL == bit::Insert(0UL, 0xAB,
                                              bit::Mask{
                                                  .position = 24,
                                                  .width    = 8,
@@ -256,7 +256,7 @@ TEST_CASE("Testing Bit Manipulations")
     static_assert(0b0001'1111 == bit::Set(0b1111, 4));
 
     CHECK(0xFFFF'FFFF == bit::Set(0x7FFFFFFF, 31));
-    static_assert(0xFFFF'FFFF == bit::Set(0x7FFFFFFF, 31));
+    static_assert(0xFFFF'FFFFUL == bit::Set(0x7FFFFFFFUL, 31));
 
     CHECK(0b0000'0001 == bit::Set(0, 0));
     static_assert(0b0000'0001 == bit::Set(0, 0));

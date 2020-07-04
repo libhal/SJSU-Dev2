@@ -1,7 +1,7 @@
 // Tests for the TaskScheduler singleton class.
 #include <iterator>
 
-#include "L3_Application/task.hpp"
+#include "L3_Application/task_scheduler.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace  // private namespace for custom fakes

@@ -91,8 +91,6 @@ extern "C"
   }
 }
 
-SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
-
 // The Interrupt vector table.
 // This relies on the linker script to place at correct location in memory.
 SJ2_SECTION(".isr_vector")

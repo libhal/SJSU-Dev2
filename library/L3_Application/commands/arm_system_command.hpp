@@ -7,6 +7,7 @@
 #include "L0_Platform/ram.hpp"
 #include "L1_Peripheral/system_controller.hpp"
 #include "L3_Application/commandline.hpp"
+#include "utility/build_info.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
@@ -29,7 +30,11 @@ class ArmSystemInfoCommand final : public Command
 
   int Program(int, const char * const[]) override
   {
-    intptr_t top_of_stack         = reinterpret_cast<intptr_t>(&StackTop);
+    intptr_t top_of_stack = 0xFFFF'FFFF;
+    if constexpr (!build::IsPlatform(build::Platform::host))
+    {
+      top_of_stack = reinterpret_cast<intptr_t>(&StackTop);
+    }
     intptr_t master_stack_pointer = sjsu::cortex::__get_MSP();
     intptr_t used_stack           = top_of_stack - master_stack_pointer;
     intptr_t remaining_stack      = 0x10000 - used_stack;

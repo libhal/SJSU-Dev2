@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['ocr',['ocr',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#aa971046cc3c58ef2d0eadf0756a02fc3',1,'sjsu::Sd::CardInfo_t::ocr()'],['../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698',1,'sjsu::Sd::Ocr()']]],
+  ['ocr',['Ocr',['../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698',1,'sjsu::Sd::Ocr()'],['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#aa971046cc3c58ef2d0eadf0756a02fc3',1,'sjsu::Sd::CardInfo_t::ocr()']]],
   ['oled',['Oled',['../db/dc5/structsjtwo.html#affe396d98953fc6a8ef3429a9615ea42',1,'sjtwo::Oled()'],['../db/dc5/structsjtwo.html#ae5391ad56fbae459afc44c531c95591a',1,'sjtwo::Oled()']]],
   ['onchange',['OnChange',['../dd/d3a/classsjsu_1_1Gpio.html#aa50b322d9399f08346154b5f43b47484',1,'sjsu::Gpio']]],
   ['onfallingedge',['OnFallingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#aa9709aa81ffe199781e2f73b2f95167c',1,'sjsu::Gpio']]],
   ['onrisingedge',['OnRisingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#a340de686d13d8a299f9fa313c56327ba',1,'sjsu::Gpio']]],
   ['open_5fdrain_5fmap',['open_drain_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a5e9489a92a066c7c6aadc80694257c5a',1,'sjsu::lpc17xx::Pin']]],
-  ['operation',['operation',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a865292f7dcccaea17d85ed6a88f6ce75',1,'sjsu::I2c::Transaction_t::operation()'],['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a3263d894c71f11021ddbb89af2798acd',1,'sjsu::I2cCommand::Arguments_t::operation()'],['../d0/d9b/classsjsu_1_1I2c.html#a539a41100567dee1b59b3c43d5cd480c',1,'sjsu::I2c::Operation()']]],
+  ['operation',['Operation',['../d0/d9b/classsjsu_1_1I2c.html#a539a41100567dee1b59b3c43d5cd480c',1,'sjsu::I2c::Operation()'],['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a865292f7dcccaea17d85ed6a88f6ce75',1,'sjsu::I2c::Transaction_t::operation()'],['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a3263d894c71f11021ddbb89af2798acd',1,'sjsu::I2cCommand::Arguments_t::operation()']]],
   ['operator_20_26',['operator &amp;',['../d0/d6b/namespacesjsu.html#ab16806d14e7cff6945107c75e5b6d24f',1,'sjsu']]],
   ['operator_20_26_3d',['operator &amp;=',['../d0/d6b/namespacesjsu.html#ab9c11fb4b8f68b1d8bde067470fb8d12',1,'sjsu']]],
   ['operator_20int',['operator int',['../dd/dee/structsjsu_1_1Status__t.html#aff71e5bbfbfb0a6e0243840b32e22a43',1,'sjsu::Status_t']]],

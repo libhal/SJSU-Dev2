@@ -4,13 +4,12 @@
 
 #include <cstdint>
 #include <FreeRTOS.h>
+#include "event_groups.h"
 #include "semphr.h"
 #include "task.h"
-
-#if defined(HOST_TEST)
-#include "event_groups.h"
 #include "timers.h"
 
+#if defined(HOST_TEST)
 #include "L4_Testing/testing_frameworks.hpp"
 
 DECLARE_FAKE_VOID_FUNC(vTaskStartScheduler);

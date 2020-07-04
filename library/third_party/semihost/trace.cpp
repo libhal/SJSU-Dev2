@@ -5,7 +5,7 @@
 
 // ----------------------------------------------------------------------------
 
-#if defined(TRACE)
+#if defined(ARM_CORTEX_M_TRACE_ENABLE)
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -83,4 +83,4 @@ trace_dump_args(int argc, char* argv[])
 #pragma GCC diagnostic pop
 // ----------------------------------------------------------------------------
 
-#endif // TRACE
+#endif // if defined(ARM_CORTEX_M_TRACE_ENABLE)

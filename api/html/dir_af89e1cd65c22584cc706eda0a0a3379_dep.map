@@ -1,22 +1,22 @@
 <map id="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L2_HAL/sensors" name="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L2_HAL/sensors">
 <area shape="rect" id="node2" href="dir_887e88b1487fa3ebf7d40e5e6f51c71f.html" title="battery" alt="" coords="37,63,109,111"/>
 <area shape="rect" id="node7" href="dir_e22535da68eb65b6fc818b619b379434.html" title="utility" alt="" coords="277,255,349,303"/>
-<area shape="rect" id="edge10-headlabel" href="dir_000023_000040.html" title="2" alt="" coords="259,243,268,257"/>
+<area shape="rect" id="edge10-headlabel" href="dir_000022_000036.html" title="2" alt="" coords="259,243,268,257"/>
 <area shape="rect" id="node8" href="dir_2bf854a3d102de3a4799cdc41323fe3c.html" title="L1_Peripheral" alt="" coords="211,159,322,207"/>
-<area shape="rect" id="edge11-headlabel" href="dir_000023_000001.html" title="1" alt="" coords="192,149,201,163"/>
+<area shape="rect" id="edge11-headlabel" href="dir_000022_000001.html" title="1" alt="" coords="192,149,201,163"/>
 <area shape="rect" id="node3" href="dir_7b04ba9a135e2291624c74d12a79d076.html" title="distance" alt="" coords="133,63,211,111"/>
-<area shape="rect" id="edge8-headlabel" href="dir_000024_000040.html" title="4" alt="" coords="260,242,269,256"/>
-<area shape="rect" id="edge9-headlabel" href="dir_000024_000001.html" title="1" alt="" coords="231,132,240,147"/>
+<area shape="rect" id="edge8-headlabel" href="dir_000023_000036.html" title="4" alt="" coords="260,242,269,256"/>
+<area shape="rect" id="edge9-headlabel" href="dir_000023_000001.html" title="1" alt="" coords="231,132,240,147"/>
 <area shape="rect" id="node4" href="dir_0f63a620b4967d29353c6b1badf2d080.html" title="environment" alt="" coords="235,63,341,111"/>
-<area shape="rect" id="edge6-headlabel" href="dir_000026_000040.html" title="9" alt="" coords="333,233,343,247"/>
-<area shape="rect" id="edge7-headlabel" href="dir_000026_000001.html" title="3" alt="" coords="280,135,289,150"/>
+<area shape="rect" id="edge6-headlabel" href="dir_000025_000036.html" title="9" alt="" coords="333,233,343,247"/>
+<area shape="rect" id="edge7-headlabel" href="dir_000025_000001.html" title="3" alt="" coords="280,135,289,150"/>
 <area shape="rect" id="node5" href="dir_e695268739217789433fa480a971c2a4.html" title="movement" alt="" coords="365,63,459,111"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000029_000040.html" title="7" alt="" coords="340,236,349,250"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000029_000001.html" title="1" alt="" coords="326,149,335,164"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000028_000036.html" title="7" alt="" coords="340,236,349,250"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000028_000001.html" title="1" alt="" coords="326,149,335,164"/>
 <area shape="rect" id="node6" href="dir_4b2ddd4c039b8bb339868a400b883ae8.html" title="optical" alt="" coords="483,63,555,111"/>
-<area shape="rect" id="edge3-headlabel" href="dir_000031_000040.html" title="4" alt="" coords="354,241,363,256"/>
-<area shape="rect" id="edge4-headlabel" href="dir_000031_000001.html" title="1" alt="" coords="337,175,346,189"/>
-<area shape="rect" id="edge5-headlabel" href="dir_000001_000040.html" title="105" alt="" coords="288,227,314,241"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000030_000036.html" title="4" alt="" coords="354,241,363,256"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000030_000001.html" title="1" alt="" coords="337,175,346,189"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000001_000036.html" title="105" alt="" coords="288,227,314,241"/>
 <area shape="rect" id="clust2" href="dir_af89e1cd65c22584cc706eda0a0a3379.html" alt="" coords="27,52,661,121"/>
 <area shape="rect" id="clust1" href="dir_841ee1dd7dc6c6192335cfd1419c2b84.html" title="L2_HAL" alt="" coords="16,16,672,132"/>
 </map>

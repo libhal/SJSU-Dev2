@@ -260,10 +260,10 @@ LIBRARY_LPC40XX += $(LIB_DIR)/L1_Peripheral/cortex/interrupt_vector_table.cpp
 # (Optional) Add test source files if applicable
 TESTS += $(LIB_DIR)/L0_Platform/lpc40xx/startup_test.cpp
 
-# (Optional) Add any files or folders that should NOT be evaluated via the linter.
-# System headers and register description files to be ignored.
-LINT_FILTER += $(LIB_DIR)/L0_Platform/lpc40xx/LPC40xx.h
-LINT_FILTER += $(LIB_DIR)/L0_Platform/lpc40xx/system_LPC407x_8x_177x_8x.h
+# (Optional) Add any files or folders that should NOT be evaluated via the
+# linter. System headers and register description files to be ignored.
+# .c and .h files are not considered for linting in general.
+LINT_FILTER += $(LIB_DIR)/L0_Platform/lpc40xx/special_file.hpp
 
 # This call generates a static library for your platform
 # $(eval $(call BUILD_LIBRARY, - calls the build library macros
@@ -282,8 +282,8 @@ include $(LIB_DIR)/L0_Platform/arm_cortex/m4/m4.mk
 platform-flash:
 	@echo
 	@bash -c "\
-	source $(TOOLS_DIR)/nxpprog/modules/bin/activate && \
-	python3 $(TOOLS_DIR)/nxpprog/nxpprog.py \
+	source $(SJ2_TOOLS_DIR)/nxpprog/modules/bin/activate && \
+	python3 $(SJ2_TOOLS_DIR)/nxpprog/nxpprog.py \
 	--binary=\"$(BINARY)\" --device=\"$(SJDEV)\" \
 	--osfreq=12000000 --baud=115200 --control"
 	@echo

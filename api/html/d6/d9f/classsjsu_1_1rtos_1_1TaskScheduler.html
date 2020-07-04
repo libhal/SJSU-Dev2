@@ -141,6 +141,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void sjsu::rtos::TaskScheduler::AddTask </td>
@@ -150,9 +153,14 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Add a task to the task scheduler. If the scheduler is full, the task will not be added and a fatal error will be asserted.</p>
-<dl class="section note"><dt>Note</dt><dd>When a task inheriting the <a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="An abstract interface for the Task interface class. ">TaskInterface</a> is constructed, it will automatically call this function to add itself to the scheduler.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>When a task inheriting the <a class="el" href="../../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html">TaskInterface</a> is constructed, it will automatically call this function to add itself to the scheduler.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">task</td><td><a class="el" href="../../d3/d19/classsjsu_1_1rtos_1_1Task.html">Task</a> to add. </td></tr>
@@ -305,6 +313,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">uint8_t sjsu::rtos::TaskScheduler::GetTaskIndex </td>
@@ -314,6 +325,11 @@ Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Used to get a task's index to determine the sync bit for the PreRun event group.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -331,6 +347,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void sjsu::rtos::TaskScheduler::RemoveTask </td>
@@ -340,6 +359,11 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Removes a specified task by its name and updates the task_list_ and task_count_.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -377,9 +401,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/SJSU-Dev2/SJSU-Dev2/library/L3_Application/<a class="el" href="../../d6/db9/task__scheduler_8hpp_source.html">task_scheduler.hpp</a></li>
-<li>/home/travis/build/SJSU-Dev2/SJSU-Dev2/library/L3_Application/<a class="el" href="../../db/df7/task__scheduler_8cpp.html">task_scheduler.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

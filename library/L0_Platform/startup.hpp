@@ -1,6 +1,7 @@
 #pragma once
 
 #include "L0_Platform/ram.hpp"
+#include "utility/build_info.hpp"
 
 extern "C"
 {
@@ -25,15 +26,22 @@ inline void SystemInitialize()
   // SysInit 1. Transfer data section values from flash to RAM
   //            (ALREADY DONE FOR YOU)
   InitializeDataSection();
+
   // SysInit 2. Clear BSS section of RAM
   //            This is required because the nano implementation of the
   //            standard C/C++ libraries assumes that the BSS section is
   //            initialized to 0.
   //            (ALREADY DONE FOR YOU)
   InitializeBssSection();
-  //  SysInit 3. Initialisation C++ libraries
-  //            (ALREADY DONE FOR YOU)
-  __libc_init_array();
+
+  // Checks at compile time if this is a unit test. If it is, then do not
+  // attempt to run `__libc_init_array()`
+  if constexpr (!build::IsPlatform(build::Platform::host))
+  {
+    //  SysInit 3. Initialisation C++ libraries
+    //            (ALREADY DONE FOR YOU)
+    __libc_init_array();
+  }
 }
 
 // Declaration of an InitializePlatform function that every platform must have

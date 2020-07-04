@@ -1,7 +1,9 @@
 SYSTEM_INCLUDES += $(LIBRARY_DIR)/L0_Platform/linux/freertos_posix/
 
-SOURCES += $(LIBRARY_DIR)/L0_Platform/linux/startup.cpp
-SOURCES += $(LIBRARY_DIR)/L0_Platform/linux/freertos_posix/port.c
+LIBRARY_LINUX += $(LIBRARY_DIR)/L0_Platform/linux/startup.cpp
+LIBRARY_LINUX += $(LIBRARY_DIR)/L0_Platform/linux/freertos_posix/port.c
+
+$(eval $(call BUILD_LIBRARY,liblinux,LIBRARY_LINUX))
 
 DEVICE_CC        := gcc-8
 DEVICE_CPPC      := g++-8
@@ -14,9 +16,11 @@ DEVICE_RANLIB    := ranlib
 DEVICE_ADDR2LINE := addr2line
 DEVICE_GDB       := gdb
 
-COMMON_FLAGS += -m32
+CFLAGS += -m32
 
-LINK_FLAGS = $(COMMON_FLAGS) -pthread -Wl,--gc-sections -Wl,-Map,"$(MAP)"
+LINKER_SCRIPT :=
+
+LDFLAGS := $(CFLAGS) -pthread -Wl,--gc-sections -Wl,-Map,"$(MAP)"
 
 include $(LIBRARY_DIR)/L0_Platform/freertos/freertos.mk
 

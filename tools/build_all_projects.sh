@@ -20,7 +20,7 @@ cd "$SJBASE/projects/hello_world"
 # building from scratch
 SILENCE=$(make purge)
 # Check if the system can build without any warnings!
-SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
+SILENCE=$(make -s -j4 application WARNING_BECOME_ERRORS=-Werror)
 # Set build capture to return code from the build
 BUILD_CAPTURE=$?
 print_status $BUILD_CAPTURE
@@ -32,7 +32,7 @@ cd "$SJBASE/projects/starter"
 # Clean the build and start building from scratch
 SILENCE=$(make clean)
 # Check if the system can build without any warnings!
-SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
+SILENCE=$(make -s -j4 application WARNING_BECOME_ERRORS=-Werror)
 # Set build capture to return code from the build
 SPECIFIC_BUILD_CAPTURE=$?
 BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
@@ -45,7 +45,7 @@ cd "$SJBASE/projects/barebones"
 # Clean the build and start building from scratch
 SILENCE=$(make clean)
 # Check if the system can build without any warnings!
-SILENCE=$(make -s application WARNINGS_ARE_ERRORS=-Werror)
+SILENCE=$(make -s -j4 application WARNING_BECOME_ERRORS=-Werror)
 # Set build capture to return code from the build
 SPECIFIC_BUILD_CAPTURE=$?
 BUILD_CAPTURE=$(($BUILD_CAPTURE + $SPECIFIC_BUILD_CAPTURE))
@@ -66,7 +66,7 @@ do
   # Clean the build and start building from scratch
   SILENCE=$(make clean)
   # Check if the system can build without any warnings!
-  SILENCE=$(make application WARNINGS_ARE_ERRORS=-Werror)
+  SILENCE=$(make -j4 application WARNING_BECOME_ERRORS=-Werror)
   # Add the return codes of the previous build capture. None zero means that at
   # least one of the captures failed.
   SPECIFIC_BUILD_CAPTURE=$?
@@ -92,7 +92,7 @@ do
     # Clean the build and start building from scratch
     SILENCE=$(make clean)
     # Check if the system can build without any warnings!
-    SILENCE=$(make application WARNINGS_ARE_ERRORS=-Werror PLATFORM=$p)
+    SILENCE=$(make -j4 application PLATFORM=$p WARNING_BECOME_ERRORS=-Werror)
     # Add the return codes of the previous build capture. None zero means that
     # at least one of the captures failed.
     SPECIFIC_BUILD_CAPTURE=$?
