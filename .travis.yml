@@ -14,14 +14,13 @@ matrix:
             - cd projects/continuous_integration/
             - make quick-presubmit
             - make spellcheck
+            - make doxygen
             # TODO(#1289): Add this back
             # - make find-missing-tests
             # TODO(#1290): Add this back
             # - make find-unused-tests
-            - cd ../../tools/
-            - ./generate_doxygen_docs.sh
           after_success:
-            - cd ../
+            - cd ../../
             - coveralls --gcov "gcov-8"
               --include "library/L0_Platform"
               --include "library/L1_Peripheral"

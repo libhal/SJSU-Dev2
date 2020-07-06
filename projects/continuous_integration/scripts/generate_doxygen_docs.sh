@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Get base path
-SJBASE=$(dirname "$0")
-SJBASE=$(cd "$SJBASE/.." ; pwd -P)
-# Import SJSU-Dev2 common shell script functions
-. $SJBASE/tools/common.sh
+COMMON_SCRIPT_DIRECTORY=$(dirname "$0")
+SJBASE=$(cd "${COMMON_SCRIPT_DIRECTORY}/../../../" ; pwd -P)
+
+. ${COMMON_SCRIPT_DIRECTORY}/common.sh
 
 print_divider "Generating API Reference Documentation using Doxygen"
 
