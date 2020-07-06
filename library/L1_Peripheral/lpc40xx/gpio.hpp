@@ -199,7 +199,7 @@ class Gpio final : public sjsu::Gpio
       {
         pin_obj_ = &kLpc40xxPin;
       }
-      else if constexpr (IsPlatform(sjsu::build::Platform::lpc40xx))
+      else if constexpr (IsPlatform(sjsu::build::Platform::lpc17xx))
       {
         pin_obj_ = &kLpc17xxPin;
       }
