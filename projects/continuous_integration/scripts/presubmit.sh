@@ -6,10 +6,10 @@ TIDY_CAPTURE=0
 TEST_CAPTURE=0
 
 # Get base path
-SJBASE=$(dirname "$0")
-SJBASE=$(cd "$SJBASE/.." ; pwd -P)
+COMMON_SCRIPT_DIRECTORY=$(dirname "$0")
+SJBASE=$(cd "${COMMON_SCRIPT_DIRECTORY}/../../../" ; pwd -P)
 
-. $SJBASE/tools/common.sh
+. ${COMMON_SCRIPT_DIRECTORY}/common.sh
 
 function check
 {

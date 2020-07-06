@@ -15,17 +15,10 @@ tools/**/*
 !tools/cpplint
 
 !tools/common.sh
-!tools/build_all_projects.sh
-!tools/presubmit.sh
-!tools/launch_openocd_gdb.sh
-!tools/generate_doxygen_docs.sh
-!tools/find_sources_without_tests.sh
-!tools/print_unused_test_files.sh
-!tools/spell_checker.sh
-!tools/find_unused_test_files.sh
-
 !tools/makefile_help_menu.txt
 !tools/doxygen_ignore_list.txt
+!tools/launch_openocd_gdb.sh
+!tools/generate_doxygen_docs.sh
 
 api/doxygen_stderr.txt
 
