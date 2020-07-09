@@ -46,7 +46,7 @@ class Eeprom final : public sjsu::Storage
   };
 
   /// Max timeout for program/write operations in milliseconds
-  static constexpr std::chrono::milliseconds kMaxTimeout = 20ms;
+  static constexpr std::chrono::milliseconds kMaxTimeout = 5ms;
 
   Type GetMemoryType() override
   {
@@ -130,7 +130,7 @@ class Eeprom final : public sjsu::Storage
 
     address = bit::Clear(address, kAddressMask);
 
-    // Because the EEPROM uses 32-bit communication, write_data will be casted
+    // Because the EEPROM uses 32-bit communication, write_data will be cast
     // into a uint32_t *
     const uint32_t * write_data = reinterpret_cast<const uint32_t *>(data);
 
@@ -170,9 +170,9 @@ class Eeprom final : public sjsu::Storage
 
       page_offset += kOffsetInterval;
 
-      // If the 64 byte page buffer fills up, then it must be programmed to the
+      // If the 64 byte page buffer fills up, then it must be
       // programmed to the EEPROM before continuing.
-      if (page_offset > 64)
+      if (page_offset == 64)
       {
         Program(eeprom_address);
         page_count++;
@@ -212,17 +212,17 @@ class Eeprom final : public sjsu::Storage
     eeprom_register->ADDR = address;
     eeprom_register->CMD  = kEraseProgram;
 
-    // Poll status register bit to see when writing is finished
+    // Poll status register bit to see when programming is finished
     auto check_register = []() {
-      return !(
-          bit::Read(eeprom_register->INT_STATUS, Status::kProgramStatusMask));
+      return (bit::Read(eeprom_register->INT_STATUS,
+              Status::kProgramStatusMask));
     };
 
     Wait(kMaxTimeout, check_register);
 
     // Clear program interrupt
     eeprom_register->INT_CLR_STATUS =
-        (bit::Set(0, Status::kReadWriteStatusMask));
+        (bit::Set(0, Status::kProgramStatusMask));
   }
 };
 }  // namespace lpc40xx
