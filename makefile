@@ -72,14 +72,13 @@ SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -ffunction-sections \
                        -Wfloat-equal -Wundef -Wno-format-nonliteral \
                        -Wconversion -Wdouble-promotion -Wswitch -Wformat=2 \
                        $(WARNING_BECOME_ERRORS) -Wno-uninitialized \
-                       -Wnull-dereference \
-                       -fdiagnostics-color -MMD -MP
+                       -Wnull-dereference -fdiagnostics-color -MMD -MP
 
 SJ2_DEFAULT_CPPFLAGS = -std=c++2a -fno-rtti -fno-threadsafe-statics \
                        -Wold-style-cast -Woverloaded-virtual -Wsuggest-override
 
 SJ2_DEFAULT_LDFLAGS  = -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
-                      --specs=nano.specs --specs=rdimon.specs
+                       --specs=nano.specs --specs=rdimon.specs
 
 SJ2_DEFAULT_SOURCES  = source/main.cpp
 
@@ -117,7 +116,7 @@ SJ2_DEFAULT_TEST_FLAGS := \
 # ==============================================================================
 
 PLATFORM        ?= $(SJ2_DEFAULT_PLATFORM)
-OPTIMIZE        ?=
+OPTIMIZE        ?= g
 INCLUDES        ?= $(SJ2_DEFAULT_INCLUDES)
 SYSTEM_INCLUDES ?=
 SOURCES         ?= $(SJ2_DEFAULT_SOURCES)
@@ -164,11 +163,13 @@ $(1)_OBJECTS = $$(addprefix $(SJ2_OBJECT_DIR)/, $$($(2):=.o))
 
 -include    $$($(1)_OBJECTS:.o=.d) # DEPENDENCIES
 
+
+
 $(SJ2_STATIC_LIBRARY_DIR)/$(1).a: $$($(1)_OBJECTS)
 	@mkdir -p "$(SJ2_STATIC_LIBRARY_DIR)"
 	@rm -f "$@"
-	@$$(DEVICE_AR) rcs "$$@" $$^
-	@$$(DEVICE_RANLIB) "$$@"
+	@$$(DEVICE_AR) rcs --plugin="$$(PLUGIN)" "$$@" $$^
+	@$$(DEVICE_RANLIB) --plugin="$$(PLUGIN)" "$$@"
 	@printf '$(CYAN)Built Library ( A )$(RESET) : $$@ \n'
 
 endef
@@ -192,6 +193,7 @@ OBJDUMP     = $(DEVICE_OBJDUMP)
 SIZEC       = $(DEVICE_SIZEC)
 OBJCOPY     = $(DEVICE_OBJCOPY)
 NM          = $(DEVICE_NM)
+PLUGIN      = $(shell $(DEVICE_CC) --print-file-name=liblto_plugin.so)
 
 TEST_CPPC          = g++-8
 TEST_CC            = gcc-8
@@ -379,9 +381,10 @@ $(LIST): $(EXECUTABLE)
 
 
 $(SJ2_CORE_STATIC_LIBRARY): $(SJ2_LIBRARIES)
+	@rm -rf "$@"
 	@mkdir -p "$(dir $@)"
-	@$(DEVICE_AR) rcT "$@" $^
-	@$(DEVICE_RANLIB) "$@"
+	@$(DEVICE_AR) rcT --plugin="$(PLUGIN)" "$@" $^
+	@$(DEVICE_RANLIB) --plugin="$(PLUGIN)" "$@"
 	@printf '$(CYAN)Final Library ( A ) $(RESET): $@\n'
 
 
