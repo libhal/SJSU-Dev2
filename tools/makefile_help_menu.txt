@@ -2,7 +2,7 @@
 USAGE
 ================================================================================
 
-  make [target] [PLATFORM=[linux|lpc40xx|lpc17xx|...]]
+  make [target] [PLATFORM=[lpc40xx|lpc17xx|stm32f10x|linux|...]]
   make [target] [PLATFORM=platform] [JTAG=[stlink|jlink|...]]
   make [target] [PLATFORM=platform] OPTIMIZE=2
 
@@ -21,7 +21,10 @@ GENERAL TARGETS ________________________________________________________________
   execute ----------------------------------------------------------------------
   flash ------------------------------------------------------------------------
     Program applications binary to device or executes binary on linux.
-    Only supported for LPC series devices such as lpc17xx and lpc40xx.
+
+    None jtag flashing support is only available for LPC series devices such as
+    lpc17xx and lpc40xx.
+
     This option will also build the binary, if necessary, before programming or
     executing the binary.
 
@@ -30,14 +33,10 @@ GENERAL TARGETS ________________________________________________________________
     magnitude faster.
 
   program ----------------------------------------------------------------------
-    Program application binary
-
-  openocd ----------------------------------------------------------------------
-    Opens openocd and connects to the selected PLATFORM via the selected JTAG
-    device.
+    Program application binary via JTAG/SWD interface via OpenOCD.
 
   debug ------------------------------------------------------------------------
-    Will bring up GDB with current projects .elf file, using openocd if
+    Open GDB with current project's firmware.elf file, using OpenOCD if
     necessary.
 
   clean ------------------------------------------------------------------------
@@ -52,10 +51,11 @@ GENERAL TARGETS ________________________________________________________________
     platform.
 
   purge ------------------------------------------------------------------------
-    Remove all temporary local build files and static libraries
+    Remove all temporary local build files and static libraries.
 
   telemetry --------------------------------------------------------------------
-    Launch telemetry web interface on platform
+    Launch telemetry web serial interface on interface.
+
 
 DEVELOPER TARGETS ______________________________________________________________
 
@@ -87,23 +87,10 @@ DEVELOPER TARGETS ______________________________________________________________
     Will format all modified files in commit to the SJSU-Dev2 standard.
 
   debug-test -------------------------------------------------------------------
-    Allows you to debug your test executable in GDB.
-
-  stacktrace -------------------------------------------------------------------
-    Usage:
-      make stacktrace TRACES="0x80000000 0x800001FC0 ..."
-
-    Description:
-      Will show the stack trace based on the program counter trace addresses in
-      the TRACES variable.
-
-MAKEFILE DEBUG TARGETS _________________________________________________________
-
-  show-variables ---------------------------------------------------------------
-    Displays the contents of make variables.
+    Launches GDB on unit tests.
 
 
-COMMAND LINE OPTIONS:
+COMMON COMMAND LINE OPTIONS:
 ================================================================================
 
   PLATFORM ---------------------------------------------------------------------
@@ -139,9 +126,9 @@ COMMAND LINE OPTIONS:
 
   OPTIMIZE ---------------------------------------------------------------------
     Usage:
-      ... OPTIMIZE=0
-      ... OPTIMIZE=2
+      ... OPTIMIZE=g
       ... OPTIMIZE=s
+      ... OPTIMIZE=2
 
     Description:
       Set the optimization level of the compiler. Default is optimization level
@@ -149,46 +136,46 @@ COMMAND LINE OPTIONS:
 
         0: Low to no optimization
             Only trivial and quick optimizations will be considered.
+            Not recommended in general. Prefer to use level g.
 
         1: Level 1 optimization
             Optimizes the executable, reduces binary size, increases execution
             performance, but compilation time will increase.
 
+        g: Debug Friendly Level 1 optimization (DEFAULT)
+            Same optimizations as level 1, but certain flags are turned on to
+            make the debugging experience better. The debugging experience is
+            actually better with level g than with than level 0, thus this is
+            the best option for day to day development.
+
         2: Level 2 optimization
             Optimizes the executable further. Performs all optimizations that
             do not sacrifice memory to increase runtime performance.
 
-        3: Highest level of optimization
+        3: Highest level of optimization (NOT RECOMMENDED)
             Best runtime performance, but will typically increase binary size
-            above O2.
+            above O2. This optimization level will lead to glitches in some
+            applications. Be careful when using it.
 
         s: Optimize for size
-            Will perform all optimizations that reduce the size of the binary.
-            May sacrifice runtime performance in order to decrease binary size.
+            Will perform all optimizations that reduce the size of the binary. Typically increases runtime performance but may sacrifice runtime performance in order to decrease binary size.
 
-  DEVICE -----------------------------------------------------------------------
+  PORT -------------------------------------------------------------------------
     Usage:
-      make flash DEVICE=/dev/ttyUSB0
+      make flash PORT=/dev/ttyUSB0
 
     Description:
       Set the serial port to use when performing "make flash".
 
-  TEST_ARGS --------------------------------------------------------------------
+  TEST_ARGUMENTS ---------------------------------------------------------------
     Usage:
-      make test TEST_ARGS="-s [i2c,adc]"
-      make library-test TEST_ARGS="-s [i2c,adc]"
-      make library-test TEST_ARGS="-h"
+      make test TEST_ARGUMENTS="-s [i2c,adc]"
+      make library-test TEST_ARGUMENTS="-s [i2c,adc]"
+      make library-test TEST_ARGUMENTS="-h"
 
     Description:
       Defines the arguments to be passed to the test executable.
       -h will return the test executable help menu.
-
-  CFLAGS -----------------------------------------------------------------
-    Usage:
-      make application CFLAGS="-Wall"
-
-    Description:
-      Add additional compiler flags.
 
   OPENOCD_CONFIG ---------------------------------------------------------------
     Usage:

@@ -28,8 +28,8 @@ markdown_extensions:
 nav:
   - Home: 'index.md'
   - Get Started:
-    - Getting started: 'getting_started/getting_started.md'
-    - How to Use Make: 'getting_started/using_make.md'
+    - 'getting_started/getting_started.md'
+    - 'getting_started/using_make.md'
   - Guides:
     - Directory Structure:
       - 'guides/directory_layout/project.md'
