@@ -54,8 +54,9 @@ The program will list all of the documentation errors at the end of the program.
 
 ## Running presubmit checks
 
-To run the whole set of presubmit checks, change into your project
-directory and run `make presubmit`. If you see this:
+To run the whole set of presubmit checks, you MUST be in the
+`SJSU-Dev2/projects/continuous_integration` project. Then from there, run
+`make presubmit`. If you see this:
 
 ``` console
 ============================
@@ -69,7 +70,7 @@ directory and run `make presubmit`. If you see this:
 
 Then you passed.
 
-If you see this:
+If you see something like this:
 
 ``` console
 ============================
