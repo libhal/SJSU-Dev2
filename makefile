@@ -18,11 +18,23 @@ endif
 .DEFAULT_GOAL := help
 
 # ==============================================================================
+# Enable Undefined Variable Use Warnings
+# ==============================================================================
+
+MAKEFLAGS += --warn-undefined-variables
+
+# Make sure MAKECMDGOALS is defined, so it doesn't cause an error itself
+ifndef MAKECMDGOALS
+MAKECMDGOALS = help
+endif
+
+# ==============================================================================
 # Directories
 # ==============================================================================
 
 SJ2_BUILD_DIRECTORY_NAME = build
 SJ2_SOURCE_DIR           = source
+SJ2_LOCAL_LIBRARY_DIR    = library
 SJ2_CURRENT_DIRECTORY    = $(shell pwd)
 SJ2_TOOLS_DIR            = $(SJSU_DEV2_BASE)/tools
 SJ2_BUILD_DIR            = $(SJ2_BUILD_DIRECTORY_NAME)/$(PLATFORM)
@@ -64,15 +76,16 @@ RESET   = $(shell echo "\x1B[0m")
 
 SJ2_DEFAULT_PLATFORM = lpc40xx
 
-SJ2_DEFAULT_INCLUDES = $(SJ2_DIR_LOCAL_LIBRARY_SOURCE) $(SJ2_DIR_SOURCE)
+SJ2_DEFAULT_INCLUDES = $(SJ2_CURRENT_DIRECTORY) $(SJ2_SOURCE_DIR) \
+                       $(SJ2_LOCAL_LIBRARY_DIR)
 
 SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -ffunction-sections \
                        -fdata-sections -fno-exceptions -fno-omit-frame-pointer \
                        -Wno-main -Wno-variadic-macros -Wall -Wextra -Wshadow \
                        -Wfloat-equal -Wundef -Wno-format-nonliteral \
                        -Wconversion -Wdouble-promotion -Wswitch -Wformat=2 \
-                       $(WARNING_BECOME_ERRORS) -Wno-uninitialized \
-                       -Wnull-dereference -fdiagnostics-color -MMD -MP
+                       -Wno-uninitialized -Wnull-dereference \
+											 -fdiagnostics-color -MMD -MP
 
 SJ2_DEFAULT_CPPFLAGS = -std=c++2a -fno-rtti -fno-threadsafe-statics \
                        -Wold-style-cast -Woverloaded-virtual -Wsuggest-override
@@ -94,7 +107,7 @@ SJ2_DEFAULT_TEST_FLAGS := \
                 -fkeep-inline-functions -fno-elide-constructors  \
                 -fdiagnostics-color -fprofile-correction -Wall \
                 -Wno-variadic-macros -Wextra -Wshadow -Wno-main \
-                -Wno-missing-field-initializers $(WARNING_BECOME_ERRORS) \
+                -Wno-missing-field-initializers \
                 -Wfloat-equal -Wundef -Wno-format-nonliteral \
                 -Wdouble-promotion -Wswitch -Wnull-dereference -Wformat=2 \
                 -D HOST_TEST=1 -D PLATFORM=host -O0 -std=c++2a -MMD -MP \
@@ -114,6 +127,7 @@ SJ2_DEFAULT_TEST_FLAGS := \
 #
 # Set to their defaults if project.mk does not set them first.
 # ==============================================================================
+WARNING_BECOME_ERRORS ?=
 
 PLATFORM        ?= $(SJ2_DEFAULT_PLATFORM)
 OPTIMIZE        ?= g
@@ -127,9 +141,16 @@ SOURCES         ?= $(SJ2_DEFAULT_SOURCES)
 TESTS           ?= $(SJ2_DEFAULT_TESTS)
 TEST_ARGUMENTS  ?=
 
-PORT            ?=
-OPENOCD_CONFIG  ?=
-JTAG            ?=
+
+# ==============================================================================
+# User Defined Arguments
+#
+# These are not set by default and must be set by the user.
+# The makefile will error if a target needs them.
+# ==============================================================================
+# PORT
+# OPENOCD_CONFIG
+# JTAG
 
 # ==============================================================================
 # Tool chain paths
@@ -164,10 +185,9 @@ $(1)_OBJECTS = $$(addprefix $(SJ2_OBJECT_DIR)/, $$($(2):=.o))
 -include    $$($(1)_OBJECTS:.o=.d) # DEPENDENCIES
 
 
-
 $(SJ2_STATIC_LIBRARY_DIR)/$(1).a: $$($(1)_OBJECTS)
 	@mkdir -p "$(SJ2_STATIC_LIBRARY_DIR)"
-	@rm -f "$@"
+	@rm -f "$$@"
 	@$$(DEVICE_AR) rcs --plugin="$$(PLUGIN)" "$$@" $$^
 	@$$(DEVICE_RANLIB) --plugin="$$(PLUGIN)" "$$@"
 	@printf '$(CYAN)Built Library ( A )$(RESET) : $$@ \n'
@@ -218,10 +238,12 @@ SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
 OBJECTS         := $(addprefix $(SJ2_OBJECT_DIR)/, $(SOURCES:=.o))
 
 CFLAGS          := -O$(OPTIMIZE) -D PLATFORM=$(PLATFORM) \
-                   $(SYSTEM_INCLUDES) $(INCLUDES) $(CFLAGS)
+                   $(SYSTEM_INCLUDES) $(INCLUDES) $(CFLAGS)  \
+                   $(WARNING_BECOME_ERRORS)
 CPPFLAGS        := $(SYSTEM_INCLUDES) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
 LDFLAGS         := $(CFLAGS) $(LDFLAGS) $(addprefix -T ,$(LINKER_SCRIPT))
-TEST_FLAGS      := $(SYSTEM_INCLUDES) $(INCLUDES) $(SJ2_DEFAULT_TEST_FLAGS)
+TEST_FLAGS      := $(SYSTEM_INCLUDES) $(INCLUDES) $(SJ2_DEFAULT_TEST_FLAGS) \
+                   $(WARNING_BECOME_ERRORS)
 
 SJ2_TEST_OBJECTS   := $(addprefix $(SJ2_TEST_OBJECT_DIR)/, $(TESTS:=.o))
 SJ2_COVERAGE_FILES := $(shell find $(SJ2_BUILD_DIRECTORY_NAME) -name "*.gcda" \
@@ -241,7 +263,15 @@ SJ2_COVERAGE_FILES := $(shell find $(SJ2_BUILD_DIRECTORY_NAME) -name "*.gcda" \
 
 
 .PHONY: application flash clean library-clean purge $(SIZE) clean-coverage \
-        run-test coverage clean-coverage run-test test help
+        run-test coverage clean-coverage run-test test help no-make-warnings
+
+# ==============================================================================
+# Abort make if warnings are detected
+# ==============================================================================
+
+
+no-make-warnings:
+	@! +$(MAKE) -n $(MAKECMDGOALS) 2>&1 >/dev/null | grep warning
 
 
 # ==============================================================================
@@ -249,7 +279,7 @@ SJ2_COVERAGE_FILES := $(shell find $(SJ2_BUILD_DIRECTORY_NAME) -name "*.gcda" \
 # ==============================================================================
 
 
-help:
+help: no-make-warnings
 	@cat $(SJ2_TOOLS_DIR)/makefile_help_menu.txt | \
 	GREP_COLOR='1;31' grep --color=always -e " [-]*"  -e '**' | \
 	GREP_COLOR='1;34' grep --color=always -e "==" -e '**'
@@ -260,7 +290,7 @@ help:
 # ==============================================================================
 
 
-application: | $(LIST) $(HEX) $(BINARY) $(SIZE)
+application: | no-make-warnings $(LIST) $(HEX) $(BINARY) $(SIZE)
 
 
 # ==============================================================================
@@ -275,7 +305,7 @@ program: application
 			-c "program \"$(EXECUTABLE)\" reset exit"
 
 
-debug:
+debug: no-make-warnings
 	@printf '$(MAGENTA)Starting firmware debug...$(RESET)\n'
 	@$(SJ2_TOOLS_DIR)/launch_openocd_gdb.sh \
 			"$(DEVICE_GDB)" \
@@ -288,12 +318,12 @@ debug:
 			"$(SJ2_OPENOCD_EXE)"
 
 
-debug-test:
+debug-test: no-make-warnings
 	gdb build/tests.exe
 
 
+flash: | no-make-warnings application platform-flash
 execute: flash
-flash: | application platform-flash
 
 
 # ==============================================================================
@@ -301,17 +331,17 @@ flash: | application platform-flash
 # ==============================================================================
 
 
-clean:
+clean: no-make-warnings
 	rm -fr $(SJ2_BUILD_DIRECTORY_NAME)
 	@mkdir -p $(SJ2_BUILD_DIRECTORY_NAME)
 
 
-library-clean:
+library-clean: no-make-warnings
 	rm -fr $(SJ2_STATIC_LIBRARY_ROOT)
 	@mkdir -p $(SJ2_STATIC_LIBRARY_ROOT)
 
 
-purge: clean library-clean
+purge: | no-make-warnings clean library-clean
 
 
 # ==============================================================================
@@ -319,11 +349,11 @@ purge: clean library-clean
 # ==============================================================================
 
 
-clean-coverage:
+clean-coverage: no-make-warnings
 	@rm -f $(SJ2_COVERAGE_FILES) 2> /dev/null
 
 
-coverage:
+coverage: no-make-warnings
 	@printf '$(YELLOW)Generating Coverage Files $(RESET) : '
 
 	@mkdir -p "$(SJ2_COVERAGE_DIR)"
@@ -338,12 +368,12 @@ coverage:
 
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
-run-test:
+run-test: no-make-warnings
 	@export ASAN_SYMBOLIZER_PATH=$(HOST_SYMBOLIZER) && \
 	 ASAN_OPTIONS="symbolize=1 color=always" $(TEST_EXECUTABLE) $(TEST_ARGUMENTS)
 
 
-test: | clean-coverage $(TEST_EXECUTABLE)
+test: | no-make-warnings clean-coverage $(TEST_EXECUTABLE)
 	+@$(MAKE) run-test --no-print-directory
 	+@$(MAKE) coverage --no-print-directory
 

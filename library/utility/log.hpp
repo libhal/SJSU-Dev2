@@ -124,7 +124,7 @@ struct LogDebug  // NOLINT
     // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
     // attribute for constructor's first argument
     _SJ2_USED(format);
-    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_DEBUG)
+    if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_DEBUG)
     {
       Log<Params...>(SJ2_BACKGROUND_PURPLE "   DEBUG", format, params...,
                      location);
@@ -154,7 +154,7 @@ struct LogInfo  // NOLINT
     // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
     // attribute for constructor's first argument
     _SJ2_USED(format);
-    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_INFO)
+    if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_INFO)
     {
       Log<Params...>(SJ2_BACKGROUND_GREEN "    INFO", format, params...,
                      location);
@@ -186,7 +186,7 @@ struct LogWarning  // NOLINT
     // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
     // attribute for constructor's first argument
     _SJ2_USED(format);
-    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_WARNING)
+    if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_WARNING)
     {
       Log<Params...>(SJ2_BACKGROUND_YELLOW " WARNING", format, params...,
                      location);
@@ -216,7 +216,7 @@ struct LogError  // NOLINT
     // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
     // attribute for constructor's first argument
     _SJ2_USED(format);
-    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_ERROR)
+    if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_ERROR)
     {
       Log<Params...>(SJ2_BACKGROUND_RED "   ERROR", format, params...,
                      location);
