@@ -263,23 +263,14 @@ SJ2_COVERAGE_FILES := $(shell find $(SJ2_BUILD_DIRECTORY_NAME) -name "*.gcda" \
 
 
 .PHONY: application flash clean library-clean purge $(SIZE) clean-coverage \
-        run-test coverage clean-coverage run-test test help no-make-warnings
-
-# ==============================================================================
-# Abort make if warnings are detected
-# ==============================================================================
-
-
-no-make-warnings:
-	@! +$(MAKE) -n $(MAKECMDGOALS) 2>&1 >/dev/null | grep warning
-
+        run-test coverage clean-coverage run-test test help
 
 # ==============================================================================
 # Application Build Targets
 # ==============================================================================
 
 
-help: no-make-warnings
+help:
 	@cat $(SJ2_TOOLS_DIR)/makefile_help_menu.txt | \
 	GREP_COLOR='1;31' grep --color=always -e " [-]*"  -e '**' | \
 	GREP_COLOR='1;34' grep --color=always -e "==" -e '**'
@@ -290,7 +281,7 @@ help: no-make-warnings
 # ==============================================================================
 
 
-application: | no-make-warnings $(LIST) $(HEX) $(BINARY) $(SIZE)
+application: | $(LIST) $(HEX) $(BINARY) $(SIZE)
 
 
 # ==============================================================================
@@ -305,7 +296,7 @@ program: application
 			-c "program \"$(EXECUTABLE)\" reset exit"
 
 
-debug: no-make-warnings
+debug:
 	@printf '$(MAGENTA)Starting firmware debug...$(RESET)\n'
 	@$(SJ2_TOOLS_DIR)/launch_openocd_gdb.sh \
 			"$(DEVICE_GDB)" \
@@ -318,11 +309,11 @@ debug: no-make-warnings
 			"$(SJ2_OPENOCD_EXE)"
 
 
-debug-test: no-make-warnings
+debug-test:
 	gdb build/tests.exe
 
 
-flash: | no-make-warnings application platform-flash
+flash: | application platform-flash
 execute: flash
 
 
@@ -331,17 +322,17 @@ execute: flash
 # ==============================================================================
 
 
-clean: no-make-warnings
+clean:
 	rm -fr $(SJ2_BUILD_DIRECTORY_NAME)
 	@mkdir -p $(SJ2_BUILD_DIRECTORY_NAME)
 
 
-library-clean: no-make-warnings
+library-clean:
 	rm -fr $(SJ2_STATIC_LIBRARY_ROOT)
 	@mkdir -p $(SJ2_STATIC_LIBRARY_ROOT)
 
 
-purge: | no-make-warnings clean library-clean
+purge: | clean library-clean
 
 
 # ==============================================================================
@@ -349,11 +340,11 @@ purge: | no-make-warnings clean library-clean
 # ==============================================================================
 
 
-clean-coverage: no-make-warnings
+clean-coverage:
 	@rm -f $(SJ2_COVERAGE_FILES) 2> /dev/null
 
 
-coverage: no-make-warnings
+coverage:
 	@printf '$(YELLOW)Generating Coverage Files $(RESET) : '
 
 	@mkdir -p "$(SJ2_COVERAGE_DIR)"
@@ -368,12 +359,12 @@ coverage: no-make-warnings
 
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
-run-test: no-make-warnings
+run-test:
 	@export ASAN_SYMBOLIZER_PATH=$(HOST_SYMBOLIZER) && \
 	 ASAN_OPTIONS="symbolize=1 color=always" $(TEST_EXECUTABLE) $(TEST_ARGUMENTS)
 
 
-test: | no-make-warnings clean-coverage $(TEST_EXECUTABLE)
+test: | clean-coverage $(TEST_EXECUTABLE)
 	+@$(MAKE) run-test --no-print-directory
 	+@$(MAKE) coverage --no-print-directory
 
