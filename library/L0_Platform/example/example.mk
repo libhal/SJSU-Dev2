@@ -6,8 +6,7 @@ LIBRARY_EXAMPLE += $(LIBRARY_DIR)/L0_Platform/example/startup.cpp
 LIBRARY_EXAMPLE += $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/ARM_CM4F/port.c
 
 # Give a path to the OPENOCD configuration file
-OPENOCD_CONFIG := $(or $(OPENOCD_CONFIG), \
-                       $(LIBRARY_DIR)/L0_Platform/example/example.cfg)
+OPENOCD_CONFIG ?= $(LIBRARY_DIR)/L0_Platform/example/example.cfg
 
 # This calls the BUILD_LIBRARY macro that generates the the example platform
 # static library.
