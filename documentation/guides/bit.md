@@ -96,7 +96,9 @@ A wishlist of features for a bit manipulation library would be the following:
     3. Bit Toggle: single bit flipped from 0 to 1 or 1 to 0.
     4. Bit Read: read single bit
     5. Value Extraction: extract multiple bits from a location in a value
-    6. Value Insert: insert multiple bits into a specific location in a value
+    6. Signed Value Extraction: extract multiple bits from a location in a value
+       and sign extend it
+    7. Value Insert: insert multiple bits into a specific location in a value
 3. All APIs must be constexpr so that these APIs can be used at compile time
 4. Expressive means to construct a value with bit masks and bit apis.
 
@@ -164,7 +166,8 @@ The bit API has the following constexpr functions:
 3. bit::Clear()
 4. bit::Toggle()
 5. bit::Extract()
-6. bit::Insert()
+6. bit::SignedExtract()
+7. bit::Insert()
 
 These APIs do as you would expect. Each takes a value as an input, along with a
 bit mask and will return a value with that change.

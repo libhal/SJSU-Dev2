@@ -33,23 +33,19 @@ TEST_CASE("Testing Bit Manipulations")
     }
     SECTION("Single Bit")
     {
-      CHECK(bit::Mask{ .position = 5, .width = 1 } ==
-            bit::MaskFromRange(5));
+      CHECK(bit::Mask{ .position = 5, .width = 1 } == bit::MaskFromRange(5));
       static_assert(bit::Mask{ .position = 5, .width = 1 } ==
                     bit::MaskFromRange(5));
 
-      CHECK(bit::Mask{ .position = 47, .width = 1 } ==
-            bit::MaskFromRange(47));
+      CHECK(bit::Mask{ .position = 47, .width = 1 } == bit::MaskFromRange(47));
       static_assert(bit::Mask{ .position = 47, .width = 1 } ==
                     bit::MaskFromRange(47));
 
-      CHECK(bit::Mask{ .position = 61, .width = 1 } ==
-            bit::MaskFromRange(61));
+      CHECK(bit::Mask{ .position = 61, .width = 1 } == bit::MaskFromRange(61));
       static_assert(bit::Mask{ .position = 61, .width = 1 } ==
                     bit::MaskFromRange(61));
 
-      CHECK(bit::Mask{ .position = 7, .width = 1 } ==
-            bit::MaskFromRange(7));
+      CHECK(bit::Mask{ .position = 7, .width = 1 } == bit::MaskFromRange(7));
       static_assert(bit::Mask{ .position = 7, .width = 1 } ==
                     bit::MaskFromRange(7));
     }
@@ -85,10 +81,7 @@ TEST_CASE("Testing Bit Manipulations")
 
     CHECK(0x00AD == bit::Extract(0xDEAD'BEEF, 16, 8));
     static_assert(0x00AD == bit::Extract(0xDEAD'BEEF, 16, 8));
-  }
 
-  SECTION("Extract")
-  {
     // Static_assert is used to make sure that the functions work at compile
     // time.
     CHECK(0b0011 == bit::Extract(0b0000'1111, 2, 4));
@@ -154,6 +147,36 @@ TEST_CASE("Testing Bit Manipulations")
           bit::Extract(kTest64bit, bit::Mask{ .position = 48, .width = 16 }));
   }
 
+  SECTION("SignedExtract")
+  {
+    CHECK(-55 == bit::SignedExtract<int16_t>(0x00'FC'90'00,
+                                             bit::MaskFromRange(12, 24)));
+    static_assert(-55 == bit::SignedExtract<int16_t>(
+                             0x00'FC'90'00, bit::MaskFromRange(12, 24)));
+
+    CHECK(-55 == bit::SignedExtract<int32_t>(0x00'FC'90'00,
+                                             bit::MaskFromRange(12, 24)));
+    static_assert(-55 == bit::SignedExtract<int32_t>(
+                             0x00'FC'90'00, bit::MaskFromRange(12, 24)));
+
+    CHECK(-1234 == bit::SignedExtract<int32_t>(0x00'FB'2E'00,
+                                               bit::MaskFromRange(8, 24)));
+    static_assert(-1234 == bit::SignedExtract<int32_t>(
+                               0x00'FB'2E'00, bit::MaskFromRange(8, 24)));
+
+    CHECK(-1234 == bit::SignedExtract<int32_t>(0x00'FB'2E'00 >> 3,
+                                               bit::MaskFromRange(8, 24) >> 3));
+    static_assert(-1234 ==
+                  bit::SignedExtract<int32_t>(0x00'FB'2E'00 >> 3,
+                                              bit::MaskFromRange(8, 24) >> 3));
+
+    CHECK(77 == bit::SignedExtract<int8_t>(0x04'D0'00'00,
+                                               bit::MaskFromRange(20, 28)));
+    static_assert(77 ==
+                  bit::SignedExtract<int8_t>(0x04'D0'00'00,
+                                              bit::MaskFromRange(20, 28)));
+  }
+
   SECTION("Insert with Mask")
   {
     CHECK(0b0110'0000 == bit::Insert(0, 0b11,
@@ -195,10 +218,10 @@ TEST_CASE("Testing Bit Manipulations")
                                          .width    = 8,
                                      }));
     static_assert(0xAB00'0000UL == bit::Insert(0UL, 0xAB,
-                                             bit::Mask{
-                                                 .position = 24,
-                                                 .width    = 8,
-                                             }));
+                                               bit::Mask{
+                                                   .position = 24,
+                                                   .width    = 8,
+                                               }));
 
     CHECK(0xDEAD'BEEF == bit::Insert(0xD00D'BEEF, 0xEA,
                                      bit::Mask{
