@@ -118,12 +118,18 @@ inline sjsu::Dac & GetInactive<sjsu::Dac>()
   class InactiveDac : public sjsu::Dac
   {
    public:
-    Status Initialize() const override
+    Returns<void> Initialize() const override
     {
-      return Status::kNotImplemented;
+      return {};
     }
-    void Write(uint32_t) const override {}
-    void SetVoltage(float) const override {}
+    Returns<void> Write(uint32_t) const override
+    {
+      return {};
+    }
+    Returns<void> SetVoltage(float) const override
+    {
+      return {};
+    }
     uint8_t GetActiveBits() const override
     {
       return 12;

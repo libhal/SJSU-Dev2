@@ -35,7 +35,6 @@ class Dac final : public sjsu::Dac
     static constexpr bit::Mask kBias = bit::MaskFromRange(16);
   };
 
-
   /// The only DAC output pin on the lpc40xx.
   static constexpr sjsu::lpc40xx::Pin kDacPin = Pin::CreatePin<0, 26>();
 
@@ -56,7 +55,7 @@ class Dac final : public sjsu::Dac
   explicit constexpr Dac(const sjsu::Pin & pin = kDacPin) : dac_pin_(pin) {}
 
   /// Initialize DAC hardware, enable dac Pin, initial Bias level set to 0.
-  Status Initialize() const override
+  Returns<void> Initialize() const override
   {
     static constexpr uint8_t kDacMode = 0b010;
     dac_pin_.SetPinFunction(kDacMode);
@@ -74,10 +73,10 @@ class Dac final : public sjsu::Dac
     // Set Update Rate to 1MHz
     SetBias(Bias::kHigh);
 
-    return Status::kSuccess;
+    return {};
   }
 
-  void Write(uint32_t dac_output) const override
+  Returns<void> Write(uint32_t dac_output) const override
   {
     // The DAC output is a 10 bit input and thus it is necessary to
     // ensure dac_output is less than 1024 (largest 10-bit number)
@@ -85,8 +84,11 @@ class Dac final : public sjsu::Dac
                      "DAC output set above 1023. Must be between 0-1023.");
     dac_register->CR =
         bit::Insert(dac_register->CR, dac_output, Control::kValue);
+
+    return {};
   }
-  void SetVoltage(float voltage) const override
+
+  Returns<void> SetVoltage(float voltage) const override
   {
     float value         = (voltage * kMaximumValue) / kVref;
     uint32_t conversion = static_cast<uint32_t>(value);
@@ -94,6 +96,8 @@ class Dac final : public sjsu::Dac
         voltage < kVref,
         "DAC output was set above 3.3V. Must be between 0V and 3.3V.");
     Write(conversion);
+
+    return {};
   }
 
   /// Sets the Bias for the Dac, which determines the settling time, max
