@@ -15,7 +15,7 @@ inline void InitializeFloatingPointUnit()
 {
   if constexpr (build::kPlatform != build::Platform::host)
   {
-    __asm(
+    __asm__ __volatile__(
         // CPACR is located at address 0xE000ED88
         "LDR.W   R0, =0xE000ED88\n"
         // Read CPACR
