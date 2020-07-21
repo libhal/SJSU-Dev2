@@ -89,7 +89,7 @@ function install_linux_prerequisites() {
   echo " ────────────────────────────────────────────────────────┐"
   echo "   Installing git, make, python3 + pip, curl, tar, g++8   "
   echo "└──────────────────────────────────────────────────────── "
-  sudo apt install -y git make curl tar tree pv g++-8 \
+  sudo apt install -y git make curl tar tree pv g++-9 \
                       python3 python3-pip python3-setuptools
   local apt_install=$?
   print_status_nl $apt_install
@@ -134,7 +134,8 @@ function install_mac_osx_prerequisites() {
   echo " ───────────────────────────────────────────────────┐"
   echo "                Brew Installing gcc                  "
   echo "└─────────────────────────────────────────────────── "
-  brew install gcc@8
+  brew install gcc@9
+  brew link --overwrite gcc@9
 
   return $(($git_status + $brew_install))
 }

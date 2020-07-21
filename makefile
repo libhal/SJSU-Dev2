@@ -101,12 +101,11 @@ SJ2_DEFAULT_SOURCES  = source/main.cpp
 
 SJ2_DEFAULT_TESTS       = # test/unit_test.cpp
 SJ2_DEFAULT_TEST_FLAGS := \
-                -g -fprofile-arcs -fPIC -fexceptions -fno-inline -fno-builtin \
-                -fprofile-generate -ftest-coverage -fbranch-probabilities \
+                -g --coverage -fPIC -fexceptions -fno-inline -fno-builtin \
                 -fno-inline-small-functions -fno-default-inline \
                 -fkeep-inline-functions -fno-elide-constructors  \
-                -fdiagnostics-color -fprofile-correction -Wall \
-                -Wno-variadic-macros -Wextra -Wshadow -Wno-main \
+                -fdiagnostics-color \
+                -Wall -Wno-variadic-macros -Wextra -Wshadow -Wno-main \
                 -Wno-missing-field-initializers \
                 -Wfloat-equal -Wundef -Wno-format-nonliteral \
                 -Wdouble-promotion -Wswitch -Wnull-dereference -Wformat=2 \
@@ -215,9 +214,9 @@ OBJCOPY     = $(DEVICE_OBJCOPY)
 NM          = $(DEVICE_NM)
 PLUGIN      = $(shell $(DEVICE_CC) --print-file-name=liblto_plugin.so)
 
-TEST_CPPC          = g++-8
-TEST_CC            = gcc-8
-CODE_COVERAGE_TOOL = gcov-8
+TEST_CPPC          = g++-9
+TEST_CC            = gcc-9
+CODE_COVERAGE_TOOL = gcov-9
 CLANG_TIDY         = $(SJCLANG)/bin/clang-tidy
 HOST_SYMBOLIZER    = $(SJCLANG)/bin/llvm-symbolizer
 

@@ -2,7 +2,7 @@
 // =============================================================================
 // Example HAL Tests
 // =============================================================================
-#include "L2_HAL/test/device_memory_map_test.cpp"  // NOLINT
+// #include "L2_HAL/test/device_memory_map_test.cpp"  // NOLINT
 #include "L2_HAL/test/example_test.cpp"            // NOLINT
 
 // =============================================================================
@@ -30,7 +30,7 @@
 // =============================================================================
 // Sensor/Optical
 // =============================================================================
-#include "L2_HAL/sensors/optical/test/apds9960_test.cpp"  // NOLINT
+// #include "L2_HAL/sensors/optical/test/apds9960_test.cpp"  // NOLINT
 
 // =============================================================================
 // Sensor/Environment

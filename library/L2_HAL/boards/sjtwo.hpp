@@ -8,7 +8,7 @@
 #include "L2_HAL/memory/sd.hpp"
 #include "L2_HAL/sensors/environment/temperature/si7060.hpp"
 #include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
-#include "L2_HAL/sensors/optical/apds9960.hpp"
+// #include "L2_HAL/sensors/optical/apds9960.hpp"
 
 #include "L3_Application/graphics.hpp"
 
@@ -79,12 +79,12 @@ struct sjtwo  // NOLINT
     return sd;
   }
 
-  /// @returns fully constructed onboard Gesture device driver
-  [[gnu::always_inline]] inline static sjsu::Apds9960 & Gesture()
-  {
-    static sjsu::Apds9960 apds9960(i2c2);
-    return apds9960;
-  }
+  // /// @returns fully constructed onboard Gesture device driver
+  // [[gnu::always_inline]] inline static sjsu::Apds9960 & Gesture()
+  // {
+  //   static sjsu::Apds9960 apds9960(i2c2);
+  //   return apds9960;
+  // }
 
   /// @returns fully constructed onboard Temperature device driver
   [[gnu::always_inline]] inline static sjsu::Si7060 & Temperature()

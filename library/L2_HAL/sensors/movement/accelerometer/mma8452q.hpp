@@ -56,15 +56,7 @@ class Mma8452q : public Accelerometer
 
   Returns<void> Initialize() override
   {
-    Status status = i2c_.Initialize();
-
-    // TODO(#1244): Migrate to using auto return macro SJ2_RETURN_VALUE_ON_ERROR
-    if (!IsOk(status))
-    {
-      return Error(Status::kBusError, "I2C Initialize Failed!");
-    }
-
-    return {};
+    return i2c_.Initialize();
   }
 
   /// Will automatically set the device to 2g for full-scale. Use
@@ -95,9 +87,9 @@ class Mma8452q : public Accelerometer
 
     uint8_t xyz_data[kBytesPerAxis * kNumberOfAxis];
 
-    i2c_.WriteThenRead(kAccelerometerAddress,
-                       { Value(RegisterMap::kXYZStartAddress) }, xyz_data,
-                       sizeof(xyz_data));
+    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(
+        kAccelerometerAddress, { Value(RegisterMap::kXYZStartAddress) },
+        xyz_data, sizeof(xyz_data)));
 
     // First X-axis Byte (MSB first)
     // =========================================================================
@@ -154,15 +146,9 @@ class Mma8452q : public Accelerometer
     }
 
     uint8_t gravity_code = static_cast<uint8_t>(gravity_scale >> 2);
-    Status status =
+    SJ2_RETURN_ON_ERROR(
         i2c_.Write(kAccelerometerAddress,
-                   { Value(RegisterMap::kDataConfig), gravity_code });
-
-    // TODO(#1244): Migrate to using auto return macro SJ2_RETURN_VALUE_ON_ERROR
-    if (!IsOk(status))
-    {
-      return Error(Status::kBusError, "I2C transaction failure");
-    }
+                   { Value(RegisterMap::kDataConfig), gravity_code }));
 
     return {};
   }
@@ -172,14 +158,8 @@ class Mma8452q : public Accelerometer
     uint8_t state = is_active;
 
     // Write enable sequence
-    Status status = i2c_.Write(kAccelerometerAddress,
-                               { Value(RegisterMap::kControlReg1), state });
-
-    // TODO(#1244): Migrate to using auto return macro SJ2_RETURN_VALUE_ON_ERROR
-    if (!IsOk(status))
-    {
-      return Error(Status::kBusError, "I2C transaction failure");
-    }
+    SJ2_RETURN_ON_ERROR(i2c_.Write(
+        kAccelerometerAddress, { Value(RegisterMap::kControlReg1), state }));
 
     return {};
   }
@@ -192,15 +172,9 @@ class Mma8452q : public Accelerometer
     uint8_t device_id = 0;
 
     // Read out the identity register
-    Status status = i2c_.WriteThenRead(kAccelerometerAddress,
-                                       { Value(RegisterMap::kWhoAmI) },
-                                       &device_id, sizeof(device_id));
-
-    // TODO(#1244): Migrate to using auto return macro SJ2_RETURN_VALUE_ON_ERROR
-    if (!IsOk(status))
-    {
-      return Error(Status::kBusError, "I2C transaction failure");
-    }
+    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(kAccelerometerAddress,
+                                           { Value(RegisterMap::kWhoAmI) },
+                                           &device_id, sizeof(device_id)));
 
     if (device_id != kExpectedDeviceID)
     {

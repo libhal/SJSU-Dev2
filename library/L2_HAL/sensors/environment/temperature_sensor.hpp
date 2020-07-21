@@ -9,18 +9,22 @@ namespace sjsu
 class TemperatureSensor
 {
  public:
-  /// Initialize and enable hardware. This must be called before any other
+  /// Initialize peripherals. This must be called before any other
   /// method in this interface is called.
   ///
-  /// @return The initialization status.
-  virtual Status Initialize() const = 0;
+  /// @return Error_t if an error occurred during initialization
+  virtual Returns<void> Initialize() const = 0;
+
+  /// Call this after Initialize to enable the sensor.
+  ///
+  /// @return Error_t if an error occurred when attempting to enable the device.
+  virtual Returns<void> Enable() const = 0;
+
   /// Retrieves the temperature reading and writes the value to the designated
   /// memory address.
   ///
-  /// @param temperature Output parameter.
-  /// @return Returns Status::kSuccess if the temperature measurement was
-  ///         successfully obtained.
-  virtual Status GetTemperature(
-      units::temperature::celsius_t * temperature) const = 0;
+  /// @return Returns units::temperature::celsius_t on success. On error, will
+  //          return Error_t.
+  virtual Returns<units::temperature::celsius_t> GetTemperature() const = 0;
 };
 }  // namespace sjsu

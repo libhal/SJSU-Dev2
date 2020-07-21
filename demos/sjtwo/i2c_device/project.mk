@@ -1,1 +1,0 @@
-PLATFORM = lpc40xx

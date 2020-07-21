@@ -206,23 +206,17 @@ class FactoryTest
     {
       printf("  Attempting I2C Address: 0x%02X\n", address);
       Si7060 temperature_sensor(i2c_, address);
-      Status status;
-      status = temperature_sensor.Initialize();
+      auto status = temperature_sensor.Initialize();
 
-      if (!IsOk(status))
+      if (!status)
       {
         continue;
       }
 
       printf("  -> Attached Sensor I2C Address: 0x%02X\n", address);
 
-      units::temperature::celsius_t current_temperature;
-      status = temperature_sensor.GetTemperature(&current_temperature);
-
-      if (!IsOk(status))
-      {
-        continue;
-      }
+      units::temperature::celsius_t current_temperature =
+          SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.GetTemperature(), false);
 
       printf("  Current Temperature: %f C\n\n",
              current_temperature.to<double>());
