@@ -6,6 +6,7 @@
 #include "L0_Platform/startup.hpp"
 #include "L0_Platform/arm_cortex/m4/core_cm4.h"
 #include "L1_Peripheral/cortex/interrupt.hpp"
+#include "L1_Peripheral/cortex/fpu.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 #include "third_party/semihost/trace.h"
@@ -75,6 +76,12 @@ extern "C"
     const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
     sjsu::cortex::__set_PSP(kTopOfStack);
     sjsu::cortex::__set_MSP(kTopOfStack);
+
+    // Enable FPU (Floating Point Unit)
+    // System will crash if floating point instruction is executed before
+    // Initializing the FPU first.
+    // Processors without FPU, like cortex M3, will ignore this and do nothing.
+    sjsu::cortex::InitializeFloatingPointUnit();
 
     sjsu::SystemInitialize();
     // Check if Debugger is connected
