@@ -2,6 +2,8 @@
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "L2_HAL/displays/oled/ssd1306.hpp"
+#include "L2_HAL/sensors/environment/temperature/si7060.hpp"
+#include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
 #include "L2_HAL/boards/sjtwo.hpp"
 #include "utility/log.hpp"
 #include "utility/status.hpp"
@@ -11,20 +13,24 @@ namespace sjsu::lpc40xx
 class FactoryTest
 {
  public:
-  static constexpr uint8_t kGestureAddress       = 0x39;
-  static constexpr uint8_t kAccelerometerAddress = 0x1C;
-  static constexpr uint8_t kTemperatureAddress   = 0x31;
+  static constexpr uint8_t kGestureAddress                    = 0x39;
+  static constexpr uint8_t kAccelerometerAddress              = 0x1C;
+  static constexpr std::array<uint8_t, 4> kTemperatureAddress = { 0x30, 0x31,
+                                                                  0x32, 0x33 };
 
-  void RunFactoryTest()
+  int RunFactoryTest()
   {
     i2c_.Initialize();
 
     OledTest();
+
     bool gesture_pass       = GestureSensorTest();
     bool accelerometer_pass = AccelerometerTest();
     bool temp_pass          = TemperatureSensorTest();
     bool flash_test         = ExternalFlashTest();
-    OnBoardLedTest(gesture_pass, accelerometer_pass, temp_pass, flash_test);
+
+    return OnBoardLedTest(gesture_pass, accelerometer_pass, temp_pass,
+                          flash_test);
   }
 
  private:
@@ -32,6 +38,53 @@ class FactoryTest
   {
     return (was_successful) ? "SUCCESS" : "FAILED";
   }
+
+  int OnBoardLedTest(bool gesture_passed,
+                     bool accel_passed,
+                     bool temp_passed,
+                     bool flash_passed)
+  {
+    // Turn on all LEDs if all tests pass else none.
+    // LED Test
+    sjtwo::led0.SetAsOutput();
+    sjtwo::led1.SetAsOutput();
+    sjtwo::led2.SetAsOutput();
+    sjtwo::led3.SetAsOutput();
+
+    sjtwo::led0.SetHigh();
+    sjtwo::led1.SetHigh();
+    sjtwo::led2.SetHigh();
+    sjtwo::led3.SetHigh();
+
+    if (gesture_passed)
+    {
+      sjtwo::led0.SetLow();
+    }
+    if (accel_passed)
+    {
+      sjtwo::led1.SetLow();
+    }
+    if (temp_passed)
+    {
+      sjtwo::led2.SetLow();
+    }
+    if (flash_passed)
+    {
+      sjtwo::led3.SetLow();
+    }
+
+    printf("\n=========== TEST RESULTS ===========\n\n");
+    printf("Gesture:       '%s'\n", BoolToSuccess(gesture_passed));
+    printf("Accelerometer: '%s'\n", BoolToSuccess(accel_passed));
+    printf("Temperature:   '%s'\n", BoolToSuccess(temp_passed));
+    printf("Flash:         '%s'\n", BoolToSuccess(flash_passed));
+
+    // Sum together all of the tests that FAILED by inverting them with !. This
+    // way, we get zero is they all passed and a negative value for the number
+    // of tests that failed.
+    return -(!gesture_passed + !accel_passed + !temp_passed + !flash_passed);
+  }
+
   void OledTest()
   {
     sjsu::lpc40xx::Spi ssp1(sjsu::lpc40xx::Spi::Bus::kSpi1);
@@ -87,92 +140,60 @@ class FactoryTest
     uint8_t array[5];
     cs.SetLow();
     sjsu::Delay(1ms);
+
     // Read Manufacturer ID
     spi2.Transfer(0x9F);
+
+    // Read back flash memory ID information
     array[0] = static_cast<uint8_t>(spi2.Transfer(0x00));
     array[1] = static_cast<uint8_t>(spi2.Transfer(0x00));
     array[2] = static_cast<uint8_t>(spi2.Transfer(0x00));
     array[3] = static_cast<uint8_t>(spi2.Transfer(0x00));
-    sjsu::LogInfo("Returned 0x%02X 0x%02X 0x%02X 0x%02X", array[0], array[1],
-                  array[2], array[3]);
+    printf("Returned 0x%02X 0x%02X 0x%02X 0x%02X\n\n", array[0], array[1],
+           array[2], array[3]);
+
     cs.SetHigh();
     sjsu::Delay(1ms);
+
     printf("End of External Flash Test.\n\n");
-    if ((array[0] == 0x1F) && (array[1] == 0x40) && (array[2] == 0x00) &&
-        (array[3] == 0x00))
+
+    if ((array[0] == 0x1F) && (array[1] != 0xFF) && (array[2] != 0xFF) &&
+        (array[3] != 0xFF))
     {
       result = true;
     }
     return result;
   }
 
-  void OnBoardLedTest(bool gesture_test,
-                      bool accelerometer_test,
-                      bool temp_test,
-                      bool flash_test)
-  {
-    // Turn on all LEDs if all tests pass else none.
-    // LED Test
-    sjtwo::led0.SetAsOutput();
-    sjtwo::led1.SetAsOutput();
-    sjtwo::led2.SetAsOutput();
-    sjtwo::led3.SetAsOutput();
-
-    sjtwo::led0.SetHigh();
-    sjtwo::led1.SetHigh();
-    sjtwo::led2.SetHigh();
-    sjtwo::led3.SetHigh();
-
-    if (gesture_test)
-    {
-      sjtwo::led0.SetLow();
-    }
-    if (accelerometer_test)
-    {
-      sjtwo::led1.SetLow();
-    }
-    if (temp_test)
-    {
-      sjtwo::led2.SetLow();
-    }
-    if (flash_test)
-    {
-      sjtwo::led3.SetLow();
-    }
-
-    printf("\n=========== TEST RESULTS ===========\n\n");
-    printf("I2C: { \n");
-    printf("  Gesture: '%s', \n", BoolToSuccess(gesture_test));
-    printf("  Accelerometer: '%s',\n", BoolToSuccess(accelerometer_test));
-    printf("  Temperature: '%s',\n", BoolToSuccess(temp_test));
-    printf("}\n");
-    printf("Flash: '%s'\n\n", BoolToSuccess(flash_test));
-  }
-
+  // TODO(#1314): Use refactored apds9960.hpp library for this test
   bool GestureSensorTest()
   {
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting Gesture Sensor Test...\n\n");
-    constexpr uint8_t kApds9960IdRegisterAddress = 0x92;
-    bool result                                  = false;
+    constexpr uint8_t kIdAddress = 0x92;
 
-    result = CheckDeviceId(kGestureAddress, kApds9960IdRegisterAddress, 0xA8);
+    bool result1 = CheckDeviceId(kGestureAddress, kIdAddress, 0xA8);
+    bool result2 = CheckDeviceId(kGestureAddress, kIdAddress, 0xAB);
+
     printf("End of Gesture Sensor Test...\n\n");
 
-    return result;
+    return result1 || result2;
   }
 
   bool AccelerometerTest()
   {
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting Accelerometer Test...\n\n");
-    constexpr uint8_t kMMAIdRegisterAddress = 0x0D;
-    bool result                             = false;
+    Mma8452q accelerometer(i2c_);
 
-    result = CheckDeviceId(kAccelerometerAddress, kMMAIdRegisterAddress, 0x2A);
+    // Verify that initialization of peripherals works
+    SJ2_RETURN_VALUE_ON_ERROR(accelerometer.Initialize(), false);
+    // Will check the ID and valid state of the device.
+    SJ2_RETURN_VALUE_ON_ERROR(accelerometer.Enable(), false);
+
     printf("End of Accelerometer Test...\n\n");
 
-    return result;
+    return true;
   }
 
   bool TemperatureSensorTest()
@@ -180,18 +201,40 @@ class FactoryTest
     // ID should be 0x01 [7:4]
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting Temperature Test...\n\n");
-    constexpr uint8_t kTemperatureIdAddress = 0xC0;
-    bool id_test_result                     = false;
 
-    id_test_result =
-        CheckDeviceId(kTemperatureAddress, kTemperatureIdAddress, 0x14);
+    for (auto address : kTemperatureAddress)
+    {
+      printf("  Attempting I2C Address: 0x%02X\n", address);
+      Si7060 temperature_sensor(i2c_, address);
+      Status status;
+      status = temperature_sensor.Initialize();
 
-    int actual_temp       = CalculateTemperature(i2c_);
-    bool temp_test_result = (-40 < actual_temp && actual_temp < 125);
-    printf("  Temperature is: %d\n\n", actual_temp);
-    printf("End of temperature test...\n\n");
+      if (!IsOk(status))
+      {
+        continue;
+      }
 
-    return (id_test_result && temp_test_result);
+      printf("  -> Attached Sensor I2C Address: 0x%02X\n", address);
+
+      units::temperature::celsius_t current_temperature;
+      status = temperature_sensor.GetTemperature(&current_temperature);
+
+      if (!IsOk(status))
+      {
+        continue;
+      }
+
+      printf("  Current Temperature: %f C\n\n",
+             current_temperature.to<double>());
+      printf("End of temperature test...\n\n");
+
+      if (-40_degC < current_temperature && current_temperature < 125_degC)
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   bool CheckDeviceId(uint8_t device_address,
@@ -204,32 +247,6 @@ class FactoryTest
     return (device_id == expected_id);
   }
 
-  int CalculateTemperature(I2c & temperature_i2c)
-  {
-    // Enables one burst mode (on-demand) temperature sampling
-    // by setting control register 0xC4 oneburst bit 3 to 1
-    // and stop bit 2 to 0. Stop bit is set to 1 upon successful
-    // measurement.
-    temperature_i2c.Write(kTemperatureAddress, { 0xC4, 0x04 });
-
-    // Enable the auto increment of the i2c register address pointer
-    // by setting control register 0xC5 to autoinc bit to 1
-    temperature_i2c.Write(kTemperatureAddress, { 0xC5, 0x01 });
-    // MSB, LSB for temperature data
-    uint8_t temperature_ms = 0xC1;
-    uint8_t temperature_ls = 0xC2;
-    int temperature_data   = 0;
-    temperature_i2c.WriteThenRead(kTemperatureAddress, &temperature_ms, 1,
-                                  &temperature_ms, 1);
-    temperature_i2c.Read(kTemperatureAddress, &temperature_ls, 1);
-
-    temperature_data = ((temperature_ms & 0x7F) << 8) | temperature_ls;
-    printf("  Temperature Data: 0x%02X, 0x%02X, 0x%04X\n\n", temperature_ms,
-           temperature_ls, temperature_data);
-    // Compute the actual temperature in Celsius
-    return (55 + ((temperature_data - 16384) / 160));
-  }
-
  private:
   I2c i2c_ = I2c(I2c::Bus::kI2c2);
 };
@@ -238,6 +255,5 @@ class FactoryTest
 int main()
 {
   sjsu::lpc40xx::FactoryTest ft;
-  ft.RunFactoryTest();
-  return 0;
+  return ft.RunFactoryTest();
 }
