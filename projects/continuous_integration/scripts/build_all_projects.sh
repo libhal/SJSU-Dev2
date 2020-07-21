@@ -3,10 +3,10 @@
 BUILD_CAPTURE=0
 
 # Get base path
-SJBASE=$(dirname "$0")
-SJBASE=$(cd "$SJBASE/.." ; pwd -P)
+COMMON_SCRIPT_DIRECTORY=$(dirname "$0")
+SJBASE=$(cd "${COMMON_SCRIPT_DIRECTORY}/../../../" ; pwd -P)
 
-. $SJBASE/tools/common.sh
+. ${COMMON_SCRIPT_DIRECTORY}/common.sh
 
 ####################################
 #    All Projects Build Check      #

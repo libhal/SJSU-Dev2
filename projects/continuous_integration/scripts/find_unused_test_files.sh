@@ -1,16 +1,19 @@
 #!/bin/bash
 
-# Get base path
-SJBASE=$(dirname "$0")
-SJBASE=$(
-  cd "$SJBASE/.."
-  pwd -P
-)
-
 # Import SJSU-Dev2 common shell script functions
-. $SJBASE/tools/common.sh
+# Get base path
+COMMON_SCRIPT_DIRECTORY=$(dirname "$0")
+SJBASE=$(cd "${COMMON_SCRIPT_DIRECTORY}/../../../" ; pwd -P)
+
+. ${COMMON_SCRIPT_DIRECTORY}/common.sh
 
 missing_test_totals=0
+
+unity_file_list=$(find ${SJBASE}/library/ -name "unity_test.cpp")
+combined_tests=$(cat ${unity_file_list})
+listed_tests=$(echo "${combined_tests}" | grep -oP "#include \K\"(.*)\"" | sort)
+
+all_test_files=$(find ${SJBASE}/library/ -name "*.hpp" -o -name "*.cpp")
 
 for unused_test_file in "$@"; do
   echo -e "${RED}Missing from library test suite:${RESET} ${unused_test_file}"

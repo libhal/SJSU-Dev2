@@ -31,33 +31,36 @@ $(SJ2_OBJECT_DIR)/%.tidy: %
 	@mkdir -p "$(dir $@)"
 	@$(CLANG_TIDY) -extra-arg="-std=c++2a" "$<"  -- \
 	  -D PLATFORM=host -D HOST_TEST=1 \
-		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
+		$(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@printf '$(GREEN)Evaluated file: $(RESET)$< \n'
 
 
 spellcheck:
-	@$(SJ2_TOOLS_DIR)/spell_checker.sh $(LINT_FILES)
+	@./scripts/spell_checker.sh $(LINT_FILES)
 
 
 all-projects:
-	+@$(SJ2_TOOLS_DIR)/build_all_projects.sh
+	+@./scripts/build_all_projects.sh
 
 
 presubmit:
-	+@$(SJ2_TOOLS_DIR)/presubmit.sh
+	+@./scripts/presubmit.sh
 
 
 quick-presubmit:
-	+@$(SJ2_TOOLS_DIR)/presubmit.sh quick
+	+@./scripts/presubmit.sh quick
 
 
-FILES_WITH_TESTS=$(filter-out $(NO_TEST_NEEDED), $(LINT_FILES))
 find-missing-tests:
-	@$(SJ2_TOOLS_DIR)/find_sources_without_tests.sh $(FILES_WITH_TESTS)
+	@./scripts/find_sources_without_tests.sh $(LINT_FILES)
 
 
 # FIND_ALL_TEST_FILES = $(shell find $(LIBRARY_DIR) -name "*_test.cpp")
 # UNUSED_TEST_FILES = $(filter-out $(TESTS), $(FIND_ALL_TEST_FILES))
 find-unused-tests:
-	@$(SJ2_TOOLS_DIR)/find_unused_test_files.sh $(UNUSED_TEST_FILES)
+	@./scripts/find_unused_test_files.sh $(UNUSED_TEST_FILES)
+
+
+doxygen:
+	+@./scripts/generate_doxygen_docs.sh
 
