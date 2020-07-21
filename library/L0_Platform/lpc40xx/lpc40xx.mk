@@ -13,6 +13,6 @@ platform-flash:
 	@bash -c "\
 	source $(SJ2_TOOLS_DIR)/nxpprog/modules/bin/activate && \
 	python3 $(SJ2_TOOLS_DIR)/nxpprog/nxpprog.py \
-	--binary=\"$(BINARY)\" --device=\"$(SJDEV)\" \
+	--binary=\"$(BINARY)\" --device=\"$(PORT)\" \
 	--osfreq=12000000 --baud=115200 --control"
 	@echo

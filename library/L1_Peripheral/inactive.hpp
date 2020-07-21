@@ -173,13 +173,13 @@ inline sjsu::I2c & GetInactive<sjsu::I2c>()
   class InactiveI2c : public sjsu::I2c
   {
    public:
-    Status Initialize() const override
+    Returns<void> Initialize() const override
     {
-      return Status::kNotImplemented;
+      return {};
     }
-    Status Transaction(Transaction_t) const override
+    Returns<void> Transaction(Transaction_t) const override
     {
-      return Status::kNotImplemented;
+      return {};
     }
   };
 

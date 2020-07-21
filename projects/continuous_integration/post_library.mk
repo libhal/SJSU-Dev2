@@ -22,7 +22,7 @@ tidy: $(TIDY_FILES)
 
 TIDY_COMMIT_SOURCES := $(shell git show --name-only HEAD | grep ".[hc]pp")
 SHORT_TIDY_FILES    := $(addprefix $(SJ2_OBJECT_DIR)/, \
-                                   $(TIDY_COMMIT_SOURCES\:=.tidy))
+                                   $(TIDY_COMMIT_SOURCES:=.tidy))
 commit-tidy: $(SHORT_TIDY_FILES)
 	@printf '$(GREEN)Commit Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 

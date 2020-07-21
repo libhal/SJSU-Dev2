@@ -15,18 +15,27 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
   {
     SECTION("Initialization success")
     {
-      constexpr Status kExpectedStatus = Status::kSuccess;
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedStatus);
-      CHECK(temperature_sensor.Initialize() == kExpectedStatus);
+      // Setup
+      When(Method(mock_i2c, Initialize)).AlwaysReturn({});
+
+      // Exercise
+      auto success = temperature_sensor.Initialize();
+
+      // Verify
+      CHECK(success);
       Verify(Method(mock_i2c, Initialize)).Once();
     }
     SECTION("Initialization failure")
     {
-      mock_i2c.Reset();
-
+      // Setup
       constexpr Status kExpectedStatus = Status::kBusError;
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedStatus);
-      CHECK(temperature_sensor.Initialize() == kExpectedStatus);
+      When(Method(mock_i2c, Initialize)).AlwaysReturn(Error(kExpectedStatus));
+
+      // Exercise
+      auto success = temperature_sensor.Initialize();
+
+      // Verify
+      CHECK(!success);
       Verify(Method(mock_i2c, Initialize)).Once();
     }
   }
@@ -86,13 +95,15 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
     // receive buffer when temperature data is expected to be received.
     When(Method(mock_i2c, Transaction))
         .AlwaysDo([&transactions, &data_out, &kExpectedTemperatureData](
-                      I2c::Transaction_t transaction) -> Status {
+                      I2c::Transaction_t transaction) -> Returns<void> {
           static uint8_t transaction_id = 0;
           transactions[transaction_id]  = transaction;
+
           for (size_t i = 0; i < transaction.out_length; i++)
           {
             data_out[transaction_id][i] = transaction.data_out[i];
           }
+
           // Inject temperature data to second transaction which is the
           // transaction to fetch temperature data.
           if (transaction_id == 1)
@@ -100,12 +111,13 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
             transaction.data_in[0] = kExpectedTemperatureData[0];
             transaction.data_in[1] = kExpectedTemperatureData[1];
           }
+
           transaction_id++;
-          return Status::kSuccess;
+          return {};
         });
 
-    units::temperature::celsius_t temperature;
-    temperature_sensor.GetTemperature(&temperature);
+    auto temperature = temperature_sensor.GetTemperature();
+
     // Verify the configuration and data in the two transactions.
     Verify(Method(mock_i2c, Transaction)).Exactly(kExpectedTransactions.size());
     for (size_t i = 0; i < kExpectedTransactions.size(); i++)
@@ -124,7 +136,8 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
         CHECK(data_out[i][j] == kExpectedTransactions[i].data_out[j]);
       }
     }
-    CHECK(temperature.to<float>() ==
+    REQUIRE(temperature);
+    CHECK(temperature.value().to<float>() ==
           doctest::Approx(kExpectedTemperature).epsilon(kMarginOfError));
   }
 }
