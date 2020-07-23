@@ -46,7 +46,7 @@ struct DecodedFrame_t
 
 /// Helper function to check if a duration is within an acceptable tolerance.
 ///
-/// @param duration The duration value to check.
+/// @param duration The duration, in microseconds, to check.
 /// @param expected_duration The expected duration to check against.
 /// @param tolerance The acceptable tolerance percentage.
 /// @return True if the specified duration is within tolerance of the expected
