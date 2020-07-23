@@ -3,9 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 #include "utility/macros.hpp"
-// ========================
-// Memory Map information
-// ========================
+
 // .data Section Table Information
 SJ2_PACKED(struct)
 DataSectionTable_t
@@ -14,8 +12,10 @@ DataSectionTable_t
   uint32_t * ram_location;
   uint32_t length;
 };
+
 extern DataSectionTable_t data_section_table[];
 extern DataSectionTable_t data_section_table_end;
+
 // .bss Section Table Information
 SJ2_PACKED(struct)
 BssSectionTable_t
@@ -23,6 +23,7 @@ BssSectionTable_t
   uint32_t * ram_location;
   uint32_t length;
 };
+
 extern BssSectionTable_t bss_section_table[];
 extern BssSectionTable_t bss_section_table_end;
 
