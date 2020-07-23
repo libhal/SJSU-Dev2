@@ -1,6 +1,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 
 #include <unistd.h>
+
+#include "L0_Platform/ram.hpp"
 #include "newlib/newlib.hpp"
 #include "testing_frameworks.hpp"
 
@@ -8,7 +10,10 @@ DEFINE_FFF_GLOBALS
 
 #include "utility/rtos.hpp"
 
-#if defined(HOST_TEST)
+// =============================================================================
+// Fake FreeRTOS Functions
+// =============================================================================
+
 DEFINE_FAKE_VOID_FUNC(vTaskStartScheduler);
 DEFINE_FAKE_VOID_FUNC(vTaskSuspend, TaskHandle_t);
 DEFINE_FAKE_VOID_FUNC(vTaskResume, TaskHandle_t);
@@ -75,12 +80,66 @@ DEFINE_FAKE_VALUE_FUNC(BaseType_t,
                        TickType_t);
 DEFINE_FAKE_VALUE_FUNC(void *, pvTimerGetTimerID, TimerHandle_t);
 DEFINE_FAKE_VOID_FUNC(vTimerSetTimerID, TimerHandle_t, void *);
-#endif  // defined(HOST_TEST)
+
+// =============================================================================
+// Define Empty InitializePlatform()
+// =============================================================================
 
 namespace sjsu
 {
 void InitializePlatform() {}
 }  // namespace sjsu
+
+// =============================================================================
+// Ram definitions for testing
+// =============================================================================
+
+namespace
+{
+struct DataSection_t
+{
+  int32_t a;
+  uint8_t b;
+  double d;
+  uint16_t s;
+};
+
+DataSection_t rom = {
+  .a = 15,
+  .b = 'C',
+  .d = 5.0,
+  .s = 12'346U,
+};
+
+DataSection_t ram;
+
+std::array<uint32_t, 128> bss_section;
+}  // namespace
+
+DataSectionTable_t data_section_table[] = {
+  DataSectionTable_t{
+      .rom_location = reinterpret_cast<uint32_t *>(&rom),
+      .ram_location = reinterpret_cast<uint32_t *>(&ram),
+      .length       = sizeof(rom),
+  },
+};
+
+// NOTE: Not used, but must be defined
+DataSectionTable_t data_section_table_end;
+
+BssSectionTable_t bss_section_table[] = {
+  BssSectionTable_t{
+      .ram_location = bss_section.data(),
+      .length       = bss_section.size(),
+  },
+};
+
+// NOTE: Not used, but must be defined
+BssSectionTable_t bss_section_table_end;
+
+// =============================================================================
+// Setup write() and read()
+// =============================================================================
 
 int HostWrite(const char * payload, size_t length)
 {
