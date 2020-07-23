@@ -9,7 +9,6 @@
 #include "L0_Platform/startup.hpp"
 #include "L0_Platform/msp432p401r/msp432p401r.h"
 #include "L1_Peripheral/cortex/dwt_counter.hpp"
-#include "L1_Peripheral/cortex/fpu.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/msp432p401r/system_controller.hpp"
@@ -156,11 +155,6 @@ namespace sjsu
 SJ2_WEAK(void InitializePlatform());
 void InitializePlatform()
 {
-  // Enable FPU (Floating Point Unit)
-  // System will crash if floating point instruction is executed before
-  // Initializing the FPU first.
-  sjsu::cortex::InitializeFloatingPointUnit();
-
   sjsu::newlib::SetStdout(Msp432p401rStdOut);
   sjsu::newlib::SetStdin(Msp432p401rStdIn);
 

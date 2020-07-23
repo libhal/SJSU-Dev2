@@ -167,10 +167,6 @@ namespace sjsu
 SJ2_WEAK(void InitializePlatform());
 void InitializePlatform()
 {
-  // Enable FPU (Floating Point Unit)
-  // System will crash if floating point instruction is executed before
-  // Initializing the FPU first.
-  sjsu::cortex::InitializeFloatingPointUnit();
   // Set the platform's interrupt controller.
   // This will be used by other libraries to enable and disable interrupts.
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
