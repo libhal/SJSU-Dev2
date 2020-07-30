@@ -33,14 +33,16 @@ TEST_CASE("Testing lpc40xx Dac")
     // Source: "UM10562 LPC408x/407x User manual" table 686 page 814
     constexpr uint8_t kDacMode  = 0b010;
     // Mocked out Initialize for the Verify Methods
-    test_subject.Initialize();
+    auto result = test_subject.Initialize();
     // Check Pin Mode DAC_OUT
     Verify(Method(mock_dac_pin, SetPinFunction).Using(kDacMode),
            Method(mock_dac_pin, SetAsAnalogMode).Using(true),
            Method(mock_dac_pin, SetPull).Using(sjsu::Pin::Resistor::kNone));
 
     CHECK(0 == bit::Read(local_dac_port.CR, Dac::Control::kBias));
+    CHECK(result);
   }
+
   SECTION("Write Dac")
   {
     // Test the Write function by checking if the CR
@@ -48,11 +50,14 @@ TEST_CASE("Testing lpc40xx Dac")
     // function has its value input.
     constexpr uint8_t kDacWrite0 = 10;
     constexpr uint8_t kDacWrite1 = 100;
-    test_subject.Write(10);
+    auto result = test_subject.Write(10);
     CHECK(kDacWrite0 == bit::Extract(local_dac_port.CR, Dac::Control::kValue));
-    test_subject.Write(100);
+    CHECK(result);
+    result = test_subject.Write(100);
     CHECK(kDacWrite1 == bit::Extract(local_dac_port.CR, Dac::Control::kValue));
+    CHECK(result);
   }
+
   SECTION("SetVoltage")
   {
     // Setup
@@ -61,11 +66,13 @@ TEST_CASE("Testing lpc40xx Dac")
     constexpr float kDacVoltage0   = (kVoltageInput0 * 1024.0f) / 3.3f;
     constexpr int kConversion0     = static_cast<int>(kDacVoltage0);
     // Exercise
-    test_subject.SetVoltage(kVoltageInput0);
+    auto result = test_subject.SetVoltage(kVoltageInput0);
     // Verify
     CHECK(kConversion0 ==
           bit::Extract(local_dac_port.CR, Dac::Control::kValue));
+    CHECK(result);
   }
+
   SECTION("SetBias(High)")
   {
     // Exercise
@@ -73,6 +80,7 @@ TEST_CASE("Testing lpc40xx Dac")
     // Verify
     CHECK(!bit::Read(local_dac_port.CR, Dac::Control::kBias));
   }
+
   SECTION("SetBias(Low)")
   {
     // Exercise

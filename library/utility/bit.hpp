@@ -68,7 +68,7 @@ struct Mask  // NOLINT
 ///         If the low_bit_position > high_bit_position, the result is
 ///         undefined.
 constexpr Mask MaskFromRange(uint32_t low_bit_position,
-                                   uint32_t high_bit_position)
+                             uint32_t high_bit_position)
 {
   return Mask({
       .position = low_bit_position,
@@ -130,6 +130,33 @@ template <typename T>
 [[nodiscard]] constexpr T Extract(T target, Mask bitmask)
 {
   return Extract(target, bitmask.position, bitmask.width);
+}
+
+/// Extract value and sign extend it.
+///
+/// @tparam T - return type container.
+/// @tparam U - type of the input target value.
+/// @param target - Value to extract the signed data from.
+/// @param bitmask - The location of the signed data to extract from the target.
+/// @return constexpr T - extracted and sign extended value.
+template <typename T, typename U>
+[[nodiscard]] constexpr T SignedExtract(U target, Mask bitmask)
+{
+  // Check the types at compile time
+  static_assert(std::numeric_limits<U>::is_integer,
+                "Extract only accepts intergers.");
+  static_assert(std::numeric_limits<T>::is_integer,
+                "Extract only accepts intergers.");
+  static_assert(std::is_signed_v<T>, "Return value must be a signed.");
+
+  constexpr size_t kBits    = sizeof(T) * 8;
+  const size_t kShiftAmount = (kBits - bitmask.width) + 1;
+
+  T value = static_cast<T>(Extract(target, bitmask));
+  value <<= kShiftAmount;
+  value = value >> kShiftAmount;
+
+  return value;
 }
 
 /// Insert a set of contiguous bits into a target value.

@@ -103,6 +103,9 @@ Functions</h2></td></tr>
 <tr class="memitem:abc8c0825b298b93d06922e5e0cc44556"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:abc8c0825b298b93d06922e5e0cc44556"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../de/df8/namespacesjsu_1_1bit.html#abc8c0825b298b93d06922e5e0cc44556">Extract</a> (T target, <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">Mask</a> bitmask)</td></tr>
 <tr class="separator:abc8c0825b298b93d06922e5e0cc44556"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af86925ca37317f129ecae64b30686839"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
+<tr class="memitem:af86925ca37317f129ecae64b30686839"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../de/df8/namespacesjsu_1_1bit.html#af86925ca37317f129ecae64b30686839">SignedExtract</a> (U target, <a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">Mask</a> bitmask)</td></tr>
+<tr class="separator:af86925ca37317f129ecae64b30686839"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d4736f9dd210ccb60d85ea83806d302"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U &gt; </td></tr>
 <tr class="memitem:a8d4736f9dd210ccb60d85ea83806d302"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../de/df8/namespacesjsu_1_1bit.html#a8d4736f9dd210ccb60d85ea83806d302">Insert</a> (T target, U value, uint32_t position, uint32_t width=1)</td></tr>
 <tr class="separator:a8d4736f9dd210ccb60d85ea83806d302"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -599,6 +602,52 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>a value that is the target value with the bit set to a 1 at the bit position within the bitmask. For example if your bitmask has field position set to 5, then this function will return the target value with the 5th bits set to a 1. </dd></dl>
+
+</div>
+</div>
+<a id="af86925ca37317f129ecae64b30686839"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af86925ca37317f129ecae64b30686839">&#9670;&nbsp;</a></span>SignedExtract()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename U &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T sjsu::bit::SignedExtract </td>
+          <td>(</td>
+          <td class="paramtype">U&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d9/dd3/structsjsu_1_1bit_1_1Mask.html">Mask</a>&#160;</td>
+          <td class="paramname"><em>bitmask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Extract value and sign extend it.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- return type container. </td></tr>
+    <tr><td class="paramname">U</td><td>- type of the input target value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>- <a class="el" href="../../df/d21/classsjsu_1_1bit_1_1Value.html">Value</a> to extract the signed data from. </td></tr>
+    <tr><td class="paramname">bitmask</td><td>- The location of the signed data to extract from the target. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr T - extracted and sign extended value. </dd></dl>
 
 </div>
 </div>
