@@ -1,12 +1,12 @@
 #pragma once
 
 #include <cstdint>
+#include <limits>
 
 #include "L1_Peripheral/i2c.hpp"
 #include "L2_HAL/sensors/movement/accelerometer.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
-#include "utility/math/limits.hpp"
 #include "utility/map.hpp"
 
 namespace sjsu
