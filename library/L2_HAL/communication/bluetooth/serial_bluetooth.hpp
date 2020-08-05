@@ -16,6 +16,9 @@ class SerialBluetooth
   ///          device.
   virtual bool GetState() const = 0;
 
+  virtual void Connect(const char * device_id,
+                               std::chrono::nanoseconds timeout) const = 0;
+
   /// Disconnect from the current connection.
   virtual void Disconnect() const = 0;
 
