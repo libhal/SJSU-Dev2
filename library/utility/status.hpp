@@ -152,6 +152,10 @@ struct Status : public Status_t  // NOLINT
   /// This is different from kNotImplemented, where there is no plan to ever
   /// implement a particular feature.
   static constexpr auto kUnfinished = CreateStatus(-8, "Unfinished");
+
+  /// If there was some sort of access of memory or information outside of its
+  /// typical boundary.
+  static constexpr auto kOutOfBounds = CreateStatus(-9, "Out Of Bounds");
 };
 
 /// Operator == definitions between Status_t and Status objects.
@@ -214,7 +218,7 @@ struct Error_t
   ///                         the error occurred.
   /// @param source_location - the location in the source code where the Error_t
   ///                          was created.
-  constexpr Error_t(Status error_status,
+  constexpr Error_t(Status error_status            = Status::kSuccess,
                     std::string_view error_message = kEmptyMessage,
                     const std::experimental::source_location & source_location =
                         std::experimental::source_location::current())
@@ -228,13 +232,16 @@ struct Error_t
     {
       if (!std::is_constant_evaluated())
       {
-        Print();
-        if constexpr (config::kIncludeBacktrace)
+        if (error_status != Status::kSuccess)
         {
-          printf(SJ2_HI_BOLD_WHITE "Backtrace:" SJ2_COLOR_RESET);
-          int depth = 0;
-          _Unwind_Backtrace(&debug::PrintAddressInRow, &depth);
-          puts("");
+          Print();
+          if constexpr (config::kIncludeBacktrace)
+          {
+            printf(SJ2_HI_BOLD_WHITE "Backtrace:" SJ2_COLOR_RESET);
+            int depth = 0;
+            _Unwind_Backtrace(&debug::PrintAddressInRow, &depth);
+            puts("");
+          }
         }
       }
     }
@@ -255,8 +262,15 @@ struct Error_t
     return status == other.status;
   }
 
+  /// @return true if the Error_t is an error. Meaning that the status it
+  /// contains is anything other than Status::kSuccess.
+  constexpr operator bool() const
+  {
+    return status != Status::kSuccess;
+  }
+
   /// The status associated with this error
-  Status status;
+  Status_t status;
   /// Custom message describing the error
   std::string_view message = kEmptyMessage;
   /// Location of where the error occurred.
@@ -291,6 +305,15 @@ constexpr tl::unexpected<Error_t> Error(
         std::experimental::source_location::current())
 {
   return tl::unexpected(Error_t{ status, message, location });
+}
+
+/// Short hand for writing `tl::unexpected(error);` when returning a bare
+/// Error_t type.
+///
+/// @param error - the error type to return.
+constexpr tl::unexpected<Error_t> Error(Error_t && error)
+{
+  return tl::unexpected(error);
 }
 
 /// Alias for the more complex tl::expected definitions. Using

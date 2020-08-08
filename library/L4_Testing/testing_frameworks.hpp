@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cinttypes>
+#include <span>
 
 #include "third_party/doctest/doctest/doctest.h"
 // Quick and dirty way to have sub sections from Catch2 translate to SUBCASE in
@@ -37,6 +38,155 @@ int HostRead(char * payload, size_t length);
   }                                                          \
   auto __full_##class_name = __LetsGo_##class_name(nullptr); \
   }  // namespace
+
+
+
+template <typename T>
+struct Reflection
+{
+  static constexpr const char * name()
+  {
+    return "?";
+  }
+};
+
+template <>
+struct Reflection<uint8_t>
+{
+  static constexpr const char * name()
+  {
+    return "uint8_t";
+  }
+};
+
+template <>
+struct Reflection<const uint8_t>
+{
+  static constexpr const char * name()
+  {
+    return "const uint8_t";
+  }
+};
+
+template <>
+struct Reflection<uint16_t>
+{
+  static constexpr const char * name()
+  {
+    return "uint16_t";
+  }
+};
+
+template <>
+struct Reflection<uint32_t>
+{
+  static constexpr const char * name()
+  {
+    return "uint32_t";
+  }
+};
+
+template <>
+struct Reflection<uint64_t>
+{
+  static constexpr const char * name()
+  {
+    return "uint64_t";
+  }
+};
+
+template <>
+struct Reflection<int8_t>
+{
+  static constexpr const char * name()
+  {
+    return "int8_t";
+  }
+};
+
+template <>
+struct Reflection<int16_t>
+{
+  static constexpr const char * name()
+  {
+    return "int16_t";
+  }
+};
+
+template <>
+struct Reflection<int32_t>
+{
+  static constexpr const char * name()
+  {
+    return "int32_t";
+  }
+};
+
+template <>
+struct Reflection<int64_t>
+{
+  static constexpr const char * name()
+  {
+    return "int64_t";
+  }
+};
+
+namespace doctest
+{
+template <typename T, size_t N>
+struct StringMaker<std::array<T, N>>
+{
+  static String convert(const std::array<T, N> & array)
+  {
+    std::string str;
+
+    str += "std::array<";
+    str += Reflection<T>::name();
+    str += ", ";
+    str += std::to_string(N);
+    str += ">{";
+
+    size_t i = 0;
+    for (i = 0; i < N - 1; i++)
+    {
+      str += std::to_string(array[i]) + ", ";
+    }
+
+    str += std::to_string(array[i]);
+
+    str += " }";
+
+    return str.c_str();
+  }
+};
+
+template <typename T>
+struct StringMaker<std::span<T>>
+{
+  static String convert(const std::span<T> & span)
+  {
+    std::string str;
+
+    str += "std::span<";
+    str += Reflection<T>::name();
+    str += ", ";
+    str += std::to_string(span.size());
+    str += ">{ ";
+
+    size_t i = 0;
+    for (i = 0; i < span.size() - 1; i++)
+    {
+      str += std::to_string(span[i]) + ", ";
+    }
+
+    str += std::to_string(span[i]);
+
+    str += " }";
+
+    return str.c_str();
+  }
+};
+}  // namespace doctest
 
 namespace sjsu::testing
 {

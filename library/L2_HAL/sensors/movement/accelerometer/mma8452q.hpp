@@ -4,6 +4,7 @@
 
 #include "L1_Peripheral/i2c.hpp"
 #include "L2_HAL/sensors/movement/accelerometer.hpp"
+#include "L2_HAL/device_memory_map.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
 #include "utility/math/limits.hpp"
@@ -15,27 +16,41 @@ namespace sjsu
 class Mma8452q : public Accelerometer
 {
  public:
-  /// Map of all of the used device addresses in this driver.
-  enum class RegisterMap : uint8_t
-  {
-    /// Device status register address
-    kStatus = 0x00,
-
-    /// Register address of the the first byte of the X axis
-    kXYZStartAddress = 0x01,
-
-    /// Device ID register address
-    kWhoAmI = 0x0D,
-
-    /// Device configuration starting address
-    kDataConfig = 0x0E,
-
-    /// Control register 1 holds the enable bit
-    kControlReg1 = 0x2A,
+  static constexpr DeviceMemoryMap::MemorySpecification kSpec = {
+    .address_width = DeviceMemoryMap::AddressWidth::Byte1,
+    .endianness    = std::endian::big,
   };
 
-  ///
-  ///
+  /// Map of all of the used device addresses in this driver.
+  struct Map
+  {
+    /// Device status register address
+    static constexpr auto kStatus =
+        DeviceMemoryMap::Register<kSpec>({ .address = 0x00, .width = 1 });
+
+    /// Register address of the the first byte of the X axis
+    static constexpr auto kXYZStartAddress =
+        DeviceMemoryMap::Register<kSpec>({ .address = 0x01, .width = 6 });
+
+    /// Device ID register address
+    static constexpr auto kWhoAmI =
+        DeviceMemoryMap::Register<kSpec>({ .address = 0x0D, .width = 1 });
+
+    /// Device configuration starting address
+    static constexpr auto kDataConfig =
+        DeviceMemoryMap::Register<kSpec>({ .address = 0x0E, .width = 1 });
+
+    /// Control register 1 holds the enable bit
+    static constexpr auto kControlReg1 =
+        DeviceMemoryMap::Register<kSpec>({ .address = 0x2A, .width = 1 });
+
+    // static_assert(NoRegistersOverlap(kSpec,
+    //                                  { kStatus, kXYZStartAddress, kWhoAmI,
+    //                                    kDataConfig, kControlReg1 }),
+    //               "Memory map for MMA8452 is not valid. Register "
+    //               "addresses/sizes overlap with each other");
+  };
+
   /// @param i2c - i2c peripheral used to commnicate with device.
   /// @param full_scale - the specification maximum detectable acceleration.
   ///        Allowed values are 2g, 4g, and 8g, where g reprsents the
@@ -50,7 +65,24 @@ class Mma8452q : public Accelerometer
       const I2c & i2c,
       units::acceleration::standard_gravity_t full_scale = 2_SG,
       uint8_t address                                    = 0x1c)
-      : i2c_(i2c), kFullScale(full_scale), kAccelerometerAddress(address)
+      : i2c_(i2c),
+        kFullScale(full_scale),
+        kAccelerometerAddress(address),
+        i2c_memory_(kAccelerometerAddress, i2c),
+        device_(i2c_memory_)
+  {
+  }
+
+  explicit constexpr Mma8452q(
+      DeviceMemoryMap & external_map_protocol,
+      const I2c & i2c,
+      units::acceleration::standard_gravity_t full_scale = 2_SG,
+      uint8_t address                                    = 0x1c)
+      : i2c_(i2c),
+        kFullScale(full_scale),
+        kAccelerometerAddress(address),
+        i2c_memory_(kAccelerometerAddress, i2c),
+        device_(external_map_protocol)
   {
   }
 
@@ -80,16 +112,10 @@ class Mma8452q : public Accelerometer
 
   Returns<Acceleration_t> Read() override
   {
-    constexpr uint16_t kBytesPerAxis = 2;
-    constexpr uint8_t kNumberOfAxis  = 3;
+    Acceleration_t acceleration     = {};
+    std::array<int16_t, 3> xyz_data = device_[Map::kXYZStartAddress];
 
-    Acceleration_t acceleration = {};
-
-    uint8_t xyz_data[kBytesPerAxis * kNumberOfAxis];
-
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(
-        kAccelerometerAddress, { Value(RegisterMap::kXYZStartAddress) },
-        xyz_data, sizeof(xyz_data)));
+    // SJ2_CHECK_DEVICE_ERROR(device_);
 
     // First X-axis Byte (MSB first)
     // =========================================================================
@@ -105,17 +131,10 @@ class Mma8452q : public Accelerometer
     // 16 value. We do not shift yet because we want to get the signed bit in
     // the most significant bit position to allow for sign extension when we
     // shift to the right later.
-    int16_t x = static_cast<int16_t>(xyz_data[0] << 8 | xyz_data[1]);
-    int16_t y = static_cast<int16_t>(xyz_data[2] << 8 | xyz_data[3]);
-    int16_t z = static_cast<int16_t>(xyz_data[4] << 8 | xyz_data[5]);
 
-    // Each axis is left shifted by 4 bits in order to place the signed bit in
-    // the 16th bit position for the 16 bit integer. This allows us to right
-    // shift to get rid of the right most zeros and to sign extend the value,
-    // allowing us to return the correct value of the axis.
-    x = static_cast<int16_t>(x >> 4);
-    y = static_cast<int16_t>(y >> 4);
-    z = static_cast<int16_t>(z >> 4);
+    int16_t x = static_cast<int16_t>(xyz_data[0] >> 4);
+    int16_t y = static_cast<int16_t>(xyz_data[1] >> 4);
+    int16_t z = static_cast<int16_t>(xyz_data[2] >> 4);
 
     // Convert the 12-bit signed value into a value from -1.0 to 1.0f so it can
     // be multiplied by the kFullScale in order to get the true acceleration.
@@ -125,8 +144,6 @@ class Mma8452q : public Accelerometer
     float x_axis_ratio = sjsu::Map(x, kMin, kMax, -1.0f, 1.0f);
     float y_axis_ratio = sjsu::Map(y, kMin, kMax, -1.0f, 1.0f);
     float z_axis_ratio = sjsu::Map(z, kMin, kMax, -1.0f, 1.0f);
-
-    sjsu::LogDebug("x = %d :: y = %d :: z = %d", x, y, z);
 
     acceleration.x = kFullScale * x_axis_ratio;
     acceleration.y = kFullScale * y_axis_ratio;
@@ -145,21 +162,19 @@ class Mma8452q : public Accelerometer
                    "Invalid gravity scale. Must be 2g, 4g, or 8g.");
     }
 
-    uint8_t gravity_code = static_cast<uint8_t>(gravity_scale >> 2);
-    SJ2_RETURN_ON_ERROR(
-        i2c_.Write(kAccelerometerAddress,
-                   { Value(RegisterMap::kDataConfig), gravity_code }));
+    // device_[Map::kDataConfig] = static_cast<uint8_t>(gravity_scale >> 2);
+    SJ2_CHECK_DEVICE_ERROR(device_);
 
     return {};
   }
 
   Returns<void> ActiveMode(bool is_active = true)
   {
-    uint8_t state = is_active;
-
     // Write enable sequence
-    SJ2_RETURN_ON_ERROR(i2c_.Write(
-        kAccelerometerAddress, { Value(RegisterMap::kControlReg1), state }));
+    device_[Map::kControlReg1] = is_active;
+
+    // Check and return any errors found by the device during the transaction
+    SJ2_CHECK_DEVICE_ERROR(device_);
 
     return {};
   }
@@ -169,12 +184,9 @@ class Mma8452q : public Accelerometer
     // Verify that the device is the correct device
     static constexpr uint8_t kExpectedDeviceID = 0x2A;
 
-    uint8_t device_id = 0;
-
     // Read out the identity register
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(kAccelerometerAddress,
-                                           { Value(RegisterMap::kWhoAmI) },
-                                           &device_id, sizeof(device_id)));
+    uint8_t device_id = device_[Map::kWhoAmI];
+    SJ2_CHECK_DEVICE_ERROR(device_);
 
     if (device_id != kExpectedDeviceID)
     {
@@ -190,5 +202,7 @@ class Mma8452q : public Accelerometer
   const I2c & i2c_;
   const units::acceleration::standard_gravity_t kFullScale;
   const uint8_t kAccelerometerAddress;
-};
+  I2cMemory<1> i2c_memory_;
+  DeviceMemoryMap & device_;
+};  // namespace sjsu
 }  // namespace sjsu

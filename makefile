@@ -48,12 +48,13 @@ LIBRARY_DIR              = $(SJSU_DEV2_BASE)/library
 # Build Products and Artifacts
 # ==============================================================================
 
-EXECUTABLE = $(SJ2_BUILD_DIR)/firmware.elf
-BINARY     = $(EXECUTABLE:.elf=.bin)
-HEX        = $(EXECUTABLE:.elf=.hex)
-LIST       = $(EXECUTABLE:.elf=.lst)
-SIZE       = $(EXECUTABLE:.elf=.siz)
-MAP        = $(EXECUTABLE:.elf=.map)
+EXECUTABLE  = $(SJ2_BUILD_DIR)/firmware.elf
+BINARY      = $(EXECUTABLE:.elf=.bin)
+HEX         = $(EXECUTABLE:.elf=.hex)
+LIST        = $(EXECUTABLE:.elf=.lst)
+SOURCE_LIST = $(EXECUTABLE:.elf=_source.lst)
+SIZE        = $(EXECUTABLE:.elf=.siz)
+MAP         = $(EXECUTABLE:.elf=.map)
 
 TEST_EXECUTABLE = $(SJ2_TEST_EXECUTABLE_DIR)/test.exe
 
@@ -280,7 +281,7 @@ help:
 # ==============================================================================
 
 
-application: | $(LIST) $(HEX) $(BINARY) $(SIZE)
+application: | $(HEX) $(BINARY) $(LIST) $(SOURCE_LIST) $(SIZE)
 
 
 # ==============================================================================
@@ -297,7 +298,7 @@ program: application
 
 debug:
 	@printf '$(MAGENTA)Starting firmware debug...$(RESET)\n'
-	@$(SJ2_TOOLS_DIR)/launch_openocd_gdb.sh \
+	$(SJ2_TOOLS_DIR)/launch_openocd_gdb.sh \
 			"$(DEVICE_GDB)" \
 			"$(GDBINIT_PATH)" \
 			"$(PLATFORM)" \
@@ -309,7 +310,7 @@ debug:
 
 
 debug-test:
-	gdb build/tests.exe
+	gdb -ex "source $(GDBINIT_PATH)" $(TEST_EXECUTABLE)
 
 
 flash: | application platform-flash
@@ -395,8 +396,13 @@ $(SIZE): $(EXECUTABLE)
 	@echo
 
 
-$(LIST): $(EXECUTABLE)
+$(SOURCE_LIST): $(EXECUTABLE)
 	@$(OBJDUMP) --disassemble --all-headers --source --demangle "$<" > "$@"
+	@printf '$(YELLOW)Disassembly Generated$(RESET)  : $@\n'
+
+
+$(LIST): $(EXECUTABLE)
+	@$(OBJDUMP) --disassemble --demangle "$<" > "$@"
 	@printf '$(YELLOW)Disassembly Generated$(RESET)  : $@\n'
 
 
@@ -412,7 +418,7 @@ $(EXECUTABLE): $(OBJECTS) $(SJ2_CORE_STATIC_LIBRARY) $(LINKER_SCRIPT)
 	@printf '$(GREEN)==================================================$(RESET)\n'
 	@printf '$(YELLOW)Linking Executable$(RESET)     : $@\n'
 	@mkdir -p "$(dir $@)"
-	@$(CPPC) -Wl,--print-memory-usage $(LDFLAGS) -o "$@" \
+	@$(CPPC) -Wl,--undefined=uxTopUsedPriority -Wl,--print-memory-usage $(LDFLAGS) -o "$@" \
 						$(OBJECTS) $(SJ2_CORE_STATIC_LIBRARY) 1> "$(SIZE)"
 	@printf '$(GREEN)==================================================$(RESET)\n'
 
