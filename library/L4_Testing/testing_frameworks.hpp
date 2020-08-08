@@ -1,13 +1,20 @@
 #pragma once
 
 #include <cinttypes>
+#include <span>
+#include <string>
+#include <utility>
 
 #include "third_party/doctest/doctest/doctest.h"
 // Quick and dirty way to have sub sections from Catch2 translate to SUBCASE in
 // doctest.
+#undef SUBCASE
+#define SUBCASE(...) DOCTEST_SUBCASE(std::string(__VA_ARGS__).c_str())
 #define SECTION SUBCASE
+
 #include "third_party/fakeit/fakeit.hpp"
 #include "third_party/fff/fff.h"
+#include "utility/status.hpp"
 
 using namespace fakeit;  // NOLINT
 
@@ -37,6 +44,197 @@ int HostRead(char * payload, size_t length);
   }                                                          \
   auto __full_##class_name = __LetsGo_##class_name(nullptr); \
   }  // namespace
+
+template <typename T>
+class Reflection
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "?";
+  }
+};
+
+template <>
+class Reflection<uint8_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "uint8_t";
+  }
+};
+
+template <>
+class Reflection<const uint8_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "const uint8_t";
+  }
+};
+
+template <>
+class Reflection<uint16_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "uint16_t";
+  }
+};
+
+template <>
+class Reflection<uint32_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "uint32_t";
+  }
+};
+
+template <>
+class Reflection<uint64_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "uint64_t";
+  }
+};
+
+template <>
+class Reflection<int8_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "int8_t";
+  }
+};
+
+template <>
+class Reflection<int16_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "int16_t";
+  }
+};
+
+template <>
+class Reflection<int32_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "int32_t";
+  }
+};
+
+template <>
+class Reflection<int64_t>
+{
+ public:
+  static constexpr const char * Name()
+  {
+    return "int64_t";
+  }
+};
+
+namespace doctest
+{
+template <typename T, size_t N>
+struct StringMaker<std::array<T, N>>  // NOLINT
+{
+  static String convert(const std::array<T, N> & array)  // NOLINT
+  {
+    std::string str;
+
+    str += "std::array<";
+    str += Reflection<T>::Name();
+    str += ", ";
+    str += std::to_string(N);
+    str += ">{";
+
+    size_t i = 0;
+    for (i = 0; i < N - 1; i++)
+    {
+      str += std::to_string(array[i]) + ", ";
+    }
+
+    str += std::to_string(array[i]);
+
+    str += " }";
+
+    String result(str.data(), str.size());
+    return result;
+  }
+};
+
+template <typename T>
+struct StringMaker<std::span<T>>
+{
+  static String convert(const std::span<T> & span)  // NOLINT
+  {
+    std::string str;
+
+    str += "std::span<";
+    str += Reflection<T>::Name();
+    str += ", ";
+    str += std::to_string(span.size());
+    str += ">{ ";
+
+    size_t i = 0;
+    for (i = 0; i < span.size() - 1; i++)
+    {
+      str += std::to_string(span[i]) + ", ";
+    }
+
+    str += std::to_string(span[i]);
+
+    str += " }";
+
+    String result(str.data(), str.size());
+    return result;
+  }
+};
+
+template <>
+struct StringMaker<sjsu::Status>  // NOLINT
+{
+  static String convert(const sjsu::Status & status)  // NOLINT
+  {
+    std::string str;
+
+    str += "sjsu::Status_t( ";
+    str += std::to_string(status.code);
+    str += " , ";
+    str += status.name;
+    str += " )";
+
+    String result(str.data(), str.size());
+    return result;
+  }
+
+  static String convert(const sjsu::Status && status)  // NOLINT
+  {
+    std::string str;
+
+    str += "sjsu::Status_t( ";
+    str += std::to_string(status.code);
+    str += " , ";
+    str += status.name;
+    str += " )";
+
+    String result(str.data(), str.size());
+    return result;
+  }
+};
+}  // namespace doctest
 
 namespace sjsu::testing
 {

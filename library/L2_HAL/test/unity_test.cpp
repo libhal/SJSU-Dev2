@@ -2,8 +2,8 @@
 // =============================================================================
 // Example HAL Tests
 // =============================================================================
-// #include "L2_HAL/test/device_memory_map_test.cpp"  // NOLINT
-#include "L2_HAL/test/example_test.cpp"            // NOLINT
+#include "L2_HAL/test/memory_access_protocol_test.cpp"  // NOLINT
+#include "L2_HAL/test/example_test.cpp"                 // NOLINT
 
 // =============================================================================
 // Audio
