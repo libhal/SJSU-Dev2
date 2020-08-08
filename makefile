@@ -106,7 +106,7 @@ SJ2_DEFAULT_TEST_FLAGS := \
                 -g --coverage -fPIC -fexceptions -fno-inline -fno-builtin \
                 -fno-inline-small-functions -fno-default-inline \
                 -fkeep-inline-functions -fno-elide-constructors  \
-                -fdiagnostics-color \
+                -fdiagnostics-color -fno-stack-protector -fsanitize=address \
                 -Wall -Wno-variadic-macros -Wextra -Wshadow -Wno-main \
                 -Wno-missing-field-initializers \
                 -Wfloat-equal -Wundef -Wno-format-nonliteral \
@@ -311,7 +311,7 @@ debug:
 
 
 debug-test:
-	gdb -ex "source $(GDBINIT_PATH)" build/tests.exe
+	gdb -ex "source $(GDBINIT_PATH)" $(TEST_EXECUTABLE)
 
 
 flash: | application platform-flash

@@ -14,22 +14,9 @@ EMIT_ALL_METHODS(TFMini);
 
 namespace
 {
-auto MockReadImplementation(size_t & read_count,
-                            std::initializer_list<uint8_t> list)
-{
-  return [list, &read_count](void * data_ptr, size_t size) -> size_t {
-    uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-    for (size_t i = 0; i < size; i++)
-    {
-      data[i] = list.begin()[read_count++];
-    }
-    return size;
-  };
-}
-
 template <size_t length>
 auto MockReadImplementation(size_t & read_count,
-                            std::array<uint8_t, length> & list)
+                            const std::array<uint8_t, length> & list)
 {
   return [&list, &read_count](void * data_ptr, size_t size) -> size_t {
     uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
@@ -56,17 +43,17 @@ TEST_CASE("Testing TFMini")
     constexpr uint32_t kBaudRate = 115200;
     // Assuming Uart Initialization is successful
     When(Method(mock_uart, Initialize)).Return(sjsu::Status::kSuccess);
-    size_t read_count       = 0;
-    auto init_read_callback = MockReadImplementation(
-        read_count,
-        {
-            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
-            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
-            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
-            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
-            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
-            0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x00, 0x02,  // Exit Config
-        });
+    size_t read_count                                        = 0;
+    const std::array<uint8_t, 8 * 6> kExpectedInitializeData = {
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
+      0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x00, 0x02,  // Exit Config
+    };
+    auto init_read_callback =
+        MockReadImplementation(read_count, kExpectedInitializeData);
 
     When(Method(mock_uart, HasData)).AlwaysReturn(true);
     When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
