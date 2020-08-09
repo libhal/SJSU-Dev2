@@ -32,8 +32,10 @@ class I2c
   /// time.
   static constexpr std::chrono::milliseconds kI2cTimeout = 100ms;
 
-  struct CommonErrors
+  /// Namespace of common I2C transaction errors
+  class CommonErrors
   {
+   public:
     static constexpr auto kTimeout =
         Error(Status::kTimedOut,
               "I2C took too long to process and timed out! Consider "
