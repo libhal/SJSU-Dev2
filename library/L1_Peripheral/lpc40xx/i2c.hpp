@@ -49,15 +49,15 @@ class I2c final : public sjsu::I2c
     kBusError                          = 0x00,
     kStartCondition                    = 0x08,
     kRepeatedStart                     = 0x10,
-    kSlaveAddressWriteSentreceivedAck  = 0x18,
-    kSlaveAddressWriteSentreceivedNack = 0x20,
-    kTransmittedDatareceivedAck        = 0x28,
-    kTransmittedDatareceivedNack       = 0x30,
+    kSlaveAddressWriteSentReceivedAck  = 0x18,
+    kSlaveAddressWriteSentReceivedNack = 0x20,
+    kTransmittedDataReceivedAck        = 0x28,
+    kTransmittedDataReceivedNack       = 0x30,
     kArbitrationLost                   = 0x38,
-    kSlaveAddressReadSentreceivedAck   = 0x40,
-    kSlaveAddressReadSentreceivedNack  = 0x48,
-    kReceivedDatareceivedAck           = 0x50,
-    kReceivedDatareceivedNack          = 0x58,
+    kSlaveAddressReadSentReceivedAck   = 0x40,
+    kSlaveAddressReadSentReceivedNack  = 0x48,
+    kReceivedDataReceivedAck           = 0x50,
+    kReceivedDataReceivedNack          = 0x58,
     kOwnAddressReceived                = 0xA0,
     kDoNothing                         = 0xF8
   };
@@ -169,7 +169,7 @@ class I2c final : public sjsu::I2c
         i2c.registers->DAT        = i2c.transaction.GetProperAddress();
         break;
       }
-      case MasterState::kSlaveAddressWriteSentreceivedAck:  // 0x18
+      case MasterState::kSlaveAddressWriteSentReceivedAck:  // 0x18
       {
         clear_mask = Control::kStart;
         if (i2c.transaction.out_length == 0)
@@ -185,7 +185,7 @@ class I2c final : public sjsu::I2c
         }
         break;
       }
-      case MasterState::kSlaveAddressWriteSentreceivedNack:  // 0x20
+      case MasterState::kSlaveAddressWriteSentReceivedNack:  // 0x20
       {
         clear_mask             = Control::kStart;
         i2c.transaction.busy   = false;
@@ -193,7 +193,7 @@ class I2c final : public sjsu::I2c
         set_mask               = Control::kStop;
         break;
       }
-      case MasterState::kTransmittedDatareceivedAck:  // 0x28
+      case MasterState::kTransmittedDataReceivedAck:  // 0x28
       {
         if (i2c.transaction.position >= i2c.transaction.out_length)
         {
@@ -217,7 +217,7 @@ class I2c final : public sjsu::I2c
         }
         break;
       }
-      case MasterState::kTransmittedDatareceivedNack:  // 0x30
+      case MasterState::kTransmittedDataReceivedNack:  // 0x30
       {
         i2c.transaction.busy = false;
         set_mask             = Control::kStop;
@@ -228,7 +228,7 @@ class I2c final : public sjsu::I2c
         set_mask = Control::kStart;
         break;
       }
-      case MasterState::kSlaveAddressReadSentreceivedAck:  // 0x40
+      case MasterState::kSlaveAddressReadSentReceivedAck:  // 0x40
       {
         clear_mask = Control::kStart;
         if (i2c.transaction.in_length == 0)
@@ -247,7 +247,7 @@ class I2c final : public sjsu::I2c
         }
         break;
       }
-      case MasterState::kSlaveAddressReadSentreceivedNack:  // 0x48
+      case MasterState::kSlaveAddressReadSentReceivedNack:  // 0x48
       {
         clear_mask             = Control::kStart;
         i2c.transaction.status = Status::kDeviceNotFound;
@@ -255,7 +255,7 @@ class I2c final : public sjsu::I2c
         set_mask               = Control::kStop;
         break;
       }
-      case MasterState::kReceivedDatareceivedAck:  // 0x50
+      case MasterState::kReceivedDataReceivedAck:  // 0x50
       {
         const size_t kBufferEnd = i2c.transaction.in_length;
         if (i2c.transaction.position < kBufferEnd)
@@ -277,7 +277,7 @@ class I2c final : public sjsu::I2c
         }
         break;
       }
-      case MasterState::kReceivedDatareceivedNack:  // 0x58
+      case MasterState::kReceivedDataReceivedNack:  // 0x58
       {
         i2c.transaction.busy = false;
         if (i2c.transaction.in_length != 0)
@@ -310,9 +310,14 @@ class I2c final : public sjsu::I2c
   ///
   /// @param bus - pass a reference to a constant lpc40xx::I2c::Bus_t
   ///        definition.
-  explicit constexpr I2c(const Bus_t & bus) : i2c_(bus) {}
+  /// @param clock_rate - clock rate to operate the i2c bus at.
+  explicit constexpr I2c(const Bus_t & bus,
+                         units::frequency::hertz_t clock_rate = 100'000_Hz)
+      : i2c_(bus), clock_rate_(clock_rate)
+  {
+  }
 
-  Status Initialize() const override
+  Returns<void> Initialize() const override
   {
     i2c_.sda_pin.SetPinFunction(i2c_.pin_function);
     i2c_.scl_pin.SetPinFunction(i2c_.pin_function);
@@ -327,8 +332,8 @@ class I2c final : public sjsu::I2c
 
     // Calculating and setting the I2C Clock rate
     // Weight the high side duty cycle more than the lower side by 30% in order
-    // to give more time for the bus to charge up.s
-    float clock_frequency = (peripheral_frequency / 75'000_Hz) / 2.0f;
+    // to give more time for the bus to charge up.
+    float clock_frequency = (peripheral_frequency / clock_rate_) / 2.0f;
     float scll            = clock_frequency * 0.7f;
     float sclh            = clock_frequency * 1.3f;
     i2c_.registers->SCLL  = static_cast<uint32_t>(scll);
@@ -343,20 +348,22 @@ class I2c final : public sjsu::I2c
         .interrupt_handler        = [this]() { I2cHandler(i2c_); },
     });
 
-    return Status::kSuccess;
+    return {};
   }
 
-  Status Transaction(Transaction_t transaction) const override
+  Returns<void> Transaction(Transaction_t transaction) const override
   {
     i2c_.transaction       = transaction;
     i2c_.registers->CONSET = Control::kStart;
     return BlockUntilFinished();
   }
+
   /// Special method that returns the current state of the transaction.
   const Transaction_t GetTransactionInfo()
   {
     return i2c_.transaction;
   }
+
   /// Special method to check if the bus is currently initialized.
   /// @returns true if this bus has been initialized.
   bool IsIntialized() const
@@ -368,39 +375,54 @@ class I2c final : public sjsu::I2c
   /// Since this I2C implementation utilizes interrupts, while the transaction
   /// is happening, on the bus, block the sequence of execution until the
   /// transaction has completed, OR the timeout has elapsed.
-  Status BlockUntilFinished() const
+  Returns<void> BlockUntilFinished() const
   {
     // Skip waiting on the interrupt if running a host unit test
     if constexpr (build::kPlatform == build::Platform::host)
     {
-      return i2c_.transaction.status;
+      return {};
     }
 
-    SJ2_ASSERT_FATAL(IsIntialized(),
-                     "Attempted to use I2C, but peripheral was not "
-                     "initialized! Be sure to run the Initialize() method "
-                     "of this class, before using it.");
+    if (!IsIntialized())
+    {
+      return Error(Status::kNotReadyYet,
+                   "Attempted to use I2C, but peripheral was not initialized!"
+                   "Be sure to run the Initialize() method first");
+    }
+
     auto wait_for_i2c_transaction = [this]() -> bool {
       return !i2c_.transaction.busy;
     };
-    Status status = Wait(i2c_.transaction.timeout, wait_for_i2c_transaction);
 
-    if (status == Status::kTimedOut)
+    Status wait_status =
+        Wait(i2c_.transaction.timeout, wait_for_i2c_transaction);
+
+    if (i2c_.transaction.status == Status::kBusError)
+    {
+      return CommonErrors::kBusError;
+    }
+    else if (i2c_.transaction.status == Status::kDeviceNotFound)
+    {
+      return CommonErrors::kDeviceNotFound;
+    }
+    else if (wait_status == Status::kTimedOut)
     {
       // Abort I2C communication if this point is reached!
       i2c_.registers->CONSET = Control::kAssertAcknowledge | Control::kStop;
-      SJ2_ASSERT_WARNING(
-          i2c_.transaction.out_length == 0 || i2c_.transaction.in_length == 0,
-          "I2C took too long to process and timed out! If the "
-          "transaction needs more time, you may want to increase the "
-          "timeout time.");
-      i2c_.transaction.status = Status::kTimedOut;
+
+      if (i2c_.transaction.out_length == 0 || i2c_.transaction.in_length == 0)
+      {
+        return CommonErrors::kTimeout;
+      }
     }
+
     // Ensure that start is cleared before leaving this function
     i2c_.registers->CONCLR = Control::kStart;
-    return i2c_.transaction.status;
+    return {};
   }
+
   const Bus_t & i2c_;
+  units::frequency::hertz_t clock_rate_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

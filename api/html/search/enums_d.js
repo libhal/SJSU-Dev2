@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['transaction',['Transaction',['../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0',1,'sjsu::Ssd1306']]],
-  ['type',['Type',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878',1,'sjsu::Storage::Type()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()']]]
+  ['usbclockdivider',['UsbClockDivider',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#af7e9d86e2996b1ea5dd06456026101dd',1,'sjsu::lpc17xx::SystemController']]],
+  ['usbclockselect',['UsbClockSelect',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a13463e5bf70d424aabe083577641200c',1,'sjsu::lpc40xx::SystemController']]],
+  ['usbclocksource',['UsbClockSource',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a18ec8835f53b968c732122dc56e55944',1,'sjsu::lpc17xx::SystemController']]],
+  ['usbdivider',['UsbDivider',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a8643fe1fcc2ef831ae790a43d98f8a73',1,'sjsu::lpc40xx::SystemController::UsbDivider()'],['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ac649916b096a6be9c5195c08bf1bf8eb',1,'sjsu::stm32f10x::SystemController::UsbDivider()']]]
 ];

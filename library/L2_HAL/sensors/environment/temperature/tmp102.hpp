@@ -28,6 +28,7 @@ class Tmp102 final : public TemperatureSensor
     /// The device address when A0 is connected to SCL.
     static constexpr uint8_t kScl = 0b100'1011;
   };
+
   /// Register addresses of the device used to perform read/write operations.
   struct RegisterAddress  // NOLINT
   {
@@ -37,10 +38,13 @@ class Tmp102 final : public TemperatureSensor
     /// The address of the register used to configure the device.
     static constexpr uint8_t kConfiguration = 0x01;
   };
+
   /// The command to enable one-shot shutdown mode.
   static constexpr uint8_t kOneShotShutdownMode = 0x81;
+
   /// Max time for the device to complete one temperature conversion.
   static constexpr std::chrono::milliseconds kConversionTimeout = 30ms;
+
   /// @param i2c The I2C peripheral used for communication with the device.
   /// @param device_address The device address of the sensor. The addres is
   ///                       configured by physically modifying the connection of
@@ -51,47 +55,48 @@ class Tmp102 final : public TemperatureSensor
       : i2c_(i2c), kDeviceAddress(device_address)
   {
   }
-  /// Initializes the I2C peripheral to enable the device for use.
-  ///
-  /// @return The initialization status.
-  Status Initialize() const override
+
+  Returns<void> Initialize() const override
   {
     return i2c_.Initialize();
   }
-  /// Retrieves the temperature reading from the device.
-  ///
-  /// @param temperature Output parameter.
-  /// @return Returns Status::kSuccess if the temperature measurement was
-  ///         successfully obtained.
-  Status GetTemperature(
-      units::temperature::celsius_t * temperature) const override
+
+  Returns<void> Enable() const override
+  {
+    return {};
+  }
+
+  Returns<units::temperature::celsius_t> GetTemperature() const override
   {
     OneShotShutdown();
     constexpr uint8_t kBufferLength = 2;
     uint8_t temperature_buffer[kBufferLength];
+
     // Note: The MSB is received first in the buffer.
-    i2c_.WriteThenRead(kDeviceAddress,
-                       { RegisterAddress::kTemperature },
-                       &temperature_buffer[0],
-                       kBufferLength,
-                       kConversionTimeout);
+    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(
+        kDeviceAddress, { RegisterAddress::kTemperature },
+        &temperature_buffer[0], kBufferLength, kConversionTimeout));
+
     // The temperature value is at bits [15:3].
     const int32_t kTemperatureData =
         (temperature_buffer[0] << 4) | (temperature_buffer[1] >> 4);
+
     constexpr float kResolution = 0.0625f;
-    *temperature                = units::temperature::celsius_t(
-        static_cast<float>(kTemperatureData) * kResolution);
-    return Status::kSuccess;
+
+    return units::temperature::celsius_t(static_cast<float>(kTemperatureData) *
+                                         kResolution);
   }
 
  private:
   /// Sets the device to use one-shot shutdown mode. This allows power to be
   /// conserved by putting the device in the shutdown state once a reading is
   /// obtained.
-  void OneShotShutdown() const
+  Returns<void> OneShotShutdown() const
   {
-    i2c_.Write(kDeviceAddress,
-               { RegisterAddress::kConfiguration, kOneShotShutdownMode });
+    SJ2_RETURN_ON_ERROR(
+        i2c_.Write(kDeviceAddress,
+                   { RegisterAddress::kConfiguration, kOneShotShutdownMode }));
+    return {};
   }
 
   /// The I2C peripheral used for communication with the device.

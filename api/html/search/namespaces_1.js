@@ -6,7 +6,6 @@ var searchData=
   ['cortex',['cortex',['../dc/dc0/namespacesjsu_1_1cortex.html',1,'sjsu']]],
   ['crc',['crc',['../dc/dfc/namespacesjsu_1_1crc.html',1,'sjsu']]],
   ['debug',['debug',['../d8/df0/namespacesjsu_1_1debug.html',1,'sjsu']]],
-  ['device',['device',['../da/d55/namespacesjsu_1_1device.html',1,'sjsu']]],
   ['example',['example',['../d9/df5/namespacesjsu_1_1example.html',1,'sjsu']]],
   ['infrared',['infrared',['../d3/d9b/namespacesjsu_1_1infrared.html',1,'sjsu']]],
   ['lpc17xx',['lpc17xx',['../d1/d32/namespacesjsu_1_1lpc17xx.html',1,'sjsu']]],

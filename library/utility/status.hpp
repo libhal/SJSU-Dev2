@@ -226,13 +226,16 @@ struct Error_t
     }
     if constexpr (config::kAutomaticallyPrintOnError)
     {
-      Print();
-      if constexpr (config::kIncludeBacktrace)
+      if (!std::is_constant_evaluated())
       {
-        printf(SJ2_HI_BOLD_WHITE "Backtrace:" SJ2_COLOR_RESET);
-        int depth = 0;
-        _Unwind_Backtrace(&debug::PrintAddressInRow, &depth);
-        puts("");
+        Print();
+        if constexpr (config::kIncludeBacktrace)
+        {
+          printf(SJ2_HI_BOLD_WHITE "Backtrace:" SJ2_COLOR_RESET);
+          int depth = 0;
+          _Unwind_Backtrace(&debug::PrintAddressInRow, &depth);
+          puts("");
+        }
       }
     }
   }
@@ -245,6 +248,11 @@ struct Error_t
                            ":%s:%" PRIuLEAST32 ":%s(): %s\n" SJ2_COLOR_RESET,
            status.name.data(), status.code, location.file_name(),
            location.line(), location.function_name(), message.data());
+  }
+
+  constexpr bool operator==(const Error_t & other) const
+  {
+    return status == other.status;
   }
 
   /// The status associated with this error
@@ -292,6 +300,12 @@ constexpr tl::unexpected<Error_t> Error(
 /// @tparam T - the actual, non-error, result to return from the function
 template <typename T>
 using Returns = tl::expected<T, Error_t>;
+
+template <typename T>
+constexpr Returns<T> NoError()
+{
+  return T{};
+}
 
 /// This is a helper function for the `SJ2_RETURN_ON_ERROR()` macro to help it
 /// return the results of a `Returns<>` object.

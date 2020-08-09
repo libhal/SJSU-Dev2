@@ -16,7 +16,7 @@ TEST_CASE("Accelerometer")
     SECTION("Success")
     {
       // Setup
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(Status::kSuccess);
+      When(Method(mock_i2c, Initialize)).AlwaysReturn({});
 
       // Exercise
       auto result = test_subject.Initialize();
@@ -24,13 +24,14 @@ TEST_CASE("Accelerometer")
       // Verify
       Verify(Method(mock_i2c, Initialize));
       // Verify: Initialize should not have an error
-      CHECK(result.has_value());
+      CHECK(result);
     }
 
     SECTION("Failure")
     {
       // Setup
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(Status::kNotReadyYet);
+      When(Method(mock_i2c, Initialize))
+          .AlwaysReturn(Error(Status::kNotReadyYet));
 
       // Exercise
       auto result = test_subject.Initialize();
@@ -38,7 +39,7 @@ TEST_CASE("Accelerometer")
       // Verify
       Verify(Method(mock_i2c, Initialize));
       // Verify: Initialize should not have an error
-      CHECK(!result.has_value());
+      CHECK(!result);
     }
   }
 

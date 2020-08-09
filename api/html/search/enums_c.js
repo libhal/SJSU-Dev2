@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['spificlockselect',['SpifiClockSelect',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a2942ffd625e21c9d3caf8e20faef2b21',1,'sjsu::lpc40xx::SystemController']]],
-  ['state',['State',['../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f',1,'sjsu::Gpio']]],
-  ['states',['States',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#af98e440b4aefb4db4033936a59fe3fb2',1,'sjsu::lpc40xx::uart']]],
-  ['systemclockselect',['SystemClockSelect',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ad26f10f57cd757dab4f15454df3e556b',1,'sjsu::stm32f10x::SystemController']]]
+  ['transaction',['Transaction',['../db/d32/classsjsu_1_1Ssd1306.html#a0b2dc658cec9be8d3b73234c9370bdf0',1,'sjsu::Ssd1306']]],
+  ['type',['Type',['../dc/da6/classsjsu_1_1Storage.html#a4d7a2e245eff968badaaa8492a91b878',1,'sjsu::Storage::Type()'],['../dc/d5f/classsjsu_1_1Sd.html#ab0be829c25921b7453bcc4c76b76b946',1,'sjsu::Sd::Type()']]]
 ];

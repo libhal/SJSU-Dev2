@@ -1,12 +1,16 @@
 #include <cstdint>
 
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
-#include "L2_HAL/sensors/optical/apds9960.hpp"
+// #include "L2_HAL/sensors/optical/apds9960.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
 int main(void)
 {
+  sjsu::LogInfo("This demo is not available");
+  return -1;
+
+  /*
   sjsu::lpc40xx::I2c i2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
   sjsu::Apds9960 sensor(i2c);
   i2c.Initialize();
@@ -52,4 +56,5 @@ int main(void)
     sjsu::Delay(500ms);  // Do other code here
   }
   return 0;
+  */
 }

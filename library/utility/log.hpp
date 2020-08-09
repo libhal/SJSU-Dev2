@@ -20,6 +20,7 @@
 #include <cstdio>
 #include <cstring>
 #include <string_view>
+#include <type_traits>
 
 #include "config.hpp"
 #include "log_levels.hpp"

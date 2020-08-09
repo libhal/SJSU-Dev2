@@ -181,7 +181,7 @@ class Gpio final : public sjsu::Gpio
   ///
   /// @param port_number - port number
   /// @param pin_number - pin number
-  /// @param pin - pointer to an sjsu::Pin, keep as nullptr to ignore this a
+  /// @param pin - pointer to an sjsu::Pin, keep as nullptr to ignore this
   constexpr Gpio(uint8_t port_number,
                  uint8_t pin_number,
                  sjsu::Pin * pin = nullptr)

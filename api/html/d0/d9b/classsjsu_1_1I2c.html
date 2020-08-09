@@ -97,6 +97,9 @@ Inheritance diagram for sjsu::I2c:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd4/classsjsu_1_1I2c_1_1CommonErrors.html">CommonErrors</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace of common I2C transaction errors.  <a href="../../d4/dd4/classsjsu_1_1I2c_1_1CommonErrors.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html">Transaction_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -109,20 +112,20 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a50907d4d89828d869e9925df00fa2a18"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a50907d4d89828d869e9925df00fa2a18">Initialize</a> () const =0</td></tr>
-<tr class="separator:a50907d4d89828d869e9925df00fa2a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5f74263207d178f3d9e1402b4a0a525"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#ad5f74263207d178f3d9e1402b4a0a525">Transaction</a> (<a class="el" href="../../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html">Transaction_t</a> transaction) const =0</td></tr>
-<tr class="separator:ad5f74263207d178f3d9e1402b4a0a525"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b6ac09e0df5d3aad671f8e7bedba9a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a8b6ac09e0df5d3aad671f8e7bedba9a5">Read</a> (uint8_t address, uint8_t *transmit_buffer, size_t transmit_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
-<tr class="separator:a8b6ac09e0df5d3aad671f8e7bedba9a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc1e5ff50b8585d91cff6c704563b560"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#abc1e5ff50b8585d91cff6c704563b560">Write</a> (uint8_t address, const uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
-<tr class="separator:abc1e5ff50b8585d91cff6c704563b560"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a171418cb987f13760e1c23d7e4356dd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a171418cb987f13760e1c23d7e4356dd6">Write</a> (uint8_t address, std::initializer_list&lt; uint8_t &gt; transmit, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
-<tr class="separator:a171418cb987f13760e1c23d7e4356dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa242585abf86d762eee529c2233dac3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#aa242585abf86d762eee529c2233dac3b">WriteThenRead</a> (uint8_t address, const uint8_t *transmit_buffer, size_t transmit_buffer_length, uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
-<tr class="separator:aa242585abf86d762eee529c2233dac3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a525532383da920493bea016891afae18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a525532383da920493bea016891afae18">WriteThenRead</a> (uint8_t address, std::initializer_list&lt; uint8_t &gt; transmit, uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
-<tr class="separator:a525532383da920493bea016891afae18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35b458ae49e75330c9ccfec95bd4b027"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a35b458ae49e75330c9ccfec95bd4b027">Initialize</a> () const =0</td></tr>
+<tr class="separator:a35b458ae49e75330c9ccfec95bd4b027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ef1be87d17c20480b328e1beef089b8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a6ef1be87d17c20480b328e1beef089b8">Transaction</a> (<a class="el" href="../../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html">Transaction_t</a> transaction) const =0</td></tr>
+<tr class="separator:a6ef1be87d17c20480b328e1beef089b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0edf79df0b811e160514b56ba3686486"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a0edf79df0b811e160514b56ba3686486">Read</a> (uint8_t address, uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
+<tr class="separator:a0edf79df0b811e160514b56ba3686486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a092e9c4dc995c258a19fd8274b521254"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a092e9c4dc995c258a19fd8274b521254">Write</a> (uint8_t address, const uint8_t *transmit_buffer, size_t transmit_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
+<tr class="separator:a092e9c4dc995c258a19fd8274b521254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a418e2655bf64941275c6eb014a125304"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a418e2655bf64941275c6eb014a125304">Write</a> (uint8_t address, std::initializer_list&lt; uint8_t &gt; transmit, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
+<tr class="separator:a418e2655bf64941275c6eb014a125304"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae2bcb4b489a457b0c78b68b223906a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#aae2bcb4b489a457b0c78b68b223906a5">WriteThenRead</a> (uint8_t address, const uint8_t *transmit_buffer, size_t transmit_buffer_length, uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
+<tr class="separator:aae2bcb4b489a457b0c78b68b223906a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a617cacfe96e7c933a2949ca6bb0f1cba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#a617cacfe96e7c933a2949ca6bb0f1cba">WriteThenRead</a> (uint8_t address, std::initializer_list&lt; uint8_t &gt; transmit, uint8_t *receive_buffer, size_t receive_buffer_length, std::chrono::milliseconds timeout=<a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a>) const</td></tr>
+<tr class="separator:a617cacfe96e7c933a2949ca6bb0f1cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -152,8 +155,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a50907d4d89828d869e9925df00fa2a18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50907d4d89828d869e9925df00fa2a18">&#9670;&nbsp;</a></span>Initialize()</h2>
+<a id="a35b458ae49e75330c9ccfec95bd4b027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35b458ae49e75330c9ccfec95bd4b027">&#9670;&nbsp;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,7 +165,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::I2c::Initialize </td>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::I2c::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -176,12 +179,12 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Initialize and enable hardware. This must be called before any other method in this interface is called. </p>
 
-<p>Implemented in <a class="el" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#ad6693c0242651fb904650a3af1019f7d">sjsu::lpc40xx::I2c</a>.</p>
+<p>Implemented in <a class="el" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#abc2f7a849b983d4e5b132eb08488abc7">sjsu::lpc40xx::I2c</a>.</p>
 
 </div>
 </div>
-<a id="a8b6ac09e0df5d3aad671f8e7bedba9a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b6ac09e0df5d3aad671f8e7bedba9a5">&#9670;&nbsp;</a></span>Read()</h2>
+<a id="a0edf79df0b811e160514b56ba3686486"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0edf79df0b811e160514b56ba3686486">&#9670;&nbsp;</a></span>Read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +193,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::I2c::Read </td>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::I2c::Read </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>address</em>, </td>
@@ -199,94 +202,6 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>transmit_buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>transmit_buffer_length</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::chrono::milliseconds&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Read from a device on the I2C bus</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">address</td><td>- device address </td></tr>
-    <tr><td class="paramname">transmit_buffer</td><td>- pointer to a byte buffer to read information into </td></tr>
-    <tr><td class="paramname">transmit_buffer_length</td><td>- number of bytes to be written into the data buffer </td></tr>
-    <tr><td class="paramname">timeout</td><td>- Amount of time to wait for a response by device before bailing out. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ad5f74263207d178f3d9e1402b4a0a525"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5f74263207d178f3d9e1402b4a0a525">&#9670;&nbsp;</a></span>Transaction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::I2c::Transaction </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html">Transaction_t</a>&#160;</td>
-          <td class="paramname"><em>transaction</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Perform a I2C transaction using the information contained in the transaction parameter.</p>
-<dl class="section return"><dt>Returns</dt><dd>Status::kTimeout if the transaction could not be performed in the set time. <a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a59dd553c29e41e59a91b292e55433e8f">Status::kDeviceNotFound</a> if external device does not respond to address on the bus <a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a96b13230012af6002196c0556984e409">Status::kSuccess</a> if transaction was fulfilled. </dd></dl>
-
-<p>Implemented in <a class="el" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#adcd3f4d566c68e7617c7aadb3202ae6e">sjsu::lpc40xx::I2c</a>.</p>
-
-</div>
-</div>
-<a id="abc1e5ff50b8585d91cff6c704563b560"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc1e5ff50b8585d91cff6c704563b560">&#9670;&nbsp;</a></span>Write() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::I2c::Write </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>receive_buffer</em>, </td>
         </tr>
         <tr>
@@ -313,12 +228,12 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Write to a device on the I2C bus</p>
+<p>Read from a device on the I2C bus</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">address</td><td>- device address </td></tr>
-    <tr><td class="paramname">receive_buffer</td><td>- pointer to a byte buffer to send to the device </td></tr>
-    <tr><td class="paramname">receive_buffer_length</td><td>- number of bytes to be written to the device </td></tr>
+    <tr><td class="paramname">receive_buffer</td><td>- pointer to a byte buffer to read information into </td></tr>
+    <tr><td class="paramname">receive_buffer_length</td><td>- number of bytes to be written into the data buffer </td></tr>
     <tr><td class="paramname">timeout</td><td>- Amount of time to wait for a response by device before bailing out. </td></tr>
   </table>
   </dd>
@@ -326,8 +241,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a171418cb987f13760e1c23d7e4356dd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a171418cb987f13760e1c23d7e4356dd6">&#9670;&nbsp;</a></span>Write() <span class="overload">[2/2]</span></h2>
+<a id="a6ef1be87d17c20480b328e1beef089b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ef1be87d17c20480b328e1beef089b8">&#9670;&nbsp;</a></span>Transaction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,7 +251,95 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::I2c::Write </td>
+          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::I2c::Transaction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html">Transaction_t</a>&#160;</td>
+          <td class="paramname"><em>transaction</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Perform a I2C transaction using the information contained in the transaction parameter.</p>
+<dl class="section return"><dt>Returns</dt><dd>Status::kTimeout if the transaction could not be performed in the set time. <a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a59dd553c29e41e59a91b292e55433e8f">Status::kDeviceNotFound</a> if external device does not respond to address on the bus <a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a96b13230012af6002196c0556984e409">Status::kSuccess</a> if transaction was fulfilled. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#ac7383d4f3ded05c45b2ee6ec86a88618">sjsu::lpc40xx::I2c</a>.</p>
+
+</div>
+</div>
+<a id="a092e9c4dc995c258a19fd8274b521254"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a092e9c4dc995c258a19fd8274b521254">&#9670;&nbsp;</a></span>Write() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::I2c::Write </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>transmit_buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>transmit_buffer_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::chrono::milliseconds&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html#acea3c1d338413b9b02cc278d3316b921">kI2cTimeout</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write to a device on the I2C bus</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">address</td><td>- device address </td></tr>
+    <tr><td class="paramname">transmit_buffer</td><td>- pointer to a byte buffer to send to the device </td></tr>
+    <tr><td class="paramname">transmit_buffer_length</td><td>- number of bytes to be written to the device </td></tr>
+    <tr><td class="paramname">timeout</td><td>- Amount of time to wait for a response by device before bailing out. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a418e2655bf64941275c6eb014a125304"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a418e2655bf64941275c6eb014a125304">&#9670;&nbsp;</a></span>Write() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::I2c::Write </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>address</em>, </td>
@@ -378,8 +381,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa242585abf86d762eee529c2233dac3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa242585abf86d762eee529c2233dac3b">&#9670;&nbsp;</a></span>WriteThenRead() <span class="overload">[1/2]</span></h2>
+<a id="aae2bcb4b489a457b0c78b68b223906a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae2bcb4b489a457b0c78b68b223906a5">&#9670;&nbsp;</a></span>WriteThenRead() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -388,7 +391,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::I2c::WriteThenRead </td>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::I2c::WriteThenRead </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>address</em>, </td>
@@ -451,8 +454,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a525532383da920493bea016891afae18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a525532383da920493bea016891afae18">&#9670;&nbsp;</a></span>WriteThenRead() <span class="overload">[2/2]</span></h2>
+<a id="a617cacfe96e7c933a2949ca6bb0f1cba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a617cacfe96e7c933a2949ca6bb0f1cba">&#9670;&nbsp;</a></span>WriteThenRead() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -461,7 +464,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">Status</a> sjsu::I2c::WriteThenRead </td>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">Returns</a>&lt;void&gt; sjsu::I2c::WriteThenRead </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>address</em>, </td>

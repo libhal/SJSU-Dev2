@@ -4,7 +4,6 @@ var searchData=
   ['filebasename',['FileBasename',['../d0/d6b/namespacesjsu.html#a0100494866cb454bdaad16e2d4c31525',1,'sjsu::FileBasename(const char(&amp;path)[kPathLength])'],['../d0/d6b/namespacesjsu.html#a7c6279c539e2978eccc5ccf84afc2222',1,'sjsu::FileBasename(const char *path)']]],
   ['fill',['Fill',['../db/d32/classsjsu_1_1Ssd1306.html#ab089ba1b2d17602cb03b7242def6ac60',1,'sjsu::Ssd1306']]],
   ['findclosestfractional',['FindClosestFractional',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#a30393ed9717dbd31bffacb61a08ca0f8',1,'sjsu::lpc40xx::uart']]],
-  ['finddevice',['FindDevice',['../d8/d99/classsjsu_1_1Apds9960.html#a67ce1ca8a3203f209823c5cecdf5ae62',1,'sjsu::Apds9960']]],
   ['flush',['Flush',['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a077cff60586da2451d5fa8e3272322bc',1,'sjsu::stm32f10x::UartBase::Flush()'],['../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#ab6ae99f7a7e24c76392aa9025c9124b0',1,'sjsu::stm32f10x::Uart::Flush()'],['../d0/ddc/classsjsu_1_1Uart.html#a121d444f33008f78dbc94a27120d6043',1,'sjsu::Uart::Flush()']]],
   ['fputs',['fputs',['../d0/d21/newlib_8cpp.html#a3f07e5855650a9d6b307446642341546',1,'newlib.cpp']]],
   ['fractionalestimate',['FractionalEstimate',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#ac9d42a921ce81d039297beb31b2fd11b',1,'sjsu::lpc40xx::uart']]],

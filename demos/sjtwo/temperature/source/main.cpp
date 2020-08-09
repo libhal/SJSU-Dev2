@@ -9,22 +9,19 @@ int main()
   sjsu::lpc40xx::I2c i2c2(sjsu::lpc40xx::I2c::Bus::kI2c2);
   sjsu::Si7060 temperature_sensor(i2c2);
 
-  sjsu::Status temperature_device_status = temperature_sensor.Initialize();
-  if (temperature_device_status != sjsu::Status::kSuccess)
-  {
-    sjsu::LogError("Could not initialize temperature device (Si7060)");
-    sjsu::Halt();
-  }
+  SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.Initialize(), -1);
+  SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.Enable(), -2);
 
   sjsu::LogInfo("Si7060 Initialized!");
 
   while (true)
   {
-    units::temperature::celsius_t temperature;
-    temperature_sensor.GetTemperature(&temperature);
+    units::temperature::celsius_t temperature =
+        SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.GetTemperature(), -3);
     sjsu::LogInfo("Board Temperature: %.4f C",
                   static_cast<double>(temperature.value()));
     sjsu::Delay(1s);
   }
+
   return 0;
 }

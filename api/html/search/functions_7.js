@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['gesture',['Gesture',['../db/dc5/structsjtwo.html#a0f8b659c0f682ca2c102cdf63fea2292',1,'sjtwo']]],
   ['get',['Get',['../dd/dbe/classsjsu_1_1bit_1_1Register.html#a2ce5d6e0e2d14a760c47a0cb6a126bad',1,'sjsu::bit::Register']]],
   ['getactivebits',['GetActiveBits',['../d0/dc1/classsjsu_1_1Adc.html#aad0f82c8674acc5916171b9c654797cf',1,'sjsu::Adc::GetActiveBits()'],['../da/d01/classsjsu_1_1Dac.html#a701eca7eb9b1cbb37a403e3c4df39c6d',1,'sjsu::Dac::GetActiveBits()'],['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a3f886549ab4444d418c8586ede018fea',1,'sjsu::lpc40xx::Adc::GetActiveBits()'],['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ace0b148664a123566a3679cdbaf42a3f',1,'sjsu::lpc40xx::Dac::GetActiveBits()']]],
   ['getalltasks',['GetAllTasks',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#a6fbdbb0b4cc79b3259d78914178fbb96',1,'sjsu::rtos::TaskScheduler']]],
@@ -20,7 +19,6 @@ var searchData=
   ['getdistance',['GetDistance',['../df/d5c/classsjsu_1_1DistanceSensor.html#a74f6e6649466aaba8243facb5ae0b04a',1,'sjsu::DistanceSensor::GetDistance()'],['../d2/dc6/classsjsu_1_1TFMini.html#ab3c0345be5f2811555b916284f5c3fd4',1,'sjsu::TFMini::GetDistance()']]],
   ['getdutycycle',['GetDutyCycle',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a8cc7d4fcaa4860db071ee8a9b0cf84ee',1,'sjsu::lpc40xx::Pwm::GetDutyCycle()'],['../d6/ddf/classsjsu_1_1Pwm.html#af88f83b8b493df9a9c419df13bdb61a9',1,'sjsu::Pwm::GetDutyCycle()']]],
   ['getfrequency',['GetFrequency',['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a4076a5bdcb7719daee16f55794f07851',1,'sjsu::FrequencyCounter::GetFrequency()'],['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#acfb050cb32d4a111947260a5310cd349',1,'sjsu::lpc40xx::Pwm::GetFrequency()']]],
-  ['getgesture',['GetGesture',['../d8/d99/classsjsu_1_1Apds9960.html#a5375437f7d0bad02d4c2ebc872a67e29',1,'sjsu::Apds9960']]],
   ['getgpio',['GetGpio',['../d1/de1/classsjsu_1_1Button.html#adeb2387018ceb0bec02c7ca813d36b97',1,'sjsu::Button']]],
   ['gethandle',['GetHandle',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#abbcaf43eb1826bb0c6ecebb1806f4320',1,'sjsu::rtos::TaskInterface::GetHandle()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab0b5901f7f1ac3a18d8d6664d7812857',1,'sjsu::rtos::Task::GetHandle()']]],
   ['getheight',['GetHeight',['../db/d32/classsjsu_1_1Ssd1306.html#a47e47d288886889be9ce67510312a93d',1,'sjsu::Ssd1306::GetHeight()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a726c225c675804f71fb0fecc3c23565d',1,'sjsu::PixelDisplay::GetHeight()']]],
@@ -65,7 +63,7 @@ var searchData=
   ['gettaskfunction',['GetTaskFunction',['../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a89b555507cf39a4049755ac023465ea1',1,'sjsu::rtos::PeriodicTaskInterface::GetTaskFunction()'],['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a9914d6a1c6953f3bba984eabdc66d6b8',1,'sjsu::rtos::PeriodicTask::GetTaskFunction()']]],
   ['gettaskindex',['GetTaskIndex',['../d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html#ab53fd96b35d0aee319661b87545395b3',1,'sjsu::rtos::TaskScheduler']]],
   ['gettaskscheduler',['GetTaskScheduler',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a02dab34cd71b9970220f7c4d560c4f78',1,'sjsu::rtos::TaskInterface']]],
-  ['gettemperature',['GetTemperature',['../df/ddc/classsjsu_1_1Si7060.html#aba403bfa3429d2e915c736ed49b378bf',1,'sjsu::Si7060::GetTemperature()'],['../d8/db2/classsjsu_1_1Tmp102.html#a8adfd3cdf4b6a0527d7a08200450d13e',1,'sjsu::Tmp102::GetTemperature()'],['../d9/d0b/classsjsu_1_1TemperatureSensor.html#a8d9fe856155e726f586a5424cd71a5f1',1,'sjsu::TemperatureSensor::GetTemperature()']]],
+  ['gettemperature',['GetTemperature',['../df/ddc/classsjsu_1_1Si7060.html#aa1e8be3ffd5ef3315648b2746a0d459c',1,'sjsu::Si7060::GetTemperature()'],['../d8/db2/classsjsu_1_1Tmp102.html#ad152e0b6699eccf0492bbefdb40048e5',1,'sjsu::Tmp102::GetTemperature()'],['../d9/d0b/classsjsu_1_1TemperatureSensor.html#a11e551fa2ab77283789409515a566f1a',1,'sjsu::TemperatureSensor::GetTemperature()']]],
   ['gettimeleft',['GetTimeLeft',['../d6/d98/classsjsu_1_1TimeoutTimer.html#a33061d496e5ff5285d194dfe50cf1869',1,'sjsu::TimeoutTimer']]],
   ['gettransactioninfo',['GetTransactionInfo',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a1aab2429685ff4d31764246480566ee2',1,'sjsu::lpc40xx::I2c']]],
   ['getvolume',['GetVolume',['../de/d29/classsjsu_1_1Buzzer.html#aedf2952a1214bb003cb5574b3a0f61af',1,'sjsu::Buzzer']]],

@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['referenceclockfrequency',['ReferenceClockFrequency',['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a3069929d8bd343b6b56585dc5e5c9ff6',1,'sjsu::msp432p401r::SystemController']]],
-  ['registermap',['RegisterMap',['../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193',1,'sjsu::Mma8452q']]],
-  ['registers',['Registers',['../d8/d93/classsjsu_1_1example_1_1Example.html#aaaf3a87a0c22577eeb23c23505b95fdf',1,'sjsu::example::Example']]],
-  ['resistor',['Resistor',['../d0/da9/classsjsu_1_1Pin.html#af3152fad7bd72aaf4b1ffaa51e962b95',1,'sjsu::Pin']]],
-  ['responsetype',['ResponseType',['../dc/d5f/classsjsu_1_1Sd.html#aae21a97bbd11f456310b6fc8f399a580',1,'sjsu::Sd']]],
-  ['rtcsource',['RtcSource',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a61a5e38375081dae28296f049bb83c35',1,'sjsu::stm32f10x::SystemController']]]
+  ['spificlockselect',['SpifiClockSelect',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a2942ffd625e21c9d3caf8e20faef2b21',1,'sjsu::lpc40xx::SystemController']]],
+  ['state',['State',['../dd/d3a/classsjsu_1_1Gpio.html#abe65948089b7eacd3881a6305493f88f',1,'sjsu::Gpio']]],
+  ['states',['States',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#af98e440b4aefb4db4033936a59fe3fb2',1,'sjsu::lpc40xx::uart']]],
+  ['systemclockselect',['SystemClockSelect',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ad26f10f57cd757dab4f15454df3e556b',1,'sjsu::stm32f10x::SystemController']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['other',['other',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html#a4ab76b649d80090a9331b9d58292ced4',1,'sjsu::FixedAllocator::rebind']]]
+  ['returns',['Returns',['../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb',1,'sjsu']]]
 ];
