@@ -54,14 +54,7 @@ class Mpu6050 : public Accelerometer
 
   Returns<void> Initialize() override
   {
-    Status status = i2c_.Initialize();
-    // TODO(#1244): Migrate to using auto return macro SJ2_RETURN_VALUE_ON_ERROR
-    if (!IsOk(status))
-    {
-      return Error(Status::kBusError, "I2C Initialize Failed!");
-    }
-
-    return {};
+    return i2c_.Initialize();
   }
 
   /// Will automatically set the device to 2g for full-scale. Use
@@ -160,15 +153,9 @@ class Mpu6050 : public Accelerometer
                        { Value(RegisterMap::kDataConfig) }, &configRegister, 1);
     auto scaleMask = bit::MaskFromRange(3, 4);
     configRegister = bit::Insert(configRegister, gravity_code, scaleMask);
-    Status status =
+    SJ2_RETURN_ON_ERROR(
         i2c_.Write(kAccelerometerAddress,
-                   { Value(RegisterMap::kDataConfig), configRegister });
-
-    // TODO(#1244): Migrate to using auto return macro SJ2_RETURN_VALUE_ON_ERROR
-    if (!IsOk(status))
-    {
-      return Error(Status::kBusError, "I2C transaction failure");
-    }
+                   { Value(RegisterMap::kDataConfig), configRegister }));
 
     return {};
   }
@@ -186,15 +173,9 @@ class Mpu6050 : public Accelerometer
     controlRegister = bit::Insert(controlRegister, !is_active, sleepMask);
 
     // Write enable sequence
-    Status status =
+    SJ2_RETURN_ON_ERROR(
         i2c_.Write(kAccelerometerAddress,
-                   { Value(RegisterMap::kControlReg1), controlRegister });
-
-    // TODO(#1244): Migrate to using auto return macro SJ2_RETURN_VALUE_ON_ERROR
-    if (!IsOk(status))
-    {
-      return Error(Status::kBusError, "I2C transaction failure");
-    }
+                   { Value(RegisterMap::kControlReg1), controlRegister }));
 
     return {};
   }
@@ -207,15 +188,9 @@ class Mpu6050 : public Accelerometer
     uint8_t device_id = 0;
 
     // Read out the identity register
-    Status status = i2c_.WriteThenRead(kAccelerometerAddress,
-                                       { Value(RegisterMap::kWhoAmI) },
-                                       &device_id, sizeof(device_id));
-
-    // TODO(#1244): Migrate to using auto return macro SJ2_RETURN_VALUE_ON_ERROR
-    if (!IsOk(status))
-    {
-      return Error(Status::kBusError, "I2C transaction failure");
-    }
+    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(kAccelerometerAddress,
+                                           { Value(RegisterMap::kWhoAmI) },
+                                           &device_id, sizeof(device_id)));
 
     if (device_id != kExpectedDeviceID)
     {
