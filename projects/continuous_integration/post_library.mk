@@ -20,18 +20,23 @@ tidy: $(TIDY_FILES)
 	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 
 
-TIDY_COMMIT_SOURCES := $(shell git show --name-only HEAD | grep ".[hc]pp")
+TIDY_COMMIT_SOURCES := $(shell git show --diff-filter=AM --name-only HEAD \
+                               | grep ".[hc]pp")
 SHORT_TIDY_FILES    := $(addprefix $(SJ2_OBJECT_DIR)/, \
-                                   $(TIDY_COMMIT_SOURCES\:=.tidy))
+                                   $(TIDY_COMMIT_SOURCES:=.tidy))
 commit-tidy: $(SHORT_TIDY_FILES)
 	@printf '$(GREEN)Commit Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 
 
-$(SJ2_OBJECT_DIR)/%.tidy: %
+MAC_TIDY_INCLUDES = \
+		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+		-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/
+
+$(SJ2_OBJECT_DIR)/%.tidy: $(SJSU_DEV2_BASE)/%
 	@mkdir -p "$(dir $@)"
 	@$(CLANG_TIDY) -extra-arg="-std=c++2a" "$<"  -- \
 	  -D PLATFORM=host -D HOST_TEST=1 \
-		$(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
+		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
 	@printf '$(GREEN)Evaluated file: $(RESET)$< \n'
 
 
