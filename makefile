@@ -309,7 +309,7 @@ debug:
 
 
 debug-test:
-	gdb build/tests.exe
+	gdb -ex "source $(GDBINIT_PATH)" build/tests.exe
 
 
 flash: | application platform-flash
