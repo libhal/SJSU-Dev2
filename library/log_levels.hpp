@@ -1,4 +1,5 @@
 #pragma once
+
 // Definitions of Log levels in SJSU-Dev2
 // Follows the same log levels values as python's logging library
 #define SJ2_LOG_LEVEL_NONESET    00
