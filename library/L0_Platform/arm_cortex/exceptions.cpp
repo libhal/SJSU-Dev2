@@ -1,3 +1,5 @@
+#include <FreeRTOS.h>
+
 #include <cinttypes>
 #include <cstdint>
 #include <cstdio>
@@ -9,6 +11,7 @@
 #include "L1_Peripheral/cortex/fpu.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
+#include "utility/macros.hpp"
 #include "third_party/semihost/trace.h"
 
 extern "C"
@@ -63,6 +66,9 @@ extern "C"
     }
   }
 
+  // Required to get FreeRTOS support in OpenOCD + GDB
+  const volatile int uxTopUsedPriority = configMAX_PRIORITIES - 1;
+
   // Reset entry point for your code.
   // Sets up a simple runtime environment and initializes the C/C++ library.
   void ArmResetHandler()
@@ -76,6 +82,10 @@ extern "C"
     const uint32_t kTopOfStack = reinterpret_cast<intptr_t>(&StackTop);
     sjsu::cortex::__set_PSP(kTopOfStack);
     sjsu::cortex::__set_MSP(kTopOfStack);
+
+    // Required to get the compiler to keep this symbol in the symbol table
+    // rather than garbage collecting it at link time.
+    _SJ2_USED(uxTopUsedPriority);
 
     // Enable FPU (Floating Point Unit)
     // System will crash if floating point instruction is executed before
