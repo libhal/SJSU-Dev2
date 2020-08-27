@@ -117,14 +117,11 @@ struct LogDebug  // NOLINT
   /// @param params - variadic list of parameters to be passed to the log object
   /// @param location - the location in the source code where this object was
   ///        constructed.
-  LogDebug(const char * format,
+  LogDebug([[maybe_unused]] const char * format,
            Params... params,
            const std::experimental::source_location & location =
                std::experimental::source_location::current())
   {
-    // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
-    // attribute for constructor's first argument
-    _SJ2_USED(format);
     if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_DEBUG)
     {
       Log<Params...>(SJ2_BACKGROUND_PURPLE "   DEBUG", format, params...,
@@ -147,14 +144,11 @@ struct LogInfo  // NOLINT
   /// @param params - variadic list of parameters to be passed to the log object
   /// @param location - the location in the source code where this object was
   ///        constructed.
-  LogInfo(const char * format,
+  LogInfo([[maybe_unused]] const char * format,
           Params... params,
           const std::experimental::source_location & location =
               std::experimental::source_location::current())
   {
-    // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
-    // attribute for constructor's first argument
-    _SJ2_USED(format);
     if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_INFO)
     {
       Log<Params...>(SJ2_BACKGROUND_GREEN "    INFO", format, params...,
@@ -179,14 +173,11 @@ struct LogWarning  // NOLINT
   /// @param params - variadic list of parameters to be passed to the log object
   /// @param location - the location in the source code where this object was
   ///        constructed.
-  LogWarning(const char * format,
+  LogWarning([[maybe_unused]] const char * format,
              Params... params,
              const std::experimental::source_location & location =
                  std::experimental::source_location::current())
   {
-    // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
-    // attribute for constructor's first argument
-    _SJ2_USED(format);
     if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_WARNING)
     {
       Log<Params...>(SJ2_BACKGROUND_YELLOW " WARNING", format, params...,
@@ -209,14 +200,11 @@ struct LogError  // NOLINT
   /// @param params - variadic list of parameters to be passed to the log object
   /// @param location - the location in the source code where this object was
   ///        constructed.
-  LogError(const char * format,
+  LogError([[maybe_unused]] const char * format,
            Params... params,
            const std::experimental::source_location & location =
                std::experimental::source_location::current())
   {
-    // Required as GCC8 has parsing issues with the C++17 [[maybe_unused]]
-    // attribute for constructor's first argument
-    _SJ2_USED(format);
     if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_ERROR)
     {
       Log<Params...>(SJ2_BACKGROUND_RED "   ERROR", format, params...,
