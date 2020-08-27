@@ -52,6 +52,7 @@ EXECUTABLE = $(SJ2_BUILD_DIR)/firmware.elf
 BINARY     = $(EXECUTABLE:.elf=.bin)
 HEX        = $(EXECUTABLE:.elf=.hex)
 LIST       = $(EXECUTABLE:.elf=.lst)
+SRC_LIST   = $(EXECUTABLE:.elf=.src.lst)
 SIZE       = $(EXECUTABLE:.elf=.siz)
 MAP        = $(EXECUTABLE:.elf=.map)
 
@@ -69,6 +70,7 @@ MAGENTA = $(shell echo "\x1B[35;1m")
 CYAN    = $(shell echo "\x1B[36;1m")
 WHITE   = $(shell echo "\x1B[37;1m")
 RESET   = $(shell echo "\x1B[0m")
+DIVIDER = ======================================================================
 
 # ==============================================================================
 # Default Flags for Firmware
@@ -280,7 +282,7 @@ help:
 # ==============================================================================
 
 
-application: | $(LIST) $(HEX) $(BINARY) $(SIZE)
+application: | $(HEX) $(BINARY) $(LIST) $(SRC_LIST) $(SIZE)
 
 
 # ==============================================================================
@@ -375,16 +377,16 @@ test: | clean-coverage $(TEST_EXECUTABLE)
 
 $(HEX): $(EXECUTABLE)
 	@$(OBJCOPY) -O ihex "$<" "$@"
-	@printf '$(YELLOW)Generated Hex Image $(RESET)   : $@\n'
+	@printf '$(YELLOW)Generated Hex Image $(RESET)        : $@\n'
 
 
 $(BINARY): $(EXECUTABLE)
 	@$(OBJCOPY) -O binary "$<" "$@"
-	@printf '$(YELLOW)Generated Binary Image $(RESET): $@\n'
+	@printf '$(YELLOW)Generated Binary Image $(RESET)     : $@\n'
 
 
 $(SIZE): $(EXECUTABLE)
-	@printf '$(GREEN)==================================================$(RESET)\n'
+	@printf '$(GREEN)$(DIVIDER)$(RESET)\n'
 	@echo
 	@printf '$(WHITE)   Memory region:     Used Size  Region Size     %% Used\n'
 	@printf '$(RESET)'
@@ -396,8 +398,13 @@ $(SIZE): $(EXECUTABLE)
 
 
 $(LIST): $(EXECUTABLE)
+	@$(OBJDUMP) --disassemble --demangle "$<" > "$@"
+	@printf '$(YELLOW)Generated Disassembly $(RESET)      : $@\n'
+
+
+$(SRC_LIST): $(EXECUTABLE)
 	@$(OBJDUMP) --disassemble --all-headers --source --demangle "$<" > "$@"
-	@printf '$(YELLOW)Disassembly Generated$(RESET)  : $@\n'
+	@printf '$(YELLOW)Generated Source + Assembly$(RESET) : $@\n'
 
 
 $(SJ2_CORE_STATIC_LIBRARY): $(SJ2_LIBRARIES)
@@ -409,12 +416,12 @@ $(SJ2_CORE_STATIC_LIBRARY): $(SJ2_LIBRARIES)
 
 
 $(EXECUTABLE): $(OBJECTS) $(SJ2_CORE_STATIC_LIBRARY) $(LINKER_SCRIPT)
-	@printf '$(GREEN)==================================================$(RESET)\n'
+	@printf '$(GREEN)$(DIVIDER)$(RESET)\n'
 	@printf '$(YELLOW)Linking Executable$(RESET)     : $@\n'
 	@mkdir -p "$(dir $@)"
 	@$(CPPC) -Wl,--print-memory-usage $(LDFLAGS) -o "$@" \
 						$(OBJECTS) $(SJ2_CORE_STATIC_LIBRARY) 1> "$(SIZE)"
-	@printf '$(GREEN)==================================================$(RESET)\n'
+	@printf '$(GREEN)$(DIVIDER)$(RESET)\n'
 
 
 $(SJ2_OBJECT_DIR)/%.c.o: %.c
@@ -437,11 +444,11 @@ $(SJ2_OBJECT_DIR)/%.o: %
 
 
 $(TEST_EXECUTABLE): $(SJ2_TEST_OBJECTS)
-	@printf '$(GREEN)==================================================$(RESET)\n'
+	@printf '$(GREEN)$(DIVIDER)$(RESET)\n'
 	@printf '$(YELLOW)Linking Test Executable $(RESET) : $@\n'
 	@mkdir -p "$(dir $@)"
 	@$(TEST_CPPC) $(TEST_FLAGS) -o $(TEST_EXECUTABLE) $(SJ2_TEST_OBJECTS)
-	@printf '$(GREEN)==================================================$(RESET)\n'
+	@printf '$(GREEN)$(DIVIDER)$(RESET)\n'
 	@printf '$(GREEN)Test Executable Generated!$(RESET)\n'
 
 
