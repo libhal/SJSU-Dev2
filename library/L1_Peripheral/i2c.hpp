@@ -2,9 +2,9 @@
 
 #include <cstdint>
 #include <initializer_list>
+#include <span>
 
 #include "config.hpp"
-
 #include "utility/status.hpp"
 #include "utility/units.hpp"
 
@@ -16,9 +16,9 @@ namespace sjsu
 class I2c
 {
  public:
-  // ==============================
+  // ===========================================================================
   // Interface Defintions
-  // ==============================
+  // ===========================================================================
 
   /// Operation defines the types of operations that can occur in an I2C
   /// transaction.
@@ -117,6 +117,7 @@ class I2c
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
   virtual Returns<void> Initialize() const = 0;
+
   /// Perform a I2C transaction using the information contained in the
   /// transaction parameter.
   ///
@@ -127,9 +128,9 @@ class I2c
   ///         Status::kSuccess if transaction was fulfilled.
   virtual Returns<void> Transaction(Transaction_t transaction) const = 0;
 
-  // ==============================
+  // ===========================================================================
   // Utility Methods
-  // ==============================
+  // ===========================================================================
 
   /// Read from a device on the I2C bus
   ///
@@ -156,6 +157,19 @@ class I2c
         .busy       = true,
         .timeout    = timeout,
     });
+  }
+
+  /// Read from a device on the I2C bus
+  ///
+  /// @param address - device address
+  /// @param receive - byte span to read information into
+  /// @param timeout - Amount of time to wait for a response by device before
+  ///        bailing out.
+  Returns<void> Read(uint8_t address,
+                     std::span<uint8_t> receive,
+                     std::chrono::milliseconds timeout = kI2cTimeout) const
+  {
+    return Read(address, receive.data(), receive.size(), timeout);
   }
 
   /// Write to a device on the I2C bus
@@ -202,6 +216,24 @@ class I2c
     return Write(address, transmit.begin(), transmit.size(), timeout);
   }
 
+  /// Write to a device on the I2C bus
+  ///
+  /// Usage:
+  ///
+  ///     std::array<uint8_t> payload = {0x01, 0x2a, 0x10};
+  ///     i2c.Write(0x29, payload);
+  ///
+  /// @param address - device address
+  /// @param transmit - array or span to send to device
+  /// @param timeout - Amount of time to wait for a response by device before
+  ///        bailing out.
+  Returns<void> Write(uint8_t address,
+                      std::span<const uint8_t> transmit,
+                      std::chrono::milliseconds timeout = kI2cTimeout) const
+  {
+    return Write(address, transmit.data(), transmit.size(), timeout);
+  }
+
   /// Write to a device on the I2C bus, then read from that device.
   ///
   /// This is very common for most I2C devices, where the microcontroller must
@@ -209,11 +241,12 @@ class I2c
   /// read the data from the device.
   ///
   /// @param address - device address
-  /// @param transmit_buffer - pointer to a byte buffer to read information into
+  /// @param transmit_buffer - pointer to a byte buffer to write information
+  ///        into
   /// @param transmit_buffer_length - number of bytes to be written into the
   ///        data buffer
-  /// @param receive_buffer - pointer to a byte buffer to send to the device
-  /// @param receive_buffer_length - number of bytes to be written to the device
+  /// @param receive_buffer - pointer to a byte buffer to read from the device
+  /// @param receive_buffer_length - number of bytes to be read from the device
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
   Returns<void> WriteThenRead(
@@ -242,13 +275,13 @@ class I2c
   ///
   /// Usage:
   ///
-  ///    uint8_t buffer[10];
-  ///    i2c.Write(0x29, {0x01}, buffer, sizeof(buffer));
+  ///    std::array<uint8_t, 10> buffer;
+  ///    i2c.Write(0x29, {0x01}, buffer.data(), buffer.size());
   ///
   /// @param address - device address
   /// @param transmit - array literal to send to device
-  /// @param receive_buffer - b
-  /// @param receive_buffer_length -
+  /// @param receive_buffer - pointer to a byte buffer to read from the device
+  /// @param receive_buffer_length - number of bytes to be read from the device
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
   Returns<void> WriteThenRead(
@@ -260,6 +293,28 @@ class I2c
   {
     return WriteThenRead(address, transmit.begin(), transmit.size(),
                          receive_buffer, receive_buffer_length, timeout);
+  }
+
+  /// Write to a device on the I2C bus, then read from that device.
+  ///
+  /// Usage:
+  ///
+  ///    std::array<uint8_t, 10> buffer;
+  ///    i2c.Write(0x29, {0x01}, buffer.data(), buffer.size());
+  ///
+  /// @param address - device address
+  /// @param transmit - span referencing bytes to transmit to device
+  /// @param receive - span to byte buffer to received data from device
+  /// @param timeout - Amount of time to wait for a response by device before
+  ///        bailing out.
+  Returns<void> WriteThenRead(
+      uint8_t address,
+      std::span<const uint8_t> transmit,
+      std::span<uint8_t> receive,
+      std::chrono::milliseconds timeout = kI2cTimeout) const
+  {
+    return WriteThenRead(address, transmit.data(), transmit.size(),
+                         receive.data(), receive.size(), timeout);
   }
 };
 }  // namespace sjsu
