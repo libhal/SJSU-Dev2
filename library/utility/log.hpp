@@ -86,7 +86,7 @@ struct Log  // NOLINT
     // If we have exceeded the limits of the log statement, we truncate the
     // message and add an "..." at the end, to indicate that data was
     // trimmed/lost.
-    if (static_cast<size_t>(position) >= buffer.size() - 1)
+    if (static_cast<size_t>(position) <= buffer.size() - 1)
     {
       static constexpr std::string_view kEllipsisEnding =
           "...\n" SJ2_COLOR_RESET;
@@ -122,7 +122,7 @@ struct LogDebug  // NOLINT
            const std::experimental::source_location & location =
                std::experimental::source_location::current())
   {
-    if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_DEBUG)
+    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_DEBUG)
     {
       Log<Params...>(SJ2_BACKGROUND_PURPLE "   DEBUG", format, params...,
                      location);
@@ -149,7 +149,7 @@ struct LogInfo  // NOLINT
           const std::experimental::source_location & location =
               std::experimental::source_location::current())
   {
-    if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_INFO)
+    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_INFO)
     {
       Log<Params...>(SJ2_BACKGROUND_GREEN "    INFO", format, params...,
                      location);
@@ -178,7 +178,7 @@ struct LogWarning  // NOLINT
              const std::experimental::source_location & location =
                  std::experimental::source_location::current())
   {
-    if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_WARNING)
+    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_WARNING)
     {
       Log<Params...>(SJ2_BACKGROUND_YELLOW " WARNING", format, params...,
                      location);
@@ -205,7 +205,7 @@ struct LogError  // NOLINT
            const std::experimental::source_location & location =
                std::experimental::source_location::current())
   {
-    if constexpr (config::kLogLevel >= SJ2_LOG_LEVEL_ERROR)
+    if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_ERROR)
     {
       Log<Params...>(SJ2_BACKGROUND_RED "   ERROR", format, params...,
                      location);
