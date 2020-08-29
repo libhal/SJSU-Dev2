@@ -5,8 +5,8 @@ LIBRARY_LINUX += $(LIBRARY_DIR)/L0_Platform/linux/freertos_posix/port.c
 
 $(eval $(call BUILD_LIBRARY,liblinux,LIBRARY_LINUX))
 
-DEVICE_CC        := gcc-8
-DEVICE_CPPC      := g++-8
+DEVICE_CC        := gcc-9
+DEVICE_CPPC      := g++-9
 DEVICE_OBJDUMP   := objdump
 DEVICE_SIZEC     := size
 DEVICE_OBJCOPY   := objcopy

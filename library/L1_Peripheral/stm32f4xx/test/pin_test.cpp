@@ -202,7 +202,7 @@ TEST_CASE("Testing stm32f4xx Pin")
       stm32f4xx::Pin invalid_pin(port, 0);
 
       // Exercise & Verify
-      CHECK(invalid_pin.Initialize().error().status ==
+      CHECK(invalid_pin.Initialize().error()->status ==
             Status::kInvalidSettings);
     }
   }
@@ -254,7 +254,7 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].pin.Initialize();
 
         // Exercise & Verify
-        CHECK(test[i].pin.SetPinFunction(invalid_function).error().status ==
+        CHECK(test[i].pin.SetPinFunction(invalid_function).error()->status ==
               Status::kInvalidParameters);
       }
     }
@@ -303,7 +303,7 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise & Verify
-        CHECK(test[i].pin.SetPull(Pin::Resistor::kRepeater).error().status ==
+        CHECK(test[i].pin.SetPull(Pin::Resistor::kRepeater).error()->status ==
               Status::kInvalidSettings);
       }
     }

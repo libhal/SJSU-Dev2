@@ -235,7 +235,7 @@ TEST_CASE("Testing stm32f10x Pin")
       for (size_t i = 0; i < test.size(); i++)
       {
         // Exercise & Verify
-        CHECK(test[i].pin.SetPinFunction(0b10).error().status ==
+        CHECK(test[i].pin.SetPinFunction(0b10).error()->status ==
               Status::kInvalidParameters);
       }
     }
@@ -305,7 +305,7 @@ TEST_CASE("Testing stm32f10x Pin")
 
       {
         // Exercise & Verify
-        CHECK(test[i].pin.SetPull(Pin::Resistor::kRepeater).error().status ==
+        CHECK(test[i].pin.SetPull(Pin::Resistor::kRepeater).error()->status ==
               Status::kInvalidSettings);
       }
     }

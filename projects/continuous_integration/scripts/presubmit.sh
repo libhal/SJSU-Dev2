@@ -67,20 +67,12 @@ echo ""
 # ==============================================================================
 # Clang Tidy Check
 # ==============================================================================
+print_divider "Executing 'commit-tidy' check"
 
-if [ "$1" == "quick" ]; then
-  print_divider "Executing 'commit-tidy' check"
-  time make -s commit-tidy -j4
-  TIDY_CAPTURE=$?
-  print_status $TIDY_CAPTURE
-  echo ""
-else
-  print_divider "Executing 'tidy' check"
-  time make -s tidy -j4
-  TIDY_CAPTURE=$?
-  print_status $TIDY_CAPTURE
-  echo ""
-fi
+time make -s commit-tidy -j4
+TIDY_CAPTURE=$?
+print_status $TIDY_CAPTURE
+echo ""
 
 # ==============================================================================
 # Unit Test Check

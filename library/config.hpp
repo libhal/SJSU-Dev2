@@ -222,16 +222,6 @@ static_assert(1 <= kFatDriveCount && kFatDriveCount <= 10,
 /// Delcare Constant STORE_ERROR_MESSAGE
 SJ2_DECLARE_CONSTANT(STORE_ERROR_MESSAGE, bool, kStoreErrorMessages);
 
-/// If true, will automatically print errors that occur in the system along with
-/// a stacktrace from when the error occurred.
-#if !defined(SJ2_AUTOMATICALLY_PRINT_ON_ERROR)
-#define SJ2_AUTOMATICALLY_PRINT_ON_ERROR true
-#endif  // !defined(SJ2_AUTOMATICALLY_PRINT_ON_ERROR)
-/// Delcare Constant AUTOMATICALLY_PRINT_ON_ERROR
-SJ2_DECLARE_CONSTANT(AUTOMATICALLY_PRINT_ON_ERROR,
-                     bool,
-                     kAutomaticallyPrintOnError);
-
 /// Enable or disable float support in printf statements. Setting to false will
 /// reduce binary size.
 #if !defined(SJ2_PRINTF_BUFFER_SIZE)

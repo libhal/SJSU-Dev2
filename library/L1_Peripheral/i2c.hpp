@@ -37,14 +37,16 @@ class I2c
   {
    public:
     static constexpr auto kTimeout =
-        Error(Status::kTimedOut,
-              "I2C took too long to process and timed out! Consider "
-              "increasing the timeout time.");
+        Error_t(Status::kTimedOut,
+                "I2C took too long to process and timed out! Consider "
+                "increasing the timeout time.");
+
     static constexpr auto kBusError =
-        Error(Status::kBusError, "I2C bus error occurred.");
+        Error_t(Status::kBusError, "I2C bus error occurred.");
+
     static constexpr auto kDeviceNotFound =
-        Error(Status::kDeviceNotFound,
-              "I2C address not found/acknowledged by device.");
+        Error_t(Status::kDeviceNotFound,
+                "I2C address not found/acknowledged by device.");
   };
 
   /// A common structure for holding the information needed for I2C

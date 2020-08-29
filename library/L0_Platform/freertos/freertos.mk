@@ -1,4 +1,4 @@
-LINT_FILTER += $(LIBRARY_DIR)/L0_Platform/freertos/
+LINT_FILTER += library/L0_Platform/freertos/
 
 LIBRARY_FREERTOS_COMMON += \
     $(LIBRARY_DIR)/L0_Platform/freertos/freertos_common.cpp

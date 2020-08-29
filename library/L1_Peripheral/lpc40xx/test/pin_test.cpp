@@ -48,9 +48,9 @@ TEST_CASE("Testing lpc40xx Pin")
     SECTION("Invalid function code")
     {
       // Exercise & Verify
-      CHECK(test_subject00.SetPinFunction(0b1000).error().status ==
+      CHECK(test_subject00.SetPinFunction(0b1000).error()->status ==
             Status::kInvalidParameters);
-      CHECK(test_subject25.SetPinFunction(0b1111).error().status ==
+      CHECK(test_subject25.SetPinFunction(0b1111).error()->status ==
             Status::kInvalidParameters);
     }
   }
