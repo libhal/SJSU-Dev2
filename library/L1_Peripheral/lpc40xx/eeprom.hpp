@@ -27,7 +27,7 @@ class Eeprom final : public sjsu::Storage
   static constexpr bit::Mask kAddressMask = bit::MaskFromRange(0, 1);
 
   /// Masks for the program status bits and read/write status bits
-  struct Status  // NOLINT
+  struct StatusRegister  // NOLINT
   {
     /// Mask to get value of programming status bit
     static constexpr bit::Mask kProgramStatusMask = bit::MaskFromRange(28);
@@ -155,18 +155,19 @@ class Eeprom final : public sjsu::Storage
       // Poll status register bit to see when writing is finished
       auto check_register = []() {
         return bit::Read(eeprom_register->INT_STATUS,
-                         Status::kReadWriteStatusMask);
+                         StatusRegister::kReadWriteStatusMask);
       };
 
       auto timeout_status = Wait(kMaxTimeout, check_register);
       if (!IsOk(timeout_status))
       {
-        return Error(timeout_status, "Could not write to EEPROM in time.");
+        return Error(Status::kTimedOut,
+                     "Could not write to EEPROM in time.");
       }
 
       // Clear write interrupt
       eeprom_register->INT_CLR_STATUS =
-          (bit::Set(0, Status::kReadWriteStatusMask));
+          (bit::Set(0, StatusRegister::kReadWriteStatusMask));
 
       page_offset += kOffsetInterval;
 
@@ -215,14 +216,14 @@ class Eeprom final : public sjsu::Storage
     // Poll status register bit to see when programming is finished
     auto check_register = []() {
       return (bit::Read(eeprom_register->INT_STATUS,
-              Status::kProgramStatusMask));
+                        StatusRegister::kProgramStatusMask));
     };
 
     Wait(kMaxTimeout, check_register);
 
     // Clear program interrupt
     eeprom_register->INT_CLR_STATUS =
-        (bit::Set(0, Status::kProgramStatusMask));
+        (bit::Set(0, StatusRegister::kProgramStatusMask));
   }
 };
 }  // namespace lpc40xx

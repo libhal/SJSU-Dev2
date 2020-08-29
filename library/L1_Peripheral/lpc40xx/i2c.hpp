@@ -399,11 +399,11 @@ class I2c final : public sjsu::I2c
 
     if (i2c_.transaction.status == Status::kBusError)
     {
-      return CommonErrors::kBusError;
+      return DefinedError(CommonErrors::kBusError);
     }
     else if (i2c_.transaction.status == Status::kDeviceNotFound)
     {
-      return CommonErrors::kDeviceNotFound;
+      return DefinedError(CommonErrors::kDeviceNotFound);
     }
     else if (wait_status == Status::kTimedOut)
     {
@@ -412,7 +412,7 @@ class I2c final : public sjsu::I2c
 
       if (i2c_.transaction.out_length == 0 || i2c_.transaction.in_length == 0)
       {
-        return CommonErrors::kTimeout;
+        return DefinedError(CommonErrors::kTimeout);
       }
     }
 

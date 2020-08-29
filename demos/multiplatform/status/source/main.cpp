@@ -3,7 +3,6 @@
 
 namespace
 {
-using sjsu::Error;
 using sjsu::Returns;
 using sjsu::Status;
 }  // namespace
@@ -93,7 +92,8 @@ int main()
   // Check if the result has an error
   if (!result)
   {
-    sjsu::LogError("Getting PLL Code Failed!\n");
+    sjsu::LogError("Getting PLL Code Failed!");
+    result.error()->Print();
     // Error handling would go here...
     return 111;
   }

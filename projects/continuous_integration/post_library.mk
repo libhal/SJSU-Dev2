@@ -4,33 +4,39 @@ CFLAGS += -Werror
 # ==============================================================================
 # Continuous Integration Recipes
 # ==============================================================================
-FILE_EXCLUDES = grep -v $(addprefix -e ,$(LINT_FILTER))
-LINT_FILES    = $(shell \
-find $(LIBRARY_DIR) $(SJSU_DEV2_BASE)/projects/hello_world \
-     $(SJSU_DEV2_BASE)/projects/starter $(SJSU_DEV2_BASE)/projects/barebones \
-     $(SJSU_DEV2_BASE)/demos/ -name "*.hpp" -o -name "*.cpp" | \
-     $(FILE_EXCLUDES) 2> /dev/null)
+
+FILE_EXCLUDES      := grep -v $(addprefix -e ,$(LINT_FILTER))
+GREP_CPP_SOURCES   := grep ".[hc]pp$$" | $(FILE_EXCLUDES)
+GIT_ALL_REPO_FILES := git ls-tree --full-tree -r --name-only HEAD
+GIT_UPDATED_FILES  := git show --diff-filter=AM --name-only HEAD...master
+
+TRACKED_SOURCES    = $(shell $(GIT_ALL_REPO_FILES) | $(GREP_CPP_SOURCES))
+UPDATED_SOURCES    = $(shell $(GIT_UPDATED_FILES) | $(GREP_CPP_SOURCES))
+
+LINT_FILES         = $(addprefix $(SJSU_DEV2_BASE)/, $(TRACKED_SOURCES))
+TIDY_FILES         = $(addprefix $(SJ2_OBJECT_DIR)/, $(TRACKED_SOURCES:=.tidy))
+UPDATED_TIDY_FILES = $(addprefix $(SJ2_OBJECT_DIR)/, $(UPDATED_SOURCES:=.tidy))
+
+MAC_TIDY_INCLUDES = \
+		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+		-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/
+
+# ==============================================================================
+# Targets
+# ==============================================================================
+
 
 lint:
 	@python3 $(SJ2_TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
 
 
-TIDY_FILES = $(addprefix $(SJ2_OBJECT_DIR)/, $(LINT_FILES:=.tidy))
-tidy: $(TIDY_FILES)
-	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
-
-
-TIDY_COMMIT_SOURCES := $(shell git show --diff-filter=AM --name-only HEAD \
-                               | grep ".[hc]pp")
-SHORT_TIDY_FILES    := $(addprefix $(SJ2_OBJECT_DIR)/, \
-                                   $(TIDY_COMMIT_SOURCES:=.tidy))
-commit-tidy: $(SHORT_TIDY_FILES)
+commit-tidy: $(UPDATED_TIDY_FILES)
 	@printf '$(GREEN)Commit Tidy Evaluation Complete. Everything clear!$(RESET)\n'
 
 
-MAC_TIDY_INCLUDES = \
-		-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
-		-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/
+tidy: $(TIDY_FILES)
+	@printf '$(GREEN)Tidy Evaluation Complete. Everything clear!$(RESET)\n'
+
 
 $(SJ2_OBJECT_DIR)/%.tidy: $(SJSU_DEV2_BASE)/%
 	@mkdir -p "$(dir $@)"
@@ -50,10 +56,6 @@ all-projects:
 
 presubmit:
 	+@./scripts/presubmit.sh
-
-
-quick-presubmit:
-	+@./scripts/presubmit.sh quick
 
 
 find-missing-tests:

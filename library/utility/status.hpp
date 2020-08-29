@@ -208,53 +208,40 @@ constexpr const char * Stringify(const Status_t & status)
 
 /// Error object that contains the Status code, message and location of where an
 /// error occurred. This is the underlying error type of SJSU-Dev2.
-struct Error_t
+class Error_t  // NOLINT
 {
+ public:
   /// Represents an empty string
-  constexpr static std::string_view kEmptyMessage = "";
+  constexpr static const char * kEmptyMessage = "";
 
   /// @param error_status   - status code to go with this error object
   /// @param error_message  - message to go with error to describe exactly why
   ///                         the error occurred.
   /// @param source_location - the location in the source code where the Error_t
   ///                          was created.
-  constexpr Error_t(Status error_status            = Status::kSuccess,
-                    std::string_view error_message = kEmptyMessage,
+  constexpr Error_t(Status error_status        = Status::kSuccess,
+                    const char * error_message = kEmptyMessage,
                     const std::experimental::source_location & source_location =
                         std::experimental::source_location::current())
-      : status(error_status), message(kEmptyMessage), location(source_location)
+      : status(error_status)
   {
+    file     = source_location.file_name();
+    function = source_location.function_name();
+    line     = source_location.line();
+
     if constexpr (config::kStoreErrorMessages)
     {
       message = error_message;
     }
-    if constexpr (config::kAutomaticallyPrintOnError)
-    {
-      if (!std::is_constant_evaluated())
-      {
-        if (error_status != Status::kSuccess)
-        {
-          Print();
-          if constexpr (config::kIncludeBacktrace)
-          {
-            printf(SJ2_HI_BOLD_WHITE "Backtrace:" SJ2_COLOR_RESET);
-            int depth = 0;
-            _Unwind_Backtrace(&debug::PrintAddressInRow, &depth);
-            puts("");
-          }
-        }
-      }
-    }
   }
 
   /// Print the error message to STDOUT
-  void Print()
+  void Print() const
   {
     /// Print the colored error text to STDOUT
     printf(SJ2_BOLD_YELLOW "Error:" SJ2_HI_BOLD_RED "%s(%d)" SJ2_HI_BOLD_WHITE
-                           ":%s:%" PRIuLEAST32 ":%s(): %s\n" SJ2_COLOR_RESET,
-           status.name.data(), status.code, location.file_name(),
-           location.line(), location.function_name(), message.data());
+                           ":%s:%d:%s(): %s\n" SJ2_COLOR_RESET,
+           status.name.data(), status.code, file, line, function, message);
   }
 
   constexpr bool operator==(const Error_t & other) const
@@ -272,57 +259,31 @@ struct Error_t
   /// The status associated with this error
   Status_t status;
   /// Custom message describing the error
-  std::string_view message = kEmptyMessage;
-  /// Location of where the error occurred.
-  std::experimental::source_location location;
+  const char * message = kEmptyMessage;
+  /// File name string
+  const char * file = kEmptyMessage;
+  /// Function name string
+  const char * function = kEmptyMessage;
+  /// File line number
+  int line = 0;
 };
-
-/// Compile time factory function for cleanly creating
-/// std::unexpected<Error_t> objects. Library code shall use this function to
-/// generate std::unexpected objects and shall not use std::unexpected
-/// directly to keep the code style consistent.
-///
-/// Usage:
-///
-///     return Error(Status::kTimeout, "Couldn't find resource in time");
-///
-/// Without this function:
-///
-///     return std::unexpected(
-///               Error_t{Status::kTimeout, "Couldn't find resource in
-///               time"});
-///
-/// @param status - The status associated with this error
-/// @param message - The custom message to go with the status
-/// @param location - Default initialized and should almost never be supplied
-///                   by the user. Will be defaulted to the location in which
-///                   this function was called.
-/// @return constexpr tl::unexpected<Error_t>
-constexpr tl::unexpected<Error_t> Error(
-    Status status,
-    std::string_view message = Error_t::kEmptyMessage,
-    const std::experimental::source_location & location =
-        std::experimental::source_location::current())
-{
-  return tl::unexpected(Error_t{ status, message, location });
-}
 
 /// Short hand for writing `tl::unexpected(error);` when returning a bare
 /// Error_t type.
 ///
 /// @param error - the error type to return.
-constexpr tl::unexpected<Error_t> Error(Error_t && error)
+constexpr tl::unexpected<const Error_t *> DefinedError(const Error_t & error)
 {
-  return tl::unexpected(error);
+  return tl::unexpected(&error);
 }
 
 /// Alias for the more complex tl::expected definitions. Using
-/// std::expected<T, Error_t> should never be used in order to conform to the
+/// tl::expected<T, Error_t> should never be used in order to conform to the
 /// SJSU-Dev2 standard.
 ///
 /// @tparam T - the actual, non-error, result to return from the function
 template <typename T>
-using Returns = tl::expected<T, Error_t>;
+using Returns = tl::expected<T, const Error_t *>;
 
 template <typename T>
 constexpr Returns<T> NoError()
@@ -333,7 +294,7 @@ constexpr Returns<T> NoError()
 /// This is a helper function for the `SJ2_RETURN_ON_ERROR()` macro to help it
 /// return the results of a `Returns<>` object.
 ///
-/// std::expected has a special case where the `value()` does not exist for
+/// tl::expected has a special case where the `value()` does not exist for
 /// void types, meaning that in that specific case, we cannot call that
 /// method. So in the place of running `value()` we return a throw away value,
 /// in this case int 0.
@@ -356,6 +317,31 @@ constexpr auto GetReturnValue(Returns<T> & result)
     return result.value();
   }
 }
+
+/// Compile time factory function for cleanly creating
+/// tl::unexpected<Error_t> objects. Library code shall use this function to
+/// generate tl::unexpected objects and shall not use tl::unexpected
+/// directly to keep the code style consistent.
+///
+/// Usage:
+///
+///     return Error(Status::kTimeout, "Couldn't find resource in time");
+///
+/// Without this function:
+///
+///     return tl::unexpected(
+///               Error_t{Status::kTimeout, "Couldn't find resource in
+///               time"});
+///
+/// @param status - The status associated with this error
+/// @param message - The custom message to go with the status
+/// @return constexpr tl::unexpected<Error_t>
+#define Error(status, message)                                \
+  ({                                                          \
+    constexpr static ::sjsu::Error_t kError(status, message); \
+    auto error_result = tl::unexpected(&kError);              \
+    error_result;                                             \
+  })
 
 /// A macro for simplifying the boiler plate of evaluating an expression that
 /// returns a Returns<> object. This will handle evaluating the function that
