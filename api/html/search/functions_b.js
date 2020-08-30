@@ -6,5 +6,6 @@ var searchData=
   ['max_5fsize',['max_size',['../db/d4d/structsjsu_1_1CommandList__t.html#a6f328b8d5e3b7f1389470580652b82c9',1,'sjsu::CommandList_t']]],
   ['min',['Min',['../d4/d0e/classsjsu_1_1BitLimits.html#a64f08e64f3d047743131b28b3900618f',1,'sjsu::BitLimits']]],
   ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html#a8d39b64e10b87ceefb5a4f49f92b5a16',1,'sjsu::Mma8452q']]],
-  ['movetolinestart',['MoveToLineStart',['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a05b2be125e0004307303f5097ed271cc',1,'sjsu::GraphicalTerminal']]]
+  ['movetolinestart',['MoveToLineStart',['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a05b2be125e0004307303f5097ed271cc',1,'sjsu::GraphicalTerminal']]],
+  ['mpu6050',['Mpu6050',['../d6/d14/classsjsu_1_1Mpu6050.html#a87c6aa675bf955cc53de77561d435115',1,'sjsu::Mpu6050']]]
 ];

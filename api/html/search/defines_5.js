@@ -1,7 +1,6 @@
 var searchData=
 [
   ['section',['SECTION',['../d0/daf/testing__frameworks_8hpp.html#ac5f41b3cefc075e35486583b52712b0d',1,'testing_frameworks.hpp']]],
-  ['sj2_5fautomatically_5fprint_5fon_5ferror',['SJ2_AUTOMATICALLY_PRINT_ON_ERROR',['../d8/dfd/config_8hpp.html#a10bda9f5050bfd880b874a67d0c4de03',1,'config.hpp']]],
   ['sj2_5fbackground_5fblack',['SJ2_BACKGROUND_BLACK',['../de/d94/ansi__terminal__codes_8hpp.html#a7dc36ece40472b259734ebbf91892146',1,'ansi_terminal_codes.hpp']]],
   ['sj2_5fbackground_5fblue',['SJ2_BACKGROUND_BLUE',['../de/d94/ansi__terminal__codes_8hpp.html#a4f6a22d9ca15e7f06363318c28e82e4a',1,'ansi_terminal_codes.hpp']]],
   ['sj2_5fbackground_5fcyan',['SJ2_BACKGROUND_CYAN',['../de/d94/ansi__terminal__codes_8hpp.html#a6f9930d1ab86753358c0c4ce3607f8fb',1,'ansi_terminal_codes.hpp']]],

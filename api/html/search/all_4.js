@@ -23,6 +23,7 @@ var searchData=
   ['decodedframe_5ft',['DecodedFrame_t',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html',1,'sjsu::infrared']]],
   ['defaultuptime',['DefaultUptime',['../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877',1,'sjsu']]],
   ['define',['Define',['../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html#ab1c7122316c8970cc365a85e519c24eb',1,'sjsu::SystemController::ResourceID']]],
+  ['definederror',['DefinedError',['../d0/d6b/namespacesjsu.html#a3162c7ef61140e906b785432edbbc752',1,'sjsu']]],
   ['delay',['Delay',['../d0/d6b/namespacesjsu.html#a7296da8e9d2335075c51565cc1a0060f',1,'sjsu']]],
   ['delay_5ftime_5f',['delay_time_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5be244105265971ef530ad246b030c7b',1,'sjsu::rtos::Task']]],
   ['delete',['Delete',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a481ac77148be00467ef08270b2ec5b9b',1,'sjsu::rtos::TaskInterface::Delete()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a3e60b11d2c6ad1d9241db2498ac1f44a',1,'sjsu::rtos::Task::Delete()']]],

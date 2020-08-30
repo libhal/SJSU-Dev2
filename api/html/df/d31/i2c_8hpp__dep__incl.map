@@ -4,7 +4,8 @@
 <area shape="rect" id="node14" href="$d0/dfe/si7060_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/sensors\l/environment/temperature\l/si7060.hpp" alt="" coords="919,124,1113,209"/>
 <area shape="rect" id="node15" href="$d6/df5/tmp102_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/sensors\l/environment/temperature\l/tmp102.hpp" alt="" coords="1137,124,1332,209"/>
 <area shape="rect" id="node16" href="$dc/d47/mma8452q_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/sensors\l/movement/accelerometer\l/mma8452q.hpp" alt="" coords="1272,257,1467,343"/>
-<area shape="rect" id="node17" href="$d0/dd3/i2c__command_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L3_Application\l/commands/i2c_command.hpp" alt="" coords="1407,131,1628,202"/>
+<area shape="rect" id="node17" href="$d2/d61/mpu6050_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/sensors\l/movement/accelerometer\l/mpu6050.hpp" alt="" coords="1407,124,1601,209"/>
+<area shape="rect" id="node18" href="$d0/dd3/i2c__command_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L3_Application\l/commands/i2c_command.hpp" alt="" coords="1625,131,1847,202"/>
 <area shape="rect" id="node3" href="$d6/d0c/lpc40xx_2can_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L1_Peripheral\l/lpc40xx/can.hpp" alt="" coords="119,265,287,335"/>
 <area shape="rect" id="node5" href="$d6/d2f/lpc40xx_2gpio_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L1_Peripheral\l/lpc40xx/gpio.hpp" alt="" coords="424,265,592,335"/>
 <area shape="rect" id="node9" href="$d4/de6/sjtwo_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/boards\l/sjtwo.hpp" alt="" coords="837,391,1005,461"/>

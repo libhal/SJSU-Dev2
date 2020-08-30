@@ -83,6 +83,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;initializer_list&gt;</code><br />
+<code>#include &lt;span&gt;</code><br />
 <code>#include &quot;<a class="el" href="../../d8/dfd/config_8hpp_source.html">config.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../db/dcd/status_8hpp_source.html">utility/status.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../de/d06/units_8hpp_source.html">utility/units.hpp</a>&quot;</code><br />
@@ -91,16 +92,16 @@ Include dependency graph for i2c.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d8/dc5/i2c_8hpp__incl.png" border="0" usemap="#_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2i2c_8hpp" alt=""/></div>
 <map name="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2i2c_8hpp" id="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2i2c_8hpp">
-<area shape="rect" id="node4" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1041,377,1130,404"/>
-<area shape="rect" id="node8" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1463,452,1587,479"/>
-<area shape="rect" id="node11" href="../../db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="786,124,918,151"/>
-<area shape="rect" id="node6" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1015,452,1156,479"/>
-<area shape="rect" id="node7" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="874,452,990,479"/>
-<area shape="rect" id="node16" href="../../da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="786,206,918,233"/>
-<area shape="rect" id="node23" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="1385,295,1525,322"/>
-<area shape="rect" id="node25" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="634,288,787,329"/>
-<area shape="rect" id="node26" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="290,295,446,322"/>
-<area shape="rect" id="node27" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="470,295,610,322"/>
+<area shape="rect" id="node5" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="786,377,875,404"/>
+<area shape="rect" id="node9" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1295,452,1419,479"/>
+<area shape="rect" id="node12" href="../../db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="837,124,969,151"/>
+<area shape="rect" id="node7" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="760,452,901,479"/>
+<area shape="rect" id="node8" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="619,452,735,479"/>
+<area shape="rect" id="node17" href="../../da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="837,206,969,233"/>
+<area shape="rect" id="node24" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="1099,295,1239,322"/>
+<area shape="rect" id="node26" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="685,288,838,329"/>
+<area shape="rect" id="node27" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="341,295,497,322"/>
+<area shape="rect" id="node28" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="521,295,661,322"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -113,7 +114,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <area shape="rect" id="node14" href="../../d0/dfe/si7060_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/sensors\l/environment/temperature\l/si7060.hpp" alt="" coords="919,124,1113,209"/>
 <area shape="rect" id="node15" href="../../d6/df5/tmp102_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/sensors\l/environment/temperature\l/tmp102.hpp" alt="" coords="1137,124,1332,209"/>
 <area shape="rect" id="node16" href="../../dc/d47/mma8452q_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/sensors\l/movement/accelerometer\l/mma8452q.hpp" alt="" coords="1272,257,1467,343"/>
-<area shape="rect" id="node17" href="../../d0/dd3/i2c__command_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L3_Application\l/commands/i2c_command.hpp" alt="" coords="1407,131,1628,202"/>
+<area shape="rect" id="node17" href="../../d2/d61/mpu6050_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/sensors\l/movement/accelerometer\l/mpu6050.hpp" alt="" coords="1407,124,1601,209"/>
+<area shape="rect" id="node18" href="../../d0/dd3/i2c__command_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L3_Application\l/commands/i2c_command.hpp" alt="" coords="1625,131,1847,202"/>
 <area shape="rect" id="node3" href="../../d6/d0c/lpc40xx_2can_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L1_Peripheral\l/lpc40xx/can.hpp" alt="" coords="119,265,287,335"/>
 <area shape="rect" id="node5" href="../../d6/d2f/lpc40xx_2gpio_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L1_Peripheral\l/lpc40xx/gpio.hpp" alt="" coords="424,265,592,335"/>
 <area shape="rect" id="node9" href="../../d4/de6/sjtwo_8hpp.html" title="/home/travis/build\l/SJSU&#45;Dev2/SJSU&#45;Dev2\l/library/L2_HAL/boards\l/sjtwo.hpp" alt="" coords="837,391,1005,461"/>

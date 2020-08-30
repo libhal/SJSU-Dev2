@@ -126,7 +126,7 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a96b13230012af6002196c0556984e409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa054d158293c0ee3aaa2972d2154e545"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html#aa054d158293c0ee3aaa2972d2154e545">kTimedOut</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-1, &quot;Timed Out&quot;)</td></tr>
 <tr class="separator:aa054d158293c0ee3aaa2972d2154e545"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1fe454c409d80157fc870e96745606b"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html#af1fe454c409d80157fc870e96745606b">kBusError</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-2, &quot;Bus <a class="el" href="../../d0/d6b/namespacesjsu.html#aec7ea63db938c0a4e7b66f5c50fa9f1c">Error</a>&quot;)</td></tr>
+<tr class="memitem:af1fe454c409d80157fc870e96745606b"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html#af1fe454c409d80157fc870e96745606b">kBusError</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-2, &quot;Bus <a class="el" href="../../db/dcd/status_8hpp.html#a7e4674688064881f9f1a6b09a8a735d4">Error</a>&quot;)</td></tr>
 <tr class="separator:af1fe454c409d80157fc870e96745606b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59dd553c29e41e59a91b292e55433e8f"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a59dd553c29e41e59a91b292e55433e8f">kDeviceNotFound</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-3, &quot;Device Not Found&quot;)</td></tr>
 <tr class="separator:a59dd553c29e41e59a91b292e55433e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,6 +140,8 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:ace796147fa61bccad8e792e0f0a46844"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98f8c44511e60cfe24081834409ae014"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a98f8c44511e60cfe24081834409ae014">kUnfinished</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-8, &quot;Unfinished&quot;)</td></tr>
 <tr class="separator:a98f8c44511e60cfe24081834409ae014"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c854db5c6e588a52a88702c5d245499"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a7c854db5c6e588a52a88702c5d245499">kOutOfBounds</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-9, &quot;Out Of Bounds&quot;)</td></tr>
+<tr class="separator:a7c854db5c6e588a52a88702c5d245499"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -371,7 +373,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto sjsu::Status::kBusError = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-2, &quot;Bus <a class="el" href="../../d0/d6b/namespacesjsu.html#aec7ea63db938c0a4e7b66f5c50fa9f1c">Error</a>&quot;)</td>
+          <td class="memname">constexpr auto sjsu::Status::kBusError = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-2, &quot;Bus <a class="el" href="../../db/dcd/status_8hpp.html#a7e4674688064881f9f1a6b09a8a735d4">Error</a>&quot;)</td>
         </tr>
       </table>
   </td>
@@ -496,6 +498,29 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>This is returned if a system is currently busy and cannot take new operations or requests. </p>
+
+</div>
+</div>
+<a id="a7c854db5c6e588a52a88702c5d245499"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c854db5c6e588a52a88702c5d245499">&#9670;&nbsp;</a></span>kOutOfBounds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto sjsu::Status::kOutOfBounds = <a class="el" href="../../d0/d6b/namespacesjsu.html#aae914cbf259768df3c6ff54347081c43">CreateStatus</a>(-9, &quot;Out Of Bounds&quot;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If there was some sort of access of memory or information outside of its typical boundary. </p>
 
 </div>
 </div>

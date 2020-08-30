@@ -30,8 +30,8 @@ TEST_CASE("Accelerometer")
     SECTION("Failure")
     {
       // Setup
-      When(Method(mock_i2c, Initialize))
-          .AlwaysReturn(Error(Status::kNotReadyYet));
+      const auto kExpectedStatus = Error(Status::kNotReadyYet, "");
+      When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedStatus);
 
       // Exercise
       auto result = test_subject.Initialize();

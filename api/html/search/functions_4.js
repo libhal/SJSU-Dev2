@@ -6,6 +6,7 @@ var searchData=
   ['decode',['Decode',['../d3/d9b/namespacesjsu_1_1infrared.html#ac51a552a21bf1eb337eaaa66530b5746',1,'sjsu::infrared']]],
   ['defaultuptime',['DefaultUptime',['../d0/d6b/namespacesjsu.html#a0f84f67b465422655089cda4b4a60877',1,'sjsu']]],
   ['define',['Define',['../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html#ab1c7122316c8970cc365a85e519c24eb',1,'sjsu::SystemController::ResourceID']]],
+  ['definederror',['DefinedError',['../d0/d6b/namespacesjsu.html#a3162c7ef61140e906b785432edbbc752',1,'sjsu']]],
   ['delay',['Delay',['../d0/d6b/namespacesjsu.html#a7296da8e9d2335075c51565cc1a0060f',1,'sjsu']]],
   ['delete',['Delete',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#a481ac77148be00467ef08270b2ec5b9b',1,'sjsu::rtos::TaskInterface::Delete()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a3e60b11d2c6ad1d9241db2498ac1f44a',1,'sjsu::rtos::Task::Delete()']]],
   ['detachinterrupt',['DetachInterrupt',['../dd/d3a/classsjsu_1_1Gpio.html#a0657f0c0777ec9cd10cc1d31e9f8d5a4',1,'sjsu::Gpio::DetachInterrupt()'],['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ad7fcbd8e572440d339a1c8e492e49f24',1,'sjsu::lpc40xx::Gpio::DetachInterrupt()'],['../d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html#a6baf76373d1c4ffa5732a2bcf95844c0',1,'sjsu::msp432p401r::Gpio::DetachInterrupt()'],['../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#aca13aea12bc8fd1380ad496fe213a6c7',1,'sjsu::stm32f10x::Gpio::DetachInterrupt()'],['../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#ad8507069ab3e33fda5fc459bfddf2a0b',1,'sjsu::stm32f4xx::Gpio::DetachInterrupt()']]],

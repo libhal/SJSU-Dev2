@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['returns',['Returns',['../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb',1,'sjsu']]]
+  ['returns',['Returns',['../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5',1,'sjsu']]]
 ];

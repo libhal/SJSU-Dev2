@@ -28,8 +28,8 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
     SECTION("Initialization failure")
     {
       // Setup
-      constexpr Status kExpectedStatus = Status::kBusError;
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(Error(kExpectedStatus));
+      const auto kExpectedStatus = Error(Status::kBusError, "");
+      When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedStatus);
 
       // Exercise
       auto success = temperature_sensor.Initialize();

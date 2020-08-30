@@ -14,7 +14,7 @@ var searchData=
   ['max',['Max',['../d4/d0e/classsjsu_1_1BitLimits.html#a539171e351081e41c16f9ee6ae250702',1,'sjsu::BitLimits']]],
   ['max_5fcpu_5fclock_5frate',['max_cpu_clock_rate',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a262a9463b764059a46f3eadc42af8608',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t']]],
   ['max_5fsize',['max_size',['../db/d4d/structsjsu_1_1CommandList__t.html#a6f328b8d5e3b7f1389470580652b82c9',1,'sjsu::CommandList_t']]],
-  ['message',['message',['../d1/d7c/structsjsu_1_1Error__t.html#a26025e219b43d78024c429deac0e43ad',1,'sjsu::Error_t']]],
+  ['message',['message',['../d1/d36/classsjsu_1_1Error__t.html#aa4dca9fcced15aba14955878d086e37a',1,'sjsu::Error_t']]],
   ['message_5ft',['Message_t',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html',1,'sjsu::Can']]],
   ['millisecond_5fcount',['millisecond_count',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a4b3de8f56a24d2ff25838f07052776ae',1,'sjsu::cortex::SystemTimer']]],
   ['min',['Min',['../d4/d0e/classsjsu_1_1BitLimits.html#a64f08e64f3d047743131b28b3900618f',1,'sjsu::BitLimits']]],
@@ -25,6 +25,8 @@ var searchData=
   ['modules',['Modules',['../d5/d44/classsjsu_1_1msp432p401r_1_1SystemController_1_1Modules.html',1,'sjsu::msp432p401r::SystemController']]],
   ['mosi',['mosi',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#ae3cf6225b5c2b9bb40f74830df712b31',1,'sjsu::lpc40xx::Spi::Bus_t']]],
   ['movetolinestart',['MoveToLineStart',['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a05b2be125e0004307303f5097ed271cc',1,'sjsu::GraphicalTerminal']]],
+  ['mpu6050',['Mpu6050',['../d6/d14/classsjsu_1_1Mpu6050.html',1,'sjsu::Mpu6050'],['../d6/d14/classsjsu_1_1Mpu6050.html#a87c6aa675bf955cc53de77561d435115',1,'sjsu::Mpu6050::Mpu6050()']]],
+  ['mpu6050_2ehpp',['mpu6050.hpp',['../d2/d61/mpu6050_8hpp.html',1,'']]],
   ['msp432p401r',['msp432p401r',['../d6/d36/namespacesjsu_1_1build.html#a7cd3fc249a4045bc9f897bab66447d92a781b08b2845d4be560a4adf3f62951e4',1,'sjsu::build']]],
   ['multiplier',['Multiplier',['../d5/df8/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1.html#a4da75961cfc8e01fdfd45ffe8d8f7d1f',1,'sjsu::lpc17xx::SystemController::Pll1::Multiplier()'],['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#ae729c2515c9fa282f28fd2469293c5da',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::multiplier()'],['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a682053e71c1225fcb0ac7776a369e8ec',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::multiplier()']]],
   ['multiply',['multiply',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#ae4dfb55b5ee86ca42d9243ca04f0fd8c',1,'sjsu::lpc40xx::SystemController::ClockConfiguration::multiply()'],['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d',1,'sjsu::lpc40xx::uart::UartCalibration_t::multiply()'],['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a797da42e3805d6a99769c5601685ed4a',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::multiply()']]]

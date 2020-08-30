@@ -70,24 +70,25 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">Error_t</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">Mpu6050</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">sjsu::Error_t Member List</div>  </div>
+<div class="title">sjsu::Mpu6050 Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html#a4ab62690bccd1d772f9a3230937d0355">Error_t</a>(Status error_status, std::string_view error_message=kEmptyMessage, const std::experimental::source_location &amp;source_location=std::experimental::source_location::current())</td><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html#acf51be236e5d055cf27e11e80658d473">kEmptyMessage</a></td><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html#ace6b05991298446d2ad8d893a689f3a7">location</a></td><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html#a26025e219b43d78024c429deac0e43ad">message</a></td><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html#aeb3028e8a9100f34ad02e91195b08b43">operator==</a>(const Error_t &amp;other) const</td><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html#acb5ce3e8c91402e503d4ba32d98c2df6">Print</a>()</td><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html#a0e6df183c33f5bd28bfe5d5a4967ae10">status</a></td><td class="entry"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#a05371a0fcf52b2bc99c6098277b9d6ce">ActiveMode</a>(bool is_active=true)</td><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#ad4e4335b52a0f8ffecbaf329ebc7c89d">Enable</a>() override</td><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#ab7174557df35c6017b29df88982d0912">Initialize</a>() override</td><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#aca929b9d44c71e9e700a60a6bb9d5fd3">IsValidDevice</a>()</td><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#a87c6aa675bf955cc53de77561d435115">Mpu6050</a>(const I2c &amp;i2c, units::acceleration::standard_gravity_t full_scale=2_SG, uint8_t address=0x68)</td><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
+  <tr><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#ad4b0f954a99a04b716b7d607df0d2de8">Read</a>() override</td><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#a87627628596e4e5f5c685b26ce009ca5">RegisterMap</a> enum name</td><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#acd47a193c51aceb53ad9606a2aff41d1">SetFullScaleRange</a>()</td><td class="entry"><a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html">sjsu::Mpu6050</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->

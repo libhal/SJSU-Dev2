@@ -171,7 +171,7 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d10/structsjsu_1_1Status.html">sjsu::Status</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7c/structsjsu_1_1Error__t.html">sjsu::Error_t</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d36/classsjsu_1_1Error__t.html">sjsu::Error_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -181,6 +181,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a7e4674688064881f9f1a6b09a8a735d4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcd/status_8hpp.html#a7e4674688064881f9f1a6b09a8a735d4">Error</a>(status,  message)</td></tr>
+<tr class="separator:a7e4674688064881f9f1a6b09a8a735d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23b72c114edfa0c39521b403a7d20abb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcd/status_8hpp.html#a23b72c114edfa0c39521b403a7d20abb">SJ2_RETURN_ON_ERROR</a>(expression)</td></tr>
 <tr class="separator:a23b72c114edfa0c39521b403a7d20abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9ce66c2638619a6d0c2dcc930f00b56"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dcd/status_8hpp.html#ac9ce66c2638619a6d0c2dcc930f00b56">SJ2_RETURN_VALUE_ON_ERROR</a>(expression,  value)</td></tr>
@@ -188,9 +190,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a03cee5ef434c22d629b58c946cc1cdfb"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a03cee5ef434c22d629b58c946cc1cdfb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a03cee5ef434c22d629b58c946cc1cdfb">sjsu::Returns</a> = tl::expected&lt; T, Error_t &gt;</td></tr>
-<tr class="separator:a03cee5ef434c22d629b58c946cc1cdfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e9bf9c05bd3d57355ab5d6710d8b9d5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7e9bf9c05bd3d57355ab5d6710d8b9d5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">sjsu::Returns</a> = tl::expected&lt; T, const Error_t * &gt;</td></tr>
+<tr class="separator:a7e9bf9c05bd3d57355ab5d6710d8b9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -206,8 +208,8 @@ Functions</h2></td></tr>
 <tr class="separator:ae79fee3041646c850a4eafd77db83d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad012d4cec8669cbd475e24254d79ea6f"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ad012d4cec8669cbd475e24254d79ea6f">sjsu::Stringify</a> (const Status_t &amp;status)</td></tr>
 <tr class="separator:ad012d4cec8669cbd475e24254d79ea6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec7ea63db938c0a4e7b66f5c50fa9f1c"><td class="memItemLeft" align="right" valign="top">constexpr tl::unexpected&lt; Error_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#aec7ea63db938c0a4e7b66f5c50fa9f1c">sjsu::Error</a> (Status status, std::string_view message=Error_t::kEmptyMessage, const std::experimental::source_location &amp;location=std::experimental::source_location::current())</td></tr>
-<tr class="separator:aec7ea63db938c0a4e7b66f5c50fa9f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3162c7ef61140e906b785432edbbc752"><td class="memItemLeft" align="right" valign="top">constexpr tl::unexpected&lt; const Error_t * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a3162c7ef61140e906b785432edbbc752">sjsu::DefinedError</a> (const Error_t &amp;error)</td></tr>
+<tr class="separator:a3162c7ef61140e906b785432edbbc752"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac074665cbd70e881ba8cc23cc77a7228"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ac074665cbd70e881ba8cc23cc77a7228"><td class="memTemplItemLeft" align="right" valign="top">constexpr Returns&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac074665cbd70e881ba8cc23cc77a7228">sjsu::NoError</a> ()</td></tr>
 <tr class="separator:ac074665cbd70e881ba8cc23cc77a7228"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -216,6 +218,47 @@ Functions</h2></td></tr>
 <tr class="separator:a18e6a843e58706740f3e24d4d4c1a1a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a7e4674688064881f9f1a6b09a8a735d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e4674688064881f9f1a6b09a8a735d4">&#9670;&nbsp;</a></span>Error</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define Error</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">status, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">message&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">({                                                          \</div><div class="line">    constexpr static ::sjsu::Error_t kError(status, message); \</div><div class="line">    auto error_result = tl::unexpected(&amp;kError);              \</div><div class="line">    error_result;                                             \</div><div class="line">  })</div></div><!-- fragment --><p>Compile time factory function for cleanly creating tl::unexpected&lt;Error_t&gt; objects. Library code shall use this function to generate tl::unexpected objects and shall not use tl::unexpected directly to keep the code style consistent.</p>
+<p>Usage: </p><pre class="fragment">return Error(Status::kTimeout, "Couldn't find resource in time");
+</pre><p>Without this function: </p><pre class="fragment">return tl::unexpected(
+          Error_t{Status::kTimeout, "Couldn't find resource in
+          time"});
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">status</td><td>- The status associated with this error </td></tr>
+    <tr><td class="paramname">message</td><td>- The custom message to go with the status </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>constexpr tl::unexpected&lt;Error_t&gt; </dd></dl>
+
+</div>
+</div>
 <a id="a23b72c114edfa0c39521b403a7d20abb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a23b72c114edfa0c39521b403a7d20abb">&#9670;&nbsp;</a></span>SJ2_RETURN_ON_ERROR</h2>
 
