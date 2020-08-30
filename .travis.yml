@@ -36,13 +36,36 @@ matrix:
               branch: master
         - os: osx
           osx_image: xcode10
+          cache:
+            directories:
+              - $HOME/Library/Caches/Homebrew
+              - /usr/local/Homebrew
+          before_cache:
+            - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
+            - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
+          addons:
+            homebrew:
+              packages:
+              - python@3
           script:
             - cd projects/continuous_integration/
             - make presubmit
         - os: osx
           osx_image: xcode11.3
+          cache:
+            directories:
+              - $HOME/Library/Caches/Homebrew
+              - /usr/local/Homebrew
+          before_cache:
+            - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew cleanup; fi
+            - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then find /usr/local/Homebrew \! -regex ".+\.git.+" -delete; fi
+          addons:
+            homebrew:
+              packages:
+              - python@3
           script:
             - cd projects/continuous_integration/
             - make presubmit
+
 install: ./setup
 
