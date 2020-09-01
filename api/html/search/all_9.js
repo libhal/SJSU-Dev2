@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['i2c',['I2c',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx::I2c'],['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a16017796facc691f44596bbb2934d6d5',1,'sjsu::lpc40xx::I2c::I2c()']]],
+  ['i2c',['I2c',['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a16017796facc691f44596bbb2934d6d5',1,'sjsu::lpc40xx::I2c::I2c()']]],
   ['i2c_2ehpp',['i2c.hpp',['../db/d1c/i2c_8hpp.html',1,'(Global Namespace)'],['../d8/dbb/lpc17xx_2i2c_8hpp.html',1,'(Global Namespace)'],['../d9/d18/lpc40xx_2i2c_8hpp.html',1,'(Global Namespace)']]],
   ['i2c0',['i2c0',['../db/dc0/structsjone.html#acd934660401331ad1c5992a8542bd183',1,'sjone::i2c0()'],['../db/dc5/structsjtwo.html#abf5330654c0cfb42de768115ed7d90e5',1,'sjtwo::i2c0()']]],
   ['i2c1',['i2c1',['../db/dc0/structsjone.html#ad492142aeaf9cbb65ebe63b69807a2da',1,'sjone::i2c1()'],['../db/dc5/structsjtwo.html#aac9b09af97527c13c15a9aa4eb8fa48d',1,'sjtwo::i2c1()']]],
@@ -9,6 +9,8 @@ var searchData=
   ['i2cbus',['I2cBus',['../d8/d9a/structsjsu_1_1lpc17xx_1_1I2cBus.html',1,'sjsu::lpc17xx']]],
   ['i2ccommand',['I2cCommand',['../dd/d36/classsjsu_1_1I2cCommand.html',1,'sjsu::I2cCommand'],['../dd/d36/classsjsu_1_1I2cCommand.html#ae2c9db1ca8f249ad0b23b7b480a23e19',1,'sjsu::I2cCommand::I2cCommand()']]],
   ['i2chandler',['I2cHandler',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a3394da7b10ba7c9eeaf2bff0f6e4e912',1,'sjsu::lpc40xx::I2c']]],
+  ['i2cprotocol',['I2cProtocol',['../d2/dc2/classsjsu_1_1I2cProtocol.html',1,'sjsu::I2cProtocol&lt; MaximumPayloadSize &gt;'],['../d2/dc2/classsjsu_1_1I2cProtocol.html#a3dd0a79d55772ee5df86c318de250f9c',1,'sjsu::I2cProtocol::I2cProtocol()']]],
+  ['i2cprotocol_3c_201_20_3e',['I2cProtocol&lt; 1 &gt;',['../d2/dc2/classsjsu_1_1I2cProtocol.html',1,'sjsu']]],
   ['id',['id',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a856e262a4e837740c47e5d257fb467db',1,'sjsu::Can::Message_t::id()'],['../d2/d5c/structsjsu_1_1lpc40xx_1_1Can_1_1Channel__t.html#a0df2f35eb7b6c59cba7ac60014ce13bb',1,'sjsu::lpc40xx::Can::Channel_t::id()'],['../d8/d77/structsjsu_1_1lpc40xx_1_1Can_1_1LpcRegisters__t.html#ae28828c3deddd9b8a31549dfa35069d3',1,'sjsu::lpc40xx::Can::LpcRegisters_t::id()'],['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a01c42a7dbd94156b995c26d37e897fd8',1,'sjsu::lpc40xx::I2c::Bus_t::id()'],['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#aa486d40b66bc152f88d1a72ad753c437',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t::id()'],['../d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html#a1ea66dfa6c24c2aefc41e4be1187328e',1,'sjsu::lpc40xx::Pwm::Peripheral_t::id()'],['../d5/d2d/structsjsu_1_1lpc40xx_1_1Timer_1_1Peripheral__t.html#abba8072a29062d4cc848876d12a31ee0',1,'sjsu::lpc40xx::Timer::Peripheral_t::id()'],['../d6/d49/structsjsu_1_1stm32f10x_1_1UartBase_1_1Port__t.html#a35eaccaf5f7994e35c04cb90d08e5cf3',1,'sjsu::stm32f10x::UartBase::Port_t::id()']]],
   ['in',['in',['../dd/de8/namespacesjsu_1_1newlib.html#a70c98e935901ed2720ac2adc8c67a70e',1,'sjsu::newlib']]],
   ['in_5flength',['in_length',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ad780c3a4397f73fdfa36390237495eac',1,'sjsu::I2c::Transaction_t']]],
@@ -51,6 +53,7 @@ var searchData=
   ['isconnected',['IsConnected',['../dc/d4f/classsjsu_1_1Esp8266.html#a8910ede1b41e9f6188526179b1261ab7',1,'sjsu::Esp8266::IsConnected()'],['../dc/d16/classsjsu_1_1WiFi.html#a2bc768a0e2741c539b208efd709c9ae1',1,'sjsu::WiFi::IsConnected()']]],
   ['isdecimal',['IsDecimal',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#a6da530bacaa2987dc82d1182f2c7ed84',1,'sjsu::lpc40xx::uart']]],
   ['isdurationwithintolerance',['IsDurationWithinTolerance',['../d3/d9b/namespacesjsu_1_1infrared.html#a028c343ac2452cd72e96484238a0653b',1,'sjsu::infrared']]],
+  ['isinteger',['IsInteger',['../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#aec080d0f95999d7e38d734f598436df0',1,'sjsu::MemoryAccessProtocol::AccessHandler']]],
   ['isintialized',['IsIntialized',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#af6a3d9c711e437eaa236a44f69493176',1,'sjsu::lpc40xx::I2c']]],
   ['ismediapresent',['IsMediaPresent',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a675baf4b9500cf99753fed44a09cd29e',1,'sjsu::lpc40xx::Eeprom::IsMediaPresent()'],['../dc/da6/classsjsu_1_1Storage.html#a826db74f43c08271f1d15d11e2e91b8d',1,'sjsu::Storage::IsMediaPresent()'],['../dc/d5f/classsjsu_1_1Sd.html#aabd2e86689ae232ecb8c21f1aa2dac87',1,'sjsu::Sd::IsMediaPresent()']]],
   ['ismonochrome',['IsMonoChrome',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a8c05af6fb8b71208ada059c2595e61ec',1,'sjsu::PixelDisplay::Color_t']]],

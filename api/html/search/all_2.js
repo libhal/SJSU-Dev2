@@ -30,5 +30,7 @@ var searchData=
   ['button3',['button3',['../db/dc5/structsjtwo.html#ac1791cf80adee1ed870187ffb7eacec5',1,'sjtwo']]],
   ['buzzer',['Buzzer',['../de/d29/classsjsu_1_1Buzzer.html',1,'sjsu::Buzzer'],['../de/d29/classsjsu_1_1Buzzer.html#a1b68d1d57788fa4b654567b332812ac7',1,'sjsu::Buzzer::Buzzer()']]],
   ['buzzer_2ehpp',['buzzer.hpp',['../df/d07/buzzer_8hpp.html',1,'']]],
-  ['byte',['byte',['../da/df2/structsjsu_1_1Sd_1_1Response__t.html#aa38255a751f9ff6a198ebc01f6ed642f',1,'sjsu::Sd::Response_t::byte()'],['../df/d50/structsjsu_1_1Sd_1_1CsdBuffer__t.html#addc2a8beca18613fab63ff079f94408a',1,'sjsu::Sd::CsdBuffer_t::byte()'],['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a75dfb1ca7fcbbf580d84cff257348959',1,'sjsu::Sd::CardInfo_t::byte()']]]
+  ['byte',['byte',['../da/df2/structsjsu_1_1Sd_1_1Response__t.html#aa38255a751f9ff6a198ebc01f6ed642f',1,'sjsu::Sd::Response_t::byte()'],['../df/d50/structsjsu_1_1Sd_1_1CsdBuffer__t.html#addc2a8beca18613fab63ff079f94408a',1,'sjsu::Sd::CsdBuffer_t::byte()'],['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a75dfb1ca7fcbbf580d84cff257348959',1,'sjsu::Sd::CardInfo_t::byte()']]],
+  ['byte_2ehpp',['byte.hpp',['../da/da9/byte_8hpp.html',1,'']]],
+  ['bytearraytospan',['ByteArrayToSpan',['../d0/d6b/namespacesjsu.html#a688d949c0a1495025da0d6357f2d52b6',1,'sjsu']]]
 ];

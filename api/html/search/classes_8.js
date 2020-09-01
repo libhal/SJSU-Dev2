@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['i2c',['I2c',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx::I2c'],['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu::I2c']]],
+  ['i2c',['I2c',['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx::I2c']]],
   ['i2cbus',['I2cBus',['../d8/d9a/structsjsu_1_1lpc17xx_1_1I2cBus.html',1,'sjsu::lpc17xx']]],
   ['i2ccommand',['I2cCommand',['../dd/d36/classsjsu_1_1I2cCommand.html',1,'sjsu']]],
+  ['i2cprotocol',['I2cProtocol',['../d2/dc2/classsjsu_1_1I2cProtocol.html',1,'sjsu']]],
+  ['i2cprotocol_3c_201_20_3e',['I2cProtocol&lt; 1 &gt;',['../d2/dc2/classsjsu_1_1I2cProtocol.html',1,'sjsu']]],
   ['infraredreceiver',['InfraredReceiver',['../dd/d21/classsjsu_1_1InfraredReceiver.html',1,'sjsu']]],
   ['internaloscillator',['InternalOscillator',['../d9/d26/structsjsu_1_1msp432p401r_1_1SystemController_1_1InternalOscillator.html',1,'sjsu::msp432p401r::SystemController']]],
   ['internetsocket',['InternetSocket',['../db/dcb/classsjsu_1_1InternetSocket.html',1,'sjsu']]],

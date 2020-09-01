@@ -51,6 +51,7 @@ var searchData=
   ['dividerestimate',['DividerEstimate',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#abde94d90bf0a65ebb8422fdeaa33acda',1,'sjsu::lpc40xx::uart']]],
   ['dma',['dma',['../d6/d49/structsjsu_1_1stm32f10x_1_1UartBase_1_1Port__t.html#a75667adb72ff2b7654893c13c51b2a59',1,'sjsu::stm32f10x::UartBase::Port_t']]],
   ['dmareg',['DmaReg',['../de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html',1,'sjsu::stm32f10x::UartBase']]],
+  ['doctest',['doctest',['../d0/d4c/namespacedoctest.html',1,'']]],
   ['donothingstdin',['DoNothingStdIn',['../dd/de8/namespacesjsu_1_1newlib.html#a0b0f63d263af72ba7d3666c022d768c6',1,'sjsu::newlib']]],
   ['donothingstdout',['DoNothingStdOut',['../dd/de8/namespacesjsu_1_1newlib.html#af97bdea09c0adcc921ef2fd8520bbef0',1,'sjsu::newlib']]],
   ['drawcharacter',['DrawCharacter',['../d7/d8c/classsjsu_1_1Graphics.html#aa0ec32c4f630a496e9cf979a153242b7',1,'sjsu::Graphics']]],

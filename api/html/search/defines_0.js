@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['build_5ftests',['BUILD_TESTS',['../de/d06/units_8hpp.html#aceb17e7c24309f9f8aa91bd94b9dcf1e',1,'units.hpp']]]
+  ['add_5farithmetic_5foperation',['ADD_ARITHMETIC_OPERATION',['../d7/dae/memory__access__protocol_8hpp.html#ab3d760c9882f57caaef0a93a5526551d',1,'memory_access_protocol.hpp']]]
 ];

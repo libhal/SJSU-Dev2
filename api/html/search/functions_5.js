@@ -8,6 +8,8 @@ var searchData=
   ['enablehysteresis',['EnableHysteresis',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ac778f80d582fb2b9b91098f3f328e253',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighcurrentdrive',['EnableI2cHighCurrentDrive',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae0250a624094081b9ca08accfbbabc6b',1,'sjsu::lpc40xx::Pin']]],
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a62684c9056be5f64a86d23046167565e',1,'sjsu::lpc40xx::Pin']]],
+  ['endianess',['Endianess',['../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html#a49ed225ee43f8db86d3693a74a50d894',1,'sjsu::MemoryAccessProtocol::Address']]],
+  ['endianness',['Endianness',['../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html#a9cf1a06f6ccc4a9b5e12a1994e1a8e39',1,'sjsu::MemoryAccessProtocol::Specification_t']]],
   ['erase',['Erase',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#aebbdb60f356670558cf1971932eabac7',1,'sjsu::lpc40xx::Eeprom::Erase()'],['../dc/da6/classsjsu_1_1Storage.html#a8ee35125b70666a7717b83db70ea66cf',1,'sjsu::Storage::Erase()'],['../dc/d5f/classsjsu_1_1Sd.html#a34de0a4725d328732eb92ff2de6ca55c',1,'sjsu::Sd::Erase()']]],
   ['error_5ft',['Error_t',['../d1/d36/classsjsu_1_1Error__t.html#a78794ce7014bd81a7541f6b4e7866d7c',1,'sjsu::Error_t']]],
   ['esp8266',['Esp8266',['../dc/d4f/classsjsu_1_1Esp8266.html#ac0ddbdd40f24de276666fb9e27b919bf',1,'sjsu::Esp8266']]],

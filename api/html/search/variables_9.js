@@ -3,6 +3,7 @@ var searchData=
   ['kactivebits',['kActiveBits',['../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae062fa73ba090adab38b1b423715fb32',1,'sjsu::lpc40xx::Adc']]],
   ['kadcdivider',['kAdcDivider',['../dd/ddb/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfigurationRegisters.html#a6c0f1c149c0fd506ff1a7c59330c58f6',1,'sjsu::stm32f10x::SystemController::ClockConfigurationRegisters']]],
   ['kaddressmask',['kAddressMask',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a53eeb9f770c3b05675e5550e9fe57016',1,'sjsu::lpc40xx::Eeprom']]],
+  ['kaddresssizelimit',['kAddressSizeLimit',['../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html#aea9798b0ab10ff64e03a00249520d455',1,'sjsu::MemoryAccessProtocol']]],
   ['kahb',['kAHB',['../dd/d68/classsjsu_1_1stm32f10x_1_1SystemController_1_1Peripherals.html#a907269b3844fc83edd0566e1bae0eae0',1,'sjsu::stm32f10x::SystemController::Peripherals']]],
   ['kahb1',['kAHB1',['../de/d68/classsjsu_1_1stm32f4xx_1_1SystemController_1_1Peripherals.html#a2bafb2b443a0a4985966a2078b3848c7',1,'sjsu::stm32f4xx::SystemController::Peripherals']]],
   ['kahb2',['kAHB2',['../de/d68/classsjsu_1_1stm32f4xx_1_1SystemController_1_1Peripherals.html#a303a19d2271212bc9b6213a6fdbc7147',1,'sjsu::stm32f4xx::SystemController::Peripherals']]],
@@ -58,6 +59,7 @@ var searchData=
   ['kconfigcommand',['kConfigCommand',['../d2/dc6/classsjsu_1_1TFMini.html#a76611c96addc0ed25d5bb89ba77de1d3',1,'sjsu::TFMini']]],
   ['kconfiguration',['kConfiguration',['../d8/da2/structsjsu_1_1Tmp102_1_1RegisterAddress.html#a78a32f93b03d819d4e55197dda4a5ae0',1,'sjsu::Tmp102::RegisterAddress']]],
   ['kconnectmask',['kConnectMask',['../d6/db9/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll0_1_1StatusRegister.html#a90f2d9dcb3cd70798274d57b36177a12',1,'sjsu::lpc17xx::SystemController::Pll0::StatusRegister::kConnectMask()'],['../d4/d4d/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1_1_1StatusRegister.html#ae796071b79057b94b456a76252d32966',1,'sjsu::lpc17xx::SystemController::Pll1::StatusRegister::kConnectMask()'],['../d8/df5/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllControlRegister.html#a14b539982bc2d74d0b313317b62074cd',1,'sjsu::lpc17xx::SystemController::PllControlRegister::kConnectMask()']]],
+  ['kcontrolreg1',['kControlReg1',['../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html#a48aaa67546926cbc4c04a285b4634f40',1,'sjsu::Mma8452q::Map']]],
   ['kcontrolsettings1',['kControlSettings1',['../d0/d54/structsjsu_1_1stm32f10x_1_1UartBase_1_1ControlReg.html#aef2600a1b51b7fc32b72d631501a0673',1,'sjsu::stm32f10x::UartBase::ControlReg']]],
   ['kcontrolsettings3',['kControlSettings3',['../d0/d54/structsjsu_1_1stm32f10x_1_1UartBase_1_1ControlReg.html#ad79c75f8d04d05980a7788c7b1ef4b56',1,'sjsu::stm32f10x::UartBase::ControlReg']]],
   ['kconversiontimeout',['kConversionTimeout',['../d8/db2/classsjsu_1_1Tmp102.html#ae71f9e1b1560275d10a4117c75ab1187',1,'sjsu::Tmp102']]],
@@ -72,6 +74,7 @@ var searchData=
   ['kdacenable',['kDacEnable',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a10fb982b459575b2c1ae8896a011d661',1,'sjsu::lpc40xx::Pin']]],
   ['kdacpin',['kDacPin',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#ae53c19c534567bb10c74f9576d8b0203',1,'sjsu::lpc40xx::Dac']]],
   ['kdatabit',['kDataBit',['../dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html#ab3199dac3442672cf64b67198adf1e06',1,'sjsu::lpc40xx::Spi::ControlRegister0']]],
+  ['kdataconfig',['kDataConfig',['../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html#aa253c002500812bcb5f9b438b53eeec5',1,'sjsu::Mma8452q::Map']]],
   ['kdatalinebusybit',['kDataLineBusyBit',['../d9/d20/structsjsu_1_1lpc40xx_1_1Spi_1_1StatusRegister.html#acef49cc49a0502309571da0ac4444769',1,'sjsu::lpc40xx::Spi::StatusRegister']]],
   ['kdataoverrun',['kDataOverrun',['../d8/d38/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts.html#a6e3e5b0bb8059b3c90cfe6a3bf7f31ca',1,'sjsu::lpc40xx::Can::Interrupts']]],
   ['kdatasizelut',['kDataSizeLUT',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a532e5d13af6f2d556464d03d8fed984d',1,'sjsu::lpc40xx::Spi']]],
@@ -250,6 +253,7 @@ var searchData=
   ['kslavemodebit',['kSlaveModeBit',['../d7/dde/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister1.html#ac7ed8127258bb92c4cd7367f17710eec',1,'sjsu::lpc40xx::Spi::ControlRegister1']]],
   ['ksleepmode',['kSleepMode',['../d0/d98/structsjsu_1_1lpc40xx_1_1Can_1_1Mode.html#a9cb55d54b3450f4e343bb1476c2083ae',1,'sjsu::lpc40xx::Can::Mode']]],
   ['kslew',['kSlew',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a1a60668702567bd7468bfc94fa18c386',1,'sjsu::lpc40xx::Pin']]],
+  ['kspec',['kSpec',['../d5/d82/classsjsu_1_1Mma8452q.html#a0f4b82c337c83327764b30d16963c13b',1,'sjsu::Mma8452q']]],
   ['kspi0',['kSpi0',['../da/d85/structsjsu_1_1lpc17xx_1_1SpiBus.html#a5501811f437c003773b7f55631fc472d',1,'sjsu::lpc17xx::SpiBus::kSpi0()'],['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html#ae065675cbea4644f8f65c652cf2bca7a',1,'sjsu::lpc40xx::Spi::Bus::kSpi0()']]],
   ['kspi1',['kSpi1',['../da/d85/structsjsu_1_1lpc17xx_1_1SpiBus.html#a166197638328c98ea75b42b139926de7',1,'sjsu::lpc17xx::SpiBus::kSpi1()'],['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html#a372bc94cabec3d20f79aa7634972f06f',1,'sjsu::lpc40xx::Spi::Bus::kSpi1()']]],
   ['kspi2',['kSpi2',['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html#acc3ee18f38d695b0b7d2a150ec2315f1',1,'sjsu::lpc40xx::Spi::Bus']]],
@@ -258,6 +262,7 @@ var searchData=
   ['kstandarduart',['kStandardUart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aa4bbcf7ccfa5a5de3c14906ca231d9f8',1,'sjsu::lpc40xx::Uart']]],
   ['kstartcode',['kStartCode',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a2126f6b386de2a1c5caec235551a19be',1,'sjsu::lpc40xx::Adc::Control']]],
   ['kstartedge',['kStartEdge',['../d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#ad4870d5d17da8adf84d54dd6e1de1577',1,'sjsu::lpc40xx::Adc::Control']]],
+  ['kstatus',['kStatus',['../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html#aadb8d151d58870d59d9f37375c3d57fa',1,'sjsu::Mma8452q::Map']]],
   ['kstrengthlowerlimitcap',['kStrengthLowerLimitCap',['../d2/dc6/classsjsu_1_1TFMini.html#a231eb58309dbbfac0e3b9ad25093a442',1,'sjsu::TFMini']]],
   ['kstrengthupperbound',['kStrengthUpperBound',['../d2/dc6/classsjsu_1_1TFMini.html#a9025d2fdef06705d90512c8db5b48de5',1,'sjsu::TFMini']]],
   ['ksubsystemclockdividerselect',['kSubsystemClockDividerSelect',['../d8/d36/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control1Register.html#acf17efed942aa611bf9abea2bfb6e5b8',1,'sjsu::msp432p401r::SystemController::Control1Register']]],
@@ -306,5 +311,7 @@ var searchData=
   ['kvref',['kVref',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a30431206431b0f96b87a19b5aaa11e6c',1,'sjsu::lpc40xx::Dac']]],
   ['kwakeup',['kWakeup',['../d8/d38/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts.html#a1780ee56b33aad006b9f748347949f93',1,'sjsu::lpc40xx::Can::Interrupts']]],
   ['kwatchdogclockrate',['kWatchdogClockRate',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a51c9f1dc951bb586c135d5f1fcf3d2c8',1,'sjsu::stm32f10x::SystemController']]],
-  ['kwidth',['kWidth',['../db/d32/classsjsu_1_1Ssd1306.html#a615427dec68f13dc38ca34fb1559ddfa',1,'sjsu::Ssd1306']]]
+  ['kwhoami',['kWhoAmI',['../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html#acd343a810c3bae19d2da4e2dbda52ab7',1,'sjsu::Mma8452q::Map']]],
+  ['kwidth',['kWidth',['../db/d32/classsjsu_1_1Ssd1306.html#a615427dec68f13dc38ca34fb1559ddfa',1,'sjsu::Ssd1306']]],
+  ['kxyzstartaddress',['kXYZStartAddress',['../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html#abda9d971e81bab7c4e254c2653124053',1,'sjsu::Mma8452q::Map']]]
 ];

@@ -32,6 +32,7 @@ var searchData=
   ['setdisplayon',['SetDisplayOn',['../d3/d56/classsjsu_1_1St7066u.html#a0c349c7648f9530f4d35978e6abf8709',1,'sjsu::St7066u']]],
   ['setdrivestrength',['SetDriveStrength',['../d2/dc5/classsjsu_1_1msp432p401r_1_1Pin.html#a4601eca8b1e5b8fe10fda9af2509e861',1,'sjsu::msp432p401r::Pin']]],
   ['setdutycycle',['SetDutyCycle',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a8350020c7e10e61b10fc58e8bf4cbb3b',1,'sjsu::lpc40xx::Pwm::SetDutyCycle()'],['../d6/ddf/classsjsu_1_1Pwm.html#aa7e71f9afca75d779b362a8006dd61df',1,'sjsu::Pwm::SetDutyCycle()']]],
+  ['seterror',['SetError',['../d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html#a94901db0b41183ff33f10c6a40e057e1',1,'sjsu::MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte1 &gt;']]],
   ['setfloating',['SetFloating',['../d0/da9/classsjsu_1_1Pin.html#a942ae6aac56e715386edf230e8cf1cd7',1,'sjsu::Pin']]],
   ['setfrequency',['SetFrequency',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#aedcdb22b1de25219a2bda5bc2fd586e4',1,'sjsu::lpc40xx::Pwm::SetFrequency()'],['../d6/ddf/classsjsu_1_1Pwm.html#a17925286801d4d918e11699a6f27b5ba',1,'sjsu::Pwm::SetFrequency()'],['../d9/dc9/classsjsu_1_1Servo.html#aebe197bf95c522b200946dccf84b53d5',1,'sjsu::Servo::SetFrequency()']]],
   ['setfullscalerange',['SetFullScaleRange',['../d5/d82/classsjsu_1_1Mma8452q.html#a969d126b9005d3d9d535405f2364a546',1,'sjsu::Mma8452q::SetFullScaleRange()'],['../d6/d14/classsjsu_1_1Mpu6050.html#acd47a193c51aceb53ad9606a2aff41d1',1,'sjsu::Mpu6050::SetFullScaleRange()']]],

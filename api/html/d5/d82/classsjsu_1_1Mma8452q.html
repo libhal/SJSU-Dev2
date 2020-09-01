@@ -75,8 +75,9 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../d0/dbb/classsjsu_1_1Mma8452q-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::Mma8452q Class Reference</div>  </div>
@@ -100,28 +101,23 @@ Collaboration diagram for sjsu::Mma8452q:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dd/de4/classsjsu_1_1Mma8452q__coll__graph.png" border="0" usemap="#sjsu_1_1Mma8452q_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1Mma8452q_coll__map" id="sjsu_1_1Mma8452q_coll__map">
-<area shape="rect" id="node2" href="../../d2/d7b/classsjsu_1_1Accelerometer.html" title="sjsu::Accelerometer" alt="" coords="5,5,156,32"/>
+<area shape="rect" id="node2" href="../../d2/d7b/classsjsu_1_1Accelerometer.html" title="sjsu::Accelerometer" alt="" coords="49,5,200,32"/>
+<area shape="rect" id="node3" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html" title="sjsu::MemoryAccessProtocol\l::Specification_t\&lt; MemoryAccess\lProtocol::AddressWidth::kByte1,\l std::endian::big \&gt;" alt="" coords="5,57,244,127"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a3a47ce4de7d7451f4eaf90dd5cc8d193"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193">RegisterMap</a> : uint8_t { <br />
-&#160;&#160;<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193a34f9dab6492af9ec6c83aa9b8345c7b8">RegisterMap::kStatus</a> = 0x00, 
-<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193ae4334f02c383d9c1f611ee9c8f4cdf7e">RegisterMap::kXYZStartAddress</a> = 0x01, 
-<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193a7423898f5caee3a1632e37e2b195e98f">RegisterMap::kWhoAmI</a> = 0x0D, 
-<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193a1c7d7f1c6643b36155bd4c07f3240695">RegisterMap::kDataConfig</a> = 0x0E, 
-<br />
-&#160;&#160;<a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193a6650ee16ec53f38664dc46bd63fc5694">RegisterMap::kControlReg1</a> = 0x2A
-<br />
- }<tr class="memdesc:a3a47ce4de7d7451f4eaf90dd5cc8d193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of all of the used device addresses in this driver.  <a href="../../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193">More...</a><br /></td></tr>
-</td></tr>
-<tr class="separator:a3a47ce4de7d7451f4eaf90dd5cc8d193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html">Map</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html" title="Map of all of the used device addresses in this driver. ">Map</a> of all of the used device addresses in this driver.  <a href="../../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8d39b64e10b87ceefb5a4f49f92b5a16"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a8d39b64e10b87ceefb5a4f49f92b5a16">Mma8452q</a> (const <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;i2c, units::acceleration::standard_gravity_t full_scale=2_SG, uint8_t address=0x1c)</td></tr>
 <tr class="separator:a8d39b64e10b87ceefb5a4f49f92b5a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbc5d91b1b80cedb1a83265d50d54186"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#adbc5d91b1b80cedb1a83265d50d54186">Mma8452q</a> (<a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html">MemoryAccessProtocol</a> &amp;external_map_protocol, const <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;i2c, units::acceleration::standard_gravity_t full_scale=2_SG, uint8_t address=0x1c)</td></tr>
+<tr class="separator:adbc5d91b1b80cedb1a83265d50d54186"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62007619d6e5205da4d0e04ecdb9168c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a62007619d6e5205da4d0e04ecdb9168c">Initialize</a> () override</td></tr>
 <tr class="separator:a62007619d6e5205da4d0e04ecdb9168c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72e9b1d0118dd0c9f0c7f0b8d730d145"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a72e9b1d0118dd0c9f0c7f0b8d730d145">Enable</a> () override</td></tr>
@@ -134,49 +130,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a35320eb01f1a5ed0ee7356c618526993"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2fa141da22b5888eadd0b73140bbe1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#ab2fa141da22b5888eadd0b73140bbe1e">IsValidDevice</a> ()</td></tr>
 <tr class="separator:ab2fa141da22b5888eadd0b73140bbe1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a0f4b82c337c83327764b30d16963c13b"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html">MemoryAccessProtocol::Specification_t</a>&lt; <a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html#a231647012f8b6ef096f4744a9b7ebaeeadec086556b3cbec660c8648db1bf52fd">MemoryAccessProtocol::AddressWidth::kByte1</a>, std::endian::big &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a0f4b82c337c83327764b30d16963c13b">kSpec</a> {}</td></tr>
+<tr class="separator:a0f4b82c337c83327764b30d16963c13b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Driver for the MMA8452Q 3-axis accelerometer. </p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a3a47ce4de7d7451f4eaf90dd5cc8d193"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a47ce4de7d7451f4eaf90dd5cc8d193">&#9670;&nbsp;</a></span>RegisterMap</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a3a47ce4de7d7451f4eaf90dd5cc8d193">sjsu::Mma8452q::RegisterMap</a> : uint8_t</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Map of all of the used device addresses in this driver. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3a47ce4de7d7451f4eaf90dd5cc8d193a34f9dab6492af9ec6c83aa9b8345c7b8"></a>kStatus&#160;</td><td class="fielddoc"><p>Device status register address. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a3a47ce4de7d7451f4eaf90dd5cc8d193ae4334f02c383d9c1f611ee9c8f4cdf7e"></a>kXYZStartAddress&#160;</td><td class="fielddoc"><p>Register address of the the first byte of the X axis. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a3a47ce4de7d7451f4eaf90dd5cc8d193a7423898f5caee3a1632e37e2b195e98f"></a>kWhoAmI&#160;</td><td class="fielddoc"><p>Device ID register address. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a3a47ce4de7d7451f4eaf90dd5cc8d193a1c7d7f1c6643b36155bd4c07f3240695"></a>kDataConfig&#160;</td><td class="fielddoc"><p>Device configuration starting address. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a3a47ce4de7d7451f4eaf90dd5cc8d193a6650ee16ec53f38664dc46bd63fc5694"></a>kControlReg1&#160;</td><td class="fielddoc"><p>Control register 1 holds the enable bit. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8d39b64e10b87ceefb5a4f49f92b5a16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d39b64e10b87ceefb5a4f49f92b5a16">&#9670;&nbsp;</a></span>Mma8452q()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d39b64e10b87ceefb5a4f49f92b5a16">&#9670;&nbsp;</a></span>Mma8452q() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -222,6 +186,54 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="adbc5d91b1b80cedb1a83265d50d54186"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbc5d91b1b80cedb1a83265d50d54186">&#9670;&nbsp;</a></span>Mma8452q() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr sjsu::Mma8452q::Mma8452q </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html">MemoryAccessProtocol</a> &amp;&#160;</td>
+          <td class="paramname"><em>external_map_protocol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> &amp;&#160;</td>
+          <td class="paramname"><em>i2c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">units::acceleration::standard_gravity_t&#160;</td>
+          <td class="paramname"><em>full_scale</em> = <code>2_SG</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em> = <code>0x1c</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -382,6 +394,29 @@ Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0f4b82c337c83327764b30d16963c13b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f4b82c337c83327764b30d16963c13b">&#9670;&nbsp;</a></span>kSpec</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html">MemoryAccessProtocol::Specification_t</a>&lt; <a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html#a231647012f8b6ef096f4744a9b7ebaeeadec086556b3cbec660c8648db1bf52fd">MemoryAccessProtocol::AddressWidth::kByte1</a>, std::endian::big&gt; sjsu::Mma8452q::kSpec {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
