@@ -89,6 +89,10 @@
 #include <assert.h>
 #include <string.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#pragma GCC diagnostic ignored "-Wconversion"
+
 /* Scheduler includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -882,3 +886,4 @@ unsigned long ulPortGetTimerValue( void )
     return ( unsigned long ) xTimes.tms_utime;
 }
 
+#pragma GCC diagnostic pop
