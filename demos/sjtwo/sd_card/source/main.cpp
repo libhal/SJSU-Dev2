@@ -55,14 +55,14 @@ class DualGpios : public sjsu::Gpio
     return master_.GetPin();
   }
 
-  void AttachInterrupt(InterruptCallback callback, Edge edge) override
+  Returns<void> AttachInterrupt(InterruptCallback callback, Edge edge) override
   {
-    master_.AttachInterrupt(callback, edge);
+    return master_.AttachInterrupt(callback, edge);
   }
 
-  void DetachInterrupt() const override
+  Returns<void> DetachInterrupt() const override
   {
-    master_.DetachInterrupt();
+    return master_.DetachInterrupt();
   }
 
  private:

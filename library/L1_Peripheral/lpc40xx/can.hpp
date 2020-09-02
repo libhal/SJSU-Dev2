@@ -322,7 +322,7 @@ class Can final : public sjsu::Can
   /// @param channel - Which CANBUS channel to use
   explicit constexpr Can(const Channel_t & channel) : channel_(channel) {}
 
-  Status Initialize() const override
+  Returns<void> Initialize() const override
   {
     /// Power on CANBUS peripheral
     auto & platform = sjsu::SystemController::GetPlatformController();
@@ -345,15 +345,16 @@ class Can final : public sjsu::Can
     // Disable reset mode and enter operating mode.
     SetMode(Mode::kReset, false);
 
-    return Status::kSuccess;
+    return {};
   }
 
-  void Enable() const override
+  Returns<void> Enable() const override
   {
     SetMode(Mode::kReset, false);
+    return {};
   }
 
-  void Send(const Message_t & message) const override
+  Returns<void> Send(const Message_t & message) const override
   {
     LpcRegisters_t registers = ConvertMessageToRegisters(message);
 
@@ -392,6 +393,8 @@ class Can final : public sjsu::Can
         sent                     = true;
       }
     }
+
+    return {};
   }
 
   bool HasData() const override
@@ -400,7 +403,7 @@ class Can final : public sjsu::Can
     return bit::Read(channel_.registers->GSR, GlobalStatus::kReceiveBuffer);
   }
 
-  Message_t Receive() const override
+  Returns<Message_t> Receive() const override
   {
     Message_t message;
 
@@ -437,7 +440,12 @@ class Can final : public sjsu::Can
 
   bool SelfTest(uint32_t id) const override
   {
-    bool success = false;
+    std::scope_exit on_failure_routine([this]() {
+      // Disable self-test mode
+      SetMode(Mode::kReset, true);
+      SetMode(Mode::kSelfTest, false);
+      SetMode(Mode::kReset, false);
+    });
 
     Message_t test_message;
     test_message.id = id;
@@ -448,6 +456,7 @@ class Can final : public sjsu::Can
     SetMode(Mode::kSelfTest, true);
     // Disable reset mode
     SetMode(Mode::kReset, false);
+
     // Write test message to tx buffer 1
     LpcRegisters_t registers = ConvertMessageToRegisters(test_message);
 
@@ -470,28 +479,21 @@ class Can final : public sjsu::Can
     // Allow time for RX to fire
     sjsu::Delay(2ms);
 
-    auto wait_status = Wait(100ms, [this]() { return HasData(); });
+    SJ2_RETURN_VALUE_ON_ERROR(Wait(100ms, [this]() { return HasData(); }),
+                              false);
 
-    if (!IsOk(wait_status))
+    // Read the message from the rx buffer and enqueue it into the rx queue.
+    auto received_message = SJ2_RETURN_VALUE_ON_ERROR(Receive(), false);
+
+    // Check if the received message matches the one we sent
+    if (received_message.id != test_message.id)
     {
       return false;
     }
 
-    // Read the message from the rx buffer and enqueue it into the rx queue.
-    Message_t received_message = Receive();
+    on_failure_routine.release();
 
-    // Check if the received message matches the one we sent
-    if (received_message.id == test_message.id)
-    {
-      success = true;
-    }
-
-    // Disable self-test mode
-    SetMode(Mode::kReset, true);
-    SetMode(Mode::kSelfTest, false);
-    SetMode(Mode::kReset, false);
-
-    return success;
+    return true;
   }
 
   bool IsBusOff() const override
@@ -500,7 +502,7 @@ class Can final : public sjsu::Can
   }
 
   /// @param baud - baud rate to configure the CANBUS to
-  void SetBaudRate(units::frequency::hertz_t baud) const override
+  Returns<void> SetBaudRate(units::frequency::hertz_t baud) const override
   {
     // According to the BOSCH CAN spec, the nominal bit time is divided into 4
     // time segments. These segments need to be programmed for the internal
@@ -556,6 +558,8 @@ class Can final : public sjsu::Can
     }
 
     channel_.registers->BTR = bus_timing;
+
+    return {};
   }
 
  private:

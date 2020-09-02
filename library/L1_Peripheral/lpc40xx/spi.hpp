@@ -194,7 +194,7 @@ class Spi final : public sjsu::Spi
   /// Powers on the peripheral, activates the SSP pins and enables the SSP
   /// peripheral.
   /// See page 601 of user manual UM10562 LPC408x/407x for more details.
-  Status Initialize() const override
+  Returns<void> Initialize() const override
   {
     constexpr uint8_t kSpiFormatCode = 0b00;
 
@@ -218,7 +218,8 @@ class Spi final : public sjsu::Spi
     // Enable SSP
     bus_.registers->CR1 =
         bit::Set(bus_.registers->CR1, ControlRegister1::kSpiEnable);
-    return Status::kSuccess;
+
+    return {};
   }
 
   /// An easy way to sets up an SPI peripheral as SPI master with default clock
@@ -278,9 +279,9 @@ class Spi final : public sjsu::Spi
   /// @param read_miso_on_rising - capture serial data on true=first or
   ///        1=second clock cycle
   /// @param frequency - serial clock rate
-  void SetClock(units::frequency::hertz_t frequency,
-                bool positive_clock_on_idle = false,
-                bool read_miso_on_rising    = false) const override
+  Returns<void> SetClock(units::frequency::hertz_t frequency,
+                         bool positive_clock_on_idle = false,
+                         bool read_miso_on_rising    = false) const override
   {
     auto & system = sjsu::SystemController::GetPlatformController();
 
@@ -299,6 +300,7 @@ class Spi final : public sjsu::Spi
     // Store upper 8 bit half of the prescalar in control register 0
     bus_.registers->CR0 = bit::Insert(bus_.registers->CR0, prescaler >> 8,
                                       ControlRegister0::kDividerBit);
+    return {};
   }
 
  private:

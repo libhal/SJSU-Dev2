@@ -35,8 +35,8 @@ class Pin final : public sjsu::Pin
   {
     if (!('A' <= port_ && port_ <= 'I'))
     {
-      return Error(Status::kInvalidSettings,
-                   "Invalid port choosen for this pin implementation");
+      return Error(std::errc::invalid_argument,
+                   "Port must be between 'A' and 'I'");
     }
 
     switch (port_)
@@ -83,11 +83,10 @@ class Pin final : public sjsu::Pin
 
   Returns<void> SetPinFunction(uint8_t function) const override
   {
-    if (function > 0b10011)
+    if (function > 0b1111)
     {
-      return Error(
-          Status::kInvalidParameters,
-          "The function code must be a 2-bit value between 0b0000 and 0b1111");
+      return Error(std::errc::invalid_argument,
+                   "The function code must be a 4-bit code.");
     }
 
     SJ2_RETURN_ON_ERROR(Initialize());
@@ -99,13 +98,15 @@ class Pin final : public sjsu::Pin
     // --> 10: Alternate function mode
     //     11: Analog mode
     Port()->MODER = bit::Insert(Port()->MODER, 0b10, Mask());
+
     // Create bitmask for the pin
-    bit::Mask mask = {
+    const bit::Mask kMask = {
       .position = static_cast<uint8_t>((pin_ % 8) * 4),
       .width    = 4,
     };
+
     // Set alternative function code
-    Port()->AFR[pin_ / 8] = bit::Insert(Port()->AFR[pin_ / 8], function, mask);
+    Port()->AFR[pin_ / 8] = bit::Insert(Port()->AFR[pin_ / 8], function, kMask);
 
     return {};
   }
@@ -122,7 +123,7 @@ class Pin final : public sjsu::Pin
       case Resistor::kNone: mask = 0b00; break;
       case Resistor::kPullUp: mask = 0b01; break;
       case Resistor::kPullDown: mask = 0b10; break;
-      default: return Error(Status::kInvalidSettings, "Invalid resistor pull.");
+      default: return Error(std::errc::not_supported, "Invalid resistor pull.");
     }
 
     Port()->PUPDR = bit::Insert(Port()->PUPDR, mask, Mask());

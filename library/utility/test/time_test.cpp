@@ -64,10 +64,10 @@ TEST_CASE("Testing Time Utility")
     // Exercise
     // Exercise: if the callback always returns false, then the waiting period
     //           will be the whole timeout.
-    Status wait_status = Wait(timeout_time, []() { return false; });
+    auto wait_status = Wait(timeout_time, []() { return false; });
 
     // Verify
-    CHECK(wait_status == Status::kTimedOut);
+    CHECK(wait_status == std::errc::timed_out);
     CHECK((current_timestamp + 1us + timeout_time) == Uptime());
   }
 
@@ -81,19 +81,17 @@ TEST_CASE("Testing Time Utility")
     auto callback_counter    = 0us;
 
     // Exercise
-    Status wait_status =
-        Wait(timeout_time, [&callback_counter, time_until_complete]() {
-          if (callback_counter > time_until_complete)
-          {
-            return true;
-          }
-          callback_counter++;
-          return false;
-        });
+    REQUIRE(Wait(timeout_time, [&callback_counter, time_until_complete]() {
+      if (callback_counter > time_until_complete)
+      {
+        return true;
+      }
+      callback_counter++;
+      return false;
+    }));
 
     // Verify
     auto final_uptime = Uptime();
-    CHECK(wait_status == Status::kSuccess);
     CHECK((current_timestamp + 4us + time_until_complete) == final_uptime);
     CHECK((current_timestamp + 4us + timeout_time) != final_uptime);
   }
@@ -115,19 +113,17 @@ TEST_CASE("Testing Time Utility")
     //           the current_time, thus the next iteration will cause a timeout.
     //           If we are actually able to iterate more then a few times the
     //           the max has been ceiled.
-    Status wait_status =
-        Wait(timeout_time, [&callback_counter, time_until_complete]() {
-          if (callback_counter > time_until_complete)
-          {
-            return true;
-          }
-          callback_counter++;
-          return false;
-        });
+    REQUIRE(Wait(timeout_time, [&callback_counter, time_until_complete]() {
+      if (callback_counter > time_until_complete)
+      {
+        return true;
+      }
+      callback_counter++;
+      return false;
+    }));
 
     // Verify
     auto final_uptime = Uptime();
-    CHECK(wait_status == Status::kSuccess);
     CHECK((current_timestamp + 3us + time_until_complete) == final_uptime);
     CHECK((current_timestamp + 3us + timeout_time) != final_uptime);
   }

@@ -4,7 +4,6 @@
 namespace
 {
 using sjsu::Returns;
-using sjsu::Status;
 }  // namespace
 
 // Example code that will return an error if invalid input is given.
@@ -23,7 +22,7 @@ Returns<int> CalculatePllCode(int frequency)
     default:
       // When creating an error give it a reasonable status and a helpful
       // message to the user.
-      return Error(Status::kInvalidParameters,
+      return Error(std::errc::invalid_argument,
                    "Frequency must be 1, 2, 4, 8, 16, 32 megahertz.");
   }
 
@@ -49,7 +48,8 @@ Returns<void> SetPllCode(int code)
   // detected.
   if (reg == (0b101 * 2))
   {
-    return Error(Status::kTimedOut, "CPU speed could not stabilize in time.");
+    return Error(std::errc::timed_out,
+                 "CPU speed could not stabilize in time.");
   }
 
   return {};

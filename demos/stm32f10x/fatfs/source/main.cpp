@@ -1,4 +1,5 @@
 #include "L0_Platform/startup.hpp"
+#include "L1_Peripheral/spi.hpp"
 #include "L1_Peripheral/stm32f10x/gpio.hpp"
 #include "L1_Peripheral/stm32f10x/system_controller.hpp"
 #include "L2_HAL/memory/sd.hpp"
@@ -15,7 +16,7 @@ class BitBangSpi : public sjsu::Spi
   {
   }
 
-  sjsu::Status Initialize() const override
+  sjsu::Returns<void> Initialize() const override
   {
     mosi_.SetAsOutput();
     miso_.SetAsInput();
@@ -23,7 +24,7 @@ class BitBangSpi : public sjsu::Spi
     sck_.SetLow();
     mosi_.SetLow();
     miso_.GetPin().PullUp();
-    return sjsu::Status::kSuccess;
+    return {};
   }
 
   uint16_t Transfer(uint16_t data) const override
@@ -53,9 +54,9 @@ class BitBangSpi : public sjsu::Spi
     size_ = size;
   }
 
-  void SetClock(units::frequency::hertz_t frequency,
-                bool = false,
-                bool = false) const override
+  sjsu::Returns<void> SetClock(units::frequency::hertz_t frequency,
+                               bool = false,
+                               bool = false) const override
   {
     if (frequency < 1_MHz)
     {
@@ -65,6 +66,7 @@ class BitBangSpi : public sjsu::Spi
     {
       delay_ = false;
     }
+    return {};
   }
 
  private:

@@ -204,34 +204,34 @@ struct StringMaker<std::span<T>>
 };
 
 template <>
-struct StringMaker<sjsu::Status>  // NOLINT
+struct StringMaker<std::errc>
 {
-  static String convert(const sjsu::Status & status)  // NOLINT
+  static String convert(const std::errc & error_code)  // NOLINT
   {
-    std::string str;
-
-    str += "sjsu::Status_t( ";
-    str += std::to_string(status.code);
-    str += " , ";
-    str += status.name;
-    str += " )";
-
-    String result(str.data(), str.size());
-    return result;
+    return sjsu::Stringify(error_code);
   }
+};
 
-  static String convert(const sjsu::Status && status)  // NOLINT
+template <typename T>
+struct StringMaker<sjsu::Returns<T>>
+{
+  static String convert(const sjsu::Returns<T> & result)  // NOLINT
   {
-    std::string str;
-
-    str += "sjsu::Status_t( ";
-    str += std::to_string(status.code);
-    str += " , ";
-    str += status.name;
-    str += " )";
-
-    String result(str.data(), str.size());
-    return result;
+    if (result.has_value())
+    {
+      if constexpr (std::is_void_v<T>)
+      {
+        return "";
+      }
+      else
+      {
+        return StringMaker<T>::convert(result.value());
+      }
+    }
+    else
+    {
+      return sjsu::Stringify(result.error()->code);
+    }
   }
 };
 

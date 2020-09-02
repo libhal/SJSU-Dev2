@@ -261,14 +261,17 @@ class UartBase : public sjsu::Uart
     bit::Register(&port_.uart->CR1).Clear(ControlReg::kUsartEnable).Save();
   }
 
-  Status Initialize(uint32_t baud_rate) const override
+  Returns<void> Initialize(uint32_t baud_rate) const override
   {
     auto & system = SystemController::GetPlatformController();
 
-    SJ2_ASSERT_FATAL(
-        queue_size_ < 65'535,
-        "UART Queue size must not exceed the DMA transfer limit of "
-        "65'535 (2^16 - 1).");
+    if (queue_size_ > 65'535)
+    {
+      return Error(
+          std::errc::invalid_argument,
+          "UART Receive queue size must not exceed the DMA transfer limit of "
+          "65,535.");
+    }
 
     // Supply clock to UART
     system.PowerUpPeripheral(port_.id);
@@ -300,10 +303,10 @@ class UartBase : public sjsu::Uart
     //       basic UART such as USART clock, USART port network (LIN), and other
     //       things.
 
-    return Status::kSuccess;
+    return {};
   }
 
-  bool SetBaudRate(uint32_t baud_rate) const override
+  Returns<void> SetBaudRate(uint32_t baud_rate) const override
   {
     auto & system  = SystemController::GetPlatformController();
     auto frequency = system.GetClockRate(port_.id);
@@ -329,7 +332,7 @@ class UartBase : public sjsu::Uart
     port_.uart->BRR = bit::Value<uint16_t>()
                           .Insert(mantissa, BaudRateReg::kMantissa)
                           .Insert(fractional_int, BaudRateReg::kFraction);
-    return true;
+    return {};
   }
 
   void Write(const void * data, size_t size) const override
@@ -398,51 +401,18 @@ class UartBase : public sjsu::Uart
 ///           for a higher or lower number of bytes. Note: that the larger this
 ///           value, the larger this object's size is.
 template <const size_t kQueueSize = 32>
-class Uart : public sjsu::Uart
+class Uart : public sjsu::stm32f10x::UartBase
 {
  public:
   using sjsu::Uart::Read;
   using sjsu::Uart::Write;
 
-  ///
-  /// @param port
   explicit constexpr Uart(const sjsu::stm32f10x::UartBase::Port_t & port)
-      : kUart(port, queue_), queue_{}
+      : sjsu::stm32f10x::UartBase(port, queue_), queue_{}
   {
-  }
-
-  Status Initialize(uint32_t baud_rate) const override
-  {
-    return kUart.Initialize(baud_rate);
-  }
-
-  bool SetBaudRate(uint32_t baud_rate) const override
-  {
-    return kUart.SetBaudRate(baud_rate);
-  }
-
-  void Write(const void * data, size_t size) const override
-  {
-    return kUart.Write(data, size);
-  }
-
-  size_t Read(void * data, size_t size) const override
-  {
-    return kUart.Read(data, size);
-  }
-
-  bool HasData() const override
-  {
-    return kUart.HasData();
-  }
-
-  void Flush() const override
-  {
-    kUart.Flush();
   }
 
  private:
-  const sjsu::stm32f10x::UartBase kUart;
   std::array<uint8_t, kQueueSize> queue_;
 };
 }  // namespace sjsu::stm32f10x

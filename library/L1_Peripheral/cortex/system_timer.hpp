@@ -132,33 +132,33 @@ class SystemTimer final : public sjsu::SystemTimer
     callback = isr;
   }
 
-  Status StartTimer() const override
+  Returns<void> StartTimer() const override
   {
-    Status status = Status::kInvalidSettings;
-
-    if (sys_tick->LOAD != 0)
+    if (sys_tick->LOAD == 0)
     {
-      // The interrupt handler must be registered before you starting the timer
-      // by setting the Enable counter flag in the CTRL register.
-      // Otherwise, the handler may not be set by the time the first tick
-      // interrupt occurs.
-      sjsu::InterruptController::GetPlatformController().Enable({
-          .interrupt_request_number = cortex::SysTick_IRQn,
-          .interrupt_handler        = SystemTimerHandler,
-          .priority                 = priority_,
-      });
-      // Set all flags required to enable the counter
-      uint32_t ctrl_mask = (1 << ControlBitMap::kTickInterupt) |
-                           (1 << ControlBitMap::kEnableCounter) |
-                           (1 << ControlBitMap::kClkSource);
-      // Set the system tick counter to start immediately
-      sys_tick->VAL = 0;
-      sys_tick->CTRL |= ctrl_mask;
-
-      status = Status::kSuccess;
+      return Error(std::errc::invalid_argument,
+                   "Load must be set to a non-zero value before the timer can "
+                   "be started.");
     }
 
-    return status;
+    // The interrupt handler must be registered before you starting the timer
+    // by setting the Enable counter flag in the CTRL register.
+    // Otherwise, the handler may not be set by the time the first tick
+    // interrupt occurs.
+    sjsu::InterruptController::GetPlatformController().Enable({
+        .interrupt_request_number = cortex::SysTick_IRQn,
+        .interrupt_handler        = SystemTimerHandler,
+        .priority                 = priority_,
+    });
+    // Set all flags required to enable the counter
+    uint32_t ctrl_mask = (1 << ControlBitMap::kTickInterupt) |
+                         (1 << ControlBitMap::kEnableCounter) |
+                         (1 << ControlBitMap::kClkSource);
+    // Set the system tick counter to start immediately
+    sys_tick->VAL = 0;
+    sys_tick->CTRL |= ctrl_mask;
+
+    return {};
   }
 
   /// @param frequency set the frequency that SystemTick counter will run.

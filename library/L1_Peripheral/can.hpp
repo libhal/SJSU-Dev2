@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <initializer_list>
+#include <scope>
 
 #include "utility/status.hpp"
 
@@ -56,22 +57,22 @@ class Can
 
   /// Initialize the CANBUS peripheral. Must be called before calling anything
   /// else in the driver.
-  virtual Status Initialize() const = 0;
+  virtual Returns<void> Initialize() const = 0;
 
   /// Enables CANBUS and allows communication. Must be called after Initialize()
   /// before using this driver.
-  virtual void Enable() const = 0;
+  virtual Returns<void> Enable() const = 0;
 
   /// Send a message via CANBUS to the designated device with the supplied ID
   ///
   /// @param message - Message containing the CANBUS contents.
-  virtual void Send(const Message_t & message) const = 0;
+  virtual Returns<void> Send(const Message_t & message) const = 0;
 
   /// Receive data via CANBUS
   ///
   /// @return retrieved can message. Will return with length field = 0 if no
   /// messages exist.
-  virtual Message_t Receive() const = 0;
+  virtual Returns<Message_t> Receive() const = 0;
 
   /// Checks if there is a message available for this channel.
   ///
@@ -91,7 +92,7 @@ class Can
   virtual bool IsBusOff() const = 0;
 
   /// @param baud - baud rate to configure the CANBUS to
-  virtual void SetBaudRate(
+  virtual Returns<void> SetBaudRate(
       units::frequency::hertz_t baud = kStandardBaudRate) const = 0;
 
   // ===========================================================================
@@ -104,14 +105,18 @@ class Can
   /// @param payload - array literal payload to send to the device with ID
   /// @return true - on success
   /// @return false - on failure
-  void Send(uint32_t id, std::initializer_list<uint8_t> payload) const
+  Returns<void> Send(uint32_t id, std::initializer_list<uint8_t> payload) const
   {
     Message_t message;
+
+    message.id     = id;
+    message.length = static_cast<uint8_t>(payload.size());
+
     std::copy_n(payload.begin(),
                 std::min(payload.size(), message.payload.size()),
                 message.payload.begin());
-    message.id = id;
-    Send(message);
+
+    return Send(message);
   }
 };
 }  // namespace sjsu

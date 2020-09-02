@@ -297,7 +297,7 @@ class Uart final : public sjsu::Uart
   /// @param port - a reference to a constant lpc40xx::Uart::Port_t definition
   explicit constexpr Uart(const Port_t & port) : port_(port) {}
 
-  Status Initialize(uint32_t baud_rate) const override
+  Returns<void> Initialize(uint32_t baud_rate) const override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
     sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
@@ -311,10 +311,10 @@ class Uart final : public sjsu::Uart
     port_.tx.PullUp();
     port_.registers->FCR |= kFIFOEnableAndReset;
 
-    return Status::kSuccess;
+    return {};
   }
 
-  bool SetBaudRate(uint32_t baud_rate) const override
+  Returns<void> SetBaudRate(uint32_t baud_rate) const override
   {
     auto & system = sjsu::SystemController::GetPlatformController();
 
@@ -335,7 +335,8 @@ class Uart final : public sjsu::Uart
     port_.registers->DLL = dll;
     port_.registers->FDR = fdr;
     port_.registers->LCR = kStandardUart;
-    return true;
+
+    return {};
   }
 
   void Write(const void * data, size_t size) const override

@@ -94,7 +94,7 @@ class Pin final : public sjsu::Pin
   [[deprecated("Unsupported operation")]] Returns<void> SetAsAnalogMode(
       bool) const override
   {
-    return Error(Status::kNotImplemented, "Unsupported operation");
+    return Error(std::errc::operation_not_supported, "");
   }
 
   Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override

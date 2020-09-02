@@ -213,14 +213,24 @@ static_assert(1 <= kFatDriveCount && kFatDriveCount <= 10,
               "The number of FAT drives is limited to between 1 and 10.");
 
 /// If true, will store error messages into error objects. Setting this to false
-/// will reduce your binary size when using any optimization setting above O0,
-/// as the compiler will deduce that the strings are not being used, and remove
-/// them from the binary.
-#if !defined(SJ2_STORE_ERROR_MESSAGE)
-#define SJ2_STORE_ERROR_MESSAGE true
-#endif  // !defined(SJ2_STORE_ERROR_MESSAGE)
+/// will reduce your binary size by omitting the storage of these strings (only
+/// works for optimization levels above O0).
+#if !defined(SJ2_STORE_ERROR_MESSAGES)
+#define SJ2_STORE_ERROR_MESSAGES true
+#endif  // !defined(SJ2_STORE_ERROR_MESSAGES)
 /// Delcare Constant STORE_ERROR_MESSAGE
-SJ2_DECLARE_CONSTANT(STORE_ERROR_MESSAGE, bool, kStoreErrorMessages);
+SJ2_DECLARE_CONSTANT(STORE_ERROR_MESSAGES, bool, kStoreErrorMessages);
+
+/// If true, will store the text representation of the error_code in flash
+/// memory, such that they can be printed out when the Print() method is called
+/// on an Error_t object. Setting this to false will reduce your binary size by
+/// omitting the error_codes (usually saving 2kB), and only printing out the
+/// error code numeric values.
+#if !defined(SJ2_STORE_ERROR_CODE_STRING)
+#define SJ2_STORE_ERROR_CODE_STRING true
+#endif  // !defined(SJ2_STORE_ERROR_CODE_STRING)
+/// Delcare Constant STORE_ERROR_MESSAGE
+SJ2_DECLARE_CONSTANT(STORE_ERROR_CODE_STRING, bool, kStoreErrorCodeStrings);
 
 /// Enable or disable float support in printf statements. Setting to false will
 /// reduce binary size.

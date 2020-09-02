@@ -20,13 +20,15 @@ int main()
   sjsu::Esp8266 wifi(uart3);
 
   sjsu::LogInfo("Initializing Esp8266 module...");
-  LOG_ON_FAILURE(wifi.Initialize());
+  if (auto result = wifi.Initialize(); !result)
+  {
+    result.error()->Print();
+  }
 
   while (true)
   {
     sjsu::LogInfo("Connecting to WiFi...");
-    auto status = wifi.ConnectToAccessPoint("ssid", "password");
-    if (status == sjsu::Status::kSuccess)
+    if (wifi.ConnectToAccessPoint("ssid", "password"))
     {
       break;
     }
@@ -37,17 +39,27 @@ int main()
   sjsu::LogInfo("Connected to WiFi!!");
 
   sjsu::LogInfo("Connecting to server (%s)...", kHost.data());
-  LOG_ON_FAILURE(
-      wifi.Connect(sjsu::InternetSocket::Protocol::kTCP, kHost, 9000, 5s));
 
-  LOG_ON_FAILURE(
-      wifi.Write(kGetRequestExample.data(), kGetRequestExample.size(), 5s));
+  if (auto result =
+          wifi.Connect(sjsu::InternetSocket::Protocol::kTCP, kHost, 9000, 5s);
+      !result)
+  {
+    result.error()->Print();
+  }
+
+  if (auto result =
+          wifi.Write(kGetRequestExample.data(), kGetRequestExample.size(), 5s);
+      !result)
+  {
+    result.error()->Print();
+  }
 
   std::array<char, 2048> response;
   size_t read_back = 0;
-  read_back += wifi.Read(&response[read_back], response.size(), 10s);
-  read_back +=
-      wifi.Read(&response[read_back], response.size() - read_back, 10s);
+  read_back += SJ2_RETURN_VALUE_ON_ERROR(
+      wifi.Read(&response[read_back], response.size(), 10s), -1);
+  read_back += SJ2_RETURN_VALUE_ON_ERROR(
+      wifi.Read(&response[read_back], response.size() - read_back, 10s), -1);
 
   sjsu::LogInfo("Printing Server Response:");
   printf("%.*s\n", read_back, response.data());

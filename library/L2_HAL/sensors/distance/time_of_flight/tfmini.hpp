@@ -76,108 +76,66 @@ class TFMini final : public DistanceSensor
 
   /// @param uart - UART peripheral connected to the RX and TX of the TFMini
   ///               module.
-  explicit constexpr TFMini(Uart & uart) : uart_pin_(uart) {}
+  explicit constexpr TFMini(Uart & uart) : uart_(uart) {}
 
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
   /// Sets the baud rate as well as configures the TFMini to have an external
   /// trigger and sets the distance units to mm
   ///
-  /// @returns Status::kBusError if initialization fails
-  /// @returns Status::kSuccess if initialization succeeds
-  Status Initialize() override
+  /// @returns std::errc::io_error if initialization fails
+  Returns<void> Initialize() override
   {
     constexpr uint32_t kBaudRate = 115200;
-    Status init_success          = uart_pin_.Initialize(kBaudRate);
+    SJ2_RETURN_ON_ERROR(uart_.Initialize(kBaudRate));
 
-    if (IsOk(init_success))
+    if (!SendCommandAndCheckEcho(kConfigCommand) ||
+        !SendCommandAndCheckEcho(kSetExternalTriggerMode) ||
+        !SendCommandAndCheckEcho(kSetDistUnitMM) ||
+        !SendCommandAndCheckEcho(kExitConfigCommand))
     {
-      if (!SendCommandAndCheckEcho(kConfigCommand) ||
-          !SendCommandAndCheckEcho(kSetExternalTriggerMode) ||
-          !SendCommandAndCheckEcho(kSetDistUnitMM) ||
-          !SendCommandAndCheckEcho(kExitConfigCommand))
-      {
-        return sjsu::Status::kBusError;
-      }
+      return Error(std::errc::io_error, "Enabling device failed!");
     }
-    return Status::kSuccess;
+
+    return {};
   }
 
   /// Obtain the distance to the object directly in front of the sensor
   ///
-  /// @param distance - the distance an object is from the TFMini in mm.
-  ///        If the signal strength is lower than the min threshold, or if the
-  ///        device is not recognized, the distance will be unreliable and set
-  ///        to std::numeric_limits<uint32_t>::max(). If the actual distance is
-  ///        greater than 12000mm, the distance value caps at 12000
-  ///
-  /// @returns Status::kDeviceNotFound if device is not recognized
-  /// @returns Status::kBusError if data read from device is inconsistent
-  /// @returns Status::kSuccess if device is successfully read from
-  Status GetDistance(units::length::millimeter_t * distance) override
+  /// @return the distance an object is from the TFMini in mm.
+  ///         If the signal strength is lower than the min threshold, or if the
+  ///         device is not recognized, the distance will be unreliable and set
+  ///         to std::numeric_limits<uint32_t>::max(). If the actual distance is
+  ///         greater than 12000mm, the distance value caps at 12000
+  Returns<units::length::millimeter_t> GetDistance() override
   {
     std::array<uint8_t, kDeviceDataLength> device_data = { 0 };
 
-    uart_pin_.Write(kPromptMeasurementCommand, kCommandLength);
-    uart_pin_.Read(device_data.data(), device_data.size(), kTimeout);
+    uart_.Write(kPromptMeasurementCommand, kCommandLength);
+    uart_.Read(device_data.data(), device_data.size(), kTimeout);
 
-    if (device_data[0] != kFrameHeader || device_data[1] != kFrameHeader)
-    {
-      *distance = std::numeric_limits<units::length::millimeter_t>::max();
-      return sjsu::Status::kDeviceNotFound;
-    }
+    SJ2_RETURN_ON_ERROR(VerifyData(device_data));
 
-    uint8_t checksum =
-        std::accumulate(device_data.begin(), &device_data.end()[-2], 0);
-
-    if (checksum != device_data[8])
-    {
-      *distance = std::numeric_limits<units::length::millimeter_t>::max();
-      return sjsu::Status::kBusError;
-    }
-
-    uint32_t dist = device_data[2];
-    dist |= device_data[3] << 8;
-    *distance = units::length::millimeter_t(dist);
-    return sjsu::Status::kSuccess;
+    uint32_t dist = device_data[3] << 8 | device_data[2];
+    return units::length::millimeter_t(dist);
   }
 
   /// Obtain the strength of the light pulse the sensor emits.
   ///
-  /// @param strength - the strength of the light pulse, calculated by
-  ///        strength_val / 3000. Recommended that readings are reliable if in
-  ///        range .7%-67%, lower limit is adjustable -> SetMinSignalThreshhold
-  ///
-  /// @returns Status::kDeviceNotFound if device is not recognized
-  /// @returns Status::kBusError if data read from device is inconsistent
-  /// @returns Status::kSuccess if device is successfully read from
-  Status GetSignalStrengthPercent(float * strength) override
+  /// @return the strength of the light pulse, calculated by
+  ///         strength_val / 3000. Recommended that readings are reliable if in
+  ///         range .7%-67%, lower limit is adjustable -> SetMinSignalThreshhold
+  Returns<float> GetSignalStrengthPercent() override
   {
     std::array<uint8_t, kDeviceDataLength> device_data = { 0 };
 
-    uart_pin_.Write(kPromptMeasurementCommand, kCommandLength);
-    uart_pin_.Read(device_data.data(), device_data.size(), kTimeout);
+    uart_.Write(kPromptMeasurementCommand, kCommandLength);
+    uart_.Read(device_data.data(), device_data.size(), kTimeout);
 
-    if (device_data[0] != kFrameHeader || device_data[1] != kFrameHeader)
-    {
-      *strength = -1;
-      return sjsu::Status::kDeviceNotFound;
-    }
+    SJ2_RETURN_ON_ERROR(VerifyData(device_data));
 
-    uint8_t checksum =
-        std::accumulate(device_data.begin(), &device_data.end()[-2], 0);
-
-    if (checksum != device_data[8])
-    {
-      *strength = -1;
-      return sjsu::Status::kBusError;
-    }
-
-    uint32_t strength_bytes = device_data[4];
-    strength_bytes |= device_data[5] << 8;
-    *strength = (strength_bytes / kStrengthUpperBound);
-
-    return sjsu::Status::kSuccess;
+    uint32_t strength_bytes = device_data[5] << 8 | device_data[4];
+    return (static_cast<float>(strength_bytes) / kStrengthUpperBound);
   }
 
   /// Update the signal strength's lower limit valid range.
@@ -185,10 +143,7 @@ class TFMini final : public DistanceSensor
   /// @param lower_threshold - the value to set the lower threshold as.
   ///        default value is 20, caps at 80. Decrease the value to increase the
   ///        measurement range, increase value to improve reliability.
-  ///
-  /// @returns Status::kBusError if updating the TFMini fails
-  /// @returns Status::kSuccess if device is successfully updated
-  Status SetMinSignalThreshhold(uint8_t lower_threshold = 20)
+  Returns<void> SetMinSignalThreshhold(uint8_t lower_threshold = 20)
   {
     constexpr uint8_t kUpdateMinThresholdCommand[kCommandLength] = {
       0x42, 0x57, 0x02, 0x00, 0xEE, 0x00, 0x00, 0x20
@@ -213,15 +168,37 @@ class TFMini final : public DistanceSensor
         !SendCommandAndCheckEcho(updated_min_threshold_command.data()) ||
         !SendCommandAndCheckEcho(kExitConfigCommand))
     {
-      return sjsu::Status::kBusError;
+      return Error(std::errc::io_error,
+                   "Setting minimum threshold values failed.");
     }
 
     min_threshold_ = lower_threshold;
 
-    return sjsu::Status::kSuccess;
+    return {};
   }
 
  private:
+  Returns<void> VerifyData(std::array<uint8_t, kDeviceDataLength> & data)
+  {
+    if (data[0] != kFrameHeader || data[1] != kFrameHeader)
+    {
+      SJ2_PRINT_VARIABLE(data[0], "%u");
+      SJ2_PRINT_VARIABLE(data[1], "%u");
+      return Error(std::errc::no_such_device, "Frame header is incorrect");
+    }
+
+    uint8_t checksum = std::accumulate(data.begin(), &data.end()[-2], 0);
+
+    if (checksum != data[8])
+    {
+      SJ2_PRINT_VARIABLE(checksum, "%u");
+      SJ2_PRINT_VARIABLE(data[8], "%u");
+      return Error(std::errc::io_error, "Checksum came back incorrect");
+    }
+
+    return {};
+  }
+
   bool SendCommandAndCheckEcho(const uint8_t * command) const
   {
     constexpr uint8_t kEchoSuccess[kCommandLength] = {
@@ -233,8 +210,9 @@ class TFMini final : public DistanceSensor
 
     uint8_t echo[kCommandLength];
 
-    uart_pin_.Write(command, kCommandLength);
-    uart_pin_.Read(echo, sizeof(echo), kTimeout);
+    uart_.Write(command, kCommandLength);
+    uart_.Read(echo, sizeof(echo), kTimeout);
+
     for (int i = 0; i < kCommandLength; i++)
     {
       if ((kEchoSuccess[i] != echo[i]) && (kConfigExit[i] != echo[i]))
@@ -245,7 +223,7 @@ class TFMini final : public DistanceSensor
     return true;
   }
 
-  const Uart & uart_pin_;
+  const Uart & uart_;
   uint8_t min_threshold_ = 20;
 };
 }  // namespace sjsu

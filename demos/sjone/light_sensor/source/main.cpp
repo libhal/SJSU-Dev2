@@ -14,15 +14,17 @@ int main()
   sjsu::lpc17xx::Adc adc2(sjsu::lpc17xx::AdcChannel::kChannel2);
 
   sjsu::Temt6000x01 light_sensor(adc2, kPullDownResistance);
-  SJ2_ASSERT_FATAL(light_sensor.Initialize() == sjsu::Status::kSuccess,
-                   "Failed to initialized light sensor!");
+  light_sensor.Initialize();
 
   while (true)
   {
-    sjsu::LogInfo(
-        "Lux: %.4f, Brightness Percentage: %.2f%%",
-        light_sensor.GetIlluminance().to<double>(),
-        static_cast<double>(light_sensor.GetPercentageBrightness() * 100));
+    auto lux = SJ2_RETURN_VALUE_ON_ERROR(light_sensor.GetIlluminance(), -1);
+    auto percent =
+        SJ2_RETURN_VALUE_ON_ERROR(light_sensor.GetPercentageBrightness(), -1);
+
+    sjsu::LogInfo("Lux: %.4f, Brightness Percentage: %.2f%%", lux.to<double>(),
+                  static_cast<double>(percent * 100));
+
     sjsu::Delay(1s);
   }
 

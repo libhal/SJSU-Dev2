@@ -27,14 +27,6 @@ int Bar(void)
 {
   Baz();
 
-  SJ2_ASSERT_WARNING(2 < 5,
-                     "This assert warning message shouldn't show up "
-                     "since the condition evaluates to true. If it wasn't "
-                     "true, then this message would be printed to STDOUT. ");
-  SJ2_ASSERT_WARNING(1 == 0,
-                     "This assert warning message SHOULD show up, since the "
-                     "condition is, does 1 == 0, which is false. Since this "
-                     "is just a warning, the program will be stoped.");
   SJ2_ASSERT_FATAL(
       false,
       "SJ2_ASSERT_FATAL will cause the system to abort operations. This "
@@ -53,6 +45,9 @@ int main()
 {
   // This application assumes that all pins are set to function 0 (GPIO)
   sjsu::LogInfo("Backtrace Application Starting...");
+
   Foo();
+
+  // This will never be reached
   return 0;
 }

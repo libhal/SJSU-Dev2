@@ -212,11 +212,16 @@ void InitializePlatform()
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
 
+  system_timer.Initialize();
   system_timer.SetTickFrequency(config::kRtosFrequency);
-  sjsu::Status timer_start_status = system_timer.StartTimer();
-
-  SJ2_ASSERT_FATAL(timer_start_status == sjsu::Status::kSuccess,
-                   "System Timer (used by FreeRTOS) has FAILED to start!");
+  if (auto status = system_timer.StartTimer(); !status)
+  {
+    status.error()->Print();
+    sjsu::LogError(
+        "System Timer (used as the system timer and by "
+        "FreeRTOS) has FAILED to start!");
+    sjsu::Halt();
+  }
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);

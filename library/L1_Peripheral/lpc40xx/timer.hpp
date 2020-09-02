@@ -83,9 +83,9 @@ class Timer final : public sjsu::Timer
   /// peripheral to be used with this object
   explicit constexpr Timer(const Peripheral_t & timer) : timer_(timer) {}
 
-  Status Initialize(units::frequency::hertz_t frequency,
-                    InterruptCallback callback = nullptr,
-                    int32_t priority           = -1) const override
+  Returns<void> Initialize(units::frequency::hertz_t frequency,
+                           InterruptCallback callback = nullptr,
+                           int32_t priority           = -1) const override
   {
     auto & system = sjsu::SystemController::GetPlatformController();
     system.PowerUpPeripheral(timer_.id);
@@ -116,20 +116,22 @@ class Timer final : public sjsu::Timer
         .priority                 = priority,
     });
 
-    return Status::kSuccess;
+    return {};
   }
 
-  void SetMatchBehavior(uint32_t ticks,
-                        MatchAction action,
-                        uint8_t match_register = 0) const override
+  Returns<void> SetMatchBehavior(uint32_t ticks,
+                                 MatchAction action,
+                                 uint8_t match_register = 0) const override
   {
-    SJ2_ASSERT_FATAL(match_register < GetAvailableMatchRegisters(),
-                     "LPC40xx can only has 3 match registers. An attempt "
-                     "to set match register %d was attempted.",
-                     match_register);
+    if (match_register >= GetAvailableMatchRegisters())
+    {
+      LogDebug("match_register = %u", match_register);
+      return Error(std::errc::invalid_argument,
+                   "LPC40xx can only has 3 match registers.");
+    }
 
     timer_.peripheral->MCR =
-        bit::Insert(timer_.peripheral->MCR, static_cast<uint32_t>(action),
+        bit::Insert(timer_.peripheral->MCR, Value(action),
                     {
                         .position = static_cast<uint8_t>(match_register * 3),
                         .width    = 3,
@@ -140,6 +142,8 @@ class Timer final : public sjsu::Timer
     volatile uint32_t * match_register_ptr = &timer_.peripheral->MR0;
 
     match_register_ptr[match_register & 0b11] = ticks;
+
+    return {};
   }
 
   uint8_t GetAvailableMatchRegisters() const override
@@ -147,29 +151,32 @@ class Timer final : public sjsu::Timer
     return 4;
   }
 
-  uint32_t GetCount() const override
+  Returns<uint32_t> GetCount() const override
   {
     return timer_.peripheral->TC;
   }
 
-  void Start() const override
+  Returns<void> Start() const override
   {
     timer_.peripheral->TCR = bit::Set(
         timer_.peripheral->TCR, TimerControlRegister::kEnableBit.position);
+    return {};
   }
 
-  void Stop() const override
+  Returns<void> Stop() const override
   {
     timer_.peripheral->TCR = bit::Clear(
         timer_.peripheral->TCR, TimerControlRegister::kEnableBit.position);
+    return {};
   }
 
-  void Reset() const override
+  Returns<void> Reset() const override
   {
     timer_.peripheral->TCR = bit::Set(timer_.peripheral->TCR,
                                       TimerControlRegister::kResetBit.position);
     timer_.peripheral->TCR = bit::Clear(
         timer_.peripheral->TCR, TimerControlRegister::kResetBit.position);
+    return {};
   }
 
  private:

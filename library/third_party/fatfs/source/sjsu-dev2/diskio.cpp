@@ -33,7 +33,7 @@ Returns<void> RegisterFatFsDrive(Storage * storage, uint8_t drive_number)
   if (drive_number >= drive.size())
   {
     return Error(
-        Status::kInvalidSettings,
+        std::errc::invalid_argument,
         "Drive number supplied is beyond the number of storage drives that "
         "can be registered as phyiscal drivers for FatFS. The limit is defined "
         "by config::kFatDriveCount. Increase that config value in order to add "

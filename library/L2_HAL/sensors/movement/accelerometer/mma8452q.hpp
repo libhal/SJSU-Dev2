@@ -156,8 +156,8 @@ class Mma8452q : public Accelerometer
 
     if (kGravityScale != 2 && kGravityScale != 4 && kGravityScale != 8)
     {
-      return Error(Status::kInvalidParameters,
-                   "Invalid gravity scale. Must be 2g, 4g, or 8g.");
+      return Error(std::errc::invalid_argument,
+                   "Gravity scale must be 2g, 4g, or 8g.");
     }
 
     const uint8_t kNewGravityScale = static_cast<uint8_t>(kGravityScale >> 2);
@@ -184,9 +184,8 @@ class Mma8452q : public Accelerometer
 
     if (memory_id.value() != kExpectedDeviceID)
     {
-      sjsu::LogDebug("Invalid Device ID (0x%02X) detected!", memory_id.value());
-      return Error(Status::kDeviceNotFound,
-                   "Invalid device id from device, expected 0x2A.");
+      LogDebug("ID = 0x%02X", memory_id.value());
+      return Error(std::errc::no_such_device, "Expected Device ID: 0x2A.");
     }
 
     return {};

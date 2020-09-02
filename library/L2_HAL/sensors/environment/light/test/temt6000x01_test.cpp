@@ -28,35 +28,34 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
 
   Temt6000x01 test_subject(mock_adc.get(), kPullDownResistor);
 
-  SECTION("Initialize")
+  SECTION("Successful Initialize")
   {
     // Setup
-    Status expected_status;
-
-    SUBCASE("On Success")
-    {
-      expected_status = Status::kSuccess;
-    }
-
-    SUBCASE("On Invalid Settings")
-    {
-      expected_status = Status::kInvalidSettings;
-    }
-
-    When(Method(mock_adc, Initialize)).AlwaysReturn(expected_status);
+    When(Method(mock_adc, Initialize)).AlwaysReturn({});
 
     // Exercise
-    auto actual_status = test_subject.Initialize();
+    REQUIRE(test_subject.Initialize());
 
     // Verify
     Verify(Method(mock_adc, Initialize)).Once();
-    CHECK(actual_status == expected_status);
+  }
+
+  SECTION("Successful Initialize")
+  {
+    const auto kExpectedError = std::errc::invalid_argument;
+    When(Method(mock_adc, Initialize)).AlwaysReturn(Error(kExpectedError, ""));
+
+    // Exercise
+    REQUIRE(kExpectedError == test_subject.Initialize());
+
+    // Verify
+    Verify(Method(mock_adc, Initialize)).Once();
   }
 
   SECTION("GetIlluminance")
   {
     // Exercise
-    units::illuminance::lux_t actual_lux = test_subject.GetIlluminance();
+    auto actual_lux = test_subject.GetIlluminance().value();
 
     // Verify
     Verify(Method(mock_adc, Read)).Once();
@@ -66,7 +65,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
   SECTION("GetMaxIlluminance")
   {
     // Exercise
-    units::illuminance::lux_t actual_max_lux = test_subject.GetMaxIlluminance();
+    auto actual_max_lux = test_subject.GetMaxIlluminance().value();
 
     // Verify
     CHECK(actual_max_lux == expected_max_lux);
@@ -77,7 +76,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
     float expected_percentage = (expected_lux / expected_max_lux).to<float>();
 
     // Exercise
-    float actual_percentage = test_subject.GetPercentageBrightness();
+    float actual_percentage = test_subject.GetPercentageBrightness().value();
 
     // Verify
     Verify(Method(mock_adc, Read)).Once();

@@ -27,6 +27,7 @@ struct AdcChannel  // NOLINT
     kCh45Pins   = 0b11,
     kCh67Pins   = 0b10,
   };
+
   inline static const Pin kAdcPinChannel0 = Pin::CreatePin<0, 23>();
   inline static const Pin kAdcPinChannel1 = Pin::CreatePin<0, 24>();
   inline static const Pin kAdcPinChannel2 = Pin::CreatePin<0, 25>();

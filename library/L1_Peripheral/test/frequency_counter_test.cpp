@@ -74,7 +74,6 @@ TEST_CASE("Testing FrequencyCounter")
       // Verify: (800 ticks / 4us) => 200MHz
       CHECK(new_actual_frequency == 200_MHz);
     }
-
     Verify(Method(mock_counter, Enable)).Once();
   }
 }

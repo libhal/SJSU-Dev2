@@ -264,12 +264,12 @@ class TaskScheduler final
                     portMAX_DELAY);
     // All PreRun() complete, each Task's Run() can now start executing...
     TickType_t last_wake_time = xTaskGetTickCount();
+
     while (true)
     {
       if (!task.Run())
       {
-        SJ2_ASSERT_WARNING(
-            false,
+        LogWarning(
             "An error occurred, the following task will be suspended: %s",
             task.GetName());
         vTaskSuspend(NULL);

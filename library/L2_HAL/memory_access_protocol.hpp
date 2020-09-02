@@ -309,8 +309,6 @@ class MockProtocol<MemoryAccessProtocol::AddressWidth::kByte1>
     : public MemoryAccessProtocol
 {
  public:
-  MockProtocol() {}
-
   std::array<uint8_t, (1 << 8)> memory_map;
 
   Returns<void> Write(std::span<const uint8_t> address,
@@ -318,7 +316,7 @@ class MockProtocol<MemoryAccessProtocol::AddressWidth::kByte1>
   {
     if (error_active_)
     {
-      return DefinedError(error_);
+      return error_;
     }
 
     // Only use the first byte of the address
@@ -332,7 +330,7 @@ class MockProtocol<MemoryAccessProtocol::AddressWidth::kByte1>
   {
     if (error_active_)
     {
-      return DefinedError(error_);
+      return error_;
     }
 
     // Only use the first byte of the address
@@ -341,7 +339,7 @@ class MockProtocol<MemoryAccessProtocol::AddressWidth::kByte1>
     return {};
   }
 
-  void SetError(Error_t error)
+  void SetError(Returns<void> error)
   {
     error_        = error;
     error_active_ = true;
@@ -352,8 +350,8 @@ class MockProtocol<MemoryAccessProtocol::AddressWidth::kByte1>
     error_active_ = false;
   }
 
-  Error_t error_;
-  bool error_active_ = false;
+  Returns<void> error_ = {};
+  bool error_active_   = false;
 };
 
 // TODO(#1329) Not supported yet.
@@ -383,7 +381,7 @@ class I2cProtocol : public MemoryAccessProtocol
 
     if (address.size() + value.size() >= kBufferSize)
     {
-      return Error(Status::kOutOfBounds,
+      return Error(std::errc::not_enough_memory,
                    "I2cProtocol Object does not have enough buffer storage to "
                    "perform this write operation.");
     }

@@ -23,14 +23,12 @@ class Uart
   /// method in this interface is called.
   ///
   /// @param baud_rate - set the communication speed
-  virtual Status Initialize(uint32_t baud_rate) const = 0;
+  virtual Returns<void> Initialize(uint32_t baud_rate) const = 0;
 
   /// Set UART baud rate
   ///
   /// @param baud_rate the speed of the UART transmit and receive.
-  /// @return true - if baud rate was able to be set correctly.
-  /// @return false - if baud rate is not possible to be set.
-  virtual bool SetBaudRate(uint32_t baud_rate) const = 0;
+  virtual Returns<void> SetBaudRate(uint32_t baud_rate) const = 0;
 
   /// Sends bytes via UART port via the TX line
   ///
@@ -62,6 +60,7 @@ class Uart
   {
     PollingFlush();
   }
+
   // ===========================================================================
   // Utility Methods
   // ===========================================================================
@@ -115,10 +114,9 @@ class Uart
   /// @param data - buffer to read bytes into.
   /// @param size - number of bytes to read before timeout.
   /// @param timeout - duration to wait for incoming data before timeout.
-  /// @return sjsu::Status::kSuccess if bytes were read before timeout.
-  /// @return sjsu::Status::kTimeout if bytes could not be read before before
+  /// @return std::errc::timed_out if bytes could not be read before before
   ///         timeout.
-  sjsu::Status Read(void * data,
+  Returns<void> Read(void * data,
                     size_t size,
                     std::chrono::nanoseconds timeout) const
   {

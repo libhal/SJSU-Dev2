@@ -42,11 +42,11 @@ int main()
   {
     // Grab the calculated charge from the counter, based on how many ticks it
     // received and the polarity.
-    units::charge::milliampere_hour_t recent_charge = counter.GetCharge();
+    units::charge::milliampere_hour_t recent_charge =
+        SJ2_RETURN_VALUE_ON_ERROR(counter.GetCharge(), -1);
 
     // Anytime the charge changes, we print out the latest count.
-    if (!ApproxEquality(previous_charge.to<float>(),
-                        recent_charge.to<float>(),
+    if (!ApproxEquality(previous_charge.to<float>(), recent_charge.to<float>(),
                         kResolution))
     {
       sjsu::LogInfo("Current Charge: %f mAh", recent_charge.to<double>());

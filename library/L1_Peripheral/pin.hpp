@@ -99,30 +99,30 @@ class Pin
   /// code usage.
   ///
   /// @param function pin function code
-  /// @returns Status::kInvalidParameter only if the function code is invalid.
+  /// @return std::errc::invalid_argument the function code is not valid.
   virtual Returns<void> SetPinFunction(uint8_t function) const = 0;
 
   /// Set pin's resistor pull, setting ot either no resistor pull, pull down,
   /// pull up and repeater.
   ///
   /// @param resistor - which resistor setup you would like.
-  /// @returns An Error only if the resistor setting is not
-  ///          supported.
+  /// @return should return std::errc::not_supported if the pull option is not
+  ///         supported by the MCU.
   virtual Returns<void> SetPull(Resistor resistor) const = 0;
 
   /// Set pin to open drain mode
   ///
   /// @param set_as_open_drain If false, disable open drain feature, pin
   ///        becomes push-pull (a.k.a totem pole).
-  /// @returns Status::kNotImplemented only if open drain configuration is not
-  ///          supported by the MCU.
+  /// @return should return std::errc::not_supported if open drain is not
+  ///         supported by the MCU.
   virtual Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const = 0;
 
   /// Set pin as analog mode
   ///
   /// @param set_as_analog If false, disable analog mode for pin
-  /// @returns Status::kNotImplemented only if analog mode configuration is not
-  ///          supported by the MCU.
+  /// @return should return std::errc::not_supported if analog mode is not
+  ///         supported by the MCU.
   virtual Returns<void> SetAsAnalogMode(bool set_as_analog = true) const = 0;
 
   // ===========================================================================
@@ -130,21 +130,21 @@ class Pin
   // ===========================================================================
 
   /// Attach internal pull up resistor to pin
-  void PullUp() const
+  Returns<void> PullUp() const
   {
-    SetPull(Resistor::kPullUp);
+    return SetPull(Resistor::kPullUp);
   }
 
   /// Attach internal pull down resistor to pin
-  void PullDown() const
+  Returns<void> PullDown() const
   {
-    SetPull(Resistor::kPullDown);
+    return SetPull(Resistor::kPullDown);
   }
 
   /// Detach internal pull resistor from pin and allow the pin to float
-  void SetFloating() const
+  Returns<void> SetFloating() const
   {
-    SetPull(Resistor::kNone);
+    return SetPull(Resistor::kNone);
   }
 
   /// Getter method for the pin's port.

@@ -20,17 +20,25 @@ int main()
   pin3.GetPin().PullUp();
 
   sjsu::LogInfo("Setup P0[15] to interrupt on only Falling edges...");
-  pin0.AttachInterrupt([]() { sjsu::LogInfo("P0[15] interrupt!"); },
-                       sjsu::Gpio::Edge::kFalling);
+  auto was_successful = pin0.AttachInterrupt(
+      []() { sjsu::LogInfo("P0[15] interrupt!"); }, sjsu::Gpio::Edge::kFalling);
+
+  if (!was_successful)
+  {
+    return -1;
+  }
 
   sjsu::LogInfo("Setup P2[9] to interrupt on only Rising edges...");
-  pin1.OnRisingEdge([]() { sjsu::LogInfo("P2[9] interrupt!"); });
+  SJ2_RETURN_VALUE_ON_ERROR(
+      pin1.OnRisingEdge([]() { sjsu::LogInfo("P2[9] interrupt!"); }), -2);
 
   sjsu::LogInfo("Setup P0[29] to interrupt on Rising and Falling edges...");
-  pin2.OnChange([]() { sjsu::LogInfo("P0[29] interrupt!"); });
+  SJ2_RETURN_VALUE_ON_ERROR(
+      pin2.OnChange([]() { sjsu::LogInfo("P0[29] interrupt!"); }), -3);
 
   sjsu::LogInfo("Setup P0[30] to interrupt on Rising and Falling edges...");
-  pin2.OnChange([]() { sjsu::LogInfo("P0[30] interrupt!"); });
+  SJ2_RETURN_VALUE_ON_ERROR(
+      pin2.OnChange([]() { sjsu::LogInfo("P0[30] interrupt!"); }), -4);
 
   sjsu::LogInfo(
       "All of the pins are currently pulled high using an internal pull-up "

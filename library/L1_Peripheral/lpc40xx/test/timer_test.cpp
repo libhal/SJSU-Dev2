@@ -44,7 +44,7 @@ TEST_CASE("Testing lpc40xx Timer")
         kClockFrequency / kExpectedFrequency;
 
     // Exercise
-    const Status kStatus = timer.Initialize(kExpectedFrequency);
+    REQUIRE(timer.Initialize(kExpectedFrequency));
 
     // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
@@ -52,7 +52,6 @@ TEST_CASE("Testing lpc40xx Timer")
                  return kExpectedPeripheralId.device_id == id.device_id;
                }),
            Method(mock_interrupt_controller, Enable));
-    CHECK(kStatus == Status::kSuccess);
     CHECK(local_timer_registers.PR == kExpectedPrescaler);
   }
 
@@ -127,7 +126,7 @@ TEST_CASE("Testing lpc40xx Timer")
 
     // Exercise
     local_timer_registers.TC = expected_count;
-    uint32_t actual_count    = timer.GetCount();
+    uint32_t actual_count    = timer.GetCount().value();
 
     // Verify
     CHECK(actual_count == expected_count);

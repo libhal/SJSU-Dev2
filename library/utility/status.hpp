@@ -7,6 +7,7 @@
 #include <cinttypes>
 #include <limits>
 #include <string_view>
+#include <system_error>
 
 #if defined(__clang_analyzer__)
 #include "utility/dummy/source_location"
@@ -15,195 +16,120 @@
 #endif
 
 #include "utility/debug.hpp"
+#include "utility/enum.hpp"
 #include "third_party/expected/include/tl/expected.hpp"
 
 namespace sjsu
 {
-/// Parent structure of the `Status` object containing the status code as well
-/// as the status' name.
-struct Status_t
+constexpr const char * Stringify(std::errc error_code)
 {
-  /// The status code number
-  int code = std::numeric_limits<int>::max();
-
-  /// The string representation of the status.
-  std::string_view name = "Unknown";
-
-  /// Allows explicit static_cast<> conversion from Status_t to int
-  /// @return int - the error code as this type
-  explicit operator int() const
+  if constexpr (config::kStoreErrorCodeStrings)
   {
-    return code;
+    switch (error_code)
+    {
+      case std::errc::address_family_not_supported:
+        return "address family not supported";
+
+      case std::errc::address_in_use: return "address in use";
+      case std::errc::address_not_available: return "address not available";
+      case std::errc::already_connected: return "already connected";
+      case std::errc::argument_list_too_long: return "argument list too long";
+      case std::errc::argument_out_of_domain: return "argument out of domain";
+      case std::errc::bad_address: return "bad address";
+      case std::errc::bad_file_descriptor: return "bad file descriptor";
+      case std::errc::bad_message: return "bad message";
+      case std::errc::broken_pipe: return "broken pipe";
+      case std::errc::connection_aborted: return "connection aborted";
+      case std::errc::connection_already_in_progress:
+        return "connection already in progress";
+
+      case std::errc::connection_refused: return "connection refused";
+      case std::errc::connection_reset: return "connection reset";
+      case std::errc::cross_device_link: return "cross device link";
+      case std::errc::destination_address_required:
+        return "destination address required";
+
+      case std::errc::device_or_resource_busy: return "device or resource busy";
+      case std::errc::directory_not_empty: return "directory not empty";
+      case std::errc::executable_format_error: return "executable format error";
+      case std::errc::file_exists: return "file exists";
+      case std::errc::file_too_large: return "file too large";
+      case std::errc::filename_too_long: return "filename too long";
+      case std::errc::function_not_supported: return "function not supported";
+      case std::errc::host_unreachable: return "host unreachable";
+      case std::errc::identifier_removed: return "identifier removed";
+      case std::errc::illegal_byte_sequence: return "illegal byte sequence";
+      case std::errc::inappropriate_io_control_operation:
+        return "inappropriate io control operation";
+
+      case std::errc::interrupted: return "interrupted";
+      case std::errc::invalid_argument: return "invalid argument";
+      case std::errc::invalid_seek: return "invalid seek";
+      case std::errc::io_error: return "io error";
+      case std::errc::is_a_directory: return "is a directory";
+      case std::errc::message_size: return "message size";
+      case std::errc::network_down: return "network down";
+      case std::errc::network_reset: return "network reset";
+      case std::errc::network_unreachable: return "network unreachable";
+      case std::errc::no_buffer_space: return "no buffer space";
+      case std::errc::no_child_process: return "no child process";
+      case std::errc::no_link: return "no link";
+      case std::errc::no_lock_available: return "no lock available";
+      case std::errc::no_message_available: return "no message available";
+      case std::errc::no_message: return "no message";
+      case std::errc::no_protocol_option: return "no protocol option";
+      case std::errc::no_space_on_device: return "no space on device";
+      case std::errc::no_stream_resources: return "no stream resources";
+      case std::errc::no_such_device_or_address:
+        return "no such device or address";
+
+      case std::errc::no_such_device: return "no such device";
+      case std::errc::no_such_file_or_directory:
+        return "no such file or directory";
+
+      case std::errc::no_such_process: return "no such process";
+      case std::errc::not_a_directory: return "not a directory";
+      case std::errc::not_a_socket: return "not a socket";
+      case std::errc::not_a_stream: return "not a stream";
+      case std::errc::not_connected: return "not connected";
+      case std::errc::not_enough_memory: return "not enough memory";
+      case std::errc::not_supported: return "not supported";
+      case std::errc::operation_canceled: return "operation canceled";
+      case std::errc::operation_in_progress: return "operation in progress";
+      case std::errc::operation_not_permitted: return "operation not permitted";
+      case std::errc::owner_dead: return "owner dead";
+      case std::errc::permission_denied: return "permission denied";
+      case std::errc::protocol_error: return "protocol error";
+      case std::errc::protocol_not_supported: return "protocol not supported";
+      case std::errc::read_only_file_system: return "read only file system";
+      case std::errc::resource_deadlock_would_occur:
+        return "resource deadlock would occur";
+
+      case std::errc::resource_unavailable_try_again:
+        return "resource unavailable try again";
+
+      case std::errc::result_out_of_range: return "result out of range";
+      case std::errc::state_not_recoverable: return "state not recoverable";
+      case std::errc::stream_timeout: return "stream timeout";
+      case std::errc::text_file_busy: return "text file busy";
+      case std::errc::timed_out: return "timed out";
+      case std::errc::too_many_files_open_in_system:
+        return "too many files open in system";
+
+      case std::errc::too_many_files_open: return "too many files open";
+      case std::errc::too_many_links: return "too many links";
+      case std::errc::too_many_symbolic_link_levels:
+        return "too many symbolic link levels";
+
+      case std::errc::value_too_large: return "value too large";
+      case std::errc::wrong_protocol_type: return "wrong protocol type";
+      default:
+      {
+        return "unknown";
+      }
+    }
   }
-};
-
-/// Helper factory function for creating a Status_t at compile time. If you
-/// want to create your own status types you can do so by using this function
-/// and supplying your own status_code and status_name. It is recommend to use
-/// positive numbers for user supplied status' as the SJSU-Dev2's status's are
-/// all negative.
-///
-/// @param status_code - Number associated with the status code.
-/// @param status_name - String to represent the name of the status.
-/// @return constexpr Status_t - resulting Status_t
-constexpr Status_t CreateStatus(int status_code, std::string_view status_name)
-{
-  return Status_t{ .code = status_code, .name = status_name };
-}
-
-/// A status object that indicates the type of error or exception that has
-/// occurred within the code. This object is also a container/namespace for
-/// the standard set of status's defined for SJSU-Dev2.
-struct Status : public Status_t  // NOLINT
-{
-  /// Allows the creation of a default Status object
-  constexpr Status() {}
-
-  /// Factory object that is used to simplify the creation of status objects.
-  ///
-  /// @param status_code - Number associated with the status code.
-  /// @param status_name - String to represent the name of the status.
-  constexpr Status(int status_code, std::string_view status_name)
-  {
-    code = status_code;
-    name = status_name;
-  }
-
-  /// Implicit conversion from Status_t& -> Status
-  ///
-  /// @param status - the status to copy
-  constexpr Status(const Status_t & status)  // NOLINT
-  {
-    code = status.code;
-    name = status.name;
-  }
-
-  /// Implicit conversion from Status_t&& -> Status
-  ///
-  /// @param status - the status to copy
-  constexpr Status(const Status_t && status)  // NOLINT
-  {
-    code = status.code;
-    name = status.name;
-  }
-
-  /// Implicit assignment from Status_t& -> Status
-  ///
-  /// @param status
-  /// @return constexpr Status
-  constexpr Status operator=(const Status_t & status)
-  {
-    code = status.code;
-    name = status.name;
-    return *this;
-  }
-
-  /// Implicit assignment from Status_t&& -> Status
-  ///
-  /// @param status
-  /// @return constexpr Status
-  constexpr Status operator=(const Status_t && status)
-  {
-    code = status.code;
-    name = status.name;
-    return *this;
-  }
-
-  /// A status indicating that the operation was successful.
-  /// This is deprecated in ErrorHandling v2 as there is no longer a need for
-  /// a non-error like status code.
-  static constexpr auto kSuccess = CreateStatus(0, "Success");
-
-  /// Used to indicate that a particular operation could not be accomplished
-  /// in the time given.
-  static constexpr auto kTimedOut = CreateStatus(-1, "Timed Out");
-
-  /// A problem in communicate over a communication channel occurred,
-  /// resulting in an operation failing.
-  static constexpr auto kBusError = CreateStatus(-2, "Bus Error");
-
-  /// Failure occurred because an operation required a device to be present,
-  /// and it was not.
-  static constexpr auto kDeviceNotFound = CreateStatus(-3, "Device Not Found");
-
-  /// A system or object failed to perform an operation due to the fact that
-  /// the settings are not correct. An example of this could be setting the
-  /// clock speed of a system to 0 Hz, and then attempting to use that system
-  /// for communication or generating a signal.
-  static constexpr auto kInvalidSettings = CreateStatus(-4, "Invalid Settings");
-
-  /// This is returned when the implementation of a particular aspect of an
-  /// interface was purposefully kept unimplemented. This can happen in cases
-  /// where a particular implementation, does not have the capability to
-  /// perform
-  static constexpr auto kNotImplemented = CreateStatus(-5, "Not Implemented");
-
-  /// This is returned if a system is currently busy and cannot take new
-  /// operations or requests.
-  static constexpr auto kNotReadyYet = CreateStatus(-6, "Not Ready Yet");
-
-  /// Failure to perform an operation because the input parameters were not
-  /// acceptable for the function or method being called.
-  static constexpr auto kInvalidParameters =
-      CreateStatus(-7, "Invalid Parameters");
-
-  /// Unfinished is returned when a particular aspect of an implementation of
-  /// a system, class or object is unfinished, but is planned to be finished.
-  /// This is different from kNotImplemented, where there is no plan to ever
-  /// implement a particular feature.
-  static constexpr auto kUnfinished = CreateStatus(-8, "Unfinished");
-
-  /// If there was some sort of access of memory or information outside of its
-  /// typical boundary.
-  static constexpr auto kOutOfBounds = CreateStatus(-9, "Out Of Bounds");
-};
-
-/// Operator == definitions between Status_t and Status objects.
-///
-/// @param rhs Status to compare
-/// @param lhs Status to compare
-/// @return true - if the error codes are the same.
-constexpr bool operator==(const Status & rhs, const Status & lhs)
-{
-  return rhs.code == lhs.code;
-}
-
-/// Operator != definitions between Status_t and Status objects.
-///
-/// @param rhs Status to compare
-/// @param lhs Status to compare
-/// @return true - if the error codes are the same.
-constexpr bool operator!=(const Status & rhs, const Status & lhs)
-{
-  return rhs.code != lhs.code;
-}
-
-/// Backwards compability for IsOK(enum) for when Status was a enum type
-///
-/// @param status - The status to check. If the code is 0, then it is ok.
-/// @return true - if the status is a successful one.
-constexpr bool IsOk(const Status & status)
-{
-  return status.code == Status::kSuccess.code;
-}
-
-/// Backwards compability for Value(enum) for when Status. was a enum type
-///
-/// @param status -
-/// @return constexpr int - return the status.code
-constexpr int Value(const Status & status)
-{
-  return status.code;
-}
-
-/// Backwards compatibility for Stringify(enum) for when Status. was a enum
-/// type
-///
-/// @param status
-/// @return constexpr const char*
-constexpr const char * Stringify(const Status_t & status)
-{
-  return status.name.data();
+  return "unknown";
 }
 
 /// Error object that contains the Status code, message and location of where an
@@ -214,16 +140,16 @@ class Error_t  // NOLINT
   /// Represents an empty string
   constexpr static const char * kEmptyMessage = "";
 
-  /// @param error_status   - status code to go with this error object
-  /// @param error_message  - message to go with error to describe exactly why
+  /// @param error_code    - error code to be associated with this error object
+  /// @param error_message - message to go with error to describe exactly why
   ///                         the error occurred.
   /// @param source_location - the location in the source code where the Error_t
   ///                          was created.
-  constexpr Error_t(Status error_status        = Status::kSuccess,
+  constexpr Error_t(std::errc error_code,
                     const char * error_message = kEmptyMessage,
                     const std::experimental::source_location & source_location =
                         std::experimental::source_location::current())
-      : status(error_status)
+      : code(error_code)
   {
     file     = source_location.file_name();
     function = source_location.function_name();
@@ -241,23 +167,35 @@ class Error_t  // NOLINT
     /// Print the colored error text to STDOUT
     printf(SJ2_BOLD_YELLOW "Error:" SJ2_HI_BOLD_RED "%s(%d)" SJ2_HI_BOLD_WHITE
                            ":%s:%d:%s(): %s\n" SJ2_COLOR_RESET,
-           status.name.data(), status.code, file, line, function, message);
+           Stringify(code), Value(code), file, line, function, message);
   }
 
   constexpr bool operator==(const Error_t & other) const
   {
-    return status == other.status;
+    return code == other.code;
   }
 
-  /// @return true if the Error_t is an error. Meaning that the status it
-  /// contains is anything other than Status::kSuccess.
+  /// @return true if `code` contains an error_code which is any non-zero
+  /// number.
   constexpr operator bool() const
   {
-    return status != Status::kSuccess;
+    return static_cast<int>(code) != 0;
+  }
+
+  friend constexpr bool operator==(const Error_t & lhs, std::errc rhs)
+  {
+    return rhs == lhs.code;
+  }
+
+  friend constexpr bool operator==(std::errc lhs, const Error_t & rhs)
+  {
+    return lhs == rhs.code;
   }
 
   /// The status associated with this error
-  Status_t status;
+  std::errc code;
+  // /// The category associated with the error type
+  // const std::error_category & category;
   /// Custom message describing the error
   const char * message = kEmptyMessage;
   /// File name string
@@ -289,6 +227,60 @@ template <typename T>
 constexpr Returns<T> NoError()
 {
   return T{};
+}
+
+/// Checks if the Returns<T> object contains an error and if so, does it match
+/// the error_code provided. Will automatically be false if the Return<T> does
+/// not contain an error.
+///
+/// Shorthand to allow comparison between a Returns<T> object and an error code
+/// enumeration.
+///
+/// This allows you to migrate code from
+///
+///    std::errc::invalid_argument == result.error()->code;
+///
+/// To:
+///
+///    std::errc::invalid_argument == result
+///
+/// @param error_code - enumeration to compare with the Returns<T> object.
+/// @param result - the result to compare against the error code.
+template <typename T>
+constexpr bool operator==(std::errc error_code, const Returns<T> & result)
+{
+  if (result.has_value())
+  {
+    return false;
+  }
+  return error_code == result.error()->code;
+}
+
+/// Checks if the Returns<T> object contains an error and if so, does it match
+/// the error_code provided. Will automatically be false if the Return<T> does
+/// not contain an error.
+///
+/// Shorthand to allow comparison between a Returns<T> object and an error code
+/// enumeration.
+///
+/// This allows you to migrate code from
+///
+///    std::errc::invalid_argument == result.error()->code;
+///
+/// To:
+///
+///    std::errc::invalid_argument == result
+///
+/// @param error_code - enumeration to compare with the Returns<T> object.
+/// @param result - the result to compare against the error code.
+template <typename T>
+constexpr bool operator==(const Returns<T> & result, std::errc error_code)
+{
+  if (result.has_value())
+  {
+    return false;
+  }
+  return error_code == result.error()->code;
 }
 
 /// This is a helper function for the `SJ2_RETURN_ON_ERROR()` macro to help it
@@ -325,22 +317,21 @@ constexpr auto GetReturnValue(Returns<T> & result)
 ///
 /// Usage:
 ///
-///     return Error(Status::kTimeout, "Couldn't find resource in time");
+///     return Error(std::errc::timed_out, "Couldn't find resource in time");
 ///
 /// Without this function:
 ///
-///     return tl::unexpected(
-///               Error_t{Status::kTimeout, "Couldn't find resource in
-///               time"});
+///     return tl::unexpected(Error_t{std::errc::timed_out,
+///                                   "Couldn't find resource in time"});
 ///
-/// @param status - The status associated with this error
+/// @param error - The error_condition associated with this error
 /// @param message - The custom message to go with the status
 /// @return constexpr tl::unexpected<Error_t>
-#define Error(status, message)                                \
-  ({                                                          \
-    constexpr static ::sjsu::Error_t kError(status, message); \
-    auto error_result = tl::unexpected(&kError);              \
-    error_result;                                             \
+#define Error(error, message)                                       \
+  ({                                                                \
+    constexpr static ::sjsu::Error_t _static_error(error, message); \
+    auto unexpected_result = tl::unexpected(&_static_error);        \
+    unexpected_result;                                              \
   })
 
 /// A macro for simplifying the boiler plate of evaluating an expression that

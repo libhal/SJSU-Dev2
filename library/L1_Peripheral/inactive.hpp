@@ -89,9 +89,9 @@ inline sjsu::Adc & GetInactive<sjsu::Adc>()
   class InactiveAdc : public sjsu::Adc
   {
    public:
-    sjsu::Status Initialize() const override
+    Returns<void> Initialize() const override
     {
-      return sjsu::Status::kNotImplemented;
+      return {};
     }
     uint32_t Read() const override
     {
@@ -158,8 +158,14 @@ inline sjsu::Gpio & GetInactive<sjsu::Gpio>()
     {
       return GetInactive<sjsu::Pin>();
     }
-    void AttachInterrupt(InterruptCallback, Edge) override {}
-    void DetachInterrupt() const override {}
+    Returns<void> AttachInterrupt(InterruptCallback, Edge) override
+    {
+      return {};
+    }
+    Returns<void> DetachInterrupt() const override
+    {
+      return {};
+    }
   };
 
   static InactiveGpio inactive;
@@ -194,16 +200,25 @@ inline sjsu::Pwm & GetInactive<sjsu::Pwm>()
   class InactivePwm : public sjsu::Pwm
   {
    public:
-    Status Initialize(units::frequency::hertz_t) const override
+    Returns<void> Initialize(units::frequency::hertz_t) const override
     {
-      return Status::kNotImplemented;
+      return {};
     }
-    void SetDutyCycle(float) const override {}
-    float GetDutyCycle() const override
+
+    Returns<void> SetDutyCycle(float) const override
+    {
+      return {};
+    }
+
+    Returns<float> GetDutyCycle() const override
     {
       return 0.0;
     }
-    void SetFrequency(units::frequency::hertz_t) const override {}
+
+    Returns<void> SetFrequency(units::frequency::hertz_t) const override
+    {
+      return {};
+    }
   };
 
   static InactivePwm inactive;
@@ -217,16 +232,19 @@ inline sjsu::Spi & GetInactive<sjsu::Spi>()
   class InactiveSpi : public sjsu::Spi
   {
    public:
-    Status Initialize() const override
+    Returns<void> Initialize() const override
     {
-      return Status::kNotImplemented;
+      return {};
     }
     uint16_t Transfer(uint16_t) const override
     {
       return 0xFF;
     }
     void SetDataSize(DataSize) const override {}
-    void SetClock(units::frequency::hertz_t, bool, bool) const override {}
+    Returns<void> SetClock(units::frequency::hertz_t, bool, bool) const override
+    {
+      return {};
+    }
   };
 
   static InactiveSpi inactive;
@@ -286,9 +304,9 @@ inline sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
    public:
     void Initialize() const override {}
     void SetCallback(InterruptCallback) const override {}
-    Status StartTimer() const override
+    Returns<void> StartTimer() const override
     {
-      return Status::kNotImplemented;
+      return {};
     }
     int32_t SetTickFrequency(units::frequency::hertz_t) const override
     {
@@ -307,14 +325,19 @@ inline sjsu::Timer & GetInactive<sjsu::Timer>()
   class InactiveTimer : public sjsu::Timer
   {
    public:
-    Status Initialize(units::frequency::hertz_t,
-                      InterruptCallback,
-                      int32_t) const override
+    Returns<void> Initialize(units::frequency::hertz_t,
+                             InterruptCallback,
+                             int32_t) const override
     {
-      return Status::kNotImplemented;
+      return {};
     }
-    void SetMatchBehavior(uint32_t, MatchAction, uint8_t) const override {}
-    uint32_t GetCount() const override
+    Returns<void> SetMatchBehavior(uint32_t,
+                                   MatchAction,
+                                   uint8_t) const override
+    {
+      return {};
+    }
+    Returns<uint32_t> GetCount() const override
     {
       return 0;
     }
@@ -322,9 +345,18 @@ inline sjsu::Timer & GetInactive<sjsu::Timer>()
     {
       return 3;
     }
-    void Start() const override {}
-    void Stop() const override {}
-    void Reset() const override {}
+    Returns<void> Start() const override
+    {
+      return {};
+    }
+    Returns<void> Stop() const override
+    {
+      return {};
+    }
+    Returns<void> Reset() const override
+    {
+      return {};
+    }
   };
 
   static InactiveTimer inactive;
@@ -338,13 +370,13 @@ inline sjsu::Uart & GetInactive<sjsu::Uart>()
   class InactiveUart : public sjsu::Uart
   {
    public:
-    Status Initialize(uint32_t) const override
+    Returns<void> Initialize(uint32_t) const override
     {
-      return Status::kNotImplemented;
+      return {};
     }
-    bool SetBaudRate(uint32_t) const override
+    Returns<void> SetBaudRate(uint32_t) const override
     {
-      return true;
+      return {};
     }
     void Write(const void *, size_t) const override {}
     size_t Read(void *, size_t) const override
