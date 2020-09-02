@@ -50,9 +50,9 @@ TEST_CASE("Testing stm32f10x SystemController")
   SystemController test_subject(config);
 
   auto system_clock_becomes_ready = [&local_rcc, &config]() {
-    // Delay by 10ms to give enough time for other simulated triggers to
+    // Delay by 5ms to give enough time for other simulated triggers to
     // operate before this cancels.
-    std::this_thread::sleep_for(10ms);
+    std::this_thread::sleep_for(20ms);
     local_rcc.CFGR = bit::Insert(
         local_rcc.CFGR, Value(config.system_clock),
         SystemController::ClockConfigurationRegisters::kSystemClockStatus);
@@ -65,7 +65,7 @@ TEST_CASE("Testing stm32f10x SystemController")
   };
 
   auto high_oscillator_ready = [&local_rcc]() {
-    std::this_thread::sleep_for(1ms);
+    std::this_thread::sleep_for(10ms);
 
     local_rcc.CR =
         bit::Set(local_rcc.CR,
@@ -73,7 +73,7 @@ TEST_CASE("Testing stm32f10x SystemController")
   };
 
   auto low_oscillator_ready = [&local_rcc]() {
-    std::this_thread::sleep_for(1ms);
+    std::this_thread::sleep_for(10ms);
 
     local_rcc.BDCR = bit::Set(
         local_rcc.BDCR, SystemController::RtcRegisters::kLowSpeedOscReady);

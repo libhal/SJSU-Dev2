@@ -154,7 +154,7 @@ class I2c final : public sjsu::I2c
     {
       case MasterState::kBusError:  // 0x00
       {
-        i2c.transaction.status = Status::kBusError;
+        i2c.transaction.status = std::errc::io_error;
         set_mask               = Control::kAssertAcknowledge | Control::kStop;
         break;
       }
@@ -174,9 +174,8 @@ class I2c final : public sjsu::I2c
         clear_mask = Control::kStart;
         if (i2c.transaction.out_length == 0)
         {
-          i2c.transaction.busy   = false;
-          i2c.transaction.status = Status::kSuccess;
-          set_mask               = Control::kStop;
+          i2c.transaction.busy = false;
+          set_mask             = Control::kStop;
         }
         else
         {
@@ -189,7 +188,7 @@ class I2c final : public sjsu::I2c
       {
         clear_mask             = Control::kStart;
         i2c.transaction.busy   = false;
-        i2c.transaction.status = Status::kDeviceNotFound;
+        i2c.transaction.status = std::errc::no_such_device_or_address;
         set_mask               = Control::kStop;
         break;
       }
@@ -250,7 +249,7 @@ class I2c final : public sjsu::I2c
       case MasterState::kSlaveAddressReadSentReceivedNack:  // 0x48
       {
         clear_mask             = Control::kStart;
-        i2c.transaction.status = Status::kDeviceNotFound;
+        i2c.transaction.status = std::errc::no_such_device_or_address;
         i2c.transaction.busy   = false;
         set_mask               = Control::kStop;
         break;
@@ -385,27 +384,26 @@ class I2c final : public sjsu::I2c
 
     if (!IsIntialized())
     {
-      return Error(Status::kNotReadyYet,
-                   "Attempted to use I2C, but peripheral was not initialized!"
-                   "Be sure to run the Initialize() method first");
+      return Error(std::errc::operation_not_permitted,
+                   "Attempt to use I2C, before peripheral was not INITIALIZED!"
+                   "Be sure to run the i2c.Initialize() method first");
     }
 
     auto wait_for_i2c_transaction = [this]() -> bool {
       return !i2c_.transaction.busy;
     };
 
-    Status wait_status =
-        Wait(i2c_.transaction.timeout, wait_for_i2c_transaction);
+    auto wait_status = Wait(i2c_.transaction.timeout, wait_for_i2c_transaction);
 
-    if (i2c_.transaction.status == Status::kBusError)
+    if (i2c_.transaction.status == CommonErrors::kBusError)
     {
       return DefinedError(CommonErrors::kBusError);
     }
-    else if (i2c_.transaction.status == Status::kDeviceNotFound)
+    else if (i2c_.transaction.status == CommonErrors::kDeviceNotFound)
     {
       return DefinedError(CommonErrors::kDeviceNotFound);
     }
-    else if (wait_status == Status::kTimedOut)
+    else if (!wait_status)
     {
       // Abort I2C communication if this point is reached!
       i2c_.registers->CONSET = Control::kAssertAcknowledge | Control::kStop;

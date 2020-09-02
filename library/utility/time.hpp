@@ -48,9 +48,11 @@ inline void SetUptimeFunction(UptimeFunction uptime_function)
 ///        return true.
 /// @param is_done will be run in a tight loop until it returns true or the
 ///        timeout time has elapsed.
-inline Status Wait(std::chrono::nanoseconds timeout,
-                   std::function<bool()> is_done)
+inline Returns<void> Wait(std::chrono::nanoseconds timeout,
+                          std::function<bool()> is_done)
 {
+  const auto kTimedOutError = Error(std::errc::timed_out, "");
+
   std::chrono::nanoseconds timeout_time;
 
   if (timeout == std::chrono::nanoseconds::max())
@@ -62,7 +64,7 @@ inline Status Wait(std::chrono::nanoseconds timeout,
   }
   else if (timeout == 0ns)
   {
-    return Status::kTimedOut;
+    return kTimedOutError;
   }
   else
   {
@@ -84,18 +86,18 @@ inline Status Wait(std::chrono::nanoseconds timeout,
   {
     if (is_done())
     {
-      return Status::kSuccess;
+      return {};
     }
   }
 
-  return Status::kTimedOut;
+  return kTimedOutError;
 }
 
 /// Overload of `Wait` that merely takes a timeout.
 ///
 /// @param timeout - the amount of time to wait.
 /// @return always returns std::errc::timed_out
-inline Status Wait(std::chrono::nanoseconds timeout)
+inline Returns<void> Wait(std::chrono::nanoseconds timeout)
 {
   return Wait(timeout, []() -> bool { return false; });
 }

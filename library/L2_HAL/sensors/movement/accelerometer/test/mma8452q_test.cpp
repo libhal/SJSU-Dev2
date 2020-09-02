@@ -26,27 +26,21 @@ TEST_CASE("Accelerometer")
       When(Method(mock_i2c, Initialize)).AlwaysReturn({});
 
       // Exercise
-      auto result = test_subject.Initialize();
-
-      // Verify
-      Verify(Method(mock_i2c, Initialize));
-      // Verify: Initialize should not have an error
-      CHECK(result);
+      REQUIRE(test_subject.Initialize());
     }
 
     SECTION("Failure")
     {
       // Setup
-      const auto kExpectedStatus = Error(Status::kNotReadyYet, "");
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedStatus);
+      const auto kExpectedError = std::errc::not_supported;
+      When(Method(mock_i2c, Initialize))
+          .AlwaysReturn(Error(kExpectedError, ""));
 
       // Exercise
-      auto result = test_subject.Initialize();
+      REQUIRE(kExpectedError == test_subject.Initialize());
 
       // Verify
       Verify(Method(mock_i2c, Initialize));
-      // Verify: Initialize should not have an error
-      CHECK(!result);
     }
   }
 
@@ -59,11 +53,8 @@ TEST_CASE("Accelerometer")
       mock_map[Mma8452q::Map::kWhoAmI] = 0x22;
 
       // Exercise
-      auto result = test_subject.Enable();
-
       // Verify
-      CHECK(!result);
-      CHECK(*result.error() == Error_t(Status::kDeviceNotFound));
+      REQUIRE(test_subject.Enable() == std::errc::no_such_device);
     }
 
     SECTION("Success")
@@ -108,7 +99,7 @@ TEST_CASE("Accelerometer")
       Mma8452q gravity_test_subject(mock_map, mock_i2c.get(), 4_SG);
 
       // Exercise
-      auto result            = gravity_test_subject.Enable();
+      auto result                     = gravity_test_subject.Enable();
       Returns<uint8_t> actual_control = mock_map[Mma8452q::Map::kControlReg1];
       Returns<uint8_t> actual_config  = mock_map[Mma8452q::Map::kDataConfig];
 
@@ -124,7 +115,7 @@ TEST_CASE("Accelerometer")
       Mma8452q gravity_test_subject(mock_map, mock_i2c.get(), 8_SG);
 
       // Exercise
-      auto result            = gravity_test_subject.Enable();
+      auto result                     = gravity_test_subject.Enable();
       Returns<uint8_t> actual_control = mock_map[Mma8452q::Map::kControlReg1];
       Returns<uint8_t> actual_config  = mock_map[Mma8452q::Map::kDataConfig];
 
@@ -138,7 +129,7 @@ TEST_CASE("Accelerometer")
   SECTION("Read")
   {
     // Signed 12-bit value has a maximum
-    constexpr int16_t kQuaterMaxAcceleration =
+    constexpr int16_t kQuarterMaxAcceleration =
         BitLimits<12, int16_t>::Max() / 4;
     constexpr units::acceleration::meters_per_second_squared_t kExpectedValue =
         0.5_SG;
@@ -150,17 +141,12 @@ TEST_CASE("Accelerometer")
       // Setup
       // Setup: Value
       mock_map[Mma8452q::Map::kXYZStartAddress] =
-          std::array<int16_t, 3>{ kQuaterMaxAcceleration << 4, 0, 0 };
+          std::array<int16_t, 3>{ kQuarterMaxAcceleration << 4, 0, 0 };
 
       // Exercise
-      auto result = test_subject.Read();
+      auto acceleration = test_subject.Read().value();
 
       // Verify
-      // Verify: Initialize should not have an error
-      REQUIRE(result);
-
-      auto acceleration = result.value();
-
       CHECK(acceleration.x.to<float>() ==
             doctest::Approx(kExpectedValue.to<float>()).epsilon(0.01f));
       CHECK(acceleration.y.to<float>() ==
@@ -174,17 +160,12 @@ TEST_CASE("Accelerometer")
       // Setup
       // Setup: Value
       mock_map[Mma8452q::Map::kXYZStartAddress] =
-          std::array<int16_t, 3>{ 0, kQuaterMaxAcceleration << 4, 0 };
+          std::array<int16_t, 3>{ 0, kQuarterMaxAcceleration << 4, 0 };
 
       // Exercise
-      auto result = test_subject.Read();
+      auto acceleration = test_subject.Read().value();
 
       // Verify
-      // Verify: Initialize should not have an error
-      REQUIRE(result);
-
-      auto acceleration = result.value();
-
       CHECK(acceleration.x.to<float>() ==
             doctest::Approx(kExpectedZero.to<float>()).epsilon(0.01f));
       CHECK(acceleration.y.to<float>() ==
@@ -198,17 +179,12 @@ TEST_CASE("Accelerometer")
       // Setup
       // Setup: Value
       mock_map[Mma8452q::Map::kXYZStartAddress] =
-          std::array<int16_t, 3>{ 0, 0, kQuaterMaxAcceleration << 4 };
+          std::array<int16_t, 3>{ 0, 0, kQuarterMaxAcceleration << 4 };
 
       // Exercise
-      auto result = test_subject.Read();
+      auto acceleration = test_subject.Read().value();
 
       // Verify
-      // Verify: Initialize should not have an error
-      REQUIRE(result);
-
-      auto acceleration = result.value();
-
       CHECK(acceleration.x.to<float>() ==
             doctest::Approx(kExpectedZero.to<float>()).epsilon(0.01f));
       CHECK(acceleration.y.to<float>() ==
@@ -222,19 +198,14 @@ TEST_CASE("Accelerometer")
       // Setup
       // Setup: Value
       mock_map[Mma8452q::Map::kXYZStartAddress] =
-          std::array<int16_t, 3>{ kQuaterMaxAcceleration << 4,
-                                  kQuaterMaxAcceleration << 4,
-                                  kQuaterMaxAcceleration << 4 };
+          std::array<int16_t, 3>{ kQuarterMaxAcceleration << 4,
+                                  kQuarterMaxAcceleration << 4,
+                                  kQuarterMaxAcceleration << 4 };
 
       // Exercise
-      auto result = test_subject.Read();
+      auto acceleration = test_subject.Read().value();
 
       // Verify
-      // Verify: Initialize should not have an error
-      REQUIRE(result);
-
-      auto acceleration = result.value();
-
       CHECK(acceleration.x.to<float>() ==
             doctest::Approx(kExpectedValue.to<float>()).epsilon(0.01f));
       CHECK(acceleration.y.to<float>() ==
@@ -246,21 +217,12 @@ TEST_CASE("Accelerometer")
     SECTION("Failure")
     {
       // Setup
-      constexpr auto kError = Error_t(Status::kDeviceNotFound);
-      mock_map.SetError(kError);
-
-      // Setup: Value
-      mock_map[Mma8452q::Map::kXYZStartAddress] =
-          std::array<int16_t, 3>{ kQuaterMaxAcceleration << 4,
-                                  kQuaterMaxAcceleration << 4,
-                                  kQuaterMaxAcceleration << 4 };
+      const auto kExpectedError = Error(std::errc::no_such_device, "");
+      mock_map.SetError(kExpectedError);
 
       // Exercise
-      auto result = test_subject.Read();
-
       // Verify
-      REQUIRE(!result);
-      CHECK(*result.error() == kError);
+      REQUIRE(std::errc::no_such_device == test_subject.Read());
     }
   }
 }

@@ -37,15 +37,15 @@ class I2c
   {
    public:
     static constexpr auto kTimeout =
-        Error_t(Status::kTimedOut,
+        Error_t(std::errc::timed_out,
                 "I2C took too long to process and timed out! Consider "
                 "increasing the timeout time.");
 
     static constexpr auto kBusError =
-        Error_t(Status::kBusError, "I2C bus error occurred.");
+        Error_t(std::errc::io_error, "I2C bus error occurred.");
 
     static constexpr auto kDeviceNotFound =
-        Error_t(Status::kDeviceNotFound,
+        Error_t(std::errc::no_such_device_or_address,
                 "I2C address not found/acknowledged by device.");
   };
 
@@ -109,7 +109,7 @@ class I2c
 
     /// The status of the transaction after it is completed, fails, or times
     /// out.
-    Status status = Status::kSuccess;
+    std::errc status = static_cast<std::errc>(0);
   };
 
   // ===========================================================================
@@ -123,11 +123,9 @@ class I2c
   /// Perform a I2C transaction using the information contained in the
   /// transaction parameter.
   ///
-  /// @return Status::kTimeout if the transaction could not be performed in the
-  ///         set time.
-  ///         Status::kDeviceNotFound if external device does not respond to
-  ///         address on the bus
-  ///         Status::kSuccess if transaction was fulfilled.
+  /// @return std::errc::timed_out, std::errc::io_error, or
+  /// std::errc::no_such_device_or_address, depending on the circumstances of
+  /// the error that occurred during the transaction.
   virtual Returns<void> Transaction(Transaction_t transaction) const = 0;
 
   // ===========================================================================

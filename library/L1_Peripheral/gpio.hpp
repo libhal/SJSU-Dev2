@@ -71,10 +71,11 @@ class Gpio
   /// @param callback - the callback supplied here will be executed when the
   ///        interrupt condition occurs
   /// @param edge - the pin condition that will trigger the interrupt
-  virtual void AttachInterrupt(InterruptCallback callback, Edge edge) = 0;
+  virtual Returns<void> AttachInterrupt(InterruptCallback callback,
+                                        Edge edge) = 0;
 
   /// Remove interrupt call from pin and deactivate interrupts for this pin
-  virtual void DetachInterrupt() const = 0;
+  virtual Returns<void> DetachInterrupt() const = 0;
 
   // ===========================================================================
   // Utility Methods
@@ -108,27 +109,27 @@ class Gpio
   ///
   /// @param callback - the function to be called when a rising edge event
   ///                   occurs on this pin.
-  void OnRisingEdge(InterruptCallback callback)
+  Returns<void> OnRisingEdge(InterruptCallback callback)
   {
-    AttachInterrupt(callback, Edge::kRising);
+    return AttachInterrupt(callback, Edge::kRising);
   }
 
   /// Set pin to run callback when the pin sees a falling edge
   ///
   /// @param callback - the function to be called when a falling edge event
   ///                   occurs on this pin.
-  void OnFallingEdge(InterruptCallback callback)
+  Returns<void> OnFallingEdge(InterruptCallback callback)
   {
-    AttachInterrupt(callback, Edge::kFalling);
+    return AttachInterrupt(callback, Edge::kFalling);
   }
 
   /// Set pin to run callback when the pin sees a change on the pin's state.
   ///
   /// @param callback - the function to be called when a rising edge or falling
   ///                   edge event occurs on this pin.
-  void OnChange(InterruptCallback callback)
+  Returns<void> OnChange(InterruptCallback callback)
   {
-    AttachInterrupt(callback, Edge::kBoth);
+    return AttachInterrupt(callback, Edge::kBoth);
   }
 };
 }  // namespace sjsu

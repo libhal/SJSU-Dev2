@@ -41,8 +41,10 @@ TEST_CASE("Testing TFMini")
   SECTION("Initialize()")
   {
     constexpr uint32_t kBaudRate = 115200;
+
     // Assuming Uart Initialization is successful
-    When(Method(mock_uart, Initialize)).Return(sjsu::Status::kSuccess);
+    When(Method(mock_uart, Initialize)).Return({});
+
     size_t read_count                                        = 0;
     const std::array<uint8_t, 8 * 6> kExpectedInitializeData = {
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
@@ -52,6 +54,7 @@ TEST_CASE("Testing TFMini")
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x00, 0x02,  // Exit Config
     };
+
     auto init_read_callback =
         MockReadImplementation(read_count, kExpectedInitializeData);
 
@@ -60,7 +63,7 @@ TEST_CASE("Testing TFMini")
         .AlwaysDo(init_read_callback);
 
     // Exercise
-    CHECK(sjsu::Status::kSuccess == test.Initialize());
+    REQUIRE(test.Initialize());
 
     // Verify:
     // Verify: Check that uart initialization uses the correct Baud rate
@@ -113,12 +116,10 @@ TEST_CASE("Testing TFMini")
     SECTION("Success")
     {
       // Exercise
-      units::length::millimeter_t distance_check = 0_mm;
-      Status status = test.GetDistance(&distance_check);
+      auto distance = test.GetDistance().value();
 
       // Verify
-      CHECK(status == sjsu::Status::kSuccess);
-      CHECK(distance_check == kExpectedDistance);
+      CHECK(distance == kExpectedDistance);
       Verify(
           ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
               .Using(TFMini::kPromptMeasurementCommand, TFMini::kCommandLength))
@@ -131,13 +132,8 @@ TEST_CASE("Testing TFMini")
       device_result[4] = 0x34;
 
       // Exercise
-      units::length::millimeter_t distance_check = 0_mm;
-      Status status = test.GetDistance(&distance_check);
-
       // Verify
-      CHECK(sjsu::Status::kBusError == status);
-      CHECK(std::numeric_limits<units::length::millimeter_t>::max() ==
-            distance_check);
+      CHECK(std::errc::io_error == test.GetDistance());
     }
 
     SECTION("Device Not Found")
@@ -153,12 +149,7 @@ TEST_CASE("Testing TFMini")
       }
 
       // Exercise
-      units::length::millimeter_t distance_check = 0_mm;
-      Status status = test.GetDistance(&distance_check);
-
-      CHECK(status == sjsu::Status::kDeviceNotFound);
-      CHECK(distance_check ==
-            std::numeric_limits<units::length::millimeter_t>::max());
+      CHECK(std::errc::no_such_device == test.GetDistance());
     }
 
     // Verify
@@ -173,8 +164,7 @@ TEST_CASE("Testing TFMini")
   {
     constexpr uint16_t kExpectedStrength = 0x05DC;
     constexpr float kExpectedStrengthRange =
-        static_cast<float>(kExpectedStrength / TFMini::kStrengthUpperBound);
-    constexpr float kExpectedError = -1.0f;
+        static_cast<float>(kExpectedStrength) / TFMini::kStrengthUpperBound;
 
     constexpr uint8_t kLowerByte  = bit::Extract(kExpectedStrength, 1, 8);
     constexpr uint8_t kHigherByte = bit::Extract(kExpectedStrength, 9, 8);
@@ -199,20 +189,17 @@ TEST_CASE("Testing TFMini")
 
     SECTION("Proper Operation")
     {
-      // Setup
-      float strength_check = 0;
-
       // Exercise
-      Status status = test.GetSignalStrengthPercent(&strength_check);
+      auto strength = test.GetSignalStrengthPercent().value();
 
       // Verify
-      CHECK(status == sjsu::Status::kSuccess);
-      CHECK(strength_check ==
+      CHECK(strength ==
             doctest::Approx(kExpectedStrengthRange).epsilon(kEpsilon));
     }
 
     SECTION("Invalid Device Header")
     {
+      // Setup
       SECTION("First byte is invalid")
       {
         device_result[0] = 0x00;
@@ -223,32 +210,20 @@ TEST_CASE("Testing TFMini")
         device_result[1] = 0x00;
       }
 
-      // Setup
-      float strength_check = 0;
-
       // Exercise
-      Status status = test.GetSignalStrengthPercent(&strength_check);
-
       // Verify
-      CHECK(status == sjsu::Status::kDeviceNotFound);
-      CHECK(strength_check ==
-            doctest::Approx(kExpectedError).epsilon(kEpsilon));
+      CHECK(std::errc::no_such_device == test.GetSignalStrengthPercent());
     }
 
     SECTION("Invalid Checksum")
     {
       // Setup
-      float strength_check = 0;
       // Setup: throw one of the bytes off from the checksum
       device_result[4] = 0x34;
 
       // Exercise
-      Status status = test.GetSignalStrengthPercent(&strength_check);
-
       // Verify
-      CHECK(status == sjsu::Status::kBusError);
-      CHECK(strength_check ==
-            doctest::Approx(kExpectedError).epsilon(kEpsilon));
+      CHECK(std::errc::io_error == test.GetSignalStrengthPercent());
     }
 
     Verify(
@@ -278,28 +253,19 @@ TEST_CASE("Testing TFMini")
     SECTION("Successfully return using edge case 0")
     {
       // Exercise
-      Status status = test.SetMinSignalThreshhold(0);
-
-      // Verify
-      CHECK(sjsu::Status::kSuccess == status);
+      REQUIRE(test.SetMinSignalThreshhold(0));
     }
 
     SECTION("Successfully return in proper usage")
     {
       // Exercise
-      Status status = test.SetMinSignalThreshhold(50);
-
-      // Verify
-      CHECK(sjsu::Status::kSuccess == status);
+      REQUIRE(test.SetMinSignalThreshhold(50));
     }
 
     SECTION("Successfully return using edge case: Above the threshold cap")
     {
       // Exercise
-      Status status = test.SetMinSignalThreshhold(100);
-
-      // Verify
-      CHECK(sjsu::Status::kSuccess == status);
+      REQUIRE(test.SetMinSignalThreshhold(100));
     }
 
     // TODO(#1052): Missing verification for

@@ -17,31 +17,35 @@ class FrequencyCounter
 
   /// Initializes counter hardware. Will NOT start counting at this point. Will
   /// also set the counting direction to count up.
-  virtual void Initialize()
+  virtual Returns<void> Initialize()
   {
-    counter_->Initialize();
-    counter_->SetDirection(HardwareCounter::Direction::kUp);
+    SJ2_RETURN_ON_ERROR(counter_->Initialize());
+    SJ2_RETURN_ON_ERROR(
+        counter_->SetDirection(HardwareCounter::Direction::kUp));
+    return {};
   }
 
   /// Will enable the hardware counter and start the time measurement that will
   /// be used to measure the approximate frequency of the hardware counter.
-  virtual void Enable()
+  virtual Returns<void> Enable()
   {
-    counter_->Enable();
+    SJ2_RETURN_ON_ERROR(counter_->Enable());
     previous_time_ = Uptime();
+    return {};
   }
 
   /// Disable/Stops the hardware counter from counting.
-  virtual void Disable()
+  virtual Returns<void> Disable()
   {
-    counter_->Disable();
+    return counter_->Disable();
   }
 
   /// Resets the frequency counter.
-  virtual void Reset()
+  virtual Returns<void> Reset()
   {
-    previous_count_ = counter_->GetCount();
+    previous_count_ = SJ2_RETURN_ON_ERROR(counter_->GetCount());
     previous_time_  = Uptime();
+    return {};
   }
 
   /// Returns the approximate frequency of the hardware counter by measuring the
@@ -57,9 +61,9 @@ class FrequencyCounter
   /// you expect in order to get reliable results. For more information as to
   /// why this is, see whats called the "Nyquist Frequency".
   /// https://en.wikipedia.org/wiki/Nyquist_frequency
-  virtual units::frequency::hertz_t GetFrequency()
+  virtual Returns<units::frequency::hertz_t> GetFrequency()
   {
-    uint32_t current_count = counter_->GetCount();
+    uint32_t current_count = SJ2_RETURN_ON_ERROR(counter_->GetCount());
     auto current_uptime    = Uptime();
 
     uint32_t count_delta                 = current_count - previous_count_;

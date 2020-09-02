@@ -8,7 +8,7 @@ int main()
   dwt_counter.Initialize();
 
   // We are storing the counts in an array to reduce the latency between each
-  // call to GetCount(). If we added a call to printf/LOG_INFO, this will
+  // call to GetCount(). If we added a call to printf/LogInfo, this will
   // introduce latency into the counts, making the tick counts seem larger then
   // they really are.
   constexpr size_t kCountTotal = 25;

@@ -191,7 +191,8 @@ class Pwm final : public sjsu::Pwm
   ///        instance of the PWM driver.
   explicit constexpr Pwm(const Channel_t & channel) : channel_(channel) {}
 
-  Status Initialize(units::frequency::hertz_t frequency_hz) const override
+  Returns<void> Initialize(
+      units::frequency::hertz_t frequency_hz) const override
   {
     SJ2_ASSERT_FATAL(1 <= channel_.channel && channel_.channel <= 6,
                      "Channel must be between 1 and 6 on LPC40xx platforms.");
@@ -239,41 +240,54 @@ class Pwm final : public sjsu::Pwm
 
     channel_.pin.SetPinFunction(channel_.pin_function_code);
 
-    return Status::kSuccess;
+    return {};
   }
 
-  void SetDutyCycle(float duty_cycle) const override
+  Returns<void> SetDutyCycle(float duty_cycle) const override
   {
-    SJ2_ASSERT_FATAL(0.0f <= duty_cycle && duty_cycle <= 1.0f,
-                     "duty_cycle of Duty Cycle provided is out of bounds.");
+    bool is_valid_duty_cycle = (0.0f <= duty_cycle && duty_cycle <= 1.0f);
+    if (!is_valid_duty_cycle)
+    {
+      SJ2_PRINT_VARIABLE(duty_cycle, "%f");
+      return Error(std::errc::invalid_argument,
+                   "Duty Cycle provided is out of bounds.");
+    }
+
     *GetMatchRegisters(channel_.channel) = CalculateDutyCycle(duty_cycle);
     // LER (Load Enable Register) sets the hardware up to load the new duty
     // cycle period in the next reset cycle after MR0 match. Hardware requires
     // this as a means ot prevent itself from glitching and changing pwm
     // instantaniously.
     channel_.peripheral.registers->LER |= (1 << channel_.channel);
+
+    return {};
   }
 
-  float GetDutyCycle() const override
+  Returns<float> GetDutyCycle() const override
   {
     auto period     = static_cast<float>(*GetMatchRegisters(channel_.channel));
     auto max_period = static_cast<float>(*GetMatchRegisters(0));
     return period / max_period;
   }
 
-  void SetFrequency(units::frequency::hertz_t frequency_hz) const override
+  Returns<void> SetFrequency(
+      units::frequency::hertz_t frequency_hz) const override
   {
     if (frequency_hz <= 0_Hz)
     {
-      LogDebug("Cannot set frequency to 0Hz! This call will have no effect!");
-      return;
+      SJ2_PRINT_VARIABLE(frequency_hz, "%f");
+      return Error(std::errc::invalid_argument,
+                   "Frequency must be greater than 0 Hz. Frequency will not be "
+                   "updated.");
     }
 
     auto & system = sjsu::SystemController::GetPlatformController();
 
     auto peripheral_frequency = system.GetClockRate(channel_.peripheral.id);
     // Get the current duty cycle so we can match it to the updated frequency.
-    float previous_duty_cycle = GetDutyCycle();
+    // This implementation of `GetDutyCycle()` can never return an error thus,
+    // We can skip producing the logic to return an error at this stage.
+    float previous_duty_cycle = GetDutyCycle().value();
 
     // In order to avoid PWM glitches, the PWM must be disabled while updating
     // the MR0 register. Doing this will reset all counters to 0 and allow us to
@@ -285,6 +299,8 @@ class Pwm final : public sjsu::Pwm
       SetDutyCycle(previous_duty_cycle);
     }
     EnablePwm(true);
+
+    return {};
   }
 
   /// Helper method for converting the match register 0 to a frequency in Hz.
@@ -347,6 +363,7 @@ class Pwm final : public sjsu::Pwm
       default: return &channel_.peripheral.registers->MR0;
     }
   }
+
   /// Converts a percent value from 0.0f to 1.0f to the closest approximate
   /// match register value and returns that value.
   ///
@@ -359,6 +376,7 @@ class Pwm final : public sjsu::Pwm
     float pwm_period = static_cast<float>(*GetMatchRegisters(0));
     return static_cast<uint32_t>(duty_cycle_percent * pwm_period);
   }
+
   /// Reference to a const channel description for this instance of the PWM
   /// driver.
   const Channel_t & channel_;

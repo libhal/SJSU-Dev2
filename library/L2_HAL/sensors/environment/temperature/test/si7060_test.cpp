@@ -20,8 +20,9 @@ TEST_CASE("Si7060")
       // The failure status should be returned immediately without performing
       // any further communication with the device.
       bool i2c_transaction_not_invoked = true;
-      const auto kExpectedError        = Error(Status::kNotReadyYet, "");
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedError);
+      const auto kExpectedError        = std::errc::protocol_error;
+      When(Method(mock_i2c, Initialize))
+          .AlwaysReturn(Error(kExpectedError, ""));
 
       // Exercise
       CHECK(kExpectedError == temperature_sensor.Initialize());
@@ -34,17 +35,15 @@ TEST_CASE("Si7060")
     SECTION("Incorrect device information")
     {
       // Setup
-      const auto kExpectedError = Error(Status::kDeviceNotFound, "");
-
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedError);
+      const auto kExpectedError            = std::errc::no_such_device;
       constexpr uint8_t kIncorrectDeviceId = 0xFF;
 
       When(Method(mock_i2c, Initialize)).AlwaysReturn({});
       When(Method(mock_i2c, Transaction))
-          .AlwaysDo([kExpectedError](
+          .AlwaysDo([kExpectedError, kIncorrectDeviceId](
                         I2c::Transaction_t transaction) -> Returns<void> {
             transaction.data_in[0] = kIncorrectDeviceId;
-            return kExpectedError;
+            return Error(kExpectedError, "");
           });
 
       // Exercise
@@ -112,7 +111,6 @@ TEST_CASE("Si7060")
           .repeated   = false,
           .busy       = true,
           .timeout    = I2c::kI2cTimeout,
-          .status     = Status::kSuccess,
       }),
       // transaction to enable auto increment
       I2c::Transaction_t({
@@ -126,7 +124,6 @@ TEST_CASE("Si7060")
           .repeated   = false,
           .busy       = true,
           .timeout    = I2c::kI2cTimeout,
-          .status     = Status::kSuccess,
       }),
       // transaction to read the MSB of the temperature data
       I2c::Transaction_t({
@@ -140,7 +137,6 @@ TEST_CASE("Si7060")
           .repeated   = true,
           .busy       = true,
           .timeout    = I2c::kI2cTimeout,
-          .status     = Status::kSuccess,
       }),
       // transaction to read the LSB of the temperature data
       I2c::Transaction_t({
@@ -154,7 +150,6 @@ TEST_CASE("Si7060")
           .repeated   = false,
           .busy       = true,
           .timeout    = I2c::kI2cTimeout,
-          .status     = Status::kSuccess,
       }),
     };
 

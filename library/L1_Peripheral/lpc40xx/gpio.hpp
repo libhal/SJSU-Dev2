@@ -271,11 +271,12 @@ class Gpio final : public sjsu::Gpio
 
   /// Assign the developer's ISR and sets the selected edge that the gpio
   /// interrupt will be triggered on.
-  void AttachInterrupt(InterruptCallback callback, Edge edge) override
+  Returns<void> AttachInterrupt(InterruptCallback callback, Edge edge) override
   {
     if (!IsAValidPort())
     {
-      return;
+      return Error(std::errc::invalid_argument,
+                   "Only port 0 and port 2 can be used as an interrupt.");
     }
 
     if constexpr (IsPlatform(sjsu::build::Platform::lpc17xx))
@@ -304,15 +305,19 @@ class Gpio final : public sjsu::Gpio
     {
       *interrupt->falling_enable = bit::Set(*interrupt->falling_enable, pin_);
     }
+
+    return {};
   }
 
   /// Removes the developer's ISR and clears the selected edge of the gpio
   /// interrupt from being triggered.
-  void DetachInterrupt() const override
+  Returns<void> DetachInterrupt() const override
   {
     if (!IsAValidPort())
     {
-      return;
+      return Error(std::errc::invalid_argument,
+                   "Only port 0 and port 2 can be used as an interrupt. No "
+                   "work is performed.");
     }
 
     handlers[interrupt_index_][pin_] = nullptr;
@@ -320,18 +325,15 @@ class Gpio final : public sjsu::Gpio
     auto * interrupt           = LocalInterruptRegister();
     *interrupt->rising_enable  = bit::Clear(*interrupt->rising_enable, pin_);
     *interrupt->falling_enable = bit::Clear(*interrupt->falling_enable, pin_);
+
+    return {};
   }
 
  private:
   /// Checks if the selected gpio port is valid for external interrupts.
   bool IsAValidPort() const
   {
-    bool is_valid = !(interrupt_index_ == kInterruptPorts);
-    SJ2_ASSERT_WARNING(
-        is_valid,
-        "This gpio port cannot be used for External Interrupts. Need "
-        "to use GPIOs on Port 0 or 2.");
-    return is_valid;
+    return !(interrupt_index_ == kInterruptPorts);
   }
 
   GpioInterruptRegisterMap_t * LocalInterruptRegister() const

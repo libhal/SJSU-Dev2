@@ -96,7 +96,7 @@ class Gpio : public sjsu::Gpio
     external_interrupt->PR = (1 << pin);
   }
 
-  void AttachInterrupt(InterruptCallback callback, Edge edge) override
+  Returns<void> AttachInterrupt(InterruptCallback callback, Edge edge) override
   {
     // Clear both falling and raising edges bits
     // They will be assigned in the conditionals below
@@ -194,11 +194,16 @@ class Gpio : public sjsu::Gpio
             .interrupt_handler        = InterruptHandler,
         });
         break;
-      default: SJ2_ASSERT_FATAL(false, "Invalid pin for detected!"); return;
+      default:
+      {
+        return Error(std::errc::invalid_argument, "Pin must be between 0-15");
+      }
     }
+
+    return {};
   }
 
-  void DetachInterrupt() const override
+  Returns<void> DetachInterrupt() const override
   {
     // No need to Enable/Disable the interrupt via the interrupt controller,
     // especially since you would need logic to determine if this is the last
@@ -210,6 +215,7 @@ class Gpio : public sjsu::Gpio
         bit::Clear(external_interrupt->RTSR, pin_.GetPin());
     external_interrupt->FTSR =
         bit::Clear(external_interrupt->FTSR, pin_.GetPin());
+    return {};
   }
 
  private:

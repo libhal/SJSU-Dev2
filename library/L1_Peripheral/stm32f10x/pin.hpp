@@ -49,16 +49,17 @@ class Pin final : public sjsu::Pin
 
   Returns<void> Initialize() const override
   {
+    bool port_is_valid = ('A' <= port_ && port_ <= 'I');
+    if (!port_is_valid)
+    {
+      return Error(std::errc::invalid_argument,
+                   "Port must be between 'A' and 'I'");
+    }
+
     auto & system = SystemController::GetPlatformController();
 
     // Enable the usage of alternative pin configurations
     system.PowerUpPeripheral(stm32f10x::SystemController::Peripherals::kAFIO);
-
-    if (!('A' <= port_ && port_ <= 'I'))
-    {
-      return Error(Status::kInvalidParameters,
-                   "Invalid port choosen for this pin implementation");
-    }
 
     switch (port_)
     {
@@ -111,7 +112,7 @@ class Pin final : public sjsu::Pin
 
     if (alternative_function > 0b1)
     {
-      return Error(Status::kInvalidParameters, "Invalid function.");
+      return Error(std::errc::invalid_argument, "Invalid function.");
     }
 
     uint32_t config = 0;
@@ -137,11 +138,15 @@ class Pin final : public sjsu::Pin
       case Resistor::kNone: config = 0b0100; break;
       case Resistor::kPullDown: pull_up = false; [[fallthrough]];
       case Resistor::kPullUp: config = 0b1000; break;
-      default: return Error(Status::kInvalidSettings, "Invalid resistor pull.");
+      case Resistor::kRepeater:
+      {
+        return Error(std::errc::not_supported, "Repeater not supported");
+      }
     }
 
     SetConfig(config);
     Port()->ODR = bit::Insert(Port()->ODR, pull_up, pin_);
+
     return {};
   }
 

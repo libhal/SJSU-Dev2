@@ -182,8 +182,6 @@ TEST_CASE("Testing stm32f4xx Pin")
       // Setup
       uint8_t port;
 
-      Status expected_status;
-
       SUBCASE("Port 0")
       {
         port = 'J';
@@ -202,8 +200,7 @@ TEST_CASE("Testing stm32f4xx Pin")
       stm32f4xx::Pin invalid_pin(port, 0);
 
       // Exercise & Verify
-      CHECK(invalid_pin.Initialize().error()->status ==
-            Status::kInvalidSettings);
+      CHECK(invalid_pin.Initialize() == std::errc::invalid_argument);
     }
   }
 
@@ -230,7 +227,7 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].pin.Initialize();
 
         // Exercise
-        test[i].pin.SetPinFunction(kExpectedFunction[i]);
+        REQUIRE(test[i].pin.SetPinFunction(kExpectedFunction[i]));
 
         // Verify
         CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
@@ -254,8 +251,8 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].pin.Initialize();
 
         // Exercise & Verify
-        CHECK(test[i].pin.SetPinFunction(invalid_function).error()->status ==
-              Status::kInvalidParameters);
+        CHECK(test[i].pin.SetPinFunction(invalid_function) ==
+              std::errc::invalid_argument);
       }
     }
   }
@@ -303,8 +300,8 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise & Verify
-        CHECK(test[i].pin.SetPull(Pin::Resistor::kRepeater).error()->status ==
-              Status::kInvalidSettings);
+        CHECK(test[i].pin.SetPull(Pin::Resistor::kRepeater) ==
+              std::errc::not_supported);
       }
     }
   }

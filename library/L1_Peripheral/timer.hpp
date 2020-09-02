@@ -48,9 +48,9 @@ class Timer
   ///        SetTimer method has occurred.
   /// @param priority - sets the Timer interrupt's priority level, defaults to
   ///        -1 which uses the platforms default priority.
-  virtual Status Initialize(units::frequency::hertz_t counter_frequency,
-                            InterruptCallback callback = nullptr,
-                            int32_t priority           = -1) const = 0;
+  virtual Returns<void> Initialize(units::frequency::hertz_t counter_frequency,
+                                   InterruptCallback callback = nullptr,
+                                   int32_t priority           = -1) const = 0;
 
   /// Set a timer to execute your timer command when the time counter equals the
   /// match register. time in ticks dependent on initialization Functionality is
@@ -62,23 +62,23 @@ class Timer
   ///        register.
   /// @param match_register - which match register should be used
   ///        for holding the count for the action.
-  virtual void SetMatchBehavior(uint32_t match_count,
-                                MatchAction action,
-                                uint8_t match_register) const = 0;
+  virtual Returns<void> SetMatchBehavior(uint32_t match_count,
+                                         MatchAction action,
+                                         uint8_t match_register) const = 0;
 
   /// @return number of available match registers
   virtual uint8_t GetAvailableMatchRegisters() const = 0;
 
   /// Get the current count in the count register
-  virtual uint32_t GetCount() const = 0;
+  virtual Returns<uint32_t> GetCount() const = 0;
 
   /// Starts the timer.
-  virtual void Start() const = 0;
+  virtual Returns<void> Start() const = 0;
 
   /// Stops the timer.
-  virtual void Stop() const = 0;
+  virtual Returns<void> Stop() const = 0;
 
   /// Resets the timer.
-  virtual void Reset() const = 0;
+  virtual Returns<void> Reset() const = 0;
 };
 }  // namespace sjsu

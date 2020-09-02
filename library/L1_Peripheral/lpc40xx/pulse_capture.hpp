@@ -211,15 +211,18 @@ class PulseCapture final : public sjsu::PulseCapture
   /// Powers on the peripheral, configures the timer pins.
   /// See page 687 of the user manual UM10562 LPC408x/407x for more details.
   /// NOTE: Same initialization as Timer library's Initialize()
-  Status Initialize(CaptureCallback callback   = nullptr,
-                    int32_t interrupt_priority = -1) const override
+  Returns<void> Initialize(CaptureCallback callback   = nullptr,
+                           int32_t interrupt_priority = -1) const override
   {
-    auto & system = sjsu::SystemController::GetPlatformController();
+    if (frequency_ == 0_Hz)
+    {
+      return Error(
+          std::errc::invalid_argument,
+          "Cannot have zero ticks per microsecond, please choose 1 or more.");
+    }
 
+    auto & system = sjsu::SystemController::GetPlatformController();
     system.PowerUpPeripheral(timer_.channel.id);
-    SJ2_ASSERT_FATAL(
-        frequency_ != 0_Hz,
-        "Cannot have zero ticks per microsecond, please choose 1 or more.");
 
     // Configure prescaler
     uint32_t prescaler = system.GetClockRate(timer_.channel.id) / frequency_;
@@ -241,7 +244,7 @@ class PulseCapture final : public sjsu::PulseCapture
           .interrupt_handler        = timer_.handler,
           .priority                 = interrupt_priority });
 
-    return Status::kSuccess;
+    return {};
   }
 
   /// Configures the edges to trigger a capture event on

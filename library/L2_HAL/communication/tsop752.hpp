@@ -30,29 +30,25 @@ class Tsop752 final : public InfraredReceiver
   {
   }
   /// Initializes the PulseCapture and Timer peripherals.
-  ///
-  /// @return The initialization status. Returns Status::kSuccess if the driver
-  ///         has been successfully initialized.
-  Status Initialize() override
+  Returns<void> Initialize() override
   {
-    Status status = capture_.Initialize(
-        [this](auto capture_status) { HandlePulseCaptured(capture_status); });
-    if (status != Status::kSuccess)
-    {
-      return status;
-    }
+    // using 1 MHz for 1µs precision (1 / 1'000'000 Hz = 1µs)
+    constexpr units::frequency::hertz_t kFrequency = 1_MHz;
+    constexpr uint8_t kTimerMatchRegister          = 0;
+
+    SJ2_RETURN_ON_ERROR(capture_.Initialize(
+        [this](auto capture_status) { HandlePulseCaptured(capture_status); }));
+
     capture_.ConfigureCapture(sjsu::PulseCapture::CaptureEdgeMode::kBoth);
     capture_.EnableCaptureInterrupt(true);
 
-    constexpr uint8_t kTimerMatchRegister = 0;
-    // using 1 MHz for 1µs precision (1 / 1'000'000 Hz = 1µs)
-    constexpr units::frequency::hertz_t kFrequency = 1_MHz;
+    SJ2_RETURN_ON_ERROR(
+        timer_.Initialize(kFrequency, [this]() { HandleEndOfFrame(); }));
 
-    status = timer_.Initialize(kFrequency, [this]() { HandleEndOfFrame(); });
-    timer_.SetMatchBehavior(static_cast<uint32_t>(kTimeout.count()),
-                            sjsu::Timer::MatchAction::kInterrupt,
-                            kTimerMatchRegister);
-    return status;
+    SJ2_RETURN_ON_ERROR(timer_.SetMatchBehavior(
+        static_cast<uint32_t>(kTimeout.count()),
+        sjsu::Timer::MatchAction::kInterrupt, kTimerMatchRegister));
+    return {};
   }
   /// @param handler User callback handler to invoke when a frame is received.
   void SetInterruptCallback(DataReceivedHandler handler) override

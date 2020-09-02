@@ -1,7 +1,7 @@
 #include "L0_Platform/startup.hpp"
+#include "L1_Peripheral/spi.hpp"
 #include "L1_Peripheral/stm32f10x/gpio.hpp"
 #include "L1_Peripheral/stm32f10x/system_controller.hpp"
-#include "L1_Peripheral/spi.hpp"
 #include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "L3_Application/graphics.hpp"
 #include "utility/time.hpp"
@@ -14,13 +14,13 @@ class BitBangSpi : public sjsu::Spi
  public:
   BitBangSpi(sjsu::Gpio & sck, sjsu::Gpio & mosi) : sck_(sck), mosi_(mosi) {}
 
-  sjsu::Status Initialize() const override
+  sjsu::Returns<void> Initialize() const override
   {
     mosi_.SetAsOutput();
     sck_.SetAsOutput();
     sck_.SetLow();
     mosi_.SetLow();
-    return sjsu::Status::kSuccess;
+    return {};
   }
 
   uint16_t Transfer(uint16_t data) const override
@@ -44,10 +44,11 @@ class BitBangSpi : public sjsu::Spi
     size_ = size;
   }
 
-  void SetClock(units::frequency::hertz_t,
-                bool = false,
-                bool = false) const override
+  sjsu::Returns<void> SetClock(units::frequency::hertz_t,
+                         bool = false,
+                         bool = false) const override
   {
+    return {};
   }
 
  private:
