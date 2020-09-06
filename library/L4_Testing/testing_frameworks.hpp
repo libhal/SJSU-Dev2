@@ -234,6 +234,15 @@ struct StringMaker<sjsu::Status>  // NOLINT
     return result;
   }
 };
+
+template <typename T, typename U>
+struct StringMaker<std::chrono::duration<T, U>>  // NOLINT
+{
+  static String convert(const std::chrono::duration<T, U> & duration)  // NOLINT
+  {
+    return std::to_string(duration.count()).c_str();
+  }
+};
 }  // namespace doctest
 
 namespace sjsu::testing
