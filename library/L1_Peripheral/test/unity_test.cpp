@@ -63,11 +63,6 @@
 #include "L1_Peripheral/lpc17xx/test/system_controller_test.cpp"  // NOLINT
 
 // =============================================================================
-// example implemenation test
-// =============================================================================
-#include "L1_Peripheral/example/test/example_test.cpp"  // NOLINT
-
-// =============================================================================
 // cortex implemenation test
 // =============================================================================
 #include "L1_Peripheral/cortex/test/dwt_counter_test.cpp"   // NOLINT
