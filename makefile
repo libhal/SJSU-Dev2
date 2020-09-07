@@ -319,6 +319,10 @@ flash: | application platform-flash
 execute: flash
 
 
+stacktrace:
+	addr2line -e $(EXECUTABLE) $(TRACES)
+
+
 # ==============================================================================
 # Project cleaning targets
 # ==============================================================================
