@@ -691,13 +691,13 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Extract a set of contiguous bits from an array of bytes. The byte stream and the result are both assumed to be the same endianness.</p>
-<p><a class="el" href="../../d4/d55/classsjsu_1_1Example.html" title="Example class is a template for &quot;L1_Peripheral&quot; peripherals. ">Example</a> (Little Endian bit aligned):</p>
+<p>Example (Little Endian bit aligned):</p>
 <p>uint8_t array[] = { 0xAB, 0xCD, 0xEF }; uint16_t result = StreamExtract&lt;uint16_t&gt;(array, sizeof(array), { .position = 0, width = 16 }, <a class="el" href="../../d0/d6b/namespacesjsu.html#a18160a1f80da5769d7c6e4cfadec54c7a7bbae49a9d8a561ba9312a9eab885d19">Endian::kLittle</a>); result =&gt; 0xCDEF</p>
-<p><a class="el" href="../../d4/d55/classsjsu_1_1Example.html" title="Example class is a template for &quot;L1_Peripheral&quot; peripherals. ">Example</a> (Big Endian bit aligned):</p>
+<p>Example (Big Endian bit aligned):</p>
 <p>uint8_t array[] = { 0xAB, 0xCD, 0xEF }; uint16_t result = StreamExtract&lt;uint16_t&gt;(array, sizeof(array), { .position = 0, width = 16 }, <a class="el" href="../../d0/d6b/namespacesjsu.html#a18160a1f80da5769d7c6e4cfadec54c7ac0f6b79cbec5d23bdcf57b7f63d7646d">Endian::kBig</a>); result =&gt; 0xCDAB</p>
-<p><a class="el" href="../../d4/d55/classsjsu_1_1Example.html" title="Example class is a template for &quot;L1_Peripheral&quot; peripherals. ">Example</a> (Little Endian bit unaligned):</p>
+<p>Example (Little Endian bit unaligned):</p>
 <p>uint8_t array[] = { 0xAB, 0xCD, 0xEF }; uint16_t result = StreamExtract&lt;uint16_t&gt;(array, sizeof(array), { .position = 4, width = 16 }, <a class="el" href="../../d0/d6b/namespacesjsu.html#a18160a1f80da5769d7c6e4cfadec54c7a7bbae49a9d8a561ba9312a9eab885d19">Endian::kLittle</a>); result =&gt; 0xBCDE</p>
-<p><a class="el" href="../../d4/d55/classsjsu_1_1Example.html" title="Example class is a template for &quot;L1_Peripheral&quot; peripherals. ">Example</a> (Big Endian bit unaligned):</p>
+<p>Example (Big Endian bit unaligned):</p>
 <p>uint8_t array[] = { 0xAB, 0xCD, 0xEF }; uint16_t result = StreamExtract&lt;uint16_t&gt;(array, sizeof(array), { .position = 4, width = 16 }, <a class="el" href="../../d0/d6b/namespacesjsu.html#a18160a1f80da5769d7c6e4cfadec54c7ac0f6b79cbec5d23bdcf57b7f63d7646d">Endian::kBig</a>); result =&gt; 0xFCDB</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">

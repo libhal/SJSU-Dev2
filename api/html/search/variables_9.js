@@ -113,7 +113,6 @@ var searchData=
   ['kerrorcodetype',['kErrorCodeType',['../d8/d38/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts.html#ada58bf2463fbfe96311c86027d901cf5',1,'sjsu::lpc40xx::Can::Interrupts']]],
   ['kerrorpassive',['kErrorPassive',['../d8/d38/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts.html#a69eba585a8c75502341ce938b41dc1cf',1,'sjsu::lpc40xx::Can::Interrupts']]],
   ['kerrorwarning',['kErrorWarning',['../d8/d38/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts.html#a6fb73fef71a0e1a06e654e867c5fc5cf',1,'sjsu::lpc40xx::Can::Interrupts']]],
-  ['kexample0',['kExample0',['../dd/d4d/structsjsu_1_1example_1_1Example_1_1Channel.html#ae86df24c03af71969af0f9304d13d29d',1,'sjsu::example::Example::Channel']]],
   ['kexitconfigcommand',['kExitConfigCommand',['../d2/dc6/classsjsu_1_1TFMini.html#a29cb66a2ebd0754a3b262f27e27d80e9',1,'sjsu::TFMini']]],
   ['kexpectedsensorid',['kExpectedSensorId',['../df/ddc/classsjsu_1_1Si7060.html#aaa9447d97932b62a22db91e818765b9e',1,'sjsu::Si7060']]],
   ['kexternalenable',['kExternalEnable',['../de/dc4/structsjsu_1_1lpc40xx_1_1SystemController_1_1OscillatorRegister.html#a7268112e2ca98e1b76fd61694e551050',1,'sjsu::lpc40xx::SystemController::OscillatorRegister']]],

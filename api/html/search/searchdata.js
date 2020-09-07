@@ -11,7 +11,7 @@ var indexSectionsWithContent =
   8: "hklms",
   9: "fg",
   10: "abdelpsu",
-  11: "cilu",
+  11: "ciu",
   12: "des"
 };
 

@@ -3,8 +3,6 @@
 <area shape="rect" id="node3" href="$d0/d9b/classsjsu_1_1I2c.html" title="sjsu::I2c" alt="" coords="35,5,110,32"/>
 <area shape="rect" id="node4" href="$da/d39/classsjsu_1_1lpc40xx_1_1Spi.html" title="sjsu::lpc40xx::Spi" alt="" coords="164,81,299,108"/>
 <area shape="rect" id="node5" href="$d3/de6/classsjsu_1_1Spi.html" title="sjsu::Spi" alt="" coords="193,5,269,32"/>
-<area shape="rect" id="node6" href="$d8/d93/classsjsu_1_1example_1_1Example.html" title="sjsu::example::Example" alt="" coords="323,81,502,108"/>
-<area shape="rect" id="node7" href="$d4/d55/classsjsu_1_1Example.html" title="Example class is a template for &quot;L1_Peripheral&quot; peripherals. " alt="" coords="356,5,469,32"/>
-<area shape="rect" id="node8" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="527,81,672,108"/>
-<area shape="rect" id="node9" href="$dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="556,5,643,32"/>
+<area shape="rect" id="node6" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="323,81,468,108"/>
+<area shape="rect" id="node7" href="$dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="352,5,439,32"/>
 </map>

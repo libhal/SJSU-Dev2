@@ -3,7 +3,7 @@ var searchData=
   ['array_3c_20t_2c_20n_20_3e_3e',['array&lt; T, N &gt;&gt;',['../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a11dbea21d69dde0293e1a0a185beb838',1,'sjsu::MemoryAccessProtocol::AccessHandler']]],
   ['array_3c_20uint8_5ft_2c_20n_20_3e_3e',['array&lt; uint8_t, N &gt;&gt;',['../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#aae74441c798a8135570b813dac7e0346',1,'sjsu::MemoryAccessProtocol::AccessHandler']]],
   ['ocr',['ocr',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#aa971046cc3c58ef2d0eadf0756a02fc3',1,'sjsu::Sd::CardInfo_t::ocr()'],['../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698',1,'sjsu::Sd::Ocr()']]],
-  ['oled',['Oled',['../db/dc5/structsjtwo.html#affe396d98953fc6a8ef3429a9615ea42',1,'sjtwo::Oled()'],['../db/dc5/structsjtwo.html#ae5391ad56fbae459afc44c531c95591a',1,'sjtwo::Oled()']]],
+  ['oled',['Oled',['../db/dc5/structsjtwo.html#ae5391ad56fbae459afc44c531c95591a',1,'sjtwo']]],
   ['onchange',['OnChange',['../dd/d3a/classsjsu_1_1Gpio.html#aa50b322d9399f08346154b5f43b47484',1,'sjsu::Gpio']]],
   ['onfallingedge',['OnFallingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#aa9709aa81ffe199781e2f73b2f95167c',1,'sjsu::Gpio']]],
   ['onrisingedge',['OnRisingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#a340de686d13d8a299f9fa313c56327ba',1,'sjsu::Gpio']]],

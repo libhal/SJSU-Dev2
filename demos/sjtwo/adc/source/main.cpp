@@ -1,6 +1,5 @@
 #include <cstdint>
 
-#include "L1_Peripheral/example.hpp"
 #include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/lpc40xx/adc.hpp"
 #include "utility/log.hpp"
@@ -9,7 +8,7 @@
 
 int main()
 {
-  sjsu::LogInfo("Analog-to-Ditial Application Starting...");
+  sjsu::LogInfo("ADC Application Starting...");
 
   sjsu::LogInfo("Creating ADC object and selecting ADC channel 4 & 5");
   sjsu::LogInfo("ADC channel 4 is connected to pin P1.30");
@@ -28,8 +27,8 @@ int main()
   sjsu::LogInfo("Initializing ADC Complete!");
 
   sjsu::LogInfo(
-      "Apply a voltage from 0 to 3.3V (BE SUPER SURE not to accidently apply "
-      "more then 3.3V or you WILL damage your board).");
+      "Apply a voltage from 0 to 3.3V (BE SUPER SURE not to apply more then "
+      "3.3V or you WILL damage your board).");
 
   while (true)
   {
@@ -49,10 +48,8 @@ int main()
     voltage[1] = sjsu::Map(adc_digital_value[1], 0, 4095, 0.0f, 3.3f);
 
     sjsu::LogInfo("voltage[0] = %f V (%lu) :: voltage[1] = %f V (%lu)",
-                  static_cast<double>(voltage[0]),
-                  adc_digital_value[0],
-                  static_cast<double>(voltage[1]),
-                  adc_digital_value[1]);
+                  static_cast<double>(voltage[0]), adc_digital_value[0],
+                  static_cast<double>(voltage[1]), adc_digital_value[1]);
     sjsu::Delay(250ms);
   }
   return 0;

@@ -23,8 +23,6 @@ Peripherals must be taken as const Object references (`const Adc & adc`)
 as their parameters for their constructors. The HAL driver can take more
 parameters than then just the L1 drivers.
 
-See `library/L2_HAL/example.hpp`
-
 ## Adding a device category interface
 
 If there is a device category that does not currently exist, it can be

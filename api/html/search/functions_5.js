@@ -13,8 +13,5 @@ var searchData=
   ['erase',['Erase',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#aebbdb60f356670558cf1971932eabac7',1,'sjsu::lpc40xx::Eeprom::Erase()'],['../dc/da6/classsjsu_1_1Storage.html#a8ee35125b70666a7717b83db70ea66cf',1,'sjsu::Storage::Erase()'],['../dc/d5f/classsjsu_1_1Sd.html#a34de0a4725d328732eb92ff2de6ca55c',1,'sjsu::Sd::Erase()']]],
   ['error_5ft',['Error_t',['../d1/d36/classsjsu_1_1Error__t.html#a78794ce7014bd81a7541f6b4e7866d7c',1,'sjsu::Error_t']]],
   ['esp8266',['Esp8266',['../dc/d4f/classsjsu_1_1Esp8266.html#ac0ddbdd40f24de276666fb9e27b919bf',1,'sjsu::Esp8266']]],
-  ['example',['Example',['../d8/d93/classsjsu_1_1example_1_1Example.html#a6543d9de209a0ec2e8a51046a344c167',1,'sjsu::example::Example']]],
-  ['examplehalimplementation',['ExampleHalImplementation',['../d7/d4f/classsjsu_1_1ExampleHalImplementation.html#ad8b1d5af72ed6d3c668262a38831153f',1,'sjsu::ExampleHalImplementation']]],
-  ['examplesingleimplementationhal',['ExampleSingleImplementationHal',['../d7/d1a/classsjsu_1_1ExampleSingleImplementationHal.html#afd407530822417a5ce69c2a131bea9b0',1,'sjsu::ExampleSingleImplementationHal']]],
   ['extract',['Extract',['../dd/dbe/classsjsu_1_1bit_1_1Register.html#a8825dd7dea15b937476425c8bdaf0763',1,'sjsu::bit::Register::Extract()'],['../de/df8/namespacesjsu_1_1bit.html#ad3aa0e093d9b5bc0fa7c5ece35dfc451',1,'sjsu::bit::Extract(T target, uint32_t position, uint32_t width=1)'],['../de/df8/namespacesjsu_1_1bit.html#abc8c0825b298b93d06922e5e0cc44556',1,'sjsu::bit::Extract(T target, Mask bitmask)']]]
 ];

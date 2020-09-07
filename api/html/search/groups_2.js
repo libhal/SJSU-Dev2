@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['l1_20peripheral_20interfaces',['L1 Peripheral Interfaces',['../d4/da8/group__l1__peripheral.html',1,'']]]
+  ['utility_20functions',['Utility Functions',['../de/d7a/group__Log.html',1,'']]],
+  ['utility_20macros',['Utility Macros',['../d3/deb/group__Macros.html',1,'']]]
 ];

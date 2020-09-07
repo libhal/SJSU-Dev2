@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['l1_20peripheral_20interfaces',['L1 Peripheral Interfaces',['../d4/da8/group__l1__peripheral.html',1,'']]],
   ['led0',['led0',['../db/dc0/structsjone.html#a704ef4737a8eb46a379efa76a0b81b79',1,'sjone::led0()'],['../db/dc5/structsjtwo.html#ac140efcc4ca6c0e256b95e5f479a2235',1,'sjtwo::led0()']]],
   ['led1',['led1',['../db/dc0/structsjone.html#a6c0ae7a420bb2500167288794614e813',1,'sjone::led1()'],['../db/dc5/structsjtwo.html#a66601f7e36e302051e04f1fea2f78704',1,'sjtwo::led1()']]],
   ['led2',['led2',['../db/dc0/structsjone.html#a54f800d2fe06330157f10a969ac4096f',1,'sjone::led2()'],['../db/dc5/structsjtwo.html#a23fe76dbac7e6d1a48922e5290e39a3b',1,'sjtwo::led2()']]],
