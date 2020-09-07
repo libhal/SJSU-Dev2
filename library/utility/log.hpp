@@ -234,18 +234,6 @@ template <typename... Params>
 LogError(const char * format, Params...)->LogError<Params...>;
 }  // namespace sjsu
 
-/// Deprecated log macro with the DEBUG level of log message.
-#define LOG_DEBUG(format, ...) ::sjsu::LogDebug(format, ##__VA_ARGS__)
-
-/// Deprecated log macro with the INFO level of log message.
-#define LOG_INFO(format, ...) ::sjsu::LogInfo(format, ##__VA_ARGS__)
-
-/// Deprecated log macro with the WARNING level of log message.
-#define LOG_WARNING(format, ...) ::sjsu::LogWarning(format, ##__VA_ARGS__)
-
-/// Deprecated log macro with the ERROR level of log message.
-#define LOG_ERROR(format, ...) ::sjsu::LogError(format, ##__VA_ARGS__)
-
 /// When the condition is false, issue a warning to the user with a warning
 /// message. Warning message format acts like printf.
 #define SJ2_ASSERT_WARNING(condition, warning_message, ...) \
@@ -255,16 +243,6 @@ LogError(const char * format, Params...)->LogError<Params...>;
     {                                                       \
       ::sjsu::LogWarning(warning_message, ##__VA_ARGS__);   \
     }                                                       \
-  } while (0)
-
-/// Returns and prinparams statement if condition returns true
-#define SJ2_RETURN_IF(condition, warning_message, ...)                    \
-  do                                                                      \
-  {                                                                       \
-    if ((condition))                                                      \
-    {                                                                     \
-      ::sjsu::LogWarning(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
-    }                                                                     \
   } while (0)
 
 /// Logs the expression if it returns any but Status::kSuccess

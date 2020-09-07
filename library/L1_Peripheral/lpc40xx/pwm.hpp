@@ -263,9 +263,11 @@ class Pwm final : public sjsu::Pwm
 
   void SetFrequency(units::frequency::hertz_t frequency_hz) const override
   {
-    SJ2_RETURN_IF(
-        frequency_hz == 0_Hz,
-        "Cannot set frequency to 0Hz! This call will have no effect!");
+    if (frequency_hz <= 0_Hz)
+    {
+      LogDebug("Cannot set frequency to 0Hz! This call will have no effect!");
+      return;
+    }
 
     auto & system = sjsu::SystemController::GetPlatformController();
 

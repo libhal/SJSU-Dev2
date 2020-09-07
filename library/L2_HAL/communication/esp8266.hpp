@@ -291,7 +291,7 @@ class Esp8266 : public InternetSocket, public WiFi
     // Wait for an OK!
     if (ReadUntil(kOk, timer.GetTimeLeft()) == -1)
     {
-      LOG_ERROR("CIPSEND");
+      LogDebug("CIPSEND");
       return Status::kBusError;
     }
 
@@ -301,7 +301,7 @@ class Esp8266 : public InternetSocket, public WiFi
     // Wait for an OK!
     if (ReadUntil("\r\nSEND OK\r\n\r\n", timer.GetTimeLeft()) == -1)
     {
-      LOG_ERROR("SEND OK");
+      LogDebug("SEND OK");
       return Status::kBusError;
     }
 
