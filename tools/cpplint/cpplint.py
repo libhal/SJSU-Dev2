@@ -465,6 +465,7 @@ _CPP_HEADERS = frozenset([
     'string',
     'strstream',
     'system_error',
+    'scope',
     'thread',
     'tuple',
     'typeindex',
@@ -6105,7 +6106,6 @@ def FlagCxx11Features(filename, clean_lines, linenum, error):
                                       # 'chrono',
                                       'ratio',
                                       'regex',
-                                      'system_error',
                                      ):
     error(filename, linenum, 'build/c++11', 5,
           ('<%s> is an unapproved C++11 header.') % include.group(1))
