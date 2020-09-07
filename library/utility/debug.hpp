@@ -155,12 +155,13 @@ inline _Unwind_Reason_Code PrintAddressAsList(_Unwind_Context * context,
   (*depth)++;
   return _URC_NO_REASON;
 }
+
 inline _Unwind_Reason_Code PrintAddressInRow(_Unwind_Context * context,
                                              void * depth_pointer)
 {
   int * depth      = static_cast<int *>(depth_pointer);
   intptr_t address = static_cast<intptr_t>(_Unwind_GetIP(context));
-  printf(" 0x%08" PRIXPTR, address - config::kBacktraceAddressOffset);
+  printf("0x%08" PRIXPTR " ", address - config::kBacktraceAddressOffset);
   (*depth)++;
   return _URC_NO_REASON;
 }
@@ -193,12 +194,13 @@ inline void PrintBacktrace(bool show_make_command = false,
     {
       printf("\nRun: the following command in your project directory");
       printf("\n\n  " SJ2_BOLD_WHITE);
-      printf("make stacktrace TRACES=\"");
+      printf("make stacktrace PLATFORM=%s TRACES=\"",
+             build::Stringify(build::kPlatform));
 
       _Unwind_Backtrace(&PrintAddressInRow, &depth);
       if (final_address)
       {
-        printf("0x%p ", final_address);
+        printf("0x%p", final_address);
       }
 
       printf("\"\n\n" SJ2_COLOR_RESET);
