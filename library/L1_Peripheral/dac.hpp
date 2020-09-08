@@ -29,6 +29,6 @@ class Dac
   virtual Returns<void> SetVoltage(float voltage) const = 0;
 
   /// @return number of active bits for the DAC.
-  virtual uint8_t GetActiveBits() const = 0;
+  virtual Returns<uint8_t> GetActiveBits() const = 0;
 };
 }  // namespace sjsu

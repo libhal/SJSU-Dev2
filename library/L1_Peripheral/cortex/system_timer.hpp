@@ -114,22 +114,25 @@ class SystemTimer final : public sjsu::SystemTimer
   {
   }
 
-  void Initialize() const override
+  Returns<void> Initialize() const override
   {
     dwt_counter.Initialize();
 
-    auto system_frequency = SystemController::GetPlatformController()
-                                .GetClockRate(id_)
-                                .to<uint32_t>();
+    auto system_frequency =
+        SJ2_RETURN_ON_ERROR(
+            SystemController::GetPlatformController().GetClockRate(id_))
+            .to<uint32_t>();
 
     ticks_per_millisecond = system_frequency / 1000 /* ms/s */;
     nanoseconds_per_tick =
         (kFixedPointScaling * 1'000'000'000ns) / system_frequency;
+    return {};
   }
 
-  void SetCallback(InterruptCallback isr) const override
+  Returns<void> SetCallback(InterruptCallback isr) const override
   {
     callback = isr;
+    return {};
   }
 
   Returns<void> StartTimer() const override
@@ -171,15 +174,16 @@ class SystemTimer final : public sjsu::SystemTimer
   ///          return without changing any hardware and return -1.
   ///          If the reload value exceeds the SysTick_LOAD_RELOAD_Msk, the
   ///          returned value is the SysTick_LOAD_RELOAD_Msk.
-  int32_t SetTickFrequency(units::frequency::hertz_t frequency) const override
+  Returns<int32_t> SetTickFrequency(
+      units::frequency::hertz_t frequency) const override
   {
     if (frequency <= 1_Hz)
     {
       return -1;
     }
 
-    units::frequency::hertz_t system_frequency =
-        sjsu::SystemController::GetPlatformController().GetClockRate(id_);
+    units::frequency::hertz_t system_frequency = SJ2_RETURN_ON_ERROR(
+        sjsu::SystemController::GetPlatformController().GetClockRate(id_));
 
     uint32_t reload_value =
         units::unit_cast<uint32_t>((system_frequency / frequency) - 1);

@@ -49,19 +49,19 @@ class Gpio
   ///       first before calling any other method
   ///
   /// @param direction - which direction to set the pin to.
-  virtual void SetDirection(Direction direction) const = 0;
+  virtual Returns<void> SetDirection(Direction direction) const = 0;
 
   /// Set the pin state as HIGH voltage or LOW voltage
-  virtual void Set(State output) const = 0;
+  virtual Returns<void> Set(State output) const = 0;
 
   /// Toggles pin state. If the pin is HIGH, after this call it will be LOW
   /// and vise versa.
-  virtual void Toggle() const = 0;
+  virtual Returns<void> Toggle() const = 0;
 
   /// @return the state of the pin, note that this method does not consider
   ///         whether or not the active level is high or low. Simply returns the
   ///         state as depicted in memory
-  virtual bool Read() const = 0;
+  virtual Returns<bool> Read() const = 0;
 
   /// @return underlying pin object
   virtual const sjsu::Pin & GetPin() const = 0;
@@ -82,27 +82,27 @@ class Gpio
   // ===========================================================================
 
   /// Set pin to HIGH voltage
-  void SetHigh() const
+  Returns<void> SetHigh() const
   {
-    Set(State::kHigh);
+    return Set(State::kHigh);
   }
 
   /// Set pin to LOW voltage
-  void SetLow() const
+  Returns<void> SetLow() const
   {
-    Set(State::kLow);
+    return Set(State::kLow);
   }
 
   /// Set pin direction as input
-  void SetAsInput() const
+  Returns<void> SetAsInput() const
   {
-    SetDirection(Direction::kInput);
+    return SetDirection(Direction::kInput);
   }
 
   /// Set pin direction as output
-  void SetAsOutput() const
+  Returns<void> SetAsOutput() const
   {
-    SetDirection(Direction::kOutput);
+    return SetDirection(Direction::kOutput);
   }
 
   /// Set pin to run callback when the pin sees a rising edge

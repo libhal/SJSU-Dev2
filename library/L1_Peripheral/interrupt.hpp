@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <functional>
 
+#include "utility/status.hpp"
+
 namespace sjsu
 {
 /// Used specifically for defining an interrupt vector table of addresses.
@@ -60,7 +62,8 @@ class InterruptController
   /// @note This MUST NOT be called by application code. This for use only in
   /// the platform's startup. Doing this typically overwrites the interrupt
   /// handlers with the unregistered_handler.
-  virtual void Initialize(InterruptHandler unregistered_handler = nullptr) = 0;
+  virtual Returns<void> Initialize(
+      InterruptHandler unregistered_handler = nullptr) = 0;
 
   /// Configures and enables the interrupt on the platform and also registers
   /// the interrupt handler.
@@ -68,13 +71,13 @@ class InterruptController
   /// @param register_info - the needed information to setup the interrupt, such
   ///        as its vector number, priority, if it should be enabled with this
   ///        call, etc. See RegistrationInfo_t documentation for more details.
-  virtual void Enable(RegistrationInfo_t register_info) = 0;
+  virtual Returns<void> Enable(RegistrationInfo_t register_info) = 0;
 
   /// Disables and interrupt based on its interrupt request number
   ///
   /// @param interrupt_request_number - the interrupt request number to be
   ///        disabled.
-  virtual void Disable(int interrupt_request_number) = 0;
+  virtual Returns<void> Disable(int interrupt_request_number) = 0;
 };
 
 /// Compare operator between two InterruptController::RegistrationInfo_t

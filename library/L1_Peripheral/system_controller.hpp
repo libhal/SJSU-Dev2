@@ -135,32 +135,32 @@ class SystemController
   ///            clock system based on configurations in the ClockConfiguration.
   ///            Incorrect configurations may result in a hard fault or cause
   ///            the clock system(s) to supply incorrect clock rate(s).
-  virtual void Initialize() = 0;
+  virtual Returns<void> Initialize() = 0;
 
   /// @returns A pointer to the clock configuration object used to configure
   ///          this system controller.
   virtual void * GetClockConfiguration() = 0;
 
   /// @returns The clock rate frequency of a clock resource.
-  /// @returns 0 MHz when a unknown/invalid ResourceID is specified.
-  virtual units::frequency::hertz_t GetClockRate(ResourceID resource) const = 0;
+  virtual Returns<units::frequency::hertz_t> GetClockRate(
+      ResourceID resource) const = 0;
 
   /// Checks hardware and determines if the peripheral is powered up.
   ///
   /// @param peripheral The peripheral to check.
   /// @returns true if the peripheral is currently powered up.
   /// @returns false if the peripheral is currently powered down.
-  virtual bool IsPeripheralPoweredUp(ResourceID peripheral) const = 0;
+  virtual Returns<bool> IsPeripheralPoweredUp(ResourceID peripheral) const = 0;
 
   /// Powers up the selected peripheral.
   ///
   /// @param peripheral The peripheral to power up.
-  virtual void PowerUpPeripheral(ResourceID peripheral) const = 0;
+  virtual Returns<void> PowerUpPeripheral(ResourceID peripheral) const = 0;
 
   /// Powers down the selected peripheral.
   ///
   /// @param peripheral The peripheral to power down.
-  virtual void PowerDownPeripheral(ResourceID peripheral) const = 0;
+  virtual Returns<void> PowerDownPeripheral(ResourceID peripheral) const = 0;
 
   // ===========================================================================
   // Utility Methods

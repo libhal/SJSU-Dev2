@@ -72,8 +72,8 @@ class GpioCounter : public HardwareCounter
 
   Returns<void> Initialize() override
   {
-    gpio_.GetPin().SetPull(pull_);
-    gpio_.SetAsInput();
+    SJ2_RETURN_ON_ERROR(gpio_.GetPin().SetPull(pull_));
+    SJ2_RETURN_ON_ERROR(gpio_.SetAsInput());
     return {};
   }
   Returns<void> Set(int32_t new_count_value) override

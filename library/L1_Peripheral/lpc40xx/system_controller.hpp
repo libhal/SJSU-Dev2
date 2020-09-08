@@ -10,8 +10,9 @@
 #include "utility/bit.hpp"
 #include "utility/build_info.hpp"
 #include "utility/enum.hpp"
-#include "utility/log.hpp"
 #include "utility/macros.hpp"
+#include "utility/log.hpp"
+#include "utility/status.hpp"
 #include "utility/time.hpp"
 
 namespace sjsu
@@ -384,27 +385,39 @@ class SystemController final : public sjsu::SystemController
     return &clock_configuration_;
   }
 
-  bool IsPeripheralPoweredUp(ResourceID peripheral_select) const override
+  /// Passing an invalid ResourceID will result in undefined behaviour, but will
+  /// not result in an error being returned.
+  Returns<bool> IsPeripheralPoweredUp(
+      ResourceID peripheral_select) const override
   {
     return bit::Register(&system_controller->PCONP)
         .Read(bit::MaskFromRange(peripheral_select.device_id));
   }
 
-  void PowerUpPeripheral(ResourceID peripheral_select) const override
+  /// Passing an invalid ResourceID will result in undefined behaviour, but will
+  /// not result in an error being returned.
+  Returns<void> PowerUpPeripheral(ResourceID peripheral_select) const override
   {
     bit::Register(&system_controller->PCONP)
         .Set(bit::MaskFromRange(peripheral_select.device_id))
         .Save();
+    return {};
   }
 
-  void PowerDownPeripheral(ResourceID peripheral_select) const override
+  /// Passing an invalid ResourceID will result in undefined behaviour, but will
+  /// not result in an error being returned.
+  Returns<void> PowerDownPeripheral(ResourceID peripheral_select) const override
   {
     bit::Register(&system_controller->PCONP)
         .Clear(bit::MaskFromRange(peripheral_select.device_id))
         .Save();
+    return {};
   }
 
-  units::frequency::hertz_t GetClockRate(ResourceID peripheral) const override
+  /// Passing an invalid ResourceID will result in the CPU clock rate being
+  /// returned.
+  Returns<units::frequency::hertz_t> GetClockRate(
+      ResourceID peripheral) const override
   {
     switch (peripheral.device_id)
     {
@@ -438,7 +451,7 @@ class SystemController final : public sjsu::SystemController
   ///            clock system based on configurations in the ClockConfiguration.
   ///            Incorrect configurations may result in a hard fault or cause
   ///            the clock system(s) to supply incorrect clock rate(s).
-  void Initialize() override
+  Returns<void> Initialize() override
   {
     LPC_SC_TypeDef * sys = system_controller;
     auto config          = clock_configuration_;
@@ -616,6 +629,8 @@ class SystemController final : public sjsu::SystemController
     SpiFiClockRegister::Register()
         .Insert(Value(config.spifi.clock), SpiFiClockRegister::kSelect)
         .Save();
+
+    return {};
   }
 
  private:
@@ -625,7 +640,7 @@ class SystemController final : public sjsu::SystemController
                                      volatile uint32_t * stat,
                                      int pll_index) const
   {
-    const auto & pll_config = clock_configuration_.pll[pll_index];
+    const auto & pll_config        = clock_configuration_.pll[pll_index];
     units::frequency::hertz_t fcco = 0_Hz;
 
     if (pll_config.enabled)

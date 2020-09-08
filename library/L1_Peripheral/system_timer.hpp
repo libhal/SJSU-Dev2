@@ -22,12 +22,12 @@ class SystemTimer
   // Interface Methods
   // ===========================================================================
   /// Initialize system timer hardware.
-  virtual void Initialize() const = 0;
+  virtual Returns<void> Initialize() const = 0;
 
   /// Set the function to be called when the System Timer interrupt fires.
   ///
   /// @param callback - function to be called on system timer event.
-  virtual void SetCallback(InterruptCallback callback) const = 0;
+  virtual Returns<void> SetCallback(InterruptCallback callback) const = 0;
 
   /// Set frequency of the timer.
   ///
@@ -35,7 +35,7 @@ class SystemTimer
   ///         interrupt be called.
   /// @return the difference between the frequency that was achieved vs the
   ///         input frequency.
-  virtual int32_t SetTickFrequency(
+  virtual Returns<int32_t> SetTickFrequency(
       units::frequency::hertz_t frequency) const = 0;
 
   /// Start the system timer. Should be done after SetInterrupt and

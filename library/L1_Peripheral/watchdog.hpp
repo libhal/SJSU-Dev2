@@ -29,9 +29,9 @@ class Watchdog
   virtual Returns<void> Enable() const = 0;
 
   /// Feeds the watchdog and restarts the sequence.
-  virtual void FeedSequence() const = 0;
+  virtual Returns<void> FeedSequence() const = 0;
 
   /// Reads the current counter value of the watchdog timer.
-  virtual uint32_t CheckTimeout() const = 0;
+  virtual Returns<uint32_t> CheckTimeout() const = 0;
 };
 }  // namespace sjsu

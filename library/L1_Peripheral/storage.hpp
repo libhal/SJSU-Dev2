@@ -64,20 +64,20 @@ class Storage
   ///         be removed or is physically located within a device, this should
   ///         always return true.
   /// @return false if storage media is not present.
-  virtual bool IsMediaPresent() = 0;
+  virtual Returns<bool> IsMediaPresent() = 0;
 
   /// @return true if device is not writable.
-  virtual bool IsReadOnly() = 0;
+  virtual Returns<bool> IsReadOnly() = 0;
 
   /// @return the maximum capacity of this storage media. This includes areas
   ///         that have already been written to. This does not include sections
   ///         of the memory that are not accessible. For example, if the first
   ///         2kB of the memory cannot be accessed via this driver, then it
   ///         should not be considered as apart of the capacity.
-  virtual units::data::byte_t GetCapacity() = 0;
+  virtual Returns<units::data::byte_t> GetCapacity() = 0;
 
   /// @return the number of bytes per block.
-  virtual units::data::byte_t GetBlockSize() = 0;
+  virtual Returns<units::data::byte_t> GetBlockSize() = 0;
 
   /// Must be called before a `Write()` operation. Erases the contents of the
   /// storage media in the location specified, the number of bytes given. Some

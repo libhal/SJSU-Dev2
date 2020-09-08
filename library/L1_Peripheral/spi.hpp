@@ -49,12 +49,12 @@ class Spi
   /// @param data - transfer data to external device via spi port
   ///
   /// @return byte read from the external device.
-  virtual uint16_t Transfer(uint16_t data) const = 0;
+  virtual Returns<uint16_t> Transfer(uint16_t data) const = 0;
 
   /// Set the number of bits to transmit over SPI
   ///
   /// @param size - number of bits to transmit over spi
-  virtual void SetDataSize(DataSize size) const = 0;
+  virtual Returns<void> SetDataSize(DataSize size) const = 0;
 
   /// Set the clock frequency
   ///
@@ -83,7 +83,7 @@ class Spi
   ///         ellision, preventing a memcpy from occuring when the result is
   ///         returned.
   template <typename T, size_t length>
-  std::array<T, length> Transfer(const std::array<T, length> & data)
+  std::array<uint8_t, length> Transfer(const std::array<T, length> & data)
   {
     // Compile time check that the datatype used is equal to or smaller than
     // datatype for Transfer. This will produce a better error message than the
@@ -94,7 +94,7 @@ class Spi
     std::array<T, length> result = { 0 };
     for (uint16_t i = 0; i < length; i++)
     {
-      result[i] = static_cast<T>(Transfer(data[i]));
+      result[i] = static_cast<T>(SJ2_RETURN_ON_ERROR(Transfer(data[i])));
     }
     return result;
   }

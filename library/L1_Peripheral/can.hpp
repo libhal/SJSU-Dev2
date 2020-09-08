@@ -77,7 +77,7 @@ class Can
   /// Checks if there is a message available for this channel.
   ///
   /// @returns true a message was received.
-  virtual bool HasData() const = 0;
+  virtual Returns<bool> HasData() const = 0;
 
   /// Determine if you can communicate over the bus.
   ///
@@ -85,11 +85,11 @@ class Can
   ///             the bus.
   /// @return true - on success
   /// @return false - on failure
-  virtual bool SelfTest(uint32_t id) const = 0;
+  virtual Returns<bool> SelfTest(uint32_t id) const = 0;
 
   /// @return true - if the device is "bus Off"
   /// @return false - if the device is NOT "bus off"
-  virtual bool IsBusOff() const = 0;
+  virtual Returns<bool> IsBusOff() const = 0;
 
   /// @param baud - baud rate to configure the CANBUS to
   virtual Returns<void> SetBaudRate(

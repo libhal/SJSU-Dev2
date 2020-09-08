@@ -318,7 +318,8 @@ class Uart final : public sjsu::Uart
   {
     auto & system = sjsu::SystemController::GetPlatformController();
 
-    auto peripheral_frequency = system.GetClockRate(port_.power_on_id);
+    auto peripheral_frequency =
+        SJ2_RETURN_ON_ERROR(system.GetClockRate(port_.power_on_id));
 
     uart::UartCalibration_t calibration =
         uart::GenerateUartCalibration(baud_rate, peripheral_frequency);
@@ -339,7 +340,7 @@ class Uart final : public sjsu::Uart
     return {};
   }
 
-  void Write(const void * data, size_t size) const override
+  Returns<void> Write(const void * data, size_t size) const override
   {
     const uint8_t * data_buffer = reinterpret_cast<const uint8_t *>(data);
     for (size_t i = 0; i < size; i++)
@@ -350,9 +351,10 @@ class Uart final : public sjsu::Uart
         continue;
       }
     }
+    return {};
   }
 
-  size_t Read(void * data, size_t size) const override
+  Returns<size_t> Read(void * data, size_t size) const override
   {
     uint8_t * data_buffer = reinterpret_cast<uint8_t *>(data);
     size_t index          = 0;
@@ -367,7 +369,7 @@ class Uart final : public sjsu::Uart
     return index;
   }
 
-  bool HasData() const override
+  Returns<bool> HasData() const override
   {
     return FifoHasData();
   }
@@ -378,11 +380,13 @@ class Uart final : public sjsu::Uart
   {
     return bit::Read(port_.registers->LSR, 5);
   }
+
   /// @return true if fifo contains receive data.
   bool FifoHasData() const
   {
     return bit::Read(port_.registers->LSR, 0);
   }
+
   /// const reference to lpc40xx::Uart::Port_t definition
   const Port_t & port_;
 };  // namespace lpc40xx

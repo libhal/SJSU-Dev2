@@ -56,13 +56,14 @@ class InterruptController final : public sjsu::InterruptController
     handler();
   }
 
-  void Initialize(
+  Returns<void> Initialize(
       InterruptHandler unregistered_handler = UnregisteredHandler) override
   {
     std::fill(table.begin(), table.end(), unregistered_handler);
+    return {};
   }
 
-  void Enable(RegistrationInfo_t register_info) override
+  Returns<void> Enable(RegistrationInfo_t register_info) override
   {
     int irq                = register_info.interrupt_request_number;
     table[IRQToIndex(irq)] = register_info.interrupt_handler;
@@ -75,15 +76,19 @@ class InterruptController final : public sjsu::InterruptController
     {
       NvicSetPriority(irq, register_info.priority);
     }
+
+    return {};
   }
 
-  void Disable(int interrupt_request_number) override
+  Returns<void> Disable(int interrupt_request_number) override
   {
     if (interrupt_request_number >= 0)
     {
       NvicDisableIRQ(interrupt_request_number);
     }
     table[IRQToIndex(interrupt_request_number)] = UnregisteredHandler;
+
+    return {};
   }
 
  private:

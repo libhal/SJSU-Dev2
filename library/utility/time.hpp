@@ -49,7 +49,7 @@ inline void SetUptimeFunction(UptimeFunction uptime_function)
 /// @param is_done will be run in a tight loop until it returns true or the
 ///        timeout time has elapsed.
 inline Returns<void> Wait(std::chrono::nanoseconds timeout,
-                          std::function<bool()> is_done)
+                          std::function<Returns<bool>()> is_done)
 {
   const auto kTimedOutError = Error(std::errc::timed_out, "");
 
@@ -84,7 +84,7 @@ inline Returns<void> Wait(std::chrono::nanoseconds timeout,
 
   while (Uptime() <= timeout_time)
   {
-    if (is_done())
+    if (SJ2_RETURN_ON_ERROR(is_done()))
     {
       return {};
     }

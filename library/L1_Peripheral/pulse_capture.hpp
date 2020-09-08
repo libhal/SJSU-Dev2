@@ -39,10 +39,10 @@ class PulseCapture
                                    int32_t interrupt_priority = -1) const = 0;
 
   /// Select edge type to capture on
-  virtual void ConfigureCapture(CaptureEdgeMode mode) const = 0;
+  virtual Returns<void> ConfigureCapture(CaptureEdgeMode mode) const = 0;
 
   /// Enable or disable capture interrupts
-  virtual void EnableCaptureInterrupt(bool enabled) const = 0;
+  virtual Returns<void> EnableCaptureInterrupt(bool enabled) const = 0;
 };
 
 }  // namespace sjsu

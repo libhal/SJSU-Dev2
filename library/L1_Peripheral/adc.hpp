@@ -22,22 +22,22 @@ class Adc
   /// running the GetActiveBits().
   ///
   /// @returns The digital representation of the analog.
-  virtual uint32_t Read() const = 0;
+  virtual Returns<uint32_t> Read() const = 0;
 
   /// @returns The number of active bits for the ADC.
-  virtual uint8_t GetActiveBits() const = 0;
+  virtual Returns<uint8_t> GetActiveBits() const = 0;
 
   /// @returns The ADC reference voltage.
-  virtual units::voltage::microvolt_t ReferenceVoltage() const = 0;
+  virtual Returns<units::voltage::microvolt_t> ReferenceVoltage() const = 0;
 
   // ===========================================================================
   // Utility Methods
   // ===========================================================================
 
   /// @returns The ADC resolution based on the active bits.
-  uint32_t GetMaximumValue() const
+  Returns<uint32_t> GetMaximumValue() const
   {
-    return (1 << GetActiveBits()) - 1;
+    return (1 << SJ2_RETURN_ON_ERROR(GetActiveBits())) - 1;
   }
 
   /// Utility method to convert and return the ADC result in voltage using the
@@ -46,9 +46,11 @@ class Adc
   /// voltage = adc_output * adc_reference_voltage / adc_resolution
   ///
   /// @returns The measured voltage.
-  units::voltage::microvolt_t Voltage() const
+  Returns<units::voltage::microvolt_t> Voltage() const
   {
-    return Read() * ReferenceVoltage() / GetMaximumValue();
+    return SJ2_RETURN_ON_ERROR(Read()) *
+           SJ2_RETURN_ON_ERROR(ReferenceVoltage()) /
+           SJ2_RETURN_ON_ERROR(GetMaximumValue());
   }
 };
 }  // namespace sjsu
