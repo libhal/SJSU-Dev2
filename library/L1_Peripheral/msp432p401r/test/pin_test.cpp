@@ -128,7 +128,7 @@ TEST_CASE("Testing Msp432p401r Pin")
       Pin pin(invalid_port_number, 0);
 
       // Verify & Exercise
-      CHECK(pin.Initialize() == std::errc::invalid_argument);
+      SJ2_CHECK_EXCEPTION(pin.Initialize(), std::errc::invalid_argument);
     }
 
     SECTION("Invalid pin")
@@ -154,7 +154,7 @@ TEST_CASE("Testing Msp432p401r Pin")
       Pin pin(1, invalid_pin_number);
 
       // Verify & Exercise
-      CHECK(pin.Initialize() == std::errc::invalid_argument);
+      SJ2_CHECK_EXCEPTION(pin.Initialize(), std::errc::invalid_argument);
     }
   }
 
@@ -228,8 +228,8 @@ TEST_CASE("Testing Msp432p401r Pin")
       }
 
       // Exercise & Verify
-      CHECK(test_pins[0].pin.SetPinFunction(function_code) ==
-            std::errc::invalid_argument);
+      SJ2_CHECK_EXCEPTION(test_pins[0].pin.SetPinFunction(function_code),
+                          std::errc::invalid_argument);
     }
   }
 
@@ -260,7 +260,8 @@ TEST_CASE("Testing Msp432p401r Pin")
       bool actual_out;
 
       // Exercise & Verify - Setting pull as repeater
-      CHECK(pin.SetPull(Pin::Resistor::kRepeater) == std::errc::not_supported);
+      SJ2_CHECK_EXCEPTION(pin.SetPull(Pin::Resistor::kRepeater),
+                          std::errc::not_supported);
 
       // Exercise - Setting pull up resistor
       pin.SetPull(Pin::Resistor::kPullUp);
@@ -336,8 +337,8 @@ TEST_CASE("Testing Msp432p401r Pin")
       INFO("port: " << static_cast<size_t>(kPortNumber));
       INFO("pin: " << static_cast<size_t>(kPinNumber));
 
-      // Exercise and Verify
-      CHECK(pin.SetAsOpenDrain({}) == std::errc::operation_not_supported);
+      SJ2_CHECK_EXCEPTION(pin.SetAsOpenDrain({}),
+                          std::errc::operation_not_supported);
     }
   }
 

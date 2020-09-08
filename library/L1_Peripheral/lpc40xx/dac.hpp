@@ -6,7 +6,7 @@
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/log.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -55,7 +55,7 @@ class Dac final : public sjsu::Dac
   explicit constexpr Dac(const sjsu::Pin & pin = kDacPin) : dac_pin_(pin) {}
 
   /// Initialize DAC hardware, enable dac Pin, initial Bias level set to 0.
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     static constexpr uint8_t kDacMode = 0b010;
     dac_pin_.SetPinFunction(kDacMode);
@@ -72,26 +72,22 @@ class Dac final : public sjsu::Dac
     dac_register->CTRL = 0;
     // Set Update Rate to 1MHz
     SetBias(Bias::kHigh);
-
-    return {};
   }
 
-  Returns<void> Write(uint32_t dac_output) const override
+  void Write(uint32_t dac_output) const override
   {
     // The DAC output is a 10 bit input and thus it is necessary to
     // ensure dac_output is less than 1024 (largest 10-bit number)
     if (dac_output >= kMaximumValue)
     {
-      return Error(std::errc::invalid_argument,
-                   "DAC output set above 1023. Must be between 0-1023.");
+      throw Exception(std::errc::invalid_argument,
+                      "DAC output set above 1023. Must be between 0-1023.");
     }
     dac_register->CR =
         bit::Insert(dac_register->CR, dac_output, Control::kValue);
-
-    return {};
   }
 
-  Returns<void> SetVoltage(float voltage) const override
+  void SetVoltage(float voltage) const override
   {
     float value         = (voltage * kMaximumValue) / kVref;
     uint32_t conversion = static_cast<uint32_t>(value);

@@ -31,12 +31,12 @@ class Pin final : public sjsu::Pin
   /// @param pin - must be between 0 to 15
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     if (!('A' <= port_ && port_ <= 'I'))
     {
-      return Error(std::errc::invalid_argument,
-                   "Port must be between 'A' and 'I'");
+      throw Exception(std::errc::invalid_argument,
+                      "Port must be between 'A' and 'I'");
     }
 
     switch (port_)
@@ -78,18 +78,17 @@ class Pin final : public sjsu::Pin
             stm32f4xx::SystemController::Peripherals::kGpioI);
         break;
     }
-    return {};
   }
 
-  Returns<void> SetPinFunction(uint8_t function) const override
+  void SetPinFunction(uint8_t function) const override
   {
     if (function > 0b1111)
     {
-      return Error(std::errc::invalid_argument,
-                   "The function code must be a 4-bit code.");
+      throw Exception(std::errc::invalid_argument,
+                      "The function code must be a 4-bit code.");
     }
 
-    SJ2_RETURN_ON_ERROR(Initialize());
+    Initialize();
 
     // RM0090 p.281
     //
@@ -107,11 +106,9 @@ class Pin final : public sjsu::Pin
 
     // Set alternative function code
     Port()->AFR[pin_ / 8] = bit::Insert(Port()->AFR[pin_ / 8], function, kMask);
-
-    return {};
   }
 
-  Returns<void> SetPull(Resistor resistor) const override
+  void SetPull(Resistor resistor) const override
   {
     uint8_t mask = 0;
     // 00: No pull-up, pull-down
@@ -123,21 +120,19 @@ class Pin final : public sjsu::Pin
       case Resistor::kNone: mask = 0b00; break;
       case Resistor::kPullUp: mask = 0b01; break;
       case Resistor::kPullDown: mask = 0b10; break;
-      default: return Error(std::errc::not_supported, "Invalid resistor pull.");
+      default:
+        throw Exception(std::errc::not_supported, "Invalid resistor pull.");
     }
 
     Port()->PUPDR = bit::Insert(Port()->PUPDR, mask, Mask());
-
-    return {};
   }
 
-  Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override
+  void SetAsOpenDrain(bool set_as_open_drain = true) const override
   {
     Port()->OTYPER = bit::Insert(Port()->OTYPER, set_as_open_drain, pin_, 1);
-    return {};
   }
 
-  Returns<void> SetAsAnalogMode(bool set_as_analog = true) const override
+  void SetAsAnalogMode(bool set_as_analog = true) const override
   {
     // RM0090 p.281
     //
@@ -150,7 +145,6 @@ class Pin final : public sjsu::Pin
     {
       Port()->MODER = bit::Insert(Port()->MODER, kAnalogCode, Mask());
     }
-    return {};
   }
 
  private:

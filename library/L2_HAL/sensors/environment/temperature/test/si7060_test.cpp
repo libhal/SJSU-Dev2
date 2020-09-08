@@ -14,64 +14,50 @@ TEST_CASE("Si7060")
 
   SECTION("Initialize")
   {
-    SECTION("I2c initialization failure")
-    {
-      // Setup
-      // The failure status should be returned immediately without performing
-      // any further communication with the device.
-      bool i2c_transaction_not_invoked = true;
-      const auto kExpectedError        = std::errc::protocol_error;
-      When(Method(mock_i2c, Initialize))
-          .AlwaysReturn(Error(kExpectedError, ""));
+    // Setup
+    Fake(Method(mock_i2c, Initialize));
 
-      // Exercise
-      CHECK(kExpectedError == temperature_sensor.Initialize());
+    // Exercise
+    temperature_sensor.Initialize();
 
-      // Verify
-      CHECK(i2c_transaction_not_invoked);
-      Verify(Method(mock_i2c, Initialize)).Once();
-    }
+    // Verify
+    Verify(Method(mock_i2c, Initialize)).Once();
+  }
 
+  SECTION("Enable")
+  {
     SECTION("Incorrect device information")
     {
       // Setup
-      const auto kExpectedError            = std::errc::no_such_device;
       constexpr uint8_t kIncorrectDeviceId = 0xFF;
 
-      When(Method(mock_i2c, Initialize)).AlwaysReturn({});
       When(Method(mock_i2c, Transaction))
-          .AlwaysDo([kExpectedError, kIncorrectDeviceId](
-                        I2c::Transaction_t transaction) -> Returns<void> {
-            transaction.data_in[0] = kIncorrectDeviceId;
-            return Error(kExpectedError, "");
-          });
+          .AlwaysDo(
+              [kIncorrectDeviceId](I2c::Transaction_t transaction) -> void {
+                transaction.data_in[0] = kIncorrectDeviceId;
+              });
 
       // Exercise
-      CHECK(temperature_sensor.Initialize());
-      CHECK(kExpectedError == temperature_sensor.Enable());
+      SJ2_CHECK_EXCEPTION(temperature_sensor.Enable(),
+                          std::errc::no_such_device);
 
       // Verify
-      Verify(Method(mock_i2c, Initialize), Method(mock_i2c, Transaction))
-          .Once();
+      Verify(Method(mock_i2c, Transaction)).Once();
     }
 
     SECTION("I2c initialization success w/ correct device information")
     {
       // Setup
-      When(Method(mock_i2c, Initialize)).AlwaysReturn({});
       When(Method(mock_i2c, Transaction))
-          .AlwaysDo([](I2c::Transaction_t transaction) -> Returns<void> {
+          .AlwaysDo([](I2c::Transaction_t transaction) -> void {
             transaction.data_in[0] = Si7060::kExpectedSensorId;
-            return {};
           });
 
       // Exercise
-      CHECK(temperature_sensor.Initialize());
-      CHECK(temperature_sensor.Enable());
+      temperature_sensor.Enable();
 
       // Verify
-      Verify(Method(mock_i2c, Initialize), Method(mock_i2c, Transaction))
-          .Once();
+      Verify(Method(mock_i2c, Transaction)).Once();
     }
   }
 
@@ -161,7 +147,7 @@ TEST_CASE("Si7060")
     // receive buffer when temperature data is expected to be received.
     When(Method(mock_i2c, Transaction))
         .AlwaysDo([&transactions, &data_out, &kExpectedTemperatureData](
-                      I2c::Transaction_t transaction) -> Returns<void> {
+                      I2c::Transaction_t transaction) -> void {
           static uint8_t transaction_id = 0;
           transactions[transaction_id]  = transaction;
           for (size_t i = 0; i < transaction.out_length; i++)
@@ -182,7 +168,6 @@ TEST_CASE("Si7060")
             default: break;
           }
           transaction_id++;
-          return {};
         });
 
     auto temperature = temperature_sensor.GetTemperature();
@@ -207,7 +192,7 @@ TEST_CASE("Si7060")
     }
 
     REQUIRE(temperature);
-    CHECK(temperature.value().to<float>() ==
+    CHECK(temperature.to<float>() ==
           doctest::Approx(kExpectedTemperature).epsilon(kMarginOfError));
   }
 }

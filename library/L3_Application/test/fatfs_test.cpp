@@ -120,49 +120,22 @@ TEST_CASE("Testing FAT FS")
       CHECK(RES_PARERR == disk_initialize(5));
     }
 
-    SECTION("Initialize Failed")
-    {
-      // Setup
-      // Setup: Needed to verify disk_status's return value
-      When(Method(mock_storage, IsMediaPresent)).AlwaysReturn(true);
-      // Setup: The error returned is arbitrary
-      When(Method(mock_storage, Initialize))
-          .AlwaysReturn(Error(std::errc::no_such_device,
-                              "Initialize Failed for Testing"));
-      When(Method(mock_storage, Enable)).AlwaysReturn({});
-
-      // Exercise + Verify
-      CHECK(STA_NOINIT == disk_initialize(0));
-      CHECK(STA_NOINIT == disk_status(0));
-    }
-
     SECTION("Initialize Successful + Enable Failed")
     {
       // Setup
       // Setup: Needed to verify disk_status's return value
       When(Method(mock_storage, IsMediaPresent)).AlwaysReturn(true);
-      // Setup: The error returned is arbitrary
-      When(Method(mock_storage, Initialize)).AlwaysReturn({});
-      When(Method(mock_storage, Enable))
-          .AlwaysReturn(
-              Error(std::errc::io_error, "Enable Failed for Testing"));
+      Fake(Method(mock_storage, Initialize));
+      Fake(Method(mock_storage, Enable));
 
-      // Exercise + Verify
-      CHECK(STA_NOINIT == disk_initialize(0));
-      CHECK(STA_NOINIT == disk_status(0));
-    }
-
-    SECTION("Initialize Successful + Enable Failed")
-    {
-      // Setup
-      // Setup: Needed to verify disk_status's return value
-      When(Method(mock_storage, IsMediaPresent)).AlwaysReturn(true);
-      When(Method(mock_storage, Initialize)).AlwaysReturn({});
-      When(Method(mock_storage, Enable)).AlwaysReturn({});
-
-      // Exercise + Verify
+      // Exercise
       CHECK(RES_OK == disk_initialize(0));
       CHECK(RES_OK == disk_status(0));
+
+      // Verify
+      Verify(Method(mock_storage, IsMediaPresent));
+      Verify(Method(mock_storage, Initialize));
+      Verify(Method(mock_storage, Enable));
     }
   }
 
@@ -177,13 +150,11 @@ TEST_CASE("Testing FAT FS")
     // Setup
     Mock<sjsu::Storage> mock_storage;
 
-    // Exercise
+    // Exercise + Verify
     // Exercise: Take the drive count and add 1 to push it out of bounds.
-    auto result =
-        RegisterFatFsDrive(&mock_storage.get(), config::kFatDriveCount + 1);
-
-    // Verify
-    CHECK(!result.has_value());
+    SJ2_CHECK_EXCEPTION(
+        RegisterFatFsDrive(&mock_storage.get(), config::kFatDriveCount + 1),
+        std::errc::invalid_argument);
   }
 
   SECTION("disk_write()")
@@ -203,8 +174,8 @@ TEST_CASE("Testing FAT FS")
       // Setup
       uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
 
-      When(Method(mock_storage, Write)).AlwaysReturn({});
-      When(Method(mock_storage, Erase)).AlwaysReturn({});
+      Fake(Method(mock_storage, Write));
+      Fake(Method(mock_storage, Erase));
 
       for (uint32_t sector : { 0, 1, 4, 512, 1024, 65536 })
       {
@@ -232,63 +203,6 @@ TEST_CASE("Testing FAT FS")
         }
       }
     }
-
-    SECTION("Storage::Erase() Failure")
-    {
-      // Setup
-      uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
-      When(Method(mock_storage, Erase))
-          .AlwaysReturn(Error(std::errc::io_error, "Erase Failed for Testing"));
-      When(Method(mock_storage, Write)).AlwaysReturn({});
-      When(Method(mock_storage, GetBlockSize)).AlwaysReturn(512_B);
-
-      uint32_t sector     = 0;
-      uint32_t block_size = 512;
-      uint32_t count      = 5;
-
-      const uint32_t kExpectedSector = (sector * FF_MIN_SS) / block_size;
-      const uint32_t kLength         = (count * FF_MIN_SS);
-
-      // Exercise
-      auto disk_write_status = disk_write(0, payload, sector, count);
-
-      // Verify
-      CHECK(RES_ERROR == disk_write_status);
-
-      Verify(Method(mock_storage, Erase).Using(kExpectedSector, kLength))
-          .Once();
-      // Verify: The write command must not be called at all in anyway.
-      Verify(Method(mock_storage, Write)).Never();
-    }
-
-    SECTION("Storage::Write() Failure")
-    {
-      // Setup
-      uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
-      When(Method(mock_storage, Erase)).AlwaysReturn({});
-      When(Method(mock_storage, Write))
-          .AlwaysReturn(Error(std::errc::io_error, "Write Failed for Testing"));
-      When(Method(mock_storage, GetBlockSize)).AlwaysReturn(512_B);
-
-      uint32_t sector     = 5;
-      uint32_t block_size = 512;
-      uint32_t count      = 2;
-
-      const uint32_t kExpectedSector = (sector * FF_MIN_SS) / block_size;
-      const uint32_t kLength         = (count * FF_MIN_SS);
-
-      // Exercise
-      auto disk_write_status = disk_write(0, payload, sector, count);
-
-      // Verify
-      CHECK(RES_ERROR == disk_write_status);
-
-      Verify(Method(mock_storage, Erase).Using(kExpectedSector, kLength))
-          .Once();
-      Verify(
-          Method(mock_storage, Write).Using(kExpectedSector, payload, kLength))
-          .Once();
-    }
   }
 
   SECTION("disk_read()")
@@ -308,7 +222,7 @@ TEST_CASE("Testing FAT FS")
       // Setup
       uint8_t payload[512];
 
-      When(Method(mock_storage, Read)).AlwaysReturn({});
+      Fake(Method(mock_storage, Read));
 
       for (uint32_t sector : { 0, 1, 4, 512, 1024, 65536 })
       {
@@ -335,32 +249,6 @@ TEST_CASE("Testing FAT FS")
           }
         }
       }
-    }
-
-    SECTION("Storage::Read() Failure")
-    {
-      // Setup
-      uint8_t payload[512];
-      When(Method(mock_storage, Read))
-          .AlwaysReturn(Error(std::errc::io_error, "Read Failed for Testing"));
-      When(Method(mock_storage, GetBlockSize)).AlwaysReturn(512_B);
-
-      uint32_t sector     = 5;
-      uint32_t block_size = 512;
-      uint32_t count      = 2;
-
-      const uint32_t kExpectedSector = (sector * FF_MIN_SS) / block_size;
-      const uint32_t kLength         = (count * FF_MIN_SS);
-
-      // Exercise
-      auto disk_read_status = disk_read(0, payload, sector, count);
-
-      // Verify
-      CHECK(RES_ERROR == disk_read_status);
-      Verify(Method(mock_storage, Read)
-                 .Using(kExpectedSector, reinterpret_cast<void *>(payload),
-                        kLength))
-          .Once();
     }
   }
 }

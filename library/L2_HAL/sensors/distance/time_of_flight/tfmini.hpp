@@ -12,7 +12,7 @@
 
 #include "L1_Peripheral/uart.hpp"
 #include "L2_HAL/sensors/distance/distance_sensor.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
@@ -84,20 +84,18 @@ class TFMini final : public DistanceSensor
   /// trigger and sets the distance units to mm
   ///
   /// @returns std::errc::io_error if initialization fails
-  Returns<void> Initialize() override
+  void Initialize() override
   {
     constexpr uint32_t kBaudRate = 115200;
-    SJ2_RETURN_ON_ERROR(uart_.Initialize(kBaudRate));
+    uart_.Initialize(kBaudRate);
 
     if (!SendCommandAndCheckEcho(kConfigCommand) ||
         !SendCommandAndCheckEcho(kSetExternalTriggerMode) ||
         !SendCommandAndCheckEcho(kSetDistUnitMM) ||
         !SendCommandAndCheckEcho(kExitConfigCommand))
     {
-      return Error(std::errc::io_error, "Enabling device failed!");
+      throw Exception(std::errc::io_error, "Enabling device failed!");
     }
-
-    return {};
   }
 
   /// Obtain the distance to the object directly in front of the sensor
@@ -107,14 +105,14 @@ class TFMini final : public DistanceSensor
   ///         device is not recognized, the distance will be unreliable and set
   ///         to std::numeric_limits<uint32_t>::max(). If the actual distance is
   ///         greater than 12000mm, the distance value caps at 12000
-  Returns<units::length::millimeter_t> GetDistance() override
+  units::length::millimeter_t GetDistance() override
   {
     std::array<uint8_t, kDeviceDataLength> device_data = { 0 };
 
     uart_.Write(kPromptMeasurementCommand, kCommandLength);
     uart_.Read(device_data.data(), device_data.size(), kTimeout);
 
-    SJ2_RETURN_ON_ERROR(VerifyData(device_data));
+    VerifyData(device_data);
 
     uint32_t dist = device_data[3] << 8 | device_data[2];
     return units::length::millimeter_t(dist);
@@ -125,14 +123,14 @@ class TFMini final : public DistanceSensor
   /// @return the strength of the light pulse, calculated by
   ///         strength_val / 3000. Recommended that readings are reliable if in
   ///         range .7%-67%, lower limit is adjustable -> SetMinSignalThreshhold
-  Returns<float> GetSignalStrengthPercent() override
+  float GetSignalStrengthPercent() override
   {
     std::array<uint8_t, kDeviceDataLength> device_data = { 0 };
 
     uart_.Write(kPromptMeasurementCommand, kCommandLength);
     uart_.Read(device_data.data(), device_data.size(), kTimeout);
 
-    SJ2_RETURN_ON_ERROR(VerifyData(device_data));
+    VerifyData(device_data);
 
     uint32_t strength_bytes = device_data[5] << 8 | device_data[4];
     return (static_cast<float>(strength_bytes) / kStrengthUpperBound);
@@ -143,7 +141,7 @@ class TFMini final : public DistanceSensor
   /// @param lower_threshold - the value to set the lower threshold as.
   ///        default value is 20, caps at 80. Decrease the value to increase the
   ///        measurement range, increase value to improve reliability.
-  Returns<void> SetMinSignalThreshhold(uint8_t lower_threshold = 20)
+  void SetMinSignalThreshhold(uint8_t lower_threshold = 20)
   {
     constexpr uint8_t kUpdateMinThresholdCommand[kCommandLength] = {
       0x42, 0x57, 0x02, 0x00, 0xEE, 0x00, 0x00, 0x20
@@ -168,23 +166,21 @@ class TFMini final : public DistanceSensor
         !SendCommandAndCheckEcho(updated_min_threshold_command.data()) ||
         !SendCommandAndCheckEcho(kExitConfigCommand))
     {
-      return Error(std::errc::io_error,
-                   "Setting minimum threshold values failed.");
+      throw Exception(std::errc::io_error,
+                      "Setting minimum threshold values failed.");
     }
 
     min_threshold_ = lower_threshold;
-
-    return {};
   }
 
  private:
-  Returns<void> VerifyData(std::array<uint8_t, kDeviceDataLength> & data)
+  void VerifyData(std::array<uint8_t, kDeviceDataLength> & data)
   {
     if (data[0] != kFrameHeader || data[1] != kFrameHeader)
     {
       SJ2_PRINT_VARIABLE(data[0], "%u");
       SJ2_PRINT_VARIABLE(data[1], "%u");
-      return Error(std::errc::no_such_device, "Frame header is incorrect");
+      throw Exception(std::errc::no_such_device, "Frame header is incorrect");
     }
 
     uint8_t checksum = std::accumulate(data.begin(), &data.end()[-2], 0);
@@ -193,10 +189,8 @@ class TFMini final : public DistanceSensor
     {
       SJ2_PRINT_VARIABLE(checksum, "%u");
       SJ2_PRINT_VARIABLE(data[8], "%u");
-      return Error(std::errc::io_error, "Checksum came back incorrect");
+      throw Exception(std::errc::io_error, "Checksum came back incorrect");
     }
-
-    return {};
   }
 
   bool SendCommandAndCheckEcho(const uint8_t * command) const

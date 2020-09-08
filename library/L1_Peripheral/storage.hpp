@@ -4,7 +4,7 @@
 #include <cstddef>
 
 #include "utility/units.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -41,7 +41,7 @@ class Storage
   /// Initialize all peripherals required to make communicate with the storage
   /// media possible. MUST be called before calling any method in this interface
   /// with the exception of `GetMemoryType()`
-  virtual Returns<void> Initialize() = 0;
+  virtual void Initialize() = 0;
 
   /// Will prepare and configure storage media for communication.
   /// This method can only be called after `Initialize()` was called
@@ -51,14 +51,14 @@ class Storage
   ///    bool IsReadOnly()
   ///    units::data::byte_t GetCapacity()
   ///    units::data::byte_t GetBlockSize()
-  ///    Returns<void> Erase(uint32_t, size_t)
-  ///    Returns<void> Write(uint32_t, const void *, size_t)
-  ///    Returns<void> Read(uint32_t, void *, size_t)
-  ///    Returns<void> Disable()
+  ///    void Erase(uint32_t, size_t)
+  ///    void Write(uint32_t, const void *, size_t)
+  ///    void Read(uint32_t, void *, size_t)
+  ///    void Disable()
   ///
   /// Calling any of these methods before `Enable()` has been called
   /// successfully, will result in undefined behavior.
-  virtual Returns<void> Enable() = 0;
+  virtual void Enable() = 0;
 
   /// @return true if the storage is present. For cases where the memory cannot
   ///         be removed or is physically located within a device, this should
@@ -88,7 +88,7 @@ class Storage
   /// @param blocks_count - the number of bytes to erase.
   /// @return Status of if the operation was successful, otherwise, returns an
   ///         appropriate status signal.
-  virtual Returns<void> Erase(uint32_t block_address, size_t blocks_count) = 0;
+  virtual void Erase(uint32_t block_address, size_t blocks_count) = 0;
 
   /// Write data to the storage media in the location block specified. If the
   /// block size for this media is not 1 byte, then single byte is not allowed
@@ -103,9 +103,9 @@ class Storage
   ///               the size of a block.
   /// @return Status of if the operation was successful, otherwise, returns an
   ///         appropriate status signal.
-  virtual Returns<void> Write(uint32_t block_address,
-                              const void * data,
-                              size_t size) = 0;
+  virtual void Write(uint32_t block_address,
+                     const void * data,
+                     size_t size) = 0;
 
   /// Read data from the storage media in the location specified.
   ///
@@ -115,11 +115,9 @@ class Storage
   ///               the size of a block.
   /// @return Status of if the operation was successful, otherwise, return an
   ///         appropriate status signal.
-  virtual Returns<void> Read(uint32_t block_address,
-                             void * data,
-                             size_t size) = 0;
+  virtual void Read(uint32_t block_address, void * data, size_t size) = 0;
 
   /// Should shutdown the device.
-  virtual Returns<void> Disable() = 0;
+  virtual void Disable() = 0;
 };
 }  // namespace sjsu

@@ -11,7 +11,7 @@
 
 #include "L1_Peripheral/i2c.hpp"
 #include "utility/enum.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/byte.hpp"
 
 namespace sjsu
@@ -136,12 +136,12 @@ class MemoryAccessProtocol
     {
     }
 
-    constexpr Returns<void> Write(std::span<const uint8_t> payload)
+    constexpr void Write(std::span<const uint8_t> payload)
     {
       return map_.Write(address_.address, payload);
     }
 
-    constexpr Returns<void> Read(std::span<uint8_t> payload) const
+    constexpr void Read(std::span<uint8_t> payload) const
     {
       return map_.Read(address_.address, payload);
     }
@@ -150,7 +150,7 @@ class MemoryAccessProtocol
     using IsInteger = std::enable_if_t<std::is_integral_v<T>>;
 
     template <typename Integer, typename = IsInteger<Integer>>
-    Returns<void> operator=(Integer write_value)
+    void operator=(Integer write_value)
     {
       // Create short hand variables for the specification variables
       const ContainerInt kValue = static_cast<ContainerInt>(write_value);
@@ -164,19 +164,19 @@ class MemoryAccessProtocol
     }
 
     template <size_t N>
-    Returns<void> operator=(const std::array<uint8_t, N> && value_array)
+    void operator=(const std::array<uint8_t, N> && value_array)
     {
       return Write(value_array);
     }
 
     template <size_t N>
-    Returns<void> operator=(const std::array<uint8_t, N> & value_array)
+    void operator=(const std::array<uint8_t, N> & value_array)
     {
       return Write(value_array);
     }
 
     template <typename T, size_t N>
-    Returns<void> operator=(const std::array<T, N> && value_array)
+    void operator=(const std::array<T, N> && value_array)
     {
       std::array<uint8_t, N * sizeof(T)> endian_payload;
 
@@ -191,13 +191,13 @@ class MemoryAccessProtocol
     }
 
     template <typename T, size_t N>
-    Returns<void> operator=(const std::array<T, N> & value_array)
+    void operator=(const std::array<T, N> & value_array)
     {
       return (*this = std::move(value_array));
     }
 
     template <typename Integer>
-    operator Returns<Integer>() const
+    operator Integer() const
     {
       std::array<uint8_t, sizeof(ContainerInt)> read_buffer = { 0 };
 
@@ -205,27 +205,24 @@ class MemoryAccessProtocol
       const auto kRegisterSize = std::min(kWidth, sizeof(ContainerInt));
       const std::span<uint8_t> kReadSpan(read_buffer.begin(), kRegisterSize);
 
-      SJ2_RETURN_ON_ERROR(Read(kReadSpan));
+      Read(kReadSpan);
 
       return ToInteger<Integer>(endianness, kReadSpan);
     }
 
     template <size_t N>
-    operator Returns<std::array<uint8_t, N>>() const
+    operator std::array<uint8_t, N>() const
     {
       std::array<uint8_t, N> result;
-      SJ2_RETURN_ON_ERROR(Read(result));
+      Read(result);
       return result;
     }
 
     template <typename T, size_t N>
-    operator Returns<std::array<T, N>>() const
+    operator std::array<T, N>() const
     {
-      Returns<std::array<uint8_t, N * sizeof(T)>> byte_buffer = *this;
-
-      SJ2_RETURN_ON_ERROR(byte_buffer);
-
-      return ToIntegerArray<T, N>(endianness, byte_buffer.value());
+      std::array<uint8_t, N * sizeof(T)> byte_buffer = *this;
+      return ToIntegerArray<T, N>(endianness, byte_buffer);
     }
 
 /// Boiler plate for defining memory comparision operations
@@ -278,10 +275,10 @@ class MemoryAccessProtocol
   // Interface Methods
   // ===========================================================================
 
-  virtual Returns<void> Write(std::span<const uint8_t> address,
-                              std::span<const uint8_t> payload) = 0;
-  virtual Returns<void> Read(std::span<const uint8_t> address,
-                             std::span<uint8_t> payload)        = 0;
+  virtual void Write(std::span<const uint8_t> address,
+                     std::span<const uint8_t> payload) = 0;
+  virtual void Read(std::span<const uint8_t> address,
+                    std::span<uint8_t> payload)        = 0;
 
   // ===========================================================================
   // Class Methods
@@ -311,47 +308,21 @@ class MockProtocol<MemoryAccessProtocol::AddressWidth::kByte1>
  public:
   std::array<uint8_t, (1 << 8)> memory_map;
 
-  Returns<void> Write(std::span<const uint8_t> address,
-                      std::span<const uint8_t> payload) override
+  void Write(std::span<const uint8_t> address,
+             std::span<const uint8_t> payload) override
   {
-    if (error_active_)
-    {
-      return error_;
-    }
-
     // Only use the first byte of the address
     std::copy_n(payload.begin(), payload.size(),
                 memory_map.begin() + address[0]);
-    return {};
   }
 
-  Returns<void> Read(std::span<const uint8_t> address,
-                     std::span<uint8_t> payload) override
+  void Read(std::span<const uint8_t> address,
+            std::span<uint8_t> payload) override
   {
-    if (error_active_)
-    {
-      return error_;
-    }
-
     // Only use the first byte of the address
     std::copy_n(memory_map.begin() + address[0], payload.size(),
                 payload.begin());
-    return {};
   }
-
-  void SetError(Returns<void> error)
-  {
-    error_        = error;
-    error_active_ = true;
-  }
-
-  void ClearError()
-  {
-    error_active_ = false;
-  }
-
-  Returns<void> error_ = {};
-  bool error_active_   = false;
 };
 
 // TODO(#1329) Not supported yet.
@@ -373,17 +344,18 @@ class I2cProtocol : public MemoryAccessProtocol
   {
   }
 
-  Returns<void> Write(std::span<const uint8_t> address,
-                      std::span<const uint8_t> value) override
+  void Write(std::span<const uint8_t> address,
+             std::span<const uint8_t> value) override
   {
     constexpr auto kAddressSize = MemoryAccessProtocol::kAddressSizeLimit;
     constexpr auto kBufferSize  = kAddressSize + MaximumPayloadSize;
 
     if (address.size() + value.size() >= kBufferSize)
     {
-      return Error(std::errc::not_enough_memory,
-                   "I2cProtocol Object does not have enough buffer storage to "
-                   "perform this write operation.");
+      throw Exception(
+          std::errc::not_enough_memory,
+          "I2cProtocol Object does not have enough buffer storage to "
+          "perform this write operation.");
     }
 
     std::array<uint8_t, kBufferSize> buffer;
@@ -391,15 +363,13 @@ class I2cProtocol : public MemoryAccessProtocol
     std::copy(address.begin(), address.end(), buffer.begin());
     std::copy(value.begin(), value.end(), buffer.begin() + address.size());
 
-    SJ2_RETURN_ON_ERROR(i2c_.Write(i2c_address_, buffer));
-    return {};
+    i2c_.Write(i2c_address_, buffer);
   }
 
-  Returns<void> Read(std::span<const uint8_t> address,
-                     std::span<uint8_t> receive) override
+  void Read(std::span<const uint8_t> address,
+            std::span<uint8_t> receive) override
   {
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(i2c_address_, address, receive));
-    return {};
+    i2c_.WriteThenRead(i2c_address_, address, receive);
   }
 
  private:

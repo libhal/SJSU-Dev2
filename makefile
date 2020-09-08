@@ -94,20 +94,38 @@ SJ2_DEFAULT_PLATFORM = lpc40xx
 SJ2_DEFAULT_INCLUDES = $(SJ2_CURRENT_DIRECTORY) $(SJ2_SOURCE_DIR) \
                        $(SJ2_LOCAL_LIBRARY_DIR)
 
-SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -ffunction-sections \
-                       -fdata-sections -fno-exceptions -fno-omit-frame-pointer \
+SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -fexceptions -ffunction-sections \
+                       -fdata-sections -fno-omit-frame-pointer  \
                        -Wno-main -Wno-variadic-macros -Wall -Wextra -Wshadow \
                        -Wfloat-equal -Wundef -Wno-format-nonliteral \
                        -Wconversion -Wdouble-promotion -Wswitch -Wformat=2 \
                        -Wno-uninitialized -Wnull-dereference \
 											 -fdiagnostics-color -MMD -MP
 
-SJ2_DEFAULT_CPPFLAGS = -std=c++2a -fno-rtti -fno-threadsafe-statics \
-                       -Wold-style-cast -Woverloaded-virtual -Wsuggest-override
+SJ2_DEFAULT_CPPFLAGS = -std=c++2a -fexceptions -fno-rtti \
+                       -fno-threadsafe-statics -Wold-style-cast \
+                       -Woverloaded-virtual -Wsuggest-override
 
-SJ2_DEFAULT_LDFLAGS  = -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
+SJ2_DEFAULT_LDFLAGS  = -fexceptions -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
                        --specs=nano.specs --specs=rdimon.specs \
-                       -Wl,--wrap=snprintf
+                       -Wl,--wrap=snprintf \
+
+											# -Wl,--wrap=__cxa_get_globals \
+                       -Wl,--wrap=__cxa_allocate_exception \
+                       -Wl,--wrap=__cxa_free_exception \
+											-Wl,--wrap=__cxa_get_globals_fast \
+											-Wl,--wrap=__cxa_atexit \
+											-Wl,--wrap=__cxa_call_terminate \
+											-Wl,--wrap=__cxa_begin_cleanup \
+											-Wl,--wrap=__cxa_end_catch \
+											-Wl,--wrap=__cxa_begin_catch \
+											-Wl,--wrap=__cxa_rethrow \
+											-Wl,--wrap=__cxa_type_match \
+											-Wl,--wrap=__cxa_call_unexpected \
+											-Wl,--wrap=__cxa_throw \
+											-Wl,--wrap=__gnu_unwind_execute \
+											-Wl,--wrap=_Unwind_VRS_Pop \
+											-Wl,--wrap=__gnu_unwind_pr_common
 
 SJ2_DEFAULT_SOURCES  = source/main.cpp
 

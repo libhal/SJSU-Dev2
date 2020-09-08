@@ -18,12 +18,11 @@ int main()
 
   while (true)
   {
-    auto lux = SJ2_RETURN_VALUE_ON_ERROR(light_sensor.GetIlluminance(), -1);
-    auto percent =
-        SJ2_RETURN_VALUE_ON_ERROR(light_sensor.GetPercentageBrightness(), -1);
+    auto lux     = light_sensor.GetIlluminance();
+    auto percent = light_sensor.GetPercentageBrightness() * 100;
 
     sjsu::LogInfo("Lux: %.4f, Brightness Percentage: %.2f%%", lux.to<double>(),
-                  static_cast<double>(percent * 100));
+                  static_cast<double>(percent));
 
     sjsu::Delay(1s);
   }

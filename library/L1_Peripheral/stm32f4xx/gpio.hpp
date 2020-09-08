@@ -4,7 +4,7 @@
 
 #include "L1_Peripheral/gpio.hpp"
 #include "L1_Peripheral/stm32f4xx/pin.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu::stm32f4xx
 {
@@ -73,14 +73,14 @@ class Gpio : public sjsu::Gpio
     return pin_;
   }
 
-  Returns<void> AttachInterrupt(InterruptCallback, Edge) override
+  void AttachInterrupt(InterruptCallback, Edge) override
   {
-    return Error(std::errc::operation_not_supported, "");
+    throw Exception(std::errc::operation_not_supported, "");
   }
 
-  Returns<void> DetachInterrupt() const override
+  void DetachInterrupt() const override
   {
-    return Error(std::errc::operation_not_supported, "");
+    throw Exception(std::errc::operation_not_supported, "");
   }
 
  private:

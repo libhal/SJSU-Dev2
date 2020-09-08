@@ -44,18 +44,18 @@ class Pin final : public sjsu::Pin
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
   /// @note GPIO hardare is enabled and ready by default on reset.
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     // NOTE: port can only be 1-10 or 'J'
     if (((port_ > 10) || (port_ == 0)) && (port_ != 'J'))
     {
-      return Error(std::errc::invalid_argument, "Port must be 1-10 or J");
+      throw Exception(std::errc::invalid_argument, "Port must be 1-10 or J");
     }
     if (pin_ > 7)
     {
-      return Error(std::errc::invalid_argument, "Pin must be between 0 and 7");
+      throw Exception(std::errc::invalid_argument,
+                      "Pin must be between 0 and 7");
     }
-    return {};
   }
 
   /// Configures the pin's function mode based on the specified 3-bit function
@@ -65,13 +65,13 @@ class Pin final : public sjsu::Pin
   ///      http://www.ti.com/lit/ds/symlink/msp432p401r.pdf#page=138
   ///
   /// @param function The 3-bit function code.
-  Returns<void> SetPinFunction(uint8_t function) const override
+  void SetPinFunction(uint8_t function) const override
   {
-    SJ2_RETURN_ON_ERROR(Initialize());
+    Initialize();
 
     if (function > 0b111)
     {
-      return Error(
+      throw Exception(
           std::errc::invalid_argument,
           "The function code must be a 3-bit value between 0b000 and 0b111.");
     }
@@ -90,8 +90,6 @@ class Pin final : public sjsu::Pin
                     bit::Read(function, kSel0Bit), pin_));
 
     SetPinDirection(Gpio::Direction(bit::Read(function, kDirectionBit)));
-
-    return {};
   }
 
   /// Sets the pin's resistor pull either as pull up, pull down, or none.
@@ -100,7 +98,7 @@ class Pin final : public sjsu::Pin
   ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=678
   ///
   /// @param resistor The resistor to set.
-  Returns<void> SetPull(Resistor resistor) const override
+  void SetPull(Resistor resistor) const override
   {
     volatile uint8_t * resistor_enable = RegisterAddress(&Port()->REN);
     // The output register (OUT) is used to select the pull down or pull up
@@ -121,9 +119,9 @@ class Pin final : public sjsu::Pin
         *resistor_select = bit::Set(*resistor_select, pin_);
         break;
       case Resistor::kRepeater:
-        return Error(std::errc::not_supported, "Repeater mode not supported");
+        throw Exception(std::errc::not_supported,
+                        "Repeater mode not supported");
     }
-    return {};
   }
 
   /// Sets the drive strength of the pin.
@@ -143,17 +141,17 @@ class Pin final : public sjsu::Pin
     }
   }
 
-  Returns<void> SetAsOpenDrain(bool) const override
+  void SetAsOpenDrain(bool) const override
   {
-    return Error(std::errc::operation_not_supported, "");
+    throw Exception(std::errc::operation_not_supported, "");
   }
 
   /// @note This function does nothing as setting the analog mode is not
   ///       required to enable the use of the ADC.
-  [[deprecated("Unsupported operation")]] Returns<void> SetAsAnalogMode(
+  [[deprecated("Unsupported operation")]] void SetAsAnalogMode(
       bool) const override
   {
-    return Error(std::errc::operation_not_supported, "");
+    throw Exception(std::errc::operation_not_supported, "");
   }
 
  private:

@@ -3,7 +3,7 @@
 #include <ff.h>
 
 #include "L1_Peripheral/storage.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -23,8 +23,8 @@ namespace sjsu
 /// @param storage - reference to the storage device that contains a fatfs
 ///                  filesystem.
 /// @param drive_number - the drive designation number for device.
-/// @return Returns<int> - an error if there is one.
-Returns<void> RegisterFatFsDrive(Storage * storage, uint8_t drive_number = 0);
+/// @return int - an error if there is one.
+void RegisterFatFsDrive(Storage * storage, uint8_t drive_number = 0);
 
 /// @param result - the fatfs result to convert to a string description.
 /// @return a string description of the passed fatfs result.

@@ -23,40 +23,16 @@ TEST_CASE("Tsop752 Infrared Receiver Test")
 
   SECTION("Initialize")
   {
-    SECTION("PulseCapture peripheral initialization failure")
-    {
-      // Setup
-      const auto kExpectedError = std::errc::invalid_argument;
-      When(Method(mock_timer, Initialize)).AlwaysReturn({});
-      When(Method(mock_pulse_capture, Initialize))
-          .AlwaysReturn(Error(kExpectedError, ""));
+    // Setup
+    Fake(Method(mock_timer, Initialize));
+    Fake(Method(mock_pulse_capture, Initialize));
 
-      // Exercise
-      CHECK(std::errc::invalid_argument == ir_receiver.Initialize());
+    // Exercise
+    ir_receiver.Initialize();
 
-      // Verify
-      Verify(Method(mock_pulse_capture, Initialize)).Once();
-      VerifyNoOtherInvocations(mock_pulse_capture, mock_timer);
-    }
-
-    SECTION("Timer peripheral initialization failure")
-    {
-      // Setup
-      const auto kExpectedError = std::errc::invalid_argument;
-      When(Method(mock_pulse_capture, Initialize)).AlwaysReturn({});
-      When(Method(mock_timer, Initialize))
-          .AlwaysReturn(Error(kExpectedError, ""));
-
-      // Exercise
-      CHECK(std::errc::invalid_argument == ir_receiver.Initialize());
-
-      // Verify
-      Verify(Method(mock_pulse_capture, Initialize),
-             Method(mock_pulse_capture, ConfigureCapture),
-             Method(mock_pulse_capture, EnableCaptureInterrupt),
-             Method(mock_timer, Initialize))
-          .Once();
-    }
+    // Verify
+    Verify(Method(mock_pulse_capture, Initialize)).Once();
+    Verify(Method(mock_pulse_capture, Initialize)).Once();
   }
 
   SECTION("Both peripherals initialization success")
@@ -65,11 +41,11 @@ TEST_CASE("Tsop752 Infrared Receiver Test")
     constexpr uint32_t kExpectedTimerMatchCount   = kTimeout.count();
     constexpr uint8_t kExpectedTimerMatchRegister = 0;
 
-    When(Method(mock_pulse_capture, Initialize)).AlwaysReturn({});
-    When(Method(mock_timer, Initialize)).AlwaysReturn({});
+    Fake(Method(mock_pulse_capture, Initialize));
+    Fake(Method(mock_timer, Initialize));
 
     // Exercise
-    REQUIRE(ir_receiver.Initialize());
+    ir_receiver.Initialize();
 
     // Verify
     Verify(Method(mock_pulse_capture, Initialize)).Once();

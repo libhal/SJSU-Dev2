@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -21,8 +21,7 @@ class Pwm
   /// method in this interface is called.
   ///
   /// @param frequency - starting frequency of PWM waveform
-  virtual Returns<void> Initialize(
-      units::frequency::hertz_t frequency) const = 0;
+  virtual void Initialize(units::frequency::hertz_t frequency) const = 0;
 
   /// Set output pulse width to following duty cycle.
   ///
@@ -30,16 +29,15 @@ class Pwm
   ///        50% duty cycle meaning that the pulse will be on for 50% of the
   ///        time and off for the other 50%. Values above or below 0 and 1 will
   ///        simply be clamped.
-  virtual Returns<void> SetDutyCycle(float duty_cycle) const = 0;
+  virtual void SetDutyCycle(float duty_cycle) const = 0;
 
   /// @return current duty cycle from hardware
-  virtual Returns<float> GetDutyCycle() const = 0;
+  virtual float GetDutyCycle() const = 0;
 
   /// Set PWM waveform frequency
   ///
   /// @param frequency - frequency to set the PWM waveform. Cannot be set
   ///        higher than the peripheral frequency of the board.
-  virtual Returns<void> SetFrequency(
-      units::frequency::hertz_t frequency) const = 0;
+  virtual void SetFrequency(units::frequency::hertz_t frequency) const = 0;
 };
 }  // namespace sjsu

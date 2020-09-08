@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -68,7 +68,7 @@ class Pin
 
   /// Setup the required hardware to enable usage of the pin. Must be called
   /// first before calling any othe methods.
-  virtual Returns<void> Initialize() const = 0;
+  virtual void Initialize() const = 0;
 
   /// Set the pin's function using a function code.
   /// The function code is very specific to the controller being used.
@@ -100,7 +100,7 @@ class Pin
   ///
   /// @param function pin function code
   /// @return std::errc::invalid_argument the function code is not valid.
-  virtual Returns<void> SetPinFunction(uint8_t function) const = 0;
+  virtual void SetPinFunction(uint8_t function) const = 0;
 
   /// Set pin's resistor pull, setting ot either no resistor pull, pull down,
   /// pull up and repeater.
@@ -108,7 +108,7 @@ class Pin
   /// @param resistor - which resistor setup you would like.
   /// @return should return std::errc::not_supported if the pull option is not
   ///         supported by the MCU.
-  virtual Returns<void> SetPull(Resistor resistor) const = 0;
+  virtual void SetPull(Resistor resistor) const = 0;
 
   /// Set pin to open drain mode
   ///
@@ -116,33 +116,33 @@ class Pin
   ///        becomes push-pull (a.k.a totem pole).
   /// @return should return std::errc::not_supported if open drain is not
   ///         supported by the MCU.
-  virtual Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const = 0;
+  virtual void SetAsOpenDrain(bool set_as_open_drain = true) const = 0;
 
   /// Set pin as analog mode
   ///
   /// @param set_as_analog If false, disable analog mode for pin
   /// @return should return std::errc::not_supported if analog mode is not
   ///         supported by the MCU.
-  virtual Returns<void> SetAsAnalogMode(bool set_as_analog = true) const = 0;
+  virtual void SetAsAnalogMode(bool set_as_analog = true) const = 0;
 
   // ===========================================================================
   // Utility Methods
   // ===========================================================================
 
   /// Attach internal pull up resistor to pin
-  Returns<void> PullUp() const
+  void PullUp() const
   {
     return SetPull(Resistor::kPullUp);
   }
 
   /// Attach internal pull down resistor to pin
-  Returns<void> PullDown() const
+  void PullDown() const
   {
     return SetPull(Resistor::kPullDown);
   }
 
   /// Detach internal pull resistor from pin and allow the pin to float
-  Returns<void> SetFloating() const
+  void SetFloating() const
   {
     return SetPull(Resistor::kNone);
   }

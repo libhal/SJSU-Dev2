@@ -56,14 +56,14 @@ class Gpio final : public sjsu::Gpio
     return pin_;
   }
 
-  Returns<void> AttachInterrupt(InterruptCallback, Edge) override
+  void AttachInterrupt(InterruptCallback, Edge) override
   {
-    return Error(std::errc::operation_not_supported, "");
+    throw Exception(std::errc::operation_not_supported, "");
   }
 
-  Returns<void> DetachInterrupt() const override
+  void DetachInterrupt() const override
   {
-    return Error(std::errc::operation_not_supported, "");
+    throw Exception(std::errc::operation_not_supported, "");
   }
 
  private:

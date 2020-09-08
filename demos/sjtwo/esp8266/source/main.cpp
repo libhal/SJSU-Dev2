@@ -20,10 +20,7 @@ int main()
   sjsu::Esp8266 wifi(uart3);
 
   sjsu::LogInfo("Initializing Esp8266 module...");
-  if (auto result = wifi.Initialize(); !result)
-  {
-    result.error()->Print();
-  }
+  wifi.Initialize();
 
   while (true)
   {
@@ -40,26 +37,14 @@ int main()
 
   sjsu::LogInfo("Connecting to server (%s)...", kHost.data());
 
-  if (auto result =
-          wifi.Connect(sjsu::InternetSocket::Protocol::kTCP, kHost, 9000, 5s);
-      !result)
-  {
-    result.error()->Print();
-  }
-
-  if (auto result =
-          wifi.Write(kGetRequestExample.data(), kGetRequestExample.size(), 5s);
-      !result)
-  {
-    result.error()->Print();
-  }
+  wifi.Connect(sjsu::InternetSocket::Protocol::kTCP, kHost, 9000, 5s);
+  wifi.Write(kGetRequestExample.data(), kGetRequestExample.size(), 5s);
 
   std::array<char, 2048> response;
   size_t read_back = 0;
-  read_back += SJ2_RETURN_VALUE_ON_ERROR(
-      wifi.Read(&response[read_back], response.size(), 10s), -1);
-  read_back += SJ2_RETURN_VALUE_ON_ERROR(
-      wifi.Read(&response[read_back], response.size() - read_back, 10s), -1);
+  read_back += wifi.Read(&response[read_back], response.size(), 10s);
+  read_back +=
+      wifi.Read(&response[read_back], response.size() - read_back, 10s);
 
   sjsu::LogInfo("Printing Server Response:");
   printf("%.*s\n", read_back, response.data());

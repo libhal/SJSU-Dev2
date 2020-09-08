@@ -8,7 +8,7 @@
 #include <cstdio>
 
 #include "utility/macros.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 #include "utility/build_info.hpp"
 
@@ -48,11 +48,11 @@ inline void SetUptimeFunction(UptimeFunction uptime_function)
 ///        return true.
 /// @param is_done will be run in a tight loop until it returns true or the
 ///        timeout time has elapsed.
-inline Returns<void> Wait(std::chrono::nanoseconds timeout,
-                          std::function<bool()> is_done)
+/// @returns true when the is_done routine returned true before timeout time
+/// elapsed.
+inline bool Wait(std::chrono::nanoseconds timeout,
+                 std::function<bool()> is_done)
 {
-  const auto kTimedOutError = Error(std::errc::timed_out, "");
-
   std::chrono::nanoseconds timeout_time;
 
   if (timeout == std::chrono::nanoseconds::max())
@@ -64,7 +64,7 @@ inline Returns<void> Wait(std::chrono::nanoseconds timeout,
   }
   else if (timeout == 0ns)
   {
-    return kTimedOutError;
+    return false;
   }
   else
   {
@@ -86,18 +86,18 @@ inline Returns<void> Wait(std::chrono::nanoseconds timeout,
   {
     if (is_done())
     {
-      return {};
+      return true;
     }
   }
 
-  return kTimedOutError;
+  return false;
 }
 
 /// Overload of `Wait` that merely takes a timeout.
 ///
 /// @param timeout - the amount of time to wait.
 /// @return always returns std::errc::timed_out
-inline Returns<void> Wait(std::chrono::nanoseconds timeout)
+inline bool Wait(std::chrono::nanoseconds timeout)
 {
   return Wait(timeout, []() -> bool { return false; });
 }
@@ -143,6 +143,7 @@ inline void Delay(std::chrono::nanoseconds delay_time)
     Wait(delay_time);
   }
 }
+
 /// Halt system by putting it into infinite loop
 inline void Halt()
 {

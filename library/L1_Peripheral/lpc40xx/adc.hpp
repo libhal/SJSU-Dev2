@@ -8,7 +8,7 @@
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/log.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -235,7 +235,7 @@ class Adc final : public sjsu::Adc
   {
   }
 
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     auto & system     = sjsu::SystemController::GetPlatformController();
     const auto kAdcId = sjsu::lpc40xx::SystemController::Peripherals::kAdc;
@@ -265,8 +265,6 @@ class Adc final : public sjsu::Adc
     }
 
     adc_base->CR = control;
-
-    return {};
   }
 
   uint32_t Read() const override

@@ -74,10 +74,8 @@ class RtosCommand final : public Command
                " | %4lu : %-4lu |\n",
                task_status[x].pcTaskName,
                RtosStateToString(task_status[x].eCurrentState),
-               cpu_utilization_percent,
-               task_status[x].usStackHighWaterMark,
-               task_status[x].uxBasePriority,
-               task_status[x].uxCurrentPriority);
+               cpu_utilization_percent, task_status[x].usStackHighWaterMark,
+               task_status[x].uxBasePriority, task_status[x].uxCurrentPriority);
       }
       puts(kDivider);
     }

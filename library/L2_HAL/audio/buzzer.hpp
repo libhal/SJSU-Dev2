@@ -24,15 +24,14 @@ class Buzzer
   explicit constexpr Buzzer(sjsu::Pwm & pwm) : pwm_(pwm) {}
 
   /// Initialize Buzzer hardware.
-  Returns<void> Initialize()
+  void Initialize()
   {
-    SJ2_RETURN_ON_ERROR(pwm_.Initialize(500_Hz));
-    SJ2_RETURN_ON_ERROR(Stop());
-    return {};
+    pwm_.Initialize(500_Hz);
+    Stop();
   }
 
   /// Turn off buzzer.
-  Returns<void> Stop()
+  void Stop()
   {
     return pwm_.SetDutyCycle(0.0f);
   }
@@ -41,21 +40,18 @@ class Buzzer
   ///
   /// @param frequency - The frequency to set the buzzer to.
   /// @param volume - percent output power from 0.0f to 1.0f.
-  Returns<void> Beep(units::frequency::hertz_t frequency = 500_Hz,
-                     float volume                        = 1.0f)
+  void Beep(units::frequency::hertz_t frequency = 500_Hz, float volume = 1.0f)
   {
-    SJ2_RETURN_ON_ERROR(pwm_.SetFrequency(frequency));
+    pwm_.SetFrequency(frequency);
     // NOTE: Since the PWM is at its loudest at 50% duty cycle, the maximum PWM
     // is divided by 2.
-    SJ2_RETURN_ON_ERROR(pwm_.SetDutyCycle(volume / 2));
-
-    return {};
+    pwm_.SetDutyCycle(volume / 2);
   }
 
   /// @return gets the current running volume of the device.
-  Returns<float> GetVolume()
+  float GetVolume()
   {
-    return 2 * SJ2_RETURN_ON_ERROR(pwm_.GetDutyCycle());
+    return 2 * pwm_.GetDutyCycle();
   }
 
  private:
