@@ -13,32 +13,14 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
 
   SECTION("Initialize")
   {
-    SECTION("Initialization success")
-    {
-      // Setup
-      When(Method(mock_i2c, Initialize)).AlwaysReturn({});
+    // Setup
+    Fake(Method(mock_i2c, Initialize));
 
-      // Exercise
-      auto success = temperature_sensor.Initialize();
+    // Exercise
+    temperature_sensor.Initialize();
 
-      // Verify
-      CHECK(success);
-      Verify(Method(mock_i2c, Initialize)).Once();
-    }
-
-    SECTION("Initialization failure")
-    {
-      // Setup
-      const auto kExpectedStatus = Error(std::errc::io_error, "");
-      When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedStatus);
-
-      // Exercise
-      auto success = temperature_sensor.Initialize();
-
-      // Verify
-      CHECK(!success);
-      Verify(Method(mock_i2c, Initialize)).Once();
-    }
+    // Verify
+    Verify(Method(mock_i2c, Initialize)).Once();
   }
 
   SECTION("GetTemperature")
@@ -95,7 +77,7 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
     // receive buffer when temperature data is expected to be received.
     When(Method(mock_i2c, Transaction))
         .AlwaysDo([&transactions, &data_out, &kExpectedTemperatureData](
-                      I2c::Transaction_t transaction) -> Returns<void> {
+                      I2c::Transaction_t transaction) -> void {
           static uint8_t transaction_id = 0;
           transactions[transaction_id]  = transaction;
 
@@ -113,7 +95,6 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
           }
 
           transaction_id++;
-          return {};
         });
 
     auto temperature = temperature_sensor.GetTemperature();
@@ -137,7 +118,7 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
       }
     }
     REQUIRE(temperature);
-    CHECK(temperature.value().to<float>() ==
+    CHECK(temperature.to<float>() ==
           doctest::Approx(kExpectedTemperature).epsilon(kMarginOfError));
   }
 }

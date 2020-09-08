@@ -64,17 +64,12 @@ int main()
 
   // In order to use the SD card as a FAT filesystem drive, the storage media
   // needs to be registered. Register SD Card as driver number 0.
-  auto success = sjsu::RegisterFatFsDrive(&card);
-  if (!success)
-  {
-    // sjsu::LogError("Failed to add SD Card to list of FAT FS drives.");
-    return -1;
-  }
-
+  sjsu::RegisterFatFsDrive(&card);
   sjsu::LogInfo("Mounting filesystem...");
 
   // Must be called before using fat fs.
   FATFS fat_fs;
+
   // See http://elm-chan.org/fsw/ff/00index_e.html
   // for more information about how to use the elm-chan fatfs APIs.
   auto mount_result = f_mount(&fat_fs, "", 0);

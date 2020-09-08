@@ -64,10 +64,10 @@ TEST_CASE("Testing Time Utility")
     // Exercise
     // Exercise: if the callback always returns false, then the waiting period
     //           will be the whole timeout.
-    auto wait_status = Wait(timeout_time, []() { return false; });
+    auto wait_successful = Wait(timeout_time, []() { return false; });
 
     // Verify
-    CHECK(wait_status == std::errc::timed_out);
+    CHECK(!wait_successful);
     CHECK((current_timestamp + 1us + timeout_time) == Uptime());
   }
 

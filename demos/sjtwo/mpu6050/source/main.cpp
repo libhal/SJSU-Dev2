@@ -16,15 +16,15 @@ int main()
   sjsu::Mpu6050 sensor(i2c, 2_SG);
 
   sjsu::LogInfo("Initializing accelerometer peripherals...");
-  SJ2_RETURN_VALUE_ON_ERROR(sensor.Initialize(), 1);
+  sensor.Initialize();
 
   sjsu::LogInfo("Enabling accelerometer...");
-  SJ2_RETURN_VALUE_ON_ERROR(sensor.Enable(), 2);
+  sensor.Enable();
 
   while (true)
   {
     // Read the current acceleration values from the sensor
-    auto current_acceleration = SJ2_RETURN_VALUE_ON_ERROR(sensor.Read(), 3);
+    auto current_acceleration = sensor.Read();
 
     // Print the acceleration values
     current_acceleration.Print();

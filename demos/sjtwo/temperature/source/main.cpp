@@ -9,17 +9,17 @@ int main()
   sjsu::lpc40xx::I2c i2c2(sjsu::lpc40xx::I2c::Bus::kI2c2);
   sjsu::Si7060 temperature_sensor(i2c2);
 
-  SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.Initialize(), -1);
-  SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.Enable(), -2);
+  temperature_sensor.Initialize();
+  temperature_sensor.Enable();
 
   sjsu::LogInfo("Si7060 Initialized!");
 
   while (true)
   {
     units::temperature::celsius_t temperature =
-        SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.GetTemperature(), -3);
+        temperature_sensor.GetTemperature();
     sjsu::LogInfo("Board Temperature: %.4f C",
-                  static_cast<double>(temperature.value()));
+                  static_cast<double>(temperature));
     sjsu::Delay(1s);
   }
 

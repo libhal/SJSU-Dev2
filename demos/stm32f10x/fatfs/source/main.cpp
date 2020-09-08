@@ -16,7 +16,7 @@ class BitBangSpi : public sjsu::Spi
   {
   }
 
-  sjsu::Returns<void> Initialize() const override
+  void Initialize() const override
   {
     mosi_.SetAsOutput();
     miso_.SetAsInput();
@@ -24,7 +24,6 @@ class BitBangSpi : public sjsu::Spi
     sck_.SetLow();
     mosi_.SetLow();
     miso_.GetPin().PullUp();
-    return {};
   }
 
   uint16_t Transfer(uint16_t data) const override
@@ -54,7 +53,7 @@ class BitBangSpi : public sjsu::Spi
     size_ = size;
   }
 
-  sjsu::Returns<void> SetClock(units::frequency::hertz_t frequency,
+  void SetClock(units::frequency::hertz_t frequency,
                                bool = false,
                                bool = false) const override
   {
@@ -66,7 +65,6 @@ class BitBangSpi : public sjsu::Spi
     {
       delay_ = false;
     }
-    return {};
   }
 
  private:
@@ -137,12 +135,7 @@ int main()
 
   // Register SD Card as driver number 0.
   // This must be done before using any of the FatFS APIs.
-  auto success = sjsu::RegisterFatFsDrive(&card);
-  if (!success)
-  {
-    // sjsu::LogError("Failed to add SD Card to list of FAT FS drives.");
-    return -1;
-  }
+  sjsu::RegisterFatFsDrive(&card);
 
   sjsu::LogInfo("Mounting filesystem...");
 

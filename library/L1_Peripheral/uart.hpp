@@ -4,7 +4,7 @@
 #include <initializer_list>
 #include <limits>
 
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/time.hpp"
 
 namespace sjsu
@@ -23,12 +23,12 @@ class Uart
   /// method in this interface is called.
   ///
   /// @param baud_rate - set the communication speed
-  virtual Returns<void> Initialize(uint32_t baud_rate) const = 0;
+  virtual void Initialize(uint32_t baud_rate) const = 0;
 
   /// Set UART baud rate
   ///
   /// @param baud_rate the speed of the UART transmit and receive.
-  virtual Returns<void> SetBaudRate(uint32_t baud_rate) const = 0;
+  virtual void SetBaudRate(uint32_t baud_rate) const = 0;
 
   /// Sends bytes via UART port via the TX line
   ///
@@ -116,13 +116,12 @@ class Uart
   /// @param timeout - duration to wait for incoming data before timeout.
   /// @return std::errc::timed_out if bytes could not be read before before
   ///         timeout.
-  Returns<void> Read(void * data,
-                    size_t size,
-                    std::chrono::nanoseconds timeout) const
+  size_t Read(void * data, size_t size, std::chrono::nanoseconds timeout) const
   {
     size_t position       = 0;
     uint8_t * data_buffer = reinterpret_cast<uint8_t *>(data);
-    return Wait(timeout, [this, &data_buffer, size, &position]() -> bool {
+
+    Wait(timeout, [this, &data_buffer, size, &position]() -> bool {
       if (HasData())
       {
         data_buffer[position++] = Read();
@@ -133,6 +132,8 @@ class Uart
       }
       return false;
     });
+
+    return position;
   }
 };
 }  // namespace sjsu

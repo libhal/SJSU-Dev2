@@ -12,7 +12,7 @@
 #include "L1_Peripheral/pulse_capture.hpp"
 #include "utility/bit.hpp"
 #include "utility/log.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -211,12 +211,12 @@ class PulseCapture final : public sjsu::PulseCapture
   /// Powers on the peripheral, configures the timer pins.
   /// See page 687 of the user manual UM10562 LPC408x/407x for more details.
   /// NOTE: Same initialization as Timer library's Initialize()
-  Returns<void> Initialize(CaptureCallback callback   = nullptr,
-                           int32_t interrupt_priority = -1) const override
+  void Initialize(CaptureCallback callback   = nullptr,
+                  int32_t interrupt_priority = -1) const override
   {
     if (frequency_ == 0_Hz)
     {
-      return Error(
+      throw Exception(
           std::errc::invalid_argument,
           "Cannot have zero ticks per microsecond, please choose 1 or more.");
     }
@@ -243,8 +243,6 @@ class PulseCapture final : public sjsu::PulseCapture
         { .interrupt_request_number = timer_.channel.irq,
           .interrupt_handler        = timer_.handler,
           .priority                 = interrupt_priority });
-
-    return {};
   }
 
   /// Configures the edges to trigger a capture event on

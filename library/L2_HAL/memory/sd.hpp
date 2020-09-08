@@ -204,7 +204,7 @@ class Sd : public Storage
     return Storage::Type::kSD;
   }
 
-  Returns<void> Initialize() override
+  void Initialize() override
   {
     chip_select_.SetAsOutput();
     chip_select_.SetHigh();
@@ -215,8 +215,6 @@ class Sd : public Storage
     /// be possible.
     spi_.SetClock(400_kHz);
     spi_.SetDataSize(Spi::DataSize::kEight);
-
-    return {};
   }
 
   bool IsMediaPresent() override
@@ -238,15 +236,16 @@ class Sd : public Storage
     return false;
   }
 
-  Returns<void> Enable() override
+  void Enable() override
   {
     return Mount();
   }
 
-  Returns<void> Disable() override
+  void Disable() override
   {
-    return Error(std::errc::operation_not_supported,
-                 "Disabling SD cards is not supported w/ this implementation.");
+    throw Exception(
+        std::errc::operation_not_supported,
+        "Disabling SD cards is not supported w/ this implementation.");
   }
 
   /// Assumes that write protection is never enabled.
@@ -274,14 +273,12 @@ class Sd : public Storage
     return card_size;
   };
 
-  Returns<void> Erase(uint32_t block_address, size_t block_count) override
+  void Erase(uint32_t block_address, size_t block_count) override
   {
     return EraseBlock(block_address, block_count);
   }
 
-  Returns<void> Write(uint32_t block_address,
-                      const void * data,
-                      size_t size) override
+  void Write(uint32_t block_address, const void * data, size_t size) override
   {
     // Convert the void* to a uint8_t* so we can byte access it
     const uint8_t * data_ptr = reinterpret_cast<const uint8_t *>(data);
@@ -323,13 +320,11 @@ class Sd : public Storage
 
       // Convert the block address into a byte address
       uint32_t block_byte_address = block_address + block_offset;
-      SJ2_RETURN_ON_ERROR(WriteBlock(block_byte_address, block));
+      WriteBlock(block_byte_address, block);
     }
-
-    return {};
   }
 
-  Returns<void> Read(uint32_t block_address, void * data, size_t size) override
+  void Read(uint32_t block_address, void * data, size_t size) override
   {
     // Convert the void* to a uint8_t* so we can byte access it
     uint8_t * data_ptr = reinterpret_cast<uint8_t *>(data);
@@ -345,7 +340,7 @@ class Sd : public Storage
     for (size_t block_offset = 0; !finished; block_offset++)
     {
       Block_t block;
-      SJ2_RETURN_ON_ERROR(ReadBlock(block, block_address + block_offset));
+      ReadBlock(block, block_address + block_offset);
 
       // Start the position of the index pointer at the position
       for (uint32_t index = 0; index < kBlockSize; index++)
@@ -358,8 +353,6 @@ class Sd : public Storage
         }
       }
     }
-
-    return {};
   }
 
   /// Returns the SD card's information as a reference.
@@ -421,7 +414,7 @@ class Sd : public Storage
   }
 
   // Read any number of blocks from the SD card
-  Returns<CsdBuffer_t> GetCsdRegisterBlock()
+  CsdBuffer_t GetCsdRegisterBlock()
   {
     CsdBuffer_t csd;
 
@@ -433,12 +426,12 @@ class Sd : public Storage
     // Check if the command was acknowledged properly
     if (!CommandWasAcknowledged(response))
     {
-      return Error(std::errc::io_error,
-                   "Get CSD Register was not acknowledged properly!");
+      throw Exception(std::errc::io_error,
+                      "Get CSD Register was not acknowledged properly!");
     }
 
     // Wait for the card to respond with a ready signal
-    SJ2_RETURN_ON_ERROR(WaitToReadBlock());
+    WaitToReadBlock();
 
     // Read all the bytes of a single csd
     for (size_t i = 0; i < csd.byte.size(); i++)
@@ -455,7 +448,7 @@ class Sd : public Storage
     if (expected_crc != actual_crc)
     {
       LogDebug("Expected '0x%04X' :: Got '0x%04X'", expected_crc, actual_crc);
-      return Error(std::errc::io_error, "CRC Mismatch!");
+      throw Exception(std::errc::io_error, "CRC Mismatch!");
     }
 
     WaitForDeviceToLeaveIdle();
@@ -477,7 +470,7 @@ class Sd : public Storage
   }
 
   /// Read any number of blocks from the SD card
-  Returns<void> ReadBlock(Block_t & block, uint32_t block_address)
+  void ReadBlock(Block_t & block, uint32_t block_address)
   {
     LogDebug("Block %" PRId32, block_address);
     // Wait for a previous command to finish
@@ -489,8 +482,8 @@ class Sd : public Storage
     // Check if the command was acknowledged properly
     if (!CommandWasAcknowledged(response))
     {
-      return Error(std::errc::io_error,
-                   "Read Command was not acknowledged properly!");
+      throw Exception(std::errc::io_error,
+                      "Read Command was not acknowledged properly!");
     }
 
     // Wait for the card to respond with a ready signal
@@ -510,16 +503,14 @@ class Sd : public Storage
     {
       LogDebug("Expected CRC '0x%04X' :: Got '0x%04X'", expected_block_crc,
                block_crc);
-      return Error(std::errc::io_error, "CRC Mismatch on Block Read!");
+      throw Exception(std::errc::io_error, "CRC Mismatch on Block Read!");
     }
 
     WaitForDeviceToLeaveIdle();
-
-    return {};
   }
 
   // Writes any number of 512-byte blocks to the SD Card
-  Returns<void> WriteBlock(uint32_t address, const Block_t & block)
+  void WriteBlock(uint32_t address, const Block_t & block)
   {
     // Wait for a previous command to finish
     WaitWhileBusy();
@@ -541,7 +532,7 @@ class Sd : public Storage
       sjsu::LogDebug("Illegal Cmd Err: %s", ToBool(response.byte[0] & 0x04));
       sjsu::LogDebug("Erase Reset: %s", ToBool(response.byte[0] & 0x02));
       sjsu::LogDebug("In Idle: %s", ToBool(response.byte[0] & 0x01));
-      return Error(std::errc::io_error, "Write Block Rejected by Card.");
+      throw Exception(std::errc::io_error, "Write Block Rejected by Card.");
     }
 
     // Send the start token for the current block
@@ -562,12 +553,10 @@ class Sd : public Storage
                    ToBool(data_response_token & 0b0001'0000));
 
     WaitWhileBusy();
-
-    return {};
   }
 
   // Deletes any number of blocks (inclusively) within a range of address.
-  Returns<void> EraseBlock(uint32_t address, size_t length)
+  void EraseBlock(uint32_t address, size_t length)
   {
     // Wait for a previous command to finish
     WaitWhileBusy();
@@ -583,7 +572,8 @@ class Sd : public Storage
     // Force return if an error occurred
     if (response.byte[0] != 0x00)
     {
-      return Error(std::errc::invalid_argument, "Failed to set Start Address!");
+      throw Exception(std::errc::invalid_argument,
+                      "Failed to set Start Address!");
     }
 
     // Set the delete end address
@@ -596,7 +586,8 @@ class Sd : public Storage
     // Force return if an error occurred
     if (response.byte[0] != 0x00)
     {
-      return Error(std::errc::invalid_argument, "Failed to set End Address!");
+      throw Exception(std::errc::invalid_argument,
+                      "Failed to set End Address!");
     }
 
     // Issue the delete command to delete from our from:to range
@@ -609,13 +600,11 @@ class Sd : public Storage
     // Check response
     LogDebug("[R1 Response: 0x%02X]", response.byte[0]);
     LogDebug("Deletion Complete...");
-
-    return {};
   }
 
   // Waits for the card to respond after a single or multi block read cmd is
   // sent.
-  Returns<void> WaitToReadBlock()
+  void WaitToReadBlock()
   {
     // Since the command encountered no errors, we can now begin to read data.
     // The card will enter "BUSY" mode following reception of the read command
@@ -642,7 +631,6 @@ class Sd : public Storage
       {
         LogDebug("Received GO Byte 0xFE;");
         LogDebug("Card is now sending block payload...");
-        return {};
       }
 
       if (bit::Extract(wait_byte, kErrorIndicator) == 0x00)
@@ -653,11 +641,11 @@ class Sd : public Storage
         LogDebug("  Card ECC Failed: %s", ToBool(bit::Read(wait_byte, 2)));
         LogDebug("Addr Out of Range: %s", ToBool(bit::Read(wait_byte, 3)));
 
-        return Error(std::errc::io_error, "Card Rejected Read Command!");
+        throw Exception(std::errc::io_error, "Card Rejected Read Command!");
       }
     }
 
-    return Error(std::errc::timed_out, "SD Card did not respond in time.");
+    throw Exception(std::errc::timed_out, "SD Card did not respond in time.");
   }
 
   /// Waits for the card to be ready to receive a new block after one has
@@ -814,7 +802,7 @@ class Sd : public Storage
   }
 
   // Initialize and enable the SD Card
-  Returns<void> Mount()
+  void Mount()
   {
     // As found in the "Application Note Secure Digital Card Interface for the
     // MSP430" we need to assert the chip select and clock for more than 74
@@ -840,7 +828,7 @@ class Sd : public Storage
     SendCommand(Command::kReset, 0, KeepAlive::kNo);
 
     // Ask if supported voltage of 3v3 is supported
-    SJ2_RETURN_ON_ERROR(CheckSupportedVoltages());
+    CheckSupportedVoltages();
 
     bool initialization_successful = false;
     for (uint32_t i = 0; i < kRetryLimit * 10; i++)
@@ -850,8 +838,8 @@ class Sd : public Storage
 
       if (bit::Read(begin_response.byte[0], kIllegalCommand))
       {
-        return Error(std::errc::not_supported,
-                     "Card rejected ACMD, this may not be an SD card");
+        throw Exception(std::errc::not_supported,
+                        "Card rejected ACMD, this may not be an SD card");
       }
 
       uint32_t init_settings = (0b0101'0000 << 24);
@@ -870,7 +858,7 @@ class Sd : public Storage
 
     if (!initialization_successful)
     {
-      return Error(std::errc::timed_out, "Initialization Failed!");
+      throw Exception(std::errc::timed_out, "Initialization Failed!");
     }
 
     // =========================================================================
@@ -879,9 +867,9 @@ class Sd : public Storage
     sd_.type = GetCardType();
     if (sd_.type == Type::kSDSC)
     {
-      return Error(std::errc::not_supported,
-                   "SD Card is standard size. This driver does not support "
-                   "Standard Size SD cards.");
+      throw Exception(std::errc::not_supported,
+                      "SD Card is standard size. This driver does not support "
+                      "Standard Size SD cards.");
     }
 
     LogDebug("SD Card is HC/XC");
@@ -890,16 +878,14 @@ class Sd : public Storage
     // Get and store CSD Register
     // =========================================================================
     LogDebug("Getting CSD register contents");
-    sd_.csd = SJ2_RETURN_ON_ERROR(GetCsdRegisterBlock());
+    sd_.csd = GetCsdRegisterBlock();
 
     // Bring the clock speed back up for typical use
     spi_.SetClock(spi_clock_rate_);
-
-    return {};
   }
 
   /// Send the host's supported voltage (3.3V) and ask if the card supports it.
-  Returns<void> CheckSupportedVoltages()
+  void CheckSupportedVoltages()
   {
     LogDebug("Checking Current SD Card Voltage Level...");
     constexpr bit::Mask kVoltageCodeMask = bit::MaskFromRange(8, 11) >> 8;
@@ -913,9 +899,8 @@ class Sd : public Storage
     LogDebug("Detecting if device is SD version +2.0 or not");
     if (bit::Read(response.byte[0], kIllegalCommand))
     {
-      return Error(
-          std::errc::not_supported,
-          "Unsupported SD Card responded with Illegal Command");
+      throw Exception(std::errc::not_supported,
+                      "Unsupported SD Card responded with Illegal Command");
     }
 
     if (bit::Extract(response.byte[3], kVoltageCodeMask) != voltage_code)
@@ -925,8 +910,8 @@ class Sd : public Storage
       // device's operating voltage
       LogDebug("Response.byte[3] = 0x%02X", response.byte[3]);
 
-      return Error(std::errc::not_supported,
-                   "Unsupported voltage in use. Aborting!");
+      throw Exception(std::errc::not_supported,
+                      "Unsupported voltage in use. Aborting!");
     }
 
     if (response.byte[4] != kCheckPattern)
@@ -935,11 +920,9 @@ class Sd : public Storage
       // command's argument, this response is invalid
       LogDebug("Response.byte[4] = (0x%02X)", response.byte[4]);
 
-      return Error(std::errc::io_error,
-                   "Response integrity check failed. Aborting!");
+      throw Exception(std::errc::io_error,
+                      "Response integrity check failed. Aborting!");
     }
-
-    return {};
   }
 
   Type GetCardType()

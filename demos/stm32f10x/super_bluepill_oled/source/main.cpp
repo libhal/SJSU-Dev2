@@ -14,13 +14,12 @@ class BitBangSpi : public sjsu::Spi
  public:
   BitBangSpi(sjsu::Gpio & sck, sjsu::Gpio & mosi) : sck_(sck), mosi_(mosi) {}
 
-  sjsu::Returns<void> Initialize() const override
+  void Initialize() const override
   {
     mosi_.SetAsOutput();
     sck_.SetAsOutput();
     sck_.SetLow();
     mosi_.SetLow();
-    return {};
   }
 
   uint16_t Transfer(uint16_t data) const override
@@ -44,11 +43,10 @@ class BitBangSpi : public sjsu::Spi
     size_ = size;
   }
 
-  sjsu::Returns<void> SetClock(units::frequency::hertz_t,
+  void SetClock(units::frequency::hertz_t,
                          bool = false,
                          bool = false) const override
   {
-    return {};
   }
 
  private:

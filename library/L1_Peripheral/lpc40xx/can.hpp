@@ -11,7 +11,7 @@
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/macros.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/enum.hpp"
 
 namespace sjsu
@@ -322,7 +322,7 @@ class Can final : public sjsu::Can
   /// @param channel - Which CANBUS channel to use
   explicit constexpr Can(const Channel_t & channel) : channel_(channel) {}
 
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     /// Power on CANBUS peripheral
     auto & platform = sjsu::SystemController::GetPlatformController();
@@ -344,17 +344,14 @@ class Can final : public sjsu::Can
 
     // Disable reset mode and enter operating mode.
     SetMode(Mode::kReset, false);
-
-    return {};
   }
 
-  Returns<void> Enable() const override
+  void Enable() const override
   {
     SetMode(Mode::kReset, false);
-    return {};
   }
 
-  Returns<void> Send(const Message_t & message) const override
+  void Send(const Message_t & message) const override
   {
     LpcRegisters_t registers = ConvertMessageToRegisters(message);
 
@@ -393,8 +390,6 @@ class Can final : public sjsu::Can
         sent                     = true;
       }
     }
-
-    return {};
   }
 
   bool HasData() const override
@@ -403,7 +398,7 @@ class Can final : public sjsu::Can
     return bit::Read(channel_.registers->GSR, GlobalStatus::kReceiveBuffer);
   }
 
-  Returns<Message_t> Receive() const override
+  Message_t Receive() const override
   {
     Message_t message;
 
@@ -479,11 +474,10 @@ class Can final : public sjsu::Can
     // Allow time for RX to fire
     sjsu::Delay(2ms);
 
-    SJ2_RETURN_VALUE_ON_ERROR(Wait(100ms, [this]() { return HasData(); }),
-                              false);
+    Wait(100ms, [this]() { return HasData(); });
 
     // Read the message from the rx buffer and enqueue it into the rx queue.
-    auto received_message = SJ2_RETURN_VALUE_ON_ERROR(Receive(), false);
+    auto received_message = Receive();
 
     // Check if the received message matches the one we sent
     if (received_message.id != test_message.id)
@@ -502,7 +496,7 @@ class Can final : public sjsu::Can
   }
 
   /// @param baud - baud rate to configure the CANBUS to
-  Returns<void> SetBaudRate(units::frequency::hertz_t baud) const override
+  void SetBaudRate(units::frequency::hertz_t baud) const override
   {
     // According to the BOSCH CAN spec, the nominal bit time is divided into 4
     // time segments. These segments need to be programmed for the internal
@@ -558,8 +552,6 @@ class Can final : public sjsu::Can
     }
 
     channel_.registers->BTR = bus_timing;
-
-    return {};
   }
 
  private:

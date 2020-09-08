@@ -10,10 +10,8 @@ namespace
 {
 auto GetLambda(sjsu::InterruptCallback & isr)
 {
-  return [&isr](sjsu::InterruptCallback callback,
-                sjsu::Gpio::Edge) -> Returns<void> {
+  return [&isr](sjsu::InterruptCallback callback, sjsu::Gpio::Edge) -> void {
     isr = callback;
-    return {};
   };
 }
 }  // namespace

@@ -6,7 +6,7 @@
 #pragma once
 
 #include <cstdint>
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -19,16 +19,16 @@ class DistanceSensor
  public:
   /// Initialize distance sensor hardware. Must be called before running any
   /// other methods.
-  virtual Returns<void> Initialize() = 0;
+  virtual void Initialize() = 0;
 
   /// Trigger a capture of the current distance reading and return it.
   ///
   /// @return measured distance
-  virtual Returns<units::length::millimeter_t> GetDistance() = 0;
+  virtual units::length::millimeter_t GetDistance() = 0;
 
   /// Get the signal strength from the distance sensor.
   ///
   /// @return the strength of the signal the strength of the measurement.
-  virtual Returns<float> GetSignalStrengthPercent() = 0;
+  virtual float GetSignalStrengthPercent() = 0;
 };
 }  // namespace sjsu

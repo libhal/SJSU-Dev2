@@ -6,7 +6,7 @@
 #include <functional>
 
 #include "L1_Peripheral/interrupt.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -40,6 +40,6 @@ class SystemTimer
 
   /// Start the system timer. Should be done after SetInterrupt and
   /// SetTickFrequency have been called.
-  virtual Returns<void> StartTimer() const = 0;
+  virtual void StartTimer() const = 0;
 };
 }  // namespace sjsu

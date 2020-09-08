@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -15,7 +15,7 @@ class Adc
  public:
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual Returns<void> Initialize() const = 0;
+  virtual void Initialize() const = 0;
 
   /// Read the analog signal's value.
   /// The number active bits depends on the ADC being used and be known by

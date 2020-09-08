@@ -44,7 +44,7 @@ TEST_CASE("Testing lpc40xx Timer")
         kClockFrequency / kExpectedFrequency;
 
     // Exercise
-    REQUIRE(timer.Initialize(kExpectedFrequency));
+    timer.Initialize(kExpectedFrequency);
 
     // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
@@ -126,7 +126,7 @@ TEST_CASE("Testing lpc40xx Timer")
 
     // Exercise
     local_timer_registers.TC = expected_count;
-    uint32_t actual_count    = timer.GetCount().value();
+    uint32_t actual_count    = timer.GetCount();
 
     // Verify
     CHECK(actual_count == expected_count);

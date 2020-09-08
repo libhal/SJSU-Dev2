@@ -3,7 +3,7 @@
 #include <array>
 
 #include "L1_Peripheral/lpc40xx/pin.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -42,7 +42,7 @@ class Spi
 
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual Returns<void> Initialize() const = 0;
+  virtual void Initialize() const = 0;
 
   /// Send a value via SPI and receive a value back from the serial port
   ///
@@ -63,9 +63,9 @@ class Spi
   ///        nothing is being transmitted.
   /// @param read_miso_on_rising - if true, device will read the the MISO line
   ///        on rising edge of the clock line.
-  virtual Returns<void> SetClock(units::frequency::hertz_t frequency,
-                                 bool positive_clock_on_idle = false,
-                                 bool read_miso_on_rising    = false) const = 0;
+  virtual void SetClock(units::frequency::hertz_t frequency,
+                        bool positive_clock_on_idle = false,
+                        bool read_miso_on_rising    = false) const = 0;
 
   /// Transfer a std::array of data
   ///

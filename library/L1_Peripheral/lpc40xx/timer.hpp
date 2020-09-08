@@ -10,7 +10,7 @@
 #include "L1_Peripheral/timer.hpp"
 #include "utility/bit.hpp"
 #include "utility/log.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -83,9 +83,9 @@ class Timer final : public sjsu::Timer
   /// peripheral to be used with this object
   explicit constexpr Timer(const Peripheral_t & timer) : timer_(timer) {}
 
-  Returns<void> Initialize(units::frequency::hertz_t frequency,
-                           InterruptCallback callback = nullptr,
-                           int32_t priority           = -1) const override
+  void Initialize(units::frequency::hertz_t frequency,
+                  InterruptCallback callback = nullptr,
+                  int32_t priority           = -1) const override
   {
     auto & system = sjsu::SystemController::GetPlatformController();
     system.PowerUpPeripheral(timer_.id);
@@ -115,19 +115,17 @@ class Timer final : public sjsu::Timer
         .interrupt_handler        = interrupt_handler,
         .priority                 = priority,
     });
-
-    return {};
   }
 
-  Returns<void> SetMatchBehavior(uint32_t ticks,
-                                 MatchAction action,
-                                 uint8_t match_register = 0) const override
+  void SetMatchBehavior(uint32_t ticks,
+                        MatchAction action,
+                        uint8_t match_register = 0) const override
   {
     if (match_register >= GetAvailableMatchRegisters())
     {
       LogDebug("match_register = %u", match_register);
-      return Error(std::errc::invalid_argument,
-                   "LPC40xx can only has 3 match registers.");
+      throw Exception(std::errc::invalid_argument,
+                      "LPC40xx can only has 3 match registers.");
     }
 
     timer_.peripheral->MCR =
@@ -142,8 +140,6 @@ class Timer final : public sjsu::Timer
     volatile uint32_t * match_register_ptr = &timer_.peripheral->MR0;
 
     match_register_ptr[match_register & 0b11] = ticks;
-
-    return {};
   }
 
   uint8_t GetAvailableMatchRegisters() const override
@@ -151,32 +147,29 @@ class Timer final : public sjsu::Timer
     return 4;
   }
 
-  Returns<uint32_t> GetCount() const override
+  uint32_t GetCount() const override
   {
     return timer_.peripheral->TC;
   }
 
-  Returns<void> Start() const override
+  void Start() const override
   {
     timer_.peripheral->TCR = bit::Set(
         timer_.peripheral->TCR, TimerControlRegister::kEnableBit.position);
-    return {};
   }
 
-  Returns<void> Stop() const override
+  void Stop() const override
   {
     timer_.peripheral->TCR = bit::Clear(
         timer_.peripheral->TCR, TimerControlRegister::kEnableBit.position);
-    return {};
   }
 
-  Returns<void> Reset() const override
+  void Reset() const override
   {
     timer_.peripheral->TCR = bit::Set(timer_.peripheral->TCR,
                                       TimerControlRegister::kResetBit.position);
     timer_.peripheral->TCR = bit::Clear(
         timer_.peripheral->TCR, TimerControlRegister::kResetBit.position);
-    return {};
   }
 
  private:

@@ -95,40 +95,33 @@ class Pin final : public sjsu::Pin
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
   /// NOTE: GPIO hardare is enabled and ready by default on reset.
-  Returns<void> Initialize() const override
-  {
-    return {};
-  }
+  void Initialize() const override {}
 
-  Returns<void> SetPinFunction(uint8_t function) const override
+  void SetPinFunction(uint8_t function) const override
   {
     if (function > 0b111)
     {
-      return Error(
+      throw Exception(
           std::errc::invalid_argument,
           "The function code must be a 3-bit value between 0b000 and 0b111.");
     }
     SetPinRegister(function, kFunction);
-    return {};
   }
 
-  Returns<void> SetPull(Resistor resistor) const override
+  void SetPull(Resistor resistor) const override
   {
     SetPinRegister(static_cast<uint8_t>(resistor), kResistor);
-    return {};
   }
 
-  Returns<void> SetAsAnalogMode(bool set_as_analog = true) const override
+  void SetAsAnalogMode(bool set_as_analog = true) const override
   {
     // Invert the bool because the bit must be set to 0 to enable analog mode.
     SetPinRegister(!set_as_analog, kAnalogDigitalMode);
-    return {};
   }
 
-  Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override
+  void SetAsOpenDrain(bool set_as_open_drain = true) const override
   {
     SetPinRegister(set_as_open_drain, kOpenDrain);
-    return {};
   }
 
   /// Enable pin hysteresis. This allows the pin to remember which state is was

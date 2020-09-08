@@ -11,7 +11,7 @@
 #include "L1_Peripheral/inactive.hpp"
 #include "utility/log.hpp"
 #include "utility/debug.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace
 {
@@ -28,11 +28,11 @@ std::array<FatfsDevice_t, config::kFatDriveCount> drive;
 
 namespace sjsu
 {
-Returns<void> RegisterFatFsDrive(Storage * storage, uint8_t drive_number)
+void RegisterFatFsDrive(Storage * storage, uint8_t drive_number)
 {
   if (drive_number >= drive.size())
   {
-    return Error(
+    throw Exception(
         std::errc::invalid_argument,
         "Drive number supplied is beyond the number of storage drives that "
         "can be registered as phyiscal drivers for FatFS. The limit is defined "
@@ -45,8 +45,6 @@ Returns<void> RegisterFatFsDrive(Storage * storage, uint8_t drive_number)
 
   // Assume that newly registered drives have not been initialized yet.
   drive[drive_number].is_initialized = false;
-
-  return {};
 }
 }  // namespace sjsu
 
@@ -90,11 +88,9 @@ extern "C" DSTATUS disk_initialize(BYTE drive_number)
   auto & storage = drive[drive_number];
 
   // Attempt to initialize media peripherals and on failure return STA_NOINIT
-  SJ2_RETURN_VALUE_ON_ERROR(storage.media->Initialize(), STA_NOINIT);
-
+  storage.media->Initialize();
   // Attempt to enable media and on failure return STA_NOINIT
-  SJ2_RETURN_VALUE_ON_ERROR(storage.media->Enable(), STA_NOINIT);
-
+  storage.media->Enable();
   // If the previous methods were successful, this point is reached and the
   // drive is considered initialized.
   storage.is_initialized = true;
@@ -150,9 +146,8 @@ extern "C" DRESULT disk_read(BYTE drive_number,
   uint32_t location_block = std::get<0>(location);
   uint32_t location_count = std::get<1>(location);
 
-  // Write to the block, return RES_ERROR on error.
-  SJ2_RETURN_VALUE_ON_ERROR(
-      storage.media->Read(location_block, buffer, location_count), RES_ERROR);
+  // Write to the block, return RES_ERROR on error.e
+  storage.media->Read(location_block, buffer, location_count);
 
   return RES_OK;
 }
@@ -178,13 +173,12 @@ extern "C" DRESULT disk_write(BYTE drive_number,
   uint32_t location_block = std::get<0>(location);
   uint32_t location_count = std::get<1>(location);
 
-  // Erase-before-write for media that requires this. Return RES_ERROR on error.
-  SJ2_RETURN_VALUE_ON_ERROR(
-      storage.media->Erase(location_block, location_count), RES_ERROR);
+  // Erase-before-write for media that requires this. Return RES_ERROR on
+  // error.e
+  storage.media->Erase(location_block, location_count);
 
-  // Write to the block, return RES_ERROR on error.
-  SJ2_RETURN_VALUE_ON_ERROR(
-      storage.media->Write(location_block, buffer, location_count), RES_ERROR);
+  // Write to the block, return RES_ERROR on error.e
+  storage.media->Write(location_block, buffer, location_count);
 
   return RES_OK;
 }

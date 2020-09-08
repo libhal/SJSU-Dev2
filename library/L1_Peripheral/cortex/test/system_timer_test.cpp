@@ -106,7 +106,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     local_systick.LOAD       = 1000;
 
     // Exercise
-    CHECK(test_subject.StartTimer());
+    test_subject.StartTimer();
 
     // Verify
     CHECK(kMask == local_systick.CTRL);
@@ -132,7 +132,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     local_systick.VAL  = 0xBEEF;
 
     // Exercise
-    CHECK(std::errc::invalid_argument == test_subject.StartTimer());
+    SJ2_CHECK_EXCEPTION(test_subject.StartTimer(), std::errc::invalid_argument);
 
     // Verify
     CHECK(kClkSourceMask == local_systick.CTRL);

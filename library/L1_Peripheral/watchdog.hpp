@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include "third_party/units/units.h"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -22,11 +22,11 @@ class Watchdog
   /// @param interval - feeding interval. Not feeding the watch dog in this
   ///        time will result in the system restarting.
   /// @return status indicating the failure type for the watchdog.
-  virtual Returns<void> Initialize(std::chrono::seconds interval) const = 0;
+  virtual void Initialize(std::chrono::seconds interval) const = 0;
 
   /// Enables the watchdog. After this point, the watch dog must be feed before
   /// the interval duration is exceeded, otherwise the system will restart.
-  virtual Returns<void> Enable() const = 0;
+  virtual void Enable() const = 0;
 
   /// Feeds the watchdog and restarts the sequence.
   virtual void FeedSequence() const = 0;

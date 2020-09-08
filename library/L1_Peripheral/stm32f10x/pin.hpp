@@ -47,13 +47,13 @@ class Pin final : public sjsu::Pin
   /// @param pin - must be between 0 to 15
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     bool port_is_valid = ('A' <= port_ && port_ <= 'I');
     if (!port_is_valid)
     {
-      return Error(std::errc::invalid_argument,
-                   "Port must be between 'A' and 'I'");
+      throw Exception(std::errc::invalid_argument,
+                      "Port must be between 'A' and 'I'");
     }
 
     auto & system = SystemController::GetPlatformController();
@@ -92,7 +92,6 @@ class Pin final : public sjsu::Pin
             stm32f10x::SystemController::Peripherals::kGpioG);
         break;
     }
-    return {};
   }
 
   /// Will not change the function of the pin but does change the
@@ -103,16 +102,16 @@ class Pin final : public sjsu::Pin
   ///
   /// @param alternative_function - set to 0 for gpio mode and set to 1 for
   ///        alternative mode.
-  Returns<void> SetPinFunction(uint8_t alternative_function) const override
+  void SetPinFunction(uint8_t alternative_function) const override
   {
     static constexpr auto kMode = bit::MaskFromRange(0, 1);
     static constexpr auto kCFN1 = bit::MaskFromRange(3);
 
-    SJ2_RETURN_ON_ERROR(Initialize());
+    Initialize();
 
     if (alternative_function > 0b1)
     {
-      return Error(std::errc::invalid_argument, "Invalid function.");
+      throw Exception(std::errc::invalid_argument, "Invalid function.");
     }
 
     uint32_t config = 0;
@@ -122,12 +121,11 @@ class Pin final : public sjsu::Pin
     config = bit::Insert(config, 0b11, kMode);
 
     SetConfig(config);
-    return {};
   }
 
   /// Should only be used for inputs. This method will change the pin's mode
   /// form out to input.
-  Returns<void> SetPull(Resistor resistor) const override
+  void SetPull(Resistor resistor) const override
   {
     bool pull_up   = true;
     uint8_t config = 0;
@@ -140,18 +138,16 @@ class Pin final : public sjsu::Pin
       case Resistor::kPullUp: config = 0b1000; break;
       case Resistor::kRepeater:
       {
-        return Error(std::errc::not_supported, "Repeater not supported");
+        throw Exception(std::errc::not_supported, "Repeater not supported");
       }
     }
 
     SetConfig(config);
     Port()->ODR = bit::Insert(Port()->ODR, pull_up, pin_);
-
-    return {};
   }
 
   /// This function MUST NOT be called for pins set as inputs.
-  Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override
+  void SetAsOpenDrain(bool set_as_open_drain = true) const override
   {
     static constexpr auto kCFN0 = bit::MaskFromRange(2);
 
@@ -160,15 +156,13 @@ class Pin final : public sjsu::Pin
     config = bit::Insert(config, set_as_open_drain, kCFN0);
 
     SetConfig(config);
-    return {};
   }
 
   /// This function can only be used to set the pin as analog.
-  Returns<void> SetAsAnalogMode(bool = true) const override
+  void SetAsAnalogMode(bool = true) const override
   {
     // Configuration for analog input mode. See Table 20 on page 161 on RM0008
     SetConfig(0b0100);
-    return {};
   }
 
  private:
