@@ -73,14 +73,14 @@ class Gpio : public sjsu::Gpio
     return pin_;
   }
 
-  void AttachInterrupt(InterruptCallback, Edge) override
+  Returns<void> AttachInterrupt(InterruptCallback, Edge) override
   {
-    sjsu::LogInfo("Not Implemented");
+    return Error(std::errc::operation_not_supported, "");
   }
 
-  void DetachInterrupt() const override
+  Returns<void> DetachInterrupt() const override
   {
-    sjsu::LogInfo("Not Implemented");
+    return Error(std::errc::operation_not_supported, "");
   }
 
  private:

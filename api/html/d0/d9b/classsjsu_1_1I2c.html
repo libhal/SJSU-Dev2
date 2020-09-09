@@ -322,7 +322,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Perform a I2C transaction using the information contained in the transaction parameter.</p>
-<dl class="section return"><dt>Returns</dt><dd>Status::kTimeout if the transaction could not be performed in the set time. <a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a59dd553c29e41e59a91b292e55433e8f">Status::kDeviceNotFound</a> if external device does not respond to address on the bus <a class="el" href="../../dc/d10/structsjsu_1_1Status.html#a96b13230012af6002196c0556984e409">Status::kSuccess</a> if transaction was fulfilled. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>std::errc::timed_out, std::errc::io_error, or std::errc::no_such_device_or_address, depending on the circumstances of the error that occurred during the transaction. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#ac7383d4f3ded05c45b2ee6ec86a88618">sjsu::lpc40xx::I2c</a>.</p>
 

@@ -105,7 +105,7 @@ class Pin final : public sjsu::Pin
     if (function > 0b111)
     {
       return Error(
-          Status::kInvalidParameters,
+          std::errc::invalid_argument,
           "The function code must be a 3-bit value between 0b000 and 0b111.");
     }
     SetPinRegister(function, kFunction);

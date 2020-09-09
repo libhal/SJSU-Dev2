@@ -27,14 +27,15 @@ int main()
       "value will be printed to stdout.",
       gpio.GetPin().GetPort(), gpio.GetPin().GetPin());
 
-  uint32_t previous_count = 0;
+  int32_t previous_count = 0;
+
   while (true)
   {
-    uint32_t current_count = counter.GetCount();
+    int32_t current_count = SJ2_RETURN_VALUE_ON_ERROR(counter.GetCount(), -1);
     // Anytime the count changes, we print out the latest count.
     if (previous_count != current_count)
     {
-      sjsu::LogInfo("Hardare Count %" PRIu32 "\n", current_count);
+      sjsu::LogInfo("Hardare Count %" PRId32 "\n", current_count);
       previous_count = current_count;
     }
     // This throttles how often we print as well as demonstrates that the

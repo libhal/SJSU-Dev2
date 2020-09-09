@@ -15,7 +15,7 @@ class Adc
  public:
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual Status Initialize() const = 0;
+  virtual Returns<void> Initialize() const = 0;
 
   /// Read the analog signal's value.
   /// The number active bits depends on the ADC being used and be known by

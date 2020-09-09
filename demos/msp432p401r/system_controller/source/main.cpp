@@ -54,7 +54,7 @@ void ConfigureClockOutPins()
 
 int main()
 {
-  LOG_INFO("Starting MSP432P401R System Controller Demo...");
+  sjsu::LogInfo("Starting MSP432P401R System Controller Demo...");
 
   // Configure the on-board P1.0 LED to be initially turned on.
   sjsu::msp432p401r::Gpio p1_0(1, 0);

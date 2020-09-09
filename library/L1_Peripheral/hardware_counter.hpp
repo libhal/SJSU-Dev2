@@ -25,29 +25,29 @@ class HardwareCounter
   /// that the counter is set to zero after this call. NOTE: This must not
   /// enable the counter. In order to start counting based on an external input,
   /// an explicit invocation of Enable() must occur.
-  virtual void Initialize() = 0;
+  virtual Returns<void> Initialize() = 0;
 
   /// Set counter to a specific value. There is no guarantee that a count will
   /// not be missed during the invocation of this call.
   ///
   /// @param new_count_value - the value to set the counter to.
-  virtual void Set(int32_t new_count_value) = 0;
+  virtual Returns<void> Set(int32_t new_count_value) = 0;
 
   /// Set the direction of the counter to either up or down. Doing so will cause
   /// the counter to begin counting in that direction as events occur.
   ///
   /// @param direction - the direction (either up or down) to count.
-  virtual void SetDirection(Direction direction) = 0;
+  virtual Returns<void> SetDirection(Direction direction) = 0;
 
   /// Starts counting from clock input. Must be called after Initialize() to
   /// begin counting.
-  virtual void Enable() = 0;
+  virtual Returns<void> Enable() = 0;
 
   /// Stops counting from clock input. Current count is retained.
-  virtual void Disable() = 0;
+  virtual Returns<void> Disable() = 0;
 
   /// Get the current count from hardware timer.
-  virtual int32_t GetCount() = 0;
+  virtual Returns<int32_t> GetCount() = 0;
 
   /// Default virtual destructor
   virtual ~HardwareCounter() = default;
@@ -70,33 +70,36 @@ class GpioCounter : public HardwareCounter
   {
   }
 
-  void Initialize() override
+  Returns<void> Initialize() override
   {
     gpio_.GetPin().SetPull(pull_);
     gpio_.SetAsInput();
+    return {};
   }
-  void Set(int32_t new_count_value) override
+  Returns<void> Set(int32_t new_count_value) override
   {
     count_ = new_count_value;
+    return {};
   }
 
-  void SetDirection(HardwareCounter::Direction direction) override
+  Returns<void> SetDirection(HardwareCounter::Direction direction) override
   {
     direction_ = direction;
+    return {};
   }
 
-  void Enable() override
+  Returns<void> Enable() override
   {
-    gpio_.AttachInterrupt([this] { count_ += Value(direction_.load()); },
-                          edge_);
+    return gpio_.AttachInterrupt([this] { count_ += Value(direction_.load()); },
+                                 edge_);
   }
 
-  void Disable() override
+  Returns<void> Disable() override
   {
-    gpio_.DetachInterrupt();
+    return gpio_.DetachInterrupt();
   }
 
-  int32_t GetCount() override
+  Returns<int32_t> GetCount() override
   {
     return count_;
   }

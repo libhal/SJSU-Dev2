@@ -1,3 +1,4 @@
 <map id="sjsu::stm32f10x::Uart&lt; kQueueSize &gt;" name="sjsu::stm32f10x::Uart&lt; kQueueSize &gt;">
-<area shape="rect" id="node2" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="45,5,129,32"/>
+<area shape="rect" id="node2" href="$d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="5,80,200,107"/>
+<area shape="rect" id="node3" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="61,5,145,32"/>
 </map>

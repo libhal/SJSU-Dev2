@@ -118,7 +118,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Error_t(<a class="code" href="../../dc/d10/structsjsu_1_1Status.html#af1fe454c409d80157fc870e96745606b">Status::kBusError</a>, <span class="stringliteral">&quot;I2C bus error occurred.&quot;</span>)</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Error_t(std::errc::io_error, <span class="stringliteral">&quot;I2C bus error occurred.&quot;</span>)</div></div><!-- fragment -->
 </div>
 </div>
 <a id="ae7515fcdbe8eb43c42a9f57451531321"></a>
@@ -140,7 +140,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Error_t(<a class="code" href="../../dc/d10/structsjsu_1_1Status.html#a59dd553c29e41e59a91b292e55433e8f">Status::kDeviceNotFound</a>,</div><div class="line">                <span class="stringliteral">&quot;I2C address not found/acknowledged by device.&quot;</span>)</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Error_t(std::errc::no_such_device_or_address,</div><div class="line">                <span class="stringliteral">&quot;I2C address not found/acknowledged by device.&quot;</span>)</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a8feeea23c79cb3e5a211c5e40a75ac05"></a>
@@ -162,7 +162,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Error_t(<a class="code" href="../../dc/d10/structsjsu_1_1Status.html#aa054d158293c0ee3aaa2972d2154e545">Status::kTimedOut</a>,</div><div class="line">                <span class="stringliteral">&quot;I2C took too long to process and timed out! Consider &quot;</span></div><div class="line">                <span class="stringliteral">&quot;increasing the timeout time.&quot;</span>)</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Error_t(std::errc::timed_out,</div><div class="line">                <span class="stringliteral">&quot;I2C took too long to process and timed out! Consider &quot;</span></div><div class="line">                <span class="stringliteral">&quot;increasing the timeout time.&quot;</span>)</div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

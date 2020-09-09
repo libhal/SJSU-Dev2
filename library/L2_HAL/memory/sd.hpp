@@ -155,7 +155,7 @@ class Sd : public Storage
     /// CSD contents
     std::array<uint8_t, kBytesInCsdRegister> byte;
     /// Determines if hte CSD contents are valid.
-    Status status = Status::kSuccess;
+    std::errc error;
   };
 
   /// Structure for recording information about the SD Card
@@ -245,8 +245,8 @@ class Sd : public Storage
 
   Returns<void> Disable() override
   {
-    return Error(Status::kNotImplemented,
-                 "This implementation does not disable SD Cards.");
+    return Error(std::errc::operation_not_supported,
+                 "Disabling SD cards is not supported w/ this implementation.");
   }
 
   /// Assumes that write protection is never enabled.
@@ -433,7 +433,7 @@ class Sd : public Storage
     // Check if the command was acknowledged properly
     if (!CommandWasAcknowledged(response))
     {
-      return Error(Status::kBusError,
+      return Error(std::errc::io_error,
                    "Get CSD Register was not acknowledged properly!");
     }
 
@@ -455,7 +455,7 @@ class Sd : public Storage
     if (expected_crc != actual_crc)
     {
       LogDebug("Expected '0x%04X' :: Got '0x%04X'", expected_crc, actual_crc);
-      return Error(Status::kBusError, "CRC Mismatch!");
+      return Error(std::errc::io_error, "CRC Mismatch!");
     }
 
     WaitForDeviceToLeaveIdle();
@@ -489,7 +489,7 @@ class Sd : public Storage
     // Check if the command was acknowledged properly
     if (!CommandWasAcknowledged(response))
     {
-      return Error(Status::kBusError,
+      return Error(std::errc::io_error,
                    "Read Command was not acknowledged properly!");
     }
 
@@ -510,7 +510,7 @@ class Sd : public Storage
     {
       LogDebug("Expected CRC '0x%04X' :: Got '0x%04X'", expected_block_crc,
                block_crc);
-      return Error(Status::kBusError, "CRC Mismatch on Block Read!");
+      return Error(std::errc::io_error, "CRC Mismatch on Block Read!");
     }
 
     WaitForDeviceToLeaveIdle();
@@ -541,7 +541,7 @@ class Sd : public Storage
       sjsu::LogDebug("Illegal Cmd Err: %s", ToBool(response.byte[0] & 0x04));
       sjsu::LogDebug("Erase Reset: %s", ToBool(response.byte[0] & 0x02));
       sjsu::LogDebug("In Idle: %s", ToBool(response.byte[0] & 0x01));
-      return Error(Status::kBusError, "Write Block Rejected by Card.");
+      return Error(std::errc::io_error, "Write Block Rejected by Card.");
     }
 
     // Send the start token for the current block
@@ -583,7 +583,7 @@ class Sd : public Storage
     // Force return if an error occurred
     if (response.byte[0] != 0x00)
     {
-      return Error(Status::kInvalidParameters, "Failed to set Start Address!");
+      return Error(std::errc::invalid_argument, "Failed to set Start Address!");
     }
 
     // Set the delete end address
@@ -596,7 +596,7 @@ class Sd : public Storage
     // Force return if an error occurred
     if (response.byte[0] != 0x00)
     {
-      return Error(Status::kInvalidParameters, "Failed to set End Address!");
+      return Error(std::errc::invalid_argument, "Failed to set End Address!");
     }
 
     // Issue the delete command to delete from our from:to range
@@ -653,11 +653,11 @@ class Sd : public Storage
         LogDebug("  Card ECC Failed: %s", ToBool(bit::Read(wait_byte, 2)));
         LogDebug("Addr Out of Range: %s", ToBool(bit::Read(wait_byte, 3)));
 
-        return Error(Status::kNotReadyYet, "Card Rejected Read Command!");
+        return Error(std::errc::io_error, "Card Rejected Read Command!");
       }
     }
 
-    return Error(Status::kTimedOut, "SD Card did not respond in time.");
+    return Error(std::errc::timed_out, "SD Card did not respond in time.");
   }
 
   /// Waits for the card to be ready to receive a new block after one has
@@ -850,7 +850,7 @@ class Sd : public Storage
 
       if (bit::Read(begin_response.byte[0], kIllegalCommand))
       {
-        return Error(Status::kInvalidSettings,
+        return Error(std::errc::not_supported,
                      "Card rejected ACMD, this may not be an SD card");
       }
 
@@ -870,7 +870,7 @@ class Sd : public Storage
 
     if (!initialization_successful)
     {
-      return Error(Status::kTimedOut, "Initialization Failed!");
+      return Error(std::errc::timed_out, "Initialization Failed!");
     }
 
     // =========================================================================
@@ -879,7 +879,7 @@ class Sd : public Storage
     sd_.type = GetCardType();
     if (sd_.type == Type::kSDSC)
     {
-      return Error(Status::kInvalidSettings,
+      return Error(std::errc::not_supported,
                    "SD Card is standard size. This driver does not support "
                    "Standard Size SD cards.");
     }
@@ -914,9 +914,8 @@ class Sd : public Storage
     if (bit::Read(response.byte[0], kIllegalCommand))
     {
       return Error(
-          Status::kInvalidSettings,
-          "Card responded with Illegal Command, this is not a supported SD "
-          "card.");
+          std::errc::not_supported,
+          "Unsupported SD Card responded with Illegal Command");
     }
 
     if (bit::Extract(response.byte[3], kVoltageCodeMask) != voltage_code)
@@ -926,7 +925,7 @@ class Sd : public Storage
       // device's operating voltage
       LogDebug("Response.byte[3] = 0x%02X", response.byte[3]);
 
-      return Error(Status::kInvalidSettings,
+      return Error(std::errc::not_supported,
                    "Unsupported voltage in use. Aborting!");
     }
 
@@ -936,7 +935,7 @@ class Sd : public Storage
       // command's argument, this response is invalid
       LogDebug("Response.byte[4] = (0x%02X)", response.byte[4]);
 
-      return Error(Status::kBusError,
+      return Error(std::errc::io_error,
                    "Response integrity check failed. Aborting!");
     }
 

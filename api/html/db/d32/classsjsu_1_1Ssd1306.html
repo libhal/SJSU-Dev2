@@ -360,7 +360,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Draw the specified pixel. Implementations of this method should not be expected to the draw the pixel on the display, immediately after this method has finished. A class implementing this interface should write/manipulate a framebuffer and update the screen after a call to the <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a3abd909600703b0a2cfe8b5bd0fc2077" title="Writes internal bitmap_ to the screen. ">Update()</a> method.</p>
+<p>Draw the specified pixel. Implementations of this method should not draw directly to the display but should manipulate A class implementing this interface should write/manipulate a framebuffer and update the screen after a call to the <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#a3abd909600703b0a2cfe8b5bd0fc2077" title="Writes internal bitmap_ to the screen. ">Update()</a> method.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">x</td><td>x coordinate position to draw the pixel </td></tr>

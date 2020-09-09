@@ -234,50 +234,6 @@ template <typename... Params>
 LogError(const char * format, Params...)->LogError<Params...>;
 }  // namespace sjsu
 
-/// Deprecated log macro with the DEBUG level of log message.
-#define LOG_DEBUG(format, ...) ::sjsu::LogDebug(format, ##__VA_ARGS__)
-
-/// Deprecated log macro with the INFO level of log message.
-#define LOG_INFO(format, ...) ::sjsu::LogInfo(format, ##__VA_ARGS__)
-
-/// Deprecated log macro with the WARNING level of log message.
-#define LOG_WARNING(format, ...) ::sjsu::LogWarning(format, ##__VA_ARGS__)
-
-/// Deprecated log macro with the ERROR level of log message.
-#define LOG_ERROR(format, ...) ::sjsu::LogError(format, ##__VA_ARGS__)
-
-/// When the condition is false, issue a warning to the user with a warning
-/// message. Warning message format acts like printf.
-#define SJ2_ASSERT_WARNING(condition, warning_message, ...) \
-  do                                                        \
-  {                                                         \
-    if (!(condition))                                       \
-    {                                                       \
-      ::sjsu::LogWarning(warning_message, ##__VA_ARGS__);   \
-    }                                                       \
-  } while (0)
-
-/// Returns and prinparams statement if condition returns true
-#define SJ2_RETURN_IF(condition, warning_message, ...)                    \
-  do                                                                      \
-  {                                                                       \
-    if ((condition))                                                      \
-    {                                                                     \
-      ::sjsu::LogWarning(warning_message SJ2_COLOR_RESET, ##__VA_ARGS__); \
-    }                                                                     \
-  } while (0)
-
-/// Logs the expression if it returns any but Status::kSuccess
-#define LOG_ON_FAILURE(expression)                              \
-  do                                                            \
-  {                                                             \
-    sjsu::Status log_on_failure_status = (expression);          \
-    if (log_on_failure_status != sjsu::Status::kSuccess)        \
-    {                                                           \
-      ::sjsu::LogWarning("Expression Failed: %s", #expression); \
-    }                                                           \
-  } while (0)
-
 /// When the condition is false, issue a critical level message to the user and
 /// halt the processor.
 #define SJ2_ASSERT_FATAL_WITH_DUMP(with_dump, condition, fatal_message, ...) \
@@ -314,5 +270,5 @@ LogError(const char * format, Params...)->LogError<Params...>;
 #endif  // defined(HOST_TEST)
 /// Print a variable using the printf_specifier supplied.
 #define SJ2_PRINT_VARIABLE(variable, printf_specifier) \
-  ::sjsu::LogError(#variable " = " printf_specifier, (variable))
+  ::sjsu::LogDebug(#variable " = " printf_specifier, (variable))
 /// @}

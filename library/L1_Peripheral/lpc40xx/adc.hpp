@@ -235,7 +235,7 @@ class Adc final : public sjsu::Adc
   {
   }
 
-  Status Initialize() const override
+  Returns<void> Initialize() const override
   {
     auto & system     = sjsu::SystemController::GetPlatformController();
     const auto kAdcId = sjsu::lpc40xx::SystemController::Peripherals::kAdc;
@@ -266,7 +266,7 @@ class Adc final : public sjsu::Adc
 
     adc_base->CR = control;
 
-    return Status::kSuccess;
+    return {};
   }
 
   uint32_t Read() const override

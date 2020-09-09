@@ -18,15 +18,17 @@ namespace sjsu
 class SystemTimer
 {
  public:
-  // ==============================
+  // ===========================================================================
   // Interface Methods
-  // ==============================
+  // ===========================================================================
   /// Initialize system timer hardware.
   virtual void Initialize() const = 0;
+
   /// Set the function to be called when the System Timer interrupt fires.
   ///
   /// @param callback - function to be called on system timer event.
   virtual void SetCallback(InterruptCallback callback) const = 0;
+
   /// Set frequency of the timer.
   ///
   /// @param frequency - How many times per second should the system timer
@@ -35,11 +37,9 @@ class SystemTimer
   ///         input frequency.
   virtual int32_t SetTickFrequency(
       units::frequency::hertz_t frequency) const = 0;
+
   /// Start the system timer. Should be done after SetInterrupt and
   /// SetTickFrequency have been called.
-  ///
-  /// @return Status::kSuccess if the system timer started correctly. Otherwise,
-  ///         the exact status is implementation dependent.
-  virtual Status StartTimer() const = 0;
+  virtual Returns<void> StartTimer() const = 0;
 };
 }  // namespace sjsu

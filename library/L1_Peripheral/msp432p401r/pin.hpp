@@ -49,11 +49,11 @@ class Pin final : public sjsu::Pin
     // NOTE: port can only be 1-10 or 'J'
     if (((port_ > 10) || (port_ == 0)) && (port_ != 'J'))
     {
-      return Error(Status::kInvalidSettings, "Port must be 1-10 or J");
+      return Error(std::errc::invalid_argument, "Port must be 1-10 or J");
     }
     if (pin_ > 7)
     {
-      return Error(Status::kInvalidSettings, "Pin must be between 0 and 7");
+      return Error(std::errc::invalid_argument, "Pin must be between 0 and 7");
     }
     return {};
   }
@@ -72,7 +72,7 @@ class Pin final : public sjsu::Pin
     if (function > 0b111)
     {
       return Error(
-          Status::kInvalidParameters,
+          std::errc::invalid_argument,
           "The function code must be a 3-bit value between 0b000 and 0b111.");
     }
 
@@ -121,7 +121,7 @@ class Pin final : public sjsu::Pin
         *resistor_select = bit::Set(*resistor_select, pin_);
         break;
       case Resistor::kRepeater:
-        return Error(Status::kInvalidSettings, "Invalid resistor pull.");
+        return Error(std::errc::not_supported, "Repeater mode not supported");
     }
     return {};
   }
@@ -145,7 +145,7 @@ class Pin final : public sjsu::Pin
 
   Returns<void> SetAsOpenDrain(bool) const override
   {
-    return Error(Status::kNotImplemented, "Open drain is not supported");
+    return Error(std::errc::operation_not_supported, "");
   }
 
   /// @note This function does nothing as setting the analog mode is not
@@ -153,7 +153,7 @@ class Pin final : public sjsu::Pin
   [[deprecated("Unsupported operation")]] Returns<void> SetAsAnalogMode(
       bool) const override
   {
-    return Error(Status::kNotImplemented, "Unsupported operation");
+    return Error(std::errc::operation_not_supported, "");
   }
 
  private:

@@ -1,17 +1,18 @@
 <map id="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L2_HAL/sensors/environment/light/temt6000x01.hpp" name="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L2_HAL/sensors/environment/light/temt6000x01.hpp">
-<area shape="rect" id="node2" href="$d7/de7/light__sensor_8hpp.html" title="L2_HAL/sensors/environment\l/light_sensor.hpp" alt="" coords="5,199,216,240"/>
-<area shape="rect" id="node29" href="$d5/d90/adc_8hpp.html" title="L1_Peripheral/adc.hpp" alt="" coords="240,206,405,233"/>
-<area shape="rect" id="node30" href="$d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1367,124,1479,151"/>
-<area shape="rect" id="node3" href="$db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="735,288,867,315"/>
-<area shape="rect" id="node20" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="286,616,410,643"/>
-<area shape="rect" id="node8" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1203,370,1335,397"/>
-<area shape="rect" id="node16" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1298,541,1387,568"/>
-<area shape="rect" id="node23" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="1079,459,1219,486"/>
-<area shape="rect" id="node25" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="1883,452,2037,493"/>
-<area shape="rect" id="node26" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1295,459,1451,486"/>
-<area shape="rect" id="node27" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1719,459,1859,486"/>
-<area shape="rect" id="node18" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1272,616,1413,643"/>
-<area shape="rect" id="node19" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="1753,616,1869,643"/>
-<area shape="rect" id="node33" href="$d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="1080,288,1235,315"/>
-<area shape="rect" id="node34" href="$de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="1361,206,1484,233"/>
+<area shape="rect" id="node2" href="$d7/de7/light__sensor_8hpp.html" title="L2_HAL/sensors/environment\l/light_sensor.hpp" alt="" coords="132,199,343,240"/>
+<area shape="rect" id="node32" href="$d5/d90/adc_8hpp.html" title="L1_Peripheral/adc.hpp" alt="" coords="367,206,532,233"/>
+<area shape="rect" id="node33" href="$d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1620,124,1732,151"/>
+<area shape="rect" id="node3" href="$db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="614,288,746,315"/>
+<area shape="rect" id="node21" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="230,616,354,643"/>
+<area shape="rect" id="node9" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1514,370,1646,397"/>
+<area shape="rect" id="node29" href="$dd/d0a/enum_8hpp.html" title="utility/enum.hpp" alt="" coords="563,370,693,397"/>
+<area shape="rect" id="node17" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1637,541,1726,568"/>
+<area shape="rect" id="node24" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="1481,459,1621,486"/>
+<area shape="rect" id="node26" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="1967,452,2121,493"/>
+<area shape="rect" id="node27" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1054,459,1210,486"/>
+<area shape="rect" id="node28" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1803,459,1943,486"/>
+<area shape="rect" id="node19" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1611,616,1752,643"/>
+<area shape="rect" id="node20" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="2105,616,2221,643"/>
+<area shape="rect" id="node35" href="$d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="2201,288,2356,315"/>
+<area shape="rect" id="node36" href="$de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="1288,206,1411,233"/>
 </map>

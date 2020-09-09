@@ -12,6 +12,7 @@ enum RemoteCode : uint16_t
   kVolumeDown      = 0xB24D,
   kToggleBluetooth = 0x40BF,
 };
+
 /// @see https://www.sbprojects.net/knowledge/ir/nec.php
 constexpr sjsu::infrared::PulseDurationConfiguration_t kNecConfiguration = {
   .header_mark_duration  = 9000us,
@@ -62,6 +63,7 @@ void HandleDataFrame(const sjsu::infrared::DataFrame_t * data_frame)
 int main()
 {
   sjsu::LogInfo("Starting Tsop752 IR Receiver Example...");
+
   // Using timeout of 9ms since the header mark of the NEC remote is 9ms long.
   constexpr std::chrono::microseconds kTimeout               = 9ms;
   constexpr units::frequency::hertz_t kPulseCaptureFrequency = 1_MHz;
@@ -70,12 +72,13 @@ int main()
       sjsu::lpc17xx::PulseCaptureChannel::kCaptureTimer1,
       sjsu::lpc17xx::PulseCapture::CaptureChannelNumber::kChannel0,
       kPulseCaptureFrequency);
+
   sjsu::lpc17xx::Timer timer(sjsu::lpc17xx::TimerPeripheral::kTimer2);
 
   sjsu::Tsop752 ir_receiver(pulse_capture, timer, kTimeout);
+
   ir_receiver.SetInterruptCallback(HandleDataFrame);
-  SJ2_ASSERT_FATAL(ir_receiver.Initialize() == sjsu::Status::kSuccess,
-                   "Failed to initialize Tsop752.");
+  ir_receiver.Initialize();
 
   sjsu::Halt();
   return 0;

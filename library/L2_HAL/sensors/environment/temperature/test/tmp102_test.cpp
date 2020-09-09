@@ -25,10 +25,11 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
       CHECK(success);
       Verify(Method(mock_i2c, Initialize)).Once();
     }
+
     SECTION("Initialization failure")
     {
       // Setup
-      const auto kExpectedStatus = Error(Status::kBusError, "");
+      const auto kExpectedStatus = Error(std::errc::io_error, "");
       When(Method(mock_i2c, Initialize)).AlwaysReturn(kExpectedStatus);
 
       // Exercise
@@ -58,6 +59,7 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
       { Tmp102::RegisterAddress::kConfiguration, Tmp102::kOneShotShutdownMode },
       { Tmp102::RegisterAddress::kTemperature },
     };
+
     const std::array kExpectedTransactions = {
       I2c::Transaction_t({
           .operation  = I2c::Operation::kWrite,
@@ -70,7 +72,6 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
           .repeated   = false,
           .busy       = true,
           .timeout    = I2c::kI2cTimeout,
-          .status     = Status::kSuccess,
       }),
       I2c::Transaction_t({
           .operation  = I2c::Operation::kWrite,
@@ -83,7 +84,6 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
           .repeated   = true,
           .busy       = true,
           .timeout    = Tmp102::kConversionTimeout,
-          .status     = Status::kSuccess,
       }),
     };
 

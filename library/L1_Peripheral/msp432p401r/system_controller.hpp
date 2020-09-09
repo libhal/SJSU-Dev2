@@ -564,7 +564,7 @@ class SystemController final : public sjsu::SystemController
       case Clock::kLowSpeedSubsystemMaster: break;
       case Clock::kAuxiliary:
       {
-        SJ2_ASSERT_WARNING(
+        SJ2_ASSERT_FATAL(
             select_value <= Value(Oscillator::kReference),
             "The auxiliary clock can only be driven by kLowFrequency, "
             "kVeryLowFrequency, or kReference. The system will default to "

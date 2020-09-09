@@ -65,7 +65,8 @@ int main(void)
     // See the array appear back on the device
     if (can2.HasData())
     {
-      sjsu::Can::Message_t message = can2.Receive();
+      sjsu::Can::Message_t message =
+          SJ2_RETURN_VALUE_ON_ERROR(can2.Receive(), -1);
       sjsu::LogInfo("CAN 2 received a message!");
       sjsu::LogInfo("ID: 0x%0" PRIX32, message.id);
       for (uint8_t i = 0; i < message.length; i++)
@@ -89,7 +90,8 @@ int main(void)
 
     if (can1.HasData())
     {
-      sjsu::Can::Message_t message = can1.Receive();
+      sjsu::Can::Message_t message =
+          SJ2_RETURN_VALUE_ON_ERROR(can1.Receive(), -2);
       sjsu::LogInfo("CAN 1 received a message!");
       sjsu::LogInfo("ID: 0x%0" PRIx32, message.id);
       for (uint8_t i = 0; i < message.length; i++)

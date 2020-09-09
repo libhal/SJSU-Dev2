@@ -106,7 +106,7 @@ TEST_CASE("Testing SD Card Driver Class")
 
   SECTION("Disable()")
   {
-    CHECK(Status::kNotImplemented == sd.Disable().error()->status);
+    CHECK(std::errc::operation_not_supported == sd.Disable());
   }
 
   SECTION("GetBlockSize()")

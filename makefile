@@ -93,7 +93,8 @@ SJ2_DEFAULT_CPPFLAGS = -std=c++2a -fno-rtti -fno-threadsafe-statics \
                        -Wold-style-cast -Woverloaded-virtual -Wsuggest-override
 
 SJ2_DEFAULT_LDFLAGS  = -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
-                       --specs=nano.specs --specs=rdimon.specs
+                       --specs=nano.specs --specs=rdimon.specs \
+                       -Wl,--wrap=snprintf
 
 SJ2_DEFAULT_SOURCES  = source/main.cpp
 
@@ -316,6 +317,10 @@ debug-test:
 
 flash: | application platform-flash
 execute: flash
+
+
+stacktrace:
+	addr2line -e $(EXECUTABLE) $(TRACES)
 
 
 # ==============================================================================

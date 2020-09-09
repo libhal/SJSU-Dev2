@@ -14,7 +14,7 @@ var searchData=
   ['spi2',['spi2',['../db/dc5/structsjtwo.html#a9bcef747550a2b721ee903987b9e7e15',1,'sjtwo']]],
   ['spifi',['spifi',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#a6207a66a1be5ab86763f42f238775ec8',1,'sjsu::lpc40xx::SystemController::ClockConfiguration']]],
   ['stack_5f',['stack_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5fccf7fa785a8f0a807496cec063f027',1,'sjsu::rtos::Task']]],
-  ['status',['status',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adfccef243357bbb8518ce19faa60e22e',1,'sjsu::I2c::Transaction_t::status()'],['../d3/d2e/structsjsu_1_1Esp8266_1_1IpAddress__t.html#ab4353752cb1cfeba874272deddbaeedc',1,'sjsu::Esp8266::IpAddress_t::status()'],['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#a7dd93e8fae4f60fe41cbbba0d385a10e',1,'sjsu::WiFi::NetworkConnection_t::status()'],['../df/d50/structsjsu_1_1Sd_1_1CsdBuffer__t.html#a9ab49a21e53d34747574e1bab053d4cf',1,'sjsu::Sd::CsdBuffer_t::status()'],['../d1/d36/classsjsu_1_1Error__t.html#a193e36ab9eabc4115ddbdf18fd449106',1,'sjsu::Error_t::status()']]],
+  ['status',['status',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a923ef44b94d85bb24e6e91e22395cc1b',1,'sjsu::I2c::Transaction_t']]],
   ['str',['str',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html#a1e8caafdbebd22880a692db6f7c4b5c9',1,'sjsu::I2cCommand::AddressString_t']]],
   ['subsystem_5fmaster',['subsystem_master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a30b94259f9d08fb203e11883ca52941d',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['sys_5ftick',['sys_tick',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a2072bd1bdcfc860636a16021693ed4b8',1,'sjsu::cortex::SystemTimer']]],

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <time.h>
+
 #include <cstdint>
 #include <cinttypes>
 #include <functional>
@@ -46,10 +48,13 @@ inline void SetUptimeFunction(UptimeFunction uptime_function)
 ///        return true.
 /// @param is_done will be run in a tight loop until it returns true or the
 ///        timeout time has elapsed.
-inline Status Wait(std::chrono::nanoseconds timeout,
-                   std::function<bool()> is_done)
+inline Returns<void> Wait(std::chrono::nanoseconds timeout,
+                          std::function<bool()> is_done)
 {
+  const auto kTimedOutError = Error(std::errc::timed_out, "");
+
   std::chrono::nanoseconds timeout_time;
+
   if (timeout == std::chrono::nanoseconds::max())
   {
     // TODO(#983): This is a cheap hack to keep overflows from happening, but
@@ -59,7 +64,7 @@ inline Status Wait(std::chrono::nanoseconds timeout,
   }
   else if (timeout == 0ns)
   {
-    return Status::kTimedOut;
+    return kTimedOutError;
   }
   else
   {
@@ -77,31 +82,66 @@ inline Status Wait(std::chrono::nanoseconds timeout,
     }
   }
 
-  Status status = Status::kTimedOut;
   while (Uptime() <= timeout_time)
   {
     if (is_done())
     {
-      status = Status::kSuccess;
-      break;
+      return {};
     }
   }
-  return status;
+
+  return kTimedOutError;
 }
 
 /// Overload of `Wait` that merely takes a timeout.
 ///
 /// @param timeout - the amount of time to wait.
-/// @return always returns Status::kTimedOut
-inline Status Wait(std::chrono::nanoseconds timeout)
+/// @return always returns std::errc::timed_out
+inline Returns<void> Wait(std::chrono::nanoseconds timeout)
 {
   return Wait(timeout, []() -> bool { return false; });
 }
 
+// Declare an external linkage to the linux nanosleep() function. This is
+// not needed for linux builds but is required to keep the ARM compiler from
+// stating that the nanosleep() function does not exist, as it is #ifdef
+// out in the header file.
+//
+// During the linking stage, since the constexpr if will fail, this path
+// will be removed form the code, and thus no linking errors due to an
+// undefined function call.
+extern int nanosleep(const timespec *, const timespec *);  // NOLINT
+
 /// Delay the system for a duration of time
 inline void Delay(std::chrono::nanoseconds delay_time)
 {
-  Wait(delay_time);
+  // For Linux Systems since using Wait (which will busy loop) will drive the
+  // CPU utilization up to maximum.
+  if constexpr (build::kPlatform == build::Platform::linux)
+  {
+    // Needs to use the linux timespec structure to pass into nanosleep
+    timespec ts;
+
+    // Error code return value to be checked if the sleep has finished.
+    int res;
+
+    // Convert delay time to seconds to be stored into timespec structure.
+    // Using time mod 1000000000 to trim off the time greater than a second.
+    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(delay_time);
+    ts.tv_sec    = static_cast<decltype(ts.tv_sec)>(seconds.count());
+    ts.tv_nsec =
+        static_cast<decltype(ts.tv_nsec)>(delay_time.count() % 1000000000);
+
+    do
+    {
+      res = nanosleep(&ts, &ts);
+    } while (res);
+  }
+  else
+  {
+    // For all other systems use the Wait function to loop until time is up.
+    Wait(delay_time);
+  }
 }
 /// Halt system by putting it into infinite loop
 inline void Halt()

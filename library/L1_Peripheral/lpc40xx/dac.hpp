@@ -80,8 +80,11 @@ class Dac final : public sjsu::Dac
   {
     // The DAC output is a 10 bit input and thus it is necessary to
     // ensure dac_output is less than 1024 (largest 10-bit number)
-    SJ2_ASSERT_FATAL(dac_output < kMaximumValue,
-                     "DAC output set above 1023. Must be between 0-1023.");
+    if (dac_output >= kMaximumValue)
+    {
+      return Error(std::errc::invalid_argument,
+                   "DAC output set above 1023. Must be between 0-1023.");
+    }
     dac_register->CR =
         bit::Insert(dac_register->CR, dac_output, Control::kValue);
 
@@ -92,12 +95,7 @@ class Dac final : public sjsu::Dac
   {
     float value         = (voltage * kMaximumValue) / kVref;
     uint32_t conversion = static_cast<uint32_t>(value);
-    SJ2_ASSERT_FATAL(
-        voltage < kVref,
-        "DAC output was set above 3.3V. Must be between 0V and 3.3V.");
-    Write(conversion);
-
-    return {};
+    return Write(conversion);
   }
 
   /// Sets the Bias for the Dac, which determines the settling time, max

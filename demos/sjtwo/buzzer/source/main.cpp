@@ -10,6 +10,7 @@ int main()
   sjsu::LogInfo("The buzzer will start with a frequency of 1000 Hz");
   sjsu::LogInfo("and a volume of 10 percent i.e. 0.1f");
   sjsu::LogInfo("==================================================");
+
   sjsu::lpc40xx::Pwm pwm_pin(sjsu::lpc40xx::Pwm::Channel::kPwm1);
   sjsu::Buzzer buzzer(pwm_pin);
 
@@ -21,7 +22,7 @@ int main()
   sjsu::Delay(1s);
 
   sjsu::LogInfo(
-      "Buzzer will emit sound at 10 percent volume and 1kHz freqeuncy");
+      "Buzzer will emit sound at 10 percent volume and 1kHz frequency");
   buzzer.Beep(kFrequency, kVolume);
   sjsu::Delay(1s);
   buzzer.Stop();
@@ -41,10 +42,9 @@ int main()
   sjsu::Delay(1s);
   buzzer.Stop();
 
-  sjsu::LogInfo("Restart the example anytime by ");
-  sjsu::LogInfo("pressing the 'reset' button on controller");
+  sjsu::LogInfo(
+      "Restart the example anytime by pressing the 'reset' button on "
+      "controller");
 
-  sjsu::LogInfo("Halting the processor...");
-  sjsu::Halt();
   return 0;
 }

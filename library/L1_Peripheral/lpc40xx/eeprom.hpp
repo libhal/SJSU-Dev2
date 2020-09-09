@@ -159,9 +159,9 @@ class Eeprom final : public sjsu::Storage
       };
 
       auto timeout_status = Wait(kMaxTimeout, check_register);
-      if (!IsOk(timeout_status))
+      if (!timeout_status)
       {
-        return Error(Status::kTimedOut,
+        return Error(std::errc::timed_out,
                      "Could not write to EEPROM in time.");
       }
 

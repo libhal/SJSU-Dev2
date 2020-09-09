@@ -25,13 +25,13 @@ class Temt6000x01 final : public LightSensor
   /// Initializes the ADC driver.
   ///
   /// @returns The initialization status.
-  Status Initialize() const override
+  Returns<void> Initialize() const override
   {
     return adc_.Initialize();
   }
 
   /// @returns The illuminance in units of lux ranging from 1 - 1'000.
-  units::illuminance::lux_t GetIlluminance() const override
+  Returns<units::illuminance::lux_t> GetIlluminance() const override
   {
     // current = voltage / resistance
     const units::current::microampere_t kCurrent =
@@ -62,7 +62,7 @@ class Temt6000x01 final : public LightSensor
 
   /// @returns The maximum illuminance that can be handled by the sensor.  The
   ///          device has an illumination range of 1 - 1000 lux.
-  units::illuminance::lux_t GetMaxIlluminance() const override
+  Returns<units::illuminance::lux_t> GetMaxIlluminance() const override
   {
     return 1'000_lx;
   }

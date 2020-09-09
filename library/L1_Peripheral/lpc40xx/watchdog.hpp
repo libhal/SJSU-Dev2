@@ -30,7 +30,7 @@ class Watchdog final : public sjsu::Watchdog
   {
   }
 
-  Status Initialize(std::chrono::seconds duration) const override
+  Returns<void> Initialize(std::chrono::seconds duration) const override
   {
     constexpr units::frequency::hertz_t kWatchdogClockDivider   = 4_Hz;
     constexpr units::frequency::hertz_t kWatchdogClockFrequency = 500_kHz;
@@ -52,10 +52,10 @@ class Watchdog final : public sjsu::Watchdog
     constexpr uint32_t kTimerWarningMax = 0b11'1111'1111;
     wdt_base->WARNINT                   = kTimerWarningMax;
 
-    return Status::kSuccess;
+    return {};
   }
 
-  void Enable() const override
+  Returns<void> Enable() const override
   {
     // Register WDT_IRQ defined by the structure
     sjsu::InterruptController::GetPlatformController().Enable({
@@ -63,6 +63,8 @@ class Watchdog final : public sjsu::Watchdog
         .interrupt_handler        = []() {},
         .priority                 = priority_,
     });
+
+    return {};
   }
 
   void FeedSequence() const override

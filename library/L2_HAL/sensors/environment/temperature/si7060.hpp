@@ -6,6 +6,7 @@
 #include "utility/units.hpp"
 #include "utility/math/limits.hpp"
 #include "utility/status.hpp"
+#include "utility/log.hpp"
 
 namespace sjsu
 {
@@ -46,10 +47,7 @@ class Si7060 final : public TemperatureSensor
 
   Returns<void> Initialize() const override
   {
-    Status status;
-
-    SJ2_RETURN_ON_ERROR(i2c_.Initialize());
-    return {};
+    return i2c_.Initialize();
   }
 
   Returns<void> Enable() const override
@@ -61,7 +59,8 @@ class Si7060 final : public TemperatureSensor
 
     if (temperature_sensor_id_register != kExpectedSensorId)
     {
-      return Error(Status::kDeviceNotFound,
+      LogDebug("ID = 0x%02X\n", temperature_sensor_id_register);
+      return Error(std::errc::no_such_device,
                    "Device ID does not match expected device ID 0x14");
     }
 

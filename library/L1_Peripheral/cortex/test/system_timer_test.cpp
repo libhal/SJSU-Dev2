@@ -47,7 +47,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
   using ResourceID = sjsu::SystemController::ResourceID;
 
   constexpr uint8_t kExpectedPriority = 3;
-  constexpr ResourceID kId = ResourceID::Define<0>();
+  constexpr ResourceID kId            = ResourceID::Define<0>();
   SystemTimer test_subject(kId, kExpectedPriority);
 
   SECTION("Initialize()")
@@ -106,7 +106,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     local_systick.LOAD       = 1000;
 
     // Exercise
-    CHECK(Status::kSuccess == test_subject.StartTimer());
+    CHECK(test_subject.StartTimer());
 
     // Verify
     CHECK(kMask == local_systick.CTRL);
@@ -132,7 +132,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     local_systick.VAL  = 0xBEEF;
 
     // Exercise
-    CHECK(Status::kInvalidSettings == test_subject.StartTimer());
+    CHECK(std::errc::invalid_argument == test_subject.StartTimer());
 
     // Verify
     CHECK(kClkSourceMask == local_systick.CTRL);

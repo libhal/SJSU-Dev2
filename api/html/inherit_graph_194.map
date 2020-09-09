@@ -1,5 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$db/dcb/classsjsu_1_1InternetSocket.html" title="sjsu::InternetSocket" alt="" coords="5,5,156,32"/>
-<area shape="rect" id="node2" href="$dc/d4f/classsjsu_1_1Esp8266.html" title="sjsu::Esp8266" alt="" coords="204,31,315,57"/>
-<area shape="rect" id="node3" href="$dc/d16/classsjsu_1_1WiFi.html" title="sjsu::WiFi" alt="" coords="39,56,122,83"/>
+<area shape="rect" id="node1" href="$d5/da1/classsjsu_1_1Watchdog.html" title="sjsu::Watchdog" alt="" coords="5,5,125,32"/>
+<area shape="rect" id="node2" href="$dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html" title="Watchdog driver for the lpc40xx. " alt="" coords="173,5,352,32"/>
 </map>

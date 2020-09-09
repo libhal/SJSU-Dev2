@@ -412,8 +412,9 @@ static float _PowerOf10(uint32_t exponent)
   float whole_float   = static_cast<float>(whole);
   float decimal_float = (value - whole_float) * _PowerOf10(precision);
   int32_t decimal     = static_cast<int32_t>(decimal_float);
-  int next_position   = snprintf(&buffer[idx], maxlen, "%s%" PRId32 ".%" PRId32,
-                               negative, whole, decimal);
+  int next_position   = __wrap_snprintf(&buffer[idx], maxlen,
+                                        "%s%" PRId32 ".%" PRId32,
+                                        negative, whole, decimal);
   return idx + next_position;
 }
 
@@ -978,7 +979,7 @@ int sprintf(char* buffer, const char* format, ...)
 }
 
 
-int snprintf(char* buffer, size_t count, const char* format, ...)
+int __wrap_snprintf(char* buffer, size_t count, const char* format, ...)
 {
   va_list va;
   va_start(va, format);

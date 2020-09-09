@@ -127,8 +127,8 @@ TEST_CASE("Testing FAT FS")
       When(Method(mock_storage, IsMediaPresent)).AlwaysReturn(true);
       // Setup: The error returned is arbitrary
       When(Method(mock_storage, Initialize))
-          .AlwaysReturn(
-              Error(Status::kDeviceNotFound, "Initialize Failed for Testing"));
+          .AlwaysReturn(Error(std::errc::no_such_device,
+                              "Initialize Failed for Testing"));
       When(Method(mock_storage, Enable)).AlwaysReturn({});
 
       // Exercise + Verify
@@ -145,7 +145,7 @@ TEST_CASE("Testing FAT FS")
       When(Method(mock_storage, Initialize)).AlwaysReturn({});
       When(Method(mock_storage, Enable))
           .AlwaysReturn(
-              Error(Status::kNotReadyYet, "Enable Failed for Testing"));
+              Error(std::errc::io_error, "Enable Failed for Testing"));
 
       // Exercise + Verify
       CHECK(STA_NOINIT == disk_initialize(0));
@@ -238,7 +238,7 @@ TEST_CASE("Testing FAT FS")
       // Setup
       uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
       When(Method(mock_storage, Erase))
-          .AlwaysReturn(Error(Status::kBusError, "Erase Failed for Testing"));
+          .AlwaysReturn(Error(std::errc::io_error, "Erase Failed for Testing"));
       When(Method(mock_storage, Write)).AlwaysReturn({});
       When(Method(mock_storage, GetBlockSize)).AlwaysReturn(512_B);
 
@@ -267,7 +267,7 @@ TEST_CASE("Testing FAT FS")
       uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
       When(Method(mock_storage, Erase)).AlwaysReturn({});
       When(Method(mock_storage, Write))
-          .AlwaysReturn(Error(Status::kBusError, "Write Failed for Testing"));
+          .AlwaysReturn(Error(std::errc::io_error, "Write Failed for Testing"));
       When(Method(mock_storage, GetBlockSize)).AlwaysReturn(512_B);
 
       uint32_t sector     = 5;
@@ -342,7 +342,7 @@ TEST_CASE("Testing FAT FS")
       // Setup
       uint8_t payload[512];
       When(Method(mock_storage, Read))
-          .AlwaysReturn(Error(Status::kBusError, "Read Failed for Testing"));
+          .AlwaysReturn(Error(std::errc::io_error, "Read Failed for Testing"));
       When(Method(mock_storage, GetBlockSize)).AlwaysReturn(512_B);
 
       uint32_t sector     = 5;

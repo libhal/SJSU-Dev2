@@ -115,9 +115,8 @@ TEST_CASE("Testing L1 uart")
     When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .AlwaysDo([&read_was_called](void * data_ptr, size_t size) -> size_t {
           uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-          std::array<uint8_t, kPayloadLength> response = {
-            0xAA, 0xBB, 0xCC, 0xDD
-          };
+          std::array<uint8_t, kPayloadLength> response = { 0xAA, 0xBB, 0xCC,
+                                                           0xDD };
           for (size_t i = 0; i < size; i++)
           {
             data[i] = response[read_was_called++];
@@ -126,11 +125,10 @@ TEST_CASE("Testing L1 uart")
         });
 
     // Exercise
-    Status status = uart.Read(bytes.data(), bytes.size(), 10us);
+    REQUIRE(uart.Read(bytes.data(), bytes.size(), 10us));
 
     // Verify
     CHECK(kPayloadLength == read_was_called);
-    CHECK(Status::kSuccess == status);
     Verify(Method(mock_uart, HasData)).Exactly(7);
     Verify(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .Exactly(kPayloadLength);
@@ -157,9 +155,8 @@ TEST_CASE("Testing L1 uart")
     When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .AlwaysDo([&read_was_called](void * data_ptr, size_t size) -> size_t {
           uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-          std::array<uint8_t, kPayloadLength> response = {
-            0xAA, 0xBB, 0xCC, 0xDD
-          };
+          std::array<uint8_t, kPayloadLength> response = { 0xAA, 0xBB, 0xCC,
+                                                           0xDD };
           for (size_t i = 0; i < size; i++)
           {
             data[i] = response[read_was_called++];
@@ -168,11 +165,11 @@ TEST_CASE("Testing L1 uart")
         });
 
     // Exercise
-    Status status = uart.Read(bytes.data(), bytes.size(), 10us);
+    auto status = uart.Read(bytes.data(), bytes.size(), 10us);
 
     // Verify
     CHECK(kPayloadLength - 1 == read_was_called);
-    CHECK(Status::kTimedOut == status);
+    CHECK(std::errc::timed_out == status);
     Verify(Method(mock_uart, HasData)).Exactly(8);
     Verify(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .Exactly(kPayloadLength - 1);

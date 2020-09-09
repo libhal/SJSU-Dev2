@@ -1,15 +1,16 @@
 <map id="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L2_HAL/sensors/movement/accelerometer.hpp" name="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L2_HAL/sensors/movement/accelerometer.hpp">
-<area shape="rect" id="node4" href="$d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1251,124,1363,151"/>
-<area shape="rect" id="node17" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1820,601,1944,628"/>
-<area shape="rect" id="node31" href="$db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="551,273,683,300"/>
-<area shape="rect" id="node13" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1369,527,1459,553"/>
-<area shape="rect" id="node16" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="1595,601,1711,628"/>
-<area shape="rect" id="node20" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="1337,437,1491,479"/>
-<area shape="rect" id="node21" href="$d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="1831,273,1986,300"/>
-<area shape="rect" id="node23" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1137,355,1269,382"/>
-<area shape="rect" id="node29" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1515,445,1655,471"/>
-<area shape="rect" id="node30" href="$de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="937,199,1059,225"/>
-<area shape="rect" id="node15" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1343,601,1485,628"/>
-<area shape="rect" id="node26" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="1016,445,1156,471"/>
-<area shape="rect" id="node28" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="609,445,765,471"/>
+<area shape="rect" id="node4" href="$d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1482,124,1594,151"/>
+<area shape="rect" id="node17" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1795,601,1919,628"/>
+<area shape="rect" id="node32" href="$db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="965,273,1097,300"/>
+<area shape="rect" id="node13" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1515,527,1604,553"/>
+<area shape="rect" id="node16" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="1655,601,1771,628"/>
+<area shape="rect" id="node20" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="1687,437,1840,479"/>
+<area shape="rect" id="node21" href="$d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="1677,273,1831,300"/>
+<area shape="rect" id="node23" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1627,355,1759,382"/>
+<area shape="rect" id="node29" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="971,445,1111,471"/>
+<area shape="rect" id="node30" href="$de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="383,199,506,225"/>
+<area shape="rect" id="node15" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1489,601,1630,628"/>
+<area shape="rect" id="node26" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="1381,445,1521,471"/>
+<area shape="rect" id="node28" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="532,445,688,471"/>
+<area shape="rect" id="node35" href="$dd/d0a/enum_8hpp.html" title="utility/enum.hpp" alt="" coords="1019,355,1148,382"/>
 </map>
