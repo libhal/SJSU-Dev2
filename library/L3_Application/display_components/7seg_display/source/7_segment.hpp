@@ -3,7 +3,6 @@
 #include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "L3_Application/graphics.hpp"
 
-#include "utility/log.hpp"
 namespace sjsu
 {
 class SevenSegmentDisplay
