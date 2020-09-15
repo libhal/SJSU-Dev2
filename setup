@@ -107,12 +107,6 @@ function install_mac_osx_prerequisites() {
   echo ""
   echo "└────────────────────────────────────────────────── "
   echo " ───────────────────────────────────────────────────┐"
-  echo "          Prompt Git installer by invoking it        "
-  echo "└─────────────────────────────────────────────────── "
-  git --version
-  local git_status=$?
-  print_status_nl $git_status
-  echo " ───────────────────────────────────────────────────┐"
   echo "               Installing Homebrew                   "
   echo "└─────────────────────────────────────────────────── "
   which -s brew
@@ -122,7 +116,12 @@ function install_mac_osx_prerequisites() {
     local brew_install=$?
   fi
   print_status_nl $brew_install
-
+  echo " ───────────────────────────────────────────────────┐"
+  echo "          Prompt Git installer by invoking it        "
+  echo "└─────────────────────────────────────────────────── "
+  git --version
+  local git_status=$?
+  print_status_nl $git_status
   echo " ───────────────────────────────────────────────────┐"
   echo "               Brew Install Python@3                 "
   echo "└─────────────────────────────────────────────────── "
