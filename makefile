@@ -158,8 +158,17 @@ TEST_ARGUMENTS  ?=
 # Tool chain paths
 # ==============================================================================
 
-SJCLANG      = $(shell cd $(SJSU_DEV2_BASE)/tools/clang+llvm-*/ ; pwd)
-SJARMGCC     = $(shell cd $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/ ; pwd)
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	OS := linux
+endif
+ifeq ($(UNAME_S),Darwin)
+	OS := osx
+endif
+
+TOOLCHAIN_DIR = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-nano-exceptions/$(OS)
+SJCLANG          = $(shell cd $(TOOLCHAIN_DIR)/clang+llvm-*/ ; pwd)
+SJARMGCC         = $(shell cd $(TOOLCHAIN_DIR)/gcc-arm-none-eabi-*/ ; pwd)
 SJ2_OPENOCD_DIR  = $(shell grep -q Microsoft /proc/version && \
                            echo "$(SJSU_DEV2_BASE)/tools/openocd-wsl" || \
                            echo "$(SJSU_DEV2_BASE)/tools/openocd")
