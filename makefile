@@ -1,4 +1,18 @@
 # ==============================================================================
+# ANSI Color Codes Constants
+# ==============================================================================
+
+RED     = $(shell echo "\x1B[31;1m")
+GREEN   = $(shell echo "\x1B[32;1m")
+YELLOW  = $(shell echo "\x1B[33;1m")
+BLUE    = $(shell echo "\x1B[34;1m")
+MAGENTA = $(shell echo "\x1B[35;1m")
+CYAN    = $(shell echo "\x1B[36;1m")
+WHITE   = $(shell echo "\x1B[37;1m")
+RESET   = $(shell echo "\x1B[0m")
+DIVIDER = ======================================================================
+
+# ==============================================================================
 # Report an error if SJSU_DEV2_BASE does not exist
 # ==============================================================================
 
@@ -9,6 +23,19 @@ $(info | Run make from within a SJSU-Dev2 project folder    |)
 $(info +----------------------------------------------------+)
 $(info $(shell printf '$(RESET)'))
 $(error )
+endif
+
+# ==============================================================================
+# Present setup out of date message
+# ==============================================================================
+
+SETUP_VERSION_PATH    = $(SJSU_DEV2_BASE)/setup_version.txt
+CURRENT_SETUP_VERSION = $(shell cat $(SETUP_VERSION_PATH) 2> /dev/null)
+
+ifneq ($(PREVIOUS_SETUP_VERSION), $(CURRENT_SETUP_VERSION))
+  $(info $(shell printf '$(YELLOW)'))
+  $(info Setup version is out of date! Run ./setup again to resolve this.)
+  $(info $(shell printf '$(RESET)'))
 endif
 
 # ==============================================================================
@@ -57,20 +84,6 @@ SIZE       = $(EXECUTABLE:.elf=.siz)
 MAP        = $(EXECUTABLE:.elf=.map)
 
 TEST_EXECUTABLE = $(SJ2_TEST_EXECUTABLE_DIR)/test.exe
-
-# ==============================================================================
-# ANSI Color Codes Constants
-# ==============================================================================
-
-RED     = $(shell echo "\x1B[31;1m")
-GREEN   = $(shell echo "\x1B[32;1m")
-YELLOW  = $(shell echo "\x1B[33;1m")
-BLUE    = $(shell echo "\x1B[34;1m")
-MAGENTA = $(shell echo "\x1B[35;1m")
-CYAN    = $(shell echo "\x1B[36;1m")
-WHITE   = $(shell echo "\x1B[37;1m")
-RESET   = $(shell echo "\x1B[0m")
-DIVIDER = ======================================================================
 
 # ==============================================================================
 # Default Flags for Firmware
@@ -158,8 +171,17 @@ TEST_ARGUMENTS  ?=
 # Tool chain paths
 # ==============================================================================
 
-SJCLANG      = $(shell cd $(SJSU_DEV2_BASE)/tools/clang+llvm-*/ ; pwd)
-SJARMGCC     = $(shell cd $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/ ; pwd)
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	OS := linux
+endif
+ifeq ($(UNAME_S),Darwin)
+	OS := osx
+endif
+
+TOOLCHAIN_DIR = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-nano-exceptions/$(OS)
+SJCLANG          = $(shell cd $(TOOLCHAIN_DIR)/clang+llvm-*/ ; pwd)
+SJARMGCC         = $(shell cd $(TOOLCHAIN_DIR)/gcc-arm-none-eabi-*/ ; pwd)
 SJ2_OPENOCD_DIR  = $(shell grep -q Microsoft /proc/version && \
                            echo "$(SJSU_DEV2_BASE)/tools/openocd-wsl" || \
                            echo "$(SJSU_DEV2_BASE)/tools/openocd")
