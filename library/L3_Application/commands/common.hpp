@@ -37,7 +37,8 @@ inline Command help("help", "Get information about how to use the SJ2 board");
 /// @param  command_line is the CommandLine object you would like to have the
 ///         command list of commands added to.
 template <template <auto> class CommandLineType,
-          template <size_t> class CommandListType,
+          template <size_t>
+          class CommandListType,
           size_t kSize,
           CommandListType<kSize> & list>
 inline void AddCommonCommands(CommandLineType<list> & command_line)

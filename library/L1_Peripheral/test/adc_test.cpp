@@ -46,7 +46,7 @@ TEST_CASE("Testing ADC Interface")
   SECTION("Voltage")
   {
     // Setup
-    uint32_t expected_active_bits = 12;
+    uint32_t expected_active_bits                          = 12;
     units::voltage::microvolt_t expected_reference_voltage = 3.3_V;
 
     uint32_t expected_adc_reading;

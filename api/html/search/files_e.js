@@ -8,7 +8,6 @@ var searchData=
   ['spi_2ehpp',['spi.hpp',['../d9/dfe/lpc17xx_2spi_8hpp.html',1,'(Global Namespace)'],['../dd/d0d/lpc40xx_2spi_8hpp.html',1,'(Global Namespace)'],['../d7/de4/spi_8hpp.html',1,'(Global Namespace)']]],
   ['ssd1306_2ehpp',['ssd1306.hpp',['../d8/d59/ssd1306_8hpp.html',1,'']]],
   ['st7066u_2ehpp',['st7066u.hpp',['../d3/d4e/st7066u_8hpp.html',1,'']]],
-  ['status_2ehpp',['status.hpp',['../db/dcd/status_8hpp.html',1,'']]],
   ['stdio_2ecpp',['stdio.cpp',['../df/dce/stdio_8cpp.html',1,'']]],
   ['stopwatch_2ehpp',['stopwatch.hpp',['../dd/d41/stopwatch_8hpp.html',1,'']]],
   ['storage_2ehpp',['storage.hpp',['../da/d07/storage_8hpp.html',1,'']]],

@@ -94,18 +94,18 @@ Inheritance diagram for sjsu::DistanceSensor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a740936e7ae8ee66e33fd03af1ecf6f7c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#a740936e7ae8ee66e33fd03af1ecf6f7c">Initialize</a> ()=0</td></tr>
-<tr class="separator:a740936e7ae8ee66e33fd03af1ecf6f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8304a3ae5ff96e0343a09c9ce935999a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; units::length::millimeter_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#a8304a3ae5ff96e0343a09c9ce935999a">GetDistance</a> ()=0</td></tr>
-<tr class="separator:a8304a3ae5ff96e0343a09c9ce935999a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f47d0726095c836eee7218a88251a8a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#a1f47d0726095c836eee7218a88251a8a">GetSignalStrengthPercent</a> ()=0</td></tr>
-<tr class="separator:a1f47d0726095c836eee7218a88251a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74ffd294790b96d2fa7cd1387ce06c9d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#a74ffd294790b96d2fa7cd1387ce06c9d">Initialize</a> ()=0</td></tr>
+<tr class="separator:a74ffd294790b96d2fa7cd1387ce06c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8d3c7835790acdf9d8bb7594d7c7404"><td class="memItemLeft" align="right" valign="top">virtual units::length::millimeter_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#aa8d3c7835790acdf9d8bb7594d7c7404">GetDistance</a> ()=0</td></tr>
+<tr class="separator:aa8d3c7835790acdf9d8bb7594d7c7404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a013c993c01182dc53783899a080c677b"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5c/classsjsu_1_1DistanceSensor.html#a013c993c01182dc53783899a080c677b">GetSignalStrengthPercent</a> ()=0</td></tr>
+<tr class="separator:a013c993c01182dc53783899a080c677b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface for a sensor that can measure distance in a single dimension, such as 1D lidar, ultrasonic range sensor, or infared distance sensor. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8304a3ae5ff96e0343a09c9ce935999a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8304a3ae5ff96e0343a09c9ce935999a">&#9670;&nbsp;</a></span>GetDistance()</h2>
+<a id="aa8d3c7835790acdf9d8bb7594d7c7404"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8d3c7835790acdf9d8bb7594d7c7404">&#9670;&nbsp;</a></span>GetDistance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -114,7 +114,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;units::length::millimeter_t&gt; sjsu::DistanceSensor::GetDistance </td>
+          <td class="memname">virtual units::length::millimeter_t sjsu::DistanceSensor::GetDistance </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -129,12 +129,12 @@ Public Member Functions</h2></td></tr>
 <p>Trigger a capture of the current distance reading and return it.</p>
 <dl class="section return"><dt>Returns</dt><dd>measured distance </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a61a63ea71b6ddc3debff3c7cd975070a">sjsu::TFMini</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#adbb2ee871368001fbe271b16d7741cf5">sjsu::TFMini</a>.</p>
 
 </div>
 </div>
-<a id="a1f47d0726095c836eee7218a88251a8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f47d0726095c836eee7218a88251a8a">&#9670;&nbsp;</a></span>GetSignalStrengthPercent()</h2>
+<a id="a013c993c01182dc53783899a080c677b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a013c993c01182dc53783899a080c677b">&#9670;&nbsp;</a></span>GetSignalStrengthPercent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,7 +143,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;float&gt; sjsu::DistanceSensor::GetSignalStrengthPercent </td>
+          <td class="memname">virtual float sjsu::DistanceSensor::GetSignalStrengthPercent </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -158,12 +158,12 @@ Public Member Functions</h2></td></tr>
 <p>Get the signal strength from the distance sensor.</p>
 <dl class="section return"><dt>Returns</dt><dd>the strength of the signal the strength of the measurement. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a2d63ff96a21ba7e64038fcdfd1874b5e">sjsu::TFMini</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a406d1a0aa0973422c0bdceddd4224357">sjsu::TFMini</a>.</p>
 
 </div>
 </div>
-<a id="a740936e7ae8ee66e33fd03af1ecf6f7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a740936e7ae8ee66e33fd03af1ecf6f7c">&#9670;&nbsp;</a></span>Initialize()</h2>
+<a id="a74ffd294790b96d2fa7cd1387ce06c9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74ffd294790b96d2fa7cd1387ce06c9d">&#9670;&nbsp;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,7 +172,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::DistanceSensor::Initialize </td>
+          <td class="memname">virtual void sjsu::DistanceSensor::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -186,7 +186,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Initialize distance sensor hardware. Must be called before running any other methods. </p>
 
-<p>Implemented in <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a7ea92e5b842b5c87fad9a4cd7d32776e">sjsu::TFMini</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a635dc6af4b73d2076521fbb4ecef1478">sjsu::TFMini</a>.</p>
 
 </div>
 </div>

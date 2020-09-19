@@ -37,8 +37,7 @@ namespace sjsu
 /// by the allocator cannot be precise as it is with the other containers. You
 /// may end up with less memory then needed or a lot of extra memory.
 template <class T, const size_t length>
-using Deque =
-    std::deque<T, FixedAllocator<T, length * DEQUE_BUFFER_SIZE(T)>>;
+using Deque = std::deque<T, FixedAllocator<T, length * DEQUE_BUFFER_SIZE(T)>>;
 }  // namespace sjsu
 
 #undef DEQUE_BUFFER_SIZE

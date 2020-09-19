@@ -261,13 +261,13 @@ class UartBase : public sjsu::Uart
     bit::Register(&port_.uart->CR1).Clear(ControlReg::kUsartEnable).Save();
   }
 
-  Returns<void> Initialize(uint32_t baud_rate) const override
+  void Initialize(uint32_t baud_rate) const override
   {
     auto & system = SystemController::GetPlatformController();
 
     if (queue_size_ > 65'535)
     {
-      return Error(
+      throw Exception(
           std::errc::invalid_argument,
           "UART Receive queue size must not exceed the DMA transfer limit of "
           "65,535.");
@@ -302,11 +302,9 @@ class UartBase : public sjsu::Uart
     // NOTE: We leave control settings 2 alone as it is for features beyond
     //       basic UART such as USART clock, USART port network (LIN), and other
     //       things.
-
-    return {};
   }
 
-  Returns<void> SetBaudRate(uint32_t baud_rate) const override
+  void SetBaudRate(uint32_t baud_rate) const override
   {
     auto & system  = SystemController::GetPlatformController();
     auto frequency = system.GetClockRate(port_.id);
@@ -332,7 +330,6 @@ class UartBase : public sjsu::Uart
     port_.uart->BRR = bit::Value<uint16_t>()
                           .Insert(mantissa, BaudRateReg::kMantissa)
                           .Insert(fractional_int, BaudRateReg::kFraction);
-    return {};
   }
 
   void Write(const void * data, size_t size) const override

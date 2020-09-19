@@ -15,7 +15,7 @@
 #include "utility/build_info.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/time.hpp"
 
 namespace sjsu
@@ -316,7 +316,7 @@ class I2c final : public sjsu::I2c
   {
   }
 
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     i2c_.sda_pin.SetPinFunction(i2c_.pin_function);
     i2c_.scl_pin.SetPinFunction(i2c_.pin_function);
@@ -346,14 +346,12 @@ class I2c final : public sjsu::I2c
         .interrupt_request_number = i2c_.irq_number,
         .interrupt_handler        = [this]() { I2cHandler(i2c_); },
     });
-
-    return {};
   }
 
-  Returns<void> Transaction(Transaction_t transaction) const override
+  void Transaction(Transaction_t transaction) const override
   {
-    i2c_.transaction       = transaction;
-    i2c_.registers->CONSET = Control::kStart;
+    i2c_.transaction = transaction;
+    i2c_.registers->CONSET |= Control::kStart;
     return BlockUntilFinished();
   }
 
@@ -374,19 +372,19 @@ class I2c final : public sjsu::I2c
   /// Since this I2C implementation utilizes interrupts, while the transaction
   /// is happening, on the bus, block the sequence of execution until the
   /// transaction has completed, OR the timeout has elapsed.
-  Returns<void> BlockUntilFinished() const
+  void BlockUntilFinished() const
   {
     // Skip waiting on the interrupt if running a host unit test
     if constexpr (build::kPlatform == build::Platform::host)
     {
-      return {};
     }
 
     if (!IsIntialized())
     {
-      return Error(std::errc::operation_not_permitted,
-                   "Attempt to use I2C, before peripheral was not INITIALIZED!"
-                   "Be sure to run the i2c.Initialize() method first");
+      throw Exception(
+          std::errc::operation_not_permitted,
+          "Attempt to use I2C, before peripheral was not INITIALIZED! Be sure "
+          "to run the i2c.Initialize() method first");
     }
 
     auto wait_for_i2c_transaction = [this]() -> bool {
@@ -397,11 +395,11 @@ class I2c final : public sjsu::I2c
 
     if (i2c_.transaction.status == CommonErrors::kBusError)
     {
-      return DefinedError(CommonErrors::kBusError);
+      throw CommonErrors::kBusError;
     }
     else if (i2c_.transaction.status == CommonErrors::kDeviceNotFound)
     {
-      return DefinedError(CommonErrors::kDeviceNotFound);
+      throw CommonErrors::kDeviceNotFound;
     }
     else if (!wait_status)
     {
@@ -410,13 +408,12 @@ class I2c final : public sjsu::I2c
 
       if (i2c_.transaction.out_length == 0 || i2c_.transaction.in_length == 0)
       {
-        return DefinedError(CommonErrors::kTimeout);
+        throw CommonErrors::kTimeout;
       }
     }
 
     // Ensure that start is cleared before leaving this function
     i2c_.registers->CONCLR = Control::kStart;
-    return {};
   }
 
   const Bus_t & i2c_;

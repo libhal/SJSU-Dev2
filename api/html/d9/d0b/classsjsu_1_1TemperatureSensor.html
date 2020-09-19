@@ -98,18 +98,18 @@ Inheritance diagram for sjsu::TemperatureSensor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a16d0d0466acfd8a1fdbd7c42a524c7eb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a16d0d0466acfd8a1fdbd7c42a524c7eb">Initialize</a> () const =0</td></tr>
-<tr class="separator:a16d0d0466acfd8a1fdbd7c42a524c7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0c500a10f7fbe2a9f0320418c7535e4"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#aa0c500a10f7fbe2a9f0320418c7535e4">Enable</a> () const =0</td></tr>
-<tr class="separator:aa0c500a10f7fbe2a9f0320418c7535e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11e551fa2ab77283789409515a566f1a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; units::temperature::celsius_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a11e551fa2ab77283789409515a566f1a">GetTemperature</a> () const =0</td></tr>
-<tr class="separator:a11e551fa2ab77283789409515a566f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae30d042a6131d5c256a04264c2e2870f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#ae30d042a6131d5c256a04264c2e2870f">Initialize</a> () const =0</td></tr>
+<tr class="separator:ae30d042a6131d5c256a04264c2e2870f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f1ac791a15f493d820da182c4128b00"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#a4f1ac791a15f493d820da182c4128b00">Enable</a> () const =0</td></tr>
+<tr class="separator:a4f1ac791a15f493d820da182c4128b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdc8f9b38c8db7a426b951bbe2068ae9"><td class="memItemLeft" align="right" valign="top">virtual units::temperature::celsius_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html#abdc8f9b38c8db7a426b951bbe2068ae9">GetTemperature</a> () const =0</td></tr>
+<tr class="separator:abdc8f9b38c8db7a426b951bbe2068ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An abstract interface for temperature sensing device drivers. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa0c500a10f7fbe2a9f0320418c7535e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0c500a10f7fbe2a9f0320418c7535e4">&#9670;&nbsp;</a></span>Enable()</h2>
+<a id="a4f1ac791a15f493d820da182c4128b00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f1ac791a15f493d820da182c4128b00">&#9670;&nbsp;</a></span>Enable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,7 +118,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::TemperatureSensor::Enable </td>
+          <td class="memname">virtual void sjsu::TemperatureSensor::Enable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -131,14 +131,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Call this after Initialize to enable the sensor.</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d1/d36/classsjsu_1_1Error__t.html">Error_t</a> if an error occurred when attempting to enable the device. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Error_t if an error occurred when attempting to enable the device. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#ae2475bccf8ff551e0f564e511c6c89ac">sjsu::Tmp102</a>, and <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#aab1aa8e5f478eee1b15756128e02d8cc">sjsu::Si7060</a>.</p>
+<p>Implemented in <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a9ddcbd84d92348bf015f8b7f8a3818ea">sjsu::Tmp102</a>, and <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#a0898a6f12153fc90ddb67e52faf97dd3">sjsu::Si7060</a>.</p>
 
 </div>
 </div>
-<a id="a11e551fa2ab77283789409515a566f1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11e551fa2ab77283789409515a566f1a">&#9670;&nbsp;</a></span>GetTemperature()</h2>
+<a id="abdc8f9b38c8db7a426b951bbe2068ae9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdc8f9b38c8db7a426b951bbe2068ae9">&#9670;&nbsp;</a></span>GetTemperature()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -147,7 +147,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;units::temperature::celsius_t&gt; sjsu::TemperatureSensor::GetTemperature </td>
+          <td class="memname">virtual units::temperature::celsius_t sjsu::TemperatureSensor::GetTemperature </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -162,12 +162,12 @@ Public Member Functions</h2></td></tr>
 <p>Retrieves the temperature reading and writes the value to the designated memory address.</p>
 <dl class="section return"><dt>Returns</dt><dd>Returns units::temperature::celsius_t on success. On error, will </dd></dl>
 
-<p>Implemented in <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#aa1e8be3ffd5ef3315648b2746a0d459c">sjsu::Si7060</a>, and <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#ad152e0b6699eccf0492bbefdb40048e5">sjsu::Tmp102</a>.</p>
+<p>Implemented in <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#a9f3983ea3af1dabd8c29daa1a2e50912">sjsu::Si7060</a>, and <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a79d24b590190571ed1219ed5b45945d7">sjsu::Tmp102</a>.</p>
 
 </div>
 </div>
-<a id="a16d0d0466acfd8a1fdbd7c42a524c7eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16d0d0466acfd8a1fdbd7c42a524c7eb">&#9670;&nbsp;</a></span>Initialize()</h2>
+<a id="ae30d042a6131d5c256a04264c2e2870f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae30d042a6131d5c256a04264c2e2870f">&#9670;&nbsp;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,7 +176,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::TemperatureSensor::Initialize </td>
+          <td class="memname">virtual void sjsu::TemperatureSensor::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -189,9 +189,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Initialize peripherals. This must be called before any other method in this interface is called.</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d1/d36/classsjsu_1_1Error__t.html">Error_t</a> if an error occurred during initialization </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Error_t if an error occurred during initialization </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a81b450d096434760a8972129646ff2a8">sjsu::Tmp102</a>, and <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#aa860a3c063a8c037513ead297bba87ec">sjsu::Si7060</a>.</p>
+<p>Implemented in <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a8976f4e1f0a2badca6b1117fc7b126d2">sjsu::Tmp102</a>, and <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#a40316a1a9b2f667efab2fd093b29214b">sjsu::Si7060</a>.</p>
 
 </div>
 </div>

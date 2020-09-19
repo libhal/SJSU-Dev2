@@ -96,10 +96,10 @@ Inheritance diagram for sjsu::Uart:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8dd865c69be143bac0262353c8ec7f81"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a8dd865c69be143bac0262353c8ec7f81">Initialize</a> (uint32_t baud_rate) const =0</td></tr>
-<tr class="separator:a8dd865c69be143bac0262353c8ec7f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7ae85cb2de0a7915b00ef905956d2d3"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#ac7ae85cb2de0a7915b00ef905956d2d3">SetBaudRate</a> (uint32_t baud_rate) const =0</td></tr>
-<tr class="separator:ac7ae85cb2de0a7915b00ef905956d2d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad276be5a20b3aab35db7977a3435444e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#ad276be5a20b3aab35db7977a3435444e">Initialize</a> (uint32_t baud_rate) const =0</td></tr>
+<tr class="separator:ad276be5a20b3aab35db7977a3435444e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a812c0a57736f70fb9083fdd00305dcdd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a812c0a57736f70fb9083fdd00305dcdd">SetBaudRate</a> (uint32_t baud_rate) const =0</td></tr>
+<tr class="separator:a812c0a57736f70fb9083fdd00305dcdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a018e450d642c39889b8598f80598831f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a018e450d642c39889b8598f80598831f">Write</a> (const void *data, size_t size) const =0</td></tr>
 <tr class="separator:a018e450d642c39889b8598f80598831f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45920b923b0f0dff051aa249b3feb8dd"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a45920b923b0f0dff051aa249b3feb8dd">Read</a> (void *data, size_t size) const =0</td></tr>
@@ -116,8 +116,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2088945da7c58af8cffcdd6ede11583e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a548981496b8d6c342b34e1a10e286e9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a548981496b8d6c342b34e1a10e286e9d">PollingFlush</a> () const</td></tr>
 <tr class="separator:a548981496b8d6c342b34e1a10e286e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afedb7c394be96ef420d7311e3eab4ae7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#afedb7c394be96ef420d7311e3eab4ae7">Read</a> (void *data, size_t size, std::chrono::nanoseconds timeout) const</td></tr>
-<tr class="separator:afedb7c394be96ef420d7311e3eab4ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dcf5069ed1032a9fede7c6f0f1e5291"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html#a4dcf5069ed1032a9fede7c6f0f1e5291">Read</a> (void *data, size_t size, std::chrono::nanoseconds timeout) const</td></tr>
+<tr class="separator:a4dcf5069ed1032a9fede7c6f0f1e5291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An abstract interface for hardware that implements the Universal Asynchronous Receiver Transmitter (UART) hardware communication Protocol. </p>
@@ -179,8 +179,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8dd865c69be143bac0262353c8ec7f81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dd865c69be143bac0262353c8ec7f81">&#9670;&nbsp;</a></span>Initialize()</h2>
+<a id="ad276be5a20b3aab35db7977a3435444e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad276be5a20b3aab35db7977a3435444e">&#9670;&nbsp;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -189,7 +189,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::Uart::Initialize </td>
+          <td class="memname">virtual void sjsu::Uart::Initialize </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>baud_rate</em></td><td>)</td>
@@ -210,7 +210,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#aff349afef53d1e54f250b319a37ce043">sjsu::lpc40xx::Uart</a>, and <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a91b0086b5a296f97f2d93b8b7615c7d5">sjsu::stm32f10x::UartBase</a>.</p>
+<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a1d3201d9e83f4d7a5ef44c33f9a7cbe1">sjsu::lpc40xx::Uart</a>, and <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#afc80b728e7ac6ecb480fa01fa35313aa">sjsu::stm32f10x::UartBase</a>.</p>
 
 </div>
 </div>
@@ -314,8 +314,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="afedb7c394be96ef420d7311e3eab4ae7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afedb7c394be96ef420d7311e3eab4ae7">&#9670;&nbsp;</a></span>Read() <span class="overload">[3/3]</span></h2>
+<a id="a4dcf5069ed1032a9fede7c6f0f1e5291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dcf5069ed1032a9fede7c6f0f1e5291">&#9670;&nbsp;</a></span>Read() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -324,7 +324,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::Uart::Read </td>
+          <td class="memname">size_t sjsu::Uart::Read </td>
           <td>(</td>
           <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -366,8 +366,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac7ae85cb2de0a7915b00ef905956d2d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7ae85cb2de0a7915b00ef905956d2d3">&#9670;&nbsp;</a></span>SetBaudRate()</h2>
+<a id="a812c0a57736f70fb9083fdd00305dcdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a812c0a57736f70fb9083fdd00305dcdd">&#9670;&nbsp;</a></span>SetBaudRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -376,7 +376,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::Uart::SetBaudRate </td>
+          <td class="memname">virtual void sjsu::Uart::SetBaudRate </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>baud_rate</em></td><td>)</td>
@@ -397,7 +397,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a2b7e2e2be623d4d833a56011b0b15c94">sjsu::lpc40xx::Uart</a>, and <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#ac311e404663e9cb142894e399c0d64dd">sjsu::stm32f10x::UartBase</a>.</p>
+<p>Implemented in <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a997c255893b76fa0eafd2c83cd253d68">sjsu::lpc40xx::Uart</a>, and <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a5029f79c0b89a89ad7abd08b440d2de5">sjsu::stm32f10x::UartBase</a>.</p>
 
 </div>
 </div>

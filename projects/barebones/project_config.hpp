@@ -9,5 +9,6 @@
 #define SJ2_INCLUDE_BACKTRACE false
 #define SJ2_ENABLE_ANSI_CODES false
 #define SJ2_INCLUDE_VSNPRINTF false
+#define SJ2_STORE_ERROR_CODE_STRING false
 
 #include "config.hpp"

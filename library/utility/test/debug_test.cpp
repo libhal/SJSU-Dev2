@@ -17,7 +17,7 @@ TEST_CASE("Testing Debug Utilities")
   int debug_memory_out_position = 0;
 
   sjsu::newlib::SetStdout([&debug_memory_out, &debug_memory_out_position](
-                        const char * out_char, size_t length) {
+                              const char * out_char, size_t length) {
     for (size_t i = 0; i < length; i++)
     {
       debug_memory_out[debug_memory_out_position++] = out_char[i];

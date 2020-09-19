@@ -89,7 +89,7 @@ $(function() {
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &quot;<a class="el" href="../../db/dbe/macros_8hpp_source.html">utility/macros.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="../../db/dcd/status_8hpp_source.html">utility/status.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../da/d85/error__handling_8hpp_source.html">utility/error_handling.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../de/d06/units_8hpp_source.html">utility/units.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../dd/d98/build__info_8hpp_source.html">utility/build_info.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -97,17 +97,13 @@ Include dependency graph for time.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d8d/time_8hpp__incl.png" border="0" usemap="#_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2utility_2time_8hpp" alt=""/></div>
 <map name="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2utility_2time_8hpp" id="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2utility_2time_8hpp">
-<area shape="rect" id="node7" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1435,281,1575,307"/>
-<area shape="rect" id="node8" href="../../db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="649,109,781,136"/>
-<area shape="rect" id="node23" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1351,437,1475,464"/>
-<area shape="rect" id="node28" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1599,281,1755,307"/>
-<area shape="rect" id="node13" href="../../da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1169,191,1301,218"/>
-<area shape="rect" id="node29" href="../../dd/d0a/enum_8hpp.html" title="utility/enum.hpp" alt="" coords="582,191,711,218"/>
-<area shape="rect" id="node19" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="734,363,823,389"/>
-<area shape="rect" id="node26" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="481,281,621,307"/>
-<area shape="rect" id="node27" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="645,273,798,315"/>
-<area shape="rect" id="node21" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="805,437,947,464"/>
-<area shape="rect" id="node22" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="665,437,781,464"/>
+<area shape="rect" id="node7" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="449,109,589,136"/>
+<area shape="rect" id="node8" href="../../da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="613,109,800,136"/>
+<area shape="rect" id="node15" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="781,273,905,300"/>
+<area shape="rect" id="node19" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="875,109,1031,136"/>
+<area shape="rect" id="node11" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="506,191,595,218"/>
+<area shape="rect" id="node13" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="475,273,616,300"/>
+<area shape="rect" id="node14" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="641,273,757,300"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -186,10 +182,10 @@ Functions</h2></td></tr>
 <tr class="separator:a0f84f67b465422655089cda4b4a60877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e2cb4b7be14a36c3477dcae3a3010a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8e2cb4b7be14a36c3477dcae3a3010a0">sjsu::SetUptimeFunction</a> (UptimeFunction uptime_function)</td></tr>
 <tr class="separator:a8e2cb4b7be14a36c3477dcae3a3010a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f8c177c5efd6409564904c519f3973d"><td class="memItemLeft" align="right" valign="top">Returns&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a8f8c177c5efd6409564904c519f3973d">sjsu::Wait</a> (std::chrono::nanoseconds timeout, std::function&lt; bool()&gt; is_done)</td></tr>
-<tr class="separator:a8f8c177c5efd6409564904c519f3973d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6a490716a7297b782241e14ed72aff7"><td class="memItemLeft" align="right" valign="top">Returns&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#ac6a490716a7297b782241e14ed72aff7">sjsu::Wait</a> (std::chrono::nanoseconds timeout)</td></tr>
-<tr class="separator:ac6a490716a7297b782241e14ed72aff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e96d17a3a8ea14334ffd5dec0c2a57d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7e96d17a3a8ea14334ffd5dec0c2a57d">sjsu::Wait</a> (std::chrono::nanoseconds timeout, std::function&lt; bool()&gt; is_done)</td></tr>
+<tr class="separator:a7e96d17a3a8ea14334ffd5dec0c2a57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaafca375166d07300d811d148908726"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#afaafca375166d07300d811d148908726">sjsu::Wait</a> (std::chrono::nanoseconds timeout)</td></tr>
+<tr class="separator:afaafca375166d07300d811d148908726"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40f4acbe88fb1a753773ef651ffb0bac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a40f4acbe88fb1a753773ef651ffb0bac">sjsu::nanosleep</a> (const timespec *, const timespec *)</td></tr>
 <tr class="separator:a40f4acbe88fb1a753773ef651ffb0bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7296da8e9d2335075c51565cc1a0060f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a7296da8e9d2335075c51565cc1a0060f">sjsu::Delay</a> (std::chrono::nanoseconds delay_time)</td></tr>

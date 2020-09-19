@@ -1,18 +1,17 @@
 <map id="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L3_Application/commandline.hpp" name="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L3_Application/commandline.hpp">
-<area shape="rect" id="node5" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="698,609,838,635"/>
-<area shape="rect" id="node8" href="$da/d16/vector_8hpp.html" title="utility/containers\l/vector.hpp" alt="" coords="266,124,398,165"/>
-<area shape="rect" id="node13" href="$d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1491,288,1603,315"/>
-<area shape="rect" id="node10" href="$d5/d61/allocator_8hpp.html" title="utility/allocator.hpp" alt="" coords="1869,213,2017,240"/>
-<area shape="rect" id="node20" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1531,691,1621,717"/>
-<area shape="rect" id="node22" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="1797,765,1913,792"/>
-<area shape="rect" id="node26" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="1499,601,1653,643"/>
-<area shape="rect" id="node27" href="$d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="2096,437,2251,464"/>
-<area shape="rect" id="node28" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1458,519,1590,546"/>
-<area shape="rect" id="node32" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1729,609,1869,635"/>
-<area shape="rect" id="node33" href="$de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="1273,363,1396,389"/>
-<area shape="rect" id="node35" href="$db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="731,437,863,464"/>
-<area shape="rect" id="node21" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1505,765,1647,792"/>
-<area shape="rect" id="node23" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1223,765,1347,792"/>
-<area shape="rect" id="node31" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1073,609,1229,635"/>
-<area shape="rect" id="node38" href="$dd/d0a/enum_8hpp.html" title="utility/enum.hpp" alt="" coords="138,519,267,546"/>
+<area shape="rect" id="node5" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="45,445,185,471"/>
+<area shape="rect" id="node8" href="$da/d16/vector_8hpp.html" title="utility/containers\l/vector.hpp" alt="" coords="603,124,735,165"/>
+<area shape="rect" id="node13" href="$d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="771,288,883,315"/>
+<area shape="rect" id="node10" href="$d5/d61/allocator_8hpp.html" title="utility/allocator.hpp" alt="" coords="395,213,543,240"/>
+<area shape="rect" id="node20" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="601,534,691,561"/>
+<area shape="rect" id="node22" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="5,616,121,643"/>
+<area shape="rect" id="node26" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="401,437,555,479"/>
+<area shape="rect" id="node27" href="$d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="363,363,518,389"/>
+<area shape="rect" id="node28" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="883,363,1015,389"/>
+<area shape="rect" id="node32" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1067,445,1207,471"/>
+<area shape="rect" id="node33" href="$de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="1499,363,1622,389"/>
+<area shape="rect" id="node35" href="$da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="1845,445,2031,471"/>
+<area shape="rect" id="node21" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="575,616,717,643"/>
+<area shape="rect" id="node23" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1289,616,1413,643"/>
+<area shape="rect" id="node31" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1424,445,1580,471"/>
 </map>

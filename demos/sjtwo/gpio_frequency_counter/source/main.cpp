@@ -3,7 +3,7 @@
 #include "L1_Peripheral/frequency_counter.hpp"
 #include "utility/time.hpp"
 #include "utility/log.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 int main()
 {
@@ -43,8 +43,7 @@ int main()
   while (true)
   {
     // Using printf here to reduce the latency between each
-    auto frequency =
-        SJ2_RETURN_VALUE_ON_ERROR(frequency_counter.GetFrequency(), -1);
+    auto frequency = frequency_counter.GetFrequency();
     sjsu::LogInfo("Freq = %f\n", frequency.to<double>());
     sjsu::Delay(1000ms);
   }

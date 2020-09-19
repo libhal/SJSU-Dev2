@@ -3,7 +3,7 @@
 #include <functional>
 
 #include "utility/infrared_algorithms.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -19,7 +19,7 @@ class InfraredReceiver
 
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual Returns<void> Initialize() = 0;
+  virtual void Initialize() = 0;
 
   /// Sets the callback handler that is invoked when a data frame is received.
   ///

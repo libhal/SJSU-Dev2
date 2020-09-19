@@ -1,18 +1,14 @@
 <map id="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L1_Peripheral/hardware_counter.hpp" name="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L1_Peripheral/hardware_counter.hpp">
-<area shape="rect" id="node4" href="$d1/d2c/gpio_8hpp.html" title="L1_Peripheral/gpio.hpp" alt="" coords="321,124,492,151"/>
-<area shape="rect" id="node33" href="$dd/d0a/enum_8hpp.html" title="utility/enum.hpp" alt="" coords="1671,459,1801,486"/>
-<area shape="rect" id="node6" href="$df/d97/interrupt_8hpp.html" title="L1_Peripheral/interrupt.hpp" alt="" coords="146,549,345,575"/>
-<area shape="rect" id="node7" href="$d4/da5/lpc40xx_2pin_8hpp.html" title="L1_Peripheral/lpc40xx\l/pin.hpp" alt="" coords="705,199,871,240"/>
-<area shape="rect" id="node10" href="$db/dcd/status_8hpp.html" title="utility/status.hpp" alt="" coords="1185,377,1317,404"/>
-<area shape="rect" id="node9" href="$d5/df1/pin_8hpp.html" title="L1_Peripheral/pin.hpp" alt="" coords="588,295,751,322"/>
-<area shape="rect" id="node32" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="606,549,746,575"/>
-<area shape="rect" id="node37" href="$d3/d51/bit_8hpp.html" title="utility/bit.hpp" alt="" coords="1996,459,2105,486"/>
-<area shape="rect" id="node16" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1151,459,1283,486"/>
-<area shape="rect" id="node22" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1801,631,1890,657"/>
-<area shape="rect" id="node29" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="822,549,962,575"/>
-<area shape="rect" id="node30" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="1613,541,1766,583"/>
-<area shape="rect" id="node31" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1275,549,1431,575"/>
-<area shape="rect" id="node24" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1775,705,1916,732"/>
-<area shape="rect" id="node25" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="1486,705,1602,732"/>
-<area shape="rect" id="node26" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1626,705,1750,732"/>
+<area shape="rect" id="node4" href="$d1/d2c/gpio_8hpp.html" title="L1_Peripheral/gpio.hpp" alt="" coords="279,124,449,151"/>
+<area shape="rect" id="node26" href="$dd/d0a/enum_8hpp.html" title="utility/enum.hpp" alt="" coords="1270,295,1399,322"/>
+<area shape="rect" id="node6" href="$df/d97/interrupt_8hpp.html" title="L1_Peripheral/interrupt.hpp" alt="" coords="197,206,395,233"/>
+<area shape="rect" id="node7" href="$d4/da5/lpc40xx_2pin_8hpp.html" title="L1_Peripheral/lpc40xx\l/pin.hpp" alt="" coords="873,199,1039,240"/>
+<area shape="rect" id="node10" href="$da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="471,377,657,404"/>
+<area shape="rect" id="node9" href="$d5/df1/pin_8hpp.html" title="L1_Peripheral/pin.hpp" alt="" coords="699,295,861,322"/>
+<area shape="rect" id="node22" href="$d3/d51/bit_8hpp.html" title="utility/bit.hpp" alt="" coords="1136,295,1245,322"/>
+<area shape="rect" id="node27" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="886,295,1026,322"/>
+<area shape="rect" id="node13" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="866,459,955,486"/>
+<area shape="rect" id="node15" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="684,541,825,568"/>
+<area shape="rect" id="node16" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="850,541,966,568"/>
+<area shape="rect" id="node17" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="990,541,1114,568"/>
 </map>

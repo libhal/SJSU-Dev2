@@ -14,7 +14,7 @@
 
 #include "third_party/fakeit/fakeit.hpp"
 #include "third_party/fff/fff.h"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 using namespace fakeit;  // NOLINT
 
@@ -44,6 +44,22 @@ int HostRead(char * payload, size_t length);
   }                                                          \
   auto __full_##class_name = __LetsGo_##class_name(nullptr); \
   }  // namespace
+
+/// @param expression - and expression that, when executed will throw
+/// @param error_code - the error code to compare the one held by the exception
+#define SJ2_CHECK_EXCEPTION(expression, error_code)                        \
+  try                                                                      \
+  {                                                                        \
+    /* Execute expression */                                               \
+    (expression);                                                          \
+    /* Fail this check if this area is reached. */                         \
+    CHECK_MESSAGE(false, "Exception was NOT thrown when it should have!"); \
+  }                                                                        \
+  catch (const ::sjsu::Exception & e)                                      \
+  {                                                                        \
+    /* Verify */                                                           \
+    CHECK(e.GetCode() == error_code);                                      \
+  }
 
 template <typename T>
 class Reflection
@@ -212,29 +228,6 @@ struct StringMaker<std::errc>
   }
 };
 
-template <typename T>
-struct StringMaker<sjsu::Returns<T>>
-{
-  static String convert(const sjsu::Returns<T> & result)  // NOLINT
-  {
-    if (result.has_value())
-    {
-      if constexpr (std::is_void_v<T>)
-      {
-        return "";
-      }
-      else
-      {
-        return StringMaker<T>::convert(result.value());
-      }
-    }
-    else
-    {
-      return sjsu::Stringify(result.error()->code);
-    }
-  }
-};
-
 template <typename T, typename U>
 struct StringMaker<std::chrono::duration<T, U>>  // NOLINT
 {
@@ -244,6 +237,11 @@ struct StringMaker<std::chrono::duration<T, U>>  // NOLINT
   }
 };
 }  // namespace doctest
+
+REGISTER_EXCEPTION_TRANSLATOR(sjsu::Exception & e)
+{
+  return doctest::String(e.what());
+}
 
 namespace sjsu::testing
 {

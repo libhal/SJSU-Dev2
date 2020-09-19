@@ -17,7 +17,6 @@ var searchData=
   ['memory_5faccess_5fprotocol_2ehpp',['memory_access_protocol.hpp',['../d7/dae/memory__access__protocol_8hpp.html',1,'']]],
   ['memory_5fmap',['memory_map',['../d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html#a9565b9f4ed25d41b460f023324c151ab',1,'sjsu::MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte1 &gt;']]],
   ['memoryaccessprotocol',['MemoryAccessProtocol',['../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html',1,'sjsu']]],
-  ['message',['message',['../d1/d36/classsjsu_1_1Error__t.html#aa4dca9fcced15aba14955878d086e37a',1,'sjsu::Error_t']]],
   ['message_5ft',['Message_t',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html',1,'sjsu::Can']]],
   ['millisecond_5fcount',['millisecond_count',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a4b3de8f56a24d2ff25838f07052776ae',1,'sjsu::cortex::SystemTimer']]],
   ['min',['Min',['../d4/d0e/classsjsu_1_1BitLimits.html#a64f08e64f3d047743131b28b3900618f',1,'sjsu::BitLimits']]],

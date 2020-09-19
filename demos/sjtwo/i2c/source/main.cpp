@@ -27,10 +27,14 @@ int main()
          address++)
     {
       uint8_t buffer;
-      auto success = i2c.Read(address, &buffer, sizeof(buffer), 50ms);
-      if (success)
+      try
       {
+        i2c.Read(address, &buffer, sizeof(buffer), 50ms);
         sjsu::LogInfo("    Found device at address: 0x%02X", address);
+      }
+      catch (sjsu::Exception & e)
+      {
+        // Skip exception handling as this is expected from this procedure
       }
     }
 

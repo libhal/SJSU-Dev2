@@ -82,11 +82,11 @@ class SystemController : public sjsu::SystemController
   explicit constexpr SystemController(
       ClockConfiguration_t & clock_configuration);
 
-  Returns<void> Initialize() override;
+  void Initialize() override;
   void * GetClockConfiguration() override;
-  Returns<units::frequency::hertz_t> GetClockRate(
+  units::frequency::hertz_t GetClockRate(
      ResourceID peripheral) const override;
-  Returns<void> SetClockDivider(Clock clock, ClockDivider divider) const;
+  void SetClockDivider(Clock clock, ClockDivider divider) const;
 
   bool IsPeripheralPoweredUp(ResourceID) const override;
   void PowerUpPeripheral(ResourceID) const override;
@@ -96,9 +96,9 @@ class SystemController : public sjsu::SystemController
   void UnlockClockSystemRegisters() const;
   void LockClockSystemRegisters() const;
   void WaitForClockReadyStatus(Clock clock) const;
-  Returns<void> SetClockSource(Clock clock, Oscillator source) const;
-  Returns<units::frequency::hertz_t> ConfigureDcoClock() const;
-  Returns<units::frequency::hertz_t> ConfigureReferenceClock() const;
+  void SetClockSource(Clock clock, Oscillator source) const;
+  units::frequency::hertz_t ConfigureDcoClock() const;
+  units::frequency::hertz_t ConfigureReferenceClock() const;
 };
 ```
 

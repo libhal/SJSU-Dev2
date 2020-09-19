@@ -4,7 +4,7 @@
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/enum.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -55,6 +55,7 @@ TEST_CASE("Testing lpc40xx I2C")
     .scl_pin      = mock_scl_pin.get(),
     .pin_function = 0b010,
   };
+
   I2c test_subject(kMockI2c);
 
   SECTION("Initialize")
@@ -105,107 +106,25 @@ TEST_CASE("Testing lpc40xx I2C")
         .Once();
   }
 
-  SECTION("Transaction test")
-  {
-    constexpr uint32_t kFakeDeviceAddress = 0x22;
-    sjsu::I2c::Transaction_t transaction;
-    transaction.address = 0x22;
-
-    transaction.operation = sjsu::I2c::Operation::kWrite;
-    // With a read operation, the address is shifted by 1 and LSB is set to 0.
-    CHECK((kFakeDeviceAddress << 1) == transaction.GetProperAddress());
-    // With a read operation, the address is shifted by 1 and LSB is set to 1.
-    transaction.operation = sjsu::I2c::Operation::kRead;
-    CHECK(((kFakeDeviceAddress << 1) | 1) == transaction.GetProperAddress());
-  }
-
-  SECTION("Read Setup")
-  {
-    local_i2c.CONSET = 0;
-    uint8_t read_buffer[10];
-
-    test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));
-    sjsu::I2c::Transaction_t actual_transaction =
-        test_subject.GetTransactionInfo();
-
-    CHECK(actual_transaction.address == kAddress);
-    CHECK(actual_transaction.data_out == nullptr);
-    CHECK(actual_transaction.out_length == 0);
-    CHECK(actual_transaction.data_in == read_buffer);
-    CHECK(actual_transaction.in_length == sizeof(read_buffer));
-    CHECK(actual_transaction.position == 0);
-    CHECK(actual_transaction.repeated == false);
-    CHECK(actual_transaction.busy == true);
-    CHECK(static_cast<int>(actual_transaction.status) == 0);
-    CHECK(actual_transaction.operation == I2c::Operation::kRead);
-    CHECK(actual_transaction.timeout == I2c::kI2cTimeout);
-    CHECK(local_i2c.CONSET == I2c::Control::kStart);
-  }
-
-  SECTION("Write Setup")
-  {
-    local_i2c.CONSET = 0;
-    uint8_t write_buffer[10];
-
-    test_subject.Write(kAddress, write_buffer, sizeof(write_buffer));
-    sjsu::I2c::Transaction_t actual_transaction =
-        test_subject.GetTransactionInfo();
-
-    CHECK(actual_transaction.address == kAddress);
-    CHECK(actual_transaction.data_out == write_buffer);
-    CHECK(actual_transaction.out_length == sizeof(write_buffer));
-    CHECK(actual_transaction.data_in == nullptr);
-    CHECK(actual_transaction.in_length == 0);
-    CHECK(actual_transaction.position == 0);
-    CHECK(actual_transaction.repeated == false);
-    CHECK(actual_transaction.busy == true);
-    CHECK(static_cast<int>(actual_transaction.status) == 0);
-    CHECK(actual_transaction.operation == I2c::Operation::kWrite);
-    CHECK(actual_transaction.timeout == I2c::kI2cTimeout);
-    CHECK(local_i2c.CONSET == I2c::Control::kStart);
-  }
-
-  SECTION("Write and Read Setup")
-  {
-    local_i2c.CONSET = 0;
-    uint8_t read_buffer[10];
-    uint8_t write_buffer[15];
-
-    test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
-                               read_buffer, sizeof(read_buffer));
-    sjsu::I2c::Transaction_t actual_transaction =
-        test_subject.GetTransactionInfo();
-
-    CHECK(actual_transaction.address == kAddress);
-    CHECK(actual_transaction.data_out == write_buffer);
-    CHECK(actual_transaction.out_length == sizeof(write_buffer));
-    CHECK(actual_transaction.data_in == read_buffer);
-    CHECK(actual_transaction.in_length == sizeof(read_buffer));
-    CHECK(actual_transaction.position == 0);
-    CHECK(actual_transaction.repeated == true);
-    CHECK(actual_transaction.busy == true);
-    CHECK(static_cast<int>(actual_transaction.status) == 0);
-    CHECK(actual_transaction.operation == I2c::Operation::kWrite);
-    CHECK(actual_transaction.timeout == I2c::kI2cTimeout);
-    CHECK(local_i2c.CONSET == I2c::Control::kStart);
-  }
-
 #define CHECK_BITS(mask, reg) CHECK(mask == (reg & mask))
 
   auto setup_state_machine = [&](I2c::MasterState state) {
     local_i2c.STAT   = Value(state);
-    local_i2c.CONSET = 0;
+    local_i2c.CONSET = I2c::Control::kInterfaceEnable;
     local_i2c.CONCLR = 0;
     local_i2c.DAT    = 0;
   };
 
   SECTION("I2C State Machine: kBusError")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kBusError);
+
+    // Exercise
     test_subject.I2cHandler(kMockI2c);
-    sjsu::I2c::Transaction_t actual_transaction =
-        test_subject.GetTransactionInfo();
-    CHECK(std::errc::io_error == actual_transaction.status);
+
+    // Verify
+    CHECK(std::errc::io_error == test_subject.GetTransactionInfo().status);
     CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
@@ -213,18 +132,35 @@ TEST_CASE("Testing lpc40xx I2C")
 
   SECTION("I2C State Machine: kStartCondition")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kStartCondition);
-    test_subject.Write(kAddress, nullptr, 0);
+
+    // Exercise
+    // Exercise: This will throw a timeout exception, which we will catch. We
+    // just want this to setup the transaction register and to start the
+    // I2cHandler().
+    SJ2_CHECK_EXCEPTION(test_subject.Write(kAddress, nullptr, 0),
+                        std::errc::timed_out);
+
+    // Exercise: Handle the I2c transaction for one more step.
     test_subject.I2cHandler(kMockI2c);
+
+    // Verify
     CHECK((kAddress << 1) == local_i2c.DAT);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
 
   SECTION("I2C State Machine: kRepeatedStart")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kRepeatedStart);
-    test_subject.Write(kAddress, nullptr, 0);
+
+    // Exercise
+    SJ2_CHECK_EXCEPTION(test_subject.Write(kAddress, nullptr, 0),
+                        std::errc::timed_out);
     test_subject.I2cHandler(kMockI2c);
+
+    // Verify
     CHECK(((kAddress << 1) | 1) == local_i2c.DAT);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
@@ -233,10 +169,18 @@ TEST_CASE("Testing lpc40xx I2C")
   {
     SECTION("Non-zero length buffer")
     {
+      // Setup
       setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentReceivedAck);
       uint8_t write_buffer[] = { 0x55, 0x22, 0xAA };
-      test_subject.Write(kAddress, write_buffer, sizeof(write_buffer));
+
+      // Exercise
+      SJ2_CHECK_EXCEPTION(
+          test_subject.Write(kAddress, write_buffer, sizeof(write_buffer)),
+          std::errc::timed_out);
+
       test_subject.I2cHandler(kMockI2c);
+
+      // Verify
       // In this state, you will send the first byte from the write buffer
       // and thus, no other value needs to be check except for [0].
       CHECK(write_buffer[0] == local_i2c.DAT);
@@ -245,14 +189,16 @@ TEST_CASE("Testing lpc40xx I2C")
     }
     SECTION("Zero length buffer")
     {
+      // Setup
       setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentReceivedAck);
 
-      test_subject.Write(kAddress, nullptr, 0);
+      // Exercise
+      SJ2_CHECK_EXCEPTION(test_subject.Write(kAddress, nullptr, 0),
+                          std::errc::timed_out);
       test_subject.I2cHandler(kMockI2c);
-      sjsu::I2c::Transaction_t actual_transaction =
-          test_subject.GetTransactionInfo();
 
-      CHECK(!actual_transaction.busy);
+      // Verify
+      CHECK(!test_subject.GetTransactionInfo().busy);
       CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
       CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
       CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
@@ -261,13 +207,14 @@ TEST_CASE("Testing lpc40xx I2C")
 
   SECTION("I2C State Machine: kSlaveAddressWriteSentReceivedNack")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kSlaveAddressWriteSentReceivedNack);
 
+    // Exercise
     test_subject.I2cHandler(kMockI2c);
-    sjsu::I2c::Transaction_t actual_transaction =
-        test_subject.GetTransactionInfo();
 
-    CHECK(!actual_transaction.busy);
+    // Verify
+    CHECK(!test_subject.GetTransactionInfo().busy);
     CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
@@ -275,79 +222,98 @@ TEST_CASE("Testing lpc40xx I2C")
 
   SECTION("I2C State Machine: kTransmittedDataReceivedAck wo/ repeat start")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kTransmittedDataReceivedAck);
     uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
-    test_subject.Write(kAddress, write_buffer, sizeof(write_buffer));
-    sjsu::I2c::Transaction_t actual_transaction;
-    // Each iteration should be load the next byte from write_buffer into
-    // the local_i2c.DAT
+
+    // Exercise
+    SJ2_CHECK_EXCEPTION(
+        test_subject.Write(kAddress, write_buffer, sizeof(write_buffer)),
+        std::errc::timed_out);
+
+    // Exercise: Each iteration should be load the next byte from write_buffer
+    //           into the local_i2c.DAT
     for (size_t i = 0; i < sizeof(write_buffer); i++)
     {
+      // Setup
       setup_state_machine(I2c::MasterState::kTransmittedDataReceivedAck);
 
+      // Exercise
       test_subject.I2cHandler(kMockI2c);
 
-      actual_transaction = test_subject.GetTransactionInfo();
+      // Verify
       CHECK(local_i2c.DAT == write_buffer[i]);
-      CHECK(actual_transaction.busy);
+      CHECK(test_subject.GetTransactionInfo().busy);
     }
 
-    // WriteThenRead should set the transaction to repeated
+    // Exercise: WriteThenRead should set the transaction to repeated
     test_subject.I2cHandler(kMockI2c);
-    actual_transaction = test_subject.GetTransactionInfo();
 
-    CHECK(!actual_transaction.busy);
+    // Verify
+    CHECK(!test_subject.GetTransactionInfo().busy);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
   }
 
   SECTION("I2C State Machine: kTransmittedDataReceivedAck w/ repeat start")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kTransmittedDataReceivedAck);
     uint8_t write_buffer[] = { 'A', 'B', 'C', 'D' };
-    test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
-                               nullptr, 0);
-    sjsu::I2c::Transaction_t actual_transaction;
-    // Each iteration should be load the next byte from write_buffer into
-    // the local_i2c.DAT
+
+    // Exercise
+    SJ2_CHECK_EXCEPTION(
+        test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
+                                   nullptr, 0),
+        std::errc::timed_out);
+
+    // Exercise: Each iteration should be load the next byte from write_buffer
+    //           into the local_i2c.DAT
     for (size_t i = 0; i < sizeof(write_buffer); i++)
     {
+      // Setup
       setup_state_machine(I2c::MasterState::kTransmittedDataReceivedAck);
 
+      // Exercise
       test_subject.I2cHandler(kMockI2c);
 
-      actual_transaction = test_subject.GetTransactionInfo();
+      // Verify
       CHECK(local_i2c.DAT == write_buffer[i]);
-      CHECK(actual_transaction.busy);
+      CHECK(test_subject.GetTransactionInfo().busy);
     }
 
-    // WriteThenRead should set the transaction to repeated
+    // Exercise: WriteThenRead should set the transaction to repeated
     test_subject.I2cHandler(kMockI2c);
-    actual_transaction = test_subject.GetTransactionInfo();
 
-    CHECK(actual_transaction.operation == sjsu::I2c::Operation::kRead);
-    CHECK(actual_transaction.position == 0);
+    // Verify
+    CHECK(test_subject.GetTransactionInfo().operation ==
+          sjsu::I2c::Operation::kRead);
+    CHECK(test_subject.GetTransactionInfo().position == 0);
     CHECK_BITS(I2c::Control::kStart, local_i2c.CONSET);
   }
 
   SECTION("I2C State Machine: kTransmittedDataReceivedNack")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kTransmittedDataReceivedNack);
 
+    // Exercise
     test_subject.I2cHandler(kMockI2c);
-    sjsu::I2c::Transaction_t actual_transaction =
-        test_subject.GetTransactionInfo();
 
-    CHECK(!actual_transaction.busy);
+    // Verify
+    CHECK(!test_subject.GetTransactionInfo().busy);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
 
   SECTION("I2C State Machine: kArbitrationLost")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kArbitrationLost);
 
+    // Exercise
     test_subject.I2cHandler(kMockI2c);
 
+    // Verify
     CHECK_BITS(I2c::Control::kStart, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
@@ -356,23 +322,33 @@ TEST_CASE("Testing lpc40xx I2C")
   {
     SECTION("Non-zero length buffer")
     {
+      // Setup
       setup_state_machine(I2c::MasterState::kSlaveAddressReadSentReceivedAck);
       uint8_t read_buffer[3];
-      test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));
+
+      // Exercise
+      SJ2_CHECK_EXCEPTION(
+          test_subject.Read(kAddress, read_buffer, sizeof(read_buffer)),
+          std::errc::timed_out);
 
       test_subject.I2cHandler(kMockI2c);
 
+      // Verify
       CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
       CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
       CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
     SECTION("Zero length buffer")
     {
+      // Setup
       setup_state_machine(I2c::MasterState::kSlaveAddressReadSentReceivedAck);
-      test_subject.Read(kAddress, nullptr, 0);
 
+      // Exercise
+      SJ2_CHECK_EXCEPTION(test_subject.Read(kAddress, nullptr, 0),
+                          std::errc::timed_out);
       test_subject.I2cHandler(kMockI2c);
 
+      // Verify
       CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
       CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
     }
@@ -380,14 +356,16 @@ TEST_CASE("Testing lpc40xx I2C")
 
   SECTION("I2C State Machine: kSlaveAddressReadSentReceivedNack")
   {
+    // Setup
     setup_state_machine(I2c::MasterState::kSlaveAddressReadSentReceivedNack);
 
+    // Exercise
     test_subject.I2cHandler(kMockI2c);
-    sjsu::I2c::Transaction_t actual_transaction =
-        test_subject.GetTransactionInfo();
 
-    CHECK(std::errc::no_such_device_or_address == actual_transaction.status);
-    CHECK(!actual_transaction.busy);
+    // Verify
+    CHECK(std::errc::no_such_device_or_address ==
+          test_subject.GetTransactionInfo().status);
+    CHECK(!test_subject.GetTransactionInfo().busy);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kStart, local_i2c.CONCLR);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
@@ -395,33 +373,37 @@ TEST_CASE("Testing lpc40xx I2C")
 
   SECTION("I2C State Machine: kReceivedDataReceivedAck")
   {
+    // Setup
     constexpr uint8_t kI2cReadData[]          = { 'A', 'B', 'C', 'D' };
     uint8_t read_buffer[sizeof(kI2cReadData)] = { 0 };
-    test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));
-    sjsu::I2c::Transaction_t actual_transaction;
-    // Each iteration should be load a new byte from kI2cReadData into the
-    // read_buffer array;
+
+    setup_state_machine(I2c::MasterState::kReceivedDataReceivedAck);
+    SJ2_CHECK_EXCEPTION(
+        test_subject.Read(kAddress, read_buffer, sizeof(read_buffer)),
+        std::errc::timed_out);
+
+    // Exercise: Each iteration should be load a new byte from kI2cReadData into
+    //           the read_buffer array;
     for (size_t i = 0; i < sizeof(read_buffer) - 1; i++)
     {
-      setup_state_machine(I2c::MasterState::kReceivedDataReceivedAck);
       local_i2c.DAT = kI2cReadData[i];
 
       test_subject.I2cHandler(kMockI2c);
 
-      actual_transaction = test_subject.GetTransactionInfo();
       CHECK(kI2cReadData[i] == read_buffer[i]);
       if (i < sizeof(read_buffer) - 2)
       {
-        CHECK(actual_transaction.busy);
+        CHECK(test_subject.GetTransactionInfo().busy);
         CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONSET);
       }
       // Check for the NACK at the end of the read buffer
       else
       {
-        CHECK(!actual_transaction.busy);
+        CHECK(!test_subject.GetTransactionInfo().busy);
         CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
       }
     }
+
     // Last byte should be transferred
     setup_state_machine(I2c::MasterState::kReceivedDataReceivedAck);
     constexpr size_t kEnd = sizeof(read_buffer) - 1;
@@ -429,9 +411,8 @@ TEST_CASE("Testing lpc40xx I2C")
 
     test_subject.I2cHandler(kMockI2c);
 
-    actual_transaction = test_subject.GetTransactionInfo();
     // At this point, the limit for the length should have been reached.
-    CHECK(!actual_transaction.busy);
+    CHECK(!test_subject.GetTransactionInfo().busy);
     CHECK(kI2cReadData[kEnd] == read_buffer[kEnd]);
     CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
 
@@ -445,8 +426,8 @@ TEST_CASE("Testing lpc40xx I2C")
     {
       CHECK(local_i2c.DAT != read_buffer[i]);
     }
-    actual_transaction = test_subject.GetTransactionInfo();
-    CHECK(!actual_transaction.busy);
+
+    CHECK(!test_subject.GetTransactionInfo().busy);
     CHECK_BITS(I2c::Control::kAssertAcknowledge, local_i2c.CONCLR);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
@@ -456,14 +437,16 @@ TEST_CASE("Testing lpc40xx I2C")
     setup_state_machine(I2c::MasterState::kReceivedDataReceivedNack);
     local_i2c.DAT = 0xDE;
     uint8_t read_buffer[5];
-    test_subject.Read(kAddress, read_buffer, sizeof(read_buffer));
 
+    // Exercise
+    SJ2_CHECK_EXCEPTION(
+        test_subject.Read(kAddress, read_buffer, sizeof(read_buffer)),
+        std::errc::timed_out);
     test_subject.I2cHandler(kMockI2c);
-    sjsu::I2c::Transaction_t actual_transaction =
-        test_subject.GetTransactionInfo();
 
+    // Verify
     CHECK(local_i2c.DAT == read_buffer[0]);
-    CHECK(!actual_transaction.busy);
+    CHECK(!test_subject.GetTransactionInfo().busy);
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONSET);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
@@ -472,8 +455,10 @@ TEST_CASE("Testing lpc40xx I2C")
   {
     setup_state_machine(I2c::MasterState::kDoNothing);
 
+    // Exercise
     test_subject.I2cHandler(kMockI2c);
 
+    // Verify
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
 
@@ -481,11 +466,16 @@ TEST_CASE("Testing lpc40xx I2C")
   {
     setup_state_machine(I2c::MasterState(0xFF));
 
+    // Exercise
     test_subject.I2cHandler(kMockI2c);
+
+    // Verify
     CHECK_BITS(I2c::Control::kStop, local_i2c.CONCLR);
     CHECK_BITS(I2c::Control::kInterrupt, local_i2c.CONCLR);
   }
 
   sjsu::lpc40xx::SystemController::system_controller = LPC_SC;
+
+#undef CHECK_BITS
 }
 }  // namespace sjsu::lpc40xx

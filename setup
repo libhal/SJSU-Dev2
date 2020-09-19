@@ -18,12 +18,6 @@ ARCH=$(uname -m)
 OS=$(uname -s)
 # Define name of the arm version we are downloading
 BASE_URL="https://github.com/SJSU-Dev2"
-TOOLS_BUNDLE="$BASE_URL/SJSU-Dev2/releases/download/v2.3/tools-bundle"
-TOOLS_BUNDLE_URL_LINUX="$TOOLS_BUNDLE-linux.tar.bz2"
-TOOLS_BUNDLE_URL_OSX="$TOOLS_BUNDLE-osx.tar.bz2"
-# Set later
-TOOLS_BUNDLE_URL=
-TOOLS_FILE_COUNT=9642
 
 PREREQUISITES=1
 TOOL_BUNDLE=1
@@ -34,6 +28,17 @@ LINK_PROJECTS=1
 
 # Import SJSU-Dev2 common shell script functions
 . $BASE/tools/common.sh
+
+function print_status() {
+  if [ $1 -ne 0 ]; then
+    printf "$BOLD_RED"
+    printf "✘"
+  else
+    printf "$BOLD_GREEN"
+    printf "✔"
+  fi
+  printf "$RESET\n"
+}
 
 function print_status_nl() {
   if [ $1 -ne 0 ]; then
@@ -87,7 +92,7 @@ function install_linux_prerequisites() {
   echo " ────────────────────────────────────────────────────────┐"
   echo "   Installing git, make, python3 + pip, curl, tar, g++9   "
   echo "└──────────────────────────────────────────────────────── "
-  sudo apt install -y git make curl tar tree pv g++-9 \
+  sudo apt install -y git make curl tar tree g++-9 \
     python3 python3-pip python3-setuptools
   local apt_install=$?
   print_status_nl $apt_install
@@ -127,10 +132,6 @@ function install_mac_osx_prerequisites() {
   echo "└─────────────────────────────────────────────────── "
   brew install python@3
   echo " ───────────────────────────────────────────────────┐"
-  echo "                Brew Installing pv                   "
-  echo "└─────────────────────────────────────────────────── "
-  brew install pv
-  echo " ───────────────────────────────────────────────────┐"
   echo "                Brew Installing gcc                  "
   echo "└─────────────────────────────────────────────────── "
   brew install gcc@9
@@ -162,75 +163,18 @@ function install_python_tools() {
   return $(($pip_status + $gcovr_status + $virtualenv_status))
 }
 
-function download_and_extract_tool_bundle() {
-  cd "$TOOLDIR/"
+function download_tools_bundle() {
+  cd "$TOOLDIR"
   echo " ───────────────────────────────────────────────────┐"
-  echo "             Downloading Tools Bundle                "
+  echo "              Downloading Build Tools                "
   echo "└─────────────────────────────────────────────────── "
-  local temporary_name=temp_toolkit.tar.bz2
-  # Remove an old temporary file if it exists
-  rm $temporary_name &>/dev/null
-  # -z argument checks the online modification date with the file online and
-  # the current toolkit file. If the online one is newer, then it is
-  # downloaded. If it is older, it is ignored and no temporary file is created.
-  echo "Downloading: $TOOLS_BUNDLE_URL"
-  TOOLS_BUNDLE_PATH=$(basename $TOOLS_BUNDLE_URL)
+  rm -rf "gcc-arm-none-eabi-nano-exceptions/"
+  git clone --single-branch --branch "gcc9-2020-q2-update" \
+      "$BASE_URL/gcc-arm-none-eabi-nano-exceptions.git"
+  local git_clone=$?
+  print_status_nl $git_clone
 
-  if [[ -f $TOOLS_BUNDLE_PATH ]]; then
-    curl -z $TOOLS_BUNDLE_PATH -o $temporary_name \
-      -L0 "$TOOLS_BUNDLE_URL"
-  else
-    curl -o $temporary_name -L0 "$TOOLS_BUNDLE_URL"
-  fi
-  # This will have an expected failure if curl ignored downloading the file,
-  # which would result in the temp file not existing. mv does nothing if the
-  # source file does not exist.
-  printf "Verify tools download/update was successful... "
-  mv $temporary_name $TOOLS_BUNDLE_PATH &>/dev/null
-  local tools_bundle_was_updated=$?
-  print_status_nl $tools_bundle_was_updated
-
-  if [[ $tools_bundle_was_updated -eq "0" ]]; then
-    echo " ──────────────────────────────────────────────────┐"
-    echo "             Extracting tools bundle                "
-    echo "└────────────────────────────────────────────────── "
-
-    # Delete old toolkit folders to be re-extracted
-    rm -r "openocd*" &>/dev/null
-    rm -r "gcc-arm*" &>/dev/null
-    rm -r "clang+llvm*" &>/dev/null
-
-    pv $TOOLS_BUNDLE_PATH | tar --extract --bzip --file="-"
-    local extract=$?
-    print_status_nl $extract
-
-    # Verify that each directory exists
-    ls clang+llvm-*/ &>/dev/null
-    printf "Verify that Clang tools were extracted... "
-    local clang_exists=$?
-    print_status_nl $clang_exists
-
-    ls gcc-arm*/ &>/dev/null
-    printf "Verify that ARM toolchain was extracted... "
-    local gcc_exists=$?
-    print_status_nl $gcc_exists
-
-    printf "Verify that OpenOCD debug tools were extracted... "
-    ls openocd/ &>/dev/null
-    local openocd_exists=$?
-    print_status_nl $openocd_exists
-
-    # Linux or Windows WSL
-    if [[ "$OS" == "Linux" ]]; then
-      printf "Verify that OpenOCD debug tools for windows was extracted... "
-      ls openocd-wsl/ &>/dev/null
-      openocd_exists=$(($openocd_exists + $?))
-      print_status_nl $openocd_exists
-    fi
-
-    return $(($extract + $clang_exists + $gcc_exists + $openocd_exists))
-  fi
-  return 0
+  return $(($git_clone))
 }
 
 function install_nxpprog() {
@@ -397,7 +341,7 @@ if [ "$PREREQUISITES" -ne "0" ]; then
   exit 1
 fi
 
-download_and_extract_tool_bundle
+download_tools_bundle
 TOOL_BUNDLE=$?
 install_python_tools
 PYTHON_TOOLS=$?

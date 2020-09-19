@@ -31,7 +31,7 @@ int main()
 
   while (true)
   {
-    int32_t current_count = SJ2_RETURN_VALUE_ON_ERROR(counter.GetCount(), -1);
+    int32_t current_count = counter.GetCount();
     // Anytime the count changes, we print out the latest count.
     if (previous_count != current_count)
     {

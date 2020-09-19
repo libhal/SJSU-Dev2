@@ -5,7 +5,7 @@
 #include <span>
 
 #include "config.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -36,17 +36,17 @@ class I2c
   class CommonErrors
   {
    public:
-    static constexpr auto kTimeout =
-        Error_t(std::errc::timed_out,
-                "I2C took too long to process and timed out! Consider "
-                "increasing the timeout time.");
+    static inline const auto kTimeout =
+        Exception(std::errc::timed_out,
+                  "I2C took too long to process and timed out! Consider "
+                  "increasing the timeout time.");
 
-    static constexpr auto kBusError =
-        Error_t(std::errc::io_error, "I2C bus error occurred.");
+    static inline const auto kBusError =
+        Exception(std::errc::io_error, "I2C bus error occurred.");
 
-    static constexpr auto kDeviceNotFound =
-        Error_t(std::errc::no_such_device_or_address,
-                "I2C address not found/acknowledged by device.");
+    static inline const auto kDeviceNotFound =
+        Exception(std::errc::no_such_device_or_address,
+                  "I2C address not found/acknowledged by device.");
   };
 
   /// A common structure for holding the information needed for I2C
@@ -118,7 +118,7 @@ class I2c
 
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual Returns<void> Initialize() const = 0;
+  virtual void Initialize() const = 0;
 
   /// Perform a I2C transaction using the information contained in the
   /// transaction parameter.
@@ -126,7 +126,7 @@ class I2c
   /// @return std::errc::timed_out, std::errc::io_error, or
   /// std::errc::no_such_device_or_address, depending on the circumstances of
   /// the error that occurred during the transaction.
-  virtual Returns<void> Transaction(Transaction_t transaction) const = 0;
+  virtual void Transaction(Transaction_t transaction) const = 0;
 
   // ===========================================================================
   // Utility Methods
@@ -140,10 +140,10 @@ class I2c
   ///        data buffer
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
-  Returns<void> Read(uint8_t address,
-                     uint8_t * receive_buffer,
-                     size_t receive_buffer_length,
-                     std::chrono::milliseconds timeout = kI2cTimeout) const
+  void Read(uint8_t address,
+            uint8_t * receive_buffer,
+            size_t receive_buffer_length,
+            std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Transaction({
         .operation  = Operation::kRead,
@@ -165,9 +165,9 @@ class I2c
   /// @param receive - byte span to read information into
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
-  Returns<void> Read(uint8_t address,
-                     std::span<uint8_t> receive,
-                     std::chrono::milliseconds timeout = kI2cTimeout) const
+  void Read(uint8_t address,
+            std::span<uint8_t> receive,
+            std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Read(address, receive.data(), receive.size(), timeout);
   }
@@ -180,10 +180,10 @@ class I2c
   ///        device
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
-  Returns<void> Write(uint8_t address,
-                      const uint8_t * transmit_buffer,
-                      size_t transmit_buffer_length,
-                      std::chrono::milliseconds timeout = kI2cTimeout) const
+  void Write(uint8_t address,
+             const uint8_t * transmit_buffer,
+             size_t transmit_buffer_length,
+             std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Transaction({
         .operation  = Operation::kWrite,
@@ -209,9 +209,9 @@ class I2c
   /// @param transmit - array literal to send to device
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
-  Returns<void> Write(uint8_t address,
-                      std::initializer_list<uint8_t> transmit,
-                      std::chrono::milliseconds timeout = kI2cTimeout) const
+  void Write(uint8_t address,
+             std::initializer_list<uint8_t> transmit,
+             std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Write(address, transmit.begin(), transmit.size(), timeout);
   }
@@ -227,9 +227,9 @@ class I2c
   /// @param transmit - array or span to send to device
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
-  Returns<void> Write(uint8_t address,
-                      std::span<const uint8_t> transmit,
-                      std::chrono::milliseconds timeout = kI2cTimeout) const
+  void Write(uint8_t address,
+             std::span<const uint8_t> transmit,
+             std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Write(address, transmit.data(), transmit.size(), timeout);
   }
@@ -249,13 +249,12 @@ class I2c
   /// @param receive_buffer_length - number of bytes to be read from the device
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
-  Returns<void> WriteThenRead(
-      uint8_t address,
-      const uint8_t * transmit_buffer,
-      size_t transmit_buffer_length,
-      uint8_t * receive_buffer,
-      size_t receive_buffer_length,
-      std::chrono::milliseconds timeout = kI2cTimeout) const
+  void WriteThenRead(uint8_t address,
+                     const uint8_t * transmit_buffer,
+                     size_t transmit_buffer_length,
+                     uint8_t * receive_buffer,
+                     size_t receive_buffer_length,
+                     std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return Transaction({
         .operation  = Operation::kWrite,
@@ -284,12 +283,11 @@ class I2c
   /// @param receive_buffer_length - number of bytes to be read from the device
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
-  Returns<void> WriteThenRead(
-      uint8_t address,
-      std::initializer_list<uint8_t> transmit,
-      uint8_t * receive_buffer,
-      size_t receive_buffer_length,
-      std::chrono::milliseconds timeout = kI2cTimeout) const
+  void WriteThenRead(uint8_t address,
+                     std::initializer_list<uint8_t> transmit,
+                     uint8_t * receive_buffer,
+                     size_t receive_buffer_length,
+                     std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return WriteThenRead(address, transmit.begin(), transmit.size(),
                          receive_buffer, receive_buffer_length, timeout);
@@ -307,11 +305,10 @@ class I2c
   /// @param receive - span to byte buffer to received data from device
   /// @param timeout - Amount of time to wait for a response by device before
   ///        bailing out.
-  Returns<void> WriteThenRead(
-      uint8_t address,
-      std::span<const uint8_t> transmit,
-      std::span<uint8_t> receive,
-      std::chrono::milliseconds timeout = kI2cTimeout) const
+  void WriteThenRead(uint8_t address,
+                     std::span<const uint8_t> transmit,
+                     std::span<uint8_t> receive,
+                     std::chrono::milliseconds timeout = kI2cTimeout) const
   {
     return WriteThenRead(address, transmit.data(), transmit.size(),
                          receive.data(), receive.size(), timeout);

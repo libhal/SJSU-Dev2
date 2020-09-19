@@ -102,18 +102,18 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a074239135236bd8565ab1eca8948bdd4"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a074239135236bd8565ab1eca8948bdd4">Initialize</a> ()=0</td></tr>
-<tr class="separator:a074239135236bd8565ab1eca8948bdd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc7c023bc92617c5ff8d34e9e4a5937e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#adc7c023bc92617c5ff8d34e9e4a5937e">Enable</a> ()=0</td></tr>
-<tr class="separator:adc7c023bc92617c5ff8d34e9e4a5937e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a478ed85f58179797bc27343fdbf53a2f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; <a class="el" href="../../d8/dc4/structsjsu_1_1Accelerometer_1_1Acceleration__t.html">Acceleration_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a478ed85f58179797bc27343fdbf53a2f">Read</a> ()=0</td></tr>
-<tr class="separator:a478ed85f58179797bc27343fdbf53a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe32fc0d8813628fe09a9b1b67bee0b6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#afe32fc0d8813628fe09a9b1b67bee0b6">Initialize</a> ()=0</td></tr>
+<tr class="separator:afe32fc0d8813628fe09a9b1b67bee0b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21b053fb39a6fd3096b02c44300d0ad7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a21b053fb39a6fd3096b02c44300d0ad7">Enable</a> ()=0</td></tr>
+<tr class="separator:a21b053fb39a6fd3096b02c44300d0ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1e1d3b58ca810891db9fcbf129799a8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d8/dc4/structsjsu_1_1Accelerometer_1_1Acceleration__t.html">Acceleration_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#af1e1d3b58ca810891db9fcbf129799a8">Read</a> ()=0</td></tr>
+<tr class="separator:af1e1d3b58ca810891db9fcbf129799a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract interface for devices that behave as accelerometers. Accelerometers are devices that can measure acceleration in X, Y, or Z axis. On the earth's surface, if the accelerometer is held still, and it is oriented flat on one of its axes, it will measure approximately 9.8 m/s^2 on that axis. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="adc7c023bc92617c5ff8d34e9e4a5937e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc7c023bc92617c5ff8d34e9e4a5937e">&#9670;&nbsp;</a></span>Enable()</h2>
+<a id="a21b053fb39a6fd3096b02c44300d0ad7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21b053fb39a6fd3096b02c44300d0ad7">&#9670;&nbsp;</a></span>Enable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -122,7 +122,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::Accelerometer::Enable </td>
+          <td class="memname">virtual void sjsu::Accelerometer::Enable </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -134,15 +134,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This method must be called before running <code><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a478ed85f58179797bc27343fdbf53a2f">Read()</a></code>. This function will configure the device settings as defined through the constructor of this interface's implementation. Some implementations have more detail or settings than others. For example, the MMA8452q device allows for the full-scale value to be changed based on the values supplied to the constructor.</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d1/d36/classsjsu_1_1Error__t.html">Error_t</a> if an error occurred. Typically occurs if (1) I2C peripheral could not speak to the device due to connection issue. (2) Device address is incorrect. (3) Detected Device ID does not match the driver. </dd></dl>
+<p>This method must be called before running <code><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#af1e1d3b58ca810891db9fcbf129799a8">Read()</a></code>. This function will configure the device settings as defined through the constructor of this interface's implementation. Some implementations have more detail or settings than others. For example, the MMA8452q device allows for the full-scale value to be changed based on the values supplied to the constructor.</p>
+<dl class="section return"><dt>Returns</dt><dd>Error_t if an error occurred. Typically occurs if (1) I2C peripheral could not speak to the device due to connection issue. (2) Device address is incorrect. (3) Detected Device ID does not match the driver. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a72e9b1d0118dd0c9f0c7f0b8d730d145">sjsu::Mma8452q</a>, and <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#ad4e4335b52a0f8ffecbaf329ebc7c89d">sjsu::Mpu6050</a>.</p>
+<p>Implemented in <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a470b25eea2a3fbe974b83ea1be502db7">sjsu::Mma8452q</a>, and <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#a08782367ec704f2fcf08bfbeac95b5a0">sjsu::Mpu6050</a>.</p>
 
 </div>
 </div>
-<a id="a074239135236bd8565ab1eca8948bdd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a074239135236bd8565ab1eca8948bdd4">&#9670;&nbsp;</a></span>Initialize()</h2>
+<a id="afe32fc0d8813628fe09a9b1b67bee0b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe32fc0d8813628fe09a9b1b67bee0b6">&#9670;&nbsp;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,7 +151,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::Accelerometer::Initialize </td>
+          <td class="memname">virtual void sjsu::Accelerometer::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -163,15 +163,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialize peripherals required to communicate with device. Must be the first method called on this driver. After this is called, <code><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#adc7c023bc92617c5ff8d34e9e4a5937e">Enable()</a></code> can be called to enable the device and begin gathering acceleration data.</p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d1/d36/classsjsu_1_1Error__t.html">Error_t</a> if an error occurred. Typically occurs when I2C peripheral fails to initialize. </dd></dl>
+<p>Initialize peripherals required to communicate with device. Must be the first method called on this driver. After this is called, <code><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html#a21b053fb39a6fd3096b02c44300d0ad7">Enable()</a></code> can be called to enable the device and begin gathering acceleration data.</p>
+<dl class="section return"><dt>Returns</dt><dd>Error_t if an error occurred. Typically occurs when I2C peripheral fails to initialize. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a62007619d6e5205da4d0e04ecdb9168c">sjsu::Mma8452q</a>, and <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#ab7174557df35c6017b29df88982d0912">sjsu::Mpu6050</a>.</p>
+<p>Implemented in <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#ab3e7d70dc2f820aba4af027edd829d49">sjsu::Mma8452q</a>, and <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#acbb4996cf68f9e5192ec47e850ae135a">sjsu::Mpu6050</a>.</p>
 
 </div>
 </div>
-<a id="a478ed85f58179797bc27343fdbf53a2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a478ed85f58179797bc27343fdbf53a2f">&#9670;&nbsp;</a></span>Read()</h2>
+<a id="af1e1d3b58ca810891db9fcbf129799a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1e1d3b58ca810891db9fcbf129799a8">&#9670;&nbsp;</a></span>Read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,7 +180,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;<a class="el" href="../../d8/dc4/structsjsu_1_1Accelerometer_1_1Acceleration__t.html">Acceleration_t</a>&gt; sjsu::Accelerometer::Read </td>
+          <td class="memname">virtual <a class="el" href="../../d8/dc4/structsjsu_1_1Accelerometer_1_1Acceleration__t.html">Acceleration_t</a> sjsu::Accelerometer::Read </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -195,7 +195,7 @@ Public Member Functions</h2></td></tr>
 <p><a class="el" href="../../d2/d7b/classsjsu_1_1Accelerometer.html">Accelerometer</a> driver will read each axis of acceleration and convert the data to m/s^2.</p>
 <dl class="section return"><dt>Returns</dt><dd>An Acceleration object which contains the acceleration in the X, Y, and Z axis. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a1b9c2e9229b24a3b22267d940dc1428d">sjsu::Mma8452q</a>, and <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#ad4b0f954a99a04b716b7d607df0d2de8">sjsu::Mpu6050</a>.</p>
+<p>Implemented in <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a9c7eda4be598f69b149b0510d7a37425">sjsu::Mma8452q</a>, and <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#ab89b91dde6af50a9e14bc8c52a83dbe8">sjsu::Mpu6050</a>.</p>
 
 </div>
 </div>

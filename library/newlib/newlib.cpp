@@ -135,6 +135,7 @@ extern "C"
   // NOLINTNEXTLINE(readability-identifier-naming)
   void _exit([[maybe_unused]] int rc)
   {
+    write(0, "EXIT", 4);
     while (1)
     {
       continue;

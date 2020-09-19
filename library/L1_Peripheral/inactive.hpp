@@ -56,26 +56,11 @@ inline sjsu::Pin & GetInactive<sjsu::Pin>()
   {
    public:
     InactivePin() : sjsu::Pin(0, 0) {}
-    Returns<void> Initialize() const override
-    {
-      return {};
-    }
-    Returns<void> SetPinFunction(uint8_t) const override
-    {
-      return {};
-    }
-    Returns<void> SetPull(Resistor) const override
-    {
-      return {};
-    }
-    Returns<void> SetAsOpenDrain(bool) const override
-    {
-      return {};
-    }
-    Returns<void> SetAsAnalogMode(bool) const override
-    {
-      return {};
-    }
+    void Initialize() const override {}
+    void SetPinFunction(uint8_t) const override {}
+    void SetPull(Resistor) const override {}
+    void SetAsOpenDrain(bool) const override {}
+    void SetAsAnalogMode(bool) const override {}
   };
 
   static InactivePin inactive;
@@ -89,10 +74,7 @@ inline sjsu::Adc & GetInactive<sjsu::Adc>()
   class InactiveAdc : public sjsu::Adc
   {
    public:
-    Returns<void> Initialize() const override
-    {
-      return {};
-    }
+    void Initialize() const override {}
     uint32_t Read() const override
     {
       return 0;
@@ -118,18 +100,9 @@ inline sjsu::Dac & GetInactive<sjsu::Dac>()
   class InactiveDac : public sjsu::Dac
   {
    public:
-    Returns<void> Initialize() const override
-    {
-      return {};
-    }
-    Returns<void> Write(uint32_t) const override
-    {
-      return {};
-    }
-    Returns<void> SetVoltage(float) const override
-    {
-      return {};
-    }
+    void Initialize() const override {}
+    void Write(uint32_t) const override {}
+    void SetVoltage(float) const override {}
     uint8_t GetActiveBits() const override
     {
       return 12;
@@ -158,14 +131,8 @@ inline sjsu::Gpio & GetInactive<sjsu::Gpio>()
     {
       return GetInactive<sjsu::Pin>();
     }
-    Returns<void> AttachInterrupt(InterruptCallback, Edge) override
-    {
-      return {};
-    }
-    Returns<void> DetachInterrupt() const override
-    {
-      return {};
-    }
+    void AttachInterrupt(InterruptCallback, Edge) override {}
+    void DetachInterrupt() const override {}
   };
 
   static InactiveGpio inactive;
@@ -179,14 +146,8 @@ inline sjsu::I2c & GetInactive<sjsu::I2c>()
   class InactiveI2c : public sjsu::I2c
   {
    public:
-    Returns<void> Initialize() const override
-    {
-      return {};
-    }
-    Returns<void> Transaction(Transaction_t) const override
-    {
-      return {};
-    }
+    void Initialize() const override {}
+    void Transaction(Transaction_t) const override {}
   };
 
   static InactiveI2c inactive;
@@ -200,25 +161,16 @@ inline sjsu::Pwm & GetInactive<sjsu::Pwm>()
   class InactivePwm : public sjsu::Pwm
   {
    public:
-    Returns<void> Initialize(units::frequency::hertz_t) const override
-    {
-      return {};
-    }
+    void Initialize(units::frequency::hertz_t) const override {}
 
-    Returns<void> SetDutyCycle(float) const override
-    {
-      return {};
-    }
+    void SetDutyCycle(float) const override {}
 
-    Returns<float> GetDutyCycle() const override
+    float GetDutyCycle() const override
     {
       return 0.0;
     }
 
-    Returns<void> SetFrequency(units::frequency::hertz_t) const override
-    {
-      return {};
-    }
+    void SetFrequency(units::frequency::hertz_t) const override {}
   };
 
   static InactivePwm inactive;
@@ -232,19 +184,13 @@ inline sjsu::Spi & GetInactive<sjsu::Spi>()
   class InactiveSpi : public sjsu::Spi
   {
    public:
-    Returns<void> Initialize() const override
-    {
-      return {};
-    }
+    void Initialize() const override {}
     uint16_t Transfer(uint16_t) const override
     {
       return 0xFF;
     }
     void SetDataSize(DataSize) const override {}
-    Returns<void> SetClock(units::frequency::hertz_t, bool, bool) const override
-    {
-      return {};
-    }
+    void SetClock(units::frequency::hertz_t, bool, bool) const override {}
   };
 
   static InactiveSpi inactive;
@@ -304,10 +250,7 @@ inline sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
    public:
     void Initialize() const override {}
     void SetCallback(InterruptCallback) const override {}
-    Returns<void> StartTimer() const override
-    {
-      return {};
-    }
+    void StartTimer() const override {}
     int32_t SetTickFrequency(units::frequency::hertz_t) const override
     {
       return 0;
@@ -325,19 +268,13 @@ inline sjsu::Timer & GetInactive<sjsu::Timer>()
   class InactiveTimer : public sjsu::Timer
   {
    public:
-    Returns<void> Initialize(units::frequency::hertz_t,
-                             InterruptCallback,
-                             int32_t) const override
+    void Initialize(units::frequency::hertz_t,
+                    InterruptCallback,
+                    int32_t) const override
     {
-      return {};
     }
-    Returns<void> SetMatchBehavior(uint32_t,
-                                   MatchAction,
-                                   uint8_t) const override
-    {
-      return {};
-    }
-    Returns<uint32_t> GetCount() const override
+    void SetMatchBehavior(uint32_t, MatchAction, uint8_t) const override {}
+    uint32_t GetCount() const override
     {
       return 0;
     }
@@ -345,18 +282,9 @@ inline sjsu::Timer & GetInactive<sjsu::Timer>()
     {
       return 3;
     }
-    Returns<void> Start() const override
-    {
-      return {};
-    }
-    Returns<void> Stop() const override
-    {
-      return {};
-    }
-    Returns<void> Reset() const override
-    {
-      return {};
-    }
+    void Start() const override {}
+    void Stop() const override {}
+    void Reset() const override {}
   };
 
   static InactiveTimer inactive;
@@ -370,14 +298,8 @@ inline sjsu::Uart & GetInactive<sjsu::Uart>()
   class InactiveUart : public sjsu::Uart
   {
    public:
-    Returns<void> Initialize(uint32_t) const override
-    {
-      return {};
-    }
-    Returns<void> SetBaudRate(uint32_t) const override
-    {
-      return {};
-    }
+    void Initialize(uint32_t) const override {}
+    void SetBaudRate(uint32_t) const override {}
     void Write(const void *, size_t) const override {}
     size_t Read(void *, size_t) const override
     {
@@ -403,21 +325,15 @@ inline sjsu::Storage & GetInactive<sjsu::Storage>()
     {
       return Type::kRam;
     }
-    Returns<void> Initialize() override
-    {
-      return {};
-    }
+    void Initialize() override {}
     bool IsMediaPresent() override
     {
-      return {};
+      return true;
     }
-    Returns<void> Enable() override
-    {
-      return {};
-    }
+    void Enable() override {}
     bool IsReadOnly() override
     {
-      return {};
+      return true;
     }
     units::data::byte_t GetCapacity() override
     {
@@ -427,22 +343,10 @@ inline sjsu::Storage & GetInactive<sjsu::Storage>()
     {
       return 0_B;
     }
-    Returns<void> Erase(uint32_t, size_t) override
-    {
-      return {};
-    }
-    Returns<void> Write(uint32_t, const void *, size_t) override
-    {
-      return {};
-    }
-    Returns<void> Read(uint32_t, void *, size_t) override
-    {
-      return {};
-    }
-    Returns<void> Disable() override
-    {
-      return {};
-    }
+    void Erase(uint32_t, size_t) override {}
+    void Write(uint32_t, const void *, size_t) override {}
+    void Read(uint32_t, void *, size_t) override {}
+    void Disable() override {}
   };
 
   static InactiveStorage inactive;

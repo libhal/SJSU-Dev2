@@ -4,7 +4,7 @@
 #include <cstdint>
 
 #include "utility/log.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 // TODO(#1080): Refactor Accelerometer
@@ -39,7 +39,7 @@ class Accelerometer
   ///
   /// @return Error_t if an error occurred. Typically occurs when I2C peripheral
   ///         fails to initialize.
-  virtual Returns<void> Initialize() = 0;
+  virtual void Initialize() = 0;
 
   /// This method must be called before running `Read()`. This function will
   /// configure the device settings as defined through the constructor of this
@@ -53,13 +53,13 @@ class Accelerometer
   ///             connection issue.
   ///         (2) Device address is incorrect.
   ///         (3) Detected Device ID does not match the driver.
-  virtual Returns<void> Enable() = 0;
+  virtual void Enable() = 0;
 
   /// Accelerometer driver will read each axis of acceleration and convert the
   /// data to m/s^2.
   ///
   /// @return An Acceleration object which contains the acceleration in the
   ///         X, Y, and Z axis.
-  virtual Returns<Acceleration_t> Read() = 0;
+  virtual Acceleration_t Read() = 0;
 };
 }  // namespace sjsu

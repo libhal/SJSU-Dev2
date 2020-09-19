@@ -98,7 +98,7 @@ TEST_CASE("Testing L1 uart")
   SECTION("Read() with timeout, returns kSuccess")
   {
     // Setup
-    int read_was_called                    = 0;
+    int read_position                      = 0;
     static constexpr size_t kPayloadLength = 4;
     std::array<uint8_t, kPayloadLength> bytes;
     std::fill(bytes.begin(), bytes.end(), 0x00);
@@ -113,22 +113,27 @@ TEST_CASE("Testing L1 uart")
         .Return(true);  // More data has arrived;
 
     When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
-        .AlwaysDo([&read_was_called](void * data_ptr, size_t size) -> size_t {
+        .AlwaysDo([&read_position](void * data_ptr, size_t size) -> size_t {
           uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-          std::array<uint8_t, kPayloadLength> response = { 0xAA, 0xBB, 0xCC,
-                                                           0xDD };
+          std::array<uint8_t, kPayloadLength> response = {
+            0xAA,
+            0xBB,
+            0xCC,
+            0xDD,
+          };
           for (size_t i = 0; i < size; i++)
           {
-            data[i] = response[read_was_called++];
+            data[i] = response[read_position++];
           }
           return size;
         });
 
     // Exercise
-    REQUIRE(uart.Read(bytes.data(), bytes.size(), 10us));
+    auto bytes_read = uart.Read(bytes.data(), bytes.size(), 10us);
 
     // Verify
-    CHECK(kPayloadLength == read_was_called);
+    CHECK(kPayloadLength == bytes_read);
+    CHECK(kPayloadLength == read_position);
     Verify(Method(mock_uart, HasData)).Exactly(7);
     Verify(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .Exactly(kPayloadLength);
@@ -141,7 +146,7 @@ TEST_CASE("Testing L1 uart")
   SECTION("Read() with timeout, returns kTimeout")
   {
     // Setup
-    int read_was_called                    = 0;
+    int read_position                      = 0;
     static constexpr size_t kPayloadLength = 4;
     std::array<uint8_t, kPayloadLength> bytes;
     std::fill(bytes.begin(), bytes.end(), 0x00);
@@ -153,23 +158,27 @@ TEST_CASE("Testing L1 uart")
         .AlwaysReturn(false);  // No data available, waiting
 
     When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
-        .AlwaysDo([&read_was_called](void * data_ptr, size_t size) -> size_t {
+        .AlwaysDo([&read_position](void * data_ptr, size_t size) -> size_t {
           uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-          std::array<uint8_t, kPayloadLength> response = { 0xAA, 0xBB, 0xCC,
-                                                           0xDD };
+          std::array<uint8_t, kPayloadLength> response = {
+            0xAA,
+            0xBB,
+            0xCC,
+            0xDD,
+          };
           for (size_t i = 0; i < size; i++)
           {
-            data[i] = response[read_was_called++];
+            data[i] = response[read_position++];
           }
           return size;
         });
 
     // Exercise
-    auto status = uart.Read(bytes.data(), bytes.size(), 10us);
+    auto bytes_read = uart.Read(bytes.data(), bytes.size(), 10us);
 
     // Verify
-    CHECK(kPayloadLength - 1 == read_was_called);
-    CHECK(std::errc::timed_out == status);
+    CHECK(kPayloadLength - 1 == bytes_read);
+    CHECK(kPayloadLength - 1 == read_position);
     Verify(Method(mock_uart, HasData)).Exactly(8);
     Verify(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
         .Exactly(kPayloadLength - 1);

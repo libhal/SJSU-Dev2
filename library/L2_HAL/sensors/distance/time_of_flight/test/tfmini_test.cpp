@@ -42,9 +42,6 @@ TEST_CASE("Testing TFMini")
   {
     constexpr uint32_t kBaudRate = 115200;
 
-    // Assuming Uart Initialization is successful
-    When(Method(mock_uart, Initialize)).Return({});
-
     size_t read_count                                        = 0;
     const std::array<uint8_t, 8 * 6> kExpectedInitializeData = {
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
@@ -63,7 +60,7 @@ TEST_CASE("Testing TFMini")
         .AlwaysDo(init_read_callback);
 
     // Exercise
-    REQUIRE(test.Initialize());
+    test.Initialize();
 
     // Verify:
     // Verify: Check that uart initialization uses the correct Baud rate
@@ -116,7 +113,7 @@ TEST_CASE("Testing TFMini")
     SECTION("Success")
     {
       // Exercise
-      auto distance = test.GetDistance().value();
+      auto distance = test.GetDistance();
 
       // Verify
       CHECK(distance == kExpectedDistance);
@@ -133,7 +130,7 @@ TEST_CASE("Testing TFMini")
 
       // Exercise
       // Verify
-      CHECK(std::errc::io_error == test.GetDistance());
+      SJ2_CHECK_EXCEPTION(test.GetDistance(), std::errc::io_error);
     }
 
     SECTION("Device Not Found")
@@ -149,7 +146,7 @@ TEST_CASE("Testing TFMini")
       }
 
       // Exercise
-      CHECK(std::errc::no_such_device == test.GetDistance());
+      SJ2_CHECK_EXCEPTION(test.GetDistance(), std::errc::no_such_device);
     }
 
     // Verify
@@ -190,7 +187,7 @@ TEST_CASE("Testing TFMini")
     SECTION("Proper Operation")
     {
       // Exercise
-      auto strength = test.GetSignalStrengthPercent().value();
+      auto strength = test.GetSignalStrengthPercent();
 
       // Verify
       CHECK(strength ==
@@ -212,7 +209,8 @@ TEST_CASE("Testing TFMini")
 
       // Exercise
       // Verify
-      CHECK(std::errc::no_such_device == test.GetSignalStrengthPercent());
+      SJ2_CHECK_EXCEPTION(test.GetSignalStrengthPercent(),
+                          std::errc::no_such_device);
     }
 
     SECTION("Invalid Checksum")
@@ -223,7 +221,7 @@ TEST_CASE("Testing TFMini")
 
       // Exercise
       // Verify
-      CHECK(std::errc::io_error == test.GetSignalStrengthPercent());
+      SJ2_CHECK_EXCEPTION(test.GetSignalStrengthPercent(), std::errc::io_error);
     }
 
     Verify(
@@ -253,19 +251,19 @@ TEST_CASE("Testing TFMini")
     SECTION("Successfully return using edge case 0")
     {
       // Exercise
-      REQUIRE(test.SetMinSignalThreshhold(0));
+      test.SetMinSignalThreshhold(0);
     }
 
     SECTION("Successfully return in proper usage")
     {
       // Exercise
-      REQUIRE(test.SetMinSignalThreshhold(50));
+      test.SetMinSignalThreshhold(50);
     }
 
     SECTION("Successfully return using edge case: Above the threshold cap")
     {
       // Exercise
-      REQUIRE(test.SetMinSignalThreshhold(100));
+      test.SetMinSignalThreshhold(100);
     }
 
     // TODO(#1052): Missing verification for

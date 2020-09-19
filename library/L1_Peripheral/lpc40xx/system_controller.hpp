@@ -6,6 +6,7 @@
 #include "project_config.hpp"
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L0_Platform/startup.hpp"
 #include "L1_Peripheral/system_controller.hpp"
 #include "utility/bit.hpp"
 #include "utility/build_info.hpp"
@@ -625,7 +626,7 @@ class SystemController final : public sjsu::SystemController
                                      volatile uint32_t * stat,
                                      int pll_index) const
   {
-    const auto & pll_config = clock_configuration_.pll[pll_index];
+    const auto & pll_config        = clock_configuration_.pll[pll_index];
     units::frequency::hertz_t fcco = 0_Hz;
 
     if (pll_config.enabled)
@@ -717,5 +718,29 @@ class SystemController final : public sjsu::SystemController
   units::frequency::hertz_t usb_clock_rate_        = 0_Hz;
   units::frequency::hertz_t spifi_clock_rate_      = 0_Hz;
 };
+
+inline void SetMaximumClockSpeed()
+{
+  auto & system = SystemController::GetPlatformController();
+  auto & config = system.GetClockConfiguration<
+      lpc40xx::SystemController::ClockConfiguration>();
+
+  using sjsu::lpc40xx::SystemController;
+
+  // Make sure PLL0 is enabled
+  config.pll[0].enabled = true;
+  // IRC (12_MHz) * 10 => 120 MHz (maximum cpu clock rate)
+  config.pll[0].multiply = 10;
+
+  // Set clock source to PLL0
+  config.cpu.clock   = SystemController::CpuClockSelect::kPll0;
+  config.cpu.divider = 1;
+
+  // Initialize system clock rates.
+  system.Initialize();
+
+  // Initialize platform with new clock configuration settings.
+  sjsu::InitializePlatform();
+}
 }  // namespace lpc40xx
 }  // namespace sjsu

@@ -39,7 +39,7 @@ class Ltc4150 : public CoulombCounter
 
   /// Initialize hardware, setting pins as inputs and attaching ISR handlers to
   /// the interrupt pin.
-  Returns<void> Initialize() override
+  void Initialize() override
   {
     auto polarity_interrupt = [this]() {
       if (pol_pin_.Read())
@@ -69,15 +69,13 @@ class Ltc4150 : public CoulombCounter
 
     // Start counting
     counter_.Enable();
-
-    return {};
   }
 
   /// @return the calculated mAh
-  Returns<units::charge::milliampere_hour_t> GetCharge() const override
+  units::charge::milliampere_hour_t GetCharge() const override
   {
     /// We cast the pulses to scalar so we can calculate mAh
-    float pulses = static_cast<float>(SJ2_RETURN_ON_ERROR(counter_.GetCount()));
+    float pulses = static_cast<float>(counter_.GetCount());
     units::charge::milliampere_hour_t charge(
         pulses / (kCoulombsPerAh * kGvf.to<float>() * resistance_.to<float>()));
     return charge;

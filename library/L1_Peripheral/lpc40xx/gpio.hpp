@@ -271,12 +271,12 @@ class Gpio final : public sjsu::Gpio
 
   /// Assign the developer's ISR and sets the selected edge that the gpio
   /// interrupt will be triggered on.
-  Returns<void> AttachInterrupt(InterruptCallback callback, Edge edge) override
+  void AttachInterrupt(InterruptCallback callback, Edge edge) override
   {
     if (!IsAValidPort())
     {
-      return Error(std::errc::invalid_argument,
-                   "Only port 0 and port 2 can be used as an interrupt.");
+      throw Exception(std::errc::invalid_argument,
+                      "Only port 0 and port 2 can be used as an interrupt.");
     }
 
     if constexpr (IsPlatform(sjsu::build::Platform::lpc17xx))
@@ -305,19 +305,17 @@ class Gpio final : public sjsu::Gpio
     {
       *interrupt->falling_enable = bit::Set(*interrupt->falling_enable, pin_);
     }
-
-    return {};
   }
 
   /// Removes the developer's ISR and clears the selected edge of the gpio
   /// interrupt from being triggered.
-  Returns<void> DetachInterrupt() const override
+  void DetachInterrupt() const override
   {
     if (!IsAValidPort())
     {
-      return Error(std::errc::invalid_argument,
-                   "Only port 0 and port 2 can be used as an interrupt. No "
-                   "work is performed.");
+      throw Exception(std::errc::invalid_argument,
+                      "Only port 0 and port 2 can be used as an interrupt. No "
+                      "work is performed.");
     }
 
     handlers[interrupt_index_][pin_] = nullptr;
@@ -325,8 +323,6 @@ class Gpio final : public sjsu::Gpio
     auto * interrupt           = LocalInterruptRegister();
     *interrupt->rising_enable  = bit::Clear(*interrupt->rising_enable, pin_);
     *interrupt->falling_enable = bit::Clear(*interrupt->falling_enable, pin_);
-
-    return {};
   }
 
  private:

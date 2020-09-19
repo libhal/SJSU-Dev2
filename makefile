@@ -1,4 +1,18 @@
 # ==============================================================================
+# ANSI Color Codes Constants
+# ==============================================================================
+
+RED     = $(shell echo "\x1B[31;1m")
+GREEN   = $(shell echo "\x1B[32;1m")
+YELLOW  = $(shell echo "\x1B[33;1m")
+BLUE    = $(shell echo "\x1B[34;1m")
+MAGENTA = $(shell echo "\x1B[35;1m")
+CYAN    = $(shell echo "\x1B[36;1m")
+WHITE   = $(shell echo "\x1B[37;1m")
+RESET   = $(shell echo "\x1B[0m")
+DIVIDER = ======================================================================
+
+# ==============================================================================
 # Report an error if SJSU_DEV2_BASE does not exist
 # ==============================================================================
 
@@ -9,6 +23,19 @@ $(info | Run make from within a SJSU-Dev2 project folder    |)
 $(info +----------------------------------------------------+)
 $(info $(shell printf '$(RESET)'))
 $(error )
+endif
+
+# ==============================================================================
+# Present setup out of date message
+# ==============================================================================
+
+SETUP_VERSION_PATH    = $(SJSU_DEV2_BASE)/setup_version.txt
+CURRENT_SETUP_VERSION = $(shell cat $(SETUP_VERSION_PATH) 2> /dev/null)
+
+ifneq ($(PREVIOUS_SETUP_VERSION), $(CURRENT_SETUP_VERSION))
+  $(info $(shell printf '$(YELLOW)'))
+  $(info Setup version is out of date! Run ./setup again to resolve this.)
+  $(info $(shell printf '$(RESET)'))
 endif
 
 # ==============================================================================
@@ -59,20 +86,6 @@ MAP        = $(EXECUTABLE:.elf=.map)
 TEST_EXECUTABLE = $(SJ2_TEST_EXECUTABLE_DIR)/test.exe
 
 # ==============================================================================
-# ANSI Color Codes Constants
-# ==============================================================================
-
-RED     = $(shell echo "\x1B[31;1m")
-GREEN   = $(shell echo "\x1B[32;1m")
-YELLOW  = $(shell echo "\x1B[33;1m")
-BLUE    = $(shell echo "\x1B[34;1m")
-MAGENTA = $(shell echo "\x1B[35;1m")
-CYAN    = $(shell echo "\x1B[36;1m")
-WHITE   = $(shell echo "\x1B[37;1m")
-RESET   = $(shell echo "\x1B[0m")
-DIVIDER = ======================================================================
-
-# ==============================================================================
 # Default Flags for Firmware
 # ==============================================================================
 
@@ -81,20 +94,38 @@ SJ2_DEFAULT_PLATFORM = lpc40xx
 SJ2_DEFAULT_INCLUDES = $(SJ2_CURRENT_DIRECTORY) $(SJ2_SOURCE_DIR) \
                        $(SJ2_LOCAL_LIBRARY_DIR)
 
-SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -ffunction-sections \
-                       -fdata-sections -fno-exceptions -fno-omit-frame-pointer \
+SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -fexceptions -ffunction-sections \
+                       -fdata-sections -fno-omit-frame-pointer  \
                        -Wno-main -Wno-variadic-macros -Wall -Wextra -Wshadow \
                        -Wfloat-equal -Wundef -Wno-format-nonliteral \
                        -Wconversion -Wdouble-promotion -Wswitch -Wformat=2 \
                        -Wno-uninitialized -Wnull-dereference \
 											 -fdiagnostics-color -MMD -MP
 
-SJ2_DEFAULT_CPPFLAGS = -std=c++2a -fno-rtti -fno-threadsafe-statics \
-                       -Wold-style-cast -Woverloaded-virtual -Wsuggest-override
+SJ2_DEFAULT_CPPFLAGS = -std=c++2a -fexceptions -fno-rtti \
+                       -fno-threadsafe-statics -Wold-style-cast \
+                       -Woverloaded-virtual -Wsuggest-override
 
-SJ2_DEFAULT_LDFLAGS  = -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
+SJ2_DEFAULT_LDFLAGS  = -fexceptions -Wl,--gc-sections -Wl,-Map,"$(MAP)" \
                        --specs=nano.specs --specs=rdimon.specs \
-                       -Wl,--wrap=snprintf
+                       -Wl,--wrap=snprintf \
+
+											# -Wl,--wrap=__cxa_get_globals \
+                       -Wl,--wrap=__cxa_allocate_exception \
+                       -Wl,--wrap=__cxa_free_exception \
+											-Wl,--wrap=__cxa_get_globals_fast \
+											-Wl,--wrap=__cxa_atexit \
+											-Wl,--wrap=__cxa_call_terminate \
+											-Wl,--wrap=__cxa_begin_cleanup \
+											-Wl,--wrap=__cxa_end_catch \
+											-Wl,--wrap=__cxa_begin_catch \
+											-Wl,--wrap=__cxa_rethrow \
+											-Wl,--wrap=__cxa_type_match \
+											-Wl,--wrap=__cxa_call_unexpected \
+											-Wl,--wrap=__cxa_throw \
+											-Wl,--wrap=__gnu_unwind_execute \
+											-Wl,--wrap=_Unwind_VRS_Pop \
+											-Wl,--wrap=__gnu_unwind_pr_common
 
 SJ2_DEFAULT_SOURCES  = source/main.cpp
 
@@ -158,8 +189,17 @@ TEST_ARGUMENTS  ?=
 # Tool chain paths
 # ==============================================================================
 
-SJCLANG      = $(shell cd $(SJSU_DEV2_BASE)/tools/clang+llvm-*/ ; pwd)
-SJARMGCC     = $(shell cd $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-*/ ; pwd)
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	OS := linux
+endif
+ifeq ($(UNAME_S),Darwin)
+	OS := osx
+endif
+
+TOOLCHAIN_DIR = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-nano-exceptions/$(OS)
+SJCLANG          = $(shell cd $(TOOLCHAIN_DIR)/clang+llvm-*/ ; pwd)
+SJARMGCC         = $(shell cd $(TOOLCHAIN_DIR)/gcc-arm-none-eabi-*/ ; pwd)
 SJ2_OPENOCD_DIR  = $(shell grep -q Microsoft /proc/version && \
                            echo "$(SJSU_DEV2_BASE)/tools/openocd-wsl" || \
                            echo "$(SJSU_DEV2_BASE)/tools/openocd")

@@ -10,13 +10,13 @@ int main()
   sjsu::lpc17xx::I2c i2c2(sjsu::lpc17xx::I2cBus::kI2c2);
   sjsu::Tmp102 temperature_sensor(i2c2);
 
-  SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.Initialize(), -1);
-  SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.Enable(), -2);
+  temperature_sensor.Initialize();
+  temperature_sensor.Enable();
 
   while (true)
   {
     units::temperature::celsius_t temperature =
-        SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.GetTemperature(), -3);
+        temperature_sensor.GetTemperature();
     sjsu::LogInfo("Temperature: %.2f C", temperature.to<double>());
     sjsu::Delay(1s);
   }

@@ -106,7 +106,7 @@ TEST_CASE("Testing SD Card Driver Class")
 
   SECTION("Disable()")
   {
-    CHECK(std::errc::operation_not_supported == sd.Disable());
+    SJ2_CHECK_EXCEPTION(sd.Disable(), std::errc::operation_not_supported);
   }
 
   SECTION("GetBlockSize()")

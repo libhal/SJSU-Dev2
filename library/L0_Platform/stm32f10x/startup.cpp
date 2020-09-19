@@ -85,8 +85,6 @@ extern "C"
   }
 }
 
-SJ2_SECTION(".crp") const uint32_t kCrpWord = 0xFFFFFFFF;
-
 // The Interrupt vector table.
 // This relies on the linker script to place at correct location in memory.
 SJ2_SECTION(".isr_vector")
@@ -199,14 +197,7 @@ void InitializePlatform()
 
   system_timer.Initialize();
   system_timer.SetTickFrequency(config::kRtosFrequency);
-  if (auto status = system_timer.StartTimer(); !status)
-  {
-    status.error()->Print();
-    sjsu::LogError(
-        "System Timer (used as the system timer and by "
-        "FreeRTOS) has FAILED to start!");
-    sjsu::Halt();
-  }
+  system_timer.StartTimer();
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);

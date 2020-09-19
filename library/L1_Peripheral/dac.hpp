@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -14,19 +14,19 @@ class Dac
  public:
   /// Initialize and enable hardware. This must be called before any other
   /// method in this interface is called.
-  virtual Returns<void> Initialize() const = 0;
+  virtual void Initialize() const = 0;
 
   /// Set the DAC output the the value supplied.
   ///
   /// @param output - what value to write to the DAC register.
-  virtual Returns<void> Write(uint32_t output) const = 0;
+  virtual void Write(uint32_t output) const = 0;
 
   /// Set the DAC to the voltage supplied.
   /// If the voltage is above or below the voltage range, then the output
   /// will be capped at those voltages.
   ///
   /// @param voltage - The specific voltage to set the DAC to.
-  virtual Returns<void> SetVoltage(float voltage) const = 0;
+  virtual void SetVoltage(float voltage) const = 0;
 
   /// @return number of active bits for the DAC.
   virtual uint8_t GetActiveBits() const = 0;

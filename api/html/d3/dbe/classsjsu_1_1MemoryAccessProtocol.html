@@ -125,10 +125,10 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abbdd90399ffe75652990cca2d21a5288"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html#abbdd90399ffe75652990cca2d21a5288">Write</a> (std::span&lt; const uint8_t &gt; address, std::span&lt; const uint8_t &gt; payload)=0</td></tr>
-<tr class="separator:abbdd90399ffe75652990cca2d21a5288"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a73d155055cc739198afe9f3ef5b0eb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html#a9a73d155055cc739198afe9f3ef5b0eb">Read</a> (std::span&lt; const uint8_t &gt; address, std::span&lt; uint8_t &gt; payload)=0</td></tr>
-<tr class="separator:a9a73d155055cc739198afe9f3ef5b0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f48d5a7d99a3766b003191170ca2bc8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html#a1f48d5a7d99a3766b003191170ca2bc8">Write</a> (std::span&lt; const uint8_t &gt; address, std::span&lt; const uint8_t &gt; payload)=0</td></tr>
+<tr class="separator:a1f48d5a7d99a3766b003191170ca2bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bae425278c8c200448905a9fc6df617"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html#a3bae425278c8c200448905a9fc6df617">Read</a> (std::span&lt; const uint8_t &gt; address, std::span&lt; uint8_t &gt; payload)=0</td></tr>
+<tr class="separator:a3bae425278c8c200448905a9fc6df617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae92e04fe5f2d8229e1a24073cbee4d76"><td class="memTemplParams" colspan="2">template&lt;AddressWidth address_width, std::endian endianness&gt; </td></tr>
 <tr class="memitem:ae92e04fe5f2d8229e1a24073cbee4d76"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html#ae92e04fe5f2d8229e1a24073cbee4d76">operator[]</a> (const <a class="el" href="../../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html">MemoryAccessProtocol::Address</a>&lt; address_width, endianness &gt; &amp;device_register)</td></tr>
 <tr class="separator:ae92e04fe5f2d8229e1a24073cbee4d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,8 +199,8 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
 
 </div>
 </div>
-<a id="a9a73d155055cc739198afe9f3ef5b0eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a73d155055cc739198afe9f3ef5b0eb">&#9670;&nbsp;</a></span>Read()</h2>
+<a id="a3bae425278c8c200448905a9fc6df617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bae425278c8c200448905a9fc6df617">&#9670;&nbsp;</a></span>Read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,7 +209,7 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::MemoryAccessProtocol::Read </td>
+          <td class="memname">virtual void sjsu::MemoryAccessProtocol::Read </td>
           <td>(</td>
           <td class="paramtype">std::span&lt; const uint8_t &gt;&#160;</td>
           <td class="paramname"><em>address</em>, </td>
@@ -233,12 +233,12 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d2/dc2/classsjsu_1_1I2cProtocol.html#ab5785353158a8cfad61fee2d78c09bfb">sjsu::I2cProtocol&lt; MaximumPayloadSize &gt;</a>, <a class="el" href="../../d2/dc2/classsjsu_1_1I2cProtocol.html#ab5785353158a8cfad61fee2d78c09bfb">sjsu::I2cProtocol&lt; 1 &gt;</a>, and <a class="el" href="../../d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html#ac7524852393311f95340c1a86759020f">sjsu::MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte1 &gt;</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/dc2/classsjsu_1_1I2cProtocol.html#a742898a8d58128a539b5e9ae26c57d33">sjsu::I2cProtocol&lt; MaximumPayloadSize &gt;</a>, <a class="el" href="../../d2/dc2/classsjsu_1_1I2cProtocol.html#a742898a8d58128a539b5e9ae26c57d33">sjsu::I2cProtocol&lt; 1 &gt;</a>, and <a class="el" href="../../d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html#a6d447add4d2926a033db28cbfb1b87db">sjsu::MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte1 &gt;</a>.</p>
 
 </div>
 </div>
-<a id="abbdd90399ffe75652990cca2d21a5288"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbdd90399ffe75652990cca2d21a5288">&#9670;&nbsp;</a></span>Write()</h2>
+<a id="a1f48d5a7d99a3766b003191170ca2bc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f48d5a7d99a3766b003191170ca2bc8">&#9670;&nbsp;</a></span>Write()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,7 +247,7 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d0/d6b/namespacesjsu.html#a7e9bf9c05bd3d57355ab5d6710d8b9d5">Returns</a>&lt;void&gt; sjsu::MemoryAccessProtocol::Write </td>
+          <td class="memname">virtual void sjsu::MemoryAccessProtocol::Write </td>
           <td>(</td>
           <td class="paramtype">std::span&lt; const uint8_t &gt;&#160;</td>
           <td class="paramname"><em>address</em>, </td>
@@ -271,7 +271,7 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="../../d2/dc2/classsjsu_1_1I2cProtocol.html#a9050997817c1b0870a0ff56e9dbec837">sjsu::I2cProtocol&lt; MaximumPayloadSize &gt;</a>, <a class="el" href="../../d2/dc2/classsjsu_1_1I2cProtocol.html#a9050997817c1b0870a0ff56e9dbec837">sjsu::I2cProtocol&lt; 1 &gt;</a>, and <a class="el" href="../../d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html#a617d18f301fe38f3e80d2c8fb6b111c9">sjsu::MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte1 &gt;</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/dc2/classsjsu_1_1I2cProtocol.html#ad69707f6d4ab8b6526bfd476fef97b6d">sjsu::I2cProtocol&lt; MaximumPayloadSize &gt;</a>, <a class="el" href="../../d2/dc2/classsjsu_1_1I2cProtocol.html#ad69707f6d4ab8b6526bfd476fef97b6d">sjsu::I2cProtocol&lt; 1 &gt;</a>, and <a class="el" href="../../d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html#aea2a9348f176ea0653600b95921d8a20">sjsu::MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte1 &gt;</a>.</p>
 
 </div>
 </div>

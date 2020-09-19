@@ -22,7 +22,7 @@ class Mma8452q : public Accelerometer
       kSpec{};
 
   /// Map of all of the used device addresses in this driver.
-  struct Map
+  struct Map  // NOLINT
   {
     /// Device status register address
     static constexpr auto kStatus =
@@ -85,35 +85,33 @@ class Mma8452q : public Accelerometer
   {
   }
 
-  Returns<void> Initialize() override
+  void Initialize() override
   {
     return i2c_.Initialize();
   }
 
   /// Will automatically set the device to 2g for full-scale. Use
   /// `SetFullScaleRange()` to change it.
-  Returns<void> Enable() override
+  void Enable() override
   {
     // Check that the device is valid before proceeding.
-    SJ2_RETURN_ON_ERROR(IsValidDevice());
+    IsValidDevice();
 
     // Put device into standby so we can configure the device.
-    SJ2_RETURN_ON_ERROR(ActiveMode(false));
+    ActiveMode(false);
 
     // Set device full-scale to the value supplied by the constructor.
-    SJ2_RETURN_ON_ERROR(SetFullScaleRange());
+    SetFullScaleRange();
 
     // Activate device to allow full-scale and configuration to take effect.
-    SJ2_RETURN_ON_ERROR(ActiveMode(true));
-
-    return {};
+    ActiveMode(true);
   }
 
-  Returns<Acceleration_t> Read() override
+  Acceleration_t Read() override
   {
-    Acceleration_t acceleration            = {};
-    Returns<std::array<int16_t, 3>> result = memory_[Map::kXYZStartAddress];
-    auto xyz_data                          = SJ2_RETURN_ON_ERROR(result);
+    Acceleration_t acceleration   = {};
+    std::array<int16_t, 3> result = memory_[Map::kXYZStartAddress];
+    auto xyz_data                 = result;
 
     // First X-axis Byte (MSB first)
     // =========================================================================
@@ -150,45 +148,39 @@ class Mma8452q : public Accelerometer
     return acceleration;
   }
 
-  Returns<void> SetFullScaleRange()
+  void SetFullScaleRange()
   {
     const uint32_t kGravityScale = kFullScale.to<uint32_t>();
 
     if (kGravityScale != 2 && kGravityScale != 4 && kGravityScale != 8)
     {
-      return Error(std::errc::invalid_argument,
-                   "Gravity scale must be 2g, 4g, or 8g.");
+      throw Exception(std::errc::invalid_argument,
+                      "Gravity scale must be 2g, 4g, or 8g.");
     }
 
     const uint8_t kNewGravityScale = static_cast<uint8_t>(kGravityScale >> 2);
-    SJ2_RETURN_ON_ERROR(memory_[Map::kDataConfig] = kNewGravityScale);
-
-    return {};
+    memory_[Map::kDataConfig]      = kNewGravityScale;
   }
 
-  Returns<void> ActiveMode(bool is_active = true)
+  void ActiveMode(bool is_active = true)
   {
     // Write enable sequence
-    SJ2_RETURN_ON_ERROR(memory_[Map::kControlReg1] = is_active);
-    return {};
+    memory_[Map::kControlReg1] = is_active;
   }
 
-  Returns<void> IsValidDevice()
+  void IsValidDevice()
   {
     // Verify that the device is the correct device
     static constexpr uint8_t kExpectedDeviceID = 0x2A;
 
     // Read out the identity register
-    Returns<uint8_t> memory_id = memory_[Map::kWhoAmI];
-    SJ2_RETURN_ON_ERROR(memory_id);
+    uint8_t memory_id = memory_[Map::kWhoAmI];
 
-    if (memory_id.value() != kExpectedDeviceID)
+    if (memory_id != kExpectedDeviceID)
     {
-      LogDebug("ID = 0x%02X", memory_id.value());
-      return Error(std::errc::no_such_device, "Expected Device ID: 0x2A.");
+      LogDebug("ID = 0x%02X", memory_id);
+      throw Exception(std::errc::no_such_device, "Expected Device ID: 0x2A.");
     }
-
-    return {};
   }
 
  private:

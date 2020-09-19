@@ -5,7 +5,7 @@
 #include "L1_Peripheral/gpio.hpp"
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/stm32f10x/pin.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu::stm32f10x
 {
@@ -96,7 +96,7 @@ class Gpio : public sjsu::Gpio
     external_interrupt->PR = (1 << pin);
   }
 
-  Returns<void> AttachInterrupt(InterruptCallback callback, Edge edge) override
+  void AttachInterrupt(InterruptCallback callback, Edge edge) override
   {
     // Clear both falling and raising edges bits
     // They will be assigned in the conditionals below
@@ -196,14 +196,13 @@ class Gpio : public sjsu::Gpio
         break;
       default:
       {
-        return Error(std::errc::invalid_argument, "Pin must be between 0-15");
+        throw Exception(std::errc::invalid_argument,
+                        "Pin must be between 0-15");
       }
     }
-
-    return {};
   }
 
-  Returns<void> DetachInterrupt() const override
+  void DetachInterrupt() const override
   {
     // No need to Enable/Disable the interrupt via the interrupt controller,
     // especially since you would need logic to determine if this is the last
@@ -215,7 +214,6 @@ class Gpio : public sjsu::Gpio
         bit::Clear(external_interrupt->RTSR, pin_.GetPin());
     external_interrupt->FTSR =
         bit::Clear(external_interrupt->FTSR, pin_.GetPin());
-    return {};
   }
 
  private:

@@ -171,10 +171,9 @@ TEST_CASE("Testing Bit Manipulations")
                                               bit::MaskFromRange(8, 24) >> 3));
 
     CHECK(77 == bit::SignedExtract<int8_t>(0x04'D0'00'00,
-                                               bit::MaskFromRange(20, 28)));
-    static_assert(77 ==
-                  bit::SignedExtract<int8_t>(0x04'D0'00'00,
-                                              bit::MaskFromRange(20, 28)));
+                                           bit::MaskFromRange(20, 28)));
+    static_assert(77 == bit::SignedExtract<int8_t>(0x04'D0'00'00,
+                                                   bit::MaskFromRange(20, 28)));
   }
 
   SECTION("Insert with Mask")

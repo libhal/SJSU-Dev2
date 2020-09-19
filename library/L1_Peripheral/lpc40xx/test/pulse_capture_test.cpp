@@ -3,7 +3,7 @@
 #include "L1_Peripheral/lpc40xx/pulse_capture.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/enum.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu::lpc40xx

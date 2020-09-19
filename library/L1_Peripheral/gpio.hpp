@@ -5,7 +5,7 @@
 
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -71,11 +71,10 @@ class Gpio
   /// @param callback - the callback supplied here will be executed when the
   ///        interrupt condition occurs
   /// @param edge - the pin condition that will trigger the interrupt
-  virtual Returns<void> AttachInterrupt(InterruptCallback callback,
-                                        Edge edge) = 0;
+  virtual void AttachInterrupt(InterruptCallback callback, Edge edge) = 0;
 
   /// Remove interrupt call from pin and deactivate interrupts for this pin
-  virtual Returns<void> DetachInterrupt() const = 0;
+  virtual void DetachInterrupt() const = 0;
 
   // ===========================================================================
   // Utility Methods
@@ -109,7 +108,7 @@ class Gpio
   ///
   /// @param callback - the function to be called when a rising edge event
   ///                   occurs on this pin.
-  Returns<void> OnRisingEdge(InterruptCallback callback)
+  void OnRisingEdge(InterruptCallback callback)
   {
     return AttachInterrupt(callback, Edge::kRising);
   }
@@ -118,7 +117,7 @@ class Gpio
   ///
   /// @param callback - the function to be called when a falling edge event
   ///                   occurs on this pin.
-  Returns<void> OnFallingEdge(InterruptCallback callback)
+  void OnFallingEdge(InterruptCallback callback)
   {
     return AttachInterrupt(callback, Edge::kFalling);
   }
@@ -127,7 +126,7 @@ class Gpio
   ///
   /// @param callback - the function to be called when a rising edge or falling
   ///                   edge event occurs on this pin.
-  Returns<void> OnChange(InterruptCallback callback)
+  void OnChange(InterruptCallback callback)
   {
     return AttachInterrupt(callback, Edge::kBoth);
   }

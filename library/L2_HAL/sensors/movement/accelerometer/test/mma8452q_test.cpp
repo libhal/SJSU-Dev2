@@ -20,28 +20,11 @@ TEST_CASE("Accelerometer")
 
   SECTION("Initialize")
   {
-    SECTION("Success")
-    {
-      // Setup
-      When(Method(mock_i2c, Initialize)).AlwaysReturn({});
+    // Setup
+    Fake(Method(mock_i2c, Initialize));
 
-      // Exercise
-      REQUIRE(test_subject.Initialize());
-    }
-
-    SECTION("Failure")
-    {
-      // Setup
-      const auto kExpectedError = std::errc::not_supported;
-      When(Method(mock_i2c, Initialize))
-          .AlwaysReturn(Error(kExpectedError, ""));
-
-      // Exercise
-      REQUIRE(kExpectedError == test_subject.Initialize());
-
-      // Verify
-      Verify(Method(mock_i2c, Initialize));
-    }
+    // Exercise
+    test_subject.Initialize();
   }
 
   SECTION("Enable")
@@ -54,7 +37,7 @@ TEST_CASE("Accelerometer")
 
       // Exercise
       // Verify
-      REQUIRE(test_subject.Enable() == std::errc::no_such_device);
+      SJ2_CHECK_EXCEPTION(test_subject.Enable(), std::errc::no_such_device);
     }
 
     SECTION("Success")
@@ -64,14 +47,13 @@ TEST_CASE("Accelerometer")
       mock_map[Mma8452q::Map::kDataConfig]  = 0xFF;
 
       // Exercise
-      auto result                     = test_subject.Enable();
-      Returns<uint8_t> actual_control = mock_map[Mma8452q::Map::kControlReg1];
-      Returns<uint8_t> actual_config  = mock_map[Mma8452q::Map::kDataConfig];
+      test_subject.Enable();
 
       // Verify
-      CHECK(result);
-      CHECK(0x01 == actual_control.value());
-      CHECK((2 >> 2) == actual_config.value());
+      uint8_t actual_control = mock_map[Mma8452q::Map::kControlReg1];
+      uint8_t actual_config  = mock_map[Mma8452q::Map::kDataConfig];
+      CHECK(0x01 == actual_control);
+      CHECK((2 >> 2) == actual_config);
     }
   }
 
@@ -83,14 +65,13 @@ TEST_CASE("Accelerometer")
       Mma8452q gravity_test_subject(mock_map, mock_i2c.get(), 2_SG);
 
       // Exercise
-      auto result                     = gravity_test_subject.Enable();
-      Returns<uint8_t> actual_control = mock_map[Mma8452q::Map::kControlReg1];
-      Returns<uint8_t> actual_config  = mock_map[Mma8452q::Map::kDataConfig];
+      gravity_test_subject.Enable();
 
       // Verify
-      CHECK(result);
-      CHECK(0x01 == actual_control.value());
-      CHECK((2 >> 2) == actual_config.value());
+      uint8_t actual_control = mock_map[Mma8452q::Map::kControlReg1];
+      uint8_t actual_config  = mock_map[Mma8452q::Map::kDataConfig];
+      CHECK(0x01 == actual_control);
+      CHECK((2 >> 2) == actual_config);
     }
 
     SECTION("4 standard gravity")
@@ -99,14 +80,13 @@ TEST_CASE("Accelerometer")
       Mma8452q gravity_test_subject(mock_map, mock_i2c.get(), 4_SG);
 
       // Exercise
-      auto result                     = gravity_test_subject.Enable();
-      Returns<uint8_t> actual_control = mock_map[Mma8452q::Map::kControlReg1];
-      Returns<uint8_t> actual_config  = mock_map[Mma8452q::Map::kDataConfig];
+      gravity_test_subject.Enable();
 
       // Verify
-      CHECK(result);
-      CHECK(0x01 == actual_control.value());
-      CHECK((4 >> 2) == actual_config.value());
+      uint8_t actual_control = mock_map[Mma8452q::Map::kControlReg1];
+      uint8_t actual_config  = mock_map[Mma8452q::Map::kDataConfig];
+      CHECK(0x01 == actual_control);
+      CHECK((4 >> 2) == actual_config);
     }
 
     SECTION("8 standard gravity")
@@ -115,14 +95,13 @@ TEST_CASE("Accelerometer")
       Mma8452q gravity_test_subject(mock_map, mock_i2c.get(), 8_SG);
 
       // Exercise
-      auto result                     = gravity_test_subject.Enable();
-      Returns<uint8_t> actual_control = mock_map[Mma8452q::Map::kControlReg1];
-      Returns<uint8_t> actual_config  = mock_map[Mma8452q::Map::kDataConfig];
+      gravity_test_subject.Enable();
 
       // Verify
-      CHECK(result);
-      CHECK(0x01 == actual_control.value());
-      CHECK((8 >> 2) == actual_config.value());
+      uint8_t actual_control = mock_map[Mma8452q::Map::kControlReg1];
+      uint8_t actual_config  = mock_map[Mma8452q::Map::kDataConfig];
+      CHECK(0x01 == actual_control);
+      CHECK((8 >> 2) == actual_config);
     }
   }
 
@@ -144,7 +123,7 @@ TEST_CASE("Accelerometer")
           std::array<int16_t, 3>{ kQuarterMaxAcceleration << 4, 0, 0 };
 
       // Exercise
-      auto acceleration = test_subject.Read().value();
+      auto acceleration = test_subject.Read();
 
       // Verify
       CHECK(acceleration.x.to<float>() ==
@@ -163,7 +142,7 @@ TEST_CASE("Accelerometer")
           std::array<int16_t, 3>{ 0, kQuarterMaxAcceleration << 4, 0 };
 
       // Exercise
-      auto acceleration = test_subject.Read().value();
+      auto acceleration = test_subject.Read();
 
       // Verify
       CHECK(acceleration.x.to<float>() ==
@@ -182,7 +161,7 @@ TEST_CASE("Accelerometer")
           std::array<int16_t, 3>{ 0, 0, kQuarterMaxAcceleration << 4 };
 
       // Exercise
-      auto acceleration = test_subject.Read().value();
+      auto acceleration = test_subject.Read();
 
       // Verify
       CHECK(acceleration.x.to<float>() ==
@@ -203,7 +182,7 @@ TEST_CASE("Accelerometer")
                                   kQuarterMaxAcceleration << 4 };
 
       // Exercise
-      auto acceleration = test_subject.Read().value();
+      auto acceleration = test_subject.Read();
 
       // Verify
       CHECK(acceleration.x.to<float>() ==
@@ -212,17 +191,6 @@ TEST_CASE("Accelerometer")
             doctest::Approx(kExpectedValue.to<float>()).epsilon(0.01f));
       CHECK(acceleration.z.to<float>() ==
             doctest::Approx(kExpectedValue.to<float>()).epsilon(0.01f));
-    }
-
-    SECTION("Failure")
-    {
-      // Setup
-      const auto kExpectedError = Error(std::errc::no_such_device, "");
-      mock_map.SetError(kExpectedError);
-
-      // Exercise
-      // Verify
-      REQUIRE(std::errc::no_such_device == test_subject.Read());
     }
   }
 }

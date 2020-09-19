@@ -3,7 +3,6 @@ var searchData=
   ['fallbacklistnode_5ft',['FallbackListNode_t',['../da/d1b/structsjsu_1_1FallbackListNode__t.html',1,'sjsu']]],
   ['fatfs_2ehpp',['fatfs.hpp',['../d6/d12/fatfs_8hpp.html',1,'']]],
   ['feedsequence',['FeedSequence',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#a1dda314d3fe97b7b7a4f1de7137253b9',1,'sjsu::lpc40xx::Watchdog::FeedSequence()'],['../d5/da1/classsjsu_1_1Watchdog.html#aee0713947074d1af74fb830f89392a17',1,'sjsu::Watchdog::FeedSequence()']]],
-  ['file',['file',['../d1/d36/classsjsu_1_1Error__t.html#a74474c57dc5f492ea61ae183b2e3e159',1,'sjsu::Error_t']]],
   ['filebasename',['FileBasename',['../d0/d6b/namespacesjsu.html#a0100494866cb454bdaad16e2d4c31525',1,'sjsu::FileBasename(const char(&amp;path)[kPathLength])'],['../d0/d6b/namespacesjsu.html#a7c6279c539e2978eccc5ccf84afc2222',1,'sjsu::FileBasename(const char *path)']]],
   ['fill',['Fill',['../db/d32/classsjsu_1_1Ssd1306.html#ab089ba1b2d17602cb03b7242def6ac60',1,'sjsu::Ssd1306']]],
   ['findclosestfractional',['FindClosestFractional',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#a30393ed9717dbd31bffacb61a08ca0f8',1,'sjsu::lpc40xx::uart']]],
@@ -24,6 +23,5 @@ var searchData=
   ['frequency',['frequency',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a37b3125dc3070f47dfdd200345295ba7',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::frequency()'],['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#ab265a3be3b9f8401790ae6d60a019d74',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t::frequency()'],['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a8c904662b9fbee848d398db51ca60594',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t::frequency()'],['../dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html#a598178103e64537a0dd2abe6838327b6',1,'sjsu::rtos::PeriodicScheduler::Frequency()']]],
   ['frequency_5fcounter_2ehpp',['frequency_counter.hpp',['../d2/df9/frequency__counter_8hpp.html',1,'']]],
   ['frequencycounter',['FrequencyCounter',['../d6/d0f/classsjsu_1_1FrequencyCounter.html',1,'sjsu::FrequencyCounter'],['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a2416155f94eeb4b1bf8998f5e6b6296e',1,'sjsu::FrequencyCounter::FrequencyCounter()']]],
-  ['function',['function',['../d1/d36/classsjsu_1_1Error__t.html#a3a08c3155582640ff107dcbb08d24d3e',1,'sjsu::Error_t']]],
   ['function_5fmap',['function_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a362622236e910dba04f12d5cb7fddcf6',1,'sjsu::lpc17xx::Pin']]]
 ];
