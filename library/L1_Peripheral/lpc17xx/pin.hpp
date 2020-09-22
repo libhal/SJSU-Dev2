@@ -62,20 +62,16 @@ class Pin final : public sjsu::Pin
   }
 
   /// @note GPIO hardare is enabled and ready by default on reset.
-  Returns<void> Initialize() const override
-  {
-    return {};
-  }
+  void Initialize() const override {}
 
-  Returns<void> SetPinFunction(uint8_t function) const override
+  void SetPinFunction(uint8_t function) const override
   {
     uint32_t pin_reg_select = PinRegisterLookup();
     function_map->pin[pin_reg_select] =
         bit::Insert(function_map->pin[pin_reg_select], function, kPinMask);
-    return {};
   }
 
-  Returns<void> SetPull(Resistor resistor) const override
+  void SetPull(Resistor resistor) const override
   {
     static constexpr uint8_t kResistorModes[4] = {
       0b10,  // kNone     [0]
@@ -87,17 +83,16 @@ class Pin final : public sjsu::Pin
     resistor_map->pin[pin_reg_select] =
         bit::Insert(resistor_map->pin[pin_reg_select],
                     kResistorModes[Value(resistor)], kPinMask);
-    return {};
   }
 
   /// Implement SetAsAnalogMode as deprecated and unsupported
-  [[deprecated("Unsupported operation")]] Returns<void> SetAsAnalogMode(
+  [[deprecated("Unsupported operation")]] void SetAsAnalogMode(
       bool) const override
   {
-    return Error(std::errc::operation_not_supported, "");
+    throw Exception(std::errc::operation_not_supported, "");
   }
 
-  Returns<void> SetAsOpenDrain(bool set_as_open_drain = true) const override
+  void SetAsOpenDrain(bool set_as_open_drain = true) const override
   {
     open_drain_map->pin[port_] =
         bit::Insert(open_drain_map->pin[port_], set_as_open_drain,
@@ -105,7 +100,6 @@ class Pin final : public sjsu::Pin
                         .position = pin_,
                         .width    = 1,
                     });
-    return {};
   }
 
  private:

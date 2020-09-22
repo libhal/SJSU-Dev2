@@ -25,7 +25,7 @@ class BitBangSpi : public sjsu::Spi
   {
   }
 
-  sjsu::Returns<void> Initialize() const override
+  void Initialize() const override
   {
     mosi_.SetAsOutput();
     miso_.SetAsInput();
@@ -33,7 +33,6 @@ class BitBangSpi : public sjsu::Spi
     sck_.SetLow();
     mosi_.SetLow();
     miso_.GetPin().PullUp();
-    return {};
   }
 
   uint16_t Transfer(uint16_t data) const override
@@ -63,7 +62,7 @@ class BitBangSpi : public sjsu::Spi
     size_ = size;
   }
 
-  sjsu::Returns<void> SetClock(units::frequency::hertz_t frequency,
+  void SetClock(units::frequency::hertz_t frequency,
                                bool = false,
                                bool = false) const override
   {
@@ -75,7 +74,6 @@ class BitBangSpi : public sjsu::Spi
     {
       delay_ = false;
     }
-    return {};
   }
 
  private:
@@ -121,12 +119,7 @@ int main()
     return -1;
   }
 
-  auto enable_status = card.Enable();
-  if (!enable_status)
-  {
-    sjsu::LogError("Failed to mount SD Card!");
-    return -2;
-  }
+  card.Enable();
 
   sjsu::LogInfo("Mounting of SD Card was" SJ2_HI_BOLD_GREEN " successful!");
 
@@ -143,36 +136,35 @@ int main()
 
   // Beyond this point, information on the SD card will be overwritten
   sjsu::LogInfo("Deleting blocks");
-  SJ2_RETURN_VALUE_ON_ERROR(card.Erase(0, 1), -3);
+  card.Erase(0, 1);
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Writing Hello World to block 0");
-  SJ2_RETURN_VALUE_ON_ERROR(card.Write(0, kHelloWorld, sizeof(kHelloWorld)),
-                            -4);
+  card.Write(0, kHelloWorld, sizeof(kHelloWorld));
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 0");
   uint8_t buffer[512];
-  SJ2_RETURN_VALUE_ON_ERROR(card.Read(0, buffer, sizeof(buffer)), -5);
+  card.Read(0, buffer, sizeof(buffer));
   sjsu::debug::Hexdump<8>(buffer, sizeof(buffer));
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Deleting block 5");
-  SJ2_RETURN_VALUE_ON_ERROR(card.Erase(5, 1), -6);
+  card.Erase(5, 1);
 
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 5 after delete");
-  SJ2_RETURN_VALUE_ON_ERROR(card.Read(5, buffer, sizeof(buffer)), -7);
+  card.Read(5, buffer, sizeof(buffer));
   sjsu::debug::Hexdump<8>(buffer, sizeof(buffer));
 
   sjsu::LogInfo("Writing to block 5 after delete");
-  SJ2_RETURN_VALUE_ON_ERROR(card.Write(5, kLongText, sizeof(kLongText)), -8);
+  card.Write(5, kLongText, sizeof(kLongText));
 
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 5 after write");
-  SJ2_RETURN_VALUE_ON_ERROR(card.Read(5, buffer, sizeof(buffer)), -9);
+  card.Read(5, buffer, sizeof(buffer));
   sjsu::debug::Hexdump<8>(buffer, sizeof(buffer));
 
   sjsu::LogInfo("End SD Card Driver Example...");

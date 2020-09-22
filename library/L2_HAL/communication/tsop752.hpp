@@ -3,7 +3,7 @@
 #include "L1_Peripheral/pulse_capture.hpp"
 #include "L1_Peripheral/timer.hpp"
 #include "L2_HAL/communication/infrared_receiver.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -29,32 +29,33 @@ class Tsop752 final : public InfraredReceiver
         last_received_timestamp_(0)
   {
   }
+
   /// Initializes the PulseCapture and Timer peripherals.
-  Returns<void> Initialize() override
+  void Initialize() override
   {
     // using 1 MHz for 1µs precision (1 / 1'000'000 Hz = 1µs)
     constexpr units::frequency::hertz_t kFrequency = 1_MHz;
     constexpr uint8_t kTimerMatchRegister          = 0;
 
-    SJ2_RETURN_ON_ERROR(capture_.Initialize(
-        [this](auto capture_status) { HandlePulseCaptured(capture_status); }));
+    capture_.Initialize(
+        [this](auto capture_status) { HandlePulseCaptured(capture_status); });
 
     capture_.ConfigureCapture(sjsu::PulseCapture::CaptureEdgeMode::kBoth);
     capture_.EnableCaptureInterrupt(true);
 
-    SJ2_RETURN_ON_ERROR(
-        timer_.Initialize(kFrequency, [this]() { HandleEndOfFrame(); }));
+    timer_.Initialize(kFrequency, [this]() { HandleEndOfFrame(); });
 
-    SJ2_RETURN_ON_ERROR(timer_.SetMatchBehavior(
-        static_cast<uint32_t>(kTimeout.count()),
-        sjsu::Timer::MatchAction::kInterrupt, kTimerMatchRegister));
-    return {};
+    timer_.SetMatchBehavior(static_cast<uint32_t>(kTimeout.count()),
+                            sjsu::Timer::MatchAction::kInterrupt,
+                            kTimerMatchRegister);
   }
+
   /// @param handler User callback handler to invoke when a frame is received.
   void SetInterruptCallback(DataReceivedHandler handler) override
   {
     user_callback_ = handler;
   }
+
   /// Invoked when a pulse is captured.
   ///
   /// Example timing diagram:
@@ -86,6 +87,7 @@ class Tsop752 final : public InfraredReceiver
       HandleEndOfFrame();
     }
   }
+
   /// Invoked when a data frame is currently being received and no new pulse
   /// edge is captured after a timeout period, signifying the end of the data
   /// frame.

@@ -70,11 +70,11 @@ class Pin
 
   constexpr Pin(uint8_t port, uint8_t pin);
 
-  virtual Returns<void> Initialize() const = 0;
-  virtual Returns<void> SetPinFunction(uint8_t function) const = 0;
-  virtual Returns<void> SetPull(Resistor resistor) const = 0;
-  virtual Returns<void> SetAsOpenDrain(bool set_as_open_drain) const = 0;
-  virtual Returns<void> SetAsAnalogMode(bool set_as_analog) const = 0;
+  virtual void Initialize() const = 0;
+  virtual void SetPinFunction(uint8_t function) const = 0;
+  virtual void SetPull(Resistor resistor) const = 0;
+  virtual void SetAsOpenDrain(bool set_as_open_drain) const = 0;
+  virtual void SetAsAnalogMode(bool set_as_analog) const = 0;
 
   void PullUp() const;
   void PullDown() const;

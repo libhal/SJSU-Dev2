@@ -52,28 +52,26 @@ class Mpu6050 : public Accelerometer
   {
   }
 
-  Returns<void> Initialize() override
+  void Initialize() override
   {
     return i2c_.Initialize();
   }
 
   /// Will automatically set the device to 2g for full-scale. Use
   /// `SetFullScaleRange()` to change it.
-  Returns<void> Enable() override
+  void Enable() override
   {
     // Check that the device is valid before proceeding.
-    SJ2_RETURN_ON_ERROR(IsValidDevice());
+    IsValidDevice();
 
     // Wake up the device so we can configure the device.
-    SJ2_RETURN_ON_ERROR(ActiveMode(true));
+    ActiveMode(true);
 
     // Set device full-scale to the value supplied by the constructor.
-    SJ2_RETURN_ON_ERROR(SetFullScaleRange());
-
-    return {};
+    SetFullScaleRange();
   }
 
-  Returns<Acceleration_t> Read() override
+  Acceleration_t Read() override
   {
     constexpr uint16_t kBytesPerAxis = 2;
     constexpr uint8_t kNumberOfAxis  = 3;
@@ -82,9 +80,9 @@ class Mpu6050 : public Accelerometer
 
     uint8_t xyz_data[kBytesPerAxis * kNumberOfAxis];
 
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(
-        kAccelerometerAddress, { Value(RegisterMap::kXYZStartAddress) },
-        xyz_data, sizeof(xyz_data)));
+    i2c_.WriteThenRead(kAccelerometerAddress,
+                       { Value(RegisterMap::kXYZStartAddress) }, xyz_data,
+                       sizeof(xyz_data));
 
     // First X-axis Byte (MSB first)
     // =========================================================================
@@ -118,15 +116,15 @@ class Mpu6050 : public Accelerometer
     return acceleration;
   }
 
-  Returns<void> SetFullScaleRange()
+  void SetFullScaleRange()
   {
     uint32_t gravity_scale = kFullScale.to<uint32_t>();
 
     if (gravity_scale != 2 && gravity_scale != 4 && gravity_scale != 8 &&
         gravity_scale != 16)
     {
-      return Error(std::errc::invalid_argument,
-                   "Invalid gravity scale. Must be 2g, 4g, 8g or 16g.");
+      throw Exception(std::errc::invalid_argument,
+                        "Invalid gravity scale. Must be 2g, 4g, 8g or 16g.");
     }
     uint8_t gravity_code;
     if (gravity_scale == 2)
@@ -150,39 +148,33 @@ class Mpu6050 : public Accelerometer
     // filter config untouched
     constexpr auto kScaleMask = bit::MaskFromRange(3, 4);
     uint8_t config;
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(kAccelerometerAddress,
-                                           { Value(RegisterMap::kDataConfig) },
-                                           &config, 1));
+    i2c_.WriteThenRead(kAccelerometerAddress,
+                       { Value(RegisterMap::kDataConfig) }, &config, 1);
 
     config = bit::Insert(config, gravity_code, kScaleMask);
 
-    SJ2_RETURN_ON_ERROR(i2c_.Write(
-        kAccelerometerAddress, { Value(RegisterMap::kDataConfig), config }));
-
-    return {};
+    i2c_.Write(kAccelerometerAddress,
+               { Value(RegisterMap::kDataConfig), config });
   }
 
-  Returns<void> ActiveMode(bool is_active = true)
+  void ActiveMode(bool is_active = true)
   {
     constexpr auto kSleepMask = bit::MaskFromRange(6);
 
     uint8_t control;
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(kAccelerometerAddress,
-                                           { Value(RegisterMap::kDataConfig) },
-                                           &control, 1));
+    i2c_.WriteThenRead(kAccelerometerAddress,
+                       { Value(RegisterMap::kDataConfig) }, &control, 1);
 
     // !is_active is required as the bit must be set to 0 in order to prevent it
     // from sleeping.
     control = bit::Insert(control, !is_active, kSleepMask);
 
     // Write enable sequence
-    SJ2_RETURN_ON_ERROR(i2c_.Write(
-        kAccelerometerAddress, { Value(RegisterMap::kControlReg1), control }));
-
-    return {};
+    i2c_.Write(kAccelerometerAddress,
+               { Value(RegisterMap::kControlReg1), control });
   }
 
-  Returns<void> IsValidDevice()
+  void IsValidDevice()
   {
     // Verify that the device is the correct device
     static constexpr uint8_t kExpectedDeviceID = 0x68;
@@ -190,17 +182,14 @@ class Mpu6050 : public Accelerometer
     uint8_t device_id = 0;
 
     // Read out the identity register
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(kAccelerometerAddress,
-                                           { Value(RegisterMap::kWhoAmI) },
-                                           &device_id, sizeof(device_id)));
+    i2c_.WriteThenRead(kAccelerometerAddress, { Value(RegisterMap::kWhoAmI) },
+                       &device_id, sizeof(device_id));
 
     if (device_id != kExpectedDeviceID)
     {
       sjsu::LogDebug("device_id = 0x%02X", device_id);
-      return Error(std::errc::no_such_device, "Expected Device ID: 0x2A");
+      throw Exception(std::errc::no_such_device, "Expected Device ID: 0x2A");
     }
-
-    return {};
   }
 
  private:

@@ -10,9 +10,8 @@ namespace sjsu
 {
 auto GetLambda(InterruptCallback & isr)
 {
-  return [&isr](InterruptCallback callback, Gpio::Edge) -> Returns<void> {
+  return [&isr](InterruptCallback callback, Gpio::Edge) -> void {
     isr = callback;
-    return {};
   };
 }
 
@@ -90,11 +89,11 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
     When(Method(mock_backup_hardware_counter, GetCount)).Return(6);
 
     primary_counter.Initialize();
-    CHECK(primary_counter.GetCharge().value().to<float>() ==
+    CHECK(primary_counter.GetCharge().to<float>() ==
           doctest::Approx(kPrimaryCharge));
 
     backup_counter.Initialize();
-    CHECK(backup_counter.GetCharge().value().to<float>() ==
+    CHECK(backup_counter.GetCharge().to<float>() ==
           doctest::Approx(kBackupCharge));
   }
 
@@ -145,17 +144,17 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
     primary_counter.Initialize();
 
     // Verify
-    CHECK(primary_counter.GetCharge().value().to<float>() ==
+    CHECK(primary_counter.GetCharge().to<float>() ==
           doctest::Approx(kNegativePrimaryCharge).epsilon(kResolution));
     primary_pol_isr();
-    CHECK(primary_counter.GetCharge().value().to<float>() ==
+    CHECK(primary_counter.GetCharge().to<float>() ==
           doctest::Approx(kPositivePrimaryCharge).epsilon(kResolution));
 
     backup_counter.Initialize();
-    CHECK(backup_counter.GetCharge().value().to<float>() ==
+    CHECK(backup_counter.GetCharge().to<float>() ==
           doctest::Approx(kPositiveBackupCharge).epsilon(kResolution));
     backup_pol_isr();
-    CHECK(backup_counter.GetCharge().value().to<float>() ==
+    CHECK(backup_counter.GetCharge().to<float>() ==
           doctest::Approx(kNegativeBackupCharge).epsilon(kResolution));
   }
 }

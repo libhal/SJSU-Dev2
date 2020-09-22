@@ -37,7 +37,7 @@ TEST_CASE("Testing EEPROM")
     constexpr uint32_t kClockDivider    = 128;
 
     // Exercise
-    CHECK(test_eeprom.Initialize());
+    test_eeprom.Initialize();
 
     // Verify
     CHECK(local_eeprom.WSTATE == kWaitStateValues);
@@ -60,7 +60,7 @@ TEST_CASE("Testing EEPROM")
     local_eeprom.INT_STATUS = (1 << 26) | (1 << 28);
 
     // Exercise
-    CHECK(test_eeprom.Write(kAddress, wdata, kPayloadSize));
+    test_eeprom.Write(kAddress, wdata, kPayloadSize);
 
     // Verify
     CHECK(local_eeprom.ADDR == kAddress);
@@ -78,7 +78,7 @@ TEST_CASE("Testing EEPROM")
     local_eeprom.RDATA = kReadVal;
 
     // Exercise
-    CHECK(test_eeprom.Read(kAddress, rdata, kPayloadSize));
+    test_eeprom.Read(kAddress, rdata, kPayloadSize);
 
     // Verify
     uint32_t read_value =
@@ -104,7 +104,7 @@ TEST_CASE("Testing EEPROM")
     local_eeprom.PWRDWN = 1;
 
     // Exercise
-    CHECK(test_eeprom.Enable());
+    test_eeprom.Enable();
 
     // Verify
     CHECK(local_eeprom.PWRDWN == 0);
@@ -116,7 +116,7 @@ TEST_CASE("Testing EEPROM")
     local_eeprom.PWRDWN = 0;
 
     // Exercise
-    CHECK(test_eeprom.Disable());
+    test_eeprom.Disable();
 
     // Verify
     CHECK(local_eeprom.PWRDWN == 1);

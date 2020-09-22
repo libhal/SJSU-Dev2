@@ -9,7 +9,7 @@
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/uart.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/time.hpp"
 
 using sjsu::lpc17xx::LPC_UART0_TypeDef;
@@ -297,7 +297,7 @@ class Uart final : public sjsu::Uart
   /// @param port - a reference to a constant lpc40xx::Uart::Port_t definition
   explicit constexpr Uart(const Port_t & port) : port_(port) {}
 
-  Returns<void> Initialize(uint32_t baud_rate) const override
+  void Initialize(uint32_t baud_rate) const override
   {
     constexpr uint8_t kFIFOEnableAndReset = 0b111;
     sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
@@ -310,11 +310,9 @@ class Uart final : public sjsu::Uart
     port_.rx.PullUp();
     port_.tx.PullUp();
     port_.registers->FCR |= kFIFOEnableAndReset;
-
-    return {};
   }
 
-  Returns<void> SetBaudRate(uint32_t baud_rate) const override
+  void SetBaudRate(uint32_t baud_rate) const override
   {
     auto & system = sjsu::SystemController::GetPlatformController();
 
@@ -335,8 +333,6 @@ class Uart final : public sjsu::Uart
     port_.registers->DLL = dll;
     port_.registers->FDR = fdr;
     port_.registers->LCR = kStandardUart;
-
-    return {};
   }
 
   void Write(const void * data, size_t size) const override

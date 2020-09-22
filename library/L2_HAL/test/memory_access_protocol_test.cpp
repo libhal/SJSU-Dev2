@@ -78,8 +78,8 @@ TEST_CASE_TEMPLATE("Testing MemoryAccessProtocol",
       std::iota(read_value.begin(), read_value.end(), 0);
     }
 
-    Returns<void> Write(std::span<const uint8_t> address,
-                        std::span<const uint8_t> payload) override
+    void Write(std::span<const uint8_t> address,
+               std::span<const uint8_t> payload) override
     {
       write_address.fill(0);
       write_value.fill(0);
@@ -89,12 +89,10 @@ TEST_CASE_TEMPLATE("Testing MemoryAccessProtocol",
 
       std::copy(address.begin(), address.end(), write_address.begin());
       std::copy(payload.begin(), payload.end(), write_value.begin());
-
-      return {};
     }
 
-    Returns<void> Read(std::span<const uint8_t> address,
-                       std::span<uint8_t> payload) override
+    void Read(std::span<const uint8_t> address,
+              std::span<uint8_t> payload) override
     {
       read_address.fill(0);
 
@@ -103,8 +101,6 @@ TEST_CASE_TEMPLATE("Testing MemoryAccessProtocol",
 
       std::copy(address.begin(), address.end(), read_address.begin());
       std::copy_n(read_value.begin(), payload.size(), payload.begin());
-
-      return {};
     }
 
     /// Used to setup the read_value
@@ -235,26 +231,26 @@ TEST_CASE_TEMPLATE("Testing MemoryAccessProtocol",
         {
           case sizeof(uint8_t):
           {
-            Returns<uint8_t> result_read_int = (mock_map[test_register]);
-            read_int                         = result_read_int.value();
+            uint8_t result_read_int = (mock_map[test_register]);
+            read_int                = result_read_int;
             break;
           }
           case sizeof(uint16_t):
           {
-            Returns<uint16_t> result_read_int = (mock_map[test_register]);
-            read_int                          = result_read_int.value();
+            uint16_t result_read_int = (mock_map[test_register]);
+            read_int                 = result_read_int;
             break;
           }
           case sizeof(uint32_t):
           {
-            Returns<uint32_t> result_read_int = (mock_map[test_register]);
-            read_int                          = result_read_int.value();
+            uint32_t result_read_int = (mock_map[test_register]);
+            read_int                 = result_read_int;
             break;
           }
           case sizeof(uint64_t):
           {
-            Returns<uint64_t> result_read_int = (mock_map[test_register]);
-            read_int                          = result_read_int.value();
+            uint64_t result_read_int = (mock_map[test_register]);
+            read_int                 = result_read_int;
             break;
           }
         }
@@ -547,105 +543,91 @@ TEST_CASE_TEMPLATE("Testing MemoryAccessProtocol",
         {
           case 1:
           {
-            Returns<std::array<uint8_t, 1>> read_bytes =
-                mock_map[test_register];
-            CHECK(std::array<uint8_t, 1>({ 1 }) == read_bytes.value());
+            std::array<uint8_t, 1> read_bytes = mock_map[test_register];
+            CHECK(std::array<uint8_t, 1>({ 1 }) == read_bytes);
             CHECK(1 == mock_map.read_value_span.size());
             break;
           }
           case 2:
           {
-            Returns<std::array<uint8_t, 2>> read_bytes =
-                mock_map[test_register];
-            CHECK(std::array<uint8_t, 2>({ 1, 2 }) == read_bytes.value());
+            std::array<uint8_t, 2> read_bytes = mock_map[test_register];
+            CHECK(std::array<uint8_t, 2>({ 1, 2 }) == read_bytes);
             CHECK(2 == mock_map.read_value_span.size());
             break;
           }
           case 3:
           {
-            Returns<std::array<uint8_t, 3>> read_bytes =
-                mock_map[test_register];
-            CHECK(std::array<uint8_t, 3>({ 1, 2, 3 }) == read_bytes.value());
+            std::array<uint8_t, 3> read_bytes = mock_map[test_register];
+            CHECK(std::array<uint8_t, 3>({ 1, 2, 3 }) == read_bytes);
             CHECK(3 == mock_map.read_value_span.size());
             break;
           }
           case 4:
           {
-            Returns<std::array<uint8_t, 4>> read_bytes =
-                mock_map[test_register];
-            CHECK(std::array<uint8_t, 4>({ 1, 2, 3, 4 }) == read_bytes.value());
+            std::array<uint8_t, 4> read_bytes = mock_map[test_register];
+            CHECK(std::array<uint8_t, 4>({ 1, 2, 3, 4 }) == read_bytes);
             CHECK(4 == mock_map.read_value_span.size());
             break;
           }
           case 5:
           {
-            Returns<std::array<uint8_t, 5>> read_bytes =
-                mock_map[test_register];
-            CHECK(std::array<uint8_t, 5>({ 1, 2, 3, 4, 5 }) ==
-                  read_bytes.value());
+            std::array<uint8_t, 5> read_bytes = mock_map[test_register];
+            CHECK(std::array<uint8_t, 5>({ 1, 2, 3, 4, 5 }) == read_bytes);
             CHECK(5 == mock_map.read_value_span.size());
             break;
           }
           case 6:
           {
-            Returns<std::array<uint8_t, 6>> read_bytes =
-                mock_map[test_register];
-            CHECK(std::array<uint8_t, 6>({ 1, 2, 3, 4, 5, 6 }) ==
-                  read_bytes.value());
+            std::array<uint8_t, 6> read_bytes = mock_map[test_register];
+            CHECK(std::array<uint8_t, 6>({ 1, 2, 3, 4, 5, 6 }) == read_bytes);
             CHECK(6 == mock_map.read_value_span.size());
             break;
           }
           case 7:
           {
-            Returns<std::array<uint8_t, 7>> read_bytes =
-                mock_map[test_register];
+            std::array<uint8_t, 7> read_bytes = mock_map[test_register];
             CHECK(std::array<uint8_t, 7>({ 1, 2, 3, 4, 5, 6, 7 }) ==
-                  read_bytes.value());
+                  read_bytes);
             CHECK(7 == mock_map.read_value_span.size());
             break;
           }
           case 8:
           {
-            Returns<std::array<uint8_t, 8>> read_bytes =
-                mock_map[test_register];
+            std::array<uint8_t, 8> read_bytes = mock_map[test_register];
             CHECK(std::array<uint8_t, 8>({ 1, 2, 3, 4, 5, 6, 7, 8 }) ==
-                  read_bytes.value());
+                  read_bytes);
             CHECK(8 == mock_map.read_value_span.size());
             break;
           }
           case 9:
           {
-            Returns<std::array<uint8_t, 9>> read_bytes =
-                mock_map[test_register];
+            std::array<uint8_t, 9> read_bytes = mock_map[test_register];
             CHECK(std::array<uint8_t, 9>({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }) ==
-                  read_bytes.value());
+                  read_bytes);
             CHECK(9 == mock_map.read_value_span.size());
             break;
           }
           case 10:
           {
-            Returns<std::array<uint8_t, 10>> read_bytes =
-                mock_map[test_register];
+            std::array<uint8_t, 10> read_bytes = mock_map[test_register];
             CHECK(std::array<uint8_t, 10>({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }) ==
-                  read_bytes.value());
+                  read_bytes);
             CHECK(10 == mock_map.read_value_span.size());
             break;
           }
           case 11:
           {
-            Returns<std::array<uint8_t, 11>> read_bytes =
-                mock_map[test_register];
-            CHECK(std::array<uint8_t, 11>({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                                            11 }) == read_bytes.value());
+            std::array<uint8_t, 11> read_bytes = mock_map[test_register];
+            CHECK(std::array<uint8_t, 11>(
+                      { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }) == read_bytes);
             CHECK(11 == mock_map.read_value_span.size());
             break;
           }
           case 12:
           {
-            Returns<std::array<uint8_t, 12>> read_bytes =
-                mock_map[test_register];
-            CHECK(std::array<uint8_t, 12>({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                                            12 }) == read_bytes.value());
+            std::array<uint8_t, 12> read_bytes = mock_map[test_register];
+            CHECK(std::array<uint8_t, 12>(
+                      { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }) == read_bytes);
             CHECK(12 == mock_map.read_value_span.size());
             break;
           }
@@ -668,7 +650,7 @@ TEST_CASE_TEMPLATE("Testing MemoryAccessProtocol",
       if (kEndian == std::endian::big)
       {
         // Exercise: BIG Endian
-        Returns<std::array<uint16_t, 3>> read_bytes = mock_map[test_register];
+        std::array<uint16_t, 3> read_bytes = mock_map[test_register];
         CHECK(std::array<uint16_t, 3>({ 0x0102, 0x0304, 0x0506 }) ==
               read_bytes);
         CHECK(6 == mock_map.read_value_span.size());
@@ -676,7 +658,7 @@ TEST_CASE_TEMPLATE("Testing MemoryAccessProtocol",
       else
       {
         // Exercise: Little Endian
-        Returns<std::array<uint16_t, 3>> read_bytes = mock_map[test_register];
+        std::array<uint16_t, 3> read_bytes = mock_map[test_register];
         CHECK(std::array<uint16_t, 3>({ 0x0201, 0x0403, 0x0605 }) ==
               read_bytes);
         CHECK(6 == mock_map.read_value_span.size());

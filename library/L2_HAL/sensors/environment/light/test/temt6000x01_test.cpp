@@ -28,25 +28,13 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
 
   Temt6000x01 test_subject(mock_adc.get(), kPullDownResistor);
 
-  SECTION("Successful Initialize")
+  SECTION("Initialize")
   {
     // Setup
-    When(Method(mock_adc, Initialize)).AlwaysReturn({});
+    Fake(Method(mock_adc, Initialize));
 
     // Exercise
-    REQUIRE(test_subject.Initialize());
-
-    // Verify
-    Verify(Method(mock_adc, Initialize)).Once();
-  }
-
-  SECTION("Successful Initialize")
-  {
-    const auto kExpectedError = std::errc::invalid_argument;
-    When(Method(mock_adc, Initialize)).AlwaysReturn(Error(kExpectedError, ""));
-
-    // Exercise
-    REQUIRE(kExpectedError == test_subject.Initialize());
+    test_subject.Initialize();
 
     // Verify
     Verify(Method(mock_adc, Initialize)).Once();
@@ -55,7 +43,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
   SECTION("GetIlluminance")
   {
     // Exercise
-    auto actual_lux = test_subject.GetIlluminance().value();
+    auto actual_lux = test_subject.GetIlluminance();
 
     // Verify
     Verify(Method(mock_adc, Read)).Once();
@@ -65,7 +53,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
   SECTION("GetMaxIlluminance")
   {
     // Exercise
-    auto actual_max_lux = test_subject.GetMaxIlluminance().value();
+    auto actual_max_lux = test_subject.GetMaxIlluminance();
 
     // Verify
     CHECK(actual_max_lux == expected_max_lux);
@@ -76,7 +64,7 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
     float expected_percentage = (expected_lux / expected_max_lux).to<float>();
 
     // Exercise
-    float actual_percentage = test_subject.GetPercentageBrightness().value();
+    float actual_percentage = test_subject.GetPercentageBrightness();
 
     // Verify
     Verify(Method(mock_adc, Read)).Once();

@@ -5,7 +5,7 @@
 #include "utility/bit.hpp"
 #include "utility/units.hpp"
 #include "utility/math/limits.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
@@ -45,29 +45,27 @@ class Si7060 final : public TemperatureSensor
   {
   }
 
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     return i2c_.Initialize();
   }
 
-  Returns<void> Enable() const override
+  void Enable() const override
   {
     uint8_t temperature_sensor_id_register;
 
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(address_, { kIdRegister },
-                                           &temperature_sensor_id_register, 1));
+    i2c_.WriteThenRead(address_, { kIdRegister },
+                       &temperature_sensor_id_register, 1);
 
     if (temperature_sensor_id_register != kExpectedSensorId)
     {
       LogDebug("ID = 0x%02X\n", temperature_sensor_id_register);
-      return Error(std::errc::no_such_device,
-                   "Device ID does not match expected device ID 0x14");
+      throw Exception(std::errc::no_such_device,
+                        "Device ID does not match expected device ID 0x14");
     }
-
-    return {};
   }
 
-  Returns<units::temperature::celsius_t> GetTemperature() const override
+  units::temperature::celsius_t GetTemperature() const override
   {
     constexpr int32_t kSubtractTemperatureData = BitLimits<14, uint32_t>::Max();
 
@@ -76,15 +74,15 @@ class Si7060 final : public TemperatureSensor
 
     // The register will enable the device to collect data once
     // and automatically sets the stop bit to 0 (2nd bit).
-    SJ2_RETURN_ON_ERROR(i2c_.Write(address_, { kOneBurstRegister, 0x04 }));
+    i2c_.Write(address_, { kOneBurstRegister, 0x04 });
 
     // Enable I2C automatic address increment on read (must be done every time)
-    SJ2_RETURN_ON_ERROR(i2c_.Write(address_, { kAutomaticBitRegister, 0x01 }));
+    i2c_.Write(address_, { kAutomaticBitRegister, 0x01 });
 
     // These need to be in separate transactions
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(
-        address_, { kMostSignificantRegister }, &most_significant_register, 1));
-    SJ2_RETURN_ON_ERROR(i2c_.Read(address_, &least_significant_register, 1));
+    i2c_.WriteThenRead(address_, { kMostSignificantRegister },
+                       &most_significant_register, 1);
+    i2c_.Read(address_, &least_significant_register, 1);
 
     // The write and read operation sets the most significant bit to one,
     // telling the register that the data has been read.
@@ -101,7 +99,8 @@ class Si7060 final : public TemperatureSensor
     float acquired_temperature =
         static_cast<float>(temperature_data - kSubtractTemperatureData);
     auto temperature =
-        units::temperature::celsius_t{(acquired_temperature / 160.0f) + 55.0f};
+        units::temperature::celsius_t{ (acquired_temperature / 160.0f) +
+                                       55.0f };
 
     return temperature;
   }

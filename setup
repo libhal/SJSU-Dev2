@@ -29,6 +29,17 @@ LINK_PROJECTS=1
 # Import SJSU-Dev2 common shell script functions
 . $BASE/tools/common.sh
 
+function print_status() {
+  if [ $1 -ne 0 ]; then
+    printf "$BOLD_RED"
+    printf "✘"
+  else
+    printf "$BOLD_GREEN"
+    printf "✔"
+  fi
+  printf "$RESET\n"
+}
+
 function print_status_nl() {
   if [ $1 -ne 0 ]; then
     printf "$BOLD_RED"

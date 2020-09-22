@@ -8,10 +8,13 @@ CFLAGS += -Werror
 FILE_EXCLUDES      := grep -v $(addprefix -e ,$(LINT_FILTER))
 GREP_CPP_SOURCES   := grep ".[hc]pp$$" | $(FILE_EXCLUDES)
 GIT_ALL_REPO_FILES := git ls-tree --full-tree -r --name-only HEAD
-GIT_UPDATED_FILES  := git show --diff-filter=AM --name-only HEAD...master
+GIT_DELETED_FILES  := git show --diff-filter=D  --name-only HEAD...master
+GIT_MODIFIED_FILES := git show --diff-filter=AM --name-only HEAD...master
 
-TRACKED_SOURCES    = $(shell $(GIT_ALL_REPO_FILES) | $(GREP_CPP_SOURCES))
-UPDATED_SOURCES    = $(shell $(GIT_UPDATED_FILES) | $(GREP_CPP_SOURCES))
+TRACKED_SOURCES   := $(shell $(GIT_ALL_REPO_FILES) | $(GREP_CPP_SOURCES))
+DELETED_SOURCES   := $(shell $(GIT_DELETED_FILES)  | $(GREP_CPP_SOURCES))
+MODIFIED_SOURCES  := $(shell $(GIT_MODIFIED_FILES) | $(GREP_CPP_SOURCES))
+UPDATED_SOURCES   := $(filter-out $(DELETED_SOURCES), $(MODIFIED_SOURCES))
 
 LINT_FILES         = $(addprefix $(SJSU_DEV2_BASE)/, $(TRACKED_SOURCES))
 TIDY_FILES         = $(addprefix $(SJ2_OBJECT_DIR)/, $(TRACKED_SOURCES:=.tidy))
@@ -40,6 +43,7 @@ tidy: $(TIDY_FILES)
 
 $(SJ2_OBJECT_DIR)/%.tidy: $(SJSU_DEV2_BASE)/%
 	@mkdir -p "$(dir $@)"
+
 	@$(CLANG_TIDY) -extra-arg="-std=c++2a" "$<"  -- \
 	  -D PLATFORM=host -D HOST_TEST=1 \
 		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
@@ -71,3 +75,7 @@ find-unused-tests:
 doxygen:
 	+@./scripts/generate_doxygen_docs.sh
 
+
+format-code:
+	@$(SJCLANG)/bin/git-clang-format --binary="$(SJCLANG)/bin/clang-format" \
+	  --force

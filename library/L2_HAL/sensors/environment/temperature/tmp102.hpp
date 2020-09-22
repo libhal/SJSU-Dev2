@@ -56,26 +56,23 @@ class Tmp102 final : public TemperatureSensor
   {
   }
 
-  Returns<void> Initialize() const override
+  void Initialize() const override
   {
     return i2c_.Initialize();
   }
 
-  Returns<void> Enable() const override
-  {
-    return {};
-  }
+  void Enable() const override {}
 
-  Returns<units::temperature::celsius_t> GetTemperature() const override
+  units::temperature::celsius_t GetTemperature() const override
   {
     OneShotShutdown();
     constexpr uint8_t kBufferLength = 2;
     uint8_t temperature_buffer[kBufferLength];
 
     // Note: The MSB is received first in the buffer.
-    SJ2_RETURN_ON_ERROR(i2c_.WriteThenRead(
-        kDeviceAddress, { RegisterAddress::kTemperature },
-        &temperature_buffer[0], kBufferLength, kConversionTimeout));
+    i2c_.WriteThenRead(kDeviceAddress, { RegisterAddress::kTemperature },
+                       &temperature_buffer[0], kBufferLength,
+                       kConversionTimeout);
 
     // The temperature value is at bits [15:3].
     const int32_t kTemperatureData =
@@ -91,12 +88,10 @@ class Tmp102 final : public TemperatureSensor
   /// Sets the device to use one-shot shutdown mode. This allows power to be
   /// conserved by putting the device in the shutdown state once a reading is
   /// obtained.
-  Returns<void> OneShotShutdown() const
+  void OneShotShutdown() const
   {
-    SJ2_RETURN_ON_ERROR(
-        i2c_.Write(kDeviceAddress,
-                   { RegisterAddress::kConfiguration, kOneShotShutdownMode }));
-    return {};
+    i2c_.Write(kDeviceAddress,
+               { RegisterAddress::kConfiguration, kOneShotShutdownMode });
   }
 
   /// The I2C peripheral used for communication with the device.

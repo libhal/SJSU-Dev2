@@ -6,7 +6,7 @@
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/storage.hpp"
 #include "utility/bit.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -55,7 +55,7 @@ class Eeprom final : public sjsu::Storage
 
   /// Initializing the EEPROM requires setting the wait state register, setting
   /// the clock divider register, and ensuring that the device is powered on.
-  Returns<void> Initialize() override
+  void Initialize() override
   {
     auto & system            = sjsu::SystemController::GetPlatformController();
     const float kSystemClock = static_cast<float>(system.GetClockRate(
@@ -82,7 +82,6 @@ class Eeprom final : public sjsu::Storage
 
     // Initialize EEPROM clock
     eeprom_register->CLKDIV = static_cast<uint8_t>(kSystemClock / kEepromClk);
-    return {};
   }
 
   /// EEPROM is apart of the lpc40xx silicon so it is always present.
@@ -91,16 +90,14 @@ class Eeprom final : public sjsu::Storage
     return true;
   }
 
-  Returns<void> Enable() override
+  void Enable() override
   {
     eeprom_register->PWRDWN = 0;
-    return {};
   }
 
-  Returns<void> Disable() override
+  void Disable() override
   {
     eeprom_register->PWRDWN = 1;
-    return {};
   }
 
   bool IsReadOnly() override
@@ -118,12 +115,9 @@ class Eeprom final : public sjsu::Storage
     return 4_B;
   }
 
-  Returns<void> Erase(uint32_t, size_t) override
-  {
-    return {};
-  }
+  void Erase(uint32_t, size_t) override {}
 
-  Returns<void> Write(uint32_t address, const void * data, size_t size) override
+  void Write(uint32_t address, const void * data, size_t size) override
   {
     constexpr bit::Mask kLower6Bits = bit::MaskFromRange(0, 5);
     constexpr bit::Mask kUpper6Bits = bit::MaskFromRange(6, 11);
@@ -161,8 +155,8 @@ class Eeprom final : public sjsu::Storage
       auto timeout_status = Wait(kMaxTimeout, check_register);
       if (!timeout_status)
       {
-        return Error(std::errc::timed_out,
-                     "Could not write to EEPROM in time.");
+        throw Exception(std::errc::timed_out,
+                        "Could not write to EEPROM in time.");
       }
 
       // Clear write interrupt
@@ -183,11 +177,9 @@ class Eeprom final : public sjsu::Storage
 
     // Program final information so that it's stored in the EEPROM
     Program(eeprom_address);
-
-    return {};
   }
 
-  Returns<void> Read(uint32_t address, void * data, size_t size) override
+  void Read(uint32_t address, void * data, size_t size) override
   {
     address = bit::Insert(address, 0b00, kAddressMask);
 
@@ -201,8 +193,6 @@ class Eeprom final : public sjsu::Storage
       eeprom_register->CMD  = kRead32Bits;
       read_data[index]      = eeprom_register->RDATA;
     }
-
-    return {};
   }
 
  private:

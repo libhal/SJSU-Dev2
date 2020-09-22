@@ -12,15 +12,15 @@ int main()
   sjsu::Mma8452q sensor(i2c);
 
   sjsu::LogInfo("Initializing accelerometer peripherals...");
-  SJ2_RETURN_VALUE_ON_ERROR(sensor.Initialize(), 1);
+  sensor.Initialize();
 
   sjsu::LogInfo("Enabling accelerometer...");
-  SJ2_RETURN_VALUE_ON_ERROR(sensor.Enable(), 1);
+  sensor.Enable();
 
   while (true)
   {
     // Read the current acceleration from the sensor
-    auto current_acceleration = SJ2_RETURN_VALUE_ON_ERROR(sensor.Read(), 2);
+    auto current_acceleration = sensor.Read();
 
     // Print the acceleration values
     current_acceleration.Print();

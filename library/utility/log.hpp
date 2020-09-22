@@ -30,7 +30,7 @@
 #include "utility/debug.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu
 {

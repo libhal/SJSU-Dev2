@@ -27,20 +27,20 @@ struct SpiBus  // NOLINT
  public:
   /// Definition for SPI bus 0 for LPC17xx
   inline static const lpc40xx::Spi::Bus_t kSpi0 = {
-    .registers       = reinterpret_cast<lpc40xx::LPC_SSP_TypeDef *>(LPC_SSP0),
-    .power_on_bit    = SystemController::Peripherals::kSsp0,
-    .mosi            = kMosi0,
-    .miso            = kMiso0,
-    .sck             = kSck0,
+    .registers    = reinterpret_cast<lpc40xx::LPC_SSP_TypeDef *>(LPC_SSP0),
+    .power_on_bit = SystemController::Peripherals::kSsp0,
+    .mosi         = kMosi0,
+    .miso         = kMiso0,
+    .sck          = kSck0,
     .pin_function = 0b10,
   };
   /// Definition for SPI bus 1 for LPC17xx
   inline static const lpc40xx::Spi::Bus_t kSpi1 = {
-    .registers       = reinterpret_cast<lpc40xx::LPC_SSP_TypeDef *>(LPC_SSP1),
-    .power_on_bit    = SystemController::Peripherals::kSsp1,
-    .mosi            = kMosi1,
-    .miso            = kMiso1,
-    .sck             = kSck1,
+    .registers    = reinterpret_cast<lpc40xx::LPC_SSP_TypeDef *>(LPC_SSP1),
+    .power_on_bit = SystemController::Peripherals::kSsp1,
+    .mosi         = kMosi1,
+    .miso         = kMiso1,
+    .sck          = kSck1,
     .pin_function = 0b10,
   };
 };

@@ -35,6 +35,12 @@ class I2cCommand final : public Command
   {
     /// String large enough to hold the string 0x00
     char str[sizeof("0x00")];
+
+    /// @param address - Address to convert to a string
+    explicit AddressString_t(uint8_t address)
+    {
+      snprintf(str, sizeof(str), "0x%02X", address);
+    }
   };
 
   /// Holds the information needed to perform the I2C transaction with an
@@ -230,14 +236,20 @@ class I2cCommand final : public Command
          address++)
     {
       uint8_t buffer;
-      auto result = i2c_.Read(address, &buffer, sizeof(buffer), 50ms);
-
-      if (result)
+      try
       {
-        AddressString_t address_string;
-        snprintf(address_string.str, sizeof(address_string.str), "0x%02X",
-                 address);
+        // This will throw an exception if device is not found on bus (does not
+        // acknowledge address)
+        i2c_.Read(address, &buffer, sizeof(buffer), 50ms);
+
+        // These lines can only be reached if the I2C read did not throw
+        AddressString_t address_string(address);
         devices_found_.push_back(address_string);
+      }
+      catch (const sjsu::Exception &)
+      {
+        // Catch this exception and do nothing.
+        // Any other exceptions must propogate up.
       }
     }
   }
@@ -256,10 +268,8 @@ class I2cCommand final : public Command
     uint8_t contents[128];
     if (args.length < sizeof(contents))
     {
-      SJ2_RETURN_VALUE_ON_ERROR(
-          i2c_.WriteThenRead(args.device_address, &args.register_address, 1,
-                             contents, args.length),
-          1);
+      i2c_.WriteThenRead(args.device_address, &args.register_address, 1,
+                         contents, args.length);
       debug::Hexdump(contents, args.length);
     }
     else

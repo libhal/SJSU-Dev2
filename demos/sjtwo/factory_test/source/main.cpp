@@ -6,7 +6,7 @@
 #include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
 #include "L2_HAL/boards/sjtwo.hpp"
 #include "utility/log.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -187,9 +187,9 @@ class FactoryTest
     Mma8452q accelerometer(i2c_);
 
     // Verify that initialization of peripherals works
-    SJ2_RETURN_VALUE_ON_ERROR(accelerometer.Initialize(), false);
+    accelerometer.Initialize();
     // Will check the ID and valid state of the device.
-    SJ2_RETURN_VALUE_ON_ERROR(accelerometer.Enable(), false);
+    accelerometer.Enable();
 
     printf("End of Accelerometer Test...\n\n");
 
@@ -206,17 +206,12 @@ class FactoryTest
     {
       printf("  Attempting I2C Address: 0x%02X\n", address);
       Si7060 temperature_sensor(i2c_, address);
-      auto status = temperature_sensor.Initialize();
-
-      if (!status)
-      {
-        continue;
-      }
+      temperature_sensor.Initialize();
 
       printf("  -> Attached Sensor I2C Address: 0x%02X\n", address);
 
       units::temperature::celsius_t current_temperature =
-          SJ2_RETURN_VALUE_ON_ERROR(temperature_sensor.GetTemperature(), false);
+          temperature_sensor.GetTemperature();
 
       printf("  Current Temperature: %f C\n\n",
              current_temperature.to<double>());

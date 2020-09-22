@@ -9,7 +9,7 @@
 #include "L1_Peripheral/cortex/dwt_counter.hpp"
 #include "L1_Peripheral/system_controller.hpp"
 #include "L1_Peripheral/system_timer.hpp"
-#include "utility/status.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/enum.hpp"
 #include "utility/time.hpp"
 #include "utility/units.hpp"
@@ -132,13 +132,14 @@ class SystemTimer final : public sjsu::SystemTimer
     callback = isr;
   }
 
-  Returns<void> StartTimer() const override
+  void StartTimer() const override
   {
     if (sys_tick->LOAD == 0)
     {
-      return Error(std::errc::invalid_argument,
-                   "Load must be set to a non-zero value before the timer can "
-                   "be started.");
+      throw Exception(
+          std::errc::invalid_argument,
+          "Load must be set to a non-zero value before the timer can "
+          "be started.");
     }
 
     // The interrupt handler must be registered before you starting the timer
@@ -157,8 +158,6 @@ class SystemTimer final : public sjsu::SystemTimer
     // Set the system tick counter to start immediately
     sys_tick->VAL = 0;
     sys_tick->CTRL |= ctrl_mask;
-
-    return {};
   }
 
   /// @param frequency set the frequency that SystemTick counter will run.
