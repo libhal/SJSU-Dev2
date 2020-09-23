@@ -8,12 +8,10 @@ namespace sjsu
 class SevenSegmentDisplay
 {
     public:
-      SevenSegmentDisplay(sjsu::Graphics &graphics)
+      explicit SevenSegmentDisplay(sjsu::Graphics &graphics)
       : graphics_(graphics)
       {
-
       }
-
       /// Takes a character input and draws it to a 
       /// display in 7-segment form.
       ///
@@ -24,15 +22,15 @@ class SevenSegmentDisplay
         {
           for(uint8_t i = 0; i < 8; i++)
           {
-            if(bipmap_array[character] & (1 << i))
+            if(kBitmap[character] & (1 << i))
             {
               if(i == 0 || i == 3 || i == 6)
               {
-                DrawHorizontalSegment(segment_references_right[i][0], segment_references_right[i][1]);
+                DrawHorizontalSegment(kSegmentReferencesRight[i][0], kSegmentReferencesRight[i][1]);
               }
               else
               {
-                DrawVerticalSegment(segment_references_right[i][0], segment_references_right[i][1]);
+                DrawVerticalSegment(kSegmentReferencesRight[i][0], kSegmentReferencesRight[i][1]);
               }
             }
           }
@@ -53,26 +51,26 @@ class SevenSegmentDisplay
           }
           for(uint8_t i = 0; i < 8; i++)
           {
-            if(bipmap_array[first] & (1 << i))
+            if(kBitmap[first] & (1 << i))
             {
               if(i == 0 || i == 3 || i == 6)
               {
-                DrawHorizontalSegment(segment_references_left[i][0], segment_references_left[i][1]);
+                DrawHorizontalSegment(kSegmentReferencesLeft[i][0], kSegmentReferencesLeft[i][1]);
               }
               else
               {
-                DrawVerticalSegment(segment_references_left[i][0], segment_references_left[i][1]);
+                DrawVerticalSegment(kSegmentReferencesLeft[i][0], kSegmentReferencesLeft[i][1]);
               }
             }
-            if(bipmap_array[second] & (1 << i))
+            if(kBitmap[second] & (1 << i))
             {
               if(i == 0 || i == 3 || i == 6)
               {
-                DrawHorizontalSegment(segment_references_right[i][0], segment_references_right[i][1]);
+                DrawHorizontalSegment(kSegmentReferencesRight[i][0], kSegmentReferencesRight[i][1]);
               }
               else
               {
-                DrawVerticalSegment(segment_references_right[i][0], segment_references_right[i][1]);
+                DrawVerticalSegment(kSegmentReferencesRight[i][0], kSegmentReferencesRight[i][1]);
               }
             }
           }
@@ -143,7 +141,7 @@ class SevenSegmentDisplay
       }
       
       ///reference points for segment beginnings for the left 7-segment
-      inline static const uint8_t segment_references_left[8][2] =
+      inline static const uint8_t kSegmentReferencesLeft[8][2] =
       {
         {21, 7},   //segment 0, horizontal
         {44, 9},   //segment 1, vertical
@@ -155,7 +153,7 @@ class SevenSegmentDisplay
         {55, 54}   //period following after
       };
       ///reference points for segment beginnings for the right 7-segment
-      inline static const uint8_t segment_references_right[8][2] =
+      inline static const uint8_t kSegmentReferencesRight[8][2] =
       {
         {86, 7},   //segment 0, horizontal
         {109, 9},  //segment 1, vertical
@@ -166,8 +164,8 @@ class SevenSegmentDisplay
         {86, 32},  //segment 6, horizontal
         {120, 54}  //period following after
       };
-      ///bitmap array for numbers 0 - 9
-      static constexpr uint8_t bipmap_array[10] = 
+      ///kBitmap array for numbers 0 - 9
+      static constexpr uint8_t kBitmap[10] = 
       {
         0b00111111,
         0b00000110,
