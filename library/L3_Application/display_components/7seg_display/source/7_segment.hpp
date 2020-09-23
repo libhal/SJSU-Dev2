@@ -15,7 +15,7 @@ class SevenSegmentDisplay
       /// Takes a character input and draws it to a
       /// display in 7-segment form.
       ///
-      /// @param num - character to be drawn to 7-segment
+      /// @param character - character to be drawn to 7-segment
       void SetCharacter(uint8_t character)
       {
         if (character < 10)
