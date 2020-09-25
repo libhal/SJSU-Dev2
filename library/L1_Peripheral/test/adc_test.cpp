@@ -1,4 +1,5 @@
 #include "L1_Peripheral/adc.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
@@ -7,7 +8,6 @@ TEST_CASE("Testing ADC Interface")
 {
   Mock<Adc> mock_adc;
 
-  Fake(Method(mock_adc, Initialize));
   Fake(Method(mock_adc, Read));
   Fake(Method(mock_adc, GetActiveBits));
   Fake(Method(mock_adc, ReferenceVoltage));

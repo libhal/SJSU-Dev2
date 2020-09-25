@@ -1,18 +1,27 @@
 #pragma once
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
+#include <span>
+#include <string>
 
-#include "utility/units.hpp"
+#include "L1_Peripheral/inactive.hpp"
+#include "module.hpp"
 #include "utility/error_handling.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
 /// Abstract interface for persistent memory storage systems.
+///
 /// @ingroup l1_peripheral
-class Storage
+class Storage : public Module
 {
  public:
+  // ===========================================================================
+  // Interface Definitions
+  // ===========================================================================
+
   /// Defines the types of storage media.
   enum class Type
   {
@@ -34,31 +43,21 @@ class Storage
     kFRam,
   };
 
+  // ===========================================================================
+  // Interface Methods
+  // ===========================================================================
+
+  // ---------------------------------------------------------------------------
+  // Configuration Methods
+  // ---------------------------------------------------------------------------
+
+  // ---------------------------------------------------------------------------
+  // Usage Methods
+  // ---------------------------------------------------------------------------
+
   /// @return the type of memory this driver controls. Can be called without
   ///         calling Initialize() first.
   virtual Type GetMemoryType() = 0;
-
-  /// Initialize all peripherals required to make communicate with the storage
-  /// media possible. MUST be called before calling any method in this interface
-  /// with the exception of `GetMemoryType()`
-  virtual void Initialize() = 0;
-
-  /// Will prepare and configure storage media for communication.
-  /// This method can only be called after `Initialize()` was called
-  /// successfully without returning an `Error_t`.
-  /// This method MUST be called in order for the following methods to operate:
-  ///
-  ///    bool IsReadOnly()
-  ///    units::data::byte_t GetCapacity()
-  ///    units::data::byte_t GetBlockSize()
-  ///    void Erase(uint32_t, size_t)
-  ///    void Write(uint32_t, const void *, size_t)
-  ///    void Read(uint32_t, void *, size_t)
-  ///    void Disable()
-  ///
-  /// Calling any of these methods before `Enable()` has been called
-  /// successfully, will result in undefined behavior.
-  virtual void Enable() = 0;
 
   /// @return true if the storage is present. For cases where the memory cannot
   ///         be removed or is physically located within a device, this should
@@ -98,26 +97,69 @@ class Storage
   /// writing, otherwise, the data may be corrupted or unchanged.
   ///
   /// @param block_address - starting block to write to
-  /// @param data - data to be stored in the location addressed above.
-  /// @param size - the number of bytes to write into memory. Can be less than
-  ///               the size of a block.
-  /// @return Status of if the operation was successful, otherwise, returns an
-  ///         appropriate status signal.
-  virtual void Write(uint32_t block_address,
-                     const void * data,
-                     size_t size) = 0;
+  /// @param data - buffer of data to be stored in the location addressed.
+  virtual void Write(uint32_t block_address, std::span<const uint8_t> data) = 0;
 
   /// Read data from the storage media in the location specified.
   ///
   /// @param block_address - starting block to read from.
-  /// @param data - pointer to where read data should be stored.
-  /// @param size - the number of bytes to read from memory. Can be less than
-  ///               the size of a block.
-  /// @return Status of if the operation was successful, otherwise, return an
-  ///         appropriate status signal.
-  virtual void Read(uint32_t block_address, void * data, size_t size) = 0;
+  /// @param data - buffer to hold the data stored in the location address.
+  virtual void Read(uint32_t block_address, std::span<uint8_t> data) = 0;
 
-  /// Should shutdown the device.
-  virtual void Disable() = 0;
+  // ===========================================================================
+  // Utility Methods
+  // ===========================================================================
+
+  /// Helper function that overloads the Write function to allow usage of the
+  /// std::string_view container.
+  ///
+  /// @param block_address - starting block to write to
+  /// @param data - string view of characters to stored in the location.
+  void Write(uint32_t block_address, std::string_view data)
+  {
+    const uint8_t * pointer = reinterpret_cast<const uint8_t *>(data.data());
+
+    Write(block_address, std::span(pointer, data.size()));
+  }
 };
+
+/// Template specialization that generates an inactive sjsu::Uart.
+template <>
+inline sjsu::Storage & GetInactive<sjsu::Storage>()
+{
+  class InactiveStorage : public sjsu::Storage
+  {
+   public:
+    Type GetMemoryType() override
+    {
+      return Type::kRam;
+    }
+
+    void ModuleInitialize() override {}
+    void ModuleEnable(bool = true) override {}
+
+    bool IsMediaPresent() override
+    {
+      return true;
+    }
+    bool IsReadOnly() override
+    {
+      return true;
+    }
+    units::data::byte_t GetCapacity() override
+    {
+      return 0_B;
+    }
+    units::data::byte_t GetBlockSize() override
+    {
+      return 0_B;
+    }
+    void Erase(uint32_t, size_t) override {}
+    void Write(uint32_t, std::span<const uint8_t>) override {}
+    void Read(uint32_t, std::span<uint8_t>) override {}
+  };
+
+  static InactiveStorage inactive;
+  return inactive;
+}
 }  // namespace sjsu

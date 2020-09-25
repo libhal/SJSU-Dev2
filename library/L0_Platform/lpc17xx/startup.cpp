@@ -1,3 +1,5 @@
+#include "L0_Platform/startup.hpp"
+
 #include <FreeRTOS.h>
 #include <task.h>
 
@@ -6,7 +8,6 @@
 #include <iterator>
 
 #include "L0_Platform/ram.hpp"
-#include "L0_Platform/startup.hpp"
 #include "L1_Peripheral/cortex/dwt_counter.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
 #include "L1_Peripheral/interrupt.hpp"
@@ -43,21 +44,28 @@ sjsu::cortex::InterruptController<sjsu::lpc17xx::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>
     interrupt_controller;
 
-int Lpc17xxStdOut(const char * data, size_t length)
+int Lpc17xxStdOut(std::span<const char> data)
 {
-  uart0.Write(reinterpret_cast<const uint8_t *>(data), length);
-  return length;
+  std::span<const uint8_t> char_data(
+      reinterpret_cast<const uint8_t *>(data.data()), data.size());
+
+  uart0.Write(char_data);
+
+  return data.size();
 }
 
-int Lpc17xxStdIn(char * data, size_t length)
+int Lpc17xxStdIn(std::span<char> data)
 {
+  std::span<uint8_t> char_data(reinterpret_cast<uint8_t *>(data.data()),
+                               data.size());
+
   // Wait until data comes in
   while (!uart0.HasData())
   {
     continue;
   }
-  uart0.Read(reinterpret_cast<uint8_t *>(data), length);
-  return length;
+
+  return uart0.Read(char_data);
 }
 }  // namespace
 
@@ -83,11 +91,17 @@ extern "C"
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
+    // Disable timer so the callback can be configured
+    system_timer.Enable(false);
+
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
     // delay itself.
-    system_timer.SetCallback(xPortSysTickHandler);
+    system_timer.ConfigureCallback(xPortSysTickHandler);
+
+    // Re-enable timer
+    system_timer.Enable(true);
   }
 }
 
@@ -166,13 +180,17 @@ void InitializePlatform()
   system_controller.Initialize();
 
   // Set UART0 baudrate, which is required for printf and scanf to work properly
-  uart0.Initialize(config::kBaudRate);
+  uart0.Initialize();
+  uart0.ConfigureBaudRate(config::kBaudRate);
+  uart0.Enable();
+
   sjsu::newlib::SetStdout(Lpc17xxStdOut);
   sjsu::newlib::SetStdin(Lpc17xxStdIn);
 
   system_timer.Initialize();
-  system_timer.SetTickFrequency(config::kRtosFrequency);
-  system_timer.StartTimer();
+  system_timer.ConfigureTickFrequency(config::kRtosFrequency);
+  system_timer.ConfigureCallback([]() {});
+  system_timer.Enable();
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "L2_HAL/sensors/environment/temperature_sensor.hpp"
-
 #include "L1_Peripheral/i2c.hpp"
+#include "L2_HAL/sensors/environment/temperature_sensor.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
@@ -56,22 +55,29 @@ class Tmp102 final : public TemperatureSensor
   {
   }
 
-  void Initialize() const override
+  void ModuleInitialize() override
   {
-    return i2c_.Initialize();
+    if (i2c_.RequiresConfiguration())
+    {
+      i2c_.Initialize();
+      i2c_.ConfigureClockRate();
+      i2c_.Enable();
+    }
   }
 
-  void Enable() const override {}
+  void ModuleEnable(bool = true) override {}
 
-  units::temperature::celsius_t GetTemperature() const override
+  units::temperature::celsius_t GetTemperature() override
   {
     OneShotShutdown();
     constexpr uint8_t kBufferLength = 2;
     uint8_t temperature_buffer[kBufferLength];
 
     // Note: The MSB is received first in the buffer.
-    i2c_.WriteThenRead(kDeviceAddress, { RegisterAddress::kTemperature },
-                       &temperature_buffer[0], kBufferLength,
+    i2c_.WriteThenRead(kDeviceAddress,
+                       { RegisterAddress::kTemperature },
+                       &temperature_buffer[0],
+                       kBufferLength,
                        kConversionTimeout);
 
     // The temperature value is at bits [15:3].
@@ -88,14 +94,14 @@ class Tmp102 final : public TemperatureSensor
   /// Sets the device to use one-shot shutdown mode. This allows power to be
   /// conserved by putting the device in the shutdown state once a reading is
   /// obtained.
-  void OneShotShutdown() const
+  void OneShotShutdown()
   {
     i2c_.Write(kDeviceAddress,
                { RegisterAddress::kConfiguration, kOneShotShutdownMode });
   }
 
   /// The I2C peripheral used for communication with the device.
-  const sjsu::I2c & i2c_;
+  sjsu::I2c & i2c_;
   /// The configurable device address used for communication.
   const uint8_t kDeviceAddress;
 };

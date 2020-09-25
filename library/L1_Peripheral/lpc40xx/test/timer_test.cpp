@@ -1,5 +1,6 @@
-#include "L4_Testing/testing_frameworks.hpp"
 #include "L1_Peripheral/lpc40xx/timer.hpp"
+
+#include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -88,8 +89,8 @@ TEST_CASE("Testing lpc40xx Timer")
         INFO("match_register: " << i);
 
         // Exercise
-        timer.SetMatchBehavior(kTicks[i], kMatchActions[j],
-                               kExpectedMatchRegister);
+        timer.SetMatchBehavior(
+            kTicks[i], kMatchActions[j], kExpectedMatchRegister);
 
         // Verify
         CHECK(bit::Extract(local_timer_registers.MCR, kMatchActionMask) ==

@@ -2,13 +2,14 @@
 
 #include <cstddef>
 #include <functional>
+#include <span>
 
 namespace sjsu
 {
 namespace newlib
 {
-using Stdout = std::function<int(const char *, size_t)>;
-using Stdin  = std::function<int(char *, size_t)>;
+using Stdout = std::function<int(std::span<const char>)>;
+using Stdin  = std::function<int(std::span<char>)>;
 
 void SetStdout(Stdout);
 void SetStdin(Stdin);
@@ -16,11 +17,12 @@ void SetStdin(Stdin);
 ///
 /// @param enable_echo - If true, enable echo, if false disable echo back.
 void StdinEchoBack(bool enable_echo);
-int DoNothingStdOut(const char *, size_t);
-int DoNothingStdIn(char *, size_t);
+
+int DoNothingStdOut(std::span<const char> ignore);
+int DoNothingStdIn(std::span<char> ignore);
 
 inline bool echo_back_is_enabled = true;
-inline Stdout out = DoNothingStdOut;
-inline Stdin in   = DoNothingStdIn;
+inline Stdout out                = DoNothingStdOut;
+inline Stdin in                  = DoNothingStdIn;
 }  // namespace newlib
 }  // namespace sjsu

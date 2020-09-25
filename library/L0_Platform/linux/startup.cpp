@@ -1,28 +1,30 @@
 #include <unistd.h>
 
 #include <chrono>
+#include <span>
 
+#include "L1_Peripheral/interrupt.hpp"
+#include "L1_Peripheral/system_controller.hpp"
 #include "newlib/newlib.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
-#include "L1_Peripheral/inactive.hpp"
 
 // Private namespace to make sure that these do not conflict with other globals
 namespace
 {
-int LinuxStdOut(const char * data, size_t length)
+int LinuxStdOut(std::span<const char> data)
 {
-  return write(STDOUT_FILENO, data, length);
+  return write(STDOUT_FILENO, data.data(), data.size());
 }
 
-int LinuxStdIn(char * data, size_t length)
+int LinuxStdIn(std::span<char> data)
 {
-  return read(STDIN_FILENO, data, length);
+  return read(STDIN_FILENO, data.data(), data.size());
 }
 
 extern "C" int _write(int, const char * ptr, int length)  // NOLINT
 {
-  return LinuxStdOut(ptr, length);
+  return LinuxStdOut(std::span<const char>(ptr, length));
 }
 
 std::chrono::nanoseconds LinuxUptime()

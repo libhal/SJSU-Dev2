@@ -32,7 +32,7 @@ inline std::chrono::nanoseconds DefaultUptime()
 /// Global Uptime function, preset to DefaultUptime() for testing purposes.
 /// In general, this function is overwritten by
 inline UptimeFunction Uptime = DefaultUptime;  // NOLINT
-
+inline std::chrono::nanoseconds global_time = 0ns;
 /// Returns the system uptime in nanoseconds, do not use this function directly
 ///
 /// @param uptime_function - new system wide uptime function to override the
@@ -82,12 +82,14 @@ inline bool Wait(std::chrono::nanoseconds timeout,
     }
   }
 
-  while (Uptime() <= timeout_time)
+  global_time = Uptime();
+  while (global_time <= timeout_time)
   {
     if (is_done())
     {
       return true;
     }
+    global_time = Uptime();
   }
 
   return false;

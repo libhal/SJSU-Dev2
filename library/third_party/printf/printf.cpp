@@ -368,58 +368,7 @@ static size_t _ntoa_long_long(out_fct_type out, char* buffer, size_t idx, size_t
 [[maybe_unused]]
 static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags);
 
-static float _PowerOf10(uint32_t exponent)
-{
-  float result = 1;
-  for (uint32_t i = 0; i < exponent; i++)
-  {
-    result *= 10.0f;
-  }
-  return result;
-}
-
-// SJSU-Dev2: Added to minimize the cost of utilizing floating point arithmetic
-[[maybe_unused]] static size_t _imprecise_ftoa(out_fct_type,
-                                               char * buffer,
-                                               size_t idx,
-                                               size_t maxlen,
-                                               float value,
-                                               unsigned int precision,
-                                               unsigned int flags)
-{
-  static constexpr float kRounders[] = {
-    0.5f, 0.05f, 0.005f, 0.0005f, 0.00005f, 0.000005f, 0.0000005f, 0.00000005f,
-  };
-
-  const char * negative = "";
-
-  if (value < 0)
-  {
-    negative = "-";
-    value    = -value;
-  }
-
-  // set default precision, if not set explicitly
-  if (!(flags & FLAGS_PRECISION))
-  {
-    precision = PRINTF_DEFAULT_FLOAT_PRECISION;
-  }
-
-  precision = std::min(precision, PRINTF_DEFAULT_FLOAT_PRECISION);
-  value += kRounders[precision];
-
-  int32_t whole       = static_cast<int32_t>(value);
-  float whole_float   = static_cast<float>(whole);
-  float decimal_float = (value - whole_float) * _PowerOf10(precision);
-  int32_t decimal     = static_cast<int32_t>(decimal_float);
-  int next_position   = __wrap_snprintf(&buffer[idx], maxlen,
-                                        "%s%" PRId32 ".%" PRId32,
-                                        negative, whole, decimal);
-  return idx + next_position;
-}
-
 // internal ftoa for fixed decimal floating point
-[[maybe_unused]]
 static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags)
 {
   char buf[PRINTF_FTOA_BUFFER_SIZE];
@@ -838,7 +787,6 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
         break;
       }
 
-#if defined(PRINTF_SUPPORT_PRECISION_FLOAT)
       case 'f' :
       case 'F' :
         if (*format == 'F') flags |= FLAGS_UPPERCASE;
@@ -856,15 +804,6 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
         format++;
         break;
 #endif  // PRINTF_SUPPORT_EXPONENTIAL
-#elif defined(PRINTF_SUPPORT_FLOAT)
-      case 'f':
-      case 'F':
-        idx = _imprecise_ftoa(out, buffer, idx, maxlen,
-                              (float)va_arg(va, double), precision, flags);
-        format++;
-        break;
-#endif  // PRINTF_SUPPORT_FLOAT
-
       case 'c' : {
         unsigned int l = 1U;
         // pre padding

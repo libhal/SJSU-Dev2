@@ -24,13 +24,12 @@
 
 #include "config.hpp"
 #include "log_levels.hpp"
-
 #include "utility/ansi_terminal_codes.hpp"
 #include "utility/constexpr.hpp"
 #include "utility/debug.hpp"
+#include "utility/error_handling.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
-#include "utility/error_handling.hpp"
 
 namespace sjsu
 {
@@ -66,11 +65,14 @@ struct Log  // NOLINT
 
     // Write log prefix statement to the buffer.
     int position =
-        snprintf(buffer.data(), buffer.size(),
+        snprintf(buffer.data(),
+                 buffer.size(),
                  "%s" SJ2_HI_BLUE ":%s:" SJ2_HI_GREEN "%s():" SJ2_HI_YELLOW
                  "%" PRIuLEAST32 "> " SJ2_WHITE,
-                 log_type, FileBasename(location.file_name()),
-                 location.function_name(), location.line());
+                 log_type,
+                 FileBasename(location.file_name()),
+                 location.function_name(),
+                 location.line());
 
     int bytes_left = 0;
 
@@ -88,11 +90,13 @@ struct Log  // NOLINT
     // trimmed/lost.
     if (static_cast<size_t>(position) <= buffer.size() - 1)
     {
-      static constexpr std::string_view kEllipsisEnding =
-          "...\n" SJ2_COLOR_RESET;
-      position = buffer.size() - (kEllipsisEnding.size() + 1);
-      std::copy(kEllipsisEnding.begin(), kEllipsisEnding.end(),
-                &buffer[position]);
+      static std::string_view ellipsis_ending = "...\n" SJ2_COLOR_RESET;
+
+      position = buffer.size() - (ellipsis_ending.size() + 1);
+
+      std::copy(ellipsis_ending.begin(),
+                ellipsis_ending.end(),
+                &buffer[position - 1]);
     }
 
     // Finally use fputs to pass buffer to stdout, typically UART port or
@@ -124,8 +128,8 @@ struct LogDebug  // NOLINT
   {
     if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_DEBUG)
     {
-      Log<Params...>(SJ2_BACKGROUND_PURPLE "   DEBUG", format, params...,
-                     location);
+      Log<Params...>(
+          SJ2_BACKGROUND_PURPLE "   DEBUG", format, params..., location);
     }
   }
 };
@@ -151,8 +155,8 @@ struct LogInfo  // NOLINT
   {
     if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_INFO)
     {
-      Log<Params...>(SJ2_BACKGROUND_GREEN "    INFO", format, params...,
-                     location);
+      Log<Params...>(
+          SJ2_BACKGROUND_GREEN "    INFO", format, params..., location);
     }
   }
 };
@@ -180,8 +184,8 @@ struct LogWarning  // NOLINT
   {
     if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_WARNING)
     {
-      Log<Params...>(SJ2_BACKGROUND_YELLOW " WARNING", format, params...,
-                     location);
+      Log<Params...>(
+          SJ2_BACKGROUND_YELLOW " WARNING", format, params..., location);
     }
   }
 };
@@ -207,8 +211,8 @@ struct LogError  // NOLINT
   {
     if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_ERROR)
     {
-      Log<Params...>(SJ2_BACKGROUND_RED "   ERROR", format, params...,
-                     location);
+      Log<Params...>(
+          SJ2_BACKGROUND_RED "   ERROR", format, params..., location);
     }
   }
 };

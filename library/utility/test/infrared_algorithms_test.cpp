@@ -9,7 +9,7 @@ TEST_CASE("Testing Infrared Algorithms")
 {
   SECTION("IsDurationWithinTolerance")
   {
-    struct TestInput
+    struct TestInput_t
     {
       /// Duration in microseconds.
       uint16_t duration;
@@ -20,25 +20,25 @@ TEST_CASE("Testing Infrared Algorithms")
     };
 
     constexpr std::array kTestInputs = {
-      TestInput{
+      TestInput_t{
           .duration                = 97,
           .expected_duration       = 100us,
           .tolerance               = 0.05,
           .expect_within_tolerance = true,
       },
-      TestInput{
+      TestInput_t{
           .duration                = 103,
           .expected_duration       = 100us,
           .tolerance               = 0.05,
           .expect_within_tolerance = true,
       },
-      TestInput{
+      TestInput_t{
           .duration                = 995,
           .expected_duration       = 10us,
           .tolerance               = 0.1,
           .expect_within_tolerance = false,
       },
-      TestInput{
+      TestInput_t{
           .duration                = 1095,
           .expected_duration       = 10us,
           .tolerance               = 0.1,

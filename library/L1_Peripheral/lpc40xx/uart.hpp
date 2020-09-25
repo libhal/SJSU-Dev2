@@ -221,14 +221,19 @@ class Uart final : public sjsu::Uart
   {
     /// Address of the LPC_UART peripheral in memory
     LPC_UART_TypeDef * registers;
+
     /// ResourceID of the UART peripheral to power on at initialization.
     sjsu::SystemController::ResourceID power_on_id;
+
     /// Refernce to a uart transmitter pin
-    const sjsu::Pin & tx;
+    sjsu::Pin & tx;
+
     /// Refernce to a uart receiver pin
-    const sjsu::Pin & rx;
+    sjsu::Pin & rx;
+
     /// Function code to set the transmit pin to uart transmitter
     uint8_t tx_function_id : 3;
+
     /// Function code to set the receive pin to uart receiver
     uint8_t rx_function_id : 3;
   };
@@ -236,17 +241,17 @@ class Uart final : public sjsu::Uart
   struct Port  // NOLINT
   {
    private:
-    inline static const Pin kUart0Tx = Pin(0, 2);
-    inline static const Pin kUart0Rx = Pin(0, 3);
+    inline static Pin uart0_tx = Pin(0, 2);
+    inline static Pin uart0_rx = Pin(0, 3);
 
-    inline static const Pin kUart2Tx = Pin(2, 8);
-    inline static const Pin kUart2Rx = Pin(2, 9);
+    inline static Pin uart2_tx = Pin(2, 8);
+    inline static Pin uart2_rx = Pin(2, 9);
 
-    inline static const Pin kUart3Tx = Pin(4, 28);
-    inline static const Pin kUart3Rx = Pin(4, 29);
+    inline static Pin uart3_tx = Pin(4, 28);
+    inline static Pin uart3_rx = Pin(4, 29);
 
-    inline static const Pin kUart4Tx = Pin(1, 29);
-    inline static const Pin kUart4Rx = Pin(2, 9);
+    inline static Pin uart4_tx = Pin(1, 29);
+    inline static Pin uart4_rx = Pin(2, 9);
 
    public:
     /// Definition for uart port 0 for lpc40xx.
@@ -257,8 +262,8 @@ class Uart final : public sjsu::Uart
       // would make more sense if it only warned us with lpc40xx.
       .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART0_BASE),
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart0,
-      .tx             = kUart0Tx,
-      .rx             = kUart0Rx,
+      .tx             = uart0_tx,
+      .rx             = uart0_rx,
       .tx_function_id = 0b001,
       .rx_function_id = 0b001,
     };
@@ -267,8 +272,8 @@ class Uart final : public sjsu::Uart
     inline static const Port_t kUart2 = {
       .registers      = LPC_UART2,
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart2,
-      .tx             = kUart2Tx,
-      .rx             = kUart2Rx,
+      .tx             = uart2_tx,
+      .rx             = uart2_rx,
       .tx_function_id = 0b010,
       .rx_function_id = 0b010,
     };
@@ -277,8 +282,8 @@ class Uart final : public sjsu::Uart
     inline static const Port_t kUart3 = {
       .registers      = LPC_UART3,
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart3,
-      .tx             = kUart3Tx,
-      .rx             = kUart3Rx,
+      .tx             = uart3_tx,
+      .rx             = uart3_rx,
       .tx_function_id = 0b010,
       .rx_function_id = 0b010,
     };
@@ -287,8 +292,8 @@ class Uart final : public sjsu::Uart
     inline static const Port_t kUart4 = {
       .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4),
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart4,
-      .tx             = kUart4Tx,
-      .rx             = kUart4Rx,
+      .tx             = uart4_tx,
+      .rx             = uart4_rx,
       .tx_function_id = 0b101,
       .rx_function_id = 0b011,
     };
@@ -297,22 +302,33 @@ class Uart final : public sjsu::Uart
   /// @param port - a reference to a constant lpc40xx::Uart::Port_t definition
   explicit constexpr Uart(const Port_t & port) : port_(port) {}
 
-  void Initialize(uint32_t baud_rate) const override
+  void ModuleInitialize() override
   {
-    constexpr uint8_t kFIFOEnableAndReset = 0b111;
     sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
         port_.power_on_id);
-
-    SetBaudRate(baud_rate);
-
-    port_.rx.SetPinFunction(port_.rx_function_id);
-    port_.tx.SetPinFunction(port_.tx_function_id);
-    port_.rx.PullUp();
-    port_.tx.PullUp();
-    port_.registers->FCR |= kFIFOEnableAndReset;
   }
 
-  void SetBaudRate(uint32_t baud_rate) const override
+  void ModuleEnable(bool enable = true) override
+  {
+    constexpr uint8_t kEnableAndResetFIFO = 0b111;
+    constexpr uint8_t kDisable            = ~kEnableAndResetFIFO;
+
+    if (enable)
+    {
+      port_.rx.ConfigureFunction(port_.rx_function_id);
+      port_.tx.ConfigureFunction(port_.tx_function_id);
+      port_.rx.ConfigurePullUp();
+      port_.tx.ConfigurePullUp();
+
+      port_.registers->FCR |= kEnableAndResetFIFO;
+    }
+    else
+    {
+      port_.registers->FCR &= kDisable;
+    }
+  }
+
+  void ConfigureBaudRate(uint32_t baud_rate) override
   {
     auto & system = sjsu::SystemController::GetPlatformController();
 
@@ -335,12 +351,17 @@ class Uart final : public sjsu::Uart
     port_.registers->LCR = kStandardUart;
   }
 
-  void Write(const void * data, size_t size) const override
+  void ConfigureFormat(FrameSize /* size */ = FrameSize::kEightBits,
+                       StopBits /* stop */  = StopBits::kSingle,
+                       Parity /* parity */  = Parity::kNone) override
   {
-    const uint8_t * data_buffer = reinterpret_cast<const uint8_t *>(data);
-    for (size_t i = 0; i < size; i++)
+  }
+
+  void Write(std::span<const uint8_t> data) override
+  {
+    for (const auto & byte : data)
     {
-      port_.registers->THR = data_buffer[i];
+      port_.registers->THR = byte;
       while (!TransmissionComplete())
       {
         continue;
@@ -348,37 +369,35 @@ class Uart final : public sjsu::Uart
     }
   }
 
-  size_t Read(void * data, size_t size) const override
+  size_t Read(std::span<uint8_t> data) override
   {
-    uint8_t * data_buffer = reinterpret_cast<uint8_t *>(data);
-    size_t index          = 0;
-    while (FifoHasData())
+    size_t index = 0;
+
+    for (auto & byte : data)
     {
-      if (index >= size)
+      if (!HasData())
       {
         break;
       }
-      data_buffer[index++] = port_.registers->RBR;
+      byte = port_.registers->RBR;
+      index++;
     }
+
     return index;
   }
 
-  bool HasData() const override
+  bool HasData() override
   {
-    return FifoHasData();
+    return bit::Read(port_.registers->LSR, 0);
   }
 
  private:
   /// @return true if port is still sending the byte.
-  bool TransmissionComplete() const
+  bool TransmissionComplete()
   {
     return bit::Read(port_.registers->LSR, 5);
   }
-  /// @return true if fifo contains receive data.
-  bool FifoHasData() const
-  {
-    return bit::Read(port_.registers->LSR, 0);
-  }
+
   /// const reference to lpc40xx::Uart::Port_t definition
   const Port_t & port_;
 };  // namespace lpc40xx

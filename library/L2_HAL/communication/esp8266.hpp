@@ -10,9 +10,10 @@
 #include <cstring>
 #include <span>
 
-#include "config.hpp"
 #include "L1_Peripheral/uart.hpp"
 #include "L2_HAL/communication/internet_socket.hpp"
+#include "config.hpp"
+#include "module.hpp"
 #include "utility/debug.hpp"
 #include "utility/enum.hpp"
 #include "utility/error_handling.hpp"
@@ -27,7 +28,7 @@ namespace sjsu
 /// InternetSocket interfaces.
 /// Can be used to connect to a WiFi host device.
 /// Can be used to communicate over the internet using this driver.
-class Esp8266 : public InternetSocket, public WiFi
+class Esp8266 : public Module
 {
  public:
   /// Default baud rate for ESP8266
@@ -39,11 +40,96 @@ class Esp8266 : public InternetSocket, public WiFi
   /// Confirmation responses received from the ESP8266 module
   static constexpr char kOk[] = "\r\nOK\r\n";
 
+  class Esp8266InternetSocket : public InternetSocket
+  {
+   public:
+    explicit constexpr Esp8266InternetSocket(Esp8266 & esp) : esp_(esp) {}
+
+    void ModuleInitialize() override
+    {
+      esp_.Initialize();
+    }
+
+    void ModuleEnable(bool enable = true) override
+    {
+      esp_.Enable(enable);
+    }
+
+    bool Connect(Protocol protocol,
+                 std::string_view address,
+                 uint16_t port,
+                 std::chrono::nanoseconds timeout) override
+    {
+      return esp_.Connect(protocol, address, port, timeout);
+    }
+
+    void Write(std::span<const uint8_t> data,
+               std::chrono::nanoseconds timeout) override
+    {
+      esp_.Write(data, timeout);
+    }
+
+    size_t Read(std::span<uint8_t> data,
+                std::chrono::nanoseconds timeout) override
+    {
+      return esp_.Read(data, timeout);
+    }
+
+    void Close() override
+    {
+      esp_.Close();
+    }
+
+   private:
+    Esp8266 & esp_;
+  };
+
+  class Esp8266WiFi : public WiFi
+  {
+   public:
+    explicit constexpr Esp8266WiFi(Esp8266 & esp) : esp_(esp) {}
+
+    void ModuleInitialize() override
+    {
+      esp_.Initialize();
+    }
+
+    void ModuleEnable(bool enable = true) override
+    {
+      esp_.Enable(enable);
+    }
+
+    bool ConnectToAccessPoint(std::string_view ssid,
+                              std::string_view password,
+                              std::chrono::nanoseconds read_timeout) override
+    {
+      return esp_.ConnectToAccessPoint(ssid, password, read_timeout);
+    }
+
+    void DisconnectFromAccessPoint() override
+    {
+      esp_.DisconnectFromAccessPoint();
+    }
+
+    bool IsConnected() override
+    {
+      return esp_.IsConnected();
+    }
+
+    NetworkConnection_t GetNetworkConnectionInfo() override
+    {
+      return NetworkConnection_t{};
+    }
+
+   private:
+    Esp8266 & esp_;
+  };
+
   /// @param port - uart port to use to communicate with the ESP8266 device
   /// @param baud_rate - operating baudrate of the uart device.
-  explicit constexpr Esp8266(const sjsu::Uart & port,
+  explicit constexpr Esp8266(sjsu::Uart & port,
                              uint32_t baud_rate = kDefaultBaudRate)
-      : uart_port_(port), baud_rate_(baud_rate)
+      : uart_port_(port), kBaudRate(baud_rate), socket_(*this), wifi_(*this)
   {
   }
 
@@ -52,7 +138,7 @@ class Esp8266 : public InternetSocket, public WiFi
   void TestModule()
   {
     WifiWrite("AT\r\n");
-    ReadUntil(kOk);
+    ReadUntil(kOk, kDefaultTimeout, true);
   }
 
   // ===========================================================================
@@ -63,40 +149,80 @@ class Esp8266 : public InternetSocket, public WiFi
   void Reset()
   {
     WifiWrite("AT+RST\r\n");
-    ReadUntil<1024>("\r\n\r\nready\r\n", kDefaultLongTimeout);
+    ReadUntil<1024>("\r\nready\r\n", kDefaultLongTimeout, true);
   }
 
-  void Initialize() override
+  void ModuleInitialize() override
   {
-    uart_port_.Initialize(baud_rate_);
-    uart_port_.Flush();
+    uart_port_.Initialize();
 
-    WifiWrite("+++");
-    Reset();
+    if (uart_port_.RequiresConfiguration())
+    {
+      uart_port_.ConfigureFormat();
+      uart_port_.ConfigureBaudRate(kBaudRate);
+      uart_port_.Enable();
+    }
+  }
 
-    // Disable echo
-    WifiWrite("ATE0\r\n");
-    ReadUntil(kOk);
-    // Enable simple IP client mode
-    WifiWrite("AT+CWMODE=1\r\n");
-    ReadUntil(kOk);
+  void ModuleEnable(bool enable = true) override
+  {
+    if (enable)
+    {
+      uart_port_.Flush();
 
-    return TestModule();
+      try
+      {
+        LogDebug("Reseting module...");
+        WifiWrite("+++");
+        Reset();
+
+        // Disable echo
+        LogDebug("Disabling echo back...");
+        WifiWrite("ATE0\r\n");
+        ReadUntil(kOk, kDefaultTimeout, true);
+
+        // Enable simple IP client mode
+        LogDebug("Set device to simple IP client mode...");
+        WifiWrite("AT+CWMODE=1\r\n");
+        ReadUntil(kOk, kDefaultTimeout, true);
+
+        LogDebug("Testing that module is ready...");
+        TestModule();
+      }
+      catch (sjsu::Exception & e)
+      {
+        if (e.GetCode() == std::errc::timed_out)
+        {
+          throw sjsu::Exception(
+              std::errc::no_such_device,
+              "Enabling ESP8266 driver failed! The baud rate could be "
+              "incorrect. The device may not be connected, or connected "
+              "properly, or is not responding to input (possibly broken).");
+        }
+      }
+    }
+    else
+    {
+      LogDebug("ESP8266 driver cannot be disabled once enabled");
+    }
   }
 
   bool ConnectToAccessPoint(
       std::string_view ssid,
       std::string_view password,
-      std::chrono::nanoseconds read_timeout = kDefaultLongTimeout) override
+      std::chrono::nanoseconds read_timeout = kDefaultLongTimeout)
   {
     std::array<char, 128> command_buffer;
 
-    int length = snprintf(command_buffer.data(), command_buffer.size(),
+    int length = snprintf(command_buffer.data(),
+                          command_buffer.size(),
                           R"(AT+CWJAP_CUR="%s","%s")"
                           "\r\n",
-                          ssid.data(), password.data());
+                          ssid.data(),
+                          password.data());
 
-    uart_port_.Write(command_buffer.data(), length);
+    std::span payload(command_buffer.data(), length);
+    uart_port_.Write(std::as_bytes(payload));
 
     int confirmation_location =
         ReadUntil("WIFI GOT IP\r\n\r\nOK\r\n", read_timeout);
@@ -104,33 +230,25 @@ class Esp8266 : public InternetSocket, public WiFi
     return (confirmation_location != -1);
   }
 
-  void DisconnectFromAccessPoint() override
+  void DisconnectFromAccessPoint()
   {
     WifiWrite("AT+CWQAP\r\n");
     ReadUntil(kOk);
   }
 
-  NetworkConnection_t GetNetworkConnectionInfo() override
-  {
-    return NetworkConnection_t{};
-  }
-
-  InternetSocket & GetInternetSocket() override
-  {
-    return *this;
-  }
-
   /// @param mode - Which mode to put the ESP8266 WiFi module into.
-  void SetMode(WifiMode mode)
+  void SetMode(WiFi::Mode mode)
   {
     std::array<char, 32> command_buffer;
 
-    int length = snprintf(command_buffer.data(), command_buffer.size(),
+    int length = snprintf(command_buffer.data(),
+                          command_buffer.size(),
                           R"(AT+CWMODE=%u)"
                           "\r\n",
                           Value(mode));
 
-    uart_port_.Write(command_buffer.data(), length);
+    std::span payload(command_buffer.data(), length);
+    uart_port_.Write(std::as_bytes(payload));
 
     ReadUntil("OK\r\n", 100ms);
   }
@@ -145,17 +263,21 @@ class Esp8266 : public InternetSocket, public WiFi
   void ConfigureAccessPoint(std::string_view ssid,
                             std::string_view password,
                             uint8_t channel_id,
-                            AccessPointSecurity security)
+                            WiFi::AccessPointSecurity security)
   {
     std::array<char, 256> command_buffer;
 
-    int length =
-        snprintf(command_buffer.data(), command_buffer.size(),
-                 R"(AT+CWSAP="%s","%s",%u,%u)"
-                 "\r\n",
-                 ssid.data(), password.data(), channel_id, Value(security));
+    int length = snprintf(command_buffer.data(),
+                          command_buffer.size(),
+                          R"(AT+CWSAP="%s","%s",%u,%u)"
+                          "\r\n",
+                          ssid.data(),
+                          password.data(),
+                          channel_id,
+                          Value(security));
 
-    uart_port_.Write(command_buffer.data(), length);
+    std::span payload(command_buffer.data(), length);
+    uart_port_.Write(std::as_bytes(payload));
 
     ReadUntil("OK\r\n", 100ms);
   }
@@ -171,8 +293,13 @@ class Esp8266 : public InternetSocket, public WiFi
     {
       std::array<char, 16> ip_string;
 
-      snprintf(ip_string.data(), ip_string.size(), "%u.%u.%u.%u", data[0],
-               data[1], data[2], data[3]);
+      snprintf(ip_string.data(),
+               ip_string.size(),
+               "%u.%u.%u.%u",
+               data[0],
+               data[1],
+               data[2],
+               data[3]);
 
       return ip_string;
     }
@@ -187,12 +314,16 @@ class Esp8266 : public InternetSocket, public WiFi
 
     int length = ReadUntil(buffer, "OK\r\n", 3s);
 
-    debug::Hexdump(buffer.data(), length);
+    debug::HexdumpDebug(buffer.data(), length);
 
     IpAddress_t ip;
     std::array<uint32_t, 4> temp_ip;
-    sscanf(reinterpret_cast<const char *>(buffer.data()), "%lu.%lu.%lu.%lu,",
-           &temp_ip[0], &temp_ip[1], &temp_ip[2], &temp_ip[3]);
+    sscanf(reinterpret_cast<const char *>(buffer.data()),
+           "%lu.%lu.%lu.%lu,",
+           &temp_ip[0],
+           &temp_ip[1],
+           &temp_ip[2],
+           &temp_ip[3]);
 
     ip.data[0] = static_cast<uint8_t>(temp_ip[0]);
     ip.data[1] = static_cast<uint8_t>(temp_ip[1]);
@@ -205,10 +336,10 @@ class Esp8266 : public InternetSocket, public WiFi
   // ===========================================================================
   // InternetProtocol
   // ===========================================================================
-  bool Connect(Protocol protocol,
+  bool Connect(InternetSocket::Protocol protocol,
                std::string_view address,
                uint16_t port,
-               std::chrono::nanoseconds timeout) override
+               std::chrono::nanoseconds timeout)
   {
     static constexpr const char * kConnectionType[] = { "TCP", "UDP" };
     static constexpr char kConnectToServerCommand[] =
@@ -218,11 +349,15 @@ class Esp8266 : public InternetSocket, public WiFi
 
     std::array<char, 128> command_buffer;
 
-    int length = snprintf(
-        command_buffer.data(), command_buffer.size(), kConnectToServerCommand,
-        kConnectionType[Value(protocol)], address.data(), port);
+    int length = snprintf(command_buffer.data(),
+                          command_buffer.size(),
+                          kConnectToServerCommand,
+                          kConnectionType[Value(protocol)],
+                          address.data(),
+                          port);
 
-    uart_port_.Write(command_buffer.data(), length);
+    std::span payload(command_buffer.data(), length);
+    uart_port_.Write(std::as_bytes(payload));
 
     if (ReadUntil(kOk, timer.GetTimeLeft(), true) == -1)
     {
@@ -244,31 +379,34 @@ class Esp8266 : public InternetSocket, public WiFi
     std::array<char, 64> command_buffer;
     static constexpr char kServerStart[] = "AT+CIPSERVER=1,%" PRIu16 "\r\n";
 
-    int length = snprintf(command_buffer.data(), command_buffer.size(),
-                          kServerStart, port);
-    uart_port_.Write(command_buffer.data(), length);
+    int length = snprintf(
+        command_buffer.data(), command_buffer.size(), kServerStart, port);
+
+    std::span payload(command_buffer.data(), length);
+    uart_port_.Write(std::as_bytes(payload));
 
     ReadUntil(kOk, kDefaultLongTimeout, true);
   }
 
   /// TODO(kammce): Fix this!!
-  bool IsConnected() override
+  bool IsConnected()
   {
     return false;
   }
 
-  void Write(const void * data,
-             size_t size,
-             std::chrono::nanoseconds timeout) override
+  void Write(std::span<const uint8_t> data, std::chrono::nanoseconds timeout)
   {
     TimeoutTimer timer(timeout);
 
     std::array<char, 32> data_count_buffer;
-    int send_count_length =
-        snprintf(data_count_buffer.data(), data_count_buffer.size(),
-                 "AT+CIPSEND=%zu\r\n", size);
+    int send_count_length = snprintf(data_count_buffer.data(),
+                                     data_count_buffer.size(),
+                                     "AT+CIPSEND=%zu\r\n",
+                                     data.size());
+
     // Send payload length
-    uart_port_.Write(data_count_buffer.data(), send_count_length);
+    std::span payload(data_count_buffer.data(), send_count_length);
+    uart_port_.Write(std::as_bytes(payload));
 
     // Wait for an OK!
     if (ReadUntil(kOk, timer.GetTimeLeft()) == -1)
@@ -279,7 +417,7 @@ class Esp8266 : public InternetSocket, public WiFi
     }
 
     // Now write the rest of the data
-    uart_port_.Write(data, size);
+    uart_port_.Write(data);
 
     // Wait for an OK!
     if (ReadUntil("\r\nSEND OK\r\n\r\n", timer.GetTimeLeft()) == -1)
@@ -289,14 +427,9 @@ class Esp8266 : public InternetSocket, public WiFi
     }
   }
 
-  size_t Read(void * buffer,
-              size_t size,
-              std::chrono::nanoseconds timeout) override
+  size_t Read(std::span<uint8_t> data, std::chrono::nanoseconds timeout)
   {
     TimeoutTimer timer(timeout);
-    size_t position      = 0;
-    size_t bytes_to_read = 0;
-
     size_t received_bytes = GetReceiveLength(timer);
 
     if (received_bytes == 0)
@@ -304,20 +437,25 @@ class Esp8266 : public InternetSocket, public WiFi
       return 0;
     }
 
-    uint8_t * byte_buffer = reinterpret_cast<uint8_t *>(buffer);
-    bytes_to_read         = std::min(size - position, received_bytes);
+    auto data_subspan = data.first(std::min(data.size(), received_bytes));
 
-    uart_port_.Read(&byte_buffer[position], bytes_to_read, timer.GetTimeLeft());
-
-    position += bytes_to_read;
-
-    return position;
+    return uart_port_.Read(data_subspan, timer.GetTimeLeft());
   }
 
-  void Close() override
+  void Close()
   {
     WifiWrite("AT+CIPCLOSE\r\n");
     ReadUntil(kOk);
+  }
+
+  InternetSocket & GetInternetSocket()
+  {
+    return socket_;
+  }
+
+  WiFi & GetWiFi()
+  {
+    return wifi_;
   }
 
  private:
@@ -334,11 +472,9 @@ class Esp8266 : public InternetSocket, public WiFi
     ReadUntil(total_buffer, "+IPD,", timer.GetTimeLeft());
     ReadUntil(total_buffer, ":", timer.GetTimeLeft());
 
-    const char * receive_length =
-        reinterpret_cast<const char *>(total_buffer.data());
+    auto receive_length = reinterpret_cast<const char *>(total_buffer.data());
 
     sscanf(receive_length, "%zu:", &incoming_bytes);
-
     return incoming_bytes;
   }
 
@@ -346,7 +482,8 @@ class Esp8266 : public InternetSocket, public WiFi
   template <size_t kLength>
   void WifiWrite(const char (&str)[kLength])
   {
-    uart_port_.Write(reinterpret_cast<const uint8_t *>(str), kLength - 1);
+    const auto * ptr = reinterpret_cast<const uint8_t *>(str);
+    uart_port_.Write(std::span(ptr, kLength - 1));
   }
 
   // Reads to provided buffer and checks to see if the end of the read matches
@@ -413,7 +550,9 @@ class Esp8266 : public InternetSocket, public WiFi
 
     if (throw_on_failure)
     {
-      throw Exception(std::errc::timed_out, "Could not find ");
+      debug::HexdumpDebug(buffer.data(), buffer.size());
+      throw Exception(std::errc::timed_out,
+                      "Did not get the expected response from device.");
     }
 
     return -1;
@@ -429,7 +568,9 @@ class Esp8266 : public InternetSocket, public WiFi
     return ReadUntil(buffer, end, timeout, throw_on_failure);
   }
 
-  const Uart & uart_port_;
-  uint32_t baud_rate_;
+  Uart & uart_port_;
+  const uint32_t kBaudRate;
+  Esp8266InternetSocket socket_;
+  Esp8266WiFi wifi_;
 };  // namespace sjsu
 }  // namespace sjsu

@@ -16,14 +16,7 @@
 namespace
 {
 sjsu::Storage & empty_storage = sjsu::GetInactive<sjsu::Storage>();
-
-struct FatfsDevice_t
-{
-  bool is_initialized   = false;
-  sjsu::Storage * media = &empty_storage;
-};
-
-std::array<FatfsDevice_t, config::kFatDriveCount> drive;
+std::array<sjsu::Storage *, config::kFatDriveCount> drive;
 }  // namespace
 
 namespace sjsu
@@ -41,10 +34,7 @@ void RegisterFatFsDrive(Storage * storage, uint8_t drive_number)
   }
 
   // Store the address of the storage media into the drive array
-  drive[drive_number].media = storage;
-
-  // Assume that newly registered drives have not been initialized yet.
-  drive[drive_number].is_initialized = false;
+  drive[drive_number] = storage;
 }
 }  // namespace sjsu
 
@@ -61,14 +51,14 @@ extern "C" DSTATUS disk_status(BYTE drive_number)
   auto & storage = drive[drive_number];
 
   // If the storage media is not present, return NO_DISK
-  if (!storage.media->IsMediaPresent())
+  if (!storage->IsMediaPresent())
   {
     return STA_NODISK;
   }
 
   // If the media was never initialized by calling disk_initialize, which occurs
   // after an f_mount() call, then return STA_NOINIT.
-  if (!storage.is_initialized)
+  if (!storage->IsEnabled())
   {
     return STA_NOINIT;
   }
@@ -88,12 +78,10 @@ extern "C" DSTATUS disk_initialize(BYTE drive_number)
   auto & storage = drive[drive_number];
 
   // Attempt to initialize media peripherals and on failure return STA_NOINIT
-  storage.media->Initialize();
+  storage->Initialize();
+
   // Attempt to enable media and on failure return STA_NOINIT
-  storage.media->Enable();
-  // If the previous methods were successful, this point is reached and the
-  // drive is considered initialized.
-  storage.is_initialized = true;
+  storage->Enable();
 
   return RES_OK;
 }
@@ -140,14 +128,15 @@ extern "C" DRESULT disk_read(BYTE drive_number,
   auto & storage = drive[drive_number];
 
   // Get the number of bytes per block for this media.
-  units::data::byte_t block_size = storage.media->GetBlockSize();
+  units::data::byte_t block_size = storage->GetBlockSize();
 
   auto location = CorrectedLocation(block_size.to<uint32_t>(), sector, count);
   uint32_t location_block = std::get<0>(location);
   uint32_t location_count = std::get<1>(location);
 
-  // Write to the block, return RES_ERROR on error.e
-  storage.media->Read(location_block, buffer, location_count);
+  // Read from blocks
+  storage->Read(location_block,
+                      std::span<uint8_t>(buffer, location_count));
 
   return RES_OK;
 }
@@ -167,18 +156,18 @@ extern "C" DRESULT disk_write(BYTE drive_number,
   auto & storage = drive[drive_number];
 
   // Get the number of bytes per block for this media.
-  units::data::byte_t block_size = storage.media->GetBlockSize();
+  units::data::byte_t block_size = storage->GetBlockSize();
 
   auto location = CorrectedLocation(block_size.to<uint32_t>(), sector, count);
   uint32_t location_block = std::get<0>(location);
   uint32_t location_count = std::get<1>(location);
 
-  // Erase-before-write for media that requires this. Return RES_ERROR on
-  // error.e
-  storage.media->Erase(location_block, location_count);
+  // Erase-before-write for media that requires this
+  storage->Erase(location_block, location_count);
 
-  // Write to the block, return RES_ERROR on error.e
-  storage.media->Write(location_block, buffer, location_count);
+  // Write to the block
+  storage->Write(location_block,
+                       std::span<const uint8_t>(buffer, location_count));
 
   return RES_OK;
 }

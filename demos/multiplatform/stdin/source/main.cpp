@@ -1,6 +1,3 @@
-#include <cstdint>
-#include <array>
-
 #include "utility/log.hpp"
 
 int main()
@@ -10,8 +7,7 @@ int main()
   int number = 0;
   printf("Type in a number: ");
   scanf("%d", &number);
-  printf("The number you typed was %d\n\n", number);
+  printf("\n--> You typed number: %d\n\n", number);
 
-  sjsu::LogInfo("End of program.");
   return 0;
 }

@@ -14,12 +14,11 @@
 #include "L1_Peripheral/test/pin_test.cpp"                // NOLINT
 #include "L1_Peripheral/test/pwm_test.cpp"                // NOLINT
 #include "L1_Peripheral/test/uart_test.cpp"               // NOLINT
-#include "L1_Peripheral/test/frequency_counter_test.cpp"  // NOLINT
 
 // =============================================================================
 // stm32f10x implemenation test
 // =============================================================================
-#include "L1_Peripheral/stm32f10x/test/system_controller_test.cpp"  // NOLINT
+// #include "L1_Peripheral/stm32f10x/test/system_controller_test.cpp"  // NOLINT
 #include "L1_Peripheral/stm32f10x/test/gpio_test.cpp"               // NOLINT
 #include "L1_Peripheral/stm32f10x/test/pin_test.cpp"                // NOLINT
 #include "L1_Peripheral/stm32f10x/test/uart_test.cpp"               // NOLINT

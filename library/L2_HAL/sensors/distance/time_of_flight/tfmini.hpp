@@ -48,31 +48,32 @@ class TFMini final : public DistanceSensor
   static constexpr uint8_t kCommandLength = 8;
 
   /// Command packet to enable configuration of device
-  static constexpr uint8_t kConfigCommand[kCommandLength] = {
+  static constexpr std::array<uint8_t, kCommandLength> kConfigCommand = {
     0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x01, 0x02,
   };
 
   /// Command packet to disable configuration of device
-  static constexpr uint8_t kExitConfigCommand[kCommandLength] = {
+  static constexpr std::array<uint8_t, kCommandLength> kExitConfigCommand = {
     0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x02
   };
 
   /// Command packet to set device units to millimeters.
-  static constexpr uint8_t kSetDistUnitMM[kCommandLength] = {
+  static constexpr std::array<uint8_t, kCommandLength> kSetDistUnitMM = {
     0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x1A,
   };
 
   /// Command packet to allow distance capture on kPromptMeasurementCommand
   /// command.
-  static constexpr uint8_t kSetExternalTriggerMode[kCommandLength] = {
-    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x40
-  };
+  static constexpr std::array<uint8_t, kCommandLength>
+      kSetExternalTriggerMode = {
+        0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x40
+      };
 
   /// Command packet to request distance measurement data along with signal
   /// strength data.
-  static constexpr uint8_t kPromptMeasurementCommand[kCommandLength] = {
-    0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x41
-  };
+  static constexpr std::array<uint8_t, kCommandLength>
+      kPromptMeasurementCommand = { 0x42, 0x57, 0x02, 0x00,
+                                    0x00, 0x00, 0x00, 0x41 };
 
   /// @param uart - UART peripheral connected to the RX and TX of the TFMini
   ///               module.
@@ -84,17 +85,36 @@ class TFMini final : public DistanceSensor
   /// trigger and sets the distance units to mm
   ///
   /// @returns std::errc::io_error if initialization fails
-  void Initialize() override
+  void ModuleInitialize() override
   {
-    constexpr uint32_t kBaudRate = 115200;
-    uart_.Initialize(kBaudRate);
-
-    if (!SendCommandAndCheckEcho(kConfigCommand) ||
-        !SendCommandAndCheckEcho(kSetExternalTriggerMode) ||
-        !SendCommandAndCheckEcho(kSetDistUnitMM) ||
-        !SendCommandAndCheckEcho(kExitConfigCommand))
+    if (uart_.RequiresConfiguration())
     {
-      throw Exception(std::errc::io_error, "Enabling device failed!");
+      // Phase 1: Initialize
+      uart_.Initialize();
+      // Phase 2: Configure
+      uart_.ConfigureBaudRate(115200);
+      uart_.ConfigureFormat();
+      // Phase 3: Enable
+      uart_.Enable();
+    }
+  }
+
+  /// Disabling this driver is not supported
+  void ModuleEnable(bool enable = true) override
+  {
+    if (enable)
+    {
+      if (!SendCommandAndCheckEcho(kConfigCommand) ||
+          !SendCommandAndCheckEcho(kSetExternalTriggerMode) ||
+          !SendCommandAndCheckEcho(kSetDistUnitMM) ||
+          !SendCommandAndCheckEcho(kExitConfigCommand))
+      {
+        throw Exception(std::errc::io_error, "Enabling device failed!");
+      }
+    }
+    else
+    {
+      LogDebug("Disabling this driver is not supported");
     }
   }
 
@@ -109,8 +129,8 @@ class TFMini final : public DistanceSensor
   {
     std::array<uint8_t, kDeviceDataLength> device_data = { 0 };
 
-    uart_.Write(kPromptMeasurementCommand, kCommandLength);
-    uart_.Read(device_data.data(), device_data.size(), kTimeout);
+    uart_.Write(kPromptMeasurementCommand);
+    uart_.Read(device_data, kTimeout);
 
     VerifyData(device_data);
 
@@ -127,8 +147,8 @@ class TFMini final : public DistanceSensor
   {
     std::array<uint8_t, kDeviceDataLength> device_data = { 0 };
 
-    uart_.Write(kPromptMeasurementCommand, kCommandLength);
-    uart_.Read(device_data.data(), device_data.size(), kTimeout);
+    uart_.Write(kPromptMeasurementCommand);
+    uart_.Read(device_data, kTimeout);
 
     VerifyData(device_data);
 
@@ -143,7 +163,7 @@ class TFMini final : public DistanceSensor
   ///        measurement range, increase value to improve reliability.
   void SetMinSignalThreshhold(uint8_t lower_threshold = 20)
   {
-    constexpr uint8_t kUpdateMinThresholdCommand[kCommandLength] = {
+    constexpr std::array<uint8_t, kCommandLength> kUpdateMinThresholdCommand = {
       0x42, 0x57, 0x02, 0x00, 0xEE, 0x00, 0x00, 0x20
     };
     constexpr uint8_t kThresholdByte = 4;
@@ -155,15 +175,12 @@ class TFMini final : public DistanceSensor
     {
       low_limit = kStrengthLowerLimitCap;
     }
-    for (int i = 0; i < kCommandLength; i++)
-    {
-      updated_min_threshold_command[i] = kUpdateMinThresholdCommand[i];
-    }
 
+    updated_min_threshold_command                 = kUpdateMinThresholdCommand;
     updated_min_threshold_command[kThresholdByte] = low_limit;
 
     if (!SendCommandAndCheckEcho(kConfigCommand) ||
-        !SendCommandAndCheckEcho(updated_min_threshold_command.data()) ||
+        !SendCommandAndCheckEcho(updated_min_threshold_command) ||
         !SendCommandAndCheckEcho(kExitConfigCommand))
     {
       throw Exception(std::errc::io_error,
@@ -174,7 +191,7 @@ class TFMini final : public DistanceSensor
   }
 
  private:
-  void VerifyData(std::array<uint8_t, kDeviceDataLength> & data)
+  void VerifyData(std::span<uint8_t> data)
   {
     if (data[0] != kFrameHeader || data[1] != kFrameHeader)
     {
@@ -193,31 +210,24 @@ class TFMini final : public DistanceSensor
     }
   }
 
-  bool SendCommandAndCheckEcho(const uint8_t * command) const
+  bool SendCommandAndCheckEcho(std::span<const uint8_t> command) const
   {
-    constexpr uint8_t kEchoSuccess[kCommandLength] = {
+    static constexpr std::array<uint8_t, kCommandLength> kEchoSuccess = {
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,
     };
-    constexpr uint8_t kConfigExit[kCommandLength] = {
+    static constexpr std::array<uint8_t, kCommandLength> kConfigExit = {
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x00, 0x02,
     };
 
-    uint8_t echo[kCommandLength];
+    std::array<uint8_t, kCommandLength> echo;
 
-    uart_.Write(command, kCommandLength);
-    uart_.Read(echo, sizeof(echo), kTimeout);
+    uart_.Write(command);
+    uart_.Read(echo, kTimeout);
 
-    for (int i = 0; i < kCommandLength; i++)
-    {
-      if ((kEchoSuccess[i] != echo[i]) && (kConfigExit[i] != echo[i]))
-      {
-        return false;
-      }
-    }
-    return true;
+    return (kEchoSuccess == echo) || (kConfigExit == echo);
   }
 
-  const Uart & uart_;
+  Uart & uart_;
   uint8_t min_threshold_ = 20;
 };
 }  // namespace sjsu

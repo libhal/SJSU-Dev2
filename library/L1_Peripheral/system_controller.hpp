@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "L1_Peripheral/inactive.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
@@ -180,4 +181,32 @@ class SystemController
     return *reinterpret_cast<ClockConfiguration *>(GetClockConfiguration());
   }
 };
+
+/// Template specialization that generates an inactive sjsu::SystemController.
+template <>
+inline sjsu::SystemController & GetInactive<sjsu::SystemController>()
+{
+  class InactiveSystemController : public sjsu::SystemController
+  {
+   public:
+    void Initialize() override {}
+    void * GetClockConfiguration() override
+    {
+      return nullptr;
+    }
+    units::frequency::hertz_t GetClockRate(ResourceID) const override
+    {
+      return 0_Hz;
+    }
+    bool IsPeripheralPoweredUp(ResourceID) const override
+    {
+      return false;
+    }
+    void PowerUpPeripheral(ResourceID) const override {}
+    void PowerDownPeripheral(ResourceID) const override {}
+  };
+
+  static InactiveSystemController inactive;
+  return inactive;
+}
 }  // namespace sjsu

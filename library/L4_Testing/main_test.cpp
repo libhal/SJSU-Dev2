@@ -2,17 +2,14 @@
 
 #include <unistd.h>
 
+#include <span>
+
 #include "L0_Platform/ram.hpp"
 #include "newlib/newlib.hpp"
 #include "testing_frameworks.hpp"
-
-DEFINE_FFF_GLOBALS
-
 #include "utility/rtos.hpp"
 
-// =============================================================================
-// Fake FreeRTOS Functions
-// =============================================================================
+DEFINE_FFF_GLOBALS
 
 DEFINE_FAKE_VOID_FUNC(vTaskStartScheduler);
 DEFINE_FAKE_VOID_FUNC(vTaskSuspend, TaskHandle_t);
@@ -141,21 +138,22 @@ BssSectionTable_t bss_section_table_end;
 // Setup write() and read()
 // =============================================================================
 
-int HostWrite(const char * payload, size_t length)
+int HostTestWrite(std::span<const char> str)
 {
-  return static_cast<int>(write(1, payload, length));
+  return static_cast<int>(write(1, str.data(), str.size()));
 }
-int HostRead(char * payload, size_t length)
+
+int HostTestRead(std::span<char> str)
 {
-  return static_cast<int>(read(1, payload, length));
+  return static_cast<int>(read(1, str.data(), str.size()));
 }
 
 int main(int argc, char * argv[])
 {
   doctest::Context context;
 
-  sjsu::newlib::SetStdout(HostWrite);
-  sjsu::newlib::SetStdin(HostRead);
+  sjsu::newlib::SetStdout(HostTestWrite);
+  sjsu::newlib::SetStdin(HostTestRead);
 
   context.applyCommandLine(argc, argv);
 

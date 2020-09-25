@@ -16,12 +16,14 @@ using ::sjsu::lpc40xx::I2c;
 struct I2cBus  // NOLINT
 {
  private:
-  inline static const Pin kI2c0SdaPin = Pin::CreatePin<0, 27>();
-  inline static const Pin kI2c0SclPin = Pin::CreatePin<0, 28>();
-  inline static const Pin kI2c1SdaPin = Pin::CreatePin<0, 0>();
-  inline static const Pin kI2c1SclPin = Pin::CreatePin<0, 1>();
-  inline static const Pin kI2c2SdaPin = Pin::CreatePin<0, 10>();
-  inline static const Pin kI2c2SclPin = Pin::CreatePin<0, 11>();
+  inline static lpc17xx::Pin i2c0_sda_pin = lpc17xx::Pin(0, 27);
+  inline static lpc17xx::Pin i2c0_scl_pin = lpc17xx::Pin(0, 28);
+
+  inline static lpc17xx::Pin i2c1_sda_pin = lpc17xx::Pin(0, 0);
+  inline static lpc17xx::Pin i2c1_scl_pin = lpc17xx::Pin(0, 1);
+
+  inline static lpc17xx::Pin i2c2_sda_pin = lpc17xx::Pin(0, 10);
+  inline static lpc17xx::Pin i2c2_scl_pin = lpc17xx::Pin(0, 11);
 
   inline static I2c::Transaction_t transaction_i2c0;
   inline static I2c::Transaction_t transaction_i2c1;
@@ -35,8 +37,8 @@ struct I2cBus  // NOLINT
     .id           = SystemController::Peripherals::kI2c0,
     .irq_number   = I2C0_IRQn,
     .transaction  = transaction_i2c0,
-    .sda_pin      = kI2c0SdaPin,
-    .scl_pin      = kI2c0SclPin,
+    .sda_pin      = i2c0_sda_pin,
+    .scl_pin      = i2c0_scl_pin,
     .pin_function = 0b01,
   };
 
@@ -46,8 +48,8 @@ struct I2cBus  // NOLINT
     .id           = SystemController::Peripherals::kI2c1,
     .irq_number   = I2C1_IRQn,
     .transaction  = transaction_i2c1,
-    .sda_pin      = kI2c1SdaPin,
-    .scl_pin      = kI2c1SclPin,
+    .sda_pin      = i2c1_sda_pin,
+    .scl_pin      = i2c1_scl_pin,
     .pin_function = 0b11,
   };
 
@@ -57,8 +59,8 @@ struct I2cBus  // NOLINT
     .id           = SystemController::Peripherals::kI2c2,
     .irq_number   = I2C2_IRQn,
     .transaction  = transaction_i2c2,
-    .sda_pin      = kI2c2SdaPin,
-    .scl_pin      = kI2c2SclPin,
+    .sda_pin      = i2c2_sda_pin,
+    .scl_pin      = i2c2_scl_pin,
     .pin_function = 0b10,
   };
 };

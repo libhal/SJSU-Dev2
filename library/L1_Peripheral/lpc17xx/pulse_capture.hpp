@@ -19,8 +19,8 @@ struct PulseCaptureChannel  // NOLINT
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer0_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
-  inline static const Pin kCapture0Channel0Pin = Pin(1, 26);
-  inline static const Pin kCapture0Channel1Pin = Pin(1, 27);
+  inline static Pin capture0_channel0_pin = Pin(1, 26);
+  inline static Pin capture0_channel1_pin = Pin(1, 27);
   inline static const lpc40xx::PulseCapture::CaptureChannelPartial_t
       kTimerPartial0 = {
         .timer_register =
@@ -28,8 +28,8 @@ struct PulseCaptureChannel  // NOLINT
         .id             = SystemController::Peripherals::kTimer0,
         .irq            = static_cast<lpc40xx::IRQn>(IRQn::TIMER0_IRQn),
         .user_callback  = &timer0_isr,
-        .capture_pin0   = kCapture0Channel0Pin,
-        .capture_pin1   = kCapture0Channel1Pin,
+        .capture_pin0   = capture0_channel0_pin,
+        .capture_pin1   = capture0_channel1_pin,
         .channel_number = &timer0_channel_number,
       };
 
@@ -37,8 +37,8 @@ struct PulseCaptureChannel  // NOLINT
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer1_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
-  inline static const Pin kCapture1Channel0Pin = Pin(1, 18);
-  inline static const Pin kCapture1Channel1Pin = Pin(1, 19);
+  inline static Pin capture1_channel0_pin = Pin(1, 18);
+  inline static Pin capture1_channel1_pin = Pin(1, 19);
   inline static const lpc40xx::PulseCapture::CaptureChannelPartial_t
       kTimerPartial1 = {
         .timer_register =
@@ -46,8 +46,8 @@ struct PulseCaptureChannel  // NOLINT
         .id             = SystemController::Peripherals::kTimer1,
         .irq            = static_cast<lpc40xx::IRQn>(IRQn::TIMER1_IRQn),
         .user_callback  = &timer1_isr,
-        .capture_pin0   = kCapture1Channel0Pin,
-        .capture_pin1   = kCapture1Channel1Pin,
+        .capture_pin0   = capture1_channel0_pin,
+        .capture_pin1   = capture1_channel1_pin,
         .channel_number = &timer1_channel_number,
       };
 
@@ -55,8 +55,8 @@ struct PulseCaptureChannel  // NOLINT
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer2_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
-  inline static const Pin kCapture2Channel0Pin = Pin(0, 4);
-  inline static const Pin kCapture2Channel1Pin = Pin(0, 5);
+  inline static Pin capture2_channel0_pin = Pin(0, 4);
+  inline static Pin capture2_channel1_pin = Pin(0, 5);
   inline static const lpc40xx::PulseCapture::CaptureChannelPartial_t
       kTimerPartial2 = {
         .timer_register =
@@ -64,8 +64,8 @@ struct PulseCaptureChannel  // NOLINT
         .id             = SystemController::Peripherals::kTimer2,
         .irq            = static_cast<lpc40xx::IRQn>(IRQn::TIMER2_IRQn),
         .user_callback  = &timer2_isr,
-        .capture_pin0   = kCapture2Channel0Pin,
-        .capture_pin1   = kCapture2Channel1Pin,
+        .capture_pin0   = capture2_channel0_pin,
+        .capture_pin1   = capture2_channel1_pin,
         .channel_number = &timer2_channel_number,
       };
 
@@ -73,8 +73,8 @@ struct PulseCaptureChannel  // NOLINT
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer3_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
-  inline static const Pin kCapture3Channel0Pin = Pin(0, 23);
-  inline static const Pin kCapture3Channel1Pin = Pin(0, 24);
+  inline static Pin capture3_channel0_pin = Pin(0, 23);
+  inline static Pin capture3_channel1_pin = Pin(0, 24);
   inline static const lpc40xx::PulseCapture::CaptureChannelPartial_t
       kTimerPartial3 = {
         .timer_register =
@@ -82,8 +82,8 @@ struct PulseCaptureChannel  // NOLINT
         .id             = SystemController::Peripherals::kTimer3,
         .irq            = static_cast<lpc40xx::IRQn>(IRQn::TIMER3_IRQn),
         .user_callback  = &timer3_isr,
-        .capture_pin0   = kCapture3Channel0Pin,
-        .capture_pin1   = kCapture3Channel1Pin,
+        .capture_pin0   = capture3_channel0_pin,
+        .capture_pin1   = capture3_channel1_pin,
         .channel_number = &timer3_channel_number,
       };
 

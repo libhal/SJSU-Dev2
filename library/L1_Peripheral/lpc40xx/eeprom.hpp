@@ -55,18 +55,15 @@ class Eeprom final : public sjsu::Storage
 
   /// Initializing the EEPROM requires setting the wait state register, setting
   /// the clock divider register, and ensuring that the device is powered on.
-  void Initialize() override
+  void ModuleInitialize() override
   {
     auto & system            = sjsu::SystemController::GetPlatformController();
     const float kSystemClock = static_cast<float>(system.GetClockRate(
         sjsu::lpc40xx::SystemController::Peripherals::kEeprom));
+
     // The EEPROM runs at 375 kHz
     constexpr float kEepromClk  = 375'000;
     constexpr float kNanosecond = 1E-9f;
-
-    // The EEPROM is turned on by default, but in case it was somehow
-    // turned off, we turn it on by writing 0 to the PWRDWN register
-    Enable();
 
     // Initialize EEPROM wait state register with number of wait states
     // for each of its internal phases
@@ -90,14 +87,16 @@ class Eeprom final : public sjsu::Storage
     return true;
   }
 
-  void Enable() override
+  void ModuleEnable(bool enable = true) override
   {
-    eeprom_register->PWRDWN = 0;
-  }
-
-  void Disable() override
-  {
-    eeprom_register->PWRDWN = 1;
+    if (enable)
+    {
+      eeprom_register->PWRDWN = 0;
+    }
+    else
+    {
+      eeprom_register->PWRDWN = 1;
+    }
   }
 
   bool IsReadOnly() override
@@ -117,7 +116,7 @@ class Eeprom final : public sjsu::Storage
 
   void Erase(uint32_t, size_t) override {}
 
-  void Write(uint32_t address, const void * data, size_t size) override
+  void Write(uint32_t address, std::span<const uint8_t> data) override
   {
     constexpr bit::Mask kLower6Bits = bit::MaskFromRange(0, 5);
     constexpr bit::Mask kUpper6Bits = bit::MaskFromRange(6, 11);
@@ -126,7 +125,10 @@ class Eeprom final : public sjsu::Storage
 
     // Because the EEPROM uses 32-bit communication, write_data will be cast
     // into a uint32_t *
-    const uint32_t * write_data = reinterpret_cast<const uint32_t *>(data);
+    std::span<const uint32_t> write_data(
+        reinterpret_cast<const uint32_t *>(data.data()),
+        data.size() / sizeof(uint32_t));
+    // const uint32_t * write_data = reinterpret_cast<const uint32_t *>(data);
 
     // The first 6 bits in the address (MSB) dictate which page is being written
     // to in the EEPROM, and the last 6 bits (LSB) dictate offset in the page
@@ -135,7 +137,7 @@ class Eeprom final : public sjsu::Storage
 
     uint16_t eeprom_address = 0;
 
-    for (size_t i = 0; (i * 4) < size; i++)
+    for (const auto & word : write_data)
     {
       // Page offset is incremented by 4 because we're writing 32 bits
       constexpr uint8_t kOffsetInterval = 4;
@@ -144,7 +146,7 @@ class Eeprom final : public sjsu::Storage
 
       eeprom_register->ADDR  = eeprom_address;
       eeprom_register->CMD   = kWrite32Bits;
-      eeprom_register->WDATA = write_data[i];
+      eeprom_register->WDATA = word;
 
       // Poll status register bit to see when writing is finished
       auto check_register = []() {
@@ -179,19 +181,22 @@ class Eeprom final : public sjsu::Storage
     Program(eeprom_address);
   }
 
-  void Read(uint32_t address, void * data, size_t size) override
+  void Read(uint32_t address, std::span<uint8_t> data) override
   {
     address = bit::Insert(address, 0b00, kAddressMask);
 
     // Because the EEPROM uses 32-bit communication, read_data will be casted
     // into a uint32_t *
-    uint32_t * read_data = reinterpret_cast<uint32_t *>(data);
+    std::span<uint32_t> read_data(reinterpret_cast<uint32_t *>(data.data()),
+                                  data.size() / sizeof(uint32_t));
 
-    for (uint16_t index = 0; (index * 4) < size; index++)
+    int index = 0;
+    for (auto & word : read_data)
     {
       eeprom_register->ADDR = address + (index * 4);
       eeprom_register->CMD  = kRead32Bits;
-      read_data[index]      = eeprom_register->RDATA;
+      word                  = eeprom_register->RDATA;
+      index++;
     }
   }
 

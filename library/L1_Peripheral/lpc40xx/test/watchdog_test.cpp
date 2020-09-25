@@ -1,7 +1,8 @@
+#include "L1_Peripheral/lpc40xx/watchdog.hpp"
+
 #include <cstdint>
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L1_Peripheral/lpc40xx/watchdog.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "third_party/units/units.h"
 

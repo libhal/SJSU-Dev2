@@ -1,7 +1,8 @@
+#include "L1_Peripheral/stm32f4xx/pin.hpp"
+
 #include <cstdint>
 
 #include "L0_Platform/stm32f4xx/stm32f4xx.h"
-#include "L1_Peripheral/stm32f4xx/pin.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::stm32f4xx
@@ -205,7 +206,7 @@ TEST_CASE("Testing stm32f4xx Pin")
     }
   }
 
-  SECTION("SetPinFunction()")
+  SECTION("ConfigureFunction()")
   {
     SECTION("Valid function code")
     {
@@ -228,7 +229,7 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].pin.Initialize();
 
         // Exercise
-        test[i].pin.SetPinFunction(kExpectedFunction[i]);
+        test[i].pin.ConfigureFunction(kExpectedFunction[i]);
 
         // Verify
         CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
@@ -252,13 +253,13 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].pin.Initialize();
 
         // Exercise & Verify
-        SJ2_CHECK_EXCEPTION(test[i].pin.SetPinFunction(invalid_function),
+        SJ2_CHECK_EXCEPTION(test[i].pin.ConfigureFunction(invalid_function),
                             std::errc::invalid_argument);
       }
     }
   }
 
-  SECTION("SetPull()")
+  SECTION("ConfigurePullResistor()")
   {
     // 00: No pull-up, pull-down
     // 01: Pull-up
@@ -277,7 +278,7 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.SetFloating();
+        test[i].pin.ConfigureFloating();
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedNoPull);
@@ -285,7 +286,7 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.PullUp();
+        test[i].pin.ConfigurePullUp();
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedPullUp);
@@ -293,7 +294,7 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.PullDown();
+        test[i].pin.ConfigurePullDown();
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedPullDown);
@@ -301,13 +302,14 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise & Verify
-        SJ2_CHECK_EXCEPTION(test[i].pin.SetPull(Pin::Resistor::kRepeater),
-                            std::errc::not_supported);
+        SJ2_CHECK_EXCEPTION(
+            test[i].pin.ConfigurePullResistor(Pin::Resistor::kRepeater),
+            std::errc::not_supported);
       }
     }
   }
 
-  SECTION("SetAsOpenDrain()")
+  SECTION("ConfigureAsOpenDrain()")
   {
     for (size_t i = 0; i < test.size(); i++)
     {
@@ -317,7 +319,7 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.SetAsOpenDrain(true);
+        test[i].pin.ConfigureAsOpenDrain(true);
 
         // Verify
         CHECK(bit::Read(test[i].gpio.OTYPER, test[i].pin.GetPin()));
@@ -325,7 +327,7 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.SetAsOpenDrain(false);
+        test[i].pin.ConfigureAsOpenDrain(false);
 
         // Verify
         CHECK(!bit::Read(test[i].gpio.OTYPER, test[i].pin.GetPin()));
@@ -333,7 +335,7 @@ TEST_CASE("Testing stm32f4xx Pin")
     }
   }
 
-  SECTION("SetAsAnalogMode()")
+  SECTION("ConfigureAsAnalogMode()")
   {
     constexpr uint8_t kAnalogCode = 0b11;
     for (size_t i = 0; i < test.size(); i++)
@@ -346,7 +348,7 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].gpio.MODER = 0;
 
         // Exercise
-        test[i].pin.SetAsAnalogMode(true);
+        test[i].pin.ConfigureAsAnalogMode(true);
 
         // Verify
         CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
@@ -357,8 +359,8 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].gpio.MODER = 0;
 
         // Exercise
-        test[i].pin.SetAsAnalogMode(true);
-        test[i].pin.SetAsAnalogMode(false);
+        test[i].pin.ConfigureAsAnalogMode(true);
+        test[i].pin.ConfigureAsAnalogMode(false);
 
         // Verify
         CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
@@ -369,7 +371,7 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].gpio.MODER = 0;
 
         // Exercise
-        test[i].pin.SetAsAnalogMode(false);
+        test[i].pin.ConfigureAsAnalogMode(false);
 
         // Verify
         CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) == 0b00);

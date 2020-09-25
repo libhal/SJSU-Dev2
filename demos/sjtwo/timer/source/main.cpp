@@ -5,19 +5,22 @@
 
 // Put whatever functions you want to be triggered within these ISR's
 // and you can use the timer to trigger whatever event you want.
-void Timer0ISR(void)
+void Timer0ISR()
 {
   sjsu::LogInfo("Successfully triggered interrupt from timer 0");
 }
-void Timer1ISR(void)
+
+void Timer1ISR()
 {
   sjsu::LogInfo("Successfully triggered interrupt from timer 1");
 }
-void Timer2ISR(void)
+
+void Timer2ISR()
 {
   sjsu::LogInfo("Successfully triggered interrupt from timer 2");
 }
-void Timer3ISR(void)
+
+void Timer3ISR()
 {
   sjsu::LogInfo("Successfully triggered interrupt from timer 3");
 }

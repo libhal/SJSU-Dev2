@@ -3,12 +3,12 @@
 #include <cstdint>
 
 #include "L1_Peripheral/i2c.hpp"
-#include "L2_HAL/sensors/movement/accelerometer.hpp"
 #include "L2_HAL/memory_access_protocol.hpp"
+#include "L2_HAL/sensors/movement/accelerometer.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
-#include "utility/math/limits.hpp"
 #include "utility/map.hpp"
+#include "utility/math/limits.hpp"
 
 namespace sjsu
 {
@@ -44,67 +44,75 @@ class Mma8452q : public Accelerometer
     static constexpr auto kControlReg1 =
         MemoryAccessProtocol::Address(kSpec, { .address = 0x2A, .width = 1 });
 
-    static_assert(NoRegistersOverlap({ kStatus, kXYZStartAddress, kWhoAmI,
-                                       kDataConfig, kControlReg1 }),
-                  "Memory map for MMA8452 is not valid. Register "
-                  "addresses/sizes overlap with each other");
+    static_assert(
+        NoRegistersOverlap(
+            { kStatus, kXYZStartAddress, kWhoAmI, kDataConfig, kControlReg1 }),
+        "Memory map for MMA8452 is not valid. Register "
+        "addresses/sizes overlap with each other");
   };
 
   /// @param i2c - i2c peripheral used to commnicate with device.
-  /// @param full_scale - the specification maximum detectable acceleration.
-  ///        Allowed values are 2g, 4g, and 8g, where g reprsents the
-  ///        gravitational constent 9.8 m/s^2 (the user defined literals for
-  ///        this are 2_SG, 4_SG, and 8_SG). Setting this to a larger max
-  ///        acceleration results in being able to detect accelerations but
-  ///        loses resolution because -8g to 8g must span 12 bits of
-  ///        information. Where as 2g has a lower maximum detectable
-  ///        acceleration, but 12 bits of information.
   /// @param address - Mma8452q device address.
-  explicit constexpr Mma8452q(
-      const I2c & i2c,
-      units::acceleration::standard_gravity_t full_scale = 2_SG,
-      uint8_t address                                    = 0x1c)
-      : i2c_(i2c),
-        kFullScale(full_scale),
-        kAccelerometerAddress(address),
-        i2c_memory_(kAccelerometerAddress, i2c),
-        memory_(i2c_memory_)
+  explicit constexpr Mma8452q(I2c & i2c, uint8_t address = 0x1c)
+      : i2c_(i2c), i2c_memory_(address, i2c), memory_(i2c_memory_)
   {
   }
 
-  explicit constexpr Mma8452q(
-      MemoryAccessProtocol & external_map_protocol,
-      const I2c & i2c,
-      units::acceleration::standard_gravity_t full_scale = 2_SG,
-      uint8_t address                                    = 0x1c)
-      : i2c_(i2c),
-        kFullScale(full_scale),
-        kAccelerometerAddress(address),
-        i2c_memory_(kAccelerometerAddress, i2c),
-        memory_(external_map_protocol)
+  explicit constexpr Mma8452q(MemoryAccessProtocol & external_map_protocol,
+                              I2c & i2c,
+                              uint8_t address = 0x1c)
+      : i2c_(i2c), i2c_memory_(address, i2c), memory_(external_map_protocol)
   {
   }
 
-  void Initialize() override
+  void ModuleInitialize() override
   {
-    return i2c_.Initialize();
+    i2c_.Initialize();
+
+    if (i2c_.RequiresConfiguration())
+    {
+      i2c_.ConfigureClockRate();
+    }
+
+    i2c_.Enable();
   }
 
-  /// Will automatically set the device to 2g for full-scale. Use
-  /// `SetFullScaleRange()` to change it.
-  void Enable() override
+  void ModuleEnable(bool enable = true) override
   {
-    // Check that the device is valid before proceeding.
-    IsValidDevice();
+    if (enable)
+    {
+      // Check that the device is valid before proceeding.
+      IsValidDevice();
 
-    // Put device into standby so we can configure the device.
-    ActiveMode(false);
+      // Activate device to allow full-scale and configuration to take effect.
+      ActiveMode(true);
+    }
+    else
+    {
+      // Put device into standby so we can configure the device.
+      ActiveMode(false);
+    }
+  }
 
-    // Set device full-scale to the value supplied by the constructor.
-    SetFullScaleRange();
+  void ConfigureFullScale(
+      units::acceleration::standard_gravity_t gravity) override
+  {
+    const uint32_t kGravityScale = gravity.to<uint32_t>();
 
-    // Activate device to allow full-scale and configuration to take effect.
-    ActiveMode(true);
+    if (kGravityScale != 2 && kGravityScale != 4 && kGravityScale != 8)
+    {
+      throw Exception(std::errc::invalid_argument,
+                      "Gravity scale must be 2g, 4g, or 8g.");
+    }
+
+    // Convert Gs to gravity scale code for the device.
+    const uint8_t kNewGravityScale = static_cast<uint8_t>(kGravityScale >> 2);
+
+    // Write gravity scale to memory
+    memory_[Map::kDataConfig] = kNewGravityScale;
+
+    // Set the full_scale_ value for use in Read()
+    full_scale_ = gravity;
   }
 
   Acceleration_t Read() override
@@ -133,7 +141,7 @@ class Mma8452q : public Accelerometer
     int16_t z = static_cast<int16_t>(xyz_data[2] >> 4);
 
     // Convert the 12-bit signed value into a value from -1.0 to 1.0f so it can
-    // be multiplied by the kFullScale in order to get the true acceleration.
+    // be multiplied by the full_scale in order to get the true acceleration.
     constexpr int16_t kMin = sjsu::BitLimits<12, int16_t>::Min();
     constexpr int16_t kMax = sjsu::BitLimits<12, int16_t>::Max();
 
@@ -141,25 +149,11 @@ class Mma8452q : public Accelerometer
     float y_axis_ratio = sjsu::Map(y, kMin, kMax, -1.0f, 1.0f);
     float z_axis_ratio = sjsu::Map(z, kMin, kMax, -1.0f, 1.0f);
 
-    acceleration.x = kFullScale * x_axis_ratio;
-    acceleration.y = kFullScale * y_axis_ratio;
-    acceleration.z = kFullScale * z_axis_ratio;
+    acceleration.x = full_scale_ * x_axis_ratio;
+    acceleration.y = full_scale_ * y_axis_ratio;
+    acceleration.z = full_scale_ * z_axis_ratio;
 
     return acceleration;
-  }
-
-  void SetFullScaleRange()
-  {
-    const uint32_t kGravityScale = kFullScale.to<uint32_t>();
-
-    if (kGravityScale != 2 && kGravityScale != 4 && kGravityScale != 8)
-    {
-      throw Exception(std::errc::invalid_argument,
-                      "Gravity scale must be 2g, 4g, or 8g.");
-    }
-
-    const uint8_t kNewGravityScale = static_cast<uint8_t>(kGravityScale >> 2);
-    memory_[Map::kDataConfig]      = kNewGravityScale;
   }
 
   void ActiveMode(bool is_active = true)
@@ -184,10 +178,9 @@ class Mma8452q : public Accelerometer
   }
 
  private:
-  const I2c & i2c_;
-  const units::acceleration::standard_gravity_t kFullScale;
-  const uint8_t kAccelerometerAddress;
+  I2c & i2c_;
   I2cProtocol<1> i2c_memory_;
   MemoryAccessProtocol & memory_;
+  units::acceleration::standard_gravity_t full_scale_ = 2_SG;
 };  // namespace sjsu
 }  // namespace sjsu

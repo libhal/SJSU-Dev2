@@ -1,6 +1,7 @@
+#include "L1_Peripheral/msp432p401r/pin.hpp"
+
 #include <bitset>
 
-#include "L1_Peripheral/msp432p401r/pin.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
@@ -196,7 +197,7 @@ TEST_CASE("Testing Msp432p401r Pin")
           bool expected_sel0      = bit::Read(function_code, kSel0Bit);
 
           // Exercise
-          pin.SetPinFunction(function_code);
+          pin.ConfigureFunction(function_code);
 
           // Verify
           CHECK(bit::Read(*direction_register, kPinNumber) ==
@@ -228,12 +229,12 @@ TEST_CASE("Testing Msp432p401r Pin")
       }
 
       // Exercise & Verify
-      SJ2_CHECK_EXCEPTION(test_pins[0].pin.SetPinFunction(function_code),
+      SJ2_CHECK_EXCEPTION(test_pins[0].pin.ConfigureFunction(function_code),
                           std::errc::invalid_argument);
     }
   }
 
-  SECTION("SetPull")
+  SECTION("ConfigurePullResistor")
   {
     for (size_t i = 0; i < test_pins.size(); i++)
     {
@@ -260,11 +261,11 @@ TEST_CASE("Testing Msp432p401r Pin")
       bool actual_out;
 
       // Exercise & Verify - Setting pull as repeater
-      SJ2_CHECK_EXCEPTION(pin.SetPull(Pin::Resistor::kRepeater),
+      SJ2_CHECK_EXCEPTION(pin.ConfigurePullResistor(Pin::Resistor::kRepeater),
                           std::errc::not_supported);
 
       // Exercise - Setting pull up resistor
-      pin.SetPull(Pin::Resistor::kPullUp);
+      pin.ConfigurePullResistor(Pin::Resistor::kPullUp);
       actual_resistor_enable = bit::Read(*resistor_enable_register, kPinNumber);
       actual_out             = bit::Read(*out_register, kPinNumber);
 
@@ -273,7 +274,7 @@ TEST_CASE("Testing Msp432p401r Pin")
       CHECK(actual_out == true);
 
       // Exercise - Setting pull down resistor
-      pin.SetPull(Pin::Resistor::kPullDown);
+      pin.ConfigurePullResistor(Pin::Resistor::kPullDown);
       actual_resistor_enable = bit::Read(*resistor_enable_register, kPinNumber);
       actual_out             = bit::Read(*out_register, kPinNumber);
 
@@ -282,7 +283,7 @@ TEST_CASE("Testing Msp432p401r Pin")
       CHECK(actual_out == false);
 
       // Exercise - Setting no resistor
-      pin.SetPull(Pin::Resistor::kNone);
+      pin.ConfigurePullResistor(Pin::Resistor::kNone);
       actual_resistor_enable = bit::Read(*resistor_enable_register, kPinNumber);
 
       // Verify
@@ -325,7 +326,7 @@ TEST_CASE("Testing Msp432p401r Pin")
     }
   }
 
-  SECTION("SetAsOpenDrain")
+  SECTION("ConfigureAsOpenDrain")
   {
     for (size_t i = 0; i < test_pins.size(); i++)
     {
@@ -337,7 +338,7 @@ TEST_CASE("Testing Msp432p401r Pin")
       INFO("port: " << static_cast<size_t>(kPortNumber));
       INFO("pin: " << static_cast<size_t>(kPinNumber));
 
-      SJ2_CHECK_EXCEPTION(pin.SetAsOpenDrain({}),
+      SJ2_CHECK_EXCEPTION(pin.ConfigureAsOpenDrain({}),
                           std::errc::operation_not_supported);
     }
   }

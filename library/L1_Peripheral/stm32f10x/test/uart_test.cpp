@@ -1,8 +1,9 @@
+#include "L1_Peripheral/stm32f10x/uart.hpp"
+
 #include <algorithm>
 #include <numeric>
 #include <thread>
 
-#include "L1_Peripheral/stm32f10x/uart.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::stm32f10x
@@ -20,8 +21,11 @@ TEST_CASE("Testing stm32f10x Uart")
   Mock<sjsu::Pin> mock_tx;
   Mock<sjsu::Pin> mock_pin;
 
-  Fake(Method(mock_rx, SetPull));
-  Fake(Method(mock_tx, SetPinFunction));
+  Fake(Method(mock_rx, ConfigurePullResistor));
+  Fake(Method(mock_rx, ConfigureFunction));
+
+  Fake(Method(mock_tx, ConfigurePullResistor));
+  Fake(Method(mock_tx, ConfigureFunction));
 
   DMA_Channel_TypeDef local_dma;
   USART_TypeDef local_usart;
@@ -43,31 +47,34 @@ TEST_CASE("Testing stm32f10x Uart")
 
   SECTION("Initialize()")
   {
-    // Setup
-    static constexpr uint32_t kExpectedBaudRate = 115200;
-
-    Mock<UartBase> spy(test_subject);
-    Fake(Method(spy, SetBaudRate));
-
-    intptr_t data_address_int = reinterpret_cast<intptr_t>(&local_usart.DR);
-    intptr_t queue_address_int =
-        reinterpret_cast<intptr_t>(receieve_queue.data());
-
-    auto data_address  = static_cast<uint32_t>(data_address_int);
-    auto queue_address = static_cast<uint32_t>(queue_address_int);
-
     // Exercise
-    test_subject.Initialize(kExpectedBaudRate);
+    test_subject.Initialize();
 
     // Verify
-    Verify(Method(spy, SetBaudRate).Using(kExpectedBaudRate)).Once();
     Verify(Method(mock_controller, PowerUpPeripheral).Using(mock_port.id))
         .Once();
     Verify(Method(mock_controller, PowerUpPeripheral)
                .Using(SystemController::Peripherals::kDma1))
         .Once();
-    Verify(Method(mock_rx, SetPull).Using(sjsu::Pin::Resistor::kPullUp)).Once();
-    Verify(Method(mock_tx, SetPinFunction).Using(1)).Once();
+  }
+
+  SECTION("Enable(true)")
+  {
+    // Setup
+    auto data_address_int  = reinterpret_cast<intptr_t>(&local_usart.DR);
+    auto queue_address_int = reinterpret_cast<intptr_t>(receieve_queue.data());
+    auto data_address      = static_cast<uint32_t>(data_address_int);
+    auto queue_address     = static_cast<uint32_t>(queue_address_int);
+
+    // Exercise
+    test_subject.SetStateToInitialized();
+    test_subject.Enable();
+
+    // Verify
+    Verify(Method(mock_rx, ConfigurePullResistor)
+               .Using(sjsu::Pin::Resistor::kPullUp))
+        .Once();
+    Verify(Method(mock_tx, ConfigureFunction).Using(1)).Once();
 
     CHECK(receieve_queue.size() == local_dma.CNDTR);
     CHECK(data_address == local_dma.CPAR);
@@ -77,7 +84,7 @@ TEST_CASE("Testing stm32f10x Uart")
     CHECK(UartBase::ControlReg::kControlSettings3 == local_usart.CR3);
   }
 
-  SECTION("SetBaudRate()")
+  SECTION("ConfigureBaudRate()")
   {
     // Setup
     uint32_t baud_rate;
@@ -157,7 +164,7 @@ TEST_CASE("Testing stm32f10x Uart")
     }
 
     // Exercise
-    test_subject.SetBaudRate(baud_rate);
+    test_subject.ConfigureBaudRate(baud_rate);
 
     // Verify
     bit::Register baud_reg(&local_usart.BRR);
@@ -169,7 +176,7 @@ TEST_CASE("Testing stm32f10x Uart")
   {
     // Setup
     // Setup: Payload to be written to the uart port.
-    std::array<char, 7> payload;
+    std::array<uint8_t, 7> payload;
 
     // Setup: Fill the receive queue with letters from 'a' to 'a'+8
     std::iota(payload.begin(), payload.end(), 'a');
@@ -238,7 +245,7 @@ TEST_CASE("Testing stm32f10x Uart")
     });
 
     // Exercise
-    test_subject.Write(payload.data(), payload_size);
+    test_subject.Write(std::span<const uint8_t>(payload.data(), payload_size));
     initial_transmit_wait.join();
 
     // Verify
@@ -304,7 +311,7 @@ TEST_CASE("Testing stm32f10x Uart")
     local_dma.CNDTR = receieve_queue.size() - stored_bytes;
 
     // Exercise
-    test_subject.Read(results.data(), stored_bytes);
+    test_subject.Read(std::span<uint8_t>(results.data(), stored_bytes));
 
     // Verify
     CHECK(receieve_queue == results);

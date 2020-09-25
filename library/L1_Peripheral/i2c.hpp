@@ -5,6 +5,8 @@
 #include <span>
 
 #include "config.hpp"
+#include "inactive.hpp"
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
@@ -13,7 +15,7 @@ namespace sjsu
 /// An abstract interface for hardware that implements the Inter-integrated
 /// Circuit (I2C) or Two Wire Interface (TWI) hardware communication Protocol.
 /// @ingroup l1_peripheral
-class I2c
+class I2c : public Module
 {
  public:
   // ===========================================================================
@@ -116,17 +118,34 @@ class I2c
   // Interface Methods
   // ===========================================================================
 
-  /// Initialize and enable hardware. This must be called before any other
-  /// method in this interface is called.
-  virtual void Initialize() const = 0;
+  // ---------------------------------------------------------------------------
+  // Configuration Methods
+  // ---------------------------------------------------------------------------
+
+  /// MUST be called before running Enable().
+  /// Set the clock rate and duty cycle of the serial clock frequency.
+  ///
+  /// @param frequency - the clock frequency to set the I2C serial clock
+  /// frequency to.
+  /// @param duty_cycle - percentage of time the clock rate is LOW. Moving this
+  /// value closer to 0 will cause the time the serial clock is low to be
+  /// shorten. This will allow more time for the signal to pull high via the
+  /// external pull up resistor.
+  virtual void ConfigureClockRate(
+      units::frequency::hertz_t frequency = 100'000_Hz,
+      float duty_cycle                    = 0.5) = 0;
+
+  // ---------------------------------------------------------------------------
+  // Usage Methods
+  // ---------------------------------------------------------------------------
 
   /// Perform a I2C transaction using the information contained in the
   /// transaction parameter.
   ///
-  /// @return std::errc::timed_out, std::errc::io_error, or
-  /// std::errc::no_such_device_or_address, depending on the circumstances of
-  /// the error that occurred during the transaction.
-  virtual void Transaction(Transaction_t transaction) const = 0;
+  /// @throw sjsu::Exception - with error codes, std::errc::timed_out,
+  /// std::errc::io_error, or std::errc::no_such_device_or_address, depending on
+  /// the circumstances of the error that occurred during the transaction.
+  virtual void Transaction(Transaction_t transaction) = 0;
 
   // ===========================================================================
   // Utility Methods
@@ -143,7 +162,7 @@ class I2c
   void Read(uint8_t address,
             uint8_t * receive_buffer,
             size_t receive_buffer_length,
-            std::chrono::milliseconds timeout = kI2cTimeout) const
+            std::chrono::milliseconds timeout = kI2cTimeout)
   {
     return Transaction({
         .operation  = Operation::kRead,
@@ -167,7 +186,7 @@ class I2c
   ///        bailing out.
   void Read(uint8_t address,
             std::span<uint8_t> receive,
-            std::chrono::milliseconds timeout = kI2cTimeout) const
+            std::chrono::milliseconds timeout = kI2cTimeout)
   {
     return Read(address, receive.data(), receive.size(), timeout);
   }
@@ -183,7 +202,7 @@ class I2c
   void Write(uint8_t address,
              const uint8_t * transmit_buffer,
              size_t transmit_buffer_length,
-             std::chrono::milliseconds timeout = kI2cTimeout) const
+             std::chrono::milliseconds timeout = kI2cTimeout)
   {
     return Transaction({
         .operation  = Operation::kWrite,
@@ -211,7 +230,7 @@ class I2c
   ///        bailing out.
   void Write(uint8_t address,
              std::initializer_list<uint8_t> transmit,
-             std::chrono::milliseconds timeout = kI2cTimeout) const
+             std::chrono::milliseconds timeout = kI2cTimeout)
   {
     return Write(address, transmit.begin(), transmit.size(), timeout);
   }
@@ -229,7 +248,7 @@ class I2c
   ///        bailing out.
   void Write(uint8_t address,
              std::span<const uint8_t> transmit,
-             std::chrono::milliseconds timeout = kI2cTimeout) const
+             std::chrono::milliseconds timeout = kI2cTimeout)
   {
     return Write(address, transmit.data(), transmit.size(), timeout);
   }
@@ -254,7 +273,7 @@ class I2c
                      size_t transmit_buffer_length,
                      uint8_t * receive_buffer,
                      size_t receive_buffer_length,
-                     std::chrono::milliseconds timeout = kI2cTimeout) const
+                     std::chrono::milliseconds timeout = kI2cTimeout)
   {
     return Transaction({
         .operation  = Operation::kWrite,
@@ -287,10 +306,14 @@ class I2c
                      std::initializer_list<uint8_t> transmit,
                      uint8_t * receive_buffer,
                      size_t receive_buffer_length,
-                     std::chrono::milliseconds timeout = kI2cTimeout) const
+                     std::chrono::milliseconds timeout = kI2cTimeout)
   {
-    return WriteThenRead(address, transmit.begin(), transmit.size(),
-                         receive_buffer, receive_buffer_length, timeout);
+    return WriteThenRead(address,
+                         transmit.begin(),
+                         transmit.size(),
+                         receive_buffer,
+                         receive_buffer_length,
+                         timeout);
   }
 
   /// Write to a device on the I2C bus, then read from that device.
@@ -308,10 +331,34 @@ class I2c
   void WriteThenRead(uint8_t address,
                      std::span<const uint8_t> transmit,
                      std::span<uint8_t> receive,
-                     std::chrono::milliseconds timeout = kI2cTimeout) const
+                     std::chrono::milliseconds timeout = kI2cTimeout)
   {
-    return WriteThenRead(address, transmit.data(), transmit.size(),
-                         receive.data(), receive.size(), timeout);
+    return WriteThenRead(address,
+                         transmit.data(),
+                         transmit.size(),
+                         receive.data(),
+                         receive.size(),
+                         timeout);
   }
 };
+
+/// Template specialization that generates an inactive sjsu::I2c.
+template <>
+inline sjsu::I2c & GetInactive<sjsu::I2c>()
+{
+  class InactiveI2c : public sjsu::I2c
+  {
+   public:
+    void ModuleInitialize() override {}
+    void ModuleEnable(bool = true) override {}
+    void ConfigureClockRate(units::frequency::hertz_t = 100'000_Hz,
+                            float                     = 0.5) override
+    {
+    }
+    void Transaction(Transaction_t) override {}
+  };
+
+  static InactiveI2c inactive;
+  return inactive;
+}
 }  // namespace sjsu

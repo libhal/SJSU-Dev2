@@ -18,8 +18,7 @@ int main()
   {
     units::temperature::celsius_t temperature =
         temperature_sensor.GetTemperature();
-    sjsu::LogInfo("Board Temperature: %.4f C",
-                  static_cast<double>(temperature));
+    sjsu::LogInfo("Board Temperature: %.4f C", temperature.to<double>());
     sjsu::Delay(1s);
   }
 

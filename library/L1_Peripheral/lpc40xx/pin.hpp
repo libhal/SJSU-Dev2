@@ -3,7 +3,7 @@
 //   Usage:
 //      Pin P0_0(0, 0);
 //      P0_0.SetAsActiveLow();
-//      P0_0.PullUp();
+//      P0_0.ConfigurePullUp();
 #pragma once
 
 #include <cstdio>
@@ -76,28 +76,34 @@ class Pin final : public sjsu::Pin
   /// technique for this class.
   inline static PinMap_t * pin_map = reinterpret_cast<PinMap_t *>(LPC_IOCON);
 
-  /// Compile time Pin factory that test the port and pin variables to make sure
-  /// they are within bounds of the pin map register.
-  template <unsigned port_, unsigned pin_>
-  static constexpr sjsu::lpc40xx::Pin CreatePin()
-  {
-    static_assert(port_ <= 5, "Port must be between 0 and 5");
-    static_assert(pin_ <= 31, "Pin must be between 0 and 31");
-    static_assert(port_ < 5 || (port_ == 5 && pin_ <= 4),
-                  "For port 5, the pin number must be equal to or below 4");
-    return Pin(port_, pin_);
-  }
-
   /// Construct a pin for the specified port and pin numbers.
   ///
   /// @param port - port number for the pin you want to construct.
   /// @param pin - pin number for the pin you want to construct.
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
-  /// NOTE: GPIO hardare is enabled and ready by default on reset.
-  void Initialize() const override {}
+  /// NOTE: GPIO hardare is enabled and ready by default on reset. This
+  /// initialize method only serves to check that the port and pin are correct,
+  /// and throws if they are not.
+  void ModuleInitialize() override
+  {
+    if (port_ > 5 && pin_ > 31)
+    {
+      throw Exception(
+          std::errc::invalid_argument,
+          "Port must be between 0 and 5 & Pin must be between 0 and 31");
+    }
+    if (port_ == 5 && pin_ > 4)
+    {
+      throw Exception(std::errc::invalid_argument,
+                      "For port 5, the pin number must be equal to or below 4");
+    }
+  }
 
-  void SetPinFunction(uint8_t function) const override
+  /// Does nothing, pin hardware is enabled by default.
+  void ModuleEnable(bool = true) override {}
+
+  void ConfigureFunction(uint8_t function) override
   {
     if (function > 0b111)
     {
@@ -105,21 +111,22 @@ class Pin final : public sjsu::Pin
           std::errc::invalid_argument,
           "The function code must be a 3-bit value between 0b000 and 0b111.");
     }
+
     SetPinRegister(function, kFunction);
   }
 
-  void SetPull(Resistor resistor) const override
+  void ConfigurePullResistor(Resistor resistor) override
   {
     SetPinRegister(static_cast<uint8_t>(resistor), kResistor);
   }
 
-  void SetAsAnalogMode(bool set_as_analog = true) const override
+  void ConfigureAsAnalogMode(bool set_as_analog = true) override
   {
     // Invert the bool because the bit must be set to 0 to enable analog mode.
     SetPinRegister(!set_as_analog, kAnalogDigitalMode);
   }
 
-  void SetAsOpenDrain(bool set_as_open_drain = true) const override
+  void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
   {
     SetPinRegister(set_as_open_drain, kOpenDrain);
   }
@@ -157,6 +164,7 @@ class Pin final : public sjsu::Pin
   {
     SetPinRegister(enable_fast_mode, kSlew);
   }
+
   /// Enable I2C high speed mode for this pin.
   ///
   /// @param enable_high_speed - set to false to disable this mode.
@@ -164,6 +172,7 @@ class Pin final : public sjsu::Pin
   {
     SetPinRegister(!enable_high_speed, kI2cHighSpeed);
   }
+
   /// Enable i2c high current drive mode on pin.
   ///
   /// @param enable_high_current - set to false to disable this mode.

@@ -5,6 +5,7 @@ projects/**/build
 !projects/hello_world
 !projects/starter
 !projects/continuous_integration
+!projects/hyperload_bootloader_lpc
 
 demos/**/build
 library/static_libraries/*

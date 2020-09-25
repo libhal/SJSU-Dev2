@@ -54,19 +54,33 @@ namespace sjsu
 /// @param max - current maximum value that the value can reach
 /// @param new_min - the new minimum value to scale and shift the old value to
 /// @param new_max - the new maximum value to scale and shift the old value to
-template <typename Input, typename Range, typename NewRange>
-constexpr NewRange Map(Input value, Range min, Range max, NewRange new_min,
-             NewRange new_max)
+template <typename Input,
+          typename RangeMin,
+          typename RangeMax,
+          typename NewRangeMin,
+          typename NewRangeMax>
+constexpr NewRangeMax Map(Input value,
+                          RangeMin min,
+                          RangeMax max,
+                          NewRangeMin new_min,
+                          NewRangeMax new_max)
 {
   static_assert(std::is_arithmetic<Input>::value,
                 "Input value variable type must be an arithmetic type (like "
                 "int, char, float, etc).");
-  static_assert(std::is_arithmetic<Range>::value,
+  static_assert(std::is_arithmetic<RangeMin>::value,
                 "min and max variable types must be an arithmetic type (like "
                 "int, char, float, etc).");
-  static_assert(std::is_arithmetic<Range>::value,
+  static_assert(std::is_arithmetic<RangeMax>::value,
+                "min and max variable types must be an arithmetic type (like "
+                "int, char, float, etc).");
+  static_assert(std::is_arithmetic<NewRangeMin>::value,
                 "new_min and new_max variable types must be an arithmetic type "
                 "(like int, char, float, etc).");
+  static_assert(std::is_arithmetic<NewRangeMax>::value,
+                "new_min and new_max variable types must be an arithmetic type "
+                "(like int, char, float, etc).");
+
   float map_value   = static_cast<float>(value);
   float map_min     = static_cast<float>(min);
   float map_max     = static_cast<float>(max);
@@ -74,6 +88,7 @@ constexpr NewRange Map(Input value, Range min, Range max, NewRange new_min,
   float map_new_max = static_cast<float>(new_max);
   float range_ratio = (map_new_max - map_new_min) / (map_max - map_min);
   float mapped      = ((map_value - map_min) * range_ratio) + map_new_min;
-  return static_cast<NewRange>(mapped);
+
+  return static_cast<NewRangeMax>(mapped);
 };
 }  // namespace sjsu

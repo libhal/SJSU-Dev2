@@ -1,7 +1,8 @@
+#include "L1_Peripheral/stm32f4xx/gpio.hpp"
+
 #include <cstdint>
 
 #include "L0_Platform/stm32f4xx/stm32f4xx.h"
-#include "L1_Peripheral/stm32f4xx/gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::stm32f4xx
@@ -10,7 +11,7 @@ EMIT_ALL_METHODS(Gpio);
 
 namespace
 {
-bit::Mask Mask2Bit(const sjsu::Gpio & gpio)
+bit::Mask Mask2Bit(sjsu::Gpio & gpio)
 {
   return {
     .position = static_cast<uint8_t>(gpio.GetPin().GetPin() * 2),
@@ -136,15 +137,35 @@ TEST_CASE("Testing stm32f4xx Gpio")
     },
   };
 
+  SECTION("Initialize()")
+  {
+    auto power_up_matcher = [](sjsu::SystemController::ResourceID expected_id) {
+      return [expected_id](sjsu::SystemController::ResourceID actual_id) {
+        return expected_id.device_id == actual_id.device_id;
+      };
+    };
+
+    for (auto & test_subject : test)
+    {
+      // Setup
+      INFO("Failure at Pin " << test_subject.gpio.GetPin().GetPort() << "["
+                             << test_subject.gpio.GetPin().GetPin() << "]");
+
+      // Setup: Fill with 1s so that by setting it to input they get replaced
+      //        with the correct input code of zero.
+      test_subject.reg.MODER = 0xFFFF'FFFF;
+
+      // Exercise
+      test_subject.gpio.Initialize();
+
+      // Verify
+      Verify(Method(mock_system_controller, PowerUpPeripheral)
+                 .Matching(power_up_matcher(test_subject.id)));
+    }
+  }
+
   SECTION("SetDirection()")
   {
-    auto power_up_matcher =
-        [](sjsu::SystemController::ResourceID expected_id) {
-          return [expected_id](sjsu::SystemController::ResourceID actual_id) {
-            return expected_id.device_id == actual_id.device_id;
-          };
-        };
-
     // RM0090 p.281
     //
     // --> 00: Input (reset state)
@@ -155,107 +176,118 @@ TEST_CASE("Testing stm32f4xx Gpio")
     constexpr uint8_t kInputCode  = 0b00;
     constexpr uint8_t kOutputCode = 0b01;
 
-    for (uint32_t i = 0; i < test.size(); i++)
+    for (auto & test_subject : test)
     {
       // Setup
-      INFO("Failure at index: " << i);
+      INFO("SetAsInput Failure at Pin "
+           << test_subject.gpio.GetPin().GetPort() << "["
+           << test_subject.gpio.GetPin().GetPin() << "]");
+
       // Setup: Fill with 1s so that by setting it to input they get replaced
       //        with the correct input code of zero.
-      test[i].reg.MODER = 0xFFFF'FFFF;
+      test_subject.reg.MODER = 0xFFFF'FFFF;
 
       // Exercise
-      test[i].gpio.SetAsInput();
+      test_subject.gpio.SetAsInput();
 
       // Verify
-      // Verify: Should call Pin's Initialize method which simply calls
-      //         PowerUpPeripheral()
-      Verify(Method(mock_system_controller, PowerUpPeripheral)
-                 .Matching(power_up_matcher(test[i].id)));
-      mock_system_controller.ClearInvocationHistory();
-      CHECK(bit::Extract(test[i].reg.MODER, Mask2Bit(test[i].gpio)) ==
+      CHECK(bit::Extract(test_subject.reg.MODER, Mask2Bit(test_subject.gpio)) ==
             kInputCode);
     }
 
-    for (uint32_t i = 0; i < test.size(); i++)
+    for (auto & test_subject : test)
     {
       // Setup
-      INFO("Failure at index: " << i);
+      INFO("SetAsOutput Failure at Pin "
+           << test_subject.gpio.GetPin().GetPort() << "["
+           << test_subject.gpio.GetPin().GetPin() << "]");
+
       // Setup: Fill with 1s so that by setting it to input they get replaced
       //        with the correct input code of zero.
-      test[i].reg.MODER = 0xFFFF'FFFF;
+      test_subject.reg.MODER = 0xFFFF'FFFF;
 
       // Exercise
-      test[i].gpio.SetAsOutput();
+      test_subject.gpio.SetAsOutput();
 
       // Verify
-      // Verify: Should call Pin's Initialize method which simply calls
-      //         PowerUpPeripheral()
-      Verify(Method(mock_system_controller, PowerUpPeripheral)
-                 .Matching(power_up_matcher(test[i].id)));
-      mock_system_controller.ClearInvocationHistory();
-      CHECK(bit::Extract(test[i].reg.MODER, Mask2Bit(test[i].gpio)) ==
+      CHECK(bit::Extract(test_subject.reg.MODER, Mask2Bit(test_subject.gpio)) ==
             kOutputCode);
     }
   }
+
   SECTION("Set()")
   {
-    for (uint32_t i = 0; i < test.size(); i++)
+    for (auto & test_subject : test)
     {
       // Setup
-      INFO("Failure at index: " << i);
+      INFO("SetAsInput Failure at Pin "
+           << test_subject.gpio.GetPin().GetPort() << "["
+           << test_subject.gpio.GetPin().GetPin() << "]");
+
       // Setup: Set register to all zeros. A 1 in this field will set the bit if
       //        its in the first 15 bits. A 1 in the last 15 bits of the
       //        register will clear the output.
-      test[i].reg.BSRRH = 0;
-      test[i].reg.BSRRL = 0;
+      test_subject.reg.BSRRH = 0;
+      test_subject.reg.BSRRL = 0;
 
       // Exercise
-      test[i].gpio.SetLow();
+      test_subject.gpio.SetLow();
 
       // Verify
-      CHECK(bit::Read(test[i].reg.BSRRH, test[i].gpio.GetPin().GetPin()));
-      CHECK(!bit::Read(test[i].reg.BSRRL, test[i].gpio.GetPin().GetPin()));
+      CHECK(bit::Read(test_subject.reg.BSRRH,
+                      test_subject.gpio.GetPin().GetPin()));
+      CHECK(!bit::Read(test_subject.reg.BSRRL,
+                       test_subject.gpio.GetPin().GetPin()));
     }
 
-    for (uint32_t i = 0; i < test.size(); i++)
+    for (auto & test_subject : test)
     {
       // Setup
-      INFO("Failure at index: " << i);
+      INFO("SetAsInput Failure at Pin "
+           << test_subject.gpio.GetPin().GetPort() << "["
+           << test_subject.gpio.GetPin().GetPin() << "]");
+
       // Setup: Fill with 1s so that by setting it to input they get replaced
       //        with the correct input code of zero.
-      test[i].reg.BSRRH = 0;
-      test[i].reg.BSRRL = 0;
+      test_subject.reg.BSRRH = 0;
+      test_subject.reg.BSRRL = 0;
 
       // Exercise
-      test[i].gpio.SetHigh();
+      test_subject.gpio.SetHigh();
 
       // Verify
-      CHECK(!bit::Read(test[i].reg.BSRRH, test[i].gpio.GetPin().GetPin()));
-      CHECK(bit::Read(test[i].reg.BSRRL, test[i].gpio.GetPin().GetPin()));
+      CHECK(!bit::Read(test_subject.reg.BSRRH,
+                       test_subject.gpio.GetPin().GetPin()));
+      CHECK(bit::Read(test_subject.reg.BSRRL,
+                      test_subject.gpio.GetPin().GetPin()));
     }
   }
   SECTION("Toggle()")
   {
-    for (uint32_t i = 0; i < test.size(); i++)
+    for (auto & test_subject : test)
     {
       // Setup
-      INFO("Failure at index: " << i);
+      INFO("SetAsInput Failure at Pin "
+           << test_subject.gpio.GetPin().GetPort() << "["
+           << test_subject.gpio.GetPin().GetPin() << "]");
+
       // Setup: Initialize output register as zero
-      test[i].reg.ODR = 0;
+      test_subject.reg.ODR = 0;
 
       // Exercise
-      test[i].gpio.Toggle();
+      test_subject.gpio.Toggle();
       bool should_be_set =
-          bit::Read(test[i].reg.ODR, test[i].gpio.GetPin().GetPin());
-      test[i].gpio.Toggle();
+          bit::Read(test_subject.reg.ODR, test_subject.gpio.GetPin().GetPin());
+      test_subject.gpio.Toggle();
       bool should_be_cleared =
-          bit::Read(test[i].reg.ODR, test[i].gpio.GetPin().GetPin());
+          bit::Read(test_subject.reg.ODR, test_subject.gpio.GetPin().GetPin());
 
       // Verify
       CHECK(should_be_set == true);
       CHECK(should_be_cleared == false);
     }
   }
+
   SECTION("Read()")
   {
     constexpr std::array<uint32_t, 2> kIdr = {
@@ -263,19 +295,25 @@ TEST_CASE("Testing stm32f4xx Gpio")
       0xAAAA'AAAA,
     };
 
-    for (uint32_t i = 0; i < kIdr.size(); i++)
+    for (auto & test_subject : test)
     {
-      test[i].reg.IDR = kIdr[i];
-      for (uint32_t j = 0; j < test.size(); j++)
+      // Setup
+      INFO("SetAsInput Failure at Pin "
+           << test_subject.gpio.GetPin().GetPort() << "["
+           << test_subject.gpio.GetPin().GetPin() << "]");
+
+      for (const auto & gpio_field : kIdr)
       {
+        test_subject.reg.IDR = gpio_field;
         // Setup
-        INFO("Failure at index: " << j << " IDR: " << test[i].reg.IDR);
+        INFO(" IDR: " << gpio_field);
+
         // Setup: Initialize output register as all 1s
-        bool expected_read =
-            bit::Read(test[j].reg.IDR, test[j].gpio.GetPin().GetPin());
+        bool expected_read = bit::Read(test_subject.reg.IDR,
+                                       test_subject.gpio.GetPin().GetPin());
 
         // Exercise + Verify
-        CHECK(expected_read == test[j].gpio.Read());
+        CHECK(expected_read == test_subject.gpio.Read());
       }
     }
   }

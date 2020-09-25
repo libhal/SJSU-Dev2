@@ -3,25 +3,36 @@
 #include <cstdint>
 
 #include "L1_Peripheral/gpio.hpp"
+#include "module.hpp"
 
 namespace sjsu
 {
 /// An button class that can tell you if a button has been pressed or released
-/// using a sjsu::Gpio object.
-class Button
+/// using a sjsu::Gpio object. This class does not use interrupt and requires
+/// constant polling in order to work. This is useful for situations where a
+/// gpio does not have interrupt capability, or interrupt capability is not
+/// desired.
+class Button : public Module
 {
  public:
   /// Button Constructor
-  constexpr explicit Button(const sjsu::Gpio & button)
-      : button_(button), was_pressed_(false), was_released_(false)
+  constexpr explicit Button(sjsu::Gpio & button) : button_(button) {}
+
+  void ModuleInitialize() override
   {
+    button_.Initialize();
   }
-  /// Initialize the Gpio for use as a button. Must be called before calling
-  /// anything else.
-  virtual void Initialize()
+
+  void ModuleEnable(bool enable = true) override
   {
-    button_.SetAsInput();
+    button_.Enable(enable);
+
+    if (enable)
+    {
+      button_.SetAsInput();
+    }
   }
+
   /// Call this function continuously to detect if a button has been released.
   /// This method must be called at least twice before it can return true for a
   /// "released" state.
@@ -52,6 +63,7 @@ class Button
     }
     return result;
   }
+
   /// Same documentation as Released() but for the Pressed() state.
   virtual bool Pressed()
   {
@@ -67,6 +79,7 @@ class Button
     }
     return result;
   }
+
   /// Resets the internal state of the button controller.
   virtual void ResetState()
   {
@@ -80,8 +93,8 @@ class Button
   }
 
  private:
-  const sjsu::Gpio & button_;
-  bool was_pressed_;
-  bool was_released_;
+  sjsu::Gpio & button_;
+  bool was_pressed_  = false;
+  bool was_released_ = false;
 };
 }  // namespace sjsu

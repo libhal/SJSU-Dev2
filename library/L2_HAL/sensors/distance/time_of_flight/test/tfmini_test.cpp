@@ -3,9 +3,10 @@
 // @brief This file contains the unit tests to validate the TFMini device driver
 // @{
 #include "L2_HAL/sensors/distance/time_of_flight/tfmini.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
-#include "utility/log.hpp"
 #include "utility/bit.hpp"
+#include "utility/log.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -18,13 +19,9 @@ template <size_t length>
 auto MockReadImplementation(size_t & read_count,
                             const std::array<uint8_t, length> & list)
 {
-  return [&list, &read_count](void * data_ptr, size_t size) -> size_t {
-    uint8_t * data = reinterpret_cast<uint8_t *>(data_ptr);
-    for (size_t i = 0; i < size; i++)
-    {
-      data[i] = list[read_count++];
-    }
-    return size;
+  return [&list, &read_count](std::span<uint8_t> data) -> size_t {
+    std::copy_n(list.begin(), data.size(), data.begin());
+    return data.size();
   };
 }
 }  // namespace
@@ -32,16 +29,34 @@ auto MockReadImplementation(size_t & read_count,
 TEST_CASE("Testing TFMini")
 {
   Mock<Uart> mock_uart;
-  Fake(Method(mock_uart, Initialize),
-       ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)));
+  Fake(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>)));
 
   Uart & uart = mock_uart.get();
   TFMini test(uart);
 
   SECTION("Initialize()")
   {
+    // Setup
     constexpr uint32_t kBaudRate = 115200;
+    Fake(Method(mock_uart, ModuleInitialize));
+    Fake(Method(mock_uart, ConfigureBaudRate));
+    Fake(Method(mock_uart, ConfigureFormat));
+    Fake(Method(mock_uart, ModuleEnable));
 
+    // Exercise
+    test.ModuleInitialize();
+
+    // Verify:
+    // Verify: Check that uart initialization uses the correct Baud rate
+    Verify(Method(mock_uart, ModuleInitialize));
+    Verify(Method(mock_uart, ConfigureBaudRate).Using(kBaudRate));
+    Verify(Method(mock_uart, ConfigureFormat));
+    Verify(Method(mock_uart, ModuleEnable));
+  }
+
+  SECTION("Enable()")
+  {
+    // Setup
     size_t read_count                                        = 0;
     const std::array<uint8_t, 8 * 6> kExpectedInitializeData = {
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
@@ -52,33 +67,26 @@ TEST_CASE("Testing TFMini")
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x00, 0x02,  // Exit Config
     };
 
-    auto init_read_callback =
-        MockReadImplementation(read_count, kExpectedInitializeData);
-
-    When(Method(mock_uart, HasData)).AlwaysReturn(true);
-    When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
-        .AlwaysDo(init_read_callback);
+    When(OverloadedMethod(mock_uart, Read, size_t(std::span<uint8_t>)))
+        .AlwaysDo(MockReadImplementation(read_count, kExpectedInitializeData));
 
     // Exercise
-    test.Initialize();
+    test.ModuleEnable();
 
-    // Verify:
-    // Verify: Check that uart initialization uses the correct Baud rate
-    Verify(Method(mock_uart, Initialize).Using(kBaudRate));
     // Verify: Check the entering of Config mode
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-               .Using(TFMini::kConfigCommand, TFMini::kCommandLength));
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+               .Using(TFMini::kConfigCommand));
     // Verify: Check setting of external trigger mode
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-               .Using(TFMini::kSetExternalTriggerMode, TFMini::kCommandLength));
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+               .Using(TFMini::kSetExternalTriggerMode));
     // Verify: Check Dist units are set to millimeters
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-               .Using(TFMini::kSetDistUnitMM, TFMini::kCommandLength));
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+               .Using(TFMini::kSetDistUnitMM));
     // Verify: Check that config mode was exited
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-               .Using(TFMini::kExitConfigCommand, TFMini::kCommandLength));
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+               .Using(TFMini::kExitConfigCommand));
     // Verify: Check that we wrote commands exactly 4 different times
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)))
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>)))
         .Exactly(4);
   }
 
@@ -107,7 +115,7 @@ TEST_CASE("Testing TFMini")
     When(Method(mock_uart, HasData)).AlwaysReturn(true);
 
     auto dist_read_callback = MockReadImplementation(read_count, device_result);
-    When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
+    When(OverloadedMethod(mock_uart, Read, size_t(std::span<uint8_t>)))
         .AlwaysDo(dist_read_callback);
 
     SECTION("Success")
@@ -117,9 +125,8 @@ TEST_CASE("Testing TFMini")
 
       // Verify
       CHECK(distance == kExpectedDistance);
-      Verify(
-          ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-              .Using(TFMini::kPromptMeasurementCommand, TFMini::kCommandLength))
+      Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+                 .Using(TFMini::kPromptMeasurementCommand))
           .Exactly(1);
     }
 
@@ -150,10 +157,9 @@ TEST_CASE("Testing TFMini")
     }
 
     // Verify
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-            .Using(TFMini::kPromptMeasurementCommand, TFMini::kCommandLength));
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)))
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+               .Using(TFMini::kPromptMeasurementCommand));
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>)))
         .Exactly(1);
   }
 
@@ -179,7 +185,7 @@ TEST_CASE("Testing TFMini")
 
     size_t read_count      = 0;
     auto strength_callback = MockReadImplementation(read_count, device_result);
-    When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
+    When(OverloadedMethod(mock_uart, Read, size_t(std::span<uint8_t>)))
         .AlwaysDo(strength_callback);
 
     constexpr float kEpsilon = 0.001f;
@@ -224,10 +230,9 @@ TEST_CASE("Testing TFMini")
       SJ2_CHECK_EXCEPTION(test.GetSignalStrengthPercent(), std::errc::io_error);
     }
 
-    Verify(
-        ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-            .Using(TFMini::kPromptMeasurementCommand, TFMini::kCommandLength));
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)))
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+               .Using(TFMini::kPromptMeasurementCommand));
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>)))
         .Exactly(1);
   }
 
@@ -245,7 +250,7 @@ TEST_CASE("Testing TFMini")
 
     size_t read_count      = 0;
     auto strength_callback = MockReadImplementation(read_count, device_result);
-    When(ConstOverloadedMethod(mock_uart, Read, size_t(void *, size_t)))
+    When(OverloadedMethod(mock_uart, Read, size_t(std::span<uint8_t>)))
         .AlwaysDo(strength_callback);
 
     SECTION("Successfully return using edge case 0")
@@ -271,13 +276,13 @@ TEST_CASE("Testing TFMini")
 
     // Verify
     // Verify: that the command to enter config has been used
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-               .Using(TFMini::kConfigCommand, TFMini::kCommandLength));
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+               .Using(TFMini::kConfigCommand));
     // Verify: that the command to exit config has been used
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t))
-               .Using(TFMini::kExitConfigCommand, TFMini::kCommandLength));
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))
+               .Using(TFMini::kExitConfigCommand));
     // Verify: that we wrote commands exactly 3 different times
-    Verify(ConstOverloadedMethod(mock_uart, Write, void(const void *, size_t)))
+    Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>)))
         .Exactly(3);
   }
 }
