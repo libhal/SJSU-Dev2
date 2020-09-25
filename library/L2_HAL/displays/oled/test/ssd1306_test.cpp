@@ -1,5 +1,6 @@
 // Tests for the St7066u Parallel LCD Driver class.
 #include "L2_HAL/displays/oled/ssd1306.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
@@ -13,49 +14,101 @@ TEST_CASE("SSD1306 Test")
   Mock<sjsu::Gpio> mock_dc;
   Mock<sjsu::Gpio> mock_reset;
 
-  Fake(Method(mock_cs, SetDirection), Method(mock_cs, Set));
-  Fake(Method(mock_dc, SetDirection), Method(mock_dc, Set));
-  Fake(Method(mock_reset, SetDirection), Method(mock_reset, Set));
-  Fake(Method(mock_spi, Initialize), Method(mock_spi, SetDataSize),
-       Method(mock_spi, SetClock));
+  Fake(Method(mock_cs, ModuleInitialize),
+       Method(mock_cs, ModuleEnable),
+       Method(mock_cs, SetDirection),
+       Method(mock_cs, Set));
+  Fake(Method(mock_dc, ModuleInitialize),
+       Method(mock_dc, ModuleEnable),
+       Method(mock_dc, SetDirection),
+       Method(mock_dc, Set));
+  Fake(Method(mock_reset, ModuleInitialize),
+       Method(mock_reset, ModuleEnable),
+       Method(mock_reset, SetDirection),
+       Method(mock_reset, Set));
+  Fake(Method(mock_spi, ModuleInitialize),
+       Method(mock_spi, ModuleEnable),
+       Method(mock_spi, ConfigureFrequency),
+       Method(mock_spi, ConfigureClockMode),
+       Method(mock_spi, ConfigureFrameSize));
 
-  Ssd1306 test_subject(mock_spi.get(), mock_cs.get(), mock_dc.get(),
-                       mock_reset.get());
+  Ssd1306 test_subject(
+      mock_spi.get(), mock_cs.get(), mock_dc.get(), mock_reset.get());
 
-  SECTION("Initialize")
+  SECTION("Initialize()")
+  {
+    SECTION("SPI Requires Configuration()")
+    {
+      // Setup
+      mock_spi.get().SetStateToReset();
+
+      // Exercise
+      test_subject.ModuleInitialize();
+
+      Verify(Method(mock_spi, ModuleInitialize),
+             Method(mock_spi, ConfigureClockMode),
+             Method(mock_spi, ConfigureFrameSize)
+                 .Using(Spi::FrameSize::kEightBits),
+             Method(mock_spi, ConfigureFrequency)
+                 .Using(Ssd1306::kDefaultClockRate),
+             Method(mock_spi, ModuleEnable));
+    }
+
+    SECTION("SPI Does NOT Require Configuration()")
+    {
+      // Setup
+      mock_spi.get().SetStateToEnabled();
+
+      // Exercise
+      test_subject.ModuleInitialize();
+    }
+
+    // Verify
+    // Phase 1: Initialize()
+    Fake(Method(mock_cs, ModuleInitialize),
+         Method(mock_dc, ModuleInitialize),
+         Method(mock_reset, ModuleInitialize));
+
+    // Phase 3: Enable()
+    Fake(Method(mock_cs, ModuleEnable),
+         Method(mock_dc, ModuleEnable),
+         Method(mock_reset, ModuleEnable));
+
+    // Phase 4: Usage
+    Fake(Method(mock_cs, SetDirection).Using(Gpio::Direction::kOutput),
+         Method(mock_dc, SetDirection).Using(Gpio::Direction::kOutput),
+         Method(mock_reset, SetDirection).Using(Gpio::Direction::kOutput));
+
+    Fake(Method(mock_cs, Set).Using(Gpio::State::kHigh),
+         Method(mock_dc, Set).Using(Gpio::State::kHigh));
+
+    Fake(Method(mock_reset, Set).Using(Gpio::State::kLow),
+         Method(mock_reset, Set).Using(Gpio::State::kHigh));
+  }
+
+  SECTION("Enable()")
   {
     // Setup
-    const std::vector<uint16_t> kInitializationSequence = {
+    static constexpr std::array<uint8_t, 31> kInitializationSequence = {
       0xAE, 0xD5, 0x80, 0xA8, 0x3F, 0xD3, 0x00, 0x40, 0x8D, 0x14, 0xA1,
       0xC8, 0xDA, 0x12, 0x81, 0xCF, 0xD9, 0xF1, 0xDB, 0x40, 0x20, 0x00,
       0x21, 0x00, 0x7F, 0x22, 0x00, 0x07, 0xA4, 0xA6, 0xAF,
     };
 
-    std::vector<uint16_t> buffer;
+    std::array<uint8_t, 31> buffer;
+    int location = 0;
 
-    When(ConstOverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
-        .AlwaysDo([&buffer, &mock_cs](uint16_t data) -> uint16_t {
-          buffer.push_back(data);
-          Verify(Method(mock_cs, Set).Using(Gpio::State::kLow));
-          return 0;
-        });
+    When(OverloadedMethod(mock_spi, Transfer, void(std::span<uint8_t>)))
+        .AlwaysDo(
+            [&buffer, &mock_cs, &location](std::span<uint8_t> data) -> void {
+              std::copy(data.begin(), data.end(), &buffer[location]);
+              location += data.size();
+            });
 
     // Exercise
-    test_subject.Initialize();
+    test_subject.ModuleEnable();
 
     // Verify
-    Verify(Method(mock_spi, Initialize),
-           Method(mock_spi, SetDataSize).Using(Spi::DataSize::kEight),
-           Method(mock_spi, SetClock).Using(2_MHz, _, _));
-
-    Verify(Method(mock_cs, SetDirection).Using(Gpio::Direction::kOutput),
-           Method(mock_dc, SetDirection).Using(Gpio::Direction::kOutput),
-           Method(mock_reset, SetDirection).Using(Gpio::Direction::kOutput));
-
-    Verify(Method(mock_cs, Set).Using(Gpio::State::kHigh),
-           Method(mock_dc, Set).Using(Gpio::State::kHigh),
-           Method(mock_reset, Set).Using(Gpio::State::kLow));
-
     REQUIRE(kInitializationSequence == buffer);
   }
 
@@ -89,7 +142,7 @@ TEST_CASE("SSD1306 Test")
     const std::vector<uint16_t> kExpected = { 0xA7 };
     std::vector<uint16_t> buffer;
 
-    When(ConstOverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
+    When(OverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
         .AlwaysDo([&buffer, &mock_cs](uint16_t data) -> uint16_t {
           buffer.push_back(data);
           Verify(Method(mock_cs, Set).Using(Gpio::State::kLow));
@@ -109,7 +162,7 @@ TEST_CASE("SSD1306 Test")
     const std::vector<uint16_t> kExpected = { 0xA6 };
     std::vector<uint16_t> buffer;
 
-    When(ConstOverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
+    When(OverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
         .AlwaysDo([&buffer, &mock_cs](uint16_t data) -> uint16_t {
           buffer.push_back(data);
           Verify(Method(mock_cs, Set).Using(Gpio::State::kLow));
@@ -217,7 +270,7 @@ TEST_CASE("SSD1306 Test")
 
     std::vector<uint16_t> buffer;
 
-    When(ConstOverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
+    When(OverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
         .AlwaysDo([&buffer, &mock_cs](uint16_t data) -> uint16_t {
           buffer.push_back(data);
           Verify(Method(mock_cs, Set).Using(Gpio::State::kLow));
@@ -332,7 +385,7 @@ TEST_CASE("SSD1306 Test")
 
     std::vector<uint16_t> buffer;
 
-    When(ConstOverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
+    When(OverloadedMethod(mock_spi, Transfer, uint16_t(uint16_t)))
         .AlwaysDo([&buffer, &mock_cs](uint16_t data) -> uint16_t {
           buffer.push_back(data);
           Verify(Method(mock_cs, Set).Using(Gpio::State::kLow));

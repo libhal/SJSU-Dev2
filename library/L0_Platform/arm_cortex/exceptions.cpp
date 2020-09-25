@@ -4,15 +4,15 @@
 #include <cstdint>
 #include <cstdio>
 
+#include "L0_Platform/arm_cortex/m4/core_cm4.h"
 #include "L0_Platform/ram.hpp"
 #include "L0_Platform/startup.hpp"
-#include "L0_Platform/arm_cortex/m4/core_cm4.h"
-#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/cortex/fpu.hpp"
-#include "utility/log.hpp"
-#include "utility/time.hpp"
-#include "utility/macros.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "third_party/semihost/trace.h"
+#include "utility/log.hpp"
+#include "utility/macros.hpp"
+#include "utility/time.hpp"
 
 extern "C"
 {
@@ -39,11 +39,17 @@ extern "C"
     printf("r0: 0x%08" PRIX32 ", r1: 0x%08" PRIX32
            ", "
            "r2: 0x%08" PRIX32 ", r3: 0x%08" PRIX32 "\n",
-           r0, r1, r2, r3);
+           r0,
+           r1,
+           r2,
+           r3);
     printf("r12: 0x%08" PRIX32 ", lr: 0x%08" PRIX32
            ", "
            "pc: 0x%08" PRIX32 ", psr: 0x%08" PRIX32 "\n",
-           r12, lr, pc, psr);
+           r12,
+           lr,
+           pc,
+           psr);
     sjsu::debug::PrintBacktrace(true, reinterpret_cast<void *>(pc));
     // When the following line is hit, the variables contain the register values
     // Use a JTAG debugger to inspect these variables
@@ -67,7 +73,7 @@ extern "C"
   }
 
   // Required to get FreeRTOS support in OpenOCD + GDB
-  const volatile int uxTopUsedPriority = configMAX_PRIORITIES - 1;
+  const volatile int uxTopUsedPriority = configMAX_PRIORITIES - 1;  // NOLINT
 
   // Reset entry point for your code.
   // Sets up a simple runtime environment and initializes the C/C++ library.

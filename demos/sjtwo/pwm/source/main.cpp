@@ -7,48 +7,72 @@ int main()
 {
   sjsu::LogInfo("Pwm Application Starting...");
 
-  sjsu::LogInfo("Creating Gpio powered LED...P4.28");
-  sjsu::LogInfo("This Gpio powered LED represents the maximum brightness");
-  sjsu::LogInfo("and is used as reference against the Pwm powered LED");
-  sjsu::LogInfo("during its sweep.");
-  sjsu::LogInfo("Connect a 470 ohm resistor between the power line and");
-  sjsu::LogInfo("the anode of the LED. The cathode is then connected to");
-  sjsu::LogInfo("P4.28 and P2.0(Pwm1).");
-  sjsu::lpc40xx::Gpio p4_28(4, 28);
-  p4_28.SetAsOutput();
-  p4_28.SetLow();
+  sjsu::LogInfo("Creating PWM signal on P2.0 (Pwm0).");
+  sjsu::lpc40xx::Pwm pwm(sjsu::lpc40xx::Pwm::Channel::kPwm0);
+  pwm.Initialize();
 
-  sjsu::LogInfo("Creating Pwm powered LED...P2.0 (Pwm1)");
-  sjsu::lpc40xx::Pwm p2_0(sjsu::lpc40xx::Pwm::Channel::kPwm0);
-  // Initialize Pwm at 1 kHz
-  p2_0.Initialize(1_kHz);
-  float duty = 0;
+  // Initialize Pwm at 10 kHz
+  pwm.ConfigureFrequency(10_kHz);
+
+  pwm.Enable();
+
+  sjsu::LogInfo(
+      "Hookup an oscilloscope to see the signal change frequency and duty "
+      "cycle.");
+  sjsu::LogInfo(
+      "Connect to LED and resistor and see the brightness change with duty "
+      "cycle.");
 
   while (true)
   {
-    p2_0.SetFrequency(1_kHz);
-    for (int i = 0; i <= 255; i++)
+    // NOTE: You must disable PWM before configuring its frequency.
+    pwm.Enable(false);
+    pwm.ConfigureFrequency(10_kHz);
+    pwm.Enable(true);
+
+    sjsu::LogInfo("Iterate from 0%% to 100%% duty cycle");
+    for (float i = 0; i <= 100; i++)
     {
-      duty = static_cast<float>(i) / 255.0f;
-      p2_0.SetDutyCycle(duty);
-      sjsu::Delay(10ms);
+      pwm.SetDutyCycle(i / 100.0f);
+      sjsu::Delay(20ms);
     }
 
-    p2_0.SetDutyCycle(0.5);
-    units::frequency::hertz_t frequency = 1_Hz;
-    while (frequency < 20'000_Hz)
+    sjsu::LogInfo("Iterate from 100%% to 50%% duty cycle");
+    for (float i = 100; i > 50; i--)
     {
-      frequency = frequency * 2;
-      p2_0.SetFrequency(frequency);
+      pwm.SetDutyCycle(i / 100.0f);
+      sjsu::Delay(20ms);
+    }
+
+    sjsu::LogInfo("Sweep frequency from 10 kHz to 20 kHz.");
+    units::frequency::hertz_t frequency = 10_kHz;
+
+    while (frequency < 200_kHz)
+    {
+      frequency *= 2;
+
+      pwm.Enable(false);
+      pwm.ConfigureFrequency(frequency);
+      pwm.Enable(true);
+
+      sjsu::LogInfo("Freq = %f", frequency.to<double>());
       sjsu::Delay(500ms);
     }
 
-    while (frequency > 5_Hz)
+    sjsu::LogInfo("Sweep frequency from 200 kHz back to 10 kHz.");
+    while (frequency > 10_kHz)
     {
-      frequency = frequency / 2;
-      p2_0.SetFrequency(frequency);
+      frequency /= 2;
+
+      pwm.Enable(false);
+      pwm.ConfigureFrequency(frequency);
+      pwm.Enable(true);
+
+      sjsu::LogInfo("Freq = %f", frequency.to<double>());
+
       sjsu::Delay(500ms);
     }
   }
+
   return 0;
 }

@@ -1,7 +1,8 @@
 // this is the ssp.hpp test file
 
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/spi.hpp"
+
+#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::lpc40xx
@@ -30,9 +31,9 @@ TEST_CASE("Testing lpc40xx SPI")
   Mock<sjsu::Pin> mock_miso;
   Mock<sjsu::Pin> mock_sck;
 
-  Fake(Method(mock_mosi, SetPinFunction));
-  Fake(Method(mock_miso, SetPinFunction));
-  Fake(Method(mock_sck, SetPinFunction));
+  Fake(Method(mock_mosi, ConfigureFunction));
+  Fake(Method(mock_miso, ConfigureFunction));
+  Fake(Method(mock_sck, ConfigureFunction));
 
   // Set up SSP Bus configuration object
   const Spi::Bus_t kMockSpi = {
@@ -45,55 +46,90 @@ TEST_CASE("Testing lpc40xx SPI")
   };
 
   Spi test_spi(kMockSpi);
-  test_spi.SetSpiDefault();
-  test_spi.Initialize();
 
   SECTION("Initialize")
   {
+    // Exercise
+    test_spi.ModuleInitialize();
+
+    // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
                .Matching([](sjsu::SystemController::ResourceID id) {
                  return sjsu::lpc40xx::SystemController::Peripherals::kSsp0
                             .device_id == id.device_id;
                }));
+  }
 
-    Verify(Method(mock_mosi, SetPinFunction).Using(kMockSpi.pin_function))
+  SECTION("Enable(true)")
+  {
+    // Setup
+    constexpr auto kSspEnable = bit::MaskFromRange(1);
+
+    // Exercise
+    test_spi.ModuleEnable();
+
+    // Verify
+    Verify(Method(mock_mosi, ConfigureFunction).Using(kMockSpi.pin_function))
         .Once();
-    Verify(Method(mock_miso, SetPinFunction).Using(kMockSpi.pin_function))
+    Verify(Method(mock_miso, ConfigureFunction).Using(kMockSpi.pin_function))
         .Once();
-    Verify(Method(mock_sck, SetPinFunction).Using(kMockSpi.pin_function))
+    Verify(Method(mock_sck, ConfigureFunction).Using(kMockSpi.pin_function))
         .Once();
 
-    constexpr uint8_t kSspEnable = 0b10;
-    CHECK((local_ssp.CR1 & kSspEnable) == kSspEnable);
+    CHECK(bit::Read(local_ssp.CR1, kSspEnable));
+  }
+
+  SECTION("Enable(false)")
+  {
+    // Setup
+    constexpr auto kSspEnable = bit::MaskFromRange(1);
+
+    // Exercise
+    test_spi.ModuleEnable(false);
+
+    // Verify
+    CHECK(!bit::Read(local_ssp.CR1, kSspEnable));
   }
 
   SECTION("Verify Mode and Frame")
   {
+    // Setup
     constexpr uint8_t kSlaveBit = 2;
     constexpr uint8_t kDataBit  = 0;
+
+    // Exercise
+    test_spi.ConfigureFrameSize();
 
     // Check that slave mode bit is 0, meaning we are in master mode.
     CHECK(bit::Read(local_ssp.CR1, kSlaveBit) == false);
     CHECK((local_ssp.CR0 & (0xF << kDataBit)) ==
-          Value(Spi::DataSize::kEight) + 3);
+          Value(Spi::FrameSize::kEightBits) + 3);
   }
 
   SECTION("Verify Clock Polarity and Prescaler")
   {
+    // Setup
     constexpr uint8_t kPolarityMask = 0 << 6;
-    constexpr uint16_t kPrescaler =
-        (kDummySystemControllerClockFrequency / 1_MHz).to<uint16_t>();
 
+    // Exercise
+    test_spi.ConfigureClockMode();
+
+    // Verify
     CHECK((local_ssp.CR0 & kPolarityMask) == kPolarityMask);
-    CHECK(local_ssp.CPSR == (kPrescaler & 0xFF));
   }
 
-  SECTION("Check Transfer Register")
+  SECTION("ConfigureFrequency()")
   {
-    constexpr uint8_t kIdle    = 0;
-    constexpr uint8_t kIdleBit = 4;
+    // Setup
+    constexpr auto kFrequency = 1_MHz;
+    constexpr uint16_t kPrescaler =
+        (kDummySystemControllerClockFrequency / kFrequency).to<uint16_t>();
 
-    CHECK((local_ssp.SR & (0x1 << kIdleBit)) == kIdle);
+    // Exercise
+    test_spi.ConfigureFrequency(kFrequency);
+
+    // Verify
+    CHECK(local_ssp.CPSR == (kPrescaler & 0xFF));
   }
 
   sjsu::lpc40xx::SystemController::system_controller = LPC_SC;

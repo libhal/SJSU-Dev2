@@ -44,7 +44,7 @@ class Pin final : public sjsu::Pin
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
   /// @note GPIO hardare is enabled and ready by default on reset.
-  void Initialize() const override
+  void ModuleInitialize() override
   {
     // NOTE: port can only be 1-10 or 'J'
     if (((port_ > 10) || (port_ == 0)) && (port_ != 'J'))
@@ -58,6 +58,8 @@ class Pin final : public sjsu::Pin
     }
   }
 
+  void ModuleEnable(bool = true) override {}
+
   /// Configures the pin's function mode based on the specified 3-bit function
   /// code. Where the most significant bit determines the pin direction.
   ///
@@ -65,10 +67,8 @@ class Pin final : public sjsu::Pin
   ///      http://www.ti.com/lit/ds/symlink/msp432p401r.pdf#page=138
   ///
   /// @param function The 3-bit function code.
-  void SetPinFunction(uint8_t function) const override
+  void ConfigureFunction(uint8_t function) override
   {
-    Initialize();
-
     if (function > 0b111)
     {
       throw Exception(
@@ -98,7 +98,7 @@ class Pin final : public sjsu::Pin
   ///      https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=678
   ///
   /// @param resistor The resistor to set.
-  void SetPull(Resistor resistor) const override
+  void ConfigurePullResistor(Resistor resistor) override
   {
     volatile uint8_t * resistor_enable = RegisterAddress(&Port()->REN);
     // The output register (OUT) is used to select the pull down or pull up
@@ -141,15 +141,15 @@ class Pin final : public sjsu::Pin
     }
   }
 
-  void SetAsOpenDrain(bool) const override
+  void ConfigureAsOpenDrain(bool) override
   {
     throw Exception(std::errc::operation_not_supported, "");
   }
 
   /// @note This function does nothing as setting the analog mode is not
   ///       required to enable the use of the ADC.
-  [[deprecated("Unsupported operation")]] void SetAsAnalogMode(
-      bool) const override
+  [[deprecated("Unsupported operation")]] void ConfigureAsAnalogMode(
+      bool) override
   {
     throw Exception(std::errc::operation_not_supported, "");
   }

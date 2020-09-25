@@ -1,4 +1,5 @@
 #include "L1_Peripheral/lpc40xx/dac.hpp"
+
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/bit.hpp"
@@ -22,8 +23,9 @@ TEST_CASE("Testing lpc40xx Dac")
   Dac::dac_register = &local_dac_port;
 
   Mock<sjsu::Pin> mock_dac_pin;
-  Fake(Method(mock_dac_pin, SetPinFunction),
-       Method(mock_dac_pin, SetAsAnalogMode), Method(mock_dac_pin, SetPull));
+  Fake(Method(mock_dac_pin, ConfigureFunction),
+       Method(mock_dac_pin, ConfigureAsAnalogMode),
+       Method(mock_dac_pin, ConfigurePullResistor));
 
   Dac test_subject(mock_dac_pin.get());
 
@@ -33,12 +35,13 @@ TEST_CASE("Testing lpc40xx Dac")
     constexpr uint8_t kDacMode = 0b010;
 
     // Mocked out Initialize for the Verify Methods
-    test_subject.Initialize();
+    test_subject.ModuleEnable();
 
     // Check Pin Mode DAC_OUT
-    Verify(Method(mock_dac_pin, SetPinFunction).Using(kDacMode),
-           Method(mock_dac_pin, SetAsAnalogMode).Using(true),
-           Method(mock_dac_pin, SetPull).Using(sjsu::Pin::Resistor::kNone));
+    Verify(Method(mock_dac_pin, ConfigureAsAnalogMode).Using(true),
+           Method(mock_dac_pin, ConfigurePullResistor)
+               .Using(sjsu::Pin::Resistor::kNone),
+           Method(mock_dac_pin, ConfigureFunction).Using(kDacMode));
 
     CHECK(0 == bit::Read(local_dac_port.CR, Dac::Control::kBias));
   }
@@ -62,9 +65,10 @@ TEST_CASE("Testing lpc40xx Dac")
   {
     // Setup
     // Source: "UM10562 LPC408x/407x User manual" table 686 page 814
-    constexpr float kVoltageInput0 = 3.0f;
-    constexpr float kDacVoltage0   = (kVoltageInput0 * 1024.0f) / 3.3f;
-    constexpr int kConversion0     = static_cast<int>(kDacVoltage0);
+    constexpr auto kVoltageInput0     = 3_V;
+    constexpr auto kVoltageInputFloat = kVoltageInput0.to<float>();
+    constexpr float kDacVoltage0      = (kVoltageInputFloat * 1024.0f) / 3.3f;
+    constexpr int kConversion0        = static_cast<int>(kDacVoltage0);
 
     // Exercise
     test_subject.SetVoltage(kVoltageInput0);

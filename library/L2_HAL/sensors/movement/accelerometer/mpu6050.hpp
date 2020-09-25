@@ -31,44 +31,44 @@ class Mpu6050 : public Accelerometer
     kControlReg1 = 0x6B,
   };
 
-  ///
   /// MPU6050 Constructor
   ///
   /// @param i2c - i2c peripheral used to commnicate with device.
-  /// @param full_scale - the specification maximum detectable acceleration.
-  ///        Allowed values are 2g, 4g, 8g, and 16g, where g reprsents the
-  ///        gravitational constent 9.8 m/s^2 (the user defined literals for
-  ///        this are 2_SG, 4_SG, 8_SG, and 16_SG). Setting this to a larger max
-  ///        acceleration results in being able to detect accelerations but
-  ///        loses resolution because -16g to 16g must span 12 bits of
-  ///        information. Where as 2g has a lower maximum detectable
-  ///        acceleration, but 12 bits of information.
   /// @param address - Mpu6050 device address.
-  explicit constexpr Mpu6050(
-      const I2c & i2c,
-      units::acceleration::standard_gravity_t full_scale = 2_SG,
-      uint8_t address                                    = 0x68)
-      : i2c_(i2c), kFullScale(full_scale), kAccelerometerAddress(address)
+  explicit constexpr Mpu6050(I2c & i2c, uint8_t address = 0x68)
+      : i2c_(i2c), kAddress(address)
   {
   }
 
-  void Initialize() override
+  void ModuleInitialize() override
   {
-    return i2c_.Initialize();
+    i2c_.Initialize();
+
+    if (i2c_.RequiresConfiguration())
+    {
+      i2c_.ConfigureClockRate();
+    }
+
+    i2c_.Enable();
   }
 
   /// Will automatically set the device to 2g for full-scale. Use
   /// `SetFullScaleRange()` to change it.
-  void Enable() override
+  void ModuleEnable(bool enable = true) override
   {
-    // Check that the device is valid before proceeding.
-    IsValidDevice();
+    if (enable)
+    {
+      // Check that the device is valid before proceeding.
+      IsValidDevice();
 
-    // Wake up the device so we can configure the device.
-    ActiveMode(true);
-
-    // Set device full-scale to the value supplied by the constructor.
-    SetFullScaleRange();
+      // Wake up the device so we can configure the device.
+      ActiveMode(true);
+    }
+    else
+    {
+      // Put device into standby so we can configure the device.
+      ActiveMode(false);
+    }
   }
 
   Acceleration_t Read() override
@@ -80,8 +80,9 @@ class Mpu6050 : public Accelerometer
 
     uint8_t xyz_data[kBytesPerAxis * kNumberOfAxis];
 
-    i2c_.WriteThenRead(kAccelerometerAddress,
-                       { Value(RegisterMap::kXYZStartAddress) }, xyz_data,
+    i2c_.WriteThenRead(kAddress,
+                       { Value(RegisterMap::kXYZStartAddress) },
+                       xyz_data,
                        sizeof(xyz_data));
 
     // First X-axis Byte (MSB first)
@@ -109,52 +110,42 @@ class Mpu6050 : public Accelerometer
     float y_ratio = sjsu::Map(y, kMin, kMax, -1.0f, 1.0f);
     float z_ratio = sjsu::Map(z, kMin, kMax, -1.0f, 1.0f);
 
-    acceleration.x = kFullScale * x_ratio;
-    acceleration.y = kFullScale * y_ratio;
-    acceleration.z = kFullScale * z_ratio;
+    acceleration.x = full_scale_ * x_ratio;
+    acceleration.y = full_scale_ * y_ratio;
+    acceleration.z = full_scale_ * z_ratio;
 
     return acceleration;
   }
 
-  void SetFullScaleRange()
+  void ConfigureFullScale(
+      units::acceleration::standard_gravity_t gravity) override
   {
-    uint32_t gravity_scale = kFullScale.to<uint32_t>();
-
-    if (gravity_scale != 2 && gravity_scale != 4 && gravity_scale != 8 &&
-        gravity_scale != 16)
-    {
-      throw Exception(std::errc::invalid_argument,
-                        "Invalid gravity scale. Must be 2g, 4g, 8g or 16g.");
-    }
+    uint32_t gravity_scale = gravity.to<uint32_t>();
     uint8_t gravity_code;
-    if (gravity_scale == 2)
+
+    switch (gravity_scale)
     {
-      gravity_code = 0x00;
-    }
-    else if (gravity_scale == 4)
-    {
-      gravity_code = 0x01;
-    }
-    else if (gravity_scale == 8)
-    {
-      gravity_code = 0x02;
-    }
-    else if (gravity_scale == 16)
-    {
-      gravity_code = 0x03;
+      case 2: gravity_code = 0x00; break;
+      case 4: gravity_code = 0x01; break;
+      case 8: gravity_code = 0x02; break;
+      case 16: gravity_code = 0x03; break;
+      default:
+        throw Exception(std::errc::invalid_argument,
+                        "Invalid gravity scale. Must be 2g, 4g, 8g or 16g.");
     }
 
     // Write in the full scale range; but leave the self test and high pass
     // filter config untouched
     constexpr auto kScaleMask = bit::MaskFromRange(3, 4);
     uint8_t config;
-    i2c_.WriteThenRead(kAccelerometerAddress,
-                       { Value(RegisterMap::kDataConfig) }, &config, 1);
+    i2c_.WriteThenRead(
+        kAddress, { Value(RegisterMap::kDataConfig) }, &config, 1);
 
     config = bit::Insert(config, gravity_code, kScaleMask);
 
-    i2c_.Write(kAccelerometerAddress,
-               { Value(RegisterMap::kDataConfig), config });
+    i2c_.Write(kAddress, { Value(RegisterMap::kDataConfig), config });
+
+    full_scale_ = gravity;
   }
 
   void ActiveMode(bool is_active = true)
@@ -162,16 +153,15 @@ class Mpu6050 : public Accelerometer
     constexpr auto kSleepMask = bit::MaskFromRange(6);
 
     uint8_t control;
-    i2c_.WriteThenRead(kAccelerometerAddress,
-                       { Value(RegisterMap::kDataConfig) }, &control, 1);
+    i2c_.WriteThenRead(
+        kAddress, { Value(RegisterMap::kDataConfig) }, &control, 1);
 
     // !is_active is required as the bit must be set to 0 in order to prevent it
     // from sleeping.
     control = bit::Insert(control, !is_active, kSleepMask);
 
     // Write enable sequence
-    i2c_.Write(kAccelerometerAddress,
-               { Value(RegisterMap::kControlReg1), control });
+    i2c_.Write(kAddress, { Value(RegisterMap::kControlReg1), control });
   }
 
   void IsValidDevice()
@@ -182,8 +172,10 @@ class Mpu6050 : public Accelerometer
     uint8_t device_id = 0;
 
     // Read out the identity register
-    i2c_.WriteThenRead(kAccelerometerAddress, { Value(RegisterMap::kWhoAmI) },
-                       &device_id, sizeof(device_id));
+    i2c_.WriteThenRead(kAddress,
+                       { Value(RegisterMap::kWhoAmI) },
+                       &device_id,
+                       sizeof(device_id));
 
     if (device_id != kExpectedDeviceID)
     {
@@ -193,8 +185,8 @@ class Mpu6050 : public Accelerometer
   }
 
  private:
-  const I2c & i2c_;
-  const units::acceleration::standard_gravity_t kFullScale;
-  const uint8_t kAccelerometerAddress;
+  I2c & i2c_;
+  const uint8_t kAddress;
+  units::acceleration::standard_gravity_t full_scale_ = 2_SG;
 };
 }  // namespace sjsu

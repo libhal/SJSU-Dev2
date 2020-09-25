@@ -17,21 +17,25 @@ class Temt6000x01 final : public LightSensor
   ///                             in the circuit.
   explicit constexpr Temt6000x01(sjsu::Adc & adc,
                                  units::impedance::ohm_t pull_down_resistance)
-      : adc_(adc),
-        kPullDownResistance(pull_down_resistance)
+      : adc_(adc), kPullDownResistance(pull_down_resistance)
   {
   }
 
   /// Initializes the ADC driver.
   ///
   /// @returns The initialization status.
-  void Initialize() const override
+  void ModuleInitialize() override
   {
-    return adc_.Initialize();
+    adc_.Initialize();
+  }
+
+  void ModuleEnable(bool enable = true) override
+  {
+    adc_.Enable(enable);
   }
 
   /// @returns The illuminance in units of lux ranging from 1 - 1'000.
-  units::illuminance::lux_t GetIlluminance() const override
+  units::illuminance::lux_t GetIlluminance() override
   {
     // current = voltage / resistance
     const units::current::microampere_t kCurrent =
@@ -62,14 +66,14 @@ class Temt6000x01 final : public LightSensor
 
   /// @returns The maximum illuminance that can be handled by the sensor.  The
   ///          device has an illumination range of 1 - 1000 lux.
-  units::illuminance::lux_t GetMaxIlluminance() const override
+  units::illuminance::lux_t GetMaxIlluminance() override
   {
     return 1'000_lx;
   }
 
  private:
   /// The ADC peripheral used to capture the input illuminance data.
-  const sjsu::Adc & adc_;
+  sjsu::Adc & adc_;
   /// Resistance of the pull down resistor.
   const units::impedance::ohm_t kPullDownResistance;
 };

@@ -26,11 +26,7 @@ const uint16_t kSineLookup[256] = {
   488
 };
 
-namespace sjsu
-{
-namespace lpc40xx
-{
-void SineDac(const Dac & dac, std::chrono::milliseconds delay)
+void Sine(sjsu::Dac & dac, std::chrono::nanoseconds delay)
 {
   for (uint8_t i = 0; i < 255; i++)
   {
@@ -38,7 +34,8 @@ void SineDac(const Dac & dac, std::chrono::milliseconds delay)
     sjsu::Delay(delay);
   }
 }
-void SawtoothDac(const Dac & dac, std::chrono::milliseconds delay)
+
+void Sawtooth(sjsu::Dac & dac, std::chrono::nanoseconds delay)
 {
   int sawtooth = 0;
   for (uint8_t i = 0; i < 255; i++)
@@ -49,7 +46,8 @@ void SawtoothDac(const Dac & dac, std::chrono::milliseconds delay)
     sjsu::Delay(delay);
   }
 }
-void TriangleDac(const Dac & dac, std::chrono::milliseconds delay)
+
+void Triangle(sjsu::Dac & dac, std::chrono::nanoseconds delay)
 {
   int triangle = 0;
   for (uint8_t i = 0; i < 127; i++)
@@ -59,6 +57,7 @@ void TriangleDac(const Dac & dac, std::chrono::milliseconds delay)
     triangle = triangle + 8;
     sjsu::Delay(delay);
   }
+
   for (uint8_t i = 127; i < 255; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(triangle);
@@ -67,9 +66,11 @@ void TriangleDac(const Dac & dac, std::chrono::milliseconds delay)
     sjsu::Delay(delay);
   }
 }
-void SerratedDac(const Dac & dac, std::chrono::milliseconds delay)
+
+void Serrated(sjsu::Dac & dac, std::chrono::nanoseconds delay)
 {
   int serrated = 0;
+
   for (uint8_t i = 0; i < 127; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(serrated);
@@ -77,7 +78,9 @@ void SerratedDac(const Dac & dac, std::chrono::milliseconds delay)
     serrated = serrated + 8;
     sjsu::Delay(delay);
   }
+
   serrated = 0;
+
   for (uint8_t i = 127; i < 253; i++)
   {
     uint16_t conversion = static_cast<uint16_t>(serrated);
@@ -87,30 +90,47 @@ void SerratedDac(const Dac & dac, std::chrono::milliseconds delay)
   }
 }
 
-void StartDemo(const Dac & dac, std::chrono::milliseconds input_cycles)
+void StartDemo(sjsu::Dac & dac, std::chrono::nanoseconds input_cycles)
 {
-  for (uint32_t i = 0; i < 4; i++)
+  static constexpr int kCycleCount = 1000;
+
+  sjsu::LogInfo("Serrated...");
+  for (int i = 0; i < kCycleCount; i++)
   {
-    for (int j = 0; j < 30; j++)
-    {
-      SerratedDac(dac, input_cycles);
-      TriangleDac(dac, input_cycles);
-      SawtoothDac(dac, input_cycles);
-      SineDac(dac, input_cycles);
-    }
+    Serrated(dac, input_cycles);
+  }
+
+  sjsu::LogInfo("Triangle...");
+  for (int i = 0; i < kCycleCount; i++)
+  {
+    Triangle(dac, input_cycles);
+  }
+
+  sjsu::LogInfo("Sawtooth...");
+  for (int i = 0; i < kCycleCount; i++)
+  {
+    Sawtooth(dac, input_cycles);
+  }
+
+  sjsu::LogInfo("Sine...");
+  for (int i = 0; i < kCycleCount; i++)
+  {
+    Sine(dac, input_cycles);
   }
 }
-}  // namespace lpc40xx
-}  // namespace sjsu
 
 int main()
 {
   sjsu::lpc40xx::Dac dac;
+
   dac.Initialize();
-  sjsu::LogInfo("Hook up pin p0.26 to an oscilloscope to test if it works!\n");
-  sjsu::LogInfo("Starting Output of waves...\n");
-  while (true)
-  {
-    StartDemo(dac, 1ms);
-  }
+  dac.Enable();
+
+  sjsu::LogInfo("Hook up pin p0.26 to an oscilloscope to test if it works!");
+  sjsu::LogInfo("Starting Output of waves...");
+
+  StartDemo(dac, 10us);
+
+  sjsu::LogInfo("Demo exiting. To restart, reset device. ...");
+  return 0;
 }

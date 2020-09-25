@@ -7,7 +7,10 @@ int main()
   sjsu::LogInfo("Starting Uart Application...");
 
   sjsu::stm32f10x::Uart<128> uart1(sjsu::stm32f10x::UartBase::Port::kUart1);
-  uart1.Initialize(38400);
+  uart1.Initialize();
+  uart1.ConfigureFormat();
+  uart1.ConfigureBaudRate(38400);
+  uart1.Enable();
 
   sjsu::LogInfo(
       "Connect the TX (PA9) RX (PA10) and pins to a USB to serial converter "

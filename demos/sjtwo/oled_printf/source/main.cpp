@@ -1,5 +1,6 @@
 #include <cstdarg>
 #include <cstdint>
+#include <string_view>
 
 #include "L2_HAL/boards/sjtwo.hpp"
 #include "L3_Application/graphical_terminal.hpp"
@@ -17,6 +18,7 @@ int main()
   sjsu::GraphicalTerminal oled_terminal(&oled_graphics, &cache);
 
   oled_terminal.Initialize();
+  oled_terminal.Enable();
 
   sjsu::LogInfo("Demonstrating printf capabilities...");
   oled_terminal.printf("Float: %.1f\nInteger: %d", 234.5, 15);
@@ -31,7 +33,7 @@ int main()
   sjsu::LogInfo("Clearing screen...");
   oled_terminal.Clear();
   oled_terminal.printf("Printing\nParagraph:\n\n");
-  const char kParagraph[] =
+  std::string_view paragraph =
       "The important thing is not to stop questioning. "
       "Curiosity has its own reason for existing.\n"
       "-Albert Einstein";
@@ -39,13 +41,13 @@ int main()
   sjsu::LogInfo("Printing characters one by one...");
   sjsu::LogInfo(
       "Notice how the terminal will scroll down as more text is added...");
-  for (size_t i = 0; i < sizeof(kParagraph); i++)
+
+  for (const auto & character : paragraph)
   {
-    char buffer[2];
-    buffer[0] = kParagraph[i];
-    buffer[1] = '\0';
-    oled_terminal.printf("%1s", buffer);
+    oled_terminal.printf("%c", character);
+    sjsu::Delay(100ms);
   }
+
   sjsu::LogInfo("Finished printing message!");
   sjsu::Delay(6000ms);
 
@@ -53,15 +55,18 @@ int main()
   oled_terminal.Clear();
   sjsu::LogInfo("Screen Cleared!");
 
-  sjsu::LogInfo("Printing \"Hello World\" to oled display!");
+  sjsu::LogInfo("Printing \"Count #\" to oled display!");
   oled_terminal.printf("Printing\nHelloWorld:\n\n");
-  while (true)
+
+  for (int i = 0; i < 16; i++)
   {
-    for (int i = 0; i < 16; i++)
-    {
-      oled_terminal.printf("Hello World 0x%X\n", i);
-      sjsu::Delay(300ms);
-    }
+    oled_terminal.printf("Count 0x%X\n", i);
+    sjsu::Delay(300ms);
   }
+
+  oled_terminal.Clear();
+  oled_terminal.printf("Reset device to run demo again!");
+
+  sjsu::LogInfo("Reset device to run demo again!");
   return 0;
 }

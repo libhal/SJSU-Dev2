@@ -2,15 +2,15 @@
 #include <iterator>
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L0_Platform/ram.hpp"
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L1_Peripheral/lpc40xx/watchdog.hpp"
 #include "L3_Application/task_scheduler.hpp"
 #include "third_party/units/units.h"
-#include "utility/time.hpp"
-#include "utility/rtos.hpp"
 #include "utility/log.hpp"
-#include "L0_Platform/ram.hpp"
+#include "utility/rtos.hpp"
+#include "utility/time.hpp"
 
 sjsu::lpc40xx::Watchdog watchdog;
 
@@ -38,6 +38,7 @@ void HighCPUTask([[maybe_unused]] void * param)
     if (button3.Read())
     {
       sjsu::LogInfo("High priority task is now hogging the CPU for 2 second.");
+      sjsu::LogInfo("System will restart!\n\n");
       led3.SetLow();
       // Because the LowPriorityFeedTask() does not get a chance to run during
       // the delay the watchdog is starved, thus causing a reset. When the
@@ -54,6 +55,12 @@ int main()
 {
   sjsu::LogInfo("Watchdog Timer Application Starting...");
 
+  button3.Initialize();
+  led3.Initialize();
+
+  button3.Enable();
+  led3.Enable();
+
   button3.SetAsInput();
   led3.SetDirection(sjsu::Gpio::Direction::kOutput);
 
@@ -67,6 +74,7 @@ int main()
 
   xTaskCreate(FeedTask, "FeedTask", 1024, NULL, sjsu::rtos::kLow, NULL);
   xTaskCreate(HighCPUTask, "HighCPUTask", 1024, NULL, sjsu::rtos::kHigh, NULL);
+
   vTaskStartScheduler();
 
   sjsu::Halt();

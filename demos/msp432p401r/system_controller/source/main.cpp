@@ -36,19 +36,19 @@ void ConfigureClockOutPins()
 
   // Configure P4.2 to output ACLK
   sjsu::msp432p401r::Pin aclk_out_pin(4, 2);
-  aclk_out_pin.SetPinFunction(kClockOutFunction);
+  aclk_out_pin.ConfigureFunction(kClockOutFunction);
 
   // Configure P4.3 to output MCLK
   sjsu::msp432p401r::Pin mclk_out_pin(4, 3);
-  mclk_out_pin.SetPinFunction(kClockOutFunction);
+  mclk_out_pin.ConfigureFunction(kClockOutFunction);
 
   // Configure P4.4 to output HSMCLK
   sjsu::msp432p401r::Pin hsmclk_out_pin(4, 4);
-  hsmclk_out_pin.SetPinFunction(kClockOutFunction);
+  hsmclk_out_pin.ConfigureFunction(kClockOutFunction);
 
   // Configure P7.0 to output SMCLK
   sjsu::msp432p401r::Pin smclk_out_pin(7, 0);
-  smclk_out_pin.SetPinFunction(kClockOutFunction);
+  smclk_out_pin.ConfigureFunction(kClockOutFunction);
 }
 }  // namespace
 

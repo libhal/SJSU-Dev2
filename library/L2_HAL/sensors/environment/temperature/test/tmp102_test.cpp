@@ -14,13 +14,18 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
   SECTION("Initialize")
   {
     // Setup
-    Fake(Method(mock_i2c, Initialize));
+    Fake(Method(mock_i2c, ModuleInitialize));
+    Fake(Method(mock_i2c, ConfigureClockRate));
+    Fake(Method(mock_i2c, ModuleEnable));
 
     // Exercise
-    temperature_sensor.Initialize();
+    temperature_sensor.ModuleInitialize();
 
     // Verify
-    Verify(Method(mock_i2c, Initialize)).Once();
+    Verify(Method(mock_i2c, ModuleInitialize),
+           Method(mock_i2c, ConfigureClockRate),
+           Method(mock_i2c, ModuleEnable))
+        .Once();
   }
 
   SECTION("GetTemperature")

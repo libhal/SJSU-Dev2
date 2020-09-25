@@ -1,12 +1,12 @@
 #pragma once
 
-#include "L1_Peripheral/dac.hpp"
-
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/dac.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "utility/log.hpp"
 #include "utility/error_handling.hpp"
+#include "utility/log.hpp"
+#include "utility/math/limits.hpp"
 
 namespace sjsu
 {
@@ -36,13 +36,13 @@ class Dac final : public sjsu::Dac
   };
 
   /// The only DAC output pin on the lpc40xx.
-  static constexpr sjsu::lpc40xx::Pin kDacPin = Pin::CreatePin<0, 26>();
+  static inline sjsu::lpc40xx::Pin dac_pin = sjsu::lpc40xx::Pin(0, 26);
 
   /// Voltage reference for the lpc40xx voltage.
-  static constexpr float kVref = 3.3f;
+  static constexpr units::voltage::microvolt_t kVref = 3.3_V;
 
   /// Maximum numeric value of the ADC value register.
-  static constexpr uint32_t kMaximumValue = (1 << Control::kValue.width) - 1;
+  static constexpr uint32_t kBitWidth = Control::kValue.width;
 
   /// Pointer to the LPC DAC peripheral in memory
   inline static LPC_DAC_TypeDef * dac_register = LPC_DAC;
@@ -52,46 +52,58 @@ class Dac final : public sjsu::Dac
   /// @param pin - defaults to the only dac pin on the board. The only reason to
   ///        use this parameter would be for unit testing. Otherwise, it should
   ///        not be changed from its default.
-  explicit constexpr Dac(const sjsu::Pin & pin = kDacPin) : dac_pin_(pin) {}
+  explicit constexpr Dac(sjsu::Pin & pin = dac_pin) : dac_pin_(pin) {}
 
-  /// Initialize DAC hardware, enable dac Pin, initial Bias level set to 0.
-  void Initialize() const override
+  /// The DAC is always connected to power, Initialize does nothing.
+  void ModuleInitialize() override {}
+  void ModuleEnable(bool enable = true) override
   {
-    static constexpr uint8_t kDacMode = 0b010;
-    dac_pin_.SetPinFunction(kDacMode);
-    // Temporarily convert dac_pin to a lpc40xx::Pin so we can use the
-    // EnableDacs() method featured in the LPC40xx pin object.
-    // The program is ill-formed if the pin's implementation was not a lpc40xx
-    // pin.
-    const sjsu::lpc40xx::Pin & lpc40xx_dac_pin =
-        reinterpret_cast<const sjsu::lpc40xx::Pin &>(dac_pin_);
-    lpc40xx_dac_pin.EnableDac();
-    dac_pin_.SetAsAnalogMode();
-    dac_pin_.SetFloating();
-    // Disable interrupt and DMA
-    dac_register->CTRL = 0;
-    // Set Update Rate to 1MHz
-    SetBias(Bias::kHigh);
+    if (enable)
+    {
+      static constexpr uint8_t kDacMode = 0b010;
+
+      if constexpr (build::IsPlatform(build::Platform::lpc40xx))
+      {
+        // Temporarily convert dac_pin to a lpc40xx::Pin so we can use the
+        // EnableDacs() method featured in the LPC40xx pin object.
+        // The program is ill-formed if the pin's implementation was not a
+        // lpc40xx pin.
+        const sjsu::lpc40xx::Pin & lpc40xx_dac_pin =
+            reinterpret_cast<const sjsu::lpc40xx::Pin &>(dac_pin_);
+        lpc40xx_dac_pin.EnableDac();
+      }
+
+      dac_pin_.ConfigureAsAnalogMode();
+      dac_pin_.ConfigureFloating();
+      dac_pin_.ConfigureFunction(kDacMode);
+
+      // Disable interrupt and DMA
+      dac_register->CTRL = 0;
+
+      // Set Update Rate to 1MHz
+      SetBias(Bias::kHigh);
+    }
+    else
+    {
+      LogDebug("Disabling this peripheral is not supported!");
+    }
   }
 
-  void Write(uint32_t dac_output) const override
+  void Write(uint32_t dac_output) override
   {
     // The DAC output is a 10 bit input and thus it is necessary to
     // ensure dac_output is less than 1024 (largest 10-bit number)
-    if (dac_output >= kMaximumValue)
-    {
-      throw Exception(std::errc::invalid_argument,
-                      "DAC output set above 1023. Must be between 0-1023.");
-    }
-    dac_register->CR =
-        bit::Insert(dac_register->CR, dac_output, Control::kValue);
+    dac_output = std::clamp(dac_output,
+                            BitLimits<kBitWidth, uint32_t>::Min(),
+                            BitLimits<kBitWidth, uint32_t>::Max());
+
+    bit::Register(&dac_register->CR).Insert(dac_output, Control::kValue).Save();
   }
 
-  void SetVoltage(float voltage) const override
+  void SetVoltage(units::voltage::microvolt_t voltage) override
   {
-    float value         = (voltage * kMaximumValue) / kVref;
-    uint32_t conversion = static_cast<uint32_t>(value);
-    return Write(conversion);
+    auto value = (voltage * BitLimits<kBitWidth, uint32_t>::Max()) / kVref;
+    return Write(value.to<uint32_t>());
   }
 
   /// Sets the Bias for the Dac, which determines the settling time, max
@@ -102,13 +114,13 @@ class Dac final : public sjsu::Dac
     dac_register->CR = bit::Insert(dac_register->CR, bias, Control::kBias);
   }
 
-  uint8_t GetActiveBits() const override
+  uint8_t GetActiveBits() override
   {
     return Control::kValue.width;
   }
 
  private:
-  const sjsu::Pin & dac_pin_;
+  sjsu::Pin & dac_pin_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

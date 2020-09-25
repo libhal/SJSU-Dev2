@@ -1,14 +1,10 @@
 #include <iterator>
 
-#include "L2_HAL/io/parallel_bus/parallel_gpio.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
+#include "L2_HAL/io/parallel_bus/parallel_gpio.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
-sjsu::lpc40xx::Gpio led0(2, 3);
-sjsu::lpc40xx::Gpio led1(1, 26);
-sjsu::lpc40xx::Gpio led2(1, 24);
-sjsu::lpc40xx::Gpio led3(1, 18);
 int main()
 {
   sjsu::LogInfo("Staring Parallel Gpio Application");
@@ -16,13 +12,17 @@ int main()
   sjsu::LogInfo("Creating gpio (led) objects...");
 
   sjsu::LogInfo("Creating ParallelGpio object using led Gpios...");
-  sjsu::Gpio * leds[] = {
-    &led0,
-    &led1,
-    &led2,
-    &led3,
-  };
-  sjsu::ParallelGpio parallel_leds(leds, std::size(leds));
+
+  sjsu::lpc40xx::Gpio led0(2, 3);
+  sjsu::lpc40xx::Gpio led1(1, 26);
+  sjsu::lpc40xx::Gpio led2(1, 24);
+  sjsu::lpc40xx::Gpio led3(1, 18);
+  std::array<sjsu::Gpio *, 4> leds = { &led0, &led1, &led2, &led3 };
+
+  sjsu::ParallelGpio parallel_leds(leds);
+
+  parallel_leds.Initialize();
+  parallel_leds.Enable();
 
   while (true)
   {

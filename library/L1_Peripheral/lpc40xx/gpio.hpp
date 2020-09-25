@@ -3,13 +3,12 @@
 #include <cstdint>
 #include <functional>
 
-#include "L1_Peripheral/gpio.hpp"
-
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L0_Platform/lpc17xx/LPC17xx.h"
+#include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/cortex/interrupt.hpp"
+#include "L1_Peripheral/gpio.hpp"
 #include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/interrupt.hpp"
-#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/lpc17xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "utility/build_info.hpp"
@@ -24,10 +23,13 @@ class Gpio final : public sjsu::Gpio
  public:
   /// Specifies number of ports and pins that can be used with gpio interrupts.
   static constexpr uint8_t kPinCount = 32;
+
   /// The number of ports that generate gpio interrupts.
   static constexpr uint8_t kInterruptPorts = 2;
+
   /// Lookup table that holds developer gpio interrupt handlers.
   inline static InterruptCallback handlers[kInterruptPorts][kPinCount];
+
   /// This structure makes the access of gpio interrupt registers more
   /// accessible and efficient
   struct GpioInterruptRegisterMap_t
@@ -185,8 +187,8 @@ class Gpio final : public sjsu::Gpio
   constexpr Gpio(uint8_t port_number,
                  uint8_t pin_number,
                  sjsu::Pin * pin = nullptr)
-      : kLpc17xxPin(port_number, pin_number),
-        kLpc40xxPin(port_number, pin_number),
+      : lpc17xx_pin_(port_number, pin_number),
+        lpc40xx_pin_(port_number, pin_number),
         pin_obj_(nullptr),
         gpio_port_(nullptr),
         pin_(pin_number),
@@ -197,11 +199,11 @@ class Gpio final : public sjsu::Gpio
     {
       if constexpr (IsPlatform(sjsu::build::Platform::lpc40xx))
       {
-        pin_obj_ = &kLpc40xxPin;
+        pin_obj_ = &lpc40xx_pin_;
       }
       else if constexpr (IsPlatform(sjsu::build::Platform::lpc17xx))
       {
-        pin_obj_ = &kLpc17xxPin;
+        pin_obj_ = &lpc17xx_pin_;
       }
       else
       {
@@ -230,11 +232,22 @@ class Gpio final : public sjsu::Gpio
     // Assign gpio port
     gpio_port_ = *GpioRegister(port_number);
   }
-  void SetDirection(Direction direction) const override
+
+  void ModuleInitialize() override
+  {
+    pin_obj_->Initialize();
+  }
+
+  void ModuleEnable(bool enable = true) override
+  {
+    pin_obj_->Enable(enable);
+  }
+
+  void SetDirection(Direction direction) override
   {
     /// Pin function is zero fall pins on the LPC40xx and LPC17xx.
     constexpr uint8_t kGpioFunction = 0;
-    pin_obj_->SetPinFunction(kGpioFunction);
+    pin_obj_->ConfigureFunction(kGpioFunction);
 
     if (direction == Direction::kInput)
     {
@@ -245,7 +258,8 @@ class Gpio final : public sjsu::Gpio
       gpio_port_->DIR = bit::Set(gpio_port_->DIR, pin_);
     }
   }
-  void Set(State output = kHigh) const override
+
+  void Set(State output = kHigh) override
   {
     if (output == State::kHigh)
     {
@@ -256,15 +270,15 @@ class Gpio final : public sjsu::Gpio
       gpio_port_->CLR = (1 << pin_);
     }
   }
-  void Toggle() const override
+  void Toggle() override
   {
     gpio_port_->PIN ^= (1 << pin_);
   }
-  bool Read() const override
+  bool Read() override
   {
     return bit::Read(gpio_port_->PIN, pin_);
   }
-  const sjsu::Pin & GetPin() const override
+  sjsu::Pin & GetPin() override
   {
     return *pin_obj_;
   }
@@ -309,7 +323,7 @@ class Gpio final : public sjsu::Gpio
 
   /// Removes the developer's ISR and clears the selected edge of the gpio
   /// interrupt from being triggered.
-  void DetachInterrupt() const override
+  void DetachInterrupt() override
   {
     if (!IsAValidPort())
     {
@@ -337,9 +351,9 @@ class Gpio final : public sjsu::Gpio
     return InterruptRegister(interrupt_index_);
   }
 
-  const sjsu::lpc17xx::Pin kLpc17xxPin;
-  const sjsu::lpc40xx::Pin kLpc40xxPin;
-  const sjsu::Pin * pin_obj_;
+  sjsu::lpc17xx::Pin lpc17xx_pin_;
+  sjsu::lpc40xx::Pin lpc40xx_pin_;
+  sjsu::Pin * pin_obj_;
 
   lpc40xx::LPC_GPIO_TypeDef * gpio_port_;
   uint8_t pin_;

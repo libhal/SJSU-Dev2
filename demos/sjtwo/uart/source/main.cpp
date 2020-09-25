@@ -7,38 +7,47 @@
 
 int main()
 {
-  sjsu::LogInfo("Uart application starting.");
-  sjsu::LogInfo(
-      "The aplication uses a loopback test. The test will be constantly "
-      "sending data between the Tx and Rx pins."
-      "Please connect pins P2.8 and P2.9 together using a wire for this "
-      "test.");
+  sjsu::LogInfo("Uart Loopback Application starting...");
+  sjsu::LogInfo("Connect jumper between P2[8] and P2[9].");
   sjsu::lpc40xx::Uart uart2(sjsu::lpc40xx::Uart::Port::kUart2);
-  sjsu::LogInfo(
-      "Initializing UART port 2 with a baud rate of 38400 bits per second");
-  uart2.Initialize(38400);
+
+  sjsu::LogInfo("Initializing UART port 2");
+  uart2.Initialize();
+
+  sjsu::LogInfo("Setting standard uart frame format.");
+  uart2.ConfigureFormat();
+
+  sjsu::LogInfo("Setting Baud rate to 38400");
+  uart2.ConfigureBaudRate(38400);
+
+  sjsu::LogInfo("Enabling UART!");
+  uart2.Enable();
+
   while (true)
   {
-    sjsu::LogInfo(
-        "A char array containing the characters 'Hello World' will"
-        "now be sent from the Tx pin to the Rx pin");
-    char message[] = "Hello World!";
-    for (size_t i = 0; message[i] != '\0'; i++)
-    {
-      // This first loop sends all the data within the array
-      sjsu::LogInfo("Sending characters now.");
-      uart2.Write(message[i]);
-    }
-    sjsu::LogInfo(
-        "receiving characters that arrived at Rx pin and printing them");
-    // This second loop receives all the sent data and prints it out
-    for (size_t i = 0; i < std::size(message) - 1; i++)
-    {
-      char receive = uart2.Read();
-      putchar(receive);
-    }
+    std::string_view payload = "SJSU-DEV2";
+    sjsu::LogInfo("Transmitting \"%s\" ...", payload.data());
+    uart2.Write(payload);
 
-    putchar('\n');
+    sjsu::LogInfo("Receiving characters...");
+
+    // Create buffer to hold the bytes received from the UART peripheral
+    std::array<uint8_t, 32> receive_buffer;
+
+    // Fill buffer with zeros
+    receive_buffer.fill(0);
+
+    // Read bytes into buffer until either the buffer is full or the UART
+    // peripheral no longer has any more bytes left.
+    // Store bytes into the kReadBytes variable.
+    const size_t kReadBytes = uart2.Read(receive_buffer);
+
+    // Print out the number of bytes read and the actual buffer
+    sjsu::LogInfo("(%zu) Bytes received: %.*s",
+                  kReadBytes,
+                  kReadBytes,
+                  receive_buffer.data());
+
     sjsu::Delay(1s);
   }
   return 0;

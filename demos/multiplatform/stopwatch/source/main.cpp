@@ -11,9 +11,9 @@ int main()
 
   sjsu::LogInfo("Calibrating stop watch...");
   stopwatch.Calibrate();
-  sjsu::LogInfo("Time it takes to Start() and Stop() the stopwatch = %" PRId32
-                "ns.",
-                static_cast<int32_t>(stopwatch.GetCalibrationDelta().count()));
+  sjsu::LogInfo(
+      "Time it between Start() and Stop() of the stopwatch is %" PRId64 "ns.",
+      stopwatch.GetCalibrationDelta().count());
 
   sjsu::LogInfo(
       "Calibration figures out how much time it takes to call Uptime()");
@@ -22,26 +22,24 @@ int main()
   while (true)
   {
     // Setup
-    sjsu::LogInfo(
-        "Starting timer and executing code that will take time perform...");
+    sjsu::LogInfo("Starting timer...");
     stopwatch.Start();
 
     // Exercise
     // Exercise: Print something
-    printf(
-        "Payload message! This typically requires communication via JTAG or "
-        "UART to perform!\n");
+    printf("Printing message! Usually via JTAG or UART.\n");
     // Exercise: Delay for a period of time
     sjsu::Delay(200ms);
 
     // Record the time it took to run the printf command and stream the data to
     // stdout.
     auto time_delta = stopwatch.Stop();
+    sjsu::LogInfo("Stopping timer...");
 
     // Displaying to the user the amount of time it took.
     // The time delta shouldn't be greater than what a 32-bit number can hold
-    sjsu::LogInfo("Printing the message above took = %" PRId32 "ns",
-                  static_cast<int32_t>(time_delta.count()));
+    sjsu::LogInfo("Printing the message above took = %" PRId64 "ns",
+                  time_delta.count());
 
     sjsu::Delay(1s);
   }

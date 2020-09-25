@@ -4,10 +4,10 @@ UseTab: Never
 BreakBeforeBraces: Allman
 DerivePointerAlignment: false
 PointerAlignment: Middle
-BinPackArguments: true
 AlignConsecutiveAssignments: true
 AlignEscapedNewlines: Left
 BinPackParameters: false
+BinPackArguments: false
 AlignAfterOpenBracket: Align
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: false
@@ -16,7 +16,6 @@ AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: true
-BinPackArguments: true
 BreakStringLiterals: true
 CompactNamespaces: true
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
@@ -28,8 +27,7 @@ KeepEmptyLinesAtTheStartOfBlocks: false
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 ReflowComments: true
-SortIncludes: false
-# SpaceBeforeInheritanceColon: true
+SortIncludes: true
 SpaceBeforeParens: ControlStatements
 SpaceInEmptyParentheses: false
 SpacesInAngles: false

@@ -1,4 +1,5 @@
 #include "L1_Peripheral/msp432p401r/gpio.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
@@ -40,7 +41,7 @@ TEST_CASE("Testing Msp432p401r Gpio")
   Gpio p8_2(8, 2);
   Gpio p9_4(9, 4);
   Gpio p10_0(10, 0);
-  Gpio pJ_1('J', 1); // NOLINT
+  Gpio pJ_1('J', 1);  // NOLINT
 
   struct TestStruct_t
   {

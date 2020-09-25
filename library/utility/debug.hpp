@@ -2,8 +2,8 @@
 
 #include <unwind.h>
 
-#include <array>
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <cinttypes>
 #include <cstdint>
@@ -142,6 +142,16 @@ inline void Hexdump(void * address, size_t length)
   printf("%08zX  \n", length);
 }
 
+/// Only prints hexdump if the log level for the application is above DEBUG
+template <size_t kNumberOfRowsBuffered = 1>
+inline void HexdumpDebug(void * address, size_t length)
+{
+  if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_DEBUG)
+  {
+    Hexdump<kNumberOfRowsBuffered>(address, length);
+  }
+}
+
 // ==============================================
 // Hidden Backtrace Utility Functions
 // ==============================================
@@ -150,7 +160,8 @@ inline _Unwind_Reason_Code PrintAddressAsList(_Unwind_Context * context,
 {
   int * depth      = static_cast<int *>(depth_pointer);
   intptr_t address = static_cast<intptr_t>(_Unwind_GetIP(context));
-  printf("  %d) 0x%08" PRIXPTR "\n", *depth,
+  printf("  %d) 0x%08" PRIXPTR "\n",
+         *depth,
          address - config::kBacktraceAddressOffset);
   (*depth)++;
   return _URC_NO_REASON;

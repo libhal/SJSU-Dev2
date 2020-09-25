@@ -1,8 +1,9 @@
+#include "L1_Peripheral/msp432p401r/system_controller.hpp"
+
 #include <bitset>
 #include <thread>
 
 #include "L0_Platform/msp432p401r/msp432p401r.h"
-#include "L1_Peripheral/msp432p401r/system_controller.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/units.hpp"
 
@@ -68,6 +69,7 @@ TEST_CASE("Testing msp432p401r SystemController")
       SystemController::Oscillator::kModule,
       SystemController::Oscillator::kHighFrequency
     };
+
     constexpr std::array kClockDividers = {
       SystemController::ClockDivider::kDivideBy1,
       SystemController::ClockDivider::kDivideBy2,
@@ -452,9 +454,10 @@ TEST_CASE("Testing msp432p401r SystemController")
           case SystemController::Oscillator::kLowFrequency: [[fallthrough]];
           case SystemController::Oscillator::kReference:
           {
-            uint8_t actual_reference_frequency_select = bit::Read(
-                local_cs.CLKEN, SystemController::ClockEnableRegister::
-                                    kReferenceFrequencySelect);
+            uint8_t actual_reference_frequency_select =
+                bit::Read(local_cs.CLKEN,
+                          SystemController::ClockEnableRegister::
+                              kReferenceFrequencySelect);
             uint8_t actual_backup_clock_select = bit::Extract(
                 local_cs.CTL1,
                 SystemController::Control1Register::kBackupClockSourceSelect);

@@ -22,20 +22,33 @@ int main()
   sjsu::lpc17xx::Gpio d1(2, 6);
   sjsu::lpc17xx::Gpio d0(2, 7);
 
-  std::array<sjsu::Gpio *, 8> data_pins = { &d0, &d1, &d2, &d3,
-                                            &d4, &d5, &d6, &d7 };
-  sjsu::ParallelGpio data_bus(data_pins.data(), data_pins.size());
+  std::array<sjsu::Gpio *, 8> data_pins = {
+    &d0, &d1, &d2, &d3, &d4, &d5, &d6, &d7,
+  };
+
+  sjsu::ParallelGpio data_bus(data_pins);
 
   constexpr uint8_t kMaxLines        = 4;
   constexpr uint8_t kMaxDisplayWidth = 20;
 
   sjsu::St7066u lcd(sjsu::St7066u::BusMode::kEightBit,
                     sjsu::St7066u::DisplayMode::kMultiLine,
-                    sjsu::St7066u::FontStyle::kFont5x8, rs, rw, e, data_bus);
+                    sjsu::St7066u::FontStyle::kFont5x8,
+                    rs,
+                    rw,
+                    e,
+                    data_bus);
+
   lcd.Initialize();
-  lcd.DisplayText("Parallel LCD", sjsu::St7066u::CursorPosition_t{ 1, 4 });
-  lcd.DisplayText("SJSU-DEV2", sjsu::St7066u::CursorPosition_t{ 2, 5 });
+  lcd.Enable();
+
+  sjsu::LogInfo("Drawing text to screen at different locations...");
+  lcd.DrawText("Parallel LCD Demo", sjsu::St7066u::CursorPosition_t{ 1, 4 });
+  lcd.DrawText("SJSU-DEV2", sjsu::St7066u::CursorPosition_t{ 2, 5 });
+
   lcd.SetCursorHidden(false);
+
+  sjsu::LogInfo("Making the cursor traverse through each row...");
 
   while (true)
   {
@@ -45,7 +58,7 @@ int main()
       for (uint8_t j = 0; j < kMaxDisplayWidth; j++)
       {
         lcd.SetCursorPosition(sjsu::St7066u::CursorPosition_t{ i, j });
-        sjsu::Delay(1s);
+        sjsu::Delay(100ms);
       }
     }
   }

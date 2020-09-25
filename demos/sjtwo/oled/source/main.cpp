@@ -7,6 +7,7 @@
 
 int main()
 {
+  sjsu::LogInfo("Starting OLED Application...");
   sjsu::lpc40xx::Spi ssp1(sjsu::lpc40xx::Spi::Bus::kSpi1);
   sjsu::lpc40xx::Gpio cs_gpio(1, 22);
   sjsu::lpc40xx::Gpio dc_gpio(1, 25);
@@ -15,22 +16,17 @@ int main()
   // board.
   sjsu::Ssd1306 oled_display(ssp1, cs_gpio, dc_gpio,
                              sjsu::GetInactive<sjsu::Gpio>());
-  oled_display.Initialize();
   sjsu::Graphics graphics(oled_display);
-  sjsu::LogInfo("Starting OLED Hardware Test in 5s...");
-  sjsu::Delay(5000ms);
 
-  sjsu::LogInfo("Initializing Graphics library along with OLED Hardware...");
+  // Initialize OLED display and all of the peripherals it uses
   graphics.Initialize();
-  sjsu::Delay(1s);
+
+  // Enable OLED display
+  graphics.Enable();
 
   sjsu::LogInfo("Clearing Screen...");
   graphics.Clear();
   graphics.Update();
-  sjsu::Delay(1s);
-
-  sjsu::LogInfo("Clearing Screen finished. Waiting 1 second...");
-  sjsu::Delay(1s);
 
   sjsu::LogInfo("Drawing Some Shapes...");
 

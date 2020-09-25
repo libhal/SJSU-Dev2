@@ -48,7 +48,7 @@ constexpr auto ByteArrayToSpan(std::endian endian,
   }
   else
   {
-    return std::span<const uint8_t>(bytes.begin(), width);
+    return std::span<const uint8_t>(bytes.data(), width);
   }
 }
 

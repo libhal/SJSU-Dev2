@@ -5,18 +5,21 @@
 
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
+#include "inactive.hpp"
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 
 namespace sjsu
 {
 /// An abstract interface for General Purpose I/O
 /// @ingroup l1_peripheral
-class Gpio
+class Gpio : public Module
 {
  public:
   // ===========================================================================
   // Interface Defintions
   // ===========================================================================
+
   /// Defines the set of directions a GPIO can be.
   enum Direction : uint8_t
   {
@@ -43,28 +46,36 @@ class Gpio
   // Interface Methods
   // ===========================================================================
 
+  // ---------------------------------------------------------------------------
+  // Configuration Methods
+  // ---------------------------------------------------------------------------
+
+  // ---------------------------------------------------------------------------
+  // Usage Methods
+  // ---------------------------------------------------------------------------
+
   /// Set pin as an output or an input
   ///
   /// NOTE: this method acts is the GPIO initialization, and must be called
   ///       first before calling any other method
   ///
   /// @param direction - which direction to set the pin to.
-  virtual void SetDirection(Direction direction) const = 0;
+  virtual void SetDirection(Direction direction) = 0;
 
   /// Set the pin state as HIGH voltage or LOW voltage
-  virtual void Set(State output) const = 0;
+  virtual void Set(State output) = 0;
 
   /// Toggles pin state. If the pin is HIGH, after this call it will be LOW
   /// and vise versa.
-  virtual void Toggle() const = 0;
+  virtual void Toggle() = 0;
 
   /// @return the state of the pin, note that this method does not consider
   ///         whether or not the active level is high or low. Simply returns the
   ///         state as depicted in memory
-  virtual bool Read() const = 0;
+  virtual bool Read() = 0;
 
   /// @return underlying pin object
-  virtual const sjsu::Pin & GetPin() const = 0;
+  virtual sjsu::Pin & GetPin() = 0;
 
   /// Attach an interrupt call to a pin
   ///
@@ -74,32 +85,32 @@ class Gpio
   virtual void AttachInterrupt(InterruptCallback callback, Edge edge) = 0;
 
   /// Remove interrupt call from pin and deactivate interrupts for this pin
-  virtual void DetachInterrupt() const = 0;
+  virtual void DetachInterrupt() = 0;
 
   // ===========================================================================
   // Utility Methods
   // ===========================================================================
 
   /// Set pin to HIGH voltage
-  void SetHigh() const
+  void SetHigh()
   {
     Set(State::kHigh);
   }
 
   /// Set pin to LOW voltage
-  void SetLow() const
+  void SetLow()
   {
     Set(State::kLow);
   }
 
   /// Set pin direction as input
-  void SetAsInput() const
+  void SetAsInput()
   {
     SetDirection(Direction::kInput);
   }
 
   /// Set pin direction as output
-  void SetAsOutput() const
+  void SetAsOutput()
   {
     SetDirection(Direction::kOutput);
   }
@@ -131,4 +142,32 @@ class Gpio
     return AttachInterrupt(callback, Edge::kBoth);
   }
 };
+
+/// Template specialization that generates an inactive sjsu::Gpio.
+template <>
+inline sjsu::Gpio & GetInactive<sjsu::Gpio>()
+{
+  class InactiveGpio : public sjsu::Gpio
+  {
+   public:
+    void ModuleInitialize() override {}
+    void ModuleEnable(bool = true) override {}
+    void SetDirection(Direction) override {}
+    void Set(State) override {}
+    void Toggle() override {}
+    bool Read() override
+    {
+      return false;
+    }
+    sjsu::Pin & GetPin() override
+    {
+      return GetInactive<sjsu::Pin>();
+    }
+    void AttachInterrupt(InterruptCallback, Edge) override {}
+    void DetachInterrupt() override {}
+  };
+
+  static InactiveGpio inactive;
+  return inactive;
+}
 }  // namespace sjsu

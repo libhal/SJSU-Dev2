@@ -18,15 +18,18 @@ class Gpio final : public sjsu::Gpio
   /// @param pin  The pin number.
   constexpr Gpio(uint8_t port, uint8_t pin) : pin_{ port, pin } {}
 
-  void SetDirection(Direction direction) const override
+  void ModuleInitialize() override {}
+  void ModuleEnable(bool = true) override {}
+
+  void SetDirection(Direction direction) override
   {
     constexpr auto kDirectionBit = bit::MaskFromRange(2);
     uint32_t function_code       = 0b00;
     function_code = bit::Insert(function_code, Value(direction), kDirectionBit);
-    pin_.SetPinFunction(static_cast<uint8_t>(function_code));
+    pin_.ConfigureFunction(static_cast<uint8_t>(function_code));
   }
 
-  void Set(State output) const override
+  void Set(State output) override
   {
     volatile uint8_t * out_register = pin_.RegisterAddress(&pin_.Port()->OUT);
     if (output == State::kHigh)
@@ -39,19 +42,19 @@ class Gpio final : public sjsu::Gpio
     }
   }
 
-  void Toggle() const override
+  void Toggle() override
   {
     volatile uint8_t * out_register = pin_.RegisterAddress(&pin_.Port()->OUT);
     *out_register                   = bit::Toggle(*out_register, pin_.GetPin());
   }
 
-  bool Read() const override
+  bool Read() override
   {
     volatile uint8_t * in_register = pin_.RegisterAddress(&pin_.Port()->IN);
     return bit::Read(*in_register, pin_.GetPin());
   }
 
-  const sjsu::Pin & GetPin() const override
+  sjsu::Pin & GetPin() override
   {
     return pin_;
   }
@@ -61,7 +64,7 @@ class Gpio final : public sjsu::Gpio
     throw Exception(std::errc::operation_not_supported, "");
   }
 
-  void DetachInterrupt() const override
+  void DetachInterrupt() override
   {
     throw Exception(std::errc::operation_not_supported, "");
   }

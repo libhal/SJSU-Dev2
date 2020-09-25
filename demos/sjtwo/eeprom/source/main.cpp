@@ -1,68 +1,59 @@
 #include <cstdint>
-#include <iterator>
+#include <numeric>
 
 #include "L1_Peripheral/lpc40xx/eeprom.hpp"
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "L2_HAL/switches/button.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
 
 int main(void)
 {
   sjsu::LogInfo("Starting EEPROM Example");
+
   constexpr size_t kPayloadSize = 128;
   constexpr uint32_t kAddress   = 0b0110'0011'1000;
 
-  sjsu::LogInfo("Initializing button");
-  sjsu::lpc40xx::Gpio button_gpio3(0, 29);
-  sjsu::Button button3(button_gpio3);
-  button3.Initialize();
-
-  sjsu::LogInfo("Initializing EEPROM");
+  sjsu::LogInfo("Initializing & Enabling EEPROM");
   sjsu::lpc40xx::Eeprom eeprom;
   eeprom.Initialize();
+  eeprom.Enable();
 
-  // Generating Payload
+  // Payload array
   std::array<uint8_t, kPayloadSize> list;
+  // Fill list with number starting from 1.
+  std::iota(list.begin(), list.end(), 0);
 
+  sjsu::LogInfo("Write to EEPROM...");
+  eeprom.Write(kAddress, list);
+
+  sjsu::LogInfo("Reading back from EEPROM...");
+  std::array<uint8_t, kPayloadSize> read;
+  eeprom.Read(kAddress, read);
+
+  sjsu::LogInfo("Print out contents:");
+
+  bool all_data_valid = true;
   for (size_t i = 0; i < list.size(); i++)
   {
-    list[i] = static_cast<uint8_t>(i * 2);
+    if (read[i] == i)
+    {
+      sjsu::LogInfo("Expected: %zu == Actual: %u", i, read[i]);
+    }
+    else
+    {
+      sjsu::LogError("Expected: %zu != Actual: %u ", i, read[i]);
+      all_data_valid = false;
+    }
   }
 
-  while (true)
+  if (all_data_valid)
   {
-    sjsu::LogInfo("Starting Write");
-    eeprom.Write(kAddress, list.data(), kPayloadSize);
-
-    sjsu::LogInfo("Starting Read");
-    std::array<uint8_t, kPayloadSize> results;
-    eeprom.Read(kAddress, results.data(), kPayloadSize);
-
-    sjsu::LogInfo("Results:");
-    for (size_t i = 0; i < list.size(); i++)
-    {
-      if (results[i] == i * 2)
-      {
-        sjsu::LogInfo("%i: %u", i, results[i]);
-      }
-      else
-      {
-        sjsu::LogInfo("%i: %u ERROR", i, results[i]);
-      }
-    }
-    printf("\n");
-
-    sjsu::LogInfo("Please press button 3 to restart demo");
-    while (true)
-    {
-      if (button3.Pressed())
-      {
-        break;
-      }
-    }
+    sjsu::LogInfo("All of the data written to EEPROM was read by correctly!");
   }
+  else
+  {
+    sjsu::LogInfo("An error occurred when reading back data from EEPROM.");
+  }
+
+  sjsu::LogInfo("Exiting! To restart demo, reset device.");
 
   return 0;
 }

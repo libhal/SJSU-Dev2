@@ -2,8 +2,10 @@
 
 #include <array>
 #include <cstddef>
+#include <span>
 #include <string_view>
 
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
@@ -15,7 +17,7 @@ namespace sjsu
 /// within computer network. It is an endpoint in networking software.
 /// Modeled after Berkley Sockets (POSIX sockets)
 /// @ingroup communication
-class InternetSocket
+class InternetSocket : public Module
 {
  public:
   /// Which Internet Protocol to use for communicating with the remote host
@@ -43,20 +45,18 @@ class InternetSocket
   /// this.
   ///
   /// @param data - data to write to socket
-  /// @param size - the number of bytes to write.
   /// @param timeout - Amount of time before this function should gives up.
-  virtual void Write(const void * data,
-                     size_t size,
+  virtual void Write(std::span<const uint8_t> data,
                      std::chrono::nanoseconds timeout) = 0;
 
   /// Read data received from the connected host. Must have used Connect()
   /// before using this.
   ///
-  /// @param buffer - location to read information from
-  /// @param size - the number of bytes to write.
+  /// @param buffer - location to read information from socket
   /// @param timeout - Amount of time before this function should gives up.
-  virtual size_t Read(void * buffer,
-                      size_t size,
+  ///
+  /// @return
+  virtual size_t Read(std::span<uint8_t> buffer,
                       std::chrono::nanoseconds timeout) = 0;
 
   /// Closes the connection established by the Connect() method.
@@ -67,7 +67,7 @@ class InternetSocket
 /// protocol. This interface is used for connecting a device to a Wifi hotspot
 /// (client).
 /// @ingroup communication
-class WiFi
+class WiFi : public Module
 {
  public:
   /// Contains network connection information such as IP address, netmask,
@@ -95,16 +95,12 @@ class WiFi
   };
 
   /// The type of mode to put the device into.
-  enum class WifiMode
+  enum class Mode
   {
     kClient = 1,
     kAccessPoint,
     kBoth,
   };
-
-  /// Initialize the WiFi hardware and necessary peripherals needed to
-  /// communicate with it.
-  virtual void Initialize() = 0;
 
   /// @return true - if this Wifi instance is connected to an access point
   /// @return false - it this Wifi instance is not connected to an access point
@@ -126,10 +122,6 @@ class WiFi
   /// @return NetworkConnection_t - Get connection information such as IP
   ///         address.
   virtual NetworkConnection_t GetNetworkConnectionInfo() = 0;
-
-  /// @return Reference to InternetSocket& that can be used to connect and
-  ///         communicate over TCP or UDP.
-  virtual InternetSocket & GetInternetSocket() = 0;
 };
 
 }  // namespace sjsu

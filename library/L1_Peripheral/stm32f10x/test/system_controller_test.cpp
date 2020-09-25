@@ -1,10 +1,11 @@
+#include "L1_Peripheral/stm32f10x/system_controller.hpp"
+
 #include <array>
 #include <cstdint>
 #include <numeric>
 #include <thread>
 
 #include "L0_Platform/stm32f10x/stm32f10x.h"
-#include "L1_Peripheral/stm32f10x/system_controller.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/units.hpp"
 
@@ -54,7 +55,8 @@ TEST_CASE("Testing stm32f10x SystemController")
     // operate before this cancels.
     std::this_thread::sleep_for(20ms);
     local_rcc.CFGR = bit::Insert(
-        local_rcc.CFGR, Value(config.system_clock),
+        local_rcc.CFGR,
+        Value(config.system_clock),
         SystemController::ClockConfigurationRegisters::kSystemClockStatus);
   };
 
@@ -443,7 +445,8 @@ TEST_CASE("Testing stm32f10x SystemController")
     // Setup: Set the registers with all of the enable bits so keep looping form
     //        happening.
     local_rcc.CFGR = bit::Insert(
-        local_rcc.CFGR, Value(config.system_clock),
+        local_rcc.CFGR,
+        Value(config.system_clock),
         SystemController::ClockConfigurationRegisters::kSystemClockStatus);
     local_rcc.CR = bit::Set(local_rcc.CR,
                             SystemController::ClockControlRegisters::kPllReady);

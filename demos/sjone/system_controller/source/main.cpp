@@ -43,9 +43,9 @@ int main()
   // NOTE: P1.27 may not be available for the 80-pin package option of the MCU.
   constexpr uint8_t kClockOutFunction = 0b01;
   sjsu::lpc17xx::Pin clock_pin(1, 27);
-  clock_pin.SetPinFunction(kClockOutFunction);
-  clock_pin.SetFloating();
-  clock_pin.SetAsOpenDrain(false);
+  clock_pin.ConfigureFunction(kClockOutFunction);
+  clock_pin.ConfigureFloating();
+  clock_pin.ConfigureAsOpenDrain(false);
 
   // Clockout Configuration register (CLKOUTCFG) bit masks,
   constexpr uint8_t kClockOutEnableBit = 8;
