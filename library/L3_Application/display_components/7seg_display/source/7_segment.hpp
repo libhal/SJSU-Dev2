@@ -7,7 +7,7 @@ namespace sjsu
 {
 class SevenSegmentDisplay
 {
-     public:
+ public:
       explicit SevenSegmentDisplay(sjsu::Graphics &graphics)
       : graphics_(graphics)
       {
@@ -20,7 +20,7 @@ class SevenSegmentDisplay
       {
         if (character < 10)
         {
-          for(uint8_t i = 0; i < 8; i++)
+          for (uint8_t i = 0; i < 8; i++)
           {
             if (kBitmap[character] & (1 << i))
             {
@@ -49,7 +49,7 @@ class SevenSegmentDisplay
             second = character%10;
             first = (character-first)/10;
           }
-          for(uint8_t i = 0; i < 8; i++)
+          for (uint8_t i = 0; i < 8; i++)
           {
             if (kBitmap[first] & (1 << i))
             {
@@ -95,12 +95,12 @@ class SevenSegmentDisplay
       {
         graphics_.Update();
       }
-     private:
+ private:
       sjsu::Graphics &graphics_;
 
       void DrawHorizontalSegment(uint8_t x, uint8_t y)
       {
-        for(int i = 0; i < 22; i++){
+        for (int i = 0; i < 22; i++){
             if (i == 0 || i == 21){
               graphics_.DrawPixel(x+i, y);
             }
@@ -108,7 +108,7 @@ class SevenSegmentDisplay
               graphics_.DrawPixel(x+i, y-1);
               graphics_.DrawPixel(x+i, y);
               graphics_.DrawPixel(x+i, y+1);
-            } 
+            }
             else if (i >= 2 && i <= 19){
               graphics_.DrawPixel(x+i, y-2);
               graphics_.DrawPixel(x+i, y-1);
@@ -121,23 +121,27 @@ class SevenSegmentDisplay
 
       void DrawVerticalSegment(uint8_t x, uint8_t y)
       {
-        for(int i = 0; i < 22; i++){
-            if (i == 0 || i == 21){
-              graphics_.DrawPixel(x,   y+i);
-            }
-            else if (i == 1 || i == 20){
-              graphics_.DrawPixel(x-1, y+i);
-              graphics_.DrawPixel(x,   y+i);
-              graphics_.DrawPixel(x+1, y+i);
-            } 
-            else if (i >= 2 && i <= 19){
-              graphics_.DrawPixel(x-2, y+i);
-              graphics_.DrawPixel(x-1, y+i);
-              graphics_.DrawPixel(x,   y+i);
-              graphics_.DrawPixel(x+1, y+i);
-              graphics_.DrawPixel(x+2, y+i);
-            }
+        for (int i = 0; i < 22; i++)
+        {
+          if (i == 0 || i == 21)
+          {
+            graphics_.DrawPixel(x,   y+i);
           }
+          else if (i == 1 || i == 20)
+          {
+            graphics_.DrawPixel(x-1, y+i);
+            graphics_.DrawPixel(x,   y+i);
+            graphics_.DrawPixel(x+1, y+i);
+          }
+          else if (i >= 2 && i <= 19)
+          {
+            graphics_.DrawPixel(x-2, y+i);
+            graphics_.DrawPixel(x-1, y+i);
+            graphics_.DrawPixel(x,   y+i);
+            graphics_.DrawPixel(x+1, y+i);
+            graphics_.DrawPixel(x+2, y+i);
+          }
+        }
       }
       /// reference points for segment beginnings for the left 7-segment
       inline static const uint8_t kSegmentReferencesLeft[8][2] =
@@ -184,4 +188,4 @@ class SevenSegmentDisplay
       //   {64, 44}
       // };
 };
-} //namespace sjsu
+}  // namespace sjsu

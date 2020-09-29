@@ -83,5 +83,5 @@ PLATFORM = lpc40xx
 #    OPENOCD_CONFIG = $(LIBRARY_DIR)/L0_Platform/lpc40xx/sjone.cfg
 #
 #TESTS += $(LIBRARY_DIR)/L2_HAL/switches/test/button_test.cpp
-#TESTS += $(LIBRARY_DIR)/L3_Application/test/graphics_test.cpp
+TESTS += $(LIBRARY_DIR)/L3_Application/display_components/7seg_display/test/7_segment_test.cpp
 OPENOCD_CONFIG :=
