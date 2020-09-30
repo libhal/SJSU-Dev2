@@ -181,11 +181,6 @@ class SevenSegmentDisplay
         0b01111111,
         0b01100111
       };
-      /// reference points for middle circles on 7-segment
-      // static constexpr uint8_t middle_circles[2][2] =
-      // {
-      //   {64, 19},
-      //   {64, 44}
-      // };
 };
 }  // namespace sjsu
+
