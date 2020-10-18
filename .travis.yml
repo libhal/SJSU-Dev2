@@ -13,6 +13,7 @@ matrix:
           script:
             - cd projects/continuous_integration/
             - make presubmit
+            - make coverage
             - make spellcheck
             - make doxygen
             # TODO(#1289): Add this back
@@ -21,7 +22,7 @@ matrix:
             # - make find-unused-tests
           after_success:
             - cd ../../
-            - coveralls --gcov "gcov-8"
+            - coveralls --gcov "gcov-9"
               --include "library/L0_Platform"
               --include "library/L1_Peripheral"
               --include "library/L2_HAL"
