@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <limits>
 #include <numeric>
+#include <span>
 
 #include "L1_Peripheral/uart.hpp"
 #include "L2_HAL/sensors/distance/distance_sensor.hpp"
@@ -200,7 +201,7 @@ class TFMini final : public DistanceSensor
       throw Exception(std::errc::no_such_device, "Frame header is incorrect");
     }
 
-    uint8_t checksum = std::accumulate(data.begin(), &data.end()[-2], 0);
+    uint8_t checksum = std::accumulate(data.data(), &data.end()[-2], 0);
 
     if (checksum != data[8])
     {
