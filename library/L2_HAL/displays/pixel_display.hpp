@@ -3,13 +3,14 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 
 namespace sjsu
 {
 /// PixelDisplay is a common set of methods that all hardware display drivers
 /// must implement to work with the Graphics class.
-class PixelDisplay
+class PixelDisplay : public Module
 {
  public:
   /// Describes the color space and resolution of the display.
@@ -47,16 +48,6 @@ class PixelDisplay
 
   /// @returns a color object with the available colors.
   virtual Color_t AvailableColors() = 0;
-
-  /// Configure hardware peripherals and initialize external display hardware
-  virtual void Initialize() = 0;
-
-  /// Optional method to turn on display if applicable
-  virtual void Enable() {}
-
-  /// Optional method to turn off display and potentially put it into a low
-  /// power mode
-  virtual void Disable() {}
 
   /// Clear framebuffer
   virtual void Clear() = 0;

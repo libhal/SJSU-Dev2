@@ -43,10 +43,12 @@ tidy: $(TIDY_FILES)
 
 $(SJ2_OBJECT_DIR)/%.tidy: $(SJSU_DEV2_BASE)/%
 	@mkdir -p "$(dir $@)"
-
 	@$(CLANG_TIDY) -extra-arg="-std=c++2a" "$<"  -- \
 	  -D PLATFORM=host -D HOST_TEST=1 \
-		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
+		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@.tmp
+	@# This is here to convert the temp file into the correct .tidy if the above
+	@# command was successful
+	@mv $@.tmp $@
 	@printf '$(GREEN)Evaluated file: $(RESET)$< \n'
 
 

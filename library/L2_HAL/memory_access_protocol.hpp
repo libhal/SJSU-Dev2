@@ -339,7 +339,7 @@ template <size_t MaximumPayloadSize = 1>
 class I2cProtocol : public MemoryAccessProtocol
 {
  public:
-  constexpr I2cProtocol(uint8_t i2c_address, const sjsu::I2c & i2c)
+  constexpr I2cProtocol(uint8_t i2c_address, sjsu::I2c & i2c)
       : i2c_address_(i2c_address), i2c_(i2c)
   {
   }
@@ -374,7 +374,7 @@ class I2cProtocol : public MemoryAccessProtocol
 
  private:
   uint8_t i2c_address_;
-  const sjsu::I2c & i2c_;
+  sjsu::I2c & i2c_;
 };
 
 template <MemoryAccessProtocol::AddressWidth address_width,

@@ -88,8 +88,9 @@ Collaboration diagram for sjsu::lpc17xx::AdcChannel:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d55/structsjsu_1_1lpc17xx_1_1AdcChannel__coll__graph.png" border="0" usemap="#sjsu_1_1lpc17xx_1_1AdcChannel_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc17xx_1_1AdcChannel_coll__map" id="sjsu_1_1lpc17xx_1_1AdcChannel_coll__map">
-<area shape="rect" id="node2" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html" title="sjsu::lpc40xx::Adc\l::Channel_t" alt="" coords="32,95,171,136"/>
-<area shape="rect" id="node3" href="../../d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="63,5,139,32"/>
+<area shape="rect" id="node2" href="../../d4/d30/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel__t.html" title="sjsu::lpc40xx::Adc\l::Channel_t" alt="" coords="32,171,171,212"/>
+<area shape="rect" id="node3" href="../../d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="63,81,139,108"/>
+<area shape="rect" id="node4" href="../../d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="50,5,153,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -135,7 +136,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = kAdcPinChannel0,</div><div class="line">    .channel      = 0,</div><div class="line">    .pin_function = AdcMode::kCh0123Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 0. Pass this to the lpc17xx::Adc class to utilize adc channel0. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = adc_pin_channel0,</div><div class="line">    .channel      = 0,</div><div class="line">    .pin_function = AdcMode::kCh0123Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 0. Pass this to the lpc17xx::Adc class to utilize adc channel0. </p>
 
 </div>
 </div>
@@ -158,7 +159,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = kAdcPinChannel1,</div><div class="line">    .channel      = 1,</div><div class="line">    .pin_function = AdcMode::kCh0123Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 1. Pass this to the lpc17xx::Adc class to utilize adc channel1. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = adc_pin_channel1,</div><div class="line">    .channel      = 1,</div><div class="line">    .pin_function = AdcMode::kCh0123Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 1. Pass this to the lpc17xx::Adc class to utilize adc channel1. </p>
 
 </div>
 </div>
@@ -181,7 +182,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = kAdcPinChannel2,</div><div class="line">    .channel      = 2,</div><div class="line">    .pin_function = AdcMode::kCh0123Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 2. Pass this to the lpc17xx::Adc class to utilize adc channel2. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = adc_pin_channel2,</div><div class="line">    .channel      = 2,</div><div class="line">    .pin_function = AdcMode::kCh0123Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 2. Pass this to the lpc17xx::Adc class to utilize adc channel2. </p>
 
 </div>
 </div>
@@ -204,7 +205,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = kAdcPinChannel3,</div><div class="line">    .channel      = 3,</div><div class="line">    .pin_function = AdcMode::kCh0123Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 3. Pass this to the lpc17xx::Adc class to utilize adc channel3. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = adc_pin_channel3,</div><div class="line">    .channel      = 3,</div><div class="line">    .pin_function = AdcMode::kCh0123Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 3. Pass this to the lpc17xx::Adc class to utilize adc channel3. </p>
 
 </div>
 </div>
@@ -227,7 +228,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = kAdcPinChannel4,</div><div class="line">    .channel      = 4,</div><div class="line">    .pin_function = AdcMode::kCh45Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 4. Pass this to the lpc17xx::Adc class to utilize adc channel4. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = adc_pin_channel4,</div><div class="line">    .channel      = 4,</div><div class="line">    .pin_function = AdcMode::kCh45Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 4. Pass this to the lpc17xx::Adc class to utilize adc channel4. </p>
 
 </div>
 </div>
@@ -250,7 +251,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = kAdcPinChannel5,</div><div class="line">    .channel      = 5,</div><div class="line">    .pin_function = AdcMode::kCh45Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 5. Pass this to the lpc17xx::Adc class to utilize adc channel5. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = adc_pin_channel5,</div><div class="line">    .channel      = 5,</div><div class="line">    .pin_function = AdcMode::kCh45Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 5. Pass this to the lpc17xx::Adc class to utilize adc channel5. </p>
 
 </div>
 </div>
@@ -273,7 +274,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = kAdcPinChannel6,</div><div class="line">    .channel      = 6,</div><div class="line">    .pin_function = AdcMode::kCh67Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 6. Pass this to the lpc17xx::Adc class to utilize adc channel6. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = adc_pin_channel6,</div><div class="line">    .channel      = 6,</div><div class="line">    .pin_function = AdcMode::kCh67Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 6. Pass this to the lpc17xx::Adc class to utilize adc channel6. </p>
 
 </div>
 </div>
@@ -296,7 +297,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = kAdcPinChannel7,</div><div class="line">    .channel      = 7,</div><div class="line">    .pin_function = AdcMode::kCh67Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 7. Pass this to the lpc17xx::Adc class to utilize adc channel7. </p>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .adc_pin      = adc_pin_channel7,</div><div class="line">    .channel      = 7,</div><div class="line">    .pin_function = AdcMode::kCh67Pins,</div><div class="line">  }</div></div><!-- fragment --><p>Predefined channel information for channel 7. Pass this to the lpc17xx::Adc class to utilize adc channel7. </p>
 
 </div>
 </div>

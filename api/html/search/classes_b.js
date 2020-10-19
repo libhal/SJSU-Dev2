@@ -10,6 +10,7 @@ var searchData=
   ['mockprotocol_3c_20memoryaccessprotocol_3a_3aaddresswidth_3a_3akbyte1_20_3e',['MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte1 &gt;',['../d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html',1,'sjsu']]],
   ['mockprotocol_3c_20memoryaccessprotocol_3a_3aaddresswidth_3a_3akbyte2_20_3e',['MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte2 &gt;',['../d6/d32/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte2_01_4.html',1,'sjsu']]],
   ['mode',['Mode',['../d0/d98/structsjsu_1_1lpc40xx_1_1Can_1_1Mode.html',1,'sjsu::lpc40xx::Can']]],
+  ['module',['Module',['../d1/ded/classsjsu_1_1Module.html',1,'sjsu']]],
   ['modules',['Modules',['../d5/d44/classsjsu_1_1msp432p401r_1_1SystemController_1_1Modules.html',1,'sjsu::msp432p401r::SystemController']]],
   ['mpu6050',['Mpu6050',['../d6/d14/classsjsu_1_1Mpu6050.html',1,'sjsu']]]
 ];

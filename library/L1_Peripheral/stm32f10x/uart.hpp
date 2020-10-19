@@ -1,8 +1,8 @@
 #pragma once
 
 #include "L0_Platform/stm32f10x/stm32f10x.h"
-#include "L1_Peripheral/uart.hpp"
 #include "L1_Peripheral/stm32f10x/pin.hpp"
+#include "L1_Peripheral/uart.hpp"
 
 namespace sjsu::stm32f10x
 {
@@ -26,7 +26,7 @@ class UartBase : public sjsu::Uart
     /// and PC11 can be remapped to USART3. In order to use those other pins,
     /// the AFIO->MAPR register must be configured for this before using this
     /// library, otherwise, the default mapping will be used.
-    const sjsu::Pin & tx;
+    sjsu::Pin & tx;
 
     /// Reference to the UART RX pin
     /// This driver will not handle remapping (muxing) the pin. So for example,
@@ -34,7 +34,7 @@ class UartBase : public sjsu::Uart
     /// and PC11 can be remapped to USART3. In order to use those other pins,
     /// the AFIO->MAPR register must be configured for this before using this
     /// library, otherwise, the default mapping will be used.
-    const sjsu::Pin & rx;
+    sjsu::Pin & rx;
 
     /// Address to the UART peripheral to use
     USART_TypeDef * uart;
@@ -53,20 +53,20 @@ class UartBase : public sjsu::Uart
   struct Port  // NOLINT
   {
    private:
-    const inline static auto kTx1 = sjsu::stm32f10x::Pin('A', 9);
-    const inline static auto kRx1 = sjsu::stm32f10x::Pin('A', 10);
+    inline static auto tx1 = Pin('A', 9);
+    inline static auto rx1 = Pin('A', 10);
 
-    const inline static auto kRx2 = sjsu::stm32f10x::Pin('A', 3);
-    const inline static auto kTx2 = sjsu::stm32f10x::Pin('A', 2);
+    inline static auto rx2 = Pin('A', 3);
+    inline static auto tx2 = Pin('A', 2);
 
-    const inline static auto kTx3 = sjsu::stm32f10x::Pin('B', 10);
-    const inline static auto kRx3 = sjsu::stm32f10x::Pin('B', 11);
+    inline static auto tx3 = Pin('B', 10);
+    inline static auto rx3 = Pin('B', 11);
 
    public:
     /// Predefined port for UART1
     const inline static Port_t kUart1 = {
-      .tx   = kTx1,
-      .rx   = kRx1,
+      .tx   = tx1,
+      .rx   = rx1,
       .uart = USART1,
       .id   = SystemController::Peripherals::kUsart1,
       .dma  = DMA1_Channel5,
@@ -74,8 +74,8 @@ class UartBase : public sjsu::Uart
 
     /// Predefined port for UART2
     const inline static Port_t kUart2 = {
-      .tx   = kTx2,
-      .rx   = kRx2,
+      .tx   = tx2,
+      .rx   = rx2,
       .uart = USART2,
       .id   = SystemController::Peripherals::kUsart2,
       .dma  = DMA1_Channel6,
@@ -83,8 +83,8 @@ class UartBase : public sjsu::Uart
 
     /// Predefined port for UART3
     const inline static Port_t kUart3 = {
-      .tx   = kTx3,
-      .rx   = kRx3,
+      .tx   = tx3,
+      .rx   = rx3,
       .uart = USART3,
       .id   = SystemController::Peripherals::kUsart3,
       .dma  = DMA1_Channel3,
@@ -253,15 +253,17 @@ class UartBase : public sjsu::Uart
 
     // Disable DMA channel for this UART
     bit::Register(&port_.dma->CCR).Clear(DmaReg::kEnable).Save();
+
     // Disable DMA flag Receive flag in UART control register
     bit::Register(&port_.uart->CR3)
         .Clear(ControlReg::kDmaReceiverEnable)
         .Save();
+
     // Disable UART peripheral
     bit::Register(&port_.uart->CR1).Clear(ControlReg::kUsartEnable).Save();
   }
 
-  void Initialize(uint32_t baud_rate) const override
+  void ModuleInitialize() override
   {
     auto & system = SystemController::GetPlatformController();
 
@@ -276,35 +278,45 @@ class UartBase : public sjsu::Uart
     // Supply clock to UART
     system.PowerUpPeripheral(port_.id);
     system.PowerUpPeripheral(SystemController::Peripherals::kDma1);
+  }
 
+  void ModuleEnable(bool = true) override
+  {
     // Setup TX as output with alternative control (TXD)
-    port_.tx.SetPinFunction(1);
+    port_.tx.ConfigureFunction(1);
     // Set pin as input with internal PULL UP (RXD)
-    port_.rx.PullUp();
-
-    // Configure the baud rate of the device
-    SetBaudRate(baud_rate);
+    port_.rx.ConfigurePullUp();
 
     // Setup RX DMA channel
-    auto data_register_address = reinterpret_cast<intptr_t>(&port_.uart->DR);
-    auto queue_address         = reinterpret_cast<intptr_t>(queue_);
+    const auto kDataAddress  = reinterpret_cast<intptr_t>(&port_.uart->DR);
+    const auto kQueueAddress = reinterpret_cast<intptr_t>(queue_);
 
     port_.dma->CNDTR = queue_size_;
-    port_.dma->CPAR  = static_cast<uint32_t>(data_register_address);
-    port_.dma->CMAR  = static_cast<uint32_t>(queue_address);
+    port_.dma->CPAR  = static_cast<uint32_t>(kDataAddress);
+    port_.dma->CMAR  = static_cast<uint32_t>(kQueueAddress);
 
     // Setup DMA Channel Settings
     port_.dma->CCR = DmaReg::kDmaSettings;
+
     // Setup UART Control Settings 1
     port_.uart->CR1 = ControlReg::kControlSettings1;
-    // Setup UART Control Settings 3
-    port_.uart->CR3 = ControlReg::kControlSettings3;
+
     // NOTE: We leave control settings 2 alone as it is for features beyond
     //       basic UART such as USART clock, USART port network (LIN), and other
     //       things.
+
+    // Setup UART Control Settings 3
+    port_.uart->CR3 = ControlReg::kControlSettings3;
   }
 
-  void SetBaudRate(uint32_t baud_rate) const override
+  void ConfigureFormat(FrameSize = FrameSize::kEightBits,
+                       StopBits  = StopBits::kSingle,
+                       Parity    = Parity::kNone) override
+  {
+    sjsu::LogWarning("Not supported currently");
+  }
+
+  void ConfigureBaudRate(uint32_t baud_rate) override
   {
     auto & system  = SystemController::GetPlatformController();
     auto frequency = system.GetClockRate(port_.id);
@@ -332,11 +344,9 @@ class UartBase : public sjsu::Uart
                           .Insert(fractional_int, BaudRateReg::kFraction);
   }
 
-  void Write(const void * data, size_t size) const override
+  void Write(std::span<const uint8_t> data) override
   {
-    const uint8_t * data_buffer = reinterpret_cast<const uint8_t *>(data);
-
-    for (size_t i = 0; i < size; i++)
+    for (const auto & byte : data)
     {
       while (!bit::Read(port_.uart->SR, StatusReg::kTransitEmpty))
       {
@@ -344,36 +354,36 @@ class UartBase : public sjsu::Uart
       }
 
       // Load the next byte into the data register
-      port_.uart->DR = data_buffer[i];
+      port_.uart->DR = byte;
     }
   }
 
-  size_t Read(void * data, size_t size) const override
+  size_t Read(std::span<uint8_t> data) override
   {
-    uint8_t * data_buffer = reinterpret_cast<uint8_t *>(data);
-    size_t index          = 0;
+    size_t index = 0;
 
-    while (HasData())
+    for (auto & byte : data)
     {
-      if (index >= size)
+      if (!HasData())
       {
         break;
       }
-      data_buffer[index++] = queue_[read_pointer_++];
-      read_pointer_        = read_pointer_ % queue_size_;
+      byte          = queue_[read_pointer_++];
+      read_pointer_ = read_pointer_ % queue_size_;
+      index++;
     }
 
     return index;
   }
 
-  bool HasData() const override
+  bool HasData() override
   {
     // When write and read position are equal, the receive queue is empty.
     // WARNING: if DMA overruns the queue, the information will be lost.
     return !(DmaWritePosition() == read_pointer_);
   }
 
-  void Flush() const override
+  void Flush() override
   {
     read_pointer_ = DmaWritePosition();
   }

@@ -288,7 +288,8 @@ template&lt;size_t kNumberOfInterrupts, uint32_t kNvicPriorityBits&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialize interrupt vector table. </p><dl class="section note"><dt>Note</dt><dd>This MUST NOT be called by application code. This for use only in the platform's startup. Doing this typically overwrites the interrupt handlers with the unregistered_handler. </dd></dl>
+<p>Initialize interrupt vector table.</p>
+<dl class="section note"><dt>Note</dt><dd>This MUST NOT be called by application code. This for use only in the platform's startup. Doing this typically overwrites the interrupt handlers with the unregistered_handler. </dd></dl>
 
 <p>Implements <a class="el" href="../../dc/db2/classsjsu_1_1InterruptController.html#ac3af9c1af844d43deb2811511c204751">sjsu::InterruptController</a>.</p>
 
@@ -353,7 +354,7 @@ template&lt;size_t kNumberOfInterrupts, uint32_t kNvicPriorityBits&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This must be put into the interrupt vector table for all of the interrupts this lookup handler will work for in ROM at compile time. </p><dl class="section note"><dt>Note</dt><dd>This must not be executed directly, only by the processor when an interrupt occurs. </dd></dl>
+<p>This must be put into the interrupt vector table for all of the interrupts this lookup handler will work for in ROM at compile time. </p><dl class="section note"><dt>Note</dt><dd>This function should only be called by the processor not by the application. </dd></dl>
 
 </div>
 </div>

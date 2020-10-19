@@ -6,16 +6,15 @@
 #include <cstdlib>
 #include <initializer_list>
 
-#include "L1_Peripheral/i2c.hpp"
-
-#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/cortex/interrupt.hpp"
+#include "L1_Peripheral/i2c.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "utility/build_info.hpp"
 #include "utility/enum.hpp"
-#include "utility/log.hpp"
 #include "utility/error_handling.hpp"
+#include "utility/log.hpp"
 #include "utility/time.hpp"
 
 namespace sjsu
@@ -76,9 +75,9 @@ class I2c final : public sjsu::I2c
     /// only have a single transaction on its bus at a time.
     Transaction_t & transaction;
     /// Refernce to I2C data pin.
-    const sjsu::Pin & sda_pin;
+    sjsu::Pin & sda_pin;
     /// Refernce to I2C clock pin.
-    const sjsu::Pin & scl_pin;
+    sjsu::Pin & scl_pin;
     /// Function code to set each pin to the appropriate I2C function.
     uint8_t pin_function;
   };
@@ -87,18 +86,12 @@ class I2c final : public sjsu::I2c
   struct Bus  // NOLINT
   {
    private:
-    inline static const sjsu::lpc40xx::Pin kI2c0SdaPin =
-        sjsu::lpc40xx::Pin::CreatePin<0, 0>();
-    inline static const sjsu::lpc40xx::Pin kI2c0SclPin =
-        sjsu::lpc40xx::Pin::CreatePin<0, 1>();
-    inline static const sjsu::lpc40xx::Pin kI2c1SdaPin =
-        sjsu::lpc40xx::Pin::CreatePin<1, 30>();
-    inline static const sjsu::lpc40xx::Pin kI2c1SclPin =
-        sjsu::lpc40xx::Pin::CreatePin<1, 31>();
-    inline static const sjsu::lpc40xx::Pin kI2c2SdaPin =
-        sjsu::lpc40xx::Pin::CreatePin<0, 10>();
-    inline static const sjsu::lpc40xx::Pin kI2c2SclPin =
-        sjsu::lpc40xx::Pin::CreatePin<0, 11>();
+    inline static auto i2c0_sda_pin = Pin(0, 0);
+    inline static auto i2c0_scl_pin = Pin(0, 1);
+    inline static auto i2c1_sda_pin = Pin(1, 30);
+    inline static auto i2c1_scl_pin = Pin(1, 31);
+    inline static auto i2c2_sda_pin = Pin(0, 10);
+    inline static auto i2c2_scl_pin = Pin(0, 11);
 
     inline static Transaction_t transaction_i2c0;
     inline static Transaction_t transaction_i2c1;
@@ -112,8 +105,8 @@ class I2c final : public sjsu::I2c
       .id           = sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
       .irq_number   = I2C0_IRQn,
       .transaction  = transaction_i2c0,
-      .sda_pin      = kI2c0SdaPin,
-      .scl_pin      = kI2c0SclPin,
+      .sda_pin      = i2c0_sda_pin,
+      .scl_pin      = i2c0_scl_pin,
       .pin_function = 0b010,
     };
 
@@ -123,8 +116,8 @@ class I2c final : public sjsu::I2c
       .id           = sjsu::lpc40xx::SystemController::Peripherals::kI2c1,
       .irq_number   = I2C1_IRQn,
       .transaction  = transaction_i2c1,
-      .sda_pin      = kI2c1SdaPin,
-      .scl_pin      = kI2c1SclPin,
+      .sda_pin      = i2c1_sda_pin,
+      .scl_pin      = i2c1_scl_pin,
       .pin_function = 0b011,
     };
 
@@ -134,8 +127,8 @@ class I2c final : public sjsu::I2c
       .id           = sjsu::lpc40xx::SystemController::Peripherals::kI2c2,
       .irq_number   = I2C2_IRQn,
       .transaction  = transaction_i2c2,
-      .sda_pin      = kI2c2SdaPin,
-      .scl_pin      = kI2c2SclPin,
+      .sda_pin      = i2c2_sda_pin,
+      .scl_pin      = i2c2_scl_pin,
       .pin_function = 0b010,
     };
   };
@@ -309,49 +302,69 @@ class I2c final : public sjsu::I2c
   ///
   /// @param bus - pass a reference to a constant lpc40xx::I2c::Bus_t
   ///        definition.
-  /// @param clock_rate - clock rate to operate the i2c bus at.
-  explicit constexpr I2c(const Bus_t & bus,
-                         units::frequency::hertz_t clock_rate = 100'000_Hz)
-      : i2c_(bus), clock_rate_(clock_rate)
+  explicit constexpr I2c(const Bus_t & bus) : i2c_(bus) {}
+
+  void ModuleInitialize() override
   {
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(i2c_.id);
   }
 
-  void Initialize() const override
+  void ConfigureClockRate(units::frequency::hertz_t frequency = 100'000_Hz,
+                          float duty_cycle                    = 0.5) override
   {
-    i2c_.sda_pin.SetPinFunction(i2c_.pin_function);
-    i2c_.scl_pin.SetPinFunction(i2c_.pin_function);
-    i2c_.sda_pin.SetAsOpenDrain();
-    i2c_.scl_pin.SetAsOpenDrain();
-    i2c_.sda_pin.SetFloating();
-    i2c_.scl_pin.SetFloating();
-
-    auto & system = sjsu::SystemController::GetPlatformController();
-    system.PowerUpPeripheral(i2c_.id);
-    auto peripheral_frequency = system.GetClockRate(i2c_.id);
-
     // Calculating and setting the I2C Clock rate
-    // Weight the high side duty cycle more than the lower side by 30% in order
-    // to give more time for the bus to charge up.
-    float clock_frequency = (peripheral_frequency / clock_rate_) / 2.0f;
-    float scll            = clock_frequency * 0.7f;
-    float sclh            = clock_frequency * 1.3f;
-    i2c_.registers->SCLL  = static_cast<uint32_t>(scll);
-    i2c_.registers->SCLH  = static_cast<uint32_t>(sclh);
+    // Weight the high side duty cycle more than the lower side by 30% in
+    // order to give more time for the bus to charge up.
+    const auto kPeripheralFrequency =
+        sjsu::SystemController::GetPlatformController().GetClockRate(i2c_.id);
 
-    i2c_.registers->CONCLR = Control::kAssertAcknowledge | Control::kStart |
-                             Control::kStop | Control::kInterrupt;
-    i2c_.registers->CONSET = Control::kInterfaceEnable;
+    const float kClockFrequency = kPeripheralFrequency / frequency;
+    const float kScll           = kClockFrequency * duty_cycle;
+    const float kSclh           = kClockFrequency * (1 - duty_cycle);
 
-    sjsu::InterruptController::GetPlatformController().Enable({
-        .interrupt_request_number = i2c_.irq_number,
-        .interrupt_handler        = [this]() { I2cHandler(i2c_); },
-    });
+    i2c_.registers->SCLL = static_cast<uint32_t>(kScll);
+    i2c_.registers->SCLH = static_cast<uint32_t>(kSclh);
   }
 
-  void Transaction(Transaction_t transaction) const override
+  void ModuleEnable(bool enable = true) override
   {
+    if (enable)
+    {
+      i2c_.sda_pin.ConfigureFunction(i2c_.pin_function);
+      i2c_.scl_pin.ConfigureFunction(i2c_.pin_function);
+      i2c_.sda_pin.ConfigureFloating();
+      i2c_.scl_pin.ConfigureFloating();
+      i2c_.sda_pin.ConfigureAsOpenDrain();
+      i2c_.scl_pin.ConfigureAsOpenDrain();
+
+      // Clear all transmission flags
+      i2c_.registers->CONCLR = Control::kAssertAcknowledge | Control::kStart |
+                               Control::kStop | Control::kInterrupt;
+      // Enable I2C interface
+      i2c_.registers->CONSET = Control::kInterfaceEnable;
+
+      // Enable interrupt service routine.
+      sjsu::InterruptController::GetPlatformController().Enable({
+          .interrupt_request_number = i2c_.irq_number,
+          .interrupt_handler        = [this]() { I2cHandler(i2c_); },
+      });
+    }
+    else
+    {
+      // Disable I2C interface
+      i2c_.registers->CONCLR = Control::kInterfaceEnable;
+    }
+  }
+
+  void Transaction(Transaction_t transaction) override
+  {
+    // Copy the transaction object for the IRQ to use
     i2c_.transaction = transaction;
+
+    // Start the transaction
     i2c_.registers->CONSET |= Control::kStart;
+
+    // Wait until the transaction is complete.
     return BlockUntilFinished();
   }
 
@@ -363,7 +376,7 @@ class I2c final : public sjsu::I2c
 
   /// Special method to check if the bus is currently initialized.
   /// @returns true if this bus has been initialized.
-  bool IsIntialized() const
+  bool IsEnabled() const
   {
     return (i2c_.registers->CONSET & Control::kInterfaceEnable);
   }
@@ -374,12 +387,7 @@ class I2c final : public sjsu::I2c
   /// transaction has completed, OR the timeout has elapsed.
   void BlockUntilFinished() const
   {
-    // Skip waiting on the interrupt if running a host unit test
-    if constexpr (build::kPlatform == build::Platform::host)
-    {
-    }
-
-    if (!IsIntialized())
+    if (!IsEnabled())
     {
       throw Exception(
           std::errc::operation_not_permitted,
@@ -412,12 +420,12 @@ class I2c final : public sjsu::I2c
       }
     }
 
-    // Ensure that start is cleared before leaving this function
+    // Ensure that start is cleared before leaving this function, to end the
+    // transaction.
     i2c_.registers->CONCLR = Control::kStart;
   }
 
   const Bus_t & i2c_;
-  units::frequency::hertz_t clock_rate_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

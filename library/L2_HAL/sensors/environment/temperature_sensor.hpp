@@ -1,30 +1,20 @@
 #pragma once
 
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
 {
 /// An abstract interface for temperature sensing device drivers.
-class TemperatureSensor
+class TemperatureSensor : public Module
 {
  public:
-  /// Initialize peripherals. This must be called before any other
-  /// method in this interface is called.
-  ///
-  /// @return Error_t if an error occurred during initialization
-  virtual void Initialize() const = 0;
-
-  /// Call this after Initialize to enable the sensor.
-  ///
-  /// @return Error_t if an error occurred when attempting to enable the device.
-  virtual void Enable() const = 0;
-
   /// Retrieves the temperature reading and writes the value to the designated
   /// memory address.
   ///
   /// @return Returns units::temperature::celsius_t on success. On error, will
   //          return Error_t.
-  virtual units::temperature::celsius_t GetTemperature() const = 0;
+  virtual units::temperature::celsius_t GetTemperature() = 0;
 };
 }  // namespace sjsu

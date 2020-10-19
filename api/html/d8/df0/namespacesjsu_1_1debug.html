@@ -90,6 +90,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aa174a60fc9de6bdb16b3ba2727319f20"><td class="memTemplParams" colspan="2">template&lt;size_t kNumberOfRowsBuffered = 1&gt; </td></tr>
 <tr class="memitem:aa174a60fc9de6bdb16b3ba2727319f20"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/df0/namespacesjsu_1_1debug.html#aa174a60fc9de6bdb16b3ba2727319f20">Hexdump</a> (void *address, size_t length)</td></tr>
 <tr class="separator:aa174a60fc9de6bdb16b3ba2727319f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c88fa971cb59a2ed4c1ca46f2897ca"><td class="memTemplParams" colspan="2">template&lt;size_t kNumberOfRowsBuffered = 1&gt; </td></tr>
+<tr class="memitem:a44c88fa971cb59a2ed4c1ca46f2897ca"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/df0/namespacesjsu_1_1debug.html#a44c88fa971cb59a2ed4c1ca46f2897ca">HexdumpDebug</a> (void *address, size_t length)</td></tr>
+<tr class="memdesc:a44c88fa971cb59a2ed4c1ca46f2897ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only prints hexdump if the log level for the application is above DEBUG.  <a href="#a44c88fa971cb59a2ed4c1ca46f2897ca">More...</a><br /></td></tr>
+<tr class="separator:a44c88fa971cb59a2ed4c1ca46f2897ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44929e35494f51f6ffe8297196977286"><td class="memItemLeft" align="right" valign="top">_Unwind_Reason_Code&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/df0/namespacesjsu_1_1debug.html#a44929e35494f51f6ffe8297196977286">PrintAddressAsList</a> (_Unwind_Context *context, void *depth_pointer)</td></tr>
 <tr class="separator:a44929e35494f51f6ffe8297196977286"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c61bb0742f7a7d5db3ef2fd20795210"><td class="memItemLeft" align="right" valign="top">_Unwind_Reason_Code&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/df0/namespacesjsu_1_1debug.html#a4c61bb0742f7a7d5db3ef2fd20795210">PrintAddressInRow</a> (_Unwind_Context *context, void *depth_pointer)</td></tr>
@@ -143,6 +147,46 @@ template&lt;size_t kNumberOfRowsBuffered = 1&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a44c88fa971cb59a2ed4c1ca46f2897ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44c88fa971cb59a2ed4c1ca46f2897ca">&#9670;&nbsp;</a></span>HexdumpDebug()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t kNumberOfRowsBuffered = 1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::debug::HexdumpDebug </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Only prints hexdump if the log level for the application is above DEBUG. </p>
 
 </div>
 </div>

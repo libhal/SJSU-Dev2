@@ -46,8 +46,8 @@ class InterruptController final : public sjsu::InterruptController
 
   /// This must be put into the interrupt vector table for all of the interrupts
   /// this lookup handler will work for in ROM at compile time.
-  /// @note This must not be executed directly, only by the processor when an
-  ///       interrupt occurs.
+  /// @note This function should only be called by the processor not by the
+  /// application.
   static void LookupHandler()
   {
     int active_interrupt     = (scb->ICSR & 0xFF);
@@ -131,7 +131,7 @@ class InterruptController final : public sjsu::InterruptController
   static void UnregisteredHandler()
   {
     sjsu::LogDebug(
-        "No interrupt handler found. Disabling interrupt request %d!",
+        "No interrupt handler found! Disabling interrupt request %d!",
         current_vector);
     if (current_vector >= 0)
     {

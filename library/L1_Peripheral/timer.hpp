@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <functional>
 
+#include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/interrupt.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
@@ -13,6 +14,9 @@ namespace sjsu
 /// keeping time, starting and stopping a hardware timer, and causing interrupts
 /// when the timer reaches a certain condition. This is not meant to be used for
 /// PWM generation, or other advanced feature.
+///
+/// (INCOMPLETE PERIPHERAL has not migrated to sjsu::Module)
+///
 /// @ingroup l1_peripheral
 class Timer
 {
@@ -81,4 +85,34 @@ class Timer
   /// Resets the timer.
   virtual void Reset() const = 0;
 };
+
+/// Template specialization that generates an inactive sjsu::Timer.
+template <>
+inline sjsu::Timer & GetInactive<sjsu::Timer>()
+{
+  class InactiveTimer : public sjsu::Timer
+  {
+   public:
+    void Initialize(units::frequency::hertz_t,
+                    InterruptCallback,
+                    int32_t) const override
+    {
+    }
+    void SetMatchBehavior(uint32_t, MatchAction, uint8_t) const override {}
+    uint32_t GetCount() const override
+    {
+      return 0;
+    }
+    uint8_t GetAvailableMatchRegisters() const override
+    {
+      return 3;
+    }
+    void Start() const override {}
+    void Stop() const override {}
+    void Reset() const override {}
+  };
+
+  static InactiveTimer inactive;
+  return inactive;
+}
 }  // namespace sjsu

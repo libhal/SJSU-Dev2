@@ -40,18 +40,6 @@ class Pin final : public sjsu::Pin
   inline static volatile PinTable_t * open_drain_map =
       reinterpret_cast<volatile PinTable_t *>(&LPC_PINCON->PINMODE_OD0);
 
-  /// Compile time Pin factory that test the port and pin variables to make sure
-  /// they are within bounds of the pin_config_register.
-  template <unsigned port_, unsigned pin_>
-  static constexpr Pin CreatePin()
-  {
-    static_assert(port_ <= 5, "Port must be between 0 and 5");
-    static_assert(pin_ <= 31, "Pin must be between 0 and 31");
-    static_assert(port_ < 5 || (port_ == 5 && pin_ <= 4),
-                  "For port 5, the pin number must be equal to or below 4");
-    return Pin(port_, pin_);
-  }
-
   /// Construct a pin for the specified port and pin numbers.
   ///
   /// @param port - port number for the pin you want to construct.
@@ -61,17 +49,35 @@ class Pin final : public sjsu::Pin
   {
   }
 
-  /// @note GPIO hardare is enabled and ready by default on reset.
-  void Initialize() const override {}
+  /// NOTE: GPIO hardare is enabled and ready by default on reset. This
+  /// initialize method only serves to check that the port and pin are correct,
+  /// and throws if they are not.
+  void ModuleInitialize() override
+  {
+    if (port_ > 5 && pin_ > 31)
+    {
+      throw Exception(
+          std::errc::invalid_argument,
+          "Port must be between 0 and 5 & Pin must be between 0 and 31");
+    }
+    if (port_ == 5 && pin_ > 4)
+    {
+      throw Exception(std::errc::invalid_argument,
+                      "For port 5, the pin number must be equal to or below 4");
+    }
+  }
 
-  void SetPinFunction(uint8_t function) const override
+  /// Does nothing
+  void ModuleEnable(bool = true) override {}
+
+  void ConfigureFunction(uint8_t function) override
   {
     uint32_t pin_reg_select = PinRegisterLookup();
     function_map->pin[pin_reg_select] =
         bit::Insert(function_map->pin[pin_reg_select], function, kPinMask);
   }
 
-  void SetPull(Resistor resistor) const override
+  void ConfigurePullResistor(Resistor resistor) override
   {
     static constexpr uint8_t kResistorModes[4] = {
       0b10,  // kNone     [0]
@@ -85,14 +91,14 @@ class Pin final : public sjsu::Pin
                     kResistorModes[Value(resistor)], kPinMask);
   }
 
-  /// Implement SetAsAnalogMode as deprecated and unsupported
-  [[deprecated("Unsupported operation")]] void SetAsAnalogMode(
-      bool) const override
+  /// Implement ConfigureAsAnalogMode as deprecated and unsupported
+  [[deprecated("Unsupported operation")]] void ConfigureAsAnalogMode(
+      bool = true) override
   {
     throw Exception(std::errc::operation_not_supported, "");
   }
 
-  void SetAsOpenDrain(bool set_as_open_drain = true) const override
+  void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
   {
     open_drain_map->pin[port_] =
         bit::Insert(open_drain_map->pin[port_], set_as_open_drain,

@@ -91,9 +91,10 @@ Collaboration diagram for sjsu::lpc17xx::UartPort:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/dd1/structsjsu_1_1lpc17xx_1_1UartPort__coll__graph.png" border="0" usemap="#sjsu_1_1lpc17xx_1_1UartPort_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc17xx_1_1UartPort_coll__map" id="sjsu_1_1lpc17xx_1_1UartPort_coll__map">
-<area shape="rect" id="node2" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html" title="sjsu::lpc40xx::Uart\l::Port_t" alt="" coords="45,124,188,165"/>
-<area shape="rect" id="node3" href="../../d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="5,13,81,39"/>
-<area shape="rect" id="node4" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html" title="sjsu::SystemController\l::ResourceID" alt="" coords="105,5,275,47"/>
+<area shape="rect" id="node2" href="../../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html" title="sjsu::lpc40xx::Uart\l::Port_t" alt="" coords="95,200,237,241"/>
+<area shape="rect" id="node3" href="../../d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="19,89,95,115"/>
+<area shape="rect" id="node4" href="../../d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="5,5,108,32"/>
+<area shape="rect" id="node5" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html" title="sjsu::SystemController\l::ResourceID" alt="" coords="119,81,288,123"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -131,7 +132,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers      = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_UART_TypeDef *<span class="keyword">&gt;</span>(LPC_UART0),</div><div class="line">    .power_on_id    = lpc40xx::SystemController::Peripherals::kUart0,</div><div class="line">    .tx             = kUart0Tx,</div><div class="line">    .rx             = kUart0Rx,</div><div class="line">    .tx_function_id = 0b01,</div><div class="line">    .rx_function_id = 0b01,</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers      = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_UART_TypeDef *<span class="keyword">&gt;</span>(LPC_UART0),</div><div class="line">    .power_on_id    = lpc40xx::SystemController::Peripherals::kUart0,</div><div class="line">    .tx             = uart0_tx,</div><div class="line">    .rx             = uart0_rx,</div><div class="line">    .tx_function_id = 0b01,</div><div class="line">    .rx_function_id = 0b01,</div><div class="line">  }</div></div><!-- fragment -->
 <p>Definition for uart port 0 for <a class="el" href="../../da/d08/namespacesjsu_1_1lpc40xx.html">lpc40xx</a>. </p>
 
 </div>
@@ -155,7 +156,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers      = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_UART_TypeDef *<span class="keyword">&gt;</span>(LPC_UART2),</div><div class="line">    .power_on_id    = lpc40xx::SystemController::Peripherals::kUart2,</div><div class="line">    .tx             = kUart2Tx,</div><div class="line">    .rx             = kUart2Rx,</div><div class="line">    .tx_function_id = 0b010,</div><div class="line">    .rx_function_id = 0b010,</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers      = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_UART_TypeDef *<span class="keyword">&gt;</span>(LPC_UART2),</div><div class="line">    .power_on_id    = lpc40xx::SystemController::Peripherals::kUart2,</div><div class="line">    .tx             = uart2_tx,</div><div class="line">    .rx             = uart2_rx,</div><div class="line">    .tx_function_id = 0b010,</div><div class="line">    .rx_function_id = 0b010,</div><div class="line">  }</div></div><!-- fragment -->
 <p>Definition for uart port 1 for <a class="el" href="../../da/d08/namespacesjsu_1_1lpc40xx.html">lpc40xx</a>. </p>
 
 </div>
@@ -179,7 +180,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers      = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_UART_TypeDef *<span class="keyword">&gt;</span>(LPC_UART3),</div><div class="line">    .power_on_id    = lpc40xx::SystemController::Peripherals::kUart3,</div><div class="line">    .tx             = kUart3Tx,</div><div class="line">    .rx             = kUart3Rx,</div><div class="line">    .tx_function_id = 0b010,</div><div class="line">    .rx_function_id = 0b010,</div><div class="line">  }</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">    .registers      = <span class="keyword">reinterpret_cast&lt;</span>lpc40xx::LPC_UART_TypeDef *<span class="keyword">&gt;</span>(LPC_UART3),</div><div class="line">    .power_on_id    = lpc40xx::SystemController::Peripherals::kUart3,</div><div class="line">    .tx             = uart3_tx,</div><div class="line">    .rx             = uart3_rx,</div><div class="line">    .tx_function_id = 0b010,</div><div class="line">    .rx_function_id = 0b010,</div><div class="line">  }</div></div><!-- fragment -->
 <p>Definition for uart port 2 for <a class="el" href="../../da/d08/namespacesjsu_1_1lpc40xx.html">lpc40xx</a>. </p>
 
 </div>

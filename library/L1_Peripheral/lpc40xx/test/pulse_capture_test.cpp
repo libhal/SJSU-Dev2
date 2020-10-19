@@ -1,6 +1,7 @@
+#include "L1_Peripheral/lpc40xx/pulse_capture.hpp"
+
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/pulse_capture.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/enum.hpp"
 #include "utility/error_handling.hpp"
@@ -32,7 +33,8 @@ TEST_CASE("Testing lpc40xx Pulse Capture")
   static Mock<sjsu::Pin> mock_pin0;
   static Mock<sjsu::Pin> mock_pin1;
 
-  Fake(Method(mock_pin0, SetPinFunction), Method(mock_pin1, SetPinFunction));
+  Fake(Method(mock_pin0, ConfigureFunction),
+       Method(mock_pin1, ConfigureFunction));
 
   sjsu::Pin & capture0_input_pin = mock_pin0.get();
   sjsu::Pin & capture1_input_pin = mock_pin1.get();

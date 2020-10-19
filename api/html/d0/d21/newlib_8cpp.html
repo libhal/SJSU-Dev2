@@ -88,15 +88,23 @@ $(function() {
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &quot;L0_Platform/ram.hpp&quot;</code><br />
-<code>#include &quot;<a class="el" href="../../db/dbe/macros_8hpp_source.html">utility/macros.hpp</a>&quot;</code><br />
 <code>#include &quot;third_party/semihost/trace.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../de/d94/ansi__terminal__codes_8hpp_source.html">utility/ansi_terminal_codes.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../da/d85/error__handling_8hpp_source.html">utility/error_handling.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../db/dbe/macros_8hpp_source.html">utility/macros.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for newlib.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../da/dc9/newlib_8cpp__incl.png" border="0" usemap="#_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2newlib_2newlib_8cpp" alt=""/></div>
 <map name="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2newlib_2newlib_8cpp" id="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2newlib_2newlib_8cpp">
-<area shape="rect" id="node2" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="21,117,161,143"/>
-<area shape="rect" id="node12" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="940,117,1080,143"/>
+<area shape="rect" id="node2" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="726,117,866,143"/>
+<area shape="rect" id="node14" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="238,109,391,151"/>
+<area shape="rect" id="node21" href="../../da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="472,117,659,143"/>
+<area shape="rect" id="node25" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1737,117,1877,143"/>
+<area shape="rect" id="node15" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="182,206,271,233"/>
+<area shape="rect" id="node16" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="385,288,527,315"/>
+<area shape="rect" id="node17" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="97,288,213,315"/>
+<area shape="rect" id="node18" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="237,288,361,315"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -126,8 +134,10 @@ Functions</h2></td></tr>
 <tr class="separator:af268e896cd802cda85b1926b9b7365bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1a4459ed37d5ec64628f8f33721e7b5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/newlib_8cpp.html#ae1a4459ed37d5ec64628f8f33721e7b5">_isatty_r</a> ([[maybe_unused]] int file)</td></tr>
 <tr class="separator:ae1a4459ed37d5ec64628f8f33721e7b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b0bf80541201ad613e391af381bdcae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/newlib_8cpp.html#a6b0bf80541201ad613e391af381bdcae">_exit</a> ([[maybe_unused]] int rc)</td></tr>
-<tr class="separator:a6b0bf80541201ad613e391af381bdcae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34c32cab0ba06aa5adc98ba052d00914"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/newlib_8cpp.html#a34c32cab0ba06aa5adc98ba052d00914">HandleExceptionPointer</a> (std::exception_ptr exception_pointer)</td></tr>
+<tr class="separator:a34c32cab0ba06aa5adc98ba052d00914"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92f3a2a875b4e08083b83d032adddc4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/newlib_8cpp.html#a92f3a2a875b4e08083b83d032adddc4d">_exit</a> (int rc)</td></tr>
+<tr class="separator:a92f3a2a875b4e08083b83d032adddc4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c48433db9c04031772d5b36e6c4411d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/newlib_8cpp.html#a5c48433db9c04031772d5b36e6c4411d">scanf</a> (const char *format,...)</td></tr>
 <tr class="separator:a5c48433db9c04031772d5b36e6c4411d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -150,8 +160,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6b0bf80541201ad613e391af381bdcae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b0bf80541201ad613e391af381bdcae">&#9670;&nbsp;</a></span>_exit()</h2>
+<a id="a92f3a2a875b4e08083b83d032adddc4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92f3a2a875b4e08083b83d032adddc4d">&#9670;&nbsp;</a></span>_exit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,7 +169,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void _exit </td>
           <td>(</td>
-          <td class="paramtype">[[maybe_unused] ] int&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>rc</em></td><td>)</td>
           <td></td>
         </tr>
@@ -401,6 +411,24 @@ Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a34c32cab0ba06aa5adc98ba052d00914"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34c32cab0ba06aa5adc98ba052d00914">&#9670;&nbsp;</a></span>HandleExceptionPointer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HandleExceptionPointer </td>
+          <td>(</td>
+          <td class="paramtype">std::exception_ptr&#160;</td>
+          <td class="paramname"><em>exception_pointer</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">

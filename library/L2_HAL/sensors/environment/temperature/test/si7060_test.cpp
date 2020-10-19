@@ -1,4 +1,5 @@
 #include "L2_HAL/sensors/environment/temperature/si7060.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
@@ -15,13 +16,18 @@ TEST_CASE("Si7060")
   SECTION("Initialize")
   {
     // Setup
-    Fake(Method(mock_i2c, Initialize));
+    Fake(Method(mock_i2c, ModuleInitialize));
+    Fake(Method(mock_i2c, ConfigureClockRate));
+    Fake(Method(mock_i2c, ModuleEnable));
 
     // Exercise
-    temperature_sensor.Initialize();
+    temperature_sensor.ModuleInitialize();
 
     // Verify
-    Verify(Method(mock_i2c, Initialize)).Once();
+    Verify(Method(mock_i2c, ModuleInitialize),
+           Method(mock_i2c, ConfigureClockRate),
+           Method(mock_i2c, ModuleEnable))
+        .Once();
   }
 
   SECTION("Enable")
@@ -38,7 +44,7 @@ TEST_CASE("Si7060")
               });
 
       // Exercise
-      SJ2_CHECK_EXCEPTION(temperature_sensor.Enable(),
+      SJ2_CHECK_EXCEPTION(temperature_sensor.ModuleEnable(),
                           std::errc::no_such_device);
 
       // Verify
@@ -54,7 +60,7 @@ TEST_CASE("Si7060")
           });
 
       // Exercise
-      temperature_sensor.Enable();
+      temperature_sensor.ModuleEnable();
 
       // Verify
       Verify(Method(mock_i2c, Transaction)).Once();

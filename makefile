@@ -201,8 +201,8 @@ TOOLCHAIN_DIR = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-nano-exceptions/$(OS)
 SJCLANG          = $(shell cd $(TOOLCHAIN_DIR)/clang+llvm-*/ ; pwd)
 SJARMGCC         = $(shell cd $(TOOLCHAIN_DIR)/gcc-arm-none-eabi-*/ ; pwd)
 SJ2_OPENOCD_DIR  = $(shell grep -q Microsoft /proc/version && \
-                           echo "$(SJSU_DEV2_BASE)/tools/openocd-wsl" || \
-                           echo "$(SJSU_DEV2_BASE)/tools/openocd")
+                           echo "$(TOOLCHAIN_DIR)/openocd-wsl" || \
+                           echo "$(TOOLCHAIN_DIR)/openocd")
 SJ2_OPENOCD_EXE  = $(shell grep -q Microsoft /proc/version && \
                            echo "openocd.exe" || echo "openocd")
 OPENOCD          = $(SJ2_OPENOCD_DIR)/bin/$(SJ2_OPENOCD_EXE)
@@ -412,7 +412,6 @@ run-test:
 
 test: | clean-coverage $(TEST_EXECUTABLE)
 	+@$(MAKE) run-test --no-print-directory
-	+@$(MAKE) coverage --no-print-directory
 
 
 # ==============================================================================

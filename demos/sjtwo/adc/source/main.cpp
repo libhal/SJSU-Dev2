@@ -1,6 +1,6 @@
+#include <array>
 #include <cstdint>
 
-#include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/lpc40xx/adc.hpp"
 #include "utility/log.hpp"
 #include "utility/map.hpp"
@@ -13,6 +13,7 @@ int main()
   sjsu::LogInfo("Creating ADC object and selecting ADC channel 4 & 5");
   sjsu::LogInfo("ADC channel 4 is connected to pin P1.30");
   sjsu::lpc40xx::Adc adc4(sjsu::lpc40xx::Adc::Channel::kChannel4);
+
   sjsu::LogInfo("ADC channel 5 is connected to pin P1.31");
   sjsu::lpc40xx::Adc adc5(sjsu::lpc40xx::Adc::Channel::kChannel5);
 
@@ -21,36 +22,45 @@ int main()
       "state, and in this state, the voltage read from this pin will be "
       "random.");
 
-  sjsu::LogInfo("Initializing ADC ...");
+  sjsu::LogInfo("Initializing ADCs ...");
   adc5.Initialize();
   adc4.Initialize();
-  sjsu::LogInfo("Initializing ADC Complete!");
+  sjsu::LogInfo("Initializing ADCs Complete!");
 
-  sjsu::LogInfo(
-      "Apply a voltage from 0 to 3.3V (BE SUPER SURE not to apply more then "
-      "3.3V or you WILL damage your board).");
+  sjsu::LogInfo("Enabling ADCs ...");
+  adc5.Enable();
+  adc4.Enable();
+  sjsu::LogInfo("Enabling ADCs Complete!");
+
+  sjsu::LogInfo("Apply voltage from 0 to 3.3V. DO NOT GO BEYOND THIS LIMIT!");
 
   while (true)
   {
-    // Now that conversion is complete, read the value like so.
-    uint32_t adc_digital_value[2];
-    float voltage[2];
-
     // For the LPC40xx with a 12-bit ADC, lowest and highest values are 0 to
-    // 1023, where as the lowest and highest voltages are between 0 and 3.3V
+    // 4095, where as the lowest and highest voltages are between 0 and 3.3V
 
-    // Now that conversion is complete, read the value like so.
-    adc_digital_value[0] = adc5.Read();
-    adc_digital_value[1] = adc4.Read();
-    // For the LPC40xx with a 12-bit ADC, lowest and highest values are 0 to
-    // 1023, where as the lowest and highest voltages are between 0 and 3.3V
-    voltage[0] = sjsu::Map(adc_digital_value[0], 0, 4095, 0.0f, 3.3f);
-    voltage[1] = sjsu::Map(adc_digital_value[1], 0, 4095, 0.0f, 3.3f);
+    // Using the Read() API, you can get a value from the 0 to 4095.
+    uint32_t digital_value = adc4.Read();
 
-    sjsu::LogInfo("voltage[0] = %f V (%lu) :: voltage[1] = %f V (%lu)",
-                  static_cast<double>(voltage[0]), adc_digital_value[0],
-                  static_cast<double>(voltage[1]), adc_digital_value[1]);
+    // Now we convert the digital_value into a float from 0.0 and 3.3 to get the
+    // voltage.
+    float voltage =
+        sjsu::Map(digital_value, 0, adc4.GetMaximumValue(), 0.0f, 3.3f);
+
+    // OR
+
+    // A more convenient way to do this is to simply grab the voltage from the
+    // ADC. The method will handle the conversion from digital value to the ADCs
+    // actual voltage.
+    units::voltage::volt_t adc_voltage = adc5.Voltage();
+
+    sjsu::LogInfo("ADC4 = %.5f V (%04lu) :: ADC5 voltage = %.5f V",
+                  static_cast<double>(voltage),
+                  digital_value,
+                  adc_voltage.to<double>());
+
     sjsu::Delay(250ms);
   }
+
   return 0;
 }

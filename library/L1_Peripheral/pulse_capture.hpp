@@ -8,16 +8,18 @@
 
 namespace sjsu
 {
-/// Pulse capture library
+/// Pulse capture library (INCOMPLETE, does not use sjsu::Module yet)
+///
 /// @ingroup l1_peripheral
 class PulseCapture
 {
  public:
-  /// Structure containing information collected during a capture event
+    /// Structure containing information collected during a capture event
   struct CaptureStatus_t
   {
     /// Timer count at the point in time a capture event was triggered
     uint32_t count;
+
     /// Capture status flags at the point in time a capture event was triggered
     uint32_t flags;
   };
@@ -44,5 +46,4 @@ class PulseCapture
   /// Enable or disable capture interrupts
   virtual void EnableCaptureInterrupt(bool enabled) const = 0;
 };
-
 }  // namespace sjsu

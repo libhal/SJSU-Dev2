@@ -1,3 +1,4 @@
 <map id="sjsu::PixelDisplay" name="sjsu::PixelDisplay">
-<area shape="rect" id="node2" href="$db/d32/classsjsu_1_1Ssd1306.html" title="sjsu::Ssd1306" alt="" coords="19,80,129,107"/>
+<area shape="rect" id="node3" href="$db/d32/classsjsu_1_1Ssd1306.html" title="sjsu::Ssd1306" alt="" coords="19,155,129,181"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="23,5,125,32"/>
 </map>

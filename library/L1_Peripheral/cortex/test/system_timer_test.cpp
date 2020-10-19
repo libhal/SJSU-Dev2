@@ -1,9 +1,10 @@
 // Test for Pin class.
 // Using a test by side effect on the Cortex M4 SysTick register
-#include "config.hpp"
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/cortex/system_timer.hpp"
+
+#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "config.hpp"
 
 namespace sjsu::cortex
 {
@@ -47,54 +48,45 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
   using ResourceID = sjsu::SystemController::ResourceID;
 
   constexpr uint8_t kExpectedPriority = 3;
-  constexpr ResourceID kId            = ResourceID::Define<0>();
-  SystemTimer test_subject(kId, kExpectedPriority);
+  SystemTimer test_subject(ResourceID::Define<0>(), kExpectedPriority);
 
   SECTION("Initialize()")
   {
+    // Exercise
+    test_subject.ModuleInitialize();
+
+    // Verify
+    // Verify: Check that the DWT time was initialized properly
+    CHECK(CoreDebug_DEMCR_TRCENA_Msk == local_core.DEMCR);
+    CHECK(0 == local_dwt.CYCCNT);
+    CHECK(DWT_CTRL_CYCCNTENA_Msk == local_dwt.CTRL);
+  }
+
+  SECTION("SetTickFrequency generate desired frequency")
+  {
     // Setup
-    constexpr uint32_t kClockFrequencyInt = kClockFrequency.to<uint32_t>();
+    constexpr auto kFrequency         = 1_kHz;
+    constexpr auto kExpectedLoadValue = (kClockFrequency / kFrequency) - 1;
+    constexpr auto kClockFrequencyInt = kClockFrequency.to<uint32_t>();
     constexpr auto kExpectedTicksPerMillisecond =
         kClockFrequencyInt / 1000 /* ms/s */;
     constexpr auto kExpectedNanosecondsPerTick =
         (SystemTimer::kFixedPointScaling * 1'000'000'000ns) /
         kClockFrequencyInt;
 
+    // Setup: Set LOAD to zero
+    local_systick.LOAD = 0;
+
     // Exercise
-    test_subject.Initialize();
+    test_subject.ConfigureTickFrequency(kFrequency);
 
     // Verify
-    CHECK(CoreDebug_DEMCR_TRCENA_Msk == local_core.DEMCR);
-    CHECK(0 == local_dwt.CYCCNT);
-    CHECK(DWT_CTRL_CYCCNTENA_Msk == local_dwt.CTRL);
-
     CHECK(kExpectedTicksPerMillisecond == SystemTimer::ticks_per_millisecond);
     CHECK(kExpectedNanosecondsPerTick == SystemTimer::nanoseconds_per_tick);
+    CHECK(kExpectedLoadValue.to<uint32_t>() == local_systick.LOAD);
   }
 
-  SECTION("SetTickFrequency generate desired frequency")
-  {
-    constexpr auto kDivisibleFrequency = 1_kHz;
-    local_systick.LOAD                 = 0;
-
-    CHECK(0 == test_subject.SetTickFrequency(kDivisibleFrequency));
-    constexpr uint32_t kExpectedLoadValue =
-        (kClockFrequency / kDivisibleFrequency) - 1;
-    CHECK(kExpectedLoadValue == local_systick.LOAD);
-  }
-
-  SECTION("SetTickFrequency should return remainder of ticks mismatch")
-  {
-    constexpr auto kOddFrequency = 7_Hz;
-    local_systick.LOAD           = 0;
-
-    CHECK(kClockFrequency.to<uint32_t>() % kOddFrequency.to<uint32_t>() ==
-          test_subject.SetTickFrequency(kOddFrequency));
-    CHECK(((kClockFrequency / kOddFrequency) - 1).to<uint32_t>() ==
-          local_systick.LOAD);
-  }
-
-  SECTION("Start Timer should set necessary SysTick Ctrl bits and set VAL to 0")
+  SECTION("Enable()")
   {
     // Setup
     // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
@@ -102,11 +94,12 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     constexpr uint8_t kTickIntMask   = 0b0010;
     constexpr uint8_t kClkSourceMask = 0b0100;
     constexpr uint32_t kMask = kEnableMask | kTickIntMask | kClkSourceMask;
-    local_systick.VAL        = 0xBEEF;
-    local_systick.LOAD       = 1000;
+
+    local_systick.LOAD = 1000;
+    local_systick.VAL  = 0xBEEF;
 
     // Exercise
-    test_subject.StartTimer();
+    test_subject.ModuleEnable();
 
     // Verify
     CHECK(kMask == local_systick.CTRL);
@@ -119,8 +112,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
             }));
   }
 
-  SECTION(
-      "StartTimer should return false and set no bits if LOAD is set to zero")
+  SECTION("Enable() should throw exception if LOAD is 0")
   {
     // Setup
     // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
@@ -132,7 +124,8 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     local_systick.VAL  = 0xBEEF;
 
     // Exercise
-    SJ2_CHECK_EXCEPTION(test_subject.StartTimer(), std::errc::invalid_argument);
+    SJ2_CHECK_EXCEPTION(test_subject.ModuleEnable(),
+                        std::errc::invalid_argument);
 
     // Verify
     CHECK(kClkSourceMask == local_systick.CTRL);
@@ -140,7 +133,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     Verify(Method(mock_interrupt_controller, Enable)).Never();
   }
 
-  SECTION("DisableTimer should clear all bits")
+  SECTION("Disable Timer should clear all bits")
   {
     // Setup
     // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
@@ -152,21 +145,22 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     local_systick.LOAD       = 1000;
 
     // Exercise
-    test_subject.DisableTimer();
+    test_subject.ModuleEnable(false);
 
     // Verify
-    CHECK(0 == local_systick.CTRL);
+    // Verify: The control should not change as unfortunately, the SystemTick
+    //         Timer will not come back after being enabled.
+    CHECK(kMask == local_systick.CTRL);
   }
 
-  SECTION(
-      "SetInterrupt set SystemTimer::system_timer_callback to dummy_function")
+  SECTION("ConfigureCallback()")
   {
     // Setup
     bool was_called     = false;
     auto dummy_function = [&was_called](void) { was_called = true; };
 
     // Exercise
-    test_subject.SetCallback(dummy_function);
+    test_subject.ConfigureCallback(dummy_function);
     test_subject.SystemTimerHandler();
 
     // Verify

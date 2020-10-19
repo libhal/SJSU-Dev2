@@ -1,19 +1,20 @@
 #pragma once
 
-#include <array>
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <initializer_list>
-#include <scope>
+#include <span>
 
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 
 namespace sjsu
 {
 /// The common interface for the CANBUS peripherals.
 /// @ingroup l1_peripheral
-class Can
+class Can : public Module
 {
  public:
   // ===========================================================================
@@ -46,6 +47,12 @@ class Can
     /// are ignored. Length shall have the length of requested data to get back
     /// from the device responsible for message id.
     bool is_remote_request = false;
+
+    void SetPayload(std::span<const uint8_t> data)
+    {
+      std::copy_n(
+          data.begin(), std::min(payload.size(), data.size()), payload.begin());
+    }
   };
 
   /// Standard baud rate for most CANBUS networks
@@ -55,29 +62,33 @@ class Can
   // Interface Methods
   // ===========================================================================
 
-  /// Initialize the CANBUS peripheral. Must be called before calling anything
-  /// else in the driver.
-  virtual void Initialize() const = 0;
+  // ---------------------------------------------------------------------------
+  // Configuration Methods
+  // ---------------------------------------------------------------------------
 
-  /// Enables CANBUS and allows communication. Must be called after Initialize()
-  /// before using this driver.
-  virtual void Enable() const = 0;
+  /// @param baud - baud rate to configure the CANBUS to
+  virtual void ConfigureBaudRate(
+      units::frequency::hertz_t baud = kStandardBaudRate) = 0;
+
+  // ---------------------------------------------------------------------------
+  // Usage Methods
+  // ---------------------------------------------------------------------------
 
   /// Send a message via CANBUS to the designated device with the supplied ID
   ///
   /// @param message - Message containing the CANBUS contents.
-  virtual void Send(const Message_t & message) const = 0;
+  virtual void Send(const Message_t & message) = 0;
 
   /// Receive data via CANBUS
   ///
   /// @return retrieved can message. Will return with length field = 0 if no
   /// messages exist.
-  virtual Message_t Receive() const = 0;
+  virtual Message_t Receive() = 0;
 
   /// Checks if there is a message available for this channel.
   ///
   /// @returns true a message was received.
-  virtual bool HasData() const = 0;
+  virtual bool HasData() = 0;
 
   /// Determine if you can communicate over the bus.
   ///
@@ -85,15 +96,11 @@ class Can
   ///             the bus.
   /// @return true - on success
   /// @return false - on failure
-  virtual bool SelfTest(uint32_t id) const = 0;
+  virtual bool SelfTest(uint32_t id) = 0;
 
   /// @return true - if the device is "bus Off"
   /// @return false - if the device is NOT "bus off"
-  virtual bool IsBusOff() const = 0;
-
-  /// @param baud - baud rate to configure the CANBUS to
-  virtual void SetBaudRate(
-      units::frequency::hertz_t baud = kStandardBaudRate) const = 0;
+  virtual bool IsBusOff() = 0;
 
   // ===========================================================================
   // Utility Methods
@@ -105,16 +112,30 @@ class Can
   /// @param payload - array literal payload to send to the device with ID
   /// @return true - on success
   /// @return false - on failure
-  void Send(uint32_t id, std::initializer_list<uint8_t> payload) const
+  void Send(uint32_t id, std::initializer_list<uint8_t> payload)
   {
     Message_t message;
 
     message.id     = id;
     message.length = static_cast<uint8_t>(payload.size());
+    message.SetPayload(payload);
 
-    std::copy_n(payload.begin(),
-                std::min(payload.size(), message.payload.size()),
-                message.payload.begin());
+    return Send(message);
+  }
+
+  /// Send a message via CANBUS to the designated device with the supplied ID
+  ///
+  /// @param id - ID to send the data to.
+  /// @param payload - uint8_t span payload to send to the device with ID
+  /// @return true - on success
+  /// @return false - on failure
+  void Send(uint32_t id, std::span<const uint8_t> payload)
+  {
+    Message_t message;
+
+    message.id     = id;
+    message.length = static_cast<uint8_t>(payload.size());
+    message.SetPayload(payload);
 
     return Send(message);
   }

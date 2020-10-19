@@ -91,7 +91,8 @@ Inheritance diagram for sjsu::cortex::SystemTimer:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../db/d53/classsjsu_1_1cortex_1_1SystemTimer__inherit__graph.png" border="0" usemap="#sjsu_1_1cortex_1_1SystemTimer_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1cortex_1_1SystemTimer_inherit__map" id="sjsu_1_1cortex_1_1SystemTimer_inherit__map">
-<area shape="rect" id="node2" href="../../de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="30,5,173,32"/>
+<area shape="rect" id="node2" href="../../de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="30,80,173,107"/>
+<area shape="rect" id="node3" href="../../d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="50,5,153,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -99,8 +100,9 @@ Collaboration diagram for sjsu::cortex::SystemTimer:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d54/classsjsu_1_1cortex_1_1SystemTimer__coll__graph.png" border="0" usemap="#sjsu_1_1cortex_1_1SystemTimer_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1cortex_1_1SystemTimer_coll__map" id="sjsu_1_1cortex_1_1SystemTimer_coll__map">
-<area shape="rect" id="node2" href="../../de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="5,5,148,32"/>
-<area shape="rect" id="node3" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html" title="sjsu::cortex::DwtCounter" alt="" coords="172,5,355,32"/>
+<area shape="rect" id="node2" href="../../de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="5,81,148,108"/>
+<area shape="rect" id="node3" href="../../d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="25,5,128,32"/>
+<area shape="rect" id="node4" href="../../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html" title="sjsu::cortex::DwtCounter" alt="" coords="172,81,355,108"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -112,25 +114,67 @@ Public Types</h2></td></tr>
 <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aff5684f22abe41dfad000cfd9df31991a150ab0c2842137c560de2391e250717d">kCountFlag</a> = 16
  }</td></tr>
 <tr class="separator:aff5684f22abe41dfad000cfd9df31991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classsjsu_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classsjsu_1_1Module')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a></td></tr>
+<tr class="memitem:a112d5ca5bc39486088c225ad62685a6b inherit pub_types_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b">State::kReset</a>, 
+<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bab661416dbe99f1eddca1a5547a8bd720">State::kInitialized</a>, 
+<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bade1ec1870756a80dffbdc4cda53153e0">State::kEnabled</a>, 
+<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6ba7b04d8795f5fd03c761ce70dab985fee">State::kDisabled</a>, 
+<br />
+&#160;&#160;<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6ba5a20548c220f372fc701cae6de94040b">State::kCritical</a>
+<br />
+ }</td></tr>
+<tr class="separator:a112d5ca5bc39486088c225ad62685a6b inherit pub_types_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7ac3f131e3e0831f4705499ece5ee440"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a7ac3f131e3e0831f4705499ece5ee440">SystemTimer</a> (<a class="el" href="../../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html">sjsu::SystemController::ResourceID</a> id, uint8_t priority=-1)</td></tr>
 <tr class="separator:a7ac3f131e3e0831f4705499ece5ee440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a9fecf977b3d1f5f8d1c8be0a297a6618">Initialize</a> () const override</td></tr>
-<tr class="memdesc:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize system timer hardware.  <a href="#a9fecf977b3d1f5f8d1c8be0a297a6618">More...</a><br /></td></tr>
-<tr class="separator:a9fecf977b3d1f5f8d1c8be0a297a6618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc2d3bf8f5a4a566759167111232b722"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#abc2d3bf8f5a4a566759167111232b722">SetCallback</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> isr) const override</td></tr>
-<tr class="separator:abc2d3bf8f5a4a566759167111232b722"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a3a4b8207deb4bcd297e77959bc38eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a8a3a4b8207deb4bcd297e77959bc38eb">StartTimer</a> () const override</td></tr>
-<tr class="separator:a8a3a4b8207deb4bcd297e77959bc38eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb7441308a247bcc389f0aa20132f334"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#adb7441308a247bcc389f0aa20132f334">SetTickFrequency</a> (units::frequency::hertz_t frequency) const override</td></tr>
-<tr class="separator:adb7441308a247bcc389f0aa20132f334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae32cee03db076d63e387ea1f37f0ee4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ae32cee03db076d63e387ea1f37f0ee4f">ModuleInitialize</a> () override</td></tr>
+<tr class="separator:ae32cee03db076d63e387ea1f37f0ee4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02ae1efef5b1a596538326fea1843df0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a02ae1efef5b1a596538326fea1843df0">ModuleEnable</a> (bool enable=true) override</td></tr>
+<tr class="separator:a02ae1efef5b1a596538326fea1843df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafd4618abfb3e39ede81d7dc3d82ea41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aafd4618abfb3e39ede81d7dc3d82ea41">ConfigureCallback</a> (<a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a> isr) override</td></tr>
+<tr class="separator:aafd4618abfb3e39ede81d7dc3d82ea41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d731934ddae3b5c3e33ffed6820a4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a92d731934ddae3b5c3e33ffed6820a4c">ConfigureTickFrequency</a> (units::frequency::hertz_t frequency) override</td></tr>
+<tr class="separator:a92d731934ddae3b5c3e33ffed6820a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classsjsu_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1Module')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a></td></tr>
+<tr class="memitem:acc0b3e493052c2e3fd7e43f01e98bf6e inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize</a> ()</td></tr>
+<tr class="separator:acc0b3e493052c2e3fd7e43f01e98bf6e inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03a485dea8009f6877a5cebb983b2f96 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a03a485dea8009f6877a5cebb983b2f96">Enable</a> (bool enable=true)</td></tr>
+<tr class="separator:a03a485dea8009f6877a5cebb983b2f96 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcda494fd9fb64cd390a2e516a4c18a0 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#abcda494fd9fb64cd390a2e516a4c18a0">GetState</a> () const</td></tr>
+<tr class="separator:abcda494fd9fb64cd390a2e516a4c18a0 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37e072bfe5762a0220221acc67576b99 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a37e072bfe5762a0220221acc67576b99">SetState</a> (<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a> new_state)</td></tr>
+<tr class="separator:a37e072bfe5762a0220221acc67576b99 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6255f5e6d0f25f57d9d0271aec21fe80 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a6255f5e6d0f25f57d9d0271aec21fe80">IsReset</a> () const</td></tr>
+<tr class="separator:a6255f5e6d0f25f57d9d0271aec21fe80 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74f1946eb1ab6ec4a9a22e9eab35dc3a inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a74f1946eb1ab6ec4a9a22e9eab35dc3a">RequiresConfiguration</a> () const</td></tr>
+<tr class="separator:a74f1946eb1ab6ec4a9a22e9eab35dc3a inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72bc161a2253446aabeb6f48707d6e0d inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a72bc161a2253446aabeb6f48707d6e0d">IsInitialized</a> () const</td></tr>
+<tr class="separator:a72bc161a2253446aabeb6f48707d6e0d inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa489ec4488a4e9c941c8c7c02eff8ee7 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#aa489ec4488a4e9c941c8c7c02eff8ee7">IsEnabled</a> () const</td></tr>
+<tr class="separator:aa489ec4488a4e9c941c8c7c02eff8ee7 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada36472841ce93619269973002bc5427 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ada36472841ce93619269973002bc5427">IsDisabled</a> () const</td></tr>
+<tr class="separator:ada36472841ce93619269973002bc5427 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26aad48f0938400f4aab63058252ab64 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a26aad48f0938400f4aab63058252ab64">IsCritical</a> () const</td></tr>
+<tr class="separator:a26aad48f0938400f4aab63058252ab64 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9001a72b5ff3d8c34baccb5caefe9146 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a9001a72b5ff3d8c34baccb5caefe9146">SetStateToReset</a> ()</td></tr>
+<tr class="separator:a9001a72b5ff3d8c34baccb5caefe9146 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af11709a7ddbc703de2a32d68de8204a3 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#af11709a7ddbc703de2a32d68de8204a3">SetStateToInitialized</a> ()</td></tr>
+<tr class="separator:af11709a7ddbc703de2a32d68de8204a3 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b715ea9844383667005702a98209e2a inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a7b715ea9844383667005702a98209e2a">SetStateToEnabled</a> ()</td></tr>
+<tr class="separator:a7b715ea9844383667005702a98209e2a inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66f68400f5f9e071899171cf95963e2e inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a66f68400f5f9e071899171cf95963e2e">SetStateToDisabled</a> ()</td></tr>
+<tr class="separator:a66f68400f5f9e071899171cf95963e2e inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08d12c914915199255dea68344a1fe2e inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a08d12c914915199255dea68344a1fe2e">SetStateToCritical</a> ()</td></tr>
+<tr class="separator:a08d12c914915199255dea68344a1fe2e inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00710b3cee10012793af0bf708376875 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a00710b3cee10012793af0bf708376875">~Module</a> ()=default</td></tr>
+<tr class="memdesc:a00710b3cee10012793af0bf708376875 inherit pub_methods_classsjsu_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructed of this base class calls the destructors of derived classes.  <a href="../../d1/ded/classsjsu_1_1Module.html#a00710b3cee10012793af0bf708376875">More...</a><br /></td></tr>
+<tr class="separator:a00710b3cee10012793af0bf708376875 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa13190bddfc1da090d3b3a445ee2eb5d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#aa13190bddfc1da090d3b3a445ee2eb5d">DisableTimer</a> ()</td></tr>
-<tr class="separator:aa13190bddfc1da090d3b3a445ee2eb5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a876dd71b2d954db5401a44bda10eaf64"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a876dd71b2d954db5401a44bda10eaf64">SystemTimerHandler</a> ()</td></tr>
 <tr class="memdesc:a876dd71b2d954db5401a44bda10eaf64"><td class="mdescLeft">&#160;</td><td class="mdescRight">System timer interrupt handler.  <a href="#a876dd71b2d954db5401a44bda10eaf64">More...</a><br /></td></tr>
 <tr class="separator:a876dd71b2d954db5401a44bda10eaf64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,6 +201,13 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:aa56845f054040a5d4c91899d3987dcc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afceab64a17cb45c34f4a8b4f1f7d100f"><td class="memItemLeft" align="right" valign="top">static constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#afceab64a17cb45c34f4a8b4f1f7d100f">kFixedPointScaling</a> = 1'000'000</td></tr>
 <tr class="separator:afceab64a17cb45c34f4a8b4f1f7d100f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classsjsu_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classsjsu_1_1Module')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a></td></tr>
+<tr class="memitem:a9f71ac69f51d176b0949f47c564b9f2d inherit pro_attribs_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a9f71ac69f51d176b0949f47c564b9f2d">state_</a> = <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b">State::kReset</a></td></tr>
+<tr class="memdesc:a9f71ac69f51d176b0949f47c564b9f2d inherit pro_attribs_classsjsu_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the state of the module. Default state of the module is kReset.  <a href="../../d1/ded/classsjsu_1_1Module.html#a9f71ac69f51d176b0949f47c564b9f2d">More...</a><br /></td></tr>
+<tr class="separator:a9f71ac69f51d176b0949f47c564b9f2d inherit pro_attribs_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html">SystemTimer</a> peripheral for all ARM Cortex-M series processors. </p>
@@ -228,8 +279,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa13190bddfc1da090d3b3a445ee2eb5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa13190bddfc1da090d3b3a445ee2eb5d">&#9670;&nbsp;</a></span>DisableTimer()</h2>
+<a id="aafd4618abfb3e39ede81d7dc3d82ea41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafd4618abfb3e39ede81d7dc3d82ea41">&#9670;&nbsp;</a></span>ConfigureCallback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,19 +289,62 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void sjsu::cortex::SystemTimer::DisableTimer </td>
+          <td class="memname">void sjsu::cortex::SystemTimer::ConfigureCallback </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Disables this system timer. </p><dl class="section warning"><dt>Warning</dt><dd>: Calling this function so will disable FreeRTOS. </dd></dl>
+<p>Set the function to be called when the System <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html">Timer</a> interrupt fires.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>- function to be called on system timer event. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#ad5f1462c3f843838f890fa3e7351d8f6">sjsu::SystemTimer</a>.</p>
+
+</div>
+</div>
+<a id="a92d731934ddae3b5c3e33ffed6820a4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92d731934ddae3b5c3e33ffed6820a4c">&#9670;&nbsp;</a></span>ConfigureTickFrequency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::cortex::SystemTimer::ConfigureTickFrequency </td>
+          <td>(</td>
+          <td class="paramtype">units::frequency::hertz_t&#160;</td>
+          <td class="paramname"><em>frequency</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frequency</td><td>set the frequency that SystemTick counter will run. If it is above the maximum SystemTick value 2^24 [SysTick_LOAD_RELOAD_Msk], the value is ceiled to SysTick_LOAD_RELOAD_Msk. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#a395a9c0ebc6e52030538e2432b1da65b">sjsu::SystemTimer</a>.</p>
 
 </div>
 </div>
@@ -280,8 +374,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9fecf977b3d1f5f8d1c8be0a297a6618"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fecf977b3d1f5f8d1c8be0a297a6618">&#9670;&nbsp;</a></span>Initialize()</h2>
+<a id="a02ae1efef5b1a596538326fea1843df0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02ae1efef5b1a596538326fea1843df0">&#9670;&nbsp;</a></span>ModuleEnable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -290,10 +384,11 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void sjsu::cortex::SystemTimer::Initialize </td>
+          <td class="memname">void sjsu::cortex::SystemTimer::ModuleEnable </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em> = <code>true</code></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -302,50 +397,20 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Initialize system timer hardware. </p>
-
-<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#a07b5f947f4877beb5026f469bb3f623d">sjsu::SystemTimer</a>.</p>
-
-</div>
-</div>
-<a id="abc2d3bf8f5a4a566759167111232b722"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc2d3bf8f5a4a566759167111232b722">&#9670;&nbsp;</a></span>SetCallback()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::cortex::SystemTimer::SetCallback </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7">InterruptCallback</a>&#160;</td>
-          <td class="paramname"><em>callback</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Set the function to be called when the System <a class="el" href="../../dd/d31/classsjsu_1_1Timer.html">Timer</a> interrupt fires.</p>
+<p><a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> Implementation of Enable.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">callback</td><td>- function to be called on system timer event. </td></tr>
+    <tr><td class="paramname">enable</td><td>- if true, will enable the module, if false, will disabled </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#aeaf96515f7680302d871fcbe2d91e151">sjsu::SystemTimer</a>.</p>
+<p>Implements <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ab1f4ae70c9be02bd7956ff9a07944dd8">sjsu::Module</a>.</p>
 
 </div>
 </div>
-<a id="adb7441308a247bcc389f0aa20132f334"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb7441308a247bcc389f0aa20132f334">&#9670;&nbsp;</a></span>SetTickFrequency()</h2>
+<a id="ae32cee03db076d63e387ea1f37f0ee4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae32cee03db076d63e387ea1f37f0ee4f">&#9670;&nbsp;</a></span>ModuleInitialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,45 +419,10 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t sjsu::cortex::SystemTimer::SetTickFrequency </td>
-          <td>(</td>
-          <td class="paramtype">units::frequency::hertz_t&#160;</td>
-          <td class="paramname"><em>frequency</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">frequency</td><td>set the frequency that SystemTick counter will run. If it is above the maximum SystemTick value 2^24 [SysTick_LOAD_RELOAD_Msk], the value is ceiled to SysTick_LOAD_RELOAD_Msk. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>if the freqency was not divisible by the clock frequency, the remainder will be returned. If the freqency supplied is less then 1Hz, the function will return without changing any hardware and return -1. If the reload value exceeds the SysTick_LOAD_RELOAD_Msk, the returned value is the SysTick_LOAD_RELOAD_Msk. </dd></dl>
-
-<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#ac4f771d7b99ce43ea158018504c4fc0a">sjsu::SystemTimer</a>.</p>
-
-</div>
-</div>
-<a id="a8a3a4b8207deb4bcd297e77959bc38eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a3a4b8207deb4bcd297e77959bc38eb">&#9670;&nbsp;</a></span>StartTimer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::cortex::SystemTimer::StartTimer </td>
+          <td class="memname">void sjsu::cortex::SystemTimer::ModuleInitialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -401,9 +431,10 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Start the system timer. Should be done after SetInterrupt and SetTickFrequency have been called. </p>
+<p><a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a>'s implementation of Initialize. See the documentation for <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a> for more details about what this should do.</p>
+<p>NOTE: that this implementation should not use <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a37e072bfe5762a0220221acc67576b99">SetState()</a>, but should allow the Module::Interface() method to handle that. </p>
 
-<p>Implements <a class="el" href="../../de/d0c/classsjsu_1_1SystemTimer.html#add4090a163c455abcace497066164083">sjsu::SystemTimer</a>.</p>
+<p>Implements <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ab35a3d1eaacc41a457be09d0fde9013e">sjsu::Module</a>.</p>
 
 </div>
 </div>
@@ -454,7 +485,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>callback defaults to nullptr. The actual SystemTickHandler should check if the isr is set to nullptr, and if it is, turn off the timer, if set a proper function then execute it. </p>
+<p>Callback defaults to nullptr. The actual SystemTickHandler should check if the isr is set to nullptr, and if it is, turn off the timer, if set a proper function then execute it. </p>
 
 </div>
 </div>

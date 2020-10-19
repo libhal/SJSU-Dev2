@@ -1,7 +1,7 @@
 var searchData=
 [
   ['_5fclose_5fr',['_close_r',['../d0/d21/newlib_8cpp.html#af268e896cd802cda85b1926b9b7365bf',1,'newlib.cpp']]],
-  ['_5fexit',['_exit',['../d0/d21/newlib_8cpp.html#a6b0bf80541201ad613e391af381bdcae',1,'newlib.cpp']]],
+  ['_5fexit',['_exit',['../d0/d21/newlib_8cpp.html#a92f3a2a875b4e08083b83d032adddc4d',1,'newlib.cpp']]],
   ['_5ffstat',['_fstat',['../d0/d21/newlib_8cpp.html#a2e7e127c083da174b46f874592133ed4',1,'newlib.cpp']]],
   ['_5fgetpid',['_getpid',['../d0/d21/newlib_8cpp.html#a0ebe0c689c80a2bca135fd157da50fbf',1,'newlib.cpp']]],
   ['_5fisatty_5fr',['_isatty_r',['../d0/d21/newlib_8cpp.html#ae1a4459ed37d5ec64628f8f33721e7b5',1,'newlib.cpp']]],

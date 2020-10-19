@@ -1,8 +1,9 @@
 // Test for Pin class.
 // Using a test by side effect on the Cortex M4 SysTick register
-#include "config.hpp"
 #include "L1_Peripheral/cortex/dwt_counter.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
+#include "config.hpp"
 
 namespace sjsu::cortex
 {

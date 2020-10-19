@@ -91,16 +91,18 @@ $(function() {
 <code>#include &quot;third_party/fakeit/fakeit.hpp&quot;</code><br />
 <code>#include &quot;third_party/fff/fff.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../da/d85/error__handling_8hpp_source.html">utility/error_handling.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d1/d13/rtos_8hpp_source.html">utility/rtos.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for testing_frameworks.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d8/d58/testing__frameworks_8hpp__incl.png" border="0" usemap="#_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L4__Testing_2testing__frameworks_8hpp" alt=""/></div>
 <map name="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L4__Testing_2testing__frameworks_8hpp" id="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L4__Testing_2testing__frameworks_8hpp">
 <area shape="rect" id="node9" href="../../da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="849,131,1036,158"/>
-<area shape="rect" id="node12" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="971,221,1061,247"/>
-<area shape="rect" id="node15" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="945,303,1087,329"/>
-<area shape="rect" id="node16" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="1111,303,1227,329"/>
-<area shape="rect" id="node17" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1251,303,1375,329"/>
+<area shape="rect" id="node21" href="../../d1/d13/rtos_8hpp.html" title="utility/rtos.hpp" alt="" coords="1388,131,1505,158"/>
+<area shape="rect" id="node12" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="898,221,987,247"/>
+<area shape="rect" id="node15" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="740,303,881,329"/>
+<area shape="rect" id="node16" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="906,303,1022,329"/>
+<area shape="rect" id="node17" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1046,303,1170,329"/>
 </map>
 </div>
 </div>
@@ -157,10 +159,47 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aca7d71c22db8ffab1666c48d879a6955"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#aca7d71c22db8ffab1666c48d879a6955">HostWrite</a> (const char *payload, size_t length)</td></tr>
-<tr class="separator:aca7d71c22db8ffab1666c48d879a6955"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a721acad9c45378d30695a8f1468fa3d5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a721acad9c45378d30695a8f1468fa3d5">HostRead</a> (char *payload, size_t length)</td></tr>
-<tr class="separator:a721acad9c45378d30695a8f1468fa3d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68f7fcbe98b12937bab1d4c35fdc9806"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a68f7fcbe98b12937bab1d4c35fdc9806"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a68f7fcbe98b12937bab1d4c35fdc9806">operator==</a> (std::span&lt; T &gt; lhs, std::span&lt; T &gt; rhs)</td></tr>
+<tr class="separator:a68f7fcbe98b12937bab1d4c35fdc9806"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75298ba6e0c9373ade36b77337818673"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a75298ba6e0c9373ade36b77337818673">DECLARE_FAKE_VOID_FUNC</a> (vTaskStartScheduler)</td></tr>
+<tr class="separator:a75298ba6e0c9373ade36b77337818673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb729db0fe58bac1dcc015a3f11e9583"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#acb729db0fe58bac1dcc015a3f11e9583">DECLARE_FAKE_VOID_FUNC</a> (vTaskSuspend, TaskHandle_t)</td></tr>
+<tr class="separator:acb729db0fe58bac1dcc015a3f11e9583"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67e76b3793246c7878018f98ad0c5de2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a67e76b3793246c7878018f98ad0c5de2">DECLARE_FAKE_VOID_FUNC</a> (vTaskResume, TaskHandle_t)</td></tr>
+<tr class="separator:a67e76b3793246c7878018f98ad0c5de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae66c7a0174da11ceaf3ff3d89b9b308b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#ae66c7a0174da11ceaf3ff3d89b9b308b">DECLARE_FAKE_VOID_FUNC</a> (vTaskDelete, TaskHandle_t)</td></tr>
+<tr class="separator:ae66c7a0174da11ceaf3ff3d89b9b308b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884ebd8b0db327336201ef493658a91a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a884ebd8b0db327336201ef493658a91a">DECLARE_FAKE_VOID_FUNC</a> (vTaskDelayUntil, TickType_t *, TickType_t)</td></tr>
+<tr class="separator:a884ebd8b0db327336201ef493658a91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30e7d95cf6d7aec0ec11df80d4f204b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a30e7d95cf6d7aec0ec11df80d4f204b0">DECLARE_FAKE_VOID_FUNC</a> (vApplicationGetIdleTaskMemory, StaticTask_t **, StackType_t **, uint32_t *)</td></tr>
+<tr class="separator:a30e7d95cf6d7aec0ec11df80d4f204b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace48b7387048b9ac0ac7ecfe17393d7b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#ace48b7387048b9ac0ac7ecfe17393d7b">DECLARE_FAKE_VALUE_FUNC</a> (TickType_t, xTaskGetTickCount)</td></tr>
+<tr class="separator:ace48b7387048b9ac0ac7ecfe17393d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70fd791ed9bfe9dc43fd18ec61ca9685"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a70fd791ed9bfe9dc43fd18ec61ca9685">DECLARE_FAKE_VALUE_FUNC</a> (TaskHandle_t, xTaskCreateStatic, TaskFunction_t, const char *, uint32_t, void *, UBaseType_t, StackType_t *, StaticTask_t *)</td></tr>
+<tr class="separator:a70fd791ed9bfe9dc43fd18ec61ca9685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c8b3c466559c90fdeb2953ac4926ad5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a6c8b3c466559c90fdeb2953ac4926ad5">DECLARE_FAKE_VALUE_FUNC</a> (EventGroupHandle_t, xEventGroupCreateStatic, StaticEventGroup_t *)</td></tr>
+<tr class="separator:a6c8b3c466559c90fdeb2953ac4926ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f0f4cdecbe0bc1e9939f5f9b54aa238"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a0f0f4cdecbe0bc1e9939f5f9b54aa238">DECLARE_FAKE_VALUE_FUNC</a> (EventBits_t, xEventGroupSync, EventGroupHandle_t, EventBits_t, EventBits_t, TickType_t)</td></tr>
+<tr class="separator:a0f0f4cdecbe0bc1e9939f5f9b54aa238"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afea06192e2bbb955b797e32850ebbd18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#afea06192e2bbb955b797e32850ebbd18">DECLARE_FAKE_VALUE_FUNC</a> (QueueHandle_t, xQueueGenericCreateStatic, UBaseType_t, UBaseType_t, uint8_t *, StaticQueue_t *, uint8_t)</td></tr>
+<tr class="separator:afea06192e2bbb955b797e32850ebbd18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5505ca15fd92394b62673d2ba5971fd9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a5505ca15fd92394b62673d2ba5971fd9">DECLARE_FAKE_VALUE_FUNC</a> (BaseType_t, xQueueGenericSend, QueueHandle_t, const void *, TickType_t, BaseType_t)</td></tr>
+<tr class="separator:a5505ca15fd92394b62673d2ba5971fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab340a0d0e1a7a1d9d83f08c1a1287fe5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#ab340a0d0e1a7a1d9d83f08c1a1287fe5">DECLARE_FAKE_VALUE_FUNC</a> (BaseType_t, xQueueSemaphoreTake, QueueHandle_t, TickType_t)</td></tr>
+<tr class="separator:ab340a0d0e1a7a1d9d83f08c1a1287fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68c2f2825ec02fcaf0b302faac20953c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a68c2f2825ec02fcaf0b302faac20953c">DECLARE_FAKE_VALUE_FUNC</a> (TimerHandle_t, xTimerCreateStatic, const char *, TickType_t, UBaseType_t, void *, TimerCallbackFunction_t, StaticTimer_t *)</td></tr>
+<tr class="separator:a68c2f2825ec02fcaf0b302faac20953c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14e224b23620c603b0767a48d70599bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a14e224b23620c603b0767a48d70599bc">DECLARE_FAKE_VALUE_FUNC</a> (BaseType_t, xTimerGenericCommand, TimerHandle_t, BaseType_t, TickType_t, BaseType_t *, TickType_t)</td></tr>
+<tr class="separator:a14e224b23620c603b0767a48d70599bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ae5d1b9168620450ab5292db4dfadd0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a9ae5d1b9168620450ab5292db4dfadd0">DECLARE_FAKE_VALUE_FUNC</a> (void *, pvTimerGetTimerID, TimerHandle_t)</td></tr>
+<tr class="separator:a9ae5d1b9168620450ab5292db4dfadd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0aa78b78a1ec848c23c4c1e63120ae4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#ad0aa78b78a1ec848c23c4c1e63120ae4">DECLARE_FAKE_VOID_FUNC</a> (vTimerSetTimerID, TimerHandle_t, void *)</td></tr>
+<tr class="separator:ad0aa78b78a1ec848c23c4c1e63120ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf9443d53073bd6673fb808791e1b0ea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#aaf9443d53073bd6673fb808791e1b0ea">HostWrite</a> (std::span&lt; const char &gt; payload)</td></tr>
+<tr class="separator:aaf9443d53073bd6673fb808791e1b0ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb0153d3543c3afb586f8b7cc7e4c29"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a5bb0153d3543c3afb586f8b7cc7e4c29">HostRead</a> (std::span&lt; char &gt; payload)</td></tr>
+<tr class="separator:a5bb0153d3543c3afb586f8b7cc7e4c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a127c1ce0e2660c3ad5baea38826bc6bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/daf/testing__frameworks_8hpp.html#a127c1ce0e2660c3ad5baea38826bc6bd">REGISTER_EXCEPTION_TRANSLATOR</a> (<a class="el" href="../../d1/dfd/classsjsu_1_1Exception.html">sjsu::Exception</a> &amp;e)</td></tr>
 <tr class="separator:a127c1ce0e2660c3ad5baea38826bc6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38e6d215f447e7df811dca2bc3de535d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
@@ -255,23 +294,23 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a721acad9c45378d30695a8f1468fa3d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a721acad9c45378d30695a8f1468fa3d5">&#9670;&nbsp;</a></span>HostRead()</h2>
+<a id="ace48b7387048b9ac0ac7ecfe17393d7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace48b7387048b9ac0ac7ecfe17393d7b">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[1/10]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int HostRead </td>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
           <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>payload</em>, </td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
+          <td class="paramtype">xTaskGetTickCount&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -283,8 +322,698 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aca7d71c22db8ffab1666c48d879a6955"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca7d71c22db8ffab1666c48d879a6955">&#9670;&nbsp;</a></span>HostWrite()</h2>
+<a id="a70fd791ed9bfe9dc43fd18ec61ca9685"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70fd791ed9bfe9dc43fd18ec61ca9685">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[2/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">TaskHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">xTaskCreateStatic&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TaskFunction_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UBaseType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">StackType_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">StaticTask_t *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6c8b3c466559c90fdeb2953ac4926ad5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c8b3c466559c90fdeb2953ac4926ad5">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[3/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">EventGroupHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">xEventGroupCreateStatic&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">StaticEventGroup_t *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0f0f4cdecbe0bc1e9939f5f9b54aa238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f0f4cdecbe0bc1e9939f5f9b54aa238">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[4/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">EventBits_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">xEventGroupSync&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EventGroupHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EventBits_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EventBits_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afea06192e2bbb955b797e32850ebbd18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afea06192e2bbb955b797e32850ebbd18">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[5/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">QueueHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">xQueueGenericCreateStatic&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UBaseType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UBaseType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">StaticQueue_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5505ca15fd92394b62673d2ba5971fd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5505ca15fd92394b62673d2ba5971fd9">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[6/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">BaseType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">xQueueGenericSend&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QueueHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BaseType_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab340a0d0e1a7a1d9d83f08c1a1287fe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab340a0d0e1a7a1d9d83f08c1a1287fe5">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[7/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">BaseType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">xQueueSemaphoreTake&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">QueueHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a68c2f2825ec02fcaf0b302faac20953c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68c2f2825ec02fcaf0b302faac20953c">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[8/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">TimerHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">xTimerCreateStatic&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UBaseType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TimerCallbackFunction_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">StaticTimer_t *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14e224b23620c603b0767a48d70599bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14e224b23620c603b0767a48d70599bc">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[9/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">BaseType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">xTimerGenericCommand&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TimerHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BaseType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">BaseType_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9ae5d1b9168620450ab5292db4dfadd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ae5d1b9168620450ab5292db4dfadd0">&#9670;&nbsp;</a></span>DECLARE_FAKE_VALUE_FUNC() <span class="overload">[10/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VALUE_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">pvTimerGetTimerID&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TimerHandle_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a75298ba6e0c9373ade36b77337818673"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75298ba6e0c9373ade36b77337818673">&#9670;&nbsp;</a></span>DECLARE_FAKE_VOID_FUNC() <span class="overload">[1/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VOID_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">vTaskStartScheduler&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acb729db0fe58bac1dcc015a3f11e9583"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb729db0fe58bac1dcc015a3f11e9583">&#9670;&nbsp;</a></span>DECLARE_FAKE_VOID_FUNC() <span class="overload">[2/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VOID_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">vTaskSuspend&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TaskHandle_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a67e76b3793246c7878018f98ad0c5de2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67e76b3793246c7878018f98ad0c5de2">&#9670;&nbsp;</a></span>DECLARE_FAKE_VOID_FUNC() <span class="overload">[3/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VOID_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">vTaskResume&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TaskHandle_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae66c7a0174da11ceaf3ff3d89b9b308b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae66c7a0174da11ceaf3ff3d89b9b308b">&#9670;&nbsp;</a></span>DECLARE_FAKE_VOID_FUNC() <span class="overload">[4/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VOID_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">vTaskDelete&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TaskHandle_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a884ebd8b0db327336201ef493658a91a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a884ebd8b0db327336201ef493658a91a">&#9670;&nbsp;</a></span>DECLARE_FAKE_VOID_FUNC() <span class="overload">[5/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VOID_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">vTaskDelayUntil&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TickType_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TickType_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30e7d95cf6d7aec0ec11df80d4f204b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30e7d95cf6d7aec0ec11df80d4f204b0">&#9670;&nbsp;</a></span>DECLARE_FAKE_VOID_FUNC() <span class="overload">[6/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VOID_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">vApplicationGetIdleTaskMemory&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">StaticTask_t **&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">StackType_t **&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad0aa78b78a1ec848c23c4c1e63120ae4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0aa78b78a1ec848c23c4c1e63120ae4">&#9670;&nbsp;</a></span>DECLARE_FAKE_VOID_FUNC() <span class="overload">[7/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DECLARE_FAKE_VOID_FUNC </td>
+          <td>(</td>
+          <td class="paramtype">vTimerSetTimerID&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TimerHandle_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5bb0153d3543c3afb586f8b7cc7e4c29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bb0153d3543c3afb586f8b7cc7e4c29">&#9670;&nbsp;</a></span>HostRead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HostRead </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; char &gt;&#160;</td>
+          <td class="paramname"><em>payload</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaf9443d53073bd6673fb808791e1b0ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf9443d53073bd6673fb808791e1b0ea">&#9670;&nbsp;</a></span>HostWrite()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,14 +1021,34 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int HostWrite </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>payload</em>, </td>
+          <td class="paramtype">std::span&lt; const char &gt;&#160;</td>
+          <td class="paramname"><em>payload</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a68f7fcbe98b12937bab1d4c35fdc9806"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68f7fcbe98b12937bab1d4c35fdc9806">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; T &gt;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
+          <td class="paramtype">std::span&lt; T &gt;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

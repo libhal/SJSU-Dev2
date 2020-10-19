@@ -1,18 +1,18 @@
 #pragma once
 
 #include <initializer_list>
+#include <scope>
 #include <string_view>
 
-#include "L1_Peripheral/can.hpp"
-
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/can.hpp"
 #include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "utility/macros.hpp"
-#include "utility/error_handling.hpp"
 #include "utility/enum.hpp"
+#include "utility/error_handling.hpp"
+#include "utility/macros.hpp"
 
 namespace sjsu
 {
@@ -259,15 +259,20 @@ class Can final : public sjsu::Can
   struct Channel_t
   {
     /// Reference to transmit pin object
-    const sjsu::Pin & td_pin;
+    sjsu::Pin & td_pin;
+
     /// Pin function code for transmit
     uint8_t td_function_code;
+
     /// Reference to read pin object
-    const sjsu::Pin & rd_pin;
+    sjsu::Pin & rd_pin;
+
     /// Pin function code for receive
     uint8_t rd_function_code;
+
     /// Pointer to the LPC CAN peripheral in memory
     LPC_CAN_TypeDef * registers;
+
     /// Peripheral's ID
     sjsu::SystemController::ResourceID id;
   };
@@ -289,17 +294,17 @@ class Can final : public sjsu::Can
   struct Channel  // NOLINT
   {
    private:
-    inline static const lpc40xx::Pin kPort1TransmitPin = Pin(0, 1);
-    inline static const lpc40xx::Pin kPort1ReadPin     = Pin(0, 0);
-    inline static const lpc40xx::Pin kPort2TransmitPin = Pin(2, 8);
-    inline static const lpc40xx::Pin kPort2ReadPin     = Pin(2, 7);
+    inline static auto port1_transmit_pin = Pin(0, 1);
+    inline static auto port1_read_pin     = Pin(0, 0);
+    inline static auto port2_transmit_pin = Pin(2, 8);
+    inline static auto port2_read_pin     = Pin(2, 7);
 
    public:
     /// Predefined definition for CAN1
     inline static const Channel_t kCan1 = {
-      .td_pin           = kPort1TransmitPin,
+      .td_pin           = port1_transmit_pin,
       .td_function_code = 1,
-      .rd_pin           = kPort1ReadPin,
+      .rd_pin           = port1_read_pin,
       .rd_function_code = 1,
       .registers        = lpc40xx::LPC_CAN1,
       .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan1,
@@ -307,9 +312,9 @@ class Can final : public sjsu::Can
 
     /// Predefined definition for CAN2
     inline static const Channel_t kCan2 = {
-      .td_pin           = kPort2TransmitPin,
+      .td_pin           = port2_transmit_pin,
       .td_function_code = 1,
-      .rd_pin           = kPort2ReadPin,
+      .rd_pin           = port2_read_pin,
       .rd_function_code = 1,
       .registers        = lpc40xx::LPC_CAN2,
       .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan2,
@@ -322,181 +327,32 @@ class Can final : public sjsu::Can
   /// @param channel - Which CANBUS channel to use
   explicit constexpr Can(const Channel_t & channel) : channel_(channel) {}
 
-  void Initialize() const override
+  void ModuleInitialize() override
   {
     /// Power on CANBUS peripheral
     auto & platform = sjsu::SystemController::GetPlatformController();
     platform.PowerUpPeripheral(channel_.id);
 
     /// Configure pins
-    channel_.td_pin.SetPinFunction(channel_.td_function_code);
-    channel_.rd_pin.SetPinFunction(channel_.rd_function_code);
+    channel_.td_pin.ConfigureFunction(channel_.td_function_code);
+    channel_.rd_pin.ConfigureFunction(channel_.rd_function_code);
 
     // Enable reset mode in order to write to CAN registers.
     SetMode(Mode::kReset, true);
 
-    // CAN bus clock (on the wire)
-    SetBaudRate(kStandardBaudRate);
-
     // Accept all messages
     // TODO(#343): Allow the user to configure their own filter.
     EnableAcceptanceFilter();
-
-    // Disable reset mode and enter operating mode.
-    SetMode(Mode::kReset, false);
   }
 
-  void Enable() const override
+  void ModuleEnable(bool enable = true) override
   {
-    SetMode(Mode::kReset, false);
-  }
-
-  void Send(const Message_t & message) const override
-  {
-    LpcRegisters_t registers = ConvertMessageToRegisters(message);
-
-    // Wait for one of the buffers to be free so we can transmit a message
-    // through it.
-    bool sent = false;
-    while (!sent)
-    {
-      uint32_t status_register = channel_.registers->SR;
-      // Check if any buffer is available.
-      if (bit::Read(status_register, BufferStatus::kTx1Released))
-      {
-        channel_.registers->TFI1 = registers.frame;
-        channel_.registers->TID1 = registers.id;
-        channel_.registers->TDA1 = registers.data_a;
-        channel_.registers->TDB1 = registers.data_b;
-        channel_.registers->CMR  = Value(Commands::kSendTxBuffer1);
-        sent                     = true;
-      }
-      else if (bit::Read(status_register, BufferStatus::kTx2Released))
-      {
-        channel_.registers->TFI2 = registers.frame;
-        channel_.registers->TID2 = registers.id;
-        channel_.registers->TDA2 = registers.data_a;
-        channel_.registers->TDB2 = registers.data_b;
-        channel_.registers->CMR  = Value(Commands::kSendTxBuffer2);
-        sent                     = true;
-      }
-      else if (bit::Read(status_register, BufferStatus::kTx3Released))
-      {
-        channel_.registers->TFI3 = registers.frame;
-        channel_.registers->TID3 = registers.id;
-        channel_.registers->TDA3 = registers.data_a;
-        channel_.registers->TDB3 = registers.data_b;
-        channel_.registers->CMR  = Value(Commands::kSendTxBuffer3);
-        sent                     = true;
-      }
-    }
-  }
-
-  bool HasData() const override
-  {
-    // GlobalStatus::kReceiveBuffer returns 1 (true) if it has data.
-    return bit::Read(channel_.registers->GSR, GlobalStatus::kReceiveBuffer);
-  }
-
-  Message_t Receive() const override
-  {
-    Message_t message;
-
-    uint32_t frame = channel_.registers->RFS;
-
-    // Extract all of the information from the message frame
-    bool is_remote_request = bit::Extract(frame, FrameInfo::kRemoteRequest);
-    uint32_t length        = bit::Extract(frame, FrameInfo::kLength);
-    uint32_t format        = bit::Extract(frame, FrameInfo::kFormat);
-
-    message.is_remote_request = is_remote_request;
-    message.length            = static_cast<uint8_t>(length);
-    message.format            = static_cast<Message_t::Format>(format);
-
-    // Get the frame ID
-    message.id = channel_.registers->RID;
-
-    // Pull the bytes from RDA into the payload array
-    message.payload[0] = (channel_.registers->RDA >> (0 * 8)) & 0xFF;
-    message.payload[1] = (channel_.registers->RDA >> (1 * 8)) & 0xFF;
-    message.payload[2] = (channel_.registers->RDA >> (2 * 8)) & 0xFF;
-    message.payload[3] = (channel_.registers->RDA >> (3 * 8)) & 0xFF;
-    // Pull the bytes from RDB into the payload array
-    message.payload[4] = (channel_.registers->RDB >> (0 * 8)) & 0xFF;
-    message.payload[5] = (channel_.registers->RDB >> (1 * 8)) & 0xFF;
-    message.payload[6] = (channel_.registers->RDB >> (2 * 8)) & 0xFF;
-    message.payload[7] = (channel_.registers->RDB >> (3 * 8)) & 0xFF;
-
-    // Release the RX buffer and allow another buffer to be read.
-    channel_.registers->CMR = Value(Commands::kReleaseRxBuffer);
-
-    return message;
-  }
-
-  bool SelfTest(uint32_t id) const override
-  {
-    std::scope_exit on_failure_routine([this]() {
-      // Disable self-test mode
-      SetMode(Mode::kReset, true);
-      SetMode(Mode::kSelfTest, false);
-      SetMode(Mode::kReset, false);
-    });
-
-    Message_t test_message;
-    test_message.id = id;
-
-    // Enable reset mode in order to write to registers
-    SetMode(Mode::kReset, true);
-    // Enable self-test mode
-    SetMode(Mode::kSelfTest, true);
-    // Disable reset mode
-    SetMode(Mode::kReset, false);
-
-    // Write test message to tx buffer 1
-    LpcRegisters_t registers = ConvertMessageToRegisters(test_message);
-
-    // Set self-test request and send buffer 1
-    while (true)
-    {
-      uint32_t status_register = channel_.registers->SR;
-      // Check if any buffer is available.
-      if (bit::Read(status_register, BufferStatus::kTx1Released))
-      {
-        channel_.registers->TFI1 = registers.frame;
-        channel_.registers->TID1 = registers.id;
-        channel_.registers->TDA1 = 0;
-        channel_.registers->TDB1 = 0;
-        channel_.registers->CMR  = Value(Commands::kSelfReceptionSendTxBuffer1);
-        break;
-      }
-    }
-
-    // Allow time for RX to fire
-    sjsu::Delay(2ms);
-
-    Wait(100ms, [this]() { return HasData(); });
-
-    // Read the message from the rx buffer and enqueue it into the rx queue.
-    auto received_message = Receive();
-
-    // Check if the received message matches the one we sent
-    if (received_message.id != test_message.id)
-    {
-      return false;
-    }
-
-    on_failure_routine.release();
-
-    return true;
-  }
-
-  bool IsBusOff() const override
-  {
-    return bit::Read(channel_.registers->GSR, GlobalStatus::kBusError);
+    // Flip logic of enable such that, if enable = true, set reset mode to false
+    SetMode(Mode::kReset, !enable);
   }
 
   /// @param baud - baud rate to configure the CANBUS to
-  void SetBaudRate(units::frequency::hertz_t baud) const override
+  void ConfigureBaudRate(units::frequency::hertz_t baud) override
   {
     // According to the BOSCH CAN spec, the nominal bit time is divided into 4
     // time segments. These segments need to be programmed for the internal
@@ -554,6 +410,150 @@ class Can final : public sjsu::Can
     channel_.registers->BTR = bus_timing;
   }
 
+  void Send(const Message_t & message) override
+  {
+    LpcRegisters_t registers = ConvertMessageToRegisters(message);
+
+    // Wait for one of the buffers to be free so we can transmit a message
+    // through it.
+    bool sent = false;
+    while (!sent)
+    {
+      uint32_t status_register = channel_.registers->SR;
+      // Check if any buffer is available.
+      if (bit::Read(status_register, BufferStatus::kTx1Released))
+      {
+        channel_.registers->TFI1 = registers.frame;
+        channel_.registers->TID1 = registers.id;
+        channel_.registers->TDA1 = registers.data_a;
+        channel_.registers->TDB1 = registers.data_b;
+        channel_.registers->CMR  = Value(Commands::kSendTxBuffer1);
+        sent                     = true;
+      }
+      else if (bit::Read(status_register, BufferStatus::kTx2Released))
+      {
+        channel_.registers->TFI2 = registers.frame;
+        channel_.registers->TID2 = registers.id;
+        channel_.registers->TDA2 = registers.data_a;
+        channel_.registers->TDB2 = registers.data_b;
+        channel_.registers->CMR  = Value(Commands::kSendTxBuffer2);
+        sent                     = true;
+      }
+      else if (bit::Read(status_register, BufferStatus::kTx3Released))
+      {
+        channel_.registers->TFI3 = registers.frame;
+        channel_.registers->TID3 = registers.id;
+        channel_.registers->TDA3 = registers.data_a;
+        channel_.registers->TDB3 = registers.data_b;
+        channel_.registers->CMR  = Value(Commands::kSendTxBuffer3);
+        sent                     = true;
+      }
+    }
+  }
+
+  bool HasData() override
+  {
+    // GlobalStatus::kReceiveBuffer returns 1 (true) if it has data.
+    return bit::Read(channel_.registers->GSR, GlobalStatus::kReceiveBuffer);
+  }
+
+  Message_t Receive() override
+  {
+    Message_t message;
+
+    uint32_t frame = channel_.registers->RFS;
+
+    // Extract all of the information from the message frame
+    bool is_remote_request = bit::Extract(frame, FrameInfo::kRemoteRequest);
+    uint32_t length        = bit::Extract(frame, FrameInfo::kLength);
+    uint32_t format        = bit::Extract(frame, FrameInfo::kFormat);
+
+    message.is_remote_request = is_remote_request;
+    message.length            = static_cast<uint8_t>(length);
+    message.format            = static_cast<Message_t::Format>(format);
+
+    // Get the frame ID
+    message.id = channel_.registers->RID;
+
+    // Pull the bytes from RDA into the payload array
+    message.payload[0] = (channel_.registers->RDA >> (0 * 8)) & 0xFF;
+    message.payload[1] = (channel_.registers->RDA >> (1 * 8)) & 0xFF;
+    message.payload[2] = (channel_.registers->RDA >> (2 * 8)) & 0xFF;
+    message.payload[3] = (channel_.registers->RDA >> (3 * 8)) & 0xFF;
+    // Pull the bytes from RDB into the payload array
+    message.payload[4] = (channel_.registers->RDB >> (0 * 8)) & 0xFF;
+    message.payload[5] = (channel_.registers->RDB >> (1 * 8)) & 0xFF;
+    message.payload[6] = (channel_.registers->RDB >> (2 * 8)) & 0xFF;
+    message.payload[7] = (channel_.registers->RDB >> (3 * 8)) & 0xFF;
+
+    // Release the RX buffer and allow another buffer to be read.
+    channel_.registers->CMR = Value(Commands::kReleaseRxBuffer);
+
+    return message;
+  }
+
+  bool SelfTest(uint32_t id) override
+  {
+    std::scope_exit on_failure_routine([this]() {
+      // Disable self-test mode
+      SetMode(Mode::kReset, true);
+      SetMode(Mode::kSelfTest, false);
+      SetMode(Mode::kReset, false);
+    });
+
+    Message_t test_message;
+    test_message.id = id;
+
+    // Enable reset mode in order to write to registers
+    SetMode(Mode::kReset, true);
+    // Enable self-test mode
+    SetMode(Mode::kSelfTest, true);
+    // Disable reset mode
+    SetMode(Mode::kReset, false);
+
+    // Write test message to tx buffer 1
+    LpcRegisters_t registers = ConvertMessageToRegisters(test_message);
+
+    // Set self-test request and send buffer 1
+    while (true)
+    {
+      uint32_t status_register = channel_.registers->SR;
+      // Check if any buffer is available.
+      if (bit::Read(status_register, BufferStatus::kTx1Released))
+      {
+        channel_.registers->TFI1 = registers.frame;
+        channel_.registers->TID1 = registers.id;
+        channel_.registers->TDA1 = 0;
+        channel_.registers->TDB1 = 0;
+        channel_.registers->CMR  = Value(Commands::kSelfReceptionSendTxBuffer1);
+        break;
+      }
+    }
+
+    // Allow time for RX to fire
+    sjsu::Delay(2ms);
+
+    Wait(100ms, [this]() { return HasData(); });
+
+    // Read the message from the rx buffer and enqueue it into the rx queue.
+    auto received_message = Receive();
+
+    // Check if the received message matches the one we sent
+    if (received_message.id != test_message.id)
+    {
+      return false;
+    }
+
+    on_failure_routine.release();
+
+    return true;
+  }
+
+  bool IsBusOff() override
+  {
+    return bit::Read(channel_.registers->GSR, GlobalStatus::kBusError);
+  }
+
  private:
   /// Convert message into the registers LPC40xx can bus registers.
   ///
@@ -564,8 +564,8 @@ class Can final : public sjsu::Can
 
     uint32_t frame_info = 0;
     frame_info = bit::Insert(frame_info, message.length, FrameInfo::kLength);
-    frame_info = bit::Insert(frame_info, message.is_remote_request,
-                             FrameInfo::kRemoteRequest);
+    frame_info = bit::Insert(
+        frame_info, message.is_remote_request, FrameInfo::kRemoteRequest);
     frame_info =
         bit::Insert(frame_info, Value(message.format), FrameInfo::kFormat);
 

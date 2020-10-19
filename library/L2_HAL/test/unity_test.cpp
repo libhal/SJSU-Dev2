@@ -18,7 +18,7 @@
 // Displays
 // =============================================================================
 #include "L2_HAL/displays/lcd/test/st7066u_test.cpp"   // NOLINT
-#include "L2_HAL/displays/oled/test/ssd1306_test.cpp"  // NOLINT
+// #include "L2_HAL/displays/oled/test/ssd1306_test.cpp"  // NOLINT
 
 // =============================================================================
 // I/O
@@ -38,7 +38,7 @@
 
 // =============================================================================
 // Sensor/Temperature
-// =============================================================================hpp
+// =============================================================================
 #include "L2_HAL/sensors/environment/temperature/test/si7060_test.cpp"  // NOLINT
 #include "L2_HAL/sensors/environment/temperature/test/tmp102_test.cpp"  // NOLINT
 
@@ -51,6 +51,11 @@
 // Sensor/Distance
 // =============================================================================
 #include "L2_HAL/sensors/distance/time_of_flight/test/tfmini_test.cpp"  // NOLINT
+
+// =============================================================================
+// Sensor/Signal
+// =============================================================================
+#include "L2_HAL/sensors/signal/test/frequency_counter_test.cpp"  // NOLINT
 
 // =============================================================================
 // Switches

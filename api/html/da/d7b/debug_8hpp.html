@@ -82,8 +82,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;unwind.h&gt;</code><br />
-<code>#include &lt;array&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;array&gt;</code><br />
 <code>#include &lt;cctype&gt;</code><br />
 <code>#include &lt;cinttypes&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -101,9 +101,9 @@ Include dependency graph for debug.hpp:</div>
 <map name="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2utility_2debug_8hpp" id="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2utility_2debug_8hpp">
 <area shape="rect" id="node10" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="759,199,848,225"/>
 <area shape="rect" id="node17" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="953,117,1093,143"/>
-<area shape="rect" id="node19" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="776,109,929,151"/>
-<area shape="rect" id="node20" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1117,117,1273,143"/>
-<area shape="rect" id="node21" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1297,117,1437,143"/>
+<area shape="rect" id="node20" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="776,109,929,151"/>
+<area shape="rect" id="node21" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1117,117,1273,143"/>
+<area shape="rect" id="node22" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1297,117,1437,143"/>
 <area shape="rect" id="node12" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="842,273,983,300"/>
 <area shape="rect" id="node13" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="553,273,669,300"/>
 <area shape="rect" id="node14" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="693,273,817,300"/>
@@ -184,6 +184,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aa174a60fc9de6bdb16b3ba2727319f20"><td class="memTemplParams" colspan="2">template&lt;size_t kNumberOfRowsBuffered = 1&gt; </td></tr>
 <tr class="memitem:aa174a60fc9de6bdb16b3ba2727319f20"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/df0/namespacesjsu_1_1debug.html#aa174a60fc9de6bdb16b3ba2727319f20">sjsu::debug::Hexdump</a> (void *address, size_t length)</td></tr>
 <tr class="separator:aa174a60fc9de6bdb16b3ba2727319f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c88fa971cb59a2ed4c1ca46f2897ca"><td class="memTemplParams" colspan="2">template&lt;size_t kNumberOfRowsBuffered = 1&gt; </td></tr>
+<tr class="memitem:a44c88fa971cb59a2ed4c1ca46f2897ca"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/df0/namespacesjsu_1_1debug.html#a44c88fa971cb59a2ed4c1ca46f2897ca">sjsu::debug::HexdumpDebug</a> (void *address, size_t length)</td></tr>
+<tr class="memdesc:a44c88fa971cb59a2ed4c1ca46f2897ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only prints hexdump if the log level for the application is above DEBUG.  <a href="../../d8/df0/namespacesjsu_1_1debug.html#a44c88fa971cb59a2ed4c1ca46f2897ca">More...</a><br /></td></tr>
+<tr class="separator:a44c88fa971cb59a2ed4c1ca46f2897ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44929e35494f51f6ffe8297196977286"><td class="memItemLeft" align="right" valign="top">_Unwind_Reason_Code&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/df0/namespacesjsu_1_1debug.html#a44929e35494f51f6ffe8297196977286">sjsu::debug::PrintAddressAsList</a> (_Unwind_Context *context, void *depth_pointer)</td></tr>
 <tr class="separator:a44929e35494f51f6ffe8297196977286"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c61bb0742f7a7d5db3ef2fd20795210"><td class="memItemLeft" align="right" valign="top">_Unwind_Reason_Code&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/df0/namespacesjsu_1_1debug.html#a4c61bb0742f7a7d5db3ef2fd20795210">sjsu::debug::PrintAddressInRow</a> (_Unwind_Context *context, void *depth_pointer)</td></tr>

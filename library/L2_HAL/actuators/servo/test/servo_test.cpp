@@ -1,4 +1,5 @@
 #include "L2_HAL/actuators/servo/servo.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
@@ -9,17 +10,45 @@ TEST_CASE("Testing Servo")
 {
   Mock<Pwm> mock_pwm;
 
-  Fake(Method(mock_pwm, Initialize));
-  Fake(Method(mock_pwm, SetFrequency));
+  Fake(Method(mock_pwm, ModuleInitialize));
+  Fake(Method(mock_pwm, ModuleEnable));
+  Fake(Method(mock_pwm, ConfigureFrequency));
   Fake(Method(mock_pwm, SetDutyCycle));
 
   // Inject test_gpio into button object
   Servo test_servo(mock_pwm.get());
 
-  SECTION("Initialize")
+  SECTION("ModuleInitialize")
   {
-    test_servo.Initialize();
-    Verify(Method(mock_pwm, Initialize).Using(Servo::kDefaultFrequency)).Once();
+    test_servo.ModuleInitialize();
+    Verify(Method(mock_pwm, ModuleInitialize)).Once();
+  }
+
+  SECTION("ModuleEnable")
+  {
+    SECTION("true")
+    {
+      // Setup
+      mock_pwm.get().SetStateToInitialized();
+
+      // Exercise
+      test_servo.ModuleEnable();
+
+      // Verify
+      Verify(Method(mock_pwm, ModuleEnable).Using(true)).Once();
+    }
+
+    SECTION("false")
+    {
+      // Setup
+      mock_pwm.get().SetStateToEnabled();
+
+      // Exercise
+      test_servo.ModuleEnable(false);
+
+      // Verify
+      Verify(Method(mock_pwm, ModuleEnable).Using(false)).Once();
+    }
   }
 
   SECTION("Write Microseconds")
@@ -30,10 +59,10 @@ TEST_CASE("Testing Servo")
     constexpr float kTestDutyCycle =
         static_cast<float>(kTestPulseWidth.count() / kTestMaxPulseWidth);
 
-    test_servo.SetFrequency(kTestFrequency);
+    test_servo.ConfigureFrequency(kTestFrequency);
     test_servo.SetPulseWidthInMicroseconds(kTestPulseWidth);
 
-    Verify(Method(mock_pwm, SetFrequency).Using(kTestFrequency)).Once();
+    Verify(Method(mock_pwm, ConfigureFrequency).Using(kTestFrequency)).Once();
     Verify(Method(mock_pwm, SetDutyCycle).Using(kTestDutyCycle)).Once();
   }
 
@@ -58,9 +87,9 @@ TEST_CASE("Testing Servo")
     constexpr float kExpectedDutyCycle =
         kTestPulseWidth / kTestMaxPulseWidth.count();
 
-    test_servo.SetFrequency(kTestFrequency);
-    test_servo.SetAngleBounds(kTestMinAngle, kTestMaxAngle);
-    test_servo.SetPulseBounds(kTestPulseWidthMin, kTestPulseWidthMax);
+    test_servo.ConfigureFrequency(kTestFrequency);
+    test_servo.ConfigureAngleBounds(kTestMinAngle, kTestMaxAngle);
+    test_servo.ConfigurePulseBounds(kTestPulseWidthMin, kTestPulseWidthMax);
     test_servo.SetAngle(kTestAngle);
 
     Verify(

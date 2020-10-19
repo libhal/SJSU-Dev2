@@ -4,13 +4,13 @@ namespace sjsu
 {
 namespace newlib
 {
-int DoNothingStdOut(const char *, size_t)
+int DoNothingStdOut(std::span<const char> ignore)
 {
-  return 1;
+  return ignore.size();
 }
-int DoNothingStdIn(char *, size_t)
+int DoNothingStdIn(std::span<char> ignore)
 {
-  return 0;
+  return ignore.size();
 }
 void SetStdout(Stdout stdout_handler)
 {
@@ -30,5 +30,5 @@ void StdinEchoBack(bool enable_echo)
 // Needed by third party "printf" library
 extern "C" void _putchar(char character)  // NOLINT
 {
-  sjsu::newlib::out(&character, 1);
+  sjsu::newlib::out(std::span<char>(&character, 1));
 }

@@ -9,8 +9,10 @@
 #include <cstring>
 
 #include "L0_Platform/ram.hpp"
-#include "utility/macros.hpp"
 #include "third_party/semihost/trace.h"
+#include "utility/ansi_terminal_codes.hpp"
+#include "utility/error_handling.hpp"
+#include "utility/macros.hpp"
 
 extern "C"
 {
@@ -54,7 +56,7 @@ extern "C"
   int _write([[maybe_unused]] int file, const char * ptr, int length)
   {
     trace_write(ptr, length);
-    return sjsu::newlib::out(ptr, length);
+    return sjsu::newlib::out(std::span<const char>(ptr, length));
   }
 
   // NOLINTNEXTLINE(readability-identifier-naming)
@@ -63,11 +65,11 @@ extern "C"
     int number_of_read_characters = 0;
     if (file == STDIN_FILENO)
     {
-      number_of_read_characters = sjsu::newlib::in(ptr, 1);
+      number_of_read_characters = sjsu::newlib::in(std::span<char>(ptr, 1));
       // Echo back to STDOUT
       if (sjsu::newlib::echo_back_is_enabled)
       {
-        sjsu::newlib::out(ptr, 1);
+        sjsu::newlib::out(std::span<const char>(ptr, 1));
       }
     }
     return number_of_read_characters;
@@ -130,12 +132,39 @@ extern "C"
     return 1;
   }
 
+  void HandleExceptionPointer(std::exception_ptr exception_pointer)
+  {
+    printf(SJ2_BACKGROUND_RED "Uncaught exception: ");
+
+    try
+    {
+      if (exception_pointer)
+      {
+        std::rethrow_exception(exception_pointer);
+      }
+    }
+    catch (const std::exception & e)
+    {
+      printf("std::exception(%s)\n", e.what());
+    }
+    catch (sjsu::Exception & e)
+    {
+      e.Print();
+    }
+    catch (...)
+    {
+      printf("Unknown...\n");
+    }
+
+    puts(SJ2_COLOR_RESET);
+  }
   // Dummy implementation of exit with return code placed into
   // Arm register r3
   // NOLINTNEXTLINE(readability-identifier-naming)
-  void _exit([[maybe_unused]] int rc)
+  void _exit(int rc)
   {
-    write(0, "EXIT", 4);
+    printf("Exit with code: %d\n", rc);
+    HandleExceptionPointer(std::current_exception());
     while (1)
     {
       continue;

@@ -47,7 +47,7 @@ class Pin final : public sjsu::Pin
   /// @param pin - must be between 0 to 15
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
-  void Initialize() const override
+  void ModuleInitialize() override
   {
     bool port_is_valid = ('A' <= port_ && port_ <= 'I');
     if (!port_is_valid)
@@ -94,6 +94,9 @@ class Pin final : public sjsu::Pin
     }
   }
 
+  /// Does nothing
+  void ModuleEnable(bool = true) override {}
+
   /// Will not change the function of the pin but does change the
   /// pin to its alternative function mode, meaning it will no longer respond or
   /// operate based on the GPIO registers. Muxing pins to the correct function
@@ -102,7 +105,7 @@ class Pin final : public sjsu::Pin
   ///
   /// @param alternative_function - set to 0 for gpio mode and set to 1 for
   ///        alternative mode.
-  void SetPinFunction(uint8_t alternative_function) const override
+  void ConfigureFunction(uint8_t alternative_function) override
   {
     static constexpr auto kMode = bit::MaskFromRange(0, 1);
     static constexpr auto kCFN1 = bit::MaskFromRange(3);
@@ -125,7 +128,7 @@ class Pin final : public sjsu::Pin
 
   /// Should only be used for inputs. This method will change the pin's mode
   /// form out to input.
-  void SetPull(Resistor resistor) const override
+  void ConfigurePullResistor(Resistor resistor) override
   {
     bool pull_up   = true;
     uint8_t config = 0;
@@ -147,7 +150,7 @@ class Pin final : public sjsu::Pin
   }
 
   /// This function MUST NOT be called for pins set as inputs.
-  void SetAsOpenDrain(bool set_as_open_drain = true) const override
+  void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
   {
     static constexpr auto kCFN0 = bit::MaskFromRange(2);
 
@@ -159,7 +162,7 @@ class Pin final : public sjsu::Pin
   }
 
   /// This function can only be used to set the pin as analog.
-  void SetAsAnalogMode(bool = true) const override
+  void ConfigureAsAnalogMode(bool = true) override
   {
     // Configuration for analog input mode. See Table 20 on page 161 on RM0008
     SetConfig(0b0100);

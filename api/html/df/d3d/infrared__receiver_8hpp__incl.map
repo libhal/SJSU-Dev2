@@ -1,17 +1,17 @@
 <map id="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L2_HAL/communication/infrared_receiver.hpp" name="/home/travis/build/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L2_HAL/communication/infrared_receiver.hpp">
-<area shape="rect" id="node3" href="$d0/dde/infrared__algorithms_8hpp.html" title="utility/infrared_algorithms.hpp" alt="" coords="1435,124,1655,151"/>
-<area shape="rect" id="node34" href="$da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="237,355,423,382"/>
-<area shape="rect" id="node5" href="$d3/d51/bit_8hpp.html" title="utility/bit.hpp" alt="" coords="2343,273,2453,300"/>
-<area shape="rect" id="node10" href="$d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1489,199,1601,225"/>
-<area shape="rect" id="node20" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="412,527,536,553"/>
-<area shape="rect" id="node17" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1813,445,1903,471"/>
-<area shape="rect" id="node19" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="2223,527,2339,553"/>
-<area shape="rect" id="node23" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="1937,348,2091,389"/>
-<area shape="rect" id="node24" href="$d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="1811,273,1966,300"/>
-<area shape="rect" id="node26" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1340,273,1472,300"/>
-<area shape="rect" id="node31" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="880,355,1020,382"/>
-<area shape="rect" id="node32" href="$de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="609,273,731,300"/>
-<area shape="rect" id="node18" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1787,527,1929,553"/>
-<area shape="rect" id="node29" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="1328,355,1468,382"/>
-<area shape="rect" id="node30" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1096,355,1252,382"/>
+<area shape="rect" id="node3" href="$d0/dde/infrared__algorithms_8hpp.html" title="utility/infrared_algorithms.hpp" alt="" coords="372,124,592,151"/>
+<area shape="rect" id="node33" href="$da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="407,355,594,382"/>
+<area shape="rect" id="node5" href="$d3/d51/bit_8hpp.html" title="utility/bit.hpp" alt="" coords="2382,273,2491,300"/>
+<area shape="rect" id="node10" href="$d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1633,199,1745,225"/>
+<area shape="rect" id="node20" href="$de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="105,527,229,553"/>
+<area shape="rect" id="node17" href="$d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="1677,445,1767,471"/>
+<area shape="rect" id="node19" href="$db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="2216,527,2332,553"/>
+<area shape="rect" id="node23" href="$de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="1956,348,2109,389"/>
+<area shape="rect" id="node24" href="$d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="1726,273,1881,300"/>
+<area shape="rect" id="node26" href="$da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1519,273,1651,300"/>
+<area shape="rect" id="node32" href="$db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1080,355,1220,382"/>
+<area shape="rect" id="node36" href="$de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="637,273,759,300"/>
+<area shape="rect" id="node18" href="$da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="1651,527,1793,553"/>
+<area shape="rect" id="node29" href="$d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="1439,355,1579,382"/>
+<area shape="rect" id="node31" href="$dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="813,355,969,382"/>
 </map>

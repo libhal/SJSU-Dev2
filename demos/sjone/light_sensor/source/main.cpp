@@ -15,6 +15,7 @@ int main()
 
   sjsu::Temt6000x01 light_sensor(adc2, kPullDownResistance);
   light_sensor.Initialize();
+  light_sensor.Enable();
 
   while (true)
   {

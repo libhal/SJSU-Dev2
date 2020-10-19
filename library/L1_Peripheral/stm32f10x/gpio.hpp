@@ -27,29 +27,31 @@ class Gpio : public sjsu::Gpio
   /// @param pin - must be between 0 to 15
   constexpr Gpio(uint8_t port, uint8_t pin) : pin_{ port, pin } {}
 
-  void SetDirection(Direction direction) const override
+  void ModuleInitialize() override
   {
-    // Power up the gpio peripheral corresponding to this gpio port.
-    // NOTE: Initialize() on pin is safe to execute multiple times even if the
-    // peripheral is already powered on. If the peripheral is already powered
-    // on, then nothing will change.
     pin_.Initialize();
+  }
 
+  /// Does nothing
+  void ModuleEnable(bool = true) override {}
+
+  void SetDirection(Direction direction) override
+  {
     if (direction == Direction::kInput)
     {
-      // Using the `SetFloating()` method here will do the work of setting the
-      // pin to an input as well as setting the pin to the its reset state as
-      // defined within the RM0008 user manual for the STM32F10x.
-      pin_.SetFloating();
+      // Using the `ConfigureFloating()` method here will do the work of setting
+      // the pin to an input as well as setting the pin to the its reset state
+      // as defined within the RM0008 user manual for the STM32F10x.
+      pin_.ConfigureFloating();
     }
     else
     {
       // Setting pin function to 0 converts pin to an output GPIO pin.
-      pin_.SetPinFunction(0);
+      pin_.ConfigureFunction(0);
     }
   }
 
-  void Set(State output) const override
+  void Set(State output) override
   {
     if (output == State::kHigh)
     {
@@ -63,17 +65,17 @@ class Gpio : public sjsu::Gpio
     }
   }
 
-  void Toggle() const override
+  void Toggle() override
   {
     pin_.Port()->ODR ^= (1 << pin_.GetPin());
   }
 
-  bool Read() const override
+  bool Read() override
   {
     return bit::Read(pin_.Port()->IDR, pin_.GetPin());
   }
 
-  const sjsu::Pin & GetPin() const override
+  sjsu::Pin & GetPin() override
   {
     return pin_;
   }
@@ -137,8 +139,8 @@ class Gpio : public sjsu::Gpio
 
     // Assign the control port value, which is equal to the port value minus
     // 'A', thus A would be 0, B would be 1, etc.
-    *control = bit::Insert(*control, pin_.GetPort() - 'A',
-                           interrupt_alternative_function_mask);
+    *control = bit::Insert(
+        *control, pin_.GetPort() - 'A', interrupt_alternative_function_mask);
 
     // Enable interrupts for this external interrupt line
     switch (pin_.GetPin())
@@ -202,7 +204,7 @@ class Gpio : public sjsu::Gpio
     }
   }
 
-  void DetachInterrupt() const override
+  void DetachInterrupt() override
   {
     // No need to Enable/Disable the interrupt via the interrupt controller,
     // especially since you would need logic to determine if this is the last

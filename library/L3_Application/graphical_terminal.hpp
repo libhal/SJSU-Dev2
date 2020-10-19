@@ -3,6 +3,7 @@
 #include <cstdarg>
 #include <cstdint>
 
+#include "module.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "L2_HAL/displays/oled/ssd1306.hpp"
@@ -25,7 +26,7 @@ struct TerminalCache_t
 
 /// Utilizes a pixel display and a terminal character cache to create a
 /// Graphical Terminal on that display.
-class GraphicalTerminal
+class GraphicalTerminal : public Module
 {
  public:
   /// Maximum height of the font used for the graphical display
@@ -53,11 +54,23 @@ class GraphicalTerminal
   }
 
   /// Initialize the graphics driver.
-  void Initialize()
+  void ModuleInitialize() override
   {
     graphics_->Initialize();
-    graphics_->Clear();
-    graphics_->Update();
+  }
+
+  void ModuleEnable(bool enable = true) override
+  {
+    if (enable)
+    {
+      graphics_->Enable();
+      graphics_->Clear();
+      graphics_->Update();
+    }
+    else
+    {
+      graphics_->Enable(false);
+    }
   }
 
   /// Prints to the screen as printf would to STDOUT.
@@ -145,8 +158,8 @@ class GraphicalTerminal
       {
         int32_t x = j * kCharacterWidth;
         int32_t y = i * kCharacterHeight;
-        graphics_->DrawCharacter(
-            x, y, GetChar(((i + row_start_) % max_rows_), j));
+        graphics_->DrawCharacter(x, y,
+                                 GetChar(((i + row_start_) % max_rows_), j));
       }
     }
     graphics_->Update();

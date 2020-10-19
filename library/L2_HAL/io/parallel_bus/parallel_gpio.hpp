@@ -1,6 +1,7 @@
 #pragma once
 
 #include <initializer_list>
+#include <span>
 
 #include "L2_HAL/io/parallel_bus.hpp"
 #include "utility/bit.hpp"
@@ -14,78 +15,82 @@ class ParallelGpio : public sjsu::ParallelBus
  public:
   /// Construct ParallelGpio
   ///
-  /// @param array - an array of pointers to mutable sjsu::Gpio objects. The
-  ///        const is a measure to make sure that this class does not attempt to
-  ///        change pointer values of the array.
-  /// @param width - The size of the array of gpio.
-  ParallelGpio(sjsu::Gpio * const array[], size_t width)
-      : io_(array), kWidth(width)
+  /// @param gpio_array - an array of pointers to mutable sjsu::Gpio objects.
+  ///        The const is a measure to make sure that this class does not
+  ///        attempt to change pointer values of the array.
+  constexpr explicit ParallelGpio(std::span<sjsu::Gpio *> gpio_array)
+      : io_(gpio_array)
   {
   }
-  void Initialize() override
+
+  void ModuleInitialize() override
   {
-    bool parallel_gpio_bus_initialized_successfully = true;
-    for (size_t i = 0; i < kWidth; i++)
+    for (auto gpio : io_)
     {
-      if (io_[i] == nullptr)
+      if (gpio == nullptr)
       {
-        parallel_gpio_bus_initialized_successfully = false;
-        sjsu::LogError("Gpio %zu of parallel bus is NULL.", i);
+        throw sjsu::Exception(
+            std::errc::invalid_argument,
+            "The gpios in the parallel bus cannot be nullptr.");
       }
+      // Initialize the GPIO
+      gpio->Initialize();
     }
-
-    SJ2_ASSERT_FATAL(parallel_gpio_bus_initialized_successfully,
-                     "ParallelGpio initialization failed.");
-
-    SetAsInput();
   }
-  /// Set the pins of the parallel bus as open drain (or open collector).
-  ///
-  /// @param set_as_open_drain - if true, set output of parallel bus pins to
-  /// open drain. Otherwise, set pin as push-pull.
-  void SetAsOpenDrain(bool set_as_open_drain = true) override
+
+  void ModuleEnable(bool enable = true) override
   {
-    for (size_t i = 0; i < kWidth; i++)
+    for (auto gpio : io_)
     {
-      io_[i]->GetPin().SetAsOpenDrain(set_as_open_drain);
+      gpio->Enable(enable);
+    }
+  }
+
+  void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
+  {
+    for (auto gpio : io_)
+    {
+      gpio->GetPin().ConfigureAsOpenDrain(set_as_open_drain);
     }
   }
 
   void Write(uint32_t data) override
   {
     SetDirection(sjsu::Gpio::Direction::kOutput);
-    for (uint32_t i = 0; i < kWidth; i++)
+
+    for (int i = 0; auto gpio : io_)
     {
-      io_[i]->Set(static_cast<sjsu::Gpio::State>(bit::Read(data, i)));
+      gpio->Set(static_cast<sjsu::Gpio::State>(bit::Read(data, i++)));
     }
   }
 
   uint32_t Read() override
   {
-    uint32_t read_value = 0;
     SetDirection(sjsu::Gpio::Direction::kInput);
 
-    for (size_t i = 0; i < kWidth; i++)
+    uint32_t read_value = 0;
+    for (int i = 0; auto gpio : io_)
     {
-      read_value |= io_[i]->Read() << i;
+      read_value |= gpio->Read() << (i++);
     }
 
     return read_value;
   }
-  size_t BusWidth() const override
+
+  size_t BusWidth() override
   {
-    return kWidth;
+    return io_.size();
   }
+
   void SetDirection(sjsu::Gpio::Direction direction) override
   {
-    for (size_t i = 0; i < kWidth; i++)
+    for (auto gpio : io_)
     {
-      io_[i]->SetDirection(direction);
+      gpio->SetDirection(direction);
     }
   }
 
  private:
-  sjsu::Gpio * const * io_;
-  const size_t kWidth;
+  std::span<sjsu::Gpio *> io_;
 };
 }  // namespace sjsu

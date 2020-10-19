@@ -1,7 +1,9 @@
-#include <cstdint>
-#include "L1_Peripheral/cortex/interrupt.hpp"
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
+
+#include <cstdint>
+
+#include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/enum.hpp"
 #include "utility/error_handling.hpp"
@@ -21,10 +23,12 @@ TEST_CASE("Testing lpc40xx I2C")
 
   Mock<sjsu::Pin> mock_sda_pin;
   Mock<sjsu::Pin> mock_scl_pin;
-  Fake(Method(mock_sda_pin, SetPinFunction),
-       Method(mock_sda_pin, SetAsOpenDrain), Method(mock_sda_pin, SetPull));
-  Fake(Method(mock_scl_pin, SetPinFunction),
-       Method(mock_scl_pin, SetAsOpenDrain), Method(mock_scl_pin, SetPull));
+  Fake(Method(mock_sda_pin, ConfigureFunction),
+       Method(mock_sda_pin, ConfigureAsOpenDrain),
+       Method(mock_sda_pin, ConfigurePullResistor));
+  Fake(Method(mock_scl_pin, ConfigureFunction),
+       Method(mock_scl_pin, ConfigureAsOpenDrain),
+       Method(mock_scl_pin, ConfigurePullResistor));
 
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
@@ -60,28 +64,50 @@ TEST_CASE("Testing lpc40xx I2C")
 
   SECTION("Initialize")
   {
-    // Source: "UM10562 LPC408x/407x User manual" table 84 page 443
-    constexpr uint32_t kExpectedControlClear =
-        I2c::Control::kAssertAcknowledge | I2c::Control::kStart |
-        I2c::Control::kStop | I2c::Control::kInterrupt;
-    test_subject.Initialize();
+    // Exercise
+    test_subject.ModuleInitialize();
 
-    constexpr float kSystemFrequency =
-        kDummySystemControllerClockFrequency.to<uint32_t>();
-
-    constexpr float kScll = ((kSystemFrequency / 100'000.0f) / 2.0f) * 0.7f;
-    constexpr float kSclh = ((kSystemFrequency / 100'000.0f) / 2.0f) * 1.3f;
-
-    constexpr uint32_t kLow  = static_cast<uint32_t>(kScll);
-    constexpr uint32_t kHigh = static_cast<uint32_t>(kSclh);
-
+    // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
                .Matching([](sjsu::SystemController::ResourceID id) {
                  return sjsu::lpc40xx::SystemController::Peripherals::kI2c0
                             .device_id == id.device_id;
                }));
+  }
+
+  SECTION("ConfigureClockRate()")
+  {
+    // Setup
+    constexpr float kSystemFrequency =
+        kDummySystemControllerClockFrequency.to<uint32_t>();
+
+    constexpr float kScll = ((kSystemFrequency / 100'000.0f) / 2.0f);
+    constexpr float kSclh = ((kSystemFrequency / 100'000.0f) / 2.0f);
+
+    constexpr uint32_t kLow  = static_cast<uint32_t>(kScll);
+    constexpr uint32_t kHigh = static_cast<uint32_t>(kSclh);
+
+    // Exercise
+    test_subject.SetStateToInitialized();
+    test_subject.ConfigureClockRate();
+
+    // Verify
     CHECK(kLow == local_i2c.SCLL);
     CHECK(kHigh == local_i2c.SCLH);
+  }
+
+  SECTION("Enable")
+  {
+    // Setup
+    // Source: "UM10562 LPC408x/407x User manual" table 84 page 443
+    constexpr uint32_t kExpectedControlClear =
+        I2c::Control::kAssertAcknowledge | I2c::Control::kStart |
+        I2c::Control::kStop | I2c::Control::kInterrupt;
+
+    // Exercise
+    test_subject.ModuleEnable();
+
+    // Verify
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
     CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
 
@@ -93,16 +119,18 @@ TEST_CASE("Testing lpc40xx I2C")
                      (info.priority == -1);
             }));
 
-    Verify(Method(mock_sda_pin, SetPinFunction).Using(kMockI2c.pin_function))
+    Verify(Method(mock_sda_pin, ConfigureFunction).Using(kMockI2c.pin_function))
         .Once();
-    Verify(Method(mock_sda_pin, SetAsOpenDrain)).Once();
-    Verify(Method(mock_sda_pin, SetPull).Using(sjsu::Pin::Resistor::kNone))
+    Verify(Method(mock_sda_pin, ConfigureAsOpenDrain)).Once();
+    Verify(Method(mock_sda_pin, ConfigurePullResistor)
+               .Using(sjsu::Pin::Resistor::kNone))
         .Once();
 
-    Verify(Method(mock_scl_pin, SetPinFunction).Using(kMockI2c.pin_function))
+    Verify(Method(mock_scl_pin, ConfigureFunction).Using(kMockI2c.pin_function))
         .Once();
-    Verify(Method(mock_scl_pin, SetAsOpenDrain)).Once();
-    Verify(Method(mock_scl_pin, SetPull).Using(sjsu::Pin::Resistor::kNone))
+    Verify(Method(mock_scl_pin, ConfigureAsOpenDrain)).Once();
+    Verify(Method(mock_scl_pin, ConfigurePullResistor)
+               .Using(sjsu::Pin::Resistor::kNone))
         .Once();
   }
 
@@ -262,8 +290,8 @@ TEST_CASE("Testing lpc40xx I2C")
 
     // Exercise
     SJ2_CHECK_EXCEPTION(
-        test_subject.WriteThenRead(kAddress, write_buffer, sizeof(write_buffer),
-                                   nullptr, 0),
+        test_subject.WriteThenRead(
+            kAddress, write_buffer, sizeof(write_buffer), nullptr, 0),
         std::errc::timed_out);
 
     // Exercise: Each iteration should be load the next byte from write_buffer

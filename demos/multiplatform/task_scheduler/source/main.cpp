@@ -84,5 +84,6 @@ int main()
   sjsu::LogInfo("Starting scheduler");
   scheduler.Start();
   sjsu::LogInfo("This point should not be reached!");
+
   return 0;
 }

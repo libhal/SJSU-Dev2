@@ -4,16 +4,22 @@
 #include <cstdint>
 
 #include "L1_Peripheral/gpio.hpp"
+#include "module.hpp"
 #include "utility/enum.hpp"
 
 namespace sjsu
 {
 /// An abstract interface for controlling a hardware counter, internal or
 /// external.
+///
 /// @ingroup l1_peripheral
-class HardwareCounter
+class HardwareCounter : public Module
 {
  public:
+  // ===========================================================================
+  // Interface Definitions
+  // ===========================================================================
+
   /// Definitions of the directions that a counter to count in.
   enum class Direction : int8_t
   {
@@ -21,11 +27,17 @@ class HardwareCounter
     kUp   = 1,
   };
 
-  /// When called, this initializes the peripheral hardware. You must ensure
-  /// that the counter is set to zero after this call. NOTE: This must not
-  /// enable the counter. In order to start counting based on an external input,
-  /// an explicit invocation of Enable() must occur.
-  virtual void Initialize() = 0;
+  // ===========================================================================
+  // Interface Methods
+  // ===========================================================================
+
+  // ---------------------------------------------------------------------------
+  // Configuration Methods
+  // ---------------------------------------------------------------------------
+
+  // ---------------------------------------------------------------------------
+  // Usage Methods
+  // ---------------------------------------------------------------------------
 
   /// Set counter to a specific value. There is no guarantee that a count will
   /// not be missed during the invocation of this call.
@@ -39,22 +51,13 @@ class HardwareCounter
   /// @param direction - the direction (either up or down) to count.
   virtual void SetDirection(Direction direction) = 0;
 
-  /// Starts counting from clock input. Must be called after Initialize() to
-  /// begin counting.
-  virtual void Enable() = 0;
-
-  /// Stops counting from clock input. Current count is retained.
-  virtual void Disable() = 0;
-
   /// Get the current count from hardware timer.
   virtual int32_t GetCount() = 0;
-
-  /// Default virtual destructor
-  virtual ~HardwareCounter() = default;
 };
 
 /// A class that utilizes a generic sjsu::Gpio implementation to implement
 /// a hardware
+///
 /// @ingroup l1_peripheral
 class GpioCounter : public HardwareCounter
 {
@@ -70,11 +73,26 @@ class GpioCounter : public HardwareCounter
   {
   }
 
-  void Initialize() override
+  void ModuleInitialize() override
   {
-    gpio_.GetPin().SetPull(pull_);
+    gpio_.Initialize();
+    gpio_.GetPin().ConfigurePullResistor(pull_);
     gpio_.SetAsInput();
   }
+
+  void ModuleEnable(bool enable = true) override
+  {
+    if (enable)
+    {
+      gpio_.AttachInterrupt([this] { count_ += Value(direction_.load()); },
+                            edge_);
+    }
+    else
+    {
+      gpio_.DetachInterrupt();
+    }
+  }
+
   void Set(int32_t new_count_value) override
   {
     count_ = new_count_value;
@@ -83,17 +101,6 @@ class GpioCounter : public HardwareCounter
   void SetDirection(HardwareCounter::Direction direction) override
   {
     direction_ = direction;
-  }
-
-  void Enable() override
-  {
-    return gpio_.AttachInterrupt([this] { count_ += Value(direction_.load()); },
-                                 edge_);
-  }
-
-  void Disable() override
-  {
-    return gpio_.DetachInterrupt();
   }
 
   int32_t GetCount() override
@@ -106,7 +113,7 @@ class GpioCounter : public HardwareCounter
   /// callback when this object has been destroyed.
   ~GpioCounter()
   {
-    gpio_.DetachInterrupt();
+    ModuleEnable(false);
   }
 
  private:

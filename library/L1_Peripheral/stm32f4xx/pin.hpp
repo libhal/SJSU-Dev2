@@ -31,7 +31,7 @@ class Pin final : public sjsu::Pin
   /// @param pin - must be between 0 to 15
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
-  void Initialize() const override
+  void ModuleInitialize() override
   {
     if (!('A' <= port_ && port_ <= 'I'))
     {
@@ -80,15 +80,15 @@ class Pin final : public sjsu::Pin
     }
   }
 
-  void SetPinFunction(uint8_t function) const override
+  void ModuleEnable(bool = true) override {}
+
+  void ConfigureFunction(uint8_t function) override
   {
     if (function > 0b1111)
     {
       throw Exception(std::errc::invalid_argument,
                       "The function code must be a 4-bit code.");
     }
-
-    Initialize();
 
     // RM0090 p.281
     //
@@ -108,7 +108,7 @@ class Pin final : public sjsu::Pin
     Port()->AFR[pin_ / 8] = bit::Insert(Port()->AFR[pin_ / 8], function, kMask);
   }
 
-  void SetPull(Resistor resistor) const override
+  void ConfigurePullResistor(Resistor resistor) override
   {
     uint8_t mask = 0;
     // 00: No pull-up, pull-down
@@ -127,12 +127,12 @@ class Pin final : public sjsu::Pin
     Port()->PUPDR = bit::Insert(Port()->PUPDR, mask, Mask());
   }
 
-  void SetAsOpenDrain(bool set_as_open_drain = true) const override
+  void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
   {
     Port()->OTYPER = bit::Insert(Port()->OTYPER, set_as_open_drain, pin_, 1);
   }
 
-  void SetAsAnalogMode(bool set_as_analog = true) const override
+  void ConfigureAsAnalogMode(bool set_as_analog = true) override
   {
     // RM0090 p.281
     //

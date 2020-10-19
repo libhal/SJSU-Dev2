@@ -13,7 +13,7 @@ int main()
       "readings for each axis");
 
   sjsu::lpc40xx::I2c i2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
-  sjsu::Mpu6050 sensor(i2c, 2_SG);
+  sjsu::Mpu6050 sensor(i2c);
 
   sjsu::LogInfo("Initializing accelerometer peripherals...");
   sensor.Initialize();

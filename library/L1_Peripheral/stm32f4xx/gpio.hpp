@@ -16,14 +16,16 @@ class Gpio : public sjsu::Gpio
   /// @param pin - must be between 0 to 15
   constexpr Gpio(uint8_t port, uint8_t pin) : pin_{ port, pin } {}
 
-  void SetDirection(Direction direction) const override
+  void ModuleInitialize() override
   {
-    // Power up the gpio peripheral corresponding to this gpio port.
-    // NOTE: Initialize() on pin is safe to execute multiple times even if the
-    // peripheral is already powered on. If the peripheral is already powered
-    // on, then nothing will change.
     pin_.Initialize();
+  }
 
+  /// Pin/Gpio are both enabled by Initialize
+  void ModuleEnable(bool = true) override {}
+
+  void SetDirection(Direction direction) override
+  {
     if (direction == Direction::kInput)
     {
       // RM0090 p.281
@@ -46,7 +48,7 @@ class Gpio : public sjsu::Gpio
     }
   }
 
-  void Set(State output) const override
+  void Set(State output) override
   {
     if (output == State::kLow)
     {
@@ -58,17 +60,17 @@ class Gpio : public sjsu::Gpio
     }
   }
 
-  void Toggle() const override
+  void Toggle() override
   {
     pin_.Port()->ODR ^= (1 << pin_.GetPin());
   }
 
-  bool Read() const override
+  bool Read() override
   {
     return bit::Read(pin_.Port()->IDR, pin_.GetPin());
   }
 
-  const sjsu::Pin & GetPin() const override
+  sjsu::Pin & GetPin() override
   {
     return pin_;
   }
@@ -78,7 +80,7 @@ class Gpio : public sjsu::Gpio
     throw Exception(std::errc::operation_not_supported, "");
   }
 
-  void DetachInterrupt() const override
+  void DetachInterrupt() override
   {
     throw Exception(std::errc::operation_not_supported, "");
   }

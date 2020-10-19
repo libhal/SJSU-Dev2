@@ -2,13 +2,13 @@
 
 #include <cstdint>
 
-#include "L1_Peripheral/adc.hpp"
-
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/adc.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "utility/log.hpp"
+#include "utility/bit.hpp"
 #include "utility/error_handling.hpp"
+#include "utility/log.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -86,13 +86,16 @@ class Adc final : public sjsu::Adc
   struct Channel_t
   {
     /// Reference to the pin associated with the adc channel.
-    const sjsu::Pin & adc_pin;
+    sjsu::Pin & adc_pin;
+
     /// Channel number
-    uint8_t channel : 3;
+    uint8_t channel;
+
     /// Which function code selects the ADC function for the pin, specified in
     /// the adc_pin field.
-    uint8_t pin_function : 3;
+    uint8_t pin_function;
   };
+
   /// Namespace containing predefined Channel_t description objects. These
   /// objects can be passed directly to the constructor of an lpc40xx::Adc
   /// object.
@@ -111,20 +114,20 @@ class Adc final : public sjsu::Adc
       kCh4567Pins = 0b011
     };
 
-    inline static const Pin kAdcPinChannel0 = Pin::CreatePin<0, 23>();
-    inline static const Pin kAdcPinChannel1 = Pin::CreatePin<0, 24>();
-    inline static const Pin kAdcPinChannel2 = Pin::CreatePin<0, 25>();
-    inline static const Pin kAdcPinChannel3 = Pin::CreatePin<0, 26>();
-    inline static const Pin kAdcPinChannel4 = Pin::CreatePin<1, 30>();
-    inline static const Pin kAdcPinChannel5 = Pin::CreatePin<1, 31>();
-    inline static const Pin kAdcPinChannel6 = Pin::CreatePin<0, 12>();
-    inline static const Pin kAdcPinChannel7 = Pin::CreatePin<0, 13>();
+    inline static auto adc_pin_channel0 = Pin(0, 23);
+    inline static auto adc_pin_channel1 = Pin(0, 24);
+    inline static auto adc_pin_channel2 = Pin(0, 25);
+    inline static auto adc_pin_channel3 = Pin(0, 26);
+    inline static auto adc_pin_channel4 = Pin(1, 30);
+    inline static auto adc_pin_channel5 = Pin(1, 31);
+    inline static auto adc_pin_channel6 = Pin(0, 12);
+    inline static auto adc_pin_channel7 = Pin(0, 13);
 
    public:
     /// Predefined channel information for channel 0.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel0.
     inline static const Channel_t kChannel0 = {
-      .adc_pin      = kAdcPinChannel0,
+      .adc_pin      = adc_pin_channel0,
       .channel      = 0,
       .pin_function = AdcMode::kCh0123Pins,
     };
@@ -132,7 +135,7 @@ class Adc final : public sjsu::Adc
     /// Predefined channel information for channel 1.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel1.
     inline static const Channel_t kChannel1 = {
-      .adc_pin      = kAdcPinChannel1,
+      .adc_pin      = adc_pin_channel1,
       .channel      = 1,
       .pin_function = AdcMode::kCh0123Pins,
     };
@@ -140,7 +143,7 @@ class Adc final : public sjsu::Adc
     /// Predefined channel information for channel 2.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel2.
     inline static const Channel_t kChannel2 = {
-      .adc_pin      = kAdcPinChannel2,
+      .adc_pin      = adc_pin_channel2,
       .channel      = 2,
       .pin_function = AdcMode::kCh0123Pins,
     };
@@ -148,7 +151,7 @@ class Adc final : public sjsu::Adc
     /// Predefined channel information for channel 3.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel3.
     inline static const Channel_t kChannel3 = {
-      .adc_pin      = kAdcPinChannel3,
+      .adc_pin      = adc_pin_channel3,
       .channel      = 3,
       .pin_function = AdcMode::kCh0123Pins,
     };
@@ -156,7 +159,7 @@ class Adc final : public sjsu::Adc
     /// Predefined channel information for channel 4.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel4.
     inline static const Channel_t kChannel4 = {
-      .adc_pin      = kAdcPinChannel4,
+      .adc_pin      = adc_pin_channel4,
       .channel      = 4,
       .pin_function = AdcMode::kCh4567Pins,
     };
@@ -164,7 +167,7 @@ class Adc final : public sjsu::Adc
     /// Predefined channel information for channel 5.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel5.
     inline static const Channel_t kChannel5 = {
-      .adc_pin      = kAdcPinChannel5,
+      .adc_pin      = adc_pin_channel5,
       .channel      = 5,
       .pin_function = AdcMode::kCh4567Pins,
     };
@@ -172,7 +175,7 @@ class Adc final : public sjsu::Adc
     /// Predefined channel information for channel 6.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel6.
     inline static const Channel_t kChannel6 = {
-      .adc_pin      = kAdcPinChannel6,
+      .adc_pin      = adc_pin_channel6,
       .channel      = 6,
       .pin_function = AdcMode::kCh4567Pins,
     };
@@ -180,7 +183,7 @@ class Adc final : public sjsu::Adc
     /// Predefined channel information for channel 7.
     /// Pass this to the lpc17xx::Adc class to utilize adc channel7.
     inline static const Channel_t kChannel7 = {
-      .adc_pin      = kAdcPinChannel7,
+      .adc_pin      = adc_pin_channel7,
       .channel      = 7,
       .pin_function = AdcMode::kCh4567Pins,
     };
@@ -199,33 +202,6 @@ class Adc final : public sjsu::Adc
   /// largest value it can have is 2^12 = 4096
   static constexpr uint8_t kActiveBits = 12;
 
-  /// Turn on or off burst mode for the whole ADC peripheral.
-  ///
-  /// WARNING: if you are using this mode, call this before intializing any of
-  /// your LPC40xx ADC peripherals.
-  ///
-  /// Normally, and ADC conversion must be triggered. After triggering
-  /// conversion, one must wait until the conversion is complete before
-  /// retrieving the converted analog voltage to digital value.
-  ///
-  /// Burst mode is an ADC mode that makes the ADC peripheral continuously
-  /// sample it's input channels without CPU intervention, meaning that the CPU
-  /// can simply read back the value in the conversion register to get the
-  /// current converted voltage.
-  ///
-  /// @param turn_burst_mode_on: if true, will turn on burst mode.
-  static void BurstMode(bool turn_burst_mode_on = true)
-  {
-    adc_base->CR =
-        bit::Insert(adc_base->CR, turn_burst_mode_on, Control::kBurstEnable);
-  }
-
-  /// @returns true if burst mode is enabled and false otherwise.
-  static bool BurstModeIsEnabled()
-  {
-    return bit::Read(adc_base->CR, Control::kBurstEnable);
-  }
-
   /// @param channel Passed channel descriptor object. See Channel_t and
   ///        Channel documentation for more details about how to use this.
   /// @param reference_voltage The ADC reference voltage in microvolts.
@@ -235,84 +211,64 @@ class Adc final : public sjsu::Adc
   {
   }
 
-  void Initialize() const override
+  void ModuleInitialize() override
   {
-    auto & system     = sjsu::SystemController::GetPlatformController();
-    const auto kAdcId = sjsu::lpc40xx::SystemController::Peripherals::kAdc;
-
-    system.PowerUpPeripheral(kAdcId);
+    sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
+        sjsu::lpc40xx::SystemController::Peripherals::kAdc);
 
     // It is required for proper operation of analog pins for the LPC40xx that
     // the pins be floating.
-    channel_.adc_pin.SetPinFunction(channel_.pin_function);
-    channel_.adc_pin.SetFloating();
-    channel_.adc_pin.SetAsAnalogMode(true);
+    channel_.adc_pin.Initialize();
+    channel_.adc_pin.ConfigureFunction(channel_.pin_function);
+    channel_.adc_pin.ConfigureFloating();
+    channel_.adc_pin.ConfigureAsAnalogMode(true);
+    channel_.adc_pin.Enable();
 
-    const auto kPeripheralFrequency = system.GetClockRate(kAdcId);
-    uint32_t clock_divider          = kPeripheralFrequency / kClockFrequency;
+    const auto kPeripheralFrequency =
+        sjsu::SystemController::GetPlatformController().GetClockRate(
+            sjsu::lpc40xx::SystemController::Peripherals::kAdc);
 
-    uint32_t control = adc_base->CR;
+    const uint32_t kClockDivider = kPeripheralFrequency / kClockFrequency;
 
-    control = bit::Set(control, Control::kPowerEnable);
-    control = bit::Insert(control, clock_divider, Control::kClockDivider);
-
-    // If burst mode is enabled, the bits in the select area of the control
-    // register, are enables for each corresponding ADC channel. Otherwise, this
-    // field should only hold a single set 1 when using software conversion.
-    if (BurstModeIsEnabled())
-    {
-      control = bit::Set(control, channel_.channel);
-    }
-
-    adc_base->CR = control;
+    bit::Register(&adc_base->CR)
+        .Insert(kClockDivider, Control::kClockDivider)
+        .Set(Control::kBurstEnable)
+        .Set(Control::kPowerEnable)
+        .Save();
   }
 
-  uint32_t Read() const override
+  void ModuleEnable(bool enable = true) override
   {
-    // Convert analog value from analog to a digital value
-    Conversion();
-    uint32_t result =
-        bit::Extract(adc_base->DR[channel_.channel], DataRegister::kResult);
-    return result;
+    if (enable)
+    {
+      bit::Register(&adc_base->CR)
+          .Set(bit::MaskFromRange(channel_.channel))
+          .Save();
+    }
+    else
+    {
+      bit::Register(&adc_base->CR)
+          .Clear(bit::MaskFromRange(channel_.channel))
+          .Save();
+    }
   }
 
-  uint8_t GetActiveBits() const override
+  uint32_t Read() override
+  {
+    return bit::Extract(adc_base->DR[channel_.channel], DataRegister::kResult);
+  }
+
+  uint8_t GetActiveBits() override
   {
     return kActiveBits;
   }
 
-  units::voltage::microvolt_t ReferenceVoltage() const override
+  units::voltage::microvolt_t ReferenceVoltage() override
   {
     return kReferenceVoltage;
   }
 
  private:
-  bool HasConversionFinished() const
-  {
-    return bit::Read(adc_base->DR[channel_.channel], DataRegister::kDone);
-  }
-
-  void Conversion() const
-  {
-    if (BurstModeIsEnabled())
-    {
-      // NOTE: If burst mode is enabled, conversion start must be set 0
-      adc_base->CR = bit::Insert(adc_base->CR, 0, Control::kStartCode);
-    }
-    else
-    {
-      uint32_t channel_select = (1 << channel_.channel);
-      adc_base->CR =
-          bit::Insert(adc_base->CR, channel_select, Control::kChannelSelect);
-      // Start ADC conversion with start code 0x01
-      adc_base->CR = bit::Insert(adc_base->CR, 0x01, Control::kStartCode);
-      while (!HasConversionFinished())
-      {
-        continue;
-      }
-    }
-  }
-
   const Channel_t & channel_;
   const units::voltage::microvolt_t kReferenceVoltage;
 };

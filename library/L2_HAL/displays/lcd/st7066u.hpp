@@ -1,10 +1,12 @@
 #pragma once
 
+#include <algorithm>
 #include <cstdint>
-#include <cstring>
+#include <string_view>
 
 #include "L1_Peripheral/gpio.hpp"
 #include "L2_HAL/io/parallel_bus.hpp"
+#include "module.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
@@ -12,7 +14,7 @@
 namespace sjsu
 {
 /// Driver for the St7066u driver of a LCD character display
-class St7066u
+class St7066u : public Module
 {
  public:
   /// Data transfer operation types.
@@ -64,9 +66,9 @@ class St7066u
   struct CursorPosition_t
   {
     /// Display line number starting at 0 for the first line.
-    uint8_t line_number;
+    size_t line_number = 0;
     /// Character column position
-    uint8_t position;
+    size_t position = 0;
   };
 
   /// The two forms of bus modes for the LCD screen
@@ -91,21 +93,20 @@ class St7066u
   };
 
   /// Default cursor position at line 0, position 0.
-  static constexpr CursorPosition_t kDefaultCursorPosition =
-      CursorPosition_t{ 0, 0 };
+  static constexpr CursorPosition_t kDefaultCursorPosition{ 0, 0 };
 
   /// Constructor for the display driver with desired configurations.
   ///
   /// @param bus_mode 4-bit or 8-bit data transfer bus mode.
   /// @param display_mode Number of lines used for displaying characters.
   /// @param font_style Character font style
-  /// @param register_select_pin Pin that outputs whether the instruction or
-  ///                            data register is selected.
-  /// @param read_write_pin Pin that outputs whether the operation is
-  ///                       read/write.
-  /// @param enable_pin Enable pin used for triggering read/write operations.
-  /// @param data_bus 4-bit or 8-bit GPIO parallel bus depending on the
-  ///                 specified bus_mode.
+  /// @param register_select_pin - Pin that outputs whether the instruction or
+  ///        data register is selected.
+  /// @param read_write_pin - Pin that outputs whether the operation is
+  ///        read/write.
+  /// @param enable_pin - Enable pin used for triggering read/write operations.
+  /// @param data_bus - 4-bit or 8-bit GPIO parallel bus depending on the
+  ///        specified bus_mode.
   explicit constexpr St7066u(BusMode bus_mode,
                              DisplayMode display_mode,
                              FontStyle font_style,
@@ -116,105 +117,78 @@ class St7066u
       : kBusMode(bus_mode),
         kDisplayMode(display_mode),
         kFontStyle(font_style),
-        kRegisterSelectPin(register_select_pin),
-        kReadWritePin(read_write_pin),
-        kEnablePin(enable_pin),
-        kDataBus(data_bus)
+        register_select_pin_(register_select_pin),
+        read_write_pin_(read_write_pin),
+        enable_pin_(enable_pin),
+        data_bus_(data_bus)
   {
   }
 
   /// Initialize the pins needed to communicate with the LCD screen
-  void Initialize() const
+  void ModuleInitialize() override
   {
-    kRegisterSelectPin.SetAsOutput();
-    kReadWritePin.SetAsOutput();
-    kEnablePin.SetAsOutput();
-    kEnablePin.SetHigh();
-    kDataBus.Initialize();
-    kDataBus.SetAsOutput();
+    // Phase 1. Initialize
+    register_select_pin_.Initialize();
+    read_write_pin_.Initialize();
+    enable_pin_.Initialize();
+    data_bus_.Initialize();
 
-    WriteCommand(Value(Command::kDefaultDisplayConfiguration) |
-                 Value(kBusMode) | Value(kDisplayMode) | Value(kFontStyle));
-    SetDisplayOn();
-    ClearDisplay();
+    // Phase 2. Configure
+    // Phase 3. Enable
+    register_select_pin_.Enable();
+    read_write_pin_.Enable();
+    enable_pin_.Enable();
+    data_bus_.Enable();
+
+    // Phase 4. Setup
+    register_select_pin_.SetAsOutput();
+    read_write_pin_.SetAsOutput();
+    enable_pin_.SetAsOutput();
+    data_bus_.SetAsOutput();
+
+    enable_pin_.SetHigh();
   }
 
-  /// @param operation Operation transfer type.
-  /// @param data      The 4-bit or 8-bit data to write to the device.
-  void Write(WriteOperation operation, uint8_t data) const
+  /// Initialize the pins needed to communicate with the LCD screen
+  void ModuleEnable(bool enable = true) override
   {
-    kEnablePin.SetHigh();
-    kRegisterSelectPin.Set(sjsu::Gpio::State(operation));
-    kReadWritePin.SetLow();
-
-    kDataBus.Write(data);
-    sjsu::Delay(80ns);  // Data setup time minimum of 80ns
-    // Toggle chip enable to trigger write on falling edge
-    kEnablePin.SetLow();
-    sjsu::Delay(10ns);  // Data hold time minimum of 10ns
-    kEnablePin.SetHigh();
-  }
-
-  /// @param command 8-bit command to send.
-  void WriteCommand(Command command) const
-  {
-    WriteCommand(Value(command));
-  }
-
-  /// Perform a write command
-  ///
-  /// @param command - the command to send to the LCD screen.
-  void WriteCommand(uint8_t command) const
-  {
-    switch (kBusMode)
+    if (enable)
     {
-      case BusMode::kFourBit:
-        Write(WriteOperation::kCommand, (command >> 4) & 0xF);
-        Write(WriteOperation::kCommand, (command >> 0) & 0xF);
-        break;
-      case BusMode::kEightBit: Write(WriteOperation::kCommand, command); break;
+      WriteCommand(Value(Command::kDefaultDisplayConfiguration) |
+                   Value(kBusMode) | Value(kDisplayMode) | Value(kFontStyle));
+      SetDisplayOn();
+      ClearDisplay();
     }
-  }
-
-  /// Writes a byte to the current cursor address position.
-  ///
-  /// @param data Byte to send to device.
-  void WriteData(uint8_t data) const
-  {
-    switch (kBusMode)
+    else
     {
-      case BusMode::kFourBit:
-        Write(WriteOperation::kData, (data >> 4) & 0xF);
-        Write(WriteOperation::kData, (data >> 0) & 0xF);
-        break;
-      case BusMode::kEightBit: Write(WriteOperation::kData, data); break;
+      LogDebug("Disabled not supported for this driver");
     }
   }
 
   /// Clears all characters on the display by sending the clear display command
   /// to the device.
-  void ClearDisplay() const
+  void ClearDisplay()
   {
     WriteCommand(Command::kClearDisplay);
     sjsu::Delay(1600us);  // Clear display operation requires 1.52ms
   }
 
-  /// @param on Toggles the display on if TRUe.
-  void SetDisplayOn(bool on = true) const
+  /// @param on Toggles the display on if true.
+  void SetDisplayOn(bool on = true)
   {
     WriteCommand(on ? Command::kTurnDisplayOn : Command::kTurnDisplayOff);
   }
 
-  /// Make the cursor hidden
+  /// Hide the cursor
   ///
   /// @param hidden - set to false to make the cursor appear.
-  void SetCursorHidden(bool hidden = true) const
+  void SetCursorHidden(bool hidden = true)
   {
     WriteCommand(hidden ? Command::kTurnDisplayOn : Command::kTurnCursorOn);
   }
 
   /// Set the drawing direction of the cursor and characters
-  void SetCursorDirection(CursorDirection direction) const
+  void SetCursorDirection(CursorDirection direction)
   {
     switch (direction)
     {
@@ -229,74 +203,132 @@ class St7066u
 
   /// Sets the cursor at a specified position.
   ///
-  /// @param position Line number (row) and character position to move cursor
-  ///                 to.
-  void SetCursorPosition(CursorPosition_t position) const
+  /// @param cursor - Line number (row) and character position to move cursor to
+  ///
+  /// @throw sjsu::Exception with error code std::errc::argument_out_of_domain.
+  void SetCursorPosition(CursorPosition_t cursor)
   {
-    SJ2_ASSERT_FATAL(position.line_number < 5,
-                     "SetCursorPosition() - The driver does not support "
-                     "more than 4 display lines");
-    SJ2_ASSERT_FATAL(position.position < 20,
-                     "SetCursorPosition() - The character position should "
-                     "not exceed the max display width");
+    if (cursor.line_number > 4 || cursor.position > 20)
+    {
+      throw sjsu::Exception(std::errc::argument_out_of_domain,
+                            "Line number must be between 0 to 4 and cursor "
+                            "position from 0 to 19.");
+    }
 
-    constexpr Command kLineAddresses[] = {
+    constexpr std::array<Command, 4> kLineAddress = {
       Command::kDisplayLineAddress0,
       Command::kDisplayLineAddress1,
       Command::kDisplayLineAddress2,
       Command::kDisplayLineAddress3,
     };
-    uint8_t line_address =
-        static_cast<uint8_t>(kLineAddresses[position.line_number]);
-    WriteCommand(static_cast<uint8_t>(line_address + position.position));
+
+    uint8_t line_address = Value(kLineAddress[cursor.line_number]);
+
+    WriteCommand(static_cast<uint8_t>(line_address + cursor.position));
   }
 
   /// Move cursor back to the starting position.
-  void ResetCursorPosition() const
+  void ResetCursorPosition()
   {
     WriteCommand(Command::kResetCursor);
-    sjsu::Delay(1600us);  // requires 1.52ms
+    sjsu::Delay(1600us);  // requires at least 1.52ms
   }
 
   /// Displays a desired text string on the display.
   ///
-  /// @param text     String to write on the display.
-  /// @param position Position to start writing the characters
-  void DisplayText(const char * text,
-                   CursorPosition_t position = kDefaultCursorPosition) const
+  /// @param text   - String to write on the display.
+  /// @param cursor - Position to start writing the characters
+  void DrawText(std::string_view text, CursorPosition_t cursor)
   {
-    constexpr uint8_t kMaxDisplayWidth = 20;
-    const uint8_t kStartOffset         = position.position;
-    uint8_t termination_index          = uint8_t(strlen(text));
-    // calculate the termination_index to stop writing to the display
-    // if the string length of text exceeds the display's width
-    if (termination_index > kMaxDisplayWidth)
+    constexpr size_t kMaxDisplayWidth = 20;
+
+    if (cursor.position >= kMaxDisplayWidth)
     {
-      termination_index = kMaxDisplayWidth;
+      return;
     }
-    if (termination_index > (kMaxDisplayWidth - kStartOffset))
-    {
-      termination_index = uint8_t(kMaxDisplayWidth - kStartOffset);
-    }
+
+    // Distance from position to the end of the screen
+    const size_t kWidth = kMaxDisplayWidth - cursor.position;
+
     // set cursor start position for writing
-    SetCursorPosition(position);
-    for (uint8_t i = 0; i < termination_index; i++)
+    SetCursorPosition(cursor);
+
+    std::string_view sub_string = text.substr(0, std::min(text.size(), kWidth));
+    for (const auto & character : sub_string)
     {
-      WriteData(text[i]);
+      WriteData(character);
     }
   }
 
  private:
+  /// @param operation Operation transfer type.
+  /// @param data      The 4-bit or 8-bit data to write to the device.
+  void Write(WriteOperation operation, uint8_t data)
+  {
+    enable_pin_.SetHigh();
+    register_select_pin_.Set(sjsu::Gpio::State(operation));
+    read_write_pin_.SetLow();
+
+    data_bus_.Write(data);
+    sjsu::Delay(80ns);  // Data setup time minimum of 80ns
+
+    // Toggle chip enable to trigger write on falling edge
+    enable_pin_.SetLow();
+
+    sjsu::Delay(10ns);  // Data hold time minimum of 10ns
+    enable_pin_.SetHigh();
+  }
+
+  /// @param command 8-bit command to send.
+  void WriteCommand(Command command)
+  {
+    WriteCommand(Value(command));
+  }
+
+  /// Perform a write command
+  ///
+  /// @param command - the command to send to the LCD screen.
+  void WriteCommand(uint8_t command)
+  {
+    switch (kBusMode)
+    {
+      case BusMode::kFourBit:
+        Write(WriteOperation::kCommand, (command >> 4) & 0xF);
+        Write(WriteOperation::kCommand, (command >> 0) & 0xF);
+        break;
+      case BusMode::kEightBit: Write(WriteOperation::kCommand, command); break;
+    }
+  }
+
+  /// Writes a byte to the current cursor address position.
+  ///
+  /// @param data Byte to send to device.
+  void WriteData(uint8_t data)
+  {
+    switch (kBusMode)
+    {
+      case BusMode::kFourBit:
+        Write(WriteOperation::kData, (data >> 4) & 0xF);
+        Write(WriteOperation::kData, (data >> 0) & 0xF);
+        break;
+      case BusMode::kEightBit: Write(WriteOperation::kData, data); break;
+    }
+  }
+
   const BusMode kBusMode;
   const DisplayMode kDisplayMode;
   const FontStyle kFontStyle;
+
   /// Pin that outputs whether the instruction or data register is selected.
-  const Gpio & kRegisterSelectPin;  // NOLINT
+  Gpio & register_select_pin_;
+
   /// Pin that outputs whether the operation is read/write.
-  const Gpio & kReadWritePin;  // NOLINT
+  Gpio & read_write_pin_;
+
   /// Enable pin used for triggering read/write operations.
-  const Gpio & kEnablePin;  // NOLINT
+  Gpio & enable_pin_;
+
   /// 4-bit or 8-bit data bus.
-  ParallelBus & kDataBus;  // NOLINT
+  ParallelBus & data_bus_;
 };
 }  // namespace sjsu
