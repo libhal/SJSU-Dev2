@@ -494,13 +494,6 @@ class Can final : public sjsu::Can
 
   bool SelfTest(uint32_t id) override
   {
-    std::scope_exit on_failure_routine([this]() {
-      // Disable self-test mode
-      SetMode(Mode::kReset, true);
-      SetMode(Mode::kSelfTest, false);
-      SetMode(Mode::kReset, false);
-    });
-
     Message_t test_message;
     test_message.id = id;
 
@@ -531,8 +524,6 @@ class Can final : public sjsu::Can
     }
 
     // Allow time for RX to fire
-    sjsu::Delay(2ms);
-
     Wait(100ms, [this]() { return HasData(); });
 
     // Read the message from the rx buffer and enqueue it into the rx queue.
@@ -544,7 +535,10 @@ class Can final : public sjsu::Can
       return false;
     }
 
-    on_failure_routine.release();
+    // Disable self-test mode
+    SetMode(Mode::kReset, true);
+    SetMode(Mode::kSelfTest, false);
+    SetMode(Mode::kReset, false);
 
     return true;
   }
