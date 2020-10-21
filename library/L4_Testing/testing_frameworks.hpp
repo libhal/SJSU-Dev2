@@ -1,8 +1,10 @@
 #pragma once
 
 #include <cinttypes>
+#include <functional>
 #include <span>
 #include <string>
+#include <thread>
 #include <utility>
 
 #include "third_party/doctest/doctest/doctest.h"
@@ -340,5 +342,112 @@ template <class T>
 inline void ClearStructure(T * data_structure)
 {
   memset(data_structure, 0, sizeof(*data_structure));
+}
+
+/// Poll verification parameter to condense the arguments of the
+/// PollingVerification function.
+struct PollVerificationParameter_t
+{
+  /// Locking function must setup the environment in such a way to cause the
+  /// polling_function to lock up in a loop and wait for an event to occur to
+  /// release it. For example, polling_function() will wait for Register A to be
+  /// 10 before finishing. The locking function will need to set Register A to
+  /// something other than 10, lets say 0, in order to cause the polling
+  /// function to poll.
+  std::function<void(void)> locking_function;
+
+  /// A function that poll when called. This function should wait for an event
+  /// to occur like a register update.
+  std::function<void(void)> polling_function;
+
+  /// Release function must configure the environment in such a way to cause the
+  /// polling function to no longer poll. This function can be used to verify
+  /// that the environment has been configured properly by the polling_function.
+  /// For example, if you know that the polling function will set a register (A)
+  /// to the value 5 before it polls on register B for the value 10, the release
+  /// function can check if register A is 5, then the release function can set
+  /// register B to 10.
+  std::function<void(void)> release_function;
+
+  /// Delay time between calling the polling function and running the release
+  /// function. This is also the delay time between calling the release function
+  /// and verifying that the polling function was released by the release
+  /// function. Default of 1ms should be more than enough for most use cases.
+  std::chrono::nanoseconds delay_time = 1ms;
+};
+
+/// A utility function to help scaffold and generalize test code that has polls
+/// on a specific condition. Will fail test case and abort all sub-threads if a
+/// failure occurs. This function is safe to use and shall halt the program any
+/// more than 2x the time of delay_time.
+///
+/// USE this function rather than using std::thread directly to verify the state
+/// of a system when it begins to poll.
+///
+/// @param poll - see documentation for this type for more details about each
+///        field and how they should be used.
+/// @param location - used to print out the location in the test where the
+///        failure occurred. Do not
+inline void PollingVerification(
+    PollVerificationParameter_t poll,
+    const std::experimental::source_location & location =
+        std::experimental::source_location::current())
+{
+  // Setup
+  // Setup: Create a polling variable that will track if the polling function is
+  //        still polling or not. This is set to false after the polling
+  //        function is finished. This variable only become false the polling
+  //        function was never locked in a loop or if environmental change due
+  //        to the release function results in the polling_function finishing.
+  bool polling = true;
+
+  // Setup: First run the function that will setup the environment to cause the
+  //        polling function to poll/loop/lock.
+  poll.locking_function();
+
+  std::string file_location =
+      location.file_name() + std::string(":") + std::to_string(location.line());
+
+  std::string lock_failure_string = file_location;
+  lock_failure_string +=
+      ": locking_function() did not result in the polling_function() locking. "
+      "Failing this test!";
+
+  std::string release_failure_string = file_location;
+  release_failure_string +=
+      ": polling_function() was not released by release_function(). Failing "
+      "this test!";
+
+  // Exercise
+  // Exercise: Create the additional thread that will release the
+  //           polling_function() from polling after delay_time has elapsed.
+  //           Will also verify that that polling variable is correct.
+  std::thread polling_release_thread(
+      [&poll, &polling, &lock_failure_string, &release_failure_string]() {
+        // Wait for polling function to begin polling
+        std::this_thread::sleep_for(poll.delay_time);
+
+        // Check that polling variable is still TRUE (will become false if
+        // polling finished early).
+        REQUIRE_MESSAGE(polling, lock_failure_string.c_str());
+
+        // Attempt to release the polling function from polling.
+        poll.release_function();
+
+        // Wait for polling function to finish.
+        std::this_thread::sleep_for(poll.delay_time);
+
+        // Check that polling variable is now FALSE
+        REQUIRE_MESSAGE(!polling, release_failure_string.c_str());
+      });
+
+  // Exercise: Begin polling
+  poll.polling_function();
+
+  // Polling function has finished at this point, set polling to false.
+  polling = false;
+
+  // Wait for polling thread to finish.
+  polling_release_thread.join();
 }
 }  // namespace sjsu::testing
