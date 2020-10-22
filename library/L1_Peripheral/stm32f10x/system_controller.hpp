@@ -400,6 +400,7 @@ class SystemController : public sjsu::SystemController
 
     // Step 1.4 Reset RTC clock registers
     RtcRegisters::Register().Set(RtcRegisters::kBackupDomainReset).Save();
+
     // Manually clear the RTC reset bit
     RtcRegisters::Register().Clear(RtcRegisters::kBackupDomainReset).Save();
 

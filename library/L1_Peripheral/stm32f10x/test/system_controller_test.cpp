@@ -50,37 +50,6 @@ TEST_CASE("Testing stm32f10x SystemController")
 
   SystemController test_subject(config);
 
-  auto system_clock_becomes_ready = [&local_rcc, &config]() {
-    // Delay by 5ms to give enough time for other simulated triggers to
-    // operate before this cancels.
-    std::this_thread::sleep_for(20ms);
-    local_rcc.CFGR = bit::Insert(
-        local_rcc.CFGR,
-        Value(config.system_clock),
-        SystemController::ClockConfigurationRegisters::kSystemClockStatus);
-  };
-
-  auto pll_lock = [&local_rcc]() {
-    std::this_thread::sleep_for(1ms);
-    local_rcc.CR = bit::Set(local_rcc.CR,
-                            SystemController::ClockControlRegisters::kPllReady);
-  };
-
-  auto high_oscillator_ready = [&local_rcc]() {
-    std::this_thread::sleep_for(10ms);
-
-    local_rcc.CR =
-        bit::Set(local_rcc.CR,
-                 SystemController::ClockControlRegisters::kExternalOscReady);
-  };
-
-  auto low_oscillator_ready = [&local_rcc]() {
-    std::this_thread::sleep_for(10ms);
-
-    local_rcc.BDCR = bit::Set(
-        local_rcc.BDCR, SystemController::RtcRegisters::kLowSpeedOscReady);
-  };
-
   SECTION("PowerUpPeripheral()")
   {
     for (size_t i = 0; i < id.size(); i++)
@@ -154,10 +123,145 @@ TEST_CASE("Testing stm32f10x SystemController")
     REQUIRE(&config == test_subject.GetClockConfiguration());
   }
 
-  SECTION("Initialize() + GetClockRate()")
+  SECTION("Initialize() Polling Verification")
   {
     // Setup
-    std::thread simulated_system_clock_ready(system_clock_becomes_ready);
+    // Setup: Will set all fields required to prevent polling. Each
+    //        locking_function will need to change this in order to induce
+    //        polling for each test case.
+
+    auto control_reg     = bit::Register(&local_rcc.CR);
+    auto control_config  = bit::Register(&local_rcc.CFGR);
+    auto bd_control      = bit::Register(&local_rcc.BDCR);
+    auto call_initialize = [&test_subject]() { test_subject.Initialize(); };
+
+    // Setup: system_clock_becomes_ready
+    control_config
+        .Insert(
+            Value(config.system_clock),
+            SystemController::ClockConfigurationRegisters::kSystemClockStatus)
+        .Save();
+
+    // Setup: pll_lock
+    control_reg.Set(SystemController::ClockControlRegisters::kPllReady).Save();
+
+    // Setup: high_oscillator_ready
+    control_reg.Set(SystemController::ClockControlRegisters::kExternalOscReady)
+        .Save();
+
+    // Setup: low_oscillator_ready
+    bd_control.Set(SystemController::RtcRegisters::kLowSpeedOscReady).Save();
+
+    SECTION("High Speed Lock")
+    {
+      testing::PollingVerification({
+          .locking_function =
+              [&control_reg, &config]() {
+                config.high_speed_external = 10_MHz;
+                control_reg
+                    .Clear(SystemController::ClockControlRegisters::
+                               kExternalOscReady)
+                    .Save();
+              },
+          .polling_function = call_initialize,
+          .release_function =
+              [&control_reg]() {
+                control_reg
+                    .Set(SystemController::ClockControlRegisters::
+                             kExternalOscReady)
+                    .Save();
+              },
+      });
+    }
+
+    SECTION("Low Speed Lock")
+    {
+      testing::PollingVerification({
+          .locking_function =
+              [&bd_control, &config]() {
+                config.low_speed_external = 1_MHz;
+                bd_control
+                    .Clear(SystemController::RtcRegisters::kLowSpeedOscReady)
+                    .Save();
+              },
+          .polling_function = call_initialize,
+          .release_function =
+              [&bd_control]() {
+                bd_control
+                    .Set(SystemController::RtcRegisters::kLowSpeedOscReady)
+                    .Save();
+              },
+      });
+    }
+
+    SECTION("Pll Lock")
+    {
+      testing::PollingVerification({
+          .locking_function =
+              [&control_reg, &config]() {
+                config.pll.enable = true;
+                control_reg
+                    .Clear(SystemController::ClockControlRegisters::kPllReady)
+                    .Save();
+              },
+          .polling_function = call_initialize,
+          .release_function =
+              [&control_reg]() {
+                control_reg
+                    .Set(SystemController::ClockControlRegisters::kPllReady)
+                    .Save();
+              },
+      });
+    }
+
+    SECTION("Verify System Clock Ready")
+    {
+      testing::PollingVerification({
+          .locking_function =
+              [&control_config, &config]() {
+                config.system_clock = SystemController::SystemClockSelect::kPll;
+
+                control_config
+                    .Insert(Value(SystemController::SystemClockSelect::
+                                      kHighSpeedInternal),
+                            SystemController::ClockConfigurationRegisters::
+                                kSystemClockStatus)
+                    .Save();
+              },
+          .polling_function = call_initialize,
+          .release_function =
+              [&control_config, &config]() {
+                control_config
+                    .Insert(Value(config.system_clock),
+                            SystemController::ClockConfigurationRegisters::
+                                kSystemClockStatus)
+                    .Save();
+              },
+      });
+    }
+  }
+
+  SECTION("Initialize()")
+  {
+    // Setup
+    // Setup: system_clock_becomes_ready
+    local_rcc.CFGR = bit::Insert(
+        local_rcc.CFGR,
+        Value(config.system_clock),
+        SystemController::ClockConfigurationRegisters::kSystemClockStatus);
+
+    // Setup: pll_lock
+    local_rcc.CR = bit::Set(local_rcc.CR,
+                            SystemController::ClockControlRegisters::kPllReady);
+
+    // Setup: high_oscillator_ready
+    local_rcc.CR =
+        bit::Set(local_rcc.CR,
+                 SystemController::ClockControlRegisters::kExternalOscReady);
+
+    // Setup: low_oscillator_ready
+    local_rcc.BDCR = bit::Set(
+        local_rcc.BDCR, SystemController::RtcRegisters::kLowSpeedOscReady);
 
     SECTION("Default Initialize")
     {
@@ -168,12 +272,10 @@ TEST_CASE("Testing stm32f10x SystemController")
     SECTION("Enable high speed external oscillator")
     {
       // Setup
-      std::thread simulate_high_oscillator_ready(high_oscillator_ready);
       config.high_speed_external = 8_MHz;
 
       // Exercise
       test_subject.Initialize();
-      simulate_high_oscillator_ready.join();
 
       // Verify
       CHECK(bit::Read(
@@ -184,12 +286,10 @@ TEST_CASE("Testing stm32f10x SystemController")
     SECTION("Enable low speed external oscillator")
     {
       // Setup
-      std::thread simulate_high_oscillator_ready(low_oscillator_ready);
       config.low_speed_external = 8_MHz;
 
       // Exercise
       test_subject.Initialize();
-      simulate_high_oscillator_ready.join();
 
       // Verify
       CHECK(bit::Read(local_rcc.BDCR,
@@ -240,11 +340,8 @@ TEST_CASE("Testing stm32f10x SystemController")
     SECTION("PLL Configuration Enable")
     {
       // Setup
-      std::thread simulate_pll_locks(pll_lock);
-
       // Exercise
       test_subject.Initialize();
-      simulate_pll_locks.join();
 
       // Verify
       CHECK(
@@ -260,21 +357,18 @@ TEST_CASE("Testing stm32f10x SystemController")
     SECTION("Flash Wait State Configuration")
     {
       // Setup
-      std::thread simulate_pll_locks(pll_lock);
-      std::thread simulate_high_oscillator_ready(high_oscillator_ready);
       uint32_t flash_code = 0b000;
 
       // Setup: Make sure we are using the PLL source
       config.system_clock = SystemController::SystemClockSelect::kPll;
+      config.pll.enable   = true;
 
       SECTION("Pll speed = 16 MHz")
       {
         // Setup
         // Setup: Internal is divided by 2 to get 4 MHz
         config.pll.source   = SystemController::PllSource::kHighSpeedInternal;
-        config.pll.enable   = true;
         config.pll.multiply = SystemController::PllMultiply::kMultiplyBy4;
-        config.system_clock = SystemController::SystemClockSelect::kPll;
         flash_code          = 0b000;
       }
 
@@ -283,9 +377,7 @@ TEST_CASE("Testing stm32f10x SystemController")
         // Setup
         // Setup: Internal is divided by 2 to get 4 MHz
         config.pll.source   = SystemController::PllSource::kHighSpeedInternal;
-        config.pll.enable   = true;
         config.pll.multiply = SystemController::PllMultiply::kMultiplyBy8;
-        config.system_clock = SystemController::SystemClockSelect::kPll;
         flash_code          = 0b001;
       }
 
@@ -294,9 +386,7 @@ TEST_CASE("Testing stm32f10x SystemController")
         // Setup
         // Setup: Internal is divided by 2 to get 4 MHz
         config.pll.source   = SystemController::PllSource::kHighSpeedInternal;
-        config.pll.enable   = true;
         config.pll.multiply = SystemController::PllMultiply::kMultiplyBy16;
-        config.system_clock = SystemController::SystemClockSelect::kPll;
         flash_code          = 0b010;
       }
 
@@ -306,16 +396,18 @@ TEST_CASE("Testing stm32f10x SystemController")
         // Setup: External Oscillator set to 8_Mhz
         config.high_speed_external = 8_MHz;
         config.pll.source   = SystemController::PllSource::kHighSpeedExternal;
-        config.pll.enable   = true;
         config.pll.multiply = SystemController::PllMultiply::kMultiplyBy9;
-        config.system_clock = SystemController::SystemClockSelect::kPll;
         flash_code          = 0b010;
       }
 
+      // Setup: system_clock_becomes_ready
+      local_rcc.CFGR = bit::Insert(
+          local_rcc.CFGR,
+          Value(config.system_clock),
+          SystemController::ClockConfigurationRegisters::kSystemClockStatus);
+
       // Exercise
       test_subject.Initialize();
-      simulate_pll_locks.join();
-      simulate_high_oscillator_ready.join();
 
       // Verify
       CHECK(flash_code ==
@@ -339,6 +431,11 @@ TEST_CASE("Testing stm32f10x SystemController")
       // Setup
       config.system_clock =
           SystemController::SystemClockSelect::kHighSpeedExternal;
+
+      local_rcc.CFGR = bit::Insert(
+          local_rcc.CFGR,
+          Value(config.system_clock),
+          SystemController::ClockConfigurationRegisters::kSystemClockStatus);
 
       // Exercise
       test_subject.Initialize();
@@ -369,8 +466,6 @@ TEST_CASE("Testing stm32f10x SystemController")
       // Exercise
       test_subject.Initialize();
     }
-
-    simulated_system_clock_ready.join();
 
     // Verify
     // Verify: Set the RTC oscillator source
