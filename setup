@@ -27,8 +27,7 @@ LOCATION_FILE=1
 LINK_PROJECTS=1
 
 # Import SJSU-Dev2 common shell script functions
-. $BASE/tools/common.sh
-
+. $BASE/projects/continuous_integration/scripts/common.sh
 function print_status() {
   if [ $1 -ne 0 ]; then
     printf "$BOLD_RED"
@@ -115,8 +114,9 @@ function install_mac_osx_prerequisites() {
   echo "               Installing Homebrew                   "
   echo "└─────────────────────────────────────────────────── "
   which -s brew
-  if [[ $? -eq "0" ]]; then
-    # Install Homebrew
+  local brew_exists=$?
+  if [[ $brew_exists -ne 0 ]]; then
+    echo "Homebrew does not exist! Installing now..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     local brew_install=$?
   fi
