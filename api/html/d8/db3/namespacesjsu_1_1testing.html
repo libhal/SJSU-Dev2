@@ -75,17 +75,25 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">sjsu::testing Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7b/structsjsu_1_1testing_1_1PollVerificationParameter__t.html">PollVerificationParameter_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a38e6d215f447e7df811dca2bc3de535d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a38e6d215f447e7df811dca2bc3de535d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/db3/namespacesjsu_1_1testing.html#a38e6d215f447e7df811dca2bc3de535d">ClearStructure</a> (T *data_structure)</td></tr>
 <tr class="separator:a38e6d215f447e7df811dca2bc3de535d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8355670212cc25039220f6e024a1abb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/db3/namespacesjsu_1_1testing.html#af8355670212cc25039220f6e024a1abb">PollingVerification</a> (<a class="el" href="../../d7/d7b/structsjsu_1_1testing_1_1PollVerificationParameter__t.html">PollVerificationParameter_t</a> poll, const std::experimental::source_location &amp;location=std::experimental::source_location::current())</td></tr>
+<tr class="separator:af8355670212cc25039220f6e024a1abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a38e6d215f447e7df811dca2bc3de535d"></a>
@@ -123,6 +131,51 @@ template&lt;class T &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data_structure</td><td>- data structure to set to all zeros. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af8355670212cc25039220f6e024a1abb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8355670212cc25039220f6e024a1abb">&#9670;&nbsp;</a></span>PollingVerification()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sjsu::testing::PollingVerification </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7b/structsjsu_1_1testing_1_1PollVerificationParameter__t.html">PollVerificationParameter_t</a>&#160;</td>
+          <td class="paramname"><em>poll</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::experimental::source_location &amp;&#160;</td>
+          <td class="paramname"><em>location</em> = <code>std::experimental::source_location::current()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A utility function to help scaffold and generalize test code that has polls on a specific condition. Will fail test case and abort all sub-threads if a failure occurs. This function is safe to use and shall halt the program any more than 2x the time of delay_time.</p>
+<p>USE this function rather than using std::thread directly to verify the state of a system when it begins to poll.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">poll</td><td>- see documentation for this type for more details about each field and how they should be used. </td></tr>
+    <tr><td class="paramname">location</td><td>- used to print out the location in the test where the failure occurred. Do not </td></tr>
   </table>
   </dd>
 </dl>

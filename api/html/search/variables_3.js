@@ -10,6 +10,7 @@ var searchData=
   ['data_5fout',['data_out',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ae29e8896e5b9b209ef11a0679bf68fd7',1,'sjsu::I2c::Transaction_t']]],
   ['datetime',['datetime',['../d0/d0f/namespacesjsu_1_1command.html#a1efcb7c236329e31aedebc158efd5618',1,'sjsu::command']]],
   ['dco',['dco',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a26481b0018be8231ead928662c611dbe',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['delay_5ftime',['delay_time',['../d7/d7b/structsjsu_1_1testing_1_1PollVerificationParameter__t.html#aefa4b00cb7735465885774c6c382e0d2',1,'sjsu::testing::PollVerificationParameter_t']]],
   ['delay_5ftime_5f',['delay_time_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5be244105265971ef530ad246b030c7b',1,'sjsu::rtos::Task']]],
   ['device_5faddress',['device_address',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#ad06cae1b08802fda54085f0cec74322b',1,'sjsu::I2cCommand::Arguments_t']]],
   ['device_5fdescriptors',['device_descriptors',['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#af4e686e38cefd9a35f4c5471e747cff1',1,'sjsu::msp432p401r::SystemController']]],
