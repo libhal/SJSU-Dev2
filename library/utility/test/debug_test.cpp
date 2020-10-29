@@ -83,6 +83,6 @@ TEST_CASE("Testing Debug Utilities")
   }
 
   // Restore stdout function
-  newlib::SetStdout(HostWrite);
+  newlib::SetStdout(HostTestWrite);
 }  // namespace sjsu
 }  // namespace sjsu

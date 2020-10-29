@@ -104,8 +104,8 @@ DECLARE_FAKE_VOID_FUNC(vTimerSetTimerID, TimerHandle_t, void *);
 
 using namespace fakeit;  // NOLINT
 
-int HostWrite(std::span<const char> payload);
-int HostRead(std::span<char> payload);
+int HostTestWrite(std::span<const char> payload);
+int HostTestRead(std::span<char> payload);
 
 /// This magical method does a lot of tricks to convince the compiler to emit
 /// as many of the class methods as possible for methods of a function that may
