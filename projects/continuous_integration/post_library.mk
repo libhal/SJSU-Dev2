@@ -32,6 +32,7 @@ MAC_TIDY_INCLUDES = \
 lint:
 	@python3 $(SJ2_TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
 
+$(info UPDATED_TIDY_FILES = $(UPDATED_TIDY_FILES))
 
 commit-tidy: $(UPDATED_TIDY_FILES)
 	@printf '$(GREEN)Commit Tidy Evaluation Complete. Everything clear!$(RESET)\n'

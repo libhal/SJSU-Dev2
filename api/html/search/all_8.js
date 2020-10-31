@@ -19,6 +19,6 @@ var searchData=
   ['hexdumpdebug',['HexdumpDebug',['../d8/df0/namespacesjsu_1_1debug.html#a44c88fa971cb59a2ed4c1ca46f2897ca',1,'sjsu::debug']]],
   ['high_5fspeed_5fexternal',['high_speed_external',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#ae80352deb50eef1479edbe1834fd52ec',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['host',['host',['../d6/d36/namespacesjsu_1_1build.html#a7cd3fc249a4045bc9f897bab66447d92a67b3dba8bc6778101892eb77249db32e',1,'sjsu::build']]],
-  ['hostread',['HostRead',['../d0/daf/testing__frameworks_8hpp.html#a5bb0153d3543c3afb586f8b7cc7e4c29',1,'testing_frameworks.hpp']]],
-  ['hostwrite',['HostWrite',['../d0/daf/testing__frameworks_8hpp.html#aaf9443d53073bd6673fb808791e1b0ea',1,'testing_frameworks.hpp']]]
+  ['hosttestread',['HostTestRead',['../d0/daf/testing__frameworks_8hpp.html#ab75a37494187f3e15094275dee249190',1,'testing_frameworks.hpp']]],
+  ['hosttestwrite',['HostTestWrite',['../d0/daf/testing__frameworks_8hpp.html#a3955d92c5a57c51c91b798077e5ef2df',1,'testing_frameworks.hpp']]]
 ];
