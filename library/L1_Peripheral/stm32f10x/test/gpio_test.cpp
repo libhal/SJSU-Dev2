@@ -2,7 +2,6 @@
 
 #include <cstdint>
 
-#include "L0_Platform/stm32f10x/stm32f10x.h"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::stm32f10x
