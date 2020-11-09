@@ -127,10 +127,9 @@ TEST_CASE("Seven segment display properly displays 8")
         {
             test.pixel_test[i][j] = 0;
         }
-
     }
     test_subject.SetCharacter(8);
-    std::array<std::array<int, 128>, 64> char_8 = 
+    std::array<std::array<int, 128>, 64> char_8 =
     {
         {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -202,7 +201,7 @@ TEST_CASE("Seven segment display properly displays 8")
 
     for (int i = 0; i < test.pixel_test.size(); i++)
     {
-        if(test.pixel_test[i] == char_8[i])
+        if (test.pixel_test[i] == char_8[i])
         {
             CHECK(test.pixel_test[i] == char_8[i]);
         }
@@ -224,7 +223,6 @@ TEST_CASE("Seven segment display properly displays 10")
         {
             test.pixel_test[i][j] = 0;
         }
-
     }
     test_subject.SetCharacter(10);
     std::array<std::array<int, 128>, 64> char_10 =
@@ -299,7 +297,7 @@ TEST_CASE("Seven segment display properly displays 10")
 
     for (int i = 0; i < test.pixel_test.size(); i++)
     {
-        if(test.pixel_test[i] == char_10[i])
+        if (test.pixel_test[i] == char_10[i])
         {
             CHECK(test.pixel_test[i] == char_10[i]);
         }
@@ -321,7 +319,6 @@ TEST_CASE("Seven segment display properly displays 88")
         {
             test.pixel_test[i][j] = 0;
         }
-
     }
     test_subject.SetCharacter(88);
     std::array<std::array<int, 128>, 64> char_88 =
@@ -396,7 +393,7 @@ TEST_CASE("Seven segment display properly displays 88")
 
     for (int i = 0; i < test.pixel_test.size(); i++)
     {
-        if(test.pixel_test[i] == char_88[i])
+        if (test.pixel_test[i] == char_88[i])
         {
             CHECK(test.pixel_test[i] == char_88[i]);
         }
@@ -407,4 +404,4 @@ TEST_CASE("Seven segment display properly displays 88")
         }
     }
 }
-}
+}  // namespace sjsu

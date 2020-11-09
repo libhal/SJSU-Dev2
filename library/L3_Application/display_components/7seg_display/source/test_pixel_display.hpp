@@ -13,7 +13,6 @@ namespace sjsu
 class TestPixelDisplay : public PixelDisplay
 {
  public:
-
   /// Returns the number of pixels wide the display is.
   size_t GetWidth() override {return 128;}
 
@@ -45,7 +44,7 @@ class TestPixelDisplay : public PixelDisplay
   /// @param x x coordinate position to draw the pixel
   /// @param y y coordinate position to draw the pixel
   /// @param color the color of the pixel. May be ignored on monochrome screens.
-  void DrawPixel(int32_t x, int32_t y, Color_t color) override 
+  void DrawPixel(int32_t x, int32_t y, Color_t color) override
   {
     pixel_test[y][x] = 1;
   }
