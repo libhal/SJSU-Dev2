@@ -6,24 +6,24 @@ more microcontrollers.
 
 ## Philosophy
 
-1.  Simple
-2.  Light Weight
-3.  Multi Platform
-4.  Fast Builds
-5.  Tested & Testable
-6.  Anti-Framework
+1. Simple
+2. Light Weight
+3. Multi Platform
+4. Builds Fast
+5. Tested & Testable
+6. Anti-Framework
 
-## Simple
+### Simple
 
 SJSU-Dev2 should be powerful yet simple. The code should be:
 
-* Readable
-* Intuitive
-* Easy to learn
+- Readable
+- Intuitive
+- Easy to learn
 
 Thus the the stylistic choices in the style guide and layer guides were made.
 
-## Light Weight
+### Light Weight
 
 > You ONLY pay for what you use!
 
@@ -34,7 +34,7 @@ interface contains, or reducing the amount of data required to configure a
 peripheral. See the techniques section for more various guides on how to do
 this.
 
-## Multiplatform
+### Multiplatform
 
 SJSU-Dev2 was built to allow development on any platform. This means any sort of
 microcontroller, processor, or system. Developers should be able to readily and
@@ -45,7 +45,7 @@ multiple microcontrollers.
 
 See `demos/multiplatform/dual_platforms` for an example of how to do this.
 
-## Fast Builds
+### Builds Fast
 
 Decisions, such as using header-only implementations for library code, were made
 to make the build system as fast as possible by reducing the number of
@@ -53,14 +53,16 @@ invocations of the GCC compiler.
 
 The following have been used to greatly reduce the time required to compile
 code.
-*  Reducing the allowable headers
-*  Reduced use of complex templates
-*  Use of static precompiled libraries
+
+- Reducing the allowable headers
+- Reduced use of complex templates
+- Use of static precompiled libraries
 
 The faster you can build the faster you can prototype, the faster you can hit
 your deadlines.
 
-# Tested & Testable
+### Tested & Testable
+
 SJSU-Dev2's code base is and must stay thoroughly tested. This ensures that the
 behavior of the code does not change when changes to the codebase occur. This
 makes refactoring and optimizing code easier as an error made in refactoring
@@ -71,7 +73,7 @@ SJSU-Dev2 comes with a testing suite that help developers test their
 applications. There is effort put in to make this as easy as possible to
 embolden developers to test more of their application code.
 
-# Anti-Framework
+### Anti-Framework
 
 SJSU-Dev2 aims to be an anti-framework. It does not aim to constrain you
 to a specific design philosophy. You can choose to omit using an OS, you
