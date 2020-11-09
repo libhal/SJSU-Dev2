@@ -3,9 +3,10 @@
 #pragma once
 
 #include <cstdint>
-#include <functional>
 
+#include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/interrupt.hpp"
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
@@ -15,31 +16,47 @@ namespace sjsu
 /// at a fixed period, like 1ms or 10ms. Such interrupts are generally used to
 /// give control of the processor back to an operating.
 /// @ingroup l1_peripheral
-class SystemTimer
+class SystemTimer : public Module
 {
  public:
   // ===========================================================================
   // Interface Methods
   // ===========================================================================
-  /// Initialize system timer hardware.
-  virtual void Initialize() const = 0;
+
+  // ---------------------------------------------------------------------------
+  // Configuration Methods
+  // ---------------------------------------------------------------------------
 
   /// Set the function to be called when the System Timer interrupt fires.
   ///
   /// @param callback - function to be called on system timer event.
-  virtual void SetCallback(InterruptCallback callback) const = 0;
+  virtual void ConfigureCallback(InterruptCallback callback) = 0;
 
   /// Set frequency of the timer.
   ///
   /// @param frequency - How many times per second should the system timer
   ///         interrupt be called.
-  /// @return the difference between the frequency that was achieved vs the
-  ///         input frequency.
-  virtual int32_t SetTickFrequency(
-      units::frequency::hertz_t frequency) const = 0;
+  virtual void ConfigureTickFrequency(units::frequency::hertz_t frequency) = 0;
 
-  /// Start the system timer. Should be done after SetInterrupt and
-  /// SetTickFrequency have been called.
-  virtual void StartTimer() const = 0;
+  // ---------------------------------------------------------------------------
+  // Usage Methods
+  // ---------------------------------------------------------------------------
 };
+
+/// Template specialization that generates an inactive sjsu::SystemTimer.
+template <>
+inline sjsu::SystemTimer & GetInactive<sjsu::SystemTimer>()
+{
+  class InactiveSystemTimer : public sjsu::SystemTimer
+  {
+   public:
+    void ModuleInitialize() override {}
+    void ModuleEnable(bool = true) override {}
+    void ConfigureCallback(InterruptCallback) override {}
+    void ConfigureTickFrequency(units::frequency::hertz_t) override {}
+  };
+
+  static InactiveSystemTimer inactive;
+  return inactive;
+}
 }  // namespace sjsu

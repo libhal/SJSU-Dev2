@@ -1,3 +1,5 @@
+#include "L3_Application/fatfs.hpp"
+
 #include <diskio.h>
 #include <ff.h>
 #include <ffconf.h>
@@ -6,7 +8,6 @@
 #include <cstring>
 
 #include "L4_Testing/testing_frameworks.hpp"
-#include "L3_Application/fatfs.hpp"
 
 // NOLINTNEXTLINE
 extern "C" DSTATUS disk_status(BYTE drive_number);
@@ -125,8 +126,8 @@ TEST_CASE("Testing FAT FS")
       // Setup
       // Setup: Needed to verify disk_status's return value
       When(Method(mock_storage, IsMediaPresent)).AlwaysReturn(true);
-      Fake(Method(mock_storage, Initialize));
-      Fake(Method(mock_storage, Enable));
+      Fake(Method(mock_storage, ModuleInitialize));
+      Fake(Method(mock_storage, ModuleEnable));
 
       // Exercise
       CHECK(RES_OK == disk_initialize(0));
@@ -134,8 +135,8 @@ TEST_CASE("Testing FAT FS")
 
       // Verify
       Verify(Method(mock_storage, IsMediaPresent));
-      Verify(Method(mock_storage, Initialize));
-      Verify(Method(mock_storage, Enable));
+      Verify(Method(mock_storage, ModuleInitialize));
+      Verify(Method(mock_storage, ModuleEnable));
     }
   }
 
@@ -172,9 +173,10 @@ TEST_CASE("Testing FAT FS")
     SECTION("Check various sector and count values")
     {
       // Setup
-      uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
+      uint8_t payload[512] = { 1, 2, 3, 4, 5, 6 };
 
-      Fake(Method(mock_storage, Write));
+      Fake(OverloadedMethod(
+          mock_storage, Write, void(uint32_t, std::span<const uint8_t>)));
       Fake(Method(mock_storage, Erase));
 
       for (uint32_t sector : { 0, 1, 4, 512, 1024, 65536 })
@@ -196,9 +198,17 @@ TEST_CASE("Testing FAT FS")
             disk_write(0, payload, sector, count);
 
             // Verify
-            Verify(Method(mock_storage, Erase).Using(kExpectedSector, kLength));
-            Verify(Method(mock_storage, Write)
-                       .Using(kExpectedSector, payload, kLength));
+            Verify(Method(mock_storage, GetBlockSize),
+                   Method(mock_storage, Erase).Using(kExpectedSector, kLength),
+                   OverloadedMethod(mock_storage,
+                                    Write,
+                                    void(uint32_t, std::span<const uint8_t>))
+                       .Matching([kExpectedSector, payload, kLength](
+                                     uint32_t match_sector,
+                                     std::span<const uint8_t> data) {
+                         return (kExpectedSector == match_sector) &&
+                                (data.size() == kLength);
+                       }));
           }
         }
       }
@@ -244,8 +254,12 @@ TEST_CASE("Testing FAT FS")
 
             // Verify
             Verify(Method(mock_storage, Read)
-                       .Using(kExpectedSector,
-                              reinterpret_cast<void *>(payload), kLength));
+                       .Matching(
+                           [kExpectedSector, payload, kLength](
+                               uint32_t match_sector, std::span<uint8_t> data) {
+                             return (kExpectedSector == match_sector) &&
+                                    (data.size() == kLength);
+                           }));
           }
         }
       }

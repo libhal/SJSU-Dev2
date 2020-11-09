@@ -1,7 +1,8 @@
+#include "L1_Peripheral/lpc17xx/system_controller.hpp"
+
 #include <bitset>
 #include <thread>
 
-#include "L1_Peripheral/lpc17xx/system_controller.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::lpc17xx
@@ -467,55 +468,53 @@ TEST_CASE("Testing LPC176x/5x System Controller")
     INFO("device id: " << peripheral.device_id);
 
     // Test IsPeripheralPoweredUp
-    {
-      // Peripheral is Test on
-      {
-        // Setup: Set all peripheral power bits to be off except for the
+    {   // Peripheral is Test on
+      { // Setup: Set all peripheral power bits to be off except for the
         //        peripheral to test
         local_sc.PCONP = 0;
-        local_sc.PCONP = (1 << peripheral.device_id);
+    local_sc.PCONP = (1 << peripheral.device_id);
 
-        // Exercise + Verify
-        CHECK(system_controller.IsPeripheralPoweredUp(peripheral) == true);
-      }
+    // Exercise + Verify
+    CHECK(system_controller.IsPeripheralPoweredUp(peripheral) == true);
+  }
 
-      // Peripheral is Test off
-      {
-        // Setup: Set all peripheral power bits to be on except for the
-        //        peripheral to test
-        local_sc.PCONP = std::numeric_limits<decltype(local_sc.PCONP)>::max();
-        local_sc.PCONP = ~(1 << peripheral.device_id);
+  // Peripheral is Test off
+  {
+    // Setup: Set all peripheral power bits to be on except for the
+    //        peripheral to test
+    local_sc.PCONP = std::numeric_limits<decltype(local_sc.PCONP)>::max();
+    local_sc.PCONP = ~(1 << peripheral.device_id);
 
-        // Exercise + Verify
-        CHECK(system_controller.IsPeripheralPoweredUp(peripheral) == false);
-      }
-    }
+    // Exercise + Verify
+    CHECK(system_controller.IsPeripheralPoweredUp(peripheral) == false);
+  }
+}
 
-    // Test PowerUpPeripheral
-    {
-      // Setup: Set all peripherals power bits to be initially off
-      local_sc.PCONP = 0;
+// Test PowerUpPeripheral
+{
+  // Setup: Set all peripherals power bits to be initially off
+  local_sc.PCONP = 0;
 
-      // Exercise
-      system_controller.PowerUpPeripheral(peripheral);
+  // Exercise
+  system_controller.PowerUpPeripheral(peripheral);
 
-      // Verify
-      CHECK(local_sc.PCONP == (1 << peripheral.device_id));
-    }
+  // Verify
+  CHECK(local_sc.PCONP == (1 << peripheral.device_id));
+}
 
-    // Test PowerDownPeripheral
-    {
-      // Setup: Set all peripherals power bits to be initially on
-      local_sc.PCONP = std::numeric_limits<decltype(local_sc.PCONP)>::max();
+// Test PowerDownPeripheral
+{
+  // Setup: Set all peripherals power bits to be initially on
+  local_sc.PCONP = std::numeric_limits<decltype(local_sc.PCONP)>::max();
 
-      // Exercise
-      system_controller.PowerDownPeripheral(peripheral);
+  // Exercise
+  system_controller.PowerDownPeripheral(peripheral);
 
-      // Verify
-      CHECK(local_sc.PCONP == ~(1 << peripheral.device_id));
-    }
-  }  // Peripheral Power Control
+  // Verify
+  CHECK(local_sc.PCONP == ~(1 << peripheral.device_id));
+}
+}  // namespace sjsu::lpc17xx
 
-  SystemController::system_controller = LPC_SC;
+SystemController::system_controller = LPC_SC;
 }
 }  // namespace sjsu::lpc17xx

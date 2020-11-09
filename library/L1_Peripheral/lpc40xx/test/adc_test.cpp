@@ -1,5 +1,6 @@
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/adc.hpp"
+
+#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/bit.hpp"
 
@@ -11,8 +12,10 @@ TEST_CASE("Testing lpc40xx adc")
 {
   // Create local version of LPC_ADC
   LPC_ADC_TypeDef local_adc;
+
   // Clear local adc registers
   testing::ClearStructure(&local_adc);
+
   // Set base registers to respective local variables to check
   // for any bit manipulations
   // Any manipulation will be directed to the respective local registers
@@ -26,19 +29,22 @@ TEST_CASE("Testing lpc40xx adc")
   When(Method(mock_system_controller, GetClockRate))
       .AlwaysReturn(kDummySystemControllerClockFrequency);
 
-
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   // Set mock for sjsu::Pin
   Mock<sjsu::Pin> mock_adc_pin0;
-  Fake(Method(mock_adc_pin0, SetAsAnalogMode),
-       Method(mock_adc_pin0, SetPull),
-       Method(mock_adc_pin0, SetPinFunction));
+  Fake(Method(mock_adc_pin0, ModuleInitialize),
+       Method(mock_adc_pin0, ModuleEnable),
+       Method(mock_adc_pin0, ConfigureAsAnalogMode),
+       Method(mock_adc_pin0, ConfigurePullResistor),
+       Method(mock_adc_pin0, ConfigureFunction));
 
   Mock<sjsu::Pin> mock_adc_pin1;
-  Fake(Method(mock_adc_pin1, SetAsAnalogMode),
-       Method(mock_adc_pin1, SetPull),
-       Method(mock_adc_pin1, SetPinFunction));
+  Fake(Method(mock_adc_pin1, ModuleInitialize),
+       Method(mock_adc_pin1, ModuleEnable),
+       Method(mock_adc_pin1, ConfigureAsAnalogMode),
+       Method(mock_adc_pin1, ConfigurePullResistor),
+       Method(mock_adc_pin1, ConfigureFunction));
 
   const Adc::Channel_t kMockChannel0 = {
     .adc_pin      = mock_adc_pin0.get(),
@@ -53,8 +59,8 @@ TEST_CASE("Testing lpc40xx adc")
   };
 
   // Create ports and pins to test and mock
-  Adc channel0_mock(kMockChannel0);
-  Adc channel1_mock(kMockChannel1);
+  Adc test_subject0(kMockChannel0);
+  Adc test_subject1(kMockChannel1);
 
   auto setup_adc_channel = [&](Adc::Channel_t channel,
                                uint32_t expected_value) {
@@ -68,34 +74,37 @@ TEST_CASE("Testing lpc40xx adc")
                                                 Adc::DataRegister::kResult);
   };
 
-  SECTION("Software Initialization")
+  SECTION("Initialize()")
   {
     // Setup
     constexpr uint32_t kExpectedDivider =
         kDummySystemControllerClockFrequency / Adc::kClockFrequency;
 
     // Exercise
-    channel0_mock.Initialize();
-    channel1_mock.Initialize();
+    test_subject0.ModuleInitialize();
+    test_subject1.ModuleInitialize();
 
     // Verify
-    // Verify that PowerUpPeripheral() was called with the ADC peripheral id
+    // Verify: that PowerUpPeripheral() was called with the ADC peripheral id
     Verify(Method(mock_system_controller, PowerUpPeripheral)
-               .Matching([](sjsu::SystemController::ResourceID id) {
-                 return SystemController::Peripherals::kAdc.device_id ==
-                        id.device_id;
-               }));
+               .Using(SystemController::Peripherals::kAdc));
 
-    // Verify that the pins were setup correctly
-    Verify(
-        Method(mock_adc_pin0, SetPinFunction).Using(kMockChannel0.pin_function),
-        Method(mock_adc_pin0, SetPull).Using(sjsu::Pin::Resistor::kNone),
-        Method(mock_adc_pin0, SetAsAnalogMode).Using(true));
+    // Verify: that the pins were setup correctly
+    Verify(Method(mock_adc_pin0, ModuleInitialize),
+           Method(mock_adc_pin0, ConfigureFunction)
+               .Using(kMockChannel0.pin_function),
+           Method(mock_adc_pin0, ConfigurePullResistor)
+               .Using(sjsu::Pin::Resistor::kNone),
+           Method(mock_adc_pin0, ConfigureAsAnalogMode).Using(true),
+           Method(mock_adc_pin0, ModuleEnable).Using(true));
 
-    Verify(
-        Method(mock_adc_pin1, SetPinFunction).Using(kMockChannel1.pin_function),
-        Method(mock_adc_pin1, SetPull).Using(sjsu::Pin::Resistor::kNone),
-        Method(mock_adc_pin1, SetAsAnalogMode).Using(true));
+    Verify(Method(mock_adc_pin1, ModuleInitialize),
+           Method(mock_adc_pin1, ConfigureFunction)
+               .Using(kMockChannel1.pin_function),
+           Method(mock_adc_pin1, ConfigurePullResistor)
+               .Using(sjsu::Pin::Resistor::kNone),
+           Method(mock_adc_pin1, ConfigureAsAnalogMode).Using(true),
+           Method(mock_adc_pin1, ModuleEnable).Using(true));
 
     CHECK(kExpectedDivider ==
           bit::Extract(local_adc.CR, Adc::Control::kClockDivider));
@@ -104,173 +113,74 @@ TEST_CASE("Testing lpc40xx adc")
     CHECK(0 == bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
     // Check bit 21 to see if power down bit is set in local_adc.CR
     CHECK(bit::Read(local_adc.CR, Adc::Control::kPowerEnable));
-  }
-
-  // This test only tests that the channel select lines were enabled. The rest
-  // of the initialize is tested above.
-  SECTION("Burst Mode Initialization")
-  {
-    // Setup
-    Adc::BurstMode();
-    // Exercise
-    channel0_mock.Initialize();
-    channel1_mock.Initialize();
-    // Check that the channel enable bits (the first 8 bits of the control
-    // register) has been set to 1 (enabled)
-    CHECK(bit::Read(local_adc.CR, kMockChannel0.channel));
-    CHECK(bit::Read(local_adc.CR, kMockChannel1.channel));
-    CHECK(!bit::Read(local_adc.CR, 3));  // make sure channel 3 is not enabled
-    CHECK(!bit::Read(local_adc.CR, 4));  // make sure channel 4 is not enabled
-    CHECK(!bit::Read(local_adc.CR, 5));  // make sure channel 5 is not enabled
-    CHECK(!bit::Read(local_adc.CR, 6));  // make sure channel 6 is not enabled
-    CHECK(!bit::Read(local_adc.CR, 7));  // make sure channel 7 is not enabled
-  }
-  SECTION("Burst mode")
-  {
-    // Only need to test if burst mode will turn on and off
-    // Burst mode applies to all channels that are initialized
-    Adc::BurstMode(true);
-
-    CHECK(channel0_mock.BurstModeIsEnabled());
     CHECK(bit::Read(local_adc.CR, Adc::Control::kBurstEnable));
-
-    Adc::BurstMode(false);
-
-    CHECK(!channel0_mock.BurstModeIsEnabled());
-    CHECK(!bit::Read(local_adc.CR, Adc::Control::kBurstEnable));
-
-    constexpr uint8_t kBurstModeStartCode = 0b000;
-    // Check if bits 24 to 26 in local_adc.CR are cleared for burst mode
-    // conversion
-    Adc::BurstMode(true);
-    CHECK(kBurstModeStartCode ==
-          bit::Extract(local_adc.CR, Adc::Control::kStartCode));
   }
-  SECTION("Read channel 0 using software mode")
+
+  SECTION("Enable()")
   {
-    // Setup
-    constexpr uint32_t kExpectedAdcValue  = 2425;
-    constexpr uint32_t kSoftwareStartCode = 0b001;
-    setup_adc_channel(kMockChannel0, kExpectedAdcValue);
-    Adc::BurstMode(false);
-    channel0_mock.Initialize();
-    // Exercise
-    uint32_t adc_raw = channel0_mock.Read();
-    // Verify
-    CHECK(adc_raw == bit::Extract(local_adc.DR[0], Adc::DataRegister::kResult));
-    CHECK(kSoftwareStartCode ==
-          bit::Extract(local_adc.CR, Adc::Control::kStartCode));
-    CHECK((1 << kMockChannel0.channel) ==
-          bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
+    SECTION("true")
+    {
+      // Exercise
+      test_subject0.ModuleEnable();
+      test_subject1.ModuleEnable();
+
+      // Verify
+      // Check that the channel enable bits (the first 8 bits of the control
+      // register) has been set to 1 (enabled)
+      CHECK(bit::Read(local_adc.CR, kMockChannel0.channel));
+      CHECK(bit::Read(local_adc.CR, kMockChannel1.channel));
+      CHECK(!bit::Read(local_adc.CR, 3));  // make sure channel 3 is not enabled
+      CHECK(!bit::Read(local_adc.CR, 4));  // make sure channel 4 is not enabled
+      CHECK(!bit::Read(local_adc.CR, 5));  // make sure channel 5 is not enabled
+      CHECK(!bit::Read(local_adc.CR, 6));  // make sure channel 6 is not enabled
+      CHECK(!bit::Read(local_adc.CR, 7));  // make sure channel 7 is not enabled
+    }
+
+    SECTION("false")
+    {
+      // Exercise
+      test_subject0.ModuleEnable(true);
+      test_subject1.ModuleEnable(false);
+
+      // Check that the channel enable bits (the first 8 bits of the control
+      // register) has been set to 1 (enabled)
+      CHECK(bit::Read(local_adc.CR, kMockChannel0.channel));
+      CHECK(!bit::Read(local_adc.CR, kMockChannel1.channel));
+      CHECK(!bit::Read(local_adc.CR, 3));  // make sure channel 3 is not enabled
+      CHECK(!bit::Read(local_adc.CR, 4));  // make sure channel 4 is not enabled
+      CHECK(!bit::Read(local_adc.CR, 5));  // make sure channel 5 is not enabled
+      CHECK(!bit::Read(local_adc.CR, 6));  // make sure channel 6 is not enabled
+      CHECK(!bit::Read(local_adc.CR, 7));  // make sure channel 7 is not enabled
+    }
   }
-  SECTION("Read channel 1 using software mode")
-  {
-    // Setup
-    constexpr uint32_t kExpectedAdcValue  = 3341;
-    constexpr uint32_t kSoftwareStartCode = 0b001;
-    setup_adc_channel(kMockChannel1, kExpectedAdcValue);
-    Adc::BurstMode(false);
-    channel1_mock.Initialize();
-    // Exercise
-    uint32_t adc_raw = channel1_mock.Read();
-    // Verify
-    CHECK(adc_raw == bit::Extract(local_adc.DR[1], Adc::DataRegister::kResult));
-    CHECK(kSoftwareStartCode ==
-          bit::Extract(local_adc.CR, Adc::Control::kStartCode));
-    CHECK((1 << kMockChannel1.channel) ==
-          bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
-  }
-  SECTION("Read using burst mode")
+
+  SECTION("Read ADC")
   {
     // Setup
     constexpr uint32_t kExpectedAdcValue = 1555;
     constexpr uint32_t kBurstStartCode   = 0b000;
     setup_adc_channel(kMockChannel0, kExpectedAdcValue);
-    Adc::BurstMode(true);
-    channel0_mock.Initialize();
+
     // Exercise
-    uint32_t adc_raw = channel0_mock.Read();
+    uint32_t adc_raw = test_subject0.Read();
+
     // Verify
-    CHECK((1 << kMockChannel0.channel) ==
-          bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
+    // Verify: channel select should be set to 0 as burst mode will sample all
+    //         enabled channels.
+    CHECK(0 == bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
+    // Verify: The adc_raw value should be what was stored in the result
+    //         register.
     CHECK(adc_raw == bit::Extract(local_adc.DR[0], Adc::DataRegister::kResult));
+    // Verify: That the burst start code is set in start code as any other code
+    //         will cause sampling to break.
     CHECK(kBurstStartCode ==
           bit::Extract(local_adc.CR, Adc::Control::kStartCode));
   }
-  SECTION("Read Result from two different channels")
-  {
-    constexpr uint32_t kExpectedAdcValue[3] = { 0, 125, 4000 };
-    uint32_t adc_read_result[2]             = { 0 };
 
-    // Source "UM10562 LPC408x/7x User Manual" table 678 page 805
-    constexpr uint8_t kSoftwareStartCode = 0b001;
-
-    // Setup
-    // Set done flag so the functions do not loop forever. Only need to do this
-    // once since the driver should not be modifying these flags.
-    local_adc.DR[kMockChannel0.channel] =
-        bit::Set(local_adc.DR[kMockChannel0.channel], Adc::DataRegister::kDone);
-    local_adc.DR[kMockChannel1.channel] =
-        bit::Set(local_adc.DR[kMockChannel1.channel], Adc::DataRegister::kDone);
-    // Set done bit so conversion does not loop forever
-    // Set the expected results
-    local_adc.DR[kMockChannel0.channel] =
-        bit::Insert(local_adc.DR[kMockChannel0.channel],
-                    kExpectedAdcValue[0],
-                    Adc::DataRegister::kResult);
-    local_adc.DR[kMockChannel1.channel] =
-        bit::Insert(local_adc.DR[kMockChannel1.channel],
-                    kExpectedAdcValue[2],
-                    Adc::DataRegister::kResult);
-    // Exercise
-    adc_read_result[0] = channel0_mock.Read();
-    adc_read_result[1] = channel1_mock.Read();
-    // Verify
-    CHECK(kExpectedAdcValue[0] == adc_read_result[0]);
-    CHECK(kExpectedAdcValue[2] == adc_read_result[1]);
-    CHECK(kSoftwareStartCode ==
-          bit::Extract(local_adc.CR, Adc::Control::kStartCode));
-
-    // Setup
-    local_adc.DR[kMockChannel0.channel] =
-        bit::Insert(local_adc.DR[kMockChannel0.channel],
-                    kExpectedAdcValue[2],
-                    Adc::DataRegister::kResult);
-    local_adc.DR[kMockChannel1.channel] =
-        bit::Insert(local_adc.DR[kMockChannel1.channel],
-                    kExpectedAdcValue[1],
-                    Adc::DataRegister::kResult);
-    // Exercise
-    adc_read_result[0] = channel0_mock.Read();
-    adc_read_result[1] = channel1_mock.Read();
-    // Verify
-    CHECK(kExpectedAdcValue[2] == adc_read_result[0]);
-    CHECK(kExpectedAdcValue[1] == adc_read_result[1]);
-    CHECK(kSoftwareStartCode ==
-          bit::Extract(local_adc.CR, Adc::Control::kStartCode));
-
-    // Setup
-    local_adc.DR[kMockChannel0.channel] =
-        bit::Insert(local_adc.DR[kMockChannel0.channel],
-                    kExpectedAdcValue[1],
-                    Adc::DataRegister::kResult);
-    local_adc.DR[kMockChannel1.channel] =
-        bit::Insert(local_adc.DR[kMockChannel1.channel],
-                    kExpectedAdcValue[0],
-                    Adc::DataRegister::kResult);
-    // Exercise
-    adc_read_result[0] = channel0_mock.Read();
-    adc_read_result[1] = channel1_mock.Read();
-    // Verify
-    CHECK(kExpectedAdcValue[1] == adc_read_result[0]);
-    CHECK(kExpectedAdcValue[0] == adc_read_result[1]);
-    CHECK(kSoftwareStartCode ==
-          bit::Extract(local_adc.CR, Adc::Control::kStartCode));
-  }
   SECTION("Get Active Bits")
   {
     constexpr uint16_t kExpectedActiveBits = 12;
-    CHECK(kExpectedActiveBits == channel0_mock.GetActiveBits());
+    CHECK(kExpectedActiveBits == test_subject0.GetActiveBits());
   }
 
   SystemController::system_controller = LPC_SC;

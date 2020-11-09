@@ -7,9 +7,9 @@
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L3_Application/commandline.hpp"
+#include "L3_Application/commands/arm_system_command.hpp"
 #include "L3_Application/commands/common.hpp"
 #include "L3_Application/commands/i2c_command.hpp"
-#include "L3_Application/commands/arm_system_command.hpp"
 #include "L3_Application/commands/rtos_command.hpp"
 #include "utility/log.hpp"
 #include "utility/rtos.hpp"
@@ -61,7 +61,12 @@ int main()
   sjsu::LogInfo("Staring Command Line Application");
 
   sjsu::LogInfo("Adding common SJTwo commands to command line...");
-  AddCommonCommands(ci);
+  ci.AddCommand(&sjsu::command::clear);
+  ci.AddCommand(&sjsu::command::reboot);
+  ci.AddCommand(&sjsu::command::sensor);
+  ci.AddCommand(&sjsu::command::telemetry);
+  ci.AddCommand(&sjsu::command::datetime);
+  ci.AddCommand(&sjsu::command::help);
 
   sjsu::LogInfo("Adding i2c command to command line...");
   i2c_command.Initialize();
@@ -77,8 +82,8 @@ int main()
   ci.Initialize();
 
   xTaskCreate(
-      TerminalTask, "Terminal", 501, nullptr, sjsu::rtos::kLow, nullptr);
-  xTaskCreate(BusyTask, "BusyTask", 512, nullptr, sjsu::rtos::kMedium, nullptr);
+      TerminalTask, "Terminal", 512, nullptr, sjsu::rtos::kLow, nullptr);
+  xTaskCreate(BusyTask, "Busy", 512, nullptr, sjsu::rtos::kMedium, nullptr);
 
   vTaskStartScheduler();
   return 0;

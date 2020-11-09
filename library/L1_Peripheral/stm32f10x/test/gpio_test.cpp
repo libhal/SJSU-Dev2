@@ -1,7 +1,8 @@
+#include "L1_Peripheral/stm32f10x/gpio.hpp"
+
 #include <cstdint>
 
 #include "L0_Platform/stm32f10x/stm32f10x.h"
-#include "L1_Peripheral/stm32f10x/gpio.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::stm32f10x
@@ -10,7 +11,7 @@ EMIT_ALL_METHODS(Gpio);
 
 namespace
 {
-bit::Mask Mask4Bit(const sjsu::Gpio & gpio)
+bit::Mask Mask4Bit(sjsu::Gpio & gpio)
 {
   return {
     .position = static_cast<uint32_t>(gpio.GetPin().GetPin() * 4),
@@ -170,15 +171,34 @@ TEST_CASE("Testing stm32f10x Gpio")
     },
   };
 
+  SECTION("Initialize()")
+  {
+    auto power_up_matcher = [](sjsu::SystemController::ResourceID expected_id) {
+      return [expected_id](sjsu::SystemController::ResourceID actual_id) {
+        return expected_id.device_id == actual_id.device_id;
+      };
+    };
+
+    for (auto & test_subject : test)
+    {
+      // Setup
+      INFO("Failure at Pin " << test_subject.gpio.GetPin().GetPort() << "["
+                             << test_subject.gpio.GetPin().GetPin() << "]");
+
+      // Exercise
+      test_subject.gpio.Initialize();
+
+      // Verify
+      // Verify: Should call Pin's Initialize method which simply calls
+      //         PowerUpPeripheral()
+      Verify(Method(mock_system_controller, PowerUpPeripheral)
+                 .Matching(power_up_matcher(test_subject.id)));
+      mock_system_controller.ClearInvocationHistory();
+    }
+  }
+
   SECTION("SetDirection()")
   {
-    auto power_up_matcher =
-        [](sjsu::SystemController::ResourceID expected_id) {
-          return [expected_id](sjsu::SystemController::ResourceID actual_id) {
-            return expected_id.device_id == actual_id.device_id;
-          };
-        };
-
     constexpr uint8_t kInputFloatingCode   = 0b0100;
     constexpr uint8_t kOutputFullSpeedCode = 0b0011;
 
@@ -200,13 +220,6 @@ TEST_CASE("Testing stm32f10x Gpio")
       uint64_t cr  = (crh << 32) | crl;
 
       // Verify
-      // Verify: Should call Pin's Initialize method which simply calls
-      //         PowerUpPeripheral()
-      Verify(Method(mock_system_controller, PowerUpPeripheral)
-                 .Matching(power_up_matcher(test[i].id)));
-
-      mock_system_controller.ClearInvocationHistory();
-
       CHECK(kInputFloatingCode == bit::Extract(cr, Mask4Bit(test[i].gpio)));
     }
 
@@ -229,12 +242,7 @@ TEST_CASE("Testing stm32f10x Gpio")
       uint64_t cr  = (crh << 32) | crl;
 
       // Verify
-      // Verify: Should call Pin's Initialize method which simply calls
-      //         PowerUpPeripheral()
-      Verify(Method(mock_system_controller, PowerUpPeripheral)
-                 .Matching(power_up_matcher(test[i].id)));
       CHECK(kOutputFullSpeedCode == bit::Extract(cr, Mask4Bit(test[i].gpio)));
-      mock_system_controller.ClearInvocationHistory();
     }
   }
 

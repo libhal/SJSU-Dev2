@@ -1,7 +1,8 @@
+#include "L1_Peripheral/stm32f10x/pin.hpp"
+
 #include <cstdint>
 
 #include "L0_Platform/stm32f10x/stm32f10x.h"
-#include "L1_Peripheral/stm32f10x/pin.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::stm32f10x
@@ -175,7 +176,7 @@ TEST_CASE("Testing stm32f10x Pin")
     }
   }
 
-  SECTION("SetPinFunction()")
+  SECTION("ConfigureFunction()")
   {
     SECTION("Gpio full speed")
     {
@@ -191,7 +192,7 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0xFFFF'FFFF;
 
         // Exercise
-        test[i].pin.SetPinFunction(0);
+        test[i].pin.ConfigureFunction(0);
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
         uint64_t crh = test[i].reg.CRH;
@@ -217,7 +218,7 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0xFFFF'FFFF;
 
         // Exercise
-        test[i].pin.SetPinFunction(1);
+        test[i].pin.ConfigureFunction(1);
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
         uint64_t crh = test[i].reg.CRH;
@@ -235,13 +236,13 @@ TEST_CASE("Testing stm32f10x Pin")
       for (size_t i = 0; i < test.size(); i++)
       {
         // Exercise & Verify
-        SJ2_CHECK_EXCEPTION(test[i].pin.SetPinFunction(0b10),
+        SJ2_CHECK_EXCEPTION(test[i].pin.ConfigureFunction(0b10),
                             std::errc::invalid_argument);
       }
     }
   }
 
-  SECTION("SetPull()")
+  SECTION("ConfigurePullResistor()")
   {
     constexpr uint8_t kPullDownCode = 0b1000;
     constexpr uint8_t kFloating     = 0b0100;
@@ -257,7 +258,7 @@ TEST_CASE("Testing stm32f10x Pin")
 
       {
         // Exercise
-        test[i].pin.SetFloating();
+        test[i].pin.ConfigureFloating();
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
@@ -271,7 +272,7 @@ TEST_CASE("Testing stm32f10x Pin")
 
       {
         // Exercise
-        test[i].pin.PullUp();
+        test[i].pin.ConfigurePullUp();
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
@@ -288,7 +289,7 @@ TEST_CASE("Testing stm32f10x Pin")
 
       {
         // Exercise
-        test[i].pin.PullDown();
+        test[i].pin.ConfigurePullDown();
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
@@ -305,13 +306,14 @@ TEST_CASE("Testing stm32f10x Pin")
 
       {
         // Exercise & Verify
-        SJ2_CHECK_EXCEPTION(test[i].pin.SetPull(Pin::Resistor::kRepeater),
-                            std::errc::not_supported);
+        SJ2_CHECK_EXCEPTION(
+            test[i].pin.ConfigurePullResistor(Pin::Resistor::kRepeater),
+            std::errc::not_supported);
       }
     }
   }
 
-  SECTION("SetAsOpenDrain()")
+  SECTION("ConfigureAsOpenDrain()")
   {
     for (size_t i = 0; i < test.size(); i++)
     {
@@ -325,7 +327,7 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0;
 
         // Exercise
-        test[i].pin.SetAsOpenDrain(true);
+        test[i].pin.ConfigureAsOpenDrain(true);
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
@@ -346,7 +348,7 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0xFFFF'FFFF;
 
         // Exercise
-        test[i].pin.SetAsOpenDrain(false);
+        test[i].pin.ConfigureAsOpenDrain(false);
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
@@ -362,7 +364,7 @@ TEST_CASE("Testing stm32f10x Pin")
     }
   }
 
-  SECTION("SetAsAnalogMode()")
+  SECTION("ConfigureAsAnalogMode()")
   {
     constexpr uint8_t kAnalogCode = 0b0100;
     for (size_t i = 0; i < test.size(); i++)
@@ -378,7 +380,7 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0xFFFF'FFFF;
 
         // Exercise
-        test[i].pin.SetAsAnalogMode();
+        test[i].pin.ConfigureAsAnalogMode();
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
         uint64_t crh = test[i].reg.CRH;

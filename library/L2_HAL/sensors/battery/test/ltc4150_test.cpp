@@ -1,10 +1,11 @@
 #include "L2_HAL/sensors/battery/ltc4150.hpp"
+
+#include "L1_Peripheral/gpio.hpp"
+#include "L1_Peripheral/interrupt.hpp"
 #include "L2_HAL/sensors/battery/coulomb_counter.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
-#include "L1_Peripheral/interrupt.hpp"
-#include "L1_Peripheral/gpio.hpp"
-#include "utility/units.hpp"
 #include "utility/log.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -17,11 +18,10 @@ auto GetLambda(InterruptCallback & isr)
 
 TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
 {
-  constexpr float kResolution        = 0.001f;
   units::impedance::ohm_t resistance = 0.00050_Ohm;
 
-  Mock<Gpio> mock_primary_pol_pin;
-  Mock<Gpio> mock_backup_pol_pin;
+  Mock<Gpio> mock_primary_pol_gpio;
+  Mock<Gpio> mock_backup_pol_gpio;
 
   Mock<HardwareCounter> mock_primary_hardware_counter;
   Mock<HardwareCounter> mock_backup_hardware_counter;
@@ -31,47 +31,79 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
   InterruptCallback backup_input_isr;
   InterruptCallback backup_pol_isr;
 
-  When(Method(mock_primary_pol_pin, AttachInterrupt))
-      .AlwaysDo(GetLambda(primary_pol_isr));
-  When(Method(mock_backup_pol_pin, AttachInterrupt))
-      .AlwaysDo(GetLambda(backup_pol_isr));
-
-  Fake(Method(mock_primary_hardware_counter, Initialize));
-  Fake(Method(mock_backup_hardware_counter, Initialize));
-  Fake(Method(mock_primary_hardware_counter, Enable));
-  Fake(Method(mock_backup_hardware_counter, Enable));
+  Fake(Method(mock_primary_hardware_counter, ModuleInitialize));
+  Fake(Method(mock_primary_hardware_counter, ModuleEnable));
   Fake(Method(mock_primary_hardware_counter, GetCount));
-  Fake(Method(mock_backup_hardware_counter, GetCount));
+  Fake(Method(mock_primary_hardware_counter, Set));
   Fake(Method(mock_primary_hardware_counter, SetDirection));
+
+  Fake(Method(mock_backup_hardware_counter, ModuleInitialize));
+  Fake(Method(mock_backup_hardware_counter, ModuleEnable));
+  Fake(Method(mock_backup_hardware_counter, GetCount));
+  Fake(Method(mock_backup_hardware_counter, Set));
   Fake(Method(mock_backup_hardware_counter, SetDirection));
 
-  Fake(Method(mock_primary_pol_pin, SetDirection));
-  Fake(Method(mock_backup_pol_pin, SetDirection));
-  Fake(Method(mock_primary_pol_pin, DetachInterrupt));
-  Fake(Method(mock_backup_pol_pin, DetachInterrupt));
+  Fake(Method(mock_primary_pol_gpio, ModuleInitialize));
+  Fake(Method(mock_primary_pol_gpio, ModuleEnable));
+  Fake(Method(mock_primary_pol_gpio, SetDirection));
+  Fake(Method(mock_primary_pol_gpio, Read));
+  Fake(Method(mock_primary_pol_gpio, DetachInterrupt));
+  When(Method(mock_primary_pol_gpio, AttachInterrupt))
+      .AlwaysDo(GetLambda(primary_pol_isr));
+
+  Fake(Method(mock_backup_pol_gpio, ModuleInitialize));
+  Fake(Method(mock_backup_pol_gpio, ModuleEnable));
+  Fake(Method(mock_backup_pol_gpio, SetDirection));
+  Fake(Method(mock_backup_pol_gpio, Read));
+  Fake(Method(mock_backup_pol_gpio, DetachInterrupt));
+  When(Method(mock_backup_pol_gpio, AttachInterrupt))
+      .AlwaysDo(GetLambda(backup_pol_isr));
 
   SECTION("LTC4150 Initialization")
   {
+    // Setup
     Ltc4150 primary_counter(mock_primary_hardware_counter.get(),
-                            mock_primary_pol_pin.get(), resistance);
+                            mock_primary_pol_gpio.get(),
+                            resistance);
     Ltc4150 backup_counter(mock_backup_hardware_counter.get(),
-                           mock_backup_pol_pin.get(), resistance);
+                           mock_backup_pol_gpio.get(),
+                           resistance);
 
-    When(Method(mock_primary_pol_pin, Read)).Return(true);
-    When(Method(mock_backup_pol_pin, Read)).Return(false);
-    primary_counter.Initialize();
-    backup_counter.Initialize();
+    When(Method(mock_primary_pol_gpio, Read)).Return(true);
+    When(Method(mock_backup_pol_gpio, Read)).Return(false);
 
-    Verify(Method(mock_primary_hardware_counter, Initialize)).Exactly(1);
-    Verify(Method(mock_backup_hardware_counter, Initialize)).Exactly(1);
-    Verify(Method(mock_primary_pol_pin, SetDirection)
+    // Exercise
+    primary_counter.ModuleInitialize();
+    backup_counter.ModuleInitialize();
+
+    // Verify
+    Verify(Method(mock_primary_hardware_counter, ModuleInitialize)).Exactly(1);
+    Verify(Method(mock_backup_hardware_counter, ModuleInitialize)).Exactly(1);
+    Verify(Method(mock_primary_pol_gpio, SetDirection)
                .Using(Gpio::Direction::kInput));
-    Verify(Method(mock_backup_pol_pin, SetDirection)
+    Verify(Method(mock_backup_pol_gpio, SetDirection)
                .Using(Gpio::Direction::kInput));
-    Verify(Method(mock_primary_pol_pin, AttachInterrupt)).Exactly(1);
-    Verify(Method(mock_backup_pol_pin, AttachInterrupt)).Exactly(1);
-    Verify(Method(mock_primary_hardware_counter, Enable)).Exactly(1);
-    Verify(Method(mock_backup_hardware_counter, Enable)).Exactly(1);
+    Verify(Method(mock_primary_hardware_counter, ModuleEnable)).Exactly(1);
+    Verify(Method(mock_backup_hardware_counter, ModuleEnable)).Exactly(1);
+  }
+
+  SECTION("Enable()")
+  {
+    // Setup
+    Ltc4150 primary_counter(mock_primary_hardware_counter.get(),
+                            mock_primary_pol_gpio.get(),
+                            resistance);
+    Ltc4150 backup_counter(mock_backup_hardware_counter.get(),
+                           mock_backup_pol_gpio.get(),
+                           resistance);
+
+    // Exercise
+    primary_counter.ModuleEnable();
+    backup_counter.ModuleEnable();
+
+    // Verify
+    Verify(Method(mock_primary_pol_gpio, AttachInterrupt));
+    Verify(Method(mock_backup_pol_gpio, AttachInterrupt));
   }
 
   SECTION("Count Ticks and Calculate mAh")
@@ -80,82 +112,25 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
     constexpr float kBackupCharge  = 0.102407f;
 
     Ltc4150 primary_counter(mock_primary_hardware_counter.get(),
-                            mock_primary_pol_pin.get(), resistance);
+                            mock_primary_pol_gpio.get(),
+                            resistance);
     Ltc4150 backup_counter(mock_backup_hardware_counter.get(),
-                           mock_backup_pol_pin.get(), resistance);
-    When(Method(mock_primary_pol_pin, Read)).Return(false);
-    When(Method(mock_backup_pol_pin, Read)).Return(true);
+                           mock_backup_pol_gpio.get(),
+                           resistance);
+    When(Method(mock_primary_pol_gpio, Read)).Return(false);
+    When(Method(mock_backup_pol_gpio, Read)).Return(true);
     When(Method(mock_primary_hardware_counter, GetCount)).Return(-4);
     When(Method(mock_backup_hardware_counter, GetCount)).Return(6);
 
-    primary_counter.Initialize();
+    primary_counter.ModuleInitialize();
+    primary_counter.ModuleEnable();
     CHECK(primary_counter.GetCharge().to<float>() ==
-          doctest::Approx(kPrimaryCharge));
+          doctest::Approx(kPrimaryCharge * 1000));
 
-    backup_counter.Initialize();
+    backup_counter.ModuleInitialize();
+    backup_counter.ModuleEnable();
     CHECK(backup_counter.GetCharge().to<float>() ==
-          doctest::Approx(kBackupCharge));
-  }
-
-  SECTION("Direction of Counter changes with the Polarity Pin's State Change")
-  {
-    Ltc4150 primary_counter(mock_primary_hardware_counter.get(),
-                            mock_primary_pol_pin.get(), resistance);
-    Ltc4150 backup_counter(mock_backup_hardware_counter.get(),
-                           mock_backup_pol_pin.get(), resistance);
-    When(Method(mock_primary_pol_pin, Read)).Return(true, false);
-    When(Method(mock_backup_pol_pin, Read)).Return(false, true);
-
-    primary_counter.Initialize();
-    Verify(Method(mock_primary_hardware_counter, SetDirection)
-               .Using(HardwareCounter::Direction::kUp));
-    primary_pol_isr();
-    Verify(Method(mock_primary_hardware_counter, SetDirection)
-               .Using(HardwareCounter::Direction::kDown));
-
-    backup_counter.Initialize();
-    Verify(Method(mock_backup_hardware_counter, SetDirection)
-               .Using(HardwareCounter::Direction::kDown));
-    backup_pol_isr();
-    Verify(Method(mock_backup_hardware_counter, SetDirection)
-               .Using(HardwareCounter::Direction::kUp));
-  }
-
-  SECTION("Charge Flips Sign with the Polarity Pin's State Change")
-  {
-    // Setup
-    constexpr float kPositivePrimaryCharge = 0.08534f;
-    constexpr float kNegativePrimaryCharge = -0.0512f;
-    constexpr float kPositiveBackupCharge  = 0.0512f;
-    constexpr float kNegativeBackupCharge  = -0.08534f;
-
-    Ltc4150 primary_counter(mock_primary_hardware_counter.get(),
-                            mock_primary_pol_pin.get(), resistance);
-
-    Ltc4150 backup_counter(mock_backup_hardware_counter.get(),
-                           mock_backup_pol_pin.get(), resistance);
-
-    When(Method(mock_primary_pol_pin, Read)).Return(false, true);
-    When(Method(mock_backup_pol_pin, Read)).Return(true, false);
-    When(Method(mock_primary_hardware_counter, GetCount)).Return(-3, 5);
-    When(Method(mock_backup_hardware_counter, GetCount)).Return(3, -5);
-
-    // Exercise
-    primary_counter.Initialize();
-
-    // Verify
-    CHECK(primary_counter.GetCharge().to<float>() ==
-          doctest::Approx(kNegativePrimaryCharge).epsilon(kResolution));
-    primary_pol_isr();
-    CHECK(primary_counter.GetCharge().to<float>() ==
-          doctest::Approx(kPositivePrimaryCharge).epsilon(kResolution));
-
-    backup_counter.Initialize();
-    CHECK(backup_counter.GetCharge().to<float>() ==
-          doctest::Approx(kPositiveBackupCharge).epsilon(kResolution));
-    backup_pol_isr();
-    CHECK(backup_counter.GetCharge().to<float>() ==
-          doctest::Approx(kNegativeBackupCharge).epsilon(kResolution));
+          doctest::Approx(kBackupCharge * 1000));
   }
 }
 }  // namespace sjsu

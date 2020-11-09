@@ -1,26 +1,27 @@
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
 #include "L1_Peripheral/lpc40xx/i2c.hpp"
 #include "L1_Peripheral/lpc40xx/spi.hpp"
+#include "L2_HAL/boards/sjtwo.hpp"
 #include "L2_HAL/displays/oled/ssd1306.hpp"
 #include "L2_HAL/sensors/environment/temperature/si7060.hpp"
 #include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
-#include "L2_HAL/boards/sjtwo.hpp"
-#include "utility/log.hpp"
 #include "utility/error_handling.hpp"
+#include "utility/log.hpp"
 
 namespace sjsu::lpc40xx
 {
 class FactoryTest
 {
  public:
-  static constexpr uint8_t kGestureAddress                    = 0x39;
-  static constexpr uint8_t kAccelerometerAddress              = 0x1C;
-  static constexpr std::array<uint8_t, 4> kTemperatureAddress = { 0x30, 0x31,
-                                                                  0x32, 0x33 };
+  static constexpr uint8_t kGestureAddress       = 0x39;
+  static constexpr uint8_t kAccelerometerAddress = 0x1C;
 
   int RunFactoryTest()
   {
     i2c_.Initialize();
+    i2c_.Enable();
+
+    printf("\n=========== STARTING FACTORY TEST ===========\n\n");
 
     OledTest();
 
@@ -29,8 +30,8 @@ class FactoryTest
     bool temp_pass          = TemperatureSensorTest();
     bool flash_test         = ExternalFlashTest();
 
-    return OnBoardLedTest(gesture_pass, accelerometer_pass, temp_pass,
-                          flash_test);
+    return OnBoardLedTest(
+        gesture_pass, accelerometer_pass, temp_pass, flash_test);
   }
 
  private:
@@ -44,6 +45,16 @@ class FactoryTest
                      bool temp_passed,
                      bool flash_passed)
   {
+    sjtwo::led0.Initialize();
+    sjtwo::led1.Initialize();
+    sjtwo::led2.Initialize();
+    sjtwo::led3.Initialize();
+
+    sjtwo::led0.Enable();
+    sjtwo::led1.Enable();
+    sjtwo::led2.Enable();
+    sjtwo::led3.Enable();
+
     // Turn on all LEDs if all tests pass else none.
     // LED Test
     sjtwo::led0.SetAsOutput();
@@ -90,15 +101,19 @@ class FactoryTest
     sjsu::lpc40xx::Spi ssp1(sjsu::lpc40xx::Spi::Bus::kSpi1);
     sjsu::lpc40xx::Gpio cs(1, 22);
     sjsu::lpc40xx::Gpio dc(1, 25);
+    sjsu::Gpio & reset = sjsu::GetInactive<sjsu::Gpio>();
 
     Spi spi1(Spi::Bus::kSpi1);
-    Ssd1306 display(spi1, cs, dc, sjsu::GetInactive<sjsu::Gpio>());
+    Ssd1306 display(spi1, cs, dc, reset);
 
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting OLED Hardware Test...\n\n");
 
     printf("  Initializing OLED Hardware Test...\n\n");
     display.Initialize();
+
+    printf("  Enabling OLED Hardware Test...\n\n");
+    display.Enable();
 
     printf("  Filling internal screen bitmap...\n\n");
     display.Fill();
@@ -129,40 +144,41 @@ class FactoryTest
     printf("Starting External Flash Test...\n\n");
     Spi spi2(Spi::Bus::kSpi2);
     Gpio cs(1, 10);
-    bool result = false;
+
     cs.SetAsOutput();
     cs.SetHigh();
 
     spi2.Initialize();
-    spi2.SetDataSize(Spi::DataSize::kEight);
-    spi2.SetClock(100_kHz);
+    spi2.ConfigureFrameSize(Spi::FrameSize::kEightBits);
+    spi2.ConfigureFrequency(100_kHz);
+    spi2.ConfigureClockMode();
+    spi2.Enable();
 
-    uint8_t array[5];
     cs.SetLow();
     sjsu::Delay(1ms);
 
-    // Read Manufacturer ID
-    spi2.Transfer(0x9F);
+    // Write Manufacturer ID command and read back memory ID information
+    std::array<uint8_t, 5> array = { 0x9F };
+    spi2.Transfer(array);
 
-    // Read back flash memory ID information
-    array[0] = static_cast<uint8_t>(spi2.Transfer(0x00));
-    array[1] = static_cast<uint8_t>(spi2.Transfer(0x00));
-    array[2] = static_cast<uint8_t>(spi2.Transfer(0x00));
-    array[3] = static_cast<uint8_t>(spi2.Transfer(0x00));
-    printf("Returned 0x%02X 0x%02X 0x%02X 0x%02X\n\n", array[0], array[1],
-           array[2], array[3]);
+    printf("Returned 0x%02X 0x%02X 0x%02X 0x%02X\n\n",
+           array[1],
+           array[2],
+           array[3],
+           array[4]);
 
     cs.SetHigh();
     sjsu::Delay(1ms);
 
     printf("End of External Flash Test.\n\n");
 
-    if ((array[0] == 0x1F) && (array[1] != 0xFF) && (array[2] != 0xFF) &&
-        (array[3] != 0xFF))
+    if ((array[1] == 0x1F) && (array[2] != 0xFF) && (array[3] != 0xFF) &&
+        (array[4] != 0xFF))
     {
-      result = true;
+      return true;
     }
-    return result;
+
+    return false;
   }
 
   // TODO(#1314): Use refactored apds9960.hpp library for this test
@@ -188,6 +204,7 @@ class FactoryTest
 
     // Verify that initialization of peripherals works
     accelerometer.Initialize();
+
     // Will check the ID and valid state of the device.
     accelerometer.Enable();
 
@@ -202,24 +219,33 @@ class FactoryTest
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting Temperature Test...\n\n");
 
-    for (auto address : kTemperatureAddress)
+    // Possible addresses for the temperature sensor
+    for (const auto & address : { 0x30, 0x31, 0x32, 0x33 })
     {
-      printf("  Attempting I2C Address: 0x%02X\n", address);
-      Si7060 temperature_sensor(i2c_, address);
-      temperature_sensor.Initialize();
-
-      printf("  -> Attached Sensor I2C Address: 0x%02X\n", address);
-
-      units::temperature::celsius_t current_temperature =
-          temperature_sensor.GetTemperature();
-
-      printf("  Current Temperature: %f C\n\n",
-             current_temperature.to<double>());
-      printf("End of temperature test...\n\n");
-
-      if (-40_degC < current_temperature && current_temperature < 125_degC)
+      try
       {
-        return true;
+        printf("  Attempting I2C Address: 0x%02X\n", address);
+        Si7060 temperature_sensor(i2c_, static_cast<uint8_t>(address));
+        temperature_sensor.Initialize();
+
+        printf("  -> Attached Sensor I2C Address: 0x%02X\n", address);
+
+        auto temperature = temperature_sensor.GetTemperature();
+
+        printf("  Current Temperature: %f C\n\n", temperature.to<double>());
+        printf("End of temperature test...\n\n");
+
+        if (-40_degC < temperature && temperature < 125_degC)
+        {
+          return true;
+        }
+      }
+      catch (sjsu::Exception & e)
+      {
+        if (e.GetCode() == std::errc::no_such_device_or_address)
+        {
+          continue;
+        }
       }
     }
 
@@ -230,10 +256,14 @@ class FactoryTest
                      uint8_t id_register_address,
                      uint8_t expected_id)
   {
-    uint8_t device_id = 0x00;
-    i2c_.WriteThenRead(device_address, &id_register_address, 1, &device_id, 1);
-    printf("  Device ID: 0x%02X\n\n", device_id);
-    return (device_id == expected_id);
+    std::array<uint8_t, 1> readback_id = { 0x00 };
+    std::array<uint8_t, 1> command     = { id_register_address };
+    std::array<uint8_t, 1> expected    = { expected_id };
+
+    i2c_.WriteThenRead(device_address, command, readback_id);
+    printf("  Device ID: 0x%02X\n", readback_id[0]);
+
+    return readback_id == expected;
   }
 
  private:

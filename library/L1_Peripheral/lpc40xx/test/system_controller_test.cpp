@@ -1,6 +1,7 @@
+#include "L1_Peripheral/lpc40xx/system_controller.hpp"
+
 #include <thread>
 
-#include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::lpc40xx
@@ -34,9 +35,8 @@ TEST_CASE("sjsu::lpc40xx::SystemController")
     {
       // Setup
       INFO("Error on peripheral ID " << i);
-      const sjsu::SystemController::ResourceID kTestPeripheral = {
-        .device_id = i
-      };
+      const sjsu::SystemController::ResourceID kTestPeripheral = { .device_id =
+                                                                       i };
       // Setup: Set the power bits to all zero to isolate the change made by
       //        PowerUpPeripheral()
       local_sc.PCONP = 0;
@@ -56,9 +56,8 @@ TEST_CASE("sjsu::lpc40xx::SystemController")
     {
       // Setup
       INFO("Error on peripheral ID " << i);
-      const sjsu::SystemController::ResourceID kTestPeripheral = {
-        .device_id = i
-      };
+      const sjsu::SystemController::ResourceID kTestPeripheral = { .device_id =
+                                                                       i };
       // Setup: Set all of the power bits to all 1s to isolate the change made
       //        by PowerDownPeripheral()
       local_sc.PCONP = std::numeric_limits<decltype(local_sc.PCONP)>::max();
@@ -80,9 +79,8 @@ TEST_CASE("sjsu::lpc40xx::SystemController")
     {
       // Setup
       INFO("Error on peripheral ID " << i);
-      const sjsu::SystemController::ResourceID kTestPeripheral = {
-        .device_id = i
-      };
+      const sjsu::SystemController::ResourceID kTestPeripheral = { .device_id =
+                                                                       i };
       // Setup: Set all of the power bits to all 1s to isolate the change made
       //        by PowerDownPeripheral()
       local_sc.PCONP = 1 << i;
@@ -95,9 +93,8 @@ TEST_CASE("sjsu::lpc40xx::SystemController")
     {
       // Setup
       INFO("Error on peripheral ID " << i);
-      const sjsu::SystemController::ResourceID kTestPeripheral = {
-        .device_id = i
-      };
+      const sjsu::SystemController::ResourceID kTestPeripheral = { .device_id =
+                                                                       i };
       // Setup: Set all of the power bits to all 1s to isolate the change made
       //        by PowerDownPeripheral()
       local_sc.PCONP = ~(1 << i);

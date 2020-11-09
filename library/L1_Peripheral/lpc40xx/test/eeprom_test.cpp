@@ -1,6 +1,7 @@
 /// This is the eeprom.cpp test file
 
 #include "L1_Peripheral/lpc40xx/eeprom.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::lpc40xx
@@ -43,10 +44,38 @@ TEST_CASE("Testing EEPROM")
     CHECK(local_eeprom.WSTATE == kWaitStateValues);
     CHECK(local_eeprom.CLKDIV == kClockDivider);
   }
+
+  SECTION("Enable")
+  {
+    // Setup
+    // Setup: Set to 1 indicating that eeprom is powered down.
+    local_eeprom.PWRDWN = 1;
+
+    // Exercise
+    test_eeprom.SetStateToInitialized();
+    test_eeprom.Enable();
+
+    // Verify
+    CHECK(local_eeprom.PWRDWN == 0);
+  }
+
+  SECTION("Disable")
+  {
+    // Setup
+    local_eeprom.PWRDWN = 0;
+
+    // Exercise
+    test_eeprom.SetStateToEnabled();
+    test_eeprom.Enable(false);
+
+    // Verify
+    CHECK(local_eeprom.PWRDWN == 1);
+  }
+
   SECTION("Writing")
   {
     // Setup
-    uint8_t wdata[4];
+    std::array<uint8_t, kPayloadSize> wdata;
     constexpr uint16_t kAddress = 0x3F4;
     wdata[0]                    = 0b11110000;
     wdata[1]                    = 0b00001111;
@@ -60,7 +89,7 @@ TEST_CASE("Testing EEPROM")
     local_eeprom.INT_STATUS = (1 << 26) | (1 << 28);
 
     // Exercise
-    test_eeprom.Write(kAddress, wdata, kPayloadSize);
+    test_eeprom.Write(kAddress, wdata);
 
     // Verify
     CHECK(local_eeprom.ADDR == kAddress);
@@ -73,12 +102,12 @@ TEST_CASE("Testing EEPROM")
     // Setup
     constexpr uint16_t kAddress = 0x534;
     constexpr uint32_t kReadVal = 0x12345678;
-    uint8_t rdata[4];
+    std::array<uint8_t, kPayloadSize> rdata;
     // Setup: Placing value in register which read function will be reading from
     local_eeprom.RDATA = kReadVal;
 
     // Exercise
-    test_eeprom.Read(kAddress, rdata, kPayloadSize);
+    test_eeprom.Read(kAddress, rdata);
 
     // Verify
     uint32_t read_value =
@@ -95,31 +124,6 @@ TEST_CASE("Testing EEPROM")
     CHECK(test_eeprom.GetCapacity() == 4_kB);
     CHECK(test_eeprom.IsReadOnly() == false);
     CHECK(test_eeprom.IsMediaPresent() == true);
-  }
-
-  SECTION("Enable")
-  {
-    // Setup
-    // Setup: Set to 1 indicating that eeprom is powered down.
-    local_eeprom.PWRDWN = 1;
-
-    // Exercise
-    test_eeprom.Enable();
-
-    // Verify
-    CHECK(local_eeprom.PWRDWN == 0);
-  }
-
-  SECTION("Disable")
-  {
-    // Setup
-    local_eeprom.PWRDWN = 0;
-
-    // Exercise
-    test_eeprom.Disable();
-
-    // Verify
-    CHECK(local_eeprom.PWRDWN == 1);
   }
 
   // Reset eeprom_register back to original value

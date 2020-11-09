@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "module.hpp"
 #include "L2_HAL/displays/pixel_display.hpp"
 #include "third_party/font8x8/font8x8_basic.h"
 #include "utility/log.hpp"
@@ -12,7 +13,7 @@
 namespace sjsu
 {
 /// Graphics library to draw shapes and characters on a pixel display
-class Graphics
+class Graphics : public Module
 {
  public:
   /// Constructor for a graphics object.
@@ -27,27 +28,20 @@ class Graphics
   }
 
   /// Initialize display hardware.
-  void Initialize()
+  void ModuleInitialize() override
   {
     display_.Initialize();
+  }
+
+  void ModuleEnable(bool enable = true) override
+  {
+    display_.Enable(enable);
   }
 
   /// Update the display.
   void Update()
   {
     display_.Update();
-  }
-
-  /// Enable the display.
-  void Enable()
-  {
-    display_.Enable();
-  }
-
-  /// Disable the display.
-  void Disable()
-  {
-    display_.Disable();
   }
 
   /// Clears the display.

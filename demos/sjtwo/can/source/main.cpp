@@ -30,10 +30,13 @@ int main(void)
   sjsu::LogInfo("Initializing CAN 2 with default bit rate of 100 kBit/s...");
   can2.Initialize();
 
-  sjsu::LogInfo("Enabling CAN 1...");
+  sjsu::LogInfo("Enabling CAN 1 & CAN 2...");
   can1.Enable();
-  sjsu::LogInfo("Enabling CAN 2...");
   can2.Enable();
+
+  sjsu::LogInfo("Configuring CAN 1 & CAN 2 baud rates (setting to 100kHz)...");
+  can1.ConfigureBaudRate(100_kHz);
+  can1.ConfigureBaudRate(100_kHz);
 
   sjsu::LogInfo("Starting local self-test for CAN 1...");
   if (can1.SelfTest(146))
@@ -75,15 +78,15 @@ int main(void)
     }
 
     // Demonstrate constructing a CAN message from scratch
-    constexpr uint8_t kMessagePayload[] = { 1, 3, 3, 7 };
+    const std::array<uint8_t, 4> kMessagePayload = { 1, 3, 3, 7 };
+
     sjsu::Can::Message_t tx_message;
     tx_message.id     = 0x244;
     tx_message.length = sizeof(kMessagePayload);
-
-    std::copy_n(kMessagePayload, sizeof(kMessagePayload),
-                tx_message.payload.begin());
+    tx_message.SetPayload(kMessagePayload);
 
     can2.Send(tx_message);
+
     sjsu::LogInfo(
         "Sent message 0x244 with a data length of 4 bytes from CAN 2...");
 
@@ -111,6 +114,7 @@ int main(void)
       sjsu::LogInfo("Re-enabling CAN 2...");
       can2.Enable();
     }
+
     sjsu::Delay(1s);
   }
 

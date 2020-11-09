@@ -69,7 +69,7 @@ class I2cCommand final : public Command
   )";
 
   /// Sole constructor of the I2c command
-  explicit I2cCommand(const I2c & i2c)
+  explicit I2cCommand(I2c & i2c)
       : Command("i2c", kDescription),
         devices_found_(decltype(devices_found_)::allocator_type{}),
         i2c_(i2c)
@@ -130,7 +130,8 @@ class I2cCommand final : public Command
     if (argc - 1 < kOperation)
     {
       sjsu::LogError("Invalid number of arguments, required %d, supplied %d",
-                     kOperation, argc);
+                     kOperation,
+                     argc);
       return 1;
     }
 
@@ -261,15 +262,19 @@ class I2cCommand final : public Command
       sjsu::LogError(
           "Invalid number of arguments for read operation, required %d, "
           "supplied %d",
-          kRegisterAddress, argc);
+          kRegisterAddress,
+          argc);
       return 1;
     }
     Arguments_t args = ParseArguments(argc, argv);
     uint8_t contents[128];
     if (args.length < sizeof(contents))
     {
-      i2c_.WriteThenRead(args.device_address, &args.register_address, 1,
-                         contents, args.length);
+      i2c_.WriteThenRead(args.device_address,
+                         &args.register_address,
+                         1,
+                         contents,
+                         args.length);
       debug::Hexdump(contents, args.length);
     }
     else
@@ -287,7 +292,8 @@ class I2cCommand final : public Command
       sjsu::LogError(
           "Invalid number of arguments for write operation, required %d, "
           "supplied %d",
-          kRegisterAddress, argc);
+          kRegisterAddress,
+          argc);
       return 1;
     }
     Arguments_t args = ParseArguments(argc, argv);
@@ -321,9 +327,11 @@ class I2cCommand final : public Command
     return 0;
   }
 
-  static inline const char * const kI2cOperations[] = { "read", "write",
-                                                        "discover", nullptr };
+  static inline const char * const kI2cOperations[] = { "read",
+                                                        "write",
+                                                        "discover",
+                                                        nullptr };
   sjsu::Vector<AddressString_t, command::kAutoCompleteOptions> devices_found_;
-  const I2c & i2c_;
+  I2c & i2c_;
 };
 }  // namespace sjsu

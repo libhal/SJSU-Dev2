@@ -6,6 +6,8 @@
 #pragma once
 
 #include <cstdint>
+
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
@@ -14,13 +16,9 @@ namespace sjsu
 /// Interface for a sensor that can measure distance in a single dimension, such
 /// as 1D lidar, ultrasonic range sensor, or infared distance sensor.
 /// @ingroup sensors
-class DistanceSensor
+class DistanceSensor : public Module
 {
  public:
-  /// Initialize distance sensor hardware. Must be called before running any
-  /// other methods.
-  virtual void Initialize() = 0;
-
   /// Trigger a capture of the current distance reading and return it.
   ///
   /// @return measured distance

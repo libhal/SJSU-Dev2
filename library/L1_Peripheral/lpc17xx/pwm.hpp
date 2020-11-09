@@ -14,12 +14,12 @@ using ::sjsu::lpc40xx::Pwm;
 struct PwmChannel  // NOLINT
 {
  private:
-  inline static const Pin kPwmPin0 = Pin::CreatePin<2, 0>();
-  inline static const Pin kPwmPin1 = Pin::CreatePin<2, 1>();
-  inline static const Pin kPwmPin2 = Pin::CreatePin<2, 2>();
-  inline static const Pin kPwmPin3 = Pin::CreatePin<2, 3>();
-  inline static const Pin kPwmPin4 = Pin::CreatePin<2, 4>();
-  inline static const Pin kPwmPin5 = Pin::CreatePin<2, 5>();
+  inline static lpc17xx::Pin pwm_pin0 = lpc17xx::Pin(2, 0);
+  inline static lpc17xx::Pin pwm_pin1 = lpc17xx::Pin(2, 1);
+  inline static lpc17xx::Pin pwm_pin2 = lpc17xx::Pin(2, 2);
+  inline static lpc17xx::Pin pwm_pin3 = lpc17xx::Pin(2, 3);
+  inline static lpc17xx::Pin pwm_pin4 = lpc17xx::Pin(2, 4);
+  inline static lpc17xx::Pin pwm_pin5 = lpc17xx::Pin(2, 5);
 
  public:
   /// Definition of the PWM 1 peripheral.
@@ -30,42 +30,42 @@ struct PwmChannel  // NOLINT
   /// Definition for channel 0 of PWM peripheral 1.
   inline static const lpc40xx::Pwm::Channel_t kPwm0 = {
     .peripheral        = kPwm1Peripheral,
-    .pin               = kPwmPin0,
+    .pin               = pwm_pin0,
     .channel           = 1,
     .pin_function_code = 0b01,
   };
   /// Definition for channel 1 of PWM peripheral 1.
   inline static const lpc40xx::Pwm::Channel_t kPwm1 = {
     .peripheral        = kPwm1Peripheral,
-    .pin               = kPwmPin1,
+    .pin               = pwm_pin1,
     .channel           = 2,
     .pin_function_code = 0b01,
   };
   /// Definition for channel 2 of PWM peripheral 1.
   inline static const lpc40xx::Pwm::Channel_t kPwm2 = {
     .peripheral        = kPwm1Peripheral,
-    .pin               = kPwmPin2,
+    .pin               = pwm_pin2,
     .channel           = 3,
     .pin_function_code = 0b01,
   };
   /// Definition for channel 3 of PWM peripheral 1.
   inline static const lpc40xx::Pwm::Channel_t kPwm3 = {
     .peripheral        = kPwm1Peripheral,
-    .pin               = kPwmPin3,
+    .pin               = pwm_pin3,
     .channel           = 4,
     .pin_function_code = 0b01,
   };
   /// Definition for channel 4 of PWM peripheral 1.
   inline static const lpc40xx::Pwm::Channel_t kPwm4 = {
     .peripheral        = kPwm1Peripheral,
-    .pin               = kPwmPin4,
+    .pin               = pwm_pin4,
     .channel           = 5,
     .pin_function_code = 0b01,
   };
   /// Definition for channel 5 of PWM peripheral 1.
   inline static const lpc40xx::Pwm::Channel_t kPwm5 = {
     .peripheral        = kPwm1Peripheral,
-    .pin               = kPwmPin5,
+    .pin               = pwm_pin5,
     .channel           = 6,
     .pin_function_code = 0b01,
   };

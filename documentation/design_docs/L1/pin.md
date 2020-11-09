@@ -10,14 +10,14 @@
   - [Pin Configuration](#pin-configuration)
     - [constexpr Pin(uint8_t port, uint8_t pin)](#constexpr-pinuint8t-port-uint8t-pin)
     - [Returns&lt;void> Initialize() const](#returnsvoid-initialize-const)
-    - [Returns&lt;void> SetPinFunction(uint8_t function) const](#returnsvoid-setpinfunctionuint8t-function-const)
-    - [Returns&lt;void> SetPull(Resistor resistor) const](#returnsvoid-setpullresistor-resistor-const)
-    - [Returns&lt;void> SetAsOpenDrain(bool set_as_open_drain) const](#returnsvoid-setasopendrainbool-setasopendrain-const)
-    - [Returns&lt;void> SetAsAnalogMode(bool set_as_analog) const](#returnsvoid-setasanalogmodebool-setasanalog-const)
+    - [Returns&lt;void> ConfigureFunction(uint8_t function) const](#returnsvoid-ConfigureFunctionuint8t-function-const)
+    - [Returns&lt;void> ConfigurePullResistor(Resistor resistor) const](#returnsvoid-ConfigurePullResistorresistor-resistor-const)
+    - [Returns&lt;void> ConfigureAsOpenDrain(bool set_as_open_drain) const](#returnsvoid-ConfigureAsOpenDrainbool-ConfigureAsOpenDrain-const)
+    - [Returns&lt;void> ConfigureAsAnalogMode(bool set_as_analog) const](#returnsvoid-ConfigureAsAnalogModebool-setasanalog-const)
   - [Utility Functions](#utility-functions)
     - [void PullUp() const](#void-pullup-const)
     - [void PullDown() const](#void-pulldown-const)
-    - [void SetFloating() const](#void-setfloating-const)
+    - [void ConfigureFloating() const](#void-ConfigureFloating-const)
     - [uint8_t GetPort() const](#uint8t-getport-const)
     - [uint8_t GetPin() const](#uint8t-getpin-const)
 - [Future Advancements](#future-advancements)
@@ -25,7 +25,7 @@
   - [Unit Testing Scheme](#unit-testing-scheme)
     - [void PullUp() const](#void-pullup-const-1)
     - [void PullDown() const](#void-pulldown-const-1)
-    - [void SetFloating() const](#void-setfloating-const-1)
+    - [void ConfigureFloating() const](#void-ConfigureFloating-const-1)
 
 # Location
 `L1 Peripheral`
@@ -71,14 +71,14 @@ class Pin
   constexpr Pin(uint8_t port, uint8_t pin);
 
   virtual void Initialize() const = 0;
-  virtual void SetPinFunction(uint8_t function) const = 0;
-  virtual void SetPull(Resistor resistor) const = 0;
-  virtual void SetAsOpenDrain(bool set_as_open_drain) const = 0;
-  virtual void SetAsAnalogMode(bool set_as_analog) const = 0;
+  virtual void ConfigureFunction(uint8_t function) const = 0;
+  virtual void ConfigurePullResistor(Resistor resistor) const = 0;
+  virtual void ConfigureAsOpenDrain(bool set_as_open_drain) const = 0;
+  virtual void ConfigureAsAnalogMode(bool set_as_analog) const = 0;
 
   void PullUp() const;
   void PullDown() const;
-  void SetFloating() const;
+  void ConfigureFloating() const;
 
   uint8_t GetPort() const;
   uint8_t GetPin() const;
@@ -94,23 +94,23 @@ Constructs the `Pin` object with the specified port and pin identifier.
 Performs the necessary operations to initialize the hardware pin for use. An
 **Error_t** should be returned when the pin fails to initialize.
 
-### Returns&lt;void> SetPinFunction(uint8_t function) const
+### Returns&lt;void> ConfigureFunction(uint8_t function) const
 Configures the pin based on the specified function code. An **Error_t** should
 be returned if the specified function code is invalid.
 
-### Returns&lt;void> SetPull(Resistor resistor) const
+### Returns&lt;void> ConfigurePullResistor(Resistor resistor) const
 Configures the pin based on the specified resistor pull. An **Error_t** should
 be returned if the specified resistor pull is not supported.
 
 > **NOTE:** Not all MCUs or pins have support pull up/down resistors.
 
-### Returns&lt;void> SetAsOpenDrain(bool set_as_open_drain) const
+### Returns&lt;void> ConfigureAsOpenDrain(bool set_as_open_drain) const
 Configures the pin to be an open drain pin when `set_as_open_drain` is `true`.
 
 > **Note:** Not all MCUs support this hardware feature. If this is the case,
 > then this function should be left unimplemented.
 
-### Returns&lt;void> SetAsAnalogMode(bool set_as_analog) const
+### Returns&lt;void> ConfigureAsAnalogMode(bool set_as_analog) const
 Enables the pin's analog mode when `set_as_analog` is `true`.
 
 > **Note:** Not all MCUs support the need to set the pin in analog mode. If this
@@ -119,13 +119,13 @@ Enables the pin's analog mode when `set_as_analog` is `true`.
 ## Utility Functions
 
 ### void PullUp() const
-A shorthand for invoking `SetPull(Resistor::kPullUp)`.
+A shorthand for invoking `ConfigurePullResistor(Resistor::kPullUp)`.
 
 ### void PullDown() const
-A shorthand for invoking `SetPull(Resistor::kPulldown)`.
+A shorthand for invoking `ConfigurePullResistor(Resistor::kPulldown)`.
 
-### void SetFloating() const
-A shorthand for invoking `SetPull(Resistor::kNone)`.
+### void ConfigureFloating() const
+A shorthand for invoking `ConfigurePullResistor(Resistor::kNone)`.
 
 ### uint8_t GetPort() const
 Returns the pin's port identifier.
@@ -139,16 +139,16 @@ N/A
 # Testing Plan
 
 ## Unit Testing Scheme
-The `Pin` interface shall be mocked and the `SetPull` function shall be faked to
+The `Pin` interface shall be mocked and the `ConfigurePullResistor` function shall be faked to
 verify the invocation of the utility functions `PullUp()`, `PullDown()`,
-and `SetFloating()`.
+and `ConfigureFloating()`.
 
 ### void PullUp() const
-- This function should invoke `SetPull()` with the argument `Resistor::kPullUp`.
+- This function should invoke `ConfigurePullResistor()` with the argument `Resistor::kPullUp`.
 
 ### void PullDown() const
-- This function should invoke `SetPull()` with the argument
+- This function should invoke `ConfigurePullResistor()` with the argument
   `Resistor::kPulldown`.
 
-### void SetFloating() const
-- This function should invoke `SetPull()` with the argument `Resistor::kNone`.
+### void ConfigureFloating() const
+- This function should invoke `ConfigurePullResistor()` with the argument `Resistor::kNone`.

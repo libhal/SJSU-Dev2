@@ -54,9 +54,10 @@ int main()
   sjsu::SystemController::ResourceID system_timer_id = GetSystemTimerID();
   sjsu::cortex::SystemTimer system_timer(system_timer_id);
 
-  system_timer.SetCallback(DemoSystemIsr);
-  system_timer.SetTickFrequency(10_Hz);
-  system_timer.StartTimer();
+  system_timer.Initialize();
+  system_timer.ConfigureCallback(DemoSystemIsr);
+  system_timer.ConfigureTickFrequency(10_Hz);
+  system_timer.Enable();
 
   sjsu::LogInfo("Halting any action.");
   return 0;

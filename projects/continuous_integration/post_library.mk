@@ -32,6 +32,7 @@ MAC_TIDY_INCLUDES = \
 lint:
 	@python3 $(SJ2_TOOLS_DIR)/cpplint/cpplint.py $(LINT_FILES)
 
+$(info UPDATED_TIDY_FILES = $(UPDATED_TIDY_FILES))
 
 commit-tidy: $(UPDATED_TIDY_FILES)
 	@printf '$(GREEN)Commit Tidy Evaluation Complete. Everything clear!$(RESET)\n'
@@ -43,10 +44,12 @@ tidy: $(TIDY_FILES)
 
 $(SJ2_OBJECT_DIR)/%.tidy: $(SJSU_DEV2_BASE)/%
 	@mkdir -p "$(dir $@)"
-
 	@$(CLANG_TIDY) -extra-arg="-std=c++2a" "$<"  -- \
 	  -D PLATFORM=host -D HOST_TEST=1 \
-		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@
+		$(MAC_TIDY_INCLUDES) $(INCLUDES) $(SYSTEM_INCLUDES) 2> $@.tmp
+	@# This is here to convert the temp file into the correct .tidy if the above
+	@# command was successful
+	@mv $@.tmp $@
 	@printf '$(GREEN)Evaluated file: $(RESET)$< \n'
 
 

@@ -6,11 +6,12 @@
 
 namespace sjsu
 {
-/// @ingroup l1_peripheral
-///
 /// Abstract interface for a hardware watchdog timer peripheral which can be
 /// used to determine if the system has become locked up, and if so, restarts
 /// the system.
+///
+/// (INCOMPLETE PERIPHERAL does not support sjsu::Module)
+/// @ingroup l1_peripheral
 class Watchdog
 {
   // TODO(#998): May need to expand the set of functions watchdogs perform.

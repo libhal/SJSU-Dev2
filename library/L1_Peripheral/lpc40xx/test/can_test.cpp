@@ -1,7 +1,7 @@
-#include <chrono>  // NOLINT
-#include <thread>  // NOLINT
-
 #include "L1_Peripheral/lpc40xx/can.hpp"
+
+#include <chrono>
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::lpc40xx
@@ -34,8 +34,8 @@ TEST_CASE("Testing lpc40xx Can")
   Mock<sjsu::Pin> mock_td;
   Mock<sjsu::Pin> mock_rd;
 
-  Fake(Method(mock_td, SetPinFunction));
-  Fake(Method(mock_rd, SetPinFunction));
+  Fake(Method(mock_td, ConfigureFunction));
+  Fake(Method(mock_rd, ConfigureFunction));
 
   // Set up SSP Bus configuration object
   const Can::Channel_t kMockCan = {
@@ -57,21 +57,8 @@ TEST_CASE("Testing lpc40xx Can")
              id.device_id;
     };
 
-    constexpr uint32_t kExpectedSyncJumpWidth = 3;
-    constexpr uint32_t kExpectedTimeSegment1  = 6;
-    constexpr uint32_t kExpectedTimeSegment2  = 1;
-    constexpr uint32_t kExpectedBusSampling   = 0;
-
-    constexpr uint32_t kAdjust =
-        kExpectedSyncJumpWidth + kExpectedTimeSegment1 + kExpectedTimeSegment2;
-    constexpr uint32_t kExpectedPreAdjustedPrescalar =
-        (kDummySystemControllerClockFrequency / Can::kStandardBaudRate) - 1;
-
-    constexpr uint32_t kExpectedPrescalar =
-        kExpectedPreAdjustedPrescalar / kAdjust;
-
     // Exercise
-    test_can.Initialize();
+    test_can.ModuleInitialize();
 
     // Verify
     // Verify: Peripheral is powered on
@@ -79,25 +66,13 @@ TEST_CASE("Testing lpc40xx Can")
                .Matching(check_power_up));
 
     // Verify: Pins are configured
-    Verify(Method(mock_td, SetPinFunction).Using(kMockCan.td_function_code))
+    Verify(Method(mock_td, ConfigureFunction).Using(kMockCan.td_function_code))
         .Once();
-    Verify(Method(mock_rd, SetPinFunction).Using(kMockCan.rd_function_code))
+    Verify(Method(mock_rd, ConfigureFunction).Using(kMockCan.rd_function_code))
         .Once();
 
     // Verify: Mode is in reset
-    CHECK(!bit::Read(local_can.MOD, Can::Mode::kReset));
-
-    // Verify: Baud rate is set correctly
-    CHECK(kExpectedPrescalar ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kPrescalar));
-    CHECK(kExpectedSyncJumpWidth ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kSyncJumpWidth));
-    CHECK(kExpectedTimeSegment1 ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kTimeSegment1));
-    CHECK(kExpectedTimeSegment2 ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kTimeSegment2));
-    CHECK(kExpectedBusSampling ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kSampling));
+    CHECK(bit::Read(local_can.MOD, Can::Mode::kReset));
 
     // Verify: Acceptance filter has been set to accept everything
     CHECK(Value(Can::Commands::kAcceptAllMessages) ==
@@ -119,7 +94,7 @@ TEST_CASE("Testing lpc40xx Can")
     }
 
     // Exercise
-    test_can.Enable();
+    test_can.ModuleEnable();
 
     // Verify: Mode is in reset
     CHECK(!bit::Read(local_can.MOD, Can::Mode::kReset));
@@ -180,10 +155,11 @@ TEST_CASE("Testing lpc40xx Can")
     uint32_t expected_frame = 0;
     expected_frame =
         bit::Insert(expected_frame, message.length, Can::FrameInfo::kLength);
-    expected_frame = bit::Insert(expected_frame, message.is_remote_request,
+    expected_frame = bit::Insert(expected_frame,
+                                 message.is_remote_request,
                                  Can::FrameInfo::kRemoteRequest);
-    expected_frame = bit::Insert(expected_frame, Value(message.format),
-                                 Can::FrameInfo::kFormat);
+    expected_frame = bit::Insert(
+        expected_frame, Value(message.format), Can::FrameInfo::kFormat);
 
     const uint32_t kExpectedDataA =
         message.payload[0] | message.payload[1] << 8 |
@@ -237,25 +213,25 @@ TEST_CASE("Testing lpc40xx Can")
 
     SECTION("All buffers full, release TX3 after ")
     {
-      local_can.SR = bit::Clear(local_can.SR, Can::BufferStatus::kTx1Released);
-      local_can.SR = bit::Clear(local_can.SR, Can::BufferStatus::kTx2Released);
-      local_can.SR = bit::Clear(local_can.SR, Can::BufferStatus::kTx3Released);
-
-      std::thread open_up_tx3([&local_can]() {
-        std::this_thread::sleep_for(1ms);
-        local_can.SR = bit::Set(local_can.SR, Can::BufferStatus::kTx3Released);
+      testing::PollingVerification({
+          .locking_function =
+              [&local_can]() {
+                local_can.SR =
+                    bit::Clear(local_can.SR, Can::BufferStatus::kTx1Released);
+                local_can.SR =
+                    bit::Clear(local_can.SR, Can::BufferStatus::kTx2Released);
+                local_can.SR =
+                    bit::Clear(local_can.SR, Can::BufferStatus::kTx3Released);
+              },
+          .polling_function = [&test_can,
+                               &message]() { test_can.Send(message); },
+          .release_function =
+              [&local_can]() {
+                local_can.SR =
+                    bit::Set(local_can.SR, Can::BufferStatus::kTx3Released);
+              },
+          .delay_time = 5ms,
       });
-
-      // Exercise
-      test_can.Send(message);
-      open_up_tx3.join();
-
-      // Verify
-      CHECK(expected_frame == local_can.TFI3);
-      CHECK(message.id == local_can.TID3);
-      CHECK(kExpectedDataA == local_can.TDA3);
-      CHECK(kExpectedDataB == local_can.TDB3);
-      CHECK(Value(Can::Commands::kSendTxBuffer3) == local_can.CMR);
     }
   }
 
@@ -272,10 +248,11 @@ TEST_CASE("Testing lpc40xx Can")
     uint32_t expected_frame = 0;
     expected_frame =
         bit::Insert(expected_frame, message.length, Can::FrameInfo::kLength);
-    expected_frame = bit::Insert(expected_frame, message.is_remote_request,
+    expected_frame = bit::Insert(expected_frame,
+                                 message.is_remote_request,
                                  Can::FrameInfo::kRemoteRequest);
-    expected_frame = bit::Insert(expected_frame, Value(message.format),
-                                 Can::FrameInfo::kFormat);
+    expected_frame = bit::Insert(
+        expected_frame, Value(message.format), Can::FrameInfo::kFormat);
 
     local_can.RFS = expected_frame;
     local_can.RID = message.id;
@@ -294,6 +271,50 @@ TEST_CASE("Testing lpc40xx Can")
     CHECK(message.payload == actual_message.payload);
   }
 
+  SECTION("SelfTest() Polling Test")
+  {
+    testing::PollingVerification({
+        .locking_function =
+            [&local_can]() {
+              bit::Register(&local_can.SR)
+                  .Set(Can::BufferStatus::kTx1Released)
+                  .Save();
+              bit::Register(&local_can.GSR)
+                  .Clear(Can::GlobalStatus::kReceiveBuffer)
+                  .Save();
+            },
+        .polling_function = [&test_can]() { test_can.SelfTest(0xAA); },
+        .release_function =
+            [&local_can]() {
+              REQUIRE(Value(Can::Commands::kSelfReceptionSendTxBuffer1) ==
+                      local_can.CMR);
+              bit::Register(&local_can.GSR)
+                  .Set(Can::GlobalStatus::kReceiveBuffer)
+                  .Save();
+            },
+    });
+
+    testing::PollingVerification({
+        .locking_function =
+            [&local_can]() {
+              bit::Register(&local_can.SR)
+                  .Clear(Can::BufferStatus::kTx1Released)
+                  .Save();
+              bit::Register(&local_can.GSR)
+                  .Set(Can::GlobalStatus::kReceiveBuffer)
+                  .Save();
+            },
+        .polling_function = [&test_can]() { test_can.SelfTest(0xAA); },
+        .release_function =
+            [&local_can]() {
+              bit::Register(&local_can.SR)
+                  .Set(Can::BufferStatus::kTx1Released)
+                  .Save();
+            },
+        .delay_time = 100ms,
+    });
+  }
+
   SECTION("SelfTest()")
   {
     // Setup
@@ -302,7 +323,6 @@ TEST_CASE("Testing lpc40xx Can")
     Can::Message_t mock_message;
     uint32_t expected_frame = 0;
     uint32_t alter_id       = 0;
-    bool clear_receive_flag = true;
 
     SECTION("Should fail Self Test by incorrect ID")
     {
@@ -310,73 +330,44 @@ TEST_CASE("Testing lpc40xx Can")
       alter_id = 1;
     }
 
-    SECTION("Should fail Self Test by timeout")
-    {
-      clear_receive_flag = false;
-    }
-
-    expected_frame = bit::Insert(expected_frame, mock_message.length,
-                                 Can::FrameInfo::kLength);
-    expected_frame = bit::Insert(expected_frame, mock_message.is_remote_request,
+    expected_frame = bit::Insert(
+        expected_frame, mock_message.length, Can::FrameInfo::kLength);
+    expected_frame = bit::Insert(expected_frame,
+                                 mock_message.is_remote_request,
                                  Can::FrameInfo::kRemoteRequest);
-    expected_frame = bit::Insert(expected_frame, Value(mock_message.format),
-                                 Can::FrameInfo::kFormat);
+    expected_frame = bit::Insert(
+        expected_frame, Value(mock_message.format), Can::FrameInfo::kFormat);
 
-    std::thread open_up_tx3([&local_can, expected_frame, kID, alter_id,
-                             clear_receive_flag]() {
-      // Sleep to allow time for SelfTest() To be called
-      std::this_thread::sleep_for(1ms);
+    // Set the receive bit to 0, to indicate that no message is present.
+    local_can.GSR =
+        bit::Clear(local_can.GSR, Can::GlobalStatus::kReceiveBuffer);
+    // Release the TX1 buffer to allow writing, SelfTest() should be
+    // looping right now.
+    local_can.SR = bit::Set(local_can.SR, Can::BufferStatus::kTx1Released);
 
-      // Set the receive bit to 0, to indicate that no message is present.
-      local_can.GSR =
-          bit::Clear(local_can.GSR, Can::GlobalStatus::kReceiveBuffer);
-      // Release the TX1 buffer to allow writing, SelfTest() should be looping
-      // right now.
-      local_can.SR = bit::Set(local_can.SR, Can::BufferStatus::kTx1Released);
+    // Setup: Clear receive buffer and allow SelfTest() to read from the
+    // buffer.
+    local_can.GSR = bit::Set(local_can.GSR, Can::GlobalStatus::kReceiveBuffer);
 
-      // Sleep for 1ms to give SelfTest() time to write to the transmit data
-      // buffers.
-      std::this_thread::sleep_for(1ms);
-
-      // Verify: Transmission
-      REQUIRE(expected_frame == local_can.TFI1);
-      REQUIRE(0 == local_can.TDA1);
-      REQUIRE(0 == local_can.TDB1);
-      REQUIRE(Value(Can::Commands::kSelfReceptionSendTxBuffer1) ==
-              local_can.CMR);
-      REQUIRE(kID == local_can.TID1);
-
-      // Setup: Setup receive buffer with message contents
-      local_can.RFS = expected_frame;
-      local_can.RID = kID + alter_id;
-      local_can.RDA = 0;
-      local_can.RDB = 0;
-
-      // Setup: Clear receive buffer and allow SelfTest() to read from the
-      // buffer.
-      if (clear_receive_flag)
-      {
-        local_can.GSR =
-            bit::Set(local_can.GSR, Can::GlobalStatus::kReceiveBuffer);
-      }
-
-      // Give time for SelfTest() to read the buffer and return success.
-      std::this_thread::sleep_for(1ms);
-    });
+    // Setup: Setup receive buffer with message contents
+    local_can.RFS = expected_frame;
+    local_can.RID = kID + alter_id;
+    local_can.RDA = 0;
+    local_can.RDB = 0;
 
     // Exercise
     bool success = test_can.SelfTest(kID);
-    open_up_tx3.join();
 
-    // Verify
-    // Verify: If clear_receive_flag is false, then we should have timed out
-    if (!clear_receive_flag)
-    {
-      CHECK(!success);
-    }
+    // Verify: Transmission
+    REQUIRE(expected_frame == local_can.TFI1);
+    REQUIRE(0 == local_can.TDA1);
+    REQUIRE(0 == local_can.TDB1);
+    REQUIRE(Value(Can::Commands::kReleaseRxBuffer) == local_can.CMR);
+    REQUIRE(kID == local_can.TID1);
+
     // Verify: If alter_id is not zero, then the received ID will not be equal
     // to the given ID thus self test should fail.
-    else if (alter_id != 0)
+    if (alter_id != 0)
     {
       CHECK(!success);
     }
@@ -386,7 +377,7 @@ TEST_CASE("Testing lpc40xx Can")
     }
   }
 
-  SECTION("SetBaudRate()")
+  SECTION("ConfigureBaudRate()")
   {
     constexpr units::frequency::hertz_t kDifferentBaudRate = 50'000_Hz;
     constexpr uint32_t kExpectedSyncJumpWidth              = 3;
@@ -402,7 +393,7 @@ TEST_CASE("Testing lpc40xx Can")
     constexpr uint32_t kExpectedPrescalar =
         kExpectedPreAdjustedPrescalar / kAdjust;
 
-    test_can.SetBaudRate(kDifferentBaudRate);
+    test_can.ConfigureBaudRate(kDifferentBaudRate);
 
     // Verify: Baud rate is set correctly
     CHECK(kExpectedPrescalar ==

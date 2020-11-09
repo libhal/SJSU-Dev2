@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstdint>
 
+#include "module.hpp"
 #include "utility/log.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
@@ -16,7 +17,7 @@ namespace sjsu
 /// On the earth's surface, if the accelerometer is held still, and it is
 /// oriented flat on one of its axes, it will measure approximately 9.8 m/s^2 on
 /// that axis.
-class Accelerometer
+class Accelerometer : public Module
 {
  public:
   /// Acceleration along each axis of detection
@@ -33,27 +34,27 @@ class Accelerometer
     }
   };
 
-  /// Initialize peripherals required to communicate with device. Must be the
-  /// first method called on this driver. After this is called, `Enable()` can
-  /// be called to enable the device and begin gathering acceleration data.
+  /// Set the maximum absolute acceleration that can be read by the
+  /// accelerometer. NOT calling this before calling Enable() will result in the
+  /// default full scale being used. Please consult the datasheet to see if this
+  /// fits your application.
   ///
-  /// @return Error_t if an error occurred. Typically occurs when I2C peripheral
-  ///         fails to initialize.
-  virtual void Initialize() = 0;
-
-  /// This method must be called before running `Read()`. This function will
-  /// configure the device settings as defined through the constructor of this
-  /// interface's implementation. Some implementations have more detail or
-  /// settings than others. For example, the MMA8452q device allows for the
-  /// full-scale value to be changed based on the values supplied to the
-  /// constructor.
+  /// In general accelerometers have a fixed number of bits that respresents te
+  /// precisions of their measurements. Setting a smaller maximum full scale
+  /// results in a higher precision measurement, but means that the highest
+  /// measureable acceleration is decreased.
   ///
-  /// @return Error_t if an error occurred. Typically occurs if
-  ///         (1) I2C peripheral could not speak to the device due to
-  ///             connection issue.
-  ///         (2) Device address is incorrect.
-  ///         (3) Detected Device ID does not match the driver.
-  virtual void Enable() = 0;
+  /// Vice-versa for setting a higher maximum scale. Precision is sacraficed,
+  /// but the maximum acceleration is larger.
+  ///
+  /// Its a trade off that is very application specific. In general most
+  /// orientation measurements will require 2Gs of precision to account for
+  /// accelerations caused by translation rather than simply rotation.
+  ///
+  /// @param gravity - the number of G(s) that defines the maximum acceleration
+  /// the accelerometer can sense.
+  virtual void ConfigureFullScale(
+      units::acceleration::standard_gravity_t gravity) = 0;
 
   /// Accelerometer driver will read each axis of acceleration and convert the
   /// data to m/s^2.

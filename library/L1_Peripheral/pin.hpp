@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "inactive.hpp"
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 
 namespace sjsu
@@ -25,7 +27,7 @@ namespace sjsu
 /// This interface represents a common set of functions that most controllers
 /// and systems support.
 /// @ingroup l1_peripheral
-class Pin
+class Pin : public Module
 {
  public:
   // ===========================================================================
@@ -41,11 +43,14 @@ class Pin
     /// not connected to anything then the pin will be floating. Its value will
     /// not undefined.
     kNone = 0,
+
     /// Connect pin to ground using weak (high resistance) resistor.
     kPullDown,
+
     /// Connect pin to controller digital voltage (VCC) using a weak (high
     /// resistance) resistor.
     kPullUp,
+
     /// Connect pin to a pull up or pull down resistor based what the pin's
     /// previous state was.
     ///
@@ -66,9 +71,9 @@ class Pin
   // Interface Methods
   // ===========================================================================
 
-  /// Setup the required hardware to enable usage of the pin. Must be called
-  /// first before calling any othe methods.
-  virtual void Initialize() const = 0;
+  // ---------------------------------------------------------------------------
+  // Configuration Methods
+  // ---------------------------------------------------------------------------
 
   /// Set the pin's function using a function code.
   /// The function code is very specific to the controller being used.
@@ -83,8 +88,8 @@ class Pin
   ///    4. and UART port 0 transmitter
   ///
   /// Each function listed above is listed with its function code. If you pass
-  /// the value 4 into the SetPinFunction function, for P0.0, it will set that
-  /// pin to the UART port 0 transmitter function. After that, if you have
+  /// the value 4 into the ConfigureFunction function, for P0.0, it will set
+  /// that pin to the UART port 0 transmitter function. After that, if you have
   /// properly enabled the UART hardware, when you attempt to send data through
   /// the uart0 port, it will show up on the pin.
   ///
@@ -98,53 +103,58 @@ class Pin
   /// the job of the L1 peripheral that uses this pin to manage its own function
   /// code usage.
   ///
-  /// @param function pin function code
-  /// @return std::errc::invalid_argument the function code is not valid.
-  virtual void SetPinFunction(uint8_t function) const = 0;
+  /// @param function - pin function code
+  /// @throw sjsu::Exception - std::errc::invalid_argument the function code is
+  /// not valid.
+  virtual void ConfigureFunction(uint8_t function) = 0;
 
   /// Set pin's resistor pull, setting ot either no resistor pull, pull down,
   /// pull up and repeater.
   ///
   /// @param resistor - which resistor setup you would like.
-  /// @return should return std::errc::not_supported if the pull option is not
-  ///         supported by the MCU.
-  virtual void SetPull(Resistor resistor) const = 0;
+  /// @throw sjsu::Exception - with std::errc::not_supported if the pull option
+  /// is not supported by the MCU.
+  virtual void ConfigurePullResistor(Resistor resistor) = 0;
 
   /// Set pin to open drain mode
   ///
   /// @param set_as_open_drain If false, disable open drain feature, pin
   ///        becomes push-pull (a.k.a totem pole).
-  /// @return should return std::errc::not_supported if open drain is not
-  ///         supported by the MCU.
-  virtual void SetAsOpenDrain(bool set_as_open_drain = true) const = 0;
+  /// @throw sjsu::Exception - with std::errc::not_supported if open drain is
+  /// not supported by the MCU.
+  virtual void ConfigureAsOpenDrain(bool set_as_open_drain = true) = 0;
 
   /// Set pin as analog mode
   ///
   /// @param set_as_analog If false, disable analog mode for pin
-  /// @return should return std::errc::not_supported if analog mode is not
-  ///         supported by the MCU.
-  virtual void SetAsAnalogMode(bool set_as_analog = true) const = 0;
+  /// @throw sjsu::Exception - with std::errc::not_supported if analog mode is
+  /// not supported by the MCU.
+  virtual void ConfigureAsAnalogMode(bool set_as_analog = true) = 0;
+
+  // ---------------------------------------------------------------------------
+  // Usage Methods
+  // ---------------------------------------------------------------------------
 
   // ===========================================================================
   // Utility Methods
   // ===========================================================================
 
-  /// Attach internal pull up resistor to pin
-  void PullUp() const
+  /// Configure the pin to use the internal pull up resistor
+  void ConfigurePullUp()
   {
-    return SetPull(Resistor::kPullUp);
+    return ConfigurePullResistor(Resistor::kPullUp);
   }
 
-  /// Attach internal pull down resistor to pin
-  void PullDown() const
+  /// Configure the pin to use the internal pull up resistor
+  void ConfigurePullDown()
   {
-    return SetPull(Resistor::kPullDown);
+    return ConfigurePullResistor(Resistor::kPullDown);
   }
 
-  /// Detach internal pull resistor from pin and allow the pin to float
-  void SetFloating() const
+  /// Configure the pin to not use a pull resistor
+  void ConfigureFloating()
   {
-    return SetPull(Resistor::kNone);
+    return ConfigurePullResistor(Resistor::kNone);
   }
 
   /// Getter method for the pin's port.
@@ -169,4 +179,24 @@ class Pin
   /// Assigned pin within the above port
   uint8_t pin_;
 };
+
+/// Template specialization that generates an inactive sjsu::Pin.
+template <>
+inline sjsu::Pin & GetInactive<sjsu::Pin>()
+{
+  class InactivePin : public sjsu::Pin
+  {
+   public:
+    InactivePin() : sjsu::Pin(0, 0) {}
+    void ModuleInitialize() override {}
+    void ModuleEnable(bool = true) override {}
+    void ConfigureFunction(uint8_t) override {}
+    void ConfigurePullResistor(Resistor) override {}
+    void ConfigureAsOpenDrain(bool) override {}
+    void ConfigureAsAnalogMode(bool) override {}
+  };
+
+  static InactivePin inactive;
+  return inactive;
+}
 }  // namespace sjsu

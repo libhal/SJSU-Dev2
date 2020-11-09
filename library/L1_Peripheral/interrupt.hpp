@@ -3,17 +3,25 @@
 #include <cstdint>
 #include <functional>
 
+#include "L1_Peripheral/inactive.hpp"
+
 namespace sjsu
 {
 /// Used specifically for defining an interrupt vector table of addresses.
 using InterruptVectorAddress = void (*)(void);
+
 /// Define an alias for an interrupt service routine callable object.
 using InterruptHandler = std::function<void(void)>;
+
 /// Standard callback that should be executed when interrupts fire.
 using InterruptCallback = std::function<void(void)>;
+
+inline static InterruptCallback do_nothing = []() {};
+
 /// An abstract interface for a platforms interrupt controller. This allows a
 /// developer to enable and disable interrupts as well as assign handlers for
 /// each.
+///
 /// @ingroup l1_peripheral
 class InterruptController
 {
@@ -50,6 +58,7 @@ class InterruptController
   {
     platform_interrupt_controller = interrupt_controller;
   }
+
   /// Retrieve a reference of the platforms interrupt controller
   static sjsu::InterruptController & GetPlatformController()
   {
@@ -57,6 +66,7 @@ class InterruptController
   }
 
   /// Initialize interrupt vector table.
+  ///
   /// @note This MUST NOT be called by application code. This for use only in
   /// the platform's startup. Doing this typically overwrites the interrupt
   /// handlers with the unregistered_handler.
@@ -90,5 +100,21 @@ constexpr bool operator==(const InterruptController::RegistrationInfo_t & lhs,
 {
   return lhs.interrupt_request_number == rhs.interrupt_request_number &&
          lhs.priority == rhs.priority;
+}
+
+/// Template specialization that generates an inactive sjsu::SystemController.
+template <>
+inline sjsu::InterruptController & GetInactive<sjsu::InterruptController>()
+{
+  class InactiveInterruptController : public sjsu::InterruptController
+  {
+   public:
+    void Initialize(InterruptHandler) override {}
+    void Enable(RegistrationInfo_t) override {}
+    void Disable(int) override {}
+  };
+
+  static InactiveInterruptController inactive;
+  return inactive;
 }
 }  // namespace sjsu

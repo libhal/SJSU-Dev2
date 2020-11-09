@@ -28,26 +28,4 @@ inline Command telemetry(
 inline Command datetime("datetime", "Display or set current datetime");
 inline Command help("help", "Get information about how to use the SJ2 board");
 }  // namespace command
-
-/// Adds the common set of commands: clear, reboot, sensor, memory, telemetry
-/// datetime, help and rtos to the passed command_line object.
-///
-/// @tparam CommandListType should not be defined within the template argument
-///         list. This type is automatically deduced by the compiler.
-/// @param  command_line is the CommandLine object you would like to have the
-///         command list of commands added to.
-template <template <auto> class CommandLineType,
-          template <size_t>
-          class CommandListType,
-          size_t kSize,
-          CommandListType<kSize> & list>
-inline void AddCommonCommands(CommandLineType<list> & command_line)
-{
-  command_line.AddCommand(&command::clear);
-  command_line.AddCommand(&command::reboot);
-  command_line.AddCommand(&command::sensor);
-  command_line.AddCommand(&command::telemetry);
-  command_line.AddCommand(&command::datetime);
-  command_line.AddCommand(&command::help);
-}
 }  // namespace sjsu

@@ -13,11 +13,11 @@ sjsu::rtos::PeriodicTaskInterface::TaskFunction task_function_10_hz =
 sjsu::rtos::TaskScheduler scheduler;
 sjsu::rtos::PeriodicScheduler periodic_scheduler("PeriodicScheduler");
 sjsu::rtos::PeriodicTask<1024> printer_1_hz_task("Print1Hz",
-                                                sjsu::rtos::Priority::kLow,
-                                                &task_function_1_hz);
-sjsu::rtos::PeriodicTask<1024> printer_10_hz_task("Print10Hz",
                                                  sjsu::rtos::Priority::kLow,
-                                                 &task_function_10_hz);
+                                                 &task_function_1_hz);
+sjsu::rtos::PeriodicTask<1024> printer_10_hz_task("Print10Hz",
+                                                  sjsu::rtos::Priority::kLow,
+                                                  &task_function_10_hz);
 }  // namespace
 
 int main()

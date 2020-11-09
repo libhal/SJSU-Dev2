@@ -42,17 +42,6 @@ sjsu::cortex::SystemTimer system_timer(
 sjsu::cortex::InterruptController<sjsu::lpc40xx::kNumberOfIrqs,
                                   __NVIC_PRIO_BITS>
     interrupt_controller;
-
-int Stm32f10xStdOut([[maybe_unused]] const char * data,
-                    [[maybe_unused]] size_t length)
-{
-  return length;
-}
-
-int Stm32f10xStdIn([[maybe_unused]] char * data, [[maybe_unused]] size_t length)
-{
-  return length;
-}
 }  // namespace
 
 extern "C" uint32_t ThreadRuntimeCounter()
@@ -77,11 +66,17 @@ extern "C"
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
+    // Disable timer so the callback can be configured
+    system_timer.Enable(false);
+
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
     // delay itself.
-    system_timer.SetCallback(xPortSysTickHandler);
+    system_timer.ConfigureCallback(xPortSysTickHandler);
+
+    // Re-enable timer
+    system_timer.Enable(true);
   }
 }
 
@@ -185,8 +180,9 @@ namespace sjsu
 SJ2_WEAK(void InitializePlatform());
 void InitializePlatform()
 {
-  sjsu::newlib::SetStdout(Stm32f10xStdOut);
-  sjsu::newlib::SetStdin(Stm32f10xStdIn);
+  // NOTE: Use default STDOUT and STDIN which do nothing.
+  // sjsu::newlib::SetStdout(...);
+  // sjsu::newlib::SetStdin(...);
 
   // Set the platform's interrupt controller.
   // This will be used by other libraries to enable and disable interrupts.
@@ -196,8 +192,9 @@ void InitializePlatform()
   system_controller.Initialize();
 
   system_timer.Initialize();
-  system_timer.SetTickFrequency(config::kRtosFrequency);
-  system_timer.StartTimer();
+  system_timer.ConfigureTickFrequency(config::kRtosFrequency);
+  system_timer.ConfigureCallback([]() {});
+  system_timer.Enable();
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);

@@ -45,27 +45,39 @@ class Si7060 final : public TemperatureSensor
   {
   }
 
-  void Initialize() const override
+  void ModuleInitialize() override
   {
-    return i2c_.Initialize();
-  }
-
-  void Enable() const override
-  {
-    uint8_t temperature_sensor_id_register;
-
-    i2c_.WriteThenRead(address_, { kIdRegister },
-                       &temperature_sensor_id_register, 1);
-
-    if (temperature_sensor_id_register != kExpectedSensorId)
+    if (i2c_.RequiresConfiguration())
     {
-      LogDebug("ID = 0x%02X\n", temperature_sensor_id_register);
-      throw Exception(std::errc::no_such_device,
-                        "Device ID does not match expected device ID 0x14");
+      i2c_.Initialize();
+      i2c_.ConfigureClockRate();
+      i2c_.Enable();
     }
   }
 
-  units::temperature::celsius_t GetTemperature() const override
+  void ModuleEnable(bool enable = true) override
+  {
+    if (enable)
+    {
+      uint8_t temperature_sensor_id_register;
+
+      i2c_.WriteThenRead(address_, { kIdRegister },
+                         &temperature_sensor_id_register, 1);
+
+      if (temperature_sensor_id_register != kExpectedSensorId)
+      {
+        LogDebug("ID = 0x%02X\n", temperature_sensor_id_register);
+        throw Exception(std::errc::no_such_device,
+                        "Device ID does not match expected device ID 0x14");
+      }
+    }
+    else
+    {
+      LogInfo("Disable not supported for this driver.");
+    }
+  }
+
+  units::temperature::celsius_t GetTemperature() override
   {
     constexpr int32_t kSubtractTemperatureData = BitLimits<14, uint32_t>::Max();
 
@@ -107,7 +119,7 @@ class Si7060 final : public TemperatureSensor
 
  private:
   /// The I2C peripheral used for communication with the device.
-  const sjsu::I2c & i2c_;
+  sjsu::I2c & i2c_;
   /// The device address used for communication.
   uint8_t address_;
 };

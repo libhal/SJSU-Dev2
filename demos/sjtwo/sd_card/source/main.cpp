@@ -1,13 +1,13 @@
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "L1_Peripheral/lpc40xx/gpio.hpp"
+#include "L1_Peripheral/lpc40xx/spi.hpp"
 #include "L2_HAL/memory/sd.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
 #include "utility/time.hpp"
 
-const uint8_t kLongText[512] = R"(
+std::string_view long_text = R"(
 Do you want to build a snowman?
 Come on, let's go and play!
 I never see you anymore
@@ -15,59 +15,71 @@ Come out the door
 It's like you've gone away!
 )";
 
-const uint8_t kHelloWorld[] = "Hello World!";
+std::string_view hello_world = "Hello World!";
 
 namespace sjsu
 {
 class DualGpios : public sjsu::Gpio
 {
  public:
-  DualGpios(sjsu::Gpio & master, sjsu::Gpio & slave)
-      : master_(master), slave_(slave)
+  DualGpios(sjsu::Gpio & lead, sjsu::Gpio & follower)
+      : lead_(lead), follower_(follower)
   {
   }
 
-  void SetDirection(Direction direction) const override
+  void ModuleInitialize() override
   {
-    master_.SetDirection(direction);
-    slave_.SetDirection(direction);
+    lead_.Initialize();
+    lead_.Initialize();
   }
 
-  void Set(State output) const override
+  void ModuleEnable(bool enable = true) override
   {
-    master_.Set(output);
-    slave_.Set(output);
+    lead_.Enable(enable);
+    lead_.Enable(enable);
   }
 
-  void Toggle() const override
+  void SetDirection(Direction direction) override
   {
-    master_.Toggle();
-    slave_.Toggle();
+    lead_.SetDirection(direction);
+    follower_.SetDirection(direction);
   }
 
-  bool Read() const override
+  void Set(State output) override
   {
-    return master_.Read();
+    lead_.Set(output);
+    follower_.Set(output);
   }
 
-  const sjsu::Pin & GetPin() const override
+  void Toggle() override
   {
-    return master_.GetPin();
+    lead_.Toggle();
+    follower_.Toggle();
+  }
+
+  bool Read() override
+  {
+    return lead_.Read();
+  }
+
+  sjsu::Pin & GetPin() override
+  {
+    return lead_.GetPin();
   }
 
   void AttachInterrupt(InterruptCallback callback, Edge edge) override
   {
-    return master_.AttachInterrupt(callback, edge);
+    return lead_.AttachInterrupt(callback, edge);
   }
 
-  void DetachInterrupt() const override
+  void DetachInterrupt() override
   {
-    return master_.DetachInterrupt();
+    return lead_.DetachInterrupt();
   }
 
  private:
-  sjsu::Gpio & master_;
-  sjsu::Gpio & slave_;
+  sjsu::Gpio & lead_;
+  sjsu::Gpio & follower_;
 };
 }  // namespace sjsu
 
@@ -76,13 +88,14 @@ int main()
   sjsu::LogInfo("BEGIN SD Card Driver Example...");
 
   sjsu::lpc40xx::Spi spi2(sjsu::lpc40xx::Spi::Bus::kSpi2);
+  sjsu::lpc40xx::Gpio sd_card_detect(1, 9);
   sjsu::lpc40xx::Gpio sd_chip_select_actual(1, 8);
+  sjsu::lpc40xx::Gpio sd_chip_select_mirror(0, 6);
+
   // This pin is not necessary for operation, but because the SD card's chip
   // select not accessable, it is useful for debugging the SD card to have an
   // extra GPIO that mirrors the proper SD Card chip select.
-  sjsu::lpc40xx::Gpio sd_chip_select_mirror(0, 6);
   sjsu::DualGpios sd_chip_select(sd_chip_select_actual, sd_chip_select_mirror);
-  sjsu::lpc40xx::Gpio sd_card_detect(1, 9);
 
   sjsu::Sd card(spi2, sd_chip_select, sd_card_detect);
 
@@ -99,6 +112,8 @@ int main()
     sjsu::LogInfo("Please insert an SD card and restart the system.");
     return -1;
   }
+
+  sjsu::LogInfo("Attempting to mount (Enable) SD card...");
 
   card.Enable();
 
@@ -121,13 +136,18 @@ int main()
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Writing Hello World to block 0");
-  card.Write(0, kHelloWorld, sizeof(kHelloWorld));
+  std::span<const uint8_t> payload(
+      reinterpret_cast<const uint8_t *>(hello_world.data()),
+      hello_world.size());
+
+  card.Write(0, payload);
+
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 0");
-  uint8_t buffer[512];
-  card.Read(0, buffer, sizeof(buffer));
-  sjsu::debug::Hexdump(buffer, sizeof(buffer));
+  std::array<uint8_t, 512> buffer;
+  card.Read(0, buffer);
+  sjsu::debug::Hexdump(buffer.data(), buffer.size());
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Deleting block 5");
@@ -136,17 +156,19 @@ int main()
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 5 after delete");
-  card.Read(5, buffer, sizeof(buffer));
-  sjsu::debug::Hexdump(buffer, sizeof(buffer));
+  card.Read(5, buffer);
+  sjsu::debug::Hexdump(buffer.data(), buffer.size());
 
   sjsu::LogInfo("Writing to block 5 after delete");
-  card.Write(5, kLongText, sizeof(kLongText));
+  std::span<const uint8_t> long_text_span(
+      reinterpret_cast<const uint8_t *>(long_text.data()), long_text.size());
+  card.Write(5, long_text_span);
 
   sjsu::Delay(1s);
 
   sjsu::LogInfo("Reading block 5 after write");
-  card.Read(5, buffer, sizeof(buffer));
-  sjsu::debug::Hexdump(buffer, sizeof(buffer));
+  card.Read(5, buffer);
+  sjsu::debug::Hexdump(buffer.data(), buffer.size());
 
   sjsu::LogInfo("End SD Card Driver Example...");
   return 0;

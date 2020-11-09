@@ -1,9 +1,10 @@
+#include "L1_Peripheral/stm32f4xx/system_controller.hpp"
+
 #include <array>
 #include <cstdint>
 #include <numeric>
 
 #include "L0_Platform/stm32f4xx/stm32f4xx.h"
-#include "L1_Peripheral/stm32f4xx/system_controller.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/units.hpp"
 

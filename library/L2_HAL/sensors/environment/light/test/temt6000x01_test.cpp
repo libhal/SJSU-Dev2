@@ -1,4 +1,5 @@
 #include "L2_HAL/sensors/environment/light/temt6000x01.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
@@ -31,13 +32,26 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
   SECTION("Initialize")
   {
     // Setup
-    Fake(Method(mock_adc, Initialize));
+    Fake(Method(mock_adc, ModuleInitialize));
 
     // Exercise
     test_subject.Initialize();
 
     // Verify
-    Verify(Method(mock_adc, Initialize)).Once();
+    Verify(Method(mock_adc, ModuleInitialize)).Once();
+  }
+
+  SECTION("Enable")
+  {
+    // Setup
+    Fake(Method(mock_adc, ModuleEnable));
+
+    // Exercise
+    mock_adc.get().SetStateToInitialized();
+    test_subject.ModuleEnable();
+
+    // Verify
+    Verify(Method(mock_adc, ModuleEnable)).Once();
   }
 
   SECTION("GetIlluminance")

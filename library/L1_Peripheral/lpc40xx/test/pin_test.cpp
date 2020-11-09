@@ -1,7 +1,8 @@
 // Test for Pin class.
 // Using a test by side effect on the LPC_IOCON register
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
+
+#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/debug.hpp"
 
@@ -33,8 +34,8 @@ TEST_CASE("Testing lpc40xx Pin")
       constexpr uint8_t kPort2Pin5Pwm1Channel6 = 0b001;
 
       // Exercise
-      test_subject00.SetPinFunction(kPort0Pin0Uart3Txd);
-      test_subject25.SetPinFunction(kPort2Pin5Pwm1Channel6);
+      test_subject00.ConfigureFunction(kPort0Pin0Uart3Txd);
+      test_subject25.ConfigureFunction(kPort2Pin5Pwm1Channel6);
 
       // Verify
       // Check that mapped pin P0.0's first 3 bits are equal to the function
@@ -48,9 +49,9 @@ TEST_CASE("Testing lpc40xx Pin")
     SECTION("Invalid function code")
     {
       // Exercise & Verify
-      SJ2_CHECK_EXCEPTION(test_subject00.SetPinFunction(0b1000),
+      SJ2_CHECK_EXCEPTION(test_subject00.ConfigureFunction(0b1000),
                           std::errc::invalid_argument);
-      SJ2_CHECK_EXCEPTION(test_subject25.SetPinFunction(0b1111),
+      SJ2_CHECK_EXCEPTION(test_subject25.ConfigureFunction(0b1111),
                           std::errc::invalid_argument);
     }
   }
@@ -71,32 +72,32 @@ TEST_CASE("Testing lpc40xx Pin")
         static_cast<uint8_t>(sjsu::Pin::Resistor::kRepeater) << kModePosition;
 
     // Exercise - Set as floating
-    test_subject00.SetFloating();
-    test_subject25.SetFloating();
+    test_subject00.ConfigureFloating();
+    test_subject25.ConfigureFloating();
 
     // Verify
     CHECK(kExpectedForInactive == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForInactive == (local_iocon.P2_5 & kMask));
 
     // Exercise - Set as pull down resistor
-    test_subject00.PullDown();
-    test_subject25.PullDown();
+    test_subject00.ConfigurePullDown();
+    test_subject25.ConfigurePullDown();
 
     // Verify
     CHECK(kExpectedForPullDown == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForPullDown == (local_iocon.P2_5 & kMask));
 
     // Exercise - Set as pull up resistor
-    test_subject00.PullUp();
-    test_subject25.PullUp();
+    test_subject00.ConfigurePullUp();
+    test_subject25.ConfigurePullUp();
 
     // Verify
     CHECK(kExpectedForPullUp == (local_iocon.P0_0 & kMask));
     CHECK(kExpectedForPullUp == (local_iocon.P2_5 & kMask));
 
     // Exercise - Set as repeater
-    test_subject00.SetPull(sjsu::Pin::Resistor::kRepeater);
-    test_subject25.SetPull(sjsu::Pin::Resistor::kRepeater);
+    test_subject00.ConfigurePullResistor(sjsu::Pin::Resistor::kRepeater);
+    test_subject25.ConfigurePullResistor(sjsu::Pin::Resistor::kRepeater);
 
     // Verify
     CHECK(kExpectedForRepeater == (local_iocon.P0_0 & kMask));
@@ -159,8 +160,8 @@ TEST_CASE("Testing lpc40xx Pin")
     constexpr uint32_t kMask  = 0b1 << kAdMode;
 
     // Exercise
-    test_subject00.SetAsAnalogMode(true);
-    test_subject25.SetAsAnalogMode(false);
+    test_subject00.ConfigureAsAnalogMode(true);
+    test_subject25.ConfigureAsAnalogMode(false);
 
     // Verify
     // Digital filter is set with zero
@@ -168,8 +169,8 @@ TEST_CASE("Testing lpc40xx Pin")
     CHECK(kMask == (local_iocon.P2_5 & kMask));
 
     // Exercise
-    test_subject00.SetAsAnalogMode(false);
-    test_subject25.SetAsAnalogMode(true);
+    test_subject00.ConfigureAsAnalogMode(false);
+    test_subject25.ConfigureAsAnalogMode(true);
 
     // Verify
     CHECK(kMask == (local_iocon.P0_0 & kMask));
@@ -278,8 +279,8 @@ TEST_CASE("Testing lpc40xx Pin")
     // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
     constexpr uint8_t kOpenDrainPosition = 10;
     constexpr uint32_t kMask             = 0b1 << kOpenDrainPosition;
-    test_subject00.SetAsOpenDrain(true);
-    test_subject25.SetAsOpenDrain(false);
+    test_subject00.ConfigureAsOpenDrain(true);
+    test_subject25.ConfigureAsOpenDrain(false);
 
     // Verify
     CHECK(kMask == (local_iocon.P0_0 & kMask));
@@ -288,8 +289,8 @@ TEST_CASE("Testing lpc40xx Pin")
     // Exercise
 
     // Exercise
-    test_subject00.SetAsOpenDrain(false);
-    test_subject25.SetAsOpenDrain(true);
+    test_subject00.ConfigureAsOpenDrain(false);
+    test_subject25.ConfigureAsOpenDrain(true);
 
     // Verify
     CHECK(0 == (local_iocon.P0_0 & kMask));

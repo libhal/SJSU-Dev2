@@ -14,7 +14,6 @@
 #include "L1_Peripheral/test/pin_test.cpp"                // NOLINT
 #include "L1_Peripheral/test/pwm_test.cpp"                // NOLINT
 #include "L1_Peripheral/test/uart_test.cpp"               // NOLINT
-#include "L1_Peripheral/test/frequency_counter_test.cpp"  // NOLINT
 
 // =============================================================================
 // stm32f10x implemenation test
@@ -41,7 +40,7 @@
 // lpc40xx implemenation test
 // =============================================================================
 #include "L1_Peripheral/lpc40xx/test/adc_test.cpp"  // NOLINT
-// #include "L1_Peripheral/lpc40xx/test/can_test.cpp"                // NOLINT
+#include "L1_Peripheral/lpc40xx/test/can_test.cpp"                // NOLINT
 #include "L1_Peripheral/lpc40xx/test/dac_test.cpp"                // NOLINT
 #include "L1_Peripheral/lpc40xx/test/eeprom_test.cpp"             // NOLINT
 #include "L1_Peripheral/lpc40xx/test/gpio_test.cpp"               // NOLINT

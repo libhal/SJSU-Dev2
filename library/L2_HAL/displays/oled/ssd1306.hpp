@@ -4,10 +4,10 @@
 #include <cstdint>
 #include <cstring>
 
-#include "config.hpp"
 #include "L1_Peripheral/gpio.hpp"
 #include "L1_Peripheral/spi.hpp"
 #include "L2_HAL/displays/pixel_display.hpp"
+#include "config.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
@@ -20,14 +20,21 @@ class Ssd1306 final : public PixelDisplay
  public:
   /// Defines the number of columns the device has
   static constexpr size_t kColumns = 128;
+
   /// Defines the width in pixels, which is simply the columns
   static constexpr size_t kWidth = kColumns;
+
   /// Defines the height in pixels
   static constexpr size_t kHeight = 64;
+
   /// Defines the column height which is a single byte or 8 bits
   static constexpr size_t kColumnHeight = 8;
+
   /// Calculates the number of rows that exist for the device.
   static constexpr size_t kRows = kHeight / kColumnHeight;
+
+  /// Calculates the number of rows that exist for the device.
+  static constexpr auto kDefaultClockRate = 2_MHz;
 
   /// Defines the types of communication that can occur with the display driver.
   enum class Transaction
@@ -52,7 +59,7 @@ class Ssd1306 final : public PixelDisplay
                     sjsu::Gpio & cs,
                     sjsu::Gpio & dc,
                     sjsu::Gpio & reset,
-                    units::frequency::hertz_t clock_rate = 2_MHz)
+                    units::frequency::hertz_t clock_rate = kDefaultClockRate)
       : spi_(spi),
         cs_(cs),
         dc_(dc),
@@ -82,11 +89,33 @@ class Ssd1306 final : public PixelDisplay
     };
   }
 
-  void Initialize() override
+  void ModuleInitialize() override
   {
+    // Phase 1: Initialize()
+    spi_.Initialize();
+    cs_.Initialize();
+    dc_.Initialize();
+    reset_.Initialize();
+
+    // Phase 2: Configure()
+    if (spi_.RequiresConfiguration())
+    {
+      spi_.ConfigureClockMode();
+      spi_.ConfigureFrameSize(Spi::FrameSize::kEightBits);
+      spi_.ConfigureFrequency(clock_rate_);
+    }
+
+    // Phase 3: Enable()
+    spi_.Enable();
+    cs_.Enable();
+    dc_.Enable();
+    reset_.Enable();
+
+    // Phase 4: Usage
     cs_.SetAsOutput();
     dc_.SetAsOutput();
     reset_.SetAsOutput();
+
     cs_.SetHigh();
     dc_.SetHigh();
 
@@ -94,25 +123,43 @@ class Ssd1306 final : public PixelDisplay
     Delay(100us);
     reset_.SetHigh();
     Delay(100us);
+  }
 
-    spi_.Initialize();
-    spi_.SetDataSize(sjsu::Spi::DataSize::kEight);
-    spi_.SetClock(clock_rate_);
-
-    Clear();
-    InitializationPanel();
+  void ModuleEnable(bool enable = true) override
+  {
+    if (enable)
+    {
+      Clear();
+      InitializationPanel();
+    }
+    else
+    {
+      LogDebug("Disable does nothing");
+    }
   }
 
   /// Clears the internal bitmap_ to zero (or a user defined clear_value)
   void Clear() override
   {
-    memset(bitmap_, 0x00, sizeof(bitmap_));
+    for (auto & row : bitmap_)
+    {
+      for (auto & pixel_block : row)
+      {
+        pixel_block = 0x00;
+      }
+    }
   }
 
   /// Fill the screen with white (or what ever color the screen is)
   void Fill()
   {
-    memset(bitmap_, 0xFF, sizeof(bitmap_));
+    for (auto & row : bitmap_)
+    {
+      for (auto & pixel_block : row)
+      {
+        pixel_block = 0xFF;
+      }
+    }
   }
 
   void DrawPixel(int32_t x, int32_t y, Color_t color) override
@@ -276,6 +323,6 @@ class Ssd1306 final : public PixelDisplay
   sjsu::Gpio & reset_;
   units::frequency::hertz_t clock_rate_;
 
-  uint8_t bitmap_[kRows + 5][kColumns + 5];
+  std::array<std::array<uint8_t, kColumns + 5>, kRows + 5> bitmap_;
 };
 }  // namespace sjsu

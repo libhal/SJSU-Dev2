@@ -1,10 +1,11 @@
+#include "L1_Peripheral/lpc40xx/pwm.hpp"
+
 #include <cmath>
 
-#include "config.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
-#include "L1_Peripheral/lpc40xx/pwm.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
+#include "config.hpp"
 
 namespace sjsu::lpc40xx
 {
@@ -28,8 +29,8 @@ TEST_CASE("Testing lpc40xx PWM instantiation")
 
   // Creating mock of Pin class
   Mock<sjsu::Pin> mock_pwm_pin;
-  // Make sure mock Pin doesn't call real SetPinFunction() method
-  Fake(Method(mock_pwm_pin, SetPinFunction));
+  // Make sure mock Pin doesn't call real ConfigureFunction() method
+  Fake(Method(mock_pwm_pin, ConfigureFunction));
 
   // Creating mock peripheral configuration
   Pwm::Peripheral_t mock_peripheral = {
@@ -47,15 +48,11 @@ TEST_CASE("Testing lpc40xx PWM instantiation")
 
   Pwm test_pwm(mock_channel);
 
-  SECTION("Initialization values")
+  SECTION("Initialize()")
   {
     // Setup
-    constexpr uint32_t kCounterEnable = 0;
-    constexpr uint8_t kCounterReset   = 1;
-    constexpr uint8_t kPwmEnable      = 3;
-
     // Exercise
-    test_pwm.Initialize(2_kHz);
+    test_pwm.Initialize();
 
     // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
@@ -66,19 +63,49 @@ TEST_CASE("Testing lpc40xx PWM instantiation")
 
     // Verify: PWM Count Control Register should be all zeros
     CHECK(0 == local_pwm.CTCR);
+    // Verify: Clear Prescalar
+    CHECK(0 == local_pwm.PR);
+    // Verify: Clear counter
+    CHECK(0 == local_pwm.PC);
     // Verify: Check that Match Control Register reset for PWM0 has been set
     CHECK(1 == bit::Read(local_pwm.MCR, 1));
+    // Verify: verify that the pwm control enable has been set
+    CHECK(1 == bit::Extract(local_pwm.PCR, mock_channel.channel + 8));
+    Verify(Method(mock_pwm_pin, ConfigureFunction)
+               .Using(mock_channel.pin_function_code))
+        .Once();
+  }
+
+  SECTION("Enable()")
+  {
+    // Setup
+    constexpr int kCounterEnable = 0;
+    constexpr int kCounterReset  = 1;
+    constexpr int kPwmEnable     = 3;
+
+    // Exercise
+    test_pwm.SetStateToInitialized();
+    test_pwm.Enable();
+
+    // Verify
     // Verify: that the appropriate flags in the timer register have been set
     CHECK(1 == bit::Read(local_pwm.TCR, kCounterEnable));
     CHECK(0 == bit::Read(local_pwm.TCR, kCounterReset));
     CHECK(1 == bit::Read(local_pwm.TCR, kPwmEnable));
-    // Verify: verify that the pwm control enable has been set
-    CHECK(1 == bit::Extract(local_pwm.PCR, mock_channel.channel + 8));
-    Verify(Method(mock_pwm_pin, SetPinFunction)
-               .Using(mock_channel.pin_function_code))
-        .Once();
-    // Verify: that the default frequency was set.
-    CHECK(2000_Hz == test_pwm.GetFrequency());
+  }
+
+  SECTION("Enable(false)")
+  {
+    // Setup
+    constexpr int kPwmEnable = 3;
+
+    // Exercise
+    test_pwm.SetStateToEnabled();
+    test_pwm.Enable(false);
+
+    // Verify
+    // Verify: that the appropriate flags in the timer register have been set
+    CHECK(!bit::Read(local_pwm.TCR, kPwmEnable));
   }
 
   SECTION("Set & Get Duty Cycle")
@@ -114,13 +141,12 @@ TEST_CASE("Testing lpc40xx PWM instantiation")
     local_pwm.MR5 = static_cast<uint32_t>(local_pwm.MR0 * kDutyCycle);
 
     // Exercise
+    test_pwm.ConfigureFrequency(kFrequency);
     test_pwm.SetDutyCycle(kDutyCycle);
-    test_pwm.SetFrequency(kFrequency);
 
     // Verify
     CHECK(kExpectedMR0 == local_pwm.MR0);
     CHECK(kExpectedMR5 == local_pwm.MR5);
-    CHECK(test_pwm.GetFrequency() == 2000_Hz);
   }
 }
 }  // namespace sjsu::lpc40xx

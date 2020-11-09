@@ -6,11 +6,11 @@
 #include <type_traits>
 
 #include "L1_Peripheral/gpio.hpp"
+#include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/spi.hpp"
 #include "L1_Peripheral/storage.hpp"
-#include "L1_Peripheral/inactive.hpp"
-#include "utility/log.hpp"
 #include "utility/crc.hpp"
+#include "utility/log.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -175,6 +175,7 @@ class Sd : public Storage
 
   /// R1 Response error flag "Illegal Command" bit position
   static constexpr bit::Mask kIllegalCommand = bit::MaskFromRange(2);
+
   /// R1 Response error flag "In Idle Mode" bit position
   static constexpr bit::Mask kIdle = bit::MaskFromRange(0);
 
@@ -204,17 +205,53 @@ class Sd : public Storage
     return Storage::Type::kSD;
   }
 
-  void Initialize() override
+  void ModuleInitialize() override
   {
+    // Phase 1: Initialize
+    chip_select_.Initialize();
+    card_detect_.Initialize();
+
+    // Phase 2: Configure
+    if (spi_.RequiresConfiguration())
+    {
+      spi_.Initialize();
+      // Use bit 8-bit framesize.
+      spi_.ConfigureFrameSize(Spi::FrameSize::kEightBits);
+
+      // Use default clock mode for SPI.
+      spi_.ConfigureClockMode();
+
+      // Start the clock rate at 400 kHz which is required for initial
+      // communication with the SD card.
+      spi_.ConfigureFrequency(400_kHz);
+
+      // Phase 3: Enable
+      spi_.Enable();
+    }
+
+    chip_select_.Enable();
+    card_detect_.Enable();
+
+    // Phase 4: Usage
+    // Setup chip select
     chip_select_.SetAsOutput();
     chip_select_.SetHigh();
-    card_detect_.SetAsInput();
 
-    spi_.Initialize();
-    /// Defaulting to 400 kHz as that is the frequency that allows mounting to
-    /// be possible.
-    spi_.SetClock(400_kHz);
-    spi_.SetDataSize(Spi::DataSize::kEight);
+    // Setup card detection as input
+    card_detect_.SetAsInput();
+  }
+
+  /// Does not support disabling the SD
+  void ModuleEnable(bool enable = true) override
+  {
+    if (enable)
+    {
+      Mount();
+    }
+    else
+    {
+      LogDebug("Disabling SD cards is not supported w/ this implementation.");
+    }
   }
 
   bool IsMediaPresent() override
@@ -234,18 +271,6 @@ class Sd : public Storage
     }
 
     return false;
-  }
-
-  void Enable() override
-  {
-    return Mount();
-  }
-
-  void Disable() override
-  {
-    throw Exception(
-        std::errc::operation_not_supported,
-        "Disabling SD cards is not supported w/ this implementation.");
   }
 
   /// Assumes that write protection is never enabled.
@@ -278,11 +303,8 @@ class Sd : public Storage
     return EraseBlock(block_address, block_count);
   }
 
-  void Write(uint32_t block_address, const void * data, size_t size) override
+  void Write(uint32_t block_address, std::span<const uint8_t> data) override
   {
-    // Convert the void* to a uint8_t* so we can byte access it
-    const uint8_t * data_ptr = reinterpret_cast<const uint8_t *>(data);
-
     // A counter that counts the number of bytes read. Is used to determine when
     // to stop this algorithm.
     size_t bytes_written = 0;
@@ -307,8 +329,8 @@ class Sd : public Storage
       // we finish writting bytes.
       for (uint32_t index = 0; index < kBlockSize; index++)
       {
-        block.byte[index] = data_ptr[bytes_written++];
-        if (bytes_written >= size)
+        block.byte[index] = data[bytes_written++];
+        if (bytes_written >= data.size())
         {
           finished = true;
           break;
@@ -324,11 +346,8 @@ class Sd : public Storage
     }
   }
 
-  void Read(uint32_t block_address, void * data, size_t size) override
+  void Read(uint32_t block_address, std::span<uint8_t> data) override
   {
-    // Convert the void* to a uint8_t* so we can byte access it
-    uint8_t * data_ptr = reinterpret_cast<uint8_t *>(data);
-
     // A counter that counts the number of bytes read. Is used to determine when
     // to stop this algorithm.
     size_t bytes_read = 0;
@@ -345,8 +364,8 @@ class Sd : public Storage
       // Start the position of the index pointer at the position
       for (uint32_t index = 0; index < kBlockSize; index++)
       {
-        data_ptr[bytes_read++] = block.byte[index];
-        if (bytes_read >= size)
+        data[bytes_read++] = block.byte[index];
+        if (bytes_read >= data.size())
         {
           finished = true;
           break;
@@ -436,14 +455,14 @@ class Sd : public Storage
     // Read all the bytes of a single csd
     for (size_t i = 0; i < csd.byte.size(); i++)
     {
-      csd.byte[i] = static_cast<uint8_t>(spi_.Transfer(0xFF));
+      csd.byte[i] = spi_.Transfer(kDontCare);
     }
 
     // Then read the last two bytes to get the 16-bit CRC
-    uint16_t crc_higher_byte = spi_.Transfer(0xFF);
-    uint16_t crc_lower_byte  = spi_.Transfer(0xFF);
-    uint32_t actual_crc      = crc_higher_byte << 8 | crc_lower_byte;
-    uint32_t expected_crc    = GetCrc16(csd.byte.data(), csd.byte.size());
+    uint8_t crc_higher_byte = spi_.Transfer(kDontCare);
+    uint8_t crc_lower_byte  = spi_.Transfer(kDontCare);
+    uint32_t actual_crc     = crc_higher_byte << 8 | crc_lower_byte;
+    uint32_t expected_crc   = GetCrc16(csd.byte.data(), csd.byte.size());
 
     if (expected_crc != actual_crc)
     {
@@ -492,7 +511,7 @@ class Sd : public Storage
     // Read all the bytes of a single block
     for (uint16_t i = 0; i < block.byte.size(); i++)
     {
-      block.byte[i] = static_cast<uint8_t>(spi_.Transfer(0xFF));
+      block.byte[i] = spi_.Transfer(kDontCare);
     }
 
     // Then read the last two bytes to get the 16-bit CRC
@@ -501,7 +520,8 @@ class Sd : public Storage
 
     if (expected_block_crc != block_crc)
     {
-      LogDebug("Expected CRC '0x%04X' :: Got '0x%04X'", expected_block_crc,
+      LogDebug("Expected CRC '0x%04X' :: Got '0x%04X'",
+               expected_block_crc,
                block_crc);
       throw Exception(std::errc::io_error, "CRC Mismatch on Block Read!");
     }
@@ -540,10 +560,10 @@ class Sd : public Storage
     spi_.Transfer(kWriteStartToken);
 
     // Write all 512-bytes of the given block
-    spi_.Transfer(block.byte);
+    spi_.ConstTransfer(block.byte);
 
     // Read the data response token after writing the block
-    uint8_t data_response_token = static_cast<uint8_t>(spi_.Transfer(0xFF));
+    uint8_t data_response_token = spi_.Transfer(kDontCare);
     sjsu::LogDebug("Response Byte");
     sjsu::LogDebug("[Data Response Token: 0x%02X]", data_response_token);
     sjsu::LogDebug("Data Accepted?: %s", ToBool(data_response_token & 0x05));
@@ -625,7 +645,7 @@ class Sd : public Storage
 
     for (uint32_t i = 0; i < kRetryLimit * 100; i++)
     {
-      uint8_t wait_byte = static_cast<uint8_t>(spi_.Transfer(0xFF));
+      uint8_t wait_byte = spi_.Transfer(kDontCare);
 
       if (wait_byte == 0xFE)
       {
@@ -660,7 +680,7 @@ class Sd : public Storage
     // 0xFF)
     for (uint32_t i = 0; i < retry; i++)
     {
-      if (spi_.Transfer(0xFF) == 0xFF)
+      if (spi_.Transfer(kDontCare) == 0xFF)
       {
         LogDebug("Card finished!");
         return true;
@@ -751,7 +771,7 @@ class Sd : public Storage
     // cycles as padding before sending the command sequence. We send "0xFF"
     // because a zero constitutes the start of a command and we don't want to
     // start the command sequence at this point.
-    spi_.Transfer(0xFF);
+    spi_.Transfer(kDontCare);
 
     // Send command to the SD Card
     SendCommandParameters(command, parameter);
@@ -766,7 +786,7 @@ class Sd : public Storage
     for (uint32_t tries = 0; tries < kRetryLimit; tries++)
     {
       /// Store the response into the first byte of the response
-      response.byte[0] = static_cast<uint8_t>(spi_.Transfer(0xFF));
+      response.byte[0] = spi_.Transfer(kDontCare);
 
       /// If the MSB of the byte is 0 then this is the true first byte of the
       /// response.
@@ -777,7 +797,7 @@ class Sd : public Storage
         // Store all additional of the response bytes into the response object.
         for (uint32_t i = 1; i < kResponseLength; i++)
         {
-          response.byte[i] = static_cast<uint8_t>(spi_.Transfer(0xFF));
+          response.byte[i] = spi_.Transfer(kDontCare);
         }
         break;
       }
@@ -793,12 +813,11 @@ class Sd : public Storage
     return response;
   }
 
-  void ClockCard(int number_of_cycles)
+  template <size_t kNumberOfCycles>
+  void ClockCard()
   {
-    for (int i = 0; i < number_of_cycles / 8; i++)
-    {
-      spi_.Transfer(0xFF);
-    }
+    std::array<uint8_t, kNumberOfCycles> ignore_buffer;
+    spi_.Transfer(ignore_buffer);
   }
 
   // Initialize and enable the SD Card
@@ -808,19 +827,19 @@ class Sd : public Storage
     // MSP430" we need to assert the chip select and clock for more than 74
     // cycles.
 
-    // Lower the clock speed to 400kHz for mounting
-    spi_.SetClock(400_kHz);
-
     // So we assert the chip select
     chip_select_.SetLow();
+
     // Clock out 10 bytes or 80 clock cycles, to get the SD Card's internal
     // state ready for transmission.
-    ClockCard(80);
+    ClockCard<80>();
+
     // Then de-assert chip select
     chip_select_.SetHigh();
+
     // And finally clock for 16 more cycles to finish off the necessary time for
     // the SD card to finish its internal work.
-    ClockCard(16);
+    ClockCard<16>();
 
     // Reset the card and force it to go to idle state at <400kHz with a
     // CMD0 + (active-low) CS
@@ -880,8 +899,11 @@ class Sd : public Storage
     LogDebug("Getting CSD register contents");
     sd_.csd = GetCsdRegisterBlock();
 
-    // Bring the clock speed back up for typical use
-    spi_.SetClock(spi_clock_rate_);
+    // Set SPI clock rate to the operating speed set at construction
+    // SPI must be disabled before running configuration methods
+    spi_.Enable(false);
+    spi_.ConfigureFrequency(spi_clock_rate_);
+    spi_.Enable(true);
   }
 
   /// Send the host's supported voltage (3.3V) and ask if the card supports it.
@@ -971,6 +993,8 @@ class Sd : public Storage
 
     return static_cast<uint16_t>(crc ^ final_value);
   }
+
+  static constexpr uint8_t kDontCare = 0xFF;
 
   Spi & spi_;
   Gpio & chip_select_;

@@ -1,8 +1,9 @@
+#include "L1_Peripheral/lpc40xx/gpio.hpp"
+
 #include <cstdint>
 
-#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
+#include "L1_Peripheral/cortex/interrupt.hpp"
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::lpc40xx
@@ -24,8 +25,8 @@ TEST_CASE("Testing lpc40xx Gpio")
   // Create mock pins
   Mock<sjsu::Pin> mock_pin0;
   Mock<sjsu::Pin> mock_pin1;
-  Fake(Method(mock_pin0, SetPinFunction));
-  Fake(Method(mock_pin1, SetPinFunction));
+  Fake(Method(mock_pin0, ConfigureFunction));
+  Fake(Method(mock_pin1, ConfigureFunction));
 
   // Get gpio register pointer and replace the address with the local GPIOs.
   // Only GPIO port 1 & 2 will be used in this unit test
@@ -47,8 +48,8 @@ TEST_CASE("Testing lpc40xx Gpio")
     p0_00.SetAsInput();
     p1_07.SetAsOutput();
 
-    Verify(Method(mock_pin0, SetPinFunction).Using(0));
-    Verify(Method(mock_pin1, SetPinFunction).Using(0));
+    Verify(Method(mock_pin0, ConfigureFunction).Using(0));
+    Verify(Method(mock_pin1, ConfigureFunction).Using(0));
 
     // Check bit 0 of local_gpio_port[0].DIR (port 0 pin 0)
     // to see if it is cleared
@@ -167,7 +168,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts")
 
   // Create mock pin
   Mock<sjsu::Pin> mock_pin;
-  Fake(Method(mock_pin, SetPinFunction));
+  Fake(Method(mock_pin, ConfigureFunction));
 
   Gpio p0_15(0, 15, &mock_pin.get());
   Gpio p2_7(2, 7, &mock_pin.get());

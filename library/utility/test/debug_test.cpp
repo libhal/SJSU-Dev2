@@ -17,8 +17,8 @@ TEST_CASE("Testing Debug Utilities")
   int debug_memory_out_position = 0;
 
   sjsu::newlib::SetStdout([&debug_memory_out, &debug_memory_out_position](
-                              const char * out_char, size_t length) {
-    for (size_t i = 0; i < length; i++)
+                              std::span<const char> out_char) {
+    for (size_t i = 0; i < out_char.size(); i++)
     {
       debug_memory_out[debug_memory_out_position++] = out_char[i];
     }
@@ -83,6 +83,6 @@ TEST_CASE("Testing Debug Utilities")
   }
 
   // Restore stdout function
-  newlib::SetStdout(HostWrite);
+  newlib::SetStdout(HostTestWrite);
 }  // namespace sjsu
 }  // namespace sjsu

@@ -240,21 +240,6 @@ SJ2_DECLARE_CONSTANT(STORE_ERROR_CODE_STRING, bool, kStoreErrorCodeStrings);
 /// Delcare Constant AUTOMATICALLY_PRINT_ON_ERROR
 SJ2_DECLARE_CONSTANT(PRINTF_BUFFER_SIZE, size_t, kPrintfBufferSize);
 
-/// Enable or disable single precision float support in printf statements.
-/// Setting to false will disable floating point rendering. This floating point
-/// support is low cost, but can be imprecise. If you want to support
-/// exponential and precision floating point, disable this and set
-/// SJ2_PRINTF_SUPPORT_PRECISION_FLOAT to true.
-#if !defined(SJ2_PRINTF_SUPPORT_FLOAT)
-#define SJ2_PRINTF_SUPPORT_FLOAT true
-#endif  // !defined(PRINTF_SUPPORT_FLOAT)
-
-/// Enable or disable precision float support in printf statements. Setting to
-/// false will reduce binary size. Needed to enable exponential rendering of
-/// floats. Enabling this will override single precision float support.
-#if !defined(SJ2_PRINTF_SUPPORT_PRECISION_FLOAT)
-#define SJ2_PRINTF_SUPPORT_PRECISION_FLOAT false
-#endif  // !defined(PRINTF_SUPPORT_PRECISION_FLOAT)
 
 /// Enable printing of 64 bit numbers. Setting to false will reduce binary size.
 #if !defined(SJ2_PRINTF_SUPPORT_LONG_LONG)
@@ -273,15 +258,6 @@ SJ2_DECLARE_CONSTANT(PRINTF_BUFFER_SIZE, size_t, kPrintfBufferSize);
 #if !defined(SJ2_PRINTF_SUPPORT_PTRDIFF_T)
 #define SJ2_PRINTF_SUPPORT_PTRDIFF_T true
 #endif  // !defined(PRINTF_SUPPORT_PTRDIFF_T)
-
-/// Enables FLOAT support for the 3rd party printf library.
-#if SJ2_PRINTF_SUPPORT_FLOAT == false
-#define PRINTF_DISABLE_SUPPORT_FLOAT
-#endif
-
-#if SJ2_PRINTF_SUPPORT_PRECISION_FLOAT == false
-#define PRINTF_DISABLE_PRECISION_SUPPORT_FLOAT
-#endif
 
 /// Enables LONG LONG support for the 3rd party printf library.
 #if SJ2_PRINTF_SUPPORT_LONG_LONG == false

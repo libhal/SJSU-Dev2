@@ -1,4 +1,5 @@
 #include "L2_HAL/memory/sd.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::experimental
@@ -11,10 +12,21 @@ TEST_CASE("Testing SD Card Driver Class")
   Mock<sjsu::Gpio> mock_card_detect;
   Mock<sjsu::Gpio> mock_chip_select;
 
-  Fake(Method(mock_chip_select, SetDirection), Method(mock_chip_select, Set));
-  Fake(Method(mock_card_detect, SetDirection));
-  Fake(Method(mock_spi, Initialize), Method(mock_spi, SetClock),
-       Method(mock_spi, SetDataSize));
+  Fake(Method(mock_chip_select, ModuleInitialize),
+       Method(mock_chip_select, ModuleEnable),
+       Method(mock_chip_select, SetDirection),
+       Method(mock_chip_select, Set));
+
+  Fake(Method(mock_card_detect, ModuleInitialize),
+       Method(mock_card_detect, ModuleEnable),
+       Method(mock_card_detect, SetDirection),
+       Method(mock_card_detect, Set));
+
+  Fake(Method(mock_spi, ModuleInitialize),
+       Method(mock_spi, ModuleEnable),
+       Method(mock_spi, ConfigureFrameSize),
+       Method(mock_spi, ConfigureClockMode),
+       Method(mock_spi, ConfigureFrequency));
 
   Sd sd(mock_spi.get(), mock_chip_select.get(), mock_card_detect.get());
 
@@ -27,18 +39,27 @@ TEST_CASE("Testing SD Card Driver Class")
   SECTION("Initialize()")
   {
     // Exercise
-    sd.Initialize();
+    sd.ModuleInitialize();
 
     // Verify
+    Verify(Method(mock_chip_select, ModuleInitialize));
+    Verify(Method(mock_card_detect, ModuleInitialize));
+
+    Verify(Method(mock_spi, ModuleInitialize));
+    Verify(
+        Method(mock_spi, ConfigureFrameSize).Using(Spi::FrameSize::kEightBits));
+    Verify(Method(mock_spi, ConfigureClockMode));
+    Verify(Method(mock_spi, ConfigureFrequency).Using(400_kHz));
+    Verify(Method(mock_spi, ModuleEnable).Using(true));
+
+    Verify(Method(mock_chip_select, ModuleEnable));
+    Verify(Method(mock_card_detect, ModuleEnable));
+
     Verify(
         Method(mock_chip_select, SetDirection).Using(Gpio::Direction::kOutput));
     Verify(Method(mock_chip_select, Set).Using(Gpio::State::kHigh));
     Verify(
         Method(mock_card_detect, SetDirection).Using(Gpio::Direction::kInput));
-    Verify(Method(mock_spi, Initialize));
-    Verify(Method(mock_spi, SetClock)
-               .Using(units::frequency::hertz_t{ 400_kHz }, false, false));
-    Verify(Method(mock_spi, SetDataSize).Using(Spi::DataSize::kEight));
   }
 
   SECTION("IsMediaPresent()")
@@ -74,8 +95,10 @@ TEST_CASE("Testing SD Card Driver Class")
 
     SECTION("Active High")
     {
-      sjsu::Sd active_low_sd(mock_spi.get(), mock_chip_select.get(),
-                             mock_card_detect.get(), sd.kDefaultSpiFrequency,
+      sjsu::Sd active_low_sd(mock_spi.get(),
+                             mock_chip_select.get(),
+                             mock_card_detect.get(),
+                             sd.kDefaultSpiFrequency,
                              sjsu::Gpio::State::kHigh);
 
       SECTION("Is Present")
@@ -102,11 +125,6 @@ TEST_CASE("Testing SD Card Driver Class")
         CHECK(!media_is_present);
       }
     }
-  }
-
-  SECTION("Disable()")
-  {
-    SJ2_CHECK_EXCEPTION(sd.Disable(), std::errc::operation_not_supported);
   }
 
   SECTION("GetBlockSize()")
@@ -156,5 +174,5 @@ TEST_CASE("Testing SD Card Driver Class")
   {
     // NOT TESTED!
   }
-}
+}  // namespace sjsu::experimental
 }  // namespace sjsu::experimental
