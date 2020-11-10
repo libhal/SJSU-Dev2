@@ -10,8 +10,8 @@ The default starter projects that can be found in the `projects/` directory are:
 
 ## Creating a new project
 
-To create a project you simply copy the `starter` project folder and paste it
-somewhere on your computer and rename it. The folder can be placed anywhere on
+To create a project, simply copy the `starter` project folder, paste it
+somewhere on your computer, and rename it. The folder can be placed anywhere on
 the computer. Now you can edit the `source/main.cpp`, add files, edit the
 configuration files, etc.
 
