@@ -118,8 +118,8 @@ one could do something like this:
 The above expression will print the CCER register value.
 
 You can also use the `set variable` command to actually change those values.
-FOr example you force the loop `i` iterator variable to 5. You can also change
-register values as well.
+For example, if you are within a loop you force the loop `i` iterator variable
+to 5. You can also change register values as well.
 
 ```bash
 >>> set variable i = 5
