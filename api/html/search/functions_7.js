@@ -68,6 +68,7 @@ var searchData=
   ['gettemperature',['GetTemperature',['../df/ddc/classsjsu_1_1Si7060.html#a31813a3a15113d51947876b621f4f08d',1,'sjsu::Si7060::GetTemperature()'],['../d8/db2/classsjsu_1_1Tmp102.html#adc7929accbfaace60a32c3363f78215b',1,'sjsu::Tmp102::GetTemperature()'],['../d9/d0b/classsjsu_1_1TemperatureSensor.html#a6b1e3a5ad2d430ed8db0f9c1bbabeef4',1,'sjsu::TemperatureSensor::GetTemperature()']]],
   ['gettimeleft',['GetTimeLeft',['../d6/d98/classsjsu_1_1TimeoutTimer.html#a33061d496e5ff5285d194dfe50cf1869',1,'sjsu::TimeoutTimer']]],
   ['gettransactioninfo',['GetTransactionInfo',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a1aab2429685ff4d31764246480566ee2',1,'sjsu::lpc40xx::I2c']]],
+  ['getvoltage',['GetVoltage',['../d7/da0/classsjsu_1_1Max170343.html#ab00f363a1eda702098a13a81fc7c1add',1,'sjsu::Max170343']]],
   ['getvolume',['GetVolume',['../de/d29/classsjsu_1_1Buzzer.html#aedf2952a1214bb003cb5574b3a0f61af',1,'sjsu::Buzzer']]],
   ['getwidth',['GetWidth',['../db/d32/classsjsu_1_1Ssd1306.html#ab2602eabd5f405febf399123933e0d8a',1,'sjsu::Ssd1306::GetWidth()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a6d136302e6266d6fbc773d49fd487670',1,'sjsu::PixelDisplay::GetWidth()']]],
   ['getwifi',['GetWiFi',['../dc/d4f/classsjsu_1_1Esp8266.html#a9c64675f27051eadf1aefdaa464807f6',1,'sjsu::Esp8266']]],

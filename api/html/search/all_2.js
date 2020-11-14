@@ -3,6 +3,8 @@ var searchData=
   ['b',['b',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#adb16414448c0857eea4a638fbe8f717d',1,'sjsu::FallbackListNode_t']]],
   ['backup',['backup',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a512f59bcb4848104b0775612b8893e50',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['basenamelength',['BasenameLength',['../d0/d6b/namespacesjsu.html#a9ead998e2ac62523001932e91dbd793d',1,'sjsu']]],
+  ['battery_5fcharge_2ehpp',['battery_charge.hpp',['../d6/d65/battery__charge_8hpp.html',1,'']]],
+  ['batterycharge',['BatteryCharge',['../de/dc8/classsjsu_1_1BatteryCharge.html',1,'sjsu']]],
   ['baudratereg',['BaudRateReg',['../d2/deb/structsjsu_1_1stm32f10x_1_1UartBase_1_1BaudRateReg.html',1,'sjsu::stm32f10x::UartBase']]],
   ['beep',['Beep',['../de/d29/classsjsu_1_1Buzzer.html#ab1397d0c5093422c2a7d119e4b8fe61f',1,'sjsu::Buzzer']]],
   ['bias',['Bias',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#aadb6fea48b66b0d68c9805930caf0246',1,'sjsu::lpc40xx::Dac']]],

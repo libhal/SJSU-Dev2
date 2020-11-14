@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['value',['Value',['../df/d21/classsjsu_1_1bit_1_1Value.html#a133bf4f76d3d591e1f88191ced68ee87',1,'sjsu::bit::Value::Value()'],['../df/d21/classsjsu_1_1bit_1_1Value.html#a5ade766eac79f8528d3ca68167989d6a',1,'sjsu::bit::Value::Value(T initial_value)'],['../d0/d6b/namespacesjsu.html#a6f02778e34f958f03f01da8e11a5ad98',1,'sjsu::Value()']]],
-  ['voltage',['Voltage',['../d0/dc1/classsjsu_1_1Adc.html#aae35f4ff916107ea722d8f81ca9a8d8b',1,'sjsu::Adc']]]
+  ['uart',['Uart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a0c61d06f7cd58e8fea55558c795bc1d8',1,'sjsu::lpc40xx::Uart::Uart()'],['../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#a4b8f86e0d22195bd586533f9e0f75540',1,'sjsu::stm32f10x::Uart::Uart()']]],
+  ['uartbase',['UartBase',['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a10381fa114c5c7288282b128bee28088',1,'sjsu::stm32f10x::UartBase::UartBase(const Port_t &amp;port, std::array&lt; uint8_t, size &gt; &amp;buffer)'],['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a45949e7026ee7b141778dd07c9d4d9eb',1,'sjsu::stm32f10x::UartBase::UartBase(const Port_t &amp;port, uint8_t *buffer, size_t size)'],['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a504beebe6099c47c9b48714a58b2b21b',1,'sjsu::stm32f10x::UartBase::UartBase(const Port_t &amp;port, uint8_t(&amp;buffer)[size])']]],
+  ['update',['Update',['../db/d32/classsjsu_1_1Ssd1306.html#a3abd909600703b0a2cfe8b5bd0fc2077',1,'sjsu::Ssd1306::Update()'],['../df/d96/classsjsu_1_1PixelDisplay.html#accaf6672d7dd8d147bc133289decd2ff',1,'sjsu::PixelDisplay::Update()'],['../d6/dde/classsjsu_1_1GraphicalTerminal.html#adf2022683c383ddcb56fed1e44810cd7',1,'sjsu::GraphicalTerminal::Update()'],['../d7/d8c/classsjsu_1_1Graphics.html#a8490fd8968a1fd703531130c6dba7371',1,'sjsu::Graphics::Update()']]],
+  ['used',['used',['../df/ddd/classsjsu_1_1Arena.html#a6193b0ea357c7877cce07b4c3b15e77f',1,'sjsu::Arena']]]
 ];

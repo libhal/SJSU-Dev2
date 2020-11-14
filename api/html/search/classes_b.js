@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['map',['Map',['../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html',1,'sjsu::Mma8452q']]],
+  ['map',['Map',['../d3/d9e/structsjsu_1_1Max170343_1_1Map.html',1,'sjsu::Max170343::Map'],['../d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html',1,'sjsu::Mma8452q::Map']]],
   ['mask',['Mask',['../d9/dd3/structsjsu_1_1bit_1_1Mask.html',1,'sjsu::bit']]],
   ['matchcontrol',['MatchControl',['../d1/dd9/structsjsu_1_1lpc40xx_1_1Pwm_1_1MatchControl.html',1,'sjsu::lpc40xx::Pwm']]],
+  ['max170343',['Max170343',['../d7/da0/classsjsu_1_1Max170343.html',1,'sjsu']]],
   ['memoryaccessprotocol',['MemoryAccessProtocol',['../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html',1,'sjsu']]],
   ['message_5ft',['Message_t',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html',1,'sjsu::Can']]],
   ['mma8452q',['Mma8452q',['../d5/d82/classsjsu_1_1Mma8452q.html',1,'sjsu']]],

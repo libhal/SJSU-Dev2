@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['batterycharge',['BatteryCharge',['../de/dc8/classsjsu_1_1BatteryCharge.html',1,'sjsu']]],
   ['baudratereg',['BaudRateReg',['../d2/deb/structsjsu_1_1stm32f10x_1_1UartBase_1_1BaudRateReg.html',1,'sjsu::stm32f10x::UartBase']]],
   ['bitlimits',['BitLimits',['../d4/d0e/classsjsu_1_1BitLimits.html',1,'sjsu']]],
   ['bufferstatus',['BufferStatus',['../d5/dff/structsjsu_1_1lpc40xx_1_1Can_1_1BufferStatus.html',1,'sjsu::lpc40xx::Can']]],
