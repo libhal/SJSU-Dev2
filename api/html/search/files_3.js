@@ -4,5 +4,6 @@ var searchData=
   ['debug_2ehpp',['debug.hpp',['../da/d7b/debug_8hpp.html',1,'']]],
   ['deque_2ehpp',['deque.hpp',['../d7/df6/deque_8hpp.html',1,'']]],
   ['distance_5fsensor_2ehpp',['distance_sensor.hpp',['../d0/da7/distance__sensor_8hpp.html',1,'']]],
+  ['dma_2ehpp',['dma.hpp',['../d7/d9b/dma_8hpp.html',1,'']]],
   ['dwt_5fcounter_2ehpp',['dwt_counter.hpp',['../d7/dca/dwt__counter_8hpp.html',1,'']]]
 ];

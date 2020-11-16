@@ -75,9 +75,13 @@ $(function() {
 <h3><a id="index_k"></a>- k -</h3><ul>
 <li>kActiveBits
 : <a class="el" href="dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ae062fa73ba090adab38b1b423715fb32">sjsu::lpc40xx::Adc</a>
+, <a class="el" href="d3/df9/classsjsu_1_1stm32f10x_1_1Adc.html#a8c9e3e6c00cd12138276e8f77fae9091">sjsu::stm32f10x::Adc</a>
 </li>
 <li>kAdcDivider
 : <a class="el" href="dd/ddb/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfigurationRegisters.html#a6c0f1c149c0fd506ff1a7c59330c58f6">sjsu::stm32f10x::SystemController::ClockConfigurationRegisters</a>
+</li>
+<li>kAdcOn
+: <a class="el" href="d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html#aed8b1023c74b334b45db648bbed1dcb6">sjsu::stm32f10x::Adc::Control2</a>
 </li>
 <li>kAddressMask
 : <a class="el" href="dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a53eeb9f770c3b05675e5550e9fe57016">sjsu::lpc40xx::Eeprom</a>
@@ -172,6 +176,9 @@ $(function() {
 <li>kBytesInCsdRegister
 : <a class="el" href="df/d50/structsjsu_1_1Sd_1_1CsdBuffer__t.html#ae3d8cfa178dfe3d3d76cc3fa10a57d48">sjsu::Sd::CsdBuffer_t</a>
 </li>
+<li>kCalibration
+: <a class="el" href="d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html#a50a8dc6a3a8357195c616dbd8e157382">sjsu::stm32f10x::Adc::Control2</a>
+</li>
 <li>kCan1
 : <a class="el" href="d9/dee/structsjsu_1_1lpc40xx_1_1Can_1_1Channel.html#a2547011164aa1a6ea10dfb63c47a6056">sjsu::lpc40xx::Can::Channel</a>
 </li>
@@ -200,37 +207,69 @@ $(function() {
 <li>kChannel0
 : <a class="el" href="db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html#a22ccfd19a23459f951211dd50c818ba1">sjsu::lpc17xx::AdcChannel</a>
 , <a class="el" href="d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html#aad542668b6ef3d7bf927d66177fbfa9e">sjsu::lpc40xx::Adc::Channel</a>
+, <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#ad46c8d8184aa6e3f37107660dbe96dc6">sjsu::stm32f10x::Adc::Channel</a>
 </li>
 <li>kChannel1
 : <a class="el" href="db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html#a8bfedcdf7b7a9c3d6e02a520b5302a8a">sjsu::lpc17xx::AdcChannel</a>
 , <a class="el" href="d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html#a8a1cda6852db46f59a494c491ec305ca">sjsu::lpc40xx::Adc::Channel</a>
+, <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a3a964278819760849451640461a306fa">sjsu::stm32f10x::Adc::Channel</a>
+</li>
+<li>kChannel10
+: <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#ab68cc4bcb245b0383ca3c2de764db025">sjsu::stm32f10x::Adc::Channel</a>
+</li>
+<li>kChannel11
+: <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a96ce7f670610f25ce871d565c3c51789">sjsu::stm32f10x::Adc::Channel</a>
+</li>
+<li>kChannel12
+: <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#ab44755aa371808464b37973660c6b5a1">sjsu::stm32f10x::Adc::Channel</a>
+</li>
+<li>kChannel13
+: <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a2f72862061e99621eabcad00bf17165e">sjsu::stm32f10x::Adc::Channel</a>
+</li>
+<li>kChannel14
+: <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a717b0cd4036fe2712c73dc1de65626ef">sjsu::stm32f10x::Adc::Channel</a>
+</li>
+<li>kChannel15
+: <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a369f8d710c7cfc8e12dcf1de3a53a83b">sjsu::stm32f10x::Adc::Channel</a>
 </li>
 <li>kChannel2
 : <a class="el" href="db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html#a33529c15d33cd28f183b511e7376caa5">sjsu::lpc17xx::AdcChannel</a>
 , <a class="el" href="d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html#a161cf2f478562e63ee334b7f175836c4">sjsu::lpc40xx::Adc::Channel</a>
+, <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a0d497588442716e98266181e633d747c">sjsu::stm32f10x::Adc::Channel</a>
 </li>
 <li>kChannel3
 : <a class="el" href="db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html#ad6dcc7039b80c93c9d090106f792c308">sjsu::lpc17xx::AdcChannel</a>
 , <a class="el" href="d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html#a5737233d8b15ea4ec12a3d6c9d53f13d">sjsu::lpc40xx::Adc::Channel</a>
+, <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a2dd729483b5327109b35aa5e4cc0b33d">sjsu::stm32f10x::Adc::Channel</a>
 </li>
 <li>kChannel4
 : <a class="el" href="db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html#ac6cd041f2fcd0ea2442993caa69078ed">sjsu::lpc17xx::AdcChannel</a>
 , <a class="el" href="d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html#a345877f6490dac7479e386d2e8011025">sjsu::lpc40xx::Adc::Channel</a>
+, <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a72947a4001f74b48671eef50a4cf0ea4">sjsu::stm32f10x::Adc::Channel</a>
 </li>
 <li>kChannel5
 : <a class="el" href="db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html#abd2d5bb432ecbee2d82e7770ab89bf33">sjsu::lpc17xx::AdcChannel</a>
 , <a class="el" href="d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html#a6c1536e2fe82c70c61a0bb7c2e7869eb">sjsu::lpc40xx::Adc::Channel</a>
+, <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a8e801cb67707b41ff6bdc0a8e6dd0cd0">sjsu::stm32f10x::Adc::Channel</a>
 </li>
 <li>kChannel6
 : <a class="el" href="db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html#a38e504816e1c5355285b918c5e6193a1">sjsu::lpc17xx::AdcChannel</a>
 , <a class="el" href="d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html#a3727b7037e0d3b36995ca782945a3005">sjsu::lpc40xx::Adc::Channel</a>
+, <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#ae6b0d73ed90a5f2a5456d44ca2c407ac">sjsu::stm32f10x::Adc::Channel</a>
 </li>
 <li>kChannel7
 : <a class="el" href="db/d99/structsjsu_1_1lpc17xx_1_1AdcChannel.html#a036ad291162e47a8fe2997f0754dc123">sjsu::lpc17xx::AdcChannel</a>
 , <a class="el" href="d1/d52/structsjsu_1_1lpc40xx_1_1Adc_1_1Channel.html#a43134fcbd55ed9074fbca976be83e119">sjsu::lpc40xx::Adc::Channel</a>
+, <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#aac053c57c58f3859adf22d36be3b1276">sjsu::stm32f10x::Adc::Channel</a>
+</li>
+<li>kChannel8
+: <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#ac527aefc83ba4d6abbd1a56db9a5bacc">sjsu::stm32f10x::Adc::Channel</a>
+</li>
+<li>kChannel9
+: <a class="el" href="d9/d99/structsjsu_1_1stm32f10x_1_1Adc_1_1Channel.html#a9da0328ec5e72ad0fcd55481d48debfe">sjsu::stm32f10x::Adc::Channel</a>
 </li>
 <li>kChannelPriority
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#ad7931fe2fc292c33d5c6cd0d9a0d14e2">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#adf8f310a2c047bac919058b89e6dbcd1">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kChannelSelect
 : <a class="el" href="d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#a5a93d91ae499199580e94d2cf9382ebc">sjsu::lpc40xx::Adc::Control</a>
@@ -242,13 +281,14 @@ $(function() {
 : <a class="el" href="d6/dde/classsjsu_1_1GraphicalTerminal.html#a03c8ad89ab22e2df3f092a9122d30cba">sjsu::GraphicalTerminal</a>
 </li>
 <li>kCircularMode
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#ae0d3bf80eab139e0751fb749b1809d48">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#a77b2d3e4d3ccf804ec54b0cd4521485c">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kClockDivider
 : <a class="el" href="d5/d34/structsjsu_1_1lpc40xx_1_1Adc_1_1Control.html#aa13d0257fbcd2d8684232ee7ebbe3614">sjsu::lpc40xx::Adc::Control</a>
 </li>
 <li>kClockFrequency
 : <a class="el" href="dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a81bdaa0efc54b01da70afa55fd4c44f9">sjsu::lpc40xx::Adc</a>
+, <a class="el" href="d3/df9/classsjsu_1_1stm32f10x_1_1Adc.html#a6e70d981b03ec700086c858f83e12e9d">sjsu::stm32f10x::Adc</a>
 </li>
 <li>kClockPeripheralCount
 : <a class="el" href="dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a6e847d7cf61b8bb8a0656237527b0b7b">sjsu::msp432p401r::SystemController</a>
@@ -281,6 +321,9 @@ $(function() {
 : <a class="el" href="d6/db9/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll0_1_1StatusRegister.html#a90f2d9dcb3cd70798274d57b36177a12">sjsu::lpc17xx::SystemController::Pll0::StatusRegister</a>
 , <a class="el" href="d4/d4d/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1_1_1StatusRegister.html#ae796071b79057b94b456a76252d32966">sjsu::lpc17xx::SystemController::Pll1::StatusRegister</a>
 , <a class="el" href="d8/df5/structsjsu_1_1lpc17xx_1_1SystemController_1_1PllControlRegister.html#a14b539982bc2d74d0b313317b62074cd">sjsu::lpc17xx::SystemController::PllControlRegister</a>
+</li>
+<li>kContinuous
+: <a class="el" href="d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html#af9a631517890884f61c271126c1c3350">sjsu::stm32f10x::Adc::Control2</a>
 </li>
 <li>kControlReg1
 : <a class="el" href="d2/d4d/structsjsu_1_1Mma8452q_1_1Map.html#a48aaa67546926cbc4c04a285b4634f40">sjsu::Mma8452q::Map</a>
@@ -337,7 +380,11 @@ $(function() {
 : <a class="el" href="da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a532e5d13af6f2d556464d03d8fed984d">sjsu::lpc40xx::Spi</a>
 </li>
 <li>kDataTransferDirection
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#ad83c442f36cee85257ff121ecd6f59d5">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#aee8d01607189db07a0d7868cce4a0395">sjsu::stm32f10x::Dma::Reg</a>
+</li>
+<li>kDefault
+: <a class="el" href="d8/d52/structsjsu_1_1stm32f10x_1_1Adc_1_1Control1.html#a4a1f1928ec6bf6c4d93d7ac8ee4b73a7">sjsu::stm32f10x::Adc::Control1</a>
+, <a class="el" href="d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html#a6e9bb80018ccdf402c0f13ed74a5a6bb">sjsu::stm32f10x::Adc::Control2</a>
 </li>
 <li>kDefaultAddress
 : <a class="el" href="df/ddc/classsjsu_1_1Si7060.html#ae174b287c74e3fb629c752077e0e4188">sjsu::Si7060</a>
@@ -412,11 +459,15 @@ $(function() {
 , <a class="el" href="d4/d4d/structsjsu_1_1lpc17xx_1_1SystemController_1_1Pll1_1_1StatusRegister.html#aa6ddc6b75a62c6132d54721eddcfe2d8">sjsu::lpc17xx::SystemController::Pll1::StatusRegister</a>
 , <a class="el" href="dc/d68/structsjsu_1_1lpc17xx_1_1SystemController_1_1UsbClockRegister.html#a169c80d099925e53e5a4a75f4f6943cc">sjsu::lpc17xx::SystemController::UsbClockRegister</a>
 </li>
+<li>kDmaEnable
+: <a class="el" href="d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html#a849dd5b1af81c62296a8a87d9c5cb567">sjsu::stm32f10x::Adc::Control2</a>
+</li>
 <li>kDmaReceiverEnable
 : <a class="el" href="d0/d54/structsjsu_1_1stm32f10x_1_1UartBase_1_1ControlReg.html#acec4321c52ecbb488f654b95cca71e5b">sjsu::stm32f10x::UartBase::ControlReg</a>
 </li>
 <li>kDmaSettings
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#ac93816aefd85ba7a4f6e15f95d5e7bc7">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/df9/classsjsu_1_1stm32f10x_1_1Adc.html#af8a2d0d551931f00efa6a9d7384b8cb3">sjsu::stm32f10x::Adc</a>
+, <a class="el" href="d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#af736b52d8697979e160e20a99f57cc88">sjsu::stm32f10x::UartBase</a>
 </li>
 <li>kDone
 : <a class="el" href="df/d35/structsjsu_1_1lpc40xx_1_1Adc_1_1DataRegister.html#a03290054552540a32804bc46b016398e">sjsu::lpc40xx::Adc::DataRegister</a>
@@ -428,7 +479,7 @@ $(function() {
 : <a class="el" href="db/dc2/structsjsu_1_1EnableBitMaskOperators__t.html#a231e2b72425ff832d7e971a2650089b0">sjsu::EnableBitMaskOperators_t&lt; typename &gt;</a>
 , <a class="el" href="d0/dcb/structsjsu_1_1lpc40xx_1_1SystemController_1_1PllRegister.html#af7e0c1ee90d1671a516cdec00a7c16b2">sjsu::lpc40xx::SystemController::PllRegister</a>
 , <a class="el" href="d7/d9d/structsjsu_1_1msp432p401r_1_1SystemController_1_1Control0Register.html#ab0ee8c422c7f315cc4b83555067ced03">sjsu::msp432p401r::SystemController::Control0Register</a>
-, <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#ac1022b14c4a537f0a7141560ed9286ca">sjsu::stm32f10x::UartBase::DmaReg</a>
+, <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#ab63a379ad00712a6b12bc33873aadc98">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kEnableBit
 : <a class="el" href="d5/daf/structsjsu_1_1lpc40xx_1_1Timer_1_1TimerControlRegister.html#af37a848bd0e3d1695be10e831a005a79">sjsu::lpc40xx::Timer::TimerControlRegister</a>
@@ -477,6 +528,12 @@ $(function() {
 <li>kExternalReady
 : <a class="el" href="de/dc4/structsjsu_1_1lpc40xx_1_1SystemController_1_1OscillatorRegister.html#a5893e0f15c5cb65c0e5d40a37ad2ee39">sjsu::lpc40xx::SystemController::OscillatorRegister</a>
 </li>
+<li>kExternalTriggerEnable
+: <a class="el" href="d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html#a46ae7fcdfd8b442f014a26690a86f2aa">sjsu::stm32f10x::Adc::Control2</a>
+</li>
+<li>kExternalTriggerSelect
+: <a class="el" href="d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html#a4950588a5f5a9aafd3ad4e9c1782181a">sjsu::stm32f10x::Adc::Control2</a>
+</li>
 <li>kFixedPointScaling
 : <a class="el" href="d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#afceab64a17cb45c34f4a8b4f1f7d100f">sjsu::cortex::SystemTimer</a>
 </li>
@@ -511,7 +568,7 @@ $(function() {
 : <a class="el" href="d9/d3a/classsjsu_1_1Ltc4150.html#afa5d48eaa2d2307ff78eac95f365e69f">sjsu::Ltc4150</a>
 </li>
 <li>kHalfTransferInterruptEnable
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#a7d6042c50de09831fdc3069643010603">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#a7e2c19c8a9f3a24b0605f04c48940854">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kHeader
 : <a class="el" href="d3/d13/classsjsu_1_1RtosCommand.html#a60e1a41ba615461fd16ad3063c58e053">sjsu::RtosCommand</a>
@@ -575,6 +632,7 @@ $(function() {
 </li>
 <li>kLength
 : <a class="el" href="d5/d45/structsjsu_1_1lpc40xx_1_1Can_1_1FrameInfo.html#afbed9110af762e94aad112a84f551098">sjsu::lpc40xx::Can::FrameInfo</a>
+, <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#aefaeafeaabf36533be659b1688baf8bb">sjsu::stm32f10x::Adc::RegularSequence</a>
 </li>
 <li>kListenOnly
 : <a class="el" href="d0/d98/structsjsu_1_1lpc40xx_1_1Can_1_1Mode.html#a50b7e3f39c06a954fcfbc4f41e2f4fbe">sjsu::lpc40xx::Can::Mode</a>
@@ -626,13 +684,13 @@ $(function() {
 : <a class="el" href="dd/ddb/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfigurationRegisters.html#acc218f315bbd464d89757d0fa9f5ca9a">sjsu::stm32f10x::SystemController::ClockConfigurationRegisters</a>
 </li>
 <li>kMemoryIncrementEnable
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#a5cf9485936a0a3a91950fed07ae817d3">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#adeb789715fb221657af1763906905364">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kMemorySize
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#a4d6561b2f66866070b933ce3768addcd">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#abbe71d0580fd82d1548237745f3ab7c9">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kMemoryToMemory
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#a81e73e5913dde6311f26c6155bf0eee6">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#a79a82d9e19f528072817ac0dc25e055f">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kMode
 : <a class="el" href="d3/d2d/structsjsu_1_1lpc40xx_1_1Pwm_1_1CountControl.html#a9e9334b7d8fecb2dda6672c74cc2c9e8">sjsu::lpc40xx::Pwm::CountControl</a>
@@ -684,10 +742,10 @@ $(function() {
 : <a class="el" href="df/d35/structsjsu_1_1lpc40xx_1_1Adc_1_1DataRegister.html#a166bac012514afacd57a991cbb3d027e">sjsu::lpc40xx::Adc::DataRegister</a>
 </li>
 <li>kPeripheralIncrementEnable
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#a442605ec77e7a3bd4f2ee38a896528cd">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#a2324a9ed8ad878bf56bcd71dcad1409a">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kPeripheralSize
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#afb4b47827bf6cdc14204014a1cdefae2">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#a94d9475e1b4e42e470707fdb28d8f2a9">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kPhaseBit
 : <a class="el" href="dd/d1e/structsjsu_1_1lpc40xx_1_1Spi_1_1ControlRegister0.html#a318a639542c450d900c05c9f20627c50">sjsu::lpc40xx::Spi::ControlRegister0</a>
@@ -797,6 +855,15 @@ $(function() {
 <li>kReferenceFrequencySelect
 : <a class="el" href="da/d65/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockEnableRegister.html#a93229fe2e4ea82cc091014e498b7ae2e">sjsu::msp432p401r::SystemController::ClockEnableRegister</a>
 </li>
+<li>kRegisterSequence1
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#adbc2c898ef022e8b2e2c476539aaf5de">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
+<li>kRegisterSequence2
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#a495ecebcd51d1990da926df0020b1487">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
+<li>kRegisterSequence3
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#afc924c3fe0dfab3d9cb50823aeb735b8">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
 <li>kRemoteRequest
 : <a class="el" href="d5/d45/structsjsu_1_1lpc40xx_1_1Can_1_1FrameInfo.html#a4cb9081e2060ccba2fa190fe5d209355">sjsu::lpc40xx::Can::FrameInfo</a>
 </li>
@@ -836,6 +903,9 @@ $(function() {
 <li>kSampling
 : <a class="el" href="d1/dd3/structsjsu_1_1lpc40xx_1_1Can_1_1BusTiming.html#a755e643ba981585cb5cd8a23cd0c04d5">sjsu::lpc40xx::Can::BusTiming</a>
 </li>
+<li>kScanMode
+: <a class="el" href="d8/d52/structsjsu_1_1stm32f10x_1_1Adc_1_1Control1.html#a542ccc9d6d5fd1bf9a68fef116310344">sjsu::stm32f10x::Adc::Control1</a>
+</li>
 <li>kScl
 : <a class="el" href="dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html#a11cb19d8b74bfdb615470a1f71118781">sjsu::Tmp102::DeviceAddress</a>
 </li>
@@ -854,6 +924,24 @@ $(function() {
 <li>kSelfTest
 : <a class="el" href="d0/d98/structsjsu_1_1lpc40xx_1_1Can_1_1Mode.html#a9a6d1c30a8df162c125b05fe2bc55210">sjsu::lpc40xx::Can::Mode</a>
 </li>
+<li>kSequence1
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#a8721ad91d31bcc1538321712e5144a45">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
+<li>kSequence2
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#a7c15142c577ed4087b464a1667dfd493">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
+<li>kSequence3
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#a5c59b1a2124b06bb96c42dca1b36eb0f">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
+<li>kSequence4
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#a783d09e567b8107ddafc20b3f53b62a0">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
+<li>kSequence5
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#a3abd77cfec22e63cff47a92686f7187e">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
+<li>kSequence6
+: <a class="el" href="d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html#a690597a316830d98f7ec36182c871a05">sjsu::stm32f10x::Adc::RegularSequence</a>
+</li>
 <li>kSetDistUnitMM
 : <a class="el" href="d2/dc6/classsjsu_1_1TFMini.html#af53041019aace1ebc58a90261cf380d2">sjsu::TFMini</a>
 </li>
@@ -871,6 +959,9 @@ $(function() {
 </li>
 <li>kSoc
 : <a class="el" href="d3/d9e/structsjsu_1_1Max170343_1_1Map.html#a5f907d5857e087555f1df48520ea90f5">sjsu::Max170343::Map</a>
+</li>
+<li>kSoftwareStart
+: <a class="el" href="d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html#afbb9350c72ee3d6cdfcae1406dddb397">sjsu::stm32f10x::Adc::Control2</a>
 </li>
 <li>kSpec
 : <a class="el" href="d7/da0/classsjsu_1_1Max170343.html#a82a4dc66bcaf81b37b48d1a1c685e563">sjsu::Max170343</a>
@@ -965,10 +1056,10 @@ $(function() {
 : <a class="el" href="d1/dd3/structsjsu_1_1lpc40xx_1_1Can_1_1BusTiming.html#a2327ce26eb41833bfeb2504e8af2facc">sjsu::lpc40xx::Can::BusTiming</a>
 </li>
 <li>kTransferCompleteInterruptEnable
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#a68d90ec8d52bf4033c5c848083bd9e94">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#a1af488862b50d529168b1f1947560409">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kTransferErrorInterruptEnable
-: <a class="el" href="de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html#ae93b9a3bbbd65fe801a4e116cd2a73c4">sjsu::stm32f10x::UartBase::DmaReg</a>
+: <a class="el" href="d3/d0c/structsjsu_1_1stm32f10x_1_1Dma_1_1Reg.html#a8f655705835cac6657c9aef8b0a75a20">sjsu::stm32f10x::Dma::Reg</a>
 </li>
 <li>kTransitEmpty
 : <a class="el" href="da/d13/structsjsu_1_1stm32f10x_1_1UartBase_1_1StatusReg.html#a07482da22626e331083114d01dfe5237">sjsu::stm32f10x::UartBase::StatusReg</a>

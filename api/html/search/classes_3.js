@@ -6,6 +6,6 @@ var searchData=
   ['decodedframe_5ft',['DecodedFrame_t',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html',1,'sjsu::infrared']]],
   ['deviceaddress',['DeviceAddress',['../dd/d95/structsjsu_1_1Tmp102_1_1DeviceAddress.html',1,'sjsu::Tmp102']]],
   ['distancesensor',['DistanceSensor',['../df/d5c/classsjsu_1_1DistanceSensor.html',1,'sjsu']]],
-  ['dmareg',['DmaReg',['../de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html',1,'sjsu::stm32f10x::UartBase']]],
+  ['dma',['Dma',['../de/d5e/classsjsu_1_1stm32f10x_1_1Dma.html',1,'sjsu::stm32f10x']]],
   ['dwtcounter',['DwtCounter',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html',1,'sjsu::cortex']]]
 ];

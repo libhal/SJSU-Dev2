@@ -82,35 +82,38 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;L0_Platform/stm32f10x/stm32f10x.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d7/d9b/dma_8hpp_source.html">L1_Peripheral/stm32f10x/dma.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../d3/dfc/stm32f10x_2pin_8hpp_source.html">L1_Peripheral/stm32f10x/pin.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../de/d3f/uart_8hpp_source.html">L1_Peripheral/uart.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d3/d51/bit_8hpp_source.html">utility/bit.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for uart.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d6/d70/stm32f10x_2uart_8hpp__incl.png" border="0" usemap="#_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2stm32f10x_2uart_8hpp" alt=""/></div>
 <map name="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2stm32f10x_2uart_8hpp" id="_2home_2travis_2build_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2stm32f10x_2uart_8hpp">
-<area shape="rect" id="node3" href="../../d3/dfc/stm32f10x_2pin_8hpp.html" title="L1_Peripheral/stm32f10x\l/pin.hpp" alt="" coords="2308,124,2492,165"/>
-<area shape="rect" id="node46" href="../../de/d3f/uart_8hpp.html" title="L1_Peripheral/uart.hpp" alt="" coords="2810,221,2978,247"/>
-<area shape="rect" id="node5" href="../../d5/df1/pin_8hpp.html" title="L1_Peripheral/pin.hpp" alt="" coords="2982,310,3144,337"/>
-<area shape="rect" id="node21" href="../../d0/d2f/stm32f10x_2system__controller_8hpp.html" title="L1_Peripheral/stm32f10x\l/system_controller.hpp" alt="" coords="2308,213,2492,255"/>
-<area shape="rect" id="node24" href="../../d3/d51/bit_8hpp.html" title="utility/bit.hpp" alt="" coords="1851,310,1960,337"/>
-<area shape="rect" id="node27" href="../../d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="706,221,818,247"/>
-<area shape="rect" id="node7" href="../../db/d5e/inactive_8hpp.html" title="inactive.hpp" alt="" coords="2584,399,2686,426"/>
-<area shape="rect" id="node9" href="../../de/def/module_8hpp.html" title="module.hpp" alt="" coords="3014,399,3112,426"/>
-<area shape="rect" id="node10" href="../../da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="1972,399,2159,426"/>
-<area shape="rect" id="node13" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="526,489,616,515"/>
-<area shape="rect" id="node15" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="500,571,642,597"/>
-<area shape="rect" id="node16" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="157,571,273,597"/>
-<area shape="rect" id="node17" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1501,571,1625,597"/>
-<area shape="rect" id="node23" href="../../d7/df3/system__controller_8hpp.html" title="L1_Peripheral/system\l_controller.hpp" alt="" coords="1984,303,2147,344"/>
-<area shape="rect" id="node26" href="../../dd/d0a/enum_8hpp.html" title="utility/enum.hpp" alt="" coords="2425,310,2554,337"/>
-<area shape="rect" id="node33" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="124,392,277,433"/>
-<area shape="rect" id="node34" href="../../d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="516,310,671,337"/>
-<area shape="rect" id="node36" href="../../da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="696,310,828,337"/>
-<area shape="rect" id="node43" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1144,399,1284,426"/>
-<area shape="rect" id="node44" href="../../de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="1452,310,1575,337"/>
-<area shape="rect" id="node39" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="800,399,940,426"/>
-<area shape="rect" id="node42" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="964,399,1120,426"/>
+<area shape="rect" id="node3" href="../../d7/d9b/dma_8hpp.html" title="L1_Peripheral/stm32f10x\l/dma.hpp" alt="" coords="2504,213,2688,255"/>
+<area shape="rect" id="node4" href="../../d3/d51/bit_8hpp.html" title="utility/bit.hpp" alt="" coords="2764,310,2873,337"/>
+<area shape="rect" id="node10" href="../../d3/dfc/stm32f10x_2pin_8hpp.html" title="L1_Peripheral/stm32f10x\l/pin.hpp" alt="" coords="2097,124,2281,165"/>
+<area shape="rect" id="node47" href="../../de/d3f/uart_8hpp.html" title="L1_Peripheral/uart.hpp" alt="" coords="2970,221,3138,247"/>
+<area shape="rect" id="node11" href="../../d5/df1/pin_8hpp.html" title="L1_Peripheral/pin.hpp" alt="" coords="2577,310,2740,337"/>
+<area shape="rect" id="node24" href="../../d0/d2f/stm32f10x_2system__controller_8hpp.html" title="L1_Peripheral/stm32f10x\l/system_controller.hpp" alt="" coords="2097,213,2281,255"/>
+<area shape="rect" id="node28" href="../../d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1076,221,1188,247"/>
+<area shape="rect" id="node12" href="../../db/d5e/inactive_8hpp.html" title="inactive.hpp" alt="" coords="2432,399,2535,426"/>
+<area shape="rect" id="node13" href="../../de/def/module_8hpp.html" title="module.hpp" alt="" coords="2998,399,3097,426"/>
+<area shape="rect" id="node14" href="../../da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="1738,399,1925,426"/>
+<area shape="rect" id="node17" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="583,489,672,515"/>
+<area shape="rect" id="node18" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="557,571,698,597"/>
+<area shape="rect" id="node19" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="156,571,272,597"/>
+<area shape="rect" id="node20" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1538,571,1662,597"/>
+<area shape="rect" id="node26" href="../../d7/df3/system__controller_8hpp.html" title="L1_Peripheral/system\l_controller.hpp" alt="" coords="1982,303,2145,344"/>
+<area shape="rect" id="node27" href="../../dd/d0a/enum_8hpp.html" title="utility/enum.hpp" alt="" coords="2220,310,2350,337"/>
+<area shape="rect" id="node34" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="242,392,395,433"/>
+<area shape="rect" id="node35" href="../../d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="280,310,434,337"/>
+<area shape="rect" id="node37" href="../../da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="666,310,798,337"/>
+<area shape="rect" id="node44" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1147,399,1287,426"/>
+<area shape="rect" id="node45" href="../../de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="1534,310,1657,337"/>
+<area shape="rect" id="node40" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="716,399,856,426"/>
+<area shape="rect" id="node43" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="880,399,1036,426"/>
 </map>
 </div>
 </div>
@@ -132,8 +135,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/deb/structsjsu_1_1stm32f10x_1_1UartBase_1_1BaudRateReg.html">sjsu::stm32f10x::UartBase::BaudRateReg</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace for the baud rate (BRR) registers bit masks.  <a href="../../d2/deb/structsjsu_1_1stm32f10x_1_1UartBase_1_1BaudRateReg.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dbf/structsjsu_1_1stm32f10x_1_1UartBase_1_1DmaReg.html">sjsu::stm32f10x::UartBase::DmaReg</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html">sjsu::stm32f10x::Uart&lt; kQueueSize &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. ">Uart</a> Driver for the <a class="el" href="../../dc/d92/namespacesjsu_1_1stm32f10x.html">stm32f10x</a> platform.  <a href="../../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html#details">More...</a><br /></td></tr>
