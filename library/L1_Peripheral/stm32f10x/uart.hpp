@@ -1,8 +1,10 @@
 #pragma once
 
 #include "L0_Platform/stm32f10x/stm32f10x.h"
+#include "L1_Peripheral/stm32f10x/dma.hpp"
 #include "L1_Peripheral/stm32f10x/pin.hpp"
 #include "L1_Peripheral/uart.hpp"
+#include "utility/bit.hpp"
 
 namespace sjsu::stm32f10x
 {
@@ -139,80 +141,22 @@ class UartBase : public sjsu::Uart
     static constexpr auto kFraction = bit::MaskFromRange(0, 3);
   };
 
-  /// Namespace for the control registers (DMA->CCR) bit masks and predefined
-  /// settings constants.
-  struct DmaReg  // NOLINT
-  {
-    /// Declare this channel for Memory to memory mode
-    static constexpr auto kMemoryToMemory = bit::MaskFromRange(14);
-
-    /// Configure the channel priority for this channel.
-    /// 0b00: Low
-    /// 0b01: Medium
-    /// 0b10: High
-    /// 0b11: Very high
-    static constexpr auto kChannelPriority = bit::MaskFromRange(12, 13);
-
-    /// The size of each element of the memory.
-    /// 0b00: 8-bits
-    /// 0b01: 16-bits
-    /// 0b10: 32-bits
-    /// 0b11: Reserved
-    static constexpr auto kMemorySize = bit::MaskFromRange(10, 11);
-
-    /// The peripheral register size.
-    /// 0b00: 8-bits
-    /// 0b01: 16-bits
-    /// 0b10: 32-bits
-    /// 0b11: Reserved
-    static constexpr auto kPeripheralSize = bit::MaskFromRange(8, 9);
-
-    /// Activate memory increment mode, which will increment the memory address
-    /// with each transfer
-    static constexpr auto kMemoryIncrementEnable = bit::MaskFromRange(7);
-
-    /// Activate memory increment mode, which will increment the peripheral
-    /// address with each transfer
-    static constexpr auto kPeripheralIncrementEnable = bit::MaskFromRange(6);
-
-    /// DMA will continuous load bytes into the buffer supplied in a circular
-    /// buffer manner.
-    static constexpr auto kCircularMode = bit::MaskFromRange(5);
-
-    /// Data transfer direction
-    /// 0: Read from peripheral
-    /// 1: Read from memory
-    static constexpr auto kDataTransferDirection = bit::MaskFromRange(4);
-
-    /// Enable interrupt on transfer error
-    static constexpr auto kTransferErrorInterruptEnable = bit::MaskFromRange(3);
-
-    /// Enable interrupt on half of data transferred
-    static constexpr auto kHalfTransferInterruptEnable = bit::MaskFromRange(2);
-
-    /// Enable interrupt on complete transfer
-    static constexpr auto kTransferCompleteInterruptEnable =
-        bit::MaskFromRange(1);
-
-    /// Enable this DMA channel
-    static constexpr auto kEnable = bit::MaskFromRange(0);
-
-    /// Setup the DMA channel with all of the options specific to handling UART
-    static constexpr uint32_t kDmaSettings =
-        bit::Value{}
-            .Clear(kTransferCompleteInterruptEnable)
-            .Clear(kHalfTransferInterruptEnable)
-            .Clear(kTransferErrorInterruptEnable)
-            .Clear(kDataTransferDirection)  // Read from peripheral
-            .Set(kCircularMode)
-            .Clear(kPeripheralIncrementEnable)
-            .Set(kMemoryIncrementEnable)
-            .Insert(0b00, kPeripheralSize)   // size = 8 bits
-            .Insert(0b00, kMemorySize)       // size = 8 bits
-            .Insert(0b10, kChannelPriority)  // Low Medium [High] Very_High
-            .Clear(kMemoryToMemory)
-            .Set(kEnable);
-  };
+  /// Setup the DMA channel with all of the options specific to handling UART
+  static constexpr uint32_t kDmaSettings =
+      bit::Value{}
+          .Clear(Dma::Reg::kTransferCompleteInterruptEnable)
+          .Clear(Dma::Reg::kHalfTransferInterruptEnable)
+          .Clear(Dma::Reg::kTransferErrorInterruptEnable)
+          .Clear(Dma::Reg::kDataTransferDirection)  // Read from peripheral
+          .Set(Dma::Reg::kCircularMode)
+          .Clear(Dma::Reg::kPeripheralIncrementEnable)
+          .Set(Dma::Reg::kMemoryIncrementEnable)
+          .Insert(0b00, Dma::Reg::kPeripheralSize)  // size = 8 bits
+          .Insert(0b00, Dma::Reg::kMemorySize)      // size = 8 bits
+          .Insert(0b10,
+                  Dma::Reg::kChannelPriority)  // Low Medium [High] Very_High
+          .Clear(Dma::Reg::kMemoryToMemory)
+          .Set(Dma::Reg::kEnable);
 
   /// @tparam size - size of the array
   /// @param port - reference to the port configuration object
@@ -252,8 +196,7 @@ class UartBase : public sjsu::Uart
     // Without doing this, the enabled DMA will continue to use up port cycles.
 
     // Disable DMA channel for this UART
-    bit::Register(&port_.dma->CCR).Clear(DmaReg::kEnable).Save();
-
+    bit::Register(&port_.dma->CCR).Clear(Dma::Reg::kEnable).Save();
     // Disable DMA flag Receive flag in UART control register
     bit::Register(&port_.uart->CR3)
         .Clear(ControlReg::kDmaReceiverEnable)
@@ -296,7 +239,7 @@ class UartBase : public sjsu::Uart
     port_.dma->CMAR  = static_cast<uint32_t>(kQueueAddress);
 
     // Setup DMA Channel Settings
-    port_.dma->CCR = DmaReg::kDmaSettings;
+    port_.dma->CCR = kDmaSettings;
 
     // Setup UART Control Settings 1
     port_.uart->CR1 = ControlReg::kControlSettings1;
