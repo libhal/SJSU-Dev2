@@ -371,40 +371,42 @@ class Can final : public sjsu::Can
     //                          ^
     //                    sample point (industry standard: 80%)
 
-    // Hold the results in RAM rather than altering the register directly
-    // multiple times.
-    uint32_t bus_timing = 0;
-
-    // Used to compensate for positive and negative edge phase errors. Defines
-    // how much the sample point can be shifted.
-    bus_timing = bit::Insert(bus_timing, 3, BusTiming::kSyncJumpWidth);
-
-    // These time segments determine the location of the "sample point".
-    bus_timing = bit::Insert(bus_timing, 6, BusTiming::kTimeSegment1);
-    bus_timing = bit::Insert(bus_timing, 1, BusTiming::kTimeSegment2);
-
-    // The above sampling sifts alters the baud rate by the sum, which is 10,
-    // thus we need to increase the baud rate by that amount.
-    const uint32_t kBaudRateAdjust = 10;
+    constexpr int kTseg1               = 0;
+    constexpr int kTseg2               = 0;
+    constexpr int kSyncJump            = 0;
+    constexpr uint32_t kBaudRateAdjust = kTseg1 + kTseg2 + kSyncJump + 3;
 
     // Equation found p.563 of the user manual
     //    tSCL = CANsuppliedCLK * ((prescaler * kBaudRateAdjust) -  1)
     // Configure the baud rate divider
-    auto & system             = sjsu::SystemController::GetPlatformController();
-    auto peripheral_frequency = system.GetClockRate(channel_.id);
-    uint32_t prescaler = (peripheral_frequency / (baud * kBaudRateAdjust)) - 1;
+    auto & system         = sjsu::SystemController::GetPlatformController();
+    const auto kFrequency = system.GetClockRate(channel_.id);
+    uint32_t prescaler    = (kFrequency / ((baud * kBaudRateAdjust)) - 1);
 
-    bus_timing = bit::Insert(bus_timing, prescaler, BusTiming::kPrescalar);
+    sjsu::LogDebug(
+        "freq = %f :: prescale = %lu", kFrequency.to<double>(), prescaler);
+
+    // Hold the results in RAM rather than altering the register directly
+    // multiple times.
+    bit::Value bus_timing;
+
+    // Used to compensate for positive and negative edge phase errors. Defines
+    // how much the sample point can be shifted.
+    // These time segments determine the location of the "sample point".
+    bus_timing.Insert(0, BusTiming::kSyncJumpWidth)
+        .Insert(0, BusTiming::kTimeSegment1)
+        .Insert(0, BusTiming::kTimeSegment2)
+        .Insert(prescaler, BusTiming::kPrescalar);
 
     if (baud < kStandardBaudRate)
     {
       // The bus is sampled 3 times (recommended for low speeds, 100kHz is
       // considered HIGH).
-      bus_timing = bit::Insert(bus_timing, 1, BusTiming::kSampling);
+      bus_timing.Insert(1, BusTiming::kSampling);
     }
     else
     {
-      bus_timing = bit::Insert(bus_timing, 0, BusTiming::kSampling);
+      bus_timing.Insert(0, BusTiming::kSampling);
     }
 
     channel_.registers->BTR = bus_timing;
@@ -489,6 +491,8 @@ class Can final : public sjsu::Can
     // Release the RX buffer and allow another buffer to be read.
     channel_.registers->CMR = Value(Commands::kReleaseRxBuffer);
 
+    // sjsu::lpc40xx::LPC_CANAF_RAM->mask[0]
+
     return message;
   }
 
@@ -556,12 +560,11 @@ class Can final : public sjsu::Can
   {
     LpcRegisters_t registers;
 
-    uint32_t frame_info = 0;
-    frame_info = bit::Insert(frame_info, message.length, FrameInfo::kLength);
-    frame_info = bit::Insert(
-        frame_info, message.is_remote_request, FrameInfo::kRemoteRequest);
-    frame_info =
-        bit::Insert(frame_info, Value(message.format), FrameInfo::kFormat);
+    uint32_t frame_info =
+        bit::Value()
+            .Insert(message.length, FrameInfo::kLength)
+            .Insert(message.is_remote_request, FrameInfo::kRemoteRequest)
+            .Insert(Value(message.format), FrameInfo::kFormat);
 
     uint32_t data_a = 0;
     data_a |= message.payload[0] << (0 * 8);
