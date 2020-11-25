@@ -1,12 +1,16 @@
 #pragma once
 
 #include <algorithm>
+#include <cinttypes>
 
 #include "L1_Peripheral/can.hpp"
 #include "module.hpp"
+#include "utility/bit.hpp"
 #include "utility/enum.hpp"
+#include "utility/log.hpp"
 #include "utility/map.hpp"
 #include "utility/math/limits.hpp"
+#include "utility/time.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -97,12 +101,18 @@ class RmdX : public sjsu::Module
     .maximum_speed = 120_rpm,
   };
 
+  ///
+  ///
+  /// @param canbus - canbus peripheral to use
   /// @param device_id - Device ID of the RMD motor. This can be modified by the
   /// switches on the back of the motor. Default ID set by factory on the
   /// switches is 0x140.
-  constexpr explicit RmdX(sjsu::Can & canbus,
-                          uint16_t device_id  = 0x140,
-                          Parameters_t params = kDefaultParameters)
+  /// @param params - RMD-X series parameters that must be set correctly for
+  /// proper operation. If the gear ratio is incorrect, then the servo angles
+  /// will be off.
+  RmdX(sjsu::Can & canbus,
+       uint16_t device_id  = 0x140,
+       Parameters_t params = kDefaultParameters)
       : canbus_(canbus), device_id_(device_id), params_(params), feedback_{}
   {
   }
@@ -259,8 +269,6 @@ class RmdX : public sjsu::Module
         auto temperature_float = static_cast<float>(temperature);
         auto speed_float       = static_cast<float>(speed) / params_.gear_ratio;
         auto current_float     = Map(current, -kMaxInt, kMaxInt, -kMax, kMax);
-
-        constexpr float test = Map(-703, -kMaxInt, kMaxInt, -kMax, kMax);
 
         feedback_.encoder_position = encoder;
         feedback_.temperature      = celsius_t{ temperature_float };

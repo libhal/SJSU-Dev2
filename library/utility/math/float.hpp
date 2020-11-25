@@ -6,11 +6,12 @@ namespace sjsu
 {
 /// Compare two numbers
 ///
-/// @param array - pointer to an array of numeric values
-/// @param size - the number of elements in the array
-/// @return the average as a floating point value.
+/// @param a - float to compare A
+/// @param b - float to compare B
+/// @param epsilon - The precision in which to compare to the two A and B
+/// @return true if the floats equal each other within the precision of epsilon
 constexpr bool Equal(float a, float b, float epsilon = 0.00001f)
 {
   return fabsf(a - b) <= epsilon;
 }
-}
+}  // namespace sjsu

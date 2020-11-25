@@ -412,6 +412,23 @@ class Can final : public sjsu::Can
     channel_.registers->BTR = bus_timing;
   }
 
+  bool ConfigureFilter([[maybe_unused]] uint32_t id,
+                       [[maybe_unused]] uint32_t mask,
+                       [[maybe_unused]] bool is_extended = false) override
+  {
+    throw Exception(std::errc::not_supported,
+                    "This implementation does not support filtering");
+  }
+
+  void ConfigureAcceptanceFilter(bool enable) override
+  {
+    if (enable)
+    {
+      throw Exception(std::errc::not_supported,
+                      "This implementation does not support");
+    }
+  }
+
   void Send(const Message_t & message) override
   {
     LpcRegisters_t registers = ConvertMessageToRegisters(message);
@@ -453,13 +470,13 @@ class Can final : public sjsu::Can
     }
   }
 
-  bool HasData() override
+  bool HasData([[maybe_unused]] uint32_t id = 0) override
   {
     // GlobalStatus::kReceiveBuffer returns 1 (true) if it has data.
     return bit::Read(channel_.registers->GSR, GlobalStatus::kReceiveBuffer);
   }
 
-  Message_t Receive() override
+  Message_t Receive([[maybe_unused]] uint32_t id = 0) override
   {
     Message_t message;
 
@@ -475,13 +492,22 @@ class Can final : public sjsu::Can
     message.format            = static_cast<Message_t::Format>(format);
 
     // Get the frame ID
-    message.id = channel_.registers->RID;
+    const uint32_t kRID = channel_.registers->RID;
+    if (message.format == Message_t::Format::kExtended)
+    {
+      message.id = bit::Extract(kRID, bit::MaskFromRange(0, 10));
+    }
+    else
+    {
+      message.id = bit::Extract(kRID, bit::MaskFromRange(0, 28));
+    }
 
     // Pull the bytes from RDA into the payload array
     message.payload[0] = (channel_.registers->RDA >> (0 * 8)) & 0xFF;
     message.payload[1] = (channel_.registers->RDA >> (1 * 8)) & 0xFF;
     message.payload[2] = (channel_.registers->RDA >> (2 * 8)) & 0xFF;
     message.payload[3] = (channel_.registers->RDA >> (3 * 8)) & 0xFF;
+
     // Pull the bytes from RDB into the payload array
     message.payload[4] = (channel_.registers->RDB >> (0 * 8)) & 0xFF;
     message.payload[5] = (channel_.registers->RDB >> (1 * 8)) & 0xFF;
