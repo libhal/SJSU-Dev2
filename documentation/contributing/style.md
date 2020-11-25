@@ -8,39 +8,20 @@ Exceptions to the style guide are shown below.
 
 ## Usage of C files
 
-Only on special cases should `.c` (C-only) source files be used. When
-ever possible, be sure to use C++ rather than C.
+Only on special cases should `.c` (C-only) source files be used. When ever
+possible, be sure to use C++ rather than C.
 
 ## Never Include std C headers
 
-Always opt to use the C++ version of the standard library headers. For
-example, besides including `<stdlib.h>` use `<cstdlib>`.
+Always opt to use the C++ version of the standard library headers. For example,
+besides including `<stdlib.h>` use `<cstdlib>`.
 
 ## C++ Standard Libraries
 
-Many of the C++ libraries are large, complex, and not optimal for the embedded
-system projects. For the most part be careful when including std C++ libraries.
-For example, including `#include <iostream>` will grow a binary by
-**size by 150kB!!**
-
-Bare in mind that the flash size for a lot of boards is anywhere from 32kB to
-1MB. On a board with a heafty `512kB` flash memory `<iostream>` takes up
-approximately **30%** of your flash size when it is included and NOT even used.
-
-- Here are a few standard C++ libraries you can include:
-  - `<variant>`
-  - `<utility>`
-  - `<tuple>`
-  - `<type_traits>`
-  - `<limits>`
-  - `<bitset>`
-  - `<atomic>`
-  - `<utility>`
-  - `<algorithm>`
-  - `<c*>` C standard libraries
-- C++ libraries that increase binary size and you should **NEVER** be
-  included:
-  - `<iostream>`
+Many of the C++ libraries pull in additional dependencies and requirements that
+are not suitable for embedded system projects. Most C++ libraries are fine to
+include, but some like `#include <iostream>` will grow a binary by size by
+**150kB**!
 
 ## Refrain from abbreviations
 
@@ -63,8 +44,8 @@ Link to how this should look:
 
 ## Curly Braces
 
-SJSU-Dev2 will follow the Allman style of curly braces, where each curly
-brace gets their own line.
+SJSU-Dev2 will follow the Allman style of curly braces, where each curly brace
+gets their own line.
 
 ```C++
 if (IsValid())
@@ -73,18 +54,15 @@ if (IsValid())
 }
 ```
 
-## Pausing Execution of a Program Indefinitely
+## Allowing Main To Exit
 
-Use `sjsu::Halt()`, found in the `library/utility/` folder rather than directly
-with `for(;;)`, or `while (true)` etc...
-
-This is helpful for testing, as, during a unit test, `sjsu::Halt()` simply
-passes through, allowing the test to continue.
+It is allowed in SJSU-Dev2 to allow main to return. When main returns, it will
+report the return code and will halt the CPU in an infinite loop.
 
 ## Include Guards
 
-The first non-comment line of every header file must be `#pragma once`.
-**DO NOT** use the traditional macro include guards.
+**DO NOT** use the traditional macro include guards. The first non-comment line
+of every header file must be `#pragma once`.
 
 ## Integer typing
 
@@ -98,32 +76,27 @@ SJSU-Dev2 libraries must NOT use dynamic memory such as with `malloc` or `new`.
 All used memory must be allocated statically or use stack memory. This is to
 ensure that the impact of code on RAM is known at compile time.
 
-Code must also NOT use C++ libraries that allocate memory dynamically, such
-as `std::string`.
+Code must also NOT use C++ libraries that allocate memory dynamically, such as
+`std::string`.
 
 ## Pointer and Reference Character Placement
 
-Pointer and reference symbols (asterisks and ampersand), must be in the
-center of type and the variable name.
+Pointer and reference symbols (asterisks and ampersand), must be in the center
+of type and the variable name.
 
 For example: `char * array;` and `PositronManager & pos;`
 
-Prefer storing references over storing pointers. Use pointers only for
-cases where the pointer's target may be changed or needs to point to
-`nullptr`.
-
-## Refrain from using preprocessor macros
+## Refrain from using macros
 
 Stay away from `#define` as much as possible. Use `constexpr` in place of
-macros.
+macros if it is possible.
 
-Only in the scenario where a C++ type solution cannot be found, but a macro
-solution will solve the problem in a clean way, then macros can be used. Macro
-definitions must be prefixed with `SJ2_` (public) or `_SJ2_` (private). When
-prefixed with a `_`, that means that this macro is an internal macro and should
-not be called used directly by application code.
+Only as a final resort where a C++ type solution cannot be found then macros can
+be used. Macro definitions must be prefixed with `SJ2_` (public) or `_SJ2_`
+(private). When prefixed with a `_`, that means that this macro is an internal
+macro and should not be called used directly by application code.
 
-## Preprocessor Semicolons
+### Preprocessor Semicolons
 
 Macros must force the user to end them with a semicolon. Thus the contents of
 the macro must be wrapped with `do { ... } while(0)` loop.
@@ -131,13 +104,13 @@ the macro must be wrapped with `do { ... } while(0)` loop.
 Another option is a to end with a throwaway `static_assert` statement if the
 above solution does not work.
 
-``` console
+```console
 #define _SJ2_GENERATE_SOMETHING(name)     \
     bool factory_##name() { return val; } \
     static_assert(true)
 ```
 
-## Preprocessor Conditionals
+### Preprocessor Conditionals
 
 Refrain from using preprocessor conditionals. If it must be used prefer to use
 `#if` rather than `#ifdef`. `#if` checks for definition as well as if the
@@ -148,18 +121,18 @@ statement.
 
 ## Hardware/Register Manipulation in Constructors
 
-Hardware shall not be manipulated in an object's constructors. This is due to
-the fact that statically allocated or global objects have an undefined order in
-which their constructors are executed. In a lot of applications the order in
-which hardware is initialized is important, thus a constructor initializing
-hardware before the application has a chance to can lead to undefined behavior
-and hard to debug bugs.
+They MUST NEVER alter and manipulate hardware. This is due to the fact that
+statically allocated or global objects have an undefined order in which their
+constructors are executed. Most systems are sensitive to the order in which
+hardware is initialized, thus a constructor initializing hardware before the
+application has a chance to can lead to undefined behavior and hard to debug
+bugs.
 
-Every driver and class that needs to initialize hardware in any way must contain
-an `Initialize(...)` method. This way the application developer must explicitly
-`Initialize()` in order to initialize the hardware.
+Every library in SJSU-Dev2 must inherit the `sjsu::Module` interface which
+will supply the interface for `void Initialize()` and `void Enable(bool enable)`
+which are used for initializing, enabling, and disabling systems.
 
-The constructor can and should be used to initialize class memory such as member
+The constructor CAN and SHOULD be used to initialize class memory such as member
 variables.
 
 ## Comment style
@@ -171,7 +144,6 @@ be used, thus `/* ... */` is acceptable only in this case.
 
 `///` must be used for doxygen documentation comments.
 
-
 ## Documentation
 
 Every global or public function, variable, and constant must be fully documented
@@ -182,11 +154,14 @@ Prefer to write code that is sell documenting.
 
 ## Error Handling
 
-To be added...
+SJSU-Dev2 utilizes exception handling for errors. For more details please see
+[Error Handling Guide](../software_architecture/error_handling.md).
 
 ## File formatting
 
-Every file must end with a newline character.
+- Every file must end with a newline character.
+- Every line in a file must stay within a 80 character limit.
+  - Exceptions to this rule are allowed. Use `// NOLINT` in these cases
 
 ## Number formatting for bitwise operations
 
@@ -206,18 +181,18 @@ to the binary form.
 Refrain from using bit wise operators directly. Prefer to use the bit API for
 bit manipulation.
 
-See the [bit API guide](../guides/bit.md) for more details.
+See the [bit API guide](../libraries/bit.md) for more details.
 
 ## Use third party library "units" whenever appropriate
 
 In order to handle unit conversions and to make passing values with an
-associated unit attached to it easier use the units library.
-To learn how to use the units library see:
+associated unit attached to it easier, use the units library. To learn how to
+use the units library see:
 [github.com/nholthaus/units](https://github.com/nholthaus/units).
 
 Prefer an interface like:
 
-``` c++
+```c++
 #include "utility/units.hpp"
 
 class DistanceSensor
@@ -231,14 +206,9 @@ class DistanceSensor
 };
 ```
 
-The following below requires you to handle the unit conversions yourself.
-With every implementation like this, mistakes will happen and the code size will
-increase with each implementation of code doing the same operations but in
-different locations.
+Rather than this:
 
-Do not do the following below:
-
-``` c++
+```c++
 class DistanceSensor
 {
  public:
@@ -265,6 +235,7 @@ class DistanceSensor
     *distance     = static_cast<float>(sensor_reading / kConversionCM);
     return sensor_status;
   }
+
   Status GetDistanceInch(float * distance) const
   {
     uint32_t sensor_reading;
@@ -273,6 +244,7 @@ class DistanceSensor
     *distance     = static_cast<float>(sensor_reading / kConversionInch);
     return sensor_status;
   }
+
   Status GetDistanceFt(float * distance) const
   {
     uint32_t sensor_reading;
@@ -283,3 +255,8 @@ class DistanceSensor
   }
 };
 ```
+
+The later example requires every single library to handle conversions themselves
+when the solution should be generic and implemented once. The later example, if
+implemented throughout the code base would result in code bloat, longer compile
+times, and more locations where unit testing must be used to ensure correctness.
