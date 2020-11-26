@@ -1,26 +1,53 @@
-name: presubmit
-
 # Run this workflow every time a new commit pushed to your repository
-on: push
+on: [pull_request]
 
 jobs:
-  # Set the job key. The key is displayed as the job name
-  # when a job name is not provided
-  presubmit:
-    # Name the Job
-    name: Presubmit
-    # Set the type of machine to run on
+  linux_presubmit:
+    name: Linux Presubmit
     runs-on: ubuntu-latest
 
     steps:
-      # Checks out a copy of your repository on the ubuntu-latest machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Cpp Coveralls
+        run: pip install --user cpp-coveralls
+
+      - name: Install Doxygen and Graphviz
+        run: sudo apt-get -y install doxygen graphviz
+
+      - name: Install cspell
+        run: sudo npm install -g cspell@4.0.38
+
+      - name: Run Installer
+        run: ./setup
+
+      - name: Run Presubmit
+        working-directory: projects/continuous_integration
+        run: make presubmit
+
+      - name: Run Code Coverage
+        working-directory: projects/continuous_integration
+        run: make coverage
+
+      - name: Run Code Spellcheck
+        working-directory: projects/continuous_integration
+        run: make spellcheck
+
+      - name: Run Doxygen
+        working-directory: projects/continuous_integration
+        run: make doxygen
+
+  macosx_presubmit:
+    name: MacOSX Presubmit
+    runs-on: macos-10.15
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Run Installer
-        runs: ./setup
+        run: ./setup
 
-      # Runs the Super-Linter action
       - name: Run Presubmit
-        runs: cd projects/continuous_integration/
-        runs: make presubmit
+        working-directory: projects/continuous_integration
+        run: make presubmit
