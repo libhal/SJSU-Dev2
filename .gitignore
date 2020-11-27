@@ -20,6 +20,8 @@ tools/**/*
 !tools/doxygen_ignore_list.txt
 !tools/launch_openocd_gdb.sh
 !tools/generate_doxygen_docs.sh
+!tools/linux/
+!tools/osx/
 
 api/doxygen_stderr.txt
 

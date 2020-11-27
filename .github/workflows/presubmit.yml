@@ -2,9 +2,42 @@
 on: [pull_request]
 
 jobs:
+
+  cleanliness:
+    name: Cleanliness Checks
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Doxygen and Graphviz
+        run: sudo apt-get -y install doxygen graphviz
+
+      - name: Install cspell
+        run: sudo npm install -g cspell@4.0.38
+
+      - name: Fast Setup
+        run: ./setup --generate-location-file
+
+      - name: Lint Code
+        working-directory: projects/continuous_integration
+        run: make lint
+
+      - name: Check Spelling
+        working-directory: projects/continuous_integration
+        run: make spellcheck
+
+      - name: Generate & Validate Documentation
+        working-directory: projects/continuous_integration
+        run: make doxygen
+
+      - name: Check Variable Names
+        working-directory: projects/continuous_integration
+        run: make commit-tidy
+
   linux_presubmit:
-    name: Linux Presubmit
-    runs-on: ubuntu-latest
+    name: Presubmit Checks
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout code
@@ -13,33 +46,32 @@ jobs:
       - name: Install Cpp Coveralls
         run: pip install --user cpp-coveralls
 
-      - name: Install Doxygen and Graphviz
-        run: sudo apt-get -y install doxygen graphviz
-
-      - name: Install cspell
-        run: sudo npm install -g cspell@4.0.38
-
-      - name: Run Installer
+      - name: Run Setup
         run: ./setup
 
-      - name: Run Presubmit
+      - name: Unit Tests
         working-directory: projects/continuous_integration
-        run: make presubmit
+        run: make test
 
-      - name: Run Code Coverage
+      - name: Code Coverage
         working-directory: projects/continuous_integration
         run: make coverage
 
-      - name: Run Code Spellcheck
+      - name: Application Build
         working-directory: projects/continuous_integration
-        run: make spellcheck
+        run: make --no-print-directory all-projects
 
-      - name: Run Doxygen
+      - name: Coveralls
         working-directory: projects/continuous_integration
-        run: make doxygen
+        run: coveralls --gcov "gcov-9"
+              --include "library/L0_Platform"
+              --include "library/L1_Peripheral"
+              --include "library/L2_HAL"
+              --include "library/L3_Application"
+              --include "library/utility"
 
   macosx_presubmit:
-    name: MacOSX Presubmit
+    name: MacOS Setup + Build Checks
     runs-on: macos-10.15
     steps:
       - name: Checkout code
@@ -48,6 +80,18 @@ jobs:
       - name: Run Installer
         run: ./setup
 
-      - name: Run Presubmit
-        working-directory: projects/continuous_integration
-        run: make presubmit
+      - name: Build Hello World
+        working-directory: projects/hello_world
+        run: make application
+
+      - name: Build Starter
+        working-directory: projects/starter
+        run: make application
+
+      - name: Build barebones
+        working-directory: projects/barebones
+        run: make application
+
+      - name: Build stm321f10x
+        working-directory: demos/stm32f10x/uart
+        run: make application
