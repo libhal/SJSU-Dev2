@@ -2,9 +2,41 @@
 on: [pull_request]
 
 jobs:
-  linux_presubmit:
-    name: Linux Presubmit
-    runs-on: ubuntu-latest
+  cleanliness:
+    name: Cleanliness Checks
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Doxygen and Graphviz
+        run: sudo apt-get -y install doxygen graphviz
+
+      - name: Install cspell
+        run: sudo npm install -g cspell@4.0.38
+
+      - name: Fast Setup
+        run: ./setup --generate-location-file
+
+      - name: Lint Code
+        working-directory: projects/continuous_integration
+        run: make lint
+
+      - name: Check Spelling
+        working-directory: projects/continuous_integration
+        run: make spellcheck
+
+      - name: Generate & Validate Documentation
+        working-directory: projects/continuous_integration
+        run: make doxygen
+
+      - name: Check Variable Names
+        working-directory: projects/continuous_integration
+        run: make commit-tidy
+
+  unit_tests:
+    name: Unit Tests + Coverage
+    runs-on: ubuntu-18.04
 
     steps:
       - name: Checkout code
@@ -13,33 +45,42 @@ jobs:
       - name: Install Cpp Coveralls
         run: pip install --user cpp-coveralls
 
-      - name: Install Doxygen and Graphviz
-        run: sudo apt-get -y install doxygen graphviz
-
-      - name: Install cspell
-        run: sudo npm install -g cspell@4.0.38
-
-      - name: Run Installer
+      - name: Run Setup
         run: ./setup
 
-      - name: Run Presubmit
+      - name: Unit Tests
         working-directory: projects/continuous_integration
-        run: make presubmit
+        run: make test
 
-      - name: Run Code Coverage
+      - name: Code Coverage
         working-directory: projects/continuous_integration
         run: make coverage
 
-      - name: Run Code Spellcheck
-        working-directory: projects/continuous_integration
-        run: make spellcheck
+      - uses: codecov/codecov-action@v1
+        with:
+          file: projects/continuous_integration/build/test/coverage/coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true # (default = false)
+          verbose: true # (default = false)
 
-      - name: Run Doxygen
-        working-directory: projects/continuous_integration
-        run: make doxygen
+  linux_checks:
+    name: Linux Setup + Build Checks
+    runs-on: ubuntu-18.04
 
-  macosx_presubmit:
-    name: MacOSX Presubmit
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Setup
+        run: ./setup
+
+      - name: Build Applications
+        working-directory: projects/continuous_integration
+        run: make --no-print-directory all-projects
+
+  macosx_checks:
+    name: MacOS Setup + Build Checks
     runs-on: macos-10.15
     steps:
       - name: Checkout code
@@ -48,6 +89,38 @@ jobs:
       - name: Run Installer
         run: ./setup
 
-      - name: Run Presubmit
-        working-directory: projects/continuous_integration
-        run: make presubmit
+      - name: Build Hello World
+        working-directory: projects/hello_world
+        run: make application
+
+      - name: Build Barebones
+        working-directory: projects/barebones
+        run: make application
+
+      - name: Build Starter
+        working-directory: projects/starter
+        run: make application
+
+      - name: Build SJTwo GPIO
+        working-directory: demos/sjtwo/gpio
+        run: make application
+
+      - name: Build stm32f10x GPIO
+        working-directory: demos/stm32f10x/gpio
+        run: make application
+
+      - name: Build stm32f4xx GPIO
+        working-directory: demos/stm32f4xx/fk407m1_gpio
+        run: make application
+
+      - name: Build msp432p401r Blinker
+        working-directory: demos/msp432p401r/blinker
+        run: make application
+
+      - name: Build multiplatform Stopwatch
+        working-directory: demos/multiplatform/stopwatch
+        run: make application
+
+      - name: Build ARM Cortex DWT
+        working-directory: demos/arm_cortex/dwt_counter
+        run: make application

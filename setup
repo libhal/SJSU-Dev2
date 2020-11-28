@@ -115,10 +115,11 @@ function install_mac_osx_prerequisites() {
   echo "               Installing Homebrew                   "
   echo "└─────────────────────────────────────────────────── "
   which -s brew
-  if [[ $? -eq "0" ]]; then
+  local brew_install=0
+  if [[ $? -ne "0" ]]; then
     # Install Homebrew
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-    local brew_install=$?
+    brew_install=$?
   fi
   print_status_nl $brew_install
   echo " ───────────────────────────────────────────────────┐"
@@ -291,6 +292,12 @@ function final_install_check() {
 
 quit_if_script_was_run_as_root
 quit_if_not_64_bit
+
+if [[ "$1" -eq "--generate-location-file" ]]; then
+  echo " Generating Location File..."
+  generate_location_file
+  exit 0
+fi
 
 echo " ──────────────────────────────────────────────────┐"
 echo "  List of software installed globally:              "
