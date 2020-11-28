@@ -265,12 +265,6 @@ CLANG_TIDY         = $(SJCLANG)/bin/clang-tidy
 HOST_SYMBOLIZER    = $(SJCLANG)/bin/llvm-symbolizer
 
 # ==============================================================================
-# Post Makefile Inclusion
-# ==============================================================================
-
--include post_library.mk
-
-# ==============================================================================
 # Final Flag Compositions
 # ==============================================================================
 
@@ -291,6 +285,12 @@ TEST_FLAGS      := $(SYSTEM_INCLUDES) $(INCLUDES) $(SJ2_DEFAULT_TEST_FLAGS) \
 SJ2_TEST_OBJECTS   := $(addprefix $(SJ2_TEST_OBJECT_DIR)/, $(TESTS:=.o))
 SJ2_COVERAGE_FILES := $(shell find $(SJ2_BUILD_DIRECTORY_NAME) -name "*.gcda" \
                               2> /dev/null)
+
+# ==============================================================================
+# Post Makefile Inclusion
+# ==============================================================================
+
+-include post_library.mk
 
 # ==============================================================================
 # Rebuild source files if header file dependencies changes
@@ -401,7 +401,8 @@ coverage:
 		-e "$(LIBRARY_DIR)/newlib" \
 		-e "$(LIBRARY_DIR)/third_party" \
 		-e "$(LIBRARY_DIR)/L4_Testing" \
-		--html --html-details --gcov-executable="$(CODE_COVERAGE_TOOL)" \
+		--xml $(SJ2_COVERAGE_DIR)/coverage.xml --html --html-details \
+		--gcov-executable="$(CODE_COVERAGE_TOOL)" \
 		-o $(SJ2_COVERAGE_DIR)/coverage.html
 
 	@printf '$(GREEN)DONE!$(RESET)\n'
