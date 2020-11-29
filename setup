@@ -317,7 +317,7 @@ echo "    Starting SJSU-Dev2 Environment Setup Script     "
 echo ""
 echo "└────────────────────────────────────────────────── "
 
-if [[ "$OS" == "Linux" ]]; then # Linux or Windows WSL
+if [[ "$OS" == "Linux" ]]; then # Linux
   echo "Operating System: Linux"
   TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_LINUX
   install_linux_prerequisites
@@ -329,8 +329,7 @@ elif [[ "$OS" == "Darwin" ]]; then # Mac OSX
   PREREQUISITES=$?
 else
   # Default if Operating System other than Mac or Linux
-  echo -n "Only Linux, OSX, and WSL (Windows Subsystem Linux) systems "
-  echo "are supported! Exiting..."
+  echo -n "Only Linux or OSX systems are supported! Exiting..."
   exit 1
 fi
 

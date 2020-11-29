@@ -23,23 +23,13 @@ height="100px"/>
 <img
 src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
 height="100px" />
-&nbsp;&nbsp;&nbsp;&nbsp;
-<img
-src="https://cdn.worldvectorlogo.com/logos/microsoft-windows-22.svg"
-height="100px" />
 </p>
 
-Built for **Ubuntu (18.04 or above)**, **Mac OSX (High Sierra or above)**, and
-**Windows 10 WSL**.
+Built for **Ubuntu (18.04 or above)** and **Mac OSX (High Sierra or above)**.
 
 ## Quick Start
 
 ### Setting up the environment
-
-If you are using Windows, follow these steps to
-**[install WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)**
-and make sure to install the Ubuntu as the linux distro. Once you have installed
-WSL, all instructions below for Linux should work for Windows.
 
 To download and setup the environment, simply copy and paste this into a
 terminal:

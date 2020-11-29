@@ -53,12 +53,6 @@ For Ubuntu:
 make flash PORT=/dev/ttyUSB0
 ```
 
-For Windows 10:
-
-```bash
-make flash PORT=/dev/ttyS3
-```
-
 For Mac OSX:
 
 ```bash
@@ -74,12 +68,12 @@ make flash PORT=/dev/tty.SLAB_USBtoUART
     2. Make sure that the USB micro cable supports data communication as some
        "security" based USB micro cables are designed to only allow charging but
        do not have data lines.
-    1. Make sure that the device is not connected to any computer programs such
+    3. Make sure that the device is not connected to any computer programs such
        as Telemetry, PuTTY, or minicom. If you are uncertain of this,
        disconnecting and reconnecting the USB cable will force the programs to
        disconnect from the device.
-    2. Make sure that the CP2102n driver is installed on your machine. Ubuntu
-       has it preinstalled. For OSX and Windows a google search for
+    4. Make sure that the CP2102n driver is installed on your machine. Ubuntu
+       has it preinstalled. For OSX a google search for
        "CP2102n driver for <insert OS>" will point you to download sites for the
        driver.
 
