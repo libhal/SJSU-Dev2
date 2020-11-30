@@ -1,0 +1,32 @@
+#pragma once
+
+#include <cstdint>
+
+namespace std::experimental
+{
+class source_location
+{
+ public:
+  constexpr const char * file_name() const
+  {
+    return "";
+  }
+  constexpr const char * function_name() const
+  {
+    return "";
+  }
+  constexpr std::uint_least32_t line() const
+  {
+    return 0;
+  }
+  constexpr std::uint_least32_t column() const
+  {
+    return 0;
+  }
+
+  static constexpr source_location current()
+  {
+    return std::experimental::source_location{};
+  }
+};
+}  // namespace std::experimental

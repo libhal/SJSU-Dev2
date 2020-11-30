@@ -1,0 +1,359 @@
+#!/bin/bash
+
+####################
+# Global Variables #
+####################
+
+# Get base path
+BASE=$(dirname "$0")
+BASE=$(
+  cd $BASE
+  pwd -P
+)
+# Stash the tool directory
+TOOLDIR=$BASE/tools
+# Get System Architecture
+ARCH=$(uname -m)
+# Get System Operating System
+OS=$(uname -s)
+# Define name of the arm version we are downloading
+BASE_URL="https://github.com/SJSU-Dev2"
+
+PREREQUISITES=1
+TOOL_BUNDLE=1
+PYTHON_TOOLS=1
+NXPPROG=1
+LOCATION_FILE=1
+LINK_PROJECTS=1
+
+# Import SJSU-Dev2 common shell script functions
+. $BASE/tools/common.sh
+
+function print_status() {
+  if [ $1 -ne 0 ]; then
+    printf "$BOLD_RED"
+    printf "✘"
+  else
+    printf "$BOLD_GREEN"
+    printf "✔"
+  fi
+  printf "$RESET\n"
+}
+
+function print_status_nl() {
+  if [ $1 -ne 0 ]; then
+    printf "$BOLD_RED"
+    printf "✘ - failure"
+  else
+    printf "$BOLD_GREEN"
+    printf "✔ - success"
+  fi
+  printf "$RESET\n"
+}
+
+# Make sure only non-root users can run our script
+function quit_if_script_was_run_as_root() {
+  if [[ $EUID -eq 0 ]]; then
+    echo "SJSU-DEV installer script must NOT be run as root! " 1>&2
+    exit 1
+  fi
+}
+
+function request_sudo_privileges() {
+  echo " ──────────────────────────────────────────────────┐"
+  echo "            Acquiring sudo privileges               "
+  echo "└────────────────────────────────────────────────── "
+  sudo echo "" || exit 1
+}
+
+function quit_if_not_64_bit() {
+  echo " ──────────────────────────────────────────────────┐"
+  echo "              Detecting your platform               "
+  echo "└────────────────────────────────────────────────── "
+  if [[ "$ARCH" != 'x86_64' || "$ARCH" == "amd64" ]]; then
+    echo 'Only 64-bit architecture systems are supported!'
+    exit 1
+  fi
+}
+
+function install_linux_prerequisites() {
+  echo " ──────────────────────────────────────────────────┐"
+  echo ""
+  echo "            Installing Linux Prerequisites          "
+  echo ""
+  echo "└────────────────────────────────────────────────── "
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                   Updating Apt                      "
+  echo "└─────────────────────────────────────────────────── "
+  sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  sudo apt update
+  local apt_update=$?
+  print_status_nl $apt_update
+  echo " ────────────────────────────────────────────────────────┐"
+  echo "   Installing git, make, python3 + pip, curl, tar, g++9   "
+  echo "└──────────────────────────────────────────────────────── "
+  sudo apt install -y git make curl tar tree g++-9 \
+    python3 python3-pip python3-setuptools
+  local apt_install=$?
+  print_status_nl $apt_install
+  echo " ──────────────────────────────────────────────────┐"
+  echo "       Adding current user to 'dialout' group        "
+  echo "└────────────────────────────────────────────────── "
+  sudo adduser $USER dialout
+  sudo udevadm control --reload-rules && sudo udevadm trigger
+
+  return $(($apt_update + $apt_install))
+}
+
+function install_mac_osx_prerequisites() {
+  echo " ──────────────────────────────────────────────────┐"
+  echo ""
+  echo "           Installing Mac OSX Prerequisites         "
+  echo ""
+  echo "└────────────────────────────────────────────────── "
+  echo " ───────────────────────────────────────────────────┐"
+  echo "               Installing Homebrew                   "
+  echo "└─────────────────────────────────────────────────── "
+  which -s brew
+  local brew_install=0
+  if [[ $? -ne "0" ]]; then
+    # Install Homebrew
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    brew_install=$?
+  fi
+  print_status_nl $brew_install
+  echo " ───────────────────────────────────────────────────┐"
+  echo "          Prompt Git installer by invoking it        "
+  echo "└─────────────────────────────────────────────────── "
+  git --version
+  local git_status=$?
+  print_status_nl $git_status
+  echo " ───────────────────────────────────────────────────┐"
+  echo "               Brew Install Python@3                 "
+  echo "└─────────────────────────────────────────────────── "
+  brew install python@3
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                Brew Installing gcc                  "
+  echo "└─────────────────────────────────────────────────── "
+  brew install gcc@9
+  brew link --overwrite gcc@9
+
+  return $(($git_status + $brew_install))
+}
+
+function install_python_tools() {
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                  Upgrading PIP                      "
+  echo "└─────────────────────────────────────────────────── "
+  sudo -H python3 -m pip install --upgrade pip
+  local pip_status=$?
+  print_status_nl $pip_status
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                 Installing Gcovr                    "
+  echo "└─────────────────────────────────────────────────── "
+  sudo -H python3 -m pip install --upgrade gcovr
+  local gcovr_status=$?
+  print_status_nl $gcovr_status
+  echo " ───────────────────────────────────────────────────┐"
+  echo "           Installing/Upgrading Virtualenv           "
+  echo "└─────────────────────────────────────────────────── "
+  sudo -H python3 -m pip install --upgrade virtualenv
+  local virtualenv_status=$?
+  print_status_nl $virtualenv_status
+
+  return $(($pip_status + $gcovr_status + $virtualenv_status))
+}
+
+function download_tools_bundle() {
+  cd "$TOOLDIR"
+  echo " ───────────────────────────────────────────────────┐"
+  echo "              Downloading Build Tools                "
+  echo "└─────────────────────────────────────────────────── "
+  rm -rf "gcc-arm-none-eabi-nano-exceptions/"
+  git clone --single-branch --branch "gcc9-2020-q2-update" \
+      "$BASE_URL/gcc-arm-none-eabi-nano-exceptions.git"
+  local git_clone=$?
+  print_status_nl $git_clone
+
+  return $(($git_clone))
+}
+
+function install_nxpprog() {
+  cd "$TOOLDIR"
+  echo " ───────────────────────────────────────────────────┐"
+  echo "                Setting Up nxpprog                   "
+  echo "└─────────────────────────────────────────────────── "
+  rm -rf "nxpprog/"
+  git clone "$BASE_URL/nxpprog.git" "nxpprog/"
+  local git_clone=$?
+  print_status_nl $git_clone
+
+  cd "nxpprog/"
+
+  git checkout --quiet ea28bd0
+  local git_checkout=$?
+  printf "Verify nxpprog commit checkout... "
+  print_status_nl $git_checkout
+
+  ./setup
+  local setup_status=$?
+  printf "Verify nxpprog setup... "
+  print_status_nl $setup_status
+
+  return $(($git_clone + $setup_status + $git_checkout))
+}
+
+function generate_location_file() {
+  echo " ───────────────────────────────────────────────────┐"
+  echo "         Generating SJSU-Dev2 Location File          "
+  echo "└─────────────────────────────────────────────────── "
+  local SETUP_VERSION=$(cat $BASE/setup_version.txt)
+  cat >~/.sjsu_dev2.mk <<EOL
+# Location of SJSU-Dev2 folder
+SJSU_DEV2_BASE         = $BASE
+PREVIOUS_SETUP_VERSION = $SETUP_VERSION
+
+ifeq (,\$(wildcard \$(SJSU_DEV2_BASE)/))
+\$(info +-------------- SJSU-Dev2 Folder Not Found Error ---------------+)
+\$(info |                                                               |)
+\$(info | To update the location of SJSU-Dev2's folder run ./setup      |)
+\$(info |                                                               |)
+\$(info +---------------------------------------------------------------+)
+\$(error )
+endif
+
+EOL
+  printf "Verify location file generation was successful... "
+  local generation_successful=$?
+  print_status_nl $generation_successful
+  return $generation_successful
+}
+
+function final_install_check() {
+  local prerequisites="$(print_status $PREREQUISITES)"
+  local tool_bundle="$(print_status $TOOL_BUNDLE)"
+  local python_tools="$(print_status $PYTHON_TOOLS)"
+  local nxpprog="$(print_status $NXPPROG)"
+
+  local install_was_successful=$(($PREREQUISITES + $TOOL_BUNDLE + $PYTHON_TOOLS + $NXPPROG))
+
+  if [[ $install_was_successful -ne "0" ]]; then
+    printf "\e[0;31m"
+    echo " =========================== "
+    echo "|   Something went wrong!   |"
+    echo "|                           |"
+    echo "|      (╯°□ °)╯︵ ┻━┻       |"
+    printf "\e[0;31m"
+    echo "|                           |"
+    echo "| Prerequisites Install . %b |" $prerequisites
+    printf "\n"
+    echo "| Tools Install ......... %b |" $tool_bundle
+    printf "\n"
+    echo "| Python Tools .......... %b |" $python_tools
+    printf "\n"
+    echo "| Setup nxpprog ......... %b |" $nxpprog
+    printf "\n"
+    echo "|                           |"
+    echo " =========================== "
+    printf "\e[0m\n"
+    exit 1
+  else
+    printf "\e[0;32m"
+    echo " =========================== "
+    echo "|                           |"
+    printf "| Prerequisites Install . %b " $prerequisites
+    printf "\e[0;32m|\n"
+    printf "| Tools Install ......... %b " $tool_bundle
+    printf "\e[0;32m|\n"
+    printf "| Python Tools .......... %b " $python_tools
+    printf "\e[0;32m|\n"
+    printf "| Setup nxpprog ......... %b " $nxpprog
+    printf "\e[0;32m|\n"
+    echo "|                           |"
+    printf "|          (•_•)            |\r"
+    sleep .5
+    printf "|          ( •_•)>⌐▪-▪      |\r"
+    sleep .5
+    printf "|          (⌐▪_▪)           |\n"
+    sleep .5
+    echo "|                           |"
+    echo "|      SETUP COMPLETE!      |"
+    echo "|                           |"
+    printf " =========================== "
+    printf "\e[0m\n"
+    generate_location_file
+    exit 0
+  fi
+}
+
+###############
+# Setup Start #
+###############
+
+quit_if_script_was_run_as_root
+quit_if_not_64_bit
+
+if [[ "$1" == "--generate-location-file" ]]; then
+  echo " Generating Location File..."
+  generate_location_file
+  exit 0
+fi
+
+echo " ──────────────────────────────────────────────────┐"
+echo "  List of software installed globally:              "
+echo "   1) Python3                                       "
+echo "   2) pip (Python3 package manager)                 "
+echo "   3) Curl                                          "
+echo "   4) Git                                           "
+echo "   5) Gcovr                                         "
+echo "   6) XCode CLI tools (OSX Only)                    "
+echo "└────────────────────────────────────────────────── "
+
+request_sudo_privileges
+
+echo " ──────────────────────────────────────────────────┐"
+echo ""
+echo "    Starting SJSU-Dev2 Environment Setup Script     "
+echo ""
+echo "└────────────────────────────────────────────────── "
+
+if [[ "$OS" == "Linux" ]]; then # Linux
+  echo "Operating System: Linux"
+  TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_LINUX
+  install_linux_prerequisites
+  PREREQUISITES=$?
+elif [[ "$OS" == "Darwin" ]]; then # Mac OSX
+  echo "Operating System: Mac OSX Darvin"
+  TOOLS_BUNDLE_URL=$TOOLS_BUNDLE_URL_OSX
+  install_mac_osx_prerequisites
+  PREREQUISITES=$?
+else
+  # Default if Operating System other than Mac or Linux
+  echo -n "Only Linux or OSX systems are supported! Exiting..."
+  exit 1
+fi
+
+if [ "$PREREQUISITES" -ne "0" ]; then
+  printf "\e[0;31m"
+  printf " ─────────────────────────────────────────────────────────┐"
+  echo ""
+  printf "                 Prequisite Install Failed.                "
+  echo ""
+  echo "  Make sure:                                               "
+  echo "     - You are connected to the internet                   "
+  echo ""
+  printf "└───────────────────────────────────────────────────────── "
+  printf "\e[0m\n"
+  exit 1
+fi
+
+download_tools_bundle
+TOOL_BUNDLE=$?
+install_python_tools
+PYTHON_TOOLS=$?
+install_nxpprog
+NXPPROG=$?
+
+echo ""
+
+final_install_check

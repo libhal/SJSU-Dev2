@@ -1,0 +1,13 @@
+<map id="/home/runner/work/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L1_Peripheral/i2c.hpp" name="/home/runner/work/SJSU&#45;Dev2/SJSU&#45;Dev2/library/L1_Peripheral/i2c.hpp">
+<area shape="rect" id="node2" href="$d9/d18/lpc40xx_2i2c_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L1_Peripheral/lpc40xx/i2c.hpp" alt="" coords="307,117,507,173"/>
+<area shape="rect" id="node6" href="$d7/dae/memory__access__protocol_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L2_HAL/memory_access_protocol.hpp" alt="" coords="582,117,833,173"/>
+<area shape="rect" id="node7" href="$dd/dbb/max17043_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L2_HAL/sensors/battery\l/max17043.hpp" alt="" coords="729,228,899,299"/>
+<area shape="rect" id="node8" href="$dc/d47/mma8452q_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L2_HAL/sensors/movement\l/accelerometer/mma8452q.hpp" alt="" coords="503,228,704,299"/>
+<area shape="rect" id="node9" href="$d0/dfe/si7060_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L2_HAL/sensors/environment\l/temperature/si7060.hpp" alt="" coords="924,228,1123,299"/>
+<area shape="rect" id="node10" href="$d6/df5/tmp102_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L2_HAL/sensors/environment\l/temperature/tmp102.hpp" alt="" coords="5,228,204,299"/>
+<area shape="rect" id="node11" href="$d2/d61/mpu6050_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L2_HAL/sensors/movement\l/accelerometer/mpu6050.hpp" alt="" coords="959,109,1149,180"/>
+<area shape="rect" id="node12" href="$d0/dd3/i2c__command_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L3_Application/commands\l/i2c_command.hpp" alt="" coords="1174,109,1353,180"/>
+<area shape="rect" id="node3" href="$d8/dbb/lpc17xx_2i2c_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L1_Peripheral/lpc17xx/i2c.hpp" alt="" coords="227,235,427,291"/>
+<area shape="rect" id="node5" href="$d4/de6/sjtwo_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L2_HAL/boards/sjtwo.hpp" alt="" coords="515,347,691,403"/>
+<area shape="rect" id="node4" href="$df/d29/sjone_8hpp.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/L2_HAL/boards/sjone.hpp" alt="" coords="239,347,415,403"/>
+</map>

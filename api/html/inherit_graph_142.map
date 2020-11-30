@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html" title="An abstract interace for the PeriodicTask class. " alt="" coords="235,5,395,47"/>
+<area shape="rect" id="node2" href="$d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html" title="sjsu::rtos::PeriodicTask\l\&lt; kTaskStackSize \&gt;" alt="" coords="475,71,635,112"/>
+<area shape="rect" id="node3" href="$d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="sjsu::rtos::TaskInterface" alt="" coords="5,143,169,170"/>
+<area shape="rect" id="node4" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kStack\lSize \&gt;" alt="" coords="231,71,398,112"/>
+<area shape="rect" id="node5" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; 512 \&gt;" alt="" coords="235,202,394,229"/>
+<area shape="rect" id="node7" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kTaskStack\lSize \&gt;" alt="" coords="217,136,412,177"/>
+<area shape="rect" id="node6" href="$dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html" title="sjsu::rtos::PeriodicScheduler" alt="" coords="460,202,649,229"/>
+</map>

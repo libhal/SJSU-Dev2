@@ -1,0 +1,193 @@
+
+USAGE
+================================================================================
+
+  make [target] [PLATFORM=[lpc40xx|lpc17xx|stm32f10x|linux|...]]
+  make [target] [PLATFORM=platform] [JTAG=[stlink|jlink|...]]
+  make [target] [PLATFORM=platform] OPTIMIZE=2
+
+
+TARGETS
+================================================================================
+
+GENERAL TARGETS ________________________________________________________________
+
+  help -------------------------------------------------------------------------
+    Shows this menu.
+
+  application ------------------------------------------------------------------
+    Compiles code and builds application binary.
+
+  execute ----------------------------------------------------------------------
+  flash ------------------------------------------------------------------------
+    Program applications binary to device or executes binary on linux.
+
+    None jtag flashing support is only available for LPC series devices such as
+    lpc17xx and lpc40xx.
+
+    This option will also build the binary, if necessary, before programming or
+    executing the binary.
+
+    If you have a JTAG or SWD debugging device and can access the jtag/swd pins
+    of the device, it is preferred to use that as programming is orders
+    magnitude faster.
+
+  program ----------------------------------------------------------------------
+    Program application binary via JTAG/SWD interface via OpenOCD.
+
+  debug ------------------------------------------------------------------------
+    Open GDB with current project's firmware.elf file, using OpenOCD if
+    necessary.
+
+  clean ------------------------------------------------------------------------
+    Deletes temporary build files found within the build folder of the project.
+    Keeping Temporary build files speeds up builds, so keeping them around is
+    usually a good thing.
+    Clean will also delete application binaries, disassemblies, test files and
+    anything else found in the project's "build" folder.
+
+  library-clean ----------------------------------------------------------------
+    Cleans temporary libraries files made specifically for the designated
+    platform.
+
+  purge ------------------------------------------------------------------------
+    Remove all temporary local build files and static libraries.
+
+  telemetry --------------------------------------------------------------------
+    Launch telemetry web serial interface on interface.
+
+
+DEVELOPER TARGETS ______________________________________________________________
+
+  all-projects -----------------------------------------------------------------
+    Checks that all projects compile without warnings or errors.
+
+  lint -------------------------------------------------------------------------
+    Check that source files abide by the SJSU-Dev2 coding standard.
+
+  tidy -------------------------------------------------------------------------
+    Check that source file fit the SJSU-Dev2 naming convention.
+
+  test -------------------------------------------------------------------------
+    Build all tests as defined in TESTS, typically defined within the
+    project.mk file.
+
+  library-test -----------------------------------------------------------------
+    Compile and test SJSU-Dev2's library test suite.
+
+  presubmit --------------------------------------------------------------------
+    Runs the presubmit checks which is used for continuous integration. The
+    following checks will be performed:
+      1. Performs `make all-projects`
+      2. Performs `make lint`
+      3. Performs `make tidy`
+      4. Performs `make library-test`
+
+  format-code ------------------------------------------------------------------
+    Will format all modified files in commit to the SJSU-Dev2 standard.
+
+  debug-test -------------------------------------------------------------------
+    Launches GDB on unit tests.
+
+
+COMMON COMMAND LINE OPTIONS:
+================================================================================
+
+  PLATFORM ---------------------------------------------------------------------
+    Usage:
+      ... PLATFORM=lpc40xx
+      ... PLATFORM=stm32f10x
+      ... PLATFORM=linux
+
+    Description:
+      Set the target platform for the make target. For example, if you would
+      like to build the "hello_world" project for linux you can run:
+
+        make application PLATFORM=linux
+
+  JTAG -------------------------------------------------------------------------
+    Usage:
+      ... JTAG=stlink
+      ... JTAG=jlink
+      ... JTAG=ft2232h
+
+    Description:
+      Set the JTAG or SWD device to be used for programming or debugging device.
+      Some of such debugging devices may be the following:
+
+        stlink, jlink, FT2232H
+
+      The list of all supported debug devices can be found here:
+      "tools/openocd/scripts/interface/"
+
+      and this link:
+
+      http://openocd.org/doc/html/Debug-Adapter-Hardware.html#Debug-Adapter-Hardware
+
+  OPTIMIZE ---------------------------------------------------------------------
+    Usage:
+      ... OPTIMIZE=g
+      ... OPTIMIZE=s
+      ... OPTIMIZE=2
+
+    Description:
+      Set the optimization level of the compiler. Default is optimization level
+      is 0. Available optimization levels for GCC are:
+
+        0: Low to no optimization
+            Only trivial and quick optimizations will be considered.
+            Not recommended in general. Prefer to use level g.
+
+        1: Level 1 optimization
+            Optimizes the executable, reduces binary size, increases execution
+            performance, but compilation time will increase.
+
+        g: Debug Friendly Level 1 optimization (DEFAULT)
+            Same optimizations as level 1, but certain flags are turned on to
+            make the debugging experience better. The debugging experience is
+            actually better with level g than with than level 0, thus this is
+            the best option for day to day development.
+
+        2: Level 2 optimization
+            Optimizes the executable further. Performs all optimizations that
+            do not sacrifice memory to increase runtime performance.
+
+        3: Highest level of optimization (NOT RECOMMENDED)
+            Best runtime performance, but will typically increase binary size
+            above O2. This optimization level will lead to glitches in some
+            applications. Be careful when using it.
+
+        s: Optimize for size
+            Will perform all optimizations that reduce the size of the binary. Typically increases runtime performance but may sacrifice runtime performance in order to decrease binary size.
+
+  PORT -------------------------------------------------------------------------
+    Usage:
+      make flash PORT=/dev/ttyUSB0
+
+    Description:
+      Set the serial port to use when performing "make flash".
+
+  TEST_ARGUMENTS ---------------------------------------------------------------
+    Usage:
+      make test TEST_ARGUMENTS="-s [i2c,adc]"
+      make library-test TEST_ARGUMENTS="-s [i2c,adc]"
+      make library-test TEST_ARGUMENTS="-h"
+
+    Description:
+      Defines the arguments to be passed to the test executable.
+      -h will return the test executable help menu.
+
+  OPENOCD_CONFIG ---------------------------------------------------------------
+    Usage:
+      ... OPENOCD_CONFIG=custom_debug_config.cfg
+
+    Description:
+      Used to use your own custom debug config script.
+
+  LINKER -----------------------------------------------------------------------
+    Usage:
+      ... LINKER=custom_linker_script.ld
+
+    Description:
+      Used to use your own custom linker script.
+
