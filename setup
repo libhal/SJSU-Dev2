@@ -293,7 +293,7 @@ function final_install_check() {
 quit_if_script_was_run_as_root
 quit_if_not_64_bit
 
-if [[ "$1" -eq "--generate-location-file" ]]; then
+if [[ "$1" == "--generate-location-file" ]]; then
   echo " Generating Location File..."
   generate_location_file
   exit 0
