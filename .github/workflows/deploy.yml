@@ -4,8 +4,8 @@ on:
       - master
 
 jobs:
-  cleanliness:
-    name: Cleanliness Checks
+  update_docs:
+    name: Update Docs
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout 🛎️
@@ -26,5 +26,5 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: documentation # The folder the action should deploy.
+          FOLDER: . # The folder the action should deploy.
           CLEAN: true # Automatically remove deleted files from the deploy branch
