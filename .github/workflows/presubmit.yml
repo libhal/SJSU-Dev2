@@ -1,4 +1,10 @@
-on: [pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 12 * * *'
 
 jobs:
   cleanliness:
@@ -32,6 +38,17 @@ jobs:
       - name: Check Variable Names 📃
         working-directory: projects/continuous_integration
         run: make commit-tidy
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        # Only Deploy to gh-pages on master branch event
+        if: ${{ github.ref == 'refs/heads/master' &&
+                github.event_name == 'push' }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: .
+          CLEAN: true
 
   unit_tests:
     name: Unit Tests + Coverage
