@@ -15,14 +15,13 @@ information takes precedence over the summaries made here.
 
 ## Third Party Libraries
 
-  - [Catch2](https://github.com/catchorg/Catch2), MIT licence
-  - [etl](https://www.etlcpp.com/), MIT licence
-  - [FakeIt](https://github.com/eranpeer/FakeIt), MIT licence
-  - [fff](https://github.com/meekrosoft/fff), MIT licence
-  - [font8x8](https://github.com/dhepper/font8x8), Copyright (c) Marcel
-    Sondaar, Public Domain
-  - [FreeRTOS](https://www.freertos.org/), MIT License
-  - [microrl](https://github.com/Helius/microrl), Copyright (c) Eugene
-    Samoylov
-  - [printf](https://github.com/mpaland/printf), Copyright (c) 2014
-    Marco Paland, MIT License
+- [DocTest](https://github.com/onqtam/doctest), MIT licence
+- [FakeIt](https://github.com/eranpeer/FakeIt), MIT licence
+- [fff](https://github.com/meekrosoft/fff), MIT licence
+- [font8x8](https://github.com/dhepper/font8x8), Copyright (c) Marcel Sondaar,
+  Public Domain
+- [FreeRTOS](https://www.freertos.org/), MIT License
+- [microrl](https://github.com/Helius/microrl), Copyright (c) Eugene
+  Samoylov
+- [printf](https://github.com/mpaland/printf), Copyright (c) 2014
+  Marco Paland, MIT License

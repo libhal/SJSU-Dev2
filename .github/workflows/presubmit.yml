@@ -77,8 +77,7 @@ jobs:
           file: projects/continuous_integration/build/test/coverage/coverage.xml
           flags: unittests
           name: codecov-umbrella
-          fail_ci_if_error: true # (default = false)
-          verbose: true # (default = false)
+          verbose: true
 
   linux_checks:
     name: Linux Setup + Build Checks

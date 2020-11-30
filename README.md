@@ -1,31 +1,29 @@
 # SJSU-Dev2
 
-[![Build Status](https://travis-ci.com/SJSU-Dev2/SJSU-Dev2.svg?branch=master)](https://travis-ci.com/SJSU-Dev2/SJSU-Dev2)
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+[![Slack Chat](https://img.shields.io/badge/join-slack-purple.svg?logo=slack&longCache=true&style=flat)](https://slofile.com/slack/sjsu-dev2)
+[![Github Actions](https://github.com/SJSU-Dev2/SJSU-Dev2/workflows/.github/workflows/presubmit.yml/badge.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/actions?query=workflow%3A.github%2Fworkflows%2Fpresubmit.yml)
+[![codecov](https://codecov.io/gh/SJSU-Dev2/SJSU-Dev2/branch/master/graph/badge.svg?token=E7aAr2o1CT)](https://codecov.io/gh/SJSU-Dev2/SJSU-Dev2)
 [![Documentation Status](https://readthedocs.org/projects/sjsu-dev/badge/?version=latest)](http://sjsu-dev2.readthedocs.io/en/latest)
-[![Coverage Status](https://coveralls.io/repos/github/SJSU-Dev2/SJSU-Dev2/badge.svg?branch=master)](https://coveralls.io/github/SJSU-Dev2/SJSU-Dev2?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f004895337c42459f881db938e84885)](https://www.codacy.com/app/SJSU-Dev2/SJSU-Dev2?utm_source=github.com&utm_medium=referral&utm_content=SJSU-Dev2/SJSU-Dev2&utm_campaign=Badge_Grade)
 [![GitHub stars](https://img.shields.io/github/stars/SJSU-Dev2/SJSU-Dev2.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/SJSU-Dev2/SJSU-Dev2.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/network)
 [![GitHub issues](https://img.shields.io/github/issues/SJSU-Dev2/SJSU-Dev2.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/issues)
-[![Slack Chat](https://img.shields.io/badge/join-slack-purple.svg?logo=slack&longCache=true&style=flat)](https://slofile.com/slack/sjsu-dev2)
 
 Cross platform firmware framework written by students, alumni, and faculty of
 San Jose State University. Designed for the original purpose of helping students
 develop firmware for the SJTwo board.
 
+## **[📖 Full Documentation & Guides](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)*
+
+## **[<i class="fa fa-cubes" aria-hidden="true"></i> Software APIs](https://SJSU-Dev2.github.io/SJSU-Dev2/api/html/)**
+
 ## Operating System Supported
 
-<p align="center">
-<img
-src="https://assets.ubuntu.com/v1/29985a98-ubuntu-logo32.png"
-height="100px"/>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<img
-src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
-height="100px" />
-</p>
-
-Built for **Ubuntu (18.04 or above)** and **Mac OSX (High Sierra or above)**.
+Built for
+- <i class="fa fa-linux" aria-hidden="true"></i> **Ubuntu (>= 18.04)**
+- <i class="fa fa-apple" aria-hidden="true"></i> **Mac OSX (>= High Sierra)**
 
 ## Quick Start
 
@@ -47,9 +45,11 @@ If you find that git is not installed on your machine follow these steps to
 
 ### Building a Project
 
-The starter `hello_world` project can be found in the `projects/` folder along
-with the the `demos/` folder which is full of examples you can run
-on your board. To build `hello_world` :
+A good project to start with would be the `hello_world` project can be found in
+the `projects/` folder. The `demos/` folder which is full of examples you can
+run on your board.
+
+To build `hello_world`:
 
 ```bash
 cd project/hello_world
@@ -65,11 +65,6 @@ From within a project, run `make flash`.
 If `make flash` is not available for your platform, then you can try
 `make jtag-flash DEBUG_DEVICE=<jlink|stlink|etc> PLATFORM=<insert platform here>`
 if you have a JTAG or SWD debugger.
-
-## Full Documentation and Installation Guide
-
-- **[Full Documentation](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)**
-- **[Library APIs](https://SJSU-Dev2.github.io/SJSU-Dev2/api/html/)**
 
 ## Using a Prebuilt Virtual Machine
 
@@ -102,32 +97,6 @@ Chrome, using the online serial terminal tool,
 **[Telemetry](https://SJSU-Dev2.github.io/Telemetry)**.
 You can also open this up on your browser using the `make telemetry` command in
 a project directory.
-
-## Supported Processors
-
-| Processor/OS   | InterruptController | SystemTimer | CycleCounter |
-| -------------- | ------------------- | ----------- | ------------ |
-| RISCV 32I      | ☒                   | ☒           | ☒            |
-| Arm Cortex M4F | ☑                   | ☑           | ☑            |
-| Arm Cortex M3  | ☑                   | ☑           | ☑            |
-| Embedded Linux | -                   | -           | -            |
-
-## Supported Platforms
-
-- ☑ = Supported
-- ◯ = Partially supported
-- ☒ = Not supported but available
-- \- = Not available on microcontroller
-
-| Processor/OS   | MCU/SOC   | Gpio | Uart | Adc | Pwm | I2c | Spi | Dac | Timer | Can | Flash | Watchdog |
-| -------------- | --------- | ---- | ---- | --- | --- | --- | --- | --- | ----- | --- | ----- | -------- |
-| Arm Cortex M4F | lpc40xx   | ☑    | ☑    | ☑   | ☑   | ☑   | ☑   | ☑   | ☑     | ☑   | ☒     | ☑        |
-| Arm Cortex M3  | lpc17xx   | ☑    | ☑    | ☑   | ☑   | ☑   | ☑   | ☑   | ☑     | ☑   | ☒     | ☑        |
-| Arm Cortex M3  | stm32f10x | ☑    | ☑    | ☒   | ☒   | ☒   | ☒   | ☒   | ☒     | ☒   | ☒     | ☒        |
-| Arm Cortex M4F | stm32f4xx | ☑    | ☒    | ☒   | ☒   | ☒   | ☒   | ☒   | ☒     | ☒   | ☒     | ☒        |
-| RISCV 32IMAC   | gd32v10x  | ☒    | ☒    | ☒   | ☒   | ☒   | ☒   | ☒   | ☒     | ☒   | ☒     | ☒        |
-| RISCV 32IMAC   | gd32v10x  | ☒    | ☒    | ☒   | ☒   | ☒   | ☒   | ☒   | ☒     | ☒   | ☒     | ☒        |
-| Linux          | any       | ☒    | ☒    | ☒   | ☒   | ☒   | ☒   | ☒   | ☒     | ☒   | ☒     | ☒        |
 
 ## Future Goals of SJSU-Dev2
 
