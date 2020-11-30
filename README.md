@@ -53,13 +53,52 @@ make application
 
 ## 📥 Programming a board
 
-From within a project, run `make flash`.
+From within a project, run 
+
+```bash
+make flash
+```
 
 [![asciicast](https://asciinema.org/a/314699.svg)](https://asciinema.org/a/314699)
 
-If `make flash` is not available for your platform, then you can try
-`make jtag-flash DEBUG_DEVICE=<jlink|stlink|etc> PLATFORM=<insert platform here>`
-if you have a JTAG or SWD debugger.
+Most platforms do not have `make flash` not available, and in those cases JTAG/SWD
+can be used to program a device. Hook up your JTAG or SWD device of choice to your
+MCU and execute the following command with the correct JTAG and PLATFORM selected:
+
+```bash
+make program JTAG=<jlink|stlink|etc> PLATFORM=<stm32f10x|lpc17xx|etc>
+```
+
+### Example using a STLink to program a stm32f10x:
+
+```bash
+make program JTAG=stlink PLATFORM=stm32f10x
+```
+
+## 🖥️ Viewing Serial Output
+
+The preferred method for communicating with a serial devices is via Google
+Chrome, using the online serial terminal tool,
+**[Telemetry](https://SJSU-Dev2.github.io/Telemetry)**.
+You can also open this up on your browser using the `make telemetry` command in
+a project directory.
+
+## 🔎 Debugging Device
+
+If you are using a JTAG or SWD device with your MCU, you can debug the device with a 
+similiar command to programming:
+
+```bash
+make debug JTAG=<jlink|stlink|etc> PLATFORM=<stm32f10x|lpc17xx|etc>
+```
+
+### Example using a STLink to program a stm32f10x:
+
+```bash
+make debug JTAG=stlink PLATFORM=stm32f10x
+```
+
+STDOUT and STDIN will both be available via the gdb debug monitor.
 
 ## 📦 Using a Prebuilt Virtual Machine
 
@@ -84,14 +123,6 @@ Steps to install virtual box and the virtual machine are listed below:
    `Devices > USB > CP2102n...`
 4. At this point you can run commands like `make application` and `make flash`
    from within the SJSU-Dev2 folder which is located `/home/osboxes/SJSU-Dev2`
-
-### Viewing Serial Output
-
-The preferred method for communicating with a serial device is via Google
-Chrome, using the online serial terminal tool,
-**[Telemetry](https://SJSU-Dev2.github.io/Telemetry)**.
-You can also open this up on your browser using the `make telemetry` command in
-a project directory.
 
 ## 🌌 Future Goals of SJSU-Dev2
 
