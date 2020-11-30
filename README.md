@@ -40,18 +40,18 @@ If you find that git is not installed on your machine follow these steps to
 
 ## 🛠️ Building a Project
 
-A good project to start with would be the `hello_world` project can be found in
-the `projects/` folder. The `demos/` folder which is full of examples you can
-run on your board.
+A good project to start with would be the `hello_world` project. It can be found
+in the `projects/` folder. The example projects can be found in the `demos/` 
+folder.
 
-To build `hello_world`:
+Building `hello_world`:
 
 ```bash
 cd project/hello_world
 make application
 ```
 
-## 📥 Programming a board
+## 📥 Programming a Device
 
 From within a project, run 
 
@@ -61,15 +61,15 @@ make flash
 
 [![asciicast](https://asciinema.org/a/314699.svg)](https://asciinema.org/a/314699)
 
-Most platforms do not have `make flash` not available, and in those cases JTAG/SWD
-can be used to program a device. Hook up your JTAG or SWD device of choice to your
-MCU and execute the following command with the correct JTAG and PLATFORM selected:
+Most platforms do not have `make flash` available, and in those cases JTAG/SWD
+can be used to program a device. Hook up a JTAG or SWD to your MCU and execute 
+the following command with the correct JTAG and PLATFORM selected:
 
 ```bash
 make program JTAG=<jlink|stlink|etc> PLATFORM=<stm32f10x|lpc17xx|etc>
 ```
 
-### Example using a STLink to program a stm32f10x:
+### Example using a STLink to program a stm32f10x
 
 ```bash
 make program JTAG=stlink PLATFORM=stm32f10x
@@ -98,31 +98,37 @@ make debug JTAG=<jlink|stlink|etc> PLATFORM=<stm32f10x|lpc17xx|etc>
 make debug JTAG=stlink PLATFORM=stm32f10x
 ```
 
-STDOUT and STDIN will both be available via the gdb debug monitor.
+STDOUT and STDIN will be available via the gdb debug monitor.
 
-## 📦 Using a Prebuilt Virtual Machine
+## 📦 Windows Users: Using a Virtual Machine 
 
-One of the easiest ways to get started with SJSU-Dev2 is to use a VM with all of
-the software installed.
+One of the easiest ways to get started with SJSU-Dev2 for Windows users is to use 
+a prebuilt virtual machine.
 
 Steps to install virtual box and the virtual machine are listed below:
 
 1. Download and install Virtualbox and then the "VirtualBox Oracle VM VirtualBox
    Extension Pack" on your computer from this link:
    [VirtualBox Download](https://www.virtualbox.org/wiki/Downloads)
-2. Download the prebuilt virtual machine:
-   **[Ubuntu SJSU-Dev.ova](https://drive.google.com/file/d/1SNUkQY07GViJBu7H4jGsOoMN5gbs7kBa/view)**
-3. Open "Ubuntu SJSU-Dev.ova" and import into VirtualBox.
+2. Download a prebuilt VirtualBox image for Ubuntu from
+   [https://www.osboxes.org/ubuntu/](https://www.osboxes.org/ubuntu/). If you don't
+   know which version to choose, use 18.04.3.
+3. Open the file with VirtualBox to setup and open the virtual machine.
 
-### Using the Virtual Machine
+### Setting up SJSU-Dev2
 
-1. Open the "Ubuntu SJSU-Dev" Virtual Machine on the left hand side.
+Now that the VM is up and running, you can use the quick start guide to download and 
+setup SJSU-Dev2.
+
+### Connecting USB Devices to Virtual Machine
+
+1. Open the Ubuntu Virtual Machine on the left hand side.
 2. Login by entering the password "osboxes.org"
-3. To program your board, you will need to connect it to your host machine and
-   bring it into the virtual machine by using the top menu:
+3. To program and interact with your board, you will need to connect it to your host 
+   machine and bring it into the virtual machine by using the top menu:
    `Devices > USB > CP2102n...`
 4. At this point you can run commands like `make application` and `make flash`
-   from within the SJSU-Dev2 folder which is located `/home/osboxes/SJSU-Dev2`
+   from within the SJSU-Dev2 folder.
 
 ## 🌌 Future Goals of SJSU-Dev2
 
