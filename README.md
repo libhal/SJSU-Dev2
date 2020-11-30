@@ -1,7 +1,5 @@
 # SJSU-Dev2
 
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
 [![Slack Chat](https://img.shields.io/badge/join-slack-purple.svg?logo=slack&longCache=true&style=flat)](https://slofile.com/slack/sjsu-dev2)
 [![Github Actions](https://github.com/SJSU-Dev2/SJSU-Dev2/workflows/.github/workflows/presubmit.yml/badge.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/actions?query=workflow%3A.github%2Fworkflows%2Fpresubmit.yml)
 [![codecov](https://codecov.io/gh/SJSU-Dev2/SJSU-Dev2/branch/master/graph/badge.svg?token=E7aAr2o1CT)](https://codecov.io/gh/SJSU-Dev2/SJSU-Dev2)
@@ -15,19 +13,16 @@ Cross platform firmware framework written by students, alumni, and faculty of
 San Jose State University. Designed for the original purpose of helping students
 develop firmware for the SJTwo board.
 
-## **[📖 Full Documentation & Guides](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)*
+## [📖 Full Documentation & Guides](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)
 
-## **[<i class="fa fa-cubes" aria-hidden="true"></i> Software APIs](https://SJSU-Dev2.github.io/SJSU-Dev2/api/html/)**
+## [⚙️ Software APIs](https://SJSU-Dev2.github.io/SJSU-Dev2/api/html/)
 
-## Operating System Supported
+## 💻 Operating System Supported
 
-Built for
-- <i class="fa fa-linux" aria-hidden="true"></i> **Ubuntu (>= 18.04)**
-- <i class="fa fa-apple" aria-hidden="true"></i> **Mac OSX (>= High Sierra)**
+- **Ubuntu (>= 18.04)**
+- **Mac OSX (>= High Sierra)**
 
-## Quick Start
-
-### Setting up the environment
+## 🚀 Quick Start
 
 To download and setup the environment, simply copy and paste this into a
 terminal:
@@ -43,7 +38,7 @@ cd SJSU-Dev2
 If you find that git is not installed on your machine follow these steps to
 **[install GIT](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)**.
 
-### Building a Project
+## 🛠️ Building a Project
 
 A good project to start with would be the `hello_world` project can be found in
 the `projects/` folder. The `demos/` folder which is full of examples you can
@@ -56,7 +51,7 @@ cd project/hello_world
 make application
 ```
 
-### Programming a board
+## 📥 Programming a board
 
 From within a project, run `make flash`.
 
@@ -66,7 +61,7 @@ If `make flash` is not available for your platform, then you can try
 `make jtag-flash DEBUG_DEVICE=<jlink|stlink|etc> PLATFORM=<insert platform here>`
 if you have a JTAG or SWD debugger.
 
-## Using a Prebuilt Virtual Machine
+## 📦 Using a Prebuilt Virtual Machine
 
 One of the easiest ways to get started with SJSU-Dev2 is to use a VM with all of
 the software installed.
@@ -98,7 +93,7 @@ Chrome, using the online serial terminal tool,
 You can also open this up on your browser using the `make telemetry` command in
 a project directory.
 
-## Future Goals of SJSU-Dev2
+## 🌌 Future Goals of SJSU-Dev2
 
 - [x] Integrate user-defined literals for SI units
 - [ ] Platform Additions
