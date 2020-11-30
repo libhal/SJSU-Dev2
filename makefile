@@ -197,13 +197,15 @@ ifeq ($(UNAME_S),Darwin)
 	OS := osx
 endif
 
-TOOLCHAIN_DIR  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-nano-exceptions/$(OS)
-OS_TOOLS_DIR     =
-SJCLANG          = $(shell cd $(OS_TOOLS_DIR)/clang+llvm-*/ ; pwd)
-SJARMGCC         = $(shell cd $(TOOLCHAIN_DIR)/gcc-arm-none-eabi-*/ ; pwd)
-SJ2_OPENOCD_DIR  = $(SJSU_DEV2_BASE)/tools/$(OS)/openocd
-OPENOCD          = $(SJ2_OPENOCD_DIR)/bin/openocd
-GDBINIT_PATH     = $(SJSU_DEV2_BASE)/tools/gdb_dashboard/gdbinit
+OS_TOOLS_DIR    = $(SJ2_TOOLS_DIR)/$(OS)
+SJCLANG         = $(shell cd $(OS_TOOLS_DIR)/clang+llvm-*/ ; pwd)
+
+GCC_ROOT_DIR    = $(SJ2_TOOLS_DIR)/gcc-arm-none-eabi-nano-*/$(OS)
+SJARMGCC        = $(shell cd $(GCC_ROOT_DIR)/gcc-arm-none-eabi-*/ ; pwd)
+
+SJ2_OPENOCD_DIR = $(SJ2_TOOLS_DIR)/$(OS)/openocd
+OPENOCD         = $(SJ2_OPENOCD_DIR)/bin/openocd
+GDBINIT_PATH    = $(SJ2_TOOLS_DIR)/gdb_dashboard/gdbinit
 
 # ==============================================================================
 # Macro for building static library files
@@ -267,7 +269,7 @@ HOST_SYMBOLIZER    = $(SJCLANG)/bin/llvm-symbolizer
 LINKER_SCRIPT   ?= $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/linker.ld
 
 INCLUDES        := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
-SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
+SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -isystem", $(SYSTEM_INCLUDES)))
 OBJECTS         := $(addprefix $(SJ2_OBJECT_DIR)/, $(SOURCES:=.o))
 
 CFLAGS          := -O$(OPTIMIZE) -D PLATFORM=$(PLATFORM) \
