@@ -1,3 +1,0 @@
-#define TCB_SPAN_NAMESPACE_NAME std
-#include "span.hpp"
-#undef TCB_SPAN_NAMESPACE_NAME
