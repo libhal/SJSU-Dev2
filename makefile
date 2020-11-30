@@ -197,16 +197,12 @@ ifeq ($(UNAME_S),Darwin)
 	OS := osx
 endif
 
-TOOLS_DIR     = $(SJSU_DEV2_BASE)/tools/$(OS)
-TOOLCHAIN_DIR = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-nano-exceptions/$(OS)
-SJCLANG          = $(shell cd $(TOOLS_DIR)/clang+llvm-*/ ; pwd)
+TOOLCHAIN_DIR  = $(SJSU_DEV2_BASE)/tools/gcc-arm-none-eabi-nano-exceptions/$(OS)
+OS_TOOLS_DIR     =
+SJCLANG          = $(shell cd $(OS_TOOLS_DIR)/clang+llvm-*/ ; pwd)
 SJARMGCC         = $(shell cd $(TOOLCHAIN_DIR)/gcc-arm-none-eabi-*/ ; pwd)
-SJ2_OPENOCD_DIR  = $(shell grep -q Microsoft /proc/version && \
-                           echo "$(TOOLS_DIR)/openocd-wsl" || \
-                           echo "$(TOOLS_DIR)/openocd")
-SJ2_OPENOCD_EXE  = $(shell grep -q Microsoft /proc/version && \
-                           echo "openocd.exe" || echo "openocd")
-OPENOCD          = $(SJ2_OPENOCD_DIR)/bin/$(SJ2_OPENOCD_EXE)
+SJ2_OPENOCD_DIR  = $(SJSU_DEV2_BASE)/tools/$(OS)/openocd
+OPENOCD          = $(SJ2_OPENOCD_DIR)/bin/openocd
 GDBINIT_PATH     = $(SJSU_DEV2_BASE)/tools/gdb_dashboard/gdbinit
 
 # ==============================================================================
@@ -275,7 +271,7 @@ SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -idirafter", $(SYSTEM_INCLUDES)))
 OBJECTS         := $(addprefix $(SJ2_OBJECT_DIR)/, $(SOURCES:=.o))
 
 CFLAGS          := -O$(OPTIMIZE) -D PLATFORM=$(PLATFORM) \
-                   $(SYSTEM_INCLUDES) $(INCLUDES) $(CFLAGS)  \
+                   $(SYSTEM_INCLUDES) $(INCLUDES) $(CFLAGS) \
                    $(WARNING_BECOME_ERRORS)
 CPPFLAGS        := $(SYSTEM_INCLUDES) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
 LDFLAGS         := $(CFLAGS) $(LDFLAGS) $(addprefix -T ,$(LINKER_SCRIPT))
@@ -334,7 +330,7 @@ application: | $(HEX) $(BINARY) $(LIST) $(SRC_LIST) $(SIZE)
 
 program: application
 	@printf '$(MAGENTA)Programming chip via debug device...$(RESET)\n'
-	@$(OPENOCD) -s $(SJ2_OPENOCD_DIR)/scripts/ \
+	@$(SJ2_OPENOCD_DIR)/bin/openocd -s $(SJ2_OPENOCD_DIR)/scripts/ \
 			-c "source [find interface/$(JTAG).cfg]" -f $(OPENOCD_CONFIG) \
 			-c "program \"$(EXECUTABLE)\" reset exit"
 
@@ -349,7 +345,6 @@ debug:
 			"$(SJ2_OPENOCD_DIR)" \
 			"$(JTAG)" \
 			"$(OPENOCD_CONFIG)" \
-			"$(SJ2_OPENOCD_EXE)"
 
 
 debug-test:
