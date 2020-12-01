@@ -82,24 +82,25 @@ make application PLATFORM=stm32f10x OPTIMIZE=s
 
 ## Step 2. Programming Devices
 
-There are 2 ways to program a device, using `make flash` and using
-`make program`. `make flash` will tend to use serial, USB or some other specific
-protocol for the device. This currently only works for the SJTwo and SJOne
-boards. `make program` is used to program devices using a debugger and is the
-standard choice for programming devices that are not the SJTwo or SJOne boards.
-
-Programming a device is nearly the same command as build an application but you
-remove the "application" target name with "flash" or "program. Like so:
+Programming a device is nearly the same command as build an application but
+replace the "application" target name with "flash". Like so:
 
 ```bash
 make flash
 ```
 
+The above command only works for the LPC series of microcontrollers which are
+used for the SJTwo and SJOne boards.
+
+In general, you will want to program a device using a JTAG or SWD debugger
+such as an `stlink` debugger. To flash using a JTAG device, you need to supply
+the `JTAG` parameter in the command like so:
+
 ```bash
-make program PLATFORM=stm32f10x JTAG=stlink
+make flash JTAG=stlink
 ```
 
-Notice that we need to supply a `JTAG=stlink` field here in order to select
-which debugger we are using. Another option would be the `JTAG=jlink` option, if
-you are using a Segger JLink debugger. `stlink` is more commonly used, as it is
-cheaper.
+Other options for `JTAG` are available such as `JTAG=jlink` or `JTAG=buspirate`.
+`make flash` supports all debug devices that OpenOCD supports. `stlink` is the
+preferred choice for SJSU-Dev2 users as it is cheaper and more widely available
+on Amazon, Ebay, AliExpress and other online stores.

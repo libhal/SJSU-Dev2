@@ -8,7 +8,4 @@ $(eval $(call BUILD_LIBRARY,libstm32f10x,LIBRARY_STM32F10X))
 
 include $(LIBRARY_DIR)/L0_Platform/arm_cortex/m3/m3.mk
 
-platform-flash:
-	echo -n "Factory bootloader flashing support is not currently supported for "
-	echo "stm32f10x"
-	echo "Please use 'make jtag-flash' instead"
+$(eval $(call DEFAULT_PLATFORM_FLASH))
