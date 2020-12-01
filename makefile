@@ -174,16 +174,14 @@ SOURCES         ?= $(SJ2_DEFAULT_SOURCES)
 TESTS           ?= $(SJ2_DEFAULT_TESTS)
 TEST_ARGUMENTS  ?=
 
-
 # ==============================================================================
-# User Defined Arguments
+# Programming Parameters
 #
-# These are not set by default and must be set by the user.
-# The makefile will error if a target needs them.
+# Variables used program and flash devices.
 # ==============================================================================
-# PORT
+# JTAG            ?= stlink
+# PORT            ?= /dev/ttyUSB0
 # OPENOCD_CONFIG
-# JTAG
 
 # ==============================================================================
 # Tool chain paths
@@ -232,6 +230,19 @@ $(SJ2_STATIC_LIBRARY_DIR)/$(1).a: $$($(1)_OBJECTS)
 	@$$(DEVICE_AR) rcs --plugin="$$(PLUGIN)" "$$@" $$^
 	@$$(DEVICE_RANLIB) --plugin="$$(PLUGIN)" "$$@"
 	@printf '$(CYAN)Built Library ( A )$(RESET) : $$@ \n'
+
+endef
+
+define DEFAULT_PLATFORM_FLASH
+
+platform-flash:
+	@printf "$(RED)"
+	@echo "Flashing support is currently only supported via JTAG/SWD for "
+	@echo "$(PLATFORM). Please connect a JTAG or SWD device to the MCU and add "
+	@echo "the JTAG command line argument, for example:"
+	@printf "$(YELLOW)\n"
+	@echo "    make flash JTAG=stlink PLATFORM=$(PLATFORM)"
+	@printf "$(RESET)\n"
 
 endef
 
@@ -284,6 +295,12 @@ SJ2_TEST_OBJECTS   := $(addprefix $(SJ2_TEST_OBJECT_DIR)/, $(TESTS:=.o))
 SJ2_COVERAGE_FILES := $(shell find $(SJ2_BUILD_DIRECTORY_NAME) -name "*.gcda" \
                               2> /dev/null)
 
+ifeq ($(JTAG),)
+	FLASHING_RECIPE = platform-flash
+else
+	FLASHING_RECIPE = jtag-flash
+endif
+
 # ==============================================================================
 # Post Makefile Inclusion
 # ==============================================================================
@@ -303,8 +320,9 @@ SJ2_COVERAGE_FILES := $(shell find $(SJ2_BUILD_DIRECTORY_NAME) -name "*.gcda" \
 # ==============================================================================
 
 
-.PHONY: application flash clean library-clean purge $(SIZE) clean-coverage \
-        run-test coverage clean-coverage run-test test help
+.PHONY: application jtag-flash flash clean library-clean purge $(SIZE) \
+        clean-coverage run-test coverage clean-coverage run-test test help \
+        program execute
 
 # ==============================================================================
 # Application Build Targets
@@ -330,11 +348,18 @@ application: | $(HEX) $(BINARY) $(LIST) $(SRC_LIST) $(SIZE)
 # ==============================================================================
 
 
-program: application
-	@printf '$(MAGENTA)Programming chip via debug device...$(RESET)\n'
+jtag-flash: application
+	@printf '$(MAGENTA)Programming chip via JTAG/SWD...$(RESET)\n'
 	@$(SJ2_OPENOCD_DIR)/bin/openocd -s $(SJ2_OPENOCD_DIR)/scripts/ \
 			-c "source [find interface/$(JTAG).cfg]" -f $(OPENOCD_CONFIG) \
 			-c "program \"$(EXECUTABLE)\" reset exit"
+
+
+flash: | application $(FLASHING_RECIPE)
+
+
+program: jtag-flash
+execute: flash
 
 
 debug:
@@ -351,10 +376,6 @@ debug:
 
 debug-test:
 	gdb -ex "source $(GDBINIT_PATH)" $(TEST_EXECUTABLE)
-
-
-flash: | application platform-flash
-execute: flash
 
 
 stacktrace:

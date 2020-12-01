@@ -8,7 +8,4 @@ $(eval $(call BUILD_LIBRARY,libmsp432p401r,LIBRARY_MSP432P401R))
 
 include $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/m4.mk
 
-platform-flash:
-	echo -n "Factory bootloader flashing support is not currently supported for "
-	echo "msp432p401r."
-	echo "Please use 'make jtag-flash' instead"
+$(eval $(call DEFAULT_PLATFORM_FLASH))
