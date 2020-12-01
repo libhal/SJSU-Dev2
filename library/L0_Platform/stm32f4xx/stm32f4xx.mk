@@ -8,7 +8,4 @@ $(eval $(call BUILD_LIBRARY,libstm32f4xx,LIBRARY_STM32F4XX))
 
 include $(LIBRARY_DIR)/L0_Platform/arm_cortex/m4/m4.mk
 
-platform-flash:
-	echo -n "Factory bootloader flashing support is not currently supported for "
-	echo "stm32f4xx."
-	echo "Please use 'make jtag-flash' instead"
+$(eval $(call DEFAULT_PLATFORM_FLASH))
