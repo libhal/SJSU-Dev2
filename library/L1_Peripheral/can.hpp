@@ -37,6 +37,8 @@ class Can : public Module
 
     /// CAN message ID
     uint32_t id;
+    ///
+    bool is_valid = true;
     /// Length of the payload
     uint8_t length = 0;
     /// Container of the payload contents
@@ -66,9 +68,45 @@ class Can : public Module
   // Configuration Methods
   // ---------------------------------------------------------------------------
 
-  /// @param baud - baud rate to configure the CANBUS to
+  /// @param baud - the baud rate to set the CANBUS communication frequency to.
   virtual void ConfigureBaudRate(
       units::frequency::hertz_t baud = kStandardBaudRate) = 0;
+
+  /// Filter out CANBUS messages based on their ID. Without such a filter, every
+  /// single message on the CANBUS will be received, even those not intended or
+  /// useful for this target device. Without a filter, software will need to
+  /// perform work to throw away CAN messages that are irrelevant. This method
+  /// will utilize the CAN peripheral hardware to perform message filtering.
+  ///
+  /// NOTE: ConfigureAcceptanceFilter(true) must be called for the filter to be
+  /// taken into effect.
+  ///
+  /// @param id - the ID to accept
+  /// @param mask - a mask to be applied to the ID. This works by checking the
+  ///        received ID against this equation: (received_id & mask == id &
+  ///        mask). This allows for a greater range of IDs to be accepted from
+  ///        the bus. For example, to accept IDs 0x140, 0x141, 0x142, 0x143, ID
+  ///        will be 0x140 and mask = 0x14C. This works because the last 2 bits
+  ///        of the mask are zeros, and thus will be ignored when performing the
+  ///        mask check operation.
+  /// @param is_extended - default false, specifies if the filter is meant for
+  ///        extended IDs.
+  /// @throw sjsu::Exception with std::errc::not_supported if filtering is not
+  ///        supported for this canbus peripheral.
+  /// @return true - if the filter was able to be installed successfully
+  /// @return false - if the filter was NOT able to be installed successfully.
+  ///         This typically occurres when the number of hardware filters runs
+  ///         out.
+  virtual bool ConfigureFilter(uint32_t id,
+                               uint32_t mask,
+                               bool is_extended = false) = 0;
+
+  /// Enables and disables the acceptance filter. When enabled, the filters
+  ///
+  /// @param enable - set to true to enable enable filter, false to disable.
+  /// @throw sjsu::Exception with std::errc::not_supported if filtering is not
+  ///        supported for this canbus peripheral.
+  virtual void ConfigureAcceptanceFilter(bool enable) = 0;
 
   // ---------------------------------------------------------------------------
   // Usage Methods
@@ -79,16 +117,21 @@ class Can : public Module
   /// @param message - Message containing the CANBUS contents.
   virtual void Send(const Message_t & message) = 0;
 
-  /// Receive data via CANBUS
+  /// Receive a CANBUS message from the queue. If an non-zero ID is supplied, a
+  /// message with that ID will be returned. Typically this is done using a
+  /// queue and has a O(n) time complexity. Some implementations like LPC40xx
+  /// and LPC17xx utilize a special RAM lookup table, giving a time complexity
+  /// of O(1).
   ///
-  /// @return retrieved can message. Will return with length field = 0 if no
-  /// messages exist.
-  virtual Message_t Receive() = 0;
+  /// @param id - retreive a message from the hardware queue that matches this
+  ///        ID. ID zero means retrieve any message from the queue.
+  /// @return Message_t - messages
+  virtual Message_t Receive(uint32_t id = 0) = 0;
 
   /// Checks if there is a message available for this channel.
   ///
   /// @returns true a message was received.
-  virtual bool HasData() = 0;
+  virtual bool HasData(uint32_t id = 0) = 0;
 
   /// Determine if you can communicate over the bus.
   ///

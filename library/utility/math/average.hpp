@@ -6,6 +6,8 @@
 #include <initializer_list>
 #include <iterator>
 
+namespace sjsu
+{
 /// Calculates the average of an array of numeric values of the same type.
 /// This function can be used in a constexpr (compile time) context.
 ///
@@ -57,3 +59,4 @@ constexpr float Average(const T (&array)[size])
 {
   return Average(array, size);
 }
+}  // namespace sjsu

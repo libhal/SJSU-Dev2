@@ -9,6 +9,7 @@ var searchData=
   ['sensor',['sensor',['../d0/d0f/namespacesjsu_1_1command.html#a3f01366709f7a2f58c275b34ae0158b3',1,'sjsu::command']]],
   ['size',['size',['../d1/df0/classsjsu_1_1FixedAllocator.html#a3abce1c109d029e51a0c9dc34942d58f',1,'sjsu::FixedAllocator']]],
   ['source',['source',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a092bd3ac246ab6b9d010a3a34a5b8838',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::source()'],['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a362d4891e8fa6fc05726edaf2cbc61fc',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::source()']]],
+  ['speed',['speed',['../da/d0c/structsjsu_1_1RmdX_1_1Feedback__t.html#a500adabfb14a37df43b71cf8cf171c21',1,'sjsu::RmdX::Feedback_t']]],
   ['spi0',['spi0',['../db/dc0/structsjone.html#a36d0478d37e04f16fa5611126315ef83',1,'sjone::spi0()'],['../db/dc5/structsjtwo.html#ab3bcf9254b30b163ecfe7886ea3735d9',1,'sjtwo::spi0()']]],
   ['spi1',['spi1',['../db/dc0/structsjone.html#adf079f49bdfdf8d6f02d4bf7d7f3caa8',1,'sjone::spi1()'],['../db/dc5/structsjtwo.html#a81d5d2f5ba3110f1aecc151e907f7403',1,'sjtwo::spi1()']]],
   ['spi2',['spi2',['../db/dc5/structsjtwo.html#a9bcef747550a2b721ee903987b9e7e15',1,'sjtwo']]],

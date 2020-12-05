@@ -4,5 +4,6 @@ var searchData=
   ['value_5ftype',['value_type',['../d1/df0/classsjsu_1_1FixedAllocator.html#a59cd85ce7c8e1807e3d6497fe21e09ab',1,'sjsu::FixedAllocator']]],
   ['vector',['Vector',['../d0/d6b/namespacesjsu.html#a66617a2d1e908afe21967587eb99d91d',1,'sjsu']]],
   ['vector_2ehpp',['vector.hpp',['../da/d16/vector_8hpp.html',1,'']]],
-  ['voltage',['Voltage',['../d0/dc1/classsjsu_1_1Adc.html#aae35f4ff916107ea722d8f81ca9a8d8b',1,'sjsu::Adc']]]
+  ['voltage',['Voltage',['../d0/dc1/classsjsu_1_1Adc.html#aae35f4ff916107ea722d8f81ca9a8d8b',1,'sjsu::Adc']]],
+  ['volts',['volts',['../da/d0c/structsjsu_1_1RmdX_1_1Feedback__t.html#a308055aafcbeba1d5d5b9d51c32885fa',1,'sjsu::RmdX::Feedback_t']]]
 ];

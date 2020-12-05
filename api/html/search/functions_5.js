@@ -10,6 +10,7 @@ var searchData=
   ['enablei2chighspeedmode',['EnableI2cHighSpeedMode',['../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a62684c9056be5f64a86d23046167565e',1,'sjsu::lpc40xx::Pin']]],
   ['endianess',['Endianess',['../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html#a49ed225ee43f8db86d3693a74a50d894',1,'sjsu::MemoryAccessProtocol::Address']]],
   ['endianness',['Endianness',['../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html#a9cf1a06f6ccc4a9b5e12a1994e1a8e39',1,'sjsu::MemoryAccessProtocol::Specification_t']]],
+  ['equal',['Equal',['../d0/d6b/namespacesjsu.html#a05556e191e85c2afe44560390c8fef35',1,'sjsu']]],
   ['erase',['Erase',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#aa697513d7c975c9ae77f4858d9e27ecf',1,'sjsu::lpc40xx::Eeprom::Erase()'],['../dc/da6/classsjsu_1_1Storage.html#a69fa013742f0f8e1af5c88920eab5d2c',1,'sjsu::Storage::Erase()'],['../dc/d5f/classsjsu_1_1Sd.html#abc34d4b66162ddbd39a6f391d229ea58',1,'sjsu::Sd::Erase()']]],
   ['esp8266',['Esp8266',['../dc/d4f/classsjsu_1_1Esp8266.html#a011f424bc5fc91316a5aa9c98423d460',1,'sjsu::Esp8266']]],
   ['esp8266internetsocket',['Esp8266InternetSocket',['../d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html#a864e0487a332bd9b7e3ef38c27ac3518',1,'sjsu::Esp8266::Esp8266InternetSocket']]],

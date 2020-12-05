@@ -105,6 +105,7 @@ var searchData=
   ['kdefaultmaxpulse',['kDefaultMaxPulse',['../d9/dc9/classsjsu_1_1Servo.html#a1a1ced0c7f713d07d94779acfae409bd',1,'sjsu::Servo']]],
   ['kdefaultminangle',['kDefaultMinAngle',['../d9/dc9/classsjsu_1_1Servo.html#ab4049990f0dae64b94232916512b2ab3',1,'sjsu::Servo']]],
   ['kdefaultminpulse',['kDefaultMinPulse',['../d9/dc9/classsjsu_1_1Servo.html#af7a859b9b2c9ef013e53ce826df3741f',1,'sjsu::Servo']]],
+  ['kdefaultparameters',['kDefaultParameters',['../d9/d98/classsjsu_1_1RmdX.html#ad8c5a25980fd42f1c01f17935b0f06df',1,'sjsu::RmdX']]],
   ['kdefaultperiod',['kDefaultPeriod',['../d9/dc9/classsjsu_1_1Servo.html#aee72f7556bd9b3f4af6d2740cbc8f48b',1,'sjsu::Servo']]],
   ['kdefaultspifrequency',['kDefaultSpiFrequency',['../dc/d5f/classsjsu_1_1Sd.html#a241cb4ecf81dc85b44ce367e581aaab6',1,'sjsu::Sd']]],
   ['kdefaulttimeout',['kDefaultTimeout',['../dc/d4f/classsjsu_1_1Esp8266.html#a2d2279a18710591a052e9e12bdc2d100',1,'sjsu::Esp8266']]],

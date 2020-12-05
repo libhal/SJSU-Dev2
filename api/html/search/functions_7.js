@@ -19,6 +19,7 @@ var searchData=
   ['getdescription',['GetDescription',['../d9/db2/classsjsu_1_1CommandInterface.html#a5060769486cb3f1937bbb5012868e13c',1,'sjsu::CommandInterface::GetDescription()'],['../d7/d56/classsjsu_1_1Command.html#aa6dad075e6a5be27869fe68b85d968e8',1,'sjsu::Command::GetDescription()']]],
   ['getdistance',['GetDistance',['../df/d5c/classsjsu_1_1DistanceSensor.html#aa8d3c7835790acdf9d8bb7594d7c7404',1,'sjsu::DistanceSensor::GetDistance()'],['../d2/dc6/classsjsu_1_1TFMini.html#adbb2ee871368001fbe271b16d7741cf5',1,'sjsu::TFMini::GetDistance()']]],
   ['getdutycycle',['GetDutyCycle',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#af477d951e228bd8f41f208ab2dcf5cb6',1,'sjsu::lpc40xx::Pwm::GetDutyCycle()'],['../d6/ddf/classsjsu_1_1Pwm.html#abc0632d38ad5dc941dbe5d0812bcafaa',1,'sjsu::Pwm::GetDutyCycle()']]],
+  ['getfeedback',['GetFeedback',['../d9/d98/classsjsu_1_1RmdX.html#afba393e16f720518987e4b8c898d036b',1,'sjsu::RmdX']]],
   ['getfrequency',['GetFrequency',['../d6/d0f/classsjsu_1_1FrequencyCounter.html#a4076a5bdcb7719daee16f55794f07851',1,'sjsu::FrequencyCounter']]],
   ['getgpio',['GetGpio',['../d1/de1/classsjsu_1_1Button.html#adeb2387018ceb0bec02c7ca813d36b97',1,'sjsu::Button']]],
   ['gethandle',['GetHandle',['../d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html#abbcaf43eb1826bb0c6ecebb1806f4320',1,'sjsu::rtos::TaskInterface::GetHandle()'],['../d3/d19/classsjsu_1_1rtos_1_1Task.html#ab0b5901f7f1ac3a18d8d6664d7812857',1,'sjsu::rtos::Task::GetHandle()']]],

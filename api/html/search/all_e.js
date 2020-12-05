@@ -2,7 +2,7 @@ var searchData=
 [
   ['array_3c_20t_2c_20n_20_3e',['array&lt; T, N &gt;',['../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a4602d503b096545318a0a8ae24c2bc45',1,'sjsu::MemoryAccessProtocol::AccessHandler']]],
   ['array_3c_20uint8_5ft_2c_20n_20_3e',['array&lt; uint8_t, N &gt;',['../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a12c0405bc9b2e98f6564f60daf47b38e',1,'sjsu::MemoryAccessProtocol::AccessHandler']]],
-  ['ocr',['ocr',['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#aa971046cc3c58ef2d0eadf0756a02fc3',1,'sjsu::Sd::CardInfo_t::ocr()'],['../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698',1,'sjsu::Sd::Ocr()']]],
+  ['ocr',['Ocr',['../dc/d5f/classsjsu_1_1Sd.html#ab2c9a4b50af56678d9c11ef018593698',1,'sjsu::Sd::Ocr()'],['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#aa971046cc3c58ef2d0eadf0756a02fc3',1,'sjsu::Sd::CardInfo_t::ocr()']]],
   ['oled',['Oled',['../db/dc5/structsjtwo.html#ae5391ad56fbae459afc44c531c95591a',1,'sjtwo']]],
   ['onchange',['OnChange',['../dd/d3a/classsjsu_1_1Gpio.html#aa50b322d9399f08346154b5f43b47484',1,'sjsu::Gpio']]],
   ['onfallingedge',['OnFallingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#aa9709aa81ffe199781e2f73b2f95167c',1,'sjsu::Gpio']]],
@@ -29,5 +29,7 @@ var searchData=
   ['other',['other',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html#a4ab76b649d80090a9331b9d58292ced4',1,'sjsu::FixedAllocator::rebind']]],
   ['out',['out',['../dd/de8/namespacesjsu_1_1newlib.html#aca77f0322e418b3b095ea24162438f7c',1,'sjsu::newlib']]],
   ['out_5flength',['out_length',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a44cff9edd1ff5d648521d3b268687820',1,'sjsu::I2c::Transaction_t']]],
-  ['outputcontrol',['OutputControl',['../d3/d69/structsjsu_1_1lpc40xx_1_1Pwm_1_1OutputControl.html',1,'sjsu::lpc40xx::Pwm']]]
+  ['outputcontrol',['OutputControl',['../d3/d69/structsjsu_1_1lpc40xx_1_1Pwm_1_1OutputControl.html',1,'sjsu::lpc40xx::Pwm']]],
+  ['over_5ftemperature_5fprotection_5ftripped',['over_temperature_protection_tripped',['../da/d0c/structsjsu_1_1RmdX_1_1Feedback__t.html#a6f6de37dc0caf626d2ea8dbb5c613393',1,'sjsu::RmdX::Feedback_t']]],
+  ['over_5fvoltage_5fprotection_5ftripped',['over_voltage_protection_tripped',['../da/d0c/structsjsu_1_1RmdX_1_1Feedback__t.html#aeee7071b5dfc4291128e6bd235854d7c',1,'sjsu::RmdX::Feedback_t']]]
 ];

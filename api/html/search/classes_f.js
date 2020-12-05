@@ -18,6 +18,7 @@ var searchData=
   ['regularsequence',['RegularSequence',['../d3/de7/structsjsu_1_1stm32f10x_1_1Adc_1_1RegularSequence.html',1,'sjsu::stm32f10x::Adc']]],
   ['resourceid',['ResourceID',['../d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html',1,'sjsu::SystemController']]],
   ['response_5ft',['Response_t',['../da/df2/structsjsu_1_1Sd_1_1Response__t.html',1,'sjsu::Sd']]],
+  ['rmdx',['RmdX',['../d9/d98/classsjsu_1_1RmdX.html',1,'sjsu']]],
   ['rtcregisters',['RtcRegisters',['../d8/df0/structsjsu_1_1stm32f10x_1_1SystemController_1_1RtcRegisters.html',1,'sjsu::stm32f10x::SystemController']]],
   ['rtoscommand',['RtosCommand',['../d3/d13/classsjsu_1_1RtosCommand.html',1,'sjsu']]]
 ];

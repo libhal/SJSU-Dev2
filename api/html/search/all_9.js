@@ -46,7 +46,7 @@ var searchData=
   ['irqtoindex',['IRQToIndex',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#aa63417f84aa1a11886960bafcd17d09f',1,'sjsu::cortex::InterruptController']]],
   ['is_5fremote_5frequest',['is_remote_request',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a4aefc088b7ce71993193cf4091f36639',1,'sjsu::Can::Message_t']]],
   ['is_5frepeat',['is_repeat',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07d03c94231cab76332cf16b0ccff9a6',1,'sjsu::infrared::DecodedFrame_t']]],
-  ['is_5fvalid',['is_valid',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07c2ff4ead66e7ec2b1892dc1c0d21ee',1,'sjsu::infrared::DecodedFrame_t']]],
+  ['is_5fvalid',['is_valid',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb4c343d6ae7bc0c0c9ea7444112ac6d',1,'sjsu::Can::Message_t::is_valid()'],['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07c2ff4ead66e7ec2b1892dc1c0d21ee',1,'sjsu::infrared::DecodedFrame_t::is_valid()']]],
   ['isblank',['IsBlank',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a0eef47d4e25c7300ea70d1a90bc57216',1,'sjsu::PixelDisplay::Color_t']]],
   ['isbusbusy',['IsBusBusy',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a08066431cb1ddb23b1c8745b5b79b3de',1,'sjsu::lpc40xx::Spi']]],
   ['isbusoff',['IsBusOff',['../da/d70/classsjsu_1_1Can.html#ad34bff3d491a4b9c8443dc375da6f4bb',1,'sjsu::Can::IsBusOff()'],['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ac5d55131c43e7bbd31b96f0a2e12faca',1,'sjsu::lpc40xx::Can::IsBusOff()']]],

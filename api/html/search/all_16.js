@@ -2,7 +2,7 @@ var searchData=
 [
   ['wait',['Wait',['../d0/d6b/namespacesjsu.html#a7e96d17a3a8ea14334ffd5dec0c2a57d',1,'sjsu::Wait(std::chrono::nanoseconds timeout, std::function&lt; bool()&gt; is_done)'],['../d0/d6b/namespacesjsu.html#afaafca375166d07300d811d148908726',1,'sjsu::Wait(std::chrono::nanoseconds timeout)']]],
   ['waitforinput',['WaitForInput',['../d1/d42/classsjsu_1_1CommandLine.html#a4eaf573a214cc6dd46027c3441ec7ed1',1,'sjsu::CommandLine']]],
-  ['watchdog',['Watchdog',['../d5/da1/classsjsu_1_1Watchdog.html',1,'sjsu::Watchdog'],['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html',1,'sjsu::lpc40xx::Watchdog'],['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#af0761efd4e541f4348091cca8719be19',1,'sjsu::lpc40xx::Watchdog::Watchdog()']]],
+  ['watchdog',['Watchdog',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html',1,'sjsu::lpc40xx::Watchdog'],['../d5/da1/classsjsu_1_1Watchdog.html',1,'sjsu::Watchdog'],['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#af0761efd4e541f4348091cca8719be19',1,'sjsu::lpc40xx::Watchdog::Watchdog()']]],
   ['watchdog_2ehpp',['watchdog.hpp',['../d8/d25/lpc40xx_2watchdog_8hpp.html',1,'(Global Namespace)'],['../d6/d0f/watchdog_8hpp.html',1,'(Global Namespace)']]],
   ['wdt_5fbase',['wdt_base',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#a999d5dbb73a733a481d9bf43768a7663',1,'sjsu::lpc40xx::Watchdog']]],
   ['what',['what',['../d1/dfd/classsjsu_1_1Exception.html#a5f5d2ff19f2476ba68551556855095e7',1,'sjsu::Exception']]],
