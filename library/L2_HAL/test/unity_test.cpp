@@ -71,6 +71,7 @@
 // Actuators
 // =============================================================================
 #include "L2_HAL/actuators/servo/test/servo_test.cpp"  // NOLINT
+#include "L2_HAL/actuators/servo/test/rmd_x_test.cpp"  // NOLINT
 
 // =============================================================================
 // Battery

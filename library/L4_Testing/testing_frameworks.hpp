@@ -373,7 +373,7 @@ struct PollVerificationParameter_t
   /// function. This is also the delay time between calling the release function
   /// and verifying that the polling function was released by the release
   /// function. Default of 1ms should be more than enough for most use cases.
-  std::chrono::nanoseconds delay_time = 1ms;
+  std::chrono::nanoseconds delay_time = 5ms;
 };
 
 /// A utility function to help scaffold and generalize test code that has polls

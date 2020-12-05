@@ -379,23 +379,26 @@ TEST_CASE("Testing lpc40xx Can")
 
   SECTION("ConfigureBaudRate()")
   {
+    // Setup
     constexpr units::frequency::hertz_t kDifferentBaudRate = 50'000_Hz;
-    constexpr uint32_t kExpectedSyncJumpWidth              = 3;
-    constexpr uint32_t kExpectedTimeSegment1               = 6;
-    constexpr uint32_t kExpectedTimeSegment2               = 1;
+    constexpr uint32_t kExpectedSyncJumpWidth              = 0;
+    constexpr uint32_t kExpectedTimeSegment1               = 0;
+    constexpr uint32_t kExpectedTimeSegment2               = 0;
     constexpr uint32_t kExpectedBusSampling                = 1;
 
-    constexpr uint32_t kAdjust =
-        kExpectedSyncJumpWidth + kExpectedTimeSegment1 + kExpectedTimeSegment2;
+    constexpr uint32_t kAdjust = kExpectedSyncJumpWidth +
+                                 kExpectedTimeSegment1 + kExpectedTimeSegment2 +
+                                 3;
     constexpr uint32_t kExpectedPreAdjustedPrescalar =
         (kDummySystemControllerClockFrequency / kDifferentBaudRate) - 1;
 
     constexpr uint32_t kExpectedPrescalar =
         kExpectedPreAdjustedPrescalar / kAdjust;
 
+    // Exercise
     test_can.ConfigureBaudRate(kDifferentBaudRate);
 
-    // Verify: Baud rate is set correctly
+    // Verify
     CHECK(kExpectedPrescalar ==
           bit::Extract(local_can.BTR, Can::BusTiming::kPrescalar));
     CHECK(kExpectedSyncJumpWidth ==
