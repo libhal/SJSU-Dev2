@@ -11,14 +11,18 @@ int main(void)
 
   sjsu::LogInfo("Starting RMD-X demo in 5s...");
   sjsu::lpc40xx::Can can(sjsu::lpc40xx::Can::Channel::kCan2);
-  sjsu::RmdX rmd_x7(can, 0x148);
+  sjsu::StaticAllocator<1024> memory_resource;
+  sjsu::CanNetwork can_network(can, &memory_resource);
+  sjsu::RmdX rmd_x7(can_network, 0x148);
 
   sjsu::Delay(5s);
+
+  sjsu::LogInfo("RMD-X initializing and enabling...");
 
   rmd_x7.Initialize();
   rmd_x7.Enable();
 
-  sjsu::LogInfo("RMD-X intialized and Enabled...");
+  sjsu::LogInfo("RMD-X initialized and enabled!");
 
   sjsu::LogInfo("Setting motor speed to +%f RPM...", kSpeedLimit.to<double>());
   rmd_x7.SetSpeed(kSpeedLimit);

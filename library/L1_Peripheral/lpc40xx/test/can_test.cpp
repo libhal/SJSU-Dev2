@@ -411,6 +411,19 @@ TEST_CASE("Testing lpc40xx Can")
           bit::Extract(local_can.BTR, Can::BusTiming::kSampling));
   }
 
+  SECTION("~Can()")
+  {
+    // Setup
+    bit::Register(&local_can.IER).Set(Can::Interrupts::kReceivedMessage).Save();
+
+    // Exercise
+    test_can.~Can();
+
+    // Verify
+    CHECK(
+        !bit::Register(&local_can.IER).Read(Can::Interrupts::kReceivedMessage));
+  }
+
   Can::can_acceptance_filter_register = LPC_CANAF;
 }
 }  // namespace sjsu::lpc40xx

@@ -60,8 +60,8 @@ class Can final : public sjsu::Can
     //       Bits 16-23 & 24-31 are released by the CAN
     //       controller as soon as they are read.
 
-    /// Assert interrupt when the receive buffer is full
-    static constexpr bit::Mask kRxBufferFull = bit::MaskFromRange(0);
+    /// Assert interrupt when a new message has been received
+    static constexpr bit::Mask kReceivedMessage = bit::MaskFromRange(0);
 
     /// Assert interrupt when TX Buffer 1 has finished or aborted its
     /// transmission.
@@ -325,7 +325,7 @@ class Can final : public sjsu::Can
   inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
 
   /// @param channel - Which CANBUS channel to use
-  explicit constexpr Can(const Channel_t & channel) : channel_(channel) {}
+  explicit Can(const Channel_t & channel) : channel_(channel), handler_{} {}
 
   void ModuleInitialize() override
   {
@@ -412,20 +412,36 @@ class Can final : public sjsu::Can
     channel_.registers->BTR = bus_timing;
   }
 
-  bool ConfigureFilter([[maybe_unused]] uint32_t id,
-                       [[maybe_unused]] uint32_t mask,
-                       [[maybe_unused]] bool is_extended = false) override
+  bool ConfigureFilter([[maybe_unused]] uint32_t id) override
   {
-    throw Exception(std::errc::not_supported,
-                    "This implementation does not support filtering");
+    return false;
   }
 
-  void ConfigureAcceptanceFilter(bool enable) override
+  bool ConfigureAcceptanceFilter(bool) override
   {
-    if (enable)
+    return false;
+  }
+
+  void ConfigureReceiveHandler(ReceiveHandler handler) override
+  {
+    if (handler)
     {
-      throw Exception(std::errc::not_supported,
-                      "This implementation does not support");
+      handler_ = handler;
+
+      bit::Register(&channel_.registers->IER)
+          .Set(Interrupts::kReceivedMessage)
+          .Save();
+
+      InterruptController::GetPlatformController().Enable({
+          .interrupt_request_number = lpc40xx::CAN_IRQn,
+          .interrupt_handler        = [this]() { handler_(*this); },
+      });
+    }
+    else
+    {
+      bit::Register(&channel_.registers->IER)
+          .Clear(Interrupts::kReceivedMessage)
+          .Save();
     }
   }
 
@@ -470,13 +486,13 @@ class Can final : public sjsu::Can
     }
   }
 
-  bool HasData([[maybe_unused]] uint32_t id = 0) override
+  bool HasData() override
   {
-    // GlobalStatus::kReceiveBuffer returns 1 (true) if it has data.
+    // ...ta.
     return bit::Read(channel_.registers->GSR, GlobalStatus::kReceiveBuffer);
   }
 
-  Message_t Receive([[maybe_unused]] uint32_t id = 0) override
+  Message_t Receive() override
   {
     Message_t message;
 
@@ -516,8 +532,6 @@ class Can final : public sjsu::Can
 
     // Release the RX buffer and allow another buffer to be read.
     channel_.registers->CMR = Value(Commands::kReleaseRxBuffer);
-
-    // sjsu::lpc40xx::LPC_CANAF_RAM->mask[0]
 
     return message;
   }
@@ -578,6 +592,12 @@ class Can final : public sjsu::Can
     return bit::Read(channel_.registers->GSR, GlobalStatus::kBusError);
   }
 
+  ~Can()
+  {
+    // Canbus interrupts must be disabled
+    ConfigureReceiveHandler(nullptr);
+  }
+
  private:
   /// Convert message into the registers LPC40xx can bus registers.
   ///
@@ -628,6 +648,7 @@ class Can final : public sjsu::Can
   }
 
   const Channel_t & channel_;
+  ReceiveHandler handler_;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

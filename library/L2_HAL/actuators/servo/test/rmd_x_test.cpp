@@ -11,21 +11,31 @@ TEST_CASE("Testing RMD-X7")
 {
   Mock<Can> mock_can;
 
-  Fake(Method(mock_can, ModuleInitialize));
-  Fake(Method(mock_can, ModuleEnable));
-  Fake(Method(mock_can, ConfigureBaudRate));
-  Fake(OverloadedMethod(mock_can, Send, void(const Can::Message_t &)));
-  Fake(Method(mock_can, Receive));
-  Fake(Method(mock_can, HasData));
+  Fake(Method(mock_can, Can::ModuleInitialize));
+  Fake(Method(mock_can, Can::ModuleEnable));
+  Fake(Method(mock_can, Can::ConfigureBaudRate));
+  Fake(Method(mock_can, Can::ConfigureReceiveHandler));
+  Fake(OverloadedMethod(mock_can, Can::Send, void(const Can::Message_t &)));
+  Fake(Method(mock_can, Can::Receive));
+  Fake(Method(mock_can, Can::HasData));
+
+  StaticAllocator<1024> memory_resource;
+  CanNetwork network(mock_can.get(), &memory_resource);
 
   constexpr auto kId = 0x140;
 
   // Inject test_gpio into button object
-  RmdX test_servo(mock_can.get(), kId);
+  RmdX test_servo(network, kId);
 
   SECTION("ModuleInitialize")
   {
     test_servo.ModuleInitialize();
+
+    Verify(Method(mock_can, ModuleInitialize),
+           Method(mock_can, ConfigureBaudRate).Using(1_MHz),
+           Method(mock_can, ModuleEnable))
+        .Once();
+
     Verify(Method(mock_can, ModuleInitialize),
            Method(mock_can, ConfigureBaudRate).Using(1_MHz),
            Method(mock_can, ModuleEnable))
