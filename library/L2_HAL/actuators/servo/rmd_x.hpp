@@ -11,6 +11,7 @@
 #include "utility/map.hpp"
 #include "utility/math/limits.hpp"
 #include "utility/time.hpp"
+#include "utility/timeout_timer.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
@@ -101,30 +102,39 @@ class RmdX : public sjsu::Module
     .maximum_speed = 120_rpm,
   };
 
-  ///
-  ///
-  /// @param canbus - canbus peripheral to use
+  /// @param network - canbus network object that uses the CAN BUS to which this
+  /// motor is connected
   /// @param device_id - Device ID of the RMD motor. This can be modified by the
   /// switches on the back of the motor. Default ID set by factory on the
   /// switches is 0x140.
   /// @param params - RMD-X series parameters that must be set correctly for
   /// proper operation. If the gear ratio is incorrect, then the servo angles
   /// will be off.
-  RmdX(sjsu::Can & canbus,
+  RmdX(CanNetwork & network,
        uint16_t device_id  = 0x140,
        Parameters_t params = kDefaultParameters)
-      : canbus_(canbus), device_id_(device_id), params_(params), feedback_{}
+      : network_(network),
+        device_id_(device_id),
+        params_(params),
+        feedback_{},
+        node_(nullptr)
   {
   }
 
   void ModuleInitialize() override
   {
-    if (canbus_.RequiresConfiguration())
+    if (network_.CanBus().RequiresConfiguration())
     {
-      canbus_.Initialize();
-      canbus_.ConfigureBaudRate(params_.can_baudrate);
-      canbus_.Enable();
+      network_.CanBus().Initialize();
+      network_.CanBus().ConfigureBaudRate(params_.can_baudrate);
+      network_.CanBus().Enable();
     }
+    if (network_.RequiresConfiguration())
+    {
+      network_.Initialize();
+      network_.Enable();
+    }
+    node_ = network_.CaptureMessage(device_id_);
   }
 
   /// Disabling the motor will assert the MOTOR OFF command which will clear all
@@ -138,34 +148,33 @@ class RmdX : public sjsu::Module
     }
     else
     {
-      canbus_.Send(device_id_,
-                   { Value(Commands::kMotorOffCommand),
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00 });
+      network_.CanBus().Send(device_id_,
+                             { Value(Commands::kMotorOffCommand),
+                               0x00,
+                               0x00,
+                               0x00,
+                               0x00,
+                               0x00,
+                               0x00,
+                               0x00 });
     }
   }
 
   RmdX & SetSpeed(units::angular_velocity::revolutions_per_minute_t rpm)
   {
     int32_t command_speed = ConvertRPMToCommandSpeed(rpm);
-    canbus_.Send(device_id_,
-                 {
-                     Value(Commands::kSpeedClosedLoopCommand),
-                     0x00,
-                     0x00,
-                     0x00,
-                     static_cast<uint8_t>((command_speed >> 0) & 0xFF),
-                     static_cast<uint8_t>((command_speed >> 8) & 0xFF),
-                     static_cast<uint8_t>((command_speed >> 16) & 0xFF),
-                     static_cast<uint8_t>((command_speed >> 24) & 0xFF),
-                 });
-
-    PollForMessages();
+    network_.CanBus().Send(
+        device_id_,
+        {
+            Value(Commands::kSpeedClosedLoopCommand),
+            0x00,
+            0x00,
+            0x00,
+            static_cast<uint8_t>((command_speed >> 0) & 0xFF),
+            static_cast<uint8_t>((command_speed >> 8) & 0xFF),
+            static_cast<uint8_t>((command_speed >> 16) & 0xFF),
+            static_cast<uint8_t>((command_speed >> 24) & 0xFF),
+        });
 
     return *this;
   }
@@ -179,52 +188,56 @@ class RmdX : public sjsu::Module
 
     LogDebug("Angle_command = %" PRId32, command_angle);
 
-    canbus_.Send(device_id_,
-                 {
-                     Value(Commands::kPositionClosedLoopCommand2),
-                     0x00,
-                     static_cast<uint8_t>((command_speed >> 0) & 0xFF),
-                     static_cast<uint8_t>((command_speed >> 8) & 0xFF),
-                     static_cast<uint8_t>((command_angle >> 0) & 0xFF),
-                     static_cast<uint8_t>((command_angle >> 8) & 0xFF),
-                     static_cast<uint8_t>((command_angle >> 16) & 0xFF),
-                     static_cast<uint8_t>((command_angle >> 24) & 0xFF),
-                 });
-
-    PollForMessages();
+    network_.CanBus().Send(
+        device_id_,
+        {
+            Value(Commands::kPositionClosedLoopCommand2),
+            0x00,
+            static_cast<uint8_t>((command_speed >> 0) & 0xFF),
+            static_cast<uint8_t>((command_speed >> 8) & 0xFF),
+            static_cast<uint8_t>((command_angle >> 0) & 0xFF),
+            static_cast<uint8_t>((command_angle >> 8) & 0xFF),
+            static_cast<uint8_t>((command_angle >> 16) & 0xFF),
+            static_cast<uint8_t>((command_angle >> 24) & 0xFF),
+        });
 
     return *this;
   }
 
-  RmdX & RequestFeedbackFromMotor()
+  RmdX & RequestFeedbackFromMotor(std::chrono::nanoseconds timeout = 2ms)
   {
-    canbus_.Send(device_id_,
-                 {
-                     Value(Commands::kReadMotorStatus1AndErrorFlagCommands),
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                 });
+    TimeoutTimer timeout_timer(timeout);
 
-    PollForMessages();
+    network_.CanBus().Send(
+        device_id_,
+        {
+            Value(Commands::kReadMotorStatus1AndErrorFlagCommands),
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+        });
 
-    canbus_.Send(device_id_,
-                 {
-                     Value(Commands::kReadMotorStatus2),
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                     0x00,
-                 });
+    PollForMessages(Value(Commands::kReadMotorStatus1AndErrorFlagCommands),
+                    timeout_timer.GetTimeLeft());
 
-    PollForMessages();
+    network_.CanBus().Send(device_id_,
+                           {
+                               Value(Commands::kReadMotorStatus2),
+                               0x00,
+                               0x00,
+                               0x00,
+                               0x00,
+                               0x00,
+                               0x00,
+                               0x00,
+                           });
+
+    PollForMessages(Value(Commands::kReadMotorStatus2),
+                    timeout_timer.GetTimeLeft());
 
     return *this;
   }
@@ -305,33 +318,44 @@ class RmdX : public sjsu::Module
     return true;
   }
 
-  void PollForMessages(std::chrono::nanoseconds receive_timeout = 1ms)
+  void PollForMessages(uint8_t command_id,
+                       std::chrono::nanoseconds receive_timeout)
   {
-    sjsu::Can::Message_t feedback;
+    sjsu::Can::Message_t response_message;
+    // Assume that the message has been missed. If the Wait() statement fails
+    // this will come true. If ResponseHandler() returns successful (true), then
+    // assign false to this variable.
+    feedback_.missed_feedback = true;
 
-    bool receive_successful = Wait(receive_timeout, [this, &feedback]() {
-      if (canbus_.HasData())
-      {
-        feedback = canbus_.Receive();
-        return true;
-      }
-      return false;
-    });
-
-    if (!receive_successful)
-    {
-      feedback_.missed_feedback = false;
-    }
+    // Poll/Wait for the CAN message retrieved from SecureGet() to return with
+    // payload contents where the first byte is equal to the expected
+    // command_id.
+    bool receive_successful =
+        Wait(receive_timeout, [this, command_id, &response_message]() {
+          response_message = node_->SecureGet();
+          if (response_message.payload[0] == command_id)
+          {
+            return true;
+          }
+          return false;
+        });
 
     LogDebug("CAN Message Contents:");
-    for (int i = 0; i < feedback.length; i++)
+    for (int i = 0; i < response_message.length; i++)
     {
-      LogDebug("  0x%02X", feedback.payload[i]);
+      LogDebug("  0x%02X", response_message.payload[i]);
+    }
+
+    // Return early and keep feedback_.missed_feedback = true. This way the user
+    // knows if the previous feedback has been missed.
+    if (!receive_successful)
+    {
+      return;
     }
 
     // Invert the response of ResponseHandler(). If it was successful in parsing
     // feedback from the motor
-    feedback_.missed_feedback = !ResponseHandler(feedback);
+    feedback_.missed_feedback = !ResponseHandler(response_message);
   }
 
   int32_t ConvertRPMToCommandSpeed(
@@ -370,9 +394,10 @@ class RmdX : public sjsu::Module
     return scaled_angle.to<int32_t>();
   }
 
-  sjsu::Can & canbus_;
+  sjsu::CanNetwork & network_;
   const uint16_t device_id_;
   const Parameters_t params_;
   Feedback_t feedback_;
-};  // namespace sjsu
+  sjsu::CanNetwork::Node_t * node_;
+};
 }  // namespace sjsu

@@ -47,26 +47,26 @@ class StaticAllocator : public std::pmr::memory_resource
 
   /// @return size_t - the total number of bytes that this allocator can
   /// allocate before throwing a std::bad_alloc exception.
-  constexpr std::size_t Capacity()
+  constexpr std::size_t Capacity() const
   {
     return kBufferSizeBytes;
   }
 
   /// @return size_t - number of bytes that have already been allocated.
-  std::size_t MemoryUsed()
+  std::size_t MemoryUsed() const
   {
     return unallocated_memory_ - buffer_.data();
   }
 
   /// @return int - Bytes that have yet to be allocated from this allocator.
-  int MemoryAvailable()
+  int MemoryAvailable() const
   {
     return Capacity() - MemoryUsed();
   }
 
   /// Print to STDOUT the total capcity, memory allocated and memory left in
   /// allocator.
-  void Print()
+  void Print() const
   {
     LogInfo("StaticAllocator >> Capacity: %zu, Allocated: %zu, Left: %d",
             Capacity(),
