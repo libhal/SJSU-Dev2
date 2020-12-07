@@ -130,5 +130,20 @@ TEST_CASE("Testing StaticAllocator")
         ([&allocator, &ptr]() { ptr = allocator.allocate(1, 1); })(),
         std::bad_alloc);
   }
+
+  SECTION("Test .is_equal()")
+  {
+    // Setup
+    StaticAllocator<32> allocator1;
+    StaticAllocator<32> allocator2;
+
+    // Exercise
+    bool are_not_equal = allocator1.is_equal(allocator2);
+    bool are_equal = allocator1.is_equal(allocator1);
+
+    // Verify
+    CHECK(!are_not_equal);
+    CHECK(!are_equal);
+  }
 }
 }  // namespace sjsu
