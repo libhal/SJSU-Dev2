@@ -5,8 +5,8 @@
 #include <iterator>
 
 #include "newlib/newlib.hpp"
-#include "utility/containers/vector.hpp"
 #include "third_party/microrl/microrl.h"
+#include "utility/allocator.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
@@ -146,9 +146,9 @@ struct CommandList_t
 {
   /// Default constructor of the command list that reserves the space in the
   /// command list vector.
-  CommandList_t()
+  CommandList_t() : buffer(), commands(&buffer)
   {
-    commands.reserve(decltype(commands)::allocator_type::size);
+    commands.reserve(kNumberOfCommands);
   }
 
   /// Returns the number of commands currently held in the command list.
@@ -165,7 +165,10 @@ struct CommandList_t
 
   /// Fixed sized std::vector that holds pointers to a list of command line
   /// commands.
-  sjsu::Vector<CommandInterface *, kNumberOfCommands> commands;
+  static constexpr size_t kCommandListBufferSize =
+      sizeof(CommandInterface *) * kNumberOfCommands;
+  StaticAllocator<kCommandListBufferSize> buffer;
+  std::pmr::vector<CommandInterface *> commands;
 };
 
 namespace command
