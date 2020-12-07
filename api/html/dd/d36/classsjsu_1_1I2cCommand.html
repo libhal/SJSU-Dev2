@@ -152,6 +152,14 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a02fec276240685073e9627404b1e6764"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#a02fec276240685073e9627404b1e6764">kDescription</a> []</td></tr>
 <tr class="memdesc:a02fec276240685073e9627404b1e6764"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> usage description and details.  <a href="#a02fec276240685073e9627404b1e6764">More...</a><br /></td></tr>
 <tr class="separator:a02fec276240685073e9627404b1e6764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31f0e078b6c150259e821c2de753e7ec"><td class="memItemLeft" align="right" valign="top">static const char *const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#a31f0e078b6c150259e821c2de753e7ec">kI2cOperations</a> []</td></tr>
+<tr class="separator:a31f0e078b6c150259e821c2de753e7ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9835f84913dd3d20f6b4d2dda1a2fda"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#aa9835f84913dd3d20f6b4d2dda1a2fda">kFirstI2cAddress</a> = 0x08</td></tr>
+<tr class="separator:aa9835f84913dd3d20f6b4d2dda1a2fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae306bc7f508782d1d957d4cd2a2a88ee"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#ae306bc7f508782d1d957d4cd2a2a88ee">kLastI2cAddress</a> = 0x78</td></tr>
+<tr class="separator:ae306bc7f508782d1d957d4cd2a2a88ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7df600e6de09ca77113c6bea967cb49"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html#ad7df600e6de09ca77113c6bea967cb49">kNumberOfI2cAddresses</a></td></tr>
+<tr class="separator:ad7df600e6de09ca77113c6bea967cb49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="../../dd/d36/classsjsu_1_1I2cCommand.html">I2cCommand</a> [will] allows the user to discover, read, and write to devices on the I2C bus. </p>
@@ -358,6 +366,94 @@ Static Public Attributes</h2></td></tr>
 <b>Initial value:</b><div class="fragment"><div class="line">= R<span class="stringliteral">&quot;(Read and write to the i2c bus.</span></div><div class="line"><span class="stringliteral">                i2c write &lt;device address&gt; &lt;register address&gt; &lt;data0&gt; ...</span></div><div class="line"><span class="stringliteral">                i2c read &lt;device address&gt; &lt;register address&gt; &lt;length&gt;</span></div><div class="line"><span class="stringliteral">                i2c discover</span></div><div class="line"><span class="stringliteral">  )&quot;</span></div></div><!-- fragment -->
 <p><a class="el" href="../../d0/d9b/classsjsu_1_1I2c.html">I2c</a> usage description and details. </p>
 
+</div>
+</div>
+<a id="aa9835f84913dd3d20f6b4d2dda1a2fda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9835f84913dd3d20f6b4d2dda1a2fda">&#9670;&nbsp;</a></span>kFirstI2cAddress</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::I2cCommand::kFirstI2cAddress = 0x08</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a31f0e078b6c150259e821c2de753e7ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31f0e078b6c150259e821c2de753e7ec">&#9670;&nbsp;</a></span>kI2cOperations</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* const sjsu::I2cCommand::kI2cOperations[]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= { <span class="stringliteral">&quot;read&quot;</span>,</div><div class="line">                                                        <span class="stringliteral">&quot;write&quot;</span>,</div><div class="line">                                                        <span class="stringliteral">&quot;discover&quot;</span>,</div><div class="line">                                                        <span class="keyword">nullptr</span> }</div></div><!-- fragment -->
+</div>
+</div>
+<a id="ae306bc7f508782d1d957d4cd2a2a88ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae306bc7f508782d1d957d4cd2a2a88ee">&#9670;&nbsp;</a></span>kLastI2cAddress</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t sjsu::I2cCommand::kLastI2cAddress = 0x78</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad7df600e6de09ca77113c6bea967cb49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7df600e6de09ca77113c6bea967cb49">&#9670;&nbsp;</a></span>kNumberOfI2cAddresses</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t sjsu::I2cCommand::kNumberOfI2cAddresses</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">      <a class="code" href="../../dd/d36/classsjsu_1_1I2cCommand.html#ae306bc7f508782d1d957d4cd2a2a88ee">kLastI2cAddress</a> - <a class="code" href="../../dd/d36/classsjsu_1_1I2cCommand.html#aa9835f84913dd3d20f6b4d2dda1a2fda">kFirstI2cAddress</a></div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

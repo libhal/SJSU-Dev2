@@ -7,7 +7,7 @@
 
 #include "L1_Peripheral/i2c.hpp"
 #include "L3_Application/commandline.hpp"
-#include "utility/containers/vector.hpp"
+#include "utility/allocator.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
@@ -68,13 +68,24 @@ class I2cCommand final : public Command
                 i2c discover
   )";
 
+  static inline const char * const kI2cOperations[] = { "read",
+                                                        "write",
+                                                        "discover",
+                                                        nullptr };
+
+  static constexpr uint8_t kFirstI2cAddress = 0x08;
+  static constexpr uint8_t kLastI2cAddress  = 0x78;
+  static constexpr size_t kNumberOfI2cAddresses =
+      kLastI2cAddress - kFirstI2cAddress;
+
   /// Sole constructor of the I2c command
   explicit I2cCommand(I2c & i2c)
       : Command("i2c", kDescription),
-        devices_found_(decltype(devices_found_)::allocator_type{}),
+        vector_buffer_(),
+        devices_found_(&vector_buffer_),
         i2c_(i2c)
   {
-    devices_found_.reserve(decltype(devices_found_)::allocator_type::size);
+    devices_found_.reserve(kNumberOfI2cAddresses);
   }
 
   /// Initializes i2c peripheral. MUST be called before calling any other method
@@ -228,9 +239,6 @@ class I2cCommand final : public Command
 
   void I2cDiscover()
   {
-    constexpr uint8_t kFirstI2cAddress = 0x08;
-    constexpr uint8_t kLastI2cAddress  = 0x78;
-
     devices_found_.clear();
 
     for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
@@ -327,11 +335,8 @@ class I2cCommand final : public Command
     return 0;
   }
 
-  static inline const char * const kI2cOperations[] = { "read",
-                                                        "write",
-                                                        "discover",
-                                                        nullptr };
-  sjsu::Vector<AddressString_t, command::kAutoCompleteOptions> devices_found_;
+  StaticAllocator<sizeof(AddressString_t) * 128> vector_buffer_;
+  std::pmr::vector<AddressString_t> devices_found_;
   I2c & i2c_;
 };
 }  // namespace sjsu

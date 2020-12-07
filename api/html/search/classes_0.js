@@ -8,7 +8,6 @@ var searchData=
   ['address',['Address',['../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html',1,'sjsu::MemoryAccessProtocol']]],
   ['addresslocationprototype_5ft',['AddressLocationPrototype_t',['../d0/d97/structsjsu_1_1MemoryAccessProtocol_1_1AddressLocationPrototype__t.html',1,'sjsu::MemoryAccessProtocol']]],
   ['addressstring_5ft',['AddressString_t',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html',1,'sjsu::I2cCommand']]],
-  ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu']]],
   ['arguments_5ft',['Arguments_t',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html',1,'sjsu::I2cCommand']]],
   ['armsysteminfocommand',['ArmSystemInfoCommand',['../df/d55/classsjsu_1_1ArmSystemInfoCommand.html',1,'sjsu']]]
 ];

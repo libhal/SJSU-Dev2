@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['c',['c',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#a0c03ed9b3e3b512713d7a09e108f6bec',1,'sjsu::FallbackListNode_t']]],
   ['callback',['callback',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a40769f764fdfd4a35d7bc2f2c13e5f49',1,'sjsu::cortex::SystemTimer']]],
   ['can_5facceptance_5ffilter_5fregister',['can_acceptance_filter_register',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ab24e6d346d461b6d40057d50475928f2',1,'sjsu::lpc40xx::Can']]],
   ['can_5fbaudrate',['can_baudrate',['../d6/d6d/structsjsu_1_1RmdX_1_1Parameters__t.html#af553edc82e44dd916867c2d38c4fe056',1,'sjsu::RmdX::Parameters_t']]],
@@ -13,7 +12,7 @@ var searchData=
   ['clock_5fcontrol',['clock_control',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a0514ed47d107b2563ccc57c977739c76',1,'sjsu::stm32f10x::SystemController']]],
   ['clock_5fsource',['clock_source',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a4db778e32dde4c513e3890f1e7b3b342',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::clock_source()'],['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a339030e3eab461e629797c1a3c4eced7',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::clock_source()'],['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#afcbd3f2b531b924b2d196f876ca92488',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::clock_source()'],['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a9d7dcda93bdc918b61968e4b9e9845ac',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t::clock_source()']]],
   ['clock_5fsystem',['clock_system',['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a622ba12de566f166cf7fd473dfeaa503',1,'sjsu::msp432p401r::SystemController']]],
-  ['commands',['commands',['../db/d4d/structsjsu_1_1CommandList__t.html#adcf263f5169af79c4db93aa3979c218e',1,'sjsu::CommandList_t']]],
+  ['commands',['commands',['../db/d4d/structsjsu_1_1CommandList__t.html#a3342cb42c1ddf6a00a2b8f9206030801',1,'sjsu::CommandList_t']]],
   ['core',['core',['../d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html#a132ec893313a5c0d5c5f980b070c7e5d',1,'sjsu::cortex::DwtCounter']]],
   ['count',['count',['../d0/ded/structsjsu_1_1PulseCapture_1_1CaptureStatus__t.html#aedb7331f896891f21669df7c45c4c99d',1,'sjsu::PulseCapture::CaptureStatus_t']]],
   ['cpu',['cpu',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a9a87581daa917063fa3ade5798ae3296',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t::cpu()'],['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#a9a7b40add1d89cadeb90c87283352e5f',1,'sjsu::lpc40xx::SystemController::ClockConfiguration::cpu()']]],

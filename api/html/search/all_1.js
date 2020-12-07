@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['a',['a',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#a9c48cd871987d2e96432228bd6f3bc6f',1,'sjsu::FallbackListNode_t']]],
   ['acceleration_5ft',['Acceleration_t',['../d8/dc4/structsjsu_1_1Accelerometer_1_1Acceleration__t.html',1,'sjsu::Accelerometer']]],
   ['accelerometer',['Accelerometer',['../d2/d7b/classsjsu_1_1Accelerometer.html',1,'sjsu::Accelerometer'],['../db/dc0/structsjone.html#a252df24f22db272648cbaa5cb1cf9313',1,'sjone::Accelerometer()'],['../db/dc5/structsjtwo.html#ae29e5c4359ad5fb762654251afbbbb84',1,'sjtwo::Accelerometer()']]],
   ['accelerometer_2ehpp',['accelerometer.hpp',['../d8/d04/accelerometer_8hpp.html',1,'']]],
@@ -26,15 +25,12 @@ var searchData=
   ['afio',['afio',['../d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html#a6b6e4a2e9ad26537a19e7341d45a18fe',1,'sjsu::stm32f10x::Pin']]],
   ['ahb',['ahb',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a08bdcf7e446d5aa953d284e129eae980',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['ahbdivider',['AHBDivider',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#ab05ea60ebf52eb7d4a00dbbe323ea21a',1,'sjsu::stm32f10x::SystemController']]],
-  ['allocate',['allocate',['../df/ddd/classsjsu_1_1Arena.html#ad68341c9db5759077d4d0b20b6c2ef10',1,'sjsu::Arena::allocate()'],['../d1/df0/classsjsu_1_1FixedAllocator.html#af5afc7393b5ab8bc8db1c727e59fa12b',1,'sjsu::FixedAllocator::allocate()']]],
   ['allocator_2ehpp',['allocator.hpp',['../d5/d61/allocator_8hpp.html',1,'']]],
   ['alpha',['alpha',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a188ba3108004e6099d90d8701cdcec3b',1,'sjsu::PixelDisplay::Color_t']]],
   ['ansi_5fterminal_5fcodes_2ehpp',['ansi_terminal_codes.hpp',['../de/d94/ansi__terminal__codes_8hpp.html',1,'']]],
   ['apb1',['apb1',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a6991e860ff6ffdf22a4cad274db7c1a7',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['apb2',['apb2',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#af0e52751ff45831a8c33825d6fe9dbf8',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['apbdivider',['APBDivider',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a0ed1e6e8d32ded047e5328cb7fcb1c63',1,'sjsu::stm32f10x::SystemController']]],
-  ['arena',['Arena',['../df/ddd/classsjsu_1_1Arena.html',1,'sjsu::Arena'],['../df/ddd/classsjsu_1_1Arena.html#acbbf1fbb2830f352f94728bba8082208',1,'sjsu::Arena::Arena(uint8_t *buf, size_t size, uint8_t *ptr=nullptr) noexcept'],['../df/ddd/classsjsu_1_1Arena.html#a5f9b57a035215dbf0686c93a724fa190',1,'sjsu::Arena::Arena(const Arena &amp;a)']]],
-  ['arena_5ftype',['arena_type',['../d1/df0/classsjsu_1_1FixedAllocator.html#ad5fdaee3f7297a29cfdc7eb841fd80d9',1,'sjsu::FixedAllocator']]],
   ['args',['Args',['../dd/d36/classsjsu_1_1I2cCommand.html#a43331db48a59d2cffbeb76f8ef9546a1',1,'sjsu::I2cCommand']]],
   ['arguments_5ft',['Arguments_t',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html',1,'sjsu::I2cCommand']]],
   ['arm_5fsystem_5fcommand_2ehpp',['arm_system_command.hpp',['../d5/d6c/arm__system__command_8hpp.html',1,'']]],

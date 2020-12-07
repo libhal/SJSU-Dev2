@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['b',['b',['../da/d1b/structsjsu_1_1FallbackListNode__t.html#adb16414448c0857eea4a638fbe8f717d',1,'sjsu::FallbackListNode_t']]],
   ['backup',['backup',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a512f59bcb4848104b0775612b8893e50',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['basenamelength',['BasenameLength',['../d0/d6b/namespacesjsu.html#a9ead998e2ac62523001932e91dbd793d',1,'sjsu']]],
   ['battery_5fcharge_2ehpp',['battery_charge.hpp',['../d6/d65/battery__charge_8hpp.html',1,'']]],
@@ -12,7 +11,7 @@ var searchData=
   ['bit_2ehpp',['bit.hpp',['../d3/d51/bit_8hpp.html',1,'']]],
   ['bitlimits',['BitLimits',['../d4/d0e/classsjsu_1_1BitLimits.html',1,'sjsu']]],
   ['blue',['blue',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a933905599c7cca0661282cc7109a7d1f',1,'sjsu::PixelDisplay::Color_t']]],
-  ['buffer',['buffer',['../d4/d59/structsjsu_1_1TerminalCache__t.html#a972656f858ee95a5a8174172d7ecca51',1,'sjsu::TerminalCache_t']]],
+  ['buffer',['buffer',['../db/d4d/structsjsu_1_1CommandList__t.html#a071fea024aa663b7477b58b3c3c2d808',1,'sjsu::CommandList_t::buffer()'],['../d4/d59/structsjsu_1_1TerminalCache__t.html#a972656f858ee95a5a8174172d7ecca51',1,'sjsu::TerminalCache_t::buffer()']]],
   ['bufferstatus',['BufferStatus',['../d5/dff/structsjsu_1_1lpc40xx_1_1Can_1_1BufferStatus.html',1,'sjsu::lpc40xx::Can']]],
   ['build_5finfo_2ehpp',['build_info.hpp',['../dd/d98/build__info_8hpp.html',1,'']]],
   ['build_5ftests',['BUILD_TESTS',['../de/d06/units_8hpp.html#aceb17e7c24309f9f8aa91bd94b9dcf1e',1,'units.hpp']]],
@@ -32,5 +31,7 @@ var searchData=
   ['buzzer_2ehpp',['buzzer.hpp',['../df/d07/buzzer_8hpp.html',1,'']]],
   ['byte',['byte',['../da/df2/structsjsu_1_1Sd_1_1Response__t.html#aa38255a751f9ff6a198ebc01f6ed642f',1,'sjsu::Sd::Response_t::byte()'],['../df/d50/structsjsu_1_1Sd_1_1CsdBuffer__t.html#addc2a8beca18613fab63ff079f94408a',1,'sjsu::Sd::CsdBuffer_t::byte()'],['../d6/d1c/structsjsu_1_1Sd_1_1CardInfo__t.html#a75dfb1ca7fcbbf580d84cff257348959',1,'sjsu::Sd::CardInfo_t::byte()']]],
   ['byte_2ehpp',['byte.hpp',['../da/da9/byte_8hpp.html',1,'']]],
-  ['bytearraytospan',['ByteArrayToSpan',['../d0/d6b/namespacesjsu.html#a688d949c0a1495025da0d6357f2d52b6',1,'sjsu']]]
+  ['bytearraytospan',['ByteArrayToSpan',['../d0/d6b/namespacesjsu.html#a688d949c0a1495025da0d6357f2d52b6',1,'sjsu']]],
+  ['bytesallocated',['BytesAllocated',['../d9/dd3/classsjsu_1_1StaticAllocator.html#aed4bd3aab4afd14a2e353d45a04f79b1',1,'sjsu::StaticAllocator']]],
+  ['bytesunallocated',['BytesUnallocated',['../d9/dd3/classsjsu_1_1StaticAllocator.html#a47475d9c6fb1c98bc16ccae6c4de8b53',1,'sjsu::StaticAllocator']]]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['rebind',['rebind',['../d2/d52/structsjsu_1_1FixedAllocator_1_1rebind.html',1,'sjsu::FixedAllocator']]],
   ['reflection',['Reflection',['../db/db4/classReflection.html',1,'']]],
   ['reflection_3c_20const_20uint8_5ft_20_3e',['Reflection&lt; const uint8_t &gt;',['../d0/d10/classReflection_3_01const_01uint8__t_01_4.html',1,'']]],
   ['reflection_3c_20int16_5ft_20_3e',['Reflection&lt; int16_t &gt;',['../d6/d2c/classReflection_3_01int16__t_01_4.html',1,'']]],

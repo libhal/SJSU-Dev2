@@ -7,7 +7,6 @@ var searchData=
   ['semaphore_5f',['semaphore_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#abf739cf54a2f35b206c3ca90d970f072',1,'sjsu::rtos::PeriodicTask']]],
   ['semaphore_5fbuffer_5f',['semaphore_buffer_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#ae53ad672ea8ea07e4919ffc5b4d04fad',1,'sjsu::rtos::PeriodicTask']]],
   ['sensor',['sensor',['../d0/d0f/namespacesjsu_1_1command.html#a3f01366709f7a2f58c275b34ae0158b3',1,'sjsu::command']]],
-  ['size',['size',['../d1/df0/classsjsu_1_1FixedAllocator.html#a3abce1c109d029e51a0c9dc34942d58f',1,'sjsu::FixedAllocator']]],
   ['source',['source',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a092bd3ac246ab6b9d010a3a34a5b8838',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::source()'],['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a362d4891e8fa6fc05726edaf2cbc61fc',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::source()']]],
   ['speed',['speed',['../da/d0c/structsjsu_1_1RmdX_1_1Feedback__t.html#a500adabfb14a37df43b71cf8cf171c21',1,'sjsu::RmdX::Feedback_t']]],
   ['spi0',['spi0',['../db/dc0/structsjone.html#a36d0478d37e04f16fa5611126315ef83',1,'sjone::spi0()'],['../db/dc5/structsjtwo.html#ab3bcf9254b30b163ecfe7886ea3735d9',1,'sjtwo::spi0()']]],
