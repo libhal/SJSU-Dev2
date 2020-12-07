@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <memory_resource>
 
 #include "utility/log.hpp"
@@ -36,8 +37,8 @@ class StaticAllocator : public std::pmr::memory_resource
 {
  public:
   StaticAllocator()
-      : memory_allocated_(0),
-        buffer_{},
+      : buffer_{},
+        unallocated_memory_(buffer_.data()),
         resource_(buffer_.data(),
                   buffer_.size(),
                   std::pmr::null_memory_resource())
@@ -54,7 +55,7 @@ class StaticAllocator : public std::pmr::memory_resource
   /// @return size_t - number of bytes that have already been allocated.
   size_t BytesAllocated()
   {
-    return memory_allocated_;
+    return unallocated_memory_ - buffer_.data();
   }
 
   /// @return int - Bytes that have yet to be allocated from this allocator.
@@ -76,12 +77,22 @@ class StaticAllocator : public std::pmr::memory_resource
  protected:
   void * do_allocate(std::size_t bytes, std::size_t alignment) override
   {
-    memory_allocated_ += bytes;
     LogDebug("Allocating %zu @ alignment %zu, left: %zu\n",
              bytes,
              alignment,
-             memory_allocated_);
-    return resource_.allocate(bytes, alignment);
+             BytesUnallocated());
+
+    // Request a pointer to unallocated memory from the
+    // monotonic_buffer_resource buffer.
+    void * allocated_address = resource_.allocate(bytes, alignment);
+
+    // If the above call has not thrown a std::bad_alloc exception, then the
+    // allocated address must contain a valid address from buffer. To get the
+    // location of the unallocated memory, simply add the number of bytes to
+    // allocate_address variable.
+    unallocated_memory_ = static_cast<std::byte *>(allocated_address) + bytes;
+
+    return allocated_address;
   }
 
   void do_deallocate(void * p,
@@ -98,8 +109,8 @@ class StaticAllocator : public std::pmr::memory_resource
   }
 
  private:
-  size_t memory_allocated_;
-  std::array<uint8_t, kBufferSizeBytes> buffer_;
+  std::array<std::byte, kBufferSizeBytes> buffer_;
+  std::byte * unallocated_memory_;
   std::pmr::monotonic_buffer_resource resource_;
 };
 }  // namespace sjsu
