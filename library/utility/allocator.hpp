@@ -47,21 +47,21 @@ class StaticAllocator : public std::pmr::memory_resource
 
   /// @return size_t - the total number of bytes that this allocator can
   /// allocate before throwing a std::bad_alloc exception.
-  constexpr size_t TotalCapacity()
+  constexpr std::size_t Capacity()
   {
     return kBufferSizeBytes;
   }
 
   /// @return size_t - number of bytes that have already been allocated.
-  size_t BytesAllocated()
+  std::size_t MemoryUsed()
   {
     return unallocated_memory_ - buffer_.data();
   }
 
   /// @return int - Bytes that have yet to be allocated from this allocator.
-  int BytesUnallocated()
+  int MemoryAvailable()
   {
-    return TotalCapacity() - BytesAllocated();
+    return Capacity() - MemoryUsed();
   }
 
   /// Print to STDOUT the total capcity, memory allocated and memory left in
@@ -69,9 +69,9 @@ class StaticAllocator : public std::pmr::memory_resource
   void Print()
   {
     LogInfo("StaticAllocator >> Capacity: %zu, Allocated: %zu, Left: %d",
-            TotalCapacity(),
-            BytesAllocated(),
-            BytesUnallocated());
+            Capacity(),
+            MemoryUsed(),
+            MemoryAvailable());
   }
 
  protected:
@@ -80,7 +80,7 @@ class StaticAllocator : public std::pmr::memory_resource
     LogDebug("Allocating %zu @ alignment %zu, left: %zu\n",
              bytes,
              alignment,
-             BytesUnallocated());
+             MemoryAvailable());
 
     // Request a pointer to unallocated memory from the
     // monotonic_buffer_resource buffer.
