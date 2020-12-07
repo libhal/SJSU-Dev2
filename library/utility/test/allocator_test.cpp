@@ -78,6 +78,30 @@ TEST_CASE("Testing StaticAllocator")
     CHECK((kCapacity - 3) == allocator.BytesUnallocated());
   }
 
+  SECTION("Memory Metrics with alignment")
+  {
+    // Setup
+    constexpr size_t kCapacity = 32;
+    StaticAllocator<kCapacity> allocator;
+
+    // Exercise
+    // Exercise: Memory Allocation --> [x] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
+    [[maybe_unused]] void * allocate_block0 = allocator.allocate(1, 1);
+    // Exercise: Memory Allocation --> [x] [x] [ ] [ ] [ ] [ ] [ ] [ ]
+    [[maybe_unused]] void * allocate_block1 = allocator.allocate(1, 1);
+    // Exercise: Memory Allocation --> [x] [x] [-] [-] [x] [ ] [ ] [ ]
+    //           Notice how 2 of the bytes get skipped? this is due to the fact
+    //           that the alignment needs to be in sections of 4 bytes, or word,
+    //           chunks. Putting the pointer at index 3 (starting from 1), would
+    //           cause the address to be misaligned.
+    [[maybe_unused]] void * allocate_block2 = allocator.allocate(1, 4);
+
+    // Verify
+    CHECK(kCapacity == allocator.TotalCapacity());
+    CHECK(5 == allocator.BytesAllocated());
+    CHECK((kCapacity - 5) == allocator.BytesUnallocated());
+  }
+
   SECTION("Allocate maximum capacity without exception thrown")
   {
     // Setup
