@@ -11,35 +11,35 @@ jobs:
     name: Cleanliness Checks
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout 🛎️
+      - name: 🛎️ Checkout
         uses: actions/checkout@v2
 
-      - name: Install Doxygen and Graphviz 📥
+      - name: 📥 Install Doxygen and Graphviz
         run: sudo apt-get -y install doxygen graphviz
 
-      - name: Install cspell 📥
+      - name: 📥 Install cspell
         run: sudo npm install -g cspell@4.0.38
 
-      - name: Fast Setup 📦
+      - name: 📦 Fast Setup
         run: ./setup --generate-location-file
 
-      - name: Lint 🧹
+      - name: 🧹 Lint
         working-directory: projects/continuous_integration
         run: make lint
 
-      - name: Spellcheck 🔤
+      - name: 🔤 Spellcheck
         working-directory: projects/continuous_integration
         run: make spellcheck
 
-      - name: Documentation 📖
+      - name: 📖 Documentation
         working-directory: projects/continuous_integration
         run: make doxygen
 
-      - name: Check Variable Names 📃
+      - name: 📃 Check Variable Names
         working-directory: projects/continuous_integration
         run: make commit-tidy
 
-      - name: Deploy 🚀
+      - name: 🚀 Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         # Only Deploy to gh-pages on master branch event
         if: ${{ github.ref == 'refs/heads/master' &&
@@ -55,42 +55,47 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - name: Checkout 🛎️
+      - name: 🛎️ Checkout
         uses: actions/checkout@v2
 
-      - name: Install Cpp Coveralls 📥
+      - name: 📥 Install Cpp Coveralls
         run: pip install --user cpp-coveralls
 
-      - name: Setup 📦
+      - name: 📦 Setup
         run: ./setup
 
-      - name: Run Tests 🧪
+      - name: 🧪 Run Tests
         working-directory: projects/continuous_integration
         run: make test
 
-      - name: Code Coverage 🩺
+      - name: 🩺 Code Coverage
         working-directory: projects/continuous_integration
         run: make coverage
 
-      - uses: codecov/codecov-action@v1
+      - name: 🚀 Send Coverage to Codecov.io
+        uses: codecov/codecov-action@v1
         with:
           file: projects/continuous_integration/build/test/coverage/coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-          verbose: true
+          name: Full Platform Unit Tests
+
+      - name: 🗄️ Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: projects/continuous_integration/build/test/coverage/coverage.xml
 
   linux_checks:
     name: Linux Setup + Build Checks
     runs-on: ubuntu-18.04
 
     steps:
-      - name: Checkout 🛎️
+      - name: 🛎️ Checkout
         uses: actions/checkout@v2
 
-      - name: Setup 📦
+      - name: 📦 Setup
         run: ./setup
 
-      - name: Build Applications 🛠️
+      - name: 🛠️ Build Applications
         working-directory: projects/continuous_integration
         run: make --no-print-directory all-projects
 
@@ -98,44 +103,44 @@ jobs:
     name: MacOS Setup + Build Checks
     runs-on: macos-10.15
     steps:
-      - name: Checkout 🛎️
+      - name: 🛎️ Checkout
         uses: actions/checkout@v2
 
-      - name: Setup 📦
+      - name: 📦 Setup
         run: ./setup
 
-      - name: Build Hello World 🛠️
+      - name: 🛠️ Build Hello World
         working-directory: projects/hello_world
         run: make application
 
-      - name: Build Barebones 🛠️
+      - name: 🛠️ Build Barebones
         working-directory: projects/barebones
         run: make application
 
-      - name: Build Starter 🛠️
+      - name: 🛠️ Build Starter
         working-directory: projects/starter
         run: make application
 
-      - name: Build SJTwo GPIO 🛠️
+      - name: 🛠️ Build SJTwo GPIO
         working-directory: demos/sjtwo/gpio
         run: make application
 
-      - name: Build stm32f10x GPIO 🛠️
+      - name: 🛠️ Build stm32f10x GPIO
         working-directory: demos/stm32f10x/gpio
         run: make application
 
-      - name: Build stm32f4xx GPIO 🛠️
+      - name: 🛠️ Build stm32f4xx GPIO
         working-directory: demos/stm32f4xx/fk407m1_gpio
         run: make application
 
-      - name: Build msp432p401r Blinker 🛠️
+      - name: 🛠️ Build msp432p401r Blinker
         working-directory: demos/msp432p401r/blinker
         run: make application
 
-      - name: Build multiplatform Stopwatch 🛠️
+      - name: 🛠️ Build multiplatform Stopwatch
         working-directory: demos/multiplatform/stopwatch
         run: make application
 
-      - name: Build ARM Cortex DWT 🛠️
+      - name: 🛠️ Build ARM Cortex DWT
         working-directory: demos/arm_cortex/dwt_counter
         run: make application

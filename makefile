@@ -409,19 +409,24 @@ clean-coverage:
 	@rm -f $(SJ2_COVERAGE_FILES) 2> /dev/null
 
 
+
+
+
 coverage:
 	@printf '$(YELLOW)Generating Coverage Files $(RESET) : '
 
 	@mkdir -p "$(SJ2_COVERAGE_DIR)"
 
+
 	@gcovr \
+		--xml --output $(SJ2_COVERAGE_DIR)/coverage.xml \
+		--html $(SJ2_COVERAGE_DIR)/coverage.html --html-details \
+		--gcov-executable="$(CODE_COVERAGE_TOOL)" --sort-percentage \
 		--filter="$(LIBRARY_DIR)" \
-		-e "$(LIBRARY_DIR)/newlib" \
-		-e "$(LIBRARY_DIR)/third_party" \
+		-e "$(LIBRARY_DIR)/L0_Platform" \
 		-e "$(LIBRARY_DIR)/L4_Testing" \
-		--xml $(SJ2_COVERAGE_DIR)/coverage.xml --html --html-details \
-		--gcov-executable="$(CODE_COVERAGE_TOOL)" \
-		-o $(SJ2_COVERAGE_DIR)/coverage.html
+		-e "$(LIBRARY_DIR)/newlib" \
+		-e "$(LIBRARY_DIR)/third_party"
 
 	@printf '$(GREEN)DONE!$(RESET)\n'
 
