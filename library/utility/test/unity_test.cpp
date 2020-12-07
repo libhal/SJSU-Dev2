@@ -23,11 +23,3 @@
 // =============================================================================
 #include "utility/math/test/average_test.cpp"  // NOLINT
 #include "utility/math/test/limits_test.cpp"   // NOLINT
-
-// =============================================================================
-// Containers
-// =============================================================================
-#include "utility/containers/test/deque_test.cpp"   // NOLINT
-#include "utility/containers/test/list_test.cpp"    // NOLINT
-#include "utility/containers/test/string_test.cpp"  // NOLINT
-#include "utility/containers/test/vector_test.cpp"  // NOLINT

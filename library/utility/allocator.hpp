@@ -1,208 +1,105 @@
 #pragma once
 
-#include <cstdint>
-#include <cstdlib>
+#include <memory_resource>
 
 #include "utility/log.hpp"
 
 namespace sjsu
 {
-/// Arena class is a memory management class that takes an external buffer and
-/// manages it.
-class Arena
+/// The StaticAllocator is the polymorphic memory resource allocator of choice
+/// for SJSU-Dev2's internal libraries when a library would like to use a C++
+/// standard container such as std::pmr::vector, std::pmr::string,
+/// std::pmr::unordered_map, and more without breaking the style rule of "NO
+/// Dynamic Allocation". It provides a simple way to create an allocator with
+/// built in storage, with its size indicated by a single template parameter. It
+/// also provides statistics regarding the amount of memory allocated such that
+/// developers can determine if they need to reduce or increase the size of the
+/// buffer. Memory statistics can also give programs the insight into how much
+/// memory space is available and make decisions based on that. In the event
+/// that the memory of the static allocator is exceeded, a std::bad_alloc
+/// excpetion is thrown.
+///
+/// USAGE:
+///
+///    StaticAllocator<sizeof(int) * 100> memory_resource;
+///    std::pmr::vector<int> sampled_data(&memory_resource);
+///
+/// USAGE:
+///
+///    StaticAllocator<1024> memory_resource;
+///    std::pmr::unordered_map<int, const char*> id_name_map(&memory_resource);
+///
+/// @tparam kBufferSizeBytes - Number of bytes to statically allocate for the
+///         memory resource.
+template <size_t kBufferSizeBytes>
+class StaticAllocator : public std::pmr::memory_resource
 {
  public:
-  /// Typical constructor
-  ///
-  /// @param buf - buffer to manage
-  /// @param size - size of the buffer passed
-  /// @param ptr - starting offset position in the buffer
-  Arena(uint8_t * buf, size_t size, uint8_t * ptr = nullptr) noexcept
-      : buf_(buf), ptr_(ptr), size_(size), id_(arena_id++), d_ptr_(&ptr_)
-  {
-    if (ptr_ == nullptr)
-    {
-      ptr_ = buf_;
-    }
-  }
-  /// NOTE: Arena's should never be shared between threads. This constructor
-  /// should only be used by std::containers that need to copy an arena.
-  Arena(const Arena & a)
-      : buf_(a.buf_),
-        ptr_(a.ptr_),
-        size_(a.size_),
-        id_(arena_id++),
-        d_ptr_(const_cast<uint8_t **>(&a.ptr_))
+  StaticAllocator()
+      : memory_allocated_(0),
+        buffer_{},
+        resource_(buffer_.data(),
+                  buffer_.size(),
+                  std::pmr::null_memory_resource())
   {
   }
 
-  /// Returns a pointer to a memory region within the buffer that has not been
-  /// allocated yet and fits the size requirement.
-  ///
-  /// @param requested_space - number of bytes requested
-  /// @return nullptr if not successful
-  uint8_t * allocate(size_t requested_space)  // NOLINT
+  /// @return size_t - the total number of bytes that this allocator can
+  /// allocate before throwing a std::bad_alloc exception.
+  constexpr size_t TotalCapacity()
   {
-    bool inside_of_allocatable_space = WithinAllocatableSpace(requested_space);
-    if (inside_of_allocatable_space)
-    {
-      uint8_t * r = *d_ptr_;
-      *d_ptr_ += requested_space;
-      return r;
-    }
-
-    SJ2_ASSERT_FATAL(inside_of_allocatable_space,
-                     R"(
-(%d) Memory overflow when attempting to allocate memory for container.
-buffer address     = %p
-buffer_size        = %zu
-allocation pointer = %p
-requested space    = %zu
-)",
-                     id_,
-                     buf_,
-                     size_,
-                     *d_ptr_,
-                     requested_space);
-    return nullptr;
+    return kBufferSizeBytes;
   }
 
-  /// This actually does nothing, but in the special case where the pointer to
-  /// be deallocated is at the end, the memory will be deallocated.
-  ///
-  /// @param pointer - position in memory to be deallocated
-  /// @param size - number of bytes to be deallocated
-  void deallocate(uint8_t * pointer, size_t size) noexcept  // NOLINT
+  /// @return size_t - number of bytes that have already been allocated.
+  size_t BytesAllocated()
   {
-    if (PointerInBuffer(pointer))
-    {
-      if (pointer + size == *d_ptr_)
-      {
-        *d_ptr_ = pointer;
-      }
-    }
+    return memory_allocated_;
   }
 
-  /// @return size_t - size of the arena in total
-  size_t size() noexcept  // NOLINT
+  /// @return int - Bytes that have yet to be allocated from this allocator.
+  int BytesUnallocated()
   {
-    return size_;
+    return TotalCapacity() - BytesAllocated();
   }
 
-  /// @return size_t - number of bytes currently allocated
-  size_t used() const noexcept  // NOLINT
+  /// Print to STDOUT the total capcity, memory allocated and memory left in
+  /// allocator.
+  void Print()
   {
-    return static_cast<size_t>(*d_ptr_ - buf_);
+    LogInfo("StaticAllocator >> Capacity: %zu, Allocated: %zu, Left: %d",
+            TotalCapacity(),
+            BytesAllocated(),
+            BytesUnallocated());
   }
 
-  /// Resets the arena back to its initial state freeing all allocated memory
-  void reset() noexcept  // NOLINT
+ protected:
+  void * do_allocate(std::size_t bytes, std::size_t alignment) override
   {
-    *d_ptr_ = buf_;
+    memory_allocated_ += bytes;
+    LogDebug("Allocating %zu @ alignment %zu, left: %zu\n",
+             bytes,
+             alignment,
+             memory_allocated_);
+    return resource_.allocate(bytes, alignment);
   }
 
-  template <class T, size_t N, class U>
-  friend class FixedAllocator;
+  void do_deallocate(void * p,
+                     std::size_t bytes,
+                     std::size_t alignment) override
+  {
+    return resource_.deallocate(p, bytes, alignment);
+  }
+
+  bool do_is_equal(
+      const std::pmr::memory_resource & other) const noexcept override
+  {
+    return resource_.is_equal(other);
+  }
 
  private:
-  static inline int arena_id = 0;
-
-  bool PointerInBuffer(uint8_t * p) noexcept
-  {
-    return buf_ <= p && p <= buf_ + size_;
-  }
-  bool WithinAllocatableSpace(size_t requested_space) noexcept
-  {
-    return (buf_ + size_) >= (*d_ptr_ + requested_space);
-  }
-
-  uint8_t * buf_    = nullptr;
-  uint8_t * ptr_    = nullptr;
-  size_t size_      = 0;
-  int id_           = 0;
-  uint8_t ** d_ptr_ = nullptr;
+  size_t memory_allocated_;
+  std::array<uint8_t, kBufferSizeBytes> buffer_;
+  std::pmr::monotonic_buffer_resource resource_;
 };
-
-/// Fixed size allocator
-template <class T, size_t N, class U = T>
-class FixedAllocator
-{
- public:
-  /// Alias for the value of type
-  using value_type = T;
-  /// The size of the type
-  static auto constexpr size = N;  // NOLINT
-  /// Alias of the arena type
-  using arena_type = Arena;
-
- private:
-  arena_type a_;
-  arena_type * a_ptr_            = &a_;
-  uint8_t buf_[size * sizeof(U)] = { 0 };
-
- public:
-  //! @cond Doxygen_Suppress
-  FixedAllocator(const FixedAllocator &) = default;
-  FixedAllocator & operator=(const FixedAllocator &) = delete;
-  FixedAllocator() noexcept : a_(buf_, sizeof(buf_)) {}
-  template <class T_copy, size_t N_copy, class U_copy>
-  FixedAllocator(const FixedAllocator<T_copy, N_copy, U_copy> & a)
-      : a_(a.a_), a_ptr_(const_cast<arena_type *>(&a.a_))
-  {
-  }
-  //! @endcond
-
-  /// Required by the std library to change the type of the fixed allocator.
-  /// @tparam Bind - new type to bind to the allocator
-  template <class Bind>
-  struct rebind  // NOLINT
-  {
-    /// Alias to the rebound allocator
-    using other = FixedAllocator<Bind, N, Bind>;
-  };
-
-  /// Allocate object from arena.
-  ///
-  /// @param n - number of bytes
-  /// @return T* - pointer to a type to allocate
-  T * allocate(size_t n)  // NOLINT
-  {
-    return reinterpret_cast<T *>(a_ptr_->allocate(n * sizeof(T)));
-  }
-
-  /// Deallocate the object.
-  ///
-  /// @param p - pointer to the object to deallocate
-  /// @param n - how large the object is
-  void deallocate(T * p, size_t n) noexcept  // NOLINT
-  {
-    a_ptr_->deallocate(reinterpret_cast<uint8_t *>(p), n * sizeof(T));
-  }
-
-  //! @cond Doxygen_Suppress
-  template <class T1, size_t N1, class U1, size_t M1>
-  friend bool operator==(const FixedAllocator<T1, N1> & x,
-                         const FixedAllocator<U1, M1> & y) noexcept;
-
-  template <class T1, size_t M1, class U1>
-  friend class FixedAllocator;
-  //! @endcond
-};
-
-//! @cond Doxygen_Suppress
-template <class T, size_t N, class U, class V, size_t M, class W>
-inline bool operator==(const FixedAllocator<T, N, U> & x,
-                       const FixedAllocator<V, M, W> & y) noexcept
-{
-  return N == M && &x.a_ == &y.a_;
-}
-
-template <class T, size_t N, class U, class V, size_t M, class W>
-inline bool operator!=(const FixedAllocator<T, N, U> & x,
-                       const FixedAllocator<V, M, W> & y) noexcept
-{
-  return !(x == y);
-}
-//! @endcond
-
 }  // namespace sjsu
