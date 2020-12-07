@@ -73,9 +73,33 @@ TEST_CASE("Testing StaticAllocator")
     [[maybe_unused]] void * allocate_block2 = allocator.allocate(1, 1);
 
     // Verify
-    CHECK(kCapacity == allocator.TotalCapacity());
-    CHECK(3 == allocator.BytesAllocated());
-    CHECK((kCapacity - 3) == allocator.BytesUnallocated());
+    CHECK(kCapacity == allocator.Capacity());
+    CHECK(3 == allocator.MemoryUsed());
+    CHECK((kCapacity - 3) == allocator.MemoryAvailable());
+  }
+
+  SECTION("Memory Metrics with alignment")
+  {
+    // Setup
+    constexpr size_t kCapacity = 32;
+    StaticAllocator<kCapacity> allocator;
+
+    // Exercise
+    // Exercise: Memory Allocation --> [x] [ ] [ ] [ ] [ ] [ ] [ ] [ ]
+    [[maybe_unused]] void * allocate_block0 = allocator.allocate(1, 1);
+    // Exercise: Memory Allocation --> [x] [x] [ ] [ ] [ ] [ ] [ ] [ ]
+    [[maybe_unused]] void * allocate_block1 = allocator.allocate(1, 1);
+    // Exercise: Memory Allocation --> [x] [x] [-] [-] [x] [ ] [ ] [ ]
+    //           Notice how 2 of the bytes get skipped? this is due to the fact
+    //           that the alignment needs to be in sections of 4 bytes, or word,
+    //           chunks. Putting the pointer at index 3 (starting from 1), would
+    //           cause the address to be misaligned.
+    [[maybe_unused]] void * allocate_block2 = allocator.allocate(1, 4);
+
+    // Verify
+    CHECK(kCapacity == allocator.Capacity());
+    CHECK(5 == allocator.MemoryUsed());
+    CHECK((kCapacity - 5) == allocator.MemoryAvailable());
   }
 
   SECTION("Allocate maximum capacity without exception thrown")
@@ -84,7 +108,7 @@ TEST_CASE("Testing StaticAllocator")
     StaticAllocator<32> allocator;
 
     // Exercise
-    void * ptr = allocator.allocate(allocator.TotalCapacity(), 1);
+    void * ptr = allocator.allocate(allocator.Capacity(), 1);
 
     // Verify
     CheckIfPointerIsInBounds(ptr, allocator);
@@ -99,7 +123,7 @@ TEST_CASE("Testing StaticAllocator")
     // Exercise: Allocate the entire buffer's worth, so in the next step,
     // allocating just 1 more byte will cause the allocator to throw
     // std::bad_alloc.
-    void * ptr = allocator.allocate(allocator.TotalCapacity(), 1);
+    void * ptr = allocator.allocate(allocator.Capacity(), 1);
 
     // Verify
     CHECK_THROWS_AS(

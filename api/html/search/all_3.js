@@ -6,6 +6,7 @@ var searchData=
   ['can_2ehpp',['can.hpp',['../dd/d78/can_8hpp.html',1,'(Global Namespace)'],['../d5/de2/lpc17xx_2can_8hpp.html',1,'(Global Namespace)'],['../d6/d0c/lpc40xx_2can_8hpp.html',1,'(Global Namespace)']]],
   ['can_5facceptance_5ffilter_5fregister',['can_acceptance_filter_register',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ab24e6d346d461b6d40057d50475928f2',1,'sjsu::lpc40xx::Can']]],
   ['can_5fbaudrate',['can_baudrate',['../d6/d6d/structsjsu_1_1RmdX_1_1Parameters__t.html#af553edc82e44dd916867c2d38c4fe056',1,'sjsu::RmdX::Parameters_t']]],
+  ['capacity',['Capacity',['../d9/dd3/classsjsu_1_1StaticAllocator.html#a4a81be84a1de18719c1c1bb09eceaa5d',1,'sjsu::StaticAllocator']]],
   ['capture_5fpin0',['capture_pin0',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#ad32e97898d5a64bf62fdd8e970949eb3',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
   ['capture_5fpin1',['capture_pin1',['../da/d36/structsjsu_1_1lpc40xx_1_1PulseCapture_1_1CaptureChannelPartial__t.html#a4e527dd63edd8e59728344fa83cb9046',1,'sjsu::lpc40xx::PulseCapture::CaptureChannelPartial_t']]],
   ['capturecallback',['CaptureCallback',['../d2/d96/classsjsu_1_1PulseCapture.html#a4fa4abf74b4edd9674360f43352244e1',1,'sjsu::PulseCapture']]],

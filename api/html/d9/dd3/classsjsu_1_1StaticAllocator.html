@@ -103,12 +103,12 @@ Collaboration diagram for sjsu::StaticAllocator&lt; kBufferSizeBytes &gt;:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3ac22e3378287ad41a70c4841c33f1ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a3ac22e3378287ad41a70c4841c33f1ee">StaticAllocator</a> ()</td></tr>
 <tr class="separator:a3ac22e3378287ad41a70c4841c33f1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a999d5db0a1fdcb2b71dddf0b430c9d20"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a999d5db0a1fdcb2b71dddf0b430c9d20">TotalCapacity</a> ()</td></tr>
-<tr class="separator:a999d5db0a1fdcb2b71dddf0b430c9d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed4bd3aab4afd14a2e353d45a04f79b1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#aed4bd3aab4afd14a2e353d45a04f79b1">BytesAllocated</a> ()</td></tr>
-<tr class="separator:aed4bd3aab4afd14a2e353d45a04f79b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47475d9c6fb1c98bc16ccae6c4de8b53"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a47475d9c6fb1c98bc16ccae6c4de8b53">BytesUnallocated</a> ()</td></tr>
-<tr class="separator:a47475d9c6fb1c98bc16ccae6c4de8b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a81be84a1de18719c1c1bb09eceaa5d"><td class="memItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a4a81be84a1de18719c1c1bb09eceaa5d">Capacity</a> ()</td></tr>
+<tr class="separator:a4a81be84a1de18719c1c1bb09eceaa5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd8f60b3a00cb255d077c43faa14dfc2"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#acd8f60b3a00cb255d077c43faa14dfc2">MemoryUsed</a> ()</td></tr>
+<tr class="separator:acd8f60b3a00cb255d077c43faa14dfc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c755ff0d0bcf0f8e790bf5039f6bbde"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a7c755ff0d0bcf0f8e790bf5039f6bbde">MemoryAvailable</a> ()</td></tr>
+<tr class="separator:a7c755ff0d0bcf0f8e790bf5039f6bbde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84a076e21ab64b93f2418d5164672d09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a84a076e21ab64b93f2418d5164672d09">Print</a> ()</td></tr>
 <tr class="separator:a84a076e21ab64b93f2418d5164672d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -166,8 +166,8 @@ template&lt;size_t kBufferSizeBytes&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aed4bd3aab4afd14a2e353d45a04f79b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed4bd3aab4afd14a2e353d45a04f79b1">&#9670;&nbsp;</a></span>BytesAllocated()</h2>
+<a id="a4a81be84a1de18719c1c1bb09eceaa5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a81be84a1de18719c1c1bb09eceaa5d">&#9670;&nbsp;</a></span>Capacity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,7 +178,7 @@ template&lt;size_t kBufferSizeBytes&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::BytesAllocated </td>
+          <td class="memname">constexpr std::size_t <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::Capacity </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -190,35 +190,7 @@ template&lt;size_t kBufferSizeBytes&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>size_t - number of bytes that have already been allocated. </dd></dl>
-
-</div>
-</div>
-<a id="a47475d9c6fb1c98bc16ccae6c4de8b53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47475d9c6fb1c98bc16ccae6c4de8b53">&#9670;&nbsp;</a></span>BytesUnallocated()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t kBufferSizeBytes&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::BytesUnallocated </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>int - Bytes that have yet to be allocated from this allocator. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>size_t - the total number of bytes that this allocator can allocate before throwing a std::bad_alloc exception. </dd></dl>
 
 </div>
 </div>
@@ -332,6 +304,62 @@ template&lt;size_t kBufferSizeBytes&gt; </div>
 
 </div>
 </div>
+<a id="a7c755ff0d0bcf0f8e790bf5039f6bbde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c755ff0d0bcf0f8e790bf5039f6bbde">&#9670;&nbsp;</a></span>MemoryAvailable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t kBufferSizeBytes&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::MemoryAvailable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>int - Bytes that have yet to be allocated from this allocator. </dd></dl>
+
+</div>
+</div>
+<a id="acd8f60b3a00cb255d077c43faa14dfc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd8f60b3a00cb255d077c43faa14dfc2">&#9670;&nbsp;</a></span>MemoryUsed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t kBufferSizeBytes&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::MemoryUsed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>size_t - number of bytes that have already been allocated. </dd></dl>
+
+</div>
+</div>
 <a id="a84a076e21ab64b93f2418d5164672d09"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a84a076e21ab64b93f2418d5164672d09">&#9670;&nbsp;</a></span>Print()</h2>
 
@@ -357,34 +385,6 @@ template&lt;size_t kBufferSizeBytes&gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Print to STDOUT the total capcity, memory allocated and memory left in allocator. </p>
-
-</div>
-</div>
-<a id="a999d5db0a1fdcb2b71dddf0b430c9d20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a999d5db0a1fdcb2b71dddf0b430c9d20">&#9670;&nbsp;</a></span>TotalCapacity()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t kBufferSizeBytes&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr size_t <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::TotalCapacity </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>size_t - the total number of bytes that this allocator can allocate before throwing a std::bad_alloc exception. </dd></dl>
 
 </div>
 </div>

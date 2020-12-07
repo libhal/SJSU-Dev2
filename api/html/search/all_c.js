@@ -20,6 +20,8 @@ var searchData=
   ['memory_5faccess_5fprotocol_2ehpp',['memory_access_protocol.hpp',['../d7/dae/memory__access__protocol_8hpp.html',1,'']]],
   ['memory_5fmap',['memory_map',['../d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html#a9565b9f4ed25d41b460f023324c151ab',1,'sjsu::MockProtocol&lt; MemoryAccessProtocol::AddressWidth::kByte1 &gt;']]],
   ['memoryaccessprotocol',['MemoryAccessProtocol',['../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html',1,'sjsu']]],
+  ['memoryavailable',['MemoryAvailable',['../d9/dd3/classsjsu_1_1StaticAllocator.html#a7c755ff0d0bcf0f8e790bf5039f6bbde',1,'sjsu::StaticAllocator']]],
+  ['memoryused',['MemoryUsed',['../d9/dd3/classsjsu_1_1StaticAllocator.html#acd8f60b3a00cb255d077c43faa14dfc2',1,'sjsu::StaticAllocator']]],
   ['message_5ft',['Message_t',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html',1,'sjsu::Can']]],
   ['millisecond_5fcount',['millisecond_count',['../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a4b3de8f56a24d2ff25838f07052776ae',1,'sjsu::cortex::SystemTimer']]],
   ['min',['Min',['../d4/d0e/classsjsu_1_1BitLimits.html#a64f08e64f3d047743131b28b3900618f',1,'sjsu::BitLimits']]],
