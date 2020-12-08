@@ -13,9 +13,6 @@ theme:
 
 docs_dir: documentation/
 
-# Copyright
-copyright: 'Copyright (C) 2018-2019 San Jose State University Computer Engineering Department'
-
 markdown_extensions:
   - admonition
   - pymdownx.mark # highlighting
@@ -24,7 +21,7 @@ markdown_extensions:
   - toc:
       permalink:
 
-#Navigation
+# Navigation
 nav:
   - Home: 'index.md'
   - Introduction:
