@@ -426,6 +426,7 @@ coverage:
 		-e "$(LIBRARY_DIR)/L0_Platform" \
 		-e "$(LIBRARY_DIR)/L4_Testing" \
 		-e "$(LIBRARY_DIR)/newlib" \
+		-e "$(LIBRARY_DIR)/.*_test.cpp" \
 		-e "$(LIBRARY_DIR)/third_party"
 
 	@printf '$(GREEN)DONE!$(RESET)\n'
