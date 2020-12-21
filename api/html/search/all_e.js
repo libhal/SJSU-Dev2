@@ -8,7 +8,7 @@ var searchData=
   ['onfallingedge',['OnFallingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#aa9709aa81ffe199781e2f73b2f95167c',1,'sjsu::Gpio']]],
   ['onrisingedge',['OnRisingEdge',['../dd/d3a/classsjsu_1_1Gpio.html#a340de686d13d8a299f9fa313c56327ba',1,'sjsu::Gpio']]],
   ['open_5fdrain_5fmap',['open_drain_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a5e9489a92a066c7c6aadc80694257c5a',1,'sjsu::lpc17xx::Pin']]],
-  ['operation',['Operation',['../d0/d9b/classsjsu_1_1I2c.html#a539a41100567dee1b59b3c43d5cd480c',1,'sjsu::I2c::Operation()'],['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a865292f7dcccaea17d85ed6a88f6ce75',1,'sjsu::I2c::Transaction_t::operation()'],['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a3263d894c71f11021ddbb89af2798acd',1,'sjsu::I2cCommand::Arguments_t::operation()']]],
+  ['operation',['operation',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#a865292f7dcccaea17d85ed6a88f6ce75',1,'sjsu::I2c::Transaction_t::operation()'],['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a3263d894c71f11021ddbb89af2798acd',1,'sjsu::I2cCommand::Arguments_t::operation()'],['../d0/d9b/classsjsu_1_1I2c.html#a539a41100567dee1b59b3c43d5cd480c',1,'sjsu::I2c::Operation()']]],
   ['operator_20_26',['operator &amp;',['../d0/d6b/namespacesjsu.html#ab16806d14e7cff6945107c75e5b6d24f',1,'sjsu']]],
   ['operator_20_26_3d',['operator &amp;=',['../d0/d6b/namespacesjsu.html#ab9c11fb4b8f68b1d8bde067470fb8d12',1,'sjsu']]],
   ['operator_20integer',['operator Integer',['../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#abfeb13cb05a02cb3c3cfb7d061e90737',1,'sjsu::MemoryAccessProtocol::AccessHandler']]],

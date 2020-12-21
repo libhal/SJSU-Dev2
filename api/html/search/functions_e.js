@@ -23,5 +23,5 @@ var searchData=
   ['pulsecapture',['PulseCapture',['../d0/d68/classsjsu_1_1lpc40xx_1_1PulseCapture.html#ab6323e2e21cfaf2b9d977e63e7e7a398',1,'sjsu::lpc40xx::PulseCapture']]],
   ['putchar',['putchar',['../d0/d21/newlib_8cpp.html#afb174a8122023129dc9abbbed04d88fd',1,'newlib.cpp']]],
   ['puts',['puts',['../d0/d21/newlib_8cpp.html#a24df0c04767d20bfc8337baa088605ff',1,'newlib.cpp']]],
-  ['pwm',['Pwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a2b1b10a1410e7663c394adb4fed1213f',1,'sjsu::lpc40xx::Pwm']]]
+  ['pwm',['Pwm',['../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a2b1b10a1410e7663c394adb4fed1213f',1,'sjsu::lpc40xx::Pwm::Pwm()'],['../db/d96/classsjsu_1_1stm32f10x_1_1Pwm.html#a05ec4cb58c16e3f3618fa28b3b788c00',1,'sjsu::stm32f10x::Pwm::Pwm()']]]
 ];

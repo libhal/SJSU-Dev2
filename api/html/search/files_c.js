@@ -7,5 +7,5 @@ var searchData=
   ['pixel_5fdisplay_2ehpp',['pixel_display.hpp',['../d9/dcd/pixel__display_8hpp.html',1,'']]],
   ['project_5fconfig_2ehpp',['project_config.hpp',['../da/dd9/project__config_8hpp.html',1,'']]],
   ['pulse_5fcapture_2ehpp',['pulse_capture.hpp',['../da/da8/lpc17xx_2pulse__capture_8hpp.html',1,'(Global Namespace)'],['../de/da7/lpc40xx_2pulse__capture_8hpp.html',1,'(Global Namespace)'],['../dd/d29/pulse__capture_8hpp.html',1,'(Global Namespace)']]],
-  ['pwm_2ehpp',['pwm.hpp',['../de/dff/lpc17xx_2pwm_8hpp.html',1,'(Global Namespace)'],['../d1/d52/lpc40xx_2pwm_8hpp.html',1,'(Global Namespace)'],['../d4/dc7/pwm_8hpp.html',1,'(Global Namespace)']]]
+  ['pwm_2ehpp',['pwm.hpp',['../de/dff/lpc17xx_2pwm_8hpp.html',1,'(Global Namespace)'],['../d1/d52/lpc40xx_2pwm_8hpp.html',1,'(Global Namespace)'],['../d4/dc7/pwm_8hpp.html',1,'(Global Namespace)'],['../de/d55/stm32f10x_2pwm_8hpp.html',1,'(Global Namespace)']]]
 ];
