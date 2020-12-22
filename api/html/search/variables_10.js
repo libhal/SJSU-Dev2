@@ -1,7 +1,7 @@
 var searchData=
 [
   ['scb',['scb',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#ab64deee3a1bab3aefe2b07f086896af0',1,'sjsu::cortex::InterruptController']]],
-  ['sck',['sck',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#af0402c491ad17f4c180f3b77fbd9f2a9',1,'sjsu::lpc40xx::Spi::Bus_t']]],
+  ['sck',['sck',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#af0402c491ad17f4c180f3b77fbd9f2a9',1,'sjsu::lpc40xx::Spi::Bus_t::sck()'],['../db/db3/structsjsu_1_1stm32f10x_1_1Spi_1_1Port__t.html#a2fbbd35c4a647ba895037d17a921bdb2',1,'sjsu::stm32f10x::Spi::Port_t::sck()']]],
   ['scl_5fpin',['scl_pin',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#aeda80f2623cefb87e288e4e63ad0b5a8',1,'sjsu::lpc40xx::I2c::Bus_t']]],
   ['sda_5fpin',['sda_pin',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#a346c2fa77de4fb4e2d6178ba345e27c4',1,'sjsu::lpc40xx::I2c::Bus_t']]],
   ['semaphore_5f',['semaphore_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#abf739cf54a2f35b206c3ca90d970f072',1,'sjsu::rtos::PeriodicTask']]],
@@ -9,6 +9,7 @@ var searchData=
   ['sensor',['sensor',['../d0/d0f/namespacesjsu_1_1command.html#a3f01366709f7a2f58c275b34ae0158b3',1,'sjsu::command']]],
   ['source',['source',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a092bd3ac246ab6b9d010a3a34a5b8838',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::source()'],['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a362d4891e8fa6fc05726edaf2cbc61fc',1,'sjsu::stm32f10x::SystemController::ClockConfiguration::source()']]],
   ['speed',['speed',['../da/d0c/structsjsu_1_1RmdX_1_1Feedback__t.html#a500adabfb14a37df43b71cf8cf171c21',1,'sjsu::RmdX::Feedback_t']]],
+  ['spi',['spi',['../db/db3/structsjsu_1_1stm32f10x_1_1Spi_1_1Port__t.html#ae4afa31e347ec848ce4a143b51598ac9',1,'sjsu::stm32f10x::Spi::Port_t']]],
   ['spi0',['spi0',['../db/dc0/structsjone.html#a36d0478d37e04f16fa5611126315ef83',1,'sjone::spi0()'],['../db/dc5/structsjtwo.html#ab3bcf9254b30b163ecfe7886ea3735d9',1,'sjtwo::spi0()']]],
   ['spi1',['spi1',['../db/dc0/structsjone.html#adf079f49bdfdf8d6f02d4bf7d7f3caa8',1,'sjone::spi1()'],['../db/dc5/structsjtwo.html#a81d5d2f5ba3110f1aecc151e907f7403',1,'sjtwo::spi1()']]],
   ['spi2',['spi2',['../db/dc5/structsjtwo.html#a9bcef747550a2b721ee903987b9e7e15',1,'sjtwo']]],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['uart',['Uart',['../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html',1,'sjsu::stm32f10x::Uart&lt; kQueueSize &gt;'],['../d0/ddc/classsjsu_1_1Uart.html',1,'sjsu::Uart'],['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html',1,'sjsu::lpc40xx::Uart']]],
+  ['uart',['Uart',['../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html',1,'sjsu::lpc40xx::Uart'],['../d0/ddc/classsjsu_1_1Uart.html',1,'sjsu::Uart'],['../d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html',1,'sjsu::stm32f10x::Uart&lt; kQueueSize &gt;']]],
   ['uartbase',['UartBase',['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html',1,'sjsu::stm32f10x']]],
   ['uartcalibration_5ft',['UartCalibration_t',['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html',1,'sjsu::lpc40xx::uart']]],
   ['uartport',['UartPort',['../d4/d2f/structsjsu_1_1lpc17xx_1_1UartPort.html',1,'sjsu::lpc17xx']]],

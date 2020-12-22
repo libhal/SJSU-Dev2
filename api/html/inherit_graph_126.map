@@ -24,47 +24,48 @@
 <area shape="rect" id="node47" href="$d6/ddf/classsjsu_1_1Pwm.html" title="sjsu::Pwm" alt="" coords="191,1145,275,1172"/>
 <area shape="rect" id="node50" href="$d9/d98/classsjsu_1_1RmdX.html" title="sjsu::RmdX" alt="" coords="188,1196,279,1223"/>
 <area shape="rect" id="node51" href="$d9/dc9/classsjsu_1_1Servo.html" title="sjsu::Servo" alt="" coords="189,1247,277,1273"/>
-<area shape="rect" id="node52" href="$d3/de6/classsjsu_1_1Spi.html" title="sjsu::Spi" alt="" coords="197,1297,270,1324"/>
-<area shape="rect" id="node54" href="$d3/d56/classsjsu_1_1St7066u.html" title="Driver for the St7066u driver of a LCD character display. " alt="" coords="182,1348,285,1375"/>
-<area shape="rect" id="node55" href="$dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="184,1449,283,1476"/>
-<area shape="rect" id="node58" href="$de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="167,1525,299,1552"/>
-<area shape="rect" id="node60" href="$d9/d0b/classsjsu_1_1TemperatureSensor.html" title="An abstract interface for temperature sensing device drivers. " alt="" coords="149,1601,317,1628"/>
-<area shape="rect" id="node63" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="194,1703,273,1729"/>
-<area shape="rect" id="node67" href="$dc/d16/classsjsu_1_1WiFi.html" title="sjsu::WiFi" alt="" coords="193,1779,274,1805"/>
+<area shape="rect" id="node52" href="$d3/de6/classsjsu_1_1Spi.html" title="sjsu::Spi" alt="" coords="197,1340,270,1367"/>
+<area shape="rect" id="node55" href="$d3/d56/classsjsu_1_1St7066u.html" title="Driver for the St7066u driver of a LCD character display. " alt="" coords="182,1391,285,1417"/>
+<area shape="rect" id="node56" href="$dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="184,1483,283,1509"/>
+<area shape="rect" id="node59" href="$de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="167,1559,299,1585"/>
+<area shape="rect" id="node61" href="$d9/d0b/classsjsu_1_1TemperatureSensor.html" title="An abstract interface for temperature sensing device drivers. " alt="" coords="149,1635,317,1661"/>
+<area shape="rect" id="node64" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="194,1736,273,1763"/>
+<area shape="rect" id="node68" href="$dc/d16/classsjsu_1_1WiFi.html" title="sjsu::WiFi" alt="" coords="193,1812,274,1839"/>
 <area shape="rect" id="node3" href="$d5/d82/classsjsu_1_1Mma8452q.html" title="Driver for the MMA8452Q 3&#45;axis accelerometer. " alt="" coords="410,5,529,32"/>
 <area shape="rect" id="node4" href="$d6/d14/classsjsu_1_1Mpu6050.html" title="Driver for the Mpu6050 3&#45;axis accelerometer. " alt="" coords="416,56,523,83"/>
 <area shape="rect" id="node6" href="$dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html" title="ADC driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="404,107,535,133"/>
 <area shape="rect" id="node7" href="$d3/df9/classsjsu_1_1stm32f10x_1_1Adc.html" title="sjsu::stm32f10x::Adc" alt="" coords="396,157,543,184"/>
 <area shape="rect" id="node9" href="$d7/da0/classsjsu_1_1Max170343.html" title="Driver for the max17043 battery fuel gauge. " alt="" coords="409,208,530,235"/>
-<area shape="rect" id="node13" href="$df/daf/classsjsu_1_1lpc40xx_1_1Can.html" title="CANBUS implemenation for the LPC40xx series of devices. " alt="" coords="404,319,535,345"/>
-<area shape="rect" id="node15" href="$d9/d3a/classsjsu_1_1Ltc4150.html" title="sjsu::Ltc4150" alt="" coords="419,369,519,396"/>
-<area shape="rect" id="node17" href="$d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html" title="Implementation of digital&#45;to&#45;analog converter for lpc40xx. " alt="" coords="404,420,535,447"/>
-<area shape="rect" id="node19" href="$d2/dc6/classsjsu_1_1TFMini.html" title="sjsu::TFMini" alt="" coords="422,471,517,497"/>
-<area shape="rect" id="node23" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="402,521,537,548"/>
-<area shape="rect" id="node24" href="$d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html" title="GPIO implementation for the MSP432P401R platform. " alt="" coords="386,572,553,599"/>
-<area shape="rect" id="node25" href="$dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="394,623,545,649"/>
-<area shape="rect" id="node26" href="$dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="394,673,545,700"/>
-<area shape="rect" id="node30" href="$d0/d57/classsjsu_1_1GpioCounter.html" title="sjsu::GpioCounter" alt="" coords="406,724,533,751"/>
-<area shape="rect" id="node32" href="$d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html" title="sjsu::lpc40xx::I2c" alt="" coords="407,775,532,801"/>
-<area shape="rect" id="node34" href="$d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html" title="sjsu::Esp8266::Esp8266Internet\lSocket" alt="" coords="365,826,573,867"/>
-<area shape="rect" id="node36" href="$d3/da6/classsjsu_1_1Temt6000x01.html" title="sjsu::Temt6000x01" alt="" coords="403,892,536,919"/>
-<area shape="rect" id="node38" href="$d0/d27/classsjsu_1_1ParallelGpio.html" title="A parallel bus composed of sjsu::Gpio objects. " alt="" coords="407,943,531,969"/>
-<area shape="rect" id="node40" href="$d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="406,993,533,1020"/>
-<area shape="rect" id="node41" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="406,1044,533,1071"/>
-<area shape="rect" id="node42" href="$d2/dc5/classsjsu_1_1msp432p401r_1_1Pin.html" title="Pin control driver for MSP432P401R MCUs. " alt="" coords="390,1095,549,1121"/>
-<area shape="rect" id="node43" href="$d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html" title="Implementation of a Pin in stm32f10x. " alt="" coords="398,1145,541,1172"/>
-<area shape="rect" id="node44" href="$dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html" title="Implementation of a Pin in stm32f4xx. " alt="" coords="398,1196,541,1223"/>
-<area shape="rect" id="node46" href="$db/d32/classsjsu_1_1Ssd1306.html" title="sjsu::Ssd1306" alt="" coords="417,1247,522,1273"/>
-<area shape="rect" id="node48" href="$df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html" title="sjsu::lpc40xx::Pwm" alt="" coords="401,1297,538,1324"/>
-<area shape="rect" id="node49" href="$db/d96/classsjsu_1_1stm32f10x_1_1Pwm.html" title="sjsu::stm32f10x::Pwm" alt="" coords="393,1348,546,1375"/>
-<area shape="rect" id="node53" href="$da/d39/classsjsu_1_1lpc40xx_1_1Spi.html" title="sjsu::lpc40xx::Spi" alt="" coords="406,1399,533,1425"/>
-<area shape="rect" id="node56" href="$dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html" title="sjsu::lpc40xx::Eeprom" alt="" coords="393,1449,545,1476"/>
-<area shape="rect" id="node57" href="$dc/d5f/classsjsu_1_1Sd.html" title="SD card controller utilizing the SPI peripheral. " alt="" coords="434,1500,505,1527"/>
-<area shape="rect" id="node59" href="$d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html" title="sjsu::cortex::SystemTimer" alt="" coords="381,1551,557,1577"/>
-<area shape="rect" id="node61" href="$df/ddc/classsjsu_1_1Si7060.html" title="sjsu::Si7060" alt="" coords="422,1601,517,1628"/>
-<area shape="rect" id="node62" href="$d8/db2/classsjsu_1_1Tmp102.html" title="sjsu::Tmp102" alt="" coords="419,1652,520,1679"/>
-<area shape="rect" id="node64" href="$dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html" title="sjsu::lpc40xx::Uart" alt="" coords="403,1703,535,1729"/>
-<area shape="rect" id="node65" href="$d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="380,1753,559,1780"/>
-<area shape="rect" id="node66" href="$d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. " alt="" coords="621,1746,769,1787"/>
-<area shape="rect" id="node68" href="$d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html" title="sjsu::Esp8266::Esp8266WiFi" alt="" coords="374,1804,565,1831"/>
+<area shape="rect" id="node13" href="$df/daf/classsjsu_1_1lpc40xx_1_1Can.html" title="CANBUS implemenation for the LPC40xx series of devices. " alt="" coords="404,301,535,328"/>
+<area shape="rect" id="node15" href="$d9/d3a/classsjsu_1_1Ltc4150.html" title="sjsu::Ltc4150" alt="" coords="419,352,519,379"/>
+<area shape="rect" id="node17" href="$d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html" title="Implementation of digital&#45;to&#45;analog converter for lpc40xx. " alt="" coords="404,403,535,429"/>
+<area shape="rect" id="node19" href="$d2/dc6/classsjsu_1_1TFMini.html" title="sjsu::TFMini" alt="" coords="422,453,517,480"/>
+<area shape="rect" id="node23" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="402,504,537,531"/>
+<area shape="rect" id="node24" href="$d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html" title="GPIO implementation for the MSP432P401R platform. " alt="" coords="386,555,553,581"/>
+<area shape="rect" id="node25" href="$dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="394,605,545,632"/>
+<area shape="rect" id="node26" href="$dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="394,656,545,683"/>
+<area shape="rect" id="node30" href="$d0/d57/classsjsu_1_1GpioCounter.html" title="sjsu::GpioCounter" alt="" coords="406,707,533,733"/>
+<area shape="rect" id="node32" href="$d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html" title="sjsu::lpc40xx::I2c" alt="" coords="407,757,532,784"/>
+<area shape="rect" id="node34" href="$d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html" title="sjsu::Esp8266::Esp8266Internet\lSocket" alt="" coords="365,809,573,850"/>
+<area shape="rect" id="node36" href="$d3/da6/classsjsu_1_1Temt6000x01.html" title="sjsu::Temt6000x01" alt="" coords="403,875,536,901"/>
+<area shape="rect" id="node38" href="$d0/d27/classsjsu_1_1ParallelGpio.html" title="A parallel bus composed of sjsu::Gpio objects. " alt="" coords="407,925,531,952"/>
+<area shape="rect" id="node40" href="$d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="406,976,533,1003"/>
+<area shape="rect" id="node41" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="406,1027,533,1053"/>
+<area shape="rect" id="node42" href="$d2/dc5/classsjsu_1_1msp432p401r_1_1Pin.html" title="Pin control driver for MSP432P401R MCUs. " alt="" coords="390,1077,549,1104"/>
+<area shape="rect" id="node43" href="$d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html" title="Implementation of a Pin in stm32f10x. " alt="" coords="398,1128,541,1155"/>
+<area shape="rect" id="node44" href="$dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html" title="Implementation of a Pin in stm32f4xx. " alt="" coords="398,1179,541,1205"/>
+<area shape="rect" id="node46" href="$db/d32/classsjsu_1_1Ssd1306.html" title="sjsu::Ssd1306" alt="" coords="417,1229,522,1256"/>
+<area shape="rect" id="node48" href="$df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html" title="sjsu::lpc40xx::Pwm" alt="" coords="401,1280,538,1307"/>
+<area shape="rect" id="node49" href="$db/d96/classsjsu_1_1stm32f10x_1_1Pwm.html" title="sjsu::stm32f10x::Pwm" alt="" coords="393,1331,546,1357"/>
+<area shape="rect" id="node53" href="$da/d39/classsjsu_1_1lpc40xx_1_1Spi.html" title="sjsu::lpc40xx::Spi" alt="" coords="406,1381,533,1408"/>
+<area shape="rect" id="node54" href="$db/df9/classsjsu_1_1stm32f10x_1_1Spi.html" title="sjsu::stm32f10x::Spi" alt="" coords="398,1432,541,1459"/>
+<area shape="rect" id="node57" href="$dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html" title="sjsu::lpc40xx::Eeprom" alt="" coords="393,1483,545,1509"/>
+<area shape="rect" id="node58" href="$dc/d5f/classsjsu_1_1Sd.html" title="SD card controller utilizing the SPI peripheral. " alt="" coords="434,1533,505,1560"/>
+<area shape="rect" id="node60" href="$d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html" title="sjsu::cortex::SystemTimer" alt="" coords="381,1584,557,1611"/>
+<area shape="rect" id="node62" href="$df/ddc/classsjsu_1_1Si7060.html" title="sjsu::Si7060" alt="" coords="422,1635,517,1661"/>
+<area shape="rect" id="node63" href="$d8/db2/classsjsu_1_1Tmp102.html" title="sjsu::Tmp102" alt="" coords="419,1685,520,1712"/>
+<area shape="rect" id="node65" href="$dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html" title="sjsu::lpc40xx::Uart" alt="" coords="403,1736,535,1763"/>
+<area shape="rect" id="node66" href="$d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="380,1787,559,1813"/>
+<area shape="rect" id="node67" href="$d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. " alt="" coords="621,1779,769,1821"/>
+<area shape="rect" id="node69" href="$d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html" title="sjsu::Esp8266::Esp8266WiFi" alt="" coords="374,1837,565,1864"/>
 </map>

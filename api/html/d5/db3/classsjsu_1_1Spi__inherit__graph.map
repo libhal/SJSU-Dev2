@@ -1,4 +1,5 @@
 <map id="sjsu::Spi" name="sjsu::Spi">
 <area shape="rect" id="node3" href="$da/d39/classsjsu_1_1lpc40xx_1_1Spi.html" title="sjsu::lpc40xx::Spi" alt="" coords="5,155,132,181"/>
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="21,5,117,32"/>
+<area shape="rect" id="node4" href="$db/df9/classsjsu_1_1stm32f10x_1_1Spi.html" title="sjsu::stm32f10x::Spi" alt="" coords="156,155,299,181"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="99,5,195,32"/>
 </map>

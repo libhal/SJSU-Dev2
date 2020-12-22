@@ -17,6 +17,7 @@ var searchData=
   ['build_5ftests',['BUILD_TESTS',['../de/d06/units_8hpp.html#aceb17e7c24309f9f8aa91bd94b9dcf1e',1,'units.hpp']]],
   ['bus',['Bus',['../db/d99/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus.html',1,'sjsu::lpc40xx::I2c::Bus'],['../d7/de4/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus.html',1,'sjsu::lpc40xx::Spi::Bus']]],
   ['bus_5ft',['Bus_t',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html',1,'sjsu::lpc40xx::I2c::Bus_t'],['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html',1,'sjsu::lpc40xx::Spi::Bus_t']]],
+  ['busbusy',['BusBusy',['../db/df9/classsjsu_1_1stm32f10x_1_1Spi.html#a20951be28490eabdf36f797b23a2d9cd',1,'sjsu::stm32f10x::Spi']]],
   ['busmode',['BusMode',['../d3/d56/classsjsu_1_1St7066u.html#a9a2918722dc21b079dae228d7a3ebc37',1,'sjsu::St7066u']]],
   ['bustiming',['BusTiming',['../d1/dd3/structsjsu_1_1lpc40xx_1_1Can_1_1BusTiming.html',1,'sjsu::lpc40xx::Can']]],
   ['buswidth',['BusWidth',['../d0/d27/classsjsu_1_1ParallelGpio.html#a3a302a5d6ee68ff0306124c2e6a32622',1,'sjsu::ParallelGpio::BusWidth()'],['../d7/d86/classsjsu_1_1ParallelBus.html#a22d9ccefee27555371a3dca3176b86bb',1,'sjsu::ParallelBus::BusWidth()']]],

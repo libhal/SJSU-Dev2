@@ -5,7 +5,7 @@ var searchData=
   ['si7060_2ehpp',['si7060.hpp',['../d0/dfe/si7060_8hpp.html',1,'']]],
   ['sjone_2ehpp',['sjone.hpp',['../df/d29/sjone_8hpp.html',1,'']]],
   ['sjtwo_2ehpp',['sjtwo.hpp',['../d4/de6/sjtwo_8hpp.html',1,'']]],
-  ['spi_2ehpp',['spi.hpp',['../d9/dfe/lpc17xx_2spi_8hpp.html',1,'(Global Namespace)'],['../dd/d0d/lpc40xx_2spi_8hpp.html',1,'(Global Namespace)'],['../d7/de4/spi_8hpp.html',1,'(Global Namespace)']]],
+  ['spi_2ehpp',['spi.hpp',['../d9/dfe/lpc17xx_2spi_8hpp.html',1,'(Global Namespace)'],['../dd/d0d/lpc40xx_2spi_8hpp.html',1,'(Global Namespace)'],['../d7/de4/spi_8hpp.html',1,'(Global Namespace)'],['../dd/d61/stm32f10x_2spi_8hpp.html',1,'(Global Namespace)']]],
   ['ssd1306_2ehpp',['ssd1306.hpp',['../d8/d59/ssd1306_8hpp.html',1,'']]],
   ['st7066u_2ehpp',['st7066u.hpp',['../d3/d4e/st7066u_8hpp.html',1,'']]],
   ['stdio_2ecpp',['stdio.cpp',['../df/dce/stdio_8cpp.html',1,'']]],

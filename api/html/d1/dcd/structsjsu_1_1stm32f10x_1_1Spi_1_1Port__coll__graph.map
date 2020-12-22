@@ -1,0 +1,5 @@
+<map id="sjsu::stm32f10x::Spi::Port" name="sjsu::stm32f10x::Spi::Port">
+<area shape="rect" id="node2" href="$db/db3/structsjsu_1_1stm32f10x_1_1Spi_1_1Port__t.html" title="Bus_t holds all of the information for an SPI bus on the LPC40xx platform. " alt="" coords="5,200,148,241"/>
+<area shape="rect" id="node3" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="40,81,113,108"/>
+<area shape="rect" id="node4" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="29,5,125,32"/>
+</map>

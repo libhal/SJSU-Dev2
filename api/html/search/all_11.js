@@ -6,6 +6,7 @@ var searchData=
   ['readme_2emd',['readme.md',['../d0/d20/readme_8md.html',1,'']]],
   ['reboot',['reboot',['../d0/d0f/namespacesjsu_1_1command.html#a8a376e18ca4a72b06c2b46f79af91905',1,'sjsu::command']]],
   ['receive',['Receive',['../da/d70/classsjsu_1_1Can.html#a48921df8b002573492365405a1dcf90f',1,'sjsu::Can::Receive()'],['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ad9efb37378622482b0741a3c8d2df5cb',1,'sjsu::lpc40xx::Can::Receive()']]],
+  ['receivebuffernotempty',['ReceiveBufferNotEmpty',['../db/df9/classsjsu_1_1stm32f10x_1_1Spi.html#ab3fde3a2dc8dad26594a2fbfed0df265',1,'sjsu::stm32f10x::Spi']]],
   ['red',['red',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a596009e322e1a7fbb2f28838bbaf390c',1,'sjsu::PixelDisplay::Color_t']]],
   ['reference',['reference',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#ab5ed5f2f85c80efe07c3dad51dd7cc94',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['referenceclockfrequency',['ReferenceClockFrequency',['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a3069929d8bd343b6b56585dc5e5c9ff6',1,'sjsu::msp432p401r::SystemController']]],
