@@ -104,3 +104,12 @@ Other options for `JTAG` are available such as `JTAG=jlink` or `JTAG=buspirate`.
 `make flash` supports all debug devices that OpenOCD supports. `stlink` is the
 preferred choice for SJSU-Dev2 users as it is cheaper and more widely available
 on Amazon, Ebay, AliExpress and other online stores.
+
+```bash
+make flash JTAG=stlink OPTIMIZE=s
+```
+
+Note the usage of `OPTIMIZE=s` here. This specifies that you want to flash the
+firmware with the optimization level `s` which stands for size optimized. If you
+want to compile a binary to the smallest size, like in this example, and flash
+that same binary to the MCU, you must include this flag.
