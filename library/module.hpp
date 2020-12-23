@@ -48,17 +48,6 @@ namespace sjsu
 ///    Configuration() methods. Using the Configuration() methods outside of the
 ///    kInitialized and kDisabled state is undefined behavior.
 ///
-/// State: kCritical
-///    If a module attempted to perform some task and it was unable to in an
-///    exceptional way, the module will set its state to kCritical using the
-///    SetState() method provided to all Modules. This indicates that the module
-///    can no longer be used as normal. The only way out of this would be for
-///    the system to call SetState() force the state back to kReset, and run
-///    through the initialization sequence again. As a means to recover, a
-///    system may consider changing the Configuration settings if these led to
-///    the exception being called. Another alternative would be to run exit and
-///    reset the system.
-///
 /// These rules of usage must be followed for proper operation by all module
 /// within SJSU-Dev2 as well as external modules using the SJSU-Dev2 modules.
 class Module
@@ -71,7 +60,6 @@ class Module
     kInitialized,
     kEnabled,
     kDisabled,
-    kCritical,
   };
 
   /// Initialize module by putting system into a known state and prepare it to
@@ -186,14 +174,6 @@ class Module
     state_ = new_state;
   }
 
-  /// Helper function that returns true if the state is in reset.
-  ///
-  /// @return true if state is equal to kReset.
-  bool IsReset() const
-  {
-    return state_ == State::kReset;
-  }
-
   /// Helper function that indicates if this module has not been fully
   /// configured and enabled. This will return false if the state of the module
   /// is equal to or beyond an enabled state, such as being Enabled, Disabled,
@@ -203,7 +183,31 @@ class Module
   /// @return false - if the state is enabled or beyond.
   bool RequiresConfiguration() const
   {
-    return state_ == State::kReset || state_ == State::kInitialized;
+    return IsReset() || IsInitialized();
+  }
+
+  /// Destructed of this base class calls the destructors of derived classes.
+  virtual ~Module() = default;
+
+  /// Module's implementation of Initialize. See the documentation for
+  /// Initialize() for more details about what this should do.
+  ///
+  /// NOTE: that this implementation should not use SetState(), but should allow
+  /// the Module::Interface() method to handle that.
+  virtual void ModuleInitialize() = 0;
+
+  /// Module Implementation of Enable.
+  ///
+  /// @param enable - if true, will enable the module, if false, will disable
+  virtual void ModuleEnable(bool enable) = 0;
+
+ protected:
+  /// Helper function that returns true if the state is in reset.
+  ///
+  /// @return true if state is equal to kReset.
+  bool IsReset() const
+  {
+    return state_ == State::kReset;
   }
 
   /// Helper function that returns true if the state is in Initialized.
@@ -228,14 +232,6 @@ class Module
   bool IsDisabled() const
   {
     return state_ == State::kDisabled;
-  }
-
-  /// Helper function that returns true if the state is in Critical.
-  ///
-  /// @return true if state is equal to kCritical.
-  bool IsCritical() const
-  {
-    return state_ == State::kCritical;
   }
 
   /// Helper function that sets the state of this module to Reset.
@@ -270,30 +266,6 @@ class Module
     state_ = State::kDisabled;
   }
 
-  /// Helper function that sets the state of this module to Critical.
-  ///
-  /// @return true if state is equal to kCritical.
-  void SetStateToCritical()
-  {
-    state_ = State::kCritical;
-  }
-
-  /// Destructed of this base class calls the destructors of derived classes.
-  virtual ~Module() = default;
-
-  /// Module's implementation of Initialize. See the documentation for
-  /// Initialize() for more details about what this should do.
-  ///
-  /// NOTE: that this implementation should not use SetState(), but should allow
-  /// the Module::Interface() method to handle that.
-  virtual void ModuleInitialize() = 0;
-
-  /// Module Implementation of Enable.
-  ///
-  /// @param enable - if true, will enable the module, if false, will disabled
-  virtual void ModuleEnable(bool enable) = 0;
-
- protected:
   /// Stores the state of the module. Default state of the module is kReset.
   State state_ = State::kReset;
 };
