@@ -440,15 +440,5 @@ TEST_CASE("Testing stm32f10x Gpio")
       CHECK(local_exti.FTSR == expected_result);
     }
   }
-
-  // The stm32f10x::Gpio class uses the stm32f10x::Pin registers directly
-  Pin::gpio[0]             = GPIOA;
-  Pin::gpio[1]             = GPIOB;
-  Pin::gpio[2]             = GPIOC;
-  Pin::gpio[3]             = GPIOD;
-  Pin::gpio[4]             = GPIOE;
-  Pin::gpio[5]             = GPIOF;
-  Pin::gpio[6]             = GPIOG;
-  Gpio::external_interrupt = EXTI;
 }
 }  // namespace sjsu::stm32f10x

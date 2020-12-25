@@ -20,7 +20,11 @@ TEST_CASE("Testing lpc40xx Gpio")
   // Initialized local LPC_GPIO_TypeDef objects with 0 to observe how the Gpio
   // class manipulates the data in the registers
   LPC_GPIO_TypeDef local_gpio_port[2];
+  // Simulated version of LPC_GPIOINT
+  LPC_GPIOINT_TypeDef local_eint;
+
   testing::ClearStructure(&local_gpio_port);
+  testing::ClearStructure(&local_eint);
 
   // Create mock pins
   Mock<sjsu::Pin> mock_pin0;
@@ -28,12 +32,28 @@ TEST_CASE("Testing lpc40xx Gpio")
   Fake(Method(mock_pin0, ConfigureFunction));
   Fake(Method(mock_pin1, ConfigureFunction));
 
+
   // Get gpio register pointer and replace the address with the local GPIOs.
   // Only GPIO port 1 & 2 will be used in this unit test
   auto ** gpio_register0 = sjsu::lpc40xx::Gpio::GpioRegister(0);
   auto ** gpio_register1 = sjsu::lpc40xx::Gpio::GpioRegister(1);
   *gpio_register0        = &local_gpio_port[0];
   *gpio_register1        = &local_gpio_port[1];
+
+  auto * interrupt0 = Gpio::InterruptRegister(0);
+  auto * interrupt2 = Gpio::InterruptRegister(1);
+  // Reassign external interrupt registers to simulated LPC_GPIOINT
+  interrupt0->rising_status  = &(local_eint.IO0IntStatR);
+  interrupt0->falling_status = &(local_eint.IO0IntStatF);
+  interrupt0->clear          = &(local_eint.IO0IntClr);
+  interrupt0->rising_enable  = &(local_eint.IO0IntEnR);
+  interrupt0->falling_enable = &(local_eint.IO0IntEnF);
+
+  interrupt2->rising_status  = &(local_eint.IO2IntStatR);
+  interrupt2->falling_status = &(local_eint.IO2IntStatF);
+  interrupt2->clear          = &(local_eint.IO2IntClr);
+  interrupt2->rising_enable  = &(local_eint.IO2IntEnR);
+  interrupt2->falling_enable = &(local_eint.IO2IntEnF);
 
   // Create
   Gpio p0_00(0, 0, &mock_pin0.get());

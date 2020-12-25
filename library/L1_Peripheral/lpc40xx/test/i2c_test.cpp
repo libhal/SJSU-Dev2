@@ -134,6 +134,20 @@ TEST_CASE("Testing lpc40xx I2C")
         .Once();
   }
 
+  SECTION("~I2c()")
+  {
+    // Setup
+    // Exercise
+    test_subject.~I2c();
+
+    // Verify
+    CHECK(I2c::Control::kInterfaceEnable == local_i2c.CONCLR);
+
+    Verify(
+        Method(mock_interrupt_controller, Disable).Using(kMockI2c.irq_number))
+        .Once();
+  }
+
 #define CHECK_BITS(mask, reg) CHECK(mask == (reg & mask))
 
   auto setup_state_machine = [&](I2c::MasterState state) {
