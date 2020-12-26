@@ -76,30 +76,48 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">can.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
+<code>#include &lt;atomic&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;initializer_list&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;span&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
+<code>#include &quot;<a class="el" href="../../db/d5e/inactive_8hpp_source.html">L1_Peripheral/inactive.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../de/def/module_8hpp_source.html">module.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="../../da/d85/error__handling_8hpp_source.html">utility/error_handling.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d5/d61/allocator_8hpp_source.html">utility/allocator.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d4/d3d/log_8hpp_source.html">utility/log.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for can.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/d8f/can_8hpp__incl.png" border="0" usemap="#_2home_2runner_2work_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2can_8hpp" alt=""/></div>
 <map name="_2home_2runner_2work_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2can_8hpp" id="_2home_2runner_2work_2SJSU-Dev2_2SJSU-Dev2_2library_2L1__Peripheral_2can_8hpp">
-<area shape="rect" id="node8" href="../../de/def/module_8hpp.html" title="module.hpp" alt="" coords="115,191,205,218"/>
-<area shape="rect" id="node9" href="../../da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="651,109,813,136"/>
-<area shape="rect" id="node12" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="691,191,773,218"/>
-<area shape="rect" id="node13" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="637,273,765,300"/>
-<area shape="rect" id="node14" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="790,273,895,300"/>
-<area shape="rect" id="node15" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="919,273,1030,300"/>
+<area shape="rect" id="node13" href="../../db/d5e/inactive_8hpp.html" title="L1_Peripheral/inactive.hpp" alt="" coords="345,184,519,211"/>
+<area shape="rect" id="node15" href="../../de/def/module_8hpp.html" title="module.hpp" alt="" coords="671,184,761,211"/>
+<area shape="rect" id="node16" href="../../d5/d61/allocator_8hpp.html" title="utility/allocator.hpp" alt="" coords="859,109,989,136"/>
+<area shape="rect" id="node18" href="../../d4/d3d/log_8hpp.html" title="utility/log.hpp" alt="" coords="1648,184,1747,211"/>
+<area shape="rect" id="node24" href="../../d8/dfd/config_8hpp.html" title="config.hpp" alt="" coords="2053,430,2136,457"/>
+<area shape="rect" id="node26" href="../../db/db4/log__levels_8hpp.html" title="log_levels.hpp" alt="" coords="2418,512,2523,539"/>
+<area shape="rect" id="node30" href="../../de/d94/ansi__terminal__codes_8hpp.html" title="utility/ansi_terminal\l_codes.hpp" alt="" coords="2054,333,2189,375"/>
+<area shape="rect" id="node31" href="../../d4/dce/constexpr_8hpp.html" title="utility/constexpr.hpp" alt="" coords="1115,259,1253,285"/>
+<area shape="rect" id="node33" href="../../da/d7b/debug_8hpp.html" title="utility/debug.hpp" alt="" coords="1277,259,1395,285"/>
+<area shape="rect" id="node38" href="../../db/dbe/macros_8hpp.html" title="utility/macros.hpp" alt="" coords="1327,341,1452,367"/>
+<area shape="rect" id="node39" href="../../da/d85/error__handling_8hpp.html" title="utility/error_handling.hpp" alt="" coords="2264,341,2427,367"/>
+<area shape="rect" id="node42" href="../../de/d99/time_8hpp.html" title="utility/time.hpp" alt="" coords="1767,259,1873,285"/>
+<area shape="rect" id="node25" href="../../da/dd9/project__config_8hpp.html" title="project_config.hpp" alt="" coords="2063,512,2191,539"/>
+<area shape="rect" id="node27" href="../../de/d06/units_8hpp.html" title="utility/units.hpp" alt="" coords="1927,512,2038,539"/>
+<area shape="rect" id="node36" href="../../d1/ddf/newlib_8hpp.html" title="newlib/newlib.hpp" alt="" coords="892,341,1017,367"/>
+<area shape="rect" id="node37" href="../../dd/d98/build__info_8hpp.html" title="utility/build_info.hpp" alt="" coords="1477,341,1614,367"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -121,11 +139,24 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">sjsu::Can::Message_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d20/classsjsu_1_1CanNetwork.html">sjsu::CanNetwork</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dd/d20/classsjsu_1_1CanNetwork.html" title="CanNetwork is a canbus message receiver handler and. ">CanNetwork</a> is a canbus message receiver handler and.  <a href="../../dd/d20/classsjsu_1_1CanNetwork.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d91/classsjsu_1_1CanNetwork_1_1Node__t.html">sjsu::CanNetwork::Node_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The node stored in the <a class="el" href="../../dd/d20/classsjsu_1_1CanNetwork.html" title="CanNetwork is a canbus message receiver handler and. ">CanNetwork</a> map. Holds the latest CAN message and contains methods for updating and retreiving can messages in a thread-safe manner that does not invoke OS locks.  <a href="../../d3/d91/classsjsu_1_1CanNetwork_1_1Node__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:d0/d6b/namespacesjsu"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a0cc9635a6814582edb2a94637e6390e1"><td class="memTemplParams" colspan="2">template&lt;&gt; </td></tr>
+<tr class="memitem:a0cc9635a6814582edb2a94637e6390e1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="../../da/d70/classsjsu_1_1Can.html">sjsu::Can</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d6b/namespacesjsu.html#a0cc9635a6814582edb2a94637e6390e1">sjsu::GetInactive&lt; sjsu::Can &gt;</a> ()</td></tr>
+<tr class="memdesc:a0cc9635a6814582edb2a94637e6390e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Template specialization that generates an inactive <a class="el" href="../../da/d70/classsjsu_1_1Can.html">sjsu::Can</a>.  <a href="../../d0/d6b/namespacesjsu.html#a0cc9635a6814582edb2a94637e6390e1">More...</a><br /></td></tr>
+<tr class="separator:a0cc9635a6814582edb2a94637e6390e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

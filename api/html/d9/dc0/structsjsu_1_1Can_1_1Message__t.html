@@ -88,42 +88,42 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a3439a42a3b4016016440db4f982b6cdd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdd">Format</a> { <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdda821da62632c491ea619ead7b31c094bf">Format::kStandard</a> = 0, 
-<a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdda025a008fdf5f9fe660e711fd3973bd69">Format::kExtended</a> = 1, 
-<a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cddad8d280feff135bc62eec91e2815cdee0">Format::kNumberOfFormats</a>
- }<tr class="memdesc:a3439a42a3b4016016440db4f982b6cdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The format of the can message.  <a href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdd">More...</a><br /></td></tr>
+<tr class="memitem:afb250eaba59e88160521cc3a634428d6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6">Format</a> : uint8_t { <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6a821da62632c491ea619ead7b31c094bf">Format::kStandard</a> = 0, 
+<a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6a025a008fdf5f9fe660e711fd3973bd69">Format::kExtended</a> = 1, 
+<a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6ad8d280feff135bc62eec91e2815cdee0">Format::kNumberOfFormats</a>
+ }<tr class="memdesc:afb250eaba59e88160521cc3a634428d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The format of the can message.  <a href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:a3439a42a3b4016016440db4f982b6cdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:afb250eaba59e88160521cc3a634428d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adaeaf5cabe3f8ee96e62e79a3580435b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#adaeaf5cabe3f8ee96e62e79a3580435b">SetPayload</a> (std::span&lt; const uint8_t &gt; data)</td></tr>
-<tr class="separator:adaeaf5cabe3f8ee96e62e79a3580435b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98f9ba5820a40973b962e8452756b680"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a98f9ba5820a40973b962e8452756b680">SetPayload</a> (std::span&lt; const uint8_t &gt; data) noexcept</td></tr>
+<tr class="separator:a98f9ba5820a40973b962e8452756b680"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a856e262a4e837740c47e5d257fb467db"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a856e262a4e837740c47e5d257fb467db">id</a></td></tr>
 <tr class="memdesc:a856e262a4e837740c47e5d257fb467db"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAN message ID.  <a href="#a856e262a4e837740c47e5d257fb467db">More...</a><br /></td></tr>
 <tr class="separator:a856e262a4e837740c47e5d257fb467db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb4c343d6ae7bc0c0c9ea7444112ac6d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb4c343d6ae7bc0c0c9ea7444112ac6d">is_valid</a> = true</td></tr>
-<tr class="separator:afb4c343d6ae7bc0c0c9ea7444112ac6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aefc088b7ce71993193cf4091f36639"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a4aefc088b7ce71993193cf4091f36639">is_remote_request</a> = false</td></tr>
+<tr class="separator:a4aefc088b7ce71993193cf4091f36639"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe73cc715863cb045a71486e6a713050"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#abe73cc715863cb045a71486e6a713050">length</a> = 0</td></tr>
 <tr class="memdesc:abe73cc715863cb045a71486e6a713050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of the payload.  <a href="#abe73cc715863cb045a71486e6a713050">More...</a><br /></td></tr>
 <tr class="separator:abe73cc715863cb045a71486e6a713050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03d2bf17e786c546c5a287ae53dd8058"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6">Format</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a03d2bf17e786c546c5a287ae53dd8058">format</a> = <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6a821da62632c491ea619ead7b31c094bf">Format::kStandard</a></td></tr>
+<tr class="memdesc:a03d2bf17e786c546c5a287ae53dd8058"><td class="mdescLeft">&#160;</td><td class="mdescRight">ID format.  <a href="#a03d2bf17e786c546c5a287ae53dd8058">More...</a><br /></td></tr>
+<tr class="separator:a03d2bf17e786c546c5a287ae53dd8058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f19dd5da78b32c4c24a5b141895e978"><td class="memItemLeft" align="right" valign="top">std::chrono::nanoseconds&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a5f19dd5da78b32c4c24a5b141895e978">uptime</a> = <a class="el" href="../../d0/d6b/namespacesjsu.html#ac1015ce029891b6ea23685a883ebd664">Uptime</a>()</td></tr>
+<tr class="separator:a5f19dd5da78b32c4c24a5b141895e978"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c5c2835d92bd4daa7499718c7438361"><td class="memItemLeft" align="right" valign="top">std::array&lt; uint8_t, 8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a0c5c2835d92bd4daa7499718c7438361">payload</a></td></tr>
 <tr class="memdesc:a0c5c2835d92bd4daa7499718c7438361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container of the payload contents.  <a href="#a0c5c2835d92bd4daa7499718c7438361">More...</a><br /></td></tr>
 <tr class="separator:a0c5c2835d92bd4daa7499718c7438361"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03d2bf17e786c546c5a287ae53dd8058"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdd">Format</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a03d2bf17e786c546c5a287ae53dd8058">format</a> = <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdda821da62632c491ea619ead7b31c094bf">Format::kStandard</a></td></tr>
-<tr class="memdesc:a03d2bf17e786c546c5a287ae53dd8058"><td class="mdescLeft">&#160;</td><td class="mdescRight">ID format.  <a href="#a03d2bf17e786c546c5a287ae53dd8058">More...</a><br /></td></tr>
-<tr class="separator:a03d2bf17e786c546c5a287ae53dd8058"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aefc088b7ce71993193cf4091f36639"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a4aefc088b7ce71993193cf4091f36639">is_remote_request</a> = false</td></tr>
-<tr class="separator:a4aefc088b7ce71993193cf4091f36639"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This struct represents a transmit message based on the BOSCH CAN spec 2.0B. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a3439a42a3b4016016440db4f982b6cdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3439a42a3b4016016440db4f982b6cdd">&#9670;&nbsp;</a></span>Format</h2>
+<a id="afb250eaba59e88160521cc3a634428d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb250eaba59e88160521cc3a634428d6">&#9670;&nbsp;</a></span>Format</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,7 +132,7 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdd">sjsu::Can::Message_t::Format</a></td>
+          <td class="memname">enum <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6">sjsu::Can::Message_t::Format</a> : uint8_t</td>
         </tr>
       </table>
   </td>
@@ -144,18 +144,18 @@ Public Attributes</h2></td></tr>
 
 <p>The format of the can message. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3439a42a3b4016016440db4f982b6cdda821da62632c491ea619ead7b31c094bf"></a>kStandard&#160;</td><td class="fielddoc"><p>Use 11-bit ID message. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afb250eaba59e88160521cc3a634428d6a821da62632c491ea619ead7b31c094bf"></a>kStandard&#160;</td><td class="fielddoc"><p>Use 11-bit ID message. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3439a42a3b4016016440db4f982b6cdda025a008fdf5f9fe660e711fd3973bd69"></a>kExtended&#160;</td><td class="fielddoc"><p>Use 29-bit ID message. </p>
+<tr><td class="fieldname"><a id="afb250eaba59e88160521cc3a634428d6a025a008fdf5f9fe660e711fd3973bd69"></a>kExtended&#160;</td><td class="fielddoc"><p>Use 29-bit ID message. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a3439a42a3b4016016440db4f982b6cddad8d280feff135bc62eec91e2815cdee0"></a>kNumberOfFormats&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="afb250eaba59e88160521cc3a634428d6ad8d280feff135bc62eec91e2815cdee0"></a>kNumberOfFormats&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="adaeaf5cabe3f8ee96e62e79a3580435b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adaeaf5cabe3f8ee96e62e79a3580435b">&#9670;&nbsp;</a></span>SetPayload()</h2>
+<a id="a98f9ba5820a40973b962e8452756b680"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98f9ba5820a40973b962e8452756b680">&#9670;&nbsp;</a></span>SetPayload()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,7 +173,7 @@ Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -188,7 +188,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdd">Format</a> sjsu::Can::Message_t::format = <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdda821da62632c491ea619ead7b31c094bf">Format::kStandard</a></td>
+          <td class="memname"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6">Format</a> sjsu::Can::Message_t::format = <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6a821da62632c491ea619ead7b31c094bf">Format::kStandard</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -228,20 +228,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="afb4c343d6ae7bc0c0c9ea7444112ac6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb4c343d6ae7bc0c0c9ea7444112ac6d">&#9670;&nbsp;</a></span>is_valid</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sjsu::Can::Message_t::is_valid = true</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="abe73cc715863cb045a71486e6a713050"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe73cc715863cb045a71486e6a713050">&#9670;&nbsp;</a></span>length</h2>
 
@@ -271,6 +257,21 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Container of the payload contents. </p>
+
+</div>
+</div>
+<a id="a5f19dd5da78b32c4c24a5b141895e978"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f19dd5da78b32c4c24a5b141895e978">&#9670;&nbsp;</a></span>uptime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::chrono::nanoseconds sjsu::Can::Message_t::uptime = <a class="el" href="../../d0/d6b/namespacesjsu.html#ac1015ce029891b6ea23685a883ebd664">Uptime</a>()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the time in which this message was received. This value is default constructed and should not be changed. </p>
 
 </div>
 </div>

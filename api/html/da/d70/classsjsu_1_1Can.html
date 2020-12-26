@@ -76,6 +76,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="../../d1/d0e/classsjsu_1_1Can-members.html">List of all members</a>  </div>
@@ -108,25 +109,44 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a3798189c75cc2b988e25dc9aa5e09803"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3798189c75cc2b988e25dc9aa5e09803">ReceiveHandler</a> = std::function&lt; void(<a class="el" href="../../da/d70/classsjsu_1_1Can.html">sjsu::Can</a> &amp;)&gt;</td></tr>
+<tr class="separator:a3798189c75cc2b988e25dc9aa5e09803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classsjsu_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classsjsu_1_1Module')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a></td></tr>
+<tr class="memitem:a112d5ca5bc39486088c225ad62685a6b inherit pub_types_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a> : uint8_t { <br />
+&#160;&#160;<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b">State::kReset</a>, 
+<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bab661416dbe99f1eddca1a5547a8bd720">State::kInitialized</a>, 
+<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bade1ec1870756a80dffbdc4cda53153e0">State::kEnabled</a>, 
+<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6ba7b04d8795f5fd03c761ce70dab985fee">State::kDisabled</a>, 
+<br />
+&#160;&#160;<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6ba5a20548c220f372fc701cae6de94040b">State::kCritical</a>
+<br />
+ }</td></tr>
+<tr class="separator:a112d5ca5bc39486088c225ad62685a6b inherit pub_types_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac41bec93b72790726cd53b54aea231a9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#ac41bec93b72790726cd53b54aea231a9">ConfigureBaudRate</a> (units::frequency::hertz_t baud=<a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3b8c50971995dad8c040317429703957">kStandardBaudRate</a>)=0</td></tr>
 <tr class="separator:ac41bec93b72790726cd53b54aea231a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2749c5543e89e826cd2430b3020456cb"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a2749c5543e89e826cd2430b3020456cb">ConfigureFilter</a> (uint32_t id, uint32_t mask, bool is_extended=false)=0</td></tr>
-<tr class="memdesc:a2749c5543e89e826cd2430b3020456cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter out CANBUS messages based on their ID. Without such a filter, every single message on the CANBUS will be received, even those not intended or useful for this target device. Without a filter, software will need to perform work to throw away CAN messages that are irrelevant. This method will utilize the CAN peripheral hardware to perform message filtering.  <a href="#a2749c5543e89e826cd2430b3020456cb">More...</a><br /></td></tr>
-<tr class="separator:a2749c5543e89e826cd2430b3020456cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18ec3cba2ee7f8e2c71aa026b6ef1fb9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a18ec3cba2ee7f8e2c71aa026b6ef1fb9">ConfigureAcceptanceFilter</a> (bool enable)=0</td></tr>
-<tr class="memdesc:a18ec3cba2ee7f8e2c71aa026b6ef1fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables and disables the acceptance filter. When enabled, the filters.  <a href="#a18ec3cba2ee7f8e2c71aa026b6ef1fb9">More...</a><br /></td></tr>
-<tr class="separator:a18ec3cba2ee7f8e2c71aa026b6ef1fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8d2126e1d9322ecb9cac1679d7279ab"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#aa8d2126e1d9322ecb9cac1679d7279ab">ConfigureFilter</a> (uint32_t id)=0</td></tr>
+<tr class="memdesc:aa8d2126e1d9322ecb9cac1679d7279ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter out CANBUS messages based on their ID. Without such a filter, every single message on the CANBUS will be received, even those not intended or useful for this target device. Without a filter, software will need to perform the work to throw away CAN messages that are irrelevant. This method will utilize the CAN peripheral hardware to perform message filtering.  <a href="#aa8d2126e1d9322ecb9cac1679d7279ab">More...</a><br /></td></tr>
+<tr class="separator:aa8d2126e1d9322ecb9cac1679d7279ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1805ad4e28c923c6a10007466395b6c6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a1805ad4e28c923c6a10007466395b6c6">ConfigureAcceptanceFilter</a> (bool enable)=0</td></tr>
+<tr class="memdesc:a1805ad4e28c923c6a10007466395b6c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables and disables the acceptance filter. When disabled all messages will be received by the CAN peripheral. When enabled, only the messages with the correct ID set by <a class="el" href="../../da/d70/classsjsu_1_1Can.html#aa8d2126e1d9322ecb9cac1679d7279ab" title="Filter out CANBUS messages based on their ID. Without such a filter, every single message on the CANB...">ConfigureFilter()</a> will be allowed.  <a href="#a1805ad4e28c923c6a10007466395b6c6">More...</a><br /></td></tr>
+<tr class="separator:a1805ad4e28c923c6a10007466395b6c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2029e99a7de6233df8ec4975950b5307"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a2029e99a7de6233df8ec4975950b5307">ConfigureReceiveHandler</a> (<a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3798189c75cc2b988e25dc9aa5e09803">ReceiveHandler</a> handler)=0</td></tr>
+<tr class="memdesc:a2029e99a7de6233df8ec4975950b5307"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable interrupts for receiving CAN messages and set the handler to the one provided here.  <a href="#a2029e99a7de6233df8ec4975950b5307">More...</a><br /></td></tr>
+<tr class="separator:a2029e99a7de6233df8ec4975950b5307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11aa635531da5cc2b62790a9dd80bff2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a11aa635531da5cc2b62790a9dd80bff2">Send</a> (const <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a> &amp;message)=0</td></tr>
 <tr class="memdesc:a11aa635531da5cc2b62790a9dd80bff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message via CANBUS to the designated device with the supplied ID.  <a href="#a11aa635531da5cc2b62790a9dd80bff2">More...</a><br /></td></tr>
 <tr class="separator:a11aa635531da5cc2b62790a9dd80bff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48921df8b002573492365405a1dcf90f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a48921df8b002573492365405a1dcf90f">Receive</a> (uint32_t id=0)=0</td></tr>
-<tr class="memdesc:a48921df8b002573492365405a1dcf90f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive a CANBUS message from the queue. If an non-zero ID is supplied, a message with that ID will be returned. Typically this is done using a queue and has a O(n) time complexity. Some implementations like LPC40xx and LPC17xx utilize a special RAM lookup table, giving a time complexity of O(1).  <a href="#a48921df8b002573492365405a1dcf90f">More...</a><br /></td></tr>
-<tr class="separator:a48921df8b002573492365405a1dcf90f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a206b1eebcff5195195c006a39e3babf6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a206b1eebcff5195195c006a39e3babf6">HasData</a> (uint32_t id=0)=0</td></tr>
-<tr class="memdesc:a206b1eebcff5195195c006a39e3babf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there is a message available for this channel.  <a href="#a206b1eebcff5195195c006a39e3babf6">More...</a><br /></td></tr>
-<tr class="separator:a206b1eebcff5195195c006a39e3babf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71b5b16fed48c25ba97b89dfff527b90"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a71b5b16fed48c25ba97b89dfff527b90">Receive</a> ()=0</td></tr>
+<tr class="memdesc:a71b5b16fed48c25ba97b89dfff527b90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive a CANBUS message from the queue.  <a href="#a71b5b16fed48c25ba97b89dfff527b90">More...</a><br /></td></tr>
+<tr class="separator:a71b5b16fed48c25ba97b89dfff527b90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90349ddc8041af5c8871d80a968feba7"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a90349ddc8041af5c8871d80a968feba7">HasData</a> ()=0</td></tr>
+<tr class="memdesc:a90349ddc8041af5c8871d80a968feba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there is a message available for this channel.  <a href="#a90349ddc8041af5c8871d80a968feba7">More...</a><br /></td></tr>
+<tr class="separator:a90349ddc8041af5c8871d80a968feba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace8d1ca366e9a0b181436320cd6cd388"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#ace8d1ca366e9a0b181436320cd6cd388">SelfTest</a> (uint32_t id)=0</td></tr>
 <tr class="memdesc:ace8d1ca366e9a0b181436320cd6cd388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if you can communicate over the bus.  <a href="#ace8d1ca366e9a0b181436320cd6cd388">More...</a><br /></td></tr>
 <tr class="separator:ace8d1ca366e9a0b181436320cd6cd388"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,23 +199,14 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:aedb6c818d359d8f6c62fc3468524b686"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3798189c75cc2b988e25dc9aa5e09803">ReceiveHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#aedb6c818d359d8f6c62fc3468524b686">kDisableHandler</a> = nullptr</td></tr>
+<tr class="separator:aedb6c818d359d8f6c62fc3468524b686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b8c50971995dad8c040317429703957"><td class="memItemLeft" align="right" valign="top">static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3b8c50971995dad8c040317429703957">kStandardBaudRate</a> = 100'000_Hz</td></tr>
 <tr class="memdesc:a3b8c50971995dad8c040317429703957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard baud rate for most CANBUS networks.  <a href="#a3b8c50971995dad8c040317429703957">More...</a><br /></td></tr>
 <tr class="separator:a3b8c50971995dad8c040317429703957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classsjsu_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classsjsu_1_1Module')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a></td></tr>
-<tr class="memitem:a112d5ca5bc39486088c225ad62685a6b inherit pub_types_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a> : uint8_t { <br />
-&#160;&#160;<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b">State::kReset</a>, 
-<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bab661416dbe99f1eddca1a5547a8bd720">State::kInitialized</a>, 
-<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bade1ec1870756a80dffbdc4cda53153e0">State::kEnabled</a>, 
-<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6ba7b04d8795f5fd03c761ce70dab985fee">State::kDisabled</a>, 
-<br />
-&#160;&#160;<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6ba5a20548c220f372fc701cae6de94040b">State::kCritical</a>
-<br />
- }</td></tr>
-<tr class="separator:a112d5ca5bc39486088c225ad62685a6b inherit pub_types_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classsjsu_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classsjsu_1_1Module')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a></td></tr>
 <tr class="memitem:a9f71ac69f51d176b0949f47c564b9f2d inherit pro_attribs_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a9f71ac69f51d176b0949f47c564b9f2d">state_</a> = <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b">State::kReset</a></td></tr>
 <tr class="memdesc:a9f71ac69f51d176b0949f47c564b9f2d inherit pro_attribs_classsjsu_1_1Module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the state of the module. Default state of the module is kReset.  <a href="../../d1/ded/classsjsu_1_1Module.html#a9f71ac69f51d176b0949f47c564b9f2d">More...</a><br /></td></tr>
@@ -203,9 +214,24 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The common interface for the CANBUS peripherals. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a18ec3cba2ee7f8e2c71aa026b6ef1fb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18ec3cba2ee7f8e2c71aa026b6ef1fb9">&#9670;&nbsp;</a></span>ConfigureAcceptanceFilter()</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a3798189c75cc2b988e25dc9aa5e09803"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3798189c75cc2b988e25dc9aa5e09803">&#9670;&nbsp;</a></span>ReceiveHandler</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3798189c75cc2b988e25dc9aa5e09803">sjsu::Can::ReceiveHandler</a> =  std::function&lt;void(<a class="el" href="../../da/d70/classsjsu_1_1Can.html">sjsu::Can</a> &amp;)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1805ad4e28c923c6a10007466395b6c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1805ad4e28c923c6a10007466395b6c6">&#9670;&nbsp;</a></span>ConfigureAcceptanceFilter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,7 +240,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void sjsu::Can::ConfigureAcceptanceFilter </td>
+          <td class="memname">virtual bool sjsu::Can::ConfigureAcceptanceFilter </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>enable</em></td><td>)</td>
@@ -228,21 +254,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Enables and disables the acceptance filter. When enabled, the filters. </p>
+<p>Enables and disables the acceptance filter. When disabled all messages will be received by the CAN peripheral. When enabled, only the messages with the correct ID set by <a class="el" href="../../da/d70/classsjsu_1_1Can.html#aa8d2126e1d9322ecb9cac1679d7279ab" title="Filter out CANBUS messages based on their ID. Without such a filter, every single message on the CANB...">ConfigureFilter()</a> will be allowed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">enable</td><td>- set to true to enable enable filter, false to disable. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="../../d1/dfd/classsjsu_1_1Exception.html">sjsu::Exception</a></td><td>with std::errc::not_supported if filtering is not supported for this canbus peripheral. </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>true - if the new state was accepted. False otherwise. </dd></dl>
 
-<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a07f4baf5656c6fe1c32ffffd9c4ea22e">sjsu::lpc40xx::Can</a>.</p>
+<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ad9e65acfa26b3a760eecd44385ddcf58">sjsu::lpc40xx::Can</a>.</p>
 
 </div>
 </div>
@@ -280,8 +301,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2749c5543e89e826cd2430b3020456cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2749c5543e89e826cd2430b3020456cb">&#9670;&nbsp;</a></span>ConfigureFilter()</h2>
+<a id="aa8d2126e1d9322ecb9cac1679d7279ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8d2126e1d9322ecb9cac1679d7279ab">&#9670;&nbsp;</a></span>ConfigureFilter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -293,24 +314,8 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">virtual bool sjsu::Can::ConfigureFilter </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>id</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>mask</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>is_extended</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -320,30 +325,58 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Filter out CANBUS messages based on their ID. Without such a filter, every single message on the CANBUS will be received, even those not intended or useful for this target device. Without a filter, software will need to perform work to throw away CAN messages that are irrelevant. This method will utilize the CAN peripheral hardware to perform message filtering. </p>
+<p>Filter out CANBUS messages based on their ID. Without such a filter, every single message on the CANBUS will be received, even those not intended or useful for this target device. Without a filter, software will need to perform the work to throw away CAN messages that are irrelevant. This method will utilize the CAN peripheral hardware to perform message filtering. </p>
 <p>NOTE: ConfigureAcceptanceFilter(true) must be called for the filter to be taken into effect.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>- the ID to accept </td></tr>
-    <tr><td class="paramname">mask</td><td>- a mask to be applied to the ID. This works by checking the received ID against this equation: (received_id &amp; mask == id &amp; mask). This allows for a greater range of IDs to be accepted from the bus. For example, to accept IDs 0x140, 0x141, 0x142, 0x143, ID will be 0x140 and mask = 0x14C. This works because the last 2 bits of the mask are zeros, and thus will be ignored when performing the mask check operation. </td></tr>
-    <tr><td class="paramname">is_extended</td><td>- default false, specifies if the filter is meant for extended IDs. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname"><a class="el" href="../../d1/dfd/classsjsu_1_1Exception.html">sjsu::Exception</a></td><td>with std::errc::not_supported if filtering is not supported for this canbus peripheral. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true - if the filter was able to be installed successfully </dd>
 <dd>
-false - if the filter was NOT able to be installed successfully. This typically occurres when the number of hardware filters runs out. </dd></dl>
+false - if the filter was NOT able to be installed successfully. This typically occurres when the number of hardware filters runs out or if the CAN driver or peripheral does not support filtering. </dd></dl>
 
 </div>
 </div>
-<a id="a206b1eebcff5195195c006a39e3babf6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a206b1eebcff5195195c006a39e3babf6">&#9670;&nbsp;</a></span>HasData()</h2>
+<a id="a2029e99a7de6233df8ec4975950b5307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2029e99a7de6233df8ec4975950b5307">&#9670;&nbsp;</a></span>ConfigureReceiveHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void sjsu::Can::ConfigureReceiveHandler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3798189c75cc2b988e25dc9aa5e09803">ReceiveHandler</a>&#160;</td>
+          <td class="paramname"><em>handler</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable interrupts for receiving CAN messages and set the handler to the one provided here. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handler</td><td>- Action to be taken when a new can message arrives. Set to nullptr in order to disable this interrupt. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a38889139146bfcab6562cef5d90f6c8a">sjsu::lpc40xx::Can</a>.</p>
+
+</div>
+</div>
+<a id="a90349ddc8041af5c8871d80a968feba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90349ddc8041af5c8871d80a968feba7">&#9670;&nbsp;</a></span>HasData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,8 +387,7 @@ false - if the filter was NOT able to be installed successfully. This typically 
         <tr>
           <td class="memname">virtual bool sjsu::Can::HasData </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>id</em> = <code>0</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -368,6 +400,8 @@ false - if the filter was NOT able to be installed successfully. This typically 
 
 <p>Checks if there is a message available for this channel. </p>
 <dl class="section return"><dt>Returns</dt><dd>true a message was received. </dd></dl>
+
+<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a7f9b533b4eb074e46ad4c4995233afa9">sjsu::lpc40xx::Can</a>.</p>
 
 </div>
 </div>
@@ -401,8 +435,8 @@ false - if the device is NOT "bus off" </dd></dl>
 
 </div>
 </div>
-<a id="a48921df8b002573492365405a1dcf90f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48921df8b002573492365405a1dcf90f">&#9670;&nbsp;</a></span>Receive()</h2>
+<a id="a71b5b16fed48c25ba97b89dfff527b90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71b5b16fed48c25ba97b89dfff527b90">&#9670;&nbsp;</a></span>Receive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -413,8 +447,7 @@ false - if the device is NOT "bus off" </dd></dl>
         <tr>
           <td class="memname">virtual <a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a> sjsu::Can::Receive </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>id</em> = <code>0</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -425,14 +458,10 @@ false - if the device is NOT "bus off" </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Receive a CANBUS message from the queue. If an non-zero ID is supplied, a message with that ID will be returned. Typically this is done using a queue and has a O(n) time complexity. Some implementations like LPC40xx and LPC17xx utilize a special RAM lookup table, giving a time complexity of O(1). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>- retreive a message from the hardware queue that matches this ID. ID zero means retrieve any message from the queue. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Receive a CANBUS message from the queue. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d9/dc0/structsjsu_1_1Can_1_1Message__t.html">Message_t</a> - messages </dd></dl>
+
+<p>Implemented in <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a75214b07e9ce023051da333314dba113">sjsu::lpc40xx::Can</a>.</p>
 
 </div>
 </div>
@@ -608,6 +637,28 @@ false - on failure </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aedb6c818d359d8f6c62fc3468524b686"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedb6c818d359d8f6c62fc3468524b686">&#9670;&nbsp;</a></span>kDisableHandler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/d70/classsjsu_1_1Can.html#a3798189c75cc2b988e25dc9aa5e09803">ReceiveHandler</a> sjsu::Can::kDisableHandler = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a3b8c50971995dad8c040317429703957"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b8c50971995dad8c040317429703957">&#9670;&nbsp;</a></span>kStandardBaudRate</h2>
 

@@ -12,7 +12,7 @@ var searchData=
   ['float_2ehpp',['float.hpp',['../dd/d09/float_8hpp.html',1,'']]],
   ['flush',['Flush',['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a32057d7301aafc85a85bbeb2e47d4f95',1,'sjsu::stm32f10x::UartBase::Flush()'],['../d0/ddc/classsjsu_1_1Uart.html#a5c00ed2669a7fe0a5fa8230987752134',1,'sjsu::Uart::Flush()']]],
   ['fontstyle',['FontStyle',['../d3/d56/classsjsu_1_1St7066u.html#a6b936555ac9cc7ec812869824ff6e7a1',1,'sjsu::St7066u']]],
-  ['format',['format',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a03d2bf17e786c546c5a287ae53dd8058',1,'sjsu::Can::Message_t::format()'],['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a3439a42a3b4016016440db4f982b6cdd',1,'sjsu::Can::Message_t::Format()']]],
+  ['format',['format',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a03d2bf17e786c546c5a287ae53dd8058',1,'sjsu::Can::Message_t::format()'],['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6',1,'sjsu::Can::Message_t::Format()']]],
   ['fpu_2ehpp',['fpu.hpp',['../de/dd9/fpu_8hpp.html',1,'']]],
   ['fputs',['fputs',['../d0/d21/newlib_8cpp.html#a3f07e5855650a9d6b307446642341546',1,'newlib.cpp']]],
   ['fractionalestimate',['FractionalEstimate',['../d0/dc8/namespacesjsu_1_1lpc40xx_1_1uart.html#ac9d42a921ce81d039297beb31b2fd11b',1,'sjsu::lpc40xx::uart']]],

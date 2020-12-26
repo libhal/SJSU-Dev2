@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['i2c',['I2c',['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx::I2c'],['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a94e70d507a3d8d6bbc237135ca46cdbf',1,'sjsu::lpc40xx::I2c::I2c()']]],
+  ['i2c',['I2c',['../d0/d9b/classsjsu_1_1I2c.html',1,'sjsu::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html',1,'sjsu::lpc40xx::I2c'],['../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a94e70d507a3d8d6bbc237135ca46cdbf',1,'sjsu::lpc40xx::I2c::I2c()']]],
   ['i2c_2ehpp',['i2c.hpp',['../db/d1c/i2c_8hpp.html',1,'(Global Namespace)'],['../d8/dbb/lpc17xx_2i2c_8hpp.html',1,'(Global Namespace)'],['../d9/d18/lpc40xx_2i2c_8hpp.html',1,'(Global Namespace)']]],
   ['i2c0',['i2c0',['../db/dc0/structsjone.html#acd934660401331ad1c5992a8542bd183',1,'sjone::i2c0()'],['../db/dc5/structsjtwo.html#abf5330654c0cfb42de768115ed7d90e5',1,'sjtwo::i2c0()']]],
   ['i2c1',['i2c1',['../db/dc0/structsjone.html#ad492142aeaf9cbb65ebe63b69807a2da',1,'sjone::i2c1()'],['../db/dc5/structsjtwo.html#aac9b09af97527c13c15a9aa4eb8fa48d',1,'sjtwo::i2c1()']]],
@@ -31,7 +31,7 @@ var searchData=
   ['interrupt_5fhandler',['interrupt_handler',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#a8f02c27e02ebca4f78f9733be8a174d4',1,'sjsu::InterruptController::RegistrationInfo_t']]],
   ['interrupt_5frequest_5fnumber',['interrupt_request_number',['../dd/dea/structsjsu_1_1InterruptController_1_1RegistrationInfo__t.html#aa55f42dfba230e94a6b4546858f39735',1,'sjsu::InterruptController::RegistrationInfo_t']]],
   ['interruptcallback',['InterruptCallback',['../d0/d6b/namespacesjsu.html#aaed1ac5d25f4e9f920a8542577b803d7',1,'sjsu']]],
-  ['interruptcontroller',['InterruptController',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html',1,'sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;'],['../dc/db2/classsjsu_1_1InterruptController.html',1,'sjsu::InterruptController']]],
+  ['interruptcontroller',['InterruptController',['../dc/db2/classsjsu_1_1InterruptController.html',1,'sjsu::InterruptController'],['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html',1,'sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;']]],
   ['interrupthandler',['InterruptHandler',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ab46af7625e1f93fa997050cfb6940e37',1,'sjsu::lpc40xx::Gpio::InterruptHandler()'],['../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#a9d2ecd3a4ff67037e6adb711dd6054ac',1,'sjsu::stm32f10x::Gpio::InterruptHandler()'],['../d0/d6b/namespacesjsu.html#ae026ae4849a8724377e6b3d4c0988830',1,'sjsu::InterruptHandler()']]],
   ['interruptregister',['InterruptRegister',['../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a3394298a0c28bbbf631b4d85b65029d9',1,'sjsu::lpc40xx::Gpio']]],
   ['interrupts',['Interrupts',['../d8/d38/structsjsu_1_1lpc40xx_1_1Can_1_1Interrupts.html',1,'sjsu::lpc40xx::Can']]],
@@ -46,7 +46,7 @@ var searchData=
   ['irqtoindex',['IRQToIndex',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#aa63417f84aa1a11886960bafcd17d09f',1,'sjsu::cortex::InterruptController']]],
   ['is_5fremote_5frequest',['is_remote_request',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a4aefc088b7ce71993193cf4091f36639',1,'sjsu::Can::Message_t']]],
   ['is_5frepeat',['is_repeat',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07d03c94231cab76332cf16b0ccff9a6',1,'sjsu::infrared::DecodedFrame_t']]],
-  ['is_5fvalid',['is_valid',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb4c343d6ae7bc0c0c9ea7444112ac6d',1,'sjsu::Can::Message_t::is_valid()'],['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07c2ff4ead66e7ec2b1892dc1c0d21ee',1,'sjsu::infrared::DecodedFrame_t::is_valid()']]],
+  ['is_5fvalid',['is_valid',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07c2ff4ead66e7ec2b1892dc1c0d21ee',1,'sjsu::infrared::DecodedFrame_t']]],
   ['isblank',['IsBlank',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a0eef47d4e25c7300ea70d1a90bc57216',1,'sjsu::PixelDisplay::Color_t']]],
   ['isbusbusy',['IsBusBusy',['../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a08066431cb1ddb23b1c8745b5b79b3de',1,'sjsu::lpc40xx::Spi']]],
   ['isbusoff',['IsBusOff',['../da/d70/classsjsu_1_1Can.html#ad34bff3d491a4b9c8443dc375da6f4bb',1,'sjsu::Can::IsBusOff()'],['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#ac5d55131c43e7bbd31b96f0a2e12faca',1,'sjsu::lpc40xx::Can::IsBusOff()']]],

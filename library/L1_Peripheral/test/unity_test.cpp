@@ -7,6 +7,7 @@
 // Interface Test
 // =============================================================================
 #include "L1_Peripheral/test/adc_test.cpp"               // NOLINT
+#include "L1_Peripheral/test/can_test.cpp"               // NOLINT
 #include "L1_Peripheral/test/gpio_test.cpp"              // NOLINT
 #include "L1_Peripheral/test/hardware_counter_test.cpp"  // NOLINT
 #include "L1_Peripheral/test/i2c_test.cpp"               // NOLINT

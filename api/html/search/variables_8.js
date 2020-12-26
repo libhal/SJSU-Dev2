@@ -15,5 +15,5 @@ var searchData=
   ['irq_5fnumber',['irq_number',['../d2/dab/structsjsu_1_1lpc40xx_1_1I2c_1_1Bus__t.html#ad5ebdc62dde51c917b9ef8770ced4e60',1,'sjsu::lpc40xx::I2c::Bus_t']]],
   ['is_5fremote_5frequest',['is_remote_request',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a4aefc088b7ce71993193cf4091f36639',1,'sjsu::Can::Message_t']]],
   ['is_5frepeat',['is_repeat',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07d03c94231cab76332cf16b0ccff9a6',1,'sjsu::infrared::DecodedFrame_t']]],
-  ['is_5fvalid',['is_valid',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb4c343d6ae7bc0c0c9ea7444112ac6d',1,'sjsu::Can::Message_t::is_valid()'],['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07c2ff4ead66e7ec2b1892dc1c0d21ee',1,'sjsu::infrared::DecodedFrame_t::is_valid()']]]
+  ['is_5fvalid',['is_valid',['../d4/d22/structsjsu_1_1infrared_1_1DecodedFrame__t.html#a07c2ff4ead66e7ec2b1892dc1c0d21ee',1,'sjsu::infrared::DecodedFrame_t']]]
 ];
