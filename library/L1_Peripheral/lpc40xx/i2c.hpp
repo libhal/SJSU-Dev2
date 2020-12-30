@@ -353,6 +353,10 @@ class I2c final : public sjsu::I2c
     {
       // Disable I2C interface
       i2c_.registers->CONCLR = Control::kInterfaceEnable;
+
+      // Enable interrupt service routine.
+      sjsu::InterruptController::GetPlatformController().Disable(
+          i2c_.irq_number);
     }
   }
 
@@ -379,6 +383,11 @@ class I2c final : public sjsu::I2c
   bool IsEnabled() const
   {
     return (i2c_.registers->CONSET & Control::kInterfaceEnable);
+  }
+
+  ~I2c()
+  {
+    ModuleEnable(false);
   }
 
  private:

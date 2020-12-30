@@ -108,14 +108,6 @@ class GpioCounter : public HardwareCounter
     return count_;
   }
 
-  /// Destructor of this object will detach the interrupt from the GPIO. This is
-  /// to keep the gpio interrupt service routine from calling this objects
-  /// callback when this object has been destroyed.
-  ~GpioCounter()
-  {
-    ModuleEnable(false);
-  }
-
  private:
   sjsu::Gpio & gpio_;
   sjsu::Gpio::Edge edge_;

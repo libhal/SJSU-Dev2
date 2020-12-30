@@ -31,32 +31,33 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
   InterruptCallback backup_input_isr;
   InterruptCallback backup_pol_isr;
 
-  Fake(Method(mock_primary_hardware_counter, ModuleInitialize));
-  Fake(Method(mock_primary_hardware_counter, ModuleEnable));
-  Fake(Method(mock_primary_hardware_counter, GetCount));
-  Fake(Method(mock_primary_hardware_counter, Set));
-  Fake(Method(mock_primary_hardware_counter, SetDirection));
+  Fake(
+      Method(mock_primary_hardware_counter, HardwareCounter::ModuleInitialize));
+  Fake(Method(mock_primary_hardware_counter, HardwareCounter::ModuleEnable));
+  Fake(Method(mock_primary_hardware_counter, HardwareCounter::GetCount));
+  Fake(Method(mock_primary_hardware_counter, HardwareCounter::Set));
+  Fake(Method(mock_primary_hardware_counter, HardwareCounter::SetDirection));
 
-  Fake(Method(mock_backup_hardware_counter, ModuleInitialize));
-  Fake(Method(mock_backup_hardware_counter, ModuleEnable));
-  Fake(Method(mock_backup_hardware_counter, GetCount));
-  Fake(Method(mock_backup_hardware_counter, Set));
-  Fake(Method(mock_backup_hardware_counter, SetDirection));
+  Fake(Method(mock_backup_hardware_counter, HardwareCounter::ModuleInitialize));
+  Fake(Method(mock_backup_hardware_counter, HardwareCounter::ModuleEnable));
+  Fake(Method(mock_backup_hardware_counter, HardwareCounter::GetCount));
+  Fake(Method(mock_backup_hardware_counter, HardwareCounter::Set));
+  Fake(Method(mock_backup_hardware_counter, HardwareCounter::SetDirection));
 
-  Fake(Method(mock_primary_pol_gpio, ModuleInitialize));
-  Fake(Method(mock_primary_pol_gpio, ModuleEnable));
-  Fake(Method(mock_primary_pol_gpio, SetDirection));
-  Fake(Method(mock_primary_pol_gpio, Read));
-  Fake(Method(mock_primary_pol_gpio, DetachInterrupt));
-  When(Method(mock_primary_pol_gpio, AttachInterrupt))
+  Fake(Method(mock_primary_pol_gpio, Gpio::ModuleInitialize));
+  Fake(Method(mock_primary_pol_gpio, Gpio::ModuleEnable));
+  Fake(Method(mock_primary_pol_gpio, Gpio::SetDirection));
+  Fake(Method(mock_primary_pol_gpio, Gpio::Read));
+  Fake(Method(mock_primary_pol_gpio, Gpio::DetachInterrupt));
+  When(Method(mock_primary_pol_gpio, Gpio::AttachInterrupt))
       .AlwaysDo(GetLambda(primary_pol_isr));
 
-  Fake(Method(mock_backup_pol_gpio, ModuleInitialize));
-  Fake(Method(mock_backup_pol_gpio, ModuleEnable));
-  Fake(Method(mock_backup_pol_gpio, SetDirection));
-  Fake(Method(mock_backup_pol_gpio, Read));
-  Fake(Method(mock_backup_pol_gpio, DetachInterrupt));
-  When(Method(mock_backup_pol_gpio, AttachInterrupt))
+  Fake(Method(mock_backup_pol_gpio, Gpio::ModuleInitialize));
+  Fake(Method(mock_backup_pol_gpio, Gpio::ModuleEnable));
+  Fake(Method(mock_backup_pol_gpio, Gpio::SetDirection));
+  Fake(Method(mock_backup_pol_gpio, Gpio::Read));
+  Fake(Method(mock_backup_pol_gpio, Gpio::DetachInterrupt));
+  When(Method(mock_backup_pol_gpio, Gpio::AttachInterrupt))
       .AlwaysDo(GetLambda(backup_pol_isr));
 
   SECTION("LTC4150 Initialization")
@@ -69,22 +70,28 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
                            mock_backup_pol_gpio.get(),
                            resistance);
 
-    When(Method(mock_primary_pol_gpio, Read)).Return(true);
-    When(Method(mock_backup_pol_gpio, Read)).Return(false);
+    When(Method(mock_primary_pol_gpio, Gpio::Read)).Return(true);
+    When(Method(mock_backup_pol_gpio, Gpio::Read)).Return(false);
 
     // Exercise
     primary_counter.ModuleInitialize();
     backup_counter.ModuleInitialize();
 
     // Verify
-    Verify(Method(mock_primary_hardware_counter, ModuleInitialize)).Exactly(1);
-    Verify(Method(mock_backup_hardware_counter, ModuleInitialize)).Exactly(1);
-    Verify(Method(mock_primary_pol_gpio, SetDirection)
+    Verify(Method(mock_primary_hardware_counter,
+                  HardwareCounter::ModuleInitialize))
+        .Exactly(1);
+    Verify(
+        Method(mock_backup_hardware_counter, HardwareCounter::ModuleInitialize))
+        .Exactly(1);
+    Verify(Method(mock_primary_pol_gpio, Gpio::SetDirection)
                .Using(Gpio::Direction::kInput));
-    Verify(Method(mock_backup_pol_gpio, SetDirection)
+    Verify(Method(mock_backup_pol_gpio, Gpio::SetDirection)
                .Using(Gpio::Direction::kInput));
-    Verify(Method(mock_primary_hardware_counter, ModuleEnable)).Exactly(1);
-    Verify(Method(mock_backup_hardware_counter, ModuleEnable)).Exactly(1);
+    Verify(Method(mock_primary_hardware_counter, HardwareCounter::ModuleEnable))
+        .Exactly(1);
+    Verify(Method(mock_backup_hardware_counter, HardwareCounter::ModuleEnable))
+        .Exactly(1);
   }
 
   SECTION("Enable()")
@@ -102,8 +109,8 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
     backup_counter.ModuleEnable();
 
     // Verify
-    Verify(Method(mock_primary_pol_gpio, AttachInterrupt));
-    Verify(Method(mock_backup_pol_gpio, AttachInterrupt));
+    Verify(Method(mock_primary_pol_gpio, Gpio::AttachInterrupt));
+    Verify(Method(mock_backup_pol_gpio, Gpio::AttachInterrupt));
   }
 
   SECTION("Count Ticks and Calculate mAh")
@@ -117,10 +124,12 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
     Ltc4150 backup_counter(mock_backup_hardware_counter.get(),
                            mock_backup_pol_gpio.get(),
                            resistance);
-    When(Method(mock_primary_pol_gpio, Read)).Return(false);
-    When(Method(mock_backup_pol_gpio, Read)).Return(true);
-    When(Method(mock_primary_hardware_counter, GetCount)).Return(-4);
-    When(Method(mock_backup_hardware_counter, GetCount)).Return(6);
+    When(Method(mock_primary_pol_gpio, Gpio::Read)).Return(false);
+    When(Method(mock_backup_pol_gpio, Gpio::Read)).Return(true);
+    When(Method(mock_primary_hardware_counter, HardwareCounter::GetCount))
+        .Return(-4);
+    When(Method(mock_backup_hardware_counter, HardwareCounter::GetCount))
+        .Return(6);
 
     primary_counter.ModuleInitialize();
     primary_counter.ModuleEnable();

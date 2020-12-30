@@ -218,6 +218,11 @@ class Gpio : public sjsu::Gpio
         bit::Clear(external_interrupt->FTSR, pin_.GetPin());
   }
 
+  ~Gpio()
+  {
+    DetachInterrupt();
+  }
+
  private:
   sjsu::stm32f10x::Pin pin_;
 };
