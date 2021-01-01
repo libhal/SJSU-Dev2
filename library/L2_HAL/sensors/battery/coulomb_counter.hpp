@@ -8,7 +8,7 @@ namespace sjsu
 {
 /// Abstraction Interface for a coulomb counter. This device can give us
 /// information about a connected battery's power level.
-class CoulombCounter : public Module
+class CoulombCounter : public Module<>
 {
  public:
   /// Returns the cumulative amount of charge that has passed through the

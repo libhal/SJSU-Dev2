@@ -11,8 +11,6 @@ namespace sjsu
 {
 namespace msp432p401r
 {
-EMIT_ALL_METHODS(SystemController);
-
 TEST_CASE("Testing msp432p401r SystemController")
 {
   // Simulate local version of clock system (CS) registers.

@@ -181,14 +181,7 @@ TEST_CASE("Testing GetInactive<Can>()")
 
   // Exercise
   // Exercise: All the things in order to hit coverage on our side.
-  inactive_can.ModuleInitialize();
-  inactive_can.ModuleEnable(true);
-  inactive_can.ModuleEnable(false);
-  inactive_can.ConfigureBaudRate();
-  inactive_can.ConfigureFilter(0x111);
-  inactive_can.ConfigureAcceptanceFilter(true);
-  inactive_can.ConfigureAcceptanceFilter(false);
-  inactive_can.ConfigureReceiveHandler([](Can &) {});
+  inactive_can.Initialize();
   inactive_can.Send(0x111, {});
 
   // Verify
@@ -200,51 +193,30 @@ TEST_CASE("Testing GetInactive<Can>()")
   CHECK(false == inactive_can.IsBusOff());
 }
 
-Can::ReceiveHandler receive_handler;
+CanSettings_t::ReceiveHandler receive_handler;
 
 TEST_CASE("Testing CanNetwork")
 {
   Mock<Can> mock_can;
+  Fake(Method(mock_can, Can::ModuleInitialize));
+
   Can & can = mock_can.get();
   StaticAllocator<1024> memory_resource;
   CanNetwork network(can, &memory_resource);
 
-  // Run the Initialize() method to hit coverage requirement
-  network.ModuleInitialize();
-
-  // Setup
-  When(Method(mock_can, Can::ConfigureReceiveHandler))
-      .AlwaysDo([](Can::ReceiveHandler handler) {
-        receive_handler = handler;
-      });
-
-  SECTION("ModuleEnable()")
+  SECTION("Initialize()")
   {
-    SECTION("ModuleEnable(true)")
-    {
-      // Setup
-      When(Method(mock_can, Can::HasData)).Return(true);
-      When(Method(mock_can, Can::Receive)).Return({});
+    // Setup
+    When(Method(mock_can, Can::HasData)).Return(true);
+    When(Method(mock_can, Can::Receive)).Return({});
 
-      // Exercise
-      network.ModuleEnable();
-      receive_handler(can);
+    // Exercise
+    network.Initialize();
+    network.ManuallyCallReceiveHandler();
 
-      // Verify
-      Verify(Method(mock_can, Can::HasData), Method(mock_can, Can::Receive))
-          .Once();
-    }
-
-    SECTION("ModuleEnable(false)")
-    {
-      // Setup
-      When(Method(mock_can, Can::HasData)).Return(true);
-      When(Method(mock_can, Can::Receive)).Return({});
-
-      // Exercise
-      network.ModuleEnable(false);
-      CHECK_THROWS_AS(receive_handler(can), std::bad_function_call);
-    }
+    // Verify
+    Verify(Method(mock_can, Can::HasData), Method(mock_can, Can::Receive))
+        .Once();
   }
 
   SECTION("Node_t* CaptureMessage(id)")
@@ -436,18 +408,6 @@ TEST_CASE("Testing CanNetwork")
     // Exercise
     // Verify
     CHECK(&can == &network.CanBus());
-  }
-
-  SECTION("~CanNetwork()")
-  {
-    // Setup
-    Fake(Method(mock_can, Can::ConfigureReceiveHandler));
-
-    // Exercise
-    network.~CanNetwork();
-
-    // Verify
-    Verify(Method(mock_can, Can::ConfigureReceiveHandler)).Once();
   }
 }
 }  // namespace sjsu

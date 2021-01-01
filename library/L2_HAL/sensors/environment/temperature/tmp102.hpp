@@ -57,15 +57,8 @@ class Tmp102 final : public TemperatureSensor
 
   void ModuleInitialize() override
   {
-    if (i2c_.RequiresConfiguration())
-    {
-      i2c_.Initialize();
-      i2c_.ConfigureClockRate();
-      i2c_.Enable();
-    }
+    i2c_.Initialize();
   }
-
-  void ModuleEnable(bool = true) override {}
 
   units::temperature::celsius_t GetTemperature() override
   {

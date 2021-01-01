@@ -12,15 +12,10 @@
 
 namespace sjsu
 {
-/// An abstract interface for hardware that implements the Universal
-/// Asynchronous Receiver Transmitter (UART) hardware communication Protocol.
-/// @ingroup l1_peripheral
-class Uart : public Module
+/// Generic settings for a standard UART peripheral
+struct UartSettings_t : public MemoryEqualOperator_t<UartSettings_t>
 {
- public:
-  // ===========================================================================
-  // Interface Definitions
-  // ===========================================================================
+  /// Defines the available frame sizes for UART payloads
   enum class FrameSize : uint8_t
   {
     kFiveBits,
@@ -30,49 +25,43 @@ class Uart : public Module
     kNineBits,
   };
 
+  /// Defines the available stop bits options
   enum class StopBits : uint8_t
   {
     kSingle,
     kDouble,
   };
 
+  /// Defines the parity bit options
   enum class Parity : uint8_t
   {
+    /// Disable parity checks
     kNone = 0,
+    /// Enable parity and set HIGH when the number of bits is odd
     kOdd,
+    /// Enable parity and set HIGH when the number of bits is even
     kEven,
-    kForced1,
-    kForced0
   };
 
-  // ===========================================================================
-  // Interface Methods
-  // ===========================================================================
+  /// The operating baud rate (speed) of the UART signals.
+  uint32_t baud_rate = 9600;
 
-  // ---------------------------------------------------------------------------
-  // Configuration Methods
-  // ---------------------------------------------------------------------------
+  /// The number of bits for the UART packet payload.
+  FrameSize frame_size = FrameSize::kEightBits;
 
-  /// Set UART baud rate.
-  /// Will attempt to provide a baud rate closest to the value supplied.
-  ///
-  /// @param baud_rate the speed of the UART transmit and receive.
-  virtual void ConfigureBaudRate(uint32_t baud_rate) = 0;
+  /// The number of stop bits at the end of the.
+  StopBits stop = StopBits::kSingle;
 
-  /// Set UART baud rate.
-  /// Will attempt to provide a baud rate closest to the value supplied.
-  ///
-  /// @param size - Size of UART data frames (8 is standard).
-  /// @param stop - Number of stop bits (1 stop bit is standard)
-  /// @param parity - Type of parity control (none parity is standard)
-  virtual void ConfigureFormat(FrameSize size = FrameSize::kEightBits,
-                               StopBits stop  = StopBits::kSingle,
-                               Parity parity  = Parity::kNone) = 0;
+  /// The parity bit settings for UART.
+  Parity parity = Parity::kNone;
+};
 
-  // ---------------------------------------------------------------------------
-  // Usage Methods
-  // ---------------------------------------------------------------------------
-
+/// An abstract interface for hardware that implements the Universal
+/// Asynchronous Receiver Transmitter (UART) hardware communication Protocol.
+/// @ingroup l1_peripheral
+class Uart : public Module<UartSettings_t>
+{
+ public:
   /// Checks if there is data available for this port.
   ///
   /// @returns true if the UART port has received some data.
@@ -104,7 +93,7 @@ class Uart : public Module
   }
 
   // ===========================================================================
-  // Utility Methods
+  // Helper Functions
   // ===========================================================================
 
   /// Transmit just 1 byte
@@ -213,13 +202,6 @@ inline sjsu::Uart & GetInactive<sjsu::Uart>()
   {
    public:
     void ModuleInitialize() override {}
-    void ModuleEnable(bool) override {}
-    void ConfigureBaudRate(uint32_t) override {}
-    void ConfigureFormat(FrameSize = FrameSize::kEightBits,
-                         StopBits  = StopBits::kSingle,
-                         Parity    = Parity::kNone) override
-    {
-    }
     void Write(std::span<const uint8_t>) override {}
     size_t Read(std::span<uint8_t>) override
     {

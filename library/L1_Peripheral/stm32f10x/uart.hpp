@@ -5,6 +5,8 @@
 #include "L1_Peripheral/stm32f10x/pin.hpp"
 #include "L1_Peripheral/uart.hpp"
 #include "utility/bit.hpp"
+#include "utility/error_handling.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu::stm32f10x
 {
@@ -49,48 +51,6 @@ class UartBase : public sjsu::Uart
     /// have a FIFO or buffer of any sort, thus DMA is required for reasonable
     /// usage.
     DMA_Channel_TypeDef * dma;
-  };
-
-  /// Namespace for the predefined UART configuration objects
-  struct Port  // NOLINT
-  {
-   private:
-    inline static auto tx1 = Pin('A', 9);
-    inline static auto rx1 = Pin('A', 10);
-
-    inline static auto rx2 = Pin('A', 3);
-    inline static auto tx2 = Pin('A', 2);
-
-    inline static auto tx3 = Pin('B', 10);
-    inline static auto rx3 = Pin('B', 11);
-
-   public:
-    /// Predefined port for UART1
-    const inline static Port_t kUart1 = {
-      .tx   = tx1,
-      .rx   = rx1,
-      .uart = USART1,
-      .id   = SystemController::Peripherals::kUsart1,
-      .dma  = DMA1_Channel5,
-    };
-
-    /// Predefined port for UART2
-    const inline static Port_t kUart2 = {
-      .tx   = tx2,
-      .rx   = rx2,
-      .uart = USART2,
-      .id   = SystemController::Peripherals::kUsart2,
-      .dma  = DMA1_Channel6,
-    };
-
-    /// Predefined port for UART3
-    const inline static Port_t kUart3 = {
-      .tx   = tx3,
-      .rx   = rx3,
-      .uart = USART3,
-      .id   = SystemController::Peripherals::kUsart3,
-      .dma  = DMA1_Channel3,
-    };
   };
 
   /// Namespace for the status registers (SR) bit masks
@@ -159,10 +119,10 @@ class UartBase : public sjsu::Uart
           .Set(Dma::Reg::kEnable);
 
   /// @tparam size - size of the array
-  /// @param port - reference to the port configuration object
+  /// @param port - reference to the port specification object
   /// @param buffer - reference to the array buffer to hold the received bytes
   template <size_t size>
-  constexpr UartBase(const Port_t & port, std::array<uint8_t, size> & buffer)
+  UartBase(const Port_t & port, std::array<uint8_t, size> & buffer)
       : port_(port),
         read_pointer_(0),
         queue_(buffer.data()),
@@ -170,19 +130,19 @@ class UartBase : public sjsu::Uart
   {
   }
 
-  /// @param port - reference to the port configuration object
+  /// @param port - reference to the port specification object
   /// @param buffer - pointer to the array buffer to hold the received bytes
   /// @param size - size of the buffer in bytes
-  constexpr UartBase(const Port_t & port, uint8_t * buffer, size_t size)
+  UartBase(const Port_t & port, uint8_t * buffer, size_t size)
       : port_(port), read_pointer_(0), queue_(buffer), queue_size_(size)
   {
   }
 
   /// @tparam size - size of the array
-  /// @param port - reference to the port configuration object
+  /// @param port - reference to the port specification object
   /// @param buffer - reference to the array buffer to hold the received bytes
   template <size_t size>
-  constexpr UartBase(const Port_t & port, uint8_t (&buffer)[size])
+  UartBase(const Port_t & port, uint8_t (&buffer)[size])
       : port_(port), read_pointer_(0), queue_(buffer), queue_size_(size)
   {
   }
@@ -221,14 +181,6 @@ class UartBase : public sjsu::Uart
     // Supply clock to UART
     system.PowerUpPeripheral(port_.id);
     system.PowerUpPeripheral(SystemController::Peripherals::kDma1);
-  }
-
-  void ModuleEnable(bool = true) override
-  {
-    // Setup TX as output with alternative control (TXD)
-    port_.tx.ConfigureFunction(1);
-    // Set pin as input with internal PULL UP (RXD)
-    port_.rx.ConfigurePullUp();
 
     // Setup RX DMA channel
     const auto kDataAddress  = reinterpret_cast<intptr_t>(&port_.uart->DR);
@@ -250,41 +202,18 @@ class UartBase : public sjsu::Uart
 
     // Setup UART Control Settings 3
     port_.uart->CR3 = ControlReg::kControlSettings3;
-  }
 
-  void ConfigureFormat(FrameSize = FrameSize::kEightBits,
-                       StopBits  = StopBits::kSingle,
-                       Parity    = Parity::kNone) override
-  {
-    sjsu::LogWarning("Not supported currently");
-  }
+    ConfigureBaudRate();
+    ConfigureFormat();
 
-  void ConfigureBaudRate(uint32_t baud_rate) override
-  {
-    auto & system  = SystemController::GetPlatformController();
-    auto frequency = system.GetClockRate(port_.id);
+    // Setup TX as output with alternative control (TXD)
+    port_.tx.settings.function = 1;
 
-    float float_baud_rate = static_cast<float>(baud_rate);
-    float usart_divider =
-        static_cast<float>(frequency) / (16.0f * float_baud_rate);
+    // Set pin as input with internal PULL UP (RXD)
+    port_.rx.settings.PullUp();
 
-    // Truncate off the decimal values
-    uint16_t mantissa = static_cast<uint16_t>(usart_divider);
-
-    // Subtract the whole number to leave just the decimal
-    float fraction = static_cast<float>(usart_divider - mantissa);
-
-    uint16_t fractional_int = static_cast<uint16_t>(std::roundf(fraction * 16));
-
-    if (fractional_int >= 16)
-    {
-      mantissa       = static_cast<uint16_t>(mantissa + 1U);
-      fractional_int = 0;
-    }
-
-    port_.uart->BRR = bit::Value<uint16_t>()
-                          .Insert(mantissa, BaudRateReg::kMantissa)
-                          .Insert(fractional_int, BaudRateReg::kFraction);
+    port_.tx.Initialize();
+    port_.rx.Initialize();
   }
 
   void Write(std::span<const uint8_t> data) override
@@ -332,6 +261,68 @@ class UartBase : public sjsu::Uart
   }
 
  private:
+  void ConfigureFormat()
+  {
+    auto control_register1          = bit::Register(&port_.uart->CR1);
+    constexpr auto kParityControl   = bit::MaskFromRange(10);
+    constexpr auto kParitySelection = bit::MaskFromRange(9);
+    constexpr auto kWordLength      = bit::MaskFromRange(12);
+
+    auto control_register2 = bit::Register(&port_.uart->CR2);
+    constexpr auto kStop   = bit::MaskFromRange(12, 13);
+
+    if (settings.frame_size < UartSettings_t::FrameSize::kEightBits)
+    {
+      throw Exception(std::errc::not_supported,
+                      "Only 8-bit and 9-bit frame sizes are supported!");
+    }
+
+    bool double_stop    = (settings.stop == UartSettings_t::StopBits::kDouble);
+    uint16_t stop_value = (double_stop) ? 0b10 : 0b00;
+    bool parity_enable  = (settings.parity != UartSettings_t::Parity::kNone);
+    bool parity         = (settings.parity == UartSettings_t::Parity::kOdd);
+    bool size_code =
+        (settings.frame_size == UartSettings_t::FrameSize::kNineBits);
+    // Parity codes are: 0 for Even and 1 for Odd, thus the expression above
+    // sets the bool to TRUE when odd and zero when something else. This value
+    // is ignored if the parity is NONE since parity_enable will be zero.
+
+    control_register1.Insert(parity_enable, kParityControl)
+        .Insert(parity, kParitySelection)
+        .Insert(size_code, kWordLength)
+        .Save();
+
+    control_register2.Insert(stop_value, kStop).Save();
+  }
+
+  void ConfigureBaudRate()
+  {
+    auto & system  = SystemController::GetPlatformController();
+    auto frequency = system.GetClockRate(port_.id);
+
+    float float_baud_rate = static_cast<float>(settings.baud_rate);
+    float usart_divider =
+        static_cast<float>(frequency) / (16.0f * float_baud_rate);
+
+    // Truncate off the decimal values
+    uint16_t mantissa = static_cast<uint16_t>(usart_divider);
+
+    // Subtract the whole number to leave just the decimal
+    float fraction = static_cast<float>(usart_divider - mantissa);
+
+    uint16_t fractional_int = static_cast<uint16_t>(std::roundf(fraction * 16));
+
+    if (fractional_int >= 16)
+    {
+      mantissa       = static_cast<uint16_t>(mantissa + 1U);
+      fractional_int = 0;
+    }
+
+    port_.uart->BRR = bit::Value<uint16_t>()
+                          .Insert(mantissa, BaudRateReg::kMantissa)
+                          .Insert(fractional_int, BaudRateReg::kFraction);
+  }
+
   size_t DmaWritePosition() const
   {
     size_t write_position = queue_size_ - port_.dma->CNDTR;
@@ -350,19 +341,94 @@ class UartBase : public sjsu::Uart
 /// @tparam - defaults to 32 bytes for the queue size. You can configure this
 ///           for a higher or lower number of bytes. Note: that the larger this
 ///           value, the larger this object's size is.
-template <const size_t kQueueSize = 32>
+template <size_t queue_size = 32>
 class Uart : public sjsu::stm32f10x::UartBase
 {
  public:
   using sjsu::Uart::Read;
   using sjsu::Uart::Write;
 
+  /// @param port - reference to the port specification object
   explicit constexpr Uart(const sjsu::stm32f10x::UartBase::Port_t & port)
       : sjsu::stm32f10x::UartBase(port, queue_), queue_{}
   {
   }
 
  private:
-  std::array<uint8_t, kQueueSize> queue_;
+  std::array<uint8_t, queue_size> queue_;
 };
+
+/// Get a stm32f10x UART peripheral
+///
+/// @tparam port - which port number to use. Must be between 1 and 3.
+/// @tparam queue_size - the number of bytes to hold in the DMA queue. If the
+/// UART is operating at a high baud rate, expects to have a large amount of
+/// data pushed to this device and may not be able to process it quickly, a
+/// large buffer for the queue size may be required.
+/// @return Uart<queue_size>& - reference to a statically allocated Uart object
+/// with the port and queue_size as defined in the template parameters.
+template <int port, const size_t queue_size = 32>
+inline Uart<queue_size> & GetUart()
+{
+  if constexpr (port == 1)
+  {
+    static auto & tx1 = GetPin<'A', 9>();
+    static auto & rx1 = GetPin<'A', 10>();
+
+    /// Predefined port for UART1
+    static const UartBase::Port_t kUartInfo = {
+      .tx   = tx1,
+      .rx   = rx1,
+      .uart = USART1,
+      .id   = SystemController::Peripherals::kUsart1,
+      .dma  = DMA1_Channel5,
+    };
+
+    static Uart<queue_size> uart(kUartInfo);
+    return uart;
+  }
+  else if constexpr (port == 2)
+  {
+    static auto & rx2 = GetPin<'A', 3>();
+    static auto & tx2 = GetPin<'A', 2>();
+
+    /// Predefined port for UART2
+    static const UartBase::Port_t kUartInfo = {
+      .tx   = tx2,
+      .rx   = rx2,
+      .uart = USART2,
+      .id   = SystemController::Peripherals::kUsart2,
+      .dma  = DMA1_Channel6,
+    };
+
+    static Uart<queue_size> uart(kUartInfo);
+    return uart;
+  }
+  else if constexpr (port == 3)
+  {
+    static auto & tx3 = GetPin<'B', 10>();
+    static auto & rx3 = GetPin<'B', 11>();
+
+    /// Predefined port for UART3
+    static const UartBase::Port_t kUartInfo = {
+      .tx   = tx3,
+      .rx   = rx3,
+      .uart = USART3,
+      .id   = SystemController::Peripherals::kUsart3,
+      .dma  = DMA1_Channel3,
+    };
+
+    static Uart<queue_size> uart(kUartInfo);
+    return uart;
+  }
+  else
+  {
+    static_assert(InvalidOption<port>,
+                  "\n\n"
+                  "SJSU-Dev2 Compile Time Error:\n"
+                  "    stm31f10x only supports UART1, UART2, and UART3!\n"
+                  "\n");
+    return GetUart<1>();
+  }
+}
 }  // namespace sjsu::stm32f10x

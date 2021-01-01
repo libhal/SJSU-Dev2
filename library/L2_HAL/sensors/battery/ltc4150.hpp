@@ -46,11 +46,6 @@ class Ltc4150 : public CoulombCounter
     counter_.Initialize();
     pol_pin_.Initialize();
 
-    // Phase 2: Configure()
-    // Phase 3: Enable()
-    counter_.Enable();
-    pol_pin_.Enable();
-
     // Phase 4: Usage
     // Set the polarity pin as an input as we need to use it to read the state
     // polarity signal.
@@ -58,37 +53,25 @@ class Ltc4150 : public CoulombCounter
 
     // Set counter's initial value to zero.
     counter_.Set(0);
-  }
 
-  /// Initialize hardware, setting pins as inputs and attaching ISR handlers to
-  /// the interrupt pin.
-  void ModuleEnable(bool enable = true) override
-  {
-    if (enable)
-    {
-      auto polarity_interrupt = [this]() {
-        if (pol_pin_.Read())
-        {
-          counter_.SetDirection(sjsu::HardwareCounter::Direction::kUp);
-        }
-        else
-        {
-          counter_.SetDirection(sjsu::HardwareCounter::Direction::kDown);
-        }
-      };
+    auto polarity_interrupt = [this]() {
+      if (pol_pin_.Read())
+      {
+        counter_.SetDirection(sjsu::HardwareCounter::Direction::kUp);
+      }
+      else
+      {
+        counter_.SetDirection(sjsu::HardwareCounter::Direction::kDown);
+      }
+    };
 
-      // Sets the initial state of charging (counting down) or discharging
-      // (counting up)
-      polarity_interrupt();
+    // Sets the initial state of charging (counting down) or discharging
+    // (counting up)
+    polarity_interrupt();
 
-      // Every time the polarity changes, this interrupt to be called to
-      // determine the direction of the counter.
-      pol_pin_.OnChange(polarity_interrupt);
-    }
-    else
-    {
-      pol_pin_.DetachInterrupt();
-    }
+    // Every time the polarity changes, this interrupt to be called to
+    // determine the direction of the counter.
+    pol_pin_.OnChange(polarity_interrupt);
   }
 
   /// @return the calculated mAh
@@ -104,6 +87,12 @@ class Ltc4150 : public CoulombCounter
     units::charge::milliampere_hour_t charge(kPulses / kDenominator);
 
     return charge;
+  }
+
+  /// Remove GPIO interrupt routine referencing this object if it is destroyed.
+  ~Ltc4150()
+  {
+    pol_pin_.DetachInterrupt();
   }
 
  private:

@@ -7,8 +7,6 @@
 
 namespace sjsu::stm32f4xx
 {
-EMIT_ALL_METHODS(Gpio);
-
 namespace
 {
 bit::Mask Mask2Bit(sjsu::Gpio & gpio)

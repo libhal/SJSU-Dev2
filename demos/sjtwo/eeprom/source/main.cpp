@@ -12,9 +12,8 @@ int main(void)
   constexpr uint32_t kAddress   = 0b0110'0011'1000;
 
   sjsu::LogInfo("Initializing & Enabling EEPROM");
-  sjsu::lpc40xx::Eeprom eeprom;
+  sjsu::lpc40xx::Eeprom & eeprom = sjsu::lpc40xx::GetEeprom<0>();
   eeprom.Initialize();
-  eeprom.Enable();
 
   // Payload array
   std::array<uint8_t, kPayloadSize> list;

@@ -162,7 +162,8 @@ class Sd : public Storage
   struct CardInfo_t
   {
     /// Store OCR information
-    union {
+    union
+    {
       uint32_t dWord;
       uint16_t word[2];
       uint8_t byte[4];
@@ -207,30 +208,21 @@ class Sd : public Storage
 
   void ModuleInitialize() override
   {
-    // Phase 1: Initialize
+    // Start the clock rate at 400 kHz which is required for initial
+    // communication with the SD card. All the rest of the settings
+    // must be kept to the defaults.
+    static constexpr SpiSettings_t kSdSpiSettings = {
+      .clock_rate = 400_kHz,
+      .frame_size = SpiSettings_t::FrameSize::kEightBits,
+      .polarity   = SpiSettings_t::Polarity::kIdleLow,
+      .phase      = SpiSettings_t::Phase::kSampleLeading,
+    };
+
+    spi_.settings = kSdSpiSettings;
+
     chip_select_.Initialize();
     card_detect_.Initialize();
-
-    // Phase 2: Configure
-    if (spi_.RequiresConfiguration())
-    {
-      spi_.Initialize();
-      // Use bit 8-bit framesize.
-      spi_.ConfigureFrameSize(Spi::FrameSize::kEightBits);
-
-      // Use default clock mode for SPI.
-      spi_.ConfigureClockMode();
-
-      // Start the clock rate at 400 kHz which is required for initial
-      // communication with the SD card.
-      spi_.ConfigureFrequency(400_kHz);
-
-      // Phase 3: Enable
-      spi_.Enable();
-    }
-
-    chip_select_.Enable();
-    card_detect_.Enable();
+    spi_.Initialize();
 
     // Phase 4: Usage
     // Setup chip select
@@ -239,19 +231,8 @@ class Sd : public Storage
 
     // Setup card detection as input
     card_detect_.SetAsInput();
-  }
 
-  /// Does not support disabling the SD
-  void ModuleEnable(bool enable = true) override
-  {
-    if (enable)
-    {
-      Mount();
-    }
-    else
-    {
-      LogDebug("Disabling SD cards is not supported w/ this implementation.");
-    }
+    Mount();
   }
 
   bool IsMediaPresent() override
@@ -901,9 +882,8 @@ class Sd : public Storage
 
     // Set SPI clock rate to the operating speed set at construction
     // SPI must be disabled before running configuration methods
-    spi_.Enable(false);
-    spi_.ConfigureFrequency(spi_clock_rate_);
-    spi_.Enable(true);
+    spi_.settings.clock_rate = spi_clock_rate_;
+    spi_.Initialize();
   }
 
   /// Send the host's supported voltage (3.3V) and ask if the card supports it.

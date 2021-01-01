@@ -8,16 +8,14 @@ int main()
 {
   sjsu::LogInfo("Starting FK407M1 Gpio Application...");
   ///////////// Setup LED GPIO /////////////
-  sjsu::stm32f4xx::Gpio led('C', 13);
+  sjsu::stm32f4xx::Gpio & led = sjsu::stm32f4xx::GetGpio<'C', 13>();
   led.Initialize();
-  led.Enable();
   led.SetAsOutput();
 
-  sjsu::stm32f4xx::Gpio button('A', 15);
+  sjsu::stm32f4xx::Gpio & button = sjsu::stm32f4xx::GetGpio<'A', 15>();
+  button.GetPin().settings.PullUp();
   button.Initialize();
-  button.Enable();
   button.SetAsInput();
-  button.GetPin().ConfigurePullUp();
 
   while (true)
   {

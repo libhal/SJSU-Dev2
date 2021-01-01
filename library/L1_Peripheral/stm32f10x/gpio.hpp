@@ -25,30 +25,26 @@ class Gpio : public sjsu::Gpio
 
   /// @param port - must be a capitol letter from 'A' to 'G'
   /// @param pin - must be between 0 to 15
-  constexpr Gpio(uint8_t port, uint8_t pin) : pin_{ port, pin } {}
+  Gpio(uint8_t port, uint8_t pin) : pin_{ port, pin } {}
 
   void ModuleInitialize() override
   {
     pin_.Initialize();
   }
 
-  /// Does nothing
-  void ModuleEnable(bool = true) override {}
-
   void SetDirection(Direction direction) override
   {
+    // Set to GPIO mode
     if (direction == Direction::kInput)
     {
-      // Using the `ConfigureFloating()` method here will do the work of setting
-      // the pin to an input as well as setting the pin to the its reset state
-      // as defined within the RM0008 user manual for the STM32F10x.
-      pin_.ConfigureFloating();
+      pin_.settings.function = 2;  // input function
     }
     else
     {
-      // Setting pin function to 0 converts pin to an output GPIO pin.
-      pin_.ConfigureFunction(0);
+      pin_.settings.function = 0;  // output function
     }
+
+    pin_.Initialize();
   }
 
   void Set(State output) override
@@ -226,4 +222,19 @@ class Gpio : public sjsu::Gpio
  private:
   sjsu::stm32f10x::Pin pin_;
 };
+
+template <int port, int pin_number>
+inline Gpio & GetGpio()
+{
+  static_assert(
+      ('A' <= port && port <= 'I') && (0 <= pin_number && pin_number <= 15),
+      "\n\n"
+      "SJSU-Dev2 Compile Time Error:\n"
+      "    stm32f10x: Port must be between 'A' and 'I' and pin must be\n"
+      "    between 0 and 15!\n"
+      "\n");
+
+  static Gpio gpio(port, pin_number);
+  return gpio;
+}
 }  // namespace sjsu::stm32f10x

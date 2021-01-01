@@ -29,11 +29,6 @@ class Temt6000x01 final : public LightSensor
     adc_.Initialize();
   }
 
-  void ModuleEnable(bool enable = true) override
-  {
-    adc_.Enable(enable);
-  }
-
   /// @returns The illuminance in units of lux ranging from 1 - 1'000.
   units::illuminance::lux_t GetIlluminance() override
   {

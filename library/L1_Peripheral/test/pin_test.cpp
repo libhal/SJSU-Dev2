@@ -1,41 +1,37 @@
-#include "L4_Testing/testing_frameworks.hpp"
 #include "L1_Peripheral/pin.hpp"
+
+#include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
 {
 TEST_CASE("Testing L1 pin")
 {
   Mock<sjsu::Pin> mock_pin;
-  Fake(Method(mock_pin, ConfigurePullResistor));
-
   sjsu::Pin & pin = mock_pin.get();
 
   SECTION("PullUp()")
   {
     // Exercise
-    pin.ConfigurePullUp();
+    pin.settings.PullUp();
 
     // Verify
-    Verify(Method(mock_pin, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kPullUp));
+    CHECK(pin.settings.resistor == PinSettings_t::Resistor::kPullUp);
   }
   SECTION("PullDown()")
   {
     // Exercise
-    pin.ConfigurePullDown();
+    pin.settings.PullDown();
 
     // Verify
-    Verify(Method(mock_pin, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kPullDown));
+    CHECK(pin.settings.resistor == PinSettings_t::Resistor::kPullDown);
   }
-  SECTION("ConfigureFloating()")
+  SECTION("Floating()")
   {
     // Exercise
-    pin.ConfigureFloating();
+    pin.settings.Floating();
 
     // Verify
-    Verify(Method(mock_pin, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kNone));
+    CHECK(pin.settings.resistor == PinSettings_t::Resistor::kNone);
   }
 }
 }  // namespace sjsu

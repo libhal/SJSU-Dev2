@@ -8,8 +8,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Pin);
-
 TEST_CASE("Testing lpc40xx Pin")
 {
   // Simulated local version of LPC_IOCON register to verify register
@@ -23,85 +21,108 @@ TEST_CASE("Testing lpc40xx Pin")
   Pin test_subject00(0, 0);
   Pin test_subject25(2, 5);
 
-  SECTION("Pin Function")
-  {
-    SECTION("Valid function code")
-
-    {
-      // Setup
-      // Source: "UM10562 LPC408x/407x User manual" table 84 page 133
-      constexpr uint8_t kPort0Pin0Uart3Txd     = 0b010;
-      constexpr uint8_t kPort2Pin5Pwm1Channel6 = 0b001;
-
-      // Exercise
-      test_subject00.ConfigureFunction(kPort0Pin0Uart3Txd);
-      test_subject25.ConfigureFunction(kPort2Pin5Pwm1Channel6);
-
-      // Verify
-      // Check that mapped pin P0.0's first 3 bits are equal to the function
-      // U3_TXD
-      CHECK(kPort0Pin0Uart3Txd == (local_iocon.P0_0 & 0b111));
-      // Check that mapped pin P2.5's first 3 bits are equal to the function
-      // PWM1_6
-      CHECK(kPort2Pin5Pwm1Channel6 == (local_iocon.P2_5 & 0b111));
-    }
-
-    SECTION("Invalid function code")
-    {
-      // Exercise & Verify
-      SJ2_CHECK_EXCEPTION(test_subject00.ConfigureFunction(0b1000),
-                          std::errc::invalid_argument);
-      SJ2_CHECK_EXCEPTION(test_subject25.ConfigureFunction(0b1111),
-                          std::errc::invalid_argument);
-    }
-  }
-
-  SECTION("Pin Mode")
+  SECTION("Initialize")
   {
     // Setup
+    PinSettings_t settings0 = {};
+    PinSettings_t settings1 = {};
+
     // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
-    constexpr uint8_t kModePosition = 3;
-    constexpr uint32_t kMask        = 0b11 << kModePosition;
-    constexpr uint32_t kExpectedForInactive =
-        static_cast<uint8_t>(sjsu::Pin::Resistor::kNone) << kModePosition;
-    constexpr uint32_t kExpectedForPullDown =
-        static_cast<uint8_t>(sjsu::Pin::Resistor::kPullDown) << kModePosition;
-    constexpr uint32_t kExpectedForPullUp =
-        static_cast<uint8_t>(sjsu::Pin::Resistor::kPullUp) << kModePosition;
-    constexpr uint32_t kExpectedForRepeater =
-        static_cast<uint8_t>(sjsu::Pin::Resistor::kRepeater) << kModePosition;
+    constexpr auto kResistorMask = bit::MaskFromRange(3, 4);
 
-    // Exercise - Set as floating
-    test_subject00.ConfigureFloating();
-    test_subject25.ConfigureFloating();
+    // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
+    constexpr auto kAnalogMask = bit::MaskFromRange(7);
+
+    // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
+    constexpr auto kOpenDrainMask = bit::MaskFromRange(10);
+
+    SECTION("Function Code")
+    {
+      settings0.function = 0b010;
+      settings1.function = 0b001;
+    }
+
+    SECTION("Pull Up")
+    {
+      settings0.PullUp();
+      settings1.PullUp();
+    }
+
+    SECTION("Pull Down")
+    {
+      settings0.PullDown();
+      settings1.PullDown();
+    }
+
+    SECTION("Floating")
+    {
+      settings0.Floating();
+      settings1.Floating();
+    }
+
+    SECTION("Analog 1")
+    {
+      settings0.as_analog = true;
+      settings1.as_analog = false;
+    }
+
+    SECTION("Analog 2")
+    {
+      settings0.as_analog = false;
+      settings1.as_analog = true;
+    }
+
+    SECTION("Open Drain 1")
+    {
+      settings0.open_drain = true;
+      settings1.open_drain = false;
+    }
+
+    SECTION("Open Drain 2")
+    {
+      settings0.open_drain = false;
+      settings1.open_drain = true;
+    }
+
+    test_subject00.settings = settings0;
+    test_subject00.Initialize();
+    test_subject25.settings = settings1;
+    test_subject25.Initialize();
 
     // Verify
-    CHECK(kExpectedForInactive == (local_iocon.P0_0 & kMask));
-    CHECK(kExpectedForInactive == (local_iocon.P2_5 & kMask));
+    // Verify: Function
+    constexpr auto kFunctionMask = bit::MaskFromRange(0, 2);
+    CHECK(settings0.function == bit::Extract(local_iocon.P0_0, kFunctionMask));
+    CHECK(settings1.function == bit::Extract(local_iocon.P2_5, kFunctionMask));
 
-    // Exercise - Set as pull down resistor
-    test_subject00.ConfigurePullDown();
-    test_subject25.ConfigurePullDown();
+    // Verify: Resistor
+    CHECK(Value(settings0.resistor) ==
+          bit::Extract(local_iocon.P0_0, kResistorMask));
+    CHECK(Value(settings1.resistor) ==
+          bit::Extract(local_iocon.P2_5, kResistorMask));
 
-    // Verify
-    CHECK(kExpectedForPullDown == (local_iocon.P0_0 & kMask));
-    CHECK(kExpectedForPullDown == (local_iocon.P2_5 & kMask));
+    // Verify: Analog
+    CHECK(settings0.as_analog == !bit::Extract(local_iocon.P0_0, kAnalogMask));
+    CHECK(settings1.as_analog == !bit::Extract(local_iocon.P2_5, kAnalogMask));
 
-    // Exercise - Set as pull up resistor
-    test_subject00.ConfigurePullUp();
-    test_subject25.ConfigurePullUp();
+    // Verify: Open Drain
+    CHECK(settings0.open_drain ==
+          bit::Extract(local_iocon.P0_0, kOpenDrainMask));
+    CHECK(settings1.open_drain ==
+          bit::Extract(local_iocon.P2_5, kOpenDrainMask));
+  }
 
-    // Verify
-    CHECK(kExpectedForPullUp == (local_iocon.P0_0 & kMask));
-    CHECK(kExpectedForPullUp == (local_iocon.P2_5 & kMask));
+  SECTION("Invalid function code")
+  {
+    // Setup
+    test_subject00.settings.function = 0b1000;
+    test_subject25.settings.function = 0b1111;
 
-    // Exercise - Set as repeater
-    test_subject00.ConfigurePullResistor(sjsu::Pin::Resistor::kRepeater);
-    test_subject25.ConfigurePullResistor(sjsu::Pin::Resistor::kRepeater);
-
-    // Verify
-    CHECK(kExpectedForRepeater == (local_iocon.P0_0 & kMask));
-    CHECK(kExpectedForRepeater == (local_iocon.P2_5 & kMask));
+    // Exercise & Verify
+    SJ2_CHECK_EXCEPTION(test_subject00.Initialize(),
+                        std::errc::invalid_argument);
+    SJ2_CHECK_EXCEPTION(test_subject25.Initialize(),
+                        std::errc::invalid_argument);
   }
 
   SECTION("Set and clear Hysteresis modes")
@@ -150,31 +171,6 @@ TEST_CASE("Testing lpc40xx Pin")
     // Verify
     CHECK(0 == (local_iocon.P0_0 & kMask));
     CHECK(kMask == (local_iocon.P2_5 & kMask));
-  }
-
-  SECTION("Set and Clear Analog Mode")
-  {
-    // Setup
-    // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
-    constexpr uint8_t kAdMode = 7;
-    constexpr uint32_t kMask  = 0b1 << kAdMode;
-
-    // Exercise
-    test_subject00.ConfigureAsAnalogMode(true);
-    test_subject25.ConfigureAsAnalogMode(false);
-
-    // Verify
-    // Digital filter is set with zero
-    CHECK(0 == (local_iocon.P0_0 & kMask));
-    CHECK(kMask == (local_iocon.P2_5 & kMask));
-
-    // Exercise
-    test_subject00.ConfigureAsAnalogMode(false);
-    test_subject25.ConfigureAsAnalogMode(true);
-
-    // Verify
-    CHECK(kMask == (local_iocon.P0_0 & kMask));
-    CHECK(0 == (local_iocon.P2_5 & kMask));
   }
 
   SECTION("Enable and Disable Digital Filter")
@@ -267,30 +263,6 @@ TEST_CASE("Testing lpc40xx Pin")
     // Exercise
     test_subject00.EnableI2cHighCurrentDrive(false);
     test_subject25.EnableI2cHighCurrentDrive(true);
-
-    // Verify
-    CHECK(0 == (local_iocon.P0_0 & kMask));
-    CHECK(kMask == (local_iocon.P2_5 & kMask));
-  }
-
-  SECTION("Open Drain")
-  {
-    // Setup
-    // Source: "UM10562 LPC408x/407x User manual" table 83 page 132
-    constexpr uint8_t kOpenDrainPosition = 10;
-    constexpr uint32_t kMask             = 0b1 << kOpenDrainPosition;
-    test_subject00.ConfigureAsOpenDrain(true);
-    test_subject25.ConfigureAsOpenDrain(false);
-
-    // Verify
-    CHECK(kMask == (local_iocon.P0_0 & kMask));
-    CHECK(0 == (local_iocon.P2_5 & kMask));
-
-    // Exercise
-
-    // Exercise
-    test_subject00.ConfigureAsOpenDrain(false);
-    test_subject25.ConfigureAsOpenDrain(true);
 
     // Verify
     CHECK(0 == (local_iocon.P0_0 & kMask));

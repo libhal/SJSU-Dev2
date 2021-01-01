@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "L0_Platform/stm32f10x/stm32f10x.h"
 #include "L1_Peripheral/pwm.hpp"
 #include "L1_Peripheral/stm32f10x/pin.hpp"
@@ -13,213 +15,170 @@ namespace sjsu::stm32f10x
 class Pwm final : public sjsu::Pwm
 {
  public:
-  // We use pins spread out across Timers 1 - 5
-  struct PwmPin_t
-  {
-    // Reference to the pin
-    sjsu::Pin & pin;
+  /// Preload LOW enable
+  static constexpr auto kPreloadEnableLow = bit::MaskFromRange(3);
+  /// Preload HIGH enable
+  static constexpr auto kPreloadEnableHigh = bit::MaskFromRange(11);
 
-    // Holds the address to the corresponding Timer peripheral
-    TIM_TypeDef * registers;
+  /// Output channel enable 1
+  static constexpr auto kChannel1OutputEnable = bit::MaskFromRange(0);
+  /// Output channel enable 2
+  static constexpr auto kChannel2OutputEnable = bit::MaskFromRange(4);
+  /// Output channel enable 3
+  static constexpr auto kChannel3OutputEnable = bit::MaskFromRange(8);
+  /// Output channel enable 4
+  static constexpr auto kChannel4OutputEnable = bit::MaskFromRange(12);
 
-    // Holds the channel (1 - 4) which corresponds to the pin
-    uint8_t channel;
+  /// Main Output Enable (Timer 1 only)
+  static constexpr auto kMainOutputEnable = bit::MaskFromRange(15);
 
-    // Peripheral ID for the timer
-    sjsu::SystemController::ResourceID id;
-  };
+  /// Timer enable
+  static constexpr auto kTimerEnable = bit::MaskFromRange(0);
 
+  /// We use pins spread out across Timers 1 - 5
   struct Channel_t
   {
-   private:
-    // Note: Pins on the same timer must use the same frequency
-    // Timer 1
-    inline static sjsu::stm32f10x::Pin pa8  = sjsu::stm32f10x::Pin('A', 8);
-    inline static sjsu::stm32f10x::Pin pa9  = sjsu::stm32f10x::Pin('A', 9);
-    inline static sjsu::stm32f10x::Pin pa10 = sjsu::stm32f10x::Pin('A', 10);
-    inline static sjsu::stm32f10x::Pin pa11 = sjsu::stm32f10x::Pin('A', 11);
+    /// Reference to the pin
+    sjsu::Pin & pin;
 
-    // Timer 2
-    inline static sjsu::stm32f10x::Pin pa0 = sjsu::stm32f10x::Pin('A', 0);
-    inline static sjsu::stm32f10x::Pin pa1 = sjsu::stm32f10x::Pin('A', 1);
-    inline static sjsu::stm32f10x::Pin pa2 = sjsu::stm32f10x::Pin('A', 2);
-    inline static sjsu::stm32f10x::Pin pa3 = sjsu::stm32f10x::Pin('A', 3);
+    /// Holds the address to the corresponding Timer peripheral
+    TIM_TypeDef * registers;
 
-    // Timer 3
-    inline static sjsu::stm32f10x::Pin pa6 = sjsu::stm32f10x::Pin('A', 6);
-    inline static sjsu::stm32f10x::Pin pa7 = sjsu::stm32f10x::Pin('A', 7);
-    inline static sjsu::stm32f10x::Pin pb0 = sjsu::stm32f10x::Pin('B', 0);
-    inline static sjsu::stm32f10x::Pin pb1 = sjsu::stm32f10x::Pin('B', 1);
+    /// Holds the channel (1 - 4) which corresponds to the pin
+    uint8_t channel;
 
-    // Timer 4
-    inline static sjsu::stm32f10x::Pin pb6 = sjsu::stm32f10x::Pin('B', 6);
-    inline static sjsu::stm32f10x::Pin pb7 = sjsu::stm32f10x::Pin('B', 7);
-    inline static sjsu::stm32f10x::Pin pb8 = sjsu::stm32f10x::Pin('B', 8);
-    inline static sjsu::stm32f10x::Pin pb9 = sjsu::stm32f10x::Pin('B', 9);
-
-   public:
-    inline static const PwmPin_t kA8 = {
-      .pin       = pa8,
-      .registers = TIM1,
-      .channel   = 1,
-      .id        = SystemController::Peripherals::kTimer1
-    };
-
-    inline static const PwmPin_t kA9 = {
-      .pin       = pa9,
-      .registers = TIM1,
-      .channel   = 2,
-      .id        = SystemController::Peripherals::kTimer1
-    };
-
-    inline static const PwmPin_t kA10 = {
-      .pin       = pa10,
-      .registers = TIM1,
-      .channel   = 3,
-      .id        = SystemController::Peripherals::kTimer1
-    };
-
-    inline static const PwmPin_t kA11 = {
-      .pin       = pa11,
-      .registers = TIM1,
-      .channel   = 4,
-      .id        = SystemController::Peripherals::kTimer1
-    };
-
-    inline static const PwmPin_t kA0 = {
-      .pin       = pa0,
-      .registers = TIM2,
-      .channel   = 1,
-      .id        = SystemController::Peripherals::kTimer2
-    };
-
-    inline static const PwmPin_t kA1 = {
-      .pin       = pa1,
-      .registers = TIM2,
-      .channel   = 2,
-      .id        = SystemController::Peripherals::kTimer2
-    };
-
-    inline static const PwmPin_t kA2 = {
-      .pin       = pa2,
-      .registers = TIM2,
-      .channel   = 3,
-      .id        = SystemController::Peripherals::kTimer2
-    };
-
-    inline static const PwmPin_t kA3 = {
-      .pin       = pa3,
-      .registers = TIM2,
-      .channel   = 4,
-      .id        = SystemController::Peripherals::kTimer2
-    };
-
-    inline static const PwmPin_t kA6 = {
-      .pin       = pa6,
-      .registers = TIM3,
-      .channel   = 1,
-      .id        = SystemController::Peripherals::kTimer3
-    };
-
-    inline static const PwmPin_t kA7 = {
-      .pin       = pa7,
-      .registers = TIM3,
-      .channel   = 2,
-      .id        = SystemController::Peripherals::kTimer3
-    };
-
-    inline static const PwmPin_t kB0 = {
-      .pin       = pb0,
-      .registers = TIM3,
-      .channel   = 3,
-      .id        = SystemController::Peripherals::kTimer3
-    };
-
-    inline static const PwmPin_t kB1 = {
-      .pin       = pb1,
-      .registers = TIM3,
-      .channel   = 4,
-      .id        = SystemController::Peripherals::kTimer3
-    };
-
-    inline static const PwmPin_t kB6 = {
-      .pin       = pb6,
-      .registers = TIM4,
-      .channel   = 1,
-      .id        = SystemController::Peripherals::kTimer4
-    };
-
-    inline static const PwmPin_t kB7 = {
-      .pin       = pb7,
-      .registers = TIM4,
-      .channel   = 2,
-      .id        = SystemController::Peripherals::kTimer4
-    };
-
-    inline static const PwmPin_t kB8 = {
-      .pin       = pb8,
-      .registers = TIM4,
-      .channel   = 3,
-      .id        = SystemController::Peripherals::kTimer4
-    };
-
-    inline static const PwmPin_t kB9 = {
-      .pin       = pb9,
-      .registers = TIM4,
-      .channel   = 4,
-      .id        = SystemController::Peripherals::kTimer4
-    };
-  };  // Timer
+    /// Peripheral ID for the timer
+    sjsu::SystemController::ResourceID id;
+  };
 
   /// Constructor for a STM32F10x PWM channel.
   ///
   /// @param timer - Reference to a const timer description for this
   ///        instance of the PWM driver.
-  explicit constexpr Pwm(const PwmPin_t & timer) : pwm_pin_(timer) {}
+  explicit constexpr Pwm(const Channel_t & timer) : channel_(timer) {}
 
-  void ConfigureFrequency(units::frequency::hertz_t frequency) override
+  void ModuleInitialize() override
   {
-    static constexpr auto kUpdateGeneration = bit::MaskFromRange(0);
+    SystemController::GetPlatformController().PowerUpPeripheral(channel_.id);
 
-    auto & system                   = SystemController::GetPlatformController();
-    const auto kPeripheralFrequency = system.GetClockRate(pwm_pin_.id);
+    // We only use PWM mode 1 in this driver. The high and low are because
+    // different channels have different locations where the mode is set
+    static constexpr auto kPwmModeLow  = bit::MaskFromRange(4, 6);
+    static constexpr auto kPwmModeHigh = bit::MaskFromRange(12, 14);
+    static constexpr uint8_t kPwmMode1 = 0b110;
 
-    auto period      = 1 / frequency;
-    uint32_t product = kPeripheralFrequency * period;
+    ConfigureFrequency();
 
-    pwm_pin_.registers->PSC = GetPrescalarValue(product);
-    pwm_pin_.registers->ARR =
-      static_cast<uint16_t>(product / (pwm_pin_.registers->PSC + 1));
+    switch (channel_.channel)
+    {
+      case 1:
+        bit::Register(&channel_.registers->CCMR1)
+            .Insert(kPwmMode1, kPwmModeLow)
+            .Save();
+        bit::Register(&channel_.registers->CCMR1).Set(kPreloadEnableLow).Save();
+        bit::Register(&channel_.registers->CCER)
+            .Set(kChannel1OutputEnable)
+            .Save();
+        break;
+      case 2:
+        bit::Register(&channel_.registers->CCMR1)
+            .Insert(kPwmMode1, kPwmModeHigh)
+            .Save();
 
-    bit::Register(&pwm_pin_.registers->EGR).Set(kUpdateGeneration).Save();
+        bit::Register(&channel_.registers->CCMR1)
+            .Set(kPreloadEnableHigh)
+            .Save();
+        bit::Register(&channel_.registers->CCER)
+            .Set(kChannel2OutputEnable)
+            .Save();
+        break;
+      case 3:
+        bit::Register(&channel_.registers->CCMR2)
+            .Insert(kPwmMode1, kPwmModeLow)
+            .Save();
+        bit::Register(&channel_.registers->CCMR2).Set(kPreloadEnableLow).Save();
+        bit::Register(&channel_.registers->CCER)
+            .Set(kChannel3OutputEnable)
+            .Save();
+        break;
+      case 4:
+        bit::Register(&channel_.registers->CCMR2)
+            .Insert(kPwmMode1, kPwmModeHigh)
+            .Save();
+        bit::Register(&channel_.registers->CCMR2)
+            .Set(kPreloadEnableHigh)
+            .Save();
+        bit::Register(&channel_.registers->CCER)
+            .Set(kChannel4OutputEnable)
+            .Save();
+        break;
+    }
+
+    if (channel_.id == SystemController::Peripherals::kTimer1)
+    {
+      bit::Register(&channel_.registers->BDTR).Set(kMainOutputEnable).Save();
+    }
+
+    bit::Register(&channel_.registers->CR1).Set(kTimerEnable).Save();
+
+    // Set pin to alternative function to support PWM
+    channel_.pin.settings.function = 1;
+    channel_.pin.settings.PullDown();
+    channel_.pin.Initialize();
+  }
+
+  void ModulePowerDown() override
+  {
+    switch (channel_.channel)
+    {
+      case 1:
+        bit::Register(&channel_.registers->CCMR1)
+            .Clear(kPreloadEnableLow)
+            .Save();
+        bit::Register(&channel_.registers->CCER)
+            .Clear(kChannel1OutputEnable)
+            .Save();
+        break;
+      case 2:
+        bit::Register(&channel_.registers->CCMR1)
+            .Clear(kPreloadEnableHigh)
+            .Save();
+        bit::Register(&channel_.registers->CCER)
+            .Clear(kChannel2OutputEnable)
+            .Save();
+        break;
+      case 3:
+        bit::Register(&channel_.registers->CCMR2)
+            .Clear(kPreloadEnableLow)
+            .Save();
+        bit::Register(&channel_.registers->CCER)
+            .Clear(kChannel3OutputEnable)
+            .Save();
+        break;
+      case 4:
+        bit::Register(&channel_.registers->CCMR2)
+            .Clear(kPreloadEnableHigh)
+            .Save();
+        bit::Register(&channel_.registers->CCER)
+            .Clear(kChannel4OutputEnable)
+            .Save();
+        break;
+    }
   }
 
   void SetDutyCycle(float duty_cycle) override
   {
     // Clamp the duty cycle to make sure it's in the right range
     const float kClampedDutyCycle = std::clamp(duty_cycle, 0.0f, 1.0f);
+    const uint16_t kDutyCycle =
+        static_cast<uint16_t>(kClampedDutyCycle * channel_.registers->ARR);
 
-    switch (pwm_pin_.channel)
+    switch (channel_.channel)
     {
-    case 1:
-      pwm_pin_.registers->CCR1 =
-        static_cast<uint16_t>(kClampedDutyCycle * pwm_pin_.registers->ARR);
-      break;
-
-    case 2:
-      pwm_pin_.registers->CCR2 =
-        static_cast<uint16_t>(kClampedDutyCycle * pwm_pin_.registers->ARR);
-      break;
-
-    case 3:
-      pwm_pin_.registers->CCR3 =
-        static_cast<uint16_t>(kClampedDutyCycle * pwm_pin_.registers->ARR);
-      break;
-
-    case 4:
-      pwm_pin_.registers->CCR4 =
-        static_cast<uint16_t>(kClampedDutyCycle * pwm_pin_.registers->ARR);
-      break;
+      case 1: channel_.registers->CCR1 = kDutyCycle; break;
+      case 2: channel_.registers->CCR2 = kDutyCycle; break;
+      case 3: channel_.registers->CCR3 = kDutyCycle; break;
+      case 4: channel_.registers->CCR4 = kDutyCycle; break;
     }
   }
 
@@ -227,190 +186,50 @@ class Pwm final : public sjsu::Pwm
   {
     float duty_cycle;
 
-    switch (pwm_pin_.channel)
+    switch (channel_.channel)
     {
-    case 1:
-      duty_cycle =
-        static_cast<float>(pwm_pin_.registers->CCR1 / pwm_pin_.registers->ARR);
-      break;
-    case 2:
-      duty_cycle =
-        static_cast<float>(pwm_pin_.registers->CCR2 / pwm_pin_.registers->ARR);
-      break;
-    case 3:
-      duty_cycle =
-        static_cast<float>(pwm_pin_.registers->CCR3 / pwm_pin_.registers->ARR);
-      break;
-    case 4:
-      duty_cycle =
-        static_cast<float>(pwm_pin_.registers->CCR4 / pwm_pin_.registers->ARR);
-      break;
+      case 1:
+        duty_cycle = static_cast<float>(channel_.registers->CCR1 /
+                                        channel_.registers->ARR);
+        break;
+      case 2:
+        duty_cycle = static_cast<float>(channel_.registers->CCR2 /
+                                        channel_.registers->ARR);
+        break;
+      case 3:
+        duty_cycle = static_cast<float>(channel_.registers->CCR3 /
+                                        channel_.registers->ARR);
+        break;
+      case 4:
+        duty_cycle = static_cast<float>(channel_.registers->CCR4 /
+                                        channel_.registers->ARR);
+        break;
     }
 
     return duty_cycle;
   }
 
-  void ModuleEnable(bool enable = true) override
-  {
-    // Preload enable
-    static constexpr auto kPreloadEnableLow  = bit::MaskFromRange(3);
-    static constexpr auto kPreloadEnableHigh = bit::MaskFromRange(11);
-
-    // Output channel enable
-    static constexpr auto kChannel1OutputEnable = bit::MaskFromRange(0);
-    static constexpr auto kChannel2OutputEnable = bit::MaskFromRange(4);
-    static constexpr auto kChannel3OutputEnable = bit::MaskFromRange(8);
-    static constexpr auto kChannel4OutputEnable = bit::MaskFromRange(12);
-
-    // Main Output Enable (Timer 1 only)
-    static constexpr auto kMainOutputEnable = bit::MaskFromRange(15);
-
-    // Timer enable
-    static constexpr auto kTimerEnable = bit::MaskFromRange(0);
-
-    if (enable)
-    {
-      switch (pwm_pin_.channel)
-      {
-      case 1:
-        bit::Register(&pwm_pin_.registers->CCMR1)
-          .Set(kPreloadEnableLow)
-          .Save();
-        bit::Register(&pwm_pin_.registers->CCER)
-          .Set(kChannel1OutputEnable)
-          .Save();
-        break;
-      case 2:
-        bit::Register(&pwm_pin_.registers->CCMR1)
-          .Set(kPreloadEnableHigh)
-          .Save();
-        bit::Register(&pwm_pin_.registers->CCER)
-          .Set(kChannel2OutputEnable)
-          .Save();
-        break;
-      case 3:
-        bit::Register(&pwm_pin_.registers->CCMR2)
-          .Set(kPreloadEnableLow)
-          .Save();
-        bit::Register(&pwm_pin_.registers->CCER)
-          .Set(kChannel3OutputEnable)
-          .Save();
-        break;
-      case 4:
-        bit::Register(&pwm_pin_.registers->CCMR2)
-          .Set(kPreloadEnableHigh)
-          .Save();
-        bit::Register(&pwm_pin_.registers->CCER)
-          .Set(kChannel4OutputEnable)
-          .Save();
-        break;
-      }
-
-      if (pwm_pin_.id == SystemController::Peripherals::kTimer1)
-      {
-        bit::Register(&pwm_pin_.registers->BDTR)
-          .Set(kMainOutputEnable)
-          .Save();
-      }
-
-      bit::Register(&pwm_pin_.registers->CR1)
-        .Set(kTimerEnable)
-        .Save();
-    }
-    else
-    {
-      // Preload enable
-      switch (pwm_pin_.channel)
-      {
-      case 1:
-        bit::Register(&pwm_pin_.registers->CCMR1)
-          .Clear(kPreloadEnableLow)
-          .Save();
-        bit::Register(&pwm_pin_.registers->CCER)
-          .Clear(kChannel1OutputEnable)
-          .Save();
-        break;
-      case 2:
-        bit::Register(&pwm_pin_.registers->CCMR1)
-          .Clear(kPreloadEnableHigh)
-          .Save();
-        bit::Register(&pwm_pin_.registers->CCER)
-          .Clear(kChannel2OutputEnable)
-          .Save();
-        break;
-      case 3:
-        bit::Register(&pwm_pin_.registers->CCMR2)
-          .Clear(kPreloadEnableLow)
-          .Save();
-        bit::Register(&pwm_pin_.registers->CCER)
-          .Clear(kChannel3OutputEnable)
-          .Save();
-        break;
-      case 4:
-        bit::Register(&pwm_pin_.registers->CCMR2)
-          .Clear(kPreloadEnableHigh)
-          .Save();
-        bit::Register(&pwm_pin_.registers->CCER)
-          .Clear(kChannel4OutputEnable)
-          .Save();
-        break;
-      }
-
-      if (pwm_pin_.id == SystemController::Peripherals::kTimer1)
-      {
-        bit::Register(&pwm_pin_.registers->BDTR)
-          .Clear(kMainOutputEnable)
-          .Save();
-      }
-
-      bit::Register(&pwm_pin_.registers->CR1)
-        .Clear(kTimerEnable)
-        .Save();
-    }
-  }
-
-  void ModuleInitialize() override
-  {
-    SystemController::GetPlatformController().PowerUpPeripheral(pwm_pin_.id);
-
-    // Set pin to alternative function to support PWM
-    pwm_pin_.pin.ConfigureFunction(1);
-
-    // We only use PWM mode 1 in this driver. The high and low are because
-    // different channels have different locations where the mode is set
-    static constexpr auto kPwmModeLow  = bit::MaskFromRange(4,  6);
-    static constexpr auto kPwmModeHigh = bit::MaskFromRange(12, 14);
-    static constexpr uint8_t kPwmMode1 = 0b110;
-
-    switch (pwm_pin_.channel)
-    {
-    case 1:
-      bit::Register(&pwm_pin_.registers->CCMR1)
-        .Insert(kPwmMode1, kPwmModeLow)
-        .Save();
-      break;
-    case 2:
-      bit::Register(&pwm_pin_.registers->CCMR1)
-        .Insert(kPwmMode1, kPwmModeHigh)
-        .Save();
-      break;
-    case 3:
-      bit::Register(&pwm_pin_.registers->CCMR2)
-        .Insert(kPwmMode1, kPwmModeLow)
-        .Save();
-      break;
-    case 4:
-      bit::Register(&pwm_pin_.registers->CCMR2)
-        .Insert(kPwmMode1, kPwmModeHigh)
-        .Save();
-      break;
-    }
-  }
-
  private:
+  void ConfigureFrequency()
+  {
+    static constexpr auto kUpdateGeneration = bit::MaskFromRange(0);
+
+    auto & system                   = SystemController::GetPlatformController();
+    const auto kPeripheralFrequency = system.GetClockRate(channel_.id);
+
+    auto period      = 1 / settings.frequency;
+    uint32_t product = kPeripheralFrequency * period;
+
+    channel_.registers->PSC = GetPrescalarValue(product);
+    channel_.registers->ARR =
+        static_cast<uint16_t>(product / (channel_.registers->PSC + 1));
+
+    bit::Register(&channel_.registers->EGR).Set(kUpdateGeneration).Save();
+  }
+
   uint16_t GetPrescalarValue(uint32_t product)
   {
-    uint16_t prescalar  = 0;
+    uint16_t prescalar    = 0;
     uint16_t k_max16_bits = ~0;
 
     uint32_t arr;
@@ -431,6 +250,144 @@ class Pwm final : public sjsu::Pwm
     return --prescalar;
   }
 
-  const PwmPin_t & pwm_pin_;
+  const Channel_t & channel_;
 };
+
+constexpr auto GetPwmPinPair(int peripheral, int channel)
+{
+  std::array<std::array<std::pair<int, int>, 4>, 4> pins = {
+    std::array<std::pair<int, int>, 4>{
+        std::make_pair('A', 8),
+        std::make_pair('A', 9),
+        std::make_pair('A', 10),
+        std::make_pair('A', 11),  // TIMER 1
+    },
+    std::array<std::pair<int, int>, 4>{
+        std::make_pair('A', 0),
+        std::make_pair('A', 1),
+        std::make_pair('A', 2),
+        std::make_pair('A', 3),  // TIMER 2
+    },
+    std::array<std::pair<int, int>, 4>{
+        std::make_pair('A', 6),
+        std::make_pair('A', 7),
+        std::make_pair('B', 0),
+        std::make_pair('B', 1),  // TIMER 3
+    },
+    std::array<std::pair<int, int>, 4>{
+        std::make_pair('B', 6),
+        std::make_pair('B', 7),
+        std::make_pair('B', 8),
+        std::make_pair('B', 9),  // TIMER 4
+    },
+  };
+
+  return pins[peripheral - 1][channel - 1];
+}
+
+template <int peripheral, int channel>
+inline Pwm & GetPwm()
+{
+  static_assert(1 <= peripheral && peripheral <= 4,
+                "Peripheral template parameter must be between 1 and 4 as the "
+                "stm32f10x uses timers 1 to 4 for PWM generation.");
+
+  static_assert(1 <= channel && channel <= 4,
+                "stm31f10x only supports PWM channels from 0 to 4.");
+
+  constexpr auto pair   = GetPwmPinPair(peripheral, channel);
+  static auto & pwm_pin = GetPin<pair.first, pair.second>();
+
+  if constexpr (peripheral == 1)
+  {
+    static const Pwm::Channel_t kChannelInfo = {
+      .pin       = pwm_pin,
+      .registers = TIM1,
+      .channel   = channel,
+      .id        = SystemController::Peripherals::kTimer1
+    };
+    static Pwm pwm(kChannelInfo);
+    return pwm;
+  }
+  else if constexpr (peripheral == 2)
+  {
+    static const Pwm::Channel_t kChannelInfo = {
+      .pin       = pwm_pin,
+      .registers = TIM2,
+      .channel   = channel,
+      .id        = SystemController::Peripherals::kTimer2
+    };
+    static Pwm pwm(kChannelInfo);
+    return pwm;
+  }
+  else if constexpr (peripheral == 3)
+  {
+    static const Pwm::Channel_t kChannelInfo = {
+      .pin       = pwm_pin,
+      .registers = TIM3,
+      .channel   = channel,
+      .id        = SystemController::Peripherals::kTimer3
+    };
+    static Pwm pwm(kChannelInfo);
+    return pwm;
+  }
+  else if constexpr (peripheral == 4)
+  {
+    static const Pwm::Channel_t kChannelInfo = {
+      .pin       = pwm_pin,
+      .registers = TIM4,
+      .channel   = channel,
+      .id        = SystemController::Peripherals::kTimer4
+    };
+    static Pwm pwm(kChannelInfo);
+    return pwm;
+  }
+
+  return GetPwm<1, 1>();
+}
+
+template <int port, int pin>
+inline Pwm & GetPwmFromPin()
+{
+  // Don't worry, this gets optimized out.
+  constexpr auto pin_to_peripheral_channel = []() -> std::pair<int, int> {
+    for (int peripheral = 1; peripheral <= 4; peripheral++)
+    {
+      for (int channel = 1; channel <= 4; channel++)
+      {
+        auto pair = GetPwmPinPair(peripheral, channel);
+        if (port == pair.first && pin == pair.second)
+        {
+          return std::make_pair(peripheral, channel);
+        }
+      }
+    }
+    return std::make_pair(-1, -1);
+  };
+
+  constexpr std::pair<int, int> combination = pin_to_peripheral_channel();
+
+  if constexpr (combination.first != -1 && combination.second != -1)
+  {
+    return GetPwm<combination.first, combination.second>();
+  }
+  else
+  {
+    static_assert(
+        InvalidOption<port, pin>,
+        SJ2_ERROR_MESSAGE_DECORATOR("   stm32f10x TIMER1 only supports PWM "
+                                    "pins: PA8, PA9, PA10, PA11. \n"
+                                    "   stm32f10x TIMER2 only supports PWM "
+                                    "pins: PA0, PA1, PA2,  PA3. \n"
+                                    "   stm32f10x TIMER3 only supports PWM "
+                                    "pins: PA6, PA7, PB0,  PB1. \n"
+                                    "   stm32f10x TIMER4 only supports PWM "
+                                    "pins: PB6, PB7, PB8,  PB9. \n"
+                                    "\n"));
+    // NOTE: this is simply here to appease the compiler. If this block is
+    // hit, this code will not compile and thus Channel<0>() will never be
+    // used in this way.
+    return GetPwm<1, 1>();
+  }
+}
 }  // namespace sjsu::stm32f10x

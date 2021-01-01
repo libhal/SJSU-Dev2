@@ -13,7 +13,7 @@ namespace sjsu
 {
 /// An abstract interface for General Purpose I/O
 /// @ingroup l1_peripheral
-class Gpio : public Module
+class Gpio : public Module<>
 {
  public:
   // ===========================================================================
@@ -41,18 +41,6 @@ class Gpio : public Module
     kFalling = 1,
     kBoth    = 2
   };
-
-  // ===========================================================================
-  // Interface Methods
-  // ===========================================================================
-
-  // ---------------------------------------------------------------------------
-  // Configuration Methods
-  // ---------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------
-  // Usage Methods
-  // ---------------------------------------------------------------------------
 
   /// Set pin as an output or an input
   ///
@@ -88,7 +76,7 @@ class Gpio : public Module
   virtual void DetachInterrupt() = 0;
 
   // ===========================================================================
-  // Utility Methods
+  // Helper Functions
   // ===========================================================================
 
   /// Set pin to HIGH voltage
@@ -151,7 +139,6 @@ inline sjsu::Gpio & GetInactive<sjsu::Gpio>()
   {
    public:
     void ModuleInitialize() override {}
-    void ModuleEnable(bool = true) override {}
     void SetDirection(Direction) override {}
     void Set(State) override {}
     void Toggle() override {}

@@ -107,30 +107,6 @@ using namespace fakeit;  // NOLINT
 int HostTestWrite(std::span<const char> payload);
 int HostTestRead(std::span<char> payload);
 
-/// This magical method does a lot of tricks to convince the compiler to emit
-/// as many of the class methods as possible for methods of a function that may
-/// only exist in a header file.
-#define EMIT_ALL_METHODS(class_name)                         \
-  namespace                                                  \
-  {                                                          \
-  template <unsigned test_parameter>                         \
-  using class_name##_Template = class_name;                  \
-  int __LetsGo_##class_name(class_name##_Template<0> * obj)  \
-  {                                                          \
-    bool never_true = false;                                 \
-    bool * ptr      = &never_true;                           \
-    /* Emit destructors */                                   \
-    if (*ptr)                                                \
-    {                                                        \
-      class_name##_Template<0> emitter = *obj;               \
-      (void)emitter;                                         \
-      return 1;                                              \
-    }                                                        \
-    return 0;                                                \
-  }                                                          \
-  auto __full_##class_name = __LetsGo_##class_name(nullptr); \
-  }  // namespace
-
 /// @param expression - and expression that, when executed will throw
 /// @param error_code - the error code to compare the one held by the exception
 #define SJ2_CHECK_EXCEPTION(expression, error_code)                        \
@@ -147,100 +123,123 @@ int HostTestRead(std::span<char> payload);
     CHECK(e.GetCode() == error_code);                                      \
   }
 
+/// Default specialization of the Reflection class. If this class is used, it
+/// means that a specialization for the type does not exists. The data retrieved
+/// from this class typically indicates that the type is unknown.
 template <typename T>
 class Reflection
 {
  public:
+  /// The default name for types that cannot be found as a specialization of the
+  /// Reflection class
   static constexpr const char * Name()
   {
     return "?";
   }
 };
 
+/// Gives information about the type `uint8_t`
 template <>
 class Reflection<uint8_t>
 {
  public:
+  /// Name of the type "uint8_t"
   static constexpr const char * Name()
   {
     return "uint8_t";
   }
 };
 
+/// Gives information about the type `uint8_t`
 template <>
 class Reflection<const uint8_t>
 {
  public:
+  /// Name of the type "const"
   static constexpr const char * Name()
   {
     return "const uint8_t";
   }
 };
 
+/// Gives information about the type `uint16_t`
 template <>
 class Reflection<uint16_t>
 {
  public:
+  /// Name of the type "uint16_t"
   static constexpr const char * Name()
   {
     return "uint16_t";
   }
 };
 
+/// Gives information about the type `uint32_t`
 template <>
 class Reflection<uint32_t>
 {
  public:
+  /// Name of the type "uint32_t"
   static constexpr const char * Name()
   {
     return "uint32_t";
   }
 };
 
+/// Gives information about the type `uint64_t`
 template <>
 class Reflection<uint64_t>
 {
  public:
+  /// Name of the type "uint64_t"
   static constexpr const char * Name()
   {
     return "uint64_t";
   }
 };
 
+/// Gives information about the type `int8_t`
 template <>
 class Reflection<int8_t>
 {
  public:
+  /// Name of the type "int8_t"
   static constexpr const char * Name()
   {
     return "int8_t";
   }
 };
 
+/// Gives information about the type `int16_t`
 template <>
 class Reflection<int16_t>
 {
  public:
+  /// Name of the type "int16_t"
   static constexpr const char * Name()
   {
     return "int16_t";
   }
 };
 
+/// Gives information about the type `int32_t`
 template <>
 class Reflection<int32_t>
 {
  public:
+  /// Name of the type "int32_t"
   static constexpr const char * Name()
   {
     return "int32_t";
   }
 };
 
+/// Gives information about the type `int64_t`
 template <>
 class Reflection<int64_t>
 {
  public:
+  /// Name of the type "int64_t"
   static constexpr const char * Name()
   {
     return "int64_t";
@@ -249,9 +248,11 @@ class Reflection<int64_t>
 
 namespace doctest
 {
+/// Allows doctest to display a std::array<T>
 template <typename T, size_t N>
 struct StringMaker<std::array<T, N>>  // NOLINT
 {
+  /// Converts the std::array to a Doctest::String
   static String convert(const std::array<T, N> & array)  // NOLINT
   {
     std::string str;
@@ -277,9 +278,11 @@ struct StringMaker<std::array<T, N>>  // NOLINT
   }
 };
 
+/// Allows doctest to display a std::span<T>
 template <typename T>
 struct StringMaker<std::span<T>>
 {
+  /// Converts the std::span to a Doctest::String
   static String convert(const std::span<T> & span)  // NOLINT
   {
     std::string str;
@@ -305,18 +308,22 @@ struct StringMaker<std::span<T>>
   }
 };
 
+/// DocTest template specialization for printing std::errc
 template <>
 struct StringMaker<std::errc>
 {
+  /// Converts the std::errc to a Doctest::String
   static String convert(const std::errc & error_code)  // NOLINT
   {
     return sjsu::Stringify(error_code);
   }
 };
 
+/// DocTest template specialization for printing std::chrono::duration
 template <typename T, typename U>
 struct StringMaker<std::chrono::duration<T, U>>  // NOLINT
 {
+  /// Converts the std::chrono::duration to a Doctest::String
   static String convert(const std::chrono::duration<T, U> & duration)  // NOLINT
   {
     return std::to_string(duration.count()).c_str();

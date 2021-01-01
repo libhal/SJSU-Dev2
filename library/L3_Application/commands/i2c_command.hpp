@@ -68,15 +68,20 @@ class I2cCommand final : public Command
                 i2c discover
   )";
 
+  /// Set of I2C command operations
   static inline const char * const kI2cOperations[] = { "read",
                                                         "write",
                                                         "discover",
                                                         nullptr };
 
-  static constexpr uint8_t kFirstI2cAddress = 0x08;
-  static constexpr uint8_t kLastI2cAddress  = 0x78;
-  static constexpr size_t kNumberOfI2cAddresses =
-      kLastI2cAddress - kFirstI2cAddress;
+  /// First non-reserved I2C address
+  static constexpr uint8_t kFirstAddress = 0x08;
+
+  /// Last non-reserved I2C address
+  static constexpr uint8_t kLastAddress = 0x78;
+
+  /// Number of scannable I2C addresses
+  static constexpr size_t kNumberOfI2cAddresses = kLastAddress - kFirstAddress;
 
   /// Sole constructor of the I2c command
   explicit I2cCommand(I2c & i2c)
@@ -241,8 +246,7 @@ class I2cCommand final : public Command
   {
     devices_found_.clear();
 
-    for (uint8_t address = kFirstI2cAddress; address < kLastI2cAddress;
-         address++)
+    for (uint8_t address = kFirstAddress; address < kLastAddress; address++)
     {
       uint8_t buffer;
       try

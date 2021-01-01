@@ -7,8 +7,6 @@
 
 namespace sjsu::cortex
 {
-EMIT_ALL_METHODS(DwtCounter);
-
 TEST_CASE("Testing ARM Cortex Data Watchdog Trace Counter")
 {
   DWT_Type local_dwt = {
@@ -32,6 +30,7 @@ TEST_CASE("Testing ARM Cortex Data Watchdog Trace Counter")
     CHECK(0 == local_dwt.CYCCNT);
     CHECK(DWT_CTRL_CYCCNTENA_Msk == local_dwt.CTRL);
   }
+
   SECTION("Get Count")
   {
     local_dwt.CYCCNT = 0;

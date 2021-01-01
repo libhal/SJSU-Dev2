@@ -256,7 +256,7 @@ class Can final : public sjsu::Can
 
   /// Contains all of the information for to control and configure a CANBUS bus
   /// on the LPC40xx platform.
-  struct Channel_t
+  struct Port_t
   {
     /// Reference to transmit pin object
     sjsu::Pin & td_pin;
@@ -290,42 +290,11 @@ class Can final : public sjsu::Can
     uint32_t data_b = 0;
   };
 
-  /// List of supported CANBUS channels
-  struct Channel  // NOLINT
-  {
-   private:
-    inline static auto port1_transmit_pin = Pin(0, 1);
-    inline static auto port1_read_pin     = Pin(0, 0);
-    inline static auto port2_transmit_pin = Pin(2, 8);
-    inline static auto port2_read_pin     = Pin(2, 7);
-
-   public:
-    /// Predefined definition for CAN1
-    inline static const Channel_t kCan1 = {
-      .td_pin           = port1_transmit_pin,
-      .td_function_code = 1,
-      .rd_pin           = port1_read_pin,
-      .rd_function_code = 1,
-      .registers        = lpc40xx::LPC_CAN1,
-      .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan1,
-    };
-
-    /// Predefined definition for CAN2
-    inline static const Channel_t kCan2 = {
-      .td_pin           = port2_transmit_pin,
-      .td_function_code = 1,
-      .rd_pin           = port2_read_pin,
-      .rd_function_code = 1,
-      .registers        = lpc40xx::LPC_CAN2,
-      .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan2,
-    };
-  };
-
   /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
   inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
 
   /// @param channel - Which CANBUS channel to use
-  explicit Can(const Channel_t & channel) : channel_(channel), handler_{} {}
+  explicit constexpr Can(const Port_t & channel) : channel_(channel) {}
 
   void ModuleInitialize() override
   {
@@ -334,115 +303,21 @@ class Can final : public sjsu::Can
     platform.PowerUpPeripheral(channel_.id);
 
     /// Configure pins
-    channel_.td_pin.ConfigureFunction(channel_.td_function_code);
-    channel_.rd_pin.ConfigureFunction(channel_.rd_function_code);
+    channel_.td_pin.settings.function = channel_.td_function_code;
+    channel_.rd_pin.settings.function = channel_.rd_function_code;
+
+    channel_.td_pin.Initialize();
+    channel_.rd_pin.Initialize();
 
     // Enable reset mode in order to write to CAN registers.
     SetMode(Mode::kReset, true);
 
-    // Accept all messages
-    // TODO(#343): Allow the user to configure their own filter.
+    ConfigureBaudRate();
+    ConfigureReceiveHandler();
     EnableAcceptanceFilter();
-  }
 
-  void ModuleEnable(bool enable = true) override
-  {
     // Flip logic of enable such that, if enable = true, set reset mode to false
-    SetMode(Mode::kReset, !enable);
-  }
-
-  /// @param baud - baud rate to configure the CANBUS to
-  void ConfigureBaudRate(units::frequency::hertz_t baud) override
-  {
-    // According to the BOSCH CAN spec, the nominal bit time is divided into 4
-    // time segments. These segments need to be programmed for the internal
-    // bit timing logic/state machine. Refer to the link below for more
-    // details about the importance of these time segments:
-    // http://www.keil.com/dd/docs/datashts/silabs/boschcan_ug.pdf
-    //
-    // Nominal Bit Time : 1 / 100 000 == 10^-5s
-    //
-    //   0_______________________________10^-5
-    //  _/             1 bit             \_
-    //   \_______________________________/
-    //
-    //   | SYNC | PROP | PHASE1 | PHASE2 |        BOSCH
-    //   | TSCL |     TSEG1     | TSEG2  |        LPC
-    //                          ^
-    //                    sample point (industry standard: 80%)
-
-    constexpr int kTseg1               = 0;
-    constexpr int kTseg2               = 0;
-    constexpr int kSyncJump            = 0;
-    constexpr uint32_t kBaudRateAdjust = kTseg1 + kTseg2 + kSyncJump + 3;
-
-    // Equation found p.563 of the user manual
-    //    tSCL = CANsuppliedCLK * ((prescaler * kBaudRateAdjust) -  1)
-    // Configure the baud rate divider
-    auto & system         = sjsu::SystemController::GetPlatformController();
-    const auto kFrequency = system.GetClockRate(channel_.id);
-    uint32_t prescaler    = (kFrequency / ((baud * kBaudRateAdjust)) - 1);
-
-    sjsu::LogDebug(
-        "freq = %f :: prescale = %lu", kFrequency.to<double>(), prescaler);
-
-    // Hold the results in RAM rather than altering the register directly
-    // multiple times.
-    bit::Value bus_timing;
-
-    // Used to compensate for positive and negative edge phase errors. Defines
-    // how much the sample point can be shifted.
-    // These time segments determine the location of the "sample point".
-    bus_timing.Insert(0, BusTiming::kSyncJumpWidth)
-        .Insert(0, BusTiming::kTimeSegment1)
-        .Insert(0, BusTiming::kTimeSegment2)
-        .Insert(prescaler, BusTiming::kPrescalar);
-
-    if (baud < kStandardBaudRate)
-    {
-      // The bus is sampled 3 times (recommended for low speeds, 100kHz is
-      // considered HIGH).
-      bus_timing.Insert(1, BusTiming::kSampling);
-    }
-    else
-    {
-      bus_timing.Insert(0, BusTiming::kSampling);
-    }
-
-    channel_.registers->BTR = bus_timing;
-  }
-
-  bool ConfigureFilter([[maybe_unused]] uint32_t id) override
-  {
-    return false;
-  }
-
-  bool ConfigureAcceptanceFilter(bool) override
-  {
-    return false;
-  }
-
-  void ConfigureReceiveHandler(ReceiveHandler handler) override
-  {
-    if (handler)
-    {
-      handler_ = handler;
-
-      bit::Register(&channel_.registers->IER)
-          .Set(Interrupts::kReceivedMessage)
-          .Save();
-
-      InterruptController::GetPlatformController().Enable({
-          .interrupt_request_number = lpc40xx::CAN_IRQn,
-          .interrupt_handler        = [this]() { handler_(*this); },
-      });
-    }
-    else
-    {
-      bit::Register(&channel_.registers->IER)
-          .Clear(Interrupts::kReceivedMessage)
-          .Save();
-    }
+    SetMode(Mode::kReset, false);
   }
 
   void Send(const Message_t & message) override
@@ -488,7 +363,6 @@ class Can final : public sjsu::Can
 
   bool HasData() override
   {
-    // ...ta.
     return bit::Read(channel_.registers->GSR, GlobalStatus::kReceiveBuffer);
   }
 
@@ -595,10 +469,94 @@ class Can final : public sjsu::Can
   ~Can()
   {
     // Canbus interrupts must be disabled
-    ConfigureReceiveHandler(nullptr);
+    bit::Register(&channel_.registers->IER)
+        .Clear(Interrupts::kReceivedMessage)
+        .Save();
   }
 
  private:
+  void ConfigureBaudRate()
+  {
+    // According to the BOSCH CAN spec, the nominal bit time is divided into 4
+    // time segments. These segments need to be programmed for the internal
+    // bit timing logic/state machine. Refer to the link below for more
+    // details about the importance of these time segments:
+    // http://www.keil.com/dd/docs/datashts/silabs/boschcan_ug.pdf
+    //
+    // Nominal Bit Time : 1 / 100 000 == 10^-5s
+    //
+    //   0_______________________________10^-5
+    //  _/             1 bit             \_
+    //   \_______________________________/
+    //
+    //   | SYNC | PROP | PHASE1 | PHASE2 |        BOSCH
+    //   | TSCL |     TSEG1     | TSEG2  |        LPC
+    //                          ^
+    //                    sample point (industry standard: 80%)
+
+    constexpr int kTseg1               = 0;
+    constexpr int kTseg2               = 0;
+    constexpr int kSyncJump            = 0;
+    constexpr uint32_t kBaudRateAdjust = kTseg1 + kTseg2 + kSyncJump + 3;
+
+    // Equation found p.563 of the user manual
+    //    tSCL = CANsuppliedCLK * ((prescaler * kBaudRateAdjust) -  1)
+    // Configure the baud rate divider
+    auto & system         = sjsu::SystemController::GetPlatformController();
+    const auto kFrequency = system.GetClockRate(channel_.id);
+    uint32_t prescaler =
+        (kFrequency / ((settings.baud_rate * kBaudRateAdjust)) - 1);
+
+    sjsu::LogDebug(
+        "freq = %f :: prescale = %lu", kFrequency.to<double>(), prescaler);
+
+    // Hold the results in RAM rather than altering the register directly
+    // multiple times.
+    bit::Value bus_timing;
+
+    // Used to compensate for positive and negative edge phase errors. Defines
+    // how much the sample point can be shifted.
+    // These time segments determine the location of the "sample point".
+    bus_timing.Insert(0, BusTiming::kSyncJumpWidth)
+        .Insert(0, BusTiming::kTimeSegment1)
+        .Insert(0, BusTiming::kTimeSegment2)
+        .Insert(prescaler, BusTiming::kPrescalar);
+
+    if (settings.baud_rate <= CanSettings_t::kStandardBaudRate)
+    {
+      // The bus is sampled 3 times (recommended for low speeds, 100kHz is
+      // considered HIGH).
+      bus_timing.Insert(1, BusTiming::kSampling);
+    }
+    else
+    {
+      bus_timing.Insert(0, BusTiming::kSampling);
+    }
+
+    channel_.registers->BTR = bus_timing;
+  }
+
+  void ConfigureReceiveHandler()
+  {
+    if (settings.handler)
+    {
+      bit::Register(&channel_.registers->IER)
+          .Set(Interrupts::kReceivedMessage)
+          .Save();
+
+      InterruptController::GetPlatformController().Enable({
+          .interrupt_request_number = lpc40xx::CAN_IRQn,
+          .interrupt_handler = [this]() { CurrentSettings().handler(*this); },
+      });
+    }
+    else
+    {
+      bit::Register(&channel_.registers->IER)
+          .Clear(Interrupts::kReceivedMessage)
+          .Save();
+    }
+  }
+
   /// Convert message into the registers LPC40xx can bus registers.
   ///
   /// @param message - message to convert.
@@ -647,8 +605,55 @@ class Can final : public sjsu::Can
     can_acceptance_filter_register->AFMR = Value(Commands::kAcceptAllMessages);
   }
 
-  const Channel_t & channel_;
-  ReceiveHandler handler_;
+  const Port_t & channel_;
 };
+
+template <int port>
+inline Can & GetCan()
+{
+  if constexpr (port == 1)
+  {
+    static auto & port1_transmit_pin = GetPin<0, 1>();
+    static auto & port1_read_pin     = GetPin<0, 0>();
+
+    /// Predefined definition for CAN1
+    static const Can::Port_t kCan1 = {
+      .td_pin           = port1_transmit_pin,
+      .td_function_code = 1,
+      .rd_pin           = port1_read_pin,
+      .rd_function_code = 1,
+      .registers        = lpc40xx::LPC_CAN1,
+      .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan1,
+    };
+
+    static Can can1(kCan1);
+    return can1;
+  }
+  else if constexpr (port == 2)
+  {
+    static auto & port2_transmit_pin = GetPin<2, 8>();
+    static auto & port2_read_pin     = GetPin<2, 7>();
+
+    /// Predefined definition for CAN2
+    static const Can::Port_t kCan2 = {
+      .td_pin           = port2_transmit_pin,
+      .td_function_code = 1,
+      .rd_pin           = port2_read_pin,
+      .rd_function_code = 1,
+      .registers        = lpc40xx::LPC_CAN2,
+      .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan2,
+    };
+
+    static Can can2(kCan2);
+    return can2;
+  }
+  else
+  {
+    static_assert(InvalidOption<port>,
+                  SJ2_ERROR_MESSAGE_DECORATOR(
+                      "Support CAN ports for LPC40xx are CAN1, CAN2"));
+    return GetCan<0>();
+  }
+}
 }  // namespace lpc40xx
 }  // namespace sjsu

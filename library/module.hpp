@@ -1,300 +1,208 @@
 #pragma once
 
 #include <cstdint>
+#include <cstring>
+#include <type_traits>
 
 namespace sjsu
 {
-/// Module is the basis interface for all other SJSU-Dev2 interfaces. It
-/// incorporates an API for initialization and setup as well as a state to know
-/// which stage the module is in.
+/// Used to keep the SJSU-Dev2 compile time errors consistent, distinct and
+/// easier to spot within the compiler error messages.
+#define SJ2_ERROR_MESSAGE_DECORATOR(msg) \
+  "\n\n"                                 \
+  "SJSU-Dev2 Compile Time Error:\n"      \
+  "    " msg                             \
+  "\n"                                   \
+  "\n"
+
+/// Used for defining static_asserts that should always fail, but only if the
+/// static_assert line is hit via `if constexpr` control block.
+/// Prefer to NOT use this directly but to use `InvalidOptions` instead
+template <auto... options>
+struct InvalidOption_t : std::false_type
+{
+};
+
+/// Helper definition to simplify the usage of InvalidOption_t.
+/// @tparam options
+template <auto... options>
+inline constexpr bool InvalidOption = InvalidOption_t<options...>::value;
+
+/// States of a SJSU-Dev2 Module
+enum class State : uint8_t
+{
+  /// Module has been constructed and is not ready for use.
+  /// In this state, the settings structure can be modified to suit the needs of
+  /// the application.
+  ///
+  /// Initialize() must be called in order to use the rest of the class methods.
+  /// Calling any other methods other than Initialize() in this state will cause
+  /// undefined behaviour, typically leading to a crash.
+  kReset = 0,
+
+  /// Module has been initialized and is ready for usage. To reconfiguration the
+  /// module with new settings, simply change the settings and run Initialize()
+  /// again.
+  kInitialized,
+
+  /// Module has been put into low power state. To leave low power, run
+  /// Initialize(). Calling any other methods other than Initialize() in
+  /// this state will cause undefined behaviour, typically leading to a crash.
+  kPowerDown,
+
+  /// If a module attempts to perform some task and it was unable to do so in
+  /// some exceptional way, the module will set its state to kCritical using the
+  /// EnterCrisis() method provided to all Modules. This indicates that the
+  /// module can no longer be used as normal. To exit kCritical, run
+  /// Initialize(). Calling any other methods other than Initialize() in
+  /// this state will cause undefined behaviour, typically leading to a crash.
+  kCritical,
+};
+
+/// Gives settings objects a means to be compared at the byte level
 ///
-/// The module usage flow:
-///
-///  State: kReset
-///     All modules start off with state kReset. At this point the only method
-///     that should be called is Initialize(). Calling any other method is
-///     undefined behavior. The work of Initialize() must NOT be done in the
-///     constructor of a Module derived class as the order of initialization is
-///     not deterministic and can also result in undefined behavior.
-///
-///  State: kInitialized
-///     When Initialize() is called, the state of the module is transitioned to
-///     kInitialized, if, and only if, the state of the module is in kReset
-///     beforehand. Otherwise, no work is done by Initialize(). This allows
-///     Initialize() to be called multiple times without performing the same
-///     task multiple times. This is helpful when a module is used by two or
-///     more other modules and both modules call Initialize().
-///
-///     After Initialize() has been executed without an exception being thrown,
-///     the module can now be configured. SJSU-Dev2 convention for derived
-///     modules APIs is to name methods that configure a system with the name
-///     ConfigureX(), where X can be ClockRate, MaxRange, Frequency, etc. For
-///     example, at this stage one can run ConfigureBaudRate(9600) on the Uart
-///     driver. Only the Configuration methods shall be called at this stage.
-///
-/// State: kEnabled
-///    Once the module has been appropriately configured for the usage of the
-///    application. The module can be Enabled(). Once enabled, the module can
-///    use the runtime usage method. These methods can be identified as they are
-///    the methods of an API that does not have the "Configure-" prefix. These
-///    usage APIs interact with hardware, such as SetDutyCycle() in the Pwm
-///    driver or Transfer() for the SPI class. Configuration methods should not
-///    be called when in this state. Doing so is undefined behavior.
-///
-/// State: kDisabled
-///    In the event the Configuration options need to be change, the module must
-///    first be disabled by running the Enabled(false) method with the input
-///    parameter false. This will disable the module and allow usage of the
-///    Configuration() methods. Using the Configuration() methods outside of the
-///    kInitialized and kDisabled state is undefined behavior.
-///
-/// State: kCritical
-///    If a module attempted to perform some task and it was unable to in an
-///    exceptional way, the module will set its state to kCritical using the
-///    SetState() method provided to all Modules. This indicates that the module
-///    can no longer be used as normal. The only way out of this would be for
-///    the system to call SetState() force the state back to kReset, and run
-///    through the initialization sequence again. As a means to recover, a
-///    system may consider changing the Configuration settings if these led to
-///    the exception being called. Another alternative would be to run exit and
-///    reset the system.
-///
-/// These rules of usage must be followed for proper operation by all module
-/// within SJSU-Dev2 as well as external modules using the SJSU-Dev2 modules.
+/// @tparam Settings_t - the settings to allow memory comparison
+template <class Settings_t>
+struct MemoryEqualOperator_t
+{
+  /// @param other - the other settings to be compared against this settings
+  /// @return true - Settings match byte for byte.
+  /// @return false - Settings do not match
+  bool operator==(const Settings_t & other) const
+  {
+    return memcmp(&other, this, sizeof(other)) == 0;
+  };
+};
+
+/// An empty settings structure used to indicate that a module or interface does
+/// not have generic settings.
+struct EmptySettings_t
+{
+};
+
+/// The basis class for all peripheral, device and system drivers in SJSU-Dev2.
+template <class Settings_t = EmptySettings_t>
 class Module
 {
  public:
-  // All of the possible states that a module can be in.
-  enum class State : uint8_t
-  {
-    kReset,
-    kInitialized,
-    kEnabled,
-    kDisabled,
-    kCritical,
-  };
+  static_assert(std::is_copy_constructible_v<Settings_t>,
+                SJ2_ERROR_MESSAGE_DECORATOR(
+                    "The settings for this module does not allow for copying. "
+                    "Modules must have a copyable settings type in order to "
+                    "save the settings used after initialization."));
 
-  /// Initialize module by putting system into a known state and prepare it to
-  /// be configured and enabled. In general this typically means resetting the
-  /// device to be driven.
+  /// Every module MUST have an initialize for it operate
+  virtual void ModuleInitialize() = 0;
+
+  /// It may not always make sense for every driver to have a power down
+  /// function so this is not pure virtual. This can be overriden if necessary
+  virtual void ModulePowerDown(){};
+
+  /// Apply settings as defined by the Settings_t and enable peripheral, device,
+  /// or system.
   ///
-  /// THIS METHOD MUST BE CALLED FIRST BEFORE ANY OTHER METHOD OF THIS OR
-  /// DERIVED OBJECTS. Failure to call this first will result in undefined
-  /// behavior. Not doing this can result in hard faults when accessing
-  /// peripherals.
+  /// NOTE: Initialize() MUST be called before calling any other method in this
+  /// class or any classes that derive from this class. THIS OR DERIVED OBJECTS.
+  /// Failure to call this first will result in undefined behavior. Not doing
+  /// this can result in hard faults when accessing peripherals.
   ///
-  /// Once successfully initialized, the state of the module will transition to
-  /// State::kInitialized, and subsequent calls to initialize will simply return
-  /// without performing any work.
+  /// This method will call ModuleInitialize() which will perform the module
+  /// specific initialization sequence. If ModuleInitialize() does not throw an
+  /// exception, meaning success, then the state of the module will transition
+  /// to State::kInitialized. Once in the initialized state, this function will
+  /// not call ModuleInitialize() again unless the state is changed to something
+  /// else.
   ///
-  /// Protocol for Initialization:
-  ///
-  /// Step 1) Initialize, configure, and enable all sub-modules.
-  /// Step 2) Power on/reset device/peripheral such that the device can be
-  ///         configured and then later enabled.
-  void Initialize()
+  /// @return auto& - reference to itself to allow method chaining
+  auto & Initialize()
   {
-    if (IsReset())
-    {
-      ModuleInitialize();
-      SetState(State::kInitialized);
-    }
+    ModuleInitialize();
+    SaveSettings();
+    state_ = State::kInitialized;
+    return *this;
   }
 
-  /// Enable/Disable module such that the module can be used at run time.
+  /// Will put the module into a powered down state. All submodules used by this
+  /// module will have their power down be called well. Just like how
+  /// Initialize() calls all Initialize() methods of its submodules.
   ///
-  /// A successful Enable() call will change the state to kEnabled and will
-  /// allow the runtime usage methods to be called without any undefined
-  /// behaviour.
+  /// To get out of this state, Initialize() must be called. Many
+  /// modules do not support a mode of power down and in these cases, a dummy
+  /// implemenation is called.
   ///
-  /// A successful Enable(false) call will change the state to kDisabled and
-  /// will allow the Configuration methods to be called again, and will disable
-  /// operation of the system. The exact behavior of the system when
-  /// transitioning from kEnabled to kDisabled is module specific. For example,
-  /// the lpc40xx driver will set its duty cycle to 0% when disabled. The
-  /// disable/enable transition information should be documented for the
-  /// specific driver if it has an significant change to the state. For example
-  /// most GPIOs do not change state when disabled, and thus may have a comment
-  /// stating:
+  /// Once in a powered down state, calls to any other methods besides
+  /// Initialize will result in undefined behaviour.
   ///
-  /// "Transitions from enabled to disabled have no effect on the output signal"
-  ///
-  /// Protocol for Enable:
-  ///
-  ///   Step 1) If applicable, if the configuration settings were stored within
-  ///           the module's memory and not stored within the memory of the
-  ///           device itself, then it is the job of Enable() to write the
-  ///           configuration information to the device.
-  ///           THIS STEP IS AN EXCEPTION NOT THE RULE.
-  ///           Always, refrain from caching configuration information if it can
-  ///           be stored in the device's memory directly, such that enable can
-  ///           reduce the work it needs to perform.
-  ///
-  ///   Step 2) Run any procedures required to enable this module for usage.
-  ///           Sometimes this as simple as setting a bit in a register, in
-  ///           other cases this is a more involved sequence of steps.
-  void Enable(bool enable = true)
+  /// @return auto& - reference to itself to allow method chaining
+  auto & PowerDown()
   {
-    // Transition to enabled if the current state is State::kInitialized.
-    const bool kToEnabled = (enable && (IsDisabled() || IsInitialized()));
-
-    // Transition to disabled if the current state is State::kEnabled.
-    const bool kToDisabled = (!enable && IsEnabled());
-
-    if (kToEnabled || kToDisabled)
+    if (state_ == State::kInitialized)
     {
-      // Execute the derived class's implementation of enable. This shall throw
-      // if attempting to enable or disable the module could not be completed.
-      // This will cause the scope_fail to execute and the following lines below
-      // that set the state to State::kEnabled and State::kDisabled to be
-      // skipped.
-      ModuleEnable(enable);
-
-      // We are now past the point of exceptions being thrown, we can now set
-      // the state to operation or disabled.
-      if (enable)
-      {
-        SetState(State::kEnabled);
-      }
-      else
-      {
-        SetState(State::kDisabled);
-      }
+      ModulePowerDown();
+      state_ = State::kPowerDown;
     }
+    return *this;
   }
 
-  /// @return the module's state
+  /// Set the state of the module as State::kCritical which is a marker that
+  /// something went terribly wrong with this module such that it cannot work as
+  /// intended without an attempt to run Initialize().
+  ///
+  /// @return auto& - reference to itself to allow method chaining
+  auto & EnterCrisis()
+  {
+    state_ = State::kCritical;
+    return *this;
+  }
+
+  /// @return Settings_t - the current operating settings from the latest call
+  /// of Initialize()
+  Settings_t CurrentSettings() const
+  {
+    return current_settings_;
+  }
+
+  /// @return State - the current state of the module
   State GetState() const
   {
     return state_;
   }
 
-  /// Set the state of the module. In general this is called by the derived
-  /// class in order to indicate that the module has changed state.
-  ///
-  /// In general, derived modules should only change the state of the module if
-  /// something goes wrong, thus typically, derived modules will only move the
-  /// state of the module to kCritical and thats it.
-  ///
-  /// Normally, this method should not be called directly from outside of a
-  /// derived module, but can be used in order to revert or force the state of
-  /// the module into some other state.
-  ///
-  /// @param new_state - The new state to set the module to
-  void SetState(State new_state)
-  {
-    state_ = new_state;
-  }
+  /// Publically accessible settings structure used for configuring generic
+  /// aspects of the module. For example, PWM would have a setting for frequency
+  /// and UART would have a setting for baud_rate. When the module is
+  /// initialized the settings are saved into a private variable and can be
+  /// retrieved via the CurrentSettings() method.
+  Settings_t settings;
 
-  /// Helper function that returns true if the state is in reset.
-  ///
-  /// @return true if state is equal to kReset.
-  bool IsReset() const
-  {
-    return state_ == State::kReset;
-  }
+  /// Add constexpr constructor which will allow derived classes to have
+  /// constexpr constructors if possible.
+  constexpr Module() noexcept {}
 
-  /// Helper function that indicates if this module has not been fully
-  /// configured and enabled. This will return false if the state of the module
-  /// is equal to or beyond an enabled state, such as being Enabled, Disabled,
-  /// or Critical.
-  ///
-  /// @return true - if the module has yet to be enabled.
-  /// @return false - if the state is enabled or beyond.
-  bool RequiresConfiguration() const
-  {
-    return state_ == State::kReset || state_ == State::kInitialized;
-  }
+  /// Preventing this module from copy construction. Modules cannot be copied.
+  Module(const Module &) = delete;
+  /// Preventing this module from copy assignment. Modules cannot be copied.
+  Module & operator=(const Module &) = delete;
+  /// Preventing this module from move operation. Modules cannot be moved.
+  Module(Module &&) = delete;
+  /// Preventing this module from move assignment. Modules cannot be moved.
+  Module & operator=(Module &&) = delete;
 
-  /// Helper function that returns true if the state is in Initialized.
-  ///
-  /// @return true if state is equal to kInitialized.
-  bool IsInitialized() const
-  {
-    return state_ == State::kInitialized;
-  }
-
-  /// Helper function that returns true if the state is in Enabled.
-  ///
-  /// @return true if state is equal to kEnabled.
-  bool IsEnabled() const
-  {
-    return state_ == State::kEnabled;
-  }
-
-  /// Helper function that returns true if the state is in Disabled.
-  ///
-  /// @return true if state is equal to kDisabled.
-  bool IsDisabled() const
-  {
-    return state_ == State::kDisabled;
-  }
-
-  /// Helper function that returns true if the state is in Critical.
-  ///
-  /// @return true if state is equal to kCritical.
-  bool IsCritical() const
-  {
-    return state_ == State::kCritical;
-  }
-
-  /// Helper function that sets the state of this module to Reset.
-  ///
-  /// @return true if state is equal to kReset.
-  void SetStateToReset()
-  {
-    state_ = State::kReset;
-  }
-
-  /// Helper function that sets the state of this module to Initialized.
-  ///
-  /// @return true if state is equal to kInitialized.
-  void SetStateToInitialized()
-  {
-    state_ = State::kInitialized;
-  }
-
-  /// Helper function that sets the state of this module to Enabled.
-  ///
-  /// @return true if state is equal to kEnabled.
-  void SetStateToEnabled()
-  {
-    state_ = State::kEnabled;
-  }
-
-  /// Helper function that sets the state of this module to Disabled.
-  ///
-  /// @return true if state is equal to kDisabled.
-  void SetStateToDisabled()
-  {
-    state_ = State::kDisabled;
-  }
-
-  /// Helper function that sets the state of this module to Critical.
-  ///
-  /// @return true if state is equal to kCritical.
-  void SetStateToCritical()
-  {
-    state_ = State::kCritical;
-  }
-
-  /// Destructed of this base class calls the destructors of derived classes.
+  /// Destructor of this base class calls the destructors of derived classes.
   virtual ~Module() = default;
 
-  /// Module's implementation of Initialize. See the documentation for
-  /// Initialize() for more details about what this should do.
-  ///
-  /// NOTE: that this implementation should not use SetState(), but should allow
-  /// the Module::Interface() method to handle that.
-  virtual void ModuleInitialize() = 0;
+ private:
+  /// Helper function for saving settings.
+  void SaveSettings()
+  {
+    current_settings_ = settings;
+  }
 
-  /// Module Implementation of Enable.
-  ///
-  /// @param enable - if true, will enable the module, if false, will disabled
-  virtual void ModuleEnable(bool enable) = 0;
+  /// Saved settings from running Initialize()
+  Settings_t current_settings_ = {};
 
- protected:
-  /// Stores the state of the module. Default state of the module is kReset.
+  /// The current operating state of the module. Default is State::kReset. Once
+  /// Initialized, the State::kReset can never be reached again.
   State state_ = State::kReset;
 };
 }  // namespace sjsu

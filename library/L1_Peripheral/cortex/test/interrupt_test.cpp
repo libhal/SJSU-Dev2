@@ -25,10 +25,7 @@ TEST_CASE("Testing cortex interrupt")
   testing::ClearStructure(&local_nvic);
   test_subject.nvic = &local_nvic;
 
-  // Making the unregistered handler nullptr guarantees that an exception will
-  // be thrown if an exception occurs, which is useful in the "Initialize" test
-  // section.
-  test_subject.Initialize(nullptr);
+  test_subject.Initialize();
 
   SECTION("Initialize")
   {

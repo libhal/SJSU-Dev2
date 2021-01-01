@@ -10,9 +10,8 @@ int main()
   sjsu::LogInfo("Starting MSP432P401R LED Blinker Demo...");
 
   // Configure the on-board P1.0 LED to be initially turned on.
-  sjsu::msp432p401r::Gpio p1_0(1, 0);
+  sjsu::msp432p401r::Gpio & p1_0 = sjsu::msp432p401r::GetGpio<1, 0>();
   p1_0.Initialize();
-  p1_0.Enable();
   p1_0.SetAsOutput();
   p1_0.SetHigh();
 

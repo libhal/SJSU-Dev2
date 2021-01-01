@@ -13,31 +13,15 @@ namespace sjsu
 /// external.
 ///
 /// @ingroup l1_peripheral
-class HardwareCounter : public Module
+class HardwareCounter : public Module<>
 {
  public:
-  // ===========================================================================
-  // Interface Definitions
-  // ===========================================================================
-
   /// Definitions of the directions that a counter to count in.
   enum class Direction : int8_t
   {
     kDown = -1,
     kUp   = 1,
   };
-
-  // ===========================================================================
-  // Interface Methods
-  // ===========================================================================
-
-  // ---------------------------------------------------------------------------
-  // Configuration Methods
-  // ---------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------
-  // Usage Methods
-  // ---------------------------------------------------------------------------
 
   /// Set counter to a specific value. There is no guarantee that a count will
   /// not be missed during the invocation of this call.
@@ -68,29 +52,25 @@ class GpioCounter : public HardwareCounter
   ///        connected.
   GpioCounter(sjsu::Gpio & gpio,
               sjsu::Gpio::Edge edge,
-              sjsu::Pin::Resistor pull = sjsu::Pin::Resistor::kPullUp)
+              sjsu::PinSettings_t::Resistor pull =
+                  sjsu::PinSettings_t::Resistor::kPullUp)
       : gpio_(gpio), edge_(edge), pull_(pull)
   {
   }
 
   void ModuleInitialize() override
   {
+    gpio_.GetPin().settings.resistor = pull_;
     gpio_.Initialize();
-    gpio_.GetPin().ConfigurePullResistor(pull_);
     gpio_.SetAsInput();
+
+    gpio_.AttachInterrupt([this] { count_ += Value(direction_.load()); },
+                          edge_);
   }
 
-  void ModuleEnable(bool enable = true) override
+  void ModulePowerDown() override
   {
-    if (enable)
-    {
-      gpio_.AttachInterrupt([this] { count_ += Value(direction_.load()); },
-                            edge_);
-    }
-    else
-    {
-      gpio_.DetachInterrupt();
-    }
+    gpio_.DetachInterrupt();
   }
 
   void Set(int32_t new_count_value) override
@@ -108,10 +88,15 @@ class GpioCounter : public HardwareCounter
     return count_;
   }
 
+  ~GpioCounter()
+  {
+    gpio_.DetachInterrupt();
+  }
+
  private:
   sjsu::Gpio & gpio_;
   sjsu::Gpio::Edge edge_;
-  sjsu::Pin::Resistor pull_;
+  sjsu::PinSettings_t::Resistor pull_;
   std::atomic<int32_t> count_       = 0;
   std::atomic<Direction> direction_ = Direction::kUp;
 };

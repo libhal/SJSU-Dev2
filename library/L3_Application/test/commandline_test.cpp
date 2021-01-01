@@ -4,8 +4,6 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Command);
-
 namespace
 {
 FAKE_VALUE_FUNC(int, fake_command, int, const char * const *);

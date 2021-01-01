@@ -19,8 +19,8 @@ struct PulseCaptureChannel  // NOLINT
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer0_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
-  inline static Pin capture0_channel0_pin = Pin(1, 26);
-  inline static Pin capture0_channel1_pin = Pin(1, 27);
+  inline static Pin & capture0_channel0_pin = sjsu::lpc17xx::GetPin<1, 26>();
+  inline static Pin & capture0_channel1_pin = sjsu::lpc17xx::GetPin<1, 27>();
   inline static const lpc40xx::PulseCapture::CaptureChannelPartial_t
       kTimerPartial0 = {
         .timer_register =
@@ -37,8 +37,8 @@ struct PulseCaptureChannel  // NOLINT
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer1_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
-  inline static Pin capture1_channel0_pin = Pin(1, 18);
-  inline static Pin capture1_channel1_pin = Pin(1, 19);
+  inline static Pin & capture1_channel0_pin = sjsu::lpc17xx::GetPin<1, 18>();
+  inline static Pin & capture1_channel1_pin = sjsu::lpc17xx::GetPin<1, 19>();
   inline static const lpc40xx::PulseCapture::CaptureChannelPartial_t
       kTimerPartial1 = {
         .timer_register =
@@ -55,8 +55,8 @@ struct PulseCaptureChannel  // NOLINT
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer2_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
-  inline static Pin capture2_channel0_pin = Pin(0, 4);
-  inline static Pin capture2_channel1_pin = Pin(0, 5);
+  inline static Pin & capture2_channel0_pin = sjsu::lpc17xx::GetPin<0, 4>();
+  inline static Pin & capture2_channel1_pin = sjsu::lpc17xx::GetPin<0, 5>();
   inline static const lpc40xx::PulseCapture::CaptureChannelPartial_t
       kTimerPartial2 = {
         .timer_register =
@@ -73,8 +73,8 @@ struct PulseCaptureChannel  // NOLINT
   inline static lpc40xx::PulseCapture::CaptureChannelNumber
       timer3_channel_number =
           lpc40xx::PulseCapture::CaptureChannelNumber::kChannel1;
-  inline static Pin capture3_channel0_pin = Pin(0, 23);
-  inline static Pin capture3_channel1_pin = Pin(0, 24);
+  inline static Pin & capture3_channel0_pin = sjsu::lpc17xx::GetPin<0, 23>();
+  inline static Pin & capture3_channel1_pin = sjsu::lpc17xx::GetPin<0, 24>();
   inline static const lpc40xx::PulseCapture::CaptureChannelPartial_t
       kTimerPartial3 = {
         .timer_register =

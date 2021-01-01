@@ -25,7 +25,7 @@ jobs:
 
       - name: 🧹 Lint
         working-directory: projects/continuous_integration
-        run: make lint
+        run: make lint 1> /dev/null
 
       - name: 🔤 Spellcheck
         working-directory: projects/continuous_integration

@@ -12,7 +12,7 @@ namespace sjsu
 /// constant polling in order to work. This is useful for situations where a
 /// gpio does not have interrupt capability, or interrupt capability is not
 /// desired.
-class Button : public Module
+class Button : public Module<>
 {
  public:
   /// Button Constructor
@@ -21,16 +21,7 @@ class Button : public Module
   void ModuleInitialize() override
   {
     button_.Initialize();
-  }
-
-  void ModuleEnable(bool enable = true) override
-  {
-    button_.Enable(enable);
-
-    if (enable)
-    {
-      button_.SetAsInput();
-    }
+    button_.SetAsInput();
   }
 
   /// Call this function continuously to detect if a button has been released.
@@ -86,6 +77,7 @@ class Button : public Module
     was_pressed_  = false;
     was_released_ = false;
   }
+
   /// @returns a reference to the internal sjsu::Gpio object.
   virtual const sjsu::Gpio & GetGpio()
   {

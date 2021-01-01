@@ -16,7 +16,7 @@ namespace sjsu
 /// Interface for a sensor that can measure distance in a single dimension, such
 /// as 1D lidar, ultrasonic range sensor, or infared distance sensor.
 /// @ingroup sensors
-class DistanceSensor : public Module
+class DistanceSensor : public Module<>
 {
  public:
   /// Trigger a capture of the current distance reading and return it.

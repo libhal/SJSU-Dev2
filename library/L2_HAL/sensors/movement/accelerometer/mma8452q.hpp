@@ -16,6 +16,8 @@ namespace sjsu
 class Mma8452q : public Accelerometer
 {
  public:
+  /// MemoryAccessProtocol specifications indicating the data size and
+  /// endianness of the device.
   static constexpr MemoryAccessProtocol::Specification_t<
       MemoryAccessProtocol::AddressWidth::kByte1,
       std::endian::big>
@@ -58,6 +60,11 @@ class Mma8452q : public Accelerometer
   {
   }
 
+  /// @param external_map_protocol - reference to an external memory map
+  /// protocol. Typically used for unit testing, but could be used by
+  /// applications to implement their own map protocol.
+  /// @param i2c - i2c peripheral used to commnicate with device.
+  /// @param address - Mma8452q device address.
   explicit constexpr Mma8452q(MemoryAccessProtocol & external_map_protocol,
                               I2c & i2c,
                               uint8_t address = 0x1c)
@@ -69,50 +76,19 @@ class Mma8452q : public Accelerometer
   {
     i2c_.Initialize();
 
-    if (i2c_.RequiresConfiguration())
-    {
-      i2c_.ConfigureClockRate();
-    }
+    // Set the gravity full scale value
+    ConfigureFullScale();
 
-    i2c_.Enable();
+    // Check that the device is valid before proceeding.
+    IsValidDevice();
+    // Activate device to allow full-scale and configuration to take effect.
+    ActiveMode(true);
   }
 
-  void ModuleEnable(bool enable = true) override
+  void ModulePowerDown() override
   {
-    if (enable)
-    {
-      // Check that the device is valid before proceeding.
-      IsValidDevice();
-
-      // Activate device to allow full-scale and configuration to take effect.
-      ActiveMode(true);
-    }
-    else
-    {
-      // Put device into standby so we can configure the device.
-      ActiveMode(false);
-    }
-  }
-
-  void ConfigureFullScale(
-      units::acceleration::standard_gravity_t gravity) override
-  {
-    const uint32_t kGravityScale = gravity.to<uint32_t>();
-
-    if (kGravityScale != 2 && kGravityScale != 4 && kGravityScale != 8)
-    {
-      throw Exception(std::errc::invalid_argument,
-                      "Gravity scale must be 2g, 4g, or 8g.");
-    }
-
-    // Convert Gs to gravity scale code for the device.
-    const uint8_t kNewGravityScale = static_cast<uint8_t>(kGravityScale >> 2);
-
-    // Write gravity scale to memory
-    memory_[Map::kDataConfig] = kNewGravityScale;
-
-    // Set the full_scale_ value for use in Read()
-    full_scale_ = gravity;
+    // Put device into standby so we can configure the device.
+    ActiveMode(false);
   }
 
   Acceleration_t Read() override
@@ -149,11 +125,29 @@ class Mma8452q : public Accelerometer
     float y_axis_ratio = sjsu::Map(y, kMin, kMax, -1.0f, 1.0f);
     float z_axis_ratio = sjsu::Map(z, kMin, kMax, -1.0f, 1.0f);
 
-    acceleration.x = full_scale_ * x_axis_ratio;
-    acceleration.y = full_scale_ * y_axis_ratio;
-    acceleration.z = full_scale_ * z_axis_ratio;
+    acceleration.x = CurrentSettings().gravity * x_axis_ratio;
+    acceleration.y = CurrentSettings().gravity * y_axis_ratio;
+    acceleration.z = CurrentSettings().gravity * z_axis_ratio;
 
     return acceleration;
+  }
+
+ private:
+  void ConfigureFullScale()
+  {
+    const uint32_t kGravityScale = settings.gravity.to<uint32_t>();
+
+    if (kGravityScale != 2 && kGravityScale != 4 && kGravityScale != 8)
+    {
+      throw Exception(std::errc::invalid_argument,
+                      "Gravity scale must be 2g, 4g, or 8g.");
+    }
+
+    // Convert Gs to gravity scale code for the device.
+    const uint8_t kNewGravityScale = static_cast<uint8_t>(kGravityScale >> 2);
+
+    // Write gravity scale to memory
+    memory_[Map::kDataConfig] = kNewGravityScale;
   }
 
   void ActiveMode(bool is_active = true)
@@ -177,10 +171,8 @@ class Mma8452q : public Accelerometer
     }
   }
 
- private:
   I2c & i2c_;
   I2cProtocol<1> i2c_memory_;
   MemoryAccessProtocol & memory_;
-  units::acceleration::standard_gravity_t full_scale_ = 2_SG;
 };  // namespace sjsu
 }  // namespace sjsu

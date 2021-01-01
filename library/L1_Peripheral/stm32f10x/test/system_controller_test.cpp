@@ -11,8 +11,6 @@
 
 namespace sjsu::stm32f10x
 {
-EMIT_ALL_METHODS(SystemController);
-
 TEST_CASE("Testing stm32f10x SystemController")
 {
   std::array<const SystemController::ResourceID *, 10> id = {

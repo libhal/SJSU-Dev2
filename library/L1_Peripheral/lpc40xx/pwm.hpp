@@ -7,10 +7,13 @@
 //      p2_0.SetFrequency(1'000);
 #pragma once
 
+#include <algorithm>
 #include <cstdint>
 #include <cstdio>
+#include <utility>
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/lpc17xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/pwm.hpp"
@@ -109,79 +112,6 @@ class Pwm final : public sjsu::Pwm
     uint8_t pin_function_code : 3;
   };
 
-  /// Structure used as a namespace for predefined Channel definitions
-  struct Channel  // NOLINT
-  {
-   private:
-    inline static sjsu::lpc40xx::Pin pwm_pin0 = sjsu::lpc40xx::Pin(2, 0);
-    inline static sjsu::lpc40xx::Pin pwm_pin1 = sjsu::lpc40xx::Pin(2, 1);
-    inline static sjsu::lpc40xx::Pin pwm_pin2 = sjsu::lpc40xx::Pin(2, 2);
-    inline static sjsu::lpc40xx::Pin pwm_pin3 = sjsu::lpc40xx::Pin(2, 3);
-    inline static sjsu::lpc40xx::Pin pwm_pin4 = sjsu::lpc40xx::Pin(2, 4);
-    inline static sjsu::lpc40xx::Pin pwm_pin5 = sjsu::lpc40xx::Pin(2, 5);
-
-   public:
-    /// Definition of the PWM 0 peripheral.
-    inline static const Peripheral_t kPwm0Peripheral = {
-      .registers = LPC_PWM0,
-      .id        = sjsu::lpc40xx::SystemController::Peripherals::kPwm1,
-    };
-
-    /// Definition of the PWM 1 peripheral.
-    inline static const Peripheral_t kPwm1Peripheral = {
-      .registers = LPC_PWM1,
-      .id        = sjsu::lpc40xx::SystemController::Peripherals::kPwm1,
-    };
-
-    /// Definition for channel 0 of PWM peripheral 1.
-    inline static const Channel_t kPwm0 = {
-      .peripheral        = kPwm1Peripheral,
-      .pin               = pwm_pin0,
-      .channel           = 1,
-      .pin_function_code = 0b001,
-    };
-
-    /// Definition for channel 1 of PWM peripheral 1.
-    inline static const Channel_t kPwm1 = {
-      .peripheral        = kPwm1Peripheral,
-      .pin               = pwm_pin1,
-      .channel           = 2,
-      .pin_function_code = 0b001,
-    };
-
-    /// Definition for channel 2 of PWM peripheral 1.
-    inline static const Channel_t kPwm2 = {
-      .peripheral        = kPwm1Peripheral,
-      .pin               = pwm_pin2,
-      .channel           = 3,
-      .pin_function_code = 0b001,
-    };
-
-    /// Definition for channel 3 of PWM peripheral 1.
-    inline static const Channel_t kPwm3 = {
-      .peripheral        = kPwm1Peripheral,
-      .pin               = pwm_pin3,
-      .channel           = 4,
-      .pin_function_code = 0b001,
-    };
-
-    /// Definition for channel 4 of PWM peripheral 1.
-    inline static const Channel_t kPwm4 = {
-      .peripheral        = kPwm1Peripheral,
-      .pin               = pwm_pin4,
-      .channel           = 5,
-      .pin_function_code = 0b001,
-    };
-
-    /// Definition for channel 5 of PWM peripheral 1.
-    inline static const Channel_t kPwm5 = {
-      .peripheral        = kPwm1Peripheral,
-      .pin               = pwm_pin5,
-      .channel           = 6,
-      .pin_function_code = 0b001,
-    };
-  };
-
   /// Constructor for a LPC40xx PWM channel.
   ///
   /// @param channel - Reference to a const channel description for this
@@ -190,11 +120,6 @@ class Pwm final : public sjsu::Pwm
 
   void ModuleInitialize() override
   {
-    if (!(1 <= channel_.channel && channel_.channel <= 6))
-    {
-      throw Exception(std::errc::invalid_argument,
-                      "Channel must be between 1 and 6 on LPC40xx platforms.");
-    }
     auto & system = sjsu::SystemController::GetPlatformController();
     system.PowerUpPeripheral(channel_.peripheral.id);
 
@@ -228,64 +153,19 @@ class Pwm final : public sjsu::Pwm
     pwm->PCR = bit::Set(pwm->PCR, kChannelBitPosition);
 
     // Set the pin function
-    channel_.pin.ConfigureFunction(channel_.pin_function_code);
+    channel_.pin.settings.function = channel_.pin_function_code;
+    channel_.pin.Initialize();
+
+    // Set PWM frequency
+    ConfigureFrequency();
+
+    // Enable the PWM output channel
+    Enable();
   }
 
-  void ModuleEnable(bool enable = true) override
+  void ModulePowerDown() override
   {
-    bit::Register pwm_timer(&channel_.peripheral.registers->TCR);
-
-    if (enable)
-    {
-      // Reset the Timer Counter
-      pwm_timer.Set(Timer::kCounterReset).Save();
-
-      // Clear reset and allow timer to count
-      pwm_timer.Clear(Timer::kCounterReset).Save();
-
-      // Enable PWM output
-      pwm_timer.Set(Timer::kPwmEnable).Save();
-
-      // Enable counting
-      pwm_timer.Set(Timer::kCounterEnable).Save();
-    }
-    else
-    {
-      // Disable PWM output
-      pwm_timer.Clear(Timer::kPwmEnable).Save();
-    }
-  }
-
-  void ConfigureFrequency(units::frequency::hertz_t frequency_hz) override
-  {
-    if (frequency_hz <= 0_Hz)
-    {
-      SJ2_PRINT_VARIABLE(frequency_hz, "%f");
-      throw Exception(
-          std::errc::invalid_argument,
-          "Frequency must be greater than 0 Hz. Frequency will not be "
-          "updated.");
-    }
-
-    ModuleEnable(false);
-
-    auto & system             = sjsu::SystemController::GetPlatformController();
-    auto peripheral_frequency = system.GetClockRate(channel_.peripheral.id);
-
-    // Get the current duty cycle so we can match it to the updated frequency.
-    float previous_duty_cycle = GetDutyCycle();
-
-    // In order to avoid PWM glitches, the PWM must be disabled while updating
-    // the MR0 register. Doing this will reset all counters to 0 and allow us to
-    // update MR0.
-    const auto kNewFrequency = peripheral_frequency / frequency_hz;
-    GetMatchRegisters(0)     = kNewFrequency.to<uint32_t>();
-
-    // Re-enable PWM which will also reset all of the counters which allow
-    // setting the duty cycle of other PWM channels.
-    ModuleEnable(true);
-
-    SetDutyCycle(previous_duty_cycle);
+    Enable(false);
   }
 
   void SetDutyCycle(float duty_cycle) override
@@ -311,6 +191,63 @@ class Pwm final : public sjsu::Pwm
   }
 
  private:
+  void ConfigureFrequency()
+  {
+    if (settings.frequency <= 0_Hz)
+    {
+      SJ2_PRINT_VARIABLE(settings.frequency, "%f");
+      throw Exception(
+          std::errc::invalid_argument,
+          "Frequency must be greater than 0 Hz. Frequency will not be "
+          "updated.");
+    }
+
+    Enable(false);
+
+    auto & system             = sjsu::SystemController::GetPlatformController();
+    auto peripheral_frequency = system.GetClockRate(channel_.peripheral.id);
+
+    // Get the current duty cycle so we can match it to the updated frequency.
+    float previous_duty_cycle = GetDutyCycle();
+
+    // In order to avoid PWM glitches, the PWM must be disabled while updating
+    // the MR0 register. Doing this will reset all counters to 0 and allow us to
+    // update MR0.
+    const auto kNewFrequency = peripheral_frequency / settings.frequency;
+    GetMatchRegisters(0)     = kNewFrequency.to<uint32_t>();
+
+    // Re-enable PWM which will also reset all of the counters which allow
+    // setting the duty cycle of other PWM channels.
+    Enable(true);
+
+    SetDutyCycle(previous_duty_cycle);
+  }
+
+  void Enable(bool enable = true)
+  {
+    bit::Register pwm_timer(&channel_.peripheral.registers->TCR);
+
+    if (enable)
+    {
+      // Reset the Timer Counter
+      pwm_timer.Set(Timer::kCounterReset).Save();
+
+      // Clear reset and allow timer to count
+      pwm_timer.Clear(Timer::kCounterReset).Save();
+
+      // Enable PWM output
+      pwm_timer.Set(Timer::kPwmEnable).Save();
+
+      // Enable counting
+      pwm_timer.Set(Timer::kCounterEnable).Save();
+    }
+    else
+    {
+      // Disable PWM output
+      pwm_timer.Clear(Timer::kPwmEnable).Save();
+    }
+  }
+
   /// Helper method to make getting a pointer to the Match Register 0 more
   /// readable in the code.
   ///
@@ -347,5 +284,65 @@ class Pwm final : public sjsu::Pwm
   /// driver.
   const Channel_t & channel_;
 };
+
+template <int peripheral, int channel>
+inline Pwm & GetPwm()
+{
+  static_assert(peripheral == 1,
+                SJ2_ERROR_MESSAGE_DECORATOR(
+                    "LPC40xx currently only supports peripheral 1."));
+
+  static_assert(0 <= channel && channel <= 5,
+                SJ2_ERROR_MESSAGE_DECORATOR(
+                    "LPC40xx only supports PWM channels from 0 to 5."));
+
+  auto get_pwm_pin_pair = [](int pwm_channel) -> auto
+  {
+    std::array<std::pair<int, int>, 6> pins = {
+      std::make_pair(2, 0), std::make_pair(2, 1),
+      std::make_pair(2, 2), std::make_pair(2, 3),
+      std::make_pair(2, 4), std::make_pair(2, 5),  // PWM 1
+    };
+
+    return pins[std::clamp(pwm_channel, 0, 5)];
+  };
+
+  constexpr auto pair = get_pwm_pin_pair(channel);
+
+  /// Definition of the PWM 1 peripheral.
+  static const lpc40xx::Pwm::Peripheral_t kPwm1Peripheral = {
+    .registers = LPC_PWM1,
+    .id        = SystemController::Peripherals::kPwm1,
+  };
+
+  if constexpr (build::IsPlatform(build::Platform::lpc40xx))
+  {
+    static lpc40xx::Pin & pwm_pin40 =
+        lpc40xx::GetPin<pair.first, pair.second>();
+    static const lpc40xx::Pwm::Channel_t kPwmInfo = {
+      .peripheral        = kPwm1Peripheral,
+      .pin               = pwm_pin40,
+      .channel           = channel + 1,
+      .pin_function_code = 0b001,
+    };
+
+    static Pwm pwm(kPwmInfo);
+    return pwm;
+  }
+  else
+  {
+    static lpc17xx::Pin & pwm_pin17 =
+        lpc17xx::GetPin<pair.first, pair.second>();
+    static const lpc40xx::Pwm::Channel_t kPwmInfo = {
+      .peripheral        = kPwm1Peripheral,
+      .pin               = pwm_pin17,
+      .channel           = channel + 1,
+      .pin_function_code = 0b001,
+    };
+
+    static Pwm pwm(kPwmInfo);
+    return pwm;
+  }
+}
 }  // namespace lpc40xx
 }  // namespace sjsu

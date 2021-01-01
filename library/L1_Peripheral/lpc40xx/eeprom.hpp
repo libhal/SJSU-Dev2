@@ -79,24 +79,19 @@ class Eeprom final : public sjsu::Storage
 
     // Initialize EEPROM clock
     eeprom_register->CLKDIV = static_cast<uint8_t>(kSystemClock / kEepromClk);
+
+    eeprom_register->PWRDWN = 0;
+  }
+
+  void ModulePowerDown() override
+  {
+    eeprom_register->PWRDWN = 1;
   }
 
   /// EEPROM is apart of the lpc40xx silicon so it is always present.
   bool IsMediaPresent() override
   {
     return true;
-  }
-
-  void ModuleEnable(bool enable = true) override
-  {
-    if (enable)
-    {
-      eeprom_register->PWRDWN = 0;
-    }
-    else
-    {
-      eeprom_register->PWRDWN = 1;
-    }
   }
 
   bool IsReadOnly() override
@@ -221,5 +216,13 @@ class Eeprom final : public sjsu::Storage
         (bit::Set(0, StatusRegister::kProgramStatusMask));
   }
 };
+
+template <int port>
+inline Eeprom & GetEeprom()
+{
+  static_assert(port == 0, "LPC40xx only supports EEPROM peripheral 0!");
+  static Eeprom eeprom;
+  return eeprom;
+}
 }  // namespace lpc40xx
 }  // namespace sjsu

@@ -14,7 +14,7 @@
 namespace sjsu
 {
 /// Driver for the St7066u driver of a LCD character display
-class St7066u : public Module
+class St7066u : public Module<>
 {
  public:
   /// Data transfer operation types.
@@ -127,42 +127,22 @@ class St7066u : public Module
   /// Initialize the pins needed to communicate with the LCD screen
   void ModuleInitialize() override
   {
-    // Phase 1. Initialize
     register_select_pin_.Initialize();
     read_write_pin_.Initialize();
     enable_pin_.Initialize();
     data_bus_.Initialize();
 
-    // Phase 2. Configure
-    // Phase 3. Enable
-    register_select_pin_.Enable();
-    read_write_pin_.Enable();
-    enable_pin_.Enable();
-    data_bus_.Enable();
-
-    // Phase 4. Setup
     register_select_pin_.SetAsOutput();
     read_write_pin_.SetAsOutput();
     enable_pin_.SetAsOutput();
     data_bus_.SetAsOutput();
 
     enable_pin_.SetHigh();
-  }
 
-  /// Initialize the pins needed to communicate with the LCD screen
-  void ModuleEnable(bool enable = true) override
-  {
-    if (enable)
-    {
-      WriteCommand(Value(Command::kDefaultDisplayConfiguration) |
-                   Value(kBusMode) | Value(kDisplayMode) | Value(kFontStyle));
-      SetDisplayOn();
-      ClearDisplay();
-    }
-    else
-    {
-      LogDebug("Disabled not supported for this driver");
-    }
+    WriteCommand(Value(Command::kDefaultDisplayConfiguration) |
+                 Value(kBusMode) | Value(kDisplayMode) | Value(kFontStyle));
+    SetDisplayOn();
+    ClearDisplay();
   }
 
   /// Clears all characters on the display by sending the clear display command

@@ -32,8 +32,8 @@ class Spi final : public sjsu::Spi
     /// Setting this bit to 1 will enable the peripheral for communication.
     static constexpr bit::Mask kMasterSelection = bit::MaskFromRange(2);
 
-    // If bit is set to 1 SSP controller maintains the bus clock high betwen
-    // frames
+    /// If bit is set to 1 SSP controller maintains the bus clock high betwen
+    /// frames
     static constexpr bit::Mask kClockPolarity = bit::MaskFromRange(1);
 
     /// If bit is set to 1 SSP controller captures serial data on the second
@@ -55,9 +55,9 @@ class Spi final : public sjsu::Spi
   /// SPI_I2S Configuration Register
   struct ConfigurationRegister  // NOLINT
   {
-    // Data length to be transferred. This field controls the number of bits
-    // transferred in each frame. Value 11 in not supported and should not be
-    // used.
+    /// Data length to be transferred. This field controls the number of bits
+    /// transferred in each frame. Value 11 in not supported and should not be
+    /// used.
     static constexpr bit::Mask kDataLength = bit::MaskFromRange(1, 2);
   };
 
@@ -96,62 +96,33 @@ class Spi final : public sjsu::Spi
 
     /// Address to the SPI peripheral to use
     SPI_TypeDef * spi;
-
-    /// Function code to set each pin to the appropriate SPI function.
-    // Value of 1 will set pin to alternative function
-    uint8_t pin_function;
-  };
-
-  /// SPI Port namespace holder
-  struct Port  // NOLINT
-  {
-   private:
-    // SPI1 pins
-    inline static auto kMosi1 = sjsu::stm32f10x::Pin('A', 7);
-    inline static auto kMiso1 = sjsu::stm32f10x::Pin('A', 6);
-    inline static auto kSck1  = sjsu::stm32f10x::Pin('A', 5);
-
-    // SPI2 pins
-    inline static auto kMosi2 = sjsu::stm32f10x::Pin('B', 15);
-    inline static auto kMiso2 = sjsu::stm32f10x::Pin('B', 14);
-    inline static auto kSck2  = sjsu::stm32f10x::Pin('B', 13);
-
-   public:
-    /// Definition for SPI bus 1 for STM32F10x
-    inline static const Port_t kSpi1 = {
-      .id           = SystemController::Peripherals::kSpi1,
-      .mosi         = kMosi1,
-      .miso         = kMiso1,
-      .sck          = kSck1,
-      .spi          = SPI1,
-      .pin_function = 0b01,
-    };
-    /// Definition for SPI bus 2 for STM32F10x
-    inline static const Port_t kSpi2 = {
-      .id           = SystemController::Peripherals::kSpi2,
-      .mosi         = kMosi2,
-      .miso         = kMiso2,
-      .sck          = kSck2,
-      .spi          = SPI2,
-      .pin_function = 0b01,
-    };
   };
 
   /// Constructor for STM32F10x Spi peripheral
   ///
   /// @param port - pass a reference to a constant stm32f10x::Spi::Port_t
   ///        definition.
-  explicit constexpr Spi(const Port_t & port) : port_(port) {}
+  explicit Spi(const Port_t & port) : port_(port) {}
 
   void ModuleInitialize() override
   {
     // Power on peripheral
     SystemController::GetPlatformController().PowerUpPeripheral(port_.id);
 
+    ModulePowerDown();
+
     // Enable SPI pins
-    port_.mosi.ConfigureFunction(port_.pin_function);
-    port_.miso.ConfigureFunction(port_.pin_function);
-    port_.sck.ConfigureFunction(port_.pin_function);
+    port_.mosi.settings.function = 1;
+    port_.miso.settings.function = 1;
+    port_.sck.settings.function  = 1;
+
+    port_.mosi.Initialize();
+    port_.miso.Initialize();
+    port_.sck.Initialize();
+
+    ConfigureFrequency();
+    ConfigureFrameSize();
+    ConfigureClockMode();
 
     // Enable Master mode SPI
     // Enable software slave management (gpio must be used for slave select)
@@ -160,29 +131,34 @@ class Spi final : public sjsu::Spi
         .Set(Control1::kSoftwareSlaveManagement)
         .Set(Control1::kInternalSlaveSelect)
         .Set(Control1::kMasterSelection)
+        .Set(Control1::kSpiEnable)
         .Save();
   }
 
-  void ModuleEnable(bool enable = true) override
+  void ModulePowerDown() override
   {
-    if (enable)
+    while (!TransmitBufferEmpty())
     {
-      bit::Register(&port_.spi->CR1).Set(Control1::kSpiEnable).Save();
+      continue;
     }
-    else
+    while (BusBusy())
     {
-      while (!TransmitBufferEmpty())
-      {
-        continue;
-      }
-      while (BusBusy())
-      {
-        continue;
-      }
-      bit::Register(&port_.spi->CR1).Clear(Control1::kSpiEnable).Save();
+      continue;
     }
+    bit::Register(&port_.spi->CR1).Clear(Control1::kSpiEnable).Save();
   }
 
+  void Transfer(std::span<uint8_t> buffer) override
+  {
+    UniversalTransfer(buffer);
+  }
+
+  void Transfer(std::span<uint16_t> buffer) override
+  {
+    UniversalTransfer(buffer);
+  }
+
+ private:
   bool BusBusy()
   {
     return bit::Read(port_.spi->SR, StatusRegister::kBusyFlag);
@@ -241,23 +217,13 @@ class Spi final : public sjsu::Spi
     buffer.end()[-1] = static_cast<T>(port_.spi->DR);
   }
 
-  void Transfer(std::span<uint8_t> buffer) override
+  void ConfigureFrameSize()
   {
-    UniversalTransfer(buffer);
-  }
-
-  void Transfer(std::span<uint16_t> buffer) override
-  {
-    UniversalTransfer(buffer);
-  }
-
-  void ConfigureFrameSize(FrameSize size) override
-  {
-    if (size == FrameSize::kEightBits)
+    if (settings.frame_size == SpiSettings_t::FrameSize::kEightBits)
     {
       bit::Register(&port_.spi->CR1).Clear(Control1::kDataFrameFormat).Save();
     }
-    else if (size == FrameSize::kSixteenBits)
+    else if (settings.frame_size == SpiSettings_t::FrameSize::kSixteenBits)
     {
       bit::Register(&port_.spi->CR1).Set(Control1::kDataFrameFormat).Save();
     }
@@ -272,12 +238,12 @@ class Spi final : public sjsu::Spi
   /// The STM32F10x family of chips only supports base 2 dividers for SPI from 2
   /// to 256, meaning that the output clock frequency will be either
   /// peripheral_frequency /2, /4, /8, /16, /32, /64, /128, or /256.
-  void ConfigureFrequency(units::frequency::hertz_t frequency) override
+  void ConfigureFrequency()
   {
     auto & system = sjsu::SystemController::GetPlatformController();
     const auto kPeripheralFrequency = system.GetClockRate(port_.id);
 
-    float divider        = (kPeripheralFrequency / frequency).to<float>();
+    float divider = (kPeripheralFrequency / settings.clock_rate).to<float>();
     float base_2_divider = std::clamp(std::log2f(divider) - 1.0f, 0.0f, 7.0f);
 
     bit::Register(&port_.spi->CR1)
@@ -286,17 +252,67 @@ class Spi final : public sjsu::Spi
         .Save();
   }
 
-  void ConfigureClockMode(Polarity polarity = Polarity::kIdleLow,
-                          Phase phase       = Phase::kSampleLeading) override
+  void ConfigureClockMode()
   {
     bit::Register(&port_.spi->CR1)
-        .Insert(Value(polarity), Control1::kClockPolarity)
-        .Insert(Value(phase), Control1::kClockPhase)
+        .Insert(Value(settings.polarity), Control1::kClockPolarity)
+        .Insert(Value(settings.phase), Control1::kClockPhase)
         .Save();
   }
 
- private:
   const Port_t & port_;
 };
+
+template <int port>
+inline Spi & GetSpi()
+{
+  if constexpr (port == 1)
+  {
+    // SPI1 pins
+    static auto & kMosi1 = sjsu::stm32f10x::GetPin<'A', 7>();
+    static auto & kMiso1 = sjsu::stm32f10x::GetPin<'A', 6>();
+    static auto & kSck1  = sjsu::stm32f10x::GetPin<'A', 5>();
+
+    /// Definition for SPI bus 1 for STM32F10x
+    static const Spi::Port_t kSpiInfo = {
+      .id   = SystemController::Peripherals::kSpi1,
+      .mosi = kMosi1,
+      .miso = kMiso1,
+      .sck  = kSck1,
+      .spi  = SPI1,
+    };
+
+    static Spi spi(kSpiInfo);
+    return spi;
+  }
+  else if constexpr (port == 2)
+  {
+    // SPI2 pins
+    static auto & kMosi2 = sjsu::stm32f10x::GetPin<'B', 15>();
+    static auto & kMiso2 = sjsu::stm32f10x::GetPin<'B', 14>();
+    static auto & kSck2  = sjsu::stm32f10x::GetPin<'B', 13>();
+
+    /// Definition for SPI bus 2 for STM32F10x
+    static const Spi::Port_t kSpiInfo = {
+      .id   = SystemController::Peripherals::kSpi2,
+      .mosi = kMosi2,
+      .miso = kMiso2,
+      .sck  = kSck2,
+      .spi  = SPI2,
+    };
+
+    static Spi spi(kSpiInfo);
+    return spi;
+  }
+  else
+  {
+    static_assert(InvalidOption<port>,
+                  "\n\n"
+                  "SJSU-Dev2 Compile Time Error:\n"
+                  "    stm31f10x only supports SPI ports from 1 and 2!"
+                  "\n");
+    return GetSpi<1>();
+  }
+}
 }  // namespace stm32f10x
 }  // namespace sjsu

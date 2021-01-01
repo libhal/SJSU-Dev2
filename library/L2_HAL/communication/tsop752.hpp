@@ -31,7 +31,7 @@ class Tsop752 final : public InfraredReceiver
   }
 
   /// Initializes the PulseCapture and Timer peripherals.
-  void Initialize() override
+  void ModuleInitialize() override
   {
     // using 1 MHz for 1µs precision (1 / 1'000'000 Hz = 1µs)
     constexpr units::frequency::hertz_t kFrequency = 1_MHz;

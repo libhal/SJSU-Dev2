@@ -28,7 +28,7 @@ namespace sjsu
 /// InternetSocket interfaces.
 /// Can be used to connect to a WiFi host device.
 /// Can be used to communicate over the internet using this driver.
-class Esp8266 : public Module
+class Esp8266 : public Module<>
 {
  public:
   /// Default baud rate for ESP8266
@@ -40,19 +40,18 @@ class Esp8266 : public Module
   /// Confirmation responses received from the ESP8266 module
   static constexpr char kOk[] = "\r\nOK\r\n";
 
+  /// ESP8266's Implementation of the sjsu::InternetSocket interface/protocol
   class Esp8266InternetSocket : public InternetSocket
   {
    public:
+    /// Constructor for Esp8266 InternetSocket implementation
+    ///
+    /// @param esp - a reference to the main esp8266 object
     explicit constexpr Esp8266InternetSocket(Esp8266 & esp) : esp_(esp) {}
 
     void ModuleInitialize() override
     {
       esp_.Initialize();
-    }
-
-    void ModuleEnable(bool enable = true) override
-    {
-      esp_.Enable(enable);
     }
 
     bool Connect(Protocol protocol,
@@ -84,19 +83,18 @@ class Esp8266 : public Module
     Esp8266 & esp_;
   };
 
+  /// ESP8266's Implementation of the sjsu::Wifi interface
   class Esp8266WiFi : public WiFi
   {
    public:
+    /// Constructor for ESP8266 WiFi implementation
+    ///
+    /// @param esp - a reference to the main esp8266 object
     explicit constexpr Esp8266WiFi(Esp8266 & esp) : esp_(esp) {}
 
     void ModuleInitialize() override
     {
       esp_.Initialize();
-    }
-
-    void ModuleEnable(bool enable = true) override
-    {
-      esp_.Enable(enable);
     }
 
     bool ConnectToAccessPoint(std::string_view ssid,
@@ -133,17 +131,68 @@ class Esp8266 : public Module
   {
   }
 
+  void ModuleInitialize() override
+  {
+    // Set baudrate with all other UART settings set to default
+    const UartSettings_t kDefaultSettings = { .baud_rate = kBaudRate };
+    uart_port_.settings                   = kDefaultSettings;
+    uart_port_.Initialize();
+    uart_port_.Flush();
+
+    try
+    {
+      LogDebug("Reseting module...");
+      WifiWrite("+++");
+      Reset();
+
+      // Disable echo
+      LogDebug("Disabling echo back...");
+      WifiWrite("ATE0\r\n");
+      ReadUntil(kOk, kDefaultTimeout, true);
+
+      // Enable simple IP client mode
+      LogDebug("Set device to simple IP client mode...");
+      WifiWrite("AT+CWMODE=1\r\n");
+      ReadUntil(kOk, kDefaultTimeout, true);
+
+      LogDebug("Testing that module is ready...");
+      TestModule();
+    }
+    catch (sjsu::Exception & e)
+    {
+      if (e.GetCode() == std::errc::timed_out)
+      {
+        throw sjsu::Exception(
+            std::errc::no_such_device,
+            "Enabling ESP8266 driver failed! The baud rate could be "
+            "incorrect. The device may not be connected, or connected "
+            "properly, or is not responding to input (possibly broken).");
+      }
+    }
+  }
+
+  /// @return InternetSocket& - A reference to a InternetSocket client object
+  /// that uses the ESP8266. Use this to
+  InternetSocket & GetInternetSocket()
+  {
+    return socket_;
+  }
+
+  /// @return WiFi& - A reference to a WiFi client object that uses the ESP8266
+  WiFi & GetWiFi()
+  {
+    return wifi_;
+  }
+
   /// Tests that the ESP8266 can respond to commands.
-  /// @return std::errc::timed_out if the ESP8266 fails to respond in time.
+  ///
+  /// @throw std::errc::timed_out exception if the ESP8266 fails to respond in
+  /// time.
   void TestModule()
   {
     WifiWrite("AT\r\n");
     ReadUntil(kOk, kDefaultTimeout, true);
   }
-
-  // ===========================================================================
-  // WiFi
-  // ===========================================================================
 
   /// Resets ESP8266 using serial command.
   void Reset()
@@ -152,60 +201,61 @@ class Esp8266 : public Module
     ReadUntil<1024>("\r\nready\r\n", kDefaultLongTimeout, true);
   }
 
-  void ModuleInitialize() override
+  /// Contains IPv4 address information.
+  struct IpAddress_t
   {
-    uart_port_.Initialize();
+    /// Contains each digit of the IPv4 address
+    std::array<uint8_t, 4> data;
 
-    if (uart_port_.RequiresConfiguration())
+    /// Converts IP Address numeric representation into a std::array string.
+    std::array<char, 16> ToString()
     {
-      uart_port_.ConfigureFormat();
-      uart_port_.ConfigureBaudRate(kBaudRate);
-      uart_port_.Enable();
+      std::array<char, 16> ip_string;
+
+      snprintf(ip_string.data(),
+               ip_string.size(),
+               "%u.%u.%u.%u",
+               data[0],
+               data[1],
+               data[2],
+               data[3]);
+
+      return ip_string;
     }
+  };
+
+  /// @return the first IP address in the list of connected devices
+  IpAddress_t ListConnections()
+  {
+    WifiWrite("AT+CWLIF\r\n");
+
+    std::array<uint8_t, 256> buffer = { 0 };
+
+    int length = ReadUntil(buffer, "OK\r\n", 3s);
+
+    debug::HexdumpDebug(buffer.data(), length);
+
+    IpAddress_t ip;
+    std::array<uint32_t, 4> temp_ip;
+    sscanf(reinterpret_cast<const char *>(buffer.data()),
+           "%lu.%lu.%lu.%lu,",
+           &temp_ip[0],
+           &temp_ip[1],
+           &temp_ip[2],
+           &temp_ip[3]);
+
+    ip.data[0] = static_cast<uint8_t>(temp_ip[0]);
+    ip.data[1] = static_cast<uint8_t>(temp_ip[1]);
+    ip.data[2] = static_cast<uint8_t>(temp_ip[2]);
+    ip.data[3] = static_cast<uint8_t>(temp_ip[3]);
+
+    return ip;
   }
 
-  void ModuleEnable(bool enable = true) override
-  {
-    if (enable)
-    {
-      uart_port_.Flush();
-
-      try
-      {
-        LogDebug("Reseting module...");
-        WifiWrite("+++");
-        Reset();
-
-        // Disable echo
-        LogDebug("Disabling echo back...");
-        WifiWrite("ATE0\r\n");
-        ReadUntil(kOk, kDefaultTimeout, true);
-
-        // Enable simple IP client mode
-        LogDebug("Set device to simple IP client mode...");
-        WifiWrite("AT+CWMODE=1\r\n");
-        ReadUntil(kOk, kDefaultTimeout, true);
-
-        LogDebug("Testing that module is ready...");
-        TestModule();
-      }
-      catch (sjsu::Exception & e)
-      {
-        if (e.GetCode() == std::errc::timed_out)
-        {
-          throw sjsu::Exception(
-              std::errc::no_such_device,
-              "Enabling ESP8266 driver failed! The baud rate could be "
-              "incorrect. The device may not be connected, or connected "
-              "properly, or is not responding to input (possibly broken).");
-        }
-      }
-    }
-    else
-    {
-      LogDebug("ESP8266 driver cannot be disabled once enabled");
-    }
-  }
+ private:
+  // ===========================================================================
+  // WiFi
+  // ===========================================================================
 
   bool ConnectToAccessPoint(
       std::string_view ssid,
@@ -282,60 +332,10 @@ class Esp8266 : public Module
     ReadUntil("OK\r\n", 100ms);
   }
 
-  /// Contains IPv4 address information.
-  struct IpAddress_t
-  {
-    /// Contains each digit of the IPv4 address
-    std::array<uint8_t, 4> data;
-
-    /// Converts IP Address numeric representation into a std::array string.
-    std::array<char, 16> ToString()
-    {
-      std::array<char, 16> ip_string;
-
-      snprintf(ip_string.data(),
-               ip_string.size(),
-               "%u.%u.%u.%u",
-               data[0],
-               data[1],
-               data[2],
-               data[3]);
-
-      return ip_string;
-    }
-  };
-
-  /// @return the first IP address in the list of connected devices
-  IpAddress_t ListConnections()
-  {
-    WifiWrite("AT+CWLIF\r\n");
-
-    std::array<uint8_t, 256> buffer = { 0 };
-
-    int length = ReadUntil(buffer, "OK\r\n", 3s);
-
-    debug::HexdumpDebug(buffer.data(), length);
-
-    IpAddress_t ip;
-    std::array<uint32_t, 4> temp_ip;
-    sscanf(reinterpret_cast<const char *>(buffer.data()),
-           "%lu.%lu.%lu.%lu,",
-           &temp_ip[0],
-           &temp_ip[1],
-           &temp_ip[2],
-           &temp_ip[3]);
-
-    ip.data[0] = static_cast<uint8_t>(temp_ip[0]);
-    ip.data[1] = static_cast<uint8_t>(temp_ip[1]);
-    ip.data[2] = static_cast<uint8_t>(temp_ip[2]);
-    ip.data[3] = static_cast<uint8_t>(temp_ip[3]);
-
-    return ip;
-  }
-
   // ===========================================================================
   // InternetProtocol
   // ===========================================================================
+
   bool Connect(InternetSocket::Protocol protocol,
                std::string_view address,
                uint16_t port,
@@ -367,10 +367,6 @@ class Esp8266 : public Module
     return true;
   }
 
-  /// Starts a web server which allows the esp8266 to be connected to, retrieve
-  /// HTTP requests and send back responses.
-  ///
-  /// @param port - which port should be used for the server
   void Bind(uint16_t port = 333)
   {
     WifiWrite("AT+CIPMUX=1\r\n");
@@ -388,7 +384,7 @@ class Esp8266 : public Module
     ReadUntil(kOk, kDefaultLongTimeout, true);
   }
 
-  /// TODO(kammce): Fix this!!
+  // TODO(kammce): Fix this!!
   bool IsConnected()
   {
     return false;
@@ -448,17 +444,6 @@ class Esp8266 : public Module
     ReadUntil(kOk);
   }
 
-  InternetSocket & GetInternetSocket()
-  {
-    return socket_;
-  }
-
-  WiFi & GetWiFi()
-  {
-    return wifi_;
-  }
-
- private:
   /// Gets the number of incoming bytes coming from a network connection.
   ///
   /// @param timer - timeout timer reference with the remaining amount of time
@@ -558,7 +543,7 @@ class Esp8266 : public Module
     return -1;
   }
 
-  // Default buffer size for ReadUntil method
+  /// Default buffer size for ReadUntil method
   template <size_t kBufferSize = 64>
   int ReadUntil(const char * end,
                 std::chrono::nanoseconds timeout = kDefaultTimeout,

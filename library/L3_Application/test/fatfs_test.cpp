@@ -127,7 +127,6 @@ TEST_CASE("Testing FAT FS")
       // Setup: Needed to verify disk_status's return value
       When(Method(mock_storage, IsMediaPresent)).AlwaysReturn(true);
       Fake(Method(mock_storage, ModuleInitialize));
-      Fake(Method(mock_storage, ModuleEnable));
 
       // Exercise
       CHECK(RES_OK == disk_initialize(0));
@@ -136,7 +135,6 @@ TEST_CASE("Testing FAT FS")
       // Verify
       Verify(Method(mock_storage, IsMediaPresent));
       Verify(Method(mock_storage, ModuleInitialize));
-      Verify(Method(mock_storage, ModuleEnable));
     }
   }
 

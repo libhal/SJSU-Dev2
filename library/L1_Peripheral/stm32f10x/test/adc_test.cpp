@@ -1,9 +1,9 @@
 #include "L1_Peripheral/stm32f10x/adc.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu::stm32f10x
 {
-EMIT_ALL_METHODS(Adc);
 TEST_CASE("Testing stm32f10x ADC")
 {
   Mock<SystemController> mock_controller;
@@ -12,11 +12,8 @@ TEST_CASE("Testing stm32f10x ADC")
 
   SystemController::SetPlatformController(&mock_controller.get());
 
-  Mock<sjsu::Pin> mock_adc;
-
-  Fake(Method(mock_adc, ModuleInitialize));
-  Fake(Method(mock_adc, ConfigureAsAnalogMode));
-  Fake(Method(mock_adc, ModuleEnable));
+  Mock<sjsu::Pin> mock_adc_pin;
+  Fake(Method(mock_adc_pin, ModuleInitialize));
 
   DMA_Channel_TypeDef local_dma;
   ADC_TypeDef local_adc;
@@ -28,7 +25,7 @@ TEST_CASE("Testing stm32f10x ADC")
   Adc::dma  = &local_dma;
 
   Adc::Channel_t mock_channel = {
-    .pin   = mock_adc.get(),
+    .pin   = mock_adc_pin.get(),
     .index = 5,
   };
 
@@ -83,17 +80,9 @@ TEST_CASE("Testing stm32f10x ADC")
     CHECK(static_cast<uint32_t>(kPeripheralDataAddress) == local_dma.CPAR);
     CHECK(static_cast<uint32_t>(kRamAddress) == local_dma.CMAR);
     CHECK(Adc::kDmaSettings == local_dma.CCR);
-  }
 
-  SECTION("Enable(true)")
-  {
-    // Exercise
-    test_subject.ModuleEnable();
-
-    // Verify
-    Verify(Method(mock_adc, ModuleInitialize)).Once();
-    Verify(Method(mock_adc, ConfigureAsAnalogMode).Using(true)).Once();
-    Verify(Method(mock_adc, ModuleEnable).Using(true)).Once();
+    Verify(Method(mock_adc_pin, ModuleInitialize)).Once();
+    CHECK(mock_adc_pin.get().CurrentSettings().as_analog == true);
   }
 
   SECTION("ReferenceVoltage()")

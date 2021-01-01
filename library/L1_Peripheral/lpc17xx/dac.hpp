@@ -8,5 +8,6 @@ namespace sjsu
 namespace lpc17xx
 {
 using ::sjsu::lpc40xx::Dac;
+using ::sjsu::lpc40xx::GetDac;
 }  // namespace lpc17xx
 }  // namespace sjsu

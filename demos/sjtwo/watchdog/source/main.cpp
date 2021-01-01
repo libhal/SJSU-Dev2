@@ -58,16 +58,12 @@ int main()
   button3.Initialize();
   led3.Initialize();
 
-  button3.Enable();
-  led3.Enable();
-
   button3.SetAsInput();
   led3.SetDirection(sjsu::Gpio::Direction::kOutput);
 
   // The parameter for this function is in seconds.
   // The first parameter is the value stored in the watchdog counter.
   watchdog.Initialize(1s);
-  watchdog.Enable();
 
   // The watchdog is fed for the first time to start the watchdog timer.
   watchdog.FeedSequence();

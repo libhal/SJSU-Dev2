@@ -7,8 +7,6 @@
 
 namespace sjsu::lpc17xx
 {
-EMIT_ALL_METHODS(SystemController);
-
 TEST_CASE("Testing LPC176x/5x System Controller")
 {
   // Simulate local version of LPC_SC

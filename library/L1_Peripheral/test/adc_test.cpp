@@ -10,7 +10,6 @@ TEST_CASE("Testing ADC Interface")
 
   Fake(Method(mock_adc, Read));
   Fake(Method(mock_adc, GetActiveBits));
-  Fake(Method(mock_adc, ReferenceVoltage));
 
   Adc & test_subject = mock_adc.get();
 
@@ -75,10 +74,12 @@ TEST_CASE("Testing ADC Interface")
       expected_voltage     = 3300_mV;
     }
 
+    Fake(Method(mock_adc, ModuleInitialize));
     When(Method(mock_adc, Read)).AlwaysReturn(expected_adc_reading);
     When(Method(mock_adc, GetActiveBits)).AlwaysReturn(expected_active_bits);
-    When(Method(mock_adc, ReferenceVoltage))
-        .AlwaysReturn(expected_reference_voltage);
+    // Setup: set settings and initialize mock ADC to save the settings.
+    mock_adc.get().settings.reference_voltage = expected_reference_voltage;
+    mock_adc.get().Initialize();
 
     // Exercise
     auto actual_voltage = test_subject.Voltage();
@@ -86,7 +87,6 @@ TEST_CASE("Testing ADC Interface")
     // Verify
     Verify(Method(mock_adc, GetActiveBits)).Once();
     Verify(Method(mock_adc, Read)).Once();
-    Verify(Method(mock_adc, ReferenceVoltage)).Once();
 
     CHECK(actual_voltage.to<float>() ==
           doctest::Approx(expected_voltage.to<float>()).epsilon(0.01f));

@@ -4,8 +4,6 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Button);
-
 TEST_CASE("Testing Button")
 {
   // Make a mock pin to work with
@@ -13,15 +11,11 @@ TEST_CASE("Testing Button")
   // Retrieve a reference to the Pin to be injected as the return value
   // of GPIOs GetPin() method.
   sjsu::Pin & test_pin = mock_pin.get();
-  // Fake the implementation of SetAsActiveLow and ConfigurePullResistor to be
-  // inspected later
-  Fake(Method(mock_pin, ConfigurePullResistor));
 
   // Create a mock gpio object
   Mock<sjsu::Gpio> mock_gpio;
   // Fake Read and SetAsInput so we can inspect them later
   Fake(Method(mock_gpio, ModuleInitialize),
-       Method(mock_gpio, ModuleEnable),
        Method(mock_gpio, Read),
        Method(mock_gpio, Set),
        Method(mock_gpio, SetDirection));
@@ -40,16 +34,14 @@ TEST_CASE("Testing Button")
   SECTION("Initialize")
   {
     // Exercise
-    test_subject.ModuleInitialize();
+    test_subject.Initialize();
 
     // Verify
     Verify(Method(mock_gpio, ModuleInitialize));
+    Verify(Method(mock_gpio, SetDirection).Using(Gpio::Direction::kInput));
   }
   SECTION("Button Released")
   {
-    // Reset button state
-    test_subject.ResetState();
-
     // Simulate button being idle
     When(Method(mock_gpio, Read)).AlwaysReturn(false);
     // With this check, the state of the button should be false, and since we
@@ -67,6 +59,7 @@ TEST_CASE("Testing Button")
     // return true.
     CHECK(test_subject.Released());
   }
+
   SECTION("Button Pressed")
   {
     // Reset button state

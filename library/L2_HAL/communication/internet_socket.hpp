@@ -17,7 +17,7 @@ namespace sjsu
 /// within computer network. It is an endpoint in networking software.
 /// Modeled after Berkley Sockets (POSIX sockets)
 /// @ingroup communication
-class InternetSocket : public Module
+class InternetSocket : public Module<>
 {
  public:
   /// Which Internet Protocol to use for communicating with the remote host
@@ -67,7 +67,7 @@ class InternetSocket : public Module
 /// protocol. This interface is used for connecting a device to a Wifi hotspot
 /// (client).
 /// @ingroup communication
-class WiFi : public Module
+class WiFi : public Module<>
 {
  public:
   /// Contains network connection information such as IP address, netmask,

@@ -27,9 +27,6 @@ void LedToggle(void * parameters)
   sjtwo::led0.Initialize();
   sjtwo::led1.Initialize();
 
-  sjtwo::led0.Enable();
-  sjtwo::led1.Enable();
-
   sjtwo::led0.SetAsOutput();
   sjtwo::led1.SetAsOutput();
 
@@ -56,14 +53,11 @@ void ButtonReader([[maybe_unused]] void * parameters)
   sjsu::LogInfo("Setting up task...");
   sjsu::LogInfo("Initializing SW3...");
 
-  sjsu::lpc40xx::Gpio button_gpio3(0, 29);
+  sjsu::lpc40xx::Gpio & button_gpio3 = sjsu::lpc40xx::GetGpio<0, 29>();
   sjsu::Button switch3(button_gpio3);
 
   sjtwo::led3.Initialize();
   switch3.Initialize();
-
-  sjtwo::led3.Enable();
-  switch3.Enable();
 
   sjtwo::led3.SetAsOutput();
   sjtwo::led3.SetLow();
