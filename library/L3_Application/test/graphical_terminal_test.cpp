@@ -3,8 +3,6 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(GraphicalTerminal);
-
 TEST_CASE("Graphics Terminal Test")
 {
   SECTION("Initialize") {}

@@ -9,8 +9,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(PulseCapture);
-
 PulseCapture::CaptureStatus_t isr_result;
 PulseCapture::CaptureCallback test_timer_callback = nullptr;
 
@@ -33,8 +31,8 @@ TEST_CASE("Testing lpc40xx Pulse Capture")
   static Mock<sjsu::Pin> mock_pin0;
   static Mock<sjsu::Pin> mock_pin1;
 
-  Fake(Method(mock_pin0, ConfigureFunction),
-       Method(mock_pin1, ConfigureFunction));
+  Fake(Method(mock_pin0, Pin::ModuleInitialize),
+       Method(mock_pin1, Pin::ModuleInitialize));
 
   sjsu::Pin & capture0_input_pin = mock_pin0.get();
   sjsu::Pin & capture1_input_pin = mock_pin1.get();

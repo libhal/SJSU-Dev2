@@ -126,54 +126,6 @@ class Spi final : public sjsu::Spi
     uint8_t pin_function;
   };
 
-  /// Structure used as a namespace for predefined Bus definitions
-  struct Bus  // NOLINT
-  {
-   private:
-    // SSP0 pins
-    inline static sjsu::lpc40xx::Pin mosi0 = sjsu::lpc40xx::Pin(0, 18);
-    inline static sjsu::lpc40xx::Pin miso0 = sjsu::lpc40xx::Pin(0, 17);
-    inline static sjsu::lpc40xx::Pin sck0  = sjsu::lpc40xx::Pin(0, 15);
-    // SSP1 pins
-    inline static sjsu::lpc40xx::Pin mosi1 = sjsu::lpc40xx::Pin(0, 9);
-    inline static sjsu::lpc40xx::Pin miso1 = sjsu::lpc40xx::Pin(0, 8);
-    inline static sjsu::lpc40xx::Pin sck1  = sjsu::lpc40xx::Pin(0, 7);
-    // SSP2 pins
-    inline static sjsu::lpc40xx::Pin mosi2 = sjsu::lpc40xx::Pin(1, 1);
-    inline static sjsu::lpc40xx::Pin miso2 = sjsu::lpc40xx::Pin(1, 4);
-    inline static sjsu::lpc40xx::Pin sck2  = sjsu::lpc40xx::Pin(1, 0);
-
-   public:
-    /// Definition for SPI bus 0 for LPC40xx
-    inline static const Bus_t kSpi0 = {
-      .registers    = LPC_SSP0,
-      .power_on_bit = sjsu::lpc40xx::SystemController::Peripherals::kSsp0,
-      .mosi         = mosi0,
-      .miso         = miso0,
-      .sck          = sck0,
-      .pin_function = 0b010,
-    };
-
-    /// Definition for SPI bus 1 for LPC40xx
-    inline static const Bus_t kSpi1 = {
-      .registers    = LPC_SSP1,
-      .power_on_bit = sjsu::lpc40xx::SystemController::Peripherals::kSsp1,
-      .mosi         = mosi1,
-      .miso         = miso1,
-      .sck          = sck1,
-      .pin_function = 0b010,
-    };
-    /// Definition for SPI bus 2 for LPC40xx
-    inline static const Bus_t kSpi2 = {
-      .registers    = LPC_SSP2,
-      .power_on_bit = sjsu::lpc40xx::SystemController::Peripherals::kSsp2,
-      .mosi         = mosi2,
-      .miso         = miso2,
-      .sck          = sck2,
-      .pin_function = 0b100,
-    };
-  };
-
   /// Constructor for LPC40xx Spi peripheral
   ///
   /// @param bus - pass a reference to a constant lpc40xx::Spi::Bus_t
@@ -199,66 +151,29 @@ class Spi final : public sjsu::Spi
     // Set SPI to master mode by clearing
     bus_.registers->CR1 =
         bit::Clear(bus_.registers->CR1, ControlRegister1::kSlaveModeBit);
+
+    ConfigureFrequency();
+    ConfigureClockMode();
+    ConfigureFrameSize();
+
+    // Initialize SSP pins
+    bus_.mosi.settings.function = bus_.pin_function;
+    bus_.miso.settings.function = bus_.pin_function;
+    bus_.sck.settings.function  = bus_.pin_function;
+    bus_.mosi.Initialize();
+    bus_.miso.Initialize();
+    bus_.sck.Initialize();
+
+    // Enable SSP
+    bus_.registers->CR1 =
+        bit::Set(bus_.registers->CR1, ControlRegister1::kSpiEnable);
   }
 
-  void ModuleEnable(bool enable = true) override
+  void ModulePowerDown() override
   {
-    if (enable)
-    {
-      // Enable SSP pins
-      bus_.mosi.ConfigureFunction(bus_.pin_function);
-      bus_.miso.ConfigureFunction(bus_.pin_function);
-      bus_.sck.ConfigureFunction(bus_.pin_function);
-
-      // Enable SSP
-      bus_.registers->CR1 =
-          bit::Set(bus_.registers->CR1, ControlRegister1::kSpiEnable);
-    }
-    else
-    {
-      // Disable SSP
-      bus_.registers->CR1 =
-          bit::Clear(bus_.registers->CR1, ControlRegister1::kSpiEnable);
-    }
-  }
-
-  void ConfigureFrequency(units::frequency::hertz_t frequency) override
-  {
-    auto & system         = sjsu::SystemController::GetPlatformController();
-    auto system_frequency = system.GetClockRate(bus_.power_on_bit);
-
-    auto prescaler = system_frequency / frequency;
-
-    // Store lower half of prescalar in clock prescalar register
-    bus_.registers->CPSR = prescaler.to<uint16_t>() & 0xFF;
-
-    // Store upper 8 bit half of the prescalar in control register 0
-    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0,
-                                      prescaler.to<uint16_t>() >> 8,
-                                      ControlRegister0::kDividerBit);
-  }
-
-  void ConfigureClockMode(Polarity polarity = Polarity::kIdleLow,
-                          Phase phase       = Phase::kSampleLeading) override
-  {
-    bus_.registers->CR0 = bit::Insert(
-        bus_.registers->CR0, Value(polarity), ControlRegister0::kPolarityBit);
-
-    bus_.registers->CR0 = bit::Insert(
-        bus_.registers->CR0, Value(phase), ControlRegister0::kPhaseBit);
-  }
-
-  void ConfigureFrameSize(FrameSize size = FrameSize::kEightBits) override
-  {
-    // NOTE: In UM10562 page 611, you will see that DSS (Data Size Select) is
-    // equal to the bit transfer minus 1. So we can add 3 to our DataSize enum
-    // to get the appropriate tranfer code.
-    constexpr uint32_t kBitTransferCodeOffset = 3;
-    const auto kSizeCode = Value(size) + kBitTransferCodeOffset;
-
-    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0,
-                                      static_cast<uint8_t>(kSizeCode),
-                                      ControlRegister0::kDataBit);
+    // Disable SSP
+    bus_.registers->CR1 =
+        bit::Clear(bus_.registers->CR1, ControlRegister1::kSpiEnable);
   }
 
   /// Checks if the SSP controller is idle.
@@ -296,7 +211,118 @@ class Spi final : public sjsu::Spi
   }
 
  private:
+  void ConfigureFrequency()
+  {
+    auto & system         = sjsu::SystemController::GetPlatformController();
+    auto system_frequency = system.GetClockRate(bus_.power_on_bit);
+
+    auto prescaler = system_frequency / settings.clock_rate;
+
+    // Store lower half of prescalar in clock prescalar register
+    bus_.registers->CPSR = prescaler.to<uint16_t>() & 0xFF;
+
+    // Store upper 8 bit half of the prescalar in control register 0
+    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0,
+                                      prescaler.to<uint16_t>() >> 8,
+                                      ControlRegister0::kDividerBit);
+  }
+
+  void ConfigureClockMode()
+  {
+    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0,
+                                      Value(settings.polarity),
+                                      ControlRegister0::kPolarityBit);
+
+    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0,
+                                      Value(settings.phase),
+                                      ControlRegister0::kPhaseBit);
+  }
+
+  void ConfigureFrameSize()
+  {
+    // NOTE: In UM10562 page 611, you will see that DSS (Data Size Select) is
+    // equal to the bit transfer minus 1. So we can add 3 to our DataSize enum
+    // to get the appropriate tranfer code.
+    constexpr uint32_t kBitTransferCodeOffset = 3;
+    const auto kSizeCode = Value(settings.frame_size) + kBitTransferCodeOffset;
+
+    bus_.registers->CR0 = bit::Insert(bus_.registers->CR0,
+                                      static_cast<uint8_t>(kSizeCode),
+                                      ControlRegister0::kDataBit);
+  }
+
   const Bus_t & bus_;
 };
+
+template <int port>
+inline Spi & GetSpi()
+{
+  if constexpr (port == 0)
+  {
+    // SSP0 pins
+    static sjsu::lpc40xx::Pin & mosi0 = sjsu::lpc40xx::GetPin<0, 18>();
+    static sjsu::lpc40xx::Pin & miso0 = sjsu::lpc40xx::GetPin<0, 17>();
+    static sjsu::lpc40xx::Pin & sck0  = sjsu::lpc40xx::GetPin<0, 15>();
+
+    /// Definition for SPI bus 0 for LPC40xx
+    static const Spi::Bus_t kSpi0 = {
+      .registers    = LPC_SSP0,
+      .power_on_bit = sjsu::lpc40xx::SystemController::Peripherals::kSsp0,
+      .mosi         = mosi0,
+      .miso         = miso0,
+      .sck          = sck0,
+      .pin_function = 0b010,
+    };
+
+    static Spi spi0(kSpi0);
+    return spi0;
+  }
+  else if constexpr (port == 1)
+  {
+    // SSP1 pins
+    static sjsu::lpc40xx::Pin & mosi1 = sjsu::lpc40xx::GetPin<0, 9>();
+    static sjsu::lpc40xx::Pin & miso1 = sjsu::lpc40xx::GetPin<0, 8>();
+    static sjsu::lpc40xx::Pin & sck1  = sjsu::lpc40xx::GetPin<0, 7>();
+
+    /// Definition for SPI bus 1 for LPC40xx
+    static const Spi::Bus_t kSpi1 = {
+      .registers    = LPC_SSP1,
+      .power_on_bit = sjsu::lpc40xx::SystemController::Peripherals::kSsp1,
+      .mosi         = mosi1,
+      .miso         = miso1,
+      .sck          = sck1,
+      .pin_function = 0b010,
+    };
+
+    static Spi spi1(kSpi1);
+    return spi1;
+  }
+  else if constexpr (port == 2)
+  {  // SSP2 pins
+    static sjsu::lpc40xx::Pin & mosi2 = sjsu::lpc40xx::GetPin<1, 1>();
+    static sjsu::lpc40xx::Pin & miso2 = sjsu::lpc40xx::GetPin<1, 4>();
+    static sjsu::lpc40xx::Pin & sck2  = sjsu::lpc40xx::GetPin<1, 0>();
+
+    /// Definition for SPI bus 2 for LPC40xx
+    static const Spi::Bus_t kSpi2 = {
+      .registers    = LPC_SSP2,
+      .power_on_bit = sjsu::lpc40xx::SystemController::Peripherals::kSsp2,
+      .mosi         = mosi2,
+      .miso         = miso2,
+      .sck          = sck2,
+      .pin_function = 0b100,
+    };
+
+    static Spi spi2(kSpi2);
+    return spi2;
+  }
+  else
+  {
+    static_assert(InvalidOption<port>,
+                  SJ2_ERROR_MESSAGE_DECORATOR(
+                      "LPC40xx only supports SPI0, SPI1, and SPI2."));
+    return GetSpi<0>();
+  }
+}
 }  // namespace lpc40xx
 }  // namespace sjsu

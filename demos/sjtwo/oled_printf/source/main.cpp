@@ -18,7 +18,6 @@ int main()
   sjsu::GraphicalTerminal oled_terminal(&oled_graphics, &cache);
 
   oled_terminal.Initialize();
-  oled_terminal.Enable();
 
   sjsu::LogInfo("Demonstrating printf capabilities...");
   oled_terminal.printf("Float: %.1f\nInteger: %d", 234.5, 15);

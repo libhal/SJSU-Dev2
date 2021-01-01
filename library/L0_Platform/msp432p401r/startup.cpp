@@ -1,3 +1,5 @@
+#include "L0_Platform/startup.hpp"
+
 #include <FreeRTOS.h>
 #include <task.h>
 
@@ -5,14 +7,13 @@
 #include <cstring>
 #include <iterator>
 
-#include "L0_Platform/ram.hpp"
-#include "L0_Platform/startup.hpp"
 #include "L0_Platform/msp432p401r/msp432p401r.h"
+#include "L0_Platform/ram.hpp"
 #include "L1_Peripheral/cortex/dwt_counter.hpp"
 #include "L1_Peripheral/cortex/system_timer.hpp"
+#include "L1_Peripheral/inactive.hpp"
 #include "L1_Peripheral/interrupt.hpp"
 #include "L1_Peripheral/msp432p401r/system_controller.hpp"
-#include "L1_Peripheral/inactive.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/time.hpp"
@@ -64,17 +65,14 @@ extern "C"
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    // Disable timer so the callback can be configured
-    system_timer.Enable(false);
-
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
     // delay itself.
-    system_timer.ConfigureCallback(xPortSysTickHandler);
+    system_timer.settings.callback = xPortSysTickHandler;
 
     // Re-enable timer
-    system_timer.Enable(true);
+    system_timer.Initialize();
   }
 }
 
@@ -160,10 +158,8 @@ void InitializePlatform()
 
   system_controller.Initialize();
 
+  system_timer.settings.frequency = config::kRtosFrequency;
   system_timer.Initialize();
-  system_timer.ConfigureTickFrequency(config::kRtosFrequency);
-  system_timer.ConfigureCallback([]() {});
-  system_timer.Enable();
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);

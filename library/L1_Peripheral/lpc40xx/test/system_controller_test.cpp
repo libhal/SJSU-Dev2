@@ -6,8 +6,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(SystemController);
-
 TEST_CASE("sjsu::lpc40xx::SystemController")
 {
   // Creating local instance of System Control (SC) registers

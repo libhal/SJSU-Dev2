@@ -91,27 +91,15 @@ class Ssd1306 final : public PixelDisplay
 
   void ModuleInitialize() override
   {
-    // Phase 1: Initialize()
+    SpiSettings_t default_settings;  // Default construct
+    default_settings.clock_rate = clock_rate_;
+    spi_.settings               = default_settings;
+
     spi_.Initialize();
     cs_.Initialize();
     dc_.Initialize();
     reset_.Initialize();
 
-    // Phase 2: Configure()
-    if (spi_.RequiresConfiguration())
-    {
-      spi_.ConfigureClockMode();
-      spi_.ConfigureFrameSize(Spi::FrameSize::kEightBits);
-      spi_.ConfigureFrequency(clock_rate_);
-    }
-
-    // Phase 3: Enable()
-    spi_.Enable();
-    cs_.Enable();
-    dc_.Enable();
-    reset_.Enable();
-
-    // Phase 4: Usage
     cs_.SetAsOutput();
     dc_.SetAsOutput();
     reset_.SetAsOutput();
@@ -123,19 +111,9 @@ class Ssd1306 final : public PixelDisplay
     Delay(100us);
     reset_.SetHigh();
     Delay(100us);
-  }
 
-  void ModuleEnable(bool enable = true) override
-  {
-    if (enable)
-    {
-      Clear();
-      InitializationPanel();
-    }
-    else
-    {
-      LogDebug("Disable does nothing");
-    }
+    Clear();
+    InitializationPanel();
   }
 
   /// Clears the internal bitmap_ to zero (or a user defined clear_value)

@@ -6,8 +6,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Can);
-
 TEST_CASE("Testing lpc40xx Can")
 {
   // Simulate local version of LPC_CAN
@@ -30,15 +28,19 @@ TEST_CASE("Testing lpc40xx Can")
 
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
+  Mock<sjsu::InterruptController> mock_interrupt_controller;
+  Fake(Method(mock_interrupt_controller, InterruptController::Enable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
+
   // Set up Mock for Pin
   Mock<sjsu::Pin> mock_td;
   Mock<sjsu::Pin> mock_rd;
-
-  Fake(Method(mock_td, ConfigureFunction));
-  Fake(Method(mock_rd, ConfigureFunction));
+  Fake(Method(mock_td, Pin::ModuleInitialize));
+  Fake(Method(mock_rd, Pin::ModuleInitialize));
 
   // Set up SSP Bus configuration object
-  const Can::Channel_t kMockCan = {
+  const Can::Port_t kMockCan = {
     .td_pin           = mock_td.get(),
     .td_function_code = 2,
     .rd_pin           = mock_rd.get(),
@@ -52,13 +54,49 @@ TEST_CASE("Testing lpc40xx Can")
   SECTION("Initialize()")
   {
     // Setup
+    constexpr uint32_t kExpectedSyncJumpWidth = 0;
+    constexpr uint32_t kExpectedTimeSegment1  = 0;
+    constexpr uint32_t kExpectedTimeSegment2  = 0;
+    uint32_t expected_bus_sampling            = 1;
+
+    units::frequency::hertz_t expected_baud_rate;
+
+    SECTION("Baudrate 50 kHz")
+    {
+      expected_baud_rate = 50_kHz;
+    }
+    SECTION("Baudrate 100 kHz")
+    {
+      expected_baud_rate = 100_kHz;
+    }
+    SECTION("Baudrate 1 MHz")
+    {
+      expected_baud_rate    = 1_MHz;
+      expected_bus_sampling = 0;
+    }
+    SECTION("Baudrate 250 kHz")
+    {
+      expected_baud_rate    = 250_kHz;
+      expected_bus_sampling = 0;
+    }
+
+    const uint32_t kAdjust = kExpectedSyncJumpWidth + kExpectedTimeSegment1 +
+                             kExpectedTimeSegment2 + 3;
+    const uint32_t kExpectedPreAdjustedPrescalar =
+        (kDummySystemControllerClockFrequency / expected_baud_rate) - 1;
+
+    const uint32_t kExpectedPrescalar = kExpectedPreAdjustedPrescalar / kAdjust;
+
     auto check_power_up = [](sjsu::SystemController::ResourceID id) -> bool {
       return sjsu::lpc40xx::SystemController::Peripherals::kCan1.device_id ==
              id.device_id;
     };
 
+    test_can.settings.baud_rate = expected_baud_rate;
+    test_can.settings.handler   = [](sjsu::Can &) {};
+
     // Exercise
-    test_can.ModuleInitialize();
+    test_can.Initialize();
 
     // Verify
     // Verify: Peripheral is powered on
@@ -66,38 +104,35 @@ TEST_CASE("Testing lpc40xx Can")
                .Matching(check_power_up));
 
     // Verify: Pins are configured
-    Verify(Method(mock_td, ConfigureFunction).Using(kMockCan.td_function_code))
-        .Once();
-    Verify(Method(mock_rd, ConfigureFunction).Using(kMockCan.rd_function_code))
-        .Once();
+    CHECK(mock_td.get().CurrentSettings().function ==
+          kMockCan.td_function_code);
+    CHECK(mock_rd.get().CurrentSettings().function ==
+          kMockCan.rd_function_code);
+    Verify(Method(mock_td, Pin::ModuleInitialize)).Once();
+    Verify(Method(mock_rd, Pin::ModuleInitialize)).Once();
 
-    // Verify: Mode is in reset
-    CHECK(bit::Read(local_can.MOD, Can::Mode::kReset));
+    // Verify: Baud rate registers
+    CHECK(kExpectedPrescalar ==
+          bit::Extract(local_can.BTR, Can::BusTiming::kPrescalar));
+    CHECK(kExpectedSyncJumpWidth ==
+          bit::Extract(local_can.BTR, Can::BusTiming::kSyncJumpWidth));
+    CHECK(kExpectedTimeSegment1 ==
+          bit::Extract(local_can.BTR, Can::BusTiming::kTimeSegment1));
+    CHECK(kExpectedTimeSegment2 ==
+          bit::Extract(local_can.BTR, Can::BusTiming::kTimeSegment2));
+    CHECK(expected_bus_sampling ==
+          bit::Extract(local_can.BTR, Can::BusTiming::kSampling));
 
     // Verify: Acceptance filter has been set to accept everything
     CHECK(Value(Can::Commands::kAcceptAllMessages) ==
           local_can_acceptance.AFMR);
-  }
 
-  SECTION("Enable()")
-  {
-    // Setup
-    SECTION("CANBUS was in Reset")
-    {
-      // Setup: Set MODE to kReset at the start
-      local_can.MOD = bit::Set(local_can.MOD, Can::Mode::kReset);
-    }
-    SECTION("CANBUS was NOT in Reset")
-    {
-      // Setup: Set MODE to kReset at the start
-      local_can.MOD = bit::Clear(local_can.MOD, Can::Mode::kReset);
-    }
-
-    // Exercise
-    test_can.ModuleEnable();
-
-    // Verify: Mode is in reset
+    // Verify: Mode is out of reset
     CHECK(!bit::Read(local_can.MOD, Can::Mode::kReset));
+
+    // Verify: Interrupt set
+    Verify(Method(mock_interrupt_controller, InterruptController::Enable))
+        .Once();
   }
 
   SECTION("HasData()")
@@ -375,40 +410,6 @@ TEST_CASE("Testing lpc40xx Can")
     {
       CHECK(success);
     }
-  }
-
-  SECTION("ConfigureBaudRate()")
-  {
-    // Setup
-    constexpr units::frequency::hertz_t kDifferentBaudRate = 50'000_Hz;
-    constexpr uint32_t kExpectedSyncJumpWidth              = 0;
-    constexpr uint32_t kExpectedTimeSegment1               = 0;
-    constexpr uint32_t kExpectedTimeSegment2               = 0;
-    constexpr uint32_t kExpectedBusSampling                = 1;
-
-    constexpr uint32_t kAdjust = kExpectedSyncJumpWidth +
-                                 kExpectedTimeSegment1 + kExpectedTimeSegment2 +
-                                 3;
-    constexpr uint32_t kExpectedPreAdjustedPrescalar =
-        (kDummySystemControllerClockFrequency / kDifferentBaudRate) - 1;
-
-    constexpr uint32_t kExpectedPrescalar =
-        kExpectedPreAdjustedPrescalar / kAdjust;
-
-    // Exercise
-    test_can.ConfigureBaudRate(kDifferentBaudRate);
-
-    // Verify
-    CHECK(kExpectedPrescalar ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kPrescalar));
-    CHECK(kExpectedSyncJumpWidth ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kSyncJumpWidth));
-    CHECK(kExpectedTimeSegment1 ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kTimeSegment1));
-    CHECK(kExpectedTimeSegment2 ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kTimeSegment2));
-    CHECK(kExpectedBusSampling ==
-          bit::Extract(local_can.BTR, Can::BusTiming::kSampling));
   }
 
   SECTION("~Can()")

@@ -5,8 +5,6 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Tsop752);
-
 TEST_CASE("Tsop752 Infrared Receiver Test")
 {
   Mock<PulseCapture> mock_pulse_capture;
@@ -31,7 +29,7 @@ TEST_CASE("Tsop752 Infrared Receiver Test")
     ir_receiver.Initialize();
 
     // Verify
-    Verify(Method(mock_pulse_capture, Initialize)).Once();
+    Verify(Method(mock_timer, Initialize)).Once();
     Verify(Method(mock_pulse_capture, Initialize)).Once();
   }
 

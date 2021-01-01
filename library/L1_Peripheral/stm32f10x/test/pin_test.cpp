@@ -7,8 +7,6 @@
 
 namespace sjsu::stm32f10x
 {
-EMIT_ALL_METHODS(Pin);
-
 namespace
 {
 bit::Mask Mask4Bit(const sjsu::Pin & pin)
@@ -192,7 +190,9 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0xFFFF'FFFF;
 
         // Exercise
-        test[i].pin.ConfigureFunction(0);
+        test[i].pin.settings.function = 0;
+        test[i].pin.settings.Floating();
+        test[i].pin.Initialize();
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
         uint64_t crh = test[i].reg.CRH;
@@ -200,7 +200,7 @@ TEST_CASE("Testing stm32f10x Pin")
         uint64_t cr  = (crh << 32) | crl;
 
         // Verify
-        CHECK(bit::Extract(cr, Mask4Bit(test[i].pin)) == kGpioFullSpeedCode);
+        CHECK(kGpioFullSpeedCode == bit::Extract(cr, Mask4Bit(test[i].pin)));
       }
     }
 
@@ -218,7 +218,9 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0xFFFF'FFFF;
 
         // Exercise
-        test[i].pin.ConfigureFunction(1);
+        test[i].pin.settings.function = 1;
+        test[i].pin.settings.Floating();
+        test[i].pin.Initialize();
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
         uint64_t crh = test[i].reg.CRH;
@@ -236,7 +238,8 @@ TEST_CASE("Testing stm32f10x Pin")
       for (size_t i = 0; i < test.size(); i++)
       {
         // Exercise & Verify
-        SJ2_CHECK_EXCEPTION(test[i].pin.ConfigureFunction(0b10),
+        test[i].pin.settings.function = 3;
+        SJ2_CHECK_EXCEPTION(test[i].pin.Initialize(),
                             std::errc::invalid_argument);
       }
     }
@@ -245,7 +248,7 @@ TEST_CASE("Testing stm32f10x Pin")
   SECTION("ConfigurePullResistor()")
   {
     constexpr uint8_t kPullDownCode = 0b1000;
-    constexpr uint8_t kFloating     = 0b0100;
+    constexpr uint8_t kFloating     = 0b0011;
 
     for (size_t i = 0; i < test.size(); i++)
     {
@@ -258,7 +261,9 @@ TEST_CASE("Testing stm32f10x Pin")
 
       {
         // Exercise
-        test[i].pin.ConfigureFloating();
+        test[i].pin.settings.function = 0;
+        test[i].pin.settings.Floating();
+        test[i].pin.Initialize();
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
@@ -267,12 +272,14 @@ TEST_CASE("Testing stm32f10x Pin")
         uint64_t cr  = (crh << 32) | crl;
 
         // Verify
-        CHECK(bit::Extract(cr, Mask4Bit(test[i].pin)) == kFloating);
+        CHECK(kFloating == bit::Extract(cr, Mask4Bit(test[i].pin)));
       }
 
       {
         // Exercise
-        test[i].pin.ConfigurePullUp();
+        test[i].pin.settings.function = 0;
+        test[i].pin.settings.PullUp();
+        test[i].pin.Initialize();
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
@@ -289,7 +296,8 @@ TEST_CASE("Testing stm32f10x Pin")
 
       {
         // Exercise
-        test[i].pin.ConfigurePullDown();
+        test[i].pin.settings.PullDown();
+        test[i].pin.Initialize();
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
@@ -303,18 +311,14 @@ TEST_CASE("Testing stm32f10x Pin")
         // Verify: ODR bit is 0 for pull up
         CHECK(!bit::Read(odr, test[i].pin.GetPin()));
       }
-
-      {
-        // Exercise & Verify
-        SJ2_CHECK_EXCEPTION(
-            test[i].pin.ConfigurePullResistor(Pin::Resistor::kRepeater),
-            std::errc::not_supported);
-      }
     }
   }
 
   SECTION("ConfigureAsOpenDrain()")
   {
+    constexpr uint32_t kOutputWithOpenDrain = 0b0111;
+    constexpr uint32_t kOutputWithPushPull  = 0b0011;
+
     for (size_t i = 0; i < test.size(); i++)
     {
       // Setup
@@ -327,18 +331,22 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0;
 
         // Exercise
-        test[i].pin.ConfigureAsOpenDrain(true);
+        test[i].pin.settings.open_drain = true;
+        test[i].pin.settings.function   = 0;
+        test[i].pin.settings.Floating();
+        test[i].pin.Initialize();
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
         uint64_t crh = test[i].reg.CRH;
         uint64_t crl = test[i].reg.CRL;
         uint64_t cr  = (crh << 32) | crl;
+        uint32_t odr = test[i].reg.ODR;
 
         // Verify
-        // Verify: Shifting bit position by 2 in order to put the read position
-        //         of on the CNF0 portion of the mask.
-        CHECK(bit::Read(cr, Mask4Bit(test[i].pin) << 2));
+        CHECK(kOutputWithOpenDrain == bit::Extract(cr, Mask4Bit(test[i].pin)));
+        // Verify: ODR should be set to 0 (LOW Voltage)
+        CHECK(!bit::Read(odr, test[i].pin.GetPin()));
       }
 
       {
@@ -348,25 +356,29 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0xFFFF'FFFF;
 
         // Exercise
-        test[i].pin.ConfigureAsOpenDrain(false);
+        test[i].pin.settings.open_drain = false;
+        test[i].pin.settings.function   = 0;
+        test[i].pin.settings.Floating();
+        test[i].pin.Initialize();
 
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
         uint64_t crh = test[i].reg.CRH;
         uint64_t crl = test[i].reg.CRL;
         uint64_t cr  = (crh << 32) | crl;
+        uint32_t odr = test[i].reg.ODR;
 
         // Verify
-        // Verify: Shifting bit position by 2 in order to put the read position
-        //         of on the CNF0 portion of the mask.
-        CHECK(!bit::Read(cr, Mask4Bit(test[i].pin) << 2));
+        CHECK(kOutputWithPushPull == bit::Extract(cr, Mask4Bit(test[i].pin)));
+        // Verify: ODR should be set to 0 (LOW Voltage)
+        CHECK(!bit::Read(odr, test[i].pin.GetPin()));
       }
     }
   }
 
   SECTION("ConfigureAsAnalogMode()")
   {
-    constexpr uint8_t kAnalogCode = 0b0100;
+    constexpr uint8_t kAnalogCode = 0b0000;
     for (size_t i = 0; i < test.size(); i++)
     {
       // Setup
@@ -380,7 +392,9 @@ TEST_CASE("Testing stm32f10x Pin")
         test[i].reg.CRH = 0xFFFF'FFFF;
 
         // Exercise
-        test[i].pin.ConfigureAsAnalogMode();
+        test[i].pin.settings.as_analog = true;
+        test[i].pin.Initialize();
+
         // Exercise: Combine the two registers into 1 variable to make
         //           extraction easier.
         uint64_t crh = test[i].reg.CRH;

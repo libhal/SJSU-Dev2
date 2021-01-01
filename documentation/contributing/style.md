@@ -225,7 +225,7 @@ class DistanceSensor
   virtual Status GetSignalStrengthPercent(float * strength) const = 0;
 
   // ===============
-  // Utility Methods
+  // Helper Functions
   // ===============
   Status GetDistanceCm(float * distance) const
   {

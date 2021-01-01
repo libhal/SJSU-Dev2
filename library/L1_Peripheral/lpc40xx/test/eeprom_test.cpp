@@ -6,8 +6,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Eeprom);
-
 TEST_CASE("Testing EEPROM")
 {
   // Simulate local version of LPC_EEPROM
@@ -43,30 +41,17 @@ TEST_CASE("Testing EEPROM")
     // Verify
     CHECK(local_eeprom.WSTATE == kWaitStateValues);
     CHECK(local_eeprom.CLKDIV == kClockDivider);
-  }
-
-  SECTION("Enable")
-  {
-    // Setup
-    // Setup: Set to 1 indicating that eeprom is powered down.
-    local_eeprom.PWRDWN = 1;
-
-    // Exercise
-    test_eeprom.SetStateToInitialized();
-    test_eeprom.Enable();
-
-    // Verify
     CHECK(local_eeprom.PWRDWN == 0);
   }
 
-  SECTION("Disable")
+  SECTION("PowerDown")
   {
     // Setup
+    test_eeprom.Initialize();
     local_eeprom.PWRDWN = 0;
 
     // Exercise
-    test_eeprom.SetStateToEnabled();
-    test_eeprom.Enable(false);
+    test_eeprom.PowerDown();
 
     // Verify
     CHECK(local_eeprom.PWRDWN == 1);

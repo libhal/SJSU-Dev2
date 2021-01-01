@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <utility>
 
 #include "L0_Platform/stm32f10x/stm32f10x.h"
 #include "L1_Peripheral/adc.hpp"
@@ -140,6 +141,7 @@ class Adc final : public sjsu::Adc
                                                        .Insert(5, kSequence6);
   };
 
+  /// DMA settings for the ADC
   static constexpr uint32_t kDmaSettings =
       bit::Value{}
           .Clear(Dma::Reg::kTransferCompleteInterruptEnable)
@@ -179,133 +181,6 @@ class Adc final : public sjsu::Adc
     uint8_t index;
   };
 
-  /// Namespace containing predefined Channel_t description objects. These
-  /// objects can be passed directly to the constructor of an stm32f10x::Adc
-  /// object.
-  ///
-  /// Usage:
-  ///
-  /// ```
-  /// sjsu::stm32f10x::Adc adc(sjsu::stm32f10x::Adc::Channel::kChannel0);
-  /// ```
-  struct Channel  // NOLINT
-  {
-   private:
-    inline static auto channel0_pin  = Pin('A', 0);
-    inline static auto channel1_pin  = Pin('A', 1);
-    inline static auto channel2_pin  = Pin('A', 2);
-    inline static auto channel3_pin  = Pin('A', 3);
-    inline static auto channel4_pin  = Pin('A', 4);
-    inline static auto channel5_pin  = Pin('A', 5);
-    inline static auto channel6_pin  = Pin('A', 6);
-    inline static auto channel7_pin  = Pin('A', 7);
-    inline static auto channel8_pin  = Pin('B', 0);
-    inline static auto channel9_pin  = Pin('B', 1);
-    inline static auto channel10_pin = Pin('C', 0);
-    inline static auto channel11_pin = Pin('C', 1);
-    inline static auto channel12_pin = Pin('C', 2);
-    inline static auto channel13_pin = Pin('C', 3);
-    inline static auto channel14_pin = Pin('C', 4);
-    inline static auto channel15_pin = Pin('C', 5);
-
-   public:
-    /// Channel 0 definition.
-    inline static const Channel_t kChannel0 = {
-      .pin   = channel0_pin,
-      .index = 0,
-    };
-
-    /// Channel 1 definition.
-    inline static const Channel_t kChannel1 = {
-      .pin   = channel1_pin,
-      .index = 1,
-    };
-
-    /// Channel 2 definition.
-    inline static const Channel_t kChannel2 = {
-      .pin   = channel2_pin,
-      .index = 2,
-    };
-
-    /// Channel 3 definition.
-    inline static const Channel_t kChannel3 = {
-      .pin   = channel3_pin,
-      .index = 3,
-    };
-
-    /// Channel 4 definition.
-    inline static const Channel_t kChannel4 = {
-      .pin   = channel4_pin,
-      .index = 4,
-    };
-
-    /// Channel 5 definition.
-    inline static const Channel_t kChannel5 = {
-      .pin   = channel5_pin,
-      .index = 5,
-    };
-
-    /// Channel 6 definition.
-    inline static const Channel_t kChannel6 = {
-      .pin   = channel6_pin,
-      .index = 6,
-    };
-
-    /// Channel 7 definition.
-    inline static const Channel_t kChannel7 = {
-      .pin   = channel7_pin,
-      .index = 7,
-    };
-
-    /// Channel 8 definition.
-    inline static const Channel_t kChannel8 = {
-      .pin   = channel8_pin,
-      .index = 8,
-    };
-
-    /// Channel 9 definition.
-    inline static const Channel_t kChannel9 = {
-      .pin   = channel9_pin,
-      .index = 9,
-    };
-
-    /// Channel 10 definition.
-    inline static const Channel_t kChannel10 = {
-      .pin   = channel10_pin,
-      .index = 10,
-    };
-
-    /// Channel 11 definition.
-    inline static const Channel_t kChannel11 = {
-      .pin   = channel11_pin,
-      .index = 11,
-    };
-
-    /// Channel 12 definition.
-    inline static const Channel_t kChannel12 = {
-      .pin   = channel12_pin,
-      .index = 12,
-    };
-
-    /// Channel 13 definition.
-    inline static const Channel_t kChannel13 = {
-      .pin   = channel13_pin,
-      .index = 13,
-    };
-
-    /// Channel 14 definition.
-    inline static const Channel_t kChannel14 = {
-      .pin   = channel14_pin,
-      .index = 14,
-    };
-
-    /// Channel 15 definition.
-    inline static const Channel_t kChannel15 = {
-      .pin   = channel15_pin,
-      .index = 15,
-    };
-  };
-
   /// The default and highest frequency that the ADC can operate at.
   static constexpr units::frequency::hertz_t kClockFrequency = 1_MHz;
 
@@ -323,12 +198,7 @@ class Adc final : public sjsu::Adc
 
   /// @param channel - Passed channel descriptor object. See Channel_t and
   ///        Channel documentation for more details about how to use this.
-  /// @param reference_voltage - Voltage applied to Vref (ADC reference voltage)
-  explicit constexpr Adc(const Channel_t & channel,
-                         units::voltage::microvolt_t reference_voltage = 3.3_V)
-      : channel_(channel), kReferenceVoltage(reference_voltage)
-  {
-  }
+  explicit constexpr Adc(const Channel_t & channel) : channel_(channel) {}
 
   void ModuleInitialize() override
   {
@@ -371,13 +241,16 @@ class Adc final : public sjsu::Adc
 
     // Give some time for samples to be collected before leaving initialize
     Delay(1ms);
-  }
 
-  void ModuleEnable(bool enable = true) override
-  {
+    static constexpr PinSettings_t kADCSettings = {
+      .function   = 0,
+      .resistor   = PinSettings_t::Resistor::kNone,
+      .open_drain = false,
+      .as_analog  = true,
+    };
+
+    channel_.pin.settings = kADCSettings;
     channel_.pin.Initialize();
-    channel_.pin.ConfigureAsAnalogMode(enable);
-    channel_.pin.Enable(enable);
   }
 
   uint32_t Read() override
@@ -388,11 +261,6 @@ class Adc final : public sjsu::Adc
   uint8_t GetActiveBits() override
   {
     return kActiveBits;
-  }
-
-  units::voltage::microvolt_t ReferenceVoltage() override
-  {
-    return kReferenceVoltage;
   }
 
  private:
@@ -423,7 +291,59 @@ class Adc final : public sjsu::Adc
   }
 
   const Channel_t & channel_;
-  const units::voltage::microvolt_t kReferenceVoltage;
 };
+
+template <int channel>
+constexpr static auto GetPinBasedOnChannel()
+{
+  std::array<std::pair<int, int>, 16> pins = {
+    std::make_pair('A', 0),  // channel 0
+    std::make_pair('A', 1),  // channel 1
+    std::make_pair('A', 2),  // channel 2
+    std::make_pair('A', 3),  // channel 3
+    std::make_pair('A', 4),  // channel 4
+    std::make_pair('A', 5),  // channel 5
+    std::make_pair('A', 6),  // channel 6
+    std::make_pair('A', 7),  // channel 7
+    std::make_pair('B', 0),  // channel 8
+    std::make_pair('B', 1),  // channel 9
+    std::make_pair('C', 0),  // channel 10
+    std::make_pair('C', 1),  // channel 11
+    std::make_pair('C', 2),  // channel 12
+    std::make_pair('C', 3),  // channel 13
+    std::make_pair('C', 4),  // channel 14
+    std::make_pair('C', 5),  // channel 15
+  };
+
+  return pins[channel];
+}
+
+template <int channel>
+inline Adc & GetAdc()
+{
+  static_assert(0 <= channel && channel <= 15,
+                "\n\n"
+                "SJSU-Dev2 Compile Time Error:\n"
+                "    STM32F10x only supports ADC channels 0 to 15!\n"
+                "\n");
+
+  constexpr int bounded_channel = std::clamp(channel, 0, 15);
+
+  // Get pin values based on the ADC channel number
+  constexpr std::pair<int, int> pin_values =
+      GetPinBasedOnChannel<bounded_channel>();
+  // Get pin using GetPin to generate compile time error if map is out of
+  // bounds.
+  static Pin & channel_pin = GetPin<pin_values.first, pin_values.second>();
+
+  // Create a static const ADC channel info object
+  static const Adc::Channel_t kChannelInfo = {
+    .pin   = channel_pin,
+    .index = channel,
+  };
+
+  static Adc adc(kChannelInfo);
+  return adc;
+}
 }  // namespace stm32f10x
 }  // namespace sjsu

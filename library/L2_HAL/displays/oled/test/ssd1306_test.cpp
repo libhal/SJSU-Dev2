@@ -5,8 +5,6 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Ssd1306);
-
 TEST_CASE("SSD1306 Test")
 {
   Mock<sjsu::Spi> mock_spi;
@@ -15,22 +13,15 @@ TEST_CASE("SSD1306 Test")
   Mock<sjsu::Gpio> mock_reset;
 
   Fake(Method(mock_cs, ModuleInitialize),
-       Method(mock_cs, ModuleEnable),
        Method(mock_cs, SetDirection),
        Method(mock_cs, Set));
   Fake(Method(mock_dc, ModuleInitialize),
-       Method(mock_dc, ModuleEnable),
        Method(mock_dc, SetDirection),
        Method(mock_dc, Set));
   Fake(Method(mock_reset, ModuleInitialize),
-       Method(mock_reset, ModuleEnable),
        Method(mock_reset, SetDirection),
        Method(mock_reset, Set));
-  Fake(Method(mock_spi, ModuleInitialize),
-       Method(mock_spi, ModuleEnable),
-       Method(mock_spi, ConfigureFrequency),
-       Method(mock_spi, ConfigureClockMode),
-       Method(mock_spi, ConfigureFrameSize));
+  Fake(Method(mock_spi, ModuleInitialize));
 
   Ssd1306 test_subject(
       mock_spi.get(), mock_cs.get(), mock_dc.get(), mock_reset.get());
@@ -40,27 +31,22 @@ TEST_CASE("SSD1306 Test")
     SECTION("SPI Requires Configuration()")
     {
       // Setup
-      mock_spi.get().SetStateToReset();
-
       // Exercise
-      test_subject.ModuleInitialize();
+      test_subject.Initialize();
 
-      Verify(Method(mock_spi, ModuleInitialize),
-             Method(mock_spi, ConfigureClockMode),
-             Method(mock_spi, ConfigureFrameSize)
-                 .Using(Spi::FrameSize::kEightBits),
-             Method(mock_spi, ConfigureFrequency)
-                 .Using(Ssd1306::kDefaultClockRate),
-             Method(mock_spi, ModuleEnable));
+      Verify(Method(mock_spi, ModuleInitialize));
+      CHECK(mock_spi.get().CurrentSettings() ==
+            SpiSettings_t{
+                .clock_rate = Ssd1306::kDefaultClockRate,
+                .frame_size = SpiSettings_t::FrameSize::kEightBits,
+            });
     }
 
     SECTION("SPI Does NOT Require Configuration()")
     {
       // Setup
-      mock_spi.get().SetStateToEnabled();
-
       // Exercise
-      test_subject.ModuleInitialize();
+      test_subject.Initialize();
     }
 
     // Verify
@@ -68,11 +54,6 @@ TEST_CASE("SSD1306 Test")
     Fake(Method(mock_cs, ModuleInitialize),
          Method(mock_dc, ModuleInitialize),
          Method(mock_reset, ModuleInitialize));
-
-    // Phase 3: Enable()
-    Fake(Method(mock_cs, ModuleEnable),
-         Method(mock_dc, ModuleEnable),
-         Method(mock_reset, ModuleEnable));
 
     // Phase 4: Usage
     Fake(Method(mock_cs, SetDirection).Using(Gpio::Direction::kOutput),
@@ -106,7 +87,7 @@ TEST_CASE("SSD1306 Test")
             });
 
     // Exercise
-    test_subject.ModuleEnable();
+    test_subject.Initialize();
 
     // Verify
     REQUIRE(kInitializationSequence == buffer);

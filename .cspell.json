@@ -11,6 +11,7 @@
         "aclk",
         "ACMD",
         "ADCR",
+        "ADCs",
         "ADGDR",
         "ADINTEN",
         "ADRMATCH",

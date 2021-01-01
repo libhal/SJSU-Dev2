@@ -23,7 +23,7 @@
   - [Configuring Execution Frequency](#configuring-execution-frequency)
     - [void SetDelayTime(uint32_t time) override](#void-setdelaytimeuint32t-time-override)
     - [const uint32_t GetDelayTime() const override](#const-uint32t-getdelaytime-const-override)
-  - [Additional Utility Methods](#additional-utility-methods)
+  - [Additional Helper Functions](#additional-utility-methods)
     - [const char * GetName() const override](#const-char--getname-const-override)
     - [Priority GetPriority() const override](#priority-getpriority-const-override)
     - [size_t GetStackSize() const override](#sizet-getstacksize-const-override)
@@ -212,7 +212,7 @@ period is 1ms, then `Run()` will be invoked every 1 second.
 ### const uint32_t GetDelayTime() const override
 Returns the delay time that was set by SetDelayTime() in milliseconds.
 
-## Additional Utility Methods
+## Additional Helper Functions
 ### const char * GetName() const override
 Returns the name used to identify the task.
 

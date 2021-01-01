@@ -7,7 +7,7 @@ namespace sjsu
 {
 /// @ingroup battery
 /// Abstract interface for a state of charge.
-class BatteryCharge : public Module
+class BatteryCharge : public Module<>
 {
  public:
   /// Read the state of battery charge from a device.

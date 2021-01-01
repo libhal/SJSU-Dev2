@@ -8,8 +8,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Gpio);
-
 TEST_CASE("Testing lpc40xx Gpio")
 {
   // Declared constants that are to be used within the different sections
@@ -29,9 +27,6 @@ TEST_CASE("Testing lpc40xx Gpio")
   // Create mock pins
   Mock<sjsu::Pin> mock_pin0;
   Mock<sjsu::Pin> mock_pin1;
-  Fake(Method(mock_pin0, ConfigureFunction));
-  Fake(Method(mock_pin1, ConfigureFunction));
-
 
   // Get gpio register pointer and replace the address with the local GPIOs.
   // Only GPIO port 1 & 2 will be used in this unit test
@@ -59,6 +54,18 @@ TEST_CASE("Testing lpc40xx Gpio")
   Gpio p0_00(0, 0, &mock_pin0.get());
   Gpio p1_07(1, 7, &mock_pin1.get());
 
+  SECTION("Initialize()")
+  {
+    Fake(Method(mock_pin0, Pin::ModuleInitialize));
+    Fake(Method(mock_pin1, Pin::ModuleInitialize));
+
+    p0_00.Initialize();
+    p1_07.Initialize();
+
+    CHECK(mock_pin0.get().CurrentSettings().function == 0);
+    CHECK(mock_pin1.get().CurrentSettings().function == 0);
+  }
+
   SECTION("Set as Output and Input")
   {
     // Source: "UM10562 LPC408x/407x User manual" table 96 page 148
@@ -67,9 +74,6 @@ TEST_CASE("Testing lpc40xx Gpio")
 
     p0_00.SetAsInput();
     p1_07.SetAsOutput();
-
-    Verify(Method(mock_pin0, ConfigureFunction).Using(0));
-    Verify(Method(mock_pin1, ConfigureFunction).Using(0));
 
     // Check bit 0 of local_gpio_port[0].DIR (port 0 pin 0)
     // to see if it is cleared
@@ -87,6 +91,7 @@ TEST_CASE("Testing lpc40xx Gpio")
     // to see if it is cleared
     CHECK(bit::Read(local_gpio_port[1].DIR, kPin7) == kInputSet);
   }
+
   SECTION("Set High")
   {
     // Source: "UM10562 LPC408x/407x User manual" table 99 page 149
@@ -188,7 +193,7 @@ TEST_CASE("Testing lpc40xx Gpio External Interrupts")
 
   // Create mock pin
   Mock<sjsu::Pin> mock_pin;
-  Fake(Method(mock_pin, ConfigureFunction));
+  Fake(Method(mock_pin, Pin::ModuleInitialize));
 
   Gpio p0_15(0, 15, &mock_pin.get());
   Gpio p2_7(2, 7, &mock_pin.get());

@@ -6,11 +6,12 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Mma8452q);
-
 TEST_CASE("Accelerometer")
 {
   Mock<sjsu::I2c> mock_i2c;
+  // Setup
+  Fake(Method(mock_i2c, ModuleInitialize));
+
   MockProtocol<MemoryAccessProtocol::AddressWidth::kByte1> mock_map;
   Mma8452q test_subject(mock_map, mock_i2c.get());
 
@@ -19,32 +20,14 @@ TEST_CASE("Accelerometer")
 
   SECTION("Initialize")
   {
-    // Setup
-    Fake(Method(mock_i2c, ModuleInitialize),
-         Method(mock_i2c, ConfigureClockRate),
-         Method(mock_i2c, ModuleEnable));
-
-    // Exercise
-    test_subject.ModuleInitialize();
-
-    // Verify
-    Verify(Method(mock_i2c, ModuleInitialize),
-           Method(mock_i2c, ConfigureClockRate),
-           Method(mock_i2c, ModuleEnable));
-  }
-
-  SECTION("Enable")
-  {
     SECTION("IsValidDevice() = false")
     {
       // Setup
       // Setup: Change WhoAmI to an inccorrect register value.
       mock_map[Mma8452q::Map::kWhoAmI] = 0x22;
 
-      // Exercise
-      // Verify
-      SJ2_CHECK_EXCEPTION(test_subject.ModuleEnable(),
-                          std::errc::no_such_device);
+      // Exercise + Verify
+      SJ2_CHECK_EXCEPTION(test_subject.Initialize(), std::errc::no_such_device);
     }
 
     SECTION("Success")
@@ -53,11 +36,12 @@ TEST_CASE("Accelerometer")
       mock_map[Mma8452q::Map::kControlReg1] = 0xFF;
 
       // Exercise
-      test_subject.ModuleEnable();
+      test_subject.Initialize();
 
       // Verify
       uint8_t actual_control = mock_map[Mma8452q::Map::kControlReg1];
       CHECK(0x01 == actual_control);
+      Verify(Method(mock_i2c, ModuleInitialize));
     }
   }
 
@@ -66,7 +50,8 @@ TEST_CASE("Accelerometer")
     SECTION("2 standard gravity")
     {
       // Exercise
-      test_subject.ConfigureFullScale(2_SG);
+      test_subject.settings.gravity = 2_SG;
+      test_subject.Initialize();
 
       // Verify
       uint8_t actual_config = mock_map[Mma8452q::Map::kDataConfig];
@@ -76,7 +61,8 @@ TEST_CASE("Accelerometer")
     SECTION("4 standard gravity")
     {
       // Exercise
-      test_subject.ConfigureFullScale(4_SG);
+      test_subject.settings.gravity = 4_SG;
+      test_subject.Initialize();
 
       // Verify
       uint8_t actual_config = mock_map[Mma8452q::Map::kDataConfig];
@@ -86,7 +72,8 @@ TEST_CASE("Accelerometer")
     SECTION("8 standard gravity")
     {
       // Exercise
-      test_subject.ConfigureFullScale(8_SG);
+      test_subject.settings.gravity = 8_SG;
+      test_subject.Initialize();
 
       // Verify
       uint8_t actual_config = mock_map[Mma8452q::Map::kDataConfig];

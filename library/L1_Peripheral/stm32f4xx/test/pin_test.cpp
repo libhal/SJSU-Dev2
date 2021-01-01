@@ -7,8 +7,6 @@
 
 namespace sjsu::stm32f4xx
 {
-EMIT_ALL_METHODS(Pin);
-
 namespace
 {
 bit::Mask Mask2Bit(const sjsu::Pin & pin)
@@ -151,62 +149,33 @@ TEST_CASE("Testing stm32f4xx Pin")
     },
   };
 
+  constexpr uint8_t kAlternativeFunctionCode = 0b10;
+
   SECTION("Initialize()")
   {
-    SECTION("Valid port")
-    {
-      auto power_up_matcher =
-          [](sjsu::SystemController::ResourceID expected_id) {
-            return [expected_id](sjsu::SystemController::ResourceID actual_id) {
-              return expected_id.device_id == actual_id.device_id;
-            };
-          };
+    auto power_up_matcher = [](sjsu::SystemController::ResourceID expected_id) {
+      return [expected_id](sjsu::SystemController::ResourceID actual_id) {
+        return expected_id.device_id == actual_id.device_id;
+      };
+    };
 
-      for (size_t i = 0; i < test.size(); i++)
-      {
-        // Setup
-        INFO("Failure on test index: " << i);
-
-        // Exercise
-        test[i].pin.Initialize();
-
-        // Verify
-        Verify(Method(mock_system_controller, PowerUpPeripheral)
-                   .Matching(power_up_matcher(test[i].id)));
-        // Cleanup
-        mock_system_controller.ClearInvocationHistory();
-      }
-    }
-
-    SECTION("Invalid port")
+    for (size_t i = 0; i < test.size(); i++)
     {
       // Setup
-      uint8_t port;
+      INFO("Failure on test index: " << i);
 
-      SUBCASE("Port 0")
-      {
-        port = 'J';
-      }
+      // Exercise
+      test[i].pin.Initialize();
 
-      SUBCASE("Port 1")
-      {
-        port = 1;
-      }
-
-      SUBCASE("Port 2")
-      {
-        port = '3';
-      }
-
-      stm32f4xx::Pin invalid_pin(port, 0);
-
-      // Exercise & Verify
-      SJ2_CHECK_EXCEPTION(invalid_pin.Initialize(),
-                          std::errc::invalid_argument);
+      // Verify
+      Verify(Method(mock_system_controller, PowerUpPeripheral)
+                 .Matching(power_up_matcher(test[i].id)));
+      // Cleanup
+      mock_system_controller.ClearInvocationHistory();
     }
   }
 
-  SECTION("ConfigureFunction()")
+  SECTION("settings.Function()")
   {
     SECTION("Valid function code")
     {
@@ -220,7 +189,6 @@ TEST_CASE("Testing stm32f4xx Pin")
       constexpr uint8_t kExpectedFunction[] = {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
       };
-      constexpr uint8_t kAlternativeFunctionCode = 0b10;
 
       for (size_t i = 0; i < test.size(); i++)
       {
@@ -229,7 +197,9 @@ TEST_CASE("Testing stm32f4xx Pin")
         test[i].pin.Initialize();
 
         // Exercise
-        test[i].pin.ConfigureFunction(kExpectedFunction[i]);
+
+        test[i].pin.settings.function = kExpectedFunction[i];
+        test[i].pin.Initialize();
 
         // Verify
         CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
@@ -250,16 +220,16 @@ TEST_CASE("Testing stm32f4xx Pin")
       {
         // Setup
         INFO("Failure on test index: " << i);
-        test[i].pin.Initialize();
+        test[i].pin.settings.function = invalid_function;
 
         // Exercise & Verify
-        SJ2_CHECK_EXCEPTION(test[i].pin.ConfigureFunction(invalid_function),
+        SJ2_CHECK_EXCEPTION(test[i].pin.Initialize(),
                             std::errc::invalid_argument);
       }
     }
   }
 
-  SECTION("ConfigurePullResistor()")
+  SECTION("settings.PullResistor()")
   {
     // 00: No pull-up, pull-down
     // 01: Pull-up
@@ -278,7 +248,9 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.ConfigureFloating();
+        test[i].pin.settings.Floating();
+        test[i].pin.Initialize();
+
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedNoPull);
@@ -286,7 +258,9 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.ConfigurePullUp();
+        test[i].pin.settings.PullUp();
+        test[i].pin.Initialize();
+
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedPullUp);
@@ -294,22 +268,17 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.ConfigurePullDown();
+        test[i].pin.settings.PullDown();
+        test[i].pin.Initialize();
+
         // Verify
         CHECK(bit::Extract(test[i].gpio.PUPDR, Mask2Bit(test[i].pin)) ==
               kExpectedPullDown);
       }
-
-      {
-        // Exercise & Verify
-        SJ2_CHECK_EXCEPTION(
-            test[i].pin.ConfigurePullResistor(Pin::Resistor::kRepeater),
-            std::errc::not_supported);
-      }
     }
   }
 
-  SECTION("ConfigureAsOpenDrain()")
+  SECTION("settings.AsOpenDrain()")
   {
     for (size_t i = 0; i < test.size(); i++)
     {
@@ -319,7 +288,8 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.ConfigureAsOpenDrain(true);
+        test[i].pin.settings.open_drain = true;
+        test[i].pin.Initialize();
 
         // Verify
         CHECK(bit::Read(test[i].gpio.OTYPER, test[i].pin.GetPin()));
@@ -327,7 +297,8 @@ TEST_CASE("Testing stm32f4xx Pin")
 
       {
         // Exercise
-        test[i].pin.ConfigureAsOpenDrain(false);
+        test[i].pin.settings.open_drain = false;
+        test[i].pin.Initialize();
 
         // Verify
         CHECK(!bit::Read(test[i].gpio.OTYPER, test[i].pin.GetPin()));
@@ -335,7 +306,7 @@ TEST_CASE("Testing stm32f4xx Pin")
     }
   }
 
-  SECTION("ConfigureAsAnalogMode()")
+  SECTION("settings.AsAnalogMode()")
   {
     constexpr uint8_t kAnalogCode = 0b11;
     for (size_t i = 0; i < test.size(); i++)
@@ -345,36 +316,45 @@ TEST_CASE("Testing stm32f4xx Pin")
       test[i].pin.Initialize();
       {
         // Setup
-        test[i].gpio.MODER = 0;
+        test[i].gpio.MODER             = 0;
+        test[i].pin.settings.as_analog = true;
 
         // Exercise
-        test[i].pin.ConfigureAsAnalogMode(true);
+        test[i].pin.Initialize();
 
         // Verify
         CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
               kAnalogCode);
       }
+
       {
         // Setup
-        test[i].gpio.MODER = 0;
+        test[i].gpio.MODER            = 0;
+        test[i].pin.settings.function = 0b11;
+        // Setup: As Analog overrides all other pin configurations
+        test[i].pin.settings.as_analog = true;
 
         // Exercise
-        test[i].pin.ConfigureAsAnalogMode(true);
-        test[i].pin.ConfigureAsAnalogMode(false);
+        test[i].pin.Initialize();
 
         // Verify
         CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
               kAnalogCode);
       }
+
       {
         // Setup
-        test[i].gpio.MODER = 0;
+        test[i].gpio.MODER             = 0;
+        test[i].pin.settings.function  = 0b0011;
+        test[i].pin.settings.as_analog = false;
 
         // Exercise
-        test[i].pin.ConfigureAsAnalogMode(false);
+        test[i].pin.Initialize();
 
         // Verify
-        CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) == 0b00);
+        // Verify:
+        CHECK(bit::Extract(test[i].gpio.MODER, Mask2Bit(test[i].pin)) ==
+              kAlternativeFunctionCode);
       }
     }
   }

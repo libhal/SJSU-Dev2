@@ -33,13 +33,7 @@ class Pin final : public sjsu::Pin
 
   void ModuleInitialize() override
   {
-    if (!('A' <= port_ && port_ <= 'I'))
-    {
-      throw Exception(std::errc::invalid_argument,
-                      "Port must be between 'A' and 'I'");
-    }
-
-    switch (port_)
+    switch (GetPort())
     {
       case 'A':
         SystemController::GetPlatformController().PowerUpPeripheral(
@@ -78,13 +72,17 @@ class Pin final : public sjsu::Pin
             stm32f4xx::SystemController::Peripherals::kGpioI);
         break;
     }
+
+    ConfigureFunction();
+    ConfigurePullResistor();
+    ConfigureAsOpenDrain();
+    ConfigureAsAnalogMode();
   }
 
-  void ModuleEnable(bool = true) override {}
-
-  void ConfigureFunction(uint8_t function) override
+ private:
+  void ConfigureFunction()
   {
-    if (function > 0b1111)
+    if (settings.function > 0b1111)
     {
       throw Exception(std::errc::invalid_argument,
                       "The function code must be a 4-bit code.");
@@ -100,39 +98,39 @@ class Pin final : public sjsu::Pin
 
     // Create bitmask for the pin
     const bit::Mask kMask = {
-      .position = static_cast<uint8_t>((pin_ % 8) * 4),
+      .position = static_cast<uint8_t>((GetPin() % 8) * 4),
       .width    = 4,
     };
 
     // Set alternative function code
-    Port()->AFR[pin_ / 8] = bit::Insert(Port()->AFR[pin_ / 8], function, kMask);
+    Port()->AFR[GetPin() / 8] =
+        bit::Insert(Port()->AFR[GetPin() / 8], settings.function, kMask);
   }
 
-  void ConfigurePullResistor(Resistor resistor) override
+  void ConfigurePullResistor()
   {
     uint8_t mask = 0;
     // 00: No pull-up, pull-down
     // 01: Pull-up
     // 10: Pull-down
     // 11: Reserved
-    switch (resistor)
+    switch (settings.resistor)
     {
-      case Resistor::kNone: mask = 0b00; break;
-      case Resistor::kPullUp: mask = 0b01; break;
-      case Resistor::kPullDown: mask = 0b10; break;
-      default:
-        throw Exception(std::errc::not_supported, "Invalid resistor pull.");
+      case PinSettings_t::Resistor::kNone: mask = 0b00; break;
+      case PinSettings_t::Resistor::kPullUp: mask = 0b01; break;
+      case PinSettings_t::Resistor::kPullDown: mask = 0b10; break;
     }
 
     Port()->PUPDR = bit::Insert(Port()->PUPDR, mask, Mask());
   }
 
-  void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
+  void ConfigureAsOpenDrain()
   {
-    Port()->OTYPER = bit::Insert(Port()->OTYPER, set_as_open_drain, pin_, 1);
+    Port()->OTYPER =
+        bit::Insert(Port()->OTYPER, settings.open_drain, GetPin(), 1);
   }
 
-  void ConfigureAsAnalogMode(bool set_as_analog = true) override
+  void ConfigureAsAnalogMode()
   {
     // RM0090 p.281
     //
@@ -141,13 +139,12 @@ class Pin final : public sjsu::Pin
     //     10: Alternate function mode
     // --> 11: Analog mode
     constexpr uint8_t kAnalogCode = 0b11;
-    if (set_as_analog)
+    if (settings.as_analog)
     {
       Port()->MODER = bit::Insert(Port()->MODER, kAnalogCode, Mask());
     }
   }
 
- private:
   GPIO_TypeDef * Port() const
   {
     return gpio[PortToIndex()];
@@ -156,16 +153,29 @@ class Pin final : public sjsu::Pin
   bit::Mask Mask() const
   {
     return {
-      .position = (pin_ * 2U),
+      .position = (GetPin() * 2U),
       .width    = 2,
     };
   }
 
   uint8_t PortToIndex() const
   {
-    return static_cast<uint8_t>(port_ - 'A');
+    return static_cast<uint8_t>(GetPort() - 'A');
   }
 
   friend class Gpio;
 };
+
+template <int port, int pin_number>
+inline Pin & GetPin()
+{
+  static_assert(
+      ('A' <= port && port <= 'I') && (0 <= pin_number && pin_number <= 15),
+      SJ2_ERROR_MESSAGE_DECORATOR(
+          "stm32f4xx: Port must be between 'A' and 'I' and pin must be between "
+          "0 and 15!\n"));
+
+  static Pin pin(port, pin_number);
+  return pin;
+}
 }  // namespace sjsu::stm32f4xx

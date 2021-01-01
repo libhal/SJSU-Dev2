@@ -4,8 +4,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Timer);
-
 TEST_CASE("Testing lpc40xx Timer")
 {
   LPC_TIM_TypeDef local_timer_registers;

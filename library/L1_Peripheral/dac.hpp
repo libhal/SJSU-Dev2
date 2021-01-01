@@ -13,21 +13,9 @@ namespace sjsu
 /// typically called a Digital-to-Analog peripheral.
 ///
 /// @ingroup l1_peripheral
-class Dac : public Module
+class Dac : public Module<>
 {
  public:
-  // ===========================================================================
-  // Interface Methods
-  // ===========================================================================
-
-  // ---------------------------------------------------------------------------
-  // Configuration Methods
-  // ---------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------
-  // Usage Methods
-  // ---------------------------------------------------------------------------
-
   /// Set the DAC output the the value supplied. If the value is above what this
   /// driver can support, the value is clamped.
   ///
@@ -53,7 +41,6 @@ inline sjsu::Dac & GetInactive<sjsu::Dac>()
   {
    public:
     void ModuleInitialize() override {}
-    void ModuleEnable(bool = true) override {}
     void Write(uint32_t) override {}
     void SetVoltage(units::voltage::microvolt_t) override {}
     uint8_t GetActiveBits() override

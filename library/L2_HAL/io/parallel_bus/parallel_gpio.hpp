@@ -38,19 +38,12 @@ class ParallelGpio : public sjsu::ParallelBus
     }
   }
 
-  void ModuleEnable(bool enable = true) override
-  {
-    for (auto gpio : io_)
-    {
-      gpio->Enable(enable);
-    }
-  }
-
   void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
   {
     for (auto gpio : io_)
     {
-      gpio->GetPin().ConfigureAsOpenDrain(set_as_open_drain);
+      gpio->GetPin().settings.open_drain = set_as_open_drain;
+      gpio->GetPin().Initialize();
     }
   }
 

@@ -104,6 +104,7 @@ SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -fexceptions -ffunction-sections \
                        -Wno-main -Wno-variadic-macros -Wall -Wextra -Wshadow \
                        -Wfloat-equal -Wundef -Wno-format-nonliteral \
                        -Wconversion -Wdouble-promotion -Wswitch -Wformat=2 \
+											 -Wno-missing-field-initializers \
                        -Wno-uninitialized -Wnull-dereference \
 											 -fdiagnostics-color -MMD -MP
 

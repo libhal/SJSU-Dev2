@@ -7,7 +7,7 @@
 namespace sjsu
 {
 /// An abstract interface for temperature sensing device drivers.
-class TemperatureSensor : public Module
+class TemperatureSensor : public Module<>
 {
  public:
   /// Retrieves the temperature reading and writes the value to the designated

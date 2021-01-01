@@ -11,8 +11,6 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(TFMini);
-
 namespace
 {
 template <size_t length>
@@ -39,24 +37,7 @@ TEST_CASE("Testing TFMini")
     // Setup
     constexpr uint32_t kBaudRate = 115200;
     Fake(Method(mock_uart, ModuleInitialize));
-    Fake(Method(mock_uart, ConfigureBaudRate));
-    Fake(Method(mock_uart, ConfigureFormat));
-    Fake(Method(mock_uart, ModuleEnable));
 
-    // Exercise
-    test.ModuleInitialize();
-
-    // Verify:
-    // Verify: Check that uart initialization uses the correct Baud rate
-    Verify(Method(mock_uart, ModuleInitialize));
-    Verify(Method(mock_uart, ConfigureBaudRate).Using(kBaudRate));
-    Verify(Method(mock_uart, ConfigureFormat));
-    Verify(Method(mock_uart, ModuleEnable));
-  }
-
-  SECTION("Enable()")
-  {
-    // Setup
     size_t read_count                                        = 0;
     const std::array<uint8_t, 8 * 6> kExpectedInitializeData = {
       0x42, 0x57, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02,  // Successful Ack
@@ -71,7 +52,14 @@ TEST_CASE("Testing TFMini")
         .AlwaysDo(MockReadImplementation(read_count, kExpectedInitializeData));
 
     // Exercise
-    test.ModuleEnable();
+    test.ModuleInitialize();
+
+    // Verify:
+    // Verify: Check that uart initialization uses the correct Baud rate
+    Verify(Method(mock_uart, ModuleInitialize));
+    CHECK(mock_uart.get().CurrentSettings() == UartSettings_t{
+                                                   .baud_rate = kBaudRate,
+                                               });
 
     // Verify: Check the entering of Config mode
     Verify(OverloadedMethod(mock_uart, Write, void(std::span<const uint8_t>))

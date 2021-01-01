@@ -8,7 +8,6 @@
 
 namespace sjsu::stm32f10x
 {
-EMIT_ALL_METHODS(UartBase);
 TEST_CASE("Testing stm32f10x Uart")
 {
   static constexpr units::frequency::hertz_t kDummyClockRate = 8_MHz;
@@ -19,13 +18,9 @@ TEST_CASE("Testing stm32f10x Uart")
 
   Mock<sjsu::Pin> mock_rx;
   Mock<sjsu::Pin> mock_tx;
-  Mock<sjsu::Pin> mock_pin;
 
-  Fake(Method(mock_rx, ConfigurePullResistor));
-  Fake(Method(mock_rx, ConfigureFunction));
-
-  Fake(Method(mock_tx, ConfigurePullResistor));
-  Fake(Method(mock_tx, ConfigureFunction));
+  Fake(Method(mock_rx, Pin::ModuleInitialize));
+  Fake(Method(mock_tx, Pin::ModuleInitialize));
 
   DMA_Channel_TypeDef local_dma;
   USART_TypeDef local_usart;
@@ -47,110 +42,78 @@ TEST_CASE("Testing stm32f10x Uart")
 
   SECTION("Initialize()")
   {
-    // Exercise
-    test_subject.Initialize();
-
-    // Verify
-    Verify(Method(mock_controller, PowerUpPeripheral).Using(mock_port.id))
-        .Once();
-    Verify(Method(mock_controller, PowerUpPeripheral)
-               .Using(SystemController::Peripherals::kDma1))
-        .Once();
-  }
-
-  SECTION("Enable(true)")
-  {
     // Setup
     auto data_address_int  = reinterpret_cast<intptr_t>(&local_usart.DR);
     auto queue_address_int = reinterpret_cast<intptr_t>(receieve_queue.data());
     auto data_address      = static_cast<uint32_t>(data_address_int);
     auto queue_address     = static_cast<uint32_t>(queue_address_int);
 
-    // Exercise
-    test_subject.SetStateToInitialized();
-    test_subject.Enable();
-
-    // Verify
-    Verify(Method(mock_rx, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kPullUp))
-        .Once();
-    Verify(Method(mock_tx, ConfigureFunction).Using(1)).Once();
-
-    CHECK(receieve_queue.size() == local_dma.CNDTR);
-    CHECK(data_address == local_dma.CPAR);
-    CHECK(queue_address == local_dma.CMAR);
-    CHECK(UartBase::kDmaSettings == local_dma.CCR);
-    CHECK(UartBase::ControlReg::kControlSettings1 == local_usart.CR1);
-    CHECK(UartBase::ControlReg::kControlSettings3 == local_usart.CR3);
-  }
-
-  SECTION("ConfigureBaudRate()")
-  {
     // Setup
-    uint32_t baud_rate;
+    UartSettings_t settings = {};
     SUBCASE("baud rate 0")
     {
-      baud_rate = 1200;
+      settings.baud_rate = 1200;
     }
 
     SUBCASE("baud rate 1")
     {
-      baud_rate = 2400;
+      settings.baud_rate = 2400;
     }
 
     SUBCASE("baud rate 2")
     {
-      baud_rate = 4800;
+      settings.baud_rate = 4800;
     }
 
     SUBCASE("baud rate 3")
     {
-      baud_rate = 9600;
+      settings.baud_rate = 9600;
     }
 
     SUBCASE("baud rate 4")
     {
-      baud_rate = 14400;
+      settings.baud_rate = 14400;
     }
 
     SUBCASE("baud rate 5")
     {
-      baud_rate = 19200;
+      settings.baud_rate = 19200;
     }
 
     SUBCASE("baud rate 6")
     {
-      baud_rate = 38400;
+      settings.baud_rate = 38400;
     }
 
     SUBCASE("baud rate 7")
     {
-      baud_rate = 57600;
+      settings.baud_rate = 57600;
     }
 
     SUBCASE("baud rate 8")
     {
-      baud_rate = 115200;
+      settings.baud_rate = 115200;
     }
 
     SUBCASE("baud rate 9")
     {
-      baud_rate = 128000;
+      settings.baud_rate = 128000;
     }
 
     SUBCASE("baud rate 10")
     {
-      baud_rate = 256000;
+      settings.baud_rate = 256000;
     }
 
     SUBCASE("baud rate 11")
     {
-      baud_rate = 500000;
+      settings.baud_rate = 500000;
     }
 
-    INFO("Failure for baud rate " << baud_rate);
+    INFO("Failure for baud rate " << settings.baud_rate);
 
-    float float_baud_rate   = static_cast<float>(baud_rate);
+    // Determine UART baudrate register values
+    float float_baud_rate   = static_cast<float>(settings.baud_rate);
     float freq              = static_cast<float>(kDummyClockRate);
     float usart_divider     = freq / (16.0f * float_baud_rate);
     uint16_t mantissa       = static_cast<uint16_t>(usart_divider);
@@ -163,13 +126,98 @@ TEST_CASE("Testing stm32f10x Uart")
       fractional_int = 0;
     }
 
+    SUBCASE("Stop 1")
+    {
+      settings.stop = UartSettings_t::StopBits::kSingle;
+    }
+
+    SUBCASE("Stop 2")
+    {
+      settings.stop = UartSettings_t::StopBits::kDouble;
+    }
+
+    SUBCASE("Parity None")
+    {
+      settings.parity = UartSettings_t::Parity::kNone;
+    }
+
+    SUBCASE("Parity Odd")
+    {
+      settings.parity = UartSettings_t::Parity::kOdd;
+    }
+
+    SUBCASE("Parity Even")
+    {
+      settings.parity = UartSettings_t::Parity::kEven;
+    }
+
+    SUBCASE("Size 8 bits")
+    {
+      settings.frame_size = UartSettings_t::FrameSize::kEightBits;
+    }
+
+    SUBCASE("Size 9 bits")
+    {
+      settings.frame_size = UartSettings_t::FrameSize::kNineBits;
+    }
+
+    // Determine the control register values for UART frame settings
+    auto control_register1 = bit::Register(&local_usart.CR1);
+    auto control_register2 = bit::Register(&local_usart.CR2);
+
+    constexpr auto kStop            = bit::MaskFromRange(12, 13);
+    constexpr auto kParityControl   = bit::MaskFromRange(10);
+    constexpr auto kParitySelection = bit::MaskFromRange(9);
+    constexpr auto kWordLength      = bit::MaskFromRange(12);
+
+    bool double_stop    = (settings.stop == UartSettings_t::StopBits::kDouble);
+    uint16_t stop_value = (double_stop) ? 0b10 : 0b00;
+    bool parity_enable  = (settings.parity != UartSettings_t::Parity::kNone);
+    bool parity         = (settings.parity == UartSettings_t::Parity::kOdd);
+    bool size_code =
+        (settings.frame_size == UartSettings_t::FrameSize::kNineBits);
+
     // Exercise
-    test_subject.ConfigureBaudRate(baud_rate);
+    test_subject.settings = settings;
+    test_subject.Initialize();
 
     // Verify
+    // Verify: Power on peripheral
+    Verify(Method(mock_controller, PowerUpPeripheral).Using(mock_port.id))
+        .Once();
+    Verify(Method(mock_controller, PowerUpPeripheral)
+               .Using(SystemController::Peripherals::kDma1))
+        .Once();
+
+    CHECK(mock_rx.get().CurrentSettings().resistor ==
+          sjsu::PinSettings_t::Resistor::kPullUp);
+    CHECK(mock_tx.get().CurrentSettings().function == 1);
+    Verify(Method(mock_rx, Pin::ModuleInitialize)).Once();
+    Verify(Method(mock_tx, Pin::ModuleInitialize)).Once();
+
+    CHECK(receieve_queue.size() == local_dma.CNDTR);
+    CHECK(data_address == local_dma.CPAR);
+    CHECK(queue_address == local_dma.CMAR);
+    CHECK(UartBase::kDmaSettings == local_dma.CCR);
+
+    CHECK(control_register1.Read(UartBase::ControlReg::kUsartEnable));
+    CHECK(control_register1.Read(UartBase::ControlReg::kReceiveEnable));
+    CHECK(control_register1.Read(UartBase::ControlReg::kTransmitterEnable));
+
+    CHECK(UartBase::ControlReg::kControlSettings3 == local_usart.CR3);
+
+    // Verify: Baud Rate
     bit::Register baud_reg(&local_usart.BRR);
     CHECK(mantissa == baud_reg.Extract(UartBase::BaudRateReg::kMantissa));
     CHECK(fractional_int == baud_reg.Extract(UartBase::BaudRateReg::kFraction));
+
+    // Parity codes are: 0 for Even and 1 for Odd, thus the expression above
+    // sets the bool to TRUE when odd and zero when something else. This value
+    // is ignored if the parity is NONE since parity_enable will be zero.
+    CHECK(parity_enable == control_register1.Extract(kParityControl));
+    CHECK(parity == control_register1.Extract(kParitySelection));
+    CHECK(size_code == control_register1.Extract(kWordLength));
+    CHECK(stop_value == control_register2.Extract(kStop));
   }
 
   SECTION("Write()")
@@ -365,9 +413,7 @@ TEST_CASE("Testing stm32f10x Uart")
   SECTION("~UartBase()")
   {
     // Setup
-    bit::Register(&local_dma.CCR)
-        .Set(Dma::Reg::kEnable)
-        .Save();
+    bit::Register(&local_dma.CCR).Set(Dma::Reg::kEnable).Save();
 
     bit::Register(&local_usart.CR3)
         .Set(UartBase::ControlReg::kDmaReceiverEnable)
@@ -381,8 +427,7 @@ TEST_CASE("Testing stm32f10x Uart")
     test_subject.~UartBase();
 
     // Verify
-    CHECK(!bit::Register(&local_dma.CCR)
-               .Read(Dma::Reg::kEnable));
+    CHECK(!bit::Register(&local_dma.CCR).Read(Dma::Reg::kEnable));
     CHECK(!bit::Register(&local_usart.CR3)
                .Read(UartBase::ControlReg::kDmaReceiverEnable));
     CHECK(!bit::Register(&local_usart.CR1)

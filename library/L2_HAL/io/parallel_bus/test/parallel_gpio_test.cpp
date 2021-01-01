@@ -20,15 +20,15 @@ TEST_CASE("Testing Parallel Gpio Implementation")
   Mock<sjsu::Pin> mock_pin2;
   Mock<sjsu::Pin> mock_pin3;
 
+  Fake(Method(mock_pin0, ModuleInitialize));
+  Fake(Method(mock_pin1, ModuleInitialize));
+  Fake(Method(mock_pin2, ModuleInitialize));
+  Fake(Method(mock_pin3, ModuleInitialize));
+
   Fake(Method(mock_gpio0, ModuleInitialize));
   Fake(Method(mock_gpio1, ModuleInitialize));
   Fake(Method(mock_gpio2, ModuleInitialize));
   Fake(Method(mock_gpio3, ModuleInitialize));
-
-  Fake(Method(mock_gpio0, ModuleEnable));
-  Fake(Method(mock_gpio1, ModuleEnable));
-  Fake(Method(mock_gpio2, ModuleEnable));
-  Fake(Method(mock_gpio3, ModuleEnable));
 
   Fake(Method(mock_gpio0, SetDirection));
   Fake(Method(mock_gpio1, SetDirection));
@@ -39,11 +39,6 @@ TEST_CASE("Testing Parallel Gpio Implementation")
   Fake(Method(mock_gpio1, Set));
   Fake(Method(mock_gpio2, Set));
   Fake(Method(mock_gpio3, Set));
-
-  Fake(Method(mock_pin0, ConfigureAsOpenDrain));
-  Fake(Method(mock_pin1, ConfigureAsOpenDrain));
-  Fake(Method(mock_pin2, ConfigureAsOpenDrain));
-  Fake(Method(mock_pin3, ConfigureAsOpenDrain));
 
   When(Method(mock_gpio0, GetPin)).AlwaysReturn(mock_pin0.get());
   When(Method(mock_gpio1, GetPin)).AlwaysReturn(mock_pin1.get());
@@ -69,24 +64,6 @@ TEST_CASE("Testing Parallel Gpio Implementation")
     Verify(Method(mock_gpio1, ModuleInitialize));
     Verify(Method(mock_gpio2, ModuleInitialize));
     Verify(Method(mock_gpio3, ModuleInitialize));
-  }
-
-  SECTION("Enable()")
-  {
-    // Setup
-    mock_gpio0.get().SetStateToInitialized();
-    mock_gpio1.get().SetStateToInitialized();
-    mock_gpio2.get().SetStateToInitialized();
-    mock_gpio3.get().SetStateToInitialized();
-
-    // Exercise
-    test_subject.ModuleEnable();
-
-    // Verify
-    Verify(Method(mock_gpio0, ModuleEnable));
-    Verify(Method(mock_gpio1, ModuleEnable));
-    Verify(Method(mock_gpio2, ModuleEnable));
-    Verify(Method(mock_gpio3, ModuleEnable));
   }
 
   SECTION("SetDirection")
@@ -132,10 +109,14 @@ TEST_CASE("Testing Parallel Gpio Implementation")
       test_subject.ConfigureAsOpenDrain();
 
       // Verify
-      Verify(Method(mock_pin0, ConfigureAsOpenDrain).Using(true));
-      Verify(Method(mock_pin1, ConfigureAsOpenDrain).Using(true));
-      Verify(Method(mock_pin2, ConfigureAsOpenDrain).Using(true));
-      Verify(Method(mock_pin3, ConfigureAsOpenDrain).Using(true));
+      Verify(Method(mock_pin0, Pin::ModuleInitialize));
+      CHECK(mock_pin0.get().CurrentSettings().open_drain == true);
+      Verify(Method(mock_pin1, Pin::ModuleInitialize));
+      CHECK(mock_pin1.get().CurrentSettings().open_drain == true);
+      Verify(Method(mock_pin2, Pin::ModuleInitialize));
+      CHECK(mock_pin2.get().CurrentSettings().open_drain == true);
+      Verify(Method(mock_pin3, Pin::ModuleInitialize));
+      CHECK(mock_pin3.get().CurrentSettings().open_drain == true);
     }
 
     SECTION("Open Drain Disabled")
@@ -144,10 +125,14 @@ TEST_CASE("Testing Parallel Gpio Implementation")
       test_subject.ConfigureAsOpenDrain(false);
 
       // Verify
-      Verify(Method(mock_pin0, ConfigureAsOpenDrain).Using(false));
-      Verify(Method(mock_pin1, ConfigureAsOpenDrain).Using(false));
-      Verify(Method(mock_pin2, ConfigureAsOpenDrain).Using(false));
-      Verify(Method(mock_pin3, ConfigureAsOpenDrain).Using(false));
+      Verify(Method(mock_pin0, Pin::ModuleInitialize));
+      CHECK(mock_pin0.get().CurrentSettings().open_drain == false);
+      Verify(Method(mock_pin1, Pin::ModuleInitialize));
+      CHECK(mock_pin1.get().CurrentSettings().open_drain == false);
+      Verify(Method(mock_pin2, Pin::ModuleInitialize));
+      CHECK(mock_pin2.get().CurrentSettings().open_drain == false);
+      Verify(Method(mock_pin3, Pin::ModuleInitialize));
+      CHECK(mock_pin3.get().CurrentSettings().open_drain == false);
     }
   }
 

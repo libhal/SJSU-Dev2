@@ -6,8 +6,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Adc);
-
 TEST_CASE("Testing lpc40xx adc")
 {
   // Create local version of LPC_ADC
@@ -33,18 +31,10 @@ TEST_CASE("Testing lpc40xx adc")
 
   // Set mock for sjsu::Pin
   Mock<sjsu::Pin> mock_adc_pin0;
-  Fake(Method(mock_adc_pin0, ModuleInitialize),
-       Method(mock_adc_pin0, ModuleEnable),
-       Method(mock_adc_pin0, ConfigureAsAnalogMode),
-       Method(mock_adc_pin0, ConfigurePullResistor),
-       Method(mock_adc_pin0, ConfigureFunction));
+  Fake(Method(mock_adc_pin0, ModuleInitialize));
 
   Mock<sjsu::Pin> mock_adc_pin1;
-  Fake(Method(mock_adc_pin1, ModuleInitialize),
-       Method(mock_adc_pin1, ModuleEnable),
-       Method(mock_adc_pin1, ConfigureAsAnalogMode),
-       Method(mock_adc_pin1, ConfigurePullResistor),
-       Method(mock_adc_pin1, ConfigureFunction));
+  Fake(Method(mock_adc_pin1, ModuleInitialize));
 
   const Adc::Channel_t kMockChannel0 = {
     .adc_pin      = mock_adc_pin0.get(),
@@ -80,6 +70,20 @@ TEST_CASE("Testing lpc40xx adc")
     constexpr uint32_t kExpectedDivider =
         kDummySystemControllerClockFrequency / Adc::kClockFrequency;
 
+    const PinSettings_t kExpectedSettings0 = {
+      .function   = kMockChannel0.pin_function,
+      .resistor   = PinSettings_t::Resistor::kNone,
+      .open_drain = false,
+      .as_analog  = true,
+    };
+
+    const PinSettings_t kExpectedSettings1 = {
+      .function   = kMockChannel1.pin_function,
+      .resistor   = PinSettings_t::Resistor::kNone,
+      .open_drain = false,
+      .as_analog  = true,
+    };
+
     // Exercise
     test_subject0.ModuleInitialize();
     test_subject1.ModuleInitialize();
@@ -90,68 +94,50 @@ TEST_CASE("Testing lpc40xx adc")
                .Using(SystemController::Peripherals::kAdc));
 
     // Verify: that the pins were setup correctly
-    Verify(Method(mock_adc_pin0, ModuleInitialize),
-           Method(mock_adc_pin0, ConfigureFunction)
-               .Using(kMockChannel0.pin_function),
-           Method(mock_adc_pin0, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kNone),
-           Method(mock_adc_pin0, ConfigureAsAnalogMode).Using(true),
-           Method(mock_adc_pin0, ModuleEnable).Using(true));
-
-    Verify(Method(mock_adc_pin1, ModuleInitialize),
-           Method(mock_adc_pin1, ConfigureFunction)
-               .Using(kMockChannel1.pin_function),
-           Method(mock_adc_pin1, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kNone),
-           Method(mock_adc_pin1, ConfigureAsAnalogMode).Using(true),
-           Method(mock_adc_pin1, ModuleEnable).Using(true));
+    Verify(Method(mock_adc_pin0, ModuleInitialize));
+    Verify(Method(mock_adc_pin1, ModuleInitialize));
+    CHECK(kExpectedSettings0 == mock_adc_pin0.get().CurrentSettings());
+    CHECK(kExpectedSettings1 == mock_adc_pin1.get().CurrentSettings());
 
     CHECK(kExpectedDivider ==
           bit::Extract(local_adc.CR, Adc::Control::kClockDivider));
-    // If this register was zero before, then it should remain that way. This
-    // register should not be tampered with in software mode.
-    CHECK(0 == bit::Extract(local_adc.CR, Adc::Control::kChannelSelect));
+
     // Check bit 21 to see if power down bit is set in local_adc.CR
     CHECK(bit::Read(local_adc.CR, Adc::Control::kPowerEnable));
     CHECK(bit::Read(local_adc.CR, Adc::Control::kBurstEnable));
+
+    // Verify
+    // Check that the channel enable bits (the first 8 bits of the control
+    // register) has been set to 1 (enabled)
+    CHECK(bit::Read(local_adc.CR, kMockChannel0.channel));
+    CHECK(bit::Read(local_adc.CR, kMockChannel1.channel));
+    CHECK(!bit::Read(local_adc.CR, 3));  // make sure channel 3 is not enabled
+    CHECK(!bit::Read(local_adc.CR, 4));  // make sure channel 4 is not enabled
+    CHECK(!bit::Read(local_adc.CR, 5));  // make sure channel 5 is not enabled
+    CHECK(!bit::Read(local_adc.CR, 6));  // make sure channel 6 is not enabled
+    CHECK(!bit::Read(local_adc.CR, 7));  // make sure channel 7 is not enabled
   }
 
-  SECTION("Enable()")
+  SECTION("PowerDown()")
   {
-    SECTION("true")
-    {
-      // Exercise
-      test_subject0.ModuleEnable();
-      test_subject1.ModuleEnable();
+    // Setup
+    test_subject0.Initialize();
+    test_subject1.Initialize();
+    REQUIRE(bit::Read(local_adc.CR, kMockChannel0.channel));
+    REQUIRE(bit::Read(local_adc.CR, kMockChannel1.channel));
 
-      // Verify
-      // Check that the channel enable bits (the first 8 bits of the control
-      // register) has been set to 1 (enabled)
-      CHECK(bit::Read(local_adc.CR, kMockChannel0.channel));
-      CHECK(bit::Read(local_adc.CR, kMockChannel1.channel));
-      CHECK(!bit::Read(local_adc.CR, 3));  // make sure channel 3 is not enabled
-      CHECK(!bit::Read(local_adc.CR, 4));  // make sure channel 4 is not enabled
-      CHECK(!bit::Read(local_adc.CR, 5));  // make sure channel 5 is not enabled
-      CHECK(!bit::Read(local_adc.CR, 6));  // make sure channel 6 is not enabled
-      CHECK(!bit::Read(local_adc.CR, 7));  // make sure channel 7 is not enabled
-    }
+    // Exercise
+    test_subject1.PowerDown();
 
-    SECTION("false")
-    {
-      // Exercise
-      test_subject0.ModuleEnable(true);
-      test_subject1.ModuleEnable(false);
-
-      // Check that the channel enable bits (the first 8 bits of the control
-      // register) has been set to 1 (enabled)
-      CHECK(bit::Read(local_adc.CR, kMockChannel0.channel));
-      CHECK(!bit::Read(local_adc.CR, kMockChannel1.channel));
-      CHECK(!bit::Read(local_adc.CR, 3));  // make sure channel 3 is not enabled
-      CHECK(!bit::Read(local_adc.CR, 4));  // make sure channel 4 is not enabled
-      CHECK(!bit::Read(local_adc.CR, 5));  // make sure channel 5 is not enabled
-      CHECK(!bit::Read(local_adc.CR, 6));  // make sure channel 6 is not enabled
-      CHECK(!bit::Read(local_adc.CR, 7));  // make sure channel 7 is not enabled
-    }
+    // Check that the channel enable bits (the first 8 bits of the control
+    // register) has been set to 1 (enabled)
+    CHECK(bit::Read(local_adc.CR, kMockChannel0.channel));
+    CHECK(!bit::Read(local_adc.CR, kMockChannel1.channel));
+    CHECK(!bit::Read(local_adc.CR, 3));  // make sure channel 3 is not enabled
+    CHECK(!bit::Read(local_adc.CR, 4));  // make sure channel 4 is not enabled
+    CHECK(!bit::Read(local_adc.CR, 5));  // make sure channel 5 is not enabled
+    CHECK(!bit::Read(local_adc.CR, 6));  // make sure channel 6 is not enabled
+    CHECK(!bit::Read(local_adc.CR, 7));  // make sure channel 7 is not enabled
   }
 
   SECTION("Read ADC")

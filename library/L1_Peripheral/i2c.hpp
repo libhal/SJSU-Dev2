@@ -12,10 +12,19 @@
 
 namespace sjsu
 {
+/// Generic settings for a standard I2C peripheral
+struct I2cSettings_t : public MemoryEqualOperator_t<I2cSettings_t>
+{
+  /// Operating frequency
+  units::frequency::hertz_t frequency = 100'000_Hz;
+  /// Clock duty cycle
+  float duty_cycle = 0.5;
+};
+
 /// An abstract interface for hardware that implements the Inter-integrated
 /// Circuit (I2C) or Two Wire Interface (TWI) hardware communication Protocol.
 /// @ingroup l1_peripheral
-class I2c : public Module
+class I2c : public Module<I2cSettings_t>
 {
  public:
   // ===========================================================================
@@ -38,14 +47,31 @@ class I2c : public Module
   class CommonErrors
   {
    public:
+    /// This exception occurs when the overall transaction takes longer than the
+    /// transaction timeout time given. This includes the whole transaction from
+    /// address transmission to the last byte retrieved from the device.
     static inline const auto kTimeout =
         Exception(std::errc::timed_out,
                   "I2C took too long to process and timed out! Consider "
                   "increasing the timeout time.");
 
+    /// This exception occurs when there is an anomaly on the I2C bus. These
+    /// sort of errors can be caused by EMI or another device talking on the bus
+    /// at an incorrect time. A bus error is typically considered a situation in
+    /// which, the I2C controller device reads the state of the line and it does
+    /// not match what it expects. For example, if the I2C bus means to put a 1
+    /// or HIGH voltage on the SDA line, then samples the SDA line to make sure
+    /// the expected HIGH voltage is on the line, BUT sees that the line is held
+    /// LOW, it knows that something is wrong with the line and will stop the
+    /// transaction. Keep in mind that, since I2C is open drain with a pull up
+    /// resistor, the only way for the I2C controller to see an error is if the
+    /// controller wants to let the pin go HIGH by releasing control of the pin,
+    /// but something else on the bus is pulling it LOW.
     static inline const auto kBusError =
         Exception(std::errc::io_error, "I2C bus error occurred.");
 
+    /// This exception occurs at the start of an I2C transaction when the
+    /// device's I2C address is written to the bus and does NOT acknowledge.
     static inline const auto kDeviceNotFound =
         Exception(std::errc::no_such_device_or_address,
                   "I2C address not found/acknowledged by device.");
@@ -114,31 +140,6 @@ class I2c : public Module
     std::errc status = static_cast<std::errc>(0);
   };
 
-  // ===========================================================================
-  // Interface Methods
-  // ===========================================================================
-
-  // ---------------------------------------------------------------------------
-  // Configuration Methods
-  // ---------------------------------------------------------------------------
-
-  /// MUST be called before running Enable().
-  /// Set the clock rate and duty cycle of the serial clock frequency.
-  ///
-  /// @param frequency - the clock frequency to set the I2C serial clock
-  /// frequency to.
-  /// @param duty_cycle - percentage of time the clock rate is LOW. Moving this
-  /// value closer to 0 will cause the time the serial clock is low to be
-  /// shorten. This will allow more time for the signal to pull high via the
-  /// external pull up resistor.
-  virtual void ConfigureClockRate(
-      units::frequency::hertz_t frequency = 100'000_Hz,
-      float duty_cycle                    = 0.5) = 0;
-
-  // ---------------------------------------------------------------------------
-  // Usage Methods
-  // ---------------------------------------------------------------------------
-
   /// Perform a I2C transaction using the information contained in the
   /// transaction parameter.
   ///
@@ -148,7 +149,7 @@ class I2c : public Module
   virtual void Transaction(Transaction_t transaction) = 0;
 
   // ===========================================================================
-  // Utility Methods
+  // Helper Functions
   // ===========================================================================
 
   /// Read from a device on the I2C bus
@@ -350,11 +351,6 @@ inline sjsu::I2c & GetInactive<sjsu::I2c>()
   {
    public:
     void ModuleInitialize() override {}
-    void ModuleEnable(bool = true) override {}
-    void ConfigureClockRate(units::frequency::hertz_t = 100'000_Hz,
-                            float                     = 0.5) override
-    {
-    }
     void Transaction(Transaction_t) override {}
   };
 

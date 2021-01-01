@@ -6,8 +6,6 @@
 
 namespace sjsu::stm32f10x
 {
-EMIT_ALL_METHODS(Spi);
-
 TEST_CASE("Testing stm32f10x SPI")
 {
 }

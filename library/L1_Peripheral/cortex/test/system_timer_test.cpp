@@ -8,8 +8,6 @@
 
 namespace sjsu::cortex
 {
-EMIT_ALL_METHODS(SystemTimer);
-
 TEST_CASE("Testing ARM Cortex SystemTimer")
 {
   cortex::DWT_Type local_dwt = {
@@ -52,19 +50,13 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
 
   SECTION("Initialize()")
   {
-    // Exercise
-    test_subject.ModuleInitialize();
-
-    // Verify
-    // Verify: Check that the DWT time was initialized properly
-    CHECK(CoreDebug_DEMCR_TRCENA_Msk == local_core.DEMCR);
-    CHECK(0 == local_dwt.CYCCNT);
-    CHECK(DWT_CTRL_CYCCNTENA_Msk == local_dwt.CTRL);
-  }
-
-  SECTION("SetTickFrequency generate desired frequency")
-  {
     // Setup
+    // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
+    constexpr uint8_t kEnableMask    = 0b0001;
+    constexpr uint8_t kTickIntMask   = 0b0010;
+    constexpr uint8_t kClkSourceMask = 0b0100;
+    constexpr uint32_t kMask = kEnableMask | kTickIntMask | kClkSourceMask;
+
     constexpr auto kFrequency         = 1_kHz;
     constexpr auto kExpectedLoadValue = (kClockFrequency / kFrequency) - 1;
     constexpr auto kClockFrequencyInt = kClockFrequency.to<uint32_t>();
@@ -76,32 +68,24 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
 
     // Setup: Set LOAD to zero
     local_systick.LOAD = 0;
-
-    // Exercise
-    test_subject.ConfigureTickFrequency(kFrequency);
-
-    // Verify
-    CHECK(kExpectedTicksPerMillisecond == SystemTimer::ticks_per_millisecond);
-    CHECK(kExpectedNanosecondsPerTick == SystemTimer::nanoseconds_per_tick);
-    CHECK(kExpectedLoadValue.to<uint32_t>() == local_systick.LOAD);
-  }
-
-  SECTION("Enable()")
-  {
-    // Setup
-    // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
-    constexpr uint8_t kEnableMask    = 0b0001;
-    constexpr uint8_t kTickIntMask   = 0b0010;
-    constexpr uint8_t kClkSourceMask = 0b0100;
-    constexpr uint32_t kMask = kEnableMask | kTickIntMask | kClkSourceMask;
-
     local_systick.LOAD = 1000;
     local_systick.VAL  = 0xBEEF;
 
     // Exercise
-    test_subject.ModuleEnable();
+
+    test_subject.settings.frequency = kFrequency;
+    test_subject.Initialize();
 
     // Verify
+    // Verify: Check that the DWT time was initialized properly
+    CHECK(CoreDebug_DEMCR_TRCENA_Msk == local_core.DEMCR);
+    CHECK(0 == local_dwt.CYCCNT);
+    CHECK(DWT_CTRL_CYCCNTENA_Msk == local_dwt.CTRL);
+
+    CHECK(kExpectedTicksPerMillisecond == SystemTimer::ticks_per_millisecond);
+    CHECK(kExpectedNanosecondsPerTick == SystemTimer::nanoseconds_per_tick);
+    CHECK(kExpectedLoadValue.to<uint32_t>() == local_systick.LOAD);
+
     CHECK(kMask == local_systick.CTRL);
     CHECK(0 == local_systick.VAL);
     Verify(
@@ -112,7 +96,7 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
             }));
   }
 
-  SECTION("Enable() should throw exception if LOAD is 0")
+  SECTION("Initialize() should throw exception if LOAD is 0")
   {
     // Setup
     // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
@@ -124,8 +108,8 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     local_systick.VAL  = 0xBEEF;
 
     // Exercise
-    SJ2_CHECK_EXCEPTION(test_subject.ModuleEnable(),
-                        std::errc::invalid_argument);
+    test_subject.settings.frequency = 0.001_Hz;
+    SJ2_CHECK_EXCEPTION(test_subject.Initialize(), std::errc::invalid_argument);
 
     // Verify
     CHECK(kClkSourceMask == local_systick.CTRL);
@@ -133,34 +117,35 @@ TEST_CASE("Testing ARM Cortex SystemTimer")
     Verify(Method(mock_interrupt_controller, Enable)).Never();
   }
 
-  SECTION("Disable Timer should clear all bits")
-  {
-    // Setup
-    // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
-    constexpr uint8_t kEnableMask    = 0b0001;
-    constexpr uint8_t kTickIntMask   = 0b0010;
-    constexpr uint8_t kClkSourceMask = 0b0100;
-    constexpr uint32_t kMask = kEnableMask | kTickIntMask | kClkSourceMask;
-    local_systick.CTRL       = kMask;
-    local_systick.LOAD       = 1000;
+  // SECTION("Disable Timer should clear all bits")
+  // {
+  //   // Setup
+  //   // Source: "UM10562 LPC408x/407x User manual" table 553 page 703
+  //   constexpr uint8_t kEnableMask    = 0b0001;
+  //   constexpr uint8_t kTickIntMask   = 0b0010;
+  //   constexpr uint8_t kClkSourceMask = 0b0100;
+  //   constexpr uint32_t kMask = kEnableMask | kTickIntMask | kClkSourceMask;
+  //   local_systick.CTRL       = kMask;
+  //   local_systick.LOAD       = 1000;
 
-    // Exercise
-    test_subject.ModuleEnable(false);
+  //   // Exercise
+  //   test_subject.PowerDown();
 
-    // Verify
-    // Verify: The control should not change as unfortunately, the SystemTick
-    //         Timer will not come back after being enabled.
-    CHECK(kMask == local_systick.CTRL);
-  }
+  //   // Verify
+  //   // Verify: The control should not change as unfortunately, the SystemTick
+  //   //         Timer will not come back after being enabled.
+  //   CHECK(kMask == local_systick.CTRL);
+  // }
 
-  SECTION("ConfigureCallback()")
+  SECTION("Setting Callback()")
   {
     // Setup
     bool was_called     = false;
     auto dummy_function = [&was_called](void) { was_called = true; };
 
     // Exercise
-    test_subject.ConfigureCallback(dummy_function);
+    test_subject.settings.callback = (dummy_function);
+    test_subject.Initialize();
     test_subject.SystemTimerHandler();
 
     // Verify

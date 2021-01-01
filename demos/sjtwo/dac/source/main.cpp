@@ -121,10 +121,9 @@ void StartDemo(sjsu::Dac & dac, std::chrono::nanoseconds input_cycles)
 
 int main()
 {
-  sjsu::lpc40xx::Dac dac;
+  sjsu::lpc40xx::Dac & dac = sjsu::lpc40xx::GetDac<0>();
 
   dac.Initialize();
-  dac.Enable();
 
   sjsu::LogInfo("Hook up pin p0.26 to an oscilloscope to test if it works!");
   sjsu::LogInfo("Starting Output of waves...");

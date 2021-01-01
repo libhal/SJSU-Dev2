@@ -13,7 +13,7 @@
 namespace sjsu
 {
 /// Graphics library to draw shapes and characters on a pixel display
-class Graphics : public Module
+class Graphics : public Module<>
 {
  public:
   /// Constructor for a graphics object.
@@ -31,11 +31,6 @@ class Graphics : public Module
   void ModuleInitialize() override
   {
     display_.Initialize();
-  }
-
-  void ModuleEnable(bool enable = true) override
-  {
-    display_.Enable(enable);
   }
 
   /// Update the display.

@@ -88,34 +88,19 @@ class TFMini final : public DistanceSensor
   /// @returns std::errc::io_error if initialization fails
   void ModuleInitialize() override
   {
-    if (uart_.RequiresConfiguration())
-    {
-      // Phase 1: Initialize
-      uart_.Initialize();
-      // Phase 2: Configure
-      uart_.ConfigureBaudRate(115200);
-      uart_.ConfigureFormat();
-      // Phase 3: Enable
-      uart_.Enable();
-    }
-  }
+    static constexpr UartSettings_t kSettings = {
+      .baud_rate = 115200,
+    };
 
-  /// Disabling this driver is not supported
-  void ModuleEnable(bool enable = true) override
-  {
-    if (enable)
+    uart_.settings = kSettings;
+    uart_.Initialize();
+
+    if (!SendCommandAndCheckEcho(kConfigCommand) ||
+        !SendCommandAndCheckEcho(kSetExternalTriggerMode) ||
+        !SendCommandAndCheckEcho(kSetDistUnitMM) ||
+        !SendCommandAndCheckEcho(kExitConfigCommand))
     {
-      if (!SendCommandAndCheckEcho(kConfigCommand) ||
-          !SendCommandAndCheckEcho(kSetExternalTriggerMode) ||
-          !SendCommandAndCheckEcho(kSetDistUnitMM) ||
-          !SendCommandAndCheckEcho(kExitConfigCommand))
-      {
-        throw Exception(std::errc::io_error, "Enabling device failed!");
-      }
-    }
-    else
-    {
-      LogDebug("Disabling this driver is not supported");
+      throw Exception(std::errc::io_error, "Enabling device failed!");
     }
   }
 

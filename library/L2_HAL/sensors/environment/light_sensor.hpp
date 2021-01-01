@@ -7,7 +7,7 @@
 namespace sjsu
 {
 /// An abstract interface for light sensing device drivers.
-class LightSensor : public Module
+class LightSensor : public Module<>
 {
  public:
   /// @return The sensor reading in units of lux.
@@ -17,7 +17,7 @@ class LightSensor : public Module
   virtual units::illuminance::lux_t GetMaxIlluminance() = 0;
 
   // ===========================================================================
-  // Utility Methods
+  // Helper Functions
   // ===========================================================================
 
   /// Retreive the detected brightness as a percentage where:

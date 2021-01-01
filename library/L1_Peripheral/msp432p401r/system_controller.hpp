@@ -544,8 +544,8 @@ class SystemController final : public sjsu::SystemController
   ///
   /// @see https://www.ti.com/lit/ug/slau356i/slau356i.pdf#page=397
   ///
-  /// @param clock      The primary clock to configure.
-  /// @param oscillator The oscillator used to source the clock.
+  /// @param clock  The primary clock to configure.
+  /// @param source The oscillator used to source the clock.
   void SetClockSource(Clock clock, Oscillator source) const
   {
     constexpr bit::Mask kPrimaryClockSelectMasks[] = {

@@ -6,12 +6,10 @@
 int main()
 {
   sjsu::LogInfo("Starting Si7060 Temperature Sensor Demonstration...");
-  sjsu::lpc40xx::I2c i2c2(sjsu::lpc40xx::I2c::Bus::kI2c2);
+  sjsu::lpc40xx::I2c & i2c2 = sjsu::lpc40xx::GetI2c<2>();
   sjsu::Si7060 temperature_sensor(i2c2);
 
   temperature_sensor.Initialize();
-  temperature_sensor.Enable();
-
   sjsu::LogInfo("Si7060 Initialized!");
 
   while (true)

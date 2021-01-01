@@ -9,8 +9,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Pwm);
-
 TEST_CASE("Testing lpc40xx PWM instantiation")
 {
   // Creating local instances of register structures
@@ -30,7 +28,7 @@ TEST_CASE("Testing lpc40xx PWM instantiation")
   // Creating mock of Pin class
   Mock<sjsu::Pin> mock_pwm_pin;
   // Make sure mock Pin doesn't call real ConfigureFunction() method
-  Fake(Method(mock_pwm_pin, ConfigureFunction));
+  Fake(Method(mock_pwm_pin, Pin::ModuleInitialize));
 
   // Creating mock peripheral configuration
   Pwm::Peripheral_t mock_peripheral = {
@@ -51,6 +49,43 @@ TEST_CASE("Testing lpc40xx PWM instantiation")
   SECTION("Initialize()")
   {
     // Setup
+    constexpr int kCounterEnable = 0;
+    constexpr int kCounterReset  = 1;
+    constexpr int kPwmEnable     = 3;
+
+    SECTION("10 kHz")
+    {
+      test_pwm.settings.frequency = 10_kHz;
+    }
+
+    SECTION("20 kHz")
+    {
+      test_pwm.settings.frequency = 20_kHz;
+    }
+
+    SECTION("5 Hz")
+    {
+      test_pwm.settings.frequency = 5_Hz;
+    }
+
+    SECTION("100 kHz")
+    {
+      test_pwm.settings.frequency = 100_kHz;
+    }
+
+    // Setup
+    const float kDutyCycle = 0.5f;
+    // Setup: Expected values
+    const auto kExpectedDivider =
+        kPeriperhalClockFrequency / test_pwm.settings.frequency;
+    const auto kExpectedMR0 = kExpectedDivider.to<uint32_t>();
+    const auto kExpectedMR5 = static_cast<uint32_t>(kExpectedMR0 * kDutyCycle);
+
+    // Setup: Old condition of the PWM peripheral to be changed in the
+    // "Exercise" phase of the test.
+    local_pwm.MR0 = 100;
+    local_pwm.MR5 = static_cast<uint32_t>(local_pwm.MR0 * kDutyCycle);
+
     // Exercise
     test_pwm.Initialize();
 
@@ -71,40 +106,28 @@ TEST_CASE("Testing lpc40xx PWM instantiation")
     CHECK(1 == bit::Read(local_pwm.MCR, 1));
     // Verify: verify that the pwm control enable has been set
     CHECK(1 == bit::Extract(local_pwm.PCR, mock_channel.channel + 8));
-    Verify(Method(mock_pwm_pin, ConfigureFunction)
-               .Using(mock_channel.pin_function_code))
-        .Once();
-  }
+    CHECK(mock_pwm_pin.get().CurrentSettings().function ==
+          mock_channel.pin_function_code);
 
-  SECTION("Enable()")
-  {
-    // Setup
-    constexpr int kCounterEnable = 0;
-    constexpr int kCounterReset  = 1;
-    constexpr int kPwmEnable     = 3;
-
-    // Exercise
-    test_pwm.SetStateToInitialized();
-    test_pwm.Enable();
-
-    // Verify
     // Verify: that the appropriate flags in the timer register have been set
     CHECK(1 == bit::Read(local_pwm.TCR, kCounterEnable));
     CHECK(0 == bit::Read(local_pwm.TCR, kCounterReset));
     CHECK(1 == bit::Read(local_pwm.TCR, kPwmEnable));
+
+    // Verify
+    CHECK(kExpectedMR0 == local_pwm.MR0);
+    CHECK(kExpectedMR5 == local_pwm.MR5);
   }
 
-  SECTION("Enable(false)")
+  SECTION("PowerDown()")
   {
     // Setup
     constexpr int kPwmEnable = 3;
 
     // Exercise
-    test_pwm.SetStateToEnabled();
-    test_pwm.Enable(false);
+    test_pwm.PowerDown();
 
     // Verify
-    // Verify: that the appropriate flags in the timer register have been set
     CHECK(!bit::Read(local_pwm.TCR, kPwmEnable));
   }
 
@@ -124,29 +147,6 @@ TEST_CASE("Testing lpc40xx PWM instantiation")
     CHECK(test_pwm.GetDutyCycle() ==
           doctest::Approx(kDutyCycle).epsilon(0.001f));
     CHECK(bit::Read(local_pwm.LER, mock_channel.channel));
-  }
-
-  SECTION("Setting and Getting Frequency")
-  {
-    // Setup
-    const auto kFrequency  = 2000_Hz;
-    const float kDutyCycle = 0.5f;
-    // Setup: Expected values
-    const auto kExpectedDivider = kPeriperhalClockFrequency / kFrequency;
-    const auto kExpectedMR0     = kExpectedDivider.to<uint32_t>();
-    const auto kExpectedMR5 = static_cast<uint32_t>(kExpectedMR0 * kDutyCycle);
-    // Setup: Old condition of the PWM peripheral to be changed in the
-    // "Exercise" phase of the test.
-    local_pwm.MR0 = 100;
-    local_pwm.MR5 = static_cast<uint32_t>(local_pwm.MR0 * kDutyCycle);
-
-    // Exercise
-    test_pwm.ConfigureFrequency(kFrequency);
-    test_pwm.SetDutyCycle(kDutyCycle);
-
-    // Verify
-    CHECK(kExpectedMR0 == local_pwm.MR0);
-    CHECK(kExpectedMR5 == local_pwm.MR5);
   }
 }
 }  // namespace sjsu::lpc40xx

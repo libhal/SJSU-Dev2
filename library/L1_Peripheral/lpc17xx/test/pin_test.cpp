@@ -5,9 +5,8 @@
 #include "L4_Testing/testing_frameworks.hpp"
 #include "utility/debug.hpp"
 
+// PIN TEST IS COVERED BY LPC40XX tests
 namespace sjsu::lpc17xx
 {
-EMIT_ALL_METHODS(Pin);
-
 TEST_CASE("Testing lpc17xx Pin") {}
 }  // namespace sjsu::lpc17xx

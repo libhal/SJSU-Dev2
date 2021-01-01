@@ -12,16 +12,8 @@ int main()
   sjsu::LogInfo("I2C Application Starting...");
   sjsu::LogInfo("This example will scan for devices on the I2C Bus 2.");
 
-  sjsu::lpc40xx::I2c i2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
-
-  // Initialize I2C hardware
+  sjsu::lpc40xx::I2c & i2c = sjsu::lpc40xx::GetI2c<2>();
   i2c.Initialize();
-
-  // Set the default 100kHz clock rate.
-  i2c.ConfigureClockRate();
-
-  // Enable i2c hardware
-  i2c.Enable();
 
   sjsu::LogInfo("Starting Scan...");
 

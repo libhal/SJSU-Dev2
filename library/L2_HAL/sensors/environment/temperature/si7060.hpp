@@ -3,10 +3,10 @@
 #include "L1_Peripheral/i2c.hpp"
 #include "L2_HAL/sensors/environment/temperature_sensor.hpp"
 #include "utility/bit.hpp"
-#include "utility/units.hpp"
-#include "utility/math/limits.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/log.hpp"
+#include "utility/math/limits.hpp"
+#include "utility/units.hpp"
 
 namespace sjsu
 {
@@ -47,33 +47,18 @@ class Si7060 final : public TemperatureSensor
 
   void ModuleInitialize() override
   {
-    if (i2c_.RequiresConfiguration())
-    {
-      i2c_.Initialize();
-      i2c_.ConfigureClockRate();
-      i2c_.Enable();
-    }
-  }
+    i2c_.Initialize();
 
-  void ModuleEnable(bool enable = true) override
-  {
-    if (enable)
-    {
-      uint8_t temperature_sensor_id_register;
+    uint8_t temperature_sensor_id_register;
 
-      i2c_.WriteThenRead(address_, { kIdRegister },
-                         &temperature_sensor_id_register, 1);
+    i2c_.WriteThenRead(
+        address_, { kIdRegister }, &temperature_sensor_id_register, 1);
 
-      if (temperature_sensor_id_register != kExpectedSensorId)
-      {
-        LogDebug("ID = 0x%02X\n", temperature_sensor_id_register);
-        throw Exception(std::errc::no_such_device,
-                        "Device ID does not match expected device ID 0x14");
-      }
-    }
-    else
+    if (temperature_sensor_id_register != kExpectedSensorId)
     {
-      LogInfo("Disable not supported for this driver.");
+      LogDebug("ID = 0x%02X\n", temperature_sensor_id_register);
+      throw Exception(std::errc::no_such_device,
+                      "Device ID does not match expected device ID 0x14");
     }
   }
 
@@ -92,8 +77,8 @@ class Si7060 final : public TemperatureSensor
     i2c_.Write(address_, { kAutomaticBitRegister, 0x01 });
 
     // These need to be in separate transactions
-    i2c_.WriteThenRead(address_, { kMostSignificantRegister },
-                       &most_significant_register, 1);
+    i2c_.WriteThenRead(
+        address_, { kMostSignificantRegister }, &most_significant_register, 1);
     i2c_.Read(address_, &least_significant_register, 1);
 
     // The write and read operation sets the most significant bit to one,

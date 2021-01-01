@@ -3,14 +3,13 @@
 //   Usage:
 //      Pin P0_0(0, 0);
 //      P0_0.SetAsActiveLow();
-//      P0_0.ConfigurePullUp();
+//      P0_0.PullUp();
 #pragma once
 
 #include <cstdio>
 
-#include "L1_Peripheral/pin.hpp"
-
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "L1_Peripheral/pin.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
 #include "utility/macros.hpp"
@@ -82,53 +81,21 @@ class Pin final : public sjsu::Pin
   /// @param pin - pin number for the pin you want to construct.
   constexpr Pin(uint8_t port, uint8_t pin) : sjsu::Pin(port, pin) {}
 
-  /// NOTE: GPIO hardare is enabled and ready by default on reset. This
-  /// initialize method only serves to check that the port and pin are correct,
-  /// and throws if they are not.
+  /// Does nothing, pin hardware is enabled by default.
   void ModuleInitialize() override
   {
-    if (port_ > 5 && pin_ > 31)
-    {
-      throw Exception(
-          std::errc::invalid_argument,
-          "Port must be between 0 and 5 & Pin must be between 0 and 31");
-    }
-    if (port_ == 5 && pin_ > 4)
-    {
-      throw Exception(std::errc::invalid_argument,
-                      "For port 5, the pin number must be equal to or below 4");
-    }
-  }
-
-  /// Does nothing, pin hardware is enabled by default.
-  void ModuleEnable(bool = true) override {}
-
-  void ConfigureFunction(uint8_t function) override
-  {
-    if (function > 0b111)
+    if (settings.function > 0b111)
     {
       throw Exception(
           std::errc::invalid_argument,
           "The function code must be a 3-bit value between 0b000 and 0b111.");
     }
 
-    SetPinRegister(function, kFunction);
-  }
-
-  void ConfigurePullResistor(Resistor resistor) override
-  {
-    SetPinRegister(static_cast<uint8_t>(resistor), kResistor);
-  }
-
-  void ConfigureAsAnalogMode(bool set_as_analog = true) override
-  {
+    SetPinRegister(settings.function, kFunction);
+    SetPinRegister(Value(settings.resistor), kResistor);
+    SetPinRegister(settings.open_drain, kOpenDrain);
     // Invert the bool because the bit must be set to 0 to enable analog mode.
-    SetPinRegister(!set_as_analog, kAnalogDigitalMode);
-  }
-
-  void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
-  {
-    SetPinRegister(set_as_open_drain, kOpenDrain);
+    SetPinRegister(!settings.as_analog, kAnalogDigitalMode);
   }
 
   /// Enable pin hysteresis. This allows the pin to remember which state is was
@@ -205,5 +172,17 @@ class Pin final : public sjsu::Pin
     return &pin_map->register_matrix[GetPort()][GetPin()];
   }
 };
+
+template <int port, int pin_number>
+inline Pin & GetPin()
+{
+  static_assert(
+      (port <= 4 && pin_number <= 31) || (port == 5 && pin_number < 4),
+      "For ports between 0 and 4, the pin number must be between 0 and 31. For "
+      "port 5, the pin number must be equal to or below 4");
+
+  static Pin pin(port, pin_number);
+  return pin;
+}
 }  // namespace lpc40xx
 }  // namespace sjsu
