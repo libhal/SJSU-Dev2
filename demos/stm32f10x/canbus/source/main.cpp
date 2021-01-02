@@ -41,59 +41,91 @@ CAN_bit_timing_t CAN_bit_timing[6] =
 
 void CANInit(BITRATE bitrate)
 {
-  // Enable CAN clock (CAN1 = b'25) (CAN2 = b'26)
+	// Enable CAN clock (CAN = b'25)
 	RCC->APB1ENR |= (1 << 25);
-  
-  // Enable AFIO clock (AFIO = b'0)
+
+	// Enable GPIOB clock (GPIOB = b'3)
+	RCC->APB2ENR |= (1 << 3);
+
+	// Enable AFIO clock (AFIO = b'0)
 	RCC->APB2ENR |= (1 << 0);
 
-  // reset CAN remap (CAN_REMAP = b'13-14)
-  AFIO->MAPR   &= ~((1 << 13) | (1 << 14));
+	// Reset CAN remap (CAN_REMAP = b'14:13)
+	// Set CAN remap (CAN_REMAP = b'14:13) 
+		// b'00 = Rx:PA11 Tx:PA12 
+		// b'10 = Rx:PB8  Tx:PB9
+		// b'11 = Rx:PD0  Tx:PD1
+	AFIO->MAPR   &= ~((1 << 13) | (1 << 14));
+	AFIO->MAPR   |= (1 << 14);   	
 
-  // Set CAN remap (CAN_REMAP = b'13-14) to use PB8, PB9
-  AFIO->MAPR   |= (1 << 14);   	
+	// Set Pin Configuration CRH[3:0]
+		// MODE[1:0]
+			// 00: Input Mode
+			// 01: Output Mode 10MHz
+			// 10: Output Mode 2MHz
+			// 11: Output Mode 50MHz
+		// CNF[3:2]
+			// Input Mode
+				// 00 Analog Mode
+				// 01 Floating Input
+				// 10 Input with pull-up / pull-down
+				// 11 Reserved
+			// Output Mode
+				// 00 General Purpose Output push-pull
+				// 01 General Purpose Output Open-Drain
+				// 10 Alternate Function Push-Pull
+				// 11 Alternate Function Open-Drain
 
-  // Enable GPIOB clock (GPIOB = b'3)
-  RCC->APB2ENR |= (1 << 3);
-
-  // Configure PB8 and PB9		
-  // Clear Bits 0 - 7	
+	// Clear Bits Pins PB9 & PB8 [7:0]
 	GPIOB->CRH   &= ~(0xFFUL);
 
-  // Set pin 8 as Input Mode (MODE = b'0 = 00)
-  // Set Pin 8 Function as Input with Pull-up / pull-down (CNFy = b'2 = 11)
-  // Set Pin 8 with a pull up resistor.
-  GPIOB->CRH   |= (1 << 3);
+	// Set PB8 as Rx Input with pull-up / pull-down CRH[3:0]
+	// Set PB8 with a pull up resistor. ODR[8]
+		// 0 Pull-Down
+		// 1 Pull-Up
+	GPIOB->CRH   |= (0b1000 << 3);
 	GPIOB->ODR   |= (1 << 8);
 
-  // Set pin 9 as Output Mode at 50Mz (MODE = b'4 = 11)
-  // Set pin 9 as Alternate Function Push/Pull (CNFy = b'6 = 10)
-  GPIOB->CRH   |= (3 << 4);
-  GPIOB->CRH   |= (1 << 7);
-  
-  // Set CAN to initialization mode
-    // Bit 0 - IRQN Initialization request
-	  // Bit 4 - NART No Automatic retransmission
-	  // Bit 6 - ABOM Automatic bus-off management
-  CAN1->MCR = 0x51UL;			    
+	// Set PB9 as Tx Output Mode 50Mz with Alternate Function Push/Pull CRH[7:4]
+	GPIOB->CRH   |= (0b1011 << 4);
+	  
+	// Set CAN to initialization mode
+		// Bit 0 - IRQN Initialization request
+		// Bit 1 - SLEEP Sleep Mode Request
+		// Bit 2 - TXFP Transmit FIFO Priority
+		// Bit 3 - RFLM Recieve FIFO Locked Mode
+		// Bit 4 - NART No Automatic retransmission
+		// Bit 5 - AWUM Automatic Wakeup Mode
+		// Bit 6 - ABOM Automatic bus-off management
+		// Bit 7 - ABOM Automatic Bus-Off Management
+		// Bit 15 - RESET bxCAN Sotware Master Reset
+		// Bit 16 - DBF Debug Freeze
+	// Clear all Bits
+	CAN1->MCR &= ~((0b11 << 15) | 0b11111111);
+	// Set IRQN NART ABOM
+  	CAN1->MCR = 0x51UL;			    
 
-// Clear the register
-  // Bits 9:0 Baud rate Pre-scale
-  // Bits 19:16 TS1 Time Segment 1
-  // Bits 22:20 TS2 Time Segment 2
-  // Bits 25:24 SJW Resynchronized Jump Width
-  // Bits 30 LBKM Loop back Mode
-  // Bits 31 SILM Silent Mode
-  CAN1->BTR &= ~((0x03 << 24) | 
-                 (0x07 << 20) | 
-                 (0x0F << 16) | 
-                 (0x1FF) |
-                 (0x01 << 30)); 
+	// Set the Canbus Bit Timings
+		// BPR [9:0] Baud rate Pre-scale
+		// TS1 [19:16] Time Segment 1
+		// TS2 [22:20] Time Segment 2
+		// SJW [25:24] Resynchronized Jump Width
+		// LBKM[30]    Loop back Mode
+		// SLIM [31]   Silent Mode (debug)
+	// Clear all bits
+	CAN1->BTR &=  ~((0x1FF) |
+					(0x0F << 16) | 
+					(0x07 << 20) | 
+					(0x03 << 24) |
+					(0x01 << 30) | 
+					(0x01 << 31)); 
 
-	CAN1->BTR |=  (((CAN_bit_timing[bitrate].TS2-1) & 0x07) << 20) | 
-                (((CAN_bit_timing[bitrate].TS1-1) & 0x0F) << 16) | 
-                ((CAN_bit_timing[bitrate].BRP-1) & 0x1FF);
- 
+	// Set BPR TS1 TS2 LBKM
+	CAN1->BTR |=  ((CAN_bit_timing[bitrate].BRP-1) & 0x1FF) |
+				  (((CAN_bit_timing[bitrate].TS1-1) & 0x0F) << 16) | 
+				  (((CAN_bit_timing[bitrate].TS2-1) & 0x07) << 20) |
+				  (0x01 << 30);
+				
 // Configure Filters to default values
   // 8 - 12 as 11 1000
   // Assign all filters to CAN1
@@ -191,23 +223,69 @@ void CANInit(BITRATE bitrate)
 	 return CAN1->RF0R & 0x3UL;
 }
 
-static void filterInit (int num, int id =0, int mask =0) 
-{
-  CAN1->FA1R &= ~(1 << num); // Disable filter
-  CAN1->FS1R |= (1 << num);  // Set single 32 bit register
+void CANSetFilter(uint16_t id)
+ {
+	 static uint32_t filterID = 0;
+	 
+	 if (filterID == 112)
+	 {
+		 return;
+	 }
+	 
+	 CAN1->FMR  |=   0x1UL;                // Set to filter initialization mode
+	 
+	 switch(filterID%4)
+	 {
+		 case 0:
+				// if we need another filter bank, initialize it
+				CAN1->FA1R |= 0x1UL <<(filterID/4);
+				CAN1->FM1R |= 0x1UL << (filterID/4);
+		    CAN1->FS1R &= ~(0x1UL << (filterID/4)); 
+				
+				CAN1->sFilterRegister[filterID/4].FR1 = (id << 5) | (id << 21);
+		    CAN1->sFilterRegister[filterID/4].FR2 = (id << 5) | (id << 21);
+				break;
+		 case 1:
+			  CAN1->sFilterRegister[filterID/4].FR1 &= 0x0000FFFF;
+				CAN1->sFilterRegister[filterID/4].FR1 |= id << 21;
+			  break;
+		 case 2:
+				CAN1->sFilterRegister[filterID/4].FR2 = (id << 5) | (id << 21);
+		    break;
+		 case 3:
+			  CAN1->sFilterRegister[filterID/4].FR2 &= 0x0000FFFF;
+				CAN1->sFilterRegister[filterID/4].FR2 |= id << 21;
+				break;
+	 }
+	 filterID++;
+	 CAN1->FMR   &= ~(0x1UL);			  // Deactivate initialization mode
+ }
 
-    MMIO32(fr1 + 8 * num) = id;
-    MMIO32(fr2 + 8 * num) = mask;
+// static void filterInit (int num, int id =0, int mask =0) 
+// {
+//   CAN1->FA1R &= ~(1 << num); // Disable filter
+//   CAN1->FS1R |= (1 << num);  // Set single 32 bit register
 
-  CAN1->FA1R |= (1 << num); // Enable Filter
-}
+//     MMIO32(fr1 + 8 * num) = id;
+//     MMIO32(fr2 + 8 * num) = mask;
 
+//   CAN1->FA1R |= (1 << num); // Enable Filter
+// }
+
+} // stm32f10x
+} // sjsu
 
 int main()
 {
+
+using namespace sjsu;
+using namespace stm32f10x;
   sjsu::LogInfo("Starting Hello World Application");
   CAN_msg_t CAN_rx_msg;  // Holds receiving CAN messages
   CAN_msg_t CAN_tx_msg;  // Holds transmitted CAN messagess
+
+  CANInit(CAN_1000KBPS);
+  CANSetFilter(0x01);
 
   while (true)
   {
@@ -221,17 +299,17 @@ int main()
 	CAN_tx_msg.data[3] = 0xDD;
 	CAN_tx_msg.len     = 4;
 
-  while(!(CAN1->sTxMailBox[0].TIR & 0x1UL))
-  {}
-  CAN1->sTxMailBox[0].TIR &= ~(0x1UL);
+  // while(!(CAN1->sTxMailBox[0].TIR & 0x1UL))
+  // {}
+  // CAN1->sTxMailBox[0].TIR &= ~(0x1UL);
 
-  CANSend(&CAN_tx_msg);
+  // CANSend(&CAN_tx_msg);
 
 
-    for (uint8_t i = 0; i < 10; i++)
+    for (uint8_t i = 0; i < 20; i++)
     {
       sjsu::LogInfo("Waiting for message");
-      sjsu::Delay(100ms);
+      sjsu::Delay(250ms);
 
       if(CANMsgAvail())
       {
@@ -252,5 +330,3 @@ int main()
 }
 
 
-} // stm32f10x
-} // sjsu
