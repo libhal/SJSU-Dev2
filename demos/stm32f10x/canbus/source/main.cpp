@@ -41,6 +41,7 @@ CAN_bit_timing_t CAN_bit_timing[6] =
 
 void CANInit(BITRATE bitrate)
 {
+	 sjsu::LogInfo("Starting Initialization"); 
 	// Enable CAN clock (CAN = b'25)
 	RCC->APB1ENR |= (1 << 25);
 
@@ -125,41 +126,58 @@ void CANInit(BITRATE bitrate)
 				  (((CAN_bit_timing[bitrate].TS1-1) & 0x0F) << 16) | 
 				  (((CAN_bit_timing[bitrate].TS2-1) & 0x07) << 20) |
 				  (0x01 << 30);
-				
-// Configure Filters to default values
-  // 8 - 12 as 11 1000
-  // Assign all filters to CAN1
-  CAN1->FM1R |= 0x1C << 8;              
 
-  // Set to filter initialization mode
-  CAN1->FMR  |=   0x1UL;   
-              
-  // Clear bit 0 to deactivate filter 0
+// Set Filters to accept all messages by seting filter 1 mask to 0x00
+
+	// Registers
+		// FMR (Filter Mask Register)
+			// [0] Filter init Mode
+		// FM1R (Filter Mode Register)
+			// [27:0] 0: Mask Mode | 1: List mode
+		// FS1R (Filter Scale Register)
+			// [27:0] 0: Dual 16-bit scale | 1: Single 32-bit scale
+		// FFA1R (FIFO Assignment Register)
+			// [27:0] 0: Assign FIFO 0 | 1: Assign FIFO 1
+		// FA1R (Filter Activation Register)
+			// [27:0] 0: Filter Not Active | 1: Filter Active 
+	 sjsu::LogInfo("Starting Filter Configuration"); 
+
+	// Configure Filters to default values
+	// 8 - 12 as 11 1000
+	// Assign all filters to CAN1
+	CAN1->FM1R |= 0x1C << 8;              
+
+	// Set to filter initialization mode
+	CAN1->FMR  |=   0x1UL;   
+				
+	// Clear bit 0 to deactivate filter 0
 	CAN1->FA1R &= ~(0x1UL);            
 
-  // Set bit 0 to set filter 0 to single 32 bit configuration
+	// Set bit 0 to set filter 0 to single 32 bit configuration
 	CAN1->FS1R |=   0x1UL;               
- 
-  // Clear filters registers to 0
+
+	// Clear filters registers to 0
 	CAN1->sFilterRegister[0].FR1 = 0x0UL; 
 	CAN1->sFilterRegister[0].FR2 = 0x0UL;
 
-  // Set filter to mask mode
+	// Set filter to mask mode
 	CAN1->FM1R &= ~(0x1UL);               
- 
-  // Clear bit 0 to assign filter 0 to FIFO 0
+
+	// Clear bit 0 to assign filter 0 to FIFO 0
 	CAN1->FFA1R &= ~(0x1UL);			   
-  
-  // Activate filter 0       
+
+	// Activate filter 0       
 	CAN1->FA1R  |=   0x1UL;          
-	
-  // Deactivate initialization mode
+
+	// Deactivate initialization mode
 	CAN1->FMR   &= ~(0x1UL);			
-  // Set CAN to normal mode         
+	// Set CAN to normal mode         
 	CAN1->MCR   &= ~(0x1UL);              
 
-  // Wait for CAN to leave initialization mode
-	while (CAN1->MSR & 0x1UL); 
+	// Wait for CAN to leave initialization mode
+	while (!(CAN1->MSR & 0x1UL)); 
+
+	sjsu::LogInfo("Initialization Complete"); 
 }
 
  void CANSend(CAN_msg_t* CAN_tx_msg)
@@ -285,7 +303,7 @@ using namespace stm32f10x;
   CAN_msg_t CAN_tx_msg;  // Holds transmitted CAN messagess
 
   CANInit(CAN_1000KBPS);
-  CANSetFilter(0x01);
+//   CANSetFilter(0x01);
 
   while (true)
   {
@@ -293,17 +311,21 @@ using namespace stm32f10x;
 
   sjsu::LogInfo("Sending Message"); 
 	CAN_tx_msg.id      = 0;
-	CAN_tx_msg.data[0] = 0xAA;
-	CAN_tx_msg.data[1] = 0xBB;
-	CAN_tx_msg.data[2] = 0xCC;
-	CAN_tx_msg.data[3] = 0xDD;
-	CAN_tx_msg.len     = 4;
+	CAN_tx_msg.data[0] = 0xAa;
+	CAN_tx_msg.data[1] = 0xBb;
+	CAN_tx_msg.data[2] = 0xCc;
+	CAN_tx_msg.data[3] = 0xDd;
+	CAN_tx_msg.data[4] = 0xEe;
+	CAN_tx_msg.data[5] = 0xFf;
+	CAN_tx_msg.data[6] = 0xAb;
+	CAN_tx_msg.data[7] = 0xAc;
+	CAN_tx_msg.len     = 8;
 
   // while(!(CAN1->sTxMailBox[0].TIR & 0x1UL))
   // {}
   // CAN1->sTxMailBox[0].TIR &= ~(0x1UL);
 
-  // CANSend(&CAN_tx_msg);
+  	CANSend(&CAN_tx_msg);
 
 
     for (uint8_t i = 0; i < 20; i++)
@@ -314,11 +336,15 @@ using namespace stm32f10x;
       if(CANMsgAvail())
       {
         CANReceive(&CAN_rx_msg);
-        sjsu::LogInfo("%#04x\n %#04x\n %#04x\n %#04x\n",
+        sjsu::LogInfo("%#04x %#04x %#04x %#04x %#04x %#04x %#04x %#04x\n",
           CAN_rx_msg.data[0],
           CAN_rx_msg.data[1],
           CAN_rx_msg.data[2],
-          CAN_rx_msg.data[3]);
+          CAN_rx_msg.data[3],
+		  CAN_rx_msg.data[4],
+		  CAN_rx_msg.data[5],
+		  CAN_rx_msg.data[6],
+		  CAN_rx_msg.data[7]);
         break;
       }
 
