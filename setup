@@ -114,8 +114,8 @@ function install_mac_osx_prerequisites() {
   echo " ───────────────────────────────────────────────────┐"
   echo "               Installing Homebrew                   "
   echo "└─────────────────────────────────────────────────── "
-  which -s brew
   local brew_install=0
+  which -s brew
   if [[ $? -ne "0" ]]; then
     # Install Homebrew
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
