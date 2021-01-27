@@ -1,6 +1,6 @@
 # SJSU-Dev2
 
-[![Slack Chat](https://img.shields.io/badge/join-slack-purple.svg?logo=slack&longCache=true&style=flat)](https://slofile.com/slack/sjsu-dev2)
+[![Discord](https://img.shields.io/discord/800515757871726622?color=7389D8&logo=discord&logoColor=ffffff&labelColor=6A7EC2)](https://discord.gg/tSmCgeyM)
 [![Github Actions](https://github.com/SJSU-Dev2/SJSU-Dev2/workflows/.github/workflows/presubmit.yml/badge.svg)](https://github.com/SJSU-Dev2/SJSU-Dev2/actions?query=workflow%3A.github%2Fworkflows%2Fpresubmit.yml)
 [![codecov](https://codecov.io/gh/SJSU-Dev2/SJSU-Dev2/branch/master/graph/badge.svg?token=E7aAr2o1CT)](https://codecov.io/gh/SJSU-Dev2/SJSU-Dev2)
 [![Documentation Status](https://readthedocs.org/projects/sjsu-dev/badge/?version=latest)](http://sjsu-dev2.readthedocs.io/en/latest)
@@ -12,6 +12,23 @@
 Cross platform firmware framework written by students, alumni, and faculty of
 San Jose State University. Designed for the original purpose of helping students
 develop firmware for the SJTwo board.
+
+## 🏗️ WARNING: UNDER HEAVY CONSTRUCTION 🚧
+
+Currently Ongoing Breaking Changes:
+
+1. New common API for modules
+2. Introduction of Docker Images and Containers to make development consistent
+   across computer operating systems.
+3. Renaming and reorganization of the library folder
+
+Additional Considered Changes:
+
+1. New build system (maybe meson, or CMake (ick), or our own custom build system
+   called cpp-build)
+2. Add package management system to separate platform and peripheral
+   implementation details from main codebase.
+
 
 ## [📖 Full Documentation & Guides](http://sjsu-dev2.readthedocs.io/en/latest/?badge=latest)
 
@@ -41,7 +58,7 @@ If you find that git is not installed on your machine follow these steps to
 ## 🛠️ Building a Project
 
 A good project to start with would be the `hello_world` project. It can be found
-in the `projects/` folder. The example projects can be found in the `demos/` 
+in the `projects/` folder. The example projects can be found in the `demos/`
 folder.
 
 Building `hello_world`:
@@ -53,7 +70,7 @@ make application
 
 ## 📥 Programming a Device
 
-From within a project, run 
+From within a project, run
 
 ```bash
 make flash
@@ -62,7 +79,7 @@ make flash
 [![asciicast](https://asciinema.org/a/314699.svg)](https://asciinema.org/a/314699)
 
 Most platforms do not have `make flash` available, and in those cases JTAG/SWD
-can be used to program a device. Hook up a JTAG or SWD to your MCU and execute 
+can be used to program a device. Hook up a JTAG or SWD to your MCU and execute
 the following command with the correct JTAG and PLATFORM selected:
 
 ```bash
@@ -85,7 +102,7 @@ a project directory.
 
 ## 🔎 Debugging Device
 
-If you are using a JTAG or SWD device with your MCU, you can debug the device with a 
+If you are using a JTAG or SWD device with your MCU, you can debug the device with a
 similiar command to programming:
 
 ```bash
@@ -100,9 +117,9 @@ make debug JTAG=stlink PLATFORM=stm32f10x
 
 STDOUT and STDIN will be available via the gdb debug monitor.
 
-## 📦 Windows Users: Using a Virtual Machine 
+## 📦 Windows Users: Using a Virtual Machine
 
-One of the easiest ways to get started with SJSU-Dev2 for Windows users is to use 
+One of the easiest ways to get started with SJSU-Dev2 for Windows users is to use
 a prebuilt virtual machine.
 
 Steps to install virtual box and the virtual machine are listed below:
@@ -117,14 +134,14 @@ Steps to install virtual box and the virtual machine are listed below:
 
 ### Setting up SJSU-Dev2
 
-Now that the VM is up and running, you can use the quick start guide to download and 
+Now that the VM is up and running, you can use the quick start guide to download and
 setup SJSU-Dev2.
 
 ### Connecting USB Devices to Virtual Machine
 
 1. Open the Ubuntu Virtual Machine on the left hand side.
 2. Login by entering the password "osboxes.org"
-3. To program and interact with your board, you will need to connect it to your host 
+3. To program and interact with your board, you will need to connect it to your host
    machine and bring it into the virtual machine by using the top menu:
    `Devices > USB > CP2102n...`
 4. At this point you can run commands like `make application` and `make flash`
