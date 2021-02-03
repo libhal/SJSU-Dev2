@@ -1,11 +1,11 @@
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/spi.hpp"
-#include "L1_Peripheral/stm32f10x/gpio.hpp"
-#include "L1_Peripheral/stm32f10x/system_controller.hpp"
-#include "L2_HAL/displays/oled/ssd1306.hpp"
-#include "L3_Application/graphics.hpp"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/spi.hpp"
+#include "peripherals/stm32f10x/gpio.hpp"
+#include "peripherals/stm32f10x/system_controller.hpp"
+#include "devices/displays/oled/ssd1306.hpp"
+#include "systems/graphics/graphics.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 namespace
 {

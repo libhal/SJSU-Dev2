@@ -44,6 +44,7 @@
 ///
 
 #pragma once
+
 #include <cstddef>
 #include <cstdint>
 
@@ -52,7 +53,7 @@
 #include <project_config.hpp>
 
 #include "log_levels.hpp"
-#include "utility/units.hpp"
+#include "utility/math/units.hpp"
 
 namespace config
 {

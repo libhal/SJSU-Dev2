@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "L1_Peripheral/lpc40xx/can.hpp"
+#include "peripherals/lpc40xx/can.hpp"
 #include "utility/log.hpp"
 
 int main(void)

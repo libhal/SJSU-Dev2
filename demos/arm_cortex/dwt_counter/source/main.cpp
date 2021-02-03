@@ -1,4 +1,4 @@
-#include "L1_Peripheral/cortex/dwt_counter.hpp"
+#include "peripherals/cortex/dwt_counter.hpp"
 #include "utility/log.hpp"
 
 int main()

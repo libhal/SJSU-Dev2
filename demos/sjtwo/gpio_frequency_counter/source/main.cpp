@@ -1,8 +1,8 @@
-#include "L1_Peripheral/hardware_counter.hpp"
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/sensors/signal/frequency_counter.hpp"
+#include "peripherals/hardware_counter.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/sensors/signal/frequency_counter.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

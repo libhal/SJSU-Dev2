@@ -1,7 +1,7 @@
 #include <cstdio>
 
-#include "L0_Platform/stm32f10x/stm32f10x.h"
-#include "utility/time.hpp"
+#include "platforms/targets/stm32f10x/stm32f10x.h"
+#include "utility/time/time.hpp"
 #include "utility/log.hpp"
 
 int main()

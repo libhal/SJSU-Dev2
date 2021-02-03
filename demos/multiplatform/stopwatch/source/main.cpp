@@ -2,7 +2,7 @@
 #include <cstdint>
 
 #include "utility/log.hpp"
-#include "utility/stopwatch.hpp"
+#include "utility/time/stopwatch.hpp"
 
 int main()
 {

@@ -1,9 +1,9 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/displays/lcd/st7066u.hpp"
-#include "L2_HAL/io/parallel_bus/parallel_gpio.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/displays/lcd/st7066u.hpp"
+#include "devices/io/parallel_bus/parallel_gpio.hpp"
 
 int main()
 {

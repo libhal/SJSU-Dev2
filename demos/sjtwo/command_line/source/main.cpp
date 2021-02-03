@@ -4,15 +4,15 @@
 #include <cstdint>
 #include <iterator>
 
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
-#include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "L3_Application/commandline.hpp"
-#include "L3_Application/commands/arm_system_command.hpp"
-#include "L3_Application/commands/common.hpp"
-#include "L3_Application/commands/i2c_command.hpp"
-#include "L3_Application/commands/rtos_command.hpp"
+#include "peripherals/lpc40xx/i2c.hpp"
+#include "peripherals/lpc40xx/system_controller.hpp"
+#include "utility/console/console.hpp"
+#include "utility/console/commands/arm_system_command.hpp"
+#include "utility/console/commands/common.hpp"
+#include "utility/console/commands/i2c_command.hpp"
+#include "utility/console/commands/rtos_command.hpp"
 #include "utility/log.hpp"
-#include "utility/rtos.hpp"
+#include "utility/rtos/freertos/rtos.hpp"
 
 namespace
 {

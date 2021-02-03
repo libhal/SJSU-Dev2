@@ -35,7 +35,7 @@
 - [Future Advancements](#future-advancements)
 
 # Location
-`L3 Application`
+`systems`
 
 # Type
 Interface
@@ -116,7 +116,7 @@ class Task : public TaskInterface
 Tasks are statically allocated and the FreeRTOS task handle is created and
 managed by the `TaskScheduler`. To enable the static allocation of tasks, the
 `configSUPPORT_STATIC_ALLOCATION` definition is set to 1 in
-[FreeRTOSConfig.h](/library/L0_Platform/freertos/FreeRTOSConfig.h) and the
+[FreeRTOSConfig.h](/library/platforms/freertos/FreeRTOSConfig.h) and the
 implementation of `vApplicationGetIdleTaskMemory()` must also be provided to
 statically allocate memory for the FreeRTOS idle task when
 `vTaskStartScheduler()` is invoked.

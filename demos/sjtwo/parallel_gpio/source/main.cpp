@@ -1,9 +1,9 @@
 #include <iterator>
 
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/io/parallel_bus/parallel_gpio.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/io/parallel_bus/parallel_gpio.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

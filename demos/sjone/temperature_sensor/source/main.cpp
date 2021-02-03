@@ -1,6 +1,6 @@
-#include "L1_Peripheral/lpc17xx/i2c.hpp"
-#include "L1_Peripheral/lpc17xx/system_controller.hpp"
-#include "L2_HAL/sensors/environment/temperature/tmp102.hpp"
+#include "peripherals/lpc17xx/i2c.hpp"
+#include "peripherals/lpc17xx/system_controller.hpp"
+#include "devices/sensors/environment/temperature/tmp102.hpp"
 #include "utility/log.hpp"
 
 int main()

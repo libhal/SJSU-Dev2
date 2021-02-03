@@ -1,9 +1,9 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/spi.hpp"
-#include "L2_HAL/displays/oled/ssd1306.hpp"
-#include "L3_Application/graphics.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/spi.hpp"
+#include "devices/displays/oled/ssd1306.hpp"
+#include "systems/graphics/graphics.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

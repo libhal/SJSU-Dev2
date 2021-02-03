@@ -11,14 +11,14 @@
 #include <project_config.hpp>
 
 #include "config.hpp"
-#include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L1_Peripheral/cortex/system_timer.hpp"
-#include "L1_Peripheral/lpc40xx/uart.hpp"
-#include "L2_HAL/boards/sjtwo.hpp"
+#include "platforms/targets/lpc40xx/LPC40xx.h"
+#include "peripherals/cortex/system_timer.hpp"
+#include "peripherals/lpc40xx/uart.hpp"
+#include "devices/boards/sjtwo.hpp"
 #include "utility/build_info.hpp"
 #include "utility/debug.hpp"
 #include "utility/macros.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 namespace
 {

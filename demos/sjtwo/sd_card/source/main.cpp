@@ -1,11 +1,11 @@
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/spi.hpp"
-#include "L2_HAL/memory/sd.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/spi.hpp"
+#include "devices/memory/sd.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 std::string_view long_text = R"(
 Do you want to build a snowman?

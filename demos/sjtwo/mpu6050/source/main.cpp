@@ -1,7 +1,7 @@
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
-#include "L2_HAL/sensors/movement/accelerometer/mpu6050.hpp"
+#include "peripherals/lpc40xx/i2c.hpp"
+#include "devices/sensors/movement/accelerometer/mpu6050.hpp"
 #include "utility/log.hpp"
 
 int main()

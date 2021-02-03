@@ -1,3 +1,3 @@
-TESTS += $(LIBRARY_DIR)/L2_HAL/actuators/servo/test/servo_test.cpp
+TESTS += $(LIBRARY_DIR)/devices/actuators/servo/test/servo_test.cpp
 
 PLATFORM = lpc40xx

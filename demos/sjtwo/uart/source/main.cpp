@@ -1,9 +1,9 @@
 #include <cstdio>
 #include <iterator>
 
-#include "L1_Peripheral/lpc40xx/uart.hpp"
+#include "peripherals/lpc40xx/uart.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

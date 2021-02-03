@@ -257,7 +257,7 @@ HOST_SYMBOLIZER    = $(SJCLANG)/bin/llvm-symbolizer
 # Final Flag Compositions
 # ==============================================================================
 
-LINKER_SCRIPT   ?= $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/linker.ld
+LINKER_SCRIPT   ?= $(LIBRARY_DIR)/platforms/targets/$(PLATFORM)/linker.ld
 
 INCLUDES        := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
 SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -isystem", $(SYSTEM_INCLUDES)))
@@ -406,8 +406,8 @@ coverage:
 		--exclude-unreachable-branches --exclude-throw-branches \
 		--gcov-executable="$(CODE_COVERAGE_TOOL)" \
 		--sort-percentage --filter="$(LIBRARY_DIR)" \
-		-e "$(LIBRARY_DIR)/L0_Platform" \
-		-e "$(LIBRARY_DIR)/L4_Testing" \
+		-e "$(LIBRARY_DIR)/platforms" \
+		-e "$(LIBRARY_DIR)/testing" \
 		-e "$(LIBRARY_DIR)/newlib" \
 		-e "$(LIBRARY_DIR)/.*_test.cpp" \
 		-e "$(LIBRARY_DIR)/third_party"

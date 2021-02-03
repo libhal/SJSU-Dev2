@@ -1,7 +1,7 @@
 #include <cstdint>
 #include <numeric>
 
-#include "L1_Peripheral/lpc40xx/eeprom.hpp"
+#include "peripherals/lpc40xx/eeprom.hpp"
 #include "utility/log.hpp"
 
 int main(void)

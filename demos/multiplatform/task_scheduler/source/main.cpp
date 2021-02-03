@@ -1,6 +1,6 @@
-#include "L3_Application/task_scheduler.hpp"
+#include "utility/rtos/freertos/task_scheduler.hpp"
 #include "utility/log.hpp"
-#include "utility/rtos.hpp"
+#include "utility/rtos/freertos/rtos.hpp"
 
 class PrinterTask final : public sjsu::rtos::Task<1024>
 {

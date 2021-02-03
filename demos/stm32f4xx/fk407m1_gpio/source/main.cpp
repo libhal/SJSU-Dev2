@@ -1,7 +1,7 @@
 #include <cstdio>
 
-#include "L1_Peripheral/stm32f4xx/gpio.hpp"
-#include "utility/time.hpp"
+#include "peripherals/stm32f4xx/gpio.hpp"
+#include "utility/time/time.hpp"
 #include "utility/log.hpp"
 
 int main()

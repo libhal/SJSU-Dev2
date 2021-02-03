@@ -16,7 +16,7 @@
   - [Demonstration Project](#demonstration-project)
 
 # Location
-`L2 HAL`
+`devices`
 
 # Type
 Implementation

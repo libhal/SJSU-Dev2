@@ -4,14 +4,14 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/boards/sjtwo.hpp"
-#include "L2_HAL/switches/button.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/boards/sjtwo.hpp"
+#include "devices/switches/button.hpp"
 #include "config.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
-#include "utility/rtos.hpp"
-#include "utility/time.hpp"
+#include "utility/rtos/freertos/rtos.hpp"
+#include "utility/time/time.hpp"
 
 // Using anonymous namespace so these tasks are only visible to this file
 namespace
