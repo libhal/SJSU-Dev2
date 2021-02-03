@@ -18,15 +18,18 @@ class Gpio final : public sjsu::Gpio
   /// @param pin  The pin number.
   constexpr Gpio(uint8_t port, uint8_t pin) : pin_{ port, pin } {}
 
-  void ModuleInitialize() override {}
-  void ModuleEnable(bool = true) override {}
+  void ModuleInitialize() override
+  {
+    pin_.Initialize();
+  }
 
   void SetDirection(Direction direction) override
   {
     constexpr auto kDirectionBit = bit::MaskFromRange(2);
-    uint32_t function_code       = 0b00;
-    function_code = bit::Insert(function_code, Value(direction), kDirectionBit);
-    pin_.ConfigureFunction(static_cast<uint8_t>(function_code));
+
+    pin_.settings.function =
+        bit::Value(0).Insert(Value(direction), kDirectionBit).To<uint8_t>();
+    pin_.Initialize();
   }
 
   void Set(State output) override
@@ -72,5 +75,17 @@ class Gpio final : public sjsu::Gpio
  private:
   msp432p401r::Pin pin_;
 };
+
+template <int port, int pin_number>
+inline Gpio & GetGpio()
+{
+  // NOTE: port can only be 1-10 or 'J'
+  static_assert((1 <= port && port <= 10) || (port == 'J'),
+                "Port must be 1-10 or J");
+  static_assert(pin_number <= 7, "Pin must be between 0 and 7");
+
+  static Gpio gpio(port, pin_number);
+  return gpio;
+}
 }  // namespace msp432p401r
 }  // namespace sjsu

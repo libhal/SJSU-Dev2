@@ -5,8 +5,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Uart);
-
 TEST_CASE("Testing lpc40xx Uart")
 {
   // Simulated local version of LPC_UART2 to verify registers
@@ -24,11 +22,9 @@ TEST_CASE("Testing lpc40xx Uart")
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
   Mock<sjsu::Pin> mock_tx;
-  Fake(Method(mock_tx, ConfigureFunction));
-  Fake(Method(mock_tx, ConfigurePullResistor));
   Mock<sjsu::Pin> mock_rx;
-  Fake(Method(mock_rx, ConfigureFunction));
-  Fake(Method(mock_rx, ConfigurePullResistor));
+  Fake(Method(mock_tx, Pin::ModuleInitialize));
+  Fake(Method(mock_rx, Pin::ModuleInitialize));
 
   // Set up for UART2
   // Parameters for constructor
@@ -41,12 +37,50 @@ TEST_CASE("Testing lpc40xx Uart")
     .rx_function_id = 0b001,
   };
 
-  Uart uart_test(kMockUart2);
+  Uart test_subject(kMockUart2);
 
   SECTION("Initialize()")
   {
+    // Setup
+    mock_tx.get().settings = PinSettings_t{};
+    mock_rx.get().settings = PinSettings_t{};
+
+    // Setup: Baud Rate
+    SECTION("baudrate = 9600")
+    {
+      test_subject.settings.baud_rate = 9600;
+    }
+    SECTION("baudrate = 38400")
+    {
+      test_subject.settings.baud_rate = 38400;
+    }
+    SECTION("baudrate = 115200")
+    {
+      test_subject.settings.baud_rate = 115200;
+    }
+    SECTION("baudrate = 512000")
+    {
+      test_subject.settings.baud_rate = 512000;
+    }
+    SECTION("baudrate = 1'000'000")
+    {
+      test_subject.settings.baud_rate = 1'000'000;
+    }
+
+    constexpr uint32_t kBits8DlabClear = 3;
+
+    const uart::UartCalibration_t kCalibration = uart::GenerateUartCalibration(
+        test_subject.settings.baud_rate, kDummySystemControllerClockFrequency);
+
+    const uint8_t kExpectedUpperByte =
+        static_cast<uint8_t>((kCalibration.divide_latch >> 8) & 0xFF);
+    const uint8_t kExpectedLowerByte =
+        static_cast<uint8_t>(kCalibration.divide_latch & 0xFF);
+    const uint8_t kExpectedFdr = static_cast<uint8_t>(
+        (kCalibration.multiply & 0xF) << 4 | (kCalibration.divide_add & 0xF));
+
     // Exercise
-    uart_test.ModuleInitialize();
+    test_subject.Initialize();
 
     // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
@@ -54,56 +88,40 @@ TEST_CASE("Testing lpc40xx Uart")
                  return sjsu::lpc40xx::SystemController::Peripherals::kUart2
                             .device_id == id.device_id;
                }));
-  }
-
-  SECTION("Enable()")
-  {
-    // Exercise
-    uart_test.ModuleEnable();
 
     // Verify
-    Verify(Method(mock_tx, ConfigureFunction).Using(kMockUart2.tx_function_id))
-        .Once();
-    Verify(Method(mock_rx, ConfigureFunction).Using(kMockUart2.rx_function_id))
-        .Once();
-    Verify(Method(mock_tx, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kPullUp))
-        .Once();
-    Verify(Method(mock_rx, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kPullUp))
-        .Once();
+    CHECK(mock_tx.get().CurrentSettings() ==
+          PinSettings_t{
+              .function = kMockUart2.tx_function_id,
+              .resistor = sjsu::PinSettings_t::Resistor::kPullUp,
+          });
+
+    CHECK(mock_rx.get().CurrentSettings() ==
+          PinSettings_t{
+              .function = kMockUart2.rx_function_id,
+              .resistor = sjsu::PinSettings_t::Resistor::kPullUp,
+          });
 
     CHECK(0b111 == bit::Extract(local_uart.FCR, bit::MaskFromRange(0, 2)));
-  }
-
-  SECTION("Enable(false)")
-  {
-    // Exercise
-    uart_test.ModuleEnable(false);
-
-    // Verify
-    CHECK(0b000 == bit::Extract(local_uart.FCR, bit::MaskFromRange(0, 2)));
-  }
-
-  SECTION("ConfigureBaudRate(9600)")
-  {
-    // Setup
-    constexpr uint32_t kBaudRate          = 9600;
-    constexpr uint32_t kBits8DlabClear    = 3;
-    constexpr uint32_t kExpectedUpperByte = 0;
-    constexpr uint32_t kExpectedLowerByte = 208;
-    constexpr uint32_t kExpectedDivAdd    = 1;
-    constexpr uint32_t kExpectedMul       = 2;
-    constexpr uint32_t kExpectedFdr = (kExpectedMul << 4) | kExpectedDivAdd;
-
-    // Exercise
-    uart_test.ConfigureBaudRate(kBaudRate);
 
     // Verify
     CHECK(kExpectedUpperByte == local_uart.DLM);
     CHECK(kExpectedLowerByte == local_uart.DLL);
     CHECK(kExpectedFdr == local_uart.FDR);
     CHECK(kBits8DlabClear == local_uart.LCR);
+  }
+
+  SECTION("PowerDown()")
+  {
+    // Setup
+    local_uart.FCR =
+        bit::Insert(0b111, local_uart.FCR, bit::MaskFromRange(0, 2));
+
+    // Exercise
+    test_subject.PowerDown();
+
+    // Verify
+    CHECK(0b000 == bit::Extract(local_uart.FCR, bit::MaskFromRange(0, 2)));
   }
 
   sjsu::lpc40xx::SystemController::system_controller = LPC_SC;

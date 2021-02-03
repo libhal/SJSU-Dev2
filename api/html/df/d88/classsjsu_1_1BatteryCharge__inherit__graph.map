@@ -1,4 +1,4 @@
 <map id="sjsu::BatteryCharge" name="sjsu::BatteryCharge">
-<area shape="rect" id="node3" href="$d7/da0/classsjsu_1_1Max170343.html" title="Driver for the max17043 battery fuel gauge. " alt="" coords="14,155,135,181"/>
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="27,5,123,32"/>
+<area shape="rect" id="node3" href="$d7/da0/classsjsu_1_1Max170343.html" title="Driver for the max17043 battery fuel gauge. " alt="" coords="15,155,146,181"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="18,5,143,32"/>
 </map>

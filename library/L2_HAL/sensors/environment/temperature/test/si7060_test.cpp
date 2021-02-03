@@ -5,33 +5,17 @@
 namespace sjsu
 {
 // Uncomment this when can class has been created
-EMIT_ALL_METHODS(Si7060);
-
 TEST_CASE("Si7060")
 {
   constexpr uint8_t kDeviceAddress = Si7060::kDefaultAddress;
   Mock<I2c> mock_i2c;
   Si7060 temperature_sensor(mock_i2c.get(), kDeviceAddress);
 
-  SECTION("Initialize")
+  SECTION("Initialization")
   {
     // Setup
-    Fake(Method(mock_i2c, ModuleInitialize));
-    Fake(Method(mock_i2c, ConfigureClockRate));
-    Fake(Method(mock_i2c, ModuleEnable));
+    Fake(Method(mock_i2c, I2c::ModuleInitialize));
 
-    // Exercise
-    temperature_sensor.ModuleInitialize();
-
-    // Verify
-    Verify(Method(mock_i2c, ModuleInitialize),
-           Method(mock_i2c, ConfigureClockRate),
-           Method(mock_i2c, ModuleEnable))
-        .Once();
-  }
-
-  SECTION("Enable")
-  {
     SECTION("Incorrect device information")
     {
       // Setup
@@ -44,7 +28,7 @@ TEST_CASE("Si7060")
               });
 
       // Exercise
-      SJ2_CHECK_EXCEPTION(temperature_sensor.ModuleEnable(),
+      SJ2_CHECK_EXCEPTION(temperature_sensor.Initialize(),
                           std::errc::no_such_device);
 
       // Verify
@@ -60,11 +44,13 @@ TEST_CASE("Si7060")
           });
 
       // Exercise
-      temperature_sensor.ModuleEnable();
+      temperature_sensor.Initialize();
 
       // Verify
       Verify(Method(mock_i2c, Transaction)).Once();
     }
+
+    Verify(Method(mock_i2c, I2c::ModuleInitialize)).Once();
   }
 
   SECTION("GetTemperature")

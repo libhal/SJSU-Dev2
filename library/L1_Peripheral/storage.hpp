@@ -15,13 +15,9 @@ namespace sjsu
 /// Abstract interface for persistent memory storage systems.
 ///
 /// @ingroup l1_peripheral
-class Storage : public Module
+class Storage : public Module<>
 {
  public:
-  // ===========================================================================
-  // Interface Definitions
-  // ===========================================================================
-
   /// Defines the types of storage media.
   enum class Type
   {
@@ -42,18 +38,6 @@ class Storage : public Module
     /// Ferromagnetic RAM
     kFRam,
   };
-
-  // ===========================================================================
-  // Interface Methods
-  // ===========================================================================
-
-  // ---------------------------------------------------------------------------
-  // Configuration Methods
-  // ---------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------
-  // Usage Methods
-  // ---------------------------------------------------------------------------
 
   /// @return the type of memory this driver controls. Can be called without
   ///         calling Initialize() first.
@@ -107,7 +91,7 @@ class Storage : public Module
   virtual void Read(uint32_t block_address, std::span<uint8_t> data) = 0;
 
   // ===========================================================================
-  // Utility Methods
+  // Helper Functions
   // ===========================================================================
 
   /// Helper function that overloads the Write function to allow usage of the
@@ -136,7 +120,6 @@ inline sjsu::Storage & GetInactive<sjsu::Storage>()
     }
 
     void ModuleInitialize() override {}
-    void ModuleEnable(bool = true) override {}
 
     bool IsMediaPresent() override
     {

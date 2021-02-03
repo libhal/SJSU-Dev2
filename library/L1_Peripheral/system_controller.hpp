@@ -164,7 +164,7 @@ class SystemController
   virtual void PowerDownPeripheral(ResourceID peripheral) const = 0;
 
   // ===========================================================================
-  // Utility Methods
+  // Helper Functions
   // ===========================================================================
 
   /// Returns the clock configuration object as a casted reference of

@@ -1,5 +1,5 @@
-<map id="sjsu::stm32f10x::Uart&lt; kQueueSize &gt;" name="sjsu::stm32f10x::Uart&lt; kQueueSize &gt;">
-<area shape="rect" id="node2" href="$d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="5,155,184,181"/>
-<area shape="rect" id="node3" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="55,80,134,107"/>
-<area shape="rect" id="node4" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="47,5,143,32"/>
+<map id="sjsu::stm32f10x::Uart&lt; queue_size &gt;" name="sjsu::stm32f10x::Uart&lt; queue_size &gt;">
+<area shape="rect" id="node2" href="$d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="21,155,216,181"/>
+<area shape="rect" id="node3" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="77,80,161,107"/>
+<area shape="rect" id="node4" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; UartSettings_t \&gt;" alt="" coords="5,5,232,32"/>
 </map>

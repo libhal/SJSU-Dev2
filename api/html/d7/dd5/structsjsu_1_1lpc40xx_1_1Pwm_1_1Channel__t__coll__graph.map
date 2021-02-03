@@ -1,6 +1,8 @@
 <map id="sjsu::lpc40xx::Pwm::Channel_t" name="sjsu::lpc40xx::Pwm::Channel_t">
-<area shape="rect" id="node2" href="$d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html" title="sjsu::lpc40xx::Pwm\l::Peripheral_t" alt="" coords="19,109,157,151"/>
-<area shape="rect" id="node3" href="$d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html" title="sjsu::SystemController\l::ResourceID" alt="" coords="5,5,160,47"/>
-<area shape="rect" id="node4" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="190,117,263,143"/>
-<area shape="rect" id="node5" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="184,13,280,39"/>
+<area shape="rect" id="node2" href="$d4/dd8/structsjsu_1_1lpc40xx_1_1Pwm_1_1Peripheral__t.html" title="sjsu::lpc40xx::Pwm\l::Peripheral_t" alt="" coords="58,289,205,331"/>
+<area shape="rect" id="node3" href="$d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html" title="sjsu::SystemController\l::ResourceID" alt="" coords="5,185,175,227"/>
+<area shape="rect" id="node4" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="249,297,325,323"/>
+<area shape="rect" id="node5" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; PinSettings_t \&gt;" alt="" coords="199,193,418,219"/>
+<area shape="rect" id="node6" href="$dc/d60/structsjsu_1_1PinSettings__t.html" title="Generic settings for a standard chip&#39;s Pin peripheral. " alt="" coords="238,96,379,123"/>
+<area shape="rect" id="node7" href="$d1/d03/structsjsu_1_1MemoryEqualOperator__t.html" title="sjsu::MemoryEqualOperator\l_t\&lt; PinSettings_t \&gt;" alt="" coords="207,5,410,47"/>
 </map>

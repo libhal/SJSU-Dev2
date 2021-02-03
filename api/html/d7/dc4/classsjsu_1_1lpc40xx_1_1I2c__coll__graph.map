@@ -1,4 +1,6 @@
 <map id="sjsu::lpc40xx::I2c" name="sjsu::lpc40xx::I2c">
-<area shape="rect" id="node2" href="$d0/d9b/classsjsu_1_1I2c.html" title="sjsu::I2c" alt="" coords="32,80,104,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="20,5,116,32"/>
+<area shape="rect" id="node2" href="$d0/d9b/classsjsu_1_1I2c.html" title="An abstract interface for hardware that implements the Inter&#45;integrated Circuit (I2C) or Two Wire Int..." alt="" coords="77,261,151,288"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; I2cSettings_t \&gt;" alt="" coords="5,185,223,212"/>
+<area shape="rect" id="node4" href="$d5/def/structsjsu_1_1I2cSettings__t.html" title="Generic settings for a standard I2C peripheral. " alt="" coords="44,96,184,123"/>
+<area shape="rect" id="node5" href="$d1/d03/structsjsu_1_1MemoryEqualOperator__t.html" title="sjsu::MemoryEqualOperator\l_t\&lt; I2cSettings_t \&gt;" alt="" coords="13,5,215,47"/>
 </map>

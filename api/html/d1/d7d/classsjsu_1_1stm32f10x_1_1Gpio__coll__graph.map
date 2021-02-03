@@ -1,4 +1,5 @@
 <map id="sjsu::stm32f10x::Gpio" name="sjsu::stm32f10x::Gpio">
-<area shape="rect" id="node2" href="$dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="40,80,121,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="33,5,129,32"/>
+<area shape="rect" id="node2" href="$dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="44,171,131,197"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="25,95,150,121"/>
+<area shape="rect" id="node4" href="$d3/d79/structsjsu_1_1EmptySettings__t.html" title="sjsu::EmptySettings_t" alt="" coords="6,5,169,32"/>
 </map>

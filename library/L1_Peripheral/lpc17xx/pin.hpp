@@ -2,9 +2,8 @@
 
 #include <cstdio>
 
-#include "L1_Peripheral/pin.hpp"
-
 #include "L0_Platform/lpc17xx/LPC17xx.h"
+#include "L1_Peripheral/pin.hpp"
 #include "utility/bit.hpp"
 #include "utility/enum.hpp"
 #include "utility/log.hpp"
@@ -49,35 +48,22 @@ class Pin final : public sjsu::Pin
   {
   }
 
-  /// NOTE: GPIO hardare is enabled and ready by default on reset. This
-  /// initialize method only serves to check that the port and pin are correct,
-  /// and throws if they are not.
   void ModuleInitialize() override
   {
-    if (port_ > 5 && pin_ > 31)
-    {
-      throw Exception(
-          std::errc::invalid_argument,
-          "Port must be between 0 and 5 & Pin must be between 0 and 31");
-    }
-    if (port_ == 5 && pin_ > 4)
-    {
-      throw Exception(std::errc::invalid_argument,
-                      "For port 5, the pin number must be equal to or below 4");
-    }
+    ConfigureFunction();
+    ConfigurePullResistor();
+    ConfigureAsOpenDrain();
   }
 
-  /// Does nothing
-  void ModuleEnable(bool = true) override {}
-
-  void ConfigureFunction(uint8_t function) override
+ private:
+  void ConfigureFunction()
   {
-    uint32_t pin_reg_select = PinRegisterLookup();
-    function_map->pin[pin_reg_select] =
-        bit::Insert(function_map->pin[pin_reg_select], function, kPinMask);
+    uint32_t pin_reg_select           = PinRegisterLookup();
+    function_map->pin[pin_reg_select] = bit::Insert(
+        function_map->pin[pin_reg_select], settings.function, kPinMask);
   }
 
-  void ConfigurePullResistor(Resistor resistor) override
+  void ConfigurePullResistor()
   {
     static constexpr uint8_t kResistorModes[4] = {
       0b10,  // kNone     [0]
@@ -88,27 +74,20 @@ class Pin final : public sjsu::Pin
     uint32_t pin_reg_select = PinRegisterLookup();
     resistor_map->pin[pin_reg_select] =
         bit::Insert(resistor_map->pin[pin_reg_select],
-                    kResistorModes[Value(resistor)], kPinMask);
+                    kResistorModes[Value(settings.resistor)],
+                    kPinMask);
   }
 
-  /// Implement ConfigureAsAnalogMode as deprecated and unsupported
-  [[deprecated("Unsupported operation")]] void ConfigureAsAnalogMode(
-      bool = true) override
+  void ConfigureAsOpenDrain()
   {
-    throw Exception(std::errc::operation_not_supported, "");
+    open_drain_map->pin[GetPort()] = bit::Insert(open_drain_map->pin[GetPort()],
+                                                 settings.open_drain,
+                                                 {
+                                                     .position = GetPin(),
+                                                     .width    = 1,
+                                                 });
   }
 
-  void ConfigureAsOpenDrain(bool set_as_open_drain = true) override
-  {
-    open_drain_map->pin[port_] =
-        bit::Insert(open_drain_map->pin[port_], set_as_open_drain,
-                    {
-                        .position = pin_,
-                        .width    = 1,
-                    });
-  }
-
- private:
   /// Utility function for generating bitmasks for specific pins.
   static constexpr bit::Mask GetPinsBitmask(uint8_t pin)
   {
@@ -124,12 +103,24 @@ class Pin final : public sjsu::Pin
   /// @returns Index of register in PinTable_t map.
   uint32_t PinRegisterLookup() const
   {
-    uint32_t odd_register = (pin_ > 15) ? 1 : 0;
-    return (port_ * 2) + odd_register;
+    uint32_t odd_register = (GetPin() > 15) ? 1 : 0;
+    return (GetPort() * 2) + odd_register;
   }
 
   /// Bitmask for the pin
   const bit::Mask kPinMask;
 };
+
+template <int port, int pin_number>
+inline Pin & GetPin()
+{
+  static_assert(
+      (port <= 4 && pin_number <= 31) || (port == 5 && pin_number < 4),
+      "For ports between 0 and 4, the pin number must be between 0 and 31. For "
+      "port 5, the pin number must be equal to or below 4");
+
+  static Pin pin(port, pin_number);
+  return pin;
+}
 }  // namespace lpc17xx
 }  // namespace sjsu

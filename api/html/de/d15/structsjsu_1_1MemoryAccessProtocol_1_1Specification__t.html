@@ -86,10 +86,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a0cd17ee1052b7bad1c3434949f7f8e58"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html#a0cd17ee1052b7bad1c3434949f7f8e58">AddressWidth</a> ()</td></tr>
-<tr class="separator:a0cd17ee1052b7bad1c3434949f7f8e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cf1a06f6ccc4a9b5e12a1994e1a8e39"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html#a9cf1a06f6ccc4a9b5e12a1994e1a8e39">Endianness</a> ()</td></tr>
-<tr class="separator:a9cf1a06f6ccc4a9b5e12a1994e1a8e39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2091445a61e9580ee8788e1e6cb2f097"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html#a2091445a61e9580ee8788e1e6cb2f097">AddressWidth</a> () noexcept</td></tr>
+<tr class="separator:a2091445a61e9580ee8788e1e6cb2f097"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acebba3cf8c6e52c484f17ef05c2e368d"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html#acebba3cf8c6e52c484f17ef05c2e368d">Endianness</a> () noexcept</td></tr>
+<tr class="separator:acebba3cf8c6e52c484f17ef05c2e368d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;AddressWidth address_width, std::endian endianness&gt;<br />
@@ -104,8 +104,8 @@ struct sjsu::MemoryAccessProtocol::Specification_t&lt; address_width, endianness
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0cd17ee1052b7bad1c3434949f7f8e58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cd17ee1052b7bad1c3434949f7f8e58">&#9670;&nbsp;</a></span>AddressWidth()</h2>
+<a id="a2091445a61e9580ee8788e1e6cb2f097"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2091445a61e9580ee8788e1e6cb2f097">&#9670;&nbsp;</a></span>AddressWidth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -124,15 +124,16 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the width of the address space </dd></dl>
 
 </div>
 </div>
-<a id="a9cf1a06f6ccc4a9b5e12a1994e1a8e39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cf1a06f6ccc4a9b5e12a1994e1a8e39">&#9670;&nbsp;</a></span>Endianness()</h2>
+<a id="acebba3cf8c6e52c484f17ef05c2e368d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acebba3cf8c6e52c484f17ef05c2e368d">&#9670;&nbsp;</a></span>Endianness()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,10 +152,11 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the endianness of the register's contents. </dd></dl>
 
 </div>
 </div>

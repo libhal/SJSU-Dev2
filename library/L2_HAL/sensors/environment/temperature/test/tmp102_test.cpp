@@ -1,10 +1,9 @@
 #include "L2_HAL/sensors/environment/temperature/tmp102.hpp"
+
 #include "L4_Testing/testing_frameworks.hpp"
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Tmp102);
-
 TEST_CASE("Testing Tmp102 Temperature Sensor")
 {
   constexpr uint8_t kDeviceAddress = Tmp102::DeviceAddress::kGround;
@@ -15,17 +14,12 @@ TEST_CASE("Testing Tmp102 Temperature Sensor")
   {
     // Setup
     Fake(Method(mock_i2c, ModuleInitialize));
-    Fake(Method(mock_i2c, ConfigureClockRate));
-    Fake(Method(mock_i2c, ModuleEnable));
 
     // Exercise
     temperature_sensor.ModuleInitialize();
 
     // Verify
-    Verify(Method(mock_i2c, ModuleInitialize),
-           Method(mock_i2c, ConfigureClockRate),
-           Method(mock_i2c, ModuleEnable))
-        .Once();
+    Verify(Method(mock_i2c, ModuleInitialize)).Once();
   }
 
   SECTION("GetTemperature")

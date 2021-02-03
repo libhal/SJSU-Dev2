@@ -1,5 +1,6 @@
 <map id="sjone" name="sjone">
-<area shape="rect" id="node2" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="5,157,140,184"/>
-<area shape="rect" id="node3" href="$dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="32,81,113,108"/>
-<area shape="rect" id="node4" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="25,5,121,32"/>
+<area shape="rect" id="node2" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="14,247,159,273"/>
+<area shape="rect" id="node3" href="$dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="43,171,130,197"/>
+<area shape="rect" id="node4" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="24,95,149,121"/>
+<area shape="rect" id="node5" href="$d3/d79/structsjsu_1_1EmptySettings__t.html" title="sjsu::EmptySettings_t" alt="" coords="5,5,168,32"/>
 </map>

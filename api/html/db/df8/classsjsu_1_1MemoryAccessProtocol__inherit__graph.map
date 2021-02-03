@@ -1,7 +1,7 @@
 <map id="sjsu::MemoryAccessProtocol" name="sjsu::MemoryAccessProtocol">
-<area shape="rect" id="node2" href="$d2/dc2/classsjsu_1_1I2cProtocol.html" title="sjsu::I2cProtocol\&lt; 1 \&gt;" alt="" coords="258,5,409,32"/>
-<area shape="rect" id="node3" href="$d2/dc2/classsjsu_1_1I2cProtocol.html" title="sjsu::I2cProtocol\&lt;\l MaximumPayloadSize \&gt;" alt="" coords="249,57,417,98"/>
-<area shape="rect" id="node4" href="$d7/dc9/classsjsu_1_1MockProtocol.html" title="sjsu::MockProtocol\l\&lt; size \&gt;" alt="" coords="266,122,401,163"/>
-<area shape="rect" id="node5" href="$d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html" title="sjsu::MockProtocol\l\&lt; MemoryAccessProtocol\l::AddressWidth::kByte1 \&gt;" alt="" coords="247,188,420,244"/>
-<area shape="rect" id="node6" href="$d6/d32/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte2_01_4.html" title="sjsu::MockProtocol\l\&lt; MemoryAccessProtocol\l::AddressWidth::kByte2 \&gt;" alt="" coords="247,268,420,324"/>
+<area shape="rect" id="node2" href="$d2/dc2/classsjsu_1_1I2cProtocol.html" title="sjsu::I2cProtocol\&lt; 1 \&gt;" alt="" coords="271,5,438,32"/>
+<area shape="rect" id="node3" href="$d2/dc2/classsjsu_1_1I2cProtocol.html" title="sjsu::I2cProtocol\&lt;\l MaximumPayloadSize \&gt;" alt="" coords="263,57,447,98"/>
+<area shape="rect" id="node4" href="$d7/dc9/classsjsu_1_1MockProtocol.html" title="sjsu::MockProtocol\l\&lt; size \&gt;" alt="" coords="283,122,426,163"/>
+<area shape="rect" id="node5" href="$d3/de7/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte1_01_4.html" title="sjsu::MockProtocol\l\&lt; MemoryAccessProtocol\l::AddressWidth::kByte1 \&gt;" alt="" coords="260,188,449,244"/>
+<area shape="rect" id="node6" href="$d6/d32/classsjsu_1_1MockProtocol_3_01MemoryAccessProtocol_1_1AddressWidth_1_1kByte2_01_4.html" title="sjsu::MockProtocol\l\&lt; MemoryAccessProtocol\l::AddressWidth::kByte2 \&gt;" alt="" coords="260,268,449,324"/>
 </map>

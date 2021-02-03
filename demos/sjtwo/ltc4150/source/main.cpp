@@ -14,7 +14,7 @@ int main()
       "that have passed through the sense resistor.");
 
   // Creating GPIO on pin 2.0
-  sjsu::lpc40xx::Gpio tick_pin(2, 0);
+  sjsu::lpc40xx::Gpio & tick_pin = sjsu::lpc40xx::GetGpio<2, 0>();
 
   // Pass the tick_pin GPIO to the gpio counter. We want to keep
   // track of a tick for a falling edge interrupt from the tick_pin.
@@ -33,9 +33,6 @@ int main()
   // Initialize the LTC4150 class, setting two GPIO pins to be outputs and
   // attaching interrupts.
   counter.Initialize();
-
-  // Enable counter
-  counter.Enable();
 
   while (true)
   {

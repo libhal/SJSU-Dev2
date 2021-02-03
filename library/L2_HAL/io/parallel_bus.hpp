@@ -2,8 +2,8 @@
 
 #include <cstdint>
 
-#include "module.hpp"
 #include "L1_Peripheral/gpio.hpp"
+#include "module.hpp"
 #include "utility/log.hpp"
 
 namespace sjsu
@@ -11,7 +11,7 @@ namespace sjsu
 /// ParallelBus is an abstraction for a set of parallel digital input/output
 /// pins that can be used to communicate over a parallel bus, read switch
 /// states, or possibly control control LEDs.
-class ParallelBus : public Module
+class ParallelBus : public Module<>
 {
  public:
   // ===========================================================================
@@ -59,17 +59,19 @@ class ParallelBus : public Module
   ///
   /// @param set_as_open_drain - if true, set output of parallel bus pins to
   /// open drain. Otherwise, set pin as push-pull.
-  virtual void ConfigureAsOpenDrain(
-      [[maybe_unused]] bool set_as_open_drain = true)
+  virtual void ConfigureAsOpenDrain(bool set_as_open_drain = true)
   {
-    throw sjsu::Exception(
-        std::errc::not_supported,
-        "ConfigureAsOpenDrain() is not available for this parallel bus "
-        "implementation.");
+    if (set_as_open_drain)
+    {
+      throw sjsu::Exception(
+          std::errc::not_supported,
+          "ConfigureAsOpenDrain() is not available for this parallel bus "
+          "implementation.");
+    }
   }
 
   // ===========================================================================
-  // Utility Methods
+  // Helper Functions
   // ===========================================================================
 
   /// Utility method for setting all pins to output.

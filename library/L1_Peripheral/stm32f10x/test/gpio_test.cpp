@@ -6,8 +6,6 @@
 
 namespace sjsu::stm32f10x
 {
-EMIT_ALL_METHODS(Gpio);
-
 namespace
 {
 bit::Mask Mask4Bit(sjsu::Gpio & gpio)
@@ -211,6 +209,7 @@ TEST_CASE("Testing stm32f10x Gpio")
       test[i].reg.CRH = 0xFFFF'FFFF;
 
       // Exercise
+      test[i].gpio.GetPin().settings.Floating();
       test[i].gpio.SetAsInput();
       // Exercise: Combine the two registers into 1 variable to make extraction
       //           easier.

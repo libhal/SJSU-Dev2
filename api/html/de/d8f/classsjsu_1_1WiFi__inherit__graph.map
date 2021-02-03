@@ -1,4 +1,4 @@
 <map id="sjsu::WiFi" name="sjsu::WiFi">
-<area shape="rect" id="node3" href="$d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html" title="sjsu::Esp8266::Esp8266WiFi" alt="" coords="5,155,196,181"/>
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="53,5,149,32"/>
+<area shape="rect" id="node3" href="$d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html" title="ESP8266&#39;s Implementation of the sjsu::Wifi interface. " alt="" coords="5,155,207,181"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="43,5,169,32"/>
 </map>

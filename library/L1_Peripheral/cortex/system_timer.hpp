@@ -101,68 +101,56 @@ class SystemTimer final : public sjsu::SystemTimer
   /// @param id - id of the system controller for this platform. This is used to
   /// recover the operating speed of the SystemTimer.
   /// @param priority - the interrupt priority of
-  explicit constexpr SystemTimer(sjsu::SystemController::ResourceID id,
-                                 uint8_t priority = -1)
+  explicit SystemTimer(sjsu::SystemController::ResourceID id,
+                       uint8_t priority = -1)
       : id_(id), priority_(priority)
   {
   }
 
   void ModuleInitialize() override
   {
+    // Disable interrupts if it was already enabled.
+    sjsu::InterruptController::GetPlatformController().Disable(
+        cortex::SysTick_IRQn);
+
+    // Set the tick frequency based on the settings.
+    ConfigureTickFrequency();
+
+    // Set the static callback to the one in the settings.
+    callback = settings.callback;
+
     // System timer is available on bootup of the CPU. So just turn on the DWT
     // counter for GetCount() calculations.
     dwt_counter.Initialize();
+
+    // The interrupt handler must be registered before you starting the timer
+    // by setting the Enable counter flag in the CTRL register.
+    // Otherwise, the handler may not be set by the time the first tick
+    // interrupt occurs.
+    sjsu::InterruptController::GetPlatformController().Enable({
+        .interrupt_request_number = cortex::SysTick_IRQn,
+        .interrupt_handler        = SystemTimerHandler,
+        .priority                 = priority_,
+    });
+
+    // Set all flags required to enable the counter
+    uint32_t ctrl_mask = (1 << ControlBitMap::kTickInterupt) |
+                         (1 << ControlBitMap::kEnableCounter) |
+                         (1 << ControlBitMap::kClkSource);
+
+    // Set the system tick counter to start immediately
+    sys_tick->VAL  = 0;
+    sys_tick->CTRL = ctrl_mask;
   }
 
-  void ModuleEnable(bool enable = true) override
-  {
-    if (sys_tick->LOAD == 0)
-    {
-      throw Exception(
-          std::errc::invalid_argument,
-          "Load must be set to a non-zero value before the SystemTimer can "
-          "be started.");
-    }
-
-    if (enable)
-    {
-      // The interrupt handler must be registered before you starting the timer
-      // by setting the Enable counter flag in the CTRL register.
-      // Otherwise, the handler may not be set by the time the first tick
-      // interrupt occurs.
-      sjsu::InterruptController::GetPlatformController().Enable({
-          .interrupt_request_number = cortex::SysTick_IRQn,
-          .interrupt_handler        = SystemTimerHandler,
-          .priority                 = priority_,
-      });
-
-      // Set all flags required to enable the counter
-      uint32_t ctrl_mask = (1 << ControlBitMap::kTickInterupt) |
-                           (1 << ControlBitMap::kEnableCounter) |
-                           (1 << ControlBitMap::kClkSource);
-
-      // Set the system tick counter to start immediately
-      sys_tick->VAL  = 0;
-      sys_tick->CTRL = ctrl_mask;
-    }
-    else
-    {
-      LogDebug("Disabling this peripheral is not supported!");
-    }
-  }
-
-  void ConfigureCallback(InterruptCallback isr) override
-  {
-    callback = isr;
-  }
-
+ private:
   /// @param frequency set the frequency that SystemTick counter will run.
   ///        If it is above the maximum SystemTick value 2^24
   ///        [SysTick_LOAD_RELOAD_Msk], the value is ceiled to
   ///        SysTick_LOAD_RELOAD_Msk.
-  void ConfigureTickFrequency(units::frequency::hertz_t frequency) override
+  void ConfigureTickFrequency()
   {
-    if (frequency < 1_Hz)
+    if (settings.frequency < 1_Hz)
     {
       throw Exception(
           std::errc::invalid_argument,
@@ -177,7 +165,7 @@ class SystemTimer final : public sjsu::SystemTimer
     nanoseconds_per_tick = (kFixedPointScaling * 1'000'000'000ns) /
                            kSystemFrequency.to<uint32_t>();
 
-    uint32_t reload_value = (kSystemFrequency / frequency) - 1;
+    uint32_t reload_value = (kSystemFrequency / settings.frequency) - 1;
 
     if (reload_value > SysTick_LOAD_RELOAD_Msk)
     {
@@ -190,7 +178,6 @@ class SystemTimer final : public sjsu::SystemTimer
     sys_tick->LOAD = reload_value;
   }
 
- private:
   sjsu::SystemController::ResourceID id_;
   uint8_t priority_;
 };

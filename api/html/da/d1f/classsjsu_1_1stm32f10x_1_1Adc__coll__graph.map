@@ -1,4 +1,5 @@
 <map id="sjsu::stm32f10x::Adc" name="sjsu::stm32f10x::Adc">
-<area shape="rect" id="node2" href="$d0/dc1/classsjsu_1_1Adc.html" title="sjsu::Adc" alt="" coords="40,80,117,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="31,5,127,32"/>
+<area shape="rect" id="node2" href="$d0/dc1/classsjsu_1_1Adc.html" title="sjsu::Adc" alt="" coords="77,171,157,197"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; AdcSettings_t \&gt;" alt="" coords="5,95,228,121"/>
+<area shape="rect" id="node4" href="$de/d78/structsjsu_1_1AdcSettings__t.html" title="Generic settings for a standard ADC peripheral. " alt="" coords="44,5,189,32"/>
 </map>

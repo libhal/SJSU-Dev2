@@ -88,7 +88,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8d6835df24d3d4139f1f1fd6b7ea0e24"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html#a8d6835df24d3d4139f1f1fd6b7ea0e24">Address</a> (<a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html">Specification_t</a>&lt; address_width, endianness &gt;, <a class="el" href="../../d0/d97/structsjsu_1_1MemoryAccessProtocol_1_1AddressLocationPrototype__t.html">AddressLocationPrototype_t</a> proto)</td></tr>
+<tr class="memitem:a8d6835df24d3d4139f1f1fd6b7ea0e24"><td class="memItemLeft" align="right" valign="top"><a id="a8d6835df24d3d4139f1f1fd6b7ea0e24"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html#a8d6835df24d3d4139f1f1fd6b7ea0e24">Address</a> (<a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html">Specification_t</a>&lt; address_width, endianness &gt;, <a class="el" href="../../d0/d97/structsjsu_1_1MemoryAccessProtocol_1_1AddressLocationPrototype__t.html">AddressLocationPrototype_t</a> proto)</td></tr>
+<tr class="memdesc:a8d6835df24d3d4139f1f1fd6b7ea0e24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for <a class="el" href="../../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html">Address</a> object. <br /></td></tr>
 <tr class="separator:a8d6835df24d3d4139f1f1fd6b7ea0e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -112,46 +114,7 @@ Public Attributes</h2></td></tr>
 class sjsu::MemoryAccessProtocol::Address&lt; address_width, endianness &gt;</h3>
 
 <p>Used to define the address and size of registers within a device Register is used with the <a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html">MemoryAccessProtocol</a>'s bracket operator <code>[]</code> in order to generate <a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">AccessHandler</a> objects which can perform read and write operations on the register. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8d6835df24d3d4139f1f1fd6b7ea0e24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d6835df24d3d4139f1f1fd6b7ea0e24">&#9670;&nbsp;</a></span>Address()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="../../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html">sjsu::MemoryAccessProtocol::Address</a>&lt; address_width, endianness &gt;::<a class="el" href="../../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html">Address</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html">Specification_t</a>&lt; address_width, endianness &gt;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d0/d97/structsjsu_1_1MemoryAccessProtocol_1_1AddressLocationPrototype__t.html">AddressLocationPrototype_t</a>&#160;</td>
-          <td class="paramname"><em>proto</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9e12d4edc038aa9dd749812bfaf30b14"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e12d4edc038aa9dd749812bfaf30b14">&#9670;&nbsp;</a></span>AddressWidth()</h2>
 
@@ -176,6 +139,7 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>constexpr auto - the width of the memory map's address space </dd></dl>
 
 </div>
 </div>
@@ -203,6 +167,7 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the endianness of the register in this <a class="el" href="../../d0/d34/classsjsu_1_1MemoryAccessProtocol_1_1Address.html">Address</a> location </dd></dl>
 
 </div>
 </div>
@@ -230,6 +195,7 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>constexpr auto - return the register specification </dd></dl>
 
 </div>
 </div>

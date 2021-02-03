@@ -88,11 +88,13 @@ Macros</h2></td></tr>
 <tr class="separator:ga33d64951132f6a4ce8b4977e8f911683"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga13324cd98c1a46b0d1b943cb649b3c21"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga13324cd98c1a46b0d1b943cb649b3c21">SJ2_STRINGIFY</a>(s)&#160;&#160;&#160;<a class="el" href="../../d3/deb/group__Macros.html#ga172be480997b343ffcecc0e65a41f55d">SJ2_STRINGIFY2</a>(s)</td></tr>
 <tr class="separator:ga13324cd98c1a46b0d1b943cb649b3c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga172be480997b343ffcecc0e65a41f55d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga172be480997b343ffcecc0e65a41f55d">SJ2_STRINGIFY2</a>(s)&#160;&#160;&#160;#s</td></tr>
-<tr class="memdesc:ga172be480997b343ffcecc0e65a41f55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro for stringifying an expression.  <a href="#ga172be480997b343ffcecc0e65a41f55d">More...</a><br /></td></tr>
+<tr class="memitem:ga172be480997b343ffcecc0e65a41f55d"><td class="memItemLeft" align="right" valign="top"><a id="ga172be480997b343ffcecc0e65a41f55d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga172be480997b343ffcecc0e65a41f55d">SJ2_STRINGIFY2</a>(s)&#160;&#160;&#160;#s</td></tr>
+<tr class="memdesc:ga172be480997b343ffcecc0e65a41f55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper macro for stringifying an expression. <br /></td></tr>
 <tr class="separator:ga172be480997b343ffcecc0e65a41f55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3bad8d88b6328d998ff5df3d9266447e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga3bad8d88b6328d998ff5df3d9266447e">SJ2_PACKED</a>(type)&#160;&#160;&#160;type [[gnu::packed]]</td></tr>
-<tr class="memdesc:ga3bad8d88b6328d998ff5df3d9266447e"><td class="mdescLeft">&#160;</td><td class="mdescRight">SJ2_PACKED give a specified type a packed attribute.  <a href="#ga3bad8d88b6328d998ff5df3d9266447e">More...</a><br /></td></tr>
+<tr class="memitem:ga3bad8d88b6328d998ff5df3d9266447e"><td class="memItemLeft" align="right" valign="top"><a id="ga3bad8d88b6328d998ff5df3d9266447e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga3bad8d88b6328d998ff5df3d9266447e">SJ2_PACKED</a>(type)&#160;&#160;&#160;type [[gnu::packed]]</td></tr>
+<tr class="memdesc:ga3bad8d88b6328d998ff5df3d9266447e"><td class="mdescLeft">&#160;</td><td class="mdescRight">SJ2_PACKED give a specified type a packed attribute. <br /></td></tr>
 <tr class="separator:ga3bad8d88b6328d998ff5df3d9266447e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5cf9ee28fa3e0c027a9514a73ba3f0ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/deb/group__Macros.html#ga5cf9ee28fa3e0c027a9514a73ba3f0ac">SJ2_WEAK</a>(function)&#160;&#160;&#160;[[gnu::weak]] function</td></tr>
 <tr class="separator:ga5cf9ee28fa3e0c027a9514a73ba3f0ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,26 +118,6 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>DO NOT USE this macro directly. Use the C++17 attribute [[maybe_unused]] instead. _SJ2_USED will use void casting as a means to convince the compiler that the variable has been used in the software, to remove compiler warnings about unused variables. NOTE: this will not stop the compiler from optimizing this variable out. </p>
-
-</div>
-</div>
-<a id="ga3bad8d88b6328d998ff5df3d9266447e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3bad8d88b6328d998ff5df3d9266447e">&#9670;&nbsp;</a></span>SJ2_PACKED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SJ2_PACKED</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">type</td><td>)</td>
-          <td>&#160;&#160;&#160;type [[gnu::packed]]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>SJ2_PACKED give a specified type a packed attribute. </p>
 
 </div>
 </div>
@@ -175,26 +157,6 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <p>These macros are used to stringify define values. For example: </p><pre class="fragment"> #define VALUE true
  #define STRING "value = " STRINGIFY(s) =&gt; "value = true"</pre> 
-</div>
-</div>
-<a id="ga172be480997b343ffcecc0e65a41f55d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga172be480997b343ffcecc0e65a41f55d">&#9670;&nbsp;</a></span>SJ2_STRINGIFY2</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SJ2_STRINGIFY2</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">s</td><td>)</td>
-          <td>&#160;&#160;&#160;#s</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Helper macro for stringifying an expression. </p>
-
 </div>
 </div>
 <a id="ga5cf9ee28fa3e0c027a9514a73ba3f0ac"></a>

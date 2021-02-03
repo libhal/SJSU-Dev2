@@ -59,17 +59,14 @@ extern "C"
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    // Disable timer so the callback can be configured
-    system_timer.Enable(false);
-
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
     // delay itself.
-    system_timer.ConfigureCallback(xPortSysTickHandler);
+    system_timer.settings.callback = xPortSysTickHandler;
 
     // Re-enable timer
-    system_timer.Enable(true);
+    system_timer.Initialize();
   }
 }
 
@@ -201,10 +198,10 @@ void InitializePlatform()
   sjsu::InterruptController::SetPlatformController(&interrupt_controller);
   sjsu::SystemController::SetPlatformController(&system_controller);
 
+  system_controller.Initialize();
+
+  system_timer.settings.frequency = config::kRtosFrequency;
   system_timer.Initialize();
-  system_timer.ConfigureTickFrequency(config::kRtosFrequency);
-  system_timer.ConfigureCallback([]() {});
-  system_timer.Enable();
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);

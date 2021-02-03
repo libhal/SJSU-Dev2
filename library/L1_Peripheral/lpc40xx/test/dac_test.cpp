@@ -6,8 +6,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(Dac);
-
 TEST_CASE("Testing lpc40xx Dac")
 {
   LPC_IOCON_TypeDef local_iocon;
@@ -23,25 +21,28 @@ TEST_CASE("Testing lpc40xx Dac")
   Dac::dac_register = &local_dac_port;
 
   Mock<sjsu::Pin> mock_dac_pin;
-  Fake(Method(mock_dac_pin, ConfigureFunction),
-       Method(mock_dac_pin, ConfigureAsAnalogMode),
-       Method(mock_dac_pin, ConfigurePullResistor));
+  Fake(Method(mock_dac_pin, Pin::ModuleInitialize));
 
   Dac test_subject(mock_dac_pin.get());
 
   SECTION("Initialize Dac")
   {
     // Source: "UM10562 LPC408x/407x User manual" table 686 page 814
-    constexpr uint8_t kDacMode = 0b010;
+    constexpr uint8_t kDacMode                         = 0b010;
+    constexpr sjsu::PinSettings_t kExpectedPinSettings = {
+      .function   = kDacMode,
+      .resistor   = sjsu::PinSettings_t::Resistor::kNone,
+      .open_drain = false,
+      .as_analog  = true,
+    };
 
     // Mocked out Initialize for the Verify Methods
-    test_subject.ModuleEnable();
+    test_subject.Initialize();
 
     // Check Pin Mode DAC_OUT
-    Verify(Method(mock_dac_pin, ConfigureAsAnalogMode).Using(true),
-           Method(mock_dac_pin, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kNone),
-           Method(mock_dac_pin, ConfigureFunction).Using(kDacMode));
+    CHECK(mock_dac_pin.get().CurrentSettings() == kExpectedPinSettings);
+
+    Verify(Method(mock_dac_pin, Pin::ModuleInitialize)).Once();
 
     CHECK(0 == bit::Read(local_dac_port.CR, Dac::Control::kBias));
   }

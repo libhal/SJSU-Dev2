@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['stdin',['Stdin',['../dd/de8/namespacesjsu_1_1newlib.html#a8060dc31bb9f857278eae4405170d471',1,'sjsu::newlib']]],
-  ['stdout',['Stdout',['../dd/de8/namespacesjsu_1_1newlib.html#a2e3e77d2c7f54883ebd710ab2c0150be',1,'sjsu::newlib']]]
+  ['taskfunction',['TaskFunction',['../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6486fbda098337c90c9c794601b41ad3',1,'sjsu::rtos::PeriodicTaskInterface']]]
 ];

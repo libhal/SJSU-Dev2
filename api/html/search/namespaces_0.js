@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['config',['config',['../d6/d7f/namespaceconfig.html',1,'']]]
+  ['sjsu',['sjsu',['../d0/d6b/namespacesjsu.html',1,'']]]
 ];

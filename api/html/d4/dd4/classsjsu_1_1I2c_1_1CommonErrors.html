@@ -90,10 +90,13 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a7332a9918cc8ccbbcc3c9c390bd0ab25"><td class="memItemLeft" align="right" valign="top">static const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd4/classsjsu_1_1I2c_1_1CommonErrors.html#a7332a9918cc8ccbbcc3c9c390bd0ab25">kTimeout</a></td></tr>
+<tr class="memdesc:a7332a9918cc8ccbbcc3c9c390bd0ab25"><td class="mdescLeft">&#160;</td><td class="mdescRight">This exception occurs when the overall transaction takes longer than the transaction timeout time given. This includes the whole transaction from address transmission to the last byte retrieved from the device.  <a href="#a7332a9918cc8ccbbcc3c9c390bd0ab25">More...</a><br /></td></tr>
 <tr class="separator:a7332a9918cc8ccbbcc3c9c390bd0ab25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07dbb751cbfc9bf4ec2f2438539dca0b"><td class="memItemLeft" align="right" valign="top">static const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd4/classsjsu_1_1I2c_1_1CommonErrors.html#a07dbb751cbfc9bf4ec2f2438539dca0b">kBusError</a></td></tr>
+<tr class="memdesc:a07dbb751cbfc9bf4ec2f2438539dca0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This exception occurs when there is an anomaly on the I2C bus. These sort of errors can be caused by EMI or another device talking on the bus at an incorrect time. A bus error is typically considered a situation in which, the I2C controller device reads the state of the line and it does not match what it expects. For example, if the I2C bus means to put a 1 or HIGH voltage on the SDA line, then samples the SDA line to make sure the expected HIGH voltage is on the line, BUT sees that the line is held LOW, it knows that something is wrong with the line and will stop the transaction. Keep in mind that, since I2C is open drain with a pull up resistor, the only way for the I2C controller to see an error is if the controller wants to let the pin go HIGH by releasing control of the pin, but something else on the bus is pulling it LOW.  <a href="#a07dbb751cbfc9bf4ec2f2438539dca0b">More...</a><br /></td></tr>
 <tr class="separator:a07dbb751cbfc9bf4ec2f2438539dca0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09bc606721aaa72e2955194806273280"><td class="memItemLeft" align="right" valign="top">static const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd4/classsjsu_1_1I2c_1_1CommonErrors.html#a09bc606721aaa72e2955194806273280">kDeviceNotFound</a></td></tr>
+<tr class="memdesc:a09bc606721aaa72e2955194806273280"><td class="mdescLeft">&#160;</td><td class="mdescRight">This exception occurs at the start of an I2C transaction when the device's I2C address is written to the bus and does NOT acknowledge.  <a href="#a09bc606721aaa72e2955194806273280">More...</a><br /></td></tr>
 <tr class="separator:a09bc606721aaa72e2955194806273280"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -119,6 +122,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Exception(std::errc::io_error, <span class="stringliteral">&quot;I2C bus error occurred.&quot;</span>)</div></div><!-- fragment -->
+<p>This exception occurs when there is an anomaly on the I2C bus. These sort of errors can be caused by EMI or another device talking on the bus at an incorrect time. A bus error is typically considered a situation in which, the I2C controller device reads the state of the line and it does not match what it expects. For example, if the I2C bus means to put a 1 or HIGH voltage on the SDA line, then samples the SDA line to make sure the expected HIGH voltage is on the line, BUT sees that the line is held LOW, it knows that something is wrong with the line and will stop the transaction. Keep in mind that, since I2C is open drain with a pull up resistor, the only way for the I2C controller to see an error is if the controller wants to let the pin go HIGH by releasing control of the pin, but something else on the bus is pulling it LOW. </p>
+
 </div>
 </div>
 <a id="a09bc606721aaa72e2955194806273280"></a>
@@ -141,6 +146,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Exception(std::errc::no_such_device_or_address,</div><div class="line">                  <span class="stringliteral">&quot;I2C address not found/acknowledged by device.&quot;</span>)</div></div><!-- fragment -->
+<p>This exception occurs at the start of an I2C transaction when the device's I2C address is written to the bus and does NOT acknowledge. </p>
+
 </div>
 </div>
 <a id="a7332a9918cc8ccbbcc3c9c390bd0ab25"></a>
@@ -163,6 +170,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Exception(std::errc::timed_out,</div><div class="line">                  <span class="stringliteral">&quot;I2C took too long to process and timed out! Consider &quot;</span></div><div class="line">                  <span class="stringliteral">&quot;increasing the timeout time.&quot;</span>)</div></div><!-- fragment -->
+<p>This exception occurs when the overall transaction takes longer than the transaction timeout time given. This includes the whole transaction from address transmission to the last byte retrieved from the device. </p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

@@ -12,14 +12,11 @@ int main()
       "the accelerometer is accesable, then it will print out the accerometer "
       "readings for each axis");
 
-  sjsu::lpc40xx::I2c i2c(sjsu::lpc40xx::I2c::Bus::kI2c2);
+  sjsu::lpc40xx::I2c & i2c = sjsu::lpc40xx::GetI2c<2>();
   sjsu::Mpu6050 sensor(i2c);
 
-  sjsu::LogInfo("Initializing accelerometer peripherals...");
+  sjsu::LogInfo("Initializing accelerometer...");
   sensor.Initialize();
-
-  sjsu::LogInfo("Enabling accelerometer...");
-  sensor.Enable();
 
   while (true)
   {

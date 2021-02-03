@@ -33,19 +33,16 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
 
   Fake(
       Method(mock_primary_hardware_counter, HardwareCounter::ModuleInitialize));
-  Fake(Method(mock_primary_hardware_counter, HardwareCounter::ModuleEnable));
   Fake(Method(mock_primary_hardware_counter, HardwareCounter::GetCount));
   Fake(Method(mock_primary_hardware_counter, HardwareCounter::Set));
   Fake(Method(mock_primary_hardware_counter, HardwareCounter::SetDirection));
 
   Fake(Method(mock_backup_hardware_counter, HardwareCounter::ModuleInitialize));
-  Fake(Method(mock_backup_hardware_counter, HardwareCounter::ModuleEnable));
   Fake(Method(mock_backup_hardware_counter, HardwareCounter::GetCount));
   Fake(Method(mock_backup_hardware_counter, HardwareCounter::Set));
   Fake(Method(mock_backup_hardware_counter, HardwareCounter::SetDirection));
 
   Fake(Method(mock_primary_pol_gpio, Gpio::ModuleInitialize));
-  Fake(Method(mock_primary_pol_gpio, Gpio::ModuleEnable));
   Fake(Method(mock_primary_pol_gpio, Gpio::SetDirection));
   Fake(Method(mock_primary_pol_gpio, Gpio::Read));
   Fake(Method(mock_primary_pol_gpio, Gpio::DetachInterrupt));
@@ -53,7 +50,6 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
       .AlwaysDo(GetLambda(primary_pol_isr));
 
   Fake(Method(mock_backup_pol_gpio, Gpio::ModuleInitialize));
-  Fake(Method(mock_backup_pol_gpio, Gpio::ModuleEnable));
   Fake(Method(mock_backup_pol_gpio, Gpio::SetDirection));
   Fake(Method(mock_backup_pol_gpio, Gpio::Read));
   Fake(Method(mock_backup_pol_gpio, Gpio::DetachInterrupt));
@@ -74,8 +70,8 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
     When(Method(mock_backup_pol_gpio, Gpio::Read)).Return(false);
 
     // Exercise
-    primary_counter.ModuleInitialize();
-    backup_counter.ModuleInitialize();
+    primary_counter.Initialize();
+    backup_counter.Initialize();
 
     // Verify
     Verify(Method(mock_primary_hardware_counter,
@@ -88,27 +84,7 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
                .Using(Gpio::Direction::kInput));
     Verify(Method(mock_backup_pol_gpio, Gpio::SetDirection)
                .Using(Gpio::Direction::kInput));
-    Verify(Method(mock_primary_hardware_counter, HardwareCounter::ModuleEnable))
-        .Exactly(1);
-    Verify(Method(mock_backup_hardware_counter, HardwareCounter::ModuleEnable))
-        .Exactly(1);
-  }
 
-  SECTION("Enable()")
-  {
-    // Setup
-    Ltc4150 primary_counter(mock_primary_hardware_counter.get(),
-                            mock_primary_pol_gpio.get(),
-                            resistance);
-    Ltc4150 backup_counter(mock_backup_hardware_counter.get(),
-                           mock_backup_pol_gpio.get(),
-                           resistance);
-
-    // Exercise
-    primary_counter.ModuleEnable();
-    backup_counter.ModuleEnable();
-
-    // Verify
     Verify(Method(mock_primary_pol_gpio, Gpio::AttachInterrupt));
     Verify(Method(mock_backup_pol_gpio, Gpio::AttachInterrupt));
   }
@@ -124,6 +100,7 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
     Ltc4150 backup_counter(mock_backup_hardware_counter.get(),
                            mock_backup_pol_gpio.get(),
                            resistance);
+
     When(Method(mock_primary_pol_gpio, Gpio::Read)).Return(false);
     When(Method(mock_backup_pol_gpio, Gpio::Read)).Return(true);
     When(Method(mock_primary_hardware_counter, HardwareCounter::GetCount))
@@ -131,13 +108,11 @@ TEST_CASE("Test LTC4150 Coulomb Counter/ Battery Gas Gauge")
     When(Method(mock_backup_hardware_counter, HardwareCounter::GetCount))
         .Return(6);
 
-    primary_counter.ModuleInitialize();
-    primary_counter.ModuleEnable();
+    primary_counter.Initialize();
     CHECK(primary_counter.GetCharge().to<float>() ==
           doctest::Approx(kPrimaryCharge * 1000));
 
-    backup_counter.ModuleInitialize();
-    backup_counter.ModuleEnable();
+    backup_counter.Initialize();
     CHECK(backup_counter.GetCharge().to<float>() ==
           doctest::Approx(kBackupCharge * 1000));
   }

@@ -56,11 +56,12 @@ class InterruptController final : public sjsu::InterruptController
     handler();
   }
 
-  void Initialize(
-      InterruptHandler unregistered_handler = UnregisteredHandler) override
+  InterruptController()
   {
-    std::fill(table.begin(), table.end(), unregistered_handler);
+    std::fill(table.begin(), table.end(), nullptr);
   }
+
+  void ModuleInitialize() override {}
 
   void Enable(RegistrationInfo_t register_info) override
   {

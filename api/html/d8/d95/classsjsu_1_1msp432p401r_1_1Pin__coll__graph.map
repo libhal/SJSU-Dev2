@@ -1,4 +1,6 @@
 <map id="sjsu::msp432p401r::Pin" name="sjsu::msp432p401r::Pin">
-<area shape="rect" id="node2" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="48,80,121,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="37,5,133,32"/>
+<area shape="rect" id="node2" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="77,261,153,288"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; PinSettings_t \&gt;" alt="" coords="5,185,224,212"/>
+<area shape="rect" id="node4" href="$dc/d60/structsjsu_1_1PinSettings__t.html" title="Generic settings for a standard chip&#39;s Pin peripheral. " alt="" coords="44,96,185,123"/>
+<area shape="rect" id="node5" href="$d1/d03/structsjsu_1_1MemoryEqualOperator__t.html" title="sjsu::MemoryEqualOperator\l_t\&lt; PinSettings_t \&gt;" alt="" coords="13,5,216,47"/>
 </map>

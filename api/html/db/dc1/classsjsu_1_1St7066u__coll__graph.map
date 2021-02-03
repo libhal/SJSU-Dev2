@@ -1,4 +1,5 @@
 <map id="sjsu::St7066u" name="sjsu::St7066u">
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="5,5,101,32"/>
-<area shape="rect" id="node3" href="$d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html" title="Structure the holds where the position of the character cursor is. " alt="" coords="126,5,333,32"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="24,95,149,121"/>
+<area shape="rect" id="node3" href="$d3/d79/structsjsu_1_1EmptySettings__t.html" title="sjsu::EmptySettings_t" alt="" coords="5,5,168,32"/>
+<area shape="rect" id="node4" href="$d0/d97/structsjsu_1_1St7066u_1_1CursorPosition__t.html" title="Structure the holds where the position of the character cursor is. " alt="" coords="174,95,397,121"/>
 </map>

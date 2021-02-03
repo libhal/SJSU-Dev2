@@ -1,3 +1,4 @@
 <map id="sjsu::Adc" name="sjsu::Adc">
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="5,5,101,32"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; AdcSettings_t \&gt;" alt="" coords="5,95,228,121"/>
+<area shape="rect" id="node3" href="$de/d78/structsjsu_1_1AdcSettings__t.html" title="Generic settings for a standard ADC peripheral. " alt="" coords="44,5,189,32"/>
 </map>

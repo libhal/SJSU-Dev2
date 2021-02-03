@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['empty_20now',['Empty now',['../d0/d0b/md__home_runner_work_SJSU-Dev2_SJSU-Dev2_library_readme.html',1,'']]]
+  ['sjsu_2ddev2_20reference_20page',['SJSU-Dev2 Reference Page',['../index.html',1,'']]]
 ];

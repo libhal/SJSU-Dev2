@@ -26,7 +26,7 @@ namespace
 sjsu::CommandList_t<32> command_list;
 // This is an i2c command object which can be added to a CommandLine object and
 // become apart of the list of commands you can run.
-sjsu::lpc40xx::I2c i2c2(sjsu::lpc40xx::I2c::Bus::kI2c2);
+sjsu::lpc40xx::I2c & i2c2 = sjsu::lpc40xx::GetI2c<2>();
 sjsu::I2cCommand i2c_command(i2c2);
 sjsu::RtosCommand rtos_command;
 sjsu::ArmSystemInfoCommand system_command;

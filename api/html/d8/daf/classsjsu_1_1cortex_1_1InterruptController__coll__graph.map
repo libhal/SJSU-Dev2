@@ -1,3 +1,5 @@
 <map id="sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;" name="sjsu::cortex::InterruptController&lt; kNumberOfInterrupts, kNvicPriorityBits &gt;">
-<area shape="rect" id="node2" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="63,5,222,32"/>
+<area shape="rect" id="node2" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="71,171,247,197"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="96,95,221,121"/>
+<area shape="rect" id="node4" href="$d3/d79/structsjsu_1_1EmptySettings__t.html" title="sjsu::EmptySettings_t" alt="" coords="77,5,240,32"/>
 </map>

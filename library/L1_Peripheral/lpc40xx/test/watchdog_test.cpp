@@ -10,8 +10,6 @@ namespace sjsu
 {
 namespace lpc40xx
 {
-EMIT_ALL_METHODS(Watchdog);
-
 TEST_CASE("Testing lpc40xx watchdog")
 {
   constexpr std::chrono::seconds kTimerConstantSeconds = 1s;

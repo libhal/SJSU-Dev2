@@ -57,7 +57,7 @@ int main()
 
   // Before we can use a storage device, we need to create the storage device we
   // want to use. In this case we want to use the SD card on the SJTwo board.
-  sjsu::lpc40xx::Spi spi2(sjsu::lpc40xx::Spi::Bus::kSpi2);
+  sjsu::lpc40xx::Spi & spi2 = sjsu::lpc40xx::GetSpi<2>();
   sjsu::lpc40xx::Gpio sd_chip_select(1, 8);
   sjsu::lpc40xx::Gpio sd_card_detect(1, 9);
   sjsu::Sd card(spi2, sd_chip_select, sd_card_detect);

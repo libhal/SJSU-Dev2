@@ -83,8 +83,8 @@ class PulseCapture final : public sjsu::PulseCapture
     inline static CaptureCallback timer0_callback = nullptr;
     inline static CaptureChannelNumber timer0_channel_number =
         CaptureChannelNumber::kChannel1;
-    inline static Pin capture0_channel0_pin                    = Pin(1, 26);
-    inline static Pin capture0_channel1_pin                    = Pin(1, 27);
+    inline static Pin & capture0_channel0_pin = GetPin<1, 26>();
+    inline static Pin & capture0_channel1_pin = GetPin<1, 27>();
     inline static const CaptureChannelPartial_t kTimerPartial0 = {
       .timer_register = LPC_TIM0,
       .id             = SystemController::Peripherals::kTimer0,
@@ -98,9 +98,9 @@ class PulseCapture final : public sjsu::PulseCapture
     inline static CaptureCallback timer1_callback = nullptr;
     inline static CaptureChannelNumber timer1_channel_number =
         CaptureChannelNumber::kChannel1;
-    inline static Pin capture1_channel0_pin                    = Pin(1, 18);
-    inline static Pin capture1_channel1_pin                    = Pin(1, 19);
-    inline static Pin capture1_pin                             = Pin(1, 14);
+    inline static Pin & capture1_channel0_pin = GetPin<1, 18>();
+    inline static Pin & capture1_channel1_pin = GetPin<1, 19>();
+    inline static Pin & capture1_pin          = GetPin<1, 14>();
     inline static const CaptureChannelPartial_t kTimerPartial1 = {
       .timer_register = LPC_TIM1,
       .id             = SystemController::Peripherals::kTimer1,
@@ -114,8 +114,8 @@ class PulseCapture final : public sjsu::PulseCapture
     inline static CaptureCallback timer2_callback = nullptr;
     inline static CaptureChannelNumber timer2_channel_number =
         CaptureChannelNumber::kChannel1;
-    inline static Pin capture2_channel0_pin                    = Pin(1, 14);
-    inline static Pin capture2_channel1_pin                    = Pin(0, 5);
+    inline static Pin & capture2_channel0_pin = GetPin<1, 14>();
+    inline static Pin & capture2_channel1_pin = GetPin<0, 5>();
     inline static const CaptureChannelPartial_t kTimerPartial2 = {
       .timer_register = LPC_TIM2,
       .id             = SystemController::Peripherals::kTimer2,
@@ -129,8 +129,8 @@ class PulseCapture final : public sjsu::PulseCapture
     inline static CaptureCallback timer3_callback = nullptr;
     inline static CaptureChannelNumber timer3_channel_number =
         CaptureChannelNumber::kChannel1;
-    inline static Pin capture3_channel0_pin                    = Pin(0, 23);
-    inline static Pin capture3_channel1_pin                    = Pin(0, 24);
+    inline static Pin & capture3_channel0_pin = GetPin<0, 23>();
+    inline static Pin & capture3_channel1_pin = GetPin<0, 24>();
     inline static const CaptureChannelPartial_t kTimerPartial3 = {
       .timer_register = LPC_TIM3,
       .id             = SystemController::Peripherals::kTimer3,
@@ -251,11 +251,13 @@ class PulseCapture final : public sjsu::PulseCapture
   {
     if (channel_ == CaptureChannelNumber::kChannel1)
     {
-      timer_.channel.capture_pin1.ConfigureFunction(3);
+      timer_.channel.capture_pin1.settings.function = 3;
+      timer_.channel.capture_pin1.Initialize();
     }
     else
     {
-      timer_.channel.capture_pin0.ConfigureFunction(3);
+      timer_.channel.capture_pin0.settings.function = 3;
+      timer_.channel.capture_pin0.Initialize();
     }
 
     static constexpr bit::Mask kModeBits[2] = { bit::MaskFromRange(0, 1),

@@ -11,12 +11,11 @@ int main()
   sjsu::LogInfo("and a volume of 10 percent i.e. 0.1f");
   sjsu::LogInfo("==================================================");
 
-  sjsu::lpc40xx::Pwm pwm_pin(sjsu::lpc40xx::Pwm::Channel::kPwm1);
+  sjsu::lpc40xx::Pwm & pwm_pin = sjsu::lpc40xx::GetPwm<1, 1>();
   sjsu::Buzzer buzzer(pwm_pin);
 
   sjsu::LogInfo("Initializing & Enabling the buzzer...");
   buzzer.Initialize();
-  buzzer.Enable();
 
   sjsu::Delay(1s);
 

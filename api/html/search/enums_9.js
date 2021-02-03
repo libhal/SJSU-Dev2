@@ -1,12 +1,9 @@
 var searchData=
 [
-  ['parity',['Parity',['../d0/ddc/classsjsu_1_1Uart.html#af204401b99ded479947a90ee5e0828ca',1,'sjsu::Uart']]],
-  ['phase',['Phase',['../d3/de6/classsjsu_1_1Spi.html#a1bd987dfbc34d3daefb0a8559ddaf868',1,'sjsu::Spi']]],
-  ['platform',['Platform',['../d6/d36/namespacesjsu_1_1build.html#a7cd3fc249a4045bc9f897bab66447d92',1,'sjsu::build']]],
+  ['parity',['Parity',['../da/d27/structsjsu_1_1UartSettings__t.html#a33e3e08e16f4ab58b75871592c2b7bbe',1,'sjsu::UartSettings_t']]],
+  ['phase',['Phase',['../d1/ddc/structsjsu_1_1SpiSettings__t.html#a6a418309b9d4ffbcb2dc3e63e77edefd',1,'sjsu::SpiSettings_t']]],
   ['pllmultiply',['PllMultiply',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#aba3dd793461f513ab4685bebefd646c2',1,'sjsu::stm32f10x::SystemController']]],
   ['pllsource',['PllSource',['../db/d13/classsjsu_1_1stm32f10x_1_1SystemController.html#a0fe64c00fada505b2ee6a91c9e347ded',1,'sjsu::stm32f10x::SystemController']]],
-  ['polarity',['Polarity',['../d3/de6/classsjsu_1_1Spi.html#a57d4699447ec8e230a3f418608de5cab',1,'sjsu::Spi::Polarity()'],['../d9/d3a/classsjsu_1_1Ltc4150.html#adf65026068cee571c64936b91526a1fa',1,'sjsu::Ltc4150::Polarity()']]],
-  ['priority',['Priority',['../dd/d42/namespacesjsu_1_1rtos.html#aaead486b5853e422b8f6a5b11d28098e',1,'sjsu::rtos']]],
-  ['protocol',['Protocol',['../db/dcb/classsjsu_1_1InternetSocket.html#a1ba82ae7b2309972b7d7ff0fa4a0cb28',1,'sjsu::InternetSocket']]],
-  ['pulsedurationtype',['PulseDurationType',['../d3/d9b/namespacesjsu_1_1infrared.html#ae53ca6ee47c96d1ca4043971fa248504',1,'sjsu::infrared']]]
+  ['polarity',['Polarity',['../d1/ddc/structsjsu_1_1SpiSettings__t.html#afb4ea1bcc2e38759fd6e981c22bf8faf',1,'sjsu::SpiSettings_t::Polarity()'],['../d9/d3a/classsjsu_1_1Ltc4150.html#adf65026068cee571c64936b91526a1fa',1,'sjsu::Ltc4150::Polarity()']]],
+  ['protocol',['Protocol',['../db/dcb/classsjsu_1_1InternetSocket.html#a1ba82ae7b2309972b7d7ff0fa4a0cb28',1,'sjsu::InternetSocket']]]
 ];

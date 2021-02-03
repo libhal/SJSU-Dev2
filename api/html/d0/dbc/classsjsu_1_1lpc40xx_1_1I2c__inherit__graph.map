@@ -1,4 +1,4 @@
 <map id="sjsu::lpc40xx::I2c" name="sjsu::lpc40xx::I2c">
-<area shape="rect" id="node2" href="$d0/d9b/classsjsu_1_1I2c.html" title="sjsu::I2c" alt="" coords="32,80,104,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="20,5,116,32"/>
+<area shape="rect" id="node2" href="$d0/d9b/classsjsu_1_1I2c.html" title="An abstract interface for hardware that implements the Inter&#45;integrated Circuit (I2C) or Two Wire Int..." alt="" coords="77,80,151,107"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; I2cSettings_t \&gt;" alt="" coords="5,5,223,32"/>
 </map>

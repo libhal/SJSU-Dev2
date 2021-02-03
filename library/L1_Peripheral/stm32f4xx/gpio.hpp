@@ -21,9 +21,6 @@ class Gpio : public sjsu::Gpio
     pin_.Initialize();
   }
 
-  /// Pin/Gpio are both enabled by Initialize
-  void ModuleEnable(bool = true) override {}
-
   void SetDirection(Direction direction) override
   {
     if (direction == Direction::kInput)
@@ -88,4 +85,16 @@ class Gpio : public sjsu::Gpio
  private:
   sjsu::stm32f4xx::Pin pin_;
 };
+
+template <int port, int pin_number>
+inline Gpio & GetGpio()
+{
+  static_assert(
+      ('A' <= port && port <= 'I') && (0 <= pin_number && pin_number <= 15),
+      SJ2_ERROR_MESSAGE_DECORATOR("stm32f4xx: Port must be between 'A' and 'I' "
+                                  "and pin must be between 0 and 15!\n"));
+
+  static Gpio gpio(port, pin_number);
+  return gpio;
+}
 }  // namespace sjsu::stm32f4xx

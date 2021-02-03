@@ -36,7 +36,7 @@ class Dac final : public sjsu::Dac
   };
 
   /// The only DAC output pin on the lpc40xx.
-  static inline sjsu::lpc40xx::Pin dac_pin = sjsu::lpc40xx::Pin(0, 26);
+  static inline sjsu::lpc40xx::Pin default_dac_pin = sjsu::lpc40xx::Pin(0, 26);
 
   /// Voltage reference for the lpc40xx voltage.
   static constexpr units::voltage::microvolt_t kVref = 3.3_V;
@@ -52,41 +52,39 @@ class Dac final : public sjsu::Dac
   /// @param pin - defaults to the only dac pin on the board. The only reason to
   ///        use this parameter would be for unit testing. Otherwise, it should
   ///        not be changed from its default.
-  explicit constexpr Dac(sjsu::Pin & pin = dac_pin) : dac_pin_(pin) {}
+  explicit Dac(sjsu::Pin & pin = default_dac_pin) : dac_pin_(pin) {}
 
   /// The DAC is always connected to power, Initialize does nothing.
-  void ModuleInitialize() override {}
-  void ModuleEnable(bool enable = true) override
+  void ModuleInitialize() override
   {
-    if (enable)
+    static constexpr uint8_t kDacMode = 0b010;
+
+    if constexpr (build::IsPlatform(build::Platform::lpc40xx))
     {
-      static constexpr uint8_t kDacMode = 0b010;
-
-      if constexpr (build::IsPlatform(build::Platform::lpc40xx))
-      {
-        // Temporarily convert dac_pin to a lpc40xx::Pin so we can use the
-        // EnableDacs() method featured in the LPC40xx pin object.
-        // The program is ill-formed if the pin's implementation was not a
-        // lpc40xx pin.
-        const sjsu::lpc40xx::Pin & lpc40xx_dac_pin =
-            reinterpret_cast<const sjsu::lpc40xx::Pin &>(dac_pin_);
-        lpc40xx_dac_pin.EnableDac();
-      }
-
-      dac_pin_.ConfigureAsAnalogMode();
-      dac_pin_.ConfigureFloating();
-      dac_pin_.ConfigureFunction(kDacMode);
-
-      // Disable interrupt and DMA
-      dac_register->CTRL = 0;
-
-      // Set Update Rate to 1MHz
-      SetBias(Bias::kHigh);
+      // Temporarily convert dac_pin to a lpc40xx::Pin so we can use the
+      // EnableDacs() method featured in the LPC40xx pin object.
+      // The program is ill-formed if the pin's implementation was not a
+      // lpc40xx pin.
+      const sjsu::lpc40xx::Pin & lpc40xx_dac_pin =
+          reinterpret_cast<const sjsu::lpc40xx::Pin &>(dac_pin_);
+      lpc40xx_dac_pin.EnableDac();
     }
-    else
-    {
-      LogDebug("Disabling this peripheral is not supported!");
-    }
+
+    constexpr PinSettings_t kDacPinSettings = {
+      .function  = kDacMode,
+      .resistor  = PinSettings_t::Resistor::kNone,
+      .open_drain = false,
+      .as_analog = true,
+    };
+
+    dac_pin_.settings = kDacPinSettings;
+    dac_pin_.Initialize();
+
+    // Disable interrupt and DMA
+    dac_register->CTRL = 0;
+
+    // Set Update Rate to 1MHz
+    SetBias(Bias::kHigh);
   }
 
   void Write(uint32_t dac_output) override
@@ -121,6 +119,14 @@ class Dac final : public sjsu::Dac
 
  private:
   sjsu::Pin & dac_pin_;
+};
+
+template <int port>
+inline Dac & GetDac()
+{
+  static_assert(port == 0, "LPC40xx only supports DAC0!");
+  static Dac dac;
+  return dac;
 };
 }  // namespace lpc40xx
 }  // namespace sjsu

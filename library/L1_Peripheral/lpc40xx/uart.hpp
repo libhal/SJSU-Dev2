@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <limits>
 
-#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L0_Platform/lpc17xx/LPC17xx.h"
+#include "L0_Platform/lpc40xx/LPC40xx.h"
 #include "L1_Peripheral/lpc40xx/pin.hpp"
 #include "L1_Peripheral/lpc40xx/system_controller.hpp"
 #include "L1_Peripheral/uart.hpp"
@@ -159,8 +159,8 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       {
         divide_estimate = RoundFloat(DividerEstimate(
             baud_rate_float, decimal, integer_peripheral_frequency));
-        decimal         = FractionalEstimate(baud_rate_float, divide_estimate,
-                                     integer_peripheral_frequency);
+        decimal         = FractionalEstimate(
+            baud_rate_float, divide_estimate, integer_peripheral_frequency);
         if (1.1f <= decimal && decimal <= 1.9f)
         {
           state = States::kGenerateFractionFromDecimal;
@@ -212,8 +212,12 @@ class Uart final : public sjsu::Uart
   using sjsu::Uart::Read;
   using sjsu::Uart::Write;
 
-  /// Code for enabling standard uart mode.
+  /// Bit code for enabling standard uart mode.
   static constexpr uint8_t kStandardUart = 0b011;
+  /// Bit code for resetting UART FIFO and enabling peripheral
+  static constexpr uint8_t kEnableAndResetFIFO = 0b111;
+  /// Bit code to power down UART driver
+  static constexpr uint8_t kPowerDown = ~kEnableAndResetFIFO;
 
   /// Port contains all of the information that the lpc40xx uart port needs to
   /// operate.
@@ -237,67 +241,6 @@ class Uart final : public sjsu::Uart
     /// Function code to set the receive pin to uart receiver
     uint8_t rx_function_id : 3;
   };
-  /// Structure used as a namespace for predefined Port_t definitions.
-  struct Port  // NOLINT
-  {
-   private:
-    inline static Pin uart0_tx = Pin(0, 2);
-    inline static Pin uart0_rx = Pin(0, 3);
-
-    inline static Pin uart2_tx = Pin(2, 8);
-    inline static Pin uart2_rx = Pin(2, 9);
-
-    inline static Pin uart3_tx = Pin(4, 28);
-    inline static Pin uart3_rx = Pin(4, 29);
-
-    inline static Pin uart4_tx = Pin(1, 29);
-    inline static Pin uart4_rx = Pin(2, 9);
-
-   public:
-    /// Definition for uart port 0 for lpc40xx.
-    inline static const Port_t kUart0 = {
-      // NOTE: required since LPC_UART0 is of type LPC_UART0_TypeDef in lpc17xx
-      // and LPC_UART_TypeDef in lpc40xx causing a "useless cast" warning when
-      // compiled for, some odd reason, for either one being compiled, which
-      // would make more sense if it only warned us with lpc40xx.
-      .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART0_BASE),
-      .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart0,
-      .tx             = uart0_tx,
-      .rx             = uart0_rx,
-      .tx_function_id = 0b001,
-      .rx_function_id = 0b001,
-    };
-
-    /// Definition for uart port 1 for lpc40xx.
-    inline static const Port_t kUart2 = {
-      .registers      = LPC_UART2,
-      .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart2,
-      .tx             = uart2_tx,
-      .rx             = uart2_rx,
-      .tx_function_id = 0b010,
-      .rx_function_id = 0b010,
-    };
-
-    /// Definition for uart port 2 for lpc40xx.
-    inline static const Port_t kUart3 = {
-      .registers      = LPC_UART3,
-      .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart3,
-      .tx             = uart3_tx,
-      .rx             = uart3_rx,
-      .tx_function_id = 0b010,
-      .rx_function_id = 0b010,
-    };
-
-    /// Definition for uart port 3 for lpc40xx.
-    inline static const Port_t kUart4 = {
-      .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4),
-      .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart4,
-      .tx             = uart4_tx,
-      .rx             = uart4_rx,
-      .tx_function_id = 0b101,
-      .rx_function_id = 0b011,
-    };
-  };
 
   /// @param port - a reference to a constant lpc40xx::Uart::Port_t definition
   explicit constexpr Uart(const Port_t & port) : port_(port) {}
@@ -306,55 +249,24 @@ class Uart final : public sjsu::Uart
   {
     sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
         port_.power_on_id);
+
+    ConfigureBaudRate();
+    ConfigureFormat();
+
+    port_.rx.settings.function = port_.rx_function_id;
+    port_.tx.settings.function = port_.tx_function_id;
+    port_.rx.settings.PullUp();
+    port_.tx.settings.PullUp();
+
+    port_.rx.Initialize();
+    port_.tx.Initialize();
+
+    port_.registers->FCR |= kEnableAndResetFIFO;
   }
 
-  void ModuleEnable(bool enable = true) override
+  void ModulePowerDown() override
   {
-    constexpr uint8_t kEnableAndResetFIFO = 0b111;
-    constexpr uint8_t kDisable            = ~kEnableAndResetFIFO;
-
-    if (enable)
-    {
-      port_.rx.ConfigureFunction(port_.rx_function_id);
-      port_.tx.ConfigureFunction(port_.tx_function_id);
-      port_.rx.ConfigurePullUp();
-      port_.tx.ConfigurePullUp();
-
-      port_.registers->FCR |= kEnableAndResetFIFO;
-    }
-    else
-    {
-      port_.registers->FCR &= kDisable;
-    }
-  }
-
-  void ConfigureBaudRate(uint32_t baud_rate) override
-  {
-    auto & system = sjsu::SystemController::GetPlatformController();
-
-    auto peripheral_frequency = system.GetClockRate(port_.power_on_id);
-
-    uart::UartCalibration_t calibration =
-        uart::GenerateUartCalibration(baud_rate, peripheral_frequency);
-
-    constexpr uint8_t kDlabBit = (1 << 7);
-
-    uint8_t dlm = static_cast<uint8_t>((calibration.divide_latch >> 8) & 0xFF);
-    uint8_t dll = static_cast<uint8_t>(calibration.divide_latch & 0xFF);
-    uint8_t fdr = static_cast<uint8_t>((calibration.multiply & 0xF) << 4 |
-                                       (calibration.divide_add & 0xF));
-
-    port_.registers->LCR = kDlabBit;
-    port_.registers->DLM = dlm;
-    port_.registers->DLL = dll;
-    port_.registers->FDR = fdr;
-    port_.registers->LCR = kStandardUart;
-  }
-
-  void ConfigureFormat(FrameSize /* size */ = FrameSize::kEightBits,
-                       StopBits /* stop */  = StopBits::kSingle,
-                       Parity /* parity */  = Parity::kNone) override
-  {
+    port_.registers->FCR &= kPowerDown;
   }
 
   void Write(std::span<const uint8_t> data) override
@@ -392,6 +304,32 @@ class Uart final : public sjsu::Uart
   }
 
  private:
+  void ConfigureFormat()
+  {
+    // To be continued...
+  }
+
+  void ConfigureBaudRate()
+  {
+    constexpr uint8_t kDlabBit = (1 << 7);
+    auto & system             = sjsu::SystemController::GetPlatformController();
+    auto peripheral_frequency = system.GetClockRate(port_.power_on_id);
+
+    uart::UartCalibration_t calibration =
+        uart::GenerateUartCalibration(settings.baud_rate, peripheral_frequency);
+
+    uint8_t dlm = static_cast<uint8_t>((calibration.divide_latch >> 8) & 0xFF);
+    uint8_t dll = static_cast<uint8_t>(calibration.divide_latch & 0xFF);
+    uint8_t fdr = static_cast<uint8_t>((calibration.multiply & 0xF) << 4 |
+                                       (calibration.divide_add & 0xF));
+
+    port_.registers->LCR = kDlabBit;
+    port_.registers->DLM = dlm;
+    port_.registers->DLL = dll;
+    port_.registers->FDR = fdr;
+    port_.registers->LCR = kStandardUart;
+  }
+
   /// @return true if port is still sending the byte.
   bool TransmissionComplete()
   {
@@ -400,6 +338,95 @@ class Uart final : public sjsu::Uart
 
   /// const reference to lpc40xx::Uart::Port_t definition
   const Port_t & port_;
-};  // namespace lpc40xx
+};
+
+template <int port>
+inline Uart & GetUart()
+{
+  if constexpr (port == 0)
+  {
+    static Pin & uart0_tx = sjsu::lpc40xx::GetPin<0, 2>();
+    static Pin & uart0_rx = sjsu::lpc40xx::GetPin<0, 3>();
+
+    /// Definition for uart port 0 for lpc40xx.
+    static const Uart::Port_t kUart0 = {
+      // NOTE: required since LPC_UART0 is of type LPC_UART0_TypeDef in lpc17xx
+      // and LPC_UART_TypeDef in lpc40xx causing a "useless cast" warning when
+      // compiled for, some odd reason, for either one being compiled, which
+      // would make more sense if it only warned us with lpc40xx.
+      .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART0_BASE),
+      .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart0,
+      .tx             = uart0_tx,
+      .rx             = uart0_rx,
+      .tx_function_id = 0b001,
+      .rx_function_id = 0b001,
+    };
+
+    static Uart uart0(kUart0);
+    return uart0;
+  }
+  else if constexpr (port == 2)
+  {
+    static Pin & uart2_tx = sjsu::lpc40xx::GetPin<2, 8>();
+    static Pin & uart2_rx = sjsu::lpc40xx::GetPin<2, 9>();
+
+    /// Definition for uart port 1 for lpc40xx.
+    static const Uart::Port_t kUart2 = {
+      .registers      = LPC_UART2,
+      .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart2,
+      .tx             = uart2_tx,
+      .rx             = uart2_rx,
+      .tx_function_id = 0b010,
+      .rx_function_id = 0b010,
+    };
+
+    static Uart uart2(kUart2);
+    return uart2;
+  }
+  else if constexpr (port == 3)
+  {
+    static Pin & uart3_tx = sjsu::lpc40xx::GetPin<4, 28>();
+    static Pin & uart3_rx = sjsu::lpc40xx::GetPin<4, 29>();
+
+    /// Definition for uart port 2 for lpc40xx.
+    static const Uart::Port_t kUart3 = {
+      .registers      = LPC_UART3,
+      .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart3,
+      .tx             = uart3_tx,
+      .rx             = uart3_rx,
+      .tx_function_id = 0b010,
+      .rx_function_id = 0b010,
+    };
+
+    static Uart uart3(kUart3);
+    return uart3;
+  }
+  else if constexpr (port == 4)
+  {
+    static Pin & uart4_tx = sjsu::lpc40xx::GetPin<1, 29>();
+    static Pin & uart4_rx = sjsu::lpc40xx::GetPin<2, 9>();
+
+    /// Definition for uart port 3 for lpc40xx.
+    static const Uart::Port_t kUart4 = {
+      .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4),
+      .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart4,
+      .tx             = uart4_tx,
+      .rx             = uart4_rx,
+      .tx_function_id = 0b101,
+      .rx_function_id = 0b011,
+    };
+
+    static Uart uart4(kUart4);
+    return uart4;
+  }
+  else
+  {
+    static_assert(
+        InvalidOption<port>,
+        SJ2_ERROR_MESSAGE_DECORATOR("Support UART ports for LPC40xx are UART0, "
+                                    "UART2, UART3, and UART4."));
+    return GetUart<0>();
+  }
+}
 }  // namespace lpc40xx
 }  // namespace sjsu

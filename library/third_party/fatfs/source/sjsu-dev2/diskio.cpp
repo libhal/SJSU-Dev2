@@ -58,7 +58,7 @@ extern "C" DSTATUS disk_status(BYTE drive_number)
 
   // If the media was never initialized by calling disk_initialize, which occurs
   // after an f_mount() call, then return STA_NOINIT.
-  if (!storage->IsEnabled())
+  if (storage->GetState() != sjsu::State::kInitialized)
   {
     return STA_NOINIT;
   }
@@ -77,11 +77,8 @@ extern "C" DSTATUS disk_initialize(BYTE drive_number)
   // Get a reference for the storage drive
   auto & storage = drive[drive_number];
 
-  // Attempt to initialize media peripherals and on failure return STA_NOINIT
-  storage->Initialize();
-
   // Attempt to enable media and on failure return STA_NOINIT
-  storage->Enable();
+  storage->Initialize();
 
   return RES_OK;
 }

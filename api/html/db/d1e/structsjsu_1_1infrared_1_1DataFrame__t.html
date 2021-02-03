@@ -70,7 +70,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../d3/d9b/namespacesjsu_1_1infrared.html">infrared</a></li><li class="navelem"><a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html">DataFrame_t</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><b>infrared</b></li><li class="navelem"><a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html">DataFrame_t</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -87,11 +87,13 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae418d752845253f8cd9ce08ce949dd51"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#ae418d752845253f8cd9ce08ce949dd51">pulse_buffer</a> [<a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#aa600340a041635f85b9ae9cb0e124d21">kMaxPulseBufferSize</a>]</td></tr>
-<tr class="memdesc:ae418d752845253f8cd9ce08ce949dd51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer containing the pulse edge timestamps.  <a href="#ae418d752845253f8cd9ce08ce949dd51">More...</a><br /></td></tr>
+<tr class="memitem:ae418d752845253f8cd9ce08ce949dd51"><td class="memItemLeft" align="right" valign="top"><a id="ae418d752845253f8cd9ce08ce949dd51"></a>
+uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#ae418d752845253f8cd9ce08ce949dd51">pulse_buffer</a> [<a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#aa600340a041635f85b9ae9cb0e124d21">kMaxPulseBufferSize</a>]</td></tr>
+<tr class="memdesc:ae418d752845253f8cd9ce08ce949dd51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer containing the pulse edge timestamps. <br /></td></tr>
 <tr class="separator:ae418d752845253f8cd9ce08ce949dd51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c34c1181080883c253895e89eef2e73"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#a4c34c1181080883c253895e89eef2e73">pulse_buffer_length</a></td></tr>
-<tr class="memdesc:a4c34c1181080883c253895e89eef2e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current number of timestamps of pulse edges stored in pulse_buffer.  <a href="#a4c34c1181080883c253895e89eef2e73">More...</a><br /></td></tr>
+<tr class="memitem:a4c34c1181080883c253895e89eef2e73"><td class="memItemLeft" align="right" valign="top"><a id="a4c34c1181080883c253895e89eef2e73"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#a4c34c1181080883c253895e89eef2e73">pulse_buffer_length</a></td></tr>
+<tr class="memdesc:a4c34c1181080883c253895e89eef2e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current number of timestamps of pulse edges stored in pulse_buffer. <br /></td></tr>
 <tr class="separator:a4c34c1181080883c253895e89eef2e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -122,38 +124,6 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Maximum size of the pulse_buffer. A value of 67 is chosen since formats using pulse duration modulation consists of a header (2 pulses), up to 32 bits of data (64 pulses), and a stop pulse. </p>
-
-</div>
-</div>
-<a id="ae418d752845253f8cd9ce08ce949dd51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae418d752845253f8cd9ce08ce949dd51">&#9670;&nbsp;</a></span>pulse_buffer</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t sjsu::infrared::DataFrame_t::pulse_buffer[<a class="el" href="../../db/d1e/structsjsu_1_1infrared_1_1DataFrame__t.html#aa600340a041635f85b9ae9cb0e124d21">kMaxPulseBufferSize</a>]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Buffer containing the pulse edge timestamps. </p>
-
-</div>
-</div>
-<a id="a4c34c1181080883c253895e89eef2e73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c34c1181080883c253895e89eef2e73">&#9670;&nbsp;</a></span>pulse_buffer_length</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t sjsu::infrared::DataFrame_t::pulse_buffer_length</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Current number of timestamps of pulse edges stored in pulse_buffer. </p>
 
 </div>
 </div>

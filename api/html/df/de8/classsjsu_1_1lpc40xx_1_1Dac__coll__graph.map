@@ -1,8 +1,12 @@
 <map id="sjsu::lpc40xx::Dac" name="sjsu::lpc40xx::Dac">
-<area shape="rect" id="node2" href="$da/d01/classsjsu_1_1Dac.html" title="sjsu::Dac" alt="" coords="18,214,97,241"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="5,5,101,32"/>
-<area shape="rect" id="node5" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="75,89,149,115"/>
-<area shape="rect" id="node4" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="161,332,287,359"/>
-<area shape="rect" id="node6" href="$d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="Pin map table for maping pins and ports to registers. " alt="" coords="173,81,299,123"/>
-<area shape="rect" id="node7" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="323,89,431,115"/>
+<area shape="rect" id="node2" href="$da/d01/classsjsu_1_1Dac.html" title="sjsu::Dac" alt="" coords="161,525,242,552"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="68,282,193,309"/>
+<area shape="rect" id="node4" href="$d3/d79/structsjsu_1_1EmptySettings__t.html" title="sjsu::EmptySettings_t" alt="" coords="5,185,168,212"/>
+<area shape="rect" id="node5" href="$df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html" title="Pin control driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="315,525,450,552"/>
+<area shape="rect" id="node6" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="241,282,317,309"/>
+<area shape="rect" id="node7" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; PinSettings_t \&gt;" alt="" coords="192,185,411,212"/>
+<area shape="rect" id="node8" href="$dc/d60/structsjsu_1_1PinSettings__t.html" title="Generic settings for a standard chip&#39;s Pin peripheral. " alt="" coords="231,96,372,123"/>
+<area shape="rect" id="node9" href="$d1/d03/structsjsu_1_1MemoryEqualOperator__t.html" title="sjsu::MemoryEqualOperator\l_t\&lt; PinSettings_t \&gt;" alt="" coords="200,5,403,47"/>
+<area shape="rect" id="node10" href="$d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html" title="Pin map table for maping pins and ports to registers. " alt="" coords="341,275,475,316"/>
+<area shape="rect" id="node11" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="500,282,615,309"/>
 </map>

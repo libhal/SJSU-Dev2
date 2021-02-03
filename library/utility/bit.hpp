@@ -4,8 +4,8 @@
 #pragma once
 
 #include <array>
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 #include <limits>
 #include <type_traits>
 
@@ -126,6 +126,13 @@ template <typename T>
   return static_cast<T>((target >> position) & mask);
 }
 
+/// Extract value from integer.
+///
+/// @tparam T - return type container.
+/// @tparam U - type of the input target value.
+/// @param target - Value to extract the data from.
+/// @param bitmask - The location of the data to extract from the target.
+/// @return constexpr T - extracted value.
 template <typename T>
 [[nodiscard]] constexpr T Extract(T target, Mask bitmask)
 {
@@ -212,6 +219,12 @@ template <typename T, typename U>
   return static_cast<T>(target);
 }
 
+/// Insert a set of contiguous bits into a target value.
+///
+/// @param target the target that will have bits inserted into it.
+/// @param value the bits to be inserted into the target
+/// @param bitmask the position and width of bits in the target to insert the
+/// value of bits.
 template <typename T, typename U>
 [[nodiscard]] constexpr T Insert(T target, U value, Mask bitmask)
 {
@@ -630,6 +643,14 @@ class Value
   constexpr operator T() const
   {
     return value_;
+  }
+
+  /// Allows implicit conversion from this type into the integer type.
+  /// @return T - the type of this value
+  template <typename Int>
+  constexpr Int To() const
+  {
+    return static_cast<Int>(value_);
   }
 
  private:

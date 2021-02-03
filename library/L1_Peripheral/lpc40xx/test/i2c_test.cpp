@@ -10,8 +10,6 @@
 
 namespace sjsu::lpc40xx
 {
-EMIT_ALL_METHODS(I2c);
-
 TEST_CASE("Testing lpc40xx I2C")
 {
   // Dummy address used by test sections
@@ -23,12 +21,8 @@ TEST_CASE("Testing lpc40xx I2C")
 
   Mock<sjsu::Pin> mock_sda_pin;
   Mock<sjsu::Pin> mock_scl_pin;
-  Fake(Method(mock_sda_pin, ConfigureFunction),
-       Method(mock_sda_pin, ConfigureAsOpenDrain),
-       Method(mock_sda_pin, ConfigurePullResistor));
-  Fake(Method(mock_scl_pin, ConfigureFunction),
-       Method(mock_scl_pin, ConfigureAsOpenDrain),
-       Method(mock_scl_pin, ConfigurePullResistor));
+  Fake(Method(mock_sda_pin, Pin::ModuleInitialize));
+  Fake(Method(mock_scl_pin, Pin::ModuleInitialize));
 
   // Set mock for sjsu::SystemController
   constexpr units::frequency::hertz_t kDummySystemControllerClockFrequency =
@@ -50,7 +44,7 @@ TEST_CASE("Testing lpc40xx I2C")
   // The mock object must be statically linked, otherwise a reference to an
   // object in the stack cannot be used as a template parameter for creating
   // a I2c::I2cHandler<kMockI2c> below in Bus_t kMockI2c.
-  const I2c::Bus_t kMockI2c = {
+  const I2c::Port_t kMockI2c = {
     .registers    = &local_i2c,
     .id           = sjsu::lpc40xx::SystemController::Peripherals::kI2c0,
     .irq_number   = I2C0_IRQn,
@@ -64,8 +58,56 @@ TEST_CASE("Testing lpc40xx I2C")
 
   SECTION("Initialize")
   {
+    // Setup
+    constexpr auto kSystemFrequency = kDummySystemControllerClockFrequency;
+
+    // Source: "UM10562 LPC408x/407x User manual" table 84 page 443
+    constexpr uint32_t kExpectedControlClear =
+        I2c::Control::kAssertAcknowledge | I2c::Control::kStart |
+        I2c::Control::kStop | I2c::Control::kInterrupt;
+
+    I2cSettings_t settings = {};
+
+    SECTION("Default")
+    {
+      settings.frequency = 100_kHz;
+    }
+
+    SECTION("200_kHz")
+    {
+      settings.frequency = 200_kHz;
+    }
+
+    SECTION("500_kHz")
+    {
+      settings.frequency = 500_kHz;
+    }
+
+    SECTION("1_MHz")
+    {
+      settings.frequency = 1_MHz;
+    }
+
+    SECTION("Duty 30%")
+    {
+      settings.duty_cycle = .3;
+    }
+
+    SECTION("Duty 70%")
+    {
+      settings.duty_cycle = .7;
+    }
+
+    const float kDivider = (kSystemFrequency / settings.frequency);
+    const float kExpectedScll = kDivider * settings.duty_cycle;
+    const float kExpectedSclh = kDivider * (1 - settings.duty_cycle);
+
+    const uint32_t kLow  = static_cast<uint32_t>(kExpectedScll);
+    const uint32_t kHigh = static_cast<uint32_t>(kExpectedSclh);
+
     // Exercise
-    test_subject.ModuleInitialize();
+    test_subject.settings = settings;
+    test_subject.Initialize();
 
     // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
@@ -73,41 +115,12 @@ TEST_CASE("Testing lpc40xx I2C")
                  return sjsu::lpc40xx::SystemController::Peripherals::kI2c0
                             .device_id == id.device_id;
                }));
-  }
 
-  SECTION("ConfigureClockRate()")
-  {
-    // Setup
-    constexpr float kSystemFrequency =
-        kDummySystemControllerClockFrequency.to<uint32_t>();
-
-    constexpr float kScll = ((kSystemFrequency / 100'000.0f) / 2.0f);
-    constexpr float kSclh = ((kSystemFrequency / 100'000.0f) / 2.0f);
-
-    constexpr uint32_t kLow  = static_cast<uint32_t>(kScll);
-    constexpr uint32_t kHigh = static_cast<uint32_t>(kSclh);
-
-    // Exercise
-    test_subject.SetStateToInitialized();
-    test_subject.ConfigureClockRate();
-
-    // Verify
+    // Verify: Clock rate
     CHECK(kLow == local_i2c.SCLL);
     CHECK(kHigh == local_i2c.SCLH);
-  }
 
-  SECTION("Enable")
-  {
-    // Setup
-    // Source: "UM10562 LPC408x/407x User manual" table 84 page 443
-    constexpr uint32_t kExpectedControlClear =
-        I2c::Control::kAssertAcknowledge | I2c::Control::kStart |
-        I2c::Control::kStop | I2c::Control::kInterrupt;
-
-    // Exercise
-    test_subject.ModuleEnable();
-
-    // Verify
+    // Verify: Interrupts
     CHECK(local_i2c.CONCLR == kExpectedControlClear);
     CHECK(local_i2c.CONSET == I2c::Control::kInterfaceEnable);
 
@@ -119,19 +132,21 @@ TEST_CASE("Testing lpc40xx I2C")
                      (info.priority == -1);
             }));
 
-    Verify(Method(mock_sda_pin, ConfigureFunction).Using(kMockI2c.pin_function))
-        .Once();
-    Verify(Method(mock_sda_pin, ConfigureAsOpenDrain)).Once();
-    Verify(Method(mock_sda_pin, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kNone))
-        .Once();
+    CHECK(mock_sda_pin.get().CurrentSettings() ==
+          PinSettings_t{
+              .function   = kMockI2c.pin_function,
+              .resistor   = sjsu::PinSettings_t::Resistor::kNone,
+              .open_drain = true,
+              .as_analog  = false,
+          });
 
-    Verify(Method(mock_scl_pin, ConfigureFunction).Using(kMockI2c.pin_function))
-        .Once();
-    Verify(Method(mock_scl_pin, ConfigureAsOpenDrain)).Once();
-    Verify(Method(mock_scl_pin, ConfigurePullResistor)
-               .Using(sjsu::Pin::Resistor::kNone))
-        .Once();
+    CHECK(mock_scl_pin.get().CurrentSettings() ==
+          PinSettings_t{
+              .function   = kMockI2c.pin_function,
+              .resistor   = sjsu::PinSettings_t::Resistor::kNone,
+              .open_drain = true,
+              .as_analog  = false,
+          });
   }
 
   SECTION("~I2c()")

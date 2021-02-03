@@ -167,7 +167,10 @@ struct CommandList_t
   /// commands.
   static constexpr size_t kCommandListBufferSize =
       sizeof(CommandInterface *) * kNumberOfCommands;
+
+  /// Memory resource for the commands vector
   StaticAllocator<kCommandListBufferSize> buffer;
+  /// Array of CommandInterface pointers
   std::pmr::vector<CommandInterface *> commands;
 };
 
@@ -262,7 +265,7 @@ class CommandLine
 
  private:
   /// AutoCompleteHandler is passed to the microrl object and used to handle
-  /// <tab> completion.
+  /// TAB completion.
   ///
   /// The handler first if the command is complete, which is found by checking
   /// if argc <= 1. If it is not, then the set of commands added to this
@@ -309,7 +312,7 @@ class CommandLine
   }
 
   /// ExecuteCommand is passed to the microrl object and used to execute a
-  /// command when the <enter> key is pressed.
+  /// command when the ENTER key is pressed.
   /// ExecuteCommand will compare argv[0] (name of the argument) with the list
   /// of command names and if one of them is found, that command will be
   /// executed.

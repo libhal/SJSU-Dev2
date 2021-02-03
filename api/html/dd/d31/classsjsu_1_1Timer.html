@@ -89,21 +89,21 @@ Inheritance diagram for sjsu::Timer:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d0c/classsjsu_1_1Timer__inherit__graph.png" border="0" usemap="#sjsu_1_1Timer_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1Timer_inherit__map" id="sjsu_1_1Timer_inherit__map">
-<area shape="rect" id="node2" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html" title="sjsu::lpc40xx::Timer" alt="" coords="5,80,145,107"/>
+<area shape="rect" id="node2" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html" title="sjsu::lpc40xx::Timer" alt="" coords="5,80,159,107"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a33fef2b3a0dc21152ab7fb42eda7b0b8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8">MatchAction</a> : uint8_t { <br />
-&#160;&#160;<a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8a5226558f5ccca12b5009c9e2f97d50ae">MatchAction::kInterrupt</a> = 0b001, 
-<a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8a10b027f9e2db79a78b68b36eca360470">MatchAction::kRestart</a> = 0b010, 
-<a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8a97bebae73e3334ef0c946c5df81e440b">MatchAction::kStop</a> = 0b100, 
-<a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8a3cf6b2f14df0e1e3352e9ae3ed0cb1b4">MatchAction::kInterruptRestart</a> = 0b011, 
+&#160;&#160;<b>kInterrupt</b> = 0b001, 
+<b>kRestart</b> = 0b010, 
+<b>kStop</b> = 0b100, 
+<b>kInterruptRestart</b> = 0b011, 
 <br />
-&#160;&#160;<a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8a28ea3a89a7ba724366ae570ccd855042">MatchAction::kInterruptStop</a> = 0b101, 
-<a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8a2975e8c642e11809064f5e5363af9bf6">MatchAction::kRestartStop</a> = 0b110, 
-<a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a33fef2b3a0dc21152ab7fb42eda7b0b8a5d5ab7046f0bfc7ddf14168b3de79efd">MatchAction::kInterruptRestartStop</a> = 0b111
+&#160;&#160;<b>kInterruptStop</b> = 0b101, 
+<b>kRestartStop</b> = 0b110, 
+<b>kInterruptRestartStop</b> = 0b111
 <br />
  }</td></tr>
 <tr class="separator:a33fef2b3a0dc21152ab7fb42eda7b0b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,22 +116,26 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af8c95d6b7e1d88d2dc03493b18e48b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5be3fa5ef96894c0174d3824af1a15a9"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a5be3fa5ef96894c0174d3824af1a15a9">GetAvailableMatchRegisters</a> () const =0</td></tr>
 <tr class="separator:a5be3fa5ef96894c0174d3824af1a15a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aac4d65af93fd8fde22bdbf007db478"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a5aac4d65af93fd8fde22bdbf007db478">GetCount</a> () const =0</td></tr>
-<tr class="memdesc:a5aac4d65af93fd8fde22bdbf007db478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current count in the count register.  <a href="#a5aac4d65af93fd8fde22bdbf007db478">More...</a><br /></td></tr>
+<tr class="memitem:a5aac4d65af93fd8fde22bdbf007db478"><td class="memItemLeft" align="right" valign="top"><a id="a5aac4d65af93fd8fde22bdbf007db478"></a>
+virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a5aac4d65af93fd8fde22bdbf007db478">GetCount</a> () const =0</td></tr>
+<tr class="memdesc:a5aac4d65af93fd8fde22bdbf007db478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current count in the count register. <br /></td></tr>
 <tr class="separator:a5aac4d65af93fd8fde22bdbf007db478"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12ec807c8c85044230465edfc64b5eea"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a12ec807c8c85044230465edfc64b5eea">Start</a> () const =0</td></tr>
-<tr class="memdesc:a12ec807c8c85044230465edfc64b5eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the timer.  <a href="#a12ec807c8c85044230465edfc64b5eea">More...</a><br /></td></tr>
+<tr class="memitem:a12ec807c8c85044230465edfc64b5eea"><td class="memItemLeft" align="right" valign="top"><a id="a12ec807c8c85044230465edfc64b5eea"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a12ec807c8c85044230465edfc64b5eea">Start</a> () const =0</td></tr>
+<tr class="memdesc:a12ec807c8c85044230465edfc64b5eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the timer. <br /></td></tr>
 <tr class="separator:a12ec807c8c85044230465edfc64b5eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a001128facce75522d8b9811c5649a3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a3a001128facce75522d8b9811c5649a3">Stop</a> () const =0</td></tr>
-<tr class="memdesc:a3a001128facce75522d8b9811c5649a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the timer.  <a href="#a3a001128facce75522d8b9811c5649a3">More...</a><br /></td></tr>
+<tr class="memitem:a3a001128facce75522d8b9811c5649a3"><td class="memItemLeft" align="right" valign="top"><a id="a3a001128facce75522d8b9811c5649a3"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#a3a001128facce75522d8b9811c5649a3">Stop</a> () const =0</td></tr>
+<tr class="memdesc:a3a001128facce75522d8b9811c5649a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the timer. <br /></td></tr>
 <tr class="separator:a3a001128facce75522d8b9811c5649a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb6c77042b4e115cb241cfdc0be69d79"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#acb6c77042b4e115cb241cfdc0be69d79">Reset</a> () const =0</td></tr>
-<tr class="memdesc:acb6c77042b4e115cb241cfdc0be69d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the timer.  <a href="#acb6c77042b4e115cb241cfdc0be69d79">More...</a><br /></td></tr>
+<tr class="memitem:acb6c77042b4e115cb241cfdc0be69d79"><td class="memItemLeft" align="right" valign="top"><a id="acb6c77042b4e115cb241cfdc0be69d79"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d31/classsjsu_1_1Timer.html#acb6c77042b4e115cb241cfdc0be69d79">Reset</a> () const =0</td></tr>
+<tr class="memdesc:acb6c77042b4e115cb241cfdc0be69d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the timer. <br /></td></tr>
 <tr class="separator:acb6c77042b4e115cb241cfdc0be69d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An abstract interface for timer peripherals. This interface can be used for keeping time, starting and stopping a hardware timer, and causing interrupts when the timer reaches a certain condition. This is not meant to be used for PWM generation, or other advanced feature.</p>
-<p>(INCOMPLETE PERIPHERAL has not migrated to <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>) </p>
+<p>(INCOMPLETE PERIPHERAL has not migrated to <a class="el" href="../../d1/ded/classsjsu_1_1Module.html" title="The basis class for all peripheral, device and system drivers in SJSU-Dev2. ">sjsu::Module</a>) </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a33fef2b3a0dc21152ab7fb42eda7b0b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33fef2b3a0dc21152ab7fb42eda7b0b8">&#9670;&nbsp;</a></span>MatchAction</h2>
@@ -153,15 +157,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Actions the timer can perform when the time counter equals one of the match registers. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a33fef2b3a0dc21152ab7fb42eda7b0b8a5226558f5ccca12b5009c9e2f97d50ae"></a>kInterrupt&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a33fef2b3a0dc21152ab7fb42eda7b0b8a10b027f9e2db79a78b68b36eca360470"></a>kRestart&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a33fef2b3a0dc21152ab7fb42eda7b0b8a97bebae73e3334ef0c946c5df81e440b"></a>kStop&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a33fef2b3a0dc21152ab7fb42eda7b0b8a3cf6b2f14df0e1e3352e9ae3ed0cb1b4"></a>kInterruptRestart&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a33fef2b3a0dc21152ab7fb42eda7b0b8a28ea3a89a7ba724366ae570ccd855042"></a>kInterruptStop&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a33fef2b3a0dc21152ab7fb42eda7b0b8a2975e8c642e11809064f5e5363af9bf6"></a>kRestartStop&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a33fef2b3a0dc21152ab7fb42eda7b0b8a5d5ab7046f0bfc7ddf14168b3de79efd"></a>kInterruptRestartStop&#160;</td><td class="fielddoc"></td></tr>
-</table>
 
 </div>
 </div>
@@ -191,35 +186,6 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>number of available match registers </dd></dl>
 
 <p>Implemented in <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ac6e6bc69b3c07a9b7a145266899984be">sjsu::lpc40xx::Timer</a>.</p>
-
-</div>
-</div>
-<a id="a5aac4d65af93fd8fde22bdbf007db478"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5aac4d65af93fd8fde22bdbf007db478">&#9670;&nbsp;</a></span>GetCount()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual uint32_t sjsu::Timer::GetCount </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the current count in the count register. </p>
-
-<p>Implemented in <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#a3a26b7074bcd9905dcafe6d7a6be4f7c">sjsu::lpc40xx::Timer</a>.</p>
 
 </div>
 </div>
@@ -276,35 +242,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acb6c77042b4e115cb241cfdc0be69d79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb6c77042b4e115cb241cfdc0be69d79">&#9670;&nbsp;</a></span>Reset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void sjsu::Timer::Reset </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Resets the timer. </p>
-
-<p>Implemented in <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ad116fb0c5f8b55b880367f9253ce542f">sjsu::lpc40xx::Timer</a>.</p>
-
-</div>
-</div>
 <a id="af8c95d6b7e1d88d2dc03493b18e48b39"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af8c95d6b7e1d88d2dc03493b18e48b39">&#9670;&nbsp;</a></span>SetMatchBehavior()</h2>
 
@@ -355,64 +292,6 @@ Public Member Functions</h2></td></tr>
 </dl>
 
 <p>Implemented in <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#add4aabca1f231b7a1aee354809551223">sjsu::lpc40xx::Timer</a>.</p>
-
-</div>
-</div>
-<a id="a12ec807c8c85044230465edfc64b5eea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12ec807c8c85044230465edfc64b5eea">&#9670;&nbsp;</a></span>Start()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void sjsu::Timer::Start </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Starts the timer. </p>
-
-<p>Implemented in <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#ae2574bedeb19007ea5bda021cd106f74">sjsu::lpc40xx::Timer</a>.</p>
-
-</div>
-</div>
-<a id="a3a001128facce75522d8b9811c5649a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a001128facce75522d8b9811c5649a3">&#9670;&nbsp;</a></span>Stop()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void sjsu::Timer::Stop </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Stops the timer. </p>
-
-<p>Implemented in <a class="el" href="../../d3/d1b/classsjsu_1_1lpc40xx_1_1Timer.html#aed7997ea81a68d6d1315bb23ef882cee">sjsu::lpc40xx::Timer</a>.</p>
 
 </div>
 </div>

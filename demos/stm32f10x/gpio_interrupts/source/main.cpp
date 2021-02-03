@@ -9,20 +9,17 @@ int main()
   sjsu::stm32f10x::Gpio pin1('B', 10);
   sjsu::stm32f10x::Gpio pin2('B', 12);
 
+  pin0.GetPin().settings.PullUp();
+  pin1.GetPin().settings.PullUp();
+  pin2.GetPin().settings.PullUp();
+
   pin0.Initialize();
   pin1.Initialize();
   pin2.Initialize();
 
-  pin0.Enable();
-  pin1.Enable();
-  pin2.Enable();
-
   pin0.SetAsInput();
-  pin0.GetPin().ConfigurePullUp();
   pin1.SetAsInput();
-  pin1.GetPin().ConfigurePullUp();
   pin2.SetAsInput();
-  pin2.GetPin().ConfigurePullUp();
 
   sjsu::LogInfo("Setup PA8 to interrupt on only Falling edges...");
   pin0.AttachInterrupt([]() { sjsu::LogInfo("PA8 interrupt!"); },

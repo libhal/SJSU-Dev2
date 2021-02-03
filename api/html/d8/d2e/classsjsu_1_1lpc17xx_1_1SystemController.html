@@ -70,7 +70,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><a class="el" href="../../d1/d32/namespacesjsu_1_1lpc17xx.html">lpc17xx</a></li><li class="navelem"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html">SystemController</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../d0/d6b/namespacesjsu.html">sjsu</a></li><li class="navelem"><b>lpc17xx</b></li><li class="navelem"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html">SystemController</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -94,7 +94,7 @@ Inheritance diagram for sjsu::lpc17xx::SystemController:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d5/d60/classsjsu_1_1lpc17xx_1_1SystemController__inherit__graph.png" border="0" usemap="#sjsu_1_1lpc17xx_1_1SystemController_inherit__map" alt="Inheritance graph"/></div>
 <map name="sjsu_1_1lpc17xx_1_1SystemController_inherit__map" id="sjsu_1_1lpc17xx_1_1SystemController_inherit__map">
-<area shape="rect" id="node2" href="../../df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="32,5,187,32"/>
+<area shape="rect" id="node2" href="../../df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="35,5,204,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -102,7 +102,7 @@ Collaboration diagram for sjsu::lpc17xx::SystemController:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d1/d51/classsjsu_1_1lpc17xx_1_1SystemController__coll__graph.png" border="0" usemap="#sjsu_1_1lpc17xx_1_1SystemController_coll__map" alt="Collaboration graph"/></div>
 <map name="sjsu_1_1lpc17xx_1_1SystemController_coll__map" id="sjsu_1_1lpc17xx_1_1SystemController_coll__map">
-<area shape="rect" id="node2" href="../../df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="32,5,187,32"/>
+<area shape="rect" id="node2" href="../../df/d0e/classsjsu_1_1SystemController.html" title="sjsu::SystemController" alt="" coords="35,5,204,32"/>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -146,8 +146,8 @@ Public Types</h2></td></tr>
  }<tr class="memdesc:a50995143c6d0aaf8a7c4bce5d8723468"><td class="mdescLeft">&#160;</td><td class="mdescRight">The available CPU clock sources.  <a href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a50995143c6d0aaf8a7c4bce5d8723468">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a50995143c6d0aaf8a7c4bce5d8723468"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18ec8835f53b968c732122dc56e55944"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a18ec8835f53b968c732122dc56e55944">UsbClockSource</a> : uint8_t { <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a18ec8835f53b968c732122dc56e55944adfaa01ab6223e684fdae5e070bbd8cf4">UsbClockSource::kPll0</a> = 0b0, 
-<a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a18ec8835f53b968c732122dc56e55944a254d6527609be07b3ac6987f109b0aca">UsbClockSource::kPll1</a> = 0b1
+<tr class="memitem:a18ec8835f53b968c732122dc56e55944"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a18ec8835f53b968c732122dc56e55944">UsbClockSource</a> : uint8_t { <b>kPll0</b> = 0b0, 
+<b>kPll1</b> = 0b1
  }</td></tr>
 <tr class="separator:a18ec8835f53b968c732122dc56e55944"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7e9d86e2996b1ea5dd06456026101dd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#af7e9d86e2996b1ea5dd06456026101dd">UsbClockDivider</a> : uint8_t { <a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#af7e9d86e2996b1ea5dd06456026101dda7fb432232d83b261a7b2ca58ec060c7e">UsbClockDivider::kDivideBy6</a> = 0b0101, 
@@ -179,17 +179,21 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a6301bd2156708c6e971fd756f9896842"><td class="memItemLeft" align="right" valign="top">static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6301bd2156708c6e971fd756f9896842">kIrcFrequency</a> = 4_MHz</td></tr>
-<tr class="memdesc:a6301bd2156708c6e971fd756f9896842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed Internal RC frequency.  <a href="#a6301bd2156708c6e971fd756f9896842">More...</a><br /></td></tr>
+<tr class="memitem:a6301bd2156708c6e971fd756f9896842"><td class="memItemLeft" align="right" valign="top"><a id="a6301bd2156708c6e971fd756f9896842"></a>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a6301bd2156708c6e971fd756f9896842">kIrcFrequency</a> = 4_MHz</td></tr>
+<tr class="memdesc:a6301bd2156708c6e971fd756f9896842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed Internal RC frequency. <br /></td></tr>
 <tr class="separator:a6301bd2156708c6e971fd756f9896842"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8432d08a021135dff956e6c25e523038"><td class="memItemLeft" align="right" valign="top">static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a8432d08a021135dff956e6c25e523038">kRTCFrequency</a> = 32'768_Hz</td></tr>
-<tr class="memdesc:a8432d08a021135dff956e6c25e523038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed RTC frequency.  <a href="#a8432d08a021135dff956e6c25e523038">More...</a><br /></td></tr>
+<tr class="memitem:a8432d08a021135dff956e6c25e523038"><td class="memItemLeft" align="right" valign="top"><a id="a8432d08a021135dff956e6c25e523038"></a>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a8432d08a021135dff956e6c25e523038">kRTCFrequency</a> = 32'768_Hz</td></tr>
+<tr class="memdesc:a8432d08a021135dff956e6c25e523038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed RTC frequency. <br /></td></tr>
 <tr class="separator:a8432d08a021135dff956e6c25e523038"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="memItemLeft" align="right" valign="top">static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ae48127fbdcbf061f82a3e780e8d46e2f">kUsbClockFrequency</a> = 48_MHz</td></tr>
-<tr class="memdesc:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The required frequency for the USB clock.  <a href="#ae48127fbdcbf061f82a3e780e8d46e2f">More...</a><br /></td></tr>
+<tr class="memitem:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="memItemLeft" align="right" valign="top"><a id="ae48127fbdcbf061f82a3e780e8d46e2f"></a>
+static constexpr units::frequency::hertz_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ae48127fbdcbf061f82a3e780e8d46e2f">kUsbClockFrequency</a> = 48_MHz</td></tr>
+<tr class="memdesc:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The required frequency for the USB clock. <br /></td></tr>
 <tr class="separator:ae48127fbdcbf061f82a3e780e8d46e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="memItemLeft" align="right" valign="top">static LPC_SC_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab1db7a0dd2837d0cf38ad57ced9ee6e3">system_controller</a> = LPC_SC</td></tr>
-<tr class="memdesc:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer reference to the system controller peripheral in memory.  <a href="#ab1db7a0dd2837d0cf38ad57ced9ee6e3">More...</a><br /></td></tr>
+<tr class="memitem:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="memItemLeft" align="right" valign="top"><a id="ab1db7a0dd2837d0cf38ad57ced9ee6e3"></a>
+static LPC_SC_TypeDef *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#ab1db7a0dd2837d0cf38ad57ced9ee6e3">system_controller</a> = LPC_SC</td></tr>
+<tr class="memdesc:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer reference to the system controller peripheral in memory. <br /></td></tr>
 <tr class="separator:ab1db7a0dd2837d0cf38ad57ced9ee6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
@@ -317,10 +321,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>The available USB subsystem clock sources.</p>
 <dl class="section warning"><dt>Warning</dt><dd>PLL0 should not be used as a source if PLL0 is driven by the internal oscillator as the clock signal will not be precise enough for the USB subsystem. </dd></dl>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a18ec8835f53b968c732122dc56e55944adfaa01ab6223e684fdae5e070bbd8cf4"></a>kPll0&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a18ec8835f53b968c732122dc56e55944a254d6527609be07b3ac6987f109b0aca"></a>kPll1&#160;</td><td class="fielddoc"></td></tr>
-</table>
 
 </div>
 </div>
@@ -550,103 +550,6 @@ false if the peripheral is currently powered down. </dd></dl>
 </dl>
 
 <p>Implements <a class="el" href="../../df/d0e/classsjsu_1_1SystemController.html#a66acf14da8b949ba9e7f1ba9e3ed65fc">sjsu::SystemController</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a6301bd2156708c6e971fd756f9896842"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6301bd2156708c6e971fd756f9896842">&#9670;&nbsp;</a></span>kIrcFrequency</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr units::frequency::hertz_t sjsu::lpc17xx::SystemController::kIrcFrequency = 4_MHz</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Fixed Internal RC frequency. </p>
-
-</div>
-</div>
-<a id="a8432d08a021135dff956e6c25e523038"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8432d08a021135dff956e6c25e523038">&#9670;&nbsp;</a></span>kRTCFrequency</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr units::frequency::hertz_t sjsu::lpc17xx::SystemController::kRTCFrequency = 32'768_Hz</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Fixed RTC frequency. </p>
-
-</div>
-</div>
-<a id="ae48127fbdcbf061f82a3e780e8d46e2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae48127fbdcbf061f82a3e780e8d46e2f">&#9670;&nbsp;</a></span>kUsbClockFrequency</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr units::frequency::hertz_t sjsu::lpc17xx::SystemController::kUsbClockFrequency = 48_MHz</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The required frequency for the USB clock. </p>
-
-</div>
-</div>
-<a id="ab1db7a0dd2837d0cf38ad57ced9ee6e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1db7a0dd2837d0cf38ad57ced9ee6e3">&#9670;&nbsp;</a></span>system_controller</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">LPC_SC_TypeDef* sjsu::lpc17xx::SystemController::system_controller = LPC_SC</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pointer reference to the system controller peripheral in memory. </p>
 
 </div>
 </div>

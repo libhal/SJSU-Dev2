@@ -32,7 +32,10 @@ inline std::chrono::nanoseconds DefaultUptime()
 /// Global Uptime function, preset to DefaultUptime() for testing purposes.
 /// In general, this function is overwritten by
 inline UptimeFunction Uptime = DefaultUptime;  // NOLINT
+
+/// Global count of the time.
 inline std::chrono::nanoseconds global_time = 0ns;
+
 /// Returns the system uptime in nanoseconds, do not use this function directly
 ///
 /// @param uptime_function - new system wide uptime function to override the
@@ -104,14 +107,14 @@ inline bool Wait(std::chrono::nanoseconds timeout)
   return Wait(timeout, []() -> bool { return false; });
 }
 
-// Declare an external linkage to the linux nanosleep() function. This is
-// not needed for linux builds but is required to keep the ARM compiler from
-// stating that the nanosleep() function does not exist, as it is #ifdef
-// out in the header file.
-//
-// During the linking stage, since the constexpr if will fail, this path
-// will be removed form the code, and thus no linking errors due to an
-// undefined function call.
+/// Declare an external linkage to the linux nanosleep() function. This is
+/// not needed for linux builds but is required to keep the ARM compiler from
+/// stating that the nanosleep() function does not exist, as it is "ifdef"
+/// out in the header file.
+///
+/// During the linking stage, since the constexpr if will fail, this path
+/// will be removed form the code, and thus no linking errors due to an
+/// undefined function call.
 extern int nanosleep(const timespec *, const timespec *);  // NOLINT
 
 /// Delay the system for a duration of time

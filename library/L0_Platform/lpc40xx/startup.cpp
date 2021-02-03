@@ -32,7 +32,7 @@ sjsu::lpc40xx::SystemController system_controller(clock_configuration);
 sjsu::cortex::DwtCounter arm_dwt_counter;
 
 // Uart port 0 is used to communicate back to the host computer
-sjsu::lpc40xx::Uart uart0(sjsu::lpc40xx::Uart::Port::kUart0);
+sjsu::lpc40xx::Uart & uart0 = sjsu::lpc40xx::GetUart<0>();
 
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
@@ -93,17 +93,14 @@ extern "C"
 
   void vPortSetupTimerInterrupt(void)  // NOLINT
   {
-    // Disable timer so the callback can be configured
-    system_timer.Enable(false);
-
     // Set the SystemTick frequency to the RTOS tick frequency
     // It is critical that this happens before you set the system_clock,
     // since The system_timer keeps the time that the system_clock uses to
     // delay itself.
-    system_timer.ConfigureCallback(xPortSysTickHandler);
+    system_timer.settings.callback = xPortSysTickHandler;
 
     // Re-enable timer
-    system_timer.Enable(true);
+    system_timer.Initialize();
   }
 }
 
@@ -189,16 +186,14 @@ void InitializePlatform()
   system_controller.Initialize();
 
   // Set UART0 baudrate, which is required for printf and scanf to work properly
+  uart0.settings.baud_rate = config::kBaudRate;
   uart0.Initialize();
-  uart0.ConfigureBaudRate(config::kBaudRate);
-  uart0.Enable();
 
   sjsu::newlib::SetStdout(Lpc40xxStdOut);
   sjsu::newlib::SetStdin(Lpc40xxStdIn);
 
+  system_timer.settings.frequency = config::kRtosFrequency;
   system_timer.Initialize();
-  system_timer.ConfigureTickFrequency(config::kRtosFrequency);
-  system_timer.Enable();
 
   arm_dwt_counter.Initialize();
   sjsu::SetUptimeFunction(sjsu::cortex::SystemTimer::GetCount);

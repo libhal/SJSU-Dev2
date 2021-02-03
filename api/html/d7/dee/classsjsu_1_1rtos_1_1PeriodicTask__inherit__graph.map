@@ -1,5 +1,5 @@
 <map id="sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;" name="sjsu::rtos::PeriodicTask&lt; kTaskStackSize &gt;">
-<area shape="rect" id="node2" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kTaskStack\lSize \&gt;" alt="" coords="5,80,200,121"/>
-<area shape="rect" id="node3" href="$d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="sjsu::rtos::TaskInterface" alt="" coords="21,5,185,32"/>
-<area shape="rect" id="node4" href="$de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html" title="An abstract interace for the PeriodicTask class. " alt="" coords="224,80,384,121"/>
+<area shape="rect" id="node2" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kTaskStack\lSize \&gt;" alt="" coords="5,80,212,121"/>
+<area shape="rect" id="node3" href="$d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="sjsu::rtos::TaskInterface" alt="" coords="21,5,197,32"/>
+<area shape="rect" id="node4" href="$de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html" title="An abstract interace for the PeriodicTask class. " alt="" coords="237,80,407,121"/>
 </map>

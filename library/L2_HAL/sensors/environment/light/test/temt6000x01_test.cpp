@@ -4,8 +4,6 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Temt6000x01);
-
 TEST_CASE("Testing TEMP6000X01 Light Sensor")
 {
   constexpr units::voltage::microvolt_t kReferenceVoltage = 3.3_V;
@@ -23,36 +21,17 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
   units::illuminance::lux_t expected_max_lux(1'000_lx);
 
   Mock<Adc> mock_adc;
-  When(Method(mock_adc, GetActiveBits)).AlwaysReturn(kAdcActiveBits);
-  When(Method(mock_adc, Read)).AlwaysReturn(kAdcTestOutput);
-  When(Method(mock_adc, ReferenceVoltage)).AlwaysReturn(kReferenceVoltage);
+  mock_adc.get().settings.reference_voltage = 3.3_V;
+  When(Method(mock_adc, Adc::GetActiveBits)).AlwaysReturn(kAdcActiveBits);
+  When(Method(mock_adc, Adc::Read)).AlwaysReturn(kAdcTestOutput);
 
   Temt6000x01 test_subject(mock_adc.get(), kPullDownResistor);
 
-  SECTION("Initialize")
-  {
-    // Setup
-    Fake(Method(mock_adc, ModuleInitialize));
+  // Setup
+  Fake(Method(mock_adc, ModuleInitialize));
 
-    // Exercise
-    test_subject.Initialize();
-
-    // Verify
-    Verify(Method(mock_adc, ModuleInitialize)).Once();
-  }
-
-  SECTION("Enable")
-  {
-    // Setup
-    Fake(Method(mock_adc, ModuleEnable));
-
-    // Exercise
-    mock_adc.get().SetStateToInitialized();
-    test_subject.ModuleEnable();
-
-    // Verify
-    Verify(Method(mock_adc, ModuleEnable)).Once();
-  }
+  // Exercise
+  test_subject.Initialize();
 
   SECTION("GetIlluminance")
   {
@@ -61,7 +40,9 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
 
     // Verify
     Verify(Method(mock_adc, Read)).Once();
-    CHECK(actual_lux == expected_lux);
+
+    CHECK(actual_lux.to<float>() ==
+          doctest::Approx(expected_lux.to<float>()).epsilon(0.01f));
   }
 
   SECTION("GetMaxIlluminance")
@@ -70,7 +51,8 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
     auto actual_max_lux = test_subject.GetMaxIlluminance();
 
     // Verify
-    CHECK(actual_max_lux == expected_max_lux);
+    CHECK(actual_max_lux.to<float>() ==
+          doctest::Approx(expected_max_lux.to<float>()).epsilon(0.01f));
   }
 
   SECTION("GetIlluminancePercentage")
@@ -85,5 +67,8 @@ TEST_CASE("Testing TEMP6000X01 Light Sensor")
     CHECK(actual_percentage ==
           doctest::Approx(expected_percentage).epsilon(0.01f));
   }
+
+  // Verify
+  Verify(Method(mock_adc, ModuleInitialize)).Once();
 }
 }  // namespace sjsu

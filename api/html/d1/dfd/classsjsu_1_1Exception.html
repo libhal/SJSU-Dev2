@@ -84,6 +84,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>The standard exception class for SJSU-Dev2.  
+ <a href="../../d1/dfd/classsjsu_1_1Exception.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../da/d85/error__handling_8hpp_source.html">error_handling.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for sjsu::Exception:</div>
@@ -114,7 +117,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a935b1e135383f31038d3ee4d76ea97cb"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dfd/classsjsu_1_1Exception.html#a935b1e135383f31038d3ee4d76ea97cb">kEmptyMessage</a> = &quot;(undefined)&quot;</td></tr>
+<tr class="memitem:a935b1e135383f31038d3ee4d76ea97cb"><td class="memItemLeft" align="right" valign="top"><a id="a935b1e135383f31038d3ee4d76ea97cb"></a>
+static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dfd/classsjsu_1_1Exception.html#a935b1e135383f31038d3ee4d76ea97cb">kEmptyMessage</a> = &quot;(undefined)&quot;</td></tr>
+<tr class="memdesc:a935b1e135383f31038d3ee4d76ea97cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default message for exceptions without a context message. <br /></td></tr>
 <tr class="separator:a935b1e135383f31038d3ee4d76ea97cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -124,7 +129,9 @@ Friends</h2></td></tr>
 <tr class="memitem:ac4dc9d859a7a318cd20df0f5ee289e61"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dfd/classsjsu_1_1Exception.html#ac4dc9d859a7a318cd20df0f5ee289e61">operator==</a> (std::errc error, const <a class="el" href="../../d1/dfd/classsjsu_1_1Exception.html">Exception</a> &amp;exception)</td></tr>
 <tr class="separator:ac4dc9d859a7a318cd20df0f5ee289e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The standard exception class for SJSU-Dev2. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac3b80c393d548a783344ee2bb4e3bcea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3b80c393d548a783344ee2bb4e3bcea">&#9670;&nbsp;</a></span>Exception()</h2>
 
@@ -164,6 +171,14 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">error_code_enum</td><td>- error code that represents this error </td></tr>
+    <tr><td class="paramname">location_message</td><td>- a message that descripes the exception and why it occurred. </td></tr>
+    <tr><td class="paramname">source_location</td><td>- location of where this exception was created. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -190,6 +205,7 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>std::errc - the error code number </dd></dl>
 
 </div>
 </div>
@@ -243,6 +259,7 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>const char* - return the message associated with this excpetion </dd></dl>
 
 </div>
 </div>
@@ -280,6 +297,17 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Check if the exception object has and error code equal to the compared error code</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">exception</td><td>- the exception object to compare </td></tr>
+    <tr><td class="paramname">error</td><td>- the error code to check against </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true - <code>exception</code> has the same error code as <code>error</code> </dd>
+<dd>
+false - <code>exception</code> does NOT have the same error code as <code>error</code> </dd></dl>
 
 </div>
 </div>
@@ -316,29 +344,17 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a935b1e135383f31038d3ee4d76ea97cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a935b1e135383f31038d3ee4d76ea97cb">&#9670;&nbsp;</a></span>kEmptyMessage</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr const char* sjsu::Exception::kEmptyMessage = &quot;(undefined)&quot;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Check if the exception object has and error code equal to the compared error code</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">error</td><td>- the error code to check against </td></tr>
+    <tr><td class="paramname">exception</td><td>- the exception object to compare </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true - <code>exception</code> has the same error code as <code>error</code> </dd>
+<dd>
+false - <code>exception</code> does NOT have the same error code as <code>error</code> </dd></dl>
 
 </div>
 </div>

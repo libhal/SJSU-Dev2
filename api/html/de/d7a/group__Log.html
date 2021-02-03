@@ -92,8 +92,9 @@ Macros</h2></td></tr>
 <tr class="separator:ga091fa592071c28e5ad36aef40371ffbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7bcf00e18eb9e382f9a1273473782237"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d7a/group__Log.html#ga7bcf00e18eb9e382f9a1273473782237">SJ2_ASSERT_FATAL</a>(condition,  fatal_message, ...)&#160;&#160;&#160;<a class="el" href="../../de/d7a/group__Log.html#ga091fa592071c28e5ad36aef40371ffbb">SJ2_ASSERT_FATAL_WITH_DUMP</a>(true, (condition), fatal_message, ##__VA_ARGS__)</td></tr>
 <tr class="separator:ga7bcf00e18eb9e382f9a1273473782237"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85a3cd2a242e13555003a23598c548c2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d7a/group__Log.html#ga85a3cd2a242e13555003a23598c548c2">SJ2_PRINT_VARIABLE</a>(variable,  printf_specifier)&#160;&#160;&#160;::<a class="el" href="../../d2/dbb/structsjsu_1_1LogDebug.html">sjsu::LogDebug</a>(#variable &quot; = &quot; printf_specifier, (variable))</td></tr>
-<tr class="memdesc:ga85a3cd2a242e13555003a23598c548c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a variable using the printf_specifier supplied.  <a href="#ga85a3cd2a242e13555003a23598c548c2">More...</a><br /></td></tr>
+<tr class="memitem:ga85a3cd2a242e13555003a23598c548c2"><td class="memItemLeft" align="right" valign="top"><a id="ga85a3cd2a242e13555003a23598c548c2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d7a/group__Log.html#ga85a3cd2a242e13555003a23598c548c2">SJ2_PRINT_VARIABLE</a>(variable,  printf_specifier)&#160;&#160;&#160;::<a class="el" href="../../d2/dbb/structsjsu_1_1LogDebug.html">sjsu::LogDebug</a>(#variable &quot; = &quot; printf_specifier, (variable))</td></tr>
+<tr class="memdesc:ga85a3cd2a242e13555003a23598c548c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a variable using the printf_specifier supplied. <br /></td></tr>
 <tr class="separator:ga85a3cd2a242e13555003a23598c548c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -171,41 +172,7 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                         \</div><div class="line">  {                                                                          \</div><div class="line">    if (!(condition))                                                        \</div><div class="line">    {                                                                        <a class="code" href="../../d0/d6b/namespacesjsu.html#a176db8436ca10f664ea360284a96cb87">\</a></div><div class="line"><a class="code" href="../../d0/d6b/namespacesjsu.html#a176db8436ca10f664ea360284a96cb87">      ::sjsu::LogError</a>(<span class="stringliteral">&quot;Assertion Failure, Condition Tested: &quot;</span> #condition    \</div><div class="line">                       <span class="stringliteral">&quot;\n          &quot;</span> fatal_message <a class="code" href="../../de/d94/ansi__terminal__codes_8hpp.html#a00e54d2c40f400aa8104c5cec8d8d67f">SJ2_COLOR_RESET</a>,         \</div><div class="line">                       ##__VA_ARGS__);                                       \</div><div class="line">      if ((with_dump) &amp;&amp; ::config::kIncludeBacktrace)                        \</div><div class="line">      {                                                                      \</div><div class="line">        printf(<span class="stringliteral">&quot;\nPrinting Stack Trace:\n\n&quot;</span>);                               <a class="code" href="../../d8/df0/namespacesjsu_1_1debug.html#a9a647110e5db8a329fcab8da5fe883df">\</a></div><div class="line"><a class="code" href="../../d8/df0/namespacesjsu_1_1debug.html#a9a647110e5db8a329fcab8da5fe883df">        ::sjsu::debug::PrintBacktrace</a>(<span class="keyword">true</span>);                                 \</div><div class="line">      }                                                                      <a class="code" href="../../d0/d6b/namespacesjsu.html#a9e0c84e1acf85469e214a02be7b0049a">\</a></div><div class="line"><a class="code" href="../../d0/d6b/namespacesjsu.html#a9e0c84e1acf85469e214a02be7b0049a">      ::sjsu::Halt</a>();                                                        \</div><div class="line">    }                                                                        \</div><div class="line">  } <span class="keywordflow">while</span> (0)</div><div class="ttc" id="namespacesjsu_html_a9e0c84e1acf85469e214a02be7b0049a"><div class="ttname"><a href="../../d0/d6b/namespacesjsu.html#a9e0c84e1acf85469e214a02be7b0049a">sjsu::Halt</a></div><div class="ttdeci">void Halt()</div><div class="ttdoc">Halt system by putting it into infinite loop. </div><div class="ttdef"><b>Definition:</b> time.hpp:150</div></div>
-<div class="ttc" id="ansi__terminal__codes_8hpp_html_a00e54d2c40f400aa8104c5cec8d8d67f"><div class="ttname"><a href="../../de/d94/ansi__terminal__codes_8hpp.html#a00e54d2c40f400aa8104c5cec8d8d67f">SJ2_COLOR_RESET</a></div><div class="ttdeci">#define SJ2_COLOR_RESET</div><div class="ttdef"><b>Definition:</b> ansi_terminal_codes.hpp:71</div></div>
-<div class="ttc" id="namespacesjsu_html_a176db8436ca10f664ea360284a96cb87"><div class="ttname"><a href="../../d0/d6b/namespacesjsu.html#a176db8436ca10f664ea360284a96cb87">sjsu::LogError</a></div><div class="ttdeci">LogError(const char *format, Params...) -&gt; LogError&lt; Params... &gt;</div><div class="ttdoc">Deduction guide for LogError. </div></div>
-<div class="ttc" id="namespacesjsu_1_1debug_html_a9a647110e5db8a329fcab8da5fe883df"><div class="ttname"><a href="../../d8/df0/namespacesjsu_1_1debug.html#a9a647110e5db8a329fcab8da5fe883df">sjsu::debug::PrintBacktrace</a></div><div class="ttdeci">void PrintBacktrace(bool show_make_command=false, void *final_address=nullptr)</div><div class="ttdef"><b>Definition:</b> debug.hpp:192</div></div>
-</div><!-- fragment --><p>When the condition is false, issue a critical level message to the user and halt the processor. </p>
-
-</div>
-</div>
-<a id="ga85a3cd2a242e13555003a23598c548c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga85a3cd2a242e13555003a23598c548c2">&#9670;&nbsp;</a></span>SJ2_PRINT_VARIABLE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SJ2_PRINT_VARIABLE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">variable, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">printf_specifier&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;::<a class="el" href="../../d2/dbb/structsjsu_1_1LogDebug.html">sjsu::LogDebug</a>(#variable &quot; = &quot; printf_specifier, (variable))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Print a variable using the printf_specifier supplied. </p>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                         \</div><div class="line">  {                                                                          \</div><div class="line">    if (!(condition))                                                        \</div><div class="line">    {                                                                        \</div><div class="line">      ::sjsu::LogError(<span class="stringliteral">&quot;Assertion Failure, Condition Tested: &quot;</span> #condition    \</div><div class="line">                       <span class="stringliteral">&quot;\n          &quot;</span> fatal_message SJ2_COLOR_RESET,         \</div><div class="line">                       ##__VA_ARGS__);                                       \</div><div class="line">      if ((with_dump) &amp;&amp; ::config::kIncludeBacktrace)                        \</div><div class="line">      {                                                                      \</div><div class="line">        printf(<span class="stringliteral">&quot;\nPrinting Stack Trace:\n\n&quot;</span>);                               \</div><div class="line">        ::sjsu::debug::PrintBacktrace(<span class="keyword">true</span>);                                 \</div><div class="line">      }                                                                      \</div><div class="line">      ::sjsu::Halt();                                                        \</div><div class="line">    }                                                                        \</div><div class="line">  } <span class="keywordflow">while</span> (0)</div></div><!-- fragment --><p>When the condition is false, issue a critical level message to the user and halt the processor. </p>
 
 </div>
 </div>

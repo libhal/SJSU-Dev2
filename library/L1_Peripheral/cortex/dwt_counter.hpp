@@ -1,6 +1,7 @@
 #pragma once
 
 #include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "module.hpp"
 
 namespace sjsu
 {
@@ -8,7 +9,7 @@ namespace cortex
 {
 /// The DWT (Debug Watch and Trace) module in the Cortex M series of processors
 /// has a number of debugging
-class DwtCounter
+class DwtCounter : public sjsu::Module<>
 {
  public:
   /// Address of the hardware DWT registers
@@ -18,7 +19,7 @@ class DwtCounter
 
   /// Initialize the debug core to enable counting and then being counting on
   /// the DWT.
-  void Initialize()
+  void ModuleInitialize() override
   {
     core->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
     dwt->CYCCNT = 0;

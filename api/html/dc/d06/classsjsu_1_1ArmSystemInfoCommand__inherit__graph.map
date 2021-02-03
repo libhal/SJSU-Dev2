@@ -1,4 +1,4 @@
 <map id="sjsu::ArmSystemInfoCommand" name="sjsu::ArmSystemInfoCommand">
-<area shape="rect" id="node2" href="$d7/d56/classsjsu_1_1Command.html" title="sjsu::Command" alt="" coords="51,80,165,107"/>
-<area shape="rect" id="node3" href="$d9/db2/classsjsu_1_1CommandInterface.html" title="CommandInterface is the set of methods that every command must support. " alt="" coords="25,5,191,32"/>
+<area shape="rect" id="node2" href="$d7/d56/classsjsu_1_1Command.html" title="sjsu::Command" alt="" coords="56,80,179,107"/>
+<area shape="rect" id="node3" href="$d9/db2/classsjsu_1_1CommandInterface.html" title="CommandInterface is the set of methods that every command must support. " alt="" coords="27,5,208,32"/>
 </map>

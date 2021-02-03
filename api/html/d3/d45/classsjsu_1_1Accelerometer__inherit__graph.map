@@ -1,5 +1,5 @@
 <map id="sjsu::Accelerometer" name="sjsu::Accelerometer">
-<area shape="rect" id="node3" href="$d5/d82/classsjsu_1_1Mma8452q.html" title="Driver for the MMA8452Q 3&#45;axis accelerometer. " alt="" coords="5,155,124,181"/>
-<area shape="rect" id="node4" href="$d6/d14/classsjsu_1_1Mpu6050.html" title="Driver for the Mpu6050 3&#45;axis accelerometer. " alt="" coords="149,155,255,181"/>
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="85,5,181,32"/>
+<area shape="rect" id="node3" href="$d5/d82/classsjsu_1_1Mma8452q.html" title="Driver for the MMA8452Q 3&#45;axis accelerometer. " alt="" coords="5,169,133,196"/>
+<area shape="rect" id="node4" href="$d6/d14/classsjsu_1_1Mpu6050.html" title="Driver for the Mpu6050 3&#45;axis accelerometer. " alt="" coords="157,169,272,196"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; Accelerometer\lSettings_t \&gt;" alt="" coords="35,5,248,47"/>
 </map>

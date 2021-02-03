@@ -2,32 +2,28 @@
 
 #include <cstdint>
 
-#include "module.hpp"
 #include "inactive.hpp"
+#include "module.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/units.hpp"
 
 namespace sjsu
 {
+/// Generic settings for a standard ADC peripheral
+struct AdcSettings_t
+{
+  /// The high side voltage reference of the ADC. Used to calculate an
+  /// approximation of the voltage of the ADC.
+  units::voltage::microvolt_t reference_voltage = 3.3_V;
+};
+
 /// Common abstraction interface for Analog-to-Digital (ADC) Converter. These
 /// peripherals are used to sense a voltage and convert it to a numeric value.
 ///
 /// @ingroup l1_peripheral
-class Adc : public Module
+class Adc : public Module<AdcSettings_t>
 {
  public:
-  // ===========================================================================
-  // Interface Methods
-  // ===========================================================================
-
-  // ---------------------------------------------------------------------------
-  // Configuration Methods
-  // ---------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------
-  // Usage Methods
-  // ---------------------------------------------------------------------------
-
   /// Read the analog signal's value.
   /// The number active bits depends on the ADC being used and be known by
   /// running the GetActiveBits().
@@ -38,11 +34,8 @@ class Adc : public Module
   /// @returns The number of active bits for the ADC.
   virtual uint8_t GetActiveBits() = 0;
 
-  /// @returns The ADC reference voltage.
-  virtual units::voltage::microvolt_t ReferenceVoltage() = 0;
-
   // ===========================================================================
-  // Utility Methods
+  // Helper Functions
   // ===========================================================================
 
   /// @returns The ADC resolution based on the active bits.
@@ -59,7 +52,7 @@ class Adc : public Module
   /// @returns The measured voltage.
   units::voltage::microvolt_t Voltage()
   {
-    return Read() * ReferenceVoltage() / GetMaximumValue();
+    return Read() * (CurrentSettings().reference_voltage / GetMaximumValue());
   }
 };
 
@@ -71,7 +64,6 @@ inline sjsu::Adc & GetInactive<sjsu::Adc>()
   {
    public:
     void ModuleInitialize() override {}
-    void ModuleEnable(bool = true) override {}
     uint32_t Read() override
     {
       return 0;
@@ -79,10 +71,6 @@ inline sjsu::Adc & GetInactive<sjsu::Adc>()
     uint8_t GetActiveBits() override
     {
       return 12;
-    }
-    units::voltage::microvolt_t ReferenceVoltage() override
-    {
-      return 0_V;
     }
   };
 

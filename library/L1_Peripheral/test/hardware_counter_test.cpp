@@ -20,12 +20,10 @@ auto GetLambda(sjsu::InterruptCallback & isr)
 TEST_CASE("Testing L1 GpioCounter")
 {
   Mock<sjsu::Pin> mock_pin;
-  Fake(Method(mock_pin, Pin::ConfigurePullResistor));
 
   // Create mocked versions of the sjsu::Pin
   Mock<sjsu::Gpio> mock_gpio;
   Fake(Method(mock_gpio, Gpio::ModuleInitialize));
-  Fake(Method(mock_gpio, Gpio::ModuleEnable));
   Fake(Method(mock_gpio, Gpio::SetDirection));
   Fake(Method(mock_gpio, Gpio::AttachInterrupt));
   Fake(Method(mock_gpio, Gpio::DetachInterrupt));
@@ -47,15 +45,18 @@ TEST_CASE("Testing L1 GpioCounter")
       Verify(Method(mock_gpio, Gpio::ModuleInitialize));
       Verify(
           Method(mock_gpio, Gpio::SetDirection).Using(Gpio::Direction::kInput));
-      Verify(Method(mock_pin, Pin::ConfigurePullResistor)
-                 .Using(Pin::Resistor::kPullUp));
+      Verify(
+          Method(mock_gpio, Gpio::AttachInterrupt).Using(_, Gpio::Edge::kBoth))
+          .Once();
+      CHECK(mock_pin.get().settings.resistor ==
+            PinSettings_t::Resistor::kPullUp);
     }
 
     SECTION("Use passed pull resistor settings")
     {
       // Setup
       GpioCounter test_subject(
-          gpio, Gpio::Edge::kBoth, Pin::Resistor::kPullDown);
+          gpio, Gpio::Edge::kBoth, PinSettings_t::Resistor::kPullDown);
 
       // Exercise
       test_subject.Initialize();
@@ -64,24 +65,12 @@ TEST_CASE("Testing L1 GpioCounter")
       Verify(Method(mock_gpio, Gpio::ModuleInitialize));
       Verify(
           Method(mock_gpio, Gpio::SetDirection).Using(Gpio::Direction::kInput));
-      Verify(Method(mock_pin, Pin::ConfigurePullResistor)
-                 .Using(Pin::Resistor::kPullDown));
+      Verify(
+          Method(mock_gpio, Gpio::AttachInterrupt).Using(_, Gpio::Edge::kBoth))
+          .Once();
+      CHECK(mock_pin.get().settings.resistor ==
+            PinSettings_t::Resistor::kPullDown);
     }
-  }
-
-  SECTION("Enable()")
-  {
-    // Setup
-    GpioCounter test_subject(gpio, Gpio::Edge::kFalling);
-
-    // Exercise
-    test_subject.SetStateToInitialized();
-    test_subject.Enable();
-
-    // Verify
-    Verify(
-        Method(mock_gpio, Gpio::AttachInterrupt).Using(_, Gpio::Edge::kFalling))
-        .Once();
   }
 
   SECTION("Set() & Get()")
@@ -110,7 +99,6 @@ TEST_CASE("Testing L1 GpioCounter")
 
     // Exercise
     test_subject.Initialize();
-    test_subject.Enable();
 
     // Exercise: (1) Count up
     test_subject.SetDirection(HardwareCounter::Direction::kUp);
@@ -133,15 +121,28 @@ TEST_CASE("Testing L1 GpioCounter")
     CHECK(test_subject.GetCount() == kCountUps - kCountDowns);
   }
 
-  SECTION("Disable() + ~GpioCounter()")
+  SECTION("PowerDown()")
   {
     // Setup
-    sjsu::InterruptCallback callback;
-    Fake(Method(mock_gpio, Gpio::DetachInterrupt));
     GpioCounter test_subject(gpio, Gpio::Edge::kBoth);
 
     // Exercise
-    test_subject.ModuleEnable(false);
+    test_subject.Initialize();
+    test_subject.PowerDown();
+
+    // Verify
+    Verify(Method(mock_gpio, Gpio::DetachInterrupt)).Once();
+  }
+
+  SECTION("~GpioCounter()")
+  {
+    // Setup
+    GpioCounter test_subject(gpio, Gpio::Edge::kBoth);
+
+    // Exercise
+    test_subject.~GpioCounter();
+
+    // Verify
     Verify(Method(mock_gpio, Gpio::DetachInterrupt)).Once();
   }
 }

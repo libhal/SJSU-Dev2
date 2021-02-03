@@ -1,5 +1,5 @@
 <map id="sjsu::stm32f10x::UartBase" name="sjsu::stm32f10x::UartBase">
-<area shape="rect" id="node4" href="$d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. " alt="" coords="21,229,169,271"/>
-<area shape="rect" id="node2" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="55,80,134,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="47,5,143,32"/>
+<area shape="rect" id="node4" href="$d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. " alt="" coords="37,229,200,271"/>
+<area shape="rect" id="node2" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="77,80,161,107"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; UartSettings_t \&gt;" alt="" coords="5,5,232,32"/>
 </map>

@@ -101,8 +101,6 @@ Collaboration diagram for sjsu::StaticAllocator&lt; kBufferSizeBytes &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3ac22e3378287ad41a70c4841c33f1ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a3ac22e3378287ad41a70c4841c33f1ee">StaticAllocator</a> ()</td></tr>
-<tr class="separator:a3ac22e3378287ad41a70c4841c33f1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b115734fd0f57f946319986cd6c649b"><td class="memItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a8b115734fd0f57f946319986cd6c649b">Capacity</a> () const</td></tr>
 <tr class="separator:a8b115734fd0f57f946319986cd6c649b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64a40b24bb45d17c5a532cc98853633c"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a64a40b24bb45d17c5a532cc98853633c">MemoryUsed</a> () const</td></tr>
@@ -114,11 +112,17 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ae6f2b842879dd7f8ff9db47f8e694c35"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#ae6f2b842879dd7f8ff9db47f8e694c35">do_allocate</a> (std::size_t bytes, std::size_t alignment) override</td></tr>
+<tr class="memitem:ae6f2b842879dd7f8ff9db47f8e694c35"><td class="memItemLeft" align="right" valign="top"><a id="ae6f2b842879dd7f8ff9db47f8e694c35"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#ae6f2b842879dd7f8ff9db47f8e694c35">do_allocate</a> (std::size_t bytes, std::size_t alignment) override</td></tr>
+<tr class="memdesc:ae6f2b842879dd7f8ff9db47f8e694c35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implemenation of the <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#ae6f2b842879dd7f8ff9db47f8e694c35" title="Implemenation of the do_allocate() method for std::pmr::memory_resource. ">do_allocate()</a> method for std::pmr::memory_resource. <br /></td></tr>
 <tr class="separator:ae6f2b842879dd7f8ff9db47f8e694c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fd9a93434fb69d8788a9f3b7971223f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a8fd9a93434fb69d8788a9f3b7971223f">do_deallocate</a> (void *p, std::size_t bytes, std::size_t alignment) override</td></tr>
+<tr class="memitem:a8fd9a93434fb69d8788a9f3b7971223f"><td class="memItemLeft" align="right" valign="top"><a id="a8fd9a93434fb69d8788a9f3b7971223f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a8fd9a93434fb69d8788a9f3b7971223f">do_deallocate</a> (void *p, std::size_t bytes, std::size_t alignment) override</td></tr>
+<tr class="memdesc:a8fd9a93434fb69d8788a9f3b7971223f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implemenation of the <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a8fd9a93434fb69d8788a9f3b7971223f" title="Implemenation of the do_deallocate() method for std::pmr::memory_resource. ">do_deallocate()</a> method for std::pmr::memory_resource. <br /></td></tr>
 <tr class="separator:a8fd9a93434fb69d8788a9f3b7971223f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c785795836631382b66d1f0a31f69a8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a6c785795836631382b66d1f0a31f69a8">do_is_equal</a> (const std::pmr::memory_resource &amp;other) const noexcept override</td></tr>
+<tr class="memitem:a6c785795836631382b66d1f0a31f69a8"><td class="memItemLeft" align="right" valign="top"><a id="a6c785795836631382b66d1f0a31f69a8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a6c785795836631382b66d1f0a31f69a8">do_is_equal</a> (const std::pmr::memory_resource &amp;other) const noexcept override</td></tr>
+<tr class="memdesc:a6c785795836631382b66d1f0a31f69a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implemenation of the <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html#a6c785795836631382b66d1f0a31f69a8" title="Implemenation of the do_is_equal() method for std::pmr::memory_resource. ">do_is_equal()</a> method for std::pmr::memory_resource. <br /></td></tr>
 <tr class="separator:a6c785795836631382b66d1f0a31f69a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -137,35 +141,7 @@ Dynamic Allocation". It provides a simple way to create an allocator with built 
   </table>
   </dd>
 </dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3ac22e3378287ad41a70c4841c33f1ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ac22e3378287ad41a70c4841c33f1ee">&#9670;&nbsp;</a></span>StaticAllocator()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t kBufferSizeBytes&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::<a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">StaticAllocator</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8b115734fd0f57f946319986cd6c649b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8b115734fd0f57f946319986cd6c649b">&#9670;&nbsp;</a></span>Capacity()</h2>
 
@@ -191,116 +167,6 @@ template&lt;size_t kBufferSizeBytes&gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>size_t - the total number of bytes that this allocator can allocate before throwing a std::bad_alloc exception. </dd></dl>
-
-</div>
-</div>
-<a id="ae6f2b842879dd7f8ff9db47f8e694c35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6f2b842879dd7f8ff9db47f8e694c35">&#9670;&nbsp;</a></span>do_allocate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t kBufferSizeBytes&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void* <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::do_allocate </td>
-          <td>(</td>
-          <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>bytes</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>alignment</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8fd9a93434fb69d8788a9f3b7971223f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fd9a93434fb69d8788a9f3b7971223f">&#9670;&nbsp;</a></span>do_deallocate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t kBufferSizeBytes&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::do_deallocate </td>
-          <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>p</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>bytes</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>alignment</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6c785795836631382b66d1f0a31f69a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c785795836631382b66d1f0a31f69a8">&#9670;&nbsp;</a></span>do_is_equal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t kBufferSizeBytes&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="../../d9/dd3/classsjsu_1_1StaticAllocator.html">sjsu::StaticAllocator</a>&lt; kBufferSizeBytes &gt;::do_is_equal </td>
-          <td>(</td>
-          <td class="paramtype">const std::pmr::memory_resource &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
 
 </div>
 </div>

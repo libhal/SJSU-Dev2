@@ -75,6 +75,7 @@ class StaticAllocator : public std::pmr::memory_resource
   }
 
  protected:
+  /// Implemenation of the do_allocate() method for std::pmr::memory_resource
   void * do_allocate(std::size_t bytes, std::size_t alignment) override
   {
     LogDebug("Allocating %zu @ alignment %zu, left: %zu\n",
@@ -95,6 +96,7 @@ class StaticAllocator : public std::pmr::memory_resource
     return allocated_address;
   }
 
+  /// Implemenation of the do_deallocate() method for std::pmr::memory_resource
   void do_deallocate(void * p,
                      std::size_t bytes,
                      std::size_t alignment) override
@@ -102,6 +104,7 @@ class StaticAllocator : public std::pmr::memory_resource
     return resource_.deallocate(p, bytes, alignment);
   }
 
+  /// Implemenation of the do_is_equal() method for std::pmr::memory_resource
   bool do_is_equal(
       const std::pmr::memory_resource & other) const noexcept override
   {

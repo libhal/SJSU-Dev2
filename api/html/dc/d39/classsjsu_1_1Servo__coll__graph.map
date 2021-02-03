@@ -1,3 +1,4 @@
 <map id="sjsu::Servo" name="sjsu::Servo">
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="5,5,101,32"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; RCServoSettings_t \&gt;" alt="" coords="5,95,257,121"/>
+<area shape="rect" id="node3" href="$d6/d38/structsjsu_1_1RCServoSettings__t.html" title="Settings for Servos that use RC servo PWM signals. " alt="" coords="44,5,219,32"/>
 </map>

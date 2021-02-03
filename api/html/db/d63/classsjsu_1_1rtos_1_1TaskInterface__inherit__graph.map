@@ -1,7 +1,7 @@
 <map id="sjsu::rtos::TaskInterface" name="sjsu::rtos::TaskInterface">
-<area shape="rect" id="node2" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kStack\lSize \&gt;" alt="" coords="231,5,398,47"/>
-<area shape="rect" id="node3" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; 512 \&gt;" alt="" coords="235,71,394,98"/>
-<area shape="rect" id="node5" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kTaskStack\lSize \&gt;" alt="" coords="217,123,412,164"/>
-<area shape="rect" id="node4" href="$dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html" title="sjsu::rtos::PeriodicScheduler" alt="" coords="460,71,649,98"/>
-<area shape="rect" id="node6" href="$d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html" title="sjsu::rtos::PeriodicTask\l\&lt; kTaskStackSize \&gt;" alt="" coords="475,123,635,164"/>
+<area shape="rect" id="node2" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kStack\lSize \&gt;" alt="" coords="244,5,421,47"/>
+<area shape="rect" id="node3" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; 512 \&gt;" alt="" coords="247,71,419,98"/>
+<area shape="rect" id="node5" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; kTaskStack\lSize \&gt;" alt="" coords="229,123,436,164"/>
+<area shape="rect" id="node4" href="$dc/d1a/classsjsu_1_1rtos_1_1PeriodicScheduler.html" title="sjsu::rtos::PeriodicScheduler" alt="" coords="484,71,689,98"/>
+<area shape="rect" id="node6" href="$d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html" title="sjsu::rtos::PeriodicTask\l\&lt; kTaskStackSize \&gt;" alt="" coords="501,123,672,164"/>
 </map>

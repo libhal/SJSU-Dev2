@@ -10,7 +10,7 @@ namespace sjsu
 {
 /// PixelDisplay is a common set of methods that all hardware display drivers
 /// must implement to work with the Graphics class.
-class PixelDisplay : public Module
+class PixelDisplay : public Module<>
 {
  public:
   /// Describes the color space and resolution of the display.

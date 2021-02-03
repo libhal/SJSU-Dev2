@@ -1,4 +1,6 @@
 <map id="sjsu::lpc40xx::Uart" name="sjsu::lpc40xx::Uart">
-<area shape="rect" id="node2" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="32,80,111,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="23,5,119,32"/>
+<area shape="rect" id="node2" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="77,261,161,288"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; UartSettings_t \&gt;" alt="" coords="5,185,232,212"/>
+<area shape="rect" id="node4" href="$da/d27/structsjsu_1_1UartSettings__t.html" title="Generic settings for a standard UART peripheral. " alt="" coords="44,96,193,123"/>
+<area shape="rect" id="node5" href="$d1/d03/structsjsu_1_1MemoryEqualOperator__t.html" title="sjsu::MemoryEqualOperator\l_t\&lt; UartSettings_t \&gt;" alt="" coords="17,5,220,47"/>
 </map>

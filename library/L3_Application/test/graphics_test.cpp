@@ -3,8 +3,6 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Graphics);
-
 TEST_CASE("Graphics Test")
 {
   SECTION("Initialize") {}

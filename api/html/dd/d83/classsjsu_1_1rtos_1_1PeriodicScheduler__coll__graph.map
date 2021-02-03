@@ -1,5 +1,5 @@
 <map id="sjsu::rtos::PeriodicScheduler" name="sjsu::rtos::PeriodicScheduler">
-<area shape="rect" id="node2" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; 512 \&gt;" alt="" coords="21,171,179,197"/>
-<area shape="rect" id="node3" href="$d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="sjsu::rtos::TaskInterface" alt="" coords="18,95,182,121"/>
-<area shape="rect" id="node4" href="$d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html" title="sjsu::rtos::TaskScheduler" alt="" coords="15,5,185,32"/>
+<area shape="rect" id="node2" href="$d3/d19/classsjsu_1_1rtos_1_1Task.html" title="sjsu::rtos::Task\&lt; 512 \&gt;" alt="" coords="22,171,194,197"/>
+<area shape="rect" id="node3" href="$d5/de0/classsjsu_1_1rtos_1_1TaskInterface.html" title="sjsu::rtos::TaskInterface" alt="" coords="20,95,196,121"/>
+<area shape="rect" id="node4" href="$d6/d9f/classsjsu_1_1rtos_1_1TaskScheduler.html" title="sjsu::rtos::TaskScheduler" alt="" coords="17,5,199,32"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="sjsu::lpc40xx::Pwm" name="sjsu::lpc40xx::Pwm">
-<area shape="rect" id="node2" href="$d6/ddf/classsjsu_1_1Pwm.html" title="sjsu::Pwm" alt="" coords="32,80,116,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="26,5,122,32"/>
+<area shape="rect" id="node2" href="$d6/ddf/classsjsu_1_1Pwm.html" title="sjsu::Pwm" alt="" coords="77,171,165,197"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; PwmSettings_t \&gt;" alt="" coords="5,95,236,121"/>
+<area shape="rect" id="node4" href="$df/d21/structsjsu_1_1PwmSettings__t.html" title="Generic settings for a standard PWM peripheral. " alt="" coords="44,5,197,32"/>
 </map>

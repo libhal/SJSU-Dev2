@@ -184,9 +184,7 @@ class Gpio final : public sjsu::Gpio
   /// @param port_number - port number
   /// @param pin_number - pin number
   /// @param pin - pointer to an sjsu::Pin, keep as nullptr to ignore this
-  constexpr Gpio(uint8_t port_number,
-                 uint8_t pin_number,
-                 sjsu::Pin * pin = nullptr)
+  Gpio(uint8_t port_number, uint8_t pin_number, sjsu::Pin * pin = nullptr)
       : lpc17xx_pin_(port_number, pin_number),
         lpc40xx_pin_(port_number, pin_number),
         pin_obj_(nullptr),
@@ -235,20 +233,14 @@ class Gpio final : public sjsu::Gpio
 
   void ModuleInitialize() override
   {
+    /// Pin function is zero fall pins on the LPC40xx and LPC17xx.
+    constexpr uint8_t kGpioFunction = 0;
+    pin_obj_->settings.function     = kGpioFunction;
     pin_obj_->Initialize();
-  }
-
-  void ModuleEnable(bool enable = true) override
-  {
-    pin_obj_->Enable(enable);
   }
 
   void SetDirection(Direction direction) override
   {
-    /// Pin function is zero fall pins on the LPC40xx and LPC17xx.
-    constexpr uint8_t kGpioFunction = 0;
-    pin_obj_->ConfigureFunction(kGpioFunction);
-
     if (direction == Direction::kInput)
     {
       gpio_port_->DIR = bit::Clear(gpio_port_->DIR, pin_);
@@ -360,5 +352,18 @@ class Gpio final : public sjsu::Gpio
   uint8_t pin_;
   uint8_t interrupt_index_;
 };
+
+template <int port, int pin_number>
+inline Gpio & GetGpio()
+{
+  static_assert(
+      (port <= 4 && pin_number <= 31) || (port == 5 && pin_number < 4),
+      "For ports between 0 and 4, the pin number must be between 0 and 31. For "
+      "port 5, the pin number must be equal to or below 4");
+
+  static Gpio gpio(port, pin_number);
+  return gpio;
+}
+
 }  // namespace lpc40xx
 }  // namespace sjsu

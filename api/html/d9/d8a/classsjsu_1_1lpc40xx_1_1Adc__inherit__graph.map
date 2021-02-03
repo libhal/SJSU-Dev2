@@ -1,4 +1,4 @@
 <map id="sjsu::lpc40xx::Adc" name="sjsu::lpc40xx::Adc">
-<area shape="rect" id="node2" href="$d0/dc1/classsjsu_1_1Adc.html" title="sjsu::Adc" alt="" coords="32,80,109,107"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="23,5,119,32"/>
+<area shape="rect" id="node2" href="$d0/dc1/classsjsu_1_1Adc.html" title="sjsu::Adc" alt="" coords="77,80,157,107"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; AdcSettings_t \&gt;" alt="" coords="5,5,228,32"/>
 </map>

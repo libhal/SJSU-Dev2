@@ -1,6 +1,6 @@
 <map id="sjsu::Command" name="sjsu::Command">
-<area shape="rect" id="node3" href="$df/d55/classsjsu_1_1ArmSystemInfoCommand.html" title="sjsu::ArmSystemInfoCommand" alt="" coords="5,155,211,181"/>
-<area shape="rect" id="node4" href="$dd/d36/classsjsu_1_1I2cCommand.html" title="sjsu::I2cCommand" alt="" coords="235,155,367,181"/>
-<area shape="rect" id="node5" href="$d3/d13/classsjsu_1_1RtosCommand.html" title="Print RTOS runtime stats of FreeRTOS. " alt="" coords="391,155,534,181"/>
-<area shape="rect" id="node2" href="$d9/db2/classsjsu_1_1CommandInterface.html" title="CommandInterface is the set of methods that every command must support. " alt="" coords="219,5,384,32"/>
+<area shape="rect" id="node3" href="$df/d55/classsjsu_1_1ArmSystemInfoCommand.html" title="sjsu::ArmSystemInfoCommand" alt="" coords="5,155,229,181"/>
+<area shape="rect" id="node4" href="$dd/d36/classsjsu_1_1I2cCommand.html" title="sjsu::I2cCommand" alt="" coords="253,155,395,181"/>
+<area shape="rect" id="node5" href="$d3/d13/classsjsu_1_1RtosCommand.html" title="Print RTOS runtime stats of FreeRTOS. " alt="" coords="420,155,572,181"/>
+<area shape="rect" id="node2" href="$d9/db2/classsjsu_1_1CommandInterface.html" title="CommandInterface is the set of methods that every command must support. " alt="" coords="233,5,415,32"/>
 </map>

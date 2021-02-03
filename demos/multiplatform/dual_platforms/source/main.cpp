@@ -67,10 +67,6 @@ int main()
   button.Initialize();
   led_gpio->Initialize();
 
-  sjsu::LogInfo("Enable...");
-  button.Enable();
-  led_gpio->Enable();
-
   sjsu::LogInfo("Use...");
   led_gpio->SetAsOutput();
 

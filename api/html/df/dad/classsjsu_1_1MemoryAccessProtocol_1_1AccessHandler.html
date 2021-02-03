@@ -87,7 +87,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa91600dd9e59cbffcf13866a7faee1e0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#aa91600dd9e59cbffcf13866a7faee1e0">ContainerInt</a> = uint64_t</td></tr>
+<tr class="memitem:aa91600dd9e59cbffcf13866a7faee1e0"><td class="memItemLeft" align="right" valign="top"><a id="aa91600dd9e59cbffcf13866a7faee1e0"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#aa91600dd9e59cbffcf13866a7faee1e0">ContainerInt</a> = uint64_t</td></tr>
+<tr class="memdesc:aa91600dd9e59cbffcf13866a7faee1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Largest reasonable integer to contain the size of an access handler. <br /></td></tr>
 <tr class="separator:aa91600dd9e59cbffcf13866a7faee1e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec080d0f95999d7e38d734f598436df0"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aec080d0f95999d7e38d734f598436df0"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#aec080d0f95999d7e38d734f598436df0">IsInteger</a> = std::enable_if_t&lt; std::is_integral_v&lt; T &gt; &gt;</td></tr>
@@ -119,21 +121,35 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abfeb13cb05a02cb3c3cfb7d061e90737"><td class="memTemplParams" colspan="2">template&lt;typename Integer &gt; </td></tr>
 <tr class="memitem:abfeb13cb05a02cb3c3cfb7d061e90737"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#abfeb13cb05a02cb3c3cfb7d061e90737">operator Integer</a> () const</td></tr>
 <tr class="separator:abfeb13cb05a02cb3c3cfb7d061e90737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12c0405bc9b2e98f6564f60daf47b38e"><td class="memTemplParams" colspan="2">template&lt;size_t N&gt; </td></tr>
+<tr class="memitem:a12c0405bc9b2e98f6564f60daf47b38e"><td class="memTemplParams" colspan="2"><a id="a12c0405bc9b2e98f6564f60daf47b38e"></a>
+template&lt;size_t N&gt; </td></tr>
 <tr class="memitem:a12c0405bc9b2e98f6564f60daf47b38e"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a12c0405bc9b2e98f6564f60daf47b38e">operator std::array&lt; uint8_t, N &gt;</a> () const</td></tr>
+<tr class="memdesc:a12c0405bc9b2e98f6564f60daf47b38e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read contents of register and return it as an array of bytes. <br /></td></tr>
 <tr class="separator:a12c0405bc9b2e98f6564f60daf47b38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4602d503b096545318a0a8ae24c2bc45"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t N&gt; </td></tr>
+<tr class="memitem:a4602d503b096545318a0a8ae24c2bc45"><td class="memTemplParams" colspan="2"><a id="a4602d503b096545318a0a8ae24c2bc45"></a>
+template&lt;typename T , size_t N&gt; </td></tr>
 <tr class="memitem:a4602d503b096545318a0a8ae24c2bc45"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a4602d503b096545318a0a8ae24c2bc45">operator std::array&lt; T, N &gt;</a> () const</td></tr>
+<tr class="memdesc:a4602d503b096545318a0a8ae24c2bc45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read contents of register and return it as an array of integers. <br /></td></tr>
 <tr class="separator:a4602d503b096545318a0a8ae24c2bc45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a513cc97d92eb573fac5b41cc0c6167af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a513cc97d92eb573fac5b41cc0c6167af">ADD_ARITHMETIC_OPERATION</a> (|)</td></tr>
+<tr class="memitem:a513cc97d92eb573fac5b41cc0c6167af"><td class="memItemLeft" align="right" valign="top"><a id="a513cc97d92eb573fac5b41cc0c6167af"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a513cc97d92eb573fac5b41cc0c6167af">ADD_ARITHMETIC_OPERATION</a> (|)</td></tr>
+<tr class="memdesc:a513cc97d92eb573fac5b41cc0c6167af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the usage of the | operator on memory mapped register. <br /></td></tr>
 <tr class="separator:a513cc97d92eb573fac5b41cc0c6167af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fdee8b0486b97b3dd9d860a4595dcef"><td class="memItemLeft" align="right" valign="top">ADD_ARITHMETIC_OPERATION &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a4fdee8b0486b97b3dd9d860a4595dcef">ADD_ARITHMETIC_OPERATION</a> (^);ADD_ARITHMETIC_OPERATION(+</td></tr>
+<tr class="memitem:a4fdee8b0486b97b3dd9d860a4595dcef"><td class="memItemLeft" align="right" valign="top"><a id="a4fdee8b0486b97b3dd9d860a4595dcef"></a>
+ADD_ARITHMETIC_OPERATION &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#a4fdee8b0486b97b3dd9d860a4595dcef">ADD_ARITHMETIC_OPERATION</a> (^);ADD_ARITHMETIC_OPERATION(+</td></tr>
+<tr class="memdesc:a4fdee8b0486b97b3dd9d860a4595dcef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the usage of the &amp; operator on memory mapped register. <br /></td></tr>
 <tr class="separator:a4fdee8b0486b97b3dd9d860a4595dcef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abad5c57a647de73980967af3cca5af48"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#abad5c57a647de73980967af3cca5af48">ADD_ARITHMETIC_OPERATION</a> (-)</td></tr>
+<tr class="memitem:abad5c57a647de73980967af3cca5af48"><td class="memItemLeft" align="right" valign="top"><a id="abad5c57a647de73980967af3cca5af48"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#abad5c57a647de73980967af3cca5af48">ADD_ARITHMETIC_OPERATION</a> (-)</td></tr>
+<tr class="memdesc:abad5c57a647de73980967af3cca5af48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the usage of the - operator on memory mapped register. <br /></td></tr>
 <tr class="separator:abad5c57a647de73980967af3cca5af48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac1835ea95649d9c5f8af85c7e23ce48"><td class="memItemLeft" align="right" valign="top">ADD_ARITHMETIC_OPERATION *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#aac1835ea95649d9c5f8af85c7e23ce48">ADD_ARITHMETIC_OPERATION</a> (/);ADD_ARITHMETIC_OPERATION(&gt;&gt;</td></tr>
+<tr class="memitem:aac1835ea95649d9c5f8af85c7e23ce48"><td class="memItemLeft" align="right" valign="top"><a id="aac1835ea95649d9c5f8af85c7e23ce48"></a>
+ADD_ARITHMETIC_OPERATION *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#aac1835ea95649d9c5f8af85c7e23ce48">ADD_ARITHMETIC_OPERATION</a> (/);ADD_ARITHMETIC_OPERATION(&gt;&gt;</td></tr>
+<tr class="memdesc:aac1835ea95649d9c5f8af85c7e23ce48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the usage of the * operator on memory mapped register. <br /></td></tr>
 <tr class="separator:aac1835ea95649d9c5f8af85c7e23ce48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad279cbda6c9a8fbb2e6bfb98e786106b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#ad279cbda6c9a8fbb2e6bfb98e786106b">ADD_ARITHMETIC_OPERATION</a> (&lt;&lt;)</td></tr>
+<tr class="memitem:ad279cbda6c9a8fbb2e6bfb98e786106b"><td class="memItemLeft" align="right" valign="top"><a id="ad279cbda6c9a8fbb2e6bfb98e786106b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#ad279cbda6c9a8fbb2e6bfb98e786106b">ADD_ARITHMETIC_OPERATION</a> (&lt;&lt;)</td></tr>
+<tr class="memdesc:ad279cbda6c9a8fbb2e6bfb98e786106b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the usage of the &lt;&lt; operator on memory mapped register. <br /></td></tr>
 <tr class="separator:ad279cbda6c9a8fbb2e6bfb98e786106b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -142,22 +158,6 @@ class sjsu::MemoryAccessProtocol::AccessHandler&lt; address_width, endianness &g
 
 <p>Utilizes a <a class="el" href="../../d3/dbe/classsjsu_1_1MemoryAccessProtocol.html">MemoryAccessProtocol</a> implementations in order to read and write to the register passed to it. It's usage is quite vast. It works by using implicit cast operations to detect what type it is being assigned to in order to read or write bytes from the device and store them in a variable. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aa91600dd9e59cbffcf13866a7faee1e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa91600dd9e59cbffcf13866a7faee1e0">&#9670;&nbsp;</a></span>ContainerInt</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">sjsu::MemoryAccessProtocol::AccessHandler</a>&lt; address_width, endianness &gt;::<a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html#aa91600dd9e59cbffcf13866a7faee1e0">ContainerInt</a> =  uint64_t</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aec080d0f95999d7e38d734f598436df0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec080d0f95999d7e38d734f598436df0">&#9670;&nbsp;</a></span>IsInteger</h2>
 
@@ -173,6 +173,13 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>SFINAE template check a value used for a template paremater is in fact an integer.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- The type to check. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -212,110 +219,17 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">memory_map</td><td>- reference to a memory map protocol object </td></tr>
+    <tr><td class="paramname">address</td><td>- address/register to be accessed </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a513cc97d92eb573fac5b41cc0c6167af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a513cc97d92eb573fac5b41cc0c6167af">&#9670;&nbsp;</a></span>ADD_ARITHMETIC_OPERATION() <span class="overload">[1/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">sjsu::MemoryAccessProtocol::AccessHandler</a>&lt; address_width, endianness &gt;::ADD_ARITHMETIC_OPERATION </td>
-          <td>(</td>
-          <td class="paramtype">|&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4fdee8b0486b97b3dd9d860a4595dcef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fdee8b0486b97b3dd9d860a4595dcef">&#9670;&nbsp;</a></span>ADD_ARITHMETIC_OPERATION() <span class="overload">[2/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">ADD_ARITHMETIC_OPERATION&amp; <a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">sjsu::MemoryAccessProtocol::AccessHandler</a>&lt; address_width, endianness &gt;::ADD_ARITHMETIC_OPERATION </td>
-          <td>(</td>
-          <td class="paramtype">^&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="abad5c57a647de73980967af3cca5af48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abad5c57a647de73980967af3cca5af48">&#9670;&nbsp;</a></span>ADD_ARITHMETIC_OPERATION() <span class="overload">[3/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">sjsu::MemoryAccessProtocol::AccessHandler</a>&lt; address_width, endianness &gt;::ADD_ARITHMETIC_OPERATION </td>
-          <td>(</td>
-          <td class="paramtype">-&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aac1835ea95649d9c5f8af85c7e23ce48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac1835ea95649d9c5f8af85c7e23ce48">&#9670;&nbsp;</a></span>ADD_ARITHMETIC_OPERATION() <span class="overload">[4/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">ADD_ARITHMETIC_OPERATION* <a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">sjsu::MemoryAccessProtocol::AccessHandler</a>&lt; address_width, endianness &gt;::ADD_ARITHMETIC_OPERATION </td>
-          <td>(</td>
-          <td class="paramtype">/&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad279cbda6c9a8fbb2e6bfb98e786106b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad279cbda6c9a8fbb2e6bfb98e786106b">&#9670;&nbsp;</a></span>ADD_ARITHMETIC_OPERATION() <span class="overload">[5/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">sjsu::MemoryAccessProtocol::AccessHandler</a>&lt; address_width, endianness &gt;::ADD_ARITHMETIC_OPERATION </td>
-          <td>(</td>
-          <td class="paramtype">&lt;&lt;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="abfeb13cb05a02cb3c3cfb7d061e90737"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abfeb13cb05a02cb3c3cfb7d061e90737">&#9670;&nbsp;</a></span>operator Integer()</h2>
 
@@ -342,64 +256,14 @@ template&lt;typename Integer &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4602d503b096545318a0a8ae24c2bc45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4602d503b096545318a0a8ae24c2bc45">&#9670;&nbsp;</a></span>operator std::array< T, N >()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-<div class="memtemplate">
-template&lt;typename T , size_t N&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">sjsu::MemoryAccessProtocol::AccessHandler</a>&lt; address_width, endianness &gt;::operator std::array&lt; T, N &gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a12c0405bc9b2e98f6564f60daf47b38e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12c0405bc9b2e98f6564f60daf47b38e">&#9670;&nbsp;</a></span>operator std::array< uint8_t, N >()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
-<div class="memtemplate">
-template&lt;size_t N&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../df/dad/classsjsu_1_1MemoryAccessProtocol_1_1AccessHandler.html">sjsu::MemoryAccessProtocol::AccessHandler</a>&lt; address_width, endianness &gt;::operator std::array&lt; uint8_t, N &gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Casting this into an integer will perform a read operation using the memory access protocol and will convert the value to an integer.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Integer</td><td>- type to convert the contents of the register into </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Integer - the value within the register </dd></dl>
 
 </div>
 </div>
@@ -430,6 +294,20 @@ template&lt;typename Integer , typename  = IsInteger&lt;Integer&gt;&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The value will be converted into an array of bytes fitting the endianness of the memory map protocol and will be written to the memory map using the memory map protocol's Write method.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Integer</td><td>- Type of the value to be written </td></tr>
+    <tr><td class="paramname">typename</td><td>- checks if the value is an integer </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">write_value</td><td>- value to be written </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -460,6 +338,19 @@ template&lt;size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Array of bytes to be written to the memory map using the memory map protocol's Write method.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">N</td><td>- number of elements in the array (do not set this value) it is inferred by the compiler when called. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value_array</td><td>- array of bytes to be written to the register. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -490,6 +381,19 @@ template&lt;size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Array of bytes to be written to the memory map using the memory map protocol's Write method.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">N</td><td>- number of elements in the array (do not set this value) it is inferred by the compiler when called. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value_array</td><td>- array of bytes to be written to the register. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -520,6 +424,19 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Array of integers to be written to the memory map using the memory map protocol's Write method. The array of integers is converted into a byte array based on the endianness of the memory map registers.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">N</td><td>- number of elements in the array (do not set this value) it is inferred by the compiler when called. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value_array</td><td>- array of integers to be written to the register. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -550,6 +467,19 @@ template&lt;typename T , size_t N&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Array of integers to be written to the memory map using the memory map protocol's Write method. The array of integers is converted into a byte array based on the endianness of the memory map registers.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">N</td><td>- number of elements in the array (do not set this value) it is inferred by the compiler when called. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value_array</td><td>- array of integers to be written to the register. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -578,6 +508,12 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Read contents of register into payload </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">payload</td><td>- buffer to read bytes of register into </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -606,6 +542,12 @@ template&lt;AddressWidth address_width, std::endian endianness&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Write the contents of payload to the address </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">payload</td><td>- bytes to be written to the payload </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

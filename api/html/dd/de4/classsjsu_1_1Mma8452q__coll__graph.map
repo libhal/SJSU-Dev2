@@ -1,5 +1,6 @@
 <map id="sjsu::Mma8452q" name="sjsu::Mma8452q">
-<area shape="rect" id="node2" href="$d2/d7b/classsjsu_1_1Accelerometer.html" title="sjsu::Accelerometer" alt="" coords="191,5,329,32"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="5,5,101,32"/>
-<area shape="rect" id="node4" href="$de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html" title="sjsu::MemoryAccessProtocol\l::Specification_t\&lt; MemoryAccess\lProtocol::AddressWidth::kByte1,\l std::endian::big \&gt;" alt="" coords="151,57,369,127"/>
+<area shape="rect" id="node2" href="$d2/d7b/classsjsu_1_1Accelerometer.html" title="sjsu::Accelerometer" alt="" coords="633,13,784,39"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; Accelerometer\lSettings_t \&gt;" alt="" coords="327,5,540,47"/>
+<area shape="rect" id="node4" href="$d7/d2b/structsjsu_1_1AccelerometerSettings__t.html" title="Generic settings for a standard Accelerometer device. " alt="" coords="5,13,221,39"/>
+<area shape="rect" id="node5" href="$de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html" title="sjsu::MemoryAccessProtocol\l::Specification_t\&lt; MemoryAccess\lProtocol::AddressWidth::kByte1,\l std::endian::big \&gt;" alt="" coords="589,64,828,135"/>
 </map>

@@ -9,24 +9,21 @@ namespace sjsu
 {
 /// FrequencyCounter can measure the frequency of a signal based on a hardware
 /// counter.
-class FrequencyCounter : public Module
+class FrequencyCounter : public Module<>
 {
  public:
-  // ===========================================================================
-  // Interface Methods
-  // ===========================================================================
-
-  // ---------------------------------------------------------------------------
-  // Configuration Methods
-  // ---------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------
-  // Usage Methods
-  // ---------------------------------------------------------------------------
-
   /// @param counter - A hardware counter implementation that will be used to
   /// derive a frequency from.
   explicit FrequencyCounter(HardwareCounter * counter) : counter_(counter) {}
+
+  /// Initializes counter hardware. Will NOT start counting at this point. Will
+  /// also set the counting direction to count up.
+  void ModuleInitialize() override
+  {
+    counter_->Initialize();
+    counter_->SetDirection(HardwareCounter::Direction::kUp);
+    previous_time_ = Uptime();
+  }
 
   /// Resets the frequency counter.
   virtual void Reset()
@@ -58,22 +55,6 @@ class FrequencyCounter : public Module
     units::frequency::hertz_t result     = count_delta / time_delta;
     Reset();
     return result;
-  }
-
-  /// Initializes counter hardware. Will NOT start counting at this point. Will
-  /// also set the counting direction to count up.
-  void ModuleInitialize() override
-  {
-    counter_->Initialize();
-    counter_->SetDirection(HardwareCounter::Direction::kUp);
-  }
-
-  /// Will enable the hardware counter and start the time measurement that will
-  /// be used to measure the approximate frequency of the hardware counter.
-  void ModuleEnable(bool enable = true) override
-  {
-    counter_->Enable(enable);
-    previous_time_ = Uptime();
   }
 
  private:

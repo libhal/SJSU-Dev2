@@ -44,31 +44,19 @@ class Mpu6050 : public Accelerometer
   {
     i2c_.Initialize();
 
-    if (i2c_.RequiresConfiguration())
-    {
-      i2c_.ConfigureClockRate();
-    }
+    // Check that the device is valid before proceeding.
+    IsValidDevice();
 
-    i2c_.Enable();
+    // Wake up the device so we can configure the device.
+    ActiveMode(true);
   }
 
   /// Will automatically set the device to 2g for full-scale. Use
   /// `SetFullScaleRange()` to change it.
-  void ModuleEnable(bool enable = true) override
+  void ModulePowerDown() override
   {
-    if (enable)
-    {
-      // Check that the device is valid before proceeding.
-      IsValidDevice();
-
-      // Wake up the device so we can configure the device.
-      ActiveMode(true);
-    }
-    else
-    {
-      // Put device into standby so we can configure the device.
-      ActiveMode(false);
-    }
+    // Put device into standby so we can configure the device.
+    ActiveMode(false);
   }
 
   Acceleration_t Read() override
@@ -110,17 +98,17 @@ class Mpu6050 : public Accelerometer
     float y_ratio = sjsu::Map(y, kMin, kMax, -1.0f, 1.0f);
     float z_ratio = sjsu::Map(z, kMin, kMax, -1.0f, 1.0f);
 
-    acceleration.x = full_scale_ * x_ratio;
-    acceleration.y = full_scale_ * y_ratio;
-    acceleration.z = full_scale_ * z_ratio;
+    acceleration.x = CurrentSettings().gravity * x_ratio;
+    acceleration.y = CurrentSettings().gravity * y_ratio;
+    acceleration.z = CurrentSettings().gravity * z_ratio;
 
     return acceleration;
   }
 
-  void ConfigureFullScale(
-      units::acceleration::standard_gravity_t gravity) override
+ private:
+  void ConfigureFullScale()
   {
-    uint32_t gravity_scale = gravity.to<uint32_t>();
+    uint32_t gravity_scale = settings.gravity.to<uint32_t>();
     uint8_t gravity_code;
 
     switch (gravity_scale)
@@ -144,8 +132,6 @@ class Mpu6050 : public Accelerometer
     config = bit::Insert(config, gravity_code, kScaleMask);
 
     i2c_.Write(kAddress, { Value(RegisterMap::kDataConfig), config });
-
-    full_scale_ = gravity;
   }
 
   void ActiveMode(bool is_active = true)
@@ -184,9 +170,7 @@ class Mpu6050 : public Accelerometer
     }
   }
 
- private:
   I2c & i2c_;
   const uint8_t kAddress;
-  units::acceleration::standard_gravity_t full_scale_ = 2_SG;
 };
 }  // namespace sjsu

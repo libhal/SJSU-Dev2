@@ -4,15 +4,11 @@
 
 namespace sjsu
 {
-EMIT_ALL_METHODS(Servo);
-
 TEST_CASE("Testing Servo")
 {
   Mock<Pwm> mock_pwm;
 
   Fake(Method(mock_pwm, ModuleInitialize));
-  Fake(Method(mock_pwm, ModuleEnable));
-  Fake(Method(mock_pwm, ConfigureFrequency));
   Fake(Method(mock_pwm, SetDutyCycle));
 
   // Inject test_gpio into button object
@@ -22,33 +18,7 @@ TEST_CASE("Testing Servo")
   {
     test_servo.ModuleInitialize();
     Verify(Method(mock_pwm, ModuleInitialize)).Once();
-  }
-
-  SECTION("ModuleEnable")
-  {
-    SECTION("true")
-    {
-      // Setup
-      mock_pwm.get().SetStateToInitialized();
-
-      // Exercise
-      test_servo.ModuleEnable();
-
-      // Verify
-      Verify(Method(mock_pwm, ModuleEnable).Using(true)).Once();
-    }
-
-    SECTION("false")
-    {
-      // Setup
-      mock_pwm.get().SetStateToEnabled();
-
-      // Exercise
-      test_servo.ModuleEnable(false);
-
-      // Verify
-      Verify(Method(mock_pwm, ModuleEnable).Using(false)).Once();
-    }
+    CHECK(mock_pwm.get().CurrentSettings().frequency == 50_Hz);
   }
 
   SECTION("Write Microseconds")
@@ -59,10 +29,10 @@ TEST_CASE("Testing Servo")
     constexpr float kTestDutyCycle =
         static_cast<float>(kTestPulseWidth.count() / kTestMaxPulseWidth);
 
-    test_servo.ConfigureFrequency(kTestFrequency);
+    test_servo.settings.frequency = (kTestFrequency);
+    test_servo.Initialize();
     test_servo.SetPulseWidthInMicroseconds(kTestPulseWidth);
 
-    Verify(Method(mock_pwm, ConfigureFrequency).Using(kTestFrequency)).Once();
     Verify(Method(mock_pwm, SetDutyCycle).Using(kTestDutyCycle)).Once();
   }
 
@@ -87,9 +57,12 @@ TEST_CASE("Testing Servo")
     constexpr float kExpectedDutyCycle =
         kTestPulseWidth / kTestMaxPulseWidth.count();
 
-    test_servo.ConfigureFrequency(kTestFrequency);
-    test_servo.ConfigureAngleBounds(kTestMinAngle, kTestMaxAngle);
-    test_servo.ConfigurePulseBounds(kTestPulseWidthMin, kTestPulseWidthMax);
+    test_servo.settings.frequency = kTestFrequency;
+    test_servo.settings.min_angle = kTestMinAngle;
+    test_servo.settings.max_angle = kTestMaxAngle;
+    test_servo.settings.min_pulse = kTestPulseWidthMin;
+    test_servo.settings.max_pulse = kTestPulseWidthMax;
+    test_servo.Initialize();
     test_servo.SetAngle(kTestAngle);
 
     Verify(

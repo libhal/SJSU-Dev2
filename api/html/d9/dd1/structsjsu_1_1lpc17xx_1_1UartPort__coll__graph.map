@@ -1,6 +1,0 @@
-<map id="sjsu::lpc17xx::UartPort" name="sjsu::lpc17xx::UartPort">
-<area shape="rect" id="node2" href="$d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html" title="sjsu::lpc40xx::Uart\l::Port_t" alt="" coords="57,200,189,241"/>
-<area shape="rect" id="node3" href="$d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="17,89,90,115"/>
-<area shape="rect" id="node4" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="5,5,101,32"/>
-<area shape="rect" id="node5" href="$d6/d7f/structsjsu_1_1SystemController_1_1ResourceID.html" title="sjsu::SystemController\l::ResourceID" alt="" coords="115,81,269,123"/>
-</map>

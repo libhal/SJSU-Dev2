@@ -1,7 +1,8 @@
 <map id="sjsu::Sd" name="sjsu::Sd">
-<area shape="rect" id="node2" href="$dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="187,5,285,32"/>
-<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="5,5,101,32"/>
-<area shape="rect" id="node4" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="182,56,290,83"/>
-<area shape="rect" id="node5" href="$d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint8_t \&gt;" alt="" coords="151,107,321,149"/>
-<area shape="rect" id="node6" href="$d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint16_t \&gt;" alt="" coords="151,173,321,214"/>
+<area shape="rect" id="node2" href="$dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="484,7,591,33"/>
+<area shape="rect" id="node3" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="273,7,399,33"/>
+<area shape="rect" id="node4" href="$d3/d79/structsjsu_1_1EmptySettings__t.html" title="sjsu::EmptySettings_t" alt="" coords="5,7,168,33"/>
+<area shape="rect" id="node5" href="$d9/dd3/structsjsu_1_1bit_1_1Mask.html" title="sjsu::bit::Mask" alt="" coords="480,57,595,84"/>
+<area shape="rect" id="node6" href="$d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint8_t \&gt;" alt="" coords="448,109,627,150"/>
+<area shape="rect" id="node7" href="$d2/d8f/structsjsu_1_1crc_1_1CrcTableConfig__t.html" title="sjsu::crc::CrcTableConfig\l_t\&lt; uint16_t \&gt;" alt="" coords="448,174,627,215"/>
 </map>

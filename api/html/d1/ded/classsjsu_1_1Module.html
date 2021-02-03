@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.13"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>SJSU-Dev2: sjsu::Module Class Reference</title>
+        <title>SJSU-Dev2: sjsu::Module&lt; Settings_t &gt; Class Template Reference</title>
         <!--<link href="../../tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="../../dynsections.js"></script>
         <link href="../../search/search.css" rel="stylesheet" type="text/css"/>
@@ -75,183 +75,91 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="../../dd/d0b/classsjsu_1_1Module-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">sjsu::Module Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">sjsu::Module&lt; Settings_t &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
+<p>The basis class for all peripheral, device and system drivers in SJSU-Dev2.  
+ <a href="../../d1/ded/classsjsu_1_1Module.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="../../de/def/module_8hpp_source.html">module.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for sjsu::Module:</div>
+Collaboration diagram for sjsu::Module&lt; Settings_t &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="../../d7/d2e/classsjsu_1_1Module__inherit__graph.png" border="0" usemap="#sjsu_1_1Module_inherit__map" alt="Inheritance graph"/></div>
-<map name="sjsu_1_1Module_inherit__map" id="sjsu_1_1Module_inherit__map">
-<area shape="rect" id="node2" href="../../d2/d7b/classsjsu_1_1Accelerometer.html" title="sjsu::Accelerometer" alt="" coords="164,56,303,83"/>
-<area shape="rect" id="node5" href="../../d0/dc1/classsjsu_1_1Adc.html" title="sjsu::Adc" alt="" coords="195,132,272,159"/>
-<area shape="rect" id="node8" href="../../de/dc8/classsjsu_1_1BatteryCharge.html" title="sjsu::BatteryCharge" alt="" coords="164,183,303,209"/>
-<area shape="rect" id="node10" href="../../d1/de1/classsjsu_1_1Button.html" title="sjsu::Button" alt="" coords="187,233,279,260"/>
-<area shape="rect" id="node11" href="../../de/d29/classsjsu_1_1Buzzer.html" title="sjsu::Buzzer" alt="" coords="186,284,281,311"/>
-<area shape="rect" id="node12" href="../../da/d70/classsjsu_1_1Can.html" title="sjsu::Can" alt="" coords="194,335,273,361"/>
-<area shape="rect" id="node14" href="../../dd/d20/classsjsu_1_1CanNetwork.html" title="CanNetwork is a canbus message receiver handler and. " alt="" coords="170,385,297,412"/>
-<area shape="rect" id="node15" href="../../d1/d15/classsjsu_1_1CoulombCounter.html" title="sjsu::CoulombCounter" alt="" coords="157,436,309,463"/>
-<area shape="rect" id="node17" href="../../da/d01/classsjsu_1_1Dac.html" title="sjsu::Dac" alt="" coords="194,487,273,513"/>
-<area shape="rect" id="node19" href="../../df/d5c/classsjsu_1_1DistanceSensor.html" title="sjsu::DistanceSensor" alt="" coords="160,537,307,564"/>
-<area shape="rect" id="node21" href="../../dc/d4f/classsjsu_1_1Esp8266.html" title="sjsu::Esp8266" alt="" coords="181,588,286,615"/>
-<area shape="rect" id="node22" href="../../d6/d0f/classsjsu_1_1FrequencyCounter.html" title="sjsu::FrequencyCounter" alt="" coords="153,639,314,665"/>
-<area shape="rect" id="node23" href="../../dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="193,689,274,716"/>
-<area shape="rect" id="node28" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html" title="sjsu::GraphicalTerminal" alt="" coords="154,740,313,767"/>
-<area shape="rect" id="node29" href="../../d7/d8c/classsjsu_1_1Graphics.html" title="Graphics library to draw shapes and characters on a pixel display. " alt="" coords="180,791,287,817"/>
-<area shape="rect" id="node30" href="../../d7/ddd/classsjsu_1_1HardwareCounter.html" title="sjsu::HardwareCounter" alt="" coords="155,841,311,868"/>
-<area shape="rect" id="node32" href="../../d0/d9b/classsjsu_1_1I2c.html" title="sjsu::I2c" alt="" coords="197,892,269,919"/>
-<area shape="rect" id="node34" href="../../db/dcb/classsjsu_1_1InternetSocket.html" title="sjsu::InternetSocket" alt="" coords="164,943,303,969"/>
-<area shape="rect" id="node36" href="../../d7/d75/classsjsu_1_1LightSensor.html" title="An abstract interface for light sensing device drivers. " alt="" coords="172,993,295,1020"/>
-<area shape="rect" id="node37" href="../../d7/d86/classsjsu_1_1ParallelBus.html" title="sjsu::ParallelBus" alt="" coords="173,1044,293,1071"/>
-<area shape="rect" id="node38" href="../../d0/da9/classsjsu_1_1Pin.html" title="sjsu::Pin" alt="" coords="197,1095,270,1121"/>
-<area shape="rect" id="node39" href="../../df/d96/classsjsu_1_1PixelDisplay.html" title="sjsu::PixelDisplay" alt="" coords="170,1145,297,1172"/>
-<area shape="rect" id="node40" href="../../d6/ddf/classsjsu_1_1Pwm.html" title="sjsu::Pwm" alt="" coords="191,1196,275,1223"/>
-<area shape="rect" id="node41" href="../../d9/d98/classsjsu_1_1RmdX.html" title="sjsu::RmdX" alt="" coords="188,1247,279,1273"/>
-<area shape="rect" id="node42" href="../../d9/dc9/classsjsu_1_1Servo.html" title="sjsu::Servo" alt="" coords="189,1297,277,1324"/>
-<area shape="rect" id="node43" href="../../d3/de6/classsjsu_1_1Spi.html" title="sjsu::Spi" alt="" coords="197,1348,270,1375"/>
-<area shape="rect" id="node44" href="../../d3/d56/classsjsu_1_1St7066u.html" title="Driver for the St7066u driver of a LCD character display. " alt="" coords="182,1399,285,1425"/>
-<area shape="rect" id="node45" href="../../dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="184,1449,283,1476"/>
-<area shape="rect" id="node46" href="../../de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="167,1500,299,1527"/>
-<area shape="rect" id="node47" href="../../d9/d0b/classsjsu_1_1TemperatureSensor.html" title="An abstract interface for temperature sensing device drivers. " alt="" coords="149,1551,317,1577"/>
-<area shape="rect" id="node48" href="../../d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="194,1601,273,1628"/>
-<area shape="rect" id="node49" href="../../dc/d16/classsjsu_1_1WiFi.html" title="sjsu::WiFi" alt="" coords="193,1652,274,1679"/>
-<area shape="rect" id="node3" href="../../d5/d82/classsjsu_1_1Mma8452q.html" title="Driver for the MMA8452Q 3&#45;axis accelerometer. " alt="" coords="410,5,529,32"/>
-<area shape="rect" id="node4" href="../../d6/d14/classsjsu_1_1Mpu6050.html" title="Driver for the Mpu6050 3&#45;axis accelerometer. " alt="" coords="416,56,523,83"/>
-<area shape="rect" id="node6" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html" title="ADC driver for the LPC40xx and LPC17xx microcontrollers. " alt="" coords="404,107,535,133"/>
-<area shape="rect" id="node7" href="../../d3/df9/classsjsu_1_1stm32f10x_1_1Adc.html" title="sjsu::stm32f10x::Adc" alt="" coords="396,157,543,184"/>
-<area shape="rect" id="node9" href="../../d7/da0/classsjsu_1_1Max170343.html" title="Driver for the max17043 battery fuel gauge. " alt="" coords="409,208,530,235"/>
-<area shape="rect" id="node13" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html" title="CANBUS implemenation for the LPC40xx series of devices. " alt="" coords="404,335,535,361"/>
-<area shape="rect" id="node16" href="../../d9/d3a/classsjsu_1_1Ltc4150.html" title="sjsu::Ltc4150" alt="" coords="419,436,519,463"/>
-<area shape="rect" id="node18" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html" title="Implementation of digital&#45;to&#45;analog converter for lpc40xx. " alt="" coords="404,487,535,513"/>
-<area shape="rect" id="node20" href="../../d2/dc6/classsjsu_1_1TFMini.html" title="sjsu::TFMini" alt="" coords="422,537,517,564"/>
-<area shape="rect" id="node24" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="402,613,537,640"/>
-<area shape="rect" id="node25" href="../../d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html" title="GPIO implementation for the MSP432P401R platform. " alt="" coords="386,664,553,691"/>
-<area shape="rect" id="node26" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="394,715,545,741"/>
-<area shape="rect" id="node27" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="394,765,545,792"/>
-<area shape="rect" id="node31" href="../../d0/d57/classsjsu_1_1GpioCounter.html" title="sjsu::GpioCounter" alt="" coords="406,841,533,868"/>
-<area shape="rect" id="node33" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html" title="sjsu::lpc40xx::I2c" alt="" coords="407,892,532,919"/>
-<area shape="rect" id="node35" href="../../d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html" title="sjsu::Esp8266::Esp8266Internet\lSocket" alt="" coords="365,943,573,985"/>
+<div class="center"><img src="../../da/da4/classsjsu_1_1Module__coll__graph.png" border="0" usemap="#sjsu_1_1Module_3_01Settings__t_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="sjsu_1_1Module_3_01Settings__t_01_4_coll__map" id="sjsu_1_1Module_3_01Settings__t_01_4_coll__map">
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a112d5ca5bc39486088c225ad62685a6b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a> : uint8_t { <br />
-&#160;&#160;<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b">State::kReset</a>, 
-<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bab661416dbe99f1eddca1a5547a8bd720">State::kInitialized</a>, 
-<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bade1ec1870756a80dffbdc4cda53153e0">State::kEnabled</a>, 
-<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6ba7b04d8795f5fd03c761ce70dab985fee">State::kDisabled</a>, 
-<br />
-&#160;&#160;<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6ba5a20548c220f372fc701cae6de94040b">State::kCritical</a>
-<br />
- }</td></tr>
-<tr class="separator:a112d5ca5bc39486088c225ad62685a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acc0b3e493052c2e3fd7e43f01e98bf6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize</a> ()</td></tr>
-<tr class="separator:acc0b3e493052c2e3fd7e43f01e98bf6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03a485dea8009f6877a5cebb983b2f96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a03a485dea8009f6877a5cebb983b2f96">Enable</a> (bool enable=true)</td></tr>
-<tr class="separator:a03a485dea8009f6877a5cebb983b2f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abcda494fd9fb64cd390a2e516a4c18a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#abcda494fd9fb64cd390a2e516a4c18a0">GetState</a> () const</td></tr>
-<tr class="separator:abcda494fd9fb64cd390a2e516a4c18a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37e072bfe5762a0220221acc67576b99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a37e072bfe5762a0220221acc67576b99">SetState</a> (<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a> new_state)</td></tr>
-<tr class="separator:a37e072bfe5762a0220221acc67576b99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6255f5e6d0f25f57d9d0271aec21fe80"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a6255f5e6d0f25f57d9d0271aec21fe80">IsReset</a> () const</td></tr>
-<tr class="separator:a6255f5e6d0f25f57d9d0271aec21fe80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74f1946eb1ab6ec4a9a22e9eab35dc3a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a74f1946eb1ab6ec4a9a22e9eab35dc3a">RequiresConfiguration</a> () const</td></tr>
-<tr class="separator:a74f1946eb1ab6ec4a9a22e9eab35dc3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72bc161a2253446aabeb6f48707d6e0d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a72bc161a2253446aabeb6f48707d6e0d">IsInitialized</a> () const</td></tr>
-<tr class="separator:a72bc161a2253446aabeb6f48707d6e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa489ec4488a4e9c941c8c7c02eff8ee7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#aa489ec4488a4e9c941c8c7c02eff8ee7">IsEnabled</a> () const</td></tr>
-<tr class="separator:aa489ec4488a4e9c941c8c7c02eff8ee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada36472841ce93619269973002bc5427"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ada36472841ce93619269973002bc5427">IsDisabled</a> () const</td></tr>
-<tr class="separator:ada36472841ce93619269973002bc5427"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26aad48f0938400f4aab63058252ab64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a26aad48f0938400f4aab63058252ab64">IsCritical</a> () const</td></tr>
-<tr class="separator:a26aad48f0938400f4aab63058252ab64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9001a72b5ff3d8c34baccb5caefe9146"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a9001a72b5ff3d8c34baccb5caefe9146">SetStateToReset</a> ()</td></tr>
-<tr class="separator:a9001a72b5ff3d8c34baccb5caefe9146"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af11709a7ddbc703de2a32d68de8204a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#af11709a7ddbc703de2a32d68de8204a3">SetStateToInitialized</a> ()</td></tr>
-<tr class="separator:af11709a7ddbc703de2a32d68de8204a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b715ea9844383667005702a98209e2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a7b715ea9844383667005702a98209e2a">SetStateToEnabled</a> ()</td></tr>
-<tr class="separator:a7b715ea9844383667005702a98209e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66f68400f5f9e071899171cf95963e2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a66f68400f5f9e071899171cf95963e2e">SetStateToDisabled</a> ()</td></tr>
-<tr class="separator:a66f68400f5f9e071899171cf95963e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08d12c914915199255dea68344a1fe2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a08d12c914915199255dea68344a1fe2e">SetStateToCritical</a> ()</td></tr>
-<tr class="separator:a08d12c914915199255dea68344a1fe2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00710b3cee10012793af0bf708376875"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a00710b3cee10012793af0bf708376875">~Module</a> ()=default</td></tr>
-<tr class="memdesc:a00710b3cee10012793af0bf708376875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructed of this base class calls the destructors of derived classes.  <a href="#a00710b3cee10012793af0bf708376875">More...</a><br /></td></tr>
-<tr class="separator:a00710b3cee10012793af0bf708376875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab35a3d1eaacc41a457be09d0fde9013e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ab35a3d1eaacc41a457be09d0fde9013e">ModuleInitialize</a> ()=0</td></tr>
-<tr class="separator:ab35a3d1eaacc41a457be09d0fde9013e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1f4ae70c9be02bd7956ff9a07944dd8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ab1f4ae70c9be02bd7956ff9a07944dd8">ModuleEnable</a> (bool enable)=0</td></tr>
-<tr class="separator:ab1f4ae70c9be02bd7956ff9a07944dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae06fdc45e3771fb52e488259d42c2080"><td class="memItemLeft" align="right" valign="top"><a id="ae06fdc45e3771fb52e488259d42c2080"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ae06fdc45e3771fb52e488259d42c2080">ModuleInitialize</a> ()=0</td></tr>
+<tr class="memdesc:ae06fdc45e3771fb52e488259d42c2080"><td class="mdescLeft">&#160;</td><td class="mdescRight">Every module MUST have an initialize for it operate. <br /></td></tr>
+<tr class="separator:ae06fdc45e3771fb52e488259d42c2080"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c9a986a446b2379b7ff09cc32b5628"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a30c9a986a446b2379b7ff09cc32b5628">ModulePowerDown</a> ()</td></tr>
+<tr class="separator:a30c9a986a446b2379b7ff09cc32b5628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f8a91c8fb087e0afd6aad4021fa0f50"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize</a> ()</td></tr>
+<tr class="separator:a1f8a91c8fb087e0afd6aad4021fa0f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3236b0f1dfab8c820006c7dcaab09a2d"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a3236b0f1dfab8c820006c7dcaab09a2d">PowerDown</a> ()</td></tr>
+<tr class="separator:a3236b0f1dfab8c820006c7dcaab09a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1844ee16f0723a56c2d55d40aac4bbe6"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1844ee16f0723a56c2d55d40aac4bbe6">EnterCrisis</a> ()</td></tr>
+<tr class="separator:a1844ee16f0723a56c2d55d40aac4bbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad5cf43ef622d78eacea24e754adaffd"><td class="memItemLeft" align="right" valign="top">Settings_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#aad5cf43ef622d78eacea24e754adaffd">CurrentSettings</a> () const</td></tr>
+<tr class="separator:aad5cf43ef622d78eacea24e754adaffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f2a4bfc017b3e9fac6b00042ae71978"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a067d8cdbf9c17173f473fc0b3583c58b">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a4f2a4bfc017b3e9fac6b00042ae71978">GetState</a> () const</td></tr>
+<tr class="separator:a4f2a4bfc017b3e9fac6b00042ae71978"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae25d68cbc8ebd36ba4296866e964474c"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ae25d68cbc8ebd36ba4296866e964474c">Module</a> () noexcept</td></tr>
+<tr class="separator:ae25d68cbc8ebd36ba4296866e964474c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0218cc3988bd72744bb415c00f862b6e"><td class="memItemLeft" align="right" valign="top"><a id="a0218cc3988bd72744bb415c00f862b6e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a0218cc3988bd72744bb415c00f862b6e">Module</a> (const <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> &amp;)=delete</td></tr>
+<tr class="memdesc:a0218cc3988bd72744bb415c00f862b6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preventing this module from copy construction. Modules cannot be copied. <br /></td></tr>
+<tr class="separator:a0218cc3988bd72744bb415c00f862b6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a494fef49459fa393af6036096ecb64ff"><td class="memItemLeft" align="right" valign="top"><a id="a494fef49459fa393af6036096ecb64ff"></a>
+<a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a494fef49459fa393af6036096ecb64ff">operator=</a> (const <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> &amp;)=delete</td></tr>
+<tr class="memdesc:a494fef49459fa393af6036096ecb64ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preventing this module from copy assignment. Modules cannot be copied. <br /></td></tr>
+<tr class="separator:a494fef49459fa393af6036096ecb64ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dbd50dbb0555455bd092b8016d34511"><td class="memItemLeft" align="right" valign="top"><a id="a9dbd50dbb0555455bd092b8016d34511"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a9dbd50dbb0555455bd092b8016d34511">Module</a> (<a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> &amp;&amp;)=delete</td></tr>
+<tr class="memdesc:a9dbd50dbb0555455bd092b8016d34511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preventing this module from move operation. Modules cannot be moved. <br /></td></tr>
+<tr class="separator:a9dbd50dbb0555455bd092b8016d34511"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd5e1e4b80947c7d7c68e1762b9f89f0"><td class="memItemLeft" align="right" valign="top"><a id="abd5e1e4b80947c7d7c68e1762b9f89f0"></a>
+<a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#abd5e1e4b80947c7d7c68e1762b9f89f0">operator=</a> (<a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> &amp;&amp;)=delete</td></tr>
+<tr class="memdesc:abd5e1e4b80947c7d7c68e1762b9f89f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preventing this module from move assignment. Modules cannot be moved. <br /></td></tr>
+<tr class="separator:abd5e1e4b80947c7d7c68e1762b9f89f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18bba6050a483702881a916de0f7d0ee"><td class="memItemLeft" align="right" valign="top"><a id="a18bba6050a483702881a916de0f7d0ee"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a18bba6050a483702881a916de0f7d0ee">~Module</a> ()=default</td></tr>
+<tr class="memdesc:a18bba6050a483702881a916de0f7d0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor of this base class calls the destructors of derived classes. <br /></td></tr>
+<tr class="separator:a18bba6050a483702881a916de0f7d0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a9f71ac69f51d176b0949f47c564b9f2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a9f71ac69f51d176b0949f47c564b9f2d">state_</a> = <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b">State::kReset</a></td></tr>
-<tr class="memdesc:a9f71ac69f51d176b0949f47c564b9f2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the state of the module. Default state of the module is kReset.  <a href="#a9f71ac69f51d176b0949f47c564b9f2d">More...</a><br /></td></tr>
-<tr class="separator:a9f71ac69f51d176b0949f47c564b9f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a8da9c2a91113e8e1327cc3b20c200d9f"><td class="memItemLeft" align="right" valign="top">Settings_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a8da9c2a91113e8e1327cc3b20c200d9f">settings</a></td></tr>
+<tr class="separator:a8da9c2a91113e8e1327cc3b20c200d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> is the basis interface for all other SJSU-Dev2 interfaces. It incorporates an API for initialization and setup as well as a state to know which stage the module is in.</p>
-<p>The module usage flow:</p>
-<p>State: kReset All modules start off with state kReset. At this point the only method that should be called is <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a>. Calling any other method is undefined behavior. The work of <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a> must NOT be done in the constructor of a <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> derived class as the order of initialization is not deterministic and can also result in undefined behavior.</p>
-<p>State: kInitialized When <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a> is called, the state of the module is transitioned to kInitialized, if, and only if, the state of the module is in kReset beforehand. Otherwise, no work is done by <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a>. This allows <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a> to be called multiple times without performing the same task multiple times. This is helpful when a module is used by two or more other modules and both modules call <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a>.</p>
-<p>After <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a> has been executed without an exception being thrown, the module can now be configured. SJSU-Dev2 convention for derived modules APIs is to name methods that configure a system with the name ConfigureX(), where X can be ClockRate, MaxRange, Frequency, etc. For example, at this stage one can run ConfigureBaudRate(9600) on the <a class="el" href="../../d0/ddc/classsjsu_1_1Uart.html">Uart</a> driver. Only the Configuration methods shall be called at this stage.</p>
-<p>State: kEnabled Once the module has been appropriately configured for the usage of the application. The module can be Enabled(). Once enabled, the module can use the runtime usage method. These methods can be identified as they are the methods of an API that does not have the "Configure-" prefix. These usage APIs interact with hardware, such as SetDutyCycle() in the <a class="el" href="../../d6/ddf/classsjsu_1_1Pwm.html">Pwm</a> driver or Transfer() for the SPI class. Configuration methods should not be called when in this state. Doing so is undefined behavior.</p>
-<p>State: kDisabled In the event the Configuration options need to be change, the module must first be disabled by running the Enabled(false) method with the input parameter false. This will disable the module and allow usage of the Configuration() methods. Using the Configuration() methods outside of the kInitialized and kDisabled state is undefined behavior.</p>
-<p>State: kCritical If a module attempted to perform some task and it was unable to in an exceptional way, the module will set its state to kCritical using the <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a37e072bfe5762a0220221acc67576b99">SetState()</a> method provided to all Modules. This indicates that the module can no longer be used as normal. The only way out of this would be for the system to call <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a37e072bfe5762a0220221acc67576b99">SetState()</a> force the state back to kReset, and run through the initialization sequence again. As a means to recover, a system may consider changing the Configuration settings if these led to the exception being called. Another alternative would be to run exit and reset the system.</p>
-<p>These rules of usage must be followed for proper operation by all module within SJSU-Dev2 as well as external modules using the SJSU-Dev2 modules. </p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a112d5ca5bc39486088c225ad62685a6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a112d5ca5bc39486088c225ad62685a6b">&#9670;&nbsp;</a></span>State</h2>
+<div class="textblock"><h3>template&lt;class Settings_t = EmptySettings_t&gt;<br />
+class sjsu::Module&lt; Settings_t &gt;</h3>
+
+<p>The basis class for all peripheral, device and system drivers in SJSU-Dev2. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae25d68cbc8ebd36ba4296866e964474c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae25d68cbc8ebd36ba4296866e964474c">&#9670;&nbsp;</a></span>Module()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">sjsu::Module::State</a> : uint8_t</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b"></a>kReset&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a112d5ca5bc39486088c225ad62685a6bab661416dbe99f1eddca1a5547a8bd720"></a>kInitialized&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a112d5ca5bc39486088c225ad62685a6bade1ec1870756a80dffbdc4cda53153e0"></a>kEnabled&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a112d5ca5bc39486088c225ad62685a6ba7b04d8795f5fd03c761ce70dab985fee"></a>kDisabled&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a112d5ca5bc39486088c225ad62685a6ba5a20548c220f372fc701cae6de94040b"></a>kCritical&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a00710b3cee10012793af0bf708376875"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00710b3cee10012793af0bf708376875">&#9670;&nbsp;</a></span>~Module()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual sjsu::Module::~Module </td>
+          <td class="memname">constexpr <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::<a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -259,60 +167,28 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Destructed of this base class calls the destructors of derived classes. </p>
+<p>Add constexpr constructor which will allow derived classes to have constexpr constructors if possible. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a03a485dea8009f6877a5cebb983b2f96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03a485dea8009f6877a5cebb983b2f96">&#9670;&nbsp;</a></span>Enable()</h2>
+<a id="aad5cf43ef622d78eacea24e754adaffd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad5cf43ef622d78eacea24e754adaffd">&#9670;&nbsp;</a></span>CurrentSettings()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void sjsu::Module::Enable </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>enable</em> = <code>true</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Enable/Disable module such that the module can be used at run time.</p>
-<p>A successful <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a03a485dea8009f6877a5cebb983b2f96">Enable()</a> call will change the state to kEnabled and will allow the runtime usage methods to be called without any undefined behaviour.</p>
-<p>A successful Enable(false) call will change the state to kDisabled and will allow the Configuration methods to be called again, and will disable operation of the system. The exact behavior of the system when transitioning from kEnabled to kDisabled is module specific. For example, the <a class="el" href="../../da/d08/namespacesjsu_1_1lpc40xx.html">lpc40xx</a> driver will set its duty cycle to 0% when disabled. The disable/enable transition information should be documented for the specific driver if it has an significant change to the state. For example most GPIOs do not change state when disabled, and thus may have a comment stating:</p>
-<p>"Transitions from enabled to disabled have no effect on the output signal"</p>
-<p>Protocol for Enable:</p>
-<p>Step 1) If applicable, if the configuration settings were stored within the module's memory and not stored within the memory of the device itself, then it is the job of <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a03a485dea8009f6877a5cebb983b2f96">Enable()</a> to write the configuration information to the device. THIS STEP IS AN EXCEPTION NOT THE RULE. Always, refrain from caching configuration information if it can be stored in the device's memory directly, such that enable can reduce the work it needs to perform.</p>
-<p>Step 2) Run any procedures required to enable this module for usage. Sometimes this as simple as setting a bit in a register, in other cases this is a more involved sequence of steps. </p>
-
-</div>
-</div>
-<a id="abcda494fd9fb64cd390a2e516a4c18a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcda494fd9fb64cd390a2e516a4c18a0">&#9670;&nbsp;</a></span>GetState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a> sjsu::Module::GetState </td>
+          <td class="memname">Settings_t <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::CurrentSettings </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -324,21 +200,23 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the module's state </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Settings_t - the current operating settings from the latest call of <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a> </dd></dl>
 
 </div>
 </div>
-<a id="acc0b3e493052c2e3fd7e43f01e98bf6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc0b3e493052c2e3fd7e43f01e98bf6e">&#9670;&nbsp;</a></span>Initialize()</h2>
+<a id="a1844ee16f0723a56c2d55d40aac4bbe6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1844ee16f0723a56c2d55d40aac4bbe6">&#9670;&nbsp;</a></span>EnterCrisis()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void sjsu::Module::Initialize </td>
+          <td class="memname">auto&amp; <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::EnterCrisis </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -350,25 +228,24 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialize module by putting system into a known state and prepare it to be configured and enabled. In general this typically means resetting the device to be driven.</p>
-<p>THIS METHOD MUST BE CALLED FIRST BEFORE ANY OTHER METHOD OF THIS OR DERIVED OBJECTS. Failure to call this first will result in undefined behavior. Not doing this can result in hard faults when accessing peripherals.</p>
-<p>Once successfully initialized, the state of the module will transition to <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bab661416dbe99f1eddca1a5547a8bd720">State::kInitialized</a>, and subsequent calls to initialize will simply return without performing any work.</p>
-<p>Protocol for Initialization:</p>
-<p>Step 1) Initialize, configure, and enable all sub-modules. Step 2) Power on/reset device/peripheral such that the device can be configured and then later enabled. </p>
+<p>Set the state of the module as <a class="el" href="../../d0/d6b/namespacesjsu.html#a067d8cdbf9c17173f473fc0b3583c58ba5a20548c220f372fc701cae6de94040b">State::kCritical</a> which is a marker that something went terribly wrong with this module such that it cannot work as intended without an attempt to run <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>auto&amp; - reference to itself to allow method chaining </dd></dl>
 
 </div>
 </div>
-<a id="a26aad48f0938400f4aab63058252ab64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26aad48f0938400f4aab63058252ab64">&#9670;&nbsp;</a></span>IsCritical()</h2>
+<a id="a4f2a4bfc017b3e9fac6b00042ae71978"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f2a4bfc017b3e9fac6b00042ae71978">&#9670;&nbsp;</a></span>GetState()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool sjsu::Module::IsCritical </td>
+          <td class="memname"><a class="el" href="../../d0/d6b/namespacesjsu.html#a067d8cdbf9c17173f473fc0b3583c58b">State</a> <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::GetState </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -380,258 +257,23 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Helper function that returns true if the state is in Critical.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kCritical. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>State - the current state of the module </dd></dl>
 
 </div>
 </div>
-<a id="ada36472841ce93619269973002bc5427"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada36472841ce93619269973002bc5427">&#9670;&nbsp;</a></span>IsDisabled()</h2>
+<a id="a1f8a91c8fb087e0afd6aad4021fa0f50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f8a91c8fb087e0afd6aad4021fa0f50">&#9670;&nbsp;</a></span>Initialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool sjsu::Module::IsDisabled </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper function that returns true if the state is in Disabled.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kDisabled. </dd></dl>
-
-</div>
-</div>
-<a id="aa489ec4488a4e9c941c8c7c02eff8ee7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa489ec4488a4e9c941c8c7c02eff8ee7">&#9670;&nbsp;</a></span>IsEnabled()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sjsu::Module::IsEnabled </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper function that returns true if the state is in Enabled.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kEnabled. </dd></dl>
-
-</div>
-</div>
-<a id="a72bc161a2253446aabeb6f48707d6e0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72bc161a2253446aabeb6f48707d6e0d">&#9670;&nbsp;</a></span>IsInitialized()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sjsu::Module::IsInitialized </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper function that returns true if the state is in Initialized.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kInitialized. </dd></dl>
-
-</div>
-</div>
-<a id="a6255f5e6d0f25f57d9d0271aec21fe80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6255f5e6d0f25f57d9d0271aec21fe80">&#9670;&nbsp;</a></span>IsReset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sjsu::Module::IsReset </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper function that returns true if the state is in reset.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kReset. </dd></dl>
-
-</div>
-</div>
-<a id="ab1f4ae70c9be02bd7956ff9a07944dd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1f4ae70c9be02bd7956ff9a07944dd8">&#9670;&nbsp;</a></span>ModuleEnable()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void sjsu::Module::ModuleEnable </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>enable</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p><a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a> Implementation of Enable.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">enable</td><td>- if true, will enable the module, if false, will disabled </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implemented in <a class="el" href="../../d3/df9/classsjsu_1_1stm32f10x_1_1Adc.html#aedf25c8887d5129deda56ae7b7058d65">sjsu::stm32f10x::Adc</a>, <a class="el" href="../../dd/d20/classsjsu_1_1CanNetwork.html#af76cae3b823b28c11bc81850be5b70bd">sjsu::CanNetwork</a>, <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a3a249cd5f5b756b2ff990eefe6329267">sjsu::lpc40xx::Can</a>, <a class="el" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a3b21401fc8ff4decb413afc2211b2336">sjsu::lpc40xx::I2c</a>, <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a38a2647947f75358bec8062692f3876b">sjsu::lpc40xx::Uart</a>, <a class="el" href="../../db/d96/classsjsu_1_1stm32f10x_1_1Pwm.html#a3f3c7ee7468b9fd4edc1be56bb5eaf54">sjsu::stm32f10x::Pwm</a>, <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#a17dce36445713586a6daf8e6f1a778b1">sjsu::Sd</a>, <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#ac132f2fd9a324f71fe757eb7cdadefb0">sjsu::lpc40xx::Gpio</a>, <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a5c5b374301ff0f01de0d448c0f73ab1b">sjsu::lpc40xx::Adc</a>, <a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a6f7e5a9a41b1d85f407ee48d37eb39fe">sjsu::lpc40xx::Pwm</a>, <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a5932d51ec71bbb62a285a977dd677348">sjsu::stm32f10x::UartBase</a>, <a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#aa1eea589670a603b391685741e51d56d">sjsu::lpc40xx::Spi</a>, <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a0702573da4169afb92c56aa3b69b3765">sjsu::Esp8266</a>, <a class="el" href="../../db/df9/classsjsu_1_1stm32f10x_1_1Spi.html#a6b95b4f652f6a8bd5bc5fa946eed4580">sjsu::stm32f10x::Spi</a>, <a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a43227c1057321efb01296360d322f324">sjsu::St7066u</a>, <a class="el" href="../../d9/d98/classsjsu_1_1RmdX.html#a9d32521cf3ce0b56a28b4a742fb91339">sjsu::RmdX</a>, <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ab246097bc98d418d30c65da98e335d88">sjsu::Ssd1306</a>, <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#a02ae1efef5b1a596538326fea1843df0">sjsu::cortex::SystemTimer</a>, <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#a98ca7aeed09078d994cb0816d3a18c3b">sjsu::lpc40xx::Pin</a>, <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#a72b2ac3030711f9649f87f1c37bdac1b">sjsu::TFMini</a>, <a class="el" href="../../d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html#a8603e303c2c810cd4cb32f2baa769551">sjsu::stm32f10x::Pin</a>, <a class="el" href="../../d7/da0/classsjsu_1_1Max170343.html#aba3a593a0c7d45d2a7a5b612c712b741">sjsu::Max170343</a>, <a class="el" href="../../d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html#a37c79f4ee42e42f475ec0f756452661c">sjsu::Esp8266::Esp8266WiFi</a>, <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a4d4f4408a253dcfa784b7882a985dea9">sjsu::lpc40xx::Eeprom</a>, <a class="el" href="../../d0/d57/classsjsu_1_1GpioCounter.html#a931547e88b43f88a78f76a24d345ce04">sjsu::GpioCounter</a>, <a class="el" href="../../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#a0629ec12933f63a501af5e147ca7f3af">sjsu::stm32f4xx::Pin</a>, <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a6b46690b935d5a1be49b82593a934c9b">sjsu::Mma8452q</a>, <a class="el" href="../../d6/d0f/classsjsu_1_1FrequencyCounter.html#a6d53a36c4379fcfe272e4f75f03c314f">sjsu::FrequencyCounter</a>, <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#aeaf615412c3f036ab829cd37ddc30cd7">sjsu::lpc17xx::Pin</a>, <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a2c515699f8b9dc5ebbcc4e4a6b9d6d2f">sjsu::Tmp102</a>, <a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a79d6e0ea60005c5e48f26f6f2959de67">sjsu::Ltc4150</a>, <a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html#ae7e7caf56c1c03817552b90f0b770031">sjsu::GraphicalTerminal</a>, <a class="el" href="../../d2/dc5/classsjsu_1_1msp432p401r_1_1Pin.html#af5ff44e0c5a1738ad8a0059181cec491">sjsu::msp432p401r::Pin</a>, <a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a6ec600eac2cb4c49a067ad7e349fd0ed">sjsu::lpc40xx::Dac</a>, <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#ae5d575ba1dd6863993fef84f9defc59e">sjsu::Si7060</a>, <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#a8b4fe57dfd1a9a3bf9504f447b6f3079">sjsu::Mpu6050</a>, <a class="el" href="../../d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html#a38fddd4b9a14b0ff25a16d0c99484189">sjsu::Esp8266::Esp8266InternetSocket</a>, <a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#a3b7e4bc05d0023cea048a39a18cf3992">sjsu::Servo</a>, <a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html#aa5b8d6e90a872e8a46d67427a6b7b5c4">sjsu::ParallelGpio</a>, <a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#ac5dbd59eb14b255e1829da36745fe80c">sjsu::stm32f10x::Gpio</a>, <a class="el" href="../../d7/d8c/classsjsu_1_1Graphics.html#a80bcbb9ba5ae0d999c0db2029f67860e">sjsu::Graphics</a>, <a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html#a22ffce5da7213938f63dbe446ef7dd4c">sjsu::Buzzer</a>, <a class="el" href="../../d3/da6/classsjsu_1_1Temt6000x01.html#a8b2715979e8d8558f66af85506659f38">sjsu::Temt6000x01</a>, <a class="el" href="../../d1/de1/classsjsu_1_1Button.html#ac49343953a4c17b0c8467cf1754d7c14">sjsu::Button</a>, <a class="el" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a6c9cd0bf3d99ac6f5e2055ceda517944">sjsu::stm32f4xx::Gpio</a>, and <a class="el" href="../../d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html#a7086046125f66630972b215eb6c981ff">sjsu::msp432p401r::Gpio</a>.</p>
-
-</div>
-</div>
-<a id="ab35a3d1eaacc41a457be09d0fde9013e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab35a3d1eaacc41a457be09d0fde9013e">&#9670;&nbsp;</a></span>ModuleInitialize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void sjsu::Module::ModuleInitialize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p><a class="el" href="../../d1/ded/classsjsu_1_1Module.html">Module</a>'s implementation of Initialize. See the documentation for <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#acc0b3e493052c2e3fd7e43f01e98bf6e">Initialize()</a> for more details about what this should do.</p>
-<p>NOTE: that this implementation should not use <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a37e072bfe5762a0220221acc67576b99">SetState()</a>, but should allow the Module::Interface() method to handle that. </p>
-
-<p>Implemented in <a class="el" href="../../db/d96/classsjsu_1_1stm32f10x_1_1Pwm.html#a69c5d10f89ef1e604a13ccb1dfa52fca">sjsu::stm32f10x::Pwm</a>, <a class="el" href="../../dd/d20/classsjsu_1_1CanNetwork.html#acf146d77801eba05baeff6ba5d14111c">sjsu::CanNetwork</a>, <a class="el" href="../../d3/df9/classsjsu_1_1stm32f10x_1_1Adc.html#afbbbc345b3b0b1c0dc105d9b1160f897">sjsu::stm32f10x::Adc</a>, <a class="el" href="../../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#a361ecf974925400896fb0f074e25acd4">sjsu::lpc40xx::Can</a>, <a class="el" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#aa88e10978743058e0ef009b2bb5a8069">sjsu::lpc40xx::I2c</a>, <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#a508ba90842f465d6bf85bc9623daaf8d">sjsu::lpc40xx::Uart</a>, <a class="el" href="../../db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html#a89127c1698e60e6362f13e6c186c9c31">sjsu::lpc40xx::Gpio</a>, <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#ac78e384d4c2849ebc3800c2613904ab0">sjsu::lpc40xx::Adc</a>, <a class="el" href="../../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a11b08a6aaac5d782553287952276517b">sjsu::stm32f10x::UartBase</a>, <a class="el" href="../../dc/d5f/classsjsu_1_1Sd.html#acb1b78ed8135a4d49e605c17853bd40b">sjsu::Sd</a>, <a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#a995028a524014f14ad367d1460003f75">sjsu::lpc40xx::Pwm</a>, <a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#a1ac0755d14d7e9f64230737b4f63ca4c">sjsu::lpc40xx::Spi</a>, <a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#ac4841d458714b727b16b3648150705b1">sjsu::Esp8266</a>, <a class="el" href="../../db/df9/classsjsu_1_1stm32f10x_1_1Spi.html#afe461924415803c344c75fd72ea1311f">sjsu::stm32f10x::Spi</a>, <a class="el" href="../../d3/d56/classsjsu_1_1St7066u.html#a4c61276c632bb246b5b564f18b8326e6">sjsu::St7066u</a>, <a class="el" href="../../d9/d98/classsjsu_1_1RmdX.html#adfdb088ca91f950288a92db07699de72">sjsu::RmdX</a>, <a class="el" href="../../d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html#ae32cee03db076d63e387ea1f37f0ee4f">sjsu::cortex::SystemTimer</a>, <a class="el" href="../../d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html#aaeb7d7f6eee6f2b9fdf6b996c4a8ac38">sjsu::Esp8266::Esp8266WiFi</a>, <a class="el" href="../../db/d32/classsjsu_1_1Ssd1306.html#ada9626187c5988ffbeb2012b396c01e5">sjsu::Ssd1306</a>, <a class="el" href="../../d2/dc6/classsjsu_1_1TFMini.html#af6995c045bbf27a93d1d21a41533b918">sjsu::TFMini</a>, <a class="el" href="../../df/dbd/classsjsu_1_1lpc40xx_1_1Pin.html#ae650e1ac0f92b76480a9f89f77d4f5e7">sjsu::lpc40xx::Pin</a>, <a class="el" href="../../d7/da0/classsjsu_1_1Max170343.html#a56e393a92868d92c65c030ac11f58922">sjsu::Max170343</a>, <a class="el" href="../../d0/d57/classsjsu_1_1GpioCounter.html#a3c5bb1e3f2d3eb06b2e4f1668a0c4272">sjsu::GpioCounter</a>, <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#aa4b11b64bc57b9b12ea9e7fa13d46190">sjsu::Mma8452q</a>, <a class="el" href="../../d6/d0f/classsjsu_1_1FrequencyCounter.html#a6b3529dcb5e81da002bd8d769b50bbb1">sjsu::FrequencyCounter</a>, <a class="el" href="../../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a0d9ceba3cac6bbcf41852a37c7081f5c">sjsu::lpc40xx::Dac</a>, <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#adf5e5a72bb3531a49ac7eed712cbe092">sjsu::lpc40xx::Eeprom</a>, <a class="el" href="../../d8/db2/classsjsu_1_1Tmp102.html#a175b98f5d3b834ea0e8d02977221c0fe">sjsu::Tmp102</a>, <a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html#ae1c642957eaf998fe943c2750ac58af9">sjsu::GraphicalTerminal</a>, <a class="el" href="../../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#a88081dc1ac0420397236e305e31997dd">sjsu::lpc17xx::Pin</a>, <a class="el" href="../../d2/d74/classsjsu_1_1stm32f10x_1_1Pin.html#a041c5d71d55a67c1d25234aa796d3704">sjsu::stm32f10x::Pin</a>, <a class="el" href="../../d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html#aa5a01a68797877cf148f4e2c684dcd40">sjsu::Esp8266::Esp8266InternetSocket</a>, <a class="el" href="../../df/ddc/classsjsu_1_1Si7060.html#a68c1fe9b335b16a5d1e7c9fce31d5e90">sjsu::Si7060</a>, <a class="el" href="../../d2/dc5/classsjsu_1_1msp432p401r_1_1Pin.html#af6b5ef62f0086ee2211ea7ad4be54f66">sjsu::msp432p401r::Pin</a>, <a class="el" href="../../d9/dc9/classsjsu_1_1Servo.html#aa3ffc87f5af3920c191f174334ee97b2">sjsu::Servo</a>, <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#aaddf17707c174124bb29174e3da65386">sjsu::Mpu6050</a>, <a class="el" href="../../d9/d3a/classsjsu_1_1Ltc4150.html#a13117565531ea49407f083780e87a34b">sjsu::Ltc4150</a>, <a class="el" href="../../dc/da4/classsjsu_1_1stm32f4xx_1_1Pin.html#aecbd727276242e5ecf274f22632ac387">sjsu::stm32f4xx::Pin</a>, <a class="el" href="../../d7/d8c/classsjsu_1_1Graphics.html#a55995ef28cd234be92b79982afa4243a">sjsu::Graphics</a>, <a class="el" href="../../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#ac2d7572082d565a62d0cab26aac9435e">sjsu::stm32f10x::Gpio</a>, <a class="el" href="../../de/d29/classsjsu_1_1Buzzer.html#addc4b55c99d2f3a0f1f25daa77597a0d">sjsu::Buzzer</a>, <a class="el" href="../../d3/da6/classsjsu_1_1Temt6000x01.html#a4586ea91d786b5b76e5601d158f497a1">sjsu::Temt6000x01</a>, <a class="el" href="../../d0/d27/classsjsu_1_1ParallelGpio.html#a57b36b0c788962cb1de2eda98e220ab6">sjsu::ParallelGpio</a>, <a class="el" href="../../d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html#ac142a0af45066f35a5d9faab5443677e">sjsu::msp432p401r::Gpio</a>, <a class="el" href="../../d1/de1/classsjsu_1_1Button.html#a41ad8bad7d71b0ff2e443df55547792a">sjsu::Button</a>, and <a class="el" href="../../dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html#a258897cc60eab6d2dffb26868476cc27">sjsu::stm32f4xx::Gpio</a>.</p>
-
-</div>
-</div>
-<a id="a74f1946eb1ab6ec4a9a22e9eab35dc3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74f1946eb1ab6ec4a9a22e9eab35dc3a">&#9670;&nbsp;</a></span>RequiresConfiguration()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sjsu::Module::RequiresConfiguration </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper function that indicates if this module has not been fully configured and enabled. This will return false if the state of the module is equal to or beyond an enabled state, such as being Enabled, Disabled, or Critical.</p>
-<dl class="section return"><dt>Returns</dt><dd>true - if the module has yet to be enabled. </dd>
-<dd>
-false - if the state is enabled or beyond. </dd></dl>
-
-</div>
-</div>
-<a id="a37e072bfe5762a0220221acc67576b99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37e072bfe5762a0220221acc67576b99">&#9670;&nbsp;</a></span>SetState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::Module::SetState </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a>&#160;</td>
-          <td class="paramname"><em>new_state</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Set the state of the module. In general this is called by the derived class in order to indicate that the module has changed state.</p>
-<p>In general, derived modules should only change the state of the module if something goes wrong, thus typically, derived modules will only move the state of the module to kCritical and thats it.</p>
-<p>Normally, this method should not be called directly from outside of a derived module, but can be used in order to revert or force the state of the module into some other state.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">new_state</td><td>- The new state to set the module to </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a08d12c914915199255dea68344a1fe2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08d12c914915199255dea68344a1fe2e">&#9670;&nbsp;</a></span>SetStateToCritical()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::Module::SetStateToCritical </td>
+          <td class="memname">auto&amp; <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -643,22 +285,56 @@ false - if the state is enabled or beyond. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Helper function that sets the state of this module to Critical.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kCritical. </dd></dl>
+<p>Apply settings as defined by the Settings_t and enable peripheral, device, or system.</p>
+<p>NOTE: <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a> MUST be called before calling any other method in this class or any classes that derive from this class. THIS OR DERIVED OBJECTS. Failure to call this first will result in undefined behavior. Not doing this can result in hard faults when accessing peripherals.</p>
+<p>This method will call <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ae06fdc45e3771fb52e488259d42c2080" title="Every module MUST have an initialize for it operate. ">ModuleInitialize()</a> which will perform the module specific initialization sequence. If <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ae06fdc45e3771fb52e488259d42c2080" title="Every module MUST have an initialize for it operate. ">ModuleInitialize()</a> does not throw an exception, meaning success, then the state of the module will transition to <a class="el" href="../../d0/d6b/namespacesjsu.html#a067d8cdbf9c17173f473fc0b3583c58bab661416dbe99f1eddca1a5547a8bd720">State::kInitialized</a>. Once in the initialized state, this function will not call <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ae06fdc45e3771fb52e488259d42c2080" title="Every module MUST have an initialize for it operate. ">ModuleInitialize()</a> again unless the state is changed to something else.</p>
+<dl class="section return"><dt>Returns</dt><dd>auto&amp; - reference to itself to allow method chaining </dd></dl>
 
 </div>
 </div>
-<a id="a66f68400f5f9e071899171cf95963e2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66f68400f5f9e071899171cf95963e2e">&#9670;&nbsp;</a></span>SetStateToDisabled()</h2>
+<a id="a30c9a986a446b2379b7ff09cc32b5628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30c9a986a446b2379b7ff09cc32b5628">&#9670;&nbsp;</a></span>ModulePowerDown()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void sjsu::Module::SetStateToDisabled </td>
+          <td class="memname">virtual void <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::ModulePowerDown </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>It may not always make sense for every driver to have a power down function so this is not pure virtual. This can be overriden if necessary </p>
+
+<p>Reimplemented in <a class="el" href="../../d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html#a91ebf064092918431f54c3712d8aeb3e">sjsu::lpc40xx::I2c</a>, <a class="el" href="../../dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html#af05e4c87f5cc3aa0b8680a4db0cdb55f">sjsu::lpc40xx::Uart</a>, <a class="el" href="../../da/d39/classsjsu_1_1lpc40xx_1_1Spi.html#adbd16781e94e437eddb161479881b489">sjsu::lpc40xx::Spi</a>, <a class="el" href="../../df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html#adfbc99575a59e878987701924501753e">sjsu::lpc40xx::Pwm</a>, <a class="el" href="../../dd/d4c/classsjsu_1_1lpc40xx_1_1Adc.html#a2f48341079a6a0ab782804aca7dba863">sjsu::lpc40xx::Adc</a>, <a class="el" href="../../db/df9/classsjsu_1_1stm32f10x_1_1Spi.html#a5064df718b39493c58a6e64a283a09c5">sjsu::stm32f10x::Spi</a>, <a class="el" href="../../db/d96/classsjsu_1_1stm32f10x_1_1Pwm.html#aeabf71cbfe40e94695717e80ec15f9a3">sjsu::stm32f10x::Pwm</a>, <a class="el" href="../../d7/da0/classsjsu_1_1Max170343.html#a0d596f0b44354d5f50be9e24981fb6e2">sjsu::Max170343</a>, <a class="el" href="../../d5/d82/classsjsu_1_1Mma8452q.html#a89ccdcda4f44921a85d13637bff8ddbc">sjsu::Mma8452q</a>, <a class="el" href="../../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a25a44d79a3be12fc0bb524c8b155ced5">sjsu::lpc40xx::Eeprom</a>, <a class="el" href="../../d0/d57/classsjsu_1_1GpioCounter.html#a818d1d8759572ddc6506d8be191a7a00">sjsu::GpioCounter</a>, <a class="el" href="../../d6/dde/classsjsu_1_1GraphicalTerminal.html#a2a283711918a1fbd53ca63473c63d28b">sjsu::GraphicalTerminal</a>, and <a class="el" href="../../d6/d14/classsjsu_1_1Mpu6050.html#abb43ee63d02f61054c0d6ca2f692d5b6">sjsu::Mpu6050</a>.</p>
+
+</div>
+</div>
+<a id="a3236b0f1dfab8c820006c7dcaab09a2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3236b0f1dfab8c820006c7dcaab09a2d">&#9670;&nbsp;</a></span>PowerDown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto&amp; <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::PowerDown </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -670,114 +346,28 @@ false - if the state is enabled or beyond. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Helper function that sets the state of this module to Disabled.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kDisabled. </dd></dl>
-
-</div>
-</div>
-<a id="a7b715ea9844383667005702a98209e2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b715ea9844383667005702a98209e2a">&#9670;&nbsp;</a></span>SetStateToEnabled()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::Module::SetStateToEnabled </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper function that sets the state of this module to Enabled.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kEnabled. </dd></dl>
-
-</div>
-</div>
-<a id="af11709a7ddbc703de2a32d68de8204a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af11709a7ddbc703de2a32d68de8204a3">&#9670;&nbsp;</a></span>SetStateToInitialized()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::Module::SetStateToInitialized </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper function that sets the state of this module to Initialized.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kInitialized. </dd></dl>
-
-</div>
-</div>
-<a id="a9001a72b5ff3d8c34baccb5caefe9146"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9001a72b5ff3d8c34baccb5caefe9146">&#9670;&nbsp;</a></span>SetStateToReset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void sjsu::Module::SetStateToReset </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Helper function that sets the state of this module to Reset.</p>
-<dl class="section return"><dt>Returns</dt><dd>true if state is equal to kReset. </dd></dl>
+<p>Will put the module into a powered down state. All submodules used by this module will have their power down be called well. Just like how <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a> calls all <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a> methods of its submodules.</p>
+<p>To get out of this state, <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a> must be called. Many modules do not support a mode of power down and in these cases, a dummy implemenation is called.</p>
+<p>Once in a powered down state, calls to any other methods besides Initialize will result in undefined behaviour.</p>
+<dl class="section return"><dt>Returns</dt><dd>auto&amp; - reference to itself to allow method chaining </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a9f71ac69f51d176b0949f47c564b9f2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f71ac69f51d176b0949f47c564b9f2d">&#9670;&nbsp;</a></span>state_</h2>
+<a id="a8da9c2a91113e8e1327cc3b20c200d9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8da9c2a91113e8e1327cc3b20c200d9f">&#9670;&nbsp;</a></span>settings</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6b">State</a> sjsu::Module::state_ = <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a112d5ca5bc39486088c225ad62685a6bac372b1b54561a3ca533a61adafccfc8b">State::kReset</a></td>
+          <td class="memname">Settings_t <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::settings</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-
-<p>Stores the state of the module. Default state of the module is kReset. </p>
+<p>Publically accessible settings structure used for configuring generic aspects of the module. For example, PWM would have a setting for frequency and UART would have a setting for baud_rate. When the module is initialized the settings are saved into a private variable and can be retrieved via the <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#aad5cf43ef622d78eacea24e754adaffd">CurrentSettings()</a> method. </p>
 
 </div>
 </div>

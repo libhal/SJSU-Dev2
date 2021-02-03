@@ -1,5 +1,5 @@
 <map id="sjsu::Storage" name="sjsu::Storage">
-<area shape="rect" id="node3" href="$dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html" title="sjsu::lpc40xx::Eeprom" alt="" coords="5,155,157,181"/>
-<area shape="rect" id="node4" href="$dc/d5f/classsjsu_1_1Sd.html" title="SD card controller utilizing the SPI peripheral. " alt="" coords="182,155,253,181"/>
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module" alt="" coords="101,5,197,32"/>
+<area shape="rect" id="node3" href="$dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html" title="sjsu::lpc40xx::Eeprom" alt="" coords="5,155,171,181"/>
+<area shape="rect" id="node4" href="$dc/d5f/classsjsu_1_1Sd.html" title="SD card controller utilizing the SPI peripheral. " alt="" coords="195,155,267,181"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="96,5,221,32"/>
 </map>
