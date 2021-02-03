@@ -2,9 +2,9 @@
 
 #include <cstdint>
 
-#include "utility/bit.hpp"
+#include "utility/math/bit.hpp"
 #include "utility/log.hpp"
-#include "utility/units.hpp"
+#include "utility/math/units.hpp"
 
 namespace sjsu
 {

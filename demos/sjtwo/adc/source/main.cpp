@@ -1,10 +1,10 @@
 #include <array>
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/adc.hpp"
+#include "peripherals/lpc40xx/adc.hpp"
 #include "utility/log.hpp"
-#include "utility/map.hpp"
-#include "utility/time.hpp"
+#include "utility/math/map.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

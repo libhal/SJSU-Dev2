@@ -2,9 +2,9 @@
 #include <cstdint>
 #include <string_view>
 
-#include "L1_Peripheral/lpc40xx/uart.hpp"
-#include "L1_Peripheral/stm32f10x/uart.hpp"
-#include "L2_HAL/communication/esp8266.hpp"
+#include "peripherals/lpc40xx/uart.hpp"
+#include "peripherals/stm32f10x/uart.hpp"
+#include "devices/communication/esp8266.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
 

@@ -217,7 +217,7 @@ PLL->CONFIG = bit::Insert(PLL->CONFIG, 0x5, kPllMultiply);
 array of bytes can passed to `bit::StreamExtract()`.
 
 See the
-[sd card](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/library/L2_HAL/memory/sd.hpp)
+[sd card](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/library/devices/memory/sd.hpp)
 implementation source code for an example of its usage.
 
 ## bit::Register & bit::Value Class
@@ -333,6 +333,6 @@ compile time.
 The entire codebase of SJSU-Dev2 uses the bit APIs. Some of the older codes and
 tests still uses direct bit manipulation, but going forward everything will go
 through the bit API. A good place to find usage of the bit APIs are in the
-`L1_Peripheral/<insert mcu name here>` directories. Each MCU implementation of a
+`peripherals/<insert mcu name here>` directories. Each MCU implementation of a
 peripheral will need to perform bit manipulation, thus they are a hot spot its
 usage.

@@ -36,7 +36,7 @@ PLATFORM = lpc40xx
 #
 # Example of adding a test from the library folder:
 #
-#    TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/adc_test.cpp
+#    TESTS += $(LIBRARY_DIR)/peripherals/test/adc_test.cpp
 #
 
 # =============================
@@ -80,6 +80,6 @@ PLATFORM = lpc40xx
 # Override the path to the Openocd debugger configuration file
 # Example:
 #
-#    OPENOCD_CONFIG = $(LIBRARY_DIR)/L0_Platform/lpc40xx/sjone.cfg
+#    OPENOCD_CONFIG = $(LIBRARY_DIR)/platforms/lpc40xx/sjone.cfg
 #
 OPENOCD_CONFIG :=

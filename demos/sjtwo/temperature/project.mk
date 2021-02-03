@@ -1,3 +1,3 @@
 TESTS += \
-  $(LIBRARY_DIR)/L2_HAL/sensors/environment/temperature/test/si7060_test.cpp
+  $(LIBRARY_DIR)/devices/sensors/environment/temperature/test/si7060_test.cpp
 PLATFORM = lpc40xx

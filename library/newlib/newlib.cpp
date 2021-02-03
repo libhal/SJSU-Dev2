@@ -8,7 +8,7 @@
 #include <cstdio>
 #include <cstring>
 
-#include "L0_Platform/ram.hpp"
+#include "platforms/utility/ram.hpp"
 #include "third_party/semihost/trace.h"
 #include "utility/ansi_terminal_codes.hpp"
 #include "utility/error_handling.hpp"

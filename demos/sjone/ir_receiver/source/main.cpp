@@ -1,7 +1,7 @@
-#include "L1_Peripheral/lpc17xx/system_controller.hpp"
-#include "L1_Peripheral/lpc17xx/pulse_capture.hpp"
-#include "L1_Peripheral/lpc17xx/timer.hpp"
-#include "L2_HAL/communication/tsop752.hpp"
+#include "peripherals/lpc17xx/system_controller.hpp"
+#include "peripherals/lpc17xx/pulse_capture.hpp"
+#include "peripherals/lpc17xx/timer.hpp"
+#include "devices/communication/tsop752.hpp"
 #include "utility/infrared_algorithms.hpp"
 #include "utility/log.hpp"
 

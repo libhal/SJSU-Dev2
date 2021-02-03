@@ -1,7 +1,7 @@
-#include "L1_Peripheral/lpc40xx/pwm.hpp"
-#include "L2_HAL/audio/buzzer.hpp"
+#include "peripherals/lpc40xx/pwm.hpp"
+#include "devices/audio/buzzer.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

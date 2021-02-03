@@ -1,7 +1,7 @@
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
-#include "L2_HAL/sensors/environment/temperature/si7060.hpp"
+#include "peripherals/lpc40xx/i2c.hpp"
+#include "devices/sensors/environment/temperature/si7060.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

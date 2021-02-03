@@ -1,7 +1,7 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/pwm.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/pwm.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

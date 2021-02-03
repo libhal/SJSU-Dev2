@@ -1,6 +1,6 @@
-#include "L1_Peripheral/stm32f10x/uart.hpp"
+#include "peripherals/stm32f10x/uart.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

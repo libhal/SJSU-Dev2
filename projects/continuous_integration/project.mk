@@ -5,7 +5,7 @@ PLATFORM = lpc40xx
 # ==============================================================================
 
 # Unity Files
-TESTS += $(LIBRARY_DIR)/L1_Peripheral/test/unity_test.cpp
-TESTS += $(LIBRARY_DIR)/L2_HAL/test/unity_test.cpp
-TESTS += $(LIBRARY_DIR)/L3_Application/test/unity_test.cpp
+TESTS += $(LIBRARY_DIR)/peripherals/test/unity_test.cpp
+TESTS += $(LIBRARY_DIR)/devices/test/unity_test.cpp
+TESTS += $(LIBRARY_DIR)/systems/test/unity_test.cpp
 TESTS += $(LIBRARY_DIR)/utility/test/unity_test.cpp

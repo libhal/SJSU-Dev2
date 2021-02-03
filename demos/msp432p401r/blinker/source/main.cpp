@@ -1,9 +1,9 @@
 #include <cstdio>
 
-#include "L0_Platform/msp432p401r/msp432p401r.h"
-#include "L1_Peripheral/msp432p401r/gpio.hpp"
+#include "platforms/targets/msp432p401r/msp432p401r.h"
+#include "peripherals/msp432p401r/gpio.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

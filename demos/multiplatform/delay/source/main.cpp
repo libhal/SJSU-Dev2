@@ -2,7 +2,7 @@
 #include <cstdint>
 
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

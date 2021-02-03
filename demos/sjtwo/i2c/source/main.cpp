@@ -1,6 +1,6 @@
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
+#include "peripherals/lpc40xx/i2c.hpp"
 #include "utility/log.hpp"
 
 constexpr uint8_t kFirstI2cAddress      = 0x08;

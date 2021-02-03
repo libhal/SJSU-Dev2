@@ -1,4 +1,4 @@
-#include "L1_Peripheral/stm32f10x/spi.hpp"
+#include "peripherals/stm32f10x/spi.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
 

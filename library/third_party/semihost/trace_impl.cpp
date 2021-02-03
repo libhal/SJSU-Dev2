@@ -18,7 +18,7 @@
 #endif
 
 #include "trace.h"
-#include "L0_Platform/lpc40xx/LPC40xx.h"
+#include "platforms/targets/lpc40xx/LPC40xx.h"
 
 using ::sjsu::cortex::DWT_Type;
 using ::sjsu::cortex::CoreDebug_Type;

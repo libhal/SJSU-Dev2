@@ -14,13 +14,13 @@
     - [void Start() override](#void-start-override)
     - [void InitializeAllTasks() override](#void-initializealltasks-override)
   - [Task Execution](#task-execution)
-    - [static void RunTask(void * task_pointer)](#static-void-runtaskvoid--taskpointer)
+    - [static void RunTask(void * task_pointer)](#static-void-runtaskvoid--task_pointer)
   - [Retrieving a Task](#retrieving-a-task)
-    - [TaskInterface * GetTask(const char * task_name) override](#taskinterface--gettaskconst-char--taskname-override)
-    - [uint8_t GetTaskIndex(const char * task_name) const override](#uint8t-gettaskindexconst-char--taskname-const-override)
+    - [TaskInterface * GetTask(const char * task_name) override](#taskinterface--gettaskconst-char--task_name-override)
+    - [uint8_t GetTaskIndex(const char * task_name) const override](#uint8_t-gettaskindexconst-char--task_name-const-override)
     - [TaskInterface * const * GetAllTasks() const override](#taskinterface--const--getalltasks-const-override)
   - [Removing a Task from the Scheduler](#removing-a-task-from-the-scheduler)
-    - [void RemoveTask(const char * task_name) override](#void-removetaskconst-char--taskname-override)
+    - [void RemoveTask(const char * task_name) override](#void-removetaskconst-char--task_name-override)
 - [Caveats](#caveats)
 - [Future Advancements](#future-advancements)
 - [Testing Plan](#testing-plan)
@@ -33,7 +33,7 @@
   - [Demonstration Project](#demonstration-project)
 
 # Location
-`L3 Application`
+`systems`
 
 # Type
 Implementation

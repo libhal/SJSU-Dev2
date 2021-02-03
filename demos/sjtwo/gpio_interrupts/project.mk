@@ -1,3 +1,3 @@
 
-TESTS += $(LIBRARY_DIR)/L1_Peripheral/lpc40xx/test/gpio_test.cpp
+TESTS += $(LIBRARY_DIR)/peripherals/lpc40xx/test/gpio_test.cpp
 PLATFORM = lpc40xx

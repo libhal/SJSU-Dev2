@@ -1,6 +1,6 @@
-#include "L1_Peripheral/lpc17xx/adc.hpp"
-#include "L1_Peripheral/lpc17xx/system_controller.hpp"
-#include "L2_HAL/sensors/environment/light/temt6000x01.hpp"
+#include "peripherals/lpc17xx/adc.hpp"
+#include "peripherals/lpc17xx/system_controller.hpp"
+#include "devices/sensors/environment/light/temt6000x01.hpp"
 #include "utility/log.hpp"
 
 int main()

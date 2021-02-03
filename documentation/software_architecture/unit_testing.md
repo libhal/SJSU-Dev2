@@ -23,7 +23,7 @@ If your project directory does not have a `test` folder, create one.
 !!! Error
     DO NOT IMPLEMENT a main function anywhere in your tests. This will cause
     linking issues since main is already defined for tests in the
-    `firmware/library/L4_Testing/main_test.cpp` file.
+    `library/testing/main_test.cpp` file.
 
 ## Adding Unit Tests Files to Project Unit Tests
 

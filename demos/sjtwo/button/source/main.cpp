@@ -1,8 +1,8 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/boards/sjtwo.hpp"
-#include "L2_HAL/switches/button.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/boards/sjtwo.hpp"
+#include "devices/switches/button.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

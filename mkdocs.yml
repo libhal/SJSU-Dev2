@@ -45,23 +45,23 @@ nav:
   - How To Contribute:
     - 'contributing/philosophy.md'
     - 'contributing/levels.md'
-    - 'contributing/level_guide/L0_platform.md'
-    - 'contributing/level_guide/L1_peripheral.md'
-    - 'contributing/level_guide/L2_hal.md'
-    - 'contributing/level_guide/L3_application.md'
+    - 'contributing/level_guide/platforms.md'
+    - 'contributing/level_guide/peripherals.md'
+    - 'contributing/level_guide/devices.md'
+    - 'contributing/level_guide/systems.md'
     - 'contributing/presubmit-checks.md'
     - 'contributing/style.md'
     - 'contributing/techniques/left-to-right.md'
   - Design Documents:
-    - L0 Platform:
+    - Platforms:
       - 'design_docs/L0/none.md'
-    - L1 Peripheral:
+    - Peripherals:
       - 'design_docs/L1/counter.md'
       - 'design_docs/L1/pin.md'
       - 'design_docs/L1/system_controller.md'
       - System Controllers:
         - 'design_docs/L1/msp432p401r/system_controller.md'
-    - L2 Hardware Abstraction:
+    - Devices:
       - Sensors:
         - 'design_docs/L2/accelerometer.md'
         - Accelerometers Drivers:
@@ -78,7 +78,7 @@ nav:
         - 'design_docs/L2/infrared_receiver_interface.md'
         - Infrared:
           - 'design_docs/L2/tsop752.md'
-    - L3 Application:
+    - Systems:
       - 'design_docs/L3/periodic_scheduler.md'
       - 'design_docs/L3/task_interface.md'
       - 'design_docs/L3/task_scheduler.md'
