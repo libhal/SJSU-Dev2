@@ -1,8 +1,8 @@
 // Digital-to-Analog Demoonstration Main, Designed so that
 // The DAC driver can be demonstrated on an Oscilloscope.
-#include "L1_Peripheral/lpc40xx/dac.hpp"
+#include "peripherals/lpc40xx/dac.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 // Input Number for starting demo
 
 const uint16_t kSineLookup[256] = {

@@ -2,10 +2,10 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/lpc40xx/pin.hpp"
-#include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "utility/bit.hpp"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/lpc40xx/pin.hpp"
+#include "peripherals/lpc40xx/system_controller.hpp"
+#include "utility/math/bit.hpp"
 #include "utility/log.hpp"
 
 int main()

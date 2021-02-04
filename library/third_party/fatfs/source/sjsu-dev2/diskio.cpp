@@ -7,8 +7,8 @@
 #include <tuple>
 
 #include "config.hpp"
-#include "L1_Peripheral/storage.hpp"
-#include "L1_Peripheral/inactive.hpp"
+#include "peripherals/storage.hpp"
+#include "peripherals/inactive.hpp"
 #include "utility/log.hpp"
 #include "utility/debug.hpp"
 #include "utility/error_handling.hpp"

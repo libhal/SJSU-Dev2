@@ -1,9 +1,9 @@
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
-// #include "L2_HAL/sensors/optical/apds9960.hpp"
+#include "peripherals/lpc40xx/i2c.hpp"
+// #include "devices/sensors/optical/apds9960.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main(void)
 {

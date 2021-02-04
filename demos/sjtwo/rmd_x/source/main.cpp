@@ -1,7 +1,7 @@
 #include <algorithm>
 
-#include "L1_Peripheral/lpc40xx/can.hpp"
-#include "L2_HAL/actuators/servo/rmd_x.hpp"
+#include "peripherals/lpc40xx/can.hpp"
+#include "devices/actuators/servo/rmd_x.hpp"
 #include "utility/log.hpp"
 
 int main(void)
@@ -11,7 +11,7 @@ int main(void)
 
   sjsu::LogInfo("Starting RMD-X demo in 5s...");
   sjsu::lpc40xx::Can & can = sjsu::lpc40xx::GetCan<2>();
-  sjsu::StaticAllocator<1024> memory_resource;
+  sjsu::StaticMemoryResource<1024> memory_resource;
   sjsu::CanNetwork can_network(can, &memory_resource);
   sjsu::RmdX rmd_x7(can_network, 0x148);
 

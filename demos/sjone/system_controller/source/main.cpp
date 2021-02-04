@@ -1,7 +1,7 @@
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/lpc17xx/pin.hpp"
-#include "L1_Peripheral/lpc17xx/system_controller.hpp"
-#include "L1_Peripheral/lpc17xx/uart.hpp"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/lpc17xx/pin.hpp"
+#include "peripherals/lpc17xx/system_controller.hpp"
+#include "peripherals/lpc17xx/uart.hpp"
 #include "utility/log.hpp"
 
 int main()

@@ -7,7 +7,7 @@ var searchData=
   ['data_5fduration',['data_duration',['../de/d0d/structsjsu_1_1infrared_1_1PulseDurationConfiguration__t.html#a3fb686a930b8ff5d7491852177fd1771',1,'sjsu::infrared::PulseDurationConfiguration_t']]],
   ['data_5fin',['data_in',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ad09af8f2e92717b00790636207811b22',1,'sjsu::I2c::Transaction_t']]],
   ['data_5fout',['data_out',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#ae29e8896e5b9b209ef11a0679bf68fd7',1,'sjsu::I2c::Transaction_t']]],
-  ['dco',['dco',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a26481b0018be8231ead928662c611dbe',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['dco',['dco',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a11daed7d495d941d53e9e489d7de1463',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['default_5fdac_5fpin',['default_dac_pin',['../d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html#a962349f882f7d723c2b4e8e6ad92d1c1',1,'sjsu::lpc40xx::Dac']]],
   ['delay_5ftime',['delay_time',['../d7/d7b/structsjsu_1_1testing_1_1PollVerificationParameter__t.html#aefa4b00cb7735465885774c6c382e0d2',1,'sjsu::testing::PollVerificationParameter_t']]],
   ['delay_5ftime_5f',['delay_time_',['../d3/d19/classsjsu_1_1rtos_1_1Task.html#a5be244105265971ef530ad246b030c7b',1,'sjsu::rtos::Task']]],

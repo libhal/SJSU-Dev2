@@ -1,11 +1,11 @@
 #include <array>
 #include <cstdio>
 
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/stm32f10x/gpio.hpp"
-#include "L2_HAL/switches/button.hpp"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/stm32f10x/gpio.hpp"
+#include "devices/switches/button.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

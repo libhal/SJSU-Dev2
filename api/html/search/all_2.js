@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['backup',['backup',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a512f59bcb4848104b0775612b8893e50',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['backup',['backup',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#aab4a3a080043cb5a156cfee97d35d09e',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['basenamelength',['BasenameLength',['../d0/d6b/namespacesjsu.html#a9ead998e2ac62523001932e91dbd793d',1,'sjsu']]],
   ['batterycharge',['BatteryCharge',['../de/dc8/classsjsu_1_1BatteryCharge.html',1,'sjsu']]],
   ['baud_5frate',['baud_rate',['../de/d83/structsjsu_1_1CanSettings__t.html#ae6ae37c9732c24def5a189440444d73d',1,'sjsu::CanSettings_t::baud_rate()'],['../da/d27/structsjsu_1_1UartSettings__t.html#a87a2b885151c23ade73a625cd68eea87',1,'sjsu::UartSettings_t::baud_rate()']]],
@@ -10,7 +10,7 @@ var searchData=
   ['bit_2ehpp',['bit.hpp',['../d3/d51/bit_8hpp.html',1,'']]],
   ['bitlimits',['BitLimits',['../d4/d0e/classsjsu_1_1BitLimits.html',1,'sjsu']]],
   ['blue',['blue',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a933905599c7cca0661282cc7109a7d1f',1,'sjsu::PixelDisplay::Color_t']]],
-  ['buffer',['buffer',['../db/d4d/structsjsu_1_1CommandList__t.html#a071fea024aa663b7477b58b3c3c2d808',1,'sjsu::CommandList_t::buffer()'],['../d4/d59/structsjsu_1_1TerminalCache__t.html#a972656f858ee95a5a8174172d7ecca51',1,'sjsu::TerminalCache_t::buffer()']]],
+  ['buffer',['buffer',['../d4/d59/structsjsu_1_1TerminalCache__t.html#a972656f858ee95a5a8174172d7ecca51',1,'sjsu::TerminalCache_t::buffer()'],['../db/d4d/structsjsu_1_1CommandList__t.html#a5b053e9bb816e225d5467fad449d5230',1,'sjsu::CommandList_t::buffer()']]],
   ['bufferstatus',['BufferStatus',['../d5/dff/structsjsu_1_1lpc40xx_1_1Can_1_1BufferStatus.html',1,'sjsu::lpc40xx::Can']]],
   ['bus_5ft',['Bus_t',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html',1,'sjsu::lpc40xx::Spi']]],
   ['busmode',['BusMode',['../d3/d56/classsjsu_1_1St7066u.html#a9a2918722dc21b079dae228d7a3ebc37',1,'sjsu::St7066u']]],

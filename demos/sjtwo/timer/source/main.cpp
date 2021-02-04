@@ -1,7 +1,7 @@
-#include "L1_Peripheral/lpc40xx/timer.hpp"
+#include "peripherals/lpc40xx/timer.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
-#include "utility/units.hpp"
+#include "utility/time/time.hpp"
+#include "utility/math/units.hpp"
 
 // Put whatever functions you want to be triggered within these ISR's
 // and you can use the timer to trigger whatever event you want.

@@ -1,8 +1,8 @@
 var searchData=
 [
   ['mac',['mac',['../d4/d66/structsjsu_1_1WiFi_1_1NetworkConnection__t.html#ac496c58a4c6fe4cd87415b730a993772',1,'sjsu::WiFi::NetworkConnection_t']]],
-  ['main_5foscillator',['main_oscillator',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a5570676973ec583bb4a922a2b5d74608',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t']]],
-  ['master',['master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#abbbb89329f310c3666d1e6329ee428ef',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['main_5foscillator',['main_oscillator',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a72cea8bce2e992c132d257663e84de6e',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t']]],
+  ['master',['master',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a7c55c7b647f8d4ef5a2581b967c7b665',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['max_5fangle',['max_angle',['../d6/d38/structsjsu_1_1RCServoSettings__t.html#ae88216c4c1d9699c231cddc8214463c5',1,'sjsu::RCServoSettings_t']]],
   ['max_5fcpu_5fclock_5frate',['max_cpu_clock_rate',['../d9/d5a/structsjsu_1_1lpc17xx_1_1SystemController_1_1ClockConfiguration__t.html#a262a9463b764059a46f3eadc42af8608',1,'sjsu::lpc17xx::SystemController::ClockConfiguration_t']]],
   ['max_5fpulse',['max_pulse',['../d6/d38/structsjsu_1_1RCServoSettings__t.html#ad4cf84337a7376b85be612794cf6e329',1,'sjsu::RCServoSettings_t']]],

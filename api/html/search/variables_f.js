@@ -3,7 +3,7 @@ var searchData=
   ['rd_5ffunction_5fcode',['rd_function_code',['../da/d2f/structsjsu_1_1lpc40xx_1_1Can_1_1Port__t.html#aa2db278436e6534ad5856df74ca20afe',1,'sjsu::lpc40xx::Can::Port_t']]],
   ['rd_5fpin',['rd_pin',['../da/d2f/structsjsu_1_1lpc40xx_1_1Can_1_1Port__t.html#a5f94d3142cb48a64dddfedae8f8a807d',1,'sjsu::lpc40xx::Can::Port_t']]],
   ['red',['red',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a596009e322e1a7fbb2f28838bbaf390c',1,'sjsu::PixelDisplay::Color_t']]],
-  ['reference',['reference',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#ab5ed5f2f85c80efe07c3dad51dd7cc94',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
+  ['reference',['reference',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a628da3524009e0e877e03f4a5e12cf18',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['reference_5fvoltage',['reference_voltage',['../de/d78/structsjsu_1_1AdcSettings__t.html#a4b771badb948f8d229bf39e3fe2912ea',1,'sjsu::AdcSettings_t']]],
   ['register_5faddress',['register_address',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html#a0668c341fd35eac915345585e558c4c1',1,'sjsu::I2cCommand::Arguments_t']]],
   ['register_5fmatrix',['register_matrix',['../d3/d66/structsjsu_1_1lpc40xx_1_1Pin_1_1PinMap__t.html#a24f9558dd4d59675b8aa5cbb69c25943',1,'sjsu::lpc40xx::Pin::PinMap_t']]],
@@ -12,7 +12,7 @@ var searchData=
   ['repeated',['repeated',['../dc/d00/structsjsu_1_1I2c_1_1Transaction__t.html#adc0985997e4b61df23608c071b2422e7',1,'sjsu::I2c::Transaction_t']]],
   ['resistor',['resistor',['../dc/d60/structsjsu_1_1PinSettings__t.html#a881956aa719e90a31bda8d47b3275af2',1,'sjsu::PinSettings_t']]],
   ['resistor_5fmap',['resistor_map',['../d9/d82/classsjsu_1_1lpc17xx_1_1Pin.html#af61d2da32f1f3363c10d6c8b2204bcd9',1,'sjsu::lpc17xx::Pin']]],
-  ['rtc',['rtc',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a000a3ede9415ca5e9a7ff039c278fae5',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
+  ['rtc',['rtc',['../d2/d8e/structsjsu_1_1stm32f10x_1_1SystemController_1_1ClockConfiguration.html#a628ce9da69e206c9ca3c6a43f748aeb5',1,'sjsu::stm32f10x::SystemController::ClockConfiguration']]],
   ['run_5fcount_5f',['run_count_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#a2a52810dad462e3fff1c2f9d9e33b102',1,'sjsu::rtos::PeriodicTask']]],
   ['rx',['rx',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#aaaa69bc3e6fa8473bfe0dcf2ab2305c8',1,'sjsu::lpc40xx::Uart::Port_t::rx()'],['../d6/d49/structsjsu_1_1stm32f10x_1_1UartBase_1_1Port__t.html#a72aa23acc98c192033e0d8fb2ffbd5ed',1,'sjsu::stm32f10x::UartBase::Port_t::rx()']]],
   ['rx_5ffunction_5fid',['rx_function_id',['../d2/df7/structsjsu_1_1lpc40xx_1_1Uart_1_1Port__t.html#a9430e0d1d6216f3f7b6ddfb82096b757',1,'sjsu::lpc40xx::Uart::Port_t']]]

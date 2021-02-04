@@ -1,4 +1,4 @@
-#include "L1_Peripheral/stm32f10x/gpio.hpp"
+#include "peripherals/stm32f10x/gpio.hpp"
 #include "utility/log.hpp"
 
 int main()

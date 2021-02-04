@@ -1,7 +1,7 @@
 // DO NOT MODIFY THIS PROJECT OR FILE!
 // Copy this folder and modify that copied project folder.
 
-#include "L0_Platform/startup.hpp"
+#include "platforms/utility/startup.hpp"
 
 namespace sjsu
 {

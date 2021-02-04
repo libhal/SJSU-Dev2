@@ -1,7 +1,7 @@
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/pulse_capture.hpp"
-#include "L1_Peripheral/lpc40xx/pwm.hpp"
+#include "peripherals/lpc40xx/pulse_capture.hpp"
+#include "peripherals/lpc40xx/pwm.hpp"
 
 uint32_t previous_count;
 uint32_t current_count;

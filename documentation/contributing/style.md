@@ -193,7 +193,7 @@ use the units library see:
 Prefer an interface like:
 
 ```c++
-#include "utility/units.hpp"
+#include "utility/math/units.hpp"
 
 class DistanceSensor
 {

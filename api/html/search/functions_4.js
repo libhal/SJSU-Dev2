@@ -12,7 +12,7 @@ var searchData=
   ['endianness',['Endianness',['../de/d15/structsjsu_1_1MemoryAccessProtocol_1_1Specification__t.html#acebba3cf8c6e52c484f17ef05c2e368d',1,'sjsu::MemoryAccessProtocol::Specification_t']]],
   ['entercrisis',['EnterCrisis',['../d1/ded/classsjsu_1_1Module.html#a1844ee16f0723a56c2d55d40aac4bbe6',1,'sjsu::Module']]],
   ['equal',['Equal',['../d0/d6b/namespacesjsu.html#a05556e191e85c2afe44560390c8fef35',1,'sjsu']]],
-  ['erase',['Erase',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#aa697513d7c975c9ae77f4858d9e27ecf',1,'sjsu::lpc40xx::Eeprom::Erase()'],['../dc/da6/classsjsu_1_1Storage.html#a69fa013742f0f8e1af5c88920eab5d2c',1,'sjsu::Storage::Erase()'],['../dc/d5f/classsjsu_1_1Sd.html#abc34d4b66162ddbd39a6f391d229ea58',1,'sjsu::Sd::Erase()']]],
+  ['erase',['Erase',['../dc/d5f/classsjsu_1_1Sd.html#abc34d4b66162ddbd39a6f391d229ea58',1,'sjsu::Sd::Erase()'],['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#aa697513d7c975c9ae77f4858d9e27ecf',1,'sjsu::lpc40xx::Eeprom::Erase()'],['../dc/da6/classsjsu_1_1Storage.html#a69fa013742f0f8e1af5c88920eab5d2c',1,'sjsu::Storage::Erase()']]],
   ['esp8266',['Esp8266',['../dc/d4f/classsjsu_1_1Esp8266.html#a011f424bc5fc91316a5aa9c98423d460',1,'sjsu::Esp8266']]],
   ['esp8266internetsocket',['Esp8266InternetSocket',['../d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html#a864e0487a332bd9b7e3ef38c27ac3518',1,'sjsu::Esp8266::Esp8266InternetSocket']]],
   ['esp8266wifi',['Esp8266WiFi',['../d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html#ae082f19f501ed7ee7738ebab1f118a78',1,'sjsu::Esp8266::Esp8266WiFi']]],

@@ -1,16 +1,16 @@
 #include <cstdint>
 #include <iterator>
 
-#include "L0_Platform/lpc40xx/LPC40xx.h"
-#include "L0_Platform/ram.hpp"
-#include "L1_Peripheral/interrupt.hpp"
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/watchdog.hpp"
-#include "L3_Application/task_scheduler.hpp"
+#include "platforms/targets/lpc40xx/LPC40xx.h"
+#include "platforms/utility/ram.hpp"
+#include "peripherals/interrupt.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/watchdog.hpp"
+#include "utility/rtos/freertos/task_scheduler.hpp"
 #include "third_party/units/units.h"
 #include "utility/log.hpp"
-#include "utility/rtos.hpp"
-#include "utility/time.hpp"
+#include "utility/rtos/freertos/rtos.hpp"
+#include "utility/time/time.hpp"
 
 sjsu::lpc40xx::Watchdog watchdog;
 

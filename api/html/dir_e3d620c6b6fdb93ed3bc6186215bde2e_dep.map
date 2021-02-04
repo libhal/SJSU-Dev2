@@ -1,11 +1,11 @@
 <map id="/home/runner/work/SJSU&#45;Dev2/SJSU&#45;Dev2/library" name="/home/runner/work/SJSU&#45;Dev2/SJSU&#45;Dev2/library">
-<area shape="rect" id="node2" href="dir_2bf854a3d102de3a4799cdc41323fe3c.html" title="L1_Peripheral" alt="" coords="475,27,586,75"/>
-<area shape="rect" id="node7" href="dir_e22535da68eb65b6fc818b619b379434.html" title="utility" alt="" coords="436,123,508,171"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000001_000035.html" title="21" alt="" coords="495,104,512,118"/>
-<area shape="rect" id="node3" href="dir_841ee1dd7dc6c6192335cfd1419c2b84.html" title="L2_HAL" alt="" coords="379,27,451,75"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000008_000035.html" title="6" alt="" coords="451,95,460,110"/>
-<area shape="rect" id="node4" href="dir_eefe77f73173b22a142efb4ef79a1f8f.html" title="L3_Application" alt="" coords="237,27,355,75"/>
-<area shape="rect" id="node5" href="dir_20b2c25fc8303a03b983c8d1836b675d.html" title="L4_Testing" alt="" coords="123,27,213,75"/>
-<area shape="rect" id="node6" href="dir_182f869e3157fd4ae3e53e12c2a9ca39.html" title="newlib" alt="" coords="27,27,99,75"/>
-<area shape="rect" id="clust1" href="dir_e3d620c6b6fdb93ed3bc6186215bde2e.html" alt="" coords="16,16,693,181"/>
+<area shape="rect" id="node2" href="dir_f133a4c9d884916ca1f0688c13a94fdf.html" title="devices" alt="" coords="440,27,512,75"/>
+<area shape="rect" id="node7" href="dir_e22535da68eb65b6fc818b619b379434.html" title="utility" alt="" coords="337,123,409,171"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000001_000035.html" title="6" alt="" coords="414,109,423,124"/>
+<area shape="rect" id="node3" href="dir_182f869e3157fd4ae3e53e12c2a9ca39.html" title="newlib" alt="" coords="344,27,416,75"/>
+<area shape="rect" id="node4" href="dir_edc3d702f53a9662a79685869310f1b7.html" title="peripherals" alt="" coords="225,27,319,75"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000025_000035.html" title="21" alt="" coords="332,97,349,111"/>
+<area shape="rect" id="node5" href="dir_3eeff65defdd993fe73053c02e778762.html" title="systems" alt="" coords="123,27,200,75"/>
+<area shape="rect" id="node6" href="dir_ea8805c684a760b7ab5cd9ba5e9b35fb.html" title="testing" alt="" coords="27,27,99,75"/>
+<area shape="rect" id="clust1" href="dir_e3d620c6b6fdb93ed3bc6186215bde2e.html" alt="" coords="16,16,619,181"/>
 </map>

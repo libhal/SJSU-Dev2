@@ -86,8 +86,8 @@ else
 }
 ```
 
-## Phase 3: Pass references to L2_HAL and L3_Applications objects if any
-If you are passing the L1 peripherals to L2 HALS then this phase is the time to
+## Phase 3: Pass references to devices and systems objects if any
+If you are passing the L1 peripherals to devicesS then this phase is the time to
 do it. This phase is outside of the `if constexpr` block and is where you list
 and construct every hardware abstraction. Same goes for application level
 objects. A small example below

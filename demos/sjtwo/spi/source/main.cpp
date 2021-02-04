@@ -1,5 +1,5 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/spi.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/spi.hpp"
 #include "utility/log.hpp"
 
 int main()

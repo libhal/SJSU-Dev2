@@ -2,10 +2,10 @@
 #include <cstdint>
 #include <string_view>
 
-#include "L2_HAL/boards/sjtwo.hpp"
-#include "L3_Application/graphical_terminal.hpp"
+#include "devices/boards/sjtwo.hpp"
+#include "systems/graphics/graphical_terminal.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

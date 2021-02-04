@@ -1,8 +1,8 @@
 #include <cstdio>
 
-#include "L1_Peripheral/stm32f10x/gpio.hpp"
+#include "peripherals/stm32f10x/gpio.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {

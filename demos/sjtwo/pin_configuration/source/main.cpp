@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "L1_Peripheral/lpc40xx/pin.hpp"
+#include "peripherals/lpc40xx/pin.hpp"
 #include "utility/log.hpp"
 
 int main()

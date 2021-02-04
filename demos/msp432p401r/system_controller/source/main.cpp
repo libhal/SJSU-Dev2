@@ -1,13 +1,13 @@
 #include <cstdio>
 
-#include "L0_Platform/msp432p401r/msp432p401r.h"
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/cortex/system_timer.hpp"
-#include "L1_Peripheral/msp432p401r/gpio.hpp"
-#include "L1_Peripheral/msp432p401r/pin.hpp"
-#include "L1_Peripheral/msp432p401r/system_controller.hpp"
+#include "platforms/targets/msp432p401r/msp432p401r.h"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/cortex/system_timer.hpp"
+#include "peripherals/msp432p401r/gpio.hpp"
+#include "peripherals/msp432p401r/pin.hpp"
+#include "peripherals/msp432p401r/system_controller.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 namespace
 {
