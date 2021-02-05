@@ -85,6 +85,8 @@ template <class Settings_t = EmptySettings_t>
 class Module
 {
  public:
+  using SettingsType_t = Settings_t;
+
   static_assert(std::is_copy_constructible_v<Settings_t>,
                 SJ2_ERROR_MESSAGE_DECORATOR(
                     "The settings for this module does not allow for copying. "
@@ -152,6 +154,16 @@ class Module
   auto & EnterCrisis()
   {
     state_ = State::kCritical;
+    return *this;
+  }
+
+  /// Set the state of the module to Initialized. Should only be used by unit
+  /// tests.
+  ///
+  /// @return auto& - reference to itself to allow method chaining
+  auto & UnitTestEnterInitialized()
+  {
+    state_ = State::kInitialized;
     return *this;
   }
 
