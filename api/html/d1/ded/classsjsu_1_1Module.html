@@ -75,6 +75,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="../../dd/d0b/classsjsu_1_1Module-members.html">List of all members</a>  </div>
@@ -95,6 +96,11 @@ Collaboration diagram for sjsu::Module&lt; Settings_t &gt;:</div>
 </map>
 <center><span class="legend">[<a href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ada55592d5eb80fdfd49ce551024355ff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ada55592d5eb80fdfd49ce551024355ff">SettingsType_t</a> = Settings_t</td></tr>
+<tr class="separator:ada55592d5eb80fdfd49ce551024355ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae06fdc45e3771fb52e488259d42c2080"><td class="memItemLeft" align="right" valign="top"><a id="ae06fdc45e3771fb52e488259d42c2080"></a>
@@ -109,6 +115,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="separator:a3236b0f1dfab8c820006c7dcaab09a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1844ee16f0723a56c2d55d40aac4bbe6"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1844ee16f0723a56c2d55d40aac4bbe6">EnterCrisis</a> ()</td></tr>
 <tr class="separator:a1844ee16f0723a56c2d55d40aac4bbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7389fcf4074d647ca19cfb98c30be25"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ab7389fcf4074d647ca19cfb98c30be25">UnitTestEnterInitialized</a> ()</td></tr>
+<tr class="separator:ab7389fcf4074d647ca19cfb98c30be25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad5cf43ef622d78eacea24e754adaffd"><td class="memItemLeft" align="right" valign="top">Settings_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#aad5cf43ef622d78eacea24e754adaffd">CurrentSettings</a> () const</td></tr>
 <tr class="separator:aad5cf43ef622d78eacea24e754adaffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f2a4bfc017b3e9fac6b00042ae71978"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d6b/namespacesjsu.html#a067d8cdbf9c17173f473fc0b3583c58b">State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a4f2a4bfc017b3e9fac6b00042ae71978">GetState</a> () const</td></tr>
@@ -146,7 +154,25 @@ Public Attributes</h2></td></tr>
 class sjsu::Module&lt; Settings_t &gt;</h3>
 
 <p>The basis class for all peripheral, device and system drivers in SJSU-Dev2. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ada55592d5eb80fdfd49ce551024355ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada55592d5eb80fdfd49ce551024355ff">&#9670;&nbsp;</a></span>SettingsType_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::<a class="el" href="../../d1/ded/classsjsu_1_1Module.html#ada55592d5eb80fdfd49ce551024355ff">SettingsType_t</a> =  Settings_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Provides a publicly accessible name to type definition of the module's Settings_t. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae25d68cbc8ebd36ba4296866e964474c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae25d68cbc8ebd36ba4296866e964474c">&#9670;&nbsp;</a></span>Module()</h2>
 
@@ -349,6 +375,35 @@ template&lt;class Settings_t = EmptySettings_t&gt; </div>
 <p>Will put the module into a powered down state. All submodules used by this module will have their power down be called well. Just like how <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a> calls all <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a> methods of its submodules.</p>
 <p>To get out of this state, <a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a1f8a91c8fb087e0afd6aad4021fa0f50">Initialize()</a> must be called. Many modules do not support a mode of power down and in these cases, a dummy implemenation is called.</p>
 <p>Once in a powered down state, calls to any other methods besides Initialize will result in undefined behaviour.</p>
+<dl class="section return"><dt>Returns</dt><dd>auto&amp; - reference to itself to allow method chaining </dd></dl>
+
+</div>
+</div>
+<a id="ab7389fcf4074d647ca19cfb98c30be25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7389fcf4074d647ca19cfb98c30be25">&#9670;&nbsp;</a></span>UnitTestEnterInitialized()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Settings_t = EmptySettings_t&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto&amp; <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module</a>&lt; Settings_t &gt;::UnitTestEnterInitialized </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the state of the module to Initialized. Should only be used by unit tests.</p>
 <dl class="section return"><dt>Returns</dt><dd>auto&amp; - reference to itself to allow method chaining </dd></dl>
 
 </div>

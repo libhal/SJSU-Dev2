@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/d03/structsjsu_1_1MemoryEqualOperator__t.html" title="sjsu::MemoryEqualOperator\l_t\&lt; UartSettings_t \&gt;" alt="" coords="5,5,208,47"/>
-<area shape="rect" id="node2" href="$da/d27/structsjsu_1_1UartSettings__t.html" title="Generic settings for a standard UART peripheral. " alt="" coords="256,13,405,39"/>
+<area shape="rect" id="node1" href="$d1/d03/structsjsu_1_1MemoryEqualOperator__t.html" title="sjsu::MemoryEqualOperator\l_t\&lt; PinSettings_t \&gt;" alt="" coords="5,5,208,47"/>
+<area shape="rect" id="node2" href="$dc/d60/structsjsu_1_1PinSettings__t.html" title="Generic settings for a standard chip&#39;s Pin peripheral. " alt="" coords="256,13,397,39"/>
 </map>

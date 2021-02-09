@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$da/d65/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockEnableRegister.html" title="Namespace containing the bit masks for the Clock Enable Register (CLKEN). " alt="" coords="5,5,228,61"/>
+<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; UartSettings_t \&gt;" alt="" coords="5,31,232,57"/>
+<area shape="rect" id="node2" href="$d0/ddc/classsjsu_1_1Uart.html" title="sjsu::Uart" alt="" coords="280,31,364,57"/>
+<area shape="rect" id="node3" href="$dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html" title="sjsu::lpc40xx::Uart" alt="" coords="438,5,581,32"/>
+<area shape="rect" id="node4" href="$d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="412,56,607,83"/>
+<area shape="rect" id="node5" href="$d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. " alt="" coords="655,49,817,90"/>
 </map>

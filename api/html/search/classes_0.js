@@ -10,5 +10,6 @@ var searchData=
   ['addresslocationprototype_5ft',['AddressLocationPrototype_t',['../d0/d97/structsjsu_1_1MemoryAccessProtocol_1_1AddressLocationPrototype__t.html',1,'sjsu::MemoryAccessProtocol']]],
   ['addressstring_5ft',['AddressString_t',['../d0/de4/structsjsu_1_1I2cCommand_1_1AddressString__t.html',1,'sjsu::I2cCommand']]],
   ['arguments_5ft',['Arguments_t',['../da/dcd/structsjsu_1_1I2cCommand_1_1Arguments__t.html',1,'sjsu::I2cCommand']]],
-  ['armsysteminfocommand',['ArmSystemInfoCommand',['../df/d55/classsjsu_1_1ArmSystemInfoCommand.html',1,'sjsu']]]
+  ['armsysteminfocommand',['ArmSystemInfoCommand',['../df/d55/classsjsu_1_1ArmSystemInfoCommand.html',1,'sjsu']]],
+  ['autoverifyperipheralmemory',['AutoVerifyPeripheralMemory',['../d4/d58/classsjsu_1_1AutoVerifyPeripheralMemory.html',1,'sjsu']]]
 ];

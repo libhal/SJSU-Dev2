@@ -23,7 +23,7 @@ namespace debug
 // =====================================
 // Hidden utility functions for Hexdump
 // =====================================
-inline void PrintCharacterRow(uint8_t * bytes,
+inline void PrintCharacterRow(const uint8_t * bytes,
                               size_t length,
                               char * buffer,
                               int position)
@@ -44,7 +44,7 @@ inline void PrintCharacterRow(uint8_t * bytes,
   buffer[position++] = '\n';
 }
 
-inline int PrintHexBytesRow(uint8_t * bytes,
+inline int PrintHexBytesRow(const uint8_t * bytes,
                             size_t length,
                             char * buffer,
                             int position)
@@ -78,13 +78,6 @@ inline int PrintHexBytesRow(uint8_t * bytes,
 ///   char some_string[] = "Hello World, and Goodbye World!\n";
 ///   // Subtract 1 to ignore null character
 ///   sjsu::debug::Hexdump(some_string, sizeof(some_string) - 1);
-///
-/// Output:
-/*
-  00000000  48 65 6c 6c 6f 20 57 6f  72 6c 64 2c 20 61 6e 64  |Hello World, and|
-  00000010  20 47 6f 6f 64 62 79 65  20 57 6f 72 6c 64 21 0a  | Goodbye World!.|
-  00000020
-*/
 ///
 /// @param address - location to start reading bytes from
 /// @param length - the number of bytes to read from the starting location
@@ -140,6 +133,51 @@ inline void Hexdump(void * address, size_t length)
 
   // Print out the amount of data
   printf("%08zX  \n", length);
+}
+
+/// Generate a string of text that represents a hexdump of any data type.
+///
+/// @tparam Structure - the inferred type of the address.
+/// @param address - address of the structure to be convereted into a hexdumped
+/// array.
+/// @return auto - std::array<char, N> where N is the number characters needed
+/// to represent the hexdump data.
+template <class Structure>
+inline auto HexdumpStructure(const Structure & address)
+{
+  static constexpr size_t kLength = sizeof(Structure);
+  // The number of bytes required to hold a row of hexdump data + newline
+  static constexpr size_t kRowMaximumLength = 79;
+
+  // Define a buffer that will contain the bytes for each row of the hex dump.
+  // +1 to size for NULL CHARACTER.
+  std::array<char, ((kLength + 1) * kRowMaximumLength)> rows;
+
+  // Fill the rows
+  std::fill(rows.begin(), rows.end(), '\0');
+
+  // Convert the void* to a uint8_t* so that the value are interpreted as
+  // numerical bytes.
+  const uint8_t * bytes = reinterpret_cast<const uint8_t *>(&address);
+
+  size_t row_position = 0;
+
+  for (size_t i = 0; i < kLength; i += 16, row_position++)
+  {
+    // Point to the start of the current rows.
+    char * row = &rows[row_position * kRowMaximumLength];
+
+    // Print the starting address position of the row
+    int position = snprintf(row, 11, "%08zX  ", i);  // NOLINT
+
+    // Figure out the number of bytes to display
+    size_t bytes_to_print = (i + 15 > kLength) ? (kLength % 16) : 16;
+
+    position = PrintHexBytesRow(&bytes[i], bytes_to_print, row, position);
+    PrintCharacterRow(&bytes[i], bytes_to_print, row, position);
+  }
+
+  return rows;
 }
 
 /// Only prints hexdump if the log level for the application is above DEBUG

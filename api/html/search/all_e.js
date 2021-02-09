@@ -24,6 +24,7 @@ var searchData=
   ['operator_7c',['operator|',['../d0/d6b/namespacesjsu.html#aaf4826253a08f0cd26782f7cb8328e82',1,'sjsu']]],
   ['operator_7c_3d',['operator|=',['../d0/d6b/namespacesjsu.html#aa59a6263ecd09fc182e449f009022150',1,'sjsu']]],
   ['operator_7e',['operator~',['../d0/d6b/namespacesjsu.html#a90b52aadb06f664413d34a0a8acdbde4',1,'sjsu']]],
+  ['original_5faddress_5f',['original_address_',['../d4/d58/classsjsu_1_1AutoVerifyPeripheralMemory.html#a7372bf0d87128ac66a99bbaaf21ac06b',1,'sjsu::AutoVerifyPeripheralMemory']]],
   ['oscillator',['Oscillator',['../d8/d2e/classsjsu_1_1lpc17xx_1_1SystemController.html#a9c849274116aa0b58ce80f712b6a31a4',1,'sjsu::lpc17xx::SystemController::Oscillator()'],['../dc/d6f/classsjsu_1_1msp432p401r_1_1SystemController.html#a972984247412665055486d10b60c4d4d',1,'sjsu::msp432p401r::SystemController::Oscillator()']]],
   ['oscillatorregister',['OscillatorRegister',['../de/dc4/structsjsu_1_1lpc40xx_1_1SystemController_1_1OscillatorRegister.html',1,'sjsu::lpc40xx::SystemController']]],
   ['oscillatorsource',['OscillatorSource',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a965cc6bc2b1e06c754cdaacc234ba3ca',1,'sjsu::lpc40xx::SystemController']]],

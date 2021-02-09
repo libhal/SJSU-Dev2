@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['taskfunction',['TaskFunction',['../de/d24/classsjsu_1_1rtos_1_1PeriodicTaskInterface.html#a6486fbda098337c90c9c794601b41ad3',1,'sjsu::rtos::PeriodicTaskInterface']]]
+  ['settingstype_5ft',['SettingsType_t',['../d1/ded/classsjsu_1_1Module.html#ada55592d5eb80fdfd49ce551024355ff',1,'sjsu::Module']]]
 ];

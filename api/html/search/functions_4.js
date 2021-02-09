@@ -17,5 +17,7 @@ var searchData=
   ['esp8266internetsocket',['Esp8266InternetSocket',['../d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html#a864e0487a332bd9b7e3ef38c27ac3518',1,'sjsu::Esp8266::Esp8266InternetSocket']]],
   ['esp8266wifi',['Esp8266WiFi',['../d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html#ae082f19f501ed7ee7738ebab1f118a78',1,'sjsu::Esp8266::Esp8266WiFi']]],
   ['exception',['Exception',['../d1/dfd/classsjsu_1_1Exception.html#ac3b80c393d548a783344ee2bb4e3bcea',1,'sjsu::Exception']]],
+  ['expected',['Expected',['../d4/d58/classsjsu_1_1AutoVerifyPeripheralMemory.html#adbcfcd1c4f2b7cb2cfa69ef9045f8aae',1,'sjsu::AutoVerifyPeripheralMemory']]],
+  ['expectedregister',['ExpectedRegister',['../d4/d58/classsjsu_1_1AutoVerifyPeripheralMemory.html#a8634f2f78c978df0d5002e6fe8a40035',1,'sjsu::AutoVerifyPeripheralMemory']]],
   ['extract',['Extract',['../dd/dbe/classsjsu_1_1bit_1_1Register.html#a8825dd7dea15b937476425c8bdaf0763',1,'sjsu::bit::Register::Extract()'],['../d3/d51/bit_8hpp.html#ad3aa0e093d9b5bc0fa7c5ece35dfc451',1,'sjsu::bit::Extract(T target, uint32_t position, uint32_t width=1)'],['../d3/d51/bit_8hpp.html#abc8c0825b298b93d06922e5e0cc44556',1,'sjsu::bit::Extract(T target, Mask bitmask)']]]
 ];

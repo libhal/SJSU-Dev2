@@ -9,6 +9,7 @@ var searchData=
   ['error',['error',['../df/d50/structsjsu_1_1Sd_1_1CsdBuffer__t.html#ae363094238eb7d0e25bbe68e6fe9f29d',1,'sjsu::Sd::CsdBuffer_t']]],
   ['error_5fcode',['error_code',['../df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html#abf9afdcdca666d6c6858de0489de5a97',1,'sjsu::lpc40xx::Can::FrameError_t']]],
   ['error_5fmessage',['error_message',['../df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html#af58c9a61eaace1cd40486efb728e2cad',1,'sjsu::lpc40xx::Can::FrameError_t']]],
+  ['expected_5fmemory_5f',['expected_memory_',['../d4/d58/classsjsu_1_1AutoVerifyPeripheralMemory.html#a3de6a4a1cfef05d06cbfb5607b147a93',1,'sjsu::AutoVerifyPeripheralMemory']]],
   ['external_5finterrupt',['external_interrupt',['../dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html#ae26e2a1438bd2888600eb8bbf5da733a',1,'sjsu::stm32f10x::Gpio']]],
   ['external_5foscillator_5ffrequency',['external_oscillator_frequency',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#a5c1e4b97a9cb6ed35c6b218d7e5e3f98',1,'sjsu::lpc40xx::SystemController::ClockConfiguration']]]
 ];

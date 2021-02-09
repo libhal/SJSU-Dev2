@@ -85,6 +85,12 @@ template <class Settings_t = EmptySettings_t>
 class Module
 {
  public:
+  /// Provides a publicly accessible name to type definition of the module's
+  /// Settings_t.
+  using SettingsType_t = Settings_t;
+
+  // Compile time check to ensure that the Settings_t object is copyable,
+  // because otherwise the settings after initialization could not be saved.
   static_assert(std::is_copy_constructible_v<Settings_t>,
                 SJ2_ERROR_MESSAGE_DECORATOR(
                     "The settings for this module does not allow for copying. "
@@ -152,6 +158,16 @@ class Module
   auto & EnterCrisis()
   {
     state_ = State::kCritical;
+    return *this;
+  }
+
+  /// Set the state of the module to Initialized. Should only be used by unit
+  /// tests.
+  ///
+  /// @return auto& - reference to itself to allow method chaining
+  auto & UnitTestEnterInitialized()
+  {
+    state_ = State::kInitialized;
     return *this;
   }
 

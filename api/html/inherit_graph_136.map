@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html" title="sjsu::msp432p401r::\lSystemController::ClockConfiguration_t" alt="" coords="5,5,284,47"/>
+<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; SystemTimer\lSettings_t \&gt;" alt="" coords="5,5,211,47"/>
+<area shape="rect" id="node2" href="$de/d0c/classsjsu_1_1SystemTimer.html" title="sjsu::SystemTimer" alt="" coords="259,13,401,39"/>
+<area shape="rect" id="node3" href="$d2/d4c/classsjsu_1_1cortex_1_1SystemTimer.html" title="sjsu::cortex::SystemTimer" alt="" coords="449,13,641,39"/>
 </map>
