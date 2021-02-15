@@ -47,7 +47,7 @@ TEST_CASE("Testing lpc40xx adc")
   Adc test_subject0(kMockChannel0);
   Adc test_subject1(kMockChannel1);
 
-  AutoVerifyPeripheralMemory mock_peripheral(&Adc::adc_base);
+  AutoVerifyPeripheralMemory mock_peripheral(&Adc::adc_base, "adc_peripheral");
 
   SECTION("Initialize()")
   {

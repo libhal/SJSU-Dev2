@@ -61,8 +61,10 @@ class AutoVerifyPeripheralMemory
   /// driver. This will save the previous peripheral address, replace it with
   /// the mock memory, and on destruction of the class, will return the
   /// peripheral memory pointer back to its original address.
-  explicit AutoVerifyPeripheralMemory(Peripheral ** peripheral_address)
-      : peripheral_address_(peripheral_address),
+  explicit AutoVerifyPeripheralMemory(Peripheral ** peripheral_address,
+                                      const char * name = "peripheral")
+      : name_(name),
+        peripheral_address_(peripheral_address),
         original_address_(*peripheral_address),
         mock_memory_{},
         expected_memory_{}
@@ -82,6 +84,17 @@ class AutoVerifyPeripheralMemory
   Peripheral * Mock()
   {
     return &mock_memory_;
+  }
+
+  /// @return a bit::Register to a member within the mock memory. Use this
+  /// to setup the exected results of the memory after a function has been
+  /// called.
+  template <typename PeripheralMemoryType>
+  bit::Register<PeripheralMemoryType> MockRegister(
+      volatile PeripheralMemoryType Peripheral::*member)
+  {
+    bit::Register mocked_register(&(mock_memory_.*member));
+    return mocked_register;
   }
 
   /// @return a pointer to the expected memory. Use this to setup the exected
@@ -121,6 +134,7 @@ class AutoVerifyPeripheralMemory
     int memory_compare =
         memcmp(&mock_memory_, &expected_memory_, sizeof(mock_memory_));
 
+    INFO("Name: " << name_);
     INFO("Expected: \n" << HexDumpObject(expected_memory_));
     INFO("Actual: \n" << HexDumpObject(mock_memory_));
 
@@ -133,6 +147,8 @@ class AutoVerifyPeripheralMemory
   }
 
  protected:
+  /// Name of the peripheral verification object.
+  const char * name_;
   /// Address of the driver's address pointer
   Peripheral ** peripheral_address_;
   /// The original address pointed to by the peripheral pointer
