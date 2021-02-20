@@ -2,9 +2,9 @@
 #include <cstdint>
 #include <string_view>
 
-#include "L1_Peripheral/lpc40xx/uart.hpp"
-#include "L1_Peripheral/stm32f10x/uart.hpp"
-#include "L2_HAL/communication/esp8266.hpp"
+#include "peripherals/lpc40xx/uart.hpp"
+#include "peripherals/stm32f10x/uart.hpp"
+#include "devices/communication/esp8266.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
 
@@ -29,15 +29,14 @@ int main()
   {
     sjsu::LogInfo("Current Platform STM32F10x...");
     // Giving UART a massive 1kB receive buffer to make we don't lose any data.
-    static sjsu::stm32f10x::Uart<1024> uart2(
-        sjsu::stm32f10x::UartBase::Port::kUart2);
-    uart = &uart2;
+    static auto & uart2 = sjsu::stm32f10x::GetUart<2, 1024>();
+    uart                = &uart2;
   }
   else if constexpr (sjsu::build::kPlatform == sjsu::build::Platform::lpc40xx)
   {
     sjsu::LogInfo("Current Platform LPC40xx...");
-    static sjsu::lpc40xx::Uart uart3(sjsu::lpc40xx::Uart::Port::kUart3);
-    uart = &uart3;
+    static auto & uart3 = sjsu::lpc40xx::GetUart<3>();
+    uart                = &uart3;
   }
   else
   {
@@ -54,9 +53,6 @@ int main()
   // initialize and enable the ESP module.
   sjsu::LogInfo("Initializing Esp8266 module...");
   esp.Initialize();
-
-  sjsu::LogInfo("Enabling Esp8266 module...");
-  esp.Enable();
 
   while (true)
   {

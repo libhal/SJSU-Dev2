@@ -11,7 +11,7 @@
 - [Future Advancements](#future-advancements)
 
 # Location
-`L2_HAL`
+`devices`
 
 # Type
 Interface

@@ -1,27 +1,20 @@
 #include <cstdio>
 #include <iterator>
 
-#include "L1_Peripheral/lpc40xx/uart.hpp"
+#include "peripherals/lpc40xx/uart.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
   sjsu::LogInfo("Uart Loopback Application starting...");
   sjsu::LogInfo("Connect jumper between P2[8] and P2[9].");
-  sjsu::lpc40xx::Uart uart2(sjsu::lpc40xx::Uart::Port::kUart2);
-
-  sjsu::LogInfo("Initializing UART port 2");
-  uart2.Initialize();
-
-  sjsu::LogInfo("Setting standard uart frame format.");
-  uart2.ConfigureFormat();
+  sjsu::lpc40xx::Uart & uart2 = sjsu::lpc40xx::GetUart<2>();
 
   sjsu::LogInfo("Setting Baud rate to 38400");
-  uart2.ConfigureBaudRate(38400);
-
-  sjsu::LogInfo("Enabling UART!");
-  uart2.Enable();
+  uart2.settings.baud_rate = 38400;
+  sjsu::LogInfo("Initializing UART port 2");
+  uart2.Initialize();
 
   while (true)
   {

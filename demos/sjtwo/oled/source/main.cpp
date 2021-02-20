@@ -1,28 +1,25 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/spi.hpp"
-#include "L2_HAL/displays/oled/ssd1306.hpp"
-#include "L3_Application/graphics.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/spi.hpp"
+#include "devices/displays/oled/ssd1306.hpp"
+#include "systems/graphics/graphics.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
   sjsu::LogInfo("Starting OLED Application...");
-  sjsu::lpc40xx::Spi ssp1(sjsu::lpc40xx::Spi::Bus::kSpi1);
-  sjsu::lpc40xx::Gpio cs_gpio(1, 22);
-  sjsu::lpc40xx::Gpio dc_gpio(1, 25);
+  sjsu::lpc40xx::Spi & ssp1     = sjsu::lpc40xx::GetSpi<1>();
+  sjsu::lpc40xx::Gpio & cs_gpio = sjsu::lpc40xx::GetGpio<1, 22>();
+  sjsu::lpc40xx::Gpio & dc_gpio = sjsu::lpc40xx::GetGpio<1, 25>();
 
   // Using an Inactive GPIO for the reset, as it is not needed for the SJTwo
   // board.
-  sjsu::Ssd1306 oled_display(ssp1, cs_gpio, dc_gpio,
-                             sjsu::GetInactive<sjsu::Gpio>());
+  sjsu::Ssd1306 oled_display(
+      ssp1, cs_gpio, dc_gpio, sjsu::GetInactive<sjsu::Gpio>());
   sjsu::Graphics graphics(oled_display);
 
   // Initialize OLED display and all of the peripherals it uses
   graphics.Initialize();
-
-  // Enable OLED display
-  graphics.Enable();
 
   sjsu::LogInfo("Clearing Screen...");
   graphics.Clear();
@@ -30,20 +27,20 @@ int main()
 
   sjsu::LogInfo("Drawing Some Shapes...");
 
-  graphics.DrawHorizontalLine(0, sjsu::Ssd1306::kHeight / 2,
-                              sjsu::Ssd1306::kWidth);
+  graphics.DrawHorizontalLine(
+      0, sjsu::Ssd1306::kHeight / 2, sjsu::Ssd1306::kWidth);
   graphics.Update();
 
-  graphics.DrawVerticalLine(sjsu::Ssd1306::kWidth / 2, 0,
-                            sjsu::Ssd1306::kHeight);
+  graphics.DrawVerticalLine(
+      sjsu::Ssd1306::kWidth / 2, 0, sjsu::Ssd1306::kHeight);
   graphics.Update();
 
-  graphics.DrawRectangle(sjsu::Ssd1306::kWidth / 2 - 10,
-                         sjsu::Ssd1306::kHeight / 2 - 10, 20, 20);
+  graphics.DrawRectangle(
+      sjsu::Ssd1306::kWidth / 2 - 10, sjsu::Ssd1306::kHeight / 2 - 10, 20, 20);
   graphics.Update();
 
-  graphics.DrawRectangle(sjsu::Ssd1306::kWidth / 2 - 20,
-                         sjsu::Ssd1306::kHeight / 2 - 20, 40, 40);
+  graphics.DrawRectangle(
+      sjsu::Ssd1306::kWidth / 2 - 20, sjsu::Ssd1306::kHeight / 2 - 20, 40, 40);
   graphics.Update();
 
   graphics.DrawLine(0, 0, sjsu::Ssd1306::kWidth, sjsu::Ssd1306::kHeight);
@@ -52,20 +49,20 @@ int main()
   graphics.DrawLine(0, sjsu::Ssd1306::kHeight, sjsu::Ssd1306::kWidth, 0);
   graphics.Update();
 
-  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
-                      20);
+  graphics.DrawCircle(
+      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 20);
   graphics.Update();
 
-  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
-                      30);
+  graphics.DrawCircle(
+      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 30);
   graphics.Update();
 
-  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
-                      40);
+  graphics.DrawCircle(
+      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 40);
   graphics.Update();
 
-  graphics.DrawCircle(sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2,
-                      60);
+  graphics.DrawCircle(
+      sjsu::Ssd1306::kWidth / 2, sjsu::Ssd1306::kHeight / 2, 60);
   graphics.Update();
 
   sjsu::LogInfo("Drawing Some names...");

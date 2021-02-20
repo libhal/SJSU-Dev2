@@ -1,14 +1,20 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
 #include "utility/log.hpp"
 
 int main()
 {
   sjsu::LogInfo("Staring GPIO Interrupt Application...\n");
 
-  sjsu::lpc40xx::Gpio pin0(0, 15);
-  sjsu::lpc40xx::Gpio pin1(2, 9);
-  sjsu::lpc40xx::Gpio pin2(0, 29);
-  sjsu::lpc40xx::Gpio pin3(0, 30);
+  sjsu::lpc40xx::Gpio & pin0 = sjsu::lpc40xx::GetGpio<0, 15>();
+  sjsu::lpc40xx::Gpio & pin1 = sjsu::lpc40xx::GetGpio<2, 9>();
+  sjsu::lpc40xx::Gpio & pin2 = sjsu::lpc40xx::GetGpio<0, 29>();
+  sjsu::lpc40xx::Gpio & pin3 = sjsu::lpc40xx::GetGpio<0, 30>();
+
+  // Connect internal pull up for each pin
+  pin0.GetPin().settings.PullUp();
+  pin1.GetPin().settings.PullUp();
+  pin2.GetPin().settings.PullUp();
+  pin3.GetPin().settings.PullUp();
 
   // Initialize all pins
   pin0.Initialize();
@@ -16,23 +22,12 @@ int main()
   pin2.Initialize();
   pin3.Initialize();
 
-  // Enable all pins
-  pin0.Enable();
-  pin1.Enable();
-  pin2.Enable();
-  pin3.Enable();
-
   // Set as an input
   pin0.SetAsInput();
   pin1.SetAsInput();
   pin2.SetAsInput();
   pin3.SetAsInput();
 
-  // Connect internal pull up for each pin
-  pin0.GetPin().ConfigurePullUp();
-  pin1.GetPin().ConfigurePullUp();
-  pin2.GetPin().ConfigurePullUp();
-  pin3.GetPin().ConfigurePullUp();
 
   sjsu::LogInfo("Setup P0[15] to interrupt on only Falling edges...");
   pin0.AttachInterrupt([]() { sjsu::LogInfo("P0[15] interrupt!"); },

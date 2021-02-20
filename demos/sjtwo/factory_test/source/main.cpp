@@ -1,10 +1,10 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/i2c.hpp"
-#include "L1_Peripheral/lpc40xx/spi.hpp"
-#include "L2_HAL/boards/sjtwo.hpp"
-#include "L2_HAL/displays/oled/ssd1306.hpp"
-#include "L2_HAL/sensors/environment/temperature/si7060.hpp"
-#include "L2_HAL/sensors/movement/accelerometer/mma8452q.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/i2c.hpp"
+#include "peripherals/lpc40xx/spi.hpp"
+#include "devices/boards/sjtwo.hpp"
+#include "devices/displays/oled/ssd1306.hpp"
+#include "devices/sensors/environment/temperature/si7060.hpp"
+#include "devices/sensors/movement/accelerometer/mma8452q.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/log.hpp"
 
@@ -19,7 +19,6 @@ class FactoryTest
   int RunFactoryTest()
   {
     i2c_.Initialize();
-    i2c_.Enable();
 
     printf("\n=========== STARTING FACTORY TEST ===========\n\n");
 
@@ -49,11 +48,6 @@ class FactoryTest
     sjtwo::led1.Initialize();
     sjtwo::led2.Initialize();
     sjtwo::led3.Initialize();
-
-    sjtwo::led0.Enable();
-    sjtwo::led1.Enable();
-    sjtwo::led2.Enable();
-    sjtwo::led3.Enable();
 
     // Turn on all LEDs if all tests pass else none.
     // LED Test
@@ -98,22 +92,18 @@ class FactoryTest
 
   void OledTest()
   {
-    sjsu::lpc40xx::Spi ssp1(sjsu::lpc40xx::Spi::Bus::kSpi1);
-    sjsu::lpc40xx::Gpio cs(1, 22);
-    sjsu::lpc40xx::Gpio dc(1, 25);
-    sjsu::Gpio & reset = sjsu::GetInactive<sjsu::Gpio>();
+    sjsu::lpc40xx::Spi & spi = sjsu::lpc40xx::GetSpi<1>();
+    sjsu::lpc40xx::Gpio & cs = sjsu::lpc40xx::GetGpio<1, 22>();
+    sjsu::lpc40xx::Gpio & dc = sjsu::lpc40xx::GetGpio<1, 25>();
+    sjsu::Gpio & reset       = sjsu::GetInactive<sjsu::Gpio>();
 
-    Spi spi1(Spi::Bus::kSpi1);
-    Ssd1306 display(spi1, cs, dc, reset);
+    Ssd1306 display(spi, cs, dc, reset);
 
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting OLED Hardware Test...\n\n");
 
     printf("  Initializing OLED Hardware Test...\n\n");
     display.Initialize();
-
-    printf("  Enabling OLED Hardware Test...\n\n");
-    display.Enable();
 
     printf("  Filling internal screen bitmap...\n\n");
     display.Fill();
@@ -142,17 +132,15 @@ class FactoryTest
   {
     printf("++++++++++++++++++++++++++++++++++++++\n\n");
     printf("Starting External Flash Test...\n\n");
-    Spi spi2(Spi::Bus::kSpi2);
+    sjsu::lpc40xx::Spi & spi2 = sjsu::lpc40xx::GetSpi<2>();
     Gpio cs(1, 10);
 
     cs.SetAsOutput();
     cs.SetHigh();
 
+    spi2.settings.frame_size = SpiSettings_t::FrameSize::kEightBits;
+    spi2.settings.clock_rate = 100_kHz;
     spi2.Initialize();
-    spi2.ConfigureFrameSize(Spi::FrameSize::kEightBits);
-    spi2.ConfigureFrequency(100_kHz);
-    spi2.ConfigureClockMode();
-    spi2.Enable();
 
     cs.SetLow();
     sjsu::Delay(1ms);
@@ -192,7 +180,6 @@ class FactoryTest
     bool result2 = CheckDeviceId(kGestureAddress, kIdAddress, 0xAB);
 
     printf("End of Gesture Sensor Test...\n\n");
-
     return result1 || result2;
   }
 
@@ -205,11 +192,7 @@ class FactoryTest
     // Verify that initialization of peripherals works
     accelerometer.Initialize();
 
-    // Will check the ID and valid state of the device.
-    accelerometer.Enable();
-
     printf("End of Accelerometer Test...\n\n");
-
     return true;
   }
 
@@ -267,7 +250,7 @@ class FactoryTest
   }
 
  private:
-  I2c i2c_ = I2c(I2c::Bus::kI2c2);
+  sjsu::lpc40xx::I2c & i2c_ = sjsu::lpc40xx::GetI2c<2>();
 };
 }  // namespace sjsu::lpc40xx
 

@@ -1,8 +1,8 @@
-#include "L1_Peripheral/hardware_counter.hpp"
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/sensors/signal/frequency_counter.hpp"
+#include "peripherals/hardware_counter.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/sensors/signal/frequency_counter.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
@@ -15,7 +15,7 @@ int main()
   // other gpio port and pin number. The best option is a pin connected to a
   // function generator or PWM signal to verify that the frequency counter is
   // operating as expected.
-  sjsu::lpc40xx::Gpio gpio(0, 29);
+  sjsu::lpc40xx::Gpio & gpio = sjsu::lpc40xx::GetGpio<0, 29>();
 
   // Pass the GPIO above into the gpio counter to be controlled by it.
   // The second parameter allows you to change which event triggers a count.
@@ -29,9 +29,6 @@ int main()
 
   // Initialize the hardware.
   frequency_counter.Initialize();
-
-  // Enable the counter.
-  frequency_counter.Enable();
 
   sjsu::LogInfo(
       "With every rising edge of pin P%u.%u, the counter will increase and its "

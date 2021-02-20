@@ -1,7 +1,7 @@
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/lpc17xx/pin.hpp"
-#include "L1_Peripheral/lpc17xx/system_controller.hpp"
-#include "L1_Peripheral/lpc17xx/uart.hpp"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/lpc17xx/pin.hpp"
+#include "peripherals/lpc17xx/system_controller.hpp"
+#include "peripherals/lpc17xx/uart.hpp"
 #include "utility/log.hpp"
 
 int main()
@@ -42,10 +42,11 @@ int main()
   //
   // NOTE: P1.27 may not be available for the 80-pin package option of the MCU.
   constexpr uint8_t kClockOutFunction = 0b01;
-  sjsu::lpc17xx::Pin clock_pin(1, 27);
-  clock_pin.ConfigureFunction(kClockOutFunction);
-  clock_pin.ConfigureFloating();
-  clock_pin.ConfigureAsOpenDrain(false);
+  sjsu::lpc17xx::Pin & clock_pin = sjsu::lpc17xx::GetPin<1, 27>();
+  clock_pin.settings.function = kClockOutFunction;
+  clock_pin.settings.Floating();
+  clock_pin.settings.open_drain = false;
+  clock_pin.Initialize();
 
   // Clockout Configuration register (CLKOUTCFG) bit masks,
   constexpr uint8_t kClockOutEnableBit = 8;

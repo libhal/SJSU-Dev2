@@ -1,4 +1,4 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
 #include "utility/log.hpp"
 
 int main()
@@ -8,16 +8,14 @@ int main()
   // pdf labled "SW&LED_Ckts", showing how the circuits that are being used
   // are constructed.
   sjsu::LogInfo("Gpio application starting...");
-  sjsu::lpc40xx::Gpio p1_19(1, 19);
-  sjsu::lpc40xx::Gpio p2_03(2, 3);
+  sjsu::lpc40xx::Gpio & p1_19 = sjsu::lpc40xx::GetGpio<1, 19>();
+  sjsu::lpc40xx::Gpio & p2_03 = sjsu::lpc40xx::GetGpio<2, 3>();
+
+  p1_19.GetPin().settings.PullDown();
 
   p1_19.Initialize();
   p2_03.Initialize();
 
-  p1_19.Enable();
-  p2_03.Enable();
-
-  p1_19.GetPin().ConfigurePullDown();
   p1_19.SetAsInput();
   sjsu::LogInfo("Configured port 1, pin 19 as input");
 

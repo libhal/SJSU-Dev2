@@ -1,9 +1,9 @@
 #include <iterator>
 
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/io/parallel_bus/parallel_gpio.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/io/parallel_bus/parallel_gpio.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
@@ -13,16 +13,15 @@ int main()
 
   sjsu::LogInfo("Creating ParallelGpio object using led Gpios...");
 
-  sjsu::lpc40xx::Gpio led0(2, 3);
-  sjsu::lpc40xx::Gpio led1(1, 26);
-  sjsu::lpc40xx::Gpio led2(1, 24);
-  sjsu::lpc40xx::Gpio led3(1, 18);
+  sjsu::lpc40xx::Gpio & led0 = sjsu::lpc40xx::GetGpio<2, 3>();
+  sjsu::lpc40xx::Gpio & led1 = sjsu::lpc40xx::GetGpio<1, 26>();
+  sjsu::lpc40xx::Gpio & led2 = sjsu::lpc40xx::GetGpio<1, 24>();
+  sjsu::lpc40xx::Gpio & led3 = sjsu::lpc40xx::GetGpio<1, 18>();
   std::array<sjsu::Gpio *, 4> leds = { &led0, &led1, &led2, &led3 };
 
   sjsu::ParallelGpio parallel_leds(leds);
 
   parallel_leds.Initialize();
-  parallel_leds.Enable();
 
   while (true)
   {

@@ -1,12 +1,12 @@
 #include <algorithm>
 
-#include "L1_Peripheral/lpc40xx/can.hpp"
+#include "peripherals/lpc40xx/can.hpp"
 #include "utility/log.hpp"
 
 int main(void)
 {
-  sjsu::lpc40xx::Can can1(sjsu::lpc40xx::Can::Channel::kCan1);
-  sjsu::lpc40xx::Can can2(sjsu::lpc40xx::Can::Channel::kCan2);
+  sjsu::lpc40xx::Can & can1 = sjsu::lpc40xx::GetCan<1>();
+  sjsu::lpc40xx::Can & can2 = sjsu::lpc40xx::GetCan<2>();
 
   sjsu::LogInfo("CAN application starting...");
   sjsu::LogInfo(
@@ -30,14 +30,6 @@ int main(void)
   sjsu::LogInfo("Initializing CAN 2 with default bit rate of 100 kBit/s...");
   can2.Initialize();
 
-  sjsu::LogInfo("Enabling CAN 1 & CAN 2...");
-  can1.Enable();
-  can2.Enable();
-
-  sjsu::LogInfo("Configuring CAN 1 & CAN 2 baud rates (setting to 100kHz)...");
-  can1.ConfigureBaudRate(100_kHz);
-  can1.ConfigureBaudRate(100_kHz);
-
   sjsu::LogInfo("Starting local self-test for CAN 1...");
   if (can1.SelfTest(146))
   {
@@ -49,7 +41,7 @@ int main(void)
   }
 
   sjsu::LogInfo("Starting local self-test for CAN 2...");
-  if (can1.SelfTest(244))
+  if (can2.SelfTest(244))
   {
     sjsu::LogInfo("CAN 2 self-test" SJ2_HI_BOLD_GREEN " passed!");
   }
@@ -105,14 +97,14 @@ int main(void)
     {
       sjsu::LogInfo("CAN 1 is in a BUS-OFF error state and is disabled!");
       sjsu::LogInfo("Re-enabling CAN 1...");
-      can1.Enable();
+      can1.Initialize();
     }
 
     if (can2.IsBusOff())
     {
       sjsu::LogInfo("CAN 2 is in a BUS-OFF error state and is disabled!");
       sjsu::LogInfo("Re-enabling CAN 2...");
-      can2.Enable();
+      can2.Initialize();
     }
 
     sjsu::Delay(1s);

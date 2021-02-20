@@ -23,7 +23,7 @@
   - [Configuring Execution Frequency](#configuring-execution-frequency)
     - [void SetDelayTime(uint32_t time) override](#void-setdelaytimeuint32t-time-override)
     - [const uint32_t GetDelayTime() const override](#const-uint32t-getdelaytime-const-override)
-  - [Additional Utility Methods](#additional-utility-methods)
+  - [Additional Helper Functions](#additional-utility-methods)
     - [const char * GetName() const override](#const-char--getname-const-override)
     - [Priority GetPriority() const override](#priority-getpriority-const-override)
     - [size_t GetStackSize() const override](#sizet-getstacksize-const-override)
@@ -35,7 +35,7 @@
 - [Future Advancements](#future-advancements)
 
 # Location
-`L3 Application`
+`systems`
 
 # Type
 Interface
@@ -116,7 +116,7 @@ class Task : public TaskInterface
 Tasks are statically allocated and the FreeRTOS task handle is created and
 managed by the `TaskScheduler`. To enable the static allocation of tasks, the
 `configSUPPORT_STATIC_ALLOCATION` definition is set to 1 in
-[FreeRTOSConfig.h](/library/L0_Platform/freertos/FreeRTOSConfig.h) and the
+[FreeRTOSConfig.h](/library/platforms/freertos/FreeRTOSConfig.h) and the
 implementation of `vApplicationGetIdleTaskMemory()` must also be provided to
 statically allocate memory for the FreeRTOS idle task when
 `vTaskStartScheduler()` is invoked.
@@ -212,7 +212,7 @@ period is 1ms, then `Run()` will be invoked every 1 second.
 ### const uint32_t GetDelayTime() const override
 Returns the delay time that was set by SetDelayTime() in milliseconds.
 
-## Additional Utility Methods
+## Additional Helper Functions
 ### const char * GetName() const override
 Returns the name used to identify the task.
 

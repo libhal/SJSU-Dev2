@@ -27,7 +27,7 @@
 
 # Location
 Specify which library folder this module belongs to. For example:
-`L1 Peripheral`.
+`peripherals`.
 
 # Type
 This should be 1 line and can be any of the following:

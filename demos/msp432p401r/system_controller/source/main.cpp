@@ -1,19 +1,19 @@
 #include <cstdio>
 
-#include "L0_Platform/startup.hpp"
-#include "L0_Platform/msp432p401r/msp432p401r.h"
-#include "L1_Peripheral/cortex/system_timer.hpp"
-#include "L1_Peripheral/msp432p401r/gpio.hpp"
-#include "L1_Peripheral/msp432p401r/pin.hpp"
-#include "L1_Peripheral/msp432p401r/system_controller.hpp"
+#include "platforms/targets/msp432p401r/msp432p401r.h"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/cortex/system_timer.hpp"
+#include "peripherals/msp432p401r/gpio.hpp"
+#include "peripherals/msp432p401r/pin.hpp"
+#include "peripherals/msp432p401r/system_controller.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 namespace
 {
 void ConfigureSystemClocks()
 {
-  auto & system_controller    = sjsu::SystemController::GetPlatformController();
+  auto & system_controller   = sjsu::SystemController::GetPlatformController();
   auto & clock_configuration = system_controller.GetClockConfiguration<
       sjsu::msp432p401r::SystemController::ClockConfiguration_t>();
   clock_configuration.dco.frequency = 12_MHz;
@@ -35,20 +35,24 @@ void ConfigureClockOutPins()
   constexpr uint8_t kClockOutFunction = 0b101;
 
   // Configure P4.2 to output ACLK
-  sjsu::msp432p401r::Pin aclk_out_pin(4, 2);
-  aclk_out_pin.ConfigureFunction(kClockOutFunction);
+  sjsu::msp432p401r::Pin & aclk_out_pin = sjsu::msp432p401r::GetPin<4, 2>();
+  aclk_out_pin.settings.function        = kClockOutFunction;
+  aclk_out_pin.Initialize();
 
   // Configure P4.3 to output MCLK
-  sjsu::msp432p401r::Pin mclk_out_pin(4, 3);
-  mclk_out_pin.ConfigureFunction(kClockOutFunction);
+  sjsu::msp432p401r::Pin & mclk_out_pin = sjsu::msp432p401r::GetPin<4, 3>();
+  mclk_out_pin.settings.function        = kClockOutFunction;
+  mclk_out_pin.Initialize();
 
   // Configure P4.4 to output HSMCLK
-  sjsu::msp432p401r::Pin hsmclk_out_pin(4, 4);
-  hsmclk_out_pin.ConfigureFunction(kClockOutFunction);
+  sjsu::msp432p401r::Pin & hsmclk_out_pin = sjsu::msp432p401r::GetPin<4, 4>();
+  hsmclk_out_pin.settings.function        = kClockOutFunction;
+  hsmclk_out_pin.Initialize();
 
   // Configure P7.0 to output SMCLK
-  sjsu::msp432p401r::Pin smclk_out_pin(7, 0);
-  smclk_out_pin.ConfigureFunction(kClockOutFunction);
+  sjsu::msp432p401r::Pin & smclk_out_pin = sjsu::msp432p401r::GetPin<7, 0>();
+  smclk_out_pin.settings.function        = kClockOutFunction;
+  smclk_out_pin.Initialize();
 }
 }  // namespace
 
@@ -57,7 +61,8 @@ int main()
   sjsu::LogInfo("Starting MSP432P401R System Controller Demo...");
 
   // Configure the on-board P1.0 LED to be initially turned on.
-  sjsu::msp432p401r::Gpio p1_0(1, 0);
+  sjsu::msp432p401r::Gpio & p1_0 = sjsu::msp432p401r::GetGpio<1, 0>();
+  p1_0.Initialize();
   p1_0.SetAsOutput();
   p1_0.SetHigh();
 

@@ -1,11 +1,11 @@
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/spi.hpp"
-#include "L1_Peripheral/stm32f10x/gpio.hpp"
-#include "L1_Peripheral/stm32f10x/system_controller.hpp"
-#include "L2_HAL/displays/oled/ssd1306.hpp"
-#include "L3_Application/graphics.hpp"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/spi.hpp"
+#include "peripherals/stm32f10x/gpio.hpp"
+#include "peripherals/stm32f10x/system_controller.hpp"
+#include "devices/displays/oled/ssd1306.hpp"
+#include "systems/graphics/graphics.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 namespace
 {
@@ -19,16 +19,11 @@ class BitBangSpi : public sjsu::Spi
     mosi_.Initialize();
     sck_.Initialize();
 
-    mosi_.Enable();
-    sck_.Enable();
-
     mosi_.SetAsOutput();
     sck_.SetAsOutput();
     sck_.SetLow();
     mosi_.SetLow();
   }
-
-  void ModuleEnable(bool = true) override {}
 
   void Transfer(std::span<uint8_t> buffer) override
   {
@@ -51,13 +46,6 @@ class BitBangSpi : public sjsu::Spi
   {
     sjsu::LogInfo("NOT SUPPORTED!");
   }
-
-  void ConfigureClockMode(Polarity = Polarity::kIdleLow,
-                          Phase    = Phase::kSampleLeading) override
-  {
-  }
-  void ConfigureFrameSize(FrameSize = FrameSize::kEightBits) override {}
-  void ConfigureFrequency(units::frequency::hertz_t) override {}
 
  private:
   sjsu::Gpio & sck_;
@@ -90,7 +78,6 @@ int main()
 
   sjsu::LogInfo("Starting OLED Display Initialized...");
   oled_display.Initialize();
-  oled_display.Enable();
 
   while (true)
   {

@@ -29,7 +29,7 @@
 #include "utility/debug.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/macros.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 namespace sjsu
 {

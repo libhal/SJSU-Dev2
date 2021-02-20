@@ -1,7 +1,7 @@
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/pulse_capture.hpp"
-#include "L1_Peripheral/lpc40xx/pwm.hpp"
+#include "peripherals/lpc40xx/pulse_capture.hpp"
+#include "peripherals/lpc40xx/pwm.hpp"
 
 uint32_t previous_count;
 uint32_t current_count;
@@ -40,10 +40,9 @@ int main()
 
   // Create 60 Hz square wave on P2.0, that we can capture
   sjsu::LogInfo("Creating PWM output on P2.0");
-  sjsu::lpc40xx::Pwm signal_generator(sjsu::lpc40xx::Pwm::Channel::kPwm0);
+  sjsu::lpc40xx::Pwm & signal_generator = sjsu::lpc40xx::GetPwm<1, 0>();
+  signal_generator.settings.frequency   = kGeneratorFrequency;
   signal_generator.Initialize();
-  signal_generator.ConfigureFrequency(kGeneratorFrequency);
-  signal_generator.Enable();
   signal_generator.SetDutyCycle(kGeneratorDutyCycle);
 
   // Enable capture interrupt for both edges

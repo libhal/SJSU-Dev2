@@ -32,7 +32,7 @@
   - [Demonstration Project](#demonstration-project)
 
 # Location
-`L1 Peripheral`
+`peripherals`
 
 # Type
 `Implementation`

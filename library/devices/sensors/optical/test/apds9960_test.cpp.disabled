@@ -1,0 +1,10 @@
+#include "devices/sensors/optical/apds9960.hpp"
+#include "testing/testing_frameworks.hpp"
+
+namespace sjsu
+{
+TEST_CASE("Testing Gesture Sensor")
+{
+  SECTION("Initialize") {}
+}
+}  // namespace sjsu

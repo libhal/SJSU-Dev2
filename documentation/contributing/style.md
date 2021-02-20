@@ -193,7 +193,7 @@ use the units library see:
 Prefer an interface like:
 
 ```c++
-#include "utility/units.hpp"
+#include "utility/math/units.hpp"
 
 class DistanceSensor
 {
@@ -225,7 +225,7 @@ class DistanceSensor
   virtual Status GetSignalStrengthPercent(float * strength) const = 0;
 
   // ===============
-  // Utility Methods
+  // Helper Functions
   // ===============
   Status GetDistanceCm(float * distance) const
   {

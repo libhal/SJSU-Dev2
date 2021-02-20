@@ -1,10 +1,10 @@
-#include "L1_Peripheral/gpio.hpp"
-#include "L1_Peripheral/inactive.hpp"
-#include "L1_Peripheral/lpc17xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/switches/button.hpp"
+#include "peripherals/gpio.hpp"
+#include "peripherals/inactive.hpp"
+#include "peripherals/lpc17xx/gpio.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/switches/button.hpp"
 #include "utility/build_info.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
@@ -48,7 +48,7 @@ int main()
   }
 
   // Phase #3:
-  // Pass and construct all L2 HAL abstraction objects. Typically the hardware
+  // Pass and construct all devices abstraction objects. Typically the hardware
   // abstractions are platform independent, thus passing them here will cause
   // implementation details of a particular platform to leak into this
   // application.
@@ -56,7 +56,7 @@ int main()
   sjsu::Button button(*button_gpio);
 
   // Phase #4:
-  // Now you can use the L2 HAL abstractions and L1 Peripheral interfaces as
+  // Now you can use the devices abstractions and peripherals interfaces as
   // you wish.
 
   // Also note that not all of this has to happen in the main function. These
@@ -66,10 +66,6 @@ int main()
   sjsu::LogInfo("Initialize...");
   button.Initialize();
   led_gpio->Initialize();
-
-  sjsu::LogInfo("Enable...");
-  button.Enable();
-  led_gpio->Enable();
 
   sjsu::LogInfo("Use...");
   led_gpio->SetAsOutput();

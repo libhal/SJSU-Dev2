@@ -27,7 +27,7 @@
   - [Unit Testing Scheme](#unit-testing-scheme)
 
 # Location
-`L1 Peripheral`
+`peripherals`
 
 # Type
 `Interface`
@@ -116,7 +116,7 @@ rate. This is also used for application developers to access and set up any
 clock configurations.
 
 !!! Warning
-    This should not be used by `L2 HAL` or `L3 Application` as knowledge about
+    This should not be used by `devices` or `systems` as knowledge about
     the particular platform is not and should not be known at those levels.
 
 ## Defining System Controller Resources

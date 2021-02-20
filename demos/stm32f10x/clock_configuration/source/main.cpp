@@ -1,11 +1,11 @@
 #include <array>
 #include <cstdio>
 
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/stm32f10x/gpio.hpp"
-#include "utility/time.hpp"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/stm32f10x/gpio.hpp"
+#include "devices/switches/button.hpp"
 #include "utility/log.hpp"
-#include "L2_HAL/switches/button.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
@@ -73,8 +73,9 @@ int main()
 
   // Set pin to its alternative mode which is MCU CLOCK OUTPUT (MCO) mode.
   sjsu::LogInfo("Clock output on PA[8]");
-  sjsu::stm32f10x::Gpio mco_pin('A', 8);
-  mco_pin.GetPin().ConfigureFunction(1);
+  sjsu::stm32f10x::Gpio & mco_pin    = sjsu::stm32f10x::GetGpio<'A', 8>();
+  mco_pin.GetPin().settings.function = (1);
+  mco_pin.Initialize();
 
   struct McoOptions_t
   {

@@ -1,16 +1,14 @@
-#include "L1_Peripheral/stm32f10x/uart.hpp"
-#include "utility/time.hpp"
+#include "peripherals/stm32f10x/uart.hpp"
 #include "utility/log.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
   sjsu::LogInfo("Starting Uart Application...");
 
-  sjsu::stm32f10x::Uart<128> uart1(sjsu::stm32f10x::UartBase::Port::kUart1);
+  sjsu::stm32f10x::Uart<32> & uart1 = sjsu::stm32f10x::GetUart<1>();
+  uart1.settings.baud_rate          = 38400;
   uart1.Initialize();
-  uart1.ConfigureFormat();
-  uart1.ConfigureBaudRate(38400);
-  uart1.Enable();
 
   sjsu::LogInfo(
       "Connect the TX (PA9) RX (PA10) and pins to a USB to serial converter "

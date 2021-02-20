@@ -1,10 +1,10 @@
 #include <array>
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/adc.hpp"
+#include "peripherals/lpc40xx/adc.hpp"
 #include "utility/log.hpp"
-#include "utility/map.hpp"
-#include "utility/time.hpp"
+#include "utility/math/map.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
@@ -12,25 +12,20 @@ int main()
 
   sjsu::LogInfo("Creating ADC object and selecting ADC channel 4 & 5");
   sjsu::LogInfo("ADC channel 4 is connected to pin P1.30");
-  sjsu::lpc40xx::Adc adc4(sjsu::lpc40xx::Adc::Channel::kChannel4);
+  sjsu::lpc40xx::Adc & adc4 = sjsu::lpc40xx::GetAdc<4>();
 
   sjsu::LogInfo("ADC channel 5 is connected to pin P1.31");
-  sjsu::lpc40xx::Adc adc5(sjsu::lpc40xx::Adc::Channel::kChannel5);
+  sjsu::lpc40xx::Adc & adc5 = sjsu::lpc40xx::GetAdc<5>();
 
   sjsu::LogInfo(
       "If you leave a channel disconnected, then the pin will be in a floating "
       "state, and in this state, the voltage read from this pin will be "
       "random.");
 
-  sjsu::LogInfo("Initializing ADCs ...");
+  sjsu::LogInfo("Initializing ADC4 and ADC5 ...");
   adc5.Initialize();
   adc4.Initialize();
-  sjsu::LogInfo("Initializing ADCs Complete!");
-
-  sjsu::LogInfo("Enabling ADCs ...");
-  adc5.Enable();
-  adc4.Enable();
-  sjsu::LogInfo("Enabling ADCs Complete!");
+  sjsu::LogInfo("Initializing ADC4 and ADC5 Complete!");
 
   sjsu::LogInfo("Apply voltage from 0 to 3.3V. DO NOT GO BEYOND THIS LIMIT!");
 

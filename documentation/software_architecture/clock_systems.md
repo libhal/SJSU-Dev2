@@ -19,7 +19,7 @@ performance but will also decrease power consumption.
 ## How this is handled in SJSU-Dev2
 
 Clocking and power management is handled by the platform's
-[`L1/SystemController`](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/library/L1_Peripheral/system_controller.hpp).
+[`L1/SystemController`](https://github.com/SJSU-Dev2/SJSU-Dev2/blob/master/library/peripherals/system_controller.hpp).
 Clocking system can be quite unique across platforms. So unique that a
 functional API for controlling clock systems is not feasible. Thus the
 `SystemController` interface only exposes two functions for controlling the

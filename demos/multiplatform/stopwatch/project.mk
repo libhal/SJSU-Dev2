@@ -1,1 +1,1 @@
-TESTS += $(LIBRARY_DIR)/utility/test/stopwatch_test.cpp
+TESTS += $(LIBRARY_DIR)/utility/time/test/stopwatch_test.cpp

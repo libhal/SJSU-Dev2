@@ -2,10 +2,10 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L0_Platform/startup.hpp"
-#include "L1_Peripheral/lpc40xx/pin.hpp"
-#include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "utility/bit.hpp"
+#include "platforms/utility/startup.hpp"
+#include "peripherals/lpc40xx/pin.hpp"
+#include "peripherals/lpc40xx/system_controller.hpp"
+#include "utility/math/bit.hpp"
 #include "utility/log.hpp"
 
 int main()
@@ -17,16 +17,18 @@ int main()
   // Set the function of the pin to output the clock signal
   // This is NOT needed to change the clock rate, but is used to inspect and
   // verify that the clock rate change did work.
-  sjsu::lpc40xx::Pin clock_pin(1, 25);
+  sjsu::lpc40xx::Pin & clock_pin      = sjsu::lpc40xx::GetPin<1, 25>();
   constexpr uint8_t kClockOutFunction = 0b101;
+
+  clock_pin.settings.function   = kClockOutFunction;
+  clock_pin.settings.open_drain = false;
+  clock_pin.settings.Floating();
+
   clock_pin.Initialize();
-  clock_pin.ConfigureFunction(kClockOutFunction);
-  clock_pin.ConfigureFloating();
+
   clock_pin.EnableHysteresis(false);
   clock_pin.SetAsActiveLow(false);
   clock_pin.EnableFastMode(false);
-  clock_pin.ConfigureAsOpenDrain(false);
-  clock_pin.Enable();
   sjsu::LogInfo("Connect a probe to pin P1[25] to measure the clock rate");
 
   constexpr sjsu::bit::Mask kClockSelect = sjsu::bit::MaskFromRange(0, 3);
@@ -73,18 +75,16 @@ int main()
 
     // Change function back to GPIO and pull the signal low to show a transition
     // between clock signals.
-    clock_pin.Enable(false);
-    clock_pin.ConfigureFunction(0);
-    clock_pin.ConfigurePullResistor(sjsu::Pin::Resistor::kPullDown);
-    clock_pin.Enable(true);
+    clock_pin.settings.function = 0;
+    clock_pin.settings.PullDown();
+    clock_pin.Initialize();
 
     sjsu::Delay(1000ms);
 
     // Change the signal back to the CLKOUT signal.
-    clock_pin.Enable(false);
-    clock_pin.ConfigureFunction(kClockOutFunction);
-    clock_pin.ConfigureFloating();
-    clock_pin.Enable(true);
+    clock_pin.settings.function = kClockOutFunction;
+    clock_pin.settings.Floating();
+    clock_pin.Initialize();
 
     config.cpu.clock = SystemController::CpuClockSelect::kSystemClock;
     sjsu::InitializePlatform();

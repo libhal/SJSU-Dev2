@@ -17,6 +17,8 @@
 
 namespace sjsu
 {
+/// @return constexpr const char* - the string representation of the std::errc
+/// code passed.
 constexpr const char * Stringify(std::errc error_code)
 {
   if constexpr (config::kStoreErrorCodeStrings)
@@ -128,11 +130,17 @@ constexpr const char * Stringify(std::errc error_code)
   return "unknown";
 }
 
+/// The standard exception class for SJSU-Dev2
 class Exception : std::exception
 {
  public:
+  /// Default message for exceptions without a context message.
   constexpr static const char * kEmptyMessage = "(undefined)";
 
+  /// @param error_code_enum - error code that represents this error
+  /// @param location_message - a message that descripes the exception and why
+  /// it occurred.
+  /// @param source_location - location of where this exception was created.
   explicit Exception(
       std::errc error_code_enum,
       const char * location_message = kEmptyMessage,
@@ -146,6 +154,7 @@ class Exception : std::exception
     line_     = source_location.line();
   }
 
+  /// @return const char* - return the message associated with this excpetion
   const char * what() const noexcept override
   {
     return message_;
@@ -155,20 +164,40 @@ class Exception : std::exception
   void Print() const
   {
     /// Print the colored error text to STDOUT
-    printf("Error:%s(%d):%s:%d:%s(): %s\n", Stringify(code_),
-           static_cast<int>(code_), file_, line_, function_, message_);
+    printf("Error:%s(%d):%s:%d:%s(): %s\n",
+           Stringify(code_),
+           static_cast<int>(code_),
+           file_,
+           line_,
+           function_,
+           message_);
   }
 
+  /// @return std::errc - the error code number
   std::errc GetCode() const
   {
     return code_;
   }
 
+  /// Check if the exception object has and error code equal to the compared
+  /// error code
+  ///
+  /// @param exception - the exception object to compare
+  /// @param error - the error code to check against
+  /// @return true - `exception` has the same error code as `error`
+  /// @return false - `exception` does NOT have the same error code as `error`
   friend bool operator==(const Exception & exception, std::errc error)
   {
     return exception.GetCode() == error;
   }
 
+  /// Check if the exception object has and error code equal to the compared
+  /// error code
+  ///
+  /// @param error - the error code to check against
+  /// @param exception - the exception object to compare
+  /// @return true - `exception` has the same error code as `error`
+  /// @return false - `exception` does NOT have the same error code as `error`
   friend bool operator==(std::errc error, const Exception & exception)
   {
     return exception.GetCode() == error;

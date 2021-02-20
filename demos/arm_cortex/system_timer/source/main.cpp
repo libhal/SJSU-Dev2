@@ -1,13 +1,13 @@
-#include "L1_Peripheral/cortex/system_timer.hpp"
-#include "L1_Peripheral/inactive.hpp"
-#include "L1_Peripheral/system_controller.hpp"
-#include "L1_Peripheral/lpc17xx/system_controller.hpp"
-#include "L1_Peripheral/lpc40xx/system_controller.hpp"
-#include "L1_Peripheral/msp432p401r/system_controller.hpp"
-#include "L1_Peripheral/stm32f10x/system_controller.hpp"
-#include "L1_Peripheral/stm32f4xx/system_controller.hpp"
-#include "utility/log.hpp"
+#include "peripherals/cortex/system_timer.hpp"
+#include "peripherals/inactive.hpp"
+#include "peripherals/lpc17xx/system_controller.hpp"
+#include "peripherals/lpc40xx/system_controller.hpp"
+#include "peripherals/msp432p401r/system_controller.hpp"
+#include "peripherals/stm32f10x/system_controller.hpp"
+#include "peripherals/stm32f4xx/system_controller.hpp"
+#include "peripherals/system_controller.hpp"
 #include "utility/build_info.hpp"
+#include "utility/log.hpp"
 
 void DemoSystemIsr()
 {
@@ -54,10 +54,9 @@ int main()
   sjsu::SystemController::ResourceID system_timer_id = GetSystemTimerID();
   sjsu::cortex::SystemTimer system_timer(system_timer_id);
 
+  system_timer.settings.callback  = DemoSystemIsr;
+  system_timer.settings.frequency = 10_Hz;
   system_timer.Initialize();
-  system_timer.ConfigureCallback(DemoSystemIsr);
-  system_timer.ConfigureTickFrequency(10_Hz);
-  system_timer.Enable();
 
   sjsu::LogInfo("Halting any action.");
   return 0;

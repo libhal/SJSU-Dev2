@@ -1,20 +1,17 @@
-#include "L1_Peripheral/lpc40xx/pwm.hpp"
-#include "L2_HAL/actuators/servo/servo.hpp"
+#include "peripherals/lpc40xx/pwm.hpp"
+#include "devices/actuators/servo/servo.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
   sjsu::LogInfo("Servo application starting...");
 
   // Creating PWM on pin 2.0
-  sjsu::lpc40xx::Pwm pwm(sjsu::lpc40xx::Pwm::Channel::kPwm0);
+  sjsu::lpc40xx::Pwm & pwm = sjsu::lpc40xx::GetPwm<1, 0>();
 
   // Create servo class and and give it the PWM.
   sjsu::Servo servo(pwm);
-
-  sjsu::LogInfo("Initalizing Servo");
-  servo.Initialize();
 
   // When all of the bounds of the servo class are set, the servo class will
   // map your degrees to microseconds. With the below example, 0 degrees will
@@ -22,18 +19,20 @@ int main()
   // 90 degrees will representation 1500 us.
 
   // Set RC servo PWM frequency to default (50 Hz)
-  servo.ConfigureFrequency();
+  servo.settings.frequency = 50_Hz;
 
   // Set the pulse wideth bounds to be 500 us and 2500 us.
   sjsu::LogInfo("Setting Servo pulse width bounds from 500us to 2500us.");
-  servo.ConfigurePulseBounds(500us, 2500us);
+  servo.settings.min_pulse = 500us;
+  servo.settings.max_pulse = 2500us;
 
   // Set the angle bounds of the servo to be 0 degrees and 180 degrees
   sjsu::LogInfo("Setting Servo angle bounds from 0 deg to 180 deg.");
-  servo.ConfigureAngleBounds(0_deg, 180_deg);
+  servo.settings.min_angle = 0_deg;
+  servo.settings.max_angle = 180_deg;
 
-  sjsu::LogInfo("Enabling Servo!");
-  servo.Enable();
+  sjsu::LogInfo("Initalizing Servo");
+  servo.Initialize();
 
   while (true)
   {

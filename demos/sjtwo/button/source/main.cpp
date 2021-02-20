@@ -1,8 +1,8 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/boards/sjtwo.hpp"
-#include "L2_HAL/switches/button.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/boards/sjtwo.hpp"
+#include "devices/switches/button.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
@@ -13,15 +13,12 @@ int main()
   sjsu::lpc40xx::Gpio button_gpio2(0, 30);
   sjsu::lpc40xx::Gpio button_gpio3(0, 29);
 
+  button_gpio0.GetPin().settings.PullDown();
+  button_gpio1.GetPin().settings.PullDown();
+
   // Early initialization of gpio2 and gpio3 to set their pull up resistors
   button_gpio0.Initialize();
   button_gpio1.Initialize();
-
-  button_gpio0.GetPin().ConfigurePullDown();
-  button_gpio1.GetPin().ConfigurePullDown();
-
-  button_gpio0.Enable();
-  button_gpio1.Enable();
 
   sjsu::Button button0(button_gpio0);
   sjsu::Button button1(button_gpio1);
@@ -38,17 +35,6 @@ int main()
   button1.Initialize();
   button2.Initialize();
   button3.Initialize();
-
-  sjsu::LogInfo("Enabling LEDs and Buttons...");
-  sjtwo::led0.Enable();
-  sjtwo::led1.Enable();
-  sjtwo::led2.Enable();
-  sjtwo::led3.Enable();
-
-  button0.Enable();
-  button1.Enable();
-  button2.Enable();
-  button3.Enable();
 
   sjsu::LogInfo("Set LEDs as outputs...");
 

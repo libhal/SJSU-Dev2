@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <cstring>
 
-#include "L1_Peripheral/lpc40xx/spi.hpp"
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/memory/sd.hpp"
-#include "L3_Application/fatfs.hpp"
+#include "peripherals/lpc40xx/spi.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/memory/sd.hpp"
+#include "utility/fatfs/fatfs.hpp"
 #include "utility/log.hpp"
 
 FRESULT ScanFiles(char * start_path, size_t path_length)
@@ -57,7 +57,7 @@ int main()
 
   // Before we can use a storage device, we need to create the storage device we
   // want to use. In this case we want to use the SD card on the SJTwo board.
-  sjsu::lpc40xx::Spi spi2(sjsu::lpc40xx::Spi::Bus::kSpi2);
+  sjsu::lpc40xx::Spi & spi2 = sjsu::lpc40xx::GetSpi<2>();
   sjsu::lpc40xx::Gpio sd_chip_select(1, 8);
   sjsu::lpc40xx::Gpio sd_card_detect(1, 9);
   sjsu::Sd card(spi2, sd_chip_select, sd_card_detect);

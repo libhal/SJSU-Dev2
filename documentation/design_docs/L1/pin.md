@@ -28,7 +28,7 @@
     - [void ConfigureFloating() const](#void-ConfigureFloating-const-1)
 
 # Location
-`L1 Peripheral`
+`peripherals`
 
 # Type
 `Interface`

@@ -1,26 +1,30 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L2_HAL/displays/lcd/st7066u.hpp"
-#include "L2_HAL/io/parallel_bus/parallel_gpio.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "devices/displays/lcd/st7066u.hpp"
+#include "devices/io/parallel_bus/parallel_gpio.hpp"
 
 int main()
 {
   sjsu::LogInfo("Starting Parallel LCD Demo");
 
   // set up control pins for lcd
-  sjsu::lpc40xx::Gpio rs(0, 15);  // RS:    Register Select
-  sjsu::lpc40xx::Gpio rw(0, 16);  // RW:    Read / Write
-  sjsu::lpc40xx::Gpio e(0, 17);   // E:     Chip Enable
-  sjsu::lpc40xx::Gpio d7(2, 2);   // D7-D0: Parallel Data Pins
-  sjsu::lpc40xx::Gpio d6(2, 1);
-  sjsu::lpc40xx::Gpio d5(2, 3);
-  sjsu::lpc40xx::Gpio d4(2, 4);
-  sjsu::lpc40xx::Gpio d3(2, 5);
-  sjsu::lpc40xx::Gpio d2(2, 6);
-  sjsu::lpc40xx::Gpio d1(2, 7);
-  sjsu::lpc40xx::Gpio d0(2, 8);
+  sjsu::lpc40xx::Gpio & rs = sjsu::lpc40xx::GetGpio<0, 15>();
+  // RS:    Register Select
+  sjsu::lpc40xx::Gpio & rw = sjsu::lpc40xx::GetGpio<0, 16>();
+  // RW:    Read / Write
+  sjsu::lpc40xx::Gpio & e = sjsu::lpc40xx::GetGpio<0, 17>();
+  // E:     Chip Enable
+  sjsu::lpc40xx::Gpio & d7 = sjsu::lpc40xx::GetGpio<2, 2>();
+  // D7-D0: Parallel Data Pins
+  sjsu::lpc40xx::Gpio & d6 = sjsu::lpc40xx::GetGpio<2, 1>();
+  sjsu::lpc40xx::Gpio & d5 = sjsu::lpc40xx::GetGpio<2, 3>();
+  sjsu::lpc40xx::Gpio & d4 = sjsu::lpc40xx::GetGpio<2, 4>();
+  sjsu::lpc40xx::Gpio & d3 = sjsu::lpc40xx::GetGpio<2, 5>();
+  sjsu::lpc40xx::Gpio & d2 = sjsu::lpc40xx::GetGpio<2, 6>();
+  sjsu::lpc40xx::Gpio & d1 = sjsu::lpc40xx::GetGpio<2, 7>();
+  sjsu::lpc40xx::Gpio & d0 = sjsu::lpc40xx::GetGpio<2, 8>();
 
   std::array<sjsu::Gpio *, 8> data_pins = { &d0, &d1, &d2, &d3,
                                             &d4, &d5, &d6, &d7 };
@@ -38,7 +42,6 @@ int main()
                     data_bus);
 
   lcd.Initialize();
-  lcd.Enable();
 
   sjsu::LogInfo("Drawing text to screen at different locations...");
   lcd.DrawText("Parallel LCD Demo", sjsu::St7066u::CursorPosition_t{ 1, 4 });

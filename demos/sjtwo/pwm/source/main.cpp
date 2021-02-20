@@ -1,20 +1,16 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/pwm.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/pwm.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 int main()
 {
   sjsu::LogInfo("Pwm Application Starting...");
 
   sjsu::LogInfo("Creating PWM signal on P2.0 (Pwm0).");
-  sjsu::lpc40xx::Pwm pwm(sjsu::lpc40xx::Pwm::Channel::kPwm0);
+  sjsu::lpc40xx::Pwm & pwm = sjsu::lpc40xx::GetPwm<1, 0>();
+  pwm.settings.frequency   = 10_kHz;
   pwm.Initialize();
-
-  // Initialize Pwm at 10 kHz
-  pwm.ConfigureFrequency(10_kHz);
-
-  pwm.Enable();
 
   sjsu::LogInfo(
       "Hookup an oscilloscope to see the signal change frequency and duty "
@@ -25,11 +21,6 @@ int main()
 
   while (true)
   {
-    // NOTE: You must disable PWM before configuring its frequency.
-    pwm.Enable(false);
-    pwm.ConfigureFrequency(10_kHz);
-    pwm.Enable(true);
-
     sjsu::LogInfo("Iterate from 0%% to 100%% duty cycle");
     for (float i = 0; i <= 100; i++)
     {
@@ -51,9 +42,9 @@ int main()
     {
       frequency *= 2;
 
-      pwm.Enable(false);
-      pwm.ConfigureFrequency(frequency);
-      pwm.Enable(true);
+      pwm.settings.frequency = frequency;
+      pwm.Initialize();
+      pwm.SetDutyCycle(0.5f);
 
       sjsu::LogInfo("Freq = %f", frequency.to<double>());
       sjsu::Delay(500ms);
@@ -64,9 +55,9 @@ int main()
     {
       frequency /= 2;
 
-      pwm.Enable(false);
-      pwm.ConfigureFrequency(frequency);
-      pwm.Enable(true);
+      pwm.settings.frequency = frequency;
+      pwm.Initialize();
+      pwm.SetDutyCycle(0.5f);
 
       sjsu::LogInfo("Freq = %f", frequency.to<double>());
 

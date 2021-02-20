@@ -1,8 +1,8 @@
 // Digital-to-Analog Demoonstration Main, Designed so that
 // The DAC driver can be demonstrated on an Oscilloscope.
-#include "L1_Peripheral/lpc40xx/dac.hpp"
+#include "peripherals/lpc40xx/dac.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 // Input Number for starting demo
 
 const uint16_t kSineLookup[256] = {
@@ -121,10 +121,9 @@ void StartDemo(sjsu::Dac & dac, std::chrono::nanoseconds input_cycles)
 
 int main()
 {
-  sjsu::lpc40xx::Dac dac;
+  sjsu::lpc40xx::Dac & dac = sjsu::lpc40xx::GetDac<0>();
 
   dac.Initialize();
-  dac.Enable();
 
   sjsu::LogInfo("Hook up pin p0.26 to an oscilloscope to test if it works!");
   sjsu::LogInfo("Starting Output of waves...");

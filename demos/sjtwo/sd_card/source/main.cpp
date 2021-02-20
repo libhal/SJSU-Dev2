@@ -1,11 +1,11 @@
 #include <cstdint>
 
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/spi.hpp"
-#include "L2_HAL/memory/sd.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/spi.hpp"
+#include "devices/memory/sd.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 std::string_view long_text = R"(
 Do you want to build a snowman?
@@ -31,12 +31,6 @@ class DualGpios : public sjsu::Gpio
   {
     lead_.Initialize();
     lead_.Initialize();
-  }
-
-  void ModuleEnable(bool enable = true) override
-  {
-    lead_.Enable(enable);
-    lead_.Enable(enable);
   }
 
   void SetDirection(Direction direction) override
@@ -87,10 +81,10 @@ int main()
 {
   sjsu::LogInfo("BEGIN SD Card Driver Example...");
 
-  sjsu::lpc40xx::Spi spi2(sjsu::lpc40xx::Spi::Bus::kSpi2);
-  sjsu::lpc40xx::Gpio sd_card_detect(1, 9);
-  sjsu::lpc40xx::Gpio sd_chip_select_actual(1, 8);
-  sjsu::lpc40xx::Gpio sd_chip_select_mirror(0, 6);
+  sjsu::lpc40xx::Spi & spi2                   = sjsu::lpc40xx::GetSpi<2>();
+  sjsu::lpc40xx::Gpio & sd_card_detect        = sjsu::lpc40xx::GetGpio<1, 9>();
+  sjsu::lpc40xx::Gpio & sd_chip_select_actual = sjsu::lpc40xx::GetGpio<1, 8>();
+  sjsu::lpc40xx::Gpio & sd_chip_select_mirror = sjsu::lpc40xx::GetGpio<0, 6>();
 
   // This pin is not necessary for operation, but because the SD card's chip
   // select not accessable, it is useful for debugging the SD card to have an
@@ -112,10 +106,6 @@ int main()
     sjsu::LogInfo("Please insert an SD card and restart the system.");
     return -1;
   }
-
-  sjsu::LogInfo("Attempting to mount (Enable) SD card...");
-
-  card.Enable();
 
   sjsu::LogInfo("Mounting of SD Card was" SJ2_HI_BOLD_GREEN " successful!");
 

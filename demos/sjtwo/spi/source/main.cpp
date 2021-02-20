@@ -1,5 +1,5 @@
-#include "L1_Peripheral/lpc40xx/gpio.hpp"
-#include "L1_Peripheral/lpc40xx/spi.hpp"
+#include "peripherals/lpc40xx/gpio.hpp"
+#include "peripherals/lpc40xx/spi.hpp"
 #include "utility/log.hpp"
 
 int main()
@@ -11,29 +11,17 @@ int main()
   // to SPI2. Device ID (part 1) = 40h; Manufacturer ID = 1Fh.
   sjsu::LogInfo("SPI Application Starting...");
   sjsu::LogInfo("Pins for SPI2 are: MOSI = P1[1], MISO = P1[4], SCK = P1[0]");
+  sjsu::lpc40xx::Spi & spi2 = sjsu::lpc40xx::GetSpi<2>();
 
-  sjsu::lpc40xx::Spi spi2(sjsu::lpc40xx::Spi::Bus::kSpi2);
+  sjsu::LogInfo("Set clock frequency to 1 MHz");
+  spi2.settings.clock_rate = 1_MHz;
 
   sjsu::LogInfo("SPI initialization");
   spi2.Initialize();
 
-  sjsu::LogInfo("Set clock mode to the standard defaults for SPI.");
-  spi2.ConfigureClockMode();
-
-  sjsu::LogInfo("Set frame size to 8-bits (standard)");
-  spi2.ConfigureFrameSize(sjsu::Spi::FrameSize::kEightBits);
-
-  // Set up SPI clock polarity and phase
-  sjsu::LogInfo("Set clock frequency to 1 MHz");
-  spi2.ConfigureFrequency(1_MHz);
-
-  sjsu::LogInfo("Enabling SPI2");
-  spi2.Enable();
-
   // Set up chip select as GPIO pin
-  sjsu::lpc40xx::Gpio chip_select(1, 10);
+  sjsu::lpc40xx::Gpio & chip_select = sjsu::lpc40xx::GetGpio<1, 10>();
   chip_select.Initialize();
-  chip_select.Enable();
   chip_select.SetAsOutput();
   chip_select.SetHigh();
   sjsu::LogInfo("Chip select on Port 1.10 and initialized high.");

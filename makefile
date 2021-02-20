@@ -45,12 +45,6 @@ endif
 
 .DEFAULT_GOAL := help
 
-# ==============================================================================
-# Enable Undefined Variable Use Warnings
-# ==============================================================================
-
-MAKEFLAGS += --warn-undefined-variables
-
 # Make sure MAKECMDGOALS is defined, so it doesn't cause an error itself
 ifndef MAKECMDGOALS
 MAKECMDGOALS = help
@@ -110,6 +104,7 @@ SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -fexceptions -ffunction-sections \
                        -Wno-main -Wno-variadic-macros -Wall -Wextra -Wshadow \
                        -Wfloat-equal -Wundef -Wno-format-nonliteral \
                        -Wconversion -Wdouble-promotion -Wswitch -Wformat=2 \
+											 -Wno-missing-field-initializers \
                        -Wno-uninitialized -Wnull-dereference \
 											 -fdiagnostics-color -MMD -MP
 
@@ -131,7 +126,8 @@ SJ2_DEFAULT_TESTS       = # test/unit_test.cpp
 SJ2_DEFAULT_TEST_FLAGS := \
                 -g --coverage -fPIC -fexceptions -fno-inline -fno-builtin \
                 -fno-inline-small-functions -fno-default-inline \
-                -fkeep-inline-functions -fno-elide-constructors  \
+                -fkeep-inline-functions -fno-elide-constructors \
+                -fprofile-arcs -ftest-coverage \
                 -fdiagnostics-color -fno-stack-protector -fsanitize=address \
                 -Wall -Wno-variadic-macros -Wextra -Wshadow -Wno-main \
                 -Wno-missing-field-initializers \
@@ -261,7 +257,7 @@ HOST_SYMBOLIZER    = $(SJCLANG)/bin/llvm-symbolizer
 # Final Flag Compositions
 # ==============================================================================
 
-LINKER_SCRIPT   ?= $(LIBRARY_DIR)/L0_Platform/$(PLATFORM)/linker.ld
+LINKER_SCRIPT   ?= $(LIBRARY_DIR)/platforms/targets/$(PLATFORM)/linker.ld
 
 INCLUDES        := $(addsuffix ", $(addprefix -I", $(INCLUDES)))
 SYSTEM_INCLUDES := $(addsuffix ", $(addprefix -isystem", $(SYSTEM_INCLUDES)))
@@ -403,17 +399,15 @@ clean-coverage:
 
 coverage:
 	@printf '$(YELLOW)Generating Coverage Files $(RESET) : '
-
 	@mkdir -p "$(SJ2_COVERAGE_DIR)"
-
-
 	@gcovr \
 		--xml --output $(SJ2_COVERAGE_DIR)/coverage.xml \
 		--html $(SJ2_COVERAGE_DIR)/coverage.html --html-details \
-		--gcov-executable="$(CODE_COVERAGE_TOOL)" --sort-percentage \
-		--filter="$(LIBRARY_DIR)" \
-		-e "$(LIBRARY_DIR)/L0_Platform" \
-		-e "$(LIBRARY_DIR)/L4_Testing" \
+		--exclude-unreachable-branches --exclude-throw-branches \
+		--gcov-executable="$(CODE_COVERAGE_TOOL)" \
+		--sort-percentage --filter="$(LIBRARY_DIR)" \
+		-e "$(LIBRARY_DIR)/platforms" \
+		-e "$(LIBRARY_DIR)/testing" \
 		-e "$(LIBRARY_DIR)/newlib" \
 		-e "$(LIBRARY_DIR)/.*_test.cpp" \
 		-e "$(LIBRARY_DIR)/third_party"
