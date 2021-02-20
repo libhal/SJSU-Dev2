@@ -189,9 +189,25 @@ class Can final : public sjsu::Can
   };
 
   /// List of supported CANBUS channels
-  struct Channel  // NOLINT
+  struct Channel_t  // NOLINT
   {
+     /// Reference to transmit pin object
+    sjsu::Pin & td_pin;
 
+    /// Pin function code for transmit
+    uint8_t td_function_code;
+
+    /// Reference to read pin object
+    sjsu::Pin & rd_pin;
+
+    /// Pin function code for receive
+    uint8_t rd_function_code;
+
+    /// Pointer to the LPC CAN peripheral in memory
+    CAN_TypeDef * registers;
+
+    /// Peripheral's ID
+    sjsu::SystemController::ResourceID id;
   };
 
   /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
