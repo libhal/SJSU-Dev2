@@ -2,7 +2,7 @@ LIBRARY_LPC17XX += $(LIBRARY_DIR)/platforms/targets/lpc17xx/startup.cpp
 LIBRARY_LPC17XX += $(LIBRARY_DIR)/platforms/processors/arm_cortex/m3/ARM_CM3/port.c
 LIBRARY_LPC17XX += $(LIBRARY_DIR)/platforms/processors/arm_cortex/exceptions.cpp
 
-OPENOCD_CONFIG  ?= $(LIBRARY_DIR)/platforms/lpc17xx/lpc17xx.cfg
+OPENOCD_CONFIG  ?= $(LIBRARY_DIR)/platforms/targets/lpc17xx/lpc17xx.cfg
 
 $(eval $(call BUILD_LIBRARY,liblpc17xx,LIBRARY_LPC17XX))
 
