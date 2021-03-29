@@ -17,12 +17,5 @@ bool compare_floats(float a,float b,float epsilon) {
     else {
         return false;
     }
-
-
 }
-
-
-
-
-
 }
