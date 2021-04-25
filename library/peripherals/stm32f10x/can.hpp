@@ -217,20 +217,111 @@ class Can final : public sjsu::Can
   explicit constexpr Can(const Channel_t & channel) : channel_(channel) {}
 
   void ModuleInitialize() override
-  void ModuleEnable(bool enable = true) override
-  void ConfigureBaudRate(units::frequency::hertz_t baud) override
-  bool ConfigureFilter([[maybe_unused]] uint32_t id,
-                       [[maybe_unused]] uint32_t mask,
-                       [[maybe_unused]] bool is_extended = false) override
-  void ConfigureAcceptanceFilter(bool enable) override
+  {
+    /// Power on CANBUS peripheral
+    auto & platform = sjsu::SystemController::GetPlatformController();
+    platform.PowerUpPeripheral(channel_.id);
+
+    /// Configure pins
+    channel_.td_pin.settings.function = channel_.td_function_code;
+    channel_.rd_pin.settings.function = channel_.rd_function_code;
+
+    // Enter Initialization mode in order to write to CAN registers.
+    SetMode(Mode::kInitializationRequest, true);
+    // Wait to enter Initialization mode
+    while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, true))
+
+    ConfigureBaudRate();
+    ConfigureReceiveHandler();
+    EnableAcceptanceFilter();
+
+    // Leave Initialization mode
+    SetMode(Mode::kInitializationRequest, false);
+    // Wait to leave Initialization mode
+    while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, false))
+  }
+
   void Send(const Message_t & message) override
   bool HasData([[maybe_unused]] uint32_t id = 0) override
   Message_t Receive([[maybe_unused]] uint32_t id = 0) override
   bool SelfTest(uint32_t id) override
   bool IsBusOff() override
+  ~Can(){}
+
 
  private:
+  void ConfigureBaudRate(units::frequency::hertz_t baud) override
+  void ConfigureReceiveHandler(){}
+  LpcRegisters_t ConvertMessageToRegisters(const Message_t & message) const
+  bool ConfigureFilter([[maybe_unused]] uint32_t id,
+                        [[maybe_unused]] uint32_t mask,
+                        [[maybe_unused]] bool is_extended = false) override
+  void ConfigureAcceptanceFilter(bool enable) override
 
+    /// Enable/Disable controller modes
+  ///
+  /// @param mode - which mode to enable/disable
+  /// @param enable_mode - true if you want to enable the mode. False otherwise.
+  void SetMode(bit::Mask mode, bool enable_mode) const
+  {
+    channel_.registers->MOD =
+        bit::Insert(channel_.registers->MOD, enable_mode, mode);
+  }
+
+    /// Verify controller modes
+  bool VerifyStatus(bit::Mask status, bool state) const
+  {
+    return bit::Read(channel_.registers->MSR, status);
+  }
+
+}
+
+template <int port>
+inline Can & GetCan()
+{
+  if constexpr (port == 1)
+  {
+    static auto & port1_transmit_pin = GetPin<0, 12>();
+    static auto & port1_read_pin     = GetPin<0, 11>();
+
+    /// Predefined definition for CAN1
+    static const Can::Port_t kCan1 = {
+      .td_pin           = port1_transmit_pin,
+      .td_function_code = 8,
+      .rd_pin           = port1_read_pin,
+      .rd_function_code = 2,
+      .registers        = stm32f10x::CAN1,
+      .id               = sjsu::stm32f10x::SystemController::Peripherals::kCan1,
+    };
+
+    static Can can1(kCan1);
+    return can1;
+  }
+  // else if constexpr (port == 2)
+  // {
+  //   static auto & port2_transmit_pin = GetPin<2, 8>();
+  //   static auto & port2_read_pin     = GetPin<2, 7>();
+
+  //   /// Predefined definition for CAN2
+  //   static const Can::Port_t kCan2 = {
+  //     .td_pin           = port2_transmit_pin,
+  //     .td_function_code = 1,
+  //     .rd_pin           = port2_read_pin,
+  //     .rd_function_code = 1,
+  //     .registers        = lpc40xx::LPC_CAN2,
+  //     .id               = sjsu::lpc40xx::SystemController::Peripherals::kCan2,
+  //   };
+
+  //   static Can can2(kCan2);
+  //   return can2;
+  // }
+  else
+  {
+    static_assert(InvalidOption<port>,
+                  SJ2_ERROR_MESSAGE_DECORATOR(
+                      "Support CAN ports for LPC40xx are CAN1, CAN2"));
+    return GetCan<0>();
+  }
 }
 }  // namespace lpc40xx
 }  // namespace sjsu
