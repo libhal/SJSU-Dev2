@@ -137,13 +137,31 @@ class Can final : public sjsu::Can
   };
 
 
+  
   /// CANBUS FIFO Status (pg. 680)
   struct FIFOStatus  // NOLINT
   {
-    static constexpr bit::Mask kInitializationRequest           = bit::MaskFromRange(0, 1);
-    static constexpr bit::Mask kInitializationRequest           = bit::MaskFromRange(3);
-    static constexpr bit::Mask kInitializationRequest           = bit::MaskFromRange(4);
-    static constexpr bit::Mask kInitializationRequest           = bit::MaskFromRange(5);
+    // Indicates how many messages are pending in the recieve FIFO
+    static constexpr bit::Mask kMessagesPending         = bit::MaskFromRange(0, 1);
+
+    // Set by hardware when three messages are stored in the FIFO.
+    static constexpr bit::Mask kIsFIFOFull              = bit::MaskFromRange(3);
+
+    // Set by hardware when a new message has been released and passed the filter while the FIFO is full.
+    static constexpr bit::Mask kIsFIFOOverrun           = bit::MaskFromRange(4);
+
+    // Release the output mailbox of the FIFO.
+    static constexpr bit::Mask kReleaseOutputMailbox    = bit::MaskFromRange(5);
+  };
+
+  /// CANBUS Mailbox Register
+  struct MailboxIdentifier
+  {
+    static constexpr bit::Mask kTransmitMailboxRequest        = bit::MaskFromRange(0);
+    static constexpr bit::Mask kRemoteTransmissionRequest     = bit::MaskFromRange(1);
+    static constexpr bit::Mask kIdentifierExtension           = bit::MaskFromRange(2);
+    static constexpr bit::Mask kStandardId                    = bit::MaskFromRange(21, 31);
+    static constexpr bit::Mask kExtenedId                     = bit::MaskFromRange(3, 31);
   };
 
   /// CANBus frame bit masks for the TFM and RFM registers
@@ -210,6 +228,53 @@ class Can final : public sjsu::Can
     sjsu::SystemController::ResourceID id;
   };
 
+
+  /// Container for the LPC40xx CANBUS registers
+  struct LpcRegisters_t
+  {
+    /// TFI register contents
+    uint32_t frame = 0;
+    /// TID register contents
+    uint32_t id = 0;
+    /// TDA register contents
+    uint32_t data_a = 0;
+    /// TDB register contents
+    uint32_t data_b = 0;
+  };
+
+  /// List of supported CANBUS channels
+  struct Channel  // NOLINT
+  {
+   private:
+      inline static auto port1_transmit_pin = Pin(0, 12);
+      inline static auto port1_read_pin     = Pin(0, 11);
+
+      // Need to assign. the below is incorrect
+      inline static auto port2_transmit_pin = Pin(2, 8);
+      inline static auto port2_read_pin     = Pin(2, 7);
+
+    public:
+
+    /// Predefined definition for CAN1
+    inline static const Channel_t kCan1 = {
+      .td_pin           = port1_transmit_pin,
+      .td_function_code = 3,
+      .rd_pin           = port1_read_pin,
+      .rd_function_code = 0,
+      .registers        = stm32f10x::CAN1,
+      .id               = sjsu::stm32f10x::SystemController::Peripherals::kCan1,
+    };
+
+    /// Predefined definition for CAN2
+    inline static const Channel_t kCan2 = {
+      .td_pin           = port2_transmit_pin,
+      .td_function_code = 3,
+      .rd_pin           = port2_read_pin,
+      .rd_function_code = 0,
+      .registers        = stm32f10x::CAN2,
+      .id               = sjsu::stm32f10x::SystemController::Peripherals::kCan2,
+    };
+
   /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
   inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
 
@@ -225,6 +290,11 @@ class Can final : public sjsu::Can
     /// Configure pins
     channel_.td_pin.settings.function = channel_.td_function_code;
     channel_.rd_pin.settings.function = channel_.rd_function_code;
+
+        // Enter Initalization mode in order to write to CAN registers.
+    SetMasterControl(Mode::kInitializationRequest, true);
+    SetMasterControl(Mode::kNoAutomaticRetransmission, true);
+    SetMasterControl(Mode::kAutomaticBussOffManagement, true);
 
     // Enter Initialization mode in order to write to CAN registers.
     SetMode(Mode::kInitializationRequest, true);
