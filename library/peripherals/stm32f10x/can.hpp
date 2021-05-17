@@ -327,7 +327,7 @@ class Can final : public sjsu::Can
     while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, true))
 
     ConfigureBaudRate();
-    ConfigureReceiveHandler();
+    // ConfigureReceiveHandler();
     EnableAcceptanceFilter();
 
     // Leave Initialization mode
@@ -345,7 +345,38 @@ class Can final : public sjsu::Can
 
 
  private:
-  void ConfigureBaudRate(units::frequency::hertz_t baud) override
+  void ConfigureBaudRate(units::frequency::hertz_t baud)
+  {
+    constexpr int kTseg1               = 0;
+    constexpr int kTseg2               = 0;
+    constexpr int kSyncJump            = 0;
+    constexpr uint32_t kBaudRateAdjust = kTseg1 + kTseg2 + kSyncJump + 3;
+
+    auto & system         = sjsu::SystemController::GetPlatformController();
+    const auto kFrequency = system.GetClockRate(channel_.id);
+
+    // Must be between 8 - 25 time Quanta
+
+    // Clock    = 10 Mhz
+    // Tq       = 1/10Mhz = 100 ns
+    // bit rate = 100 Khz
+    // bit time = 1/100Khz = 10 us
+    // # of tq = bit time / tq = 10000 ns  / 100 ns = 100 
+    // Tsync = 1
+    // TSync + TSeg1 / TSync + TSeg1 + TSeg2 = 80%
+    // 1 + Tseg / 100 = 80% so TSeg1 = 79 TSeg2 = 21 
+
+    uint32_t prescaler = ((kFrequency / settings.baud_rate) - 1);
+
+    uint32_t prescaler =
+    uint32_t tq = (Prescaler + 1) * (1 / kFrequency); // Length of time quanta
+
+
+    
+
+    sjsu::LogDebug(
+        "freq = %f :: prescale = %lu", kFrequency.to<double>(), prescaler);
+  }
   void ConfigureReceiveHandler(){}
   LpcRegisters_t ConvertMessageToRegisters(const Message_t & message) const
   bool ConfigureFilter([[maybe_unused]] uint32_t id,
@@ -353,8 +384,6 @@ class Can final : public sjsu::Can
                         [[maybe_unused]] bool is_extended = false) override
   void ConfigureAcceptanceFilter(bool enable) override
   {
-    uint32_t 
-
     // (Dont think needed)
     // Configure Filters (8-9 as Mask Mode) (10 - 12 as List Mode)
     // 8 - 12 as 1 1100
@@ -405,19 +434,19 @@ class Can final : public sjsu::Can
         bit::Insert(channel_.registers->FM1R, mode, filter);
   }
 
-    void SetFilterScale(Filter filter, FilterScale scale)
+  void SetFilterScale(Filter filter, FilterScale scale)
   {
     channel_.registers->FS1R =
         bit::Insert(channel_.registers->FS1R, scale, filter);
   }
 
-    void SetFilterFIFOAssignment(Filter filter, FilterFIFOAssignment fifo)
+  void SetFilterFIFOAssignment(Filter filter, FilterFIFOAssignment fifo)
   {
     channel_.registers->FFA1R =
         bit::Insert(channel_.registers->FFA1R, fifo, filter);
   }
 
-    void ActivateFilter(Filter filter, FilterActivation state)
+  void ActivateFilter(Filter filter, FilterActivation state)
   {
     channel_.registers->FA1R =
         bit::Insert(channel_.registers->FA1R, state, filter);
