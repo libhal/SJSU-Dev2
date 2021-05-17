@@ -1,9 +1,9 @@
 #include <cstdint>
 
-#include "L0_Platform/stm32f10x/stm32f10x.h"
+#include "platforms/targets/stm32f10x/stm32f10x.h"
 
 #include "utility/log.hpp"
-#include "utility/time.hpp"
+#include "utility/time/time.hpp"
 
 namespace sjsu
 {
