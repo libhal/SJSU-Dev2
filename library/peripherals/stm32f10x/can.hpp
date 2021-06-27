@@ -338,7 +338,7 @@ class Can final : public sjsu::Can
     uint32_t data_b = 0;
   };
 
-  
+ 
 
   /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
   inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
@@ -578,11 +578,32 @@ class Can final : public sjsu::Can
     uint32_t prescaler =
     uint32_t tq = (Prescaler + 1) * (1 / kFrequency); // Length of time quanta
 
+          // enum BITRATE{CAN_50KBPS,
+          //              CAN_100KBPS,
+          //              CAN_125KBPS,
+          //              CAN_250KBPS,
+          //              CAN_500KBPS,
+          //              CAN_1000KBPS};
 
+          // CAN_bit_timing_t CAN_bit_timing[6] = 
+          // {{2, 13, 45}, 
+          //  {2, 15, 20}, 
+          //  {2, 13, 18}, 
+          //  {2, 13, 9}, 
+          //  {2, 15, 4}, 
+          //  {2, 15, 2}};
+      channel_.registers->BTR =
+        bit::Insert(channel_.registers->BTR, 0, BusTiming::kPrescalar);
+      channel_.registers->BTR =
+        bit::Insert(channel_.registers->BTR, 14, BusTiming::kTimeSegment1);
+      channel_.registers->BTR =
+        bit::Insert(channel_.registers->BTR, 4, BusTiming::kTimeSegment2);
+      channel_.registers->BTR =
+        bit::Insert(channel_.registers->BTR, 1, BusTiming::kLoopBackMode);
     
 
-    sjsu::LogDebug(
-        "freq = %f :: prescale = %lu", kFrequency.to<double>(), prescaler);
+    // sjsu::LogDebug(
+    //     "freq = %f :: prescale = %lu", kFrequency.to<double>(), prescaler);
   }
   void ConfigureReceiveHandler(){}
   StmDataRegisters_t ConvertMessageToRegisters(const Message_t & message) const
