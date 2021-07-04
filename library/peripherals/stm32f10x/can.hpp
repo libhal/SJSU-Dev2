@@ -342,7 +342,7 @@ class Can final : public sjsu::Can
     SetMode(Mode::kNoAutomaticRetransmission, true);
     SetMode(Mode::kAutomaticBussOffManagement, true);
     // Wait to enter Initialization mode
-    while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, true))
+    while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, true)){}
 
     ConfigureBaudRate();
     // ConfigureReceiveHandler();
@@ -351,7 +351,8 @@ class Can final : public sjsu::Can
     // Leave Initialization mode
     SetMode(Mode::kInitializationRequest, false);
     // Wait to leave Initialization mode
-    while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, false))
+    while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, false)){}
+    return;
   }
 
   void Send(const Message_t & message)
@@ -421,11 +422,11 @@ class Can final : public sjsu::Can
     {
       fifo_select = FIFOSelect::kFIFO2;
     }
-    else
-    {
-      // Error, tried to recieve when there were no pending messages.
-      return;
-    }
+    // else
+    // {
+    //   // Error, tried to recieve when there were no pending messages.
+    //   return;
+    // }
 
     uint32_t frame = channel_.registers->sFIFOMailBox[Value(fifo_select)].RDTR;
     uint32_t id = channel_.registers->sFIFOMailBox[Value(fifo_select)].RIR;
@@ -464,11 +465,11 @@ class Can final : public sjsu::Can
     // Release the RX buffer and allow another buffer to be read.
     if (fifo_select == FIFOSelect::kFIFO1)
     {
-      channel_.registers->RF0R = Value(FIFOStatus::kReleaseOutputMailbox);
+      channel_.registers->RF0R = bit::Set(channel_.registers->RF0R, FIFOStatus::kReleaseOutputMailbox);
     }
     else if (fifo_select == FIFOSelect::kFIFO2)
     {
-      channel_.registers->RF1R = Value(FIFOStatus::kReleaseOutputMailbox);
+      channel_.registers->RF1R = bit::Set(channel_.registers->RF1R, FIFOStatus::kReleaseOutputMailbox);
     }
 
     return message;
@@ -731,7 +732,7 @@ class Can final : public sjsu::Can
     return bit::Read(channel_.registers->MSR, status);
   }
    const Port_t & channel_;
-}
+};
 
 template <int port>
 inline Can & GetCan()
