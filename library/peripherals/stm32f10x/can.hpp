@@ -13,6 +13,8 @@
 #include "utility/enum.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/macros.hpp"
+#include "utility/log.hpp"
+#include "utility/time/time.hpp"
 
 
 namespace sjsu
@@ -326,28 +328,40 @@ class Can final : public sjsu::Can
 
   void ModuleInitialize() override
   {
+    sjsu::LogInfo("Power on CANBUS peripheral");
     /// Power on CANBUS peripheral=
     auto & platform = sjsu::SystemController::GetPlatformController();
     platform.PowerUpPeripheral(channel_.id);
 
+    sjsu::LogInfo("Configure pins");
     /// Configure pins
     channel_.td_pin.settings.function = channel_.td_function_code;
     channel_.rd_pin.settings.function = channel_.rd_function_code;
 
+    sjsu::LogInfo("channel_.td_pin");
     channel_.td_pin.Initialize();
+
+    sjsu::LogInfo("channel_.rd_pin");
     channel_.rd_pin.Initialize();
 
+    sjsu::LogInfo("Enter Initalization mode in order to write to CAN registers.");
     // Enter Initalization mode in order to write to CAN registers.
     SetMode(Mode::kInitializationRequest, true);
     SetMode(Mode::kNoAutomaticRetransmission, true);
     SetMode(Mode::kAutomaticBussOffManagement, true);
+
+    sjsu::LogInfo("Wait to enter Initialization mode");
     // Wait to enter Initialization mode
     while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, true)){}
 
+    sjsu::LogInfo("ConfigureBaudRate");
     ConfigureBaudRate();
     // ConfigureReceiveHandler();
+
+    sjsu::LogInfo("EnableAcceptanceFilter");
     EnableAcceptanceFilter();
 
+    sjsu::LogInfo("Leave Initialization mode");
     // Leave Initialization mode
     SetMode(Mode::kInitializationRequest, false);
     // Wait to leave Initialization mode
@@ -475,56 +489,74 @@ class Can final : public sjsu::Can
     return message;
   }
 
-  // bool SelfTest(uint32_t id)
-  // {
-  //   Message_t test_message;
-  //   test_message.id = id;
+  bool SelfTest(uint32_t id)
+  {
+    Message_t test_message;
+    test_message.id = id;
 
-  //   // Enable reset mode in order to write to registers
-  //   SetMode(Mode::kInitializationRequest, true);
-  //   // Enable self-test mode
-  //   SetLoopback(true);
-  //   // Disable reset mode
-  //   SetMode(Mode::kInitializationRequest, false);
+    // Enable reset mode in order to write to registers
+    SetMode(Mode::kInitializationRequest, true);
+    // Enable self-test mode
+    SetLoopback(true);
+    // Disable reset mode
+    SetMode(Mode::kInitializationRequest, false);
 
-  //   // Write test message to tx buffer 1
-  //   StmDataRegisters_t registers = ConvertMessageToRegisters(test_message);
+    // Write test message to tx buffer 1
+    StmDataRegisters_t registers = ConvertMessageToRegisters(test_message);
 
-  //   // Set self-test request and send buffer 1
-  //   while (true)
-  //   {
-  //     uint32_t status_register = channel_.registers->SR;
-  //     // Check if any buffer is available.
-  //     if (bit::Read(status_register, BufferStatus::kTx1Released))
-  //     {
-  //       channel_.registers->TFI1 = registers.frame;
-  //       channel_.registers->TID1 = registers.id;
-  //       channel_.registers->TDA1 = 0;
-  //       channel_.registers->TDB1 = 0;
-  //       channel_.registers->CMR  = Value(Commands::kSelfReceptionSendTxBuffer1);
-  //       break;
-  //     }
-  //   }
+    // Set self-test request and send buffer 1
+    
+    while (true)
+    {
+       uint32_t status_register = channel_.registers->TSR;
+      // Check if any buffer is available.
+      if (bit::Read(status_register, TransmitStatus::kTransmitMailbox0Empty))
+      {
+        channel_.registers->sTxMailBox[0].TDTR = registers.frame;
+        channel_.registers->sTxMailBox[0].TDLR = 0xAAAA;
+        channel_.registers->sTxMailBox[0].TDHR = 0xBBBB;
+        channel_.registers->sTxMailBox[0].TIR  = registers.id;
+        break;
+      }
+    }
 
-  //   // Allow time for RX to fire
-  //   Wait(100ms, [this]() { return HasData(); });
+    // Allow time for RX to fire
+    Wait(100ms, [this]() { return HasData(); });
 
-  //   // Read the message from the rx buffer and enqueue it into the rx queue.
-  //   auto received_message = Receive();
+    // Read the message from the rx buffer and enqueue it into the rx queue.
+    auto received_message = Receive();
 
-  //   // Check if the received message matches the one we sent
-  //   if (received_message.id != test_message.id)
-  //   {
-  //     return false;
-  //   }
+    // const uint32_t kExpectedDataA =
+    //     received_message.payload[0] | received_message.payload[1] << 8 |
+    //     received_message.payload[2] << 16 | received_message.payload[3] << 24;
+    // const uint32_t kExpectedDataB = 
+    //     received_message.payload[4] | received_message.payload[5] << 8 |
+    //     received_message.payload[6] << 16 | received_message.payload[7] << 24;
 
-  //   // Disable self-test mode
-  //   SetMode(Mode::kReset, true);
-  //   SetMode(Mode::kSelfTest, false);
-  //   SetMode(Mode::kReset, false);
+    sjsu::LogInfo("%#04x %#04x %#04x %#04x %#04x %#04x %#04x %#04x\n",
+          received_message.payload[0],
+          received_message.payload[1],
+          received_message.payload[2],
+          received_message.payload[3],
+          received_message.payload[4],
+          received_message.payload[5],
+          received_message.payload[6],
+          received_message.payload[7]);
 
-  //   return true;
-  // }
+    // Check if the received message matches the one we sent
+    if (received_message.id != test_message.id)
+    {
+      return false;
+    }
+
+    // Disable self-test mode
+    SetMode(Mode::kInitializationRequest, true);
+    SetLoopback(false);
+    SetMode(Mode::kInitializationRequest, false);
+
+    return true;
+  }
+
   bool IsBusOff() override
   {}
   ~Can(){}
@@ -533,10 +565,10 @@ class Can final : public sjsu::Can
  private:
   void ConfigureBaudRate()
   {
-    constexpr int kTseg1               = 0;
-    constexpr int kTseg2               = 0;
-    constexpr int kSyncJump            = 0;
-    constexpr uint32_t kBaudRateAdjust = kTseg1 + kTseg2 + kSyncJump + 3;
+    // constexpr int kTseg1               = 0;
+    // constexpr int kTseg2               = 0;
+    // constexpr int kSyncJump            = 0;
+    // constexpr uint32_t kBaudRateAdjust = kTseg1 + kTseg2 + kSyncJump + 3;
 
     auto & system         = sjsu::SystemController::GetPlatformController();
     const auto kFrequency = system.GetClockRate(channel_.id);
@@ -552,9 +584,9 @@ class Can final : public sjsu::Can
     // TSync + TSeg1 / TSync + TSeg1 + TSeg2 = 80%
     // 1 + Tseg / 100 = 80% so TSeg1 = 79 TSeg2 = 21 
 
-    uint32_t prescaler = ((kFrequency / settings.baud_rate) - 1);
+    // uint32_t prescaler = ((kFrequency / settings.baud_rate) - 1);
 
-    uint32_t prescaler =
+    // uint32_t prescaler =
     // uint32_t tq = (Prescaler + 1) * (1 / kFrequency); // Length of time quanta
 
           // enum BITRATE{CAN_50KBPS,
@@ -597,21 +629,21 @@ class Can final : public sjsu::Can
 
 
     uint32_t frame_id =
-        bit:value()
+        bit::Value()
             .Insert(message.is_remote_request, FrameIdentifier::kRemoteRequest)
             .Set(FrameIdentifier::kTransmitMailboxRequest);
 
     if(message.format == Message_t::Format::kStandard)
     {
       frame_id = 
-         bit:value(frame_id)
+         bit::Value(frame_id)
             .Insert(message.id, FrameIdentifier::kStandardIdentifier);
 
     }
-    else if(message.format == Message_t::Format::kStandard)
+    else if(message.format == Message_t::Format::kExtended)
     {
         frame_id = 
-         bit:value(frame_id)
+         bit::Value(frame_id)
             .Insert(message.id, FrameIdentifier::kExtendedIdentifier);
     }           
 
@@ -670,7 +702,7 @@ class Can final : public sjsu::Can
 
     // Assign filter 0 to FIFO 0 (Clear bit 0) 
     channel_.registers->FFA1R &= ~(0x1UL);	
-    SetFilterFIFOSelect(Filter::k0, FilterFIFOSelect::kFIFO0);		   
+    SetFilterFIFOSelect(Filter::k0, FIFOSelect::kFIFO1);		   
 
     // Activate filter 0 (Set bit 0) 
     channel_.registers->FA1R  |=   0x1UL;
@@ -717,13 +749,14 @@ class Can final : public sjsu::Can
   /// @param enable_mode - true if you want to enable the mode. False otherwise.
   void SetMode(bit::Mask mode, bool enable_mode) const
   {
-    channel_.registers->MOD =
-        bit::Insert(channel_.registers->MOD, enable_mode, mode);
+    channel_.registers->MCR =
+        bit::Insert(channel_.registers->MCR, enable_mode, mode);
   }
 
   void SetLoopback(bool enable_mode) const
   {
-     bit::Insert(channel_.registers->BTR, kLoopBackMode, mode);
+     channel_.registers->BTR =
+        bit::Insert(channel_.registers->BTR, enable_mode, BusTiming::kLoopBackMode);
   }
 
     /// Verify controller modess
@@ -739,13 +772,13 @@ inline Can & GetCan()
 {
   if constexpr (port == 1)
   {
-    static auto & port1_transmit_pin = GetPin<0, 12>();
-    static auto & port1_read_pin     = GetPin<0, 11>();
+    static auto & port1_transmit_pin = GetPin<'A', 12>();
+    static auto & port1_read_pin     = GetPin<'A', 11>();
 
     /// Predefined definition for CAN1
     static const Can::Port_t kCan1 = {
       .td_pin           = port1_transmit_pin,
-      .td_function_code = 8,
+      .td_function_code = 0,
       .rd_pin           = port1_read_pin,
       .rd_function_code = 2,
       .registers        = stm32f10x::CAN1,

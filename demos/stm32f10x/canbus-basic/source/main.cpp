@@ -339,14 +339,14 @@ using namespace stm32f10x;
       {
         CANReceive(&CAN_rx_msg);
         sjsu::LogInfo("%#04x %#04x %#04x %#04x %#04x %#04x %#04x %#04x\n",
-          CAN_rx_msg.data[0],
-          CAN_rx_msg.data[1],
-          CAN_rx_msg.data[2],
-          CAN_rx_msg.data[3],
-					CAN_rx_msg.data[4],
-					CAN_rx_msg.data[5],
-					CAN_rx_msg.data[6],
-					CAN_rx_msg.data[7]);
+			CAN_rx_msg.data[0],
+			CAN_rx_msg.data[1],
+			CAN_rx_msg.data[2],
+			CAN_rx_msg.data[3],
+			CAN_rx_msg.data[4],
+			CAN_rx_msg.data[5],
+			CAN_rx_msg.data[6],
+			CAN_rx_msg.data[7]);
         break;
       }
 
