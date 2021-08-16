@@ -4,11 +4,11 @@
 #include <cstdint>
 #include <limits>
 
-#include "platforms/targets/lpc17xx/LPC17xx.h"
-#include "platforms/targets/lpc40xx/LPC40xx.h"
 #include "peripherals/lpc40xx/pin.hpp"
 #include "peripherals/lpc40xx/system_controller.hpp"
 #include "peripherals/uart.hpp"
+#include "platforms/targets/lpc17xx/LPC17xx.h"
+#include "platforms/targets/lpc40xx/LPC40xx.h"
 #include "utility/error_handling.hpp"
 #include "utility/time/time.hpp"
 
@@ -22,43 +22,114 @@ namespace uart
 {
 /// UART baud error threshold. Used to check if a fractional value is reasonable
 /// close to the desired value.
-constexpr float kThreshold = 0.01f;
+constexpr float kThreshold = 0.015f;
+
+/// Contains the float fraction value as well as the immediate byte code to
+/// generate it when assigned to the FDR register.
+struct UartFractionals
+{
+  /// Fraction value
+  float fraction;
+  /// FDR value
+  uint8_t byte_code;
+};
+
+/// Simply holds an oversized version of the baud rate table to be shrunk down
+/// in a later step.
+struct TableIntermediate
+{
+  /// Oversized array of UartFractionals
+  std::array<UartFractionals, 1000> element{};
+  /// How many entries within element contain a fraction and byte_code
+  int valid_entries = 0;
+};
+
+/// Generate the table using and returning the TableIntermediate which will be
+/// truncated by GenerateBaudRateTable()
+static constexpr auto GenerateOversizedBaudTable() noexcept
+{
+  constexpr uint32_t numerator_min   = 1;
+  constexpr uint32_t denominator_min = 1;
+  constexpr uint32_t denominator_max = 15;
+
+  TableIntermediate table{};
+
+  // First element is the fractional 1.0f value. This allows baud rates that
+  // have dividers that are already integers, on the first iteration of the
+  // fractional value, this will match and the loop will stop.
+  table.element[table.valid_entries++] = UartFractionals{
+    .fraction  = 1,
+    .byte_code = (1 << 4) | (0),
+  };
+
+  // Skip zero numerator
+  for (uint32_t denominator = denominator_min; denominator < denominator_max;
+       denominator++)
+  {
+    for (uint32_t numerator = numerator_min; numerator < denominator;
+         numerator++)
+    {
+      float fraction = 1.0f + static_cast<float>(numerator) /
+                                  static_cast<float>(denominator);
+      if (1.1f <= fraction && fraction <= 1.9f)
+      {
+        table.element[table.valid_entries++] = UartFractionals{
+          .fraction  = fraction,
+          .byte_code = static_cast<uint8_t>((denominator << 4) | (numerator)),
+        };
+      }
+    }
+  }
+
+  return table;
+}
+
+/// Generate the baudrate table.
+constexpr auto GenerateBaudRateTable()
+{
+  constexpr auto kLargeTable = GenerateOversizedBaudTable();
+  std::array<UartFractionals, kLargeTable.valid_entries> table{};
+
+  for (size_t i = 0; i < table.size(); i++)
+  {
+    table[i] = kLargeTable.element[i];
+  }
+
+  return table;
+}
+
+constexpr auto kBaudTable = GenerateBaudRateTable();
+
 /// Structure containing all of the information that a lpc40xx UART needs to
 /// achieve its desired baud rate.
 struct UartCalibration_t
 {
-  /// Main clock divider
+  /// Main clock divider, default to minimum of 2
   uint32_t divide_latch = 0;
   /// Fractional divisor to trim the UART baud rate into the proper rate
-  uint32_t divide_add = 0;
-  /// Fractional numerator to trim the UART baud rate into the proper rate.
-  uint32_t multiply = 1;
+  uint8_t fraction = 0;
 };
+
 /// @param decimal - the number to approximate.
 /// @return Will generate a UartCalibration_t that attempts to find a fractional
 /// value that closely matches the input decimal number as much as possible.
 constexpr UartCalibration_t FindClosestFractional(float decimal)
 {
-  UartCalibration_t result;
-  bool finished = false;
-  for (int div = 0; div < 15 && !finished; div++)
+  UartCalibration_t result{};
+
+  for (const auto & fraction : kBaudTable)
   {
-    for (int mul = div + 1; mul < 15 && !finished; mul++)
+    if (fraction.fraction - kThreshold <= decimal &&
+        decimal <= fraction.fraction + kThreshold)
     {
-      float divf         = static_cast<float>(div);
-      float mulf         = static_cast<float>(mul);
-      float test_decimal = 1.0f + divf / mulf;
-      if (decimal <= test_decimal + kThreshold &&
-          decimal >= test_decimal - kThreshold)
-      {
-        result.divide_add = div;
-        result.multiply   = mul;
-        finished          = true;
-      }
+      result.fraction = fraction.byte_code;
+      break;
     }
   }
+
   return result;
 }
+
 /// @param baud_rate - desired baud rate.
 /// @param fraction_estimate - corrissponds to the result of UartCalibration_t
 ///        divide_add/multiply.
@@ -71,6 +142,7 @@ constexpr float DividerEstimate(float baud_rate,
   float clock_frequency = static_cast<float>(peripheral_frequency);
   return clock_frequency / (16.0f * baud_rate * fraction_estimate);
 }
+
 /// @param baud_rate - desired baud rate.
 /// @param divider - clock divider for the baud rate.
 /// @param peripheral_frequency - input source frequency.
@@ -83,12 +155,14 @@ constexpr float FractionalEstimate(float baud_rate,
   float clock_frequency = static_cast<float>(peripheral_frequency);
   return clock_frequency / (16.0f * baud_rate * divider);
 }
+
 /// @param value - value to round
 /// @return rounded up and truncated value
 constexpr float RoundFloat(float value)
 {
   return static_cast<float>(static_cast<int>(value + 0.5f));
 }
+
 /// @param value input float value.
 /// @return true if value is within our threshold of a decimal number, false
 ///         otherwise.
@@ -103,6 +177,7 @@ constexpr bool IsDecimal(float value)
   }
   return result;
 }
+
 /// States for the uart calibration state machine.
 enum class States
 {
@@ -112,6 +187,7 @@ enum class States
   kGenerateFractionFromDecimal,
   kDone
 };
+
 /// @param baud_rate - desire baud rate
 /// @param peripheral_frequency - input clock source frequency
 /// @return UartCalibration_t that will get the output baud rate as close to the
@@ -126,9 +202,8 @@ constexpr static UartCalibration_t GenerateUartCalibration(
   UartCalibration_t uart_calibration;
   float baud_rate_float = static_cast<float>(baud_rate);
   float divide_estimate = 0;
-  float decimal         = 1.5;
-  float div             = 1;
-  float mul             = 2;
+  float decimal         = kBaudTable[0].fraction;
+  size_t table_position = 0;
   while (state != States::kDone)
   {
     switch (state)
@@ -173,19 +248,11 @@ constexpr static UartCalibration_t GenerateUartCalibration(
       }
       case States::kDecimalFailedGenerateNewDecimal:
       {
-        mul += 1;
-
-        if (div > 15)
+        if (table_position >= kBaudTable.size())
         {
           state = States::kDone;
-          break;
         }
-        else if (mul > 15)
-        {
-          div += 1;
-          mul = div + 1;
-        }
-        decimal = div / mul;
+        decimal = kBaudTable[table_position++].fraction;
         state   = States::kCalculateDivideLatchWithDecimal;
         break;
       }
@@ -320,8 +387,7 @@ class Uart final : public sjsu::Uart
 
     uint8_t dlm = static_cast<uint8_t>((calibration.divide_latch >> 8) & 0xFF);
     uint8_t dll = static_cast<uint8_t>(calibration.divide_latch & 0xFF);
-    uint8_t fdr = static_cast<uint8_t>((calibration.multiply & 0xF) << 4 |
-                                       (calibration.divide_add & 0xF));
+    uint8_t fdr = calibration.fraction;
 
     port_.registers->LCR = kDlabBit;
     port_.registers->DLM = dlm;

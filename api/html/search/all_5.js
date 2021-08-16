@@ -3,6 +3,7 @@ var searchData=
   ['edge',['Edge',['../dd/d3a/classsjsu_1_1Gpio.html#a28d10175d5620f861a7aecd118513149',1,'sjsu::Gpio']]],
   ['eeprom',['Eeprom',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html',1,'sjsu::lpc40xx']]],
   ['eeprom_5fregister',['eeprom_register',['../dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html#a3faf44bc640f083da8fe8e278cd105f5',1,'sjsu::lpc40xx::Eeprom']]],
+  ['element',['element',['../d5/d6b/structsjsu_1_1lpc40xx_1_1uart_1_1TableIntermediate.html#a0c6cbc6e4a996e2f5f3eff1586c63cfa',1,'sjsu::lpc40xx::uart::TableIntermediate']]],
   ['emc_5fdivider',['emc_divider',['../d2/d48/structsjsu_1_1lpc40xx_1_1SystemController_1_1ClockConfiguration.html#aaf541deb0c3fb69c0542337a02052b8e',1,'sjsu::lpc40xx::SystemController::ClockConfiguration']]],
   ['emcclockregister',['EmcClockRegister',['../de/d44/structsjsu_1_1lpc40xx_1_1SystemController_1_1EmcClockRegister.html',1,'sjsu::lpc40xx::SystemController']]],
   ['emcdivider',['EmcDivider',['../d0/d13/classsjsu_1_1lpc40xx_1_1SystemController.html#a523d98f246952d5d70a84d695b818fcc',1,'sjsu::lpc40xx::SystemController']]],

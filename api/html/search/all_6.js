@@ -11,6 +11,7 @@ var searchData=
   ['flush',['Flush',['../d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html#a32057d7301aafc85a85bbeb2e47d4f95',1,'sjsu::stm32f10x::UartBase::Flush()'],['../d0/ddc/classsjsu_1_1Uart.html#a5c00ed2669a7fe0a5fa8230987752134',1,'sjsu::Uart::Flush()']]],
   ['fontstyle',['FontStyle',['../d3/d56/classsjsu_1_1St7066u.html#a6b936555ac9cc7ec812869824ff6e7a1',1,'sjsu::St7066u']]],
   ['format',['format',['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#a03d2bf17e786c546c5a287ae53dd8058',1,'sjsu::Can::Message_t::format()'],['../d9/dc0/structsjsu_1_1Can_1_1Message__t.html#afb250eaba59e88160521cc3a634428d6',1,'sjsu::Can::Message_t::Format()']]],
+  ['fraction',['fraction',['../d4/dbc/structsjsu_1_1lpc40xx_1_1uart_1_1UartFractionals.html#aed5b0aaa9bfe17186bd4ce65632160c5',1,'sjsu::lpc40xx::uart::UartFractionals::fraction()'],['../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a7554e8f0a2fd259101edc45c24bda5cd',1,'sjsu::lpc40xx::uart::UartCalibration_t::fraction()']]],
   ['frame',['frame',['../d8/d77/structsjsu_1_1lpc40xx_1_1Can_1_1LpcRegisters__t.html#ae81d03e595f1af0326f882765cb84ecd',1,'sjsu::lpc40xx::Can::LpcRegisters_t']]],
   ['frame_5fsize',['frame_size',['../d1/ddc/structsjsu_1_1SpiSettings__t.html#a2d5b025bf2394f5f32d328c71d891564',1,'sjsu::SpiSettings_t::frame_size()'],['../da/d27/structsjsu_1_1UartSettings__t.html#ad1a63dda8726649be4fadd13b26ba99a',1,'sjsu::UartSettings_t::frame_size()']]],
   ['frameerror_5ft',['FrameError_t',['../df/dfd/structsjsu_1_1lpc40xx_1_1Can_1_1FrameError__t.html',1,'sjsu::lpc40xx::Can']]],

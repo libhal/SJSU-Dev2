@@ -88,16 +88,12 @@ $(function() {
 Public Attributes</h2></td></tr>
 <tr class="memitem:a811d5016449d3f36725712edd9f93500"><td class="memItemLeft" align="right" valign="top"><a id="a811d5016449d3f36725712edd9f93500"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a811d5016449d3f36725712edd9f93500">divide_latch</a> = 0</td></tr>
-<tr class="memdesc:a811d5016449d3f36725712edd9f93500"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main clock divider. <br /></td></tr>
+<tr class="memdesc:a811d5016449d3f36725712edd9f93500"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main clock divider, default to minimum of 2. <br /></td></tr>
 <tr class="separator:a811d5016449d3f36725712edd9f93500"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a805a337d0ddac02557b190af81a8f49e"><td class="memItemLeft" align="right" valign="top"><a id="a805a337d0ddac02557b190af81a8f49e"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a805a337d0ddac02557b190af81a8f49e">divide_add</a> = 0</td></tr>
-<tr class="memdesc:a805a337d0ddac02557b190af81a8f49e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fractional divisor to trim the UART baud rate into the proper rate. <br /></td></tr>
-<tr class="separator:a805a337d0ddac02557b190af81a8f49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b8e483b152bbe0ef67f8b4a657f537d"><td class="memItemLeft" align="right" valign="top"><a id="a2b8e483b152bbe0ef67f8b4a657f537d"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a2b8e483b152bbe0ef67f8b4a657f537d">multiply</a> = 1</td></tr>
-<tr class="memdesc:a2b8e483b152bbe0ef67f8b4a657f537d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fractional numerator to trim the UART baud rate into the proper rate. <br /></td></tr>
-<tr class="separator:a2b8e483b152bbe0ef67f8b4a657f537d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7554e8f0a2fd259101edc45c24bda5cd"><td class="memItemLeft" align="right" valign="top"><a id="a7554e8f0a2fd259101edc45c24bda5cd"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/df7/structsjsu_1_1lpc40xx_1_1uart_1_1UartCalibration__t.html#a7554e8f0a2fd259101edc45c24bda5cd">fraction</a> = 0</td></tr>
+<tr class="memdesc:a7554e8f0a2fd259101edc45c24bda5cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fractional divisor to trim the UART baud rate into the proper rate. <br /></td></tr>
+<tr class="separator:a7554e8f0a2fd259101edc45c24bda5cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure containing all of the information that a lpc40xx UART needs to achieve its desired baud rate. </p>

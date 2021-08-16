@@ -4,6 +4,7 @@
 
 #include "peripherals/lpc40xx/uart.hpp"
 #include "peripherals/stm32f10x/uart.hpp"
+#include "peripherals/interrupt.hpp"
 #include "devices/communication/esp8266.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
@@ -35,6 +36,7 @@ int main()
   else if constexpr (sjsu::build::kPlatform == sjsu::build::Platform::lpc40xx)
   {
     sjsu::LogInfo("Current Platform LPC40xx...");
+    sjsu::lpc40xx::SetMaximumClockSpeed();
     static auto & uart3 = sjsu::lpc40xx::GetUart<3>();
     uart                = &uart3;
   }
@@ -78,11 +80,28 @@ int main()
 
   socket.Write(write_payload, 5s);
 
-  sjsu::LogInfo("Reading back response from server (%s)...", host.data());
-
   std::array<uint8_t, 1024 * 2> response;
   size_t read_back = socket.Read(response, 10s);
 
+  sjsu::LogInfo("Reading back response from server (%s)...", host.data());
+  sjsu::LogInfo("Printing Server Response:");
+  printf("%.*s\n", read_back, response.data());
+  puts("===================================================================");
+
+  socket.Write(write_payload, 5s);
+
+  read_back = socket.Read(response, 10s);
+
+  sjsu::LogInfo("Reading back response from server (%s)...", host.data());
+  sjsu::LogInfo("Printing Server Response:");
+  printf("%.*s\n", read_back, response.data());
+  puts("===================================================================");
+
+  socket.Write(write_payload, 5s);
+
+  read_back = socket.Read(response, 10s);
+
+  sjsu::LogInfo("Reading back response from server (%s)...", host.data());
   sjsu::LogInfo("Printing Server Response:");
   printf("%.*s\n", read_back, response.data());
   puts("===================================================================");

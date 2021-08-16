@@ -1,6 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; PwmSettings_t \&gt;" alt="" coords="5,31,236,57"/>
-<area shape="rect" id="node2" href="$d6/ddf/classsjsu_1_1Pwm.html" title="sjsu::Pwm" alt="" coords="284,31,372,57"/>
-<area shape="rect" id="node3" href="$df/dfa/classsjsu_1_1lpc40xx_1_1Pwm.html" title="sjsu::lpc40xx::Pwm" alt="" coords="430,5,577,32"/>
-<area shape="rect" id="node4" href="$db/d96/classsjsu_1_1stm32f10x_1_1Pwm.html" title="sjsu::stm32f10x::Pwm" alt="" coords="420,56,587,83"/>
+<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; I2cSettings_t \&gt;" alt="" coords="5,5,223,32"/>
+<area shape="rect" id="node2" href="$d0/d9b/classsjsu_1_1I2c.html" title="An abstract interface for hardware that implements the Inter&#45;integrated Circuit (I2C) or Two Wire Int..." alt="" coords="271,5,345,32"/>
+<area shape="rect" id="node3" href="$d8/d71/classsjsu_1_1lpc40xx_1_1I2c.html" title="sjsu::lpc40xx::I2c" alt="" coords="393,5,528,32"/>
 </map>

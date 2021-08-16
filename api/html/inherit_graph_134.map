@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="The basis class for all peripheral, device and system drivers in SJSU&#45;Dev2. " alt="" coords="5,5,204,32"/>
+<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; RCServoSettings_t \&gt;" alt="" coords="5,5,257,32"/>
+<area shape="rect" id="node2" href="$d9/dc9/classsjsu_1_1Servo.html" title="sjsu::Servo" alt="" coords="305,5,399,32"/>
 </map>
