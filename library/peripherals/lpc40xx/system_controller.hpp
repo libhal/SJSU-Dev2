@@ -736,11 +736,15 @@ inline void SetMaximumClockSpeed()
   config.cpu.clock   = SystemController::CpuClockSelect::kPll0;
   config.cpu.divider = 1;
 
+  sjsu::cortex::__disable_irq();
+
   // Initialize system clock rates.
   system.Initialize();
 
   // Initialize platform with new clock configuration settings.
   sjsu::InitializePlatform();
+
+  sjsu::cortex::__enable_irq();
 }
 }  // namespace lpc40xx
 }  // namespace sjsu
