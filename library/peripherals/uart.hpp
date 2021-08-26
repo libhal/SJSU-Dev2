@@ -5,8 +5,8 @@
 #include <limits>
 #include <span>
 
-#include "peripherals/inactive.hpp"
 #include "module.hpp"
+#include "peripherals/inactive.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/time/time.hpp"
 
@@ -180,15 +180,19 @@ class Uart : public Module<UartSettings_t>
   size_t Read(std::span<uint8_t> data, std::chrono::nanoseconds timeout)
   {
     size_t position = 0;
+    // Read as much data out of the Uart port initially before waiting
+    position += Read(data.subspan(position));
 
-    Wait(timeout, [this, data, &position]() -> bool {
-      position += Read(data.subspan(position));
-      if (position >= data.size())
-      {
-        return true;
-      }
-      return false;
-    });
+    Wait(timeout,
+         [this, data, &position]() -> bool
+         {
+           position += Read(data.subspan(position));
+           if (position >= data.size())
+           {
+             return true;
+           }
+           return false;
+         });
 
     return position;
   }

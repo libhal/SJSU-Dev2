@@ -8,6 +8,7 @@
 #include "peripherals/stm32f10x/uart.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
+#include "utility/time/time.hpp"
 
 std::string_view host = "www.example.com";
 std::string_view get_request_example =
@@ -61,7 +62,8 @@ int main()
   while (true)
   {
     sjsu::LogInfo("Connecting to WiFi...");
-    if (wifi.ConnectToAccessPoint("wifi", "password", 10s))
+    // Replace the SSID and password with your access point's SSID and password.
+    if (wifi.ConnectToAccessPoint("ssid", "password", 10s))
     {
       break;
     }
@@ -70,6 +72,17 @@ int main()
   }
 
   sjsu::LogInfo("Connected to WiFi!!");
+  sjsu::LogInfo("Verifying the connection...");
+
+  if (wifi.IsConnected())
+  {
+    sjsu::LogInfo("Connection Verified!");
+  }
+  else
+  {
+    sjsu::LogInfo("Connection NOT Verified!");
+  }
+
   sjsu::LogInfo("Connecting to server (%s)...", host.data());
 
   socket.Connect(sjsu::InternetSocket::Protocol::kTCP, host, 80, 5s);
@@ -80,14 +93,16 @@ int main()
       reinterpret_cast<const uint8_t *>(get_request_example.data()),
       get_request_example.size());
 
-  socket.Write(write_payload, 5s);
+  std::array<uint8_t, 1024 * 2> response{};
 
-  std::array<uint8_t, 1024 * 2> response;
-  size_t read_back = socket.Read(response, 10s);
+  socket.Write(write_payload, 5s);
+  sjsu::Delay(1s);
+  size_t read_back = 0;
+  read_back        = esp.ReadRaw(response);
 
   sjsu::LogInfo("Reading back response from server (%s)...", host.data());
   sjsu::LogInfo("Printing Server Response:");
-  printf("%.*s\n", read_back, response.data());
+  printf("(%d) %.*s\n", read_back, read_back, response.data());
   puts("===================================================================");
 
   socket.Write(write_payload, 5s);
