@@ -552,10 +552,10 @@ class UartBase : public sjsu::Uart
 
 /// Uart Driver for the lpc40xx platform.
 ///
-/// @tparam - defaults to 1024 bytes for the queue size. You can configure this
+/// @tparam - defaults to 2048 bytes for the queue size. You can configure this
 ///           for a higher or lower number of bytes. Note: that the larger this
 ///           value, the larger this object's size is.
-template <size_t queue_size = 1024>
+template <size_t queue_size = 2048>
 class Uart : public sjsu::lpc40xx::UartBase
 {
  public:
@@ -572,7 +572,7 @@ class Uart : public sjsu::lpc40xx::UartBase
   std::array<uint8_t, queue_size> queue_;
 };
 
-template <int port, size_t queue_size = 1024>
+template <int port, size_t queue_size = 2048>
 inline Uart<queue_size> & GetUart()
 {
   if constexpr (port == 0)

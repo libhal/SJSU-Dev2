@@ -19,9 +19,6 @@
 #include "utility/macros.hpp"
 #include "utility/time/time.hpp"
 
-// Uart port 0 is used to communicate back to the host computer
-auto & uart0 = sjsu::lpc40xx::GetUart<0, 1024>();
-
 // Private namespace to make sure that these do not conflict with other globals
 namespace
 {
@@ -33,6 +30,9 @@ sjsu::lpc40xx::SystemController system_controller(clock_configuration);
 
 // Create timer0 to be used by lower level initialization for uptime calculation
 sjsu::cortex::DwtCounter arm_dwt_counter;
+
+// Uart port 0 is used to communicate back to the host computer
+auto & uart0 = sjsu::lpc40xx::GetUart<0>();
 
 // System timer is used to count milliseconds of time and to run the RTOS
 // scheduler.
