@@ -17,6 +17,7 @@
 #include "utility/time/time.hpp"
 
 
+
 namespace sjsu
 {
 namespace stm32f10x
@@ -53,9 +54,6 @@ class Can final : public sjsu::Can
     /// start a transmission. (pg. 658)
     static constexpr bit::Mask kSilentMode = bit::MaskFromRange(31);
   };
-  ////////////////////////////////////////
-  //////// INTERRUPTS FOR LATER //////////
-  ////////////////////////////////////////
 
   /// This struct holds interrupt flags and capture flag status. It is HW mapped
   /// to a 16-bit register: ICR (pg. 557)
@@ -128,27 +126,27 @@ class Can final : public sjsu::Can
     static constexpr bit::Mask kDebugFreeze                     = bit::MaskFromRange(16);
   };
 
-  struct FrameIdentifier  // NOLINT
+  struct MaillboxIdentifier  // NOLINT
   {
     //Transmit
     static constexpr bit::Mask kTransmitMailboxRequest    = bit::MaskFromRange(0);
     //Both
-    static constexpr bit::Mask kRemoteRequest = bit::MaskFromRange(1);
+    static constexpr bit::Mask kRemoteRequest             = bit::MaskFromRange(1);
     static constexpr bit::Mask kIdentifierType            = bit::MaskFromRange(2);
-    static constexpr bit::Mask kStandardIdentifier        = bit::MaskFromRange(20,3);
-    static constexpr bit::Mask kExtendedIdentifier        = bit::MaskFromRange(31,3);
+    static constexpr bit::Mask kStandardIdentifier        = bit::MaskFromRange(21,31);
+    static constexpr bit::Mask kExtendedIdentifier        = bit::MaskFromRange(3,31);
   };
 
-    struct FrameInfo  // NOLINT
+    struct FrameLengthAndInfo  // NOLINT
   {
-    //Both
+    //Recieve/Transmit
     static constexpr bit::Mask kDataLengthCode = bit::MaskFromRange(3,0);
     //Transmit
     static constexpr bit::Mask kkTransmitGlobalTime = bit::MaskFromRange(8);
     //Recieve
-    static constexpr bit::Mask kFilterMatchIndex = bit::MaskFromRange(15,8);
-    //Both
-    static constexpr bit::Mask kMessageTimeStamp = bit::MaskFromRange(31,16);
+    static constexpr bit::Mask kFilterMatchIndex = bit::MaskFromRange(8,15);
+    //Recieve/Transmit
+    static constexpr bit::Mask kMessageTimeStamp = bit::MaskFromRange(16,31);
   };
   
   /// CANBUS FIFO Status (pg. 680)
@@ -164,98 +162,78 @@ class Can final : public sjsu::Can
     static constexpr bit::Mask kReleaseOutputMailbox    = bit::MaskFromRange(5);
   };
 
-   enum class FIFOSelect : int
+   enum class FIFOAssignment : int
    {
     kFIFO1 = 0,
     kFIFO2 = 1,
     kFIFONone = 4
    };
-
-
-
-  ////////////////////////////////////////
-  //////// Filter Registers     //////////
-  ////////////////////////////////////////
   
   /// CAN Filter Master Register
   struct FilterMaster
   {
-    static constexpr bit::Mask kInitializationMode            = bit::MaskFromRange(0);
-    static constexpr bit::Mask kCan2StartBank                 = bit::MaskFromRange(8, 13);
+    static constexpr bit::Mask kInitializationMode = bit::MaskFromRange(0);
+    static constexpr bit::Mask kCan2StartBank = bit::MaskFromRange(8, 13);
   };
 
   /// CAN Filter Bank Mode
    enum class FilterBankMode : int
   {
-    kActive                        = 0,
-    kInitialization                = 1
+    kActive = 0,
+    kInitialization = 1
   };
 
   /// CAN Filter Mode Register (CAN_FM1R)
-  enum class FilterMode : int
+  enum class FilterType : int
   {
-    kMaskMode                      =0,
-    kListMode                      =1
+    kMask = 0,
+    kList = 1
   };
 
   /// CAN Filter Scale Register (CAN_FS1R)
   enum class FilterScale : int
   {
-    kDual16BitScale                =0,
-    kSingle32BitScale              =1
+    kDual16BitScale = 0,
+    kSingle32BitScale = 1
   };
 
     /// CAN Filter Activation Register (CAN_FFA1R)
    enum class  FilterActivation  : int
   {
-    kNotActive                      =0,
-    kActive                         =1
+    kNotActive = 0,
+    kActive = 1
   };
 
   struct Filter
   {
-    static constexpr bit::Mask k0                      = bit::MaskFromRange(0);
-    static constexpr bit::Mask k1                      = bit::MaskFromRange(1);
-    static constexpr bit::Mask k2                      = bit::MaskFromRange(2);
-    static constexpr bit::Mask k3                      = bit::MaskFromRange(3);
-    static constexpr bit::Mask k4                      = bit::MaskFromRange(4);
-    static constexpr bit::Mask k5                      = bit::MaskFromRange(5);
-    static constexpr bit::Mask k6                      = bit::MaskFromRange(6);
-    static constexpr bit::Mask k7                      = bit::MaskFromRange(7);
-    static constexpr bit::Mask k8                      = bit::MaskFromRange(8);
-    static constexpr bit::Mask k9                      = bit::MaskFromRange(9);
-    static constexpr bit::Mask k10                     = bit::MaskFromRange(10);
-    static constexpr bit::Mask k11                     = bit::MaskFromRange(11);
-    static constexpr bit::Mask k12                     = bit::MaskFromRange(12);
-    static constexpr bit::Mask k13                     = bit::MaskFromRange(13);
-    static constexpr bit::Mask k14                     = bit::MaskFromRange(14);
-    static constexpr bit::Mask k15                     = bit::MaskFromRange(15);
-    static constexpr bit::Mask k16                     = bit::MaskFromRange(16);
-    static constexpr bit::Mask k17                     = bit::MaskFromRange(17);
-    static constexpr bit::Mask k18                     = bit::MaskFromRange(18);
-    static constexpr bit::Mask k19                     = bit::MaskFromRange(19);
-    static constexpr bit::Mask k20                     = bit::MaskFromRange(20);
-    static constexpr bit::Mask k21                     = bit::MaskFromRange(21);
-    static constexpr bit::Mask k22                     = bit::MaskFromRange(22);
-    static constexpr bit::Mask k23                     = bit::MaskFromRange(23);
-    static constexpr bit::Mask k24                     = bit::MaskFromRange(24);
-    static constexpr bit::Mask k25                     = bit::MaskFromRange(25);
-    static constexpr bit::Mask k26                     = bit::MaskFromRange(26);
-    static constexpr bit::Mask k27                     = bit::MaskFromRange(27);
-  };
-
-
-
-
-
-  /// CANBUS Mailbox Register
-  struct MailboxIdentifier
-  {
-    static constexpr bit::Mask kTransmitMailboxRequest        = bit::MaskFromRange(0);
-    static constexpr bit::Mask kRemoteTransmissionRequest     = bit::MaskFromRange(1);
-    static constexpr bit::Mask kIdentifierExtension           = bit::MaskFromRange(2);
-    static constexpr bit::Mask kStandardId                    = bit::MaskFromRange(21, 31);
-    static constexpr bit::Mask kExtenedId                     = bit::MaskFromRange(3, 31);
+    static constexpr bit::Mask k0 = bit::MaskFromRange(0);
+    static constexpr bit::Mask k1 = bit::MaskFromRange(1);
+    static constexpr bit::Mask k2 = bit::MaskFromRange(2);
+    static constexpr bit::Mask k3 = bit::MaskFromRange(3);
+    static constexpr bit::Mask k4 = bit::MaskFromRange(4);
+    static constexpr bit::Mask k5 = bit::MaskFromRange(5);
+    static constexpr bit::Mask k6 = bit::MaskFromRange(6);
+    static constexpr bit::Mask k7 = bit::MaskFromRange(7);
+    static constexpr bit::Mask k8 = bit::MaskFromRange(8);
+    static constexpr bit::Mask k9 = bit::MaskFromRange(9);
+    static constexpr bit::Mask k10 = bit::MaskFromRange(10);
+    static constexpr bit::Mask k11 = bit::MaskFromRange(11);
+    static constexpr bit::Mask k12 = bit::MaskFromRange(12);
+    static constexpr bit::Mask k13 = bit::MaskFromRange(13);
+    static constexpr bit::Mask k14 = bit::MaskFromRange(14);
+    static constexpr bit::Mask k15 = bit::MaskFromRange(15);
+    static constexpr bit::Mask k16 = bit::MaskFromRange(16);
+    static constexpr bit::Mask k17 = bit::MaskFromRange(17);
+    static constexpr bit::Mask k18 = bit::MaskFromRange(18);
+    static constexpr bit::Mask k19 = bit::MaskFromRange(19);
+    static constexpr bit::Mask k20 = bit::MaskFromRange(20);
+    static constexpr bit::Mask k21 = bit::MaskFromRange(21);
+    static constexpr bit::Mask k22 = bit::MaskFromRange(22);
+    static constexpr bit::Mask k23 = bit::MaskFromRange(23);
+    static constexpr bit::Mask k24 = bit::MaskFromRange(24);
+    static constexpr bit::Mask k25 = bit::MaskFromRange(25);
+    static constexpr bit::Mask k26 = bit::MaskFromRange(26);
+    static constexpr bit::Mask k27 = bit::MaskFromRange(27);
   };
 
 
@@ -298,8 +276,10 @@ class Can final : public sjsu::Can
     /// Pin function code for receive
     uint8_t rd_function_code;
 
+    PinSettings_t::Resistor rd_resistor_state;
+
     /// Pointer to the STM32F1 CAN peripheral in memory
-    CAN_TypeDef * registers;
+    CAN_TypeDef * can;
 
     /// Peripheral's ID
     sjsu::SystemController::ResourceID id;
@@ -318,47 +298,38 @@ class Can final : public sjsu::Can
     uint32_t data_b = 0;
   };
 
- 
-
-  /// Pointer to the LPC CANBUS acceptance filter peripheral in memory
-  // inline static LPC_CANAF_TypeDef * can_acceptance_filter_register = LPC_CANAF;
-
   /// @param channel - Which CANBUS channel to use
   explicit constexpr Can(const Port_t & channel) : channel_(channel) {}
 
   void ModuleInitialize() override
   {
     sjsu::LogInfo("Power on CANBUS peripheral");
-    sjsu::LogInfo("Power on CANBUS peripheral");
-    sjsu::LogInfo("Power on CANBUS peripheral");
-    sjsu::LogInfo("Power on CANBUS peripheral");
-    sjsu::LogInfo("Power on CANBUS peripheral");
-    sjsu::LogInfo("Power on CANBUS peripheral");
-    sjsu::LogInfo("Power on CANBUS peripheral");
-    sjsu::LogInfo("Power on CANBUS peripheral");
-    sjsu::LogInfo("Power on CANBUS peripheral");    
+
     /// Power on CANBUS peripheral=
     auto & platform = sjsu::SystemController::GetPlatformController();
-    platform.PowerUpPeripheral(channel_.id);
+    platform.PowerUpPeripheral(channel_.id); // checked
 
     /// Configure pins
-    channel_.td_pin.settings.function = channel_.td_function_code;
-    channel_.rd_pin.settings.function = channel_.rd_function_code;
+  
+    // Setup TX as output with alternative control (TXD)
+    channel_.td_pin.settings.function = 1;
+    channel_.td_pin.settings.Floating();
+
+    // Setup RX as Input with Pullup
+    channel_.rd_pin.settings.function = 2; // Input Floating
+    channel_.rd_pin.settings.PullUp();
+  
     channel_.td_pin.Initialize();
     channel_.rd_pin.Initialize();
-
+   
     // Enter Initalization mode in order to write to CAN registers.
-    channel_.registers->MCR =
-        bit::Insert(channel_.registers->MCR, true, Mode::kInitializationRequest);
-    channel_.registers->MCR =
-        bit::Insert(channel_.registers->MCR, true, Mode::kNoAutomaticRetransmission);
-    channel_.registers->MCR =
-        bit::Insert(channel_.registers->MCR, true, Mode::kAutomaticBussOffManagement);
-    // SetMode(Mode::kInitializationRequest, true);
-    // SetMode(Mode::kNoAutomaticRetransmission, true);
-    // SetMode(Mode::kAutomaticBussOffManagement, true);
+    SetMasterMode(Mode::kSleepModeRequest, false);
+    SetMasterMode(Mode::kInitializationRequest, true);
+    SetMasterMode(Mode::kNoAutomaticRetransmission, true);
+    SetMasterMode(Mode::kAutomaticBussOffManagement, true);
+
     // Wait to enter Initialization mode
-    while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, true)){}
+    while (!GetMasterStatus(MasterStatus::kInitializationAcknowledge)){}
 
     ConfigureBaudRate();
     // ConfigureReceiveHandler();
@@ -366,43 +337,50 @@ class Can final : public sjsu::Can
     EnableAcceptanceFilter();
 
     // Leave Initialization mode
-    SetMode(Mode::kInitializationRequest, false);
+    SetMasterMode(Mode::kInitializationRequest, false);
+
     // Wait to leave Initialization mode
-    while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, false)){}
+    while (GetMasterStatus(MasterStatus::kInitializationAcknowledge)){}
+
     return;
   }
 
   void Send(const Message_t & message)
   {
     StmDataRegisters_t registers = ConvertMessageToRegisters(message);
-
     bool sent = false;
     while (!sent)
     {
-      uint32_t status_register = channel_.registers->TSR;
+      uint32_t status_register = channel_.can->TSR;
       // Check if any buffer is available.
       if (bit::Read(status_register, TransmitStatus::kTransmitMailbox0Empty))
       {
-        channel_.registers->sTxMailBox[0].TDTR = registers.frame;
-        channel_.registers->sTxMailBox[0].TDLR = registers.data_a;
-        channel_.registers->sTxMailBox[0].TDHR = registers.data_b;
-        channel_.registers->sTxMailBox[0].TIR = registers.id;
+        sjsu::LogInfo(" Sent Mailbox 1");
+        channel_.can->sTxMailBox[0].TDTR &= ~(0xF);
+	      channel_.can->sTxMailBox[0].TDTR |= message.length & 0xF;
+        channel_.can->sTxMailBox[0].TDLR = registers.data_a;
+        channel_.can->sTxMailBox[0].TDHR = registers.data_b;  
+        channel_.can->sTxMailBox[0].TIR = registers.id;
         sent = true;
       }
       else if (bit::Read(status_register, TransmitStatus::kTransmitMailbox1Empty))
       {
-        channel_.registers->sTxMailBox[1].TDTR = registers.frame;
-        channel_.registers->sTxMailBox[1].TDLR = registers.data_a;
-        channel_.registers->sTxMailBox[1].TDHR = registers.data_b;
-        channel_.registers->sTxMailBox[1].TIR = registers.id;
+        sjsu::LogInfo(" Sent Mailbox 2");
+        channel_.can->sTxMailBox[1].TDTR &= ~(0xF);
+	      channel_.can->sTxMailBox[1].TDTR |= message.length & 0xF;
+        channel_.can->sTxMailBox[1].TDLR = registers.data_a;
+        channel_.can->sTxMailBox[1].TDHR = registers.data_b;
+        channel_.can->sTxMailBox[1].TIR = registers.id;
         sent = true;
       }
       else if (bit::Read(status_register, TransmitStatus::kTransmitMailbox2Empty))
       {
-        channel_.registers->sTxMailBox[2].TDTR = registers.frame;
-        channel_.registers->sTxMailBox[2].TDLR = registers.data_a;
-        channel_.registers->sTxMailBox[2].TDHR = registers.data_b;
-        channel_.registers->sTxMailBox[2].TIR = registers.id;
+        sjsu::LogInfo(" Sent Mailbox 3");
+        channel_.can->sTxMailBox[2].TDTR &= ~(0xF);
+	      channel_.can->sTxMailBox[2].TDTR |= message.length & 0xF;
+        channel_.can->sTxMailBox[2].TDLR = registers.data_a;
+        channel_.can->sTxMailBox[2].TDHR = registers.data_b;
+        channel_.can->sTxMailBox[2].TIR = registers.id;
         sent = true;
       }
     }
@@ -410,8 +388,8 @@ class Can final : public sjsu::Can
 
   bool HasData()
   {
-    uint32_t fifo0_status = channel_.registers->RF0R;
-    uint32_t fifo1_status = channel_.registers->RF1R;
+    uint32_t fifo0_status = channel_.can->RF0R;
+    uint32_t fifo1_status = channel_.can->RF1R;
     if (bit::Read(fifo0_status, FIFOStatus::kMessagesPending))
     {
       return true;
@@ -427,31 +405,31 @@ class Can final : public sjsu::Can
   {
     Message_t message;
 
-    uint32_t fifo0_status = channel_.registers->RF0R;
-    uint32_t fifo1_status = channel_.registers->RF1R;
-    FIFOSelect fifo_select = FIFOSelect::kFIFONone;
+    uint32_t fifo0_status = channel_.can->RF0R;
+    uint32_t fifo1_status = channel_.can->RF1R;
+    FIFOAssignment fifo_select = FIFOAssignment::kFIFONone;
 
     if (bit::Read(fifo0_status, FIFOStatus::kMessagesPending))
     {
-      fifo_select = FIFOSelect::kFIFO1;
+      fifo_select = FIFOAssignment::kFIFO1;
     }
     else if(bit::Read(fifo1_status, FIFOStatus::kMessagesPending))
     {
-      fifo_select = FIFOSelect::kFIFO2;
+      fifo_select = FIFOAssignment::kFIFO2;
     }
-    // else
-    // {
-    //   // Error, tried to recieve when there were no pending messages.
-    //   return;
-    // }
+    else
+    {
+      // Error, tried to recieve when there were no pending messages.
+      return message;
+    }
 
-    uint32_t frame = channel_.registers->sFIFOMailBox[Value(fifo_select)].RDTR;
-    uint32_t id = channel_.registers->sFIFOMailBox[Value(fifo_select)].RIR;
+    uint32_t frame = channel_.can->sFIFOMailBox[Value(fifo_select)].RDTR;
+    uint32_t id = channel_.can->sFIFOMailBox[Value(fifo_select)].RIR;
 
     // Extract all of the information from the message frame
-    bool is_remote_request = bit::Extract(id,     FrameIdentifier::kRemoteRequest);
-    uint32_t length        = bit::Extract(frame,  FrameInfo::kDataLengthCode);
-    uint32_t format        = bit::Extract(id,     FrameIdentifier::kIdentifierType);
+    bool is_remote_request = bit::Extract(id,     MaillboxIdentifier::kRemoteRequest);
+    uint32_t length        = bit::Extract(frame,  FrameLengthAndInfo::kDataLengthCode);
+    uint32_t format        = bit::Extract(id,     MaillboxIdentifier::kIdentifierType);
 
     message.is_remote_request = is_remote_request;
     message.length            = static_cast<uint8_t>(length);
@@ -460,33 +438,33 @@ class Can final : public sjsu::Can
     // Get the frame ID
     if (message.format == Message_t::Format::kExtended)
     {
-      message.id = bit::Extract(id, FrameIdentifier::kExtendedIdentifier);
+      message.id = bit::Extract(id, MaillboxIdentifier::kExtendedIdentifier);
     }
     else
     {
-      message.id = bit::Extract(id, FrameIdentifier::kStandardIdentifier);
-    }
+      message.id = bit::Extract(id, MaillboxIdentifier::kStandardIdentifier);
+    }  
 
-    // Pull the bytes from RDA into the payload array
-    message.payload[0] = (channel_.registers->sFIFOMailBox[Value(fifo_select)].RDLR >> (0 * 8)) & 0xFF;
-    message.payload[1] = (channel_.registers->sFIFOMailBox[Value(fifo_select)].RDLR >> (1 * 8)) & 0xFF;
-    message.payload[2] = (channel_.registers->sFIFOMailBox[Value(fifo_select)].RDLR >> (2 * 8)) & 0xFF;
-    message.payload[3] = (channel_.registers->sFIFOMailBox[Value(fifo_select)].RDLR >> (3 * 8)) & 0xFF;
+    // Pull the bytes from RDL into the payload array
+    message.payload[0] = (channel_.can->sFIFOMailBox[Value(fifo_select)].RDLR >> (0 * 8)) & 0xFF;
+    message.payload[1] = (channel_.can->sFIFOMailBox[Value(fifo_select)].RDLR >> (1 * 8)) & 0xFF;
+    message.payload[2] = (channel_.can->sFIFOMailBox[Value(fifo_select)].RDLR >> (2 * 8)) & 0xFF;
+    message.payload[3] = (channel_.can->sFIFOMailBox[Value(fifo_select)].RDLR >> (3 * 8)) & 0xFF;
 
-    // Pull the bytes from RDB into the payload array
-    message.payload[4] = (channel_.registers->sFIFOMailBox[Value(fifo_select)].RDHR >> (0 * 8)) & 0xFF;
-    message.payload[5] = (channel_.registers->sFIFOMailBox[Value(fifo_select)].RDHR >> (1 * 8)) & 0xFF;
-    message.payload[6] = (channel_.registers->sFIFOMailBox[Value(fifo_select)].RDHR >> (2 * 8)) & 0xFF;
-    message.payload[7] = (channel_.registers->sFIFOMailBox[Value(fifo_select)].RDHR >> (3 * 8)) & 0xFF;
+    // Pull the bytes from RDH into the payload array
+    message.payload[4] = (channel_.can->sFIFOMailBox[Value(fifo_select)].RDHR >> (0 * 8)) & 0xFF;
+    message.payload[5] = (channel_.can->sFIFOMailBox[Value(fifo_select)].RDHR >> (1 * 8)) & 0xFF;
+    message.payload[6] = (channel_.can->sFIFOMailBox[Value(fifo_select)].RDHR >> (2 * 8)) & 0xFF;
+    message.payload[7] = (channel_.can->sFIFOMailBox[Value(fifo_select)].RDHR >> (3 * 8)) & 0xFF;
 
     // Release the RX buffer and allow another buffer to be read.
-    if (fifo_select == FIFOSelect::kFIFO1)
+    if (fifo_select == FIFOAssignment::kFIFO1)
     {
-      channel_.registers->RF0R = bit::Set(channel_.registers->RF0R, FIFOStatus::kReleaseOutputMailbox);
+      channel_.can->RF0R = bit::Set(channel_.can->RF0R, FIFOStatus::kReleaseOutputMailbox);
     }
-    else if (fifo_select == FIFOSelect::kFIFO2)
+    else if (fifo_select == FIFOAssignment::kFIFO2)
     {
-      channel_.registers->RF1R = bit::Set(channel_.registers->RF1R, FIFOStatus::kReleaseOutputMailbox);
+      channel_.can->RF1R = bit::Set(channel_.can->RF1R, FIFOStatus::kReleaseOutputMailbox);
     }
 
     return message;
@@ -496,55 +474,21 @@ class Can final : public sjsu::Can
   {
     Message_t test_message;
     test_message.id = id;
-
+    
     // Enable reset mode in order to write to registers
-    SetMode(Mode::kInitializationRequest, true);
+    SetMasterMode(Mode::kInitializationRequest, true);
     // Enable self-test mode
     SetLoopback(true);
     // Disable reset mode
-    SetMode(Mode::kInitializationRequest, false);
+    SetMasterMode(Mode::kInitializationRequest, false);
 
-    // Write test message to tx buffer 1
-    StmDataRegisters_t registers = ConvertMessageToRegisters(test_message);
-
-    // Set self-test request and send buffer 1
-    
-    while (true)
-    {
-       uint32_t status_register = channel_.registers->TSR;
-      // Check if any buffer is available.
-      if (bit::Read(status_register, TransmitStatus::kTransmitMailbox0Empty))
-      {
-        channel_.registers->sTxMailBox[0].TDTR = registers.frame;
-        channel_.registers->sTxMailBox[0].TDLR = 0xAAAA;
-        channel_.registers->sTxMailBox[0].TDHR = 0xBBBB;
-        channel_.registers->sTxMailBox[0].TIR  = registers.id;
-        break;
-      }
-    }
+    Send(test_message);
 
     // Allow time for RX to fire
     Wait(100ms, [this]() { return HasData(); });
 
     // Read the message from the rx buffer and enqueue it into the rx queue.
     auto received_message = Receive();
-
-    // const uint32_t kExpectedDataA =
-    //     received_message.payload[0] | received_message.payload[1] << 8 |
-    //     received_message.payload[2] << 16 | received_message.payload[3] << 24;
-    // const uint32_t kExpectedDataB = 
-    //     received_message.payload[4] | received_message.payload[5] << 8 |
-    //     received_message.payload[6] << 16 | received_message.payload[7] << 24;
-
-    sjsu::LogInfo("%#04x %#04x %#04x %#04x %#04x %#04x %#04x %#04x\n",
-          received_message.payload[0],
-          received_message.payload[1],
-          received_message.payload[2],
-          received_message.payload[3],
-          received_message.payload[4],
-          received_message.payload[5],
-          received_message.payload[6],
-          received_message.payload[7]);
 
     // Check if the received message matches the one we sent
     if (received_message.id != test_message.id)
@@ -553,9 +497,9 @@ class Can final : public sjsu::Can
     }
 
     // Disable self-test mode
-    SetMode(Mode::kInitializationRequest, true);
+    SetMasterMode(Mode::kInitializationRequest, true);
     SetLoopback(false);
-    SetMode(Mode::kInitializationRequest, false);
+    SetMasterMode(Mode::kInitializationRequest, false);
 
     return true;
   }
@@ -606,14 +550,14 @@ class Can final : public sjsu::Can
           //  {2, 13, 9}, 
           //  {2, 15, 4}, 
           //  {2, 15, 2}};
-      channel_.registers->BTR =
-        bit::Insert(channel_.registers->BTR, 0, BusTiming::kPrescalar);
-      channel_.registers->BTR =
-        bit::Insert(channel_.registers->BTR, 14, BusTiming::kTimeSegment1);
-      channel_.registers->BTR =
-        bit::Insert(channel_.registers->BTR, 4, BusTiming::kTimeSegment2);
-      channel_.registers->BTR =
-        bit::Insert(channel_.registers->BTR, 1, BusTiming::kLoopBackMode);
+      channel_.can->BTR =
+        bit::Insert(channel_.can->BTR, 1, BusTiming::kPrescalar);
+      channel_.can->BTR =
+        bit::Insert(channel_.can->BTR, 14, BusTiming::kTimeSegment1);
+      channel_.can->BTR =
+        bit::Insert(channel_.can->BTR, 1, BusTiming::kTimeSegment2);
+      channel_.can->BTR =
+        bit::Insert(channel_.can->BTR, 1, BusTiming::kLoopBackMode);
     
 
     // sjsu::LogDebug(
@@ -625,31 +569,32 @@ class Can final : public sjsu::Can
     StmDataRegisters_t registers;
 
     uint32_t frame_info =
-        bit::Value()
-            .Insert(message.length, FrameInfo::kDataLengthCode)
-            .Insert(Value(message.format), FrameIdentifier::kIdentifierType)
-            .Insert(message.is_remote_request, FrameIdentifier::kRemoteRequest);
+        bit::Value(frame_info)
+            // .Insert(message.uptime, FrameLengthAndInfo::kMessageTimeStamp)
+            .Insert(message.length, FrameLengthAndInfo::kDataLengthCode);
 
-
-    uint32_t frame_id =
-        bit::Value()
-            .Insert(message.is_remote_request, FrameIdentifier::kRemoteRequest)
-            .Set(FrameIdentifier::kTransmitMailboxRequest);
-
+    uint32_t frame_id = 0;
+   
     if(message.format == Message_t::Format::kStandard)
     {
       frame_id = 
-         bit::Value(frame_id)
-            .Insert(message.id, FrameIdentifier::kStandardIdentifier);
+         bit::Value(0)
+            .Insert(true,                      MaillboxIdentifier::kTransmitMailboxRequest)
+            .Insert(message.is_remote_request, MaillboxIdentifier::kRemoteRequest)
+            .Insert(Value(message.format),     MaillboxIdentifier::kIdentifierType)
+            .Insert(message.id,                MaillboxIdentifier::kStandardIdentifier);
 
     }
     else if(message.format == Message_t::Format::kExtended)
     {
-        frame_id = 
-         bit::Value(frame_id)
-            .Insert(message.id, FrameIdentifier::kExtendedIdentifier);
-    }           
-
+      frame_id = 
+        bit::Value(0)
+          .Insert(true,                      MaillboxIdentifier::kTransmitMailboxRequest)
+          .Insert(message.is_remote_request, MaillboxIdentifier::kRemoteRequest)
+          .Insert(Value(message.format),     MaillboxIdentifier::kIdentifierType)
+          .Insert(message.id,                MaillboxIdentifier::kExtendedIdentifier);
+    }         
+    
     uint32_t data_a = 0;
     data_a |= message.payload[0] << (0 * 8);
     data_a |= message.payload[1] << (1 * 8);
@@ -667,6 +612,7 @@ class Can final : public sjsu::Can
     registers.data_a = data_a;
     registers.data_b = data_b;
 
+    
     return registers;
   }
 
@@ -677,96 +623,85 @@ class Can final : public sjsu::Can
                         [[maybe_unused]] bool is_extended = false)
                         {}
   void EnableAcceptanceFilter()
-  {
-    // (Dont think needed)
-    // Configure Filters (8-9 as Mask Mode) (10 - 12 as List Mode)
-    // 8 - 12 as 1 1100
-    // CAN1->FM1R |= 0x1C << 8;              
+  {        
 
     // Activate filter initialization mode (Set bit 0) 
-    channel_.registers->FMR  |=   0x1UL;
     SetFilterBankMode(FilterBankMode::kInitialization);
    
     // Deactivate filter 0 (Clear bit 0) 
-    channel_.registers->FA1R &= ~(0x1UL);
-    ActivateFilter(Filter::k0, FilterActivation::kNotActive);    
+    SetFilterActivationState(Filter::k0, FilterActivation::kNotActive);    
 
     // Configure filter 0 to single 32-bit scale configuration (Set bit 0)
-    channel_.registers->FS1R |=   0x1UL;
     SetFilterScale(Filter::k0, FilterScale::kSingle32BitScale);             
 
-    // Clear filters registers to 0
-    channel_.registers->sFilterRegister[0].FR1 = 0x0UL; 
-    channel_.registers->sFilterRegister[0].FR2 = 0x0UL;
+    // Clear filter registers to accept all messages.
+    channel_.can->sFilterRegister[0].FR1 = 0x0UL; 
+    channel_.can->sFilterRegister[0].FR2 = 0x0UL;
 
-    // Set filter to mask mode (Clear bit 0)
-    channel_.registers->FM1R &= ~(0x1UL);       
-    SetFilterFilteringMode(Filter::k0, FilterMode::kMaskMode);      
+    // Set filter to mask mode
+    SetFilterType(Filter::k0, FilterType::kMask);      
 
     // Assign filter 0 to FIFO 0 (Clear bit 0) 
-    channel_.registers->FFA1R &= ~(0x1UL);	
-    SetFilterFIFOSelect(Filter::k0, FIFOSelect::kFIFO1);		   
+    SetFilterFIFOAssignment(Filter::k0, FIFOAssignment::kFIFO1);		   
 
     // Activate filter 0 (Set bit 0) 
-    channel_.registers->FA1R  |=   0x1UL;
-    ActivateFilter(Filter::k0, FilterActivation::kActive);        
+    SetFilterActivationState(Filter::k0, FilterActivation::kActive);        
 
     // Deactivate filter initialization mode (clear bit 0)
-    channel_.registers->FMR   &= ~(0x1UL);
     SetFilterBankMode(FilterBankMode::kActive);	       
   }
 
   void SetFilterBankMode(FilterBankMode mode)
   {
-     channel_.registers->FMR =
-        bit::Insert(channel_.registers->FMR, Value(mode), FilterMaster::kInitializationMode);
+     channel_.can->FMR =
+        bit::Insert(channel_.can->FMR, Value(mode), FilterMaster::kInitializationMode);
   }
 
-  void SetFilterFilteringMode(bit::Mask filter, FilterMode mode)
+  void SetFilterType(bit::Mask filter, FilterType mode)
   {
-    channel_.registers->FM1R =
-        bit::Insert(channel_.registers->FM1R, Value(mode), filter);
+    channel_.can->FM1R =
+        bit::Insert(channel_.can->FM1R, Value(mode), filter);
   }
 
   void SetFilterScale(bit::Mask filter, FilterScale scale)
   {
-    channel_.registers->FS1R =
-        bit::Insert(channel_.registers->FS1R, Value(scale), filter);
+    channel_.can->FS1R =
+        bit::Insert(channel_.can->FS1R, Value(scale), filter);
   }
 
-  void SetFilterFIFOSelect(bit::Mask filter, FIFOSelect fifo)
+  void SetFilterFIFOAssignment(bit::Mask filter, FIFOAssignment fifo)
   {
-    channel_.registers->FFA1R =
-        bit::Insert(channel_.registers->FFA1R, Value(fifo), filter);
+    channel_.can->FFA1R =
+        bit::Insert(channel_.can->FFA1R, Value(fifo), filter);
   }
 
-  void ActivateFilter(bit::Mask filter, FilterActivation state)
+  void SetFilterActivationState(bit::Mask filter, FilterActivation state)
   {
-    channel_.registers->FA1R =
-        bit::Insert(channel_.registers->FA1R, Value(state), filter);
+    channel_.can->FA1R =
+        bit::Insert(channel_.can->FA1R, Value(state), filter);
   }
 
   /// Enable/Disable controller modes
   ///
   /// @param mode - which mode to enable/disable
   /// @param enable_mode - true if you want to enable the mode. False otherwise.
-  void SetMode(bit::Mask mode, bool enable_mode) const
+  void SetMasterMode(bit::Mask mode, bool enable_mode)
   {
-    channel_.registers->MCR =
-        bit::Insert(channel_.registers->MCR, enable_mode, mode);
+    channel_.can->MCR =
+        bit::Insert(channel_.can->MCR, enable_mode, mode);
   }
 
-  void SetLoopback(bool enable_mode) const
+  bool GetMasterStatus(bit::Mask mode) const
   {
-     channel_.registers->BTR =
-        bit::Insert(channel_.registers->BTR, enable_mode, BusTiming::kLoopBackMode);
+    return bit::Read(CAN1->MSR, mode);
   }
 
-    /// Verify controller modess
-  bool VerifyStatus(bit::Mask status, bool state) const
+  void SetLoopback(bool enable_mode)
   {
-    return bit::Read(channel_.registers->MSR, status);
+     channel_.can->BTR =
+        bit::Insert(channel_.can->BTR, enable_mode, BusTiming::kLoopBackMode);
   }
+
    const Port_t & channel_;
 };
 
@@ -781,41 +716,52 @@ inline Can & GetCan()
     /// Predefined definition for CAN1
     static const Can::Port_t kCan1 = {
       .td_pin           = port1_transmit_pin,
-      .td_function_code = 0,
       .rd_pin           = port1_read_pin,
-      .rd_function_code = 2,
-      .registers        = stm32f10x::CAN1,
+      .can              = stm32f10x::CAN1,
       .id               = sjsu::stm32f10x::SystemController::Peripherals::kCan1,
     };
 
     static Can can1(kCan1);
     return can1;
   }
-  // else if constexpr (port == 2)
-  // {
-  //   static auto & port2_transmit_pin = GetPin<2, 8>();
-  //   static auto & port2_read_pin     = GetPin<2, 7>();
-
-  //   /// Predefined definition for CAN2
-  //   static const Can::Port_t kCan2 = {
-  //     .td_pin           = port2_transmit_pin,
-  //     .td_function_code = 8,
-  //     .rd_pin           = port2_read_pin,
-  //     .rd_function_code = 2,
-  //     .registers        = stm32f10x::CAN2,
-  //     .id               = sjsu::stm32f10x::SystemController::Peripherals::kCan2,
-  //   };
-
-  //   static Can can2(kCan2);
-  //   return can2;
-  // }
   else
   {
     static_assert(InvalidOption<port>,
                   SJ2_ERROR_MESSAGE_DECORATOR(
-                      "Support CAN ports for LPC40xx are CAN1, CAN2"));
+                      "Support CAN ports for STM32F10xx are CAN1"));
     return GetCan<0>();
   }
 }
-}  // namespace lpc40xx
+typedef struct
+{
+	uint16_t id;
+	uint8_t  data[8];
+	uint8_t  len;
+} CAN_msg_t;
+
+  void CANReceive(CAN_msg_t* CAN_rx_msg)
+ {
+	// Grab the identifier Bits 31:21
+	CAN_rx_msg->id  = (stm32f10x::CAN1->sFIFOMailBox[0].RIR >> 21) & 0x7FFUL;
+	// Grab the Data length Code
+	CAN_rx_msg->len = (stm32f10x::CAN1->sFIFOMailBox[0].RDTR) & 0xFUL;
+	
+	CAN_rx_msg->data[0] = 0xFFUL &  stm32f10x::CAN1->sFIFOMailBox[0].RDLR;
+	CAN_rx_msg->data[1] = 0xFFUL & (stm32f10x::CAN1->sFIFOMailBox[0].RDLR >> 8);
+	CAN_rx_msg->data[2] = 0xFFUL & (stm32f10x::CAN1->sFIFOMailBox[0].RDLR >> 16);
+	CAN_rx_msg->data[3] = 0xFFUL & (stm32f10x::CAN1->sFIFOMailBox[0].RDLR >> 24);
+	CAN_rx_msg->data[4] = 0xFFUL &  stm32f10x::CAN1->sFIFOMailBox[0].RDHR;
+	CAN_rx_msg->data[5] = 0xFFUL & (stm32f10x::CAN1->sFIFOMailBox[0].RDHR >> 8);
+	CAN_rx_msg->data[6] = 0xFFUL & (stm32f10x::CAN1->sFIFOMailBox[0].RDHR >> 16);
+	CAN_rx_msg->data[7] = 0xFFUL & (stm32f10x::CAN1->sFIFOMailBox[0].RDHR >> 24);
+	
+	stm32f10x::CAN1->RF0R |= 0x20UL;
+ }
+
+  uint8_t CANMsgAvail(void)
+  {
+    return CAN1->RF0R & 0x3UL;
+  }
+
+ }  // namespace stm32f10x
 }  // namespace sjsu
