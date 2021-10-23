@@ -329,39 +329,42 @@ class Can final : public sjsu::Can
   void ModuleInitialize() override
   {
     sjsu::LogInfo("Power on CANBUS peripheral");
+    sjsu::LogInfo("Power on CANBUS peripheral");
+    sjsu::LogInfo("Power on CANBUS peripheral");
+    sjsu::LogInfo("Power on CANBUS peripheral");
+    sjsu::LogInfo("Power on CANBUS peripheral");
+    sjsu::LogInfo("Power on CANBUS peripheral");
+    sjsu::LogInfo("Power on CANBUS peripheral");
+    sjsu::LogInfo("Power on CANBUS peripheral");
+    sjsu::LogInfo("Power on CANBUS peripheral");    
     /// Power on CANBUS peripheral=
     auto & platform = sjsu::SystemController::GetPlatformController();
     platform.PowerUpPeripheral(channel_.id);
 
-    sjsu::LogInfo("Configure pins");
     /// Configure pins
     channel_.td_pin.settings.function = channel_.td_function_code;
     channel_.rd_pin.settings.function = channel_.rd_function_code;
-
-    sjsu::LogInfo("channel_.td_pin");
     channel_.td_pin.Initialize();
-
-    sjsu::LogInfo("channel_.rd_pin");
     channel_.rd_pin.Initialize();
 
-    sjsu::LogInfo("Enter Initalization mode in order to write to CAN registers.");
     // Enter Initalization mode in order to write to CAN registers.
-    SetMode(Mode::kInitializationRequest, true);
-    SetMode(Mode::kNoAutomaticRetransmission, true);
-    SetMode(Mode::kAutomaticBussOffManagement, true);
-
-    sjsu::LogInfo("Wait to enter Initialization mode");
+    channel_.registers->MCR =
+        bit::Insert(channel_.registers->MCR, true, Mode::kInitializationRequest);
+    channel_.registers->MCR =
+        bit::Insert(channel_.registers->MCR, true, Mode::kNoAutomaticRetransmission);
+    channel_.registers->MCR =
+        bit::Insert(channel_.registers->MCR, true, Mode::kAutomaticBussOffManagement);
+    // SetMode(Mode::kInitializationRequest, true);
+    // SetMode(Mode::kNoAutomaticRetransmission, true);
+    // SetMode(Mode::kAutomaticBussOffManagement, true);
     // Wait to enter Initialization mode
     while (!VerifyStatus(MasterStatus::kInitializationAcknowledge, true)){}
 
-    sjsu::LogInfo("ConfigureBaudRate");
     ConfigureBaudRate();
     // ConfigureReceiveHandler();
 
-    sjsu::LogInfo("EnableAcceptanceFilter");
     EnableAcceptanceFilter();
 
-    sjsu::LogInfo("Leave Initialization mode");
     // Leave Initialization mode
     SetMode(Mode::kInitializationRequest, false);
     // Wait to leave Initialization mode

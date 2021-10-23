@@ -5,6 +5,17 @@
 #include "utility/log.hpp"
 #include "utility/time/time.hpp"
 
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY(byte)  \
+  (byte & 0x80 ? '1' : '0'), \
+  (byte & 0x40 ? '1' : '0'), \
+  (byte & 0x20 ? '1' : '0'), \
+  (byte & 0x10 ? '1' : '0'), \
+  (byte & 0x08 ? '1' : '0'), \
+  (byte & 0x04 ? '1' : '0'), \
+  (byte & 0x02 ? '1' : '0'), \
+  (byte & 0x01 ? '1' : '0') 
+
 namespace sjsu
 {
 namespace stm32f10x
@@ -44,12 +55,14 @@ void CANInit(BITRATE bitrate)
 	 sjsu::LogInfo("Starting Initialization"); 
 	// Enable CAN clock (CAN = b'25)
 	RCC->APB1ENR |= (1 << 25);
+	sjsu::LogInfo("RCC->APB1ENR | %#x \n", &RCC->APB1ENR);
 
 	// Enable GPIOB clock (GPIOB = b'3)
 	RCC->APB2ENR |= (1 << 3);
 
 	// Enable AFIO clock (AFIO = b'0)
 	RCC->APB2ENR |= (1 << 0);
+	sjsu::LogInfo("RCC->APB1ENR | %#x \n", &RCC->APB2ENR);
 
 	// Reset CAN remap (CAN_REMAP = b'14:13)
 	// Set CAN remap (CAN_REMAP = b'14:13) 
@@ -57,7 +70,8 @@ void CANInit(BITRATE bitrate)
 		// b'10 = Rx:PB8  Tx:PB9
 		// b'11 = Rx:PD0  Tx:PD1
 	AFIO->MAPR   &= ~((1 << 13) | (1 << 14));
-	AFIO->MAPR   |= (1 << 14);   	
+	AFIO->MAPR   |= (1 << 14);
+	sjsu::LogInfo("AFIO->MAPR | %#x \n", &AFIO->MAPR);
 
 	// Set Pin Configuration CRH[3:0]
 		// MODE[1:0]
@@ -86,6 +100,8 @@ void CANInit(BITRATE bitrate)
 		// 1 Pull-Up
 	GPIOB->CRH   |= (0b1000 << 3);
 	GPIOB->ODR   |= (1 << 8);
+	sjsu::LogInfo("GPIOB->CRH | %#x \n", &GPIOB->CRH);
+	sjsu::LogInfo("GPIOB->ODR | %#x \n", &GPIOB->ODR);
 
 	// Set PB9 as Tx Output Mode 50Mz with Alternate Function Push/Pull CRH[7:4]
 	GPIOB->CRH   |= (0b1011 << 4);
@@ -104,7 +120,8 @@ void CANInit(BITRATE bitrate)
 	// Clear all Bits
 	CAN1->MCR &= ~((0b11 << 15) | 0b11111111);
 	// Set IRQN NART ABOM
-  	CAN1->MCR = 0x51UL;			    
+  	CAN1->MCR = 0x51UL;		
+	sjsu::LogInfo("CAN1->MCR | %#x \n", &CAN1->MCR );	   
 
 	// Set the Canbus Bit Timings
 		// BPR [9:0] Baud rate Pre-scale
@@ -114,12 +131,30 @@ void CANInit(BITRATE bitrate)
 		// LBKM[30]    Loop back Mode
 		// SLIM [31]   Silent Mode (debug)
 	// Clear all bits
+	typedef const struct
+	{
+		uint8_t TS2;
+		uint8_t TS1;
+		uint8_t BRP;
+	} CAN_bit_timing_t;
+
+	CAN_bit_timing_t CAN_bit_timing[6] = 
+	{{2, 13, 45}, 
+	{2, 15, 20}, 
+	{2, 13, 18}, 
+	{2, 13, 9}, 
+	{2, 15, 4}, 
+	{2, 15, 2}};
+
+
+
 	CAN1->BTR &=  ~((0x1FF) |
 					(0x0F << 16) | 
 					(0x07 << 20) | 
 					(0x03 << 24) |
 					(0x01 << 30) | 
 					(0x01 << 31)); 
+	sjsu::LogInfo("CAN1->BTR | %#x \n", &CAN1->BTR );
 
 	// Set BPR TS1 TS2 LBKM
 	CAN1->BTR |=  ((CAN_bit_timing[bitrate].BRP-1) & 0x1FF) |
@@ -145,26 +180,35 @@ void CANInit(BITRATE bitrate)
 	// Configure Filters to default values
 	// 8 - 12 as 11 1000
 	// Assign all filters to CAN1
-	CAN1->FM1R |= 0x1C << 8;              
+	CAN1->FM1R |= 0x1C << 8;
+	sjsu::LogInfo("CAN1->FM1R  | %#x \n", &CAN1->FM1R  );            
 
 	// Set to filter initialization mode
 	CAN1->FMR  |=   0x1UL;   
+	sjsu::LogInfo("CAN1->FMR | %#x \n", &CAN1->FMR );
 				
 	// Clear bit 0 to deactivate filter 0
-	CAN1->FA1R &= ~(0x1UL);            
+	CAN1->FA1R &= ~(0x1UL);   
+	sjsu::LogInfo("CAN1->FA1R | %#x \n", &CAN1->FA1R );         
 
 	// Set bit 0 to set filter 0 to single 32 bit configuration
-	CAN1->FS1R |=   0x1UL;               
+	CAN1->FS1R |=   0x1UL;  
+	sjsu::LogInfo("CAN1->FS1R | %#x \n", &CAN1->FS1R );             
 
 	// Clear filters registers to 0
 	CAN1->sFilterRegister[0].FR1 = 0x0UL; 
 	CAN1->sFilterRegister[0].FR2 = 0x0UL;
+	sjsu::LogInfo("CAN1->sFilterRegister[0].FR1 | %#x \n", &CAN1->sFilterRegister[0].FR1 );
+	sjsu::LogInfo("CAN1->sFilterRegister[0].FR2 | %#x \n", &CAN1->sFilterRegister[0].FR2 );
 
 	// Set filter to mask mode
-	CAN1->FM1R &= ~(0x1UL);               
+	CAN1->FM1R &= ~(0x1UL); 
+	sjsu::LogInfo("CAN1->FM1R | %#x \n", &CAN1->FM1R );
+	              
 
 	// Clear bit 0 to assign filter 0 to FIFO 0
-	CAN1->FFA1R &= ~(0x1UL);			   
+	CAN1->FFA1R &= ~(0x1UL);
+	sjsu::LogInfo("CAN1->FFA1R | %#x \n", &CAN1->FFA1R );			   
 
 	// Activate filter 0       
 	CAN1->FA1R  |=   0x1UL;          
@@ -172,38 +216,46 @@ void CANInit(BITRATE bitrate)
 	// Deactivate initialization mode
 	CAN1->FMR   &= ~(0x1UL);			
 	// Set CAN to normal mode         
-	CAN1->MCR   &= ~(0x1UL);              
+	CAN1->MCR   &= ~(0x1UL);
+	sjsu::LogInfo("CAN1->MCR | %#x \n", &CAN1->MCR );           
 
 	// Wait for CAN to leave initialization mode
 	while (!(CAN1->MSR & 0x1UL)); 
+	sjsu::LogInfo("CAN1->MSR | %#x \n", &CAN1->MSR );
 
 	sjsu::LogInfo("Initialization Complete"); 
 }
 
  void CANSend(CAN_msg_t* CAN_tx_msg)
  {
-	volatile int count = 0;
-	 
-	CAN1->sTxMailBox[0].TIR   = (CAN_tx_msg->id) << 21;
+	// Mailbox Identification Register, 
+    // Set Id using Standard ID
+	stm32f10x::CAN1->sTxMailBox[0].TIR   = (CAN_tx_msg->id) << 21;
 	
-	CAN1->sTxMailBox[0].TDTR &= ~(0xF);
-	CAN1->sTxMailBox[0].TDTR |= CAN_tx_msg->len & 0xFUL;
+  	// Mailbox Data Length Control & Time Stamp Register
+		// Clear Data Length Control
+		// Set Data length to number of bytes being sent.
+	stm32f10x::CAN1->sTxMailBox[0].TDTR &= ~(0xF);
+	stm32f10x::CAN1->sTxMailBox[0].TDTR |= CAN_tx_msg->len & 0xFUL;
 	
-	CAN1->sTxMailBox[0].TDLR  = 
+  	// Set Lower 4 bytes to be sent
+	stm32f10x::CAN1->sTxMailBox[0].TDLR  = 
                 (static_cast<uint32_t>(CAN_tx_msg->data[3]) << 24) |
 								(static_cast<uint32_t>(CAN_tx_msg->data[2]) << 16) |
 								(static_cast<uint32_t>(CAN_tx_msg->data[1]) <<  8) |
 								(static_cast<uint32_t>(CAN_tx_msg->data[0]) );
-	CAN1->sTxMailBox[0].TDHR  = 
+  	// Set High 2 bytes to be sent.
+	stm32f10x::CAN1->sTxMailBox[0].TDHR  = 
                 (static_cast<uint32_t>(CAN_tx_msg->data[7]) << 24) |
 								(static_cast<uint32_t>(CAN_tx_msg->data[6]) << 16) |
 								(static_cast<uint32_t>(CAN_tx_msg->data[5]) <<  8) |
 								(static_cast<uint32_t>(CAN_tx_msg->data[4]) );
 
-	CAN1->sTxMailBox[0].TIR  |= 0x1UL;
-	while(CAN1->sTxMailBox[0].TIR & 0x1UL && count++ < 1000000);
-	 
-	 if (!(CAN1->sTxMailBox[0].TIR & 0x1UL)) return;
+  	// Request Mailbox 1 to send.
+	stm32f10x::CAN1->sTxMailBox[0].TIR  |= 0x1UL;
+  
+  	// Wait for Mailbox to finish sending
+	while(stm32f10x::CAN1->sTxMailBox[0].TIR & 0x1UL && count++ < 1000000);
 	 
 	 //Sends error log to screen
 	//  while (CAN1->sTxMailBox[0].TIR & 0x1UL)
