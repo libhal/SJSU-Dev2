@@ -123,31 +123,7 @@ void CANInit(BITRATE bitrate)
   	CAN1->MCR = 0x51UL;		
 	sjsu::LogInfo("CAN1->MCR | %#x \n", &CAN1->MCR );	   
 
-	// Set the Canbus Bit Timings
-		// BPR [9:0] Baud rate Pre-scale
-		// TS1 [19:16] Time Segment 1
-		// TS2 [22:20] Time Segment 2
-		// SJW [25:24] Resynchronized Jump Width
-		// LBKM[30]    Loop back Mode
-		// SLIM [31]   Silent Mode (debug)
-	// Clear all bits
-	typedef const struct
-	{
-		uint8_t TS2;
-		uint8_t TS1;
-		uint8_t BRP;
-	} CAN_bit_timing_t;
-
-	CAN_bit_timing_t CAN_bit_timing[6] = 
-	{{2, 13, 45}, 
-	{2, 15, 20}, 
-	{2, 13, 18}, 
-	{2, 13, 9}, 
-	{2, 15, 4}, 
-	{2, 15, 2}};
-
-
-
+	
 	CAN1->BTR &=  ~((0x1FF) |
 					(0x0F << 16) | 
 					(0x07 << 20) | 

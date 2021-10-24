@@ -112,7 +112,7 @@ class Can final : public sjsu::Can
   };
 
   /// CANBUS modes
-  struct Mode  // NOLINT
+  struct MasterControl  // NOLINT
   {
     static constexpr bit::Mask kInitializationRequest           = bit::MaskFromRange(0);
     static constexpr bit::Mask kSleepModeRequest                = bit::MaskFromRange(1);
@@ -323,10 +323,10 @@ class Can final : public sjsu::Can
     channel_.rd_pin.Initialize();
    
     // Enter Initalization mode in order to write to CAN registers.
-    SetMasterMode(Mode::kSleepModeRequest, false);
-    SetMasterMode(Mode::kInitializationRequest, true);
-    SetMasterMode(Mode::kNoAutomaticRetransmission, true);
-    SetMasterMode(Mode::kAutomaticBussOffManagement, true);
+    SetMasterMode(MasterControl::kSleepModeRequest, false);
+    SetMasterMode(MasterControl::kInitializationRequest, true);
+    SetMasterMode(MasterControl::kNoAutomaticRetransmission, true);
+    SetMasterMode(MasterControl::kAutomaticBussOffManagement, true);
 
     // Wait to enter Initialization mode
     while (!GetMasterStatus(MasterStatus::kInitializationAcknowledge)){}
@@ -337,7 +337,7 @@ class Can final : public sjsu::Can
     EnableAcceptanceFilter();
 
     // Leave Initialization mode
-    SetMasterMode(Mode::kInitializationRequest, false);
+    SetMasterMode(MasterControl::kInitializationRequest, false);
 
     // Wait to leave Initialization mode
     while (GetMasterStatus(MasterStatus::kInitializationAcknowledge)){}
@@ -475,12 +475,8 @@ class Can final : public sjsu::Can
     Message_t test_message;
     test_message.id = id;
     
-    // Enable reset mode in order to write to registers
-    SetMasterMode(Mode::kInitializationRequest, true);
     // Enable self-test mode
-    SetLoopback(true);
-    // Disable reset mode
-    SetMasterMode(Mode::kInitializationRequest, false);
+    SetLoopback();
 
     Send(test_message);
 
@@ -497,9 +493,7 @@ class Can final : public sjsu::Can
     }
 
     // Disable self-test mode
-    SetMasterMode(Mode::kInitializationRequest, true);
-    SetLoopback(false);
-    SetMasterMode(Mode::kInitializationRequest, false);
+    ClearLoopback();
 
     return true;
   }
@@ -507,6 +501,32 @@ class Can final : public sjsu::Can
   bool IsBusOff() override
   {}
   ~Can(){}
+
+  void SetLoopback()
+  {
+    SetMasterMode(MasterControl::kInitializationRequest, true);
+    channel_.can->BTR =
+      bit::Set(channel_.can->BTR, BusTiming::kLoopBackMode);
+    ClearLoopback();
+  }
+  void ClearLoopback()
+  {
+    SetMasterMode(MasterControl::kInitializationRequest, true);
+    channel_.can->BTR =
+      bit::Clear(channel_.can->BTR, BusTiming::kLoopBackMode);
+    ClearLoopback();
+  }
+
+    /// Enable/Disable controller modes
+  ///
+  /// @param mode - which mode to enable/disable
+  /// @param enable_mode - true if you want to enable the mode. False otherwise.
+  void SetMasterMode(bit::Mask mode, bool enable_mode)
+  {
+    channel_.can->MCR =
+        bit::Insert(channel_.can->MCR, enable_mode, mode);
+  }
+
 
 
  private:
@@ -625,30 +645,55 @@ class Can final : public sjsu::Can
   void EnableAcceptanceFilter()
   {        
 
-    // Activate filter initialization mode (Set bit 0) 
-    SetFilterBankMode(FilterBankMode::kInitialization);
+      // Activate filter initialization mode (Set bit 0) 
+    channel_.can->FMR  |=   0x1UL;
    
     // Deactivate filter 0 (Clear bit 0) 
-    SetFilterActivationState(Filter::k0, FilterActivation::kNotActive);    
+    channel_.can->FA1R &= ~(0x1UL);
 
     // Configure filter 0 to single 32-bit scale configuration (Set bit 0)
-    SetFilterScale(Filter::k0, FilterScale::kSingle32BitScale);             
+    channel_.can->FS1R |=   0x1UL;         
 
-    // Clear filter registers to accept all messages.
+    // Clear filters registers to 0
     channel_.can->sFilterRegister[0].FR1 = 0x0UL; 
     channel_.can->sFilterRegister[0].FR2 = 0x0UL;
 
-    // Set filter to mask mode
-    SetFilterType(Filter::k0, FilterType::kMask);      
+    // Set filter to mask mode (Clear bit 0)
+    channel_.can->FM1R &= ~(0x1UL);        
 
     // Assign filter 0 to FIFO 0 (Clear bit 0) 
-    SetFilterFIFOAssignment(Filter::k0, FIFOAssignment::kFIFO1);		   
+    channel_.can->FFA1R &= ~(0x1UL);	   
 
     // Activate filter 0 (Set bit 0) 
-    SetFilterActivationState(Filter::k0, FilterActivation::kActive);        
+    channel_.can->FA1R  |=   0x1UL;     
 
     // Deactivate filter initialization mode (clear bit 0)
-    SetFilterBankMode(FilterBankMode::kActive);	       
+    channel_.can->FMR   &= ~(0x1UL);
+
+    // Activate filter initialization mode (Set bit 0) 
+    // SetFilterBankMode(FilterBankMasterControl::kInitialization);
+   
+    // // Deactivate filter 0 (Clear bit 0) 
+    // SetFilterActivationState(Filter::k0, FilterActivation::kNotActive);    
+
+    // // Configure filter 0 to single 32-bit scale configuration (Set bit 0)
+    // SetFilterScale(Filter::k0, FilterScale::kSingle32BitScale);             
+
+    // // Clear filter registers to accept all messages.
+    // channel_.can->sFilterRegister[0].FR1 = 0x0UL; 
+    // channel_.can->sFilterRegister[0].FR2 = 0x0UL;
+
+    // // Set filter to mask mode
+    // SetFilterType(Filter::k0, FilterType::kMask);      
+
+    // // Assign filter 0 to FIFO 0 (Clear bit 0) 
+    // SetFilterFIFOAssignment(Filter::k0, FIFOAssignment::kFIFO1);		   
+
+    // // Activate filter 0 (Set bit 0) 
+    // SetFilterActivationState(Filter::k0, FilterActivation::kActive);        
+
+    // // Deactivate filter initialization mode (clear bit 0)
+    // SetFilterBankMode(FilterBankMasterControl::kActive);	       
   }
 
   void SetFilterBankMode(FilterBankMode mode)
@@ -681,27 +726,14 @@ class Can final : public sjsu::Can
         bit::Insert(channel_.can->FA1R, Value(state), filter);
   }
 
-  /// Enable/Disable controller modes
-  ///
-  /// @param mode - which mode to enable/disable
-  /// @param enable_mode - true if you want to enable the mode. False otherwise.
-  void SetMasterMode(bit::Mask mode, bool enable_mode)
-  {
-    channel_.can->MCR =
-        bit::Insert(channel_.can->MCR, enable_mode, mode);
-  }
+
 
   bool GetMasterStatus(bit::Mask mode) const
   {
     return bit::Read(CAN1->MSR, mode);
   }
 
-  void SetLoopback(bool enable_mode)
-  {
-     channel_.can->BTR =
-        bit::Insert(channel_.can->BTR, enable_mode, BusTiming::kLoopBackMode);
-  }
-
+  
    const Port_t & channel_;
 };
 
