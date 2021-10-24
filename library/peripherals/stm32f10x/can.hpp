@@ -162,13 +162,38 @@ class Can final : public sjsu::Can
     static constexpr bit::Mask kReleaseOutputMailbox    = bit::MaskFromRange(5);
   };
 
-   enum class FIFOAssignment : int
-   {
-    kFIFO1 = 0,
-    kFIFO2 = 1,
-    kFIFONone = 4
-   };
-  
+  enum class FIFOAssignment : int
+  {
+  kFIFO1 = 0,
+  kFIFO2 = 1,
+  kFIFONone = 4
+  };
+
+  enum class CanBitRate : int
+  {
+    kCan50kBps,
+    kCan100kBps,
+    kCan125kBps,
+    kCan250kBps,
+    kCan500kBps,
+    kCan1000kBps
+  };
+
+  typedef const struct 
+  {
+    uint8_t TS2;
+    uint8_t TS1;
+    uint8_t BRP;
+  } BusTimingSetup;
+
+  const BusTimingSetup CanBusTimingTable[6] = 
+  {{2, 13, 45}, 
+   {2, 15, 20}, 
+   {2, 13, 18}, 
+   {2, 13, 9}, 
+   {2, 15, 4}, 
+   {2, 15, 2}};
+
   /// CAN Filter Master Register
   struct FilterMaster
   {
@@ -507,14 +532,14 @@ class Can final : public sjsu::Can
     SetMasterMode(MasterControl::kInitializationRequest, true);
     channel_.can->BTR =
       bit::Set(channel_.can->BTR, BusTiming::kLoopBackMode);
-    ClearLoopback();
+    SetMasterMode(MasterControl::kInitializationRequest, false);
   }
   void ClearLoopback()
   {
     SetMasterMode(MasterControl::kInitializationRequest, true);
     channel_.can->BTR =
       bit::Clear(channel_.can->BTR, BusTiming::kLoopBackMode);
-    ClearLoopback();
+    SetMasterMode(MasterControl::kInitializationRequest, false);
   }
 
     /// Enable/Disable controller modes
@@ -530,58 +555,25 @@ class Can final : public sjsu::Can
 
 
  private:
-  void ConfigureBaudRate()
+  void ConfigureBaudRate(CanBitRate bit_rate = CanBitRate::kCan100kBps)
   {
-    // constexpr int kTseg1               = 0;
-    // constexpr int kTseg2               = 0;
-    // constexpr int kSyncJump            = 0;
-    // constexpr uint32_t kBaudRateAdjust = kTseg1 + kTseg2 + kSyncJump + 3;
-
     auto & system         = sjsu::SystemController::GetPlatformController();
     const auto kFrequency = system.GetClockRate(channel_.id);
 
-    // Must be between 8 - 25 time Quanta
+    channel_.can->BTR =
+      bit::Value(channel_.can->BTR)
+          .Insert(CanBusTimingTable[Value(bit_rate)].BRP-1, BusTiming::kPrescalar)
+          .Insert(CanBusTimingTable[Value(bit_rate)].TS1-1, BusTiming::kTimeSegment1)
+          .Insert(CanBusTimingTable[Value(bit_rate)].TS2-1, BusTiming::kTimeSegment2);
 
-    // Clock    = 10 Mhz
-    // Tq       = 1/10Mhz = 100 ns
-    // bit rate = 100 Khz
-    // bit time = 1/100Khz = 10 us
-    // # of tq = bit time / tq = 10000 ns  / 100 ns = 100 
-    // Tsync = 1
-    // TSync + TSeg1 / TSync + TSeg1 + TSeg2 = 80%
-    // 1 + Tseg / 100 = 80% so TSeg1 = 79 TSeg2 = 21 
-
-    // uint32_t prescaler = ((kFrequency / settings.baud_rate) - 1);
-
-    // uint32_t prescaler =
-    // uint32_t tq = (Prescaler + 1) * (1 / kFrequency); // Length of time quanta
-
-          // enum BITRATE{CAN_50KBPS,
-          //              CAN_100KBPS,
-          //              CAN_125KBPS,
-          //              CAN_250KBPS,
-          //              CAN_500KBPS,
-          //              CAN_1000KBPS};
-
-          // CAN_bit_timing_t CAN_bit_timing[6] = 
-          // {{2, 13, 45}, 
-          //  {2, 15, 20}, 
-          //  {2, 13, 18}, 
-          //  {2, 13, 9}, 
-          //  {2, 15, 4}, 
-          //  {2, 15, 2}};
-      channel_.can->BTR =
-        bit::Insert(channel_.can->BTR, 1, BusTiming::kPrescalar);
-      channel_.can->BTR =
-        bit::Insert(channel_.can->BTR, 14, BusTiming::kTimeSegment1);
-      channel_.can->BTR =
-        bit::Insert(channel_.can->BTR, 1, BusTiming::kTimeSegment2);
-      channel_.can->BTR =
-        bit::Insert(channel_.can->BTR, 1, BusTiming::kLoopBackMode);
-    
-
-    // sjsu::LogDebug(
-    //     "freq = %f :: prescale = %lu", kFrequency.to<double>(), prescaler);
+         
+    // channel_.can->BTR =
+    //   bit::Insert(channel_.can->BTR, 1, BusTiming::kPrescalar);
+    // channel_.can->BTR =
+    //   bit::Insert(channel_.can->BTR, 14, BusTiming::kTimeSegment1);
+    // channel_.can->BTR =
+    //   bit::Insert(channel_.can->BTR, 1, BusTiming::kTimeSegment2);
+      
   }
   void ConfigureReceiveHandler(){}
   StmDataRegisters_t ConvertMessageToRegisters(const Message_t & message) const

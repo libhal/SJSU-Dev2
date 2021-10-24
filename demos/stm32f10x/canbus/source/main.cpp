@@ -37,6 +37,7 @@ int main(void)
   while (true)
   { 
     // Enable self-test mode
+    sjsu::LogInfo("Setting Loopback2");
     can1.SetLoopback();
     sjsu::LogInfo("Sending Message with ID: %d", test_id);
     sjsu::Can::Message_t test_message;
