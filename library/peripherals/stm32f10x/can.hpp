@@ -169,7 +169,7 @@ class Can final : public sjsu::Can
   kFIFONone = 4
   };
 
-  enum class CanBitRate : int
+  enum class Rate : int
   {
     kCan50kBps,
     kCan100kBps,
@@ -328,6 +328,11 @@ class Can final : public sjsu::Can
 
   void ModuleInitialize() override
   {
+    ModuleInitialize(Rate::kCan100kBps);
+  }
+
+  void ModuleInitialize(Rate bit_rate)
+  {
     sjsu::LogInfo("Power on CANBUS peripheral");
 
     /// Power on CANBUS peripheral=
@@ -356,7 +361,7 @@ class Can final : public sjsu::Can
     // Wait to enter Initialization mode
     while (!GetMasterStatus(MasterStatus::kInitializationAcknowledge)){}
 
-    ConfigureBaudRate();
+    ConfigureBaudRate(bit_rate);
     // ConfigureReceiveHandler();
 
     EnableAcceptanceFilter();
@@ -555,7 +560,7 @@ class Can final : public sjsu::Can
 
 
  private:
-  void ConfigureBaudRate(CanBitRate bit_rate = CanBitRate::kCan100kBps)
+  void ConfigureBaudRate(Rate bit_rate = Rate::kCan100kBps)
   {
     auto & system         = sjsu::SystemController::GetPlatformController();
     const auto kFrequency = system.GetClockRate(channel_.id);
