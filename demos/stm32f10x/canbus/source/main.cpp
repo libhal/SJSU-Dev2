@@ -16,7 +16,7 @@ int main(void)
   sjsu::stm32f10x::Can & can1 = sjsu::stm32f10x::GetCan<1>();
   
   sjsu::LogInfo("Initializing CAN 1 with default bit rate of 100 kBit/s...");
-  can1.ModuleInitialize(sjsu::stm32f10x::Can::Rate::kCan100kBps);
+  can1.ModuleInitialize();
   
   using namespace sjsu;
   using namespace stm32f10x;
@@ -37,7 +37,6 @@ int main(void)
   while (true)
   { 
     // Enable self-test mode
-    sjsu::LogInfo("Setting Loopback2");
     can1.SetLoopback();
     sjsu::LogInfo("Sending Message with ID: %d", test_id);
     sjsu::Can::Message_t test_message;

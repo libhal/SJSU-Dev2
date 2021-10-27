@@ -169,31 +169,6 @@ class Can final : public sjsu::Can
   kFIFONone = 4
   };
 
-  enum class Rate : int
-  {
-    kCan50kBps,
-    kCan100kBps,
-    kCan125kBps,
-    kCan250kBps,
-    kCan500kBps,
-    kCan1000kBps
-  };
-
-  typedef const struct 
-  {
-    uint8_t TS2;
-    uint8_t TS1;
-    uint8_t BRP;
-  } BusTimingSetup;
-
-  const BusTimingSetup CanBusTimingTable[6] = 
-  {{2, 13, 45}, 
-   {2, 15, 20}, 
-   {2, 13, 18}, 
-   {2, 13, 9}, 
-   {2, 15, 4}, 
-   {2, 15, 2}};
-
   /// CAN Filter Master Register
   struct FilterMaster
   {
@@ -202,7 +177,7 @@ class Can final : public sjsu::Can
   };
 
   /// CAN Filter Bank Mode
-   enum class FilterBankMode : int
+   enum class FilterBankMasterControl : int
   {
     kActive = 0,
     kInitialization = 1
@@ -328,11 +303,6 @@ class Can final : public sjsu::Can
 
   void ModuleInitialize() override
   {
-    ModuleInitialize(Rate::kCan100kBps);
-  }
-
-  void ModuleInitialize(Rate bit_rate)
-  {
     sjsu::LogInfo("Power on CANBUS peripheral");
 
     /// Power on CANBUS peripheral=
@@ -361,7 +331,7 @@ class Can final : public sjsu::Can
     // Wait to enter Initialization mode
     while (!GetMasterStatus(MasterStatus::kInitializationAcknowledge)){}
 
-    ConfigureBaudRate(bit_rate);
+    ConfigureBaudRate();
     // ConfigureReceiveHandler();
 
     EnableAcceptanceFilter();
@@ -560,26 +530,31 @@ class Can final : public sjsu::Can
 
 
  private:
-  void ConfigureBaudRate(Rate bit_rate = Rate::kCan100kBps)
+  void ConfigureBaudRate()
   {
+
+    constexpr int kTseg1               = 4; // 6 + 1 = 5
+    constexpr int kTseg2               = 1; // 1 + 1 = 2
+    constexpr int kSyncJump            = 0; // 0 + 1 = 1
+    constexpr uint32_t kBaudRateAdjust = kTseg1 + kTseg2 + kSyncJump + 3;
+
     auto & system         = sjsu::SystemController::GetPlatformController();
     const auto kFrequency = system.GetClockRate(channel_.id);
 
-    channel_.can->BTR =
-      bit::Value(channel_.can->BTR)
-          .Insert(CanBusTimingTable[Value(bit_rate)].BRP-1, BusTiming::kPrescalar)
-          .Insert(CanBusTimingTable[Value(bit_rate)].TS1-1, BusTiming::kTimeSegment1)
-          .Insert(CanBusTimingTable[Value(bit_rate)].TS2-1, BusTiming::kTimeSegment2);
+    uint32_t prescaler =
+        (kFrequency / ((settings.baud_rate * kBaudRateAdjust)) - 1);
 
+    sjsu::LogInfo(
+        "freq = %f :: prescale = %lu", kFrequency.to<double>(), prescaler);
          
-    // channel_.can->BTR =
-    //   bit::Insert(channel_.can->BTR, 1, BusTiming::kPrescalar);
-    // channel_.can->BTR =
-    //   bit::Insert(channel_.can->BTR, 14, BusTiming::kTimeSegment1);
-    // channel_.can->BTR =
-    //   bit::Insert(channel_.can->BTR, 1, BusTiming::kTimeSegment2);
-      
+    channel_.can->BTR =
+      bit::Insert(channel_.can->BTR, 1, BusTiming::kPrescalar);
+    channel_.can->BTR =
+      bit::Insert(channel_.can->BTR, 14, BusTiming::kTimeSegment1);
+    channel_.can->BTR =
+      bit::Insert(channel_.can->BTR, 1, BusTiming::kTimeSegment2);
   }
+
   void ConfigureReceiveHandler(){}
   StmDataRegisters_t ConvertMessageToRegisters(const Message_t & message) const
   {
@@ -633,67 +608,39 @@ class Can final : public sjsu::Can
     return registers;
   }
 
-
-  
   bool ConfigureFilter([[maybe_unused]] uint32_t id,
                         [[maybe_unused]] uint32_t mask,
                         [[maybe_unused]] bool is_extended = false)
                         {}
   void EnableAcceptanceFilter()
   {        
-
-      // Activate filter initialization mode (Set bit 0) 
-    channel_.can->FMR  |=   0x1UL;
+    // Activate filter initialization mode (Set bit 0) 
+    SetFilterBankMode(FilterBankMasterControl::kInitialization);
    
     // Deactivate filter 0 (Clear bit 0) 
-    channel_.can->FA1R &= ~(0x1UL);
+    SetFilterActivationState(Filter::k0, FilterActivation::kNotActive);    
 
     // Configure filter 0 to single 32-bit scale configuration (Set bit 0)
-    channel_.can->FS1R |=   0x1UL;         
+    SetFilterScale(Filter::k0, FilterScale::kSingle32BitScale);             
 
-    // Clear filters registers to 0
+    // Clear filter registers to accept all messages.
     channel_.can->sFilterRegister[0].FR1 = 0x0UL; 
     channel_.can->sFilterRegister[0].FR2 = 0x0UL;
 
-    // Set filter to mask mode (Clear bit 0)
-    channel_.can->FM1R &= ~(0x1UL);        
+    // Set filter to mask mode
+    SetFilterType(Filter::k0, FilterType::kMask);      
 
     // Assign filter 0 to FIFO 0 (Clear bit 0) 
-    channel_.can->FFA1R &= ~(0x1UL);	   
+    SetFilterFIFOAssignment(Filter::k0, FIFOAssignment::kFIFO1);		   
 
     // Activate filter 0 (Set bit 0) 
-    channel_.can->FA1R  |=   0x1UL;     
+    SetFilterActivationState(Filter::k0, FilterActivation::kActive);        
 
     // Deactivate filter initialization mode (clear bit 0)
-    channel_.can->FMR   &= ~(0x1UL);
-
-    // Activate filter initialization mode (Set bit 0) 
-    // SetFilterBankMode(FilterBankMasterControl::kInitialization);
-   
-    // // Deactivate filter 0 (Clear bit 0) 
-    // SetFilterActivationState(Filter::k0, FilterActivation::kNotActive);    
-
-    // // Configure filter 0 to single 32-bit scale configuration (Set bit 0)
-    // SetFilterScale(Filter::k0, FilterScale::kSingle32BitScale);             
-
-    // // Clear filter registers to accept all messages.
-    // channel_.can->sFilterRegister[0].FR1 = 0x0UL; 
-    // channel_.can->sFilterRegister[0].FR2 = 0x0UL;
-
-    // // Set filter to mask mode
-    // SetFilterType(Filter::k0, FilterType::kMask);      
-
-    // // Assign filter 0 to FIFO 0 (Clear bit 0) 
-    // SetFilterFIFOAssignment(Filter::k0, FIFOAssignment::kFIFO1);		   
-
-    // // Activate filter 0 (Set bit 0) 
-    // SetFilterActivationState(Filter::k0, FilterActivation::kActive);        
-
-    // // Deactivate filter initialization mode (clear bit 0)
-    // SetFilterBankMode(FilterBankMasterControl::kActive);	       
+    SetFilterBankMode(FilterBankMasterControl::kActive);	       
   }
 
-  void SetFilterBankMode(FilterBankMode mode)
+  void SetFilterBankMode(FilterBankMasterControl mode)
   {
      channel_.can->FMR =
         bit::Insert(channel_.can->FMR, Value(mode), FilterMaster::kInitializationMode);
@@ -723,14 +670,11 @@ class Can final : public sjsu::Can
         bit::Insert(channel_.can->FA1R, Value(state), filter);
   }
 
-
-
   bool GetMasterStatus(bit::Mask mode) const
   {
     return bit::Read(CAN1->MSR, mode);
   }
 
-  
    const Port_t & channel_;
 };
 
