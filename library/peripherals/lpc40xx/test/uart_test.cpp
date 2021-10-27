@@ -76,18 +76,19 @@ TEST_CASE("Testing lpc40xx Uart")
         static_cast<uint8_t>((kCalibration.divide_latch >> 8) & 0xFF);
     const uint8_t kExpectedLowerByte =
         static_cast<uint8_t>(kCalibration.divide_latch & 0xFF);
-    const uint8_t kExpectedFdr = static_cast<uint8_t>(
-        (kCalibration.multiply & 0xF) << 4 | (kCalibration.divide_add & 0xF));
+    const uint8_t kExpectedFdr = kCalibration.fraction;
 
     // Exercise
     test_subject.Initialize();
 
     // Verify
     Verify(Method(mock_system_controller, PowerUpPeripheral)
-               .Matching([](sjsu::SystemController::ResourceID id) {
-                 return sjsu::lpc40xx::SystemController::Peripherals::kUart2
-                            .device_id == id.device_id;
-               }));
+               .Matching(
+                   [](sjsu::SystemController::ResourceID id)
+                   {
+                     return sjsu::lpc40xx::SystemController::Peripherals::kUart2
+                                .device_id == id.device_id;
+                   }));
 
     // Verify
     CHECK(mock_tx.get().CurrentSettings() ==
