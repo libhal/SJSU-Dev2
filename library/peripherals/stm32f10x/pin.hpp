@@ -225,18 +225,6 @@ class Pin final : public sjsu::Pin
                           .Insert(mapping.MODE, kMODE)
                           .To<uint32_t>();
 
-    // printf("Config Function:\n"
-    //         "mapping.CNF1 %u\n"
-    //         "mapping.CNF0 %u\n"
-    //         "mapping.MODE %u\n"
-    //         "mapping.PxODR %u\n"
-    //         "Raw %#x\n",
-    //         mapping.CNF1,
-    //         mapping.CNF0,
-    //         mapping.MODE,
-    //         mapping.MODE,
-    //         config);
-
     SetConfig(config);
     Port()->ODR = bit::Insert(Port()->ODR, mapping.PxODR, GetPin());
   }
