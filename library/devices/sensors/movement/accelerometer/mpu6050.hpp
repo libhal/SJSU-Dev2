@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <limits>
 
-#include "peripherals/i2c.hpp"
 #include "devices/sensors/movement/accelerometer.hpp"
-#include "utility/math/bit.hpp"
+#include "peripherals/i2c.hpp"
 #include "utility/enum.hpp"
+#include "utility/math/bit.hpp"
 #include "utility/math/map.hpp"
 
 namespace sjsu
@@ -45,6 +45,7 @@ class Mpu6050 : public Accelerometer
     i2c_.Initialize();
 
     // Check that the device is valid before proceeding.
+    // NOTE: this is commented out as the WHO_AM_I address
     IsValidDevice();
 
     // Wake up the device so we can configure the device.
@@ -163,10 +164,15 @@ class Mpu6050 : public Accelerometer
                        &device_id,
                        sizeof(device_id));
 
+    // Extract the ID bits [1:6]
+    device_id = bit::Extract(device_id, bit::MaskFromRange(1, 6));
+
     if (device_id != kExpectedDeviceID)
     {
-      sjsu::LogDebug("device_id = 0x%02X", device_id);
-      throw Exception(std::errc::no_such_device, "Expected Device ID: 0x2A");
+      sjsu::LogDebug("device_id = 0x%02X, expected = 0x%02X",
+                     device_id,
+                     kExpectedDeviceID);
+      throw Exception(std::errc::no_such_device, "Expected Device ID: 0x68");
     }
   }
 

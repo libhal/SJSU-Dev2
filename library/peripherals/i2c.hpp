@@ -75,6 +75,18 @@ class I2c : public Module<I2cSettings_t>
     static inline const auto kDeviceNotFound =
         Exception(std::errc::no_such_device_or_address,
                   "I2C address not found/acknowledged by device.");
+
+    /// Clockrate is not possible for this peripheral. May need to increase the
+    /// the i2c's peripheral input clock or check if the user manual to see if
+    /// the i2c peripheral can even achieve the clock rate.
+    static inline const auto kClockRateNotPossible =
+        Exception(std::errc::invalid_argument,
+                  "I2C clock rate not achievable.");
+
+    /// In the event that another master is on the bus and this device loses
+    /// arbitration with it.
+    static inline const auto kArbitrationLost =
+        Exception(std::errc::device_or_resource_busy, "Arbitration lost.");
   };
 
   /// A common structure for holding the information needed for I2C

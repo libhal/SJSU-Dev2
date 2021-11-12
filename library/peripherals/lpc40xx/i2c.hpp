@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
-#include <initializer_list>
 
 #include "platforms/targets/lpc40xx/LPC40xx.h"
 #include "peripherals/cortex/interrupt.hpp"
