@@ -2,8 +2,8 @@ var searchData=
 [
   ['scb',['scb',['../d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html#ab64deee3a1bab3aefe2b07f086896af0',1,'sjsu::cortex::InterruptController']]],
   ['sck',['sck',['../d3/dad/structsjsu_1_1lpc40xx_1_1Spi_1_1Bus__t.html#af0402c491ad17f4c180f3b77fbd9f2a9',1,'sjsu::lpc40xx::Spi::Bus_t::sck()'],['../db/db3/structsjsu_1_1stm32f10x_1_1Spi_1_1Port__t.html#a2fbbd35c4a647ba895037d17a921bdb2',1,'sjsu::stm32f10x::Spi::Port_t::sck()']]],
-  ['scl_5fpin',['scl_pin',['../d7/dc6/structsjsu_1_1lpc40xx_1_1I2c_1_1Port__t.html#a08e20452261a910ca851a7445bfe11aa',1,'sjsu::lpc40xx::I2c::Port_t']]],
-  ['sda_5fpin',['sda_pin',['../d7/dc6/structsjsu_1_1lpc40xx_1_1I2c_1_1Port__t.html#a44378827feb1fdfda5cfd067176f0dd3',1,'sjsu::lpc40xx::I2c::Port_t']]],
+  ['scl_5fpin',['scl_pin',['../d7/dc6/structsjsu_1_1lpc40xx_1_1I2c_1_1Port__t.html#a08e20452261a910ca851a7445bfe11aa',1,'sjsu::lpc40xx::I2c::Port_t::scl_pin()'],['../da/d6d/structsjsu_1_1stm32f4xx_1_1I2c_1_1Port__t.html#a6ac941c9a1061609680aa04d4e4a7b72',1,'sjsu::stm32f4xx::I2c::Port_t::scl_pin()']]],
+  ['sda_5fpin',['sda_pin',['../d7/dc6/structsjsu_1_1lpc40xx_1_1I2c_1_1Port__t.html#a44378827feb1fdfda5cfd067176f0dd3',1,'sjsu::lpc40xx::I2c::Port_t::sda_pin()'],['../da/d6d/structsjsu_1_1stm32f4xx_1_1I2c_1_1Port__t.html#a744e3554ddbfe0fe736f5870ed4945d0',1,'sjsu::stm32f4xx::I2c::Port_t::sda_pin()']]],
   ['semaphore_5f',['semaphore_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#abf739cf54a2f35b206c3ca90d970f072',1,'sjsu::rtos::PeriodicTask']]],
   ['semaphore_5fbuffer_5f',['semaphore_buffer_',['../d1/d29/classsjsu_1_1rtos_1_1PeriodicTask.html#ae53ad672ea8ea07e4919ffc5b4d04fad',1,'sjsu::rtos::PeriodicTask']]],
   ['settings',['settings',['../d1/ded/classsjsu_1_1Module.html#a8da9c2a91113e8e1327cc3b20c200d9f',1,'sjsu::Module']]],

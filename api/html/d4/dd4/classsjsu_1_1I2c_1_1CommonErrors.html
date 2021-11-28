@@ -98,10 +98,37 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a09bc606721aaa72e2955194806273280"><td class="memItemLeft" align="right" valign="top">static const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd4/classsjsu_1_1I2c_1_1CommonErrors.html#a09bc606721aaa72e2955194806273280">kDeviceNotFound</a></td></tr>
 <tr class="memdesc:a09bc606721aaa72e2955194806273280"><td class="mdescLeft">&#160;</td><td class="mdescRight">This exception occurs at the start of an I2C transaction when the device's I2C address is written to the bus and does NOT acknowledge.  <a href="#a09bc606721aaa72e2955194806273280">More...</a><br /></td></tr>
 <tr class="separator:a09bc606721aaa72e2955194806273280"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac50b76c2d315632b499a29dae0ec2fdb"><td class="memItemLeft" align="right" valign="top">static const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd4/classsjsu_1_1I2c_1_1CommonErrors.html#ac50b76c2d315632b499a29dae0ec2fdb">kClockRateNotPossible</a></td></tr>
+<tr class="separator:ac50b76c2d315632b499a29dae0ec2fdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abac723a57da2f058ab6a477d53b135fb"><td class="memItemLeft" align="right" valign="top">static const auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dd4/classsjsu_1_1I2c_1_1CommonErrors.html#abac723a57da2f058ab6a477d53b135fb">kArbitrationLost</a></td></tr>
+<tr class="separator:abac723a57da2f058ab6a477d53b135fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Namespace of common I2C transaction errors. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="abac723a57da2f058ab6a477d53b135fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abac723a57da2f058ab6a477d53b135fb">&#9670;&nbsp;</a></span>kArbitrationLost</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const auto sjsu::I2c::CommonErrors::kArbitrationLost</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Exception(std::errc::device_or_resource_busy, <span class="stringliteral">&quot;Arbitration lost.&quot;</span>)</div></div><!-- fragment --><p>In the event that another master is on the bus and this device loses arbitration with it. </p>
+
+</div>
+</div>
 <a id="a07dbb751cbfc9bf4ec2f2438539dca0b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07dbb751cbfc9bf4ec2f2438539dca0b">&#9670;&nbsp;</a></span>kBusError</h2>
 
@@ -123,6 +150,29 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Exception(std::errc::io_error, <span class="stringliteral">&quot;I2C bus error occurred.&quot;</span>)</div></div><!-- fragment -->
 <p>This exception occurs when there is an anomaly on the I2C bus. These sort of errors can be caused by EMI or another device talking on the bus at an incorrect time. A bus error is typically considered a situation in which, the I2C controller device reads the state of the line and it does not match what it expects. For example, if the I2C bus means to put a 1 or HIGH voltage on the SDA line, then samples the SDA line to make sure the expected HIGH voltage is on the line, BUT sees that the line is held LOW, it knows that something is wrong with the line and will stop the transaction. Keep in mind that, since I2C is open drain with a pull up resistor, the only way for the I2C controller to see an error is if the controller wants to let the pin go HIGH by releasing control of the pin, but something else on the bus is pulling it LOW. </p>
+
+</div>
+</div>
+<a id="ac50b76c2d315632b499a29dae0ec2fdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac50b76c2d315632b499a29dae0ec2fdb">&#9670;&nbsp;</a></span>kClockRateNotPossible</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const auto sjsu::I2c::CommonErrors::kClockRateNotPossible</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        Exception(std::errc::invalid_argument,</div><div class="line">                  <span class="stringliteral">&quot;I2C clock rate not achievable.&quot;</span>)</div></div><!-- fragment --><p>Clockrate is not possible for this peripheral. May need to increase the the i2c's peripheral input clock or check if the user manual to see if the i2c peripheral can even achieve the clock rate. </p>
 
 </div>
 </div>
