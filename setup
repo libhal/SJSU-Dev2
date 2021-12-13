@@ -66,16 +66,6 @@ function request_sudo_privileges() {
   sudo echo "" || exit 1
 }
 
-function quit_if_not_64_bit() {
-  echo " ──────────────────────────────────────────────────┐"
-  echo "              Detecting your platform               "
-  echo "└────────────────────────────────────────────────── "
-  if [[ "$ARCH" != 'x86_64' || "$ARCH" == "amd64" ]]; then
-    echo 'Only 64-bit architecture systems are supported!'
-    exit 1
-  fi
-}
-
 function install_linux_prerequisites() {
   echo " ──────────────────────────────────────────────────┐"
   echo ""
@@ -135,8 +125,8 @@ function install_mac_osx_prerequisites() {
   echo " ───────────────────────────────────────────────────┐"
   echo "                Brew Installing gcc                  "
   echo "└─────────────────────────────────────────────────── "
-  brew install gcc@9
-  brew link --overwrite gcc@9
+  brew install gcc@10
+  brew link --overwrite gcc@10
 
   return $(($git_status + $brew_install))
 }
@@ -291,7 +281,6 @@ function final_install_check() {
 ###############
 
 quit_if_script_was_run_as_root
-quit_if_not_64_bit
 
 if [[ "$1" == "--generate-location-file" ]]; then
   echo " Generating Location File..."
