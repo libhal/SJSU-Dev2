@@ -517,4 +517,3 @@ $(SJ2_TEST_OBJECT_DIR)/%.o: %
 	@$(TEST_CPPC) $(TEST_FLAGS) \
 					 -MF"$(@:%.o=%.d)" -MT"$(@)" -c -o "$@" "$<"
 	@printf '$(YELLOW)Built Source  (C++) $(RESET): $<\n'
-
