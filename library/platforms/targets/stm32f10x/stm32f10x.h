@@ -43,8 +43,9 @@
 
 #pragma GCC system_header
 
-#include "platforms/processors/arm_cortex/m4/core_cm4.h"
 #include <cstdint>
+
+#include "platforms/processors/arm_cortex/m4/core_cm4.h"
 
 // SJSU-Dev2: Putting contents of this include in sjsu::stm32f10x
 namespace sjsu::stm32f10x

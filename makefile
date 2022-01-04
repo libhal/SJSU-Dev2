@@ -106,7 +106,7 @@ SJ2_DEFAULT_CFLAGS   = -g -fmessage-length=0 -fexceptions -ffunction-sections \
                        -Wconversion -Wdouble-promotion -Wswitch -Wformat=2 \
 											 -Wno-missing-field-initializers \
                        -Wno-uninitialized -Wnull-dereference \
-											 -fdiagnostics-color -MMD -MP
+											 -fdiagnostics-color -DNDEBUG -MMD -MP
 
 SJ2_DEFAULT_CPPFLAGS = -std=c++2a -fexceptions -fno-rtti \
                        -fno-threadsafe-statics -Wold-style-cast \

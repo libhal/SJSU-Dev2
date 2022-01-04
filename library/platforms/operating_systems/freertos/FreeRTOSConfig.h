@@ -79,6 +79,8 @@ to exclude the API function. */
 #define INCLUDE_uxTaskGetStackHighWaterMark 1
 #define INCLUDE_xTaskGetSchedulerState 1
 
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS 32
+
 /* FreeRTOS Timer or daemon task configuration */
 #define configUSE_TIMERS 1
 #define configTIMER_TASK_PRIORITY (configMAX_PRIORITIES - 1)
