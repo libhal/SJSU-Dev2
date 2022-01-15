@@ -24,7 +24,8 @@ int main(void)
   sjsu::LogInfo("Can::CanSettings_t::baud_rate = kFastdBaudRate reach 1Mhz");
 
   // Set the CanBus handler to recieve incomming messages.
-  // STM32F10x requires recieving an incomming message to clear the interrupt for it.
+  // STM32F10x requires recieving an incomming message to clear the interrupt
+  // for it.
   can1.settings.handler = [](sjsu::Can & can)
   {
     if (can.HasData())

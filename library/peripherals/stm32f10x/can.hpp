@@ -579,10 +579,9 @@ class Can final : public sjsu::Can
   {
     if (settings.handler)
     {
-       InterruptController::GetPlatformController().Enable({
+      InterruptController::GetPlatformController().Enable({
           .interrupt_request_number = stm32f10x::CAN1_RX0_IRQn,
-          .interrupt_handler = [this]() { 
-            settings.handler(*this); },
+          .interrupt_handler        = [this]() { settings.handler(*this); },
       });
 
       bit::Register(&channel_.can->IER)
@@ -603,23 +602,23 @@ class Can final : public sjsu::Can
     }
   }
 
-   void EnableInterrupts()
+  void EnableInterrupts()
   {
-      bit::Register(&channel_.can->IER)
-          .Set(InterruptEnableRegister::kFIFO0MessagePending)
-          .Save();
-      bit::Register(&channel_.can->IER)
-          .Set(InterruptEnableRegister::kFIFO1MessagePending)
-          .Save();
+    bit::Register(&channel_.can->IER)
+        .Set(InterruptEnableRegister::kFIFO0MessagePending)
+        .Save();
+    bit::Register(&channel_.can->IER)
+        .Set(InterruptEnableRegister::kFIFO1MessagePending)
+        .Save();
   }
   void DisableInterrupts()
   {
-      bit::Register(&channel_.can->IER)
-          .Clear(InterruptEnableRegister::kFIFO0MessagePending)
-          .Save();
-      bit::Register(&channel_.can->IER)
-          .Clear(InterruptEnableRegister::kFIFO1MessagePending)
-          .Save();
+    bit::Register(&channel_.can->IER)
+        .Clear(InterruptEnableRegister::kFIFO0MessagePending)
+        .Save();
+    bit::Register(&channel_.can->IER)
+        .Clear(InterruptEnableRegister::kFIFO1MessagePending)
+        .Save();
   }
 
   bool ConfigureFilter([[maybe_unused]] uint32_t id,
