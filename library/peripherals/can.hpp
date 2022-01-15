@@ -33,7 +33,7 @@ struct CanSettings_t
   static constexpr auto kFastdBaudRate = 1000_kHz;
 
   /// baud rate for most CANBUS networks
-  units::frequency::hertz_t baud_rate = kFastdBaudRate;
+  units::frequency::hertz_t baud_rate = kStandardBaudRate;
 
   /// When a message is received this handler is executed.
   ReceiveHandler handler = nullptr;

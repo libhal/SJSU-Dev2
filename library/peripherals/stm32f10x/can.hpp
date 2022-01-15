@@ -118,6 +118,24 @@ class Can final : public sjsu::Can
     static constexpr auto kLowestPriorityFlagMailbox2 = bit::MaskFromRange(31);
   };
 
+  struct InterruptEnableRegister  // NOLINT
+  {
+    static constexpr auto kTransmitMailboxEmpty = bit::MaskFromRange(0);
+    static constexpr auto kFIFO0MessagePending  = bit::MaskFromRange(1);
+    static constexpr auto kFIFO0Full            = bit::MaskFromRange(2);
+    static constexpr auto kFIFO0OverRun         = bit::MaskFromRange(3);
+    static constexpr auto kFIFO1MessagePending  = bit::MaskFromRange(4);
+    static constexpr auto kFIFO1Full            = bit::MaskFromRange(5);
+    static constexpr auto kFIFO1OverRun         = bit::MaskFromRange(6);
+    static constexpr auto kErrorWarning         = bit::MaskFromRange(8);
+    static constexpr auto kErrorPassive         = bit::MaskFromRange(9);
+    static constexpr auto kBusOff               = bit::MaskFromRange(10);
+    static constexpr auto kLastErrorCode        = bit::MaskFromRange(11);
+    static constexpr auto kErrorInterrupt       = bit::MaskFromRange(15);
+    static constexpr auto kWakeup               = bit::MaskFromRange(16);
+    static constexpr auto kSleep                = bit::MaskFromRange(17);
+  };
+
   struct MaillboxIdentifier  // NOLINT
   {
     // Transmit
@@ -197,57 +215,6 @@ class Can final : public sjsu::Can
     kActive    = 1
   };
 
-  struct Filter
-  {
-    static constexpr auto k0  = bit::MaskFromRange(0);
-    static constexpr auto k1  = bit::MaskFromRange(1);
-    static constexpr auto k2  = bit::MaskFromRange(2);
-    static constexpr auto k3  = bit::MaskFromRange(3);
-    static constexpr auto k4  = bit::MaskFromRange(4);
-    static constexpr auto k5  = bit::MaskFromRange(5);
-    static constexpr auto k6  = bit::MaskFromRange(6);
-    static constexpr auto k7  = bit::MaskFromRange(7);
-    static constexpr auto k8  = bit::MaskFromRange(8);
-    static constexpr auto k9  = bit::MaskFromRange(9);
-    static constexpr auto k10 = bit::MaskFromRange(10);
-    static constexpr auto k11 = bit::MaskFromRange(11);
-    static constexpr auto k12 = bit::MaskFromRange(12);
-    static constexpr auto k13 = bit::MaskFromRange(13);
-    static constexpr auto k14 = bit::MaskFromRange(14);
-    static constexpr auto k15 = bit::MaskFromRange(15);
-    static constexpr auto k16 = bit::MaskFromRange(16);
-    static constexpr auto k17 = bit::MaskFromRange(17);
-    static constexpr auto k18 = bit::MaskFromRange(18);
-    static constexpr auto k19 = bit::MaskFromRange(19);
-    static constexpr auto k20 = bit::MaskFromRange(20);
-    static constexpr auto k21 = bit::MaskFromRange(21);
-    static constexpr auto k22 = bit::MaskFromRange(22);
-    static constexpr auto k23 = bit::MaskFromRange(23);
-    static constexpr auto k24 = bit::MaskFromRange(24);
-    static constexpr auto k25 = bit::MaskFromRange(25);
-    static constexpr auto k26 = bit::MaskFromRange(26);
-    static constexpr auto k27 = bit::MaskFromRange(27);
-  };
-
-  /// https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 554)
-  enum class Commands : uint32_t
-  {
-  };
-
-  /// https://www.nxp.com/docs/en/user-guide/UM10562.pdf (pg. 560)
-  /// CAN frame format: https://goo.gl/images/XLjzn5
-  enum FrameErrorCodes : uint8_t
-  {
-  };
-
-  /// Frame Error container with error codes and error messages.
-  struct FrameError_t
-  {
-  };
-
-  /// Lookup table with all of the CANBUS FrameErrors.
-  static constexpr std::array<FrameError_t, 19> kFrameErrorTable = {};
-
   /// Contains all of the information for to control and configure a CANBUS bus
   /// on the STM32F10x platform.
   struct Port_t  // NOLINT
@@ -291,8 +258,6 @@ class Can final : public sjsu::Can
 
   void ModuleInitialize() override
   {
-    sjsu::LogInfo("Power on CANBUS peripheral");
-
     /// Power on CANBUS peripheral=
     auto & platform = sjsu::SystemController::GetPlatformController();
     platform.PowerUpPeripheral(channel_.id);  // checked
@@ -322,7 +287,7 @@ class Can final : public sjsu::Can
     }
 
     ConfigureBaudRate();
-    // ConfigureReceiveHandler();
+    ConfigureReceiveHandler();
 
     EnableAcceptanceFilter();
 
@@ -532,6 +497,7 @@ class Can final : public sjsu::Can
     test_message.id = id;
 
     // Enable self-test mode
+    DisableInterrupts();
     SetLoopback();
 
     Send(test_message);
@@ -550,6 +516,7 @@ class Can final : public sjsu::Can
 
     // Disable self-test mode
     ClearLoopback();
+    EnableInterrupts();
 
     return true;
   }
@@ -586,17 +553,18 @@ class Can final : public sjsu::Can
  private:
   void ConfigureBaudRate()
   {
-    constexpr int tseg1               = 4;
-    constexpr int tseg2               = 1;
-    constexpr int sync_jump           = 0;
+    constexpr int tseg1     = 4;
+    constexpr int tseg2     = 1;
+    constexpr int sync_jump = 0;
 
     constexpr uint32_t clocks_per_bit = tseg1 + tseg2 + sync_jump + 3;
 
     auto & system         = sjsu::SystemController::GetPlatformController();
     const auto frequency  = system.GetClockRate(channel_.id);
     const auto clock_rate = settings.baud_rate * clocks_per_bit;
-    uint32_t prescaler = (frequency.to<uint32_t>() / (clock_rate.to<uint32_t>()) - 1);
-      
+    uint32_t prescaler =
+        (frequency.to<uint32_t>() / (clock_rate.to<uint32_t>()) - 1);
+
     channel_.can->BTR =
         bit::Insert(channel_.can->BTR, prescaler, BusTiming::kPrescalar);
     channel_.can->BTR =
@@ -607,7 +575,52 @@ class Can final : public sjsu::Can
         bit::Insert(channel_.can->BTR, sync_jump, BusTiming::kSyncJumpWidth);
   }
 
-  void ConfigureReceiveHandler() {}
+  void ConfigureReceiveHandler()
+  {
+    if (settings.handler)
+    {
+       InterruptController::GetPlatformController().Enable({
+          .interrupt_request_number = stm32f10x::CAN1_RX0_IRQn,
+          .interrupt_handler = [this]() { 
+            settings.handler(*this); },
+      });
+
+      bit::Register(&channel_.can->IER)
+          .Set(InterruptEnableRegister::kFIFO0MessagePending)
+          .Save();
+      bit::Register(&channel_.can->IER)
+          .Set(InterruptEnableRegister::kFIFO1MessagePending)
+          .Save();
+    }
+    else
+    {
+      bit::Register(&channel_.can->IER)
+          .Clear(InterruptEnableRegister::kFIFO0MessagePending)
+          .Save();
+      bit::Register(&channel_.can->IER)
+          .Clear(InterruptEnableRegister::kFIFO1MessagePending)
+          .Save();
+    }
+  }
+
+   void EnableInterrupts()
+  {
+      bit::Register(&channel_.can->IER)
+          .Set(InterruptEnableRegister::kFIFO0MessagePending)
+          .Save();
+      bit::Register(&channel_.can->IER)
+          .Set(InterruptEnableRegister::kFIFO1MessagePending)
+          .Save();
+  }
+  void DisableInterrupts()
+  {
+      bit::Register(&channel_.can->IER)
+          .Clear(InterruptEnableRegister::kFIFO0MessagePending)
+          .Save();
+      bit::Register(&channel_.can->IER)
+          .Clear(InterruptEnableRegister::kFIFO1MessagePending)
+          .Save();
+  }
 
   bool ConfigureFilter([[maybe_unused]] uint32_t id,
                        [[maybe_unused]] uint32_t mask,
@@ -615,29 +628,61 @@ class Can final : public sjsu::Can
   {
     return false;
   }
+  struct Filter
+  {
+    static constexpr auto k0  = bit::MaskFromRange(0);
+    static constexpr auto k1  = bit::MaskFromRange(1);
+    static constexpr auto k2  = bit::MaskFromRange(2);
+    static constexpr auto k3  = bit::MaskFromRange(3);
+    static constexpr auto k4  = bit::MaskFromRange(4);
+    static constexpr auto k5  = bit::MaskFromRange(5);
+    static constexpr auto k6  = bit::MaskFromRange(6);
+    static constexpr auto k7  = bit::MaskFromRange(7);
+    static constexpr auto k8  = bit::MaskFromRange(8);
+    static constexpr auto k9  = bit::MaskFromRange(9);
+    static constexpr auto k10 = bit::MaskFromRange(10);
+    static constexpr auto k11 = bit::MaskFromRange(11);
+    static constexpr auto k12 = bit::MaskFromRange(12);
+    static constexpr auto k13 = bit::MaskFromRange(13);
+    static constexpr auto k14 = bit::MaskFromRange(14);
+    static constexpr auto k15 = bit::MaskFromRange(15);
+    static constexpr auto k16 = bit::MaskFromRange(16);
+    static constexpr auto k17 = bit::MaskFromRange(17);
+    static constexpr auto k18 = bit::MaskFromRange(18);
+    static constexpr auto k19 = bit::MaskFromRange(19);
+    static constexpr auto k20 = bit::MaskFromRange(20);
+    static constexpr auto k21 = bit::MaskFromRange(21);
+    static constexpr auto k22 = bit::MaskFromRange(22);
+    static constexpr auto k23 = bit::MaskFromRange(23);
+    static constexpr auto k24 = bit::MaskFromRange(24);
+    static constexpr auto k25 = bit::MaskFromRange(25);
+    static constexpr auto k26 = bit::MaskFromRange(26);
+    static constexpr auto k27 = bit::MaskFromRange(27);
+  };
+
   void EnableAcceptanceFilter()
   {
     // Activate filter initialization mode (Set bit)
     SetFilterBankMode(FilterBankMasterControl::kInitialization);
 
     // Deactivate filter 0 (Clear bit)
-    SetFilterActivationState(Filter::k0, FilterActivation::kNotActive);
+    SetFilterActivationState<0>(FilterActivation::kNotActive);
 
     // Configure filter 0 to single 32-bit scale configuration (Set bit)
-    SetFilterScale(Filter::k0, FilterScale::kSingle32BitScale);
+    SetFilterScale<0>(FilterScale::kSingle32BitScale);
 
     // Clear filter 0 registers to accept all messages.
     channel_.can->sFilterRegister[0].FR1 = 0;
     channel_.can->sFilterRegister[0].FR2 = 0;
 
     // Set filter to mask mode
-    SetFilterType(Filter::k0, FilterType::kMask);
+    SetFilterType<0>(FilterType::kMask);
 
     // Assign filter 0 to FIFO 0 (Clear bit)
-    SetFilterFIFOAssignment(Filter::k0, FIFOAssignment::kFIFO1);
+    SetFilterFIFOAssignment<0>(FIFOAssignment::kFIFO1);
 
     // Activate filter 0 (Set bit)
-    SetFilterActivationState(Filter::k0, FilterActivation::kActive);
+    SetFilterActivationState<0>(FilterActivation::kActive);
 
     // Deactivate filter initialization mode (clear bit)
     SetFilterBankMode(FilterBankMasterControl::kActive);
@@ -650,24 +695,44 @@ class Can final : public sjsu::Can
         .Save();
   }
 
-  void SetFilterType(bit::Mask filter, FilterType filtertype)
+  template <uint32_t filter>
+  void SetFilterType(FilterType filtertype)
   {
-    bit::Register(&channel_.can->FM1R).Insert(Value(filtertype), filter).Save();
+    static_assert((filter >= 0 && filter <= 27),
+                  "There are only 28 filters available 0 - 27");
+    bit::Register(&channel_.can->FM1R)
+        .Insert(Value(filtertype), bit::MaskFromRange(filter))
+        .Save();
   }
 
-  void SetFilterScale(bit::Mask filter, FilterScale scale)
+  template <uint32_t filter>
+  void SetFilterScale(FilterScale scale)
   {
-    bit::Register(&channel_.can->FS1R).Insert(Value(scale), filter).Save();
+    static_assert((filter >= 0 && filter <= 27),
+                  "There are only 28 filters available 0 - 27");
+    bit::Register(&channel_.can->FS1R)
+        .Insert(Value(scale), bit::MaskFromRange(filter))
+        .Save();
   }
 
-  void SetFilterFIFOAssignment(bit::Mask filter, FIFOAssignment fifo)
+  template <uint32_t filter>
+  void SetFilterFIFOAssignment(FIFOAssignment fifo)
   {
-    bit::Register(&channel_.can->FFA1R).Insert(Value(fifo), filter).Save();
+    static_assert((filter >= 0 && filter <= 27),
+                  "There are only 28 filters available 0 - 27");
+    bit::Register(&channel_.can->FFA1R)
+        .Insert(Value(fifo), bit::MaskFromRange(filter))
+        .Save();
   }
 
-  void SetFilterActivationState(bit::Mask filter, FilterActivation state)
+  template <uint32_t filter>
+  void SetFilterActivationState(FilterActivation state)
   {
-    bit::Register(&channel_.can->FA1R).Insert(Value(state), filter).Save();
+    static_assert((filter >= 0 && filter <= 27),
+                  "There are only 28 filters available 0 - 27");
+    bit::Register(&channel_.can->FA1R)
+        .Insert(Value(state), bit::MaskFromRange(filter))
+        .Save();
   }
 
   bool GetMasterStatus(bit::Mask mode) const
@@ -680,19 +745,19 @@ class Can final : public sjsu::Can
 
 inline Can & GetCan()
 {
-    static auto & port1_transmit_pin = GetPin<'A', 12>();
-    static auto & port1_read_pin     = GetPin<'A', 11>();
+  static auto & port1_transmit_pin = GetPin<'A', 12>();
+  static auto & port1_read_pin     = GetPin<'A', 11>();
 
-    /// Predefined definition for CAN1
-    static const Can::Port_t kCan1 = {
-      .td_pin = port1_transmit_pin,
-      .rd_pin = port1_read_pin,
-      .can    = stm32f10x::CAN1,
-      .id     = sjsu::stm32f10x::SystemController::Peripherals::kCan1,
-    };
+  /// Predefined definition for CAN1
+  static const Can::Port_t kCan1 = {
+    .td_pin = port1_transmit_pin,
+    .rd_pin = port1_read_pin,
+    .can    = stm32f10x::CAN1,
+    .id     = sjsu::stm32f10x::SystemController::Peripherals::kCan1,
+  };
 
-    static Can can1(kCan1);
-    return can1;
+  static Can can1(kCan1);
+  return can1;
 }
 
 }  // namespace stm32f10x
