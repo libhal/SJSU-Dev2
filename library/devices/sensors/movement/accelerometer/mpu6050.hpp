@@ -165,7 +165,7 @@ class Mpu6050 : public Accelerometer
                        sizeof(device_id));
 
     // Extract the ID bits [1:6]
-    device_id = bit::Extract(device_id, bit::MaskFromRange(1, 6));
+    device_id = bit::Extract(device_id, bit::MaskFromRange(0, 6));
 
     if (device_id != kExpectedDeviceID)
     {
