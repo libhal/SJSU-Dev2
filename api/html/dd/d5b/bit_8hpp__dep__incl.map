@@ -17,7 +17,7 @@
 <area shape="rect" id="node34" href="$de/da7/lpc40xx_2pulse__capture_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/lpc40xx/pulse\l_capture.hpp" alt="" coords="383,347,577,417"/>
 <area shape="rect" id="node35" href="$dd/d0d/lpc40xx_2spi_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/lpc40xx/spi.hpp" alt="" coords="2749,354,2955,410"/>
 <area shape="rect" id="node36" href="$d0/da8/lpc40xx_2timer_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/lpc40xx/timer.hpp" alt="" coords="518,235,738,291"/>
-<area shape="rect" id="node39" href="$dd/d61/stm32f10x_2spi_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/stm32f10x/spi.hpp" alt="" coords="4871,354,5095,410"/>
+<area shape="rect" id="node39" href="$dd/d61/stm32f10x_2spi_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/stm32f10x/spi.hpp" alt="" coords="4861,354,5085,410"/>
 <area shape="rect" id="node40" href="$db/d4f/lpc40xx_2system__controller_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/lpc40xx/system\l_controller.hpp" alt="" coords="1905,109,2111,180"/>
 <area shape="rect" id="node41" href="$d3/d60/msp432p401r_2system__controller_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/msp432p401r\l/system_controller.hpp" alt="" coords="4025,109,4217,180"/>
 <area shape="rect" id="node42" href="$d7/d9b/dma_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/stm32f10x/dma.hpp" alt="" coords="4100,235,4335,291"/>
@@ -47,5 +47,5 @@
 <area shape="rect" id="node38" href="$d7/de4/spi_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/spi.hpp" alt="" coords="3059,235,3239,291"/>
 <area shape="rect" id="node30" href="$d6/d68/stm32f10x_2gpio_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/stm32f10x/gpio.hpp" alt="" coords="3793,354,4026,410"/>
 <area shape="rect" id="node43" href="$de/d2b/stm32f10x_2adc_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/stm32f10x/adc.hpp" alt="" coords="4357,354,4585,410"/>
-<area shape="rect" id="node46" href="$de/d55/stm32f10x_2pwm_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/stm32f10x/pwm.hpp" alt="" coords="4609,354,4847,410"/>
+<area shape="rect" id="node46" href="$d0/d00/stm32f10x_2can_8hpp_source.html" title="/home/runner/work/SJSU\l&#45;Dev2/SJSU&#45;Dev2/library\l/peripherals/stm32f10x/can.hpp" alt="" coords="4609,354,4837,410"/>
 </map>

@@ -1,5 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; CanSettings_t \&gt;" alt="" coords="5,5,228,32"/>
-<area shape="rect" id="node2" href="$da/d70/classsjsu_1_1Can.html" title="sjsu::Can" alt="" coords="276,5,357,32"/>
-<area shape="rect" id="node3" href="$df/daf/classsjsu_1_1lpc40xx_1_1Can.html" title="CANBUS implemenation for the LPC40xx series of devices. " alt="" coords="405,5,545,32"/>
+<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; CanSettings_t \&gt;" alt="" coords="5,31,228,57"/>
+<area shape="rect" id="node2" href="$da/d70/classsjsu_1_1Can.html" title="sjsu::Can" alt="" coords="276,31,357,57"/>
+<area shape="rect" id="node3" href="$df/daf/classsjsu_1_1lpc40xx_1_1Can.html" title="CANBUS implemenation for the LPC40xx series of devices. " alt="" coords="415,5,555,32"/>
+<area shape="rect" id="node4" href="$d1/d08/classsjsu_1_1stm32f10x_1_1Can.html" title="CANBUS implemenation for the stm32f10x series of devices. " alt="" coords="405,56,564,83"/>
 </map>

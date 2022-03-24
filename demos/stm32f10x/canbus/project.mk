@@ -1,0 +1,1 @@
+PLATFORM = stm32f10x

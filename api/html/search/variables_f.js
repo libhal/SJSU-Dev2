@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['rd_5ffunction_5fcode',['rd_function_code',['../da/d2f/structsjsu_1_1lpc40xx_1_1Can_1_1Port__t.html#aa2db278436e6534ad5856df74ca20afe',1,'sjsu::lpc40xx::Can::Port_t']]],
-  ['rd_5fpin',['rd_pin',['../da/d2f/structsjsu_1_1lpc40xx_1_1Can_1_1Port__t.html#a5f94d3142cb48a64dddfedae8f8a807d',1,'sjsu::lpc40xx::Can::Port_t']]],
+  ['rd_5ffunction_5fcode',['rd_function_code',['../da/d2f/structsjsu_1_1lpc40xx_1_1Can_1_1Port__t.html#aa2db278436e6534ad5856df74ca20afe',1,'sjsu::lpc40xx::Can::Port_t::rd_function_code()'],['../d8/d62/structsjsu_1_1stm32f10x_1_1Can_1_1Port__t.html#af1c7aa62b82337d00815a97137e00635',1,'sjsu::stm32f10x::Can::Port_t::rd_function_code()']]],
+  ['rd_5fpin',['rd_pin',['../da/d2f/structsjsu_1_1lpc40xx_1_1Can_1_1Port__t.html#a5f94d3142cb48a64dddfedae8f8a807d',1,'sjsu::lpc40xx::Can::Port_t::rd_pin()'],['../d8/d62/structsjsu_1_1stm32f10x_1_1Can_1_1Port__t.html#af94eb78a44f288fafae6b95f81125993',1,'sjsu::stm32f10x::Can::Port_t::rd_pin()']]],
+  ['rd_5fresistor_5fstate',['rd_resistor_state',['../d8/d62/structsjsu_1_1stm32f10x_1_1Can_1_1Port__t.html#ab0c2fe271e08dc42e18664271b2f7f79',1,'sjsu::stm32f10x::Can::Port_t']]],
   ['red',['red',['../dc/d2e/structsjsu_1_1PixelDisplay_1_1Color__t.html#a596009e322e1a7fbb2f28838bbaf390c',1,'sjsu::PixelDisplay::Color_t']]],
   ['reference',['reference',['../dc/dea/structsjsu_1_1msp432p401r_1_1SystemController_1_1ClockConfiguration__t.html#a628da3524009e0e877e03f4a5e12cf18',1,'sjsu::msp432p401r::SystemController::ClockConfiguration_t']]],
   ['reference_5fvoltage',['reference_voltage',['../de/d78/structsjsu_1_1AdcSettings__t.html#a4b771badb948f8d229bf39e3fe2912ea',1,'sjsu::AdcSettings_t']]],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['calibrate',['Calibrate',['../d0/dab/classsjsu_1_1StopWatch.html#abed47c2598a289745ee58d50cd0b97e8',1,'sjsu::StopWatch']]],
-  ['can',['Can',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#abd8e9218ad4bf98c2bc67222f2079392',1,'sjsu::lpc40xx::Can']]],
+  ['can',['Can',['../df/daf/classsjsu_1_1lpc40xx_1_1Can.html#abd8e9218ad4bf98c2bc67222f2079392',1,'sjsu::lpc40xx::Can::Can()'],['../d1/d08/classsjsu_1_1stm32f10x_1_1Can.html#a9aac34c45700cbe65f00fd76122f356b',1,'sjsu::stm32f10x::Can::Can()']]],
   ['canbus',['CanBus',['../dd/d20/classsjsu_1_1CanNetwork.html#a301722c50d18ec33f16bd6f1c9367f29',1,'sjsu::CanNetwork']]],
   ['cannetwork',['CanNetwork',['../dd/d20/classsjsu_1_1CanNetwork.html#a41fb83952629a9dd3c1d0a7320c06c5b',1,'sjsu::CanNetwork']]],
   ['capacity',['Capacity',['../d5/d7b/classsjsu_1_1StaticMemoryResource.html#a3b1c8dec88da801348e2c8cc84c6682a',1,'sjsu::StaticMemoryResource']]],
@@ -9,6 +9,7 @@ var searchData=
   ['checktimeout',['CheckTimeout',['../dc/db6/classsjsu_1_1lpc40xx_1_1Watchdog.html#ad5ea166a0227906a6698074926f89464',1,'sjsu::lpc40xx::Watchdog::CheckTimeout()'],['../d5/da1/classsjsu_1_1Watchdog.html#a58b096fc6e905a7d0b3dddab79eefb42',1,'sjsu::Watchdog::CheckTimeout()']]],
   ['clear',['Clear',['../db/d32/classsjsu_1_1Ssd1306.html#abec7db550df0e97d8e586d99af29a243',1,'sjsu::Ssd1306::Clear()'],['../df/d96/classsjsu_1_1PixelDisplay.html#a0ee59c54a2f2918b8866c89f7e2f1fdd',1,'sjsu::PixelDisplay::Clear()'],['../d6/dde/classsjsu_1_1GraphicalTerminal.html#ac212c2eebebe0a2112795d398950a332',1,'sjsu::GraphicalTerminal::Clear()'],['../d7/d8c/classsjsu_1_1Graphics.html#a8e1e7f91244e6728e1df1fc325b6a3df',1,'sjsu::Graphics::Clear()'],['../dd/dbe/classsjsu_1_1bit_1_1Register.html#a54c7c53445cdd3dde50f593695305c3c',1,'sjsu::bit::Register::Clear()'],['../df/d21/classsjsu_1_1bit_1_1Value.html#af23177ae9577eb2c18c668d965e0668c',1,'sjsu::bit::Value::Clear()'],['../d3/d51/bit_8hpp.html#ad8acc3d6b14fee37468377f9fcfb8d73',1,'sjsu::bit::Clear(T target, uint32_t position)'],['../d3/d51/bit_8hpp.html#a69c928f3aa68b0c2e9e735e2ed528a05',1,'sjsu::bit::Clear(T target, Mask bitmask)']]],
   ['cleardisplay',['ClearDisplay',['../d3/d56/classsjsu_1_1St7066u.html#a14fca47f43a79d8953359a0527f26ffa',1,'sjsu::St7066u']]],
+  ['clearloopback',['ClearLoopback',['../d1/d08/classsjsu_1_1stm32f10x_1_1Can.html#a4bd48fad9275577361ae7836eae10695',1,'sjsu::stm32f10x::Can']]],
   ['clearrow',['ClearRow',['../d6/dde/classsjsu_1_1GraphicalTerminal.html#a9117f73a0f48af21a7f40cbcbeeeb12a',1,'sjsu::GraphicalTerminal']]],
   ['close',['Close',['../d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html#ada4b6442b35cb68f260b7a62e1f3a955',1,'sjsu::Esp8266::Esp8266InternetSocket::Close()'],['../db/dcb/classsjsu_1_1InternetSocket.html#a6484006ab02e759f189fde020edf93ab',1,'sjsu::InternetSocket::Close()']]],
   ['command',['Command',['../d7/d56/classsjsu_1_1Command.html#a84d7e7a94bf4deb48b03fdd9465deb97',1,'sjsu::Command']]],
@@ -19,6 +20,7 @@ var searchData=
   ['connecttoaccesspoint',['ConnectToAccessPoint',['../d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html#afa28ec1e91510f3369546fba0f7e2986',1,'sjsu::Esp8266::Esp8266WiFi::ConnectToAccessPoint()'],['../dc/d16/classsjsu_1_1WiFi.html#a91b3d3690e3ed27fc50dceced0d4072c',1,'sjsu::WiFi::ConnectToAccessPoint()']]],
   ['consttransfer',['ConstTransfer',['../d3/de6/classsjsu_1_1Spi.html#a5190946c388159f3edea873f2936b9ac',1,'sjsu::Spi']]],
   ['convert',['convert',['../d3/d07/structdoctest_1_1StringMaker_3_01sjsu_1_1HexDumpObject_3_01PeripheralStructure_01_4_01_4.html#a28a0a548a5cef53eb79920c7b3299f00',1,'doctest::StringMaker&lt; sjsu::HexDumpObject&lt; PeripheralStructure &gt; &gt;::convert()'],['../de/d0b/structdoctest_1_1StringMaker_3_01std_1_1array_3_01T_00_01N_01_4_01_4.html#a66bb62f44cf47c1b8b03f877c0a53c76',1,'doctest::StringMaker&lt; std::array&lt; T, N &gt; &gt;::convert()'],['../d7/d41/structdoctest_1_1StringMaker_3_01std_1_1span_3_01T_01_4_01_4.html#ab18d5988054ceb855c329470b5084d21',1,'doctest::StringMaker&lt; std::span&lt; T &gt; &gt;::convert()'],['../d8/d11/structdoctest_1_1StringMaker_3_01std_1_1errc_01_4.html#a191bf88378467d2be973537f2bfc02a2',1,'doctest::StringMaker&lt; std::errc &gt;::convert()'],['../d7/dbc/structdoctest_1_1StringMaker_3_01std_1_1chrono_1_1duration_3_01T_00_01U_01_4_01_4.html#a3d23af337c64b74e5f6f48c5a2e5e6a4',1,'doctest::StringMaker&lt; std::chrono::duration&lt; T, U &gt; &gt;::convert()']]],
+  ['convertmessagetoregisters',['ConvertMessageToRegisters',['../d1/d08/classsjsu_1_1stm32f10x_1_1Can.html#a93bde1d7fbdce8bf0bad76866d9d045d',1,'sjsu::stm32f10x::Can']]],
   ['copymocktoexpected',['CopyMockToExpected',['../d4/d58/classsjsu_1_1AutoVerifyPeripheralMemory.html#a872b8a51039bc85d6839a40040ce2b4f',1,'sjsu::AutoVerifyPeripheralMemory']]],
   ['currentsettings',['CurrentSettings',['../d1/ded/classsjsu_1_1Module.html#aad5cf43ef622d78eacea24e754adaffd',1,'sjsu::Module']]]
 ];

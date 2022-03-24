@@ -31,6 +31,9 @@ struct CanSettings_t
   /// Standard baud rate for most CANBUS networks
   static constexpr auto kStandardBaudRate = 100_kHz;
 
+  /// Standard fast baud rate
+  static constexpr auto kFastBaudRate = 1000_kHz;
+
   /// baud rate for most CANBUS networks
   units::frequency::hertz_t baud_rate = kStandardBaudRate;
 
