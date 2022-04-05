@@ -1,3 +1,7 @@
+// Trying to add in functions for reading and setting PID values.
+// WIP - work-in-progress
+
+
 #pragma once
 
 #include <algorithm>
@@ -61,7 +65,7 @@ class RmdX : public sjsu::Module<RmdXSettings_t>
     kWriteAccelerationDataToRAMCommand           = 0x34,
     kReadEncoderDataCommand                      = 0x90,
     kWriteEncoderOffsetCommand                   = 0x91,
-    kWriteCurrentPositionToROMAsMotorZeroCommand = 0x19,
+    kWriteCurrentPositionToROMAsMotorZeroCommand = 0x19,        // could this be used as a homing procedure?
     kReadMultiTurnsAngleCommand                  = 0x92,
     kReadSingleCircleAngleCommand                = 0x94,
     kReadMotorStatus1AndErrorFlagCommands        = 0x9A,
@@ -83,6 +87,18 @@ class RmdX : public sjsu::Module<RmdXSettings_t>
   /// motor
   struct Feedback_t
   {
+
+    /// (WIP) 
+    /// PID gains from motor. 
+    /// The motor has different pid values for position, speed, and torque.. (unsure about torque)
+    float Kp_pos;
+    float Ki_pos;
+    float Kp_spe;
+    float Ki_spe;
+    float Kp_tor;
+    float Ki_tor;
+
+
     /// Core temperature of the motor
     units::temperature::celsius_t temperature;
     /// Current flowing through the motor windings
@@ -113,11 +129,19 @@ class RmdX : public sjsu::Module<RmdXSettings_t>
       LogInfo("  Over Temperature Protection Tripped: %d",
               over_temperature_protection_tripped);
       LogInfo("Sensors:");
+    
       LogInfo("  Encoder Position: %" PRId16, encoder_position);
       LogInfo("  Voltage:     %f V", volts.to<double>());
       LogInfo("  Speed:       %f RPM", speed.to<double>());
       LogInfo("  Current:     %f A", current.to<double>());
       LogInfo("  Temperature: %f C", temperature.to<double>());
+
+
+      LogInfo("PID Control gains:");
+
+      LogInfo(" Proportional gain: %f", Kp);
+      LogInfo(" Integral gain: %f", Ki);
+      LogInfo(" Derivative gain: %f", Kd);
     }
   };
 
@@ -150,6 +174,60 @@ class RmdX : public sjsu::Module<RmdXSettings_t>
                              0x00,
                              0x00,
                              0x00 });
+  }
+
+  /// (WIP)
+  /// Set the proportional, integral, and derivative gains on the motor.
+  ///
+  /// @param Kp - desired proportional gain
+  /// @param Ki - desired integral gain
+  /// @param Kd - desired derivative gain
+  ///
+  /// @return RmdX& - reference to self to allow method chaining
+  RmdX & SetPID(float Kp_pos, float Ki_pos, float Kp_speed, float Ki_speed, float Kp_torque, float Ki_torque)
+  {
+        
+    network_.CanBus().Send(
+        device_id_,
+        {
+            Value(Commands::kWritePIDToROMCommand),                   //write to ROM so the motor remembers the PID value even when 
+            0x00,
+            static_cast<float>((Kp_pos >> 0) & 0xFF),
+            static_cast<float>((Ki_pos >> 8) & 0xFF),
+            static_cast<float>((Kp_speed >> 16) & 0xFF),
+            static_cast<float>((Ki_speed >> 24) & 0xFF),
+            static_cast<float>((Kp_torque >> 16) & 0xFF),
+            static_cast<float>((Ki_torque >> 24) & 0xFF),
+        });
+
+    return *this;
+  }
+
+  /// (WIP)
+  /// Request PID values from the motor for position, speed, and torque
+  /// @param timeout - Amount of time to wait for feedback from the motor.
+  /// @return RmdX& - reference to self to allow method chaining
+  RmdX & GetPID(std::chrono::nanoseconds timeout = 2ms)
+  {
+    TimeoutTimer timeout_timer(timeout);
+
+    network_.CanBus().Send(
+        device_id_,
+        {
+            Value(Commands::kReadPIDData),
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+        });
+
+    PollForMessages(Value(Commands::kReadMotorStatus1AndErrorFlagCommands),
+                    timeout_timer.GetTimeLeft());      
+
+    return *this;
   }
 
   /// Set the rotational speed of the motor.
@@ -264,6 +342,39 @@ class RmdX : public sjsu::Module<RmdXSettings_t>
 
     switch (Commands(message.payload[0]))
     {
+      
+      // WIP
+      case Commands::kReadPIDData:
+      {
+          auto & payload = message.payload;
+
+          auto Kp_val1 = static_cast<int8_t>(payload[9] << 8) | payload[8]);
+          auto Ki_val1 = static_cast<int8_t>(payload[11] << 8) | payload[10]);
+
+          auto Kp_val1 = static_cast<int8_t>(payload[13] << 8) | payload[12]);
+          auto Ki_val1 = static_cast<int8_t>(payload[15] << 8) | payload[14]);
+
+          auto Kp_val1 = static_cast<int8_t>(payload[17] << 8) | payload[16]);
+          auto Ki_val1 = static_cast<int8_t>(payload[19] << 8) | payload[18]);          
+
+          feedback_.Kp_pos = Kp_val1;
+          feedback_.Ki_pos = Ki_val1;
+
+          feedback_.Kp_spe = Kp_val2;
+          feedback_.Ki_spe = Ki_val2;
+
+          feedback_.Kp_tor = Kp_val3;
+          feedback_.Ki_tor = Ki_val3;
+
+          break;
+      }
+
+      // WIP
+      case Commands::kWritePIDToROMCommand:
+      {
+
+      }
+
       case Commands::kReadMotorStatus2:
       case Commands::kTorqueClosedLoopCommand:
       case Commands::kSpeedClosedLoopCommand:
@@ -281,10 +392,12 @@ class RmdX : public sjsu::Module<RmdXSettings_t>
 
         auto & payload = message.payload;
 
-        auto temperature = static_cast<int8_t>(payload[1]);
+        // (Joshua) really confused by this section
+        auto temperature = static_cast<int8_t>(payload[1]);    
         auto current     = static_cast<int16_t>((payload[3] << 8) | payload[2]);
         auto speed       = static_cast<int16_t>((payload[5] << 8) | payload[4]);
         auto encoder     = static_cast<int16_t>((payload[7] << 8) | payload[6]);
+        //
 
         auto temperature_float = static_cast<float>(temperature);
         auto gear_ratio        = CurrentSettings().gear_ratio;
