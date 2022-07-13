@@ -7,12 +7,12 @@
 #include <cstring>
 #include <iterator>
 
-#include "platforms/utility/ram.hpp"
 #include "peripherals/cortex/dwt_counter.hpp"
 #include "peripherals/cortex/system_timer.hpp"
 #include "peripherals/interrupt.hpp"
 #include "peripherals/lpc17xx/system_controller.hpp"
 #include "peripherals/lpc17xx/uart.hpp"
+#include "platforms/utility/ram.hpp"
 #include "utility/log.hpp"
 #include "utility/macros.hpp"
 #include "utility/time/time.hpp"
@@ -31,7 +31,7 @@ sjsu::lpc17xx::SystemController system_controller(clock_configuration);
 sjsu::cortex::DwtCounter arm_dwt_counter;
 
 /// Uart port 0 is used to communicate back to the host computer
-sjsu::lpc17xx::Uart & uart0 = sjsu::lpc17xx::GetUart<0>();
+auto & uart0 = sjsu::lpc17xx::GetUart<0>();
 
 /// System timer is used to count milliseconds of time and to run the RTOS
 /// scheduler.

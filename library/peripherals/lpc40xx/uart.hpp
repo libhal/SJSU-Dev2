@@ -4,11 +4,13 @@
 #include <cstdint>
 #include <limits>
 
+#include "peripherals/cortex/interrupt.hpp"
 #include "peripherals/lpc40xx/pin.hpp"
 #include "peripherals/lpc40xx/system_controller.hpp"
 #include "peripherals/uart.hpp"
 #include "platforms/targets/lpc17xx/LPC17xx.h"
 #include "platforms/targets/lpc40xx/LPC40xx.h"
+#include "third_party/ring_span/ring_span.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/time/time.hpp"
 
@@ -131,7 +133,7 @@ constexpr UartCalibration_t FindClosestFractional(float decimal)
 }
 
 /// @param baud_rate - desired baud rate.
-/// @param fraction_estimate - corrissponds to the result of UartCalibration_t
+/// @param fraction_estimate - corresponds to the result of UartCalibration_t
 ///        divide_add/multiply.
 /// @param peripheral_frequency - input source frequency.
 /// @return an estimate for the baud rate divider
@@ -273,7 +275,7 @@ constexpr static UartCalibration_t GenerateUartCalibration(
 
 /// Implementation of the UART peripheral for the LPC40xx family of
 /// microcontrollers.
-class Uart final : public sjsu::Uart
+class UartBase : public sjsu::Uart
 {
  public:
   using sjsu::Uart::Read;
@@ -296,10 +298,13 @@ class Uart final : public sjsu::Uart
     /// ResourceID of the UART peripheral to power on at initialization.
     sjsu::SystemController::ResourceID power_on_id;
 
-    /// Refernce to a uart transmitter pin
+    /// IRQ number for this I2C port.
+    sjsu::cortex::IRQn_Type irq_number;
+
+    /// Reference to a uart transmitter pin
     sjsu::Pin & tx;
 
-    /// Refernce to a uart receiver pin
+    /// Reference to a uart receiver pin
     sjsu::Pin & rx;
 
     /// Function code to set the transmit pin to uart transmitter
@@ -309,16 +314,85 @@ class Uart final : public sjsu::Uart
     uint8_t rx_function_id : 3;
   };
 
-  /// @param port - a reference to a constant lpc40xx::Uart::Port_t definition
-  explicit constexpr Uart(const Port_t & port) : port_(port) {}
+  /// Interrupt enable bit fields
+  struct InterruptEnable
+  {
+    /// RBR Interrupt Enable. Enables the Receive Data Available interrupt for
+    /// UARTn: Reset 0 It also controls the Character Receive Time-out
+    /// interrupt.
+    /// - 0 Disable the RDA interrupts.
+    /// - 1 Enable the RDA interrupts.
+    static constexpr auto kReceiveInterrupt = bit::MaskFromRange(0);
+  };
+
+  /// Interrupt ID bit fields
+  struct InterruptID
+  {
+    /// Interrupt identification. UnIER[3:1] identifies an interrupt
+    /// corresponding to the UARTn Rx or TX FIFO. All other combinations of
+    /// UnIER[3:1] not listed below are reserved (000,100,101,111).
+    /// - 0x3 1 - Receive Line Status (RLS).
+    /// - 0x2 2a - Receive Data Available (RDA).
+    /// - 0x6 2b - Character Time-out Indicator (CTI).
+    /// - 0x1 3 - THRE Interrupt
+    static constexpr auto kID = bit::MaskFromRange(1, 3);
+  };
+
+  /// FIFO control bit fields
+  struct FIFOControl
+  {
+    /// FIFO Enable: Reset 0
+    /// - 0 UARTn FIFOs are disabled. Must not be used in the application.
+    /// - 1 Active high enable for both UARTn Rx and TX FIFOs and UnFCR[7:1]
+    /// access. This bit must be set for proper UART operation. Any transition
+    /// on this bit will automatically clear the related UART FIFOs.
+    static constexpr auto kFifoEnable = bit::MaskFromRange(0);
+    /// RX FIFO Reset: Reset 0
+    /// - 0 No impact on either of UARTn FIFOs.
+    /// - 1 Writing a logic 1 to UnFCR[1] will clear all bytes in UARTn Rx FIFO,
+    /// reset the pointer logic. This bit is self-clearing.
+    static constexpr auto kRxFifoClear = bit::MaskFromRange(1);
+    /// TX FIFO Reset: Reset 0
+    /// - 0 No impact on either of UARTn FIFOs.
+    /// - 1 Writing a logic 1 to UnFCR[2] will clear all bytes in UARTn TX FIFO,
+    /// reset the pointer logic. This bit is self-clearing.
+    static constexpr auto kTxFifoClear = bit::MaskFromRange(2);
+    /// RX Trigger Level. These two bits determine how many receiver UARTn FIFO
+    /// characters must be written before an interrupt or DMA request is
+    /// activated: Reset 0
+    /// - 0x0 Trigger level 0 (1 character or 0x01).
+    /// - 0x1 Trigger level 1 (4 characters or 0x04).
+    /// - 0x2 Trigger level 2 (8 characters or 0x08).
+    /// - 0x3 Trigger level 3 (14 characters or 0x0E).
+    static constexpr auto kRxTriggerLevel = bit::MaskFromRange(6, 7);
+  };
+
+  /// @param port - reference to the port specification object
+  /// @param buffer - pointer to the array buffer to hold the received bytes
+  UartBase(const Port_t & port, std::span<uint8_t> buffer)
+      : port_(port), receive_buffer_(buffer.begin(), buffer.end())
+  {
+  }
+
+  /// @tparam size - size of the array
+  /// @param port - reference to the port specification object
+  /// @param buffer - reference to the array buffer to hold the received bytes
+  template <size_t size>
+  UartBase(const Port_t & port, uint8_t (&buffer)[size])
+      : port_(port), receive_buffer_(buffer, size)
+  {
+  }
 
   void ModuleInitialize() override
   {
     sjsu::SystemController::GetPlatformController().PowerUpPeripheral(
         port_.power_on_id);
 
-    ConfigureBaudRate();
+    port_.registers->FCR =
+        bit::Value(0).Set(FIFOControl::kFifoEnable).To<uint8_t>();
+
     ConfigureFormat();
+    ConfigureBaudRate();
 
     port_.rx.settings.function = port_.rx_function_id;
     port_.tx.settings.function = port_.tx_function_id;
@@ -328,12 +402,14 @@ class Uart final : public sjsu::Uart
     port_.rx.Initialize();
     port_.tx.Initialize();
 
-    port_.registers->FCR |= kEnableAndResetFIFO;
+    SetupReceiveInterrupt();
+    Flush();
+    ResetUartQueue();
   }
 
   void ModulePowerDown() override
   {
-    port_.registers->FCR &= kPowerDown;
+    port_.registers->FCR = kPowerDown;
   }
 
   void Write(std::span<const uint8_t> data) override
@@ -350,27 +426,94 @@ class Uart final : public sjsu::Uart
 
   size_t Read(std::span<uint8_t> data) override
   {
-    size_t index = 0;
+    int count = 0;
 
     for (auto & byte : data)
     {
-      if (!HasData())
+      if (receive_buffer_.empty())
       {
         break;
       }
-      byte = port_.registers->RBR;
-      index++;
+
+      byte = receive_buffer_.pop_front();
+      count++;
     }
 
-    return index;
+    return count;
   }
 
   bool HasData() override
   {
-    return bit::Read(port_.registers->LSR, 0);
+    return receive_buffer_.size();
+  }
+
+  void Flush() noexcept override
+  {
+    while (!receive_buffer_.empty())
+    {
+      receive_buffer_.pop_back();
+    }
+  }
+
+  ~UartBase()
+  {
+    sjsu::InterruptController::GetPlatformController().Disable(
+        port_.irq_number);
   }
 
  private:
+  bool FifoContainsData()
+  {
+    return bit::Read(port_.registers->LSR, 0);
+  }
+  void Interrupt()
+  {
+    [[maybe_unused]] auto line_status_value = port_.registers->LSR;
+    auto interrupt_type = bit::Extract(port_.registers->IIR, InterruptID::kID);
+    if (interrupt_type == 0x2 || interrupt_type == 0x6)
+    {
+      while (FifoContainsData())
+      {
+        uint8_t byte{ port_.registers->RBR };
+        if (!receive_buffer_.full())
+        {
+          receive_buffer_.push_back(byte);
+        }
+      }
+    }
+  }
+
+  void ResetUartQueue()
+  {
+    // 0x3 = 14 bytes in fifo before triggering a receive interrupt.
+    // 0x2 = 8
+    // 0x1 = 4
+    // 0x0 = 1
+    port_.registers->FCR = bit::Value(0)
+                               .Set(FIFOControl::kRxFifoClear)
+                               .Set(FIFOControl::kTxFifoClear)
+                               .To<uint8_t>();
+  }
+
+  void SetupReceiveInterrupt()
+  {
+    // Enable interrupt service routine.
+    sjsu::InterruptController::GetPlatformController().Enable({
+        .interrupt_request_number = port_.irq_number,
+        .interrupt_handler        = [this]() { Interrupt(); },
+    });
+
+    // Enable uart interrupt signal
+    bit::Register(&port_.registers->IER)
+        .Set(InterruptEnable::kReceiveInterrupt)
+        .Save();
+
+    port_.registers->FCR =
+        bit::Value(0)
+            .Insert(std::uint8_t{ 0x3 }, FIFOControl::kRxTriggerLevel)
+            .To<uint8_t>();
+  }
+
   void ConfigureFormat()
   {
     // To be continued...
@@ -404,10 +547,33 @@ class Uart final : public sjsu::Uart
 
   /// const reference to lpc40xx::Uart::Port_t definition
   const Port_t & port_;
+  nonstd::ring_span<std::uint8_t> receive_buffer_;
 };
 
-template <int port>
-inline Uart & GetUart()
+/// Uart Driver for the lpc40xx platform.
+///
+/// @tparam - defaults to 1024 bytes for the queue size. You can configure this
+///           for a higher or lower number of bytes. Note: that the larger this
+///           value, the larger this object's size is.
+template <size_t queue_size = 1024>
+class Uart : public sjsu::lpc40xx::UartBase
+{
+ public:
+  using sjsu::Uart::Read;
+  using sjsu::Uart::Write;
+
+  /// @param port - reference to the port specification object
+  explicit constexpr Uart(const sjsu::lpc40xx::UartBase::Port_t & port)
+      : sjsu::lpc40xx::UartBase(port, queue_), queue_{}
+  {
+  }
+
+ private:
+  std::array<uint8_t, queue_size> queue_;
+};
+
+template <int port, size_t queue_size = 1024>
+inline Uart<queue_size> & GetUart()
 {
   if constexpr (port == 0)
   {
@@ -415,20 +581,21 @@ inline Uart & GetUart()
     static Pin & uart0_rx = sjsu::lpc40xx::GetPin<0, 3>();
 
     /// Definition for uart port 0 for lpc40xx.
-    static const Uart::Port_t kUart0 = {
+    static const UartBase::Port_t kUart0 = {
       // NOTE: required since LPC_UART0 is of type LPC_UART0_TypeDef in lpc17xx
       // and LPC_UART_TypeDef in lpc40xx causing a "useless cast" warning when
       // compiled for, some odd reason, for either one being compiled, which
       // would make more sense if it only warned us with lpc40xx.
       .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART0_BASE),
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart0,
+      .irq_number     = 5,
       .tx             = uart0_tx,
       .rx             = uart0_rx,
       .tx_function_id = 0b001,
       .rx_function_id = 0b001,
     };
 
-    static Uart uart0(kUart0);
+    static Uart<queue_size> uart0(kUart0);
     return uart0;
   }
   else if constexpr (port == 2)
@@ -437,16 +604,17 @@ inline Uart & GetUart()
     static Pin & uart2_rx = sjsu::lpc40xx::GetPin<2, 9>();
 
     /// Definition for uart port 1 for lpc40xx.
-    static const Uart::Port_t kUart2 = {
+    static const UartBase::Port_t kUart2 = {
       .registers      = LPC_UART2,
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart2,
+      .irq_number     = sjsu::lpc40xx::IRQn::UART2_IRQn,
       .tx             = uart2_tx,
       .rx             = uart2_rx,
       .tx_function_id = 0b010,
       .rx_function_id = 0b010,
     };
 
-    static Uart uart2(kUart2);
+    static Uart<queue_size> uart2(kUart2);
     return uart2;
   }
   else if constexpr (port == 3)
@@ -455,16 +623,17 @@ inline Uart & GetUart()
     static Pin & uart3_rx = sjsu::lpc40xx::GetPin<4, 29>();
 
     /// Definition for uart port 2 for lpc40xx.
-    static const Uart::Port_t kUart3 = {
+    static const UartBase::Port_t kUart3 = {
       .registers      = LPC_UART3,
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart3,
+      .irq_number     = sjsu::lpc40xx::IRQn::UART3_IRQn,
       .tx             = uart3_tx,
       .rx             = uart3_rx,
       .tx_function_id = 0b010,
       .rx_function_id = 0b010,
     };
 
-    static Uart uart3(kUart3);
+    static Uart<queue_size> uart3(kUart3);
     return uart3;
   }
   else if constexpr (port == 4)
@@ -473,16 +642,17 @@ inline Uart & GetUart()
     static Pin & uart4_rx = sjsu::lpc40xx::GetPin<2, 9>();
 
     /// Definition for uart port 3 for lpc40xx.
-    static const Uart::Port_t kUart4 = {
+    static const UartBase::Port_t kUart4 = {
       .registers      = reinterpret_cast<LPC_UART_TypeDef *>(LPC_UART4),
       .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart4,
+      .irq_number     = sjsu::lpc40xx::IRQn::UART4_IRQn,
       .tx             = uart4_tx,
       .rx             = uart4_rx,
       .tx_function_id = 0b101,
       .rx_function_id = 0b011,
     };
 
-    static Uart uart4(kUart4);
+    static Uart<queue_size> uart4(kUart4);
     return uart4;
   }
   else

@@ -2,10 +2,10 @@
 #include <cstdint>
 #include <string_view>
 
+#include "devices/communication/esp8266.hpp"
+#include "peripherals/interrupt.hpp"
 #include "peripherals/lpc40xx/uart.hpp"
 #include "peripherals/stm32f10x/uart.hpp"
-#include "peripherals/interrupt.hpp"
-#include "devices/communication/esp8266.hpp"
 #include "utility/debug.hpp"
 #include "utility/log.hpp"
 
@@ -17,6 +17,8 @@ std::string_view get_request_example =
 
 int main()
 {
+  using namespace std::chrono_literals;  // NOLINT
+
   sjsu::LogInfo("ESP8266 Application Starting...");
 
   // Phase #1:
@@ -59,7 +61,7 @@ int main()
   while (true)
   {
     sjsu::LogInfo("Connecting to WiFi...");
-    if (wifi.ConnectToAccessPoint("KAMMCE-PHONE", "roverteam", 10s))
+    if (wifi.ConnectToAccessPoint("wifi", "password", 10s))
     {
       break;
     }
