@@ -9,7 +9,7 @@ int main()
 {
   sjsu::LogInfo("Uart Loopback Application starting...");
   sjsu::LogInfo("Connect jumper between P2[8] and P2[9].");
-  sjsu::lpc40xx::Uart & uart2 = sjsu::lpc40xx::GetUart<2>();
+  auto & uart2 = sjsu::lpc40xx::GetUart<2>();
 
   sjsu::LogInfo("Setting Baud rate to 38400");
   uart2.settings.baud_rate = 38400;

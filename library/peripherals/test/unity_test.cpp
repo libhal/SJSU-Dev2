@@ -59,9 +59,9 @@
 #include "peripherals/lpc40xx/test/pwm_test.cpp"                // NOLINT
 #include "peripherals/lpc40xx/test/spi_test.cpp"                // NOLINT
 #include "peripherals/lpc40xx/test/system_controller_test.cpp"  // NOLINT
-#include "peripherals/lpc40xx/test/timer_test.cpp"              // NOLINT
-#include "peripherals/lpc40xx/test/uart_test.cpp"               // NOLINT
-#include "peripherals/lpc40xx/test/watchdog_test.cpp"           // NOLINT
+// #include "peripherals/lpc40xx/test/timer_test.cpp"              // NOLINT
+#include "peripherals/lpc40xx/test/uart_test.cpp"      // NOLINT
+#include "peripherals/lpc40xx/test/watchdog_test.cpp"  // NOLINT
 
 // =============================================================================
 // lpc17xx implemenation test
