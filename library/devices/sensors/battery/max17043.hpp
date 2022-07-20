@@ -3,21 +3,21 @@
 #include <cstdint>
 #include <limits>
 
-#include "peripherals/gpio.hpp"
-#include "peripherals/i2c.hpp"
 #include "devices/memory_access_protocol.hpp"
 #include "devices/sensors/battery/battery_charge.hpp"
-#include "utility/math/bit.hpp"
+#include "peripherals/gpio.hpp"
+#include "peripherals/i2c.hpp"
 #include "utility/enum.hpp"
+#include "utility/math/bit.hpp"
 #include "utility/math/map.hpp"
 
 namespace sjsu
 {
 /// Driver for the max17043 battery fuel gauge
-class Max170343 : public BatteryCharge
+class Max17043 : public BatteryCharge
 {
  public:
-  /// Memory map specification for the Max170343
+  /// Memory map specification for the Max17043
   static constexpr MemoryAccessProtocol::Specification_t<
       MemoryAccessProtocol::AddressWidth::kByte1,
       std::endian::big>
@@ -60,10 +60,10 @@ class Max170343 : public BatteryCharge
   /// @param callback - InterruptCallback that is used when the alert_pin goes
   /// low.
   /// @param address - max17043 device address.
-  explicit constexpr Max170343(I2c & i2c,
-                               sjsu::Gpio & alert_pin,
-                               const sjsu::InterruptCallback & callback,
-                               uint8_t address = 0b0110110)
+  explicit constexpr Max17043(I2c & i2c,
+                              sjsu::Gpio & alert_pin,
+                              const sjsu::InterruptCallback & callback,
+                              uint8_t address = 0b0110110)
       : i2c_(i2c),
         i2c_memory_(address, i2c),
         memory_(i2c_memory_),
@@ -80,11 +80,11 @@ class Max170343 : public BatteryCharge
   /// @param callback - InterruptCallback that is used when the alert_pin goes
   /// low.
   /// @param address - max17043 device address.
-  explicit constexpr Max170343(MemoryAccessProtocol & external_map_protocol,
-                               I2c & i2c,
-                               sjsu::Gpio & alert_pin,
-                               sjsu::InterruptCallback & callback,
-                               uint8_t address = 0b0110110)
+  explicit constexpr Max17043(MemoryAccessProtocol & external_map_protocol,
+                              I2c & i2c,
+                              sjsu::Gpio & alert_pin,
+                              sjsu::InterruptCallback & callback,
+                              uint8_t address = 0b0110110)
       : i2c_(i2c),
         i2c_memory_(address, i2c),
         memory_(external_map_protocol),

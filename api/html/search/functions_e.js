@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quickstart',['QuickStart',['../d7/da0/classsjsu_1_1Max170343.html#a4ac1b4b60e87915c99de20a5765958e5',1,'sjsu::Max170343']]]
+  ['quickstart',['QuickStart',['../d7/de3/classsjsu_1_1Max17043.html#ad75f618073c60ce81df89966dfffbe8b',1,'sjsu::Max17043']]]
 ];
