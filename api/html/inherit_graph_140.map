@@ -1,47 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt;\&gt;" alt="" coords="5,588,131,615"/>
-<area shape="rect" id="node2" href="$de/dc8/classsjsu_1_1BatteryCharge.html" title="sjsu::BatteryCharge" alt="" coords="195,5,345,32"/>
-<area shape="rect" id="node4" href="$d1/de1/classsjsu_1_1Button.html" title="sjsu::Button" alt="" coords="221,56,319,83"/>
-<area shape="rect" id="node5" href="$de/d29/classsjsu_1_1Buzzer.html" title="sjsu::Buzzer" alt="" coords="220,107,320,133"/>
-<area shape="rect" id="node6" href="$dd/d20/classsjsu_1_1CanNetwork.html" title="CanNetwork is a canbus message receiver handler and. " alt="" coords="202,157,338,184"/>
-<area shape="rect" id="node7" href="$d7/dd7/classsjsu_1_1cortex_1_1DwtCounter.html" title="sjsu::cortex::DwtCounter" alt="" coords="179,208,361,235"/>
-<area shape="rect" id="node8" href="$d1/d15/classsjsu_1_1CoulombCounter.html" title="sjsu::CoulombCounter" alt="" coords="187,259,353,285"/>
-<area shape="rect" id="node10" href="$da/d01/classsjsu_1_1Dac.html" title="sjsu::Dac" alt="" coords="229,309,311,336"/>
-<area shape="rect" id="node12" href="$df/d5c/classsjsu_1_1DistanceSensor.html" title="sjsu::DistanceSensor" alt="" coords="191,360,349,387"/>
-<area shape="rect" id="node14" href="$dc/d4f/classsjsu_1_1Esp8266.html" title="sjsu::Esp8266" alt="" coords="215,411,325,437"/>
-<area shape="rect" id="node15" href="$d6/d0f/classsjsu_1_1FrequencyCounter.html" title="sjsu::FrequencyCounter" alt="" coords="183,461,357,488"/>
-<area shape="rect" id="node16" href="$dd/d3a/classsjsu_1_1Gpio.html" title="sjsu::Gpio" alt="" coords="227,512,313,539"/>
-<area shape="rect" id="node21" href="$d6/dde/classsjsu_1_1GraphicalTerminal.html" title="sjsu::GraphicalTerminal" alt="" coords="183,563,357,589"/>
-<area shape="rect" id="node22" href="$d7/d8c/classsjsu_1_1Graphics.html" title="Graphics library to draw shapes and characters on a pixel display. " alt="" coords="213,613,327,640"/>
-<area shape="rect" id="node23" href="$d7/ddd/classsjsu_1_1HardwareCounter.html" title="sjsu::HardwareCounter" alt="" coords="185,664,355,691"/>
-<area shape="rect" id="node25" href="$dd/d21/classsjsu_1_1InfraredReceiver.html" title="sjsu::InfraredReceiver" alt="" coords="189,715,351,741"/>
-<area shape="rect" id="node27" href="$db/dcb/classsjsu_1_1InternetSocket.html" title="sjsu::InternetSocket" alt="" coords="195,765,345,792"/>
-<area shape="rect" id="node29" href="$dc/db2/classsjsu_1_1InterruptController.html" title="sjsu::InterruptController" alt="" coords="182,816,358,843"/>
-<area shape="rect" id="node31" href="$d7/d75/classsjsu_1_1LightSensor.html" title="An abstract interface for light sensing device drivers. " alt="" coords="204,867,336,893"/>
-<area shape="rect" id="node33" href="$d7/d86/classsjsu_1_1ParallelBus.html" title="sjsu::ParallelBus" alt="" coords="206,917,334,944"/>
-<area shape="rect" id="node35" href="$df/d96/classsjsu_1_1PixelDisplay.html" title="sjsu::PixelDisplay" alt="" coords="201,968,339,995"/>
-<area shape="rect" id="node37" href="$d3/d56/classsjsu_1_1St7066u.html" title="Driver for the St7066u driver of a LCD character display. " alt="" coords="215,1019,325,1045"/>
-<area shape="rect" id="node38" href="$dc/da6/classsjsu_1_1Storage.html" title="sjsu::Storage" alt="" coords="217,1069,323,1096"/>
-<area shape="rect" id="node41" href="$d9/d0b/classsjsu_1_1TemperatureSensor.html" title="An abstract interface for temperature sensing device drivers. " alt="" coords="179,1120,361,1147"/>
-<area shape="rect" id="node44" href="$dc/d16/classsjsu_1_1WiFi.html" title="sjsu::WiFi" alt="" coords="229,1196,311,1223"/>
-<area shape="rect" id="node3" href="$d7/da0/classsjsu_1_1Max170343.html" title="Driver for the max17043 battery fuel gauge. " alt="" coords="497,5,628,32"/>
-<area shape="rect" id="node9" href="$d9/d3a/classsjsu_1_1Ltc4150.html" title="sjsu::Ltc4150" alt="" coords="509,259,616,285"/>
-<area shape="rect" id="node11" href="$d7/dab/classsjsu_1_1lpc40xx_1_1Dac.html" title="Implementation of digital&#45;to&#45;analog converter for lpc40xx. " alt="" coords="493,309,633,336"/>
-<area shape="rect" id="node13" href="$d2/dc6/classsjsu_1_1TFMini.html" title="sjsu::TFMini" alt="" coords="513,360,612,387"/>
-<area shape="rect" id="node17" href="$db/d7b/classsjsu_1_1lpc40xx_1_1Gpio.html" title="GPIO implementation for the lpc40xx platform. " alt="" coords="490,420,635,447"/>
-<area shape="rect" id="node18" href="$d0/d32/classsjsu_1_1msp432p401r_1_1Gpio.html" title="GPIO implementation for the MSP432P401R platform. " alt="" coords="471,471,654,497"/>
-<area shape="rect" id="node19" href="$dc/df4/classsjsu_1_1stm32f10x_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="481,521,645,548"/>
-<area shape="rect" id="node20" href="$dd/d1b/classsjsu_1_1stm32f4xx_1_1Gpio.html" title="An abstract interface for General Purpose I/O. " alt="" coords="481,572,645,599"/>
-<area shape="rect" id="node24" href="$d0/d57/classsjsu_1_1GpioCounter.html" title="sjsu::GpioCounter" alt="" coords="494,633,631,660"/>
-<area shape="rect" id="node26" href="$d2/de6/classsjsu_1_1Tsop752.html" title="sjsu::Tsop752" alt="" coords="508,684,617,711"/>
-<area shape="rect" id="node28" href="$d9/dc5/classsjsu_1_1Esp8266_1_1Esp8266InternetSocket.html" title="ESP8266&#39;s Implementation of the sjsu::InternetSocket interface/protocol. " alt="" coords="450,735,675,777"/>
-<area shape="rect" id="node30" href="$d5/d9a/classsjsu_1_1cortex_1_1InterruptController.html" title="sjsu::cortex::InterruptController\l\&lt; kNumberOfInterrupts, kNvicPriorityBits \&gt;" alt="" coords="409,801,716,842"/>
-<area shape="rect" id="node32" href="$d3/da6/classsjsu_1_1Temt6000x01.html" title="sjsu::Temt6000x01" alt="" coords="491,867,635,893"/>
-<area shape="rect" id="node34" href="$d0/d27/classsjsu_1_1ParallelGpio.html" title="A parallel bus composed of sjsu::Gpio objects. " alt="" coords="495,917,630,944"/>
-<area shape="rect" id="node36" href="$db/d32/classsjsu_1_1Ssd1306.html" title="sjsu::Ssd1306" alt="" coords="507,968,618,995"/>
-<area shape="rect" id="node39" href="$dc/da9/classsjsu_1_1lpc40xx_1_1Eeprom.html" title="sjsu::lpc40xx::Eeprom" alt="" coords="480,1019,645,1045"/>
-<area shape="rect" id="node40" href="$dc/d5f/classsjsu_1_1Sd.html" title="SD card controller utilizing the SPI peripheral. " alt="" coords="527,1069,599,1096"/>
-<area shape="rect" id="node42" href="$df/ddc/classsjsu_1_1Si7060.html" title="sjsu::Si7060" alt="" coords="513,1120,613,1147"/>
-<area shape="rect" id="node43" href="$d8/db2/classsjsu_1_1Tmp102.html" title="sjsu::Tmp102" alt="" coords="508,1171,617,1197"/>
-<area shape="rect" id="node45" href="$d0/d7a/classsjsu_1_1Esp8266_1_1Esp8266WiFi.html" title="ESP8266&#39;s Implementation of the sjsu::Wifi interface. " alt="" coords="462,1221,663,1248"/>
+<area shape="rect" id="node1" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; SpiSettings_t \&gt;" alt="" coords="5,31,224,57"/>
+<area shape="rect" id="node2" href="$d3/de6/classsjsu_1_1Spi.html" title="sjsu::Spi" alt="" coords="272,31,348,57"/>
+<area shape="rect" id="node3" href="$da/d39/classsjsu_1_1lpc40xx_1_1Spi.html" title="sjsu::lpc40xx::Spi" alt="" coords="406,5,541,32"/>
+<area shape="rect" id="node4" href="$db/df9/classsjsu_1_1stm32f10x_1_1Spi.html" title="sjsu::stm32f10x::Spi" alt="" coords="396,56,551,83"/>
 </map>

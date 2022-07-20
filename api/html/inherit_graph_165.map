@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d7/da9/structsjsu_1_1stm32f10x_1_1Adc_1_1Control2.html" title="Namespace containing the bitmask to manipulate the control registers2. " alt="" coords="5,5,164,47"/>
+<area shape="rect" id="node2" href="$d5/d7b/classsjsu_1_1StaticMemoryResource.html" title="sjsu::StaticMemoryResource\l\&lt; kBufferSizeBytes \&gt;" alt="" coords="199,5,404,47"/>
+<area shape="rect" id="node3" href="$d5/d7b/classsjsu_1_1StaticMemoryResource.html" title="sjsu::StaticMemoryResource\l\&lt; kCommandListBufferSize \&gt;" alt="" coords="193,71,409,112"/>
+<area shape="rect" id="node4" href="$d5/d7b/classsjsu_1_1StaticMemoryResource.html" title="sjsu::StaticMemoryResource\l\&lt; sizeof(sjsu::I2cCommand\l::AddressString_t) *128 \&gt;" alt="" coords="199,137,404,193"/>
 </map>

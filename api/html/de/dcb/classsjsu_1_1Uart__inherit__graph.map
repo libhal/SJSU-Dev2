@@ -1,6 +1,7 @@
 <map id="sjsu::Uart" name="sjsu::Uart">
-<area shape="rect" id="node3" href="$dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html" title="sjsu::lpc40xx::Uart" alt="" coords="5,155,148,181"/>
-<area shape="rect" id="node4" href="$d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="173,155,367,181"/>
-<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; UartSettings_t \&gt;" alt="" coords="59,5,286,32"/>
-<area shape="rect" id="node5" href="$d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. " alt="" coords="189,229,351,271"/>
+<area shape="rect" id="node3" href="$d5/d83/classsjsu_1_1lpc40xx_1_1UartBase.html" title="sjsu::lpc40xx::UartBase" alt="" coords="5,155,180,181"/>
+<area shape="rect" id="node5" href="$d9/d76/classsjsu_1_1stm32f10x_1_1UartBase.html" title="sjsu::stm32f10x::UartBase" alt="" coords="205,155,399,181"/>
+<area shape="rect" id="node2" href="$d1/ded/classsjsu_1_1Module.html" title="sjsu::Module\&lt; UartSettings_t \&gt;" alt="" coords="83,5,310,32"/>
+<area shape="rect" id="node4" href="$dc/dbb/classsjsu_1_1lpc40xx_1_1Uart.html" title="sjsu::lpc40xx::Uart\l\&lt; queue_size \&gt;" alt="" coords="21,229,164,271"/>
+<area shape="rect" id="node6" href="$d7/d66/classsjsu_1_1stm32f10x_1_1Uart.html" title="Uart Driver for the stm32f10x platform. " alt="" coords="221,229,383,271"/>
 </map>

@@ -3,6 +3,6 @@
 // options you can change.
 #pragma once
 
-#define SJ2_LOG_LEVEL SJ2_LOG_LEVEL_DEBUG
+#define SJ2_LOG_LEVEL SJ2_LOG_LEVEL_INFO
 
 #include "config.hpp"

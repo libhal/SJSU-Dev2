@@ -21,6 +21,12 @@ TEST_CASE("Testing lpc40xx Uart")
 
   sjsu::SystemController::SetPlatformController(&mock_system_controller.get());
 
+  Mock<sjsu::InterruptController> mock_interrupt_controller;
+  Fake(Method(mock_interrupt_controller, InterruptController::Enable));
+  Fake(Method(mock_interrupt_controller, InterruptController::Disable));
+  sjsu::InterruptController::SetPlatformController(
+      &mock_interrupt_controller.get());
+
   Mock<sjsu::Pin> mock_tx;
   Mock<sjsu::Pin> mock_rx;
   Fake(Method(mock_tx, Pin::ModuleInitialize));
@@ -28,7 +34,7 @@ TEST_CASE("Testing lpc40xx Uart")
 
   // Set up for UART2
   // Parameters for constructor
-  const Uart::Port_t kMockUart2 = {
+  const UartBase::Port_t kMockUart2 = {
     .registers      = &local_uart,
     .power_on_id    = sjsu::lpc40xx::SystemController::Peripherals::kUart2,
     .tx             = mock_tx.get(),
@@ -72,8 +78,7 @@ TEST_CASE("Testing lpc40xx Uart")
     const uart::UartCalibration_t kCalibration = uart::GenerateUartCalibration(
         test_subject.settings.baud_rate, kDummySystemControllerClockFrequency);
 
-    const uint8_t kExpectedUpperByte =
-        static_cast<uint8_t>((kCalibration.divide_latch >> 8) & 0xFF);
+    const uint8_t kExpectedUpperByte = 1;
     const uint8_t kExpectedLowerByte =
         static_cast<uint8_t>(kCalibration.divide_latch & 0xFF);
     const uint8_t kExpectedFdr = kCalibration.fraction;
@@ -103,7 +108,7 @@ TEST_CASE("Testing lpc40xx Uart")
               .resistor = sjsu::PinSettings_t::Resistor::kPullUp,
           });
 
-    CHECK(0b111 == bit::Extract(local_uart.FCR, bit::MaskFromRange(0, 2)));
+    CHECK(0b110 == bit::Extract(local_uart.FCR, bit::MaskFromRange(0, 2)));
 
     // Verify
     CHECK(kExpectedUpperByte == local_uart.DLM);

@@ -184,6 +184,7 @@
         "findstring",
         "FIOCLR",
         "FIOCLRH",
+        "THRE",
         "FIOCLRL",
         "FIODIR",
         "FIODIRH",

@@ -182,7 +182,8 @@ inline auto HexdumpStructure(const Structure & address)
 
 /// Only prints hexdump if the log level for the application is above DEBUG
 template <size_t kNumberOfRowsBuffered = 1>
-inline void HexdumpDebug(void * address, size_t length)
+inline void HexdumpDebug([[maybe_unused]] void * address,
+                         [[maybe_unused]] size_t length)
 {
   if constexpr (config::kLogLevel <= SJ2_LOG_LEVEL_DEBUG)
   {
