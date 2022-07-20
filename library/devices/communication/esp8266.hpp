@@ -10,17 +10,17 @@
 #include <cstring>
 #include <span>
 
-#include "peripherals/uart.hpp"
-#include "devices/communication/internet_socket.hpp"
 #include "config.hpp"
+#include "devices/communication/internet_socket.hpp"
 #include "module.hpp"
+#include "peripherals/uart.hpp"
 #include "utility/debug.hpp"
 #include "utility/enum.hpp"
 #include "utility/error_handling.hpp"
 #include "utility/log.hpp"
+#include "utility/math/units.hpp"
 #include "utility/time/time.hpp"
 #include "utility/time/timeout_timer.hpp"
-#include "utility/math/units.hpp"
 
 namespace sjsu
 {
@@ -252,6 +252,17 @@ class Esp8266 : public Module<>
     return ip;
   }
 
+  /**
+   * @brief Read directly from the internal serial port
+   *
+   * @param data - buffer to read data into
+   * @return size_t - number of bytes read
+   */
+  size_t ReadRaw(std::span<uint8_t> data)
+  {
+    return uart_port_.Read(data);
+  }
+
  private:
   // ===========================================================================
   // WiFi
@@ -384,9 +395,52 @@ class Esp8266 : public Module<>
     ReadUntil(kOk, kDefaultLongTimeout, true);
   }
 
-  // TODO(kammce): Fix this!!
   bool IsConnected()
   {
+    static constexpr const char kResponse[] = "+CWSTATE:%d";
+    static constexpr int kReponseLength     = sizeof(kResponse);
+
+    enum WifiConnectionStates : int
+    {
+      // ESP station has not started any Wi-Fi connection.
+      kStateNeverConnected = 0,
+      // ESP station has connected to an AP, but does not get an IPv4 address
+      // yet.
+      kStateConnectedNoIP = 1,
+      // ESP station has connected to an AP, and got an IPv4 address.
+      kStateConnectedWithIP = 2,
+      // ESP station is in Wi-Fi connecting or reconnecting state.
+      kStateConnecting = 3,
+      // ESP station is in Wi-Fi disconnected state.
+      kStateDisconnected = 4,
+    };
+
+    WifiWrite("AT+CWSTATE?\r\n");
+    std::array<uint8_t, 256> response{ 0 };
+    int string_length = ReadUntil(response, kOk, 10ms, false);
+
+    // If the number of bytes we got back is less than the response length
+    // within 10ms, then something went wrong and we did not get the correct
+    // state back from the device.
+    // Subtract 1 from the response length to the extra formatting character in
+    // the string from the length.
+    if (string_length < kReponseLength - 1)
+    {
+      return false;
+    }
+
+    // But now that we know that we have successfully read the buffer, we will
+    // use sscanf to verify the response message as well as get the state
+    // number.
+    int state_number     = 0;
+    auto response_string = reinterpret_cast<const char *>(response.data());
+    int items            = sscanf(response_string, kResponse, &state_number);
+
+    if (items == 1 && state_number == kStateConnectedWithIP)
+    {
+      return true;
+    }
+
     return false;
   }
 
@@ -457,9 +511,10 @@ class Esp8266 : public Module<>
     ReadUntil(total_buffer, "+IPD,", timer.GetTimeLeft());
     ReadUntil(total_buffer, ":", timer.GetTimeLeft());
 
-    auto receive_length = reinterpret_cast<const char *>(total_buffer.data());
+    auto receive_length_str =
+        reinterpret_cast<const char *>(total_buffer.data());
 
-    sscanf(receive_length, "%zu:", &incoming_bytes);
+    sscanf(receive_length_str, "%zu:", &incoming_bytes);
     return incoming_bytes;
   }
 
@@ -497,36 +552,38 @@ class Esp8266 : public Module<>
       .string_length = strlen(end),
     };
 
-    Wait(timeout, [this, &until]() {
-      if (until.end_position >= until.string_length)
-      {
-        until.success = true;
-        return true;
-      }
-      if (!uart_port_.HasData())
-      {
-        return false;
-      }
+    Wait(timeout,
+         [this, &until]()
+         {
+           if (until.end_position >= until.string_length)
+           {
+             until.success = true;
+             return true;
+           }
+           if (!uart_port_.HasData())
+           {
+             return false;
+           }
 
-      uint32_t buf_pos      = until.buffer_position % until.buffer.size();
-      until.buffer[buf_pos] = uart_port_.Read();
+           uint32_t buf_pos      = until.buffer_position % until.buffer.size();
+           until.buffer[buf_pos] = uart_port_.Read();
 
-      if (until.buffer[buf_pos] == until.end[until.end_position])
-      {
-        until.end_position++;
-      }
-      else if (until.buffer[buf_pos] == until.end[0])
-      {
-        until.end_position = 1;
-      }
-      else
-      {
-        until.end_position = 0;
-      }
+           if (until.buffer[buf_pos] == until.end[until.end_position])
+           {
+             until.end_position++;
+           }
+           else if (until.buffer[buf_pos] == until.end[0])
+           {
+             until.end_position = 1;
+           }
+           else
+           {
+             until.end_position = 0;
+           }
 
-      until.buffer_position++;
-      return false;
-    });
+           until.buffer_position++;
+           return false;
+         });
 
     if (until.success)
     {

@@ -135,6 +135,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:a912da180cbb499352701b0219e30efde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55a8f027688115c2926f94580a02e660"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/d2e/structsjsu_1_1Esp8266_1_1IpAddress__t.html">IpAddress_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#a55a8f027688115c2926f94580a02e660">ListConnections</a> ()</td></tr>
 <tr class="separator:a55a8f027688115c2926f94580a02e660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abddf00ca810dc620debf4df1205147c1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d4f/classsjsu_1_1Esp8266.html#abddf00ca810dc620debf4df1205147c1">ReadRaw</a> (std::span&lt; uint8_t &gt; data)</td></tr>
+<tr class="memdesc:abddf00ca810dc620debf4df1205147c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read directly from the internal serial port.  <a href="#abddf00ca810dc620debf4df1205147c1">More...</a><br /></td></tr>
+<tr class="separator:abddf00ca810dc620debf4df1205147c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classsjsu_1_1Module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classsjsu_1_1Module')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/ded/classsjsu_1_1Module.html">sjsu::Module&lt;&gt;</a></td></tr>
 <tr class="memitem:a30c9a986a446b2379b7ff09cc32b5628 inherit pub_methods_classsjsu_1_1Module"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/ded/classsjsu_1_1Module.html#a30c9a986a446b2379b7ff09cc32b5628">ModulePowerDown</a> ()</td></tr>
 <tr class="separator:a30c9a986a446b2379b7ff09cc32b5628 inherit pub_methods_classsjsu_1_1Module"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -323,6 +326,41 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the first IP address in the list of connected devices </dd></dl>
+
+</div>
+</div>
+<a id="abddf00ca810dc620debf4df1205147c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abddf00ca810dc620debf4df1205147c1">&#9670;&nbsp;</a></span>ReadRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t sjsu::Esp8266::ReadRaw </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; uint8_t &gt;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read directly from the internal serial port. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>- buffer to read data into </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>size_t - number of bytes read </dd></dl>
 
 </div>
 </div>
