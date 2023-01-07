@@ -392,8 +392,8 @@ inline I2c & GetI2c()
   // UM10562: Chapter 7: LPC408x/407x I/O configuration page 13
   if constexpr (port == 0)
   {
-    static auto & i2c0_sda_pin = GetPin<0, 0>();
-    static auto & i2c0_scl_pin = GetPin<0, 1>();
+    static auto & i2c0_sda_pin = GetPin<1, 30>();
+    static auto & i2c0_scl_pin = GetPin<1, 31>();
     static I2c::Transaction_t transaction_i2c0;
     /// Definition for I2C bus 0 for LPC40xx.
     static const I2c::Port_t kI2c0 = {
@@ -403,7 +403,7 @@ inline I2c & GetI2c()
       .transaction  = transaction_i2c0,
       .sda_pin      = i2c0_sda_pin,
       .scl_pin      = i2c0_scl_pin,
-      .pin_function = 0b010,
+      .pin_function = 0b100,
     };
 
     static I2c i2c0(kI2c0);
@@ -411,8 +411,8 @@ inline I2c & GetI2c()
   }
   else if constexpr (port == 1)
   {
-    static auto & i2c1_sda_pin = GetPin<1, 30>();
-    static auto & i2c1_scl_pin = GetPin<1, 31>();
+    static auto & i2c1_sda_pin = GetPin<0, 0>();
+    static auto & i2c1_scl_pin = GetPin<0, 1>();
     static I2c::Transaction_t transaction_i2c1;
     /// Definition for I2C bus 1 for LPC40xx.
     static const I2c::Port_t kI2c1 = {
